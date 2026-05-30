@@ -1,12 +1,10 @@
 ﻿# The Random-Cluster Model
 
 Geoffrey Grimmett
-Geoffrey Grimmett Statistical Laboratory Centre for Mathematical Sciences
+Statistical Laboratory Centre for Mathematical Sciences
 University of Cambridge
 Wilberforce Road, Cambridge, CB3 0WB
 United Kingdom
-
-Mathematics Subject Classiﬁcation (2000): 60K35, 82B20, 82B43
 
 ## Contents
 
