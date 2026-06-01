@@ -25,17 +25,17 @@ It is almost trivial to prove that pc(q) = 1 in the very special case when the n
 - (5.5) Theorem [8]. We have that
 - (5.6)
 
-![image 396](Grimmet2006_images/imageFile396.png)
+![image 396](../Images/imageFile396.png)
 
-![image 397](Grimmet2006_images/imageFile397.png)
+![image 397](../Images/imageFile397.png)
 
-![image 398](Grimmet2006_images/imageFile398.png)
+![image 398](../Images/imageFile398.png)
 
-![image 399](Grimmet2006_images/imageFile399.png)
+![image 399](../Images/imageFile399.png)
 
-![image 400](Grimmet2006_images/imageFile400.png)
+![image 400](../Images/imageFile400.png)
 
-![image 401](Grimmet2006_images/imageFile401.png)
+![image 401](../Images/imageFile401.png)
 
 Since 0 < pc(1) < 1 for d ≥ 2, [154, Thm 1.10], we deduce the important fact that
 
@@ -47,7 +47,7 @@ By (5.7), pc(q) is a continuous non-decreasing function of q. Strict monotonicit
 
 In advance of proving Theorems 5.5 and 5.10, we state and prove two facts of independent interest.
 
-![image 402](Grimmet2006_images/imageFile402.png)
+![image 402](../Images/imageFile402.png)
 
 1Except for its behaviour for large q, see Theorem 7.34. 2The strict monotonicity of pc(q) as a function of the underlying lattice was proved in [39],
 
@@ -71,21 +71,21 @@ Proof of Proposition 5.11. It is clear that
 
 by positive association and the fact that {0 ↔ ∂ } ⊆ {0 ↔ ∂ } when ⊆ . We take the limits as ↑ Zd and ↑ Zd in that order to obtain the claim.
 
-![image 403](Grimmet2006_images/imageFile403.png)
+![image 403](../Images/imageFile403.png)
 
-![image 404](Grimmet2006_images/imageFile404.png)
+![image 404](../Images/imageFile404.png)
 
-![image 405](Grimmet2006_images/imageFile405.png)
+![image 405](../Images/imageFile405.png)
 
-![image 406](Grimmet2006_images/imageFile406.png)
+![image 406](../Images/imageFile406.png)
 
-![image 407](Grimmet2006_images/imageFile407.png)
+![image 407](../Images/imageFile407.png)
 
 1 4q′
 
 , 1 ≤ q′ < q,
 
-![image 408](Grimmet2006_images/imageFile408.png)
+![image 408](../Images/imageFile408.png)
 
 whence pc(q) is Lipschitz-continuous on the interval [1,∞). Turning to strict monotonicity, let γ be given as in Theorem 3.24 with = 2d, and let 1 ≤ q2 < q1. Recall that γ(p,q) is continuous, and is strictly increasing in p and strictly decreasing in q. We apply Theorem 3.24 to the graph obtained from
 
@@ -155,33 +155,33 @@ on ( ,F )2 with marginals φp0,q and φp1,q, and assigning probability 1 to the 
 
 w∈Zd
 
-![image 409](Grimmet2006_images/imageFile409.png)
+![image 409](../Images/imageFile409.png)
 
-![image 410](Grimmet2006_images/imageFile410.png)
+![image 410](../Images/imageFile410.png)
 
 = φp0,q(Je | Hu ∩ Hv)φp0,q(Hu ∩ Hv). However,
 
-![image 411](Grimmet2006_images/imageFile411.png)
+![image 411](../Images/imageFile411.png)
 
 φp0,q(Je | Hu ∩ Hv) = φp1,q(Je | Hu ∩ Hv)
 
-![image 412](Grimmet2006_images/imageFile412.png)
+![image 412](../Images/imageFile412.png)
 
-![image 413](Grimmet2006_images/imageFile413.png)
+![image 413](../Images/imageFile413.png)
 
 by Proposition 4.37(a) and the fact (Theorem 4.34) that φp0,q,φp1,q ∈ Rp,q. In addition, φp0,q(Hu ∩ Hv) ≤ φp1,q(Hu ∩ Hv) since Hu ∩ Hv is an increasing event. Therefore (5.24) implies that
 
 (5.25) φp0,q(Je ∩ Iu ∩ Iv) ≤ φp1,q(Je | Hu ∩ Hv)φp1,q(Hu ∩ Hv)
 
-![image 414](Grimmet2006_images/imageFile414.png)
+![image 414](../Images/imageFile414.png)
 
-![image 415](Grimmet2006_images/imageFile415.png)
+![image 415](../Images/imageFile415.png)
 
 = φp1,q(Je ∩ Hu ∩ Hv) = φp1,q(Je ∩ Iu ∩ Iv). Adding (5.23) and (5.25), we obtain that
 
-![image 416](Grimmet2006_images/imageFile416.png)
+![image 416](../Images/imageFile416.png)
 
-![image 417](Grimmet2006_images/imageFile417.png)
+![image 417](../Images/imageFile417.png)
 
 φp0,q(Iu ∩ Iv) ≤ φp1,q(Iu ∩ Iv).
 
@@ -193,25 +193,25 @@ It is obvious that
 
 (5.27) φp0,q(Je ∩ Iu ∩ Iv) = φp1,q(Je ∩ Iu ∩ Iv)
 
-![image 418](Grimmet2006_images/imageFile418.png)
+![image 418](../Images/imageFile418.png)
 
-![image 419](Grimmet2006_images/imageFile419.png)
+![image 419](../Images/imageFile419.png)
 
 since both sides equal 0; the same equation holds with Iu ∩ Iv replaced by Iu ∩ Iv. Finally, we prove that
 
-![image 420](Grimmet2006_images/imageFile420.png)
+![image 420](../Images/imageFile420.png)
 
-![image 421](Grimmet2006_images/imageFile421.png)
+![image 421](../Images/imageFile421.png)
 
 (5.28) φp0,q(Je ∩ Iu ∩ Iv) = φp1,q(Je ∩ Iu ∩ Iv)
 
-![image 422](Grimmet2006_images/imageFile422.png)
+![image 422](../Images/imageFile422.png)
 
-![image 423](Grimmet2006_images/imageFile423.png)
+![image 423](../Images/imageFile423.png)
 
-![image 424](Grimmet2006_images/imageFile424.png)
+![image 424](../Images/imageFile424.png)
 
-![image 425](Grimmet2006_images/imageFile425.png)
+![image 425](../Images/imageFile425.png)
 
 which, in conjunction with (5.26), (5.27), and the subsequent remark, implies the required (5.21) by addition. Let ǫ > 0. Let be a box containing u and v, and let A = {u ↔/ ∂ , v ↔/ ∂ }. We have that
 
@@ -219,13 +219,13 @@ which, in conjunction with (5.26), (5.27), and the subsequent remark, implies th
 
 → φp0,q(Iu ∩ Iv) − φp1,q(Iu ∩ Iv) as ↑ Zd ≤ ψ F(ω0) = F(ω1) = 0,
 
-![image 426](Grimmet2006_images/imageFile426.png)
+![image 426](../Images/imageFile426.png)
 
-![image 427](Grimmet2006_images/imageFile427.png)
+![image 427](../Images/imageFile427.png)
 
-![image 428](Grimmet2006_images/imageFile428.png)
+![image 428](../Images/imageFile428.png)
 
-![image 429](Grimmet2006_images/imageFile429.png)
+![image 429](../Images/imageFile429.png)
 
 by (5.22). Therefore,
 
@@ -301,9 +301,9 @@ Proof of Theorem 5.17. Let µ be the (coupled) probability measure on × given b
 
 - µ(σ0 = 1 | 0 ↔/ ∞)[1 − θ1(p,q)]
 
-![image 430](Grimmet2006_images/imageFile430.png)
+![image 430](../Images/imageFile430.png)
 
-![image 431](Grimmet2006_images/imageFile431.png)
+![image 431](../Images/imageFile431.png)
 
 The claim is proven once we have shown that (5.32) φp0,q(0 ↔ u) → θ0(p,q)2 as |u| → ∞. By the 0/1-infinite-cluster property of φp0,q, see the remark after (4.36),
 
@@ -335,9 +335,9 @@ Slightly more is known in the case of two dimensions. It is proved in Theorem 6.
 
 √q) is the ‘self-dual’ value of p. It is conjectured that pc(q) = psd(q) for q ∈ [1,∞). Proof of Theorem 5.33. The sufﬁciency of (a) was proved in Theorem 5.16(c).
 
-![image 432](Grimmet2006_images/imageFile432.png)
+![image 432](../Images/imageFile432.png)
 
-![image 433](Grimmet2006_images/imageFile433.png)
+![image 433](../Images/imageFile433.png)
 
 We sketch a proof that φp0,q = φp1,q if p is sufficiently close to 1. There are certain topological complications in this3, and we refrain from giving all the relevant details, most of which may be found in a closely related passage of [211, Section 2]. We begin by deﬁning a lattice L with the same vertex set as Ld but with edge-relation
 
@@ -363,7 +363,7 @@ where φ ,π is product measure on E with density π = p/[p + q(1 − p)], and w
 
 (5.36) φπ( B(x) ≥ n) ≤ e−nα(p), n ≥ 1,
 
-![image 434](Grimmet2006_images/imageFile434.png)
+![image 434](../Images/imageFile434.png)
 
 3An alternative approach may be based on the methods of Section 7.2.
 
@@ -371,7 +371,7 @@ and furthermore α(p) > 0 if p is sufficiently large, say p > p′ for some p′
 
 Let A be an increasingcylinderevent, and ﬁnd a finite box such that A ∈ F . Let be a box satisfying ⊆ . For any subset S of = Zd \ containing ∂ , we deﬁne the ‘internal boundary’ D(S) of S to be the set of all vertices x of L satisfying:
 
-![image 435](Grimmet2006_images/imageFile435.png)
+![image 435](../Images/imageFile435.png)
 
 (a) x ∈/ S, (b) x is adjacent in L to some vertex of S, (c) there exists a path of Ld from x to some vertex in , this path using no
 
@@ -383,9 +383,9 @@ Let ǫ > 0 and p > p′, where p′ is given after (5.36). By (5.35)–(5.36), t
 
 Assume that K , occurs, so that I = I(B(∂ )) satisﬁes I ⊇ . Let H be the set of all subsets h of such that h ⊆ . We note three facts about B(∂ ) and D(B(∂ )):
 
-![image 436](Grimmet2006_images/imageFile436.png)
+![image 436](../Images/imageFile436.png)
 
-![image 437](Grimmet2006_images/imageFile437.png)
+![image 437](../Images/imageFile437.png)
 
 (a) D(B(∂ )) is Ld-connected in that, for all pairs x, y ∈ D(B(∂ )), there
 
@@ -393,9 +393,9 @@ exists a path of Ld joining x to y using vertices of D(B(∂ )) only, (b) every 
 
 (c) D(B(∂ )) is measurable with respect to the colours of vertices in I = Zd \ I, in the following sense: for any h ∈ H , the event {B(∂ ) = h, D(B(∂ )) = D(h)} lies in the σ-field generated by the colours of vertices in I(h).
 
-![image 438](Grimmet2006_images/imageFile438.png)
+![image 438](../Images/imageFile438.png)
 
-![image 439](Grimmet2006_images/imageFile439.png)
+![image 439](../Images/imageFile439.png)
 
 Claim (a) may be proved by adapting the argument used to prove [211, Lemma 2.23]; claim (b) is a consequence of the definition of D(B(∂ )); claim (c) holds since D(B(∂ )) is part of the boundary of the black cluster of L generated by ∂ . Full proofs of (a) and (c) are not given here. They would be rather long, and would have much in common with [211, Section 2].
 
@@ -421,9 +421,9 @@ The subcritical phase is characterized by the (almost-sure) absence of an infini
 
 It is immediate that rad(C) ≥ n if and only if 0 ↔ ∂ n, where n = [−n,n]d. We note for later use that there exists a positive constant β = β(d) such that
 
-![image 440](Grimmet2006_images/imageFile440.png)
+![image 440](../Images/imageFile440.png)
 
-![image 441](Grimmet2006_images/imageFile441.png)
+![image 441](../Images/imageFile441.png)
 
 n→∞
 
@@ -433,17 +433,17 @@ It is quite another matter to show as expected that
 
 We conﬁne ourselves in this section to ‘soft’ arguments concerning the existence of ψ and ζ; the ‘harder’ arguments relevant to strict positivity are deferred to the next two sections. We begin by considering the radius of the cluster at the origin. The existence of the limit in (5.41) relies essentially on positive association. We write en = (n,0,0,. . . ,0).
 
-![image 442](Grimmet2006_images/imageFile442.png)
+![image 442](../Images/imageFile442.png)
 
 4Note the use of the distance function · rather than the function | · | of [154].
 
-![image 443](Grimmet2006_images/imageFile443.png)
+![image 443](../Images/imageFile443.png)
 
-![image 444](Grimmet2006_images/imageFile444.png)
+![image 444](../Images/imageFile444.png)
 
-![image 445](Grimmet2006_images/imageFile445.png)
+![image 445](../Images/imageFile445.png)
 
-![image 446](Grimmet2006_images/imageFile446.png)
+![image 446](../Images/imageFile446.png)
 
 n→∞
 
@@ -457,9 +457,9 @@ Proofs of Theorem 5.44 and Corollary 5.45. The proof of Theorem 5.44 follows exa
 
 We turn next to the volume |C| of the open cluster at the origin. A probability measure µ on ( ,F ) is said to satisfy the ‘uniform insertion-tolerancecondition’ if, for some α,β ∈ (0,1),
 
-![image 447](Grimmet2006_images/imageFile447.png)
+![image 447](../Images/imageFile447.png)
 
-![image 448](Grimmet2006_images/imageFile448.png)
+![image 448](../Images/imageFile448.png)
 
 It is an easy consequence of (5.48)–(5.49) that (5.50) −
 
@@ -467,11 +467,11 @@ It is an easy consequence of (5.48)–(5.49) that (5.50) −
 
 logµ(n ≤ |C| < ∞) → ζ(µ) as n → ∞.
 
-![image 449](Grimmet2006_images/imageFile449.png)
+![image 449](../Images/imageFile449.png)
 
-![image 450](Grimmet2006_images/imageFile450.png)
+![image 450](../Images/imageFile450.png)
 
-![image 451](Grimmet2006_images/imageFile451.png)
+![image 451](../Images/imageFile451.png)
 
 Proofs of Theorem 5.47 and Corollary 5.51. These are obtained by following the proof of [154, Thm 6.78], and the details are omitted.
 
@@ -495,9 +495,9 @@ logφp(|C| ≥ n) → ζ(p,1) as n → ∞. Furthermore, ζ(p,1) > 0 when p < pc
 
 −
 
-![image 452](Grimmet2006_images/imageFile452.png)
+![image 452](../Images/imageFile452.png)
 
-![image 453](Grimmet2006_images/imageFile453.png)
+![image 453](../Images/imageFile453.png)
 
 n→∞
 
@@ -555,7 +555,7 @@ e
 
 We shall consider the event An = {0 ↔ ∂ n}, and we write Hn for HAn. The question of ascertaining the asymptotics of Hn may be viewed as a first-passage problem. Imagine you are travelling from 0 to ∂ n; travel along open edges is instantaneous, but along each closed edge requires time 1. The fastest route requires time Hn, and one is interested in the time-constant η, defined as η = limn→∞{n−1Hn}.
 
-![image 454](Grimmet2006_images/imageFile454.png)
+![image 454](../Images/imageFile454.png)
 
 n→∞
 
@@ -569,7 +569,7 @@ We apply this to the measure µ = φp0,q to deduce the existence, φp0,q-almosts
 
 Hn . By Proposition 4.28, η(p,q) is non-increasing in p, and we deﬁne (5.63) ptc(q) = sup p : η(p,q) > 0 . We seek a condition under which η(p,q) > 0. As usual, C denotes the vertex set of the open cluster at the origin.
 
-![image 455](Grimmet2006_images/imageFile455.png)
+![image 455](../Images/imageFile455.png)
 
 n→∞
 
@@ -583,13 +583,13 @@ By this theorem and the prior observations, (5.67) ptc(q) = pg(q) = pc(q) ≤ pc
 
 In the percolation case (when q = 1), the above first-passage problem and the associated time-constant η(p,q) have been studied in detail; see [208, 211]. Several authors have given serious attention to a closely related question when q = 2 and d = 2, namely, the corresponding question for the two-dimensional Ising model with the ‘passage time’ Hn replaced by the minimum number of changes of spin along paths from the origin to ∂ n, see [1, 90, 119]. The timeconstant in the Ising case cannot exceed the corresponding random-cluster timeconstantη(p,2), sinceeachedgeoftheIsingmodelhavingendverticeswithunlike spins gives rise to a closed edge in the (coupled) random-cluster model.
 
-![image 456](Grimmet2006_images/imageFile456.png)
+![image 456](../Images/imageFile456.png)
 
-![image 457](Grimmet2006_images/imageFile457.png)
+![image 457](../Images/imageFile457.png)
 
-![image 458](Grimmet2006_images/imageFile458.png)
+![image 458](../Images/imageFile458.png)
 
-![image 459](Grimmet2006_images/imageFile459.png)
+![image 459](../Images/imageFile459.png)
 
 Noteinpassingthatinequalities(5.68)and(5.69),with A = An = {0 ↔ ∂ n}, imply that the correlation length ξ(p,q) is strictly increasing in p whenever it is finite, cf. [154, Thm 6.14].
 
@@ -607,9 +607,9 @@ Conversely, suppose that r < s < pg(q). There exists α = α(s,q) > 0 such that 
 
 log[q/(s − r)] − β, whence r ≤ ptc(q). Therefore pg(q) ≤ ptc(q).
 
-![image 460](Grimmet2006_images/imageFile460.png)
+![image 460](../Images/imageFile460.png)
 
-![image 461](Grimmet2006_images/imageFile461.png)
+![image 461](../Images/imageFile461.png)
 
 There are two stages in the proof of Theorem 5.60. In the first, we apply (5.68)–(5.69) with A = An, and we utilize an iterative scheme to prove that φp0,q(An) decays ‘near-exponentially’ when p < pc(q). In the second stage, we use Theorems 5.64 and 5.66 to deduce full exponential decay. The conclusion of the first stage may be summarized as follows.
 
@@ -622,11 +622,11 @@ log1 x = log x, logk x = log(1 ∨ logk−1 x), k ≥ 2.
 
 Proof of Lemma 5.71. We shall use (5.68) and (5.69) in an iterative scheme. In the following, we shall sometimes use real quantities when integers are required. All terms of the form o(1) or O(1) are to be interpreted in the limit as n → ∞.
 
-![image 462](Grimmet2006_images/imageFile462.png)
+![image 462](../Images/imageFile462.png)
 
-![image 463](Grimmet2006_images/imageFile463.png)
+![image 463](../Images/imageFile463.png)
 
-![image 464](Grimmet2006_images/imageFile464.png)
+![image 464](../Images/imageFile464.png)
 
 where 1 < D = q/(t − s) < ∞. We substitute this into (5.68) to obtain that
 
@@ -634,35 +634,35 @@ c2(r) nd−1+ 2(r) , n ≥ 1,
 
 (5.74) φr0,q(An) ≤
 
-![image 465](Grimmet2006_images/imageFile465.png)
+![image 465](../Images/imageFile465.png)
 
 for some strictly positive and finite c2(r) and 2(r). This holds for all r < pc(q), and is an improvement in order of magnitude over (5.73).
 
-![image 466](Grimmet2006_images/imageFile466.png)
+![image 466](../Images/imageFile466.png)
 
-![image 467](Grimmet2006_images/imageFile467.png)
+![image 467](../Images/imageFile467.png)
 
-![image 468](Grimmet2006_images/imageFile468.png)
+![image 468](../Images/imageFile468.png)
 
-![image 469](Grimmet2006_images/imageFile469.png)
+![image 469](../Images/imageFile469.png)
 
-![image 470](Grimmet2006_images/imageFile470.png)
+![image 470](../Images/imageFile470.png)
 
-![image 471](Grimmet2006_images/imageFile471.png)
+![image 471](../Images/imageFile471.png)
 
-![image 472](Grimmet2006_images/imageFile472.png)
+![image 472](../Images/imageFile472.png)
 
-![image 473](Grimmet2006_images/imageFile473.png)
+![image 473](../Images/imageFile473.png)
 
-![image 474](Grimmet2006_images/imageFile474.png)
+![image 474](../Images/imageFile474.png)
 
-![image 475](Grimmet2006_images/imageFile475.png)
+![image 475](../Images/imageFile475.png)
 
-![image 476](Grimmet2006_images/imageFile476.png)
+![image 476](../Images/imageFile476.png)
 
-![image 477](Grimmet2006_images/imageFile477.png)
+![image 477](../Images/imageFile477.png)
 
-![image 478](Grimmet2006_images/imageFile478.png)
+![image 478](../Images/imageFile478.png)
 
 m→∞
 
@@ -678,9 +678,9 @@ eE be the set of edges of Zd having exactly one endvertex in E. We may ﬁnd a (
 
 properties of φp0,q here. Firstly, the law of Cvn+1 given Cv1,Cv2,. . .,Cvn depends only on eE, and secondly, φp0,q is positively associated. We obtain the required stochastic domination accordingly.
 
-![image 479](Grimmet2006_images/imageFile479.png)
+![image 479](../Images/imageFile479.png)
 
-![image 480](Grimmet2006_images/imageFile480.png)
+![image 480](../Images/imageFile480.png)
 
 m→∞
 
@@ -736,7 +736,7 @@ Let N be a ﬁxed positive integer. From Ld we construct a new lattice L as foll
 
 The following lemma relates the size of the open cluster C at the origin of Ld to the sizes of white clusters of L. For x ∈ Zd, we write Wx for the connected cluster of white vertices of L containing x.
 
-![image 481](Grimmet2006_images/imageFile481.png)
+![image 481](../Images/imageFile481.png)
 
 m≥An−1
 
@@ -774,7 +774,7 @@ x∈R
 
 Let p < pc∞(q), and choose a > 1 such that p < pca(q). With b > 3 + a, the right side of (5.98) may be made as small as required by a suitably large choice of N, and we choose N in such a way that 7de(dτNb )c < 21. Inequality (5.97) provides the required exponential bound.
 
-![image 482](Grimmet2006_images/imageFile482.png)
+![image 482](../Images/imageFile482.png)
 
 <a id="sec-5-7"></a>
 
@@ -800,7 +800,7 @@ The study of the Wulff crystal is bound up with the law of the volume of a finit
 
 φp1,q(|C| = n) ≥ e−γn(d−1)/d,
 
-![image 483](Grimmet2006_images/imageFile483.png)
+![image 483](../Images/imageFile483.png)
 
 5Such shapes are named after the author of [325]. The first mathematical results on Wulff shapes were proved for the two-dimensional Ising model in [104], see the review [55].
 
@@ -830,7 +830,7 @@ Clearly, pc(q) ≤ pc(q) < 1. It is believed that equality holds in that pc(q) =
 
 Thecase q = 1 ofConjecture5.103isspecial, since percolationenjoysa spatial independence not shared with general random-cluster models. This additional property has been used in the formulation of a type of ‘dynamic renormalization’, which has in turn yielded a proof that pc(1) = pc(1) for percolation in three or more dimensions, see [24], [154, Chapter 7], [161]. Such arguments have been adapted by Bodineau to the Ising model, resulting in proofs that pc(2) = pc(2) and that the pure phases are the unique extremalGibbs states when p = pc(2), see
 
-![image 484](Grimmet2006_images/imageFile484.png)
+![image 484](../Images/imageFile484.png)
 
 6OnemayexpectthemethodsofSection7.5toyieldaproofthat pc(q) = pc(q)forsufficiently large q.
 
@@ -854,13 +854,13 @@ For A ⊆ Zd, let ρ(A) be the number of vertices x ∈ A such that x ↔ ∂ A.
 
 δx/n
 
-![image 485](Grimmet2006_images/imageFile485.png)
+![image 485](../Images/imageFile485.png)
 
 converges in probability, with respect to the bounded, uniformly continuous functions, towards the set {θ1W(a + x)dx : a ∈ R} of measures, where θ = θ1(p,q). The probabilities of deviations are of order exp(−cnd−1).
 
-![image 486](Grimmet2006_images/imageFile486.png)
+![image 486](../Images/imageFile486.png)
 
-![image 487](Grimmet2006_images/imageFile487.png)
+![image 487](../Images/imageFile487.png)
 
 x∈W
 
@@ -868,7 +868,7 @@ x∈W
 
 where φ1p,q is the measure obtained from φp1,q by conditioning on the event {nd ≤ |C| < ∞}, and | · | is the Euclidean norm on Rk. This is a way of saying that the external boundary of a large finite open cluster with cardinality approximately nd resembles the boundary of a translate of nW. Within this boundary, the open cluster has density approximately θ, whilst the density outside is zero. It is presumably the case that the a in (5.107) may be chosen independently of f and ǫ, but this has not yet been proved.
 
-![image 488](Grimmet2006_images/imageFile488.png)
+![image 488](../Images/imageFile488.png)
 
 One important consequence of the analysis of [83] is an exact asymptotic for the probability that |C| is large. (5.108) Theorem [81]. Let q ∈ [1,∞) and d ≥ 3. Let p ∈ ( pc(q),1) be such that p ∈/ Dq. There exists γ = γ(p,q) ∈ (0,∞) such that
 
@@ -876,7 +876,7 @@ One important consequence of the analysis of [83] is an exact asymptotic for the
 
 logφp1,q(nd ≤ |C| < ∞) → −γ as n → ∞.
 
-![image 489](Grimmet2006_images/imageFile489.png)
+![image 489](../Images/imageFile489.png)
 
 The above results are valid in two dimensions also although, as noted earlier, this case is special. When d = 2, the slab critical point pc(q) is replaced by the inﬁmumofvalues patwhichthedualprocesshasexponentialdecayofconnections (see (6.5) for the relation between the dual and primal parameter-values). That is, when d = 2,
 
@@ -884,7 +884,7 @@ q(1 − pg(q)) pg(q) + q(1 − pg(q))
 
 pc(q) =
 
-![image 490](Grimmet2006_images/imageFile490.png)
+![image 490](../Images/imageFile490.png)
 
 where pg(q) is given at (5.65). Fluctuations in droplet shape for random-cluster models in two dimensions have been studied in [17, 18].
 
@@ -974,11 +974,11 @@ It remains to prove (5.116), which we do by a coupling argument. Suppose that we
 
 Only a limited amount is known about the (non-)uniqueness of random-cluster measures on Ld when q < 1, owing to the absence of stochastic ordering and the failure of positive association. By Theorems 4.31 and 4.33, there exists at least one translation-invariant member of coWp,q, and this measure is a DLRrandom-cluster measure. One may glean a little concerning uniqueness from the comparison inequalities, Theorem 3.21, from which we extract the facts that, for the random-cluster measure φG,p,q on a finite graph G = (V, E),
 
-![image 491](Grimmet2006_images/imageFile491.png)
+![image 491](../Images/imageFile491.png)
 
-![image 492](Grimmet2006_images/imageFile492.png)
+![image 492](../Images/imageFile492.png)
 
-![image 493](Grimmet2006_images/imageFile493.png)
+![image 493](../Images/imageFile493.png)
 
 Onemaydeducethefollowingbymakingcomparisonswiththepercolationmodel. (5.119) Theorem. For d ≥ 2, there exists p′ = p′(d) < 1 such that the following holds. Let p ∈ (0,1), q ∈ (0,1], and write π = p/[p + q(1 − p)]. We have that |Wp,q| = |Rp,q| = 1 whenever either θ(π,1) = 0 or p > p′.
 
@@ -988,7 +988,7 @@ there exists ψ = ψ(p,q) > 0 such that φp0,q(|C| = n) ≤ e−nψ, see the com
 
 Proof7. The proof is similar to that of Proposition 5.30 and is therefore only sketched. Let p, q be such that q ∈ (0,1) and θ(π,1) = 0, and let and be
 
-![image 494](Grimmet2006_images/imageFile494.png)
+![image 494](../Images/imageFile494.png)
 
 7See also [8, 156, 281].
 
@@ -1025,4 +1025,3 @@ m→∞
 m→∞
 
 Asimilarproofofuniquenessisvalidforlarge p, using(5.117)andtheapproach taken for Theorem 5.33(b).
-

@@ -20,35 +20,35 @@ iciently large, [224]. The second component is the proof in Sections 7.6–7.11 
 
 The principal target of this section is to study the geometry of the dual surface corresponding to the external boundary of a finite connected subgraph of Ld. The results are presented for d ≥ 3, but the reader is advised to concentrate on the case d = 3. We write Ldd for the dual lattice of Ld, being the translate of Ld by the vector 12 = (21, 21,. . ., 21).
 
-![image 617](Grimmet2006_images/imageFile617.png)
+![image 617](../Images/imageFile617.png)
 
-![image 618](Grimmet2006_images/imageFile618.png)
+![image 618](../Images/imageFile618.png)
 
-![image 619](Grimmet2006_images/imageFile619.png)
+![image 619](../Images/imageFile619.png)
 
-![image 620](Grimmet2006_images/imageFile620.png)
+![image 620](../Images/imageFile620.png)
 
 Let d ≥ 3 and let B0 = [0,1]d, viewed as a subset of Rd. The elementary cubes of Ldd are translates by integer vectors of the cube B0 − 21 = [−21, 21]d. The boundary of B0 − 21 is the union of the 2d sets Pi,u given by
 
-![image 621](Grimmet2006_images/imageFile621.png)
+![image 621](../Images/imageFile621.png)
 
-![image 622](Grimmet2006_images/imageFile622.png)
+![image 622](../Images/imageFile622.png)
 
-![image 623](Grimmet2006_images/imageFile623.png)
+![image 623](../Images/imageFile623.png)
 
-![image 624](Grimmet2006_images/imageFile624.png)
+![image 624](../Images/imageFile624.png)
 
 (7.1) Pi,u = [−21, 21]i−1 × {u − 21} × [−21, 21]d−i,
 
-![image 625](Grimmet2006_images/imageFile625.png)
+![image 625](../Images/imageFile625.png)
 
-![image 626](Grimmet2006_images/imageFile626.png)
+![image 626](../Images/imageFile626.png)
 
-![image 627](Grimmet2006_images/imageFile627.png)
+![image 627](../Images/imageFile627.png)
 
-![image 628](Grimmet2006_images/imageFile628.png)
+![image 628](../Images/imageFile628.png)
 
-![image 629](Grimmet2006_images/imageFile629.png)
+![image 629](../Images/imageFile629.png)
 
 for i = 1,2,. . .,d and u = 0,1. A plaquette (in Rd) is defined to be a translate by an integer vector of some Pi,u. We point out that plaquettes are (topologically) closed(d−1)-dimensionalsubsetsofRd, andthatplaquettesarelineswhen d = 2, and are unit squares when d = 3 (see Figure 7.1). Let H denote the set of all plaquettes in Rd. The straight line-segmentjoining the vertices of an edge e = x, y passes through the middle of a plaquette denoted by h(e), which we call the dual plaquette of e. More precisely, if y = x +ei where ei = (0,. . .,0,1,0,. . . ,0) is the unit vector in the direction of increasing ith coordinate, then h(e) = Pi,1 + x.
 
@@ -60,7 +60,7 @@ when viewed as the vertex-set of a graph with adjacency relation ∼s . Of parti
 
 We consider next some geometricalmatters. The words ‘connected’and ‘component’ should be interpreted for the moment in their topological sense. Let T ⊆ Rd, and write T for the closure of T in Rd. We deﬁne the inside ins(T) to be the union of all bounded connected components of Rd \ T; the outside out(T) is the union of all unbounded connected components of Rd \ T. The set T is said to
 
-![image 630](Grimmet2006_images/imageFile630.png)
+![image 630](../Images/imageFile630.png)
 
 separate Rd if Rd \ T has more than one connected component. For a set H ⊆ H of plaquettes, we deﬁne the set [H] ⊆ Rd by
 
@@ -76,17 +76,17 @@ The two theorems that follow are in a sense dual to one another. The first is an
 
 For any set δ of plaquettes, we deﬁne its closure δ to be the set (7.4) δ = δ ∪ h ∈ H : h is (d − 2)-connected to some member of δ .
 
-![image 631](Grimmet2006_images/imageFile631.png)
+![image 631](../Images/imageFile631.png)
 
-![image 632](Grimmet2006_images/imageFile632.png)
+![image 632](../Images/imageFile632.png)
 
 Let δ = {h(e) : e ∈ D} be a (d − 2)-connected set of plaquettes. Consider the subgraph (Zd,Ed \ D) of Ld, and let C be a component of this graph. Let
 
 v,δC denote the set of all vertices v in C for which there exists w ∈ Zd with h( v,w ) ∈ δ, and let e,δC denotethe set of edges f of C forwhich h( f ) ∈ δ\δ. Note that edges in e,δC have both endvertices belonging to v,δC.
 
-![image 633](Grimmet2006_images/imageFile633.png)
+![image 633](../Images/imageFile633.png)
 
-![image 634](Grimmet2006_images/imageFile634.png)
+![image 634](../Images/imageFile634.png)
 
 (7.5) Theorem [139]. Let d ≥ 3. Let δ = {h(e) : e ∈ D} be a (d − 2)-connected set of plaquettes, and let C = (VC, EC) be a finite connected component of the graph (Zd,Ed \ D). There exists a splitting set Q = QC of plaquettes such that:
 
@@ -96,13 +96,13 @@ v,δC denote the set of all vertices v in C for which there exists w ∈ Zd with
 
 This theorem will be used later to show that, for a suitable (random) set δ of plaquettes, the random-cluster measure within a bounded connected component of Rd \ [δ] is that with wired boundary condition. The argument is roughly as follows. Let ω ∈ , and let δ = {h(e) : e ∈ D} be a maximal (d − 2)-connected
 
-![image 635](Grimmet2006_images/imageFile635.png)
+![image 635](../Images/imageFile635.png)
 
 1This answers a question which arose in 1980 during a conversation with H. Kesten.
 
 set of plaquettes that are open (in the sense that they are dual to ω-closed edges of Ld, see (7.9)). Let h = h( f ) ∈ δ \ δ. It must be the case that f is open, since if f were closed then h( f ) would be open, which would in turn imply that h( f ) ∈ δ, a contradiction. That is to say, for any finite connected component C of (Zd,Ed \ D), every edge in e,δC is open. By Theorem 7.5, the boundary v,δC, when augmented by the set e,δC of edges, is a connected graph. The randomcluster measure on C, conditional on the set δ, is therefore a wired measure.
 
-![image 636](Grimmet2006_images/imageFile636.png)
+![image 636](../Images/imageFile636.png)
 
 We shall require one further theorem of similar type.
 
@@ -120,67 +120,67 @@ thin if λd−3(S) < ∞, fat if λd−2(S) > 0.
 
 Let P1, P2,. . ., Pn be the (d − 2)-connected components of P. Note that [Pi] ∩ [Pj] is thin, for i = j. We show next that there exists i such that x ∈ ins([Pi]). Suppose for the sake of contradiction that this is false, which is to say that x ∈/ ins([Pi]) for all i. Then x ∈/ Pi = [Pi] ∪ ins([Pi]) for i = 1,2,. . .,n. Note that each Pi is a closed set which does not separate Rd.
 
-![image 637](Grimmet2006_images/imageFile637.png)
+![image 637](../Images/imageFile637.png)
 
-![image 638](Grimmet2006_images/imageFile638.png)
+![image 638](../Images/imageFile638.png)
 
 Let i = j. We claim that: (7.7) either Pi ∩ Pj is thin, or one of the sets Pi, Pj is a subset of the other. To see this, suppose that Pi ∩ Pj is fat; we shall deduce as required that either Pi ⊆ Pj or Pi ⊇ Pj.
 
-![image 639](Grimmet2006_images/imageFile639.png)
+![image 639](../Images/imageFile639.png)
 
-![image 640](Grimmet2006_images/imageFile640.png)
+![image 640](../Images/imageFile640.png)
 
-![image 641](Grimmet2006_images/imageFile641.png)
+![image 641](../Images/imageFile641.png)
 
-![image 642](Grimmet2006_images/imageFile642.png)
+![image 642](../Images/imageFile642.png)
 
-![image 643](Grimmet2006_images/imageFile643.png)
+![image 643](../Images/imageFile643.png)
 
-![image 644](Grimmet2006_images/imageFile644.png)
+![image 644](../Images/imageFile644.png)
 
-![image 645](Grimmet2006_images/imageFile645.png)
+![image 645](../Images/imageFile645.png)
 
-![image 646](Grimmet2006_images/imageFile646.png)
+![image 646](../Images/imageFile646.png)
 
-![image 647](Grimmet2006_images/imageFile647.png)
+![image 647](../Images/imageFile647.png)
 
-![image 648](Grimmet2006_images/imageFile648.png)
+![image 648](../Images/imageFile648.png)
 
 Suppose further that Pi ∩[Pj] is fat. Since [Pj] is a union of plaquettes and Pi is a union of plaquettes and cubes, all with cornersin Zd + 21, there exists a pair h1, h2 of plaquettesofLdd such thath1 d∼−2 h2, and g = h1∩h2 satisﬁes g ⊆ Pi ∩[Pj]. We cannot have g ⊆ [Pi] since [Pi] ∩ [Pj] is thin, whence int(g) ⊆ ins([Pi]), where int(g) denotes the interior of g viewed as a subset of Rd−2. Now, [Pj] is (d − 2)-connected and [Pi] ∩ [Pj] is thin, so that [Pj] is contained in the closure of ins([Pi]), implying that [Pj] ⊆ Pi and therefore Pj ⊆ Pi.
 
-![image 649](Grimmet2006_images/imageFile649.png)
+![image 649](../Images/imageFile649.png)
 
-![image 650](Grimmet2006_images/imageFile650.png)
+![image 650](../Images/imageFile650.png)
 
-![image 651](Grimmet2006_images/imageFile651.png)
+![image 651](../Images/imageFile651.png)
 
-![image 652](Grimmet2006_images/imageFile652.png)
+![image 652](../Images/imageFile652.png)
 
-![image 653](Grimmet2006_images/imageFile653.png)
+![image 653](../Images/imageFile653.png)
 
-![image 654](Grimmet2006_images/imageFile654.png)
+![image 654](../Images/imageFile654.png)
 
-![image 655](Grimmet2006_images/imageFile655.png)
+![image 655](../Images/imageFile655.png)
 
 Suppose next that Pi ∩ [Pj] is thin but Pi ∩ ins([Pj]) is fat. Since [Pi] is (d − 2)-connected, it has by definition no thin cutset. Since [Pi] ∩ [Pj] is thin, either [Pi] ⊆ Pj or [Pi] is contained in the closure of the unbounded component of Rd \[Pj]. The latter cannot hold since Pi ∩ ins([Pj]) is fat, whence [Pi] ⊆ Pj and therefore Pi ⊆ Pj. Statement (7.7) has been proved.
 
-![image 656](Grimmet2006_images/imageFile656.png)
+![image 656](../Images/imageFile656.png)
 
-![image 657](Grimmet2006_images/imageFile657.png)
+![image 657](../Images/imageFile657.png)
 
-![image 658](Grimmet2006_images/imageFile658.png)
+![image 658](../Images/imageFile658.png)
 
-![image 659](Grimmet2006_images/imageFile659.png)
+![image 659](../Images/imageFile659.png)
 
-![image 660](Grimmet2006_images/imageFile660.png)
+![image 660](../Images/imageFile660.png)
 
-![image 661](Grimmet2006_images/imageFile661.png)
+![image 661](../Images/imageFile661.png)
 
-![image 662](Grimmet2006_images/imageFile662.png)
+![image 662](../Images/imageFile662.png)
 
 By (7.7), we may write R = ni=1 Pi as the union of distinct closed bounded sets Pi, i = 1,2,. . .,k, where k ≤ n, that do not separate Rd and such that Pi ∩ Pj is thin for i = j. By Theorem 11 of [223, §59, Section II]2, R does not separate Rd. By assumption, x ∈/ R, whence x lies in the unique component of the complement Rd \ R, in contradiction of the assumption that x ∈ ins([P]). We deduce that there exists k such that x ∈ ins([Pk]), and we deﬁne Q = Pk.
 
-![image 663](Grimmet2006_images/imageFile663.png)
+![image 663](../Images/imageFile663.png)
 
 Consider now a vertex y ∈ V. Since G = (V, E) is connected, there exists a path in Ld that connects x with y using only edges in E. Whenever u and v are two consecutive vertices on this path, h( u,v ) does not belong to P. Therefore, y lies in the inside of [Q]. Claims (i) and (ii) are now proved with Q as given, and it remains to prove (iii).
 
@@ -190,13 +190,13 @@ Proof of Theorem 7.5. Let H = ( v,δC, e,δC). Let x ∈ v,δC, and write Hx for
 
 The claim holds with y = x and hx = h( x, z ) if x has a neighbour z with h( x, z ) ∈ δ. Assume thereforethat x hasnosuch neighbourz. Since x ∈ v,δC, x has some neighbour u in Ld with h( x,u ) ∈ δ \ δ. Following a consideration
 
-![image 664](Grimmet2006_images/imageFile664.png)
+![image 664](../Images/imageFile664.png)
 
 of the various possibilities, there exists h ∈ δ such that h d∼−2 h( x,u ), and
 
 either (a) h = h( u, z ) for some z, or (b) h = h( v, z ) for some v, z satisfying v ∼ x, z ∼ u.
 
-![image 665](Grimmet2006_images/imageFile665.png)
+![image 665](../Images/imageFile665.png)
 
 2This theorem states, subject to a mild change of notation, that: “If none of the closed sets F0 and F1 cuts Sd between the points p and q and if dim(F0 ∩ F1) ≤ d − 3, their union F0 ∪ F1 does it neither”. Here, Sd denotes the d-sphere.
 
@@ -208,7 +208,7 @@ that (7.8) Qx ∩ δ = ∅.
 
 This we prove as follows. If hx ∈ Qx, the claim is immediate. Suppose that hx ∈/ Qx, so that [hx] ∩ ins([Qx]) = ∅, implying that δ intersects both ins([Qx]) and out([Qx]). Since both δ and Qx are (d − 2)-connected sets of plaquettes, it follows that δ ∪ Qx is (d − 2)-connected. Therefore, there exist h′ ∈ δ, h′′ ∈ Qx such that h′ d∼−2 h′′. If h′′ ∈ δ, then (7.8) holds, so we may assume that h′′ ∈/ δ, and hence h′′ ∈ δ \ δ. Then h′′ = h( v,w ) for some v ∈ Hx, and therefore w ∈ Hx, a contradiction. We conclude that (7.8) holds.
 
-![image 666](Grimmet2006_images/imageFile666.png)
+![image 666](../Images/imageFile666.png)
 
 Now, (7.8) implies that Qx ⊆ δ. Suppose on the contrary that Qx ⊆ δ, so that
 
@@ -240,21 +240,21 @@ Henceforthin this chapterwe shall assume, unless otherwise stated, that d = 3. S
 
 Since the random-cluster model involves probability measures on the set of edge-conﬁgurations, we shall consider functions on the power set of the edgeset E3 rather than of the vertex-set Z3. Let E be a finite subset of E3, and let LE = (VE, E) denote the induced subgraph of L3. We shall consider the partition functions of the wired and free random-cluster measures on this graph, and to this end we introduce various notions of ‘boundary’. Let D be a (finite or infinite) subset of E3, and write D = E3 \ D for its complement.
 
-![image 667](Grimmet2006_images/imageFile667.png)
+![image 667](../Images/imageFile667.png)
 
 (i) The vertex-boundary ∂D is the set of all x ∈ VD such that there exists an edge e = x, z with e ∈/ D. Note that ∂D = ∂D.
 
-![image 668](Grimmet2006_images/imageFile668.png)
+![image 668](../Images/imageFile668.png)
 
 We shall require three (related) types of ‘edge-boundaries’ of D. (ii) The 1-edge-boundary ∂eD is defined3 to be the set of all edges e ∈ D such that there exists f ∈/ D with the property that h(e) ∼1 h( f ). (iii) The external edge-boundary extD is the set of all edges e ∈/ D that are incident to some vertex in ∂D.
 
 (iv) The internal edge-boundary intD is the external edge-boundary of the complement D, that is, intD = extD. In other words, intD includes every edge e ∈ D that is incident to some x ∈ ∂D.
 
-![image 669](Grimmet2006_images/imageFile669.png)
+![image 669](../Images/imageFile669.png)
 
-![image 670](Grimmet2006_images/imageFile670.png)
+![image 670](../Images/imageFile670.png)
 
-![image 671](Grimmet2006_images/imageFile671.png)
+![image 671](../Images/imageFile671.png)
 
 3When working with Ld for general d, ∂eD would be taken to be the (d − 2)-edge-boundary, given similarly but with 1 replaced by d − 2.
 
@@ -276,9 +276,9 @@ D: D⊆E D∩ intE=∅
 
 where k0(G) denotesthe numberof connectedcomponentsof a graph G including isolated vertices5. Since intE includes every edge e ∈ E that is incident to some vertex x ∈ ∂E, every x ∈ ∂E is isolated for all sets D contributing to the summation in (7.11), and these vertices are not included in the cluster-count k(VE \ ∂E, D). The measure defined by (7.11) differs slightly from that given at (4.11)–(4.12) with ξ = 0, but it may be seen that the corresponding probability measure amounts to the free measure on the graph (VE, E \ intE).
 
-![image 672](Grimmet2006_images/imageFile672.png)
+![image 672](../Images/imageFile672.png)
 
-![image 673](Grimmet2006_images/imageFile673.png)
+![image 673](../Images/imageFile673.png)
 
 E↑E3
 
@@ -288,57 +288,57 @@ where the limit is taken in a suitable ‘van Hove’ sense.
 
 We introduce next the classes of ‘wired’ and ‘free’ contours of the lattice L3. For s ∈ {0,1} and e, f ∈ E3, we write e ∼s f if h(e) ∼s h( f ). A subset D of E3 is said to be s-connected if it is connected when viewed as a graph with adjacency relation ∼s . Thus, D is s-connected if and only if the set {h( f ) : f ∈ D} of plaquettes is s-connected. Let D ⊆ E3, and consider its external edge-boundary γ = extD. We call the set γ a wired contour (respectively, free contour) if it is
 
-![image 674](Grimmet2006_images/imageFile674.png)
+![image 674](../Images/imageFile674.png)
 
 - 4It is convenient in the present setting to think of a conﬁguration as a subset of edges rather than as a 0/1-vector. We adopt the convention that Z1(∅) = 1.
 - 5We set Z0(E) = 1 if E \ intE = ∅. In particular, Z0(∅) = 1.
 
 It may be seen by Theorem 7.5 that (7.18) intγ = γ, γ ∈ Cw.
 
-![image 675](Grimmet2006_images/imageFile675.png)
+![image 675](../Images/imageFile675.png)
 
 Two contours γ1, γ2 of the same class are said to be compatible if γ1 ∪γ2 is not 1-connected. We call the pair γ1, γ2 externally compatible if they are compatible and in additionγ1 ⊆ ext(γ2) and γ2 ⊆ ext(γ1). IfŴ = {γ1,γ2,. . .,γn} is a family of pairwise externally-compatiblecontoursof the same class, we write Ŵ = i γi, ext(Ŵ) = E3 \ Ŵ, and int(Ŵ) = Ŵ \ Ŵ. Here, we have used Ŵ to denote the set of edges in the union of the γi.
 
-![image 676](Grimmet2006_images/imageFile676.png)
+![image 676](../Images/imageFile676.png)
 
-![image 677](Grimmet2006_images/imageFile677.png)
+![image 677](../Images/imageFile677.png)
 
-![image 678](Grimmet2006_images/imageFile678.png)
+![image 678](../Images/imageFile678.png)
 
-![image 679](Grimmet2006_images/imageFile679.png)
+![image 679](../Images/imageFile679.png)
 
-![image 680](Grimmet2006_images/imageFile680.png)
+![image 680](../Images/imageFile680.png)
 
-![image 681](Grimmet2006_images/imageFile681.png)
+![image 681](../Images/imageFile681.png)
 
 LetŴw = {γ1,γ2,. . .,γm} bea familyof pairwiseexternally-compatiblewired contours. It may be seen that
 
-![image 682](Grimmet2006_images/imageFile682.png)
+![image 682](../Images/imageFile682.png)
 
-![image 683](Grimmet2006_images/imageFile683.png)
+![image 683](../Images/imageFile683.png)
 
-![image 684](Grimmet2006_images/imageFile684.png)
+![image 684](../Images/imageFile684.png)
 
-![image 685](Grimmet2006_images/imageFile685.png)
+![image 685](../Images/imageFile685.png)
 
 - 1. D contains no edge in any γi,
 - 2. D contains every edge of E not belonging to Ŵw. This leads via (7.18) and (7.19) to the formula
 
-![image 686](Grimmet2006_images/imageFile686.png)
+![image 686](../Images/imageFile686.png)
 
 (7.21) Z1(E) =
 
 r|E\Ŵw|qZ0(Ŵw)
 
-![image 687](Grimmet2006_images/imageFile687.png)
+![image 687](../Images/imageFile687.png)
 
-![image 688](Grimmet2006_images/imageFile688.png)
+![image 688](../Images/imageFile688.png)
 
 Ŵw⊂E\∂eE
 
 where the summation is over all families Ŵw of pairwise externally-compatible wired contours contained in E \ ∂eE. By Theorems 7.3 and 7.5, each such Ŵw is co-connected.
 
-![image 689](Grimmet2006_images/imageFile689.png)
+![image 689](../Images/imageFile689.png)
 
 We turn now to the free partition function Z0(E). Let D ⊆ E \ intE. Let D∞c be the set of edges in the unique infinite 1-connected component of Dc = E3 \ D, and let Ŵ(D) = intD∞c . The set Ŵ(D) may be expressed as a union of maximal 1-connected sets γi, i = 1,2,. . .,n, which are pairwise externally-compatible free contours, and we write Ŵf(D) = {γ1,γ2,. . .,γn}. We note that every edge in Ŵ(D) belongs to E. Thus, to each set D there corresponds a collection Ŵf(D), and the summation in (7.11) may be partitioned according to the value of Ŵf(D). For a given family Ŵf = {γ1,γ2,. . .,γn} of pairwise externally-compatible free contours in E, one sums over sets D with Ŵf(D) = Ŵf, and the constraints on such D are as follows:
 
@@ -373,9 +373,9 @@ The discontinuityof the Potts phase transition was provedfirst in [220]via a soc
 
 The study of polymer models is wider than is required for our speciﬁc applications, and a general approachmay be found in [219]. For the sake of concreteness, we note the following. Our applications will involve co-connected subsets of E3. Our polymers will be either wired or free contours in the sense of the last section, and ‘compatible’ shall be interpreted in the sense of that section. Our weight functions will be assumed henceforth to be strictly positive and automorphisminvariant, in that (γ) = (τγ) for any automorphism τ of L3.
 
-![image 690](Grimmet2006_images/imageFile690.png)
+![image 690](../Images/imageFile690.png)
 
-![image 691](Grimmet2006_images/imageFile691.png)
+![image 691](../Images/imageFile691.png)
 
 Theprincipalconclusionsthatfollowarenotstatedunambiguouslyasatheorem since their exact hypotheses will not be speciﬁed. Throughout this and the next section, the terms c and ci are positive finite constants which depend only on the particular type of model and not on the function . These constants may depend on the underlying lattice (which we shall take to be L3), and may therefore vary with the number d of dimensions.
 
@@ -405,19 +405,19 @@ By (7.23), Z( 1 ∪ 2) = Z( 1)Z( 2) if 1 and 2 have no common vertex. By (7.28),
 
 (7.30) ψ(E) = 0 if E is not connected. Under the assumption of ‘Theorem’ 7.27, one may obtain after a calculation that (7.31) |ψ(E)| ≤ e−c3τ E for a suitable definition of the size E and for some c3 ∈ (0,∞).
 
-![image 692](Grimmet2006_images/imageFile692.png)
+![image 692](../Images/imageFile692.png)
 
-![image 693](Grimmet2006_images/imageFile693.png)
+![image 693](../Images/imageFile693.png)
 
-![image 694](Grimmet2006_images/imageFile694.png)
+![image 694](../Images/imageFile694.png)
 
-![image 695](Grimmet2006_images/imageFile695.png)
+![image 695](../Images/imageFile695.png)
 
-![image 696](Grimmet2006_images/imageFile696.png)
+![image 696](../Images/imageFile696.png)
 
-![image 697](Grimmet2006_images/imageFile697.png)
+![image 697](../Images/imageFile697.png)
 
-![image 698](Grimmet2006_images/imageFile698.png)
+![image 698](../Images/imageFile698.png)
 
 ( )[1 + (γ)]
 
@@ -455,11 +455,11 @@ pc(q) = 1 − q−1/d + O(q−2/d) as q → ∞. This may be compared to the exa
 
 √q/(1 +
 
-![image 699](Grimmet2006_images/imageFile699.png)
+![image 699](../Images/imageFile699.png)
 
-![image 700](Grimmet2006_images/imageFile700.png)
+![image 700](../Images/imageFile700.png)
 
-![image 701](Grimmet2006_images/imageFile701.png)
+![image 701](../Images/imageFile701.png)
 
 9An overview of contour methods may be found in [217].
 
@@ -471,7 +471,7 @@ It is not especially fruitful to seek numerical estimates on the Q(d) above. Suc
 
 Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 and p = 1 − e−β, and consider the q-state Potts model on Ld with inversetemperature β. Let q be large. When β < βc(q) (respectively, β > βc(q)), the number of distinct translation-invariant Gibbs states is 1 (respectively, q). When β = βc(q), there are q + 1 distinct extremal translation-invariant Gibbs states, correspondingto the free measure and the ‘b-boundary-condition’measure for b ∈ {1,2,. . .,q}, and every translation-invariant Gibbs state is a convex combination of these q + 1 states. When d ≥ 3, there exist in addition an inﬁnityofnon-translation-invariantGibbsstatesatthecriticalpointβc(q). Further discussion may be found in [65, 66, 68, 136, 224, 251, 254].
 
-![image 702](Grimmet2006_images/imageFile702.png)
+![image 702](../Images/imageFile702.png)
 
 10Some progress has been made towards bounds on the value of Q(d). It is proved in [45] that the 3-state Potts model has a discontinuous transition for large d, and in [46] that discontinuity occurs when d = 3 for a long-range Potts model with exponentially decaying interactions. See [140] for related work when d = 2.
 
@@ -479,9 +479,9 @@ The letter (respectively, Ŵ) will always denote a family of pairwise compatible
 
 Let β ∈ R. In either of the cases above, we deﬁne
 
-![image 703](Grimmet2006_images/imageFile703.png)
+![image 703](../Images/imageFile703.png)
 
-![image 704](Grimmet2006_images/imageFile704.png)
+![image 704](../Images/imageFile704.png)
 
 =
 
@@ -491,17 +491,17 @@ and we say that this new model has parameters (β, ).
 
 We shall consider a pair of such models. The first has parameters (βw, w), and its polymerfamilies comprise pairwise compatiblewired contours; the second has parameters (βf, f) and it involvesfree contours. They are defined as follows. Let p ∈ (0,1), q ∈ [1,∞), r = p/(1 − p), and βw,βf ∈ [0,∞). The weight functions w(γ) = βww(γ), f(γ) = βf f(γ) are defined inductively on the size of γ by: (7.41)
 
-![image 705](Grimmet2006_images/imageFile705.png)
+![image 705](../Images/imageFile705.png)
 
 βw w (γ)Z(intγ; βww) = w βw(γ) = (reβw)−|γ|Z0(γ), γ ∈ Cw,
 
-![image 706](Grimmet2006_images/imageFile706.png)
+![image 706](../Images/imageFile706.png)
 
-![image 707](Grimmet2006_images/imageFile707.png)
+![image 707](../Images/imageFile707.png)
 
 βf f (γ)Z(intγ; βf f) = f βf(γ) = e−βf|γ|q−|Vintγ|Z1(intγ), γ ∈ Cf.
 
-![image 708](Grimmet2006_images/imageFile708.png)
+![image 708](../Images/imageFile708.png)
 
 These functionsgiverise to polymermodelswhichare relatedto thefreeand wired random-cluster models, as described in the first part of the next theorem. They
 
@@ -509,7 +509,7 @@ have related pressure functions f ( βww), f ( βf f) given as in (7.24). The th
 
 d = 3. (7.42) Theorem [224]. Let d ≥ 2, p ∈ (0,1), q ∈ [1,∞), and r = p/(1 − p). For βw,βf ∈ [0,∞) and a co-connected set E,
 
-![image 709](Grimmet2006_images/imageFile709.png)
+![image 709](../Images/imageFile709.png)
 
 There exists Q = Q(d) such that the following hold when q > Q.
 
@@ -521,7 +521,7 @@ F(p,q) = f ( bww) + bw + logr = f ( bff) + bf +
 
 logq. (7.45)
 
-![image 710](Grimmet2006_images/imageFile710.png)
+![image 710](../Images/imageFile710.png)
 
 (b) There exists a unique value p = p(q) such that the values bw, bf in part (a) satisfy:
 
@@ -537,57 +537,57 @@ For βw,βf ∈ [0,∞), let w = βww, f = βf f be given by (7.41). Let τ = τ
 
 (7.48) w (γ) = min{ βww(γ),e−τ γ }, γ ∈ Cw,
 
-![image 711](Grimmet2006_images/imageFile711.png)
+![image 711](../Images/imageFile711.png)
 
 βf (7.49) f (γ) = min{ βf f(γ),e−τ γ }, γ ∈ Cf, and let (7.50)
 
-![image 712](Grimmet2006_images/imageFile712.png)
+![image 712](../Images/imageFile712.png)
 
 bw = sup Bw where Bw = βw ≥ 0 : f ( βww) + βw + logr ≤ F(p,q) ,
 
-![image 713](Grimmet2006_images/imageFile713.png)
+![image 713](../Images/imageFile713.png)
 
 bf = sup Bf where Bf = βf ≥ 0 : f ( βf f) + βf + d−1 logq ≤ F(p,q) . We make three observations concerning the definition of bw; similar reasoning applies to bf. Firstly, since 0w ≤ 0w,
 
-![image 714](Grimmet2006_images/imageFile714.png)
+![image 714](../Images/imageFile714.png)
 
-![image 715](Grimmet2006_images/imageFile715.png)
+![image 715](../Images/imageFile715.png)
 
 Z1(E) ≥ r|E|Z(E; 0w,0) = r|E|Z(E; 0w), by (7.43). Applying ‘Theorem’ 7.27 to the τ-functional 0w,
 
-![image 716](Grimmet2006_images/imageFile716.png)
+![image 716](../Images/imageFile716.png)
 
-![image 717](Grimmet2006_images/imageFile717.png)
+![image 717](../Images/imageFile717.png)
 
-![image 718](Grimmet2006_images/imageFile718.png)
+![image 718](../Images/imageFile718.png)
 
 F(p,q) ≥ logr + f ( 0w),
 
-![image 719](Grimmet2006_images/imageFile719.png)
+![image 719](../Images/imageFile719.png)
 
 whence 0 ∈ Bw. Secondly, by ‘Theorem’ 7.27 again, f ( 0w) ≤ e−c1τ, whence β ∈/ Bw for large β. The third observation is contained in the next lemma which is based on the corresponding step of [218]. The lemma will be used later also, and its proof is deferred until that of Theorem 7.42 is otherwise complete.
 
-![image 720](Grimmet2006_images/imageFile720.png)
+![image 720](../Images/imageFile720.png)
 
 (7.51) Lemma. Let α ∈ (0,∞). There exists Q′′ = Q′′(α) ≥ Q′ such that the following holds. If q > Q′′, the functions h(β,r) = f ( βw), f ( βf ) have the Lipschitz property: for β,β′ ∈ [0,∞) and r,r′ ∈ (0,∞),
 
-![image 721](Grimmet2006_images/imageFile721.png)
+![image 721](../Images/imageFile721.png)
 
-![image 722](Grimmet2006_images/imageFile722.png)
+![image 722](../Images/imageFile722.png)
 
-![image 723](Grimmet2006_images/imageFile723.png)
+![image 723](../Images/imageFile723.png)
 
 Assume henceforth that
 
 (7.52) q > Q′′ = Q′′(21).
 
-![image 724](Grimmet2006_images/imageFile724.png)
+![image 724](../Images/imageFile724.png)
 
 By Lemma 7.51, the pressure f ( βww) (respectively, f ( βf f)) is continuous in βw (respectively, βf), and it follows by the prior observations that the suprema in (7.50) are attained, and hence
 
-![image 725](Grimmet2006_images/imageFile725.png)
+![image 725](../Images/imageFile725.png)
 
-![image 726](Grimmet2006_images/imageFile726.png)
+![image 726](../Images/imageFile726.png)
 
 1 d
 
@@ -595,19 +595,19 @@ By Lemma 7.51, the pressure f ( βww) (respectively, f ( βf f)) is continuous i
 
 logq.
 
-![image 727](Grimmet2006_images/imageFile727.png)
+![image 727](../Images/imageFile727.png)
 
-![image 728](Grimmet2006_images/imageFile728.png)
+![image 728](../Images/imageFile728.png)
 
-![image 729](Grimmet2006_images/imageFile729.png)
+![image 729](../Images/imageFile729.png)
 
 By Lemma 7.51 and the continuity in p of F(p,q), Theorem 4.58, (7.54) bw = bw(p) and bf = bf(p) are continuous functions of p ∈ (0,1).
 
 Havingchosenthevaluesbwandbf, weshallhenceforthsuppresstheirreference in the notation for the weight functions w, f, w, f, and we prove next that
 
-![image 730](Grimmet2006_images/imageFile730.png)
+![image 730](../Images/imageFile730.png)
 
-![image 731](Grimmet2006_images/imageFile731.png)
+![image 731](../Images/imageFile731.png)
 
 (γ) ≤ e−τ γ , γ ∈ Cw, f(γ) ≤ e−τ γ , γ ∈ Cf.
 
@@ -615,185 +615,185 @@ Havingchosenthevaluesbwandbf, weshallhenceforthsuppresstheirreference in the not
 
 This implies in particular that w = w and f = f, and then (7.45) follows from (7.53). We shall prove (7.55) by induction on |γ|.
 
-![image 732](Grimmet2006_images/imageFile732.png)
+![image 732](../Images/imageFile732.png)
 
-![image 733](Grimmet2006_images/imageFile733.png)
+![image 733](../Images/imageFile733.png)
 
-![image 734](Grimmet2006_images/imageFile734.png)
+![image 734](../Images/imageFile734.png)
 
 It is not difﬁcult to see that (7.55) holds for γw ∈ Cw with |γw| ≤ 1, and for γf ∈ Cf with |γf| ≤ 2. This is trivial in the latter case since the free contour γf with smallest γf has γf = 2(2d −1), and it is proved in the former case as follows. Let γw ∈ Cw be such that |γw| = 1, which is to say that γw comprises a single edge. By (7.41), w(γw) = (rebw)−1. By (7.12), F(p,q) ≥ d−1 logq, and the claim follows by (7.53) and the fact that f ( w) ≤ 1, see ‘Theorem’ 7.27(a).
 
-![image 735](Grimmet2006_images/imageFile735.png)
+![image 735](../Images/imageFile735.png)
 
-![image 736](Grimmet2006_images/imageFile736.png)
+![image 736](../Images/imageFile736.png)
 
-![image 737](Grimmet2006_images/imageFile737.png)
+![image 737](../Images/imageFile737.png)
 
-![image 738](Grimmet2006_images/imageFile738.png)
+![image 738](../Images/imageFile738.png)
 
 Let k ≥ 1 and assume that (7.55) holds for all γw ∈ Cw satisfying |γw| ≤ k and all γf ∈ Cf satisfying |γf| ≤ k + 1. Let γw be a wired contour with |γw| = k + 1.
 
-![image 739](Grimmet2006_images/imageFile739.png)
+![image 739](../Images/imageFile739.png)
 
-![image 740](Grimmet2006_images/imageFile740.png)
+![image 740](../Images/imageFile740.png)
 
-![image 741](Grimmet2006_images/imageFile741.png)
+![image 741](../Images/imageFile741.png)
 
 Any contour γw′ ∈ Cw contributing to Z(intγw; w) satisﬁes |γw′ | ≤ k. By the induction hypothesis, (7.56) Z(intγw; w) = Z(intγw; w)
 
-![image 742](Grimmet2006_images/imageFile742.png)
+![image 742](../Images/imageFile742.png)
 
-![image 743](Grimmet2006_images/imageFile743.png)
+![image 743](../Images/imageFile743.png)
 
 = exp |intγw| f ( w) − σ(intγw, w) , where
 
-![image 744](Grimmet2006_images/imageFile744.png)
+![image 744](../Images/imageFile744.png)
 
-![image 745](Grimmet2006_images/imageFile745.png)
+![image 745](../Images/imageFile745.png)
 
 σ(E, ) = |E| f ( ) − logZ(E; )
 
 as in (7.25). Any contour γf ∈ Cf contributing to Z(γw; f) is a subset of γw, and therefore satisﬁes |γf| ≤ k + 1. By the induction hypothesis as above,
 
-![image 746](Grimmet2006_images/imageFile746.png)
+![image 746](../Images/imageFile746.png)
 
-![image 747](Grimmet2006_images/imageFile747.png)
+![image 747](../Images/imageFile747.png)
 
-![image 748](Grimmet2006_images/imageFile748.png)
+![image 748](../Images/imageFile748.png)
 
 (7.57) Z(γw; f) = Z(γw; f)
 
-![image 749](Grimmet2006_images/imageFile749.png)
+![image 749](../Images/imageFile749.png)
 
-![image 750](Grimmet2006_images/imageFile750.png)
+![image 750](../Images/imageFile750.png)
 
-![image 751](Grimmet2006_images/imageFile751.png)
+![image 751](../Images/imageFile751.png)
 
 = exp |γw| f ( f) − σ(γw, f) .
 
-![image 752](Grimmet2006_images/imageFile752.png)
+![image 752](../Images/imageFile752.png)
 
-![image 753](Grimmet2006_images/imageFile753.png)
+![image 753](../Images/imageFile753.png)
 
-![image 754](Grimmet2006_images/imageFile754.png)
+![image 754](../Images/imageFile754.png)
 
-![image 755](Grimmet2006_images/imageFile755.png)
+![image 755](../Images/imageFile755.png)
 
-![image 756](Grimmet2006_images/imageFile756.png)
+![image 756](../Images/imageFile756.png)
 
 w(γw) = (rebw)−|γw|
 
-![image 757](Grimmet2006_images/imageFile757.png)
+![image 757](../Images/imageFile757.png)
 
-![image 758](Grimmet2006_images/imageFile758.png)
+![image 758](../Images/imageFile758.png)
 
 = (rebw)−|γw|q|V(γw)\∂γw| Z(γw; f,bf) Z(intγw; w)
 
-![image 759](Grimmet2006_images/imageFile759.png)
+![image 759](../Images/imageFile759.png)
 
 by (7.43)
 
-![image 760](Grimmet2006_images/imageFile760.png)
+![image 760](../Images/imageFile760.png)
 
-![image 761](Grimmet2006_images/imageFile761.png)
+![image 761](../Images/imageFile761.png)
 
-![image 762](Grimmet2006_images/imageFile762.png)
+![image 762](../Images/imageFile762.png)
 
-![image 763](Grimmet2006_images/imageFile763.png)
+![image 763](../Images/imageFile763.png)
 
 ≤ (rebw)−|γw|q|V(γw)\∂γw|ebf|γw| Z(γw; f) Z(intγw; w)
 
-![image 764](Grimmet2006_images/imageFile764.png)
+![image 764](../Images/imageFile764.png)
 
-![image 765](Grimmet2006_images/imageFile765.png)
+![image 765](../Images/imageFile765.png)
 
-![image 766](Grimmet2006_images/imageFile766.png)
+![image 766](../Images/imageFile766.png)
 
-![image 767](Grimmet2006_images/imageFile767.png)
+![image 767](../Images/imageFile767.png)
 
-![image 768](Grimmet2006_images/imageFile768.png)
+![image 768](../Images/imageFile768.png)
 
-![image 769](Grimmet2006_images/imageFile769.png)
+![image 769](../Images/imageFile769.png)
 
 = exp −|γw| logr + bw − bf − f ( f)
 
-![image 770](Grimmet2006_images/imageFile770.png)
+![image 770](../Images/imageFile770.png)
 
-![image 771](Grimmet2006_images/imageFile771.png)
+![image 771](../Images/imageFile771.png)
 
 - |V(γw) \ ∂γw| logq − |intγw| f ( w)
 
-![image 772](Grimmet2006_images/imageFile772.png)
+![image 772](../Images/imageFile772.png)
 
-![image 773](Grimmet2006_images/imageFile773.png)
+![image 773](../Images/imageFile773.png)
 
-![image 774](Grimmet2006_images/imageFile774.png)
+![image 774](../Images/imageFile774.png)
 
 × exp σ(intγw, w) − σ(γw, f) by (7.56)–(7.57). We use (7.13)–(7.14) and (7.53) to obtain that
 
-![image 775](Grimmet2006_images/imageFile775.png)
+![image 775](../Images/imageFile775.png)
 
-![image 776](Grimmet2006_images/imageFile776.png)
+![image 776](../Images/imageFile776.png)
 
-![image 777](Grimmet2006_images/imageFile777.png)
+![image 777](../Images/imageFile777.png)
 
 (7.58) w(γw) ≤ q− γw /(2d) exp |γw| f ( w) + σ(intγw, w) − σ(γw, f) .
 
-![image 778](Grimmet2006_images/imageFile778.png)
+![image 778](../Images/imageFile778.png)
 
-![image 779](Grimmet2006_images/imageFile779.png)
+![image 779](../Images/imageFile779.png)
 
-![image 780](Grimmet2006_images/imageFile780.png)
+![image 780](../Images/imageFile780.png)
 
-![image 781](Grimmet2006_images/imageFile781.png)
+![image 781](../Images/imageFile781.png)
 
 By ‘Theorem’ 7.27, f ( w) ≤ e−c1τ ≤ 1, and
 
-![image 782](Grimmet2006_images/imageFile782.png)
+![image 782](../Images/imageFile782.png)
 
 |σ(E, w)| ≤ |∂E|e−c2τ, |σ(E, f)| ≤ |∂E|e−c2τ for co-connected sets E. By (7.58), (7.16), and (7.44), (7.59) w(γw) ≤ q− γw /(2d)e5 γw ≤ e−τ γw , as required in the induction step.
 
-![image 783](Grimmet2006_images/imageFile783.png)
+![image 783](../Images/imageFile783.png)
 
-![image 784](Grimmet2006_images/imageFile784.png)
+![image 784](../Images/imageFile784.png)
 
 We consider now a free contour γf with |γf| = k + 2. By an elementary geometric argument, (7.60) γf ≥ 2(2d − 1). Arguing as in the wired case above, we obtain subject to the induction hypothesis that (7.61) f(γf) ≤ q · q− γf /(2d) exp σ(intγf, f) − σ(intγf, w) , by (7.15). By (7.17),
 
-![image 785](Grimmet2006_images/imageFile785.png)
+![image 785](../Images/imageFile785.png)
 
-![image 786](Grimmet2006_images/imageFile786.png)
+![image 786](../Images/imageFile786.png)
 
-![image 787](Grimmet2006_images/imageFile787.png)
+![image 787](../Images/imageFile787.png)
 
 f(γf) ≤ q · q− γf /(2d)e5 γf . By (7.60) and the fact that d ≥ 2,
 
 γf − 2d ≥ 41 γf ,
 
-![image 788](Grimmet2006_images/imageFile788.png)
+![image 788](../Images/imageFile788.png)
 
 whence
 
-![image 789](Grimmet2006_images/imageFile789.png)
+![image 789](../Images/imageFile789.png)
 
 1 d
 
 logq.
 
-![image 790](Grimmet2006_images/imageFile790.png)
+![image 790](../Images/imageFile790.png)
 
-![image 791](Grimmet2006_images/imageFile791.png)
+![image 791](../Images/imageFile791.png)
 
-![image 792](Grimmet2006_images/imageFile792.png)
+![image 792](../Images/imageFile792.png)
 
 We use this in place of (7.53) in the argument above, to obtain that βww = βww and βwf = βf f. Equation (7.63) implies that
 
-![image 793](Grimmet2006_images/imageFile793.png)
+![image 793](../Images/imageFile793.png)
 
-![image 794](Grimmet2006_images/imageFile794.png)
+![image 794](../Images/imageFile794.png)
 
 1 d
 
-![image 795](Grimmet2006_images/imageFile795.png)
+![image 795](../Images/imageFile795.png)
 
 However, by (7.43),
 
@@ -812,135 +812,135 @@ Proof of Lemma 7.51. We give the proof in the wired case, the other case being s
 
 any family of compatible contours in E, we write ⊥ γ if γ ∈/ and ∪{γ} is a compatible family of contours. Since (γ) is a smooth function of β, is piecewise-differentiable in β (see (7.48)).
 
-![image 796](Grimmet2006_images/imageFile796.png)
+![image 796](../Images/imageFile796.png)
 
-![image 797](Grimmet2006_images/imageFile797.png)
+![image 797](../Images/imageFile797.png)
 
-![image 798](Grimmet2006_images/imageFile798.png)
+![image 798](../Images/imageFile798.png)
 
-![image 799](Grimmet2006_images/imageFile799.png)
+![image 799](../Images/imageFile799.png)
 
-![image 800](Grimmet2006_images/imageFile800.png)
+![image 800](../Images/imageFile800.png)
 
-![image 801](Grimmet2006_images/imageFile801.png)
+![image 801](../Images/imageFile801.png)
 
-![image 802](Grimmet2006_images/imageFile802.png)
+![image 802](../Images/imageFile802.png)
 
 ( ) (γ) · ′(γ),
 
-![image 803](Grimmet2006_images/imageFile803.png)
+![image 803](../Images/imageFile803.png)
 
-![image 804](Grimmet2006_images/imageFile804.png)
+![image 804](../Images/imageFile804.png)
 
-![image 805](Grimmet2006_images/imageFile805.png)
+![image 805](../Images/imageFile805.png)
 
-![image 806](Grimmet2006_images/imageFile806.png)
+![image 806](../Images/imageFile806.png)
 
 | ′(γ)|
 
 zwE =
 
-![image 807](Grimmet2006_images/imageFile807.png)
+![image 807](../Images/imageFile807.png)
 
-![image 808](Grimmet2006_images/imageFile808.png)
+![image 808](../Images/imageFile808.png)
 
-![image 809](Grimmet2006_images/imageFile809.png)
+![image 809](../Images/imageFile809.png)
 
-![image 810](Grimmet2006_images/imageFile810.png)
+![image 810](../Images/imageFile810.png)
 
-![image 811](Grimmet2006_images/imageFile811.png)
+![image 811](../Images/imageFile811.png)
 
 | ′(γ)| |γ|
 
-![image 812](Grimmet2006_images/imageFile812.png)
+![image 812](../Images/imageFile812.png)
 
-![image 813](Grimmet2006_images/imageFile813.png)
+![image 813](../Images/imageFile813.png)
 
-![image 814](Grimmet2006_images/imageFile814.png)
+![image 814](../Images/imageFile814.png)
 
-![image 815](Grimmet2006_images/imageFile815.png)
+![image 815](../Images/imageFile815.png)
 
-![image 816](Grimmet2006_images/imageFile816.png)
+![image 816](../Images/imageFile816.png)
 
 ⊂E: ⊥γ
 
 Let γ ∈ Cw. We claim that (7.69) | ′(γ)| ≤ 2|γ| (γ)
 
-![image 817](Grimmet2006_images/imageFile817.png)
+![image 817](../Images/imageFile817.png)
 
-![image 818](Grimmet2006_images/imageFile818.png)
+![image 818](../Images/imageFile818.png)
 
-![image 819](Grimmet2006_images/imageFile819.png)
+![image 819](../Images/imageFile819.png)
 
 whenever the derivative exists. By (7.48), either the left side equals 0, or it equals | ′(γ)|, and we may assume that the latter holds. Write Y(γ) = Z(intγ; ). The function = w β satisﬁes (γ) = (γ)Y by (7.41), and also
 
 (7.70) ′(γ) = −|γ| (γ) = −|γ| (γ)Y(γ). Hence, (7.71) ′(γ) =
 
-![image 820](Grimmet2006_images/imageFile820.png)
+![image 820](../Images/imageFile820.png)
 
-![image 821](Grimmet2006_images/imageFile821.png)
+![image 821](../Images/imageFile821.png)
 
-![image 822](Grimmet2006_images/imageFile822.png)
+![image 822](../Images/imageFile822.png)
 
-![image 823](Grimmet2006_images/imageFile823.png)
+![image 823](../Images/imageFile823.png)
 
-![image 824](Grimmet2006_images/imageFile824.png)
+![image 824](../Images/imageFile824.png)
 
 ##### (Ŵ)
 
-![image 825](Grimmet2006_images/imageFile825.png)
+![image 825](../Images/imageFile825.png)
 
-![image 826](Grimmet2006_images/imageFile826.png)
+![image 826](../Images/imageFile826.png)
 
-![image 827](Grimmet2006_images/imageFile827.png)
+![image 827](../Images/imageFile827.png)
 
-![image 828](Grimmet2006_images/imageFile828.png)
+![image 828](../Images/imageFile828.png)
 
-![image 829](Grimmet2006_images/imageFile829.png)
+![image 829](../Images/imageFile829.png)
 
-![image 830](Grimmet2006_images/imageFile830.png)
+![image 830](../Images/imageFile830.png)
 
-![image 831](Grimmet2006_images/imageFile831.png)
+![image 831](../Images/imageFile831.png)
 
 e−τ γ ,
 
-![image 832](Grimmet2006_images/imageFile832.png)
+![image 832](../Images/imageFile832.png)
 
 (γ) ≤
 
-![image 833](Grimmet2006_images/imageFile833.png)
+![image 833](../Images/imageFile833.png)
 
-![image 834](Grimmet2006_images/imageFile834.png)
+![image 834](../Images/imageFile834.png)
 
 γ: e∈γ
 
 since is a τ-functional. The Lipschitz inequality (7.67) follows by integration for τ = τ(q) sufficiently large.
 
-![image 835](Grimmet2006_images/imageFile835.png)
+![image 835](../Images/imageFile835.png)
 
-![image 836](Grimmet2006_images/imageFile836.png)
+![image 836](../Images/imageFile836.png)
 
-![image 837](Grimmet2006_images/imageFile837.png)
+![image 837](../Images/imageFile837.png)
 
-![image 838](Grimmet2006_images/imageFile838.png)
+![image 838](../Images/imageFile838.png)
 
-![image 839](Grimmet2006_images/imageFile839.png)
+![image 839](../Images/imageFile839.png)
 
-![image 840](Grimmet2006_images/imageFile840.png)
+![image 840](../Images/imageFile840.png)
 
-![image 841](Grimmet2006_images/imageFile841.png)
+![image 841](../Images/imageFile841.png)
 
-![image 842](Grimmet2006_images/imageFile842.png)
+![image 842](../Images/imageFile842.png)
 
-![image 843](Grimmet2006_images/imageFile843.png)
+![image 843](../Images/imageFile843.png)
 
 (γ) ≤
 
-![image 844](Grimmet2006_images/imageFile844.png)
+![image 844](../Images/imageFile844.png)
 
-![image 845](Grimmet2006_images/imageFile845.png)
+![image 845](../Images/imageFile845.png)
 
-![image 846](Grimmet2006_images/imageFile846.png)
+![image 846](../Images/imageFile846.png)
 
 γ: e∈γ
 
@@ -958,17 +958,17 @@ h1(r) = f ( 0w) + logr, h2(r) = f ( 0f ) +
 
 logq,
 
-![image 847](Grimmet2006_images/imageFile847.png)
+![image 847](../Images/imageFile847.png)
 
-![image 848](Grimmet2006_images/imageFile848.png)
+![image 848](../Images/imageFile848.png)
 
-![image 849](Grimmet2006_images/imageFile849.png)
+![image 849](../Images/imageFile849.png)
 
-![image 850](Grimmet2006_images/imageFile850.png)
+![image 850](../Images/imageFile850.png)
 
-![image 851](Grimmet2006_images/imageFile851.png)
+![image 851](../Images/imageFile851.png)
 
-![image 852](Grimmet2006_images/imageFile852.png)
+![image 852](../Images/imageFile852.png)
 
 This contradicts (7.77), whence such distinct r1, r2 do not exist.
 
@@ -976,15 +976,15 @@ Proof of Theorem 7.33. Let p ∈ (0,1) and q > Q where Q, τ = τ(q), bw = bw(p,
 
 Consider first the wired measure φ1 . As in (7.21), there exists a family of maximal closed wired contours Ŵ of E (maximal in the sense of the partial order γ1 ≤ γ2 if γ1 ⊆ γ2) and, by (7.40)–(7.41), Ŵ has law
 
-![image 853](Grimmet2006_images/imageFile853.png)
+![image 853](../Images/imageFile853.png)
 
-![image 854](Grimmet2006_images/imageFile854.png)
+![image 854](../Images/imageFile854.png)
 
-![image 855](Grimmet2006_images/imageFile855.png)
+![image 855](../Images/imageFile855.png)
 
 w (Ŵ).
 
-![image 856](Grimmet2006_images/imageFile856.png)
+![image 856](../Images/imageFile856.png)
 
 Let p ≥ p, so that bw = 0. Then κ ,bww = κ ,0 w is the law of the family of maximal contours in the wired contour model on with weight function 0w.
 
@@ -1034,7 +1034,7 @@ that φ0pc(q),q = φ1pc(q),q, and hence (a) via Theorem 4.63. The uniqueness of 
 
 Letq ≥ Q′′ and p ∈ (pc(q),1). Weshallshowthath1(p,q) = φp1,q(e is open) satisﬁes (7.84) h1(p − ǫ,q) ↑ h1(p,q) as ǫ ↓ 0, and the claim will follow by Proposition 4.28(b) and Theorem 4.63.
 
-![image 857](Grimmet2006_images/imageFile857.png)
+![image 857](../Images/imageFile857.png)
 
 11The related issue of ‘restricted complete analyticity’ is considered in [110] for the case of two dimensions.
 
@@ -1042,7 +1042,7 @@ Letǫ be such that pc(q) < p−ǫ < p, and letη ∈ (0,1). Write φn1,p = φ1 n
 
 where n = [−n,n]d. For n > 23m ≥ 2, let Em,n be the event that, for every x ∈ ∂ m, if ν = νx is a maximal closed wired contour of n with x ∈ Vintν, then
 
-![image 858](Grimmet2006_images/imageFile858.png)
+![image 858](../Images/imageFile858.png)
 
 ν ⊆ x + E m/4. As in (7.78)–(7.79), there exists γ = γ(q) > 0 such that
 
@@ -1050,19 +1050,19 @@ where n = [−n,n]d. For n > 23m ≥ 2, let Em,n be the event that, for every x 
 
 (7.85) φn1,p−ǫ(Em,n) > 1 − η, n > 32m.
 
-![image 859](Grimmet2006_images/imageFile859.png)
+![image 859](../Images/imageFile859.png)
 
 Let z denote the vertex (1,0,0,. . . ,0). A cutset σ of m is defined to be a subsetof m\{0, z} such that: everypath fromeither0 or z to ∂ m passesthrough at least one vertex in σ, and σ is minimal with this property. For any cutset σ, we write int(σ) for the set of vertices reachable from either 0 and z along paths not
 
 intersecting σ, and out(σ) = Zd \ int(σ). For n > 23m and a cutset σ, we write ‘σ ⇒ ∂ n in ω’ if every vertex in σ is connected to ∂ n by an ω-open path of out(σ). We shall see below that, for ω ∈ Em,n, there exists a (random) cutset
 
-![image 860](Grimmet2006_images/imageFile860.png)
+![image 860](../Images/imageFile860.png)
 
 = (ω) ⊆ m \ m/2 such that ⇒ ∂ n in ω.
 
 Let e = 0, z and n > 23m. We couple the measures φn1,p−ǫ and φn1,p in such a way that the first lies beneath the second, and we do this by a sequential examination of the (paired) states of edges in n. We will follow the recipe of the proof of Theorem 3.45 (see also Proposition 5.30), but subject to a special ordering of the edges. The outcome will be a pair ω0,ω1 ∈ 1 n such that: ω0 has law φn1,p−ǫ, ω1 has law φn1,p, and ω0 ≤ ω1. First, we determine the states ω0(e), ω1(e) of edges e with both endvertices in n \ m−1, using some arbitrary ordering of these edges. If ∂ m ⇒ ∂ n in ω0, we set = ∂ m and we complete the construction of ω0 and ω1 according to an arbitrary ordering of the remaining edges in m.
 
-![image 861](Grimmet2006_images/imageFile861.png)
+![image 861](../Images/imageFile861.png)
 
 Suppose that ∂ m ⇒/ ∂ n in ω0. Let A be the set of edges in ∂ m that are closed in ω0. If A = ∅, we sample the states of the remaining edges of m in an arbitrary order as above. Suppose A = ∅. Pick f ∈ A, and sample the states of edges in the (d − 2)-connected closed cluster Ff = Ff (ω0) of f in the lower conﬁguration ω0. When this has been done for every f ∈ A, we complete the construction of ω0 and ω1 according to an arbitrary ordering of the remaining edges in m.
 
@@ -1110,9 +1110,9 @@ Dobrushin’s proof was the starting point for the study of interfaces in spin s
 
 When cast in the more general setting of the random-clustermodel on a box , the correct interpretation of the boundary condition is as follows. The vertices on the upper (respectively, lower) hemisphere of are wired together into a single composite vertex labelled ∂+ (respectively, ∂− ). Let D be the event that no open path of exists joining ∂− to ∂+ , and let φ ,p,q be the random-cluster measure on with the above boundary condition and conditioned on the event D. It is a geometrical fact that, under φ ,p,q, there exists an interface separating an upper region of containing ∂+ and a lower region containing ∂− , and each of these regions is in the wired phase. Dobrushin’s theorem amounts to the statement that, when q = 2 and p is sufficiently large, this interface deviates only locally from the horizontal plane through the equator of . It was proved in [139] that the same conclusion is valid for all q ∈ [1,∞) and all sufficiently large p, and this result is presented in the remainder of this chapter. The geometry of the interfaces for the random-cluster model is notably different from that of a spin model since the conﬁgurations are indexed by edges rather than by vertices, and this leads to difﬁculties not encountered in the Ising model.
 
-![image 862](Grimmet2006_images/imageFile862.png)
+![image 862](../Images/imageFile862.png)
 
-![image 863](Grimmet2006_images/imageFile863.png)
+![image 863](../Images/imageFile863.png)
 
 Although such arguments are valid whenever d ≥ 3, we shall assume for simplicity that d = 3. It is striking that the results are valid for high-density percolation on Zd with d ≥ 3, being the random-cluster model with q = 1. A corresponding question for supercritical percolation in two dimensions has been studied in depth in [77], where it is shown effectively that the (one-dimensional) interface converges when re-scaled to a Brownian bridge.
 
@@ -1120,21 +1120,21 @@ We have spoken above of interfaces which ‘deviate only locally’ from a plane
 
 Theresultsareprovedundertheassumptionthat q ∈ [1,∞)and pissufficiently large. It is a majoropen questionto determine whetheror not such results are valid underthe weakerassumption that pexceedsthe criticalvalue pc(q)of the randomcluster model. The answer may be expected to depend on the value of q and the number d of dimensions. Since the percolation measure φ ,p,1 is a conditioned product measure, it may be possible to gain insight into the existence or not of
 
-![image 864](Grimmet2006_images/imageFile864.png)
+![image 864](../Images/imageFile864.png)
 
 such a ‘rougheningtransition’ by concentrating on the special case of percolation. The two core problems here are the following. Let p(q) be the inﬁmum of all values of p at which the above interface is localized (a rigorous interpretation of this definition is evident after reading Theorems 7.87 and 7.142).
 
-![image 865](Grimmet2006_images/imageFile865.png)
+![image 865](../Images/imageFile865.png)
 
 I. Is it the case that the interface is localized for all p > p(q)? II. For what q and d does strict inequality of critical points hold in the sense that pc(q) < p(q)?
 
-![image 866](Grimmet2006_images/imageFile866.png)
+![image 866](../Images/imageFile866.png)
 
-![image 867](Grimmet2006_images/imageFile867.png)
+![image 867](../Images/imageFile867.png)
 
 In the case of the Ising model (q = 2), it is generally believed that pc(2) < p(2) if and only if d = 3.
 
-![image 868](Grimmet2006_images/imageFile868.png)
+![image 868](../Images/imageFile868.png)
 
 A certain amount of notation and preliminary work is required before the main theoremsmay be stated (in Section 7.11). In orderto whet appetites, a preliminary result is included towards the end of the current section. Sections 7.7–7.8 contain some preliminary facts about random-cluster measures and interfaces. A detailed geometrical analysis of interfaces is included in Section 7.9 along the lines of Dobrushin’s classiﬁcation of ‘walls’ and ‘ceilings’. This is followed in Section 7.10 by an exponential bound for the probability of ﬁnding local perturbations of a ﬂat interface.
 
@@ -1142,19 +1142,19 @@ The upper and lower boundaries of a set of vertices are defined as
 
 ∂+ = {x ∈ : x3 > 0, x ∼ z for some z ∈ }, ∂− = {x ∈ : x3 ≤ 0, x ∼ z for some z ∈ },
 
-![image 869](Grimmet2006_images/imageFile869.png)
+![image 869](../Images/imageFile869.png)
 
-![image 870](Grimmet2006_images/imageFile870.png)
+![image 870](../Images/imageFile870.png)
 
 where = Zd \ . For positive integers L, M, let L,M denote the box [−L, L]2 × [−M, M], and write EL,M for the set of edges having at least one endvertex in L,M. We write L = L,L, the cube of side-length 2L, and
 
-![image 871](Grimmet2006_images/imageFile871.png)
+![image 871](../Images/imageFile871.png)
 
 L = [−L, L]2 ×Z, an infinite cylinder. The equator of the box M,N is defined
 
 to be the circuit of L,M \ L−1,M comprising all vertices x with x3 = 21, with a similar definition for the cylinder L.
 
-![image 872](Grimmet2006_images/imageFile872.png)
+![image 872](../Images/imageFile872.png)
 
 We shall be particularly concerned with a boundary condition D corresponding to the mixed ‘Dobrushin boundary’ of [103]. Let D ∈ be given by (7.86)
 
@@ -1164,27 +1164,27 @@ D(e) =
 
 See Figure 7.4. Let DL,M be the set of conﬁgurations ω ∈ such that ω( f ) = D( f ) if f ∈/ EL,M, and let IL,M be the event that there exists no open path connecting a vertex of ∂+ L,M to a vertex of ∂− L,M. The probability measure of current interest is the random-cluster measure φD M,N,p,q conditioned on the event IL,M, which we denote by φD L,M,p,q.
 
-![image 873](Grimmet2006_images/imageFile873.png)
+![image 873](../Images/imageFile873.png)
 
 Many of the calculations concern the box L,M and the measure φD L,M,p,q. We choose however to express our conclusions in terms of the infinite cylinder
 
-![image 874](Grimmet2006_images/imageFile874.png)
+![image 874](../Images/imageFile874.png)
 
 L = L,∞ and the weak limit φL,p,q = limM→∞ φD L,M,p,q.
 
-![image 875](Grimmet2006_images/imageFile875.png)
+![image 875](../Images/imageFile875.png)
 
-![image 876](Grimmet2006_images/imageFile876.png)
+![image 876](../Images/imageFile876.png)
 
 consequence of Theorems 7.87 and 7.142 that, for sufficiently large p, any such weak limit is non-translation-invariant.
 
 (7.89) Theorem [139]. Let q ∈ [1,∞) and p > p(21), where p(21) is given in Theorem 7.87. The family {φL,p,q : L = 1,2,. . .} possesses at least one non-translation-invariant weak limit.
 
-![image 877](Grimmet2006_images/imageFile877.png)
+![image 877](../Images/imageFile877.png)
 
-![image 878](Grimmet2006_images/imageFile878.png)
+![image 878](../Images/imageFile878.png)
 
-![image 879](Grimmet2006_images/imageFile879.png)
+![image 879](../Images/imageFile879.png)
 
 It is shown in addition at Theorem 7.144 that there exists a geometric bound, uniformly in L, on the tail of the displacement of the interface from the ﬂat plane.
 
@@ -1192,7 +1192,7 @@ By making use of the relationship between random-cluster models and Potts models
 
 The measure φL,p,q is not a random-cluster measure in the sense of Chapter 3, even though it corresponds to a Gibbs measure when q ∈ {2,3,. . .}. It may instead be termed a ‘conditioned’ random-cluster measure, and such measures will be encountered again in Chapter 11.
 
-![image 880](Grimmet2006_images/imageFile880.png)
+![image 880](../Images/imageFile880.png)
 
 The strategy of the proofs is to follow the milestones of the paper of Dobrushin [103]. Although Dobrushin’s work is a helpful indicator of the overall route to the results, a considerable amount of extra work is necessary in the context of the random-cluster model, much of which arises from the fact that the geometry of interfaces is different for the random-cluster model from that for spin systems. Heavy use is made in the remainder of this chapter of the material in [139].
 
@@ -1200,19 +1200,19 @@ The strategy of the proofs is to follow the milestones of the paper of Dobrushin
 
 ### 7.7 Probabilistic and geometric preliminaries
 
-![image 881](Grimmet2006_images/imageFile881.png)
+![image 881](../Images/imageFile881.png)
 
-![image 882](Grimmet2006_images/imageFile882.png)
+![image 882](../Images/imageFile882.png)
 
-![image 883](Grimmet2006_images/imageFile883.png)
+![image 883](../Images/imageFile883.png)
 
-![image 884](Grimmet2006_images/imageFile884.png)
+![image 884](../Images/imageFile884.png)
 
-![image 885](Grimmet2006_images/imageFile885.png)
+![image 885](../Images/imageFile885.png)
 
-![image 886](Grimmet2006_images/imageFile886.png)
+![image 886](../Images/imageFile886.png)
 
-![image 887](Grimmet2006_images/imageFile887.png)
+![image 887](../Images/imageFile887.png)
 
 p
 
@@ -1242,43 +1242,43 @@ It is tempting to think of an interface as part of a deformed plane. Interfaces 
 
 For δ ∈ DL,M, we deﬁne its extended interface (or closure) δ to be the set (7.99) δ = δ ∪ h ∈ H : h is 1-connected to some member of δ . See (7.4). It will be useful to introduce the ‘maximal’ (denoted by ωδ) and ‘minimal’ (denoted by ωδ) conﬁgurations in DL,M that are compatible with δ:
 
-![image 888](Grimmet2006_images/imageFile888.png)
+![image 888](../Images/imageFile888.png)
 
-![image 889](Grimmet2006_images/imageFile889.png)
+![image 889](../Images/imageFile889.png)
 
-![image 890](Grimmet2006_images/imageFile890.png)
+![image 890](../Images/imageFile890.png)
 
-![image 891](Grimmet2006_images/imageFile891.png)
+![image 891](../Images/imageFile891.png)
 
 (7.100) ωδ(e) =
 
-![image 892](Grimmet2006_images/imageFile892.png)
+![image 892](../Images/imageFile892.png)
 
-![image 893](Grimmet2006_images/imageFile893.png)
+![image 893](../Images/imageFile893.png)
 
 D(e) if e ∈/ EL,M, 1 if e ∈ EL,M ∩ (δ \ δ), 0 otherwise.
 
-![image 894](Grimmet2006_images/imageFile894.png)
+![image 894](../Images/imageFile894.png)
 
 Proof of Lemma 7.98. If ω ∈ IL,M ∩ DL,M, then ω(e) = 0 whenever h(e) ∈ (ω). Suppose conversely that δ ∈ DL,M, and let ω ∈ DL,M satisfy ω(e) = 0 whenever h(e) ∈ δ. Since ω ≤ ωδ, it sufﬁces to show that ωδ ∈ IL,M. Since δ ∈ DL,M, there exists ξ ∈ IL,M ∩ DL,M such that δ = (ξ). Note that ξ ≤ ωδ. Suppose for the sake of obtaining a contradiction that ωδ ∈/ IL,M, and think of ωδ as being obtained from ξ by declaring, in turn, a certain sequence e1,e2,. . . ,er with ξ(ei) = 0, i = 1,2,. . .,r, to be open. Let ξk be obtainedfrom ξ by η(ξk) = η(ξ) ∪ {e1,e2,. . . ,ek}. By assumption, there exists K such that ξK ∈ IL,M but ξK+1 ∈/ IL,M. For ψ ∈ DL,M, let J(ψ) denote the set of edges e having endvertices in L,M, with ψ(e) = 1, and both of whose endvertices are attainable from ∂+ L,M by open paths of ψ. We apply Theorem 7.3 to the finite connected graph induced by J(ξK) to ﬁnd that there exists a splitting set Q of plaquettes such that: ∂+ L,M ⊆ ins([Q]), ∂− L,M ⊆ out([Q]), and ξK(e) = 0 whenever e ∈ EL,M and h(e) ∈ Q. It must be the case that h(eK+1) ∈ Q, since ξK+1 ∈/ IL,M. By the 1-connectedness of Q, there exists a sequence
 
-![image 895](Grimmet2006_images/imageFile895.png)
+![image 895](../Images/imageFile895.png)
 
-![image 896](Grimmet2006_images/imageFile896.png)
+![image 896](../Images/imageFile896.png)
 
-![image 897](Grimmet2006_images/imageFile897.png)
+![image 897](../Images/imageFile897.png)
 
-![image 898](Grimmet2006_images/imageFile898.png)
+![image 898](../Images/imageFile898.png)
 
-![image 899](Grimmet2006_images/imageFile899.png)
+![image 899](../Images/imageFile899.png)
 
 f1 = eK+1, f2, f3,. . . , ft of edges such that: (i) h( fi) ∈ Q for all i, (ii) fi ∈ EL,M for i = 1,2,. . .,t − 1, ft = h( x, x − (0,0,1) ) for some x = (x1, x2,1) ∈ ∂+ L,M, and
 
 (iii) h( fi) ∼1 h( fi+1) for i = 1,2,. . .,t − 1. It follows that h( fi) ∈ δ for i = 1,2,. . . ,t. In particular, h(eK+1) ∈ δ and so ωδ(eK+1) = 0, a contradiction. Therefore ωδ ∈ IL,M as claimed.
 
-![image 900](Grimmet2006_images/imageFile900.png)
+![image 900](../Images/imageFile900.png)
 
-![image 901](Grimmet2006_images/imageFile901.png)
+![image 901](../Images/imageFile901.png)
 
 <a id="sec-7-8"></a>
 
@@ -1286,15 +1286,15 @@ f1 = eK+1, f2, f3,. . . , ft of edges such that: (i) h( fi) ∈ Q for all i, (ii
 
 For conciseness of notation, we abbreviate φD L,M,p,q to φL,M, and φD L,M,p,q to φL,M. Let δ ∈ DL,M. The better to study φL,M(δ) = φL,M( = δ), we develop next an expression for this probability. Consider the connected components of the graph (Z3,η(ωδ)), and denote these components by (Sδi,Uδi), i = 1,2,. . .,kδ, where kδ = k(ωδ). Note that Uδi is empty whenever Sδi is a singleton. Let W(δ) be the edge-set EL,M \ {e ∈ E3 : h(e) ∈ δ}.
 
-![image 902](Grimmet2006_images/imageFile902.png)
+![image 902](../Images/imageFile902.png)
 
-![image 903](Grimmet2006_images/imageFile903.png)
+![image 903](../Images/imageFile903.png)
 
-![image 904](Grimmet2006_images/imageFile904.png)
+![image 904](../Images/imageFile904.png)
 
-![image 905](Grimmet2006_images/imageFile905.png)
+![image 905](../Images/imageFile905.png)
 
-![image 906](Grimmet2006_images/imageFile906.png)
+![image 906](../Images/imageFile906.png)
 
 Let ω ∈ IL,M ∩ DL,M be such that (ω) = δ, so that
 
@@ -1302,21 +1302,21 @@ Let ω ∈ IL,M ∩ DL,M be such that (ω) = δ, so that
 
 0 if h(e) ∈ δ, 1 if h(e) ∈ δ \ δ.
 
-![image 907](Grimmet2006_images/imageFile907.png)
+![image 907](../Images/imageFile907.png)
 
 Let D be the set of edges with both endvertices in L+2,M+2 that either are dual to plaquettes in δ or join a vertex of L+1,M+1 to a vertex of ∂ L+2,M+2. We apply Theorem 7.5 to the set D, and deduce that there are exactly kδ components of the graph (Z3,η(ω)) having a vertex in V(δ).
 
-![image 908](Grimmet2006_images/imageFile908.png)
+![image 908](../Images/imageFile908.png)
 
-![image 909](Grimmet2006_images/imageFile909.png)
+![image 909](../Images/imageFile909.png)
 
-![image 910](Grimmet2006_images/imageFile910.png)
+![image 910](../Images/imageFile910.png)
 
-![image 911](Grimmet2006_images/imageFile911.png)
+![image 911](../Images/imageFile911.png)
 
 =
 
-![image 912](Grimmet2006_images/imageFile912.png)
+![image 912](../Images/imageFile912.png)
 
 where Z(EL,M) = ZD L,M(p,q) and Z1(δ) = ZW1 (δ)(p,q). In this expression and later, for H ⊆ H, |H| is the cardinality of the set H ∩ {h(e) : e ∈ EL,M}. The term qkδ−1 arises since the application of ‘1’ boundary conditions to δ has the effect of uniting the boundaries of the cavities of δ, whereby the number of clusters diminishes by kδ − 1.
 
@@ -1326,9 +1326,9 @@ We shall exploit properties of the partition functions Z(·) in order to rewrite
 
 = sup L : L(e1) ∩ EL1,M1 ≃ L(e2) ∩ EL2,M2 and L(e1) ∩ E(δ1) ≃ L(e2) ∩ E(δ2)
 
-![image 913](Grimmet2006_images/imageFile913.png)
+![image 913](../Images/imageFile913.png)
 
-![image 914](Grimmet2006_images/imageFile914.png)
+![image 914](../Images/imageFile914.png)
 
 e∈E(δ)∩EL,M
 
@@ -1339,49 +1339,49 @@ for functions fp(e,δ, L, M) with the following properties. For q ∈ [1,∞), t
 
 where G = G(e1,δ1, EL1,M1; e2,δ2, EL2,M2). Inequalities (7.106) and (7.107) are valid for all relevant values of their arguments.
 
-![image 915](Grimmet2006_images/imageFile915.png)
+![image 915](../Images/imageFile915.png)
 
-![image 916](Grimmet2006_images/imageFile916.png)
+![image 916](../Images/imageFile916.png)
 
-![image 917](Grimmet2006_images/imageFile917.png)
+![image 917](../Images/imageFile917.png)
 
-![image 918](Grimmet2006_images/imageFile918.png)
+![image 918](../Images/imageFile918.png)
 
 This implies (7.105) via (7.102).
 
 It remains to show (7.106)–(7.107). Let e = ν( f,δ) and set r = e, f . Then r−2( f ) does not intersect δ, implying by Lemma 7.93 that
 
-![image 919](Grimmet2006_images/imageFile919.png)
+![image 919](../Images/imageFile919.png)
 
 (7.111) g( f, W(δ)) − g( f, EL,M) ≤ e−α e, f +2α, p > p∗,
 
 where p∗ and α are given as in that lemma. Secondly, there exists an absolute constant K such that, for all e and δ, the number of edges f ∈ E(δ) with e = ν( f,δ) is no greater than K. Therefore, by (7.92),
 
-![image 920](Grimmet2006_images/imageFile920.png)
+![image 920](../Images/imageFile920.png)
 
-![image 921](Grimmet2006_images/imageFile921.png)
+![image 921](../Images/imageFile921.png)
 
 - g( f, EL1,M1) − g(τ f, EL2,M2)
 
-![image 922](Grimmet2006_images/imageFile922.png)
+![image 922](../Images/imageFile922.png)
 
-![image 923](Grimmet2006_images/imageFile923.png)
+![image 923](../Images/imageFile923.png)
 
 By (7.112)–(7.113)and Lemma 7.93, the first summation in (7.115)is bounded
 
 above by 2G3e−31αG. By the definition of the ν( f,δi), the second and third summations are bounded above, respectively, by
 
-![image 924](Grimmet2006_images/imageFile924.png)
+![image 924](../Images/imageFile924.png)
 
 e−α f,ei +2α ≤ C′e−31αG+2α,
 
-![image 925](Grimmet2006_images/imageFile925.png)
+![image 925](../Images/imageFile925.png)
 
-![image 926](Grimmet2006_images/imageFile926.png)
+![image 926](../Images/imageFile926.png)
 
 f ∈E(δ1): ν( f,δ1)=e1
 
-![image 927](Grimmet2006_images/imageFile927.png)
+![image 927](../Images/imageFile927.png)
 
 and (7.107) follows for an appropriate choice of γ.
 
@@ -1411,9 +1411,9 @@ On the event IL, is defined as before to be the maximal 1-connected set of open 
 
 #### (7.118) Lemma.
 
-![image 928](Grimmet2006_images/imageFile928.png)
+![image 928](../Images/imageFile928.png)
 
-![image 929](Grimmet2006_images/imageFile929.png)
+![image 929](../Images/imageFile929.png)
 
 e∈E(δ)∩EL
 
@@ -1421,7 +1421,7 @@ where ZL is the appropriate normalizing constant. Proof of Lemma 7.117. It suf�
 
 Let AL,M = [−L, L]2 × {−M} and BL,M = [−L, L]2 × {M}, and let TL,M be the event that no open path exists between a vertex of ∂ +L,M \ BL,M and a vertex of ∂ −L,M \ AL,M. Note that TL,M → IL as M → ∞. Let F be a cylinder event. Then
 
-![image 930](Grimmet2006_images/imageFile930.png)
+![image 930](../Images/imageFile930.png)
 
 ≥ φL,M(F ∩ IL) − βM−1
 
@@ -1445,7 +1445,7 @@ Let M → ∞ in (7.105), and use part (a) to obtain the claim.
 
 A taxonomy of interfaces is required, and this is the topic of this section. Let δ ∈ DL. While it was natural in Section 7.7 to introduce the extended interface δ, it turns out to be useful when studying the geometry of δ to work with its semi-extended interface
 
-![image 931](Grimmet2006_images/imageFile931.png)
+![image 931](../Images/imageFile931.png)
 
 δ∗ = δ ∪ h ∈ H : h is a horizontal plaquette that is 1-connected to δ .
 
@@ -1455,31 +1455,31 @@ Let x = (x1, x2, x3) ∈ Z3. The projection π(h) of a horizontal plaquette h = 
 
 π(h) = (x1 + 21, x2 − 12, 21),(x1 + 12, x2 + 21, 21) , and, similarly, h = h( x, x + (0,1,0) ) has projection
 
-![image 932](Grimmet2006_images/imageFile932.png)
+![image 932](../Images/imageFile932.png)
 
-![image 933](Grimmet2006_images/imageFile933.png)
+![image 933](../Images/imageFile933.png)
 
-![image 934](Grimmet2006_images/imageFile934.png)
+![image 934](../Images/imageFile934.png)
 
-![image 935](Grimmet2006_images/imageFile935.png)
+![image 935](../Images/imageFile935.png)
 
-![image 936](Grimmet2006_images/imageFile936.png)
+![image 936](../Images/imageFile936.png)
 
-![image 937](Grimmet2006_images/imageFile937.png)
+![image 937](../Images/imageFile937.png)
 
 π(h) = (x1 − 21, x2 + 21, 21),(x1 + 21, x2 + 12, 21) .
 
-![image 938](Grimmet2006_images/imageFile938.png)
+![image 938](../Images/imageFile938.png)
 
-![image 939](Grimmet2006_images/imageFile939.png)
+![image 939](../Images/imageFile939.png)
 
-![image 940](Grimmet2006_images/imageFile940.png)
+![image 940](../Images/imageFile940.png)
 
-![image 941](Grimmet2006_images/imageFile941.png)
+![image 941](../Images/imageFile941.png)
 
-![image 942](Grimmet2006_images/imageFile942.png)
+![image 942](../Images/imageFile942.png)
 
-![image 943](Grimmet2006_images/imageFile943.png)
+![image 943](../Images/imageFile943.png)
 
 Ahorizontalplaquetteh ofthesemi-extendedinterfaceδ∗iscalledac-plaquette if h is the uniquememberof δ∗ with projection π(h). All otherplaquettesof δ∗ are called w-plaquettes. A ceiling of δ is a maximal 0-connected set of c-plaquettes. The projection of a ceiling C is the set π(C) = {π(h) : h ∈ C}. Similarly, we deﬁne a wall W of δ as a maximal 0-connected set of w-plaquettes, and its projection as
 
@@ -1509,17 +1509,17 @@ Proof. (i) Let h be a c-plaquette of δ∗ with π(h) = h0. Since δ ∈ DL, δ 
 
 (ii) Suppose h is a c-plaquette. Then h belongs to δ, and any horizontal plaquette that is 1-connected to h belongs to δ∗. It may be seen in addition that any vertical plaquette that is 1-connected to h lies in δ \ δ. Suppose, on the contrary, that some such vertical plaquette h′ lies in δ. Then the horizontal plaquettes that are 1-connected to h′ lie in δ∗. One of these latter plaquettes has projection π(h), in contradiction of the assumption that h is a c-plaquette.
 
-![image 944](Grimmet2006_images/imageFile944.png)
+![image 944](../Images/imageFile944.png)
 
 We may now see as follows that any horizontalplaquette h′′ that is 1-connected to h must lie in δ. Suppose, on the contrary, that some such plaquette h′′ lies in δ\δ. We may construct a path of open edges on (Z3,η(ωδ)) connecting the vertex x just above h to the vertex x − (0,0,1) just below h, using the open edges of ωδ corresponding to the three relevant plaquettes of δ \ δ. This contradicts the assumption that h is a c-plaquette of the interface δ.
 
-![image 945](Grimmet2006_images/imageFile945.png)
+![image 945](../Images/imageFile945.png)
 
-![image 946](Grimmet2006_images/imageFile946.png)
+![image 946](../Images/imageFile946.png)
 
-![image 947](Grimmet2006_images/imageFile947.png)
+![image 947](../Images/imageFile947.png)
 
-![image 948](Grimmet2006_images/imageFile948.png)
+![image 948](../Images/imageFile948.png)
 
 The second claim of (ii) follows immediately, by the definition of δ∗.
 
@@ -1531,7 +1531,7 @@ The second claim of (ii) follows immediately, by the definition of δ∗.
 
 We note that13 βi∗ is a 0-connected subset of δi∗.
 
-![image 949](Grimmet2006_images/imageFile949.png)
+![image 949](../Images/imageFile949.png)
 
 13This is a consequence of [311, eqn (5.3)], see also [286, p. 40, footnote 2].
 
@@ -1551,7 +1551,7 @@ Claim(vi)isasimpleobservationsincewallsarefinite. Claim(vii)isimmediate from cla
 
 The properties described in Lemma 7.125 allow us to describe a wall W in more detail. By (vi) and (vii), there exists a unique ceiling that is 0-connected to W and with projection in the infinite 0-connected component of δ0 \ π(W). We call this ceiling the base of W. The altitude of W is the height of the base of W, see (iii). The height D(W) of W is the maximum absolute value of the displacement in the third coordinate direction of [W] from the horizontal plane {(x1, x2,s + 21) : x1, x2 ∈ Z}, where s is the altitude of W. The interior int(W) (of the projection π(W)) of W is the complement in δ0 of the unique maximal infinite 0-connected component of δ0 \ π(W), see (vi).
 
-![image 950](Grimmet2006_images/imageFile950.png)
+![image 950](../Images/imageFile950.png)
 
 Let S = (A, B) where A, B are sets of plaquettes. We call S a standard wall if there exists δ ∈ DL such that A ⊆ δ, B ⊆ δ∗ \ δ, and A ∪ B is the unique wall of δ. If S = (A, B) is a standard wall, we refer to plaquettes of either A or B as plaquettes of S, and we write π(S) = π(A ∪ B).
 
@@ -1571,9 +1571,9 @@ The membersof anysuch familyhave distinctorigins. Forour futureconvenience, each
 
 We introduce next the concept of a group of walls. Let h ∈ δ0, δ ∈ DL, and denote by ρ(h,δ) the number of (vertical or horizontal) plaquettes in δ whose projection is a subset of h. Two standard walls S1, S2 are called close if there exist h1 ∈ π(S1) and h2 ∈ π(S2) such that
 
-![image 951](Grimmet2006_images/imageFile951.png)
+![image 951](../Images/imageFile951.png)
 
-![image 952](Grimmet2006_images/imageFile952.png)
+![image 952](../Images/imageFile952.png)
 
 h1,h2 < ρ(h1,δS1) + ρ(h2,δS2).
 
@@ -1603,7 +1603,7 @@ Sh =
 
 More precisely, in the first case, Sh = (Ah, Bh) where Ah = τ(0,0,−si)Ai and Bh = τ(0,0,−si)Bi. Thatthisis anadmissible familyof standardwalls followsfrom Lemma 7.125(viii) and from the observation that si = 0 when E(Wi) ∩ EL = ∅.
 
-![image 953](Grimmet2006_images/imageFile953.png)
+![image 953](../Images/imageFile953.png)
 
 Conversely, let {Sh = (Ah, Bh) : h ∈ δ0} be an admissible family of standard walls. We shall show that there is a unique interface δ corresponding in a certain way to this family. Let S1, S2 . . ., Sn be the non-empty walls of the family, and let δi be the unique interface in DL having Si as its only wall.
 
@@ -1641,19 +1641,19 @@ i=1
 
 (i) N(S) ≥ 1314|π(S)|. Consequently, (S) ≥ 131 |π(S)| and (S) ≥ 141 N(S). (ii) N(S) ≥ 15|S|. (iii) (S) ≥ D(S).
 
-![image 954](Grimmet2006_images/imageFile954.png)
+![image 954](../Images/imageFile954.png)
 
-![image 955](Grimmet2006_images/imageFile955.png)
+![image 955](../Images/imageFile955.png)
 
-![image 956](Grimmet2006_images/imageFile956.png)
+![image 956](../Images/imageFile956.png)
 
-![image 957](Grimmet2006_images/imageFile957.png)
+![image 957](../Images/imageFile957.png)
 
 Proof. (i) For each h0 ∈ δ0, let U(h0) = {h ∈ δ0 : h = h0 or h ∼1 h0}. We call two plaquettes h1,h2 ∈ δ0 separated if U(h1) ∩ U(h2) = ∅. Denote by Hsep = Hsep(S) ⊆ π(S) a set of pairwise-separated plaquettes in π(S) having maximum cardinality, and let H = h1∈Hsep[U(h1) ∩ π(S)]. Note that
 
 (7.129) |Hsep| ≥ 131 |π(S)|.
 
-![image 958](Grimmet2006_images/imageFile958.png)
+![image 958](../Images/imageFile958.png)
 
 For every h0 ∈ π(S), there exists a horizontal plaquette h1 ∈ δS such that π(h1) = h0. Since A ∪ B contains no c-plaquette of δS, h1 is a w-plaquette, whence h1 ∈ A. In particular, N(S) ≥ |π(S)|.
 
@@ -1667,7 +1667,7 @@ h0∈Hsep
 
 = |H| + |Hsep| + |π(S)| − |H| ≥ 1314|π(S)|.
 
-![image 959](Grimmet2006_images/imageFile959.png)
+![image 959](../Images/imageFile959.png)
 
 In order to prove (7.130), we argue first that U(h0)∩π(S) contains at least one (horizontal) plaquette besides h0. Suppose that this is not true. Then U(h0) \ h0 contains the projections of c-plaquettes of δ∗S only. By Lemma 7.125(ii, iii), these c-plaquettes belong to the same ceiling C and therefore lie in the same plane. Since h1 is by assumption a w-plaquette, there must be at least one other
 
@@ -1686,7 +1686,7 @@ Finally inthissection, we derivean exponentialboundforthenumberof groups of wall
 
 Rj = h′ ∈ δ0 : j,h′ ≤ ρ(j,δG) \ π(G),
 
-![image 960](Grimmet2006_images/imageFile960.png)
+![image 960](../Images/imageFile960.png)
 
 for which there exists no other plaquette h′′ ∈ G with π(h′′) = π(h′), are the standard walls of G. Hence, the number of such groups of walls with (G) = k is no greaterthan the numberof 0-connectedsets of plaquettescontainingno more than 70C′′k elements including h. It is proved in [103, Lemma 2] that there exists ν < ∞ such that the number of 0-connected sets of size n containing h is no larger than νn. Given any such set, there are at most 2n ways of partitioning the plaquettes between the Ai and the Bi. The claim of the lemma follows.
 
@@ -1696,13 +1696,13 @@ for which there exists no other plaquette h′′ ∈ G with π(h′′) = π(h�
 
 The probabilistic expressions of Section 7.8 may be combined with the classiﬁcation of Section 7.9 to obtain an estimate concerning the geometry of the interface. Let G = {Gh : h ∈ δ0} be a family of groups of walls. If G is admissible, there exists by Lemma 7.127 a unique corresponding interface δG. We may pick a random family ζ = {ζh : h ∈ δ0} of groups of walls according to the probability measure PL induced by φL thus:
 
-![image 961](Grimmet2006_images/imageFile961.png)
+![image 961](../Images/imageFile961.png)
 
 PL(ζ = G) =
 
 φL( = δG) if G is admissible, 0 otherwise.
 
-![image 962](Grimmet2006_images/imageFile962.png)
+![image 962](../Images/imageFile962.png)
 
 (7.132) Lemma. Let q ∈ [1,∞), and let p∗ be as in Lemma 7.104. There exist constants C3, C4 such that
 
@@ -1712,7 +1712,7 @@ for p > p∗, and for all h′ ∈ δ0, Gh′ ∈ Gh′, L > 0, and for any admi
 
 Proof. The claim is trivial if G = {Gh : h ∈ δ0} is not admissible, and therefore we may assume it to be admissible. Let h′ ∈ δ0, and let G′ agree with G except at h′, where Gh′ is replaced by the empty group Eh′. Then
 
-![image 963](Grimmet2006_images/imageFile963.png)
+![image 963](../Images/imageFile963.png)
 
 φL(δ) φL(δ′)
 
@@ -1720,73 +1720,73 @@ Proof. The claim is trivial if G = {Gh : h ∈ δ0} is not admissible, and there
 
 ,
 
-![image 964](Grimmet2006_images/imageFile964.png)
+![image 964](../Images/imageFile964.png)
 
-![image 965](Grimmet2006_images/imageFile965.png)
+![image 965](../Images/imageFile965.png)
 
 where δ = δG and δ′ = δG′.
 
 In using (7.121) to bound the right side of this expression, we shall require bounds for |δ| − |δ′|, |δ \ δ| − |δ′ \ δ′|, kδ − kδ′, and (7.134)
 
-![image 966](Grimmet2006_images/imageFile966.png)
+![image 966](../Images/imageFile966.png)
 
-![image 967](Grimmet2006_images/imageFile967.png)
+![image 967](../Images/imageFile967.png)
 
 (7.136) |δ \ δ| − |δ′ \ δ′| ≥ 0,
 
-![image 968](Grimmet2006_images/imageFile968.png)
+![image 968](../Images/imageFile968.png)
 
-![image 969](Grimmet2006_images/imageFile969.png)
+![image 969](../Images/imageFile969.png)
 
 and the reader may be prepared to omit the explanation that follows. We claim that (7.136) follows from the inequality
 
 (7.137) |P(δ)| − |P(δ′)| ≥ 0,
 
-![image 970](Grimmet2006_images/imageFile970.png)
+![image 970](../Images/imageFile970.png)
 
-![image 971](Grimmet2006_images/imageFile971.png)
+![image 971](../Images/imageFile971.png)
 
 where P(δ) (respectively, P(δ′)) is the set of plaquettes in δ \ δ (respectively, δ′ \ δ′) that project into [π(Gh′)]. In order to see that (7.137) implies (7.136), we argue as follows. The extended interface δ may be constructed from δ′ in the following manner. First, we remove all the plaquettes from δ′ that project into [π(Gh′)], and we ﬁll the gaps by introducing the walls of Gh′ one by one along the lines of the proof of Lemma 7.127. Then we add the plaquettes of δ \ δ that project into [π(Gh′)]. During this operation on interfaces, we remove P(δ′) and add P(δ), and the claim follows.
 
-![image 972](Grimmet2006_images/imageFile972.png)
+![image 972](../Images/imageFile972.png)
 
-![image 973](Grimmet2006_images/imageFile973.png)
+![image 973](../Images/imageFile973.png)
 
-![image 974](Grimmet2006_images/imageFile974.png)
+![image 974](../Images/imageFile974.png)
 
-![image 975](Grimmet2006_images/imageFile975.png)
+![image 975](../Images/imageFile975.png)
 
-![image 976](Grimmet2006_images/imageFile976.png)
+![image 976](../Images/imageFile976.png)
 
-![image 977](Grimmet2006_images/imageFile977.png)
+![image 977](../Images/imageFile977.png)
 
-![image 978](Grimmet2006_images/imageFile978.png)
+![image 978](../Images/imageFile978.png)
 
-![image 979](Grimmet2006_images/imageFile979.png)
+![image 979](../Images/imageFile979.png)
 
-![image 980](Grimmet2006_images/imageFile980.png)
+![image 980](../Images/imageFile980.png)
 
-![image 981](Grimmet2006_images/imageFile981.png)
+![image 981](../Images/imageFile981.png)
 
 By Lemma 7.125(viii), there exists no vertical plaquette of δ′ \ δ′ that projects into [π(Gh′)] and is in addition 1-connected to some wall not belonging to Gh′. Moreover, since all the horizontal plaquettes of δ′ belong to the semi-extended interface δ′∗, those that project onto [π(Gh′)] are c-plaquettes of δ′∗; hence, such plaquettes lie in δ′. It follows that P(δ′) comprises the vertical plaquettes that are 1-connected with π(Gh′).
 
-![image 982](Grimmet2006_images/imageFile982.png)
+![image 982](../Images/imageFile982.png)
 
-![image 983](Grimmet2006_images/imageFile983.png)
+![image 983](../Images/imageFile983.png)
 
-![image 984](Grimmet2006_images/imageFile984.png)
+![image 984](../Images/imageFile984.png)
 
 It is therefore sufﬁcient to construct an injective map T that maps each vertical plaquette, 1-connected with π(Gh′), to a different vertical plaquette in P(δ). We noted in the proof of Lemma 7.128(i) that, for every h0 ∈ π(G′
 
-![image 985](Grimmet2006_images/imageFile985.png)
+![image 985](../Images/imageFile985.png)
 
 h), there exists a horizontal plaquette h1 ∈ δ with π(h1) = h0. For every vertical plaquette hv ∼1 h0, there exists a translate hv1 ∼1 h1. Suppose hv lies above δ0. If hv1 ∈ δ \ δ, we set T(hv) = hv1. If hv1 ∈ δ, we consider the (unique) vertical plaquette ‘above’ it, which we denote by hv2. We repeat this procedure up to the first n for which we meet a plaquette hvn ∈ δ \ δ, and we set T(hv) = hvn. When hv lies below δ0, we act similarly to ﬁnd a plaquette T(hv) of δ \ δ beneath hv. The resulting T is as required.
 
-![image 986](Grimmet2006_images/imageFile986.png)
+![image 986](../Images/imageFile986.png)
 
-![image 987](Grimmet2006_images/imageFile987.png)
+![image 987](../Images/imageFile987.png)
 
-![image 988](Grimmet2006_images/imageFile988.png)
+![image 988](../Images/imageFile988.png)
 
 We turn now to the quantity kδ − kδ′, and we shall use the notation around (7.101). Note that exactly two of the components (Sδi,Uδi) are infinite, and these may be taken as those with indices 1 and 2. For i = 3,4,. . .,kδ, let H(Sδi) be the set of plaquettes that are dual to edges having exactly one endvertex in Sδi. The finite component (Sδi,Uδi) is in a natural way surrounded by a particular
 
@@ -1806,13 +1806,13 @@ one–one correspondence between the plaquettes of δi and those of δi′, and 
 
 If e is such that h(e) ∈ U,
 
-![image 989](Grimmet2006_images/imageFile989.png)
+![image 989](../Images/imageFile989.png)
 
-![image 990](Grimmet2006_images/imageFile990.png)
+![image 990](../Images/imageFile990.png)
 
 The principal theorem states in rough terms the following. Let q ∈ [1,∞) and let p be sufficiently large. With φL-probability close to 1, the interface (ω) deviates from the ﬂat plane δ0 only through local perturbations. An ant living on (ω) is able, with large probability, to visit a positive density of the interface via horizontal meanderings only.
 
-![image 991](Grimmet2006_images/imageFile991.png)
+![image 991](../Images/imageFile991.png)
 
 Let h ∈ δ0. For ω ∈ DL, we write h ↔ ∞ if there exists a sequence
 
@@ -1821,7 +1821,7 @@ h = h0,h1,. . .,hr of plaquettes in δ0 such that: (a) hi ∼1 hi+1 for i = 0,1,
 - (7.142) Theorem [139]. Let q ∈ [1,∞). For ǫ > 0, there exists p = p(ǫ) < 1 such that, if p > p,
 - (7.143) φL(h ↔ ∞) > 1 − ǫ, h ∈ δ0, L ≥ 1.
 
-![image 992](Grimmet2006_images/imageFile992.png)
+![image 992](../Images/imageFile992.png)
 
 Since, following Theorem 7.142, h ∈ δ0 is a c-plaquette with high probability, the vertexof Z3 immediatelybeneath(respectively,above)the centre of h is joined
 
@@ -1829,35 +1829,35 @@ to ∂− L (respectively, ∂+ L) with high probability. Theorem 7.87 follows. 
 
 The existence of non-translation-invariant (conditioned) random-cluster measures follows from Theorem 7.142, as in the following sketch argument. For e ∈ E3, let e± = e ± (0,0,1), and let ω ∈ . If h = h(e) ∈ δ0 is a c-plaquette of = (ω), then e is closed, and h(e±) ∈/ . The conﬁgurations in the two regions above and below are governed by wired random-cluster measures14. Therefore, under (7.143),
 
-![image 993](Grimmet2006_images/imageFile993.png)
+![image 993](../Images/imageFile993.png)
 
 (1 − ǫ)p p + q(1 − p)
 
 φL(e is open) ≤ ǫ, φL(e± is open) ≥
 
-![image 994](Grimmet2006_images/imageFile994.png)
+![image 994](../Images/imageFile994.png)
 
-![image 995](Grimmet2006_images/imageFile995.png)
+![image 995](../Images/imageFile995.png)
 
 ,
 
-![image 996](Grimmet2006_images/imageFile996.png)
+![image 996](../Images/imageFile996.png)
 
 by stochastic ordering. Note that these inequalities concern the probabilities of cylinder events. This implies Theorem 7.89.
 
 Our second main result concerns the vertical displacement of the interface, and asserts the existence of a geometric bound on the tail of the displacement, uniformly in L. Let δ ∈ DL, (x1, x2) ∈ Z2, and x = (x1, x2, 21). We deﬁne the displacement of δ at x by
 
-![image 997](Grimmet2006_images/imageFile997.png)
+![image 997](../Images/imageFile997.png)
 
 D(x,δ) = sup |z − 21| : (x1, x2, z) ∈ [δ] .
 
-![image 998](Grimmet2006_images/imageFile998.png)
+![image 998](../Images/imageFile998.png)
 
 (7.144) Theorem [139]. Let q ∈ [1,∞). There exists p < 1 and α(p) satisfying α(p) > 0 when p > p such that
 
 φL(D(x, ) ≥ z) ≤ e−zα(p), z ≥ 1, (x1, x2) ∈ Z2, L ≥ 1.
 
-![image 999](Grimmet2006_images/imageFile999.png)
+![image 999](../Images/imageFile999.png)
 
 Proof of Theorem 7.142. Let h ∈ δ0. We have not so far speciﬁed the ordering of plaquettes in δ0 used to identify the origin of a standard wall or of a groupof walls. We assume henceforth that this ordering is such that: for h1,h2 ∈ δ0, h1 > h2 implies h,h1 ≥ h,h2 .
 
@@ -1869,7 +1869,7 @@ each such wall S, h belongs to I(S). Suppose on the contrary that h ∈/ I(Sj) f
 
 13 (Gh′) ≥ |π(Gh′)| ≥ |π(Sj)| ≥ h, j + 1 ≥ h,h′ + 1.
 
-![image 1000](Grimmet2006_images/imageFile1000.png)
+![image 1000](../Images/imageFile1000.png)
 
 14We have used Lemma 7.117 here. 15This is a consequence of a standard property of Z2, see [210, Appendix].
 
@@ -1877,27 +1877,26 @@ Let K be as in Lemma 7.131, and p∗, C4 as in Lemma 7.132. Let p be sufficientl
 
 λ = λ(p) = −131 log[KC4(1 − p)] satisﬁes λ( p) > 0. By the last lemma, when p > p,
 
-![image 1001](Grimmet2006_images/imageFile1001.png)
+![image 1001](../Images/imageFile1001.png)
 
 PL (ζh′) ≥ 131 [ h,h′ + 1]
 
 1 − φL(h ↔ ∞) ≤
 
-![image 1002](Grimmet2006_images/imageFile1002.png)
+![image 1002](../Images/imageFile1002.png)
 
-![image 1003](Grimmet2006_images/imageFile1003.png)
+![image 1003](../Images/imageFile1003.png)
 
 for appropriate constants Ci. The claim follows on choosing p sufficiently close to 1.
 
 Proof of Theorem 7.144. If D(x, ) ≥ z, there exists r satisfying 1 ≤ r ≤ z such thatthefollowingstatementholds. Thereexistdistinctplaquettesh1,h2,. . .,hr ∈ δ0, and maximal admissible groups Ghi, i = 1,2,. . .,r, of walls of such that: x = (x1, x2, 21) lies in the interior of one or more standard wall of each Ghi, and
 
-![image 1004](Grimmet2006_images/imageFile1004.png)
+![image 1004](../Images/imageFile1004.png)
 
-![image 1005](Grimmet2006_images/imageFile1005.png)
+![image 1005](../Images/imageFile1005.png)
 
 φL(D(x, ) ≥ z) ≤
 
-![image 1006](Grimmet2006_images/imageFile1006.png)
+![image 1006](../Images/imageFile1006.png)
 
-![image 1007](Grimmet2006_images/imageFile1007.png)
-
+![image 1007](../Images/imageFile1007.png)

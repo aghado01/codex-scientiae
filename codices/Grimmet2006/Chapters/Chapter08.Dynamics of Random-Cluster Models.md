@@ -46,9 +46,9 @@ qω,ω = −
 
 Note that X proceeds by transitions in which single edges change their states, it is not permissible for two or more edge-states to change simultaneously. We say in this regard that X proceeds by ‘local moves’.
 
-![image 1008](Grimmet2006_images/imageFile1008.png)
+![image 1008](../Images/imageFile1008.png)
 
-![image 1009](Grimmet2006_images/imageFile1009.png)
+![image 1009](../Images/imageFile1009.png)
 
 We call a Markov chain on a Glauber process if it proceeds by local moves and has a generator Q satisfying (8.3), see [235, p. 191]. We have concentrated
 
@@ -68,23 +68,23 @@ Note that the generator (8.1) of the Markov chain given above depends on the ran
 
 Once again we take G = (V, E) to be a finite graph, and we let p ∈ (0,1) and q ∈ (0,∞). We consider in this section a special Glauber process termed the Gibbs sampler (or heat-bath algorithm). This is a Markov chain X on the state space = {0,1}E which proceedsby local moves. Its basic rule is as follows. We choose an edge e at random, and we set the state of e according to the conditional measure of ω(e) given the current states of the other edges. This may be done in either discrete or continuous time, we give the details for continuous time here and shall return to the case of discrete time in Section 8.4.
 
-![image 1010](Grimmet2006_images/imageFile1010.png)
+![image 1010](../Images/imageFile1010.png)
 
-![image 1011](Grimmet2006_images/imageFile1011.png)
+![image 1011](../Images/imageFile1011.png)
 
 226 Dynamics of Random-Cluster Models [8.3]
 
 for ω ∈ and e ∈ E. Thus, each edge is selected at rate 1, and the state of that edge is changed according to the correct conditional measure. It is evident that the detailed balance equations (8.2) hold as before, whence X is reversible with respect to φp,q. By irreducibility, φp,q is the unique invariantmeasure of the chain and thus, in particular, Xt ⇒ φp,q as t → ∞.
 
-![image 1012](Grimmet2006_images/imageFile1012.png)
+![image 1012](../Images/imageFile1012.png)
 
-![image 1013](Grimmet2006_images/imageFile1013.png)
+![image 1013](../Images/imageFile1013.png)
 
 The state of e is unchanged if the appropriate inequality is false. It is easily checked that this rule generates a Markov chain which satisﬁes (8.4) and proceeds by local moves. This version of such a chain has two attractive properties. First, it is a neat way of implementing the Gibbs sampler in practice since it requires only two random mechanisms: one that samples edges at random, and a second that produces uniformly distributed random variables.
 
-![image 1014](Grimmet2006_images/imageFile1014.png)
+![image 1014](../Images/imageFile1014.png)
 
-![image 1015](Grimmet2006_images/imageFile1015.png)
+![image 1015](../Images/imageFile1015.png)
 
 Let U(e) = (Uj(e) : j = 1,2,. . .), e ∈ E, be independent families of independent random variables each having the uniform distribution on [0,1]. Let
 
@@ -98,17 +98,17 @@ Xi = (Xti : t ≥ 0), i = 1,2, be Markov processes on constructed as follows. Th
 
 When performing simulations of the random-cluster model, one is required to sample from the probability measure φp,q. The Glauber processes of the last two sections certainly converge weakly to φp,q as t → ∞, but this is not as good as having a sample with the exact distribution. The Propp–Wilson approach to sampling termed ‘coupling from the past’, [282], provides a mechanism for obtaining samples with the correct distribution, and is in addition especially well suited to the random-cluster model when q ∈ [1,∞). We describe this here. Some illustrations of the method in practice may be found in [173, 195, 243].
 
-![image 1016](Grimmet2006_images/imageFile1016.png)
+![image 1016](../Images/imageFile1016.png)
 
-![image 1017](Grimmet2006_images/imageFile1017.png)
+![image 1017](../Images/imageFile1017.png)
 
-![image 1018](Grimmet2006_images/imageFile1018.png)
+![image 1018](../Images/imageFile1018.png)
 
-![image 1019](Grimmet2006_images/imageFile1019.png)
+![image 1019](../Images/imageFile1019.png)
 
-![image 1020](Grimmet2006_images/imageFile1020.png)
+![image 1020](../Images/imageFile1020.png)
 
-![image 1021](Grimmet2006_images/imageFile1021.png)
+![image 1021](../Images/imageFile1021.png)
 
 228 Dynamics of Random-Cluster Models [8.4]
 
@@ -118,9 +118,9 @@ As in (8.6), when q ∈ [1,∞), φp,q(ωe) φp,q(ωe) + φp,q(ωe) ≥
 
 , ω ≤ ξ,
 
-![image 1022](Grimmet2006_images/imageFile1022.png)
+![image 1022](../Images/imageFile1022.png)
 
-![image 1023](Grimmet2006_images/imageFile1023.png)
+![image 1023](../Images/imageFile1023.png)
 
 implying that ω(e) ≤ ξ(e), and hence (8.8) ψ(ω,e,u) ≤ ψ(ξ,e,u), ω ≤ ξ. Let Zν = (Znν : n = 0,1,2,. . .) be the Markov chain constructed via (8.7) with initial state Z0 = ν. By (8.8), (8.9) Znω ≤ Znξ for all n, if ω ≤ ξ and q ∈ [1,∞), which is to say that the coupling is monotone in the initial state: if one such chain starts below another, then it remains below for all time.
 
@@ -190,7 +190,7 @@ Proof. There is a strictly positive probability that ωn(e) = 0 for all e ∈ E.
 
 The Swendsen–Wangalgorithmgeneratesa Markovchain (σn : n = 0,1,. . .). It is generally the case that this chain converges to the equilibrium Potts measure faster than time-evolutions defined via local dynamics. This is especially evident in the ‘high β’ (or ‘low temperature’) phase, for the following reason. Consider for example the simulation of an Ising model on a finite box with free boundary conditions, and suppose that the initial state is +1 at all vertices. If β is large, local dynamics result in samples that remain close to the ‘+ phase’ for a very long time. Only after a long delay will the process achieve an average magnetization close to 0. Swendsen–Wang dynamics, on the other hand, can achieve large jumps in average magnetization eveninasinglestep,since the spin allocated to agivenlarge
 
-![image 1024](Grimmet2006_images/imageFile1024.png)
+![image 1024](../Images/imageFile1024.png)
 
 2See [249, 292] for accounts of recent work of relevance.
 
@@ -237,21 +237,21 @@ Let Q = (qγ,ω : γ,ω ∈ ) denote the generator of the process pZ. Since Z pr
 
 qγ,ω = 0 if H(γ,ω) ≥ 2,
 
-![image 1025](Grimmet2006_images/imageFile1025.png)
+![image 1025](../Images/imageFile1025.png)
 
-![image 1026](Grimmet2006_images/imageFile1026.png)
+![image 1026](../Images/imageFile1026.png)
 
-![image 1027](Grimmet2006_images/imageFile1027.png)
+![image 1027](../Images/imageFile1027.png)
 
-![image 1028](Grimmet2006_images/imageFile1028.png)
+![image 1028](../Images/imageFile1028.png)
 
-![image 1029](Grimmet2006_images/imageFile1029.png)
+![image 1029](../Images/imageFile1029.png)
 
-![image 1030](Grimmet2006_images/imageFile1030.png)
+![image 1030](../Images/imageFile1030.png)
 
 if γ ∈/ De,
 
-![image 1031](Grimmet2006_images/imageFile1031.png)
+![image 1031](../Images/imageFile1031.png)
 
 We turn now to the proof of Theorem 8.19, which is preceeded by a lemma. The product space X = [0,1]E is equipped with the Borel σ-field B. An event A ∈ B is called increasing if it has the property that ν′ ∈ A whenever there exists ν ∈ A such that ν ≤ ν′, and it is called decreasing if its complement is increasing. For ζ ∈ X, let Zζ = (Ztζ : t ≥ 0) denote the above Markov process with initial state Z0 = ζ.
 
@@ -341,7 +341,7 @@ We note two further facts for future use. First, there is a sample-path monotoni
 
 to one another, then so are Z ,(ν,tb) and Z ,(ζ,tb), for b ∈ {0,1}. These observations are made formal as follows.
 
-![image 1032](Grimmet2006_images/imageFile1032.png)
+![image 1032](../Images/imageFile1032.png)
 
 4We make the same assumption as in the footnote on page 233.
 
@@ -459,7 +459,7 @@ The ‘level-set processes’ of Zt0 and Zt1 are given as follows. Let p ∈ (0,
 
 where the projections p and p are defined in (8.20)–(8.21). Note the apparent reversal of boundary conditions in (8.55).
 
-![image 1033](Grimmet2006_images/imageFile1033.png)
+![image 1033](../Images/imageFile1033.png)
 
 5A possible alternative to the methodology of this section might be the ‘martingale method’ described in [186, 235]. For general accounts of the theory of Markov processes, the reader may consult the books [51, 113, 235, 299].
 
@@ -496,7 +496,7 @@ F F + q(1 − F)
 
 F −
 
-![image 1034](Grimmet2006_images/imageFile1034.png)
+![image 1034](../Images/imageFile1034.png)
 
 which is an increasing function of q. This is evidence that the number of pairs e, f of edges having the same state increases with q.
 
@@ -506,9 +506,9 @@ Let e = x, y ∈ Ed. As in (8.35), let Pe be the set of all paths of Ed \ {e} th
 
 For b = 0,1, let Gb be the linear operator, with domain a suitable subset of C( ), given by (8.60)
 
-![image 1035](Grimmet2006_images/imageFile1035.png)
+![image 1035](../Images/imageFile1035.png)
 
-![image 1036](Grimmet2006_images/imageFile1036.png)
+![image 1036](../Images/imageFile1036.png)
 
 Note that Gbg is well defined for all cylinder functions g, since the infinite sum in (8.60) may then be written as a finite sum. However, Gbg is not generally continuous when q ∈ (1,∞), even for cylinder functions g. For example, let q ∈ (1,∞), let g be the indicator function of the event that a given edge e is open, and let ω be a conﬁguration satisfying:
 
@@ -626,7 +626,7 @@ Since we are working with the product topology on X, it will be enough to show t
 
 Let D = Dq be as in Theorem 4.63, and let ǫ > 0. Pick a finite subset E of D = (0,1)\D such that every interval of the form (δ,δ +ǫ) contains some point of E, as δ ranges over [0,1 − ǫ). By Theorem 4.63,
 
-![image 1037](Grimmet2006_images/imageFile1037.png)
+![image 1037](../Images/imageFile1037.png)
 
 In order to show that
 
@@ -656,7 +656,7 @@ Now Zt1 ≤st ZT1 for t ≥ T, and hence
 
 P(Zt1 ∈ Cp−ǫ) > µ(Cp−ǫ) + 21η for some ǫ > 0 and all t ≥ T, by (8.87). Since Cp−ǫ is closed, this contradicts the fact that Zt1 ⇒ µ.
 
-![image 1038](Grimmet2006_images/imageFile1038.png)
+![image 1038](../Images/imageFile1038.png)
 
 The sets Bp and Bp−h are open, and Bp\Bp−h → ∅ ash ↓ 0. Henceψp0−h(A) → ψp0(A) as h ↓ 0.
 
@@ -686,11 +686,11 @@ In order to prove (8.91), we use a percolation argument. Let η > 0. As in Secti
 
 1 − e−η < 41,
 
-![image 1039](Grimmet2006_images/imageFile1039.png)
+![image 1039](../Images/imageFile1039.png)
 
 noting that 14 is less than the critical probability of bond percolation on the square lattice (see Chapter6 and [154]). Routine percolationargumentsmay now be used
 
-![image 1040](Grimmet2006_images/imageFile1040.png)
+![image 1040](../Images/imageFile1040.png)
 
 to obtain the existence of ǫ′ > 0 such that, for all boxes containing [−2n,2n]2,
 
@@ -758,9 +758,8 @@ Simultaneous uniqueness may be conjectured for the random-cluster model also, us
 
 It must be the case that iq(p) = iq′ (p) for p = pc(q). Here is a sufﬁcient condition for simultaneous uniqueness. For r ∈ (0,1) and a box , let E (r) be the subset of the conﬁguration space X containing all ν with ν(e) < r for all e ∈ E . Thus, E (r) is the event that every edge in E is open in the conﬁguration rν. By [13, Thm 1.8], it sufﬁces to show that µ has a property termed ‘positive finite energy’. This is in turn implied by:
 
-![image 1041](Grimmet2006_images/imageFile1041.png)
+![image 1041](../Images/imageFile1041.png)
 
 |E |
 
 , µ-a.s.
-

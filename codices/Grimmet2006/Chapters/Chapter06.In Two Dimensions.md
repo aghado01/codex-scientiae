@@ -6,9 +6,9 @@ Summary. The dual of the random-cluster model on a planar graph is a random-clus
 
 √q). Using duality, one obtains the uniqueness of random-cluster measures for p = psd(q) and q ∈ [1, ∞). The phase transition is discontinuous if q is sufficiently large. Results similar to those for the square lattice may be obtained for the triangular and hexagonal lattices, using the star–triangle transformation. It is expected when q ∈ [1,4) that the critical process may be described by a stochastic Lowner evolution.¨
 
-![image 495](Grimmet2006_images/imageFile495.png)
+![image 495](../Images/imageFile495.png)
 
-![image 496](Grimmet2006_images/imageFile496.png)
+![image 496](../Images/imageFile496.png)
 
 <a id="sec-6-1"></a>
 
@@ -18,25 +18,25 @@ The duality theory of planar graphs provides a technique for studying randomclus
 
 A graph is called planar if it may be embedded in R2 in such a way that two edges intersect only at a common endvertex. Let G = (V, E) be a planar (finite or infinite) graph embedded in R2. We obtain its dual graph Gd = (Vd, Ed) as follows1. We place a dual vertex within each face of G, including any infinite face of G if such exist. For each e ∈ E we place a dual edge ed = xd, yd joining the two dual vertices lying in the two faces of G abutting e; if these two faces are the same, then xd = yd and ed is a loop. Thus, Vd is in one–one correspondence with
 
-![image 497](Grimmet2006_images/imageFile497.png)
+![image 497](../Images/imageFile497.png)
 
 1The roman letter ‘d’ denotes ‘dual’ rather than ‘dimension’.
 
 138 In Two Dimensions [6.2]
 
-![image 498](Grimmet2006_images/imageFile498.png)
+![image 498](../Images/imageFile498.png)
 
 , q ∈ [1,∞).
 
 √q
 
-![image 499](Grimmet2006_images/imageFile499.png)
+![image 499](../Images/imageFile499.png)
 
-![image 500](Grimmet2006_images/imageFile500.png)
+![image 500](../Images/imageFile500.png)
 
 Thishasbeen provedwhenq = 1, q = 2, and when q ≥ 25.72. The q = 1 case was answered by Kesten, [207], in his famous proof that the critical probability of bond percolation on L2 is 21. For q = 2, the value of pc(2) given above agrees with the Kramers–Wannier [221] and Onsager [264] calculations of the critical temperature of the Ising model on Z2, and is implied by probabilistic results in the modern vernacular, see [5] and Section 9.3. The formula (6.16) for pc(q) has been established rigorously in [224, 225] for sufficiently large (real) values of q, speciﬁcally q ≥ 25.72 (see also [153]). This is explored further in Section 6.4, see Theorem 6.35.
 
-![image 501](Grimmet2006_images/imageFile501.png)
+![image 501](../Images/imageFile501.png)
 
 Several other remarkable conjectures about the phase transition on L2 may be found in the physics literature as consequences of ‘exact’ but non-rigorous arguments involving ice-type models, see [26]. These include exact formulae for the asymptotic behaviour of the partition function lim ↑Z2{Z (p,q)}1/| |, and also for the edge-densities at the self-dual point psd(q), that is, the quantities hb(q) = φbp
 
@@ -48,11 +48,11 @@ Conjecture 6.15 asserts that pc(q) = psd(q) for q ∈ [1,∞). One part of this 
 
 √q 1 +
 
-![image 502](Grimmet2006_images/imageFile502.png)
+![image 502](../Images/imageFile502.png)
 
-![image 503](Grimmet2006_images/imageFile503.png)
+![image 503](../Images/imageFile503.png)
 
-![image 504](Grimmet2006_images/imageFile504.png)
+![image 504](../Images/imageFile504.png)
 
 The complementary inequality pc(q) ≤ psd(q) has eluded mathematicians despiteprogressbyphysicists,[183]. Hereisanintuitiveargumenttojustifythelatter inequality. Supposeonthe contrarythat pc(q) > psd(q), so that pc(q)d < psd(q). For p ∈ (pc(q)d, pc(q)) we have also that pd ∈ (pc(q)d, pc(q)). Therefore, for p ∈ (pc(q)d, pc(q)), both primal and dual processes comprise (almost surely) the union of finite open clusters. This contradicts the intuitive picture, supported for p = pc(q) by our knowledge of percolation, of finite open clusters of one process ﬂoating in an infinite open ocean of the other process.
 
@@ -63,15 +63,15 @@ of φp0,q(0 ↔ ∂ (n)) as n → ∞. An example of such a statement may be fou
 - (6.18) Theorem [163]. Let q ∈ [1,∞) and suppose that, for all p < pc(q), there exists A = A(p,q) < ∞ with
 - (6.19) φp0,q(0 ↔ ∂ (n)) ≤
 
-![image 505](Grimmet2006_images/imageFile505.png)
+![image 505](../Images/imageFile505.png)
 
-![image 506](Grimmet2006_images/imageFile506.png)
+![image 506](../Images/imageFile506.png)
 
-![image 507](Grimmet2006_images/imageFile507.png)
+![image 507](../Images/imageFile507.png)
 
-![image 508](Grimmet2006_images/imageFile508.png)
+![image 508](../Images/imageFile508.png)
 
-![image 509](Grimmet2006_images/imageFile509.png)
+![image 509](../Images/imageFile509.png)
 
 For example, when q = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compared with the conjecture that pc(10) =
 
@@ -79,9 +79,9 @@ For example, when q = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compare
 
 √10/(1 +
 
-![image 510](Grimmet2006_images/imageFile510.png)
+![image 510](../Images/imageFile510.png)
 
-![image 511](Grimmet2006_images/imageFile511.png)
+![image 511](../Images/imageFile511.png)
 
 Exact values for the critical points of the triangular and hexagonal lattices may be conjectured similarly, using graphical duality together with the star–triangle transformation; see Section 6.6.
 
@@ -97,41 +97,41 @@ Supposethatθ0(p,q) > 0, whencebystochasticordering θ1(p,q) > 0. Since the φpb
 
 φpb,q(T(n) ↔/ ∞) ≥ φpb,q Al(n) φpb,q Ar(n) φpb,q At(n) φpb,q Ab(n) ,
 
-![image 512](Grimmet2006_images/imageFile512.png)
+![image 512](../Images/imageFile512.png)
 
-![image 513](Grimmet2006_images/imageFile513.png)
+![image 513](../Images/imageFile513.png)
 
-![image 514](Grimmet2006_images/imageFile514.png)
+![image 514](../Images/imageFile514.png)
 
-![image 515](Grimmet2006_images/imageFile515.png)
+![image 515](../Images/imageFile515.png)
 
 giving that φpb,q(A) ≥ 21 for b = 0,1.
 
-![image 516](Grimmet2006_images/imageFile516.png)
+![image 516](../Images/imageFile516.png)
 
 Wenowusethefactthateveryrandom-clustermeasure φpb,q hasthe0/1-infinitecluster property, see Theorem 4.33(c). If A occurs, then L2 \ T(N) contains two disjoint infinite open clusters, since the clusters in questions are separated by infinite open paths of the dual; any open path of L2 \ T(N) joining these two clusters would contain an edge which crosses an open edge of the dual, and no such edge can exist. Similarly, on A, the graph L2d \ T(N)d contains two disjoint infinite open clusters, separated physically by infinite open paths of L2 \ T(N). The whole lattice L2 contains (almost surely) a unique infinite open cluster, and it follows that there exists (almost surely on A) an open connection π of L2 between the fore-mentioned infinite open clusters. By the geometry of the situation (see Figure 6.5), this connection forms a barrier to possible open connections of the dual joining the two infinite open dual clusters. Therefore, almost surely on A, the dual lattice contains two or more infinite open clusters. Since the latter event has probability 0, it follows that φpb,q(A) = 0 in contradiction of the inequality φpb,q(A) ≥ 21. The initial hypothesis that θ0(p,q) > 0 is therefore incorrect, and the proof is complete. (b) By part (a), θ1(p,q) = 0 for p < psd(q), whence, by Theorem 5.33(a), |Rp,q| = |Wp,q| = 1 for p < psd(q).
 
-![image 517](Grimmet2006_images/imageFile517.png)
+![image 517](../Images/imageFile517.png)
 
 Suppose now that p > psd(q) so that, by (6.5), pd < psd(q). By part (a) and Theorem 4.63,
 
 φ0pd,q(ed is closed) = φ1pd,q(ed is closed), e ∈ E2, and by Theorem 6.13,
 
-![image 518](Grimmet2006_images/imageFile518.png)
+![image 518](../Images/imageFile518.png)
 
-![image 519](Grimmet2006_images/imageFile519.png)
+![image 519](../Images/imageFile519.png)
 
 φpb,q(e is open) = φ1p−d,bq(ed is closed), b = 0,1.
 
-![image 520](Grimmet2006_images/imageFile520.png)
+![image 520](../Images/imageFile520.png)
 
 Therefore, φp0,q(e is open) = φp1,q(e is open), and the claim follows by Theorem 4.63.
 
-![image 521](Grimmet2006_images/imageFile521.png)
+![image 521](../Images/imageFile521.png)
 
-![image 522](Grimmet2006_images/imageFile522.png)
+![image 522](../Images/imageFile522.png)
 
-![image 523](Grimmet2006_images/imageFile523.png)
+![image 523](../Images/imageFile523.png)
 
 in contradiction of Theorem 6.14. Therefore psd(q) = pc(q). More generally, by Theorem 5.60, φ0p
 
@@ -145,31 +145,31 @@ We precede the proof of Theorem 6.20 with a lemma.
 
 (6.28) Lemma. Let q ∈ [1,∞), and let p and pd satisfy (6.5). With C the open cluster at the origin and b ∈ {0,1},
 
-![image 524](Grimmet2006_images/imageFile524.png)
+![image 524](../Images/imageFile524.png)
 
-![image 525](Grimmet2006_images/imageFile525.png)
+![image 525](../Images/imageFile525.png)
 
-![image 526](Grimmet2006_images/imageFile526.png)
+![image 526](../Images/imageFile526.png)
 
-![image 527](Grimmet2006_images/imageFile527.png)
+![image 527](../Images/imageFile527.png)
 
-![image 528](Grimmet2006_images/imageFile528.png)
+![image 528](../Images/imageFile528.png)
 
-![image 529](Grimmet2006_images/imageFile529.png)
+![image 529](../Images/imageFile529.png)
 
-![image 530](Grimmet2006_images/imageFile530.png)
+![image 530](../Images/imageFile530.png)
 
-![image 531](Grimmet2006_images/imageFile531.png)
+![image 531](../Images/imageFile531.png)
 
-![image 532](Grimmet2006_images/imageFile532.png)
+![image 532](../Images/imageFile532.png)
 
 4An alternative proof appears in [141]. See also [314].
 
-![image 533](Grimmet2006_images/imageFile533.png)
+![image 533](../Images/imageFile533.png)
 
-![image 534](Grimmet2006_images/imageFile534.png)
+![image 534](../Images/imageFile534.png)
 
-![image 535](Grimmet2006_images/imageFile535.png)
+![image 535](../Images/imageFile535.png)
 
 (6.30) Theorem (Exponential decay) [15]. Let q ∈ [2,∞), and consider the random-cluster model on the box (n) = [−n,n]2. There exists α = α(p,q) satisfying α(p,q) > 0 when p < psd(q − 1) such that
 
@@ -183,23 +183,23 @@ psd(q − 1) ≤ pc(q) ≤ psd(q), q ≥ 2,
 
 where pc(q) is the threshold for exponential decay, see (5.65) and (5.67). We recall the conjecture that pc(q) = pc(q).
 
-![image 536](Grimmet2006_images/imageFile536.png)
+![image 536](../Images/imageFile536.png)
 
-![image 537](Grimmet2006_images/imageFile537.png)
+![image 537](../Images/imageFile537.png)
 
-![image 538](Grimmet2006_images/imageFile538.png)
+![image 538](../Images/imageFile538.png)
 
 √q − 1 1 +
 
-![image 539](Grimmet2006_images/imageFile539.png)
+![image 539](../Images/imageFile539.png)
 
 1 − e−β4 =
 
 √q − 1 = psd(q − 1). Let p = 1 − e−β < psd(q − 1). By (3.83), h′ < 0. By stochastic domination, (6.31) φ ,1 p,q(0 ↔ ∂ ) ≤ π ,β+ ′,h′(0 ↔+ ∂ ),
 
-![image 540](Grimmet2006_images/imageFile540.png)
+![image 540](../Images/imageFile540.png)
 
-![image 541](Grimmet2006_images/imageFile541.png)
+![image 541](../Images/imageFile541.png)
 
 where {0 ↔+ ∂ } is the event that there exists a path of joining 0 to some vertex of ∂ all of whose vertices have spin +1. By results of [88, 182] (see the discussion in [15, p. 438]), the right side of (6.31) decays exponentially in the shortest side-length of .
 
@@ -225,7 +225,7 @@ The term ‘mass gap’ arises in the study of the exponential decay of correlat
 
 φp0,q(0 ↔ ∂ (n)) ≈ e−nψ as n → ∞,
 
-![image 542](Grimmet2006_images/imageFile542.png)
+![image 542](../Images/imageFile542.png)
 
 5See [26, 324] and the footnote on page 183.
 
@@ -257,17 +257,17 @@ L2 beginning at the origin. It is standard, [244], that an1/n → κ as n → �
 
 Q = 2 1 κ + κ2 − 4
 
-![image 543](Grimmet2006_images/imageFile543.png)
+![image 543](../Images/imageFile543.png)
 
 . We have that 2.620 < κ < 2.696, see [302], whence 21.61 < Q < 25.72. Let ψ(q) =
 
-![image 544](Grimmet2006_images/imageFile544.png)
+![image 544](../Images/imageFile544.png)
 
-![image 545](Grimmet2006_images/imageFile545.png)
+![image 545](../Images/imageFile545.png)
 
-![image 546](Grimmet2006_images/imageFile546.png)
+![image 546](../Images/imageFile546.png)
 
-![image 547](Grimmet2006_images/imageFile547.png)
+![image 547](../Images/imageFile547.png)
 
 noting that ψ(q) > 0 if and only if q > Q. (6.35) Theorem (Discontinuous phase transition when d = 2) [153, 225]. Consider the square lattice L2, and let q > Q.
 
@@ -277,9 +277,9 @@ noting that ψ(q) > 0 if and only if q > Q. (6.35) Theorem (Discontinuous phase 
 
 (a) Critical point. The critical point is given by pc(q) =
 
-![image 548](Grimmet2006_images/imageFile548.png)
+![image 548](../Images/imageFile548.png)
 
-![image 549](Grimmet2006_images/imageFile549.png)
+![image 549](../Images/imageFile549.png)
 
 (b) Discontinuous transition. We have that θ1(pc(q),q) > 0. (c) Non-vanishing mass gap. For any ψ < ψ(q) and all large n,
 
@@ -305,19 +305,19 @@ q (1 +
 
 ,
 
-![image 550](Grimmet2006_images/imageFile550.png)
+![image 550](../Images/imageFile550.png)
 
-![image 551](Grimmet2006_images/imageFile551.png)
+![image 551](../Images/imageFile551.png)
 
-![image 552](Grimmet2006_images/imageFile552.png)
+![image 552](../Images/imageFile552.png)
 
 for any given circuit Ŵ of (n)d. Combined with a circuit-counting argument of Peierls-type involving the connective constant, this estimate implies after a little work the claims of Theorem 6.35. The idea of the proof appeared in [225] in the context of Potts models, and the random-cluster formulation may be found in [153]; see also Section 7.5 of the current work.
 
 Proof of Theorem 6.35. This proof carries a health warning. The use of twodimensionaldualityraisescertainissueswhicharetedioustoresolvewithcomplete rigour, and we choose not to do so here. Such issues may be resolved either by the methods of [210, p. 386] when d = 2, or by those expounded in Section 7.2 for general d ≥ 2. Let n ≥ 1, let = (n) = [−n,n]2, and let d = [−n,n−1]2+(21, 21) be those verticesof the dualof that lie inside (thatis, we omitthedualvertexintheinfinitefaceof ). Weshallworkwith‘wired’boundary conditions on , and we let ω ∈ = {0,1}E . The exterior (respectively, interior) of a given circuit Ŵ of either L2 or its dual L2d is defined to be the unbounded (respectively, bounded) component of R2 \ Ŵ. A circuit Ŵ of d is called an outer circuit of a conﬁguration ω ∈ if the following hold:
 
-![image 553](Grimmet2006_images/imageFile553.png)
+![image 553](../Images/imageFile553.png)
 
-![image 554](Grimmet2006_images/imageFile554.png)
+![image 554](../Images/imageFile554.png)
 
 (a) all edges of Ŵ are open in the dual conﬁguration ωd, which is to say that
 
@@ -325,27 +325,27 @@ they traverse closed edges of , (b) the origin of L2 is in the interior of Ŵ, (
 
 √2 of some vertex of Ŵ, belongs to the same component of ω.
 
-![image 555](Grimmet2006_images/imageFile555.png)
+![image 555](../Images/imageFile555.png)
 
 See Figure 6.6 for an illustration of the meaning of ‘outer circuit’. Each circuit Ŵ of d partitions the set E of edges of into three sets, namely
 
 E = {e ∈ E : e lies in the exterior of Ŵ},
 
-![image 556](Grimmet2006_images/imageFile556.png)
+![image 556](../Images/imageFile556.png)
 
-![image 557](Grimmet2006_images/imageFile557.png)
+![image 557](../Images/imageFile557.png)
 
-![image 558](Grimmet2006_images/imageFile558.png)
+![image 558](../Images/imageFile558.png)
 
 = (1 − p)|Ŵ|qm−1−21|I| Z1E Z1Id
 
-![image 559](Grimmet2006_images/imageFile559.png)
+![image 559](../Images/imageFile559.png)
 
-![image 560](Grimmet2006_images/imageFile560.png)
+![image 560](../Images/imageFile560.png)
 
 Z1 ≤ (1 − p)|Ŵ|qm−1−21|I|.
 
-![image 561](Grimmet2006_images/imageFile561.png)
+![image 561](../Images/imageFile561.png)
 
 Since each vertex of (inside Ŵ) has degree 4,
 
@@ -355,25 +355,25 @@ Since each vertex of (inside Ŵ) has degree 4,
 
 (6.42) φ ,1 p,q(OC(Ŵ)) ≤ (1 − p)|Ŵ|q 41|Ŵ|−1 =
 
-![image 562](Grimmet2006_images/imageFile562.png)
+![image 562](../Images/imageFile562.png)
 
-![image 563](Grimmet2006_images/imageFile563.png)
+![image 563](../Images/imageFile563.png)
 
 q (1 +
 
 √q)4
 
-![image 564](Grimmet2006_images/imageFile564.png)
+![image 564](../Images/imageFile564.png)
 
-![image 565](Grimmet2006_images/imageFile565.png)
+![image 565](../Images/imageFile565.png)
 
-![image 566](Grimmet2006_images/imageFile566.png)
+![image 566](../Images/imageFile566.png)
 
-![image 567](Grimmet2006_images/imageFile567.png)
+![image 567](../Images/imageFile567.png)
 
-![image 568](Grimmet2006_images/imageFile568.png)
+![image 568](../Images/imageFile568.png)
 
-![image 569](Grimmet2006_images/imageFile569.png)
+![image 569](../Images/imageFile569.png)
 
 On letting n → ∞, we obtain by Proposition 5.11 that θ1(p,q) > 0 when p =
 
@@ -381,23 +381,23 @@ On letting n → ∞, we obtain by Proposition 5.11 that θ1(p,q) > 0 when p =
 
 √q). By Theorem 6.17(a), this implies parts (a) and (b) of the theorem when q is sufficiently large.
 
-![image 570](Grimmet2006_images/imageFile570.png)
+![image 570](../Images/imageFile570.png)
 
-![image 571](Grimmet2006_images/imageFile571.png)
+![image 571](../Images/imageFile571.png)
 
 For general q > Q, we have only that A(q) < ∞. In this case, we ﬁnd N < n such that
 
 φ ,1 p,q(OC(Ŵ)) < 21,
 
-![image 572](Grimmet2006_images/imageFile572.png)
+![image 572](../Images/imageFile572.png)
 
 √q) for the random-cluster model on L2. Such predictions are often beautiful and usually provocative to mathematicians.
 
 √q/(1 +
 
-![image 573](Grimmet2006_images/imageFile573.png)
+![image 573](../Images/imageFile573.png)
 
-![image 574](Grimmet2006_images/imageFile574.png)
+![image 574](../Images/imageFile574.png)
 
 Weshallnotexploredualityingeneralhere,notingonlyinpassingtheexistence of many open problems of significance in extending known results for, say, the square lattice to general primal/dual pairs. We discuss instead two speciﬁc issues relating, in turn, to the critical points of a general primal/dual pair, and in the next section to exact calculations for the triangular and hexagonal lattices.
 
@@ -425,9 +425,9 @@ Proof. Let p > pc(q,L), so that φL1 ,p,q(0 ↔ ∞) > 0. The argumentsleading t
 
 Equality may be conjectured in (6.48). Suppose that L and Ld are isomorphic or, weaker, that pc(q,L) = pc(q,Ld). Inequality (6.48) implies then that pc(q,L) ≥ psd(q) (see Theorem 6.17(a) for the case of the square lattice). If (6.48) were to hold with equality, we would obtain that pc(q,L) = psd(q).
 
-![image 575](Grimmet2006_images/imageFile575.png)
+![image 575](../Images/imageFile575.png)
 
-![image 576](Grimmet2006_images/imageFile576.png)
+![image 576](../Images/imageFile576.png)
 
 If L is edge-transitive, it is easily seen that hbL(p,q) is simply the probability under φL1 ,p,q that a given edge is open.
 
@@ -438,7 +438,7 @@ If L is edge-transitive, it is easily seen that hbL(p,q) is simply the probabili
 
 In the notationof Theorem4.63, we have that Dq ⊆ {pc(q,L)}. In particular8, if there exists a first-order phase transition at some value p, then necessarily
 
-![image 577](Grimmet2006_images/imageFile577.png)
+![image 577](../Images/imageFile577.png)
 
 - 6Paper [130] treats vertex-models on Z2 governed by measures with certain properties of translation/rotation-invariance, ergodicity, and positive association. The arguments are however more general and apply also to edge-models on planar graphs with corresponding properties.
 - 7A graph G = (V, E) is called edge-transitive if: for every pair e, f ∈ E, there exists an automorphism of G mapping e to f . See Sections 3.3 and 10.12 for a related notion of transitivity.
@@ -464,9 +464,9 @@ Amongst ‘exact’ but non-rigorous results for the random-cluster model is the
 
 √q/(1 +
 
-![image 578](Grimmet2006_images/imageFile578.png)
+![image 578](../Images/imageFile578.png)
 
-![image 579](Grimmet2006_images/imageFile579.png)
+![image 579](../Images/imageFile579.png)
 
 Considerthesquarelattice L2. Insteadofworkingwith a singleedge-parameter p, we allow greater generality by associating with each horizontal (respectively, vertical) edge the parameter ph (respectively, pv), and we write p = (ph, pv). It will be convenient as in (6.7)–(6.8) to work instead with the parameters x = (xh, xv) given by
 
@@ -474,15 +474,15 @@ q−21 ph 1 − ph
 
 q−21 pv 1 − pv
 
-![image 580](Grimmet2006_images/imageFile580.png)
+![image 580](../Images/imageFile580.png)
 
-![image 581](Grimmet2006_images/imageFile581.png)
+![image 581](../Images/imageFile581.png)
 
-![image 582](Grimmet2006_images/imageFile582.png)
+![image 582](../Images/imageFile582.png)
 
-![image 583](Grimmet2006_images/imageFile583.png)
+![image 583](../Images/imageFile583.png)
 
-![image 584](Grimmet2006_images/imageFile584.png)
+![image 584](../Images/imageFile584.png)
 
 9This may also be proved directly for a primal/dual pair, using the arguments of Theorems 5.33 and 6.47.
 
@@ -514,27 +514,27 @@ Proof. Let n ≥ 1, and let
 
 D(n) = y ∈ Z2 : |y1| + |y2 − 12| ≤ n + 21
 
-![image 585](Grimmet2006_images/imageFile585.png)
+![image 585](../Images/imageFile585.png)
 
-![image 586](Grimmet2006_images/imageFile586.png)
+![image 586](../Images/imageFile586.png)
 
 be the ‘offset diamond’ illustrated in Figure 6.10. The proof follows that of Theorem 6.17(a), but working with D(n) in place of T(n). We omit the details, noting only that the proof uses the 0/1-infinite-cluster property of the measures φxb,q, and the symmetry of the model under reﬂection in both the vertical axis of R2 and the line {(y1, 21) : y1 ∈ R}.
 
-![image 587](Grimmet2006_images/imageFile587.png)
+![image 587](../Images/imageFile587.png)
 
-![image 588](Grimmet2006_images/imageFile588.png)
+![image 588](../Images/imageFile588.png)
 
-![image 589](Grimmet2006_images/imageFile589.png)
+![image 589](../Images/imageFile589.png)
 
-![image 590](Grimmet2006_images/imageFile590.png)
+![image 590](../Images/imageFile590.png)
 
 ,
 
-![image 591](Grimmet2006_images/imageFile591.png)
+![image 591](../Images/imageFile591.png)
 
-![image 592](Grimmet2006_images/imageFile592.png)
+![image 592](../Images/imageFile592.png)
 
-![image 593](Grimmet2006_images/imageFile593.png)
+![image 593](../Images/imageFile593.png)
 
 By the translation-invariance of the infinite-volume measures, the mean numbers of open horizontal and vertical edges satisfy
 
@@ -542,43 +542,43 @@ By the translation-invariance of the infinite-volume measures, the mean numbers 
 
 φ ,b p,q(|ηh|) → hbh(p,q) = φpb,q(eh is open), 2 |E |
 
-![image 594](Grimmet2006_images/imageFile594.png)
+![image 594](../Images/imageFile594.png)
 
 (6.56)
 
 φ ,b p,q(|ηv|) → hbv(p,q) = φpb,q(ev is open),
 
-![image 595](Grimmet2006_images/imageFile595.png)
+![image 595](../Images/imageFile595.png)
 
 as ↑ Z2, where eh (respectively, ev) is a representative horizontal (respectively, vertical) edge of L2. Therefore,
 
 hb(p,q) = 21 hbh(p,q) + hbv(p,q) .
 
-![image 596](Grimmet2006_images/imageFile596.png)
+![image 596](../Images/imageFile596.png)
 
-![image 597](Grimmet2006_images/imageFile597.png)
+![image 597](../Images/imageFile597.png)
 
-![image 598](Grimmet2006_images/imageFile598.png)
+![image 598](../Images/imageFile598.png)
 
-![image 599](Grimmet2006_images/imageFile599.png)
+![image 599](../Images/imageFile599.png)
 
 1 Y
 
 (y1y2y3 + y1y2 + y2y3 + y3y1)q,
 
-![image 600](Grimmet2006_images/imageFile600.png)
+![image 600](../Images/imageFile600.png)
 
 (6.66) Y = (y1y2y3 + y1y2 + y2y3 + y3y1 + y2 + y3)q + (1 + y1)q2.
 
 Note that the eventsin question concern the existence (ornot) of open paths within T only. The remaining term PωT (A ↔/ B ↔/ C in T) is given by the fact that the sum of the probabilities of all such conﬁgurations on T equals 1.
 
-![image 601](Grimmet2006_images/imageFile601.png)
+![image 601](../Images/imageFile601.png)
 
-![image 602](Grimmet2006_images/imageFile602.png)
+![image 602](../Images/imageFile602.png)
 
-![image 603](Grimmet2006_images/imageFile603.png)
+![image 603](../Images/imageFile603.png)
 
-![image 604](Grimmet2006_images/imageFile604.png)
+![image 604](../Images/imageFile604.png)
 
 It is left to the reader to check that, under (6.60)–(6.61), the probabilities in (6.65) and (6.67) are equal. Similar computations are valid in cases (a) and (c) also, and it follows that, in loose terms, the replacement of T by S is ‘invisible’ to connections elsewhere in the graph G.
 
@@ -658,7 +658,7 @@ We close this section with an open problem. Arguably the simplest system on the 
 
 Indeed, one expects that the critical surface is given by ψT(ph, pv, pd) = 0. The proof of the corresponding statement for the percolation model may be found at [154, Thm 11.116].
 
-![image 605](Grimmet2006_images/imageFile605.png)
+![image 605](../Images/imageFile605.png)
 
 11Note added at reprinting: this conjecture has been veriﬁed in [327].
 
@@ -670,23 +670,23 @@ Many exact calculations are ‘known’ for critical processes in two dimensions
 
 Let U = (−∞,∞) × (0,∞) denote the upper half-plane of R2, with closure U. We view U and U as subsets of the complex plane. Consider the ordinary differential equation
 
-![image 606](Grimmet2006_images/imageFile606.png)
+![image 606](../Images/imageFile606.png)
 
-![image 607](Grimmet2006_images/imageFile607.png)
+![image 607](../Images/imageFile607.png)
 
-![image 608](Grimmet2006_images/imageFile608.png)
+![image 608](../Images/imageFile608.png)
 
-![image 609](Grimmet2006_images/imageFile609.png)
+![image 609](../Images/imageFile609.png)
 
-![image 610](Grimmet2006_images/imageFile610.png)
+![image 610](../Images/imageFile610.png)
 
 subject to the boundary condition g0(z) = z, where t ∈ [0,∞), κ is a positive constant, and (Bt : t ≥ 0) is a standard Brownian motion. The solution exists when gt(z) is bounded away from Bκt. More speciﬁcally, for z ∈ U, let τz be the inﬁmum of all times τ such that 0 is a limit point of gs(z) − Bκs in the limit as s ↑ τ. We let
 
-![image 611](Grimmet2006_images/imageFile611.png)
+![image 611](../Images/imageFile611.png)
 
 Ht = {z ∈ U : τz > t}, Kt = {z ∈ U : τz ≤ t},
 
-![image 612](Grimmet2006_images/imageFile612.png)
+![image 612](../Images/imageFile612.png)
 
 so that Ht is open, and Kt is compact. It may now be seen that gt is a conformal homeomorphism from Ht to U.
 
@@ -700,19 +700,18 @@ We turn now to the random-cluster model on L2 with parameters p and q. For q ∈
 
 √q/(1 +
 
-![image 613](Grimmet2006_images/imageFile613.png)
+![image 613](../Images/imageFile613.png)
 
-![image 614](Grimmet2006_images/imageFile614.png)
+![image 614](../Images/imageFile614.png)
 
 √q, κ ∈ (4,8).
 
 cos(4π/κ) = −12
 
-![image 615](Grimmet2006_images/imageFile615.png)
+![image 615](../Images/imageFile615.png)
 
-![image 616](Grimmet2006_images/imageFile616.png)
+![image 616](../Images/imageFile616.png)
 
 This value is consistent with the above observation that κ(1) = 6, and also with the ﬁnding of [231]that the scaling limit of the uniformspanning-treePeano curve is SLE8. We recall from Theorem 1.23 that the uniform spanning-tree measure is obtained as a limit of the random-cluster measure as p,q ↓ 0.
 
 There are uncertainties over how this programme will develop. For a start, the theory of random-clustermodelsisnotso complete asthatof percolationandofthe uniformspanningtree. Secondly, the existenceof spatial limits is currentlyknown only in certain specialcases. The programme ishoweverambitiousandpromising, and may ultimately yield a full picture of the critical behaviour, including the numerical values of critical exponents, of random-cluster models with q ∈ [1,4), and hence of Ising/Pottsmodelsalso. There isgood reason to expectearlyprogress for the case q = 2, for which the random-cluster interface should converge to SLE16/3, and the Ising (spin) interface to SLE3, [306]. The reader is referred to [295] for a survey of open problems and conjectures concerning SLE.
-

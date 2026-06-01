@@ -22,11 +22,11 @@ Trees are examples of graphs whose boxes have surface/volumeratios bounded away 
 
 ### 10.2 On complete graphs
 
-![image 1106](Grimmet2006_images/imageFile1106.png)
+![image 1106](../Images/imageFile1106.png)
 
 Thus, for any given n, p, q, the measure φn,p,q is the law of a random graph with n verticeswhich we denoteby Gn,p,q. We sometimeswrite φn,p,q(F) as φV,p,q(F).
 
-![image 1107](Grimmet2006_images/imageFile1107.png)
+![image 1107](../Images/imageFile1107.png)
 
 1The random-cluster model on the complete graph is related to the ‘first-shell’ model of Whittle, [317, 318].
 
@@ -42,7 +42,7 @@ where θmax is the largest root of the equation (10.6) e−λθ =
 
 . The roots of (10.6) are illustrated in Figure 10.2.
 
-![image 1108](Grimmet2006_images/imageFile1108.png)
+![image 1108](../Images/imageFile1108.png)
 
 We note some of the properties of θ(λ,q). Firstly, θ(λ,q) > 0 if and only if either: λ > λc(q), or: λ = λc(q) and q > 2,
 
@@ -77,9 +77,9 @@ for any sequence ω(n) satisfying ω(n) → ∞ as n → ∞. Similarly, we writ
 
 P |Xn| ≤ f (n)/ω(n) → 1 as n → ∞ for some sequence ω(n) satisfying ω(n) → ∞. Convergence in probability is denoted by the symbol →P .
 
-![image 1109](Grimmet2006_images/imageFile1109.png)
+![image 1109](../Images/imageFile1109.png)
 
-![image 1110](Grimmet2006_images/imageFile1110.png)
+![image 1110](../Images/imageFile1110.png)
 
 (d) The number of edges in Gn,λ/n,q is λn/(2q) + op(n).
 
@@ -88,17 +88,17 @@ P |Xn| ≤ f (n)/ω(n) → 1 as n → ∞ for some sequence ω(n) satisfying ω(
 - (a) Almost every Gn,λ/n,q consists of a giant component, trees, and unicyclic components.
 - (b) The number of vertices in the giant component is θ(λ)n + op(n), and the number of edges is
 
-![image 1111](Grimmet2006_images/imageFile1111.png)
+![image 1111](../Images/imageFile1111.png)
 
-![image 1112](Grimmet2006_images/imageFile1112.png)
+![image 1112](../Images/imageFile1112.png)
 
-![image 1113](Grimmet2006_images/imageFile1113.png)
+![image 1113](../Images/imageFile1113.png)
 
-![image 1114](Grimmet2006_images/imageFile1114.png)
+![image 1114](../Images/imageFile1114.png)
 
-![image 1115](Grimmet2006_images/imageFile1115.png)
+![image 1115](../Images/imageFile1115.png)
 
-![image 1116](Grimmet2006_images/imageFile1116.png)
+![image 1116](../Images/imageFile1116.png)
 
 1 + (q − 1)θ(λ)2 n + op(n).
 
@@ -118,7 +118,7 @@ log{1 + (q − 1)θ} − log(1 − θ) , θ ∈ (0,1),
 
 (10.10) f (θ) =
 
-![image 1117](Grimmet2006_images/imageFile1117.png)
+![image 1117](../Images/imageFile1117.png)
 
 and note that θ ∈ (0,1) satisﬁes (10.6) if and only if f (θ) = λ. Here are two elementary lemmas concerning the function f .
 
@@ -132,23 +132,23 @@ Proof. If t > −1 then (1 + tθ)−1 is a strictly convex function of θ on (0,
 
 q−1
 
-![image 1118](Grimmet2006_images/imageFile1118.png)
+![image 1118](../Images/imageFile1118.png)
 
-![image 1119](Grimmet2006_images/imageFile1119.png)
+![image 1119](../Images/imageFile1119.png)
 
-![image 1120](Grimmet2006_images/imageFile1120.png)
+![image 1120](../Images/imageFile1120.png)
 
 f (θ) =
 
-![image 1121](Grimmet2006_images/imageFile1121.png)
+![image 1121](../Images/imageFile1121.png)
 
-![image 1122](Grimmet2006_images/imageFile1122.png)
+![image 1122](../Images/imageFile1122.png)
 
-![image 1123](Grimmet2006_images/imageFile1123.png)
+![image 1123](../Images/imageFile1123.png)
 
 = q + 21q(2 − q)θ + O(θ2),
 
-![image 1124](Grimmet2006_images/imageFile1124.png)
+![image 1124](../Images/imageFile1124.png)
 
 [10.4] The fundamental proposition 285
 
@@ -158,7 +158,7 @@ p|E1∪E2|(1 − p)(n2)−|E1∪E2|qk(V,E1∪E2) Zn,p,q
 
 rk(V1,E1)(1 − r)k(V2,E2)
 
-![image 1125](Grimmet2006_images/imageFile1125.png)
+![image 1125](../Images/imageFile1125.png)
 
 = cφV1,p,rq(E1)φV2,p,(1−r)q(E2),
 
@@ -240,15 +240,15 @@ N ≥ r(1 − θ0)n − ǫn,
 
 [10.5] The size of the largest component 287
 
-![image 1126](Grimmet2006_images/imageFile1126.png)
+![image 1126](../Images/imageFile1126.png)
 
-![image 1127](Grimmet2006_images/imageFile1127.png)
+![image 1127](../Images/imageFile1127.png)
 
 for ǫ sufficiently small, and we pick ǫ accordingly. Conditional on the value N, almost every GN,p has a component of order at least δN (≥ δn/λ by (10.19)) for some δ > 0. Therefore, (1 − r)πn → 0 as n → ∞.
 
-![image 1128](Grimmet2006_images/imageFile1128.png)
+![image 1128](../Images/imageFile1128.png)
 
-![image 1129](Grimmet2006_images/imageFile1129.png)
+![image 1129](../Images/imageFile1129.png)
 
 for the random graph Gn,pn and any sequence (pn). Applying this to the red subgraph, on the event that it contains the largest component of Gn,λ/n,q, we obtain for general q ∈ [1,∞) that
 
@@ -256,9 +256,9 @@ n N − 1 + op(1)
 
 e−λ n + r + (1 − n r) n − 1 = e−p nn + n
 
-![image 1130](Grimmet2006_images/imageFile1130.png)
+![image 1130](../Images/imageFile1130.png)
 
-![image 1131](Grimmet2006_images/imageFile1131.png)
+![image 1131](../Images/imageFile1131.png)
 
 →P 0 as n → ∞, where N is the number of red vertices. The claim follows.
 
@@ -272,7 +272,7 @@ This goes some way towards proving Theorems 10.7–10.8. Overlooking for the mom
 
 Proof. The function
 
-![image 1132](Grimmet2006_images/imageFile1132.png)
+![image 1132](../Images/imageFile1132.png)
 
 φn,p,q n ∈ Z + (−ǫ,ǫ) → 1 as n → ∞.
 
@@ -286,29 +286,29 @@ N 2
 
 p + Op(Np1/2) = 21 N2 p + op(N) edges, the following two equations follow from the two cases above,
 
-![image 1133](Grimmet2006_images/imageFile1133.png)
+![image 1133](../Images/imageFile1133.png)
 
 (10.22) n + r( n − n) n = 21 n + r(1 − n) 2n2 p + op(n), (10.23) r( n − n)n = 21[r(1 − n)]2n2 p + op(n), yielding when p = λ/n that
 
-![image 1134](Grimmet2006_images/imageFile1134.png)
+![image 1134](../Images/imageFile1134.png)
 
-![image 1135](Grimmet2006_images/imageFile1135.png)
+![image 1135](../Images/imageFile1135.png)
 
 (10.24) n + r( n − n) = 21λ n + r(1 − n) 2 + op(1), (10.25) r( n − n) = 21λ[r(1 − n)]2 + op(1). We solve for n and n, and let n → ∞ to obtain the next theorem.
 
-![image 1136](Grimmet2006_images/imageFile1136.png)
+![image 1136](../Images/imageFile1136.png)
 
-![image 1137](Grimmet2006_images/imageFile1137.png)
+![image 1137](../Images/imageFile1137.png)
 
-![image 1138](Grimmet2006_images/imageFile1138.png)
+![image 1138](../Images/imageFile1138.png)
 
 2One needs here the corresponding result for q = 1, which follows easily from the corresponding result for the number of vertices used above, together with results on the components having more edges than vertices given in [61, 192, 193].
 
-![image 1139](Grimmet2006_images/imageFile1139.png)
+![image 1139](../Images/imageFile1139.png)
 
-![image 1140](Grimmet2006_images/imageFile1140.png)
+![image 1140](../Images/imageFile1140.png)
 
-![image 1141](Grimmet2006_images/imageFile1141.png)
+![image 1141](../Images/imageFile1141.png)
 
 Whereas we proved this theorem under the assumption that q > 1, its conclusions are valid for q = 1 also, by [61, Thms VI.11, VI.12].
 
@@ -322,7 +322,7 @@ The results derivedso far are combinednextwith a newargumentin orderto prove The
 
 Proof. Let k be an integer satisfying k ≥ q. In the colouring scheme of Section 10.4 with r = q−1, we introduce the reﬁnement that each component is coloured dark red with probability k−1 and light red with probability r − k−1. Let M be the number of edges in the small cyclic components of Gn,λ/n,q.
 
-![image 1142](Grimmet2006_images/imageFile1142.png)
+![image 1142](../Images/imageFile1142.png)
 
 φn,p,q(Mi ≥ M/k for some i) < 1, in contradiction of the equality ki=1 Mi = M.
 
@@ -338,67 +338,67 @@ c(j,k,l) f (n − k,m − l)pm(1 − p)(n2)−mqn−k−m+l+j
 
 Pn,p,q(m, j,k,l) =
 
-![image 1143](Grimmet2006_images/imageFile1143.png)
+![image 1143](../Images/imageFile1143.png)
 
-![image 1144](Grimmet2006_images/imageFile1144.png)
+![image 1144](../Images/imageFile1144.png)
 
-![image 1145](Grimmet2006_images/imageFile1145.png)
+![image 1145](../Images/imageFile1145.png)
 
 See (10.27) and (10.28). If λ > q, we assume also that θ > 0, see Lemma 10.18 and Theorem 10.21(b).
 
-![image 1146](Grimmet2006_images/imageFile1146.png)
+![image 1146](../Images/imageFile1146.png)
 
-![image 1147](Grimmet2006_images/imageFile1147.png)
+![image 1147](../Images/imageFile1147.png)
 
-![image 1148](Grimmet2006_images/imageFile1148.png)
+![image 1148](../Images/imageFile1148.png)
 
-![image 1149](Grimmet2006_images/imageFile1149.png)
+![image 1149](../Images/imageFile1149.png)
 
-![image 1150](Grimmet2006_images/imageFile1150.png)
+![image 1150](../Images/imageFile1150.png)
 
-![image 1151](Grimmet2006_images/imageFile1151.png)
+![image 1151](../Images/imageFile1151.png)
 
-![image 1152](Grimmet2006_images/imageFile1152.png)
+![image 1152](../Images/imageFile1152.png)
 
-![image 1153](Grimmet2006_images/imageFile1153.png)
+![image 1153](../Images/imageFile1153.png)
 
-![image 1154](Grimmet2006_images/imageFile1154.png)
+![image 1154](../Images/imageFile1154.png)
 
-![image 1155](Grimmet2006_images/imageFile1155.png)
+![image 1155](../Images/imageFile1155.png)
 
-![image 1156](Grimmet2006_images/imageFile1156.png)
+![image 1156](../Images/imageFile1156.png)
 
-![image 1157](Grimmet2006_images/imageFile1157.png)
+![image 1157](../Images/imageFile1157.png)
 
-![image 1158](Grimmet2006_images/imageFile1158.png)
+![image 1158](../Images/imageFile1158.png)
 
-![image 1159](Grimmet2006_images/imageFile1159.png)
+![image 1159](../Images/imageFile1159.png)
 
-![image 1160](Grimmet2006_images/imageFile1160.png)
+![image 1160](../Images/imageFile1160.png)
 
-![image 1161](Grimmet2006_images/imageFile1161.png)
+![image 1161](../Images/imageFile1161.png)
 
-![image 1162](Grimmet2006_images/imageFile1162.png)
+![image 1162](../Images/imageFile1162.png)
 
-![image 1163](Grimmet2006_images/imageFile1163.png)
+![image 1163](../Images/imageFile1163.png)
 
-![image 1164](Grimmet2006_images/imageFile1164.png)
+![image 1164](../Images/imageFile1164.png)
 
-![image 1165](Grimmet2006_images/imageFile1165.png)
+![image 1165](../Images/imageFile1165.png)
 
-![image 1166](Grimmet2006_images/imageFile1166.png)
+![image 1166](../Images/imageFile1166.png)
 
-![image 1167](Grimmet2006_images/imageFile1167.png)
+![image 1167](../Images/imageFile1167.png)
 
-![image 1168](Grimmet2006_images/imageFile1168.png)
+![image 1168](../Images/imageFile1168.png)
 
 θ θ + r(1 − θ)
 
 (10.40) , l n1 → ξ1 =
 
-![image 1169](Grimmet2006_images/imageFile1169.png)
+![image 1169](../Images/imageFile1169.png)
 
-![image 1170](Grimmet2006_images/imageFile1170.png)
+![image 1170](../Images/imageFile1170.png)
 
 j (10.41) n1 → 0. It is easy to check the analogues of (10.6) and (10.32)–(10.33), namely,
 
@@ -406,73 +406,73 @@ j (10.41) n1 → 0. It is easy to check the analogues of (10.6) and (10.32)–(1
 
 ,
 
-![image 1171](Grimmet2006_images/imageFile1171.png)
+![image 1171](../Images/imageFile1171.png)
 
-![image 1172](Grimmet2006_images/imageFile1172.png)
+![image 1172](../Images/imageFile1172.png)
 
-![image 1173](Grimmet2006_images/imageFile1173.png)
+![image 1173](../Images/imageFile1173.png)
 
 (10.42) e−λ1θ1 = 1 − θ1, ξ1 = λ1θ1(1 − 12θ1), ψ1 = ξ1 + 21λ1(1 − θ1)2. Now, (10.36) is valid with q = 1, since θ > 0. Hence, (10.43) 1 ≥ Pn1,p1,1(m1, j,k,l)
 
-![image 1174](Grimmet2006_images/imageFile1174.png)
+![image 1174](../Images/imageFile1174.png)
 
-![image 1175](Grimmet2006_images/imageFile1175.png)
+![image 1175](../Images/imageFile1175.png)
 
-![image 1176](Grimmet2006_images/imageFile1176.png)
+![image 1176](../Images/imageFile1176.png)
 
 for all large n. Combining this with (10.43), equality follows in (10.44) for some suitable j,k,l.
 
-![image 1177](Grimmet2006_images/imageFile1177.png)
+![image 1177](../Images/imageFile1177.png)
 
-![image 1178](Grimmet2006_images/imageFile1178.png)
+![image 1178](../Images/imageFile1178.png)
 
-![image 1179](Grimmet2006_images/imageFile1179.png)
+![image 1179](../Images/imageFile1179.png)
 
-![image 1180](Grimmet2006_images/imageFile1180.png)
+![image 1180](../Images/imageFile1180.png)
 
-![image 1181](Grimmet2006_images/imageFile1181.png)
+![image 1181](../Images/imageFile1181.png)
 
 [r(1 − θ)]r(1−θ) (1 − θ)1−θ[θ + r(1 − θ)]θ+r(1−θ)
 
 =
 
-![image 1182](Grimmet2006_images/imageFile1182.png)
+![image 1182](../Images/imageFile1182.png)
 
-![image 1183](Grimmet2006_images/imageFile1183.png)
+![image 1183](../Images/imageFile1183.png)
 
-![image 1184](Grimmet2006_images/imageFile1184.png)
+![image 1184](../Images/imageFile1184.png)
 
-![image 1185](Grimmet2006_images/imageFile1185.png)
+![image 1185](../Images/imageFile1185.png)
 
-![image 1186](Grimmet2006_images/imageFile1186.png)
+![image 1186](../Images/imageFile1186.png)
 
-![image 1187](Grimmet2006_images/imageFile1187.png)
+![image 1187](../Images/imageFile1187.png)
 
 1 + (q − 1)θ 1 − θ
 
-![image 1188](Grimmet2006_images/imageFile1188.png)
+![image 1188](../Images/imageFile1188.png)
 
-![image 1189](Grimmet2006_images/imageFile1189.png)
+![image 1189](../Images/imageFile1189.png)
 
-![image 1190](Grimmet2006_images/imageFile1190.png)
+![image 1190](../Images/imageFile1190.png)
 
-![image 1191](Grimmet2006_images/imageFile1191.png)
+![image 1191](../Images/imageFile1191.png)
 
-![image 1192](Grimmet2006_images/imageFile1192.png)
+![image 1192](../Images/imageFile1192.png)
 
-![image 1193](Grimmet2006_images/imageFile1193.png)
+![image 1193](../Images/imageFile1193.png)
 
-![image 1194](Grimmet2006_images/imageFile1194.png)
+![image 1194](../Images/imageFile1194.png)
 
-![image 1195](Grimmet2006_images/imageFile1195.png)
+![image 1195](../Images/imageFile1195.png)
 
-![image 1196](Grimmet2006_images/imageFile1196.png)
+![image 1196](../Images/imageFile1196.png)
 
-![image 1197](Grimmet2006_images/imageFile1197.png)
+![image 1197](../Images/imageFile1197.png)
 
 n→∞
 
-![image 1198](Grimmet2006_images/imageFile1198.png)
+![image 1198](../Images/imageFile1198.png)
 
 q(q − 1)[q − 2 − 2(q − 1)θ]θ (1 − θ)2[1 + (q − 1)θ]2
 
@@ -480,9 +480,9 @@ g′′(θ) = −
 
 .
 
-![image 1199](Grimmet2006_images/imageFile1199.png)
+![image 1199](../Images/imageFile1199.png)
 
-![image 1200](Grimmet2006_images/imageFile1200.png)
+![image 1200](../Images/imageFile1200.png)
 
 3We shall see that there is a unique such θ∗, except possibly when λ = λc(q) and q > 2.
 
@@ -490,13 +490,13 @@ g′′(θ) = −
 
 Therefore, g′′(θ) has a unique zero in (0,1), at the point θ = 21(q − 2)/(q − 1). At this point, g′(θ) has a negative minimum. It follows that g(θ) < 0 on (0,θ0), and g(θ) > 0 on (θ0,1) where θ0 = (q − 2)/(q − 1).
 
-![image 1201](Grimmet2006_images/imageFile1201.png)
+![image 1201](../Images/imageFile1201.png)
 
-![image 1202](Grimmet2006_images/imageFile1202.png)
+![image 1202](../Images/imageFile1202.png)
 
 and, for this value of λ, the three roots of (10.6) are 0, 12θ0, θ0. Therefore, λmin < λc(q) < q, and
 
-![image 1203](Grimmet2006_images/imageFile1203.png)
+![image 1203](../Images/imageFile1203.png)
 
 θ∗ =
 
@@ -510,13 +510,13 @@ This completes the proof of the assertions concerning the order of the largest c
 
 It is an important problem of statistical physics to understand the nature of the singularity at a point of phase transition. For the mean-field random-clustermodel on a complete graph, the necessary calculations may be performed explicitly, and the conclusions are as follows.
 
-![image 1204](Grimmet2006_images/imageFile1204.png)
+![image 1204](../Images/imageFile1204.png)
 
-![image 1205](Grimmet2006_images/imageFile1205.png)
+![image 1205](../Images/imageFile1205.png)
 
 θ(λ) + (12q − 1)θ(λ)2 ,
 
-![image 1206](Grimmet2006_images/imageFile1206.png)
+![image 1206](../Images/imageFile1206.png)
 
 describingthe orderof the giantcomponent,and the numbers of edgesin the graph and in its giant component, respectively. All three functions are non-decreasing on (0,∞). In addition, ψ is strictly increasing, while θ(λ) and ξ(λ) equal 0 for λ < λc and are strictly increasing on [λc,∞).
 
@@ -526,35 +526,35 @@ A fourth function of interest is the pressure η(λ) given in Theorem 10.14. The
 
 2 q(2 − q)
 
-![image 1207](Grimmet2006_images/imageFile1207.png)
+![image 1207](../Images/imageFile1207.png)
 
-![image 1208](Grimmet2006_images/imageFile1208.png)
+![image 1208](../Images/imageFile1208.png)
 
 - 1
 
-![image 1209](Grimmet2006_images/imageFile1209.png)
+![image 1209](../Images/imageFile1209.png)
 
 - 2 as λ ↓ λc.
 
 θ(λ) ∼ ξ(λ) ∼ 2 3(λ − λc)
 
-![image 1210](Grimmet2006_images/imageFile1210.png)
+![image 1210](../Images/imageFile1210.png)
 
 Thus, θ′(λc+) = ξ′(λc+) = ∞. The function ψ′ has a jump at λc in that ψ′(λc−) = 41, ψ′(λc+) = 1. Also, η′ is continuous, but η′′ has a jump at λc in that η′′(λc−) = 0, η′′(λc+) = 83. The functionsψ and η are real-analytic on (0,λc] and on [λc,∞).
 
-![image 1211](Grimmet2006_images/imageFile1211.png)
+![image 1211](../Images/imageFile1211.png)
 
-![image 1212](Grimmet2006_images/imageFile1212.png)
+![image 1212](../Images/imageFile1212.png)
 
 (c) Let q ∈ (2,∞). Then θ, ψ, and ξ have jumps at λc, and it may be checked
 
 that ψ(λc−) = λc/(2q) < 12 < ψ(λc+). The pressure η is continuous at λc, but its derivative η′ has a jump at λc,
 
-![image 1213](Grimmet2006_images/imageFile1213.png)
+![image 1213](../Images/imageFile1213.png)
 
-![image 1214](Grimmet2006_images/imageFile1214.png)
+![image 1214](../Images/imageFile1214.png)
 
-![image 1215](Grimmet2006_images/imageFile1215.png)
+![image 1215](../Images/imageFile1215.png)
 
 <a id="sec-10-8"></a>
 
@@ -572,21 +572,21 @@ As in the language of large-deviation theory, [99, 164], let
 
 n,λ,q(ν) = logφn,p,q(eνCn/n), ν ∈ R,
 
-![image 1216](Grimmet2006_images/imageFile1216.png)
+![image 1216](../Images/imageFile1216.png)
 
-![image 1217](Grimmet2006_images/imageFile1217.png)
+![image 1217](../Images/imageFile1217.png)
 
-![image 1218](Grimmet2006_images/imageFile1218.png)
+![image 1218](../Images/imageFile1218.png)
 
-![image 1219](Grimmet2006_images/imageFile1219.png)
+![image 1219](../Images/imageFile1219.png)
 
-![image 1220](Grimmet2006_images/imageFile1220.png)
+![image 1220](../Images/imageFile1220.png)
 
-![image 1221](Grimmet2006_images/imageFile1221.png)
+![image 1221](../Images/imageFile1221.png)
 
-![image 1222](Grimmet2006_images/imageFile1222.png)
+![image 1222](../Images/imageFile1222.png)
 
-![image 1223](Grimmet2006_images/imageFile1223.png)
+![image 1223](../Images/imageFile1223.png)
 
 Details of the above calculations may be found in [62]. We write Fλ,q for the set of ‘exposed points’ of ∗
 
@@ -600,13 +600,13 @@ where Q is chosen to satisfy λ = λc(Q). The following LDP is a consequence of 
 
 #### (10.58) Theorem (Large deviations) [62]. Let q ∈ [1,∞) and λ ∈ (0,∞).
 
-![image 1224](Grimmet2006_images/imageFile1224.png)
+![image 1224](../Images/imageFile1224.png)
 
-![image 1225](Grimmet2006_images/imageFile1225.png)
+![image 1225](../Images/imageFile1225.png)
 
-![image 1226](Grimmet2006_images/imageFile1226.png)
+![image 1226](../Images/imageFile1226.png)
 
-![image 1227](Grimmet2006_images/imageFile1227.png)
+![image 1227](../Images/imageFile1227.png)
 
 whenever 0 < α ≤ κ(λ,q) ≤ β < 1. (ii) Let q ∈ (2,∞) and λ = λc(q). Then (10.59)–(10.60) hold for α, β satisfying
 
@@ -616,7 +616,7 @@ whenever 0 < α ≤ κ(λ,q) ≤ β < 1. (ii) Let q ∈ (2,∞) and λ = λc(q).
 
 κ−(λ, Q) < α ≤ κ+(λ, Q) or κ−(λ, Q) ≤ β < κ+(λ, Q).
 
-![image 1228](Grimmet2006_images/imageFile1228.png)
+![image 1228](../Images/imageFile1228.png)
 
 n→∞
 
@@ -624,11 +624,11 @@ exists, and the probabilities φn,p,q(Cn ≤ αn), φn,p,q(Cn ≥ βn) decay at 
 
 Since first-order transitions occur only when q ∈ (2,∞), and since the critical λ-values of such q ﬁll the interval (2,∞), there is a weak sense in which the value λ = 2 marks a singularity of the asymptotics of the random graph Gn,λ/n,q. This holds for any value of q, including q = 1. That is, the Erdos–R˝ enyi´ random graph senses the existence of a first-order phase transition in the random-cluster model, butonly throughits large deviations. Itis well knownthat the Erdos–R˝ enyi´ random graph undergoes a type of phase transition at λ = 1, and it follows from the above that it has a (weak) singularity at λ = 2 also.
 
-![image 1229](Grimmet2006_images/imageFile1229.png)
+![image 1229](../Images/imageFile1229.png)
 
-![image 1230](Grimmet2006_images/imageFile1230.png)
+![image 1230](../Images/imageFile1230.png)
 
-![image 1231](Grimmet2006_images/imageFile1231.png)
+![image 1231](../Images/imageFile1231.png)
 
 Therefore,φp,q istheproductmeasureon withdensityπ. Thesituationbecomes more interesting when we introduce boundary conditions.
 
@@ -666,7 +666,7 @@ More precisely, φ ,ξ,∼p,q is the probability measure on the pair ( ,F ) give
 
  
 
-![image 1232](Grimmet2006_images/imageFile1232.png)
+![image 1232](../Images/imageFile1232.png)
 
 boundary conditions, and it has been studied in a slightly disguised form in [167, 196].
 
@@ -684,7 +684,7 @@ For simplicity of notation we write R∼p,0q = R0p,q and similarly R∼p,1q = R1
 
 - (a) The set R0p,q of free random-cluster measures comprises the singleton φπ only, where π = π(p,q) is given in (10.62). The product measure φπ belongs to R1p,q if and only if π ≤ 21.
 
-![image 1233](Grimmet2006_images/imageFile1233.png)
+![image 1233](../Images/imageFile1233.png)
 
 - (b) The set R1p,q of wired random-cluster measures is non-empty. (c) If q ∈ [1,∞), the weak limit
 
@@ -698,11 +698,11 @@ Here are some comments on this theorem. Part (b) will be proved at Theorem 10.82
 
 this with a brief discussion of the condition π ≤ 21. This will be recognized as the conditionforthe almost-sureextinctionof a branchingprocesswhose family-sizes
 
-![image 1234](Grimmet2006_images/imageFile1234.png)
+![image 1234](../Images/imageFile1234.png)
 
 have the binomial bin(2,π) distribution. That is, π ≤ 21 if and only if (10.69) φπ(0 ↔ ∞) = 0,
 
-![image 1235](Grimmet2006_images/imageFile1235.png)
+![image 1235](../Images/imageFile1235.png)
 
 see [164, Thm 5.4.5]. It turns out that the product measure φπ lies in R1p,q if and only if it does not ‘feel’ the wired boundary condition ∼1, that is to say, if there exist (φπ-almost-surely) no infinite clusters6.
 
@@ -726,7 +726,7 @@ as required. The second part of (a) is proved after the proof of (c). (c) The ex
 
 For v ∈ V, let v be the set of infinite undirected paths of T with endvertex v. Let e = x, y , and let Ke1 be the event that there exist open vertex-disjoint paths
 
-![image 1236](Grimmet2006_images/imageFile1236.png)
+![image 1236](../Images/imageFile1236.png)
 
 e φ-almost-surely, where Je = {e is open}.
 
@@ -734,9 +734,9 @@ e φ-almost-surely, where Je = {e is open}.
 
 For ξ ∈ and W ⊆ V, write [ξ]W for the set of all conﬁgurations that agree
 
-![image 1237](Grimmet2006_images/imageFile1237.png)
+![image 1237](../Images/imageFile1237.png)
 
-![image 1238](Grimmet2006_images/imageFile1238.png)
+![image 1238](../Images/imageFile1238.png)
 
 and we prove this as follows. Let ′, ′′ be boxes satisfying ⊆ ′ ⊆ ⊆ ′′. Since ψ (·) = φ1 (· | [ξ] \e) is a random-cluster measure on an altered graph (see Theorem 3.1(a)) and since g is increasing on and non-increasing in , we have by positive association that
 
@@ -772,7 +772,7 @@ We concentrate henceforth on the binary tree T = T2 = (V, E) and the wired equiv
 
 The results of this section are valid for all q ∈ (0,∞), and we begin by proving the existence of the wired weak-limit for all p and q, thereby extending part of Theorem 10.67(c). The limit as ↑ V is taken along an arbitrary increasing sequence of boxes.
 
-![image 1239](Grimmet2006_images/imageFile1239.png)
+![image 1239](../Images/imageFile1239.png)
 
 An important quantity is the maximal root ρ = ρ(p,q) in [0,1] of the equation
 
@@ -798,7 +798,7 @@ Let n = {x ∈ V : |x| ≤ n}, where |x| denotes the number of edges in the path
 
 Let Hr be the graph obtained from the finite tree ( r, E r) by adding two new edges [x, x′ , [x, x′′ to each terminal vertex x ∈ ∂ r. We colour these new
 
-![image 1240](Grimmet2006_images/imageFile1240.png)
+![image 1240](../Images/imageFile1240.png)
 
 7The current method was mentioned in passing in [160].
 
@@ -852,7 +852,7 @@ Suppose that q ∈ (0,1). The situation is now harder since we may not appeal to
 
 Let p ≤ κq, so that ρ = 0. Then π = p/[p + q(1 − p)] ≤ 21, and therefore φπ1(0 ↔ ∞) = 0. By (10.88), θ(p,q) = ρ = 0 as claimed.
 
-![image 1241](Grimmet2006_images/imageFile1241.png)
+![image 1241](../Images/imageFile1241.png)
 
 Let p > κq, so that ρ > 0. By Theorem 10.74, θ(p,q) = lim
 
@@ -906,9 +906,9 @@ Let i ≥ 0, and suppose we are given that I(ω) ≥ i. Conditional on R(0), R(1
 
 φp1,q(I ≥ i) ≤ 1 − (1 − π)2k i, i ≥ 0, and, in particular, (10.93) holds. Hence, M = sup{r : 1 ≤ Nr ≤ k} satisﬁes φp1,q(M < ∞) = 1, implying as required that
 
-![image 1242](Grimmet2006_images/imageFile1242.png)
+![image 1242](../Images/imageFile1242.png)
 
-![image 1243](Grimmet2006_images/imageFile1243.png)
+![image 1243](../Images/imageFile1243.png)
 
 whence, for φp1,q-almost-every ξ ∈ Ke1,
 
@@ -965,25 +965,25 @@ The condition of this theorem is not best possible in the case q = 1, and theref
 
 There has been extensive study of the Ising model on a tree. It turns out that therearetwocriticalpointsonthebinarytree T. Thefirstcriticalpointcorresponds to the random-cluster transition at the point p = κ2 = 32, and the second arises as follows. Consider the Ising model on T with free boundary conditions. There is a critical value of the inverse-temperature at which the corresponding Gibbs state ceases to be extremal. In the parametrization of this chapter, this critical point is given by psg = 2/(1 +
 
-![image 1244](Grimmet2006_images/imageFile1244.png)
+![image 1244](../Images/imageFile1244.png)
 
 √2), see [49, 188, 189, 250]. This value arises also in the study of a related ‘Edwards–Anderson’spin-glass problem on T, see [89] and Section 11.5. Itmay be seen by a processof spin-ﬂippingthat the spin-glassmodel with ±1 interactionscan be mappedto a ferromagneticIsing modelwith boundary conditions taken uniformly and independently from the spin space {−1,+1}. It turns out that this model has critical value psg also, and for this reason psg is commonly referred to as the ‘spin-glass critical point’.
 
-![image 1245](Grimmet2006_images/imageFile1245.png)
+![image 1245](../Images/imageFile1245.png)
 
 In summary, for p = 1 − e−β < 32, the Ising model has a unique Gibbs state.
 
-![image 1246](Grimmet2006_images/imageFile1246.png)
+![image 1246](../Images/imageFile1246.png)
 
 For p ∈ (32, psg), the + Gibbs state differs from the free state, whereas ‘typical’ boundary conditions (in the sense of boundary conditions chosen randomly ac-
 
-![image 1247](Grimmet2006_images/imageFile1247.png)
+![image 1247](../Images/imageFile1247.png)
 
 cordingto the free state) result in the free measure. When p > psg, the free state is no longeran extremalGibbsstate. This doubletransitionis notevidentin the analysis of this chapter since it is restricted to boundary conditions of ‘unconditioned’ random-cluster-type.
 
 Sketch proof of Theorem 10.98. Note first that p ≥ 2q/(2q + 1) if and only if π = p/[p + q(1 − p)] satisﬁes π ≥ 32. Under this condition we may obtain, by a branching-process argument, the φπ-almost-sure existence in T of a (random) set W of vertices such that: (i) every 0-ray passes through some vertex of W, and (ii) every w ∈ W is the root of an infinite open sub-tree of T. The argument then continues rather as in the proof of Theorem 5.33(b). The details may be found in [160, 196].
 
-![image 1248](Grimmet2006_images/imageFile1248.png)
+![image 1248](../Images/imageFile1248.png)
 
 <a id="sec-10-12"></a>
 
@@ -995,7 +995,7 @@ Thepropertiesofinteractingsystemsontreesareoftenquitedifferentfromthoseof lattic
 
 : W ⊆ V, 0 < |W| < ∞
 
-![image 1249](Grimmet2006_images/imageFile1249.png)
+![image 1249](../Images/imageFile1249.png)
 
 satisﬁes χ(G) = 0. The graph is called non-amenable if χ(G) > 0. It is easily seen that the lattices Ld and the regular m-ary tree Tm satisfy
 
@@ -1015,7 +1015,7 @@ S(x)y = {γ y : γ ∈ S(x)},
 
 and we call G unimodular9 if |S(x)y| = |S(y)x| whenever x and y belong to the same orbit of Aut(G).
 
-![image 1250](Grimmet2006_images/imageFile1250.png)
+![image 1250](../Images/imageFile1250.png)
 
 8See Section 4.3 for the basic definitions associated with the automorphism group Aut(G). 9The terms ‘amenable’ and ‘unimodular’ come from group theory, see [265, 290, 312]. The
 
@@ -1146,4 +1146,3 @@ and the reader is referred to [174] for a discussion of this. The Burton–Keane
 It is natural to ask for the value of I when p equals one of the critical values
 
 pcb, pub. The picture is far from complete, and the reader is referred to [29, 30, 33, 167, 174] and Section 10.11 for the current state of knowledge.
-

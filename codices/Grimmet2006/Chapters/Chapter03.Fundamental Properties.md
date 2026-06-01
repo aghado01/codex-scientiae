@@ -52,7 +52,7 @@ cluster measure φξF,p,q on ( ,F ) by (3.5)
 
  
 
-![image 129](Grimmet2006_images/imageFile129.png)
+![image 129](../Images/imageFile129.png)
 
 Here is a final note. Let p ∈ (0,1) and q = 1. It is easily seen that the states of two distinct edges e, f are independent if and only if the pair e, f lies in no circuit of G. This may be proved either directly or via the simulation methods of Sections 3.4 and 8.2.
 
@@ -62,15 +62,15 @@ Proof of Theorem 3.1. (a) This is easily seen by an expansion of the conditional
 
 φG,p,q(ωe)/φG,p,q(Je) if j = 0, φG,p,q(ωe)/φG,p,q(Je) if j = 1,
 
-![image 130](Grimmet2006_images/imageFile130.png)
+![image 130](../Images/imageFile130.png)
 
-![image 131](Grimmet2006_images/imageFile131.png)
+![image 131](../Images/imageFile131.png)
 
-![image 132](Grimmet2006_images/imageFile132.png)
+![image 132](../Images/imageFile132.png)
 
-![image 133](Grimmet2006_images/imageFile133.png)
+![image 133](../Images/imageFile133.png)
 
-![image 134](Grimmet2006_images/imageFile134.png)
+![image 134](../Images/imageFile134.png)
 
 where η(ω) is, as usual, the set of open edges in . (b) The claim is immediate by the fact, easily proved,that a strictly positive probability measure φ is speciﬁed uniquely by the conditional probabilities φ(ω(e) = 1 | ω e ), ω ∈ , e ∈ E.
 
@@ -99,7 +99,7 @@ p2q2(q − 1)(1 − p)2 Z(p,q)2
 
 ,
 
-![image 135](Grimmet2006_images/imageFile135.png)
+![image 135](../Images/imageFile135.png)
 
 where Jg is the event that g is open. This is strictly negative if 0 < p,q < 1.
 
@@ -125,35 +125,35 @@ One way of estimating the probability of an event A is via an estimate of its de
 
 [3.3] Differential formulae and sharp thresholds 41
 
-![image 136](Grimmet2006_images/imageFile136.png)
+![image 136](../Images/imageFile136.png)
 
-![image 137](Grimmet2006_images/imageFile137.png)
+![image 137](../Images/imageFile137.png)
 
-![image 138](Grimmet2006_images/imageFile138.png)
+![image 138](../Images/imageFile138.png)
 
-![image 139](Grimmet2006_images/imageFile139.png)
+![image 139](../Images/imageFile139.png)
 
-![image 140](Grimmet2006_images/imageFile140.png)
+![image 140](../Images/imageFile140.png)
 
-![image 141](Grimmet2006_images/imageFile141.png)
+![image 141](../Images/imageFile141.png)
 
-![image 142](Grimmet2006_images/imageFile142.png)
+![image 142](../Images/imageFile142.png)
 
-![image 143](Grimmet2006_images/imageFile143.png)
+![image 143](../Images/imageFile143.png)
 
-![image 144](Grimmet2006_images/imageFile144.png)
+![image 144](../Images/imageFile144.png)
 
 1 q
 
 covp,q(k,h(k)) ≥ 0.
 
-![image 145](Grimmet2006_images/imageFile145.png)
+![image 145](../Images/imageFile145.png)
 
 This time we take h = −1(−∞,1], so that −h is the indicator function of the event that the open graph (V,η(ω)) is connected. We deduce that the probability of connectedness is a decreasing function of q on the interval (0,∞). These examples are curiosities, given the failure of stochastic monotonicity when q < 1.
 
 Let q ∈ [1,∞). Since φp,q satisﬁes the FKG lattice condition (2.18), it is monotonic. Let A be a subgroup of the automorphism group1 Aut(G) of the graph G = (V, E). We call E A-transitive if A acts transitively on E.
 
-![image 146](Grimmet2006_images/imageFile146.png)
+![image 146](../Images/imageFile146.png)
 
 1The automorphism group Aut(G) is discussed further in Sections 4.3 and 10.12.
 
@@ -164,45 +164,45 @@ d dp
 
 φp,q(A) ≥ C min φp,q(A),1 − φp,q(A) log|E|,
 
-![image 147](Grimmet2006_images/imageFile147.png)
+![image 147](../Images/imageFile147.png)
 
-![image 148](Grimmet2006_images/imageFile148.png)
+![image 148](../Images/imageFile148.png)
 
-![image 149](Grimmet2006_images/imageFile149.png)
+![image 149](../Images/imageFile149.png)
 
-![image 150](Grimmet2006_images/imageFile150.png)
+![image 150](../Images/imageFile150.png)
 
 an inequality that may be integrated directly. Let p1 = p1(A,q) ∈ (0,1) be chosen such that φp1,q(A) ≥ 12. Then
 
-![image 151](Grimmet2006_images/imageFile151.png)
+![image 151](../Images/imageFile151.png)
 
-![image 152](Grimmet2006_images/imageFile152.png)
+![image 152](../Images/imageFile152.png)
 
-![image 153](Grimmet2006_images/imageFile153.png)
+![image 153](../Images/imageFile153.png)
 
 and hence, by integration, (3.19) φp,q(A) ≥ 1 − 12|E|−c(p−p1)/q, p ∈ (p1,1), q ∈ [1,∞), whenever the conditions of Theorem 3.16 are satisfied. If in addition p1 ≥ √q/(1 +
 
-![image 154](Grimmet2006_images/imageFile154.png)
+![image 154](../Images/imageFile154.png)
 
 √q), then C = c, and hence
 
-![image 155](Grimmet2006_images/imageFile155.png)
+![image 155](../Images/imageFile155.png)
 
-![image 156](Grimmet2006_images/imageFile156.png)
+![image 156](../Images/imageFile156.png)
 
 (3.20) φp,q(A) ≥ 1 − 12|E|−c(p−p1), p ∈ (p1,1). An application to box crossings in two dimensions may be found in [141]. Proof of Theorem 3.12. The first formula was proved for Theorem 2.46, and the second is obtained in a similar fashion.
 
-![image 157](Grimmet2006_images/imageFile157.png)
+![image 157](../Images/imageFile157.png)
 
 Proof of Theorem 3.16. With A as in the theorem, φp,q is A-invariant since A ⊆ Aut(G). The claim is a consequence of Theorem 2.51 on noting from (3.3) that
 
-![image 158](Grimmet2006_images/imageFile158.png)
+![image 158](../Images/imageFile158.png)
 
 , e ∈ E.
 
-![image 159](Grimmet2006_images/imageFile159.png)
+![image 159](../Images/imageFile159.png)
 
-![image 160](Grimmet2006_images/imageFile160.png)
+![image 160](../Images/imageFile160.png)
 
 <a id="sec-3-4"></a>
 
@@ -220,9 +220,9 @@ p1 q1(1 − p1) ≥
 
 φp1,q1 ≥st φp2,q2 if q1 ≥ q2, q1 ≥ 1, and
 
-![image 161](Grimmet2006_images/imageFile161.png)
+![image 161](../Images/imageFile161.png)
 
-![image 162](Grimmet2006_images/imageFile162.png)
+![image 162](../Images/imageFile162.png)
 
 The first of these inequalities may be strengthened as in the next theorem. A subset W of the vertex set V is called spanning if every edge of E is incident to at least one vertex of W. The degree deg(W) of a spanning set W is defined to be the maximum degree of its members, that is, the maximum number of edges of G incident to any one vertex in W.
 
@@ -231,25 +231,25 @@ The first of these inequalities may be strengthened as in the next theorem. A su
 
 An application is to be found in Section 5.1, where it is proved that the critical point pc(q) of an infinite-volume random-cluster model on a lattice is strictly increasing in q.
 
-![image 163](Grimmet2006_images/imageFile163.png)
+![image 163](../Images/imageFile163.png)
 
-![image 164](Grimmet2006_images/imageFile164.png)
+![image 164](../Images/imageFile164.png)
 
-![image 165](Grimmet2006_images/imageFile165.png)
+![image 165](../Images/imageFile165.png)
 
-![image 166](Grimmet2006_images/imageFile166.png)
+![image 166](../Images/imageFile166.png)
 
-![image 167](Grimmet2006_images/imageFile167.png)
+![image 167](../Images/imageFile167.png)
 
-![image 168](Grimmet2006_images/imageFile168.png)
+![image 168](../Images/imageFile168.png)
 
-![image 169](Grimmet2006_images/imageFile169.png)
+![image 169](../Images/imageFile169.png)
 
-![image 170](Grimmet2006_images/imageFile170.png)
+![image 170](../Images/imageFile170.png)
 
-![image 171](Grimmet2006_images/imageFile171.png)
+![image 171](../Images/imageFile171.png)
 
-![image 172](Grimmet2006_images/imageFile172.png)
+![image 172](../Images/imageFile172.png)
 
 Assume now that the conditions of (3.22) hold. Since k(ω) is a decreasing function and |η(ω)| is increasing, we have that Y is increasing. Since q1 ≥ 1, φp1,q1 is positively associated, whence
 
@@ -257,9 +257,9 @@ Assume now that the conditions of (3.22) hold. Since k(ω) is a decreasing funct
 
 Assume now that the conditions of (3.23) hold. We write Y(ω) in the form
 
-![image 173](Grimmet2006_images/imageFile173.png)
+![image 173](../Images/imageFile173.png)
 
-![image 174](Grimmet2006_images/imageFile174.png)
+![image 174](../Images/imageFile174.png)
 
 Note that k(ω) + |η(ω)| is an increasing function of ω, since the addition of an extra open edge to ω causes |η(ω)| to increase by 1 and k(ω) to decrease by at most 1. In addition, |η(ω)| is increasing. Since q2 ≤ q1 and p2/[q2(1 − p2)] ≤ p1/[q1(1 − p1)] by assumption, we have that Y is decreasing. By the positive association of φp1,q1 as above,
 
@@ -270,19 +270,19 @@ The proof of Theorem 3.24 begins with a subsidiary result. This contains two ine
 - (3.28) Proposition [151]. Let p ∈ (0,1), q ∈ [1,∞) and ∈ {1,2,. . .}. There exists a strictly positive and continuous function α(p,q) = α (p,q) such that the following holds. Let G be a finite graph, and suppose there exists a spanning set W such that deg(W) ≤ . Then
 - (3.29) α(p,q)
 
-![image 175](Grimmet2006_images/imageFile175.png)
+![image 175](../Images/imageFile175.png)
 
-![image 176](Grimmet2006_images/imageFile176.png)
+![image 176](../Images/imageFile176.png)
 
-![image 177](Grimmet2006_images/imageFile177.png)
+![image 177](../Images/imageFile177.png)
 
 for all increasing events A.
 
 Proof. Let A be an increasing event, and write θ(p,q) = φp,q(A). As in the proof of Theorem 2.1 we shall construct a Markov chain Zt = (Xt,Yt) taking values in the product space 2.
 
-![image 178](Grimmet2006_images/imageFile178.png)
+![image 178](../Images/imageFile178.png)
 
-![image 179](Grimmet2006_images/imageFile179.png)
+![image 179](../Images/imageFile179.png)
 
 qDe(π) − qDe(ω)1A(ωe) ≥ 0,
 
@@ -298,35 +298,35 @@ P Zt+h = (π′,ω′) Zt = (π,ω) = J(π,ω; π′,ω′)h + o(h),
 
 See [164, Chapter 6] for an account of the theory of Markov chains.
 
-![image 180](Grimmet2006_images/imageFile180.png)
+![image 180](../Images/imageFile180.png)
 
-![image 181](Grimmet2006_images/imageFile181.png)
+![image 181](../Images/imageFile181.png)
 
-![image 182](Grimmet2006_images/imageFile182.png)
+![image 182](../Images/imageFile182.png)
 
-![image 183](Grimmet2006_images/imageFile183.png)
+![image 183](../Images/imageFile183.png)
 
-![image 184](Grimmet2006_images/imageFile184.png)
+![image 184](../Images/imageFile184.png)
 
-![image 185](Grimmet2006_images/imageFile185.png)
+![image 185](../Images/imageFile185.png)
 
-![image 186](Grimmet2006_images/imageFile186.png)
+![image 186](../Images/imageFile186.png)
 
-![image 187](Grimmet2006_images/imageFile187.png)
+![image 187](../Images/imageFile187.png)
 
-![image 188](Grimmet2006_images/imageFile188.png)
+![image 188](../Images/imageFile188.png)
 
-![image 189](Grimmet2006_images/imageFile189.png)
+![image 189](../Images/imageFile189.png)
 
-![image 190](Grimmet2006_images/imageFile190.png)
+![image 190](../Images/imageFile190.png)
 
-![image 191](Grimmet2006_images/imageFile191.png)
+![image 191](../Images/imageFile191.png)
 
-![image 192](Grimmet2006_images/imageFile192.png)
+![image 192](../Images/imageFile192.png)
 
-![image 193](Grimmet2006_images/imageFile193.png)
+![image 193](../Images/imageFile193.png)
 
-![image 194](Grimmet2006_images/imageFile194.png)
+![image 194](../Images/imageFile194.png)
 
 where e:e∼x denotes summation over all edges e incident to the vertex x.
 
@@ -347,36 +347,36 @@ If Ft ∩ T ∩ U ∩ V occurs, then x is isolated in Xt+1 but not in Yt+1 (sinc
 
 Proof of Theorem 3.24. Let α be as in Proposition 3.28, and let A be an increasing event. Inequality (3.29) may be stated in the form
 
-![image 195](Grimmet2006_images/imageFile195.png)
+![image 195](../Images/imageFile195.png)
 
-![image 196](Grimmet2006_images/imageFile196.png)
+![image 196](../Images/imageFile196.png)
 
-![image 197](Grimmet2006_images/imageFile197.png)
+![image 197](../Images/imageFile197.png)
 
-![image 198](Grimmet2006_images/imageFile198.png)
+![image 198](../Images/imageFile198.png)
 
-![image 199](Grimmet2006_images/imageFile199.png)
+![image 199](../Images/imageFile199.png)
 
-![image 200](Grimmet2006_images/imageFile200.png)
+![image 200](../Images/imageFile200.png)
 
-![image 201](Grimmet2006_images/imageFile201.png)
+![image 201](../Images/imageFile201.png)
 
 φp,q(A) ≤ 0,
 
-![image 202](Grimmet2006_images/imageFile202.png)
+![image 202](../Images/imageFile202.png)
 
 whence φp,q(A) is decreasing as (p,q) moves along the contour of γ in the direction of increasing q. Therefore,
 
-![image 203](Grimmet2006_images/imageFile203.png)
+![image 203](../Images/imageFile203.png)
 
-![image 204](Grimmet2006_images/imageFile204.png)
+![image 204](../Images/imageFile204.png)
 
 Before proceeding to the proofs, we note that Theorem 3.45 is closely related to the ‘sprinkling lemma’ of [6], a version of which is valid for random-cluster models; see also [154]. The argument used to prove Theorem 3.45 may be used also to prove the following, the proof of which is omitted.
 
 - (3.48) Theorem. Let q ∈ [1,∞) and 0 < r < s < 1. For any non-empty, decreasing event A ∈ F ,
 - (3.49) φr,q(A) ≥
 
-![image 205](Grimmet2006_images/imageFile205.png)
+![image 205](../Images/imageFile205.png)
 
 Proof of Theorem 3.45. Let q ∈ [1,∞) and 0 < r < s < 1. We shall employ a suitable coupling of the measures φr,q and φs,q. Let E = {e1,e2,. . . ,em} be the edges of the graph G, and let U1,U2,. . .,Um be independent random variables having the uniform distribution on [0,1]. We write P for the probability measure associated with the Uj. We shall examine the edges in turn, to determine whether they are open or closed for the respective parameters r and s. The outcome will be a pair (π,ω) of conﬁgurations each lying in = {0,1}E and such that π ≤ ω. The conﬁgurations π, ω are random in the sense that they are functions of the Uj. A similar coupling was used in the proof of Theorem 2.31.
 
@@ -398,9 +398,9 @@ where M,γ is the set of conﬁgurations ν ∈ satisfying ν(ei) = γ(ei) for 1
 
 since r < s and π(ei) ≤ ω(ei) for 1 ≤ i ≤ M. Therefore, π(eM+1) ≤ ω(eM+1). Continuing likewise, we obtain a pair (π,ω) of conﬁgurations satisfying π ≤ ω, and such that π has law φr,q, and ω has law φs,q.
 
-![image 206](Grimmet2006_images/imageFile206.png)
+![image 206](../Images/imageFile206.png)
 
-![image 207](Grimmet2006_images/imageFile207.png)
+![image 207](../Images/imageFile207.png)
 
 where Ki istheeventthatthereexistsanopenpathof E\{ei}joiningtheendvertices of ei. Using conditional expectations and the assumption q ≥ 1,
 
@@ -408,21 +408,21 @@ p p + q(1 − p) ≤ φp,q(Ji | D) ≤ p
 
 (3.50)
 
-![image 208](Grimmet2006_images/imageFile208.png)
+![image 208](../Images/imageFile208.png)
 
-![image 209](Grimmet2006_images/imageFile209.png)
+![image 209](../Images/imageFile209.png)
 
-![image 210](Grimmet2006_images/imageFile210.png)
+![image 210](../Images/imageFile210.png)
 
-![image 211](Grimmet2006_images/imageFile211.png)
+![image 211](../Images/imageFile211.png)
 
-![image 212](Grimmet2006_images/imageFile212.png)
+![image 212](../Images/imageFile212.png)
 
-![image 213](Grimmet2006_images/imageFile213.png)
+![image 213](../Images/imageFile213.png)
 
-![image 214](Grimmet2006_images/imageFile214.png)
+![image 214](../Images/imageFile214.png)
 
-![image 215](Grimmet2006_images/imageFile215.png)
+![image 215](../Images/imageFile215.png)
 
 We integrate over the interval [r,s] to obtain that (3.52) φs,q(Ji) − φr,q(Ji) ≥
 
@@ -430,19 +430,19 @@ s − r q
 
 . Finally,
 
-![image 216](Grimmet2006_images/imageFile216.png)
+![image 216](../Images/imageFile216.png)
 
 φs,q(JM+1 | M,ω) − φr,q(JM+1 | M,π) ≥ φs,q(JM+1 | M,ω) − φr,q(JM+1 | M,ω),
 
 and (3.51) follows by applying (3.52) with i = M + 1 to the graph obtained from G by contracting (respectively, deleting) any edge ei (for 1 ≤ i ≤ M) with ω(ei) = 1 (respectively, ω(ei) = 0). See [152, Theorem 2.3].
 
-![image 217](Grimmet2006_images/imageFile217.png)
+![image 217](../Images/imageFile217.png)
 
-![image 218](Grimmet2006_images/imageFile218.png)
+![image 218](../Images/imageFile218.png)
 
-![image 219](Grimmet2006_images/imageFile219.png)
+![image 219](../Images/imageFile219.png)
 
-![image 220](Grimmet2006_images/imageFile220.png)
+![image 220](../Images/imageFile220.png)
 
 This follows by the recursive construction of π and ω in terms of the family U1,U2,. . . ,Um, in the light of the bound (3.53).
 
@@ -452,18 +452,18 @@ Inequality (3.54) implies the claim of the theorem, as follows. Let A be an incr
 
 If more than one such set B exists, we pick the earliest in some deterministic ordering of all subsets of E. By (3.54),
 
-![image 221](Grimmet2006_images/imageFile221.png)
+![image 221](../Images/imageFile221.png)
 
-![image 222](Grimmet2006_images/imageFile222.png)
+![image 222](../Images/imageFile222.png)
 
 In the usual approach of classical statistical mechanics, one studies phase transitions via the partitionfunctionandits derivatives. We preferin this work to follow a more probabilistic approach, but shall nevertheless have recourse to various arguments based on the behaviour of the partition function, of which we note some basic properties.
 
 - (3.57) TG(u,v) = (u − 1)|V|−k(G)WG (u − 1)−1,v − 1 is known as the dichromatic (or Tutte) polynomial, [313]. The partition function ZG of the graph G is easily seen to satisfy
 - (3.58) ZG(p,q) = q|V|(1 − p)|E|WG
 
-![image 223](Grimmet2006_images/imageFile223.png)
+![image 223](../Images/imageFile223.png)
 
-![image 224](Grimmet2006_images/imageFile224.png)
+![image 224](../Images/imageFile224.png)
 
 a relationship which provides a link with other classical quantities associated with a graph. See [40, 41, 121, 157, 308, 315] and Chapter 9.
 
@@ -480,7 +480,7 @@ The partition function ZG does not change a great deal if an edge is removed fro
 
 ZG\F(p,q) ZG(p,q) ≤ (1 ∨ q)|F|, F ⊆ E.
 
-![image 225](Grimmet2006_images/imageFile225.png)
+![image 225](../Images/imageFile225.png)
 
 We give next an application of these inequalities to be used later. Let Gi = (Vi, Ei), i = 1,2, be finite graphson disjointvertexsets V1, V2, andwrite G1∪G2 for the graph (V1 ∪ V2, E1 ∪ E2). It is immediate from (3.55) that
 
@@ -520,17 +520,17 @@ We develop next an inequality related to (3.61) concerning the addition of a ver
 
 ZG+v(p,q) ZG(p,q) ≥ q(1 − p + pq−1)|W|.
 
-![image 226](Grimmet2006_images/imageFile226.png)
+![image 226](../Images/imageFile226.png)
 
-![image 227](Grimmet2006_images/imageFile227.png)
+![image 227](../Images/imageFile227.png)
 
-![image 228](Grimmet2006_images/imageFile228.png)
+![image 228](../Images/imageFile228.png)
 
-![image 229](Grimmet2006_images/imageFile229.png)
+![image 229](../Images/imageFile229.png)
 
-![image 230](Grimmet2006_images/imageFile230.png)
+![image 230](../Images/imageFile230.png)
 
-![image 231](Grimmet2006_images/imageFile231.png)
+![image 231](../Images/imageFile231.png)
 
 α + (1 − α)yn ≥ [α + (1 − α)y]n, α, y ∈ [0,1], n ∈ {1,2,. . .}. We substitute (3.68) into (3.67) to obtain the claim.
 
@@ -544,13 +544,13 @@ Since ZG ≥ q for all G when q ≥ 1,
 
 (3.70) ZG ≥ ZG1.
 
-![image 232](Grimmet2006_images/imageFile232.png)
+![image 232](../Images/imageFile232.png)
 
 and then
 
 ZG(p,q) = (1 − p)|E|YG(π(p),κ(q)). We write ∇X for the gradient vector of a function X : R2 → R. (3.73) Theorem. Let the vectors (π,κ) and (p,q) be related by (3.72).
 
-![image 233](Grimmet2006_images/imageFile233.png)
+![image 233](../Images/imageFile233.png)
 
 α=0
 
@@ -562,9 +562,9 @@ YG (π,κ) + αi = YG(π,κ)φp,q(eαL(i)),
 
 where L(i) = i1|η| +i2k. Therefore, the jth derivative as in (3.75) equals the jth cumulant (or semi-invariant3) of L(i).
 
-![image 234](Grimmet2006_images/imageFile234.png)
+![image 234](../Images/imageFile234.png)
 
-![image 235](Grimmet2006_images/imageFile235.png)
+![image 235](../Images/imageFile235.png)
 
 and (3.75) follows as in part (a). The convexity is a consequence of the fact that variances are non-negative.
 
@@ -576,35 +576,35 @@ Stochastic domination is an invaluable tool in the study of random-cluster measu
 
 Consider the random-clustermodel with parameters p and q on the finite graph G = (V, E). If q ∈ {2,3,. . .}, we may generate a Potts model by assigning a uniformly chosen spin-value to each open cluster. The spin conﬁguration thus obtained is governed by the Potts measure with inverse-temperature β satisfying p = 1−e−β. Evidently,this can workonly if q is an integer. Aweakerconclusion may be obtained if q is not an integer, namely the following. Suppose p ∈ [0,1] and q ∈ [1,∞). We examine each open cluster of the random-cluster model in turn, and we declareitto be red with probability1/q and white otherwise, different clusters receiving independent colours4. Let R be the set of vertices lying in red clusters. If q ∈ {2,3,. . .}, then R has the same distribution as the set of vertices of the corresponding Potts model that have a pre-determined spin-value. Write Pp,q for an appropriate probability measure. One has for general q ∈ (1,∞) that,
 
-![image 236](Grimmet2006_images/imageFile236.png)
+![image 236](../Images/imageFile236.png)
 
-![image 237](Grimmet2006_images/imageFile237.png)
+![image 237](../Images/imageFile237.png)
 
-![image 238](Grimmet2006_images/imageFile238.png)
+![image 238](../Images/imageFile238.png)
 
-![image 239](Grimmet2006_images/imageFile239.png)
+![image 239](../Images/imageFile239.png)
 
-![image 240](Grimmet2006_images/imageFile240.png)
+![image 240](../Images/imageFile240.png)
 
 ω′∈ A
 
-![image 241](Grimmet2006_images/imageFile241.png)
+![image 241](../Images/imageFile241.png)
 
-![image 242](Grimmet2006_images/imageFile242.png)
+![image 242](../Images/imageFile242.png)
 
-![image 243](Grimmet2006_images/imageFile243.png)
+![image 243](../Images/imageFile243.png)
 
 k(ω′)
 
 where A = V \ A, A = {0,1}EA with EA the subset of E containing all edges with both endvertices in A, the ZG, ZA are the appropriate partition functions, and eA is the set of edges of G with exactly one endvertex in A. When q is an integer, (3.76) reduces to the usual Potts law for the set of vertices with a given spin-value.
 
-![image 244](Grimmet2006_images/imageFile244.png)
+![image 244](../Images/imageFile244.png)
 
-![image 245](Grimmet2006_images/imageFile245.png)
+![image 245](../Images/imageFile245.png)
 
-![image 246](Grimmet2006_images/imageFile246.png)
+![image 246](../Images/imageFile246.png)
 
-![image 247](Grimmet2006_images/imageFile247.png)
+![image 247](../Images/imageFile247.png)
 
 where ZI = ZI(β,h)istherequirednormalizingconstant5. Weshallbeconcerned here with the random set S = S(σ) = {u ∈ V : σu = 1}, containing all vertices with spin +1.
 
@@ -612,18 +612,18 @@ Let deg(u) denote the degree of the vertex u in the graph G, and let
 
 = max deg(u) : u ∈ V .
 
-![image 248](Grimmet2006_images/imageFile248.png)
+![image 248](../Images/imageFile248.png)
 
 5The fraction 21 in the exponent is that appearing in (1.7).
 
-![image 249](Grimmet2006_images/imageFile249.png)
+![image 249](../Images/imageFile249.png)
 
 - (3.79) Theorem [15]. Let β ∈ (0,∞), p = 1 − e−β, q ∈ [2,∞), and let R be the random ‘red’ set of the random-cluster model, governed by the law given in (3.76). Let β′ ∈ (0,∞) and h′ ∈ (−∞,∞) be given by
 - (3.80) e2β′ = eβ
 
-![image 250](Grimmet2006_images/imageFile250.png)
+![image 250](../Images/imageFile250.png)
 
-![image 251](Grimmet2006_images/imageFile251.png)
+![image 251](../Images/imageFile251.png)
 
 and let S be the set of vertices with spin +1 under the Ising measure πβ′,h′. Then (3.81) R ≤st S. Inequality (3.81) is to be interpreted as
 
@@ -639,7 +639,7 @@ q − 2 (q − 1)1−(2/ ) − 1
 
 . By (3.80) and an elementary argument using monotonicity, (3.83) h′ < 0 if and only if β < β .
 
-![image 252](Grimmet2006_images/imageFile252.png)
+![image 252](../Images/imageFile252.png)
 
 We make one further note in advance of proving the theorem. By (3.82), β → 0 as → ∞; ifthemaximumvertexdegreeislarge,thefieldofapplication of the theorem is small. In an important application of the theorem, we shall take G to be a box of the lattice Ld with so-called ‘wired boundary conditions’ (see Section 4.2). This amounts to identifying all vertices in the boundary ∂ , and thus to the introductionof a single vertex, w say, having large degree. The method of proof of Theorem 3.79 is valid in this slightly more general setting with
 
@@ -661,17 +661,17 @@ First, we check (2.7). Let C ⊆ V and u ∈ V \ C. We claim that (3.84) µ2(Cu)
 
 µ2(Cu)
 
-![image 253](Grimmet2006_images/imageFile253.png)
+![image 253](../Images/imageFile253.png)
 
-![image 254](Grimmet2006_images/imageFile254.png)
+![image 254](../Images/imageFile254.png)
 
 (3.86)
 
-![image 255](Grimmet2006_images/imageFile255.png)
+![image 255](../Images/imageFile255.png)
 
-![image 256](Grimmet2006_images/imageFile256.png)
+![image 256](../Images/imageFile256.png)
 
-![image 257](Grimmet2006_images/imageFile257.png)
+![image 257](../Images/imageFile257.png)
 
 ≥ (1 − p)2r−δ(q − 1) 1 − p + p(q − 1)−1 δ−r.
 
@@ -679,17 +679,17 @@ Substituting p = 1 − e−β and setting x = eβ, we obtain by multiplying (3.8
 
 µ2(Cu)µ1(C) µ1(Cu)µ2(C) ≥ exp β′(2r − δ) + β′h′ − β(2r − δ)
 
-![image 258](Grimmet2006_images/imageFile258.png)
+![image 258](../Images/imageFile258.png)
 
-![image 259](Grimmet2006_images/imageFile259.png)
+![image 259](../Images/imageFile259.png)
 
-![image 260](Grimmet2006_images/imageFile260.png)
+![image 260](../Images/imageFile260.png)
 
-![image 261](Grimmet2006_images/imageFile261.png)
+![image 261](../Images/imageFile261.png)
 
-![image 262](Grimmet2006_images/imageFile262.png)
+![image 262](../Images/imageFile262.png)
 
-![image 263](Grimmet2006_images/imageFile263.png)
+![image 263](../Images/imageFile263.png)
 
 62 Fundamental Properties [3.8]
 
@@ -732,9 +732,9 @@ where π = pe pf + pe(1 − pf ) + pf (1 − pe) = π(pe, pf ).
 
 (b) Write e = u,v , f = v,w , so that g = u,w . Recall that ω and τω agree off the edges e, f , g, and hence the partial conﬁgurations (ω(h) : h = e, f ) and (τω(h) : h = g) have the same law. Let K be the set of all ω ∈ such that there exists an open path from u to w not using e, f ; let K′ be the corresponding event in ′ with e, f replaced by g. Note that K′ = τ K.
 
-![image 264](Grimmet2006_images/imageFile264.png)
+![image 264](../Images/imageFile264.png)
 
-![image 265](Grimmet2006_images/imageFile265.png)
+![image 265](../Images/imageFile265.png)
 
 where σ = σ(pe, pf ,q). The edge g is open in τω if and only if both e and f are open in ω. Therefore,
 
@@ -744,21 +744,21 @@ pepf pe pf + pe(1 − pe) + pf (1 − pf ) + q(1 − pe)(1 − pf )
 
 ,
 
-![image 266](Grimmet2006_images/imageFile266.png)
+![image 266](../Images/imageFile266.png)
 
 in agreement with (3.90). Similarly,
 
 φp′,q(ω′(g) = 1 | K′) = φp,q ω(e) = ω( f ) = 1 K , which in turn equals
 
-![image 267](Grimmet2006_images/imageFile267.png)
+![image 267](../Images/imageFile267.png)
 
-![image 268](Grimmet2006_images/imageFile268.png)
+![image 268](../Images/imageFile268.png)
 
 pepf pe pf + qpe(1 − pf ) + qpf (1 − pe) + q2(1 − pe)(1 − pf )
 
 ,
 
-![image 269](Grimmet2006_images/imageFile269.png)
+![image 269](../Images/imageFile269.png)
 
 = {0,1}E. There are four relevant concepts of negative association, of which we start at the ‘lowest’. The measure µ is said to be edge-negatively-associated if (3.92) µ(Je ∩ Jf ) ≤ µ(Je)µ(Jf ), e, f ∈ E, e = f. Recall that Je = {ω ∈ : ω(e) = 1}.
 
@@ -774,9 +774,9 @@ for all pairs (A, B) of increasing events with the property that there exists E�
 
 Ourthird andfourthconceptsof negativeassociationinvolveso-called ‘disjoint occurrence’ (see [37, 154]). Let A and B be events in . We deﬁne A B to be the set of all vectors ω ∈ forwhich there exists a set F ⊆ E such that F,ω ⊆ A and F,ω ⊆ B, where F = E \ F. Note that the choice of F is allowed to depend on the vector ω. We say that µ has the disjoint-occurrence property if
 
-![image 270](Grimmet2006_images/imageFile270.png)
+![image 270](../Images/imageFile270.png)
 
-![image 271](Grimmet2006_images/imageFile271.png)
+![image 271](../Images/imageFile271.png)
 
 (3.93) µ(A B) ≤ µ(A)µ(B), A, B ⊆ , and hasthe disjoint-occurrenceproperty onincreasingevents if (3.93)holdsunder the additional assumption that A and B are increasing events.
 
@@ -796,7 +796,7 @@ In the absence of a satisfactory approach to the general case of random-cluster 
 
 A stronger version of this conjecture is that USF and UCS are negatively associated in one or more of the senses described above.
 
-![image 272](Grimmet2006_images/imageFile272.png)
+![image 272](../Images/imageFile272.png)
 
 7Consider the two events Je, Jf in the graph G comprising exactly two edges e, f in parallel.
 
@@ -843,7 +843,6 @@ Theso-called Rayleighprinciplestates thatthe effectiveresistance ofa network is 
 
 The usual proof of the Rayleigh principle makes use of the Thomson/Dirichlet variational principle, which in turn asserts that, amongst all unit flows from source to sink, the true flow of unit size is that which minimizes the dissipated energy. A good account of the Kirchhoff theorem on electrical networks and spanning trees may be found in [59]. Further accounts of the mathematics of electrical networks include [106] and [241, 329], the latter containing also much material about the uniform spanning tree.
 
-![image 273](Grimmet2006_images/imageFile273.png)
+![image 273](../Images/imageFile273.png)
 
 8When re-stated in terms of counts of spanning trees with certain properties, this is a consequence of the 1847 work of Kirchhoff [215] on electrical networks, as elaborated by Brooks, Smith, Stone, and Tutte in their famous paper [71] on the dissection of rectangles. Indeed, the difference µ(Je ∩ Jf ) − µ(Je)µ(Jf ) may be expressed in terms of a certain ‘transfer current matrix’. See [74] for an extension to more than two edges, and [31, 241] for related discussion.
-

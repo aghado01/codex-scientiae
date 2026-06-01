@@ -16,7 +16,7 @@ is necessarily bounded. In addition, any increasing function X : → R is bounde
 
 Given two probability measures µ1, µ2 on ( ,F ), we write µ1 ≤st µ2 (or µ2 ≥st µ1), and we say that µ1 is stochastically smaller than µ2, if1 µ1(X) ≤ µ2(X) for all increasing continuous random variables X on .
 
-![image 35](Grimmet2006_images/imageFile35.png)
+![image 35](../Images/imageFile35.png)
 
 1Recall that µ(X) denotes the expectation of X under µ, that is, µ(X) = X dµ.
 
@@ -36,7 +36,7 @@ Let S ⊆ 2 (= × ) be the set of all ordered pairs (π,ω) of conﬁgurations s
 
 Condition (2.2) in key to Theorem 2.1, and it is equivalent to a condition of monotonicity on the one-point conditional distributions.
 
-![image 36](Grimmet2006_images/imageFile36.png)
+![image 36](../Images/imageFile36.png)
 
 2An application of such a claim may be found in the analysis of the Ashkin–Teller model at Theorem 11.12.
 
@@ -46,9 +46,9 @@ Condition (2.2) in key to Theorem 2.1, and it is equivalent to a condition of mo
 
 µ2 ω(e) = 1 ω( f ) = ζ( f ) for all f ∈ E \ {e}
 
-![image 37](Grimmet2006_images/imageFile37.png)
+![image 37](../Images/imageFile37.png)
 
-![image 38](Grimmet2006_images/imageFile38.png)
+![image 38](../Images/imageFile38.png)
 
 The following is sufﬁcient for (2.2).
 
@@ -59,7 +59,7 @@ Proof of Theorem 2.1. The theorem amounts to a ‘mere’ numerical inequality i
 
 The main step of the proof is designed to show that, under condition (2.2), µ1 and µ2 may be ‘coupled’ in such a way that the sub-diagonal S has full measure. This is achieved by constructing a certain Markov chain with the coupled measure as invariant measure.
 
-![image 39](Grimmet2006_images/imageFile39.png)
+![image 39](../Images/imageFile39.png)
 
 We let G(ω,ω′) = 0 for all other pairs ω,ω′ with ω = ω′. The diagonal elements G(ω,ω) are chosen in such a way that
 
@@ -77,11 +77,11 @@ We follownexta similarroutefor pairs ofconﬁgurations. Letµ1 and µ2 satisfy t
 
 (2.10) H(πe,ω; πe,ωe) = 1, H(π,ωe; πe,ωe) =
 
-![image 40](Grimmet2006_images/imageFile40.png)
+![image 40](../Images/imageFile40.png)
 
-![image 41](Grimmet2006_images/imageFile41.png)
+![image 41](../Images/imageFile41.png)
 
-![image 42](Grimmet2006_images/imageFile42.png)
+![image 42](../Images/imageFile42.png)
 
 for all (π,ω) ∈ S and e ∈ E; all other off-diagonal values of H are set to 0. The diagonal terms H(π,ω; π,ω) are chosen in such a way that
 
@@ -97,9 +97,9 @@ follows from (2.2) with ω1 = πe and ω2 = ωe.
 
 Let (Yt, Zt)t≥0 be a Markov chain on S with generator H, and set (Y0, Z0) = (0,1), where 0 (respectively, 1) is the state of all zeros (respectively, ones). We write P for the appropriate probability measure. Since all transitions retain the orderingof the two componentsof the state, we mayassume thatthe chain satisﬁes P(Yt ≤ Zt for all t) = 1. By examination of (2.10)–(2.12) we see that Y = (Yt : t ≥ 0) is a Markov chain with generator given by (2.9) with µ = µ1, and that Z = (Zt : t ≥ 0) arises similarly with µ = µ2. Here is a brief explanation of this elementary step in the case of Y, a similar argument holds for Z. For π ∈ and e ∈ E,
 
-![image 43](Grimmet2006_images/imageFile43.png)
+![image 43](../Images/imageFile43.png)
 
-![image 44](Grimmet2006_images/imageFile44.png)
+![image 44](../Images/imageFile44.png)
 
 Let κ be an invariant measure for the paired chain (Yt, Zt)t≥0. Since Y and Z have (respective) unique invariant measures µ1 and µ2, the marginals of κ are µ1 and µ2. Since P(Yt ≤ Zt for all t) = 1,
 
@@ -113,59 +113,59 @@ Proof of Theorem 2.3. Inequality (2.4) is equivalent to
 
 µ2(ζe)[µ1(ξe) + µ1(ξe)] ≥ µ1(ξe)[µ2(ζe) + µ2(ζe)], which is the same as (2.5). Therefore, (b) and (c) are equivalent.
 
-![image 45](Grimmet2006_images/imageFile45.png)
+![image 45](../Images/imageFile45.png)
 
-![image 46](Grimmet2006_images/imageFile46.png)
+![image 46](../Images/imageFile46.png)
 
-![image 47](Grimmet2006_images/imageFile47.png)
+![image 47](../Images/imageFile47.png)
 
-![image 48](Grimmet2006_images/imageFile48.png)
+![image 48](../Images/imageFile48.png)
 
 µ1((A1 ∩ A2) ∪ Br−1) µ1((A1 ∩ A2) ∪ Br−2)
 
 µ1((A1 ∩ A2) ∪ B) µ1((A1 ∩ A2) ∪ Br−1) ·
 
-![image 49](Grimmet2006_images/imageFile49.png)
+![image 49](../Images/imageFile49.png)
 
-![image 50](Grimmet2006_images/imageFile50.png)
+![image 50](../Images/imageFile50.png)
 
 µ1((A1 ∩ A2) ∪ B1) µ1(A1 ∩ A2)
 
 ···
 
-![image 51](Grimmet2006_images/imageFile51.png)
+![image 51](../Images/imageFile51.png)
 
-![image 52](Grimmet2006_images/imageFile52.png)
+![image 52](../Images/imageFile52.png)
 
-![image 53](Grimmet2006_images/imageFile53.png)
+![image 53](../Images/imageFile53.png)
 
-![image 54](Grimmet2006_images/imageFile54.png)
+![image 54](../Images/imageFile54.png)
 
-![image 55](Grimmet2006_images/imageFile55.png)
+![image 55](../Images/imageFile55.png)
 
 - s=1
 
 µ2(η(ξ) ∪ Bs) µ2(η(ξ) ∪ Bs−1)
 
-![image 56](Grimmet2006_images/imageFile56.png)
+![image 56](../Images/imageFile56.png)
 
 - s=1
 
-![image 57](Grimmet2006_images/imageFile57.png)
+![image 57](../Images/imageFile57.png)
 
-![image 58](Grimmet2006_images/imageFile58.png)
+![image 58](../Images/imageFile58.png)
 
-![image 59](Grimmet2006_images/imageFile59.png)
+![image 59](../Images/imageFile59.png)
 
-![image 60](Grimmet2006_images/imageFile60.png)
+![image 60](../Images/imageFile60.png)
 
-![image 61](Grimmet2006_images/imageFile61.png)
+![image 61](../Images/imageFile61.png)
 
-![image 62](Grimmet2006_images/imageFile62.png)
+![image 62](../Images/imageFile62.png)
 
-![image 63](Grimmet2006_images/imageFile63.png)
+![image 63](../Images/imageFile63.png)
 
-![image 64](Grimmet2006_images/imageFile64.png)
+![image 64](../Images/imageFile64.png)
 
 Assumethat(2.7)holds,andletω1,ω2 ∈ . Ifµ1 satisﬁes(2.8),thenitsatisﬁes (2.17), and (2.2) follows from (2.14) with ζ = ω1 ∨ ω2, ξ = ω2. Similarly, if µ2 satisﬁes (2.8), it satisﬁes (2.17), and (2.2) follows from (2.14) with ζ = ω1, ξ = ω1 ∧ ω2.
 
@@ -184,7 +184,7 @@ It is a consequence of the Holley inequality (Theorem 2.1), as follows, that any
 
 There is an extensive literature on the FKG inequality3 and its extensions. See, for example, [2, 25, 184]. One may extend the inequality to probability measures on sample spaces of the form T E with T a finite subset of R. In addition, some of the results of this section are valid for measures that are not strictly positive. Any probability measure µ satisfying (2.20) is said to have the property of ‘positive association’ or, more concisely, to be ‘positively associated’. We consider in Section 4.1 the positive association of measures on = {0,1}E when E is countably infinite.
 
-![image 65](Grimmet2006_images/imageFile65.png)
+![image 65](../Images/imageFile65.png)
 
 3The history and origins of the FKG inequality are described in the Appendix.
 
@@ -192,9 +192,9 @@ Correlation-type inequalities play an important role in mathematical physics. Fo
 
 Proof. Since inequality (2.20) involves a finite set of real numbers only, it may in principle be proved in a totally elementary manner, [280]. We follow here the more interesting route via the Holley inequality, Theorem 2.1. Assume that µ satisﬁes the FKG lattice condition (2.18), and let X and Y be increasing functions. Let a > 0 and Y′ = Y + a. Since
 
-![image 66](Grimmet2006_images/imageFile66.png)
+![image 66](../Images/imageFile66.png)
 
-![image 67](Grimmet2006_images/imageFile67.png)
+![image 67](../Images/imageFile67.png)
 
 ω∈
 
@@ -254,7 +254,7 @@ It is a near triviality to check that any product measure on satisﬁes the FKG 
 
 µ0(010) = µ0(001) = δ, µ0(000) = 1 − 2δ, µ1(111) = µ1(100) = 12.
 
-![image 68](Grimmet2006_images/imageFile68.png)
+![image 68](../Images/imageFile68.png)
 
 Let ǫ ∈ [0,1] and set µ = ǫµ0 + (1 − ǫ)µ1. Note that µ(011) = µ(101) = µ(110) = 0.
 
@@ -262,21 +262,21 @@ It may be checked that µ does not satisfy the FKG lattice condition whereas, fo
 
 µ2(011) = µ2(101) = µ2(110) = 31 and η is small and positive.
 
-![image 69](Grimmet2006_images/imageFile69.png)
+![image 69](../Images/imageFile69.png)
 
-![image 70](Grimmet2006_images/imageFile70.png)
+![image 70](../Images/imageFile70.png)
 
 (2.29) Example6. Let X and Y be independent Bernoulli random variables with parameter 21, so that
 
-![image 71](Grimmet2006_images/imageFile71.png)
+![image 71](../Images/imageFile71.png)
 
 P(X = 0) = P(X = 1) = 21, and similarly for Y. Let Z = max{X,Y}. It is clear that
 
-![image 72](Grimmet2006_images/imageFile72.png)
+![image 72](../Images/imageFile72.png)
 
 P(X = 1 | Z = 1) > P(X = 1), P(X = 1 | Y = Z = 1) = P(X = 1).
 
-![image 73](Grimmet2006_images/imageFile73.png)
+![image 73](../Images/imageFile73.png)
 
 - 4Closely related material is discussed in [204]. The equivalence of (a) and (b) is attributed in [8] to J. van den Berg and R. M. Burton (1987). See [136] for a further discussion of monotonic measures.
 - 5Proposed by J. Steif. 6Proposed by J. van den Berg.
@@ -291,13 +291,13 @@ As in the previous example, µ is not strictly positive, a weakness which we rem
 
 isanincreasingfunctionofpositivelyassociatedrandomvariables,andistherefore positively associated. However, for small positive δ, it is only a small (stochastic) perturbation of the original triple (X,Y, Z), and one may check that (A, B,C) is notmonotonic. Itiseasily veriﬁedthat P((A, B,C) = ω) > 0 forall ω ∈ {0,1}3.
 
-![image 74](Grimmet2006_images/imageFile74.png)
+![image 74](../Images/imageFile74.png)
 
 Proof of Theorem 2.27. Throughout, µ is assumed strictly positive.
 
 (a) ⇐⇒ (b). We prove first that (a) implies (b). By Theorem 2.22, it sufﬁces to prove (2.18) for two incomparable conﬁgurations ω1, ω2 that disagree on exactly two distinct edges e, f ∈ E. We order E = (e1,e2,. . .,em) with e1 = e and e2 = f , and we express a conﬁguration ω as a ‘word’ ω(e1) · ω(e2) · . . . · ω(em) in the alphabet with two letters. Thus ω1 = 0 · 1 · w and ω2 = 1 · 0 · w for some word w of length |E| − 2. By strong positive-association, α(xy) = µ(x · y · w) satisﬁes
 
-![image 75](Grimmet2006_images/imageFile75.png)
+![image 75](../Images/imageFile75.png)
 
 α(11) α(00) + α(01) + α(10) + α(11) ≥ α(01) + α(11) α(10) + α(11) , which may be simpliﬁed to obtain as required that
 
@@ -309,13 +309,13 @@ We prove next that (b) implies (a). Suppose (b) holds, and let F ⊆ E and ξ �
 
 By Theorem 2.19, µξF is positively associated. (b) ⇒ (c). By the Holley inequality, Theorem 2.1, it sufﬁces to prove for ωF,ρF ∈ F that
 
-![image 76](Grimmet2006_images/imageFile76.png)
+![image 76](../Images/imageFile76.png)
 
 µζF(ωF ∨ ρF)µξF(ωF ∧ ρF) ≥ µζF(ωF)µξF(ρF) whenever ξ ≤ ζ. This is, by (2.24), an immediate consequence of the FKG lattice property applied to the pair ωF × ζ, ρF × ξ. (c) ⇒ (d). This is trivial. (d) ⇒ (b). Let µ be 1-monotonic. By Theorem 2.3, the pair µ, µ satisﬁes (2.2), which is to say that µ satisﬁes the FKG lattice condition.
 
-![image 77](Grimmet2006_images/imageFile77.png)
+![image 77](../Images/imageFile77.png)
 
-![image 78](Grimmet2006_images/imageFile78.png)
+![image 78](../Images/imageFile78.png)
 
 <a id="sec-2-3"></a>
 
@@ -327,7 +327,7 @@ Let N ≥ 1, and let E be an arbitary finite set with |E| = N. We write = {0,1}E
 
 where J = (Je : e ∈ E) denotes7 the identity function on . There has been an extensive study of the largest inﬂuence, maxe IA(e), when µ is a productmeasure, and this has been used to obtain concentration theorems for φp(A) viewed as a function of p, where φp denotes product measure with density p on . Such resultshave applicationsto severaltopicsincludingrandomgraphs,random walks, and percolation. Theorems concerning inﬂuence were first proved for product measures, but they may be extended in a natural way to monotonic measures.
 
-![image 79](Grimmet2006_images/imageFile79.png)
+![image 79](../Images/imageFile79.png)
 
 There are several useful references concerning inﬂuence for product measures, see [125, 126, 200, 201, 329] and their bibliographies. The order of magnitude N−1 log N is the best possible, see [34].
 
@@ -341,7 +341,7 @@ We may suppose without loss of generality that E = {1,2,. . ., N}. Let x = (xi :
 
 Suppose we know the values fi(x) for i = 1,2,. . .,k − 1. Let (2.33) ak = µ Jk = 1 Ji = fi(x) for i = 1,2,. . .,k − 1 ,
 
-![image 80](Grimmet2006_images/imageFile80.png)
+![image 80](../Images/imageFile80.png)
 
 decreasing. Let x ≤ x′, and write ak = ak(x) and ak′ = ak(x′) for the values in (2.32)–(2.33) corresponding to the vectors x and x′. Clearly a1 = a′
 
@@ -359,53 +359,53 @@ pendon x1, x2,. . ., xk−1 onlythroughthevalues f1(x), f2(x),. . ., fk−1(x). 
 
 Let U = (Ui : i = 1,2,. . ., N) be the identity function on [0,1]E, so that U has law λ. By the definition of f , f (U) has law µ. Hence, (2.35) µ(A) = λ( f (U) ∈ A) = λ(U ∈ f −1(A)) = λ(B).
 
-![image 81](Grimmet2006_images/imageFile81.png)
+![image 81](../Images/imageFile81.png)
 
 We turn to (2.37) with j ≥ 2. We re-order the set E to bring the index j to the front. That is, we let F be the re-ordered index set F = (k1,k2,. . . ,kN) = (j,1,2,. . ., j − 1, j + 1,. . ., N). Let g = (gkr : r = 1,2,. . ., N) denote the associated function given by (2.32)–(2.34) subject to the new ordering, and let C = g−1(A). We claim that
 
 (2.40) KC(k1) ≥ KB(j). By (2.39) with E replaced by F, KC(k1) = IA(j), and (2.37) follows. It remains to prove (2.40), and we use monotonicity again for this. It sufﬁces to prove that (2.41) λ(C | Uj = 1) ≥ λ(B | Uj = 1), together with the reversed inequality given Uj = 0. Let (2.42) U = (U1,U2,. . . ,Uj−1,1,Uj+1,. . .,UN).
 
-![image 82](Grimmet2006_images/imageFile82.png)
+![image 82](../Images/imageFile82.png)
 
 The 0/1-vector f (U) = ( fi(U) : i = 1,2,. . ., N) is constructed sequentially (as above)byconsideringtheindices1,2,. . ., N inturn. Atstagek,wedeclare fk(U) equal to 1 if Uk exceeds a certain function ak of the variables fi(U), 1 ≤ i < k. By the monotonicity of µ, this function is non-increasing in these variables. The index j plays a special role in that: (i) fj(U) = 1, and (ii) given this fact, it is more likely than before that the variables fk(U), j < k ≤ N, will take the value 1. The values fk(U), 1 ≤ k < j are unaffected by the value of Uj.
 
-![image 83](Grimmet2006_images/imageFile83.png)
+![image 83](../Images/imageFile83.png)
 
-![image 84](Grimmet2006_images/imageFile84.png)
+![image 84](../Images/imageFile84.png)
 
-![image 85](Grimmet2006_images/imageFile85.png)
+![image 85](../Images/imageFile85.png)
 
-![image 86](Grimmet2006_images/imageFile86.png)
+![image 86](../Images/imageFile86.png)
 
-![image 87](Grimmet2006_images/imageFile87.png)
+![image 87](../Images/imageFile87.png)
 
-![image 88](Grimmet2006_images/imageFile88.png)
+![image 88](../Images/imageFile88.png)
 
-![image 89](Grimmet2006_images/imageFile89.png)
+![image 89](../Images/imageFile89.png)
 
 Consider now the 0/1-vector g(U) = (gkr(U) : r = 1,2,. . ., N), constructed in the same manner as above but with the new ordering F of the index set E. First we examine index k1 (= j), and we automatically declare gk1(U) = 1 (since Uj = 1). We then construct gkr(U), r = 2,3,. . ., N, in sequence. Since the ak are non-decreasing in the variables constructed so far,
 
-![image 90](Grimmet2006_images/imageFile90.png)
+![image 90](../Images/imageFile90.png)
 
-![image 91](Grimmet2006_images/imageFile91.png)
+![image 91](../Images/imageFile91.png)
 
-![image 92](Grimmet2006_images/imageFile92.png)
+![image 92](../Images/imageFile92.png)
 
-![image 93](Grimmet2006_images/imageFile93.png)
+![image 93](../Images/imageFile93.png)
 
 (2.43) gkr(U) ≥ fkr (U), r = 2,3,. . ., N. Therefore, g(U) ≥ f (U), and hence (2.44) λ(C | Uj = 1) = λ(g(U) ∈ A) ≥ λ( f (U) ∈ A) = λ(B | Uj = 1).
 
-![image 94](Grimmet2006_images/imageFile94.png)
+![image 94](../Images/imageFile94.png)
 
-![image 95](Grimmet2006_images/imageFile95.png)
+![image 95](../Images/imageFile95.png)
 
-![image 96](Grimmet2006_images/imageFile96.png)
+![image 96](../Images/imageFile96.png)
 
-![image 97](Grimmet2006_images/imageFile97.png)
+![image 97](../Images/imageFile97.png)
 
-![image 98](Grimmet2006_images/imageFile98.png)
+![image 98](../Images/imageFile98.png)
 
-![image 99](Grimmet2006_images/imageFile99.png)
+![image 99](../Images/imageFile99.png)
 
 Inequality (2.41) has been proved. The same argument implies the reversed inequality obtained from (2.41) by changing the conditioning to Uj = 0. Inequality (2.40) follows, and the proof is complete.
 
@@ -419,36 +419,36 @@ We consider next certain families of probability measures µp indexed by a param
 
 f (p) = µp(A) is non-decreasing with f (0) = 0 and f (1) = 1. If A has a certain property of symmetry, the sharp-threshold theorem asserts that f (p) increases steeply from 0 to 1 over a short interval of p-values with length of order 1/log N.
 
-![image 100](Grimmet2006_images/imageFile100.png)
+![image 100](../Images/imageFile100.png)
 
 , and that (each) µp is strictly positive if and only if µ is strictly positive. It is easy to check that (each) µp satisﬁes the FKG lattice condition (2.18) if and only if µ satisﬁes this condition, and it follows by Theorem 2.27 that, for strictly positive µ, µ is monotonic if and only if (each) µp is monotonic. In order to prove a sharp-threshold theorem for the family µp, we present first a differential formula of the type referred to as Russo’s formula, [154, Section 2.4].
 
-![image 101](Grimmet2006_images/imageFile101.png)
+![image 101](../Images/imageFile101.png)
 
 - (2.46) Theorem [39]. For a random variable X : → R,
 - (2.47)
 
-![image 102](Grimmet2006_images/imageFile102.png)
+![image 102](../Images/imageFile102.png)
 
-![image 103](Grimmet2006_images/imageFile103.png)
+![image 103](../Images/imageFile103.png)
 
-![image 104](Grimmet2006_images/imageFile104.png)
+![image 104](../Images/imageFile104.png)
 
-![image 105](Grimmet2006_images/imageFile105.png)
+![image 105](../Images/imageFile105.png)
 
-![image 106](Grimmet2006_images/imageFile106.png)
+![image 106](../Images/imageFile106.png)
 
-![image 107](Grimmet2006_images/imageFile107.png)
+![image 107](../Images/imageFile107.png)
 
-![image 108](Grimmet2006_images/imageFile108.png)
+![image 108](../Images/imageFile108.png)
 
-![image 109](Grimmet2006_images/imageFile109.png)
+![image 109](../Images/imageFile109.png)
 
-![image 110](Grimmet2006_images/imageFile110.png)
+![image 110](../Images/imageFile110.png)
 
-![image 111](Grimmet2006_images/imageFile111.png)
+![image 111](../Images/imageFile111.png)
 
-![image 112](Grimmet2006_images/imageFile112.png)
+![image 112](../Images/imageFile112.png)
 
 = µp(|η|X) − µp(|η|)µp(X)
 
@@ -469,17 +469,17 @@ min µp(A),1−µp(A) log N, p ∈ (0,1), where mp = µp(Je)(1 − µp(Je)).
 
 µp(A) ≥
 
-![image 113](Grimmet2006_images/imageFile113.png)
+![image 113](../Images/imageFile113.png)
 
-![image 114](Grimmet2006_images/imageFile114.png)
+![image 114](../Images/imageFile114.png)
 
 Let ǫ ∈ (0, 21) and let A be non-empty and increasing. Under the conditions of the theorem, µp(A) increases from ǫ to 1 − ǫ over an interval of values of p having length of order 1/log N. This amounts to a quantiﬁcation of the so-called S-shape results described and cited in [154, Section 2.5]. Note that mp does not depend on the choice of edge e.
 
-![image 115](Grimmet2006_images/imageFile115.png)
+![image 115](../Images/imageFile115.png)
 
 The proof is preceded by an easy lemma. Let Ip,A(e) = µp(A | Je = 1) − µp(A | Je = 0), e ∈ E.
 
-![image 116](Grimmet2006_images/imageFile116.png)
+![image 116](../Images/imageFile116.png)
 
 9This differs slightly from the definition of Section 4.3, for reasons of local convenience.
 
@@ -547,27 +547,27 @@ Suppose now that A is increasing (respectively, decreasing). Here are three usef
 - (ii) The function |η| + HA (respectively, |η| − HA) is increasing, since the addition of a single open edge to a conﬁguration ω causes |η(ω)| to increase by 1, and HA(ω) to decrease (respectively, increase) by at most 1.
 - (iii) We have that HA(ω)1A(ω) = 0 for ω ∈ .
 
-![image 117](Grimmet2006_images/imageFile117.png)
+![image 117](../Images/imageFile117.png)
 
-![image 118](Grimmet2006_images/imageFile118.png)
+![image 118](../Images/imageFile118.png)
 
-![image 119](Grimmet2006_images/imageFile119.png)
+![image 119](../Images/imageFile119.png)
 
-![image 120](Grimmet2006_images/imageFile120.png)
+![image 120](../Images/imageFile120.png)
 
-![image 121](Grimmet2006_images/imageFile121.png)
+![image 121](../Images/imageFile121.png)
 
-![image 122](Grimmet2006_images/imageFile122.png)
+![image 122](../Images/imageFile122.png)
 
 where NA isthenumberofpivotaledgesforthe increasingevent A, andφp denotes product measure with density p on ( ,F ). See [154, p. 44] for further details.
 
-![image 123](Grimmet2006_images/imageFile123.png)
+![image 123](../Images/imageFile123.png)
 
-![image 124](Grimmet2006_images/imageFile124.png)
+![image 124](../Images/imageFile124.png)
 
-![image 125](Grimmet2006_images/imageFile125.png)
+![image 125](../Images/imageFile125.png)
 
-![image 126](Grimmet2006_images/imageFile126.png)
+![image 126](../Images/imageFile126.png)
 
 µp(HA)µp(A) p(1 − p)
 
@@ -575,11 +575,10 @@ where NA isthenumberofpivotaledgesforthe increasingevent A, andφp denotes produ
 
 , and (2.57) follows. The argument is easily adapted for decreasing A.
 
-![image 127](Grimmet2006_images/imageFile127.png)
+![image 127](../Images/imageFile127.png)
 
 Let A ∈ F be non-empty and increasing. Inequality (2.57) is usually used in integrated form. Integrating over the interval [r,s], and using the facts that p(1 − p) ≤ 41 and that HA is decreasing, we obtain that
 
-![image 128](Grimmet2006_images/imageFile128.png)
+![image 128](../Images/imageFile128.png)
 
 ≤ µs(A)exp −4(s − r)µs(HA) , 0 < r ≤ s < 1. This may sometimes be combined with a complementary inequality derived by a consideration of ‘finite energy’, see Theorem 3.45.
-

@@ -51,15 +51,15 @@ The flow polynomial of H satisﬁes (9.5) CH(q) = (−1)|F|WH(−1,−q)
 
 See[40, 313]. Whentheneedforadifferentnotationarises, weshallwriteC(H;q) for CH(q), and similarly for other polynomials.
 
-![image 1042](Grimmet2006_images/imageFile1042.png)
+![image 1042](../Images/imageFile1042.png)
 
 e∈E
 
-![image 1043](Grimmet2006_images/imageFile1043.png)
+![image 1043](../Images/imageFile1043.png)
 
 This differs slightly from (1.5)–(1.6) in that different edges e may have different interactions Je, and these interactions have been ‘re-parametrized’ by the factor q. The reason for deﬁning πβJ,q thus will emerge in the calculations that follow.
 
-![image 1044](Grimmet2006_images/imageFile1044.png)
+![image 1044](../Images/imageFile1044.png)
 
 We shall work often with the quantity qτβJ,q(x, y) = πβJ,q(qδσx,σy − 1) and, for ease of notation in the following, we write
 
@@ -79,7 +79,7 @@ Let λ = (λe : e ∈ E) be a family of non-negative reals, and let P = (P(e) : 
 
 For x, y ∈ V, x = y, we denote by GxP,y the graph obtained from GP by adding an edge with endvertices x, y. If x and y are already adjacent in GP, we add exactly one further edge between them. Potts-correlations and flows are related by the following theorem2.
 
-![image 1045](Grimmet2006_images/imageFile1045.png)
+![image 1045](../Images/imageFile1045.png)
 
 2The relationship between flows and correlation functions has been explored also in [112, 246, 247].
 
@@ -90,7 +90,7 @@ Eλ(C(GxP,y; q)) Eλ(C(GP; q))
 
 , x, y ∈ V.
 
-![image 1046](Grimmet2006_images/imageFile1046.png)
+![image 1046](../Images/imageFile1046.png)
 
 This formula takes an especially simple form when q = 2, since non-zero mod-2 flows necessarily take the value 1 only. A finite graph H = (W, F) is called even if the degree of every vertex w ∈ W is even. It is elementary that CH(2) = 1 (respectively, CH(2) = 0) if H is even (respectively, not even), and therefore
 
@@ -101,7 +101,7 @@ Pλ(GxP,y is even) Pλ(GP is even)
 
 ,
 
-![image 1047](Grimmet2006_images/imageFile1047.png)
+![image 1047](../Images/imageFile1047.png)
 
 when q = 2. Observations of this sort have led to the so-called ‘randomcurrent’ expansion for Ising models, thereby after some work [3, 5, 9] yielding proofs amongst other things of the exponential decay of correlations in the hightemperature regime. We return to the case q = 2 in Sections 9.2–9.4.
 
@@ -111,9 +111,9 @@ Whereas Theorem 9.11 concerns Potts models only, there is a random-cluster gener
 
 (9.15) Theorem [146, 157]. Let p ∈ [0,1) and q ∈ (0,∞). Let λe = λ for all e ∈ E, where p = 1 − e−λq.
 
-![image 1048](Grimmet2006_images/imageFile1048.png)
+![image 1048](../Images/imageFile1048.png)
 
-![image 1049](Grimmet2006_images/imageFile1049.png)
+![image 1049](../Images/imageFile1049.png)
 
 (b) For q ∈ {2,3,. . .},
 
@@ -125,30 +125,30 @@ This may be simpliﬁed further. Let ζ(e) = P(e) modulo 2. It is easily seen th
 
 Pλ(ζ(e) = 1) = 21(1 − e−2λ) = 12 p. Equation (9.18) may therefore be written as (9.20) φG,p(2k(ω)) = 2|V|φG,p/2(the open subgraph of G is even). Proof ofTheorem 9.11. Since the parameter β appearsalways with the multiplicative factor Je, we may without loss of generality take β = 1.
 
-![image 1050](Grimmet2006_images/imageFile1050.png)
+![image 1050](../Images/imageFile1050.png)
 
-![image 1051](Grimmet2006_images/imageFile1051.png)
+![image 1051](../Images/imageFile1051.png)
 
-![image 1052](Grimmet2006_images/imageFile1052.png)
+![image 1052](../Images/imageFile1052.png)
 
-![image 1053](Grimmet2006_images/imageFile1053.png)
+![image 1053](../Images/imageFile1053.png)
 
-![image 1054](Grimmet2006_images/imageFile1054.png)
+![image 1054](../Images/imageFile1054.png)
 
 = q|V|Eλ(C(GxP,y; q)), and (9.12) follows by (9.24) and (9.25). Proof of Theorem 9.15. This theorem may be proved directly, but we shall derive it from Theorem 9.11.
 
 - (a) Equation (9.17) holds by Theorems 1.16 and 9.11. By (9.5), equation (9.16) holds for q ∈ {2,3,. . .}. Since both sides are the ratios of polynomials in q and e−λq of finite order, (9.16) is an identity in q ∈ (0,∞).
 - (b) This was noted after (9.24) above.
 
-![image 1055](Grimmet2006_images/imageFile1055.png)
+![image 1055](../Images/imageFile1055.png)
 
-![image 1056](Grimmet2006_images/imageFile1056.png)
+![image 1056](../Images/imageFile1056.png)
 
-![image 1057](Grimmet2006_images/imageFile1057.png)
+![image 1057](../Images/imageFile1057.png)
 
-![image 1058](Grimmet2006_images/imageFile1058.png)
+![image 1058](../Images/imageFile1058.png)
 
-![image 1059](Grimmet2006_images/imageFile1059.png)
+![image 1059](../Images/imageFile1059.png)
 
 Ne = {i ∈ Me : Bi = 1}, e ∈ E. Let PM denote the appropriate probability measure.
 
@@ -176,7 +176,7 @@ P ∂M = {x, y}, ∂M′ = A M ∪ M′
 
 Proof. Conditional on the sets Me ∪ Me′, e ∈ E, the sets Me are selected by the independent removal of each element with probability 21. The claim follows from Theorem 9.31.
 
-![image 1060](Grimmet2006_images/imageFile1060.png)
+![image 1060](../Images/imageFile1060.png)
 
 We present two applications of Corollary 9.32 to the Ising model, as in [3]. For m = (me : e ∈ E) ∈ Z+E, let (9.33) ∂m = v ∈ V :
 
@@ -194,7 +194,7 @@ Pλ(∂P = {x, y}) Pλ(∂P = ∅)
 
 . Let QA denote the law of P conditional on the event {∂P = A}, that is, QA(E) = Pλ(P ∈ E | ∂P = A).
 
-![image 1061](Grimmet2006_images/imageFile1061.png)
+![image 1061](../Images/imageFile1061.png)
 
 We shall require two independent copies P1, P2 of P with potentially different conditionings, and thus we write QA;B = QA × QB.
 
@@ -208,35 +208,35 @@ Pλ × Pλ(∂P1 = {x, y}, ∂P2 = {x, y}) Pλ(∂P = ∅)2
 
 σ(x, y)2 =
 
-![image 1062](Grimmet2006_images/imageFile1062.png)
+![image 1062](../Images/imageFile1062.png)
 
 Pλ × Pλ(∂P1 = {x, y}, ∂P2 = {x, y}, x ↔ y in P1 + P2) Pλ(∂P = ∅)2
 
 =
 
-![image 1063](Grimmet2006_images/imageFile1063.png)
+![image 1063](../Images/imageFile1063.png)
 
-![image 1064](Grimmet2006_images/imageFile1064.png)
+![image 1064](../Images/imageFile1064.png)
 
-![image 1065](Grimmet2006_images/imageFile1065.png)
+![image 1065](../Images/imageFile1065.png)
 
 Pλ × Pλ(∂P1 = ∅, ∂P2 = {x, z}, x ↔ y in P1 + P2) Pλ(∂P = ∅)2
 
 =
 
-![image 1066](Grimmet2006_images/imageFile1066.png)
+![image 1066](../Images/imageFile1066.png)
 
 Pλ(∂P2 = {x, z}) Pλ(∂P = ∅) · Pλ × Pλ x ↔ y in P1 + P2 ∂P1 = ∅, ∂P2 = {x, z}
 
 =
 
-![image 1067](Grimmet2006_images/imageFile1067.png)
+![image 1067](../Images/imageFile1067.png)
 
 = σ(x, z)Q{x,z};∅(x ↔ y in P1 + P2).
 
 Theorem9.35 leads to an importantcorrelationinequalityknown as the ‘Simon inequality’. Let x, z ∈ V be distinct vertices. A subset W ⊆ V is said to separate x and z if x, z ∈/ W and every path from x to z contains some vertex of W.
 
-![image 1068](Grimmet2006_images/imageFile1068.png)
+![image 1068](../Images/imageFile1068.png)
 
 y∈W
 
@@ -268,7 +268,7 @@ The Simon inequality has an important consequence for the random-cluster model w
 
 x∈Zd
 
-![image 1069](Grimmet2006_images/imageFile1069.png)
+![image 1069](../Images/imageFile1069.png)
 
 3In association with related inequalities of Hammersley [177] and Lieb [234], see Theorem 9.44(b), this is an example of what is sometimes called the Hammersley–Simon–Lieb inequality. The Simon inequality is a special case of the Boel–Kasteleyn inequalities, [56, 57].
 
@@ -330,7 +330,7 @@ and similarly for MH and mH. It is elementary that m = mF + mH, and that the set
 
 As before Theorem 9.31, we select subsets Ne from the Me by deleting each member independentlyat random with probability 21. For given M, the associated probability measure is denoted by PM.
 
-![image 1070](Grimmet2006_images/imageFile1070.png)
+![image 1070](../Images/imageFile1070.png)
 
 (9.42) Theorem. Let F, H, M, and m be as above. If x, y ∈ V are such that x = y and x ↔ y in mF then, for A ⊆ V,
 
@@ -350,7 +350,7 @@ P ∂MF = {x, y}, ∂MH = ∅, ∂M′ = A M ∪ M′
 
 Let P1 and P2 be independent copies of the Poisson field P, with intensity λ ∈ [0,∞), and let E be partitioned as E = F ∪ H. We write QA,B;C for the probability measure governing the pair P1, P2 conditional on the event {∂P1F = A} ∩ {∂P1H = B} ∩ {∂P2 = C}. We recall from (9.28) that σ(x, y) denotes a certain correlation function associated with the graph G = (V, E), and we write σ F(x, y) for the quantity defined similarly on the smaller graph (V, F).
 
-![image 1071](Grimmet2006_images/imageFile1071.png)
+![image 1071](../Images/imageFile1071.png)
 
 n→∞
 
@@ -358,13 +358,13 @@ asinTheorem5.45. Itisclearthatψ(p,q)isnon-increasingin p,andψ(p,q) = 0 if p > 
 
 (9.46) Theorem (Vanishing mass gap) [234]. Let q = 2. Then ψ(p,q) decreases to 0 as p ↑ pc(q). In particular, ψ(pc(q),q) = 0.
 
-![image 1072](Grimmet2006_images/imageFile1072.png)
+![image 1072](../Images/imageFile1072.png)
 
-![image 1073](Grimmet2006_images/imageFile1073.png)
+![image 1073](../Images/imageFile1073.png)
 
-![image 1074](Grimmet2006_images/imageFile1074.png)
+![image 1074](../Images/imageFile1074.png)
 
-![image 1075](Grimmet2006_images/imageFile1075.png)
+![image 1075](../Images/imageFile1075.png)
 
 Itfollowsthat, if(9.45)holdsforsome p ∈ (ǫ,1−ǫ), thenitholdsforsome p′ > p. That is, if φp,q(0 ↔ z) decays exponentially as z → ∞, then the same holds for some p′ satisfying p′ > p. The set {p ∈ (0,1) : ψ(p,q) > 0} is therefore open. Since ψ(p,q) = 0 for p > pc(q), we deduce that ψ(pc(q),q) = 0.
 
@@ -381,11 +381,11 @@ One may ask whether the weaker Simon inequality, Corollary 9.36, might hold for 
 - (9.47) Example4. Let G = (V, E) be a cycle of length m, illustrated in Figure 9.2. We work with the partition function
 - (9.48) Y =
 
-![image 1076](Grimmet2006_images/imageFile1076.png)
+![image 1076](../Images/imageFile1076.png)
 
-![image 1077](Grimmet2006_images/imageFile1077.png)
+![image 1077](../Images/imageFile1077.png)
 
-![image 1078](Grimmet2006_images/imageFile1078.png)
+![image 1078](../Images/imageFile1078.png)
 
 (α/Q)k + (α/Q)l + (q − 2)(α/Q)m 1 + (q − 1)(α/Q)m
 
@@ -393,45 +393,45 @@ One may ask whether the weaker Simon inequality, Corollary 9.36, might hold for 
 
 .
 
-![image 1079](Grimmet2006_images/imageFile1079.png)
+![image 1079](../Images/imageFile1079.png)
 
-![image 1080](Grimmet2006_images/imageFile1080.png)
+![image 1080](../Images/imageFile1080.png)
 
 Figure 9.2. A cycle of length 8 with four marked vertices.
 
-![image 1081](Grimmet2006_images/imageFile1081.png)
+![image 1081](../Images/imageFile1081.png)
 
 - (q − 2)
 
-![image 1082](Grimmet2006_images/imageFile1082.png)
+![image 1082](../Images/imageFile1082.png)
 
 - O(α12).
 
-![image 1083](Grimmet2006_images/imageFile1083.png)
+![image 1083](../Images/imageFile1083.png)
 
-![image 1084](Grimmet2006_images/imageFile1084.png)
-
-α Q
-
-![image 1085](Grimmet2006_images/imageFile1085.png)
+![image 1084](../Images/imageFile1084.png)
 
 α Q
 
-![image 1086](Grimmet2006_images/imageFile1086.png)
+![image 1085](../Images/imageFile1085.png)
+
+α Q
+
+![image 1086](../Images/imageFile1086.png)
 
 - O(α8), j = 1,2.
 
-![image 1087](Grimmet2006_images/imageFile1087.png)
+![image 1087](../Images/imageFile1087.png)
 
 - O(α8)
 
 - 4
 
-![image 1088](Grimmet2006_images/imageFile1088.png)
+![image 1088](../Images/imageFile1088.png)
 
 - O(α10).
 
-![image 1089](Grimmet2006_images/imageFile1089.png)
+![image 1089](../Images/imageFile1089.png)
 
 [9.3] Exponential decay for the Ising model 273
 
@@ -453,14 +453,14 @@ This implies exponential decay, by Theorem 9.38: if p < pc(q), the connectivity 
 
 √2/(1 +
 
-![image 1090](Grimmet2006_images/imageFile1090.png)
+![image 1090](../Images/imageFile1090.png)
 
-![image 1091](Grimmet2006_images/imageFile1091.png)
+![image 1091](../Images/imageFile1091.png)
 
 - (9.54)Theorem(Mean-fieldbound)[5]. UndertheconditionsstatedinTheorem 9.53, there exists a constant c = c(d) > 0 such that the percolation probability θ1(p,q) = φp1,q(0 ↔ ∞) satisﬁes
 - (9.55) θ1(p,2) ≥ c(p − pc)12, p > pc = pc(2).
 
-![image 1092](Grimmet2006_images/imageFile1092.png)
+![image 1092](../Images/imageFile1092.png)
 
 Throughtheuseofscalingtheory(see[154,Chapter9]), one isledtopredictions concerningtheexistenceofcriticalexponentsforquantitiesexhibitingsingularities at the critical point pc(q). It is believed in particular that the function θ(·,2) possesses a critical exponent5 in that there exists b ∈ (0,∞) satisfying
 
@@ -468,13 +468,13 @@ Throughtheuseofscalingtheory(see[154,Chapter9]), one isledtopredictions concerni
 
 If this is true, then b ≤ 21 by Theorem 9.54. It turns out that the latter inequality is sharp in the sense that, when d ≥ 4, it is satisfied with equality; see Theorem
 
-![image 1093](Grimmet2006_images/imageFile1093.png)
+![image 1093](../Images/imageFile1093.png)
 
 9.58. Thevalueb = 21 isin additionthe‘mean-field’valueofthecriticalexponent,
 
-![image 1094](Grimmet2006_images/imageFile1094.png)
+![image 1094](../Images/imageFile1094.png)
 
-![image 1095](Grimmet2006_images/imageFile1095.png)
+![image 1095](../Images/imageFile1095.png)
 
 5We write b rather than the more usual β for the critical exponent associated with the percolation probability, in order to avoid duplication with the inverse-temperature of the Ising model.
 
@@ -484,17 +484,17 @@ as we shall see in Section 10.7 in the context of the random-cluster model on a 
 
 Proofs of the above theorems may be found in [5], and are omitted from the current work since they are Ising-speciﬁc and have not (yet) been generalized to the random-clustersetting for general q. The key ingredientis the random-current representation of the last section, utilized with ingenuity.
 
-![image 1096](Grimmet2006_images/imageFile1096.png)
+![image 1096](../Images/imageFile1096.png)
 
-![image 1097](Grimmet2006_images/imageFile1097.png)
+![image 1097](../Images/imageFile1097.png)
 
-![image 1098](Grimmet2006_images/imageFile1098.png)
+![image 1098](../Images/imageFile1098.png)
 
-![image 1099](Grimmet2006_images/imageFile1099.png)
+![image 1099](../Images/imageFile1099.png)
 
-![image 1100](Grimmet2006_images/imageFile1100.png)
+![image 1100](../Images/imageFile1100.png)
 
-![image 1101](Grimmet2006_images/imageFile1101.png)
+![image 1101](../Images/imageFile1101.png)
 
 Using an analysis presented in [4] for percolation, the three inequalities above imply Theorem 9.54.
 
@@ -536,23 +536,22 @@ Once again, one introduces an external field and then establishes a differential
 
 θ1(p,q) = (p − pc)21(1+o(1)) as p ↓ pc = pc(2).
 
-![image 1102](Grimmet2006_images/imageFile1102.png)
+![image 1102](../Images/imageFile1102.png)
 
 Thus, the critical exponent b exists when d ≥ 4, and it takes its ‘mean-field’
 
 value b = 21. This implies in particular that the percolation probability θ1(p,2) is a continuous function of p at the critical value pc(2). Continuity has been proved by classical methods in two dimensions6, and there remains only the d = 3 case for which the continuity of θ1(·,2) is as yet unproved. In summary, it is proved when d = 3 that the phase transition is of second order, and this is believed to be so when d = 3 also.
 
-![image 1103](Grimmet2006_images/imageFile1103.png)
+![image 1103](../Images/imageFile1103.png)
 
 Similarly to the results of the last section, Theorem 9.58 is proved by an analysis of the model parametrized by the two variables β, h. This yields several further facts including an exact critical exponent for the behaviour of the Ising magnetization M(β,h) with β = βc and h ↓ 0, namely
 
 M(βc,h) = h 13(1+o(1)) as h ↓ 0.
 
-![image 1104](Grimmet2006_images/imageFile1104.png)
+![image 1104](../Images/imageFile1104.png)
 
 We refer the reader to [5, 9] for details of the random-current representation in practice, for proofs of the above results and of more detailed asymptotics, and for a more extensive bibliography. The random-current representation is a key ingredient in the derivation of a lace expansion for the Ising model with either nearest-neighbour or spread-out interactions, [288]. This has led to asymptotic formulaeforthetwo-pointcorrelationfunctionwhen d > 4. Abroaderperspective on phase transitions may be found in [118].
 
-![image 1105](Grimmet2006_images/imageFile1105.png)
+![image 1105](../Images/imageFile1105.png)
 
 6Note added at reprinting: a probabilistic proof can be found in [329, 330].
-

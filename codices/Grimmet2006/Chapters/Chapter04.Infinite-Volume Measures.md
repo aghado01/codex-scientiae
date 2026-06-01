@@ -46,7 +46,7 @@ where the convergence is pointwise on . The functions X0 , X1 are continuous. Th
 
 It is a usefulfact that, when µ1 ≤st µ2, then µ1 = µ2 whenevertheir marginals are equal. We state this as a theorem for future use, see also [235, Section II.2]. Recall that Je is the event that e is open.
 
-![image 274](Grimmet2006_images/imageFile274.png)
+![image 274](../Images/imageFile274.png)
 
 1An important example of an upper-semicontinuous function is the indicator function X = 1A of an increasing closed event A.
 
@@ -102,7 +102,7 @@ containing all conﬁgurations ω satisfying ω(e) = ξ(e) for e ∈ Ed \ E ; th
 
 we shall write φ ,ξ p,q for the random-cluster measure on the finite graph ( ,E ) ‘with boundary condition ξ’; this is the equivalent of a ‘speciﬁcation’ for Gibbs
 
-![image 275](Grimmet2006_images/imageFile275.png)
+![image 275](../Images/imageFile275.png)
 
 The boundary condition ξ inﬂuences the measure φ ,ξ p,q through the way in which the term k(ω, ) in (4.11) counts the number of ω-open clusters of intersecting the boundary ∂ . Let x, y ∈ ∂ , and suppose there exists a path of ξ-open edges of Ed \ E from x to y. Then any two ω-open clusters of containing x and y, respectively, will contribute only 1 to the count k(ω, ).
 
@@ -135,15 +135,15 @@ where ωξ isgiven in (4.2). We may view Xξ asan increasing function on {0,1}E 
 
 We augment the graph ( ,E ) by adding some extra edges as follows around the boundary∂ . Foreverydistinctunorderedpair x, y ∈ ∂ , we adda newedge, denoted [x, y], between x and y. If the edge x, y exists already in , we simply add another in parallel. We write F for the set of new edges, = {0,1}E ∪F for the augmented conﬁguration space, and let φ be the random-cluster measure on the augmentedgraph ( ,E ∪F). The key pointis thatφ satisﬁes the statements in Theorem 2.27.
 
-![image 276](Grimmet2006_images/imageFile276.png)
+![image 276](../Images/imageFile276.png)
 
-![image 277](Grimmet2006_images/imageFile277.png)
+![image 277](../Images/imageFile277.png)
 
-![image 278](Grimmet2006_images/imageFile278.png)
+![image 278](../Images/imageFile278.png)
 
 For ξ ∈ , let ∼ξ be the equivalence relation on ∂ given by: x ∼ξ y if and only if there exists a ξ-open path of Ed \ E joining x to y. Let Fξ be the set of all edges [x, y] ∈ F such that x ∼ξ y.
 
-![image 279](Grimmet2006_images/imageFile279.png)
+![image 279](../Images/imageFile279.png)
 
 2Alternatively, one may omit from the cluster-count all clusters that intersect ∂ . This under-
 
@@ -155,19 +155,19 @@ cuts k(ω, ) by 1 for the wired measure φ ,1 p,q, and the difference, being con
 
 = φ (Xξ Yξ | Fξ open, F \ Fξ closed) ≥ φ (Xξ | Fξ open, F \ Fξ closed)φ (Yξ | Fξ open, F \ Fξ closed)
 
-![image 280](Grimmet2006_images/imageFile280.png)
+![image 280](../Images/imageFile280.png)
 
-![image 281](Grimmet2006_images/imageFile281.png)
+![image 281](../Images/imageFile281.png)
 
-![image 282](Grimmet2006_images/imageFile282.png)
+![image 282](../Images/imageFile282.png)
 
 = φ (Xψ | Fψ open, F \ Fψ closed) ≤ φ (Xψ | Fξ open, F \ Fξ closed) by monotonicity ≤ φ (Xξ | Fξ open, F \ Fξ closed) since Xψ ≤ Xξ
 
-![image 283](Grimmet2006_images/imageFile283.png)
+![image 283](../Images/imageFile283.png)
 
-![image 284](Grimmet2006_images/imageFile284.png)
+![image 284](../Images/imageFile284.png)
 
-![image 285](Grimmet2006_images/imageFile285.png)
+![image 285](../Images/imageFile285.png)
 
 = φξ (Xξ ) = φξ (X), and the claim follows.
 
@@ -183,7 +183,7 @@ some ξ ∈ , φ is an accumulation point of the family {φ ,ξ p,q : ⊆ Zd}, t
 
 φξ n,p,q ⇒ φ as n → ∞. The set of all such measures φ is denoted by Wp,q, and the closed convex hull of Wp,q is denoted by coWp,q.
 
-![image 286](Grimmet2006_images/imageFile286.png)
+![image 286](../Images/imageFile286.png)
 
 One might at first sight consider instead the class of all weak limits of the form
 
@@ -211,11 +211,11 @@ The following claim is standard of its type. Part (b) is related to the so-calle
 
 (a) Existence. The set Wp,q of limit-random-cluster measures is non-empty. (b) Finite-energy property. Let φ ∈ coWp,q and e ∈ Ed. We have that
 
-![image 287](Grimmet2006_images/imageFile287.png)
+![image 287](../Images/imageFile287.png)
 
-![image 288](Grimmet2006_images/imageFile288.png)
+![image 288](../Images/imageFile288.png)
 
-![image 289](Grimmet2006_images/imageFile289.png)
+![image 289](../Images/imageFile289.png)
 
 φ-almost-surely, where Je is the event that e is open. (c) Positive association. If q ∈ [1,∞), any member of Wp,q is positively associated.
 
@@ -263,7 +263,7 @@ Let Ŵ be a subgroup of Aut(G). A random variable X : → R is called Ŵ-invaria
 
 We turn now to the graph G = Ld, and to a class of automorphisms termed translations. Let x ∈ Zd, and deﬁne the function τx : Zd → Zd by τx(y) = x + y.
 
-![image 290](Grimmet2006_images/imageFile290.png)
+![image 290](../Images/imageFile290.png)
 
 3A graph is called locally finite if every vertex has finite degree.
 
@@ -330,17 +330,17 @@ and (4.21) follows by Proposition 4.10(a). (d) We develop the proof of [31, 240]
 
 ↑ Zd to deduce that (4.25) φp0,q(A ∩ B) ≥ φp0,q(A)φp0,q(B), B ∈ T .
 
-![image 291](Grimmet2006_images/imageFile291.png)
+![image 291](../Images/imageFile291.png)
 
 4The case φ ,0 p,q(B) = 0 should be handled separately.
 
 Applying (4.25) to the complement B, we have that (4.26) φp0,q(A ∩ B) ≥ φp0,q(A)φp0,q(B), B ∈ T . Since the sum of (4.25) and (4.26) holds with equality, (4.27) φp0,q(A ∩ B) = φp0,q(A)φp0,q(B), B ∈ T .
 
-![image 292](Grimmet2006_images/imageFile292.png)
+![image 292](../Images/imageFile292.png)
 
-![image 293](Grimmet2006_images/imageFile293.png)
+![image 293](../Images/imageFile293.png)
 
-![image 294](Grimmet2006_images/imageFile294.png)
+![image 294](../Images/imageFile294.png)
 
 Since this holds for all increasing A ∈ F , it holds (as in the proof of part (a)) for all A ∈ F . Setting A = B yields that φp0,q(B) equals 0 or 1, which is to say that T is trivial. The same proof with several inequalities reversed is valid for φp1,q.
 
@@ -350,9 +350,9 @@ We close this section with the infinite-volume comparison inequalities and certa
 
 (a) Comparison inequalities. For b = 0,1, the measures φpb,q satisfy the comparison inequalities:
 
-![image 295](Grimmet2006_images/imageFile295.png)
+![image 295](../Images/imageFile295.png)
 
-![image 296](Grimmet2006_images/imageFile296.png)
+![image 296](../Images/imageFile296.png)
 
 (b) Upper-semicontinuity. Let X be an increasing upper-semicontinuous ran-
 
@@ -402,7 +402,7 @@ The structure of Rp,q relative to the set Wp,q remains somewhat obscure. It is n
 
 (4.31) Theorem [152, 153, 156, 272]. Let p ∈ [0,1] and q ∈ (0,∞). If φ ∈ co Wp,q and φ has the 0/1-infinite-cluster property, then φ ∈ Rp,q.
 
-![image 297](Grimmet2006_images/imageFile297.png)
+![image 297](../Images/imageFile297.png)
 
 A sufﬁcient condition for the 0/1-infinite-cluster property is provided by the uniqueness theorem of Burton–Keane, [72], namely translation-invariance6 and so-called ‘finite energy’. A probability measure φ on ( ,F ) is said to have the finite-energy property if
 
@@ -410,19 +410,19 @@ A sufﬁcient condition for the 0/1-infinite-cluster property is provided by the
 
 (a) The closed convex hull coWp,q contains some translation-invariant proba-
 
-![image 298](Grimmet2006_images/imageFile298.png)
+![image 298](../Images/imageFile298.png)
 
 bility measure φ. (b) Let p ∈ (0,1). Every φ ∈ coWp,q has the finite-energy property. (c) If φ ∈ coWp,q is translation-invariant, then φ has the 0/1-infinite-cluster
 
-![image 299](Grimmet2006_images/imageFile299.png)
+![image 299](../Images/imageFile299.png)
 
-![image 300](Grimmet2006_images/imageFile300.png)
+![image 300](../Images/imageFile300.png)
 
 property.
 
 Theorems 4.31 and 4.33 imply jointly that |Rp,q| = ∅ when p ∈ (0,1) and q ∈ (0,∞). [The cases p = 0,1 are trivial.] We now present some of the basic properties of the set Rp,q.
 
-![image 301](Grimmet2006_images/imageFile301.png)
+![image 301](../Images/imageFile301.png)
 
 - 5The 0/1-infinite-cluster property is linked to the property of so-called ‘almost-sure quasilocality’, see Lemma 4.39 and [272].
 - 6Ratherlessthanfulltranslation-invarianceisinfactrequired. Theproofin[72]usesergodicity of the probability measure, rather than simply translation-invariance. Further comments about the extension to translation-invariant measures may be found in [73] and [136, p. 42]. See [158] for a general account of Burton–Keane uniqueness.
@@ -457,19 +457,19 @@ It easily seen that D , = {I ≥ 2}, where I is the number of infinite open clus
 
 By the finite-energy property (4.32), (4.42) φ(I ≥ 2) > 0 if φ(I ≥ 2) > 0. By the 0/1-infinite-cluster property, φ(I ≥ 2) = 0, and therefore φ(Dg) = 0 as required.
 
-![image 302](Grimmet2006_images/imageFile302.png)
+![image 302](../Images/imageFile302.png)
 
 m
 
 where m = [−m,m]d, and τx ◦ φ is the probability measure on ( ,F ) given by τx ◦ φ(A) = φ(τx A) for the translation τx(y) = x + y of the lattice. Clearly, τx ◦ φ ∈ Wp,q for all x, whence ψm belongs to the convex hull of Wp,q. Let ψ be an accumulation point of the family (ψm : m = 1,2,. . .) of measures.
 
-![image 303](Grimmet2006_images/imageFile303.png)
+![image 303](../Images/imageFile303.png)
 
 → 0 as m → ∞,
 
 whence ψ is τe-invariant. Certainly ψ ∈ coWp,q, and the proof of (a) is complete. (b) This follows by Theorem 4.17(b).
 
-![image 304](Grimmet2006_images/imageFile304.png)
+![image 304](../Images/imageFile304.png)
 
 (c) If p = 0 (respectively, p = 1), then φ is concentrated on the conﬁguration 0 (respectively, 1), and the claim holds trivially. If p ∈ (0,1), it follows from (b) and the main theorem of [72]. See also the footnote on page 79.
 
@@ -533,19 +533,19 @@ X(ρn)1C(ρ) → X(ρ)1C(ρ) P-a.s., where C = \ DX. By the bounded convergence 
 
 = P |X(ρn) − X(ρ)|1C(ρ) + P |X(ρn) − X(ρ)|1C(ρ) ≤ P |X(ρn) − X(ρ)|1C(ρ) + v(X)P(1C(ρ))
 
-![image 305](Grimmet2006_images/imageFile305.png)
+![image 305](../Images/imageFile305.png)
 
-![image 306](Grimmet2006_images/imageFile306.png)
+![image 306](../Images/imageFile306.png)
 
 → 0 + v(X)µ(C) = v(X)µ(DX) as n → ∞.
 
-![image 307](Grimmet2006_images/imageFile307.png)
+![image 307](../Images/imageFile307.png)
 
 Let φ ∈ co Wp,q have the 0/1-infinite-cluster property, and write φ as φ = limn→∞ φn where
 
-![image 308](Grimmet2006_images/imageFile308.png)
+![image 308](../Images/imageFile308.png)
 
-![image 309](Grimmet2006_images/imageFile309.png)
+![image 309](../Images/imageFile309.png)
 
 (4.50) φ 1B(·)φ ,· p,q(A) = φ(A ∩ B).
 
@@ -557,21 +557,21 @@ By (4.49) and Lemma 4.48, (4.52) lim sup
 
 ↑Zd
 
-![image 310](Grimmet2006_images/imageFile310.png)
+![image 310](../Images/imageFile310.png)
 
-![image 311](Grimmet2006_images/imageFile311.png)
+![image 311](../Images/imageFile311.png)
 
-![image 312](Grimmet2006_images/imageFile312.png)
+![image 312](../Images/imageFile312.png)
 
-![image 313](Grimmet2006_images/imageFile313.png)
+![image 313](../Images/imageFile313.png)
 
-![image 314](Grimmet2006_images/imageFile314.png)
+![image 314](../Images/imageFile314.png)
 
 → φ(I ≥ 2) as → Zd. The final probability equals 0 as in (4.42), and therefore (4.50) holds.
 
 Proof of Theorem 4.34. (a) By Theorem 4.33, there exists φ ∈ coWp,q with the 0/1-infinite-cluster property. By Theorem 4.31, φ ∈ Rp,q. Convexity follows immediately from definition 4.29: for φ,ψ ∈ Rp,q and α ∈ [0,1], the measure αφ + (1 − α)ψ satisﬁes the condition of the definition.
 
-![image 315](Grimmet2006_images/imageFile315.png)
+![image 315](../Images/imageFile315.png)
 
 (b) Assume q ∈ [1,∞). By Theorem 4.19(b) the φpb,q are translation-invariant, whence by Theorem 4.33(c) they have the 0/1-infinite-cluster property. By The-
 
@@ -623,7 +623,7 @@ p 1 − p
 
 , κ(q) = logq.
 
-![image 316](Grimmet2006_images/imageFile316.png)
+![image 316](../Images/imageFile316.png)
 
 Note that (4.57) Zξ (p,1) = 1, Y (π,0) = (1 − p)−|E |.
 
@@ -631,7 +631,7 @@ We introduce next a function G(π,κ) which describes the exponential asymptotic
 
 (4.58) Theorem [145, 150, 152]. Let be a box of Ld. The finite limits (4.59) G(π,κ) = lim
 
-![image 317](Grimmet2006_images/imageFile317.png)
+![image 317](../Images/imageFile317.png)
 
 ↑Zd
 
@@ -675,7 +675,7 @@ where (p,q) and (π,κ) are related by (4.56), and G is given in (4.59). We shal
 
 What is the set Dq? We shall return to this question in Section 5.3, but in the meantime we summarize the anticipated situation. Let d ≥ 2 be given, and assume q ∈ [1,∞). It is thought to be the case that Dq is empty when q − 1 is
 
-![image 318](Grimmet2006_images/imageFile318.png)
+![image 318](../Images/imageFile318.png)
 
 7There is an error in [152, Thm 4.5] in the case q ∈ (0, 1). The correct condition there is that the measure φ be automorphism-invariant rather than translation-invariant.
 
@@ -693,57 +693,57 @@ Proof of Theorem 4.58. Let p ∈ (0,1) and q ∈ (0,∞), and let (π,κ) be giv
 
 We show first that the limit (4.59) exists with ξ = 0, and shall for the moment suppress explicitreferenceto the boundarycondition. Let n = (n1,n2,. . .,nd) ∈ Nd, write |n| = n1n2 ···nd, andlet n bethe box di=1[1,ni]. By thetranslationinvariance of Z (p,q), we may restrict ourselves to boxes of this type.
 
-![image 319](Grimmet2006_images/imageFile319.png)
+![image 319](../Images/imageFile319.png)
 
-![image 320](Grimmet2006_images/imageFile320.png)
+![image 320](../Images/imageFile320.png)
 
-![image 321](Grimmet2006_images/imageFile321.png)
+![image 321](../Images/imageFile321.png)
 
-![image 322](Grimmet2006_images/imageFile322.png)
+![image 322](../Images/imageFile322.png)
 
-![image 323](Grimmet2006_images/imageFile323.png)
+![image 323](../Images/imageFile323.png)
 
-![image 324](Grimmet2006_images/imageFile324.png)
+![image 324](../Images/imageFile324.png)
 
-![image 325](Grimmet2006_images/imageFile325.png)
+![image 325](../Images/imageFile325.png)
 
-![image 326](Grimmet2006_images/imageFile326.png)
+![image 326](../Images/imageFile326.png)
 
-![image 327](Grimmet2006_images/imageFile327.png)
+![image 327](../Images/imageFile327.png)
 
-![image 328](Grimmet2006_images/imageFile328.png)
+![image 328](../Images/imageFile328.png)
 
-![image 329](Grimmet2006_images/imageFile329.png)
+![image 329](../Images/imageFile329.png)
 
-![image 330](Grimmet2006_images/imageFile330.png)
+![image 330](../Images/imageFile330.png)
 
-![image 331](Grimmet2006_images/imageFile331.png)
+![image 331](../Images/imageFile331.png)
 
-![image 332](Grimmet2006_images/imageFile332.png)
+![image 332](../Images/imageFile332.png)
 
-![image 333](Grimmet2006_images/imageFile333.png)
+![image 333](../Images/imageFile333.png)
 
-![image 334](Grimmet2006_images/imageFile334.png)
+![image 334](../Images/imageFile334.png)
 
-![image 335](Grimmet2006_images/imageFile335.png)
+![image 335](../Images/imageFile335.png)
 
-![image 336](Grimmet2006_images/imageFile336.png)
+![image 336](../Images/imageFile336.png)
 
-![image 337](Grimmet2006_images/imageFile337.png)
+![image 337](../Images/imageFile337.png)
 
-![image 338](Grimmet2006_images/imageFile338.png)
+![image 338](../Images/imageFile338.png)
 
-![image 339](Grimmet2006_images/imageFile339.png)
+![image 339](../Images/imageFile339.png)
 
-![image 340](Grimmet2006_images/imageFile340.png)
+![image 340](../Images/imageFile340.png)
 
-![image 341](Grimmet2006_images/imageFile341.png)
+![image 341](../Images/imageFile341.png)
 
-![image 342](Grimmet2006_images/imageFile342.png)
+![image 342](../Images/imageFile342.png)
 
-![image 343](Grimmet2006_images/imageFile343.png)
+![image 343](../Images/imageFile343.png)
 
-![image 344](Grimmet2006_images/imageFile344.png)
+![image 344](../Images/imageFile344.png)
 
 and with the inequalities reversed if κ ∈ (−∞,0). Since |∂ |/|E | → 0 as ↑ Zd, the limit of Gξ exists by (4.70), and is independent of the choice of ξ.
 
@@ -755,33 +755,33 @@ It is clear from its form that Gξ (π,κ) is a convex function on its domain R2
 
 (4.72) ∇Gξ (π,κ) =
 
-![image 345](Grimmet2006_images/imageFile345.png)
+![image 345](../Images/imageFile345.png)
 
 Since, for any ξ ∈ , the Gξ (π,κ) are convex functions of (π,κ) which converge to the finite limit function G(π,κ) as ↑ Zd, G is convex on R2. Proof of Theorem 4.63.
 
 (c) ⇐⇒ (d). By (4.36), |Wp,q| = |Rp,q| = 1 if and only if φp0,q = φp1,q. By Proposition 4.6 and the fact that φp0,q ≤st φp1,q, φp0,q = φp1,q if and only if h0(p,q) = h1(p,q). Therefore, (c) and (d) are equivalent.
 
-![image 346](Grimmet2006_images/imageFile346.png)
+![image 346](../Images/imageFile346.png)
 
 (a) ⇐⇒ (b) ⇐⇒ (c). This is inspired by a related computation for the Ising model, [233]. Let p ∈ (0,1), q ∈ (1,∞), and let (π,κ) satisfy (4.56). Recall the functions Gξ given in (4.71), and note from (4.72) that
 
-![image 347](Grimmet2006_images/imageFile347.png)
+![image 347](../Images/imageFile347.png)
 
-![image 348](Grimmet2006_images/imageFile348.png)
+![image 348](../Images/imageFile348.png)
 
-![image 349](Grimmet2006_images/imageFile349.png)
+![image 349](../Images/imageFile349.png)
 
-![image 350](Grimmet2006_images/imageFile350.png)
+![image 350](../Images/imageFile350.png)
 
-![image 351](Grimmet2006_images/imageFile351.png)
+![image 351](../Images/imageFile351.png)
 
-![image 352](Grimmet2006_images/imageFile352.png)
+![image 352](../Images/imageFile352.png)
 
 1 |E |
 
 φ ,1 p,q(|η(ω) ∩ E |),
 
-![image 353](Grimmet2006_images/imageFile353.png)
+![image 353](../Images/imageFile353.png)
 
 where we have used the automorphism-invarianceof φp0,q and φp1,q, together with the stochastic ordering of measures. We deduce on passing to the limit as ↑ Zd that
 
@@ -789,11 +789,11 @@ dG dπ = φp0,q(Je) = φp1,q(Je), e ∈ Ed, p ∈/ Dq.
 
 (4.76)
 
-![image 354](Grimmet2006_images/imageFile354.png)
+![image 354](../Images/imageFile354.png)
 
-![image 355](Grimmet2006_images/imageFile355.png)
+![image 355](../Images/imageFile355.png)
 
-![image 356](Grimmet2006_images/imageFile356.png)
+![image 356](../Images/imageFile356.png)
 
 - 1. p ∈/ Dq,
 - 2. h0(x,q) is right-continuous at x = p,
@@ -801,13 +801,13 @@ dG dπ = φp0,q(Je) = φp1,q(Je), e ∈ Ed, p ∈/ Dq.
 
 It remains to prove (4.77) and (4.78). We concentrate first on the first equation of (4.78). By Proposition 4.28(b), h1(·,q) is right-continuous, whence
 
-![image 357](Grimmet2006_images/imageFile357.png)
+![image 357](../Images/imageFile357.png)
 
-![image 358](Grimmet2006_images/imageFile358.png)
+![image 358](../Images/imageFile358.png)
 
-![image 359](Grimmet2006_images/imageFile359.png)
+![image 359](../Images/imageFile359.png)
 
-![image 360](Grimmet2006_images/imageFile360.png)
+![image 360](../Images/imageFile360.png)
 
 x↑π x∈/Dκ′
 
@@ -817,47 +817,47 @@ Proof of Theorem 4.60. Parts (a) and (b) follow by the remarks prior to the stat
 
 (4.79) Lemma. Let p ∈ (0,1), q ∈ (1,∞), and let (π,κ) satisfy (4.56). Then κ ∈ Dπ′′ if and only if φp0,q = φp1,q.
 
-![image 361](Grimmet2006_images/imageFile361.png)
+![image 361](../Images/imageFile361.png)
 
-![image 362](Grimmet2006_images/imageFile362.png)
+![image 362](../Images/imageFile362.png)
 
-![image 363](Grimmet2006_images/imageFile363.png)
+![image 363](../Images/imageFile363.png)
 
-![image 364](Grimmet2006_images/imageFile364.png)
+![image 364](../Images/imageFile364.png)
 
-![image 365](Grimmet2006_images/imageFile365.png)
+![image 365](../Images/imageFile365.png)
 
-![image 366](Grimmet2006_images/imageFile366.png)
+![image 366](../Images/imageFile366.png)
 
-![image 367](Grimmet2006_images/imageFile367.png)
+![image 367](../Images/imageFile367.png)
 
-![image 368](Grimmet2006_images/imageFile368.png)
+![image 368](../Images/imageFile368.png)
 
-![image 369](Grimmet2006_images/imageFile369.png)
+![image 369](../Images/imageFile369.png)
 
-![image 370](Grimmet2006_images/imageFile370.png)
+![image 370](../Images/imageFile370.png)
 
-![image 371](Grimmet2006_images/imageFile371.png)
+![image 371](../Images/imageFile371.png)
 
-![image 372](Grimmet2006_images/imageFile372.png)
+![image 372](../Images/imageFile372.png)
 
-![image 373](Grimmet2006_images/imageFile373.png)
+![image 373](../Images/imageFile373.png)
 
-![image 374](Grimmet2006_images/imageFile374.png)
+![image 374](../Images/imageFile374.png)
 
-![image 375](Grimmet2006_images/imageFile375.png)
+![image 375](../Images/imageFile375.png)
 
-![image 376](Grimmet2006_images/imageFile376.png)
+![image 376](../Images/imageFile376.png)
 
-![image 377](Grimmet2006_images/imageFile377.png)
+![image 377](../Images/imageFile377.png)
 
-![image 378](Grimmet2006_images/imageFile378.png)
+![image 378](../Images/imageFile378.png)
 
-![image 379](Grimmet2006_images/imageFile379.png)
+![image 379](../Images/imageFile379.png)
 
-![image 380](Grimmet2006_images/imageFile380.png)
+![image 380](../Images/imageFile380.png)
 
-![image 381](Grimmet2006_images/imageFile381.png)
+![image 381](../Images/imageFile381.png)
 
 By (4.86), the µ-probability of (i) is zero. By considering the two sub-cases of (ii) depending on whether Cx(ω0) is finite or infinite, we ﬁnd that the µ-probabiltiy of (ii) is no larger than
 
@@ -865,31 +865,31 @@ By (4.86), the µ-probability of (i) is zero. By considering the two sub-cases o
 
 where I(ω) is the number of infinite open clusters of ω. By Theorem 4.33(c), µ(I(ω0) ≥ 2) = φp0,q(I ≥ 2) = 0. We conclude as required that the vertex-sets of C0(ω0) and C0(ω1) are equal, µ-almost-surely. Therefore, by the translationinvariance of the φpb,q,
 
-![image 382](Grimmet2006_images/imageFile382.png)
+![image 382](../Images/imageFile382.png)
 
-![image 383](Grimmet2006_images/imageFile383.png)
+![image 383](../Images/imageFile383.png)
 
-![image 384](Grimmet2006_images/imageFile384.png)
+![image 384](../Images/imageFile384.png)
 
-![image 385](Grimmet2006_images/imageFile385.png)
+![image 385](../Images/imageFile385.png)
 
-![image 386](Grimmet2006_images/imageFile386.png)
+![image 386](../Images/imageFile386.png)
 
-![image 387](Grimmet2006_images/imageFile387.png)
+![image 387](../Images/imageFile387.png)
 
 φpb,q(Ke) =
 
-![image 388](Grimmet2006_images/imageFile388.png)
+![image 388](../Images/imageFile388.png)
 
 .
 
-![image 389](Grimmet2006_images/imageFile389.png)
+![image 389](../Images/imageFile389.png)
 
-![image 390](Grimmet2006_images/imageFile390.png)
+![image 390](../Images/imageFile390.png)
 
-![image 391](Grimmet2006_images/imageFile391.png)
+![image 391](../Images/imageFile391.png)
 
-![image 392](Grimmet2006_images/imageFile392.png)
+![image 392](../Images/imageFile392.png)
 
 Hence, by (4.88),
 
@@ -897,11 +897,11 @@ Hence, by (4.88),
 
 We return now to the proof of Lemma 4.79. Suppose conversely that φp0,q = φp1,q, and let q′ < q < q′′. By Proposition 4.28(a) applied to the decreasing function |C|−1,
 
-![image 393](Grimmet2006_images/imageFile393.png)
+![image 393](../Images/imageFile393.png)
 
-![image 394](Grimmet2006_images/imageFile394.png)
+![image 394](../Images/imageFile394.png)
 
-![image 395](Grimmet2006_images/imageFile395.png)
+![image 395](../Images/imageFile395.png)
 
 Therefore, G has the appropriate partial derivative at the point (π,κ), which is to say that κ ∈/ Dπ′′ as required.
 
@@ -996,4 +996,3 @@ For any event A defined in terms of the states of the edges ei, we have by (4.92
 n→∞
 
 The law of ωn is φn and, by Theorem 1.13(a), the vector (τx(ωn) : x ∈ n) has law π1 n,β,q. By Theorem 1.13(b), the last probability equals ψp(A) where ψp is product measure on {0,1}n with density p. The claim follows.
-
