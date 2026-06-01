@@ -8,121 +8,121 @@ United Kingdom
 
 ## Contents
 
-[**1 Random-Cluster Measures**](#ch-1) — 1
+[**1 Random-Cluster Measures**](#ch-1) — 1 (lines 135-511)
 
-- [1.1 Introduction](#sec-1-1) — 1
-- [1.2 Random-cluster model](#sec-1-2) — 4
-- [1.3 Ising and Potts models](#sec-1-3) — 6
-- [1.4 Random-cluster and Ising/Potts models coupled](#sec-1-4) — 8
-- [1.5 The limit as q ↓ 0](#sec-1-5) — 13
-- [1.6 Basic notation](#sec-1-6) — 15
+- [1.1 Introduction](#sec-1-1) — 1 (lines 137-511)
+- [1.2 Random-cluster model](#sec-1-2) — 4 (lines 137-511)
+- [1.3 Ising and Potts models](#sec-1-3) — 6 (lines 137-511)
+- [1.4 Random-cluster and Ising/Potts models coupled](#sec-1-4) — 8 (lines 137-511)
+- [1.5 The limit as q ↓ 0](#sec-1-5) — 13 (lines 137-511)
+- [1.6 Basic notation](#sec-1-6) — 15 (lines 137-511)
 
-[**2 Monotonic Measures**](#ch-2) — 19
+[**2 Monotonic Measures**](#ch-2) — 19 (lines 512-1096)
 
-- [2.1 Stochastic ordering of measures](#sec-2-1) — 19
-- [2.2 Positive association](#sec-2-2) — 25
-- [2.3 Influence for monotonic measures](#sec-2-3) — 30
-- [2.4 Sharp thresholds for increasing events](#sec-2-4) — 33
-- [2.5 Exponential steepness](#sec-2-5) — 35
+- [2.1 Stochastic ordering of measures](#sec-2-1) — 19 (lines 514-1096)
+- [2.2 Positive association](#sec-2-2) — 25 (lines 514-1096)
+- [2.3 Influence for monotonic measures](#sec-2-3) — 30 (lines 514-1096)
+- [2.4 Sharp thresholds for increasing events](#sec-2-4) — 33 (lines 514-1096)
+- [2.5 Exponential steepness](#sec-2-5) — 35 (lines 514-1096)
 
-[**3 Fundamental Properties**](#ch-3) — 37
+[**3 Fundamental Properties**](#ch-3) — 37 (lines 1097-1945)
 
-- [3.1 Conditional probabilities](#sec-3-1) — 37
-- [3.2 Positive association](#sec-3-2) — 39
-- [3.3 Differential formulae and sharp thresholds](#sec-3-3) — 40
-- [3.4 Comparison inequalities](#sec-3-4) — 43
-- [3.5 Exponential steepness](#ch-3) — 49
-- [3.6 Partition functions](#ch-3) — 53
-- [3.7 Domination by the Ising model](#sec-3-7) — 57
-- [3.8 Series and parallel laws](#ch-3) — 61
-- [3.9 Negative association](#ch-3) — 63
+- [3.1 Conditional probabilities](#sec-3-1) — 37 (lines 1099-1945)
+- [3.2 Positive association](#sec-3-2) — 39 (lines 1099-1945)
+- [3.3 Differential formulae and sharp thresholds](#sec-3-3) — 40 (lines 1099-1945)
+- [3.4 Comparison inequalities](#sec-3-4) — 43 (lines 1099-1945)
+- [3.5 Exponential steepness](#ch-3) — 49 (lines 1099-1945)
+- [3.6 Partition functions](#ch-3) — 53 (lines 1099-1945)
+- [3.7 Domination by the Ising model](#sec-3-7) — 57 (lines 1099-1945)
+- [3.8 Series and parallel laws](#ch-3) — 61 (lines 1099-1945)
+- [3.9 Negative association](#ch-3) — 63 (lines 1099-1945)
 
-[**4 Infinite-Volume Measures**](#ch-4) — 67
+[**4 Infinite-Volume Measures**](#ch-4) — 67 (lines 1946-2944)
 
-- [4.1 Infinite graphs](#sec-4-1) — 67
-- [4.2 Boundary conditions](#sec-4-2) — 70
-- [4.3 Infinite-volume weak limits](#sec-4-3) — 72
-- [4.4 Infinite-volume random-cluster measures](#sec-4-4) — 78
-- [4.5 Uniqueness via convexity of pressure](#sec-4-5) — 85
-- [4.6 Potts and random-cluster models on infinite graphs](#sec-4-6) — 95
+- [4.1 Infinite graphs](#sec-4-1) — 67 (lines 1948-2944)
+- [4.2 Boundary conditions](#sec-4-2) — 70 (lines 1948-2944)
+- [4.3 Infinite-volume weak limits](#sec-4-3) — 72 (lines 1948-2944)
+- [4.4 Infinite-volume random-cluster measures](#sec-4-4) — 78 (lines 1948-2944)
+- [4.5 Uniqueness via convexity of pressure](#sec-4-5) — 85 (lines 1948-2944)
+- [4.6 Potts and random-cluster models on infinite graphs](#sec-4-6) — 95 (lines 1948-2944)
 
-[**5 Phase Transition**](#ch-5) — 98
+[**5 Phase Transition**](#ch-5) — 98 (lines 2945-3972)
 
-- [5.1 The critical point](#sec-5-1) — 98
-- [5.2 Percolation probabilities](#sec-5-2) — 102
-- [5.3 Uniqueness of random-cluster measures](#sec-5-3) — 107
-- [5.4 The subcritical phase](#sec-5-4) — 110
-- [5.5 Exponential decay of radius](#ch-5) — 113
-- [5.6 Exponential decay of volume](#sec-5-6) — 119
-- [5.7 The supercritical phase and the Wulff crystal](#sec-5-7) — 122
-- [5.8 Uniqueness when q < 1](#sec-5-8) — 131
+- [5.1 The critical point](#sec-5-1) — 98 (lines 2947-3972)
+- [5.2 Percolation probabilities](#sec-5-2) — 102 (lines 2947-3972)
+- [5.3 Uniqueness of random-cluster measures](#sec-5-3) — 107 (lines 2947-3972)
+- [5.4 The subcritical phase](#sec-5-4) — 110 (lines 2947-3972)
+- [5.5 Exponential decay of radius](#ch-5) — 113 (lines 2947-3972)
+- [5.6 Exponential decay of volume](#sec-5-6) — 119 (lines 2947-3972)
+- [5.7 The supercritical phase and the Wulff crystal](#sec-5-7) — 122 (lines 2947-3972)
+- [5.8 Uniqueness when q < 1](#sec-5-8) — 131 (lines 2947-3972)
 
-[**6 In Two Dimensions**](#ch-6) — 133
+[**6 In Two Dimensions**](#ch-6) — 133 (lines 3973-4690)
 
-- [6.1 Planar duality](#sec-6-1) — 133
-- [6.2 The value of the critical point](#ch-6) — 138
-- [6.3 Exponential decay of radius](#ch-6) — 143
-- [6.4 First-order phase transition](#sec-6-4) — 144
-- [6.5 General lattices in two dimensions](#ch-6) — 152
-- [6.6 Square, triangular, and hexagonal lattices](#sec-6-6) — 154
-- [6.7 Stochastic Löwner evolutions](#sec-6-7) — 164
+- [6.1 Planar duality](#sec-6-1) — 133 (lines 3975-4690)
+- [6.2 The value of the critical point](#ch-6) — 138 (lines 3975-4690)
+- [6.3 Exponential decay of radius](#ch-6) — 143 (lines 3975-4690)
+- [6.4 First-order phase transition](#sec-6-4) — 144 (lines 3975-4690)
+- [6.5 General lattices in two dimensions](#ch-6) — 152 (lines 3975-4690)
+- [6.6 Square, triangular, and hexagonal lattices](#sec-6-6) — 154 (lines 3975-4690)
+- [6.7 Stochastic Löwner evolutions](#sec-6-7) — 164 (lines 3975-4690)
 
-[**7 Duality in Higher Dimensions**](#ch-7) — 167
+[**7 Duality in Higher Dimensions**](#ch-7) — 167 (lines 4691-6593)
 
-- [7.1 Surfaces and plaquettes](#sec-7-1) — 167
-- [7.2 Basic properties of surfaces](#sec-7-2) — 169
-- [7.3 A contour representation](#sec-7-3) — 173
-- [7.4 Polymer models](#sec-7-4) — 179
-- [7.5 Discontinuous phase transition for large q](#sec-7-5) — 182
-- [7.6 Dobrushin interfaces](#sec-7-6) — 195
-- [7.7 Probabilistic and geometric preliminaries](#sec-7-7) — 199
-- [7.8 The law of the interface](#sec-7-8) — 202
-- [7.9 Geometry of interfaces](#sec-7-9) — 208
-- [7.10 Exponential bounds for group probabilities](#sec-7-10) — 215
-- [7.11 Localization of interface](#ch-7) — 218
+- [7.1 Surfaces and plaquettes](#sec-7-1) — 167 (lines 4693-6593)
+- [7.2 Basic properties of surfaces](#sec-7-2) — 169 (lines 4693-6593)
+- [7.3 A contour representation](#sec-7-3) — 173 (lines 4693-6593)
+- [7.4 Polymer models](#sec-7-4) — 179 (lines 4693-6593)
+- [7.5 Discontinuous phase transition for large q](#sec-7-5) — 182 (lines 4693-6593)
+- [7.6 Dobrushin interfaces](#sec-7-6) — 195 (lines 4693-6593)
+- [7.7 Probabilistic and geometric preliminaries](#sec-7-7) — 199 (lines 4693-6593)
+- [7.8 The law of the interface](#sec-7-8) — 202 (lines 4693-6593)
+- [7.9 Geometry of interfaces](#sec-7-9) — 208 (lines 4693-6593)
+- [7.10 Exponential bounds for group probabilities](#sec-7-10) — 215 (lines 4693-6593)
+- [7.11 Localization of interface](#ch-7) — 218 (lines 4693-6593)
 
-[**8 Dynamics of Random-Cluster Models**](#ch-8) — 222
+[**8 Dynamics of Random-Cluster Models**](#ch-8) — 222 (lines 6594-7359)
 
-- [8.1 Time-evolution of the random-cluster model](#sec-8-1) — 222
-- [8.2 Glauber dynamics](#sec-8-2) — 224
-- [8.3 Gibbs sampler](#sec-8-3) — 225
-- [8.4 Coupling from the past](#sec-8-4) — 227
-- [8.5 Swendsen–Wang dynamics](#sec-8-5) — 230
-- [8.6 Coupled dynamics on a finite graph](#sec-8-6) — 232
-- [8.7 Box dynamics with boundary conditions](#sec-8-7) — 237
-- [8.8 Coupled dynamics on the infinite lattice](#sec-8-8) — 240
-- [8.9 Simultaneous uniqueness](#sec-8-9) — 255
+- [8.1 Time-evolution of the random-cluster model](#sec-8-1) — 222 (lines 6596-7359)
+- [8.2 Glauber dynamics](#sec-8-2) — 224 (lines 6596-7359)
+- [8.3 Gibbs sampler](#sec-8-3) — 225 (lines 6596-7359)
+- [8.4 Coupling from the past](#sec-8-4) — 227 (lines 6596-7359)
+- [8.5 Swendsen–Wang dynamics](#sec-8-5) — 230 (lines 6596-7359)
+- [8.6 Coupled dynamics on a finite graph](#sec-8-6) — 232 (lines 6596-7359)
+- [8.7 Box dynamics with boundary conditions](#sec-8-7) — 237 (lines 6596-7359)
+- [8.8 Coupled dynamics on the infinite lattice](#sec-8-8) — 240 (lines 6596-7359)
+- [8.9 Simultaneous uniqueness](#sec-8-9) — 255 (lines 6596-7359)
 
-[**9 Flows in Poisson Graphs**](#ch-9) — 257
+[**9 Flows in Poisson Graphs**](#ch-9) — 257 (lines 7360-7917)
 
-- [9.1 Potts models and flows](#sec-9-1) — 257
-- [9.2 Flows in the Ising model](#ch-9) — 262
-- [9.3 Exponential decay for the Ising model](#sec-9-3) — 273
-- [9.4 The Ising model in four and more dimensions](#sec-9-4) — 274
+- [9.1 Potts models and flows](#sec-9-1) — 257 (lines 7362-7917)
+- [9.2 Flows in the Ising model](#ch-9) — 262 (lines 7362-7917)
+- [9.3 Exponential decay for the Ising model](#sec-9-3) — 273 (lines 7362-7917)
+- [9.4 The Ising model in four and more dimensions](#sec-9-4) — 274 (lines 7362-7917)
 
-[**10 On Other Graphs**](#ch-10) — 276
+[**10 On Other Graphs**](#ch-10) — 276 (lines 7918-9066)
 
-- [10.1 Mean-field theory](#sec-10-1) — 276
-- [10.2 On complete graphs](#sec-10-2) — 277
-- [10.3 Main results for the complete graph](#sec-10-3) — 281
-- [10.4 The fundamental proposition](#ch-10) — 284
-- [10.5 The size of the largest component](#sec-10-5) — 286
-- [10.6 Proofs of main results for complete graphs](#sec-10-6) — 289
-- [10.7 The nature of the singularity](#sec-10-7) — 295
-- [10.8 Large deviations](#sec-10-8) — 296
-- [10.9 On a tree](#ch-10) — 299
-- [10.10 The critical point for a tree](#sec-10-10) — 305
-- [10.11 (Non-)uniqueness of measures on trees](#sec-10-11) — 313
-- [10.12 On non-amenable graphs](#sec-10-12) — 315
+- [10.1 Mean-field theory](#sec-10-1) — 276 (lines 7920-9066)
+- [10.2 On complete graphs](#sec-10-2) — 277 (lines 7920-9066)
+- [10.3 Main results for the complete graph](#sec-10-3) — 281 (lines 7920-9066)
+- [10.4 The fundamental proposition](#ch-10) — 284 (lines 7920-9066)
+- [10.5 The size of the largest component](#sec-10-5) — 286 (lines 7920-9066)
+- [10.6 Proofs of main results for complete graphs](#sec-10-6) — 289 (lines 7920-9066)
+- [10.7 The nature of the singularity](#sec-10-7) — 295 (lines 7920-9066)
+- [10.8 Large deviations](#sec-10-8) — 296 (lines 7920-9066)
+- [10.9 On a tree](#ch-10) — 299 (lines 7920-9066)
+- [10.10 The critical point for a tree](#sec-10-10) — 305 (lines 7920-9066)
+- [10.11 (Non-)uniqueness of measures on trees](#sec-10-11) — 313 (lines 7920-9066)
+- [10.12 On non-amenable graphs](#sec-10-12) — 315 (lines 7920-9066)
 
-[**11 Graphical Methods for Spin Systems**](#ch-11) — 320
+[**11 Graphical Methods for Spin Systems**](#ch-11) — 320 (lines 9067-9642)
 
-- [11.1 Random-cluster representations](#sec-11-1) — 320
-- [11.2 The Potts model](#sec-11-2) — 321
-- [11.3 The Ashkin–Teller model](#sec-11-3) — 326
-- [11.4 The disordered Potts ferromagnet](#sec-11-4) — 330
-- [11.5 The Edwards–Anderson spin-glass model](#sec-11-5) — 333
-- [11.6 The Widom–Rowlinson lattice gas](#sec-11-6) — 337
+- [11.1 Random-cluster representations](#sec-11-1) — 320 (lines 9069-9642)
+- [11.2 The Potts model](#sec-11-2) — 321 (lines 9069-9642)
+- [11.3 The Ashkin–Teller model](#sec-11-3) — 326 (lines 9069-9642)
+- [11.4 The disordered Potts ferromagnet](#sec-11-4) — 330 (lines 9069-9642)
+- [11.5 The Edwards–Anderson spin-glass model](#sec-11-5) — 333 (lines 9069-9642)
+- [11.6 The Widom–Rowlinson lattice gas](#sec-11-6) — 337 (lines 9069-9642)
 
 **Appendix: The Origins of FK(G)** — 341
 
@@ -148,7 +148,7 @@ It has been known since at least 1847 that electrical networks satisfy so-called
 
 The mathematics begins with a finite graph G = (V, E), and the associated Ising model1 thereon. A random variable σx taking values −1 and +1 is assigned to each vertex x of G, and the probability of the conﬁguration σ = (σx : x ∈ V) is taken to be proportional to e−βH(σ), where β > 0 and the ‘energy’ H(σ) is the
 
-![image 5](rcm1-1_images/imageFile5.png)
+![image 5](Images/imageFile5.png)
 
 1The so-called Ising model [190] was in fact proposed (to Ising) by Lenz. The Potts model [105, 278] originated in a proposal (to Potts) by Domb.
 
@@ -164,7 +164,7 @@ The theory of electrical networks on the graph G is of course more ancient than 
 
 The three ingredients above seemed fairly distinct until Fortuin and Kasteleyn discovered around 1970, [120, 121, 122, 123, 203], that each features within a certain parametric family of models which they termed ‘random-cluster models’. They developed the basic theory of such models — correlation inequalities and the like — in this series of papers. The true power of random-cluster models as
 
-![image 6](rcm1-1_images/imageFile6.png)
+![image 6](Images/imageFile6.png)
 
 2See also the historical curiosity [323].
 
@@ -188,7 +188,7 @@ The random-cluster and Ising/Potts models on the graph G = (V, E) are defined fo
 
 Let G = (V, E) be a finite graph. The graphsconsideredhere will usually possess neither loops nor multiple edges, but we make no such general assumption. An edge e having endvertices x and y is written as e = x, y . A random-cluster measure on G is a member of a certain class of probability measures on the set of subsets of the edge set E. We take as state space the set = {0,1}E, members of which are 0/1-vectors ω = (ω(e) : e ∈ E). We speak of the edge e as being open (in ω) if ω(e) = 1, and as being closed if ω(e) = 0. For ω ∈ , let η(ω) = {e ∈ E : ω(e) = 1} denote the set of open edges. There is a one–one correspondence between vectors ω ∈ and subsets F ⊆ E, given by F = η(ω). Let k(ω) be the numberof connected components(or ‘open clusters’) of the graph (V,η(ω)), and note that k(ω) includes a count of isolated vertices, that is, of vertices incident to no open edge. We associate with the σ-field F of all its subsets.
 
-![image 7](rcm1-1_images/imageFile7.png)
+![image 7](Images/imageFile7.png)
 
 Thismeasurediffersfromproductmeasurethroughthe inclusionofthe term qk(ω). Note the difference between the cases q ≤ 1 and q ≥ 1: the former favours fewer clusters, whereas the latter favours a larger number of clusters. When q = 1, edges are open/closed independently of one another. This very special case has been studied in detail under the titles ‘percolation’ and ‘random graphs’, see [61, 154, 194]. Perhaps the most important values of q are the integers, since the random-cluster model with q ∈ {2,3,. . .} corresponds, in a way described in the next two sections, to the Potts model with q local states. The bulk of the work presented in this book is devoted to the theory of random-cluster measures when q ≥ 1. The case q < 1 seems to be harder mathematically and less important physically. There is some interest in the limit as q ↓ 0; see Section 1.5.
 
@@ -198,7 +198,7 @@ Figure 1.1. Samples from the random-cluster measure with q = 1 on a 40 × 40 box
 
 6 Random-Cluster Measures [1.3]
 
-![image 8](rcm1-1_images/imageFile8.png)
+![image 8](Images/imageFile8.png)
 
 Figure 1.2. A picture of the random-cluster model with free boundary conditions on a 2048× 2048 box of L2, with p = 0.585816 and q = 2. The critical value of the model with q = 2 is pc =
 
@@ -206,9 +206,9 @@ Figure 1.2. A picture of the random-cluster model with free boundary conditions 
 
 √2/(1 +
 
-![image 9](rcm1-1_images/imageFile9.png)
+![image 9](Images/imageFile9.png)
 
-![image 10](rcm1-1_images/imageFile10.png)
+![image 10](Images/imageFile10.png)
 
 <a id="sec-1-3"></a>
 
@@ -216,7 +216,7 @@ Figure 1.2. A picture of the random-cluster model with free boundary conditions 
 
 In a famous experiment, a piece of iron is exposed to a magnetic field. The field is increased from zero to amaximum,and then diminished tozero. If the temperature is sufficiently low, the iron retains some residual magnetization, otherwise it does not. There is a critical temperature for this phenomenon, often called the Curie point after Pierre Curie, who reported this discovery in his 1895 thesis, [98]3. The
 
-![image 11](rcm1-1_images/imageFile11.png)
+![image 11](Images/imageFile11.png)
 
 3In an example of Stigler’s Law, [309], the existence of such a temperature was discovered before 1832 by Pouillet, see [198].
 
@@ -232,7 +232,7 @@ Let G = (V, E) be a finite graph representing part of the lattice. We think of e
 
 e−βH(σ), σ ∈ , where the partition function ZI and the ‘Hamiltonian’ H : → R are given by (1.4) ZI =
 
-![image 12](rcm1-1_images/imageFile12.png)
+![image 12](Images/imageFile12.png)
 
 The physical interpretation of β is as the reciprocal 1/T of temperature, of J as the strength of interaction between neighbours, and of h as the external magnetic field. For reasons of simplicity, we shall consider here only the case of zero external-field, and we assume henceforth that h = 0.
 
@@ -248,11 +248,11 @@ e = x, y and a conﬁguration σ = (σx : x ∈ V) ∈ , we write δe(σ) = δσ
 
 e−βH′(σ), σ ∈ ,
 
-![image 13](rcm1-1_images/imageFile13.png)
+![image 13](Images/imageFile13.png)
 
 In the special case q = 2, the multiplicative formula (1.7) δσx,σy = 21(1 + σxσy), σx,σy ∈ {−1,+1}, is valid. It is now easy to see in this case that the ensuing Potts model is simply the Ising model with an adjusted value of β, in that πβ,2 is the measure obtained from λβ/2 by re-labelling the local states.
 
-![image 14](rcm1-1_images/imageFile14.png)
+![image 14](Images/imageFile14.png)
 
 where sx · sy denotes the dot product. When n = 1, this is the Ising model. It is called the X/Y model when n = 2, and the Heisenberg model when n = 3.
 
@@ -286,9 +286,9 @@ Elementary calculations reveal the following facts.
 
 (1.10)Theorem(Marginalmeasuresofµ)[108]. Letq ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β.
 
-![image 15](rcm1-1_images/imageFile15.png)
+![image 15](Images/imageFile15.png)
 
-![image 16](rcm1-1_images/imageFile16.png)
+![image 16](Images/imageFile16.png)
 
 The conditional measures of µ are given in the following theorem4, and illustrated in Figure 1.3. (1.13) Theorem (Conditional measures of µ) [108]. Let q ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β.
 
@@ -301,11 +301,11 @@ The conditional measures of µ are given in the following theorem4, and illustra
 
 the values of different ω(e) being (conditionally) independent random variables.
 
-![image 17](rcm1-1_images/imageFile17.png)
+![image 17](Images/imageFile17.png)
 
 4The corresponding facts for the infinite lattice are given in Theorem 4.91.
 
-![image 4](rcm1-1_images/imageFile4.png)
+![image 4](Images/imageFile4.png)
 
 Figure 1.3. The upper diagram is an illustration of the conditional measure of µ on given ω , with q = 4. To each open cluster of ω is allocated a spin-value chosen uniformly from { 1 , 2 , 3 , 4 } . Differentclustersareallocatedindependentvalues. Inthelowerdiagram, webegin withaconﬁguration σ . Anedgeisplacedbetweenvertices x , y withprobability p (respectively, 0) if σ x = σ y (respectively, σ x = σ y ), and the outcome has as law the conditional measure of µ on given σ .
 
@@ -315,9 +315,9 @@ correlations in Potts models correspond to open connections in random-cluster mo
 
 Let { x ↔ y } denote the set of all ω ∈ for which there exists an open path joining vertex x to vertex y . The complement of the event { x ↔ y } is denoted by { x / ↔ y } .
 
-![image 18](rcm1-1_images/imageFile18.png)
+![image 18](Images/imageFile18.png)
 
-![image 19](rcm1-1_images/imageFile19.png)
+![image 19](Images/imageFile19.png)
 
 The ‘two-point connectivity function’ of the random-cluster measure φp,q is defined as the function φp,q(x ↔ y) for x, y ∈ V, that is, the probability that x and y are joined by a path of open edges. It turns out that these ‘two-point functions’ are (except for a constant factor) the same.
 
@@ -325,11 +325,11 @@ The ‘two-point connectivity function’ of the random-cluster measure φp,q is
 
 τβ,q(x, y) = (1 − q−1)φp,q(x ↔ y), x, y ∈ V.
 
-![image 20](rcm1-1_images/imageFile20.png)
+![image 20](Images/imageFile20.png)
 
-![image 21](rcm1-1_images/imageFile21.png)
+![image 21](Images/imageFile21.png)
 
-![image 22](rcm1-1_images/imageFile22.png)
+![image 22](Images/imageFile22.png)
 
 1 Z e∈E
 
@@ -347,25 +347,25 @@ Let G = (V, E) be a finite connected graph, and let φp,q be the random-cluster 
 - • a spanning tree of G if (V, F) is connected and contains no circuit,
 - • a connected subgraph of G if (V, F) is connected. In each case we consider the graph (V, F) containing every vertex of V; in this regard, sets F of edges satisfying one of the above conditions are sometimes termed spanning. Note that F is a spanning tree if and only if it is both a forest and a connected subgraph. For = {0,1}E and ω ∈ , we call ω a forest (respectively, spanning tree, connected subgraph) if η(ω) is a forest (respectively, spanning tree, connected subgraph). Write for, st, cs for the subsets of containing all forests, spanning trees, and connected subgraphs, respectively, and write USF, UST, UCS for the uniform probability measures6 on the respective sets for, st, cs.
 
-![image 23](rcm1-1_images/imageFile23.png)
+![image 23](Images/imageFile23.png)
 
-![image 24](rcm1-1_images/imageFile24.png)
+![image 24](Images/imageFile24.png)
 
 and Zcs = Zcs(r) is the appropriate normalizing constant. In the special case p = 21, we have that φp,q ⇒ UCS as q ↓ 0.
 
-![image 25](rcm1-1_images/imageFile25.png)
+![image 25](Images/imageFile25.png)
 
-![image 26](rcm1-1_images/imageFile26.png)
+![image 26](Images/imageFile26.png)
 
-![image 27](rcm1-1_images/imageFile27.png)
+![image 27](Images/imageFile27.png)
 
 ω∈
 
 Note that p/(1 − p) → 0 and q(1 − p)/p → 0 as q ↓ 0. Now, k(ω) ≥ 1 and |η(ω)|+k(ω) ≥ |V| forω ∈ ; these two inequalitiesare satisfied simultaneously with equality if and only if ω ∈ st. Therefore, in the limit as q ↓ 0, the ‘mass’ is concentratedonspanningtrees, anditis easily seenthatthelimitmassisuniformly distributed. That is, φp,q ⇒ UST.
 
-![image 28](rcm1-1_images/imageFile28.png)
+![image 28](Images/imageFile28.png)
 
-![image 29](rcm1-1_images/imageFile29.png)
+![image 29](Images/imageFile29.png)
 
 and Zfor = Zfor(α) is the appropriate normalizing constant. In the special case α = 1, we ﬁnd that φp,q ⇒ USF.
 
@@ -377,15 +377,15 @@ Finally, if p approaches 0 faster than does q, in that p/q → 0 as p,q → 0, i
 
 UCS if p = 21, UST if p → 0 and q/p → 0,
 
-![image 30](rcm1-1_images/imageFile30.png)
+![image 30](Images/imageFile30.png)
 
 √q). It has been known since Kirchhoff’s theorem, [215], that the electrical currents which flow in a network may be expressed in terms of counts of spanning trees. We return to this discussion of UST in Section 3.9.
 
 √q/(1+
 
-![image 31](rcm1-1_images/imageFile31.png)
+![image 31](Images/imageFile31.png)
 
-![image 32](rcm1-1_images/imageFile32.png)
+![image 32](Images/imageFile32.png)
 
 The theory of the uniform-spanning-tree measure UST is beautiful in its own right(see[31]),andislinkedinanimportantwaytotheemergingfieldofstochastic growth processes of ‘stochastic Lowner¨ evolution’ (SLE) type (see [231, 284]), to which we return in Section 6.7. Further discussions of USF and UCS may be found in [165, 268].
 
@@ -405,13 +405,13 @@ The indicatorfunction of a subset A of is the function 1A : → {0,1} given by
 
 For e ∈ E, we write Je = {ω ∈ : ω(e) = 1}, the event that the edge e is open. We use Je to denote also the indicatorfunctionof this event, so that Je(ω) = ω(e). A function X : → R is called a cylinder function if there exists a finite subset F of E such that X(ω) = X(ω′) whenever ω(e) = ω′(e) for e ∈ F. A subset A of is called a cylinder event if its indicator function is a cylinder function. We
 
-![image 33](rcm1-1_images/imageFile33.png)
+![image 33](Images/imageFile33.png)
 
 7This choice of p is convenient, but actually one requires only that q/p → 0, see [166].
 
 take F to be the σ-field of subsets of generated by the cylinder events, and we shall consider certain probability measures on the measurable pair ( ,F ). If G is finite, then F is the set of all subsets of ; all events are cylinder events, and all functions are cylinder functions. The complement of an event A is written Ac or A.
 
-![image 34](rcm1-1_images/imageFile34.png)
+![image 34](Images/imageFile34.png)
 
 For W ⊆ V, let EW denote the set of edges of G having both endvertices in W. We write FW (respectively, TW) for the smallest σ-field of F with respect to which each of the random variables ω(e), e ∈ EW (respectively, e ∈/ EW), is measurable. The notation FF, TF is to be interpreted similarly for F ⊆ E. The intersection of the TF over all finite sets F is called the tail σ-field and is denoted by T . Sets in T are called tail events.
 
@@ -527,7 +527,7 @@ is necessarily bounded. In addition, any increasing function X : → R is bounde
 
 Given two probability measures µ1, µ2 on ( ,F ), we write µ1 ≤st µ2 (or µ2 ≥st µ1), and we say that µ1 is stochastically smaller than µ2, if1 µ1(X) ≤ µ2(X) for all increasing continuous random variables X on .
 
-![image 35](rcm1-1_images/imageFile35.png)
+![image 35](Images/imageFile35.png)
 
 1Recall that µ(X) denotes the expectation of X under µ, that is, µ(X) = X dµ.
 
@@ -547,7 +547,7 @@ Let S ⊆ 2 (= × ) be the set of all ordered pairs (π,ω) of conﬁgurations s
 
 Condition (2.2) in key to Theorem 2.1, and it is equivalent to a condition of monotonicity on the one-point conditional distributions.
 
-![image 36](rcm1-1_images/imageFile36.png)
+![image 36](Images/imageFile36.png)
 
 2An application of such a claim may be found in the analysis of the Ashkin–Teller model at Theorem 11.12.
 
@@ -557,9 +557,9 @@ Condition (2.2) in key to Theorem 2.1, and it is equivalent to a condition of mo
 
 µ2 ω(e) = 1 ω( f ) = ζ( f ) for all f ∈ E \ {e}
 
-![image 37](rcm1-1_images/imageFile37.png)
+![image 37](Images/imageFile37.png)
 
-![image 38](rcm1-1_images/imageFile38.png)
+![image 38](Images/imageFile38.png)
 
 The following is sufﬁcient for (2.2).
 
@@ -570,7 +570,7 @@ Proof of Theorem 2.1. The theorem amounts to a ‘mere’ numerical inequality i
 
 The main step of the proof is designed to show that, under condition (2.2), µ1 and µ2 may be ‘coupled’ in such a way that the sub-diagonal S has full measure. This is achieved by constructing a certain Markov chain with the coupled measure as invariant measure.
 
-![image 39](rcm1-1_images/imageFile39.png)
+![image 39](Images/imageFile39.png)
 
 We let G(ω,ω′) = 0 for all other pairs ω,ω′ with ω = ω′. The diagonal elements G(ω,ω) are chosen in such a way that
 
@@ -588,11 +588,11 @@ We follownexta similarroutefor pairs ofconﬁgurations. Letµ1 and µ2 satisfy t
 
 (2.10) H(πe,ω; πe,ωe) = 1, H(π,ωe; πe,ωe) =
 
-![image 40](rcm1-1_images/imageFile40.png)
+![image 40](Images/imageFile40.png)
 
-![image 41](rcm1-1_images/imageFile41.png)
+![image 41](Images/imageFile41.png)
 
-![image 42](rcm1-1_images/imageFile42.png)
+![image 42](Images/imageFile42.png)
 
 for all (π,ω) ∈ S and e ∈ E; all other off-diagonal values of H are set to 0. The diagonal terms H(π,ω; π,ω) are chosen in such a way that
 
@@ -608,9 +608,9 @@ follows from (2.2) with ω1 = πe and ω2 = ωe.
 
 Let (Yt, Zt)t≥0 be a Markov chain on S with generator H, and set (Y0, Z0) = (0,1), where 0 (respectively, 1) is the state of all zeros (respectively, ones). We write P for the appropriate probability measure. Since all transitions retain the orderingof the two componentsof the state, we mayassume thatthe chain satisﬁes P(Yt ≤ Zt for all t) = 1. By examination of (2.10)–(2.12) we see that Y = (Yt : t ≥ 0) is a Markov chain with generator given by (2.9) with µ = µ1, and that Z = (Zt : t ≥ 0) arises similarly with µ = µ2. Here is a brief explanation of this elementary step in the case of Y, a similar argument holds for Z. For π ∈ and e ∈ E,
 
-![image 43](rcm1-1_images/imageFile43.png)
+![image 43](Images/imageFile43.png)
 
-![image 44](rcm1-1_images/imageFile44.png)
+![image 44](Images/imageFile44.png)
 
 Let κ be an invariant measure for the paired chain (Yt, Zt)t≥0. Since Y and Z have (respective) unique invariant measures µ1 and µ2, the marginals of κ are µ1 and µ2. Since P(Yt ≤ Zt for all t) = 1,
 
@@ -624,59 +624,59 @@ Proof of Theorem 2.3. Inequality (2.4) is equivalent to
 
 µ2(ζe)[µ1(ξe) + µ1(ξe)] ≥ µ1(ξe)[µ2(ζe) + µ2(ζe)], which is the same as (2.5). Therefore, (b) and (c) are equivalent.
 
-![image 45](rcm1-1_images/imageFile45.png)
+![image 45](Images/imageFile45.png)
 
-![image 46](rcm1-1_images/imageFile46.png)
+![image 46](Images/imageFile46.png)
 
-![image 47](rcm1-1_images/imageFile47.png)
+![image 47](Images/imageFile47.png)
 
-![image 48](rcm1-1_images/imageFile48.png)
+![image 48](Images/imageFile48.png)
 
 µ1((A1 ∩ A2) ∪ Br−1) µ1((A1 ∩ A2) ∪ Br−2)
 
 µ1((A1 ∩ A2) ∪ B) µ1((A1 ∩ A2) ∪ Br−1) ·
 
-![image 49](rcm1-1_images/imageFile49.png)
+![image 49](Images/imageFile49.png)
 
-![image 50](rcm1-1_images/imageFile50.png)
+![image 50](Images/imageFile50.png)
 
 µ1((A1 ∩ A2) ∪ B1) µ1(A1 ∩ A2)
 
 ···
 
-![image 51](rcm1-1_images/imageFile51.png)
+![image 51](Images/imageFile51.png)
 
-![image 52](rcm1-1_images/imageFile52.png)
+![image 52](Images/imageFile52.png)
 
-![image 53](rcm1-1_images/imageFile53.png)
+![image 53](Images/imageFile53.png)
 
-![image 54](rcm1-1_images/imageFile54.png)
+![image 54](Images/imageFile54.png)
 
-![image 55](rcm1-1_images/imageFile55.png)
+![image 55](Images/imageFile55.png)
 
 - s=1
 
 µ2(η(ξ) ∪ Bs) µ2(η(ξ) ∪ Bs−1)
 
-![image 56](rcm1-1_images/imageFile56.png)
+![image 56](Images/imageFile56.png)
 
 - s=1
 
-![image 57](rcm1-1_images/imageFile57.png)
+![image 57](Images/imageFile57.png)
 
-![image 58](rcm1-1_images/imageFile58.png)
+![image 58](Images/imageFile58.png)
 
-![image 59](rcm1-1_images/imageFile59.png)
+![image 59](Images/imageFile59.png)
 
-![image 60](rcm1-1_images/imageFile60.png)
+![image 60](Images/imageFile60.png)
 
-![image 61](rcm1-1_images/imageFile61.png)
+![image 61](Images/imageFile61.png)
 
-![image 62](rcm1-1_images/imageFile62.png)
+![image 62](Images/imageFile62.png)
 
-![image 63](rcm1-1_images/imageFile63.png)
+![image 63](Images/imageFile63.png)
 
-![image 64](rcm1-1_images/imageFile64.png)
+![image 64](Images/imageFile64.png)
 
 Assumethat(2.7)holds,andletω1,ω2 ∈ . Ifµ1 satisﬁes(2.8),thenitsatisﬁes (2.17), and (2.2) follows from (2.14) with ζ = ω1 ∨ ω2, ξ = ω2. Similarly, if µ2 satisﬁes (2.8), it satisﬁes (2.17), and (2.2) follows from (2.14) with ζ = ω1, ξ = ω1 ∧ ω2.
 
@@ -695,7 +695,7 @@ It is a consequence of the Holley inequality (Theorem 2.1), as follows, that any
 
 There is an extensive literature on the FKG inequality3 and its extensions. See, for example, [2, 25, 184]. One may extend the inequality to probability measures on sample spaces of the form T E with T a finite subset of R. In addition, some of the results of this section are valid for measures that are not strictly positive. Any probability measure µ satisfying (2.20) is said to have the property of ‘positive association’ or, more concisely, to be ‘positively associated’. We consider in Section 4.1 the positive association of measures on = {0,1}E when E is countably infinite.
 
-![image 65](rcm1-1_images/imageFile65.png)
+![image 65](Images/imageFile65.png)
 
 3The history and origins of the FKG inequality are described in the Appendix.
 
@@ -703,9 +703,9 @@ Correlation-type inequalities play an important role in mathematical physics. Fo
 
 Proof. Since inequality (2.20) involves a finite set of real numbers only, it may in principle be proved in a totally elementary manner, [280]. We follow here the more interesting route via the Holley inequality, Theorem 2.1. Assume that µ satisﬁes the FKG lattice condition (2.18), and let X and Y be increasing functions. Let a > 0 and Y′ = Y + a. Since
 
-![image 66](rcm1-1_images/imageFile66.png)
+![image 66](Images/imageFile66.png)
 
-![image 67](rcm1-1_images/imageFile67.png)
+![image 67](Images/imageFile67.png)
 
 ω∈
 
@@ -765,7 +765,7 @@ It is a near triviality to check that any product measure on satisﬁes the FKG 
 
 µ0(010) = µ0(001) = δ, µ0(000) = 1 − 2δ, µ1(111) = µ1(100) = 12.
 
-![image 68](rcm1-1_images/imageFile68.png)
+![image 68](Images/imageFile68.png)
 
 Let ǫ ∈ [0,1] and set µ = ǫµ0 + (1 − ǫ)µ1. Note that µ(011) = µ(101) = µ(110) = 0.
 
@@ -773,21 +773,21 @@ It may be checked that µ does not satisfy the FKG lattice condition whereas, fo
 
 µ2(011) = µ2(101) = µ2(110) = 31 and η is small and positive.
 
-![image 69](rcm1-1_images/imageFile69.png)
+![image 69](Images/imageFile69.png)
 
-![image 70](rcm1-1_images/imageFile70.png)
+![image 70](Images/imageFile70.png)
 
 (2.29) Example6. Let X and Y be independent Bernoulli random variables with parameter 21, so that
 
-![image 71](rcm1-1_images/imageFile71.png)
+![image 71](Images/imageFile71.png)
 
 P(X = 0) = P(X = 1) = 21, and similarly for Y. Let Z = max{X,Y}. It is clear that
 
-![image 72](rcm1-1_images/imageFile72.png)
+![image 72](Images/imageFile72.png)
 
 P(X = 1 | Z = 1) > P(X = 1), P(X = 1 | Y = Z = 1) = P(X = 1).
 
-![image 73](rcm1-1_images/imageFile73.png)
+![image 73](Images/imageFile73.png)
 
 - 4Closely related material is discussed in [204]. The equivalence of (a) and (b) is attributed in [8] to J. van den Berg and R. M. Burton (1987). See [136] for a further discussion of monotonic measures.
 - 5Proposed by J. Steif. 6Proposed by J. van den Berg.
@@ -802,13 +802,13 @@ As in the previous example, µ is not strictly positive, a weakness which we rem
 
 isanincreasingfunctionofpositivelyassociatedrandomvariables,andistherefore positively associated. However, for small positive δ, it is only a small (stochastic) perturbation of the original triple (X,Y, Z), and one may check that (A, B,C) is notmonotonic. Itiseasily veriﬁedthat P((A, B,C) = ω) > 0 forall ω ∈ {0,1}3.
 
-![image 74](rcm1-1_images/imageFile74.png)
+![image 74](Images/imageFile74.png)
 
 Proof of Theorem 2.27. Throughout, µ is assumed strictly positive.
 
 (a) ⇐⇒ (b). We prove first that (a) implies (b). By Theorem 2.22, it sufﬁces to prove (2.18) for two incomparable conﬁgurations ω1, ω2 that disagree on exactly two distinct edges e, f ∈ E. We order E = (e1,e2,. . .,em) with e1 = e and e2 = f , and we express a conﬁguration ω as a ‘word’ ω(e1) · ω(e2) · . . . · ω(em) in the alphabet with two letters. Thus ω1 = 0 · 1 · w and ω2 = 1 · 0 · w for some word w of length |E| − 2. By strong positive-association, α(xy) = µ(x · y · w) satisﬁes
 
-![image 75](rcm1-1_images/imageFile75.png)
+![image 75](Images/imageFile75.png)
 
 α(11) α(00) + α(01) + α(10) + α(11) ≥ α(01) + α(11) α(10) + α(11) , which may be simpliﬁed to obtain as required that
 
@@ -820,13 +820,13 @@ We prove next that (b) implies (a). Suppose (b) holds, and let F ⊆ E and ξ �
 
 By Theorem 2.19, µξF is positively associated. (b) ⇒ (c). By the Holley inequality, Theorem 2.1, it sufﬁces to prove for ωF,ρF ∈ F that
 
-![image 76](rcm1-1_images/imageFile76.png)
+![image 76](Images/imageFile76.png)
 
 µζF(ωF ∨ ρF)µξF(ωF ∧ ρF) ≥ µζF(ωF)µξF(ρF) whenever ξ ≤ ζ. This is, by (2.24), an immediate consequence of the FKG lattice property applied to the pair ωF × ζ, ρF × ξ. (c) ⇒ (d). This is trivial. (d) ⇒ (b). Let µ be 1-monotonic. By Theorem 2.3, the pair µ, µ satisﬁes (2.2), which is to say that µ satisﬁes the FKG lattice condition.
 
-![image 77](rcm1-1_images/imageFile77.png)
+![image 77](Images/imageFile77.png)
 
-![image 78](rcm1-1_images/imageFile78.png)
+![image 78](Images/imageFile78.png)
 
 <a id="sec-2-3"></a>
 
@@ -838,7 +838,7 @@ Let N ≥ 1, and let E be an arbitary finite set with |E| = N. We write = {0,1}E
 
 where J = (Je : e ∈ E) denotes7 the identity function on . There has been an extensive study of the largest inﬂuence, maxe IA(e), when µ is a productmeasure, and this has been used to obtain concentration theorems for φp(A) viewed as a function of p, where φp denotes product measure with density p on . Such resultshave applicationsto severaltopicsincludingrandomgraphs,random walks, and percolation. Theorems concerning inﬂuence were first proved for product measures, but they may be extended in a natural way to monotonic measures.
 
-![image 79](rcm1-1_images/imageFile79.png)
+![image 79](Images/imageFile79.png)
 
 There are several useful references concerning inﬂuence for product measures, see [125, 126, 200, 201, 329] and their bibliographies. The order of magnitude N−1 log N is the best possible, see [34].
 
@@ -852,7 +852,7 @@ We may suppose without loss of generality that E = {1,2,. . ., N}. Let x = (xi :
 
 Suppose we know the values fi(x) for i = 1,2,. . .,k − 1. Let (2.33) ak = µ Jk = 1 Ji = fi(x) for i = 1,2,. . .,k − 1 ,
 
-![image 80](rcm1-1_images/imageFile80.png)
+![image 80](Images/imageFile80.png)
 
 decreasing. Let x ≤ x′, and write ak = ak(x) and ak′ = ak(x′) for the values in (2.32)–(2.33) corresponding to the vectors x and x′. Clearly a1 = a′
 
@@ -870,53 +870,53 @@ pendon x1, x2,. . ., xk−1 onlythroughthevalues f1(x), f2(x),. . ., fk−1(x). 
 
 Let U = (Ui : i = 1,2,. . ., N) be the identity function on [0,1]E, so that U has law λ. By the definition of f , f (U) has law µ. Hence, (2.35) µ(A) = λ( f (U) ∈ A) = λ(U ∈ f −1(A)) = λ(B).
 
-![image 81](rcm1-1_images/imageFile81.png)
+![image 81](Images/imageFile81.png)
 
 We turn to (2.37) with j ≥ 2. We re-order the set E to bring the index j to the front. That is, we let F be the re-ordered index set F = (k1,k2,. . . ,kN) = (j,1,2,. . ., j − 1, j + 1,. . ., N). Let g = (gkr : r = 1,2,. . ., N) denote the associated function given by (2.32)–(2.34) subject to the new ordering, and let C = g−1(A). We claim that
 
 (2.40) KC(k1) ≥ KB(j). By (2.39) with E replaced by F, KC(k1) = IA(j), and (2.37) follows. It remains to prove (2.40), and we use monotonicity again for this. It sufﬁces to prove that (2.41) λ(C | Uj = 1) ≥ λ(B | Uj = 1), together with the reversed inequality given Uj = 0. Let (2.42) U = (U1,U2,. . . ,Uj−1,1,Uj+1,. . .,UN).
 
-![image 82](rcm1-1_images/imageFile82.png)
+![image 82](Images/imageFile82.png)
 
 The 0/1-vector f (U) = ( fi(U) : i = 1,2,. . ., N) is constructed sequentially (as above)byconsideringtheindices1,2,. . ., N inturn. Atstagek,wedeclare fk(U) equal to 1 if Uk exceeds a certain function ak of the variables fi(U), 1 ≤ i < k. By the monotonicity of µ, this function is non-increasing in these variables. The index j plays a special role in that: (i) fj(U) = 1, and (ii) given this fact, it is more likely than before that the variables fk(U), j < k ≤ N, will take the value 1. The values fk(U), 1 ≤ k < j are unaffected by the value of Uj.
 
-![image 83](rcm1-1_images/imageFile83.png)
+![image 83](Images/imageFile83.png)
 
-![image 84](rcm1-1_images/imageFile84.png)
+![image 84](Images/imageFile84.png)
 
-![image 85](rcm1-1_images/imageFile85.png)
+![image 85](Images/imageFile85.png)
 
-![image 86](rcm1-1_images/imageFile86.png)
+![image 86](Images/imageFile86.png)
 
-![image 87](rcm1-1_images/imageFile87.png)
+![image 87](Images/imageFile87.png)
 
-![image 88](rcm1-1_images/imageFile88.png)
+![image 88](Images/imageFile88.png)
 
-![image 89](rcm1-1_images/imageFile89.png)
+![image 89](Images/imageFile89.png)
 
 Consider now the 0/1-vector g(U) = (gkr(U) : r = 1,2,. . ., N), constructed in the same manner as above but with the new ordering F of the index set E. First we examine index k1 (= j), and we automatically declare gk1(U) = 1 (since Uj = 1). We then construct gkr(U), r = 2,3,. . ., N, in sequence. Since the ak are non-decreasing in the variables constructed so far,
 
-![image 90](rcm1-1_images/imageFile90.png)
+![image 90](Images/imageFile90.png)
 
-![image 91](rcm1-1_images/imageFile91.png)
+![image 91](Images/imageFile91.png)
 
-![image 92](rcm1-1_images/imageFile92.png)
+![image 92](Images/imageFile92.png)
 
-![image 93](rcm1-1_images/imageFile93.png)
+![image 93](Images/imageFile93.png)
 
 (2.43) gkr(U) ≥ fkr (U), r = 2,3,. . ., N. Therefore, g(U) ≥ f (U), and hence (2.44) λ(C | Uj = 1) = λ(g(U) ∈ A) ≥ λ( f (U) ∈ A) = λ(B | Uj = 1).
 
-![image 94](rcm1-1_images/imageFile94.png)
+![image 94](Images/imageFile94.png)
 
-![image 95](rcm1-1_images/imageFile95.png)
+![image 95](Images/imageFile95.png)
 
-![image 96](rcm1-1_images/imageFile96.png)
+![image 96](Images/imageFile96.png)
 
-![image 97](rcm1-1_images/imageFile97.png)
+![image 97](Images/imageFile97.png)
 
-![image 98](rcm1-1_images/imageFile98.png)
+![image 98](Images/imageFile98.png)
 
-![image 99](rcm1-1_images/imageFile99.png)
+![image 99](Images/imageFile99.png)
 
 Inequality (2.41) has been proved. The same argument implies the reversed inequality obtained from (2.41) by changing the conditioning to Uj = 0. Inequality (2.40) follows, and the proof is complete.
 
@@ -930,36 +930,36 @@ We consider next certain families of probability measures µp indexed by a param
 
 f (p) = µp(A) is non-decreasing with f (0) = 0 and f (1) = 1. If A has a certain property of symmetry, the sharp-threshold theorem asserts that f (p) increases steeply from 0 to 1 over a short interval of p-values with length of order 1/log N.
 
-![image 100](rcm1-1_images/imageFile100.png)
+![image 100](Images/imageFile100.png)
 
 , and that (each) µp is strictly positive if and only if µ is strictly positive. It is easy to check that (each) µp satisﬁes the FKG lattice condition (2.18) if and only if µ satisﬁes this condition, and it follows by Theorem 2.27 that, for strictly positive µ, µ is monotonic if and only if (each) µp is monotonic. In order to prove a sharp-threshold theorem for the family µp, we present first a differential formula of the type referred to as Russo’s formula, [154, Section 2.4].
 
-![image 101](rcm1-1_images/imageFile101.png)
+![image 101](Images/imageFile101.png)
 
 - (2.46) Theorem [39]. For a random variable X : → R,
 - (2.47)
 
-![image 102](rcm1-1_images/imageFile102.png)
+![image 102](Images/imageFile102.png)
 
-![image 103](rcm1-1_images/imageFile103.png)
+![image 103](Images/imageFile103.png)
 
-![image 104](rcm1-1_images/imageFile104.png)
+![image 104](Images/imageFile104.png)
 
-![image 105](rcm1-1_images/imageFile105.png)
+![image 105](Images/imageFile105.png)
 
-![image 106](rcm1-1_images/imageFile106.png)
+![image 106](Images/imageFile106.png)
 
-![image 107](rcm1-1_images/imageFile107.png)
+![image 107](Images/imageFile107.png)
 
-![image 108](rcm1-1_images/imageFile108.png)
+![image 108](Images/imageFile108.png)
 
-![image 109](rcm1-1_images/imageFile109.png)
+![image 109](Images/imageFile109.png)
 
-![image 110](rcm1-1_images/imageFile110.png)
+![image 110](Images/imageFile110.png)
 
-![image 111](rcm1-1_images/imageFile111.png)
+![image 111](Images/imageFile111.png)
 
-![image 112](rcm1-1_images/imageFile112.png)
+![image 112](Images/imageFile112.png)
 
 = µp(|η|X) − µp(|η|)µp(X)
 
@@ -980,17 +980,17 @@ min µp(A),1−µp(A) log N, p ∈ (0,1), where mp = µp(Je)(1 − µp(Je)).
 
 µp(A) ≥
 
-![image 113](rcm1-1_images/imageFile113.png)
+![image 113](Images/imageFile113.png)
 
-![image 114](rcm1-1_images/imageFile114.png)
+![image 114](Images/imageFile114.png)
 
 Let ǫ ∈ (0, 21) and let A be non-empty and increasing. Under the conditions of the theorem, µp(A) increases from ǫ to 1 − ǫ over an interval of values of p having length of order 1/log N. This amounts to a quantiﬁcation of the so-called S-shape results described and cited in [154, Section 2.5]. Note that mp does not depend on the choice of edge e.
 
-![image 115](rcm1-1_images/imageFile115.png)
+![image 115](Images/imageFile115.png)
 
 The proof is preceded by an easy lemma. Let Ip,A(e) = µp(A | Je = 1) − µp(A | Je = 0), e ∈ E.
 
-![image 116](rcm1-1_images/imageFile116.png)
+![image 116](Images/imageFile116.png)
 
 9This differs slightly from the definition of Section 4.3, for reasons of local convenience.
 
@@ -1058,27 +1058,27 @@ Suppose now that A is increasing (respectively, decreasing). Here are three usef
 - (ii) The function |η| + HA (respectively, |η| − HA) is increasing, since the addition of a single open edge to a conﬁguration ω causes |η(ω)| to increase by 1, and HA(ω) to decrease (respectively, increase) by at most 1.
 - (iii) We have that HA(ω)1A(ω) = 0 for ω ∈ .
 
-![image 117](rcm1-1_images/imageFile117.png)
+![image 117](Images/imageFile117.png)
 
-![image 118](rcm1-1_images/imageFile118.png)
+![image 118](Images/imageFile118.png)
 
-![image 119](rcm1-1_images/imageFile119.png)
+![image 119](Images/imageFile119.png)
 
-![image 120](rcm1-1_images/imageFile120.png)
+![image 120](Images/imageFile120.png)
 
-![image 121](rcm1-1_images/imageFile121.png)
+![image 121](Images/imageFile121.png)
 
-![image 122](rcm1-1_images/imageFile122.png)
+![image 122](Images/imageFile122.png)
 
 where NA isthenumberofpivotaledgesforthe increasingevent A, andφp denotes product measure with density p on ( ,F ). See [154, p. 44] for further details.
 
-![image 123](rcm1-1_images/imageFile123.png)
+![image 123](Images/imageFile123.png)
 
-![image 124](rcm1-1_images/imageFile124.png)
+![image 124](Images/imageFile124.png)
 
-![image 125](rcm1-1_images/imageFile125.png)
+![image 125](Images/imageFile125.png)
 
-![image 126](rcm1-1_images/imageFile126.png)
+![image 126](Images/imageFile126.png)
 
 µp(HA)µp(A) p(1 − p)
 
@@ -1086,11 +1086,11 @@ where NA isthenumberofpivotaledgesforthe increasingevent A, andφp denotes produ
 
 , and (2.57) follows. The argument is easily adapted for decreasing A.
 
-![image 127](rcm1-1_images/imageFile127.png)
+![image 127](Images/imageFile127.png)
 
 Let A ∈ F be non-empty and increasing. Inequality (2.57) is usually used in integrated form. Integrating over the interval [r,s], and using the facts that p(1 − p) ≤ 41 and that HA is decreasing, we obtain that
 
-![image 128](rcm1-1_images/imageFile128.png)
+![image 128](Images/imageFile128.png)
 
 ≤ µs(A)exp −4(s − r)µs(HA) , 0 < r ≤ s < 1. This may sometimes be combined with a complementary inequality derived by a consideration of ‘finite energy’, see Theorem 3.45.
 
@@ -1148,7 +1148,7 @@ cluster measure φξF,p,q on ( ,F ) by (3.5)
 
  
 
-![image 129](rcm1-1_images/imageFile129.png)
+![image 129](Images/imageFile129.png)
 
 Here is a final note. Let p ∈ (0,1) and q = 1. It is easily seen that the states of two distinct edges e, f are independent if and only if the pair e, f lies in no circuit of G. This may be proved either directly or via the simulation methods of Sections 3.4 and 8.2.
 
@@ -1158,15 +1158,15 @@ Proof of Theorem 3.1. (a) This is easily seen by an expansion of the conditional
 
 φG,p,q(ωe)/φG,p,q(Je) if j = 0, φG,p,q(ωe)/φG,p,q(Je) if j = 1,
 
-![image 130](rcm1-1_images/imageFile130.png)
+![image 130](Images/imageFile130.png)
 
-![image 131](rcm1-1_images/imageFile131.png)
+![image 131](Images/imageFile131.png)
 
-![image 132](rcm1-1_images/imageFile132.png)
+![image 132](Images/imageFile132.png)
 
-![image 133](rcm1-1_images/imageFile133.png)
+![image 133](Images/imageFile133.png)
 
-![image 134](rcm1-1_images/imageFile134.png)
+![image 134](Images/imageFile134.png)
 
 where η(ω) is, as usual, the set of open edges in . (b) The claim is immediate by the fact, easily proved,that a strictly positive probability measure φ is speciﬁed uniquely by the conditional probabilities φ(ω(e) = 1 | ω e ), ω ∈ , e ∈ E.
 
@@ -1195,7 +1195,7 @@ p2q2(q − 1)(1 − p)2 Z(p,q)2
 
 ,
 
-![image 135](rcm1-1_images/imageFile135.png)
+![image 135](Images/imageFile135.png)
 
 where Jg is the event that g is open. This is strictly negative if 0 < p,q < 1.
 
@@ -1221,35 +1221,35 @@ One way of estimating the probability of an event A is via an estimate of its de
 
 [3.3] Differential formulae and sharp thresholds 41
 
-![image 136](rcm1-1_images/imageFile136.png)
+![image 136](Images/imageFile136.png)
 
-![image 137](rcm1-1_images/imageFile137.png)
+![image 137](Images/imageFile137.png)
 
-![image 138](rcm1-1_images/imageFile138.png)
+![image 138](Images/imageFile138.png)
 
-![image 139](rcm1-1_images/imageFile139.png)
+![image 139](Images/imageFile139.png)
 
-![image 140](rcm1-1_images/imageFile140.png)
+![image 140](Images/imageFile140.png)
 
-![image 141](rcm1-1_images/imageFile141.png)
+![image 141](Images/imageFile141.png)
 
-![image 142](rcm1-1_images/imageFile142.png)
+![image 142](Images/imageFile142.png)
 
-![image 143](rcm1-1_images/imageFile143.png)
+![image 143](Images/imageFile143.png)
 
-![image 144](rcm1-1_images/imageFile144.png)
+![image 144](Images/imageFile144.png)
 
 1 q
 
 covp,q(k,h(k)) ≥ 0.
 
-![image 145](rcm1-1_images/imageFile145.png)
+![image 145](Images/imageFile145.png)
 
 This time we take h = −1(−∞,1], so that −h is the indicator function of the event that the open graph (V,η(ω)) is connected. We deduce that the probability of connectedness is a decreasing function of q on the interval (0,∞). These examples are curiosities, given the failure of stochastic monotonicity when q < 1.
 
 Let q ∈ [1,∞). Since φp,q satisﬁes the FKG lattice condition (2.18), it is monotonic. Let A be a subgroup of the automorphism group1 Aut(G) of the graph G = (V, E). We call E A-transitive if A acts transitively on E.
 
-![image 146](rcm1-1_images/imageFile146.png)
+![image 146](Images/imageFile146.png)
 
 1The automorphism group Aut(G) is discussed further in Sections 4.3 and 10.12.
 
@@ -1260,45 +1260,45 @@ d dp
 
 φp,q(A) ≥ C min φp,q(A),1 − φp,q(A) log|E|,
 
-![image 147](rcm1-1_images/imageFile147.png)
+![image 147](Images/imageFile147.png)
 
-![image 148](rcm1-1_images/imageFile148.png)
+![image 148](Images/imageFile148.png)
 
-![image 149](rcm1-1_images/imageFile149.png)
+![image 149](Images/imageFile149.png)
 
-![image 150](rcm1-1_images/imageFile150.png)
+![image 150](Images/imageFile150.png)
 
 an inequality that may be integrated directly. Let p1 = p1(A,q) ∈ (0,1) be chosen such that φp1,q(A) ≥ 12. Then
 
-![image 151](rcm1-1_images/imageFile151.png)
+![image 151](Images/imageFile151.png)
 
-![image 152](rcm1-1_images/imageFile152.png)
+![image 152](Images/imageFile152.png)
 
-![image 153](rcm1-1_images/imageFile153.png)
+![image 153](Images/imageFile153.png)
 
 and hence, by integration, (3.19) φp,q(A) ≥ 1 − 12|E|−c(p−p1)/q, p ∈ (p1,1), q ∈ [1,∞), whenever the conditions of Theorem 3.16 are satisfied. If in addition p1 ≥ √q/(1 +
 
-![image 154](rcm1-1_images/imageFile154.png)
+![image 154](Images/imageFile154.png)
 
 √q), then C = c, and hence
 
-![image 155](rcm1-1_images/imageFile155.png)
+![image 155](Images/imageFile155.png)
 
-![image 156](rcm1-1_images/imageFile156.png)
+![image 156](Images/imageFile156.png)
 
 (3.20) φp,q(A) ≥ 1 − 12|E|−c(p−p1), p ∈ (p1,1). An application to box crossings in two dimensions may be found in [141]. Proof of Theorem 3.12. The first formula was proved for Theorem 2.46, and the second is obtained in a similar fashion.
 
-![image 157](rcm1-1_images/imageFile157.png)
+![image 157](Images/imageFile157.png)
 
 Proof of Theorem 3.16. With A as in the theorem, φp,q is A-invariant since A ⊆ Aut(G). The claim is a consequence of Theorem 2.51 on noting from (3.3) that
 
-![image 158](rcm1-1_images/imageFile158.png)
+![image 158](Images/imageFile158.png)
 
 , e ∈ E.
 
-![image 159](rcm1-1_images/imageFile159.png)
+![image 159](Images/imageFile159.png)
 
-![image 160](rcm1-1_images/imageFile160.png)
+![image 160](Images/imageFile160.png)
 
 <a id="sec-3-4"></a>
 
@@ -1316,9 +1316,9 @@ p1 q1(1 − p1) ≥
 
 φp1,q1 ≥st φp2,q2 if q1 ≥ q2, q1 ≥ 1, and
 
-![image 161](rcm1-1_images/imageFile161.png)
+![image 161](Images/imageFile161.png)
 
-![image 162](rcm1-1_images/imageFile162.png)
+![image 162](Images/imageFile162.png)
 
 The first of these inequalities may be strengthened as in the next theorem. A subset W of the vertex set V is called spanning if every edge of E is incident to at least one vertex of W. The degree deg(W) of a spanning set W is defined to be the maximum degree of its members, that is, the maximum number of edges of G incident to any one vertex in W.
 
@@ -1327,25 +1327,25 @@ The first of these inequalities may be strengthened as in the next theorem. A su
 
 An application is to be found in Section 5.1, where it is proved that the critical point pc(q) of an infinite-volume random-cluster model on a lattice is strictly increasing in q.
 
-![image 163](rcm1-1_images/imageFile163.png)
+![image 163](Images/imageFile163.png)
 
-![image 164](rcm1-1_images/imageFile164.png)
+![image 164](Images/imageFile164.png)
 
-![image 165](rcm1-1_images/imageFile165.png)
+![image 165](Images/imageFile165.png)
 
-![image 166](rcm1-1_images/imageFile166.png)
+![image 166](Images/imageFile166.png)
 
-![image 167](rcm1-1_images/imageFile167.png)
+![image 167](Images/imageFile167.png)
 
-![image 168](rcm1-1_images/imageFile168.png)
+![image 168](Images/imageFile168.png)
 
-![image 169](rcm1-1_images/imageFile169.png)
+![image 169](Images/imageFile169.png)
 
-![image 170](rcm1-1_images/imageFile170.png)
+![image 170](Images/imageFile170.png)
 
-![image 171](rcm1-1_images/imageFile171.png)
+![image 171](Images/imageFile171.png)
 
-![image 172](rcm1-1_images/imageFile172.png)
+![image 172](Images/imageFile172.png)
 
 Assume now that the conditions of (3.22) hold. Since k(ω) is a decreasing function and |η(ω)| is increasing, we have that Y is increasing. Since q1 ≥ 1, φp1,q1 is positively associated, whence
 
@@ -1353,9 +1353,9 @@ Assume now that the conditions of (3.22) hold. Since k(ω) is a decreasing funct
 
 Assume now that the conditions of (3.23) hold. We write Y(ω) in the form
 
-![image 173](rcm1-1_images/imageFile173.png)
+![image 173](Images/imageFile173.png)
 
-![image 174](rcm1-1_images/imageFile174.png)
+![image 174](Images/imageFile174.png)
 
 Note that k(ω) + |η(ω)| is an increasing function of ω, since the addition of an extra open edge to ω causes |η(ω)| to increase by 1 and k(ω) to decrease by at most 1. In addition, |η(ω)| is increasing. Since q2 ≤ q1 and p2/[q2(1 − p2)] ≤ p1/[q1(1 − p1)] by assumption, we have that Y is decreasing. By the positive association of φp1,q1 as above,
 
@@ -1366,19 +1366,19 @@ The proof of Theorem 3.24 begins with a subsidiary result. This contains two ine
 - (3.28) Proposition [151]. Let p ∈ (0,1), q ∈ [1,∞) and ∈ {1,2,. . .}. There exists a strictly positive and continuous function α(p,q) = α (p,q) such that the following holds. Let G be a finite graph, and suppose there exists a spanning set W such that deg(W) ≤ . Then
 - (3.29) α(p,q)
 
-![image 175](rcm1-1_images/imageFile175.png)
+![image 175](Images/imageFile175.png)
 
-![image 176](rcm1-1_images/imageFile176.png)
+![image 176](Images/imageFile176.png)
 
-![image 177](rcm1-1_images/imageFile177.png)
+![image 177](Images/imageFile177.png)
 
 for all increasing events A.
 
 Proof. Let A be an increasing event, and write θ(p,q) = φp,q(A). As in the proof of Theorem 2.1 we shall construct a Markov chain Zt = (Xt,Yt) taking values in the product space 2.
 
-![image 178](rcm1-1_images/imageFile178.png)
+![image 178](Images/imageFile178.png)
 
-![image 179](rcm1-1_images/imageFile179.png)
+![image 179](Images/imageFile179.png)
 
 qDe(π) − qDe(ω)1A(ωe) ≥ 0,
 
@@ -1394,35 +1394,35 @@ P Zt+h = (π′,ω′) Zt = (π,ω) = J(π,ω; π′,ω′)h + o(h),
 
 See [164, Chapter 6] for an account of the theory of Markov chains.
 
-![image 180](rcm1-1_images/imageFile180.png)
+![image 180](Images/imageFile180.png)
 
-![image 181](rcm1-1_images/imageFile181.png)
+![image 181](Images/imageFile181.png)
 
-![image 182](rcm1-1_images/imageFile182.png)
+![image 182](Images/imageFile182.png)
 
-![image 183](rcm1-1_images/imageFile183.png)
+![image 183](Images/imageFile183.png)
 
-![image 184](rcm1-1_images/imageFile184.png)
+![image 184](Images/imageFile184.png)
 
-![image 185](rcm1-1_images/imageFile185.png)
+![image 185](Images/imageFile185.png)
 
-![image 186](rcm1-1_images/imageFile186.png)
+![image 186](Images/imageFile186.png)
 
-![image 187](rcm1-1_images/imageFile187.png)
+![image 187](Images/imageFile187.png)
 
-![image 188](rcm1-1_images/imageFile188.png)
+![image 188](Images/imageFile188.png)
 
-![image 189](rcm1-1_images/imageFile189.png)
+![image 189](Images/imageFile189.png)
 
-![image 190](rcm1-1_images/imageFile190.png)
+![image 190](Images/imageFile190.png)
 
-![image 191](rcm1-1_images/imageFile191.png)
+![image 191](Images/imageFile191.png)
 
-![image 192](rcm1-1_images/imageFile192.png)
+![image 192](Images/imageFile192.png)
 
-![image 193](rcm1-1_images/imageFile193.png)
+![image 193](Images/imageFile193.png)
 
-![image 194](rcm1-1_images/imageFile194.png)
+![image 194](Images/imageFile194.png)
 
 where e:e∼x denotes summation over all edges e incident to the vertex x.
 
@@ -1443,36 +1443,36 @@ If Ft ∩ T ∩ U ∩ V occurs, then x is isolated in Xt+1 but not in Yt+1 (sinc
 
 Proof of Theorem 3.24. Let α be as in Proposition 3.28, and let A be an increasing event. Inequality (3.29) may be stated in the form
 
-![image 195](rcm1-1_images/imageFile195.png)
+![image 195](Images/imageFile195.png)
 
-![image 196](rcm1-1_images/imageFile196.png)
+![image 196](Images/imageFile196.png)
 
-![image 197](rcm1-1_images/imageFile197.png)
+![image 197](Images/imageFile197.png)
 
-![image 198](rcm1-1_images/imageFile198.png)
+![image 198](Images/imageFile198.png)
 
-![image 199](rcm1-1_images/imageFile199.png)
+![image 199](Images/imageFile199.png)
 
-![image 200](rcm1-1_images/imageFile200.png)
+![image 200](Images/imageFile200.png)
 
-![image 201](rcm1-1_images/imageFile201.png)
+![image 201](Images/imageFile201.png)
 
 φp,q(A) ≤ 0,
 
-![image 202](rcm1-1_images/imageFile202.png)
+![image 202](Images/imageFile202.png)
 
 whence φp,q(A) is decreasing as (p,q) moves along the contour of γ in the direction of increasing q. Therefore,
 
-![image 203](rcm1-1_images/imageFile203.png)
+![image 203](Images/imageFile203.png)
 
-![image 204](rcm1-1_images/imageFile204.png)
+![image 204](Images/imageFile204.png)
 
 Before proceeding to the proofs, we note that Theorem 3.45 is closely related to the ‘sprinkling lemma’ of [6], a version of which is valid for random-cluster models; see also [154]. The argument used to prove Theorem 3.45 may be used also to prove the following, the proof of which is omitted.
 
 - (3.48) Theorem. Let q ∈ [1,∞) and 0 < r < s < 1. For any non-empty, decreasing event A ∈ F ,
 - (3.49) φr,q(A) ≥
 
-![image 205](rcm1-1_images/imageFile205.png)
+![image 205](Images/imageFile205.png)
 
 Proof of Theorem 3.45. Let q ∈ [1,∞) and 0 < r < s < 1. We shall employ a suitable coupling of the measures φr,q and φs,q. Let E = {e1,e2,. . . ,em} be the edges of the graph G, and let U1,U2,. . .,Um be independent random variables having the uniform distribution on [0,1]. We write P for the probability measure associated with the Uj. We shall examine the edges in turn, to determine whether they are open or closed for the respective parameters r and s. The outcome will be a pair (π,ω) of conﬁgurations each lying in = {0,1}E and such that π ≤ ω. The conﬁgurations π, ω are random in the sense that they are functions of the Uj. A similar coupling was used in the proof of Theorem 2.31.
 
@@ -1494,9 +1494,9 @@ where M,γ is the set of conﬁgurations ν ∈ satisfying ν(ei) = γ(ei) for 1
 
 since r < s and π(ei) ≤ ω(ei) for 1 ≤ i ≤ M. Therefore, π(eM+1) ≤ ω(eM+1). Continuing likewise, we obtain a pair (π,ω) of conﬁgurations satisfying π ≤ ω, and such that π has law φr,q, and ω has law φs,q.
 
-![image 206](rcm1-1_images/imageFile206.png)
+![image 206](Images/imageFile206.png)
 
-![image 207](rcm1-1_images/imageFile207.png)
+![image 207](Images/imageFile207.png)
 
 where Ki istheeventthatthereexistsanopenpathof E\{ei}joiningtheendvertices of ei. Using conditional expectations and the assumption q ≥ 1,
 
@@ -1504,21 +1504,21 @@ p p + q(1 − p) ≤ φp,q(Ji | D) ≤ p
 
 (3.50)
 
-![image 208](rcm1-1_images/imageFile208.png)
+![image 208](Images/imageFile208.png)
 
-![image 209](rcm1-1_images/imageFile209.png)
+![image 209](Images/imageFile209.png)
 
-![image 210](rcm1-1_images/imageFile210.png)
+![image 210](Images/imageFile210.png)
 
-![image 211](rcm1-1_images/imageFile211.png)
+![image 211](Images/imageFile211.png)
 
-![image 212](rcm1-1_images/imageFile212.png)
+![image 212](Images/imageFile212.png)
 
-![image 213](rcm1-1_images/imageFile213.png)
+![image 213](Images/imageFile213.png)
 
-![image 214](rcm1-1_images/imageFile214.png)
+![image 214](Images/imageFile214.png)
 
-![image 215](rcm1-1_images/imageFile215.png)
+![image 215](Images/imageFile215.png)
 
 We integrate over the interval [r,s] to obtain that (3.52) φs,q(Ji) − φr,q(Ji) ≥
 
@@ -1526,19 +1526,19 @@ s − r q
 
 . Finally,
 
-![image 216](rcm1-1_images/imageFile216.png)
+![image 216](Images/imageFile216.png)
 
 φs,q(JM+1 | M,ω) − φr,q(JM+1 | M,π) ≥ φs,q(JM+1 | M,ω) − φr,q(JM+1 | M,ω),
 
 and (3.51) follows by applying (3.52) with i = M + 1 to the graph obtained from G by contracting (respectively, deleting) any edge ei (for 1 ≤ i ≤ M) with ω(ei) = 1 (respectively, ω(ei) = 0). See [152, Theorem 2.3].
 
-![image 217](rcm1-1_images/imageFile217.png)
+![image 217](Images/imageFile217.png)
 
-![image 218](rcm1-1_images/imageFile218.png)
+![image 218](Images/imageFile218.png)
 
-![image 219](rcm1-1_images/imageFile219.png)
+![image 219](Images/imageFile219.png)
 
-![image 220](rcm1-1_images/imageFile220.png)
+![image 220](Images/imageFile220.png)
 
 This follows by the recursive construction of π and ω in terms of the family U1,U2,. . . ,Um, in the light of the bound (3.53).
 
@@ -1548,18 +1548,18 @@ Inequality (3.54) implies the claim of the theorem, as follows. Let A be an incr
 
 If more than one such set B exists, we pick the earliest in some deterministic ordering of all subsets of E. By (3.54),
 
-![image 221](rcm1-1_images/imageFile221.png)
+![image 221](Images/imageFile221.png)
 
-![image 222](rcm1-1_images/imageFile222.png)
+![image 222](Images/imageFile222.png)
 
 In the usual approach of classical statistical mechanics, one studies phase transitions via the partitionfunctionandits derivatives. We preferin this work to follow a more probabilistic approach, but shall nevertheless have recourse to various arguments based on the behaviour of the partition function, of which we note some basic properties.
 
 - (3.57) TG(u,v) = (u − 1)|V|−k(G)WG (u − 1)−1,v − 1 is known as the dichromatic (or Tutte) polynomial, [313]. The partition function ZG of the graph G is easily seen to satisfy
 - (3.58) ZG(p,q) = q|V|(1 − p)|E|WG
 
-![image 223](rcm1-1_images/imageFile223.png)
+![image 223](Images/imageFile223.png)
 
-![image 224](rcm1-1_images/imageFile224.png)
+![image 224](Images/imageFile224.png)
 
 a relationship which provides a link with other classical quantities associated with a graph. See [40, 41, 121, 157, 308, 315] and Chapter 9.
 
@@ -1576,7 +1576,7 @@ The partition function ZG does not change a great deal if an edge is removed fro
 
 ZG\F(p,q) ZG(p,q) ≤ (1 ∨ q)|F|, F ⊆ E.
 
-![image 225](rcm1-1_images/imageFile225.png)
+![image 225](Images/imageFile225.png)
 
 We give next an application of these inequalities to be used later. Let Gi = (Vi, Ei), i = 1,2, be finite graphson disjointvertexsets V1, V2, andwrite G1∪G2 for the graph (V1 ∪ V2, E1 ∪ E2). It is immediate from (3.55) that
 
@@ -1616,17 +1616,17 @@ We develop next an inequality related to (3.61) concerning the addition of a ver
 
 ZG+v(p,q) ZG(p,q) ≥ q(1 − p + pq−1)|W|.
 
-![image 226](rcm1-1_images/imageFile226.png)
+![image 226](Images/imageFile226.png)
 
-![image 227](rcm1-1_images/imageFile227.png)
+![image 227](Images/imageFile227.png)
 
-![image 228](rcm1-1_images/imageFile228.png)
+![image 228](Images/imageFile228.png)
 
-![image 229](rcm1-1_images/imageFile229.png)
+![image 229](Images/imageFile229.png)
 
-![image 230](rcm1-1_images/imageFile230.png)
+![image 230](Images/imageFile230.png)
 
-![image 231](rcm1-1_images/imageFile231.png)
+![image 231](Images/imageFile231.png)
 
 α + (1 − α)yn ≥ [α + (1 − α)y]n, α, y ∈ [0,1], n ∈ {1,2,. . .}. We substitute (3.68) into (3.67) to obtain the claim.
 
@@ -1640,13 +1640,13 @@ Since ZG ≥ q for all G when q ≥ 1,
 
 (3.70) ZG ≥ ZG1.
 
-![image 232](rcm1-1_images/imageFile232.png)
+![image 232](Images/imageFile232.png)
 
 and then
 
 ZG(p,q) = (1 − p)|E|YG(π(p),κ(q)). We write ∇X for the gradient vector of a function X : R2 → R. (3.73) Theorem. Let the vectors (π,κ) and (p,q) be related by (3.72).
 
-![image 233](rcm1-1_images/imageFile233.png)
+![image 233](Images/imageFile233.png)
 
 α=0
 
@@ -1658,9 +1658,9 @@ YG (π,κ) + αi = YG(π,κ)φp,q(eαL(i)),
 
 where L(i) = i1|η| +i2k. Therefore, the jth derivative as in (3.75) equals the jth cumulant (or semi-invariant3) of L(i).
 
-![image 234](rcm1-1_images/imageFile234.png)
+![image 234](Images/imageFile234.png)
 
-![image 235](rcm1-1_images/imageFile235.png)
+![image 235](Images/imageFile235.png)
 
 and (3.75) follows as in part (a). The convexity is a consequence of the fact that variances are non-negative.
 
@@ -1672,35 +1672,35 @@ Stochastic domination is an invaluable tool in the study of random-cluster measu
 
 Consider the random-clustermodel with parameters p and q on the finite graph G = (V, E). If q ∈ {2,3,. . .}, we may generate a Potts model by assigning a uniformly chosen spin-value to each open cluster. The spin conﬁguration thus obtained is governed by the Potts measure with inverse-temperature β satisfying p = 1−e−β. Evidently,this can workonly if q is an integer. Aweakerconclusion may be obtained if q is not an integer, namely the following. Suppose p ∈ [0,1] and q ∈ [1,∞). We examine each open cluster of the random-cluster model in turn, and we declareitto be red with probability1/q and white otherwise, different clusters receiving independent colours4. Let R be the set of vertices lying in red clusters. If q ∈ {2,3,. . .}, then R has the same distribution as the set of vertices of the corresponding Potts model that have a pre-determined spin-value. Write Pp,q for an appropriate probability measure. One has for general q ∈ (1,∞) that,
 
-![image 236](rcm1-1_images/imageFile236.png)
+![image 236](Images/imageFile236.png)
 
-![image 237](rcm1-1_images/imageFile237.png)
+![image 237](Images/imageFile237.png)
 
-![image 238](rcm1-1_images/imageFile238.png)
+![image 238](Images/imageFile238.png)
 
-![image 239](rcm1-1_images/imageFile239.png)
+![image 239](Images/imageFile239.png)
 
-![image 240](rcm1-1_images/imageFile240.png)
+![image 240](Images/imageFile240.png)
 
 ω′∈ A
 
-![image 241](rcm1-1_images/imageFile241.png)
+![image 241](Images/imageFile241.png)
 
-![image 242](rcm1-1_images/imageFile242.png)
+![image 242](Images/imageFile242.png)
 
-![image 243](rcm1-1_images/imageFile243.png)
+![image 243](Images/imageFile243.png)
 
 k(ω′)
 
 where A = V \ A, A = {0,1}EA with EA the subset of E containing all edges with both endvertices in A, the ZG, ZA are the appropriate partition functions, and eA is the set of edges of G with exactly one endvertex in A. When q is an integer, (3.76) reduces to the usual Potts law for the set of vertices with a given spin-value.
 
-![image 244](rcm1-1_images/imageFile244.png)
+![image 244](Images/imageFile244.png)
 
-![image 245](rcm1-1_images/imageFile245.png)
+![image 245](Images/imageFile245.png)
 
-![image 246](rcm1-1_images/imageFile246.png)
+![image 246](Images/imageFile246.png)
 
-![image 247](rcm1-1_images/imageFile247.png)
+![image 247](Images/imageFile247.png)
 
 where ZI = ZI(β,h)istherequirednormalizingconstant5. Weshallbeconcerned here with the random set S = S(σ) = {u ∈ V : σu = 1}, containing all vertices with spin +1.
 
@@ -1708,18 +1708,18 @@ Let deg(u) denote the degree of the vertex u in the graph G, and let
 
 = max deg(u) : u ∈ V .
 
-![image 248](rcm1-1_images/imageFile248.png)
+![image 248](Images/imageFile248.png)
 
 5The fraction 21 in the exponent is that appearing in (1.7).
 
-![image 249](rcm1-1_images/imageFile249.png)
+![image 249](Images/imageFile249.png)
 
 - (3.79) Theorem [15]. Let β ∈ (0,∞), p = 1 − e−β, q ∈ [2,∞), and let R be the random ‘red’ set of the random-cluster model, governed by the law given in (3.76). Let β′ ∈ (0,∞) and h′ ∈ (−∞,∞) be given by
 - (3.80) e2β′ = eβ
 
-![image 250](rcm1-1_images/imageFile250.png)
+![image 250](Images/imageFile250.png)
 
-![image 251](rcm1-1_images/imageFile251.png)
+![image 251](Images/imageFile251.png)
 
 and let S be the set of vertices with spin +1 under the Ising measure πβ′,h′. Then (3.81) R ≤st S. Inequality (3.81) is to be interpreted as
 
@@ -1735,7 +1735,7 @@ q − 2 (q − 1)1−(2/ ) − 1
 
 . By (3.80) and an elementary argument using monotonicity, (3.83) h′ < 0 if and only if β < β .
 
-![image 252](rcm1-1_images/imageFile252.png)
+![image 252](Images/imageFile252.png)
 
 We make one further note in advance of proving the theorem. By (3.82), β → 0 as → ∞; ifthemaximumvertexdegreeislarge,thefieldofapplication of the theorem is small. In an important application of the theorem, we shall take G to be a box of the lattice Ld with so-called ‘wired boundary conditions’ (see Section 4.2). This amounts to identifying all vertices in the boundary ∂ , and thus to the introductionof a single vertex, w say, having large degree. The method of proof of Theorem 3.79 is valid in this slightly more general setting with
 
@@ -1757,17 +1757,17 @@ First, we check (2.7). Let C ⊆ V and u ∈ V \ C. We claim that (3.84) µ2(Cu)
 
 µ2(Cu)
 
-![image 253](rcm1-1_images/imageFile253.png)
+![image 253](Images/imageFile253.png)
 
-![image 254](rcm1-1_images/imageFile254.png)
+![image 254](Images/imageFile254.png)
 
 (3.86)
 
-![image 255](rcm1-1_images/imageFile255.png)
+![image 255](Images/imageFile255.png)
 
-![image 256](rcm1-1_images/imageFile256.png)
+![image 256](Images/imageFile256.png)
 
-![image 257](rcm1-1_images/imageFile257.png)
+![image 257](Images/imageFile257.png)
 
 ≥ (1 − p)2r−δ(q − 1) 1 − p + p(q − 1)−1 δ−r.
 
@@ -1775,17 +1775,17 @@ Substituting p = 1 − e−β and setting x = eβ, we obtain by multiplying (3.8
 
 µ2(Cu)µ1(C) µ1(Cu)µ2(C) ≥ exp β′(2r − δ) + β′h′ − β(2r − δ)
 
-![image 258](rcm1-1_images/imageFile258.png)
+![image 258](Images/imageFile258.png)
 
-![image 259](rcm1-1_images/imageFile259.png)
+![image 259](Images/imageFile259.png)
 
-![image 260](rcm1-1_images/imageFile260.png)
+![image 260](Images/imageFile260.png)
 
-![image 261](rcm1-1_images/imageFile261.png)
+![image 261](Images/imageFile261.png)
 
-![image 262](rcm1-1_images/imageFile262.png)
+![image 262](Images/imageFile262.png)
 
-![image 263](rcm1-1_images/imageFile263.png)
+![image 263](Images/imageFile263.png)
 
 62 Fundamental Properties [3.8]
 
@@ -1828,9 +1828,9 @@ where π = pe pf + pe(1 − pf ) + pf (1 − pe) = π(pe, pf ).
 
 (b) Write e = u,v , f = v,w , so that g = u,w . Recall that ω and τω agree off the edges e, f , g, and hence the partial conﬁgurations (ω(h) : h = e, f ) and (τω(h) : h = g) have the same law. Let K be the set of all ω ∈ such that there exists an open path from u to w not using e, f ; let K′ be the corresponding event in ′ with e, f replaced by g. Note that K′ = τ K.
 
-![image 264](rcm1-1_images/imageFile264.png)
+![image 264](Images/imageFile264.png)
 
-![image 265](rcm1-1_images/imageFile265.png)
+![image 265](Images/imageFile265.png)
 
 where σ = σ(pe, pf ,q). The edge g is open in τω if and only if both e and f are open in ω. Therefore,
 
@@ -1840,21 +1840,21 @@ pepf pe pf + pe(1 − pe) + pf (1 − pf ) + q(1 − pe)(1 − pf )
 
 ,
 
-![image 266](rcm1-1_images/imageFile266.png)
+![image 266](Images/imageFile266.png)
 
 in agreement with (3.90). Similarly,
 
 φp′,q(ω′(g) = 1 | K′) = φp,q ω(e) = ω( f ) = 1 K , which in turn equals
 
-![image 267](rcm1-1_images/imageFile267.png)
+![image 267](Images/imageFile267.png)
 
-![image 268](rcm1-1_images/imageFile268.png)
+![image 268](Images/imageFile268.png)
 
 pepf pe pf + qpe(1 − pf ) + qpf (1 − pe) + q2(1 − pe)(1 − pf )
 
 ,
 
-![image 269](rcm1-1_images/imageFile269.png)
+![image 269](Images/imageFile269.png)
 
 = {0,1}E. There are four relevant concepts of negative association, of which we start at the ‘lowest’. The measure µ is said to be edge-negatively-associated if (3.92) µ(Je ∩ Jf ) ≤ µ(Je)µ(Jf ), e, f ∈ E, e = f. Recall that Je = {ω ∈ : ω(e) = 1}.
 
@@ -1870,9 +1870,9 @@ for all pairs (A, B) of increasing events with the property that there exists E�
 
 Ourthird andfourthconceptsof negativeassociationinvolveso-called ‘disjoint occurrence’ (see [37, 154]). Let A and B be events in . We deﬁne A B to be the set of all vectors ω ∈ forwhich there exists a set F ⊆ E such that F,ω ⊆ A and F,ω ⊆ B, where F = E \ F. Note that the choice of F is allowed to depend on the vector ω. We say that µ has the disjoint-occurrence property if
 
-![image 270](rcm1-1_images/imageFile270.png)
+![image 270](Images/imageFile270.png)
 
-![image 271](rcm1-1_images/imageFile271.png)
+![image 271](Images/imageFile271.png)
 
 (3.93) µ(A B) ≤ µ(A)µ(B), A, B ⊆ , and hasthe disjoint-occurrenceproperty onincreasingevents if (3.93)holdsunder the additional assumption that A and B are increasing events.
 
@@ -1892,7 +1892,7 @@ In the absence of a satisfactory approach to the general case of random-cluster 
 
 A stronger version of this conjecture is that USF and UCS are negatively associated in one or more of the senses described above.
 
-![image 272](rcm1-1_images/imageFile272.png)
+![image 272](Images/imageFile272.png)
 
 7Consider the two events Je, Jf in the graph G comprising exactly two edges e, f in parallel.
 
@@ -1939,7 +1939,7 @@ Theso-called Rayleighprinciplestates thatthe effectiveresistance ofa network is 
 
 The usual proof of the Rayleigh principle makes use of the Thomson/Dirichlet variational principle, which in turn asserts that, amongst all unit flows from source to sink, the true flow of unit size is that which minimizes the dissipated energy. A good account of the Kirchhoff theorem on electrical networks and spanning trees may be found in [59]. Further accounts of the mathematics of electrical networks include [106] and [241, 329], the latter containing also much material about the uniform spanning tree.
 
-![image 273](rcm1-1_images/imageFile273.png)
+![image 273](Images/imageFile273.png)
 
 8When re-stated in terms of counts of spanning trees with certain properties, this is a consequence of the 1847 work of Kirchhoff [215] on electrical networks, as elaborated by Brooks, Smith, Stone, and Tutte in their famous paper [71] on the dissection of rectangles. Indeed, the difference µ(Je ∩ Jf ) − µ(Je)µ(Jf ) may be expressed in terms of a certain ‘transfer current matrix’. See [74] for an extension to more than two edges, and [31, 241] for related discussion.
 
@@ -1991,7 +1991,7 @@ where the convergence is pointwise on . The functions X0 , X1 are continuous. Th
 
 It is a usefulfact that, when µ1 ≤st µ2, then µ1 = µ2 whenevertheir marginals are equal. We state this as a theorem for future use, see also [235, Section II.2]. Recall that Je is the event that e is open.
 
-![image 274](rcm1-1_images/imageFile274.png)
+![image 274](Images/imageFile274.png)
 
 1An important example of an upper-semicontinuous function is the indicator function X = 1A of an increasing closed event A.
 
@@ -2047,7 +2047,7 @@ containing all conﬁgurations ω satisfying ω(e) = ξ(e) for e ∈ Ed \ E ; th
 
 we shall write φ ,ξ p,q for the random-cluster measure on the finite graph ( ,E ) ‘with boundary condition ξ’; this is the equivalent of a ‘speciﬁcation’ for Gibbs
 
-![image 275](rcm1-1_images/imageFile275.png)
+![image 275](Images/imageFile275.png)
 
 The boundary condition ξ inﬂuences the measure φ ,ξ p,q through the way in which the term k(ω, ) in (4.11) counts the number of ω-open clusters of intersecting the boundary ∂ . Let x, y ∈ ∂ , and suppose there exists a path of ξ-open edges of Ed \ E from x to y. Then any two ω-open clusters of containing x and y, respectively, will contribute only 1 to the count k(ω, ).
 
@@ -2080,15 +2080,15 @@ where ωξ isgiven in (4.2). We may view Xξ asan increasing function on {0,1}E 
 
 We augment the graph ( ,E ) by adding some extra edges as follows around the boundary∂ . Foreverydistinctunorderedpair x, y ∈ ∂ , we adda newedge, denoted [x, y], between x and y. If the edge x, y exists already in , we simply add another in parallel. We write F for the set of new edges, = {0,1}E ∪F for the augmented conﬁguration space, and let φ be the random-cluster measure on the augmentedgraph ( ,E ∪F). The key pointis thatφ satisﬁes the statements in Theorem 2.27.
 
-![image 276](rcm1-1_images/imageFile276.png)
+![image 276](Images/imageFile276.png)
 
-![image 277](rcm1-1_images/imageFile277.png)
+![image 277](Images/imageFile277.png)
 
-![image 278](rcm1-1_images/imageFile278.png)
+![image 278](Images/imageFile278.png)
 
 For ξ ∈ , let ∼ξ be the equivalence relation on ∂ given by: x ∼ξ y if and only if there exists a ξ-open path of Ed \ E joining x to y. Let Fξ be the set of all edges [x, y] ∈ F such that x ∼ξ y.
 
-![image 279](rcm1-1_images/imageFile279.png)
+![image 279](Images/imageFile279.png)
 
 2Alternatively, one may omit from the cluster-count all clusters that intersect ∂ . This under-
 
@@ -2100,19 +2100,19 @@ cuts k(ω, ) by 1 for the wired measure φ ,1 p,q, and the difference, being con
 
 = φ (Xξ Yξ | Fξ open, F \ Fξ closed) ≥ φ (Xξ | Fξ open, F \ Fξ closed)φ (Yξ | Fξ open, F \ Fξ closed)
 
-![image 280](rcm1-1_images/imageFile280.png)
+![image 280](Images/imageFile280.png)
 
-![image 281](rcm1-1_images/imageFile281.png)
+![image 281](Images/imageFile281.png)
 
-![image 282](rcm1-1_images/imageFile282.png)
+![image 282](Images/imageFile282.png)
 
 = φ (Xψ | Fψ open, F \ Fψ closed) ≤ φ (Xψ | Fξ open, F \ Fξ closed) by monotonicity ≤ φ (Xξ | Fξ open, F \ Fξ closed) since Xψ ≤ Xξ
 
-![image 283](rcm1-1_images/imageFile283.png)
+![image 283](Images/imageFile283.png)
 
-![image 284](rcm1-1_images/imageFile284.png)
+![image 284](Images/imageFile284.png)
 
-![image 285](rcm1-1_images/imageFile285.png)
+![image 285](Images/imageFile285.png)
 
 = φξ (Xξ ) = φξ (X), and the claim follows.
 
@@ -2128,7 +2128,7 @@ some ξ ∈ , φ is an accumulation point of the family {φ ,ξ p,q : ⊆ Zd}, t
 
 φξ n,p,q ⇒ φ as n → ∞. The set of all such measures φ is denoted by Wp,q, and the closed convex hull of Wp,q is denoted by coWp,q.
 
-![image 286](rcm1-1_images/imageFile286.png)
+![image 286](Images/imageFile286.png)
 
 One might at first sight consider instead the class of all weak limits of the form
 
@@ -2156,11 +2156,11 @@ The following claim is standard of its type. Part (b) is related to the so-calle
 
 (a) Existence. The set Wp,q of limit-random-cluster measures is non-empty. (b) Finite-energy property. Let φ ∈ coWp,q and e ∈ Ed. We have that
 
-![image 287](rcm1-1_images/imageFile287.png)
+![image 287](Images/imageFile287.png)
 
-![image 288](rcm1-1_images/imageFile288.png)
+![image 288](Images/imageFile288.png)
 
-![image 289](rcm1-1_images/imageFile289.png)
+![image 289](Images/imageFile289.png)
 
 φ-almost-surely, where Je is the event that e is open. (c) Positive association. If q ∈ [1,∞), any member of Wp,q is positively associated.
 
@@ -2208,7 +2208,7 @@ Let Ŵ be a subgroup of Aut(G). A random variable X : → R is called Ŵ-invaria
 
 We turn now to the graph G = Ld, and to a class of automorphisms termed translations. Let x ∈ Zd, and deﬁne the function τx : Zd → Zd by τx(y) = x + y.
 
-![image 290](rcm1-1_images/imageFile290.png)
+![image 290](Images/imageFile290.png)
 
 3A graph is called locally finite if every vertex has finite degree.
 
@@ -2275,17 +2275,17 @@ and (4.21) follows by Proposition 4.10(a). (d) We develop the proof of [31, 240]
 
 ↑ Zd to deduce that (4.25) φp0,q(A ∩ B) ≥ φp0,q(A)φp0,q(B), B ∈ T .
 
-![image 291](rcm1-1_images/imageFile291.png)
+![image 291](Images/imageFile291.png)
 
 4The case φ ,0 p,q(B) = 0 should be handled separately.
 
 Applying (4.25) to the complement B, we have that (4.26) φp0,q(A ∩ B) ≥ φp0,q(A)φp0,q(B), B ∈ T . Since the sum of (4.25) and (4.26) holds with equality, (4.27) φp0,q(A ∩ B) = φp0,q(A)φp0,q(B), B ∈ T .
 
-![image 292](rcm1-1_images/imageFile292.png)
+![image 292](Images/imageFile292.png)
 
-![image 293](rcm1-1_images/imageFile293.png)
+![image 293](Images/imageFile293.png)
 
-![image 294](rcm1-1_images/imageFile294.png)
+![image 294](Images/imageFile294.png)
 
 Since this holds for all increasing A ∈ F , it holds (as in the proof of part (a)) for all A ∈ F . Setting A = B yields that φp0,q(B) equals 0 or 1, which is to say that T is trivial. The same proof with several inequalities reversed is valid for φp1,q.
 
@@ -2295,9 +2295,9 @@ We close this section with the infinite-volume comparison inequalities and certa
 
 (a) Comparison inequalities. For b = 0,1, the measures φpb,q satisfy the comparison inequalities:
 
-![image 295](rcm1-1_images/imageFile295.png)
+![image 295](Images/imageFile295.png)
 
-![image 296](rcm1-1_images/imageFile296.png)
+![image 296](Images/imageFile296.png)
 
 (b) Upper-semicontinuity. Let X be an increasing upper-semicontinuous ran-
 
@@ -2347,7 +2347,7 @@ The structure of Rp,q relative to the set Wp,q remains somewhat obscure. It is n
 
 (4.31) Theorem [152, 153, 156, 272]. Let p ∈ [0,1] and q ∈ (0,∞). If φ ∈ co Wp,q and φ has the 0/1-infinite-cluster property, then φ ∈ Rp,q.
 
-![image 297](rcm1-1_images/imageFile297.png)
+![image 297](Images/imageFile297.png)
 
 A sufﬁcient condition for the 0/1-infinite-cluster property is provided by the uniqueness theorem of Burton–Keane, [72], namely translation-invariance6 and so-called ‘finite energy’. A probability measure φ on ( ,F ) is said to have the finite-energy property if
 
@@ -2355,19 +2355,19 @@ A sufﬁcient condition for the 0/1-infinite-cluster property is provided by the
 
 (a) The closed convex hull coWp,q contains some translation-invariant proba-
 
-![image 298](rcm1-1_images/imageFile298.png)
+![image 298](Images/imageFile298.png)
 
 bility measure φ. (b) Let p ∈ (0,1). Every φ ∈ coWp,q has the finite-energy property. (c) If φ ∈ coWp,q is translation-invariant, then φ has the 0/1-infinite-cluster
 
-![image 299](rcm1-1_images/imageFile299.png)
+![image 299](Images/imageFile299.png)
 
-![image 300](rcm1-1_images/imageFile300.png)
+![image 300](Images/imageFile300.png)
 
 property.
 
 Theorems 4.31 and 4.33 imply jointly that |Rp,q| = ∅ when p ∈ (0,1) and q ∈ (0,∞). [The cases p = 0,1 are trivial.] We now present some of the basic properties of the set Rp,q.
 
-![image 301](rcm1-1_images/imageFile301.png)
+![image 301](Images/imageFile301.png)
 
 - 5The 0/1-infinite-cluster property is linked to the property of so-called ‘almost-sure quasilocality’, see Lemma 4.39 and [272].
 - 6Ratherlessthanfulltranslation-invarianceisinfactrequired. Theproofin[72]usesergodicity of the probability measure, rather than simply translation-invariance. Further comments about the extension to translation-invariant measures may be found in [73] and [136, p. 42]. See [158] for a general account of Burton–Keane uniqueness.
@@ -2402,19 +2402,19 @@ It easily seen that D , = {I ≥ 2}, where I is the number of infinite open clus
 
 By the finite-energy property (4.32), (4.42) φ(I ≥ 2) > 0 if φ(I ≥ 2) > 0. By the 0/1-infinite-cluster property, φ(I ≥ 2) = 0, and therefore φ(Dg) = 0 as required.
 
-![image 302](rcm1-1_images/imageFile302.png)
+![image 302](Images/imageFile302.png)
 
 m
 
 where m = [−m,m]d, and τx ◦ φ is the probability measure on ( ,F ) given by τx ◦ φ(A) = φ(τx A) for the translation τx(y) = x + y of the lattice. Clearly, τx ◦ φ ∈ Wp,q for all x, whence ψm belongs to the convex hull of Wp,q. Let ψ be an accumulation point of the family (ψm : m = 1,2,. . .) of measures.
 
-![image 303](rcm1-1_images/imageFile303.png)
+![image 303](Images/imageFile303.png)
 
 → 0 as m → ∞,
 
 whence ψ is τe-invariant. Certainly ψ ∈ coWp,q, and the proof of (a) is complete. (b) This follows by Theorem 4.17(b).
 
-![image 304](rcm1-1_images/imageFile304.png)
+![image 304](Images/imageFile304.png)
 
 (c) If p = 0 (respectively, p = 1), then φ is concentrated on the conﬁguration 0 (respectively, 1), and the claim holds trivially. If p ∈ (0,1), it follows from (b) and the main theorem of [72]. See also the footnote on page 79.
 
@@ -2478,19 +2478,19 @@ X(ρn)1C(ρ) → X(ρ)1C(ρ) P-a.s., where C = \ DX. By the bounded convergence 
 
 = P |X(ρn) − X(ρ)|1C(ρ) + P |X(ρn) − X(ρ)|1C(ρ) ≤ P |X(ρn) − X(ρ)|1C(ρ) + v(X)P(1C(ρ))
 
-![image 305](rcm1-1_images/imageFile305.png)
+![image 305](Images/imageFile305.png)
 
-![image 306](rcm1-1_images/imageFile306.png)
+![image 306](Images/imageFile306.png)
 
 → 0 + v(X)µ(C) = v(X)µ(DX) as n → ∞.
 
-![image 307](rcm1-1_images/imageFile307.png)
+![image 307](Images/imageFile307.png)
 
 Let φ ∈ co Wp,q have the 0/1-infinite-cluster property, and write φ as φ = limn→∞ φn where
 
-![image 308](rcm1-1_images/imageFile308.png)
+![image 308](Images/imageFile308.png)
 
-![image 309](rcm1-1_images/imageFile309.png)
+![image 309](Images/imageFile309.png)
 
 (4.50) φ 1B(·)φ ,· p,q(A) = φ(A ∩ B).
 
@@ -2502,21 +2502,21 @@ By (4.49) and Lemma 4.48, (4.52) lim sup
 
 ↑Zd
 
-![image 310](rcm1-1_images/imageFile310.png)
+![image 310](Images/imageFile310.png)
 
-![image 311](rcm1-1_images/imageFile311.png)
+![image 311](Images/imageFile311.png)
 
-![image 312](rcm1-1_images/imageFile312.png)
+![image 312](Images/imageFile312.png)
 
-![image 313](rcm1-1_images/imageFile313.png)
+![image 313](Images/imageFile313.png)
 
-![image 314](rcm1-1_images/imageFile314.png)
+![image 314](Images/imageFile314.png)
 
 → φ(I ≥ 2) as → Zd. The final probability equals 0 as in (4.42), and therefore (4.50) holds.
 
 Proof of Theorem 4.34. (a) By Theorem 4.33, there exists φ ∈ coWp,q with the 0/1-infinite-cluster property. By Theorem 4.31, φ ∈ Rp,q. Convexity follows immediately from definition 4.29: for φ,ψ ∈ Rp,q and α ∈ [0,1], the measure αφ + (1 − α)ψ satisﬁes the condition of the definition.
 
-![image 315](rcm1-1_images/imageFile315.png)
+![image 315](Images/imageFile315.png)
 
 (b) Assume q ∈ [1,∞). By Theorem 4.19(b) the φpb,q are translation-invariant, whence by Theorem 4.33(c) they have the 0/1-infinite-cluster property. By The-
 
@@ -2568,7 +2568,7 @@ p 1 − p
 
 , κ(q) = logq.
 
-![image 316](rcm1-1_images/imageFile316.png)
+![image 316](Images/imageFile316.png)
 
 Note that (4.57) Zξ (p,1) = 1, Y (π,0) = (1 − p)−|E |.
 
@@ -2576,7 +2576,7 @@ We introduce next a function G(π,κ) which describes the exponential asymptotic
 
 (4.58) Theorem [145, 150, 152]. Let be a box of Ld. The finite limits (4.59) G(π,κ) = lim
 
-![image 317](rcm1-1_images/imageFile317.png)
+![image 317](Images/imageFile317.png)
 
 ↑Zd
 
@@ -2620,7 +2620,7 @@ where (p,q) and (π,κ) are related by (4.56), and G is given in (4.59). We shal
 
 What is the set Dq? We shall return to this question in Section 5.3, but in the meantime we summarize the anticipated situation. Let d ≥ 2 be given, and assume q ∈ [1,∞). It is thought to be the case that Dq is empty when q − 1 is
 
-![image 318](rcm1-1_images/imageFile318.png)
+![image 318](Images/imageFile318.png)
 
 7There is an error in [152, Thm 4.5] in the case q ∈ (0, 1). The correct condition there is that the measure φ be automorphism-invariant rather than translation-invariant.
 
@@ -2638,57 +2638,57 @@ Proof of Theorem 4.58. Let p ∈ (0,1) and q ∈ (0,∞), and let (π,κ) be giv
 
 We show first that the limit (4.59) exists with ξ = 0, and shall for the moment suppress explicitreferenceto the boundarycondition. Let n = (n1,n2,. . .,nd) ∈ Nd, write |n| = n1n2 ···nd, andlet n bethe box di=1[1,ni]. By thetranslationinvariance of Z (p,q), we may restrict ourselves to boxes of this type.
 
-![image 319](rcm1-1_images/imageFile319.png)
+![image 319](Images/imageFile319.png)
 
-![image 320](rcm1-1_images/imageFile320.png)
+![image 320](Images/imageFile320.png)
 
-![image 321](rcm1-1_images/imageFile321.png)
+![image 321](Images/imageFile321.png)
 
-![image 322](rcm1-1_images/imageFile322.png)
+![image 322](Images/imageFile322.png)
 
-![image 323](rcm1-1_images/imageFile323.png)
+![image 323](Images/imageFile323.png)
 
-![image 324](rcm1-1_images/imageFile324.png)
+![image 324](Images/imageFile324.png)
 
-![image 325](rcm1-1_images/imageFile325.png)
+![image 325](Images/imageFile325.png)
 
-![image 326](rcm1-1_images/imageFile326.png)
+![image 326](Images/imageFile326.png)
 
-![image 327](rcm1-1_images/imageFile327.png)
+![image 327](Images/imageFile327.png)
 
-![image 328](rcm1-1_images/imageFile328.png)
+![image 328](Images/imageFile328.png)
 
-![image 329](rcm1-1_images/imageFile329.png)
+![image 329](Images/imageFile329.png)
 
-![image 330](rcm1-1_images/imageFile330.png)
+![image 330](Images/imageFile330.png)
 
-![image 331](rcm1-1_images/imageFile331.png)
+![image 331](Images/imageFile331.png)
 
-![image 332](rcm1-1_images/imageFile332.png)
+![image 332](Images/imageFile332.png)
 
-![image 333](rcm1-1_images/imageFile333.png)
+![image 333](Images/imageFile333.png)
 
-![image 334](rcm1-1_images/imageFile334.png)
+![image 334](Images/imageFile334.png)
 
-![image 335](rcm1-1_images/imageFile335.png)
+![image 335](Images/imageFile335.png)
 
-![image 336](rcm1-1_images/imageFile336.png)
+![image 336](Images/imageFile336.png)
 
-![image 337](rcm1-1_images/imageFile337.png)
+![image 337](Images/imageFile337.png)
 
-![image 338](rcm1-1_images/imageFile338.png)
+![image 338](Images/imageFile338.png)
 
-![image 339](rcm1-1_images/imageFile339.png)
+![image 339](Images/imageFile339.png)
 
-![image 340](rcm1-1_images/imageFile340.png)
+![image 340](Images/imageFile340.png)
 
-![image 341](rcm1-1_images/imageFile341.png)
+![image 341](Images/imageFile341.png)
 
-![image 342](rcm1-1_images/imageFile342.png)
+![image 342](Images/imageFile342.png)
 
-![image 343](rcm1-1_images/imageFile343.png)
+![image 343](Images/imageFile343.png)
 
-![image 344](rcm1-1_images/imageFile344.png)
+![image 344](Images/imageFile344.png)
 
 and with the inequalities reversed if κ ∈ (−∞,0). Since |∂ |/|E | → 0 as ↑ Zd, the limit of Gξ exists by (4.70), and is independent of the choice of ξ.
 
@@ -2700,33 +2700,33 @@ It is clear from its form that Gξ (π,κ) is a convex function on its domain R2
 
 (4.72) ∇Gξ (π,κ) =
 
-![image 345](rcm1-1_images/imageFile345.png)
+![image 345](Images/imageFile345.png)
 
 Since, for any ξ ∈ , the Gξ (π,κ) are convex functions of (π,κ) which converge to the finite limit function G(π,κ) as ↑ Zd, G is convex on R2. Proof of Theorem 4.63.
 
 (c) ⇐⇒ (d). By (4.36), |Wp,q| = |Rp,q| = 1 if and only if φp0,q = φp1,q. By Proposition 4.6 and the fact that φp0,q ≤st φp1,q, φp0,q = φp1,q if and only if h0(p,q) = h1(p,q). Therefore, (c) and (d) are equivalent.
 
-![image 346](rcm1-1_images/imageFile346.png)
+![image 346](Images/imageFile346.png)
 
 (a) ⇐⇒ (b) ⇐⇒ (c). This is inspired by a related computation for the Ising model, [233]. Let p ∈ (0,1), q ∈ (1,∞), and let (π,κ) satisfy (4.56). Recall the functions Gξ given in (4.71), and note from (4.72) that
 
-![image 347](rcm1-1_images/imageFile347.png)
+![image 347](Images/imageFile347.png)
 
-![image 348](rcm1-1_images/imageFile348.png)
+![image 348](Images/imageFile348.png)
 
-![image 349](rcm1-1_images/imageFile349.png)
+![image 349](Images/imageFile349.png)
 
-![image 350](rcm1-1_images/imageFile350.png)
+![image 350](Images/imageFile350.png)
 
-![image 351](rcm1-1_images/imageFile351.png)
+![image 351](Images/imageFile351.png)
 
-![image 352](rcm1-1_images/imageFile352.png)
+![image 352](Images/imageFile352.png)
 
 1 |E |
 
 φ ,1 p,q(|η(ω) ∩ E |),
 
-![image 353](rcm1-1_images/imageFile353.png)
+![image 353](Images/imageFile353.png)
 
 where we have used the automorphism-invarianceof φp0,q and φp1,q, together with the stochastic ordering of measures. We deduce on passing to the limit as ↑ Zd that
 
@@ -2734,11 +2734,11 @@ dG dπ = φp0,q(Je) = φp1,q(Je), e ∈ Ed, p ∈/ Dq.
 
 (4.76)
 
-![image 354](rcm1-1_images/imageFile354.png)
+![image 354](Images/imageFile354.png)
 
-![image 355](rcm1-1_images/imageFile355.png)
+![image 355](Images/imageFile355.png)
 
-![image 356](rcm1-1_images/imageFile356.png)
+![image 356](Images/imageFile356.png)
 
 - 1. p ∈/ Dq,
 - 2. h0(x,q) is right-continuous at x = p,
@@ -2746,13 +2746,13 @@ dG dπ = φp0,q(Je) = φp1,q(Je), e ∈ Ed, p ∈/ Dq.
 
 It remains to prove (4.77) and (4.78). We concentrate first on the first equation of (4.78). By Proposition 4.28(b), h1(·,q) is right-continuous, whence
 
-![image 357](rcm1-1_images/imageFile357.png)
+![image 357](Images/imageFile357.png)
 
-![image 358](rcm1-1_images/imageFile358.png)
+![image 358](Images/imageFile358.png)
 
-![image 359](rcm1-1_images/imageFile359.png)
+![image 359](Images/imageFile359.png)
 
-![image 360](rcm1-1_images/imageFile360.png)
+![image 360](Images/imageFile360.png)
 
 x↑π x∈/Dκ′
 
@@ -2762,47 +2762,47 @@ Proof of Theorem 4.60. Parts (a) and (b) follow by the remarks prior to the stat
 
 (4.79) Lemma. Let p ∈ (0,1), q ∈ (1,∞), and let (π,κ) satisfy (4.56). Then κ ∈ Dπ′′ if and only if φp0,q = φp1,q.
 
-![image 361](rcm1-1_images/imageFile361.png)
+![image 361](Images/imageFile361.png)
 
-![image 362](rcm1-1_images/imageFile362.png)
+![image 362](Images/imageFile362.png)
 
-![image 363](rcm1-1_images/imageFile363.png)
+![image 363](Images/imageFile363.png)
 
-![image 364](rcm1-1_images/imageFile364.png)
+![image 364](Images/imageFile364.png)
 
-![image 365](rcm1-1_images/imageFile365.png)
+![image 365](Images/imageFile365.png)
 
-![image 366](rcm1-1_images/imageFile366.png)
+![image 366](Images/imageFile366.png)
 
-![image 367](rcm1-1_images/imageFile367.png)
+![image 367](Images/imageFile367.png)
 
-![image 368](rcm1-1_images/imageFile368.png)
+![image 368](Images/imageFile368.png)
 
-![image 369](rcm1-1_images/imageFile369.png)
+![image 369](Images/imageFile369.png)
 
-![image 370](rcm1-1_images/imageFile370.png)
+![image 370](Images/imageFile370.png)
 
-![image 371](rcm1-1_images/imageFile371.png)
+![image 371](Images/imageFile371.png)
 
-![image 372](rcm1-1_images/imageFile372.png)
+![image 372](Images/imageFile372.png)
 
-![image 373](rcm1-1_images/imageFile373.png)
+![image 373](Images/imageFile373.png)
 
-![image 374](rcm1-1_images/imageFile374.png)
+![image 374](Images/imageFile374.png)
 
-![image 375](rcm1-1_images/imageFile375.png)
+![image 375](Images/imageFile375.png)
 
-![image 376](rcm1-1_images/imageFile376.png)
+![image 376](Images/imageFile376.png)
 
-![image 377](rcm1-1_images/imageFile377.png)
+![image 377](Images/imageFile377.png)
 
-![image 378](rcm1-1_images/imageFile378.png)
+![image 378](Images/imageFile378.png)
 
-![image 379](rcm1-1_images/imageFile379.png)
+![image 379](Images/imageFile379.png)
 
-![image 380](rcm1-1_images/imageFile380.png)
+![image 380](Images/imageFile380.png)
 
-![image 381](rcm1-1_images/imageFile381.png)
+![image 381](Images/imageFile381.png)
 
 By (4.86), the µ-probability of (i) is zero. By considering the two sub-cases of (ii) depending on whether Cx(ω0) is finite or infinite, we ﬁnd that the µ-probabiltiy of (ii) is no larger than
 
@@ -2810,31 +2810,31 @@ By (4.86), the µ-probability of (i) is zero. By considering the two sub-cases o
 
 where I(ω) is the number of infinite open clusters of ω. By Theorem 4.33(c), µ(I(ω0) ≥ 2) = φp0,q(I ≥ 2) = 0. We conclude as required that the vertex-sets of C0(ω0) and C0(ω1) are equal, µ-almost-surely. Therefore, by the translationinvariance of the φpb,q,
 
-![image 382](rcm1-1_images/imageFile382.png)
+![image 382](Images/imageFile382.png)
 
-![image 383](rcm1-1_images/imageFile383.png)
+![image 383](Images/imageFile383.png)
 
-![image 384](rcm1-1_images/imageFile384.png)
+![image 384](Images/imageFile384.png)
 
-![image 385](rcm1-1_images/imageFile385.png)
+![image 385](Images/imageFile385.png)
 
-![image 386](rcm1-1_images/imageFile386.png)
+![image 386](Images/imageFile386.png)
 
-![image 387](rcm1-1_images/imageFile387.png)
+![image 387](Images/imageFile387.png)
 
 φpb,q(Ke) =
 
-![image 388](rcm1-1_images/imageFile388.png)
+![image 388](Images/imageFile388.png)
 
 .
 
-![image 389](rcm1-1_images/imageFile389.png)
+![image 389](Images/imageFile389.png)
 
-![image 390](rcm1-1_images/imageFile390.png)
+![image 390](Images/imageFile390.png)
 
-![image 391](rcm1-1_images/imageFile391.png)
+![image 391](Images/imageFile391.png)
 
-![image 392](rcm1-1_images/imageFile392.png)
+![image 392](Images/imageFile392.png)
 
 Hence, by (4.88),
 
@@ -2842,11 +2842,11 @@ Hence, by (4.88),
 
 We return now to the proof of Lemma 4.79. Suppose conversely that φp0,q = φp1,q, and let q′ < q < q′′. By Proposition 4.28(a) applied to the decreasing function |C|−1,
 
-![image 393](rcm1-1_images/imageFile393.png)
+![image 393](Images/imageFile393.png)
 
-![image 394](rcm1-1_images/imageFile394.png)
+![image 394](Images/imageFile394.png)
 
-![image 395](rcm1-1_images/imageFile395.png)
+![image 395](Images/imageFile395.png)
 
 Therefore, G has the appropriate partial derivative at the point (π,κ), which is to say that κ ∈/ Dπ′′ as required.
 
@@ -2969,17 +2969,17 @@ It is almost trivial to prove that pc(q) = 1 in the very special case when the n
 - (5.5) Theorem [8]. We have that
 - (5.6)
 
-![image 396](rcm1-1_images/imageFile396.png)
+![image 396](Images/imageFile396.png)
 
-![image 397](rcm1-1_images/imageFile397.png)
+![image 397](Images/imageFile397.png)
 
-![image 398](rcm1-1_images/imageFile398.png)
+![image 398](Images/imageFile398.png)
 
-![image 399](rcm1-1_images/imageFile399.png)
+![image 399](Images/imageFile399.png)
 
-![image 400](rcm1-1_images/imageFile400.png)
+![image 400](Images/imageFile400.png)
 
-![image 401](rcm1-1_images/imageFile401.png)
+![image 401](Images/imageFile401.png)
 
 Since 0 < pc(1) < 1 for d ≥ 2, [154, Thm 1.10], we deduce the important fact that
 
@@ -2991,7 +2991,7 @@ By (5.7), pc(q) is a continuous non-decreasing function of q. Strict monotonicit
 
 In advance of proving Theorems 5.5 and 5.10, we state and prove two facts of independent interest.
 
-![image 402](rcm1-1_images/imageFile402.png)
+![image 402](Images/imageFile402.png)
 
 1Except for its behaviour for large q, see Theorem 7.34. 2The strict monotonicity of pc(q) as a function of the underlying lattice was proved in [39],
 
@@ -3015,21 +3015,21 @@ Proof of Proposition 5.11. It is clear that
 
 by positive association and the fact that {0 ↔ ∂ } ⊆ {0 ↔ ∂ } when ⊆ . We take the limits as ↑ Zd and ↑ Zd in that order to obtain the claim.
 
-![image 403](rcm1-1_images/imageFile403.png)
+![image 403](Images/imageFile403.png)
 
-![image 404](rcm1-1_images/imageFile404.png)
+![image 404](Images/imageFile404.png)
 
-![image 405](rcm1-1_images/imageFile405.png)
+![image 405](Images/imageFile405.png)
 
-![image 406](rcm1-1_images/imageFile406.png)
+![image 406](Images/imageFile406.png)
 
-![image 407](rcm1-1_images/imageFile407.png)
+![image 407](Images/imageFile407.png)
 
 1 4q′
 
 , 1 ≤ q′ < q,
 
-![image 408](rcm1-1_images/imageFile408.png)
+![image 408](Images/imageFile408.png)
 
 whence pc(q) is Lipschitz-continuous on the interval [1,∞). Turning to strict monotonicity, let γ be given as in Theorem 3.24 with = 2d, and let 1 ≤ q2 < q1. Recall that γ(p,q) is continuous, and is strictly increasing in p and strictly decreasing in q. We apply Theorem 3.24 to the graph obtained from
 
@@ -3099,33 +3099,33 @@ on ( ,F )2 with marginals φp0,q and φp1,q, and assigning probability 1 to the 
 
 w∈Zd
 
-![image 409](rcm1-1_images/imageFile409.png)
+![image 409](Images/imageFile409.png)
 
-![image 410](rcm1-1_images/imageFile410.png)
+![image 410](Images/imageFile410.png)
 
 = φp0,q(Je | Hu ∩ Hv)φp0,q(Hu ∩ Hv). However,
 
-![image 411](rcm1-1_images/imageFile411.png)
+![image 411](Images/imageFile411.png)
 
 φp0,q(Je | Hu ∩ Hv) = φp1,q(Je | Hu ∩ Hv)
 
-![image 412](rcm1-1_images/imageFile412.png)
+![image 412](Images/imageFile412.png)
 
-![image 413](rcm1-1_images/imageFile413.png)
+![image 413](Images/imageFile413.png)
 
 by Proposition 4.37(a) and the fact (Theorem 4.34) that φp0,q,φp1,q ∈ Rp,q. In addition, φp0,q(Hu ∩ Hv) ≤ φp1,q(Hu ∩ Hv) since Hu ∩ Hv is an increasing event. Therefore (5.24) implies that
 
 (5.25) φp0,q(Je ∩ Iu ∩ Iv) ≤ φp1,q(Je | Hu ∩ Hv)φp1,q(Hu ∩ Hv)
 
-![image 414](rcm1-1_images/imageFile414.png)
+![image 414](Images/imageFile414.png)
 
-![image 415](rcm1-1_images/imageFile415.png)
+![image 415](Images/imageFile415.png)
 
 = φp1,q(Je ∩ Hu ∩ Hv) = φp1,q(Je ∩ Iu ∩ Iv). Adding (5.23) and (5.25), we obtain that
 
-![image 416](rcm1-1_images/imageFile416.png)
+![image 416](Images/imageFile416.png)
 
-![image 417](rcm1-1_images/imageFile417.png)
+![image 417](Images/imageFile417.png)
 
 φp0,q(Iu ∩ Iv) ≤ φp1,q(Iu ∩ Iv).
 
@@ -3137,25 +3137,25 @@ It is obvious that
 
 (5.27) φp0,q(Je ∩ Iu ∩ Iv) = φp1,q(Je ∩ Iu ∩ Iv)
 
-![image 418](rcm1-1_images/imageFile418.png)
+![image 418](Images/imageFile418.png)
 
-![image 419](rcm1-1_images/imageFile419.png)
+![image 419](Images/imageFile419.png)
 
 since both sides equal 0; the same equation holds with Iu ∩ Iv replaced by Iu ∩ Iv. Finally, we prove that
 
-![image 420](rcm1-1_images/imageFile420.png)
+![image 420](Images/imageFile420.png)
 
-![image 421](rcm1-1_images/imageFile421.png)
+![image 421](Images/imageFile421.png)
 
 (5.28) φp0,q(Je ∩ Iu ∩ Iv) = φp1,q(Je ∩ Iu ∩ Iv)
 
-![image 422](rcm1-1_images/imageFile422.png)
+![image 422](Images/imageFile422.png)
 
-![image 423](rcm1-1_images/imageFile423.png)
+![image 423](Images/imageFile423.png)
 
-![image 424](rcm1-1_images/imageFile424.png)
+![image 424](Images/imageFile424.png)
 
-![image 425](rcm1-1_images/imageFile425.png)
+![image 425](Images/imageFile425.png)
 
 which, in conjunction with (5.26), (5.27), and the subsequent remark, implies the required (5.21) by addition. Let ǫ > 0. Let be a box containing u and v, and let A = {u ↔/ ∂ , v ↔/ ∂ }. We have that
 
@@ -3163,13 +3163,13 @@ which, in conjunction with (5.26), (5.27), and the subsequent remark, implies th
 
 → φp0,q(Iu ∩ Iv) − φp1,q(Iu ∩ Iv) as ↑ Zd ≤ ψ F(ω0) = F(ω1) = 0,
 
-![image 426](rcm1-1_images/imageFile426.png)
+![image 426](Images/imageFile426.png)
 
-![image 427](rcm1-1_images/imageFile427.png)
+![image 427](Images/imageFile427.png)
 
-![image 428](rcm1-1_images/imageFile428.png)
+![image 428](Images/imageFile428.png)
 
-![image 429](rcm1-1_images/imageFile429.png)
+![image 429](Images/imageFile429.png)
 
 by (5.22). Therefore,
 
@@ -3245,9 +3245,9 @@ Proof of Theorem 5.17. Let µ be the (coupled) probability measure on × given b
 
 - µ(σ0 = 1 | 0 ↔/ ∞)[1 − θ1(p,q)]
 
-![image 430](rcm1-1_images/imageFile430.png)
+![image 430](Images/imageFile430.png)
 
-![image 431](rcm1-1_images/imageFile431.png)
+![image 431](Images/imageFile431.png)
 
 The claim is proven once we have shown that (5.32) φp0,q(0 ↔ u) → θ0(p,q)2 as |u| → ∞. By the 0/1-infinite-cluster property of φp0,q, see the remark after (4.36),
 
@@ -3279,9 +3279,9 @@ Slightly more is known in the case of two dimensions. It is proved in Theorem 6.
 
 √q) is the ‘self-dual’ value of p. It is conjectured that pc(q) = psd(q) for q ∈ [1,∞). Proof of Theorem 5.33. The sufﬁciency of (a) was proved in Theorem 5.16(c).
 
-![image 432](rcm1-1_images/imageFile432.png)
+![image 432](Images/imageFile432.png)
 
-![image 433](rcm1-1_images/imageFile433.png)
+![image 433](Images/imageFile433.png)
 
 We sketch a proof that φp0,q = φp1,q if p is sufficiently close to 1. There are certain topological complications in this3, and we refrain from giving all the relevant details, most of which may be found in a closely related passage of [211, Section 2]. We begin by deﬁning a lattice L with the same vertex set as Ld but with edge-relation
 
@@ -3307,7 +3307,7 @@ where φ ,π is product measure on E with density π = p/[p + q(1 − p)], and w
 
 (5.36) φπ( B(x) ≥ n) ≤ e−nα(p), n ≥ 1,
 
-![image 434](rcm1-1_images/imageFile434.png)
+![image 434](Images/imageFile434.png)
 
 3An alternative approach may be based on the methods of Section 7.2.
 
@@ -3315,7 +3315,7 @@ and furthermore α(p) > 0 if p is sufficiently large, say p > p′ for some p′
 
 Let A be an increasingcylinderevent, and ﬁnd a finite box such that A ∈ F . Let be a box satisfying ⊆ . For any subset S of = Zd \ containing ∂ , we deﬁne the ‘internal boundary’ D(S) of S to be the set of all vertices x of L satisfying:
 
-![image 435](rcm1-1_images/imageFile435.png)
+![image 435](Images/imageFile435.png)
 
 (a) x ∈/ S, (b) x is adjacent in L to some vertex of S, (c) there exists a path of Ld from x to some vertex in , this path using no
 
@@ -3327,9 +3327,9 @@ Let ǫ > 0 and p > p′, where p′ is given after (5.36). By (5.35)–(5.36), t
 
 Assume that K , occurs, so that I = I(B(∂ )) satisﬁes I ⊇ . Let H be the set of all subsets h of such that h ⊆ . We note three facts about B(∂ ) and D(B(∂ )):
 
-![image 436](rcm1-1_images/imageFile436.png)
+![image 436](Images/imageFile436.png)
 
-![image 437](rcm1-1_images/imageFile437.png)
+![image 437](Images/imageFile437.png)
 
 (a) D(B(∂ )) is Ld-connected in that, for all pairs x, y ∈ D(B(∂ )), there
 
@@ -3337,9 +3337,9 @@ exists a path of Ld joining x to y using vertices of D(B(∂ )) only, (b) every 
 
 (c) D(B(∂ )) is measurable with respect to the colours of vertices in I = Zd \ I, in the following sense: for any h ∈ H , the event {B(∂ ) = h, D(B(∂ )) = D(h)} lies in the σ-field generated by the colours of vertices in I(h).
 
-![image 438](rcm1-1_images/imageFile438.png)
+![image 438](Images/imageFile438.png)
 
-![image 439](rcm1-1_images/imageFile439.png)
+![image 439](Images/imageFile439.png)
 
 Claim (a) may be proved by adapting the argument used to prove [211, Lemma 2.23]; claim (b) is a consequence of the definition of D(B(∂ )); claim (c) holds since D(B(∂ )) is part of the boundary of the black cluster of L generated by ∂ . Full proofs of (a) and (c) are not given here. They would be rather long, and would have much in common with [211, Section 2].
 
@@ -3365,9 +3365,9 @@ The subcritical phase is characterized by the (almost-sure) absence of an infini
 
 It is immediate that rad(C) ≥ n if and only if 0 ↔ ∂ n, where n = [−n,n]d. We note for later use that there exists a positive constant β = β(d) such that
 
-![image 440](rcm1-1_images/imageFile440.png)
+![image 440](Images/imageFile440.png)
 
-![image 441](rcm1-1_images/imageFile441.png)
+![image 441](Images/imageFile441.png)
 
 n→∞
 
@@ -3377,17 +3377,17 @@ It is quite another matter to show as expected that
 
 We conﬁne ourselves in this section to ‘soft’ arguments concerning the existence of ψ and ζ; the ‘harder’ arguments relevant to strict positivity are deferred to the next two sections. We begin by considering the radius of the cluster at the origin. The existence of the limit in (5.41) relies essentially on positive association. We write en = (n,0,0,. . . ,0).
 
-![image 442](rcm1-1_images/imageFile442.png)
+![image 442](Images/imageFile442.png)
 
 4Note the use of the distance function · rather than the function | · | of [154].
 
-![image 443](rcm1-1_images/imageFile443.png)
+![image 443](Images/imageFile443.png)
 
-![image 444](rcm1-1_images/imageFile444.png)
+![image 444](Images/imageFile444.png)
 
-![image 445](rcm1-1_images/imageFile445.png)
+![image 445](Images/imageFile445.png)
 
-![image 446](rcm1-1_images/imageFile446.png)
+![image 446](Images/imageFile446.png)
 
 n→∞
 
@@ -3401,9 +3401,9 @@ Proofs of Theorem 5.44 and Corollary 5.45. The proof of Theorem 5.44 follows exa
 
 We turn next to the volume |C| of the open cluster at the origin. A probability measure µ on ( ,F ) is said to satisfy the ‘uniform insertion-tolerancecondition’ if, for some α,β ∈ (0,1),
 
-![image 447](rcm1-1_images/imageFile447.png)
+![image 447](Images/imageFile447.png)
 
-![image 448](rcm1-1_images/imageFile448.png)
+![image 448](Images/imageFile448.png)
 
 It is an easy consequence of (5.48)–(5.49) that (5.50) −
 
@@ -3411,11 +3411,11 @@ It is an easy consequence of (5.48)–(5.49) that (5.50) −
 
 logµ(n ≤ |C| < ∞) → ζ(µ) as n → ∞.
 
-![image 449](rcm1-1_images/imageFile449.png)
+![image 449](Images/imageFile449.png)
 
-![image 450](rcm1-1_images/imageFile450.png)
+![image 450](Images/imageFile450.png)
 
-![image 451](rcm1-1_images/imageFile451.png)
+![image 451](Images/imageFile451.png)
 
 Proofs of Theorem 5.47 and Corollary 5.51. These are obtained by following the proof of [154, Thm 6.78], and the details are omitted.
 
@@ -3439,9 +3439,9 @@ logφp(|C| ≥ n) → ζ(p,1) as n → ∞. Furthermore, ζ(p,1) > 0 when p < pc
 
 −
 
-![image 452](rcm1-1_images/imageFile452.png)
+![image 452](Images/imageFile452.png)
 
-![image 453](rcm1-1_images/imageFile453.png)
+![image 453](Images/imageFile453.png)
 
 n→∞
 
@@ -3499,7 +3499,7 @@ e
 
 We shall consider the event An = {0 ↔ ∂ n}, and we write Hn for HAn. The question of ascertaining the asymptotics of Hn may be viewed as a first-passage problem. Imagine you are travelling from 0 to ∂ n; travel along open edges is instantaneous, but along each closed edge requires time 1. The fastest route requires time Hn, and one is interested in the time-constant η, defined as η = limn→∞{n−1Hn}.
 
-![image 454](rcm1-1_images/imageFile454.png)
+![image 454](Images/imageFile454.png)
 
 n→∞
 
@@ -3513,7 +3513,7 @@ We apply this to the measure µ = φp0,q to deduce the existence, φp0,q-almosts
 
 Hn . By Proposition 4.28, η(p,q) is non-increasing in p, and we deﬁne (5.63) ptc(q) = sup p : η(p,q) > 0 . We seek a condition under which η(p,q) > 0. As usual, C denotes the vertex set of the open cluster at the origin.
 
-![image 455](rcm1-1_images/imageFile455.png)
+![image 455](Images/imageFile455.png)
 
 n→∞
 
@@ -3527,13 +3527,13 @@ By this theorem and the prior observations, (5.67) ptc(q) = pg(q) = pc(q) ≤ pc
 
 In the percolation case (when q = 1), the above first-passage problem and the associated time-constant η(p,q) have been studied in detail; see [208, 211]. Several authors have given serious attention to a closely related question when q = 2 and d = 2, namely, the corresponding question for the two-dimensional Ising model with the ‘passage time’ Hn replaced by the minimum number of changes of spin along paths from the origin to ∂ n, see [1, 90, 119]. The timeconstant in the Ising case cannot exceed the corresponding random-cluster timeconstantη(p,2), sinceeachedgeoftheIsingmodelhavingendverticeswithunlike spins gives rise to a closed edge in the (coupled) random-cluster model.
 
-![image 456](rcm1-1_images/imageFile456.png)
+![image 456](Images/imageFile456.png)
 
-![image 457](rcm1-1_images/imageFile457.png)
+![image 457](Images/imageFile457.png)
 
-![image 458](rcm1-1_images/imageFile458.png)
+![image 458](Images/imageFile458.png)
 
-![image 459](rcm1-1_images/imageFile459.png)
+![image 459](Images/imageFile459.png)
 
 Noteinpassingthatinequalities(5.68)and(5.69),with A = An = {0 ↔ ∂ n}, imply that the correlation length ξ(p,q) is strictly increasing in p whenever it is finite, cf. [154, Thm 6.14].
 
@@ -3551,9 +3551,9 @@ Conversely, suppose that r < s < pg(q). There exists α = α(s,q) > 0 such that 
 
 log[q/(s − r)] − β, whence r ≤ ptc(q). Therefore pg(q) ≤ ptc(q).
 
-![image 460](rcm1-1_images/imageFile460.png)
+![image 460](Images/imageFile460.png)
 
-![image 461](rcm1-1_images/imageFile461.png)
+![image 461](Images/imageFile461.png)
 
 There are two stages in the proof of Theorem 5.60. In the first, we apply (5.68)–(5.69) with A = An, and we utilize an iterative scheme to prove that φp0,q(An) decays ‘near-exponentially’ when p < pc(q). In the second stage, we use Theorems 5.64 and 5.66 to deduce full exponential decay. The conclusion of the first stage may be summarized as follows.
 
@@ -3566,11 +3566,11 @@ log1 x = log x, logk x = log(1 ∨ logk−1 x), k ≥ 2.
 
 Proof of Lemma 5.71. We shall use (5.68) and (5.69) in an iterative scheme. In the following, we shall sometimes use real quantities when integers are required. All terms of the form o(1) or O(1) are to be interpreted in the limit as n → ∞.
 
-![image 462](rcm1-1_images/imageFile462.png)
+![image 462](Images/imageFile462.png)
 
-![image 463](rcm1-1_images/imageFile463.png)
+![image 463](Images/imageFile463.png)
 
-![image 464](rcm1-1_images/imageFile464.png)
+![image 464](Images/imageFile464.png)
 
 where 1 < D = q/(t − s) < ∞. We substitute this into (5.68) to obtain that
 
@@ -3578,35 +3578,35 @@ c2(r) nd−1+ 2(r) , n ≥ 1,
 
 (5.74) φr0,q(An) ≤
 
-![image 465](rcm1-1_images/imageFile465.png)
+![image 465](Images/imageFile465.png)
 
 for some strictly positive and finite c2(r) and 2(r). This holds for all r < pc(q), and is an improvement in order of magnitude over (5.73).
 
-![image 466](rcm1-1_images/imageFile466.png)
+![image 466](Images/imageFile466.png)
 
-![image 467](rcm1-1_images/imageFile467.png)
+![image 467](Images/imageFile467.png)
 
-![image 468](rcm1-1_images/imageFile468.png)
+![image 468](Images/imageFile468.png)
 
-![image 469](rcm1-1_images/imageFile469.png)
+![image 469](Images/imageFile469.png)
 
-![image 470](rcm1-1_images/imageFile470.png)
+![image 470](Images/imageFile470.png)
 
-![image 471](rcm1-1_images/imageFile471.png)
+![image 471](Images/imageFile471.png)
 
-![image 472](rcm1-1_images/imageFile472.png)
+![image 472](Images/imageFile472.png)
 
-![image 473](rcm1-1_images/imageFile473.png)
+![image 473](Images/imageFile473.png)
 
-![image 474](rcm1-1_images/imageFile474.png)
+![image 474](Images/imageFile474.png)
 
-![image 475](rcm1-1_images/imageFile475.png)
+![image 475](Images/imageFile475.png)
 
-![image 476](rcm1-1_images/imageFile476.png)
+![image 476](Images/imageFile476.png)
 
-![image 477](rcm1-1_images/imageFile477.png)
+![image 477](Images/imageFile477.png)
 
-![image 478](rcm1-1_images/imageFile478.png)
+![image 478](Images/imageFile478.png)
 
 m→∞
 
@@ -3622,9 +3622,9 @@ eE be the set of edges of Zd having exactly one endvertex in E. We may ﬁnd a (
 
 properties of φp0,q here. Firstly, the law of Cvn+1 given Cv1,Cv2,. . .,Cvn depends only on eE, and secondly, φp0,q is positively associated. We obtain the required stochastic domination accordingly.
 
-![image 479](rcm1-1_images/imageFile479.png)
+![image 479](Images/imageFile479.png)
 
-![image 480](rcm1-1_images/imageFile480.png)
+![image 480](Images/imageFile480.png)
 
 m→∞
 
@@ -3680,7 +3680,7 @@ Let N be a ﬁxed positive integer. From Ld we construct a new lattice L as foll
 
 The following lemma relates the size of the open cluster C at the origin of Ld to the sizes of white clusters of L. For x ∈ Zd, we write Wx for the connected cluster of white vertices of L containing x.
 
-![image 481](rcm1-1_images/imageFile481.png)
+![image 481](Images/imageFile481.png)
 
 m≥An−1
 
@@ -3718,7 +3718,7 @@ x∈R
 
 Let p < pc∞(q), and choose a > 1 such that p < pca(q). With b > 3 + a, the right side of (5.98) may be made as small as required by a suitably large choice of N, and we choose N in such a way that 7de(dτNb )c < 21. Inequality (5.97) provides the required exponential bound.
 
-![image 482](rcm1-1_images/imageFile482.png)
+![image 482](Images/imageFile482.png)
 
 <a id="sec-5-7"></a>
 
@@ -3744,7 +3744,7 @@ The study of the Wulff crystal is bound up with the law of the volume of a finit
 
 φp1,q(|C| = n) ≥ e−γn(d−1)/d,
 
-![image 483](rcm1-1_images/imageFile483.png)
+![image 483](Images/imageFile483.png)
 
 5Such shapes are named after the author of [325]. The first mathematical results on Wulff shapes were proved for the two-dimensional Ising model in [104], see the review [55].
 
@@ -3774,7 +3774,7 @@ Clearly, pc(q) ≤ pc(q) < 1. It is believed that equality holds in that pc(q) =
 
 Thecase q = 1 ofConjecture5.103isspecial, since percolationenjoysa spatial independence not shared with general random-cluster models. This additional property has been used in the formulation of a type of ‘dynamic renormalization’, which has in turn yielded a proof that pc(1) = pc(1) for percolation in three or more dimensions, see [24], [154, Chapter 7], [161]. Such arguments have been adapted by Bodineau to the Ising model, resulting in proofs that pc(2) = pc(2) and that the pure phases are the unique extremalGibbs states when p = pc(2), see
 
-![image 484](rcm1-1_images/imageFile484.png)
+![image 484](Images/imageFile484.png)
 
 6OnemayexpectthemethodsofSection7.5toyieldaproofthat pc(q) = pc(q)forsufficiently large q.
 
@@ -3798,13 +3798,13 @@ For A ⊆ Zd, let ρ(A) be the number of vertices x ∈ A such that x ↔ ∂ A.
 
 δx/n
 
-![image 485](rcm1-1_images/imageFile485.png)
+![image 485](Images/imageFile485.png)
 
 converges in probability, with respect to the bounded, uniformly continuous functions, towards the set {θ1W(a + x)dx : a ∈ R} of measures, where θ = θ1(p,q). The probabilities of deviations are of order exp(−cnd−1).
 
-![image 486](rcm1-1_images/imageFile486.png)
+![image 486](Images/imageFile486.png)
 
-![image 487](rcm1-1_images/imageFile487.png)
+![image 487](Images/imageFile487.png)
 
 x∈W
 
@@ -3812,7 +3812,7 @@ x∈W
 
 where φ1p,q is the measure obtained from φp1,q by conditioning on the event {nd ≤ |C| < ∞}, and | · | is the Euclidean norm on Rk. This is a way of saying that the external boundary of a large finite open cluster with cardinality approximately nd resembles the boundary of a translate of nW. Within this boundary, the open cluster has density approximately θ, whilst the density outside is zero. It is presumably the case that the a in (5.107) may be chosen independently of f and ǫ, but this has not yet been proved.
 
-![image 488](rcm1-1_images/imageFile488.png)
+![image 488](Images/imageFile488.png)
 
 One important consequence of the analysis of [83] is an exact asymptotic for the probability that |C| is large. (5.108) Theorem [81]. Let q ∈ [1,∞) and d ≥ 3. Let p ∈ ( pc(q),1) be such that p ∈/ Dq. There exists γ = γ(p,q) ∈ (0,∞) such that
 
@@ -3820,7 +3820,7 @@ One important consequence of the analysis of [83] is an exact asymptotic for the
 
 logφp1,q(nd ≤ |C| < ∞) → −γ as n → ∞.
 
-![image 489](rcm1-1_images/imageFile489.png)
+![image 489](Images/imageFile489.png)
 
 The above results are valid in two dimensions also although, as noted earlier, this case is special. When d = 2, the slab critical point pc(q) is replaced by the inﬁmumofvalues patwhichthedualprocesshasexponentialdecayofconnections (see (6.5) for the relation between the dual and primal parameter-values). That is, when d = 2,
 
@@ -3828,7 +3828,7 @@ q(1 − pg(q)) pg(q) + q(1 − pg(q))
 
 pc(q) =
 
-![image 490](rcm1-1_images/imageFile490.png)
+![image 490](Images/imageFile490.png)
 
 where pg(q) is given at (5.65). Fluctuations in droplet shape for random-cluster models in two dimensions have been studied in [17, 18].
 
@@ -3918,11 +3918,11 @@ It remains to prove (5.116), which we do by a coupling argument. Suppose that we
 
 Only a limited amount is known about the (non-)uniqueness of random-cluster measures on Ld when q < 1, owing to the absence of stochastic ordering and the failure of positive association. By Theorems 4.31 and 4.33, there exists at least one translation-invariant member of coWp,q, and this measure is a DLRrandom-cluster measure. One may glean a little concerning uniqueness from the comparison inequalities, Theorem 3.21, from which we extract the facts that, for the random-cluster measure φG,p,q on a finite graph G = (V, E),
 
-![image 491](rcm1-1_images/imageFile491.png)
+![image 491](Images/imageFile491.png)
 
-![image 492](rcm1-1_images/imageFile492.png)
+![image 492](Images/imageFile492.png)
 
-![image 493](rcm1-1_images/imageFile493.png)
+![image 493](Images/imageFile493.png)
 
 Onemaydeducethefollowingbymakingcomparisonswiththepercolationmodel. (5.119) Theorem. For d ≥ 2, there exists p′ = p′(d) < 1 such that the following holds. Let p ∈ (0,1), q ∈ (0,1], and write π = p/[p + q(1 − p)]. We have that |Wp,q| = |Rp,q| = 1 whenever either θ(π,1) = 0 or p > p′.
 
@@ -3932,7 +3932,7 @@ there exists ψ = ψ(p,q) > 0 such that φp0,q(|C| = n) ≤ e−nψ, see the com
 
 Proof7. The proof is similar to that of Proposition 5.30 and is therefore only sketched. Let p, q be such that q ∈ (0,1) and θ(π,1) = 0, and let and be
 
-![image 494](rcm1-1_images/imageFile494.png)
+![image 494](Images/imageFile494.png)
 
 7See also [8, 156, 281].
 
@@ -3978,9 +3978,9 @@ Summary. The dual of the random-cluster model on a planar graph is a random-clus
 
 √q). Using duality, one obtains the uniqueness of random-cluster measures for p = psd(q) and q ∈ [1, ∞). The phase transition is discontinuous if q is sufficiently large. Results similar to those for the square lattice may be obtained for the triangular and hexagonal lattices, using the star–triangle transformation. It is expected when q ∈ [1,4) that the critical process may be described by a stochastic Lowner evolution.¨
 
-![image 495](rcm1-1_images/imageFile495.png)
+![image 495](Images/imageFile495.png)
 
-![image 496](rcm1-1_images/imageFile496.png)
+![image 496](Images/imageFile496.png)
 
 <a id="sec-6-1"></a>
 
@@ -3990,25 +3990,25 @@ The duality theory of planar graphs provides a technique for studying randomclus
 
 A graph is called planar if it may be embedded in R2 in such a way that two edges intersect only at a common endvertex. Let G = (V, E) be a planar (finite or infinite) graph embedded in R2. We obtain its dual graph Gd = (Vd, Ed) as follows1. We place a dual vertex within each face of G, including any infinite face of G if such exist. For each e ∈ E we place a dual edge ed = xd, yd joining the two dual vertices lying in the two faces of G abutting e; if these two faces are the same, then xd = yd and ed is a loop. Thus, Vd is in one–one correspondence with
 
-![image 497](rcm1-1_images/imageFile497.png)
+![image 497](Images/imageFile497.png)
 
 1The roman letter ‘d’ denotes ‘dual’ rather than ‘dimension’.
 
 138 In Two Dimensions [6.2]
 
-![image 498](rcm1-1_images/imageFile498.png)
+![image 498](Images/imageFile498.png)
 
 , q ∈ [1,∞).
 
 √q
 
-![image 499](rcm1-1_images/imageFile499.png)
+![image 499](Images/imageFile499.png)
 
-![image 500](rcm1-1_images/imageFile500.png)
+![image 500](Images/imageFile500.png)
 
 Thishasbeen provedwhenq = 1, q = 2, and when q ≥ 25.72. The q = 1 case was answered by Kesten, [207], in his famous proof that the critical probability of bond percolation on L2 is 21. For q = 2, the value of pc(2) given above agrees with the Kramers–Wannier [221] and Onsager [264] calculations of the critical temperature of the Ising model on Z2, and is implied by probabilistic results in the modern vernacular, see [5] and Section 9.3. The formula (6.16) for pc(q) has been established rigorously in [224, 225] for sufficiently large (real) values of q, speciﬁcally q ≥ 25.72 (see also [153]). This is explored further in Section 6.4, see Theorem 6.35.
 
-![image 501](rcm1-1_images/imageFile501.png)
+![image 501](Images/imageFile501.png)
 
 Several other remarkable conjectures about the phase transition on L2 may be found in the physics literature as consequences of ‘exact’ but non-rigorous arguments involving ice-type models, see [26]. These include exact formulae for the asymptotic behaviour of the partition function lim ↑Z2{Z (p,q)}1/| |, and also for the edge-densities at the self-dual point psd(q), that is, the quantities hb(q) = φbp
 
@@ -4020,11 +4020,11 @@ Conjecture 6.15 asserts that pc(q) = psd(q) for q ∈ [1,∞). One part of this 
 
 √q 1 +
 
-![image 502](rcm1-1_images/imageFile502.png)
+![image 502](Images/imageFile502.png)
 
-![image 503](rcm1-1_images/imageFile503.png)
+![image 503](Images/imageFile503.png)
 
-![image 504](rcm1-1_images/imageFile504.png)
+![image 504](Images/imageFile504.png)
 
 The complementary inequality pc(q) ≤ psd(q) has eluded mathematicians despiteprogressbyphysicists,[183]. Hereisanintuitiveargumenttojustifythelatter inequality. Supposeonthe contrarythat pc(q) > psd(q), so that pc(q)d < psd(q). For p ∈ (pc(q)d, pc(q)) we have also that pd ∈ (pc(q)d, pc(q)). Therefore, for p ∈ (pc(q)d, pc(q)), both primal and dual processes comprise (almost surely) the union of finite open clusters. This contradicts the intuitive picture, supported for p = pc(q) by our knowledge of percolation, of finite open clusters of one process ﬂoating in an infinite open ocean of the other process.
 
@@ -4035,15 +4035,15 @@ of φp0,q(0 ↔ ∂ (n)) as n → ∞. An example of such a statement may be fou
 - (6.18) Theorem [163]. Let q ∈ [1,∞) and suppose that, for all p < pc(q), there exists A = A(p,q) < ∞ with
 - (6.19) φp0,q(0 ↔ ∂ (n)) ≤
 
-![image 505](rcm1-1_images/imageFile505.png)
+![image 505](Images/imageFile505.png)
 
-![image 506](rcm1-1_images/imageFile506.png)
+![image 506](Images/imageFile506.png)
 
-![image 507](rcm1-1_images/imageFile507.png)
+![image 507](Images/imageFile507.png)
 
-![image 508](rcm1-1_images/imageFile508.png)
+![image 508](Images/imageFile508.png)
 
-![image 509](rcm1-1_images/imageFile509.png)
+![image 509](Images/imageFile509.png)
 
 For example, when q = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compared with the conjecture that pc(10) =
 
@@ -4051,9 +4051,9 @@ For example, when q = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compare
 
 √10/(1 +
 
-![image 510](rcm1-1_images/imageFile510.png)
+![image 510](Images/imageFile510.png)
 
-![image 511](rcm1-1_images/imageFile511.png)
+![image 511](Images/imageFile511.png)
 
 Exact values for the critical points of the triangular and hexagonal lattices may be conjectured similarly, using graphical duality together with the star–triangle transformation; see Section 6.6.
 
@@ -4069,41 +4069,41 @@ Supposethatθ0(p,q) > 0, whencebystochasticordering θ1(p,q) > 0. Since the φpb
 
 φpb,q(T(n) ↔/ ∞) ≥ φpb,q Al(n) φpb,q Ar(n) φpb,q At(n) φpb,q Ab(n) ,
 
-![image 512](rcm1-1_images/imageFile512.png)
+![image 512](Images/imageFile512.png)
 
-![image 513](rcm1-1_images/imageFile513.png)
+![image 513](Images/imageFile513.png)
 
-![image 514](rcm1-1_images/imageFile514.png)
+![image 514](Images/imageFile514.png)
 
-![image 515](rcm1-1_images/imageFile515.png)
+![image 515](Images/imageFile515.png)
 
 giving that φpb,q(A) ≥ 21 for b = 0,1.
 
-![image 516](rcm1-1_images/imageFile516.png)
+![image 516](Images/imageFile516.png)
 
 Wenowusethefactthateveryrandom-clustermeasure φpb,q hasthe0/1-infinitecluster property, see Theorem 4.33(c). If A occurs, then L2 \ T(N) contains two disjoint infinite open clusters, since the clusters in questions are separated by infinite open paths of the dual; any open path of L2 \ T(N) joining these two clusters would contain an edge which crosses an open edge of the dual, and no such edge can exist. Similarly, on A, the graph L2d \ T(N)d contains two disjoint infinite open clusters, separated physically by infinite open paths of L2 \ T(N). The whole lattice L2 contains (almost surely) a unique infinite open cluster, and it follows that there exists (almost surely on A) an open connection π of L2 between the fore-mentioned infinite open clusters. By the geometry of the situation (see Figure 6.5), this connection forms a barrier to possible open connections of the dual joining the two infinite open dual clusters. Therefore, almost surely on A, the dual lattice contains two or more infinite open clusters. Since the latter event has probability 0, it follows that φpb,q(A) = 0 in contradiction of the inequality φpb,q(A) ≥ 21. The initial hypothesis that θ0(p,q) > 0 is therefore incorrect, and the proof is complete. (b) By part (a), θ1(p,q) = 0 for p < psd(q), whence, by Theorem 5.33(a), |Rp,q| = |Wp,q| = 1 for p < psd(q).
 
-![image 517](rcm1-1_images/imageFile517.png)
+![image 517](Images/imageFile517.png)
 
 Suppose now that p > psd(q) so that, by (6.5), pd < psd(q). By part (a) and Theorem 4.63,
 
 φ0pd,q(ed is closed) = φ1pd,q(ed is closed), e ∈ E2, and by Theorem 6.13,
 
-![image 518](rcm1-1_images/imageFile518.png)
+![image 518](Images/imageFile518.png)
 
-![image 519](rcm1-1_images/imageFile519.png)
+![image 519](Images/imageFile519.png)
 
 φpb,q(e is open) = φ1p−d,bq(ed is closed), b = 0,1.
 
-![image 520](rcm1-1_images/imageFile520.png)
+![image 520](Images/imageFile520.png)
 
 Therefore, φp0,q(e is open) = φp1,q(e is open), and the claim follows by Theorem 4.63.
 
-![image 521](rcm1-1_images/imageFile521.png)
+![image 521](Images/imageFile521.png)
 
-![image 522](rcm1-1_images/imageFile522.png)
+![image 522](Images/imageFile522.png)
 
-![image 523](rcm1-1_images/imageFile523.png)
+![image 523](Images/imageFile523.png)
 
 in contradiction of Theorem 6.14. Therefore psd(q) = pc(q). More generally, by Theorem 5.60, φ0p
 
@@ -4117,31 +4117,31 @@ We precede the proof of Theorem 6.20 with a lemma.
 
 (6.28) Lemma. Let q ∈ [1,∞), and let p and pd satisfy (6.5). With C the open cluster at the origin and b ∈ {0,1},
 
-![image 524](rcm1-1_images/imageFile524.png)
+![image 524](Images/imageFile524.png)
 
-![image 525](rcm1-1_images/imageFile525.png)
+![image 525](Images/imageFile525.png)
 
-![image 526](rcm1-1_images/imageFile526.png)
+![image 526](Images/imageFile526.png)
 
-![image 527](rcm1-1_images/imageFile527.png)
+![image 527](Images/imageFile527.png)
 
-![image 528](rcm1-1_images/imageFile528.png)
+![image 528](Images/imageFile528.png)
 
-![image 529](rcm1-1_images/imageFile529.png)
+![image 529](Images/imageFile529.png)
 
-![image 530](rcm1-1_images/imageFile530.png)
+![image 530](Images/imageFile530.png)
 
-![image 531](rcm1-1_images/imageFile531.png)
+![image 531](Images/imageFile531.png)
 
-![image 532](rcm1-1_images/imageFile532.png)
+![image 532](Images/imageFile532.png)
 
 4An alternative proof appears in [141]. See also [314].
 
-![image 533](rcm1-1_images/imageFile533.png)
+![image 533](Images/imageFile533.png)
 
-![image 534](rcm1-1_images/imageFile534.png)
+![image 534](Images/imageFile534.png)
 
-![image 535](rcm1-1_images/imageFile535.png)
+![image 535](Images/imageFile535.png)
 
 (6.30) Theorem (Exponential decay) [15]. Let q ∈ [2,∞), and consider the random-cluster model on the box (n) = [−n,n]2. There exists α = α(p,q) satisfying α(p,q) > 0 when p < psd(q − 1) such that
 
@@ -4155,23 +4155,23 @@ psd(q − 1) ≤ pc(q) ≤ psd(q), q ≥ 2,
 
 where pc(q) is the threshold for exponential decay, see (5.65) and (5.67). We recall the conjecture that pc(q) = pc(q).
 
-![image 536](rcm1-1_images/imageFile536.png)
+![image 536](Images/imageFile536.png)
 
-![image 537](rcm1-1_images/imageFile537.png)
+![image 537](Images/imageFile537.png)
 
-![image 538](rcm1-1_images/imageFile538.png)
+![image 538](Images/imageFile538.png)
 
 √q − 1 1 +
 
-![image 539](rcm1-1_images/imageFile539.png)
+![image 539](Images/imageFile539.png)
 
 1 − e−β4 =
 
 √q − 1 = psd(q − 1). Let p = 1 − e−β < psd(q − 1). By (3.83), h′ < 0. By stochastic domination, (6.31) φ ,1 p,q(0 ↔ ∂ ) ≤ π ,β+ ′,h′(0 ↔+ ∂ ),
 
-![image 540](rcm1-1_images/imageFile540.png)
+![image 540](Images/imageFile540.png)
 
-![image 541](rcm1-1_images/imageFile541.png)
+![image 541](Images/imageFile541.png)
 
 where {0 ↔+ ∂ } is the event that there exists a path of joining 0 to some vertex of ∂ all of whose vertices have spin +1. By results of [88, 182] (see the discussion in [15, p. 438]), the right side of (6.31) decays exponentially in the shortest side-length of .
 
@@ -4197,7 +4197,7 @@ The term ‘mass gap’ arises in the study of the exponential decay of correlat
 
 φp0,q(0 ↔ ∂ (n)) ≈ e−nψ as n → ∞,
 
-![image 542](rcm1-1_images/imageFile542.png)
+![image 542](Images/imageFile542.png)
 
 5See [26, 324] and the footnote on page 183.
 
@@ -4229,17 +4229,17 @@ L2 beginning at the origin. It is standard, [244], that an1/n → κ as n → �
 
 Q = 2 1 κ + κ2 − 4
 
-![image 543](rcm1-1_images/imageFile543.png)
+![image 543](Images/imageFile543.png)
 
 . We have that 2.620 < κ < 2.696, see [302], whence 21.61 < Q < 25.72. Let ψ(q) =
 
-![image 544](rcm1-1_images/imageFile544.png)
+![image 544](Images/imageFile544.png)
 
-![image 545](rcm1-1_images/imageFile545.png)
+![image 545](Images/imageFile545.png)
 
-![image 546](rcm1-1_images/imageFile546.png)
+![image 546](Images/imageFile546.png)
 
-![image 547](rcm1-1_images/imageFile547.png)
+![image 547](Images/imageFile547.png)
 
 noting that ψ(q) > 0 if and only if q > Q. (6.35) Theorem (Discontinuous phase transition when d = 2) [153, 225]. Consider the square lattice L2, and let q > Q.
 
@@ -4249,9 +4249,9 @@ noting that ψ(q) > 0 if and only if q > Q. (6.35) Theorem (Discontinuous phase 
 
 (a) Critical point. The critical point is given by pc(q) =
 
-![image 548](rcm1-1_images/imageFile548.png)
+![image 548](Images/imageFile548.png)
 
-![image 549](rcm1-1_images/imageFile549.png)
+![image 549](Images/imageFile549.png)
 
 (b) Discontinuous transition. We have that θ1(pc(q),q) > 0. (c) Non-vanishing mass gap. For any ψ < ψ(q) and all large n,
 
@@ -4277,19 +4277,19 @@ q (1 +
 
 ,
 
-![image 550](rcm1-1_images/imageFile550.png)
+![image 550](Images/imageFile550.png)
 
-![image 551](rcm1-1_images/imageFile551.png)
+![image 551](Images/imageFile551.png)
 
-![image 552](rcm1-1_images/imageFile552.png)
+![image 552](Images/imageFile552.png)
 
 for any given circuit Ŵ of (n)d. Combined with a circuit-counting argument of Peierls-type involving the connective constant, this estimate implies after a little work the claims of Theorem 6.35. The idea of the proof appeared in [225] in the context of Potts models, and the random-cluster formulation may be found in [153]; see also Section 7.5 of the current work.
 
 Proof of Theorem 6.35. This proof carries a health warning. The use of twodimensionaldualityraisescertainissueswhicharetedioustoresolvewithcomplete rigour, and we choose not to do so here. Such issues may be resolved either by the methods of [210, p. 386] when d = 2, or by those expounded in Section 7.2 for general d ≥ 2. Let n ≥ 1, let = (n) = [−n,n]2, and let d = [−n,n−1]2+(21, 21) be those verticesof the dualof that lie inside (thatis, we omitthedualvertexintheinfinitefaceof ). Weshallworkwith‘wired’boundary conditions on , and we let ω ∈ = {0,1}E . The exterior (respectively, interior) of a given circuit Ŵ of either L2 or its dual L2d is defined to be the unbounded (respectively, bounded) component of R2 \ Ŵ. A circuit Ŵ of d is called an outer circuit of a conﬁguration ω ∈ if the following hold:
 
-![image 553](rcm1-1_images/imageFile553.png)
+![image 553](Images/imageFile553.png)
 
-![image 554](rcm1-1_images/imageFile554.png)
+![image 554](Images/imageFile554.png)
 
 (a) all edges of Ŵ are open in the dual conﬁguration ωd, which is to say that
 
@@ -4297,27 +4297,27 @@ they traverse closed edges of , (b) the origin of L2 is in the interior of Ŵ, (
 
 √2 of some vertex of Ŵ, belongs to the same component of ω.
 
-![image 555](rcm1-1_images/imageFile555.png)
+![image 555](Images/imageFile555.png)
 
 See Figure 6.6 for an illustration of the meaning of ‘outer circuit’. Each circuit Ŵ of d partitions the set E of edges of into three sets, namely
 
 E = {e ∈ E : e lies in the exterior of Ŵ},
 
-![image 556](rcm1-1_images/imageFile556.png)
+![image 556](Images/imageFile556.png)
 
-![image 557](rcm1-1_images/imageFile557.png)
+![image 557](Images/imageFile557.png)
 
-![image 558](rcm1-1_images/imageFile558.png)
+![image 558](Images/imageFile558.png)
 
 = (1 − p)|Ŵ|qm−1−21|I| Z1E Z1Id
 
-![image 559](rcm1-1_images/imageFile559.png)
+![image 559](Images/imageFile559.png)
 
-![image 560](rcm1-1_images/imageFile560.png)
+![image 560](Images/imageFile560.png)
 
 Z1 ≤ (1 − p)|Ŵ|qm−1−21|I|.
 
-![image 561](rcm1-1_images/imageFile561.png)
+![image 561](Images/imageFile561.png)
 
 Since each vertex of (inside Ŵ) has degree 4,
 
@@ -4327,25 +4327,25 @@ Since each vertex of (inside Ŵ) has degree 4,
 
 (6.42) φ ,1 p,q(OC(Ŵ)) ≤ (1 − p)|Ŵ|q 41|Ŵ|−1 =
 
-![image 562](rcm1-1_images/imageFile562.png)
+![image 562](Images/imageFile562.png)
 
-![image 563](rcm1-1_images/imageFile563.png)
+![image 563](Images/imageFile563.png)
 
 q (1 +
 
 √q)4
 
-![image 564](rcm1-1_images/imageFile564.png)
+![image 564](Images/imageFile564.png)
 
-![image 565](rcm1-1_images/imageFile565.png)
+![image 565](Images/imageFile565.png)
 
-![image 566](rcm1-1_images/imageFile566.png)
+![image 566](Images/imageFile566.png)
 
-![image 567](rcm1-1_images/imageFile567.png)
+![image 567](Images/imageFile567.png)
 
-![image 568](rcm1-1_images/imageFile568.png)
+![image 568](Images/imageFile568.png)
 
-![image 569](rcm1-1_images/imageFile569.png)
+![image 569](Images/imageFile569.png)
 
 On letting n → ∞, we obtain by Proposition 5.11 that θ1(p,q) > 0 when p =
 
@@ -4353,23 +4353,23 @@ On letting n → ∞, we obtain by Proposition 5.11 that θ1(p,q) > 0 when p =
 
 √q). By Theorem 6.17(a), this implies parts (a) and (b) of the theorem when q is sufficiently large.
 
-![image 570](rcm1-1_images/imageFile570.png)
+![image 570](Images/imageFile570.png)
 
-![image 571](rcm1-1_images/imageFile571.png)
+![image 571](Images/imageFile571.png)
 
 For general q > Q, we have only that A(q) < ∞. In this case, we ﬁnd N < n such that
 
 φ ,1 p,q(OC(Ŵ)) < 21,
 
-![image 572](rcm1-1_images/imageFile572.png)
+![image 572](Images/imageFile572.png)
 
 √q) for the random-cluster model on L2. Such predictions are often beautiful and usually provocative to mathematicians.
 
 √q/(1 +
 
-![image 573](rcm1-1_images/imageFile573.png)
+![image 573](Images/imageFile573.png)
 
-![image 574](rcm1-1_images/imageFile574.png)
+![image 574](Images/imageFile574.png)
 
 Weshallnotexploredualityingeneralhere,notingonlyinpassingtheexistence of many open problems of significance in extending known results for, say, the square lattice to general primal/dual pairs. We discuss instead two speciﬁc issues relating, in turn, to the critical points of a general primal/dual pair, and in the next section to exact calculations for the triangular and hexagonal lattices.
 
@@ -4397,9 +4397,9 @@ Proof. Let p > pc(q,L), so that φL1 ,p,q(0 ↔ ∞) > 0. The argumentsleading t
 
 Equality may be conjectured in (6.48). Suppose that L and Ld are isomorphic or, weaker, that pc(q,L) = pc(q,Ld). Inequality (6.48) implies then that pc(q,L) ≥ psd(q) (see Theorem 6.17(a) for the case of the square lattice). If (6.48) were to hold with equality, we would obtain that pc(q,L) = psd(q).
 
-![image 575](rcm1-1_images/imageFile575.png)
+![image 575](Images/imageFile575.png)
 
-![image 576](rcm1-1_images/imageFile576.png)
+![image 576](Images/imageFile576.png)
 
 If L is edge-transitive, it is easily seen that hbL(p,q) is simply the probability under φL1 ,p,q that a given edge is open.
 
@@ -4410,7 +4410,7 @@ If L is edge-transitive, it is easily seen that hbL(p,q) is simply the probabili
 
 In the notationof Theorem4.63, we have that Dq ⊆ {pc(q,L)}. In particular8, if there exists a first-order phase transition at some value p, then necessarily
 
-![image 577](rcm1-1_images/imageFile577.png)
+![image 577](Images/imageFile577.png)
 
 - 6Paper [130] treats vertex-models on Z2 governed by measures with certain properties of translation/rotation-invariance, ergodicity, and positive association. The arguments are however more general and apply also to edge-models on planar graphs with corresponding properties.
 - 7A graph G = (V, E) is called edge-transitive if: for every pair e, f ∈ E, there exists an automorphism of G mapping e to f . See Sections 3.3 and 10.12 for a related notion of transitivity.
@@ -4436,9 +4436,9 @@ Amongst ‘exact’ but non-rigorous results for the random-cluster model is the
 
 √q/(1 +
 
-![image 578](rcm1-1_images/imageFile578.png)
+![image 578](Images/imageFile578.png)
 
-![image 579](rcm1-1_images/imageFile579.png)
+![image 579](Images/imageFile579.png)
 
 Considerthesquarelattice L2. Insteadofworkingwith a singleedge-parameter p, we allow greater generality by associating with each horizontal (respectively, vertical) edge the parameter ph (respectively, pv), and we write p = (ph, pv). It will be convenient as in (6.7)–(6.8) to work instead with the parameters x = (xh, xv) given by
 
@@ -4446,15 +4446,15 @@ q−21 ph 1 − ph
 
 q−21 pv 1 − pv
 
-![image 580](rcm1-1_images/imageFile580.png)
+![image 580](Images/imageFile580.png)
 
-![image 581](rcm1-1_images/imageFile581.png)
+![image 581](Images/imageFile581.png)
 
-![image 582](rcm1-1_images/imageFile582.png)
+![image 582](Images/imageFile582.png)
 
-![image 583](rcm1-1_images/imageFile583.png)
+![image 583](Images/imageFile583.png)
 
-![image 584](rcm1-1_images/imageFile584.png)
+![image 584](Images/imageFile584.png)
 
 9This may also be proved directly for a primal/dual pair, using the arguments of Theorems 5.33 and 6.47.
 
@@ -4486,27 +4486,27 @@ Proof. Let n ≥ 1, and let
 
 D(n) = y ∈ Z2 : |y1| + |y2 − 12| ≤ n + 21
 
-![image 585](rcm1-1_images/imageFile585.png)
+![image 585](Images/imageFile585.png)
 
-![image 586](rcm1-1_images/imageFile586.png)
+![image 586](Images/imageFile586.png)
 
 be the ‘offset diamond’ illustrated in Figure 6.10. The proof follows that of Theorem 6.17(a), but working with D(n) in place of T(n). We omit the details, noting only that the proof uses the 0/1-infinite-cluster property of the measures φxb,q, and the symmetry of the model under reﬂection in both the vertical axis of R2 and the line {(y1, 21) : y1 ∈ R}.
 
-![image 587](rcm1-1_images/imageFile587.png)
+![image 587](Images/imageFile587.png)
 
-![image 588](rcm1-1_images/imageFile588.png)
+![image 588](Images/imageFile588.png)
 
-![image 589](rcm1-1_images/imageFile589.png)
+![image 589](Images/imageFile589.png)
 
-![image 590](rcm1-1_images/imageFile590.png)
+![image 590](Images/imageFile590.png)
 
 ,
 
-![image 591](rcm1-1_images/imageFile591.png)
+![image 591](Images/imageFile591.png)
 
-![image 592](rcm1-1_images/imageFile592.png)
+![image 592](Images/imageFile592.png)
 
-![image 593](rcm1-1_images/imageFile593.png)
+![image 593](Images/imageFile593.png)
 
 By the translation-invariance of the infinite-volume measures, the mean numbers of open horizontal and vertical edges satisfy
 
@@ -4514,43 +4514,43 @@ By the translation-invariance of the infinite-volume measures, the mean numbers 
 
 φ ,b p,q(|ηh|) → hbh(p,q) = φpb,q(eh is open), 2 |E |
 
-![image 594](rcm1-1_images/imageFile594.png)
+![image 594](Images/imageFile594.png)
 
 (6.56)
 
 φ ,b p,q(|ηv|) → hbv(p,q) = φpb,q(ev is open),
 
-![image 595](rcm1-1_images/imageFile595.png)
+![image 595](Images/imageFile595.png)
 
 as ↑ Z2, where eh (respectively, ev) is a representative horizontal (respectively, vertical) edge of L2. Therefore,
 
 hb(p,q) = 21 hbh(p,q) + hbv(p,q) .
 
-![image 596](rcm1-1_images/imageFile596.png)
+![image 596](Images/imageFile596.png)
 
-![image 597](rcm1-1_images/imageFile597.png)
+![image 597](Images/imageFile597.png)
 
-![image 598](rcm1-1_images/imageFile598.png)
+![image 598](Images/imageFile598.png)
 
-![image 599](rcm1-1_images/imageFile599.png)
+![image 599](Images/imageFile599.png)
 
 1 Y
 
 (y1y2y3 + y1y2 + y2y3 + y3y1)q,
 
-![image 600](rcm1-1_images/imageFile600.png)
+![image 600](Images/imageFile600.png)
 
 (6.66) Y = (y1y2y3 + y1y2 + y2y3 + y3y1 + y2 + y3)q + (1 + y1)q2.
 
 Note that the eventsin question concern the existence (ornot) of open paths within T only. The remaining term PωT (A ↔/ B ↔/ C in T) is given by the fact that the sum of the probabilities of all such conﬁgurations on T equals 1.
 
-![image 601](rcm1-1_images/imageFile601.png)
+![image 601](Images/imageFile601.png)
 
-![image 602](rcm1-1_images/imageFile602.png)
+![image 602](Images/imageFile602.png)
 
-![image 603](rcm1-1_images/imageFile603.png)
+![image 603](Images/imageFile603.png)
 
-![image 604](rcm1-1_images/imageFile604.png)
+![image 604](Images/imageFile604.png)
 
 It is left to the reader to check that, under (6.60)–(6.61), the probabilities in (6.65) and (6.67) are equal. Similar computations are valid in cases (a) and (c) also, and it follows that, in loose terms, the replacement of T by S is ‘invisible’ to connections elsewhere in the graph G.
 
@@ -4630,7 +4630,7 @@ We close this section with an open problem. Arguably the simplest system on the 
 
 Indeed, one expects that the critical surface is given by ψT(ph, pv, pd) = 0. The proof of the corresponding statement for the percolation model may be found at [154, Thm 11.116].
 
-![image 605](rcm1-1_images/imageFile605.png)
+![image 605](Images/imageFile605.png)
 
 11Note added at reprinting: this conjecture has been veriﬁed in [327].
 
@@ -4642,23 +4642,23 @@ Many exact calculations are ‘known’ for critical processes in two dimensions
 
 Let U = (−∞,∞) × (0,∞) denote the upper half-plane of R2, with closure U. We view U and U as subsets of the complex plane. Consider the ordinary differential equation
 
-![image 606](rcm1-1_images/imageFile606.png)
+![image 606](Images/imageFile606.png)
 
-![image 607](rcm1-1_images/imageFile607.png)
+![image 607](Images/imageFile607.png)
 
-![image 608](rcm1-1_images/imageFile608.png)
+![image 608](Images/imageFile608.png)
 
-![image 609](rcm1-1_images/imageFile609.png)
+![image 609](Images/imageFile609.png)
 
-![image 610](rcm1-1_images/imageFile610.png)
+![image 610](Images/imageFile610.png)
 
 subject to the boundary condition g0(z) = z, where t ∈ [0,∞), κ is a positive constant, and (Bt : t ≥ 0) is a standard Brownian motion. The solution exists when gt(z) is bounded away from Bκt. More speciﬁcally, for z ∈ U, let τz be the inﬁmum of all times τ such that 0 is a limit point of gs(z) − Bκs in the limit as s ↑ τ. We let
 
-![image 611](rcm1-1_images/imageFile611.png)
+![image 611](Images/imageFile611.png)
 
 Ht = {z ∈ U : τz > t}, Kt = {z ∈ U : τz ≤ t},
 
-![image 612](rcm1-1_images/imageFile612.png)
+![image 612](Images/imageFile612.png)
 
 so that Ht is open, and Kt is compact. It may now be seen that gt is a conformal homeomorphism from Ht to U.
 
@@ -4672,17 +4672,17 @@ We turn now to the random-cluster model on L2 with parameters p and q. For q ∈
 
 √q/(1 +
 
-![image 613](rcm1-1_images/imageFile613.png)
+![image 613](Images/imageFile613.png)
 
-![image 614](rcm1-1_images/imageFile614.png)
+![image 614](Images/imageFile614.png)
 
 √q, κ ∈ (4,8).
 
 cos(4π/κ) = −12
 
-![image 615](rcm1-1_images/imageFile615.png)
+![image 615](Images/imageFile615.png)
 
-![image 616](rcm1-1_images/imageFile616.png)
+![image 616](Images/imageFile616.png)
 
 This value is consistent with the above observation that κ(1) = 6, and also with the ﬁnding of [231]that the scaling limit of the uniformspanning-treePeano curve is SLE8. We recall from Theorem 1.23 that the uniform spanning-tree measure is obtained as a limit of the random-cluster measure as p,q ↓ 0.
 
@@ -4710,35 +4710,35 @@ iciently large, [224]. The second component is the proof in Sections 7.6–7.11 
 
 The principal target of this section is to study the geometry of the dual surface corresponding to the external boundary of a finite connected subgraph of Ld. The results are presented for d ≥ 3, but the reader is advised to concentrate on the case d = 3. We write Ldd for the dual lattice of Ld, being the translate of Ld by the vector 12 = (21, 21,. . ., 21).
 
-![image 617](rcm1-1_images/imageFile617.png)
+![image 617](Images/imageFile617.png)
 
-![image 618](rcm1-1_images/imageFile618.png)
+![image 618](Images/imageFile618.png)
 
-![image 619](rcm1-1_images/imageFile619.png)
+![image 619](Images/imageFile619.png)
 
-![image 620](rcm1-1_images/imageFile620.png)
+![image 620](Images/imageFile620.png)
 
 Let d ≥ 3 and let B0 = [0,1]d, viewed as a subset of Rd. The elementary cubes of Ldd are translates by integer vectors of the cube B0 − 21 = [−21, 21]d. The boundary of B0 − 21 is the union of the 2d sets Pi,u given by
 
-![image 621](rcm1-1_images/imageFile621.png)
+![image 621](Images/imageFile621.png)
 
-![image 622](rcm1-1_images/imageFile622.png)
+![image 622](Images/imageFile622.png)
 
-![image 623](rcm1-1_images/imageFile623.png)
+![image 623](Images/imageFile623.png)
 
-![image 624](rcm1-1_images/imageFile624.png)
+![image 624](Images/imageFile624.png)
 
 (7.1) Pi,u = [−21, 21]i−1 × {u − 21} × [−21, 21]d−i,
 
-![image 625](rcm1-1_images/imageFile625.png)
+![image 625](Images/imageFile625.png)
 
-![image 626](rcm1-1_images/imageFile626.png)
+![image 626](Images/imageFile626.png)
 
-![image 627](rcm1-1_images/imageFile627.png)
+![image 627](Images/imageFile627.png)
 
-![image 628](rcm1-1_images/imageFile628.png)
+![image 628](Images/imageFile628.png)
 
-![image 629](rcm1-1_images/imageFile629.png)
+![image 629](Images/imageFile629.png)
 
 for i = 1,2,. . .,d and u = 0,1. A plaquette (in Rd) is defined to be a translate by an integer vector of some Pi,u. We point out that plaquettes are (topologically) closed(d−1)-dimensionalsubsetsofRd, andthatplaquettesarelineswhen d = 2, and are unit squares when d = 3 (see Figure 7.1). Let H denote the set of all plaquettes in Rd. The straight line-segmentjoining the vertices of an edge e = x, y passes through the middle of a plaquette denoted by h(e), which we call the dual plaquette of e. More precisely, if y = x +ei where ei = (0,. . .,0,1,0,. . . ,0) is the unit vector in the direction of increasing ith coordinate, then h(e) = Pi,1 + x.
 
@@ -4750,7 +4750,7 @@ when viewed as the vertex-set of a graph with adjacency relation ∼s . Of parti
 
 We consider next some geometricalmatters. The words ‘connected’and ‘component’ should be interpreted for the moment in their topological sense. Let T ⊆ Rd, and write T for the closure of T in Rd. We deﬁne the inside ins(T) to be the union of all bounded connected components of Rd \ T; the outside out(T) is the union of all unbounded connected components of Rd \ T. The set T is said to
 
-![image 630](rcm1-1_images/imageFile630.png)
+![image 630](Images/imageFile630.png)
 
 separate Rd if Rd \ T has more than one connected component. For a set H ⊆ H of plaquettes, we deﬁne the set [H] ⊆ Rd by
 
@@ -4766,17 +4766,17 @@ The two theorems that follow are in a sense dual to one another. The first is an
 
 For any set δ of plaquettes, we deﬁne its closure δ to be the set (7.4) δ = δ ∪ h ∈ H : h is (d − 2)-connected to some member of δ .
 
-![image 631](rcm1-1_images/imageFile631.png)
+![image 631](Images/imageFile631.png)
 
-![image 632](rcm1-1_images/imageFile632.png)
+![image 632](Images/imageFile632.png)
 
 Let δ = {h(e) : e ∈ D} be a (d − 2)-connected set of plaquettes. Consider the subgraph (Zd,Ed \ D) of Ld, and let C be a component of this graph. Let
 
 v,δC denote the set of all vertices v in C for which there exists w ∈ Zd with h( v,w ) ∈ δ, and let e,δC denotethe set of edges f of C forwhich h( f ) ∈ δ\δ. Note that edges in e,δC have both endvertices belonging to v,δC.
 
-![image 633](rcm1-1_images/imageFile633.png)
+![image 633](Images/imageFile633.png)
 
-![image 634](rcm1-1_images/imageFile634.png)
+![image 634](Images/imageFile634.png)
 
 (7.5) Theorem [139]. Let d ≥ 3. Let δ = {h(e) : e ∈ D} be a (d − 2)-connected set of plaquettes, and let C = (VC, EC) be a finite connected component of the graph (Zd,Ed \ D). There exists a splitting set Q = QC of plaquettes such that:
 
@@ -4786,13 +4786,13 @@ v,δC denote the set of all vertices v in C for which there exists w ∈ Zd with
 
 This theorem will be used later to show that, for a suitable (random) set δ of plaquettes, the random-cluster measure within a bounded connected component of Rd \ [δ] is that with wired boundary condition. The argument is roughly as follows. Let ω ∈ , and let δ = {h(e) : e ∈ D} be a maximal (d − 2)-connected
 
-![image 635](rcm1-1_images/imageFile635.png)
+![image 635](Images/imageFile635.png)
 
 1This answers a question which arose in 1980 during a conversation with H. Kesten.
 
 set of plaquettes that are open (in the sense that they are dual to ω-closed edges of Ld, see (7.9)). Let h = h( f ) ∈ δ \ δ. It must be the case that f is open, since if f were closed then h( f ) would be open, which would in turn imply that h( f ) ∈ δ, a contradiction. That is to say, for any finite connected component C of (Zd,Ed \ D), every edge in e,δC is open. By Theorem 7.5, the boundary v,δC, when augmented by the set e,δC of edges, is a connected graph. The randomcluster measure on C, conditional on the set δ, is therefore a wired measure.
 
-![image 636](rcm1-1_images/imageFile636.png)
+![image 636](Images/imageFile636.png)
 
 We shall require one further theorem of similar type.
 
@@ -4810,67 +4810,67 @@ thin if λd−3(S) < ∞, fat if λd−2(S) > 0.
 
 Let P1, P2,. . ., Pn be the (d − 2)-connected components of P. Note that [Pi] ∩ [Pj] is thin, for i = j. We show next that there exists i such that x ∈ ins([Pi]). Suppose for the sake of contradiction that this is false, which is to say that x ∈/ ins([Pi]) for all i. Then x ∈/ Pi = [Pi] ∪ ins([Pi]) for i = 1,2,. . .,n. Note that each Pi is a closed set which does not separate Rd.
 
-![image 637](rcm1-1_images/imageFile637.png)
+![image 637](Images/imageFile637.png)
 
-![image 638](rcm1-1_images/imageFile638.png)
+![image 638](Images/imageFile638.png)
 
 Let i = j. We claim that: (7.7) either Pi ∩ Pj is thin, or one of the sets Pi, Pj is a subset of the other. To see this, suppose that Pi ∩ Pj is fat; we shall deduce as required that either Pi ⊆ Pj or Pi ⊇ Pj.
 
-![image 639](rcm1-1_images/imageFile639.png)
+![image 639](Images/imageFile639.png)
 
-![image 640](rcm1-1_images/imageFile640.png)
+![image 640](Images/imageFile640.png)
 
-![image 641](rcm1-1_images/imageFile641.png)
+![image 641](Images/imageFile641.png)
 
-![image 642](rcm1-1_images/imageFile642.png)
+![image 642](Images/imageFile642.png)
 
-![image 643](rcm1-1_images/imageFile643.png)
+![image 643](Images/imageFile643.png)
 
-![image 644](rcm1-1_images/imageFile644.png)
+![image 644](Images/imageFile644.png)
 
-![image 645](rcm1-1_images/imageFile645.png)
+![image 645](Images/imageFile645.png)
 
-![image 646](rcm1-1_images/imageFile646.png)
+![image 646](Images/imageFile646.png)
 
-![image 647](rcm1-1_images/imageFile647.png)
+![image 647](Images/imageFile647.png)
 
-![image 648](rcm1-1_images/imageFile648.png)
+![image 648](Images/imageFile648.png)
 
 Suppose further that Pi ∩[Pj] is fat. Since [Pj] is a union of plaquettes and Pi is a union of plaquettes and cubes, all with cornersin Zd + 21, there exists a pair h1, h2 of plaquettesofLdd such thath1 d∼−2 h2, and g = h1∩h2 satisﬁes g ⊆ Pi ∩[Pj]. We cannot have g ⊆ [Pi] since [Pi] ∩ [Pj] is thin, whence int(g) ⊆ ins([Pi]), where int(g) denotes the interior of g viewed as a subset of Rd−2. Now, [Pj] is (d − 2)-connected and [Pi] ∩ [Pj] is thin, so that [Pj] is contained in the closure of ins([Pi]), implying that [Pj] ⊆ Pi and therefore Pj ⊆ Pi.
 
-![image 649](rcm1-1_images/imageFile649.png)
+![image 649](Images/imageFile649.png)
 
-![image 650](rcm1-1_images/imageFile650.png)
+![image 650](Images/imageFile650.png)
 
-![image 651](rcm1-1_images/imageFile651.png)
+![image 651](Images/imageFile651.png)
 
-![image 652](rcm1-1_images/imageFile652.png)
+![image 652](Images/imageFile652.png)
 
-![image 653](rcm1-1_images/imageFile653.png)
+![image 653](Images/imageFile653.png)
 
-![image 654](rcm1-1_images/imageFile654.png)
+![image 654](Images/imageFile654.png)
 
-![image 655](rcm1-1_images/imageFile655.png)
+![image 655](Images/imageFile655.png)
 
 Suppose next that Pi ∩ [Pj] is thin but Pi ∩ ins([Pj]) is fat. Since [Pi] is (d − 2)-connected, it has by definition no thin cutset. Since [Pi] ∩ [Pj] is thin, either [Pi] ⊆ Pj or [Pi] is contained in the closure of the unbounded component of Rd \[Pj]. The latter cannot hold since Pi ∩ ins([Pj]) is fat, whence [Pi] ⊆ Pj and therefore Pi ⊆ Pj. Statement (7.7) has been proved.
 
-![image 656](rcm1-1_images/imageFile656.png)
+![image 656](Images/imageFile656.png)
 
-![image 657](rcm1-1_images/imageFile657.png)
+![image 657](Images/imageFile657.png)
 
-![image 658](rcm1-1_images/imageFile658.png)
+![image 658](Images/imageFile658.png)
 
-![image 659](rcm1-1_images/imageFile659.png)
+![image 659](Images/imageFile659.png)
 
-![image 660](rcm1-1_images/imageFile660.png)
+![image 660](Images/imageFile660.png)
 
-![image 661](rcm1-1_images/imageFile661.png)
+![image 661](Images/imageFile661.png)
 
-![image 662](rcm1-1_images/imageFile662.png)
+![image 662](Images/imageFile662.png)
 
 By (7.7), we may write R = ni=1 Pi as the union of distinct closed bounded sets Pi, i = 1,2,. . .,k, where k ≤ n, that do not separate Rd and such that Pi ∩ Pj is thin for i = j. By Theorem 11 of [223, §59, Section II]2, R does not separate Rd. By assumption, x ∈/ R, whence x lies in the unique component of the complement Rd \ R, in contradiction of the assumption that x ∈ ins([P]). We deduce that there exists k such that x ∈ ins([Pk]), and we deﬁne Q = Pk.
 
-![image 663](rcm1-1_images/imageFile663.png)
+![image 663](Images/imageFile663.png)
 
 Consider now a vertex y ∈ V. Since G = (V, E) is connected, there exists a path in Ld that connects x with y using only edges in E. Whenever u and v are two consecutive vertices on this path, h( u,v ) does not belong to P. Therefore, y lies in the inside of [Q]. Claims (i) and (ii) are now proved with Q as given, and it remains to prove (iii).
 
@@ -4880,13 +4880,13 @@ Proof of Theorem 7.5. Let H = ( v,δC, e,δC). Let x ∈ v,δC, and write Hx for
 
 The claim holds with y = x and hx = h( x, z ) if x has a neighbour z with h( x, z ) ∈ δ. Assume thereforethat x hasnosuch neighbourz. Since x ∈ v,δC, x has some neighbour u in Ld with h( x,u ) ∈ δ \ δ. Following a consideration
 
-![image 664](rcm1-1_images/imageFile664.png)
+![image 664](Images/imageFile664.png)
 
 of the various possibilities, there exists h ∈ δ such that h d∼−2 h( x,u ), and
 
 either (a) h = h( u, z ) for some z, or (b) h = h( v, z ) for some v, z satisfying v ∼ x, z ∼ u.
 
-![image 665](rcm1-1_images/imageFile665.png)
+![image 665](Images/imageFile665.png)
 
 2This theorem states, subject to a mild change of notation, that: “If none of the closed sets F0 and F1 cuts Sd between the points p and q and if dim(F0 ∩ F1) ≤ d − 3, their union F0 ∪ F1 does it neither”. Here, Sd denotes the d-sphere.
 
@@ -4898,7 +4898,7 @@ that (7.8) Qx ∩ δ = ∅.
 
 This we prove as follows. If hx ∈ Qx, the claim is immediate. Suppose that hx ∈/ Qx, so that [hx] ∩ ins([Qx]) = ∅, implying that δ intersects both ins([Qx]) and out([Qx]). Since both δ and Qx are (d − 2)-connected sets of plaquettes, it follows that δ ∪ Qx is (d − 2)-connected. Therefore, there exist h′ ∈ δ, h′′ ∈ Qx such that h′ d∼−2 h′′. If h′′ ∈ δ, then (7.8) holds, so we may assume that h′′ ∈/ δ, and hence h′′ ∈ δ \ δ. Then h′′ = h( v,w ) for some v ∈ Hx, and therefore w ∈ Hx, a contradiction. We conclude that (7.8) holds.
 
-![image 666](rcm1-1_images/imageFile666.png)
+![image 666](Images/imageFile666.png)
 
 Now, (7.8) implies that Qx ⊆ δ. Suppose on the contrary that Qx ⊆ δ, so that
 
@@ -4930,21 +4930,21 @@ Henceforthin this chapterwe shall assume, unless otherwise stated, that d = 3. S
 
 Since the random-cluster model involves probability measures on the set of edge-conﬁgurations, we shall consider functions on the power set of the edgeset E3 rather than of the vertex-set Z3. Let E be a finite subset of E3, and let LE = (VE, E) denote the induced subgraph of L3. We shall consider the partition functions of the wired and free random-cluster measures on this graph, and to this end we introduce various notions of ‘boundary’. Let D be a (finite or infinite) subset of E3, and write D = E3 \ D for its complement.
 
-![image 667](rcm1-1_images/imageFile667.png)
+![image 667](Images/imageFile667.png)
 
 (i) The vertex-boundary ∂D is the set of all x ∈ VD such that there exists an edge e = x, z with e ∈/ D. Note that ∂D = ∂D.
 
-![image 668](rcm1-1_images/imageFile668.png)
+![image 668](Images/imageFile668.png)
 
 We shall require three (related) types of ‘edge-boundaries’ of D. (ii) The 1-edge-boundary ∂eD is defined3 to be the set of all edges e ∈ D such that there exists f ∈/ D with the property that h(e) ∼1 h( f ). (iii) The external edge-boundary extD is the set of all edges e ∈/ D that are incident to some vertex in ∂D.
 
 (iv) The internal edge-boundary intD is the external edge-boundary of the complement D, that is, intD = extD. In other words, intD includes every edge e ∈ D that is incident to some x ∈ ∂D.
 
-![image 669](rcm1-1_images/imageFile669.png)
+![image 669](Images/imageFile669.png)
 
-![image 670](rcm1-1_images/imageFile670.png)
+![image 670](Images/imageFile670.png)
 
-![image 671](rcm1-1_images/imageFile671.png)
+![image 671](Images/imageFile671.png)
 
 3When working with Ld for general d, ∂eD would be taken to be the (d − 2)-edge-boundary, given similarly but with 1 replaced by d − 2.
 
@@ -4966,9 +4966,9 @@ D: D⊆E D∩ intE=∅
 
 where k0(G) denotesthe numberof connectedcomponentsof a graph G including isolated vertices5. Since intE includes every edge e ∈ E that is incident to some vertex x ∈ ∂E, every x ∈ ∂E is isolated for all sets D contributing to the summation in (7.11), and these vertices are not included in the cluster-count k(VE \ ∂E, D). The measure defined by (7.11) differs slightly from that given at (4.11)–(4.12) with ξ = 0, but it may be seen that the corresponding probability measure amounts to the free measure on the graph (VE, E \ intE).
 
-![image 672](rcm1-1_images/imageFile672.png)
+![image 672](Images/imageFile672.png)
 
-![image 673](rcm1-1_images/imageFile673.png)
+![image 673](Images/imageFile673.png)
 
 E↑E3
 
@@ -4978,57 +4978,57 @@ where the limit is taken in a suitable ‘van Hove’ sense.
 
 We introduce next the classes of ‘wired’ and ‘free’ contours of the lattice L3. For s ∈ {0,1} and e, f ∈ E3, we write e ∼s f if h(e) ∼s h( f ). A subset D of E3 is said to be s-connected if it is connected when viewed as a graph with adjacency relation ∼s . Thus, D is s-connected if and only if the set {h( f ) : f ∈ D} of plaquettes is s-connected. Let D ⊆ E3, and consider its external edge-boundary γ = extD. We call the set γ a wired contour (respectively, free contour) if it is
 
-![image 674](rcm1-1_images/imageFile674.png)
+![image 674](Images/imageFile674.png)
 
 - 4It is convenient in the present setting to think of a conﬁguration as a subset of edges rather than as a 0/1-vector. We adopt the convention that Z1(∅) = 1.
 - 5We set Z0(E) = 1 if E \ intE = ∅. In particular, Z0(∅) = 1.
 
 It may be seen by Theorem 7.5 that (7.18) intγ = γ, γ ∈ Cw.
 
-![image 675](rcm1-1_images/imageFile675.png)
+![image 675](Images/imageFile675.png)
 
 Two contours γ1, γ2 of the same class are said to be compatible if γ1 ∪γ2 is not 1-connected. We call the pair γ1, γ2 externally compatible if they are compatible and in additionγ1 ⊆ ext(γ2) and γ2 ⊆ ext(γ1). IfŴ = {γ1,γ2,. . .,γn} is a family of pairwise externally-compatiblecontoursof the same class, we write Ŵ = i γi, ext(Ŵ) = E3 \ Ŵ, and int(Ŵ) = Ŵ \ Ŵ. Here, we have used Ŵ to denote the set of edges in the union of the γi.
 
-![image 676](rcm1-1_images/imageFile676.png)
+![image 676](Images/imageFile676.png)
 
-![image 677](rcm1-1_images/imageFile677.png)
+![image 677](Images/imageFile677.png)
 
-![image 678](rcm1-1_images/imageFile678.png)
+![image 678](Images/imageFile678.png)
 
-![image 679](rcm1-1_images/imageFile679.png)
+![image 679](Images/imageFile679.png)
 
-![image 680](rcm1-1_images/imageFile680.png)
+![image 680](Images/imageFile680.png)
 
-![image 681](rcm1-1_images/imageFile681.png)
+![image 681](Images/imageFile681.png)
 
 LetŴw = {γ1,γ2,. . .,γm} bea familyof pairwiseexternally-compatiblewired contours. It may be seen that
 
-![image 682](rcm1-1_images/imageFile682.png)
+![image 682](Images/imageFile682.png)
 
-![image 683](rcm1-1_images/imageFile683.png)
+![image 683](Images/imageFile683.png)
 
-![image 684](rcm1-1_images/imageFile684.png)
+![image 684](Images/imageFile684.png)
 
-![image 685](rcm1-1_images/imageFile685.png)
+![image 685](Images/imageFile685.png)
 
 - 1. D contains no edge in any γi,
 - 2. D contains every edge of E not belonging to Ŵw. This leads via (7.18) and (7.19) to the formula
 
-![image 686](rcm1-1_images/imageFile686.png)
+![image 686](Images/imageFile686.png)
 
 (7.21) Z1(E) =
 
 r|E\Ŵw|qZ0(Ŵw)
 
-![image 687](rcm1-1_images/imageFile687.png)
+![image 687](Images/imageFile687.png)
 
-![image 688](rcm1-1_images/imageFile688.png)
+![image 688](Images/imageFile688.png)
 
 Ŵw⊂E\∂eE
 
 where the summation is over all families Ŵw of pairwise externally-compatible wired contours contained in E \ ∂eE. By Theorems 7.3 and 7.5, each such Ŵw is co-connected.
 
-![image 689](rcm1-1_images/imageFile689.png)
+![image 689](Images/imageFile689.png)
 
 We turn now to the free partition function Z0(E). Let D ⊆ E \ intE. Let D∞c be the set of edges in the unique infinite 1-connected component of Dc = E3 \ D, and let Ŵ(D) = intD∞c . The set Ŵ(D) may be expressed as a union of maximal 1-connected sets γi, i = 1,2,. . .,n, which are pairwise externally-compatible free contours, and we write Ŵf(D) = {γ1,γ2,. . .,γn}. We note that every edge in Ŵ(D) belongs to E. Thus, to each set D there corresponds a collection Ŵf(D), and the summation in (7.11) may be partitioned according to the value of Ŵf(D). For a given family Ŵf = {γ1,γ2,. . .,γn} of pairwise externally-compatible free contours in E, one sums over sets D with Ŵf(D) = Ŵf, and the constraints on such D are as follows:
 
@@ -5063,9 +5063,9 @@ The discontinuityof the Potts phase transition was provedfirst in [220]via a soc
 
 The study of polymer models is wider than is required for our speciﬁc applications, and a general approachmay be found in [219]. For the sake of concreteness, we note the following. Our applications will involve co-connected subsets of E3. Our polymers will be either wired or free contours in the sense of the last section, and ‘compatible’ shall be interpreted in the sense of that section. Our weight functions will be assumed henceforth to be strictly positive and automorphisminvariant, in that (γ) = (τγ) for any automorphism τ of L3.
 
-![image 690](rcm1-1_images/imageFile690.png)
+![image 690](Images/imageFile690.png)
 
-![image 691](rcm1-1_images/imageFile691.png)
+![image 691](Images/imageFile691.png)
 
 Theprincipalconclusionsthatfollowarenotstatedunambiguouslyasatheorem since their exact hypotheses will not be speciﬁed. Throughout this and the next section, the terms c and ci are positive finite constants which depend only on the particular type of model and not on the function . These constants may depend on the underlying lattice (which we shall take to be L3), and may therefore vary with the number d of dimensions.
 
@@ -5095,19 +5095,19 @@ By (7.23), Z( 1 ∪ 2) = Z( 1)Z( 2) if 1 and 2 have no common vertex. By (7.28),
 
 (7.30) ψ(E) = 0 if E is not connected. Under the assumption of ‘Theorem’ 7.27, one may obtain after a calculation that (7.31) |ψ(E)| ≤ e−c3τ E for a suitable definition of the size E and for some c3 ∈ (0,∞).
 
-![image 692](rcm1-1_images/imageFile692.png)
+![image 692](Images/imageFile692.png)
 
-![image 693](rcm1-1_images/imageFile693.png)
+![image 693](Images/imageFile693.png)
 
-![image 694](rcm1-1_images/imageFile694.png)
+![image 694](Images/imageFile694.png)
 
-![image 695](rcm1-1_images/imageFile695.png)
+![image 695](Images/imageFile695.png)
 
-![image 696](rcm1-1_images/imageFile696.png)
+![image 696](Images/imageFile696.png)
 
-![image 697](rcm1-1_images/imageFile697.png)
+![image 697](Images/imageFile697.png)
 
-![image 698](rcm1-1_images/imageFile698.png)
+![image 698](Images/imageFile698.png)
 
 ( )[1 + (γ)]
 
@@ -5145,11 +5145,11 @@ pc(q) = 1 − q−1/d + O(q−2/d) as q → ∞. This may be compared to the exa
 
 √q/(1 +
 
-![image 699](rcm1-1_images/imageFile699.png)
+![image 699](Images/imageFile699.png)
 
-![image 700](rcm1-1_images/imageFile700.png)
+![image 700](Images/imageFile700.png)
 
-![image 701](rcm1-1_images/imageFile701.png)
+![image 701](Images/imageFile701.png)
 
 9An overview of contour methods may be found in [217].
 
@@ -5161,7 +5161,7 @@ It is not especially fruitful to seek numerical estimates on the Q(d) above. Suc
 
 Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 and p = 1 − e−β, and consider the q-state Potts model on Ld with inversetemperature β. Let q be large. When β < βc(q) (respectively, β > βc(q)), the number of distinct translation-invariant Gibbs states is 1 (respectively, q). When β = βc(q), there are q + 1 distinct extremal translation-invariant Gibbs states, correspondingto the free measure and the ‘b-boundary-condition’measure for b ∈ {1,2,. . .,q}, and every translation-invariant Gibbs state is a convex combination of these q + 1 states. When d ≥ 3, there exist in addition an inﬁnityofnon-translation-invariantGibbsstatesatthecriticalpointβc(q). Further discussion may be found in [65, 66, 68, 136, 224, 251, 254].
 
-![image 702](rcm1-1_images/imageFile702.png)
+![image 702](Images/imageFile702.png)
 
 10Some progress has been made towards bounds on the value of Q(d). It is proved in [45] that the 3-state Potts model has a discontinuous transition for large d, and in [46] that discontinuity occurs when d = 3 for a long-range Potts model with exponentially decaying interactions. See [140] for related work when d = 2.
 
@@ -5169,9 +5169,9 @@ The letter (respectively, Ŵ) will always denote a family of pairwise compatible
 
 Let β ∈ R. In either of the cases above, we deﬁne
 
-![image 703](rcm1-1_images/imageFile703.png)
+![image 703](Images/imageFile703.png)
 
-![image 704](rcm1-1_images/imageFile704.png)
+![image 704](Images/imageFile704.png)
 
 =
 
@@ -5181,17 +5181,17 @@ and we say that this new model has parameters (β, ).
 
 We shall consider a pair of such models. The first has parameters (βw, w), and its polymerfamilies comprise pairwise compatiblewired contours; the second has parameters (βf, f) and it involvesfree contours. They are defined as follows. Let p ∈ (0,1), q ∈ [1,∞), r = p/(1 − p), and βw,βf ∈ [0,∞). The weight functions w(γ) = βww(γ), f(γ) = βf f(γ) are defined inductively on the size of γ by: (7.41)
 
-![image 705](rcm1-1_images/imageFile705.png)
+![image 705](Images/imageFile705.png)
 
 βw w (γ)Z(intγ; βww) = w βw(γ) = (reβw)−|γ|Z0(γ), γ ∈ Cw,
 
-![image 706](rcm1-1_images/imageFile706.png)
+![image 706](Images/imageFile706.png)
 
-![image 707](rcm1-1_images/imageFile707.png)
+![image 707](Images/imageFile707.png)
 
 βf f (γ)Z(intγ; βf f) = f βf(γ) = e−βf|γ|q−|Vintγ|Z1(intγ), γ ∈ Cf.
 
-![image 708](rcm1-1_images/imageFile708.png)
+![image 708](Images/imageFile708.png)
 
 These functionsgiverise to polymermodelswhichare relatedto thefreeand wired random-cluster models, as described in the first part of the next theorem. They
 
@@ -5199,7 +5199,7 @@ have related pressure functions f ( βww), f ( βf f) given as in (7.24). The th
 
 d = 3. (7.42) Theorem [224]. Let d ≥ 2, p ∈ (0,1), q ∈ [1,∞), and r = p/(1 − p). For βw,βf ∈ [0,∞) and a co-connected set E,
 
-![image 709](rcm1-1_images/imageFile709.png)
+![image 709](Images/imageFile709.png)
 
 There exists Q = Q(d) such that the following hold when q > Q.
 
@@ -5211,7 +5211,7 @@ F(p,q) = f ( bww) + bw + logr = f ( bff) + bf +
 
 logq. (7.45)
 
-![image 710](rcm1-1_images/imageFile710.png)
+![image 710](Images/imageFile710.png)
 
 (b) There exists a unique value p = p(q) such that the values bw, bf in part (a) satisfy:
 
@@ -5227,57 +5227,57 @@ For βw,βf ∈ [0,∞), let w = βww, f = βf f be given by (7.41). Let τ = τ
 
 (7.48) w (γ) = min{ βww(γ),e−τ γ }, γ ∈ Cw,
 
-![image 711](rcm1-1_images/imageFile711.png)
+![image 711](Images/imageFile711.png)
 
 βf (7.49) f (γ) = min{ βf f(γ),e−τ γ }, γ ∈ Cf, and let (7.50)
 
-![image 712](rcm1-1_images/imageFile712.png)
+![image 712](Images/imageFile712.png)
 
 bw = sup Bw where Bw = βw ≥ 0 : f ( βww) + βw + logr ≤ F(p,q) ,
 
-![image 713](rcm1-1_images/imageFile713.png)
+![image 713](Images/imageFile713.png)
 
 bf = sup Bf where Bf = βf ≥ 0 : f ( βf f) + βf + d−1 logq ≤ F(p,q) . We make three observations concerning the definition of bw; similar reasoning applies to bf. Firstly, since 0w ≤ 0w,
 
-![image 714](rcm1-1_images/imageFile714.png)
+![image 714](Images/imageFile714.png)
 
-![image 715](rcm1-1_images/imageFile715.png)
+![image 715](Images/imageFile715.png)
 
 Z1(E) ≥ r|E|Z(E; 0w,0) = r|E|Z(E; 0w), by (7.43). Applying ‘Theorem’ 7.27 to the τ-functional 0w,
 
-![image 716](rcm1-1_images/imageFile716.png)
+![image 716](Images/imageFile716.png)
 
-![image 717](rcm1-1_images/imageFile717.png)
+![image 717](Images/imageFile717.png)
 
-![image 718](rcm1-1_images/imageFile718.png)
+![image 718](Images/imageFile718.png)
 
 F(p,q) ≥ logr + f ( 0w),
 
-![image 719](rcm1-1_images/imageFile719.png)
+![image 719](Images/imageFile719.png)
 
 whence 0 ∈ Bw. Secondly, by ‘Theorem’ 7.27 again, f ( 0w) ≤ e−c1τ, whence β ∈/ Bw for large β. The third observation is contained in the next lemma which is based on the corresponding step of [218]. The lemma will be used later also, and its proof is deferred until that of Theorem 7.42 is otherwise complete.
 
-![image 720](rcm1-1_images/imageFile720.png)
+![image 720](Images/imageFile720.png)
 
 (7.51) Lemma. Let α ∈ (0,∞). There exists Q′′ = Q′′(α) ≥ Q′ such that the following holds. If q > Q′′, the functions h(β,r) = f ( βw), f ( βf ) have the Lipschitz property: for β,β′ ∈ [0,∞) and r,r′ ∈ (0,∞),
 
-![image 721](rcm1-1_images/imageFile721.png)
+![image 721](Images/imageFile721.png)
 
-![image 722](rcm1-1_images/imageFile722.png)
+![image 722](Images/imageFile722.png)
 
-![image 723](rcm1-1_images/imageFile723.png)
+![image 723](Images/imageFile723.png)
 
 Assume henceforth that
 
 (7.52) q > Q′′ = Q′′(21).
 
-![image 724](rcm1-1_images/imageFile724.png)
+![image 724](Images/imageFile724.png)
 
 By Lemma 7.51, the pressure f ( βww) (respectively, f ( βf f)) is continuous in βw (respectively, βf), and it follows by the prior observations that the suprema in (7.50) are attained, and hence
 
-![image 725](rcm1-1_images/imageFile725.png)
+![image 725](Images/imageFile725.png)
 
-![image 726](rcm1-1_images/imageFile726.png)
+![image 726](Images/imageFile726.png)
 
 1 d
 
@@ -5285,19 +5285,19 @@ By Lemma 7.51, the pressure f ( βww) (respectively, f ( βf f)) is continuous i
 
 logq.
 
-![image 727](rcm1-1_images/imageFile727.png)
+![image 727](Images/imageFile727.png)
 
-![image 728](rcm1-1_images/imageFile728.png)
+![image 728](Images/imageFile728.png)
 
-![image 729](rcm1-1_images/imageFile729.png)
+![image 729](Images/imageFile729.png)
 
 By Lemma 7.51 and the continuity in p of F(p,q), Theorem 4.58, (7.54) bw = bw(p) and bf = bf(p) are continuous functions of p ∈ (0,1).
 
 Havingchosenthevaluesbwandbf, weshallhenceforthsuppresstheirreference in the notation for the weight functions w, f, w, f, and we prove next that
 
-![image 730](rcm1-1_images/imageFile730.png)
+![image 730](Images/imageFile730.png)
 
-![image 731](rcm1-1_images/imageFile731.png)
+![image 731](Images/imageFile731.png)
 
 (γ) ≤ e−τ γ , γ ∈ Cw, f(γ) ≤ e−τ γ , γ ∈ Cf.
 
@@ -5305,185 +5305,185 @@ Havingchosenthevaluesbwandbf, weshallhenceforthsuppresstheirreference in the not
 
 This implies in particular that w = w and f = f, and then (7.45) follows from (7.53). We shall prove (7.55) by induction on |γ|.
 
-![image 732](rcm1-1_images/imageFile732.png)
+![image 732](Images/imageFile732.png)
 
-![image 733](rcm1-1_images/imageFile733.png)
+![image 733](Images/imageFile733.png)
 
-![image 734](rcm1-1_images/imageFile734.png)
+![image 734](Images/imageFile734.png)
 
 It is not difﬁcult to see that (7.55) holds for γw ∈ Cw with |γw| ≤ 1, and for γf ∈ Cf with |γf| ≤ 2. This is trivial in the latter case since the free contour γf with smallest γf has γf = 2(2d −1), and it is proved in the former case as follows. Let γw ∈ Cw be such that |γw| = 1, which is to say that γw comprises a single edge. By (7.41), w(γw) = (rebw)−1. By (7.12), F(p,q) ≥ d−1 logq, and the claim follows by (7.53) and the fact that f ( w) ≤ 1, see ‘Theorem’ 7.27(a).
 
-![image 735](rcm1-1_images/imageFile735.png)
+![image 735](Images/imageFile735.png)
 
-![image 736](rcm1-1_images/imageFile736.png)
+![image 736](Images/imageFile736.png)
 
-![image 737](rcm1-1_images/imageFile737.png)
+![image 737](Images/imageFile737.png)
 
-![image 738](rcm1-1_images/imageFile738.png)
+![image 738](Images/imageFile738.png)
 
 Let k ≥ 1 and assume that (7.55) holds for all γw ∈ Cw satisfying |γw| ≤ k and all γf ∈ Cf satisfying |γf| ≤ k + 1. Let γw be a wired contour with |γw| = k + 1.
 
-![image 739](rcm1-1_images/imageFile739.png)
+![image 739](Images/imageFile739.png)
 
-![image 740](rcm1-1_images/imageFile740.png)
+![image 740](Images/imageFile740.png)
 
-![image 741](rcm1-1_images/imageFile741.png)
+![image 741](Images/imageFile741.png)
 
 Any contour γw′ ∈ Cw contributing to Z(intγw; w) satisﬁes |γw′ | ≤ k. By the induction hypothesis, (7.56) Z(intγw; w) = Z(intγw; w)
 
-![image 742](rcm1-1_images/imageFile742.png)
+![image 742](Images/imageFile742.png)
 
-![image 743](rcm1-1_images/imageFile743.png)
+![image 743](Images/imageFile743.png)
 
 = exp |intγw| f ( w) − σ(intγw, w) , where
 
-![image 744](rcm1-1_images/imageFile744.png)
+![image 744](Images/imageFile744.png)
 
-![image 745](rcm1-1_images/imageFile745.png)
+![image 745](Images/imageFile745.png)
 
 σ(E, ) = |E| f ( ) − logZ(E; )
 
 as in (7.25). Any contour γf ∈ Cf contributing to Z(γw; f) is a subset of γw, and therefore satisﬁes |γf| ≤ k + 1. By the induction hypothesis as above,
 
-![image 746](rcm1-1_images/imageFile746.png)
+![image 746](Images/imageFile746.png)
 
-![image 747](rcm1-1_images/imageFile747.png)
+![image 747](Images/imageFile747.png)
 
-![image 748](rcm1-1_images/imageFile748.png)
+![image 748](Images/imageFile748.png)
 
 (7.57) Z(γw; f) = Z(γw; f)
 
-![image 749](rcm1-1_images/imageFile749.png)
+![image 749](Images/imageFile749.png)
 
-![image 750](rcm1-1_images/imageFile750.png)
+![image 750](Images/imageFile750.png)
 
-![image 751](rcm1-1_images/imageFile751.png)
+![image 751](Images/imageFile751.png)
 
 = exp |γw| f ( f) − σ(γw, f) .
 
-![image 752](rcm1-1_images/imageFile752.png)
+![image 752](Images/imageFile752.png)
 
-![image 753](rcm1-1_images/imageFile753.png)
+![image 753](Images/imageFile753.png)
 
-![image 754](rcm1-1_images/imageFile754.png)
+![image 754](Images/imageFile754.png)
 
-![image 755](rcm1-1_images/imageFile755.png)
+![image 755](Images/imageFile755.png)
 
-![image 756](rcm1-1_images/imageFile756.png)
+![image 756](Images/imageFile756.png)
 
 w(γw) = (rebw)−|γw|
 
-![image 757](rcm1-1_images/imageFile757.png)
+![image 757](Images/imageFile757.png)
 
-![image 758](rcm1-1_images/imageFile758.png)
+![image 758](Images/imageFile758.png)
 
 = (rebw)−|γw|q|V(γw)\∂γw| Z(γw; f,bf) Z(intγw; w)
 
-![image 759](rcm1-1_images/imageFile759.png)
+![image 759](Images/imageFile759.png)
 
 by (7.43)
 
-![image 760](rcm1-1_images/imageFile760.png)
+![image 760](Images/imageFile760.png)
 
-![image 761](rcm1-1_images/imageFile761.png)
+![image 761](Images/imageFile761.png)
 
-![image 762](rcm1-1_images/imageFile762.png)
+![image 762](Images/imageFile762.png)
 
-![image 763](rcm1-1_images/imageFile763.png)
+![image 763](Images/imageFile763.png)
 
 ≤ (rebw)−|γw|q|V(γw)\∂γw|ebf|γw| Z(γw; f) Z(intγw; w)
 
-![image 764](rcm1-1_images/imageFile764.png)
+![image 764](Images/imageFile764.png)
 
-![image 765](rcm1-1_images/imageFile765.png)
+![image 765](Images/imageFile765.png)
 
-![image 766](rcm1-1_images/imageFile766.png)
+![image 766](Images/imageFile766.png)
 
-![image 767](rcm1-1_images/imageFile767.png)
+![image 767](Images/imageFile767.png)
 
-![image 768](rcm1-1_images/imageFile768.png)
+![image 768](Images/imageFile768.png)
 
-![image 769](rcm1-1_images/imageFile769.png)
+![image 769](Images/imageFile769.png)
 
 = exp −|γw| logr + bw − bf − f ( f)
 
-![image 770](rcm1-1_images/imageFile770.png)
+![image 770](Images/imageFile770.png)
 
-![image 771](rcm1-1_images/imageFile771.png)
+![image 771](Images/imageFile771.png)
 
 - |V(γw) \ ∂γw| logq − |intγw| f ( w)
 
-![image 772](rcm1-1_images/imageFile772.png)
+![image 772](Images/imageFile772.png)
 
-![image 773](rcm1-1_images/imageFile773.png)
+![image 773](Images/imageFile773.png)
 
-![image 774](rcm1-1_images/imageFile774.png)
+![image 774](Images/imageFile774.png)
 
 × exp σ(intγw, w) − σ(γw, f) by (7.56)–(7.57). We use (7.13)–(7.14) and (7.53) to obtain that
 
-![image 775](rcm1-1_images/imageFile775.png)
+![image 775](Images/imageFile775.png)
 
-![image 776](rcm1-1_images/imageFile776.png)
+![image 776](Images/imageFile776.png)
 
-![image 777](rcm1-1_images/imageFile777.png)
+![image 777](Images/imageFile777.png)
 
 (7.58) w(γw) ≤ q− γw /(2d) exp |γw| f ( w) + σ(intγw, w) − σ(γw, f) .
 
-![image 778](rcm1-1_images/imageFile778.png)
+![image 778](Images/imageFile778.png)
 
-![image 779](rcm1-1_images/imageFile779.png)
+![image 779](Images/imageFile779.png)
 
-![image 780](rcm1-1_images/imageFile780.png)
+![image 780](Images/imageFile780.png)
 
-![image 781](rcm1-1_images/imageFile781.png)
+![image 781](Images/imageFile781.png)
 
 By ‘Theorem’ 7.27, f ( w) ≤ e−c1τ ≤ 1, and
 
-![image 782](rcm1-1_images/imageFile782.png)
+![image 782](Images/imageFile782.png)
 
 |σ(E, w)| ≤ |∂E|e−c2τ, |σ(E, f)| ≤ |∂E|e−c2τ for co-connected sets E. By (7.58), (7.16), and (7.44), (7.59) w(γw) ≤ q− γw /(2d)e5 γw ≤ e−τ γw , as required in the induction step.
 
-![image 783](rcm1-1_images/imageFile783.png)
+![image 783](Images/imageFile783.png)
 
-![image 784](rcm1-1_images/imageFile784.png)
+![image 784](Images/imageFile784.png)
 
 We consider now a free contour γf with |γf| = k + 2. By an elementary geometric argument, (7.60) γf ≥ 2(2d − 1). Arguing as in the wired case above, we obtain subject to the induction hypothesis that (7.61) f(γf) ≤ q · q− γf /(2d) exp σ(intγf, f) − σ(intγf, w) , by (7.15). By (7.17),
 
-![image 785](rcm1-1_images/imageFile785.png)
+![image 785](Images/imageFile785.png)
 
-![image 786](rcm1-1_images/imageFile786.png)
+![image 786](Images/imageFile786.png)
 
-![image 787](rcm1-1_images/imageFile787.png)
+![image 787](Images/imageFile787.png)
 
 f(γf) ≤ q · q− γf /(2d)e5 γf . By (7.60) and the fact that d ≥ 2,
 
 γf − 2d ≥ 41 γf ,
 
-![image 788](rcm1-1_images/imageFile788.png)
+![image 788](Images/imageFile788.png)
 
 whence
 
-![image 789](rcm1-1_images/imageFile789.png)
+![image 789](Images/imageFile789.png)
 
 1 d
 
 logq.
 
-![image 790](rcm1-1_images/imageFile790.png)
+![image 790](Images/imageFile790.png)
 
-![image 791](rcm1-1_images/imageFile791.png)
+![image 791](Images/imageFile791.png)
 
-![image 792](rcm1-1_images/imageFile792.png)
+![image 792](Images/imageFile792.png)
 
 We use this in place of (7.53) in the argument above, to obtain that βww = βww and βwf = βf f. Equation (7.63) implies that
 
-![image 793](rcm1-1_images/imageFile793.png)
+![image 793](Images/imageFile793.png)
 
-![image 794](rcm1-1_images/imageFile794.png)
+![image 794](Images/imageFile794.png)
 
 1 d
 
-![image 795](rcm1-1_images/imageFile795.png)
+![image 795](Images/imageFile795.png)
 
 However, by (7.43),
 
@@ -5502,135 +5502,135 @@ Proof of Lemma 7.51. We give the proof in the wired case, the other case being s
 
 any family of compatible contours in E, we write ⊥ γ if γ ∈/ and ∪{γ} is a compatible family of contours. Since (γ) is a smooth function of β, is piecewise-differentiable in β (see (7.48)).
 
-![image 796](rcm1-1_images/imageFile796.png)
+![image 796](Images/imageFile796.png)
 
-![image 797](rcm1-1_images/imageFile797.png)
+![image 797](Images/imageFile797.png)
 
-![image 798](rcm1-1_images/imageFile798.png)
+![image 798](Images/imageFile798.png)
 
-![image 799](rcm1-1_images/imageFile799.png)
+![image 799](Images/imageFile799.png)
 
-![image 800](rcm1-1_images/imageFile800.png)
+![image 800](Images/imageFile800.png)
 
-![image 801](rcm1-1_images/imageFile801.png)
+![image 801](Images/imageFile801.png)
 
-![image 802](rcm1-1_images/imageFile802.png)
+![image 802](Images/imageFile802.png)
 
 ( ) (γ) · ′(γ),
 
-![image 803](rcm1-1_images/imageFile803.png)
+![image 803](Images/imageFile803.png)
 
-![image 804](rcm1-1_images/imageFile804.png)
+![image 804](Images/imageFile804.png)
 
-![image 805](rcm1-1_images/imageFile805.png)
+![image 805](Images/imageFile805.png)
 
-![image 806](rcm1-1_images/imageFile806.png)
+![image 806](Images/imageFile806.png)
 
 | ′(γ)|
 
 zwE =
 
-![image 807](rcm1-1_images/imageFile807.png)
+![image 807](Images/imageFile807.png)
 
-![image 808](rcm1-1_images/imageFile808.png)
+![image 808](Images/imageFile808.png)
 
-![image 809](rcm1-1_images/imageFile809.png)
+![image 809](Images/imageFile809.png)
 
-![image 810](rcm1-1_images/imageFile810.png)
+![image 810](Images/imageFile810.png)
 
-![image 811](rcm1-1_images/imageFile811.png)
+![image 811](Images/imageFile811.png)
 
 | ′(γ)| |γ|
 
-![image 812](rcm1-1_images/imageFile812.png)
+![image 812](Images/imageFile812.png)
 
-![image 813](rcm1-1_images/imageFile813.png)
+![image 813](Images/imageFile813.png)
 
-![image 814](rcm1-1_images/imageFile814.png)
+![image 814](Images/imageFile814.png)
 
-![image 815](rcm1-1_images/imageFile815.png)
+![image 815](Images/imageFile815.png)
 
-![image 816](rcm1-1_images/imageFile816.png)
+![image 816](Images/imageFile816.png)
 
 ⊂E: ⊥γ
 
 Let γ ∈ Cw. We claim that (7.69) | ′(γ)| ≤ 2|γ| (γ)
 
-![image 817](rcm1-1_images/imageFile817.png)
+![image 817](Images/imageFile817.png)
 
-![image 818](rcm1-1_images/imageFile818.png)
+![image 818](Images/imageFile818.png)
 
-![image 819](rcm1-1_images/imageFile819.png)
+![image 819](Images/imageFile819.png)
 
 whenever the derivative exists. By (7.48), either the left side equals 0, or it equals | ′(γ)|, and we may assume that the latter holds. Write Y(γ) = Z(intγ; ). The function = w β satisﬁes (γ) = (γ)Y by (7.41), and also
 
 (7.70) ′(γ) = −|γ| (γ) = −|γ| (γ)Y(γ). Hence, (7.71) ′(γ) =
 
-![image 820](rcm1-1_images/imageFile820.png)
+![image 820](Images/imageFile820.png)
 
-![image 821](rcm1-1_images/imageFile821.png)
+![image 821](Images/imageFile821.png)
 
-![image 822](rcm1-1_images/imageFile822.png)
+![image 822](Images/imageFile822.png)
 
-![image 823](rcm1-1_images/imageFile823.png)
+![image 823](Images/imageFile823.png)
 
-![image 824](rcm1-1_images/imageFile824.png)
+![image 824](Images/imageFile824.png)
 
 ##### (Ŵ)
 
-![image 825](rcm1-1_images/imageFile825.png)
+![image 825](Images/imageFile825.png)
 
-![image 826](rcm1-1_images/imageFile826.png)
+![image 826](Images/imageFile826.png)
 
-![image 827](rcm1-1_images/imageFile827.png)
+![image 827](Images/imageFile827.png)
 
-![image 828](rcm1-1_images/imageFile828.png)
+![image 828](Images/imageFile828.png)
 
-![image 829](rcm1-1_images/imageFile829.png)
+![image 829](Images/imageFile829.png)
 
-![image 830](rcm1-1_images/imageFile830.png)
+![image 830](Images/imageFile830.png)
 
-![image 831](rcm1-1_images/imageFile831.png)
+![image 831](Images/imageFile831.png)
 
 e−τ γ ,
 
-![image 832](rcm1-1_images/imageFile832.png)
+![image 832](Images/imageFile832.png)
 
 (γ) ≤
 
-![image 833](rcm1-1_images/imageFile833.png)
+![image 833](Images/imageFile833.png)
 
-![image 834](rcm1-1_images/imageFile834.png)
+![image 834](Images/imageFile834.png)
 
 γ: e∈γ
 
 since is a τ-functional. The Lipschitz inequality (7.67) follows by integration for τ = τ(q) sufficiently large.
 
-![image 835](rcm1-1_images/imageFile835.png)
+![image 835](Images/imageFile835.png)
 
-![image 836](rcm1-1_images/imageFile836.png)
+![image 836](Images/imageFile836.png)
 
-![image 837](rcm1-1_images/imageFile837.png)
+![image 837](Images/imageFile837.png)
 
-![image 838](rcm1-1_images/imageFile838.png)
+![image 838](Images/imageFile838.png)
 
-![image 839](rcm1-1_images/imageFile839.png)
+![image 839](Images/imageFile839.png)
 
-![image 840](rcm1-1_images/imageFile840.png)
+![image 840](Images/imageFile840.png)
 
-![image 841](rcm1-1_images/imageFile841.png)
+![image 841](Images/imageFile841.png)
 
-![image 842](rcm1-1_images/imageFile842.png)
+![image 842](Images/imageFile842.png)
 
-![image 843](rcm1-1_images/imageFile843.png)
+![image 843](Images/imageFile843.png)
 
 (γ) ≤
 
-![image 844](rcm1-1_images/imageFile844.png)
+![image 844](Images/imageFile844.png)
 
-![image 845](rcm1-1_images/imageFile845.png)
+![image 845](Images/imageFile845.png)
 
-![image 846](rcm1-1_images/imageFile846.png)
+![image 846](Images/imageFile846.png)
 
 γ: e∈γ
 
@@ -5648,17 +5648,17 @@ h1(r) = f ( 0w) + logr, h2(r) = f ( 0f ) +
 
 logq,
 
-![image 847](rcm1-1_images/imageFile847.png)
+![image 847](Images/imageFile847.png)
 
-![image 848](rcm1-1_images/imageFile848.png)
+![image 848](Images/imageFile848.png)
 
-![image 849](rcm1-1_images/imageFile849.png)
+![image 849](Images/imageFile849.png)
 
-![image 850](rcm1-1_images/imageFile850.png)
+![image 850](Images/imageFile850.png)
 
-![image 851](rcm1-1_images/imageFile851.png)
+![image 851](Images/imageFile851.png)
 
-![image 852](rcm1-1_images/imageFile852.png)
+![image 852](Images/imageFile852.png)
 
 This contradicts (7.77), whence such distinct r1, r2 do not exist.
 
@@ -5666,15 +5666,15 @@ Proof of Theorem 7.33. Let p ∈ (0,1) and q > Q where Q, τ = τ(q), bw = bw(p,
 
 Consider first the wired measure φ1 . As in (7.21), there exists a family of maximal closed wired contours Ŵ of E (maximal in the sense of the partial order γ1 ≤ γ2 if γ1 ⊆ γ2) and, by (7.40)–(7.41), Ŵ has law
 
-![image 853](rcm1-1_images/imageFile853.png)
+![image 853](Images/imageFile853.png)
 
-![image 854](rcm1-1_images/imageFile854.png)
+![image 854](Images/imageFile854.png)
 
-![image 855](rcm1-1_images/imageFile855.png)
+![image 855](Images/imageFile855.png)
 
 w (Ŵ).
 
-![image 856](rcm1-1_images/imageFile856.png)
+![image 856](Images/imageFile856.png)
 
 Let p ≥ p, so that bw = 0. Then κ ,bww = κ ,0 w is the law of the family of maximal contours in the wired contour model on with weight function 0w.
 
@@ -5724,7 +5724,7 @@ that φ0pc(q),q = φ1pc(q),q, and hence (a) via Theorem 4.63. The uniqueness of 
 
 Letq ≥ Q′′ and p ∈ (pc(q),1). Weshallshowthath1(p,q) = φp1,q(e is open) satisﬁes (7.84) h1(p − ǫ,q) ↑ h1(p,q) as ǫ ↓ 0, and the claim will follow by Proposition 4.28(b) and Theorem 4.63.
 
-![image 857](rcm1-1_images/imageFile857.png)
+![image 857](Images/imageFile857.png)
 
 11The related issue of ‘restricted complete analyticity’ is considered in [110] for the case of two dimensions.
 
@@ -5732,7 +5732,7 @@ Letǫ be such that pc(q) < p−ǫ < p, and letη ∈ (0,1). Write φn1,p = φ1 n
 
 where n = [−n,n]d. For n > 23m ≥ 2, let Em,n be the event that, for every x ∈ ∂ m, if ν = νx is a maximal closed wired contour of n with x ∈ Vintν, then
 
-![image 858](rcm1-1_images/imageFile858.png)
+![image 858](Images/imageFile858.png)
 
 ν ⊆ x + E m/4. As in (7.78)–(7.79), there exists γ = γ(q) > 0 such that
 
@@ -5740,19 +5740,19 @@ where n = [−n,n]d. For n > 23m ≥ 2, let Em,n be the event that, for every x 
 
 (7.85) φn1,p−ǫ(Em,n) > 1 − η, n > 32m.
 
-![image 859](rcm1-1_images/imageFile859.png)
+![image 859](Images/imageFile859.png)
 
 Let z denote the vertex (1,0,0,. . . ,0). A cutset σ of m is defined to be a subsetof m\{0, z} such that: everypath fromeither0 or z to ∂ m passesthrough at least one vertex in σ, and σ is minimal with this property. For any cutset σ, we write int(σ) for the set of vertices reachable from either 0 and z along paths not
 
 intersecting σ, and out(σ) = Zd \ int(σ). For n > 23m and a cutset σ, we write ‘σ ⇒ ∂ n in ω’ if every vertex in σ is connected to ∂ n by an ω-open path of out(σ). We shall see below that, for ω ∈ Em,n, there exists a (random) cutset
 
-![image 860](rcm1-1_images/imageFile860.png)
+![image 860](Images/imageFile860.png)
 
 = (ω) ⊆ m \ m/2 such that ⇒ ∂ n in ω.
 
 Let e = 0, z and n > 23m. We couple the measures φn1,p−ǫ and φn1,p in such a way that the first lies beneath the second, and we do this by a sequential examination of the (paired) states of edges in n. We will follow the recipe of the proof of Theorem 3.45 (see also Proposition 5.30), but subject to a special ordering of the edges. The outcome will be a pair ω0,ω1 ∈ 1 n such that: ω0 has law φn1,p−ǫ, ω1 has law φn1,p, and ω0 ≤ ω1. First, we determine the states ω0(e), ω1(e) of edges e with both endvertices in n \ m−1, using some arbitrary ordering of these edges. If ∂ m ⇒ ∂ n in ω0, we set = ∂ m and we complete the construction of ω0 and ω1 according to an arbitrary ordering of the remaining edges in m.
 
-![image 861](rcm1-1_images/imageFile861.png)
+![image 861](Images/imageFile861.png)
 
 Suppose that ∂ m ⇒/ ∂ n in ω0. Let A be the set of edges in ∂ m that are closed in ω0. If A = ∅, we sample the states of the remaining edges of m in an arbitrary order as above. Suppose A = ∅. Pick f ∈ A, and sample the states of edges in the (d − 2)-connected closed cluster Ff = Ff (ω0) of f in the lower conﬁguration ω0. When this has been done for every f ∈ A, we complete the construction of ω0 and ω1 according to an arbitrary ordering of the remaining edges in m.
 
@@ -5800,9 +5800,9 @@ Dobrushin’s proof was the starting point for the study of interfaces in spin s
 
 When cast in the more general setting of the random-clustermodel on a box , the correct interpretation of the boundary condition is as follows. The vertices on the upper (respectively, lower) hemisphere of are wired together into a single composite vertex labelled ∂+ (respectively, ∂− ). Let D be the event that no open path of exists joining ∂− to ∂+ , and let φ ,p,q be the random-cluster measure on with the above boundary condition and conditioned on the event D. It is a geometrical fact that, under φ ,p,q, there exists an interface separating an upper region of containing ∂+ and a lower region containing ∂− , and each of these regions is in the wired phase. Dobrushin’s theorem amounts to the statement that, when q = 2 and p is sufficiently large, this interface deviates only locally from the horizontal plane through the equator of . It was proved in [139] that the same conclusion is valid for all q ∈ [1,∞) and all sufficiently large p, and this result is presented in the remainder of this chapter. The geometry of the interfaces for the random-cluster model is notably different from that of a spin model since the conﬁgurations are indexed by edges rather than by vertices, and this leads to difﬁculties not encountered in the Ising model.
 
-![image 862](rcm1-1_images/imageFile862.png)
+![image 862](Images/imageFile862.png)
 
-![image 863](rcm1-1_images/imageFile863.png)
+![image 863](Images/imageFile863.png)
 
 Although such arguments are valid whenever d ≥ 3, we shall assume for simplicity that d = 3. It is striking that the results are valid for high-density percolation on Zd with d ≥ 3, being the random-cluster model with q = 1. A corresponding question for supercritical percolation in two dimensions has been studied in depth in [77], where it is shown effectively that the (one-dimensional) interface converges when re-scaled to a Brownian bridge.
 
@@ -5810,21 +5810,21 @@ We have spoken above of interfaces which ‘deviate only locally’ from a plane
 
 Theresultsareprovedundertheassumptionthat q ∈ [1,∞)and pissufficiently large. It is a majoropen questionto determine whetheror not such results are valid underthe weakerassumption that pexceedsthe criticalvalue pc(q)of the randomcluster model. The answer may be expected to depend on the value of q and the number d of dimensions. Since the percolation measure φ ,p,1 is a conditioned product measure, it may be possible to gain insight into the existence or not of
 
-![image 864](rcm1-1_images/imageFile864.png)
+![image 864](Images/imageFile864.png)
 
 such a ‘rougheningtransition’ by concentrating on the special case of percolation. The two core problems here are the following. Let p(q) be the inﬁmum of all values of p at which the above interface is localized (a rigorous interpretation of this definition is evident after reading Theorems 7.87 and 7.142).
 
-![image 865](rcm1-1_images/imageFile865.png)
+![image 865](Images/imageFile865.png)
 
 I. Is it the case that the interface is localized for all p > p(q)? II. For what q and d does strict inequality of critical points hold in the sense that pc(q) < p(q)?
 
-![image 866](rcm1-1_images/imageFile866.png)
+![image 866](Images/imageFile866.png)
 
-![image 867](rcm1-1_images/imageFile867.png)
+![image 867](Images/imageFile867.png)
 
 In the case of the Ising model (q = 2), it is generally believed that pc(2) < p(2) if and only if d = 3.
 
-![image 868](rcm1-1_images/imageFile868.png)
+![image 868](Images/imageFile868.png)
 
 A certain amount of notation and preliminary work is required before the main theoremsmay be stated (in Section 7.11). In orderto whet appetites, a preliminary result is included towards the end of the current section. Sections 7.7–7.8 contain some preliminary facts about random-cluster measures and interfaces. A detailed geometrical analysis of interfaces is included in Section 7.9 along the lines of Dobrushin’s classiﬁcation of ‘walls’ and ‘ceilings’. This is followed in Section 7.10 by an exponential bound for the probability of ﬁnding local perturbations of a ﬂat interface.
 
@@ -5832,19 +5832,19 @@ The upper and lower boundaries of a set of vertices are defined as
 
 ∂+ = {x ∈ : x3 > 0, x ∼ z for some z ∈ }, ∂− = {x ∈ : x3 ≤ 0, x ∼ z for some z ∈ },
 
-![image 869](rcm1-1_images/imageFile869.png)
+![image 869](Images/imageFile869.png)
 
-![image 870](rcm1-1_images/imageFile870.png)
+![image 870](Images/imageFile870.png)
 
 where = Zd \ . For positive integers L, M, let L,M denote the box [−L, L]2 × [−M, M], and write EL,M for the set of edges having at least one endvertex in L,M. We write L = L,L, the cube of side-length 2L, and
 
-![image 871](rcm1-1_images/imageFile871.png)
+![image 871](Images/imageFile871.png)
 
 L = [−L, L]2 ×Z, an infinite cylinder. The equator of the box M,N is defined
 
 to be the circuit of L,M \ L−1,M comprising all vertices x with x3 = 21, with a similar definition for the cylinder L.
 
-![image 872](rcm1-1_images/imageFile872.png)
+![image 872](Images/imageFile872.png)
 
 We shall be particularly concerned with a boundary condition D corresponding to the mixed ‘Dobrushin boundary’ of [103]. Let D ∈ be given by (7.86)
 
@@ -5854,27 +5854,27 @@ D(e) =
 
 See Figure 7.4. Let DL,M be the set of conﬁgurations ω ∈ such that ω( f ) = D( f ) if f ∈/ EL,M, and let IL,M be the event that there exists no open path connecting a vertex of ∂+ L,M to a vertex of ∂− L,M. The probability measure of current interest is the random-cluster measure φD M,N,p,q conditioned on the event IL,M, which we denote by φD L,M,p,q.
 
-![image 873](rcm1-1_images/imageFile873.png)
+![image 873](Images/imageFile873.png)
 
 Many of the calculations concern the box L,M and the measure φD L,M,p,q. We choose however to express our conclusions in terms of the infinite cylinder
 
-![image 874](rcm1-1_images/imageFile874.png)
+![image 874](Images/imageFile874.png)
 
 L = L,∞ and the weak limit φL,p,q = limM→∞ φD L,M,p,q.
 
-![image 875](rcm1-1_images/imageFile875.png)
+![image 875](Images/imageFile875.png)
 
-![image 876](rcm1-1_images/imageFile876.png)
+![image 876](Images/imageFile876.png)
 
 consequence of Theorems 7.87 and 7.142 that, for sufficiently large p, any such weak limit is non-translation-invariant.
 
 (7.89) Theorem [139]. Let q ∈ [1,∞) and p > p(21), where p(21) is given in Theorem 7.87. The family {φL,p,q : L = 1,2,. . .} possesses at least one non-translation-invariant weak limit.
 
-![image 877](rcm1-1_images/imageFile877.png)
+![image 877](Images/imageFile877.png)
 
-![image 878](rcm1-1_images/imageFile878.png)
+![image 878](Images/imageFile878.png)
 
-![image 879](rcm1-1_images/imageFile879.png)
+![image 879](Images/imageFile879.png)
 
 It is shown in addition at Theorem 7.144 that there exists a geometric bound, uniformly in L, on the tail of the displacement of the interface from the ﬂat plane.
 
@@ -5882,7 +5882,7 @@ By making use of the relationship between random-cluster models and Potts models
 
 The measure φL,p,q is not a random-cluster measure in the sense of Chapter 3, even though it corresponds to a Gibbs measure when q ∈ {2,3,. . .}. It may instead be termed a ‘conditioned’ random-cluster measure, and such measures will be encountered again in Chapter 11.
 
-![image 880](rcm1-1_images/imageFile880.png)
+![image 880](Images/imageFile880.png)
 
 The strategy of the proofs is to follow the milestones of the paper of Dobrushin [103]. Although Dobrushin’s work is a helpful indicator of the overall route to the results, a considerable amount of extra work is necessary in the context of the random-cluster model, much of which arises from the fact that the geometry of interfaces is different for the random-cluster model from that for spin systems. Heavy use is made in the remainder of this chapter of the material in [139].
 
@@ -5890,19 +5890,19 @@ The strategy of the proofs is to follow the milestones of the paper of Dobrushin
 
 ### 7.7 Probabilistic and geometric preliminaries
 
-![image 881](rcm1-1_images/imageFile881.png)
+![image 881](Images/imageFile881.png)
 
-![image 882](rcm1-1_images/imageFile882.png)
+![image 882](Images/imageFile882.png)
 
-![image 883](rcm1-1_images/imageFile883.png)
+![image 883](Images/imageFile883.png)
 
-![image 884](rcm1-1_images/imageFile884.png)
+![image 884](Images/imageFile884.png)
 
-![image 885](rcm1-1_images/imageFile885.png)
+![image 885](Images/imageFile885.png)
 
-![image 886](rcm1-1_images/imageFile886.png)
+![image 886](Images/imageFile886.png)
 
-![image 887](rcm1-1_images/imageFile887.png)
+![image 887](Images/imageFile887.png)
 
 p
 
@@ -5932,43 +5932,43 @@ It is tempting to think of an interface as part of a deformed plane. Interfaces 
 
 For δ ∈ DL,M, we deﬁne its extended interface (or closure) δ to be the set (7.99) δ = δ ∪ h ∈ H : h is 1-connected to some member of δ . See (7.4). It will be useful to introduce the ‘maximal’ (denoted by ωδ) and ‘minimal’ (denoted by ωδ) conﬁgurations in DL,M that are compatible with δ:
 
-![image 888](rcm1-1_images/imageFile888.png)
+![image 888](Images/imageFile888.png)
 
-![image 889](rcm1-1_images/imageFile889.png)
+![image 889](Images/imageFile889.png)
 
-![image 890](rcm1-1_images/imageFile890.png)
+![image 890](Images/imageFile890.png)
 
-![image 891](rcm1-1_images/imageFile891.png)
+![image 891](Images/imageFile891.png)
 
 (7.100) ωδ(e) =
 
-![image 892](rcm1-1_images/imageFile892.png)
+![image 892](Images/imageFile892.png)
 
-![image 893](rcm1-1_images/imageFile893.png)
+![image 893](Images/imageFile893.png)
 
 D(e) if e ∈/ EL,M, 1 if e ∈ EL,M ∩ (δ \ δ), 0 otherwise.
 
-![image 894](rcm1-1_images/imageFile894.png)
+![image 894](Images/imageFile894.png)
 
 Proof of Lemma 7.98. If ω ∈ IL,M ∩ DL,M, then ω(e) = 0 whenever h(e) ∈ (ω). Suppose conversely that δ ∈ DL,M, and let ω ∈ DL,M satisfy ω(e) = 0 whenever h(e) ∈ δ. Since ω ≤ ωδ, it sufﬁces to show that ωδ ∈ IL,M. Since δ ∈ DL,M, there exists ξ ∈ IL,M ∩ DL,M such that δ = (ξ). Note that ξ ≤ ωδ. Suppose for the sake of obtaining a contradiction that ωδ ∈/ IL,M, and think of ωδ as being obtained from ξ by declaring, in turn, a certain sequence e1,e2,. . . ,er with ξ(ei) = 0, i = 1,2,. . .,r, to be open. Let ξk be obtainedfrom ξ by η(ξk) = η(ξ) ∪ {e1,e2,. . . ,ek}. By assumption, there exists K such that ξK ∈ IL,M but ξK+1 ∈/ IL,M. For ψ ∈ DL,M, let J(ψ) denote the set of edges e having endvertices in L,M, with ψ(e) = 1, and both of whose endvertices are attainable from ∂+ L,M by open paths of ψ. We apply Theorem 7.3 to the finite connected graph induced by J(ξK) to ﬁnd that there exists a splitting set Q of plaquettes such that: ∂+ L,M ⊆ ins([Q]), ∂− L,M ⊆ out([Q]), and ξK(e) = 0 whenever e ∈ EL,M and h(e) ∈ Q. It must be the case that h(eK+1) ∈ Q, since ξK+1 ∈/ IL,M. By the 1-connectedness of Q, there exists a sequence
 
-![image 895](rcm1-1_images/imageFile895.png)
+![image 895](Images/imageFile895.png)
 
-![image 896](rcm1-1_images/imageFile896.png)
+![image 896](Images/imageFile896.png)
 
-![image 897](rcm1-1_images/imageFile897.png)
+![image 897](Images/imageFile897.png)
 
-![image 898](rcm1-1_images/imageFile898.png)
+![image 898](Images/imageFile898.png)
 
-![image 899](rcm1-1_images/imageFile899.png)
+![image 899](Images/imageFile899.png)
 
 f1 = eK+1, f2, f3,. . . , ft of edges such that: (i) h( fi) ∈ Q for all i, (ii) fi ∈ EL,M for i = 1,2,. . .,t − 1, ft = h( x, x − (0,0,1) ) for some x = (x1, x2,1) ∈ ∂+ L,M, and
 
 (iii) h( fi) ∼1 h( fi+1) for i = 1,2,. . .,t − 1. It follows that h( fi) ∈ δ for i = 1,2,. . . ,t. In particular, h(eK+1) ∈ δ and so ωδ(eK+1) = 0, a contradiction. Therefore ωδ ∈ IL,M as claimed.
 
-![image 900](rcm1-1_images/imageFile900.png)
+![image 900](Images/imageFile900.png)
 
-![image 901](rcm1-1_images/imageFile901.png)
+![image 901](Images/imageFile901.png)
 
 <a id="sec-7-8"></a>
 
@@ -5976,15 +5976,15 @@ f1 = eK+1, f2, f3,. . . , ft of edges such that: (i) h( fi) ∈ Q for all i, (ii
 
 For conciseness of notation, we abbreviate φD L,M,p,q to φL,M, and φD L,M,p,q to φL,M. Let δ ∈ DL,M. The better to study φL,M(δ) = φL,M( = δ), we develop next an expression for this probability. Consider the connected components of the graph (Z3,η(ωδ)), and denote these components by (Sδi,Uδi), i = 1,2,. . .,kδ, where kδ = k(ωδ). Note that Uδi is empty whenever Sδi is a singleton. Let W(δ) be the edge-set EL,M \ {e ∈ E3 : h(e) ∈ δ}.
 
-![image 902](rcm1-1_images/imageFile902.png)
+![image 902](Images/imageFile902.png)
 
-![image 903](rcm1-1_images/imageFile903.png)
+![image 903](Images/imageFile903.png)
 
-![image 904](rcm1-1_images/imageFile904.png)
+![image 904](Images/imageFile904.png)
 
-![image 905](rcm1-1_images/imageFile905.png)
+![image 905](Images/imageFile905.png)
 
-![image 906](rcm1-1_images/imageFile906.png)
+![image 906](Images/imageFile906.png)
 
 Let ω ∈ IL,M ∩ DL,M be such that (ω) = δ, so that
 
@@ -5992,21 +5992,21 @@ Let ω ∈ IL,M ∩ DL,M be such that (ω) = δ, so that
 
 0 if h(e) ∈ δ, 1 if h(e) ∈ δ \ δ.
 
-![image 907](rcm1-1_images/imageFile907.png)
+![image 907](Images/imageFile907.png)
 
 Let D be the set of edges with both endvertices in L+2,M+2 that either are dual to plaquettes in δ or join a vertex of L+1,M+1 to a vertex of ∂ L+2,M+2. We apply Theorem 7.5 to the set D, and deduce that there are exactly kδ components of the graph (Z3,η(ω)) having a vertex in V(δ).
 
-![image 908](rcm1-1_images/imageFile908.png)
+![image 908](Images/imageFile908.png)
 
-![image 909](rcm1-1_images/imageFile909.png)
+![image 909](Images/imageFile909.png)
 
-![image 910](rcm1-1_images/imageFile910.png)
+![image 910](Images/imageFile910.png)
 
-![image 911](rcm1-1_images/imageFile911.png)
+![image 911](Images/imageFile911.png)
 
 =
 
-![image 912](rcm1-1_images/imageFile912.png)
+![image 912](Images/imageFile912.png)
 
 where Z(EL,M) = ZD L,M(p,q) and Z1(δ) = ZW1 (δ)(p,q). In this expression and later, for H ⊆ H, |H| is the cardinality of the set H ∩ {h(e) : e ∈ EL,M}. The term qkδ−1 arises since the application of ‘1’ boundary conditions to δ has the effect of uniting the boundaries of the cavities of δ, whereby the number of clusters diminishes by kδ − 1.
 
@@ -6016,9 +6016,9 @@ We shall exploit properties of the partition functions Z(·) in order to rewrite
 
 = sup L : L(e1) ∩ EL1,M1 ≃ L(e2) ∩ EL2,M2 and L(e1) ∩ E(δ1) ≃ L(e2) ∩ E(δ2)
 
-![image 913](rcm1-1_images/imageFile913.png)
+![image 913](Images/imageFile913.png)
 
-![image 914](rcm1-1_images/imageFile914.png)
+![image 914](Images/imageFile914.png)
 
 e∈E(δ)∩EL,M
 
@@ -6029,49 +6029,49 @@ for functions fp(e,δ, L, M) with the following properties. For q ∈ [1,∞), t
 
 where G = G(e1,δ1, EL1,M1; e2,δ2, EL2,M2). Inequalities (7.106) and (7.107) are valid for all relevant values of their arguments.
 
-![image 915](rcm1-1_images/imageFile915.png)
+![image 915](Images/imageFile915.png)
 
-![image 916](rcm1-1_images/imageFile916.png)
+![image 916](Images/imageFile916.png)
 
-![image 917](rcm1-1_images/imageFile917.png)
+![image 917](Images/imageFile917.png)
 
-![image 918](rcm1-1_images/imageFile918.png)
+![image 918](Images/imageFile918.png)
 
 This implies (7.105) via (7.102).
 
 It remains to show (7.106)–(7.107). Let e = ν( f,δ) and set r = e, f . Then r−2( f ) does not intersect δ, implying by Lemma 7.93 that
 
-![image 919](rcm1-1_images/imageFile919.png)
+![image 919](Images/imageFile919.png)
 
 (7.111) g( f, W(δ)) − g( f, EL,M) ≤ e−α e, f +2α, p > p∗,
 
 where p∗ and α are given as in that lemma. Secondly, there exists an absolute constant K such that, for all e and δ, the number of edges f ∈ E(δ) with e = ν( f,δ) is no greater than K. Therefore, by (7.92),
 
-![image 920](rcm1-1_images/imageFile920.png)
+![image 920](Images/imageFile920.png)
 
-![image 921](rcm1-1_images/imageFile921.png)
+![image 921](Images/imageFile921.png)
 
 - g( f, EL1,M1) − g(τ f, EL2,M2)
 
-![image 922](rcm1-1_images/imageFile922.png)
+![image 922](Images/imageFile922.png)
 
-![image 923](rcm1-1_images/imageFile923.png)
+![image 923](Images/imageFile923.png)
 
 By (7.112)–(7.113)and Lemma 7.93, the first summation in (7.115)is bounded
 
 above by 2G3e−31αG. By the definition of the ν( f,δi), the second and third summations are bounded above, respectively, by
 
-![image 924](rcm1-1_images/imageFile924.png)
+![image 924](Images/imageFile924.png)
 
 e−α f,ei +2α ≤ C′e−31αG+2α,
 
-![image 925](rcm1-1_images/imageFile925.png)
+![image 925](Images/imageFile925.png)
 
-![image 926](rcm1-1_images/imageFile926.png)
+![image 926](Images/imageFile926.png)
 
 f ∈E(δ1): ν( f,δ1)=e1
 
-![image 927](rcm1-1_images/imageFile927.png)
+![image 927](Images/imageFile927.png)
 
 and (7.107) follows for an appropriate choice of γ.
 
@@ -6101,9 +6101,9 @@ On the event IL, is defined as before to be the maximal 1-connected set of open 
 
 #### (7.118) Lemma.
 
-![image 928](rcm1-1_images/imageFile928.png)
+![image 928](Images/imageFile928.png)
 
-![image 929](rcm1-1_images/imageFile929.png)
+![image 929](Images/imageFile929.png)
 
 e∈E(δ)∩EL
 
@@ -6111,7 +6111,7 @@ where ZL is the appropriate normalizing constant. Proof of Lemma 7.117. It suf�
 
 Let AL,M = [−L, L]2 × {−M} and BL,M = [−L, L]2 × {M}, and let TL,M be the event that no open path exists between a vertex of ∂ +L,M \ BL,M and a vertex of ∂ −L,M \ AL,M. Note that TL,M → IL as M → ∞. Let F be a cylinder event. Then
 
-![image 930](rcm1-1_images/imageFile930.png)
+![image 930](Images/imageFile930.png)
 
 ≥ φL,M(F ∩ IL) − βM−1
 
@@ -6135,7 +6135,7 @@ Let M → ∞ in (7.105), and use part (a) to obtain the claim.
 
 A taxonomy of interfaces is required, and this is the topic of this section. Let δ ∈ DL. While it was natural in Section 7.7 to introduce the extended interface δ, it turns out to be useful when studying the geometry of δ to work with its semi-extended interface
 
-![image 931](rcm1-1_images/imageFile931.png)
+![image 931](Images/imageFile931.png)
 
 δ∗ = δ ∪ h ∈ H : h is a horizontal plaquette that is 1-connected to δ .
 
@@ -6145,31 +6145,31 @@ Let x = (x1, x2, x3) ∈ Z3. The projection π(h) of a horizontal plaquette h = 
 
 π(h) = (x1 + 21, x2 − 12, 21),(x1 + 12, x2 + 21, 21) , and, similarly, h = h( x, x + (0,1,0) ) has projection
 
-![image 932](rcm1-1_images/imageFile932.png)
+![image 932](Images/imageFile932.png)
 
-![image 933](rcm1-1_images/imageFile933.png)
+![image 933](Images/imageFile933.png)
 
-![image 934](rcm1-1_images/imageFile934.png)
+![image 934](Images/imageFile934.png)
 
-![image 935](rcm1-1_images/imageFile935.png)
+![image 935](Images/imageFile935.png)
 
-![image 936](rcm1-1_images/imageFile936.png)
+![image 936](Images/imageFile936.png)
 
-![image 937](rcm1-1_images/imageFile937.png)
+![image 937](Images/imageFile937.png)
 
 π(h) = (x1 − 21, x2 + 21, 21),(x1 + 21, x2 + 12, 21) .
 
-![image 938](rcm1-1_images/imageFile938.png)
+![image 938](Images/imageFile938.png)
 
-![image 939](rcm1-1_images/imageFile939.png)
+![image 939](Images/imageFile939.png)
 
-![image 940](rcm1-1_images/imageFile940.png)
+![image 940](Images/imageFile940.png)
 
-![image 941](rcm1-1_images/imageFile941.png)
+![image 941](Images/imageFile941.png)
 
-![image 942](rcm1-1_images/imageFile942.png)
+![image 942](Images/imageFile942.png)
 
-![image 943](rcm1-1_images/imageFile943.png)
+![image 943](Images/imageFile943.png)
 
 Ahorizontalplaquetteh ofthesemi-extendedinterfaceδ∗iscalledac-plaquette if h is the uniquememberof δ∗ with projection π(h). All otherplaquettesof δ∗ are called w-plaquettes. A ceiling of δ is a maximal 0-connected set of c-plaquettes. The projection of a ceiling C is the set π(C) = {π(h) : h ∈ C}. Similarly, we deﬁne a wall W of δ as a maximal 0-connected set of w-plaquettes, and its projection as
 
@@ -6199,17 +6199,17 @@ Proof. (i) Let h be a c-plaquette of δ∗ with π(h) = h0. Since δ ∈ DL, δ 
 
 (ii) Suppose h is a c-plaquette. Then h belongs to δ, and any horizontal plaquette that is 1-connected to h belongs to δ∗. It may be seen in addition that any vertical plaquette that is 1-connected to h lies in δ \ δ. Suppose, on the contrary, that some such vertical plaquette h′ lies in δ. Then the horizontal plaquettes that are 1-connected to h′ lie in δ∗. One of these latter plaquettes has projection π(h), in contradiction of the assumption that h is a c-plaquette.
 
-![image 944](rcm1-1_images/imageFile944.png)
+![image 944](Images/imageFile944.png)
 
 We may now see as follows that any horizontalplaquette h′′ that is 1-connected to h must lie in δ. Suppose, on the contrary, that some such plaquette h′′ lies in δ\δ. We may construct a path of open edges on (Z3,η(ωδ)) connecting the vertex x just above h to the vertex x − (0,0,1) just below h, using the open edges of ωδ corresponding to the three relevant plaquettes of δ \ δ. This contradicts the assumption that h is a c-plaquette of the interface δ.
 
-![image 945](rcm1-1_images/imageFile945.png)
+![image 945](Images/imageFile945.png)
 
-![image 946](rcm1-1_images/imageFile946.png)
+![image 946](Images/imageFile946.png)
 
-![image 947](rcm1-1_images/imageFile947.png)
+![image 947](Images/imageFile947.png)
 
-![image 948](rcm1-1_images/imageFile948.png)
+![image 948](Images/imageFile948.png)
 
 The second claim of (ii) follows immediately, by the definition of δ∗.
 
@@ -6221,7 +6221,7 @@ The second claim of (ii) follows immediately, by the definition of δ∗.
 
 We note that13 βi∗ is a 0-connected subset of δi∗.
 
-![image 949](rcm1-1_images/imageFile949.png)
+![image 949](Images/imageFile949.png)
 
 13This is a consequence of [311, eqn (5.3)], see also [286, p. 40, footnote 2].
 
@@ -6241,7 +6241,7 @@ Claim(vi)isasimpleobservationsincewallsarefinite. Claim(vii)isimmediate from cla
 
 The properties described in Lemma 7.125 allow us to describe a wall W in more detail. By (vi) and (vii), there exists a unique ceiling that is 0-connected to W and with projection in the infinite 0-connected component of δ0 \ π(W). We call this ceiling the base of W. The altitude of W is the height of the base of W, see (iii). The height D(W) of W is the maximum absolute value of the displacement in the third coordinate direction of [W] from the horizontal plane {(x1, x2,s + 21) : x1, x2 ∈ Z}, where s is the altitude of W. The interior int(W) (of the projection π(W)) of W is the complement in δ0 of the unique maximal infinite 0-connected component of δ0 \ π(W), see (vi).
 
-![image 950](rcm1-1_images/imageFile950.png)
+![image 950](Images/imageFile950.png)
 
 Let S = (A, B) where A, B are sets of plaquettes. We call S a standard wall if there exists δ ∈ DL such that A ⊆ δ, B ⊆ δ∗ \ δ, and A ∪ B is the unique wall of δ. If S = (A, B) is a standard wall, we refer to plaquettes of either A or B as plaquettes of S, and we write π(S) = π(A ∪ B).
 
@@ -6261,9 +6261,9 @@ The membersof anysuch familyhave distinctorigins. Forour futureconvenience, each
 
 We introduce next the concept of a group of walls. Let h ∈ δ0, δ ∈ DL, and denote by ρ(h,δ) the number of (vertical or horizontal) plaquettes in δ whose projection is a subset of h. Two standard walls S1, S2 are called close if there exist h1 ∈ π(S1) and h2 ∈ π(S2) such that
 
-![image 951](rcm1-1_images/imageFile951.png)
+![image 951](Images/imageFile951.png)
 
-![image 952](rcm1-1_images/imageFile952.png)
+![image 952](Images/imageFile952.png)
 
 h1,h2 < ρ(h1,δS1) + ρ(h2,δS2).
 
@@ -6293,7 +6293,7 @@ Sh =
 
 More precisely, in the first case, Sh = (Ah, Bh) where Ah = τ(0,0,−si)Ai and Bh = τ(0,0,−si)Bi. Thatthisis anadmissible familyof standardwalls followsfrom Lemma 7.125(viii) and from the observation that si = 0 when E(Wi) ∩ EL = ∅.
 
-![image 953](rcm1-1_images/imageFile953.png)
+![image 953](Images/imageFile953.png)
 
 Conversely, let {Sh = (Ah, Bh) : h ∈ δ0} be an admissible family of standard walls. We shall show that there is a unique interface δ corresponding in a certain way to this family. Let S1, S2 . . ., Sn be the non-empty walls of the family, and let δi be the unique interface in DL having Si as its only wall.
 
@@ -6331,19 +6331,19 @@ i=1
 
 (i) N(S) ≥ 1314|π(S)|. Consequently, (S) ≥ 131 |π(S)| and (S) ≥ 141 N(S). (ii) N(S) ≥ 15|S|. (iii) (S) ≥ D(S).
 
-![image 954](rcm1-1_images/imageFile954.png)
+![image 954](Images/imageFile954.png)
 
-![image 955](rcm1-1_images/imageFile955.png)
+![image 955](Images/imageFile955.png)
 
-![image 956](rcm1-1_images/imageFile956.png)
+![image 956](Images/imageFile956.png)
 
-![image 957](rcm1-1_images/imageFile957.png)
+![image 957](Images/imageFile957.png)
 
 Proof. (i) For each h0 ∈ δ0, let U(h0) = {h ∈ δ0 : h = h0 or h ∼1 h0}. We call two plaquettes h1,h2 ∈ δ0 separated if U(h1) ∩ U(h2) = ∅. Denote by Hsep = Hsep(S) ⊆ π(S) a set of pairwise-separated plaquettes in π(S) having maximum cardinality, and let H = h1∈Hsep[U(h1) ∩ π(S)]. Note that
 
 (7.129) |Hsep| ≥ 131 |π(S)|.
 
-![image 958](rcm1-1_images/imageFile958.png)
+![image 958](Images/imageFile958.png)
 
 For every h0 ∈ π(S), there exists a horizontal plaquette h1 ∈ δS such that π(h1) = h0. Since A ∪ B contains no c-plaquette of δS, h1 is a w-plaquette, whence h1 ∈ A. In particular, N(S) ≥ |π(S)|.
 
@@ -6357,7 +6357,7 @@ h0∈Hsep
 
 = |H| + |Hsep| + |π(S)| − |H| ≥ 1314|π(S)|.
 
-![image 959](rcm1-1_images/imageFile959.png)
+![image 959](Images/imageFile959.png)
 
 In order to prove (7.130), we argue first that U(h0)∩π(S) contains at least one (horizontal) plaquette besides h0. Suppose that this is not true. Then U(h0) \ h0 contains the projections of c-plaquettes of δ∗S only. By Lemma 7.125(ii, iii), these c-plaquettes belong to the same ceiling C and therefore lie in the same plane. Since h1 is by assumption a w-plaquette, there must be at least one other
 
@@ -6376,7 +6376,7 @@ Finally inthissection, we derivean exponentialboundforthenumberof groups of wall
 
 Rj = h′ ∈ δ0 : j,h′ ≤ ρ(j,δG) \ π(G),
 
-![image 960](rcm1-1_images/imageFile960.png)
+![image 960](Images/imageFile960.png)
 
 for which there exists no other plaquette h′′ ∈ G with π(h′′) = π(h′), are the standard walls of G. Hence, the number of such groups of walls with (G) = k is no greaterthan the numberof 0-connectedsets of plaquettescontainingno more than 70C′′k elements including h. It is proved in [103, Lemma 2] that there exists ν < ∞ such that the number of 0-connected sets of size n containing h is no larger than νn. Given any such set, there are at most 2n ways of partitioning the plaquettes between the Ai and the Bi. The claim of the lemma follows.
 
@@ -6386,13 +6386,13 @@ for which there exists no other plaquette h′′ ∈ G with π(h′′) = π(h�
 
 The probabilistic expressions of Section 7.8 may be combined with the classiﬁcation of Section 7.9 to obtain an estimate concerning the geometry of the interface. Let G = {Gh : h ∈ δ0} be a family of groups of walls. If G is admissible, there exists by Lemma 7.127 a unique corresponding interface δG. We may pick a random family ζ = {ζh : h ∈ δ0} of groups of walls according to the probability measure PL induced by φL thus:
 
-![image 961](rcm1-1_images/imageFile961.png)
+![image 961](Images/imageFile961.png)
 
 PL(ζ = G) =
 
 φL( = δG) if G is admissible, 0 otherwise.
 
-![image 962](rcm1-1_images/imageFile962.png)
+![image 962](Images/imageFile962.png)
 
 (7.132) Lemma. Let q ∈ [1,∞), and let p∗ be as in Lemma 7.104. There exist constants C3, C4 such that
 
@@ -6402,7 +6402,7 @@ for p > p∗, and for all h′ ∈ δ0, Gh′ ∈ Gh′, L > 0, and for any admi
 
 Proof. The claim is trivial if G = {Gh : h ∈ δ0} is not admissible, and therefore we may assume it to be admissible. Let h′ ∈ δ0, and let G′ agree with G except at h′, where Gh′ is replaced by the empty group Eh′. Then
 
-![image 963](rcm1-1_images/imageFile963.png)
+![image 963](Images/imageFile963.png)
 
 φL(δ) φL(δ′)
 
@@ -6410,73 +6410,73 @@ Proof. The claim is trivial if G = {Gh : h ∈ δ0} is not admissible, and there
 
 ,
 
-![image 964](rcm1-1_images/imageFile964.png)
+![image 964](Images/imageFile964.png)
 
-![image 965](rcm1-1_images/imageFile965.png)
+![image 965](Images/imageFile965.png)
 
 where δ = δG and δ′ = δG′.
 
 In using (7.121) to bound the right side of this expression, we shall require bounds for |δ| − |δ′|, |δ \ δ| − |δ′ \ δ′|, kδ − kδ′, and (7.134)
 
-![image 966](rcm1-1_images/imageFile966.png)
+![image 966](Images/imageFile966.png)
 
-![image 967](rcm1-1_images/imageFile967.png)
+![image 967](Images/imageFile967.png)
 
 (7.136) |δ \ δ| − |δ′ \ δ′| ≥ 0,
 
-![image 968](rcm1-1_images/imageFile968.png)
+![image 968](Images/imageFile968.png)
 
-![image 969](rcm1-1_images/imageFile969.png)
+![image 969](Images/imageFile969.png)
 
 and the reader may be prepared to omit the explanation that follows. We claim that (7.136) follows from the inequality
 
 (7.137) |P(δ)| − |P(δ′)| ≥ 0,
 
-![image 970](rcm1-1_images/imageFile970.png)
+![image 970](Images/imageFile970.png)
 
-![image 971](rcm1-1_images/imageFile971.png)
+![image 971](Images/imageFile971.png)
 
 where P(δ) (respectively, P(δ′)) is the set of plaquettes in δ \ δ (respectively, δ′ \ δ′) that project into [π(Gh′)]. In order to see that (7.137) implies (7.136), we argue as follows. The extended interface δ may be constructed from δ′ in the following manner. First, we remove all the plaquettes from δ′ that project into [π(Gh′)], and we ﬁll the gaps by introducing the walls of Gh′ one by one along the lines of the proof of Lemma 7.127. Then we add the plaquettes of δ \ δ that project into [π(Gh′)]. During this operation on interfaces, we remove P(δ′) and add P(δ), and the claim follows.
 
-![image 972](rcm1-1_images/imageFile972.png)
+![image 972](Images/imageFile972.png)
 
-![image 973](rcm1-1_images/imageFile973.png)
+![image 973](Images/imageFile973.png)
 
-![image 974](rcm1-1_images/imageFile974.png)
+![image 974](Images/imageFile974.png)
 
-![image 975](rcm1-1_images/imageFile975.png)
+![image 975](Images/imageFile975.png)
 
-![image 976](rcm1-1_images/imageFile976.png)
+![image 976](Images/imageFile976.png)
 
-![image 977](rcm1-1_images/imageFile977.png)
+![image 977](Images/imageFile977.png)
 
-![image 978](rcm1-1_images/imageFile978.png)
+![image 978](Images/imageFile978.png)
 
-![image 979](rcm1-1_images/imageFile979.png)
+![image 979](Images/imageFile979.png)
 
-![image 980](rcm1-1_images/imageFile980.png)
+![image 980](Images/imageFile980.png)
 
-![image 981](rcm1-1_images/imageFile981.png)
+![image 981](Images/imageFile981.png)
 
 By Lemma 7.125(viii), there exists no vertical plaquette of δ′ \ δ′ that projects into [π(Gh′)] and is in addition 1-connected to some wall not belonging to Gh′. Moreover, since all the horizontal plaquettes of δ′ belong to the semi-extended interface δ′∗, those that project onto [π(Gh′)] are c-plaquettes of δ′∗; hence, such plaquettes lie in δ′. It follows that P(δ′) comprises the vertical plaquettes that are 1-connected with π(Gh′).
 
-![image 982](rcm1-1_images/imageFile982.png)
+![image 982](Images/imageFile982.png)
 
-![image 983](rcm1-1_images/imageFile983.png)
+![image 983](Images/imageFile983.png)
 
-![image 984](rcm1-1_images/imageFile984.png)
+![image 984](Images/imageFile984.png)
 
 It is therefore sufﬁcient to construct an injective map T that maps each vertical plaquette, 1-connected with π(Gh′), to a different vertical plaquette in P(δ). We noted in the proof of Lemma 7.128(i) that, for every h0 ∈ π(G′
 
-![image 985](rcm1-1_images/imageFile985.png)
+![image 985](Images/imageFile985.png)
 
 h), there exists a horizontal plaquette h1 ∈ δ with π(h1) = h0. For every vertical plaquette hv ∼1 h0, there exists a translate hv1 ∼1 h1. Suppose hv lies above δ0. If hv1 ∈ δ \ δ, we set T(hv) = hv1. If hv1 ∈ δ, we consider the (unique) vertical plaquette ‘above’ it, which we denote by hv2. We repeat this procedure up to the first n for which we meet a plaquette hvn ∈ δ \ δ, and we set T(hv) = hvn. When hv lies below δ0, we act similarly to ﬁnd a plaquette T(hv) of δ \ δ beneath hv. The resulting T is as required.
 
-![image 986](rcm1-1_images/imageFile986.png)
+![image 986](Images/imageFile986.png)
 
-![image 987](rcm1-1_images/imageFile987.png)
+![image 987](Images/imageFile987.png)
 
-![image 988](rcm1-1_images/imageFile988.png)
+![image 988](Images/imageFile988.png)
 
 We turn now to the quantity kδ − kδ′, and we shall use the notation around (7.101). Note that exactly two of the components (Sδi,Uδi) are infinite, and these may be taken as those with indices 1 and 2. For i = 3,4,. . .,kδ, let H(Sδi) be the set of plaquettes that are dual to edges having exactly one endvertex in Sδi. The finite component (Sδi,Uδi) is in a natural way surrounded by a particular
 
@@ -6496,13 +6496,13 @@ one–one correspondence between the plaquettes of δi and those of δi′, and 
 
 If e is such that h(e) ∈ U,
 
-![image 989](rcm1-1_images/imageFile989.png)
+![image 989](Images/imageFile989.png)
 
-![image 990](rcm1-1_images/imageFile990.png)
+![image 990](Images/imageFile990.png)
 
 The principal theorem states in rough terms the following. Let q ∈ [1,∞) and let p be sufficiently large. With φL-probability close to 1, the interface (ω) deviates from the ﬂat plane δ0 only through local perturbations. An ant living on (ω) is able, with large probability, to visit a positive density of the interface via horizontal meanderings only.
 
-![image 991](rcm1-1_images/imageFile991.png)
+![image 991](Images/imageFile991.png)
 
 Let h ∈ δ0. For ω ∈ DL, we write h ↔ ∞ if there exists a sequence
 
@@ -6511,7 +6511,7 @@ h = h0,h1,. . .,hr of plaquettes in δ0 such that: (a) hi ∼1 hi+1 for i = 0,1,
 - (7.142) Theorem [139]. Let q ∈ [1,∞). For ǫ > 0, there exists p = p(ǫ) < 1 such that, if p > p,
 - (7.143) φL(h ↔ ∞) > 1 − ǫ, h ∈ δ0, L ≥ 1.
 
-![image 992](rcm1-1_images/imageFile992.png)
+![image 992](Images/imageFile992.png)
 
 Since, following Theorem 7.142, h ∈ δ0 is a c-plaquette with high probability, the vertexof Z3 immediatelybeneath(respectively,above)the centre of h is joined
 
@@ -6519,35 +6519,35 @@ to ∂− L (respectively, ∂+ L) with high probability. Theorem 7.87 follows. 
 
 The existence of non-translation-invariant (conditioned) random-cluster measures follows from Theorem 7.142, as in the following sketch argument. For e ∈ E3, let e± = e ± (0,0,1), and let ω ∈ . If h = h(e) ∈ δ0 is a c-plaquette of = (ω), then e is closed, and h(e±) ∈/ . The conﬁgurations in the two regions above and below are governed by wired random-cluster measures14. Therefore, under (7.143),
 
-![image 993](rcm1-1_images/imageFile993.png)
+![image 993](Images/imageFile993.png)
 
 (1 − ǫ)p p + q(1 − p)
 
 φL(e is open) ≤ ǫ, φL(e± is open) ≥
 
-![image 994](rcm1-1_images/imageFile994.png)
+![image 994](Images/imageFile994.png)
 
-![image 995](rcm1-1_images/imageFile995.png)
+![image 995](Images/imageFile995.png)
 
 ,
 
-![image 996](rcm1-1_images/imageFile996.png)
+![image 996](Images/imageFile996.png)
 
 by stochastic ordering. Note that these inequalities concern the probabilities of cylinder events. This implies Theorem 7.89.
 
 Our second main result concerns the vertical displacement of the interface, and asserts the existence of a geometric bound on the tail of the displacement, uniformly in L. Let δ ∈ DL, (x1, x2) ∈ Z2, and x = (x1, x2, 21). We deﬁne the displacement of δ at x by
 
-![image 997](rcm1-1_images/imageFile997.png)
+![image 997](Images/imageFile997.png)
 
 D(x,δ) = sup |z − 21| : (x1, x2, z) ∈ [δ] .
 
-![image 998](rcm1-1_images/imageFile998.png)
+![image 998](Images/imageFile998.png)
 
 (7.144) Theorem [139]. Let q ∈ [1,∞). There exists p < 1 and α(p) satisfying α(p) > 0 when p > p such that
 
 φL(D(x, ) ≥ z) ≤ e−zα(p), z ≥ 1, (x1, x2) ∈ Z2, L ≥ 1.
 
-![image 999](rcm1-1_images/imageFile999.png)
+![image 999](Images/imageFile999.png)
 
 Proof of Theorem 7.142. Let h ∈ δ0. We have not so far speciﬁed the ordering of plaquettes in δ0 used to identify the origin of a standard wall or of a groupof walls. We assume henceforth that this ordering is such that: for h1,h2 ∈ δ0, h1 > h2 implies h,h1 ≥ h,h2 .
 
@@ -6559,7 +6559,7 @@ each such wall S, h belongs to I(S). Suppose on the contrary that h ∈/ I(Sj) f
 
 13 (Gh′) ≥ |π(Gh′)| ≥ |π(Sj)| ≥ h, j + 1 ≥ h,h′ + 1.
 
-![image 1000](rcm1-1_images/imageFile1000.png)
+![image 1000](Images/imageFile1000.png)
 
 14We have used Lemma 7.117 here. 15This is a consequence of a standard property of Z2, see [210, Appendix].
 
@@ -6567,29 +6567,29 @@ Let K be as in Lemma 7.131, and p∗, C4 as in Lemma 7.132. Let p be sufficientl
 
 λ = λ(p) = −131 log[KC4(1 − p)] satisﬁes λ( p) > 0. By the last lemma, when p > p,
 
-![image 1001](rcm1-1_images/imageFile1001.png)
+![image 1001](Images/imageFile1001.png)
 
 PL (ζh′) ≥ 131 [ h,h′ + 1]
 
 1 − φL(h ↔ ∞) ≤
 
-![image 1002](rcm1-1_images/imageFile1002.png)
+![image 1002](Images/imageFile1002.png)
 
-![image 1003](rcm1-1_images/imageFile1003.png)
+![image 1003](Images/imageFile1003.png)
 
 for appropriate constants Ci. The claim follows on choosing p sufficiently close to 1.
 
 Proof of Theorem 7.144. If D(x, ) ≥ z, there exists r satisfying 1 ≤ r ≤ z such thatthefollowingstatementholds. Thereexistdistinctplaquettesh1,h2,. . .,hr ∈ δ0, and maximal admissible groups Ghi, i = 1,2,. . .,r, of walls of such that: x = (x1, x2, 21) lies in the interior of one or more standard wall of each Ghi, and
 
-![image 1004](rcm1-1_images/imageFile1004.png)
+![image 1004](Images/imageFile1004.png)
 
-![image 1005](rcm1-1_images/imageFile1005.png)
+![image 1005](Images/imageFile1005.png)
 
 φL(D(x, ) ≥ z) ≤
 
-![image 1006](rcm1-1_images/imageFile1006.png)
+![image 1006](Images/imageFile1006.png)
 
-![image 1007](rcm1-1_images/imageFile1007.png)
+![image 1007](Images/imageFile1007.png)
 
 <a id="ch-8"></a>
 
@@ -6639,9 +6639,9 @@ qω,ω = −
 
 Note that X proceeds by transitions in which single edges change their states, it is not permissible for two or more edge-states to change simultaneously. We say in this regard that X proceeds by ‘local moves’.
 
-![image 1008](rcm1-1_images/imageFile1008.png)
+![image 1008](Images/imageFile1008.png)
 
-![image 1009](rcm1-1_images/imageFile1009.png)
+![image 1009](Images/imageFile1009.png)
 
 We call a Markov chain on a Glauber process if it proceeds by local moves and has a generator Q satisfying (8.3), see [235, p. 191]. We have concentrated
 
@@ -6661,23 +6661,23 @@ Note that the generator (8.1) of the Markov chain given above depends on the ran
 
 Once again we take G = (V, E) to be a finite graph, and we let p ∈ (0,1) and q ∈ (0,∞). We consider in this section a special Glauber process termed the Gibbs sampler (or heat-bath algorithm). This is a Markov chain X on the state space = {0,1}E which proceedsby local moves. Its basic rule is as follows. We choose an edge e at random, and we set the state of e according to the conditional measure of ω(e) given the current states of the other edges. This may be done in either discrete or continuous time, we give the details for continuous time here and shall return to the case of discrete time in Section 8.4.
 
-![image 1010](rcm1-1_images/imageFile1010.png)
+![image 1010](Images/imageFile1010.png)
 
-![image 1011](rcm1-1_images/imageFile1011.png)
+![image 1011](Images/imageFile1011.png)
 
 226 Dynamics of Random-Cluster Models [8.3]
 
 for ω ∈ and e ∈ E. Thus, each edge is selected at rate 1, and the state of that edge is changed according to the correct conditional measure. It is evident that the detailed balance equations (8.2) hold as before, whence X is reversible with respect to φp,q. By irreducibility, φp,q is the unique invariantmeasure of the chain and thus, in particular, Xt ⇒ φp,q as t → ∞.
 
-![image 1012](rcm1-1_images/imageFile1012.png)
+![image 1012](Images/imageFile1012.png)
 
-![image 1013](rcm1-1_images/imageFile1013.png)
+![image 1013](Images/imageFile1013.png)
 
 The state of e is unchanged if the appropriate inequality is false. It is easily checked that this rule generates a Markov chain which satisﬁes (8.4) and proceeds by local moves. This version of such a chain has two attractive properties. First, it is a neat way of implementing the Gibbs sampler in practice since it requires only two random mechanisms: one that samples edges at random, and a second that produces uniformly distributed random variables.
 
-![image 1014](rcm1-1_images/imageFile1014.png)
+![image 1014](Images/imageFile1014.png)
 
-![image 1015](rcm1-1_images/imageFile1015.png)
+![image 1015](Images/imageFile1015.png)
 
 Let U(e) = (Uj(e) : j = 1,2,. . .), e ∈ E, be independent families of independent random variables each having the uniform distribution on [0,1]. Let
 
@@ -6691,17 +6691,17 @@ Xi = (Xti : t ≥ 0), i = 1,2, be Markov processes on constructed as follows. Th
 
 When performing simulations of the random-cluster model, one is required to sample from the probability measure φp,q. The Glauber processes of the last two sections certainly converge weakly to φp,q as t → ∞, but this is not as good as having a sample with the exact distribution. The Propp–Wilson approach to sampling termed ‘coupling from the past’, [282], provides a mechanism for obtaining samples with the correct distribution, and is in addition especially well suited to the random-cluster model when q ∈ [1,∞). We describe this here. Some illustrations of the method in practice may be found in [173, 195, 243].
 
-![image 1016](rcm1-1_images/imageFile1016.png)
+![image 1016](Images/imageFile1016.png)
 
-![image 1017](rcm1-1_images/imageFile1017.png)
+![image 1017](Images/imageFile1017.png)
 
-![image 1018](rcm1-1_images/imageFile1018.png)
+![image 1018](Images/imageFile1018.png)
 
-![image 1019](rcm1-1_images/imageFile1019.png)
+![image 1019](Images/imageFile1019.png)
 
-![image 1020](rcm1-1_images/imageFile1020.png)
+![image 1020](Images/imageFile1020.png)
 
-![image 1021](rcm1-1_images/imageFile1021.png)
+![image 1021](Images/imageFile1021.png)
 
 228 Dynamics of Random-Cluster Models [8.4]
 
@@ -6711,9 +6711,9 @@ As in (8.6), when q ∈ [1,∞), φp,q(ωe) φp,q(ωe) + φp,q(ωe) ≥
 
 , ω ≤ ξ,
 
-![image 1022](rcm1-1_images/imageFile1022.png)
+![image 1022](Images/imageFile1022.png)
 
-![image 1023](rcm1-1_images/imageFile1023.png)
+![image 1023](Images/imageFile1023.png)
 
 implying that ω(e) ≤ ξ(e), and hence (8.8) ψ(ω,e,u) ≤ ψ(ξ,e,u), ω ≤ ξ. Let Zν = (Znν : n = 0,1,2,. . .) be the Markov chain constructed via (8.7) with initial state Z0 = ν. By (8.8), (8.9) Znω ≤ Znξ for all n, if ω ≤ ξ and q ∈ [1,∞), which is to say that the coupling is monotone in the initial state: if one such chain starts below another, then it remains below for all time.
 
@@ -6783,7 +6783,7 @@ Proof. There is a strictly positive probability that ωn(e) = 0 for all e ∈ E.
 
 The Swendsen–Wangalgorithmgeneratesa Markovchain (σn : n = 0,1,. . .). It is generally the case that this chain converges to the equilibrium Potts measure faster than time-evolutions defined via local dynamics. This is especially evident in the ‘high β’ (or ‘low temperature’) phase, for the following reason. Consider for example the simulation of an Ising model on a finite box with free boundary conditions, and suppose that the initial state is +1 at all vertices. If β is large, local dynamics result in samples that remain close to the ‘+ phase’ for a very long time. Only after a long delay will the process achieve an average magnetization close to 0. Swendsen–Wang dynamics, on the other hand, can achieve large jumps in average magnetization eveninasinglestep,since the spin allocated to agivenlarge
 
-![image 1024](rcm1-1_images/imageFile1024.png)
+![image 1024](Images/imageFile1024.png)
 
 2See [249, 292] for accounts of recent work of relevance.
 
@@ -6830,21 +6830,21 @@ Let Q = (qγ,ω : γ,ω ∈ ) denote the generator of the process pZ. Since Z pr
 
 qγ,ω = 0 if H(γ,ω) ≥ 2,
 
-![image 1025](rcm1-1_images/imageFile1025.png)
+![image 1025](Images/imageFile1025.png)
 
-![image 1026](rcm1-1_images/imageFile1026.png)
+![image 1026](Images/imageFile1026.png)
 
-![image 1027](rcm1-1_images/imageFile1027.png)
+![image 1027](Images/imageFile1027.png)
 
-![image 1028](rcm1-1_images/imageFile1028.png)
+![image 1028](Images/imageFile1028.png)
 
-![image 1029](rcm1-1_images/imageFile1029.png)
+![image 1029](Images/imageFile1029.png)
 
-![image 1030](rcm1-1_images/imageFile1030.png)
+![image 1030](Images/imageFile1030.png)
 
 if γ ∈/ De,
 
-![image 1031](rcm1-1_images/imageFile1031.png)
+![image 1031](Images/imageFile1031.png)
 
 We turn now to the proof of Theorem 8.19, which is preceeded by a lemma. The product space X = [0,1]E is equipped with the Borel σ-field B. An event A ∈ B is called increasing if it has the property that ν′ ∈ A whenever there exists ν ∈ A such that ν ≤ ν′, and it is called decreasing if its complement is increasing. For ζ ∈ X, let Zζ = (Ztζ : t ≥ 0) denote the above Markov process with initial state Z0 = ζ.
 
@@ -6934,7 +6934,7 @@ We note two further facts for future use. First, there is a sample-path monotoni
 
 to one another, then so are Z ,(ν,tb) and Z ,(ζ,tb), for b ∈ {0,1}. These observations are made formal as follows.
 
-![image 1032](rcm1-1_images/imageFile1032.png)
+![image 1032](Images/imageFile1032.png)
 
 4We make the same assumption as in the footnote on page 233.
 
@@ -7052,7 +7052,7 @@ The ‘level-set processes’ of Zt0 and Zt1 are given as follows. Let p ∈ (0,
 
 where the projections p and p are defined in (8.20)–(8.21). Note the apparent reversal of boundary conditions in (8.55).
 
-![image 1033](rcm1-1_images/imageFile1033.png)
+![image 1033](Images/imageFile1033.png)
 
 5A possible alternative to the methodology of this section might be the ‘martingale method’ described in [186, 235]. For general accounts of the theory of Markov processes, the reader may consult the books [51, 113, 235, 299].
 
@@ -7089,7 +7089,7 @@ F F + q(1 − F)
 
 F −
 
-![image 1034](rcm1-1_images/imageFile1034.png)
+![image 1034](Images/imageFile1034.png)
 
 which is an increasing function of q. This is evidence that the number of pairs e, f of edges having the same state increases with q.
 
@@ -7099,9 +7099,9 @@ Let e = x, y ∈ Ed. As in (8.35), let Pe be the set of all paths of Ed \ {e} th
 
 For b = 0,1, let Gb be the linear operator, with domain a suitable subset of C( ), given by (8.60)
 
-![image 1035](rcm1-1_images/imageFile1035.png)
+![image 1035](Images/imageFile1035.png)
 
-![image 1036](rcm1-1_images/imageFile1036.png)
+![image 1036](Images/imageFile1036.png)
 
 Note that Gbg is well defined for all cylinder functions g, since the infinite sum in (8.60) may then be written as a finite sum. However, Gbg is not generally continuous when q ∈ (1,∞), even for cylinder functions g. For example, let q ∈ (1,∞), let g be the indicator function of the event that a given edge e is open, and let ω be a conﬁguration satisfying:
 
@@ -7219,7 +7219,7 @@ Since we are working with the product topology on X, it will be enough to show t
 
 Let D = Dq be as in Theorem 4.63, and let ǫ > 0. Pick a finite subset E of D = (0,1)\D such that every interval of the form (δ,δ +ǫ) contains some point of E, as δ ranges over [0,1 − ǫ). By Theorem 4.63,
 
-![image 1037](rcm1-1_images/imageFile1037.png)
+![image 1037](Images/imageFile1037.png)
 
 In order to show that
 
@@ -7249,7 +7249,7 @@ Now Zt1 ≤st ZT1 for t ≥ T, and hence
 
 P(Zt1 ∈ Cp−ǫ) > µ(Cp−ǫ) + 21η for some ǫ > 0 and all t ≥ T, by (8.87). Since Cp−ǫ is closed, this contradicts the fact that Zt1 ⇒ µ.
 
-![image 1038](rcm1-1_images/imageFile1038.png)
+![image 1038](Images/imageFile1038.png)
 
 The sets Bp and Bp−h are open, and Bp\Bp−h → ∅ ash ↓ 0. Henceψp0−h(A) → ψp0(A) as h ↓ 0.
 
@@ -7279,11 +7279,11 @@ In order to prove (8.91), we use a percolation argument. Let η > 0. As in Secti
 
 1 − e−η < 41,
 
-![image 1039](rcm1-1_images/imageFile1039.png)
+![image 1039](Images/imageFile1039.png)
 
 noting that 14 is less than the critical probability of bond percolation on the square lattice (see Chapter6 and [154]). Routine percolationargumentsmay now be used
 
-![image 1040](rcm1-1_images/imageFile1040.png)
+![image 1040](Images/imageFile1040.png)
 
 to obtain the existence of ǫ′ > 0 such that, for all boxes containing [−2n,2n]2,
 
@@ -7351,7 +7351,7 @@ Simultaneous uniqueness may be conjectured for the random-cluster model also, us
 
 It must be the case that iq(p) = iq′ (p) for p = pc(q). Here is a sufﬁcient condition for simultaneous uniqueness. For r ∈ (0,1) and a box , let E (r) be the subset of the conﬁguration space X containing all ν with ν(e) < r for all e ∈ E . Thus, E (r) is the event that every edge in E is open in the conﬁguration rν. By [13, Thm 1.8], it sufﬁces to show that µ has a property termed ‘positive finite energy’. This is in turn implied by:
 
-![image 1041](rcm1-1_images/imageFile1041.png)
+![image 1041](Images/imageFile1041.png)
 
 |E |
 
@@ -7410,15 +7410,15 @@ The flow polynomial of H satisﬁes (9.5) CH(q) = (−1)|F|WH(−1,−q)
 
 See[40, 313]. Whentheneedforadifferentnotationarises, weshallwriteC(H;q) for CH(q), and similarly for other polynomials.
 
-![image 1042](rcm1-1_images/imageFile1042.png)
+![image 1042](Images/imageFile1042.png)
 
 e∈E
 
-![image 1043](rcm1-1_images/imageFile1043.png)
+![image 1043](Images/imageFile1043.png)
 
 This differs slightly from (1.5)–(1.6) in that different edges e may have different interactions Je, and these interactions have been ‘re-parametrized’ by the factor q. The reason for deﬁning πβJ,q thus will emerge in the calculations that follow.
 
-![image 1044](rcm1-1_images/imageFile1044.png)
+![image 1044](Images/imageFile1044.png)
 
 We shall work often with the quantity qτβJ,q(x, y) = πβJ,q(qδσx,σy − 1) and, for ease of notation in the following, we write
 
@@ -7438,7 +7438,7 @@ Let λ = (λe : e ∈ E) be a family of non-negative reals, and let P = (P(e) : 
 
 For x, y ∈ V, x = y, we denote by GxP,y the graph obtained from GP by adding an edge with endvertices x, y. If x and y are already adjacent in GP, we add exactly one further edge between them. Potts-correlations and flows are related by the following theorem2.
 
-![image 1045](rcm1-1_images/imageFile1045.png)
+![image 1045](Images/imageFile1045.png)
 
 2The relationship between flows and correlation functions has been explored also in [112, 246, 247].
 
@@ -7449,7 +7449,7 @@ Eλ(C(GxP,y; q)) Eλ(C(GP; q))
 
 , x, y ∈ V.
 
-![image 1046](rcm1-1_images/imageFile1046.png)
+![image 1046](Images/imageFile1046.png)
 
 This formula takes an especially simple form when q = 2, since non-zero mod-2 flows necessarily take the value 1 only. A finite graph H = (W, F) is called even if the degree of every vertex w ∈ W is even. It is elementary that CH(2) = 1 (respectively, CH(2) = 0) if H is even (respectively, not even), and therefore
 
@@ -7460,7 +7460,7 @@ Pλ(GxP,y is even) Pλ(GP is even)
 
 ,
 
-![image 1047](rcm1-1_images/imageFile1047.png)
+![image 1047](Images/imageFile1047.png)
 
 when q = 2. Observations of this sort have led to the so-called ‘randomcurrent’ expansion for Ising models, thereby after some work [3, 5, 9] yielding proofs amongst other things of the exponential decay of correlations in the hightemperature regime. We return to the case q = 2 in Sections 9.2–9.4.
 
@@ -7470,9 +7470,9 @@ Whereas Theorem 9.11 concerns Potts models only, there is a random-cluster gener
 
 (9.15) Theorem [146, 157]. Let p ∈ [0,1) and q ∈ (0,∞). Let λe = λ for all e ∈ E, where p = 1 − e−λq.
 
-![image 1048](rcm1-1_images/imageFile1048.png)
+![image 1048](Images/imageFile1048.png)
 
-![image 1049](rcm1-1_images/imageFile1049.png)
+![image 1049](Images/imageFile1049.png)
 
 (b) For q ∈ {2,3,. . .},
 
@@ -7484,30 +7484,30 @@ This may be simpliﬁed further. Let ζ(e) = P(e) modulo 2. It is easily seen th
 
 Pλ(ζ(e) = 1) = 21(1 − e−2λ) = 12 p. Equation (9.18) may therefore be written as (9.20) φG,p(2k(ω)) = 2|V|φG,p/2(the open subgraph of G is even). Proof ofTheorem 9.11. Since the parameter β appearsalways with the multiplicative factor Je, we may without loss of generality take β = 1.
 
-![image 1050](rcm1-1_images/imageFile1050.png)
+![image 1050](Images/imageFile1050.png)
 
-![image 1051](rcm1-1_images/imageFile1051.png)
+![image 1051](Images/imageFile1051.png)
 
-![image 1052](rcm1-1_images/imageFile1052.png)
+![image 1052](Images/imageFile1052.png)
 
-![image 1053](rcm1-1_images/imageFile1053.png)
+![image 1053](Images/imageFile1053.png)
 
-![image 1054](rcm1-1_images/imageFile1054.png)
+![image 1054](Images/imageFile1054.png)
 
 = q|V|Eλ(C(GxP,y; q)), and (9.12) follows by (9.24) and (9.25). Proof of Theorem 9.15. This theorem may be proved directly, but we shall derive it from Theorem 9.11.
 
 - (a) Equation (9.17) holds by Theorems 1.16 and 9.11. By (9.5), equation (9.16) holds for q ∈ {2,3,. . .}. Since both sides are the ratios of polynomials in q and e−λq of finite order, (9.16) is an identity in q ∈ (0,∞).
 - (b) This was noted after (9.24) above.
 
-![image 1055](rcm1-1_images/imageFile1055.png)
+![image 1055](Images/imageFile1055.png)
 
-![image 1056](rcm1-1_images/imageFile1056.png)
+![image 1056](Images/imageFile1056.png)
 
-![image 1057](rcm1-1_images/imageFile1057.png)
+![image 1057](Images/imageFile1057.png)
 
-![image 1058](rcm1-1_images/imageFile1058.png)
+![image 1058](Images/imageFile1058.png)
 
-![image 1059](rcm1-1_images/imageFile1059.png)
+![image 1059](Images/imageFile1059.png)
 
 Ne = {i ∈ Me : Bi = 1}, e ∈ E. Let PM denote the appropriate probability measure.
 
@@ -7535,7 +7535,7 @@ P ∂M = {x, y}, ∂M′ = A M ∪ M′
 
 Proof. Conditional on the sets Me ∪ Me′, e ∈ E, the sets Me are selected by the independent removal of each element with probability 21. The claim follows from Theorem 9.31.
 
-![image 1060](rcm1-1_images/imageFile1060.png)
+![image 1060](Images/imageFile1060.png)
 
 We present two applications of Corollary 9.32 to the Ising model, as in [3]. For m = (me : e ∈ E) ∈ Z+E, let (9.33) ∂m = v ∈ V :
 
@@ -7553,7 +7553,7 @@ Pλ(∂P = {x, y}) Pλ(∂P = ∅)
 
 . Let QA denote the law of P conditional on the event {∂P = A}, that is, QA(E) = Pλ(P ∈ E | ∂P = A).
 
-![image 1061](rcm1-1_images/imageFile1061.png)
+![image 1061](Images/imageFile1061.png)
 
 We shall require two independent copies P1, P2 of P with potentially different conditionings, and thus we write QA;B = QA × QB.
 
@@ -7567,35 +7567,35 @@ Pλ × Pλ(∂P1 = {x, y}, ∂P2 = {x, y}) Pλ(∂P = ∅)2
 
 σ(x, y)2 =
 
-![image 1062](rcm1-1_images/imageFile1062.png)
+![image 1062](Images/imageFile1062.png)
 
 Pλ × Pλ(∂P1 = {x, y}, ∂P2 = {x, y}, x ↔ y in P1 + P2) Pλ(∂P = ∅)2
 
 =
 
-![image 1063](rcm1-1_images/imageFile1063.png)
+![image 1063](Images/imageFile1063.png)
 
-![image 1064](rcm1-1_images/imageFile1064.png)
+![image 1064](Images/imageFile1064.png)
 
-![image 1065](rcm1-1_images/imageFile1065.png)
+![image 1065](Images/imageFile1065.png)
 
 Pλ × Pλ(∂P1 = ∅, ∂P2 = {x, z}, x ↔ y in P1 + P2) Pλ(∂P = ∅)2
 
 =
 
-![image 1066](rcm1-1_images/imageFile1066.png)
+![image 1066](Images/imageFile1066.png)
 
 Pλ(∂P2 = {x, z}) Pλ(∂P = ∅) · Pλ × Pλ x ↔ y in P1 + P2 ∂P1 = ∅, ∂P2 = {x, z}
 
 =
 
-![image 1067](rcm1-1_images/imageFile1067.png)
+![image 1067](Images/imageFile1067.png)
 
 = σ(x, z)Q{x,z};∅(x ↔ y in P1 + P2).
 
 Theorem9.35 leads to an importantcorrelationinequalityknown as the ‘Simon inequality’. Let x, z ∈ V be distinct vertices. A subset W ⊆ V is said to separate x and z if x, z ∈/ W and every path from x to z contains some vertex of W.
 
-![image 1068](rcm1-1_images/imageFile1068.png)
+![image 1068](Images/imageFile1068.png)
 
 y∈W
 
@@ -7627,7 +7627,7 @@ The Simon inequality has an important consequence for the random-cluster model w
 
 x∈Zd
 
-![image 1069](rcm1-1_images/imageFile1069.png)
+![image 1069](Images/imageFile1069.png)
 
 3In association with related inequalities of Hammersley [177] and Lieb [234], see Theorem 9.44(b), this is an example of what is sometimes called the Hammersley–Simon–Lieb inequality. The Simon inequality is a special case of the Boel–Kasteleyn inequalities, [56, 57].
 
@@ -7689,7 +7689,7 @@ and similarly for MH and mH. It is elementary that m = mF + mH, and that the set
 
 As before Theorem 9.31, we select subsets Ne from the Me by deleting each member independentlyat random with probability 21. For given M, the associated probability measure is denoted by PM.
 
-![image 1070](rcm1-1_images/imageFile1070.png)
+![image 1070](Images/imageFile1070.png)
 
 (9.42) Theorem. Let F, H, M, and m be as above. If x, y ∈ V are such that x = y and x ↔ y in mF then, for A ⊆ V,
 
@@ -7709,7 +7709,7 @@ P ∂MF = {x, y}, ∂MH = ∅, ∂M′ = A M ∪ M′
 
 Let P1 and P2 be independent copies of the Poisson field P, with intensity λ ∈ [0,∞), and let E be partitioned as E = F ∪ H. We write QA,B;C for the probability measure governing the pair P1, P2 conditional on the event {∂P1F = A} ∩ {∂P1H = B} ∩ {∂P2 = C}. We recall from (9.28) that σ(x, y) denotes a certain correlation function associated with the graph G = (V, E), and we write σ F(x, y) for the quantity defined similarly on the smaller graph (V, F).
 
-![image 1071](rcm1-1_images/imageFile1071.png)
+![image 1071](Images/imageFile1071.png)
 
 n→∞
 
@@ -7717,13 +7717,13 @@ asinTheorem5.45. Itisclearthatψ(p,q)isnon-increasingin p,andψ(p,q) = 0 if p > 
 
 (9.46) Theorem (Vanishing mass gap) [234]. Let q = 2. Then ψ(p,q) decreases to 0 as p ↑ pc(q). In particular, ψ(pc(q),q) = 0.
 
-![image 1072](rcm1-1_images/imageFile1072.png)
+![image 1072](Images/imageFile1072.png)
 
-![image 1073](rcm1-1_images/imageFile1073.png)
+![image 1073](Images/imageFile1073.png)
 
-![image 1074](rcm1-1_images/imageFile1074.png)
+![image 1074](Images/imageFile1074.png)
 
-![image 1075](rcm1-1_images/imageFile1075.png)
+![image 1075](Images/imageFile1075.png)
 
 Itfollowsthat, if(9.45)holdsforsome p ∈ (ǫ,1−ǫ), thenitholdsforsome p′ > p. That is, if φp,q(0 ↔ z) decays exponentially as z → ∞, then the same holds for some p′ satisfying p′ > p. The set {p ∈ (0,1) : ψ(p,q) > 0} is therefore open. Since ψ(p,q) = 0 for p > pc(q), we deduce that ψ(pc(q),q) = 0.
 
@@ -7740,11 +7740,11 @@ One may ask whether the weaker Simon inequality, Corollary 9.36, might hold for 
 - (9.47) Example4. Let G = (V, E) be a cycle of length m, illustrated in Figure 9.2. We work with the partition function
 - (9.48) Y =
 
-![image 1076](rcm1-1_images/imageFile1076.png)
+![image 1076](Images/imageFile1076.png)
 
-![image 1077](rcm1-1_images/imageFile1077.png)
+![image 1077](Images/imageFile1077.png)
 
-![image 1078](rcm1-1_images/imageFile1078.png)
+![image 1078](Images/imageFile1078.png)
 
 (α/Q)k + (α/Q)l + (q − 2)(α/Q)m 1 + (q − 1)(α/Q)m
 
@@ -7752,45 +7752,45 @@ One may ask whether the weaker Simon inequality, Corollary 9.36, might hold for 
 
 .
 
-![image 1079](rcm1-1_images/imageFile1079.png)
+![image 1079](Images/imageFile1079.png)
 
-![image 1080](rcm1-1_images/imageFile1080.png)
+![image 1080](Images/imageFile1080.png)
 
 Figure 9.2. A cycle of length 8 with four marked vertices.
 
-![image 1081](rcm1-1_images/imageFile1081.png)
+![image 1081](Images/imageFile1081.png)
 
 - (q − 2)
 
-![image 1082](rcm1-1_images/imageFile1082.png)
+![image 1082](Images/imageFile1082.png)
 
 - O(α12).
 
-![image 1083](rcm1-1_images/imageFile1083.png)
+![image 1083](Images/imageFile1083.png)
 
-![image 1084](rcm1-1_images/imageFile1084.png)
-
-α Q
-
-![image 1085](rcm1-1_images/imageFile1085.png)
+![image 1084](Images/imageFile1084.png)
 
 α Q
 
-![image 1086](rcm1-1_images/imageFile1086.png)
+![image 1085](Images/imageFile1085.png)
+
+α Q
+
+![image 1086](Images/imageFile1086.png)
 
 - O(α8), j = 1,2.
 
-![image 1087](rcm1-1_images/imageFile1087.png)
+![image 1087](Images/imageFile1087.png)
 
 - O(α8)
 
 - 4
 
-![image 1088](rcm1-1_images/imageFile1088.png)
+![image 1088](Images/imageFile1088.png)
 
 - O(α10).
 
-![image 1089](rcm1-1_images/imageFile1089.png)
+![image 1089](Images/imageFile1089.png)
 
 [9.3] Exponential decay for the Ising model 273
 
@@ -7812,14 +7812,14 @@ This implies exponential decay, by Theorem 9.38: if p < pc(q), the connectivity 
 
 √2/(1 +
 
-![image 1090](rcm1-1_images/imageFile1090.png)
+![image 1090](Images/imageFile1090.png)
 
-![image 1091](rcm1-1_images/imageFile1091.png)
+![image 1091](Images/imageFile1091.png)
 
 - (9.54)Theorem(Mean-fieldbound)[5]. UndertheconditionsstatedinTheorem 9.53, there exists a constant c = c(d) > 0 such that the percolation probability θ1(p,q) = φp1,q(0 ↔ ∞) satisﬁes
 - (9.55) θ1(p,2) ≥ c(p − pc)12, p > pc = pc(2).
 
-![image 1092](rcm1-1_images/imageFile1092.png)
+![image 1092](Images/imageFile1092.png)
 
 Throughtheuseofscalingtheory(see[154,Chapter9]), one isledtopredictions concerningtheexistenceofcriticalexponentsforquantitiesexhibitingsingularities at the critical point pc(q). It is believed in particular that the function θ(·,2) possesses a critical exponent5 in that there exists b ∈ (0,∞) satisfying
 
@@ -7827,13 +7827,13 @@ Throughtheuseofscalingtheory(see[154,Chapter9]), one isledtopredictions concerni
 
 If this is true, then b ≤ 21 by Theorem 9.54. It turns out that the latter inequality is sharp in the sense that, when d ≥ 4, it is satisfied with equality; see Theorem
 
-![image 1093](rcm1-1_images/imageFile1093.png)
+![image 1093](Images/imageFile1093.png)
 
 9.58. Thevalueb = 21 isin additionthe‘mean-field’valueofthecriticalexponent,
 
-![image 1094](rcm1-1_images/imageFile1094.png)
+![image 1094](Images/imageFile1094.png)
 
-![image 1095](rcm1-1_images/imageFile1095.png)
+![image 1095](Images/imageFile1095.png)
 
 5We write b rather than the more usual β for the critical exponent associated with the percolation probability, in order to avoid duplication with the inverse-temperature of the Ising model.
 
@@ -7843,17 +7843,17 @@ as we shall see in Section 10.7 in the context of the random-cluster model on a 
 
 Proofs of the above theorems may be found in [5], and are omitted from the current work since they are Ising-speciﬁc and have not (yet) been generalized to the random-clustersetting for general q. The key ingredientis the random-current representation of the last section, utilized with ingenuity.
 
-![image 1096](rcm1-1_images/imageFile1096.png)
+![image 1096](Images/imageFile1096.png)
 
-![image 1097](rcm1-1_images/imageFile1097.png)
+![image 1097](Images/imageFile1097.png)
 
-![image 1098](rcm1-1_images/imageFile1098.png)
+![image 1098](Images/imageFile1098.png)
 
-![image 1099](rcm1-1_images/imageFile1099.png)
+![image 1099](Images/imageFile1099.png)
 
-![image 1100](rcm1-1_images/imageFile1100.png)
+![image 1100](Images/imageFile1100.png)
 
-![image 1101](rcm1-1_images/imageFile1101.png)
+![image 1101](Images/imageFile1101.png)
 
 Using an analysis presented in [4] for percolation, the three inequalities above imply Theorem 9.54.
 
@@ -7895,23 +7895,23 @@ Once again, one introduces an external field and then establishes a differential
 
 θ1(p,q) = (p − pc)21(1+o(1)) as p ↓ pc = pc(2).
 
-![image 1102](rcm1-1_images/imageFile1102.png)
+![image 1102](Images/imageFile1102.png)
 
 Thus, the critical exponent b exists when d ≥ 4, and it takes its ‘mean-field’
 
 value b = 21. This implies in particular that the percolation probability θ1(p,2) is a continuous function of p at the critical value pc(2). Continuity has been proved by classical methods in two dimensions6, and there remains only the d = 3 case for which the continuity of θ1(·,2) is as yet unproved. In summary, it is proved when d = 3 that the phase transition is of second order, and this is believed to be so when d = 3 also.
 
-![image 1103](rcm1-1_images/imageFile1103.png)
+![image 1103](Images/imageFile1103.png)
 
 Similarly to the results of the last section, Theorem 9.58 is proved by an analysis of the model parametrized by the two variables β, h. This yields several further facts including an exact critical exponent for the behaviour of the Ising magnetization M(β,h) with β = βc and h ↓ 0, namely
 
 M(βc,h) = h 13(1+o(1)) as h ↓ 0.
 
-![image 1104](rcm1-1_images/imageFile1104.png)
+![image 1104](Images/imageFile1104.png)
 
 We refer the reader to [5, 9] for details of the random-current representation in practice, for proofs of the above results and of more detailed asymptotics, and for a more extensive bibliography. The random-current representation is a key ingredient in the derivation of a lace expansion for the Ising model with either nearest-neighbour or spread-out interactions, [288]. This has led to asymptotic formulaeforthetwo-pointcorrelationfunctionwhen d > 4. Abroaderperspective on phase transitions may be found in [118].
 
-![image 1105](rcm1-1_images/imageFile1105.png)
+![image 1105](Images/imageFile1105.png)
 
 6Note added at reprinting: a probabilistic proof can be found in [329, 330].
 
@@ -7939,11 +7939,11 @@ Trees are examples of graphs whose boxes have surface/volumeratios bounded away 
 
 ### 10.2 On complete graphs
 
-![image 1106](rcm1-1_images/imageFile1106.png)
+![image 1106](Images/imageFile1106.png)
 
 Thus, for any given n, p, q, the measure φn,p,q is the law of a random graph with n verticeswhich we denoteby Gn,p,q. We sometimeswrite φn,p,q(F) as φV,p,q(F).
 
-![image 1107](rcm1-1_images/imageFile1107.png)
+![image 1107](Images/imageFile1107.png)
 
 1The random-cluster model on the complete graph is related to the ‘first-shell’ model of Whittle, [317, 318].
 
@@ -7959,7 +7959,7 @@ where θmax is the largest root of the equation (10.6) e−λθ =
 
 . The roots of (10.6) are illustrated in Figure 10.2.
 
-![image 1108](rcm1-1_images/imageFile1108.png)
+![image 1108](Images/imageFile1108.png)
 
 We note some of the properties of θ(λ,q). Firstly, θ(λ,q) > 0 if and only if either: λ > λc(q), or: λ = λc(q) and q > 2,
 
@@ -7994,9 +7994,9 @@ for any sequence ω(n) satisfying ω(n) → ∞ as n → ∞. Similarly, we writ
 
 P |Xn| ≤ f (n)/ω(n) → 1 as n → ∞ for some sequence ω(n) satisfying ω(n) → ∞. Convergence in probability is denoted by the symbol →P .
 
-![image 1109](rcm1-1_images/imageFile1109.png)
+![image 1109](Images/imageFile1109.png)
 
-![image 1110](rcm1-1_images/imageFile1110.png)
+![image 1110](Images/imageFile1110.png)
 
 (d) The number of edges in Gn,λ/n,q is λn/(2q) + op(n).
 
@@ -8005,17 +8005,17 @@ P |Xn| ≤ f (n)/ω(n) → 1 as n → ∞ for some sequence ω(n) satisfying ω(
 - (a) Almost every Gn,λ/n,q consists of a giant component, trees, and unicyclic components.
 - (b) The number of vertices in the giant component is θ(λ)n + op(n), and the number of edges is
 
-![image 1111](rcm1-1_images/imageFile1111.png)
+![image 1111](Images/imageFile1111.png)
 
-![image 1112](rcm1-1_images/imageFile1112.png)
+![image 1112](Images/imageFile1112.png)
 
-![image 1113](rcm1-1_images/imageFile1113.png)
+![image 1113](Images/imageFile1113.png)
 
-![image 1114](rcm1-1_images/imageFile1114.png)
+![image 1114](Images/imageFile1114.png)
 
-![image 1115](rcm1-1_images/imageFile1115.png)
+![image 1115](Images/imageFile1115.png)
 
-![image 1116](rcm1-1_images/imageFile1116.png)
+![image 1116](Images/imageFile1116.png)
 
 1 + (q − 1)θ(λ)2 n + op(n).
 
@@ -8035,7 +8035,7 @@ log{1 + (q − 1)θ} − log(1 − θ) , θ ∈ (0,1),
 
 (10.10) f (θ) =
 
-![image 1117](rcm1-1_images/imageFile1117.png)
+![image 1117](Images/imageFile1117.png)
 
 and note that θ ∈ (0,1) satisﬁes (10.6) if and only if f (θ) = λ. Here are two elementary lemmas concerning the function f .
 
@@ -8049,23 +8049,23 @@ Proof. If t > −1 then (1 + tθ)−1 is a strictly convex function of θ on (0,
 
 q−1
 
-![image 1118](rcm1-1_images/imageFile1118.png)
+![image 1118](Images/imageFile1118.png)
 
-![image 1119](rcm1-1_images/imageFile1119.png)
+![image 1119](Images/imageFile1119.png)
 
-![image 1120](rcm1-1_images/imageFile1120.png)
+![image 1120](Images/imageFile1120.png)
 
 f (θ) =
 
-![image 1121](rcm1-1_images/imageFile1121.png)
+![image 1121](Images/imageFile1121.png)
 
-![image 1122](rcm1-1_images/imageFile1122.png)
+![image 1122](Images/imageFile1122.png)
 
-![image 1123](rcm1-1_images/imageFile1123.png)
+![image 1123](Images/imageFile1123.png)
 
 = q + 21q(2 − q)θ + O(θ2),
 
-![image 1124](rcm1-1_images/imageFile1124.png)
+![image 1124](Images/imageFile1124.png)
 
 [10.4] The fundamental proposition 285
 
@@ -8075,7 +8075,7 @@ p|E1∪E2|(1 − p)(n2)−|E1∪E2|qk(V,E1∪E2) Zn,p,q
 
 rk(V1,E1)(1 − r)k(V2,E2)
 
-![image 1125](rcm1-1_images/imageFile1125.png)
+![image 1125](Images/imageFile1125.png)
 
 = cφV1,p,rq(E1)φV2,p,(1−r)q(E2),
 
@@ -8157,15 +8157,15 @@ N ≥ r(1 − θ0)n − ǫn,
 
 [10.5] The size of the largest component 287
 
-![image 1126](rcm1-1_images/imageFile1126.png)
+![image 1126](Images/imageFile1126.png)
 
-![image 1127](rcm1-1_images/imageFile1127.png)
+![image 1127](Images/imageFile1127.png)
 
 for ǫ sufficiently small, and we pick ǫ accordingly. Conditional on the value N, almost every GN,p has a component of order at least δN (≥ δn/λ by (10.19)) for some δ > 0. Therefore, (1 − r)πn → 0 as n → ∞.
 
-![image 1128](rcm1-1_images/imageFile1128.png)
+![image 1128](Images/imageFile1128.png)
 
-![image 1129](rcm1-1_images/imageFile1129.png)
+![image 1129](Images/imageFile1129.png)
 
 for the random graph Gn,pn and any sequence (pn). Applying this to the red subgraph, on the event that it contains the largest component of Gn,λ/n,q, we obtain for general q ∈ [1,∞) that
 
@@ -8173,9 +8173,9 @@ n N − 1 + op(1)
 
 e−λ n + r + (1 − n r) n − 1 = e−p nn + n
 
-![image 1130](rcm1-1_images/imageFile1130.png)
+![image 1130](Images/imageFile1130.png)
 
-![image 1131](rcm1-1_images/imageFile1131.png)
+![image 1131](Images/imageFile1131.png)
 
 →P 0 as n → ∞, where N is the number of red vertices. The claim follows.
 
@@ -8189,7 +8189,7 @@ This goes some way towards proving Theorems 10.7–10.8. Overlooking for the mom
 
 Proof. The function
 
-![image 1132](rcm1-1_images/imageFile1132.png)
+![image 1132](Images/imageFile1132.png)
 
 φn,p,q n ∈ Z + (−ǫ,ǫ) → 1 as n → ∞.
 
@@ -8203,29 +8203,29 @@ N 2
 
 p + Op(Np1/2) = 21 N2 p + op(N) edges, the following two equations follow from the two cases above,
 
-![image 1133](rcm1-1_images/imageFile1133.png)
+![image 1133](Images/imageFile1133.png)
 
 (10.22) n + r( n − n) n = 21 n + r(1 − n) 2n2 p + op(n), (10.23) r( n − n)n = 21[r(1 − n)]2n2 p + op(n), yielding when p = λ/n that
 
-![image 1134](rcm1-1_images/imageFile1134.png)
+![image 1134](Images/imageFile1134.png)
 
-![image 1135](rcm1-1_images/imageFile1135.png)
+![image 1135](Images/imageFile1135.png)
 
 (10.24) n + r( n − n) = 21λ n + r(1 − n) 2 + op(1), (10.25) r( n − n) = 21λ[r(1 − n)]2 + op(1). We solve for n and n, and let n → ∞ to obtain the next theorem.
 
-![image 1136](rcm1-1_images/imageFile1136.png)
+![image 1136](Images/imageFile1136.png)
 
-![image 1137](rcm1-1_images/imageFile1137.png)
+![image 1137](Images/imageFile1137.png)
 
-![image 1138](rcm1-1_images/imageFile1138.png)
+![image 1138](Images/imageFile1138.png)
 
 2One needs here the corresponding result for q = 1, which follows easily from the corresponding result for the number of vertices used above, together with results on the components having more edges than vertices given in [61, 192, 193].
 
-![image 1139](rcm1-1_images/imageFile1139.png)
+![image 1139](Images/imageFile1139.png)
 
-![image 1140](rcm1-1_images/imageFile1140.png)
+![image 1140](Images/imageFile1140.png)
 
-![image 1141](rcm1-1_images/imageFile1141.png)
+![image 1141](Images/imageFile1141.png)
 
 Whereas we proved this theorem under the assumption that q > 1, its conclusions are valid for q = 1 also, by [61, Thms VI.11, VI.12].
 
@@ -8239,7 +8239,7 @@ The results derivedso far are combinednextwith a newargumentin orderto prove The
 
 Proof. Let k be an integer satisfying k ≥ q. In the colouring scheme of Section 10.4 with r = q−1, we introduce the reﬁnement that each component is coloured dark red with probability k−1 and light red with probability r − k−1. Let M be the number of edges in the small cyclic components of Gn,λ/n,q.
 
-![image 1142](rcm1-1_images/imageFile1142.png)
+![image 1142](Images/imageFile1142.png)
 
 φn,p,q(Mi ≥ M/k for some i) < 1, in contradiction of the equality ki=1 Mi = M.
 
@@ -8255,67 +8255,67 @@ c(j,k,l) f (n − k,m − l)pm(1 − p)(n2)−mqn−k−m+l+j
 
 Pn,p,q(m, j,k,l) =
 
-![image 1143](rcm1-1_images/imageFile1143.png)
+![image 1143](Images/imageFile1143.png)
 
-![image 1144](rcm1-1_images/imageFile1144.png)
+![image 1144](Images/imageFile1144.png)
 
-![image 1145](rcm1-1_images/imageFile1145.png)
+![image 1145](Images/imageFile1145.png)
 
 See (10.27) and (10.28). If λ > q, we assume also that θ > 0, see Lemma 10.18 and Theorem 10.21(b).
 
-![image 1146](rcm1-1_images/imageFile1146.png)
+![image 1146](Images/imageFile1146.png)
 
-![image 1147](rcm1-1_images/imageFile1147.png)
+![image 1147](Images/imageFile1147.png)
 
-![image 1148](rcm1-1_images/imageFile1148.png)
+![image 1148](Images/imageFile1148.png)
 
-![image 1149](rcm1-1_images/imageFile1149.png)
+![image 1149](Images/imageFile1149.png)
 
-![image 1150](rcm1-1_images/imageFile1150.png)
+![image 1150](Images/imageFile1150.png)
 
-![image 1151](rcm1-1_images/imageFile1151.png)
+![image 1151](Images/imageFile1151.png)
 
-![image 1152](rcm1-1_images/imageFile1152.png)
+![image 1152](Images/imageFile1152.png)
 
-![image 1153](rcm1-1_images/imageFile1153.png)
+![image 1153](Images/imageFile1153.png)
 
-![image 1154](rcm1-1_images/imageFile1154.png)
+![image 1154](Images/imageFile1154.png)
 
-![image 1155](rcm1-1_images/imageFile1155.png)
+![image 1155](Images/imageFile1155.png)
 
-![image 1156](rcm1-1_images/imageFile1156.png)
+![image 1156](Images/imageFile1156.png)
 
-![image 1157](rcm1-1_images/imageFile1157.png)
+![image 1157](Images/imageFile1157.png)
 
-![image 1158](rcm1-1_images/imageFile1158.png)
+![image 1158](Images/imageFile1158.png)
 
-![image 1159](rcm1-1_images/imageFile1159.png)
+![image 1159](Images/imageFile1159.png)
 
-![image 1160](rcm1-1_images/imageFile1160.png)
+![image 1160](Images/imageFile1160.png)
 
-![image 1161](rcm1-1_images/imageFile1161.png)
+![image 1161](Images/imageFile1161.png)
 
-![image 1162](rcm1-1_images/imageFile1162.png)
+![image 1162](Images/imageFile1162.png)
 
-![image 1163](rcm1-1_images/imageFile1163.png)
+![image 1163](Images/imageFile1163.png)
 
-![image 1164](rcm1-1_images/imageFile1164.png)
+![image 1164](Images/imageFile1164.png)
 
-![image 1165](rcm1-1_images/imageFile1165.png)
+![image 1165](Images/imageFile1165.png)
 
-![image 1166](rcm1-1_images/imageFile1166.png)
+![image 1166](Images/imageFile1166.png)
 
-![image 1167](rcm1-1_images/imageFile1167.png)
+![image 1167](Images/imageFile1167.png)
 
-![image 1168](rcm1-1_images/imageFile1168.png)
+![image 1168](Images/imageFile1168.png)
 
 θ θ + r(1 − θ)
 
 (10.40) , l n1 → ξ1 =
 
-![image 1169](rcm1-1_images/imageFile1169.png)
+![image 1169](Images/imageFile1169.png)
 
-![image 1170](rcm1-1_images/imageFile1170.png)
+![image 1170](Images/imageFile1170.png)
 
 j (10.41) n1 → 0. It is easy to check the analogues of (10.6) and (10.32)–(10.33), namely,
 
@@ -8323,73 +8323,73 @@ j (10.41) n1 → 0. It is easy to check the analogues of (10.6) and (10.32)–(1
 
 ,
 
-![image 1171](rcm1-1_images/imageFile1171.png)
+![image 1171](Images/imageFile1171.png)
 
-![image 1172](rcm1-1_images/imageFile1172.png)
+![image 1172](Images/imageFile1172.png)
 
-![image 1173](rcm1-1_images/imageFile1173.png)
+![image 1173](Images/imageFile1173.png)
 
 (10.42) e−λ1θ1 = 1 − θ1, ξ1 = λ1θ1(1 − 12θ1), ψ1 = ξ1 + 21λ1(1 − θ1)2. Now, (10.36) is valid with q = 1, since θ > 0. Hence, (10.43) 1 ≥ Pn1,p1,1(m1, j,k,l)
 
-![image 1174](rcm1-1_images/imageFile1174.png)
+![image 1174](Images/imageFile1174.png)
 
-![image 1175](rcm1-1_images/imageFile1175.png)
+![image 1175](Images/imageFile1175.png)
 
-![image 1176](rcm1-1_images/imageFile1176.png)
+![image 1176](Images/imageFile1176.png)
 
 for all large n. Combining this with (10.43), equality follows in (10.44) for some suitable j,k,l.
 
-![image 1177](rcm1-1_images/imageFile1177.png)
+![image 1177](Images/imageFile1177.png)
 
-![image 1178](rcm1-1_images/imageFile1178.png)
+![image 1178](Images/imageFile1178.png)
 
-![image 1179](rcm1-1_images/imageFile1179.png)
+![image 1179](Images/imageFile1179.png)
 
-![image 1180](rcm1-1_images/imageFile1180.png)
+![image 1180](Images/imageFile1180.png)
 
-![image 1181](rcm1-1_images/imageFile1181.png)
+![image 1181](Images/imageFile1181.png)
 
 [r(1 − θ)]r(1−θ) (1 − θ)1−θ[θ + r(1 − θ)]θ+r(1−θ)
 
 =
 
-![image 1182](rcm1-1_images/imageFile1182.png)
+![image 1182](Images/imageFile1182.png)
 
-![image 1183](rcm1-1_images/imageFile1183.png)
+![image 1183](Images/imageFile1183.png)
 
-![image 1184](rcm1-1_images/imageFile1184.png)
+![image 1184](Images/imageFile1184.png)
 
-![image 1185](rcm1-1_images/imageFile1185.png)
+![image 1185](Images/imageFile1185.png)
 
-![image 1186](rcm1-1_images/imageFile1186.png)
+![image 1186](Images/imageFile1186.png)
 
-![image 1187](rcm1-1_images/imageFile1187.png)
+![image 1187](Images/imageFile1187.png)
 
 1 + (q − 1)θ 1 − θ
 
-![image 1188](rcm1-1_images/imageFile1188.png)
+![image 1188](Images/imageFile1188.png)
 
-![image 1189](rcm1-1_images/imageFile1189.png)
+![image 1189](Images/imageFile1189.png)
 
-![image 1190](rcm1-1_images/imageFile1190.png)
+![image 1190](Images/imageFile1190.png)
 
-![image 1191](rcm1-1_images/imageFile1191.png)
+![image 1191](Images/imageFile1191.png)
 
-![image 1192](rcm1-1_images/imageFile1192.png)
+![image 1192](Images/imageFile1192.png)
 
-![image 1193](rcm1-1_images/imageFile1193.png)
+![image 1193](Images/imageFile1193.png)
 
-![image 1194](rcm1-1_images/imageFile1194.png)
+![image 1194](Images/imageFile1194.png)
 
-![image 1195](rcm1-1_images/imageFile1195.png)
+![image 1195](Images/imageFile1195.png)
 
-![image 1196](rcm1-1_images/imageFile1196.png)
+![image 1196](Images/imageFile1196.png)
 
-![image 1197](rcm1-1_images/imageFile1197.png)
+![image 1197](Images/imageFile1197.png)
 
 n→∞
 
-![image 1198](rcm1-1_images/imageFile1198.png)
+![image 1198](Images/imageFile1198.png)
 
 q(q − 1)[q − 2 − 2(q − 1)θ]θ (1 − θ)2[1 + (q − 1)θ]2
 
@@ -8397,9 +8397,9 @@ g′′(θ) = −
 
 .
 
-![image 1199](rcm1-1_images/imageFile1199.png)
+![image 1199](Images/imageFile1199.png)
 
-![image 1200](rcm1-1_images/imageFile1200.png)
+![image 1200](Images/imageFile1200.png)
 
 3We shall see that there is a unique such θ∗, except possibly when λ = λc(q) and q > 2.
 
@@ -8407,13 +8407,13 @@ g′′(θ) = −
 
 Therefore, g′′(θ) has a unique zero in (0,1), at the point θ = 21(q − 2)/(q − 1). At this point, g′(θ) has a negative minimum. It follows that g(θ) < 0 on (0,θ0), and g(θ) > 0 on (θ0,1) where θ0 = (q − 2)/(q − 1).
 
-![image 1201](rcm1-1_images/imageFile1201.png)
+![image 1201](Images/imageFile1201.png)
 
-![image 1202](rcm1-1_images/imageFile1202.png)
+![image 1202](Images/imageFile1202.png)
 
 and, for this value of λ, the three roots of (10.6) are 0, 12θ0, θ0. Therefore, λmin < λc(q) < q, and
 
-![image 1203](rcm1-1_images/imageFile1203.png)
+![image 1203](Images/imageFile1203.png)
 
 θ∗ =
 
@@ -8427,13 +8427,13 @@ This completes the proof of the assertions concerning the order of the largest c
 
 It is an important problem of statistical physics to understand the nature of the singularity at a point of phase transition. For the mean-field random-clustermodel on a complete graph, the necessary calculations may be performed explicitly, and the conclusions are as follows.
 
-![image 1204](rcm1-1_images/imageFile1204.png)
+![image 1204](Images/imageFile1204.png)
 
-![image 1205](rcm1-1_images/imageFile1205.png)
+![image 1205](Images/imageFile1205.png)
 
 θ(λ) + (12q − 1)θ(λ)2 ,
 
-![image 1206](rcm1-1_images/imageFile1206.png)
+![image 1206](Images/imageFile1206.png)
 
 describingthe orderof the giantcomponent,and the numbers of edgesin the graph and in its giant component, respectively. All three functions are non-decreasing on (0,∞). In addition, ψ is strictly increasing, while θ(λ) and ξ(λ) equal 0 for λ < λc and are strictly increasing on [λc,∞).
 
@@ -8443,35 +8443,35 @@ A fourth function of interest is the pressure η(λ) given in Theorem 10.14. The
 
 2 q(2 − q)
 
-![image 1207](rcm1-1_images/imageFile1207.png)
+![image 1207](Images/imageFile1207.png)
 
-![image 1208](rcm1-1_images/imageFile1208.png)
+![image 1208](Images/imageFile1208.png)
 
 - 1
 
-![image 1209](rcm1-1_images/imageFile1209.png)
+![image 1209](Images/imageFile1209.png)
 
 - 2 as λ ↓ λc.
 
 θ(λ) ∼ ξ(λ) ∼ 2 3(λ − λc)
 
-![image 1210](rcm1-1_images/imageFile1210.png)
+![image 1210](Images/imageFile1210.png)
 
 Thus, θ′(λc+) = ξ′(λc+) = ∞. The function ψ′ has a jump at λc in that ψ′(λc−) = 41, ψ′(λc+) = 1. Also, η′ is continuous, but η′′ has a jump at λc in that η′′(λc−) = 0, η′′(λc+) = 83. The functionsψ and η are real-analytic on (0,λc] and on [λc,∞).
 
-![image 1211](rcm1-1_images/imageFile1211.png)
+![image 1211](Images/imageFile1211.png)
 
-![image 1212](rcm1-1_images/imageFile1212.png)
+![image 1212](Images/imageFile1212.png)
 
 (c) Let q ∈ (2,∞). Then θ, ψ, and ξ have jumps at λc, and it may be checked
 
 that ψ(λc−) = λc/(2q) < 12 < ψ(λc+). The pressure η is continuous at λc, but its derivative η′ has a jump at λc,
 
-![image 1213](rcm1-1_images/imageFile1213.png)
+![image 1213](Images/imageFile1213.png)
 
-![image 1214](rcm1-1_images/imageFile1214.png)
+![image 1214](Images/imageFile1214.png)
 
-![image 1215](rcm1-1_images/imageFile1215.png)
+![image 1215](Images/imageFile1215.png)
 
 <a id="sec-10-8"></a>
 
@@ -8489,21 +8489,21 @@ As in the language of large-deviation theory, [99, 164], let
 
 n,λ,q(ν) = logφn,p,q(eνCn/n), ν ∈ R,
 
-![image 1216](rcm1-1_images/imageFile1216.png)
+![image 1216](Images/imageFile1216.png)
 
-![image 1217](rcm1-1_images/imageFile1217.png)
+![image 1217](Images/imageFile1217.png)
 
-![image 1218](rcm1-1_images/imageFile1218.png)
+![image 1218](Images/imageFile1218.png)
 
-![image 1219](rcm1-1_images/imageFile1219.png)
+![image 1219](Images/imageFile1219.png)
 
-![image 1220](rcm1-1_images/imageFile1220.png)
+![image 1220](Images/imageFile1220.png)
 
-![image 1221](rcm1-1_images/imageFile1221.png)
+![image 1221](Images/imageFile1221.png)
 
-![image 1222](rcm1-1_images/imageFile1222.png)
+![image 1222](Images/imageFile1222.png)
 
-![image 1223](rcm1-1_images/imageFile1223.png)
+![image 1223](Images/imageFile1223.png)
 
 Details of the above calculations may be found in [62]. We write Fλ,q for the set of ‘exposed points’ of ∗
 
@@ -8517,13 +8517,13 @@ where Q is chosen to satisfy λ = λc(Q). The following LDP is a consequence of 
 
 #### (10.58) Theorem (Large deviations) [62]. Let q ∈ [1,∞) and λ ∈ (0,∞).
 
-![image 1224](rcm1-1_images/imageFile1224.png)
+![image 1224](Images/imageFile1224.png)
 
-![image 1225](rcm1-1_images/imageFile1225.png)
+![image 1225](Images/imageFile1225.png)
 
-![image 1226](rcm1-1_images/imageFile1226.png)
+![image 1226](Images/imageFile1226.png)
 
-![image 1227](rcm1-1_images/imageFile1227.png)
+![image 1227](Images/imageFile1227.png)
 
 whenever 0 < α ≤ κ(λ,q) ≤ β < 1. (ii) Let q ∈ (2,∞) and λ = λc(q). Then (10.59)–(10.60) hold for α, β satisfying
 
@@ -8533,7 +8533,7 @@ whenever 0 < α ≤ κ(λ,q) ≤ β < 1. (ii) Let q ∈ (2,∞) and λ = λc(q).
 
 κ−(λ, Q) < α ≤ κ+(λ, Q) or κ−(λ, Q) ≤ β < κ+(λ, Q).
 
-![image 1228](rcm1-1_images/imageFile1228.png)
+![image 1228](Images/imageFile1228.png)
 
 n→∞
 
@@ -8541,11 +8541,11 @@ exists, and the probabilities φn,p,q(Cn ≤ αn), φn,p,q(Cn ≥ βn) decay at 
 
 Since first-order transitions occur only when q ∈ (2,∞), and since the critical λ-values of such q ﬁll the interval (2,∞), there is a weak sense in which the value λ = 2 marks a singularity of the asymptotics of the random graph Gn,λ/n,q. This holds for any value of q, including q = 1. That is, the Erdos–R˝ enyi´ random graph senses the existence of a first-order phase transition in the random-cluster model, butonly throughits large deviations. Itis well knownthat the Erdos–R˝ enyi´ random graph undergoes a type of phase transition at λ = 1, and it follows from the above that it has a (weak) singularity at λ = 2 also.
 
-![image 1229](rcm1-1_images/imageFile1229.png)
+![image 1229](Images/imageFile1229.png)
 
-![image 1230](rcm1-1_images/imageFile1230.png)
+![image 1230](Images/imageFile1230.png)
 
-![image 1231](rcm1-1_images/imageFile1231.png)
+![image 1231](Images/imageFile1231.png)
 
 Therefore,φp,q istheproductmeasureon withdensityπ. Thesituationbecomes more interesting when we introduce boundary conditions.
 
@@ -8583,7 +8583,7 @@ More precisely, φ ,ξ,∼p,q is the probability measure on the pair ( ,F ) give
 
  
 
-![image 1232](rcm1-1_images/imageFile1232.png)
+![image 1232](Images/imageFile1232.png)
 
 boundary conditions, and it has been studied in a slightly disguised form in [167, 196].
 
@@ -8601,7 +8601,7 @@ For simplicity of notation we write R∼p,0q = R0p,q and similarly R∼p,1q = R1
 
 - (a) The set R0p,q of free random-cluster measures comprises the singleton φπ only, where π = π(p,q) is given in (10.62). The product measure φπ belongs to R1p,q if and only if π ≤ 21.
 
-![image 1233](rcm1-1_images/imageFile1233.png)
+![image 1233](Images/imageFile1233.png)
 
 - (b) The set R1p,q of wired random-cluster measures is non-empty. (c) If q ∈ [1,∞), the weak limit
 
@@ -8615,11 +8615,11 @@ Here are some comments on this theorem. Part (b) will be proved at Theorem 10.82
 
 this with a brief discussion of the condition π ≤ 21. This will be recognized as the conditionforthe almost-sureextinctionof a branchingprocesswhose family-sizes
 
-![image 1234](rcm1-1_images/imageFile1234.png)
+![image 1234](Images/imageFile1234.png)
 
 have the binomial bin(2,π) distribution. That is, π ≤ 21 if and only if (10.69) φπ(0 ↔ ∞) = 0,
 
-![image 1235](rcm1-1_images/imageFile1235.png)
+![image 1235](Images/imageFile1235.png)
 
 see [164, Thm 5.4.5]. It turns out that the product measure φπ lies in R1p,q if and only if it does not ‘feel’ the wired boundary condition ∼1, that is to say, if there exist (φπ-almost-surely) no infinite clusters6.
 
@@ -8643,7 +8643,7 @@ as required. The second part of (a) is proved after the proof of (c). (c) The ex
 
 For v ∈ V, let v be the set of infinite undirected paths of T with endvertex v. Let e = x, y , and let Ke1 be the event that there exist open vertex-disjoint paths
 
-![image 1236](rcm1-1_images/imageFile1236.png)
+![image 1236](Images/imageFile1236.png)
 
 e φ-almost-surely, where Je = {e is open}.
 
@@ -8651,9 +8651,9 @@ e φ-almost-surely, where Je = {e is open}.
 
 For ξ ∈ and W ⊆ V, write [ξ]W for the set of all conﬁgurations that agree
 
-![image 1237](rcm1-1_images/imageFile1237.png)
+![image 1237](Images/imageFile1237.png)
 
-![image 1238](rcm1-1_images/imageFile1238.png)
+![image 1238](Images/imageFile1238.png)
 
 and we prove this as follows. Let ′, ′′ be boxes satisfying ⊆ ′ ⊆ ⊆ ′′. Since ψ (·) = φ1 (· | [ξ] \e) is a random-cluster measure on an altered graph (see Theorem 3.1(a)) and since g is increasing on and non-increasing in , we have by positive association that
 
@@ -8689,7 +8689,7 @@ We concentrate henceforth on the binary tree T = T2 = (V, E) and the wired equiv
 
 The results of this section are valid for all q ∈ (0,∞), and we begin by proving the existence of the wired weak-limit for all p and q, thereby extending part of Theorem 10.67(c). The limit as ↑ V is taken along an arbitrary increasing sequence of boxes.
 
-![image 1239](rcm1-1_images/imageFile1239.png)
+![image 1239](Images/imageFile1239.png)
 
 An important quantity is the maximal root ρ = ρ(p,q) in [0,1] of the equation
 
@@ -8715,7 +8715,7 @@ Let n = {x ∈ V : |x| ≤ n}, where |x| denotes the number of edges in the path
 
 Let Hr be the graph obtained from the finite tree ( r, E r) by adding two new edges [x, x′ , [x, x′′ to each terminal vertex x ∈ ∂ r. We colour these new
 
-![image 1240](rcm1-1_images/imageFile1240.png)
+![image 1240](Images/imageFile1240.png)
 
 7The current method was mentioned in passing in [160].
 
@@ -8769,7 +8769,7 @@ Suppose that q ∈ (0,1). The situation is now harder since we may not appeal to
 
 Let p ≤ κq, so that ρ = 0. Then π = p/[p + q(1 − p)] ≤ 21, and therefore φπ1(0 ↔ ∞) = 0. By (10.88), θ(p,q) = ρ = 0 as claimed.
 
-![image 1241](rcm1-1_images/imageFile1241.png)
+![image 1241](Images/imageFile1241.png)
 
 Let p > κq, so that ρ > 0. By Theorem 10.74, θ(p,q) = lim
 
@@ -8823,9 +8823,9 @@ Let i ≥ 0, and suppose we are given that I(ω) ≥ i. Conditional on R(0), R(1
 
 φp1,q(I ≥ i) ≤ 1 − (1 − π)2k i, i ≥ 0, and, in particular, (10.93) holds. Hence, M = sup{r : 1 ≤ Nr ≤ k} satisﬁes φp1,q(M < ∞) = 1, implying as required that
 
-![image 1242](rcm1-1_images/imageFile1242.png)
+![image 1242](Images/imageFile1242.png)
 
-![image 1243](rcm1-1_images/imageFile1243.png)
+![image 1243](Images/imageFile1243.png)
 
 whence, for φp1,q-almost-every ξ ∈ Ke1,
 
@@ -8882,25 +8882,25 @@ The condition of this theorem is not best possible in the case q = 1, and theref
 
 There has been extensive study of the Ising model on a tree. It turns out that therearetwocriticalpointsonthebinarytree T. Thefirstcriticalpointcorresponds to the random-cluster transition at the point p = κ2 = 32, and the second arises as follows. Consider the Ising model on T with free boundary conditions. There is a critical value of the inverse-temperature at which the corresponding Gibbs state ceases to be extremal. In the parametrization of this chapter, this critical point is given by psg = 2/(1 +
 
-![image 1244](rcm1-1_images/imageFile1244.png)
+![image 1244](Images/imageFile1244.png)
 
 √2), see [49, 188, 189, 250]. This value arises also in the study of a related ‘Edwards–Anderson’spin-glass problem on T, see [89] and Section 11.5. Itmay be seen by a processof spin-ﬂippingthat the spin-glassmodel with ±1 interactionscan be mappedto a ferromagneticIsing modelwith boundary conditions taken uniformly and independently from the spin space {−1,+1}. It turns out that this model has critical value psg also, and for this reason psg is commonly referred to as the ‘spin-glass critical point’.
 
-![image 1245](rcm1-1_images/imageFile1245.png)
+![image 1245](Images/imageFile1245.png)
 
 In summary, for p = 1 − e−β < 32, the Ising model has a unique Gibbs state.
 
-![image 1246](rcm1-1_images/imageFile1246.png)
+![image 1246](Images/imageFile1246.png)
 
 For p ∈ (32, psg), the + Gibbs state differs from the free state, whereas ‘typical’ boundary conditions (in the sense of boundary conditions chosen randomly ac-
 
-![image 1247](rcm1-1_images/imageFile1247.png)
+![image 1247](Images/imageFile1247.png)
 
 cordingto the free state) result in the free measure. When p > psg, the free state is no longeran extremalGibbsstate. This doubletransitionis notevidentin the analysis of this chapter since it is restricted to boundary conditions of ‘unconditioned’ random-cluster-type.
 
 Sketch proof of Theorem 10.98. Note first that p ≥ 2q/(2q + 1) if and only if π = p/[p + q(1 − p)] satisﬁes π ≥ 32. Under this condition we may obtain, by a branching-process argument, the φπ-almost-sure existence in T of a (random) set W of vertices such that: (i) every 0-ray passes through some vertex of W, and (ii) every w ∈ W is the root of an infinite open sub-tree of T. The argument then continues rather as in the proof of Theorem 5.33(b). The details may be found in [160, 196].
 
-![image 1248](rcm1-1_images/imageFile1248.png)
+![image 1248](Images/imageFile1248.png)
 
 <a id="sec-10-12"></a>
 
@@ -8912,7 +8912,7 @@ Thepropertiesofinteractingsystemsontreesareoftenquitedifferentfromthoseof lattic
 
 : W ⊆ V, 0 < |W| < ∞
 
-![image 1249](rcm1-1_images/imageFile1249.png)
+![image 1249](Images/imageFile1249.png)
 
 satisﬁes χ(G) = 0. The graph is called non-amenable if χ(G) > 0. It is easily seen that the lattices Ld and the regular m-ary tree Tm satisfy
 
@@ -8932,7 +8932,7 @@ S(x)y = {γ y : γ ∈ S(x)},
 
 and we call G unimodular9 if |S(x)y| = |S(y)x| whenever x and y belong to the same orbit of Aut(G).
 
-![image 1250](rcm1-1_images/imageFile1250.png)
+![image 1250](Images/imageFile1250.png)
 
 8See Section 4.3 for the basic definitions associated with the automorphism group Aut(G). 9The terms ‘amenable’ and ‘unimodular’ come from group theory, see [265, 290, 312]. The
 
@@ -9088,7 +9088,7 @@ may be found,forexample,in the work of Alexander[15],Chayesand Machta [93, 94], 
 
 The random-cluster model was introduced in part as a means to study the Potts model. No attempt is made here to compress the ensuing theory into a few pages. Instead, we state and prove one theorem concerning a random-cluster analysis of the (non-)uniqueness of Gibbs states for the Potts model.
 
-![image 1251](rcm1-1_images/imageFile1251.png)
+![image 1251](Images/imageFile1251.png)
 
 cτ π ,β,q(σ ) if σ ∈ τ , 0 otherwise,
 
@@ -9134,7 +9134,7 @@ only if φp1,q(0 ↔ ∞) = 0. When φp1,q(0 ↔ ∞) > 0, there exists more tha
 
 to be πpi,q for i ∈ {0,1,2,. . . ,q}.
 
-![image 1252](rcm1-1_images/imageFile1252.png)
+![image 1252](Images/imageFile1252.png)
 
 1There is a technical detail here in that π ,β,q is defined on rather than on Zd, but we overlook this.
 
@@ -9150,7 +9150,7 @@ Proof of Theorem 11.3. (a) The existence of the measures is proved in Theorem 4.
 
 We prove next that πβ,1 q is a Gibbs state, and the same proof is valid for πβ,0 q. For boxes , satisfying ⊆ , let V \ denote the σ-field generated by the states of vertices in \ ( \ ∂ ). Let A ∈ G. By the martingale convergence theorem (see [164, Ex. 12.3.9]),
 
-![image 1253](rcm1-1_images/imageFile1253.png)
+![image 1253](Images/imageFile1253.png)
 
 Let ↑ Zd and deduce by Theorems 4.91 and 5.11 that
 
@@ -9158,7 +9158,7 @@ Let ↑ Zd and deduce by Theorems 4.91 and 5.11 that
 
 πβ,1 q(σ0 = 1) −
 
-![image 1254](rcm1-1_images/imageFile1254.png)
+![image 1254](Images/imageFile1254.png)
 
 Therefore, (ii) and (iii) are equivalent.
 
@@ -9168,15 +9168,15 @@ Finally, we prove that (iii) implies (i). Assume (iii), and let π be a Gibbs st
 
 We concentrate for the moment on the measure π ,β,τ q. We may couple this measure with a certain random-cluster-type measure in the same manner as described in Section 1.4 for the free measures. For ω ∈ = {0,1}E , let kτ(ω) be the number of open clusters in the graph obtained from ( ,E ) by identifying each of the sets Vi = {x ∈ ∂ : τx = i}, i = 1,2,. . .,q, as a single vertex. Let φ be the random-cluster measure on with the usual cluster-count k(ω) replaced by kτ(ω). Finally, let φ ,τ p,q denote2 φ conditioned on the event
 
-![image 1255](rcm1-1_images/imageFile1255.png)
+![image 1255](Images/imageFile1255.png)
 
-![image 1256](rcm1-1_images/imageFile1256.png)
+![image 1256](Images/imageFile1256.png)
 
 (11.6) Dτ = ω ∈ : Vi ↔/ Vj in , for all distinct i, j ∈ {1,2,. . .,q} .
 
 It is left as an exercise to prove that π ,β,τ q is the law of the spin-vector obtained as follows. If x ∈/ \∂ , assign spin τx to x. For vertices in \∂ , first sample ω ∈ according to φ ,τ p,q, and then assign uniformly distributed random spins
 
-![image 1257](rcm1-1_images/imageFile1257.png)
+![image 1257](Images/imageFile1257.png)
 
 2Since kτ (ω) differs from k1(ω) by a constant (depending on τ), we could take φ ,τ p,q to be the wired measure φ ,1 p,q conditioned on Dτ.
 
@@ -9216,7 +9216,7 @@ Each vertex may be in either of two states of the Ising model. The Potts modelwa
 
 Let G = (V, E) be a finite graph. The set of local spin-values is taken to be {A, B,C, D}, so that the conﬁguration space is = {A, B,C, D}V. Let J1, J2 be edge-interactions satisfying 0 ≤ J1 ≤ J2, and let β ∈ (0,∞). The spins at the endvertices x and y of the edge e = x, y interact according to a function δ given as follows:
 
-![image 1258](rcm1-1_images/imageFile1258.png)
+![image 1258](Images/imageFile1258.png)
 
 Neighbouring pairs prefer to have the same spin, failing which they prefer to have spins in one of the sets {A, B}, {C, D}, and failing that either of the spins in the other pair. When J1 = 0, the Ashkin–Teller model is equivalent to the Ising model. When J1 = J2, it is equivalent to the 4-state Potts model.
 
@@ -9234,9 +9234,9 @@ invariant under the re-labellings A ↔ B and C ↔ D.
 
 α(σx = s) > 41, α(σx = t) < 14, x ∈ Zd, t ∈ {A, B,C, D} \ {s}. Furthermore, β1 < β2 if J2/J1 is sufficiently large.
 
-![image 1259](rcm1-1_images/imageFile1259.png)
+![image 1259](Images/imageFile1259.png)
 
-![image 1260](rcm1-1_images/imageFile1260.png)
+![image 1260](Images/imageFile1260.png)
 
 It is an open question to decide whether β1 < β2 whenever J1 < J2. Perhaps the answer depends on the choice of lattice.
 
@@ -9252,7 +9252,7 @@ p0|η0|p1|η1| p2|η2|2k(η1∪η2)+k(η2), ω ∈ ,
 
 φG,p(ω) =
 
-![image 1261](rcm1-1_images/imageFile1261.png)
+![image 1261](Images/imageFile1261.png)
 
 where ηi = ηi(ω) and ZATRC is the appropriate normalizing constant.
 
@@ -9262,7 +9262,7 @@ We describe next how to couple αG,β and φG,p. Let ω have law φG,p. For each
 
 probability 21. This recipe results in a random spin-vector σ ∈ {A, B,C, D}V, and it is left as an exercise to check that σ has law αG,β.
 
-![image 1262](rcm1-1_images/imageFile1262.png)
+![image 1262](Images/imageFile1262.png)
 
 The key question in deciding the multiplicity of Gibbs states is whether a weak limit of the φ ,p may possess an infinite cluster of edges each of which has either state 1 or state 2 (respectively, each of which has state 2). We begin the proof of Theorem 11.12 with a lemma. The conﬁguration space = {0,1,2}E may be viewed as a partially ordered set. For probability measures µ1, µ2 on , we write µ1 ≤st µ2 if µ1( f ) ≤ µ2( f ) for all non-decreasing functions f : → R. See Section 2.1.
 
@@ -9272,29 +9272,29 @@ Proof. Each β is a probability measure on the partially ordered set . By Theore
 
 πβ,e(v,ξ) = β ω(e) ≥ v ω( f ) = ξ( f ) for all f ∈ E \ {e} is increasing (that is, non-decreasing) in β ∈ (0,∞) and ξ ∈ .
 
-![image 1263](rcm1-1_images/imageFile1263.png)
+![image 1263](Images/imageFile1263.png)
 
-![image 1264](rcm1-1_images/imageFile1264.png)
+![image 1264](Images/imageFile1264.png)
 
 where (11.17) γ0 = 2κ12(e,ξ)+κ2(e,ξ)−2, γ1 = 2κ12(e,ξ)−1. Note that (11.18) γ0 ≥ γ1 ≥ 1, and, in addition, γ0, γ1, γ0/γ1, and γ0 − γ1 are decreasing functions of ξ.
 
-![image 1265](rcm1-1_images/imageFile1265.png)
+![image 1265](Images/imageFile1265.png)
 
-![image 1266](rcm1-1_images/imageFile1266.png)
+![image 1266](Images/imageFile1266.png)
 
-![image 1267](rcm1-1_images/imageFile1267.png)
+![image 1267](Images/imageFile1267.png)
 
-![image 1268](rcm1-1_images/imageFile1268.png)
+![image 1268](Images/imageFile1268.png)
 
-![image 1269](rcm1-1_images/imageFile1269.png)
+![image 1269](Images/imageFile1269.png)
 
-![image 1270](rcm1-1_images/imageFile1270.png)
+![image 1270](Images/imageFile1270.png)
 
-![image 1271](rcm1-1_images/imageFile1271.png)
+![image 1271](Images/imageFile1271.png)
 
-![image 1272](rcm1-1_images/imageFile1272.png)
+![image 1272](Images/imageFile1272.png)
 
-![image 1273](rcm1-1_images/imageFile1273.png)
+![image 1273](Images/imageFile1273.png)
 
 3These were proved for the case = {0, 1}E, but similar results are valid in the more general setting when = T E and T is a finite subset of R. See, for example, [136, Section 4].
 
@@ -9314,7 +9314,7 @@ Thesame argumentmaybeappliedto theexistence(ornot)of aninfinitecluster of type 2
 
 πβ,e(2,ξ) ≥ 14 p2, ξ ∈ , e ∈ E, implyingasabovethat,whenβ islarge,everyweaklimitof φ ,p possesses(almost surely) an infinite cluster of type 2. Therefore, β2 < ∞. Statement (c) is easily seen to follow and, in addition, statement (b) when β1 < β2.
 
-![image 1274](rcm1-1_images/imageFile1274.png)
+![image 1274](Images/imageFile1274.png)
 
 By (11.16),
 
@@ -9330,11 +9330,11 @@ If β ∈ I, the edgesof type 1/2 dominate a supercriticalproductmeasure, and th
 
 All our models have been assumed so far to be homogeneous in the sense that their edge-parameters have been assumed equal. In a ‘disordered’ system, one begins instead with a general family of edge-parameters indexed by the edge-set E. It is potentially a major complication that the ensuing measures may not be automorphism-invariant, and one may not apply techniques such as the ergodic theorem. A degree of statistical homogeneity may be re-introduced by assuming that the edge-parametersare chosen according to some given translation-invariant random field. We restrict ourselves for simplicity here to the situation in which this random field is a product measure with a given marginal distribution.
 
-![image 1275](rcm1-1_images/imageFile1275.png)
+![image 1275](Images/imageFile1275.png)
 
 Such a model is ferromagnetic in that the Je are non-negative random variables. The non-ferromagnetic case is much harder, and the reader is referred to Section 11.5 for some partial results of random-cluster type.
 
-![image 1276](rcm1-1_images/imageFile1276.png)
+![image 1276](Images/imageFile1276.png)
 
 where Zp is the appropriate (random) normalizing constant.
 
@@ -9344,9 +9344,9 @@ With q, β, and the Je as above, let (11.24) pe = 1 − e−βJe, e ∈ E. The m
 
 (11.25) πJ,q(σx = σy) −
 
-![image 1277](rcm1-1_images/imageFile1277.png)
+![image 1277](Images/imageFile1277.png)
 
-![image 1278](rcm1-1_images/imageFile1278.png)
+![image 1278](Images/imageFile1278.png)
 
 4Disordered systems were introduced in [143], and early papers include [132, 133].
 
@@ -9396,11 +9396,11 @@ P(pe) = P(1 − e−βJe) → 0 as β ↓ 0, by monotone convergence. Therefore,
 
 We turn to the upper bound for βc. By the other comparison inequality (3.23),
 
-![image 1279](rcm1-1_images/imageFile1279.png)
+![image 1279](Images/imageFile1279.png)
 
-![image 1280](rcm1-1_images/imageFile1280.png)
+![image 1280](Images/imageFile1280.png)
 
-![image 1281](rcm1-1_images/imageFile1281.png)
+![image 1281](Images/imageFile1281.png)
 
 and the theorem is proved.
 
@@ -9412,21 +9412,21 @@ The Ising/Potts models with positive edge-interactions Je are termed ‘ferromag
 
 In the last section, the Je were allowed to be random variables taking values in the half-line [0,∞). A model which is especially interesting and relatively poorly understood is the so-called ‘Edwards–Anderson spin-glass model’, [109], in which the Je are independent, identically distributed random variables taking values in R with a symmetric distribution (that is, Je and −Je have the same law). Two natural distributions for the Je are the normal distribution, and the symmetric distribution on the two-point space {−1,1}. There are several beautiful open problems concerning the Edwards–Anderson model. We refer the reader to [260] for an account of the theory, and to [262, 263] for recent results and speculations.
 
-![image 1282](rcm1-1_images/imageFile1282.png)
+![image 1282](Images/imageFile1282.png)
 
 1 (11.31) 2 Jeσxσy. The inverse-temperature β ∈ (0,∞) is regarded as the parameter to be varied.
 
-![image 1283](rcm1-1_images/imageFile1283.png)
+![image 1283](Images/imageFile1283.png)
 
 e= x,y ∈E
 
-![image 1284](rcm1-1_images/imageFile1284.png)
+![image 1284](Images/imageFile1284.png)
 
-![image 1285](rcm1-1_images/imageFile1285.png)
+![image 1285](Images/imageFile1285.png)
 
 φe(ω(e) = 1) = 1 − φe(ω(e) = 0) = pe, e ∈ E. Let W = WG ⊆ × be the (non-empty) event (11.33) W = (σ,ω) : Jeσxσy > 0 for all e = x, y with ω(e) = 1 .
 
-![image 1286](rcm1-1_images/imageFile1286.png)
+![image 1286](Images/imageFile1286.png)
 
 Let U = UG ⊆ be the event (11.35) U = ω ∈ : there exists σ ∈ with (σ,ω) ∈ W .
 
@@ -9436,21 +9436,21 @@ A conﬁguration ω ∈ is called frustrated if ω ∈/ U. It is left as an exer
 
 (11.36)
 
-![image 1287](rcm1-1_images/imageFile1287.png)
+![image 1287](Images/imageFile1287.png)
 
-![image 1288](rcm1-1_images/imageFile1288.png)
+![image 1288](Images/imageFile1288.png)
 
-![image 1289](rcm1-1_images/imageFile1289.png)
+![image 1289](Images/imageFile1289.png)
 
-![image 1290](rcm1-1_images/imageFile1290.png)
+![image 1290](Images/imageFile1290.png)
 
-![image 1291](rcm1-1_images/imageFile1291.png)
+![image 1291](Images/imageFile1291.png)
 
 S(ω) = σ ∈ : (σ,ω) ∈ W ,
 
 which is non-empty since ω ∈ U (µ-almost-surely). Let C be an open cluster of ω, and let x, y be distinct vertices in C. Let ρ be an open path from x to y. Since every edge e of ρ is open, it must be the case that pe > 0, and therefore Je = 0.
 
-![image 1292](rcm1-1_images/imageFile1292.png)
+![image 1292](Images/imageFile1292.png)
 
 8This coupling may be found in [129] and the present account draws on [259, 260]. The first use of a random-cluster representation in this context appears to be in [202].
 
@@ -9462,7 +9462,7 @@ Let ω ∈ . We extend the definition of ηx,y by setting ηx,y = 0 if x ↔/ y,
 
 πβJ(σxσy) = φp(ηx,y), x, y ∈ V.
 
-![image 1293](rcm1-1_images/imageFile1293.png)
+![image 1293](Images/imageFile1293.png)
 
 When Je ≥ 0 forall e ∈ E, thenηx,y = 1{x↔y}, and the conclusionof Theorem 1.16 is retrieved.
 
@@ -9506,7 +9506,7 @@ The event Uτ is a decreasing subset of , so that, by positive association,
 
 (iii) for any suitable g, conditional on the event {G(ω1) = g}, the marginal law of {ω0(e) : e ∈ Eg} is the free measure φg,p.
 
-![image 1294](rcm1-1_images/imageFile1294.png)
+![image 1294](Images/imageFile1294.png)
 
 The full proof of this step is omitted, and the reader is referred to [259] and to the closely related proof of Proposition 5.30. The idea is to sample the states ω0(e), ω1(e) of edges recursively, beginning with edges e incident to ∂ . At each stage, one checks the stochastic domination (conditional on the past history of the construction) that is necessary to continue the pointwise ordering.
 
@@ -9538,7 +9538,7 @@ D = |x − y| > 1 for all x ∈ 1, y ∈ 2 ,
 
 and let µ ,λ be the law of the pair ( 1, 2) conditioned on the event D . This measure is well defined since P(D ) > 0 for bounded .
 
-![image 1295](rcm1-1_images/imageFile1295.png)
+![image 1295](Images/imageFile1295.png)
 
 9See [164, Section 6.13] for an introduction to the theory of spatial Poisson processes.
 
@@ -9550,7 +9550,7 @@ How many Gibbs states exist for a given value of λ? The following theorem may b
 
 It is an open problem to show the existence of a single critical value marking the onset of multiple Gibbs states. In advance of the proof, which is sketched at the end of the section, we turn to a lattice version of this model introduced in [232].
 
-![image 1296](rcm1-1_images/imageFile1296.png)
+![image 1296](Images/imageFile1296.png)
 
 where D is the event that, for all x, y ∈ V, x ≁ y whenever σx = 1 and σy = 2, and ZWR is the appropriate normalizing constant.
 
@@ -9562,7 +9562,7 @@ Itis an openproblemto showthe existenceof a single critical valueof λ. Proofs o
 
 The main ingredient in the proof of the latter theorem is a certain ‘site-randomcluster measure’, given as follows for the finite graph G. The conﬁguration space is V = {0,1}V. Forω ∈ V, Letk(ω)be thenumberofcomponentsin the graph
 
-![image 1297](rcm1-1_images/imageFile1297.png)
+![image 1297](Images/imageFile1297.png)
 
 where p ∈ [0,1], q ∈ (0,∞), and ZSRC is the appropriate normalizing constant. This measure reduceswhen q = 1 to the productmeasureon V otherwise known as site percolation.
 
@@ -9570,7 +9570,7 @@ At first sight, one might guess that the theory of such measures may be develope
 
 Proof of Theorem 11.47. We follow [136], see also [86]. Let G = (V, E) be a finite graph, and let q = 2, λ ∈ (0,∞), and p = λ/(1 + λ). We show first how to couple µG,λ and ψG,p,q. Let ω be sampled from V according to ψG,p,q. If ω(x) = 0, we set σx = 0. To each vertex y with ω(y) = 1, we allocate a type from the set {1,2}, each value having probability 12, and we do this by allocating a given type to each given cluster of ω, these types being constant within clusters, and independent between clusters. The outcome is a spin vector σ taking values in V, and it is left as an exercise to check that σ has law µG,λ.
 
-![image 1298](rcm1-1_images/imageFile1298.png)
+![image 1298](Images/imageFile1298.png)
 
 Next, we compare ψG,p,q with a productmeasure on V. It is immediate from (11.48) that, for ξ ∈ and x ∈ V,
 
@@ -9580,11 +9580,11 @@ pq pq + (1 − p)qκ(x,ξ)
 
 ,
 
-![image 1299](rcm1-1_images/imageFile1299.png)
+![image 1299](Images/imageFile1299.png)
 
-![image 1300](rcm1-1_images/imageFile1300.png)
+![image 1300](Images/imageFile1300.png)
 
-![image 1301](rcm1-1_images/imageFile1301.png)
+![image 1301](Images/imageFile1301.png)
 
 By Theorems 2.1 and 2.3, (11.49) φG,p1 ≤st ψG,p,q ≤st φG,p2 where φG,r is product measure on V with density r.
 
@@ -9596,29 +9596,29 @@ p2 < pcsite(Ld), but this does indeed occur if p1 > pcsite(Ld). Here, pcsite(Ld)
 
 Sketch proof of Theorem 11.46. The full proof is not included here, and interested readers are referred to [136, Thm 10.2] for further details10. Rather as in the previous proof, we relate the Widom–Rowlinson model to a type of ‘continuum site-random-cluster measure’. Let be a bounded measurable subset of Rd. For any countable subset of , let N( ) be the union of the closed 1 2-neighbourhoods of the points in , and let k( ) be the number of (topologically) connected components of N( ). Consider now the probability measure π ,λ on the family of countable subsets of given by
 
-![image 1302](rcm1-1_images/imageFile1302.png)
+![image 1302](Images/imageFile1302.png)
 
-![image 1303](rcm1-1_images/imageFile1303.png)
+![image 1303](Images/imageFile1303.png)
 
-![image 1304](rcm1-1_images/imageFile1304.png)
+![image 1304](Images/imageFile1304.png)
 
-![image 1305](rcm1-1_images/imageFile1305.png)
+![image 1305](Images/imageFile1305.png)
 
 where π ,λ is the law of a Poisson process on with intensity λ, and Z is a normalizing constant.
 
 It is not hard to verify the following coupling. Let be a random countable subset of with law π ,λ. To each point x ∈ we allocate either type 1 or type 2, each possibility having probability 21. This is done simultaneously for all x ∈ by allocating a random type to each component of N( ), this type being constantwithincomponents,and independentbetweencomponents. The outcome is a conﬁguration ( 1, 2) of two sets of points labelled 1 and 2, respectively, and it may be checked that the law of ( 1, 2) is µ ,λ.
 
-![image 1306](rcm1-1_images/imageFile1306.png)
+![image 1306](Images/imageFile1306.png)
 
-![image 1307](rcm1-1_images/imageFile1307.png)
+![image 1307](Images/imageFile1307.png)
 
 One uses arguments of stochastic domination next, but in the continuum. The methods of Section 2.1 may be adapted to the continuum to obtain a criterion under which π ,λ may be compared to some π ,λ′. It turns out that there exists α = α(d) ∈ (0,∞) such that
 
-![image 1308](rcm1-1_images/imageFile1308.png)
+![image 1308](Images/imageFile1308.png)
 
 (11.50) π ,αλ ≤st π ,λ ≤st π ,2λ for bounded measurable .
 
-![image 1309](rcm1-1_images/imageFile1309.png)
+![image 1309](Images/imageFile1309.png)
 
 Let πλ be the law of a Poisson process on Rd with intensity λ. It is a central fact of continuumpercolation, see [154, Section 12.10] and [253], that there exists λc ∈ (0,∞) such that the percolation probability
 
@@ -9630,13 +9630,13 @@ Let πλ be the law of a Poisson process on Rd with intensity λ. It is a centra
 
 It may be seen as in Section 11.2 that there exists a multiplicity of WR-Gibbs states if and only the π ,λ have a weak limit (as ↑ Rd) that allocates strictly positive probability to the occurrence of an unbounded component. By (11.50)–
 
-![image 1310](rcm1-1_images/imageFile1310.png)
+![image 1310](Images/imageFile1310.png)
 
 (11.51), this cannot occur when λ < λ1 = 21λc, but does indeed occur when λ > λ2 = λc/α.
 
-![image 1311](rcm1-1_images/imageFile1311.png)
+![image 1311](Images/imageFile1311.png)
 
-![image 1312](rcm1-1_images/imageFile1312.png)
+![image 1312](Images/imageFile1312.png)
 
 10The proof utilizes arguments of [86, 138].
 
@@ -9650,14 +9650,14 @@ The random-clustermodel has had substantial impact on the study of Ising and Pot
 
 In a reply dated 23 September 1970 to Ginibre’s first draft, Kasteleyn made a number of suggestions, including to extend the domain of the main theorem to a finite distributive lattice, thereby generalizing the result to include both a totally ordered finite set and the power set of a finite set. He proposed the use of the standard result that any finite distributive lattice is lattice-isomorphic to a sublattice of the power set of some finite set. The article was re-drafted accordingly. The two Dutch co-authorslater“thoughtitworthwhile todevelopa self-supporting lattice-theoreticproof”oftheprincipalproposition2. Ginibreplacedhisownname third in the list of authors, and the subsequent paper, [124], was published in the
 
-![image 1313](rcm1-1_images/imageFile1313.png)
+![image 1313](Images/imageFile1313.png)
 
 - 1I am indebted to Cees Fortuin and Jean Ginibre for their recollections of the events leading to the formulation and proof of the FKG inequality, and to Frank den Hollander for passing on material from Piet Kasteleyn’s papers.
 - 2The quotation is taken from the notes written by Kasteleyn on Ginibre’s second draft.
 
 (ii) As before. The substitution rule is p = p1 + p2 − p1p2.
 
-![image 1314](rcm1-1_images/imageFile1314.png)
+![image 1314](Images/imageFile1314.png)
 
 So far for the facts. Question: do they reﬂect some relation between the three systems? To answer this question we began with the following elementary steps (in which order, I do not rememberexactly; the one I give here will not be far from the actual one).
 
@@ -9667,77 +9667,77 @@ w1 + w2 1 + w1w2 ; (ii) w = w1w2.
 
 (i) w =
 
-![image 1315](rcm1-1_images/imageFile1315.png)
+![image 1315](Images/imageFile1315.png)
 
 2. Introduce new variables, viz. in case A: R∗ = R−1 (conductivity); in case B: w∗ = (1 − w)/(1 + w) = tanh(β J); in case C: p∗ = 1 − p. This reduces the substitution rules to:
 
 (i) (ii)
 
-![image 1316](rcm1-1_images/imageFile1316.png)
+![image 1316](Images/imageFile1316.png)
 
-![image 1317](rcm1-1_images/imageFile1317.png)
+![image 1317](Images/imageFile1317.png)
 
-![image 1318](rcm1-1_images/imageFile1318.png)
+![image 1318](Images/imageFile1318.png)
 
-![image 1319](rcm1-1_images/imageFile1319.png)
+![image 1319](Images/imageFile1319.png)
 
-![image 1320](rcm1-1_images/imageFile1320.png)
+![image 1320](Images/imageFile1320.png)
 
-![image 1321](rcm1-1_images/imageFile1321.png)
+![image 1321](Images/imageFile1321.png)
 
-![image 1322](rcm1-1_images/imageFile1322.png)
+![image 1322](Images/imageFile1322.png)
 
 A R = R1 + R2 R∗ = R∗
 
 1 + R∗
 
-![image 1323](rcm1-1_images/imageFile1323.png)
+![image 1323](Images/imageFile1323.png)
 
-![image 1324](rcm1-1_images/imageFile1324.png)
+![image 1324](Images/imageFile1324.png)
 
 2
 
-![image 1325](rcm1-1_images/imageFile1325.png)
+![image 1325](Images/imageFile1325.png)
 
-![image 1326](rcm1-1_images/imageFile1326.png)
+![image 1326](Images/imageFile1326.png)
 
-![image 1327](rcm1-1_images/imageFile1327.png)
+![image 1327](Images/imageFile1327.png)
 
-![image 1328](rcm1-1_images/imageFile1328.png)
+![image 1328](Images/imageFile1328.png)
 
-![image 1329](rcm1-1_images/imageFile1329.png)
+![image 1329](Images/imageFile1329.png)
 
 w1∗ + w2∗ 1 + w1∗w2∗
 
 w1 + w2 1 + w1w2
 
-![image 1330](rcm1-1_images/imageFile1330.png)
+![image 1330](Images/imageFile1330.png)
 
-![image 1331](rcm1-1_images/imageFile1331.png)
+![image 1331](Images/imageFile1331.png)
 
 w∗ =
 
 B w =
 
-![image 1332](rcm1-1_images/imageFile1332.png)
+![image 1332](Images/imageFile1332.png)
 
-![image 1333](rcm1-1_images/imageFile1333.png)
+![image 1333](Images/imageFile1333.png)
 
-![image 1334](rcm1-1_images/imageFile1334.png)
+![image 1334](Images/imageFile1334.png)
 
-![image 1335](rcm1-1_images/imageFile1335.png)
+![image 1335](Images/imageFile1335.png)
 
-![image 1336](rcm1-1_images/imageFile1336.png)
+![image 1336](Images/imageFile1336.png)
 
-![image 1337](rcm1-1_images/imageFile1337.png)
+![image 1337](Images/imageFile1337.png)
 
-![image 1338](rcm1-1_images/imageFile1338.png)
+![image 1338](Images/imageFile1338.png)
 
 C p = p1p2 p∗ = p1∗ p2∗
 
-![image 1339](rcm1-1_images/imageFile1339.png)
+![image 1339](Images/imageFile1339.png)
 
-![image 1340](rcm1-1_images/imageFile1340.png)
+![image 1340](Images/imageFile1340.png)
 
 3. (Sideline) Note that if G is planar and G∗ is its dual, then the situation
 
@@ -9745,20 +9745,20 @@ in G corresponds to in G∗ and conversely. So the starred variables can be cons
 
 4. Consider now a q-state Potts model with σ : V → {1,2,. . .,q} and
 
-![image 1341](rcm1-1_images/imageFile1341.png)
+![image 1341](Images/imageFile1341.png)
 
-![image 1342](rcm1-1_images/imageFile1342.png)
+![image 1342](Images/imageFile1342.png)
 
 - 5. Now note that by substituting q = 1 in the last few formulae we get w = w1 + w2 − w1w2, or 1 − w = (1 − w1)(1 − w2) and w∗ = 1 − w. Hence, if we write 1 − w = p, we recover the rules for C. So in this very special sense, the percolation model behaves, just like the Ising model, as a special case of the Potts model.
 - 6. At first sight the electric network does not seem to ﬁt into the Potts model. It doesso, however,ifwetakeanappropriateformallimit. DeﬁneforthePottsmodel S = q−12(1 − w). In the limit q → 0 (which at this stage is still meaningless, since q is an integer), the substitution rules reduce to
 
-![image 1343](rcm1-1_images/imageFile1343.png)
+![image 1343](Images/imageFile1343.png)
 
 S1S2 S1 + S2 ; (ii) S = S1 + S2
 
 (i) S =
 
-![image 1344](rcm1-1_images/imageFile1344.png)
+![image 1344](Images/imageFile1344.png)
 
 and the duality rule is S∗ = 1/S. In other words, we recover the rules for the network, with S = R−1 (= R∗).
 
@@ -9794,11 +9794,11 @@ So far about history. Looking at the subsequent developments, I am somewhat surp
 
 Then there is the ‘antiferromagnetic’ Potts model, where J(e) is allowed to be negative. If it is, p(e) is also negative, so that a standard probability interpretation is impossible. Thiscase hasnotbeeninvestigatedeither, as farasI know. Still, it is of interest, if only because, for integral positive q, the limit where all J(e) become infinitely negativeleads one into the theory of vertexcolouringswith q colours! In this connection I may point out that for two-dimensional regular lattices the value q = 4 plays a very special role in the random-cluster model: for q < 4 the phase transition is ‘of second order’ (i.e. the percolation probability is continuous), for q > 4 it is ‘of first order’. So it may be that there is more to be said about the four-colour problem than we know at present!
 
-![image 1345](rcm1-1_images/imageFile1345.png)
+![image 1345](Images/imageFile1345.png)
 
 Second letter from Piet Kasteleyn to GRG, dated 17 November 1992.
 
-![image 1346](rcm1-1_images/imageFile1346.png)
+![image 1346](Images/imageFile1346.png)
 
 For q = 2 (Ising model), the existence of a triangle in G already causes a relation (it cannot accommodate 3 unequal pairs of spins). This is, e.g., satisfied by F(C) = I{u↔v}, but not by F(C) = I{u↔v↔w}, where u, v, w are vertices.
 
@@ -9806,7 +9806,7 @@ You may be amused to see what happens in the case q = 1!
 
 My conclusion is that the PM is ‘included’ (in the spirit of this analysis) in the RCM, but that generically the RCM is ‘richer’: there are questions one can ask in the RCM which have no counterpart in the PM. In addition, of course, the RCM makes also sense for q ∈/ N, but the PM — as far as we know (Fortuin and I tried hard!) — not.
 
-![image 1347](rcm1-1_images/imageFile1347.png)
+![image 1347](Images/imageFile1347.png)
 
 Postscript by Cees Fortuin, 11 September 2003.
 
@@ -9848,7 +9848,7 @@ h(e) 169 The plaquette intersecting the edge e ∈ E3 [H] 170 Subset of R3 lying
 
 δ 170 The closure or extended interface of a set δ of plaquettes DL,M 201 The set of interfaces δ0 201 The regular interface ∼s 169 s-connectedness for plaquettes
 
-![image 1348](rcm1-1_images/imageFile1348.png)
+![image 1348](Images/imageFile1348.png)
 
 h1,h2 169 The L∞ distance between the centres of plaquettes h1, h2 ins(T) 169 Union of the bounded connected components of Rd \ T out(T) 169 Union of the unbounded connected components of Rd \ T |A| 17 Cardinality of A, or number of vertices of A A △ B 60 Symmetric difference of A and B
 
@@ -9870,7 +9870,7 @@ Probability notation:
 
 ωe, ωe 16 Conﬁguration ω with e declared closed/open ω1 ∨ ω2 20 Maximum conﬁguration of ω1 and ω2 ω1 ∧ ω2 20 Minimum conﬁguration of ω1 and ω2 H(ω1,ω2) 16 Hamming distance between ω1 and ω2 η(ω) 16 The set of edges that are open in ω k(ω) 17 Number of open components in ω I(ω) 79 Number of infinite open clusters in ω A, Ac 16 Complement of event A A B 64 Event that A and B occur ‘disjointly’ B(X) 241 Space of bounded measurable functions from X to R C(X) 233 Space of continuous functions from X to R DX 82 Discontinuity set of the random variable X IA(e) 30 Inﬂuence of the edge e on the event A ≤st 19 Stochastic domination inequality
 
-![image 1349](rcm1-1_images/imageFile1349.png)
+![image 1349](Images/imageFile1349.png)
 
 ⇒ 69 Weak convergence
 
@@ -9878,7 +9878,7 @@ Random-cluster notation:
 
 Cx 17 Open cluster at x C 18 Open cluster C0 at 0 pc(q) 99 Critical value of p under φp,q psd(q) 135 The self-dual point of the random-cluster model on L2 pc(q) 124 Critical point defined via slab connections pc(q) 113 Critical point for polynomial/exponential decay p(q) 197 Critical point for the roughening transition pcbond 329 Critical probability of bond percolation pcsite 340 Critical probability of site percolation ptc(q) 114 Critical point for the time-constant pg(q) 115 Critical point for exponential decay of connectivity η(µ) 114 The time-constant associated with the measure µ θb(p,q) 98 Percolation probability under φpb,q ξ(p,q) 115 Correlation length δe(σ) 7 Indicator function that the endvertices of e have equal spin {A ↔ B} 17 Event that there exist a ∈ A and b ∈ B such that a ↔ b {A ↔/ B} 17 Complement of the event {A ↔ B}
 
-![image 1350](rcm1-1_images/imageFile1350.png)
+![image 1350](Images/imageFile1350.png)
 
 Je 15 Event that e is open; also the indicator function of this event Ke 37 Event that endvertices of e are joined by an open path
 
