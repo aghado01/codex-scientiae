@@ -14,7 +14,7 @@ It has been known since at least 1847 that electrical networks satisfy so-called
 
 The mathematics begins with a finite graph G = (V, E), and the associated Ising model1 thereon. A random variable σx taking values −1 and +1 is assigned to each vertex x of G, and the probability of the conﬁguration σ = (σx : x ∈ V) is taken to be proportional to e−βH(σ), where β > 0 and the ‘energy’ H(σ) is the
 
-![image 5](Grimmet2006_images/imageFile5.png)
+![image 5](../Images/imageFile5.png)
 
 1The so-called Ising model [190] was in fact proposed (to Ising) by Lenz. The Potts model [105, 278] originated in a proposal (to Potts) by Domb.
 
@@ -30,7 +30,7 @@ The theory of electrical networks on the graph G is of course more ancient than 
 
 The three ingredients above seemed fairly distinct until Fortuin and Kasteleyn discovered around 1970, [120, 121, 122, 123, 203], that each features within a certain parametric family of models which they termed ‘random-cluster models’. They developed the basic theory of such models — correlation inequalities and the like — in this series of papers. The true power of random-cluster models as
 
-![image 6](Grimmet2006_images/imageFile6.png)
+![image 6](../Images/imageFile6.png)
 
 2See also the historical curiosity [323].
 
@@ -54,7 +54,7 @@ The random-cluster and Ising/Potts models on the graph G = (V, E) are defined fo
 
 Let G = (V, E) be a finite graph. The graphsconsideredhere will usually possess neither loops nor multiple edges, but we make no such general assumption. An edge e having endvertices x and y is written as e = x, y . A random-cluster measure on G is a member of a certain class of probability measures on the set of subsets of the edge set E. We take as state space the set = {0,1}E, members of which are 0/1-vectors ω = (ω(e) : e ∈ E). We speak of the edge e as being open (in ω) if ω(e) = 1, and as being closed if ω(e) = 0. For ω ∈ , let η(ω) = {e ∈ E : ω(e) = 1} denote the set of open edges. There is a one–one correspondence between vectors ω ∈ and subsets F ⊆ E, given by F = η(ω). Let k(ω) be the numberof connected components(or ‘open clusters’) of the graph (V,η(ω)), and note that k(ω) includes a count of isolated vertices, that is, of vertices incident to no open edge. We associate with the σ-field F of all its subsets.
 
-![image 7](Grimmet2006_images/imageFile7.png)
+![image 7](../Images/imageFile7.png)
 
 Thismeasurediffersfromproductmeasurethroughthe inclusionofthe term qk(ω). Note the difference between the cases q ≤ 1 and q ≥ 1: the former favours fewer clusters, whereas the latter favours a larger number of clusters. When q = 1, edges are open/closed independently of one another. This very special case has been studied in detail under the titles ‘percolation’ and ‘random graphs’, see [61, 154, 194]. Perhaps the most important values of q are the integers, since the random-cluster model with q ∈ {2,3,. . .} corresponds, in a way described in the next two sections, to the Potts model with q local states. The bulk of the work presented in this book is devoted to the theory of random-cluster measures when q ≥ 1. The case q < 1 seems to be harder mathematically and less important physically. There is some interest in the limit as q ↓ 0; see Section 1.5.
 
@@ -64,7 +64,7 @@ Figure 1.1. Samples from the random-cluster measure with q = 1 on a 40 × 40 box
 
 6 Random-Cluster Measures [1.3]
 
-![image 8](Grimmet2006_images/imageFile8.png)
+![image 8](../Images/imageFile8.png)
 
 Figure 1.2. A picture of the random-cluster model with free boundary conditions on a 2048× 2048 box of L2, with p = 0.585816 and q = 2. The critical value of the model with q = 2 is pc =
 
@@ -72,9 +72,9 @@ Figure 1.2. A picture of the random-cluster model with free boundary conditions 
 
 √2/(1 +
 
-![image 9](Grimmet2006_images/imageFile9.png)
+![image 9](../Images/imageFile9.png)
 
-![image 10](Grimmet2006_images/imageFile10.png)
+![image 10](../Images/imageFile10.png)
 
 <a id="sec-1-3"></a>
 
@@ -82,7 +82,7 @@ Figure 1.2. A picture of the random-cluster model with free boundary conditions 
 
 In a famous experiment, a piece of iron is exposed to a magnetic field. The field is increased from zero to amaximum,and then diminished tozero. If the temperature is sufficiently low, the iron retains some residual magnetization, otherwise it does not. There is a critical temperature for this phenomenon, often called the Curie point after Pierre Curie, who reported this discovery in his 1895 thesis, [98]3. The
 
-![image 11](Grimmet2006_images/imageFile11.png)
+![image 11](../Images/imageFile11.png)
 
 3In an example of Stigler’s Law, [309], the existence of such a temperature was discovered before 1832 by Pouillet, see [198].
 
@@ -98,7 +98,7 @@ Let G = (V, E) be a finite graph representing part of the lattice. We think of e
 
 e−βH(σ), σ ∈ , where the partition function ZI and the ‘Hamiltonian’ H : → R are given by (1.4) ZI =
 
-![image 12](Grimmet2006_images/imageFile12.png)
+![image 12](../Images/imageFile12.png)
 
 The physical interpretation of β is as the reciprocal 1/T of temperature, of J as the strength of interaction between neighbours, and of h as the external magnetic field. For reasons of simplicity, we shall consider here only the case of zero external-field, and we assume henceforth that h = 0.
 
@@ -114,11 +114,11 @@ e = x, y and a conﬁguration σ = (σx : x ∈ V) ∈ , we write δe(σ) = δσ
 
 e−βH′(σ), σ ∈ ,
 
-![image 13](Grimmet2006_images/imageFile13.png)
+![image 13](../Images/imageFile13.png)
 
 In the special case q = 2, the multiplicative formula (1.7) δσx,σy = 21(1 + σxσy), σx,σy ∈ {−1,+1}, is valid. It is now easy to see in this case that the ensuing Potts model is simply the Ising model with an adjusted value of β, in that πβ,2 is the measure obtained from λβ/2 by re-labelling the local states.
 
-![image 14](Grimmet2006_images/imageFile14.png)
+![image 14](../Images/imageFile14.png)
 
 where sx · sy denotes the dot product. When n = 1, this is the Ising model. It is called the X/Y model when n = 2, and the Heisenberg model when n = 3.
 
@@ -152,9 +152,9 @@ Elementary calculations reveal the following facts.
 
 (1.10)Theorem(Marginalmeasuresofµ)[108]. Letq ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β.
 
-![image 15](Grimmet2006_images/imageFile15.png)
+![image 15](../Images/imageFile15.png)
 
-![image 16](Grimmet2006_images/imageFile16.png)
+![image 16](../Images/imageFile16.png)
 
 The conditional measures of µ are given in the following theorem4, and illustrated in Figure 1.3. (1.13) Theorem (Conditional measures of µ) [108]. Let q ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β.
 
@@ -167,11 +167,11 @@ The conditional measures of µ are given in the following theorem4, and illustra
 
 the values of different ω(e) being (conditionally) independent random variables.
 
-![image 17](Grimmet2006_images/imageFile17.png)
+![image 17](../Images/imageFile17.png)
 
 4The corresponding facts for the infinite lattice are given in Theorem 4.91.
 
-![image 4](Grimmet2006_images/imageFile4.png)
+![image 4](../Images/imageFile4.png)
 
 Figure 1.3. The upper diagram is an illustration of the conditional measure of µ on given ω , with q = 4. To each open cluster of ω is allocated a spin-value chosen uniformly from { 1 , 2 , 3 , 4 } . Differentclustersareallocatedindependentvalues. Inthelowerdiagram, webegin withaconﬁguration σ . Anedgeisplacedbetweenvertices x , y withprobability p (respectively, 0) if σ x = σ y (respectively, σ x = σ y ), and the outcome has as law the conditional measure of µ on given σ .
 
@@ -181,9 +181,9 @@ correlations in Potts models correspond to open connections in random-cluster mo
 
 Let { x ↔ y } denote the set of all ω ∈ for which there exists an open path joining vertex x to vertex y . The complement of the event { x ↔ y } is denoted by { x / ↔ y } .
 
-![image 18](Grimmet2006_images/imageFile18.png)
+![image 18](../Images/imageFile18.png)
 
-![image 19](Grimmet2006_images/imageFile19.png)
+![image 19](../Images/imageFile19.png)
 
 The ‘two-point connectivity function’ of the random-cluster measure φp,q is defined as the function φp,q(x ↔ y) for x, y ∈ V, that is, the probability that x and y are joined by a path of open edges. It turns out that these ‘two-point functions’ are (except for a constant factor) the same.
 
@@ -191,11 +191,11 @@ The ‘two-point connectivity function’ of the random-cluster measure φp,q is
 
 τβ,q(x, y) = (1 − q−1)φp,q(x ↔ y), x, y ∈ V.
 
-![image 20](Grimmet2006_images/imageFile20.png)
+![image 20](../Images/imageFile20.png)
 
-![image 21](Grimmet2006_images/imageFile21.png)
+![image 21](../Images/imageFile21.png)
 
-![image 22](Grimmet2006_images/imageFile22.png)
+![image 22](../Images/imageFile22.png)
 
 1 Z e∈E
 
@@ -213,25 +213,25 @@ Let G = (V, E) be a finite connected graph, and let φp,q be the random-cluster 
 - • a spanning tree of G if (V, F) is connected and contains no circuit,
 - • a connected subgraph of G if (V, F) is connected. In each case we consider the graph (V, F) containing every vertex of V; in this regard, sets F of edges satisfying one of the above conditions are sometimes termed spanning. Note that F is a spanning tree if and only if it is both a forest and a connected subgraph. For = {0,1}E and ω ∈ , we call ω a forest (respectively, spanning tree, connected subgraph) if η(ω) is a forest (respectively, spanning tree, connected subgraph). Write for, st, cs for the subsets of containing all forests, spanning trees, and connected subgraphs, respectively, and write USF, UST, UCS for the uniform probability measures6 on the respective sets for, st, cs.
 
-![image 23](Grimmet2006_images/imageFile23.png)
+![image 23](../Images/imageFile23.png)
 
-![image 24](Grimmet2006_images/imageFile24.png)
+![image 24](../Images/imageFile24.png)
 
 and Zcs = Zcs(r) is the appropriate normalizing constant. In the special case p = 21, we have that φp,q ⇒ UCS as q ↓ 0.
 
-![image 25](Grimmet2006_images/imageFile25.png)
+![image 25](../Images/imageFile25.png)
 
-![image 26](Grimmet2006_images/imageFile26.png)
+![image 26](../Images/imageFile26.png)
 
-![image 27](Grimmet2006_images/imageFile27.png)
+![image 27](../Images/imageFile27.png)
 
 ω∈
 
 Note that p/(1 − p) → 0 and q(1 − p)/p → 0 as q ↓ 0. Now, k(ω) ≥ 1 and |η(ω)|+k(ω) ≥ |V| forω ∈ ; these two inequalitiesare satisfied simultaneously with equality if and only if ω ∈ st. Therefore, in the limit as q ↓ 0, the ‘mass’ is concentratedonspanningtrees, anditis easily seenthatthelimitmassisuniformly distributed. That is, φp,q ⇒ UST.
 
-![image 28](Grimmet2006_images/imageFile28.png)
+![image 28](../Images/imageFile28.png)
 
-![image 29](Grimmet2006_images/imageFile29.png)
+![image 29](../Images/imageFile29.png)
 
 and Zfor = Zfor(α) is the appropriate normalizing constant. In the special case α = 1, we ﬁnd that φp,q ⇒ USF.
 
@@ -243,15 +243,15 @@ Finally, if p approaches 0 faster than does q, in that p/q → 0 as p,q → 0, i
 
 UCS if p = 21, UST if p → 0 and q/p → 0,
 
-![image 30](Grimmet2006_images/imageFile30.png)
+![image 30](../Images/imageFile30.png)
 
 √q). It has been known since Kirchhoff’s theorem, [215], that the electrical currents which flow in a network may be expressed in terms of counts of spanning trees. We return to this discussion of UST in Section 3.9.
 
 √q/(1+
 
-![image 31](Grimmet2006_images/imageFile31.png)
+![image 31](../Images/imageFile31.png)
 
-![image 32](Grimmet2006_images/imageFile32.png)
+![image 32](../Images/imageFile32.png)
 
 The theory of the uniform-spanning-tree measure UST is beautiful in its own right(see[31]),andislinkedinanimportantwaytotheemergingfieldofstochastic growth processes of ‘stochastic Lowner¨ evolution’ (SLE) type (see [231, 284]), to which we return in Section 6.7. Further discussions of USF and UCS may be found in [165, 268].
 
@@ -271,13 +271,13 @@ The indicatorfunction of a subset A of is the function 1A : → {0,1} given by
 
 For e ∈ E, we write Je = {ω ∈ : ω(e) = 1}, the event that the edge e is open. We use Je to denote also the indicatorfunctionof this event, so that Je(ω) = ω(e). A function X : → R is called a cylinder function if there exists a finite subset F of E such that X(ω) = X(ω′) whenever ω(e) = ω′(e) for e ∈ F. A subset A of is called a cylinder event if its indicator function is a cylinder function. We
 
-![image 33](Grimmet2006_images/imageFile33.png)
+![image 33](../Images/imageFile33.png)
 
 7This choice of p is convenient, but actually one requires only that q/p → 0, see [166].
 
 take F to be the σ-field of subsets of generated by the cylinder events, and we shall consider certain probability measures on the measurable pair ( ,F ). If G is finite, then F is the set of all subsets of ; all events are cylinder events, and all functions are cylinder functions. The complement of an event A is written Ac or A.
 
-![image 34](Grimmet2006_images/imageFile34.png)
+![image 34](../Images/imageFile34.png)
 
 For W ⊆ V, let EW denote the set of edges of G having both endvertices in W. We write FW (respectively, TW) for the smallest σ-field of F with respect to which each of the random variables ω(e), e ∈ EW (respectively, e ∈/ EW), is measurable. The notation FF, TF is to be interpreted similarly for F ⊆ E. The intersection of the TF over all finite sets F is called the tail σ-field and is denoted by T . Sets in T are called tail events.
 
@@ -374,4 +374,3 @@ For any random variable X and appropriate probability measure µ, we write µ(X)
 µ(X) = X dµ.
 
 Let⌊a⌋and⌈a⌉denotetheintegerpartoftherealnumber a,andtheleastinteger not less than a, respectively. Finally, a ∧ b = min{a,b} and a ∨ b = max{a,b}.
-

@@ -6,3 +6,5 @@ This project is designed for making critical technical reference materials avail
 `Corpora` contains selected collections of published works
 
 Internal standards for formatting, correctness, completness etc are currently in development.
+
+[place holder for meta TOC with pointers to codices/ and corpora/ CONTENTS.md hierarchy]
