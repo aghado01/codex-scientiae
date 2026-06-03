@@ -26,7 +26,7 @@ The data set analyzed by Pearson (1894) consisted of measurements on the ratio o
 
 Pearson's (1894) mixture model-based approach suggested that there were two subspecies present. This paper was the first of two monstrous memoirs in series of 'Contributions to the Mathematical Theory of Evolution" (Stigler, 1986, Chapter 10) In Figure 1.1 we have plotted the density of the two-component normal mixture, as obtained by using maximum likelihood to fit this model to the data in their original interval form. Pearson (1894) had used the method of moments to fit this mixture model tothe mid-points of the intervals; which, for this data set, gives afit very similar tothat obtained with the more efficient method of maximum likelihood. Itcan be seen
 
-![image 1](mclachlan2000_images/imageFile1.png)
+![image 1](../Images/imageFile1.png)
 
 <a id="sec-1-1-3"></a>
 
@@ -206,7 +206,7 @@ As the family of g-component normal mixtures is very flexible; Marron and Wand (
 
 Some idea of the range of provided by mixtures of bivariate normal components may be obtained from Johnson (1987, Section 4.2), where contour plots are given for various selections of the parameters in the case of g = 2 components. shapes
 
-![image 2](mclachlan2000_images/imageFile2.png)
+![image 2](../Images/imageFile2.png)
 
 2. Skewed Unimodal Density
 
@@ -222,7 +222,7 @@ Some idea of the range of provided by mixtures of bivariate normal components ma
 
 Fig. 1.4 Plots of normal mixture densities. From Marron and Wand (1992)
 
-![image 3](mclachlan2000_images/imageFile3.png)
+![image 3](../Images/imageFile3.png)
 
 9. Trimodal Density
 
@@ -264,7 +264,7 @@ Source: Adapted from Marron and Wand (1992)
 
 As seen in the previous section; normal mixture densities can play a useful role in modeling the distribution of data that have asymmetrical distributions; as recognized by Pearson (1894). Another way of proceeding with the modeling of skewed data is to first apply a transformation in an attempt to remove or reduce the asymmetry in the data. For this purpose the transformation is often helpful, It is well known log that the parameters of normal mixture of two univariate normal homoscedastic components may be chosen so that its density is close in appearance to that of a and variance 02 on the scale, then its density is given by log log
 
-![image 4](mclachlan2000_images/imageFile4.png)
+![image 4](../Images/imageFile4.png)
 
 $$
 ( 2 \pi ) ^ { - \frac { 1 } { 2 } } y _ { j } ^ { - 1 } \sigma ^ { - 1 } \exp \{ - \frac { 1 } { 2 } ( \log y _ { j } - \mu ) ^ { 2 } / \sigma ^ { 2 } \} .
@@ -348,7 +348,7 @@ where H is the probability distribution that places mass T1 at the point u = 1 a
 
 We have seen in Section 1.5 that the shape of the density of a mixture of two normal components will be bimodal in appearance if the two components have sufficient separation between them. Hence; in practice; bimodality in a histogram of the feature data will obviously be suggestive of the possibility that the data have been drawn from a mixture distribution: However, bimodality in histograms of the data (or of linear combinations of the data if multivariate) does not always imply that the data have been sampled from a mixture distribution.
 
-![image 5](mclachlan2000_images/imageFile5.png)
+![image 5](../Images/imageFile5.png)
 
 This was illustrated in the seminal paper of (1969) on normal mixture models . To demonstrate the presence of spurious clusters in a data set, (1969) generated three random samples, each of sizc n = 50, from a spherically symmet ric p = 10-dimensional normal distribution. He then plotted for each sample the point Day Day
 
@@ -952,4 +952,3 @@ univariate normal distribution with mean / and variance 02
 <a id="sec-2"></a>
 
 # 2
-

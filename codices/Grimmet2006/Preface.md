@@ -1,6 +1,6 @@
 ## Preface
 
-![image 1](rcm1-1_images/imageFile1.png)
+![image 1](./Images/imageFile1.png)
 
 Kees Fortuin (1971) | Piet Kasteleyn (1968)
 
@@ -8,7 +8,7 @@ The random-cluster model was invented by Kees Fortuin and Piet Kasteleyn around 
 
 The importance of the model for probability and statistical mechanics was not fully recognized until the late 1980s. There are two reasons for this period of dormancy. Although the early publications of 1969–1972 contained many of the basic properties of the model, the emphasis placed there upon combinatorial aspects may have obscured its potential for applications. In addition, many of the geometrical arguments necessary for studying the model were not known prior to 1980, but were developed during the ‘decade of percolation’ that began then. In 1980 was published the proof that pc = 1/2 for bond percolation on the square lattice, and this was followed soon by Harry Kesten’s monograph on two-dimensional percolation.
 
-![image 2](rcm1-1_images/imageFile2.png)
+![image 2](./Images/imageFile2.png)
 
 Percolation moved into higher dimensions around 1986, and many of the mathematical issues of the day were resolved by 1989. Interest in the random-cluster model as a tool for studying the Ising/Potts models was rekindled around 1987. Swendsen and Wang utilized the model in proposing an algorithm for the time-evolution of Potts models; Aizenman, Chayes, Chayes, and Newman used it to show discontinuity in long-range one-dimensional Ising/Potts models; Edwards and Sokal showed how to do it with coupling.
 
@@ -32,9 +32,9 @@ The supercritical phase, when p > pc(q), has been the scene of recent major deve
 
 The self-duality of the two-dimensional square lattice Z2 is complemented by a duality relation for random-cluster measures on planar graphs, and this allows a fuller understanding of the two-dimensional case, as described in Chapter 6. There remain important open problems, of which the principal one is to obtain a clear proof of the ‘exact calculation’ pc(q) = √q/(1 + √q). This calculation is accepted by probabilists when q = 1 (percolation), q = 2 (Ising), and when q is large, but the “exact solutions” of theoretical physics seem to have no complete counterpart in rigorous mathematics for general values of q satisfying q ∈ [1,∞). There is strong evidence that the phase transition with d = 2 and q ∈ [1,4) will be susceptible to an analysis using SLE, and this will presumably enable in due course a computation of its critical exponents.
 
-![image 3](rcm1-1_images/imageFile3.png)
+![image 3](./Images/imageFile3.png)
 
-![image 4](rcm1-1_images/imageFile4.png)
+![image 4](./Images/imageFile4.png)
 
 In Chapter 7, we consider duality in three and more dimensions. The dual model amounts to a probability measure on surfaces and certain topological complications arise. Two significant facts are proved. First, it is proved for sufficiently large q that the phase transition is discontinuous. Secondly, it is proved for q ∈ [1,∞) and sufficiently large p that there exist non-translation-invariant ‘Dobrushin’ states.
 
