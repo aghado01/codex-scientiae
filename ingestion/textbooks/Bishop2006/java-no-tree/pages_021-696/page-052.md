@@ -1,0 +1,28 @@
+[Page 52]
+
+- Figure 1.17 The predictive distribution resulting from a Bayesian treatment of polynomial curve ﬁtting using an M = 9 polynomial, with the ﬁxed parameters α = 5 × 10−3 and β = 11.1 (corresponding to the known noise variance), in which the red curve denotes the mean of the predictive distribution and the red region corresponds to ±1 standard deviation around the mean.
+
+
+| |
+|---|
+
+
+- 0
+- 1
+
+
+t
+
+−1
+
+0 1
+
+x
+
+###### 1.3. Model Selection
+
+In our example of polynomial curve ﬁtting using least squares, we saw that there was an optimal order of polynomial that gave the best generalization. The order of the polynomial controls the number of free parameters in the model and thereby governs the model complexity. With regularized least squares, the regularization coefﬁcient λ also controls the effective complexity of the model, whereas for more complex models, such as mixture distributions or neural networks there may be multiple parameters governing complexity. In a practical application, we need to determine the values of such parameters, and the principal objective in doing so is usually to achieve the best predictive performance on new data. Furthermore, as well as ﬁnding the appropriate values for complexity parameters within a given model, we may wish to consider a range of different types of model in order to ﬁnd the best one for our particular application.
+
+We have already seen that, in the maximum likelihood approach, the performance on the training set is not a good indicator of predictive performance on unseen data due to the problem of over-ﬁtting. If data is plentiful, then one approach is simply to use some of the available data to train a range of models, or a given model with a range of values for its complexity parameters, and then to compare them on independent data, sometimes called a validation set, and select the one having the best predictive performance. If the model design is iterated many times using a limited size data set, then some over-ﬁtting to the validation data can occur and so it may be necessary to keep aside a third test set on which the performance of the selected model is ﬁnally evaluated.
+
+In many applications, however, the supply of data for training and testing will be limited, and in order to build good models, we wish to use as much of the available data as possible for training. However, if the validation set is small, it will give a relatively noisy estimate of predictive performance. One solution to this dilemma is to use cross-validation, which is illustrated in Figure 1.18. This allows a proportion (S −1)/S of the available data to be used for training while making use of all of the

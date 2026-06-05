@@ -1,0 +1,1902 @@
+{
+  "file name" : "1611.03935v1.pdf",
+  "number of pages" : 5,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20161114202910-05'00'",
+  "modification date" : "D:20161114202910-05'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 23,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 42.72, 630.585, 569.266, 674.368 ],
+    "heading level" : 1,
+    "font" : "CMR17",
+    "font size" : 20.663,
+    "text color" : "[0.0]",
+    "content" : "An Elementary Proof of Convex Phase Retrieval in the Natural Parameter Space via the Linear Program PhaseMax"
+  }, {
+    "type" : "paragraph",
+    "id" : 22,
+    "page number" : 1,
+    "bounding box" : [ 14.04, 252.0, 36.36, 596.4 ],
+    "font" : "Times-Roman",
+    "font size" : 20.0,
+    "text color" : "[0.5]",
+    "content" : "arXiv:1611.03935v1[cs.IT]12Nov2016"
+  }, {
+    "type" : "paragraph",
+    "id" : 24,
+    "page number" : 1,
+    "bounding box" : [ 191.52, 568.551, 425.143, 612.281 ],
+    "font" : "CMR12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "Paul Hand∗ and Vladislav Voroninski† November 15, 2016"
+  }, {
+    "type" : "paragraph",
+    "id" : 25,
+    "page number" : 1,
+    "bounding box" : [ 282.0, 514.2, 329.957, 521.934 ],
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 26,
+    "page number" : 1,
+    "bounding box" : [ 65.28, 342.272, 546.806, 502.222 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The phase retrieval problem has garnered signiﬁcant attention since the development of the PhaseLift algorithm, which is a convex program that operates in a lifted space of matrices. Because of the substantial computational cost due to lifting, many approaches to phase retrieval have been developed, including non-convex optimization algorithms which operate in the natural parameter space, such as Wirtinger Flow. Very recently, a convex formulation called PhaseMax has been discovered, and it has been proven to achieve phase retrieval via linear programming in the natural parameter space under optimal sample complexity. The current proofs of PhaseMax rely on statistical learning theory or geometric probability theory. Here, we present a short and elementary proof that PhaseMax exactly recovers real-valued vectors from random measurements under optimal sample complexity. Our proof only relies on standard probabilistic concentration and covering arguments, yielding a simpler and more direct proof than those that require statistical learning theory, geometric probability or the highly technical arguments for Wirtinger Flow-like approaches."
+  }, {
+    "type" : "heading",
+    "id" : 27,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 65.28, 303.139, 201.199, 318.65 ],
+    "heading level" : 2,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 28,
+    "page number" : 1,
+    "bounding box" : [ 65.279, 130.473, 546.764, 292.177 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Consider the classical phase retrieval problem: recover x0 ∈ Cn modulo global phase from a collection of measurements | ai,x0 |,i = 1,... m, where ai ∈ Cn are known measurement vectors. We consider the idealized model ai ∼ N(0,In×n) for the measurement vectors. The ﬁrst algorithm which guaranteed exact and noise-robust phase retrieval from O(n) random phaseless measurements was PhaseLift [2, 5, 3], which is a convex semideﬁnite program that operates in a lifted space of n × n matrices. Because lifting squares the problem dimensionality, PhaseLift is prohibitively computationally expensive and thus much research has focused on alternative formulations. In particular, non-convex formulations include the Wirtinger Flow [4], Truncated Wirtinger Flow [6], Truncated Amplitude Flow [11], and the gradient descent of [9]. These methods permit phase retrieval from Gaussian measurements under optimal or near optimal sample complexity in the natural parameter space, however they are technically challenging to analyze theoretically and lead to complicated algorithmic formulations with many parameters."
+  }, {
+    "type" : "paragraph",
+    "id" : 29,
+    "page number" : 1,
+    "bounding box" : [ 65.28, 103.473, 546.752, 127.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "To the surprise of the community, a recent successful formulation for phase retrieval called PhaseMax, independently developed in [7, 1], is convex and operates in the natural n-dimensional parameter"
+  }, {
+    "type" : "image",
+    "id" : 30,
+    "page number" : 1,
+    "bounding box" : [ 35.988, 95.268, 251.988, 95.748 ],
+    "source" : "images/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 31,
+    "page number" : 1,
+    "bounding box" : [ 49.32, 69.75, 398.039, 92.87 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "∗Department of Computational and Applied Mathematics, Rice University, TX. †Helm.ai, CA"
+  }, {
+    "type" : "footer",
+    "id" : 32,
+    "page number" : 1,
+    "bounding box" : [ 303.12, 39.813, 308.966, 50.417 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 6,
+      "page number" : 1,
+      "bounding box" : [ 303.12, 39.813, 308.966, 50.417 ],
+      "heading level" : 3,
+      "font" : "CMR12",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "1"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 33,
+    "page number" : 2,
+    "bounding box" : [ 65.28, 637.593, 546.775, 716.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "space. The theoretical results of [7] achieve a tighter sample complexity than those in [1], notably providing guarantees very close to the information theoretic lower-bounds. Both of these approaches rely on ﬁrst ﬁnding an anchor vector which is positively correlated with the vector x0, provided for instance by using a spectral initialization ﬁrst reported on by Netrapali et al. [8] and further enhanced by authors of Wirtinger Flow-like methods. The proof in [1] uses arguments based on statistical learning theory, and the the proof in [7] uses arguments from sphere covering and geometric probability."
+  }, {
+    "type" : "paragraph",
+    "id" : 34,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 569.793, 546.774, 634.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In this short paper, we consider only the real-valued case for simplicity (the complex case is very similar) and present an alternate elementary proof that PhaseMax succeeds in ﬁnding x0 up to global sign from O(n) phaseless Gaussian measurements, thus achieving phase retrieval under optimal sample complexity via a linear program with a linear number of constraints. Our proof is based on standard elementary probabilistic concentration estimates of the singular values of random matrices."
+  }, {
+    "type" : "heading",
+    "id" : 35,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 65.279, 530.78, 290.064, 546.291 ],
+    "heading level" : 2,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "2 Main Result and Proof"
+  }, {
+    "type" : "paragraph",
+    "id" : 36,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 480.033, 546.708, 519.818 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Our main result is that PhaseMax succeeds at recovering a ﬁxed signal x0 ∈ Rn with high probability from O(n) random measurements, when provided with an anchor vector φ that is suﬃciently close to x0."
+  }, {
+    "type" : "paragraph",
+    "id" : 37,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 430.843, 546.698, 470.137 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 1. Fix x0 ∈ Rn. Let ai be i.i.d. N(0,In×n), for i = 1... m. Let yi = | ai,x0 |. Let φ ∈ Rn be such that φ − x0 2 < 0.6 x0 2. If m ≥ cn, then with probability at least 1 − 6e−γm, x0 is the unique solution of the linear program PhaseMax:"
+  }, {
+    "type" : "paragraph",
+    "id" : 38,
+    "page number" : 2,
+    "bounding box" : [ 216.119, 392.327, 395.857, 417.742 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "max φ,x s.t. −yi ≤ ai,x ≤ yi, i = 1... m"
+  }, {
+    "type" : "paragraph",
+    "id" : 39,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 532.799, 399.992, 546.632, 410.901 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 40,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 369.753, 247.057, 380.662 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here, γ and c are universal constants."
+  }, {
+    "type" : "paragraph",
+    "id" : 41,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 327.407, 546.861, 358.101 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "A satisfactory anchor vector can be eﬃciently computed with high probability by several methods. For concreteness, consider the truncated spectral initializer in [6]. With λ = m1 mi=1 yi2, let"
+  }, {
+    "type" : "image",
+    "id" : 42,
+    "page number" : 2,
+    "bounding box" : [ 443.148, 345.948, 492.948, 346.428 ],
+    "source" : "images/imageFile2.png"
+  }, {
+    "type" : "image",
+    "id" : 43,
+    "page number" : 2,
+    "bounding box" : [ 444.348, 335.748, 451.908, 336.228 ],
+    "source" : "images/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 44,
+    "page number" : 2,
+    "bounding box" : [ 110.4, 293.913, 128.356, 304.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "φ ="
+  }, {
+    "type" : "paragraph",
+    "id" : 50,
+    "page number" : 2,
+    "bounding box" : [ 395.88, 286.353, 405.458, 312.142 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 46,
+    "page number" : 2,
+    "bounding box" : [ 161.64, 301.233, 177.785, 312.142 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "mn"
+  }, {
+    "type" : "image",
+    "id" : 45,
+    "page number" : 2,
+    "bounding box" : [ 142.308, 310.908, 197.028, 311.388 ],
+    "source" : "images/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 49,
+    "page number" : 2,
+    "bounding box" : [ 197.04, 293.913, 390.927, 304.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "λz, where z is the leading eigenvector of"
+  }, {
+    "type" : "paragraph",
+    "id" : 48,
+    "page number" : 2,
+    "bounding box" : [ 155.04, 283.727, 195.272, 299.858 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m i=1 ai 22"
+  }, {
+    "type" : "image",
+    "id" : 47,
+    "page number" : 2,
+    "bounding box" : [ 143.508, 299.148, 195.948, 299.628 ],
+    "source" : "images/imageFile5.png"
+  }, {
+    "type" : "image",
+    "id" : 51,
+    "page number" : 2,
+    "bounding box" : [ 395.868, 299.148, 405.468, 299.628 ],
+    "source" : "images/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 52,
+    "page number" : 2,
+    "bounding box" : [ 412.56, 308.207, 420.044, 316.177 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 54,
+    "page number" : 2,
+    "bounding box" : [ 426.0, 291.407, 546.633, 306.38 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "yi2aia⊺i 1{|yi|<3λ}. (2)"
+  }, {
+    "type" : "paragraph",
+    "id" : 53,
+    "page number" : 2,
+    "bounding box" : [ 409.44, 281.568, 423.152, 289.538 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 55,
+    "page number" : 2,
+    "bounding box" : [ 65.28, 164.673, 546.906, 270.775 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By Proposition 3 from [6], for a ﬁxed x0, this truncated spectral initializer satisﬁes min( φ−x0 , φ+ x0 ) ≤ 0.6 x0 2 with probability at least 1 − e−γm, provided that m ≥ c0n. Note that in the case where φ + x0 ≤ 0.6 x0 2, then the output of PhaseMax will be −x0 with high probability, which is exact up to the inherent global phase ambiguity. Alternatively, one could use the leading eigenvector of m1 mi=1 yi2aia⊺i as the anchor vector, as done in the initialization steps of AltMinPhase [8] and Wirtinger Flow [4]. In this case m = O(nlog n) measurements are necessary to obtain an accurate anchor vector [6]. The initialization from the Truncated Amplitude Flow [11] could also be used under m = O(n)."
+  }, {
+    "type" : "image",
+    "id" : 56,
+    "page number" : 2,
+    "bounding box" : [ 80.148, 210.588, 87.708, 211.068 ],
+    "source" : "images/imageFile7.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 57,
+    "page number" : 2,
+    "bounding box" : [ 65.28, 110.553, 546.763, 162.295 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The entire proof of Theorem 1 (with the stronger assumption φ − x0 < 0.4 x0 2) can ﬁt on half a page by appealing to standard concentration estimates on the singular values of Gaussian matrices and to an ℓ1-isometry bound proved in Lemma 3.2 from PhaseLift [5]. For the sake of exposition, we include a direct proof of this isometry bound with a superior constant."
+  }, {
+    "type" : "footer",
+    "id" : 58,
+    "page number" : 2,
+    "bounding box" : [ 303.119, 39.812, 308.965, 50.417 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 7,
+      "page number" : 2,
+      "bounding box" : [ 303.119, 39.812, 308.965, 50.417 ],
+      "heading level" : 3,
+      "font" : "CMR12",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "2"
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 59,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 65.28, 704.54, 141.265, 720.051 ],
+    "heading level" : 2,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "3 Proof"
+  }, {
+    "type" : "paragraph",
+    "id" : 60,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 640.353, 546.938, 691.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Throughout the proof, the values of constants c and γ may change line to line, but they are bounded from above and below by ﬁxed positive numbers. The proof uses a technical lemma that bounds the singular values of m1 mi=1 aia⊺i and a technical lemma that bounds m1 mi=1 | ai,x0 || ai,x1 | from below with high probability."
+  }, {
+    "type" : "image",
+    "id" : 61,
+    "page number" : 3,
+    "bounding box" : [ 170.388, 659.028, 177.948, 659.508 ],
+    "source" : "images/imageFile8.png"
+  }, {
+    "type" : "image",
+    "id" : 62,
+    "page number" : 3,
+    "bounding box" : [ 404.148, 659.028, 411.708, 659.508 ],
+    "source" : "images/imageFile9.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 63,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 604.473, 546.546, 628.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof of Theorem 1. Without loss of generality, take x0 2 = 1. To prove x0 is the unique maximizer of (1), it suﬃces to show that for any nonzero h ∈ Rn,"
+  }, {
+    "type" : "paragraph",
+    "id" : 64,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 556.248, 443.333, 592.015 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "ai,h ai,x0 ≤ 0 for i = 1,2... m =⇒ φ,h < 0 Suppose ai,h ai,x0 ≤ 0 for all i. Then,"
+  }, {
+    "type" : "paragraph",
+    "id" : 68,
+    "page number" : 3,
+    "bounding box" : [ 172.44, 538.607, 179.924, 546.577 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 73,
+    "page number" : 3,
+    "bounding box" : [ 286.56, 538.607, 294.044, 546.577 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 66,
+    "page number" : 3,
+    "bounding box" : [ 155.64, 516.753, 165.218, 542.542 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 71,
+    "page number" : 3,
+    "bounding box" : [ 269.88, 516.753, 279.458, 542.542 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 65,
+    "page number" : 3,
+    "bounding box" : [ 145.919, 524.193, 154.396, 535.375 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "−"
+  }, {
+    "type" : "paragraph",
+    "id" : 70,
+    "page number" : 3,
+    "bounding box" : [ 185.88, 523.248, 265.636, 535.374 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "| ai,h ai,x0 | ="
+  }, {
+    "type" : "image",
+    "id" : 67,
+    "page number" : 3,
+    "bounding box" : [ 155.628, 529.428, 165.228, 529.908 ],
+    "source" : "images/imageFile10.png"
+  }, {
+    "type" : "image",
+    "id" : 72,
+    "page number" : 3,
+    "bounding box" : [ 269.868, 529.428, 279.468, 529.908 ],
+    "source" : "images/imageFile11.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 69,
+    "page number" : 3,
+    "bounding box" : [ 169.32, 511.848, 183.032, 519.818 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 74,
+    "page number" : 3,
+    "bounding box" : [ 283.44, 511.848, 297.152, 519.818 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 75,
+    "page number" : 3,
+    "bounding box" : [ 302.4, 523.248, 371.956, 535.102 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "ai,h ai,x0 ="
+  }, {
+    "type" : "paragraph",
+    "id" : 78,
+    "page number" : 3,
+    "bounding box" : [ 401.64, 538.607, 409.124, 546.577 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 76,
+    "page number" : 3,
+    "bounding box" : [ 384.96, 516.753, 394.538, 542.542 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 80,
+    "page number" : 3,
+    "bounding box" : [ 415.08, 521.687, 456.703, 535.635 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "aia⊺i ,hx⊺0"
+  }, {
+    "type" : "image",
+    "id" : 77,
+    "page number" : 3,
+    "bounding box" : [ 384.948, 529.428, 394.548, 529.908 ],
+    "source" : "images/imageFile12.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 79,
+    "page number" : 3,
+    "bounding box" : [ 398.52, 511.848, 412.232, 519.818 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 81,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 488.313, 446.902, 501.735 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By Lemma 2, if m ≥ ǫ−2n, then on an event of probability at least 1 − 2e−γǫ2m,"
+  }, {
+    "type" : "paragraph",
+    "id" : 84,
+    "page number" : 3,
+    "bounding box" : [ 195.6, 470.327, 203.084, 478.297 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 82,
+    "page number" : 3,
+    "bounding box" : [ 178.92, 448.473, 188.498, 474.262 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 86,
+    "page number" : 3,
+    "bounding box" : [ 209.04, 453.408, 443.062, 469.178 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "aia⊺i ,hx⊺0 ≥ h,x0 − ǫ h 2 x0 2 for all h ∈ Rn."
+  }, {
+    "type" : "image",
+    "id" : 83,
+    "page number" : 3,
+    "bounding box" : [ 178.908, 461.148, 188.508, 461.628 ],
+    "source" : "images/imageFile13.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 85,
+    "page number" : 3,
+    "bounding box" : [ 192.48, 443.568, 206.192, 451.538 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 87,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 421.473, 437.782, 434.138 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By Lemma 31, if m ≥ c0n, then on an event of probability at least 1 − 4e−γm,"
+  }, {
+    "type" : "paragraph",
+    "id" : 91,
+    "page number" : 3,
+    "bounding box" : [ 197.04, 404.447, 204.524, 412.417 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 89,
+    "page number" : 3,
+    "bounding box" : [ 180.36, 382.593, 189.938, 408.382 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 93,
+    "page number" : 3,
+    "bounding box" : [ 210.48, 389.208, 441.382, 403.298 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "| ai,h ai,x0 | ≤ −0.63 h 2 x0 2 for all h ∈ Rn."
+  }, {
+    "type" : "paragraph",
+    "id" : 88,
+    "page number" : 3,
+    "bounding box" : [ 170.64, 390.153, 179.116, 401.335 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "−"
+  }, {
+    "type" : "image",
+    "id" : 90,
+    "page number" : 3,
+    "bounding box" : [ 180.348, 395.388, 189.948, 395.868 ],
+    "source" : "images/imageFile14.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 92,
+    "page number" : 3,
+    "bounding box" : [ 193.92, 377.808, 207.632, 385.778 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 94,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 357.273, 170.781, 368.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Thus, taking ǫ = 0.03,"
+  }, {
+    "type" : "paragraph",
+    "id" : 95,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 309.873, 469.484, 344.694 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "h,x0 ≤ (−0.63 + ǫ) h 2 x0 2 = −0.6 h 2 x0 2. Finally, for nonzero h, we use the assumption that φ − x0 2 < 0.6 x0 2 to conclude"
+  }, {
+    "type" : "paragraph",
+    "id" : 96,
+    "page number" : 3,
+    "bounding box" : [ 65.279, 262.473, 449.574, 297.415 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "φ,h = φ − x0,h + x0,h ≤ φ − x0 2 h 2 − 0.6 h 2 < 0 on an event of probability at least 1 − 6e−γm."
+  }, {
+    "type" : "image",
+    "id" : 97,
+    "page number" : 3,
+    "bounding box" : [ 538.788, 265.188, 539.268, 272.628 ],
+    "source" : "images/imageFile15.png"
+  }, {
+    "type" : "image",
+    "id" : 98,
+    "page number" : 3,
+    "bounding box" : [ 539.268, 272.148, 545.868, 272.628 ],
+    "source" : "images/imageFile16.png"
+  }, {
+    "type" : "image",
+    "id" : 100,
+    "page number" : 3,
+    "bounding box" : [ 545.748, 265.188, 546.228, 272.628 ],
+    "source" : "images/imageFile17.png"
+  }, {
+    "type" : "image",
+    "id" : 99,
+    "page number" : 3,
+    "bounding box" : [ 539.268, 265.188, 545.868, 265.668 ],
+    "source" : "images/imageFile18.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 101,
+    "page number" : 3,
+    "bounding box" : [ 81.6, 240.273, 255.862, 251.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We now prove the technical lemmas."
+  }, {
+    "type" : "list",
+    "id" : 102,
+    "level" : "2",
+    "page number" : 3,
+    "bounding box" : [ 65.28, 133.713, 546.731, 231.098 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 65.28, 201.887, 546.502, 231.098 ],
+      "font" : "CMBX10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "Lemma 2. Fix ǫ < 1. Let ai ∈ Rn,i = 1,2... m be i.i.d gaussian. There exists a universal constant γ > 0 such that m 1 mi=1 aia∗i − In×n ≤ ǫ with probability at least 1 − 2e−γǫ2m, provided m ≥ ǫ−2n.",
+      "kids" : [ {
+        "type" : "image",
+        "id" : 16,
+        "page number" : 3,
+        "bounding box" : [ 149.748, 210.108, 157.308, 210.588 ],
+        "source" : "images/imageFile19.png"
+      }, {
+        "type" : "paragraph",
+        "id" : 17,
+        "page number" : 3,
+        "bounding box" : [ 65.28, 169.473, 546.59, 193.942 ],
+        "font" : "CMR10",
+        "font size" : 10.909,
+        "text color" : "[0.0]",
+        "content" : "Proof. This claim follows from standard concentration estimates for Gaussian matrices (e.g. Corollary 5.35 in [10])."
+      }, {
+        "type" : "image",
+        "id" : 18,
+        "page number" : 3,
+        "bounding box" : [ 538.788, 172.188, 539.268, 179.628 ],
+        "source" : "images/imageFile20.png"
+      }, {
+        "type" : "image",
+        "id" : 19,
+        "page number" : 3,
+        "bounding box" : [ 539.268, 179.148, 545.868, 179.628 ],
+        "source" : "images/imageFile21.png"
+      }, {
+        "type" : "image",
+        "id" : 20,
+        "page number" : 3,
+        "bounding box" : [ 539.268, 172.188, 545.868, 172.668 ],
+        "source" : "images/imageFile22.png"
+      }, {
+        "type" : "image",
+        "id" : 21,
+        "page number" : 3,
+        "bounding box" : [ 545.748, 172.188, 546.228, 179.628 ],
+        "source" : "images/imageFile23.png"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 65.28, 133.713, 546.731, 159.938 ],
+      "font" : "CMBX10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "Lemma 3. There exist constants c0,γ,δ0 such that for any 0 < δ < δ0, if m ≥ c0(δ−2 log δ−1)n, then with probability at least 1 − 4e−γmδ2",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 105,
+    "page number" : 3,
+    "bounding box" : [ 166.2, 116.688, 173.684, 124.658 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 103,
+    "page number" : 3,
+    "bounding box" : [ 149.52, 94.833, 159.098, 120.622 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 107,
+    "page number" : 3,
+    "bounding box" : [ 179.64, 101.327, 264.196, 113.455 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "| ai,x0 ai,x1 | ≥"
+  }, {
+    "type" : "image",
+    "id" : 104,
+    "page number" : 3,
+    "bounding box" : [ 149.508, 107.508, 159.108, 107.988 ],
+    "source" : "images/imageFile24.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 106,
+    "page number" : 3,
+    "bounding box" : [ 163.2, 89.927, 176.912, 97.898 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "i=1"
+  }, {
+    "type" : "paragraph",
+    "id" : 108,
+    "page number" : 3,
+    "bounding box" : [ 268.44, 94.833, 274.658, 120.622 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 110,
+    "page number" : 3,
+    "bounding box" : [ 276.24, 102.273, 546.633, 115.538 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(1 − δ) x0 2 x1 2 for all x0,x1 ∈ Rn (3)"
+  }, {
+    "type" : "image",
+    "id" : 109,
+    "page number" : 3,
+    "bounding box" : [ 268.428, 107.508, 275.148, 107.988 ],
+    "source" : "images/imageFile25.png"
+  }, {
+    "type" : "image",
+    "id" : 111,
+    "page number" : 3,
+    "bounding box" : [ 35.988, 82.908, 251.988, 83.388 ],
+    "source" : "images/imageFile26.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 112,
+    "page number" : 3,
+    "bounding box" : [ 49.44, 69.221, 507.12, 80.231 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1The same result holds with the constant 0.45 by applying Lemma 3.2 from PhaseLift [5] to hx⊺0 + x0h⊺."
+  }, {
+    "type" : "footer",
+    "id" : 113,
+    "page number" : 3,
+    "bounding box" : [ 303.12, 39.813, 308.966, 50.417 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 8,
+      "page number" : 3,
+      "bounding box" : [ 303.12, 39.813, 308.966, 50.417 ],
+      "heading level" : 3,
+      "font" : "CMR12",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "3"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 114,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 688.727, 546.741, 717.938 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. Without loss of generality, we take x0 = x1 = 1. Deﬁne A : Rn×n → Rm,X  → (a⊺i Xai)mi=1. Observe that m1 mi=1 | ai,x0 ai,x1 | = m1  A(x0x⊺1) 1."
+  }, {
+    "type" : "image",
+    "id" : 115,
+    "page number" : 4,
+    "bounding box" : [ 131.988, 696.948, 139.548, 697.428 ],
+    "source" : "images/imageFile27.png"
+  }, {
+    "type" : "image",
+    "id" : 116,
+    "page number" : 4,
+    "bounding box" : [ 258.708, 696.948, 266.268, 697.428 ],
+    "source" : "images/imageFile28.png"
+  }, {
+    "type" : "caption",
+    "id" : 117,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 635.793, 546.742, 690.5 ],
+    "linked content id" : 116,
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "First, we show that for any ﬁxed x0,x1 of unit length, m1  A(x0x⊺1) 1 ≥ π2 − δ1 with probability at least 1 − 2e−γmδ12. To show this, observe that m1  A(x0x⊺1) 1 = m1 mi=1 ξi, where ξi = | ai,x0 ai,x1 | is a subexponential random variable. Let K be the subexponential norm of ξi. By Lemma 4, Eξi ≥ π2. Thus, by the Bernstein-type inequality (Corollary 5.17 in [10])"
+  }, {
+    "type" : "image",
+    "id" : 118,
+    "page number" : 4,
+    "bounding box" : [ 344.508, 683.388, 352.068, 683.868 ],
+    "source" : "images/imageFile29.png"
+  }, {
+    "type" : "image",
+    "id" : 119,
+    "page number" : 4,
+    "bounding box" : [ 423.828, 683.388, 428.988, 683.868 ],
+    "source" : "images/imageFile30.png"
+  }, {
+    "type" : "image",
+    "id" : 120,
+    "page number" : 4,
+    "bounding box" : [ 287.028, 668.028, 294.588, 668.508 ],
+    "source" : "images/imageFile31.png"
+  }, {
+    "type" : "image",
+    "id" : 121,
+    "page number" : 4,
+    "bounding box" : [ 366.468, 668.028, 374.028, 668.508 ],
+    "source" : "images/imageFile32.png"
+  }, {
+    "type" : "image",
+    "id" : 122,
+    "page number" : 4,
+    "bounding box" : [ 537.348, 654.468, 542.508, 654.948 ],
+    "source" : "images/imageFile33.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 123,
+    "page number" : 4,
+    "bounding box" : [ 158.28, 612.033, 164.945, 619.92 ],
+    "font" : "MSBM10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "P"
+  }, {
+    "type" : "paragraph",
+    "id" : 124,
+    "page number" : 4,
+    "bounding box" : [ 172.68, 602.073, 182.258, 627.862 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 126,
+    "page number" : 4,
+    "bounding box" : [ 183.36, 608.953, 249.916, 620.955 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : " A(x0x⊺1) 1 ≥"
+  }, {
+    "type" : "image",
+    "id" : 125,
+    "page number" : 4,
+    "bounding box" : [ 172.668, 614.748, 182.268, 615.228 ],
+    "source" : "images/imageFile34.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 127,
+    "page number" : 4,
+    "bounding box" : [ 254.16, 602.073, 260.378, 627.862 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 129,
+    "page number" : 4,
+    "bounding box" : [ 264.36, 609.513, 400.494, 620.694 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "− δ1 ≥ 1 − 2exp −γmmin"
+  }, {
+    "type" : "image",
+    "id" : 128,
+    "page number" : 4,
+    "bounding box" : [ 254.148, 614.748, 260.868, 615.228 ],
+    "source" : "images/imageFile35.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 130,
+    "page number" : 4,
+    "bounding box" : [ 408.24, 602.073, 422.552, 628.94 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "δ12 K2"
+  }, {
+    "type" : "paragraph",
+    "id" : 132,
+    "page number" : 4,
+    "bounding box" : [ 424.2, 609.513, 427.222, 620.422 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : ","
+  }, {
+    "type" : "image",
+    "id" : 131,
+    "page number" : 4,
+    "bounding box" : [ 408.228, 614.748, 423.108, 615.228 ],
+    "source" : "images/imageFile36.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 133,
+    "page number" : 4,
+    "bounding box" : [ 430.2, 602.073, 439.472, 627.862 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "δ1 K"
+  }, {
+    "type" : "image",
+    "id" : 134,
+    "page number" : 4,
+    "bounding box" : [ 430.188, 614.748, 440.268, 615.228 ],
+    "source" : "images/imageFile37.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 135,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 584.553, 195.142, 595.462 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Later, we will take δ1 < K."
+  }, {
+    "type" : "paragraph",
+    "id" : 136,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 543.432, 546.742, 583.777 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Second, we show that the bound (3) holds simultaneously for all x0,x1. Let Nǫ be an ǫ-net of Sn−1. By Lemma 5.2 in [10], we may take |Nǫ| ≤ (1+ 2ǫ)n. For any (x0,x1), there exists a (˜x0,x˜1) ∈ Nǫ ×Nǫ such that x0x⊺1 − x˜0x˜⊺1 1 ≤ 3ǫ. Because A(x0x⊺1) = A(˜x0x˜⊺1) + A(x0x⊺1 − x˜0x˜⊺1), we have"
+  }, {
+    "type" : "image",
+    "id" : 137,
+    "page number" : 4,
+    "bounding box" : [ 291.108, 562.668, 295.428, 563.148 ],
+    "source" : "images/imageFile38.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 141,
+    "page number" : 4,
+    "bounding box" : [ 255.12, 511.953, 264.698, 537.742 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 144,
+    "page number" : 4,
+    "bounding box" : [ 335.4, 511.953, 344.978, 537.742 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 138,
+    "page number" : 4,
+    "bounding box" : [ 173.64, 511.953, 183.218, 537.742 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 146,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 497.313, 439.582, 530.955 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : " A(x0x⊺1 − x˜0x˜⊺1) 1. On the intersection of the events"
+  }, {
+    "type" : "paragraph",
+    "id" : 140,
+    "page number" : 4,
+    "bounding box" : [ 184.44, 518.833, 250.877, 530.955 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : " A(x0x⊺1) 1 ≥"
+  }, {
+    "type" : "paragraph",
+    "id" : 143,
+    "page number" : 4,
+    "bounding box" : [ 265.92, 518.833, 331.757, 530.955 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : " A(˜x0x˜⊺1) 1 −"
+  }, {
+    "type" : "image",
+    "id" : 139,
+    "page number" : 4,
+    "bounding box" : [ 173.628, 524.628, 183.228, 525.108 ],
+    "source" : "images/imageFile39.png"
+  }, {
+    "type" : "image",
+    "id" : 142,
+    "page number" : 4,
+    "bounding box" : [ 255.108, 524.628, 264.708, 525.108 ],
+    "source" : "images/imageFile40.png"
+  }, {
+    "type" : "image",
+    "id" : 145,
+    "page number" : 4,
+    "bounding box" : [ 335.388, 524.628, 344.988, 525.108 ],
+    "source" : "images/imageFile41.png"
+  }, {
+    "type" : "list",
+    "id" : 147,
+    "level" : "3",
+    "page number" : 4,
+    "bounding box" : [ 161.76, 454.833, 429.294, 489.218 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 161.76, 475.393, 281.837, 489.218 ],
+      "font" : "CMMI10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "E1 = {m−1 A(x0x⊺1) 1 ≥",
+      "kids" : [ {
+        "type" : "paragraph",
+        "id" : 13,
+        "page number" : 4,
+        "bounding box" : [ 286.08, 468.513, 292.298, 494.302 ],
+        "font" : "CMMI10",
+        "font size" : 10.909,
+        "text color" : "[0.0]",
+        "content" : "2 π"
+      }, {
+        "type" : "image",
+        "id" : 14,
+        "page number" : 4,
+        "bounding box" : [ 286.068, 481.188, 292.788, 481.668 ],
+        "source" : "images/imageFile42.png"
+      }, {
+        "type" : "paragraph",
+        "id" : 15,
+        "page number" : 4,
+        "bounding box" : [ 296.28, 475.007, 450.294, 487.134 ],
+        "font" : "CMSY10",
+        "font size" : 10.909,
+        "text color" : "[0.0]",
+        "content" : "− δ1, for all (x0,x1) ∈ Nǫ × Nǫ}"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 161.76, 454.833, 429.294, 468.097 ],
+      "font" : "CMMI10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "E2 = {m−1 A(X) 1 ≤ (1 + δ2) X 1, for all X ∈ Rn×n}",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 148,
+    "page number" : 4,
+    "bounding box" : [ 65.279, 435.272, 102.763, 446.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "we have"
+  }, {
+    "type" : "paragraph",
+    "id" : 152,
+    "page number" : 4,
+    "bounding box" : [ 301.92, 406.473, 308.138, 432.142 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 149,
+    "page number" : 4,
+    "bounding box" : [ 213.96, 406.473, 223.538, 432.142 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 m"
+  }, {
+    "type" : "paragraph",
+    "id" : 151,
+    "page number" : 4,
+    "bounding box" : [ 224.76, 413.353, 291.196, 425.355 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : " A(x0x⊺1) 1 ≥"
+  }, {
+    "type" : "paragraph",
+    "id" : 154,
+    "page number" : 4,
+    "bounding box" : [ 312.12, 413.913, 399.098, 425.095 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "− δ1 − (1 + δ2)3ǫ"
+  }, {
+    "type" : "image",
+    "id" : 150,
+    "page number" : 4,
+    "bounding box" : [ 213.948, 419.148, 223.548, 419.628 ],
+    "source" : "images/imageFile43.png"
+  }, {
+    "type" : "image",
+    "id" : 153,
+    "page number" : 4,
+    "bounding box" : [ 301.908, 419.148, 308.628, 419.628 ],
+    "source" : "images/imageFile44.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 155,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 374.687, 546.742, 402.415 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Choose δ1 = δ/π,δ2 = 1/2,ǫ = 2δ/(9π). Further, choose δ0 such that δ1 < K. Thus, on E1 ∩ E2, 1 m A(x0x⊺1) 1 ≥ π2(1 − δ). It remains to estimate the probability of E1 ∩ E2. We have"
+  }, {
+    "type" : "image",
+    "id" : 156,
+    "page number" : 4,
+    "bounding box" : [ 66.468, 382.908, 74.028, 383.388 ],
+    "source" : "images/imageFile45.png"
+  }, {
+    "type" : "image",
+    "id" : 157,
+    "page number" : 4,
+    "bounding box" : [ 145.788, 382.908, 150.948, 383.388 ],
+    "source" : "images/imageFile46.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 160,
+    "page number" : 4,
+    "bounding box" : [ 385.439, 344.913, 390.894, 370.702 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 ǫ"
+  }, {
+    "type" : "paragraph",
+    "id" : 162,
+    "page number" : 4,
+    "bounding box" : [ 398.64, 362.568, 407.973, 370.538 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "2n"
+  }, {
+    "type" : "paragraph",
+    "id" : 163,
+    "page number" : 4,
+    "bounding box" : [ 408.48, 352.353, 439.972, 366.375 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "e−γmδ2"
+  }, {
+    "type" : "paragraph",
+    "id" : 158,
+    "page number" : 4,
+    "bounding box" : [ 167.76, 351.407, 318.892, 366.375 ],
+    "font" : "CMSY10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "P(E1) ≥ 1 − |Nǫ × Nǫ| · 2e−γmδ2"
+  }, {
+    "type" : "paragraph",
+    "id" : 159,
+    "page number" : 4,
+    "bounding box" : [ 315.0, 352.353, 381.796, 363.535 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 ≥ 1 − 2 1 +"
+  }, {
+    "type" : "paragraph",
+    "id" : 165,
+    "level" : "4",
+    "page number" : 4,
+    "bounding box" : [ 441.24, 352.353, 444.262, 363.262 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "."
+  }, {
+    "type" : "paragraph",
+    "id" : 164,
+    "page number" : 4,
+    "bounding box" : [ 436.08, 357.12, 439.732, 361.095 ],
+    "font" : "CMR6",
+    "font size" : 5.978,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "image",
+    "id" : 161,
+    "page number" : 4,
+    "bounding box" : [ 385.428, 357.588, 390.948, 358.068 ],
+    "source" : "images/imageFile47.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 166,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 313.713, 546.775, 340.815 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "If m ≥ c0nδ1−2 log δ1−1 for a suﬃciently large c0, then P(E1) ≥ 1 − 2e−γmδ12. Using standard concentration estimates on the singular values of Gaussian matrices (Corollary 5.35 in [10]), it can be shown"
+  }, {
+    "type" : "caption",
+    "id" : 167,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 285.513, 546.862, 313.695 ],
+    "linked content id" : 168,
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "that m ≥ 16δ2−2n implies P(E2) ≥ 1−2e−γmδ22. See Lemma 3.1 in [5] for the elementary details. Thus, P(E1 ∩ E2) ≥ 1 − 4e−γmδ2 for some constant γ."
+  }, {
+    "type" : "image",
+    "id" : 168,
+    "page number" : 4,
+    "bounding box" : [ 538.788, 274.668, 539.268, 282.108 ],
+    "source" : "images/imageFile48.png"
+  }, {
+    "type" : "image",
+    "id" : 169,
+    "page number" : 4,
+    "bounding box" : [ 539.268, 281.628, 545.868, 282.108 ],
+    "source" : "images/imageFile49.png"
+  }, {
+    "type" : "image",
+    "id" : 171,
+    "page number" : 4,
+    "bounding box" : [ 545.748, 274.668, 546.228, 282.108 ],
+    "source" : "images/imageFile50.png"
+  }, {
+    "type" : "image",
+    "id" : 170,
+    "page number" : 4,
+    "bounding box" : [ 539.268, 274.668, 545.868, 275.148 ],
+    "source" : "images/imageFile51.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 172,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 226.007, 496.418, 263.738 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 4. Fix x0,x1 ∈ Rn and let θ be the angle between x0 and x1. Let a ∼ N(0,In×n). E| ai,x0 ai,x1 | ="
+  }, {
+    "type" : "paragraph",
+    "id" : 176,
+    "page number" : 4,
+    "bounding box" : [ 433.68, 219.393, 439.898, 245.182 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 173,
+    "page number" : 4,
+    "bounding box" : [ 222.72, 219.393, 228.938, 245.182 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 175,
+    "page number" : 4,
+    "bounding box" : [ 237.36, 226.953, 429.436, 240.098 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "|sin θ| + sin−1(cos θ)cosθ x0 2 x1 2 ≥"
+  }, {
+    "type" : "paragraph",
+    "id" : 178,
+    "page number" : 4,
+    "bounding box" : [ 446.88, 226.953, 479.192, 237.862 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "x0 x1"
+  }, {
+    "type" : "image",
+    "id" : 174,
+    "page number" : 4,
+    "bounding box" : [ 222.708, 232.188, 229.428, 232.668 ],
+    "source" : "images/imageFile52.png"
+  }, {
+    "type" : "image",
+    "id" : 177,
+    "page number" : 4,
+    "bounding box" : [ 433.668, 232.188, 440.388, 232.668 ],
+    "source" : "images/imageFile53.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 179,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 190.713, 546.524, 215.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. Without loss of generality, take x0 = x1 = 1. Further, without loss of generality, take x0 = e1 and x1 = cos θ e1 + sin θ e2. The expected value is"
+  }, {
+    "type" : "paragraph",
+    "id" : 180,
+    "page number" : 4,
+    "bounding box" : [ 139.68, 164.793, 263.956, 175.975 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "E|a1(a1 cos θ + a2 sinθ)| ="
+  }, {
+    "type" : "paragraph",
+    "id" : 188,
+    "level" : "6",
+    "page number" : 4,
+    "bounding box" : [ 255.48, 134.073, 263.956, 144.982 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 194,
+    "page number" : 4,
+    "bounding box" : [ 268.2, 97.593, 274.418, 123.382 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 193,
+    "level" : "6",
+    "page number" : 4,
+    "bounding box" : [ 255.48, 105.033, 263.956, 115.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "image",
+    "id" : 195,
+    "page number" : 4,
+    "bounding box" : [ 268.188, 110.268, 274.908, 110.748 ],
+    "source" : "images/imageFile54.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 200,
+    "page number" : 4,
+    "bounding box" : [ 268.2, 69.273, 274.418, 95.062 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 199,
+    "level" : "6",
+    "page number" : 4,
+    "bounding box" : [ 255.48, 76.713, 263.956, 87.622 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "image",
+    "id" : 201,
+    "page number" : 4,
+    "bounding box" : [ 268.188, 81.948, 274.908, 82.428 ],
+    "source" : "images/imageFile55.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 185,
+    "page number" : 4,
+    "bounding box" : [ 367.44, 177.168, 376.502, 185.138 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "2π"
+  }, {
+    "type" : "paragraph",
+    "id" : 182,
+    "page number" : 4,
+    "bounding box" : [ 294.24, 177.167, 302.704, 185.138 ],
+    "font" : "CMSY8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "∞"
+  }, {
+    "type" : "list",
+    "id" : 181,
+    "level" : "5",
+    "page number" : 4,
+    "bounding box" : [ 268.2, 157.233, 279.818, 183.022 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 271.56, 172.113, 277.015, 183.022 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "1",
+      "kids" : [ {
+        "type" : "image",
+        "id" : 12,
+        "page number" : 4,
+        "bounding box" : [ 268.188, 170.028, 280.308, 170.508 ],
+        "source" : "images/imageFile56.png"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 268.2, 157.233, 279.818, 168.142 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "2π",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 184,
+    "page number" : 4,
+    "bounding box" : [ 305.04, 164.792, 354.36, 178.815 ],
+    "font" : "CMMI10",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "r3e−r2/2dr"
+  }, {
+    "type" : "paragraph",
+    "id" : 187,
+    "page number" : 4,
+    "bounding box" : [ 379.08, 164.793, 472.091, 175.974 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "|cos φcos(θ − φ)|dφ"
+  }, {
+    "type" : "paragraph",
+    "id" : 186,
+    "page number" : 4,
+    "bounding box" : [ 362.64, 157.393, 366.872, 162.86 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 183,
+    "page number" : 4,
+    "bounding box" : [ 289.32, 157.393, 293.552, 162.86 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 190,
+    "page number" : 4,
+    "bounding box" : [ 294.24, 146.447, 303.302, 154.418 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "2π"
+  }, {
+    "type" : "list",
+    "id" : 189,
+    "level" : "5",
+    "page number" : 4,
+    "bounding box" : [ 268.2, 126.513, 279.818, 152.302 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 271.56, 141.393, 277.015, 152.302 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "1",
+      "kids" : [ {
+        "type" : "image",
+        "id" : 11,
+        "page number" : 4,
+        "bounding box" : [ 268.188, 139.308, 280.308, 139.788 ],
+        "source" : "images/imageFile57.png"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 268.2, 126.513, 279.818, 137.422 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "2π",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 192,
+    "page number" : 4,
+    "bounding box" : [ 305.88, 134.072, 414.971, 145.254 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "|cos θ + cos(2φ − θ)|dφ"
+  }, {
+    "type" : "paragraph",
+    "id" : 191,
+    "page number" : 4,
+    "bounding box" : [ 289.32, 126.673, 293.552, 132.14 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 196,
+    "page number" : 4,
+    "bounding box" : [ 288.72, 117.527, 293.582, 125.498 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "π"
+  }, {
+    "type" : "paragraph",
+    "id" : 198,
+    "page number" : 4,
+    "bounding box" : [ 296.28, 105.033, 374.694, 118.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "|cos θ + cos φ˜|dφ˜"
+  }, {
+    "type" : "paragraph",
+    "id" : 197,
+    "page number" : 4,
+    "bounding box" : [ 283.92, 97.753, 288.152, 103.22 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 203,
+    "page number" : 4,
+    "bounding box" : [ 424.2, 69.273, 430.418, 95.062 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2 π"
+  }, {
+    "type" : "paragraph",
+    "id" : 202,
+    "page number" : 4,
+    "bounding box" : [ 282.84, 76.713, 419.956, 89.978 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "|sin θ| + sin−1(cos θ)cos θ ≥"
+  }, {
+    "type" : "paragraph",
+    "id" : 205,
+    "page number" : 4,
+    "bounding box" : [ 432.0, 76.713, 435.022, 87.622 ],
+    "font" : "CMMI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : ","
+  }, {
+    "type" : "image",
+    "id" : 204,
+    "page number" : 4,
+    "bounding box" : [ 424.188, 81.948, 430.908, 82.428 ],
+    "source" : "images/imageFile58.png"
+  }, {
+    "type" : "footer",
+    "id" : 206,
+    "page number" : 4,
+    "bounding box" : [ 303.12, 39.813, 308.966, 50.417 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 9,
+      "page number" : 4,
+      "bounding box" : [ 303.12, 39.813, 308.966, 50.417 ],
+      "heading level" : 3,
+      "font" : "CMR12",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "4"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 207,
+    "page number" : 5,
+    "bounding box" : [ 65.28, 705.273, 430.581, 716.455 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where the second equality is because 2cos φcos(θ − φ) = cos θ + cos(2φ − θ)."
+  }, {
+    "type" : "heading",
+    "id" : 212,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 65.28, 666.26, 255.546, 681.771 ],
+    "heading level" : 2,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "4 Acknowledgements"
+  }, {
+    "type" : "paragraph",
+    "id" : 213,
+    "page number" : 5,
+    "bounding box" : [ 65.28, 642.633, 347.782, 653.542 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "PH acknowledges funding by the grant NSF DMS-1464525."
+  }, {
+    "type" : "image",
+    "id" : 208,
+    "page number" : 5,
+    "bounding box" : [ 538.788, 707.988, 539.268, 715.428 ],
+    "source" : "images/imageFile59.png"
+  }, {
+    "type" : "image",
+    "id" : 209,
+    "page number" : 5,
+    "bounding box" : [ 539.268, 714.948, 545.868, 715.428 ],
+    "source" : "images/imageFile60.png"
+  }, {
+    "type" : "image",
+    "id" : 211,
+    "page number" : 5,
+    "bounding box" : [ 545.748, 707.988, 546.228, 715.428 ],
+    "source" : "images/imageFile61.png"
+  }, {
+    "type" : "image",
+    "id" : 210,
+    "page number" : 5,
+    "bounding box" : [ 539.268, 707.988, 545.868, 708.468 ],
+    "source" : "images/imageFile62.png"
+  }, {
+    "type" : "heading",
+    "id" : 214,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 65.28, 603.5, 156.066, 619.011 ],
+    "heading level" : 2,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "id" : 215,
+    "level" : "7",
+    "page number" : 5,
+    "bounding box" : [ 65.283, 155.072, 546.767, 590.782 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 11,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.68, 566.313, 546.764, 590.782 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[1] Sohail Bahmani and Justin Romberg. Phase retrieval meets statistical learning theory: A ﬂexible convex relaxation. arXiv preprint arXiv:1610.04210, 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.68, 529.233, 546.623, 553.702 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[2] E. Cande`s, Y. Eldar, T. Strohmer, and V. Voroninski. Phase retrieval via matrix completion. SIAM J. Imaging Sci., 6(1):199–225, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.68, 492.273, 546.763, 516.742 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[3] Emmanuel J Cande`s and Xiaodong Li. Solving quadratic equations via phaselift when there are about as many equations as unknowns. Found. of Comput. Math., pages 1–10, 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.681, 455.193, 546.743, 479.662 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[4] Emmanuel J Candes, Xiaodong Li, and Mahdi Soltanolkotabi. Phase retrieval via wirtinger ﬂow: Theory and algorithms. Information Theory, IEEE Transactions on, 61(4):1985–2007, 2015.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.682, 404.553, 546.701, 442.582 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[5] Emmanuel J Cande`s, Thomas Strohmer, and Vladislav Voroninski. Phaselift: Exact and stable signal recovery from magnitude measurements via convex programming. Comm. Pure Appl. Math., 66(8):1241–1274, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.682, 353.912, 546.712, 391.942 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[6] Yuxin Chen and Emmanuel Candes. Solving random quadratic systems of equations is nearly as easy as solving linear systems. In Advances in Neural Information Processing Systems, pages 739–747, 2015.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.683, 316.833, 546.701, 341.302 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[7] Tom Goldstein and Christoph Studer. Phasemax: Convex phase retrieval via basis pursuit. arXiv preprint arXiv:1610.07531, 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.683, 279.872, 546.756, 304.342 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[8] Praneeth Netrapalli, Prateek Jain, and Sujay Sanghavi. Phase retrieval using alternating minimization. In Advances in Neural Information Processing Systems, pages 2796–2804, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.683, 242.792, 546.505, 267.262 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[9] Ju Sun, Qing Qu, and John Wright. A geometric analysis of phase retrieval. arXiv preprint arXiv:1602.06664, 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 65.283, 192.152, 546.669, 230.182 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[10] R. Vershynin. Introduction to the non-asymptotic analysis of random matrices. In Y.C. Eldar and G. Kutyniok, editors, Compressed Sensing: Theory and Applications. Cambridge University Press, 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 65.283, 155.072, 546.767, 179.542 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[11] Gang Wang, Georgios B Giannakis, and Yonina C Eldar. Solving systems of random quadratic equations via truncated amplitude ﬂow. arXiv preprint arXiv:1605.08285, 2016.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "footer",
+    "id" : 216,
+    "page number" : 5,
+    "bounding box" : [ 303.123, 39.812, 308.969, 50.417 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 10,
+      "page number" : 5,
+      "bounding box" : [ 303.123, 39.812, 308.969, 50.417 ],
+      "heading level" : 3,
+      "font" : "CMR12",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "5"
+    } ]
+  } ]
+}

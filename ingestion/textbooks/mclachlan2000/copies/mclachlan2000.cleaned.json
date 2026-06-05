@@ -1,0 +1,3066 @@
+{
+  "input_path": "C:/Users/azrie/PDenv/UserGithub/PowerShellCore/ps.core.pdfdig/converted/full/mclachlan2000/mclachlan2000.md",
+  "output_path": "C:\\Users\\azrie\\PDenv\\UserGithub\\PowerShellCore\\ps.core.pdfdig\\converted\\full\\mclachlan2000\\mclachlan2000.cleaned.md",
+  "total_blocks": 5716,
+  "stripped_blocks": 293,
+  "anchors_processed": 22,
+  "anchors_skipped": 14,
+  "tunables": {
+    "pollution_length_threshold": 40,
+    "legitimate_prose_length": 80,
+    "burstiness_window": 7,
+    "pollution_zone_threshold": 0.6,
+    "clean_zone_threshold": 0.3,
+    "forward_run_min": 3,
+    "backward_run_min": 2
+  },
+  "decisions": [
+    {
+      "AnchorIndex": 68,
+      "AnchorLine": 538,
+      "AnchorText": "![image 1](<mclachlan2000_images/imageFile1.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 6,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 69,
+          "StartLine": 540,
+          "EndLine": 540,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "100"
+        },
+        {
+          "Index": 70,
+          "StartLine": 542,
+          "EndLine": 542,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.714,
+          "Text": "0.72"
+        },
+        {
+          "Index": 71,
+          "StartLine": 544,
+          "EndLine": 544,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.714,
+          "Text": "0.58"
+        },
+        {
+          "Index": 72,
+          "StartLine": 546,
+          "EndLine": 546,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.857,
+          "Text": "0.64"
+        },
+        {
+          "Index": 73,
+          "StartLine": 548,
+          "EndLine": 548,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.714,
+          "Text": "0.68"
+        },
+        {
+          "Index": 74,
+          "StartLine": 550,
+          "EndLine": 550,
+          "Kind": "AMBIGUOUS",
+          "Length": 159,
+          "Burstiness": 0.714,
+          "Text": "Fig. 1.1 Plot of forehead to body length data on 1000 crabs and of the fitted one-component (dashed line) and two-component (solid line) normal mixture models."
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 144,
+      "AnchorLine": 718,
+      "AnchorText": "![image 2](<mclachlan2000_images/imageFile2.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 3,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 147,
+          "StartLine": 724,
+          "EndLine": 724,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 27,
+          "Burstiness": 0.857,
+          "Text": "3 . Strongly Skewed Density"
+        },
+        {
+          "Index": 148,
+          "StartLine": 726,
+          "EndLine": 726,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 1.0,
+          "Text": "Density"
+        },
+        {
+          "Index": 152,
+          "StartLine": 734,
+          "EndLine": 734,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 29,
+          "Burstiness": 0.714,
+          "Text": "7 . Separated Bimodal Density"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 155,
+      "AnchorLine": 740,
+      "AnchorText": "![image 3](<mclachlan2000_images/imageFile3.png>)",
+      "AnchorBurstiness": 0.714,
+      "Skipped": false,
+      "ForwardCandidatesFound": 3,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 158,
+          "StartLine": 746,
+          "EndLine": 746,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 19,
+          "Burstiness": 0.857,
+          "Text": "Double Claw Density"
+        },
+        {
+          "Index": 160,
+          "StartLine": 750,
+          "EndLine": 750,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "11"
+        },
+        {
+          "Index": 164,
+          "StartLine": 758,
+          "EndLine": 758,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.571,
+          "Text": "Fig. 1.4 Continued"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 170,
+      "AnchorLine": 787,
+      "AnchorText": "![image 4](<mclachlan2000_images/imageFile4.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 206,
+      "AnchorLine": 867,
+      "AnchorText": "![image 5](<mclachlan2000_images/imageFile5.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 615,
+      "AnchorLine": 1934,
+      "AnchorText": "![image 6](<mclachlan2000_images/imageFile6.png>)",
+      "AnchorBurstiness": 0.0,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 626,
+      "AnchorLine": 1958,
+      "AnchorText": "![image 7](<mclachlan2000_images/imageFile7.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 6,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 627,
+          "StartLine": 1960,
+          "EndLine": 1960,
+          "Kind": "AMBIGUOUS",
+          "Length": 717,
+          "Burstiness": 0.571,
+          "Text": "To further illustrate the differences between using all the data and subsamples, we fitted a mixture of two normal components with unrestricted covariance matrices to the Iris virginica data set, consisting of n = 50 four-dimensional observations. In Figure 2.3 we give the frequencies for the different local maxima found, 1,000 random starts based on a random assignment into g = 2 groups, firstly of all the data and, secondly, on subsamples of size n, =25. It can be seen that the latter approach found wider range of local maxima although, as to be expected, the median and mode are similar for both approaches. Ofcourse, some of the additional local maxima located correspond to spurious local maximizers. using"
+        },
+        {
+          "Index": 628,
+          "StartLine": 1962,
+          "EndLine": 1962,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 14,
+          "Burstiness": 0.571,
+          "Text": "Log Likollnood"
+        },
+        {
+          "Index": 630,
+          "StartLine": 1966,
+          "EndLine": 1966,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "55"
+        },
+        {
+          "Index": 631,
+          "StartLine": 1968,
+          "EndLine": 1968,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 13,
+          "Burstiness": 0.714,
+          "Text": "Loo Llkolhooa"
+        },
+        {
+          "Index": 632,
+          "StartLine": 1970,
+          "EndLine": 1970,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "(6)"
+        },
+        {
+          "Index": 633,
+          "StartLine": 1972,
+          "EndLine": 1972,
+          "Kind": "AMBIGUOUS",
+          "Length": 154,
+          "Burstiness": 0.429,
+          "Text": "Fig. 2.3 Frequencies of the different local maxima found basedon a random assignment into 9 groups using all the data and (b) a subsample of the data_ (a)"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 949,
+      "AnchorLine": 2786,
+      "AnchorText": "![image 8](<mclachlan2000_images/imageFile8.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 4,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 950,
+          "StartLine": 2788,
+          "EndLine": 2788,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.571,
+          "Text": "["
+        },
+        {
+          "Index": 951,
+          "StartLine": 2790,
+          "EndLine": 2790,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 26,
+          "Burstiness": 0.571,
+          "Text": "Translenrln Saluratlop (%)"
+        },
+        {
+          "Index": 952,
+          "StartLine": 2792,
+          "EndLine": 2792,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.571,
+          "Text": "["
+        },
+        {
+          "Index": 953,
+          "StartLine": 2794,
+          "EndLine": 2794,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 25,
+          "Burstiness": 0.571,
+          "Text": "Transferrin Saturaton (%)"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 971,
+      "AnchorLine": 2866,
+      "AnchorText": "![image 9](<mclachlan2000_images/imageFile9.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 0,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": false,
+      "BackwardCommitted": false,
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 983,
+      "AnchorLine": 2894,
+      "AnchorText": "![image 10](<mclachlan2000_images/imageFile10.png>)",
+      "AnchorBurstiness": 0.571,
+      "Skipped": false,
+      "ForwardCandidatesFound": 4,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 984,
+          "StartLine": 2896,
+          "EndLine": 2896,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "~60"
+        },
+        {
+          "Index": 985,
+          "StartLine": 2898,
+          "EndLine": 2898,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.429,
+          "Text": "~50"
+        },
+        {
+          "Index": 986,
+          "StartLine": 2900,
+          "EndLine": 2900,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.429,
+          "Text": "~10"
+        },
+        {
+          "Index": 987,
+          "StartLine": 2902,
+          "EndLine": 2902,
+          "Kind": "AMBIGUOUS",
+          "Length": 161,
+          "Burstiness": 0.429,
+          "Text": "Fig. 3.4 Plot of hemophilia data with * and 0 representing noncarriers and carriers , respectively; along with allocation boundaries for various local maximizers"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 1045,
+      "AnchorLine": 3044,
+      "AnchorText": "![image 11](<mclachlan2000_images/imageFile11.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 1074,
+      "AnchorLine": 3119,
+      "AnchorText": "![image 12](<mclachlan2000_images/imageFile12.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 38,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 1075,
+          "StartLine": 3121,
+          "EndLine": 3121,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.571,
+          "Text": "23"
+        },
+        {
+          "Index": 1076,
+          "StartLine": 3123,
+          "EndLine": 3123,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "35"
+        },
+        {
+          "Index": 1077,
+          "StartLine": 3125,
+          "EndLine": 3125,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "19"
+        },
+        {
+          "Index": 1078,
+          "StartLine": 3127,
+          "EndLine": 3127,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.5"
+        },
+        {
+          "Index": 1079,
+          "StartLine": 3129,
+          "EndLine": 3129,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "30"
+        },
+        {
+          "Index": 1080,
+          "StartLine": 3131,
+          "EndLine": 3131,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "31"
+        },
+        {
+          "Index": 1081,
+          "StartLine": 3133,
+          "EndLine": 3133,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "20"
+        },
+        {
+          "Index": 1082,
+          "StartLine": 3135,
+          "EndLine": 3135,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "26"
+        },
+        {
+          "Index": 1083,
+          "StartLine": 3137,
+          "EndLine": 3137,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "34"
+        },
+        {
+          "Index": 1084,
+          "StartLine": 3139,
+          "EndLine": 3139,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.5"
+        },
+        {
+          "Index": 1085,
+          "StartLine": 3141,
+          "EndLine": 3141,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "32"
+        },
+        {
+          "Index": 1086,
+          "StartLine": 3143,
+          "EndLine": 3143,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "36"
+        },
+        {
+          "Index": 1087,
+          "StartLine": 3145,
+          "EndLine": 3145,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "12"
+        },
+        {
+          "Index": 1088,
+          "StartLine": 3147,
+          "EndLine": 3147,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "38"
+        },
+        {
+          "Index": 1089,
+          "StartLine": 3149,
+          "EndLine": 3149,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "18"
+        },
+        {
+          "Index": 1090,
+          "StartLine": 3151,
+          "EndLine": 3151,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "29"
+        },
+        {
+          "Index": 1091,
+          "StartLine": 3153,
+          "EndLine": 3153,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "13"
+        },
+        {
+          "Index": 1092,
+          "StartLine": 3155,
+          "EndLine": 3155,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 1.0,
+          "Text": "33 48"
+        },
+        {
+          "Index": 1093,
+          "StartLine": 3157,
+          "EndLine": 3157,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "~0.5"
+        },
+        {
+          "Index": 1094,
+          "StartLine": 3159,
+          "EndLine": 3159,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "25"
+        },
+        {
+          "Index": 1095,
+          "StartLine": 3161,
+          "EndLine": 3161,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "39"
+        },
+        {
+          "Index": 1096,
+          "StartLine": 3163,
+          "EndLine": 3163,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "'421"
+        },
+        {
+          "Index": 1097,
+          "StartLine": 3165,
+          "EndLine": 3165,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "22"
+        },
+        {
+          "Index": 1098,
+          "StartLine": 3167,
+          "EndLine": 3167,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "4246"
+        },
+        {
+          "Index": 1099,
+          "StartLine": 3169,
+          "EndLine": 3169,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "41"
+        },
+        {
+          "Index": 1100,
+          "StartLine": 3171,
+          "EndLine": 3171,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "10"
+        },
+        {
+          "Index": 1101,
+          "StartLine": 3173,
+          "EndLine": 3173,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "16"
+        },
+        {
+          "Index": 1102,
+          "StartLine": 3175,
+          "EndLine": 3175,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.5"
+        },
+        {
+          "Index": 1103,
+          "StartLine": 3177,
+          "EndLine": 3177,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "15"
+        },
+        {
+          "Index": 1104,
+          "StartLine": 3179,
+          "EndLine": 3179,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 1.0,
+          "Text": "37' 49"
+        },
+        {
+          "Index": 1105,
+          "StartLine": 3181,
+          "EndLine": 3181,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "23"
+        },
+        {
+          "Index": 1106,
+          "StartLine": 3183,
+          "EndLine": 3183,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "~22"
+        },
+        {
+          "Index": 1107,
+          "StartLine": 3185,
+          "EndLine": 3185,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "~21"
+        },
+        {
+          "Index": 1108,
+          "StartLine": 3187,
+          "EndLine": 3187,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "18"
+        },
+        {
+          "Index": 1109,
+          "StartLine": 3189,
+          "EndLine": 3189,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "16"
+        },
+        {
+          "Index": 1110,
+          "StartLine": 3191,
+          "EndLine": 3191,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.714,
+          "Text": "415"
+        },
+        {
+          "Index": 1111,
+          "StartLine": 3193,
+          "EndLine": 3193,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "~20"
+        },
+        {
+          "Index": 1112,
+          "StartLine": 3195,
+          "EndLine": 3195,
+          "Kind": "AMBIGUOUS",
+          "Length": 157,
+          "Burstiness": 0.429,
+          "Text": "Fig.3.12 Plot of the first two principal components of n 50 four-dimensional observations on the Iris virginica species, using the sample correlation matrix."
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 1134,
+      "AnchorLine": 3283,
+      "AnchorText": "![image 13](<mclachlan2000_images/imageFile13.png>)",
+      "AnchorBurstiness": 0.571,
+      "Skipped": false,
+      "ForwardCandidatesFound": 0,
+      "BackwardCandidatesFound": 1,
+      "ForwardCommitted": false,
+      "BackwardCommitted": false,
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 1348,
+      "AnchorLine": 3830,
+      "AnchorText": "![image 14](<mclachlan2000_images/imageFile14.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 54,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 1349,
+          "StartLine": 3832,
+          "EndLine": 3832,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.571,
+          "Text": "2"
+        },
+        {
+          "Index": 1350,
+          "StartLine": 3834,
+          "EndLine": 3834,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.714,
+          "Text": "2"
+        },
+        {
+          "Index": 1351,
+          "StartLine": 3836,
+          "EndLine": 3836,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.857,
+          "Text": "2"
+        },
+        {
+          "Index": 1352,
+          "StartLine": 3838,
+          "EndLine": 3838,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1353,
+          "StartLine": 3840,
+          "EndLine": 3840,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1354,
+          "StartLine": 3842,
+          "EndLine": 3842,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1355,
+          "StartLine": 3844,
+          "EndLine": 3844,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1356,
+          "StartLine": 3846,
+          "EndLine": 3846,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "10"
+        },
+        {
+          "Index": 1357,
+          "StartLine": 3848,
+          "EndLine": 3848,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.0"
+        },
+        {
+          "Index": 1358,
+          "StartLine": 3850,
+          "EndLine": 3850,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.2"
+        },
+        {
+          "Index": 1359,
+          "StartLine": 3852,
+          "EndLine": 3852,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.4"
+        },
+        {
+          "Index": 1360,
+          "StartLine": 3854,
+          "EndLine": 3854,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1361,
+          "StartLine": 3856,
+          "EndLine": 3856,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1362,
+          "StartLine": 3858,
+          "EndLine": 3858,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "10"
+        },
+        {
+          "Index": 1363,
+          "StartLine": 3860,
+          "EndLine": 3860,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.0"
+        },
+        {
+          "Index": 1364,
+          "StartLine": 3862,
+          "EndLine": 3862,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.2"
+        },
+        {
+          "Index": 1365,
+          "StartLine": 3864,
+          "EndLine": 3864,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.4"
+        },
+        {
+          "Index": 1366,
+          "StartLine": 3866,
+          "EndLine": 3866,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1367,
+          "StartLine": 3868,
+          "EndLine": 3868,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 1.0,
+          "Text": "Mixing"
+        },
+        {
+          "Index": 1368,
+          "StartLine": 3870,
+          "EndLine": 3870,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 17,
+          "Burstiness": 1.0,
+          "Text": "Mixing Proportion"
+        },
+        {
+          "Index": 1369,
+          "StartLine": 3872,
+          "EndLine": 3872,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 10,
+          "Burstiness": 1.0,
+          "Text": "Proportion"
+        },
+        {
+          "Index": 1370,
+          "StartLine": 3874,
+          "EndLine": 3874,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1371,
+          "StartLine": 3876,
+          "EndLine": 3876,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1372,
+          "StartLine": 3878,
+          "EndLine": 3878,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1373,
+          "StartLine": 3880,
+          "EndLine": 3880,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1374,
+          "StartLine": 3882,
+          "EndLine": 3882,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1375,
+          "StartLine": 3884,
+          "EndLine": 3884,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1376,
+          "StartLine": 3886,
+          "EndLine": 3886,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1377,
+          "StartLine": 3888,
+          "EndLine": 3888,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1378,
+          "StartLine": 3890,
+          "EndLine": 3890,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1379,
+          "StartLine": 3892,
+          "EndLine": 3892,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1380,
+          "StartLine": 3894,
+          "EndLine": 3894,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1381,
+          "StartLine": 3896,
+          "EndLine": 3896,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 1.0,
+          "Text": "Means"
+        },
+        {
+          "Index": 1382,
+          "StartLine": 3898,
+          "EndLine": 3898,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 1.0,
+          "Text": "Means"
+        },
+        {
+          "Index": 1383,
+          "StartLine": 3900,
+          "EndLine": 3900,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1384,
+          "StartLine": 3902,
+          "EndLine": 3902,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1385,
+          "StartLine": 3904,
+          "EndLine": 3904,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1386,
+          "StartLine": 3906,
+          "EndLine": 3906,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1388,
+          "StartLine": 3912,
+          "EndLine": 3912,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1389,
+          "StartLine": 3914,
+          "EndLine": 3914,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1390,
+          "StartLine": 3916,
+          "EndLine": 3916,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.0"
+        },
+        {
+          "Index": 1391,
+          "StartLine": 3918,
+          "EndLine": 3918,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.2"
+        },
+        {
+          "Index": 1392,
+          "StartLine": 3920,
+          "EndLine": 3920,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.4"
+        },
+        {
+          "Index": 1393,
+          "StartLine": 3922,
+          "EndLine": 3922,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.6"
+        },
+        {
+          "Index": 1394,
+          "StartLine": 3924,
+          "EndLine": 3924,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.8"
+        },
+        {
+          "Index": 1395,
+          "StartLine": 3926,
+          "EndLine": 3926,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1396,
+          "StartLine": 3928,
+          "EndLine": 3928,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1397,
+          "StartLine": 3930,
+          "EndLine": 3930,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.2"
+        },
+        {
+          "Index": 1398,
+          "StartLine": 3932,
+          "EndLine": 3932,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.4"
+        },
+        {
+          "Index": 1399,
+          "StartLine": 3934,
+          "EndLine": 3934,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.6"
+        },
+        {
+          "Index": 1400,
+          "StartLine": 3936,
+          "EndLine": 3936,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.8"
+        },
+        {
+          "Index": 1401,
+          "StartLine": 3938,
+          "EndLine": 3938,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.857,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1402,
+          "StartLine": 3940,
+          "EndLine": 3940,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.714,
+          "Text": "Standard Deviation"
+        },
+        {
+          "Index": 1403,
+          "StartLine": 3942,
+          "EndLine": 3942,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.571,
+          "Text": "Standard Deviation"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 1407,
+      "AnchorLine": 3950,
+      "AnchorText": "![image 15](<mclachlan2000_images/imageFile15.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 55,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 1408,
+          "StartLine": 3952,
+          "EndLine": 3952,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.571,
+          "Text": "2"
+        },
+        {
+          "Index": 1409,
+          "StartLine": 3954,
+          "EndLine": 3954,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.714,
+          "Text": "2"
+        },
+        {
+          "Index": 1411,
+          "StartLine": 3960,
+          "EndLine": 3960,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1412,
+          "StartLine": 3962,
+          "EndLine": 3962,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.2"
+        },
+        {
+          "Index": 1413,
+          "StartLine": 3964,
+          "EndLine": 3964,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.4"
+        },
+        {
+          "Index": 1414,
+          "StartLine": 3966,
+          "EndLine": 3966,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1415,
+          "StartLine": 3968,
+          "EndLine": 3968,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.0"
+        },
+        {
+          "Index": 1416,
+          "StartLine": 3970,
+          "EndLine": 3970,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.2"
+        },
+        {
+          "Index": 1417,
+          "StartLine": 3972,
+          "EndLine": 3972,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.4"
+        },
+        {
+          "Index": 1418,
+          "StartLine": 3974,
+          "EndLine": 3974,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1419,
+          "StartLine": 3976,
+          "EndLine": 3976,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1420,
+          "StartLine": 3978,
+          "EndLine": 3978,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.0"
+        },
+        {
+          "Index": 1421,
+          "StartLine": 3980,
+          "EndLine": 3980,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.0"
+        },
+        {
+          "Index": 1422,
+          "StartLine": 3982,
+          "EndLine": 3982,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1423,
+          "StartLine": 3984,
+          "EndLine": 3984,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.0"
+        },
+        {
+          "Index": 1424,
+          "StartLine": 3986,
+          "EndLine": 3986,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 17,
+          "Burstiness": 1.0,
+          "Text": "Mixing Proportion"
+        },
+        {
+          "Index": 1425,
+          "StartLine": 3988,
+          "EndLine": 3988,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 17,
+          "Burstiness": 1.0,
+          "Text": "Mixing Proportion"
+        },
+        {
+          "Index": 1426,
+          "StartLine": 3990,
+          "EndLine": 3990,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1427,
+          "StartLine": 3992,
+          "EndLine": 3992,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1428,
+          "StartLine": 3994,
+          "EndLine": 3994,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1429,
+          "StartLine": 3996,
+          "EndLine": 3996,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1430,
+          "StartLine": 3998,
+          "EndLine": 3998,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1431,
+          "StartLine": 4000,
+          "EndLine": 4000,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1432,
+          "StartLine": 4002,
+          "EndLine": 4002,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1433,
+          "StartLine": 4004,
+          "EndLine": 4004,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1434,
+          "StartLine": 4006,
+          "EndLine": 4006,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1435,
+          "StartLine": 4008,
+          "EndLine": 4008,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1436,
+          "StartLine": 4010,
+          "EndLine": 4010,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 1.0,
+          "Text": "Means"
+        },
+        {
+          "Index": 1437,
+          "StartLine": 4012,
+          "EndLine": 4012,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 1.0,
+          "Text": "Means"
+        },
+        {
+          "Index": 1438,
+          "StartLine": 4014,
+          "EndLine": 4014,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1439,
+          "StartLine": 4016,
+          "EndLine": 4016,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1440,
+          "StartLine": 4018,
+          "EndLine": 4018,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1441,
+          "StartLine": 4020,
+          "EndLine": 4020,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1442,
+          "StartLine": 4022,
+          "EndLine": 4022,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "2"
+        },
+        {
+          "Index": 1443,
+          "StartLine": 4024,
+          "EndLine": 4024,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1444,
+          "StartLine": 4026,
+          "EndLine": 4026,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "3"
+        },
+        {
+          "Index": 1445,
+          "StartLine": 4028,
+          "EndLine": 4028,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1446,
+          "StartLine": 4030,
+          "EndLine": 4030,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "8"
+        },
+        {
+          "Index": 1447,
+          "StartLine": 4032,
+          "EndLine": 4032,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1448,
+          "StartLine": 4034,
+          "EndLine": 4034,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.6"
+        },
+        {
+          "Index": 1449,
+          "StartLine": 4036,
+          "EndLine": 4036,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.0"
+        },
+        {
+          "Index": 1450,
+          "StartLine": 4038,
+          "EndLine": 4038,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.2"
+        },
+        {
+          "Index": 1451,
+          "StartLine": 4040,
+          "EndLine": 4040,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.6"
+        },
+        {
+          "Index": 1452,
+          "StartLine": 4042,
+          "EndLine": 4042,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.8"
+        },
+        {
+          "Index": 1453,
+          "StartLine": 4044,
+          "EndLine": 4044,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.6"
+        },
+        {
+          "Index": 1454,
+          "StartLine": 4046,
+          "EndLine": 4046,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1455,
+          "StartLine": 4048,
+          "EndLine": 4048,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.0"
+        },
+        {
+          "Index": 1456,
+          "StartLine": 4050,
+          "EndLine": 4050,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.2"
+        },
+        {
+          "Index": 1457,
+          "StartLine": 4052,
+          "EndLine": 4052,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.4"
+        },
+        {
+          "Index": 1458,
+          "StartLine": 4054,
+          "EndLine": 4054,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.8"
+        },
+        {
+          "Index": 1459,
+          "StartLine": 4056,
+          "EndLine": 4056,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.8"
+        },
+        {
+          "Index": 1460,
+          "StartLine": 4058,
+          "EndLine": 4058,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "14"
+        },
+        {
+          "Index": 1461,
+          "StartLine": 4060,
+          "EndLine": 4060,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.714,
+          "Text": "Standard Deviation"
+        },
+        {
+          "Index": 1462,
+          "StartLine": 4062,
+          "EndLine": 4062,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.571,
+          "Text": "Standard Deviation"
+        },
+        {
+          "Index": 1463,
+          "StartLine": 4064,
+          "EndLine": 4064,
+          "Kind": "AMBIGUOUS",
+          "Length": 89,
+          "Burstiness": 0.429,
+          "Text": "4.2 Posterior densities of parameter estimates labeled according t0 ordering of compoFig."
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 1886,
+      "AnchorLine": 5252,
+      "AnchorText": "![image 16](<mclachlan2000_images/imageFile16.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 11,
+      "BackwardCandidatesFound": 1,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 1887,
+          "StartLine": 5254,
+          "EndLine": 5254,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 0.571,
+          "Text": "Gating"
+        },
+        {
+          "Index": 1888,
+          "StartLine": 5256,
+          "EndLine": 5256,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.714,
+          "Text": "Network"
+        },
+        {
+          "Index": 1889,
+          "StartLine": 5258,
+          "EndLine": 5258,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.857,
+          "Text": "f2j"
+        },
+        {
+          "Index": 1890,
+          "StartLine": 5260,
+          "EndLine": 5260,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "flj"
+        },
+        {
+          "Index": 1891,
+          "StartLine": 5262,
+          "EndLine": 5262,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "Xj"
+        },
+        {
+          "Index": 1892,
+          "StartLine": 5264,
+          "EndLine": 5264,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 1.0,
+          "Text": "Expert"
+        },
+        {
+          "Index": 1893,
+          "StartLine": 5266,
+          "EndLine": 5266,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 1.0,
+          "Text": "Expert"
+        },
+        {
+          "Index": 1894,
+          "StartLine": 5268,
+          "EndLine": 5268,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.857,
+          "Text": "Network"
+        },
+        {
+          "Index": 1895,
+          "StartLine": 5270,
+          "EndLine": 5270,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.714,
+          "Text": "Network"
+        },
+        {
+          "Index": 1896,
+          "StartLine": 5272,
+          "EndLine": 5272,
+          "Kind": "AMBIGUOUS",
+          "Length": 36,
+          "Burstiness": 0.571,
+          "Text": "Fig. 5.1 A mixture-of-experts model."
+        },
+        {
+          "Index": 1897,
+          "StartLine": 5274,
+          "EndLine": 5274,
+          "Kind": "AMBIGUOUS",
+          "Length": 654,
+          "Burstiness": 0.429,
+          "Text": "From the perspective of statistical mixture modeling, the gating network models the input-dependent mixing proportions m;(æj; œ) which are the probabilities in a multinomial distributionconsisting of one draw on g categories. The expert networks model the input-dependent component densities It can be seen that (5.54) will have the form of a mixture of GLMs if the component densities 0;) belong to the exponential family.  In practice; the idea is to choose the number of components 9 to be sufficiently large so that the component densities need be relatively simple functions. In which case, will typically belong to the exponential family fi(yj they"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 1962,
+      "AnchorLine": 5434,
+      "AnchorText": "![image 17](<mclachlan2000_images/imageFile17.png>)",
+      "AnchorBurstiness": 0.286,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 2018,
+      "AnchorLine": 5575,
+      "AnchorText": "![image 18](<mclachlan2000_images/imageFile18.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 21,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2019,
+          "StartLine": 5577,
+          "EndLine": 5577,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "(.6"
+        },
+        {
+          "Index": 2020,
+          "StartLine": 5579,
+          "EndLine": 5579,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "04"
+        },
+        {
+          "Index": 2021,
+          "StartLine": 5581,
+          "EndLine": 5581,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.857,
+          "Text": "(.3"
+        },
+        {
+          "Index": 2022,
+          "StartLine": 5583,
+          "EndLine": 5583,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "(1.2"
+        },
+        {
+          "Index": 2023,
+          "StartLine": 5585,
+          "EndLine": 5585,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "5.0"
+        },
+        {
+          "Index": 2024,
+          "StartLine": 5587,
+          "EndLine": 5587,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "55"
+        },
+        {
+          "Index": 2025,
+          "StartLine": 5589,
+          "EndLine": 5589,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "2.0"
+        },
+        {
+          "Index": 2026,
+          "StartLine": 5591,
+          "EndLine": 5591,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "25"
+        },
+        {
+          "Index": 2027,
+          "StartLine": 5593,
+          "EndLine": 5593,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "3.0"
+        },
+        {
+          "Index": 2028,
+          "StartLine": 5595,
+          "EndLine": 5595,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "35"
+        },
+        {
+          "Index": 2029,
+          "StartLine": 5597,
+          "EndLine": 5597,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "45"
+        },
+        {
+          "Index": 2030,
+          "StartLine": 5599,
+          "EndLine": 5599,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "25"
+        },
+        {
+          "Index": 2031,
+          "StartLine": 5601,
+          "EndLine": 5601,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.0"
+        },
+        {
+          "Index": 2032,
+          "StartLine": 5603,
+          "EndLine": 5603,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "0.5"
+        },
+        {
+          "Index": 2033,
+          "StartLine": 5605,
+          "EndLine": 5605,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "1.0"
+        },
+        {
+          "Index": 2034,
+          "StartLine": 5607,
+          "EndLine": 5607,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "13"
+        },
+        {
+          "Index": 2035,
+          "StartLine": 5609,
+          "EndLine": 5609,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "20"
+        },
+        {
+          "Index": 2036,
+          "StartLine": 5611,
+          "EndLine": 5611,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "410"
+        },
+        {
+          "Index": 2037,
+          "StartLine": 5613,
+          "EndLine": 5613,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "415"
+        },
+        {
+          "Index": 2038,
+          "StartLine": 5615,
+          "EndLine": 5615,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 28,
+          "Burstiness": 1.0,
+          "Text": "Quantiles of Standard Normal"
+        },
+        {
+          "Index": 2039,
+          "StartLine": 5617,
+          "EndLine": 5617,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "Yj"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2073,
+      "AnchorLine": 5685,
+      "AnchorText": "![image 19](<mclachlan2000_images/imageFile19.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 7,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2074,
+          "StartLine": 5687,
+          "EndLine": 5687,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.571,
+          "Text": "75"
+        },
+        {
+          "Index": 2075,
+          "StartLine": 5689,
+          "EndLine": 5689,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "60"
+        },
+        {
+          "Index": 2076,
+          "StartLine": 5691,
+          "EndLine": 5691,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "15"
+        },
+        {
+          "Index": 2077,
+          "StartLine": 5693,
+          "EndLine": 5693,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "05"
+        },
+        {
+          "Index": 2078,
+          "StartLine": 5695,
+          "EndLine": 5695,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.857,
+          "Text": "0 , 065"
+        },
+        {
+          "Index": 2079,
+          "StartLine": 5697,
+          "EndLine": 5697,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "08"
+        },
+        {
+          "Index": 2080,
+          "StartLine": 5699,
+          "EndLine": 5699,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "095"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2086,
+      "AnchorLine": 5713,
+      "AnchorText": "![image 20](<mclachlan2000_images/imageFile20.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 7,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2087,
+          "StartLine": 5715,
+          "EndLine": 5715,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.571,
+          "Text": "15"
+        },
+        {
+          "Index": 2088,
+          "StartLine": 5717,
+          "EndLine": 5717,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "05"
+        },
+        {
+          "Index": 2089,
+          "StartLine": 5719,
+          "EndLine": 5719,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.857,
+          "Text": "0 , 065"
+        },
+        {
+          "Index": 2090,
+          "StartLine": 5721,
+          "EndLine": 5721,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 1.0,
+          "Text": "095"
+        },
+        {
+          "Index": 2091,
+          "StartLine": 5723,
+          "EndLine": 5723,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.857,
+          "Text": "0 , 125"
+        },
+        {
+          "Index": 2092,
+          "StartLine": 5725,
+          "EndLine": 5725,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "08"
+        },
+        {
+          "Index": 2093,
+          "StartLine": 5727,
+          "EndLine": 5727,
+          "Kind": "AMBIGUOUS",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "0 ."
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2106,
+      "AnchorLine": 5797,
+      "AnchorText": "![image 21](<mclachlan2000_images/imageFile21.png>)",
+      "AnchorBurstiness": 0.571,
+      "Skipped": false,
+      "ForwardCandidatesFound": 7,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2107,
+          "StartLine": 5799,
+          "EndLine": 5799,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.571,
+          "Text": "75"
+        },
+        {
+          "Index": 2108,
+          "StartLine": 5801,
+          "EndLine": 5801,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "60"
+        },
+        {
+          "Index": 2109,
+          "StartLine": 5803,
+          "EndLine": 5803,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "30"
+        },
+        {
+          "Index": 2110,
+          "StartLine": 5805,
+          "EndLine": 5805,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "15"
+        },
+        {
+          "Index": 2111,
+          "StartLine": 5807,
+          "EndLine": 5807,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 0.857,
+          "Text": "0 . 025"
+        },
+        {
+          "Index": 2112,
+          "StartLine": 5809,
+          "EndLine": 5809,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "05"
+        },
+        {
+          "Index": 2113,
+          "StartLine": 5811,
+          "EndLine": 5811,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.714,
+          "Text": "(mm)"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2115,
+      "AnchorLine": 5815,
+      "AnchorText": "![image 22](<mclachlan2000_images/imageFile22.png>)",
+      "AnchorBurstiness": 0.714,
+      "Skipped": false,
+      "ForwardCandidatesFound": 7,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2116,
+          "StartLine": 5817,
+          "EndLine": 5817,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "75"
+        },
+        {
+          "Index": 2117,
+          "StartLine": 5819,
+          "EndLine": 5819,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.714,
+          "Text": "60"
+        },
+        {
+          "Index": 2118,
+          "StartLine": 5821,
+          "EndLine": 5821,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "05"
+        },
+        {
+          "Index": 2119,
+          "StartLine": 5823,
+          "EndLine": 5823,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 7,
+          "Burstiness": 1.0,
+          "Text": "0 , 065"
+        },
+        {
+          "Index": 2120,
+          "StartLine": 5825,
+          "EndLine": 5825,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "08"
+        },
+        {
+          "Index": 2121,
+          "StartLine": 5827,
+          "EndLine": 5827,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.714,
+          "Text": "0,11"
+        },
+        {
+          "Index": 2122,
+          "StartLine": 5829,
+          "EndLine": 5829,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.571,
+          "Text": "(mn)"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2229,
+      "AnchorLine": 6107,
+      "AnchorText": "![image 23](<mclachlan2000_images/imageFile23.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 14,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2230,
+          "StartLine": 6109,
+          "EndLine": 6109,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.571,
+          "Text": "0,75"
+        },
+        {
+          "Index": 2231,
+          "StartLine": 6111,
+          "EndLine": 6111,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 0.714,
+          "Text": "0,45"
+        },
+        {
+          "Index": 2232,
+          "StartLine": 6113,
+          "EndLine": 6113,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 0.857,
+          "Text": "0 .15"
+        },
+        {
+          "Index": 2233,
+          "StartLine": 6115,
+          "EndLine": 6115,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "05"
+        },
+        {
+          "Index": 2234,
+          "StartLine": 6117,
+          "EndLine": 6117,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 16,
+          "Burstiness": 1.0,
+          "Text": "acidity data set"
+        },
+        {
+          "Index": 2235,
+          "StartLine": 6119,
+          "EndLine": 6119,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 15,
+          "Burstiness": 1.0,
+          "Text": "enzyme data set"
+        },
+        {
+          "Index": 2236,
+          "StartLine": 6121,
+          "EndLine": 6121,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 1.0,
+          "Text": "0 ,21"
+        },
+        {
+          "Index": 2237,
+          "StartLine": 6123,
+          "EndLine": 6123,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "0.18"
+        },
+        {
+          "Index": 2238,
+          "StartLine": 6125,
+          "EndLine": 6125,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "0.15"
+        },
+        {
+          "Index": 2239,
+          "StartLine": 6127,
+          "EndLine": 6127,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "0.13"
+        },
+        {
+          "Index": 2240,
+          "StartLine": 6129,
+          "EndLine": 6129,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "13"
+        },
+        {
+          "Index": 2241,
+          "StartLine": 6131,
+          "EndLine": 6131,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "16,5"
+        },
+        {
+          "Index": 2242,
+          "StartLine": 6133,
+          "EndLine": 6133,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "30"
+        },
+        {
+          "Index": 2243,
+          "StartLine": 6135,
+          "EndLine": 6135,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 30,
+          "Burstiness": 0.857,
+          "Text": "Fig. 6.7 Three real data sets_"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2252,
+      "AnchorLine": 6159,
+      "AnchorText": "![image 24](<mclachlan2000_images/imageFile24.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 7,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 2253,
+          "StartLine": 6161,
+          "EndLine": 6161,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "592"
+        },
+        {
+          "Index": 2254,
+          "StartLine": 6163,
+          "EndLine": 6163,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.714,
+          "Text": "857"
+        },
+        {
+          "Index": 2255,
+          "StartLine": 6165,
+          "EndLine": 6165,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 8,
+          "Burstiness": 0.857,
+          "Text": "0.78 Mpc"
+        },
+        {
+          "Index": 2256,
+          "StartLine": 6167,
+          "EndLine": 6167,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 8,
+          "Burstiness": 1.0,
+          "Text": "0.57 Mpc"
+        },
+        {
+          "Index": 2257,
+          "StartLine": 6169,
+          "EndLine": 6169,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.857,
+          "Text": "078"
+        },
+        {
+          "Index": 2258,
+          "StartLine": 6171,
+          "EndLine": 6171,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 0.714,
+          "Text": "1"
+        },
+        {
+          "Index": 2259,
+          "StartLine": 6173,
+          "EndLine": 6173,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 8,
+          "Burstiness": 0.714,
+          "Text": "X (ucnb)"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 2681,
+      "AnchorLine": 7355,
+      "AnchorText": "![image 25](<mclachlan2000_images/imageFile25.png>)",
+      "AnchorBurstiness": 0.0,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 2739,
+      "AnchorLine": 7503,
+      "AnchorText": "![image 26](<mclachlan2000_images/imageFile26.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 2934,
+      "AnchorLine": 8050,
+      "AnchorText": "![image 27](<mclachlan2000_images/imageFile27.png>)",
+      "AnchorBurstiness": 0.286,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 3023,
+      "AnchorLine": 8288,
+      "AnchorText": "![image 28](<mclachlan2000_images/imageFile28.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 13,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 3024,
+          "StartLine": 8290,
+          "EndLine": 8290,
+          "Kind": "AMBIGUOUS",
+          "Length": 817,
+          "Burstiness": 0.429,
+          "Text": "In Figure 9.2, the KL distance on the scale is plotted as function of bin size for specific values of n (n = 100, 300, 1000) in a comparison of the standard and binned versions of the EM algorithm.  For each ' of the three values of n, the curves have the same qualitative shape: a rapid improvement in quality as one moves from b = 20. For each of the three values of n, the binned EM 'tracks\" the performance of the standard EM quite closely: the difference between the two becomes less as n increases . The variability in the curves is due to the variability in the ten randomly sampled data sets for each particular combination of b and n Note that for b > 20 the difference between the binned and standard versions of the EM algorithm is smaller than the 'natural\" variability due to random sampling effects. log"
+        },
+        {
+          "Index": 3025,
+          "StartLine": 8292,
+          "EndLine": 8292,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.571,
+          "Text": "pxxnts pcr cmpnent"
+        },
+        {
+          "Index": 3026,
+          "StartLine": 8294,
+          "EndLine": 8294,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 11,
+          "Burstiness": 0.714,
+          "Text": "Binned, I00"
+        },
+        {
+          "Index": 3027,
+          "StartLine": 8296,
+          "EndLine": 8296,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "10"
+        },
+        {
+          "Index": 3028,
+          "StartLine": 8298,
+          "EndLine": 8298,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "1"
+        },
+        {
+          "Index": 3029,
+          "StartLine": 8300,
+          "EndLine": 8300,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 4,
+          "Burstiness": 1.0,
+          "Text": "10-2"
+        },
+        {
+          "Index": 3030,
+          "StartLine": 8302,
+          "EndLine": 8302,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "20"
+        },
+        {
+          "Index": 3031,
+          "StartLine": 8304,
+          "EndLine": 8304,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "40"
+        },
+        {
+          "Index": 3032,
+          "StartLine": 8306,
+          "EndLine": 8306,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "60"
+        },
+        {
+          "Index": 3033,
+          "StartLine": 8308,
+          "EndLine": 8308,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "80"
+        },
+        {
+          "Index": 3034,
+          "StartLine": 8310,
+          "EndLine": 8310,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.857,
+          "Text": "100"
+        },
+        {
+          "Index": 3035,
+          "StartLine": 8312,
+          "EndLine": 8312,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 24,
+          "Burstiness": 0.857,
+          "Text": "Different Random Samples"
+        },
+        {
+          "Index": 3036,
+          "StartLine": 8314,
+          "EndLine": 8314,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 18,
+          "Burstiness": 0.714,
+          "Text": "Bins per Dimension"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 3042,
+      "AnchorLine": 8326,
+      "AnchorText": "![image 29](<mclachlan2000_images/imageFile29.png>)",
+      "AnchorBurstiness": 0.429,
+      "Skipped": false,
+      "ForwardCandidatesFound": 22,
+      "BackwardCandidatesFound": 0,
+      "ForwardCommitted": true,
+      "BackwardCommitted": false,
+      "Stripped": [
+        {
+          "Index": 3043,
+          "StartLine": 8328,
+          "EndLine": 8328,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 10,
+          "Burstiness": 0.571,
+          "Text": "Control #1"
+        },
+        {
+          "Index": 3044,
+          "StartLine": 8330,
+          "EndLine": 8330,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 10,
+          "Burstiness": 0.714,
+          "Text": "Control #2"
+        },
+        {
+          "Index": 3045,
+          "StartLine": 8332,
+          "EndLine": 8332,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 10,
+          "Burstiness": 0.857,
+          "Text": "Control #3"
+        },
+        {
+          "Index": 3046,
+          "StartLine": 8334,
+          "EndLine": 8334,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "1"
+        },
+        {
+          "Index": 3047,
+          "StartLine": 8336,
+          "EndLine": 8336,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "7u"
+        },
+        {
+          "Index": 3048,
+          "StartLine": 8338,
+          "EndLine": 8338,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "1"
+        },
+        {
+          "Index": 3049,
+          "StartLine": 8340,
+          "EndLine": 8340,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "1"
+        },
+        {
+          "Index": 3050,
+          "StartLine": 8342,
+          "EndLine": 8342,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 1.0,
+          "Text": "Volumc"
+        },
+        {
+          "Index": 3051,
+          "StartLine": 8344,
+          "EndLine": 8344,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 1.0,
+          "Text": "Volume"
+        },
+        {
+          "Index": 3052,
+          "StartLine": 8346,
+          "EndLine": 8346,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 17,
+          "Burstiness": 1.0,
+          "Text": "Iron Deficient #1"
+        },
+        {
+          "Index": 3053,
+          "StartLine": 8348,
+          "EndLine": 8348,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 17,
+          "Burstiness": 1.0,
+          "Text": "Iron Deficient #2"
+        },
+        {
+          "Index": 3054,
+          "StartLine": 8350,
+          "EndLine": 8350,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 17,
+          "Burstiness": 1.0,
+          "Text": "Iron Deficient #3"
+        },
+        {
+          "Index": 3055,
+          "StartLine": 8352,
+          "EndLine": 8352,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "70"
+        },
+        {
+          "Index": 3056,
+          "StartLine": 8354,
+          "EndLine": 8354,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "70"
+        },
+        {
+          "Index": 3057,
+          "StartLine": 8356,
+          "EndLine": 8356,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 1.0,
+          "Text": "70"
+        },
+        {
+          "Index": 3058,
+          "StartLine": 8358,
+          "EndLine": 8358,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "0"
+        },
+        {
+          "Index": 3059,
+          "StartLine": 8360,
+          "EndLine": 8360,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "6"
+        },
+        {
+          "Index": 3060,
+          "StartLine": 8362,
+          "EndLine": 8362,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "1"
+        },
+        {
+          "Index": 3061,
+          "StartLine": 8364,
+          "EndLine": 8364,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 1,
+          "Burstiness": 1.0,
+          "Text": "1"
+        },
+        {
+          "Index": 3062,
+          "StartLine": 8366,
+          "EndLine": 8366,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 2,
+          "Burstiness": 0.857,
+          "Text": "40"
+        },
+        {
+          "Index": 3063,
+          "StartLine": 8368,
+          "EndLine": 8368,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 6,
+          "Burstiness": 0.714,
+          "Text": "Volume"
+        },
+        {
+          "Index": 3064,
+          "StartLine": 8370,
+          "EndLine": 8370,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 0.714,
+          "Text": "Volun"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 3141,
+      "AnchorLine": 8566,
+      "AnchorText": "![image 30](<mclachlan2000_images/imageFile30.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 3267,
+      "AnchorLine": 8906,
+      "AnchorText": "![image 31](<mclachlan2000_images/imageFile31.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 3269,
+      "AnchorLine": 8910,
+      "AnchorText": "![image 32](<mclachlan2000_images/imageFile32.png>)",
+      "AnchorBurstiness": 0.0,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 3272,
+      "AnchorLine": 8916,
+      "AnchorText": "![image 33](<mclachlan2000_images/imageFile33.png>)",
+      "AnchorBurstiness": 0.0,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 3281,
+      "AnchorLine": 8934,
+      "AnchorText": "![image 34](<mclachlan2000_images/imageFile34.png>)",
+      "AnchorBurstiness": 0.571,
+      "Skipped": false,
+      "ForwardCandidatesFound": 0,
+      "BackwardCandidatesFound": 4,
+      "ForwardCommitted": false,
+      "BackwardCommitted": true,
+      "Stripped": [
+        {
+          "Index": 3276,
+          "StartLine": 8924,
+          "EndLine": 8924,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "Dip"
+        },
+        {
+          "Index": 3277,
+          "StartLine": 8926,
+          "EndLine": 8926,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 5,
+          "Burstiness": 0.571,
+          "Text": "Angle"
+        },
+        {
+          "Index": 3278,
+          "StartLine": 8928,
+          "EndLine": 8928,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 3,
+          "Burstiness": 0.571,
+          "Text": "Dip"
+        },
+        {
+          "Index": 3279,
+          "StartLine": 8930,
+          "EndLine": 8930,
+          "Kind": "POLLUTION_CANDIDATE",
+          "Length": 9,
+          "Burstiness": 0.714,
+          "Text": "Direction"
+        }
+      ]
+    },
+    {
+      "AnchorIndex": 3602,
+      "AnchorLine": 9797,
+      "AnchorText": "![image 35](<mclachlan2000_images/imageFile35.png>)",
+      "AnchorBurstiness": 0.286,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    },
+    {
+      "AnchorIndex": 3808,
+      "AnchorLine": 10364,
+      "AnchorText": "![image 36](<mclachlan2000_images/imageFile36.png>)",
+      "AnchorBurstiness": 0.143,
+      "Skipped": true,
+      "SkipReason": "low_burstiness_clean_figure",
+      "Stripped": []
+    }
+  ]
+}

@@ -220,7 +220,7 @@ In most of the work on inference on the number of components g in a mixture mode
 
 <a id="sec-6-3-1"></a>
 
-# 6.3.1
+# 6.3.1 Likelihood-Based Methods
 
 The estimation of the order of a mixture model has been considered mainly by consideration of the likelihood, using two main ways. One way is based on a penalized form of the likelihood. As the likelihood increases with the addition of a component to mixture model, the likelihood (usually; the likelihood) is penalized by the subtraction of a term that 'penalizes' the model for the number of parameters in it. This leads to a penalized log likelihood, yielding what are called information criteria for the choice of g log
 

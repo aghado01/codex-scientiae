@@ -949,6 +949,4 @@ The notation ø(w; p, 02) is used to denote the density of a random variable hav
 
 univariate normal distribution with mean / and variance 02
 
-<a id="sec-2"></a>
 
-# 2

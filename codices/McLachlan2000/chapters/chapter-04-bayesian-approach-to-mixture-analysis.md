@@ -166,7 +166,7 @@ The Gibbs sampler is implemented by simulating from the following conditional di
 
 <a id="sec-1"></a>
 
-# 1. Simulate Step
+**1. Simulate Step**
 
 where
 
@@ -382,7 +382,7 @@ Robert and Titterington (1998) give the full conditional distributions that can 
 
 <a id="sec-4-9"></a>
 
-# 4.9
+# 4.9 LABEL SWITCHING
 
 As mentioned in Section the so-called label-switchingproblemis an issue that has to be addressed in posterior simulations for mixtures with components belonging to the same parametric family. If the distribution is symmetric in the components of the mixture, then the posterior distribution will be invariant under a permutation of the component labels. This lack of identifiability of € due to the interchanging of component labels is generally handled by a constraint on the mixing proportions of the form 4.1, prior
 
@@ -499,8 +499,4 @@ $$
 The EM algorithmcan converge very slowly, in particular when the components of the mixture are not well separated, which indicates that these two matrices;\_ Ic(û; y) and I(û; y), can be quite different. Now the observed information matrix I(#) should be similar to the estimated expected information matrix I(#); and for component
 
 Baxter and Oliver (2000) considered an improved estimate of the expected information matrix I(v) for use in the MML criterion (4.30) by adopting I(v; y) as approximated by the empirical information matrix (2.60). They also considered computationally less demanding approximation that forms the determinant of the empirical information matrix by ignoring its off-diagonal elements.
-
-<a id="sec-5"></a>
-
-# 5
 

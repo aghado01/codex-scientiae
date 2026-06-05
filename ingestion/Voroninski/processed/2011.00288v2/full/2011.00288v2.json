@@ -1,0 +1,1816 @@
+{
+  "file name" : "2011.00288v2.pdf",
+  "number of pages" : 14,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20210830220524-04'00'",
+  "modification date" : "D:20210830220524-04'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 214,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 103.68, 646.322, 507.763, 683.949 ],
+    "heading level" : 1,
+    "font" : "SFRM1728",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "Optimal Sample Complexity of Subgradient Descent for Amplitude Flow via Non-Lipschitz Matrix Concentration"
+  }, {
+    "type" : "paragraph",
+    "id" : 215,
+    "page number" : 1,
+    "bounding box" : [ 175.2, 617.241, 440.082, 629.619 ],
+    "font" : "SFRM1200",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Paul Hand ∗ , Oscar Leong † , and Vladislav Voroninski ‡"
+  }, {
+    "type" : "paragraph",
+    "id" : 216,
+    "page number" : 1,
+    "bounding box" : [ 264.36, 580.881, 347.342, 591.868 ],
+    "font" : "SFRM1200",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "August 31, 2021"
+  }, {
+    "type" : "heading",
+    "id" : 217,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 283.92, 531.06, 327.624, 538.084 ],
+    "heading level" : 1,
+    "font" : "SFBX1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 218,
+    "page number" : 1,
+    "bounding box" : [ 99.24, 343.557, 512.758, 520.472 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We consider the problem of recovering a real-valued n -dimensional signal from m phaseless, linear measurements and analyze the amplitude-based non-smooth least squares objective. We establish local convergence of subgradient descent with optimal sample complexity based on the uniform concentration of a random, discontinuous matrix-valued operator arising from the objective’s gradient dynamics. While common techniques to establish uniform concentration of random functions exploit Lipschitz continuity, we prove that the discontinuous matrix-valued operator satisﬁes a uniform matrix concentration inequality when the measurement vectors are Gaussian as soon as m = Ω( n ) with high probability. We then show that satisfaction of this inequality is suﬃcient for subgradient descent with proper initialization to converge linearly to the true solution up to the global sign ambiguity. As a consequence, this guarantees local convergence for Gaussian measurements at optimal sample complexity. The concentration methods in the present work have previously been used to establish recovery guarantees for a variety of inverse problems under generative neural network priors. This paper demonstrates the applicability of these techniques to more traditional inverse problems and serves as a pedagogical introduction to those results."
+  }, {
+    "type" : "heading",
+    "id" : 219,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 308.291, 182.295, 321.231 ],
+    "heading level" : 1,
+    "font" : "SFBX1440",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 220,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 276.447, 531.954, 296.571 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Consider the problem of recovering a signal x ∗ ∈ R n from m phaseless measurements of the form"
+  }, {
+    "type" : "formula",
+    "id" : 221,
+    "page number" : 1,
+    "bounding box" : [ 272.041, 251.847, 339.252, 270.774 ],
+    "content" : "y \\coloneqq | A x _ { * } | + \\eta"
+  }, {
+    "type" : "paragraph",
+    "id" : 222,
+    "page number" : 1,
+    "bounding box" : [ 72.001, 179.927, 539.628, 247.777 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where A ∈ R m × n is a measurement matrix, | · | acts entrywise, and η ∈ R m denotes noise. This problem is known as phase retrieval as, in practice, the phase of the signal is lost in the forward measurement process due to the underlying physics of the measurement system. We consider the case when the entries of A are i.i.d. Gaussian, which we will refer to as the generic measurement regime. In this work, we aim to recover x ∗ by solving the following non-smooth least squares problem"
+  }, {
+    "type" : "formula",
+    "id" : 223,
+    "page number" : 1,
+    "bounding box" : [ 241.322, 125.64, 539.663, 170.781 ],
+    "content" : "\\min _ { x \\in \\mathbb { R } ^ { n } } f ( x ) \\colon = \\frac { 1 } { 2 } \\| | A x | - y \\| ^ { 2 } . \\\\ \\intertext { t i c s and College of Computer and Information Science, Northeastern University, Boston , }"
+  }, {
+    "type" : "paragraph",
+    "id" : 224,
+    "page number" : 1,
+    "bounding box" : [ 71.999, 115.882, 88.132, 136.694 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "∗ MA †"
+  }, {
+    "type" : "paragraph",
+    "id" : 225,
+    "page number" : 1,
+    "bounding box" : [ 88.56, 126.802, 539.557, 135.069 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Department of Mathematics and College of Computer and Information Science, Northeastern University, Boston,"
+  }, {
+    "type" : "paragraph",
+    "id" : 226,
+    "page number" : 1,
+    "bounding box" : [ 84.839, 104.602, 443.444, 114.494 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Department of Computational and Applied Mathematics, Rice University, Houston, TX ‡"
+  }, {
+    "type" : "paragraph",
+    "id" : 227,
+    "page number" : 1,
+    "bounding box" : [ 84.839, 93.322, 191.319, 103.214 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Helm.ai, Menlo Park, CA"
+  }, {
+    "type" : "paragraph",
+    "id" : 228,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 685.593, 539.537, 723.513 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "This objective function is known as Amplitude Flow. For generic measurements, previous works have shown that with proper initialization, gradient descent both with [ 12 ] and without [ 29 ] truncated gradients can recover the signal with the optimal sample complexity of m = Ω( n ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 229,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 604.233, 539.654, 682.953 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Existing proof techniques of convergence guarantees for (sub)gradient descent of ( 1 ) follow a two-step process: 1) establish that spectral initialization or some variant thereof guarantees an initializer with relative error bounded by a small absolute constant and then 2) show that the objective satisﬁes a property akin to convexity near the minimizer to guarantee convergence. This latter property is called the local regularity condition RC ( µ,λ,ε ) 1 . Showing that this condition holds is crucial in establishing local convergence for Amplitude Flow [ 29 , 12 ] and its variants [ 23 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 230,
+    "page number" : 2,
+    "bounding box" : [ 72.001, 577.112, 539.38, 601.593 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "This proof technique is not unique to Amplitude Flow as it was initially introduced to guarantee convergence for the intensity-based formulation Wirtinger Flow, which aims to solve"
+  }, {
+    "type" : "formula",
+    "id" : 231,
+    "page number" : 2,
+    "bounding box" : [ 255.961, 524.4, 539.663, 569.542 ],
+    "content" : "\\min _ { x \\in \\mathbb { R } ^ { n } } \\frac { 1 } { 2 } \\| A x | ^ { 2 } - y ^ { 2 } \\| ^ { 2 } . \\\\ \\intertext { a f o r e m e n t i o n e d t w o { t e p s e d u r e } $ e s a b l i s h e d $ e x a c t r e c o r v e r y $ with } \\log n ) \\ A \\text { follow up variant using truncation } [ 5 ] \\text { improved } \\text { the same }"
+  }, {
+    "type" : "paragraph",
+    "id" : 232,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 443.553, 539.674, 535.713 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In the original work [ 3 ], the aforementioned two-step procedure established exact recovery with sample complexity m = Ω( n log n ) . A follow-up variant using truncation [ 5 ] improved the sample complexity to m = Ω( n ) and also employed the RC ( µ,λ,ε ) to show convergence post-initialization. Recently, [ 28 ] established the suﬃciency of a deterministic condition for local convergence when solving ( 2 ) in the lifted domain and a relationship between the condition’s accuracy and convergence rate of gradient descent was shown. This deterministic condition is a uniform matrix concentration inequality that is proven to hold for generic measurements when m = Ω( n log n ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 233,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 308.073, 539.728, 440.913 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Other works include the global landscape analysis in [ 25 ] which showed that ( 2 ) exhibits benign geometry given a suﬃcient number of measurements m = Ω( n log 3 n ) by carefully analyzing the gradient and Hessian in partitioned regions of space. In [ 11 ], the authors considered the robust ℓ 1 loss with intensity-based measurements and established local convergence of a prox-linear algorithm using composite optimization theory. Convex approaches based on lifting [ 4 , 2 , 10 , 15 ] utilize dual certiﬁcates to assert correctness of the minimizers of semideﬁnite programs. Linear programming approaches have also been studied, whose proof techniques range from using tools in statistical learning theory [ 1 ] and geometric probability theory [ 14 ], along with elementary approaches using standard concentration estimates of the singular values of random matrices [ 19 ]. For a more comprehensive overview of prior work for phase retrieval, we refer the reader to [ 13 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 234,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 226.713, 539.661, 305.433 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In this paper, we present a proof technique for solving ( 1 ) with m = Ω( n ) based on uniform concentration of random matrix-valued functions that are discontinuous in space. Consider a subgradient descent algorithm with iterates { x t } t   0 of the form x t +1 = x t − αv x t ,x ∗ where α > 0 , v x t ,x ∗ ∈ ∂f ( x t ) , and ∂f ( x ) is the Clarke subdiﬀerential at x (deﬁned in Section 3 ). Let dist ( x,x ∗ ) := min(   x − x ∗   ,   x + x ∗   ) . We ﬁrst state our main local convergence result in the Gaussian measurement regime."
+  }, {
+    "type" : "paragraph",
+    "id" : 235,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 158.007, 539.81, 217.342 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 1. There exists positive absolute constants C , c 1 , c 2 , ρ 1 , and ρ 2 such that the following holds. Suppose A ∈ R m × n has i.i.d. N (0 , 1 /m ) entries and the noise is bounded   η     ρ 1   x ∗   . Assume the initial iterate x 0 satisﬁes dist ( x 0 ,x ∗ )   ρ 2   x ∗   and the step size satisﬁes 0 < α   1 . If m   Cn , then with probability at least 1 − 3exp( − c 1 m ) − m exp( − c 2 n ) , we have that for all t   1 , t"
+  }, {
+    "type" : "formula",
+    "id" : 236,
+    "page number" : 2,
+    "bounding box" : [ 204.48, 121.92, 407.061, 157.701 ],
+    "content" : "d i s t ( x _ { t } , x _ { * } ) & \\leqslant \\left ( 1 - \\frac { \\alpha } { 2 } \\right ) ^ { t } d i s t ( x _ { 0 } , x _ { * } ) + 4 \\| \\eta \\| . \\\\ \\intertext { c o n v e r g e n c e \\ u p \\ t o \\ t h e \\ o i s e \\ l e v e l \\ w i t h \\ o p t i m a l \\ s a m }"
+  }, {
+    "type" : "paragraph",
+    "id" : 237,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 101.433, 539.733, 125.912 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "This result asserts local convergence up to the noise level with optimal sample complexity. In the theorem, note that we require an initializer with relative error less than a sufficiently small constant. There are several schemes to achieve this with m = Ω( n ) Gaussian measurements, even in the presence of noise [5, 29, 12, 11]. While convergence of subgradient descent without truncation for the Amplitude Flow objective is known [29], the method of proof we present here is novel. In particular, we show that Theorem 1 is a consequence of the following two results: 1) a uniform matrix concentration inequality is sufficient to guarantee local convergence with proper initialization and 2) Gaussian matrices satisfy this inequality with high probability when m = Ω( n ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 238,
+    "page number" : 2,
+    "bounding box" : [ 73.2, 71.155, 539.767, 93.374 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "1 A function L satisﬁes RC ( µ, λ, ε ) at a stationary point y if for all x ∈ R n such that   x − y     ε   y   ,  ∇L ( x ) , x − y     µ 2   x − y   2 + λ 2  ∇L ( x )   2 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 239,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 522.993, 539.717, 642.534 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We now detail the high level intuition behind the proof ideas and techniques. Let sgn ( z ) := z/ | z | for z   = 0 and sgn (0) = 0 act entrywise. For ease of exposition, suppose there is no noise η = 0 . The discontinuous, spatially-varying measurement operator A x := diag ( sgn ( Ax )) A plays a critical role in analyzing subgradient descent as this operator governs the gradient dynamics of f . Speciﬁcally, the gradient almost everywhere is given by ∇ f ( x ) = A T x ( A x x − A x ∗ x ∗ ) . As will be shown in the next section, the gradient in expectation obeys a property equivalent to the RC ( µ,λ,ε ) in neighborhoods of the global minimizers ± x ∗ . Hence if we establish concentration of the quantity A T x A y to its expectation E [ A T x A y ] uniformly in x,y , then this property will also be satisﬁed by the gradient. This will be shown to guarantee local convergence up to the global sign ambiguity with high probability."
+  }, {
+    "type" : "paragraph",
+    "id" : 240,
+    "page number" : 3,
+    "bounding box" : [ 96.72, 610.047, 96.72, 628.974 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 241,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 495.873, 539.432, 520.615 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The uniform concentration result we establish is the following: when A has i.i.d. N (0 , 1 /m ) entries, then for any parameter 0 < ε < 1 , when m = Ω( n ) we have that with high probability"
+  }, {
+    "type" : "formula",
+    "id" : 242,
+    "page number" : 3,
+    "bounding box" : [ 233.28, 463.647, 539.662, 484.538 ],
+    "content" : "\\| A _ { x } ^ { T } A _ { y } - \\Phi _ { x , y } \\| \\leqslant \\varepsilon \\, \\forall x , y \\in \\mathbb { R } ^ { n } \\quad \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 243,
+    "page number" : 3,
+    "bounding box" : [ 71.999, 364.014, 539.662, 459.457 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where Φ x,y := E [ A T x A y ] has an analytic expression. As this result holds uniformly in x,y , we have that for any x,x ∗ ∈ R n , the gradient ∇ f ( x ) ≈ Φ x,x x − Φ x,x ∗ x ∗ . The diﬃculty of establishing ( 3 ) uniformly in x,y is due to the fact that A T x A y is a non-Lipschitz matrix-valued operator. Standard approaches to control these types of quantities exploit Lipschitz continuity by ﬁrst 1) establishing concentration for ﬁxed x,y , then 2) establishing concentration over all points in a net of the sphere by using a union bound, and ﬁnally 3) appealing to Lipschitz continuity to get concentration uniformly in x,y . However, in this case, 3) is not possible as A T x A y is discontinuous with respect to x,y ."
+  }, {
+    "type" : "paragraph",
+    "id" : 244,
+    "page number" : 3,
+    "bounding box" : [ 71.999, 216.513, 539.661, 362.912 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Fortunately, this issue can be solved by concentrating Lipschitz continuous approximations of A T x A y with respect to x,y . In particular, one can create continuous matrix-valued functions that are upper and lower bounds of A T x A y with respect to the semideﬁnite ordering. Then, concentration of these continuous approximations can be established by appealing to the standard arguments outlined above. This, in turn, will be shown to establish concentration of the non-Lipschitz quantity of interest by a squeezing argument. Moreover, using novel tools developed in [ 9 ], a more eﬃcient set of coverings of the sphere can be exploited to achieve sample complexity linear in the ambient dimension n . Intuitively, this is achieved by constructing a net of the sphere that does not penalize all directions equally, but instead exploits directions for which the function of interest does not deviate much and penalizes those for which the function exhibits larger change. This intuition is made precise in the proof of Proposition 1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 245,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 79.353, 539.672, 198.633 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Discussion. While the convergence results presented here have been shown in [ 29 ], the contribution of this work lies in the novelty of the analysis. In particular, this work is an illustrative example of using the concentration of non-Lipschitz functions to establish favorable properties of ﬁrst-order algorithms to solve inverse problems. The concentration methods of this paper have been used to establish recovery in compressive sensing [ 20 , 22 ], phase retrieval [ 17 , 18 ], and other problems [ 21 , 24 , 16 , 8 ] under image priors given by generative neural networks. For example, a similar uniform matrix concentration inequality to the one used in this paper was introduced by the present authors in [ 17 , 18 ] to establish recovery in compressive phase retrieval under a generative prior with information-theoretically optimal sample complexity. This paper demonstrates the applicability of"
+  }, {
+    "type" : "heading",
+    "id" : 246,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 72.0, 664.931, 208.527, 677.871 ],
+    "heading level" : 1,
+    "font" : "SFBX1440",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "2 Proof Technique"
+  }, {
+    "type" : "paragraph",
+    "id" : 247,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 586.473, 539.69, 651.633 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We now establish the suﬃciency of a deterministic condition for local convergence in the form of a uniform matrix concentration inequality and show that Gaussian matrices satisfy this condition with high probability when m = Ω( n ) . A similar condition, known as the Weight Distribution Condition, was ﬁrst introduced in [ 20 ] in the context of compressive sensing under generative neural network priors. The matrix concentration inequality is stated as follows."
+  }, {
+    "type" : "paragraph",
+    "id" : 248,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 552.153, 539.69, 578.377 ],
+    "font" : "SFBI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 1. Fix 0 < ε < 1 . We say that A ∈ R m × n satisﬁes the Measurement Distribution Condition (MDC) with constant ε if"
+  }, {
+    "type" : "paragraph",
+    "id" : 250,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 507.167, 98.564, 517.56 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where Proof of Theorem 2. Let B ( x ∗ , r ) := { x ∈ R n : ‖ x -x ∗ ‖ /lessorequalslant r } . Suppose x 0 ∈ B ( x ∗ , ε ‖ x ∗ ‖ ) as the proof for the case x 0 ∈ B ( -x ∗ , ε ‖ x ∗ ‖ ) is identical. For t /greaterorequalslant 1 , observe that for any v x t -1 ,x ∗ ∈ ∂f ( x t -1 ) , we have"
+  }, {
+    "type" : "formula",
+    "id" : 249,
+    "page number" : 4,
+    "bounding box" : [ 231.24, 521.847, 380.013, 542.857 ],
+    "content" : "\\| A _ { x } ^ { T } A _ { y } - \\Phi _ { x , y } \\| \\leqslant \\varepsilon \\ \\forall \\ x , y \\in \\mathbb { R } ^ { n }"
+  }, {
+    "type" : "formula",
+    "id" : 251,
+    "page number" : 4,
+    "bounding box" : [ 179.16, 467.16, 539.663, 499.897 ],
+    "content" : "\\Phi _ { x , y } \\colon = \\begin{cases} \\frac { \\pi - 2 \\theta _ { x , y } } { \\pi } I _ { n } + \\frac { 2 \\sin \\theta _ { x , y } } { \\pi } M _ { \\hat { x } \\leftrightarrow \\hat { y } } & \\text {if } x \\neq 0 , y \\neq 0 , \\\\ 0 & \\text {otherwise.} \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 252,
+    "page number" : 4,
+    "bounding box" : [ 380.76, 477.927, 380.76, 496.854 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 253,
+    "page number" : 4,
+    "bounding box" : [ 411.36, 477.927, 411.36, 496.854 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 254,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 424.047, 539.696, 457.659 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here θ x,y := ∠ ( x,y ) , ˆ x := x/   x   , ˆ y := y/   y   , I n is the n × n identity matrix, and M ˆ x ↔ ˆ y 2 is the matrix that sends ˆ x  → ˆ y , ˆ y  → ˆ x , and z  → 0 for any z ∈ span ( { x,y } ) ⊥ . T"
+  }, {
+    "type" : "paragraph",
+    "id" : 255,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 376.167, 539.766, 423.577 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Note that for points x,y with small angle, this condition requires A x A y to act like an isometry. In the extreme case when x = y , Φ x,y is the identity. An elementary calculation gives E [ A T x A y ] = Φ x,y for x,y   = 0 and A ij ∼ N (0 , 1 /m ) . The ﬁrst result is that the MDC is suﬃcient to guarantee the following: a subgradient descent"
+  }, {
+    "type" : "paragraph",
+    "id" : 256,
+    "page number" : 4,
+    "bounding box" : [ 108.48, 376.167, 108.48, 395.094 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 257,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 316.112, 539.514, 381.273 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "algorithm with proper initialization will converge to the true solution up to the global sign ambiguity. To establish this, we ﬁrst show that the MDC is suﬃcient for the objective to satisfy the following regularity condition which states that, within a neighborhood of the true solution, all subgradients point towards the true solution. This result is proven in Section 3.1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 258,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 260.368, 539.751, 307.898 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 1. Fix 0 < ε   0 . 001 . Suppose A ∈ R m × n satisﬁes the MDC with constant ε . Then for all x ∈ R n such that dist ( x,x ∗ )   ε   x ∗   and any v x,x ∗ ∈ ∂f ( x ) , we have that   v x,x ∗ − ( x ± x ∗ )     1 2   x ± x ∗   + 2   η   . Here x ± x ∗ := x − x ∗ if   x − x ∗   = dist ( x,x ∗ ) and x + x ∗ otherwise."
+  }, {
+    "type" : "paragraph",
+    "id" : 259,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 233.793, 539.552, 258.273 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Note that the conclusion of this lemma in the noiseless setting is in fact equivalent to the RC ( µ,λ,ε ) condition 3 . We now show that satisfaction of the MDC implies local convergence."
+  }, {
+    "type" : "paragraph",
+    "id" : 260,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 185.792, 539.756, 225.578 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 2 (Deterministic Local Convergence Guarantee) . Fix 0 < ε   0 . 001 . Suppose A ∈ R m × n satisﬁes the MDC with constant ε ,   η     ε 4   x ∗   , and 0 < α   1 . If dist ( x 0 ,x ∗ )   ε   x ∗   then for all t   1 , α t"
+  }, {
+    "type" : "formula",
+    "id" : 261,
+    "page number" : 4,
+    "bounding box" : [ 204.48, 150.96, 407.061, 186.742 ],
+    "content" : "d i s t ( x _ { t } , x _ { * } ) \\leqslant \\left ( 1 - \\frac { \\alpha } { 2 } \\right ) ^ { t } d i s t ( x _ { 0 } , x _ { * } ) + 4 \\| \\eta \\| . \\\\ \\text {matrix is as follows: consider a rotation matrix R that sends } \\hat { x } \\mapsto \\alpha"
+  }, {
+    "type" : "paragraph",
+    "id" : 262,
+    "page number" : 4,
+    "bounding box" : [ 72.001, 110.875, 539.725, 160.214 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "2 A formula for this matrix is as follows: consider a rotation matrix R that sends ˆ x  → e 1 and ˆ y  → cos θ x,y e 1 + sin θ x,y e 2 where θ x,y = ∠ ( x, y ) . Then M ˆ x ↔ ˆ y = R T   cos θ x,y sin θ x,y 0 sin θ x,y − cos θ x,y 0 0 0 0 n − 2   R where 0 n − 2 is the n − 2 × n − 2 matrix of zeros. Note that if θ x,y = 0 or π , M ˆ x ↔ ˆ y = ˆ x ˆ x T or − ˆ x ˆ x T , respectively."
+  }, {
+    "type" : "paragraph",
+    "id" : 263,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 104.915, 393.144, 114.005 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "matrix of zeros. Note that if θ x,y = 0 or π , M ˆ x ↔ ˆ y = ˆ x ˆ x or -ˆ x ˆ x , respectively."
+  }, {
+    "type" : "paragraph",
+    "id" : 264,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 72.158, 539.79, 104.294 ],
+    "font" : "SFRM0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Indeed, note that if the conditions of Lemma 1 are satisﬁed and η = 0 , then for all x ∈ R n such that dist ( x, x ∗ )   ε   x ∗   and any v x,x ∗ ∈ ∂f ( x ) ,   v x,x ∗ − ( x ± x ∗ )     1 2   x ± x ∗   ⇐⇒   v x,x ∗ , x ± x ∗     3 8   x ± x ∗   2 + 1 2   v x,x ∗   2 . Thus the MDC is suﬃcient to guarantee the RC ( µ, λ, ε ) holds with µ = 3 / 4 , λ = 1 , and our choice of ε ."
+  }, {
+    "type" : "formula",
+    "id" : 265,
+    "page number" : 5,
+    "bounding box" : [ 146.88, 582.96, 539.663, 672.175 ],
+    "content" : "\\| x _ { t } - x _ { * } \\| & = \\| x _ { t - 1 } - \\alpha v _ { x _ { t - 1 } , x _ { * } } + \\alpha ( x _ { t - 1 } - x _ { * } ) - \\alpha ( x _ { t - 1 } - x _ { * } ) - x _ { * } \\| \\\\ & \\leq ( 1 - \\alpha ) \\| x _ { t - 1 } - x _ { * } \\| + \\alpha \\| v _ { x _ { t - 1 } , x _ { * } } - ( x _ { t - 1 } - x _ { * } ) \\| \\\\ & \\leq ( 1 - \\alpha ) \\| x _ { t - 1 } - x _ { * } \\| + \\frac { \\alpha } { 2 } \\| x _ { t - 1 } - x _ { * } \\| + 2 \\alpha \\| \\eta \\| \\\\ & = ( 1 - \\frac { \\alpha } { 2 } ) \\, \\| x _ { t - 1 } - x _ { * } \\| + 2 \\alpha \\| \\eta \\| \\\\ \\intertext { where in the third line we used Lemma 1 .  We claim that the iterates must stay within a ball of the }"
+  }, {
+    "type" : "paragraph",
+    "id" : 266,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 538.527, 539.621, 584.313 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where in the third line we used Lemma 1 . We claim that the iterates must stay within a ball of the minimizer. Indeed, if x t − 1 ∈ B ( x ∗ ,ε   x ∗   ) , we have that by equation ( 5 ) and our bound on the size of the noise   η     ε 4   x ∗   that"
+  }, {
+    "type" : "formula",
+    "id" : 267,
+    "page number" : 5,
+    "bounding box" : [ 113.4, 500.64, 498.294, 536.302 ],
+    "content" : "\\| x _ { t } - x _ { * } \\| & \\leqslant \\left ( 1 - \\frac { \\alpha } { 2 } \\right ) \\| x _ { t - 1 } - x _ { * } \\| + 2 \\alpha \\| n \\| \\leqslant \\left ( 1 - \\frac { \\alpha } { 2 } \\right ) \\varepsilon \\| x _ { * } \\| + \\alpha \\cdot \\frac { \\varepsilon } { 2 } \\| x _ { * } \\| = \\varepsilon \\| x _ { * } \\| \\\\ s o _ { \\ } r _ { t } \\in \\mathcal { B } ( x _ { \\varepsilon } \\triangleleft | x | ) \\quad T h u s \\ w e a n i v o k e l { e m m a l } \\ 1 \\text { and } \\text {equation } ( 5 ) \\text { for } \\text {each } t \\geqslant 1 \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text"
+  }, {
+    "type" : "paragraph",
+    "id" : 268,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 469.167, 539.533, 501.654 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "so x t ∈ B ( x ∗ ,ε   x ∗   ) . Thus, we can invoke Lemma 1 and equation ( 5 ) for each t   1 . Letting τ := 1 − α 2 , starting at t = 1 and repeatedly applying ( 5 ), we attain"
+  }, {
+    "type" : "formula",
+    "id" : 269,
+    "page number" : 5,
+    "bounding box" : [ 113.4, 431.487, 498.142, 465.022 ],
+    "content" : "\\| x _ { t } - x _ { * } \\| & \\leqslant \\tau ^ { t } \\| x _ { 0 } - x _ { * } \\| + 2 \\alpha ( \\tau ^ { t } + \\tau ^ { t - 1 } + \\cdots + 1 ) \\| \\eta \\| \\leqslant \\tau ^ { t } \\| x _ { 0 } - x _ { * } \\| + \\frac { 2 \\alpha } { 1 - \\tau } \\| \\eta \\| . \\\\ \\\\ D l u m i a g n e i n g u l p s t i o n d e f u l l e t i o n t h e d o w s t h e d o w i n g u l p s t i o n d e f u l l e t i o n t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s t h e d o w s"
+  }, {
+    "type" : "paragraph",
+    "id" : 270,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 418.953, 353.494, 429.873 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Plugging in the deﬁnition of τ yields the desired inequality."
+  }, {
+    "type" : "paragraph",
+    "id" : 271,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 382.833, 539.74, 407.313 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Finally, using recent tools developed in [ 9 ], we show that Gaussian matrices satisfy the MDC with high probability with m = Ω( n ) sample complexity."
+  }, {
+    "type" : "paragraph",
+    "id" : 272,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 325.527, 539.718, 372.938 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 1. Fix 0 < ε < 1 . Suppose A ∈ R m × n has i.i.d. N (0 , 1 /m ) entries. If m   C ε n , then A satisﬁes the MDC with constant ε with probability at least 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( − m/ 2) . Here C ε = Ω( ε − 2 log( ε − 1 )) and c is a universal constant."
+  }, {
+    "type" : "paragraph",
+    "id" : 273,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 310.713, 418.571, 321.633 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Combining this result with Theorem 2 with ε = 0 . 001 proves Theorem 1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 274,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 215.913, 539.662, 308.073 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Hence this shows that the MDC is suﬃcient for local convergence of subgradient descent with proper initialization. Moreover, the conclusion holds for generic measurements with high probability as soon as m = Ω( n ) . We emphasize that the MDC is a global property concerning the measurement matrix. Hence Proposition 1 implies one has uniform concentration of subgradients to their expectation with optimal sample complexity. Extending this local convergence result to a result about convergence of subgradient descent with generic initialization is an interesting future direction, as shown in recent works [ 6 , 26 ]."
+  }, {
+    "type" : "heading",
+    "id" : 275,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 72.0, 181.331, 140.144, 194.271 ],
+    "heading level" : 1,
+    "font" : "SFBX1440",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "3 Proofs"
+  }, {
+    "type" : "paragraph",
+    "id" : 276,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 89.433, 539.705, 168.033 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In this section, we prove Lemma 1 and Proposition 1 . We ﬁrst introduce some notation used in the proofs. Let [ n ] := { 1 ,... ,n } . Let B ( y,r ) := { x ∈ R n :   x − y     r } and B := { x ∈ R n :   x     1 } . For x ∈ R n \\ { 0 } , let ˆ x := x/   x   . Let { E } be the indicator function on the event E . For a random variable X , let X | ( E ) be the random variable X conditioned on the event E . Let I n be the n × n identity matrix. Let S n − 1 denote the unit sphere in R n . We write γ = Ω( δ ) when γ   Cδ for some positive constant C . Similarly, we write γ = O ( δ ) when γ   Cδ for some positive constant C ."
+  }, {
+    "type" : "paragraph",
+    "id" : 277,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 691.407, 539.527, 723.775 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For a locally Lipschitz function f : X → R from a Hilbert space X to R , the Clarke generalized directional derivative [ 7 ] of f at x ∈ X in the direction u is deﬁned by"
+  }, {
+    "type" : "formula",
+    "id" : 278,
+    "page number" : 6,
+    "bounding box" : [ 219.12, 661.847, 392.542, 689.094 ],
+    "content" : "f ^ { o } ( x ; u ) \\colon = \\lim _ { y \\to x , t \\downarrow 0 } \\frac { f ( y + t u ) - f ( y ) } { t } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 279,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 640.592, 349.499, 651.513 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Then the generalized subdiﬀerential of f at x is deﬁned as"
+  }, {
+    "type" : "formula",
+    "id" : 280,
+    "page number" : 6,
+    "bounding box" : [ 195.36, 610.047, 416.301, 630.651 ],
+    "content" : "\\partial f ( x ) \\colon = \\{ v \\in \\mathbb { R } ^ { n } \\colon \\langle v , u \\rangle \\leqslant f ^ { o } ( x ; u ) , \\ \\forall u \\in \\mathcal { X } \\} ."
+  }, {
+    "type" : "paragraph",
+    "id" : 281,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 546.567, 539.651, 606.054 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Any v x,x ∗ ∈ ∂f ( x ) is called a subgradient of f at x . When f is diﬀerentiable at x , ∂f ( x ) = {∇ f ( x ) } . In the proofs, we will make use of the following fact concerning the Clarke subdiﬀerential of the objective function f . Since f is piecewise quadratic, Theorem 9.6 from [ 7 ] asserts that for any x ∈ R n , ∂f ( x ) can be written equivalently as"
+  }, {
+    "type" : "formula",
+    "id" : 282,
+    "page number" : 6,
+    "bounding box" : [ 240.24, 530.448, 539.663, 542.313 ],
+    "content" : "\\partial f ( x ) = \\text {conv} ( v _ { 1 } , v _ { 2 } , \\dots , v _ { s } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 283,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 473.727, 539.656, 519.774 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where conv ( · ) denotes the convex hull of v 1 ,... ,v s , s is the number of quadratic functions adjoint to x , and v ℓ is the gradient of the ℓ -th quadratic function of f at x . For each v ℓ , there exists a w ℓ and a suﬃciently small δ ℓ > 0 such that f is diﬀerentiable at x + δ ℓ w ℓ and v ℓ = lim δ ℓ ↓ 0 ∇ f ( x + δ ℓ w ℓ ) ."
+  }, {
+    "type" : "heading",
+    "id" : 284,
+    "level" : "Subtitle",
+    "page number" : 6,
+    "bounding box" : [ 72.0, 452.904, 290.14, 463.649 ],
+    "heading level" : 1,
+    "font" : "SFBX1200",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3.1 Convexity property of objective"
+  }, {
+    "type" : "paragraph",
+    "id" : 285,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 418.353, 539.709, 442.833 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here we prove Lemma 1 , the convexity-like property around the minimizer. In essence, it states that when iterates are near the minimizers, all subgradients point towards the true solution."
+  }, {
+    "type" : "paragraph",
+    "id" : 286,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 355.473, 539.779, 407.335 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof of Lemma 1 . We consider the case x ∈ B ( x ∗ ,ε   x ∗   ) as the case x ∈ B ( − x ∗ ,ε   x ∗   ) is similar. Suppose f is diﬀerentiable at x . First, note the MDC implies that   A T x A x − I n     ε . Moreover, for any x,z ∈ R n ,   A x z   2   |  A T x A x z,z   −   z   2 | +   z   2   (1 + ε )   z   2 . Hence   A x     2 for all x ∈ R n when ε < 1 . Thus, we have"
+  }, {
+    "type" : "formula",
+    "id" : 287,
+    "page number" : 6,
+    "bounding box" : [ 116.76, 308.367, 539.662, 345.938 ],
+    "content" : "\\| v _ { x , x _ { * } } - ( x - x _ { * } ) \\| & \\leqslant \\| A _ { x } ^ { T } ( A _ { x } - A _ { x _ { * } } ) x _ { * } \\| + \\| A _ { x } ^ { T } A _ { x } ( x - x _ { * } ) - ( x - x _ { * } ) \\| + \\| A _ { x } ^ { T } \\eta \\| \\\\ & \\leqslant 2 \\| ( A _ { x } - A _ { x _ { * } } ) x _ { * } \\| + \\varepsilon \\| x - x _ { * } \\| + 2 \\| \\eta \\| . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 288,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 279.753, 539.192, 305.69 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We now show that for suﬃciently small ε ,   ( A x − A x ∗ ) x ∗     1 / 8   x − x ∗   . Letting { a i } m i =1 denote the rows of A , observe that"
+  }, {
+    "type" : "formula",
+    "id" : 289,
+    "page number" : 6,
+    "bounding box" : [ 113.16, 177.087, 498.382, 271.251 ],
+    "content" : "\\det \\text { denote the rows of A, observe that} \\\\ & \\| ( A _ { x } - A _ { x } . ) x _ { * } \\| ^ { 2 } = \\sum _ { i = 1 } ^ { m } ( s g n ( \\langle a _ { i } , x \\rangle ) - s g n ( \\langle a _ { i } , x _ { * } \\rangle ) ) ^ { 2 } \\langle a _ { i } , x _ { * } \\rangle ^ { 2 } \\\\ & \\leq \\sum _ { i = 1 } ^ { m } ( s g n ( \\langle a _ { i } , x \\rangle ) - s g n ( \\langle a _ { i } , x _ { * } \\rangle ) ) ^ { 2 } \\langle a _ { i } , ( x - x _ { * } ) \\rangle ^ { 2 } \\\\ & = \\| A _ { x } ( x - x _ { * } ) \\| ^ { 2 } + \\| A _ { x } ( x - x _ { * } ) \\| ^ { 2 } - 2 \\langle x - x _ { * } , A _ { x } ^ { T } A _ { x } , ( x - x _ { * } ) \\rangle . \\\\ \\text {Since } \\| A _ { x } ^ { T } A _ { x } - I _ { n } \\| \\leq \\epsilon , \\, \\text {we have } \\| A _ { x } ( x - x _ { * } ) \\| ^ { 2 } \\leq ( 1 + \\epsilon ) \\| x - x _ { * } \\| ^ { 2 } . \\, \\text {The same upper bound holds}"
+  }, {
+    "type" : "paragraph",
+    "id" : 290,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 140.607, 539.54, 174.577 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Since   A T x A x − I n     ε , we have   A x ( x − x ∗ )   2   (1 + ε )   x − x ∗   2 . The same upper bound holds for   A x ∗ ( x − x ∗ )   2 . We now bound 2   x − x ∗ ,A T x A x ∗ ( x − x ∗ )   from below. By the MDC, we have"
+  }, {
+    "type" : "formula",
+    "id" : 291,
+    "page number" : 6,
+    "bounding box" : [ 187.44, 117.807, 539.662, 138.818 ],
+    "content" : "| \\langle x - x _ { * } , ( A _ { x } ^ { \\Gamma } A _ { x _ { * } } - \\Phi _ { x , x _ { * } } ) ( x - x _ { * } ) \\rangle | \\leqslant \\varepsilon \\| x - x _ { * } \\| ^ { 2 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 292,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 95.007, 535.66, 113.934 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Since x ∈ B ( x ∗ ,ε   x ∗   ) , we have that | θ x,x ∗ |   2 ε . Hence Φ x,x ∗ is approximately an isometry since"
+  }, {
+    "type" : "formula",
+    "id" : 293,
+    "page number" : 6,
+    "bounding box" : [ 171.48, 65.847, 439.003, 92.215 ],
+    "content" : "\\| \\Phi _ { x , x _ { * } } - I _ { n } \\| \\leqslant \\frac { 2 | \\theta _ { x , x _ { * } } | } { \\pi } \\| I _ { n } \\| + \\frac { 2 | \\sin \\theta _ { x , x _ { * } } | } { \\pi } \\| M _ { \\hat { x } \\leftrightarrow \\hat { x } _ { * } } \\| \\leqslant \\frac { 8 \\varepsilon } { \\pi }"
+  }, {
+    "type" : "paragraph",
+    "id" : 294,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 678.36, 539.716, 725.258 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where we used ‖ M z ↔ w ‖ /lessorequalslant 1 for all z, w ∈ S n -1 . Combining this with (8), we have 2 〈 x -x ∗ , A T x A x ∗ ( x -x ∗ ) 〉 /greaterorequalslant ( 2 -16 ε π -2 ε ) ‖ x -x ∗ ‖ 2 . Thus we attain"
+  }, {
+    "type" : "formula",
+    "id" : 295,
+    "page number" : 7,
+    "bounding box" : [ 114.72, 605.16, 496.952, 686.618 ],
+    "content" : "\\| ( A _ { x } - A _ { x } ) x _ { * } \\| ^ { 2 } & \\leq \\| A _ { x } ( x - x _ { * } ) \\| ^ { 2 } + \\| A _ { x } ( x - x _ { * } ) \\| ^ { 2 } - 2 \\langle x - x _ { * } , A _ { x } ^ { T } A _ { x } , ( x - x _ { * } ) \\rangle \\\\ & \\leq \\left ( 2 + 2 \\varepsilon - 2 + \\frac { 1 6 \\varepsilon } { \\pi } + 2 \\varepsilon \\right ) \\| x - x _ { * } \\| ^ { 2 } \\\\ & = \\left ( 4 \\varepsilon + \\frac { 1 6 \\varepsilon } { \\pi } \\right ) \\| x - x _ { * } \\| ^ { 2 } . \\\\ \\intertext { F a l l y ,}$ choosing $ \\varepsilon $ so that $ \\varepsilon \\leq 0 . 0 1 $ , $ we c o n l u c $ }"
+  }, {
+    "type" : "paragraph",
+    "id" : 296,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 589.473, 308.521, 600.393 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Finally, choosing ε so that ε   0 . 001 , we conclude"
+  }, {
+    "type" : "formula",
+    "id" : 297,
+    "page number" : 7,
+    "bounding box" : [ 170.16, 541.32, 441.502, 579.262 ],
+    "content" : "2 \\| ( A _ { x } - A _ { x * } ) x _ { * } \\| & \\leqslant 2 \\sqrt { 4 \\varepsilon + 1 6 \\varepsilon / \\pi } \\| x - x _ { * } \\| \\leqslant \\frac { 1 } { 4 } \\| x - x _ { * } \\| . \\\\ \\intertext { t h i s i n e q u a l i t y , } \\varepsilon < 1 / 4 , \\text { and } ( 7 ) \\text { shows } \\| v _ { x , x _ { * } } - ( x - x _ { * } ) \\| \\leqslant 1 / 2 \\| x - x _ { * } \\| + 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 298,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 525.687, 509.051, 544.615 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Combining this inequality, ε < 1 / 4 , and (7) shows ‖ v x,x ∗ -( x -x ∗ ) ‖ /lessorequalslant 1 / 2 ‖ x -x ∗ ‖ +2 ‖ η ‖ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 299,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 484.92, 539.651, 533.331 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Finally, for non-differentiable x , recall that by (6) we can write v x,x ∗ = ∑ s /lscript =1 c /lscript v /lscript where c /lscript /greaterorequalslant 0 , ∑ s /lscript =1 c /lscript = 1 , and v /lscript = lim δ /lscript ↓ 0 ∇ f ( x + δ /lscript w /lscript ) for some w /lscript ∈ R n . Then, using ∑ s /lscript =1 c /lscript = 1 and our result for differentiable points, we conclude that for x ∈ B ( x ∗ , ε ‖ x ∗ ‖ ) ,"
+  }, {
+    "type" : "formula",
+    "id" : 300,
+    "page number" : 7,
+    "bounding box" : [ 95.759, 419.367, 515.933, 481.971 ],
+    "content" : "\\| v _ { x , x _ { * } } - ( x - x _ { * } ) \\| & \\leqslant \\sum _ { \\ell = 1 } ^ { s } c _ { \\ell } \\| v _ { \\ell } - ( x - x _ { * } ) \\| \\leqslant \\sum _ { \\ell = 1 } ^ { s } c _ { \\ell } \\lim _ { \\delta \\ell \\downarrow 0 } \\| \\nabla f ( x + \\delta _ { \\ell } w _ { \\ell } ) - ( x + \\delta _ { \\ell } w _ { \\ell } - x _ { * } ) \\| \\\\ & \\leqslant \\frac { 1 } { 2 } \\| x - x _ { * } \\| + 2 \\| \\eta \\| ."
+  }, {
+    "type" : "heading",
+    "id" : 301,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 72.0, 371.424, 315.706, 382.169 ],
+    "heading level" : 1,
+    "font" : "SFBX1200",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3.2 Gaussian Matrices Satisfy the MDC"
+  }, {
+    "type" : "paragraph",
+    "id" : 302,
+    "page number" : 7,
+    "bounding box" : [ 71.999, 275.007, 539.695, 361.473 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "To show that A satisﬁes the MDC, we will use novel probabilistic tools developed in [ 9 ], which improved the sample complexity required for Gaussian matrices to satisfy a related concentration result introduced in [ 20 ] known as the Weight Distribution Condition. We ﬁrst write A T x A y in a more convenient form. For v ∈ R n , let diag ( v > 0) denote the diagonal matrix whose i -th entry is 1 if v i > 0 and 0 otherwise. Deﬁne diag ( v < 0) analogously. For x ∈ R n , let A + ,x := diag ( Ax > 0) A and A − ,x := diag ( Ax < 0) A . Since sgn ( b ) = { b> 0 } − { b< 0 } for any b ∈ R , observe that"
+  }, {
+    "type" : "formula",
+    "id" : 303,
+    "page number" : 7,
+    "bounding box" : [ 174.12, 248.847, 437.542, 285.36 ],
+    "content" : "\\begin{array} { r l } { = d i a g ( A x < 0 ) A . \\ S i n c e s g n ( b ) = \\mathbb { I } _ { \\{ b > 0 \\} } - \\mathbb { I } _ { \\{ b < 0 \\} } \\text { for any } b \\in \\mathbb { R } , \\, o b s e r v e t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t h a t"
+  }, {
+    "type" : "paragraph",
+    "id" : 304,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 218.553, 539.644, 243.033 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We will establish concentration of each term separately. For the ﬁrst term, [ 9 ] recently showed that concentration is possible when m = Ω( n ) :"
+  }, {
+    "type" : "paragraph",
+    "id" : 305,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 169.127, 539.765, 208.777 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 2 (Theorem 3.2 in [ 9 ]) . Fix ε > 0 . If A ∈ R m × n has i.i.d. N (0 , 1 /m ) entries and m   Cε − 2 log( ε − 1 ) n , then with probability at least 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( − m/ 2) , we have T n"
+  }, {
+    "type" : "formula",
+    "id" : 306,
+    "page number" : 7,
+    "bounding box" : [ 222.601, 147.687, 388.654, 168.697 ],
+    "content" : "\\| A _ { + , x } ^ { T } A _ { + , y } - Q _ { x , y } \\| \\leqslant \\varepsilon \\ \\forall \\ x , y \\in \\mathbb { R } ^ { n } \\\\ \\intertext { i s c o n } \\ = \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l } \\ - \\ \\intertext { s i l l }"
+  }, {
+    "type" : "paragraph",
+    "id" : 307,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 119.207, 539.564, 146.857 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where Q x,y := π − θ x,y 2 π I n + sin θ x,y 2 π M ˆ x ↔ ˆ y if x,y   = 0 and 0 n × n otherwise. Here C and c are absolute constants."
+  }, {
+    "type" : "paragraph",
+    "id" : 308,
+    "page number" : 7,
+    "bounding box" : [ 289.68, 124.887, 289.68, 143.814 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 309,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 79.968, 539.724, 109.177 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "An elementary calculation shows E [ A T + ,x A + ,y ] = Q x,y . Also by symmetry, E [ A T − ,x A − ,y ] = Q x,y . By applying a nearly identical argument as in [ 9 ], the analogous result for A T − ,x A − ,y holds."
+  }, {
+    "type" : "paragraph",
+    "id" : 310,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 691.407, 539.606, 725.258 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3. Fix ε > 0 . If A ∈ R m × n has i.i.d. N (0 , 1 /m ) entries and m   Cε − 2 log( ε − 1 ) n then with probability at least 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( − m/ 2) , we have"
+  }, {
+    "type" : "formula",
+    "id" : 311,
+    "page number" : 8,
+    "bounding box" : [ 221.04, 666.807, 390.622, 687.818 ],
+    "content" : "\\| A _ { - , x } ^ { T } A _ { - , y } - Q _ { x , y } \\| \\leqslant \\varepsilon \\, \\forall \\, x , y \\in \\mathbb { R } ^ { n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 312,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 650.073, 246.794, 660.982 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here C and c are absolute constants."
+  }, {
+    "type" : "paragraph",
+    "id" : 313,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 614.073, 539.765, 640.178 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We now extend the argument in [ 9 ] for A T + ,x A − ,y . Note that a result for A T − x A + ,y would be identical. Observe that"
+  }, {
+    "type" : "formula",
+    "id" : 314,
+    "page number" : 8,
+    "bounding box" : [ 195.36, 579.327, 416.422, 605.422 ],
+    "content" : "\\mathbb { E } [ A _ { + , x } ^ { T } A _ { - , y } ] = H _ { x , y } \\colon = \\frac { \\theta _ { x , y } } { 2 \\pi } I _ { n } - \\frac { \\sin \\theta _ { x , y } } { 2 \\pi } M _ { \\hat { x } \\leftrightarrow \\hat { y } } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 315,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 560.073, 204.095, 570.993 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We will prove the following:"
+  }, {
+    "type" : "paragraph",
+    "id" : 316,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 516.327, 539.606, 550.298 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 4. Fix ε > 0 . If A ∈ R m × n has i.i.d. N (0 , 1 /m ) entries and m   Cε − 2 log( ε − 1 ) n then with probability at least 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( − m/ 2) , we have"
+  }, {
+    "type" : "formula",
+    "id" : 317,
+    "page number" : 8,
+    "bounding box" : [ 220.8, 491.727, 390.861, 512.738 ],
+    "content" : "\\| A _ { + , x } ^ { T } A _ { - , y } - H _ { x , y } \\| \\leqslant \\varepsilon \\ \\forall \\ x , y \\in \\mathbb { R } ^ { n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 318,
+    "page number" : 8,
+    "bounding box" : [ 71.999, 474.993, 246.793, 485.902 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here C and c are absolute constants."
+  }, {
+    "type" : "paragraph",
+    "id" : 319,
+    "page number" : 8,
+    "bounding box" : [ 71.999, 436.968, 539.387, 463.735 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Note that this would complete Proposition 1 by observing Φ x,y = 2 Q x,y − 2 H x,y and combining Lemmas 2 , 3 , 4 , and an analogous result for A T − x A + ,y , each satisﬁed with ε/ 4 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 320,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 371.192, 539.673, 436.353 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The main probabilistic tool in the proof of Lemma 4 is a result concerning concentration of pseudo-Lipschitz functions. Pseudo-Lipschitzness can be considered as a relaxation of standard Lipschitz continuity but with particular attention towards which sets a function is Lipschitz with respect to. When the sets are balls, then the notion of pseudo-Lipschitzness reduces to standard Lipschitzness. Prior to stating the result, we require the following deﬁnitions."
+  }, {
+    "type" : "paragraph",
+    "id" : 321,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 327.447, 539.213, 361.01 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 2 ( ( δ,γ ) -wide system) . A set system { B t ⊆ R n : t ∈ Θ } is ( δ,γ ) -wide if B t = − B t , B t is convex, and Vol ( B t ∩ δ B )   γ Vol ( δ B ) ∀ t ∈ Θ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 322,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 277.767, 539.705, 325.01 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 3 (pseudo-Lipschitz function) . Suppose there exists a ( δ,γ ) -wide system { B t ⊆ R n : t ∈ Θ } such that | g t ( x ) − g t ( y ) |   ε for any t ∈ Θ and x,y ∈ ( R n ) d with x i − y i ∈ B t for all i ∈ [ d ] . Then we say that { g t } t ∈ Θ is ( ε,δ,γ ) -pseudo-Lipschitz."
+  }, {
+    "type" : "paragraph",
+    "id" : 323,
+    "page number" : 8,
+    "bounding box" : [ 71.999, 249.512, 539.644, 273.992 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Note here that a function is pseudo-Lipschitz with respect to a particular system of sets. The following theorem establishes favorable concentration for pseudo-Lipschitz functions."
+  }, {
+    "type" : "paragraph",
+    "id" : 324,
+    "page number" : 8,
+    "bounding box" : [ 71.999, 192.087, 539.749, 239.331 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 3 (Theorem 4.4 in [ 9 ]) . Let θ be a random variable taking values in Θ . Let { g t : ( R n ) d → R : t ∈ Θ } be a function family and let h : ( R n ) d → R be a function. Let ε,γ,D > 0 and δ ∈ (0 , 1) . Deﬁne the spherical shell H := (1 + δ/ 2) B \\ (1 − δ/ 2) B in R n . Suppose:"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 8,
+    "bounding box" : [ 84.96, 124.527, 504.315, 189.771 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 84.96, 169.647, 346.34, 189.771 ],
+      "font" : "SFTI1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "1. For any ﬁxed x ∈ H d , P θ ( g θ ( x )   h ( x ) + ε )   1 − p,",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 84.96, 147.087, 268.741, 166.015 ],
+      "font" : "SFTI1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "2. { g t } t ∈ Θ is ( ε,δ,γ ) -pseudo-Lipschitz,",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 84.96, 124.527, 504.315, 144.938 ],
+      "font" : "SFTI1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "3. | h ( x ) − h ( y ) |   D whenever x ∈ ( S n − 1 ) d , y ∈ ( R n ) d , and   y i − x i     δ for all i ∈ [ d ] .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 328,
+    "page number" : 8,
+    "bounding box" : [ 71.999, 109.967, 96.323, 120.36 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Then"
+  }, {
+    "type" : "formula",
+    "id" : 329,
+    "page number" : 8,
+    "bounding box" : [ 150.359, 67.8, 461.421, 100.516 ],
+    "content" : "\\mathbb { P } _ { \\theta } \\left ( g _ { \\theta } ( x ) \\leqslant h ( x ) + 2 \\varepsilon + D , \\ \\forall \\ x \\in ( \\mathcal { S } ^ { n - 1 } ) ^ { d } \\right ) \\geqslant 1 - \\gamma ^ { - 2 d } ( 4 / \\delta ) ^ { 2 d n } p ."
+  }, {
+    "type" : "heading",
+    "id" : 330,
+    "level" : "Doctitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 713.141, 209.029, 722.956 ],
+    "heading level" : 1,
+    "font" : "SFBX1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.2.1 Proof of Lemma 4"
+  }, {
+    "type" : "paragraph",
+    "id" : 331,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 657.207, 539.62, 703.255 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For ease of exposition, assume the entries of A are i.i.d. N (0 , 1) . The main idea is that we will concentrate Lipschitz approximations of A T + ,x A − ,y that are upper and lower bounds with respect to the semideﬁnite ordering. For ε ∈ (0 , 1) , deﬁne the following continuous relaxations of { t> 0 } :"
+  }, {
+    "type" : "paragraph",
+    "id" : 332,
+    "page number" : 9,
+    "bounding box" : [ 483.839, 637.68, 490.439, 667.56 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "formula",
+    "id" : 333,
+    "page number" : 9,
+    "bounding box" : [ 150.6, 585.6, 461.182, 651.076 ],
+    "content" : "\\varphi _ { - \\varepsilon } ^ { + } ( t ) \\colon = \\begin{cases} 0 & t \\leq - \\varepsilon \\\\ 1 + t / \\varepsilon & - \\varepsilon < t \\leq 0 \\text { and } \\varphi _ { \\varepsilon } ^ { + } ( t ) \\colon = \\begin{cases} 0 & t < 0 \\\\ t / \\varepsilon & 0 \\leq t < \\varepsilon \\, . \\end{cases} \\\\ 1 & t > 0 \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 334,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 580.127, 387.851, 615.076 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "  1 t > 0   1 Analogously deﬁne the following continuous relaxations for { t< 0 } :"
+  }, {
+    "type" : "formula",
+    "id" : 335,
+    "page number" : 9,
+    "bounding box" : [ 146.28, 498.96, 465.382, 584.28 ],
+    "content" : "\\text {logosically define the following continuous relaxations for } \\mathbb { 1 } _ { \\{ t < 0 \\} } \\colon \\\\ \\varphi _ { - \\varepsilon } ( t ) \\coloneqq \\begin{cases} 1 & t \\leqslant - \\varepsilon \\\\ - t / \\varepsilon & - \\varepsilon < t \\leqslant 0 \\text { and } \\varphi _ { - } ^ { - } ( t ) \\coloneqq \\begin{cases} 1 & t < 0 \\\\ 0 & t > 0 \\end{cases} \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 336,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 469.2, 539.658, 509.738 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Then we have that for all t ∈ R , ϕ + ε ( t )   { t> 0 }   ϕ + − ε ( t ) and ϕ − − ε ( t )   { t< 0 }   ϕ − ε ( t ) . For V ∈ R m × n with rows v i for i ∈ [ m ] and x,y ∈ R n , deﬁne m"
+  }, {
+    "type" : "formula",
+    "id" : 337,
+    "page number" : 9,
+    "bounding box" : [ 199.32, 431.4, 411.833, 472.611 ],
+    "content" : "G _ { V , \\text {up} } ( x , y ) \\colon = \\sum _ { i = 1 } ^ { m } \\varphi _ { - \\varepsilon } ^ { + } ( \\langle v _ { i } , x \\rangle ) \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , y \\rangle ) v _ { i } v _ { i } ^ { \\text {T} }"
+  }, {
+    "type" : "paragraph",
+    "id" : 338,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 417.513, 89.416, 428.433 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "and"
+  }, {
+    "type" : "formula",
+    "id" : 339,
+    "page number" : 9,
+    "bounding box" : [ 196.32, 379.08, 415.342, 420.411 ],
+    "content" : "G _ { V , \\text {low} } ( x , y ) \\colon = \\sum _ { i = 1 } ^ { m } \\varphi _ { \\varepsilon } ^ { + } ( \\langle v _ { i } , x \\rangle ) \\varphi _ { - \\varepsilon } ^ { - } ( \\langle v _ { i } , y \\rangle ) v _ { i } v _ { i } ^ { \\text {T} } . \\\\ \\intertext { x } r \\, y \\in \\mathbb { R } ^ { n } \\ G _ { A } \\, _ { x } ( r \\, y ) \\prec A ^ { \\text {T} } \\quad A \\, _ { x } \\prec G _ { A } \\, _ { x } ( r \\, y ) \\, \\text { so } \\, i t \\, \\text { suffice}"
+  }, {
+    "type" : "paragraph",
+    "id" : 340,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 340.473, 539.625, 380.138 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Note that for any x,y ∈ R n , G A, low ( x,y )   A T + ,x A − ,y   G A, up ( x,y ) so it suﬃces to upper bound G A, up ( x,y ) and lower bound G A, low ( x,y ) uniformly. For the upper bound, we will prove the following:"
+  }, {
+    "type" : "paragraph",
+    "id" : 341,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 297.088, 539.718, 331.058 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 2. Fix 0 < ε < 1 . Suppose A ∈ R m × n has i.i.d. N (0 , 1) entries. Then if m   Cε − 2 log( ε − 1 ) n , we have that with probability at least 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( m/ 2) ,"
+  }, {
+    "type" : "formula",
+    "id" : 342,
+    "page number" : 9,
+    "bounding box" : [ 211.202, 273.088, 400.464, 292.015 ],
+    "content" : "G _ { A , u p } ( x , y ) \\preceq m H _ { x , y } + m \\varepsilon I _ { n } \\ \\forall \\ x , y \\neq 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 343,
+    "page number" : 9,
+    "bounding box" : [ 380.522, 273.088, 380.522, 292.015 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 344,
+    "page number" : 9,
+    "bounding box" : [ 72.002, 256.833, 246.796, 267.742 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here C and c are absolute constants."
+  }, {
+    "type" : "paragraph",
+    "id" : 345,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 167.073, 539.78, 245.793 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The central argument can be broken down into three steps and directly follows [ 9 ]. We ﬁrst show that the function g V ( x,y ) := 1 m   u,G V, up ( x,y ) u   is ( ε,δ,γ ) -pseudo-Lipschitz for ﬁxed u ∈ S n − 1 for appropriate parameters ε,δ, and γ . Second, we use Theorem 3 to establish, for ﬁxed u , concentration of g A ( x,y ) uniformly in x,y to h ( x,y ) :=   u,H x,y u   . Finally, we use a standard ε -net argument to establish uniform concentration over u , guaranteeing an upper bound on G A, up ( x,y ) . Throughout the proof, we will operate on the set of matrices"
+  }, {
+    "type" : "formula",
+    "id" : 346,
+    "page number" : 9,
+    "bounding box" : [ 180.481, 123.6, 431.182, 158.455 ],
+    "content" : "\\Theta \\coloneqq \\left \\{ V \\in \\mathbb { R } ^ { m \\times n } \\colon \\| V \\| \\leqslant 3 \\sqrt { m } , \\ \\max _ { i \\in [ m ] } \\| v _ { i } \\| \\leqslant \\sqrt { 2 n } \\right \\} . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 347,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 99.567, 462.573, 118.495 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "When A is Gaussian, standard results [ 27 ] show that A ∈ Θ with high probability."
+  }, {
+    "type" : "paragraph",
+    "id" : 348,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 63.927, 539.615, 97.898 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 5. [ 27 ] Suppose A ∈ R m × n has i.i.d. N (0 , 1) entries. Then with probability at least 1 − exp( − m/ 2) − m exp( − n/ 8) , we have   A     3 √ m and max i ∈ [ m ]   a i     √ 2 n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 349,
+    "page number" : 10,
+    "bounding box" : [ 71.999, 699.153, 539.638, 723.775 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Step 1: Establishing pseudo-Lipschitzness. We ﬁrst establish that { g V } V ∈ Θ is pseudoLipschitz with respect to a particular set system."
+  }, {
+    "type" : "paragraph",
+    "id" : 350,
+    "page number" : 10,
+    "bounding box" : [ 71.999, 655.287, 539.72, 689.618 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 6. Fix ε > 0 and u ∈ S n − 1 . For V ∈ Θ , deﬁne g V ( x,y ) := 1 m   u,G V, up ( x,y ) u   . Then { g V } V ∈ Θ is (2 ε,ε 2 / 82 , 1 / 2) -pseudo-Lipschitz with respect to the set system { B M,ε 2 ,u } V ∈ Θ where"
+  }, {
+    "type" : "formula",
+    "id" : 351,
+    "page number" : 10,
+    "bounding box" : [ 188.52, 608.88, 423.142, 650.091 ],
+    "content" : "B _ { M , \\varepsilon ^ { 2 } , u } \\colon = \\left \\{ z \\in \\mathbb { R } ^ { n } \\colon \\sum _ { i = 1 } ^ { m } | \\langle v _ { i } , z \\rangle | \\langle v _ { i } , u \\rangle ^ { 2 } \\leqslant \\varepsilon ^ { 2 } m \\right \\} . \\\\ \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 352,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 558.927, 539.712, 604.975 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We ﬁrst note that it was shown in Lemma 5.5 of [ 9 ] that the set system { B M,ε 2 ,u } V ∈ Θ is ( ε 2 / 82 , 1 / 2) -wide. We now show that { g V } V ∈ Θ is (2 ε,ε 2 / 82 , 1 / 2) -pseudo-Lipschitz. For x,y, ˜ x, ˜ y ∈ R n , suppose y − ˜ y ∈ B M,ε 2 ,u and x − ˜ x ∈ B M,ε 2 ,u . Then observe that"
+  }, {
+    "type" : "formula",
+    "id" : 353,
+    "page number" : 10,
+    "bounding box" : [ 118.68, 396.993, 492.513, 554.691 ],
+    "content" : "\\mathbb { R } ^ { n } , \\text { suppose } y - \\tilde { y } \\in B _ { M , \\varepsilon ^ { 2 } , u } \\text { and } x - \\tilde { x } \\in B _ { M , \\varepsilon ^ { 2 } , u } \\text { . Then observe that } \\\\ | g _ { V } ( x , y ) - g _ { V } ( \\tilde { x } , \\tilde { y } ) | & \\leq \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | [ \\varphi _ { - } ^ { + } ( \\langle v _ { i } , x \\rangle ) \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , y \\rangle ) - \\varphi _ { - } ^ { + } ( \\langle v _ { i } , \\tilde { x } \\rangle ) \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , y \\rangle ) | \\\\ & + | \\varphi _ { - } ^ { + } ( \\langle v _ { i } , \\tilde { x } \\rangle ) \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , y \\rangle ) - \\varphi _ { - } ^ { + } ( \\langle v _ { i } , \\tilde { x } \\rangle ) \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , \\tilde { y } \\rangle ) | \\langle v _ { i } , u \\rangle ^ { 2 } \\\\ & \\leq \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | [ \\varphi _ { - } ^ { + } ( \\langle v _ { i } , x \\rangle ) - \\varphi _ { - } ^ { + } ( \\langle v _ { i } , \\tilde { x } \\rangle ) | \\\\ & + | \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , y \\rangle ) - \\varphi _ { \\varepsilon } ^ { - } ( \\langle v _ { i } , \\tilde { y } \\rangle ) | \\langle v _ { i } , u \\rangle ^ { 2 } \\\\ & \\leq \\frac { 1 } { m \\varepsilon } \\sum _ { i = 1 } ^ { m } | [ \\langle v _ { i } , x - \\tilde { x } \\rangle | + | \\langle v _ { i } , y - \\tilde { y } \\rangle | \\langle v _ { i } , u \\rangle ^ { 2 } \\\\ & \\leq 2 \\varepsilon . \\\\ \\intertext { In the first inequality, we used the triangle inequality. In the second, we used | \\varphi _ { - } ^ { + } ( t ) | , | \\varphi _ { \\varepsilon } ^ { - } ( t ) | \\leq 1 . }"
+  }, {
+    "type" : "paragraph",
+    "id" : 354,
+    "page number" : 10,
+    "bounding box" : [ 71.999, 337.647, 539.65, 385.777 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In the ﬁrst inequality, we used the triangle inequality. In the second, we used | ϕ + − ε ( t ) | , | ϕ − ε ( t ) |   1 . In the third, we used the fact that ϕ + − ε and ϕ − ε are both 1 /ε -Lipschitz. In the last inequality, we used the assumptions y − ˜ y ∈ B M,ε 2 ,u and x − ˜ x ∈ B M,ε 2 ,u ."
+  }, {
+    "type" : "paragraph",
+    "id" : 355,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 303.033, 539.534, 329.258 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Step 2: Point-wise Concentration. We now show that, for ﬁxed u ∈ S n − 1 , g V ( x,y ) concentrates around h ( x,y ) uniformly in x,y by an application of Theorem 3 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 356,
+    "page number" : 10,
+    "bounding box" : [ 71.999, 266.913, 539.706, 293.138 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 7. Fix ε > 0 and u ∈ S n − 1 . Let A ∈ R m × n have i.i.d. N (0 , 1) entries. Deﬁne θ := A | ( A ∈ Θ) . There exist absolute constants c,K, and ˜ C such that"
+  }, {
+    "type" : "formula",
+    "id" : 357,
+    "page number" : 10,
+    "bounding box" : [ 148.08, 234.687, 463.582, 256.101 ],
+    "content" : "\\mathbb { P } _ { \\theta } \\left ( g _ { \\theta } ( x , y ) \\leqslant h ( x , y ) + K _ { \\varepsilon } \\, \\forall \\, x , y \\neq 0 \\right ) \\geqslant 1 - ( \\tilde { C } / \\varepsilon ) ^ { 8 n } \\exp ( - c m \\varepsilon ^ { 2 } ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 358,
+    "page number" : 10,
+    "bounding box" : [ 308.999, 234.687, 308.999, 253.614 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 359,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 190.68, 539.192, 231.218 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We will ﬁrst bound E [ G A, up ( x,y )] . Observe that for any t ∈ R , we have ϕ + − ε ( t )   { t   − ε } and ϕ − ε ( t )   { t   ε } . This implies that for any t 1 ,t 2 ∈ R , + −"
+  }, {
+    "type" : "formula",
+    "id" : 360,
+    "page number" : 10,
+    "bounding box" : [ 125.28, 176.687, 486.382, 207.0 ],
+    "content" : "\\text {and } \\varphi _ { \\varepsilon } \\left ( t \\right ) & \\leqslant \\mathbb { I } _ { \\{ t \\leqslant \\varepsilon \\} } \\cdot \\text {This implies that for any } t _ { 1 } , t _ { 2 } \\in \\mathbb { R } , \\\\ & \\quad \\varphi _ { - \\varepsilon } ^ { + } ( t _ { 1 } ) \\varphi _ { \\varepsilon } ^ { - } ( t _ { 2 } ) \\leqslant \\mathbb { I } _ { \\{ t _ { 1 } \\geqslant - \\varepsilon \\} } \\, \\mathbb { I } _ { \\{ t _ { 2 } \\leqslant \\varepsilon \\} } \\leqslant \\mathbb { I } _ { \\{ t _ { 1 } > 0 \\} } \\, \\mathbb { I } _ { \\{ t _ { 2 } < 0 \\} } + \\mathbb { I } _ { \\{ 0 \\leqslant t _ { 2 } \\leqslant \\varepsilon \\} } \\, ."
+  }, {
+    "type" : "paragraph",
+    "id" : 361,
+    "page number" : 10,
+    "bounding box" : [ 206.52, 151.56, 213.12, 181.44 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 362,
+    "page number" : 10,
+    "bounding box" : [ 247.8, 151.56, 254.4, 181.44 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 363,
+    "page number" : 10,
+    "bounding box" : [ 295.2, 151.56, 301.8, 181.44 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 364,
+    "page number" : 10,
+    "bounding box" : [ 330.6, 151.56, 337.2, 181.44 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 365,
+    "page number" : 10,
+    "bounding box" : [ 376.32, 151.56, 382.92, 181.44 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 10,
+    "bounding box" : [ 438.24, 151.56, 444.84, 181.44 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 154.233, 95.709, 165.153 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Thus"
+  }, {
+    "type" : "formula",
+    "id" : 368,
+    "page number" : 10,
+    "bounding box" : [ 110.64, 93.648, 501.0, 145.251 ],
+    "content" : "\\mathbb { E } [ G _ { A , u p } ( x , y ) ] & \\preceq \\mathbb { E } \\left [ \\sum _ { i = 1 } ^ { m } ( \\mathbb { 1 } _ { \\{ a _ { i } , x \\rangle > 0 } ) \\, \\mathbb { 1 } _ { \\{ a _ { i } , y \\rangle < 0 } \\right ] + \\mathbb { 1 } _ { \\{ - \\varepsilon \\leqslant ( a _ { i } , x ) \\leqslant 0 \\} } + \\mathbb { 1 } _ { \\{ 0 \\leqslant ( a _ { i } , y ) \\leqslant \\varepsilon \\} } ) a _ { i } a _ { i } ^ { T } \\right ] \\\\ & = m H _ { x , y } + m \\mathbb { E } [ \\mathbb { 1 } _ { - \\varepsilon \\leqslant \\langle a , x \\rangle \\leqslant 0 } \\ a a ^ { T } ] + m \\mathbb { E } [ \\mathbb { 1 } _ { 0 \\leqslant \\langle a , y \\rangle \\leqslant \\varepsilon } \\ a a ^ { T } ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 10,
+    "bounding box" : [ 255.0, 67.8, 261.6, 97.68 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 370,
+    "page number" : 10,
+    "bounding box" : [ 372.12, 67.8, 378.72, 97.68 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/BD"
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 685.32, 539.662, 725.33 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where a ∼ N (0 ,I n ) . It was shown in Lemma 12 of [ 20 ] that E [ {− ε     a,x     0 } aa T ]   ε 2   x   I n ∀ x   = 0 . An analogous bound shows E [ { 0     a,y     ε } aa T ]   ε 2   y   I n for all y   = 0 . Hence we attain"
+  }, {
+    "type" : "paragraph",
+    "id" : 372,
+    "page number" : 11,
+    "bounding box" : [ 519.72, 704.847, 519.72, 723.774 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash This completes the upper bound on G A, up . The lower bound on G A, low is identical:"
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 11,
+    "bounding box" : [ 380.281, 688.647, 380.281, 707.574 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "formula",
+    "id" : 374,
+    "page number" : 11,
+    "bounding box" : [ 165.84, 649.407, 445.822, 699.0 ],
+    "content" : "\\text {gous bound shows } \\mathbb { E } [ \\mathbb { I } _ { \\{ 0 \\leq ( a , y ) \\leq \\varepsilon \\} } \\ a a ^ { \\mathbb { 1 } } ] \\preceq & \\frac { \\varepsilon } { 2 \\| y \\| } I _ { n } \\text { for all } y \\neq 0 . \\text { Hence we attain} \\\\ \\mathbb { E } [ G _ { A , \\text {up} } ( x , y ) ] \\preceq & \\ m H _ { x , y } + m \\left ( \\frac { \\varepsilon } { 2 \\| x \\| } + \\frac { \\varepsilon } { 2 \\| y \\| } \\right ) I _ { n } \\text { } \\forall \\, x , y \\neq 0 . \\\\ \\text {dies } \\mathbb { F } [ a _ { \\ell } ( x , y ) ] < h ( r _ { \\ell } , y ) + 2 \\varepsilon \\text { for } \\text {fixed } x \\cdot y \\in \\mathbb { R } ^ { n } \\text { with } \\| x \\| \\, \\| y \\| > 1 / 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 375,
+    "page number" : 11,
+    "bounding box" : [ 425.88, 656.967, 425.88, 675.894 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 376,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 628.407, 445.09, 648.53 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "This implies E [ g A ( x, y )] /lessorequalslant h ( x, y ) + 2 ε for fixed x, y ∈ R n with ‖ x ‖ , ‖ y ‖ /greaterorequalslant 1 / 2 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 547.168, 539.717, 634.971 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "  x   ,   y     1 / 2 . Observe that g A ( x,y ) = 1 m   m i =1 ϕ + − ε (   a i ,x   ) ϕ − ε (   a i ,y   )   a i ,u   2 is a sum of sub-exponential random variables. Hence by Bernstein’s inequality, we have for some absolute constant c and any β > 0 , P ( g A ( x,y ) − E [ g A ( x,y )] > β )   2exp( − cm min( β,β 2 )) . Taking β = ε and using E [ g A ( x,y )]   h ( x,y )+2 ε , we get P ( g A ( x,y ) > h ( x,y ) + 3 ε )   2exp( − cmε 2 ) . Since P ( A ∈ Θ)   1 / 2 , conditioning on the event A ∈ Θ at most doubles the failure probability so we attain"
+  }, {
+    "type" : "formula",
+    "id" : 378,
+    "page number" : 11,
+    "bounding box" : [ 194.04, 524.607, 539.663, 545.618 ],
+    "content" : "\\mathbb { P } \\left ( g _ { \\theta } ( x , y ) \\leqslant h ( x , y ) + 3 \\varepsilon \\right ) \\geqslant 1 - 4 \\exp ( - c m \\varepsilon ^ { 2 } ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 379,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 447.927, 539.651, 520.833 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "To establish uniform concentration in x,y , we note that by a simple modiﬁcation to Lemma 27 in [ 17 ], we have that H x,y is L -Lipschitz with respect to x,y ∈ S n − 1 where L = 22 /π . Hence | h ( x,y ) − h (˜ x, ˜ y ) |   Lε if   x − ˜ x     ε and   y − ˜ y     ε . Thus the result follows by applying Theorem 3 to { g V } V ∈ Θ and θ := A | ( A ∈ Θ) . By Lemma 6 , { g V } V ∈ Θ is (2 ε,ε 2 / 82 , 1 / 2) -pseudo-Lipschitz. We can then take p = exp( − cmε 2 ) by ( 9 ) and D = 2 Lε ."
+  }, {
+    "type" : "paragraph",
+    "id" : 380,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 405.927, 539.771, 439.897 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Step 3: Uniform Concentration. The last step is to get a uniform bound over all u ∈ S n − 1 . Augmenting our notation, let g V ( x,y,u ) := 1 m   u,G V, up ( x,y ) u   and h ( x,y,u ) :=   u,H x,y u   . m × n"
+  }, {
+    "type" : "paragraph",
+    "id" : 381,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 357.927, 539.604, 405.457 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 8. Fix ε > 0 . Suppose A ∈ R has i.i.d. N (0 , 1) entries. There exist absolute constants c and C such that if m   Cε − 2 log( ε − 1 ) n , then with probability 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( − m/ 2) , G A, up ( x,y )   mH x,y + mε ∀ x,y   = 0 ."
+  }, {
+    "type" : "formula",
+    "id" : 382,
+    "page number" : 11,
+    "bounding box" : [ 218.28, 344.367, 393.382, 363.294 ],
+    "content" : "G _ { A , u p } ( x , y ) \\preceq & \\ m H _ { x , y } + m \\varepsilon \\ \\forall x , y \\neq 0 . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 383,
+    "page number" : 11,
+    "bounding box" : [ 373.44, 344.367, 373.44, 363.294 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 384,
+    "page number" : 11,
+    "bounding box" : [ 71.999, 310.047, 539.72, 344.017 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We ﬁrst show that g V ( x,y,u ) is 18 -Lipschitz with respect to u ∈ S n − 1 when V ∈ Θ . Fix x,y   = 0 . Observe that for u,w ∈ S n − 1 , m m"
+  }, {
+    "type" : "paragraph",
+    "id" : 385,
+    "page number" : 11,
+    "bounding box" : [ 91.799, 310.047, 91.799, 328.974 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "formula",
+    "id" : 386,
+    "page number" : 11,
+    "bounding box" : [ 101.039, 226.287, 539.661, 309.531 ],
+    "content" : "x , y & \\neq 0 . \\ \\text {Observe that } u , w \\in \\mathcal { S } ^ { 2 } \\quad , \\\\ | g v ( x , y , u ) - g v ( x , y , w ) | & \\leq \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | \\langle v _ { i } , u \\rangle | ^ { 2 } - \\langle v _ { i } , w \\rangle ^ { 2 } | \\leq \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | \\langle v _ { i } , u - w \\rangle | | ( v _ { i } , u + w ) | \\\\ & \\leq \\frac { 1 } { m } \\| V ( u - w ) \\| \\| V ( u + w ) \\| \\\\ & \\leq 1 8 \\| u - w \\| \\\\ \\text {where we used } \\| V \\| & \\leq 3 \\sqrt { m } \\text { along with } u , w \\in \\mathcal { S } ^ { n - 1 } \\text { in the last inequality.}"
+  }, {
+    "type" : "paragraph",
+    "id" : 387,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 203.727, 420.223, 230.574 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where we used ‖ V ‖ /lessorequalslant 3 √ m along with u, w ∈ S n -1 in the last inequality."
+  }, {
+    "type" : "paragraph",
+    "id" : 388,
+    "page number" : 11,
+    "bounding box" : [ 71.999, 149.607, 539.646, 210.578 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "7 and a union bound, it holds with probability at least 1 − (3 /ε ) n ( ˜ C/ε ) 8 n exp( − cmε 2 ) over θ = A | ( A ∈ Θ) that for all x,y ∈ S n − 1 and u ∈ N ε , g θ ( x,y,u )   h ( x,y,u ) + Kε. For any x,y,u ∈ S n − 1 , there exists a w ∈ N ε with   u − w     ε so using ( 10 ) we get"
+  }, {
+    "type" : "formula",
+    "id" : 389,
+    "page number" : 11,
+    "bounding box" : [ 174.24, 127.047, 437.3, 145.974 ],
+    "content" : "g _ { \\theta } ( x , y , u ) \\leqslant g _ { \\theta } ( x , y , w ) + 1 8 \\| u - w \\| \\leqslant h ( x , y , w ) + 1 8 \\varepsilon ."
+  }, {
+    "type" : "paragraph",
+    "id" : 390,
+    "page number" : 11,
+    "bounding box" : [ 71.999, 71.673, 546.631, 124.897 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Since   H x,y     2 , we have that for u,w ∈ S n − 1 , | h ( x,y,u ) − h ( x,y,w ) |   4   u − w   . This further implies g θ ( x,y,u )   h ( x,y,u )+22 ε . We conclude with probability at least 1 − (3 /ε ) n ( C/ε ) 8 n exp( − cmε 2 ) over θ , the desired inequality holds. Using P ( A ∈ Θ)   1 − m exp( − n/ 8) − exp( − m/ 2) and taking m   Cε − 2 log( ε − 1 ) n achieves the ﬁnal result with the desired probability."
+  }, {
+    "type" : "paragraph",
+    "id" : 391,
+    "page number" : 12,
+    "bounding box" : [ 72.001, 656.727, 539.605, 704.258 ],
+    "font" : "SFTI1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 9. Fix ε > 0 . Suppose A ∈ R m × n has i.i.d. N (0 , 1) entries. There exist absolute constants c and C such that if m   Cε − 2 log( ε − 1 ) n , then with probability 1 − exp( − cmε 2 / 2) − m exp( − n/ 8) − exp( − m/ 2) , G A, low ( x,y )   mH x,y − mε ∀ x,y   = 0 ."
+  }, {
+    "type" : "formula",
+    "id" : 392,
+    "page number" : 12,
+    "bounding box" : [ 216.721, 643.167, 394.943, 662.094 ],
+    "content" : "G _ { A , l o w } ( x , y ) \\succeq & \\ m H _ { x , y } - m \\varepsilon \\ \\forall x , y \\neq 0 . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 393,
+    "page number" : 12,
+    "bounding box" : [ 375.001, 643.167, 375.001, 662.094 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 12,
+    "bounding box" : [ 72.001, 629.913, 338.531, 640.833 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 4 follows by combining Lemma 8 and Lemma 9 ."
+  }, {
+    "type" : "heading",
+    "id" : 395,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 72.0, 595.571, 202.292, 608.511 ],
+    "heading level" : 1,
+    "font" : "SFBX1440",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "Acknowledgements"
+  }, {
+    "type" : "paragraph",
+    "id" : 396,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 557.913, 539.64, 582.393 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "PH is supported by NSF Grant DMS-2022205 and NSF CAREER Grant DMS-1848087. OL acknowledges support by the NSF Graduate Research Fellowship under Grant No. DGE-1450681."
+  }, {
+    "type" : "heading",
+    "id" : 397,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 72.0, 523.571, 145.658, 536.511 ],
+    "heading level" : 1,
+    "font" : "SFBX1440",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 12,
+    "bounding box" : [ 77.4, 107.072, 539.717, 510.404 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 9,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.4, 485.913, 539.569, 510.404 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[1] Sohail Bahmani and Justin Romberg. A ﬂexible convex relaxation for phase retrieval. Electronic Journal of Statistics , 11(2):5254–5281, 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.4, 436.833, 539.622, 474.873 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[2] Emmanuel J. Candès and Xiaodong Li. Solving quadratic equations via phaselift when there are about as many equations as unknowns. Foundations of Computational Mathematics , 14.5:1017– 1026, 2014.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.4, 387.753, 539.509, 425.793 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[3] Emmanuel J. Candès, Xiaodong Li, and Mahdi Soltanolkotabi. Phase retrieval via wirtinger ﬂow: Theory and applications. IEEE Transactions on Information Theory , 61(4):195–2007, 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.4, 338.793, 539.717, 376.833 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[4] Emmanuel J. Candès, Thomas Strohmer, and Vladislav Voroninski. Phaselift: Exact and stable signal recovery from magnitude measurements via convex programming. Communications on Pure and Applied Mathematics , 66(8):1241–1274, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.4, 289.713, 539.683, 327.753 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[5] Yuxin Chen and Emmanuel Candès. Solving random quadratic systems of equations is nearly as easy as solving linear systems. Communications on Pure and Applied Mathematics , 70(5):822– 883, 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.4, 240.633, 539.531, 278.673 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[6] Yuxin Chen, Yuejie Chi, Jianqing Fan, and Cong Ma. Gradient descent with random initialization: Fast global convergence for nonconvex phase retrieval. Mathematical Programming , 176(1-2):5–37, 2019.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.401, 205.233, 539.652, 229.723 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[7] Christian Clason. Nonsmooth analysis and optimization. arXiv preprint arXiv:1708.04180 , 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.401, 156.152, 539.708, 194.192 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[8] Jorio Cocola, Paul Hand, and Vladislav Voroninski. Nonasymptotic guarantees for low-rank matrix recovery with generative priors. Advances in Neural Information Processing Systems (NeurIPS) , 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 77.401, 107.072, 539.552, 145.112 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[9] Constantinos Daskalakis, Dhruv Rohatgi, and Manolis Zampetakis. Constant-expansion suﬃces for compressed sensing with generative priors. Advances in Neural Information Processing Systems (NeurIPS) , 2020.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 71.672, 539.628, 96.152 ],
+    "font" : "SFRM1095",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "[10] Laurent Demanet and Paul Hand. Stable optimizationless recovery from phaseless linear measurements. Journal of Fourier Analysis and Applications , 20(1):199–221, 2014."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 71.998, 76.832, 539.84, 723.513 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 16,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.0, 685.593, 539.49, 723.513 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[11] John Duchi and Feng Ruan. Solving (most) of a set of quadratic equalities: Composite optimization for robust phase retrieval. Information and Inference: a Journal of the IMA , 8(3):471–529, 2019.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.001, 635.913, 539.531, 673.953 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[12] Yonina C. Eldar, Georgios B. Giannakis, and Gang Wang. Solving systems of random quadratic equations via truncated amplitude ﬂow. IEEE Transactions on Information Theory , 64(2):773– 794, 2018.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.002, 599.913, 539.611, 624.404 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[13] Albert Fannjiang and Thomas Strohmer. The numerics of phase retrieval. arXiv preprint arXiv:2004.05788 , 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.001, 563.793, 539.61, 588.273 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[14] Tom Goldstein and Christoph Struder. Phasemax: Convex phase retrieval via basis pursuit. IEEE Transactions on Information Theory , 64(4):2675–2689, 2018.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.001, 527.793, 539.66, 552.284 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[15] Paul Hand. Phaselift is robust to a constant fraction of arbitrary errors. Applied and Computational Harmonic Analysis , 42(3):550–562, 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.001, 491.673, 539.611, 516.153 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[16] Paul Hand and Babhru Joshi. Global guarantees for blind demodulation with generative priors. Advances in Neural Information Processing Systems (NeurIPS) , pages 11535–11545, 2019.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.0, 455.673, 539.637, 480.033 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[17] Paul Hand, Oscar Leong, and Vladislav Voroninski. Phase retrieval under a generative prior. Advances in Neural Information Processing Systems (NeurIPS) , pages 9136–9146, 2018.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 72.0, 419.553, 539.5, 444.033 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[18] Paul Hand, Oscar Leong, and Vladislav Voroninski. Compressive phase retrieval: Optimal sample complexity with deep generative priors. arXiv preprint arXiv:2008.10579 , 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 369.992, 539.641, 407.912 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[19] Paul Hand and Vladislav Voroninski. An elementary proof of convex phase retrieval in the natural parameter space via the linear program phasemax. Communications in Mathematical Sciences , 16(7):2047–2051, 2018.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 333.872, 539.572, 358.353 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[20] Paul Hand and Vladislav Voroninski. Global guarantees for enforcing deep generative priors by empirical risk. IEEE Transactions on Information Theory , 66(1):401–418, 2019.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 297.752, 539.611, 322.232 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[21] Reinhard Heckel, Wen Huang, Paul Hand, and Vladislav Voroninski. Rate-optimal denoising with deep neural networks. Information and Inference: A Journal of the IMA , 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.998, 248.192, 539.84, 286.233 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[22] Wen Huang, Paul Hand, Reinhard Heckel, and Vladislav Voroninski. A provably convergent scheme for compressive sensing under random generative priors. Journal of Fourier Analysis and Applications , 2021.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 212.072, 539.609, 236.563 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[23] Qi Luo and Hongxia Wang. Phase retrieval via smoothed amplitude ﬂow. arXiv preprint arXiv:1909.10685 , 2019.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 162.512, 539.558, 200.552 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[24] Shuang Qiu, Xiaohan Wei, and Zhuoran Yang. Robust one-bit recovery via relu generative networks: Improved statistical rates and global landscape analysis. International Conference on Machine Learning (ICML) , 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 126.392, 539.708, 150.883 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[25] Ju Sun, Qing Qu, and John Wright. A geometric analysis of phase retrieval. Foundations of Computational Mathematics , 18(5):1131–1198, 2018.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 71.999, 76.832, 539.65, 114.872 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[26] Yan Shuo Tan and Roman Vershynin. Online stochastic gradient descent with arbitrary initialization solves non-smooth, non-convex phase retrieval. arXiv preprint arXiv:1910.12837 , 2019.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 14,
+    "bounding box" : [ 72.0, 613.473, 539.792, 723.524 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 72.0, 699.153, 539.792, 723.524 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[27] Roman Vershynin. Introduction to the non-asymptotic analysis of random matrices. Compressed Sensing: Theory and Applications , Cambridge University Press, 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 72.0, 663.033, 539.642, 687.513 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[28] Bariscan Yonel and Birsen Yazici. A deterministic theory for exact non-convex phase retrieval. IEEE Transactions on Signal Processing , 68:4612–4626, 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 72.0, 613.473, 539.634, 651.393 ],
+      "font" : "SFRM1095",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[29] Huishuai Zhang, Yingbin Liang, and Yuejie Chi. A nonconvex approach for phase retrieval: Reshaped wirtinger ﬂow and incremental algorithms. Journal of Machine Learning Research (JMLR) , 18(141):1–35, 2017.",
+      "kids" : [ ]
+    } ]
+  } ]
+}

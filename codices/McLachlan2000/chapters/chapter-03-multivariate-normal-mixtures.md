@@ -665,11 +665,11 @@ corresponding to the background noise (clutter), such as other metal objects and
 
 <a id="sec-simulated-minefield-with-noise"></a>
 
-# Simulated Minefield with Noise
+**Simulated Minefield with Noise**
 
 <a id="sec-denoised-minefield-data"></a>
 
-# Denoised Minefield Data
+**Denoised Minefield Data**
 
 g
 

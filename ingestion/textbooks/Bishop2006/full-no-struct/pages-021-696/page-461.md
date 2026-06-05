@@ -1,0 +1,32 @@
+[Page 461]
+
+# Exercise 9.4
+
+- 2. E step Evaluate p ( Z | X , θ old ) .
+- 3. M step Evaluate θ new given by
+
+$$
+\theta ^ { \text {new} } = \arg \max _ { \theta } \mathcal { Q } ( \theta , \theta ^ { \text {old} } )
+$$
+
+where
+
+$$
+\mathcal { Q } ( \theta , \theta ^ { o l d } ) & = \sum _ { z } p ( Z | X , \theta ^ { o l d } ) \ln p ( X , Z | \theta ) . \\ \intertext { c k f o r v e n g r e n c e o f e i t h e r the log l i k e l h i o d o r the param e t r $ u $ }
+$$
+
+4. Check for convergence of either the log likelihood or the parameter values. If the convergence criterion is not satisﬁed, then let
+
+and return to step 2.
+
+$$
+\theta ^ { \text {old} } \leftarrow \theta ^ { \text {new} }
+$$
+
+The EM algorithm can also be used to ﬁnd MAP (maximum posterior) solutions for models in which a prior p ( θ ) is deﬁned over the parameters. In this case the E step remains the same as in the maximum likelihood case, whereas in the M step the quantity to be maximized is given by Q ( θ , θ old ) + ln p ( θ ) . Suitable choices for the prior will remove the singularities of the kind illustrated in Figure 9.7.
+
+Here we have considered the use of the EM algorithm to maximize a likelihood function when there are discrete latent variables. However, it can also be applied when the unobserved variables correspond to missing values in the data set. The distribution of the observed values is obtained by taking the joint distribution of all the variables and then marginalizing over the missing ones. EM can then be used to maximize the corresponding likelihood function. We shall show an example of the application of this technique in the context of principal component analysis in Figure 12.11. This will be a valid procedure if the data values are missing at random , meaning that the mechanism causing values to be missing does not depend on the unobserved values. In many situations this will not be the case, for instance if a sensor fails to return a value whenever the quantity it is measuring exceeds some threshold.
+
+# 9.3.1 Gaussian mixtures revisited
+
+We now consider the application of this latent variable view of EM to the speciﬁc case of a Gaussian mixture model. Recall that our goal is to maximize the log likelihood function (9.14), which is computed using the observed data set X , and we saw that this was more difﬁcult than for the case of a single Gaussian distribution due to the presence of the summation over k that occurs inside the logarithm. Suppose then that in addition to the observed data set X , we were also given the values of the corresponding discrete variables Z . Recall that Figure 9.5(a) shows a ‘complete’ data set (i.e., one that includes labels showing which component generated each data point) while Figure 9.5(b) shows the corresponding ‘incomplete’ data set. The graphical model for the complete data is shown in Figure 9.9.

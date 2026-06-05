@@ -60,7 +60,7 @@ Flg. 8.1 Plot of the first two principal components with true group of origin sh
 
 <a id="sec-single-factor-analysis-model"></a>
 
-# SINGLE-FACTOR ANALYSIS MODEL
+# 8.3 SINGLE-FACTOR ANALYSIS MODEL
 
 We let Yí, Yn denote a random sample of size n on a p-dimensional random vector. In a typical factor analysis model, each observation Y; is modeled as
 

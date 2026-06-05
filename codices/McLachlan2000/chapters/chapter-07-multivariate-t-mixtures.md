@@ -4,11 +4,7 @@
 
 <a id="sec-7-1"></a>
 
-# 7.1
-
-<a id="sec-introduction"></a>
-
-# INTRODUCTION
+# 7.1 INTRODUCTION
 
 For many applied problems, the tails of the normal distribution are often shorter than required . Also; the estimates of the component means and covariance matrices can be affected by observations that are of the components in the normal mixture model fitted. The problem of providing protection against outliers in multivariate data is a very difficult problem and increases in difficulty with the dimension of the data (Rocke and Woodruff, 1997; Kosinski, 1999). atypical being
 
@@ -380,7 +376,7 @@ As noted in the introduction, the use of t components in place of the normal com
 
 <a id="sec-example-7-1-simulated-noisy-data-set"></a>
 
-# EXAMPLE 7.1: SIMULATED NOISY DATA SET
+**EXAMPLE 7.1: SIMULATED NOISY DATA SET**
 
 One way in which the presence of atypical observations or background noise in the data has been handled when mixtures of normal components has been to include an additional component a uniform distribution. The support of the latter component is generally specified by the upper and lower extremities of each dimension defining the rectangular region that contains all the data points. Typically, the mixing proportion for this uniform component is left unspecified to be estimated from the data, as in Example 3.11 on the minefield data set as analyzed by Dasgupta and Raftery (1998). Another example may be found in Schroeter et al. (1998), who fitted a mixture of three normal components and a uniform distribution t0 segment magnetic resonance images of the human brain into three regions (gray matter, white matter; and cerebrospinal fluid) in the presence of background noise arising from instrument irregularities and tissue abnormalities. fitting having
 
@@ -487,7 +483,5 @@ Fig. 7.7 Result of fitting a three-component t mixture model with equal v; andun
 
 Fig. 7.8 Result of three component t mixture model with equal v; and equal scale matrices to the Geyser data set; dots denote those observations assessed as atypical at the 1% level. fitting
 
-<a id="sec-8"></a>
 
-# 8
 

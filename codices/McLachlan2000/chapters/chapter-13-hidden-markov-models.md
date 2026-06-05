@@ -186,7 +186,7 @@ The values of\_ are calculated by forward recursion as follows on the (k + 1)th 
 
 <a id="sec-initialization"></a>
 
-# Initialization:
+**Initialization:**
 
 Induction:
 
@@ -200,7 +200,7 @@ $$
 
 <a id="sec-termination"></a>
 
-# Termination:
+**Termination:**
 
 $$
 \dots , Y _ { n } = y _ { n } ) = \sum _ { i = 1 } ^ { \tilde { \sum } _ { a _ { i } ^ { ( n ) } } ( p _ { i } ) }
@@ -210,7 +210,7 @@ The values of are calculated by backward recursion as follows on the (k + 1)th i
 
 <a id="sec-initialization"></a>
 
-# Initialization:
+**Initialization:**
 
 Induction:
 

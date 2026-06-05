@@ -1451,7 +1451,5 @@ $$
 
 where in the Bayesian framework adopted by Jacobs et al. (1997), the unknown in (5.69) and (5.70) can be estimated by the average of its generated values on a specified number of simulations. In a frequentist framework, it can be replaced by its estimated conditional expectation, which is the limiting value of Jacobs et al. (1997) suggest some guidelines as to the value of (5.69) 'Yor an expert to be deleted. applied their pruning methods to the spccch recognition problem As their indicators suggested that four experts would be useful for this problems, tried a 2-2 architecture and then finally a 1-1 architecture . Thij They they
 
-<a id="sec-6"></a>
 
-# 6
 

@@ -128,11 +128,7 @@ $$
 
 <a id="sec-9-3-2"></a>
 
-# 9.3.2
-
-<a id="sec-e-step"></a>
-
-# E-Step
+# 9.3.2 E-Step
 
 On the (k + 1)th iteration of the EM algorithm; the E-step the calcula likelihood, Lc("), given the observed data vector a of frequencies, using the current value requires log log
 
@@ -302,7 +298,5 @@ Contour plots from estimated density estimates for three typical Control patient
 
 Cadez et al. (1999) investigated how the fitted densities for each of the control and iron-deficient subjects could be used to form a discriminant rule for the diagnosis of a new subject. One approach is to take the fitted parameter vector û, or elements of it, as the feature vector for the formation of a discriminant rule. In the case where 4 contains the parameters of a two-component bivariate normal mixture, the feature vector would consist of eleven elements; corresponding to Â1, the two elements in considered a number of models for the group-conditional distribution of this eleven dimensional feature vector, including a two-component normal mixture model. The cross-validated error rate of this rule was found to be 1.59. This compares with a rate of about 49 on the same subjects algorithms such as CART (Breiman et al. , 1984) or C4.5 (Quinlan; 1993) directly on features from the histogram, such as univariate means and standard deviations (that is, no mixture modeling) Thus; the ability to fit mixture densities to binned and truncated data can play a significant role in improved classification performance for this particular problem. using using
 
-<a id="sec-10"></a>
 
-# 10
 

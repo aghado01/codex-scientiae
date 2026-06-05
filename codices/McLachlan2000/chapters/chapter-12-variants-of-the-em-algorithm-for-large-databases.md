@@ -128,13 +128,9 @@ Concerning the time taken to perform the IEM algorithm for one scan, the B parti
 
 The choice of the number of blocks B s0 as to optimize the convergence time of the IEM algorithm is an interesting problem. The initial work of McLachlan and Ng (2000a) suggests B ~ as a simple The optimal choice will depend n2/5 guide. using on the number of unknown parameters; and McLachlan and Ng (2000a) suggest modifying this guide to B ~ in the case of component-covariance matrices specified to be diagonal. n1/3
 
-<a id="sec-iem-algorithm-for-singleton-blocks"></a>
-
-# IEM Algorithm for Singleton Blocks
-
 <a id="sec-12-2-6"></a>
 
-# 12.2.6
+# 12.2.6 IEM Algorithm for Singleton Blocks
 
 We will sce in the simulations in Section 12.3 that the time to convergence starts to increase as the number of blocks B becomes sufficiently large. This is because of the additional computation time required in having t0 perform more M-steps and having to invert the component-covariance matrices in the more frequent updating of the posterior probabilities of component membership on each scan of the whole data set\_
 
@@ -716,8 +712,4 @@ Moore (1999) presented some simulations from normal mixture for various combinat
 Moore (1999) also reported encouraging results in preliminary experiments in applying the mrkd-tree-based EM algorithm to some large real data sets. For exam ple, on the clustering of 800,000 galaxies into 1,000 clusters on the basis of some three-dimensional data; the standard EM needed 35 minutes per iteration, while the mrkd-tree-based EM required only 13 seconds. With 1.6 million galaxies; the standard EM needed 70 minutes per iteration; while the mrkd-tree version required only 14 seconds.
 
 The sparse EM algorithm may be applied under the mrkd-tree data structure That is, instead of considering all g components at all nodes; it is possible to freeze those T; of those nodes. In particular; near the tree's leaves, the posterior probabilities of component membership need to be computed only for a small fraction of the number of components 9. This leads to a further reduction in computation time.
-
-<a id="sec-13"></a>
-
-# 13
 

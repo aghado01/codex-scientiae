@@ -162,7 +162,7 @@ Source: Adapted from Gan and Jiang (1999).
 
 <a id="sec-2-7-3"></a>
 
-# 2.7.3 Formulation of Test Statistic
+# 2.15.3 Calculation of Score Statistic
 
 To form an unbiased estimator of the difference
 
@@ -771,7 +771,7 @@ As explained in Section 2.4, it is common in practice to estimate the inverse of
 Louis (1982) showed that I(%; u) the negative of the Hessian of the incomplete-data log likelihood, can be expressed in the form
 
 $$
-\begin{array} { r l r } { I ( \Psi ; y ) } & { = } & { \mathcal { I } _ { c } ( \Psi ; y ) - c o v _ { \Psi } \{ S _ { c } ( Y _ { c } ; \Psi ) \, | \, y \} } \\ & { = } & { \mathcal { I } _ { c } ( \Psi ; y ) } \\ & { \quad } & { F \left ( S _ { c } ( Y _ { c } , \Psi ) S _ { c } ^ { T } ( Y _ { c } , \Psi ) \, | \, y \right ) } \end{array}
+\begin{array} { r l r } { I ( \Psi ; y ) } & { = } & { \mathcal { I } _ { c } ( \Psi ; y ) - c o v _ { \Psi } \{ S _ { c } ( Y _ { c } ; \Psi ) \, | \, y \} \\ & { = } & { \mathcal { I } _ { c } ( \Psi ; y ) } \\ & { \quad } & { F \left ( S _ { c } ( Y _ { c } , \Psi ) S _ { c } ^ { T } ( Y _ { c } , \Psi ) \, | \, y \right ) } \end{array}
 $$
 
 $$
@@ -808,7 +808,7 @@ $$
 
 <a id="sec-2-15-3"></a>
 
-# 2.15.3
+# 2.15.3 Calculation of Score Statistic
 
 It can be seen from expression (2.54) for the observed information matrix I(û; v) that it requires, in addition to the code for the E- and M-steps; the calculation of the conditional (on the observed data y) expectation of the complete-data informatranspose. An illustration of the use of the result (2.54) to calculate the observed information matrix is given in McLachlan and Krishnan (1997, Section 4.25) for a mixture of two univariate normal densities with known common variance. But for more complicated mixture models, thecalculation of the observed information matrix via (2.54) would be algebraically tedious. Hence we now consider some practical methods for approximating the observed information matrix.
 
@@ -1160,11 +1160,7 @@ This result can also be established on noting that the missing-data mechanism is
 
 <a id="sec-2-20-3"></a>
 
-# 2.20.3
-
-<a id="sec-asymptotic-relative-efficiencies"></a>
-
-# Asymptotic Relative Efficiencies
+# 2.20.3 Asymptotic Relative Efficiencies
 
 We let 'pc denote the MLE obtained by consideration of the likelihood Lpc(4), and and be the MLEs in the totally unclassified case (m = 0) and the totally classified case (m = n), respectively. Also; we let B(yo; be the Bayes rule for the allocation of a new observation yo inthe case of two groups with univariate normal distributions having a common variance. That is, this rule will be based on the linear discriminant function.
 

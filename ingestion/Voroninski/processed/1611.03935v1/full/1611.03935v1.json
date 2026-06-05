@@ -1,0 +1,629 @@
+{
+  "file name" : "1611.03935v1.pdf",
+  "number of pages" : 5,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20161114202910-05'00'",
+  "modification date" : "D:20161114202910-05'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 73,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 42.72, 630.585, 569.266, 674.368 ],
+    "heading level" : 1,
+    "font" : "CMR17",
+    "font size" : 20.663,
+    "text color" : "[0.0]",
+    "content" : "An Elementary Proof of Convex Phase Retrieval in the Natural Parameter Space via the Linear Program PhaseMax"
+  }, {
+    "type" : "paragraph",
+    "id" : 74,
+    "page number" : 1,
+    "bounding box" : [ 191.52, 596.555, 425.143, 612.281 ],
+    "font" : "CMR12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "Paul Hand ∗ and Vladislav Voroninski †"
+  }, {
+    "type" : "paragraph",
+    "id" : 75,
+    "page number" : 1,
+    "bounding box" : [ 247.44, 568.595, 364.735, 581.118 ],
+    "font" : "CMR12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "November 15, 2016"
+  }, {
+    "type" : "heading",
+    "id" : 76,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 282.0, 514.2, 329.957, 521.934 ],
+    "heading level" : 1,
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 77,
+    "page number" : 1,
+    "bounding box" : [ 65.28, 342.272, 546.806, 502.222 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The phase retrieval problem has garnered signiﬁcant attention since the development of the PhaseLift algorithm, which is a convex program that operates in a lifted space of matrices. Because of the substantial computational cost due to lifting, many approaches to phase retrieval have been developed, including non-convex optimization algorithms which operate in the natural parameter space, such as Wirtinger Flow. Very recently, a convex formulation called PhaseMax has been discovered, and it has been proven to achieve phase retrieval via linear programming in the natural parameter space under optimal sample complexity. The current proofs of PhaseMax rely on statistical learning theory or geometric probability theory. Here, we present a short and elementary proof that PhaseMax exactly recovers real-valued vectors from random measurements under optimal sample complexity. Our proof only relies on standard probabilistic concentration and covering arguments, yielding a simpler and more direct proof than those that require statistical learning theory, geometric probability or the highly technical arguments for Wirtinger Flow-like approaches."
+  }, {
+    "type" : "heading",
+    "id" : 78,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 65.28, 303.139, 201.199, 318.65 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 79,
+    "page number" : 1,
+    "bounding box" : [ 65.279, 130.473, 546.764, 292.177 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Consider the classical phase retrieval problem: recover x 0 ∈ C n modulo global phase from a collection of measurements |  a i ,x 0  | ,i = 1 ,... m , where a i ∈ C n are known measurement vectors. We consider the idealized model a i ∼ N (0 ,I n × n ) for the measurement vectors. The ﬁrst algorithm which guaranteed exact and noise-robust phase retrieval from O ( n ) random phaseless measurements was PhaseLift [ 2 , 5 , 3 ], which is a convex semideﬁnite program that operates in a lifted space of n × n matrices. Because lifting squares the problem dimensionality, PhaseLift is prohibitively computationally expensive and thus much research has focused on alternative formulations. In particular, non-convex formulations include the Wirtinger Flow [ 4 ], Truncated Wirtinger Flow [ 6 ], Truncated Amplitude Flow [ 11 ], and the gradient descent of [ 9 ]. These methods permit phase retrieval from Gaussian measurements under optimal or near optimal sample complexity in the natural parameter space, however they are technically challenging to analyze theoretically and lead to complicated algorithmic formulations with many parameters."
+  }, {
+    "type" : "paragraph",
+    "id" : 80,
+    "page number" : 1,
+    "bounding box" : [ 65.28, 103.473, 546.752, 127.942 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "To the surprise of the community, a recent successful formulation for phase retrieval called PhaseMax, independently developed in [7, 1], is convex and operates in the natural n -dimensional parameter space. The theoretical results of [7] achieve a tighter sample complexity than those in [1], notably providing guarantees very close to the information theoretic lower-bounds. Both of these approaches rely on first finding an anchor vector which is positively correlated with the vector x 0 , provided for instance by using a spectral initialization first reported on by Netrapali et al. [8] and further enhanced by authors of Wirtinger Flow-like methods. The proof in [1] uses arguments based on statistical learning theory, and the the proof in [7] uses arguments from sphere covering and geometric probability."
+  }, {
+    "type" : "paragraph",
+    "id" : 81,
+    "page number" : 1,
+    "bounding box" : [ 49.32, 81.75, 398.039, 92.87 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "∗ Department of Computational and Applied Mathematics, Rice University, TX. †"
+  }, {
+    "type" : "paragraph",
+    "id" : 82,
+    "page number" : 1,
+    "bounding box" : [ 49.8, 69.75, 108.151, 80.75 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Helm.ai, CA"
+  }, {
+    "type" : "paragraph",
+    "id" : 83,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 569.793, 546.774, 634.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In this short paper, we consider only the real-valued case for simplicity (the complex case is very similar) and present an alternate elementary proof that PhaseMax succeeds in ﬁnding x 0 up to global sign from O ( n ) phaseless Gaussian measurements, thus achieving phase retrieval under optimal sample complexity via a linear program with a linear number of constraints. Our proof is based on standard elementary probabilistic concentration estimates of the singular values of random matrices."
+  }, {
+    "type" : "heading",
+    "id" : 84,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 65.279, 530.78, 290.064, 546.291 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "2 Main Result and Proof"
+  }, {
+    "type" : "paragraph",
+    "id" : 85,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 480.033, 546.708, 519.818 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Our main result is that PhaseMax succeeds at recovering a ﬁxed signal x 0 ∈ R n with high probability from O ( n ) random measurements, when provided with an anchor vector φ that is suﬃciently close to x 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 86,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 430.843, 546.698, 470.137 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 1. Fix x 0 ∈ R n . Let a i be i.i.d. N (0 ,I n × n ) , for i = 1 ... m . Let y i = |  a i ,x 0  | . Let φ ∈ R n be such that   φ − x 0   2 < 0 . 6   x 0   2 . If m ≥ cn , then with probability at least 1 − 6 e − γm , x 0 is the unique solution of the linear program PhaseMax:"
+  }, {
+    "type" : "formula",
+    "id" : 87,
+    "page number" : 2,
+    "bounding box" : [ 216.119, 392.327, 546.632, 418.014 ],
+    "content" : "\\max _ { \\substack { s . t . \\\\ s . t . } } \\ \\langle \\phi , x \\rangle \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 88,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 369.753, 247.057, 380.662 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here, γ and c are universal constants."
+  }, {
+    "type" : "paragraph",
+    "id" : 89,
+    "page number" : 2,
+    "bounding box" : [ 65.279, 309.109, 546.861, 358.101 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "A satisfactory anchor vector can be eﬃciently computed with high probability by several methods. For concreteness, consider the truncated spectral initializer in [ 6 ]. With λ =   1 m   m i =1 y 2 i , let mn 1 m"
+  }, {
+    "type" : "formula",
+    "id" : 90,
+    "page number" : 2,
+    "bounding box" : [ 110.4, 264.829, 546.633, 316.177 ],
+    "content" : "\\phi & = \\sqrt { \\frac { m n } { \\sum _ { i = 1 } ^ { m } \\| a _ { i } \\| _ { 2 } ^ { 2 } } \\lambda z , \\, \\text { where } z \\text { is the leading eigenvector of } \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } y _ { i } ^ { 2 } a _ { i } \\Gamma _ { \\{ y _ { i } | < 3 \\lambda \\} } . \\quad ( 2 ) \\\\ \\intertext { B y $ \\text { Proposition } 3 $ from [6], for a fixed $ x_{0}$, $ thisTruncated$ spectral initializer satisfies $ min ( \\| \\phi - x _ { 0 } \\| , \\| \\phi + \\cdots \\rangle } }"
+  }, {
+    "type" : "paragraph",
+    "id" : 91,
+    "page number" : 2,
+    "bounding box" : [ 65.28, 164.673, 546.906, 270.775 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By Proposition 3 from [ 6 ], for a ﬁxed x 0 , this truncated spectral initializer satisﬁes min(   φ − x 0   ,   φ + x 0   ) ≤ 0 . 6   x 0   2 with probability at least 1 − e − γm , provided that m ≥ c 0 n . Note that in the case where   φ + x 0   ≤ 0 . 6   x 0   2 , then the output of PhaseMax will be − x 0 with high probability, which is exact up to the inherent global phase ambiguity. Alternatively, one could use the leading eigenvector of 1 m   m i =1 y 2 i a i a ⊺ i as the anchor vector, as done in the initialization steps of AltMinPhase [ 8 ] and Wirtinger Flow [ 4 ]. In this case m = O ( n log n ) measurements are necessary to obtain an accurate anchor vector [ 6 ]. The initialization from the Truncated Amplitude Flow [ 11 ] could also be used under m = O ( n )."
+  }, {
+    "type" : "paragraph",
+    "id" : 92,
+    "page number" : 2,
+    "bounding box" : [ 65.28, 110.553, 546.763, 162.295 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The entire proof of Theorem 1 (with the stronger assumption   φ − x 0   < 0 . 4   x 0   2 ) can ﬁt on half a page by appealing to standard concentration estimates on the singular values of Gaussian matrices and to an ℓ 1 -isometry bound proved in Lemma 3.2 from PhaseLift [ 5 ]. For the sake of exposition, we include a direct proof of this isometry bound with a superior constant."
+  }, {
+    "type" : "heading",
+    "id" : 93,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 65.28, 704.54, 141.265, 720.051 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "3 Proof"
+  }, {
+    "type" : "paragraph",
+    "id" : 94,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 632.509, 546.938, 691.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Throughout the proof, the values of constants c and γ may change line to line, but they are bounded from above and below by ﬁxed positive numbers. The proof uses a technical lemma that bounds the singular values of 1 m   m i =1 a i a ⊺ i and a technical lemma that bounds 1 m   m i =1 |  a i ,x 0  ||  a i ,x 1  | from below with high probability."
+  }, {
+    "type" : "paragraph",
+    "id" : 95,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 604.473, 546.546, 629.215 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof of Theorem 1 . Without loss of generality, take   x 0   2 = 1. To prove x 0 is the unique maximizer of ( 1 ), it suﬃces to show that for any nonzero h ∈ R n ,"
+  }, {
+    "type" : "formula",
+    "id" : 96,
+    "page number" : 3,
+    "bounding box" : [ 168.6, 579.888, 443.333, 592.015 ],
+    "content" : "\\langle a _ { i } , h \\rangle \\langle a _ { i } , x _ { 0 } \\rangle \\leq 0 \\ \\text { for } \\ i = 1 , 2 \\dots m \\ \\implies \\ \\langle \\phi , h \\rangle < 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 97,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 556.248, 265.341, 568.375 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Suppose   a i ,h    a i ,x 0   ≤ 0 for all i . Then,"
+  }, {
+    "type" : "formula",
+    "id" : 98,
+    "page number" : 3,
+    "bounding box" : [ 145.919, 505.069, 465.982, 546.577 ],
+    "content" : "- \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | \\langle a _ { i } , h \\rangle \\langle a _ { i } , x _ { 0 } \\rangle | = \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } \\langle a _ { i } , h \\rangle \\langle a _ { i } , x _ { 0 } \\rangle = \\left \\langle \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } a _ { i } a _ { i } ^ { \\intercal } , h x _ { 0 } ^ { \\intercal } \\right \\rangle \\\\ \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 99,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 488.313, 446.902, 501.735 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By Lemma 2 , if m ≥ ǫ − 2 n , then on an event of probability at least 1 − 2 e − γǫ 2 m ,"
+  }, {
+    "type" : "formula",
+    "id" : 100,
+    "page number" : 3,
+    "bounding box" : [ 168.96, 436.789, 443.062, 478.297 ],
+    "content" : "\\left \\langle \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } a _ { i } a _ { i } ^ { \\intercal } , h x _ { 0 } ^ { \\intercal } \\right \\rangle & \\geq \\langle h , x _ { 0 } \\rangle - \\epsilon \\| h \\| _ { 2 } \\| x _ { 0 } \\| _ { 2 } \\text { for all } h \\in \\mathbb { R } ^ { n } . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 101,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 421.473, 437.782, 434.138 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By Lemma 3 1 , if m ≥ c 0 n , then on an event of probability at least 1 − 4 e − γm ,"
+  }, {
+    "type" : "formula",
+    "id" : 102,
+    "page number" : 3,
+    "bounding box" : [ 170.64, 370.909, 441.382, 412.417 ],
+    "content" : "- \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | \\langle a _ { i } , h \\rangle \\langle a _ { i } , x _ { 0 } \\rangle | \\leq - 0 . 6 3 \\| h \\| _ { 2 } \\| x _ { 0 } \\| _ { 2 } \\text { for all } h \\in \\mathbb { R } ^ { n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 103,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 357.273, 170.781, 368.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Thus, taking ǫ = 0 . 03,"
+  }, {
+    "type" : "formula",
+    "id" : 104,
+    "page number" : 3,
+    "bounding box" : [ 187.8, 333.513, 424.102, 344.694 ],
+    "content" : "\\langle h , x _ { 0 } \\rangle \\leq ( - 0 . 6 3 + \\epsilon ) \\| h \\| _ { 2 } \\| x _ { 0 } \\| _ { 2 } = - 0 . 6 \\| h \\| _ { 2 } \\| x _ { 0 } \\| _ { 2 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 105,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 309.873, 469.484, 321.055 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Finally, for nonzero h , we use the assumption that   φ − x 0   2 < 0 . 6   x 0   2 to conclude"
+  }, {
+    "type" : "formula",
+    "id" : 106,
+    "page number" : 3,
+    "bounding box" : [ 162.48, 286.233, 449.574, 297.415 ],
+    "content" : "\\langle \\phi , h \\rangle = \\langle \\phi - x _ { 0 } , h \\rangle + \\langle x _ { 0 } , h \\rangle \\leq \\| \\phi - x _ { 0 } \\| _ { 2 } \\| h \\| _ { 2 } - 0 . 6 \\| h \\| _ { 2 } < 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 107,
+    "page number" : 3,
+    "bounding box" : [ 65.279, 262.473, 283.222, 275.138 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "on an event of probability at least 1 − 6 e − γm ."
+  }, {
+    "type" : "paragraph",
+    "id" : 108,
+    "page number" : 3,
+    "bounding box" : [ 81.6, 240.273, 255.862, 251.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We now prove the technical lemmas."
+  }, {
+    "type" : "paragraph",
+    "id" : 109,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 183.469, 546.502, 231.098 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 2. Fix ǫ < 1 . Let a i ∈ R n ,i = 1 , 2 ... m be i.i.d gaussian. There exists a universal constant γ > 0 such that   1 m   m i =1 a i a ∗ i − I n × n   ≤ ǫ with probability at least 1 − 2 e − γǫ 2 m , provided m ≥ ǫ − 2 n . Proof. This claim follows from standard concentration estimates for Gaussian matrices (e.g. Corollary"
+  }, {
+    "type" : "paragraph",
+    "id" : 110,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 169.473, 546.59, 210.797 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "∥ ∥ Proof. This claim follows from standard concentration estimates for Gaussian matrices (e.g. Corollary 5.35 in [10])."
+  }, {
+    "type" : "paragraph",
+    "id" : 111,
+    "page number" : 3,
+    "bounding box" : [ 65.28, 133.713, 546.731, 159.938 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3. There exist constants c 0 ,γ,δ 0 such that for any 0 < δ < δ 0 , if m ≥ c 0 ( δ − 2 log δ − 1 ) n , then with probability at least 1 − 4 e − γmδ 2"
+  }, {
+    "type" : "formula",
+    "id" : 112,
+    "page number" : 3,
+    "bounding box" : [ 149.52, 83.149, 546.633, 124.658 ],
+    "content" : "\\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } | \\langle a _ { i } , x _ { 0 } \\rangle \\langle a _ { i } , x _ { 1 } \\rangle | \\geq \\frac { 2 } { \\pi } ( 1 - \\delta ) \\| x _ { 0 } \\| _ { 2 } \\| x _ { 1 } \\| _ { 2 } \\quad \\text {for all } x _ { 0 } , x _ { 1 } \\in \\mathbb { R } ^ { n } \\\\ \\\\ \\sum _ { i = 1 } ^ { n } \\log | k _ { i } - k _ { i } - i | + \\log | i - a _ { i } | + \\log | i - a _ { i } - 2 i + \\log | i - a _ { i } | + \\log | i - a _ { i } - k _ { i } | + \\log | i - a _ { i } - k _ { i } |"
+  }, {
+    "type" : "paragraph",
+    "id" : 113,
+    "page number" : 3,
+    "bounding box" : [ 49.44, 69.221, 507.12, 80.231 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1 The same result holds with the constant 0 . 45 by applying Lemma 3.2 from PhaseLift [ 5 ] to hx ⊺ 0 + x 0 h ⊺ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 114,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 688.727, 546.741, 717.938 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. Without loss of generality, we take   x 0   =   x 1   = 1. Deﬁne A : R n × n → R m ,X  → ( a ⊺ i Xa i ) m i =1 . Observe that 1 m   m i =1 |  a i ,x 0    a i ,x 1  | = 1 m  A ( x 0 x ⊺ 1 )   1 . 1  A ⊺   ≥ 2 −"
+  }, {
+    "type" : "paragraph",
+    "id" : 115,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 635.793, 546.742, 703.156 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "First, we show that for any ﬁxed x 0 ,x 1 of unit length, m ( x 0 x 1 ) 1 π δ 1 with probability at least 1 − 2 e − γmδ 2 1 . To show this, observe that 1 m  A ( x 0 x ⊺ 1 )   1 = 1 m   m i =1 ξ i , where ξ i = |  a i ,x 0    a i ,x 1  | is a subexponential random variable. Let K be the subexponential norm of ξ i . By Lemma 4 , E ξ i ≥ 2 π . Thus, by the Bernstein-type inequality (Corollary 5.17 in [ 10 ])"
+  }, {
+    "type" : "formula",
+    "id" : 116,
+    "page number" : 4,
+    "bounding box" : [ 158.28, 592.069, 453.709, 628.94 ],
+    "content" : "\\mathbb { P } \\left ( \\frac { 1 } { m } \\| \\mathcal { A } ( x _ { 0 } x _ { 1 } ^ { T } ) \\| _ { 1 } \\geq \\frac { 2 } { \\pi } - \\delta _ { 1 } \\right ) \\geq 1 - 2 \\exp \\left [ - \\gamma m \\min \\left ( \\frac { \\delta _ { 1 } ^ { 2 } } { K ^ { 2 } } , \\frac { \\delta _ { 1 } } { K } \\right ) \\right ] \\\\ \\text {we will take } \\delta _ { 1 } < K ."
+  }, {
+    "type" : "paragraph",
+    "id" : 117,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 584.553, 195.142, 595.462 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Later, we will take δ 1 < K ."
+  }, {
+    "type" : "paragraph",
+    "id" : 118,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 543.432, 546.742, 583.777 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Second, we show that the bound ( 3 ) holds simultaneously for all x 0 ,x 1 . Let N ǫ be an ǫ -net of S n − 1 . By Lemma 5.2 in [ 10 ], we may take |N ǫ | ≤ (1+ 2 ǫ ) n . For any ( x 0 ,x 1 ), there exists a (˜ x 0 , ˜ x 1 ) ∈ N ǫ ×N ǫ such that   x 0 x ⊺ 1 − ˜ x 0 ˜ x ⊺ 1   1 ≤ 3 ǫ. Because A ( x 0 x ⊺ 1 ) = A (˜ x 0 ˜ x ⊺ 1 ) + A ( x 0 x ⊺ 1 − ˜ x 0 ˜ x ⊺ 1 ), we have"
+  }, {
+    "type" : "formula",
+    "id" : 119,
+    "page number" : 4,
+    "bounding box" : [ 173.64, 511.953, 439.582, 537.742 ],
+    "content" : "\\frac { 1 } { m } \\| \\mathcal { A } ( x _ { 0 } x _ { 1 } ^ { \\top } ) \\| _ { 1 } & \\geq \\frac { 1 } { m } \\| \\mathcal { A } ( \\tilde { x } _ { 0 } \\tilde { x } _ { 1 } ^ { \\top } ) \\| _ { 1 } - \\frac { 1 } { m } \\| \\mathcal { A } ( x _ { 0 } x _ { 1 } ^ { \\top } - \\tilde { x } _ { 0 } \\tilde { x } _ { 1 } ^ { \\top } ) \\| _ { 1 } . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 120,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 497.313, 221.259, 508.222 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "On the intersection of the events"
+  }, {
+    "type" : "formula",
+    "id" : 121,
+    "page number" : 4,
+    "bounding box" : [ 161.76, 454.833, 450.294, 494.302 ],
+    "content" : "E _ { 1 } & = \\{ m ^ { - 1 } \\| \\mathcal { A } ( x _ { 0 } x _ { 1 } ^ { T } ) \\| _ { 1 } \\geq \\frac { 2 } { \\pi } - \\delta _ { 1 } , \\text { for all } ( x _ { 0 } , x _ { 1 } ) \\in \\mathcal { N } _ { \\epsilon } \\times \\mathcal { N } _ { \\epsilon } \\} \\\\ E _ { 2 } & = \\{ m ^ { - 1 } \\| \\mathcal { A } ( X ) \\| _ { 1 } \\leq ( 1 + \\delta _ { 2 } ) \\| X \\| _ { 1 } , \\text { for all } X \\in \\mathbb { R } ^ { n \\times n } \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 122,
+    "page number" : 4,
+    "bounding box" : [ 65.279, 435.272, 102.763, 446.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "we have"
+  }, {
+    "type" : "formula",
+    "id" : 123,
+    "page number" : 4,
+    "bounding box" : [ 213.96, 396.469, 399.098, 432.142 ],
+    "content" : "\\frac { 1 } { m } \\| \\mathcal { A } ( x _ { 0 } x _ { 1 } ^ { \\intercal } ) \\| _ { 1 } & \\geq \\left ( \\frac { 2 } { \\pi } - \\delta _ { 1 } \\right ) - ( 1 + \\delta _ { 2 } ) 3 \\epsilon \\\\ 1 / 2 , \\epsilon & = 2 \\delta / ( 9 \\pi ) . \\text { Further, choose } \\delta _ { 0 } \\text { such that } \\delta _ { 1 } <"
+  }, {
+    "type" : "paragraph",
+    "id" : 124,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 374.687, 546.742, 402.415 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Choose δ 1 = δ/π,δ 2 = 1 / 2 ,ǫ = 2 δ/ (9 π ). Further, choose δ 0 such that δ 1 < K . Thus, on E 1 ∩ E 2 , 1 m  A ( x 0 x ⊺ 1 )   1 ≥ 2 π (1 − δ ). It remains to estimate the probability of E 1 ∩ E 2 . We have"
+  }, {
+    "type" : "formula",
+    "id" : 125,
+    "page number" : 4,
+    "bounding box" : [ 167.76, 334.909, 444.262, 370.702 ],
+    "content" : "\\mathbb { P } ( E _ { 1 } ) \\geq 1 - | \\mathcal { N } _ { \\epsilon } \\times \\mathcal { N } _ { \\epsilon } | \\cdot 2 e ^ { - \\gamma m \\delta _ { 1 } ^ { 2 } } \\geq 1 - 2 \\left ( 1 + \\frac { 2 } { \\epsilon } \\right ) ^ { 2 n } e ^ { - \\gamma m \\delta _ { 1 } ^ { 2 } } . \\\\ \\delta _ { 1 } ^ { - 2 } \\log \\delta _ { 1 } ^ { - 1 } \\text { for a sufficiently large } c _ { 0 } , \\text { then } \\mathbb { P } ( E _ { 1 } ) \\geq 1 - 2 e ^ { - \\gamma m \\delta _ { 1 } ^ { 2 } } . \\text { Using standa}"
+  }, {
+    "type" : "paragraph",
+    "id" : 126,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 285.513, 546.862, 340.815 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "If m ≥ c 0 nδ − 2 1 log δ − 1 1 for a suﬃciently large c 0 , then P ( E 1 ) ≥ 1 − 2 e − γmδ 2 1 . Using standard concentration estimates on the singular values of Gaussian matrices (Corollary 5.35 in [ 10 ]), it can be shown that m ≥ 16 δ − 2 2 n implies P ( E 2 ) ≥ 1 − 2 e − γmδ 2 2 . See Lemma 3.1 in [ 5 ] for the elementary details. Thus, P ( E 1 ∩ E 2 ) ≥ 1 − 4 e − γmδ 2 for some constant γ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 127,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 250.127, 496.418, 263.738 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Lemma 4. Fix x 0 ,x 1 ∈ R n and let θ be the angle between x 0 and x 1 . Let a ∼ N (0 ,I n × n ) ."
+  }, {
+    "type" : "formula",
+    "id" : 128,
+    "page number" : 4,
+    "bounding box" : [ 126.72, 206.149, 485.215, 245.182 ],
+    "content" : "\\mathbb { E } | \\langle a _ { i } , x _ { 0 } \\rangle \\langle a _ { i } , x _ { 1 } \\rangle | & = \\frac { 2 } { \\pi } \\left ( | \\sin \\theta | + \\sin ^ { - 1 } ( \\cos \\theta ) \\cos \\theta \\right ) \\| x _ { 0 } \\| _ { 2 } \\| x _ { 1 } \\| _ { 2 } \\geq \\frac { 2 } { \\pi } \\| x _ { 0 } \\| \\| x _ { 1 } \\| \\\\ P r o f . \\text { Without loss of generality, take } \\| x _ { 0 } \\| & = \\| x _ { 1 } \\| = 1 . \\text { Further, without loss of generality, take}"
+  }, {
+    "type" : "paragraph",
+    "id" : 129,
+    "page number" : 4,
+    "bounding box" : [ 65.28, 190.713, 546.524, 215.455 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. Without loss of generality, take   x 0   =   x 1   = 1. Further, without loss of generality, take x 0 = e 1 and x 1 = cos θ e 1 + sin θ e 2 . The expected value is"
+  }, {
+    "type" : "formula",
+    "id" : 130,
+    "page number" : 4,
+    "bounding box" : [ 139.68, 56.029, 472.091, 185.138 ],
+    "content" : "e _ { 1 } \\, \\text { and } x _ { 1 } & = \\cos \\theta \\, e _ { 1 } + \\sin \\theta \\, e _ { 2 } . \\ \\text { The expected value is} \\\\ & \\quad \\mathbb { E } | a _ { 1 } ( a _ { 1 } \\cos \\theta + a _ { 2 } \\sin \\theta ) | = \\frac { 1 } { 2 \\pi } \\int _ { 0 } ^ { \\infty } r ^ { 3 } e ^ { - r ^ { 2 } / 2 } d r \\int _ { 0 } ^ { 2 \\pi } | \\cos \\phi \\cos ( \\theta - \\phi ) | d \\phi \\\\ & = \\frac { 1 } { 2 \\pi } \\int _ { 0 } ^ { 2 \\pi } | \\cos \\theta + \\cos ( 2 \\phi - \\theta ) | d \\phi \\\\ & = \\frac { 1 } { \\pi } \\int _ { 0 } ^ { \\pi } | \\cos \\theta + \\cos \\tilde { \\phi } | d \\tilde { \\phi } \\\\ & = \\frac { 2 } { \\pi } \\left ( | \\sin \\theta | + \\sin ^ { - 1 } ( \\cos \\theta ) \\cos \\theta \\right ) \\geq \\frac { 2 } { \\pi } , \\\\ & \\quad 4"
+  }, {
+    "type" : "heading",
+    "id" : 131,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 65.28, 666.26, 255.546, 681.771 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "4 Acknowledgements"
+  }, {
+    "type" : "paragraph",
+    "id" : 132,
+    "page number" : 5,
+    "bounding box" : [ 65.28, 642.633, 347.782, 653.542 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "PH acknowledges funding by the grant NSF DMS-1464525."
+  }, {
+    "type" : "heading",
+    "id" : 133,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 65.28, 603.5, 156.066, 619.011 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 65.283, 155.072, 546.767, 590.782 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 11,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.68, 566.313, 546.764, 590.782 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[1] Sohail Bahmani and Justin Romberg. Phase retrieval meets statistical learning theory: A ﬂexible convex relaxation. arXiv preprint arXiv:1610.04210 , 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.68, 529.233, 546.623, 553.702 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[2] E. Cande`s, Y. Eldar, T. Strohmer, and V. Voroninski. Phase retrieval via matrix completion. SIAM J. Imaging Sci. , 6(1):199–225, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.68, 492.273, 546.763, 516.742 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[3] Emmanuel J Cande`s and Xiaodong Li. Solving quadratic equations via phaselift when there are about as many equations as unknowns. Found. of Comput. Math. , pages 1–10, 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.681, 455.193, 546.743, 479.662 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[4] Emmanuel J Candes, Xiaodong Li, and Mahdi Soltanolkotabi. Phase retrieval via wirtinger ﬂow: Theory and algorithms. Information Theory, IEEE Transactions on , 61(4):1985–2007, 2015.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.682, 404.553, 546.701, 442.582 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[5] Emmanuel J Cande`s, Thomas Strohmer, and Vladislav Voroninski. Phaselift: Exact and stable signal recovery from magnitude measurements via convex programming. Comm. Pure Appl. Math. , 66(8):1241–1274, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.682, 353.912, 546.712, 391.942 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[6] Yuxin Chen and Emmanuel Candes. Solving random quadratic systems of equations is nearly as easy as solving linear systems. In Advances in Neural Information Processing Systems , pages 739–747, 2015.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.683, 316.833, 546.701, 341.302 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[7] Tom Goldstein and Christoph Studer. Phasemax: Convex phase retrieval via basis pursuit. arXiv preprint arXiv:1610.07531 , 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.683, 279.872, 546.756, 304.342 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[8] Praneeth Netrapalli, Prateek Jain, and Sujay Sanghavi. Phase retrieval using alternating minimization. In Advances in Neural Information Processing Systems , pages 2796–2804, 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 70.683, 242.792, 546.505, 267.262 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[9] Ju Sun, Qing Qu, and John Wright. A geometric analysis of phase retrieval. arXiv preprint arXiv:1602.06664 , 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 65.283, 192.152, 546.669, 230.182 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[10] R. Vershynin. Introduction to the non-asymptotic analysis of random matrices. In Y.C. Eldar and G. Kutyniok, editors, Compressed Sensing: Theory and Applications . Cambridge University Press, 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 65.283, 155.072, 546.767, 179.542 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "[11] Gang Wang, Georgios B Giannakis, and Yonina C Eldar. Solving systems of random quadratic equations via truncated amplitude ﬂow. arXiv preprint arXiv:1605.08285 , 2016.",
+      "kids" : [ ]
+    } ]
+  } ]
+}

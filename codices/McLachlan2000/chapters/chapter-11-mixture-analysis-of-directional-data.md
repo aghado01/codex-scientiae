@@ -154,7 +154,7 @@ $$
 
 <a id="sec-step-2-compute-the-matrix"></a>
 
-# Step 2. Compute the matrix
+**Step 2. Compute the matrix**
 
 $$
 \mathbf H = \left ( \begin{array} { c c c } \cos \bar { \gamma } _ { 2 } & - \sin \bar { \gamma } _ { 2 } & 0 \\ \sin \bar { \gamma } _ { 2 } \cos \bar { \gamma } _ { 1 } & \cos \bar { \gamma } _ { 2 } \cos \bar { \gamma } _ { 1 } & - \sin \bar { \gamma } _ { 1 } \\ \sin \bar { \gamma } _ { 2 } \sin \bar { \gamma } _ { 1 } & \cos \bar { \gamma } _ { 2 } \sin \bar { \gamma } _ { 1 } & \cos \bar { \gamma } _ { 1 } , \end{array} \right ) ,
@@ -258,7 +258,7 @@ The algorithm can be initialized by fitting a mixture without the noise componen
 
 <a id="sec-example-11-1-two-mining-samples"></a>
 
-# EXAMPLE 11.1: TWO MINING SAMPLES
+**EXAMPLE 11.1: TWO MINING SAMPLES**
 
 To demonstrate their mixture model-based approach, Peel et al. (2001) analyzed two mining samples, referred to as Site 1 and Site 2 (supplied by the Julius Kruttschnitt Mineral Research Centre (JKMRC) at the University of Queensland). Site 1 consists of 860 measurements of dip angle and direction; and Site 2 consists of 531 measurements Also available for these twosites were the user interpretations based on the use of contour plots, as described in Section 11.2. These user-defined groupings are given by rectangular regions bounded by the solid lines and labeled Jl, J2, Jg. The contour are superimposed on the plots, where the sample points are indicated by various symbols, depending on the number of values recorded at the or 0 is used if one, or three values, respectively; were recorded at a point). graphs point two,
 
@@ -404,7 +404,5 @@ The mixture model approach described in the previous sections offers a practical
 
 This mixture model-based method of Peel et al. (2001) provides a fully automated method to identify how many joint sets are present and their location and shape, in the form of model parameters, a partition of the sample, andlor posterior probabilities. The manual interpretation of joint sets using the progressive contouring has several disadvantages. Firstly; the resulting interpretation is subjective and often varies according to who made the interpretation. Secondly; the presentation of the contours on a planar circle distorts the original hemisphere and may result in a biased inter pretation. Thirdly; it is difficult to remove accurately a particular joint set so that the remaining data can be examined, particularly in the case of overlapping joint sets. Fourthly; it is time-consuming and requires an experienced user. On the other hand, the mixture model approach is based on a sound statistical model of the joint set distribution that overcomes these problems as it provides a quantitative method not dependent on the user's interpretation; and it places no bias on the interpretation of joints at different angles. Moreover; it is capable of describing elongated clusters that often occur in practice as well as circular clusters, and it is able to handle overlapping clusters in a satisfactory manner. Further, it requires only a limited amount of the user' s time, this mainly to read the computer output; and does not require any special experience. being
 
-<a id="sec-12"></a>
 
-# 12
 

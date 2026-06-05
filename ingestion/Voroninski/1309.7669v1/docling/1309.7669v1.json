@@ -1,0 +1,1418 @@
+{
+  "file name" : "1309.7669v1.pdf",
+  "number of pages" : 16,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20211118034041-05'00'",
+  "modification date" : "D:20211118034041-05'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 174,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 121.08, 661.783, 491.006, 677.314 ],
+    "heading level" : 1,
+    "font" : "CMR17",
+    "font size" : 17.215,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Quantum tomography from few full-rank observables."
+  }, {
+    "type" : "paragraph",
+    "id" : 175,
+    "page number" : 1,
+    "bounding box" : [ 253.32, 626.589, 358.56, 637.456 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Vladislav Voroninski"
+  }, {
+    "type" : "paragraph",
+    "id" : 176,
+    "page number" : 1,
+    "bounding box" : [ 131.28, 601.509, 480.48, 612.377 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Department of Mathematics, Massachusetts Institute of Technology."
+  }, {
+    "type" : "paragraph",
+    "id" : 177,
+    "page number" : 1,
+    "bounding box" : [ 265.32, 571.149, 346.766, 582.016 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "September 2013"
+  }, {
+    "type" : "heading",
+    "id" : 178,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 518.516, 185.006, 531.442 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 179,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 426.447, 540.046, 501.097 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "It was proven in [8] that the PhaseLift algorithm recovers signals x ∈ C n exactly from m = O ( n log n ) measurements {|  x,z i  | 2 } m i =1 with high probability when the measurement vectors z i ∈ C n are iid gaussian and that this procedure is provably stable with respect to measurement noise under the same assumptions. To be precise, this means that in the noiseless case, for a ﬁxed x ∈ C n and deﬁning the linear operator A : X ∈ C n × n  → { Tr( Xz i z ∗ i ) } m i =1 , the program"
+  }, {
+    "type" : "formula",
+    "id" : 180,
+    "page number" : 1,
+    "bounding box" : [ 233.761, 374.967, 539.793, 420.742 ],
+    "content" : "\\minimize & \\quad \\text {Tr} ( X ) \\\\ \\text {subject to } & \\quad \\mathcal { A } ( X ) = \\mathcal { A } ( x x ^ { * } ) & ( 1 . 1 ) \\\\ X \\succeq 0 ;"
+  }, {
+    "type" : "paragraph",
+    "id" : 181,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 317.708, 540.034, 371.857 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "recovers xx ∗ with high probability. The stability result uses a modiﬁed, noise-aware convex program. These guarantees were subsequently improved to hold uniformly over all signals for m = O ( n ) with sharp stability guarantees in [3] and it was shown in [4] that in the noiseless case, this program has only one point in its feasible set, namely xx ∗ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 182,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 258.392, 540.055, 309.981 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "However, the gaussian measurement model is not know to be physically realizable. Therefore it is of interest to prove exactness results for PhaseLift under more structured measurement assumptions, which requires more technical proofs due to the lack of probabilistic independence between sensing vectors in structured random measurement ensembles."
+  }, {
+    "type" : "paragraph",
+    "id" : 183,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 144.032, 540.056, 249.741 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "A step in this direction is to consider the z i as rows of iid Haar distributed unitary matrices, a situation that occurs in quantum tomography from measurements with full-rank observables. In this paper, we prove that PhaseLift succeeds with high probability under this measurement model as long as the number of observables is O (1) (which corresponds to m = O(n) in the above setting) and point out a corollary of the result which relates to Wright’s conjecture. This conjecture, that there exist 3 observables which determine any pure state, has been recently disproven in [5,6] and a close variant of it, that 4 generic observables suﬃce to determine any pure state, was recently settled in [2]. This brings us to the main theorem:"
+  }, {
+    "type" : "paragraph",
+    "id" : 184,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 98.207, 539.936, 125.377 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Theorem 1.1 Take x ∈ C n and assume that measurements of the form {| U k x | 2 } r k =1 are available, where the U i are sampled independently according to the Haar measure on U ( n ) , the unitary group or O ( n ) , the orthogonal group, so that the total number of measurements is m = rn . Then the PhaseLift algorithm succeeds in recovering x up to global phase with very high probability with m = O ( n ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 185,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 591.287, 540.045, 660.338 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Here we assume that measurements of the form {| U k x | 2 } r k =1 are available, where the U i are sampled independently according to the Haar measure on U ( n ), the unitary group or O ( n ), the orthogonal group, and the total number of measurements is m = rn . Below, we will label the transpose of the row vectors of U k as u ( k ) i or enumerate them as { u i } m i =1 . As in the gaussian case, we may assume wlog that x = e 1 , in this case by the unitary/orthogonal invariance of the Haar measure."
+  }, {
+    "type" : "paragraph",
+    "id" : 186,
+    "page number" : 2,
+    "bounding box" : [ 72.001, 511.32, 540.099, 583.854 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We proceed by showing that the measurement operator A in this setting obeys some nice properties with high probability. Namely, we need to verify that A satisﬁes the condition of the following lemma, which is a very slight modiﬁcation of Lemma 3.6.4 in [8] achieved by noting that if Y ⊥ T ≺ 0, then   H ⊥ T ,Y ⊥ T   ≤ 0. Lemma 1.2 Suppose that the mapping obeys the following two properties: for some δ 3 / 13 :"
+  }, {
+    "type" : "paragraph",
+    "id" : 187,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 495.807, 534.699, 514.734 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Lemma 1.2 Suppose that the mapping A obeys the following two properties: for some δ ≤ 3 / 13 :"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 72.001, 427.287, 277.18, 494.901 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 72.001, 483.992, 277.18, 494.901 ],
+      "font" : "CMTI10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "1) for all positive semideﬁnite matrices X ,",
+      "kids" : [ {
+        "type" : "formula",
+        "id" : 347,
+        "page number" : 2,
+        "bounding box" : [ 235.081, 451.767, 539.794, 472.777 ],
+        "content" : "m ^ { - 1 } \\| \\mathcal { A } ( X ) \\| _ { 1 } \\leq ( 1 + \\delta ) \\| X \\| _ { 1 } ;"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 72.001, 427.287, 193.812, 446.214 ],
+      "font" : "CMTI10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "2) for all matrices X ∈ T",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 191,
+    "page number" : 2,
+    "bounding box" : [ 166.801, 402.807, 539.793, 431.214 ],
+    "content" : "m ^ { - 1 } \\| \\mathcal { A } ( X ) \\| _ { 1 } \\geq 2 ( \\sqrt { 2 } - 1 ) ( 1 - \\delta ) \\| X \\| \\geq 0 . 8 2 8 ( 1 - \\delta ) \\| X \\| ."
+  }, {
+    "type" : "paragraph",
+    "id" : 192,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 378.327, 368.258, 398.738 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Suppose further that there exists Y in the range of A ∗ obeying"
+  }, {
+    "type" : "formula",
+    "id" : 193,
+    "page number" : 2,
+    "bounding box" : [ 219.12, 353.727, 539.793, 374.738 ],
+    "content" : "\\| Y _ { T } - e _ { 1 } e _ { 1 } ^ { * } \\| _ { 2 } \\leq 1 / 5 \\ \\ a n d \\ \\ Y _ { T } ^ { \\perp } \\prec 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 194,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 334.847, 304.058, 349.658 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Then e 1 e ∗ 1 is the unique minimizer of PhaseLift."
+  }, {
+    "type" : "paragraph",
+    "id" : 195,
+    "page number" : 2,
+    "bounding box" : [ 71.999, 267.873, 540.043, 319.462 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "In particular, the RIP-1 property in this unitary case has implications related to Wright’s conjecture. Furthermore, we adapt a trick in the construction of the dual certiﬁcate, used by [3] in the gaussian case, to reduce the number of necessary measurements from O ( n log n ) to O ( n ). Establishing the above yields the main result."
+  }, {
+    "type" : "heading",
+    "id" : 196,
+    "level" : "Doctitle",
+    "page number" : 2,
+    "bounding box" : [ 71.999, 227.396, 526.435, 240.322 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "2 Restricted Isometry Property of type 1 for Unitary Matrices"
+  }, {
+    "type" : "paragraph",
+    "id" : 197,
+    "page number" : 2,
+    "bounding box" : [ 71.999, 168.153, 540.032, 209.618 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "In the sequel we will label the transpose of the row vectors of U k as u ( k ) i or enumerate them as { u i } m i =1 . As in the gaussian case, we may assume wlog that x = e 1 , in this case by the unitary/orthogonal invariance of the Haar measure."
+  }, {
+    "type" : "paragraph",
+    "id" : 198,
+    "page number" : 2,
+    "bounding box" : [ 71.999, 101.28, 539.913, 145.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "First, we aim to establish a RIP-1 property on rank-2 matrices for this class of measurements. Let A ( X ) = {   n ( n + 1) Tr( u i u ∗ i X ) } m i =1 , where A is a linear map from the Hermitian matrices. Let"
+  }, {
+    "type" : "formula",
+    "id" : 199,
+    "page number" : 3,
+    "bounding box" : [ 160.68, 628.767, 451.952, 698.902 ],
+    "content" : "\\frac { 1 } { \\sqrt { n ( n + 1 ) } } \\mathcal { A } ( x _ { 1 } x _ { 1 } ^ { * } - \\lambda x _ { 2 } x _ { 2 } ^ { * } ) = \\{ | \\langle u _ { i } , x _ { 1 } \\rangle | ^ { 2 } - \\lambda | \\langle u _ { i } , x _ { 2 } \\rangle | ^ { 2 } \\} _ { i = 1 } ^ { m } \\\\ = \\{ | \\langle u _ { i } , e _ { 1 } \\rangle | ^ { 2 } - \\lambda | \\langle u _ { i } , e _ { 2 } \\rangle | ^ { 2 } \\} _ { i = 1 } ^ { m } \\\\ = \\{ | u _ { i } | ^ { 2 } - \\lambda | u _ { i } | ^ { 2 } \\} _ { i = 1 } ^ { m } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 200,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 587.568, 539.978, 626.422 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where we used rotational invariance of Haar measure and the fact that there exist orthogonal or unitary transformations taking any real/complex orthobasis to another orthobasis and u ij denotes the j th entry of the vector u i ."
+  }, {
+    "type" : "paragraph",
+    "id" : 201,
+    "page number" : 3,
+    "bounding box" : [ 71.999, 547.647, 539.989, 581.977 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "To establish 1 m  A ( X )   1 ≤ (1 + δ )   X   1 for all psd matrices, it is enough to consider X to be rank 1 psd. Taking any unit vector x ∈ C n , we have m"
+  }, {
+    "type" : "formula",
+    "id" : 202,
+    "page number" : 3,
+    "bounding box" : [ 195.12, 497.52, 418.135, 549.097 ],
+    "content" : "\\frac { 1 } { r } \\frac { 1 } { \\sqrt { n ( n + 1 ) } } \\| \\mathcal { A } ( x x ^ { * } ) \\| _ { l 1 } & = \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } | \\langle u _ { m } , x \\rangle | ^ { 2 } = 1 \\\\ \\\\ 1 & \\quad 1 \\quad 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 203,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 496.593, 153.873, 507.502 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "This implies that"
+  }, {
+    "type" : "formula",
+    "id" : 204,
+    "page number" : 3,
+    "bounding box" : [ 218.76, 449.76, 393.632, 497.302 ],
+    "content" : "\\frac { 1 } { r } \\frac { 1 } { \\sqrt { n ( n + 1 ) } } \\| \\mathcal { A } ( X ) \\| _ { 1 } & \\leq ( 1 + \\delta ) \\| X \\| _ { 1 } \\\\ \\text {py sgd} \\ X . \\ \\text {Now since } \\frac { m } { r \\sqrt { n ( n + 1 ) } } = \\sqrt { \\frac { n } { n + 1 } } , \\text { we can }"
+  }, {
+    "type" : "paragraph",
+    "id" : 205,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 425.927, 540.11, 463.385 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "  for any δ > 0 and for any psd X . Now since m r √ n ( n +1) =   n n +1 , we can get the desired property with δ = 3 13 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 206,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 409.473, 380.989, 420.382 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "To get the other part of RIP-1, we need to examine the quantity"
+  }, {
+    "type" : "formula",
+    "id" : 207,
+    "page number" : 3,
+    "bounding box" : [ 94.8, 351.6, 518.422, 403.058 ],
+    "content" : "& \\frac { 1 } { r } \\frac { 1 } { \\sqrt { n ( n + 1 ) } } \\| A ( x _ { 1 } x _ { 1 } ^ { * } - \\lambda x _ { 2 } x _ { 2 } ^ { * } ) \\| _ { l _ { 1 } } = ^ { d } \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } \\| u _ { i 1 } | ^ { 2 } - \\lambda | u _ { i 2 } | ^ { 2 } | = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } \\| u _ { i 1 } ^ { k } | ^ { 2 } - \\lambda | u _ { i 2 } ^ { ( k ) } | ^ { 2 } \\\\ & \\text {and show that it is lower bounded by a multiple of the operator norm of } X = x _ { 1 } x _ { 1 } ^ { * } - \\lambda x _ { 2 } x _ { 2 } ^ { * } \\text { whp.} \\\\ & \\text {This sum may be expressed as } n \\text { function of } 2 r n \\text { id} \\text { guesion } r \\text { sys.} \\text { This function is not } l \\text { inposbitz } \\text { so }"
+  }, {
+    "type" : "paragraph",
+    "id" : 208,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 309.633, 540.142, 362.858 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "and show that it is lower bounded by a multiple of the operator norm of X = x 1 x ∗ 1 − λx 2 x ∗ 2 whp. This sum may be expressed as a function of 2 rn iid gaussian rvs. This function is not Lipschitz, so we will use a surrogate function that is Lipschitz in order to apply Talagrand’s inequality [9] and then show that this introduces only a very small error."
+  }, {
+    "type" : "paragraph",
+    "id" : 209,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 213.087, 539.946, 300.982 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We will treat the real and complex cases simultaneously. To be speciﬁc, one way to obtain the Haar measure on O ( n ) or U ( n ) is to perform Gram-Schmidt on the columns of a gaussian or complex gaussian matrix. Thus, we will consider the columns u 1 and u 2 of a Haar-distributed orthogonal matrix as the result of the Gram-Schmidt procedure on a pair of iid gaussian vectors ζ and z . Introduce the functions v ( x ) = x   x   2 and t ( x,y ) = x − y   y,x   . Then if ζ,z are iid N (0 ,I ) or CN (0 ,I, 0), it can be veriﬁed that d"
+  }, {
+    "type" : "formula",
+    "id" : 210,
+    "page number" : 3,
+    "bounding box" : [ 226.68, 198.888, 384.632, 213.098 ],
+    "content" : "( u _ { 1 } , u _ { 2 } ) = ^ { d } ( v ( z ) , v ( t ( v ( \\zeta ) , v ( z ) ) ) )"
+  }, {
+    "type" : "paragraph",
+    "id" : 211,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 178.833, 365.257, 189.742 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We can now express the distribution of the quantity above as"
+  }, {
+    "type" : "formula",
+    "id" : 212,
+    "page number" : 3,
+    "bounding box" : [ 136.44, 94.44, 476.783, 172.537 ],
+    "content" : "\\text {we can now express the distribution of the quantity above as} \\\\ \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } | | u _ { i 1 } | ^ { 2 } - \\lambda | u _ { i 2 } | ^ { 2 } | = & \\frac { d } { r } \\sum _ { k = 1 } ^ { r } F ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) \\\\ = & \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } | | v ( z ^ { ( k ) } ) _ { i } | ^ { 2 } - \\lambda | v ( t ( \\zeta ^ { ( k ) } ) , v ( z ^ { ( k ) } ) ) _ { i } | ^ { 2 } |"
+  }, {
+    "type" : "paragraph",
+    "id" : 213,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 667.989, 540.044, 717.262 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "as a function of a 2 rn component gaussian vector. The above function is not lipschitz and the issue occurs in two places: ﬁrst, when we normalize the vectors ζ and z and then when we normalize the expression t ( v ( ζ ) ,v ( z )). Let us introduce the surrogate functions ˜ v 1 ( x ) = x (   x   2 ∨   n c 1 ) where c >> 1 and ˜ v = x where 0 < c < 1. Now, the surrogate function"
+  }, {
+    "type" : "paragraph",
+    "id" : 214,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 649.029, 432.415, 670.897 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "c 1 >> 1 and ˜ v 2 = x ( ‖ x ‖ 2 ∨ √ c 2 ) where 0 < c 2 < 1. Now, the surrogate function"
+  }, {
+    "type" : "formula",
+    "id" : 215,
+    "page number" : 4,
+    "bounding box" : [ 137.04, 603.0, 476.062, 644.497 ],
+    "content" : "\\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { F } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } | | \\tilde { v } _ { 1 } ( z ^ { ( k ) } ) _ { i } | ^ { 2 } - \\lambda | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ^ { ( k ) } ) , \\tilde { v } _ { 1 } ( z ^ { ( k ) } ) ) ) _ { i } | ^ { 2 } | \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 216,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 588.993, 299.073, 599.902 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "is equal to the original with probability at least"
+  }, {
+    "type" : "formula",
+    "id" : 217,
+    "page number" : 4,
+    "bounding box" : [ 137.281, 539.04, 474.676, 578.465 ],
+    "content" : "1 - 2 r \\mathbb { P } \\{ \\| \\zeta \\| _ { 2 } ^ { 2 } < \\frac { n } { c _ { 1 } } \\} - r \\mathbb { P } \\{ | \\left \\langle \\frac { \\zeta } { \\| \\zeta \\| _ { 2 } } , \\frac { z } { \\| z \\| _ { 2 } } \\right \\rangle | ^ { 2 } > 1 - c _ { 2 } \\} \\geq 1 - O \\left ( r e ^ { - \\gamma n } \\right ) \\\\ \\intertext { where } \\gamma \\, \\text { can be made arbitrarily large by taking } c _ { 1 } \\, \\text { large enough and } c _ { 2 } \\, \\text { small enough. } \\, \\text { It now }"
+  }, {
+    "type" : "paragraph",
+    "id" : 218,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 503.553, 539.957, 541.582 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where γ can be made arbitrarily large by taking c 1 large enough and c 2 small enough. It now remains to verify that the surrogate function is Lipschitz with a good enough constant and that it introduces only a small error."
+  }, {
+    "type" : "paragraph",
+    "id" : 219,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 449.04, 539.956, 484.178 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Consider the function g ( x,y ) =   n i =1 || x i | 2 − λ | y i | 2 | , with x,y ∈ R n or C n and assume   x i   2 ≤ 1 ,   y i   2 ≤ 1. We have"
+  }, {
+    "type" : "formula",
+    "id" : 220,
+    "page number" : 4,
+    "bounding box" : [ 102.84, 300.207, 509.061, 447.097 ],
+    "content" : "1 , \\| y _ { i } \\| _ { 2 } & \\leq 1 . \\text { We have} \\\\ & | g ( x _ { 1 } , y _ { 1 } ) - g ( x _ { 2 } , y _ { 2 } ) | \\leq \\sum _ { i = 1 } ^ { n } | | | x _ { 1 i } | ^ { 2 } - \\lambda | y _ { 1 i } | ^ { 2 } | - | | x _ { 2 i } | ^ { 2 } - \\lambda | y _ { 2 i } | ^ { 2 } | | \\\\ & \\leq \\sum _ { i = 1 } ^ { n } | ( | x _ { 1 i } | ^ { 2 } - | x _ { 2 i } | ^ { 2 } ) - \\lambda ( | y _ { 1 i } | ^ { 2 } - | y _ { 2 i } | ^ { 2 } ) | \\\\ & \\leq \\sum _ { i = 1 } ^ { n } | ( | x _ { 1 i } | + | x _ { 2 i } | ) ( | x _ { 1 i } | - | x _ { 2 i } | ) | + \\lambda | ( | y _ { 1 i } | + | y _ { 2 i } | ) ( | y _ { 1 i } | - | y _ { 2 i } | ) | \\\\ & \\leq \\| x _ { 1 } | + | x _ { 2 } | \\| _ { 2 } | x _ { 1 } - x _ { 2 } | + \\lambda | | y _ { 1 } | + | y _ { 2 } | | \\| y _ { 1 } - y _ { 2 } | \\| _ { 2 } \\\\ & \\leq 2 \\| x _ { 1 } - x _ { 2 } \\| _ { 2 } + 2 \\lambda \\| y _ { 1 } - y _ { 2 } \\| _ { 2 } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 221,
+    "page number" : 4,
+    "bounding box" : [ 71.999, 278.193, 116.683, 289.102 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Now take"
+  }, {
+    "type" : "formula",
+    "id" : 222,
+    "page number" : 4,
+    "bounding box" : [ 110.999, 162.807, 500.312, 268.102 ],
+    "content" : "& \\text {Now take} \\\\ & \\quad | \\tilde { F } ( \\zeta _ { 1 } , z _ { 1 } ) - \\tilde { F } ( \\zeta _ { 2 } , z _ { 2 } ) | \\\\ & \\quad = | g ( \\tilde { v } _ { 1 } ( z _ { 1 } ) , \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta _ { 1 } ) , \\tilde { v } _ { 1 } ( z _ { 1 } ) ) ) ) - g ( \\tilde { v } _ { 1 } ( z _ { 2 } ) , \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta _ { 2 } ) , \\tilde { v } _ { 1 } ( z _ { 2 } ) ) ) ) | \\\\ & \\quad \\leq 2 \\| \\tilde { v } _ { 1 } ( z _ { 1 } ) - \\tilde { v } _ { 1 } ( z _ { 2 } ) \\| _ { 2 } + 2 \\lambda \\| \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta _ { 1 } ) , \\tilde { v } _ { 1 } ( z _ { 1 } ) ) ) - \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta _ { 2 } ) , \\tilde { v } _ { 1 } ( z _ { 2 } ) ) ) \\| _ { 2 } \\\\ & \\quad \\leq 2 Lip ( \\tilde { v } _ { 1 } ) \\| z _ { 1 } - z _ { 2 } \\| _ { 2 } + 2 \\lambda Lip ( \\tilde { v } _ { 2 } ) \\| t ( \\tilde { v } _ { 1 } ( \\zeta _ { 1 } ) , \\tilde { v } _ { 1 } ( z _ { 1 } ) ) - t ( \\tilde { v } _ { 1 } ( \\zeta _ { 2 } ) , \\tilde { v } _ { 1 } ( z _ { 2 } ) ) \\| _ { 2 } \\\\ & \\quad \\leq 2 Lip ( \\tilde { v } _ { 1 } ) \\| z _ { 1 } - z _ { 2 } \\| _ { 2 } + 2 \\lambda Lip ( \\tilde { v } _ { 2 } ) Lip ( t | _ { \\zeta _ { 0 , 1 } } ) \\| Lip ( \\tilde { v } _ { 1 } ( \\zeta _ { 1 } ) , \\tilde { v } _ { 1 } ( z _ { 1 } ) ) - ( \\tilde { v } _ { 1 } ( \\zeta _ { 2 } ) , \\tilde { v } _ { 1 } ( z _ { 2 } ) ) \\| _ { 2 } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 223,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 115.167, 539.857, 134.095 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "One can verify that in either the real or complex case, when   x i   2 ,   y i   2 ≤ 1, the function t satisﬁes"
+  }, {
+    "type" : "formula",
+    "id" : 224,
+    "page number" : 4,
+    "bounding box" : [ 194.279, 91.407, 417.031, 110.334 ],
+    "content" : "\\| t ( x _ { 1 } , y _ { 1 } ) - t ( x _ { 2 } , y _ { 2 } ) \\| _ { 2 } \\leq 2 \\| ( x _ { 1 } , y _ { 1 } ) - ( x _ { 2 } , y _ { 2 } ) \\| _ { 2 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 225,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 651.188, 539.978, 719.258 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "For x ∈ R n , let ˜ v ( x ) = x   x   2 ∨ c for some positive constant c. Now, we have that D ( x   x   2 ) = 1   x   3 2 (   x   2 2 I − xx ∗ ) and hence   D ( x   x   2 )   ≤ 2   x   2 . Thus,   D (˜ v )   ≤ 2 c on ¯ B (0 ,c ) c so that Lip(˜ v | U ) ≤ 2 c for any open convex set U ∈ ¯ B (0 ,c ) c . Furthermore, we have D (˜ v ) = 1 c I on B (0 ,c ) and thus   D (˜ v )   ≤ 1 c on B (0 ,c ) so that Lip(˜ v | ¯ B (0 ,c ) ) ≤ 1 c ."
+  }, {
+    "type" : "paragraph",
+    "id" : 226,
+    "page number" : 5,
+    "bounding box" : [ 71.999, 597.767, 540.043, 639.502 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Take x i ∈ ¯ B (0 ,c ) c ,i = 1 , 2 such that the line connecting these two points intersects ¯ B (0 ,c ). Assume that the point(s) of intersection are z 1 and z 2 (with the line from x 1 to x 2 ﬁrst hitting z 1 and then z 2 ). Then we have"
+  }, {
+    "type" : "formula",
+    "id" : 227,
+    "page number" : 5,
+    "bounding box" : [ 129.239, 498.687, 482.192, 565.974 ],
+    "content" : "\\| \\tilde { v } ( x _ { 1 } ) - \\tilde { v } ( x _ { 2 } ) \\| _ { 2 } & \\leq \\| \\tilde { v } ( x _ { 1 } ) - \\tilde { v } ( z _ { 1 } ) \\| _ { 2 } + \\| \\tilde { v } ( z _ { 1 } ) - \\tilde { v } ( z _ { 2 } ) \\| _ { 2 } + \\| \\tilde { v } ( z _ { 2 } ) - \\tilde { v } ( x _ { 2 } ) \\| _ { 2 } \\\\ & \\leq \\frac { 2 } { c } \\| x _ { 1 } - z _ { 2 } \\| _ { 2 } + \\frac { 1 } { c } \\| z _ { 1 } - z _ { 2 } \\| _ { 2 } + \\frac { 2 } { c } \\| z _ { 2 } - x _ { 2 } \\| _ { 2 } \\\\ & \\leq \\frac { 2 } { c } \\| x _ { 1 } - x _ { 2 } \\| _ { 2 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 228,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 418.407, 540.054, 484.015 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where for the sets U i we take B ( x i ,   z i − x i   2 ). The other cases of arrangements of x i are similarly proven. We conclude that Lip(˜ v ) ≤ 2 c . Note that this implies that in the complex case, we also have Lip(˜ v ) ≤ 2 c with ˜ v deﬁned analogously. We have thus established that Lip(˜ v 1 ) ≤ √ c 2 √ n and Lip(˜ v 2 ) ≤ 2 √ c 1 . Using this information,"
+  }, {
+    "type" : "formula",
+    "id" : 229,
+    "page number" : 5,
+    "bounding box" : [ 183.48, 375.807, 427.832, 410.346 ],
+    "content" : "| \\tilde { F } ( \\zeta _ { 1 } , z _ { 1 } ) - \\tilde { F } ( \\zeta _ { 2 } , z _ { 2 } ) | \\leq \\frac { 1 6 \\sqrt { \\frac { c _ { 1 } } { c _ { 2 } } } } { \\sqrt { n } } \\| ( \\zeta _ { 1 } , z _ { 1 } ) - ( \\zeta _ { 2 } , z _ { 2 } ) \\| _ { 2 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 230,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 353.913, 165.818, 364.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Finally, this implies"
+  }, {
+    "type" : "formula",
+    "id" : 231,
+    "page number" : 5,
+    "bounding box" : [ 219.12, 307.2, 390.052, 353.226 ],
+    "content" : "\\text {Lip} ( \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { F } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) ) \\leq \\frac { 1 } { \\sqrt { r } } \\frac { 1 6 \\sqrt { \\frac { c _ { 1 } } { c _ { 2 } } } } { \\sqrt { n } } \\\\ \\text {y, we have}"
+  }, {
+    "type" : "paragraph",
+    "id" : 232,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 296.913, 238.484, 307.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "By Talagrand’s inequality, we have"
+  }, {
+    "type" : "formula",
+    "id" : 233,
+    "page number" : 5,
+    "bounding box" : [ 156.48, 227.16, 454.492, 286.177 ],
+    "content" : "\\mathbb { P } \\{ \\left | \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { F } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) - \\mathbb { E } \\left [ \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { F } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) \\right ] \\right | \\geq t \\} \\leq e ^ { - c ( r n ) t ^ { 2 } } \\\\ \\text {constant} \\, c \\text { which depends on } c _ { i } . \\text { Let}"
+  }, {
+    "type" : "paragraph",
+    "id" : 234,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 227.16, 270.633, 259.986 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "  r   k =1 for a constant c which depends on c i . Let"
+  }, {
+    "type" : "formula",
+    "id" : 235,
+    "page number" : 5,
+    "bounding box" : [ 184.44, 178.32, 427.582, 219.937 ],
+    "content" : "\\tilde { G } = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { F } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) , \\quad G = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } F ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 236,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 160.148, 476.139, 174.742 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "G and ˜ G are both bounded by 2 and disagree on a set of probability O( re − γn ), thus"
+  }, {
+    "type" : "formula",
+    "id" : 237,
+    "page number" : 5,
+    "bounding box" : [ 249.361, 103.8, 362.542, 149.705 ],
+    "content" : "\\lim _ { n \\to \\infty } \\left | \\mathbb { E } [ \\tilde { G } ] - \\mathbb { E } \\left [ G \\right ] \\right | = 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 238,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 706.353, 325.615, 717.262 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "So that if we ﬁx t apriori, then for all n large enough"
+  }, {
+    "type" : "formula",
+    "id" : 239,
+    "page number" : 6,
+    "bounding box" : [ 184.08, 594.6, 427.973, 692.935 ],
+    "content" : "\\mathbb { P } \\{ | G - \\mathbb { E } [ G ] | \\geq t \\} \\\\ \\leq \\mathbb { P } \\{ | \\tilde { G } - \\mathbb { E } [ \\tilde { G } ] | \\geq t - \\left | \\tilde { G } - G \\right | - \\left | \\mathbb { E } [ \\tilde { G } ] - \\mathbb { E } \\left [ G \\right ] \\right | \\} \\\\ \\leq \\mathbb { P } \\{ G \\neq \\tilde { G } \\} + \\mathbb { P } \\{ | \\tilde { G } - \\mathbb { E } [ \\tilde { G } ] | \\geq t - \\left | \\mathbb { E } [ \\tilde { G } ] - \\mathbb { E } \\left [ G \\right ] \\right | \\} \\\\ \\leq O \\left ( r e ^ { - \\gamma n } \\right ) + e ^ { - c ( r n ) ( t / 2 ) ^ { 2 } } \\\\ \\intertext { h a v e s t a b l i s h e d }"
+  }, {
+    "type" : "paragraph",
+    "id" : 240,
+    "page number" : 6,
+    "bounding box" : [ 222.359, 629.847, 222.359, 648.775 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 241,
+    "page number" : 6,
+    "bounding box" : [ 71.998, 584.913, 217.852, 595.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Therefore, we have established"
+  }, {
+    "type" : "formula",
+    "id" : 242,
+    "page number" : 6,
+    "bounding box" : [ 99.718, 515.04, 512.236, 574.057 ],
+    "content" : "& \\mathbb { P } \\{ \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } | | u _ { i 1 } | ^ { 2 } - \\lambda | u _ { i 2 } | ^ { 2 } | - \\mathbb { E } \\left [ \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } | | u _ { i 1 } | ^ { 2 } - \\lambda | u _ { i 2 } | ^ { 2 } | \\right ] | \\geq t \\} \\leq e ^ { - c ( r n ) ( t / 2 ) ^ { 2 } } + O \\left ( r e ^ { - \\gamma n } \\right ) \\\\ & \\text {for constants $c$ and $\\gamma$ which depend on $c_{i}$. To achieve an arbitrarily fast exponential rate, first} \\\\ & \\text {select $c_{i}$ so that $\\gamma$ is as large as needed, then fix $r$ large enough.}"
+  }, {
+    "type" : "paragraph",
+    "id" : 243,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 503.448, 540.153, 528.862 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "    for constants c and γ which depend on c i . To achieve an arbitrarily fast exponential rate, ﬁrst select c i so that γ is as large as needed, then ﬁx r large enough."
+  }, {
+    "type" : "paragraph",
+    "id" : 244,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 431.76, 539.913, 487.145 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We claim that E     | u i 1 | 2 − λ | u i 2 | 2     = 1 n 1+ λ 2 1+ λ , which we compute below. We have from [4] that   | u i 1 | 2 ,... , | u in − 1 | 2   are uniformly distributed on { ( x 1 ,... x n − 1 ); x i ≥ 0 ,   n − 1 i =1 x i ≤ 1 } . Thus E u 2 λ u 2 1"
+  }, {
+    "type" : "formula",
+    "id" : 245,
+    "page number" : 6,
+    "bounding box" : [ 86.76, 131.88, 526.592, 441.262 ],
+    "content" : "We claim that \\mathbb { E } \\left [ | u _ { 1 } | ^ { 2 } - \\lambda | u _ { 2 } | ^ { 2 } \\right ] & = \\frac { 1 + \\lambda ^ { 2 } } { n + 1 } , \\text { which we compute below. } \\text { We have from } [ 4 ] \\text { that } \\\\ ( | u _ { 1 } | ^ { 2 } , \\dots , | u _ { n - 1 } | ^ { 2 } ) \\text { are uniformly distributed on } \\{ ( x _ { 1 } , \\dots x _ { n - 1 } ; x _ { i } \\geq 0 , \\sum _ { i = 1 } ^ { n - 1 } x _ { i } \\leq 1 ) . \\text { Thus} \\\\ \\mathbb { E } \\left [ | u _ { 1 } | ^ { 2 } - \\lambda | u _ { 2 } | ^ { 2 } \\right ] & \\frac { 1 } { ( n - 1 ) ( n - 2 ) } \\\\ = ( n - 3 ) ! \\int _ { \\mathbb { R } ^ { n - 1 } } | x _ { 1 } - \\lambda x _ { 2 } | \\chi _ { \\sum _ { i = 1 } ^ { n - 1 } x _ { i } \\geq 0 } d x _ { 1 } \\dots d x _ { n - 1 } \\\\ = ( n - 3 ) ! \\int _ { \\mathbb { R } ^ { 2 } } | x _ { 1 } - \\lambda x _ { 2 } | \\chi _ { 1 + x _ { 2 } \\leq 1 } \\int _ { \\mathbb { R } ^ { n - 3 } } \\chi _ { \\sum _ { n = 1 } ^ { n - 1 } x _ { n - 1 } ( x _ { 1 } + x _ { 2 } ) } ) d x _ { 3 } \\dots d x _ { n - 1 } \\\\ = \\frac { ( n - 3 ) ! } { ( n - 3 ) ! } \\int _ { \\mathbb { R } ^ { 2 } } | x _ { 1 } - \\lambda x _ { 2 } | ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } \\chi _ { \\{ 1 + x _ { 2 } \\leq 1 , x _ { i } \\geq 0 \\} } d x _ { 1 } d x _ { 2 } \\\\ = \\int _ { 0 } ^ { 1 } \\int \\left [ \\chi _ { 1 } \\{ x _ { 2 } \\} \\left ( \\lambda x _ { 2 } - x _ { 1 } \\right ) + \\chi _ { 1 } \\{ x _ { 1 } \\geq \\lambda x _ { 2 } \\} ( x _ { 1 } - \\lambda x _ { 2 } ) \\right ] ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } \\chi _ { \\{ 0 \\leq x _ { 2 } \\leq 1 - x _ { 2 } \\} } d x _ { 1 } d x _ { 2 } \\\\ = \\int _ { 0 } ^ { 1 } \\int _ { 0 } ^ { \\chi _ { 2 } } \\left ( \\lambda x _ { 2 } - x _ { 1 } \\right ) ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } \\\\ + \\chi _ { \\{ \\lambda x _ { 2 } \\geq 1 - x _ { 2 } \\} } \\int _ { 0 } ^ { 1 - x _ { 2 } } \\left ( \\lambda x _ { 2 } - x _ { 1 } \\right ) ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } \\\\ + \\chi _ { \\{ \\lambda x _ { 2 } \\leq 1 - x _ { 2 } \\} } \\int _ { \\lambda x _ { 2 } } ^ { 1 - x _ { 2 } } ( \\lambda x _ { 2 } - x _ { 1 } ) ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } d x _ { 2 } \\\\ = \\int _ { 0 } ^ { \\frac { 1 + x _ { 2 } } { 1 + x _ { 2 } } } \\int _ { 0 } ^ { \\lambda x _ { 2 } } ( \\lambda x _ { 2 } - x _ { 1 } ) ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } d x _ { 2 } \\\\ + \\int _ { - 1 + x } ^ { 1 - x _ { 2 } } \\int _ { 0 } ^ { ( 1 - x _ { 2 } ) } ( \\lambda x _ { 2 } - x _ { 1 } ) ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 2 } d x _ { 2 } \\\\"
+  }, {
+    "type" : "formula",
+    "id" : 246,
+    "page number" : 7,
+    "bounding box" : [ 105.84, 295.68, 506.912, 720.643 ],
+    "content" : "& = \\int _ { 0 } ^ { 1 + \\lambda } \\lambda x _ { 2 } \\left ( \\frac { - 1 } { n - 2 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 2 } \\Big | _ { 0 } ^ { \\lambda x _ { 2 } } \\right ) - \\int _ { 0 } ^ { \\lambda x _ { 2 } } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } d x _ { 2 } \\\\ & + \\int _ { 0 } ^ { 1 + \\lambda } \\int _ { \\lambda x _ { 2 } } ^ { 1 - \\rho _ { 2 } } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } - \\lambda x _ { 2 } \\left ( \\frac { - 1 } { n - 2 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 2 } \\Big | _ { \\lambda x _ { 2 } } ^ { \\lambda x _ { 2 } } \\right ) d x _ { 2 } \\\\ & + \\int _ { \\frac { 1 + \\lambda } { 1 + \\lambda } } ^ { 1 } \\lambda x _ { 2 } \\left ( \\frac { - 1 } { n - 2 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 2 } \\Big | _ { 0 } ^ { 1 - x _ { 2 } } \\right ) - \\int _ { 0 } ^ { 1 - x _ { 2 } } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } d x _ { 2 } \\\\ & = \\int _ { 0 } ^ { \\frac { 1 + \\lambda } { 1 } } \\lambda x _ { 2 } \\left ( \\frac { - 1 } { n - 2 } ( 1 - ( 1 + \\lambda ) x _ { 2 } ) ) ^ { n - 2 } + \\frac { 1 } { n - 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } \\right ) \\\\ & - \\int _ { 0 } ^ { \\lambda x _ { 2 } } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } d x _ { 2 } \\\\ & + \\int _ { 0 } ^ { \\frac { 1 + \\lambda } { 1 + \\lambda } } \\int _ { \\lambda x _ { 2 } } ^ { 1 - x _ { 2 } } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } - \\lambda x _ { 2 } \\left ( \\frac { 1 } { n - 2 } ( 1 - ( 1 + \\lambda ) x _ { 2 } ) ) ^ { n - 2 } \\right ) d x _ { 2 } \\\\ & + \\int _ { 0 } ^ { 1 + \\lambda } \\lambda x _ { 2 } \\left ( \\frac { 1 } { n - 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } \\right ) d x _ { 1 } - \\int _ { 0 } ^ { 1 - x _ { 2 } } x _ { 1 } ( 1 - x _ { 2 } ) ) ^ { n - 3 } d x _ { 1 } d x _ { 2 } \\\\ & = \\frac { \\lambda } { ( 1 + \\lambda ) ^ { 2 } } \\frac { - 1 } { n - 2 } \\int _ { 0 } ^ { 1 } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } + \\lambda \\frac { 1 } { n - 2 } \\int _ { 0 } ^ { \\frac { 1 + \\lambda } { 1 + \\lambda } } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } \\\\ & - \\int _ { 0 } ^ { 1 + \\lambda } \\frac { - 1 } { n - 2 } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 2 } \\Big | _ { 0 } ^ { \\lambda x _ { 2 } } - \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 1 } \\Big | _ { 0 } ^ { \\lambda x _ { 2 } } \\\\ & + \\int _ { 0 } ^ { \\frac { 1 + \\lambda } { 1 } } \\frac { - 1 } { n - 2 } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 2 } \\Big | _ { \\lambda x _ { 2 } } ^ { 1 - x _ { 2 } } - \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 1 } \\Big | _ { \\lambda x _ { 2 } } ^ { 1 - x _ { 2 } } \\\\ & \\frac { - \\lambda } { ( 1 + \\lambda ) ^ { 2 } } \\frac { 1 } { n - 2 } \\int _ { 0 } ^ { 1 } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } + \\frac { \\lambda } { n - 2 } \\int _ { 1 + \\lambda } ^ { \\lambda } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } \\\\ & - \\int _ { 0 } ^ { 1 } \\frac { - 1 } { n - 2 } x _ { 1 } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 2 } \\Big | _ { 0 } ^ { 1 - x _ { 2 } } - \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - ( x _ { 1 } + x _ { 2 } ) ) ^ { n - 1 } \\Big | _ { 0 } ^ { 1 - x _ { 2 } } \\\\"
+  }, {
+    "type" : "formula",
+    "id" : 247,
+    "page number" : 8,
+    "bounding box" : [ 128.64, 264.567, 485.629, 720.643 ],
+    "content" : "& = \\frac { \\lambda } { ( 1 + \\lambda ) ^ { 2 } } - 1 \\int _ { 0 } ^ { 1 } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } + \\frac { \\lambda } { n - 2 } \\int _ { 0 } ^ { \\frac { 1 } { 1 + \\lambda } } x _ { 2 } ( 1 - x ) ^ { 2 } ) ^ { n - 2 } d x _ { 2 } \\\\ & - \\int _ { 0 } ^ { + } \\frac { - 1 } { n - 2 } \\lambda x _ { 2 } ( 1 - ( 1 + \\lambda ) x _ { 2 } ) ^ { n - 2 } - \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - ( 1 + \\lambda ) x _ { 2 } ) ^ { n - 1 } \\\\ & + \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - x _ { 2 } ) ^ { n - 1 } d x _ { 2 } + \\int _ { 0 } ^ { + } \\frac { 1 } { n - 2 } \\lambda x _ { 2 } ( 1 - ( 1 + \\lambda ) x _ { 2 } ) ^ { n - 2 } \\\\ & + \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - ( 1 + \\lambda ) x _ { 2 } ) ^ { n - 1 } d x _ { 2 } \\\\ & + \\frac { - \\lambda } { ( 1 + \\lambda ) ^ { 2 } } \\frac { 1 } { n - 2 } \\int _ { 0 } ^ { 1 } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } + \\frac { \\lambda } { n - 2 } \\int _ { - \\frac { 1 } { \\lambda } } ^ { 1 } x _ { 2 } ( 1 - x _ { 2 } ) ^ { n - 2 } d x _ { 2 } \\\\ & - \\int _ { 0 } ^ { 1 } \\frac { 1 } { ( n - 2 ) ( n - 1 ) } ( 1 - x _ { 2 } ) ^ { n - 1 } d x _ { 2 } \\\\ & = \\frac { \\lambda } { ( 1 + \\lambda ) ^ { 2 } } \\frac { - 1 } { n - 2 } \\int _ { 0 } ^ { 1 } x ( 1 - x ) ^ { n - 2 } d x + \\frac { \\lambda } { n - 2 } \\int _ { 0 } ^ { 1 + \\lambda } x ( 1 - x ) ^ { n - 2 } d x \\\\ & + \\frac { \\lambda } { ( 1 + \\lambda ) ^ { 2 } } \\frac { 1 } { n - 2 } \\int _ { 0 } ^ { 1 } x ( 1 - x ) ^ { n - 2 } d x + \\frac { 1 } { 1 + \\lambda } \\frac { 1 } { ( n - 2 ) ( n - 1 ) } \\int _ { 0 } ^ { 1 } ( 1 - x ) ^ { n - 1 } d x \\\\ & - \\frac { 1 } { ( n - 2 ) ( n - 1 ) } \\int _ { 0 } ^ { 1 + \\lambda } ( 1 - x ) ^ { n - 1 } d x + \\frac { \\lambda } { ( 1 + \\lambda ) ^ { 2 } } \\frac { 1 } { n - 2 } \\int _ { 0 } ^ { 1 } x ( 1 - x ) ^ { n - 2 } d x \\\\ & + \\frac { 1 } { n - 2 } \\frac { 1 } { ( n - 2 ) ( n - 2 ) } \\int _ { 0 } ^ { 1 } ( 1 - x ) ^ { n - 1 } d x - \\frac { 1 } { ( n - 2 ) ( n - 1 ) } \\frac { 1 } { \\int _ { 0 } ^ { 1 } x } \\\\ & + \\frac { \\lambda } { n - 2 } \\int _ { 0 } ^ { 1 + \\lambda } x ( 1 - x ) ^ { n - 2 } d x + \\left [ 2 \\frac { 1 } { 1 + \\lambda } - 1 \\right ] \\frac { 1 } { ( n - 2 ) ( n - 1 ) } \\int _ { 0 } ^ { 1 } ( 1 - x ) ^ { n - 1 } d x \\\\ & = \\frac { 1 } { n ( n - 1 ) ( n - 2 ) } \\left [ \\lambda + \\frac { 1 - \\lambda } { 1 + \\lambda } \\right ] \\\\ & = \\frac { 1 } { n ( n - 1 ) ( n - 2 ) } \\frac { 1 } { 1 + \\lambda } ^ { 2 } \\\\ & \\quad \\cdot \\quad \\\\ \\text {Thus} & & \\int _ { 0 } ^ { 1 } \\left [ \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } | | u _ { i } | | ^ { 2 } - \\lambda | u _ { i } | ^ { 2 } \\right ] \\right ] = \\frac { 1 + \\lambda ^ { 2 } } { 1 + \\lambda } \\\\ & \\quad \\cdot \\quad \\\\ \\text {which, as in the complex gaussian case, achieves its minimum on [0, 1] of 2 (\\/ 2 - 1 ) > 0 . 8 2 .}"
+  }, {
+    "type" : "paragraph",
+    "id" : 248,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 251.913, 96.098, 262.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Thus"
+  }, {
+    "type" : "formula",
+    "id" : 249,
+    "page number" : 8,
+    "bounding box" : [ 220.56, 212.64, 389.792, 254.257 ],
+    "content" : "\\mathbb { E } \\left [ \\frac { 1 } { r } \\sum _ { i = 1 } ^ { m } | | u _ { i 1 } | ^ { 2 } - \\lambda | u _ { i 2 } | ^ { 2 } | \\right ] = \\frac { 1 + \\lambda ^ { 2 } } { 1 + \\lambda } \\\\ \\text {gaussian case} \\, \\ a c h i e y e s \\, \\text {its minimum on } [ 0 \\, 1 ] \\, \\text {of}"
+  }, {
+    "type" : "paragraph",
+    "id" : 250,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 193.527, 512.421, 221.454 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "i =1 which, as in the complex gaussian case, achieves its minimum on [0 , 1] of 2( √ 2 − 1) > 0 . 828."
+  }, {
+    "type" : "heading",
+    "id" : 251,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 72.0, 153.117, 356.293, 163.889 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "2.1 Implications related to Wright’s conjecture"
+  }, {
+    "type" : "paragraph",
+    "id" : 252,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 91.407, 540.042, 137.182 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Using the same covering argument over rank-2 indefinite matrices as in Lemma 3.4.2 in [8], we obtain the RIP-1 property for unitary matrices. Since RIP-1 is stronger than injectivity of the measurements, this shows that there exists some integer r such that the measurements | U i x | r i =1 , where U i are iid Haar distributed unitary matrices, are injective up to global phase with very high probability. It would be interesting to see how small of an integer r can be achieved by probabilistic arguments, say by using more sophisticated concentration arguments, but there seems to be a bottleneck in the large constants that appear in concentration inequalities. On the other hand, algebraic and differential geometry techniques are successful in establishing that an RIP-1 property with some nonzero, possibly very small constant holds for 4 unitary matrices [2]."
+  }, {
+    "type" : "heading",
+    "id" : 253,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 598.556, 218.726, 611.482 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "3 Dual certiﬁcation"
+  }, {
+    "type" : "paragraph",
+    "id" : 254,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 568.473, 226.222, 579.382 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We start with a useful property:"
+  }, {
+    "type" : "heading",
+    "id" : 255,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 534.117, 333.61, 544.888 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "3.1 Moments of entries of a unitary matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 256,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 485.847, 539.902, 518.062 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Wlog, we shall further treat below the complex case only. We record some useful identities from [7]. Let u ij be an entry of a n × n Haar distributed unitary matrix. Then"
+  }, {
+    "type" : "formula",
+    "id" : 257,
+    "page number" : 9,
+    "bounding box" : [ 221.76, 451.767, 388.952, 485.182 ],
+    "content" : "\\mathbb { E } [ | u _ { i j } | ^ { 2 d } ] & = \\frac { d ! } { n ( n + 1 ) \\dots ( n + d - 1 ) } \\\\ \\\\ 2 & \\quad U i j = n + 1 - n + i + j + n + d - 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 258,
+    "page number" : 9,
+    "bounding box" : [ 71.999, 431.007, 343.909, 451.777 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Which implies that E [ | u ia | 4 ] = 2 n ( n +1) . Using the identity"
+  }, {
+    "type" : "formula",
+    "id" : 259,
+    "page number" : 9,
+    "bounding box" : [ 142.8, 387.0, 470.302, 428.498 ],
+    "content" : "\\frac { 1 } { n } = \\mathbb { E } [ | u _ { i a } | ^ { 2 } ] = \\mathbb { E } [ | u _ { i a } | ^ { 2 } ( \\sum _ { b = 1 } ^ { n } | u _ { i b } | ^ { 2 } ) ] = \\mathbb { E } [ | u _ { i a } | ^ { 4 } ] + ( n - 1 ) \\, \\mathbb { E } [ | u _ { i b } | ^ { 2 } | u _ { i a } | ^ { 2 } ] \\\\ \\intertext { o b t a i n } \\, \\text {for } a \\neq b \\, h"
+  }, {
+    "type" : "paragraph",
+    "id" : 261,
+    "page number" : 9,
+    "bounding box" : [ 150.48, 367.767, 150.48, 386.694 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 260,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 375.513, 166.68, 386.422 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "we obtain, for a   = b"
+  }, {
+    "type" : "formula",
+    "id" : 262,
+    "page number" : 9,
+    "bounding box" : [ 246.24, 350.247, 364.593, 376.342 ],
+    "content" : "\\mathbb { E } [ | u _ { i a } | ^ { 2 } | u _ { i b } | ^ { 2 } ] = \\frac { 1 } { n ( n + 1 ) }"
+  }, {
+    "type" : "heading",
+    "id" : 263,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 318.117, 202.096, 328.888 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "3.2 Dual Certiﬁcates"
+  }, {
+    "type" : "paragraph",
+    "id" : 264,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 283.527, 263.793, 302.454 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "With A as above, it can be veriﬁed that 1"
+  }, {
+    "type" : "formula",
+    "id" : 265,
+    "page number" : 9,
+    "bounding box" : [ 227.76, 258.447, 384.599, 284.422 ],
+    "content" : "\\frac { 1 } { m } \\, \\mathbb { E } \\left [ \\mathcal { A } ^ { * } \\mathcal { A } \\right ] = I - \\frac { 1 } { n + 1 } I \\otimes I = \\mathcal { S }"
+  }, {
+    "type" : "paragraph",
+    "id" : 266,
+    "page number" : 9,
+    "bounding box" : [ 71.999, 226.233, 539.803, 252.818 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "and we have S − 1 ( X ) = X − 1 n +1 Tr( X ) I n . Thus, the regular construction of the dual certiﬁcate would be"
+  }, {
+    "type" : "formula",
+    "id" : 267,
+    "page number" : 9,
+    "bounding box" : [ 156.48, 105.568, 456.633, 208.297 ],
+    "content" : "\\frac { 1 } { m } \\mathcal { A } ^ { * } \\mathcal { A S } ^ { - 1 } ( e _ { 1 } e _ { 1 } ^ { * } ) & = \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } n ( n + 1 ) u _ { i } u _ { i } ^ { * } \\otimes u _ { i } u _ { i } ^ { * } ( e _ { 1 } e _ { 1 } ^ { * } - \\frac { 1 } { n + 1 } I _ { n } ) \\\\ & = \\frac { n ( n + 1 ) } { m } \\sum _ { i = 1 } ^ { m } ( | u _ { i 1 } | ^ { 2 } - \\frac { 1 } { n + 1 } ) u _ { i } u _ { i } ^ { * } \\\\ & = \\frac { n } { m } \\sum _ { i = 1 } ^ { m } ( ( n + 1 ) | u _ { i 1 } | ^ { 2 } - 1 ) u _ { i } u _ { i } ^ { * }"
+  }, {
+    "type" : "formula",
+    "id" : 268,
+    "page number" : 9,
+    "bounding box" : [ 264.6, 94.2, 280.353, 127.026 ],
+    "content" : "\\sum _ { i = 1 } ^ { m } O"
+  }, {
+    "type" : "paragraph",
+    "id" : 269,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 687.24, 539.935, 720.065 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Let ψ n = E   ( n )( n + 1)( | u i 1 | ∧ 3 √ n +1 ) 4   . ψ n is slightly less than 2. Using a construction similar to that found in [5], we could then take the enhanced certiﬁcate to be"
+  }, {
+    "type" : "formula",
+    "id" : 270,
+    "page number" : 10,
+    "bounding box" : [ 168.361, 636.48, 443.072, 677.977 ],
+    "content" : "Y = \\frac { 1 } { m } \\sum _ { i = 1 } ^ { n } ( 2 n ( n + 1 ) ( | u _ { i 1 } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - n ( 2 \\psi _ { n } - 1 ) ) u _ { i } u _ { i } ^ { * } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 271,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 581.312, 540.033, 632.782 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We have then the expected value of this sum is 1 in the upper left corner, near to -1 on the rest of the diagonal and zero elsewhere. Furthermore, the contribution of the | u i 1 | term is capped to not be too large. We thus hope to acquire the same properties of the enhanced dual certiﬁcate as in the gaussian case."
+  }, {
+    "type" : "heading",
+    "id" : 272,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 72.0, 544.967, 186.605, 557.129 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "3.3 Behavior of Y T"
+  }, {
+    "type" : "paragraph",
+    "id" : 273,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 511.767, 443.017, 532.177 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Here we control the quantity   Y T − e 1 e ∗ 1   F . We can re-write the certiﬁcate as"
+  }, {
+    "type" : "formula",
+    "id" : 274,
+    "page number" : 10,
+    "bounding box" : [ 156.119, 467.28, 455.312, 508.777 ],
+    "content" : "Y = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } ^ { ( k ) } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - ( 2 \\psi _ { n } - 1 ) ) u _ { i } ^ { ( k ) } u _ { i } ^ { ( k ) ^ { * } } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 275,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 434.792, 539.902, 462.818 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where { u ( k ) i } n i =1 are (indexed by k) iid Haar distributed on U n . To show that   Y T − e 1 e ∗ 1   F is small, it is enough to show that r"
+  }, {
+    "type" : "formula",
+    "id" : 276,
+    "page number" : 10,
+    "bounding box" : [ 267.36, 394.32, 344.192, 435.818 ],
+    "content" : "\\| \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } x _ { k } - e _ { 1 } \\| _ { 2 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 277,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 384.033, 142.604, 394.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "is small, where"
+  }, {
+    "type" : "formula",
+    "id" : 278,
+    "page number" : 10,
+    "bounding box" : [ 176.64, 343.56, 434.757, 385.058 ],
+    "content" : "x _ { k } = ^ { d } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - ( 2 \\psi _ { n } - 1 ) ) \\bar { u } _ { i 1 } u _ { i }"
+  }, {
+    "type" : "paragraph",
+    "id" : 279,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 706.353, 112.244, 717.262 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We have"
+  }, {
+    "type" : "formula",
+    "id" : 280,
+    "page number" : 11,
+    "bounding box" : [ 87.84, 422.247, 524.16, 697.658 ],
+    "content" : "We have \\\\ \\\\ \\mathbb { E } \\left [ \\| x _ { k } \\| ^ { 2 } \\right ] = \\mathbb { E } \\left [ \\sum _ { i = 1 } ^ { n } \\left | ( 2 ( n + 1 ) ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - ( 2 \\psi _ { n } - 1 ) ) \\right | ^ { 2 } | u _ { i } | ^ { 2 } \\right ] \\\\ = n \\mathbb { E } \\left [ \\left ( 4 ( n + 1 ) ^ { 2 } \\left ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 4 } \\right ) | u _ { i } | ^ { 2 } \\right ] + \\\\ n \\mathbb { E } \\left [ \\left ( ( 2 \\psi _ { n } - 1 ) ^ { 2 } - 4 ( n + 1 ) ( 2 \\psi _ { n } - 1 ) \\left ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 2 } \\right ) | u _ { i } | ^ { 2 } \\right ] \\\\ = 4 n ( n + 1 ) ^ { 2 } \\mathbb { E } \\left [ \\left ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 4 } | u _ { i } | ^ { 2 } \\right ] + ( 2 \\psi _ { n } - 1 ) ^ { 2 } \\\\ - 4 n ( n + 1 ) ( 2 \\psi _ { n } - 1 ) \\mathbb { E } \\left [ \\left ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 2 } | u _ { i } | ^ { 2 } \\right ] \\\\ \\leq 4 n ( n + 1 ) ^ { 2 } \\mathbb { E } \\left [ | u _ { i } | ^ { 6 } \\right ] + ( 2 \\psi _ { n } - 1 ) ^ { 2 } - 4 n ( n + 1 ) ( 2 \\psi _ { n } - 1 ) \\mathbb { E } \\left [ \\left ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 4 } \\right ] \\\\ = 4 n ( n + 1 ) ^ { 2 } \\frac { 3 ! } { n ( n + 1 ) ( n + 2 ) } + 4 \\psi _ { n } ^ { 2 } - 4 \\psi _ { n } + 1 - 4 ( 2 \\psi _ { n } - 1 ) \\psi _ { n } \\\\ = 2 4 \\frac { n + 1 } { n + 2 } + 1 - 4 \\psi _ { n } ^ { 2 } \\leq 2 4 \\\\ \\text {Forthermore, we have} \\\\ \\intertext { s u r g h e } \\left ( \\frac { n } { n } , \\frac { 3 } { 2 } \\right ) \\mathbb { E } \\left [ | u _ { i } | ^ { 2 } \\right ] + ( 2 \\psi _ { n } - 1 ) ^ { 2 } - 4 n ( n + 1 ) ( 2 \\psi _ { n } - 1 ) \\mathbb { E } \\left [ \\left ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 2 } \\right ] \\\\ = 4 n ( n + 1 ) ^ { 2 } \\frac { 3 ! } { n ( n + 1 ) ( n + 2 ) } + 4 \\psi _ { n } ^ { 2 } - 4 \\psi _ { n } + 1 - 4 ( 2 \\psi _ { n } - 1 ) \\psi _ { n } \\\\ = 2 4 \\frac { n + 1 } { n + 2 } + 1 - 4 \\psi _ { n } ^ { 2 } \\leq 2 4 \\\\ \\text {Forthermore, we have} \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 281,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 396.033, 175.723, 406.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Furthermore, we have"
+  }, {
+    "type" : "formula",
+    "id" : 282,
+    "page number" : 11,
+    "bounding box" : [ 137.28, 340.92, 474.655, 384.698 ],
+    "content" : "\\| x _ { k } \\| _ { 2 } = \\left ( \\sum _ { i = 1 } ^ { n } | ( 2 ( n + 1 ) ( | u _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - ( 2 \\psi _ { n } - 1 ) ) \\bar { u } _ { i } | ^ { 2 } \\right ) ^ { 1 / 2 } \\leq \\sqrt { 2 1 } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 283,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 304.527, 539.957, 337.015 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "These facts allow us to apply the vector Bernstein inequality (Theorem 3.5.3) to get that   Y T − e 1 e ∗ 1   F is as small as necessary with probability at least 1 − e − cr for some constant c."
+  }, {
+    "type" : "heading",
+    "id" : 284,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 72.001, 261.887, 193.551, 274.529 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "3.4 Behavior of Y T ⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 285,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 223.353, 539.936, 249.577 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We would like to show that Y T ⊥ ≺ 0 whp. It is enough to consider sup {  x,Y T ⊥ x   ; x ∈ CS n ,x 1 = 0 } and we aim to control this quantity via a covering argument. Using rotational invariance, we have"
+  }, {
+    "type" : "formula",
+    "id" : 286,
+    "page number" : 11,
+    "bounding box" : [ 108.241, 135.36, 503.673, 213.457 ],
+    "content" : "\\langle x , Y _ { T \\perp x } \\rangle = & ^ { d } \\langle e _ { 2 } , Y _ { T \\perp e 2 } \\rangle = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } ^ { ( k ) } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - ( 2 \\psi _ { n } - 1 ) ) | u _ { i 2 } ^ { ( k ) } | ^ { 2 } \\\\ = & \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } ^ { ( k ) } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } ) | u _ { i 2 } ^ { ( k ) } | ^ { 2 } - ( 2 \\psi _ { n } - 1 ) \\\\ A \\text { straight forward application of Talagram's ineqquality fails here.  Bernstein's ineqquality for weakly }"
+  }, {
+    "type" : "paragraph",
+    "id" : 287,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 107.073, 539.869, 131.422 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "A straightforward application of Talagrand’s inequality fails here. Bernstein’s inequality for weakly dependent variables also fails [1], so we will use an approach that involves conditioning and Tala-"
+  }, {
+    "type" : "formula",
+    "id" : 288,
+    "page number" : 12,
+    "bounding box" : [ 191.64, 656.76, 420.992, 698.257 ],
+    "content" : "\\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } ^ { ( k ) } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - \\phi _ { n } ) | u _ { i 2 } ^ { ( k ) } | ^ { 2 } \\\\ \\intertext { l . a n t . } \\intertext { o u b o t . }"
+  }, {
+    "type" : "paragraph",
+    "id" : 289,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 643.833, 228.284, 654.742 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "concentrates well about 0, where"
+  }, {
+    "type" : "paragraph",
+    "id" : 291,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 550.353, 112.462, 561.262 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "we have,"
+  }, {
+    "type" : "formula",
+    "id" : 290,
+    "page number" : 12,
+    "bounding box" : [ 178.92, 564.12, 433.08, 634.897 ],
+    "content" : "\\phi _ { n } & = \\mathbb { E } \\left [ \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } ^ { ( k ) } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } ) | u _ { i 2 } ^ { ( k ) } | ^ { 2 } \\right ] \\\\ & = \\mathbb { E } \\left [ 2 n ( n + 1 ) ( | u _ { i 1 } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } ) | u _ { i 2 } | ^ { 2 } \\right ] \\leq 2"
+  }, {
+    "type" : "formula",
+    "id" : 292,
+    "page number" : 12,
+    "bounding box" : [ 136.08, 427.56, 476.552, 542.257 ],
+    "content" : "we have , & \\\\ & \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | u _ { i 1 } ^ { ( k ) } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - \\phi _ { n } ) | u _ { i 2 } ^ { ( k ) } | ^ { 2 } \\\\ & = ^ { d } \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } G ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) \\\\ & = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { n } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | v ( z ^ { ( k ) } ) _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - \\phi _ { n } ) | v ( t ( v ( \\zeta ^ { ( k ) } ) , v ( z ^ { ( k ) } ) ) ) _ { i } | ^ { 2 } \\\\ \\text {and as before, we consider the surrogate function}"
+  }, {
+    "type" : "paragraph",
+    "id" : 293,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 414.633, 306.774, 425.542 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "and as before, we consider the surrogate function"
+  }, {
+    "type" : "formula",
+    "id" : 294,
+    "page number" : 12,
+    "bounding box" : [ 85.56, 365.16, 527.192, 406.657 ],
+    "content" : "& \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { G } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } ( 2 ( n + 1 ) ( | \\tilde { v } _ { 1 } ( z ^ { ( k ) } ) _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - \\phi _ { n } ) | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ^ { ( k ) } ) , \\tilde { v } _ { 1 } ( z ^ { ( k ) } ) ) ) _ { i } | ^ { 2 } \\\\ & \\quad \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\"
+  }, {
+    "type" : "paragraph",
+    "id" : 295,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 352.353, 96.142, 363.262 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Now,"
+  }, {
+    "type" : "formula",
+    "id" : 296,
+    "page number" : 12,
+    "bounding box" : [ 88.2, 148.168, 523.8, 343.417 ],
+    "content" : "k = 1 & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &"
+  }, {
+    "type" : "paragraph",
+    "id" : 297,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 91.32, 295.102, 128.106 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where f ( { z ( i ) } r i =1 ) = E ζ   1 r   r k =1 ˜ G ( ζ ( k ) ,z ( k ) )   ."
+  }, {
+    "type" : "paragraph",
+    "id" : 298,
+    "page number" : 13,
+    "bounding box" : [ 71.999, 565.287, 494.542, 720.065 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "It now suﬃces to analyze the quantities Lip ζ ( ˜ G ( ζ,z )) and E ζ   ˜ G ( ζ,z )   as functions of z . For x ∈ R n or C n , g ( x ) =   n i =1 a i | x i | 2 and   x 1   2 +   x 2   2 ≤ 2, we have | g ( x 1 ) − g ( x 2 ) | ≤ 2   a   ∞   x 1 − x 2   2 Letting a i =   2( n + 1)( | ˜ v 1 ( z ) i | ∧ 3 √ n +1 ) 2 − φ n   and noting   a   ∞ ≤ 20   ˜ G ( ζ 1 ,z ) − ˜ G ( ζ 2 ,z )   = | g (˜ v 2 ( t (˜ v 1 ( ζ 1 ) , ˜ v 1 ( z )))) − g (˜ v 2 ( t (˜ v 1 ( ζ 2 ) , ˜ v 1 ( z )))) | ≤ 2   a   ∞   ˜ v 2 ( t (˜ v 1 ( ζ 1 ) , ˜ v 1 ( z ))) − ˜ v 2 ( t (˜ v 1 ( ζ 2 ) , ˜ v 1 ( z )))   2 ≤ 40Lip(˜ v 2 )Lip( t | B (0 , 1) 2 )Lip(˜ v 1 )   ζ 1 − ζ 2   2"
+  }, {
+    "type" : "paragraph",
+    "id" : 299,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 550.593, 134.695, 561.502 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "In conclusion"
+  }, {
+    "type" : "formula",
+    "id" : 300,
+    "page number" : 13,
+    "bounding box" : [ 242.52, 517.527, 366.652, 551.945 ],
+    "content" : "L i p _ { \\zeta } ( \\tilde { G } ( \\zeta , z ) ) \\leq 8 * 4 0 \\frac { \\sqrt { \\frac { c _ { 1 } } { c _ { 2 } } } } { \\sqrt { n } }"
+  }, {
+    "type" : "paragraph",
+    "id" : 301,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 501.033, 184.538, 511.942 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "uniformly in z and thus"
+  }, {
+    "type" : "formula",
+    "id" : 302,
+    "page number" : 13,
+    "bounding box" : [ 211.2, 454.44, 397.972, 500.345 ],
+    "content" : "\\text {Lip} ( \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { G } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) ) \\leq \\frac { 1 } { \\sqrt { r } } 8 * 4 0 \\frac { \\sqrt { \\frac { c _ { 1 } } { c _ { 2 } } } } { \\sqrt { n } } \\\\ z ( r ) \\, , \\, \\text {This gives that}"
+  }, {
+    "type" : "paragraph",
+    "id" : 303,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 422.04, 281.673, 455.377 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "uniformly in   z (1) ,... ,z ( r )   . This gives that 1 r ˜ ( k ) ( k )"
+  }, {
+    "type" : "formula",
+    "id" : 304,
+    "page number" : 13,
+    "bounding box" : [ 167.4, 379.8, 443.572, 432.218 ],
+    "content" : "\\mathbb { P } _ { \\zeta } \\left ( \\left | \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { G } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) - f ( z ^ { ( 1 ) } , \\dots , z ^ { ( r ) } ) \\right | \\geq t \\right ) & \\leq e ^ { - c r n t ^ { 2 } } \\\\ \\text {start} \\ c \\text { which depends on } c _ { i } \\text { but does not depend on } z . \\text {  Now we need to } s _ { i } \\text { } ( r ) \\right )"
+  }, {
+    "type" : "paragraph",
+    "id" : 305,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 364.353, 539.913, 406.026 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "  r   k =1   for a constant c which depends on c i but does not depend on z. Now we need to show that f ( z (1) ,... ,z ( r ) ) concentrates well about its mean and that this mean is very small. We have"
+  }, {
+    "type" : "paragraph",
+    "id" : 307,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 283.713, 87.873, 294.622 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Let"
+  }, {
+    "type" : "paragraph",
+    "id" : 309,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 251.192, 89.574, 262.102 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "and"
+  }, {
+    "type" : "formula",
+    "id" : 306,
+    "page number" : 13,
+    "bounding box" : [ 108.48, 296.4, 503.509, 355.058 ],
+    "content" : "f ( z ^ { ( 1 ) } , \\dots , z ^ { ( r ) } ) \\\\ = \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\sum _ { i = 1 } ^ { n } \\mathbb { E } _ { \\zeta } \\left [ | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ^ { ( k ) } ) , \\tilde { v } _ { 1 } ( z ^ { ( k ) } ) ) ) _ { i } | ^ { 2 } \\right ] \\left ( 2 ( n + 1 ) ( | \\tilde { v } _ { 1 } ( z ^ { ( k ) } ) _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - \\phi _ { n } \\right ) \\\\ \\text {Let}"
+  }, {
+    "type" : "formula",
+    "id" : 308,
+    "page number" : 13,
+    "bounding box" : [ 213.96, 249.48, 398.062, 283.418 ],
+    "content" : "h ( z ) = \\{ \\mathbb { E } _ { \\zeta } \\left [ | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z ) ) ) _ { i } | ^ { 2 } \\right ] \\} _ { i = 1 } ^ { n } . \\\\ \\\\ ( \\, ) \\quad \\{ ( \\sigma _ { 1 } ( \\sigma _ { 2 } ( | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z ) ) ) _ { i } ) | ^ { 2 } \\} _ { i = 1 } ^ { n } ."
+  }, {
+    "type" : "formula",
+    "id" : 310,
+    "page number" : 13,
+    "bounding box" : [ 192.0, 227.553, 419.432, 254.062 ],
+    "content" : "p ( z ) = \\{ ( 2 ( n + 1 ) ( | \\tilde { v } _ { 1 } ( z ) _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } - \\phi _ { n } ) \\} _ { i = 1 } ^ { n }"
+  }, {
+    "type" : "paragraph",
+    "id" : 311,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 211.593, 220.102, 222.502 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "First, using the following facts,"
+  }, {
+    "type" : "formula",
+    "id" : 312,
+    "page number" : 13,
+    "bounding box" : [ 245.76, 95.487, 368.04, 199.942 ],
+    "content" : "\\mathbb { E } \\left [ \\tilde { v } _ { 1 } ( \\zeta ) _ { i } \\right ] & = 0 \\\\ \\mathbb { E } \\left [ \\tilde { v } _ { 1 } ( \\zeta ) _ { a } \\tilde { v } _ { 1 } ( \\zeta ) _ { b } \\right ] & = 0 , a \\neq b \\\\ \\mathbb { E } \\left [ | \\tilde { v } _ { 1 } ( \\zeta ) _ { i } | ^ { 2 } \\right ] & \\leq \\frac { 1 } { n } \\\\ \\mathbb { E } \\left [ | \\langle \\tilde { v } _ { 1 } ( \\zeta ) , y \\rangle | ^ { 2 } \\right ] & \\leq \\| y \\| _ { 2 } ^ { 2 } \\frac { 1 } { n } \\\\ \\mathbb { E } \\left [ 2 \\tilde { v } _ { 1 } ( \\zeta ) _ { i } \\bar { y } _ { i } \\left \\langle \\tilde { v } _ { 1 } ( \\zeta ) , y \\right \\rangle \\right ] & = 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 313,
+    "page number" : 13,
+    "bounding box" : [ 351.84, 164.727, 351.84, 183.654 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 314,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 698.607, 205.854, 719.017 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "for any y ∈ C n , we establish"
+  }, {
+    "type" : "formula",
+    "id" : 315,
+    "page number" : 14,
+    "bounding box" : [ 123.0, 588.36, 490.789, 697.178 ],
+    "content" : "for any & y \\in \\mathbb { C } ^ { n } , \\, \\text {we establish} \\\\ & \\mathbb { E } _ { \\zeta } \\left [ | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z ) ) ) _ { i } | ^ { 2 } \\right ] \\\\ & \\leq \\mathbb { E } _ { \\zeta } \\left [ \\frac { 1 } { c _ { 2 } } | ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z ) ) ) _ { i } | ^ { 2 } \\right ] \\\\ & \\leq \\frac { 1 } { c _ { 2 } } \\mathbb { E } _ { \\zeta } \\left [ | \\tilde { v } _ { 1 } ( \\zeta ) _ { i } | ^ { 2 } + | \\tilde { v } _ { 1 } ( z ) _ { i } | ^ { 2 } \\, | \\langle \\tilde { v } _ { 1 } ( z ) , \\tilde { v } _ { 1 } ( \\zeta ) | ^ { 2 } - 2 \\Re ( \\tilde { v } _ { 1 } ( \\zeta ) _ { i } \\tilde { v } _ { 1 } ( z ) _ { i } \\langle \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z ) ) \\rangle \\right ] \\\\ & \\leq \\frac { 1 } { c _ { 2 } } \\left [ \\frac { 1 } { n } + | \\tilde { v } _ { 1 } ( z ) _ { i } | ^ { 2 } \\| \\tilde { v } _ { 1 } ( z ) \\| ^ { 2 } _ { n } \\right ] \\leq \\frac { 2 } { c _ { 2 } n } \\\\ \\text {Thus, for any } z , \\, \\| h ( z ) \\| _ { \\infty } \\leq \\frac { 2 } { c _ { 2 } n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 316,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 565.168, 224.542, 585.938 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Thus, for any z,   h ( z )   ∞ ≤ 2 c 2 n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 317,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 518.52, 323.901, 553.658 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Now we shall compute Lip(   n i =1 h i ( z ) p i ( z )) directly: n n"
+  }, {
+    "type" : "formula",
+    "id" : 318,
+    "page number" : 14,
+    "bounding box" : [ 111.96, 265.32, 499.472, 530.226 ],
+    "content" : "Now we shall compute Lap( \\sum _ { i = 1 } ^ { n } h _ { i } ( z ) p _ { i } ( z ) ) \\text { directly:} \\\\ & \\left | \\sum _ { i = 1 } ^ { n } h _ { i } ( z _ { 1 } ) p _ { i } ( z _ { 1 } ) - \\sum _ { i = 1 } ^ { n } h _ { i } ( z _ { 2 } ) p _ { i } ( z _ { 2 } ) \\right | \\\\ & \\leq \\| h ( z _ { 1 } ) \\| _ { \\infty } \\sum _ { i = 1 } ^ { n } | p _ { i } ( z _ { 1 } ) - p _ { i } ( z _ { 2 } ) | + \\| p ( z _ { 2 } ) \\| _ { \\infty } \\sum _ { i = 1 } ^ { n } | h ( z _ { 2 } ) - h ( z _ { 2 } ) | \\\\ & \\leq 2 ( n + 1 ) \\| h ( z _ { 1 } ) \\| _ { \\infty } \\sum _ { i = 1 } ^ { n } \\left | \\left ( | \\tilde { v } _ { 1 } ( z _ { 1 } ) _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\right ) ^ { 2 } - ( | \\tilde { v } _ { 1 } ( z _ { 2 } ) _ { i } | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } ) ^ { 2 } \\right | + \\\\ & \\| p ( z _ { 2 } ) \\| _ { \\infty } \\mathbb { E } _ { \\zeta } \\left [ \\sum _ { i = 1 } ^ { n } | | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z _ { 1 } ) ) ) | _ { 2 } | ^ { 2 } - | \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z _ { 2 } ) ) ) | _ { 2 } | \\right ] \\\\ & \\leq 2 ( n + 1 ) \\| h ( z _ { 1 } ) \\| _ { \\infty } 2 ( \\| \\tilde { v } _ { 1 } ( z _ { 1 } ) \\| \\wedge \\frac { 3 } { \\sqrt { n + 1 } } - | \\tilde { v } _ { 1 } ( z _ { 2 } ) | \\wedge \\frac { 3 } { \\sqrt { n + 1 } } \\| z _ { 2 } \\| + \\\\ & \\| p ( z _ { 2 } ) \\| _ { \\infty } \\mathbb { E } _ { \\zeta } \\left [ 2 \\| \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z _ { 1 } ) ) ) - \\tilde { v } _ { 2 } ( t ( \\tilde { v } _ { 1 } ( \\zeta ) , \\tilde { v } _ { 1 } ( z _ { 2 } ) ) ) \\| _ { 2 } \\right ] \\\\ & \\leq \\left ( 1 6 \\frac { n + 1 } { n } \\frac { \\sqrt { c _ { 1 } } / c _ { 2 } } { \\sqrt { n } } + 3 2 0 \\sqrt { \\frac { \\sqrt { c _ { 1 } } } { \\sqrt { n } } } \\right ) \\| z _ { 1 } - z _ { 2 } \\| _ { 2 } \\\\ \\text {Thus} & & \\quad \\text {Lip(f(z^{(1),\\dots,z^{(r)})))} = O \\left ( \\frac { \\sqrt { c _ { 1 } } } { c _ { 2 } } \\frac { 1 } { \\sqrt { n } } \\right ) \\\\ \\text {This will allow us to get the desired concentration of } & \\tilde { f } ( z ^ { ( 1 ) } , \\tilde { \\zeta } ) \\text { around its mean via Tala-}"
+  }, {
+    "type" : "paragraph",
+    "id" : 319,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 258.273, 99.142, 269.182 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Thus,"
+  }, {
+    "type" : "formula",
+    "id" : 320,
+    "page number" : 14,
+    "bounding box" : [ 214.8, 225.24, 397.189, 265.254 ],
+    "content" : "\\text {Lip} ( f ( z ^ { ( 1 ) } , \\dots , z ^ { ( r ) } ) ) = O \\left ( \\frac { \\sqrt { c _ { 1 } } } { c _ { 2 } } \\frac { 1 } { \\sqrt { r n } } \\right ) \\\\ \\text {tot the dosirrod concontration of } f ( z ^ { ( 1 ) } ) = O \\left ( \\frac { z ^ { ( r ) } } { c _ { 1 } } \\frac { z ^ { ( r ) } } { \\sqrt { r n } } \\right ) \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 321,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 199.113, 539.794, 225.338 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "This will allow us to get the desired concentration of f ( z (1) ,... ,z ( r ) ) around its mean via Talagrand’s inequality. Namely, we obtain"
+  }, {
+    "type" : "formula",
+    "id" : 322,
+    "page number" : 14,
+    "bounding box" : [ 169.801, 144.72, 441.173, 190.625 ],
+    "content" : "\\mathbb { P } \\left ( \\left | f ( z ^ { ( 1 ) } , \\dots , z ^ { ( r ) } ) - \\mathbb { E } \\left [ f ( z ^ { ( 1 ) } , \\dots , z ^ { ( r ) } ) \\right ] \\right | \\geq t \\right ) \\leq e ^ { - c r n t ^ { 2 } } \\\\ \\text {cant} \\ c \\text { which depends on } c _ { i } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 323,
+    "page number" : 14,
+    "bounding box" : [ 72.001, 149.448, 249.983, 161.302 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "  for a constant c which depends on c i ."
+  }, {
+    "type" : "paragraph",
+    "id" : 324,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 95.88, 539.989, 132.665 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Let F = 1 r   r k =1 G ( ζ ( k ) ,z ( k ) ) and ˜ F = 1 r   r k =1 ˜ G ( ζ ( k ) ,z ( k ) ). Then E   f ( z (1) ,... ,z ( r ) )   = E   ˜ F   and note E [ F ] = 0. Since both F and ˜ F are bounded and diﬀer on a set of exponentially small"
+  }, {
+    "type" : "formula",
+    "id" : 325,
+    "page number" : 15,
+    "bounding box" : [ 211.56, 640.08, 399.292, 688.745 ],
+    "content" : "\\mathbb { P } \\left ( \\left | f ( z ^ { ( 1 ) } , \\dots , z ^ { ( r ) } ) \\right | \\geq \\frac { t } { 2 } \\right ) \\leq e ^ { - c r n ( t / 4 ) ^ { 2 } } \\\\ \\intertext { p l i e s }"
+  }, {
+    "type" : "formula",
+    "id" : 326,
+    "page number" : 15,
+    "bounding box" : [ 175.68, 583.08, 435.172, 624.697 ],
+    "content" : "\\mathbb { P } \\left ( | \\frac { 1 } { r } \\sum _ { k = 1 } ^ { r } \\tilde { G } ( \\zeta ^ { ( k ) } , z ^ { ( k ) } ) | \\geq t \\right ) & \\leq e ^ { - c r n ( t - \\frac { t } { 2 } ) ^ { 2 } } + e ^ { - c r n ( t / 4 ) ^ { 2 } } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 327,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 564.908, 460.844, 579.502 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Now using that F and ˜ F diﬀer on a set of probability at most O( re − γn ), we have"
+  }, {
+    "type" : "formula",
+    "id" : 328,
+    "page number" : 15,
+    "bounding box" : [ 190.92, 496.287, 419.932, 555.022 ],
+    "content" : "\\mathbb { P } \\left ( | F | \\geq t \\right ) & \\leq \\mathbb { P } \\{ | \\tilde { F } | \\geq t - | \\tilde { F } - F | \\} \\\\ & \\leq \\mathbb { P } \\{ F \\neq \\tilde { F } \\} + \\mathbb { P } \\{ | \\tilde { F } | > t \\} \\\\ & \\leq O ( r e ^ { - \\gamma n } ) + e ^ { - c r n ( t / 2 ) ^ { 2 } } + e ^ { - c r n ( t / 4 ) ^ { 2 } } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 329,
+    "page number" : 15,
+    "bounding box" : [ 279.24, 515.487, 279.24, 534.415 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 330,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 479.553, 217.854, 490.462 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Therefore, we have established"
+  }, {
+    "type" : "formula",
+    "id" : 331,
+    "page number" : 15,
+    "bounding box" : [ 133.32, 447.327, 477.532, 469.603 ],
+    "content" : "\\mathbb { P } \\{ \\langle x , Y _ { T ^ { \\perp } } x \\rangle \\geq t + \\phi _ { n } - ( 2 \\psi _ { n } - 1 ) \\} \\leq O ( r e ^ { - \\gamma n } ) + e ^ { - c r n ( t / 2 ) ^ { 2 } } + e ^ { - c r n ( t / 4 ) ^ { 2 } }"
+  }, {
+    "type" : "paragraph",
+    "id" : 332,
+    "page number" : 15,
+    "bounding box" : [ 71.999, 389.912, 540.054, 441.382 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "To get an arbitrarily fast exponential rate of concentration, ﬁx γ to be as large as needed by choosing c i appropriately, then ﬁx r large enough. Note that φ n ≤ 2 and ψ n is very close to 2 so that φ n − (2 ψ n − 1) ≈ − 1. Choosing an appropriate t, we get that Y T ⊥ is negative deﬁnite with high probability via the standard covering argument, which completes the proof of the main theorem."
+  }, {
+    "type" : "heading",
+    "id" : 333,
+    "level" : "Subtitle",
+    "page number" : 15,
+    "bounding box" : [ 71.999, 349.316, 169.765, 362.242 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "4 Discussion"
+  }, {
+    "type" : "paragraph",
+    "id" : 334,
+    "page number" : 15,
+    "bounding box" : [ 71.998, 243.687, 540.054, 330.142 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We show that pure states can be recovered from few full-rank observables using the PhaseLift algorithm. We note that these results can be extended to show noise stability by using a modiﬁed convex program, as well as uniformity over signals x ∈ C n . Finally, a very similar proof would yield that rankk states X k =   k i =1 λ i x i x ∗ i can be recovered from m = O ( kn ) measurements, by establishing an RIP-1 property for rank 2 k matrices and a using a dual certiﬁcate motivated by A ∗ A ( X k )."
+  }, {
+    "type" : "heading",
+    "id" : 335,
+    "level" : "Subtitle",
+    "page number" : 15,
+    "bounding box" : [ 71.998, 210.956, 229.913, 223.882 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "5 Acknowledgements"
+  }, {
+    "type" : "paragraph",
+    "id" : 336,
+    "page number" : 15,
+    "bounding box" : [ 71.998, 180.752, 446.539, 191.662 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "We acknowledge fruitful discussions with Emmanuel Candes and Xiaodong Li."
+  }, {
+    "type" : "heading",
+    "id" : 337,
+    "level" : "Subtitle",
+    "page number" : 15,
+    "bounding box" : [ 71.998, 140.276, 147.354, 153.202 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "References"
+  }, {
+    "type" : "paragraph",
+    "id" : 338,
+    "page number" : 15,
+    "bounding box" : [ 71.998, 111.633, 248.78, 122.542 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "[1] Bernstein’s inequality. Wikipedia ."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 16,
+    "bounding box" : [ 72.0, 453.872, 540.066, 717.262 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 8,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 692.793, 540.066, 717.262 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[2] V. Voroninski. D. Mondragon. Determination of all pure quantum states from a minimal number of observables. Arxiv, http://arxiv.org/abs/1306.1214 , 2013.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 656.673, 539.99, 681.142 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[3] X. Li E. Candes. Solving quadratic equations via phaselift when there are about as many equations as unknowns. Arxiv. http://arxiv.org/abs/1208.6247 , August 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 620.673, 539.902, 645.142 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[4] L. Demanet. P. Hand. Stable optimizationless recovery from phaseless linear measurements. Arxiv. http://arxiv.org/abs/1208.1803 , 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 584.553, 539.902, 609.021 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[5] T. Heinosaari L. Mazzarella and M.M. Wolf. Quantum tomography under prior information. Preprint, [arXiv:1109.5478], , 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 562.112, 327.022, 573.021 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[6] D. Mixon. Short, fat matrices. Online Blog , 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 525.992, 539.902, 550.462 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[7] J. Novak. Truncations of random unitary matrices and young tableaux. The electronic journal of combinatorics , 14(R21), 2007.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.001, 476.433, 539.968, 514.342 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[8] E. Cande`s T. Strohmer and V. Voroninski. Phaselift: Exact and stable signal recovery from magnitude measurements via convex programming. Communications on Pure and Applied Mathematics , 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.001, 453.872, 391.583, 464.781 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "[9] T. Tao. Talagrands concentration inequality blog entry. 2009.",
+      "kids" : [ ]
+    } ]
+  } ]
+}

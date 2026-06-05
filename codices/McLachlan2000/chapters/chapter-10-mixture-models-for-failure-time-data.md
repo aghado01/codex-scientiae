@@ -555,8 +555,3 @@ with respect to 41. We then choose
 This leads to given by (10.27) where k; is fixed at is then given as a root of (10.28) with a; fixed at being
 
 Albert and Baxter (1995) suggested similar approach to the computation of which called pseudo-alternating EM (PAEM) algorithm. With this approach, %{+1) is chosen to maximize the actual (incomplete-data) likelihood, log L (v), and not the Q-function, subject to € = This corresponds to the ECME (expectation-conditional maximization either) algorithm of Liu and Rubin (1994). The ECM and ECME algorithms preserve the appcaling convergence properties of the EM algorithm, such as its monotone convergence. The reader is referred to McLachlan and Krishnan (1997) for a detailed account of the ECM and ECME algorithms. they log using
-
-<a id="sec-1"></a>
-
-# 1l
-
