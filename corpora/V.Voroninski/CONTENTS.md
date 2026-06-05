@@ -62,6 +62,23 @@
   - [4. Conclusion](1608.02165v1.md#4-conclusion)
   - [References](1608.02165v1.md#references)
 
+- [An Elementary Proof of Convex Phase Retrieval in the Natural Parameter Space via the Linear Program PhaseMax](1611.03935v1.md)
+  - [Abstract](1611.03935v1.md#abstract)
+  - [1 Introduction](1611.03935v1.md#1-introduction)
+  - [2 Main Result and Proof](1611.03935v1.md#2-main-result-and-proof)
+  - [3 Proof](1611.03935v1.md#3-proof)
+  - [References](References/1611.03935v1-references.md)
+
+- [Optimal Sample Complexity of Subgradient Descent for Amplitude Flow via Non-Lipschitz Matrix Concentration](2011.00288v2.md)
+  - [Abstract](2011.00288v2.md#abstract)
+  - [1 Introduction](2011.00288v2.md#1-introduction)
+  - [2 Proof Technique](2011.00288v2.md#2-proof-technique)
+  - [3 Proofs](2011.00288v2.md#3-proofs)
+    - [3.1 Convexity property of objective](2011.00288v2.md#31-convexity-property-of-objective)
+    - [3.2 Gaussian Matrices Satisfy the MDC](2011.00288v2.md#32-gaussian-matrices-satisfy-the-mdc)
+      - [3.2.1 Proof of Lemma 4](2011.00288v2.md#321-proof-of-lemma-4)
+  - [References](2011.00288v2.md#references)
+
 - [Reconstructing the Helm.ai Technology Stack: A First-Principles Analysis of Mathematical Optimization, Deep Teaching, and Autonomous Systems](Helm-Dossier.md)
   - [Executive Summary](Helm-Dossier.md#executive-summary)
   - [The Mathematical Foundations: Vladislav Voroninski’s Academic Trajectory](Helm-Dossier.md#the-mathematical-foundations-vladislav-voroninskis-academic-trajectory)
