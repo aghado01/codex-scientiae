@@ -28,7 +28,7 @@ $$
 
 We let a1, ap be the (unit) eigenvectors, corresponding to the eigenvalues X1 2 2 Xp of V. In the case where the variates measured on disparate scales, we wish to replace the sample correlation matrix. are Vby may
 
-If there are only a few groups and are well-separated, and the between-group variation dominates the within-group variation; then projections of the feature data yj onto the first few principal axes should portray the group structure. However; a PCA of not always be useful. This was stressed by Chang (1983), who showed in the case of two groups that the principal component of the feature vector that provides the best separation between the two groups in terms of Mahalanobis distance is not necessarily the first component a{ uj; see McLachlan (1992, Section 6.6). they Vmay point
+If there are only a few groups and are well-separated, and the between-group variation dominates the within-group variation; then projections of the feature data $y_j$ onto the first few principal axes should portray the group structure. However; a PCA of not always be useful. This was stressed by Chang (1983), who showed in the case of two groups that the principal component of the feature vector that provides the best separation between the two groups in terms of Mahalanobis distance is not necessarily the first component a{ uj; see McLachlan (1992, Section 6.6). they Vmay point
 
 To illustrate we generated a sample of size n = 100 five-dimensional obser vations from two groups G1 and G2 with means this,
 
@@ -62,7 +62,7 @@ Flg. 8.1 Plot of the first two principal components with true group of origin sh
 
 # 8.3 SINGLE-FACTOR ANALYSIS MODEL
 
-We let Yí, Yn denote a random sample of size n on a p-dimensional random vector. In a typical factor analysis model, each observation Y; is modeled as
+We let Yí, Yn denote a random sample of size n on a p-dimensional random vector. In a typical factor analysis model, each observation $Y_j$ is modeled as
 
 $$
 + \, e _ { j } \ \ ( j = 1 , \dots , n ) ,
@@ -80,17 +80,13 @@ $$
 , \sigma _ { p } ^ { 2 } ) ,
 $$
 
-Thus, conditionalon the uj, the Y; are independently distributedas N(u+Buj, D). Unconditionally; the Y; are iid. according to a normal distribution with mean / and covariance matrix
+Thus, conditional on the $u_j$, the $Y_j$ are independently distributedas N(u+Buj, D). Unconditionally; the $Y_j$ are iid. according to a normal distribution with mean / and covariance matrix
 
-$$
-( 8 . 3 )
-$$
 
-Thus the factors in uj are intended to explain the correlations between the variables in Yj, while the error terms ej represent the unexplained noise unique to a particular Uj (j = 1, n). Note that in the case of 9 > 1, there is an infinity of choices for B, since this model is still satisfied if we replace uj by and Bby BHT where His any orthogonal matrix of order 9. As 39(9 ~ 1) constraints are needed for Bto be uniquely defined, the number of free parameters is Huj
 
-$$
-( 8 . 4 )
-$$
+Thus the factors in $u_j$ are intended to explain the correlations between the variables in Yj, while the error terms ej represent the unexplained noise unique to a particular Uj (j = 1, n). Note that in the case of 9 > 1, there is an infinity of choices for B, since this model is still satisfied if we replace uj by and Bby BHT where His any orthogonal matrix of order 9. As 39(9 ~ 1) constraints are needed for Bto be uniquely defined, the number of free parameters is Huj
+
+
 
 see Lawley and Maxwell (1971, Chapter 1). If 9 is chosen sufficiently smaller than p so that the difference
 
@@ -116,7 +112,7 @@ $$
 y _ { c } = 0
 $$
 
-as the complete-data vector, where where uj corresponds to Uj The complete-data likelihood is, but for an additive constant, log
+as the complete-data vector, where where $u_j$ corresponds to Uj The complete-data likelihood is, but for an additive constant, log
 
 $$
 \log L _ { c } ( \Psi ) = - \frac { 1 } { 2 } n \log | \ D | - \frac { 1 } { 2 } \sum _ { j = 1 } ^ { n } \{ ( y _ { j } - 1 ) |
@@ -130,9 +126,7 @@ $$
 
 To calculate the conditional expectations of these sufficient statistics given the observed data, we need to use the result that the random vector multivariate normal distribution with mean
 
-$$
-( 8 . 7 )
-$$
+
 
 and covariance matrix
 
@@ -202,7 +196,7 @@ $$
 
 # 8.6 MIXTURES OF FACTOR ANALYZERS
 
-As the single-factor analysis model (8.2) provides only a global linear model for the representation of the datain alower-dimensional subspace; the scope of its application is limited. Aglobal nonlinear approach can be obtained by postulating a finite mixture of linear submodels for the distribution of the full observation vector Y; given the (unobservable) factors uj That is, we can provide a local dimensionality reduction method by assuming that the distribution of the observation Yj can be modeled as
+As the single-factor analysis model (8.2) provides only a global linear model for the representation of the datain alower-dimensional subspace; the scope of its application is limited. Aglobal nonlinear approach can be obtained by postulating a finite mixture of linear submodels for the distribution of the full observation vector $Y_j$ given the (unobservable) factors uj That is, we can provide a local dimensionality reduction method by assuming that the distribution of the observation Yj can be modeled as
 
 $$
 Y _ { j } = \mu _ { i } + B _ { i } U _ { i j } + e _ { i j } \quad \text {with prob. } \pi _ { i } \quad ( i = 1 , \dots , g )
@@ -210,7 +204,7 @@ $$
 
 for j = 1, n, where the factors U;l, Uin are distributed independently which are distributed independently N(o, D;) , where D; is a diagonal matrix (i = 1, g). The so-called mixing proportions T; are nonnegative and sum to one. eij'
 
-Thus; unconditionally; the density of each observation Y; is a mixture of g normal densities in proportions T1, Tg; that is,
+Thus; unconditionally; the density of each observation $Y_j$ is a mixture of g normal densities in proportions $\pi_1$, Tg; that is,
 
 $$
 ( 8 . 1 4 )
@@ -222,7 +216,7 @@ $$
 \Sigma _ { i } = B _ { i } B _ { i } ^ { T } + D _ { i } \ \ ( i = 1 , \dots , g ) .
 $$
 
-D;, along with the mixing proportions T; (i = 1, 9 1) on putting "g 1 = 291
+D;, along with the mixing proportions $\pi_i$ ($i = 1, 9 1) on putting "g 1 = 291
 
 In Ghahramani and Hinton (1997), D; is taken to be the same for each component i; see also Yung (1997). More recently, Ghahramani and Beal (2000) have considered a Bayesian approach, using a deterministic variational approximation to full Bayesian integration over model parameters. In work on related models, Jedidi, Jagpai, and DeSarbo (1997) have considered the of a general finite mixture structural equation. Shi and Lee (2000) have considered a single-component model with mixed continuous and polytomous latent variables. Attias (1999b, 2000) has recently proposed a technique that he calls independent factor analysis, which further extends ordinary factor analysis. fitting
 
@@ -244,7 +238,7 @@ $$
 
 We can use the alternating expectation-conditional maximization (AECM) algorithm as developed by and van Dyk (1997) to fit the mixture of factor analyzers The expectation-conditional maximization (ECM) algorithm proposed by and Rubin (1993) replaces the M-step of the EM algorithm by a number of computationally simpler conditional maximization (CM) steps. The AECM algorithm is an extension of the ECM algorithm, where the specification of the complete data is allowed to be different on each CM-step. Meng Meng
 
-To apply the AECM algorithm to the fitting of the mixture model (8.14), we partition the vector of unknown parameters V as where %1 contains the mixing proportions T; (i 9 1) and the elements of the component means #; (; = 1, 9) The subvector 42 contains the elements of the B; and the Di = 1, 9) . Concerning the specification of the incomplete data, we have noted in Chapter 2 that for the fitting of mixture models in general, it is useful to conceptualize each observation %; as having arisen from one of the components of the mixture and then to declare the component-indicator vector zj s0 associated with U; as missing data; In this framework, zij = (z;); is one or zero, according to whether Uj arose or did not arise from the ith component (i = 1, 9; j = 1, n) The conditional expectation of Zij given yj is the posterior probability that the jth observation comes from the ith component, given by
+To apply the AECM algorithm to the fitting of the mixture model (8.14), we partition the vector of unknown parameters V as where %1 contains the mixing proportions T; (i 9 1) and the elements of the component means #; (; = 1, 9) The subvector 42 contains the elements of the B; and the Di = 1, 9) . Concerning the specification of the incomplete data, we have noted in Chapter 2 that for the fitting of mixture models in general, it is useful to conceptualize each observation %; as having arisen from one of the components of the mixture and then to declare the component-indicator vector $z_j$ s0 associated with U; as missing data; In this framework, zij = ($z_j$); is one or zero, according to whether Uj arose or did not arise from the ith component (i = 1, 9; j = 1, n) The conditional expectation of Zij given $y_j$ is the posterior probability that the jth observation comes from the ith component, given by
 
 $$
 ( y _ { j } ; \Psi ) \ & = \ \Pr \{ Z _ { i j } = 1 \ | \ y _ { j } \} \\ & = \ \pi _ { i } \, \phi ( y _ { j } ; \mu _ { i } , \, \Sigma _ { i } ) / \sum _ { h = 1 } ^ { g } \pi _ { h } \phi ( y _ { j } ; \mu _ { h } , \, \Sigma _ { h } ) ,
@@ -452,7 +446,7 @@ $$
 \hat { B } ^ { T } \hat { B } = R ^ { T } ( \Lambda - \hat { \sigma } ^ { 2 } I _ { q } ) R ,
 $$
 
-which is not diagonal for R # Iq (Tipping and Bishop, 1999a) As ô2 \_ 0, see from (8.36) that the probabilistic PCA becomes equivalent in the limit to standard PCA. On further distinctions between factor analysis andprobabilistic PCA, neither of the factors found by, say; atwo-factor model is necessarily the same as that foundby a single-factor model. However; with probabilistic PCA, we see that the principal axes the form of the factor analysis solution is preserved under diagonal H; that is, under scaling of each variable in the observation vector %;j On the other hand, H needs to be orthogonal (corresponding t0 a rotation of the axes) for the probabilistic PCA solution to be preserved. This is where factor analysis and standard PCA fundamentally differ. With the factor analysis model (8.13), the latent variables are intended to explain the correlations between the variables in the observation vector Yj, while the error term ej represents variability unique to a particular Y;With standard PCA, covariance and variance terms are treated identically. we Hyj'
+which is not diagonal for R # Iq (Tipping and Bishop, 1999a) As ô2 \_ 0, see from (8.36) that the probabilistic PCA becomes equivalent in the limit to standard PCA. On further distinctions between factor analysis andprobabilistic PCA, neither of the factors found by, say; atwo-factor model is necessarily the same as that foundby a single-factor model. However; with probabilistic PCA, we see that the principal axes the form of the factor analysis solution is preserved under diagonal H; that is, under scaling of each variable in the observation vector $\Psi$;j On the other hand, H needs to be orthogonal (corresponding t0 a rotation of the axes) for the probabilistic PCA solution to be preserved. This is where factor analysis and standard PCA fundamentally differ. With the factor analysis model (8.13), the latent variables are intended to explain the correlations between the variables in the observation vector Yj, while the error term ej represents variability unique to a particular $Y_j$With standard PCA, covariance and variance terms are treated identically. we Hyj'
 
 <a id="sec-8-9"></a>
 
@@ -490,7 +484,7 @@ $$
 ( 8 . 4 0 )
 $$
 
-and A; = Z; in (8.39), we can get a negative value for the term
+and A; = $Z_j$ in (8.39), we can get a negative value for the term
 
 $$
 ( \Lambda _ { i } - I _ { q } )
@@ -516,7 +510,7 @@ $$
 \overline { j = 1 }
 $$
 
-and where = 1, 9) obtained by fitting a mixture of g normal components with diagonalcomponent-covariance matrices Z; from a number that is, using Ti,
+and where = 1, 9) obtained by fitting a mixture of g normal components with diagonalcomponent-covariance matrices $Z_j$ from a number that is, using Ti,
 
 $$
 \pi _ { i } ^ { ( 0 ) } = \tilde { \pi } _ { i } \ \text { and } \ \mu _ { i } ^ { ( 0 ) } = \tilde { \mu } _ { i } .
@@ -560,7 +554,7 @@ In Figure 8.4 we have plotted the values of the estimated posterior means of the
 
 Fig. 8.4 Plot of the estimated posterior means of the 9 2 factors following singlecomponent (g=l) factor analysis of the wine data set (0,+, and x denote true component membership)
 
-Hence the mixtures of factor analyzers model has been useful here in exploring the group structure of the data and illustrating the structure found. We now consider its usefulness as a model for density estimation for providing a model-based approach to clustering. To cluster this data set, we can model the density of each p = 13dimensional observation y; by ag = 3-component normal mixture model. A soft or probabilistic clustering of the data can be obtained in terms of the estimated posterior probabilities of component membership; #); a hard or outright clustering is obtained by assigning each observation to the component to which it has the highest estimated posterior probability of belonging: As p = 13 in this application;, the covariance matrix Z; in the ith component normal distribution has 91 parameters for each i (i = 1,2,3), which means that the total number of parameters is very large relative to the sample size of n = 178. Hence we consider fitting a mixture of factor analyzers for various 9 as a way of reducing the number of parameters to be fitted. T;(yj;
+Hence the mixtures of factor analyzers model has been useful here in exploring the group structure of the data and illustrating the structure found. We now consider its usefulness as a model for density estimation for providing a model-based approach to clustering. To cluster this data set, we can model the density of each p = 13dimensional observation $y_j$ by ag = 3-component normal mixture model. A soft or probabilistic clustering of the data can be obtained in terms of the estimated posterior probabilities of component membership; #); a hard or outright clustering is obtained by assigning each observation to the component to which it has the highest estimated posterior probability of belonging: As p = 13 in this application;, the covariance matrix $Z_j$ in the ith component normal distribution has 91 parameters for each i (i = 1,2,3), which means that the total number of parameters is very large relative to the sample size of n = 178. Hence we consider fitting a mixture of factor analyzers for various 9 as a way of reducing the number of parameters to be fitted. T;($y_j$;
 
 (a) i = 1
 
@@ -570,7 +564,7 @@ Hence the mixtures of factor analyzers model has been useful here in exploring t
 
 Fig. 8.5 Plot of the estimated posterior means of the factor scores for those observations assigned outright to the ith component of the mixture fitted to the wine data.
 
-In Table 8.1, report the overall error rate of the normal mixture model-based approach using restricted forms of the Z; through the adoption of factor analyzer components for various levels of the number of factors from 9 = 1 to 9 =8, and for the full model (no restrictions on the >;). In the latter case, we have also given the results obtained when the AECM algorithm is started from the true classification of these data. We have also reported the value of minus twice the LRTS X (that is, twice the increase in the log likelihood), as we proceed from a mixture of 9 factor analyzers to one with 9 + 1 component factors. we fitting It can be seen from Table 8.1 that the error rate of the clustering based on the mixture model with unrestricted component-covariance matrices is increased when the known group membership of the data is not used to start the EM algorithm. This lack of knowledge affects the clustering for all but 9 2 and 3 factors, as we can achieve an error rate of one for the other values of q when this knowledge is used to start the AECM algorithm.
+In Table 8.1, report the overall error rate of the normal mixture model-based approach using restricted forms of the $Z_j$ through the adoption of factor analyzer components for various levels of the number of factors from 9 = 1 to 9 =8, and for the full model (no restrictions on the >;). In the latter case, we have also given the results obtained when the AECM algorithm is started from the true classification of these data. We have also reported the value of minus twice the LRTS X (that is, twice the increase in the log likelihood), as we proceed from a mixture of 9 factor analyzers to one with 9 + 1 component factors. we fitting It can be seen from Table 8.1 that the error rate of the clustering based on the mixture model with unrestricted component-covariance matrices is increased when the known group membership of the data is not used to start the EM algorithm. This lack of knowledge affects the clustering for all but 9 2 and 3 factors, as we can achieve an error rate of one for the other values of q when this knowledge is used to start the AECM algorithm.
 
 Table 8.1 Overall Error Rates for Values of q
 

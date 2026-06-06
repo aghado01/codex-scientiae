@@ -30,7 +30,7 @@ Fig. 9.1 Two-dimensional V-HC histograms of the raw data RBC counts for acontrol
 
 # 9.2 BINNED AND TRUNCATED DATA
 
-We let Yí, density (9.1). Suppose that the sample space ) of Yj is partitioned into v mutually exclusive p-dimensional Yr (r 1, v) . We consider the case where (r = 1, v) is recorded, where < That is, individual observations are not recorded but only the regions ) in which they fall are recorded; further, even such observations are made only if the value of Y; falls in one of the regions Yr (r = 1, ") regions For given the observed data vector and where and
+We let Yí, density (9.1). Suppose that the sample space ) of Yj is partitioned into v mutually exclusive p-dimensional Yr (r 1, v) . We consider the case where (r = 1, v) is recorded, where < That is, individual observations are not recorded but only the regions ) in which they fall are recorded; further, even such observations are made only if the value of $Y_j$ falls in one of the regions Yr (r = 1, ") regions For given the observed data vector and where and
 
 $$
 n = \sum _ { r = 1 } ^ { v _ { o } } n _ { r } ,
@@ -50,7 +50,7 @@ $$
 P ( \Psi ) = \sum _ { i } ^ { v _ { o } } F _ { i }
 $$
 
-Thus the likelihood for % that can be formed on the basis of a is given by log
+Thus the likelihood for $\Psi$ that can be formed on the basis of a is given by log
 
 $$
 \log L ( \Psi ) = \sum _ { r = 1 } ^ { n _ { r } } n _ { r } \log \{ P _ { r } ( \Psi ) / P ( \Psi ) \} + C _ { 1 } ,
@@ -106,7 +106,7 @@ $$
 
 and it implies the (incomplete-data) log likelihood log
 
-However; if we work with the complete-data vector specified by (9.7), then the M-step of the EM algorithm will still require an iterative procedure, since is a mixture density Consequently; for a mixture density; a further extension of the complete-data vector is needed to include the zero-one component-indicator variables in f(yj;
+However; if we work with the complete-data vector specified by (9.7), then the M-step of the EM algorithm will still require an iterative procedure, since is a mixture density Consequently; for a mixture density; a further extension of the complete-data vector is needed to include the zero-one component-indicator variables in f($y_j$;
 
 $$
 z _ { r s } = ( z _ { 1 r s } , \dots , z _ { g r s } ) ^ { T } \ \ ( r = 1 , \dots , v ; \, s = 1 , \dots , n _ { r } ) ,
@@ -114,11 +114,9 @@ $$
 
 where land with
 
-$$
-( 9 . 9 )
-$$
 
-for i = 1, 9. Note that T;(urs ; V) is the conditional probability that the random variable Yr, with realization Ur, belongs to the ith component of the mixture given Ur ' This posterior probability is of course the same as if Yrs had been obtained by sampling from the entire sample space ) and not just the subspace Yr
+
+for i = 1, 9. Note that $\tau_i(y_{rs} ; \Psi)$ is the conditional probability that the random variable Yr, with realization Ur, belongs to the ith component of the mixture given Ur ' This posterior probability is of course the same as if Yrs had been obtained by sampling from the entire sample space ) and not just the subspace Yr
 
 With the inclusion of these component-indicator vectors in the complete-data specification; the complete-data likelihood becomes
 
@@ -188,7 +186,7 @@ $$
 j ; \Psi ) = \sum _ { i = 1 } ^ { j } \pi _ { i } \phi ( y _ { j } ; \mu _ { i } , \Sigma _ { i } ) ,
 $$
 
-to binned and truncated data. This has been done in McLachlan and Jones (1988) for a univariate normal mixture; see also McLachlan and Krishnan (1997, Section 2.8) Using the multivariate analogue of their univariate results, it follows that on the (k + 1)th iteration of the EM algorithm; the estimates of the component means #; and the component-covariance matrices Z; are given by
+to binned and truncated data. This has been done in McLachlan and Jones (1988) for a univariate normal mixture; see also McLachlan and Krishnan (1997, Section 2.8) Using the multivariate analogue of their univariate results, it follows that on the (k + 1)th iteration of the EM algorithm; the estimates of the component means #; and the component-covariance matrices $Z_j$ are given by
 
 and distribution of the complete-data vector given the observed data. However, because of the slow convergence of this Monte Carlo procedure for this problem; Cadez et al. (2000) concentrated on numerical multidimensional techniques using Romberg integration; see, for example, Thisted (1988) for details. note that an important aspect of Romberg integration is selection of the order of integration. Low-order schemes use relatively few function evaluations in the initialization phase, but may but converge faster Thus, order selection can substantially affect the computation time of numerical integration. They
 
@@ -274,7 +272,7 @@ Use the parameter estimates from the standard mixture analysis to refine them wi
 
 # 9.5 SIMULATIONS
 
-Cadez et al. (2000) performed some simulation experiments to observe the effect of the number of bins v and the sample size n on the estimate $ of the parameter vector $ in a two-component bivariate normal mixture. The component-covariance matrices were set equal to the identity matrix, and the means were specified to be The range of the extended from (~5, ~5) to (5,5) so that truncation was relatively rare. The sample size was varied in steps of 10 from n = 10to n = 1,000, while the number of bins per dimension was varied in steps of 5 from b=5 tob = 100so that the original unbinned samples were quantized into v = 62 bins. Ten random samples were generated for each combination of v and n. grid
+Cadez et al. (2000) performed some simulation experiments to observe the effect of the number of bins v and the sample size n on the estimate $\hat{\Psi}$\hat{\Psi}$ of the parameter vector $ in a two-component bivariate normal mixture. The component-covariance matrices were set equal to the identity matrix, and the means were specified to be The range of the extended from (~5, ~5) to (5,5) so that truncation was relatively rare. The sample size was varied in steps of 10 from n = 10to n = 1,000, while the number of bins per dimension was varied in steps of 5 from b=5 tob = 100so that the original unbinned samples were quantized into v = 62 bins. Ten random samples were generated for each combination of v and n. grid
 
 To measure the quality of the solution, Cadez et al. (2000)calculated the Kullback \_ Leibler (KL) distance between each estimated density and the true known density They calculated the average KL distance over the 10samples foreach value of n and b, for both the binned and the standard EM algorithms. In total, each of the standard and binned algorithms were run 20,000 different times to generate the reported results.
 

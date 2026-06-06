@@ -2,13 +2,13 @@
 
 ## Chapter 7 Duality in Higher Dimensions
 
-Summary. The boundaries of clusters in d dimensions are (topologically) (d − 1)-dimensional and, in their study, one encounters new geometrical difﬁculties when d ≥ 3. By representing the random-cluster model as a sequence of nested contours with alternately wired and free boundary conditions, one arrives at the proof that the phase transition is discontinuous for sufficiently large q. There is a random-cluster analysis of non-translationinvariant states of Dobrushin-type when d ≥ 3, q ∈ [1, ∞), and p is sufficiently large.
+Summary. The boundaries of clusters in d dimensions are (topologically) (d − 1)-dimensional and, in their study, one encounters new geometrical difﬁculties when d ≥ 3. By representing the random-cluster model as a sequence of nested contours with alternately wired and free boundary conditions, one arrives at the proof that the phase transition is discontinuous for sufficiently large q. There is a random-cluster analysis of non-translationinvariant states of Dobrushin-type when d ≥ 3, q ∈ [1, ∞), and $p$ is sufficiently large.
 
 <a id="sec-7-1"></a>
 
 ### 7.1 Surfaces and plaquettes
 
-Dualityisafundamentaltechniqueinthestudyofanumberofstochasticmodelson a planar graph G = (V, E). Domains of G which are ‘switched-on’ in the model are surrounded by contours of the dual graph Gd which are ‘switched-off’. We make this more concrete as follows. We take as sample space the set = {0,1}E where, as usual, an edge e is called open in ω ∈ if ω(e) = 1. There exists no open path between two vertices x, y of G if and only if there exists a contourin the dual graph that separates x and y and that traverses closed edges only. Such facts have been especially fruitful in the case of percolation, because the dual process of closed edges is itself a percolationprocess. We saw similarly in Section 6.1 that the dual of a random-clustermodel on a planar graph G is a random-clustermodel on the dual graph Gd, and this observation led to a largely complete theory of the random-cluster model on the square lattice. When d = 2, one may summarize this with the facile remark that 2 = 1 + 1, viewed as an expression of the fact that the co-dimension of a line in R2 is 1. The situation in three and more dimensions is much more complicated since the co-dimension of a line in Rd is d − 1, and one is led therefore to a consideration of surfaces and their geometry.
+Dualityisafundamentaltechniqueinthestudyofanumberofstochasticmodelson a planar graph G = (V, E). Domains of G which are ‘switched-on’ in the model are surrounded by contours of the dual graph Gd which are ‘switched-off’. We make this more concrete as follows. We take as sample space the set \Omega = \{0,1\}^E where, as usual, an edge e is called open in ω ∈ if ω(e) = 1. There exists no open path between two vertices x, y of G if and only if there exists a contourin the dual graph that separates x and y and that traverses closed edges only. Such facts have been especially fruitful in the case of percolation, because the dual process of closed edges is itself a percolationprocess. We saw similarly in Section 6.1 that the dual of a random-clustermodel on a planar graph G is a random-clustermodel on the dual graph Gd, and this observation led to a largely complete theory of the random-cluster model on the square lattice. When d = 2, one may summarize this with the facile remark that 2 = 1 + 1, viewed as an expression of the fact that the co-dimension of a line in R2 is 1. The situation in three and more dimensions is much more complicated since the co-dimension of a line in Rd is d − 1, and one is led therefore to a consideration of surfaces and their geometry.
 
 We begin with a general description of duality in three dimensions (see, for example, [6, 139]) and we consider for the moment the three-dimensional cubic lattice L3. The dual lattice L3d is obtained by translating L3 by the vector
 
@@ -50,7 +50,7 @@ Let d ≥ 3 and let B0 = [0,1]d, viewed as a subset of Rd. The elementary cubes 
 
 ![image 629](../Images/imageFile629.png)
 
-for i = 1,2,. . .,d and u = 0,1. A plaquette (in Rd) is defined to be a translate by an integer vector of some Pi,u. We point out that plaquettes are (topologically) closed(d−1)-dimensionalsubsetsofRd, andthatplaquettesarelineswhen d = 2, and are unit squares when d = 3 (see Figure 7.1). Let H denote the set of all plaquettes in Rd. The straight line-segmentjoining the vertices of an edge e = x, y passes through the middle of a plaquette denoted by h(e), which we call the dual plaquette of e. More precisely, if y = x +ei where ei = (0,. . .,0,1,0,. . . ,0) is the unit vector in the direction of increasing ith coordinate, then h(e) = Pi,1 + x.
+for i = 1,2,. . .,d and u = 0,1. A plaquette (in Rd) is defined to be a translate by an integer vector of some Pi,u. We point out that plaquettes are (topologically) closed(d−1)-dimensionalsubsetsofRd, andthatplaquettesarelineswhen d = 2, and are unit squares when d = 3 (see Figure 7.1). Let H denote the set of all plaquettes in Rd. The straight line-segmentjoining the vertices of an edge $e = \langle x, y \rangle$ passes through the middle of a plaquette denoted by h(e), which we call the dual plaquette of e. More precisely, if y = x +ei where ei = (0,. . .,0,1,0,. . . ,0) is the unit vector in the direction of increasing ith coordinate, then h(e) = Pi,1 + x.
 
 Let s ∈ {1,2,. . .,d − 2}. Two distinct plaquettes h1 and h2 are said to be s-connected, written h1 ∼s h2, if h1 ∩ h2 contains a homeomorphic image of the s-dimensional unit cube [0,1]s. We say that h1 and h2 are 0-connected, written
 
@@ -198,7 +198,7 @@ either (a) h = h( u, z ) for some z, or (b) h = h( v, z ) for some v, z satisfyi
 
 ![image 665](../Images/imageFile665.png)
 
-2This theorem states, subject to a mild change of notation, that: “If none of the closed sets F0 and F1 cuts Sd between the points p and q and if dim(F0 ∩ F1) ≤ d − 3, their union F0 ∪ F1 does it neither”. Here, Sd denotes the d-sphere.
+2This theorem states, subject to a mild change of notation, that: “If none of the closed sets F0 and F1 cuts Sd between the points p and $q$ and if dim(F0 ∩ F1) ≤ d − 3, their union F0 ∪ F1 does it neither”. Here, Sd denotes the d-sphere.
 
 If (a) holds, we take y = u (∈ Hx) and hx = h. If (a) does not hold but (b) holds for some v, z, we take y = v (∈ Hx) and hx = h.
 
@@ -224,7 +224,7 @@ The connectivity of ( v,δC, e,δC) may be provedin very much the same way as in
 
 ### 7.3 A contour representation
 
-The dual of a two-dimensional random-cluster model is itself a random-cluster model, as explained in Chapter 6. The corresponding statement is plainly false in three or more dimensions, since the geometry of plaquettes differs from that of edges. Consider an edge-conﬁguration ω ∈ = {0,1}Ed, and the corresponding plaquette-conﬁguration π = (π(h) : h ∈ H) given by
+The dual of a two-dimensional random-cluster model is itself a random-cluster model, as explained in Chapter 6. The corresponding statement is plainly false in three or more dimensions, since the geometry of plaquettes differs from that of edges. Consider an edge-conﬁguration ω ∈ \Omega = \{0,1\}^Ed, and the corresponding plaquette-conﬁguration π = (π(h) : h ∈ H) given by
 
 (7.9) π(h(e)) = 1 − ω(e), e ∈ Ed.
 
@@ -232,7 +232,7 @@ The dual of a two-dimensional random-cluster model is itself a random-cluster mo
 
 Thus, h(e) is open if and only if e is closed. The open plaquettes form surfaces, or ‘contours’, and one seeks to understand the geometry of the original process througha study of the probable structure of such contours. Contoursare objectsof some geometrical complexity, and they demand a proper study in their own right, of which the results of Section 7.2 form part.
 
-The study of contours for the random-cluster model has as principal triumph a fairly complete analysis of the model for large q. The central feature of this analysis is the proof that, at the critical point p = pc(q) for sufficiently large q, the contour measures of both free and wired models have convergent cluster expansions. This implies a discontinuousphase transition, the existence of a mass gap, and a number of other facts presented in Section 7.5.
+The study of contours for the random-cluster model has as principal triumph a fairly complete analysis of the model for large q. The central feature of this analysis is the proof that, at the critical point $p$ = pc(q) for sufficiently large q, the contour measures of both free and wired models have convergent cluster expansions. This implies a discontinuousphase transition, the existence of a mass gap, and a number of other facts presented in Section 7.5.
 
 Cluster (or ‘polymer’) expansions form a classical topic of statistical mechanics, and their theory is extensive and well understood by experts. Rather than developingthe theory from scratch here, we shall in the next section abstract those ingredients that are relevant for the current application. Meanwhile, we concentrate on formulating the random-clustermodel in a manner resonant with polymer expansions. The account given here is an expansion and elaboration of that found in [224]. A further treatment may be found in [65, 66].
 
@@ -427,17 +427,17 @@ By (7.23), Z( 1 ∪ 2) = Z( 1)Z( 2) if 1 and 2 have no common vertex. By (7.28),
 
 ### 7.5 Discontinuous phase transition for large q
 
-It is a principal theorem for Potts and random-cluster models that the phase transition is discontinuous when q is sufficiently large, see [68, 220, 251] for Potts models and [224] for random-cluster models. This is proved for random-cluster models by showing that the maximal contours of both wired and free models at p = pc(q) have the same laws as those of certain convergent polymer models. Such use of contour expansions is normally termed a ‘Pirogov–Sinai’ approach9, after the authors of [274, 275].
+It is a principal theorem for Potts and random-cluster models that the phase transition is discontinuous when $q$ is sufficiently large, see [68, 220, 251] for Potts models and [224] for random-cluster models. This is proved for random-cluster models by showing that the maximal contours of both wired and free models at $p$ = pc(q) have the same laws as those of certain convergent polymer models. Such use of contour expansions is normally termed a ‘Pirogov–Sinai’ approach9, after the authors of [274, 275].
 
 Here are the main results, expressed for a general number d of dimensions.
 
-(7.33) Theorem (Discontinuous phase transition) [224]. Let d ≥ 2. There exists Q = Q(d) such that following hold when q > Q.
+(7.33) Theorem (Discontinuous phase transition) [224]. Let d ≥ 2. There exists Q = Q(d) such that following hold when $q$ > Q.
 
 (a) The edge-densities hb(p,q) = φpb,q(e is open), b = 0,1,
 
 are discontinuous functions of p at the critical point pc(q). (b) The percolation probabilities satisfy
 
-θ0(pc(q),q) = 0, θ1(pc(q),q) > 0. (c) There is a unique random-cluster measure when p = pc(q), and at least two random-cluster measures when p = pc(q), in that φ0pc(q),q = φ1pc(q),q. (d) If p < pc(q), there is exponential decay and a non-vanishing mass gap, in that the unique random-cluster measure satisﬁes
+θ0(pc(q),q) = 0, θ1(pc(q),q) > 0. (c) There is a unique random-cluster measure when $p$ = pc(q), and at least two random-cluster measures when $p$ = pc(q), in that φ0pc(q),$q$ = φ1pc(q),q. (d) If $p$ < pc(q), there is exponential decay and a non-vanishing mass gap, in that the unique random-cluster measure satisﬁes
 
 φp,q(0 ↔ x) ≤ e−α|x|, x ∈ Zd, for some α = α(p,q) satisfying α ∈ (0,∞) and
 
@@ -463,13 +463,13 @@ pc(q) = 1 − q−1/d + O(q−2/d) as q → ∞. This may be compared to the exa
 
 9An overview of contour methods may be found in [217].
 
-(7.35) Theorem (Non-translation-invariant measure at pc(q)) [85, 254]. Let d ≥ 3. There exists Q = Q(d) such that there exists a non-translationinvariant DLR-random-cluster measure when p = pc(q) and q > Q.
+(7.35) Theorem (Non-translation-invariant measure at pc(q)) [85, 254]. Let d ≥ 3. There exists Q = Q(d) such that there exists a non-translationinvariant DLR-random-cluster measure when $p$ = pc(q) and $q$ > Q.
 
 It is not especially fruitful to seek numerical estimates on the Q(d) above. Such estimates may be computed, but they turn out to be fairly distant from those anticipated, namely10
 
 (7.36) Q(2) = 4, Q(d) = 2 for d ≥ 6. No proof of Theorem 7.35 is included here, and the reader is referred for more details to the given references.
 
-Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 and p = 1 − e−β, and consider the q-state Potts model on Ld with inversetemperature β. Let q be large. When β < βc(q) (respectively, β > βc(q)), the number of distinct translation-invariant Gibbs states is 1 (respectively, q). When β = βc(q), there are q + 1 distinct extremal translation-invariant Gibbs states, correspondingto the free measure and the ‘b-boundary-condition’measure for b ∈ {1,2,. . .,q}, and every translation-invariant Gibbs state is a convex combination of these q + 1 states. When d ≥ 3, there exist in addition an inﬁnityofnon-translation-invariantGibbsstatesatthecriticalpointβc(q). Further discussion may be found in [65, 66, 68, 136, 224, 251, 254].
+Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 and $p$ = 1 − e−β, and consider the q-state Potts model on Ld with inversetemperature β. Let q be large. When β < βc(q) (respectively, β > βc(q)), the number of distinct translation-invariant Gibbs states is 1 (respectively, q). When β = βc(q), there are q + 1 distinct extremal translation-invariant Gibbs states, correspondingto the free measure and the ‘b-boundary-condition’measure for b ∈ {1,2,. . .,q}, and every translation-invariant Gibbs state is a convex combination of these q + 1 states. When d ≥ 3, there exist in addition an inﬁnityofnon-translation-invariantGibbsstatesatthecriticalpointβc(q). Further discussion may be found in [65, 66, 68, 136, 224, 251, 254].
 
 ![image 702](../Images/imageFile702.png)
 
@@ -511,7 +511,7 @@ d = 3. (7.42) Theorem [224]. Let d ≥ 2, p ∈ (0,1), q ∈ [1,∞), and r = p/
 
 ![image 709](../Images/imageFile709.png)
 
-There exists Q = Q(d) such that the following hold when q > Q.
+There exists Q = Q(d) such that the following hold when $q$ > Q.
 
 (a) There exist reals bw,bf ∈ [0,∞) such that bww and bff are τ-functionals with τ > c, with c as in the hypothesis of ‘Theorem’ 7.27, and that the pressure F(p,q) of (7.12) satisﬁes
 
@@ -523,15 +523,15 @@ logq. (7.45)
 
 ![image 710](../Images/imageFile710.png)
 
-(b) There exists a unique value p = p(q) such that the values bw, bf in part (a) satisfy:
+(b) There exists a unique value $p$ = p(q) such that the values bw, bf in part (a) satisfy:
 
-if p < p, then bw > 0, bf = 0, if p = p, then bw = 0, bf = 0, if p > p, then bw = 0, bf > 0.
+if $p$ < p, then bw > 0, bf = 0, if $p$ = p, then bw = 0, bf = 0, if $p$ > p, then bw = 0, bf > 0.
 
 (7.46)
 
 Proof of Theorem 7.42. We follow the scheme of [224] which in turn makes use of [218, 326]. For any given βw,βf ∈ [0,∞), equations (7.41) may be combined with (7.19)–(7.22) to obtain (7.43).
 
-For βw,βf ∈ [0,∞), let w = βww, f = βf f be given by (7.41). Let τ = τ(q) be as in (7.44), and choose Q′ such that τ(Q′) > c where c is the constant in the hypothesis of ‘Theorem’ 7.27. We assume henceforth that (7.47) q > Q′. We deﬁne the τ-functionals
+For βw,βf ∈ [0,∞), let w = βww, f = βf f be given by (7.41). Let τ = τ(q) be as in (7.44), and choose Q′ such that τ(Q′) > c where c is the constant in the hypothesis of ‘Theorem’ 7.27. We assume henceforth that (7.47) $q$ > Q′. We deﬁne the τ-functionals
 
 βw
 
@@ -569,7 +569,7 @@ whence 0 ∈ Bw. Secondly, by ‘Theorem’ 7.27 again, f ( 0w) ≤ e−c1τ, wh
 
 ![image 720](../Images/imageFile720.png)
 
-(7.51) Lemma. Let α ∈ (0,∞). There exists Q′′ = Q′′(α) ≥ Q′ such that the following holds. If q > Q′′, the functions h(β,r) = f ( βw), f ( βf ) have the Lipschitz property: for β,β′ ∈ [0,∞) and r,r′ ∈ (0,∞),
+(7.51) Lemma. Let α ∈ (0,∞). There exists Q′′ = Q′′(α) ≥ Q′ such that the following holds. If $q$ > Q′′, the functions h(β,r) = f ( βw), f ( βf ) have the Lipschitz property: for β,β′ ∈ [0,∞) and r,r′ ∈ (0,∞),
 
 ![image 721](../Images/imageFile721.png)
 
@@ -579,7 +579,7 @@ whence 0 ∈ Bw. Secondly, by ‘Theorem’ 7.27 again, f ( 0w) ≤ e−c1τ, wh
 
 Assume henceforth that
 
-(7.52) q > Q′′ = Q′′(21).
+(7.52) $q$ > Q′′ = Q′′(21).
 
 ![image 724](../Images/imageFile724.png)
 
@@ -803,10 +803,10 @@ F(p,q) ≤ logr + βw + f ( βww) in contradiction of (7.64). Therefore, (7.62) 
 
 Next we show that there exists a unique p such that bw(p) = bf(p) = 0. The proof is deferred until later in the section.
 
-- (7.65) Lemma. There exists Q′′′ ≥ Q′′ such that the following holds. For q > Q′′′, there is a unique p′ ∈ (0,1) such that bw(p′) = bf(p′) = 0. The ratio r′ = p′/(1 − p′) satisﬁes
-- (7.66) r′ = q1/d exp f ( 0f ) − f ( 0w) . Let q > Q = Q′′′ and p = p′, where Q′′′ and p′ are as given in this lemma.
+- (7.65) Lemma. There exists Q′′′ ≥ Q′′ such that the following holds. For $q$ > Q′′′, there is a unique p′ ∈ (0,1) such that bw(p′) = bf(p′) = 0. The ratio r′ = p′/(1 − p′) satisﬁes
+- (7.66) r′ = q1/d exp f ( 0f ) − f ( 0w) . Let $q$ > Q = Q′′′ and $p$ = p′, where Q′′′ and $p$′ are as given in this lemma.
 
-By (7.45) and the fact that F(p,q) → d−1 logq as p ↓ 0, f ( bff) → 0 and bf(p) → 0 as p ↓ 0. Similarly, bw(p) → ∞ as p ↓ 0. By a similar argument for p close to 1, bw(p) → 0 and bf(p) → ∞ as p ↑ 1. Statement (7.46) follows by Lemma 7.65 and the continuity of bw(p) and bf(p), (7.54). This completes the proof of Theorem 7.42.
+By (7.45) and the fact that F(p,q) → d−1 logq as p ↓ 0, f ( bff) → 0 and bf(p) → 0 as p ↓ 0. Similarly, bw(p) → ∞ as p ↓ 0. By a similar argument for $p$ close to 1, bw(p) → 0 and bf(p) → ∞ as p ↑ 1. Statement (7.46) follows by Lemma 7.65 and the continuity of bw(p) and bf(p), (7.54). This completes the proof of Theorem 7.42.
 
 Proof of Lemma 7.51. We give the proof in the wired case, the other case being similar. Write = βw and let E be co-connected. For any contour γ ⊆ E and
 
@@ -972,7 +972,7 @@ logq,
 
 This contradicts (7.77), whence such distinct r1, r2 do not exist.
 
-Proof of Theorem 7.33. Let p ∈ (0,1) and q > Q where Q, τ = τ(q), bw = bw(p,q), bf = bf(p,q), and p = p(q) are given as in Theorem 7.42. Let be a box of Ld, and let φ1 (respectively, φ0 ) be the wired random-cluster measure on E generated by the partition function Z1(E ) of (7.10) (respectively, the free measure generated by the partition function Z0(E ) of (7.11)).
+Proof of Theorem 7.33. Let p ∈ (0,1) and $q$ > Q where Q, τ = τ(q), bw = bw(p,q), bf = bf(p,q), and $p$ = p(q) are given as in Theorem 7.42. Let be a box of Ld, and let φ1 (respectively, φ0 ) be the wired random-cluster measure on E generated by the partition function Z1(E ) of (7.10) (respectively, the free measure generated by the partition function Z0(E ) of (7.11)).
 
 Consider first the wired measure φ1 . As in (7.21), there exists a family of maximal closed wired contours Ŵ of E (maximal in the sense of the partial order γ1 ≤ γ2 if γ1 ⊆ γ2) and, by (7.40)–(7.41), Ŵ has law
 
@@ -1008,13 +1008,13 @@ by Theorem 7.32 and the fact that 0w is a τ-functional. The numberof such wired
 
 [7.5] Discontinuous phase transition for large q 193
 
-ν ≥ b(1 + |x − y|) for some absolute constant b > 0. We may therefore ﬁnd absolute constants Q′ ≥ Q and a > 0 such that, for q ≥ Q′, (7.79) φ1 (F (x, y)) ≤ e−aτ(1+|x−y|).
+ν ≥ b(1 + |x − y|) for some absolute constant b > 0. We may therefore ﬁnd absolute constants Q′ ≥ Q and a > 0 such that, for $q$ ≥ Q′, (7.79) φ1 (F (x, y)) ≤ e−aτ(1+|x−y|).
 
 Take x = y in (7.79), and let ↑ Zd to obtain by Proposition 5.11 that
 
 φp1,q(x ↔/ ∞) < 1 whence p ≥ pc(q). It follows that (7.80) p ≥ pc(q).
 
-Considernextthefreemeasure φ0 . Let p ≤ p, sothatbf = 0. Byanadaptation of the argument above, there exists Q′′ ≥ Q′ and k > 0 such that, for q ≥ Q′′, x, y ∈ Zd, and all large ,
+Considernextthefreemeasure φ0 . Let p ≤ p, sothatbf = 0. Byanadaptation of the argument above, there exists Q′′ ≥ Q′ and k > 0 such that, for $q$ ≥ Q′′, x, y ∈ Zd, and all large ,
 
 (7.81) φ0 (x ↔ y) ≤ e−kτ|x−y|.
 
@@ -1026,19 +1026,19 @@ By Proposition 5.12 applied to φp0,q,
 
 ↑Zd
 
-Hence p ≤ pc(q), and so (7.83) p ≤ pc(q). By (7.80) and (7.83), p = pc(q). By (7.82), there is exponential decay of connectivity11 for p ≤ pc(q), and a non-vanishing mass gap.
+Hence p ≤ pc(q), and so (7.83) p ≤ pc(q). By (7.80) and (7.83), $p$ = pc(q). By (7.82), there is exponential decay of connectivity11 for $p$ ≤ pc(q), and a non-vanishing mass gap.
 
-Parts (b) and (d) of the theorem have been proved for q ≥ Q′′. Part (b) implies
+Parts (b) and (d) of the theorem have been proved for $q$ ≥ Q′′. Part (b) implies
 
-that φ0pc(q),q = φ1pc(q),q, and hence (a) via Theorem 4.63. The uniqueness of random-cluster measures holds generally when p < pc(q), Theorem 5.33. The proof of uniqueness when p > pc(q) has much in common with the proofs of Proposition 5.30 and Theorem 11.40, and so we present a sketch only.
+that φ0pc(q),$q$ = φ1pc(q),q, and hence (a) via Theorem 4.63. The uniqueness of random-cluster measures holds generally when $p$ < pc(q), Theorem 5.33. The proof of uniqueness when $p$ > pc(q) has much in common with the proofs of Proposition 5.30 and Theorem 11.40, and so we present a sketch only.
 
-Letq ≥ Q′′ and p ∈ (pc(q),1). Weshallshowthath1(p,q) = φp1,q(e is open) satisﬁes (7.84) h1(p − ǫ,q) ↑ h1(p,q) as ǫ ↓ 0, and the claim will follow by Proposition 4.28(b) and Theorem 4.63.
+Letq ≥ Q′′ and $p$ ∈ (pc(q),1). Weshallshowthath1(p,q) = φp1,q(e is open) satisﬁes (7.84) h1(p − ǫ,q) ↑ h1(p,q) as ǫ ↓ 0, and the claim will follow by Proposition 4.28(b) and Theorem 4.63.
 
 ![image 857](../Images/imageFile857.png)
 
 11The related issue of ‘restricted complete analyticity’ is considered in [110] for the case of two dimensions.
 
-Letǫ be such that pc(q) < p−ǫ < p, and letη ∈ (0,1). Write φn1,p = φ1 n,p,q
+Letǫ be such that pc(q) < p−ǫ < p, and letη ∈ (0,1). Write φn1,$p$ = φ1 n,p,q
 
 where n = [−n,n]d. For n > 23m ≥ 2, let Em,n be the event that, for every x ∈ ∂ m, if ν = νx is a maximal closed wired contour of n with x ∈ Vintν, then
 
@@ -1088,7 +1088,7 @@ hn(p) − hn(p − ǫ) ≤ η +
 
 where C is the set of all cutsets of m and φσ,1 p denotes the wired random-cluster measure on σ ∪ int(σ). Since m is ﬁxed, C is bounded, and (7.84) follows on letting n → ∞, ǫ ↓ 0, and η ↓ 0 in that order.
 
-Proof of Theorem7.34. Let q be large. Then pc(q) = r′/(1+r′) wherer′ is given in Lemma 7.65 and satisﬁes (7.66). Let p = pc(q). By (7.44) and ‘Theorem’ 7.27, f ( 0f ), f ( 0w) → 0 as q → ∞, and therefore r′ ∼ q1/d. We sketch a derivation of the errortermO(q−2/d). The rate atwhich f ( 0f ) → 0 (respectively,
+Proof of Theorem7.34. Let q be large. Then pc(q) = r′/(1+r′) wherer′ is given in Lemma 7.65 and satisﬁes (7.66). Let $p$ = pc(q). By (7.44) and ‘Theorem’ 7.27, f ( 0f ), f ( 0w) → 0 as q → ∞, and therefore r′ ∼ q1/d. We sketch a derivation of the errortermO(q−2/d). The rate atwhich f ( 0f ) → 0 (respectively,
 
 f ( 0w) → 0) is determined by the value 0f (γf) (respectively, 0w(γw)) on the smallest free contour γf (respectively, smallest wired contour γw). The smallest free contour is the external edge-boundary γf of a single edge, and it is easily seen from (7.41) that 0f (γf) = r′q−1 ∼ q−1+(1/d). The shortest wired contour γw is a single edge, and 0w(γw) = 1/r′ ∼ q−1/d. By (7.24), as q → ∞,
 
@@ -1108,31 +1108,31 @@ result of Dobrushin, [103], that, for large β in the limit as L → ∞, L devi
 
 Dobrushin’s proof was the starting point for the study of interfaces in spin systems. His conclusions may be reformulated and generalized in the context of the random-cluster model in three or more dimensions with q ∈ [1,∞). This generalization of Dobrushin’s theorem is achieved by deﬁning a family of conditioned random-cluster measures, and by showing the stiffness of the ensuing interface. It is a striking fact that the conclusions hold even for the percolation model.
 
-When cast in the more general setting of the random-clustermodel on a box , the correct interpretation of the boundary condition is as follows. The vertices on the upper (respectively, lower) hemisphere of are wired together into a single composite vertex labelled ∂+ (respectively, ∂− ). Let D be the event that no open path of exists joining ∂− to ∂+ , and let φ ,p,q be the random-cluster measure on with the above boundary condition and conditioned on the event D. It is a geometrical fact that, under φ ,p,q, there exists an interface separating an upper region of containing ∂+ and a lower region containing ∂− , and each of these regions is in the wired phase. Dobrushin’s theorem amounts to the statement that, when q = 2 and p is sufficiently large, this interface deviates only locally from the horizontal plane through the equator of . It was proved in [139] that the same conclusion is valid for all q ∈ [1,∞) and all sufficiently large p, and this result is presented in the remainder of this chapter. The geometry of the interfaces for the random-cluster model is notably different from that of a spin model since the conﬁgurations are indexed by edges rather than by vertices, and this leads to difﬁculties not encountered in the Ising model.
+When cast in the more general setting of the random-clustermodel on a box , the correct interpretation of the boundary condition is as follows. The vertices on the upper (respectively, lower) hemisphere of are wired together into a single composite vertex labelled ∂+ (respectively, ∂− ). Let D be the event that no open path of exists joining ∂− to ∂+ , and let φ ,p,q be the random-cluster measure on with the above boundary condition and conditioned on the event D. It is a geometrical fact that, under φ ,p,q, there exists an interface separating an upper region of containing ∂+ and a lower region containing ∂− , and each of these regions is in the wired phase. Dobrushin’s theorem amounts to the statement that, when $q$ = 2 and $p$ is sufficiently large, this interface deviates only locally from the horizontal plane through the equator of . It was proved in [139] that the same conclusion is valid for all q ∈ [1,∞) and all sufficiently large p, and this result is presented in the remainder of this chapter. The geometry of the interfaces for the random-cluster model is notably different from that of a spin model since the conﬁgurations are indexed by edges rather than by vertices, and this leads to difﬁculties not encountered in the Ising model.
 
 ![image 862](../Images/imageFile862.png)
 
 ![image 863](../Images/imageFile863.png)
 
-Although such arguments are valid whenever d ≥ 3, we shall assume for simplicity that d = 3. It is striking that the results are valid for high-density percolation on Zd with d ≥ 3, being the random-cluster model with q = 1. A corresponding question for supercritical percolation in two dimensions has been studied in depth in [77], where it is shown effectively that the (one-dimensional) interface converges when re-scaled to a Brownian bridge.
+Although such arguments are valid whenever d ≥ 3, we shall assume for simplicity that d = 3. It is striking that the results are valid for high-density percolation on Zd with d ≥ 3, being the random-cluster model with $q$ = 1. A corresponding question for supercritical percolation in two dimensions has been studied in depth in [77], where it is shown effectively that the (one-dimensional) interface converges when re-scaled to a Brownian bridge.
 
 We have spoken above of interfaces which ‘deviate only locally’ from a plane, an expression made more rigorous in Section 7.11 where the principal Theorem 7.142 is presented. We include at Theorem 7.87 a weaker version of the main result which does not make use of the notation developed in later sections.
 
-Theresultsareprovedundertheassumptionthat q ∈ [1,∞)and pissufficiently large. It is a majoropen questionto determine whetheror not such results are valid underthe weakerassumption that pexceedsthe criticalvalue pc(q)of the randomcluster model. The answer may be expected to depend on the value of q and the number d of dimensions. Since the percolation measure φ ,p,1 is a conditioned product measure, it may be possible to gain insight into the existence or not of
+Theresultsareprovedundertheassumptionthat q ∈ [1,∞)and pissufficiently large. It is a majoropen questionto determine whetheror not such results are valid underthe weakerassumption that pexceedsthe criticalvalue pc(q)of the randomcluster model. The answer may be expected to depend on the value of $q$ and the number d of dimensions. Since the percolation measure φ ,p,1 is a conditioned product measure, it may be possible to gain insight into the existence or not of
 
 ![image 864](../Images/imageFile864.png)
 
-such a ‘rougheningtransition’ by concentrating on the special case of percolation. The two core problems here are the following. Let p(q) be the inﬁmum of all values of p at which the above interface is localized (a rigorous interpretation of this definition is evident after reading Theorems 7.87 and 7.142).
+such a ‘rougheningtransition’ by concentrating on the special case of percolation. The two core problems here are the following. Let p(q) be the inﬁmum of all values of $p$ at which the above interface is localized (a rigorous interpretation of this definition is evident after reading Theorems 7.87 and 7.142).
 
 ![image 865](../Images/imageFile865.png)
 
-I. Is it the case that the interface is localized for all p > p(q)? II. For what q and d does strict inequality of critical points hold in the sense that pc(q) < p(q)?
+I. Is it the case that the interface is localized for all $p$ > p(q)? II. For what q and d does strict inequality of critical points hold in the sense that pc(q) < p(q)?
 
 ![image 866](../Images/imageFile866.png)
 
 ![image 867](../Images/imageFile867.png)
 
-In the case of the Ising model (q = 2), it is generally believed that pc(2) < p(2) if and only if d = 3.
+In the case of the Ising model ($q$ = 2), it is generally believed that pc(2) < p(2) if and only if d = 3.
 
 ![image 868](../Images/imageFile868.png)
 
@@ -1158,7 +1158,7 @@ to be the circuit of L,M \ L−1,M comprising all vertices x with x3 = 21, with 
 
 We shall be particularly concerned with a boundary condition D corresponding to the mixed ‘Dobrushin boundary’ of [103]. Let D ∈ be given by (7.86)
 
-0 if e = x, y for some x = (x1, x2,0) and y = (x1, x2,1), 1 otherwise.
+0 if $e = \langle x, y \rangle$ for some x = (x1, x2,0) and y = (x1, x2,1), 1 otherwise.
 
 D(e) =
 
@@ -1170,7 +1170,7 @@ Many of the calculations concern the box L,M and the measure φD L,M,p,q. We cho
 
 ![image 874](../Images/imageFile874.png)
 
-L = L,∞ and the weak limit φL,p,q = limM→∞ φD L,M,p,q.
+L = L,∞ and the weak limit φL,p,$q$ = limM→∞ φD L,M,p,q.
 
 ![image 875](../Images/imageFile875.png)
 
@@ -1178,7 +1178,7 @@ L = L,∞ and the weak limit φL,p,q = limM→∞ φD L,M,p,q.
 
 consequence of Theorems 7.87 and 7.142 that, for sufficiently large p, any such weak limit is non-translation-invariant.
 
-(7.89) Theorem [139]. Let q ∈ [1,∞) and p > p(21), where p(21) is given in Theorem 7.87. The family {φL,p,q : L = 1,2,. . .} possesses at least one non-translation-invariant weak limit.
+(7.89) Theorem [139]. Let q ∈ [1,∞) and $p$ > p(21), where $p$(21) is given in Theorem 7.87. The family {φL,p,q : L = 1,2,. . .} possesses at least one non-translation-invariant weak limit.
 
 ![image 877](../Images/imageFile877.png)
 
@@ -1190,7 +1190,7 @@ It is shown in addition at Theorem 7.144 that there exists a geometric bound, un
 
 By making use of the relationship between random-cluster models and Potts models (see Sections 1.4 and 4.6), one obtains a generalization of the theorem of Dobrushin [103] to include percolation and Potts models.
 
-The measure φL,p,q is not a random-cluster measure in the sense of Chapter 3, even though it corresponds to a Gibbs measure when q ∈ {2,3,. . .}. It may instead be termed a ‘conditioned’ random-cluster measure, and such measures will be encountered again in Chapter 11.
+The measure φL,p,$q$ is not a random-cluster measure in the sense of Chapter 3, even though it corresponds to a Gibbs measure when q ∈ {2,3,. . .}. It may instead be termed a ‘conditioned’ random-cluster measure, and such measures will be encountered again in Chapter 11.
 
 ![image 880](../Images/imageFile880.png)
 
@@ -1226,7 +1226,7 @@ where c and e are absolute positive constants, and ρ = r/[r + q(1 − r)]. Sinc
 
 0 ≤ φ1H,r,q(Ke) − φG1 1,r,q(Ke) ≤ 1 − φG1 1,r,q(Wn). The claim follows by (7.94), (7.96), and the triangle inequality.
 
-As explained in Sections 7.1–7.2, the dual of the random-cluster model on L3 is a certain probability measure associated with the plaquettes of the dual lattice L3d. The straight line-segment joining the vertices of an edge e = x, y passes through the middle of exactly one plaquette, denoted by h(e), which we call the dual plaquette of e. We declare this plaquette open (respectively, closed) if e is closed (respectively, open), see (7.9). The plaquette h(e) is called horizontal if y = x + (0,0,±1), and vertical otherwise.
+As explained in Sections 7.1–7.2, the dual of the random-cluster model on L3 is a certain probability measure associated with the plaquettes of the dual lattice L3d. The straight line-segment joining the vertices of an edge $e = \langle x, y \rangle$ passes through the middle of exactly one plaquette, denoted by h(e), which we call the dual plaquette of e. We declare this plaquette open (respectively, closed) if e is closed (respectively, open), see (7.9). The plaquette h(e) is called horizontal if y = x + (0,0,±1), and vertical otherwise.
 
 The regular interface of L3 is the set δ0 of plaquettes given by δ0 = h ∈ H : h = h( x, y ) for some x = (x1, x2,0) and y = (x1, x2,1) .
 
@@ -1332,7 +1332,7 @@ We shall exploit properties of the partition functions Z(·) in order to rewrite
 
 e∈E(δ)∩EL,M
 
-for functions fp(e,δ, L, M) with the following properties. For q ∈ [1,∞), there exist p∗ < 1 and constants C1, C2, γ > 0 such that, if p > p∗,
+for functions fp(e,δ, L, M) with the following properties. For q ∈ [1,∞), there exist p∗ < 1 and constants C1, C2, γ > 0 such that, if $p$ > p∗,
 
 - (7.106) | fp(e,δ, L, M)| < C1, fp(e1,δ1, L1, M1) − fp(e2,δ2, L2, M2) ≤ C2e−γG, e1 ∈ δ1, e2 ∈ δ2, e1 ≃ e2,
 - (7.107)
@@ -1353,9 +1353,9 @@ It remains to show (7.106)–(7.107). Let e = ν( f,δ) and set r = e, f . Then 
 
 ![image 919](../Images/imageFile919.png)
 
-(7.111) g( f, W(δ)) − g( f, EL,M) ≤ e−α e, f +2α, p > p∗,
+(7.111) g( f, W(δ)) − g( f, EL,M) ≤ e−α e, f +2α, $p$ > p∗,
 
-where p∗ and α are given as in that lemma. Secondly, there exists an absolute constant K such that, for all e and δ, the number of edges f ∈ E(δ) with e = ν( f,δ) is no greater than K. Therefore, by (7.92),
+where $p$∗ and α are given as in that lemma. Secondly, there exists an absolute constant K such that, for all e and δ, the number of edges f ∈ E(δ) with e = ν( f,δ) is no greater than K. Therefore, by (7.92),
 
 ![image 920](../Images/imageFile920.png)
 
@@ -1385,7 +1385,7 @@ f ∈E(δ1): ν( f,δ1)=e1
 
 and (7.107) follows for an appropriate choice of γ.
 
-In the second part of this section, we consider measures and interfaces for the infinite cylinder L = L,∞ = [−L, L]2 × Z. Note first by stochastic ordering that, if q ∈ [1,∞), then φL,M+1 ≤st φL,M, whence the (decreasing) weak limit
+In the second part of this section, we consider measures and interfaces for the infinite cylinder L = L,∞ = [−L, L]2 × Z. Note first by stochastic ordering that, if $q$ ∈ [1,∞), then φL,M+1 ≤st φL,M, whence the (decreasing) weak limit
 
 (7.116) φL = lim
 
@@ -1708,7 +1708,7 @@ PL(ζ = G) =
 
 PL ζh′ = Gh′ ζh = Gh for h ∈ δ0, h = h′ ≤ C3[C4(1 − p)] (Gh′),
 
-for p > p∗, and for all h′ ∈ δ0, Gh′ ∈ Gh′, L > 0, and for any admissible family {Gh : h ∈ δ0, h = h′} of groups of walls.
+for $p$ > p∗, and for all h′ ∈ δ0, Gh′ ∈ Gh′, L > 0, and for any admissible family {Gh : h ∈ δ0, h = h′} of groups of walls.
 
 Proof. The claim is trivial if G = {Gh : h ∈ δ0} is not admissible, and therefore we may assume it to be admissible. Let h′ ∈ δ0, and let G′ agree with G except at h′, where Gh′ is replaced by the empty group Eh′. Then
 
@@ -1818,7 +1818,7 @@ Let h ∈ δ0. For ω ∈ DL, we write h ↔ ∞ if there exists a sequence
 
 h = h0,h1,. . .,hr of plaquettes in δ0 such that: (a) hi ∼1 hi+1 for i = 0,1,. . .,r − 1, (b) each hi is a c-plaquette of (ω), and (c) hr = h(e) for some e ∈/ EL.
 
-- (7.142) Theorem [139]. Let q ∈ [1,∞). For ǫ > 0, there exists p = p(ǫ) < 1 such that, if p > p,
+- (7.142) Theorem [139]. Let q ∈ [1,∞). For ǫ > 0, there exists $p$ = p(ǫ) < 1 such that, if $p$ > p,
 - (7.143) φL(h ↔ ∞) > 1 − ǫ, h ∈ δ0, L ≥ 1.
 
 ![image 992](../Images/imageFile992.png)
@@ -1853,7 +1853,7 @@ D(x,δ) = sup |z − 21| : (x1, x2, z) ∈ [δ] .
 
 ![image 998](../Images/imageFile998.png)
 
-(7.144) Theorem [139]. Let q ∈ [1,∞). There exists p < 1 and α(p) satisfying α(p) > 0 when p > p such that
+(7.144) Theorem [139]. Let q ∈ [1,∞). There exists $p$ < 1 and α(p) satisfying α(p) > 0 when $p$ > p such that
 
 φL(D(x, ) ≥ z) ≤ e−zα(p), z ≥ 1, (x1, x2) ∈ Z2, L ≥ 1.
 
@@ -1873,9 +1873,9 @@ each such wall S, h belongs to I(S). Suppose on the contrary that h ∈/ I(Sj) f
 
 14We have used Lemma 7.117 here. 15This is a consequence of a standard property of Z2, see [210, Appendix].
 
-Let K be as in Lemma 7.131, and p∗, C4 as in Lemma 7.132. Let p be sufficiently large that p > p∗ and that
+Let K be as in Lemma 7.131, and $p$∗, C4 as in Lemma 7.132. Let p be sufficiently large that $p$ > p∗ and that
 
-λ = λ(p) = −131 log[KC4(1 − p)] satisﬁes λ( p) > 0. By the last lemma, when p > p,
+λ = λ(p) = −131 log[KC4(1 − p)] satisﬁes λ( p) > 0. By the last lemma, when $p$ > p,
 
 ![image 1001](../Images/imageFile1001.png)
 

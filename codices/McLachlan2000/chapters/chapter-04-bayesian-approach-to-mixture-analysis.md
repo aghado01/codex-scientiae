@@ -14,7 +14,7 @@ Among the first papers on Bayesian estimation for mixture models via posterior s
 
 # 4.2 ESTIMATION FOR PROPER PRIORS
 
-We consider here the case of a proper density p(v) for the parameter vector %. In the sequel, we shall use p(:) as a generic notation for a density function: We can write the posterior density of % as prior
+We consider here the case of a proper density p(v) for the parameter vector $\Psi$. In the sequel, we shall use p(:) as a generic notation for a density function: We can write the posterior density of % as prior
 
 $$
 \begin{array} { r c l } p ( \Psi | y ) & = & C ^ { - 1 } L ( \Psi ) p ( \Psi ) \\ & = & C ^ { - 1 } \sum L _ { c } ( \Psi ) p ( z | \Psi ) p ( \Psi ) , \end{array}
@@ -36,7 +36,7 @@ If a conjugate is specified, then the posterior expectation of € can be writte
 
 # 4.3 CONJUGATE PRIORS
 
-We assume now with little loss of generality that the component densities 0;) f(uj; 0); where f;(yj;
+We assume now with little loss of generality that the component densities 0;) $f(y_j$; 0); where f;($y_j$;
 
 $$
 ^ { T } _ { i } y _ { j } - b ( \theta _ { i } ) + c ( y _ { j } ) \} .
@@ -50,9 +50,7 @@ $$
 
 where w; is areal-valued vectorofconstants and Y isascalarconstant (i = 1, 9) A conjugate for the vector T = (71, T,)T of mixing proportions is the Dirichlet distribution D(œ1, ag), which has density prior
 
-$$
-( 4 . 5 )
-$$
+
 
 For this for €, the posterior density p(" u) is proportional to prior
 
@@ -74,7 +72,7 @@ In the special case where only the mixing proportions are unknown; sequential ap
 
 We can approximate posterior quantities of interest through the use of MCMC methods. Such methods allow the construction of an ergodic Markov chain with stationary distribution equal to the posterior distribution of the parameter of interest, here containing the parameters in the mixture model. Gibbs sampling achieves this by simulating directly from the conditional distribution of a subvector of € given all the other parameters in " (and the observed data v) . This conditional is called the complete conditional. We then through all the parameters iteratively; each time drawing from each parameter's complete conditional, until we N draws, from the Markov chain. After a sufficiently burn-in of, say, N) will be dependent draws approximately from the posterior distribution of %. In practice; consideration has to be given to the choice of suitable starting values for €, and choice of values for N1 and N that are sufficiently large to ensure the consequent approximation is accurate. Reviews of convergence diagnostics have been given by Cowles and Carlin (1996) Brooks ( 1998), Brooks and Roberts (1998),and Mengersen, Robert, and GuihenneucJouyaux (1999); see also Robert (1998). Among other sampling methods, there is the Metropolis-Hastings algorithm; which, in contrast to the Gibbs sampler; simulates from a convenient proposal distribution and then accepts the proposed value with some defined probability. cycle have long
 
-In the implementation of MCMC methods for mixture models, the unobservable component-indicator vector z is introducedand €is augmented by 2 during the Gibbs sampling. Thus samples for the missing-data vector z and the parameter vector are alternately generated, producing a missing-data chain and parameter chain. The of Diebolt and Robert (1994) of the convergence of the algorithm to the true posterior distribution of the parameter % is based on duality principle. The finite-state structure of the missing-data chain allows many convergence results to be proof easily established for it and transferred automatically to the parameter chain. They a central limit theorem; see Robert (1996). Diebolt and Robert (1994) established theirresults in the context of univariate normalcomponent densities; and Bensmail et al. (1997)subsequently confirmed their applicability for multivariate normal component densities. The validity of the central limit theorem for MCMC algorithms is now well documented; see Meyn and Tweedie (1993) and Roberts and Rosenthal (1998)
+In the implementation of MCMC methods for mixture models, the unobservable component-indicator vector z is introducedand €is augmented by 2 during the Gibbs sampling. Thus samples for the missing-data vector z and the parameter vector are alternately generated, producing a missing-data chain and parameter chain. The of Diebolt and Robert (1994) of the convergence of the algorithm to the true posterior distribution of the parameter $\Psi$ is based on duality principle. The finite-state structure of the missing-data chain allows many convergence results to be proof easily established for it and transferred automatically to the parameter chain. They a central limit theorem; see Robert (1996). Diebolt and Robert (1994) established theirresults in the context of univariate normalcomponent densities; and Bensmail et al. (1997)subsequently confirmed their applicability for multivariate normal component densities. The validity of the central limit theorem for MCMC algorithms is now well documented; see Meyn and Tweedie (1993) and Roberts and Rosenthal (1998)
 
 average,
 
@@ -100,9 +98,7 @@ Step 1. Simulate
 
 and
 
-$$
-( 4 . 8 )
-$$
+
 
 $$
 n _ { i } ) \ \ ( i = 1 , \dots , g ) . \quad ( 4 . 9 )
@@ -264,7 +260,7 @@ We shalldiscuss some attempts to circumvent this problem through partially prope
 
 # 4.8.1 Improper Priors
 
-If an improper prior is adopted for the component parameters then the posterior distribution will be improper. To see this, consider a mixture of g = 2 univariate and 0?. Then the term in the sum of the numerator of (4.1) with zj = (1, O)T for all Hence if an improper prior is adopted, then the integral of this term in the denominator of (4.1) will diverge.
+If an improper prior is adopted for the component parameters then the posterior distribution will be improper. To see this, consider a mixture of g = 2 univariate and 0?. Then the term in the sum of the numerator of (4.1) with $z_j$ = (1, O)T for all Hence if an improper prior is adopted, then the integral of this term in the denominator of (4.1) will diverge.
 
 To look at this more closely; we assume further, as in Wasserman (1999), that T1 = T2 = =0, so that the only unknown parameter is
 
@@ -341,7 +337,7 @@ j ; \Psi ) = \sum _ { i = 1 } ^ { j } \pi _ { i } \phi ( y _ { j } ; \mu _ { i }
 $$
 
 $$
-\pi _ { 2 } \ = \ ( 1 - q _ { 1 } ) q _ { 2 } \\ \pi _ { 3 } \ = \ ( 1 - q _ { 1 } ) ( 1 - q _ { 2 } ) , \\ \mu _ { 1 } \ = \ \omega _ { 1 } \\ \mu _ { 2 } \ = \ \omega _ { 1 } + \kappa _ { 1 } \omega _ { 2 } , \\ \mu _ { 3 } \ = \ \omega _ { 1 } + \kappa _ { 1 } \omega _ { 2 } + \kappa _ { 1 } \kappa _ { 2 } \omega _ { 3 } , \\ \sigma _ { 1 } \ = \ \kappa _ { 1 } ^ { 2 } \ \iota \\ \sigma _ { 2 } \ = \ \kappa _ { 1 } ^ { 2 } \kappa _ { 2 } ^ { 2 } \\ \sigma _ { 3 } \ = \ \kappa _ { 1 } ^ { 2 } \kappa _ { 2 } \kappa _ { 3 } . \\ \intertext { t a r i z a t i o n c a b e x t e n d e d e n $ i n a n o b u v i o s $ w a r y f o r $ ( 4 . 24 ) t o h e c }
+\pi _ { 2 } \ = \ ( 1 - q _ { 1 } ) q _ { 2 } \\ \pi _ { 3 } \ = \ ( 1 - q _ { 1 } ) ( 1 - q _ { 2 } ) , \\ \mu _ { 1 } \ = \ \omega _ { 1 } \\ \mu _ { 2 } \ = \ \omega _ { 1 } + \kappa _ { 1 } \omega _ { 2 } , \\ \mu _ { 3 } \ = \ \omega _ { 1 } + \kappa _ { 1 } \omega _ { 2 } + \kappa _ { 1 } \kappa _ { 2 } \omega _ { 3 } , \\ \sigma _ { 1 } \ = \ \kappa _ { 1 } ^ { 2 } \ \iota \\ \sigma _ { 2 } \ = \ \kappa _ { 1 } ^ { 2 } \kappa _ { 2 } ^ { 2 } \\ \sigma _ { 3 } \ = \ \kappa _ { 1 } ^ { 2 } \kappa _ { 2 } \kappa _ { 3 } . \\ 
 $$
 
 This reparameterization can be extended in an obvious way from (4.24) to the case of a g-component normal mixture model for arbitrary g
@@ -413,7 +409,7 @@ Celeux (1999) recommends performing the simulations without any constraints on t
 
 Fig. 4.1 Posterior densities of parameter estimates labeled according to ordering of component means. From Richardson and Green (1997).
 
-method to change where appropriate the component labels of the simulated values for %. Stephens (1999) proposes a similar of handling the problem. way
+method to change where appropriate the component labels of the simulated values for $\Psi$. Stephens (1999) proposes a similar of handling the problem. way
 
 West (1999) also recommends simulating without restrictions on the parameters, noting that in his experience, imposing an identifying ordering on parameters hinders convergence of the resulting MCMC on the constrained parameter space. He out that an additional gain by operatingtheMCMCon the unrestricted parameter space is an aid in assessing convergence of the simulation. As the posterior distribution of the parameters is symmetric in the component labels under a symmetric prior, points symmetry should be evident in the marginal distributions of the parameters. Thus the MCMC simulations on the unrestricted parameter space should exhibit switching effects, as parameter draws jump between the models representing the identification issue. However;, as warned by West (1999), convergence will be slow. One reason is that the sampler may be unable to leave the vicinity of one mode (or a subset of modes) to move to another mode (or subset of modes) of equal importance; because of its inability to step over of low probability. valleys
 
@@ -444,7 +440,7 @@ As noted by Robert and Titterington (1998) for mixtures of normal components wit
 
 # 4.11 VARIATIONAL APPROACH TO BAYESIAN ESTIMATION
 
-Recently; Attias (1999a) described the variational framework for providing an approximation to the Bayesian solution. This approach approximates the full posterior distribution for the unknown parameter vector % and any hidden (latent) variables such as z in the case of the of mixture distributions. It draws together vari ational ideas from intractable hidden variables models (Saul, Jaakkola; and Jordan, 1996; Ghahramani and Jordan, 1997; Ghahramani and Beal, 2000) and from Bayesian fitting inference (Jaakkola and Jordan, 2000), which; in turn, draw on the work of Neal and Hinton (1998).
+Recently; Attias (1999a) described the variational framework for providing an approximation to the Bayesian solution. This approach approximates the full posterior distribution for the unknown parameter vector $\Psi$ and any hidden (latent) variables such as z in the case of the of mixture distributions. It draws together vari ational ideas from intractable hidden variables models (Saul, Jaakkola; and Jordan, 1996; Ghahramani and Jordan, 1997; Ghahramani and Beal, 2000) and from Bayesian fitting inference (Jaakkola and Jordan, 2000), which; in turn, draw on the work of Neal and Hinton (1998).
 
 The variational approach considers lower bound on the integrated density; log ply), of the form log
 

@@ -18,9 +18,9 @@ $$
 f ( y _ { j } ; \Psi ) = \sum _ { i = 1 } ^ { g } \pi _ { i } \phi ( y _ { j } ; \mu _ { i } , \Sigma _ { i } ) .
 $$
 
-Here % = (T1, T9-1, €T)" , where € contains the elements of the component means #; and the distinct elements of the component-covariance matrices Z; (i = 1, 9)
+Here % = (T1, T9-1, €T)" , where € contains the elements of the component means #; and the distinct elements of the component-covariance matrices $Z_j$ (i = 1, 9)
 
-We first consider the unrestricted (heteroscedastic) case where the componentcovariance matrices Z; are unequal; that is, there are no restrictions placed on them: Concerning the E-step on the (k + 1)th iteration; we have seen in Section 2.8.3 that it effectively replaces the unknown zero-one component-label variables zij by their current conditional expectations given by the posterior probabilities of component membership of the observed data Uj , 9()) , where now
+We first consider the unrestricted (heteroscedastic) case where the componentcovariance matrices $Z_j$ are unequal; that is, there are no restrictions placed on them: Concerning the E-step on the (k + 1)th iteration; we have seen in Section 2.8.3 that it effectively replaces the unknown zero-one component-label variables zij by their current conditional expectations given by the posterior probabilities of component membership of the observed data Uj , 9()) , where now
 
 $$
 , \Sigma _ { i } ) / \sum _ { h = 1 } ^ { h } \pi _ { h } \phi ( y _ { j } ; \mu _ { h } , \Sigma _ { h } )
@@ -28,7 +28,7 @@ $$
 
 for i = 1, 9; j =1, n.
 
-The M-step for normal components exists in closed form. The updates of the component means #; and component-covariance matrices Z; are given simply by
+The M-step for normal components exists in closed form. The updates of the component means #; and component-covariance matrices $Z_j$ are given simply by
 
 $$
 ^ { ( k + 1 ) } _ { i } = \sum _ { j = 1 } \tau _ { i j } ^ { ( k ) } y _ { j } / \sum _ { j = 1 } \tau _ { i j } ^ { ( k ) }
@@ -46,9 +46,9 @@ $$
 ( i = 1 , \dots , g ; \, j = 1 , \dots ,
 $$
 
-The updated estimate of the ith mixing proportion T; is as given by (2.32).
+The updated estimate of the ith mixing proportion $\pi_i$ is as given by (2.32).
 
-Computationalwise; it is advantageous to express the update (3.4) of Z; directly in terms of the current conditional expectations of the sufficient statistics complete-data framework, given by I;, I;2,
+Computationalwise; it is advantageous to express the update (3.4) of $Z_j$ directly in terms of the current conditional expectations of the sufficient statistics complete-data framework, given by I;, I;2,
 
 $$
 T _ { i 1 } ^ { ( k ) } = \sum \tau _ { i j } ^ { ( k ) } ,
@@ -118,9 +118,9 @@ $$
 y _ { j } ; \Psi ) = \sum _ { i = 1 } ^ { j } \tau _ { i } ( y _ { j } ; \Psi ) \partial \{ \log \pi _ { i } + \log f _ { i } ( y _ { j } ; \theta _ { i } ) \} / \partial \Psi \ \ ( j = 1 , \dots , n ) .
 $$
 
-We now give expressions for the elements of B(uj; #) in the case of normal components with no restrictions on the component-covariance matrices Z; .
+We now give expressions for the elements of $B(y_j; \Psi)$ in the case of normal components with no restrictions on the component-covariance matrices $Z_j$ .
 
-Let 7g-1 2 and Jet w; contain the Up(p + 1) elements of Z; (i = 1, 9). Then on partitioning the vector % of unknown parameters as Tg-1)T
+Let 7g-1 2 and Jet w; contain the Up(p + 1) elements of $Z_j$ (i = 1, 9). Then on partitioning the vector $\Psi$ of unknown parameters as Tg-1)T
 
 $$
 = ( \pi _ { g - 1 } ^ { T } , \mu _ { 1 } ^ { T } , \dots
@@ -148,7 +148,7 @@ $$
 ( 3 . 1 6 )
 $$
 
-where the hth element of corresponds to the (r, s)th element of Z; and where (i =1, 9)
+where the hth element of corresponds to the (r, s)th element of $Z_j$ and where (i =1, 9)
 
 <a id="sec-3-5"></a>
 
@@ -172,7 +172,7 @@ One area in which mixture modeling has played a very important role is genetics;
 
 A basic mixture model can be used to assess the impact of possible underlying genotypes associated with a particular locus on phenotypes that display continuous or quantitative variation in the population (for example, blood pressure, height, weight). Consider a locus with two alleles, denoted types an individual can possess at this locus: AA, Aa (equivalent to aA), and aa Suppose the phenotype or trait values associated with individuals possessing the AA genotypes; the heterozygote genotypes Aa, and the homozygote genotypes aa are these genotypes in the population at large are denoted by PAA, PAa, and paa.
 
-If yj denotes the phenotype of interest, then it has the normal mixture distribution given by
+If $y_j$ denotes the phenotype of interest, then it has the normal mixture distribution given by
 
 $$
 f ( y _ { j } ) = \sum _ { i } ^ { \infty } \pi _ { i } \, \phi ( y _ { j } ; \mu _ { i } , \sigma _ { i } ^ { 2 } ) ,
@@ -186,7 +186,7 @@ $$
 
 Under the additive model, we have #3
 
-An alternative genetics model to the model above is the simple dominance model in which genotypes AA and Aa have the same phenotype with frequency T1 = p2 +2pAPa This leads to a two-component normal mixture model with components corresponding to the phenotypes AA and Aa and to aa in proportions T1 = 2pAPa and T2 = p2, respectively.
+An alternative genetics model to the model above is the simple dominance model in which genotypes AA and Aa have the same phenotype with frequency T1 = p2 +2pAPa This leads to a two-component normal mixture model with components corresponding to the phenotypes AA and Aa and to aa in proportions $\pi_1$ = 2pAPa and T2 = p2, respectively.
 
 A recent focus of mixture models in genetics is the construction of gene marker maps for percentage testing, disease resistance diagnosis, and quantitative trait loci (QTL) detection; see, for example, Doerge, and Weir (1997), Kao and (1997), and the references therein. Zeng Zeng,
 
@@ -242,7 +242,7 @@ Source: McLaren et al. (1998)
 
 In this example, a normal mixture model is used to estimate the prevalence of diabetes and to assess the sensitivity andspecificity of adiagnostic test for diabetes as afunction where there is direct inclusion of covariates in the mixture model by allowing the component densities and also the mixing proportions to depend on some available covariates. In Chapter 5 we shall consider the problem of mixtures of GLMs in proportions that may also depend on covariates. fitting
 
-The data analyzed by Thompson; Smith, and Boyle (1998) consisted of n = 919 observations on each of p = 6 variables. plasma glucose measurement after an oral glucose load. The vector æ; of associated covariates contained five variables; age (36-65 years), sex, residence (urban or rural) , physical activity (active or sedentary), and obesity (noor yes). These data were from a population-based survey conducted in Cairo and surrounding rural villages between 1991 and 1994. Thompson et al. (1998) fitted a two-component normal mixture model to the logarithm of yj initially with all five covariates in both component densities and in the logistic model for the mixing proportions Ti. Consideration was given to two-way interactions and squared terms in age, the BIC criterion in a forwardselection fitting strategy The fitfor their final model is displayed in Table 3.3, where the variable age has been coded to be (age 50)/10. Table 3.3 also contains standard errors based on 2000 bootstrap replications. In this final fit, no covariates were includedin the second component density The logistic regression model for the mixing proportion T1 included three covariates, age, and urban. The covariates included in the first component were urban; obese, and two variables (corresponding to active females and active males) for an effect of sex nested within physical activity: using age? ,
+The data analyzed by Thompson; Smith, and Boyle (1998) consisted of n = 919 observations on each of p = 6 variables. plasma glucose measurement after an oral glucose load. The vector æ; of associated covariates contained five variables; age (36-65 years), sex, residence (urban or rural) , physical activity (active or sedentary), and obesity (noor yes). These data were from a population-based survey conducted in Cairo and surrounding rural villages between 1991 and 1994. Thompson et al. (1998) fitted a two-component normal mixture model to the logarithm of $y_j$ initially with all five covariates in both component densities and in the logistic model for the mixing proportions Ti. Consideration was given to two-way interactions and squared terms in age, the BIC criterion in a forwardselection fitting strategy The fitfor their final model is displayed in Table 3.3, where the variable age has been coded to be (age 50)/10. Table 3.3 also contains standard errors based on 2000 bootstrap replications. In this final fit, no covariates were includedin the second component density The logistic regression model for the mixing proportion T1 included three covariates, age, and urban. The covariates included in the first component were urban; obese, and two variables (corresponding to active females and active males) for an effect of sex nested within physical activity: using age? ,
 
 Table 3.3 Generalized Linear Finite Mixture Model
 
@@ -319,7 +319,7 @@ $$
 y _ { 1 8 } = ( 1 3 . 1 , 1 0 . 9 , 2 8 , 3 , 3 2 . 4 , 1 1 . 2 ) ^ { T } .
 $$
 
-Although these two points are very close in terms of Euclidean and also Mahalanobis distance; their estimated posterior probabilities of belonging to G1 are quite differ ent under the normal mixture model with equal covariance matrices, being equal to 0.564 and 0.170, respectively. To see why there should be this somewhat unexpected ure 3.3 the contours of the estimated component densities for the 2nd and 3rd feature variables . It can be seen that the 18th observation lies in the feature space where the contours of 4) are very steep, so that even slight changes in the values of the feature variables can result in relatively large changes in the values of the component densities. Without the restriction of equality on the component-covariance matrices, the estimates of these two posterior probabilities are very similar, 1.000 and 0.996, and now observation 18 is correctly allocated to G1. f2(yj; being
+Although these two points are very close in terms of Euclidean and also Mahalanobis distance; their estimated posterior probabilities of belonging to G1 are quite differ ent under the normal mixture model with equal covariance matrices, being equal to 0.564 and 0.170, respectively. To see why there should be this somewhat unexpected ure 3.3 the contours of the estimated component densities for the 2nd and 3rd feature variables . It can be seen that the 18th observation lies in the feature space where the contours of 4) are very steep, so that even slight changes in the values of the feature variables can result in relatively large changes in the values of the component densities. Without the restriction of equality on the component-covariance matrices, the estimates of these two posterior probabilities are very similar, 1.000 and 0.996, and now observation 18 is correctly allocated to G1. f2($y_j$; being
 
 <a id="sec-3-7-2"></a>
 
@@ -331,7 +331,7 @@ We consider here the hemophilia data set, as analyzed by Basford and McLachlan (
 
 McLachlan and Basford ( 1988) appliedthe test of Hawkins' 1981 ) for homoscedas ticity and normality to this data set in classified form They concluded that it was reasonable to assume that the distribution of the feature vector in each was bivariate The test indicated some presence of heteroscedasticity, which an inspection of the fitted covariance matrices revealed was limited to the second variate of the
 
-We first cluster these data; ignoring their known classification, by a twocomponent normal mixture model with equal component-covariance matrices. Four local maxima were located, and the corresponding estimates of the parameter vector € are displayed in Table 3.5. Thelinearallocation boundary; T; is plotted in Figure 3.4 for the various local maximizers, along with the boundary corresponding to Qc, which is the MLE of % obtained by maximizing the complete data likelihood; that is, %c was obtained using the known values of the componentlabel vectors of the data points. fitting As %1 corresponds to the largest of the local maxima located, it is apparently the global maximizer and hence the MLE under homoscedasticity. It can be seen from Table 3.5 that V1 gives a poor assessment of the proportions in which G1 and G2 are represented in the sample and, as a consequence, it gives a worse allocation of the sample than 42, with a total of 25 members, all from G2, misallocated . This compares with 3 and 13 members from G1 and G2, respectively, being misallocated It is not difficult to understand why the local maximizer %2 is not the MLE under the condition of homoscedasticity. This is because this root of the likelihoodequation gives a probabilisticclustering in which the variation of (Y; )2 is substantially smaller in the cluster associated with G1 than in the other associated with G2, which is not consistent with homoscedasticity. In particular, this root provides estimates of m1 and T2 much closer to the actual proportions in which G1 and G2 occur in the sample than the MLE under the homoscedastic model; hence the apparent reason why this root leads to a better allocation of the sample than the MLE. This root gives almost the same clustering as obtained the MLE under the heteroscedastic model without restrictions on the component-covariance matrices. The latter misallocates one less observation from G2. using
+We first cluster these data; ignoring their known classification, by a twocomponent normal mixture model with equal component-covariance matrices. Four local maxima were located, and the corresponding estimates of the parameter vector € are displayed in Table 3.5. Thelinearallocation boundary; T; is plotted in Figure 3.4 for the various local maximizers, along with the boundary corresponding to Qc, which is the MLE of % obtained by maximizing the complete data likelihood; that is, %c was obtained using the known values of the componentlabel vectors of the data points. fitting As %1 corresponds to the largest of the local maxima located, it is apparently the global maximizer and hence the MLE under homoscedasticity. It can be seen from Table 3.5 that V1 gives a poor assessment of the proportions in which G1 and G2 are represented in the sample and, as a consequence, it gives a worse allocation of the sample than 42, with a total of 25 members, all from G2, misallocated . This compares with 3 and 13 members from G1 and G2, respectively, being misallocated It is not difficult to understand why the local maximizer %2 is not the MLE under the condition of homoscedasticity. This is because this root of the likelihoodequation gives a probabilisticclustering in which the variation of ($Y_j$ )2 is substantially smaller in the cluster associated with G1 than in the other associated with G2, which is not consistent with homoscedasticity. In particular, this root provides estimates of m1 and T2 much closer to the actual proportions in which G1 and G2 occur in the sample than the MLE under the homoscedastic model; hence the apparent reason why this root leads to a better allocation of the sample than the MLE. This root gives almost the same clustering as obtained the MLE under the heteroscedastic model without restrictions on the component-covariance matrices. The latter misallocates one less observation from G2. using
 
 Table 3.5 Local Maximizers of L(4) under Homoscedasticity
 
@@ -369,7 +369,7 @@ $$
 
 on writing E; as 0? in the univariate case. In the subsequent discussion of these two results, these conditions are implicitly assumed to hold.
 
-In the case where (3.19) and (3.20) or their multivariate analogues do not both space /2 for which f(yj; ") = f(uj; v) for almost all v; in R? , and it may also lie on the boundary. In this case, and McCulloch (1996) showed that the MLE explained in Section 2.5. Feng
+In the case where (3.19) and (3.20) or their multivariate analogues do not both space /2 for which f($y_j$; ") = f(uj; v) for almost all v; in R? , and it may also lie on the boundary. In this case, and McCulloch (1996) showed that the MLE explained in Section 2.5. Feng
 
 Kiefer (1978) verified for a mixture of univariate normal distributions in the more general case of the switching regression model that there is a sequence of roots of the likelihood equation which is consistent and asymptotically efficient and normally distributed. With probability tending t0 one, these roots correspond to local maxima in the interior of the parameter space; see also Peters and Walker (1978). Kiefer's (1978) verification was for 9 2 2 components; but his result will hold for 9 2, as noted in Hathaway (1985) who reported some univariate results on the maximization of L(v) over the constrained parameter space
 
@@ -447,7 +447,7 @@ In Section 2.12 we have discussed the possible choices for the starting value of
 
 In practice, consideration has to be given t0 the problem of relatively local maxima that occur as a consequence of a fitted component having a very small (but nonzero) variance for univariate data or generalized variance (the determinant of the covariance matrix) for multivariate data. Such component corresponds to a cluster containing a few data either relatively close together or almost lying in a lower-dimensional subspace in the case of multivariate data. There is thus a need to monitor the relative size of the fitted mixing proportions and of the component variances for univariate observations; or of the generalized component variances for multivariate data, in an attempt to identify these spurious local maximizers. The possibility that for a given starting E the EM algorithm may converge to aspurious local maximizer or may not converge at all is not a failing of this algorithm. Rather it is a consequence of the properties of the likelihood function for the normal mixture model with unrestricted component-covariance matrices in the case of unbinned data: large points point
 
-In the absence of any information on the normal components in the mixture model to be fitted to some independent data, a common strategy is to run the EM algorithm from a variety of starting values as discussed in the previous section. The intent is to choose as the MLE of the parameter vector % the local maximizer corresponding to the largest of the local maxima located. As noted in the previous sections; some care needs tobe exercised in the case of unrestrictedcomponent-covariance matrices as the likelihood is then unbounded . The detection of these singularities is not a problem in practice, as can be detected by one or more of the component-covariance matrices becoming singular in the EM iterative process. they
+In the absence of any information on the normal components in the mixture model to be fitted to some independent data, a common strategy is to run the EM algorithm from a variety of starting values as discussed in the previous section. The intent is to choose as the MLE of the parameter vector $\Psi$ the local maximizer corresponding to the largest of the local maxima located. As noted in the previous sections; some care needs tobe exercised in the case of unrestrictedcomponent-covariance matrices as the likelihood is then unbounded . The detection of these singularities is not a problem in practice, as can be detected by one or more of the component-covariance matrices becoming singular in the EM iterative process. they
 
 However, there often exist other solutions which may be regarded as spurious, lying very close to the edge of the parameter space, but with component-covariance matrices that are not actually singular; although may be close to singular for some components. These solutions often have a high likelihood, but are of little practical use or real-world interpretation. It often seems in these cases that the model is a small localized random pattern in the data rather then any underlying group structure. These spurious solutions frequently have very few points in one cluster; which has little variation in one or more of the cluster's axes (small eigenvalues of the component-covariance matrix) compared to the other clusters. they fitting
 
@@ -483,7 +483,7 @@ Fig. 3.5 Histogram of Synthetic Data Set 2 for fit 42 of the normal mixture dens
 
 Fig. 3.6 Histogram of Synthetic Data Set 2 for fit %1 of the normal mixture density.
 
-The occurrence of spurious solutions of this nature are due to the fact that the data are continuous. If we were to bin the data into intervals and then fit the mixture model to the binned data, do not occur. To illustrate this, we have reported in Table 3.6 the summary of the fit %3 after first binning the data into seven intervals of equal be seen that it is fairly similar to that for %1, confirming that V1 is the MLE for the data in unbinned form. In this example; the tell-tale sign that %2 is a spurious local maximizer is the very small value for the mixing proportion of the first component and the huge imbalance between the estimated component variances. they
+The occurrence of spurious solutions of this nature are due to the fact that the data are continuous. If we were to bin the data into intervals and then fit the mixture model to the binned data, do not occur. To illustrate this, we have reported in Table 3.6 the summary of the fit %3 after first binning the data into seven intervals of equal be seen that it is fairly similar to that for $\Psi$1, confirming that V1 is the MLE for the data in unbinned form. In this example; the tell-tale sign that %2 is a spurious local maximizer is the very small value for the mixing proportion of the first component and the huge imbalance between the estimated component variances. they
 
 Fig. 3.7 Histogram of Synthetic Data Set 2 for fit %s of the normal mixture density.
 
@@ -621,19 +621,19 @@ Table 3.10 Intercomponent Mean and Point Mahalanobis Squared Distances
 
 # 3.12.1 Spectral Representation
 
-Wehave seen that ag-component normal mixture model with unrestrictedcomponenteach component-covariance matrix Z; (i = 1, 9). Banfield and Raftery (1993) introduced a parameterization of the component-covariance matrix Z; based on a variant of the standard spectral decomposition of Z;,
+Wehave seen that ag-component normal mixture model with unrestrictedcomponenteach component-covariance matrix $Z_j$ (i = 1, 9). Banfield and Raftery (1993) introduced a parameterization of the component-covariance matrix $Z_j$ based on a variant of the standard spectral decomposition of $Z_j$,
 
 $$
 \Sigma _ { i } = \sum \lambda _ { i v } a _ { i v } a _ { i v } ^ { T } ,
 $$
 
-where denote the eigenvectors corresponding to the eigenvalues À;1 2 9) expressed Z; further as Q;l, Qip They Another requires
+where denote the eigenvectors corresponding to the eigenvalues À;1 2 9) expressed $Z_j$ further as Q;l, Qip They Another requires
 
 $$
 ( 3 . 2 6 )
 $$
 
-where A; = (ail, ) is the (orthogonal) matrix of the eigenvectors of Z;. Conventions for normalizing X; and A; include taking X; = X;1 (the largest eigenvalue of S;) for which then aip
+where A; = (ail, ) is the (orthogonal) matrix of the eigenvectors of $Z_j$. Conventions for normalizing X; and A; include taking X; = X;1 (the largest eigenvalue of S;) for which then aip
 
 $$
 ( 3 . 2 7 )
@@ -797,13 +797,13 @@ $$
 y _ { j } = ( y _ { j 1 } ^ { T } , \dots , y _ { j } ^ { T } )
 $$
 
-contain the multiattribute responses of the jth genotype in all r environments, where Ujm is a vector of dimension p giving the response of the jth genotype in the mth environment (m = 1, The vectors Vjm (j = 1, n; m = 1, are taken to be independently distributed, Under the mixture model proposed by Basford and McLachlan (1985d),it is assumed that each genotype belongs to one of g possible groups G1, Gg in proportions T1, Tg, so that in a given environment m,
+contain the multiattribute responses of the jth genotype in all r environments, where Ujm is a vector of dimension p giving the response of the jth genotype in the mth environment (m = 1, The vectors Vjm (j = 1, n; m = 1, are taken to be independently distributed, Under the mixture model proposed by Basford and McLachlan (1985d),it is assumed that each genotype belongs to one of g possible groups G1, Gg in proportions $\pi_1$, Tg, so that in a given environment m,
 
 $$
 Y _ { j } \sim N ( \mu _ { i _ { m } } , \Sigma _ { i } ) \quad \text {in} \, G _ { i } \text { with probability} \, \pi _ { i } \quad ( i = 1 , \dots , g ) .
 $$
 
-The group-conditionalcovariance matrix Z; is taken not todepend on the environment. This model covers the general situation where there may be some interpretation between genotypes and environments.
+The group-conditionalcovariance matrix $Z_j$ is taken not todepend on the environment. This model covers the general situation where there may be some interpretation between genotypes and environments.
 
 <a id="sec-3-13-3"></a>
 
@@ -845,7 +845,7 @@ $$
 \begin{array} { r l r } { Y _ { j } } & = } & { \beta _ { 0 } + \beta _ { 1 } U _ { j } + \epsilon _ { j } , } \\ { X _ { j } } & = } & { U _ { j } + e _ { j } , } \end{array}
 $$
 
-where €j and ej are independent of U; . The random variable Y; has mean # and variance 02, ej has mean zero and variance 0?, and €j has mean zero and variance ; all these random variables are uncorrelated. Carroll et al. (1999) considered a version of this model with missing surrogate data and a change-point Berkson model. Their model was motivated by a dietary assessment study where Y; corresponds to the Food Frequency Questionnaire (FFQ) and Xj t0 the multiple-day food record (FR) The unobservable U; corresponds to the true long-term usual daily diet. Data on is observed for a number ( M) of individuals. At the second stage, a smaller number of these individuals are selected by stratified sampling on the basis of their F'FQ scores. On each individual so selected, the FRis observed for a number of as it is an imprecise measurement of the true usual intake. days,
+where €j and ej are independent of U; . The random variable $Y_j$ has mean # and variance 02, ej has mean zero and variance 0?, and €j has mean zero and variance ; all these random variables are uncorrelated. Carroll et al. (1999) considered a version of this model with missing surrogate data and a change-point Berkson model. Their model was motivated by a dietary assessment study where $Y_j$ corresponds to the Food Frequency Questionnaire (FFQ) and Xj t0 the multiple-day food record (FR) The unobservable U; corresponds to the true long-term usual daily diet. Data on is observed for a number ( M) of individuals. At the second stage, a smaller number of these individuals are selected by stratified sampling on the basis of their F'FQ scores. On each individual so selected, the FRis observed for a number of as it is an imprecise measurement of the true usual intake. days,
 
 For this missing-data version of the errors-in-variables problem; the method of moments is still consistent and asymptotically efficient. But the other commonly used approach, maximum likelihood based on all random variables normally distributed, is not. By modeling the distribution of U; by a mixture of g normal distributions; Carroll et al. (1999) were able to provide a parametric model that has the efficiencies of a parametric model but also shares the robustness properties of the method of moments estimator. The mixture model can be fitted in either a frequentist framework Or a Bayesian framework. Carroll et al. (1999) adopted the latter approach, using the posterior simulation methods to be described in the next chapter. They were able also to develop a similar model for the change-point problem by modeling the measurement error by a normal mixture. being
 

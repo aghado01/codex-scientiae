@@ -2,9 +2,9 @@
 
 ## Chapter 6 In Two Dimensions
 
-Summary. The dual of the random-cluster model on a planar graph is a random-cluster model also. The self-duality of the square lattice gives rise to the conjecture that pc(q) = psd(q) for q ∈ [1,∞), where psd(q) denotes the self-dual point √q/(1+
+Summary. The dual of the random-cluster model on a planar graph is a random-cluster model also. The self-duality of the square lattice gives rise to the conjecture that pc(q) = psd(q) for $q$ ∈ [1,∞), where psd(q) denotes the self-dual point √q/(1+
 
-√q). Using duality, one obtains the uniqueness of random-cluster measures for p = psd(q) and q ∈ [1, ∞). The phase transition is discontinuous if q is sufficiently large. Results similar to those for the square lattice may be obtained for the triangular and hexagonal lattices, using the star–triangle transformation. It is expected when q ∈ [1,4) that the critical process may be described by a stochastic Lowner evolution.¨
+√q). Using duality, one obtains the uniqueness of random-cluster measures for $p$ = psd(q) and $q$ ∈ [1, ∞). The phase transition is discontinuous if $q$ is sufficiently large. Results similar to those for the square lattice may be obtained for the triangular and hexagonal lattices, using the star–triangle transformation. It is expected when q ∈ [1,4) that the critical process may be described by a stochastic Lowner evolution.¨
 
 ![image 495](../Images/imageFile495.png)
 
@@ -14,7 +14,7 @@ Summary. The dual of the random-cluster model on a planar graph is a random-clus
 
 ### 6.1 Planar duality
 
-The duality theory of planar graphs provides a technique for studying randomcluster models in two dimensions. We shall see that, for a dual pair (G, Gd) of finite planar graphs, the measures φG,p,q and φGd,pd,q are dual measures in a certain sense to be explained soon, where p and pd are related by pd/(1 − pd) = q(1 − p)/p. Such a duality survives the passage to a thermodynamic limit, and may therefore be applied also to infinite planar graphs including the square lattice L2. The square lattice has the further property of being isomorphic to its (infinite) dual, and this observation leads to many results of significance for the associated model. We begin with an account of planar duality in the random-cluster context.
+The duality theory of planar graphs provides a technique for studying randomcluster models in two dimensions. We shall see that, for a dual pair (G, Gd) of finite planar graphs, the measures φG,p,q and φGd,pd,q are dual measures in a certain sense to be explained soon, where $p$ and pd are related by pd/(1 − pd) = q(1 − p)/p. Such a duality survives the passage to a thermodynamic limit, and may therefore be applied also to infinite planar graphs including the square lattice L2. The square lattice has the further property of being isomorphic to its (infinite) dual, and this observation leads to many results of significance for the associated model. We begin with an account of planar duality in the random-cluster context.
 
 A graph is called planar if it may be embedded in R2 in such a way that two edges intersect only at a common endvertex. Let G = (V, E) be a planar (finite or infinite) graph embedded in R2. We obtain its dual graph Gd = (Vd, Ed) as follows1. We place a dual vertex within each face of G, including any infinite face of G if such exist. For each e ∈ E we place a dual edge ed = xd, yd joining the two dual vertices lying in the two faces of G abutting e; if these two faces are the same, then xd = yd and ed is a loop. Thus, Vd is in one–one correspondence with
 
@@ -34,7 +34,7 @@ A graph is called planar if it may be embedded in R2 in such a way that two edge
 
 ![image 500](../Images/imageFile500.png)
 
-Thishasbeen provedwhenq = 1, q = 2, and when q ≥ 25.72. The q = 1 case was answered by Kesten, [207], in his famous proof that the critical probability of bond percolation on L2 is 21. For q = 2, the value of pc(2) given above agrees with the Kramers–Wannier [221] and Onsager [264] calculations of the critical temperature of the Ising model on Z2, and is implied by probabilistic results in the modern vernacular, see [5] and Section 9.3. The formula (6.16) for pc(q) has been established rigorously in [224, 225] for sufficiently large (real) values of q, speciﬁcally q ≥ 25.72 (see also [153]). This is explored further in Section 6.4, see Theorem 6.35.
+Thishasbeen provedwhenq = 1, $q$ = 2, and when q ≥ 25.72. The $q$ = 1 case was answered by Kesten, [207], in his famous proof that the critical probability of bond percolation on L2 is 21. For $q$ = 2, the value of pc(2) given above agrees with the Kramers–Wannier [221] and Onsager [264] calculations of the critical temperature of the Ising model on Z2, and is implied by probabilistic results in the modern vernacular, see [5] and Section 9.3. The formula (6.16) for pc(q) has been established rigorously in [224, 225] for sufficiently large (real) values of $q$, speciﬁcally q ≥ 25.72 (see also [153]). This is explored further in Section 6.4, see Theorem 6.35.
 
 ![image 501](../Images/imageFile501.png)
 
@@ -42,9 +42,9 @@ Several other remarkable conjectures about the phase transition on L2 may be fou
 
 sd(q),q(e is open) for b = 0,1. These formulae are summarized in Section 6.6.
 
-Conjecture 6.15 asserts that pc(q) = psd(q) for q ∈ [1,∞). One part of this equality is known. Recall that θ0(p,q) = φp0,q(0 ↔ ∞). (6.17) Theorem [152, 314]. Consider the square lattice L2, and let q ∈ [1,∞).
+Conjecture 6.15 asserts that pc(q) = psd(q) for $q$ ∈ [1,∞). One part of this equality is known. Recall that θ0(p,q) = φp0,q(0 ↔ ∞). (6.17) Theorem [152, 314]. Consider the square lattice L2, and let q ∈ [1,∞).
 
-(a) We have that θ0(psd(q),q) = 0, whence pc(q) ≥ psd(q). (b) There exists a unique random-cluster measure if p = psd(q), that is,
+(a) We have that θ0(psd(q),q) = 0, whence pc(q) ≥ psd(q). (b) There exists a unique random-cluster measure if $p$ = psd(q), that is,
 
 √q 1 +
 
@@ -54,13 +54,13 @@ Conjecture 6.15 asserts that pc(q) = psd(q) for q ∈ [1,∞). One part of this 
 
 ![image 504](../Images/imageFile504.png)
 
-The complementary inequality pc(q) ≤ psd(q) has eluded mathematicians despiteprogressbyphysicists,[183]. Hereisanintuitiveargumenttojustifythelatter inequality. Supposeonthe contrarythat pc(q) > psd(q), so that pc(q)d < psd(q). For p ∈ (pc(q)d, pc(q)) we have also that pd ∈ (pc(q)d, pc(q)). Therefore, for p ∈ (pc(q)d, pc(q)), both primal and dual processes comprise (almost surely) the union of finite open clusters. This contradicts the intuitive picture, supported for p = pc(q) by our knowledge of percolation, of finite open clusters of one process ﬂoating in an infinite open ocean of the other process.
+The complementary inequality pc(q) ≤ psd(q) has eluded mathematicians despiteprogressbyphysicists,[183]. Hereisanintuitiveargumenttojustifythelatter inequality. Supposeonthe contrarythat pc(q) > psd(q), so that pc(q)d < psd(q). For p ∈ (pc(q)d, pc(q)) we have also that pd ∈ (pc(q)d, pc(q)). Therefore, for $p$ ∈ (pc(q)d, pc(q)), both primal and dual processes comprise (almost surely) the union of finite open clusters. This contradicts the intuitive picture, supported for $p$ = pc(q) by our knowledge of percolation, of finite open clusters of one process ﬂoating in an infinite open ocean of the other process.
 
 Conjecture 6.15 would be proven if one could show the sufficiently fast decay
 
 of φp0,q(0 ↔ ∂ (n)) as n → ∞. An example of such a statement may be found at Lemma 6.28, and another follows. Recall from Section 5.5 the quantity pc(q).
 
-- (6.18) Theorem [163]. Let q ∈ [1,∞) and suppose that, for all p < pc(q), there exists A = A(p,q) < ∞ with
+- (6.18) Theorem [163]. Let q ∈ [1,∞) and suppose that, for all $p$ < pc(q), there exists A = A(p,q) < ∞ with
 - (6.19) φp0,q(0 ↔ ∂ (n)) ≤
 
 ![image 505](../Images/imageFile505.png)
@@ -73,7 +73,7 @@ of φp0,q(0 ↔ ∂ (n)) as n → ∞. An example of such a statement may be fou
 
 ![image 509](../Images/imageFile509.png)
 
-For example, when q = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compared with the conjecture that pc(10) =
+For example, when $q$ = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compared with the conjecture that pc(10) =
 
 √10) ≃ 0.760. The upper bound in (6.21) is the dual value of psd(q − 1). See also Theorem 6.30.
 
@@ -85,7 +85,7 @@ For example, when q = 10, we have that 0.760 ≤ pc(10) ≤ 0.769, to be compare
 
 Exact values for the critical points of the triangular and hexagonal lattices may be conjectured similarly, using graphical duality together with the star–triangle transformation; see Section 6.6.
 
-Proof of Theorem6.17. (a) There are at least two ways of provingthis. One way is to use the circuit-constructionargumentpioneeredby Harris, [181], anddeveloped further in [47, 130], see Theorem 6.47. We shall instead adapt an argument of Zhang using the 0/1-infinite-cluster property, see [154, p. 289]. Let p = psd(q), so that φp0,q and φp1,q are dual measures in the sense of Theorem 6.13.
+Proof of Theorem6.17. (a) There are at least two ways of provingthis. One way is to use the circuit-constructionargumentpioneeredby Harris, [181], anddeveloped further in [47, 130], see Theorem 6.47. We shall instead adapt an argument of Zhang using the 0/1-infinite-cluster property, see [154, p. 289]. Let $p$ = psd(q), so that φp0,q and φp1,q are dual measures in the sense of Theorem 6.13.
 
 For n ≥ 1, let Al(n) (respectively Ar(n), At(n), Ab(n)) be the event that some vertex on the left (respectively right, top, bottom) side of the square T(n) = [0,n]2 lies in an infinite open path of L2 using no other vertex of T(n). Clearly Al(n), Ar(n), At(n), and Ab(n) are increasingeventswhose unionequalsthe event {T(n) ↔ ∞}. Furthermore, by rotation-invariance,
 
@@ -109,11 +109,11 @@ giving that φpb,q(A) ≥ 21 for b = 0,1.
 
 ![image 516](../Images/imageFile516.png)
 
-Wenowusethefactthateveryrandom-clustermeasure φpb,q hasthe0/1-infinitecluster property, see Theorem 4.33(c). If A occurs, then L2 \ T(N) contains two disjoint infinite open clusters, since the clusters in questions are separated by infinite open paths of the dual; any open path of L2 \ T(N) joining these two clusters would contain an edge which crosses an open edge of the dual, and no such edge can exist. Similarly, on A, the graph L2d \ T(N)d contains two disjoint infinite open clusters, separated physically by infinite open paths of L2 \ T(N). The whole lattice L2 contains (almost surely) a unique infinite open cluster, and it follows that there exists (almost surely on A) an open connection π of L2 between the fore-mentioned infinite open clusters. By the geometry of the situation (see Figure 6.5), this connection forms a barrier to possible open connections of the dual joining the two infinite open dual clusters. Therefore, almost surely on A, the dual lattice contains two or more infinite open clusters. Since the latter event has probability 0, it follows that φpb,q(A) = 0 in contradiction of the inequality φpb,q(A) ≥ 21. The initial hypothesis that θ0(p,q) > 0 is therefore incorrect, and the proof is complete. (b) By part (a), θ1(p,q) = 0 for p < psd(q), whence, by Theorem 5.33(a), |Rp,q| = |Wp,q| = 1 for p < psd(q).
+Wenowusethefactthateveryrandom-clustermeasure φpb,q hasthe0/1-infinitecluster property, see Theorem 4.33(c). If A occurs, then L2 \ T(N) contains two disjoint infinite open clusters, since the clusters in questions are separated by infinite open paths of the dual; any open path of L2 \ T(N) joining these two clusters would contain an edge which crosses an open edge of the dual, and no such edge can exist. Similarly, on A, the graph L2d \ T(N)d contains two disjoint infinite open clusters, separated physically by infinite open paths of L2 \ T(N). The whole lattice L2 contains (almost surely) a unique infinite open cluster, and it follows that there exists (almost surely on A) an open connection π of L2 between the fore-mentioned infinite open clusters. By the geometry of the situation (see Figure 6.5), this connection forms a barrier to possible open connections of the dual joining the two infinite open dual clusters. Therefore, almost surely on A, the dual lattice contains two or more infinite open clusters. Since the latter event has probability 0, it follows that φpb,q(A) = 0 in contradiction of the inequality φpb,q(A) ≥ 21. The initial hypothesis that θ0(p,q) > 0 is therefore incorrect, and the proof is complete. (b) By part (a), θ1(p,q) = 0 for $p$ < psd(q), whence, by Theorem 5.33(a), |Rp,q| = |Wp,q| = 1 for $p$ < psd(q).
 
 ![image 517](../Images/imageFile517.png)
 
-Suppose now that p > psd(q) so that, by (6.5), pd < psd(q). By part (a) and Theorem 4.63,
+Suppose now that $p$ > psd(q) so that, by (6.5), pd < psd(q). By part (a) and Theorem 4.63,
 
 φ0pd,q(ed is closed) = φ1pd,q(ed is closed), e ∈ E2, and by Theorem 6.13,
 
@@ -171,13 +171,13 @@ We precede the proof of Theorem 6.20 with a lemma.
 
 ![image 535](../Images/imageFile535.png)
 
-(6.30) Theorem (Exponential decay) [15]. Let q ∈ [2,∞), and consider the random-cluster model on the box (n) = [−n,n]2. There exists α = α(p,q) satisfying α(p,q) > 0 when p < psd(q − 1) such that
+(6.30) Theorem (Exponential decay) [15]. Let q ∈ [2,∞), and consider the random-cluster model on the box (n) = [−n,n]2. There exists α = α(p,q) satisfying α(p,q) > 0 when $p$ < psd(q − 1) such that
 
 φ (1 n),p,q(0 ↔ ∂ (n)) ≤ e−αn, n ≥ 1. By stochastic ordering,
 
 φ (1 n),p,q(0 ↔ ∂ (m)) ≤ φ (1 m),p,q(0 ↔ ∂ (m)), m ≤ n, and therefore, on taking the limit as n → ∞,
 
-φp1,q(0 ↔ ∂ (m)) ≤ e−αm, p < psd(q − 1), q ≥ 2, m ≥ 1, by the above theorem. In summary,
+φp1,q(0 ↔ ∂ (m)) ≤ e−αm, $p$ < psd(q − 1), q ≥ 2, m ≥ 1, by the above theorem. In summary,
 
 psd(q − 1) ≤ pc(q) ≤ psd(q), q ≥ 2,
 
@@ -195,7 +195,7 @@ where pc(q) is the threshold for exponential decay, see (5.65) and (5.67). We re
 
 1 − e−β4 =
 
-√q − 1 = psd(q − 1). Let p = 1 − e−β < psd(q − 1). By (3.83), h′ < 0. By stochastic domination, (6.31) φ ,1 p,q(0 ↔ ∂ ) ≤ π ,β+ ′,h′(0 ↔+ ∂ ),
+√q − 1 = psd(q − 1). Let $p$ = 1 − e−β < psd(q − 1). By (3.83), h′ < 0. By stochastic domination, (6.31) φ ,1 p,q(0 ↔ ∂ ) ≤ π ,β+ ′,h′(0 ↔+ ∂ ),
 
 ![image 540](../Images/imageFile540.png)
 
@@ -207,13 +207,13 @@ where {0 ↔+ ∂ } is the event that there exists a path of joining 0 to some v
 
 ### 6.4 First-order phase transition
 
-The q = 1 case of the random-cluster measure is the percolation model, with associated product measure φp = φp,1. One of the outstanding problems for percolation isto prove the continuityforall d of the percolation probability θ(p) = φp(0 ↔ ∞) at the critical point pc = pc(1), see [154, Section 8.3]. By a standard argument of semi-continuity, this amounts to proving that θ(pc) = 0, which is to say that there exists (almost surely) no infinite open cluster at the critical point. The situation for general q is quite different. It turns out that θ1(pc(q),q) > 0 for all large q.
+The $q$ = 1 case of the random-cluster measure is the percolation model, with associated product measure φp = φp,1. One of the outstanding problems for percolation isto prove the continuityforall d of the percolation probability θ(p) = φp(0 ↔ ∞) at the critical point pc = pc(1), see [154, Section 8.3]. By a standard argument of semi-continuity, this amounts to proving that θ(pc) = 0, which is to say that there exists (almost surely) no infinite open cluster at the critical point. The situation for general $q$ is quite different. It turns out that θ1(pc(q),q) > 0 for all large q.
 
-(6.32) Conjecture. Consider the d-dimensional lattice Ld where d ≥ 2. (a) θ0(pc(q),q) = 0 for q ∈ [1,∞). (b) There exists Q = Q(d) ∈ (1,∞) such that
+(6.32) Conjecture. Consider the d-dimensional lattice Ld where d ≥ 2. (a) θ0(pc(q),q) = 0 for $q$ ∈ [1,∞). (b) There exists Q = Q(d) ∈ (1,∞) such that
 
-θ1(pc(q),q) = 0 if q < Q, > 0 if q > Q.
+θ1(pc(q),q) = 0 if $q$ < Q, > 0 if $q$ > Q.
 
-In the vernacular of statistical physics, we speak of the phase transition as being of second order if θ1(pc(q),q) = 0, and of first order otherwise. Thus the random-cluster transition is expected to be of first order if and only if q is sufficientlylarge. Therearetwoissues: toprovetheexistenceofa‘sharptransition in q’, and to calculate the ‘critical value’ Q(d) of q. The first problem is strangely difﬁcult. It is natural to seek some monotonicity, perhaps of the function f (q) = θ1(pc(q),q), but this has proved elusive even in two dimensions. As for the value of Q(d), it is believed5 that Q(d) is non-increasing in d and satisﬁes
+In the vernacular of statistical physics, we speak of the phase transition as being of second order if θ1(pc(q),q) = 0, and of first order otherwise. Thus the random-cluster transition is expected to be of first order if and only if $q$ is sufficientlylarge. Therearetwoissues: toprovetheexistenceofa‘sharptransition in q’, and to calculate the ‘critical value’ Q(d) of q. The first problem is strangely difﬁcult. It is natural to seek some monotonicity, perhaps of the function f (q) = θ1(pc(q),q), but this has proved elusive even in two dimensions. As for the value of Q(d), it is believed5 that Q(d) is non-increasing in d and satisﬁes
 
 (6.33) Q(d) =
 
@@ -231,7 +231,7 @@ The term ‘mass gap’ arises in the study of the exponential decay of correlat
 
 [6.4] First-order phase transition 145
 
-where ‘≈’ denotes logarithmic asymptotics. Clearly, ψ(p,q) is a non-increasing function of p, and ψ(p,q) = 0 if θ0(p,q) > 0. It is believed that ψ(p,q) > 0 if p < pc(q). We speak of the limit
+where ‘≈’ denotes logarithmic asymptotics. Clearly, ψ(p,q) is a non-increasing function of p, and ψ(p,q) = 0 if θ0(p,q) > 0. It is believed that ψ(p,q) > 0 if $p$ < pc(q). We speak of the limit
 
 µ(q) = lim
 
@@ -243,9 +243,9 @@ as the mass gap. It is believed that the transition is of first order if and onl
 
 (6.34) Conjecture. Consider the d-dimensional lattice Ld where d ≥ 2. Then
 
-µ(q) = 0 if q < Q(d),
+µ(q) = 0 if $q$ < Q(d),
 
-> 0 if q > Q(d), where Q(d) is given in Conjecture 6.32.
+> 0 if $q$ > Q(d), where Q(d) is given in Conjecture 6.32.
 
 The first proof of first-order phase transition for the Potts model with large q was discovered by Kotecky and Shlosman, [220].´ Amongst the later proofs is that of [225], and this is best formulated in the language of the random-cluster model, [224]. It takes a very simple form in the special case d = 2, as shown in this section. The general case of d ≥ 2 is treated in Chapter 7.
 
@@ -269,7 +269,7 @@ Q = 2 1 κ + κ2 − 4
 
 ![image 547](../Images/imageFile547.png)
 
-noting that ψ(q) > 0 if and only if q > Q. (6.35) Theorem (Discontinuous phase transition when d = 2) [153, 225]. Consider the square lattice L2, and let q > Q.
+noting that ψ(q) > 0 if and only if $q$ > Q. (6.35) Theorem (Discontinuous phase transition when d = 2) [153, 225]. Consider the square lattice L2, and let $q$ > Q.
 
 √q/(1 +
 
@@ -283,15 +283,15 @@ noting that ψ(q) > 0 if and only if q > Q. (6.35) Theorem (Discontinuous phase 
 
 (b) Discontinuous transition. We have that θ1(pc(q),q) > 0. (c) Non-vanishing mass gap. For any ψ < ψ(q) and all large n,
 
-φ0pc(q),q(0 ↔ ∂ (n)) ≤ e−nψ. (d) Discontinuous edge-densities. The functions hb(p,q) = φpb,q(e is open), b = 0,1, are discontinuous functions of p at p = pc(q).
+φ0pc(q),q(0 ↔ ∂ (n)) ≤ e−nψ. (d) Discontinuous edge-densities. The functions hb(p,q) = φpb,q(e is open), b = 0,1, are discontinuous functions of p at $p$ = pc(q).
 
-Similar conclusions may be obtained for general d ≥ 2 when q is sufficiently large (q > Q(d) for suitable Q(d)). Whereas, in the case d = 2, planar duality provides an especially simple proof, the proof for general d utilizes nested
+Similar conclusions may be obtained for general d ≥ 2 when $q$ is sufficiently large ($q$ > Q(d) for suitable Q(d)). Whereas, in the case d = 2, planar duality provides an especially simple proof, the proof for general d utilizes nested
 
 sequences of surfaces of Rd and requires a control of the effective boundary conditions within the surfaces. See Section 7.5.
 
-By Theorem 6.17(b), whenever q is such that the phase transition is of first order, then necessarily pc(q) = psd(q).
+By Theorem 6.17(b), whenever $q$ is such that the phase transition is of first order, then necessarily pc(q) = psd(q).
 
-The idea of the proof of the theorem is as follows. There is a partial order on circuits Ŵ of L2 given by: Ŵ ≤ Ŵ′ if the bounded component of R2 \ Ŵ is a subset of that of R2 \ Ŵ′. We work at the self-dual point p = psd(q), and with the box (n) with wired boundary conditions. Roughly speaking, an ‘outer contour’ is defined to be a circuit Ŵ of the dual graph (n)d all of whose edges are open in the dual (that is, they traverse closed edges in the primal graph (n)), and that is maximal with this property. Using self-duality, one may show that
+The idea of the proof of the theorem is as follows. There is a partial order on circuits Ŵ of L2 given by: Ŵ ≤ Ŵ′ if the bounded component of R2 \ Ŵ is a subset of that of R2 \ Ŵ′. We work at the self-dual point $p$ = psd(q), and with the box (n) with wired boundary conditions. Roughly speaking, an ‘outer contour’ is defined to be a circuit Ŵ of the dual graph (n)d all of whose edges are open in the dual (that is, they traverse closed edges in the primal graph (n)), and that is maximal with this property. Using self-duality, one may show that
 
 |Ŵ|/4
 
@@ -313,7 +313,7 @@ q (1 +
 
 for any given circuit Ŵ of (n)d. Combined with a circuit-counting argument of Peierls-type involving the connective constant, this estimate implies after a little work the claims of Theorem 6.35. The idea of the proof appeared in [225] in the context of Potts models, and the random-cluster formulation may be found in [153]; see also Section 7.5 of the current work.
 
-Proof of Theorem 6.35. This proof carries a health warning. The use of twodimensionaldualityraisescertainissueswhicharetedioustoresolvewithcomplete rigour, and we choose not to do so here. Such issues may be resolved either by the methods of [210, p. 386] when d = 2, or by those expounded in Section 7.2 for general d ≥ 2. Let n ≥ 1, let = (n) = [−n,n]2, and let d = [−n,n−1]2+(21, 21) be those verticesof the dualof that lie inside (thatis, we omitthedualvertexintheinfinitefaceof ). Weshallworkwith‘wired’boundary conditions on , and we let ω ∈ = {0,1}E . The exterior (respectively, interior) of a given circuit Ŵ of either L2 or its dual L2d is defined to be the unbounded (respectively, bounded) component of R2 \ Ŵ. A circuit Ŵ of d is called an outer circuit of a conﬁguration ω ∈ if the following hold:
+Proof of Theorem 6.35. This proof carries a health warning. The use of twodimensionaldualityraisescertainissueswhicharetedioustoresolvewithcomplete rigour, and we choose not to do so here. Such issues may be resolved either by the methods of [210, p. 386] when d = 2, or by those expounded in Section 7.2 for general d ≥ 2. Let n ≥ 1, let = (n) = [−n,n]2, and let d = [−n,n−1]2+(21, 21) be those verticesof the dualof that lie inside (thatis, we omitthedualvertexintheinfinitefaceof ). Weshallworkwith‘wired’boundary conditions on , and we let ω ∈ \Omega = \{0,1\}^E . The exterior (respectively, interior) of a given circuit Ŵ of either L2 or its dual L2d is defined to be the unbounded (respectively, bounded) component of R2 \ Ŵ. A circuit Ŵ of d is called an outer circuit of a conﬁguration ω ∈ if the following hold:
 
 ![image 553](../Images/imageFile553.png)
 
@@ -375,17 +375,17 @@ q (1 +
 
 ![image 569](../Images/imageFile569.png)
 
-On letting n → ∞, we obtain by Proposition 5.11 that θ1(p,q) > 0 when p =
+On letting n → ∞, we obtain by Proposition 5.11 that θ1(p,q) > 0 when $p$ =
 
 √q/(1 +
 
-√q). By Theorem 6.17(a), this implies parts (a) and (b) of the theorem when q is sufficiently large.
+√q). By Theorem 6.17(a), this implies parts (a) and (b) of the theorem when $q$ is sufficiently large.
 
 ![image 570](../Images/imageFile570.png)
 
 ![image 571](../Images/imageFile571.png)
 
-For general q > Q, we have only that A(q) < ∞. In this case, we ﬁnd N < n such that
+For general $q$ > Q, we have only that A(q) < ∞. In this case, we ﬁnd N < n such that
 
 φ ,1 p,q(OC(Ŵ)) < 21,
 
@@ -413,7 +413,7 @@ Let L = (V,E) be a planar two-dimensional lattice, and let Ld be its dual lattic
 
 ρh(x, y) = (−x, y), ρv(x, y) = (x,−y), (x, y) ∈ R2, are automorphisms of L.
 
-Let p ∈ [0,1] and q ∈ [1,∞). Underthe aboveconditions, the random-cluster measures φLb ,p,q exist for b = 0,1, and are invariant under horizontal and vertical translations, andunderhorizontaland verticalaxis-reﬂection. Theyare in addition ergodic with respect to horizontal and vertical translation (separately), and they are positively associated. Such facts may be proved in exactly the same manner as were the corresponding statements for the hypercubic lattice Ld in Chapter 4.
+Let p ∈ [0,1] and $q$ ∈ [1,∞). Underthe aboveconditions, the random-cluster measures φLb ,p,q exist for b = 0,1, and are invariant under horizontal and vertical translations, andunderhorizontaland verticalaxis-reﬂection. Theyare in addition ergodic with respect to horizontal and vertical translation (separately), and they are positively associated. Such facts may be proved in exactly the same manner as were the corresponding statements for the hypercubic lattice Ld in Chapter 4.
 
 Let pc(q,L) denote the critical value of the random-cluster model on L.
 
@@ -421,7 +421,7 @@ Let pc(q,L) denote the critical value of the random-cluster model on L.
 
 (6.47) Theorem. The critical points pc(q,L), pc(q,Ld) satisfy the inequality (6.48) pc(q,L) ≥ pc(q,Ld) d.
 
-Proof. Let p > pc(q,L), so that φL1 ,p,q(0 ↔ ∞) > 0. The argumentsleading to the mainresult of[130]may be adaptedto the currentsetting6 to showthatall open clusters in the duallattice Ld are almost-surelyfinite. Therefore, pd ≤ pc(q,Ld), whence p ≥ pc(q,Ld) d as required.
+Proof. Let $p$ > pc(q,L), so that φL1 ,p,q(0 ↔ ∞) > 0. The argumentsleading to the mainresult of[130]may be adaptedto the currentsetting6 to showthatall open clusters in the duallattice Ld are almost-surelyfinite. Therefore, pd ≤ pc(q,Ld), whence p ≥ pc(q,Ld) d as required.
 
 Equality may be conjectured in (6.48). Suppose that L and Ld are isomorphic or, weaker, that pc(q,L) = pc(q,Ld). Inequality (6.48) implies then that pc(q,L) ≥ psd(q) (see Theorem 6.17(a) for the case of the square lattice). If (6.48) were to hold with equality, we would obtain that pc(q,L) = psd(q).
 
@@ -431,10 +431,10 @@ Equality may be conjectured in (6.48). Suppose that L and Ld are isomorphic or, 
 
 If L is edge-transitive, it is easily seen that hbL(p,q) is simply the probability under φL1 ,p,q that a given edge is open.
 
-(6.51) Theorem. Let L, Ld be a primal/dual pair of planar lattices in two dimensions and suppose L satisﬁes (a)–(d) above. Let p ∈ [0,1] and q ∈ [1,∞), and assume that p = pc(q,L).
+(6.51) Theorem. Let L, Ld be a primal/dual pair of planar lattices in two dimensions and suppose L satisﬁes (a)–(d) above. Let p ∈ [0,1] and $q$ ∈ [1,∞), and assume that $p$ = pc(q,L).
 
 - (i) The edge-density hbL(x,q) is a continuous function of x at the point x = p, for b = 0,1.
-- (ii) It is the case that h0L(p,q) = h1L(p,q). (iii) There is a unique random-cluster measure on L with parameters p and q, that is, |Wp,q(L)| = |Rp,q(L)| = 1, in the natural notation.
+- (ii) It is the case that h0L(p,q) = h1L(p,q). (iii) There is a unique random-cluster measure on L with parameters p and $q$, that is, |Wp,q(L)| = |Rp,q(L)| = 1, in the natural notation.
 
 In the notationof Theorem4.63, we have that Dq ⊆ {pc(q,L)}. In particular8, if there exists a first-order phase transition at some value p, then necessarily
 
@@ -446,9 +446,9 @@ In the notationof Theorem4.63, we have that Dq ⊆ {pc(q,L)}. In particular8, if
 
 154 In Two Dimensions [6.6]
 
-p = pc(q,L). As in Theorem 5.16, the percolation probabilities θLb (·,q) = φLb ,p,q(0 ↔ ∞), b = 0,1, are continuous9 except possibly at the value p = pc(q,L).
+$p$ = pc(q,L). As in Theorem 5.16, the percolation probabilities θLb (·,q) = φLb ,p,q(0 ↔ ∞), b = 0,1, are continuous9 except possibly at the value $p$ = pc(q,L).
 
-Proof. (i) For p < pc(q,L), this follows as in Theorems 4.63 and 5.33(a). When p > pc(q,L), we have from (6.48) that pd < pc(q,Ld). As in Theorem 6.13,
+Proof. (i) For $p$ < pc(q,L), this follows as in Theorems 4.63 and 5.33(a). When $p$ > pc(q,L), we have from (6.48) that pd < pc(q,Ld). As in Theorem 6.13,
 
 hbL(p,q) + h1L−db(pd,q) = 1.
 
@@ -468,7 +468,7 @@ Amongst ‘exact’ but non-rigorous results for the random-cluster model is the
 
 ![image 579](../Images/imageFile579.png)
 
-Considerthesquarelattice L2. Insteadofworkingwith a singleedge-parameter p, we allow greater generality by associating with each horizontal (respectively, vertical) edge the parameter ph (respectively, pv), and we write p = (ph, pv). It will be convenient as in (6.7)–(6.8) to work instead with the parameters x = (xh, xv) given by
+Considerthesquarelattice L2. Insteadofworkingwith a singleedge-parameter $p$, we allow greater generality by associating with each horizontal (respectively, vertical) edge the parameter ph (respectively, pv), and we write $p$ = (ph, pv). It will be convenient as in (6.7)–(6.8) to work instead with the parameters x = (xh, xv) given by
 
 q−21 ph 1 − ph
 
@@ -492,7 +492,7 @@ Write φGb ,x,q for a corresponding random-cluster measure on a graph G, and mor
 
 φ ,b x,q, θb(x,q) = φxb,q(0 ↔ ∞).
 
-φxb,q = lim
+φxb,$q$ = lim
 
 ↑L2
 
@@ -500,13 +500,13 @@ ThedualitymapofSection6.1mapsa random-clustermodelon L2 withparam-
 
 eterx = (xh, xv)toarandom-clustermodelon L2dwithparameter xd = (xv,d, xh,d). The primal and dual models have the same parameters whenever xh = xv,d and xv = xh,d, which is to say that
 
-(6.52) xhxv = 1, and we refer to the model as ‘self-dual’ if (6.52) holds. The following conjecture generalizes Conjecture 6.15. (6.53) Conjecture. Let xh, xv ∈ (0,∞) and q ∈ [1,∞). For b = 0,1,
+(6.52) xhxv = 1, and we refer to the model as ‘self-dual’ if (6.52) holds. The following conjecture generalizes Conjecture 6.15. (6.53) Conjecture. Let xh, xv ∈ (0,∞) and $q$ ∈ [1,∞). For b = 0,1,
 
 θb(x,q) = 0 if xhxv < 1, > 0 if xhxv > 1.
 
-The proof in the case of percolation (when q = 1) may be found at [154, Thm 11.115]. Partial progress in the direction of the general conjecture is provided by the next theorem.
+The proof in the case of percolation (when $q$ = 1) may be found at [154, Thm 11.115]. Partial progress in the direction of the general conjecture is provided by the next theorem.
 
-(6.54) Theorem. Let xh, xv ∈ (0,∞) and q ∈ [1,∞). Then
+(6.54) Theorem. Let xh, xv ∈ (0,∞) and $q$ ∈ [1,∞). Then
 
 θ0(x,q) = 0 if xhxv ≤ 1.
 
@@ -588,9 +588,9 @@ Lemma 6.64 allows us to replace one grey triangle of G by a star. This process m
 
 limit as ↑ T, we ﬁnd in particular that connections on T have the same probabilities as connectionson H so long as the edge-parameterson T satisfy (6.60) and the corresponding parameters on H satisfy (6.61). In particular the percolation probabilities are the same. We now make the last statement more speciﬁc.
 
-Write ET (respectively, EH) for the edge-set of T (respectively, H). Let p = (pe : e ∈ ET) ∈ (0,1)E
+Write ET (respectively, EH) for the edge-set of T (respectively, H). Let $p$ = (pe : e ∈ ET) ∈ (0,1)E
 
-T, and let ye = pe/(1 − pe). We speak of p as being of type γ if, for every grey triangle T, the three parameters y1, y2, y3 of the edges of T satisfy ψT(y1, y2, y3) = γ. Suppose that p is of type 0, as in (6.60). Applying the star–triangle transformation to every grey triangle of T, we obtain a copy H of the hexagonal lattice, and we choose the parameters p′ = (pe′ : e ∈ EH) of edges of this lattice in such a way that (6.61) holds. By the above discussion, the percolation probabilities θTb and θHb satisfy
+T, and let ye = pe/(1 − pe). We speak of p as being of type γ if, for every grey triangle T, the three parameters y1, y2, y3 of the edges of T satisfy ψT(y1, y2, y3) = γ. Suppose that $p$ is of type 0, as in (6.60). Applying the star–triangle transformation to every grey triangle of T, we obtain a copy H of the hexagonal lattice, and we choose the parameters p′ = (pe′ : e ∈ EH) of edges of this lattice in such a way that (6.61) holds. By the above discussion, the percolation probabilities θTb and θHb satisfy
 
 (6.69) θTb(p,q) = θHb(p′,q), b = 0,1, whenever q ∈ [1,∞).
 
@@ -598,13 +598,13 @@ Alabelledlattice isa latticeLtogetherwith arealvector pindexedbytheedgeset of L.
 
 Equation (6.69) leads to a proposal for the so-called ‘critical surfaces’ of the triangular and hexagonal lattices. The crude argument is as follows. Suppose that p, p′ are as above. If θT0(p,q) > 0 then, by (6.69), θH0(p′,q) > 0 also. If we accept a picture of an infinite primal ocean of H encompassing bounded islands of its dual, then it follows that θH1d((p′)d,q) = 0. If the initial labelled lattice (T,p) has a sufficiently large automorphism group then it may, by (6.61), be the case that (Hd,(p′)d) is isomorphic to (T,p), in which case
 
-0 = θH1d((p′)d,q) = θT1(p,q). This is a contradiction, and we deduce that θT0(p,q) = 0 whenever p is of type 0.
+0 = θH1d((p′)d,q) = θT1(p,q). This is a contradiction, and we deduce that θT0(p,q) = 0 whenever $p$ is of type 0.
 
 On the other hand, some readers may be able to convince themselves that there should exist no non-empty interval (α,β) ⊆ R such that: neither T nor its dual lattice possesses an infinite cluster whenever the type of p lies in (α,β). One arrives via these non-rigorous arguments at the (unproven) statement that
 
-(6.70) θT0(p,q) = 0 if p is of non-positive type,
+(6.70) θT0(p,q) = 0 if $p$ is of non-positive type,
 
-> 0 if p is of strictly positive type, with a similar conjecture for the hexagonal lattice.
+> 0 if $p$ is of strictly positive type, with a similar conjecture for the hexagonal lattice.
 
 Let p1, p2, p3 ∈ (0,1)and let yi = pi/(1− pi). We restrictthe discussion now to the situation in which every grey triangle of T has three edges with parameters p1, p2, p3, in some order. The corresponding process on H has parameters pi′ where the y′
 
@@ -616,7 +616,7 @@ i) satisfy (6.61). The assertions above motivate the proposals that:
 
 (6.71)
 
-T has critical surface y1y2y3 + y1y2 + y2y3 + y3y1 − q = 0, H has critical surface y′
+T has critical surface y1y2y3 + y1y2 + y2y3 + y3y1 − $q$ = 0, H has critical surface y′
 
 3. − q2 = 0,
 
@@ -642,7 +642,7 @@ We move now to the special case of the homogeneous random-cluster model on T, wi
 
 (a) Consider the random-cluster model on the triangular lattice T, and let p be
 
-such that y = p/(1 − p) satisﬁes y3 + 3y2 − q = 0. Then θT0(p,q) = 0, and therefore pc(q,T) ≥ p.
+such that y = p/(1 − p) satisﬁes y3 + 3y2 − $q$ = 0. Then θT0(p,q) = 0, and therefore pc(q,T) ≥ p.
 
 (b) Considerthe random-clustermodelon the hexagonallattice H, and let p′ be
 
@@ -714,4 +714,4 @@ cos(4π/κ) = −12
 
 This value is consistent with the above observation that κ(1) = 6, and also with the ﬁnding of [231]that the scaling limit of the uniformspanning-treePeano curve is SLE8. We recall from Theorem 1.23 that the uniform spanning-tree measure is obtained as a limit of the random-cluster measure as p,q ↓ 0.
 
-There are uncertainties over how this programme will develop. For a start, the theory of random-clustermodelsisnotso complete asthatof percolationandofthe uniformspanningtree. Secondly, the existenceof spatial limits is currentlyknown only in certain specialcases. The programme ishoweverambitiousandpromising, and may ultimately yield a full picture of the critical behaviour, including the numerical values of critical exponents, of random-cluster models with q ∈ [1,4), and hence of Ising/Pottsmodelsalso. There isgood reason to expectearlyprogress for the case q = 2, for which the random-cluster interface should converge to SLE16/3, and the Ising (spin) interface to SLE3, [306]. The reader is referred to [295] for a survey of open problems and conjectures concerning SLE.
+There are uncertainties over how this programme will develop. For a start, the theory of random-clustermodelsisnotso complete asthatof percolationandofthe uniformspanningtree. Secondly, the existenceof spatial limits is currentlyknown only in certain specialcases. The programme ishoweverambitiousandpromising, and may ultimately yield a full picture of the critical behaviour, including the numerical values of critical exponents, of random-cluster models with q ∈ [1,4), and hence of Ising/Pottsmodelsalso. There isgood reason to expectearlyprogress for the case $q$ = 2, for which the random-cluster interface should converge to SLE16/3, and the Ising (spin) interface to SLE3, [306]. The reader is referred to [295] for a survey of open problems and conjectures concerning SLE.

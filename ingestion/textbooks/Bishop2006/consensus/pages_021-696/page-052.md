@@ -2,9 +2,9 @@
 
 Figure 1.17 The predictive distribution resulting from a Bayesian treatment of polynomial curve ﬁtting using an $M = 9$ polynomial, with the ﬁxed parameters $\alpha = 5 \times 10^{-3}$ and $\beta = 11.1$ (corresponding to the known noise variance), in which the red curve denotes the mean of the predictive distribution and the red region corresponds to $\pm 1$ standard deviation around the mean.
 
-![image 22](../../../../../images/imageFile22.png)
+![The image depicts a graph with two main lines. The first line is a red dashed line, and the second line is a green dashed line. Both lines are connected by a dashed line. The red dashed line is positioned at the top of the graph, while the green dashed line is positioned at the bottom. The graph has a white background, and the lines are drawn with a black line. The x-axis is labeled as t, and the y-axis is labeled as t. The graph is titled Theory of Quantum Mechanics. The red dashed line is positioned at the top of the graph, while the green dashed line is positioned at the bottom. The red dashed line is positioned at the top of the graph, while the green dashed line is positioned at the bottom. The graph has a dashed line that is not clearly defined. The dashed line is not a straight line, but rather a curved line that appears to be a wave or a wave](../images/imageFile22.png)
 
-###### 1.3. Model Selection
+## 1.3. Model Selection
 
 In our example of polynomial curve ﬁtting using least squares, we saw that there was an optimal order of polynomial that gave the best generalization. The order of the polynomial controls the number of free parameters in the model and thereby governs the model complexity. With regularized least squares, the regularization coefﬁcient $\lambda$ also controls the effective complexity of the model, whereas for more complex models, such as mixture distributions or neural networks there may be multiple parameters governing complexity. In a practical application, we need to determine the values of such parameters, and the principal objective in doing so is usually to achieve the best predictive performance on new data. Furthermore, as well as ﬁnding the appropriate values for complexity parameters within a given model, we may wish to consider a range of different types of model in order to ﬁnd the best one for our particular application.
 

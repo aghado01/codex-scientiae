@@ -14,7 +14,7 @@ Before proceeding to consider ML estimation for finite mixture models, we first 
 
 # 2.2 ML ESTIMATION
 
-With the ML approach to the estimation of a d-dimensional parameter vector in a postulated density f(uj; %) for the random vector Y; associated with the jth recording on the phenomenon under study; an estimate $ is provided in regular situations by an appropriate solution of the likelihood equation,
+With the ML approach to the estimation of a $d$-dimensional parameter vector in a postulated density $f(y_j; \Psi)$ for the random vector $Y_j$ associated with the jth recording on the phenomenon under study; an estimate $\hat{\Psi}$ is provided in regular situations by an appropriate solution of the likelihood equation,
 
 $$
 \partial L ( \Psi ) / \partial \Psi = 0 ,
@@ -22,9 +22,7 @@ $$
 
 Or, equivalently;
 
-$$
-( 2 . 1 )
-$$
+
 
 $$
 L ( \Psi ) = \prod f ( y _ { j } ; \Psi )
@@ -36,7 +34,7 @@ Briefly; the aim of ML estimation (Lehmann, 1980, 1983) is to determine an estim
 
 We shall henceforth refer to as the MLE even in situations where it may not globally maximize the likelihood . Indeed, in some of the examples on mixture models to be presented, the likelihood is unbounded. However, for these models there may still exist, under the usual regularity conditions; a sequence of roots of the likelihood equation corresponding to local maxima with the properties of consistency; efficiency; and asymptotic normality; see Section 2.5. The reader is referred to Cheng and Traylor (1995) for an account of nonregular maximum likelihood problems for estimation in general.
 
-Given that a statistical model is at best an approximation to reality; it is worth considering the behavior of the MLE if the structure of the postulated model (2.2) is not valid. It follows under mild regularity conditions that the MLE under the invalid model (2.2) is still a meaningful estimator, in that it is a consistent estimator of 4o, the value of < that minimizes the Kullback-Leibler distance between the actual density of Y; and the postulated parametric family;
+Given that a statistical model is at best an approximation to reality; it is worth considering the behavior of the MLE if the structure of the postulated model (2.2) is not valid. It follows under mild regularity conditions that the MLE under the invalid model (2.2) is still a meaningful estimator, in that it is a consistent estimator of 4o, the value of < that minimizes the Kullback-Leibler distance between the actual density of $Y_j$ and the postulated parametric family;
 
 $$
 \{ f ( y _ { j } ; \Psi ) \colon \ \Psi \in \Omega \} ;
@@ -48,11 +46,9 @@ see, for example, Hjort (1986).
 
 # 2.3 INFORMATION MATRICES
 
-The Fisher expected information matrix about the parameter vector % is defined as
+The Fisher expected information matrix about the parameter vector $\Psi$ is defined as
 
-$$
-( 2 . 4 )
-$$
+
 
 $$
 \epsilon \partial \log L
@@ -60,9 +56,7 @@ $$
 
 is the gradient vector of the log likelihood function (the score statistic) and y = be expressed as
 
-$$
-( 2 . 5 )
-$$
+
 
 where
 
@@ -106,7 +100,7 @@ $$
 f ( y _ { j } ; \Psi ) = f ( y _ { j } ; \Psi _ { t } )
 $$
 
-for almost all V; in RP This set will contain more than the single Y in the case of component densities belonging t0 the same parametric family For then, as discussed in Section 1.14, a permutation of the component labels in $ does not alter the value of This particular identifiability problem can be avoided by the point f(yj;
+for almost all V; in RP This set will contain more than the single Y in the case of component densities belonging t0 the same parametric family For then, as discussed in Section 1.14, a permutation of the component labels in $ does not alter the value of This particular identifiability problem can be avoided by the point f($y_j$;
 
 Redner's (1981) work, however, was specifically aimed at families of distributions which are not identifiable. His results imply for mixture families with compact parameter space that, under the conditions of Wald (1949) except for the identifiability of €, L(æ) is almost surely maximized in a neighborhood of nt . More precisely; Redner (1981) referred to itas convergence of the MLE in the topology of the quotient space obtained by collapsing 9t into a single point; see Ghosh and Sen (1985), Li and Sedransk (1988), and Redner and Walker (1984) for further discussion.
 
@@ -136,15 +130,13 @@ In the above; itis not suggested that inference or aclustering should be based s
 
 Recently; Gan and (1999) investigated a test of the null hypothesis that a given Jiang given root is consistent and asymptotically efficient. Itis based on the result (2.5) that under regularity conditions the expected information matrix is to the negative equal
 
-$$
-( 2 . 9 )
-$$
+
 
 <a id="sec-2-7-2"></a>
 
 # 2.7.2 Example 2.1: Likelihood Function with Two Maximizers
 
-To illustrate this point, Gan and (1999) generated a random sample of size 5000 from a mixture of two univariate normal components in proportions T1 0.4 and 72 =0.6 with means p1 =-3 and p2 = 6, and variances 0? = 1 and 0? chose this model where $ p1 is the single unknown parameter, as the likelihood equation usually has two roots that correspond to a global maxiFor the generated sample, calculated SE1 (v) = are displayed in Table 21. Jiang 16 . They they
+To illustrate this point, Gan and (1999) generated a random sample of size 5000 from a mixture of two univariate normal components in proportions $\pi_1$ 0.4 and 72 =0.6 with means p1 =-3 and p2 = 6, and variances 0? = 1 and 0? chose this model where $ p1 is the single unknown parameter, as the likelihood equation usually has two roots that correspond to a global maxiFor the generated sample, calculated SE1 (v) = are displayed in Table 21. Jiang 16 . They they
 
 It is clear from Table 2.1 that the SE1(") and SE2(v) are virtually the same at
 
@@ -240,7 +232,7 @@ $$
 
 is the vector containing all the unknown parameters in this mixture model and € is the vector containing all the parameters in 01, 0g known a priori
 
-The log likelihood for % that can be formed from the observed data is given by
+The log likelihood for $\Psi$ that can be formed from the observed data is given by
 
 $$
 \log L ( \Psi ) & = \sum _ { j = 1 } ^ { n } \log f ( y _ { j } ; \Psi ) \\ & = \sum _ { j = 1 } ^ { n } \log \{ \sum _ { i = 1 } ^ { g } \pi _ { i } f _ { i } ( y _ { j } ; \theta _ { i } ) \} .
@@ -274,7 +266,7 @@ $$
 
 is the posterior probability that %j belongs to the ith component of the mixture; see McLachlan and Krishnan (1997, Section 1.4) for further details.
 
-These manipulations were carried out by various researchers in the past in their efforts to solve the likelihood equation for mixture models with specific component densities as, for example; by Hasselblad (1966, 1969), Wolfe (1965, 1967, 1970), and (1969). observed in their special cases that the equations (2.21) (2.22) in the right-hand side of these equations, a new estimate can be computed for %, which in turn can be substituted into the right-hand side of these equations to produce a new of the likelihood equation can be identified with the direct application of the EM algorithm of Dempster et al. (1977) for finding solutions of the likelihood equation. The application of the EM algorithm to the mixture problem automatically reveals the iterative scheme to be followed for the computation of the MLE. Furthermore; it ensures that the likelihood values increase monotonically . Prior to the appearance of the paper by Dempster et al. (1977), various researchers did note the monotone convergence of the likelihoodsequences produced in their particular applications, but were only able to speculate on this monotonicity holding in general. and Day They
+These manipulations were carried out by various researchers in the past in their efforts to solve the likelihood equation for mixture models with specific component densities as, for example; by Hasselblad (1966, 1969), Wolfe (1965, 1967, 1970), and (1969). observed in their special cases that the equations (2.21) (2.22) in the right-hand side of these equations, a new estimate can be computed for $\Psi$, which in turn can be substituted into the right-hand side of these equations to produce a new of the likelihood equation can be identified with the direct application of the EM algorithm of Dempster et al. (1977) for finding solutions of the likelihood equation. The application of the EM algorithm to the mixture problem automatically reveals the iterative scheme to be followed for the computation of the MLE. Furthermore; it ensures that the likelihood values increase monotonically . Prior to the appearance of the paper by Dempster et al. (1977), various researchers did note the monotone convergence of the likelihoodsequences produced in their particular applications, but were only able to speculate on this monotonicity holding in general. and Day They
 
 <a id="sec-2-8-2"></a>
 
@@ -286,19 +278,19 @@ $$
 y =
 $$
 
-is viewed as incomplete; as the associatedcomponent-label vectors, 21, are not available. arisen from one of the components of the mixture model (2.17) being fitted, z; is a 9-dimensional vector with = 1 or 0, not arise from the ith component of the mixture (i = 1, g; j = 1, n) The complete-data vector is therefore declared to be being Zij
+is viewed as incomplete; as the associatedcomponent-label vectors, 21, are not available. arisen from one of the components of the mixture model (2.17) being fitted, $z_j$ is a 9-dimensional vector with = 1 or 0, not arise from the ith component of the mixture (i = 1, g; j = 1, n) The complete-data vector is therefore declared to be being Zij
 
 $$
 y _ { c } = ( y ^ { T } , z ^ { T } ) ^ { T } ,
 $$
 
-where The addition of the unobservable data to the problem (here the z;) is handled by the E-step, which takes the conditional expectation of the complete-data log likelihood, value specified initially for ". Then on the first iteration of the EM algorithm, the E-step requires the computation of the conditional expectation of Lc(v) given y, log log
+where The addition of the unobservable data to the problem (here the $z_j$) is handled by the E-step, which takes the conditional expectation of the complete-data log likelihood, value specified initially for ". Then on the first iteration of the EM algorithm, the E-step requires the computation of the conditional expectation of Lc(v) given y, log log
 
 $$
 z = ( z _ { 1 } ^ { T } , \dots , z _ { n } ^ { T } ) ^ { T }
 $$
 
-The component-label vectors 21, Zn are taken to be the realized values of the random vectors Z1, Zn, where, for independent feature data, it is appropriate to assume that are distributed unconditionally according to the multinomial distribution (1.18). This assumption means that the distribution of the complete-data vector Yc implies the appropriate distribution for the incomplete-data vector Y. The complete-data likelihood for %, they log log
+The component-label vectors 21, Zn are taken to be the realized values of the random vectors Z1, Zn, where, for independent feature data, it is appropriate to assume that are distributed unconditionally according to the multinomial distribution (1.18). This assumption means that the distribution of the complete-data vector Yc implies the appropriate distribution for the incomplete-data vector Y. The complete-data likelihood for $\Psi$, they log log
 
 $$
 \log L _ { c } ( \Psi ) = \sum _ { i = 1 } ^ { g } \sum _ { j = 1 } ^ { n } z _ { i j } \{ \log \pi _ { i } + \log f _ { i } ( y _ { j } ; \theta _ { i } ) \} .
@@ -326,7 +318,7 @@ $$
 \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) \ = \ \pi _ { i } ^ { ( k ) } f _ { i } ( y _ { j } ; \theta _ { i } ^ { ( k ) } ) / f ( y _ { j } ; \Psi ^ { ( k ) } )
 $$
 
-for i 9; j = 1, The quantity T;(uj; bility that the jth member of the sample with observed value %; belongs to the ith component of the mixture. (2.28), we have on taking the conditional expectation of (2.26) given y that proba Using
+for i 9; j = 1, The quantity $\tau_i(y_j; \Psi)$ bility that the jth member of the sample with observed value %; belongs to the ith component of the mixture. (2.28), we have on taking the conditional expectation of (2.26) given y that proba Using
 
 $$
 = \sum _ { i = 1 } ^ { j } \sum _ { j = 1 } \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) \{ \log \pi _ { i } + \log f _ { i } ( y _ { j } ; \theta _ { i } ) \} .
@@ -340,21 +332,21 @@ $$
 
 # 2.8.4 M-Step
 
-The M-step on the (k + 1)th iteration requires the global maximization of Q(%; the finite mixture model; the updated estimates 7(\*+1) of the mixing proportions T; are calculated independently of the updated estimate &(k+1) of the parameter vector € containing the unknown parameters in the component densities.
+The M-step on the (k + 1)th iteration requires the global maximization of Q(%; the finite mixture model; the updated estimates 7(\*+1) of the mixing proportions $\tau_i$ are calculated independently of the updated estimate &(k+1) of the parameter vector € containing the unknown parameters in the component densities.
 
-If the zij were observable, then the complete-data MLE of T; would be given simply by
+If the zij were observable, then the complete-data MLE of $\tau_i$ would be given simply by
 
 $$
 \hat { \pi } _ { i } = \sum _ { j = 1 } ^ { n } z _ { i j } / n \quad ( i = 1 , \dots , g ) .
 $$
 
-As the E-step simply involves replacing each zi3 with its current conditional expecgiven by replacing each in (2.31) by T;(yj; Zij
+As the E-step simply involves replacing each zi3 with its current conditional expecgiven by replacing each in (2.31) by $\tau_i$($y_j$; Zij
 
 $$
 \pi _ { i } ^ { ( k + 1 ) } = \sum _ { j = 1 } ^ { n } \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) / n \quad ( i = 1 , \dots , g ) .
 $$
 
-Thus in forming the estimate of T; on the (k + 1)th iteration; there is a contribution from each observation V; equal to its (currently assessed) posterior probability of membership of the ith component of the mixture model. This EM solution therefore has an intuitively appealing interpretation.
+Thus in forming the estimate of $\tau_i$ on the (k + 1)th iteration; there is a contribution from each observation V; equal to its (currently assessed) posterior probability of membership of the ith component of the mixture model. This EM solution therefore has an intuitively appealing interpretation.
 
 Concerning the of € on the M-step of the (k + 1)th iteration; it can be seen from (2.30) that is obtained as an appropriate root of
 
@@ -384,7 +376,7 @@ Titterington (1984a) developed a recursive algorithm for data that are available
 
 # 2.8.5 Assessing the Implied Error Rates
 
-Ganesalingam and McLachlan (19806) and Basford McLachlan (1985a) considered a measure of strength of the clustering implied by the MLE < in terms of the and fitted posterior probabilities of component membership T;(uj; 4). For example; ifthe maximum of that the clusters are well separated. proposed estimates of the error rates of the outrightclustering obtained by assigning the observed data point U; tothe component to which it has the greatest (estimated) posterior probability of belonging. As noted in Section 1.14 on the identifiability of mixture models, there are g! permutations of the component labels for a mixture of g component densities belonging to the same parametric family. Therefore in speaking about the error rates of the clustering of the mixture model-based approach, it is implicitly assumed that the clusters correspond appropriately to the 9 external groups assumed to exist for the purpose of defining the error rates The overall error rate can be assessed by the average of the maximum of the component-posterior probabilities over the data; and the bootstrap can be used to correct for bias; see McLachlan and Basford (1988, Chapter 5) for details. T;(yj; They
+Ganesalingam and McLachlan (19806) and Basford McLachlan (1985a) considered a measure of strength of the clustering implied by the MLE < in terms of the and fitted posterior probabilities of component membership $\tau_i(y_j; \Psi)$. For example; ifthe maximum of that the clusters are well separated. proposed estimates of the error rates of the outrightclustering obtained by assigning the observed data point U; tothe component to which it has the greatest (estimated) posterior probability of belonging. As noted in Section 1.14 on the identifiability of mixture models, there are g! permutations of the component labels for a mixture of g component densities belonging to the same parametric family. Therefore in speaking about the error rates of the clustering of the mixture model-based approach, it is implicitly assumed that the clusters correspond appropriately to the 9 external groups assumed to exist for the purpose of defining the error rates The overall error rate can be assessed by the average of the maximum of the component-posterior probabilities over the data; and the bootstrap can be used to correct for bias; see McLachlan and Basford (1988, Chapter 5) for details. $\tau_i$($y_j$; They
 
 <a id="sec-2-9"></a>
 
@@ -394,7 +386,7 @@ In the past, discriminant analysis was frequently carried out for continuous dat
 
 In a typical application of discriminant analysis, there are classified data from each group (so-called training data) from which t0 estimate the group-conditional densities. If the latter are modeled as mixtures; then the estimation of a given groupconditional density can be undertaken by fitting a mixture model to the data from that group, the EM algorithm as described above. using
 
-However, in some applications; thecomponent densities for a group may have some parameters in common with the component parameters for another group. As mentioned above; in the approach of Hastie and Tibshirani(1996),the normal component densities for the groups all have the same covariance matrix. In some applications; the component densities may have more than common scale parameters. For example; in the case study of Belbin and Rubin (1995), the density for the reaction time Y; for a schizophrenic subject is modeled by the normal mixture, log
+However, in some applications; thecomponent densities for a group may have some parameters in common with the component parameters for another group. As mentioned above; in the approach of Hastie and Tibshirani(1996),the normal component densities for the groups all have the same covariance matrix. In some applications; the component densities may have more than common scale parameters. For example; in the case study of Belbin and Rubin (1995), the density for the reaction time $Y_j$ for a schizophrenic subject is modeled by the normal mixture, log
 
 $$
 f ( y _ { j } ; \Psi _ { 1 } ) = \pi _ { 1 1 } \, \phi ( y _ { j } ; \, \mu _ { 1 1 } , \sigma ^ { 2 } ) + \pi _ { 1 2 } \, \phi ( y _ { j } ; \, \mu _ { 1 2 } , \sigma ^ { 2 } ) ,
@@ -416,9 +408,9 @@ where $ is the vector VM known a to be distinct. priori
 
 # 2.10 MAXIMUM A POSTERIORI ESTIMATION
 
-The EM algorithm is easily modified to produce the maximum a posteriori (MAP) estimate in a Bayesian framework for some density p(") for %. The E-step is effectively the same as for the computation of the MLE of % in a frequentist frameThe M-step differs augmented by the density; 'p(v) prior log prior
+The EM algorithm is easily modified to produce the maximum a posteriori (MAP) estimate in a Bayesian framework for some density p(") for $\Psi$. The E-step is effectively the same as for the computation of the MLE of % in a frequentist frameThe M-step differs augmented by the density; 'p(v) prior log prior
 
-TheMAP estimate of Vcan be used as an initial value for Vin posterior simulations for % (Gelman and Rubin, 1996) Also, Rubin and Wu (1997) have argued that the use of the EM algorithmor its variants is a wise first step for solidcomputing involving the simulation of posterior distributions. Firstly, it gives a rough picture of the posterior distribution at a lower cost than the Gibbs sampler. Secondly; the monotone iterates of the (incomplete-data) likelihood are effective detectors for seemingly inevitable programming errors, and thus help to ensure clean code for the EM algorithm; which can then be translated into the code for the Gibbs sampler in astraightforward manner. Thirdly, the results from the EM algorithm and the Gibbs sampler can be checked with each other to assess the normality of the posterior distribution and also to detect possible programming errors.
+TheMAP estimate of Vcan be used as an initial value for Vin posterior simulations for $\Psi$ (Gelman and Rubin, 1996) Also, Rubin and Wu (1997) have argued that the use of the EM algorithmor its variants is a wise first step for solidcomputing involving the simulation of posterior distributions. Firstly, it gives a rough picture of the posterior distribution at a lower cost than the Gibbs sampler. Secondly; the monotone iterates of the (incomplete-data) likelihood are effective detectors for seemingly inevitable programming errors, and thus help to ensure clean code for the EM algorithm; which can then be translated into the code for the Gibbs sampler in astraightforward manner. Thirdly, the results from the EM algorithm and the Gibbs sampler can be checked with each other to assess the normality of the posterior distribution and also to detect possible programming errors.
 
 The relationship between the EM algorithm and the Gibbs sampler has been examined recently in Sahu and Roberts (1999).
 
@@ -512,7 +504,7 @@ For higher-dimensional data, an initial value z(0) for z might be obtained throu
 
 Another way of specifying an initial partition z(0) of the data is to randomly divide the data into g groups corresponding to the g components of the mixture model. That is, for each observation %j, we randomly generate an integer between 1 and g, both inclusive. If this random integer is equal to one for i = h and equal to zero for i # h (i = 1, equal
 
-Usually; the EM algorithm would be applied from a number of random starts With random starts, the effect of the central limit theorem tends to have the component parameters initially being similar at least in large samples. One way to reduce this effect is to first select asmall random subsample from the data; which is then randomly assigned to the 9 components. The first M-step is then performed on the basis of the subsample. The subsample has to be sufficiently large to ensure that the first M-step is able to produce a nondegenerate estimate of the parameter vector %. For example; in the of a mixture of p-dimensional normal components with unrestricted covariance matrices; there needs to be at least (p + 1) observations assigned to each component to ensure nonsingular estimates of the component-covariance matrices on the first M-step. fitting
+Usually; the EM algorithm would be applied from a number of random starts With random starts, the effect of the central limit theorem tends to have the component parameters initially being similar at least in large samples. One way to reduce this effect is to first select asmall random subsample from the data; which is then randomly assigned to the 9 components. The first M-step is then performed on the basis of the subsample. The subsample has to be sufficiently large to ensure that the first M-step is able to produce a nondegenerate estimate of the parameter vector $\Psi$. For example; in the of a mixture of p-dimensional normal components with unrestricted covariance matrices; there needs to be at least (p + 1) observations assigned to each component to ensure nonsingular estimates of the component-covariance matrices on the first M-step. fitting
 
 An alternative method of specifying random start, at least in the context of
 
@@ -528,7 +520,7 @@ $$
 
 is the sample covariance matrix of the observed data. With this method, there is with a random partition of the data into 9 groups, and it is also computationally less demanding.
 
-The component-covariance matrices Z; and the mixing proportions F; can be specified as
+The component-covariance matrices $Z_j$ and the mixing proportions F; can be specified as
 
 $$
 \Sigma _ { i } ^ { ( 0 ) } = V \text { and } \pi _ { i } ^ { ( 0 ) } = 1 / g \quad ( i = 1 , \dots , g ) .
@@ -696,7 +688,7 @@ Chapter 3).
 
 Thus; in a neighborhood of $ the EM algorithm is essentially a linear iteration with rate matrix J(w*) , since J(w* ) is typically nonzero. often referred to as the matrix rate of convergence, or simply the rate of convergence.
 
-For vector %, a measure of the actual observed convergence rate is the global rate of convergence, which is defined as
+For vector $\Psi$, a measure of the actual observed convergence rate is the global rate of convergence, which is defined as
 
 $$
 r = \lim _ { k \geq \infty } \| \Psi ^ { ( k + 1 ) } - \Psi ^ { ( k + 1 ) } \|
@@ -726,13 +718,13 @@ $$
 ( 2 . 4 8 )
 $$
 
-where Ic(Y; u) is the conditional expected complete-data matrix defined by (1.49) and where
+where Ic($Y_j$ u) is the conditional expected complete-data matrix defined by (1.49) and where
 
 $$
-- E _ { \Psi } \{ \partial ^ { 2 } \log k ( Y _ { c } \, | \, y ; \Psi ) / \partial \Psi \partial \Psi ^ { T } \, | \, y \}
+- E _ { \Psi } \{ \partial ^ { 2 } \log k ( Y _ { c } \, | \, $y_j$ \Psi ) / \partial \Psi \partial \Psi ^ { T } \, | \, y \}
 $$
 
-is the expected information matrix for % based on yc (or equivalently, the unobservable data) when conditioned on y, and k(yc y; %) is the conditional density of Yc given y. This result was obtained also by Sundberg (1974).
+is the expected information matrix for $\Psi$ based on yc (or equivalently, the unobservable data) when conditioned on y, and k(yc $y_j$ %) is the conditional density of Yc given y. This result was obtained also by Sundberg (1974).
 
 Thus the rate of convergence ofthe EM algorithmis given by the largest eigenvalue u) , which measures the propor tion of information about V that is missing by not also observing the "missing' data (the component-label vectors 21, 2n in the present context of mixture models), in addition to y. The greater the proportion of missing information, the slower the rate of convergence.
 
@@ -775,10 +767,10 @@ $$
 $$
 
 $$
-+ S ( y ; \Psi ) S ^ { T } ( y ; \Psi ) .
++ S ( $y_j$ \Psi ) S ^ { T } ( $y_j$ \Psi ) .
 $$
 
-In (2.52), S(y; ") and Sc(Yc; %) denote the incomplete-data and complete-data score
+In (2.52), S($y_j$ ") and Sc(Yc; %) denote the incomplete-data and complete-data score
 
 statistics; as defined by (1.46) and (1.47), respectively. It can be shown that
 
@@ -795,7 +787,7 @@ $$
 since the last term on the right-hand side of (2.52) is zero as satisfies
 
 $$
-S ( y ; \Psi ) = 0 .
+S ( $y_j$ \Psi ) = 0 .
 $$
 
 Hence the observed information matrix for the original (incomplete-data) problem can be computed in terms of the conditional moments of the gradient and curvature of the complete-data likelihood function introduced within the EM framework . log
@@ -826,10 +818,10 @@ $$
 L _ { j } ( \Psi ) = f ( y _ { j } ; \Psi )
 $$
 
-isthe likelihood function for vformed from the singleobservation y; (j = 1, n) We can now write the score vector S(y; ") as
+isthe likelihood function for vformed from the singleobservation $y_j$ (j = 1, n) We can now write the score vector S($y_j$ ") as
 
 $$
-S ( y ; \Psi ) = \sum _ { j = 1 } ^ { n } s ( \frac { \theta ( \cdot ) } { \theta ( 1 - 1 ) } )
+S ( $y_j$ \Psi ) = \sum _ { j = 1 } ^ { n } s ( \frac { \theta ( \cdot ) } { \theta ( 1 - 1 ) } )
 $$
 
 where
@@ -847,13 +839,13 @@ $$
 $$
 
 $$
-i ( \Psi ) \ & = \ E _ { \Psi } \{ s ( Y ; \Psi ) s ^ { T } ( Y ; \Psi ) \} \\ & = \ c o v _ { \Psi } \{ s ( Y ; \Psi ) \}
+i ( \Psi ) \ & = \ E _ { \Psi } \{ s ( $Y_j$ \Psi ) s ^ { T } ( $Y_j$ \Psi ) \} \\ & = \ c o v _ { \Psi } \{ s ( $Y_j$ \Psi ) \}
 $$
 
 is the information contained in a single observation. Corresponding to (2.57), the empirical information matrix (in a single observation) can be defined to be
 
 $$
-\iota ( \Psi ) & \ = \ n ^ { - 1 } \sum _ { j = 1 } ^ { n } s ( y _ { j } ; \Psi ) a ^ { T } ( y _ { j } ; \Psi ) - \delta s ^ { 2 } \\ & = \ n ^ { - 1 } \sum _ { j = 1 } ^ { n } s ( y _ { j } ; \Psi ) s ^ { T } ( y _ { j } ; \Psi ) \\ & - n ^ { - 2 } S ( y ; \Psi ) S ^ { T } ( y ; \Psi ) ,
+\iota ( \Psi ) & \ = \ n ^ { - 1 } \sum _ { j = 1 } ^ { n } s ( y _ { j } ; \Psi ) a ^ { T } ( y _ { j } ; \Psi ) - \delta s ^ { 2 } \\ & = \ n ^ { - 1 } \sum _ { j = 1 } ^ { n } s ( y _ { j } ; \Psi ) s ^ { T } ( y _ { j } ; \Psi ) \\ & - n ^ { - 2 } S ( $y_j$ \Psi ) S ^ { T } ( $y_j$ \Psi ) ,
 $$
 
 where
@@ -865,7 +857,7 @@ $$
 Corresponding to this empirical form (2.58) for i("), I(v) is estimated by
 
 $$
-\begin{array} { r l r } { \varphi ( n ; g ) \colon } & { = } & { \bar { n } ( \varphi ) } \\ & { = } & { \sum _ { j = 1 } ^ { n } s ( y _ { j } ; \varphi ) s ^ { T } ( y _ { j } ; \varphi ) } \\ & { \quad - n ^ { - 1 } S ( y ; \varphi ) S ^ { T } ( y ; \varphi ) . } \end{array}
+\begin{array} { r l r } { \varphi ( n ; g ) \colon } & { = } & { \bar { n } ( \varphi ) } \\ & { = } & { \sum _ { j = 1 } ^ { n } s ( y _ { j } ; \varphi ) s ^ { T } ( y _ { j } ; \varphi ) } \\ & { \quad - n ^ { - 1 } S ( $y_j$ \varphi ) S ^ { T } ( $y_j$ \varphi ) . } \end{array}
 $$
 
 On evaluation at
@@ -880,7 +872,7 @@ $$
 \{ \partial \log L _ { c j } ( \Psi ) / \partial \Psi | y \} ,
 $$
 
-where ;(V) is the complete-data likelihood formed from the single observation Uj (j = 1, n) Thus the approximation Ie(#; y) to the observed information matrix I(#; v) can be expressed in terms of the conditional expectation ofthe gradient vector of the complete-data likelihood function evaluated at the MLE $. It thus avoids the computation of second-order partial derivatives of the complete-data likelihood. log log
+where ;(V) is the complete-data likelihood formed from the single observation Uj (j = 1, n) Thus the approximation Ie(#; y) to the observed information matrix I(#; v) can be expressed in terms of the conditional expectation ofthe gradient vector of the complete-data likelihood function evaluated at the MLE $\hat{\Psi}$. It thus avoids the computation of second-order partial derivatives of the complete-data likelihood. log log
 
 For finite mixture models,
 
@@ -894,7 +886,7 @@ $$
 s ( y _ { j } ; \Psi ) = \sum _ { i = 1 } ^ { j } \tau _ { i } ( y _ { j } ; \Psi ) \partial \{ \log \pi _ { i } + \log f _ { i } ( y _ { j } ; \theta _ { i } ) \} / \partial \Psi \ \ ( j = 1 , \dots , n ) .
 $$
 
-Thus with the use of the empirical information matrix for the of mixture models, the observed information matrix is approximated solely in terms of the gradient of the complete-data likelihood, where the unobservable component-label variables zj are replaced by their fitted conditional expectations, that is, by the posterior probabilities of component membership of the mixture evaluated at the MLE for €. If only the mixing proportions are unknown; then the observed information matrix is exactly equal to the empirical information matrix . fitting log
+Thus with the use of the empirical information matrix for the of mixture models, the observed information matrix is approximated solely in terms of the gradient of the complete-data likelihood, where the unobservable component-label variables $z_j$ are replaced by their fitted conditional expectations, that is, by the posterior probabilities of component membership of the mixture evaluated at the MLE for €. If only the mixing proportions are unknown; then the observed information matrix is exactly equal to the empirical information matrix . fitting log
 
 <a id="sec-2-15-4"></a>
 
@@ -964,7 +956,7 @@ $$
 Y _ { 1 } ^ { * } , \dots , Y _ { n } ^ { * } \stackrel { i . i . d . } { \sim } \hat { F } ,
 $$
 
-where the estimate F (now denoting the distribution function of a single observation Y;) is held fixed at its observed value.
+where the estimate F (now denoting the distribution function of a single observation $Y_j$) is held fixed at its observed value.
 
 Step 2 The EM algorithm is applied to the bootstrap observed data y to compute the MLE for this data set,
 
@@ -1000,7 +992,7 @@ $$
 
 where the weights wj are nonnegative and sum to n. For sampling with replacement with the nonparametric bootstrap; the w; are nonnegative integers that sum to n, as wj is a count of the number of times that the original point V; occurs in the bootstrap sample. That is, w1, wn have a multinomial distribution consisting of n draws on n categories with equal probabilities 1/n.
 
-Asdiscussed in Section 1.14 onthe identifiability of amixture model,if the component densities of the mixture belong to the same parametric family; then the likelihood does not change under a permutation of the component labels in the parameter % and hence its MLE $. This raises the question of whether the so-called label switchproblem occurs in the generation of the bootstrap replications of the MLE, as in Monte Carlo Markov chain computations involving mixture models. However; in OUr experience it has not arisen; as we always take the MLE % calculated from the original data to be the initial value of the parameter in applying the EM algorithm to each bootstrap sample. In the parametric application of the bootstrap; ? corresponds to the true value of the parameter, and so it should be a reasonable starting value. ing
+Asdiscussed in Section 1.14 onthe identifiability of amixture model,if the component densities of the mixture belong to the same parametric family; then the likelihood does not change under a permutation of the component labels in the parameter $\Psi$ and hence its MLE $\hat{\Psi}$. This raises the question of whether the so-called label switchproblem occurs in the generation of the bootstrap replications of the MLE, as in Monte Carlo Markov chain computations involving mixture models. However; in OUr experience it has not arisen; as we always take the MLE % calculated from the original data to be the initial value of the parameter in applying the EM algorithm to each bootstrap sample. In the parametric application of the bootstrap; ? corresponds to the true value of the parameter, and so it should be a reasonable starting value. ing
 
 <a id="sec-2-17"></a>
 
@@ -1040,7 +1032,7 @@ $$
 - 1 ( \Psi _ { E M A } ^ { ( k + 1 ) } - \Psi _ { A } ^ { ( k ) } ) , & & ( 2 . 7 0 )
 $$
 
-where Hence this method proceeds on the (k + 1)th iteration by first producing EMA using an EM iteration with as the current fit for %. One then uses the EM iterate EMX in Aitken's acceleration procedure (2.70) to yield the final iterate +1) on the (k + 1)th iteration. This is the method proposed by Louis (1982) for speeding up the convergence of the EM algorithm:
+where Hence this method proceeds on the (k + 1)th iteration by first producing EMA using an EM iteration with as the current fit for $\Psi$. One then uses the EM iterate EMX in Aitken's acceleration procedure (2.70) to yield the final iterate +1) on the (k + 1)th iteration. This is the method proposed by Louis (1982) for speeding up the convergence of the EM algorithm:
 
 Louis (1982) suggests making use of the relationship (2.50) to estimate
 
@@ -1072,7 +1064,7 @@ Various authors, including Redner and Walker (1984), propose a hybrid approach t
 
 Aitkin and Aitkin (1996) have considered hybrid method that combines the EM algorithm with a modified Newton-Raphson method whereby the information matrix is replaced by the empirical information matrix; In the context of finite normal mixture models, constructed a hybrid algorithm that starts with five EM iterations before switching to the modified Newton-Raphson method until convergence or until the likelihood decreases. In the case of the latter; Aitkin and Aitkin (1996) proposed hal the size up to five times. As further steplikelihood decreases after five step-halves, the algorithm of Aitkin and Aitkin (1996) returns to the previous EM iterate and runs the EM algorithm for a further five iterations, before switching back again to the modified Newton-Raphson method. Their choice of performing five EM iterations initially is based on the work of Redner and Walker (1984), who report that, in their experience; 95 percent of the change in the likelihood from its initial value to its maximum generally occurs in five iterations. Obviously; the choice of the starting point can have a major influence on such guidelines. For example, if the EM algorithm is started from a random starting for which the component means are close together; then the EM algorithm may require a few iterations to recover from such a start before making being able to make progress. fitting they log [ving step log log point good
 
-Aitkin and Aitkin (1996) replicated part of the study by Everitt ( 1988a)on the fitting of a mixture of two normal densities with means #1 and p2 and variances 0? and 0? in proportions T1 and T2. Their stopping criterion was a difference in successive values of the log likelihoodof 10-5 . They found that their hybrid algorithm required 70 percent of the time required for the EM algorithm to converge, consistently over all starting values of %. They noted that the EM algorithm was impressively stable Their hybrid algorithm almost always decreased the log likelihood when the switch to the modified Newton-Raphson was first applied, and sometimes required a large number of EM controlling steps (after full step-halving) before finally increasing the log likelihood, and then usually converging rapidly to the same maximizer as with the EM algorithm: As is well known, mixture likelihoods for small sample sizes are badly behaved with multiple maxima. Aitkin and Aitkin (1996) liken the maximization of the normal mixture likelihood in their simulation studies as to the progress of a "traveler following the narrow EM up a hazardous mountain with chasms on all sides. When in sight of the summit, the modified Newton-Raphson method path leapt to the top; but when followed earlier; it caused repeated falls into the chasms, from which the traveler had to be pulled back onto the EM track:" log path
+Aitkin and Aitkin (1996) replicated part of the study by Everitt ( 1988a)on the fitting of a mixture of two normal densities with means #1 and p2 and variances 0? and 0? in proportions $\pi_1$ and T2. Their stopping criterion was a difference in successive values of the log likelihoodof 10-5 . They found that their hybrid algorithm required 70 percent of the time required for the EM algorithm to converge, consistently over all starting values of %. They noted that the EM algorithm was impressively stable Their hybrid algorithm almost always decreased the log likelihood when the switch to the modified Newton-Raphson was first applied, and sometimes required a large number of EM controlling steps (after full step-halving) before finally increasing the log likelihood, and then usually converging rapidly to the same maximizer as with the EM algorithm: As is well known, mixture likelihoods for small sample sizes are badly behaved with multiple maxima. Aitkin and Aitkin (1996) liken the maximization of the normal mixture likelihood in their simulation studies as to the progress of a "traveler following the narrow EM up a hazardous mountain with chasms on all sides. When in sight of the summit, the modified Newton-Raphson method path leapt to the top; but when followed earlier; it caused repeated falls into the chasms, from which the traveler had to be pulled back onto the EM track:" log path
 
 <a id="sec-2-18"></a>
 
@@ -1116,7 +1108,7 @@ A situation where this may arise in practice is where the components correspond 
 
 Another example concerns improving the accuracy of learned text classifiers by augmenting a small number of classified documents with a large of unclassified documents (Nigam et al., 2000). This is significant because in many important text classification problems, obtaining the true classification of documents is expensive; whereas quantities of unclassified documents are readily available. pool large
 
-Whatever the reason for wishing to carry out the estimation on the basis of both classified and unclassified data, it can be undertaken in a straightforward manner by maximum likelihood via the EM algorithm:. The equation (2.33) for the update in the presence of some classified data, except that we use the known value of the component-indicator variable zij instead of its currently assessed expectation T; 1, 9) And we make the same modification in the equation (2.32) for the update of the ith mixing proportion Ti, assuming that the classified data have been obtained by sampling from the mixture. If the classified data do not applies provide any information on the "; as, for example, where the classified data have been obtained by sampling separately from each of the groups corresponding to the components of the mixture model fitted, then the updated estimate of T; is given by being
+Whatever the reason for wishing to carry out the estimation on the basis of both classified and unclassified data, it can be undertaken in a straightforward manner by maximum likelihood via the EM algorithm:. The equation (2.33) for the update in the presence of some classified data, except that we use the known value of the component-indicator variable zij instead of its currently assessed expectation $\tau_i$ 1, 9) And we make the same modification in the equation (2.32) for the update of the ith mixing proportion Ti, assuming that the classified data have been obtained by sampling from the mixture. If the classified data do not applies provide any information on the "; as, for example, where the classified data have been obtained by sampling separately from each of the groups corresponding to the components of the mixture model fitted, then the updated estimate of $\tau_i$ is given by being
 
 $$
 \pi _ { i } ^ { ( k + 1 ) } = \sum _ { j = m + 1 } ^ { n } \pi _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) / ( n - m ) .
@@ -1156,7 +1148,7 @@ $$
 
 where the component-indicator vectors 21, corresponding to the m classified feature observations are known
 
-This result can also be established on noting that the missing-data mechanism is ignorable in the terminology introduced by Little and Rubin (1987). Here the missing-data mcchanism is ignorable if the "missing" component-indicator z; for an unclassified feature tive of whether y; is classified or unclassified. Obviously; this is true for the partial classification model considered here. point being
+This result can also be established on noting that the missing-data mechanism is ignorable in the terminology introduced by Little and Rubin (1987). Here the missing-data mcchanism is ignorable if the "missing" component-indicator $z_j$ for an unclassified feature tive of whether $y_j$ is classified or unclassified. Obviously; this is true for the partial classification model considered here. point being
 
 <a id="sec-2-20-3"></a>
 
@@ -1204,7 +1196,7 @@ It can be seen from Table 2.4 that in the case of two groups not widely separate
 
 # 2.21 CLASSIFICATION ML APPROACH
 
-Another likelihood-based approach to clustering besides the mixture likelihood approach is what is sometimes called the classification likelihood approach. With this approach, € and the unknown component-indicator vectors 21, zn of the observed feature data 91, Un are chosen to maximize Lc(w), the likelihood for 4 formed on the basis of the so-called complete-data as introduced within the EM framework for the ML of the mixture likelihood. That is, the unknown vector 2 = (z zT)T containing the component-indicators is (reated as a parameter to be estimated of zero-one values of the elements of the unknown zj, corresponding to all possible assignments of the n entities to the g components; as well as over all values of $ . In principle; the maximization process for the classification likelihood approach can be carried out for arbitrary n, since it is just a matter of computing the maximum value of situations; for example with multivariate normal component densities with unequal covariance matrices, the restriction that at least p+1 observations belong to each component is needed to avoid the degenerate case of infinite likelihood. Unless n is small, n) denotes the optimal partition of the n observations, then âij = 1 or 0, according to whether fitting along
+Another likelihood-based approach to clustering besides the mixture likelihood approach is what is sometimes called the classification likelihood approach. With this approach, € and the unknown component-indicator vectors 21, zn of the observed feature data 91, Un are chosen to maximize Lc(w), the likelihood for 4 formed on the basis of the so-called complete-data as introduced within the EM framework for the ML of the mixture likelihood. That is, the unknown vector 2 = (z zT)T containing the component-indicators is (reated as a parameter to be estimated of zero-one values of the elements of the unknown $z_j$, corresponding to all possible assignments of the n entities to the g components; as well as over all values of $ . In principle; the maximization process for the classification likelihood approach can be carried out for arbitrary n, since it is just a matter of computing the maximum value of situations; for example with multivariate normal component densities with unequal covariance matrices, the restriction that at least p+1 observations belong to each component is needed to avoid the degenerate case of infinite likelihood. Unless n is small, n) denotes the optimal partition of the n observations, then âij = 1 or 0, according to whether fitting along
 
 $$
 \hat { \pi } _ { i } f _ { i } ( y _ { j } ; \hat { \theta } _ { i } ) \geq \hat { \pi } _ { h } f _ { h } ( y _ { j } ; \hat { \theta } _ { h } ) \ \ ( h = 1 , \dots , g ; \, h \neq i )

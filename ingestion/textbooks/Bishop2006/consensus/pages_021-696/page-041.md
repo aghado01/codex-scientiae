@@ -1,6 +1,6 @@
 [Page 41]
 
-###### 1.2.3 Bayesian probabilities
+### 1.2.3 Bayesian probabilities
 
 So far in this chapter, we have viewed probabilities in terms of the frequencies of random, repeatable events. We shall refer to this as the classical or frequentist interpretation of probability. Now we turn to the more general Bayesian view, in which probabilities provide a quantiﬁcation of uncertainty.
 
@@ -10,14 +10,8 @@ The use of probability to represent uncertainty, however, is not an ad-hoc choic
 
 In the ﬁeld of pattern recognition, too, it is helpful to have a more general no-
 
-###### Thomas Bayes
-
-![image 15](../../../../../images/imageFile15.png)
-
-gambling and with the new concept of insurance. One particularly important problem concerned so-called inverse probability. A solution was proposed by Thomas Bayes in his paper ‘Essay towards solving a problem in the doctrine of chances’, which was published in 1764, some three years after his death, in the Philosophical Transactions of the Royal Society. In fact, Bayes only formulated his theory for the case of a uniform prior, and it was Pierre-Simon Laplace who independently rediscovered the theory in general form and who demonstrated its broad applicability.
-
-###### 1701–1761
-
-Thomas Bayes was born in Tunbridge Wells and was a clergyman as well as an amateur scientist and a mathematician. He studied logic and theology at Edinburgh University and was elected Fellow of the
-
-Royal Society in 1742. During the 18th century, issues regarding probability arose in connection with
+> **Thomas Bayes (1701–1761)**
+> 
+> ![image 5](../images/imageFile5.png)
+> 
+> Thomas Bayes was born in Tunbridge Wells and was a clergyman as well as an amateur scientist and a mathematician. He studied logic and theology at Edinburgh University and was elected Fellow of the Royal Society in 1742. During the 18th century, issues regarding probability arose in connection with gambling and with the new concept of insurance. One particularly important problem concerned so-called inverse probability. A solution was proposed by Thomas Bayes in his paper ‘Essay towards solving a problem in the doctrine of chances’, which was published in 1764, some three years after his death, in the Philosophical Transactions of the Royal Society. In fact, Bayes only formulated his theory for the case of a uniform prior, and it was Pierre-Simon Laplace who independently rediscovered the theory in general form and who demonstrated its broad applicability.

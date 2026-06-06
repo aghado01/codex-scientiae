@@ -10,7 +10,7 @@ Summary. The basic properties of random-cluster measures are presented in a mann
 
 Throughout this chapter, G = ( V , E ) will be assumed to be a finite graph. Let φ G , p , q be the random-cluster measure on G . Whether or not a given edge e is open depends on the conﬁguration on the remainder of the graph. The relevant conditional probabilities may be described in the following useful manner.
 
-For e = x , y ∈ E , the expression G \ e (respectively, G . e ) denotes the graph obtained from G by deleting (respectively, contracting) the edge e . We write e = { 0 , 1 } E \{ e } and, for ω ∈ , we deﬁne ω e ∈ e by
+For $e = \langle x, y \rangle$ ∈ E , the expression G \ e (respectively, G . e ) denotes the graph obtained from G by deleting (respectively, contracting) the edge e . We write e = { 0 , 1 } E \{ e } and, for ω ∈ , we deﬁne ω e ∈ e by
 
 $$
 \omega _ { \langle e \rangle } ( f ) = \omega ( f ) , \quad f \in E , \, f \neq e .
@@ -36,7 +36,7 @@ c Springer-Verlag 2006
 
 38 Fundamental Properties [3.1]
 
-(b) Conversely, if φ is a probability measure on ( ,F ) satisfying (3.3) for all ω ∈ and e ∈ E, then φ = φG,p,q.
+(b) Conversely, if φ is a probability measure on ($\Omega, \mathcal{F}$) satisfying (3.3) for all ω ∈ and e ∈ E, then φ = φG,p,q.
 
 The effect of conditioning on the absence or presence of an edge e is to replace the measure φG,p,q by the random-clustermeasure on the respectivegraph G\e or G.e. In addition, the conditionalprobabilitythat e is open, given the conﬁguration elsewhere, depends only on whether or not Ke occurs, and is then given by the stated formula. By (3.3),
 
@@ -48,19 +48,19 @@ We shall sometimes need to condition on the states of more than one edge. Toward
 
 in Section 4.2. Let ξ ∈ , F ⊆ E, and let ξF be the subset of containing all conﬁgurations ψ satisfying ψ(e) = ξ(e) for all e ∈/ F. We deﬁne the random-
 
-cluster measure φξF,p,q on ( ,F ) by (3.5)
+cluster measure $\phi_{F,p,q}^{\xi}$ on $(\Omega, \mathcal{F})$ by
+$$ (3.5) \quad \phi_{F,p,q}^{\xi}(\omega_F) = \begin{cases}
+\phi_{p,q}(\omega_F \mid \Omega_F^{\xi}) & \text{if } \phi_{p,q}(\Omega_F^{\xi}) > 0, \\
+0 & \text{otherwise.}
+\end{cases} $$
 
- 
-
-![image 129](../Images/imageFile129.png)
-
-Here is a final note. Let p ∈ (0,1) and q = 1. It is easily seen that the states of two distinct edges e, f are independent if and only if the pair e, f lies in no circuit of G. This may be proved either directly or via the simulation methods of Sections 3.4 and 8.2.
+Here is a final note. Let p ∈ (0,1) and $q$ = 1. It is easily seen that the states of two distinct edges e, f are independent if and only if the pair e, f lies in no circuit of G. This may be proved either directly or via the simulation methods of Sections 3.4 and 8.2.
 
 [3.2] Positive association 39
 
 Proof of Theorem 3.1. (a) This is easily seen by an expansion of the conditional probability,
 
-φG,p,q(ωe)/φG,p,q(Je) if j = 0, φG,p,q(ωe)/φG,p,q(Je) if j = 1,
+φG,p,q($\omega_e$)/φG,p,q(Je) if j = 0, φG,p,q($\omega_e$)/φG,p,q(Je) if j = 1,
 
 ![image 130](../Images/imageFile130.png)
 
@@ -82,14 +82,14 @@ Proof of Theorem 3.7. This holds by repeated application of (3.2), with one appl
 
 Let φp,q denote the random-cluster measure on G with parameters p and q. We shall see that φp,q satisﬁes the FKG lattice condition (2.18) whenever q ≥ 1, and we arrive thus at the following conclusion.
 
-#### (3.8) Theorem (Positive association) [122]. Let p ∈ (0,1) and q ∈ [1,∞).
+#### (3.8) Theorem (Positive association) [122]. Let p ∈ (0,1) and $q$ ∈ [1,∞).
 
-- (a) The random-cluster measure φp,q is strictly positive and satisﬁes the FKG lattice condition.
-- (b) The random-cluster measure φp,q is strongly positively-associated, and in particular
+- (a) The random-cluster measure φp,$q$ is strictly positive and satisﬁes the FKG lattice condition.
+- (b) The random-cluster measure φp,$q$ is strongly positively-associated, and in particular
 
 φp,q(XY) ≥ φp,q(X)φp,q(Y) for increasing X,Y : → R, φp,q(A ∩ B) ≥ φp,q(A)φp,q(B) for increasing A, B ∈ F .
 
-It is not difﬁcult to see that φp,q is not (in general) positively associated when q ∈ (0,1), as illustrated in the example following. Let G be the graph containing
+It is not difﬁcult to see that φp,$q$ is not (in general) positively associated when q ∈ (0,1), as illustrated in the example following. Let G be the graph containing
 
 just two vertices and having exactly two parallel edges e and f joining these vertices. It is an easy computation that
 
@@ -101,9 +101,9 @@ p2q2(q − 1)(1 − p)2 Z(p,q)2
 
 ![image 135](../Images/imageFile135.png)
 
-where Jg is the event that g is open. This is strictly negative if 0 < p,q < 1.
+where Jg is the event that g is open. This is strictly negative if 0 < p,$q$ < 1.
 
-Proof of Theorem 3.8. Let p ∈ (0,1) and q ∈ [1,∞). Part (b) follows from (a) and Theorem 2.27. It is elementary that φp,q is strictly positive. We now check as required that φp,q satisﬁes the FKG lattice condition (2.18). Since the set η(ω) of open edges in a conﬁguration ω satisﬁes
+Proof of Theorem 3.8. Let p ∈ (0,1) and $q$ ∈ [1,∞). Part (b) follows from (a) and Theorem 2.27. It is elementary that φp,$q$ is strictly positive. We now check as required that φp,q satisﬁes the FKG lattice condition (2.18). Since the set η(ω) of open edges in a conﬁguration ω satisﬁes
 
 (3.10) |η(ω1 ∨ ω2)| + |η(ω1 ∧ ω2)| = |η(ω1)| + |η(ω2)|, ω1,ω2 ∈ , it sufﬁces, on taking logarithms, to prove that (3.11) k(ω1 ∨ ω2) + k(ω1 ∧ ω2) ≥ k(ω1) + k(ω2), ω1,ω2 ∈ .
 
@@ -121,7 +121,7 @@ Theorem 3.8 applies only to finite graphs G, whereas many potential applications
 
 ### 3.3 Differential formulae and sharp thresholds
 
-One way of estimating the probability of an event A is via an estimate of its derivative dφp,q(A)/dp. When q = 1, there is a formula for this derivative which has proved very useful in reliability theory, percolation, and elsewhere, see [22, 126, 154, 287]. This formula has been extended to random-cluster measures. For ω ∈ , let |η| = |η(ω)| = e∈E ω(e) be the number of open edges of ω as usual, and k = k(ω) the number of open clusters.
+One way of estimating the probability of an event A is via an estimate of its derivative dφp,q(A)/dp. When $q$ = 1, there is a formula for this derivative which has proved very useful in reliability theory, percolation, and elsewhere, see [22, 126, 154, 287]. This formula has been extended to random-cluster measures. For ω ∈ , let |η| = |η(ω)| = e∈E ω(e) be the number of open edges of ω as usual, and k = k(ω) the number of open clusters.
 
 [3.3] Differential formulae and sharp thresholds 41
 
@@ -149,7 +149,7 @@ covp,q(k,h(k)) ≥ 0.
 
 ![image 145](../Images/imageFile145.png)
 
-This time we take h = −1(−∞,1], so that −h is the indicator function of the event that the open graph (V,η(ω)) is connected. We deduce that the probability of connectedness is a decreasing function of q on the interval (0,∞). These examples are curiosities, given the failure of stochastic monotonicity when q < 1.
+This time we take h = −1(−∞,1], so that −h is the indicator function of the event that the open graph (V,η(ω)) is connected. We deduce that the probability of connectedness is a decreasing function of q on the interval (0,∞). These examples are curiosities, given the failure of stochastic monotonicity when $q$ < 1.
 
 Let q ∈ [1,∞). Since φp,q satisﬁes the FKG lattice condition (2.18), it is monotonic. Let A be a subgroup of the automorphism group1 Aut(G) of the graph G = (V, E). We call E A-transitive if A acts transitively on E.
 
@@ -157,7 +157,7 @@ Let q ∈ [1,∞). Since φp,q satisﬁes the FKG lattice condition (2.18), it i
 
 1The automorphism group Aut(G) is discussed further in Sections 4.3 and 10.12.
 
-- (3.16) Theorem (Sharp threshold) [141]. There exists an absolute constant c ∈ (0,∞) such that the following holds. Let A ∈ F be an increasing event, and suppose there exists a subgroup A of Aut(G) such that E is A-transitive and A is A-invariant. Then, for p ∈ (0,1) and q ∈ [1,∞),
+- (3.16) Theorem (Sharp threshold) [141]. There exists an absolute constant c ∈ (0,∞) such that the following holds. Let A ∈ F be an increasing event, and suppose there exists a subgroup A of Aut(G) such that E is A-transitive and A is A-invariant. Then, for $p$ ∈ (0,1) and $q$ ∈ [1,∞),
 - (3.17)
 
 d dp
@@ -194,7 +194,7 @@ and hence, by integration, (3.19) φp,q(A) ≥ 1 − 12|E|−c(p−p1)/q, p ∈ 
 
 ![image 157](../Images/imageFile157.png)
 
-Proof of Theorem 3.16. With A as in the theorem, φp,q is A-invariant since A ⊆ Aut(G). The claim is a consequence of Theorem 2.51 on noting from (3.3) that
+Proof of Theorem 3.16. With A as in the theorem, φp,$q$ is A-invariant since A ⊆ Aut(G). The claim is a consequence of Theorem 2.51 on noting from (3.3) that
 
 ![image 158](../Images/imageFile158.png)
 
@@ -284,7 +284,7 @@ Proof. Let A be an increasing event, and write θ(p,q) = φp,q(A). As in the pro
 
 ![image 179](../Images/imageFile179.png)
 
-qDe(π) − qDe(ω)1A(ωe) ≥ 0,
+qDe(π) − qDe(ω)1A($\omega_e$) ≥ 0,
 
 by (3.31) and (3.32). We have used the facts that q ≥ 1, and De(ω) ≤ De(π) for π ≤ ω. The ensuing Markov chain has no possible transition that can exit the set S. That is, if the chain starts in S, then we may assume it remains in S for all time.
 
@@ -378,7 +378,7 @@ Before proceeding to the proofs, we note that Theorem 3.45 is closely related to
 
 ![image 205](../Images/imageFile205.png)
 
-Proof of Theorem 3.45. Let q ∈ [1,∞) and 0 < r < s < 1. We shall employ a suitable coupling of the measures φr,q and φs,q. Let E = {e1,e2,. . . ,em} be the edges of the graph G, and let U1,U2,. . .,Um be independent random variables having the uniform distribution on [0,1]. We write P for the probability measure associated with the Uj. We shall examine the edges in turn, to determine whether they are open or closed for the respective parameters r and s. The outcome will be a pair (π,ω) of conﬁgurations each lying in = {0,1}E and such that π ≤ ω. The conﬁgurations π, ω are random in the sense that they are functions of the Uj. A similar coupling was used in the proof of Theorem 2.31.
+Proof of Theorem 3.45. Let q ∈ [1,∞) and 0 < r < s < 1. We shall employ a suitable coupling of the measures φr,q and φs,q. Let E = {e1,e2,. . . ,em} be the edges of the graph G, and let U1,U2,. . .,Um be independent random variables having the uniform distribution on [0,1]. We write P for the probability measure associated with the Uj. We shall examine the edges in turn, to determine whether they are open or closed for the respective parameters r and s. The outcome will be a pair (π,ω) of conﬁgurations each lying in \Omega = \{0,1\}^E and such that π ≤ ω. The conﬁgurations π, ω are random in the sense that they are functions of the Uj. A similar coupling was used in the proof of Theorem 2.31.
 
 First, we declare
 
@@ -475,7 +475,7 @@ where φp denotes product measure. This indicates a link to percolation on G, an
 
 The partition function ZG does not change a great deal if an edge is removed from G. Let F ⊆ E, and write G\F forthe graph G with the edgesin F removed. If F is the singleton {e}, we write G \ e for G \ {e}.
 
-- (3.60) Theorem. Let p ∈ [0,1] and q ∈ (0,∞). Then
+- (3.60) Theorem. Let p ∈ [0,1] and $q$ ∈ (0,∞). Then
 - (3.61) (1 ∧ q)|F| ≤
 
 ZG\F(p,q) ZG(p,q) ≤ (1 ∨ q)|F|, F ⊆ E.
@@ -488,11 +488,11 @@ We give next an application of these inequalities to be used later. Let Gi = (Vi
 
 where for clarity we have removed explicit mention of p, q. Taken in conjunction with (3.61), this leads easily to a pair of inequalities which we state as a theorem.
 
-(3.63) Theorem. Let G = (V, E) be a finite graph, and let F be a set of edges whose removal breaks G into two disjoint graphs G1 = (V1, E1), G2 = (V2, E2). Thus, V = V1 ∪ V2 and E = E1 ∪ E2 ∪ F. For p ∈ [0,1] and q ∈ (0,∞),
+(3.63) Theorem. Let G = (V, E) be a finite graph, and let F be a set of edges whose removal breaks G into two disjoint graphs G1 = (V1, E1), G2 = (V2, E2). Thus, V = V1 ∪ V2 and E = E1 ∪ E2 ∪ F. For p ∈ [0,1] and $q$ ∈ (0,∞),
 
 ZG1ZG2(1 ∨ q)−|F| ≤ ZG ≤ ZG1ZG2(1 ∧ q)−|F|.
 
-Proof of Theorem 3.60. It sufﬁces to prove (3.61) with F a singleton set, that is, F = {e}. The claim for general F will follow by iteration. For ω ∈ , we write ω e for the conﬁguration in e = {0,1}E\{e} that agrees with ω off e. Clearly,
+Proof of Theorem 3.60. It sufﬁces to prove (3.61) with F a singleton set, that is, F = {e}. The claim for general F will follow by iteration. For ω ∈ , we write ω e for the conﬁguration in e \Omega = \{0,1\}^E\{e} that agrees with ω off e. Clearly,
 
 k(ω) ≤ k(ω e ) ≤ k(ω) + 1, whence
 
@@ -516,7 +516,7 @@ Equations (3.64) and (3.65) imply (3.61) with F = {e}.
 
 We develop next an inequality related to (3.61) concerning the addition of a vertex, and which will be useful later. Let G = (V, E) be a finite graph as usual, and let v ∈/ V and W ⊆ V. We augment G by adding the vertex v together with edges v,w for w ∈ W. Let us write G + v for the resulting graph.
 
-(3.66) Theorem. Let p ∈ [0,1] and q ∈ [1,∞). In the above notation,
+(3.66) Theorem. Let p ∈ [0,1] and $q$ ∈ [1,∞). In the above notation,
 
 ZG+v(p,q) ZG(p,q) ≥ q(1 − p + pq−1)|W|.
 
@@ -538,7 +538,7 @@ So far in this section we have considered the effect on the partition function o
 
 x, y is an edge of G1 if and only if it is an edge of G; for a ∈ A1, the number of edges of G1 between a and c is exactly the number of edges in G between a and members of C.
 
-(3.69) Lemma. For p ∈ [0,1] and q ∈ [1,∞), ZG ≥ q−1ZG1ZG2.
+(3.69) Lemma. For p ∈ [0,1] and $q$ ∈ [1,∞), ZG ≥ q−1ZG1ZG2.
 
 Since ZG ≥ q for all G when q ≥ 1,
 
@@ -574,7 +574,7 @@ and (3.75) follows as in part (a). The convexity is a consequence of the fact th
 
 Stochastic domination is an invaluable tool in the study of random-cluster measures. Since the random-cluster model is an ‘edge-model’, it is usual to make comparisons with other edge-models. The relationship when q ∈ {2,3,. . .} to Potts models suggest the possibility of comparison with a ‘vertex-model’, and a hint of how to achieve this is provided by the case of integral q.
 
-Consider the random-clustermodel with parameters p and q on the finite graph G = (V, E). If q ∈ {2,3,. . .}, we may generate a Potts model by assigning a uniformly chosen spin-value to each open cluster. The spin conﬁguration thus obtained is governed by the Potts measure with inverse-temperature β satisfying p = 1−e−β. Evidently,this can workonly if q is an integer. Aweakerconclusion may be obtained if q is not an integer, namely the following. Suppose p ∈ [0,1] and q ∈ [1,∞). We examine each open cluster of the random-cluster model in turn, and we declareitto be red with probability1/q and white otherwise, different clusters receiving independent colours4. Let R be the set of vertices lying in red clusters. If q ∈ {2,3,. . .}, then R has the same distribution as the set of vertices of the corresponding Potts model that have a pre-determined spin-value. Write Pp,q for an appropriate probability measure. One has for general q ∈ (1,∞) that,
+Consider the random-clustermodel with parameters p and $q$ on the finite graph G = (V, E). If q ∈ {2,3,. . .}, we may generate a Potts model by assigning a uniformly chosen spin-value to each open cluster. The spin conﬁguration thus obtained is governed by the Potts measure with inverse-temperature β satisfying $p$ = 1−e−β. Evidently,this can workonly if $q$ is an integer. Aweakerconclusion may be obtained if $q$ is not an integer, namely the following. Suppose p ∈ [0,1] and $q$ ∈ [1,∞). We examine each open cluster of the random-cluster model in turn, and we declareitto be red with probability1/q and white otherwise, different clusters receiving independent colours4. Let R be the set of vertices lying in red clusters. If q ∈ {2,3,. . .}, then R has the same distribution as the set of vertices of the corresponding Potts model that have a pre-determined spin-value. Write Pp,q for an appropriate probability measure. One has for general q ∈ (1,∞) that,
 
 ![image 236](../Images/imageFile236.png)
 
@@ -596,7 +596,7 @@ Consider the random-clustermodel with parameters p and q on the finite graph G =
 
 k(ω′)
 
-where A = V \ A, A = {0,1}EA with EA the subset of E containing all edges with both endvertices in A, the ZG, ZA are the appropriate partition functions, and eA is the set of edges of G with exactly one endvertex in A. When q is an integer, (3.76) reduces to the usual Potts law for the set of vertices with a given spin-value.
+where A = V \ A, A \Omega = \{0,1\}^EA with EA the subset of E containing all edges with both endvertices in A, the ZG, ZA are the appropriate partition functions, and eA is the set of edges of G with exactly one endvertex in A. When $q$ is an integer, (3.76) reduces to the usual Potts law for the set of vertices with a given spin-value.
 
 ![image 244](../Images/imageFile244.png)
 
@@ -618,7 +618,7 @@ Let deg(u) denote the degree of the vertex u in the graph G, and let
 
 ![image 249](../Images/imageFile249.png)
 
-- (3.79) Theorem [15]. Let β ∈ (0,∞), p = 1 − e−β, q ∈ [2,∞), and let R be the random ‘red’ set of the random-cluster model, governed by the law given in (3.76). Let β′ ∈ (0,∞) and h′ ∈ (−∞,∞) be given by
+- (3.79) Theorem [15]. Let β ∈ (0,∞), $p$ = 1 − e−β, q ∈ [2,∞), and let R be the random ‘red’ set of the random-cluster model, governed by the law given in (3.76). Let β′ ∈ (0,∞) and h′ ∈ (−∞,∞) be given by
 - (3.80) e2β′ = eβ
 
 ![image 250](../Images/imageFile250.png)
@@ -631,9 +631,7 @@ Pp,q( f (R)) ≤ πβ′,h′( f (S))
 
 for all increasing functions f : {0,1}V → R. Its importance lies in the deduction that R is small whenever S is small. The Ising model allows a deeper analysis than do general Potts and random-cluster models (see, for example, the results of Chapter 9). Particularly relevant facts are known for the set of + spins in the Ising model when the external field h′ is negative, and thus it becomes important to obtain conditions under which h′ < 0.
 
-Letq > 2and assume that G issuch that ≥ 3. Setting h′ = 0 and eliminating β′ in (3.80), we ﬁnd that β = β where
-
-q − 2 (q − 1)1−(2/ ) − 1
+Letq > 2and assume that G issuch that ≥ 3. Setting h′ = 0 and eliminating β′ in (3.80), we ﬁnd that β = β where $q$ − 2 (q − 1)1−(2/ ) − 1
 
 (3.82) eβ =
 
@@ -675,7 +673,7 @@ First, we check (2.7). Let C ⊆ V and u ∈ V \ C. We claim that (3.84) µ2(Cu)
 
 ≥ (1 − p)2r−δ(q − 1) 1 − p + p(q − 1)−1 δ−r.
 
-Substituting p = 1 − e−β and setting x = eβ, we obtain by multiplying (3.85) and (3.86) that
+Substituting $p$ = 1 − e−β and setting x = eβ, we obtain by multiplying (3.85) and (3.86) that
 
 µ2(Cu)µ1(C) µ1(Cu)µ2(C) ≥ exp β′(2r − δ) + β′h′ − β(2r − δ)
 
@@ -693,13 +691,13 @@ Substituting p = 1 − e−β and setting x = eβ, we obtain by multiplying (3.8
 
 62 Fundamental Properties [3.8]
 
-parameter-value ph, see (1.20). We shall see that φp,q is invariant (in a manner to made speciﬁc soon) when two edges e, f in parallel (respectively, series) are replaced as above by a single edge g having the ‘correct’ associated parametervalue pg given by
+parameter-value ph, see (1.20). We shall see that φp,$q$ is invariant (in a manner to made speciﬁc soon) when two edges e, f in parallel (respectively, series) are replaced as above by a single edge g having the ‘correct’ associated parametervalue pg given by
 
 (3.88) pg =
 
 π(pe, pf ) if e, f are in parallel, σ(pe, pf ,q) if e, f are in series.
 
-Let ′ = {0,1}E′ be the conﬁgurationspace associated with the graph G′ given above. We deﬁne a mapping τ : → ′ by τω(h) = ω(h) for h = g, and
+Let ′ \Omega = \{0,1\}^E′ be the conﬁgurationspace associated with the graph G′ given above. We deﬁne a mapping τ : → ′ by τω(h) = ω(h) for h = g, and
 
 1 − (1 − ω(e))(1 − ω( f )) if e, f are in parallel, ω(e)ω( f ) if e, f are in series.
 
@@ -715,8 +713,8 @@ and it turns out that this new measure is simply a random-cluster measure with a
 
 (3.89) Theorem. Let e, f be distinct edges of the finite graph G.
 
-- (a) Parallel law. Let e, f be in parallel. The measure φp′,q is the random-cluster measure on G′ with parameters ph for h = g, pg = π(pe, pf ).
-- (b) Series law. Let e, f be in series. The measure φp′,q is the random-cluster measure on G′ with parameters ph for h = g, pg = σ(pe, pf ,q).
+- (a) Parallel law. Let e, f be in parallel. The measure φp′,$q$ is the random-cluster measure on G′ with parameters ph for h = g, pg = π(pe, pf ).
+- (b) Series law. Let e, f be in series. The measure φp′,$q$ is the random-cluster measure on G′ with parameters ph for h = g, pg = σ(pe, pf ,q).
 
 There is a third transformation of value when calculating effective resistances of electrical networks, namely the ‘star–triangle’ (or ‘star–delta’) transformation. Thisplaysapartforrandom-clustermodelsalso,seeSection6.6andthediscussion leading to Lemma 6.64.
 
@@ -760,7 +758,7 @@ pepf pe pf + qpe(1 − pf ) + qpf (1 − pe) + q2(1 − pe)(1 − pf )
 
 ![image 269](../Images/imageFile269.png)
 
-= {0,1}E. There are four relevant concepts of negative association, of which we start at the ‘lowest’. The measure µ is said to be edge-negatively-associated if (3.92) µ(Je ∩ Jf ) ≤ µ(Je)µ(Jf ), e, f ∈ E, e = f. Recall that Je = {ω ∈ : ω(e) = 1}.
+\Omega = \{0,1\}^E. There are four relevant concepts of negative association, of which we start at the ‘lowest’. The measure µ is said to be edge-negatively-associated if (3.92) µ(Je ∩ Jf ) ≤ µ(Je)µ(Jf ), e, f ∈ E, e = f. Recall that Je = {ω ∈ : ω(e) = 1}.
 
 There is a more general notion of negative association, as follows. For ω ∈ and F ⊆ E we deﬁne the cylinder event F,ω generated by ω on F by
 
@@ -788,9 +786,9 @@ It is evident that: µ has the disjoint-occurrence property
 
 ⇒ µ is edge-negatively-associated.
 
-It was proved by van den Berg and Kesten [37] that the product measures φp on have the disjoint-occurrence property on increasing events, and further by Reimer[283] that φp hasthe more generaldisjoint-occurrenceproperty. Itiseasily seen7 that the random-cluster measure φp,q cannot in general be edge-negativelyassociated when q > 1. It may however be conjectured that φp,q satisﬁes some form of negative association when q < 1. Such a property would be useful in studying random-cluster measures, particularly in the thermodynamic limit (see Chapter 4), but no such property has yet been proved.
+It was proved by van den Berg and Kesten [37] that the product measures φp on have the disjoint-occurrence property on increasing events, and further by Reimer[283] that φp hasthe more generaldisjoint-occurrenceproperty. Itiseasily seen7 that the random-cluster measure φp,q cannot in general be edge-negativelyassociated when $q$ > 1. It may however be conjectured that φp,q satisﬁes some form of negative association when $q$ < 1. Such a property would be useful in studying random-cluster measures, particularly in the thermodynamic limit (see Chapter 4), but no such property has yet been proved.
 
-In the absence of a satisfactory approach to the general case of random-cluster measures with q < 1, we turn next to the issue of negative association of weak limits of φp,q as q ↓ 0; see Section 1.5 and especially Theorem 1.23. Here is a mild conjecture, as yet unproven.
+In the absence of a satisfactory approach to the general case of random-cluster measures with $q$ < 1, we turn next to the issue of negative association of weak limits of φp,q as q ↓ 0; see Section 1.5 and especially Theorem 1.23. Here is a mild conjecture, as yet unproven.
 
 (3.94) Conjecture [156, 165, 199, 268]. For any finite graph G = (V, E), the uniform-spanning-forest measure USF and the uniform-connected-subgraph measure UCS are edge-negatively-associated.
 
@@ -816,7 +814,7 @@ The stronger property of negative association has been proved for UST, see [116]
 
 Since forests are dual to connected subgraphs for planar graphs, this implies a property of edge-negative-association for the UCS measure on certain planar graphs having fewer than ten faces.
 
-The conjectures of this section have been expressed in terms of inequalities involving counts of connected subgraphs and forests, see the discussion around (3.95). Such inequalities may be formulated in the following more general way. Let p = (pe : e ∈ E) be a collection of non-negative numbers indexed by E. For E′ ⊆ E, let
+The conjectures of this section have been expressed in terms of inequalities involving counts of connected subgraphs and forests, see the discussion around (3.95). Such inequalities may be formulated in the following more general way. Let $p$ = (pe : e ∈ E) be a collection of non-negative numbers indexed by E. For E′ ⊆ E, let
 
 fp(E′) =
 
@@ -834,9 +832,9 @@ fp(E′),
 
 where is either the property of being connected or the property of containing no circuits. Note that (3.95) becomes a polynomial inequality in |E| real variables. Such a formulation is natural when the problem is cast in the context of the Tutte polynomial, see Section 3.6 and [308].
 
-Proof8 of Theorem 3.97. Consider an electrical network on the connected graph G in which each edge corresponds to a unit resistor. The relevant fact from the theory of electrical networks is that, if a unit current flows from a source vertex s to a sink vertex t ( = s), then the current flowing along the edge e = x, y in the direction xy equals N(s, x, y,t)/N, where N is the number of spanning trees of G and N(s, x, y,t) is the number of spanning trees whose unique path from s to t passes along the edge x, y in the direction xy.
+Proof8 of Theorem 3.97. Consider an electrical network on the connected graph G in which each edge corresponds to a unit resistor. The relevant fact from the theory of electrical networks is that, if a unit current flows from a source vertex s to a sink vertex t ( = s), then the current flowing along the edge $e = \langle x, y \rangle$ in the direction xy equals N(s, x, y,t)/N, where N is the number of spanning trees of G and N(s, x, y,t) is the number of spanning trees whose unique path from s to t passes along the edge x, y in the direction xy.
 
-- Let e = x, y , and let µ be the UST measureon G. By the above,µ(Je)equals the current flowing along e when a unit current flows through G from source x to sink y. By Ohm’s Law, this equals the potential difference between x and y, which in turn equals the effective resistance RG(x, y) of the network between x and y.
+- Let $e = \langle x, y \rangle$ , and let µ be the UST measureon G. By the above,µ(Je)equals the current flowing along e when a unit current flows through G from source x to sink y. By Ohm’s Law, this equals the potential difference between x and y, which in turn equals the effective resistance RG(x, y) of the network between x and y.
 - Let f ∈ E, f = e,anddenoteby G. f thegraphobtainedfrom G bycontracting the edge f . There is a one–one correspondence between spanning trees of G. f and spanning trees of G containing f . Therefore, µ(Je | Jf ) equals the effective resistance RG.f (x, y) of the network G. f between x and y.
 
 Theso-called Rayleighprinciplestates thatthe effectiveresistance ofa network is a non-decreasing function of the individual edge-resistances. It follows that RG.f (x, y) ≤ RG(x, y), and hence µ(Je | Jf ) ≤ µ(Je).

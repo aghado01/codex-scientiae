@@ -27,7 +27,7 @@ Another practical issue arises with the parametric specification of the componen
 Cutler and Windham (1994) explain some of the difficulties in discussing the choice of functionals, which are measures of goodness-of-fit of a model for a given number of components 9 They note that one difficulty has been discussed by Donoho (1988), who out that; "near any distribution of interest, there are empirically indistinguishable distributions (indistinguishable at a given sample size) where the functional takes on arbitrarily values: A mixture density with 9 components might be empirically indistinguishable from one with either fewer than g components points Or more than g components. It is therefore sensible in practice to approach the question of the number of components in a mixture model in terms of an assessment of the smallest number of components in the mixture compatible with the data. To this end, the true order 9 of the g-component mixture model
 
 $$
-f ( y ; \Psi ) = \sum _ { i } \pi _ { i } \, f _ { i } ( y ; \theta _ { i } )
+f ( $y_j$ \Psi ) = \sum _ { i } \pi _ { i } \, f _ { i } ( $y_j$ \theta _ { i } )
 $$
 
 different and all the associated mixing proportions Ti are nonzero.
@@ -50,7 +50,7 @@ $$
 
 and where the last term on the right-hand side of (6.2) corresponds to the Jacobian of the transformation from to Yj -
 
-Gutierrez et al. (1995) adopted this mixture model of transformed normal components in an attempt to identify the number of underlying physical phenomena behind tomato root initiation; The observation %j corresponds to the inverse proportion of the jth lateral root which expresses GUS (j =1, 40). This measurement is a possible indicator of the number of initial cells in the lateral root\_ In Figure 6.1 we report the kernel density estimate and the normal Q-Q plot ofthe yj . It shows that the data are clearly skewed with a mode at yj = 2 initial cells. However; Gutierrez et al. (1995) noted that if the reciprocals of the data are used, then the 'population appears to be normally distributed; see Figure 6.2. confirmed this by the application of the likelihood ratio test (LRT) for homogeneity versus a two-component normal model applied to the data; firstly in their original form and then to the reciprocals of the data. The P-values for these two tests were equal to 0.012 and 0.955, respectively. The former P-value was obtained through their simulation of the null distribution of the likelihood ratio test statistic (LRTS) , X, which yielded a distribution bounded As the primary interest of Gutierrez et al. (1995) was in determining whether the observed data were They ~2log - the result of one or possibly two underlying physical phenomena; reanalyzed the data; adjusting for skewness through the use of the mixture model (6.2). For fixed Ç this model can be fitted by ML estimation as for a two-component normal mixture, and so it was fitted unconditionally through a search over (. The parameter estimates so obtained were Ç = and #1 0.91. That Ç is closer to ~1 than 1 reveals that y5 is more conducive to the normal mixture model (6.2) The P-value for the LRT of g = 1 versus g 2 was found by simulation to be 0.957. The null distribution of the LRTS was virtually unaffected by the transformation; which was anticipated from usual likelihood theory given that a free parameter was added under both the null and alternative hypotheses. Thus when the Box-Cox adjustment is made for skewness; the LRT is nonsignificant, grid and so there is little evidence of any major secondary underlying phenomena. Subsequent simulations by Gutierrez et al. (1995) indicated that the power of the LRT here is less than 109 and that a sample size of n > 350 would be needed to attain a power of 509. These simulations also revealed that there is little drop in power in the Box-Cox transformation . using
+Gutierrez et al. (1995) adopted this mixture model of transformed normal components in an attempt to identify the number of underlying physical phenomena behind tomato root initiation; The observation %j corresponds to the inverse proportion of the jth lateral root which expresses GUS (j =1, 40). This measurement is a possible indicator of the number of initial cells in the lateral root\_ In Figure 6.1 we report the kernel density estimate and the normal Q-Q plot ofthe $y_j$ . It shows that the data are clearly skewed with a mode at $y_j$ = 2 initial cells. However; Gutierrez et al. (1995) noted that if the reciprocals of the data are used, then the 'population appears to be normally distributed; see Figure 6.2. confirmed this by the application of the likelihood ratio test (LRT) for homogeneity versus a two-component normal model applied to the data; firstly in their original form and then to the reciprocals of the data. The P-values for these two tests were equal to 0.012 and 0.955, respectively. The former P-value was obtained through their simulation of the null distribution of the likelihood ratio test statistic (LRTS) , X, which yielded a distribution bounded As the primary interest of Gutierrez et al. (1995) was in determining whether the observed data were They ~2log - the result of one or possibly two underlying physical phenomena; reanalyzed the data; adjusting for skewness through the use of the mixture model (6.2). For fixed Ç this model can be fitted by ML estimation as for a two-component normal mixture, and so it was fitted unconditionally through a search over (. The parameter estimates so obtained were Ç = and #1 0.91. That Ç is closer to ~1 than 1 reveals that y5 is more conducive to the normal mixture model (6.2) The P-value for the LRT of g = 1 versus g 2 was found by simulation to be 0.957. The null distribution of the LRTS was virtually unaffected by the transformation; which was anticipated from usual likelihood theory given that a free parameter was added under both the null and alternative hypotheses. Thus when the Box-Cox adjustment is made for skewness; the LRT is nonsignificant, grid and so there is little evidence of any major secondary underlying phenomena. Subsequent simulations by Gutierrez et al. (1995) indicated that the power of the LRT here is less than 109 and that a sample size of n > 350 would be needed to attain a power of 509. These simulations also revealed that there is little drop in power in the Box-Cox transformation . using
 
 ![image 18](mclachlan2000_images/imageFile18.png)
 
@@ -164,7 +164,7 @@ If we continue on past g =5 and monitor the increase in the likelihood, then it 
 
 Table 6.2 Fitted Posterior Probabilities of Component Membership
 
-| Yj        |     | (u;) | îs(y;) |
+| Yj        |     | (u;) | îs($y_j$) |
 | --------- | --- | ---- | ------ |
 | 060       |     |      | 1.00   |
 | 064       |     |      | 1.00   |
@@ -270,19 +270,17 @@ $$
 
 is twice the increase in the likelihood or the decrease in deviance. Unfortunately with mixture models, regularity conditions do not hold for ~2log X to have its usual asymptotic null distribution of chi-squared with degrees of freedom equal to the difference between the number of parameters under the null and alternative hypotheses. log
 
-To briefly explain why this is so, suppose that the component densities are completely specified. Then the parameter vector %consists ofjust the mixing proportions: Thus, as 90 < 91 in (6.4) and (6.5), the null hypothesis is specified by the true value of y on the boundary of the parameter space (with one or more of the mixing proportions specified as zero) Further, if the component densities belong to, say the same parametric family f(y;; 0) with 0 unspecified, then Ho will hold also if = 0; for some h # i That is, Ho corresponds to nonidentifiable subset of the parameter space Thus with the true value of the parameter vector under Ho lying on the boundary of the parameter space and also in nonidentifiable subset if the component densities depend on unknown parameters, the classic regularity being
+To briefly explain why this is so, suppose that the component densities are completely specified. Then the parameter vector $\Psi$consists ofjust the mixing proportions: Thus, as 90 < 91 in (6.4) and (6.5), the null hypothesis is specified by the true value of y on the boundary of the parameter space (with one or more of the mixing proportions specified as zero) Further, if the component densities belong to, say the same parametric family f($y_j$; 0) with 0 unspecified, then Ho will hold also if = 0; for some h # i That is, Ho corresponds to nonidentifiable subset of the parameter space Thus with the true value of the parameter vector under Ho lying on the boundary of the parameter space and also in nonidentifiable subset if the component densities depend on unknown parameters, the classic regularity being
 
 <a id="sec-6-4-2"></a>
 
 # 6.4.2 Example 6.3: Breakdown in Regularity Conditions
 
-We now present an example to illustrate the breakdown in the standard regularity conditions. Consider a mixture of g =2 univariate normal densities in proportions T1 and T2 = 1 T1 with means #1 = and p2 and common unit variances, where T1 and /2 are unspecified. Suppose we wish t0 test
+We now present an example to illustrate the breakdown in the standard regularity conditions. Consider a mixture of g =2 univariate normal densities in proportions $\pi_1$ and T2 = 1 T1 with means #1 = and p2 and common unit variances, where T1 and /2 are unspecified. Suppose we wish t0 test
 
 versus
 
-$$
-( 6 . 7 )
-$$
+
 
 $$
 H _ { 1 } \colon f ( y _ { j } ; \Psi ) = \pi _ { 1 } \phi ( y _ { j } ; 0 , 1 ) + \pi _ { 2 } \phi ( y _ { j } ; \mu _ { 2 } , 1 ) .
@@ -296,9 +294,7 @@ $$
 
 and the line segment [0,1] on the T1-axis when p2 = O; that is,
 
-$$
-( 6 . 9 )
-$$
+
 
 When the null hypothesis Ho holds, the parameter vector V is on the boundary of the
 
@@ -430,7 +426,7 @@ $$
 \hat { \Psi } _ { 0 } = \hat { \theta } _ { 0 } = \{ \sum _ { j = 1 } ^ { n } y _ { j }
 $$
 
-Under the alternative hypothesis H1, the MLE $1 ofvhas to be computed iteratively. Seidel et al. (2000a) used the EM algorithm with two different starting strategies. With the first, START-A, the initial value 0{0) = Y(n) = 0.5, where y(1) y(n) denote the order statistics and 9 + 0.500, where 0 denotes the true value of 0 under the null hypothesis.
+Under the alternative hypothesis H1, the MLE $\hat{\Psi}$1 ofvhas to be computed iteratively. Seidel et al. (2000a) used the EM algorithm with two different starting strategies. With the first, START-A, the initial value 0{0) = Y(n) = 0.5, where y(1) y(n) denote the order statistics and 9 + 0.500, where 0 denotes the true value of 0 under the null hypothesis.
 
 With the first, STOP-A, the EM algorithm in fitting the MLE under H1 was terminated when specified value of acc. In Table 6.3, acc was set at Their second stopping rule, STOP-B, was based on the directional derivative; log 10-5 .
 
@@ -485,7 +481,7 @@ $$
 H _ { 0 } \colon g = g _ { 0 } \quad \lor \quad H _ { 1 } \colon g = g _ { 1 }
 $$
 
-for a specified value of go. Previously Aitkin et al. (1981) had adopted a resampling approach in the context of a latent class analysis. Bootstrap samples are generated from the mixture model fitted under the null hypothesis of go components. That is, the bootstrap samples are generated from the mixture model with the vector % of unknown parameters replaced by its MLE $g computed by consideration of the log likelihood formed from the original data under Ho. The value of ~2 Ais computed for each bootstrap sample after mixture models for 9 g0 and 91 in turn to it. The process is repeated independently a number of times B, and the replicated values of ~2log X formed from the successive bootstrap samples provide an assessment of the bootstrap, and hence of the true, null distribution of -2 It enables an approximation to be made to the achieved level of significance P corresponding to the value of \_2 X evaluated from the original sample. The jth-order statistic of the B bootstrap replications can be used to estimate the quantile of order ; / (B + 1) A preferable alternative would be to use the jth-order statistic as an estimate of the quantile of order (3j - 1)/(3B + 1); see Hoaglin (1985). fitting log
+for a specified value of go. Previously Aitkin et al. (1981) had adopted a resampling approach in the context of a latent class analysis. Bootstrap samples are generated from the mixture model fitted under the null hypothesis of go components. That is, the bootstrap samples are generated from the mixture model with the vector $\Psi$ of unknown parameters replaced by its MLE $\hat{\Psi}$g computed by consideration of the log likelihood formed from the original data under Ho. The value of ~2 Ais computed for each bootstrap sample after mixture models for 9 g0 and 91 in turn to it. The process is repeated independently a number of times B, and the replicated values of ~2log X formed from the successive bootstrap samples provide an assessment of the bootstrap, and hence of the true, null distribution of -2 It enables an approximation to be made to the achieved level of significance P corresponding to the value of \_2 X evaluated from the original sample. The jth-order statistic of the B bootstrap replications can be used to estimate the quantile of order ; / (B + 1) A preferable alternative would be to use the jth-order statistic as an estimate of the quantile of order (3j - 1)/(3B + 1); see Hoaglin (1985). fitting log
 
 If a very accurate estimate of the P-value were required, then B may have to be very large (Efron and Tibshirani, 1993) Usually, however, there is no interest in estimating a P-value with high precision. Even with a limited replication number B, the amount of computation involved is still considerable; in particular for values of easily and efficiently implemented on parallel computing hardware, for example, by using B parallel processors (Smyth, 2000).
 
@@ -611,7 +607,7 @@ As Table 6.5 indicates, there does seem to be a tendency for the resampling appr
 
 # 6.7.2 Double Bootstrapping
 
-In mixture density f(u; %), some to the sensitivity of the assessed P-value to the use of replications can be obtained by performing another of bootstrapping as follows. Replications of X can be formed from bootstrap samples drawn from f(y; "go ), where 'g0 denotes the MLE calculated from a bootstrap sample drawn from f(y; These latter replications of ~2 X and the implied P-value can be contrasted with the original bootstrap replications of -2 X and the implied P-value. fitting guide layer ~2log~ log = log
+In mixture density f(u; %), some to the sensitivity of the assessed P-value to the use of replications can be obtained by performing another of bootstrapping as follows. Replications of X can be formed from bootstrap samples drawn from f($y_j$ "go ), where 'g0 denotes the MLE calculated from a bootstrap sample drawn from f($y_j$ These latter replications of ~2 X and the implied P-value can be contrasted with the original bootstrap replications of -2 X and the implied P-value. fitting guide layer ~2log~ log = log
 
 To illustrate the use of the double bootstrap applied to this problem; we report the results of McLachlan and Peel (1997a), who considered two of the aforementioned combinations of the parameters and p (4 = 2 with p = 4 and 8). We plot in Figures 6.9 and 6.10, corresponding to these two combinations; the inverse of the simulated null distribution of X versus the two bootstrap analogues obtained by resampling from the normal mixture model with parameter vector to 4go ~2log equal The second layer of bootstrapping can be used to adjust the estimates of the percentiles based on the first of bootstrap replicates. These adjusted estimates of the percentiles are reported in*Table 6.7, with the corresponding unadjusted values from Table 6.5, where Â denotes the average value of Â for each series of 50 simulation trials and Â is the MLE of A obtained from a bootstrap sample drawn It can be seen that by performing a second layer of bootstrapping more accurate assessment of the percentiles of the null distribution of can be obtained However; the double bootstrap only partially removes the bias in the bootstrap estimates obtained from the first layer. This can be explained by an examination of Figures 6.9 and 6.10, where it can be seen that the difference between the true and first layered-bootstrap assessment of the percentiles is more marked than between the first and second layered bootstrap assessments layer along ~2log*
 
@@ -668,12 +664,12 @@ $$
 which is a measure of the divergence of f(w) relative to f(w; #). The aim is to make the Kullback-Leibler information (6.19) small. As the first term on the right-hand side of (6.19) does not depend on the model, only the second term is relevant. It can be expressed as
 
 $$
-\eta ( y ; F ) \ & = \ \int f ( w ) \log f ( w ; \hat { \Psi } ) \, d w \\ & = \ \int \log f ( w ; \hat { \Psi } ) \, d F ( w ) ,
+\eta ( $y_j$ F ) \ & = \ \int f ( w ) \log f ( w ; \hat { \Psi } ) \, d w \\ & = \ \int \log f ( w ; \hat { \Psi } ) \, d F ( w ) ,
 $$
 
 where F denotes the true distribution and y = (u{ , yT)T contains the observed data.
 
-A simple estimator of n(y; F) is given by
+A simple estimator of n($y_j$ F) is given by
 
 $$
 = \ \frac { 1 } { n } \log L ( \hat { \Psi } ) ,
@@ -685,7 +681,7 @@ $$
 \int \log f ( w ) \, d F ( w ) ,
 $$
 
-since the empirical distributionfunction Fn is generally closertothe fitted distribution function Fw than the true one F . The bias of n(y; Fn) as an estimator of (6.22) is the functional
+since the empirical distributionfunction Fn is generally closertothe fitted distribution function Fw than the true one F . The bias of n($y_j$ Fn) as an estimator of (6.22) is the functional
 
 $$
 b ( F ) \ =
@@ -725,7 +721,7 @@ $$
 
 see Bozdogan and Sclove (1984) and Sclove (1987) on the use of AIC in the present context of selecting the number of components in a mixture.
 
-Konishi and Kitagawa (1996) derived the corresponding asymptotic bias where the true density f(u;) does not belong to the postulated parametric family and where the parameter vector is not necessarily estimated by maximum likelihood . However, the validity of these asymptotic expansions for b(F) depend on the same regularity conditions needed for the usual asymptotic theory for the null distributionof the LRTS to hold (Titteringtonet al., 1985). As discussed in Section 6.4, these conditions break down for tests on the number of components in a mixture model.
+Konishi and Kitagawa (1996) derived the corresponding asymptotic bias where the true density $f(y_j)$ does not belong to the postulated parametric family and where the parameter vector is not necessarily estimated by maximum likelihood . However, the validity of these asymptotic expansions for b(F) depend on the same regularity conditions needed for the usual asymptotic theory for the null distributionof the LRTS to hold (Titteringtonet al., 1985). As discussed in Section 6.4, these conditions break down for tests on the number of components in a mixture model.
 
 However; in spite of this, the AIC criterion is still often used to assess the order of a mixture model. Many authors (for example; Koehler and Murphee (1988)) obscrved that AIC is order inconsistent and tends to overfit models. In the mixture context, it means that AIC tends tooverestimate the correct number of components (Soromenho; 1993; Celeux and Soromenho, 1996).
 
@@ -816,7 +812,7 @@ With the ordinary version of the bootstrap used here, we are effectively estimat
 The bias correction of the likelihood can be undertaken cross-validation as in Smyth (2000). This cross-validation-based information criterion (CVIC) chooses 9 on the basis of the cross-validated likelihood, log using log
 
 $$
-\sum _ { j = 1 } ^ { \sum } \log f ( y _ { j } ; \hat { \Psi } _ { ( j ) } ) ,
+\sum _ { j = 1 } ^ n \log f ( y _ { j } ; \hat { \Psi } _ { ( j ) } ) ,
 $$
 
 where '(i) denotes the MLE of % formed from the observed sample y1 after first deleting the jth observation U; (j = 1, n) . The use of cross-validation in this role can be viewed as an alternative method to evaluating the fitted model on a test sample of the same size as the original one (the based.
@@ -848,7 +844,7 @@ With the minimum information ratio (MIR) criterion of Windham and Cutler (1992),
 Polymenis and Titterington (1998) proposed a modification of the MIR criterion; which was motivated by the remark of Windham and Cutler (1992) that as soon as a mixture model with too many components is fitted, the observed information matrix I(#; v) will be close to singular with the result that the corresponding eg will be close to zero. The idea of Polymenis and Titterington (1998) therefore is to detect the smallest value of g (g) for which e, is "close to zero; and select g to be 9 1. In order to quantify at what point an observed value of eg is close t0 zero, Polymenis and Titterington (1998) propose a Monte Carlo approach as follows:
 
 - 1 . Commencing with g = eg+/eg.
-- 2 Generate 99 bootstrap samples of size n from the two-component mixture model with parameter %g and calculate a value of r for each of them:
+- 2 Generate 99 bootstrap samples of size n from the two-component mixture model with parameter $\Psi$g and calculate a value of r for each of them:
 
 If the observed value of rg is greater than at least 94 of the bootstrap values of rg, increase g by one and repeat steps 1 and 2; otherwise; assume that the number of components is 9 and stop.
 

@@ -64,27 +64,25 @@ Numerous examples of applications of mixture models are given throughout the boo
 
 # 1.3 BASIC DEFINITION
 
-We let Yí, Yn denote a random sample of size n, where Y; is a p-dimensional random vector with probability density function f(u;) onRP In practice; Y; contains the random variables corresponding to p measurements made on the jth recording of some features on the phenomenon under study. We let Y= (YI Y)T , where the superscript T denotes vector transpose. Note that we are using Yto represent the entire sample; that is, Y is an n-tuple of points in RP \_ Where possible, a realization of a random vector is denoted by the corresponding lower-case letter. For example, 9 = yT)T denotes an observed random sample where %j is the observed value of the random vector Y;.
+We let Yí, Yn denote a random sample of size n, where $Y_j$ is a p-dimensional random vector with probability density function $f(y_j)$ onRP In practice; $Y_j$ contains the random variables corresponding to p measurements made on the jth recording of some features on the phenomenon under study. We let Y= (YI Y)T , where the superscript T denotes vector transpose. Note that we are using Yto represent the entire sample; that is, Y is an n-tuple of points in RP \_ Where possible, a realization of a random vector is denoted by the corresponding lower-case letter. For example, 9 = yT)T denotes an observed random sample where %j is the observed value of the random vector $Y_j$.
 
-Although we are taking the feature vector Y; t0 be a continuous random vector here, we can still view f(u;) as density in the case where Y; is discrete by the adoption of counting measure. We suppose that the density j(v;) of Y; can be written in the form
+Although we are taking the feature vector $Y_j$ t0 be a continuous random vector here, we can still view $f(y_j)$ as density in the case where $Y_j$ is discrete by the adoption of counting measure. We suppose that the density j(v;) of $Y_j$ can be written in the form
 
 $$
 f ( y _ { j } ) = \sum _ { i } \pi _ { i } \, f _ { i } ( y _ { j } ) ,
 $$
 
-where the f:(u;) are densities and the T; are nonnegative quantities that sum to one; that is,
+where the f:(u;) are densities and the $\pi_i$ are nonnegative quantities that sum to one; that is,
 
-$$
-( 1 . 2 )
-$$
+
 
 and
 
 $$
-\sum _ { i = 1 } ^ { \sum _ { \pi _ { i } = 1 . } } \pi _ { i } = 1 .
+\sum _ { i = 1 } ^ g \pi _ { i } = 1 .
 $$
 
-The quantities T1, Tg are called the mixing proportions or wcights. As the density (1.1) as a g-component finite mixture density and refer to its corresponding distribution function F(y;) as a g-component finite mixture distribution. Since we shall be focusing almost exclusively on finite mixtures of distributions, we shall usually refer to finite mixture models as just mixture models in the sequel.
+The quantities $\pi_1, \dots, \pi_g$ are called the mixing proportions or wcights. As the density (1.1) as a g-component finite mixture density and refer to its corresponding distribution function F($y_j$) as a g-component finite mixture distribution. Since we shall be focusing almost exclusively on finite mixtures of distributions, we shall usually refer to finite mixture models as just mixture models in the sequel.
 
 In this formulation ofthe mixture model, the number of components g is considered fixed. But of course in many applications; the value of g is unknown and has to be inferred from the available data; along with the mixing proportions and the parameters in the specified forms for the component densities.
 
@@ -96,31 +94,27 @@ When the number of components is allowed to increase with the sample size n, the
 
 # 1.4 INTERPRETATION OF MIXTURE MODELS
 
-An obvious way of generating a random vector Y; with the g-component mixture taking on the values 1, 9 with probabilities T1, respectively; and suppose that the conditional density of Y; given Z; is = 1 9). Then the unconditional density of Y; (that is, its marginal density) is given by f(u;) In this context, the variable Zj can be thought of as the component label of the feature vector Yj In later work, it is convenient to work with a 9-dimensional componentlabel vector Z; in place of the single categorical variable Zj, where the ith element of Zj, Zij = (Zj)i,isdefined to be one or zero, according to whether the component of origin of Yj in the mixture is cqual to i or not (i = 1, 9) Thus Z; is distributed according to a multinomial distribution consisting of one draw on 9 categories with probabilities T1, Tg; that is,
+An obvious way of generating a random vector $Y_j$ with the g-component mixture taking on the values 1, 9 with probabilities $\pi_1, \dots, \pi_g$, respectively; and suppose that the conditional density of $Y_j$ given $Z_j$ is = 1 9). Then the unconditional density of $Y_j$ (that is, its marginal density) is given by $f(y_j)$ In this context, the variable Zj can be thought of as the component label of the feature vector Yj In later work, it is convenient to work with a 9-dimensional componentlabel vector $Z_j$ in place of the single categorical variable Zj, where the ith element of Zj, Zij = (Zj)i,isdefined to be one or zero, according to whether the component of origin of Yj in the mixture is cqual to i or not (i = 1, 9) Thus $Z_j$ is distributed according to a multinomial distribution consisting of one draw on 9 categories with probabilities $\pi_1, \dots, \pi_g$; that is,
 
-$$
-( 1 . 4 )
-$$
+
 
 We write
 
-$$
-( 1 . 5 )
-$$
+
 
 where T = (71, "g)T .
 
-In the interpretation above of a mixture model, an obvious situation where the g-component mixture model (1.1) is directly applicable is where Y; is drawn from a population G which consists of g groups, in proportions T1, 9, then the density of Y; has the g-component mixture form (1.1). In this situation, the g components of the mixture can be physically identified with the 9 externally existing groups; G1, Gg G1, G9'
+In the interpretation above of a mixture model, an obvious situation where the g-component mixture model (1.1) is directly applicable is where $Y_j$ is drawn from a population G which consists of g groups, in proportions $\pi_1, \dots, \pi_g$, then the density of $Y_j$ has the g-component mixture form (1.1). In this situation, the g components of the mixture can be physically identified with the 9 externally existing groups; G1, Gg G1, G9'
 
 In biometric applications for instance; a source of the heterogeneity is often age, sex , species, geographical origin, and cohort status. For example; apopulation G may consist of two groups G1 and G2, corresponding to those members with or without particular disease that is under study. The problem may be t0 estimate the disease prevalence (that is, the mixing proportion T1 here) on the basis of some feature vector measured on a randomly selected sample of members of the population: In the case study of Do and McLachlan (1984), in which p = on the skulls of Malaysian rats collected from owl pellets, the components of the fitted mixture corresponded to g =7 different species of rats. The aim oftheir study was to assess the rat diet of owls in terms of the proportion of each species of rat represented in the fitted mixture model.
 
-We shall see in this book that there are many other examples in practice where the population is a mixture of g distinct groups that are known a priori to exist in some physical sense. However, there are also many examples invol the use of mixture Iving models where the components cannot be identified with externally existing groups as allow for greater flexibility in modeling a heterogeneous population that is apparently unable to be modeled by a single component distribution. At the extreme end of this exercise, we obtain the nonparametric kernel estimate of a density if we fit a mixture of 9 =n components in equal proportions 1/n, where n is the size of the observed Yn denote an observed (univariate) sample of size n, then we obtain the kernel estimate of the density of Y; given by
+We shall see in this book that there are many other examples in practice where the population is a mixture of g distinct groups that are known a priori to exist in some physical sense. However, there are also many examples invol the use of mixture Iving models where the components cannot be identified with externally existing groups as allow for greater flexibility in modeling a heterogeneous population that is apparently unable to be modeled by a single component distribution. At the extreme end of this exercise, we obtain the nonparametric kernel estimate of a density if we fit a mixture of 9 =n components in equal proportions 1/n, where n is the size of the observed Yn denote an observed (univariate) sample of size n, then we obtain the kernel estimate of the density of $Y_j$ given by
 
 $$
 \hat { f } ( y _ { j } ) = \frac { 1 } { n h } \sum _ { i = 1 } ^ { 1 } k ( ( y _ { j } - y _ { i } ) / h ) ,
 $$
 
-if in (1.1) we set g = n and T; = 1/n and take
+if in (1.1) we set g = n and $\pi_i = 1/n$ and take
 
 $$
 f _ { i } ( y _ { j } ) = h ^ { - 1 } k ( ( y _ { j } - y _ { i } ) / h )
@@ -142,7 +136,7 @@ Concerning the modeling of count data, the of a single Poisson distribution ofte
 
 # 1.5.1 Mixtures of Two Normal Homoscedastic Components
 
-To illustrate some of the shapes taken by a univariate normal mixture density; we first consider a mixture of two univariate normal components with common variance proportions T1 and T2, 80 that 02
+To illustrate some of the shapes taken by a univariate normal mixture density; we first consider a mixture of two univariate normal components with common variance proportions $\pi_1$ and T2, 80 that 02
 
 $$
 ( 1 7 )
@@ -150,13 +144,11 @@ $$
 
 where
 
-$$
-( 1 . 8 )
-$$
+
 
 denotes the univariate normal density with mean / and variance 0? .
 
-If the two component normal densities are sufficiently far apart; then one would expect the mixture density f(u;) toresemble two normal densities side by side, that is, bimodal density. To demonstrate this, we have plotted this normal mixture density in Figure 1.2 for various values of A in the case where +1 = 0 the proportions are equal (T1 = T2 0.5). It can be seen that as 4 increases, the shape of the mixture density f(y;) changes from unimodal to bimodal. The threshold for this change, in the present case of two univariate normal densities in equal proportions; is A =2 where, more generally; being
+If the two component normal densities are sufficiently far apart; then one would expect the mixture density $f(y_j)$ toresemble two normal densities side by side, that is, bimodal density. To demonstrate this, we have plotted this normal mixture density in Figure 1.2 for various values of A in the case where +1 = 0 the proportions are equal ($\pi_1 = \pi_2$ 0.5). It can be seen that as 4 increases, the shape of the mixture density f($y_j$) changes from unimodal to bimodal. The threshold for this change, in the present case of two univariate normal densities in equal proportions; is A =2 where, more generally; being
 
 $$
 \Delta = | \, \mu _ { 1 } - \mu _ { 2 } \, | \, / \sigma
@@ -164,7 +156,7 @@ $$
 
 is the Mahalanobis distance between the homoscedastic components of the normal mixture density; see Titterington et al. (1985, Section 5.5). This figure demonstrates the graphical resolution of a mixture into its constituent components can be a straightforward task for widely separated components (A =3 and 4), but that it can be quite a challenge when the components are close together (4 = 1). how
 
-If the means of the two component densities in the mixture model (1.7) are close enough together; then the overlap between the two component densities wouldtend to obscure the distinction between them and the result wouldbe an asymmetric density if the components are not represented in equal proportions. To demonstrate we give in Figure 1.3 the plots ofthe mixture density f (y;) corresponding to those in Figure 1.2 but where now the components are mixed in the unequal proportions T1 =0.75 and T2 = 0.25. In this case, it can be seen that the shape of the mixture density f(y;) changes from being bimodal to skewed in appearance for A 4 in Figure 1.3(d). The shape of the mixture density f(y;) for A = 3 in Figure 1.3(c) demonstrates bitangentiality; which occurs when there are two distinct at which there is a common tangent to the density. Thus, bitangentiality is implied by, but does not imply; bimodality. Informally; bimodality implies an extra hump, but bitangentiality merely an extra bump in departures from unimodality (Titterington et al. 1985, Section 3.3) points For the univariate normal mixture density f(y;) given by (1.7), Preston (1953) obtained explicit expressions for its skewness Y1 and kurtosis Y2 in terms of the separation between its components and the relative size of its mixing proportions, namely
+If the means of the two component densities in the mixture model (1.7) are close enough together; then the overlap between the two component densities wouldtend to obscure the distinction between them and the result wouldbe an asymmetric density if the components are not represented in equal proportions. To demonstrate we give in Figure 1.3 the plots ofthe mixture density f ($y_j$) corresponding to those in Figure 1.2 but where now the components are mixed in the unequal proportions $\pi_1 = 0.75$ and $\pi_2 = 0.25$. In this case, it can be seen that the shape of the mixture density f($y_j$) changes from being bimodal to skewed in appearance for A 4 in Figure 1.3(d). The shape of the mixture density f($y_j$) for A = 3 in Figure 1.3(c) demonstrates bitangentiality; which occurs when there are two distinct at which there is a common tangent to the density. Thus, bitangentiality is implied by, but does not imply; bimodality. Informally; bimodality implies an extra hump, but bitangentiality merely an extra bump in departures from unimodality (Titterington et al. 1985, Section 3.3) points For the univariate normal mixture density f($y_j$) given by (1.7), Preston (1953) obtained explicit expressions for its skewness Y1 and kurtosis Y2 in terms of the separation between its components and the relative size of its mixing proportions, namely
 
 Fig. 1.2 Plot of a mixture density of two univariate normal components in equal proportions with common variance 02 = = 4 in the cases; (a) A =I; () 4
 
@@ -340,7 +332,7 @@ $$
 f ( y _ { j } ) = \int \phi ( y _ { j } ; \mu ; \sigma ^ { 2 } / u ) \, d H ( u ) ,
 $$
 
-where H is the probability distribution that places mass T1 at the point u = 1 and mass T2 = 1 ~ T1 at the 1/k. If we replace H by the distribution of a chisquared random variable on its degrees of freedom v* we obtain the t distribution with v degrees of freedom. The family of t distributions provides a heavy-tailed alternative to the normal family: The t distribution is considered further in Chapter 7 in the context of mixtures of multivariate t components* point fitting
+where H is the probability distribution that places mass $\pi_1$ at the point u = 1 and mass $\pi_2 = 1 - \pi_1$ at the 1/k. If we replace H by the distribution of a chisquared random variable on its degrees of freedom v* we obtain the t distribution with v degrees of freedom. The family of t distributions provides a heavy-tailed alternative to the normal family: The t distribution is considered further in Chapter 7 in the context of mixtures of multivariate t components* point fitting
 
 <a id="sec-1-8"></a>
 
@@ -368,15 +360,15 @@ It is of interest to see if this spurious clustering can be detected in practice
 
 # 1.9 INCOMPLETE-DATA STRUCTURE OF MIXTURE PROBLEM
 
-In Section 1.4 we introduced the component-label vector Zj of zeroone indicator variables to define the component in the mixture model (1.1) from which the feature random vector Y; is viewed to have arisen. The concept of there label vector Zj associated with each feature vector Y; is a useful one, even though in a physical It will be seen that this conceptualization of the mixture model in terms of Yj and Z; is most useful in that it allows the maximum likelihood estimate (MLE) of the mixture distribution to be computed via a straightforward application of the EM algorithm: It is also useful in implementing the MCMC methods in the of mixture models in a Bayesian framework. being fitting
+In Section 1.4 we introduced the component-label vector Zj of zeroone indicator variables to define the component in the mixture model (1.1) from which the feature random vector $Y_j$ is viewed to have arisen. The concept of there label vector Zj associated with each feature vector $Y_j$ is a useful one, even though in a physical It will be seen that this conceptualization of the mixture model in terms of Yj and $Z_j$ is most useful in that it allows the maximum likelihood estimate (MLE) of the mixture distribution to be computed via a straightforward application of the EM algorithm: It is also useful in implementing the MCMC methods in the of mixture models in a Bayesian framework. being fitting
 
-In this book the emphasis is on the estimation of mixture distributions on the basis Un, usually available in the form of an observed random sample taken from the mixture density (1.1). That is, V1, Yn are the realized values of n independent and identically distributed (i.id.) random vectors Yi, Yn with common density f(u;) We write
+In this book the emphasis is on the estimation of mixture distributions on the basis Un, usually available in the form of an observed random sample taken from the mixture density (1.1). That is, V1, Yn are the realized values of n independent and identically distributed (i.id.) random vectors Yi, Yn with common density $f(y_j)$ We write
 
 $$
 ( 1 , 1 4 )
 $$
 
-where F '(u;) denotes the distribution function corresponding to the mixture density f(y;)
+where F '(u;) denotes the distribution function corresponding to the mixture density f($y_j$)
 
 In the EM framework, the feature data %1, Yn are viewed as being incomplete since their associated component-indicator vectors, 21, Zn, are not available. The complete-data vector is therefore declared to be
 
@@ -396,7 +388,7 @@ $$
 z = ( z _ { 1 } ^ { T } , \dots , z _ { n } ^ { T } ) ^ { T }
 $$
 
-is the unobservable vector of component-indicator variables. It is assumed here that all the observations yj have been completely recorded.
+is the unobservable vector of component-indicator variables. It is assumed here that all the observations $y_j$ have been completely recorded.
 
 The component-label vectors 21, zn are taken to be the realized values of the random vectors Zn, where, for independent feature data; it is appropriate to Z1, assume that are distributed unconditionally as they
 
@@ -410,11 +402,11 @@ $$
 \tau _ { i } ( y _ { j } ) \ & = \ \Pr \{ \, \text {entity} \in \text {ith component} \ | \ y _ { j } \} \\ & = \ \Pr \{ Z _ { i j } = 1 \ | \ y _ { j } \} \\ & = \ \pi _ { i } f _ { i } ( y _ { j } ) / f ( y _ { j } ) \quad ( i = 1 , \dots , g ; \, j = 1 , \dots , n ) .
 $$
 
-In Section 1.15.2 we shall consider the formation of an optimal rule of allocation in terms of these posterior probabilities of component membership ) T;(yj)
+In Section 1.15.2 we shall consider the formation of an optimal rule of allocation in terms of these posterior probabilities of component membership $\tau_i(y_j)$
 
-Itcan be seen that in this incomplete-datacontext; the mixture model arises because the component-label vectors are 'missing" from thecomplete-data vector; and wehave to estimate the mixture distribution on data available from the marginal distribution of Y; only rather than from the joint distribution of the feature vector Yj and its component label Zj. It will be seen in Section 2.8 that the EM algorithm exploits this reduced simplicity of working with the joint distribution of Y; and Zj to compute the MLEs on the basis ofthe observed (marginal) data y; It forms the likelihood function on the basis of the complete-data vector Uc and then overcomes the fact that the label vectors zj are unknown by iteratively working with the conditional expectation of the complete-data likelihood given the observed data %, which is effected using the current fit for the unknown parameters. log
+Itcan be seen that in this incomplete-datacontext; the mixture model arises because the component-label vectors are 'missing" from thecomplete-data vector; and wehave to estimate the mixture distribution on data available from the marginal distribution of $Y_j$ only rather than from the joint distribution of the feature vector Yj and its component label Zj. It will be seen in Section 2.8 that the EM algorithm exploits this reduced simplicity of working with the joint distribution of $Y_j$ and Zj to compute the MLEs on the basis ofthe observed (marginal) data $y_j$ It forms the likelihood function on the basis of the complete-data vector Uc and then overcomes the fact that the label vectors $z_j$ are unknown by iteratively working with the conditional expectation of the complete-data likelihood given the observed data %, which is effected using the current fit for the unknown parameters. log
 
-were available, then estimation of the mixture distribution would be more straightforward than on the basis of the observed data y, since each component density f;(u) could be estimated directly from the data known to have come from it; that is, from those feature data Uj with zij = (zj)i = 1 This would be a trivial task if, say; the component densities were postulated to be multivariate normal. The only other parameters then to be estimated would be the mixing proportions which, in the case of a mixture sampling design for the classified data; can be estimated by the proportion of these data from each component; namely
+were available, then estimation of the mixture distribution would be more straightforward than on the basis of the observed data y, since each component density f;(u) could be estimated directly from the data known to have come from it; that is, from those feature data Uj with zij = ($z_j$)i = 1 This would be a trivial task if, say; the component densities were postulated to be multivariate normal. The only other parameters then to be estimated would be the mixing proportions which, in the case of a mixture sampling design for the classified data; can be estimated by the proportion of these data from each component; namely
 
 $$
 \zeta _ { i j } / n
@@ -434,13 +426,13 @@ As discussed in the previous section, in some applications of mixture models, th
 
 Inthis book we shall be primarily concerned with the ofmixture models to an observed random sample from the mixture (1.1), U1 Un, which are unclassified with respect to the components of the mixture. However; we shall also consider the case where the available data are partially classified; that is, after an appropriate relabeling of the sample, the component-indicator vectors 21, are known for Y1, m < n) fitting Zm
 
-realized: (a) joint or mixture sampling and (b) z-conditional or separate sampling. correspond, respectively; to sampling from the joint distribution of Yj and Z; and to sampling from the distribution of Yj conditional on zjMixture sampling is common in prospective studies and diagnostic situations. In a prospective study design involving population of distinct groups, sample of individuals from the population is followed until their group memberships (component labels) are determined. With separate sampling in practice; the feature vectors are observed for a sample of m; entities taken separately from each group G; corresponding to the ith component (i = 1, 9) Hence it is appropriate to retrospective studies which are common in epidemiological investigations. For example; with the simplest retrospective case-control study of a disease; one sample is taken from the cases that They occurred during the study period and the other sample is taken from the group of indi viduals who remained free of the disease. As many diseases are rare and even a large prospective study may produce few diseased individuals, retrospective sampling can result in important economies in cost and study duration. But of course with separate sampling, the observed proportions of entities from the groups (components of the mixture) do not provide estimates of the mixing proportions F;.
+realized: (a) joint or mixture sampling and (b) z-conditional or separate sampling. correspond, respectively; to sampling from the joint distribution of Yj and $Z_j$ and to sampling from the distribution of Yj conditional on zjMixture sampling is common in prospective studies and diagnostic situations. In a prospective study design involving population of distinct groups, sample of individuals from the population is followed until their group memberships (component labels) are determined. With separate sampling in practice; the feature vectors are observed for a sample of m; entities taken separately from each group G; corresponding to the ith component (i = 1, 9) Hence it is appropriate to retrospective studies which are common in epidemiological investigations. For example; with the simplest retrospective case-control study of a disease; one sample is taken from the cases that They occurred during the study period and the other sample is taken from the group of indi viduals who remained free of the disease. As many diseases are rare and even a large prospective study may produce few diseased individuals, retrospective sampling can result in important economies in cost and study duration. But of course with separate sampling, the observed proportions of entities from the groups (components of the mixture) do not provide estimates of the mixing proportions F;.
 
 <a id="sec-1-11"></a>
 
 # 1.11 PARAMETRIC FORMULATION OF MIXTURE MODEL
 
-In many applications; the component densities f:(u;) are specified to belong to some parametric family. In this case, the component densities are specified as 0;), where 0; is the vector of unknown parameters in the postulated form for the ith component density in the mixture. The mixture density f(y;) can then be written as
+In many applications; the component densities f:(u;) are specified to belong to some parametric family. In this case, the component densities are specified as 0;), where 0; is the vector of unknown parameters in the postulated form for the ith component density in the mixture. The mixture density f($y_j$) can then be written as
 
 $$
 ( 1 . 2 0 )
@@ -452,7 +444,7 @@ $$
 t _ { 1 } , \dots , \pi _ { g - 1 } , \xi ^ { T } ) ^ { T } ,
 $$
 
-where & is the vector containing all the parameters in 01, 0g known a to be distinct. We let / denote the specified parameter space for %. Since the mixing proportions T; sum to unity; one of them is redundant. In defining $ as (1.21), we have arbitrarily omitted the gth mixing proportion priori
+where & is the vector containing all the parameters in 01, 0g known a to be distinct. We let / denote the specified parameter space for $\Psi$. Since the mixing proportions T; sum to unity; one of them is redundant. In defining $ as (1.21), we have arbitrarily omitted the gth mixing proportion priori
 
 To demonstrate the notation above for defining parametric mixture, we consider mixture of univariate normal and Laplace components with a common mean p, as considered in Kanji (1985) and Jones and McLachlan (1990a) in modeling the distribution of wind shears during aircraft landing. For this model, the mixture density of the measurement Yj of wind shear can be represented as
 
@@ -484,7 +476,7 @@ $$
 \{ f ( y _ { j } ; \theta ) \colon \theta \in \Theta \}
 $$
 
-and 0 denotes the parameter space for 8. Throughout this book, we use f as generic symbol for a density; for example; f (uj; %) denotes the mixture density and f(yj; 0;) denotes the ith component density under (1.23).
+and 0 denotes the parameter space for 8. Throughout this book, we use f as generic symbol for a density; for example; $f(y_j; \Psi)$ denotes the mixture density and f($y_j$; 0;) denotes the ith component density under (1.23).
 
 In practice; the components are often taken to belong to the normal family, leading to normal mixtures. In the case of multivariate normal components, we have that
 
@@ -504,7 +496,7 @@ $$
 \Psi = ( \pi _ { 1 } , \dots , \pi _ { g - 1 } , \xi ^ { T } ) ^ { T } ,
 $$
 
-where € consists of the elements of the component means, 1, and the distinct elements of the component-covariance matrices; 21, of normal homoscedastic components where the component-covariance matrices Z; are restricted to equal, being
+where € consists of the elements of the component means, 1, and the distinct elements of the component-covariance matrices; 21, of normal homoscedastic components where the component-covariance matrices $Z_j$ are restricted to equal, being
 
 $$
 \Sigma \quad ( i = 1 , \dots , g ) ,
@@ -574,7 +566,7 @@ In this book, the emphasis is on the fitting of mixture models by ML estimation 
 
 # 1.14 IDENTIFIABILITY OF MIXTURE DISTRIBUTIONS
 
-The estimation of is identifiable. In general, a parametric family of densities f(uj; ") is identifiable if distinct values of the parameter % determine distinct members of the family of densities
+The estimation of $\Psi$ is identifiable. In general, a parametric family of densities f(uj; ") is identifiable if distinct values of the parameter $\Psi$ determine distinct members of the family of densities
 
 $$
 \{ f ( y _ { j } ; \Psi ) \colon \ \Psi \in \Omega \} ,
@@ -616,7 +608,7 @@ $$
 \pi _ { i } = \pi _ { i } ^ { * } \ \text { and } \ f _ { i } ( y _ { j } ; \theta _ { i } ) = f _ { i } ( y _ { j } ; \theta _ { i } ^ { * } ) \ \ ( i = 1 , \dots , g ) .
 $$
 
-Here = implies equality of the densities for almost all uj relative to the underlying measure on
+Here = implies equality of the densities for almost all $y_j$ relative to the underlying measure on
 
 The lack of identifiability of € due to the interchanging of component labels is generally handled by the imposition of an appropriate constraint on %.
 
@@ -691,7 +683,7 @@ In some applications of mixture models, questions related to clustering may aris
 
 However; in other applications ofmixture models, the clustering of the data at hand is the primary aim of the analysis. In thiscase, the mixture model is used purely as a device for exposing any grouping that may underlie the data. McLachlan and Basford (1988) highlighted the usefulness of mixture models as a way of providing an effective clustering of various data sets under a variety of 'experimental designs. being
 
-With a mixture model-based approach to clustering, it is assumed that the data to be clustered are from a mixture of an initially specified number 9 of groups in various proportions. That is; each data is taken to be a realization of the mixture density (1.20), where the 9 components correspond to the 9 groups. On specifying a parametric form for each component density by maximum likelihood (or some other method). Once the mixture model has been fitted, a probabilistic clustering of the data into g clusters can be obtained in terms of the fitted posterior probabilities of component membership for the data: An outright assignment of the data into 9 clusters is achieved by assigning each data to the component to which it has the highest estimated posterior probability of belonging: Although these estimated posterior probabilities may have limited reliability in small samples, may well give a satisfactory outright assignment of the data. This is considered further in the next section, where the theoretical basis for performing mixture is presented. point fi(yj; point point
+With a mixture model-based approach to clustering, it is assumed that the data to be clustered are from a mixture of an initially specified number 9 of groups in various proportions. That is; each data is taken to be a realization of the mixture density (1.20), where the 9 components correspond to the 9 groups. On specifying a parametric form for each component density by maximum likelihood (or some other method). Once the mixture model has been fitted, a probabilistic clustering of the data into g clusters can be obtained in terms of the fitted posterior probabilities of component membership for the data: An outright assignment of the data into 9 clusters is achieved by assigning each data to the component to which it has the highest estimated posterior probability of belonging: Although these estimated posterior probabilities may have limited reliability in small samples, may well give a satisfactory outright assignment of the data. This is considered further in the next section, where the theoretical basis for performing mixture is presented. point fi($y_j$; point point
 
 In the above, there is a one-to-one correspondence between the mixture components and the groups. In those cases where the underlying population consists of groups in which the feature vector is unable to be modeled by single normal distribution but needs a normal mixture formulation; the components in the fitted g-component normal mixture model and the consequent clusters will correspond to g subgroups rather than to the smaller number of actual groups represented in the data.
 
@@ -705,7 +697,7 @@ The mixture likelihood-based approach to clustering can obviously play a major r
 
 # 1.15.2 Decision-Theoretic Approach
 
-Decision theory provides a convenient framework for the construction of discriminant rules in the situation where an allocation of an unclassified entity is required . In the context of a finite mixture model, the allocation is with respect to the components of the mixture. For this purpose we let r(y;) denote an allocation rule for assigning the feature vector %; to one of the components of the mixture model, where r(y;) implies that the observation is assigned to the ith component (i = 1, 9)
+Decision theory provides a convenient framework for the construction of discriminant rules in the situation where an allocation of an unclassified entity is required . In the context of a finite mixture model, the allocation is with respect to the components of the mixture. For this purpose we let r($y_j$) denote an allocation rule for assigning the feature vector $\Psi$; to one of the components of the mixture model, where r($y_j$) implies that the observation is assigned to the ith component (i = 1, 9)
 
 $$
 r _ { B } ( y _ { j } ) & = i \quad \text {if } \, \tau _ { i } ( y _ { j } ) \geq \tau _ { h } ( y _ { j } ) \quad ( h = 1 , \dots , g ) . \\ \text {That is,} & \quad r _ { B } ( y _ { j } ) = \arg \max _ { h } \tau _ { h } ( y _ { j } ) .
@@ -715,7 +707,7 @@ That is,
 
 The rule 'rB(u;) is not uniquely defined at %; ifthe maximum of the posterior probabilities of component membership is achieved with respect to more than one component. In this case, the entity can be assigned arbitrarily to one of the components for which the corresponding posterior probabilities are equal to the maximum value. We are assuming here that the cost of a correct allocation is zero and all misallocations are taken to have the same cost; see McLachlan (1992, Chapter 1).
 
-As the posterior probabilities of component membership T;(u;) have the same common denominator f(u;) rB(u;) can be defined in terms of the relative sizes of the component densities weighted according to the mixing (prior) probabilities; that is, The Bayes rule can be estimated by the so-called plug-in rule, rB(uj; "), where denotes the estimate of the unknown parameter vector 4 . This approach, where the component densities (that is, the group-conditional densities) are directly modeled for use in the formation of the posterior probabilities of group membership, is called the sampling approach by Dawid (1976). Another approach to the estimation of the Bayes rule is to model these posterior probabilities directly; as with the logistic model. Dawid (1976) calls this approach the diagnostic paradigm. With this approach, the interest is not on what the component densities of the feature vector Y; look like, but on the distributionof the component-indicator vectors; 21, zn, for the observed feature data %1, Un and similar values. This is the main approach with neural networks (Ripley; 1996, p 7). However, the diagnostic paradigm is limited to the case where there are classified data available.
+As the posterior probabilities of component membership $\tau_i(y_j;$) have the same common denominator $f(y_j)$ rB(u;) can be defined in terms of the relative sizes of the component densities weighted according to the mixing (prior) probabilities; that is, The Bayes rule can be estimated by the so-called plug-in rule, rB(uj; "), where denotes the estimate of the unknown parameter vector 4 . This approach, where the component densities (that is, the group-conditional densities) are directly modeled for use in the formation of the posterior probabilities of group membership, is called the sampling approach by Dawid (1976). Another approach to the estimation of the Bayes rule is to model these posterior probabilities directly; as with the logistic model. Dawid (1976) calls this approach the diagnostic paradigm. With this approach, the interest is not on what the component densities of the feature vector $Y_j$ look like, but on the distributionof the component-indicator vectors; 21, zn, for the observed feature data %1, Un and similar values. This is the main approach with neural networks (Ripley; 1996, p 7). However, the diagnostic paradigm is limited to the case where there are classified data available.
 
 $$
 r _ { B } ( y _ { j } ) = i \text { if } \pi _ { i } f _ { i } ( y _ { j } ) \geq \pi _ { h } f _ { h } ( y _ { j } ) \quad ( h = 1 , \dots , g ) .
@@ -725,9 +717,9 @@ $$
 
 # 1.15.3 Clustering of I.I.D. Data
 
-Suppose that the purpose of fitting the finite mixture model (1.20) is to cluster an observed random sample %1 , Un intog components. In terms of the complete-data specification (1.15) of the mixture model, we wish to infer the associated component labels 21, zn of these feature data vectors That is, we wish to infer the zj on the After we fit the g-component mixture model to obtain the estimate € of the vector of unknown parameters in the mixture model, we can give probabilistic clustering of the n feature observations %1, Un in terms of their fitted posterior probabilities of component membership. For each %j the g probabilities T1 give the estimated posterior probabilities that this observation belongs to the first;, second, and gth components; respectively; of the mixture (j = 1, n)
+Suppose that the purpose of fitting the finite mixture model (1.20) is to cluster an observed random sample %1 , Un intog components. In terms of the complete-data specification (1.15) of the mixture model, we wish to infer the associated component labels 21, zn of these feature data vectors That is, we wish to infer the $z_j$ on the After we fit the g-component mixture model to obtain the estimate € of the vector of unknown parameters in the mixture model, we can give probabilistic clustering of the n feature observations %1, Un in terms of their fitted posterior probabilities of component membership. For each %j the g proportions $\pi_1$ give the estimated posterior probabilities that this observation belongs to the first;, second, and gth components; respectively; of the mixture (j = 1, n)
 
-We can give an outright or hard clustering of these data by assigning each V; of belonging. That is, we estimate the component-label vector zj by {j, where
+We can give an outright or hard clustering of these data by assigning each V; of belonging. That is, we estimate the component-label vector $z_j$ by {j, where
 
 $$
 1 ,
@@ -739,11 +731,11 @@ $$
 
 for i = 1, g; j = 1,
 
-It follows from (1.35) that this use of the assignment criterion (1.37) corresponds to using the so-called plug-in sample version of the Bayes (optimal) rule, rB(y; #), whereby V is replaced by $in rB(u; ").
+It follows from (1.35) that this use of the assignment criterion (1.37) corresponds to using the so-called plug-in sample version of the Bayes (optimal) rule, rB($y_j$ #), whereby V is replaced by $in rB(u; ").
 
 Ifthe postulated component densities provide agood fit and the mixingproportions are able to beestimated with some precision; then the plug-in rule of the mixture can be identified with 9 externally existing groups G1,
 
-approximation to the Bayes rule rB 4) in the case where the components Gg in which the ith group-conditional densities of Y; can be modeled by 0;) (i = 1, 9) TB(yj; good may still be a reasonable allocation rule. It can be seen from (1.36) that for rB(uj; ") to be a good approximation to rB(yj; "), it is only necessary that the boundaries defining the allocation regions,
+approximation to the Bayes rule r_B(\Psi) in the case where the components Gg in which the ith group-conditional densities of $Y_j$ can be modeled by 0;) (i = 1, 9) TB($y_j$; good may still be a reasonable allocation rule. It can be seen from (1.36) that for rB(uj; ") to be a good approximation to rB($y_j$; "), it is only necessary that the boundaries defining the allocation regions,
 
 $$
 ) , \quad i < h = 2 , \dots , g \} , \quad ( 1 . 3 8 )
@@ -773,13 +765,13 @@ $$
 
 This clustering process is referred to as segmentation. It can also be referred to as restoration. image
 
-An estimate à can be produced by considering each zj individually and allocating
+An estimate à can be produced by considering each $z_j$ individually and allocating
 
 $$
 ( 1 , 3 9 )
 $$
 
-For instance; the pixels can be individually allocated by choosing â; to be the value of zj that has maximum posterior probability given Y; (1.39). It follows from Section 1.15.2 that this approach of maximizing the posterior marginal probability for each pixel corresponds to maximizing the expected number of correctly assigned pixels in the scene It is thus biased towards a low rate of misallocated pixcls rather than overall appearance. With the widely used ICM algorithm of (1986), segmentation is performed on the basis of Besag
+For instance; the pixels can be individually allocated by choosing â; to be the value of $z_j$ that has maximum posterior probability given $Y_j$ (1.39). It follows from Section 1.15.2 that this approach of maximizing the posterior marginal probability for each pixel corresponds to maximizing the expected number of correctly assigned pixels in the scene It is thus biased towards a low rate of misallocated pixcls rather than overall appearance. With the widely used ICM algorithm of (1986), segmentation is performed on the basis of Besag
 
 $$
 , z _ { \partial j } \} ,
@@ -787,7 +779,7 @@ $$
 
 wherc contains the label vectors ofthose pixels lying in aprescribed neighborhood n) z8j
 
-its n subvectors z; (j = 1, n) An to be the value of z that maximizes
+its n subvectors $z_j$ (j = 1, n) An to be the value of z that maximizes
 
 $$
 \ p r \{ Z = z \ | \ y \} .
@@ -837,21 +829,21 @@ We now define the notation that is used consistently throughout the book. Less f
 
 All vectors and matrices are in boldface. The superscript T denotes the transpose of a vector or matrix. The trace of a matrix A is denoted by tr(A), while the determinant of A is denoted by |Al' The null vector is denoted by 0 The notation diag(a1, an) is used for a matrix with diagonal elements 01, @n and all off-diagonal elements zero.
 
-We let Y1, denote a random sample of size n where Y; is a p-dimensional random vector with probability density function f(u;) onRP Inpractice, Y; contains the random variables corresponding to p measurements made on the _th recording of some features on the phenomenon under study. We let Y = Y)T _ Note that we are Yto represent the entire sample; that is, Yis an n-tuple of in RP Where possible, a realization of a random vector is denoted by the = to avoid any confusion with the use of Yfor the entire random sample, we shall always use Y; for an individual observation even when only one observation is being considered. using points
+We let Y1, denote a random sample of size n where $Y_j$ is a p-dimensional random vector with probability density function $f(y_j)$ onRP Inpractice, $Y_j$ contains the random variables corresponding to p measurements made on the _th recording of some features on the phenomenon under study. We let Y = Y)T _ Note that we are Yto represent the entire sample; that is, Yis an n-tuple of in RP Where possible, a realization of a random vector is denoted by the = to avoid any confusion with the use of Yfor the entire random sample, we shall always use $Y_j$ for an individual observation even when only one observation is being considered. using points
 
-The probability density function of the random vector Y; under a g-component mixture model is written in parametric form as
+The probability density function of the random vector $Y_j$ under a g-component mixture model is written in parametric form as
 
 $$
 ( 1 . 4 1 )
 $$
 
-where the vector % containing all the unknown parameters in the mixture model is written as
+where the vector $\Psi$ containing all the unknown parameters in the mixture model is written as
 
 $$
 ( 1 . 4 2 )
 $$
 
-and € is the vector containing all the parameters in 01, 0g known a priori to be distinct. We let / denote the specified parameter space for %, and we let
+and € is the vector containing all the parameters in 01, 0g known a priori to be distinct. We let / denote the specified parameter space for $\Psi$, and we let
 
 $$
 \pi = ( \pi _ { 1 } , \dots , \pi _ { g } ) ^ { T }
@@ -865,7 +857,7 @@ $$
 y = ( y _ { 1 } ^ { T } , \, .
 $$
 
-is undertaken using the EM algorithm. In theEM framework, this problemis viewed as being incomplete due to the unavailability of the associated component-label vectors where = (zj); is defined to be one or zero, according to whether Uj is viewed or not viewed as having arisen from the ith component of the mixture model being fitted. The complete-data vector Uc is given by 21, Zij
+is undertaken using the EM algorithm. In theEM framework, this problemis viewed as being incomplete due to the unavailability of the associated component-label vectors where = ($z_j$); is defined to be one or zero, according to whether Uj is viewed or not viewed as having arisen from the ith component of the mixture model being fitted. The complete-data vector Uc is given by 21, Zij
 
 $$
 y _ { c } = ( y ^ { T } , z ^ { T } ) ^ { T } ,
@@ -914,7 +906,7 @@ The (incomplete-data) expected information matrix is denoted by I(v) , where und
 regularity conditions we obtain
 
 $$
-\begin{array} { r l r } { \mathcal { I } ( \Psi ) } & { = } & { E _ { \Psi } \{ S ( Y ; \Psi ) S ^ { T } ( Y ; \Psi ) \} } \\ & { = } & { E _ { \Psi } \{ I ( \Psi ; Y ) \} . } \end{array}
+\begin{array} { r l r } { \mathcal { I } ( \Psi ) } & { = } & { E _ { \Psi } \{ S ( $Y_j$ \Psi ) S ^ { T } ( $Y_j$ \Psi ) \} } \\ & { = } & { E _ { \Psi } \{ I ( \Psi ; Y ) \} . } \end{array}
 $$
 
 Here and elsewhere in this book, the operator Ev denotes expectation using the parameter vector €.

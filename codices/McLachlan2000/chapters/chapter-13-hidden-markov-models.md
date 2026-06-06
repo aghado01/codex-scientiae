@@ -12,7 +12,7 @@ $$
 f ( y _ { j } ; \Psi ) = \sum _ { i = 1 } ^ { j } \pi _ { i } \, f _ { i } ( y _ { j } ; \theta _ { i } )
 $$
 
-for the density of an observation Y;. In our treatment of mixture models in the previous chapters for independent data, we have introduced the component-indicator vector zj, where zij according to whether %; is viewed as belonging, or not belonging, to the ith component of the mixture (i = 1, 9) These vectors 21, Zn are taken tobe iid. according to amultinomial distribution consisting of one draw on g categories with probabilities T1, Tg; that is,
+for the density of an observation $Y_j$. In our treatment of mixture models in the previous chapters for independent data, we have introduced the component-indicator vector $z_j$, where zij according to whether %; is viewed as belonging, or not belonging, to the ith component of the mixture (i = 1, 9) These vectors 21, Zn are taken tobe iid. according to amultinomial distribution consisting of one draw on g categories with proportions $\pi_1$, Tg; that is,
 
 $$
 ( 1 3 . 2 )
@@ -32,13 +32,13 @@ $$
 
 and € denotes the unknown parameters in 01, 0g known a to be distinct. From (13.2) and (13.3), the Yj will be iid. according to the mixture density (13.1) Titterington (1990) contrived the nomenclature hidden multinomial for the mixture model. priori
 
-The hidden Markov extension relaxes the independence assumption on the Y; by taking successive observations to be correlated through their component of origin. With this approach, the independence assumption (13.2) on the component-indicator vectors zj is relaxed. Usually, a stationary Markovian model is formulated for the distribution of the hidden vectors Z1, In one dimension; this Markovian model is aMarkov chain (see, for example, Holst and Lindgren (1991))andin two and higher dimensions it is a Markov random field (MRF); see Besag (1986, 1989). The conditional distribution of the observed vector Y; is formulated as before to depend only on the value of Zj, the component of origin (state of the Markov process) ; and to be conditionally independent as in (13.3). With the relaxation of (13.2), the marginal density of the feature vector Yj will not have its simple representation (13.1) of a mixture density as in the independence case.
+The hidden Markov extension relaxes the independence assumption on the $Y_j$ by taking successive observations to be correlated through their component of origin. With this approach, the independence assumption (13.2) on the component-indicator vectors $z_j$ is relaxed. Usually, a stationary Markovian model is formulated for the distribution of the hidden vectors Z1, In one dimension; this Markovian model is aMarkov chain (see, for example, Holst and Lindgren (1991))andin two and higher dimensions it is a Markov random field (MRF); see Besag (1986, 1989). The conditional distribution of the observed vector $Y_j$ is formulated as before to depend only on the value of Zj, the component of origin (state of the Markov process) ; and to be conditionally independent as in (13.3). With the relaxation of (13.2), the marginal density of the feature vector Yj will not have its simple representation (13.1) of a mixture density as in the independence case.
 
 Hidden Markov models are closely related to state-space models, in which unobserved state variables determine the distribution of the observations. In many applications; the goal is reconstruction of the state variable based on an observation set. This is achieved by the Kalman filter in Gaussian linear state-space models; scc Leroux and Puterman (1992)
 
 For general HMMs, Lindgren (1978) constructed consistent and asymptotically normal estimators of the component distributions; but he did not consider estimation of the transition probabilities: Leroux (1992b) established the consistency of the MLE for general HMMs under mild conditions; while local asymptotic normality was proved by Bickel and Ritov (1996). Recently; Bickel, Ritov; and Rydén (1998) showed that under mild conditions the MLE is asymptotically normal and that the observed information matrix is consistent estimator of the expected information: The relation between HMMs and graphical models has been reviewed recently in Smyth, Heckerman, and Jordan (1997) Ghahramani and Jordan (1997) have proa generalization of HMMs in which each hidden component (state) is factored into multiple components and is therefore represented in a distributed manner. posed
 
-The hidden Markov chain isoften arealistic model when the observations U; appear sequentially in time and tend to cluster or to alternate between different possible components (subpopulations). It is finding widespread application in many areas, and Puterman, 1992; and Puterman, 1999), computational molecular biology (Kroghet al., 1994; Churchill, 1995),finance (Rydén, Teräsvirta; and Asbrink, 1998), neurophysiology (Fredkin and Rice, 1992), and speech and character recognition (Rabiner and 1986; Kundu and He, 1991; Digalakis, 1999); see also the monograph of MacDonald and Zucchini (1997). In speech recognition applications, Wang Juang, the indexing subscript j generally represents speech frames and Y; is taken to be a finitely many-valued vector, representing random functions of the underlying (hidden) prototypical spectra; see Rabiner (1989) and and Rabiner (1991). Juang Parameter estimation in hidden Markov models usually relies on maximum likelihood or Bayesian methods; moments methods intractable in this setting. The dependency structure can only exacerbate the difficulties met in mixture estimation for iid. data; see, for example, Robert, Celeux, and Diebolt (1993) and Archer and Titterington (1997). being In image-processing applications, the subscript j indexes pixel sites; but we use the term 'pixel" liberally as in York, and Mollie (1991), allowing for pixel arrays that have no direct connection with "picture elements. In some applications; the hidden variable Z; may represent some discretized characteristic of the pixel, about which inference is required to be made and Y; is an observable feature of a pixel statistically related to the hidden characteristic of the pixel. For instance; in the example to be considered in Section 13.5 on the tissue-segmentation of a region of the human brain into the component regions of white matter; gray matter, and cerebrospinal fluid, zj is a three-dimensional indicator vector denoting the component membership of the jth pixel on which the feature vector Uj has been recorded. The latter contains the multispectral magnetic resonance images obtained for the jth pixel. In this example, the zj will not be independently distributed because of the spatial correlation between neighboring pixels. In some other applications; the hidden vari able Zj may take values over a continuum representing the gray levels or a similar characteristic of the true image and Y; is a blurred version of the hidden true image see Qian and Titterington (1991). Besag,
+The hidden Markov chain isoften arealistic model when the observations U; appear sequentially in time and tend to cluster or to alternate between different possible components (subpopulations). It is finding widespread application in many areas, and Puterman, 1992; and Puterman, 1999), computational molecular biology (Kroghet al., 1994; Churchill, 1995),finance (Rydén, Teräsvirta; and Asbrink, 1998), neurophysiology (Fredkin and Rice, 1992), and speech and character recognition (Rabiner and 1986; Kundu and He, 1991; Digalakis, 1999); see also the monograph of MacDonald and Zucchini (1997). In speech recognition applications, Wang Juang, the indexing subscript j generally represents speech frames and $Y_j$ is taken to be a finitely many-valued vector, representing random functions of the underlying (hidden) prototypical spectra; see Rabiner (1989) and and Rabiner (1991). Juang Parameter estimation in hidden Markov models usually relies on maximum likelihood or Bayesian methods; moments methods intractable in this setting. The dependency structure can only exacerbate the difficulties met in mixture estimation for iid. data; see, for example, Robert, Celeux, and Diebolt (1993) and Archer and Titterington (1997). being In image-processing applications, the subscript j indexes pixel sites; but we use the term 'pixel" liberally as in York, and Mollie (1991), allowing for pixel arrays that have no direct connection with "picture elements. In some applications; the hidden variable $Z_j$ may represent some discretized characteristic of the pixel, about which inference is required to be made and $Y_j$ is an observable feature of a pixel statistically related to the hidden characteristic of the pixel. For instance; in the example to be considered in Section 13.5 on the tissue-segmentation of a region of the human brain into the component regions of white matter; gray matter, and cerebrospinal fluid, $z_j$ is a three-dimensional indicator vector denoting the component membership of the jth pixel on which the feature vector Uj has been recorded. The latter contains the multispectral magnetic resonance images obtained for the jth pixel. In this example, the $z_j$ will not be independently distributed because of the spatial correlation between neighboring pixels. In some other applications; the hidden vari able Zj may take values over a continuum representing the gray levels or a similar characteristic of the true image and $Y_j$ is a blurred version of the hidden true image see Qian and Titterington (1991). Besag,
 
 <a id="sec-13-2"></a>
 
@@ -48,7 +48,7 @@ The hidden Markov chain isoften arealistic model when the observations U; appear
 
 # 13.21 Definition
 
-We first consider the case where the dependence between the unobservable (hidden) component-indicator vectors Z; is specified by a stationary Markov chain with 9. Thus
+We first consider the case where the dependence between the unobservable (hidden) component-indicator vectors $Z_j$ is specified by a stationary Markov chain with 9. Thus
 
 $$
 \ p r \{ Z _ { i , j + 1 } = 1 \, | \, Z _ { h j } = 1 \} \, \} = \pi _ { h i } \quad ( h , i = 1 , \dots , g )
@@ -78,7 +78,7 @@ where ß contains the initial probabilities Toi and the transition probabilities
 
 # 13.2.2 Some Examples
 
-Bickel et al. (1998) contains some examples of hidden Markov chains. In one, there are 9 2 hidden components with the ith componentdistributionof Y; being Poisson with mean p; (i = 1,2). Albert (1991) proposed this hidden Markov chain as a model for aseries of daily counts of epileptic seizures in one patient; see also Le et al. (1992) Leroux and Puterman (1992) this model to fetal lamb movements . applied
+Bickel et al. (1998) contains some examples of hidden Markov chains. In one, there are 9 2 hidden components with the ith componentdistributionof $Y_j$ being Poisson with mean p; (i = 1,2). Albert (1991) proposed this hidden Markov chain as a model for aseries of daily counts of epileptic seizures in one patient; see also Le et al. (1992) Leroux and Puterman (1992) this model to fetal lamb movements . applied
 
 In another example, there are 9 = 2 hidden components, where the ith This model has been used to model electric current through channels in ion membranes; see Guttorp (1995, p. 109) and Fredkin and Rice (1992) for further details. again
 
@@ -92,7 +92,7 @@ In another example, there are 9 = 2 hidden components, where the ith This model 
 
 We now describe the application of the EM algorithm to this problem, known in the HMM literature as the Baum-Welch algorithm. Baum and his collaborators formulated this algorithm before the appearance of the EM algorithm in Dempster et al. (1977) and established the convergence properties for this algorithm; see Baum and Petrie (1966), Baum and Eagon (1967), and Baum et al. (1970). The E-step can be implemented exactly, but it does require a forward and backward recursion through the data, which is time-consuming and numerically sensitive; even though modified algorithms have been designed (Devijver, 1985)
 
-The M-step can be implemented in closed form, provided that the MLEs of the are available in closed form. In our description here of the EM process, f:(y;) denotes the probability that Y; = Uj given its membership of the ith component of the chain; that is,
+The M-step can be implemented in closed form, provided that the MLEs of the are available in closed form. In our description here of the EM process, f:($y_j$) denotes the probability that $Y_j$ = Uj given its membership of the ith component of the chain; that is,
 
 $$
 Y _ { j } = y _ { j } \ | \ Z _ { i j } = 1 \} \quad ( i = 1 , \dots , g ; \ j = 1 , \dots , n ) .
@@ -275,13 +275,13 @@ Concerning more general Markov models, Qian and Titterington (1990) considered p
 The distribution of Z is specified by that of a Gibbs distribution;
 
 $$
-p ( z ) = \exp \{ - U ( z ; \beta ) \} / C ( \beta ) ,
+p ( z ) = \exp \{ - U ( $z_j$ \beta ) \} / C ( \beta ) ,
 $$
 
-where C(P) is a normalizingconstant (the partition function), and the energy function U(z; ß) takes the form
+where C(P) is a normalizingconstant (the partition function), and the energy function U($z_j$ ß) takes the form
 
 $$
-U ( z ; \beta ) = \sum _ { \epsilon \in \mathcal { S } } V _ { \epsilon } ( z ; \beta ) ,
+U ( $z_j$ \beta ) = \sum _ { \epsilon \in \mathcal { S } } V _ { \epsilon } ( $z_j$ \beta ) ,
 $$
 
 where S is a class of subsets of the sites, and V, is the potential function associated with subset s. In the context of images, the structure of the Gibbs function is intended to reflect plausible local, spatial correlation in the true scene; see Geman and Geman (1984) and Besag (1986). As in the hidden Markov chain case; the marginal density
@@ -312,7 +312,7 @@ where uij is the number of the prescribed neighbors of pixel j belonging to the 
 
 # 13.4.2 Application of EM Algorithm
 
-To examine the application of the EM algorithm to this more general HMM, we shall continue to assume that the feature vectors Uj are conditionally independent as specified by (13.3) But we no longer assume that each Y; is discrete.
+To examine the application of the EM algorithm to this more general HMM, we shall continue to assume that the feature vectors Uj are conditionally independent as specified by (13.3) But we no longer assume that each $Y_j$ is discrete.
 
 From (13.3) and (13.20), the complete-data log likelihood is given by
 
@@ -321,7 +321,7 @@ $$
 $$
 
 $$
-\log L _ { c } ( \Psi ) & = \log p ( z ) + \sum _ { j = 1 } ^ { n } \log f ( y _ { j } \ | \ z _ { j } ; \xi ) \\ & = \ - U ( z ; \beta ) - \log C ( \beta ) + \sum _ { i = 1 } ^ { g } \sum _ { j = 1 } ^ { n } z _ { i j } \log f _ { i } ( y _ { j } ; \theta _ { i } ) .
+\log L _ { c } ( \Psi ) & = \log p ( z ) + \sum _ { j = 1 } ^ { n } \log f ( y _ { j } \ | \ z _ { j } ; \xi ) \\ & = \ - U ( $z_j$ \beta ) - \log C ( \beta ) + \sum _ { i = 1 } ^ { g } \sum _ { j = 1 } ^ { n } z _ { i j } \log f _ { i } ( y _ { j } ; \theta _ { i } ) .
 $$
 
 The EMalgorithm for the hidden MRFisconsiderably more difficult. Asexplained by Qian and Titterington (1991),it is impossible to obtain an explicit solution via the EM algorithm where "explicit" means that an explicit formula exists; not requiring numerical integration or summation on the E-step nor iterative solution on the Mstep. To see this; the E-step on the (k + 1)th iteration requires the computation of the conditional expectation of (13.22), using the current fit <{k) for 4, which is given by
@@ -333,7 +333,7 @@ $$
 where
 
 $$
-W _ { \delta } ^ { ( k ) } ( \beta ) = E _ { \Psi ^ { ( k ) } } \{ V _ { i } ( Z ; \beta ) \, | \, y ) \}
+W _ { \delta } ^ { ( k ) } ( \beta ) = E _ { \Psi ^ { ( k ) } } \{ V _ { i } ( $Z_j$ \beta ) \, | \, y ) \}
 $$
 
 and
@@ -414,7 +414,7 @@ $$
 f _ { i } ( y _ { j } ; \theta _ { i } ) = \phi ( y _ { j } ; \mu _ { i } , \Sigma _ { i } ) .
 $$
 
-Then (13.30), we have that the updated estimates and Z; on the (k + 1)th iteration of the EM algorithm are given by using
+Then (13.30), we have that the updated estimates and $Z_j$ on the (k + 1)th iteration of the EM algorithm are given by using
 
 and
 
@@ -482,7 +482,7 @@ $$
 ( 1 3 . 3 6 )
 $$
 
-Finally; the hidden component-indicator vector z can be undertaken by generating each zj from the conditional distribution
+Finally; the hidden component-indicator vector z can be undertaken by generating each $z_j$ from the conditional distribution
 
 $$
 p ( z _ { j } \ | \ z _ { \theta j } , y , \beta , \xi ) \circ p ( z _ { j } \ | \ z _ { \theta j } ; \beta )
@@ -492,7 +492,7 @@ for j = 1, 1. This typically involves simulation from a binomial or multinomial 
 
 As explained in Rydén and Titterington (1998), simulation from (13.35) iseasy for a hidden Markov chain model if p(ß) is suitably chosen, since it involves simulating from Beta or Dirichlet distributions; see Robert et al. (1993). But in the case of the hidden MRF model, simulation from (13.35) runs into difficulties because p(z p) typically involves the partition function C(ß) .
 
-Heikkinen and Högmander (1994) and Rydén and Titterington (1998) suggest replacing p(z P) by the pseudo likelihood pPL(z; ß) defined by (13.26). The modified version of (13.35) is therefore
+Heikkinen and Högmander (1994) and Rydén and Titterington (1998) suggest replacing p(z P) by the pseudo likelihood pPL($z_j$ ß) defined by (13.26). The modified version of (13.35) is therefore
 
 $$
 ( 1 3 . 3 8 )
@@ -514,7 +514,7 @@ In other Bayesian work on HMMs, Dunmur and Titterington (1997) have derived vers
 
 # 13.7 EXAMPLES OF GIBBS SAMPLING WITH HIDDEN MARKOV CHAINS
 
-In Section 4.8.4 on the Bayesian approach to mixture estimation, we described the approach of Robert and Titterington (1998) that enabled Gibbs sampling to be carried out without the need of a proper for the of univariate normal mixtures . Their results were presented for the more general hidden Markov chain model rather for independent data. Hence their methods can be used for Bayesian estimation for hidden Markov chain. Concerning the distribution for the transition bilities, modeled each row of the transition matrix by a Dirichlet distribution D(l, The priors and the simulation of the component parameters are essentially the same as discussed in Section 4.8.4 for the independent data case (that is, the hidden multinomial model). In particular; showed that their choice of a partially proper prior led to a proper posterior distribution for %. prior fitting prior probathey they
+In Section 4.8.4 on the Bayesian approach to mixture estimation, we described the approach of Robert and Titterington (1998) that enabled Gibbs sampling to be carried out without the need of a proper for the of univariate normal mixtures . Their results were presented for the more general hidden Markov chain model rather for independent data. Hence their methods can be used for Bayesian estimation for hidden Markov chain. Concerning the distribution for the transition bilities, modeled each row of the transition matrix by a Dirichlet distribution D(l, The priors and the simulation of the component parameters are essentially the same as discussed in Section 4.8.4 for the independent data case (that is, the hidden multinomial model). In particular; showed that their choice of a partially proper prior led to a proper posterior distribution for $\Psi$. prior fitting prior probathey they
 
 For the same model as above; Robert and Titterington (1998) also the prior feedback method for the computation of the MLE. This method was discussed applied in Section 4.10 for the hidden multinomial model. As the component densities were normal with unequal densities; showed how to modify the density for the variances to ensure that the posterior density is bounded. also considered the case of Poisson component distributions. they prior \_ They We report here one of the examples in Robert and Titterington (1998) on some 341 univariate observations simulated from a three-component hidden Markov chain model with transition matrix In other recent work, Robert et al. (2000) have considered Bayesian inference in hidden Markov chains; reversible jump MCMC methods to enable the number of components 9 to be unspecified. Their work is therefore an extension of the approach of Richardson and Green (1997) for iid. data (the hidden multinomial mixture model) discussed in Chapter 4. As Robert et al. (2000) note, the Markovian structure together with the reversibility constraint lead to a higher level of complexity than in Richardson and Green (1997). using
 

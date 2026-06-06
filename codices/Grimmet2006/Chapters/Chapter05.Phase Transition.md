@@ -2,19 +2,19 @@
 
 ## Chapter 5 Phase Transition
 
-Summary. When q ∈ [1, ∞), there exists a critical value pc(q) of the edgeparameter p, separating the phase with no infinite cluster from the phase with one or more infinite clusters. Partial results are known for both phases, but important open problems remain. In the subcritical phase, exponential decay is proved for sufficiently small p, and is conjectured to hold for all p < pc(q). Much is known for the supercritical phase subject to the assumption that p exceeds a certain ‘slab critical point’ pc(q), conjectured to equal pc(q). The Wulff construction is a high point of the theory of the random-cluster model.
+Summary. When q ∈ [1, ∞), there exists a critical value pc(q) of the edgeparameter p, separating the phase with no infinite cluster from the phase with one or more infinite clusters. Partial results are known for both phases, but important open problems remain. In the subcritical phase, exponential decay is proved for sufficiently small p, and is conjectured to hold for all $p$ < pc(q). Much is known for the supercritical phase subject to the assumption that p exceeds a certain ‘slab critical point’ pc(q), conjectured to equal pc(q). The Wulff construction is a high point of the theory of the random-cluster model.
 
 <a id="sec-5-1"></a>
 
 ### 5.1 The critical point
 
-The random-cluster model possesses an infinite open cluster if and only if p is sufficiently large. There is a critical value of p separating the regime in which all open clusters are finite from that in which infinite clusters exist. We explore this phasetransitioninthischapter. WiththeexceptionofthefinalSection5.8,weshall assume for the entirety of the chapter that q ∈ [1,∞), and we shall concentrate on the extremal random-cluster measures φp0,q and φp1,q. The quantities of principal interest are the φpb,q-percolation-probabilities,
+The random-cluster model possesses an infinite open cluster if and only if $p$ is sufficiently large. There is a critical value of $p$ separating the regime in which all open clusters are finite from that in which infinite clusters exist. We explore this phasetransitioninthischapter. WiththeexceptionofthefinalSection5.8,weshall assume for the entirety of the chapter that q ∈ [1,∞), and we shall concentrate on the extremal random-cluster measures φp0,q and φp1,q. The quantities of principal interest are the φpb,q-percolation-probabilities,
 
-(5.1) θb(p,q) = φpb,q(0 ↔ ∞), b = 0,1. We deﬁne the critical points (5.2) pcb(q) = sup p : θb(p,q) = 0 , b = 0,1. By Proposition 4.28(a), the θb(·,q) are non-decreasing functions, and therefore (5.3) θb(p,q) = 0 if p < pcb(q),
+(5.1) θb(p,q) = φpb,q(0 ↔ ∞), b = 0,1. We deﬁne the critical points (5.2) pcb(q) = sup p : θb(p,q) = 0 , b = 0,1. By Proposition 4.28(a), the θb(·,q) are non-decreasing functions, and therefore (5.3) θb(p,q) = 0 if $p$ < pcb(q),
 
-> 0 if p > pcb(q).
+> 0 if $p$ > pcb(q).
 
-By Theorem 4.63, φp0,q = φp1,q for almost every p ∈ [0,1]. Therefore,
+By Theorem 4.63, φp0,$q$ = φp1,q for almost every p ∈ [0,1]. Therefore,
 
 θ0(p,q) = θ1(p,q) for almost every p, and hence pc0(q) = pc1(q). Henceforth, we use the abbreviated notation
 
@@ -55,13 +55,13 @@ see also [148].
 
 100 Phase Transition [5.1]
 
-(5.11) Proposition [8]. For p ∈ [0,1] and q ∈ [1,∞),
+(5.11) Proposition [8]. For p ∈ [0,1] and $q$ ∈ [1,∞),
 
 φ ,1 p,q(0 ↔ ∂ ) → θ1(p,q) as ↑ Zd.
 
 There is no ‘elementary’ proof of the corresponding fact for the 0-boundarycondition measure φ ,0 p,q, and indeed this is unproven for general pairs (p,q).
 
-(5.12) Proposition. Let φ , ⊆ Zd, be probability measures on ( ,F ) indexed by boxes and satisfying φ ⇒ φ as ↑ Zd. If φ has the 0/1-infinite-cluster property, then
+(5.12) Proposition. Let φ , ⊆ Zd, be probability measures on ($\Omega, \mathcal{F}$) indexed by boxes and satisfying φ ⇒ φ as ↑ Zd. If φ has the 0/1-infinite-cluster property, then
 
 φ (x ↔ y) → φ(x ↔ y), x, y ∈ Zd.
 
@@ -113,11 +113,11 @@ However, θ1(p1,q1) > 0 and θ1(p2,q2) = 0, a contradiction, and thus (5.15) hol
 
 The continuityofthe percolationprobabilitiesθb(p,q)is relatedtothe uniqueness of random-cluster measures, in the sense that the θb(·,q) are continuous at p if and only if there is a unique random-cluster measure at this value.
 
-(5.16) Theorem. Let d ≥ 2 and q ∈ [1,∞). (a) The function θ0(·,q) is left-continuous on (0,1] \ {pc(q)}. (b) The function θ1(·,q) is right-continuous on [0,1). (c) θ0(p,q) = θ1(p,q) if and only if p ∈/ Dq, where Dq is that of Theorem
+(5.16) Theorem. Let d ≥ 2 and $q$ ∈ [1,∞). (a) The function θ0(·,q) is left-continuous on (0,1] \ {pc(q)}. (b) The function θ1(·,q) is right-continuous on [0,1). (c) θ0(p,q) = θ1(p,q) if and only if $p$ ∈/ Dq, where Dq is that of Theorem
 
-4.63. (d) Let p = pc(q). The functions θ0(·,q) and θ1(·,q) are continuous at the point p if and only if p ∈/ Dq.
+4.63. (d) Let $p$ = pc(q). The functions θ0(·,q) and θ1(·,q) are continuous at the point p if and only if $p$ ∈/ Dq.
 
-Clearly, θ0(p,q) = θ1(p,q) = 0 if q ∈ [1,∞) and p < pc(q), and hence Dq∩[0, pc(q)) = ∅, bypart(c). Itispresumablythecasethatθ0(·,q)andθ1(·,q) are continuous except possibly at p = pc(q). In addition it may be conjectured that θ0(·,q) is left-continuous on the entire interval (0,1]. A veriﬁcation of this conjecture would include a proof that
+Clearly, θ0(p,q) = θ1(p,q) = 0 if $q$ ∈ [1,∞) and $p$ < pc(q), and hence Dq∩[0, pc(q)) = ∅, bypart(c). Itispresumablythecasethatθ0(·,q)andθ1(·,q) are continuous except possibly at $p$ = pc(q). In addition it may be conjectured that θ0(·,q) is left-continuous on the entire interval (0,1]. A veriﬁcation of this conjecture would include a proof that
 
 θ0(pc(q),q) = lim
 
@@ -127,9 +127,9 @@ p↑pc(q)
 
 This would in particular solve one of the famous open problems of percolation theory, namely to show that θ(pc(1),1) = 0, see [154, 161].
 
-The functions θ0(p,q) and θ1(p,q) play, respectively, the roles of the magnetizations for Potts measures with free and constant-spin boundary conditions. We state this more fully as a theorem. As in Section 1.3, we write σu for the spin at vertex u of a Potts model with q local states (where q is now assumed to be integral). We denote by πβ,q (respectively, πβ,1 q) the ‘free’ (respectively, ‘1’) q-state Potts measure on Ld with parameter β, see (4.89)–(4.90).
+The functions θ0(p,q) and θ1(p,q) play, respectively, the roles of the magnetizations for Potts measures with free and constant-spin boundary conditions. We state this more fully as a theorem. As in Section 1.3, we write σu for the spin at vertex u of a Potts model with q local states (where $q$ is now assumed to be integral). We denote by πβ,q (respectively, πβ,1 q) the ‘free’ (respectively, ‘1’) q-state Potts measure on Ld with parameter β, see (4.89)–(4.90).
 
-(5.17) Theorem. Let d ≥ 2, p ∈ (0,1), q ∈ {2,3,. . .}, and let β satisfy p = 1 − e−β. We have that:
+(5.17) Theorem. Let d ≥ 2, p ∈ (0,1), q ∈ {2,3,. . .}, and let β satisfy $p$ = 1 − e−β. We have that:
 
 |u|→∞ (5.18) πβ,q(σ0 = σu) − q−1 , (5.19) (1 − q−1)θ1(p,q) = πβ,1 q(σ0 = 1) − q−1.
 
@@ -141,13 +141,13 @@ with θ0(p,q) and πβ,q replaced, respectively, by θ1(p,q) and πβ,1 q, and t
 
 Proof of Theorem 5.16. We shall prove part (a) at the end of Section 8.8. Part (b) is a consequence of Proposition 4.28(b) applied to the indicator function of the increasingclosedevent{0 ↔ ∞}. Part(d)followsfrom(a)–(c)andTheorem4.63,
 
-on noting that the θb(·,q) are non-decreasing. It remains to prove (c). Certainly φp0,q = φp1,q if p ∈/ Dq (by Theorem 4.63), whence θ0(p,q) = θ1(p,q) for p ∈/ Dq. Suppose conversely that q > 1 and
+on noting that the θb(·,q) are non-decreasing. It remains to prove (c). Certainly φp0,$q$ = φp1,q if $p$ ∈/ Dq (by Theorem 4.63), whence θ0(p,q) = θ1(p,q) for $p$ ∈/ Dq. Suppose conversely that $q$ > 1 and
 
 (5.20) θ0(p,q) = θ1(p,q). We shall now give the main steps in a proof that (5.21) h0(p,q) = h1(p,q). This will imply by Theorem 4.63 that p ∈/ Dq.
 
 Let e = u,v be an edge, and Je the event that e is open. For w ∈ Zd, let Iw = {w ↔ ∞}, and let Hw be the event that w is in an infinite open path of Ed \ {e}. As in the proof of Proposition 4.6, there exists a probability measure ψ
 
-on ( ,F )2 with marginals φp0,q and φp1,q, and assigning probability 1 to the set of pairs (ω0,ω1) ∈ 2 satisfying ω0 ≤ ω1. Let F(ω) be the set of vertices that are joined to inﬁnity by open paths of the conﬁguration ω ∈ . We have that
+on ($\Omega, \mathcal{F}$)2 with marginals φp0,q and φp1,q, and assigning probability 1 to the set of pairs (ω0,ω1) ∈ 2 satisfying ω0 ≤ ω1. Let F(ω) be the set of vertices that are joined to inﬁnity by open paths of the conﬁguration ω ∈ . We have that
 
 φp1,q(Iw) − φp0,q(Iw) = 0, by (5.20). The event Je ∩ Iu ∩ Iv is increasing, whence (5.23) φp0,q(Je ∩ Iu ∩ Iv) ≤ φp1,q(Je ∩ Iu ∩ Iv). Also, (5.24) φp0,q(Je ∩ Iu ∩ Iv) = φp0,q(Je ∩ Hu ∩ Hv)
 
@@ -237,7 +237,7 @@ and we pick accordingly. The events {u ↔/ ∂ } and {v ↔/ ∂ } are cylinder
 
 and we pick ⊇ accordingly. We now employ a certain coupling of φ ,0 p,q and φ ,1 p,q. Similar couplings will be encountered later.
 
-(5.30) Proposition. Let p ∈ (0,1) and q ∈ [1,∞), and let , be finite boxes of Zd satisfying ⊆ . For ω ∈ , let G = G(ω) = {x ∈ : x ↔/ ∂ }. There exists a probability measure ψ on 0 × 1 , with marginals φ ,0 p,q and φ ,1 p,q, that assigns probability 1 to pairs (ω0,ω1) satisfying ω0 ≤ ω1, and with the additional property that, conditional on the set G = G(ω1), both marginals of ψ on EG equal the free random-cluster measure φG,p,q.
+(5.30) Proposition. Let p ∈ (0,1) and $q$ ∈ [1,∞), and let , be finite boxes of Zd satisfying ⊆ . For ω ∈ , let G = G(ω) = {x ∈ : x ↔/ ∂ }. There exists a probability measure ψ on 0 × 1 , with marginals φ ,0 p,q and φ ,1 p,q, that assigns probability 1 to pairs (ω0,ω1) satisfying ω0 ≤ ω1, and with the additional property that, conditional on the set G = G(ω1), both marginals of ψ on EG equal the free random-cluster measure φG,p,q.
 
 Writing G for the class of all subsets of that contain both u and v, we have by the proposition that
 
@@ -309,37 +309,37 @@ The claim is proven once we have shown that (5.32) φp0,q(0 ↔ u) → θ0(p,q)2
 
 φp0,q(0 ↔ u) = φp0,q(0 ↔ ∞, u ↔ ∞) + φp0,q(u ∈ C, |C| < ∞). The last probability tends to zero as |u| → ∞. Also,
 
-φp0,q(0 ↔ ∞, u ↔ ∞) → φp0,q(0 ↔ ∞)2 as |u| → ∞, since φp0,q is mixing, see Corollary 4.23.
+φp0,q(0 ↔ ∞, u ↔ ∞) → φp0,q(0 ↔ ∞)2 as |u| → ∞, since φp0,$q$ is mixing, see Corollary 4.23.
 
 <a id="sec-5-3"></a>
 
 ### 5.3 Uniqueness of random-cluster measures
 
-We record in this section some information about the set of values of p at which there exists a unique random-cluster measure.
+We record in this section some information about the set of values of $p$ at which there exists a unique random-cluster measure.
 
 (5.33) Theorem [8, 152]. Let q ∈ [1,∞) and d ≥ 2. There exists a unique random-cluster measure, in that |Wp,q| = |Rp,q| = 1, if either of the following holds:
 
-(a) θ0(p,q) = θ1(p,q), which is to say that p ∈/ Dq, (b) p > p′, where p′ = p′(q,d) ∈ [pc(q),1) is a certain real number.
+(a) θ0(p,q) = θ1(p,q), which is to say that p ∈/ Dq, (b) $p$ > p′, where $p$′ = p′(q,d) ∈ [pc(q),1) is a certain real number.
 
-By part (a), there is a unique random-cluster measure for any p such that θ1(p,q) = 0, [8, Thm A.2]. In particular, there exists a unique random-cluster measure throughout the subcritical phase, that is, when 0 ≤ p < pc(q). It is an important open problem to establish the same conclusion when p > pc(q).
+By part (a), there is a unique random-cluster measure for any p such that θ1(p,q) = 0, [8, Thm A.2]. In particular, there exists a unique random-cluster measure throughout the subcritical phase, that is, when 0 ≤ $p$ < pc(q). It is an important open problem to establish the same conclusion when $p$ > pc(q).
 
 108 Phase Transition [5.3]
 
-(5.34) Conjecture. Let q ∈ [1,∞) and d ≥ 2. We have that φp0,q = φp1,q, and therefore |Wp,q| = |Rp,q| = 1, if and only if either of the following holds:
+(5.34) Conjecture. Let q ∈ [1,∞) and d ≥ 2. We have that φp0,$q$ = φp1,q, and therefore |Wp,q| = |Rp,q| = 1, if and only if either of the following holds:
 
-(i) either p < pc(q) or p > pc(q), (ii) p = pc(q) and θ1(pc(q),q) = 0.
+(i) either $p$ < pc(q) or $p$ > pc(q), (ii) $p$ = pc(q) and θ1(pc(q),q) = 0.
 
-Slightly more is known in the case of two dimensions. It is proved in Theorem 6.17 that there is a unique random-cluster measure when d = 2 and p = psd(q), where psd(q) =
+Slightly more is known in the case of two dimensions. It is proved in Theorem 6.17 that there is a unique random-cluster measure when d = 2 and $p$ = psd(q), where psd(q) =
 
 √q/(1 +
 
-√q) is the ‘self-dual’ value of p. It is conjectured that pc(q) = psd(q) for q ∈ [1,∞). Proof of Theorem 5.33. The sufﬁciency of (a) was proved in Theorem 5.16(c).
+√q) is the ‘self-dual’ value of p. It is conjectured that pc(q) = psd(q) for $q$ ∈ [1,∞). Proof of Theorem 5.33. The sufﬁciency of (a) was proved in Theorem 5.16(c).
 
 ![image 432](../Images/imageFile432.png)
 
 ![image 433](../Images/imageFile433.png)
 
-We sketch a proof that φp0,q = φp1,q if p is sufficiently close to 1. There are certain topological complications in this3, and we refrain from giving all the relevant details, most of which may be found in a closely related passage of [211, Section 2]. We begin by deﬁning a lattice L with the same vertex set as Ld but with edge-relation
+We sketch a proof that φp0,$q$ = φp1,q if $p$ is sufficiently close to 1. There are certain topological complications in this3, and we refrain from giving all the relevant details, most of which may be found in a closely related passage of [211, Section 2]. We begin by deﬁning a lattice L with the same vertex set as Ld but with edge-relation
 
 x ∼ y if |xi − yi| ≤ 1 for 1 ≤ i ≤ d.
 
@@ -367,7 +367,7 @@ where φ ,π is product measure on E with density π = p/[p + q(1 − p)], and w
 
 3An alternative approach may be based on the methods of Section 7.2.
 
-and furthermore α(p) > 0 if p is sufficiently large, say p > p′ for some p′ ∈ [pc(q),1).
+and furthermore α(p) > 0 if $p$ is sufficiently large, say $p$ > p′ for some p′ ∈ [pc(q),1).
 
 Let A be an increasingcylinderevent, and ﬁnd a finite box such that A ∈ F . Let be a box satisfying ⊆ . For any subset S of = Zd \ containing ∂ , we deﬁne the ‘internal boundary’ D(S) of S to be the set of all vertices x of L satisfying:
 
@@ -379,7 +379,7 @@ vertex of S.
 
 Let S = S ∪ D(S), and denote by I(S) the set of vertices x0 for which there exists a path x0,e0, x1,e1,. . .,en−1, xn of Ld with xn ∈ , xi ∈/ S for all i. Note that every vertex of ∂I(S) is adjacent to some vertex in D(S). We shall concentrate on the case S = B(∂ ).
 
-Let ǫ > 0 and p > p′, where p′ is given after (5.36). By (5.35)–(5.36), there exists a box ′ sufficiently large that (5.37) φp0,q(K , ) ≥ 1 − ǫ, ⊇ ′, where K , = B(∂ ) ∩ = ∅ . We pick ′ accordingly, and let ⊇ ′.
+Let ǫ > 0 and $p$ > p′, where $p$′ is given after (5.36). By (5.35)–(5.36), there exists a box ′ sufficiently large that (5.37) φp0,q(K , ) ≥ 1 − ǫ, ⊇ ′, where K , = B(∂ ) ∩ = ∅ . We pick ′ accordingly, and let ⊇ ′.
 
 Assume that K , occurs, so that I = I(B(∂ )) satisﬁes I ⊇ . Let H be the set of all subsets h of such that h ⊆ . We note three facts about B(∂ ) and D(B(∂ )):
 
@@ -405,15 +405,13 @@ Let h ∈ H . The φp0,q-probability of A, conditional on {B(∂ ) = h}, is give
 
 ≥ φp0,q φ ,1 p,q(A)1K , since I ⊆ ≥ φ ,1 p,q(A) − ǫ by (5.37).
 
-Let ↑ Zd and ǫ ↓ 0 in that order, and deduce that φp0,q ≥st φp1,q. Since φp0,q ≤st φp1,q, we conclude that φp0,q = φp1,q.
+Let ↑ Zd and ǫ ↓ 0 in that order, and deduce that φp0,q ≥st φp1,q. Since φp0,q ≤st φp1,q, we conclude that φp0,$q$ = φp1,q.
 
 <a id="sec-5-4"></a>
 
 ### 5.4 The subcritical phase
 
-The random-cluster model is said to be in the subcritical phase when p < pc(q), and this phase is the subject of the next three sections. Let q ∈ [1,∞), d ≥ 2, and
-
-p < pc(q). By Theorem 5.33(a), φp0,q = φp1,q, and hence |Wp,q| = |Rp,q| = 1. We shall denote the unique random-cluster measure by φp0,q.
+The random-cluster model is said to be in the subcritical phase when $p$ < pc(q), and this phase is the subject of the next three sections. Let q ∈ [1,∞), d ≥ 2, and $p$ < pc(q). By Theorem 5.33(a), φp0,$q$ = φp1,q, and hence |Wp,q| = |Rp,q| = 1. We shall denote the unique random-cluster measure by φp0,q.
 
 The subcritical phase is characterized by the (almost-sure) absence of an infinite open cluster. Thus all open clusters are almost-surely finite, and one seeks estimates on the tail of the size of such a cluster. As described in [154, Chapter 6], one may study both the ‘radius’ and the ‘volume’ of a cluster C. We concentrate here on the cluster C = C0 at the origin, and we deﬁne its radius4 by
 
@@ -429,7 +427,7 @@ n→∞
 
 It is quite another matter to show as expected that
 
-(5.43) ψ(p,q) > 0, ζ(p,q) > 0 for p < pc(q).
+(5.43) ψ(p,q) > 0, ζ(p,q) > 0 for $p$ < pc(q).
 
 We conﬁne ourselves in this section to ‘soft’ arguments concerning the existence of ψ and ζ; the ‘harder’ arguments relevant to strict positivity are deferred to the next two sections. We begin by considering the radius of the cluster at the origin. The existence of the limit in (5.41) relies essentially on positive association. We write en = (n,0,0,. . . ,0).
 
@@ -455,7 +453,7 @@ exists and satisﬁes 0 ≤ ψ = ψ(p,q) < ∞. There exists a constant σ = σ(
 
 Proofs of Theorem 5.44 and Corollary 5.45. The proof of Theorem 5.44 follows exactlythatofthecorrespondingpartsof[154,Thms6.10,6.44],andthedetailsare omitted. For the second proof, it sufﬁces to check that φp0,q satisﬁes the conditions of Theorem 5.44.
 
-We turn next to the volume |C| of the open cluster at the origin. A probability measure µ on ( ,F ) is said to satisfy the ‘uniform insertion-tolerancecondition’ if, for some α,β ∈ (0,1),
+We turn next to the volume |C| of the open cluster at the origin. A probability measure µ on ($\Omega, \mathcal{F}$) is said to satisfy the ‘uniform insertion-tolerancecondition’ if, for some α,β ∈ (0,1),
 
 ![image 447](../Images/imageFile447.png)
 
@@ -475,9 +473,9 @@ logµ(n ≤ |C| < ∞) → ζ(µ) as n → ∞.
 
 Proofs of Theorem 5.47 and Corollary 5.51. These are obtained by following the proof of [154, Thm 6.78], and the details are omitted.
 
-Since φp0,q(0 ↔ ∞) > 0 when p > pc(q), it is elementary that (5.52) ψ(p,q) = 0 for p > pc(q). It is rather less obvious that (5.53) ζ(p,q) = 0 for p > pc(q), and this is implied (for sufficiently large p) by Theorem 5.108. It is an important open problem to prove that ψ(p,q) > 0 and ζ(p,q) > 0 when p < pc(q). (5.54) Conjecture (Exponentialdecay). Let q ∈ [1,∞). Then ψ(p,q) > 0 and ζ(p,q) > 0 whenever p < pc(q).
+Since φp0,q(0 ↔ ∞) > 0 when $p$ > pc(q), it is elementary that (5.52) ψ(p,q) = 0 for $p$ > pc(q). It is rather less obvious that (5.53) ζ(p,q) = 0 for $p$ > pc(q), and this is implied (for sufficiently large p) by Theorem 5.108. It is an important open problem to prove that ψ(p,q) > 0 and ζ(p,q) > 0 when $p$ < pc(q). (5.54) Conjecture (Exponentialdecay). Let q ∈ [1,∞). Then ψ(p,q) > 0 and ζ(p,q) > 0 whenever $p$ < pc(q).
 
-A partial result in this direction is the following rather weak statement; related results may be obtained via Theorem 3.79 as in Theorem 6.30. (5.55) Theorem. Let q ∈ [1,∞) and 0 < p < pc(1). Then ψ(p,q) > 0 and ζ(p,q) > 0.
+A partial result in this direction is the following rather weak statement; related results may be obtained via Theorem 3.79 as in Theorem 6.30. (5.55) Theorem. Let q ∈ [1,∞) and 0 < $p$ < pc(1). Then ψ(p,q) > 0 and ζ(p,q) > 0.
 
 Proof. Let q ∈ [1,∞), while noting in passing that the method of proof is valid even when q ∈ (0,1), using the comparison inequalities of Theorem 3.21 as in (5.118). By Proposition 4.28(a), φp0,q ≤st φp. Therefore,
 
@@ -491,7 +489,7 @@ Similarly,
 
 1 n
 
-logφp(|C| ≥ n) → ζ(p,1) as n → ∞. Furthermore, ζ(p,1) > 0 when p < pc(1), by [154, Thm 6.78].
+logφp(|C| ≥ n) → ζ(p,1) as n → ∞. Furthermore, ζ(p,1) > 0 when $p$ < pc(1), by [154, Thm 6.78].
 
 −
 
@@ -521,13 +519,13 @@ n→∞
 
 By the comparison inequality, Proposition 4.28, L(p,q) is non-decreasing in p, and therefore,
 
-< ∞ if p < pc(q), = ∞ if p > pc(q),
+< ∞ if $p$ < pc(q), = ∞ if $p$ > pc(q),
 
 L(p,q)
 
 where (5.58) pc(q) = sup p : L(p,q) < ∞ . Clearly pc(q) ≤ pc(q), and equality is believed to hold. (5.59) Conjecture [163]. If q ∈ [1,∞), then pc(q) = pc(q).
 
-Certainly pc(q) = pc(q) when q = 1, see [154], and we shall see at Theorem 7.33 that this holds also when q is sufficiently large. It is in addition valid for q = 2, see Theorem 9.53 and the remarks thereafter.
+Certainly pc(q) = pc(q) when $q$ = 1, see [154], and we shall see at Theorem 7.33 that this holds also when $q$ is sufficiently large. It is in addition valid for $q$ = 2, see Theorem 9.53 and the remarks thereafter.
 
 The condition L(p,q) < ∞ amounts to the statement that the radius R = rad(C)hasataildecayingatleastasfastasn−(d−1). Thisisslightlyweakerthanthe moment condition φp0,q(Rd−1) < ∞. In fact, L(p,q) = 0 if φp0,q(Rd−1) < ∞, since
 
@@ -539,11 +537,11 @@ kd−1φp0,q(R = k).
 
 k=n
 
-There is a converse statement. If p < pc(q) then L(p,q) < ∞, implying that ncφp0,q(0 ↔ ∂ n) → 0 for all c satisfying c < d − 1.
+There is a converse statement. If $p$ < pc(q) then L(p,q) < ∞, implying that ncφp0,q(0 ↔ ∂ n) → 0 for all c satisfying c < d − 1.
 
 This in turn implies, as in [164, Exercise 5.6.4], that φp0,q(Rc) < ∞ for all c < d − 1.
 
-We state nextthe main conclusionof this section. A related result is to be found at Theorem 5.86. (5.60) Theorem. Let q ∈ [1,∞). The function ψ in (5.56) satisﬁes ψ(p,q) > 0 whenever 0 < p < pc(q).
+We state nextthe main conclusionof this section. A related result is to be found at Theorem 5.86. (5.60) Theorem. Let q ∈ [1,∞). The function ψ in (5.56) satisﬁes ψ(p,q) > 0 whenever 0 < $p$ < pc(q).
 
 The proof, which is delayed until later in the section, uses the method of exponential steepness described in Section 3.5. Let A be an event, and recall from (2.54) the definition of the random variable HA,
 
@@ -573,7 +571,7 @@ Hn . By Proposition 4.28, η(p,q) is non-increasing in p, and we deﬁne (5.63) 
 
 n→∞
 
-(5.64) Theorem (Positivity of time-constant) [163]. Let p ∈ (0,1) and q ∈ [1,∞). If φp0,q(|C|2d+ǫ) < ∞ for some ǫ > 0, then η(p,q) > 0.
+(5.64) Theorem (Positivity of time-constant) [163]. Let p ∈ (0,1) and $q$ ∈ [1,∞). If φp0,q(|C|2d+ǫ) < ∞ for some ǫ > 0, then η(p,q) > 0.
 
 We deﬁne the further critical point (5.65) pg(q) = sup p : ψ(p,q) > 0 , with ψ(p,q) as in (5.56). The correlation length ξ(p,q) is defined by
 
@@ -581,7 +579,7 @@ We deﬁne the further critical point (5.65) pg(q) = sup p : ψ(p,q) > 0 , with 
 
 By this theorem and the prior observations, (5.67) ptc(q) = pg(q) = pc(q) ≤ pc(q), with equality conjectured. From the next section onwards, we shall use the expression pc(q) for the common value of ptc(q), pg(q), pc(q).
 
-In the percolation case (when q = 1), the above first-passage problem and the associated time-constant η(p,q) have been studied in detail; see [208, 211]. Several authors have given serious attention to a closely related question when q = 2 and d = 2, namely, the corresponding question for the two-dimensional Ising model with the ‘passage time’ Hn replaced by the minimum number of changes of spin along paths from the origin to ∂ n, see [1, 90, 119]. The timeconstant in the Ising case cannot exceed the corresponding random-cluster timeconstantη(p,2), sinceeachedgeoftheIsingmodelhavingendverticeswithunlike spins gives rise to a closed edge in the (coupled) random-cluster model.
+In the percolation case (when $q$ = 1), the above first-passage problem and the associated time-constant η(p,q) have been studied in detail; see [208, 211]. Several authors have given serious attention to a closely related question when $q$ = 2 and d = 2, namely, the corresponding question for the two-dimensional Ising model with the ‘passage time’ Hn replaced by the minimum number of changes of spin along paths from the origin to ∂ n, see [1, 90, 119]. The timeconstant in the Ising case cannot exceed the corresponding random-cluster timeconstantη(p,2), sinceeachedgeoftheIsingmodelhavingendverticeswithunlike spins gives rise to a closed edge in the (coupled) random-cluster model.
 
 ![image 456](../Images/imageFile456.png)
 
@@ -611,9 +609,9 @@ log[q/(s − r)] − β, whence r ≤ ptc(q). Therefore pg(q) ≤ ptc(q).
 
 ![image 461](../Images/imageFile461.png)
 
-There are two stages in the proof of Theorem 5.60. In the first, we apply (5.68)–(5.69) with A = An, and we utilize an iterative scheme to prove that φp0,q(An) decays ‘near-exponentially’ when p < pc(q). In the second stage, we use Theorems 5.64 and 5.66 to deduce full exponential decay. The conclusion of the first stage may be summarized as follows.
+There are two stages in the proof of Theorem 5.60. In the first, we apply (5.68)–(5.69) with A = An, and we utilize an iterative scheme to prove that φp0,q(An) decays ‘near-exponentially’ when $p$ < pc(q). In the second stage, we use Theorems 5.64 and 5.66 to deduce full exponential decay. The conclusion of the first stage may be summarized as follows.
 
-- (5.71) Lemma. Let q ∈ [1,∞), and let 0 < p < pc(q). There exist constants c = c(p,q) ∈ (0,∞), = (p,q) ∈ (0,1) such that
+- (5.71) Lemma. Let q ∈ [1,∞), and let 0 < $p$ < pc(q). There exist constants c = c(p,q) ∈ (0,∞), = (p,q) ∈ (0,1) such that
 - (5.72) φp0,q(An) ≤ exp(−cn ), n ≥ 1.
 
 Lemma 5.71 will be proved by an iterative scheme which may be continued further. If this is done, one obtains that φp0,q(An) decays at least as fast as exp(−αkn/logk n) for any k ≥ 1, where αk = αk(p,q) > 0 and logk n is the kth iterate of logarithm, that is,
@@ -676,7 +674,7 @@ and we shall prove this inductively. Let v1,v2,. . . be a deterministic ordering
 
 eE be the set of edges of Zd having exactly one endvertex in E. We may ﬁnd a (random) subset F of Cvn+1 such that F has the conditional law of Cvn+1 given that all edges in eE are closed; we now set Dvn+1 = F. We are using two
 
-properties of φp0,q here. Firstly, the law of Cvn+1 given Cv1,Cv2,. . .,Cvn depends only on eE, and secondly, φp0,q is positively associated. We obtain the required stochastic domination accordingly.
+properties of φp0,q here. Firstly, the law of Cvn+1 given Cv1,Cv2,. . .,Cvn depends only on eE, and secondly, φp0,$q$ is positively associated. We obtain the required stochastic domination accordingly.
 
 ![image 479](../Images/imageFile479.png)
 
@@ -686,7 +684,7 @@ m→∞
 
 where the (inner) supremum is over all animals Ŵ of Ld having m vertices and containing the origin. By the main result of [97], the right side is almost-surely finite so long as each | Cx|2 has finite (d + ǫ)th moment for some ǫ > 0. The required conclusion follows.
 
-Proof of Theorem 5.60. Let q ∈ [1,∞) and p < pc(q). Find r such that p < r < pc(q). By Lemma 5.71, there exist c, > 0 such that
+Proof of Theorem 5.60. Let q ∈ [1,∞) and $p$ < pc(q). Find r such that $p$ < r < pc(q). By Lemma 5.71, there exist c, > 0 such that
 
 φr0,q(An) ≤ exp(−cn ), n ≥ 1.
 
@@ -704,7 +702,7 @@ nd−1φ1 an,p,q(0 ↔ ∂ n) . As at (5.57), La(p,q) is non-decreasing in p, an
 
 n→∞
 
-La(p,q) = 0 if p < pca(q), ∈ (0,∞] if p > pca(q),
+La(p,q) = 0 if $p$ < pca(q), ∈ (0,∞] if $p$ > pca(q),
 
 120 Phase Transition [5.6]
 
@@ -718,11 +716,11 @@ a→∞
 
 Here is the main result of this section.
 
-(5.86) Theorem. Let q ∈ [1,∞). There exists ρ(p,q), satisfying ρ(p,q) > 0 when p < pc∞(q), such that
+(5.86) Theorem. Let q ∈ [1,∞). There exists ρ(p,q), satisfying ρ(p,q) > 0 when $p$ < pc∞(q), such that
 
 φp0,q(|C| ≥ n) ≤ e−nρ, n ≥ 1.
 
-The hypothesis p < pc∞(q) is slightly stronger than that of Theorem 5.60, and so is the conclusion, since φp0,q(rad(C) ≥ n) ≤ φp0,q(|C| ≥ n). Proof. We adapt the arguments of [209, Section 2], from which we extract the main steps. For N ≥ 1 and i = 1,2,. . . ,d, we deﬁne the box
+The hypothesis $p$ < pc∞(q) is slightly stronger than that of Theorem 5.60, and so is the conclusion, since φp0,q(rad(C) ≥ n) ≤ φp0,q(|C| ≥ n). Proof. We adapt the arguments of [209, Section 2], from which we extract the main steps. For N ≥ 1 and i = 1,2,. . . ,d, we deﬁne the box
 
 TN(i) = [0,3N]i−1 × [0, N] × [0,3N]d−i.
 
@@ -772,7 +770,7 @@ x∈R
 
 = (3N + 1)d−1φ1 aN,p,q(0 ↔ ∂ N).
 
-Let p < pc∞(q), and choose a > 1 such that p < pca(q). With b > 3 + a, the right side of (5.98) may be made as small as required by a suitably large choice of N, and we choose N in such a way that 7de(dτNb )c < 21. Inequality (5.97) provides the required exponential bound.
+Let $p$ < pc∞(q), and choose a > 1 such that $p$ < pca(q). With b > 3 + a, the right side of (5.98) may be made as small as required by a suitably large choice of N, and we choose N in such a way that 7de(dτNb )c < 21. Inequality (5.97) provides the required exponential bound.
 
 ![image 482](../Images/imageFile482.png)
 
@@ -782,15 +780,15 @@ Let p < pc∞(q), and choose a > 1 such that p < pca(q). With b > 3 + a, the rig
 
 Percolation theory is a source of intuition for the more general random-cluster model, but it has not always been possible to make such intuition rigorous. This is certainly so in the supercritical phase, where several of the basic questions remain unanswered to date. We shall work in this section with the free and wired measures, φp0,q and φp1,q, and we assume throughout that q ∈ [1,∞).
 
-The first property of note is the almost-sure uniqueness of the infinite open cluster. A probability measure φ on ( ,F ) is said to have the 0/1-infinite-cluster property if the number I of infinite open clusters satisﬁes φ(I ∈ {0,1}) = 1. We recall from Theorem 4.33(c) that every translation-invariant member of the closed convex hull of Wp,q has the 0/1-infinite-cluster property. By ergodicity, see Corollary 4.23, we arrive at the following.
+The first property of note is the almost-sure uniqueness of the infinite open cluster. A probability measure φ on ($\Omega, \mathcal{F}$) is said to have the 0/1-infinite-cluster property if the number I of infinite open clusters satisﬁes φ(I ∈ {0,1}) = 1. We recall from Theorem 4.33(c) that every translation-invariant member of the closed convex hull of Wp,q has the 0/1-infinite-cluster property. By ergodicity, see Corollary 4.23, we arrive at the following.
 
-(5.99) Theorem (Uniqueness of infinite open cluster). Let p ∈ [0,1] and q ∈ [1,∞). We have for b = 0,1 that (5.100) φpb,q(I = 1) = 1 whenever θb(p,q) > 0.
+(5.99) Theorem (Uniqueness of infinite open cluster). Let p ∈ [0,1] and $q$ ∈ [1,∞). We have for b = 0,1 that (5.100) φpb,q(I = 1) = 1 whenever θb(p,q) > 0.
 
-Let q ∈ [1,∞) and p > pc(q). There exists (φpb,q-almost-surely) a unique infinite open cluster. What may be said about the shapes and sizes of finite open clusters? One expects finite clusters to have properties broadly similar to those of supercritical percolation. Much progress has been made in recent years towards proofs of such statements, but a vital step remains unresolved. As was true formerly for percolation, the results in question are proved only for p exceeding a certain ‘slab critical point’ pc(q), and it is an important open problem to prove that pc(q) = pc(q) for all q ∈ [1,∞).
+Let q ∈ [1,∞) and $p$ > pc(q). There exists (φpb,q-almost-surely) a unique infinite open cluster. What may be said about the shapes and sizes of finite open clusters? One expects finite clusters to have properties broadly similar to those of supercritical percolation. Much progress has been made in recent years towards proofs of such statements, but a vital step remains unresolved. As was true formerly for percolation, the results in question are proved only for $p$ exceeding a certain ‘slab critical point’ pc(q), and it is an important open problem to prove that pc(q) = pc(q) for all q ∈ [1,∞).
 
-Here is an illustration. It is fundamental for supercritical percolation that the tails of the radius and volume of a finite open cluster decay exponentially in n and n(d−1)/d respectively, see [154, Thms 8.18, 8.65]. This provokes an important problem for the random-clustermodel whose full resolution remains open. Partial results are known when p > pc(q), see Theorems 5.104 and 5.108.
+Here is an illustration. It is fundamental for supercritical percolation that the tails of the radius and volume of a finite open cluster decay exponentially in n and n(d−1)/d respectively, see [154, Thms 8.18, 8.65]. This provokes an important problem for the random-clustermodel whose full resolution remains open. Partial results are known when $p$ > pc(q), see Theorems 5.104 and 5.108.
 
-(5.101) Conjecture. Let p ∈ [0,1] and q ∈ [1,∞). There exist σ = σ(p,q), γ = γ(p,q), satisfying σ(p,q),γ(p,q) > 0 when p > pc(q), such that
+(5.101) Conjecture. Let p ∈ [0,1] and $q$ ∈ [1,∞). There exist σ = σ(p,q), γ = γ(p,q), satisfying σ(p,q),γ(p,q) > 0 when $p$ > pc(q), such that
 
 φp1,q(n ≤ rad(C) < ∞) ≤ e−nσ, φp1,q(n ≤ |C| < ∞) ≤ e−γn(d−1)/d, n ≥ 1.
 
@@ -804,11 +802,11 @@ The study of the Wulff crystal is bound up with the law of the volume of a finit
 
 5Such shapes are named after the author of [325]. The first mathematical results on Wulff shapes were proved for the two-dimensional Ising model in [104], see the review [55].
 
-for some γ satisfying γ < ∞ when pc(q) < p < 1. It is believed as noted above that this is the correct order for the rate of decay of φp1,q(|C| = n) when p > pc(q).
+for some γ satisfying γ < ∞ when pc(q) < $p$ < 1. It is believed as noted above that this is the correct order for the rate of decay of φp1,q(|C| = n) when $p$ > pc(q).
 
 Before continuing, we make a commentconcerning the numberof dimensions. The case d = 2 is special (see Chapter 6). By the duality theory for planar graphs, the dual of a supercritical random-clustermeasure is a subcritical randomcluster measure, and this permits the use of special arguments. We shall therefore suppose for the majority of the rest of this section that d ≥ 3; some remarks about the two-dimensional case are made after Theorem 5.108.
 
-A partial account of the Wulff construction and the decay of volume of a finite cluster is provided in [83], where the asymptotic shape of droplets is studied in the special case of the Ising model. The proofs to date rely on two assumptions on the value of p, namely that p is such that φp0,q = φp1,q, cf. Conjecture 5.34, and secondly that p exceeds a certain ‘slab critical point’ pc(q) which we introduce next.
+A partial account of the Wulff construction and the decay of volume of a finite cluster is provided in [83], where the asymptotic shape of droplets is studied in the special case of the Ising model. The proofs to date rely on two assumptions on the value of $p$, namely that $p$ is such that φp0,$q$ = φp1,q, cf. Conjecture 5.34, and secondly that p exceeds a certain ‘slab critical point’ pc(q) which we introduce next.
 
 Fix q ∈ [1,∞) and let d ≥ 3. Let S(L,n) be the slab given as S(L,n) = [0, L − 1] × [−n,n]d−1,
 
@@ -816,7 +814,7 @@ and let ψpL,,qn = φS0(L,n),p,q be the random-clustermeasure on S(L,n) with par
 
 there exists α > 0 such that, for all n and all x ∈ S(L,n),ψpL,,qn(0 ↔ x) > α.
 
-It is not hard to see that (p, L) ⇒ (p′, L′) if p ≤ p′ and L ≤ L′, and it is thus natural to deﬁne the quantities
+It is not hard to see that (p, L) ⇒ (p′, L′) if $p$ ≤ p′ and L ≤ L′, and it is thus natural to deﬁne the quantities
 
 (5.102) pc(q, L) = inf p : (p, L) occurs , pc(q) = lim
 
@@ -828,7 +826,7 @@ Clearly, pc(q) ≤ pc(q) < 1. It is believed that equality holds in that pc(q) =
 
 (5.103) Conjecture [276]. Let q ∈ [1,∞) and d ≥ 3. Then pc(q) = pc(q).
 
-Thecase q = 1 ofConjecture5.103isspecial, since percolationenjoysa spatial independence not shared with general random-cluster models. This additional property has been used in the formulation of a type of ‘dynamic renormalization’, which has in turn yielded a proof that pc(1) = pc(1) for percolation in three or more dimensions, see [24], [154, Chapter 7], [161]. Such arguments have been adapted by Bodineau to the Ising model, resulting in proofs that pc(2) = pc(2) and that the pure phases are the unique extremalGibbs states when p = pc(2), see
+Thecase $q$ = 1 ofConjecture5.103isspecial, since percolationenjoysa spatial independence not shared with general random-cluster models. This additional property has been used in the formulation of a type of ‘dynamic renormalization’, which has in turn yielded a proof that pc(1) = pc(1) for percolation in three or more dimensions, see [24], [154, Chapter 7], [161]. Such arguments have been adapted by Bodineau to the Ising model, resulting in proofs that pc(2) = pc(2) and that the pure phases are the unique extremalGibbs states when $p$ = pc(2), see
 
 ![image 484](../Images/imageFile484.png)
 
@@ -836,17 +834,17 @@ Thecase q = 1 ofConjecture5.103isspecial, since percolationenjoysa spatial indep
 
 [53, 54]. Such arguments do not to date have a full random-cluster counterpart. Instead, in the random-cluster setting, one exploits what might be termed ‘static renormalization’methods, or ‘block arguments’, see [83, 276]. One divides space into blocks, constructs events of an appropriate nature on such blocks, having large probabilities, and then allows these events to combine across space. There have been substantial successes using this technique, of which the most striking is the resolution (subject to side conditions) of the Wulff construction for the Ising model.
 
-We state next an exponential-decay theorem for the radius of a finite cluster; the proof is given at the end of this section. It is an immediate corollary that the ‘truncated two-point connectivity function’ φp1,q(x ↔ y, x ↔/ ∞) decays exponentially in the distance x − y , whenever p > pc(q).
+We state next an exponential-decay theorem for the radius of a finite cluster; the proof is given at the end of this section. It is an immediate corollary that the ‘truncated two-point connectivity function’ φp1,q(x ↔ y, x ↔/ ∞) decays exponentially in the distance x − y , whenever $p$ > pc(q).
 
-(5.104) Theorem. Let q ∈ [1,∞), d ≥ 3, and p > pc(q). There exists σ = σ(p,q) > 0 such that
+(5.104) Theorem. Let q ∈ [1,∞), d ≥ 3, and $p$ > pc(q). There exists σ = σ(p,q) > 0 such that
 
 φp1,q(n ≤ rad(C) < ∞) ≤ e−nσ, n ≥ 1.
 
-We turn now to the Wulff construction. Subject to a veriﬁcation of Conjecture 5.103, and of a positive answerto the questionof the uniquenessof random-cluster measureswhen p > pc(q),theblockargumentsofCerfandPisztorayieldalargely complete picture of the Wulff theory of random-cluster models with q ∈ [1,∞), see [83, 276] and also [84]. Paper [81] is a ﬁne review of Wulff constructions for percolation, Ising, and random-cluster models.
+We turn now to the Wulff construction. Subject to a veriﬁcation of Conjecture 5.103, and of a positive answerto the questionof the uniquenessof random-cluster measureswhen $p$ > pc(q),theblockargumentsofCerfandPisztorayieldalargely complete picture of the Wulff theory of random-cluster models with q ∈ [1,∞), see [83, 276] and also [84]. Paper [81] is a ﬁne review of Wulff constructions for percolation, Ising, and random-cluster models.
 
-The reader is referred to [81] for an introductory discussion to the physical background of the Wulff construction. It may be summarized as follows for random-cluster models. Let n = [−n,n]d, and consider the wired randomcluster measure φ1 n,p,q with p > pc(q). The larger an open cluster, the more likely it is to be joined to the boundary ∂ n. Suppose that we condition on the event that there exists in n an open cluster C that does not intersect ∂ n and that has volume of the order of the volume nd of the box. What can be said about the shape of C? Since p > pc(q), there is little cost in having large volume, and the price of such a cluster accumulates around its external boundary. It turns out that the price may be expressed as a surface integral of an appropriate function termed ‘surface tension’. This ‘surface tension’ may be speciﬁed as the exponential rate of decay of a certain probability. The Wulff prediction for the shape of C is that, when re-scaled in the limit of large n, it converges to the solution of a certain variational problem, that is, the limit shape is obtained by minimizing a certain surface integral subject to a constraint on its volume.
+The reader is referred to [81] for an introductory discussion to the physical background of the Wulff construction. It may be summarized as follows for random-cluster models. Let n = [−n,n]d, and consider the wired randomcluster measure φ1 n,p,q with $p$ > pc(q). The larger an open cluster, the more likely it is to be joined to the boundary ∂ n. Suppose that we condition on the event that there exists in n an open cluster C that does not intersect ∂ n and that has volume of the order of the volume nd of the box. What can be said about the shape of C? Since $p$ > pc(q), there is little cost in having large volume, and the price of such a cluster accumulates around its external boundary. It turns out that the price may be expressed as a surface integral of an appropriate function termed ‘surface tension’. This ‘surface tension’ may be speciﬁed as the exponential rate of decay of a certain probability. The Wulff prediction for the shape of C is that, when re-scaled in the limit of large n, it converges to the solution of a certain variational problem, that is, the limit shape is obtained by minimizing a certain surface integral subject to a constraint on its volume.
 
-For A ⊆ Zd, let ρ(A) be the number of vertices x ∈ A such that x ↔ ∂ A. When p > pc(q), ρ( n) has order | n|. Let C be the open cluster at the origin, and suppose we condition on the event {|C| ≥ αnd, C ∩∂ n = ∅} where α > 0. This conditioning implies a change in value of ρ( n)/| n| amounting to a large deviation. The link between Wulff theory and large deviations is made more concrete in the next theorem. The set Dq is given in Theorem 4.63 as the (at most
+For A ⊆ Zd, let ρ(A) be the number of vertices x ∈ A such that x ↔ ∂ A. When $p$ > pc(q), ρ( n) has order | n|. Let C be the open cluster at the origin, and suppose we condition on the event {|C| ≥ αnd, C ∩∂ n = ∅} where α > 0. This conditioning implies a change in value of ρ( n)/| n| amounting to a large deviation. The link between Wulff theory and large deviations is made more concrete in the next theorem. The set Dq is given in Theorem 4.63 as the (at most
 
 (5.106) Theorem [81]. Let q ∈ [1,∞) and d ≥ 3. Let p ∈ ( pc(q),1) be such that p ∈/ Dq. There exists a bounded, closed, convex set W of Rd containing the origin in its interior such that the following holds. Under the conditionalmeasure obtained from φp1,q by conditioning on the event {nd ≤ |C| < ∞}, the random measure
 
@@ -866,7 +864,7 @@ x∈W
 
 ≥ 1 − e−cnd−1, n ≥ 1,
 
-where φ1p,q is the measure obtained from φp1,q by conditioning on the event {nd ≤ |C| < ∞}, and | · | is the Euclidean norm on Rk. This is a way of saying that the external boundary of a large finite open cluster with cardinality approximately nd resembles the boundary of a translate of nW. Within this boundary, the open cluster has density approximately θ, whilst the density outside is zero. It is presumably the case that the a in (5.107) may be chosen independently of f and ǫ, but this has not yet been proved.
+where φ1p,$q$ is the measure obtained from φp1,q by conditioning on the event {nd ≤ |C| < ∞}, and | · | is the Euclidean norm on Rk. This is a way of saying that the external boundary of a large finite open cluster with cardinality approximately nd resembles the boundary of a translate of nW. Within this boundary, the open cluster has density approximately θ, whilst the density outside is zero. It is presumably the case that the a in (5.107) may be chosen independently of f and ǫ, but this has not yet been proved.
 
 ![image 488](../Images/imageFile488.png)
 
@@ -904,15 +902,15 @@ n→∞
 
 Let Hn = {x ∈ Zd : x1 = n}, and let Gn be the event that the origin belongs to a finite cluster that intersects Hn. The box n has 2d faces, whence, by the rotation-invariance of φp0,q,
 
-(5.110) φp1,q 0 ↔ ∂ n, |C| < ∞ ≤ 2dφp1,q(Gn). We shall prove that, for p > pc(q), there exists γ > 0 such that (5.111) φp1,q(Gn) ≤ e−nγ , n ≥ 1, and the claim of the theorem is an immediate consequence.
+(5.110) φp1,q 0 ↔ ∂ n, |C| < ∞ ≤ 2dφp1,q(Gn). We shall prove that, for $p$ > pc(q), there exists γ > 0 such that (5.111) φp1,q(Gn) ≤ e−nγ , n ≥ 1, and the claim of the theorem is an immediate consequence.
 
-The idea of the proof of (5.111) is as follows. Since p > pc(q) by assumption, we may ﬁnd an integer L such that p > pc(q, L). Write S(L) = [0, L) × Zd−1, and
+The idea of the proof of (5.111) is as follows. Since $p$ > pc(q) by assumption, we may ﬁnd an integer L such that $p$ > pc(q, L). Write S(L) = [0, L) × Zd−1, and
 
 (5.112) Si(L) = S(L) + (i − 1)Le1 = (i − 1)L,iL × Zd−1,
 
-where e1 = (1,0,0,. . .,0). Suppose that GmL occurs for some m ≥ 1. Then each of the regions Si(L), i = 1,2,. . .,m, is traversedby an open path π from the origin. Since p > pc(q, L), there is φS0i(L),p,q-probability 1 that Si(L) contains an infinite open cluster, and π must avoid all such clusters for i = 1,2,. . .,m.
+where e1 = (1,0,0,. . .,0). Suppose that GmL occurs for some m ≥ 1. Then each of the regions Si(L), i = 1,2,. . .,m, is traversedby an open path π from the origin. Since $p$ > pc(q, L), there is φS0i(L),p,q-probability 1 that Si(L) contains an infinite open cluster, and π must avoid all such clusters for i = 1,2,. . .,m.
 
-Let S(L, N) = [0, L)×[−N, N]d−1. Since p > pc(q, L), we may ﬁnd α > 0 such that
+Let S(L, N) = [0, L)×[−N, N]d−1. Since $p$ > pc(q, L), we may ﬁnd α > 0 such that
 
 φS0(L,N),p,q(0 ↔ v) > α, v ∈ S(L, N). By positive association,
 
@@ -958,7 +956,7 @@ v∈H(j−1)L
 
 = 1 − α2, yielding in turn by (5.114)–(5.115) that ψN(Gn,M) ≤ (1 − α2)r.
 
-[5.8] Uniqueness when q < 1 131
+[5.8] Uniqueness when $q$ < 1 131
 
 Let N → ∞ and M → ∞ to obtain that
 
@@ -970,9 +968,9 @@ It remains to prove (5.116), which we do by a coupling argument. Suppose that we
 
 <a id="sec-5-8"></a>
 
-### 5.8 Uniqueness when q < 1
+### 5.8 Uniqueness when $q$ < 1
 
-Only a limited amount is known about the (non-)uniqueness of random-cluster measures on Ld when q < 1, owing to the absence of stochastic ordering and the failure of positive association. By Theorems 4.31 and 4.33, there exists at least one translation-invariant member of coWp,q, and this measure is a DLRrandom-cluster measure. One may glean a little concerning uniqueness from the comparison inequalities, Theorem 3.21, from which we extract the facts that, for the random-cluster measure φG,p,q on a finite graph G = (V, E),
+Only a limited amount is known about the (non-)uniqueness of random-cluster measures on Ld when $q$ < 1, owing to the absence of stochastic ordering and the failure of positive association. By Theorems 4.31 and 4.33, there exists at least one translation-invariant member of coWp,q, and this measure is a DLRrandom-cluster measure. One may glean a little concerning uniqueness from the comparison inequalities, Theorem 3.21, from which we extract the facts that, for the random-cluster measure φG,p,q on a finite graph G = (V, E),
 
 ![image 491](../Images/imageFile491.png)
 
@@ -980,7 +978,7 @@ Only a limited amount is known about the (non-)uniqueness of random-cluster meas
 
 ![image 493](../Images/imageFile493.png)
 
-Onemaydeducethefollowingbymakingcomparisonswiththepercolationmodel. (5.119) Theorem. For d ≥ 2, there exists p′ = p′(d) < 1 such that the following holds. Let p ∈ (0,1), q ∈ (0,1], and write π = p/[p + q(1 − p)]. We have that |Wp,q| = |Rp,q| = 1 whenever either θ(π,1) = 0 or p > p′.
+Onemaydeducethefollowingbymakingcomparisonswiththepercolationmodel. (5.119) Theorem. For d ≥ 2, there exists p′ = p′(d) < 1 such that the following holds. Let p ∈ (0,1), q ∈ (0,1], and write π = p/[p + q(1 − p)]. We have that |Wp,q| = |Rp,q| = 1 whenever either θ(π,1) = 0 or $p$ > p′.
 
 Exponential decay holds similarly when q ∈ (0,1) and π < pc(1). That is,
 
@@ -1020,7 +1018,7 @@ Suppose next that φ ∈ Rp,q so that, for any box ,
 
 m→∞
 
-φ m,π(∂ ↔ ∂ m) = 0, whence Rp,q = {ρ}.
+φ m,π(∂ ↔ ∂ m) = 0, whence Rp,$q$ = {ρ}.
 
 m→∞
 

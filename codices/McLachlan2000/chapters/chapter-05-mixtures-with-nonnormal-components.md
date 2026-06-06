@@ -8,7 +8,7 @@
 
 In this chapter we consider the of mixture models with nonnormal component densities . We first consider the case of mixed feature variables, where some are continuous andsome are categorical. We shall outline the use of the location model for the component densities; as in Jorgensen and Hunt (1996), Lawrence and Krzanowski (1996), and Hunt and Jorgensen (1999) fitting"
 
-The ML of commonly used components, such as the binomial and Poisson, can be undertaken within the framework of a mixture of generalized linear models (GLMs). This mixture model also has the capacity to handle the regression case, where the random variable Y; for the jth entity is allowed to depend on the value æj of a vector æ of covariates . If the first element of æ is taken to be one, then we can specialize this model to the nonregression situation by setting all but the first element in the vector of regression coefficients to zero. fitting mean-variance relationship. This phenomenon is called overdispersion. There are occasions in data analysis where the data are underdispersed (Faddy, 1994); that is, the sample variance is smaller than that implied by the mean-variance relationship. These phenomena are also observed with the of regression models, where the mean (say; of the Poisson or the binomial distribution) is modeled as a function of some covariates. If this dispersion is not taken into account;, then these models may lead to biased estimates of the parameters and consequently incorrect inferences about the parameters (Wang, 1994; Wang et al., 1996). In this chapter, we focus on the more common case of overdispersion. fitting using Concerning mixtures for multivariate discrete data, a common application arises in latent class analyses; in which the feature variables (or response variables in a regression context) are taken to be independent in the component distributions. This latter assumption allows mixture models in the context of a latent class analysis to be fitted within the above framework of mixtures of GLMs.
+The ML of commonly used components, such as the binomial and Poisson, can be undertaken within the framework of a mixture of generalized linear models (GLMs). This mixture model also has the capacity to handle the regression case, where the random variable $Y_j$ for the jth entity is allowed to depend on the value æj of a vector æ of covariates . If the first element of æ is taken to be one, then we can specialize this model to the nonregression situation by setting all but the first element in the vector of regression coefficients to zero. fitting mean-variance relationship. This phenomenon is called overdispersion. There are occasions in data analysis where the data are underdispersed (Faddy, 1994); that is, the sample variance is smaller than that implied by the mean-variance relationship. These phenomena are also observed with the of regression models, where the mean (say; of the Poisson or the binomial distribution) is modeled as a function of some covariates. If this dispersion is not taken into account;, then these models may lead to biased estimates of the parameters and consequently incorrect inferences about the parameters (Wang, 1994; Wang et al., 1996). In this chapter, we focus on the more common case of overdispersion. fitting using Concerning mixtures for multivariate discrete data, a common application arises in latent class analyses; in which the feature variables (or response variables in a regression context) are taken to be independent in the component distributions. This latter assumption allows mixture models in the context of a latent class analysis to be fitted within the above framework of mixtures of GLMs.
 
 One common use of mixture models with discrete data is to handle overdispersion in count data. For example, in medical research; data are often collected in the form of counts, corresponding to the number of times that a particular event of interest occurs. Because oftheir simplicity; one-parameter distributions for which the variance is determined by the mean are often used, at least in the first instance to model such data. Familiar examples are the Poisson and binomial distributions, which are members of the one-parameter exponential family. However, there are many situations where these models are inappropriate; in the sense that the mean-variance relationship implied by the one-parameter distribution being fitted is not valid . In most of these situations; the data are observed to be overdispersed; that is, the observed sample variance is larger than that predicted by inserting the sample mean into the
 
@@ -34,7 +34,7 @@ Previously; Everitt (1988b) proposed, and Everitt and Merette (1990) studied, a 
 
 # 5.2.1 Location Model-Based Approach
 
-Suppose that p1 of the p feature variables in Y; are categorical, where the categorical variable takes on ma distinct values (9 = 1, p1) Then there are m = II9=1 mq distinct patterns of these p1 categorical variables. With the location model, the p1 categorical variables are replaced by a single multinomial random vari able = 1 if the realizations of the p1 categorical variables in Y; correspond to the sth pattern. associations between the original categorical variables are converted intorelationships among the resulting multinomial cell probabilities:. The location model assumes further that conditionalon = 1 and membership of the ith component of the mixture model, the distribution of the Z;, which is the same for all cells s (that is, for all possible combinations of the realizations of the p1 categorical variables). This assumption of conditional normality means that ML estimation is straightforward to implement viathe EM algorithm. The expressions for the updated estimates on the M-step of the multinomial cell probabil ities and of the component means and component-covariance matrices can be given in closed form as follows. qth Any
+Suppose that p1 of the p feature variables in $Y_j$ are categorical, where the categorical variable takes on ma distinct values (9 = 1, p1) Then there are m = II9=1 mq distinct patterns of these p1 categorical variables. With the location model, the p1 categorical variables are replaced by a single multinomial random vari able = 1 if the realizations of the p1 categorical variables in $Y_j$ correspond to the sth pattern. associations between the original categorical variables are converted intorelationships among the resulting multinomial cell probabilities:. The location model assumes further that conditionalon = 1 and membership of the ith component of the mixture model, the distribution of the $Z_j$, which is the same for all cells s (that is, for all possible combinations of the realizations of the p1 categorical variables). This assumption of conditional normality means that ML estimation is straightforward to implement viathe EM algorithm. The expressions for the updated estimates on the M-step of the multinomial cell probabil ities and of the component means and component-covariance matrices can be given in closed form as follows. qth Any
 
 Let pis be the conditional probability that (x") = 1 given its membership of the ith component of the mixture (s 1, m; i = 1, 9). one Or zero, according to whether one or zero, and let the continuous feature variables in U;: Then on the (k + 1)th iteration of the EM algorithm; the updated estimates are given by
 
@@ -72,13 +72,11 @@ $$
 
 In practice; the number of parameters with the location model approach can be if the multinomial distribution replacing the categorical variables has many cells and there are several continuous feature variables . We now outline the implementation MULTMIX program. large
 
-taking on without loss of generality the values one or zero. Let yvj = (ys) ( 1, p). Suppose also that is independent of all the other feature variables, but that Y2; is not independent of the remaining (p 2) continuous variables. Then we partition the feature vector %j as
+taking on without loss of generality the values one or zero. Let yvj = (ys) ( 1, p). Suppose also that is independent of all the other feature variables, but that Y2; is not independent of the remaining (p 2) continuous variables. Then we partition the feature vector $\Psi$j as
 
-$$
-( 5 . 7 )
-$$
 
-(2) where u; is the subvector containing the (p 2) continuous variables. Then the ith component density of Y; is modeled as
+
+(2) where u; is the subvector containing the (p 2) continuous variables. Then the ith component density of $Y_j$ is modeled as
 
 $$
 f _ { i } ( y _ { j } ) = \{ \prod _ { v = 1 } ^ { \infty } f _ { B } ( y _ { v j } ; \theta _ { v i } ) \} \phi ( y _ { j } ^ { ( 2 ) } ; \mu _ { i , \sigma } , \Sigma _ { i } ) ,
@@ -92,7 +90,7 @@ $$
 
 denotes the binomial frequency function for a zero-one variable W taking the values one and zero with denotes the mean of x{?) corresponding tothe two distinct values of the binary variable
 
-If the preliminary fit suggests that it is unreasonable to take the two binary to be independent; then are replaced by single multinomial variable 4 cells) as in the general case described above. The conditional distribution of the subvector of continuous variables is then assumed to be normal with covariance matrix Z; and mean corresponding to (s = 1, 4) vari they
+If the preliminary fit suggests that it is unreasonable to take the two binary to be independent; then are replaced by single multinomial variable 4 cells) as in the general case described above. The conditional distribution of the subvector of continuous variables is then assumed to be normal with covariance matrix $Z_j$ and mean corresponding to (s = 1, 4) vari they
 
 In a general situation involving categorical and continuous variables, the intent in MULTIMIX is to divide the feature vector into as many subvectors as possible that can be taken to be independently distributed. The extreme form would be to take all p feature variables to be independent and to include correlation structure where
 
@@ -182,13 +180,13 @@ Source: From Hunt and Jorgensen (1999)
 
 # 5.4.1 Definition
 
-With the generalized linear model (GLM) approach originally proposed by Nelder and Wedderburn (1972), the density of the (univariate) variable Y; has the form log
+With the generalized linear model (GLM) approach originally proposed by Nelder and Wedderburn (1972), the density of the (univariate) variable $Y_j$ has the form log
 
 $$
 \log f ( y _ { j } ; \theta _ { j } , \kappa ) = m _ { j } \kappa ^ { - 1 } \{ \theta _ { j } y _ { j } - b ( \theta _ { j } ) \} \, + \, c ( y _ { j } ; \kappa ) ,
 $$
 
-is the prior weight. As only a single random variable is considered here, the subscript j on y; for a single observation may seem superfluous, but it is used to avoid any confusion with y, which is used throughout to denote the observed sample of n observations . being being
+is the prior weight. As only a single random variable is considered here, the subscript j on $y_j$ for a single observation may seem superfluous, but it is used to avoid any confusion with y, which is used throughout to denote the observed sample of n observations . being being
 
 The mean and variance of Yj are given by
 
@@ -208,7 +206,7 @@ $$
 \begin{array} { r l r } { \eta _ { j } } & = } & { h ( \mu _ { j } ) } \\ & = } & { x _ { j } ^ { T } \beta , } \end{array}
 $$
 
-a vector of covariates or explanatory variables on the jth response yj, p is a vector of unknown parameters, and h(-) is a monotonic function known as
+a vector of covariates or explanatory variables on the jth response $y_j$, p is a vector of unknown parameters, and h(-) is a monotonic function known as
 
 The variance of Yj is the product of two terms, the dispersion parameter K and the variance function b' (0;) , which is usually written in the form
 
@@ -230,7 +228,7 @@ is an example of a variance function containing an unknown parameter that is not
 
 # 5.4.2 ML Estimation for a Single GLM Component
 
-Suppose y1, Yn denote n independent observations; where Y; has weight n). Then the likelihood for ß is given by prior log
+Suppose y1, Yn denote n independent observations; where $Y_j$ has weight n). Then the likelihood for ß is given by prior log
 
 $$
 \log L ( \beta ) = \sum _ { j = 1 } ^ { n } [ m _ { j } \kappa ^ { - 1 } \{ \theta _ { j } y _ { j } - b ( \theta _ { j } ) \} + c ( y _ { j } ; \kappa ) ] .
@@ -283,7 +281,7 @@ $$
 For a fixed value of the dispersion parameter k, the quasi-likelihood approach estimates ( by the value of ( that minimizes the sum of weighted squares
 
 $$
-\sum _ { j = 1 } ^ { \sum } m _ { j } ( y _ { j } - \mu _ { j } ) ^ { 2 } / \{ \kappa V ( \mu _ { j } ) \} .
+\sum _ { j = 1 } ^ n m _ { j } ( y _ { j } - \mu _ { j } ) ^ { 2 } / \{ \kappa V ( \mu _ { j } ) \} .
 $$
 
 A simple moment estimate of k is obtained by the value of k that makes the mean deviance equal to one or the expected value of the Pearson statisticequal to its degrees
@@ -304,7 +302,7 @@ In the context of allowing for extra-Poisson variation; Breslow (1984) suggested
 
 # 5.5.1 Specification of Mixture Model
 
-For a mixture of g component distributions of GLMs in proportions T1, Tg, we have that the density of the jth response variable Y; is given by
+For a mixture of g component distributions of GLMs in proportions $\pi_1$, Tg, we have that the density of the jth response variable $Y_j$ is given by
 
 $$
 f ( y _ { j } ; \varPsi ) = \sum _ { i = 1 } ^ { j } \pi _ { i } f ( y _ { j } ; \theta _ { i j } , \kappa _ { i } ) ,
@@ -330,7 +328,7 @@ for i = 1, 9
 
 In some applications, the mixing proportions may be modeled as functions of some vector of covariates associated with the response. This vector of covariates may or may not have some elements in common with the vector of covariates 2 on which the component means of the mixture depend . Without loss of generality; we shall denote both of these vectors of covariates by æ (as irrelevant covariates in the regression forms for the canonical means and mixing proportions can have their coefficients set equal to zero).
 
-A common model for expressing the ith mixing proportion T; as a function of æ is the logistic. Under this model, have corresponding t0 the jth observation yj with covariate vector æ; we
+A common model for expressing the ith mixing proportion $\pi_i$ as a function of æ is the logistic. Under this model, have corresponding t0 the jth observation $y_j$ with covariate vector æ; we
 
 $$
 \pi _ { i j } & \ = \ \pi _ { i } ( \mathfrak { a } _ { j } ; \alpha ) \\ & = \ \exp ( \omega _ { i } ^ { T } \alpha _ { j } ) / \{ 1 + \sum _ { h = 1 } ^ { g - 1 } \exp ( \omega _ { h } ^ { T } \alpha _ { j } ) \} \quad ( i = 1 , \dots , g ) ,
@@ -356,7 +354,7 @@ As the mixing proportions are modeled to depend on some or all of the covariates
 
 # 5.5.2 ML Estimation via the EM Algorithm
 
-The likelihood for % that can be formed from these data under the mixture model (5.16) is given by log
+The likelihood for $\Psi$ that can be formed from these data under the mixture model (5.16) is given by log
 
 $$
 \log L ( \Psi ) = \sum _ { j = 1 } ^ { n } \log \sum _ { i = 1 } ^ { y } \pi _ { i j } f ( y _ { j } ; \theta _ { i j } , \kappa _ { i } ) ,
@@ -444,11 +442,11 @@ separately for each (; to produce 9) . p(\*+1)
 
 On contrasting (5.27) with (5.11), it can be seen that it has the same form as for single GLM fitted to the with prior weights m1 = mn = (yn; and fixed dispersion parameter Ki. Tin
 
-In the general case where ß1, pg may have some elements in common, we can still solve (5.27) the iteratively reweighted least-squares approach for a sin gle GLM. The double summation over i and j in (5.26) can be handled by expanding using the response vector to have dimension 9 X n by replicating each original observation (yj, æf)T g times; with prior Kg'
+In the general case where ß1, pg may have some elements in common, we can still solve (5.27) the iteratively reweighted least-squares approach for a sin gle GLM. The double summation over i and j in (5.26) can be handled by expanding using the response vector to have dimension 9 X n by replicating each original observation ($y_j$, æf)T g times; with prior Kg'
 
 Although there are more efficient methods of solving (5.27), this approach has the advantage that it is easily done in a GLM program, such as GLIM (see, for instance, Aitkin et al. (1989)), the glm( function in S-PLUS (see Becker, Chambers, and Wilks (1988)),or the GLM subroutinein SAS (1993). Dietz (1992) has provided GLIM-macro for the computation of ß. Previously, Hinde (1982) provided the GLIMcode for a Poisson model and the modifications needed for the binomialmodel; see also Anderson (1988) and Aitkin (1996, 1999a, 1999b). Wang et al. (1996) have available FORTRANcodes for algorithms that fit finite mixtures of Poisson regression models . fitting
 
-The response for each entity has been taken to be univariate in the above. The results generalize in a straightforward manner to the case of multivariate responses Y; (Y1j, if it is assumed that Ypj are independently distributed when conditioned on their component membership of the mixture model; scc Wedel and DeSarbo (1995). The case of component multivariate GLMs where Yij, Ypj are not necessarily independent has been considered by Dietz (1992) Ypi)T ,
+The response for each entity has been taken to be univariate in the above. The results generalize in a straightforward manner to the case of multivariate responses $Y_j$ (Y1j, if it is assumed that Ypj are independently distributed when conditioned on their component membership of the mixture model; scc Wedel and DeSarbo (1995). The case of component multivariate GLMs where Yij, Ypj are not necessarily independent has been considered by Dietz (1992) Ypi)T ,
 
 <a id="sec-5-5-4"></a>
 
@@ -480,7 +478,7 @@ $$
 \eta _ { j } = \beta ^ { T } x _ { j } + \sigma u _ { j } ,
 $$
 
-where uj is realization of a random variable U; distributed N(0, 1) independently of the jth response Y;(j = 1, n).
+where $u_j$ is realization of a random variable U; distributed N(0, 1) independently of the jth response $Y_j$(j = 1, n).
 
 The (marginal) likelihood is thus log
 
@@ -534,7 +532,7 @@ $$
 ( 5 . 2 9 )
 $$
 
-which has mean E(Y;) = Lj, and the natural link is the log function
+which has mean E($Y_j$) = Lj, and the natural link is the log function
 
 $$
 h ( \mu _ { j } ) \ = \ \log \mu _ { j }
@@ -542,7 +540,7 @@ $$
 
 In (5.29), A = {0, 1, 2, . . .} is the set of nonnegative integers.
 
-In many situations in practice, the varies for each subject so that the mean of Y; is given by ajlj, where aj denotes the known population size or time of exposure, and #; now denotes the mean rate per unit size or time. This can be dealt with in the theory and software for GLMs by either declaring a; as an offset in the specification of the linear predictor or by redefining the response to be the observed rate yj /aj, with aj specified as the weight. Hence in the sequel we shall assume without loss of generality that aj = 1 for all subjects. prior
+In many situations in practice, the varies for each subject so that the mean of $Y_j$ is given by ajlj, where aj denotes the known population size or time of exposure, and #; now denotes the mean rate per unit size or time. This can be dealt with in the theory and software for GLMs by either declaring a; as an offset in the specification of the linear predictor or by redefining the response to be the observed rate $y_j$ /aj, with aj specified as the weight. Hence in the sequel we shall assume without loss of generality that aj = 1 for all subjects. prior
 
 A consequence of using the Poisson regression model is that the variance equals the mean; that is,
 
@@ -564,13 +562,13 @@ There are several ways to modify the Poisson regression model. the GLM formulati
 
 # 5.7.2 Gamma-Poisson Mixture Model
 
-A classical approach is to use a continuous Poisson mixture model to adjust for extraPoisson variation. In this framework in the nonregression case; the Poisson mean #j is taken to be a latent variable from a distribution, H ((u;) so that the density of Y; is modeled as
+A classical approach is to use a continuous Poisson mixture model to adjust for extraPoisson variation. In this framework in the nonregression case; the Poisson mean #j is taken to be a latent variable from a distribution, H ((u;) so that the density of $Y_j$ is modeled as
 
 $$
 f ( y _ { j } ) = \int _ { 0 } ^ { \infty } \{ e ^ { - \mu } \mu _ { j } ^ { y } / y _ { j } ! \} I _ { A } ( y _ { j } ) \, d H ( \mu ) .
 $$
 
-A common choice for H(u) in (5.3O) is the gamma (œ, ß) distribution; which has density function defined by (4.16). This leads to the density of Y; modeled as being
+A common choice for H(u) in (5.3O) is the gamma (œ, ß) distribution; which has density function defined by (4.16). This leads to the density of $Y_j$ modeled as being
 
 $$
 = \left ( \begin{array} { c } y _ { j } + \alpha - 1 \\ y _ { j } \end{array} \right ) \left ( \frac { \beta } { \beta + 1 } \right ) ^ { \alpha } \left ( \frac { 1 } { \beta + 1 } \right ) ^ { y _ { j } } I _ { A } ( y _ { j } ) ,
@@ -591,7 +589,7 @@ $$
 where k = a function of the covariate vector "j. variance to be greater than the mean; with the variance equal to the mean inflated multiplicatively by the factor (1 + kuj) As k tends to zero in (5.32), we obtain the Poisson model. We can rewrite (5.31) as
 
 $$
-f ( y _ { j } ; \mu _ { j } , k ) & = \left ( \begin{array} { c c } y _ { j } + k ^ { - 1 } - 1 \\ y _ { j } \\ \mu _ { j } + k ^ { - 1 } \end{array} \right ) \left ( \frac { k ^ { - 1 } } { \mu _ { j } } \right ) ^ { k ^ { - 1 } } \left ( \frac { \mu _ { j } } { \mu _ { j } + k ^ { - 1 } } \right ) ^ { y _ { j } } I _ { A } ( y _ { j } ) . \\ \intertext { This is the standard negative binomial model for extra-Poisson variation and it can }
+f ( y _ { j } ; \mu _ { j } , k ) & = \left ( \begin{array} { c c } y _ { j } + k ^ { - 1 } - 1 \\ y _ { j } \\ \mu _ { j } + k ^ { - 1 } \end{array} \right ) \left ( \frac { k ^ { - 1 } } { \mu _ { j } } \right ) ^ { k ^ { - 1 } } \left ( \frac { \mu _ { j } } { \mu _ { j } + k ^ { - 1 } } \right ) ^ { y _ { j } } I _ { A } ( y _ { j } ) . \\ 
 $$
 
 This is the standard negative binomial model for extra-Poisson variation; and it can be seen that it arises by assuming that œ is fixed as /j varies. If, however; we assume that #j varies with œ and that ß remains constant, we obtain a negative binomial distribution with
@@ -684,7 +682,7 @@ If we specify (1i as the null vector; we obtain the g-component Poisson mixture 
 
 If we set g =2 and p1j = 0 for all j, then we obtain a Poisson regression model with an extra mass at Yj =0.
 
-For the g-component mixture (5.36) of Poisson regression models, the mean and variance of Y; are equal to
+For the g-component mixture (5.36) of Poisson regression models, the mean and variance of $Y_j$ are equal to
 
 and
 
@@ -851,7 +849,7 @@ $$
 \begin{array} { r c l } \text {SMR} _ { j } & = & y _ { j } / e _ { j } \\ & = & y _ { j } / \sum _ { h } A _ { h j } \omega _ { h } , \end{array}
 $$
 
-number based on an external reference, is the person years in the hth age stratum; and w is the age-specific mortality rate, which is assumed to be known. Anj A common approach to map construction in the literature is based on the assump-= Here X denotes the relative risk of disease due to within the study area. living Schlattmann and Böhning (1993) modeled the distribution of Y; by the Poisson mixture distribution The assumption (5.38) implies that all geographical areas have the same relative risk X This homogeneous model of a single Poisson distribution is often too simple with overdispersion frequently occurring: One approach for more flexibility has been to be adopt random effects model, where X is gamma or normal; see Clayton and Kaldor (1987), Mollie and Richardson (1991), and Breslow and Clayton (1993). log
+number based on an external reference, is the person years in the hth age stratum; and w is the age-specific mortality rate, which is assumed to be known. Anj A common approach to map construction in the literature is based on the assump-= Here X denotes the relative risk of disease due to within the study area. living Schlattmann and Böhning (1993) modeled the distribution of $Y_j$ by the Poisson mixture distribution The assumption (5.38) implies that all geographical areas have the same relative risk X This homogeneous model of a single Poisson distribution is often too simple with overdispersion frequently occurring: One approach for more flexibility has been to be adopt random effects model, where X is gamma or normal; see Clayton and Kaldor (1987), Mollie and Richardson (1991), and Breslow and Clayton (1993). log
 
 $$
 f ( y _ { j } ) = \sum _ { i = 1 } ^ { s } \pi _ { i }
@@ -877,7 +875,7 @@ and æj is a vector of covariates associated with the jth region, and the parame
 
 Two-component mixture models are frequently used to model data that appear to have an excess of zeros. For example, when a reliable manufacturing process is in control, the number of defects on an should be Poisson distributed. If the Poisson mean is X, the expected number of items without defects is ne -X In practice, however, there than expected. One possible explanation is that slight; unobserved changes in the environment cause the process to swerve randomly back and forth between a perfect state in which defects are impossible or at least extremely rare and an imperfect state in which defects are possible but not inevitable; see Lambert (1992). The transient perfect state increases the number of zeros in the data. item
 
-In a medical context, a 'possible explanation for the excess of zeros might be due to the fact that the patient is cured after the treatment andso no realization ofthe symptom monitored will occur. This phenomenon can be handled by a two-component mixture where one of the components is taken to be a degenerate distribution; having mass at y; = 0. The other component is a Poisson (or binomial) regression model, depending on the situation. Amixture model of this type with adegenerate component being is sometimes referred to as a nonstandard mixture model. A detailed account of the use of nonstandard mixture models in auditing may be found in the report by the Panel on Nonstandard Mixtures of Distributions (1989).
+In a medical context, a 'possible explanation for the excess of zeros might be due to the fact that the patient is cured after the treatment andso no realization ofthe symptom monitored will occur. This phenomenon can be handled by a two-component mixture where one of the components is taken to be a degenerate distribution; having mass at $y_j$ = 0. The other component is a Poisson (or binomial) regression model, depending on the situation. Amixture model of this type with adegenerate component being is sometimes referred to as a nonstandard mixture model. A detailed account of the use of nonstandard mixture models in auditing may be found in the report by the Panel on Nonstandard Mixtures of Distributions (1989).
 
 <a id="sec-5-9-1"></a>
 
@@ -891,7 +889,7 @@ $$
 ( 5 . 3 9 )
 $$
 
-where the first component is the degenerate distribution with mass one at y; and the second component is the Poisson with mean p,
+where the first component is the degenerate distribution with mass one at $y_j$ and the second component is the Poisson with mean p,
 
 $$
 f _ { 2 } ( y _ { j } ; \mu ) = \{ e ^ { - \mu } \mu ^ { y _ { j } } / y _ { j } ! \} I _ { A } ( y _ { j } ) .
@@ -921,7 +919,7 @@ $$
 I _ { j } - y _ { j } I _ { A _ { j } } ( y _ { j } ) ,
 $$
 
-where Aj = {0, 1, That is, the response y; denotes the number of successes in a series of N; independent Bernoulli trials on which the probability of success on each Bernoulli trial is 0; . In our notation here, we are suppressing the
+where Aj = {0, 1, That is, the response $y_j$ denotes the number of successes in a series of N; independent Bernoulli trials on which the probability of success on each Bernoulli trial is 0; . In our notation here, we are suppressing the
 
 In the case of logistic regression, 0; is postulated to depend on the vector æj of covariates through the logit function,
 
@@ -935,7 +933,7 @@ $$
 \theta _ { j } = \exp ( \beta ^ { T } x _ { j }
 $$
 
-It is given within the GLM framework by taking the response variable to be y; /N;, specifying the error function to be the binomial, and using the canonical logit link.
+It is given within the GLM framework by taking the response variable to be $y_j$ /N;, specifying the error function to be the binomial, and using the canonical logit link.
 
 Logistic regression is a common method for analyzing the effect of a vector of covariates on the number of successes in a series of Nj independent Bernoulli trials. Overdispersion relative to the binomial distribution may occur if the N; trials in a set are positively correlated, an important covariate is omitted, Or æj is measured with
 
@@ -981,7 +979,7 @@ where k = (œ1 + œ2 + 1)-1
 
 A beta-binomial regression model can be defined by postulating parametric forms for 0 and k. Applications of this type of regression model appear to have been limited mainly to the special cases of one- and two-way ANOVA designs; see McLachlan (1997).
 
-As in the case of the Poisson distribution, a quasi-likelihood approach can be used to deal with overdispersion through the use of the binomial regression model (Williams, 1982). With this approach, only the first two moments of the distribution of Y; have to be specified . Two such specifications have
+As in the case of the Poisson distribution, a quasi-likelihood approach can be used to deal with overdispersion through the use of the binomial regression model (Williams, 1982). With this approach, only the first two moments of the distribution of $Y_j$ have to be specified . Two such specifications have
 
 $$
 E ( Y _ { j } ) = \theta _ { j }
@@ -999,7 +997,7 @@ $$
 \log \{ \theta _ { j } / ( 1 - \theta _ { j } ) \} = \beta ^ { T } x _ { j } \ \ ( j = 1 , \dots , n ) .
 $$
 
-As Anderson (1988) noted, it is interesting that the assumptions (5.45) and (5.46) for the first two moments of Y; are satisfied by the beta-binomial distribution (5.43) if œ1 = (1
+As Anderson (1988) noted, it is interesting that the assumptions (5.45) and (5.46) for the first two moments of $Y_j$ are satisfied by the beta-binomial distribution (5.43) if œ1 = (1
 
 <a id="sec-5-11"></a>
 
@@ -1009,7 +1007,7 @@ As Anderson (1988) noted, it is interesting that the assumptions (5.45) and (5.4
 
 # 5.11.1 Mean and Variance
 
-We consider now the mixture of GLMs model (5.16) in the case where the component GLMs belong to the binomial family. That is, the ith component frequency function f(yj; @j) for the jth response Y; is given by
+We consider now the mixture of GLMs model (5.16) in the case where the component GLMs belong to the binomial family. That is, the ith component frequency function f($y_j$; @j) for the jth response $Y_j$ is given by
 
 $$
 \theta _ { i j } ) = \binom { N _ { j } } { y _ { j } } \theta _ { i j } ^ { y _ { j } } ( 1 - \theta _ { i j } ) ^ { N _ { j } - y _ { j } } I _ { A _ { j } } ( y _ { j } ) ,
@@ -1024,7 +1022,7 @@ $$
 We consider now the mean and variance of the logistic regression mixture model
 
 $$
-\sum _ { i = 1 } ^ { \sum _ { \pi _ { i j } f ( y _ { j } ; \theta _ { i j } ) . } }
+\sum _ { i = 1 } ^ g \pi _ { i j } f ( y _ { j } ; \theta _ { i j } ) . } }
 $$
 
 The mean of (5.49) is
@@ -1045,7 +1043,7 @@ $$
 \ v a r \{ E ( Y _ { j } \ | \ Z _ { j } ) \} = N _ { j } ^ { 2 } \{ \sum _ { i = 1 } ^ { j } \pi _ { i j } \theta _ { i j } ^ { 2 } - ( \sum _ { i = 1 } ^ { j } \pi _ { i j } \theta _ { i j } )
 $$
 
-For N; 1, var { E(Y; Z;)} =0 holdsif and only vif E(Y; Z;) is constant. Hence for each j (j = 1, n),
+For N; 1, var { E($Y_j$ $Z_j$)} =0 holdsif and only vif E($Y_j$ $Z_j$) is constant. Hence for each j (j = 1, n),
 
 $$
 \ v a r ( Y _ { j } ) = N _ { j } \left ( \sum _ { i j } \theta _ { i j } \right ) \left ( \begin{array} { c } \vdots \\ \end{array} \right )
@@ -1153,7 +1151,7 @@ Aitkin (1999b) fitted a logistic regression model with treatment as a fixed effe
 
 # 5.12 LATENT CLASS MODELS
 
-Latent class models constitute another class of models that can be easily fitted when formulated as a mixture of GLMs. Suppose that the feature vector Yj = (y1j, Then a common approach to the mixture analysis of such data is to assume that these variables are conditionally independent given their membership of a component in the mixture model. That is, the density (frequency function) of an observation Y; can be expressed as
+Latent class models constitute another class of models that can be easily fitted when formulated as a mixture of GLMs. Suppose that the feature vector Yj = (y1j, Then a common approach to the mixture analysis of such data is to assume that these variables are conditionally independent given their membership of a component in the mixture model. That is, the density (frequency function) of an observation $Y_j$ can be expressed as
 
 $$
 f ( y _ { j } ) = \sum _ { i = 1 } ^ { g } \pi _ { i } \, f ( y _ { j } ; \theta _ { i } ) ,
@@ -1181,7 +1179,7 @@ Over the years, there have been many variants and extensions of the basic latent
 
 # 5.13.1 Mixtures-of-Experts Model
 
-Suppose that we observe Un with associated covariates, \*1, 2n , respectively. Then under the ME model as proposed by Jacobs et al. (1991) the density of Y; given covariate æj is modeled by
+Suppose that we observe Un with associated covariates, \*1, 2n , respectively. Then under the ME model as proposed by Jacobs et al. (1991) the density of $Y_j$ given covariate æj is modeled by
 
 $$
 f ( y _ { j } \ | \ x _ { j } , \Psi ) = \sum _ { i = 1 } ^ { s } \pi _ { i } ( x _ { j } ; \alpha ) f _ { i } ( y _ { j } \ | \ x _ { j } , \theta _ { i } ) ,
@@ -1201,9 +1199,9 @@ $$
 f ( y _ { j } \, | \, x _ { j } , \Psi ) = \sum _ { i = 1 } ^ { g } \pi _ { i } ( x _ { j } ; \alpha ) \sum _ { h = 1 } ^ { g _ { i } } \pi _ { h i } ( x _ { j } ; \alpha _ { i } ) f _ { h i } ( y _ { j } \, | \, x _ { j } , \theta _ { h i } ) ,
 $$
 
-where T;(æj; a) is the probability that the observation Y; (withcovariate æj) belongs to the ith component at the first level, and Thi(æj; a;is the conditional probability that Y; (with covariate æ;) belongs to the hth component of the first-level ith component (that is, the (;, h)th component) given that it belongs to the ith component at the first level .
+where T;(æj; a) is the probability that the observation $Y_j$ (withcovariate æj) belongs to the ith component at the first level, and Thi(æj; a;is the conditional probability that $Y_j$ (with covariate æ;) belongs to the hth component of the first-level ith component (that is, the (;, h)th component) given that it belongs to the ith component at the first level .
 
-The mixing proportions T; and the Thi are usually modeled as functions of the covariate æj by the logistic function. Thus,
+The mixing proportions $\pi_i$ and the $\tau_{hi}$ are usually modeled as functions of the covariate æj by the logistic function. Thus,
 
 $$
 \omega _ { i } ^ { T } \, x _ { j } ) / \sum _ { s = 1 } ^ { s } \exp ( \omega _ { s } ^ { T } \, x _ { j } ) \ \ ( i = 1 , \dots , g ) ,
@@ -1305,7 +1303,7 @@ $$
 \pi _ { h i j } & \ = \ \ p _ { \Psi } \{ Z _ { h i j } = 1 \, | \, \mathfrak { x } _ { j } \} \\ & \ = \ \pi _ { i } ( \mathfrak { x } _ { j } ; \alpha ) \, \pi _ { h i } ( \mathfrak { x } _ { j } ; \alpha _ { i } ) \ \ ( h = 1 , \dots , g _ { i } ; \, i = 1 , \dots , g ) .
 $$
 
-The conditionalexpectation of given the response y; withcovariate æj, is given by Zhij ,
+The conditionalexpectation of given the response $y_j$ withcovariate æj, is given by Zhij ,
 
 $$
 \tau _ { h i j } \ & = \ \Pr _ { \substack { ( x _ { j } , \alpha ) \, \pi _ { h i } ( x _ { j } ; \alpha _ { i } ) \, f _ { h i } ( y _ { j } \, | \, \alpha _ { j } , \theta _ { h i } ) \\ f ( y _ { j } \, | \, \alpha _ { j } , \Psi ) & = 1 , \dots , g _ { i } ; \, i = 1 , \dots , g ) .
@@ -1330,7 +1328,7 @@ $$
 The updated estimate of a{k+1) is obtained by solving
 
 $$
-\sum _ { h = 1 } ^ { \sum } \sum _ { j = 1 } ^ { \tau _ { h i j } ^ { ( t ) } \partial \log \pi _ { h i } ( x _ { j } , \alpha _ { i } ) / \partial \alpha _ { i } = 0 } \left ( i = 1 , \dots , g \right ) .
+\sum _ { h = 1 } ^ g \sum _ { j = 1 } ^ n \tau _ { h i j } ^ { ( t ) } \partial \log \pi _ { h i } ( x _ { j } , \alpha _ { i } ) / \partial \alpha _ { i } = 0 } \left ( i = 1 , \dots , g \right ) .
 $$
 
 the updated estimate of e(+1) is obtained by solving

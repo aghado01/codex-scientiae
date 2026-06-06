@@ -10,9 +10,9 @@ Summary. The random-cluster model is introduced, and its relationship to Ising a
 
 In 1925 came the Ising model for a ferromagnet,and in 1957 the percolation model for a disordered medium. Each has since been the subject of intense study,and their theories have become elaborate. Each possesses a phase transition marking the onset of long-range order, defined in terms of correlation functions for the Ising model and in terms of the unboundedness of paths for percolation. These two phase transitions have been the scenes of notable exact (and rigorous) calculations which have since inspired many physicists and mathematicians.
 
-It has been known since at least 1847 that electrical networks satisfy so-called ‘series/parallel laws’. Piet Kasteleyn noted during the 1960s that the percolation and Ising models also have such properties. This simple observation led in joint work with Cees Fortuin to the formulation of the random-cluster model. This new model has two parameters, an ‘edge-weight’ p and a ‘cluster-weight’ q. The (bond) percolation model is retrieved by setting q = 1; when q = 2, we obtain a representation of the Ising model, and similarly of the Potts model when q = 2,3,... . The discovery of the model is described in Kasteleyn’s words in the Appendix of the current work.
+It has been known since at least 1847 that electrical networks satisfy so-called ‘series/parallel laws’. Piet Kasteleyn noted during the 1960s that the percolation and Ising models also have such properties. This simple observation led in joint work with Cees Fortuin to the formulation of the random-cluster model. This new model has two parameters, an ‘edge-weight’ p and a ‘cluster-weight’ q. The (bond) percolation model is retrieved by setting $q$ = 1; when $q$ = 2, we obtain a representation of the Ising model, and similarly of the Potts model when $q$ = 2,3,... . The discovery of the model is described in Kasteleyn’s words in the Appendix of the current work.
 
-The mathematics begins with a finite graph G = (V, E), and the associated Ising model1 thereon. A random variable σx taking values −1 and +1 is assigned to each vertex x of G, and the probability of the conﬁguration σ = (σx : x ∈ V) is taken to be proportional to e−βH(σ), where β > 0 and the ‘energy’ H(σ) is the
+The mathematics begins with a finite graph G = (V, E), and the associated Ising model1 thereon. A random variable $\sigma_x$ taking values −1 and +1 is assigned to each vertex x of G, and the probability of the conﬁguration σ = ($\sigma_x$ : x ∈ V) is taken to be proportional to e−βH(σ), where β > 0 and the ‘energy’ H(σ) is the
 
 ![image 5](../Images/imageFile5.png)
 
@@ -20,11 +20,11 @@ The mathematics begins with a finite graph G = (V, E), and the associated Ising 
 
 2 Random-Cluster Measures [1.1]
 
-negativeof the sum of σxσy overall edges e = x, y of G. As β increases, greater probability is assigned to conﬁgurations having a large number of neighbouring pairs of vertices with equal signs. The Ising model has proved extraordinarily successful in generating beautiful mathematics of relevance to the physics, and it has been useful and provocative in the mathematical theory of phase transitions and cooperative phenomena (see, for example, [118]). The proof of the existence of a phase transition in two dimensions was completed by Peierls, [266], by way of his famous “argument”.
+negativeof the sum of σxσy overall edges $e = \langle x, y \rangle$ of G. As β increases, greater probability is assigned to conﬁgurations having a large number of neighbouring pairs of vertices with equal signs. The Ising model has proved extraordinarily successful in generating beautiful mathematics of relevance to the physics, and it has been useful and provocative in the mathematical theory of phase transitions and cooperative phenomena (see, for example, [118]). The proof of the existence of a phase transition in two dimensions was completed by Peierls, [266], by way of his famous “argument”.
 
-Thereare manypossiblegeneralizationsofthe Ising modelin whichthe σx may take a generalnumber q of values, ratherthan q = 2 only. One such extension, the so-called ‘Potts model’, [278], has attracted especial interest amongst physicists, and has displayed a complex and varied structure. For example, when q is large, it possesses a discontinuousphase transition, in contrast to the continuoustransition believedto take place forsmall q. Ising/Pottsmodelsare the first of three principal ingredients in the story of random-cluster models. Note that they are ‘vertexmodels’ in the sense that they involve random variables σx indexed by the vertices x of the underlying graph. (There is a related extension of the Ising model due to Ashkin and Teller, [21], see Section 11.3.)
+Thereare manypossiblegeneralizationsofthe Ising modelin whichthe $\sigma_x$ may take a generalnumber q of values, ratherthan $q$ = 2 only. One such extension, the so-called ‘Potts model’, [278], has attracted especial interest amongst physicists, and has displayed a complex and varied structure. For example, when $q$ is large, it possesses a discontinuousphase transition, in contrast to the continuoustransition believedto take place forsmall q. Ising/Pottsmodelsare the first of three principal ingredients in the story of random-cluster models. Note that they are ‘vertexmodels’ in the sense that they involve random variables $\sigma_x$ indexed by the vertices x of the underlying graph. (There is a related extension of the Ising model due to Ashkin and Teller, [21], see Section 11.3.)
 
-The (bond) percolation model was inspired by problems of physical type, and emerged from the mathematics literature2 of the 1950s, [70]. In this model for a porous medium, each edge of the graph G is declared ‘open’ (to the passage of ﬂuid) with probability p, and ‘closed’ otherwise, different edges having independent states. The problem is to determine the typical large-scale properties of connected components of open edges as the parameter p varies. Percolation theory is now a mature part of probability lying at the core of the study of random media and interacting systems, and it is the second ingredient in the story of random-clustermodels. Note that bond percolation is an ‘edge-model’, in that the randomvariablesare indexedby the set ofedgesof the underlyinggraph. (Thereis a variant termed ‘site percolation’ in which the vertices are open/closed at random rather than the edges, see [154, Section 1.6].)
+The (bond) percolation model was inspired by problems of physical type, and emerged from the mathematics literature2 of the 1950s, [70]. In this model for a porous medium, each edge of the graph G is declared ‘open’ (to the passage of ﬂuid) with probability $p$, and ‘closed’ otherwise, different edges having independent states. The problem is to determine the typical large-scale properties of connected components of open edges as the parameter $p$ varies. Percolation theory is now a mature part of probability lying at the core of the study of random media and interacting systems, and it is the second ingredient in the story of random-clustermodels. Note that bond percolation is an ‘edge-model’, in that the randomvariablesare indexedby the set ofedgesof the underlyinggraph. (Thereis a variant termed ‘site percolation’ in which the vertices are open/closed at random rather than the edges, see [154, Section 1.6].)
 
 The theory of electrical networks on the graph G is of course more ancient than that of Ising and percolation models, dating back at least to the 1847 paper, [215], in which Kirchhoff set down a method for calculating macroscopic properties of an electrical network in terms of its local structure. Kirchhoff’s work explains in particular the relevance of counts of certain types of spanning trees of the graph. To import current language, an electrical network on a graph G may be studied via the properties of a ‘uniformly random spanning tree’ (UST) on G (see [31]).
 
@@ -38,9 +38,9 @@ The three ingredients above seemed fairly distinct until Fortuin and Kasteleyn d
 
 a mechanism for studying Ising/Potts models has emerged progressively over the intervening three decades.
 
-The conﬁguration space of the random-cluster model is the set of all subsets of the edge-set E, which we represent as the set = {0,1}E of 0/1-vectors indexed by E. An edge e is termed open in the conﬁguration ω ∈ if ω(e) = 1, and it is termed closed if ω(e) = 0. The random-cluster model is thus an edge-model, in contrast to the Ising and Potts models which assign spins to the vertices of G. The subject of current study is the subgraph of G induced by the set of open edges of a conﬁguration chosen at random from according to a certain probability measure. Of particular importance is the existence (or not) of paths of open edges joining given vertices x and y, and thus the random-cluster model is a model in stochastic geometry.
+The conﬁguration space of the random-cluster model is the set of all subsets of the edge-set E, which we represent as the set \Omega = \{0,1\}^E of 0/1-vectors indexed by E. An edge e is termed open in the conﬁguration ω ∈ if ω(e) = 1, and it is termed closed if ω(e) = 0. The random-cluster model is thus an edge-model, in contrast to the Ising and Potts models which assign spins to the vertices of G. The subject of current study is the subgraph of G induced by the set of open edges of a conﬁguration chosen at random from according to a certain probability measure. Of particular importance is the existence (or not) of paths of open edges joining given vertices x and y, and thus the random-cluster model is a model in stochastic geometry.
 
-The model may be viewed as a parametric family of probability measures φp,q on , the two parameters being denoted by p ∈ [0,1] and q ∈ (0,∞). The parameter p amounts to a measure of the density of open edges, and the parameter q is a ‘cluster-weighting’ factor. When q = 1, φp,q is a product measure, and the ensuing probabilityspace is usually termed a percolationmodelor a randomgraph dependingon the context. The integervalues q = 2,3,. . . correspondin a certain way to the Potts model on G with q local states, and thus q = 2 correspondsto the Ising model. The nature of these ‘correspondences’,as described in Section 1.4, is that ‘correlation functions’ of the Potts model may be expressed as ‘connectivity functions’ of the random-clustermodel. When extendedto infinite graphs, it turns out that long-range order in a Potts model corresponds to the existence of infinite clusters in the corresponding random-cluster model. In this sense the Potts and percolation phase transitions are counterparts of one another.
+The model may be viewed as a parametric family of probability measures φp,q on , the two parameters being denoted by p ∈ [0,1] and $q$ ∈ (0,∞). The parameter $p$ amounts to a measure of the density of open edges, and the parameter $q$ is a ‘cluster-weighting’ factor. When $q$ = 1, φp,$q$ is a product measure, and the ensuing probabilityspace is usually termed a percolationmodelor a randomgraph dependingon the context. The integervalues $q$ = 2,3,. . . correspondin a certain way to the Potts model on G with q local states, and thus $q$ = 2 correspondsto the Ising model. The nature of these ‘correspondences’,as described in Section 1.4, is that ‘correlation functions’ of the Potts model may be expressed as ‘connectivity functions’ of the random-clustermodel. When extendedto infinite graphs, it turns out that long-range order in a Potts model corresponds to the existence of infinite clusters in the corresponding random-cluster model. In this sense the Potts and percolation phase transitions are counterparts of one another.
 
 Therein lies a major strength of the random-cluster model. Geometrical methods of some complexity have been derived in the study of percolation, and some of these may be adapted and extended to more general random-cluster models, therebyobtainingresults of significance forIsing and Potts models. Such has been the value of the random-cluster model in studying Ising and Potts models that it is sometimes called simply the ‘FK representation’ of the latter systems, named after Fortuin and Kasteleyn. We shall see in Chapter 11 that several other spin models of statistical mechanics possess FK-type representations.
 
@@ -52,21 +52,21 @@ The random-cluster and Ising/Potts models on the graph G = (V, E) are defined fo
 
 ### 1.2 Random-cluster model
 
-Let G = (V, E) be a finite graph. The graphsconsideredhere will usually possess neither loops nor multiple edges, but we make no such general assumption. An edge e having endvertices x and y is written as e = x, y . A random-cluster measure on G is a member of a certain class of probability measures on the set of subsets of the edge set E. We take as state space the set = {0,1}E, members of which are 0/1-vectors ω = (ω(e) : e ∈ E). We speak of the edge e as being open (in ω) if ω(e) = 1, and as being closed if ω(e) = 0. For ω ∈ , let η(ω) = {e ∈ E : ω(e) = 1} denote the set of open edges. There is a one–one correspondence between vectors ω ∈ and subsets F ⊆ E, given by F = η(ω). Let k(ω) be the numberof connected components(or ‘open clusters’) of the graph (V,η(ω)), and note that k(ω) includes a count of isolated vertices, that is, of vertices incident to no open edge. We associate with the σ-field F of all its subsets.
+Let G = (V, E) be a finite graph. The graphsconsideredhere will usually possess neither loops nor multiple edges, but we make no such general assumption. An edge e having endvertices x and y is written as $e = \langle x, y \rangle$ . A random-cluster measure on G is a member of a certain class of probability measures on the set $\Omega$ of subsets of the edge set E. We take as state space the set \Omega = \{0,1\}^E, members of which are 0/1-vectors ω = (ω(e) : e ∈ E). We speak of the edge e as being open (in ω) if ω(e) = 1, and as being closed if ω(e) = 0. For ω ∈ , let η(ω) = {e ∈ E : ω(e) = 1} denote the set of open edges. There is a one–one correspondence between vectors ω ∈ and subsets F ⊆ E, given by F = η(ω). Let k(ω) be the numberof connected components(or ‘open clusters’) of the graph (V,η(ω)), and note that k(ω) includes a count of isolated vertices, that is, of vertices incident to no open edge. We associate with the σ-field F of all its subsets.
 
 ![image 7](../Images/imageFile7.png)
 
-Thismeasurediffersfromproductmeasurethroughthe inclusionofthe term qk(ω). Note the difference between the cases q ≤ 1 and q ≥ 1: the former favours fewer clusters, whereas the latter favours a larger number of clusters. When q = 1, edges are open/closed independently of one another. This very special case has been studied in detail under the titles ‘percolation’ and ‘random graphs’, see [61, 154, 194]. Perhaps the most important values of q are the integers, since the random-cluster model with q ∈ {2,3,. . .} corresponds, in a way described in the next two sections, to the Potts model with q local states. The bulk of the work presented in this book is devoted to the theory of random-cluster measures when q ≥ 1. The case q < 1 seems to be harder mathematically and less important physically. There is some interest in the limit as q ↓ 0; see Section 1.5.
+Thismeasurediffersfromproductmeasurethroughthe inclusionofthe term qk(ω). Note the difference between the cases q ≤ 1 and $q$ ≥ 1: the former favours fewer clusters, whereas the latter favours a larger number of clusters. When $q$ = 1, edges are open/closed independently of one another. This very special case has been studied in detail under the titles ‘percolation’ and ‘random graphs’, see [61, 154, 194]. Perhaps the most important values of $q$ are the integers, since the random-cluster model with q ∈ {2,3,. . .} corresponds, in a way described in the next two sections, to the Potts model with q local states. The bulk of the work presented in this book is devoted to the theory of random-cluster measures when q ≥ 1. The case $q$ < 1 seems to be harder mathematically and less important physically. There is some interest in the limit as q ↓ 0; see Section 1.5.
 
-We shall sometimes write φG,p,q for φp,q when the choice of graph G is to be stressed. Computer-generated samples from random-cluster measures on Z2 are presented in Figures 1.1–1.2. When q = 1, the measure φp,q is a product measure with density p, and we write φG,p or φp for this special case.
+We shall sometimes write φG,p,q for φp,q when the choice of graph G is to be stressed. Computer-generated samples from random-cluster measures on Z2 are presented in Figures 1.1–1.2. When $q$ = 1, the measure φp,$q$ is a product measure with density p, and we write φG,p or φp for this special case.
 
-Figure 1.1. Samples from the random-cluster measure with q = 1 on a 40 × 40 box of the square lattice. We have set q = 1 for ease of programming, the measure being of product form in this case. The critical value is p c ( 1 ) = 1 2 . Samples with more general values of q may be obtained by the method of ‘coupling from the past’, as described in Section 8.4.
+Figure 1.1. Samples from the random-cluster measure with $q$ = 1 on a 40 × 40 box of the square lattice. We have set $q$ = 1 for ease of programming, the measure being of product form in this case. The critical value is p c ( 1 ) = 1 2 . Samples with more general values of $q$ may be obtained by the method of ‘coupling from the past’, as described in Section 8.4.
 
 6 Random-Cluster Measures [1.3]
 
 ![image 8](../Images/imageFile8.png)
 
-Figure 1.2. A picture of the random-cluster model with free boundary conditions on a 2048× 2048 box of L2, with p = 0.585816 and q = 2. The critical value of the model with q = 2 is pc =
+Figure 1.2. A picture of the random-cluster model with free boundary conditions on a 2048× 2048 box of L2, with $p$ = 0.585816 and $q$ = 2. The critical value of the model with $q$ = 2 is pc =
 
 √2) = 0.585786 ..., and therefore the simulation is of a mildly supercritical system. It was obtained by simulating the Ising model using Glauber dynamics (see Section 8.2), and then applying the coupling illustrated in Figure 1.3. Each individual cluster is highlighted with a different tint of gray, and the smaller clusters are not visible in the picture. This and later simulations in Section 5.7 are reproduced by kind permission of Raphaël Cerf.
 
@@ -108,7 +108,7 @@ As pointed out by Baxter, [26], the Ising model permits an inﬁnity of generali
 
 Let q be an integer satisfying q ≥ 2, and take as sample space the set of vectors = {1,2,. . .,q}V. Thus each vertex of G may be in any of q states. For an edge
 
-e = x, y and a conﬁguration σ = (σx : x ∈ V) ∈ , we write δe(σ) = δσx,σy where δi,j is the Kronecker delta. The relevant probability measure is given by (1.5) πβ,q(σ) =
+$e = \langle x, y \rangle$ and a conﬁguration σ = ($\sigma_x$ : x ∈ V) ∈ , we write δe(σ) = δσx,$\sigma_y$ where δi,j is the Kronecker delta. The relevant probability measure is given by (1.5) πβ,q(σ) =
 
 1 ZP
 
@@ -116,7 +116,7 @@ e−βH′(σ), σ ∈ ,
 
 ![image 13](../Images/imageFile13.png)
 
-In the special case q = 2, the multiplicative formula (1.7) δσx,σy = 21(1 + σxσy), σx,σy ∈ {−1,+1}, is valid. It is now easy to see in this case that the ensuing Potts model is simply the Ising model with an adjusted value of β, in that πβ,2 is the measure obtained from λβ/2 by re-labelling the local states.
+In the special case $q$ = 2, the multiplicative formula (1.7) δσx,$\sigma_y$ = 21(1 + σxσy), $\sigma_x$,$\sigma_y$ ∈ {−1,+1}, is valid. It is now easy to see in this case that the ensuing Potts model is simply the Ising model with an adjusted value of β, in that πβ,2 is the measure obtained from λβ/2 by re-labelling the local states.
 
 ![image 14](../Images/imageFile14.png)
 
@@ -128,7 +128,7 @@ where sx · sy denotes the dot product. When n = 1, this is the Ising model. It 
 
 Fortuin and Kasteleyn discovered that Potts models may be re-cast as randomcluster models, and furthermore that the relationship between the two systems facilitates an extended study of phase transitions in Potts models, see [121, 122, 123, 203]. Their methods were elementary in nature. In a more modern approach, we construct the two systems on a common probability space. There may in principle be many ways to do this, but the standard coupling of Edwards and Sokal, [108], is of special value.
 
-Let q ∈ {2,3,. . .}, p ∈ [0,1], and let G = (V, E) be a finite graph. We consider the product sample space × where = {1,2,. . .,q}V and = {0,1}E as above. We deﬁne a probability mass function µ on × by
+Let q ∈ {2,3,. . .}, p ∈ [0,1], and let G = (V, E) be a finite graph. We consider the product sample space × where = {1,2,. . .,q}V and \Omega = \{0,1\}^E as above. We deﬁne a probability mass function µ on × by
 
 (1 − p)δω(e),0 + pδω(e),1δe(σ) , (σ,ω) ∈ × ,
 
@@ -136,7 +136,7 @@ Let q ∈ {2,3,. . .}, p ∈ [0,1], and let G = (V, E) be a finite graph. We con
 
 e∈E
 
-where, as before, δe(σ) = δσx,σy for e = x, y ∈ E. The constant of proportionality is exactly that which ensures the normalization
+where, as before, δe(σ) = δσx,$\sigma_y$ for $e = \langle x, y \rangle$ ∈ E. The constant of proportionality is exactly that which ensures the normalization
 
 µ(σ,ω) = 1.
 
@@ -150,20 +150,20 @@ where ψ is the uniform probability measure on , φp is product measure on with 
 
 Elementary calculations reveal the following facts.
 
-(1.10)Theorem(Marginalmeasuresofµ)[108]. Letq ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β.
+(1.10)Theorem(Marginalmeasuresofµ)[108]. Letq ∈ {2,3,. . .}, p ∈ [0,1), and suppose that $p$ = 1 − e−β.
 
 ![image 15](../Images/imageFile15.png)
 
 ![image 16](../Images/imageFile16.png)
 
-The conditional measures of µ are given in the following theorem4, and illustrated in Figure 1.3. (1.13) Theorem (Conditional measures of µ) [108]. Let q ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β.
+The conditional measures of µ are given in the following theorem4, and illustrated in Figure 1.3. (1.13) Theorem (Conditional measures of µ) [108]. Let q ∈ {2,3,. . .}, p ∈ [0,1), and suppose that $p$ = 1 − e−β.
 
 - (a) For ω ∈ , the conditional measure µ(· | ω) on is obtained by putting random spins on entire clusters of ω (of which there are k(ω)). These spins are constant on given clusters, are independent between clusters, and each is uniformly distributed on the set {1,2,. . .,q}.
-- (b) For σ ∈ , the conditional measure µ(· | σ) on is obtained as follows. If e = x, y is such that σx = σy, we set ω(e) = 0. If σx = σy, we set
+- (b) For σ ∈ , the conditional measure µ(· | σ) on is obtained as follows. If $e = \langle x, y \rangle$ is such that $\sigma_x$ = $\sigma_y$, we set ω(e) = 0. If $\sigma_x$ = $\sigma_y$, we set
 
 ω(e) =
 
-1 with probability p, 0 otherwise,
+1 with probability $p$, 0 otherwise,
 
 the values of different ω(e) being (conditionally) independent random variables.
 
@@ -173,9 +173,9 @@ the values of different ω(e) being (conditionally) independent random variables
 
 ![image 4](../Images/imageFile4.png)
 
-Figure 1.3. The upper diagram is an illustration of the conditional measure of µ on given ω , with q = 4. To each open cluster of ω is allocated a spin-value chosen uniformly from { 1 , 2 , 3 , 4 } . Differentclustersareallocatedindependentvalues. Inthelowerdiagram, webegin withaconﬁguration σ . Anedgeisplacedbetweenvertices x , y withprobability p (respectively, 0) if σ x = σ y (respectively, σ x = σ y ), and the outcome has as law the conditional measure of µ on given σ .
+Figure 1.3. The upper diagram is an illustration of the conditional measure of µ on given ω , with $q$ = 4. To each open cluster of ω is allocated a spin-value chosen uniformly from { 1 , 2 , 3 , 4 } . Differentclustersareallocatedindependentvalues. Inthelowerdiagram, webegin withaconﬁguration σ . Anedgeisplacedbetweenvertices x , y withprobability p (respectively, 0) if σ x = σ y (respectively, σ x = σ y ), and the outcome has as law the conditional measure of µ on given σ .
 
-In conclusion, the measure µ is a coupling of a Potts measure π β, q on V , together with the random-cluster measure φ p , q on . The parameters of these measures are related by the equation p = 1 − e − β . Since 0 ≤ p < 1, we have that 0 ≤ β < ∞ . This special coupling may be used in a particularly simple way to show that
+In conclusion, the measure µ is a coupling of a Potts measure π β, q on V , together with the random-cluster measure φ p , q on . The parameters of these measures are related by the equation $p$ = 1 − e − β . Since 0 ≤ $p$ < 1, we have that 0 ≤ β < ∞ . This special coupling may be used in a particularly simple way to show that
 
 correlations in Potts models correspond to open connections in random-cluster models. When extended to infinite graphs, this will imply that the phase transition of a Potts model corresponds to the creation of an infinite open cluster in the random-cluster model. Thus, arguments of stochastic geometry, and particularly those developed for the percolation model, may be harnessed directly in order to understand the correlation structure of the Potts system. The basic step is as follows.
 
@@ -185,9 +185,9 @@ Let { x ↔ y } denote the set of all ω ∈ for which there exists an open path
 
 ![image 19](../Images/imageFile19.png)
 
-The ‘two-point connectivity function’ of the random-cluster measure φp,q is defined as the function φp,q(x ↔ y) for x, y ∈ V, that is, the probability that x and y are joined by a path of open edges. It turns out that these ‘two-point functions’ are (except for a constant factor) the same.
+The ‘two-point connectivity function’ of the random-cluster measure φp,$q$ is defined as the function φp,q(x ↔ y) for x, y ∈ V, that is, the probability that x and y are joined by a path of open edges. It turns out that these ‘two-point functions’ are (except for a constant factor) the same.
 
-(1.16)Theorem(Correlation/connection)[203]. Let q ∈ {2,3,. . .}, p ∈ [0,1), and suppose that p = 1 − e−β. Then
+(1.16)Theorem(Correlation/connection)[203]. Let q ∈ {2,3,. . .}, p ∈ [0,1), and suppose that $p$ = 1 − e−β. Then
 
 τβ,q(x, y) = (1 − q−1)φp,q(x ↔ y), x, y ∈ V.
 
@@ -201,7 +201,7 @@ The ‘two-point connectivity function’ of the random-cluster measure φp,q is
 
 peω(e)(1 − pe)1−ω(e) qk(ω), ω ∈ ,
 
-where Z is the appropriate normalizing factor. The measure φp,q is retrieved by setting pe = p for all e ∈ E.
+where Z is the appropriate normalizing factor. The measure φp,$q$ is retrieved by setting pe = p for all e ∈ E.
 
 <a id="sec-1-5"></a>
 
@@ -211,13 +211,13 @@ Let G = (V, E) be a finite connected graph, and let φp,q be the random-cluster 
 
 - • a forest of G if the graph (V, F) contains no circuit,
 - • a spanning tree of G if (V, F) is connected and contains no circuit,
-- • a connected subgraph of G if (V, F) is connected. In each case we consider the graph (V, F) containing every vertex of V; in this regard, sets F of edges satisfying one of the above conditions are sometimes termed spanning. Note that F is a spanning tree if and only if it is both a forest and a connected subgraph. For = {0,1}E and ω ∈ , we call ω a forest (respectively, spanning tree, connected subgraph) if η(ω) is a forest (respectively, spanning tree, connected subgraph). Write for, st, cs for the subsets of containing all forests, spanning trees, and connected subgraphs, respectively, and write USF, UST, UCS for the uniform probability measures6 on the respective sets for, st, cs.
+- • a connected subgraph of G if (V, F) is connected. In each case we consider the graph (V, F) containing every vertex of V; in this regard, sets F of edges satisfying one of the above conditions are sometimes termed spanning. Note that F is a spanning tree if and only if it is both a forest and a connected subgraph. For \Omega = \{0,1\}^E and ω ∈ , we call ω a forest (respectively, spanning tree, connected subgraph) if η(ω) is a forest (respectively, spanning tree, connected subgraph). Write for, st, cs for the subsets of containing all forests, spanning trees, and connected subgraphs, respectively, and write USF, UST, UCS for the uniform probability measures6 on the respective sets for, st, cs.
 
 ![image 23](../Images/imageFile23.png)
 
 ![image 24](../Images/imageFile24.png)
 
-and Zcs = Zcs(r) is the appropriate normalizing constant. In the special case p = 21, we have that φp,q ⇒ UCS as q ↓ 0.
+and Zcs = Zcs(r) is the appropriate normalizing constant. In the special case $p$ = 21, we have that φp,q ⇒ UCS as q ↓ 0.
 
 ![image 25](../Images/imageFile25.png)
 
@@ -227,7 +227,7 @@ and Zcs = Zcs(r) is the appropriate normalizing constant. In the special case p 
 
 ω∈
 
-Note that p/(1 − p) → 0 and q(1 − p)/p → 0 as q ↓ 0. Now, k(ω) ≥ 1 and |η(ω)|+k(ω) ≥ |V| forω ∈ ; these two inequalitiesare satisfied simultaneously with equality if and only if ω ∈ st. Therefore, in the limit as q ↓ 0, the ‘mass’ is concentratedonspanningtrees, anditis easily seenthatthelimitmassisuniformly distributed. That is, φp,q ⇒ UST.
+Note that p/(1 − p) → 0 and $q$(1 − p)/p → 0 as q ↓ 0. Now, k(ω) ≥ 1 and |η(ω)|+k(ω) ≥ |V| forω ∈ ; these two inequalitiesare satisfied simultaneously with equality if and only if ω ∈ st. Therefore, in the limit as q ↓ 0, the ‘mass’ is concentratedonspanningtrees, anditis easily seenthatthelimitmassisuniformly distributed. That is, φp,q ⇒ UST.
 
 ![image 28](../Images/imageFile28.png)
 
@@ -235,23 +235,18 @@ Note that p/(1 − p) → 0 and q(1 − p)/p → 0 as q ↓ 0. Now, k(ω) ≥ 1 
 
 and Zfor = Zfor(α) is the appropriate normalizing constant. In the special case α = 1, we ﬁnd that φp,q ⇒ USF.
 
-Finally, if p approaches 0 faster than does q, in that p/q → 0 as p,q → 0, it is easily seen that the limit measure is concentrated on the empty set of edges. We summarize the three special cases above in a theorem.
+Finally, if $p$ approaches 0 faster than does q, in that p/q → 0 as p,q → 0, it is easily seen that the limit measure is concentrated on the empty set of edges. We summarize the three special cases above in a theorem.
 
-(1.23) Theorem. We have in the limit as q ↓ 0 that:
+(1.23) Theorem. We have in the limit as $q \downarrow 0$ that:
+$$
+\phi_{p,q} \Rightarrow \begin{cases}
+\text{UCS} & \text{if } p = 1/2, \\
+\text{UST} & \text{if } p \to 0 \text{ and } q/p \to 0, \\
+\text{USF} & \text{if } p \to 0 \text{ and } q/p \to \alpha.
+\end{cases}
+$$
 
- 
-
-UCS if p = 21, UST if p → 0 and q/p → 0,
-
-![image 30](../Images/imageFile30.png)
-
-√q). It has been known since Kirchhoff’s theorem, [215], that the electrical currents which flow in a network may be expressed in terms of counts of spanning trees. We return to this discussion of UST in Section 3.9.
-
-√q/(1+
-
-![image 31](../Images/imageFile31.png)
-
-![image 32](../Images/imageFile32.png)
+It has been known since Kirchhoff's theorem, [215], that the electrical currents which flow in a network may be expressed in terms of counts of spanning trees. We return to this discussion of UST in Section 3.9.
 
 The theory of the uniform-spanning-tree measure UST is beautiful in its own right(see[31]),andislinkedinanimportantwaytotheemergingfieldofstochastic growth processes of ‘stochastic Lowner¨ evolution’ (SLE) type (see [231, 284]), to which we return in Section 6.7. Further discussions of USF and UCS may be found in [165, 268].
 
@@ -259,9 +254,9 @@ The theory of the uniform-spanning-tree measure UST is beautiful in its own righ
 
 ### 1.6 Basic notation
 
-We present some of the basic notation necessary for a study of random-cluster measures. Let G = (V, E) be a graph, with finite or countably infinite vertex-set V and edge-set E. If two vertices x and y are joined by an edge e, we write x ∼ y, and e = x, y , and we say that x is adjacent to y. The (graph-theoretic) distance δ(x, y) from x to y is defined to be the number of edges in a shortest path of G from x to y.
+We present some of the basic notation necessary for a study of random-cluster measures. Let G = (V, E) be a graph, with finite or countably infinite vertex-set V and edge-set E. If two vertices x and y are joined by an edge e, we write x ∼ y, and $e = \langle x, y \rangle$ , and we say that x is adjacent to y. The (graph-theoretic) distance δ(x, y) from x to y is defined to be the number of edges in a shortest path of G from x to y.
 
-The conﬁguration space of the random-cluster model on G is the set = {0,1}E, points of which are represented as vectors ω = (ω(e) : e ∈ E) and called conﬁgurations. For ω ∈ , we call an edge e open (or ω-open, when the role of ω is to be emphasized) if ω(e) = 1, and closed (or ω-closed) if ω(e) = 0. We speak of a set F of edges as being ‘open’ (respectively, ‘closed’) in the conﬁguration ω if ω( f ) = 1 (respectively, ω( f ) = 0) for all f ∈ F.
+The conﬁguration space of the random-cluster model on G is the set \Omega = \{0,1\}^E, points of which are represented as vectors ω = (ω(e) : e ∈ E) and called conﬁgurations. For ω ∈ , we call an edge e open (or ω-open, when the role of ω is to be emphasized) if ω(e) = 1, and closed (or ω-closed) if ω(e) = 0. We speak of a set F of edges as being ‘open’ (respectively, ‘closed’) in the conﬁguration ω if ω( f ) = 1 (respectively, ω( f ) = 0) for all f ∈ F.
 
 The indicatorfunction of a subset A of is the function 1A : → {0,1} given by
 
@@ -273,7 +268,7 @@ For e ∈ E, we write Je = {ω ∈ : ω(e) = 1}, the event that the edge e is op
 
 ![image 33](../Images/imageFile33.png)
 
-7This choice of p is convenient, but actually one requires only that q/p → 0, see [166].
+7This choice of $p$ is convenient, but actually one requires only that q/p → 0, see [166].
 
 take F to be the σ-field of subsets of generated by the cylinder events, and we shall consider certain probability measures on the measurable pair ( ,F ). If G is finite, then F is the set of all subsets of ; all events are cylinder events, and all functions are cylinder functions. The complement of an event A is written Ac or A.
 
@@ -287,11 +282,11 @@ Thereis a naturalpartialorderon the set of conﬁgurationsgivenby: ω1 ≤ ω2 i
 
 ω1 ≤ ω2 if and only if η(ω1) ⊆ η(ω2). The smallest (respectively, largest) conﬁguration is that with ω(e) = 0 (respectively, ω(e) = 1) for all e, and this is denoted by 0 (respectively, 1). A function X : → R is called increasing if X(ω1) ≤ X(ω2) whenever ω1 ≤ ω2. Similarly, X is decreasing if −X is increasing. Note that every increasing function X : → R is necessarily bounded since X(0) ≤ X(ω) ≤ X(1) for all ω ∈ . A subset A of is called increasing (respectively, decreasing) if it has increasing (respectively, decreasing) indicator function.
 
-For ω ∈ and e ∈ E, let ωe and ωe be the conﬁgurations obtained from ω by ‘switching on’ and ‘switching off’ the edge e, respectively. That is,
+For ω ∈ and e ∈ E, let $\omega_e$ and $\omega_e$ be the conﬁgurations obtained from ω by ‘switching on’ and ‘switching off’ the edge e, respectively. That is,
 
 ω( f ) if f = e, 1 if f = e,
 
-ωe( f ) =
+$\omega_e$( f ) =
 
 for f ∈ E,
 
@@ -301,7 +296,7 @@ for f ∈ E,
 
 for f ∈ E.
 
-ωe( f ) =
+$\omega_e$( f ) =
 
 More generally, for J ⊆ E and K ⊆ E \ J, we denote by ωKJ the conﬁguration that equals 1 on J, equals 0 on K, and agrees with ω on E \ (J ∪ K). When J
 
@@ -349,7 +344,7 @@ Let x, y be vertices of Ld. The (graph-theoretic)distance from x to y is simply 
 
 x = max |xi| : i = 1,2,. . . ,d , x ∈ Zd, and we note that
 
-x ≤ |x| ≤ d x , x ∈ Zd. For ω ∈ = {0,1}Ed, we abbreviate to C the open cluster C0 at the origin. A box of Ld is a subset of Zd of the form
+x ≤ |x| ≤ d x , x ∈ Zd. For ω ∈ \Omega = \{0,1\}^Ed, we abbreviate to C the open cluster C0 at the origin. A box of Ld is a subset of Zd of the form
 
 a,b = x ∈ Zd : ai ≤ xi ≤ bi for i = 1,2,. . .,d , a,b ∈ Zd, and we sometimes write
 

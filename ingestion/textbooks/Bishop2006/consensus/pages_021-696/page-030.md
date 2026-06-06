@@ -1,61 +1,15 @@
 [Page 30]
 
-![The image presents two graphs, each with a different set of data points. The x-axis is labeled lina and the y-axis is labeled 18. The graph on the left shows a downward trend, while the graph on the right shows a upward trend. Both graphs have a horizontal line labeled ln(a) = 0 at the end of the graph. The first graph has a horizontal line labeled ln(a) = 0 at the end of the graph. The graph on the left shows a downward trend, while the graph on the right shows a upward trend. Both graphs have a vertical line labeled ln(a) = 0 at the end of the graph. The second graph has a horizontal line labeled ln(a) = 0 at the end of the graph. The graph on the left shows a downward trend, while the graph on the right shows a upward trend. Both graphs have](../../../../../images/imageFile10.png)
-
--
-
-ln λ
-
-λ
-
-=
-
-18
-
-ln λ
-
-λ
-
-= 0
-
-1
-
-1
-
-t
-
-t
-
-0
-
-0
-
-−1
-
-−1
-
-0
-
-1
-
-0
-
-1
-
-x
-
-x
+![The image presents two graphs, each with a different set of data points. The x-axis is labeled lina and the y-axis is labeled 18. The graph on the left shows a downward trend, while the graph on the right shows a upward trend. Both graphs have a horizontal line labeled ln(a) = 0 at the end of the graph. The first graph has a horizontal line labeled ln(a) = 0 at the end of the graph. The graph on the left shows a downward trend, while the graph on the right shows a upward trend. Both graphs have a vertical line labeled ln(a) = 0 at the end of the graph. The second graph has a horizontal line labeled ln(a) = 0 at the end of the graph. The graph on the left shows a downward trend, while the graph on the right shows a upward trend. Both graphs have](../images/imageFile10.png)
 
 Figure 1.7 Plots of $M = 9$ polynomials ﬁtted to the data set shown in Figure 1.2 using the regularized error function (1.4) for two values of the regularization parameter $\lambda$ corresponding to $\ln \lambda = -18$ and $\ln \lambda = 0$. The case of no regularizer, i.e., $\lambda = 0$, corresponding to $\ln \lambda = -\infty$, is shown at the bottom right of Figure 1.4.
 
-Exercise 1.2
-
-may wish to use relatively complex and ﬂexible models. One technique that is often used to control the over-fitting phenomenon in such cases is that of regularization, which involves adding a penalty term to the error function (1.2) in order to discourage the coefficients from reaching large values. The simplest such penalty term takes the form of a sum of squares of all of the coefficients, leading to a modified error function of the form
+may wish to use relatively complex and ﬂexible models. One technique that is often used to control the over-ﬁtting phenomenon in such cases is that of regularization, which involves adding a penalty term to the error function (1.2) in order to discourage the coefﬁcients from reaching large values. The simplest such penalty term takes the form of a sum of squares of all of the coefﬁcients, leading to a modiﬁed error function of the form
 
 $$
-\widetilde{E}(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{ y(x_n,\mathbf{w}) - t_n \}^{2} + \frac{\lambda}{2} \lVert \mathbf{w} \rVert^{2} \tag{1.4}
+\widetilde{E}(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \{y(x_n, \mathbf{w}) - t_n\}^2 + \frac{\lambda}{2} \|\mathbf{w}\|^2 \tag{1.4}
 $$
 
-where $\lVert \mathbf{w} \rVert^{2} \equiv \mathbf{w}^{T}\mathbf{w} = w_{0}^{2} + w_{1}^{2} + \dots + w_{M}^{2}$, and the coefficient $\lambda$ governs the relative importance of the regularization term compared with the sum-of-squares error term. Note that often the coefﬁcient $w_0$ is omitted from the regularizer because its inclusion causes the results to depend on the choice of origin for the target variable (Hastie et al., 2001), or it may be included but with its own regularization coefﬁcient (we shall discuss this topic in more detail in Section 5.5.1). Again, the error function in (1.4) can be minimized exactly in closed form. Techniques such as this are known in the statistics literature as shrinkage methods because they reduce the value of the coefﬁcients. The particular case of a quadratic regularizer is called ridge regression (Hoerl and Kennard, 1970). In the context of neural networks, this approach is known as weight decay.
+where $\|\mathbf{w}\|^2 \equiv \mathbf{w}^{\mathrm{T}}\mathbf{w} = w_0^2 + w_1^2 + \ldots + w_M^2$, and the coefﬁcient $\lambda$ governs the relative importance of the regularization term compared with the sum-of-squares error term. Note that often the coefﬁcient $w_0$ is omitted from the regularizer because its inclusion causes the results to depend on the choice of origin for the target variable (Hastie et al., 2001), or it may be included but with its own regularization coefﬁcient (we shall discuss this topic in more detail in Section 5.5.1). Again, the error function in (1.4) can be minimized exactly in closed form. Techniques such as this are known in the statistics literature as shrinkage methods because they reduce the value of the coefﬁcients. The particular case of a quadratic regularizer is called ridge regression (Hoerl and Kennard, 1970). In the context of neural networks, this approach is known as weight decay.
 
-Figure 1.7 shows the results of ﬁtting the polynomial of order $M = 9$ to the same data set as before but now using the regularized error function given by (1.4). We see that, for a value of $\ln \lambda = -18$, the over-ﬁtting has been suppressed and we now obtain a much closer representation of the underlying function $\sin(2 \pi x)$. If, however, we use too large a value for $\lambda$ then we again obtain a poor ﬁt, as shown in Figure 1.7 for $\ln \lambda = 0$. The corresponding coefﬁcients from the ﬁtted polynomials are given in Table 1.2, showing that regularization has the desired effect of reducing
+Figure 1.7 shows the results of ﬁtting the polynomial of order $M = 9$ to the same data set as before but now using the regularized error function given by (1.4). We see that, for a value of $\ln \lambda = -18$, the over-ﬁtting has been suppressed and we now obtain a much closer representation of the underlying function $\sin(2\pi x)$. If, however, we use too large a value for $\lambda$ then we again obtain a poor ﬁt, as shown in Figure 1.7 for $\ln \lambda = 0$. The corresponding coefﬁcients from the ﬁtted polynomials are given in Table 1.2, showing that regularization has the desired effect of reducing

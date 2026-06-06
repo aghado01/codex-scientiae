@@ -28,7 +28,7 @@ $$
 \sum _ { j = 1 } ^ { \infty } w ( y _ { j } ) \partial \log f ( y _ { j } ; \Psi ) / \partial \Psi = 0 ,
 $$
 
-where f(yj; %) denotes the specified parametric form for the density of Y;; The weight function w(u;) is defined in terms of the Pearson residuals; see Markatou; Basu, and Lindsay (1998) and the previous work of Green (1984). The weighted likelihoodmethodology provides robust and first-order efficient estimators in general, and Markatou (1998) has established these results in the context of univariate mixture models
+where f($y_j$; %) denotes the specified parametric form for the density of $Y_j$; The weight function w(u;) is defined in terms of the Pearson residuals; see Markatou; Basu, and Lindsay (1998) and the previous work of Green (1984). The weighted likelihoodmethodology provides robust and first-order efficient estimators in general, and Markatou (1998) has established these results in the context of univariate mixture models
 
 Also; Tibshirani and Knight (1999) have proposed the technique of bootstrap "bumping;' which can be used for resistant fitting: They demonstrated its use in two-component univariate normal mixture model in the presence of an outlier. The target criterion to be minimized was taken to be the median of the negative of the mixture density at each of the observations %; , while the working criterion was taken to be the negative of the likelihood. Corresponding to this choice for the working criterion; the usual ML solution € was obtained via the EM algorithm for each of number B of bootstrap samples %6 (6 = 1 B) obtained by sampling with replacement from the original sample y. The fit was then taken to be that estimate criterion fitting log log
 
@@ -36,9 +36,9 @@ Also; Tibshirani and Knight (1999) have proposed the technique of bootstrap "bum
 
 # 7.3 ROBUST CLUSTERING
 
-One useful application of normal mixture models has been in the important field of cluster analysis. Besides having a soundmathematical basis; this approach is not confined to the production of spherical clusters, such as with k-means-type algorithms that use Euclidean distance rather than the Mahalanobis distance metric, which allows for within-cluster correlations between the variables in the feature vector Yj . Moreover, unlike clustering methods defined solely in terms of the Mahalanobis distance, the normal mixture-based clustering takes into account the normalizing term Z; in the estimate of the multivariate normal density adopted for the component distribution of Y corresponding to the ith cluster. This term can make an important contribution in the case of disparate group-covariance matrices (McLachlan, 1992; Chapter 2) /-1/2
+One useful application of normal mixture models has been in the important field of cluster analysis. Besides having a soundmathematical basis; this approach is not confined to the production of spherical clusters, such as with k-means-type algorithms that use Euclidean distance rather than the Mahalanobis distance metric, which allows for within-cluster correlations between the variables in the feature vector Yj . Moreover, unlike clustering methods defined solely in terms of the Mahalanobis distance, the normal mixture-based clustering takes into account the normalizing term $Z_j$ in the estimate of the multivariate normal density adopted for the component distribution of Y corresponding to the ith cluster. This term can make an important contribution in the case of disparate group-covariance matrices (McLachlan, 1992; Chapter 2) /-1/2
 
-Although even a crude estimate of the within-cluster covariance matrix Z; often be severely affected by outliers. Hence it is highly desirable for methods of cluster analysis to provide robust clustering procedures. The problem of making clustering algorithms more robust has received much attention recently as, for example, in Jolion; Meer, and Bataouche (1991), Smith, Bailey, and Munford (1993), Frigui and Krishnapuram (1996), Kharin (1996), Rousseeuw, Kaufman, and Trauwaert (1996), Zhuang et al. (1996), and Davé and Krishnapuram (1997).
+Although even a crude estimate of the within-cluster covariance matrix $Z_j$ often be severely affected by outliers. Hence it is highly desirable for methods of cluster analysis to provide robust clustering procedures. The problem of making clustering algorithms more robust has received much attention recently as, for example, in Jolion; Meer, and Bataouche (1991), Smith, Bailey, and Munford (1993), Frigui and Krishnapuram (1996), Kharin (1996), Rousseeuw, Kaufman, and Trauwaert (1996), Zhuang et al. (1996), and Davé and Krishnapuram (1997).
 
 <a id="sec-7-4"></a>
 
@@ -54,9 +54,7 @@ where k is large and € is small, representing the small proportion of observat
 
 The normal scale mixture model (7.2) can be written as where where
 
-$$
-( 7 . 3 )
-$$
+
 
 where H is the probability distribution that places mass (1 \_ €) at the point u = 1 and mass point u = 1/k. Suppose we now replace H by the distribution of chi-squared random variable on its degrees of freedom v; that is, by the random variable U distributed as
 
@@ -70,11 +68,9 @@ $$
 f ( y _ { j } ; \mu , \Sigma , \nu ) = \frac { \Gamma ( \frac { \nu + p } { 2 } ) \left | \Sigma \right | ^ { - 1 / 2 } } { ( \pi \nu ) ^ { \frac { 1 } { 2 } p } \Gamma ( \frac { \nu } { 2 } ) \{ 1 + \delta ( y _ { j } , \mu ; \Sigma ) / \nu \} ^ { \frac { 1 } { 2 } ( \nu + p ) } } ,
 $$
 
-$$
-( 7 . 6 )
-$$
 
-2)-12 is its covariance matrix . As v tends to infinity, U converges to one with probability one; and so Y; becomes marginally multivariate normal with mean u and covariance matrix >. The family of t distributions thus provides a heavy-tailed alternative to the normal family with mean u and covariance matrix that is equal to a scalar multiple of $ (if v > 2)
+
+2)-12 is its covariance matrix . As v tends to infinity, U converges to one with probability one; and so $Y_j$ becomes marginally multivariate normal with mean u and covariance matrix >. The family of t distributions thus provides a heavy-tailed alternative to the normal family with mean u and covariance matrix that is equal to a scalar multiple of $ (if v > 2)
 
 <a id="sec-7-5"></a>
 
@@ -104,7 +100,7 @@ $$
 ( \dots , u _ { n } ) ^ { T } ,
 $$
 
-where y = UF)T denotes the observed-data vector; 21, Zn are the component-label vectors defining the component of origin of V1, Un' respectively; and zij = according as to whether U; belongs or does not belong to the ith component. In the light of the above characterization of the t distribution; it is convenient to view the observed data augmented by the z; as still incomplete and introduce into the complete-data vector the additional missing un , which are defined so that given =1, we obtain being Zij
+where y = UF)T denotes the observed-data vector; 21, Zn are the component-label vectors defining the component of origin of V1, Un' respectively; and zij = according as to whether U; belongs or does not belong to the ith component. In the light of the above characterization of the t distribution; it is convenient to view the observed data augmented by the $z_j$ as still incomplete and introduce into the complete-data vector the additional missing un , which are defined so that given =1, we obtain being Zij
 
 $$
 Y _ { j } \left | u _ { j } , z _ { i j } = 1 \ \sim N ( \mu _ { i } , \, \Sigma _ { i } / u _ { j } ) ,
@@ -116,7 +112,7 @@ $$
 ( 7 . 1 0 )
 $$
 
-Given 21 , the U1, Un are independently distributed according to (7.10). Thecomplete-data likelihood Lc(v) can be factored intothe product of the marginal densities of the Zj, the conditional densities of the U; given the 2;, and the conditional densities of the Y; given the u; and the zj. Accordingly, the complete-data likelihood can be written as Zn' log
+Given 21 , the U1, Un are independently distributed according to (7.10). Thecomplete-data likelihood Lc(v) can be factored intothe product of the marginal densities of the Zj, the conditional densities of the U; given the 2;, and the conditional densities of the $Y_j$ given the u; and the $z_j$. Accordingly, the complete-data likelihood can be written as Zn' log
 
 $$
 \log L _ { c } ( \Psi ) = \log L _ { 1 c } ( \pi ) + \log L _ { 2 c } ( \nu ) + \log L _ { 3 c } ( \xi ) ,
@@ -138,7 +134,7 @@ $$
 ( \frac { 1 } { i = 1 } \sum _ { j = 1 } ^ { 2 } \sum _ { i = 1 } ^ { 2 } ( 2 ^ { T } \sum _ { i = 1 } ^ { T } ( y _ { i } - \mu _ { i } ) ^ { T } \sum _ { i } ^ { T } ( y _ { j } - \mu _ { i } ) ) \} . \\ - \frac { 1 } { 2 } u _ { j } ( y _ { j } - \mu _ { i } ) ^ { T } \sum _ { i } ^ { T } ( y _ { j } - \mu _ { i } ) ) \} .
 $$
 
-and & = (0, of #; and the distinct elements of Z; (i = 1, 9)
+and & = (0, of #; and the distinct elements of $Z_j$ (i = 1, 9)
 
 <a id="sec-7-5-2"></a>
 
@@ -278,7 +274,7 @@ $$
 \pi _ { i } ^ { ( k + 1 ) } = \sum _ { j = 1 } ^ { n } \tau _ { i j } ^ { ( k ) } / n \quad ( i = 1 , \dots , g ) . \quad \L a r { \cdot }
 $$
 
-To update the estimates of #; and Z; (i = 1, 9), we need to consider
+To update the estimates of #; and $Z_j$ (i = 1, 9), we need to consider
 
 $$
 Q _ { 3 j } ( \theta _ { i } ; \Psi ^ { ( k ) } ) .
@@ -296,7 +292,7 @@ $$
 \Sigma _ { i } ^ { ( k + 1 ) } = \frac { \sum _ { j = 1 } ^ { n } \tau _ { i j } ^ { ( k ) } u _ { i j } ^ { ( k ) } ( y _ { j } - \mu _ { i } ^ { ( k + 1 ) } ) ( y _ { j } - \mu _ { i } ^ { ( k + 1 ) } ) ^ { T } } { \sum ^ { n } \tau ^ { ( k ) } } .
 $$
 
-It can be seen that the EM process effectively chooses The E-step updates the weights u while the M-step chooses #{k+1) and by weighted least-squares estimation. From the form of the equation (7.32) derived for the MLE of p;, we have that;, as v(k) decreases; the degree of downweighting of an outlier increases. For finite v{k) as |l y; Il-+ %, the effect on the ith component location parameter estimate goes to zero, whereas the effect on the ith component scale estimate remains bounded but does not vanish.
+It can be seen that the EM process effectively chooses The E-step updates the weights u while the M-step chooses #{k+1) and by weighted least-squares estimation. From the form of the equation (7.32) derived for the MLE of p;, we have that;, as v(k) decreases; the degree of downweighting of an outlier increases. For finite v{k) as |l $y_j$ Il-+ %, the effect on the ith component location parameter estimate goes to zero, whereas the effect on the ith component scale estimate remains bounded but does not vanish.
 
 Following the proposal of Kent; Tyler, and Vardi (1994) in the case of a single-
 
@@ -392,7 +388,7 @@ $$
 \Sigma _ { 1 } = \left ( \begin{array} { c c } 2 & 0 . 5 \\ 0 . 5 & . 5 \end{array} \right ) , \, \Sigma _ { 2 } = \left ( \begin{array} { c c } 1 & 0 \\ 0 & . 1 \end{array} \right ) , \, \Sigma _ { 3 } = \left ( \begin{array} { c c } 2 & - 0 . 5 \\ - 0 . 5 & . 5 \end{array} \right ) ,
 $$
 
-with mixing proportions T1 = T2 = T3 = The true grouping is shown in ure 7.1 . We now consider the clustering obtained by amixture ofthree t components with unequal scale matrices but equal degrees of freedom (v1 = v2 = v3 = v) The values of the weights u(;) at convergence; were examined. The noise points (points 101-150) gencrally produced much lower û;j values. In this application; an observation U; is treated as an outlier (background noise) if ciently small; equivalently; fitting OI,
+with mixing proportions $\pi_1$ = T2 = T3 = The true grouping is shown in ure 7.1 . We now consider the clustering obtained by amixture ofthree t components with unequal scale matrices but equal degrees of freedom (v1 = v2 = v3 = v) The values of the weights u(;) at convergence; were examined. The noise points (points 101-150) gencrally produced much lower û;j values. In this application; an observation U; is treated as an outlier (background noise) if ciently small; equivalently; fitting OI,
 
 $$
 \sum _ { i = 1 } ^ { \sum _ { \hat { z } _ { i j } \delta ( y _ { j } , \hat { \mu } _ { i } ; \hat { \Sigma } _ { i } ) } }

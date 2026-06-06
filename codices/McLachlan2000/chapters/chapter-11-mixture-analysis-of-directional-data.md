@@ -97,7 +97,7 @@ The Kent density is given in terms of the directional cosines y = and is given b
 where
 
 $$
-f _ { K } ( y ; \theta ) = C _ { K } \exp [ \kappa ( y ^ { T } \omega _ { 1 } ) + \beta \{ ( y ^ { T } \omega _ { 2 } ) ^ { 2 } - ( y ^ { T } \omega _ { 3 } ) ^ { 2 } \} ] ,
+f _ { K } ( $y_j$ \theta ) = C _ { K } \exp [ \kappa ( y ^ { T } \omega _ { 1 } ) + \beta \{ ( y ^ { T } \omega _ { 2 } ) ^ { 2 } - ( y ^ { T } \omega _ { 3 } ) ^ { 2 } \} ] ,
 $$
 
 $$
@@ -112,7 +112,7 @@ $$
 = \sum \pi _ { i } f _ { K } ( y _ { j } ; \theta _ { i } ) ,
 $$
 
-where fx (uj, 0;) is the Kent density with parameter vector
+where $f_x(y_j, \theta_i)$ is the Kent density with parameter vector
 
 $$
 \theta _ { i } = ( \kappa _ { i } , \, \beta _ { i } , \, \omega _ { i 1 } ^ { T } , \, \omega _ { i 2 } ^ { T } , \, \omega _ { i 3 } ^ { T } ) ^ { T } \quad ( i = 1 , \dots , g ) .
@@ -226,7 +226,7 @@ $$
 
 This formulation allows the data to determine the amount of noise present via the mixing proportion To, rather than the user setting the level in some ad hoc manner.
 
-In the example of Peel et al. (2001), the data are axial (antipodally symmetric); that is, every data point is represented by two points on the surface of the sphere; a and a dipole. They handled the presence of antipodal symmetry by representing each data by the closest to the center of the cluster in question (using angular distance, as defined in Section 11.3). In effect, the data space is restricted to a hemisphere; and so if a uniform component distribution is used, it must be suitably changed to fo(y;) = 1/(2r). pole point pole
+In the example of Peel et al. (2001), the data are axial (antipodally symmetric); that is, every data point is represented by two points on the surface of the sphere; a and a dipole. They handled the presence of antipodal symmetry by representing each data by the closest to the center of the cluster in question (using angular distance, as defined in Section 11.3). In effect, the data space is restricted to a hemisphere; and so if a uniform component distribution is used, it must be suitably changed to fo($y_j$) = 1/(2r). pole point pole
 
 Another choice of distributionin place of the Kent for the component distributions under antipodal symmetry is the Bingham distribution. It applies only to antipodally symmetric data, and so it avoids having to adjust the data to be in a form amenable to Kent component distributions; which can handle data not necessarily antipodally symmetric.
 

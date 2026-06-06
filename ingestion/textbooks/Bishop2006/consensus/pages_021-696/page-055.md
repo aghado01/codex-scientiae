@@ -2,7 +2,7 @@
 
 Figure 1.20 Illustration of a simple approach to the solution of a classiﬁcation problem in which the input space is divided into cells and any new test point is assigned to the class that has a majority number of representatives in the same cell as the test point. As we shall see shortly, this simplistic approach has some severe shortcomings.
 
-![image 25](../../../../../images/imageFile25.png)
+![The image is a scatter plot with a grid of points. The points are scattered across the image, with a grid of points forming a grid of squares. The points are colored in different colors, with each color representing a different number of points. The colors are red, green, blue, and pink. The points are scattered in a random pattern, with no clear pattern or pattern in the grid. The x-axis is labeled as x, and the y-axis is labeled as y. The x-axis is labeled as x1, and the y-axis is labeled as y1. The grid of points is filled with red, green, blue, and pink colors. The points are scattered in a random pattern, with no clear pattern or pattern in the grid. There are no labels or text on the image. The image is a simple scatter plot with no additional information. ### Analysis and Description: The scatter plot is a](../images/imageFile25.png)
 
 fall in the same cell. The identity of the test point is predicted as being the same as the class having the largest number of training points in the same cell as the test point (with ties being broken at random).
 
@@ -12,4 +12,4 @@ We can gain further insight into the problems of high-dimensional spaces by retu
 
 Figure 1.21 Illustration of the curse of dimensionality, showing how the number of regions of a regular grid grows exponentially with the dimensionality $D$ of the space. For clarity, only a subset of the cubical regions are shown for $D = 3$.
 
-![image 26](../../../../../images/imageFile26.png)
+![In this image, we can see a diagram with a graph and some text. The graph is represented by a line. There are some points on the graph.](../images/imageFile26.png)

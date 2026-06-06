@@ -8,7 +8,7 @@ Summary. The random-cluster partition function with integer q on a graph G may b
 
 ### 9.1 Potts models and flows
 
-The Tutte polynomialis a function of two variables (see Section 3.6). For suitable values of these variables, one obtains counts of colourings, forests, and flows, together with other combinatorial quantities, in addition to the random-cluster and Potts partition functions. The algebra of the Tutte polynomial may be used to obtain representations of the Potts correlation functions, which have in turn the potential to explain the decay of correlations in the two phases of an infinitevolume Potts measure. It is thus that many beautiful results have been derived for the Ising model (when q = 2), see [3, 5, 9]. The cases q ∈ {3,4,. . .}, and more generally q ∈ (1,∞), remain largely unexplained. We summarize this methodology in this chapter, beginning with the definition of a flow on a directed graph.
+The Tutte polynomialis a function of two variables (see Section 3.6). For suitable values of these variables, one obtains counts of colourings, forests, and flows, together with other combinatorial quantities, in addition to the random-cluster and Potts partition functions. The algebra of the Tutte polynomial may be used to obtain representations of the Potts correlation functions, which have in turn the potential to explain the decay of correlations in the two phases of an infinitevolume Potts measure. It is thus that many beautiful results have been derived for the Ising model (when $q$ = 2), see [3, 5, 9]. The cases q ∈ {3,4,. . .}, and more generally q ∈ (1,∞), remain largely unexplained. We summarize this methodology in this chapter, beginning with the definition of a flow on a directed graph.
 
 Let H = (W, F) be a finite graph with vertex-set W and edge-set F, and let q ∈ {2,3,. . .}. We permit H to have multiple edges and loops. To each edge e ∈ F we allocate a direction, turning H thus into a directed graph denoted by H = (W, F). When the edge e = u,v ∈ F is directed from u to v, we write
 
@@ -61,11 +61,11 @@ This differs slightly from (1.5)–(1.6) in that different edges e may have diff
 
 ![image 1044](../Images/imageFile1044.png)
 
-We shall work often with the quantity qτβJ,q(x, y) = πβJ,q(qδσx,σy − 1) and, for ease of notation in the following, we write
+We shall work often with the quantity qτβJ,q(x, y) = πβJ,q(qδσx,$\sigma_y$ − 1) and, for ease of notation in the following, we write
 
 (9.9) σ(x, y) = qτβJ,q(x, y), x, y ∈ V,
 
-thereby suppressing reference to the parameters βJ and q. Note that, for the Ising case with q = 2, σ(x, y) is simply the mean of the product σxσy of the Ising spins at x and at y, see (1.7).
+thereby suppressing reference to the parameters βJ and q. Note that, for the Ising case with $q$ = 2, σ(x, y) is simply the mean of the product σxσy of the Ising spins at x and at y, see (1.7).
 
 From the graph G = (V, E) we constructnext a certain random graph. For any vector m = (m(e) : e ∈ E) of non-negative integers, let Gm = (V, Em) be the graph with vertex set V and, for each e ∈ E, with exactly m(e) edges in parallel joining the endvertices of the edge e [the original edge e is itself removed]. Note that
 
@@ -92,7 +92,7 @@ Eλ(C(GxP,y; q)) Eλ(C(GP; q))
 
 ![image 1046](../Images/imageFile1046.png)
 
-This formula takes an especially simple form when q = 2, since non-zero mod-2 flows necessarily take the value 1 only. A finite graph H = (W, F) is called even if the degree of every vertex w ∈ W is even. It is elementary that CH(2) = 1 (respectively, CH(2) = 0) if H is even (respectively, not even), and therefore
+This formula takes an especially simple form when $q$ = 2, since non-zero mod-2 flows necessarily take the value 1 only. A finite graph H = (W, F) is called even if the degree of every vertex w ∈ W is even. It is elementary that CH(2) = 1 (respectively, CH(2) = 0) if H is even (respectively, not even), and therefore
 
 - (9.13) Eλ(CH(2)) = Pλ(H is even). By (9.12), for any graph G,
 - (9.14) σ(x, y) =
@@ -103,13 +103,13 @@ Pλ(GxP,y is even) Pλ(GP is even)
 
 ![image 1047](../Images/imageFile1047.png)
 
-when q = 2. Observations of this sort have led to the so-called ‘randomcurrent’ expansion for Ising models, thereby after some work [3, 5, 9] yielding proofs amongst other things of the exponential decay of correlations in the hightemperature regime. We return to the case q = 2 in Sections 9.2–9.4.
+when $q$ = 2. Observations of this sort have led to the so-called ‘randomcurrent’ expansion for Ising models, thereby after some work [3, 5, 9] yielding proofs amongst other things of the exponential decay of correlations in the hightemperature regime. We return to the case $q$ = 2 in Sections 9.2–9.4.
 
-Whereas Theorem 9.11 concerns Potts models only, there is a random-cluster generalization. We restrict ourselves here to the situation in which every edge has the same parameter p, but we note that the result is easily generalized to allowing different parameters for each edge. Recall that φG,p denotes product measure on
+Whereas Theorem 9.11 concerns Potts models only, there is a random-cluster generalization. We restrict ourselves here to the situation in which every edge has the same parameter $p$, but we note that the result is easily generalized to allowing different parameters for each edge. Recall that φG,p denotes product measure on
 
-= {0,1}E with density p.
+\Omega = \{0,1\}^E with density p.
 
-(9.15) Theorem [146, 157]. Let p ∈ [0,1) and q ∈ (0,∞). Let λe = λ for all e ∈ E, where p = 1 − e−λq.
+(9.15) Theorem [146, 157]. Let p ∈ [0,1) and $q$ ∈ (0,∞). Let λe = λ for all e ∈ E, where $p$ = 1 − e−λq.
 
 ![image 1048](../Images/imageFile1048.png)
 
@@ -117,7 +117,7 @@ Whereas Theorem 9.11 concerns Potts models only, there is a random-cluster gener
 
 (b) For q ∈ {2,3,. . .},
 
-φG,p(qk(ω)) = (1 − p)|E|(q−2)/qq|V|Eλ(C(GP; q)). (9.18) When q = 2, equation (9.18) reduces by (9.13) to
+φG,p(qk(ω)) = (1 − p)|E|(q−2)/qq|V|Eλ(C(GP; q)). (9.18) When $q$ = 2, equation (9.18) reduces by (9.13) to
 
 (9.19) φG,p(2k(ω)) = 2|V|Pλ(GP is even).
 
@@ -137,7 +137,7 @@ Pλ(ζ(e) = 1) = 21(1 − e−2λ) = 12 p. Equation (9.18) may therefore be writ
 
 = q|V|Eλ(C(GxP,y; q)), and (9.12) follows by (9.24) and (9.25). Proof of Theorem 9.15. This theorem may be proved directly, but we shall derive it from Theorem 9.11.
 
-- (a) Equation (9.17) holds by Theorems 1.16 and 9.11. By (9.5), equation (9.16) holds for q ∈ {2,3,. . .}. Since both sides are the ratios of polynomials in q and e−λq of finite order, (9.16) is an identity in q ∈ (0,∞).
+- (a) Equation (9.17) holds by Theorems 1.16 and 9.11. By (9.5), equation (9.16) holds for $q$ ∈ {2,3,. . .}. Since both sides are the ratios of polynomials in q and e−λq of finite order, (9.16) is an identity in q ∈ (0,∞).
 - (b) This was noted after (9.24) above.
 
 ![image 1055](../Images/imageFile1055.png)
@@ -186,7 +186,7 @@ e: e∼v
 
 as in (9.30). In our study of the correlation functions τλ,2(x, y), we shall as before write
 
-σ(x, y) = 2τλ,2(x, y) = πλ,2(2δσx,σy − 1), x, y ∈ V.
+σ(x, y) = 2τλ,2(x, y) = πλ,2(2δσx,$\sigma_y$ − 1), x, y ∈ V.
 
 By (9.29), (9.34) σ(x, y) =
 
@@ -248,9 +248,9 @@ Assume that the event ∂P1 = {x, z} occurs. On this event, x ↔ z in P1 + P2. 
 
 The Ising model on G = (V, E) corresponds as described in Chapter 1 to a
 
-random-cluster measure φG,p,q with q = 2. By Theorem 1.10, if λe = λ for all e, σ(x, y) = 2τλ,2(x, y) = φG,p,q(x ↔ y),
+random-cluster measure φG,p,q with $q$ = 2. By Theorem 1.10, if λe = λ for all e, σ(x, y) = 2τλ,2(x, y) = φG,p,q(x ↔ y),
 
-where p = 1−e−λq and q = 2. Therefore, the Simon inequality3 may be written in the form
+where $p$ = 1−e−λq and $q$ = 2. Therefore, the Simon inequality3 may be written in the form
 
 (9.37) φG,p,q(x ↔ z) ≤
 
@@ -258,11 +258,11 @@ where p = 1−e−λq and q = 2. Therefore, the Simon inequality3 may be written
 
 y∈W
 
-whenever W separates x and z. It is a curious fact that this inequality holds also when q = 1, as noticed by Hammersley [177]; see [154, Chapter 6]. It may be conjectured that it holds whenever q ∈ [1,2].
+whenever W separates x and z. It is a curious fact that this inequality holds also when $q$ = 1, as noticed by Hammersley [177]; see [154, Chapter 6]. It may be conjectured that it holds whenever q ∈ [1,2].
 
-The Simon inequality has an important consequence for the random-cluster model with q = 2 on an infinite lattice, namely that the two-point correlation function decays exponentially whenever it is summable. Let φp,q be the randomcluster measure on Ld where d ≥ 2. We shall consider only the case p < pc(q), and it is therefore unnecessary to mention boundary conditions.
+The Simon inequality has an important consequence for the random-cluster model with $q$ = 2 on an infinite lattice, namely that the two-point correlation function decays exponentially whenever it is summable. Let φp,q be the randomcluster measure on Ld where d ≥ 2. We shall consider only the case $p$ < pc(q), and it is therefore unnecessary to mention boundary conditions.
 
-(9.38) Corollary [300]. Let d ≥ 2, q = 2, and let p be such that (9.39)
+(9.38) Corollary [300]. Let d ≥ 2, $q$ = 2, and let p be such that (9.39)
 
 φp,q(0 ↔ x) < ∞.
 
@@ -354,9 +354,9 @@ Let P1 and P2 be independent copies of the Poisson field P, with intensity λ �
 
 n→∞
 
-asinTheorem5.45. Itisclearthatψ(p,q)isnon-increasingin p,andψ(p,q) = 0 if p > pc(q). One of the characteristics of a first-order phase transition is the (strict) exponentialdecay of free-boundary-conditionconnectivityprobabilities at the critical point, see Theorems 6.35(c) and 7.33.
+asinTheorem5.45. Itisclearthatψ(p,q)isnon-increasingin p,andψ(p,q) = 0 if $p$ > pc(q). One of the characteristics of a first-order phase transition is the (strict) exponentialdecay of free-boundary-conditionconnectivityprobabilities at the critical point, see Theorems 6.35(c) and 7.33.
 
-(9.46) Theorem (Vanishing mass gap) [234]. Let q = 2. Then ψ(p,q) decreases to 0 as p ↑ pc(q). In particular, ψ(pc(q),q) = 0.
+(9.46) Theorem (Vanishing mass gap) [234]. Let $q$ = 2. Then ψ(p,q) decreases to 0 as p ↑ pc(q). In particular, ψ(pc(q),q) = 0.
 
 ![image 1072](../Images/imageFile1072.png)
 
@@ -366,11 +366,11 @@ asinTheorem5.45. Itisclearthatψ(p,q)isnon-increasingin p,andψ(p,q) = 0 if p > 
 
 ![image 1075](../Images/imageFile1075.png)
 
-Itfollowsthat, if(9.45)holdsforsome p ∈ (ǫ,1−ǫ), thenitholdsforsome p′ > p. That is, if φp,q(0 ↔ z) decays exponentially as z → ∞, then the same holds for some p′ satisfying p′ > p. The set {p ∈ (0,1) : ψ(p,q) > 0} is therefore open. Since ψ(p,q) = 0 for p > pc(q), we deduce that ψ(pc(q),q) = 0.
+Itfollowsthat, if(9.45)holdsforsome p ∈ (ǫ,1−ǫ), thenitholdsforsome p′ > p. That is, if φp,q(0 ↔ z) decays exponentially as z → ∞, then the same holds for some p′ satisfying p′ > p. The set {p ∈ (0,1) : ψ(p,q) > 0} is therefore open. Since ψ(p,q) = 0 for $p$ > pc(q), we deduce that ψ(pc(q),q) = 0.
 
 By Theorem 4.28(c) and the second inequality of (5.46), ψ(p,q) is the limit from above of upper-semicontinuous functions of p. Therefore, ψ(p,q) is itself upper-semicontinuous, and hence left-continuous.
 
-Could some of the results of this section be valid for more general values of q than simply q = 2? It is known that the mass gap vanishes when q = 1, [154, Thm 6.14], and does not vanish for sufficiently large values of q (and any d ≥ 2),
+Could some of the results of this section be valid for more general values of $q$ than simply $q$ = 2? It is known that the mass gap vanishes when $q$ = 1, [154, Thm 6.14], and does not vanish for sufficiently large values of $q$ (and any d ≥ 2),
 
 [9.2] Flows for the Ising model 271
 
@@ -439,15 +439,15 @@ Figure 9.2. A cycle of length 8 with four marked vertices.
 
 ### 9.3 Exponential decay for the Ising model
 
-In the remaining two sections of this chapter, we review certain aspects of the mathematics of the Ising model in two and more dimensions. Several of the outstandingproblemsforPottsandrandom-clustermodelshave rigoroussolutions in the Ising case, when q = 2, and it is a challenge of substance to extend such results (where valid) to the case of general q ∈ [1,∞). Our account of the Ising model will be restricted to the work of Aizenman, Barsky, and Fernandez´ as reported in two major papers [5, 9], of which we begin in this section with the first. The principal technique of these papers is the so-called ‘random-current representation’, that is, the representation of the Ising random field in terms of non-zero mod-2 flows. See, for example, the representation (9.28) for the twopoint correlation function. Without more ado, we state the main theorem in the language of the random-cluster model.
+In the remaining two sections of this chapter, we review certain aspects of the mathematics of the Ising model in two and more dimensions. Several of the outstandingproblemsforPottsandrandom-clustermodelshave rigoroussolutions in the Ising case, when $q$ = 2, and it is a challenge of substance to extend such results (where valid) to the case of general q ∈ [1,∞). Our account of the Ising model will be restricted to the work of Aizenman, Barsky, and Fernandez´ as reported in two major papers [5, 9], of which we begin in this section with the first. The principal technique of these papers is the so-called ‘random-current representation’, that is, the representation of the Ising random field in terms of non-zero mod-2 flows. See, for example, the representation (9.28) for the twopoint correlation function. Without more ado, we state the main theorem in the language of the random-cluster model.
 
-#### (9.53) Theorem (Finite susceptibility for q = 2 random-cluster model) [5].
+#### (9.53) Theorem (Finite susceptibility for $q$ = 2 random-cluster model) [5].
 
-Let p ∈ [0,1], q = 2, d ≥ 2, and let φp1,q be the wired random-cluster measure on Ld. The open cluster C at the origin satisﬁes
+Let p ∈ [0,1], $q$ = 2, d ≥ 2, and let φp1,q be the wired random-cluster measure on Ld. The open cluster C at the origin satisﬁes
 
-φp1,q(|C|) < ∞, p < pc(q).
+φp1,q(|C|) < ∞, $p$ < pc(q).
 
-This implies exponential decay, by Theorem 9.38: if p < pc(q), the connectivity function φp1,q(0 ↔ z) decays exponentially to zero as z → ∞. When d = 2, it implies that pc(2) =
+This implies exponential decay, by Theorem 9.38: if $p$ < pc(q), the connectivity function φp1,q(0 ↔ z) decays exponentially to zero as z → ∞. When d = 2, it implies that pc(2) =
 
 √2), see Theorem 6.18.
 
@@ -458,7 +458,7 @@ This implies exponential decay, by Theorem 9.38: if p < pc(q), the connectivity 
 ![image 1091](../Images/imageFile1091.png)
 
 - (9.54)Theorem(Mean-fieldbound)[5]. UndertheconditionsstatedinTheorem 9.53, there exists a constant c = c(d) > 0 such that the percolation probability θ1(p,q) = φp1,q(0 ↔ ∞) satisﬁes
-- (9.55) θ1(p,2) ≥ c(p − pc)12, p > pc = pc(2).
+- (9.55) θ1(p,2) ≥ c(p − pc)12, $p$ > pc = pc(2).
 
 ![image 1092](../Images/imageFile1092.png)
 
@@ -510,19 +510,19 @@ T(p) =
 
 x,y∈Zd
 
-The situation for the Ising model, and therefore for the q = 2 random-cluster model, is also well understood,but this time underthe considerablyless restrictive
+The situation for the Ising model, and therefore for the $q$ = 2 random-cluster model, is also well understood,but this time underthe considerablyless restrictive
 
 [9.4] The Ising model in four and more dimensions 275
 
 assumption that d ≥ 4. The counterpart of the triangle condition is the ‘bubble condition’,namelythat B(βc) < ∞ where, in theusualnotationofthe Isingmodel without external field,
 
-σ0 σx 2.
+σ0 $\sigma_x$ 2.
 
 B(β) =
 
 x∈Zd
 
-In the language of the random-clustermodel with p = 1−e−β, the corresponding quantity is
+In the language of the random-clustermodel with $p$ = 1−e−β, the corresponding quantity is
 
 φp0,2(0 ↔ x)2.
 
@@ -532,7 +532,7 @@ x∈Zd
 
 Once again, one introduces an external field and then establishes a differential inequality via the random-current representation. We state the main result in the language of the random-cluster model.
 
-(9.58) Theorem (Critical exponent for q = 2 random-cluster model) [9]. Let q = 2 and d ≥ 4. We have that
+(9.58) Theorem (Critical exponent for $q$ = 2 random-cluster model) [9]. Let $q$ = 2 and d ≥ 4. We have that
 
 θ1(p,q) = (p − pc)21(1+o(1)) as p ↓ pc = pc(2).
 

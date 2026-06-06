@@ -36,7 +36,7 @@ E-step For i = 1, 9, replace the unobservable component-indicator var iable zij 
 
 If the component distributionsbelong to the exponential family as, for example; in the case of normal components, then it is computationally advantageous to work in terms of the current conditional expectations of the sufficient statistics. We now illustrate this for normal components, but firstly we nced the following notation.
 
-For the bth block (b = 1, B) and current value for %, let
+For the bth block (b = 1, B) and current value for $\Psi$, let
 
 $$
 T _ { i 1 , b } ^ { ( k ) } \, = \, \sum _ { j \in S _ { b } } \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) \, , \\
@@ -66,7 +66,7 @@ In the definitions (12.1)t0 (12.4), the superscript k denotes a general iteratio
 
 and not necessarily the scan number of the IEM algorithm:
 
-From (3.2) to (3.8), it follows that on the M-step on the (b + 1)th iteration of the (k + 1)th scan of the IEM algorithm, the estimates of pi, and Z; are updated as follows: T;,
+From (3.2) to (3.8), it follows that on the M-step on the (b + 1)th iteration of the (k + 1)th scan of the IEM algorithm, the estimates of pi, and $Z_j$ are updated as follows: T;,
 
 $$
 ( 1 2 . 5 )
@@ -83,7 +83,7 @@ $$
 and
 
 $$
-\Sigma _ { i } ^ { ( k + ( b + 1 ) / B ) } = \left \{ T _ { i 3 } ^ { ( k + b / B ) } - T _ { i 1 } ^ { ( k + b / B ) ^ { - 1 } } T _ { i 2 } ^ { ( k + b / B ) } T _ { i 2 } ^ { ( k + b / B ) ^ { T } } \right \} / T _ { i 1 } ^ { ( k + b / B ) } \\ \intertext { f o i = 1 }
+\Sigma _ { i } ^ { ( k + ( b + 1 ) / B ) } = \left \{ T _ { i 3 } ^ { ( k + b / B ) } - T _ { i 1 } ^ { ( k + b / B ) ^ { - 1 } } T _ { i 2 } ^ { ( k + b / B ) } T _ { i 2 } ^ { ( k + b / B ) ^ { T } } \right \} / T _ { i 1 } ^ { ( k + b / B ) } \\ 
 $$
 
 for i = 1,
@@ -91,7 +91,7 @@ for i = 1,
 The conditional expectations 1{4+6/B) of the sufficient statistics on the right-hand side of (12.5) to (12.7), which are calculated effectively on the E-step to this M-step, can be expressed in terms of their values on the previous iteration; the result prior using
 
 $$
-T _ { i q } ^ { ( k + b / B ) } = T _ { i q } ^ { ( k + ( b - 1 ) / B ) } - T _ { i q , b + 1 } ^ { ( k - 1 + b / B ) } + T _ { i q , b + 1 } ^ { ( k + b / B ) } \ ( i = 1 , \dots , g ; \ q = 1 , 2 , 3 ) . \\ \\ T _ { i q } \text { is on the} \, t o \, s o t i o n \, F \, e x t a n d \, o r \, ( k + 1 ) \, t h i t e o n \, o f t h e \, ( k + 1 ) \, t h e \, o n \, o w h t h e .
+T _ { i q } ^ { ( k + b / B ) } = T _ { i q } ^ { ( k + ( b - 1 ) / B ) } - T _ { i q , b + 1 } ^ { ( k - 1 + b / B ) } + T _ { i q , b + 1 } ^ { ( k + b / B ) } \ ( i = 1 , \dots , g ; \ q = 1 , 2 , 3 ) . \\ T _ { i q } \text { is on the} \, t o \, s o t i o n \, F \, e x t a n d \, o r \, ( k + 1 ) \, t h i t e o n \, o f t h e \, ( k + 1 ) \, t h e \, o n \, o w h t h e .
 $$
 
 That is, on the partial E-step on the (b + 1)th iteration of the (k + 1)th scan, only the
@@ -152,10 +152,10 @@ on the (j + 1)th iteration of the (k + 1)th scan of the IEM algorithm; we need t
 
 For convenience, in the remainder of this section we write Ti(uj; %k+ (j-1)/n)), z(k+
 
-McLachlan and Ng (2000a) showedthat when in can be updated as follows: T;(yj;
+McLachlan and Ng (2000a) showedthat when in can be updated as follows: T;($y_j$;
 
 $$
-\pi _ { i } ^ { * } \ = \ ( n \pi _ { i } - \tau _ { i j } + \tau _ { i j } ^ { * } ) / n \, , \\ \intertext { \quad } \pi _ { i } ^ { * } \ = \ ( n \pi _ { i } - \tau _ { i j } + \tau _ { i j } ^ { * } ) / n \, ,
+\pi _ { i } ^ { * } \ = \ ( n \pi _ { i } - \tau _ { i j } + \tau _ { i j } ^ { * } ) / n \, , \\  \pi _ { i } ^ { * } \ = \ ( n \pi _ { i } - \tau _ { i j } + \tau _ { i j } ^ { * } ) / n \, ,
 $$
 
 $$
@@ -169,12 +169,12 @@ $$
 $$
 
 $$
-\frac { \tau _ { i j } } { } ( y _ { j } - \mu _ { i } ) ^ { T } \, \Sigma _ { i } ^ { - 1 } ( y _ { j } - \mu _ { i } ) \Big | \quad ( 1 2 . 1 2 )
+\tau_{ij} ( y _ { j } - \mu _ { i } ) ^ { T } \, \Sigma _ { i } ^ { - 1 } ( y _ { j } - \mu _ { i } ) \Big | \quad ( 1 2 . 1 2 )
 $$
 
 for i = 1, 9.
 
-The use of (12.9)t0 (12.12) considerably reduces the amount of computation time in the updating of the g component posteriorprobabilitiesfor yj ' In particular; the use of (12.11)and(12.12)avoids havingtocalculate directly the inverses and determinants oftheg component-covariance matrices. Unfortunately, it is notpossible to generalize these updating formulas to the case of blocks consisting of more than one observation.
+The use of (12.9)t0 (12.12) considerably reduces the amount of computation time in the updating of the g component posteriorprobabilitiesfor $y_j$ ' In particular; the use of (12.11)and(12.12)avoids havingtocalculate directly the inverses and determinants oftheg component-covariance matrices. Unfortunately, it is notpossible to generalize these updating formulas to the case of blocks consisting of more than one observation.
 
 <a id="sec-12-3"></a>
 
@@ -272,7 +272,7 @@ $$
 \max _ { i } \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) \geq C
 $$
 
-close to one, say C 2 0.95. If (12.13) continues to hold beyond the kth iteration; then there would be no need to update these posterior probabilities when performing the E step on subsequent EM iterations. Tothisend, suppose that the n sample observations Un are dividedinto blocks as before with the IEM algorithm; but where now there are only B = 2 blocks and the %; belonging to the first block satisfy (12.13) with the remaining observations put in the second block. Then the EM (LEM) algorithm would be implemented in the same manner as the standard EM algorithm; except that on the E-steps only the posterior probabilities of component membership of those observations yj in the second block would be updated. lazy
+close to one, say C 2 0.95. If (12.13) continues to hold beyond the kth iteration; then there would be no need to update these posterior probabilities when performing the E step on subsequent EM iterations. Tothisend, suppose that the n sample observations Un are dividedinto blocks as before with the IEM algorithm; but where now there are only B = 2 blocks and the %; belonging to the first block satisfy (12.13) with the remaining observations put in the second block. Then the EM (LEM) algorithm would be implemented in the same manner as the standard EM algorithm; except that on the E-steps only the posterior probabilities of component membership of those observations $y_j$ in the second block would be updated. lazy
 
 The empirical justilication for the LEM algorithm is that if an observation %; has a very strong posterior probability of belonging t0 one of the components of the mixture, then there is a chance that it will not change its probabilistic component membership in subsequent iterations; and if it does, then the change will occur gradually rather than suddenly. The idea therefore is to run the LEM algorithm for a number of iterations k1 (say, k1 < 8) between full E-steps. Initially; the EM good algorithm would be run for ko iterations before switching t0 the LEM algorithm; which is then run for k1 iterations in between full EM steps.
 
@@ -288,7 +288,7 @@ $$
 \frac { \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) } { C _ { h \in A _ { j } ^ { o } } \tau _ { h } ( y _ { j } ; \Psi ^ { ( k ) } ) }
 $$
 
-for those components i which do not belong to Aj; otherwise do not update the posterior probabilities T;(uj; %\*-1)). As (12.14) reduces to
+for those components i which do not belong to Aj; otherwise do not update the posterior probabilities $\tau_i(y_j; %\*-1)). As (12.14) reduces to
 
 $$
 \sum _ { h \in A _ { j } ^ { c } } \tau _ { h } ( y _ { j } ; \Psi ^ { ( k - 1 ) } ) \, \frac { \pi _ { i } ^ { ( k ) } \, f _ { i } ( y _ { j } ; \theta _ { i } ^ { ( k ) } ) } { \sum _ { h \in A _ { j } ^ { c } } \pi _ { h } ^ { ( k ) } \, f _ { h } ( y _ { j } ; \theta _ { h } ^ { ( k ) } ) } ,
@@ -547,8 +547,6 @@ tics which is one or zero, according to whether Vj is in or not in the bth block
 
 ![image 35](mclachlan2000_images/imageFile35.png)
 
-'x
-
 Fig. 12.6 Illustration of the idea of secondary compression
 
 <a id="sec-12-7-6"></a>
@@ -619,7 +617,7 @@ The mrkd-tree is constructed top-down; and the partition of the current node (a 
 
 Moore (1999) proposedto scale the EM algorithm for handling large databases; based on the mrkd-tree. He illustrated his approach for the normal mixture model, but noted that his approach is not necessarily confined to normal components
 
-With the help of the multiresolution data structure built up by the mrk-d tree, the computation of the sufficient statistics can be restructured as follows on the (k + 1)th iteration of the EM algorithm. For the non-leaf-node NLN and current value %(k) for %, let
+With the help of the multiresolution data structure built up by the mrk-d tree, the computation of the sufficient statistics can be restructured as follows on the (k + 1)th iteration of the EM algorithm. For the non-leaf-node NLN and current value %(k) for $\Psi$, let
 
 $$
 N \ = \ \sum _ { j \in N L N } \tau _ { i } ( y _ { j } ; \Psi ^ { ( k ) } ) ,

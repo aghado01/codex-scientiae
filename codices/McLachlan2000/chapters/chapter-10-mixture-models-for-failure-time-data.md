@@ -56,7 +56,7 @@ $$
 h _ { i } ( t ; x ) \ & = \ e ^ { \gamma _ { i } ^ { T } x } h _ { 0 i } ( t ) \\ & = \ e ^ { \gamma _ { i } ^ { T } x + \alpha _ { i , m } } , \quad \text {if } t \in J _ { m } ,
 $$
 
-where Y; is a vector of parameters, J1, JM are M prespecified disjoint intervals that totally exhaust the nonnegative real line; and œim is the parameter representing the log of the ith component-baseline hazard on the mth interval Jm (i = 1,2; m = 1, As an alternative to this specification of hoi(t), we can adopt some parametric form for the ith component-baselinehazard function hoi(t) (i = 1,2). For example; Gordon (1990a) adopted the Gompertz distribution fto specify the conditional survival functions in the context of estimating the "cure" rate of breast cancer after a treatment therapy. She also examined the applicability of the mixture model for Kuk (1992) and Kuk and Chen (1992), on the other hand, considered a semiparametric version of (10.4) by treating the baseline hazard functions hoi (t) as nuisance parameters to be eliminated during the analysis.
+where $Y_j$ is a vector of parameters, J1, JM are M prespecified disjoint intervals that totally exhaust the nonnegative real line; and œim is the parameter representing the log of the ith component-baseline hazard on the mth interval Jm (i = 1,2; m = 1, As an alternative to this specification of hoi(t), we can adopt some parametric form for the ith component-baselinehazard function hoi(t) (i = 1,2). For example; Gordon (1990a) adopted the Gompertz distribution fto specify the conditional survival functions in the context of estimating the "cure" rate of breast cancer after a treatment therapy. She also examined the applicability of the mixture model for Kuk (1992) and Kuk and Chen (1992), on the other hand, considered a semiparametric version of (10.4) by treating the baseline hazard functions hoi (t) as nuisance parameters to be eliminated during the analysis.
 
 <a id="sec-10-2-2"></a>
 
@@ -106,7 +106,7 @@ $$
 
 and where &; =iif the jth entity failed due to cause i (i = 1,2) and ô; = 0 ifthe jth entity had not failed by the end of the study (that is, the failure time is right-censored at time t;)
 
-is a vector of unknown parameters (i = 1, 2) The vector of all unknown parameters is given by v = The log likelihood for % that can be formed from the observed data y is given by
+is a vector of unknown parameters (i = 1, 2) The vector of all unknown parameters is given by v = The log likelihood for $\Psi$ that can be formed from the observed data y is given by
 
 $$
 \log L ( \Psi ) & = \sum _ { j = 1 } ^ { n } [ I _ { [ 1 ] } ( \delta _ { j } ) \log \{ \pi _ { 1 } ( x _ { j } ; \beta ) f _ { 1 } ( t _ { j } ; \theta _ { 1 } , x _ { j } ) \} \\ & + I _ { [ 2 ] } ( \delta _ { j } ) \log \{ \pi _ { 2 } ( x _ { j } ; \beta ) f _ { 2 } ( t _ { j } ; \theta _ { 2 } , x _ { j } ) \} \\ & + I _ { [ 0 ] } ( \delta _ { j } ) \log S ( t _ { j } ; \Psi , x _ { j } ) ] ,
@@ -162,7 +162,7 @@ $$
 ( 1 0 . 1 1 )
 $$
 
-where ß = (a, b)T was adopted for the mixing proportions T1(æ) and T2(æ), corresponding to reoperation and death without reoperation, respectively; as a function of the single covariate $ , the age of the patient at the time of the initialreplacement operation. being
+where ß = (a, b)T was adopted for the mixing proportions $\pi_1$(æ) and T2(æ), corresponding to reoperation and death without reoperation, respectively; as a function of the single covariate $ , the age of the patient at the time of the initialreplacement operation. being
 
 With this mixture approach, Nget al. (1999) found that the specification oftypically used parametric forms for the component-survival functions in the mixture model (10.1) gave unsatisfactory results. For example, they initially considered parametric forms for the component-survival functions specified by (10.10). The assumption of the Gompertz model for death in the absence ofthe competing risk of reoperation (that is, for the latent survival function for death) is often used in the literature to model death in the absence of competing risks. However, it does not follow that this model will be applicable for death without a reoperation. Indeed, Ng et al. (1999) found that the Gompertz model for the baseline hazard function and proportional hazards for the effect of age was inadequate for the second component corresponding to death without a reoperation.
 
@@ -200,7 +200,7 @@ $$
 
 where Xa, Ka > 0 Ka > 1 and is a U-shaped function if Ka
 
-We shall refer to this constrained mixture model with one component based on the Gompertz distribution and the other on Weibull times a Gompertz, as the Weibull*Gompertz-Gompertz mixture model. The FORTRAN program of McLachlan et al. (1997) for the fitting of mixtures of Gompertz components with proportional hazards was modified to handle the constrained form (10.14). In Figure 10.1 we have plotted the estimate of the probability T1(z; ß) that a patient aged z years at the initial replacement operation will undergo a reoperation; as obtained by this constrained mixture model, along with the corresponding estimate of T1(z) obtained by the latent failure-time approach under the assumption ofindependent competing risks. The909 confidence limits are given by the dotted curves. were obtained by applying the nonparametric bootstrap approach with the resampling scheme slightly modified for the competing-risks problem. Let N; be the number of cause i failures (i = 1, 2) and let N3 be the number of censored observations. The bootstrapdata were obtained by sampling separately from each of the three sets, corresponding to failure from cause i (i = 1,2) and to the censored observations, with the sizes of these bootstrap subsamples taken equal to N1, Nz, and N3, respectively; A similar resampling scheme has been used by Golbeck (1992) in bootstrapping life-table estimators. In this application; K = 100 bootstrap samples were used. They It can be seen from Figure 10.1 that beyond 30 years, the Weibull*Gompertz Gompertz mixture model gives an increasingly lower estimate of the probability of reoperation with increasing age of the patient. The difference is due to how the censored observations are 'treated" during the estimation process. With this mixture model, elderly patients with censored observations are regarded as having a higher chance of dying before a reoperation is needed than with the latent failure-time approach.
+We shall refer to this constrained mixture model with one component based on the Gompertz distribution and the other on Weibull times a Gompertz, as the Weibull*Gompertz-Gompertz mixture model. The FORTRAN program of McLachlan et al. (1997) for the fitting of mixtures of Gompertz components with proportional hazards was modified to handle the constrained form (10.14). In Figure 10.1 we have plotted the estimate of the probability T1($z_j$ ß) that a patient aged z years at the initial replacement operation will undergo a reoperation; as obtained by this constrained mixture model, along with the corresponding estimate of T1(z) obtained by the latent failure-time approach under the assumption ofindependent competing risks. The909 confidence limits are given by the dotted curves. were obtained by applying the nonparametric bootstrap approach with the resampling scheme slightly modified for the competing-risks problem. Let N; be the number of cause i failures (i = 1, 2) and let N3 be the number of censored observations. The bootstrapdata were obtained by sampling separately from each of the three sets, corresponding to failure from cause i (i = 1,2) and to the censored observations, with the sizes of these bootstrap subsamples taken equal to N1, Nz, and N3, respectively; A similar resampling scheme has been used by Golbeck (1992) in bootstrapping life-table estimators. In this application; K = 100 bootstrap samples were used. They It can be seen from Figure 10.1 that beyond 30 years, the Weibull*Gompertz Gompertz mixture model gives an increasingly lower estimate of the probability of reoperation with increasing age of the patient. The difference is due to how the censored observations are 'treated" during the estimation process. With this mixture model, elderly patients with censored observations are regarded as having a higher chance of dying before a reoperation is needed than with the latent failure-time approach.
 
 Fig. 10.1 Estimated probability of reoperation at a given age of patient; Weibull\*Gompertz Gompertz mixture model (solid curve); latent failure-time approach (dashed curve); 909 confidence limits (dotted curves) From Ng et al. (2000)
 
@@ -278,7 +278,7 @@ $$
 \pi _ { 1 } + 3
 $$
 
-where t; = t; +uj, and uj isthetime from the occurrence of failure from a competing cause to the end of the follow-up period.
+where $t_i = t_i + u_j$, and $u_j$ is the time from the occurrence of failure from a competing cause to the end of the follow-up period.
 
 Because all the available information has not been used in forming the likelihood, Ng and McLachlan (1998) referred to this approach as the partial ML approach, and referred to the approach based on the competing-risks model (I0.1) as the full ML approach. The simplicity of the partial ML approach is somewhat offset by a loss in efficiency of the estimates so obtained. Ng and McLachlan (1998) performed some simulations to compare the efficiency of the partial ML approach relative to the full ML approach for survival in the presence of competing risks. They concluded that the partial ML approach is reasonably efficient; provided that the risk of failure from a competing cause is low compared with the risk of failure from the cause of interest. Practically; for clinical studies, this situation is justified because the risk of failure from the disease under study is usually much higher than that of failure due to other reasons for a cured patient. In these circumstances; the partial ML approach has particularly high relative efficiency if there are limited failures from competing causes; for example, when the follow-up is only of medium duration and the sample size is not In these situations; it is not possible with the full ML approach to estimate reliably theconditional survival function and hence the probability of failure from competing causes. they period large.
 
@@ -422,7 +422,7 @@ $$
 z = ( z _ { 1 } ^ { T } , \dots , z _ { n } ^ { T } ) ^ { T }
 $$
 
-and = (z;); = 1 if part i were the part that failed in the jth system; and is zero otherwise. Zij
+and = ($z_j$); = 1 if part i were the part that failed in the jth system; and is zero otherwise. Zij
 
 $$
 = \sum _ { i = 1 } ^ { y } \sum _ { j = 1 } ^ { n } z _ { i j } \{ \log h ( t _ { j } ; \theta _ { i } ) + \log S ( t _ { j } ; \theta _ { i } ) \} .
@@ -461,7 +461,7 @@ $$
 an illustration; we consider the special case of an exponential distribution for the parts, As
 
 $$
-f ( y ; \alpha _ { i } ) = \alpha _ { i } \exp ( - \alpha _ { i } t _ { j } ) I _ { ( 0 , \infty ) } ( t _ { j } ) ,
+f ( $y_j$ \alpha _ { i } ) = \alpha _ { i } \exp ( - \alpha _ { i } t _ { j } ) I _ { ( 0 , \infty ) } ( t _ { j } ) ,
 $$
 
 $$

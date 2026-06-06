@@ -2,7 +2,7 @@
 
 ## Chapter 8 Dynamics of Random-Cluster Models
 
-Summary. Onemayassociatetime-dynamicswiththerandom-clustermodel in a variety of natural ways. Amongst Glauber-type processes, the Gibbs sampler is especially useful and is well suited to the construction of a ‘coupling from the past’ algorithm resulting in a sample with the randomcluster measure as its (exact) law. In the Swendsen–Wang algorithm, one interleaves transitions of the random-cluster model and the associated Potts model. The random-cluster model for different values of p may be coupled together via a certain Markov process on a more general state space. This provides a mechanism for studying the ‘equilibrium’ model.
+Summary. Onemayassociatetime-dynamicswiththerandom-clustermodel in a variety of natural ways. Amongst Glauber-type processes, the Gibbs sampler is especially useful and is well suited to the construction of a ‘coupling from the past’ algorithm resulting in a sample with the randomcluster measure as its (exact) law. In the Swendsen–Wang algorithm, one interleaves transitions of the random-cluster model and the associated Potts model. The random-cluster model for different values of $p$ may be coupled together via a certain Markov process on a more general state space. This provides a mechanism for studying the ‘equilibrium’ model.
 
 <a id="sec-8-1"></a>
 
@@ -18,11 +18,11 @@ measures. It provides in addition a mechanism for studying the way in which the 
 
 Considerfirst the random-clustermodelon a finite graph G with givenvaluesof p and q. Perhaps the most obvioustype of dynamic is a so-called Glauber process in which single edges change their states at rates chosen in such a way that the equilibrium measure is the random-cluster measure on G. These are the spin-ﬂip processes which, in the context of the Ising model and related systems, have been studied in many works including Liggett’s book [235]. There is a difficulty in constructing such a process on an infinite graph, since the natural speed functions are not continuous in the product topology.
 
-There is a special Glauber process, termed the ‘Gibbs sampler’ or ‘heat-bath algorithm’, which we describe in Section 8.3 in discrete time. This is particularly suited to the exposition in Section 8.4 of the method of ‘coupling from the past’. This beautiful approach to simulation results in a sample having the exact target distribution, unlike the approximate samples produced by Monte Carlo Markov chains. The random-cluster model is a natural application for the method when q ∈ [1,∞), since φG,p,q is monotonic: the model has ‘smallest’ and ‘largest’ conﬁgurations, and the target measure is attained at the moment of coalescence of the two trajectories beginning respectively at these extremes.
+There is a special Glauber process, termed the ‘Gibbs sampler’ or ‘heat-bath algorithm’, which we describe in Section 8.3 in discrete time. This is particularly suited to the exposition in Section 8.4 of the method of ‘coupling from the past’. This beautiful approach to simulation results in a sample having the exact target distribution, unlike the approximate samples produced by Monte Carlo Markov chains. The random-cluster model is a natural application for the method when q ∈ [1,∞), since φG,p,$q$ is monotonic: the model has ‘smallest’ and ‘largest’ conﬁgurations, and the target measure is attained at the moment of coalescence of the two trajectories beginning respectively at these extremes.
 
 The speed of convergence of Glauber processes has been studied in detail for Ising and related models, and it turns out that the rate of convergenceto the unique invariant measure can be very slow. This occurs for example if the graph is a large box of a lattice with, say, + boundary conditions, the initial conﬁguration has − everywhere in the interior, and the temperature is low. The process remains for a long time close to the − state; then it senses the boundary, and converges duly to the + state. There is an alternative dynamic for the Ising (and Potts) model, termed Swendsen–Wang dynamics, which converges rather faster to the unique equilibrium so long as the temperature is different from its critical value. This method proceeds by a progressive coupling of the Ising/Potts system with the random-cluster model, and by interleaving a Markovian transition for these two systems in turn. It is described in Section 8.5.
 
-The remaining sections of this chapter are devoted to an exposition of Glauber dynamics on finite and infinite graphs, implemented in such a way as to highlight the effect of varying the parameter p. We begin in Section 8.6 with the case of a finite graph, and proceed in Sections 8.7–8.8 to a process on the infinite lattice which incorporatesin a monotonemannera time-evolvingrandom-clusterprocess for every value of p ∈ (0,1). The unique invariant measure of this composite Markov process may be viewed as a coupling of random-cluster measures on the lattice for different values of p. One consequence of this approach is a proof of the left-continuity of the percolation probability for random-cluster models with
+The remaining sections of this chapter are devoted to an exposition of Glauber dynamics on finite and infinite graphs, implemented in such a way as to highlight the effect of varying the parameter p. We begin in Section 8.6 with the case of a finite graph, and proceed in Sections 8.7–8.8 to a process on the infinite lattice which incorporatesin a monotonemannera time-evolvingrandom-clusterprocess for every value of $p$ ∈ (0,1). The unique invariant measure of this composite Markov process may be viewed as a coupling of random-cluster measures on the lattice for different values of p. One consequence of this approach is a proof of the left-continuity of the percolation probability for random-cluster models with
 
 224 Dynamics of Random-Cluster Models [8.2]
 
@@ -32,9 +32,9 @@ q ∈ [1,∞), see Theorem 5.16. It leads in Section 8.9 to an open question of 
 
 ### 8.2 Glauber dynamics
 
-Let G = (V, E) be a finite graph, with = {0,1}E as usual. Let p ∈ (0,1) and q ∈ (0,∞). We shall construct a reversible Markov chain in continuous time having as unique invariant measure the random-cluster measure φp,q on . A feature of the Glauber dynamics of this section is that the set of permissible jumps comprises exactly those in which the state of a single edge, e say, changes. To this end, we recall first the notation of (1.25). For ω ∈ and e ∈ E, let ωe and ωe be the conﬁgurationsobtainedby ‘switching e on’ and‘switching e off’, respectively.
+Let G = (V, E) be a finite graph, with \Omega = \{0,1\}^E as usual. Let p ∈ (0,1) and $q$ ∈ (0,∞). We shall construct a reversible Markov chain in continuous time having as unique invariant measure the random-cluster measure φp,q on . A feature of the Glauber dynamics of this section is that the set of permissible jumps comprises exactly those in which the state of a single edge, e say, changes. To this end, we recall first the notation of (1.25). For ω ∈ and e ∈ E, let $\omega_e$ and $\omega_e$ be the conﬁgurationsobtainedby ‘switching e on’ and‘switching e off’, respectively.
 
-Let X = (Xt : t ≥ 0) be a continuous-time Markov chain, [164, Chapter 6], on the state space with generator Q = (qω,ω′ : ω,ω′ ∈ ) satisfying (8.1) qωe,ωe = p, qωe,ωe = (1 − p)qD(e,ωe), ω ∈ , e ∈ E,
+Let X = (Xt : t ≥ 0) be a continuous-time Markov chain, [164, Chapter 6], on the state space with generator Q = (qω,ω′ : ω,ω′ ∈ ) satisfying (8.1) qωe,$\omega_e$ = p, qωe,$\omega_e$ = (1 − p)qD(e,$\omega_e$), ω ∈ , e ∈ E,
 
 where D(e,ξ) is the indicator function of the event that the endvertices of e are joined by no open path of ξ. Equations (8.1) specify the rates at which single edges are acquired or lost by the present conﬁguration. We set qω,ξ = 0 if ω and ξ differ on two or more edges, and we choose the diagonal elements qω,ω in such a way that Q, when viewed as a matrix, has row-sums zero, that is,
 
@@ -60,13 +60,13 @@ Two extensions of this dynamical structure which have proved useful are as follo
 
 One needs to be more careful when G is an infinite graph. In this case, one may construct a Glauber process on a finite subgraph H of G, and then pass to the thermodynamic limit as H ↑ G. Such a limit may be justiﬁed when q ∈ [1,∞) using the positiveassociation of random-clustermeasures, [152]. We shall discuss such limits in Section 8.8 in the more general context of ‘coupled dynamics’. For a reason which will emerge later, we will give the details for the Gibbs sampler of Section 8.3, rather than for the Glauber process of (8.1). The latter case may however be treated in an essentially identical manner.
 
-Note that the generator (8.1) of the Markov chain given above depends on the random variable D(e,ωe), and that this randomvariable is ‘non-local’in the sense that it is not everywhere continuous in ω. It is this feature of non-locality which leads to an interesting complication when the graph is infinite, linked in part to the 0/1-infinite-cluster property introduced before Theorem 4.31. Further discussion may be found in [152, 272].
+Note that the generator (8.1) of the Markov chain given above depends on the random variable D(e,$\omega_e$), and that this randomvariable is ‘non-local’in the sense that it is not everywhere continuous in ω. It is this feature of non-locality which leads to an interesting complication when the graph is infinite, linked in part to the 0/1-infinite-cluster property introduced before Theorem 4.31. Further discussion may be found in [152, 272].
 
 <a id="sec-8-3"></a>
 
 ### 8.3 Gibbs sampler
 
-Once again we take G = (V, E) to be a finite graph, and we let p ∈ (0,1) and q ∈ (0,∞). We consider in this section a special Glauber process termed the Gibbs sampler (or heat-bath algorithm). This is a Markov chain X on the state space = {0,1}E which proceedsby local moves. Its basic rule is as follows. We choose an edge e at random, and we set the state of e according to the conditional measure of ω(e) given the current states of the other edges. This may be done in either discrete or continuous time, we give the details for continuous time here and shall return to the case of discrete time in Section 8.4.
+Once again we take G = (V, E) to be a finite graph, and we let p ∈ (0,1) and $q$ ∈ (0,∞). We consider in this section a special Glauber process termed the Gibbs sampler (or heat-bath algorithm). This is a Markov chain X on the state space \Omega = \{0,1\}^E which proceedsby local moves. Its basic rule is as follows. We choose an edge e at random, and we set the state of e according to the conditional measure of ω(e) given the current states of the other edges. This may be done in either discrete or continuous time, we give the details for continuous time here and shall return to the case of discrete time in Section 8.4.
 
 ![image 1010](../Images/imageFile1010.png)
 
@@ -74,7 +74,7 @@ Once again we take G = (V, E) to be a finite graph, and we let p ∈ (0,1) and q
 
 226 Dynamics of Random-Cluster Models [8.3]
 
-for ω ∈ and e ∈ E. Thus, each edge is selected at rate 1, and the state of that edge is changed according to the correct conditional measure. It is evident that the detailed balance equations (8.2) hold as before, whence X is reversible with respect to φp,q. By irreducibility, φp,q is the unique invariantmeasure of the chain and thus, in particular, Xt ⇒ φp,q as t → ∞.
+for ω ∈ and e ∈ E. Thus, each edge is selected at rate 1, and the state of that edge is changed according to the correct conditional measure. It is evident that the detailed balance equations (8.2) hold as before, whence X is reversible with respect to φp,q. By irreducibility, φp,$q$ is the unique invariantmeasure of the chain and thus, in particular, Xt ⇒ φp,q as t → ∞.
 
 ![image 1012](../Images/imageFile1012.png)
 
@@ -112,7 +112,7 @@ When performing simulations of the random-cluster model, one is required to samp
 
 228 Dynamics of Random-Cluster Models [8.4]
 
-As in (8.6), when q ∈ [1,∞), φp,q(ωe) φp,q(ωe) + φp,q(ωe) ≥
+As in (8.6), when q ∈ [1,∞), φp,q($\omega_e$) φp,q($\omega_e$) + φp,q($\omega_e$) ≥
 
 φp,q(ξe) φp,q(ξe) + φp,q(ξe)
 
@@ -122,7 +122,7 @@ As in (8.6), when q ∈ [1,∞), φp,q(ωe) φp,q(ωe) + φp,q(ωe) ≥
 
 ![image 1023](../Images/imageFile1023.png)
 
-implying that ω(e) ≤ ξ(e), and hence (8.8) ψ(ω,e,u) ≤ ψ(ξ,e,u), ω ≤ ξ. Let Zν = (Znν : n = 0,1,2,. . .) be the Markov chain constructed via (8.7) with initial state Z0 = ν. By (8.8), (8.9) Znω ≤ Znξ for all n, if ω ≤ ξ and q ∈ [1,∞), which is to say that the coupling is monotone in the initial state: if one such chain starts below another, then it remains below for all time.
+implying that ω(e) ≤ ξ(e), and hence (8.8) ψ(ω,e,u) ≤ ψ(ξ,e,u), ω ≤ ξ. Let Zν = (Znν : n = 0,1,2,. . .) be the Markov chain constructed via (8.7) with initial state Z0 = ν. By (8.8), (8.9) Znω ≤ Znξ for all n, if ω ≤ ξ and $q$ ∈ [1,∞), which is to say that the coupling is monotone in the initial state: if one such chain starts below another, then it remains below for all time.
 
 Instead of running the chain Z ‘forwards’ in time in order to approximate the invariant measure φp,q, we shall run it ‘backwards’ in time in a certain special manner which results in a sample with the exact target distribution. Let W = (W(ω) : ω ∈ ) be a vector of random variables such that each W(ω) has the law of Z1 conditional on Z0 = ω,
 
@@ -172,13 +172,13 @@ It is a major target of statistical physics to understand the time-evolution of 
 
 slowly2. Other forms of dynamics are ‘non-local’ in that they permit large moves around the state space relatively unconstrained by neighbourly relations, and such processes can approach equilibrium faster. The random-cluster model has played a role in the development of a simple but attractive system of non-local dynamics proposed by Swendsen and Wang [310] and described as follows for the Potts model with q states.
 
-As usual, G = (V, E) is a finite graph, typically a large box in Zd, and we let q ∈ {2,3,. . .}. Consider a q-state Potts model on G, with state space = {1,2,. . .,q}V and parameter β ∈ (0,∞). The corresponding random-cluster model has state space = {0,1}E and parameter p = 1 − e−β. The Swendsen– Wang evolution for the Potts model is as follows.
+As usual, G = (V, E) is a finite graph, typically a large box in Zd, and we let q ∈ {2,3,. . .}. Consider a q-state Potts model on G, with state space = {1,2,. . .,q}V and parameter β ∈ (0,∞). The corresponding random-cluster model has state space \Omega = \{0,1\}^E and parameter $p$ = 1 − e−β. The Swendsen– Wang evolution for the Potts model is as follows.
 
 Suppose that, at some time n, we have obtained a conﬁguration σn ∈ . We construct σn+1 as follows.
 
-I. Let ωn ∈ be given by: for all e = x, y ∈ E, if σn(x) = σn(y), let ωn(e) = 0, if σn(x) = σn(y), let ωn(e) =
+I. Let ωn ∈ be given by: for all $e = \langle x, y \rangle$ ∈ E, if σn(x) = σn(y), let ωn(e) = 0, if σn(x) = σn(y), let ωn(e) =
 
-1 with probability p, 0 otherwise,
+1 with probability $p$, 0 otherwise,
 
 different edges receiving independent states. The edge-conﬁguration ωn is carried forward to the next stage.
 
@@ -186,7 +186,7 @@ II. To each cluster C of the graph (V,η(ωn)) we assign an integer chosen unifo
 
 (8.13) Theorem [310]. The Markov chain σ = (σn : n = 0,1,2,. . . ) has as unique invariant measure the q-state Potts measure on with parameter β.
 
-Proof. There is a strictly positive probability that ωn(e) = 0 for all e ∈ E. Therefore, P(σn+1 = σ | σn = σ′) > 0 for all σ,σ′ ∈ , so that the chain is irreducible. The invariance of φp,q is a consequence of Theorem 1.13.
+Proof. There is a strictly positive probability that ωn(e) = 0 for all e ∈ E. Therefore, P(σn+1 = σ | σn = σ′) > 0 for all σ,σ′ ∈ , so that the chain is irreducible. The invariance of φp,$q$ is a consequence of Theorem 1.13.
 
 The Swendsen–Wangalgorithmgeneratesa Markovchain (σn : n = 0,1,. . .). It is generally the case that this chain converges to the equilibrium Potts measure faster than time-evolutions defined via local dynamics. This is especially evident in the ‘high β’ (or ‘low temperature’) phase, for the following reason. Consider for example the simulation of an Ising model on a finite box with free boundary conditions, and suppose that the initial state is +1 at all vertices. If β is large, local dynamics result in samples that remain close to the ‘+ phase’ for a very long time. Only after a long delay will the process achieve an average magnetization close to 0. Swendsen–Wang dynamics, on the other hand, can achieve large jumps in average magnetization eveninasinglestep,since the spin allocated to agivenlarge
 
@@ -204,13 +204,13 @@ Algorithms of Swendsen–Wang type have been described for other statistical mec
 
 ### 8.6 Coupled dynamics on a finite graph
 
-Let G = (V, E) be a graph, possible infinite. Associated with G there is a family φG,p,q of random-cluster measures indexed by the parameters p ∈ [0,1] and q ∈ (0,∞); we defer a discussion of boundary conditions to the next section. It has proved fruitful to couple these measures, for ﬁxed q, by ﬁnding a family (Zq(e) : e ∈ E) of random variables taking values in [0,1] whose ‘level-sets’ are governed by the φG,p,q. It might be the case for example that, for any given p ∈ (0,1), the conﬁguration (Zp,q(e) : e ∈ E) given by
+Let G = (V, E) be a graph, possible infinite. Associated with G there is a family φG,p,q of random-cluster measures indexed by the parameters p ∈ [0,1] and $q$ ∈ (0,∞); we defer a discussion of boundary conditions to the next section. It has proved fruitful to couple these measures, for ﬁxed q, by ﬁnding a family (Zq(e) : e ∈ E) of random variables taking values in [0,1] whose ‘level-sets’ are governed by the φG,p,q. It might be the case for example that, for any given p ∈ (0,1), the conﬁguration (Zp,q(e) : e ∈ E) given by
 
 Zp,q(e) =
 
 1 if Zq(e) ≤ p, 0 otherwise,
 
-has law φG,p,q. Such a coupling has been valuable in the study of percolation theory (that is, when q = 1), where one may simply take a family of independent random variables Z(e) with the uniform distribution on the interval [0,1], see [154, 178]. The picture for random-cluster measures is more complex owing to the dependence structure of the process. Such a coupling has been explored in detail in [152] but we choose here to follow a minor variant which might be termed a ‘coupled Gibbs sampler’. We shall assume for the moment that G is finite, returning in the next two sections to the case of an infinite graph G.
+has law φG,p,q. Such a coupling has been valuable in the study of percolation theory (that is, when $q$ = 1), where one may simply take a family of independent random variables Z(e) with the uniform distribution on the interval [0,1], see [154, 178]. The picture for random-cluster measures is more complex owing to the dependence structure of the process. Such a coupling has been explored in detail in [152] but we choose here to follow a minor variant which might be termed a ‘coupled Gibbs sampler’. We shall assume for the moment that G is finite, returning in the next two sections to the case of an infinite graph G.
 
 Let G = (V, E) be finite, and let q ∈ [1,∞). Let X = [0,1]E, and let B be the Borel σ-field of subsets of X, that is, the σ-field generated by the open subsets. We shall construct a Markov process Z = (Zt : t ≥ 0) on the state space X, and we do this via a so-called graphical construction. We shall consider the states of edges chosen at random as time passes, and to this end we provide ourselves with a family of independent Poisson processes termed ‘alarm clocks’. For each arrival-time of these processes, we shall require a uniformly distributed random variable.
 
@@ -279,11 +279,11 @@ P |Zt1(e) − Zt0(e)| > ǫ for some e ∈ E ≤
 
 Now,
 
-P Zt0(e) < p < Zt1(e) .
+P Zt0(e) < $p$ < Zt1(e) .
 
 e∈E p∈E
 
-P Zt0(e) < p < Zt1(e) ≤ P( pZt0(e) = 1) − P( pZt1(e) = 1)
+P Zt0(e) < $p$ < Zt1(e) ≤ P( pZt0(e) = 1) − P( pZt1(e) = 1)
 
 → 0 as t → ∞
 
@@ -301,7 +301,7 @@ Since our target is to study processes on the lattice Ld = (Zd,Ed), we shall ass
 
 As in (8.14), we deﬁne F : Ed × X → R by
 
-ν( f ), e = x, y ∈ Ed, ν ∈ X,
+ν( f ), $e = \langle x, y \rangle$ ∈ Ed, ν ∈ X,
 
 (8.35) F(e,ν) = inf
 
@@ -359,7 +359,7 @@ Z ,(ν,tb)(e) − Z ,(ζ,tb)(e) ≤ max
 
 f ∈E
 
-Proof of Theorem 8.38. (a) The projected process ( pZ ,ζ t : t ≥ 0) takes values in the state space pζ = pXζ . The proof now follows that of Theorem 8.24(b), the key observation being that (8.30) remains valid with De the set of all conﬁgurationsin = {0,1}Ed such that the endverticesof e are joined by no open path of Ed \ {e}. (b) The claim will follow as in Theorem 8.24(a) once we have proved (8.26) for ν ∈ ϒp . We are thus required to show that:
+Proof of Theorem 8.38. (a) The projected process ( pZ ,ζ t : t ≥ 0) takes values in the state space pζ = pXζ . The proof now follows that of Theorem 8.24(b), the key observation being that (8.30) remains valid with De the set of all conﬁgurationsin \Omega = \{0,1\}^Ed such that the endverticesof e are joined by no open path of Ed \ {e}. (b) The claim will follow as in Theorem 8.24(a) once we have proved (8.26) for ν ∈ ϒp . We are thus required to show that:
 
 (8.44) for ν ∈ ϒp , F(e,ν) > p if and only if γ = pν ∈ De.
 
@@ -381,7 +381,7 @@ satisﬁes
 
 n→∞
 
-Write e = x, y , and let C(x) (respectively, C(y)) denote the set of vertices of Ld joined to x (respectively, y) by paths comprising edges f with pν( f ) = 1. By a counting argument, we have that x (respectively, y) lies in some infinite path of E, and therefore |C(x)| = |C(y)| = ∞. Since ν ∈ ϒp , pν has at most one infinite cluster. Therefore, C(x) = C(y), whence pν ∈/ De, a contradiction. This proves that F(e,ν) > p, as required for (8.44).
+Write $e = \langle x, y \rangle$ , and let C(x) (respectively, C(y)) denote the set of vertices of Ld joined to x (respectively, y) by paths comprising edges f with pν( f ) = 1. By a counting argument, we have that x (respectively, y) lies in some infinite path of E, and therefore |C(x)| = |C(y)| = ∞. Since ν ∈ ϒp , pν has at most one infinite cluster. Therefore, C(x) = C(y), whence pν ∈/ De, a contradiction. This proves that F(e,ν) > p, as required for (8.44).
 
 Proof of Theorem 8.37. This follows the proof of Theorem 8.19, with Theorem 8.38 used in place of Theorem 8.24.
 
@@ -457,7 +457,7 @@ The ‘level-set processes’ of Zt0 and Zt1 are given as follows. Let p ∈ (0,
 
 (8.55) L0p,t = pZt1, L1p,t = pZt0, t ≥ 0,
 
-where the projections p and p are defined in (8.20)–(8.21). Note the apparent reversal of boundary conditions in (8.55).
+where the projections p and $p$ are defined in (8.20)–(8.21). Note the apparent reversal of boundary conditions in (8.55).
 
 ![image 1033](../Images/imageFile1033.png)
 
@@ -465,12 +465,12 @@ where the projections p and p are defined in (8.20)–(8.21). Note the apparent 
 
 #### (8.56) Theorem.
 
-- (a) Let b ∈ {0,1} and p ∈ (0,1). The process Lbp is a Markov process on the state space = {0,1}Ed, with as unique invariant measure the randomcluster measure φpb,q on Ld. The process Lbp is reversible with respect to φpb,q.
+- (a) Let b ∈ {0,1} and $p$ ∈ (0,1). The process Lbp is a Markov process on the state space \Omega = \{0,1\}^Ed, with as unique invariant measure the randomcluster measure φpb,q on Ld. The process Lbp is reversible with respect to φpb,q.
 - (b) The measures φpb,q, b = 0,1, are ‘level-set’ measures of the invariant measure µ of Theorem 8.53 in the sense that, for A ∈ F ,
 
 φp0,q(A) = µ {ζ : pζ ∈ A} , φp1,q(A) = µ {ζ : pζ ∈ A} . (8.57) We make several remarks before proving the above theorems. First, the invari-
 
-ant measures φp0,q and φp1,q of Theorem 8.56 are identical if and only if p ∈/ Dq, where Dq is that of Theorem 4.63.
+ant measures φp0,q and φp1,q of Theorem 8.56 are identical if and only if $p$ ∈/ Dq, where Dq is that of Theorem 4.63.
 
 Secondly, with µ as in Theorem 8.53, and e ∈ Ed, let J : [0,1] → [0,1] be given by (8.58) J(x) = µ {ζ ∈ X : ζ(e) = x} , x ∈ [0,1].
 
@@ -484,7 +484,7 @@ We deduce by Theorem 4.63 that p ∈ Dq if and only if J(p) = 0, thereby providi
 
 As discussed after Theorem 4.63, it is believed that there exists Q = Q(d) such that
 
-∅ if q < Q, {pc(q)} if q > Q,
+∅ if $q$ < Q, {pc(q)} if $q$ > Q,
 
 Dq =
 
@@ -502,7 +502,7 @@ which is an increasing function of q. This is evidence that the number of pairs 
 
 Finally, we describe the transition rulesof the projected processes L0p and L1p. It turns out that the transition mechanismsof these two chains differin an interesting but ultimately unimportant regard. It is convenient to summarize the following discussion by writing down the two infinitesimal generators.
 
-Let e = x, y ∈ Ed. As in (8.35), let Pe be the set of all paths of Ed \ {e} that join x to y. Let Qe be the set of all pairs α = (α1,α2,. . .), β = (β1,β2,. . . ) of vertex-disjointsemi-infinite paths (where αi and βj are the vertices of these paths) with α1 = x and β1 = y; we require αi = βj for all i, j. Thus Qe comprises pairs (α,β) of paths and, for ω ∈ , we call an element (α,β) of Qe open if all the edges of both α and β are open.
+Let $e = \langle x, y \rangle$ ∈ Ed. As in (8.35), let Pe be the set of all paths of Ed \ {e} that join x to y. Let Qe be the set of all pairs α = (α1,α2,. . .), β = (β1,β2,. . . ) of vertex-disjointsemi-infinite paths (where αi and βj are the vertices of these paths) with α1 = x and β1 = y; we require αi = βj for all i, j. Thus Qe comprises pairs (α,β) of paths and, for ω ∈ , we call an element (α,β) of Qe open if all the edges of both α and β are open.
 
 For b = 0,1, let Gb be the linear operator, with domain a suitable subset of C( ), given by (8.60)
 
@@ -516,7 +516,7 @@ Note that Gbg is well defined for all cylinder functions g, since the infinite s
 
 Then Gbg(ω) = −qω,ωb e. However, qω,ωb e is discontinuous at ω for b = 0,1 since, for every finite box , there exists ρ ∈ agreeing with ω on E such that
 
-which implies (8.75). We deduce as required that λ = F(e,ν). (b) Let e = x, y ∈ Ed. Suppose ν ∈ X0 and ν ↑ ν as ↑ Zd. We prove first that the increasing limit
+which implies (8.75). We deduce as required that λ = F(e,ν). (b) Let $e = \langle x, y \rangle$ ∈ Ed. Suppose ν ∈ X0 and ν ↑ ν as ↑ Zd. We prove first that the increasing limit
 
 (8.76) λ = lim
 
@@ -530,23 +530,7 @@ A finite set S of edges of Ld is called a cutset (for e) if: (i) e ∈/ S,
 
 (ii) every path in Pe contains at least one edge of S, (iii) S is minimal with the two properties above, in the sense that no strict subset
 
-of S satisﬁes (i) and (ii). We claim that: (8.78) there exists a cutset S with ν( f ) > δ for all f ∈ S, and we prove this as follows. First, we write G(e,ν) = min{A, B} where (8.79) A = F(e,ν) = inf
-
-max
-
-ν( f ), B = inf
-
-sup
-
-ν( f ).
-
-f ∈π
-
-π∈Pe
-
-π∈Qe
-
-f ∈π
+of S satisﬁes (i) and (ii). We claim that: (8.78) there exists a cutset S with ν( f ) > δ for all f ∈ S, and we prove this as follows. First, we write G(e,ν) = min{A, B} where (8.79) $$ A = F(e, \nu) = \inf_{\pi \in P_e} \max_{f \in \pi} \nu(f), \quad B = \inf_{\pi \in Q_e} \sup_{f \in \pi} \nu(f). $$
 
 Since G(e,ν) > δ, we have that A, B > δ. For w ∈ Zd, let Cw(ν) denote the set of vertices of Ld that are connected to w by paths π of Ld satisfying:
 
@@ -556,9 +540,9 @@ If x ∈ Cy(ν), then there exists π ∈ Pe with ν( f ) ≤ δ for all f ∈ �
 
 Since S is finite and ν( f ) > δ for all f ∈ S, for all large and all f ∈ S, ν ( f ) > δ,
 
-Proof of Lemma 8.69. (i) By (8.35), p ≤ F(e,ν) if and only if every π ∈ Pe contains some edge f with ν( f ) ≥ p, which is to say that pν ∈ De0. (ii) Suppose that p < G(e,ν). For π ∈ Pe ∪Qe, there exists an edge f ∈ π such that ν( f ) > p. Therefore, pν ∈ De1.
+Proof of Lemma 8.69. (i) By (8.35), p ≤ F(e,ν) if and only if every π ∈ Pe contains some edge f with ν( f ) ≥ p, which is to say that pν ∈ De0. (ii) Suppose that $p$ < G(e,ν). For π ∈ Pe ∪Qe, there exists an edge f ∈ π such that ν( f ) > p. Therefore, pν ∈ De1.
 
-Suppose conversely that pν ∈ De1. It is elementary that p ≤ G(e,ν). Suppose in addition that p = G(e,ν), and we shall derive a contradiction. Let e = x, y , and let Cx(ν) (respectively, Cy(ν)) be the set of vertices attainable from x (respectively, y) along open paths of pν not using e. Since pν ∈ De1, Cx(ν) and Cy(ν) are disjoint. We shall prove that Cx(ν) (and similarly Cy(ν)) is infinite. Since p = G(e,ν), there exists an infinite sequence (αn : n = 1,2,. . .) of distinct (finite or infinite) paths of Ed \ {e} with endvertex x such that
+Suppose conversely that pν ∈ De1. It is elementary that p ≤ G(e,ν). Suppose in addition that $p$ = G(e,ν), and we shall derive a contradiction. Let $e = \langle x, y \rangle$ , and let Cx(ν) (respectively, Cy(ν)) be the set of vertices attainable from x (respectively, y) along open paths of pν not using e. Since pν ∈ De1, Cx(ν) and Cy(ν) are disjoint. We shall prove that Cx(ν) (and similarly Cy(ν)) is infinite. Since $p$ = G(e,ν), there exists an infinite sequence (αn : n = 1,2,. . .) of distinct (finite or infinite) paths of Ed \ {e} with endvertex x such that
 
 ν( f ) ↓ p as n → ∞.
 
@@ -638,7 +622,7 @@ Let p ∈ (0,1), and let A ∈ F be an increasing cylinder event. Let
 
 Bp = {ζ ∈ X : pζ ∈ A}, Cp = {ζ ∈ X : pζ ∈ A},
 
-be the correspondingevents in B, and note from the definitions of p and p that Bp is decreasing and open, and that Cp is decreasing and closed. Furthermore, Cp−ǫ ⊆ Bp for ǫ > 0, and
+be the correspondingevents in B, and note from the definitions of p and $p$ that Bp is decreasing and open, and that Cp is decreasing and closed. Furthermore, Cp−ǫ ⊆ Bp for ǫ > 0, and
 
 (8.87) Bp \ Cp−ǫ → ∅ as ǫ ↓ 0.
 
@@ -670,7 +654,7 @@ f (η)U ,0 tg(η) ≤ f (η)U ,0 tg(η) ≤ f (η)Ut0g(η), η ∈ , by Lemmas 8
 
 since φ ,0 p,q ≤st φp0,q. Let ↑ Zd and ↑ Zd, and deduce by the monotone convergence theorem that
 
-(8.89) φ ,0 p,q f (η)U ,0 tg(η) → φp0,q f (η)Ut0g(η) as ↑ Zd. The leftside of(8.89)isunchangedwhen f and g are exchanged,by the reversibility of pZ ,1 t, see Theorem 8.38. Therefore, the right side is unchanged by this exchange, implying the required reversibility (see [235, p. 91]). (b) It sufﬁces to prove (8.57) for increasing cylinder events A, since such events generate F . For such A, (8.57) follows from (8.88) in the case of φp0,q, and similarly for φp1,q. Proof of Proposition 8.59. This is a consequence of Theorem 8.56(b). (8.90) Proposition. Let q ∈ (1,∞) and p ∈ (0,1). The Markov processes L0p and L1p are not Feller processes.
+(8.89) φ ,0 p,q f (η)U ,0 tg(η) → φp0,q f (η)Ut0g(η) as ↑ Zd. The leftside of(8.89)isunchangedwhen f and g are exchanged,by the reversibility of pZ ,1 t, see Theorem 8.38. Therefore, the right side is unchanged by this exchange, implying the required reversibility (see [235, p. 91]). (b) It sufﬁces to prove (8.57) for increasing cylinder events A, since such events generate F . For such A, (8.57) follows from (8.88) in the case of φp0,q, and similarly for φp1,q. Proof of Proposition 8.59. This is a consequence of Theorem 8.56(b). (8.90) Proposition. Let q ∈ (1,∞) and $p$ ∈ (0,1). The Markov processes L0p and L1p are not Feller processes.
 
 Proof. For simplicity we take d = 2 and b = 0; a similar argument is valid for d > 2 and/or b = 1. Let e be the edge with endvertices (0,0) and (1,0), and let Je be the indicator function of the event that e is open. We shall show that the function Us0Je : → R is not continuous for sufficiently small positive values
 
@@ -704,7 +688,7 @@ P K ,η1 (e) = 1, K ,η0 (e) = 0 > ǫ′ǫ′′ηe−η,
 
 for all containing [−2n,2n]2. Let ↑ Zd to obtain (8.91) with an appropriate value of ǫ.
 
-Proof of Theorem 5.16(a). This was deferred from Section 5.2. We follow the argument of [36] as reported in [154]. For p ∈ (0,1] and ζ ∈ X, we say that an edgee is p-openif pζ(e) = 1, whichis to say thatζ(e) < p. LetCp = Cp(ζ)be the p-open cluster of Ld containing the origin, and note that Cp′ ⊆ Cp if p′ ≤ p.
+Proof of Theorem 5.16(a). This was deferred from Section 5.2. We follow the argument of [36] as reported in [154]. For p ∈ (0,1] and ζ ∈ X, we say that an edgee is p-openif pζ(e) = 1, whichis to say thatζ(e) < p. LetCp = Cp(ζ)be the p-open cluster of Ld containing the origin, and note that Cp′ ⊆ Cp if $p$′ ≤ p.
 
 By Theorem 8.56(b),
 
@@ -722,17 +706,17 @@ where µ is given in Theorem 8.53. Therefore,
 
 = µ |Cp| = ∞, |Cp′| < ∞ for all p′ < p .
 
-Assume that p > pc(q), and suppose |Cp| = ∞. If pc(q) < α < p, there exists (almostsurely)anα-openinfinitecluster Iα,andfurthermore Iα is(almostsurely)a subgraph of Cp, by the 0/1-infinite-cluster property of the 0-boundary-condition random-cluster measures. Therefore, there exists a p-open path π joining the origin to some vertex of Iα. Such a path π has finite length and each edge e in π satisﬁes ζ(e) < p, whence β = max{ζ(e) : e ∈ π} satisﬁes β < p. If p′ satisﬁes p′ ≥ α and β < p′ < p then there exists a p′-open path joining the origin to some vertex of Iα, so that |Cp′| = ∞. However, p′ < p, implying that the event on the right side of (8.92) has probability zero.
+Assume that $p$ > pc(q), and suppose |Cp| = ∞. If pc(q) < α < p, there exists (almostsurely)anα-openinfinitecluster Iα,andfurthermore Iα is(almostsurely)a subgraph of Cp, by the 0/1-infinite-cluster property of the 0-boundary-condition random-cluster measures. Therefore, there exists a p-open path π joining the origin to some vertex of Iα. Such a path π has finite length and each edge e in π satisﬁes ζ(e) < p, whence β = max{ζ(e) : e ∈ π} satisﬁes β < p. If p′ satisﬁes p′ ≥ α and β < p′ < p then there exists a p′-open path joining the origin to some vertex of Iα, so that |Cp′| = ∞. However, p′ < p, implying that the event on the right side of (8.92) has probability zero.
 
 <a id="sec-8-9"></a>
 
 ### 8.9 Simultaneous uniqueness
 
-One of the key facts for supercritical percolation is the (almost-sure) uniqueness of the infinite open cluster, which may be stated in the following form. Let φp be the percolation (product) measure on = {0,1}Ed where d ≥ 2. We have that:
+One of the key facts for supercritical percolation is the (almost-sure) uniqueness of the infinite open cluster, which may be stated in the following form. Let φp be the percolation (product) measure on \Omega = \{0,1\}^Ed where d ≥ 2. We have that:
 
 (8.93) for all p ∈ [0,1], φp has the 0/1-infinite-cluster property.
 
-Ithasbeenaskedwhetherornotthereexistsauniqueinfinite clustersimultaneously for all values of p. This question may be formulated as follows. First, we couple together the percolation processes for different values of p by deﬁning
+Ithasbeenaskedwhetherornotthereexistsauniqueinfinite clustersimultaneously for all values of p. This question may be formulated as follows. First, we couple together the percolation processes for different values of $p$ by deﬁning
 
 1 if U(e) < p, 0 otherwise,
 
@@ -742,7 +726,7 @@ where the U(e), e ∈ Ed, are independentand uniformly distributed on the interv
 
 . It is proved in [13] that there exists a deterministic non-decreasing function i : [0,1] → {0,1} such that (8.94) P I(ηp) = i(p) for all p ∈ [0,1] = 1, a statement to which we refer as ‘simultaneous uniqueness’. By (8.93) and the definition of the critical probability pc,
 
-0 if p < pc, 1 if p > pc.
+0 if $p$ < pc, 1 if $p$ > pc.
 
 i(p) =
 
@@ -756,7 +740,7 @@ Simultaneous uniqueness may be conjectured for the random-cluster model also, us
 
 µ I( pζ) = iq(p) and I( pζ) = iq′ (p), for all p ∈ [0,1] = 1.
 
-It must be the case that iq(p) = iq′ (p) for p = pc(q). Here is a sufﬁcient condition for simultaneous uniqueness. For r ∈ (0,1) and a box , let E (r) be the subset of the conﬁguration space X containing all ν with ν(e) < r for all e ∈ E . Thus, E (r) is the event that every edge in E is open in the conﬁguration rν. By [13, Thm 1.8], it sufﬁces to show that µ has a property termed ‘positive finite energy’. This is in turn implied by:
+It must be the case that iq(p) = iq′ (p) for $p$ = pc(q). Here is a sufﬁcient condition for simultaneous uniqueness. For r ∈ (0,1) and a box , let E (r) be the subset of the conﬁguration space X containing all ν with ν(e) < r for all e ∈ E . Thus, E (r) is the event that every edge in E is open in the conﬁguration rν. By [13, Thm 1.8], it sufﬁces to show that µ has a property termed ‘positive finite energy’. This is in turn implied by:
 
 ![image 1041](../Images/imageFile1041.png)
 
