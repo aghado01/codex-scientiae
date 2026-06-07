@@ -1,61 +1,57 @@
 [Page 134]
 
-which we can solve for µ to give µ = σ(η), where
+which we can solve for $\mu$ to give $\mu = \sigma(\eta)$, where
 
-1 1 + exp(−η)
-
-σ(η) =
-
-(2.199)
+$$
+\sigma(\eta) = \frac{1}{1 + \exp(-\eta)} \tag{2.199}
+$$
 
 is called the logistic sigmoid function. Thus we can write the Bernoulli distribution using the standard representation (2.194) in the form
 
-###### p(x|η) = σ(−η)exp(ηx) (2.200)
+$$
+p(x|\eta) = \sigma(-\eta)\exp(\eta x) \tag{2.200}
+$$
 
-where we have used 1 − σ(η) = σ(−η), which is easily proved from (2.199). Comparison with (2.194) shows that
+where we have used $1 - \sigma(\eta) = \sigma(-\eta)$, which is easily proved from (2.199). Comparison with (2.194) shows that
 
-###### u(x) = x (2.201) h(x) = 1 (2.202) g(η) = σ(−η). (2.203)
+$$
+\begin{align}
+u(x) &= x \tag{2.201} \\
+h(x) &= 1 \tag{2.202} \\
+g(\eta) &= \sigma(-\eta). \tag{2.203}
+\end{align}
+$$
 
-Next consider the multinomial distribution that, for a single observation x, takes the form
+Next consider the multinomial distribution that, for a single observation $\mathbf{x}$, takes the form
 
-M
+$$
+p(\mathbf{x}|\boldsymbol{\mu}) = \prod_{k=1}^M \mu_k^{x_k} = \exp \left\{ \sum_{k=1}^M x_k \ln \mu_k \right\} \tag{2.204}
+$$
 
-M
+where $\mathbf{x} = (x_1, \ldots, x_M)^{\text{T}}$. Again, we can write this in the standard representation (2.194) so that
 
-µx
+$$
+p(\mathbf{x}|\boldsymbol{\eta}) = \exp(\boldsymbol{\eta}^{\text{T}}\mathbf{x}) \tag{2.205}
+$$
 
-p(x|µ) =
+where $\eta_k = \ln \mu_k$, and we have defined $\boldsymbol{\eta} = (\eta_1, \ldots, \eta_M)^{\text{T}}$. Again, comparing with (2.194) we have
 
-k = exp
+$$
+\begin{align}
+\mathbf{u}(\mathbf{x}) &= \mathbf{x} \tag{2.206} \\
+h(\mathbf{x}) &= 1 \tag{2.207} \\
+g(\boldsymbol{\eta}) &= 1. \tag{2.208}
+\end{align}
+$$
 
-xk lnµk (2.204)
+Note that the parameters $\eta_k$ are not independent because the parameters $\mu_k$ are subject to the constraint
 
-k
+$$
+\sum_{k=1}^M \mu_k = 1 \tag{2.209}
+$$
 
-k=1
+so that, given any $M - 1$ of the parameters $\mu_k$, the value of the remaining parameter is fixed. In some circumstances, it will be convenient to remove this constraint by expressing the distribution in terms of only $M - 1$ parameters. This can be achieved by using the relationship (2.209) to eliminate $\mu_M$ by expressing it in terms of the remaining $\{\mu_k\}$ where $k = 1, \ldots, M - 1$, thereby leaving $M - 1$ parameters. Note that these remaining parameters are still subject to the constraints
 
-k=1
-
-where x = (x1,...,xN)T. Again, we can write this in the standard representation (2.194) so that
-
-###### p(x|η) = exp(ηTx) (2.205)
-
-where ηk = lnµk, and we have deﬁned η = (η1,...,ηM)T. Again, comparing with (2.194) we have
-
-u(x) = x (2.206) h(x) = 1 (2.207) g(η) = 1. (2.208)
-
-Note that the parameters ηk are not independent because the parameters µk are subject to the constraint
-
-###### M
-
-µk = 1 (2.209)
-
-k=1
-
-so that, given any M − 1 of the parameters µk, the value of the remaining parameter is ﬁxed. In some circumstances, it will be convenient to remove this constraint by expressing the distribution in terms of only M − 1 parameters. This can be achieved by using the relationship (2.209) to eliminate µM by expressing it in terms of the remaining {µk} where k = 1,...,M − 1, thereby leaving M − 1 parameters. Note that these remaining parameters are still subject to the constraints
-
-0 µk 1,
-
-M−1
-
-µk 1. (2.210)
+$$
+0 \leqslant \mu_k \leqslant 1, \quad \sum_{k=1}^{M-1} \mu_k \leqslant 1. \tag{2.210}
+$$

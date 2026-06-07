@@ -1,49 +1,55 @@
 [Page 150]
 
-- 2.11 ( ) www By expressing the expectation of lnµj under the Dirichlet distribution (2.38) as a derivative with respect to αj, show that
+- 2.11 ( ) www By expressing the expectation of $\ln \mu_j$ under the Dirichlet distribution (2.38) as a derivative with respect to $\alpha_j$, show that
 
-E[lnµj] = ψ(αj) − ψ(α0) (2.276) where α0 is given by (2.39) and
+$$
+\mathbb{E}[\ln \mu_j] = \psi(\alpha_j) - \psi(\alpha_0) \tag{2.276}
+$$
 
-ψ(a) ≡
+where $\alpha_0$ is given by (2.39) and
 
-d da
+$$
+\psi(a) \equiv \frac{d}{da} \ln \Gamma(a) \tag{2.277}
+$$
 
-lnΓ(a) (2.277) is the digamma function.
+is the digamma function.
 
-- 2.12 ( ) The uniform distribution for a continuous variable x is deﬁned by
+- 2.12 ( ) The uniform distribution for a continuous variable $x$ is deﬁned by
 
-U(x|a,b) =
-
-1 b − a
-
-, a x b. (2.278)
+$$
+U(x|a,b) = \frac{1}{b - a}, \quad a \le x \le b. \tag{2.278}
+$$
 
 Verify that this distribution is normalized, and ﬁnd expressions for its mean and variance.
 
-- 2.13 ( ) Evaluate the Kullback-Leibler divergence (1.113) between two Gaussians p(x) = N(x|µ,Σ) and q(x) = N(x|m,L).
-- 2.14 ( ) www This exercise demonstrates that the multivariate distribution with maximum entropy, for a given covariance, is a Gaussian. The entropy of a distribution p(x) is given by
+- 2.13 ( ) Evaluate the Kullback-Leibler divergence (1.113) between two Gaussians $p(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})$ and $q(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\mathbf{m},\mathbf{L})$.
 
-H[x] = − p(x)lnp(x)dx. (2.279)
+- 2.14 ( ) www This exercise demonstrates that the multivariate distribution with maximum entropy, for a given covariance, is a Gaussian. The entropy of a distribution $p(\mathbf{x})$ is given by
 
-We wish to maximize H[x] over all distributions p(x) subject to the constraints that p(x) be normalized and that it have a speciﬁc mean and covariance, so that
+$$
+H[\mathbf{x}] = - \int p(\mathbf{x})\ln p(\mathbf{x}) \, d\mathbf{x}. \tag{2.279}
+$$
 
-p(x)dx = 1 (2.280)
+We wish to maximize $H[\mathbf{x}]$ over all distributions $p(\mathbf{x})$ subject to the constraints that $p(\mathbf{x})$ be normalized and that it have a speciﬁc mean and covariance, so that
 
-p(x)xdx = µ (2.281)
+$$
+\int p(\mathbf{x}) \, d\mathbf{x} = 1 \tag{2.280}
+$$
 
-p(x)(x − µ)(x − µ)T dx = Σ. (2.282)
+$$
+\int p(\mathbf{x})\mathbf{x} \, d\mathbf{x} = \boldsymbol{\mu} \tag{2.281}
+$$
+
+$$
+\int p(\mathbf{x})(\mathbf{x} - \boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^{\text{T}} \, d\mathbf{x} = \boldsymbol{\Sigma}. \tag{2.282}
+$$
 
 By performing a variational maximization of (2.279) and using Lagrange multipliers to enforce the constraints (2.280), (2.281), and (2.282), show that the maximum likelihood distribution is given by the Gaussian (2.43).
 
-- 2.15 ( ) Show that the entropy of the multivariate Gaussian N(x|µ,Σ) is given by
+- 2.15 ( ) Show that the entropy of the multivariate Gaussian $\mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})$ is given by
 
+$$
+H[\mathbf{x}] = \frac{1}{2} \ln |\boldsymbol{\Sigma}| + \frac{D}{2} (1 + \ln(2\pi)) \tag{2.283}
+$$
 
-1 2
-
-D 2
-
-(1 + ln(2π)) (2.283) where D is the dimensionality of x.
-
-ln|Σ| +
-
-H[x] =
+where $D$ is the dimensionality of $\mathbf{x}$.
