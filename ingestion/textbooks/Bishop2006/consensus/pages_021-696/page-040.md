@@ -1,6 +1,6 @@
 [Page 40]
 
-ﬁnite sum over these points
+finite sum over these points
 $$
 \mathbb{E}[f] \simeq \frac{1}{N} \sum_{n=1}^{N} f(x_{n}). \tag{1.35}
 $$
@@ -16,7 +16,7 @@ We can also consider a conditional expectation with respect to a conditional dis
 $$
 \mathbb{E}_{x}[f|y] = \sum_{x} p(x|y)f(x) \tag{1.37}
 $$
-with an analogous deﬁnition for continuous variables. The variance of $f(x)$ is deﬁned by
+with an analogous definition for continuous variables. The variance of $f(x)$ is defined by
 $$
 \text{var}[f] = \mathbb{E}\left[ (f(x) - \mathbb{E}[f(x)])^{2} \right] \tag{1.38}
 $$
@@ -29,7 +29,7 @@ In particular, we can consider the variance of the variable $x$ itself, which is
 $$
 \text{var}[x] = \mathbb{E}[x^{2}] - \mathbb{E}[x]^{2}. \tag{1.40}
 $$
-For two random variables $x$ and $y$, the covariance is deﬁned by
+For two random variables $x$ and $y$, the covariance is defined by
 $$
 \begin{aligned}
 \text{cov}[x, y] &= \mathbb{E}_{x,y}[\{x - \mathbb{E}[x]\}\{y - \mathbb{E}[y]\}] \\

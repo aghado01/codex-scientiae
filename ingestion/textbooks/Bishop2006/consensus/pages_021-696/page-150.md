@@ -14,13 +14,13 @@ $$
 
 is the digamma function.
 
-- 2.12 ( ) The uniform distribution for a continuous variable $x$ is deﬁned by
+- 2.12 ( ) The uniform distribution for a continuous variable $x$ is defined by
 
 $$
 U(x|a,b) = \frac{1}{b - a}, \quad a \le x \le b. \tag{2.278}
 $$
 
-Verify that this distribution is normalized, and ﬁnd expressions for its mean and variance.
+Verify that this distribution is normalized, and find expressions for its mean and variance.
 
 - 2.13 ( ) Evaluate the Kullback-Leibler divergence (1.113) between two Gaussians $p(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\boldsymbol{\mu},\boldsymbol{\Sigma})$ and $q(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\mathbf{m},\mathbf{L})$.
 
@@ -30,7 +30,7 @@ $$
 H[\mathbf{x}] = - \int p(\mathbf{x})\ln p(\mathbf{x}) \, d\mathbf{x}. \tag{2.279}
 $$
 
-We wish to maximize $H[\mathbf{x}]$ over all distributions $p(\mathbf{x})$ subject to the constraints that $p(\mathbf{x})$ be normalized and that it have a speciﬁc mean and covariance, so that
+We wish to maximize $H[\mathbf{x}]$ over all distributions $p(\mathbf{x})$ subject to the constraints that $p(\mathbf{x})$ be normalized and that it have a specific mean and covariance, so that
 
 $$
 \int p(\mathbf{x}) \, d\mathbf{x} = 1 \tag{2.280}

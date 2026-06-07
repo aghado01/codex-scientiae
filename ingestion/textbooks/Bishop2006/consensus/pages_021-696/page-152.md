@@ -6,7 +6,7 @@ $$
 V_{D} |\boldsymbol{\Sigma}|^{1/2} \Delta^{D} \tag{2.286}
 $$
 
-where $V_{D}$ is the volume of the unit sphere in $D$ dimensions, and the Mahalanobis distance is deﬁned by (2.44).
+where $V_{D}$ is the volume of the unit sphere in $D$ dimensions, and the Mahalanobis distance is defined by (2.44).
 
 2.24 ( ) www Prove the identity (2.76) by multiplying both sides by the matrix
 
@@ -18,7 +18,7 @@ $$
 \tag{2.287}
 $$
 
-and making use of the deﬁnition (2.77).
+and making use of the definition (2.77).
 
 2.25 ( ) In Sections 2.3.1 and 2.3.2, we considered the conditional and marginal distributions for a multivariate Gaussian. More generally, we can consider a partitioning of the components of $\mathbf{x}$ into three groups $\mathbf{x}_{a}$, $\mathbf{x}_{b}$, and $\mathbf{x}_{c}$, with a corresponding partitioning of the mean vector $\boldsymbol{\mu}$ and of the covariance matrix $\boldsymbol{\Sigma}$ in the form
 
@@ -39,7 +39,7 @@ $$
 \tag{2.288}
 $$
 
-By making use of the results of Section 2.3, ﬁnd an expression for the conditional distribution $p(\mathbf{x}_{a}|\mathbf{x}_{b})$ in which $\mathbf{x}_{c}$ has been marginalized out.
+By making use of the results of Section 2.3, find an expression for the conditional distribution $p(\mathbf{x}_{a}|\mathbf{x}_{b})$ in which $\mathbf{x}_{c}$ has been marginalized out.
 
 2.26 ( ) A very useful result from linear algebra is the Woodbury matrix inversion formula given by
 
@@ -49,7 +49,7 @@ $$
 
 By multiplying both sides by $(\mathbf{A} + \mathbf{B}\mathbf{C}\mathbf{D})$ prove the correctness of this result.
 
-2.27 ( ) Let $\mathbf{x}$ and $\mathbf{z}$ be two independent random vectors, so that $p(\mathbf{x},\mathbf{z}) = p(\mathbf{x})p(\mathbf{z})$. Show that the mean of their sum $\mathbf{y} = \mathbf{x}+\mathbf{z}$ is given by the sum of the means of each of the variable separately. Similarly, show that the covariance matrix of $\mathbf{y}$ is given by the sum of the covariance matrices of $\mathbf{x}$ and $\mathbf{z}$. Conﬁrm that this result agrees with that of Exercise 1.10.
+2.27 ( ) Let $\mathbf{x}$ and $\mathbf{z}$ be two independent random vectors, so that $p(\mathbf{x},\mathbf{z}) = p(\mathbf{x})p(\mathbf{z})$. Show that the mean of their sum $\mathbf{y} = \mathbf{x}+\mathbf{z}$ is given by the sum of the means of each of the variable separately. Similarly, show that the covariance matrix of $\mathbf{y}$ is given by the sum of the covariance matrices of $\mathbf{x}$ and $\mathbf{z}$. Confirm that this result agrees with that of Exercise 1.10.
 
 2.28 ( ) www Consider a joint distribution over the variable
 

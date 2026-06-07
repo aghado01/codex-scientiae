@@ -14,7 +14,7 @@ $$
 \int_{-\infty}^{\infty} p(x) \, \mathrm{d}x = 1. \tag{1.26}
 $$
 
-Under a nonlinear change of variable, a probability density transforms differently from a simple function, due to the Jacobian factor. For instance, if we consider a change of variables $x = g(y)$, then a function $f(x)$ becomes $\tilde{f}(y) = f(g(y))$. Now consider a probability density $p_x(x)$ that corresponds to a density $p_y(y)$ with respect to the new variable $y$, where the sufﬁces denote the fact that $p_x(x)$ and $p_y(y)$ are different densities. Observations falling in the range $(x, x + \delta x)$ will, for small values of $\delta x$, be transformed into the range $(y, y + \delta y)$ where $p_x(x)\delta x \simeq p_y(y)\delta y$, and hence
+Under a nonlinear change of variable, a probability density transforms differently from a simple function, due to the Jacobian factor. For instance, if we consider a change of variables $x = g(y)$, then a function $f(x)$ becomes $\tilde{f}(y) = f(g(y))$. Now consider a probability density $p_x(x)$ that corresponds to a density $p_y(y)$ with respect to the new variable $y$, where the suffices denote the fact that $p_x(x)$ and $p_y(y)$ are different densities. Observations falling in the range $(x, x + \delta x)$ will, for small values of $\delta x$, be transformed into the range $(y, y + \delta y)$ where $p_x(x)\delta x \simeq p_y(y)\delta y$, and hence
 
 $$
 \begin{align}
@@ -25,12 +25,12 @@ $$
 
 One consequence of this property is that the concept of the maximum of a probability density is dependent on the choice of variable.
 
-The probability that $x$ lies in the interval $(-\infty, z)$ is given by the cumulative distribution function deﬁned by
+The probability that $x$ lies in the interval $(-\infty, z)$ is given by the cumulative distribution function defined by
 
 $$
 P(z) = \int_{-\infty}^{z} p(x) \, \mathrm{d}x \tag{1.28}
 $$
 
-which satisﬁes $P'(x) = p(x)$, as shown in Figure 1.12.
+which satisfies $P'(x) = p(x)$, as shown in Figure 1.12.
 
-If we have several continuous variables $x_1, \ldots, x_D$, denoted collectively by the vector $\mathbf{x}$, then we can deﬁne a joint probability density $p(\mathbf{x}) = p(x_1, \ldots, x_D)$ such
+If we have several continuous variables $x_1, \ldots, x_D$, denoted collectively by the vector $\mathbf{x}$, then we can define a joint probability density $p(\mathbf{x}) = p(x_1, \ldots, x_D)$ such

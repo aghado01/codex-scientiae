@@ -2,7 +2,7 @@
 
 ![The image depicts two graphs, each with a horizontal axis labeled m and a vertical axis labeled 0.0. The x-axis is labeled m and the y-axis is labeled 0.0. Both graphs have a linear scale of range 0 to 1000 on the x-axis, and a linear scale of range 0 to 10 on the y-axis. The graph on the left has a horizontal line that is slightly higher than the graph on the right.](../images/imageFile62.png)
 
-Figure 2.20 Plot of the Bessel function $I_0(m)$ deﬁned by (2.180), together with the function $A(m)$ deﬁned by (2.186).
+Figure 2.20 Plot of the Bessel function $I_0(m)$ defined by (2.180), together with the function $A(m)$ defined by (2.186).
 
 Setting the derivative with respect to $\theta_0$ equal to zero gives
 
@@ -30,7 +30,7 @@ $$
 A(m) = \frac{1}{N} \sum_{n=1}^{N} \cos(\theta_n - \theta_{0}^{\text{ML}}) \tag{2.185}
 $$
 
-where we have substituted for the maximum likelihood solution for $\theta_{0}^{\text{ML}}$ (recalling that we are performing a joint optimization over $\theta$ and $m$), and we have deﬁned
+where we have substituted for the maximum likelihood solution for $\theta_{0}^{\text{ML}}$ (recalling that we are performing a joint optimization over $\theta$ and $m$), and we have defined
 
 $$
 A(m) = \frac{I_1(m)}{I_0(m)}. \tag{2.186}

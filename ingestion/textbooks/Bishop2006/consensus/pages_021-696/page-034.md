@@ -8,7 +8,7 @@ $$
 
 which is the sum rule of probability. Note that $p(X = x_i)$ is sometimes called the marginal probability, because it is obtained by marginalizing, or summing out, the other variables (in this case $Y$).
 
-If we consider only those instances for which $X = x_i$, then the fraction of such instances for which $Y = y_j$ is written $p(Y = y_j|X = x_i)$ and is called the conditional probability of $Y = y_j$ given $X = x_i$. It is obtained by ﬁnding the fraction of those points in column $i$ that fall in cell $i,j$ and hence is given by
+If we consider only those instances for which $X = x_i$, then the fraction of such instances for which $Y = y_j$ is written $p(Y = y_j|X = x_i)$ and is called the conditional probability of $Y = y_j$ given $X = x_i$. It is obtained by finding the fraction of those points in column $i$ that fall in cell $i,j$ and hence is given by
 
 $$
 p(Y = y_j|X = x_i) = \frac{n_{ij}}{c_i} \tag{1.8}

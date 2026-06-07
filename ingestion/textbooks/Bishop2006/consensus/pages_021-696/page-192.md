@@ -1,0 +1,15 @@
+[Page 192]
+
+![The image shows a graph with two lines. The x-axis is labeled l and the y-axis is labeled m. The lines are both horizontal and are drawn in a straight line. The first line starts at the point (0, 0) and extends upwards to the left, while the second line starts at the point (5, 5) and extends downwards to the left. The graph is labeled as l and m and the x-axis is labeled as l and the y-axis is labeled as m. The lines are both drawn in a straight line, with the first line starting at the point (0, 0) and extending upwards to the left, while the second line starts at the point (5, 5) and extends downwards to the left. The graph is labeled as l and m and the x-axis is labeled as l and the y-axis](../images/imageFile88.png)
+
+Figure 3.16 The left plot shows $\gamma$ (red curve) and $2\alpha E_W(\mathbf{m}_N)$ (blue curve) versus $\ln \alpha$ for the sinusoidal synthetic data set. It is the intersection of these two curves that defines the optimum value for $\alpha$ given by the evidence procedure. The right plot shows the corresponding graph of log evidence $\ln p(\mathbf{t}|\alpha, \beta)$ versus $\ln \alpha$ (red curve) showing that the peak coincides with the crossing point of the curves in the left plot. Also shown is the test set error (blue curve) showing that the evidence maximum occurs close to the point of best generalization.
+
+formulae, because they do not require evaluation of the eigenvalue spectrum of the Hessian.
+
+![The image is a scatter plot with a white background. The plot is titled Spatial Analysis of the 2018 Presidential Election Results. The x-axis represents the years, ranging from 2012 to 2018, while the y-axis represents the percentage of votes each candidate received. The scatter plot is visually represented with five different colors: red, blue, green, yellow, and purple. Each color represents a different percentage of votes for each candidate. The red color represents the highest percentage of votes, followed by the blue color, then the green color, and finally the purple color. The points on the plot are plotted as points, with the x-axis labeled as year, and the y-axis labeled as votes. The scatter plot is visually represented with a linear scale of range 0 to 10 on the x-axis, and a linear scale of range 2012 to 2](../images/imageFile89.png)
+
+Figure 3.17 Plot of the 10 parameters $w_i$ from the Gaussian basis function model versus the effective number of parameters $\gamma$, in which the hyperparameter $\alpha$ is varied in the range $0 \leqslant \alpha \leqslant \infty$ causing $\gamma$ to vary in the range $0 \leqslant \gamma \leqslant M$.
+
+### 3.6. Limitations of Fixed Basis Functions
+
+Throughout this chapter, we have focussed on models comprising a linear combination of fixed, nonlinear basis functions. We have seen that the assumption of linearity in the parameters led to a range of useful properties including closed-form solutions to the least-squares problem, as well as a tractable Bayesian treatment. Furthermore, for a suitable choice of basis functions, we can model arbitrary nonlinearities in the

@@ -34,7 +34,7 @@ Setting the derivative with respect to $w_0$ equal to zero, and solving for $w_0
 $$
 w_{0} = \bar{t} - \sum_{j=1}^{M-1} w_{j}\overline{\phi}_{j} \tag{3.19}
 $$
-where we have deﬁned
+where we have defined
 $$
 \bar{t} = \frac{1}{N} \sum_{n=1}^{N} t_{n}, \quad \overline{\phi}_{j} = \frac{1}{N} \sum_{n=1}^{N} \phi_{j}(\mathbf{x}_{n}). \tag{3.20}
 $$

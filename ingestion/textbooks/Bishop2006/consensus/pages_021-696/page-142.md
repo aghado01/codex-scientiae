@@ -1,6 +1,6 @@
 [Page 142]
 
-this neighbourhood property was deﬁned by the bins, and there is a natural ‘smoothing’ parameter describing the spatial extent of the local region, in this case the bin width. Second, the value of the smoothing parameter should be neither too large nor too small in order to obtain good results. This is reminiscent of the choice of model complexity in polynomial curve ﬁtting discussed in Chapter 1 where the degree $M$ of the polynomial, or alternatively the value $\alpha$ of the regularization parameter, was optimal for some intermediate value, neither too large nor too small. Armed with these insights, we turn now to a discussion of two widely used nonparametric techniques for density estimation, kernel estimators and nearest neighbours, which have better scaling with dimensionality than the simple histogram model.
+this neighbourhood property was defined by the bins, and there is a natural ‘smoothing’ parameter describing the spatial extent of the local region, in this case the bin width. Second, the value of the smoothing parameter should be neither too large nor too small in order to obtain good results. This is reminiscent of the choice of model complexity in polynomial curve fitting discussed in Chapter 1 where the degree $M$ of the polynomial, or alternatively the value $\alpha$ of the regularization parameter, was optimal for some intermediate value, neither too large nor too small. Armed with these insights, we turn now to a discussion of two widely used nonparametric techniques for density estimation, kernel estimators and nearest neighbours, which have better scaling with dimensionality than the simple histogram model.
 
 ### 2.5.1 Kernel density estimators
 
@@ -19,7 +19,7 @@ $$
 K \simeq NP. \tag{2.244}
 $$
 
-If, however, we also assume that the region $\mathcal{R}$ is sufﬁciently small that the probability density $p(\mathbf{x})$ is roughly constant over the region, then we have
+If, however, we also assume that the region $\mathcal{R}$ is sufficiently small that the probability density $p(\mathbf{x})$ is roughly constant over the region, then we have
 $$
 P \simeq p(\mathbf{x})V \tag{2.245}
 $$
@@ -28,4 +28,4 @@ $$
 p(\mathbf{x}) = \frac{K}{NV}. \tag{2.246}
 $$
 
-Note that the validity of (2.246) depends on two contradictory assumptions, namely that the region $\mathcal{R}$ be sufﬁciently small that the density is approximately constant over the region and yet sufﬁciently large (in relation to the value of that density) that the number $K$ of points falling inside the region is sufﬁcient for the binomial distribution to be sharply peaked.
+Note that the validity of (2.246) depends on two contradictory assumptions, namely that the region $\mathcal{R}$ be sufficiently small that the density is approximately constant over the region and yet sufficiently large (in relation to the value of that density) that the number $K$ of points falling inside the region is sufficient for the binomial distribution to be sharply peaked.

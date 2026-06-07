@@ -1,6 +1,6 @@
 [Page 187]
 
-where $M$ is the dimensionality of $\mathbf{w}$, and we have deﬁned
+where $M$ is the dimensionality of $\mathbf{w}$, and we have defined
 $$
 \begin{aligned}
 E(\mathbf{w}) &= \beta E_D(\mathbf{w}) + \alpha E_W(\mathbf{w}) \\
@@ -28,14 +28,14 @@ $$
 \mathbf{A} = \nabla\nabla E(\mathbf{w})
 \tag{3.83}
 $$
-and is known as the Hessian matrix. Here we have also deﬁned $\mathbf{m}_N$ given by
+and is known as the Hessian matrix. Here we have also defined $\mathbf{m}_N$ given by
 $$
 \mathbf{m}_N = \beta\mathbf{A}^{-1}\mathbf{\Phi}^{\text{T}}\mathbf{t}.
 \tag{3.84}
 $$
-Using (3.54), we see that $\mathbf{A} = \mathbf{S}_N^{-1}$, and hence (3.84) is equivalent to the previous deﬁnition (3.53), and therefore represents the mean of the posterior distribution.
+Using (3.54), we see that $\mathbf{A} = \mathbf{S}_N^{-1}$, and hence (3.84) is equivalent to the previous definition (3.53), and therefore represents the mean of the posterior distribution.
 
-The integral over $\mathbf{w}$ can now be evaluated simply by appealing to the standard result for the normalization coefﬁcient of a multivariate Gaussian, giving
+The integral over $\mathbf{w}$ can now be evaluated simply by appealing to the standard result for the normalization coefficient of a multivariate Gaussian, giving
 $$
 \begin{aligned}
 \int \exp\{-E(\mathbf{w})\} \, \text{d}\mathbf{w} &= \exp\{-E(\mathbf{m}_N)\} \int \exp\left\{ -\frac{1}{2}(\mathbf{w} - \mathbf{m}_N)^{\text{T}}\mathbf{A}(\mathbf{w} - \mathbf{m}_N) \right\} \, \text{d}\mathbf{w} \\
@@ -50,4 +50,4 @@ $$
 $$
 which is the required expression for the evidence function.
 
-Returning to the polynomial regression problem, we can plot the model evidence against the order of the polynomial, as shown in Figure 3.14. Here we have assumed a prior of the form (1.65) with the parameter $\alpha$ ﬁxed at $\alpha = 5 \times 10^{-3}$. The form of this plot is very instructive. Referring back to Figure 1.4, we see that the $M = 0$ polynomial has very poor ﬁt to the data and consequently gives a relatively low value
+Returning to the polynomial regression problem, we can plot the model evidence against the order of the polynomial, as shown in Figure 3.14. Here we have assumed a prior of the form (1.65) with the parameter $\alpha$ fixed at $\alpha = 5 \times 10^{-3}$. The form of this plot is very instructive. Referring back to Figure 1.4, we see that the $M = 0$ polynomial has very poor fit to the data and consequently gives a relatively low value

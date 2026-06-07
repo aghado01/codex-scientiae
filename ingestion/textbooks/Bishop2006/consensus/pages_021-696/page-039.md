@@ -1,6 +1,6 @@
 [Page 39]
 
-that the probability of $\mathbf{x}$ falling in an inﬁnitesimal volume $\delta\mathbf{x}$ containing the point $\mathbf{x}$ is given by $p(\mathbf{x})\delta\mathbf{x}$. This multivariate probability density must satisfy
+that the probability of $\mathbf{x}$ falling in an infinitesimal volume $\delta\mathbf{x}$ containing the point $\mathbf{x}$ is given by $p(\mathbf{x})\delta\mathbf{x}$. This multivariate probability density must satisfy
 $$
 \begin{align}
 p(\mathbf{x}) &\geq 0 \tag{1.29} \\
@@ -19,11 +19,11 @@ p(x,y) &= p(y|x)p(x). \tag{1.32}
 \end{align}
 $$
 
-A formal justiﬁcation of the sum and product rules for continuous variables (Feller, 1966) requires a branch of mathematics called measure theory and lies outside the scope of this book. Its validity can be seen informally, however, by dividing each real variable into intervals of width $\Delta$ and considering the discrete probability distribution over these intervals. Taking the limit $\Delta \to 0$ then turns sums into integrals and gives the desired result.
+A formal justification of the sum and product rules for continuous variables (Feller, 1966) requires a branch of mathematics called measure theory and lies outside the scope of this book. Its validity can be seen informally, however, by dividing each real variable into intervals of width $\Delta$ and considering the discrete probability distribution over these intervals. Taking the limit $\Delta \to 0$ then turns sums into integrals and gives the desired result.
 
 ### 1.2.2 Expectations and covariances
 
-One of the most important operations involving probabilities is that of ﬁnding weighted averages of functions. The average value of some function $f(x)$ under a probability distribution $p(x)$ is called the expectation of $f(x)$ and will be denoted by $\mathbb{E}[f]$. For a discrete distribution, it is given by
+One of the most important operations involving probabilities is that of finding weighted averages of functions. The average value of some function $f(x)$ under a probability distribution $p(x)$ is called the expectation of $f(x)$ and will be denoted by $\mathbb{E}[f]$. For a discrete distribution, it is given by
 $$
 \mathbb{E}[f] = \sum_{x} p(x)f(x) \tag{1.33}
 $$
@@ -32,4 +32,4 @@ $$
 \mathbb{E}[f] = \int p(x)f(x) \, dx. \tag{1.34}
 $$
 
-In either case, if we are given a ﬁnite number $N$ of points drawn from the probability distribution or probability density, then the expectation can be approximated as a
+In either case, if we are given a finite number $N$ of points drawn from the probability distribution or probability density, then the expectation can be approximated as a

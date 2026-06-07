@@ -20,4 +20,4 @@ $$
 
 This important quantity is called the entropy of the random variable $x$. Note that $\lim_{p \to 0} p\ln p = 0$ and so we shall take $p(x)\ln p(x) = 0$ whenever we encounter a value for $x$ such that $p(x) = 0$.
 
-So far we have given a rather heuristic motivation for the deﬁnition of informa-
+So far we have given a rather heuristic motivation for the definition of informa-

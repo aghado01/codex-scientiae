@@ -1,6 +1,6 @@
 [Page 70]
 
-tion (1.92) and the corresponding entropy (1.93). We now show that these deﬁnitions indeed possess useful properties. Consider a random variable $x$ having 8 possible states, each of which is equally likely. In order to communicate the value of $x$ to a receiver, we would need to transmit a message of length 3 bits. Notice that the entropy of this variable is given by
+tion (1.92) and the corresponding entropy (1.93). We now show that these definitions indeed possess useful properties. Consider a random variable $x$ having 8 possible states, each of which is equally likely. In order to communicate the value of $x$ to a receiver, we would need to transmit a message of length 3 bits. Notice that the entropy of this variable is given by
 
 $$
 H[x] = -8 \times \frac{1}{8} \log_{2} \frac{1}{8} = 3 \text{ bits}.
@@ -22,6 +22,6 @@ which again is the same as the entropy of the random variable. Note that shorter
 
 This relation between entropy and shortest coding length is a general one. The noiseless coding theorem (Shannon, 1948) states that the entropy is a lower bound on the number of bits needed to transmit the state of a random variable.
 
-From now on, we shall switch to the use of natural logarithms in deﬁning entropy, as this will provide a more convenient link with ideas elsewhere in this book. In this case, the entropy is measured in units of ‘nats’ instead of bits, which differ simply by a factor of $\ln 2$.
+From now on, we shall switch to the use of natural logarithms in defining entropy, as this will provide a more convenient link with ideas elsewhere in this book. In this case, the entropy is measured in units of ‘nats’ instead of bits, which differ simply by a factor of $\ln 2$.
 
 We have introduced the concept of entropy in terms of the average amount of information needed to specify the state of a random variable. In fact, the concept of entropy has much earlier origins in physics where it was introduced in the context of equilibrium thermodynamics and later given a deeper interpretation as a measure of disorder through developments in statistical mechanics. We can understand this alternative view of entropy by considering a set of $N$ identical objects that are to be divided amongst a set of bins, such that there are $n_i$ objects in the $i^{\text{th}}$ bin. Consider

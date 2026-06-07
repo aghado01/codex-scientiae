@@ -1,6 +1,6 @@
 [Page 111]
 
-a linear Gaussian model (Roweis and Ghahramani, 1999), which we shall study in greater generality in Section 8.1.4. We wish to ﬁnd the marginal distribution $p(\mathbf{y})$ and the conditional distribution $p(\mathbf{x}|\mathbf{y})$. This is a problem that will arise frequently in subsequent chapters, and it will prove convenient to derive the general results here.
+a linear Gaussian model (Roweis and Ghahramani, 1999), which we shall study in greater generality in Section 8.1.4. We wish to find the marginal distribution $p(\mathbf{y})$ and the conditional distribution $p(\mathbf{x}|\mathbf{y})$. This is a problem that will arise frequently in subsequent chapters, and it will prove convenient to derive the general results here.
 
 We shall take the marginal and conditional distributions to be
 
@@ -13,7 +13,7 @@ $$
 
 where $\boldsymbol{\mu}$, $\mathbf{A}$, and $\mathbf{b}$ are parameters governing the means, and $\boldsymbol{\Lambda}$ and $\mathbf{L}$ are precision matrices. If $\mathbf{x}$ has dimensionality $M$ and $\mathbf{y}$ has dimensionality $D$, then the matrix $\mathbf{A}$ has size $D \times M$.
 
-First we ﬁnd an expression for the joint distribution over $\mathbf{x}$ and $\mathbf{y}$. To do this, we deﬁne
+First we find an expression for the joint distribution over $\mathbf{x}$ and $\mathbf{y}$. To do this, we define
 
 $$
 \mathbf{z} = \begin{pmatrix} \mathbf{x} \\ \mathbf{y} \end{pmatrix} \tag{2.101}
@@ -28,7 +28,7 @@ $$
 \end{aligned} \tag{2.102}
 $$
 
-where 'const' denotes terms independent of $\mathbf{x}$ and $\mathbf{y}$. As before, we see that this is a quadratic function of the components of $\mathbf{z}$, and hence $p(\mathbf{z})$ is a Gaussian distribution. To ﬁnd the precision of this Gaussian, we consider the second order terms in (2.102), which can be written as
+where 'const' denotes terms independent of $\mathbf{x}$ and $\mathbf{y}$. As before, we see that this is a quadratic function of the components of $\mathbf{z}$, and hence $p(\mathbf{z})$ is a Gaussian distribution. To find the precision of this Gaussian, we consider the second order terms in (2.102), which can be written as
 
 $$
 \begin{aligned}

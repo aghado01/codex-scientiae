@@ -14,12 +14,12 @@ $$
 \cos A \cos B + \sin A \sin B = \cos(A - B) . \tag{2.178}
 $$
 
-If we now deﬁne $m = r_0/\sigma^2$, we obtain our ﬁnal expression for the distribution of $p(\theta)$ along the unit circle $r = 1$ in the form
+If we now define $m = r_0/\sigma^2$, we obtain our final expression for the distribution of $p(\theta)$ along the unit circle $r = 1$ in the form
 $$
 p(\theta|\theta_0,m) = \frac{1}{2\pi I_0(m)} \exp\{m\cos(\theta - \theta_0)\} \tag{2.179}
 $$
 
-which is called the von Mises distribution, or the circular normal. Here the parameter $\theta_0$ corresponds to the mean of the distribution, while $m$, which is known as the concentration parameter, is analogous to the inverse variance (precision) for the Gaussian. The normalization coefﬁcient in (2.179) is expressed in terms of $I_0(m)$, which is the zeroth-order Bessel function of the ﬁrst kind (Abramowitz and Stegun, 1965) and is deﬁned by
+which is called the von Mises distribution, or the circular normal. Here the parameter $\theta_0$ corresponds to the mean of the distribution, while $m$, which is known as the concentration parameter, is analogous to the inverse variance (precision) for the Gaussian. The normalization coefficient in (2.179) is expressed in terms of $I_0(m)$, which is the zeroth-order Bessel function of the first kind (Abramowitz and Stegun, 1965) and is defined by
 $$
 I_0(m) = \frac{1}{2\pi} \int_{0}^{2\pi} \exp\{m\cos\theta\} \, d\theta. \tag{2.180}
 $$

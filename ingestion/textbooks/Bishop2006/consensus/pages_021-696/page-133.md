@@ -4,15 +4,15 @@ where $\mathbf{X} = \{\mathbf{x}_1, \ldots, \mathbf{x}_N\}$. We immediately see 
 
 ## 2.4. The Exponential Family
 
-The probability distributions that we have studied so far in this chapter (with the exception of the Gaussian mixture) are speciﬁc examples of a broad class of distributions called the exponential family (Duda and Hart, 1973; Bernardo and Smith, 1994). Members of the exponential family have many important properties in common, and it is illuminating to discuss these properties in some generality.
+The probability distributions that we have studied so far in this chapter (with the exception of the Gaussian mixture) are specific examples of a broad class of distributions called the exponential family (Duda and Hart, 1973; Bernardo and Smith, 1994). Members of the exponential family have many important properties in common, and it is illuminating to discuss these properties in some generality.
 
-The exponential family of distributions over $\mathbf{x}$, given parameters $\boldsymbol{\eta}$, is deﬁned to be the set of distributions of the form
+The exponential family of distributions over $\mathbf{x}$, given parameters $\boldsymbol{\eta}$, is defined to be the set of distributions of the form
 
 $$
 p(\mathbf{x}|\boldsymbol{\eta}) = h(\mathbf{x})g(\boldsymbol{\eta}) \exp\{\boldsymbol{\eta}^T \mathbf{u}(\mathbf{x})\} \tag{2.194}
 $$
 
-where $\mathbf{x}$ may be scalar or vector, and may be discrete or continuous. Here $\boldsymbol{\eta}$ are called the natural parameters of the distribution, and $\mathbf{u}(\mathbf{x})$ is some function of $\mathbf{x}$. The function $g(\boldsymbol{\eta})$ can be interpreted as the coefﬁcient that ensures that the distribution is normalized and therefore satisﬁes
+where $\mathbf{x}$ may be scalar or vector, and may be discrete or continuous. Here $\boldsymbol{\eta}$ are called the natural parameters of the distribution, and $\mathbf{u}(\mathbf{x})$ is some function of $\mathbf{x}$. The function $g(\boldsymbol{\eta})$ can be interpreted as the coefficient that ensures that the distribution is normalized and therefore satisfies
 
 $$
 g(\boldsymbol{\eta}) \int h(\mathbf{x}) \exp\{\boldsymbol{\eta}^T \mathbf{u}(\mathbf{x})\} \, d\mathbf{x} = 1 \tag{2.195}
@@ -20,7 +20,7 @@ $$
 
 where the integration is replaced by summation if $\mathbf{x}$ is a discrete variable.
 
-We begin by taking some examples of the distributions introduced earlier in the chapter and showing that they are indeed members of the exponential family. Consider ﬁrst the Bernoulli distribution
+We begin by taking some examples of the distributions introduced earlier in the chapter and showing that they are indeed members of the exponential family. Consider first the Bernoulli distribution
 
 $$
 p(x|\mu) = \text{Bern}(x|\mu) = \mu^x (1 - \mu)^{1-x} . \tag{2.196}

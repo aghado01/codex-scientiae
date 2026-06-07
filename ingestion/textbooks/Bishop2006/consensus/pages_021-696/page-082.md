@@ -1,6 +1,6 @@
 [Page 82]
 
-1.17 ( ) www The gamma function is deﬁned by
+1.17 ( ) www The gamma function is defined by
 
 $$
 \Gamma(x) \equiv \int_{0}^{\infty} u^{x - 1} e^{- u} \, d u \tag{1.141}
@@ -14,7 +14,7 @@ $$
 \prod_{i = 1}^{D} \int_{-\infty}^{\infty} e^{- x_{i}^{2}} \, d x_{i} = S_D \int_{0}^{\infty} e^{- r^{2}} r^{D - 1} \, d r \tag{1.142}
 $$
 
-Using the deﬁnition (1.141) of the Gamma function, together with (1.126), evaluate both sides of this equation, and hence show that
+Using the definition (1.141) of the Gamma function, together with (1.126), evaluate both sides of this equation, and hence show that
 
 $$
 S_D = \frac{2 \pi^{D / 2}}{\Gamma(D / 2)} \tag{1.143}

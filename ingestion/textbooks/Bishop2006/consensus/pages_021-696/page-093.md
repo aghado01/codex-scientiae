@@ -22,4 +22,4 @@ $$
 p(x = 1|\mathcal{D}) = \frac{m + a}{m + a + l + b} \tag{2.20}
 $$
 
-which has a simple interpretation as the total fraction of observations (both real observations and ﬁctitious prior observations) that correspond to $x = 1$. Note that in the limit of an inﬁnitely large data set $m, l \to \infty$ the result (2.20) reduces to the maximum likelihood result (2.8). As we shall see, it is a very general property that the Bayesian and maximum likelihood results will agree in the limit of an inﬁnitely
+which has a simple interpretation as the total fraction of observations (both real observations and fictitious prior observations) that correspond to $x = 1$. Note that in the limit of an infinitely large data set $m, l \to \infty$ the result (2.20) reduces to the maximum likelihood result (2.8). As we shall see, it is a very general property that the Bayesian and maximum likelihood results will agree in the limit of an infinitely
