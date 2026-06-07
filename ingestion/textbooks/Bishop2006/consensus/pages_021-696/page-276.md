@@ -1,0 +1,23 @@
+[Page 276]
+
+and acting on these with the $\mathcal{R}\{\cdot\}$ operator, we obtain expressions for the elements of the vector $\mathbf{v}^T\mathbf{H}$
+
+$$
+\mathcal{R} \left\{ \frac{\partial E}{\partial w_{kj}} \right\} = \mathcal{R}\{\delta_k\} z_j + \delta_k \mathcal{R}\{z_j\} \tag{5.110}
+$$
+
+$$
+\mathcal{R} \left\{ \frac{\partial E}{\partial w_{ji}} \right\} = x_i \mathcal{R}\{\delta_j\}. \tag{5.111}
+$$
+
+The implementation of this algorithm involves the introduction of additional variables $\mathcal{R}\{a_j\}$, $\mathcal{R}\{z_j\}$ and $\mathcal{R}\{\delta_j\}$ for the hidden units and $\mathcal{R}\{\delta_k\}$ and $\mathcal{R}\{y_k\}$ for the output units. For each input pattern, the values of these quantities can be found using the above results, and the elements of $\mathbf{v}^T\mathbf{H}$ are then given by (5.110) and (5.111). An elegant aspect of this technique is that the equations for evaluating $\mathbf{v}^T\mathbf{H}$ mirror closely those for standard forward and backward propagation, and so the extension of existing software to compute this product is typically straightforward.
+
+If desired, the technique can be used to evaluate the full Hessian matrix by choosing the vector $\mathbf{v}$ to be given successively by a series of unit vectors of the form $(0,0,\dots,1,\dots,0)$ each of which picks out one column of the Hessian. This leads to a formalism that is analytically equivalent to the backpropagation procedure of Bishop (1992), as described in Section 5.4.5, though with some loss of efﬁciency due to redundant calculations.
+
+### 5.5. Regularization in Neural Networks
+
+The number of input and outputs units in a neural network is generally determined by the dimensionality of the data set, whereas the number $M$ of hidden units is a free parameter that can be adjusted to give the best predictive performance. Note that $M$ controls the number of parameters (weights and biases) in the network, and so we might expect that in a maximum likelihood setting there will be an optimum value of $M$ that gives the best generalization performance, corresponding to the optimum balance between under-ﬁtting and over-ﬁtting. Figure 5.9 shows an example of the effect of different values of $M$ for the sinusoidal regression problem.
+
+The generalization error, however, is not a simple function of $M$ due to the presence of local minima in the error function, as illustrated in Figure 5.10. Here we see the effect of choosing multiple random initializations for the weight vector for a range of values of $M$. The overall best validation set performance in this case occurred for a particular solution having $M = 8$. In practice, one approach to choosing $M$ is in fact to plot a graph of the kind shown in Figure 5.10 and then to choose the speciﬁc solution having the smallest validation set error.
+
+There are, however, other ways to control the complexity of a neural network model in order to avoid over-ﬁtting. From our discussion of polynomial curve ﬁtting in Chapter 1, we see that an alternative approach is to choose a relatively large value for $M$ and then to control complexity by the addition of a regularization term to the error function. The simplest regularizer is the quadratic, giving a regularized error

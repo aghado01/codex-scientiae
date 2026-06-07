@@ -28,4 +28,4 @@
 - [Appendices](Appendix/Appendices.md)
 - [References](References.md)
 - [Index](Index.Subjects.md)
-- [Exercises](Exercises/Exercises.md)
+- [Exercises](Exercises/CONTENTS.md)

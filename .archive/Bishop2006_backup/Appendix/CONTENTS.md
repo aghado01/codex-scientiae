@@ -1,0 +1,5 @@
+- [Appendix A Data Sets](#appendix-a-data-sets)
+- [Appendix B Probability Distributions](#appendix-b-probability-distributions)
+- [Appendix C Properties of Matrices](#appendix-c-properties-of-matrices)
+- [Appendix D Calculus of Variations](#appendix-d-calculus-of-variations)
+- [Appendix E Lagrange Multipliers](#appendix-e-lagrange-multipliers)
