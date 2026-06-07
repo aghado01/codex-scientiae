@@ -1,12 +1,12 @@
 <a id="ch-4"></a>
 
-## Chapter 4 Infinite-Volume Measures
+# 4. Infinite-Volume Measures
 
 Summary. Random-cluster measures on infinite graphs may be defined either by passing to infinite-volume limits or by using the approach of Dobrushin, Lanford, and Ruelle. The problem of the uniqueness of infinitevolume measures is answered in part by way of an argument using the convexity of ‘pressure’. The random-cluster and Potts measures in infinite volume may be coupled, thereby permitting a study of the Potts model on the lattice Ld.
 
 <a id="sec-4-1"></a>
 
-### 4.1 Infinite graphs
+## 4.1 Infinite graphs
 
 Although there is interesting theory associated with random-cluster measures on finite graphs, the real action, seen from the point of view of statistical mechanics, takes place in the context of infinite graphs. On a finite graph, all probabilities are polynomials in p and $q$, and are therefore smooth functions, whereas singularities and‘phasetransitions’occurwhenthegraphisinfinite. Thesesingularitiesprovide most of the mathematical and physical motivation for the study of the randomcluster model.
 
@@ -92,7 +92,7 @@ ProofofProposition4.10. (a)We havethatµn,1(X) ≤ µn,2(X)foranyincreasing cont
 
 <a id="sec-4-2"></a>
 
-### 4.2 Boundary conditions
+## 4.2 Boundary conditions
 
 An important part of statistical mechanics is directed at understanding the way in which assumptions on the boundary of a region affect what happens in its interior. Inordertomakeprecisesuchadiscussionforrandom-clustermodels,weintroduce next the concept of a ‘boundary condition’.
 
@@ -173,7 +173,7 @@ cuts k(ω, ) by 1 for the wired measure φ ,1 p,q, and the difference, being con
 
 <a id="sec-4-3"></a>
 
-### 4.3 Infinite-volume weak limits
+## 4.3 Infinite-volume weak limits
 
 We begin with a definition of a ‘weak-limit’ random-cluster measure on Ld. The use of the letter is restricted throughout this section to boxes of Zd.
 
@@ -386,7 +386,7 @@ By the two inequalities above, the sequence φ1 n,p,q(Xn1), n = 1,2,. . ., is no
 
 <a id="sec-4-4"></a>
 
-### 4.4 Infinite-volume random-cluster measures
+## 4.4 Infinite-volume random-cluster measures
 
 There is a second way to construct infinite-volume measures, this avoids weak limits and works directly on the infinite lattice. The following definition is based upon the well known Dobrushin–Lanford–Ruelle (DLR) definition of a Gibbs state, [102, 134, 226]. It was introduced in [111, 149, 150, 272] and discussed further in [63, 152].
 
@@ -603,7 +603,7 @@ by the bounded convergence theorem and the backward martingale convergence theor
 
 <a id="sec-4-5"></a>
 
-### 4.5 Uniqueness via convexity of pressure
+## 4.5 Uniqueness via convexity of pressure
 
 We address next the question of the uniqueness of limit- and DLR-random-cluster measures on Ld for given p and q. The main result of this section is the following. There exists a (possibly empty) countable subset Dq of the interval [0,1] such that φp0,$q$ = φp1,q, and hence there exists a unique random-cluster measure in that |Wp,q| = |Rp,q| = 1, if and only if $p$ ∈/ Dq. Further results concerning the uniqueness of measures may be found at Theorems 5.33, 6.17, and 7.33.
 
@@ -645,7 +645,7 @@ Let D′ be the set of all (π,κ) at which G is not differentiable when viewed 
 
 The two partial derivatives of G have special physical significance for the random-cluster model, and one may show when $q$ > 1 (that is, κ > 0) that G has one partial derivative at any given point (π,κ) if and only if it has both.
 
-#### (4.60) Theorem.
+### (4.60) Theorem.
 
 (a) For each κ ∈ R, there exists a (possibly empty) countable subset Dκ′ of reals such that G(π,κ) is a differentiable function of π if and only if π ∈/ Dκ′ . (b) Foreachπ ∈ R, there exists a (possibly empty)countablesubsetDπ′′ of reals
 
@@ -907,7 +907,7 @@ Therefore, G has the appropriate partial derivative at the point (π,κ), which 
 
 <a id="sec-4-6"></a>
 
-### 4.6 Potts and random-cluster models on infinite graphs
+## 4.6 Potts and random-cluster models on infinite graphs
 
 Therandom-clustermodelprovidesawaytostudythePottsmodelonfinitegraphs, as explained in Section 1.4. The method is valid for infinite graphs also, as summarized in this section in the context of the lattice Ld = (Zd,Ed).
 

@@ -1,8 +1,8 @@
 [Page 673]
 
-# 14 Combining Models
+![Chapter14](../Images/Chapters/Chapter14.png)
 
-![Figure 14.1](../Images/imageFile164.png)
+# 14. Combining Models
 
 In earlier chapters, we have explored a range of different models for solving classiﬁcation and regression problems. It is often found that improved performance can be obtained by combining multiple models together in some way, instead of just using a single model in isolation. For instance, we might train $L$ different models and then make predictions using the average of the predictions made by each model. Such combinations of models are sometimes called committees. In Section 14.2, we discuss ways to apply the committee concept in practice, and we also give some insight into why it can sometimes be an effective procedure.
 
@@ -34,6 +34,7 @@ and the corresponding density over the observed variable $\mathbf{x}$ is obtaine
 $$
 p(\mathbf{x}) = \sum_{\mathbf{z}} p(\mathbf{x}, \mathbf{z}). \tag{14.3}
 $$
+
 [Page 675]
 
 In the case of our Gaussian mixture example, this leads to a distribution of the form
@@ -109,9 +110,11 @@ If we assume that the errors have zero mean and are uncorrelated, so that
 $$
 \mathbb{E}_{\mathbf{x}}[\epsilon_m(\mathbf{x})] = 0 \tag{14.12}
 $$
+
 $$
 \mathbb{E}_{\mathbf{x}}[\epsilon_m(\mathbf{x})\epsilon_l(\mathbf{x})] = 0, \quad m \ne l \tag{14.13}
 $$
+
 [Page 677]
 
 then we obtain
@@ -138,33 +141,41 @@ $$
 Y_M(\mathbf{x}) = \text{sign}\left( \sum_{m=1}^M \alpha_m y_m(\mathbf{x}) \right)
 $$
 
-## AdaBoost
+### AdaBoost
 
 1. Initialize the data weighting coefﬁcients $\{w_n\}$ by setting $w_n^{(1)} = 1/N$ for $n = 1, \dots, N$.
 2. For $m = 1, \dots, M$:
-    (a) Fit a classiﬁer $y_m(\mathbf{x})$ to the training data by minimizing the weighted error function
-    $$
+   (a) Fit a classiﬁer $y_m(\mathbf{x})$ to the training data by minimizing the weighted error function
+
+   $$
     J_m = \sum_{n=1}^N w_n^{(m)} I(y_m(\mathbf{x}_n) \ne t_n) \tag{14.15}
-    $$
-    where $I(y_m(\mathbf{x}_n) \ne t_n)$ is the indicator function and equals $1$ when $y_m(\mathbf{x}_n) \ne t_n$ and $0$ otherwise.
-    (b) Evaluate the quantities
-    $$
+   $$
+
+   where $I(y_m(\mathbf{x}_n) \ne t_n)$ is the indicator function and equals $1$ when $y_m(\mathbf{x}_n) \ne t_n$ and $0$ otherwise.
+   (b) Evaluate the quantities
+
+   $$
     \epsilon_m = \frac{\sum_{n=1}^N w_n^{(m)} I(y_m(\mathbf{x}_n) \ne t_n)}{\sum_{n=1}^N w_n^{(m)}} \tag{14.16}
-    $$
-    and then use these to evaluate
-    $$
+   $$
+
+   and then use these to evaluate
+
+   $$
     \alpha_m = \ln\left\{ \frac{1 - \epsilon_m}{\epsilon_m} \right\}. \tag{14.17}
-    $$
-    (c) Update the data weighting coefﬁcients
-    $$
+   $$
+
+   (c) Update the data weighting coefﬁcients
+
+   $$
     w_n^{(m+1)} = w_n^{(m)} \exp\left\{ \alpha_m I(y_m(\mathbf{x}_n) \ne t_n) \right\} \tag{14.18}
-    $$
-[Page 679]
+   $$
+
+   [Page 679]
 
 3. Make predictions using the ﬁnal model, which is given by
-    $$
-    Y_M(\mathbf{x}) = \text{sign} \left( \sum_{m=1}^M \alpha_m y_m(\mathbf{x}) \right). \tag{14.19}
-    $$
+   $$
+   Y_M(\mathbf{x}) = \text{sign} \left( \sum_{m=1}^M \alpha_m y_m(\mathbf{x}) \right). \tag{14.19}
+   $$
 
 We see that the ﬁrst base classiﬁer $y_1(\mathbf{x})$ is trained using weighting coefﬁcients $w_n^{(1)}$ that are all equal, which therefore corresponds to the usual procedure for training a single classiﬁer. From (14.18), we see that in subsequent iterations the weighting coefﬁcients $w_n^{(m)}$ are increased for data points that are misclassiﬁed and decreased for data points that are correctly classiﬁed. Successive classiﬁers are therefore forced to place greater emphasis on points that have been misclassiﬁed by previous classiﬁers, and data points that continue to be misclassiﬁed by successive classiﬁers receive ever greater weight. The quantities $\epsilon_m$ represent weighted measures of the error rates of each of the base classiﬁers on the data set. We therefore see that the weighting coefﬁcients $\alpha_m$ deﬁned by (14.17) give greater weight to the more accurate classiﬁers when computing the overall output given by (14.19).
 
@@ -250,6 +261,7 @@ If we perform a variational minimization with respect to all possible functions 
 $$
 y(\mathbf{x}) = \frac{1}{2} \ln \left\{ \frac{p(t=1|\mathbf{x})}{p(t=-1|\mathbf{x})} \right\} \tag{14.28}
 $$
+
 [Page 682]
 
 ![Figure 14.3](../Images/imageFile327.png)
@@ -366,6 +378,7 @@ The complete-data log likelihood function then takes the form
 $$
 \ln p(\mathbf{t}, \mathbf{Z}|\boldsymbol{\theta}) = \sum_{n=1}^N \sum_{k=1}^K z_{nk} \ln \left\{ \pi_k \mathcal{N}(t_n|\mathbf{w}_k^{\text{T}}\boldsymbol{\phi}_n, \beta^{-1}) \right\}. \tag{14.36}
 $$
+
 [Page 688]
 
 ![Figure 14.7](../Images/imageFile331.png)
@@ -482,6 +495,7 @@ Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}}) &= \mathbb{E}_{\mathbf{
 &= \sum_{n=1}^N \sum_{k=1}^K \gamma_{nk} \{\ln \pi_k + t_n \ln y_{nk} + (1 - t_n) \ln(1 - y_{nk})\}.
 \end{aligned} \tag{14.49}
 $$
+
 [Page 692]
 
 The M step involves maximization of this function with respect to $\boldsymbol{\theta}$, keeping $\boldsymbol{\theta}^{\text{old}}$, and hence $\gamma_{nk}$, ﬁxed. Maximization with respect to $\pi_k$ can be done in the usual way, with a Lagrange multiplier to enforce the summation constraint $\sum_k \pi_k = 1$, giving the familiar result

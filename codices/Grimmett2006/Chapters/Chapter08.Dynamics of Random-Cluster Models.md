@@ -1,12 +1,12 @@
 <a id="ch-8"></a>
 
-## Chapter 8 Dynamics of Random-Cluster Models
+# 8. Dynamics of Random-Cluster Models
 
 Summary. Onemayassociatetime-dynamicswiththerandom-clustermodel in a variety of natural ways. Amongst Glauber-type processes, the Gibbs sampler is especially useful and is well suited to the construction of a ‘coupling from the past’ algorithm resulting in a sample with the randomcluster measure as its (exact) law. In the Swendsen–Wang algorithm, one interleaves transitions of the random-cluster model and the associated Potts model. The random-cluster model for different values of $p$ may be coupled together via a certain Markov process on a more general state space. This provides a mechanism for studying the ‘equilibrium’ model.
 
 <a id="sec-8-1"></a>
 
-### 8.1 Time-evolution of the random-cluster model
+## 8.1 Time-evolution of the random-cluster model
 
 The random-cluster model as studied so far is random in space but not in time. Therearea variety of ways of introducing time-dynamics into the model,and some good reasons for so doing. The principal reason is that, in our 3 + 1 dimensional universe, the time-evolution of processes is fundamental. It entails the concepts of equilibrium and convergence,of metastability, and of chaos. A rigorous theory of time-evolution in statistical mechanics is one of the major achievements of modern probability theory with which the names Dobrushin, Spitzer, and Liggett are easily associated.
 
@@ -30,7 +30,7 @@ q ∈ [1,∞), see Theorem 5.16. It leads in Section 8.9 to an open question of 
 
 <a id="sec-8-2"></a>
 
-### 8.2 Glauber dynamics
+## 8.2 Glauber dynamics
 
 Let G = (V, E) be a finite graph, with \Omega = \{0,1\}^E as usual. Let p ∈ (0,1) and $q$ ∈ (0,∞). We shall construct a reversible Markov chain in continuous time having as unique invariant measure the random-cluster measure φp,q on . A feature of the Glauber dynamics of this section is that the set of permissible jumps comprises exactly those in which the state of a single edge, e say, changes. To this end, we recall first the notation of (1.25). For ω ∈ and e ∈ E, let $\omega_e$ and $\omega_e$ be the conﬁgurationsobtainedby ‘switching e on’ and‘switching e off’, respectively.
 
@@ -64,7 +64,7 @@ Note that the generator (8.1) of the Markov chain given above depends on the ran
 
 <a id="sec-8-3"></a>
 
-### 8.3 Gibbs sampler
+## 8.3 Gibbs sampler
 
 Once again we take G = (V, E) to be a finite graph, and we let p ∈ (0,1) and $q$ ∈ (0,∞). We consider in this section a special Glauber process termed the Gibbs sampler (or heat-bath algorithm). This is a Markov chain X on the state space \Omega = \{0,1\}^E which proceedsby local moves. Its basic rule is as follows. We choose an edge e at random, and we set the state of e according to the conditional measure of ω(e) given the current states of the other edges. This may be done in either discrete or continuous time, we give the details for continuous time here and shall return to the case of discrete time in Section 8.4.
 
@@ -94,7 +94,7 @@ Xi = (Xti : t ≥ 0), i = 1,2, be Markov processes on constructed as follows. Th
 
 <a id="sec-8-4"></a>
 
-### 8.4 Coupling from the past
+## 8.4 Coupling from the past
 
 When performing simulations of the random-cluster model, one is required to sample from the probability measure φp,q. The Glauber processes of the last two sections certainly converge weakly to φp,q as t → ∞, but this is not as good as having a sample with the exact distribution. The Propp–Wilson approach to sampling termed ‘coupling from the past’, [282], provides a mechanism for obtaining samples with the correct distribution, and is in addition especially well suited to the random-cluster model when q ∈ [1,∞). We describe this here. Some illustrations of the method in practice may be found in [173, 195, 243].
 
@@ -164,7 +164,7 @@ P(Y−M = ω) − φp,q(ω) ≤ P(M > m), ω ∈ , and we let m → ∞ to obtai
 
 <a id="sec-8-5"></a>
 
-### 8.5 Swendsen–Wang dynamics
+## 8.5 Swendsen–Wang dynamics
 
 It is a major target of statistical physics to understand the time-evolution of disordered systems, and a prime example lies in the study of the Ising model. A multiplicity of types of dynamics have been proposed. The majority of these share a property of ‘locality’ in the sense that the evolution involves changes to the states of vertices in close proximity to one another, perhaps single spinﬂips or spin-exchanges. The state space is generally large, of size 2N where N is the number of vertices, and the Hamiltonian may have complicated structure. When subjected to ‘local dynamics’, the process may approach equilibrium quite
 
@@ -202,7 +202,7 @@ Algorithms of Swendsen–Wang type have been described for other statistical mec
 
 <a id="sec-8-6"></a>
 
-### 8.6 Coupled dynamics on a finite graph
+## 8.6 Coupled dynamics on a finite graph
 
 Let G = (V, E) be a graph, possible infinite. Associated with G there is a family φG,p,q of random-cluster measures indexed by the parameters p ∈ [0,1] and $q$ ∈ (0,∞); we defer a discussion of boundary conditions to the next section. It has proved fruitful to couple these measures, for ﬁxed q, by ﬁnding a family (Zq(e) : e ∈ E) of random variables taking values in [0,1] whose ‘level-sets’ are governed by the φG,p,q. It might be the case for example that, for any given p ∈ (0,1), the conﬁguration (Zp,q(e) : e ∈ E) given by
 
@@ -291,7 +291,7 @@ by the ergodicity of the Markov chain pZ, see Theorem 8.24.
 
 <a id="sec-8-7"></a>
 
-### 8.7 Box dynamics with boundary conditions
+## 8.7 Box dynamics with boundary conditions
 
 In the last section, we constructed a Markov process Z on the state space X = [0,1]E for a finite edge-set E. In moving to an infinite graph, we shall require a discussion of boundaryconditions. Let d ≥ 1 and X = [0,1]Ed, a compactmetric space when equipped with the Borel σ-field B generated by the open sets.
 
@@ -345,7 +345,7 @@ to one another, then so are Z ,(ν,tb) and Z ,(ζ,tb), for b ∈ {0,1}. These ob
 
 4We make the same assumption as in the footnote on page 233.
 
-#### (8.40) Lemma.
+### (8.40) Lemma.
 
 (a) Let and be boxes satisfying ⊆ . Then:
 
@@ -409,7 +409,7 @@ and (8.46) follows by (8.16).
 
 <a id="sec-8-8"></a>
 
-### 8.8 Coupled dynamics on the infinite lattice
+## 8.8 Coupled dynamics on the infinite lattice
 
 The reader is reminded of the assumption that q ∈ [1,∞). We have constructed two Markov processes Zb = (Z ,b t : t ≥ 0) on the state space X = [0,1]Ed, indexed by the finite box and the boundary condition b ∈ {0,1}. Similar processes may be constructedon the infinite lattice Ld by passing to limits ‘pathwise’, and exploiting the monotonicity in of the processes Zb .
 
@@ -463,7 +463,7 @@ where the projections p and $p$ are defined in (8.20)–(8.21). Note the apparen
 
 5A possible alternative to the methodology of this section might be the ‘martingale method’ described in [186, 235]. For general accounts of the theory of Markov processes, the reader may consult the books [51, 113, 235, 299].
 
-#### (8.56) Theorem.
+### (8.56) Theorem.
 
 - (a) Let b ∈ {0,1} and $p$ ∈ (0,1). The process Lbp is a Markov process on the state space \Omega = \{0,1\}^Ed, with as unique invariant measure the randomcluster measure φpb,q on Ld. The process Lbp is reversible with respect to φpb,q.
 - (b) The measures φpb,q, b = 0,1, are ‘level-set’ measures of the invariant measure µ of Theorem 8.53 in the sense that, for A ∈ F ,
@@ -530,7 +530,7 @@ A finite set S of edges of Ld is called a cutset (for e) if: (i) e ∈/ S,
 
 (ii) every path in Pe contains at least one edge of S, (iii) S is minimal with the two properties above, in the sense that no strict subset
 
-of S satisﬁes (i) and (ii). We claim that: (8.78) there exists a cutset S with ν( f ) > δ for all f ∈ S, and we prove this as follows. First, we write G(e,ν) = min{A, B} where (8.79) $$ A = F(e, \nu) = \inf_{\pi \in P_e} \max_{f \in \pi} \nu(f), \quad B = \inf_{\pi \in Q_e} \sup_{f \in \pi} \nu(f). $$
+of S satisﬁes (i) and (ii). We claim that: (8.78) there exists a cutset S with ν( f ) > δ for all f ∈ S, and we prove this as follows. First, we write G(e,ν) = min{A, B} where (8.79) $$ A = F(e, \nu) = \inf*{\pi \in P_e} \max*{f \in \pi} \nu(f), \quad B = \inf*{\pi \in Q_e} \sup*{f \in \pi} \nu(f). $$
 
 Since G(e,ν) > δ, we have that A, B > δ. For w ∈ Zd, let Cw(ν) denote the set of vertices of Ld that are connected to w by paths π of Ld satisfying:
 
@@ -710,7 +710,7 @@ Assume that $p$ > pc(q), and suppose |Cp| = ∞. If pc(q) < α < p, there exists
 
 <a id="sec-8-9"></a>
 
-### 8.9 Simultaneous uniqueness
+## 8.9 Simultaneous uniqueness
 
 One of the key facts for supercritical percolation is the (almost-sure) uniqueness of the infinite open cluster, which may be stated in the following form. Let φp be the percolation (product) measure on \Omega = \{0,1\}^Ed where d ≥ 2. We have that:
 

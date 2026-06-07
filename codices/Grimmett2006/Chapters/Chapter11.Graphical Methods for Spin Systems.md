@@ -1,12 +1,12 @@
 <a id="ch-11"></a>
 
-## Chapter 11 Graphical Methods for Spin Systems
+# 11. Graphical Methods for Spin Systems
 
 Summary. Five applications are presented of the random-cluster model to lattice spin-systems, namely the Potts and Ashkin–Teller models, the disordered Potts ferromagnet, the Edwards–Anderson spin-glass model, and the Widom–Rowlinson lattice gas model.
 
 <a id="sec-11-1"></a>
 
-### 11.1 Random-cluster representations
+## 11.1 Random-cluster representations
 
 The interacting systems of lattice statistical mechanics are mostly ‘vertex-models’ in the sense that the conﬁgurations are spin-vectors indexed by the vertices. Such spins may take values in a general state-space, and the nature of the interaction between different vertices is speciﬁed within the Hamiltonian. A substantial technology has been developed for such systems. One of the techniques is to seek a transformation to an ‘edge-model’ that enables the use of geometric arguments in the study of correlations. The standard example of this is the mapping of Section 1.4 linking the Potts model and the random-cluster model. Such arguments are sometimes known as ‘graphical methods’, and some examples are summarized brieﬂy in this chapter.
 
@@ -18,7 +18,7 @@ may be found,forexample,in the work of Alexander[15],Chayesand Machta [93, 94], 
 
 <a id="sec-11-2"></a>
 
-### 11.2 The Potts model
+## 11.2 The Potts model
 
 The random-cluster model was introduced in part as a means to study the Potts model. No attempt is made here to compress the ensuing theory into a few pages. Instead, we state and prove one theorem concerning a random-cluster analysis of the (non-)uniqueness of Gibbs states for the Potts model.
 
@@ -144,7 +144,7 @@ By (11.8) and (11.11),
 
 <a id="sec-11-3"></a>
 
-### 11.3 The Ashkin–Teller model
+## 11.3 The Ashkin–Teller model
 
 Each vertex may be in either of two states of the Ising model. The Potts modelwas proposed in 1952, and allows a general number q of local states. Nearly ten years earlier, Ashkin and Teller [21] proposed a 4-state model which, with hindsight, may be viewed as an interpolation between the Ising model and the 4-state Potts model. Their model amounts to the following.
 
@@ -258,7 +258,7 @@ If β ∈ I, the edgesof type 1/2 dominate a supercriticalproductmeasure, and th
 
 <a id="sec-11-4"></a>
 
-### 11.4 The disordered Potts ferromagnet
+## 11.4 The disordered Potts ferromagnet
 
 All our models have been assumed so far to be homogeneous in the sense that their edge-parameters have been assumed equal. In a ‘disordered’ system, one begins instead with a general family of edge-parameters indexed by the edge-set E. It is potentially a major complication that the ensuing measures may not be automorphism-invariant, and one may not apply techniques such as the ergodic theorem. A degree of statistical homogeneity may be re-introduced by assuming that the edge-parametersare chosen according to some given translation-invariant random field. We restrict ourselves for simplicity here to the situation in which this random field is a product measure with a given marginal distribution.
 
@@ -338,7 +338,7 @@ and the theorem is proved.
 
 <a id="sec-11-5"></a>
 
-### 11.5 The Edwards–Anderson spin-glass model
+## 11.5 The Edwards–Anderson spin-glass model
 
 The Ising/Potts models with positive edge-interactions Je are termed ‘ferromagnetic’: like spins attract one another, unlike spins repel. The corresponding edgevariables pe = 1 − e−βJe satisfy pe ∈ [0,1), and the random-cluster model is a satisfactory tool for the analysis of the correlation structure. Conversely, when the Je can be of either sign, the model is non-ferromagnetic, and the analysis is relatively difﬁcult and incomplete5. The random-clustermodel plays a role in this situation also, as described in this section in the context of an Ising model with real-valued edge-interactions.
 
@@ -462,7 +462,7 @@ By subtraction, (11.45) π ,βτ J(A) − π ,βτ′ J(A) ≤ φ ,1 p,2( ↔ �
 
 <a id="sec-11-6"></a>
 
-### 11.6 The Widom–Rowlinson lattice gas
+## 11.6 The Widom–Rowlinson lattice gas
 
 Particles of two types, type 1 and type 2 say, are distributed randomly within a bounded measurable subset of Rd in such a way that no 1-particle is within unit distance of any 2-particle. A simple probabilistic model for this physical model is the following, termed the Widom–Rowlinson model after the authors of the paper [319] on the liquid/vapour transition. Let λ ∈ (0,∞). Let 1 and 2 be independent subsets of chosen as spatial Poisson processes9 with intensity λ. Let D be the event
 

@@ -1,12 +1,12 @@
 <a id="ch-5"></a>
 
-## Chapter 5 Phase Transition
+# 5. Phase Transition
 
 Summary. When q ∈ [1, ∞), there exists a critical value pc(q) of the edgeparameter p, separating the phase with no infinite cluster from the phase with one or more infinite clusters. Partial results are known for both phases, but important open problems remain. In the subcritical phase, exponential decay is proved for sufficiently small p, and is conjectured to hold for all $p$ < pc(q). Much is known for the supercritical phase subject to the assumption that p exceeds a certain ‘slab critical point’ pc(q), conjectured to equal pc(q). The Wulff construction is a high point of the theory of the random-cluster model.
 
 <a id="sec-5-1"></a>
 
-### 5.1 The critical point
+## 5.1 The critical point
 
 The random-cluster model possesses an infinite open cluster if and only if $p$ is sufficiently large. There is a critical value of $p$ separating the regime in which all open clusters are finite from that in which infinite clusters exist. We explore this phasetransitioninthischapter. WiththeexceptionofthefinalSection5.8,weshall assume for the entirety of the chapter that q ∈ [1,∞), and we shall concentrate on the extremal random-cluster measures φp0,q and φp1,q. The quantities of principal interest are the φpb,q-percolation-probabilities,
 
@@ -109,7 +109,7 @@ However, θ1(p1,q1) > 0 and θ1(p2,q2) = 0, a contradiction, and thus (5.15) hol
 
 <a id="sec-5-2"></a>
 
-### 5.2 Percolation probabilities
+## 5.2 Percolation probabilities
 
 The continuityofthe percolationprobabilitiesθb(p,q)is relatedtothe uniqueness of random-cluster measures, in the sense that the θb(·,q) are continuous at p if and only if there is a unique random-cluster measure at this value.
 
@@ -313,7 +313,7 @@ The claim is proven once we have shown that (5.32) φp0,q(0 ↔ u) → θ0(p,q)2
 
 <a id="sec-5-3"></a>
 
-### 5.3 Uniqueness of random-cluster measures
+## 5.3 Uniqueness of random-cluster measures
 
 We record in this section some information about the set of values of $p$ at which there exists a unique random-cluster measure.
 
@@ -409,7 +409,7 @@ Let ↑ Zd and ǫ ↓ 0 in that order, and deduce that φp0,q ≥st φp1,q. Sinc
 
 <a id="sec-5-4"></a>
 
-### 5.4 The subcritical phase
+## 5.4 The subcritical phase
 
 The random-cluster model is said to be in the subcritical phase when $p$ < pc(q), and this phase is the subject of the next three sections. Let q ∈ [1,∞), d ≥ 2, and $p$ < pc(q). By Theorem 5.33(a), φp0,$q$ = φp1,q, and hence |Wp,q| = |Rp,q| = 1. We shall denote the unique random-cluster measure by φp0,q.
 
@@ -692,7 +692,7 @@ This implies that φr0,q(|C|2d+1) < ∞. By Theorem 5.64, η(r,q) > 0, and so r 
 
 <a id="sec-5-6"></a>
 
-### 5.6 Exponential decay of volume
+## 5.6 Exponential decay of volume
 
 For percolation, there is a beautiful proof of the exponential decay of volume using only that of radius. This proof hinges on the independence of the states of different edges, and may therefore not be extended at present to general randomcluster models, see [154, Thm 6.78]. We shall instead make use here of the block arguments of [209], obtaining thereby the exponential decay of volume subject to a condition on p believed but not known to hold throughout the subcritical phase. This condition differs slightly from that of the last section in that it involves the decay rate of certain finite-volume probabilities.
 
@@ -776,7 +776,7 @@ Let $p$ < pc∞(q), and choose a > 1 such that $p$ < pca(q). With b > 3 + a, the
 
 <a id="sec-5-7"></a>
 
-### 5.7 The supercritical phase and the Wulff crystal
+## 5.7 The supercritical phase and the Wulff crystal
 
 Percolation theory is a source of intuition for the more general random-cluster model, but it has not always been possible to make such intuition rigorous. This is certainly so in the supercritical phase, where several of the basic questions remain unanswered to date. We shall work in this section with the free and wired measures, φp0,q and φp1,q, and we assume throughout that q ∈ [1,∞).
 
@@ -968,7 +968,7 @@ It remains to prove (5.116), which we do by a coupling argument. Suppose that we
 
 <a id="sec-5-8"></a>
 
-### 5.8 Uniqueness when $q$ < 1
+## 5.8 Uniqueness when $q$ < 1
 
 Only a limited amount is known about the (non-)uniqueness of random-cluster measures on Ld when $q$ < 1, owing to the absence of stochastic ordering and the failure of positive association. By Theorems 4.31 and 4.33, there exists at least one translation-invariant member of coWp,q, and this measure is a DLRrandom-cluster measure. One may glean a little concerning uniqueness from the comparison inequalities, Theorem 3.21, from which we extract the facts that, for the random-cluster measure φG,p,q on a finite graph G = (V, E),
 

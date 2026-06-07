@@ -7,8 +7,8 @@ _Page references link to the start of the containing section or appendix._
 - alarm clock: [226](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-3>), [232](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-6>), [254](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-8>)
 - altitude: [210](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-9>)
 - amenability: [315](<Chapters/Chapter10.On Other Graphs.md#sec-10-12>)
-- anti-ferromagnet: [333](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>), [347](Grimmet.md#appendix-fkg)
-- Ashkin–Teller model: [2](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [20](<Chapters/Chapter02.Monotonic Measures.md#sec-2-1>), [326](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-3>), [346](Grimmet.md#appendix-fkg)
+- anti-ferromagnet: [333](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>), [347](Grimmett.md#appendix-fkg)
+- Ashkin–Teller model: [2](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [20](<Chapters/Chapter02.Monotonic Measures.md#sec-2-1>), [326](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-3>), [346](Grimmett.md#appendix-fkg)
 - A.–T. random-cluster model: [327](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-3>)
 - Gibbs state for A.-T. model: [326](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-3>)
 
@@ -41,7 +41,7 @@ _Page references link to the start of the containing section or appendix._
 
 - ceiling: [208](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-9>)
 - chessboard estimate: [179](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-4>)
-- chromatic polynomial: [347](Grimmet.md#appendix-fkg)
+- chromatic polynomial: [347](Grimmett.md#appendix-fkg)
 - circuit: [17](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>)
 - closed edge: [3](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [4](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-2>), [15](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>)
 - closure of set of plaquettes: [170](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-2>)
@@ -117,18 +117,18 @@ _Page references link to the start of the containing section or appendix._
 
 - edge
   - co-connected set: [177](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-3>)
-  - contraction/deletion of e.: [37](<Chapters/Chapter03.Fundamental Properties.md#sec-3-1>), [346](Grimmet.md#appendix-fkg)
+  - contraction/deletion of e.: [37](<Chapters/Chapter03.Fundamental Properties.md#sec-3-1>), [346](Grimmett.md#appendix-fkg)
   - e.-boundary: [17](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>)
   - e.-transitivity: [153](<Chapters/Chapter06.In Two Dimensions.md#ch-6>)
-  - in parallel/series: [62](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [307](<Chapters/Chapter10.On Other Graphs.md#sec-10-10>), [342](Grimmet.md#appendix-fkg)
+  - in parallel/series: [62](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [307](<Chapters/Chapter10.On Other Graphs.md#sec-10-10>), [342](Grimmett.md#appendix-fkg)
 
 - edge-negative-association: [63](<Chapters/Chapter03.Fundamental Properties.md#ch-3>)
 - Edwards–Anderson spin-glass model: [333](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>)
   - Gibbs state for E.–A. model: [335](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>)
   - uniqueness of Gibbs states: [335](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>)
 
-- electrical network: [15](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>), [66](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [342](Grimmet.md#appendix-fkg)
-  - parallel/series laws: [342](Grimmet.md#appendix-fkg)
+- electrical network: [15](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>), [66](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [342](Grimmett.md#appendix-fkg)
+  - parallel/series laws: [342](Grimmett.md#appendix-fkg)
 
 - equator: [197](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-6>)
 - equivalence relation: [299](<Chapters/Chapter10.On Other Graphs.md#ch-10>), [300](<Chapters/Chapter10.On Other Graphs.md#ch-10>)
@@ -158,7 +158,7 @@ _Page references link to the start of the containing section or appendix._
 
 - FK representation: [3](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>)
 - FKG
-  - inequality: [25](<Chapters/Chapter02.Monotonic Measures.md#sec-2-2>), [341](Grimmet.md#appendix-fkg), [347](Grimmet.md#appendix-fkg)
+  - inequality: [25](<Chapters/Chapter02.Monotonic Measures.md#sec-2-2>), [341](Grimmett.md#appendix-fkg), [347](Grimmett.md#appendix-fkg)
   - strong FKG: [27](<Chapters/Chapter02.Monotonic Measures.md#sec-2-2>)
   - lattice condition/property: [25](<Chapters/Chapter02.Monotonic Measures.md#sec-2-2>)
 
@@ -167,7 +167,7 @@ _Page references link to the start of the containing section or appendix._
   - mod-q f.: [258](<Chapters/Chapter09.Flows in Poisson Graphs.md#sec-9-1>)
 
 - forest: [13](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-5>)
-- four-colour problem: [347](Grimmet.md#appendix-fkg)
+- four-colour problem: [347](Grimmett.md#appendix-fkg)
 - free contour: [175](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-3>)
 - frustrated configuration: [334](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>)
 
@@ -222,7 +222,7 @@ _Page references link to the start of the containing section or appendix._
   - semi-extended i.: [208](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-9>)
   - vertical displacement of i.: [219](<Chapters/Chapter07.Duality in Higher Dimensions.md#ch-7>)
 
-- Ising model: [1](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [6](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-3>), [57](<Chapters/Chapter03.Fundamental Properties.md#sec-3-7>), [115](<Chapters/Chapter05.Phase Transition.md#ch-5>), [138](<Chapters/Chapter06.In Two Dimensions.md#ch-6>), [195](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-6>), [223](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-1>), [260](<Chapters/Chapter09.Flows in Poisson Graphs.md#sec-9-1>), [273](<Chapters/Chapter09.Flows in Poisson Graphs.md#sec-9-3>), [343](Grimmet.md#appendix-fkg)
+- Ising model: [1](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [6](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-3>), [57](<Chapters/Chapter03.Fundamental Properties.md#sec-3-7>), [115](<Chapters/Chapter05.Phase Transition.md#ch-5>), [138](<Chapters/Chapter06.In Two Dimensions.md#ch-6>), [195](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-6>), [223](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-1>), [260](<Chapters/Chapter09.Flows in Poisson Graphs.md#sec-9-1>), [273](<Chapters/Chapter09.Flows in Poisson Graphs.md#sec-9-3>), [343](Grimmett.md#appendix-fkg)
   - on tree: [314](<Chapters/Chapter10.On Other Graphs.md#sec-10-11>)
   - with real-valued interactions: [333](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-5>)
 
@@ -277,7 +277,7 @@ _Page references link to the start of the containing section or appendix._
   - of group of standard walls: [211](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-9>)
   - of standard wall: [211](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-9>)
 
-- parallel/series laws: [62](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [307](<Chapters/Chapter10.On Other Graphs.md#sec-10-10>), [342](Grimmet.md#appendix-fkg)
+- parallel/series laws: [62](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [307](<Chapters/Chapter10.On Other Graphs.md#sec-10-10>), [342](Grimmett.md#appendix-fkg)
 - partial order: [16](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>), [19](<Chapters/Chapter02.Monotonic Measures.md#sec-2-1>), [234](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-6>)
 - partition function: [4](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-2>), [53](<Chapters/Chapter03.Fundamental Properties.md#ch-3>)
   - convexity of p. f.: [56](<Chapters/Chapter03.Fundamental Properties.md#ch-3>)
@@ -285,7 +285,7 @@ _Page references link to the start of the containing section or appendix._
 - path: [16](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>)
 - Peierls estimate: [181](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-4>)
 - percolation
-  - model: [2](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [4](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-2>), [343](Grimmet.md#appendix-fkg)
+  - model: [2](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [4](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-2>), [343](Grimmett.md#appendix-fkg)
   - p. probability: [98](<Chapters/Chapter05.Phase Transition.md#sec-5-1>)
   - continuity of p. p.: [102](<Chapters/Chapter05.Phase Transition.md#sec-5-2>)
   - phase transition: [98](<Chapters/Chapter05.Phase Transition.md#sec-5-1>)
@@ -310,7 +310,7 @@ _Page references link to the start of the containing section or appendix._
 
 - Potts lattice gas: [323](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-2>)
 - Potts model: [1](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-1>), [6](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-3>), [102](<Chapters/Chapter05.Phase Transition.md#sec-5-2>), [183](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-5>), [222](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-1>), [223](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-1>), [231](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-5>), [257](<Chapters/Chapter09.Flows in Poisson Graphs.md#sec-9-1>), [321](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-2>)
-  - anti-ferromagnetic P. m.: [347](Grimmet.md#appendix-fkg)
+  - anti-ferromagnetic P. m.: [347](Grimmett.md#appendix-fkg)
   - disordered P. ferromagnet: [330](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-4>)
   - Gibbs state for P. m.: [322](<Chapters/Chapter11.Graphical Methods for Spin Systems.md#sec-11-2>)
   - on complete graph: [278](<Chapters/Chapter10.On Other Graphs.md#sec-10-2>)
@@ -377,7 +377,7 @@ _Page references link to the start of the containing section or appendix._
   - in two dimensions: [138](<Chapters/Chapter06.In Two Dimensions.md#ch-6>)
   - when q < 1: [131](<Chapters/Chapter05.Phase Transition.md#sec-5-8>)
 
-- random-cluster model: [346](Grimmet.md#appendix-fkg)
+- random-cluster model: [346](Grimmett.md#appendix-fkg)
   - on complete graph: [277](<Chapters/Chapter10.On Other Graphs.md#sec-10-2>)
   - critical case: [282](<Chapters/Chapter10.On Other Graphs.md#sec-10-3>)
   - critical exponent: [296](<Chapters/Chapter10.On Other Graphs.md#sec-10-8>)
@@ -411,7 +411,7 @@ _Page references link to the start of the containing section or appendix._
 - s-connectedness: [168](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-1>), [169](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-2>), [175](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-3>)
 - self-dual point: [108](<Chapters/Chapter05.Phase Transition.md#sec-5-3>), [135](<Chapters/Chapter06.In Two Dimensions.md#sec-6-1>)
 - semicontinuity: [68](<Chapters/Chapter04.Infinite-Volume Measures.md#sec-4-1>), [77](<Chapters/Chapter04.Infinite-Volume Measures.md#sec-4-3>)
-- series/parallel laws: [62](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [307](<Chapters/Chapter10.On Other Graphs.md#sec-10-10>), [342](Grimmet.md#appendix-fkg)
+- series/parallel laws: [62](<Chapters/Chapter03.Fundamental Properties.md#ch-3>), [307](<Chapters/Chapter10.On Other Graphs.md#sec-10-10>), [342](Grimmett.md#appendix-fkg)
 - sharp threshold theorem: [34](<Chapters/Chapter02.Monotonic Measures.md#sec-2-4>), [42](<Chapters/Chapter03.Fundamental Properties.md#sec-3-3>)
 - Simon inequality: [265](<Chapters/Chapter09.Flows in Poisson Graphs.md#ch-9>)
 - simultaneous uniqueness: [256](<Chapters/Chapter08.Dynamics of Random-Cluster Models.md#sec-8-9>)

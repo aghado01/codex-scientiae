@@ -1,12 +1,12 @@
 <a id="ch-1"></a>
 
-## Chapter 1 Random-Cluster Measures
+# 1. Random-Cluster Measures
 
 Summary. The random-cluster model is introduced, and its relationship to Ising and Potts models is presented via a coupling of probability measures. In the limit as the cluster-weighting factor tends to 0, one arrives at electrical networks and uniform spanning trees and forests.
 
 <a id="sec-1-1"></a>
 
-### 1.1 Introduction
+## 1.1 Introduction
 
 In 1925 came the Ising model for a ferromagnet,and in 1957 the percolation model for a disordered medium. Each has since been the subject of intense study,and their theories have become elaborate. Each possesses a phase transition marking the onset of long-range order, defined in terms of correlation functions for the Ising model and in terms of the unboundedness of paths for percolation. These two phase transitions have been the scenes of notable exact (and rigorous) calculations which have since inspired many physicists and mathematicians.
 
@@ -50,7 +50,7 @@ The random-cluster and Ising/Potts models on the graph G = (V, E) are defined fo
 
 <a id="sec-1-2"></a>
 
-### 1.2 Random-cluster model
+## 1.2 Random-cluster model
 
 Let G = (V, E) be a finite graph. The graphsconsideredhere will usually possess neither loops nor multiple edges, but we make no such general assumption. An edge e having endvertices x and y is written as $e = \langle x, y \rangle$ . A random-cluster measure on G is a member of a certain class of probability measures on the set $\Omega$ of subsets of the edge set E. We take as state space the set \Omega = \{0,1\}^E, members of which are 0/1-vectors ω = (ω(e) : e ∈ E). We speak of the edge e as being open (in ω) if ω(e) = 1, and as being closed if ω(e) = 0. For ω ∈ , let η(ω) = {e ∈ E : ω(e) = 1} denote the set of open edges. There is a one–one correspondence between vectors ω ∈ and subsets F ⊆ E, given by F = η(ω). Let k(ω) be the numberof connected components(or ‘open clusters’) of the graph (V,η(ω)), and note that k(ω) includes a count of isolated vertices, that is, of vertices incident to no open edge. We associate with the σ-field F of all its subsets.
 
@@ -78,7 +78,7 @@ Figure 1.2. A picture of the random-cluster model with free boundary conditions 
 
 <a id="sec-1-3"></a>
 
-### 1.3 Ising and Potts models
+## 1.3 Ising and Potts models
 
 In a famous experiment, a piece of iron is exposed to a magnetic field. The field is increased from zero to amaximum,and then diminished tozero. If the temperature is sufficiently low, the iron retains some residual magnetization, otherwise it does not. There is a critical temperature for this phenomenon, often called the Curie point after Pierre Curie, who reported this discovery in his 1895 thesis, [98]3. The
 
@@ -124,7 +124,7 @@ where sx · sy denotes the dot product. When n = 1, this is the Ising model. It 
 
 <a id="sec-1-4"></a>
 
-### 1.4 Random-cluster and Ising/Potts models coupled
+## 1.4 Random-cluster and Ising/Potts models coupled
 
 Fortuin and Kasteleyn discovered that Potts models may be re-cast as randomcluster models, and furthermore that the relationship between the two systems facilitates an extended study of phase transitions in Potts models, see [121, 122, 123, 203]. Their methods were elementary in nature. In a more modern approach, we construct the two systems on a common probability space. There may in principle be many ways to do this, but the standard coupling of Edwards and Sokal, [108], is of special value.
 
@@ -205,7 +205,7 @@ where Z is the appropriate normalizing factor. The measure φp,$q$ is retrieved 
 
 <a id="sec-1-5"></a>
 
-### 1.5 The limit as q ↓ 0
+## 1.5 The limit as q ↓ 0
 
 Let G = (V, E) be a finite connected graph, and let φp,q be the random-cluster measure on G with parameters p ∈ (0,1), q ∈ (0,∞). We considerin thissection the set of weak limits which may arise as q ↓ 0. In preparation, we introduce three graph-theoretic terms.
 
@@ -238,6 +238,7 @@ and Zfor = Zfor(α) is the appropriate normalizing constant. In the special case
 Finally, if $p$ approaches 0 faster than does q, in that p/q → 0 as p,q → 0, it is easily seen that the limit measure is concentrated on the empty set of edges. We summarize the three special cases above in a theorem.
 
 (1.23) Theorem. We have in the limit as $q \downarrow 0$ that:
+
 $$
 \phi_{p,q} \Rightarrow \begin{cases}
 \text{UCS} & \text{if } p = 1/2, \\
@@ -252,7 +253,7 @@ The theory of the uniform-spanning-tree measure UST is beautiful in its own righ
 
 <a id="sec-1-6"></a>
 
-### 1.6 Basic notation
+## 1.6 Basic notation
 
 We present some of the basic notation necessary for a study of random-cluster measures. Let G = (V, E) be a graph, with finite or countably infinite vertex-set V and edge-set E. If two vertices x and y are joined by an edge e, we write x ∼ y, and $e = \langle x, y \rangle$ , and we say that x is adjacent to y. The (graph-theoretic) distance δ(x, y) from x to y is defined to be the number of edges in a shortest path of G from x to y.
 

@@ -1,24 +1,20 @@
 [Page 379]
 
-![In this image we can see a poster with some text.](../Images/imageFile33.png)
+![Chapter8](../Images/Chapters/Chapter8.png)
 
-# 8
-
-###### Graphical Models
+# 8. Graphical Models
 
 Probabilities play a central role in modern pattern recognition. We have seen in Chapter 1 that probability theory can be expressed in terms of two simple equations corresponding to the sum rule and the product rule. All of the probabilistic inference and learning manipulations discussed in this book, no matter how complex, amount to repeated application of these two equations. We could therefore proceed to formulate and solve complicated probabilistic models purely by algebraic manipulation. However, we shall ﬁnd it highly advantageous to augment the analysis using diagrammatic representations of probability distributions, called probabilistic graphical models. These offer several useful properties:
 
 1. They provide a simple way to visualize the structure of a probabilistic model and can be used to design and motivate new models.
 2. Insights into the properties of the model, including conditional independence properties, can be obtained by inspection of the graph.
-[Page 380]
-
 3. Complex computations, required to perform inference and learning in sophisticated models, can be expressed in terms of graphical manipulations, in which underlying mathematical expressions are carried along implicitly.
 
 A graph comprises nodes (also called vertices) connected by links (also known as edges or arcs). In a probabilistic graphical model, each node represents a random variable (or group of random variables), and the links express probabilistic relationships between these variables. The graph then captures the way in which the joint distribution over all of the random variables can be decomposed into a product of factors each depending only on a subset of the variables. We shall begin by discussing Bayesian networks, also known as directed graphical models, in which the links of the graphs have a particular directionality indicated by arrows. The other major class of graphical models are Markov random ﬁelds, also known as undirected graphical models, in which the links do not carry arrows and have no directional signiﬁcance. Directed graphs are useful for expressing causal relationships between random variables, whereas undirected graphs are better suited to expressing soft constraints between random variables. For the purposes of solving inference problems, it is often convenient to convert both directed and undirected graphs into a different representation called a factor graph.
 
 In this chapter, we shall focus on the key aspects of graphical models as needed for applications in pattern recognition and machine learning. More general treatments of graphical models can be found in the books by Whittaker (1990), Lauritzen (1996), Jensen (1996), Castillo et al. (1997), Jordan (1999), Cowell et al. (1999), and Jordan (2007).
 
-###### 8.1. Bayesian Networks
+## 8.1. Bayesian Networks
 
 In order to motivate the use of directed graphs to describe probability distributions, consider ﬁrst an arbitrary joint distribution $p(a, b, c)$ over three variables $a$, $b$, and $c$. Note that at this stage, we do not need to specify anything further about these variables, such as whether they are discrete or continuous. Indeed, one of the powerful aspects of graphical models is that a speciﬁc graph can make probabilistic statements for a broad class of distributions. By application of the product rule of probability (1.11), we can write the joint distribution in the form
 
@@ -78,7 +74,7 @@ where $\text{pa}_k$ denotes the set of parents of $x_k$, and $\mathbf{x} = \{x_1
 
 The directed graphs that we are considering are subject to an important restriction namely that there must be no directed cycles, in other words there are no closed paths within the graph such that we can move from node to node along links following the direction of the arrows and end up back at the starting node. Such graphs are also called directed acyclic graphs, or DAGs. This is equivalent to the statement that there exists an ordering of the nodes such that there are no links that go from any node to any lower numbered node.
 
-###### 8.1.1 Example: Polynomial regression
+## 8.1.1 Example: Polynomial regression
 
 As an illustration of the use of directed graphs to describe probability distributions, we consider the Bayesian polynomial regression model introduced in Sec-
 [Page 383]
@@ -149,7 +145,7 @@ $$
 
 where we are implicitly setting the random variables in $\mathbf{t}$ to the speciﬁc values observed in the data set. The details of this calculation were discussed in Chapter 3.
 
-###### 8.1.2 Generative models
+## 8.1.2 Generative models
 
 There are many situations in which we wish to draw samples from a given probability distribution. Although we shall devote the whole of Chapter 11 to a detailed discussion of sampling methods, it is instructive to outline here one technique, called ancestral sampling, which is particularly relevant to graphical models. Consider a joint distribution $p(x_1, \ldots, x_K)$ over $K$ variables that factorizes according to (8.5) corresponding to a directed acyclic graph. We shall suppose that the variables have been ordered such that there are no links from any node to any lower numbered node, in other words each node has a higher number than any of its parents. Our goal is to draw a sample $\widehat{x}_1, \ldots, \widehat{x}_K$ from the joint distribution.
 
@@ -168,7 +164,7 @@ The graphical model captures the causal process (Pearl, 1988) by which the obser
 
 The hidden variables in a probabilistic model need not, however, have any explicit physical interpretation but may be introduced simply to allow a more complex joint distribution to be constructed from simpler components. In either case, the technique of ancestral sampling applied to a generative model mimics the creation of the observed data and would therefore give rise to ‘fantasy’ data whose probability distribution (if the model were a perfect representation of reality) would be the same as that of the observed data. In practice, producing synthetic observations from a generative model can prove informative in understanding the form of the probability distribution represented by that model.
 
-###### 8.1.3 Discrete variables
+## 8.1.3 Discrete variables
 
 We have discussed the importance of probability distributions that are members of the exponential family, and we have seen that this family includes many wellknown distributions as particular cases. Although such distributions are relatively simple, they form useful building blocks for constructing more complex probability
 [Page 387]
@@ -238,7 +234,7 @@ Figure 8.13 A graph comprising $M$ parents $x_1, \ldots, x_M$ and a single child
 ![image 172](../Images/imageFile172.png)
 [Page 390]
 
-###### 8.1.4 Linear-Gaussian models
+## 8.1.4 Linear-Gaussian models
 
 In the previous section, we saw how to construct joint probability distributions over a set of discrete variables by expressing the variables as nodes in a directed acyclic graph. Here we show how a multivariate Gaussian can be expressed as a directed graph corresponding to a linear-Gaussian model over the component variables. This allows us to impose interesting structure on the distribution, with the general Gaussian and the diagonal covariance Gaussian representing opposite extremes. Several widely used techniques are examples of linear-Gaussian models, such as probabilistic principal component analysis, factor analysis, and linear dynamical systems (Roweis and Ghahramani, 1999). We shall make extensive use of the results of this section in later chapters when we consider some of these techniques in detail.
 
@@ -270,6 +266,7 @@ where $\epsilon_i$ is a zero mean, unit variance Gaussian random variable satisf
 $$
 \mathbb{E}[x_i] = \sum_{j \in \text{pa}_i} w_{ij} \mathbb{E}[x_j] + b_i. \tag{8.15}
 $$
+
 [Page 391]
 
 Figure 8.14 A directed graph over three Gaussian variables, with one missing link.
@@ -305,6 +302,7 @@ w_{21}v_1 & v_2 + w_{21}^2v_1 & w_{32}(v_2 + w_{21}^2v_1) \\
 w_{32}w_{21}v_1 & w_{32}(v_2 + w_{21}^2v_1) & v_3 + w_{32}^2(v_2 + w_{21}^2v_1)
 \end{pmatrix}. \tag{8.18}
 $$
+
 [Page 392]
 
 We can readily extend the linear-Gaussian graphical model to the case in which the nodes of the graph represent multivariate Gaussian variables. In this case, we can write the conditional distribution for node $i$ in the form
@@ -317,7 +315,7 @@ where now $\mathbf{W}_{ij}$ is a matrix (which is nonsquare if $\mathbf{x}_i$ an
 
 Note that we have already encountered a speciﬁc example of the linear-Gaussian relationship when we saw that the conjugate prior for the mean $\boldsymbol{\mu}$ of a Gaussian variable $\mathbf{x}$ is itself a Gaussian distribution over $\boldsymbol{\mu}$. The joint distribution over $\mathbf{x}$ and $\boldsymbol{\mu}$ is therefore Gaussian. This corresponds to a simple two-node graph in which the node representing $\boldsymbol{\mu}$ is the parent of the node representing $\mathbf{x}$. The mean of the distribution over $\boldsymbol{\mu}$ is a parameter controlling a prior, and so it can be viewed as a hyperparameter. Because the value of this hyperparameter may itself be unknown, we can again treat it from a Bayesian perspective by introducing a prior over the hyperparameter, sometimes called a hyperprior, which is again given by a Gaussian distribution. This type of construction can be extended in principle to any level and is an illustration of a hierarchical Bayesian model, of which we shall encounter further examples in later chapters.
 
-###### 8.2. Conditional Independence
+## 8.2. Conditional Independence
 
 An important concept for probability distributions over multiple variables is that of conditional independence (Dawid, 1980). Consider three variables $a$, $b$, and $c$, and suppose that the conditional distribution of $a$, given $b$ and $c$, is such that it does not depend on the value of $b$, so that
 
@@ -353,7 +351,7 @@ Conditional independence properties play an important role in using probabilisti
 
 If we are given an expression for the joint distribution over a set of variables in terms of a product of conditional distributions (i.e., the mathematical representation underlying a directed graph), then we could in principle test whether any potential conditional independence property holds by repeated application of the sum and product rules of probability. In practice, such an approach would be very time consuming. An important and elegant feature of graphical models is that conditional independence properties of the joint distribution can be read directly from the graph without having to perform any analytical manipulations. The general framework for achieving this is called d-separation, where the ‘d’ stands for ‘directed’ (Pearl, 1988). Here we shall motivate the concept of d-separation and give a general statement of the d-separation criterion. A formal proof can be found in Lauritzen (1996).
 
-###### 8.2.1 Three example graphs
+## 8.2.1 Three example graphs
 
 We begin our discussion of the conditional independence properties of directed graphs by considering three simple examples each involving graphs having just three nodes. Together, these will motivate and illustrate the key concepts of d-separation. The ﬁrst of the three examples is shown in Figure 8.15, and the joint distribution corresponding to this graph is easily written down using the general result (8.5) to give
 
@@ -372,6 +370,7 @@ In general, this does not factorize into the product $p(a)p(b)$, and so
 $$
 a \not\perp b | \emptyset \tag{8.25}
 $$
+
 [Page 394]
 
 Figure 8.16 As in Figure 8.15 but where we have conditioned on the value of variable $c$.
@@ -538,6 +537,7 @@ and using these results we have
 $$
 p(F = 0|G = 0) = \frac{p(G = 0|F = 0)p(F = 0)}{p(G = 0)} \simeq 0.257 \tag{8.32}
 $$
+
 [Page 398]
 
 and so $p(F = 0|G = 0) > p(F = 0)$. Thus observing that the gauge reads empty makes it more likely that the tank is indeed empty, as we would intuitively expect. Next suppose that we also check the state of the battery and ﬁnd that it is ﬂat, i.e., $B = 0$. We have now observed the states of both the fuel gauge and the battery, as shown by the right-hand graph in Figure 8.21. The posterior probability that the fuel tank is empty given the observations of both the fuel gauge and the battery state is then given by
@@ -548,7 +548,7 @@ $$
 
 where the prior probability $p(B = 0)$ has cancelled between numerator and denominator. Thus the probability that the tank is empty has decreased (from $0.257$ to $0.111$) as a result of the observation of the state of the battery. This accords with our intuition that ﬁnding out that the battery is ﬂat explains away the observation that the fuel gauge reads empty. We see that the state of the fuel tank and that of the battery have indeed become dependent on each other as a result of observing the reading on the fuel gauge. In fact, this would also be the case if, instead of observing the fuel gauge directly, we observed the state of some descendant of $G$. Note that the probability $p(F = 0|G = 0, B = 0) \simeq 0.111$ is greater than the prior probability $p(F = 0) = 0.1$ because the observation that the fuel gauge reads zero still provides some evidence in favour of an empty fuel tank.
 
-###### 8.2.2 D-separation
+## 8.2.2 D-separation
 
 We now give a general statement of the d-separation property (Pearl, 1988) for directed graphs. Consider a general directed graph in which $A$, $B$, and $C$ are arbitrary nonintersecting sets of nodes (whose union may be smaller than the complete set of nodes in the graph). We wish to ascertain whether a particular conditional independence statement $A \perp\!\!\!\perp B | C$ is implied by a given directed acyclic graph. To do so, we consider all possible paths from any node in $A$ to any node in $B$. Any such path is said to be blocked if it includes a node such that either
 
@@ -642,13 +642,13 @@ Figure 8.26 The Markov blanket of a node $x_i$ comprises the set of parents, chi
 
 of $x_i$ as well as on the co-parents, in other words variables corresponding to parents of node $x_k$ other than node $x_i$. The set of nodes comprising the parents, the children and the co-parents is called the Markov blanket and is illustrated in Figure 8.26. We can think of the Markov blanket of a node $x_i$ as being the minimal set of nodes that isolates $x_i$ from the rest of the graph. Note that it is not sufﬁcient to include only the parents and children of node $x_i$ because the phenomenon of explaining away means that observations of the child nodes will not block paths to the co-parents. We must therefore observe the co-parent nodes also.
 
-###### 8.3. Markov Random Fields
+## 8.3. Markov Random Fields
 
 We have seen that directed graphical models specify a factorization of the joint distribution over a set of variables into a product of local conditional distributions. They also deﬁne a set of conditional independence properties that must be satisﬁed by any distribution that factorizes according to the graph. We turn now to the second major class of graphical models that are described by undirected graphs and that again specify both a factorization and a set of conditional independence relations.
 
 A Markov random ﬁeld, also known as a Markov network or an undirected graphical model (Kindermann and Snell, 1980), has a set of nodes each of which corresponds to a variable or group of variables, as well as a set of links each of which connects a pair of nodes. The links are undirected, that is they do not carry arrows. In the case of undirected graphs, it is convenient to begin with a discussion of conditional independence properties.
 
-###### 8.3.1 Conditional independence properties
+## 8.3.1 Conditional independence properties
 
 In the case of directed graphs, we saw that it was possible to test whether a particular conditional independence property holds by applying a graphical test called d-separation. This involved testing whether or not the paths connecting two sets of nodes were ‘blocked’. The deﬁnition of blocked, however, was somewhat subtle due to the presence of paths having head-to-head nodes. We might ask whether it is possible to deﬁne an alternative graphical semantics for probability distributions such that conditional independence is determined by simple graph separation. This is indeed the case and corresponds to undirected graphical models. By removing the
 [Page 404]
@@ -671,7 +671,7 @@ An alternative way to view the conditional independence test is to imagine remov
 
 The Markov blanket for an undirected graph takes a particularly simple form, because a node will be conditionally independent of all other nodes conditioned only on the neighbouring nodes, as illustrated in Figure 8.28.
 
-###### 8.3.2 Factorization properties
+## 8.3.2 Factorization properties
 
 We now seek a factorization rule for undirected graphs that will correspond to the above conditional independence test. Again, this will involve expressing the joint distribution $p(\mathbf{x})$ as a product of functions deﬁned over sets of variables that are local to the graph. We therefore need to decide what is the appropriate notion of locality in this case.
 [Page 405]
@@ -736,7 +736,7 @@ where $E(\mathbf{x}_C)$ is called an energy function, and the exponential repres
 
 In contrast to the factors in the joint distribution for a directed graph, the potentials in an undirected graph do not have a speciﬁc probabilistic interpretation. Although this gives greater ﬂexibility in choosing the potential functions, because there is no normalization constraint, it does raise the question of how to motivate a choice of potential function for a particular application. This can be done by viewing the potential function as expressing which conﬁgurations of the local variables are preferred to others. Global conﬁgurations that have a relatively high probability are those that ﬁnd a good balance in satisfying the (possibly conﬂicting) inﬂuences of the clique potentials. We turn now to a speciﬁc example to illustrate the use of undirected graphs.
 
-###### 8.3.3 Illustration: Image de-noising
+## 8.3.3 Illustration: Image de-noising
 
 We can illustrate the application of undirected graphs using an example of noise removal from a binary image (Besag, 1974; Geman and Geman, 1984; Besag, 1986). Although a very simple example, this is typical of more sophisticated applications. Let the observed noisy image be described by an array of binary pixel values $y_i \in \{-1, +1\}$, where the index $i = 1, \ldots, D$ runs over all pixels. We shall suppose that the image is obtained by taking an unknown noise-free image, described by binary pixel values $x_i \in \{-1, +1\}$ and randomly ﬂipping the sign of pixels with some small probability. An example binary image, together with a noise corrupted image obtained by ﬂipping the sign of the pixels with probability 10%, is shown in Figure 8.30. Given the noisy image, our goal is to recover the original noise-free image.
 
@@ -788,7 +788,7 @@ For the purposes of this simple illustration, we have ﬁxed the parameters to b
 
 Later we shall discuss a more effective algorithm for ﬁnding high probability solutions called the max-product algorithm, which typically leads to better solutions, although this is still not guaranteed to ﬁnd the global maximum of the posterior distribution. However, for certain classes of model, including the one given by (8.42), there exist efﬁcient algorithms based on graph cuts that are guaranteed to ﬁnd the global maximum (Greig et al., 1989; Boykov et al., 2001; Kolmogorov and Zabih, 2004). The lower right panel of Figure 8.30 shows the result of applying a graph-cut algorithm to the de-noising problem.
 
-###### 8.3.4 Relation to directed graphs
+## 8.3.4 Relation to directed graphs
 
 We have introduced two graphical frameworks for representing probability distributions, corresponding to directed and undirected graphs, and it is instructive to discuss the relation between these. Consider ﬁrst the problem of taking a model that is speciﬁed using a directed graph and trying to convert it to an undirected graph. In some cases this is straightforward, as in the simple example in Figure 8.32. Here the joint distribution for the directed graph is given as a product of conditionals in the form
 
@@ -801,6 +801,7 @@ Now let us convert this to an undirected graph representation, as shown in Figur
 $$
 p(\mathbf{x}) = \frac{1}{Z} \psi_{1,2}(x_1, x_2)\psi_{2,3}(x_2, x_3) \cdots \psi_{N-1,N}(x_{N-1}, x_N). \tag{8.45}
 $$
+
 [Page 411]
 
 Figure 8.33 Example of a simple directed graph (a) and the corresponding moral graph (b).
@@ -866,7 +867,7 @@ Figure 8.36 An undirected graph whose conditional independence properties cannot
 
 ![image 195](../Images/imageFile195.png)
 
-###### 8.4. Inference in Graphical Models
+## 8.4. Inference in Graphical Models
 
 We turn now to the problem of inference in graphical models, in which some of the nodes in a graph are clamped to observed values, and we wish to compute the posterior distributions of one or more subsets of other nodes. As we shall see, we can exploit the graphical structure both to ﬁnd efﬁcient algorithms for inference, and
 [Page 414]
@@ -891,7 +892,7 @@ $$
 
 Thus the joint distribution is now expressed in terms of $p(y)$ and $p(x|y)$. From a graphical perspective, the joint distribution $p(x, y)$ is now represented by the graph shown in Figure 8.37(c), in which the direction of the arrow is reversed. This is the simplest example of an inference problem for a graphical model.
 
-###### 8.4.1 Inference on a chain
+## 8.4.1 Inference on a chain
 
 Now consider a more complex problem involving the chain of nodes of the form shown in Figure 8.32. This example will lay the foundation for a discussion of exact inference in more general graphs later in this section.
 
@@ -997,7 +998,7 @@ Thus we can obtain the joint distributions over all of the sets of variables in 
 
 This is a useful result because in practice we may wish to use parametric forms for the clique potentials, or equivalently for the conditional distributions if we started from a directed graph. In order to learn the parameters of these potentials in situations where not all of the variables are observed, we can employ the EM algorithm, and it turns out that the local joint distributions of the cliques, conditioned on any observed data, is precisely what is needed in the E step. We shall consider some examples of this in detail in Chapter 13.
 
-###### 8.4.2 Trees
+## 8.4.2 Trees
 
 We have seen that exact inference on a graph comprising a chain of nodes can be performed efﬁciently in time that is linear in the number of nodes, using an algorithm
 [Page 419]
@@ -1012,7 +1013,7 @@ In the case of an undirected graph, a tree is deﬁned as a graph in which there
 
 If there are nodes in a directed graph that have more than one parent, but there is still only one path (ignoring the direction of the arrows) between any two nodes, then the graph is a called a polytree, as illustrated in Figure 8.39(c). Such a graph will have more than one node with the property of having no parents, and furthermore, the corresponding moralized undirected graph will have loops.
 
-###### 8.4.3 Factor graphs
+## 8.4.3 Factor graphs
 
 The sum-product algorithm that we derive in the next section is applicable to undirected and directed trees and to polytrees. It can be cast in a particularly simple and general form if we ﬁrst introduce a new graphical construction called a factor graph (Frey, 1998; Kschischnang et al., 2001).
 
@@ -1069,7 +1070,7 @@ Figure 8.43 (a) A directed polytree. (b) The result of converting the polytree i
 
 precise form of the factorization. Figure 8.45 shows an example of a fully connected undirected graph along with two different factor graphs. In (b), the joint distribution is given by a general form $p(\mathbf{x}) = f(x_1, x_2, x_3)$, whereas in (c), it is given by the more speciﬁc factorization $p(\mathbf{x}) = f_a(x_1, x_2)f_b(x_1, x_3)f_c(x_2, x_3)$. It should be emphasized that the factorization in (c) does not correspond to any conditional independence properties.
 
-###### 8.4.4 The sum-product algorithm
+## 8.4.4 The sum-product algorithm
 
 We shall now make use of the factor graph framework to derive a powerful class of efﬁcient, exact inference algorithms that are applicable to tree-structured graphs. Here we shall focus on the problem of evaluating local marginals over nodes or subsets of nodes, which will lead us to the sum-product algorithm. Later we shall modify the technique to allow the most probable state to be found, giving rise to the max-sum algorithm.
 
@@ -1139,9 +1140,10 @@ Substituting (8.65) into (8.64) we obtain
 $$
 \begin{aligned}
 \mu_{f_s \to x}(x) &= \sum_{x_1} \cdots \sum_{x_M} f_s(x, x_1, \ldots, x_M) \prod_{m \in \text{ne}(f_s) \setminus x} \left[ \sum_{X_{sm}} G_m(x_m, X_{sm}) \right] \\
-&= \sum_{x_1} \cdots \sum_{x_M} f_s(x, x_1, \ldots, x_M) \prod_{m \in \text{ne}(f_s) \setminus x} \mu_{x_m \to f_s}(x_m) 
+&= \sum_{x_1} \cdots \sum_{x_M} f_s(x, x_1, \ldots, x_M) \prod_{m \in \text{ne}(f_s) \setminus x} \mu_{x_m \to f_s}(x_m)
 \end{aligned} \tag{8.66}
 $$
+
 [Page 425]
 
 Figure 8.47 Illustration of the factorization of the subgraph associated with factor node $f_s$.
@@ -1242,18 +1244,23 @@ In order to apply the sum-product algorithm to this graph, let us designate node
 $$
 \mu_{x_1 \to f_a}(x_1) = 1 \tag{8.74}
 $$
+
 $$
 \mu_{f_a \to x_2}(x_2) = \sum_{x_1} f_a(x_1, x_2) \tag{8.75}
 $$
+
 $$
 \mu_{x_4 \to f_c}(x_4) = 1 \tag{8.76}
 $$
+
 $$
 \mu_{f_c \to x_2}(x_2) = \sum_{x_4} f_c(x_2, x_4) \tag{8.77}
 $$
+
 $$
 \mu_{x_2 \to f_b}(x_2) = \mu_{f_a \to x_2}(x_2) \mu_{f_c \to x_2}(x_2) \tag{8.78}
 $$
+
 $$
 \mu_{f_b \to x_3}(x_3) = \sum_{x_2} f_b(x_2, x_3) \mu_{x_2 \to f_b}(x_2). \tag{8.79}
 $$
@@ -1263,21 +1270,27 @@ The direction of ﬂow of these messages is illustrated in Figure 8.52. Once thi
 $$
 \mu_{x_3 \to f_b}(x_3) = 1 \tag{8.80}
 $$
+
 $$
 \mu_{f_b \to x_2}(x_2) = \sum_{x_3} f_b(x_2, x_3) \tag{8.81}
 $$
+
 $$
 \mu_{x_2 \to f_a}(x_2) = \mu_{f_b \to x_2}(x_2) \mu_{f_c \to x_2}(x_2) \tag{8.82}
 $$
+
 $$
 \mu_{f_a \to x_1}(x_1) = \sum_{x_2} f_a(x_1, x_2) \mu_{x_2 \to f_a}(x_2) \tag{8.83}
 $$
+
 $$
 \mu_{x_2 \to f_c}(x_2) = \mu_{f_a \to x_2}(x_2) \mu_{f_b \to x_2}(x_2) \tag{8.84}
 $$
+
 $$
 \mu_{f_c \to x_4}(x_4) = \sum_{x_2} f_c(x_2, x_4) \mu_{x_2 \to f_c}(x_2). \tag{8.85}
 $$
+
 [Page 430]
 
 ![image 211](../Images/imageFile211.png)
@@ -1291,7 +1304,7 @@ $$
 \widetilde{p}(x_2) &= \mu_{f_a \to x_2}(x_2) \mu_{f_b \to x_2}(x_2) \mu_{f_c \to x_2}(x_2) \\
 &= \left[ \sum_{x_1} f_a(x_1, x_2) \right] \left[ \sum_{x_3} f_b(x_2, x_3) \right] \left[ \sum_{x_4} f_c(x_2, x_4) \right] \\
 &= \sum_{x_1} \sum_{x_3} \sum_{x_4} f_a(x_1, x_2) f_b(x_2, x_3) f_c(x_2, x_4) \\
-&= \sum_{x_1} \sum_{x_3} \sum_{x_4} \widetilde{p}(\mathbf{x}) 
+&= \sum_{x_1} \sum_{x_3} \sum_{x_4} \widetilde{p}(\mathbf{x})
 \end{aligned} \tag{8.86}
 $$
 
@@ -1304,14 +1317,14 @@ We have assumed throughout this section that we are dealing with discrete variab
 
 Table 8.1 Example of a joint distribution over two binary variables for which the maximum of the joint distribution occurs for different variable values compared to the maxima of the two marginals.
 
-| | $x = 0$ | $x = 1$ |
-|---|---|---|
-| $y = 0$ | $0.3$ | $0.4$ |
-| $y = 1$ | $0.3$ | $0.0$ |
+|         | $x = 0$ | $x = 1$ |
+| ------- | ------- | ------- |
+| $y = 0$ | $0.3$   | $0.4$   |
+| $y = 1$ | $0.3$   | $0.0$   |
 
 continuous variables the summations are simply replaced by integrations. We shall give an example of the sum-product algorithm applied to a graph of linear-Gaussian variables when we consider linear dynamical systems.
 
-###### 8.4.5 The max-sum algorithm
+## 8.4.5 The max-sum algorithm
 
 The sum-product algorithm allows us to take a joint distribution $p(\mathbf{x})$ expressed as a factor graph and efﬁciently ﬁnd marginals over the component variables. Two other common tasks are to ﬁnd a setting of the variables that has the largest probability and to ﬁnd the value of that probability. These can be addressed through a closely related algorithm called max-sum, which can be viewed as an application of dynamic programming in the context of graphical models (Cormen et al., 2001).
 
@@ -1334,6 +1347,7 @@ We therefore seek an efﬁcient algorithm for ﬁnding the value of $\mathbf{x}$
 $$
 \max_{\mathbf{x}} p(\mathbf{x}) = \max_{x_1} \cdots \max_{x_M} p(\mathbf{x}) \tag{8.89}
 $$
+
 [Page 432]
 
 where $M$ is the total number of variables, and then substitute for $p(\mathbf{x})$ using its expansion in terms of a product of factors. In deriving the sum-product algorithm, we made use of the distributive law (8.53) for multiplication. Here we make use of the analogous law for the max operator
@@ -1377,6 +1391,7 @@ the results (8.66) and (8.69) derived earlier for the sum-product algorithm, we 
 $$
 \mu_{f \to x}(x) = \max_{x_1, \dots, x_M} \left[ \ln f(x, x_1, \dots, x_M) + \sum_{m \in \text{ne}(f) \setminus x} \mu_{x_m \to f}(x_m) \right] \tag{8.93}
 $$
+
 $$
 \mu_{x \to f}(x) = \sum_{l \in \text{ne}(x) \setminus f} \mu_{f_l \to x}(x). \tag{8.94}
 $$
@@ -1386,6 +1401,7 @@ The initial messages sent by the leaf nodes are obtained by analogy with (8.70) 
 $$
 \mu_{x \to f}(x) = 0 \tag{8.95}
 $$
+
 $$
 \mu_{f \to x}(x) = \ln f(x) \tag{8.96}
 $$

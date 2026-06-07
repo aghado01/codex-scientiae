@@ -1,15 +1,12 @@
 [Page 245]
 
-![In this image we can see a poster with some text and images.](../Images/imageFile24.png)
+![Chapter5](../Images/Chapters/Chapter5.png)
 
-# 5 Neural Networks
+# 5. Neural Networks
 
 In Chapters 3 and 4 we considered models for regression and classification that comprised linear combinations of fixed basis functions. We saw that such models have useful analytical and computational properties but that their practical applicability was limited by the curse of dimensionality. In order to apply such models to large-scale problems, it is necessary to adapt the basis functions to the data.
 
-Support vector machines (SVMs), discussed in Chapter 7, address this by first defining basis functions that are centred on the training data points and then selecting a subset of these during training. One advantage of SVMs is that, although the training involves nonlinear optimization, the objective function is convex, and so the solution of the optimization problem is relatively straightforward. The number of basis functions in the resulting models is generally much smaller than the number of training points, although it is often still relatively large and typically increases with the size of the training set. The relevance vector machine, discussed in Section 7.2, also chooses a subset from a fixed set of basis functions and typically results in much
-[Page 246]
-
-sparser models. Unlike the SVM it also produces probabilistic outputs, although this is at the expense of a nonconvex optimization during training.
+Support vector machines (SVMs), discussed in Chapter 7, address this by first defining basis functions that are centred on the training data points and then selecting a subset of these during training. One advantage of SVMs is that, although the training involves nonlinear optimization, the objective function is convex, and so the solution of the optimization problem is relatively straightforward. The number of basis functions in the resulting models is generally much smaller than the number of training points, although it is often still relatively large and typically increases with the size of the training set. The relevance vector machine, discussed in Section 7.2, also chooses a subset from a fixed set of basis functions and typically results in much sparser models. Unlike the SVM it also produces probabilistic outputs, although this is at the expense of a nonconvex optimization during training.
 
 An alternative approach is to fix the number of basis functions in advance but allow them to be adaptive, in other words to use parametric forms for the basis functions in which the parameter values are adapted during training. The most successful model of this type in the context of pattern recognition is the feed-forward neural network, also known as the multilayer perceptron, discussed in this chapter. In fact, ‘multilayer perceptron’ is really a misnomer, because the model comprises multiple layers of logistic regression models (with continuous nonlinearities) rather than multiple perceptrons (with discontinuous nonlinearities). For many applications, the resulting model can be significantly more compact, and hence faster to evaluate, than a support vector machine having the same generalization performance. The price to be paid for this compactness, as with the relevance vector machine, is that the likelihood function, which forms the basis for network training, is no longer a convex function of the model parameters. In practice, however, it is often worth investing substantial computational resources during the training phase in order to obtain a compact model that is fast at processing new data.
 
@@ -18,31 +15,38 @@ The term ‘neural network’ has its origins in attempts to find mathematical r
 We begin by considering the functional form of the network model, including the specific parameterization of the basis functions, and we then discuss the problem of determining the network parameters within a maximum likelihood framework, which involves the solution of a nonlinear optimization problem. This requires the evaluation of derivatives of the log likelihood function with respect to the network parameters, and we shall see how these can be obtained efficiently using the technique of error backpropagation. We shall also show how the backpropagation framework can be extended to allow other derivatives to be evaluated, such as the Jacobian and Hessian matrices. Next we discuss various approaches to regularization of neural network training and the relationships between them. We also consider some extensions to the neural network model, and in particular we describe a general framework for modelling conditional probability distributions known as mixture density networks. Finally, we discuss the use of Bayesian treatments of neural networks. Additional background on neural network models can be found in Bishop (1995a).
 [Page 247]
 
-# 5.1. Feed-forward Network Functions
+## 5.1. Feed-forward Network Functions
 
 The linear models for regression and classification discussed in Chapters 3 and 4, respectively, are based on linear combinations of fixed nonlinear basis functions $\phi_j(\mathbf{x})$ and take the form
+
 $$
 y(\mathbf{x}, \mathbf{w}) = f \left( \sum_{j=1}^{M} w_j \phi_j(\mathbf{x}) \right)
 \tag{5.1}
 $$
+
 where $f(\cdot)$ is a nonlinear activation function in the case of classification and is the identity in the case of regression. Our goal is to extend this model by making the basis functions $\phi_j(\mathbf{x})$ depend on parameters and then to allow these parameters to be adjusted, along with the coefficients $\{w_j\}$, during training. There are, of course, many ways to construct parametric nonlinear basis functions. Neural networks use basis functions that follow the same form as (5.1), so that each basis function is itself a nonlinear function of a linear combination of the inputs, where the coefficients in the linear combination are adaptive parameters.
 
 This leads to the basic neural network model, which can be described as a series of functional transformations. First we construct $M$ linear combinations of the input variables $x_1, \ldots, x_D$ in the form
+
 $$
 a_j = \sum_{i=1}^{D} w_{ji}^{(1)} x_i + w_{j0}^{(1)}
 \tag{5.2}
 $$
+
 where $j = 1, \ldots, M$, and the superscript $(1)$ indicates that the corresponding parameters are in the first ‘layer’ of the network. We shall refer to the parameters $w_{ji}^{(1)}$ as weights and the parameters $w_{j0}^{(1)}$ as biases, following the nomenclature of Chapter 3. The quantities $a_j$ are known as activations. Each of them is then transformed using a differentiable, nonlinear activation function $h(\cdot)$ to give
+
 $$
 z_j = h(a_j).
 \tag{5.3}
 $$
 
 These quantities correspond to the outputs of the basis functions in (5.1) that, in the context of neural networks, are called hidden units. The nonlinear functions $h(\cdot)$ are generally chosen to be sigmoidal functions such as the logistic sigmoid or the ‘tanh’ function. Following (5.1), these values are again linearly combined to give output unit activations
+
 $$
 a_k = \sum_{j=1}^{M} w_{kj}^{(2)} z_j + w_{k0}^{(2)}
 \tag{5.4}
 $$
+
 where $k = 1, \ldots, K$, and $K$ is the total number of outputs. This transformation corresponds to the second layer of the network, and again the $w_{k0}^{(2)}$ are bias parameters. Finally, the output unit activations are transformed using an appropriate activation function to give a set of network outputs $y_k$. The choice of activation function is determined by the nature of the data and the assumed distribution of target variables
 [Page 248]
 
@@ -51,11 +55,14 @@ Figure 5.1 Network diagram for the twolayer neural network corresponding to (5.7
 ![In the image there is a diagram with a line diagram. The diagram consists of a circle and a line. The line is labeled as W and M. The circle is labeled as W and M. The line is labeled as W and M. The diagram is labeled as W and M.](../Images/imageFile107.png)
 
 and follows the same considerations as for linear models discussed in Chapters 3 and 4. Thus for standard regression problems, the activation function is the identity so that $y_k = a_k$. Similarly, for multiple binary classification problems, each output unit activation is transformed using a logistic sigmoid function so that
+
 $$
 y_k = \sigma(a_k)
 \tag{5.5}
 $$
+
 where
+
 $$
 \sigma(a) = \frac{1}{1 + \exp(-a)}.
 \tag{5.6}
@@ -64,10 +71,12 @@ $$
 Finally, for multiclass problems, a softmax activation function of the form (4.62) is used. The choice of output unit activation function is discussed in detail in Section 5.2.
 
 We can combine these various stages to give the overall network function that, for sigmoidal output unit activation functions, takes the form
+
 $$
 y_k(\mathbf{x}, \mathbf{w}) = \sigma \left( \sum_{j=1}^M w_{kj}^{(2)} h \left( \sum_{i=1}^D w_{ji}^{(1)} x_i + w_{j0}^{(1)} \right) + w_{k0}^{(2)} \right)
 \tag{5.7}
 $$
+
 where the set of all weight and bias parameters have been grouped together into a vector $\mathbf{w}$. Thus the neural network model is simply a nonlinear function from a set of input variables $\{x_i\}$ to a set of output variables $\{y_k\}$ controlled by a vector $\mathbf{w}$ of adjustable parameters.
 
 This function can be represented in the form of a network diagram as shown in Figure 5.1. The process of evaluating (5.7) can then be interpreted as a forward propagation of information through the network. It should be emphasized that these diagrams do not represent probabilistic graphical models of the kind to be considered in Chapter 8 because the internal nodes represent deterministic variables rather than stochastic ones. For this reason, we have adopted a slightly different graphical
@@ -146,12 +155,13 @@ Similarly, imagine that we interchange the values of all of the weights (and the
 
 It turns out that these factors account for all of the symmetries in weight space (except for possible accidental symmetries due to specific choices for the weight values). Furthermore, the existence of these symmetries is not a particular property of the ‘tanh’ function but applies to a wide range of activation functions (Kůrková and Kainen, 1994). In many cases, these symmetries in weight space are of little practical consequence, although in Section 5.7 we shall encounter a situation in which we need to take them into account.
 
-## 5.2. Network Training
+### 5.2. Network Training
 
 So far, we have viewed neural networks as a general class of parametric nonlinear functions from a vector $\mathbf{x}$ of input variables to a vector $\mathbf{y}$ of output variables. A simple approach to the problem of determining the network parameters is to make an analogy with the discussion of polynomial curve fitting in Section 1.1, and therefore to minimize a sum-of-squares error function. Given a training set comprising a set of input vectors $\{\mathbf{x}_n\}$, where $n = 1,\ldots,N$, together with a corresponding set of
 [Page 253]
 
 target vectors $\{\mathbf{t}_n\}$, we minimize the error function
+
 $$
 E(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^N \|\mathbf{y}(\mathbf{x}_n, \mathbf{w}) - \mathbf{t}_n\|^2 . \tag{5.11}
 $$
@@ -159,58 +169,73 @@ $$
 However, we can provide a much more general view of network training by first giving a probabilistic interpretation to the network outputs. We have already seen many advantages of using probabilistic predictions in Section 1.5.4. Here it will also provide us with a clearer motivation both for the choice of output unit nonlinearity and the choice of error function.
 
 We start by discussing regression problems, and for the moment we consider a single target variable $t$ that can take any real value. Following the discussions in Section 1.2.5 and 3.1, we assume that $t$ has a Gaussian distribution with an $\mathbf{x}$-dependent mean, which is given by the output of the neural network, so that
+
 $$
 p(t|\mathbf{x}, \mathbf{w}) = \mathcal{N}(t|y(\mathbf{x}, \mathbf{w}), \beta^{-1}) \tag{5.12}
 $$
 
 where $\beta$ is the precision (inverse variance) of the Gaussian noise. Of course this is a somewhat restrictive assumption, and in Section 5.6 we shall see how to extend this approach to allow for more general conditional distributions. For the conditional distribution given by (5.12), it is sufficient to take the output unit activation function to be the identity, because such a network can approximate any continuous function from $\mathbf{x}$ to $y$. Given a data set of $N$ independent, identically distributed observations $\mathbf{X} = \{\mathbf{x}_1,\ldots,\mathbf{x}_N\}$, along with corresponding target values $\mathbf{t} = \{t_1,\ldots,t_N\}$, we can construct the corresponding likelihood function
+
 $$
 p(\mathbf{t}|\mathbf{X}, \mathbf{w}, \beta) = \prod_{n=1}^N p(t_n|\mathbf{x}_n, \mathbf{w}, \beta).
 $$
 
 Taking the negative logarithm, we obtain the error function
+
 $$
 \frac{\beta}{2} \sum_{n=1}^N \{y(\mathbf{x}_n, \mathbf{w}) - t_n\}^2 - \frac{N}{2} \ln \beta + \frac{N}{2} \ln(2\pi) \tag{5.13}
 $$
 
 which can be used to learn the parameters $\mathbf{w}$ and $\beta$. In Section 5.7, we shall discuss the Bayesian treatment of neural networks, while here we consider a maximum likelihood approach. Note that in the neural networks literature, it is usual to consider the minimization of an error function rather than the maximization of the (log) likelihood, and so here we shall follow this convention. Consider first the determination of $\mathbf{w}$. Maximizing the likelihood function is equivalent to minimizing the sum-of-squares error function given by
+
 $$
 E(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^N \{y(\mathbf{x}_n, \mathbf{w}) - t_n\}^2 \tag{5.14}
 $$
+
 [Page 254]
 
 where we have discarded additive and multiplicative constants. The value of $\mathbf{w}$ found by minimizing $E(\mathbf{w})$ will be denoted $\mathbf{w}_{\mathrm{ML}}$ because it corresponds to the maximum likelihood solution. In practice, the nonlinearity of the network function $y(\mathbf{x}_n, \mathbf{w})$ causes the error $E(\mathbf{w})$ to be nonconvex, and so in practice local maxima of the likelihood may be found, corresponding to local minima of the error function, as discussed in Section 5.2.1.
 
 Having found $\mathbf{w}_{\mathrm{ML}}$, the value of $\beta$ can be found by minimizing the negative log likelihood to give
+
 $$
 \frac{1}{\beta_{\mathrm{ML}}} = \frac{1}{N} \sum_{n=1}^{N} \{ y(\mathbf{x}_n, \mathbf{w}_{\mathrm{ML}}) - t_n \}^2. \tag{5.15}
 $$
 
 Note that this can be evaluated once the iterative optimization required to find $\mathbf{w}_{\mathrm{ML}}$ is completed. If we have multiple target variables, and we assume that they are independent conditional on $\mathbf{x}$ and $\mathbf{w}$ with shared noise precision $\beta$, then the conditional distribution of the target values is given by
+
 $$
 p(\mathbf{t}|\mathbf{x}, \mathbf{w}) = \mathcal{N} \left( \mathbf{t}| \mathbf{y}(\mathbf{x}, \mathbf{w}), \beta^{-1}\mathbf{I} \right). \tag{5.16}
 $$
 
 Following the same argument as for a single target variable, we see that the maximum likelihood weights are determined by minimizing the sum-of-squares error function (5.11). The noise precision is then given by
+
 $$
 \frac{1}{\beta_{\mathrm{ML}}} = \frac{1}{NK} \sum_{n=1}^{N} \| \mathbf{y}(\mathbf{x}_n, \mathbf{w}_{\mathrm{ML}}) - \mathbf{t}_n \|^2 \tag{5.17}
 $$
+
 where $K$ is the number of target variables. The assumption of independence can be dropped at the expense of a slightly more complex optimization problem.
 
 Recall from Section 4.3.6 that there is a natural pairing of the error function (given by the negative log likelihood) and the output unit activation function. In the regression case, we can view the network as having an output activation function that is the identity, so that $y_k = a_k$. The corresponding sum-of-squares error function has the property
+
 $$
 \frac{\partial E}{\partial a_k} = y_k - t_k \tag{5.18}
 $$
+
 which we shall make use of when discussing error backpropagation in Section 5.3.
 
 Now consider the case of binary classification in which we have a single target variable $t$ such that $t = 1$ denotes class $\mathcal{C}_1$ and $t = 0$ denotes class $\mathcal{C}_2$. Following the discussion of canonical link functions in Section 4.3.6, we consider a network having a single output whose activation function is a logistic sigmoid
+
 $$
 y = \sigma(a) \equiv \frac{1}{1 + \exp(-a)} \tag{5.19}
 $$
+
 so that $0 \leqslant y(\mathbf{x}, \mathbf{w}) \leqslant 1$. We can interpret $y(\mathbf{x}, \mathbf{w})$ as the conditional probability $p(\mathcal{C}_1|\mathbf{x})$, with $p(\mathcal{C}_2|\mathbf{x})$ given by $1 - y(\mathbf{x}, \mathbf{w})$. The conditional distribution of targets given inputs is then a Bernoulli distribution of the form
+
 $$
 p(t|\mathbf{x}, \mathbf{w}) = y(\mathbf{x}, \mathbf{w})^t \{1 - y(\mathbf{x}, \mathbf{w})\}^{1-t}. \tag{5.20}
 $$
+
 [Page 255]
 
 If we consider a training set of independent observations, then the error function, which is given by the negative log likelihood, is then a cross-entropy error function of the form
@@ -242,6 +267,7 @@ Finally, we consider the standard multiclass classification problem in which eac
 $$
 E(\mathbf{w}) = - \sum_{n=1}^{N} \sum_{k=1}^{K} t_{kn} \ln y_k(\mathbf{x}_n, \mathbf{w}). \tag{5.24}
 $$
+
 [Page 256]
 
 ![The image depicts a diagram of a cylindrical object with a diameter of 10 cm and a height of 10 cm. The object is labeled as W and has a label E on the top. The object is a cylinder with a circular base and a circular top. The base of the cylinder is a circle with a diameter of 10 cm. The top of the cylinder is a circle with a diameter of 10 cm. The object is labeled as W and has a label E on the top. ### Objects in the Image: 1. **Cylinder**: The object is a cylinder with a circular base and a circular top. 2. **Circular Base**: The base of the cylinder is a circle with a diameter of 10 cm. 3. **Circular Top**: The top of the cylinder is a circle with a diameter of 10 cm. 4. **Label**: The label](../Images/imageFile111.png)
@@ -249,9 +275,11 @@ $$
 Figure 5.5 Geometrical view of the error function $E(\mathbf{w})$ as a surface sitting over weight space. Point $\mathbf{w}_A$ is a local minimum and $\mathbf{w}_B$ is the global minimum. At any point $\mathbf{w}_C$, the local gradient of the error surface is given by the vector $\nabla E$.
 
 Following the discussion of Section 4.3.4, we see that the output unit activation function, which corresponds to the canonical link, is given by the softmax function
+
 $$
 y_k(\mathbf{x}, \mathbf{w}) = \frac{\exp(a_k(\mathbf{x}, \mathbf{w}))}{\sum_j \exp(a_j(\mathbf{x}, \mathbf{w}))} \tag{5.25}
 $$
+
 which satisfies $0 \le y_k \le 1$ and $\sum_k y_k = 1$. Note that the $y_k(\mathbf{x}, \mathbf{w})$ are unchanged if a constant is added to all of the $a_k(\mathbf{x}, \mathbf{w})$, causing the error function to be constant for some directions in weight space. This degeneracy is removed if an appropriate regularization term (Section 5.5) is added to the error function.
 
 Once again, the derivative of the error function with respect to the activation for a particular output unit takes the familiar form (5.18).
@@ -295,18 +323,23 @@ $$
 E(\mathbf{w}) \simeq E(\widehat{\mathbf{w}}) + (\mathbf{w} - \widehat{\mathbf{w}})^{\mathrm{T}}\mathbf{b} + \frac{1}{2}(\mathbf{w} - \widehat{\mathbf{w}})^{\mathrm{T}}\mathbf{H}(\mathbf{w} - \widehat{\mathbf{w}})
 \tag{5.28}
 $$
+
 [Page 258]
 
 where cubic and higher terms have been omitted. Here $\mathbf{b}$ is defined to be the gradient of $E$ evaluated at $\widehat{\mathbf{w}}$
+
 $$
 \mathbf{b} \equiv \nabla E \big|_{\mathbf{w}=\widehat{\mathbf{w}}} \tag{5.29}
 $$
+
 and the Hessian matrix $\mathbf{H} = \nabla\nabla E$ has elements
+
 $$
 (\mathbf{H})_{ij} \equiv \frac{\partial E}{\partial w_i \partial w_j} \bigg|_{\mathbf{w}=\widehat{\mathbf{w}}}. \tag{5.30}
 $$
 
 From (5.28), the corresponding local approximation to the gradient is given by
+
 $$
 \nabla E \simeq \mathbf{b} + \mathbf{H}(\mathbf{w} - \widehat{\mathbf{w}}). \tag{5.31}
 $$
@@ -314,32 +347,41 @@ $$
 For points $\mathbf{w}$ that are sufficiently close to $\widehat{\mathbf{w}}$, these expressions will give reasonable approximations for the error and its gradient.
 
 Consider the particular case of a local quadratic approximation around a point $\mathbf{w}^{\star}$ that is a minimum of the error function. In this case there is no linear term, because $\nabla E = 0$ at $\mathbf{w}^{\star}$, and (5.28) becomes
+
 $$
 E(\mathbf{w}) = E(\mathbf{w}^{\star}) + \frac{1}{2} (\mathbf{w} - \mathbf{w}^{\star})^T \mathbf{H} (\mathbf{w} - \mathbf{w}^{\star}) \tag{5.32}
 $$
 
 where the Hessian $\mathbf{H}$ is evaluated at $\mathbf{w}^{\star}$. In order to interpret this geometrically, consider the eigenvalue equation for the Hessian matrix
+
 $$
 \mathbf{H}\mathbf{u}_i = \lambda_i \mathbf{u}_i \tag{5.33}
 $$
+
 where the eigenvectors $\mathbf{u}_i$ form a complete orthonormal set (Appendix C) so that
+
 $$
 \mathbf{u}_i^T \mathbf{u}_j = \delta_{ij}. \tag{5.34}
 $$
+
 We now expand $(\mathbf{w} - \mathbf{w}^{\star})$ as a linear combination of the eigenvectors in the form
+
 $$
 \mathbf{w} - \mathbf{w}^{\star} = \sum_{i} \alpha_i \mathbf{u}_i. \tag{5.35}
 $$
 
 This can be regarded as a transformation of the coordinate system in which the origin is translated to the point $\mathbf{w}^{\star}$, and the axes are rotated to align with the eigenvectors (through the orthogonal matrix whose columns are the $\mathbf{u}_i$), and is discussed in more detail in Appendix C. Substituting (5.35) into (5.32), and using (5.33) and (5.34), allows the error function to be written in the form
+
 $$
 E(\mathbf{w}) = E(\mathbf{w}^{\star}) + \frac{1}{2} \sum_{i} \lambda_i \alpha_i^2. \tag{5.36}
 $$
 
 A matrix $\mathbf{H}$ is said to be positive definite if, and only if,
+
 $$
 \mathbf{v}^T \mathbf{H} \mathbf{v} > 0 \quad \text{for all } \mathbf{v}. \tag{5.37}
 $$
+
 [Page 259]
 
 ![The image depicts a circular diagram with a central point labeled as W. This point is positioned at the center of the circle. The diagram is labeled with the following labels: - W: The point where the line segment W intersects the circle. - (\alpha_1): The angle between the line segment W and the radius of the circle. - (\alpha_2): The angle between the line segment W and the radius of the circle. - (\alpha_3): The angle between the line segment W and the radius of the circle. - (\alpha_4): The angle between the line segment W and the radius of the circle. - (\alpha_5): The angle between the line segment W and the radius of the circle. - (\alpha_6): The angle between the line segment W and the radius of the circle. - (\alpha_7): The angle between](../Images/imageFile112.png)
@@ -347,16 +389,19 @@ $$
 Figure 5.6 In the neighbourhood of a minimum $\mathbf{w}^{\star}$, the error function can be approximated by a quadratic. Contours of constant error are then ellipses whose axes are aligned with the eigenvectors $\mathbf{u}_i$ of the Hessian matrix, with lengths that are inversely proportional to the square roots of the corresponding eigenvalues $\lambda_i$.
 
 Because the eigenvectors $\{\mathbf{u}_i\}$ form a complete set, an arbitrary vector $\mathbf{v}$ can be written in the form
+
 $$
 \mathbf{v} = \sum_{i} c_i \mathbf{u}_i. \tag{5.38}
 $$
 
 From (5.33) and (5.34), we then have
+
 $$
 \mathbf{v}^{\mathrm{T}} \mathbf{H} \mathbf{v} = \sum_{i} c_i^2 \lambda_i \tag{5.39}
 $$
 
 and so $\mathbf{H}$ will be positive definite if, and only if, all of its eigenvalues are positive. In the new coordinate system, whose basis vectors are given by the eigenvectors $\{\mathbf{u}_i\}$, the contours of constant $E$ are ellipses centred on the origin, as illustrated in Figure 5.6. For a one-dimensional weight space, a stationary point $w^{\star}$ will be a minimum if
+
 $$
 \left. \frac{\partial^2 E}{\partial w^2} \right|_{w^{\star}} > 0. \tag{5.40}
 $$
@@ -399,6 +444,7 @@ On-line gradient descent, also known as sequential gradient descent or stochasti
 $$
 \mathbf{w}^{(\tau+1)} = \mathbf{w}^{(\tau)} - \eta \nabla E_n(\mathbf{w}^{(\tau)}). \tag{5.43}
 $$
+
 [Page 261]
 
 This update is repeated by cycling through the data either in sequence or by selecting points at random with replacement. There are of course intermediate scenarios in which the updates are based on batches of data points.
@@ -421,29 +467,39 @@ uation of other derivatives such as the Jacobian and Hessian matrices, as we sha
 We now derive the backpropagation algorithm for a general network having arbitrary feed-forward topology, arbitrary differentiable nonlinear activation functions, and a broad class of error function. The resulting formulae will then be illustrated using a simple layered network structure having a single layer of sigmoidal hidden units together with a sum-of-squares error.
 
 Many error functions of practical interest, for instance those defined by maximum likelihood for a set of i.i.d. data, comprise a sum of terms, one for each data point in the training set, so that
+
 $$
 E(\mathbf{w}) = \sum_{n=1}^{N} E_n(\mathbf{w}). \tag{5.44}
 $$
+
 Here we shall consider the problem of evaluating $\nabla E_n(\mathbf{w})$ for one such term in the error function. This may be used directly for sequential optimization, or the results can be accumulated over the training set in the case of batch methods.
 
 Consider first a simple linear model in which the outputs $y_k$ are linear combinations of the input variables $x_i$ so that
+
 $$
 y_k = \sum_i w_{ki} x_i \tag{5.45}
 $$
+
 together with an error function that, for a particular input pattern $n$, takes the form
+
 $$
 E_n = \frac{1}{2} \sum_k (y_{nk} - t_{nk})^2 \tag{5.46}
 $$
+
 where $y_{nk} = y_k(\mathbf{x}_n, \mathbf{w})$. The gradient of this error function with respect to a weight $w_{ji}$ is given by
+
 $$
 \frac{\partial E_n}{\partial w_{ji}} = (y_{nj} - t_{nj}) x_{ni} \tag{5.47}
 $$
+
 which can be interpreted as a ‘local’ computation involving the product of an ‘error signal’ $y_{nj} - t_{nj}$ associated with the output end of the link $w_{ji}$ and the variable $x_{ni}$ associated with the input end of the link. In Section 4.3.2, we saw how a similar formula arises with the logistic sigmoid activation function together with the cross entropy error function, and similarly for the softmax activation function together with its matching cross-entropy error function. We shall now see how this simple result extends to the more complex setting of multilayer feed-forward networks.
 
 In a general feed-forward network, each unit computes a weighted sum of its inputs of the form
+
 $$
 a_j = \sum_i w_{ji} z_i \tag{5.48}
 $$
+
 [Page 263]
 
 where $z_i$ is the activation of a unit, or input, that sends a connection to unit $j$, and $w_{ji}$ is the weight associated with that connection. In Section 5.1, we saw that biases can be included in this sum by introducing an extra unit, or input, with activation fixed at $+1$. We therefore do not need to deal with biases explicitly. The sum in (5.48) is transformed by a nonlinear activation function $h(\cdot)$ to give the activation $z_j$ of unit $j$ in the form
@@ -495,6 +551,7 @@ $$
 \delta_k = y_k - t_k
 \tag{5.54}
 $$
+
 [Page 264]
 
 Figure 5.7 Illustration of the calculation of $\delta_j$ for hidden unit $j$ by backpropagation of the $\delta$'s from those units $k$ to which unit $j$ sends connections. The blue arrow denotes the direction of information flow during forward propagation, and the red arrows indicate the backward propagation of error information.
@@ -502,13 +559,17 @@ Figure 5.7 Illustration of the calculation of $\delta_j$ for hidden unit $j$ by 
 ![image 113](../Images/imageFile113.png)
 
 provided we are using the canonical link as the output-unit activation function. To evaluate the $\delta$'s for hidden units, we again make use of the chain rule for partial derivatives,
+
 $$
 \delta_j \equiv \frac{\partial E_n}{\partial a_j} = \sum_k \frac{\partial E_n}{\partial a_k} \frac{\partial a_k}{\partial a_j} \tag{5.55}
 $$
+
 where the sum runs over all units $k$ to which unit $j$ sends connections. The arrangement of units and weights is illustrated in Figure 5.7. Note that the units labelled $k$ could include other hidden units and/or output units. In writing down (5.55), we are making use of the fact that variations in $a_j$ give rise to variations in the error function only through variations in the variables $a_k$. If we now substitute the definition of $\delta$ given by (5.51) into (5.55), and make use of (5.48) and (5.49), we obtain the following backpropagation formula
+
 $$
 \delta_j = h'(a_j) \sum_k w_{kj} \delta_k \tag{5.56}
 $$
+
 which tells us that the value of $\delta$ for a particular hidden unit can be obtained by propagating the $\delta$'s backwards from units higher up in the network, as illustrated in Figure 5.7. Note that the summation in (5.56) is taken over the first index on $w_{kj}$ (corresponding to backward propagation of information through the network), whereas in the forward propagation equation (5.10) it is taken over the second index. Because we already know the values of the $\delta$'s for the output units, it follows that by recursively applying (5.56) we can evaluate the $\delta$'s for all of the hidden units in a feed-forward network, regardless of its topology.
 
 The backpropagation procedure can therefore be summarized as follows.
@@ -519,9 +580,10 @@ The backpropagation procedure can therefore be summarized as follows.
 - 2. Evaluate the $\delta_k$ for all the output units using (5.54).
 - 3. Backpropagate the $\delta$'s using (5.56) to obtain $\delta_j$ for each hidden unit in the network.
 - 4. Use (5.53) to evaluate the required derivatives.
-[Page 265]
+     [Page 265]
 
 For batch methods, the derivative of the total error $E$ can then be obtained by repeating the above steps for each pattern in the training set and then summing over all patterns:
+
 $$
 \frac{\partial E}{\partial w_{ji}} = \sum_{n} \frac{\partial E_{n}}{\partial w_{ji}} .
 \tag{5.57}
@@ -532,23 +594,28 @@ In the above derivation we have implicitly assumed that each hidden or output un
 ### 5.3.2 A simple example
 
 The above derivation of the backpropagation procedure allowed for general forms for the error function, the activation functions, and the network topology. In order to illustrate the application of this algorithm, we shall consider a particular example. This is chosen both for its simplicity and for its practical importance, because many applications of neural networks reported in the literature make use of this type of network. Specifically, we shall consider a two-layer network of the form illustrated in Figure 5.1, together with a sum-of-squares error, in which the output units have linear activation functions, so that $y_k = a_k$, while the hidden units have logistic sigmoid activation functions given by
+
 $$
 h(a) \equiv \tanh(a)
 \tag{5.58}
 $$
+
 where
+
 $$
 \tanh(a) = \frac{e^a - e^{-a}}{e^a + e^{-a}} .
 \tag{5.59}
 $$
 
 A useful feature of this function is that its derivative can be expressed in a particularly simple form:
+
 $$
 h'(a) = 1 - h(a)^2 .
 \tag{5.60}
 $$
 
 We also consider a standard sum-of-squares error function, so that for pattern $n$ the error is given by
+
 $$
 E_n = \frac{1}{2} \sum_{k=1}^K (y_k - t_k)^2
 \tag{5.61}
@@ -557,6 +624,7 @@ $$
 where $y_k$ is the activation of output unit $k$, and $t_k$ is the corresponding target, for a particular input pattern $\mathbf{x}_n$.
 
 For each pattern in the training set in turn, we first perform a forward propagation using
+
 $$
 \begin{align}
 a_j &= \sum_{i=0}^D w_{ji}^{(1)} x_i \tag{5.62} \\
@@ -568,21 +636,25 @@ $$
 y_k = \sum_{j=0}^M w_{kj}^{(2)} z_j .
 \tag{5.64}
 $$
+
 [Page 266]
 
 Next we compute the $\delta$’s for each output unit using
+
 $$
 \delta_{k} = y_{k} - t_{k}.
 \tag{5.65}
 $$
 
 Then we backpropagate these to obtain $\delta$s for the hidden units using
+
 $$
 \delta_{j} = (1 - z_{j}^{2}) \sum_{k=1}^{K} w_{kj} \delta_{k}.
 \tag{5.66}
 $$
 
 Finally, the derivatives with respect to the first-layer and second-layer weights are given by
+
 $$
 \frac{\partial E_n}{\partial w_{ji}^{(1)}} = \delta_j x_i, \quad \frac{\partial E_n}{\partial w_{kj}^{(2)}} = \delta_k z_j.
 \tag{5.67}
@@ -593,11 +665,14 @@ $$
 One of the most important aspects of backpropagation is its computational efficiency. To understand this, let us examine how the number of computer operations required to evaluate the derivatives of the error function scales with the total number $W$ of weights and biases in the network. A single evaluation of the error function (for a given input pattern) would require $O(W)$ operations, for sufficiently large $W$. This follows from the fact that, except for a network with very sparse connections, the number of weights is typically much greater than the number of units, and so the bulk of the computational effort in forward propagation is concerned with evaluating the sums in (5.48), with the evaluation of the activation functions representing a small overhead. Each term in the sum in (5.48) requires one multiplication and one addition, leading to an overall computational cost that is $O(W)$.
 
 An alternative approach to backpropagation for computing the derivatives of the error function is to use finite differences. This can be done by perturbing each weight in turn, and approximating the derivatives by the expression
+
 $$
 \frac{\partial E_n}{\partial w_{ji}} = \frac{E_n(w_{ji} + \epsilon) - E_n(w_{ji})}{\epsilon} + O(\epsilon)
 \tag{5.68}
 $$
+
 where $\epsilon \ll 1$. In a software simulation, the accuracy of the approximation to the derivatives can be improved by making $\epsilon$ smaller, until numerical roundoff problems arise. The accuracy of the finite differences method can be improved significantly by using symmetrical central differences of the form
+
 $$
 \frac{\partial E_n}{\partial w_{ji}} = \frac{E_n(w_{ji} + \epsilon) - E_n(w_{ji} - \epsilon)}{2\epsilon} + O(\epsilon^2).
 \tag{5.69}
@@ -619,15 +694,19 @@ However, numerical differentiation plays an important role in practice, because 
 ### 5.3.4 The Jacobian matrix
 
 We have seen how the derivatives of an error function with respect to the weights can be obtained by the propagation of errors backwards through the network. The technique of backpropagation can also be applied to the calculation of other derivatives. Here we consider the evaluation of the Jacobian matrix, whose elements are given by the derivatives of the network outputs with respect to the inputs
+
 $$
 J_{ki} \equiv \frac{\partial y_k}{\partial x_i}
 \tag{5.70}
 $$
+
 where each such derivative is evaluated with all other inputs held fixed. Jacobian matrices play a useful role in systems built from a number of distinct modules, as illustrated in Figure 5.8. Each module can comprise a fixed or adaptive function, which can be linear or nonlinear, so long as it is differentiable. Suppose we wish to minimize an error function $E$ with respect to the parameter $w$ in Figure 5.8. The derivative of the error function is given by
+
 $$
 \frac{\partial E}{\partial w} = \sum_{k,j} \frac{\partial E}{\partial y_k} \frac{\partial y_k}{\partial z_j} \frac{\partial z_j}{\partial w}
 \tag{5.71}
 $$
+
 in which the Jacobian matrix for the red module in Figure 5.8 appears in the middle term.
 
 Because the Jacobian matrix provides a measure of the local sensitivity of the outputs to changes in each of the input variables, it also allows any known errors $\Delta x_i$ associated with the inputs to be propagated through the trained network in order to estimate their contribution $\Delta y_k$ to the errors at the outputs, through the relation
@@ -689,7 +768,7 @@ $$
 
 which involves $2D$ forward propagations for a network having $D$ inputs.
 
-## 5.4. The Hessian Matrix
+### 5.4. The Hessian Matrix
 
 We have shown how the technique of backpropagation can be used to obtain the first derivatives of an error function with respect to the weights in the network. Backpropagation can also be used to evaluate the second derivatives of the error, given by
 
@@ -713,18 +792,21 @@ An important consideration for many applications of the Hessian is the efficienc
 ### 5.4.1 Diagonal approximation
 
 Some of the applications for the Hessian matrix discussed above require the inverse of the Hessian, rather than the Hessian itself. For this reason, there has been some interest in using a diagonal approximation to the Hessian, in other words one that simply replaces the off-diagonal elements with zeros, because its inverse is trivial to evaluate. Again, we shall consider an error function that consists of a sum of terms, one for each pattern in the data set, so that $E = \sum_{n} E_{n}$. The Hessian can then be obtained by considering one pattern at a time, and then summing the results over all patterns. From (5.48), the diagonal elements of the Hessian, for pattern $n$, can be written
+
 $$
 \frac{\partial^{2} E_{n}}{\partial w_{j i}^{2}} = \frac{\partial^{2} E_{n}}{\partial a_{j}^{2}} z_{i}^{2}.
 \tag{5.79}
 $$
 
 Using (5.48) and (5.49), the second derivatives on the right-hand side of (5.79) can be found recursively using the chain rule of differential calculus to give a backpropagation equation of the form
+
 $$
 \frac{\partial^{2} E_{n}}{\partial a_{j}^{2}} = h'(a_{j})^{2} \sum_{k} \sum_{k'} w_{k j} w_{k' j} \frac{\partial^{2} E_{n}}{\partial a_{k} \partial a_{k'}} + h''(a_{j}) \sum_{k} w_{k j} \frac{\partial E_{n}}{\partial a_{k}}.
 \tag{5.80}
 $$
 
 If we now neglect off-diagonal elements in the second-derivative terms, we obtain (Becker and Le Cun, 1989; Le Cun et al., 1990)
+
 $$
 \frac{\partial^{2} E_{n}}{\partial a_{j}^{2}} = h'(a_{j})^{2} \sum_{k} w_{k j}^{2} \frac{\partial^{2} E_{n}}{\partial a_{k}^{2}} + h''(a_{j}) \sum_{k} w_{k j} \frac{\partial E_{n}}{\partial a_{k}}.
 \tag{5.81}
@@ -738,57 +820,75 @@ Ricotti et al. (1988) also used the diagonal approximation to the Hessian, but t
 ###### 5.4.2 Outer product approximation
 
 When neural networks are applied to regression problems, it is common to use a sum-of-squares error function of the form
+
 $$
 E = \frac{1}{2} \sum_{n=1}^{N} (y_n - t_n)^2 \tag{5.82}
 $$
+
 where we have considered the case of a single output in order to keep the notation simple (the extension to several outputs is straightforward). We can then write the Hessian matrix in the form
+
 $$
 H = \nabla \nabla E = \sum_{n=1}^{N} \nabla y_n \nabla y_n + \sum_{n=1}^{N} (y_n - t_n) \nabla \nabla y_n . \tag{5.83}
 $$
+
 If the network has been trained on the data set, and its outputs $y_n$ happen to be very close to the target values $t_n$, then the second term in (5.83) will be small and can be neglected. More generally, however, it may be appropriate to neglect this term by the following argument. Recall from Section 1.5.5 that the optimal function that minimizes a sum-of-squares loss is the conditional average of the target data. The quantity $(y_n - t_n)$ is then a random variable with zero mean. If we assume that its value is uncorrelated with the value of the second derivative term on the right-hand side of (5.83), then the whole term will average to zero in the summation over $n$.
 
 By neglecting the second term in (5.83), we arrive at the Levenberg–Marquardt approximation or outer product approximation (because the Hessian matrix is built up from a sum of outer products of vectors), given by
+
 $$
 H \simeq \sum_{n=1}^{N} \mathbf{b}_n \mathbf{b}_n^{\text{T}} \tag{5.84}
 $$
+
 where $\mathbf{b}_n = \nabla y_n = \nabla a_n$ because the activation function for the output units is simply the identity. Evaluation of the outer product approximation for the Hessian is straightforward as it only involves first derivatives of the error function, which can be evaluated efficiently in $\mathcal{O}(W)$ steps using standard backpropagation. The elements of the matrix can then be found in $\mathcal{O}(W^2)$ steps by simple multiplication. It is important to emphasize that this approximation is only likely to be valid for a network that has been trained appropriately, and that for a general network mapping the second derivative terms on the right-hand side of (5.83) will typically not be negligible.
 
 In the case of the cross-entropy error function for a network with logistic sigmoid output-unit activation functions, the corresponding approximation is given by
+
 $$
 H \simeq \sum_{n=1}^{N} y_n (1 - y_n) \mathbf{b}_n \mathbf{b}_n^{\text{T}} . \tag{5.85}
 $$
+
 An analogous result can be obtained for multiclass networks having softmax output-unit activation functions.
 [Page 272]
 
 ###### 5.4.3 Inverse Hessian
 
 We can use the outer-product approximation to develop a computationally efficient procedure for approximating the inverse of the Hessian (Hassibi and Stork, 1993). First we write the outer-product approximation in matrix notation as
+
 $$
 \mathbf{H}_{N} = \sum_{n=1}^{N} \mathbf{b}_{n}\mathbf{b}_{n}^{T} \tag{5.86}
 $$
+
 where $\mathbf{b}_{n} \equiv \nabla_{\mathbf{w}} a_{n}$ is the contribution to the gradient of the output unit activation arising from data point $n$. We now derive a sequential procedure for building up the Hessian by including data points one at a time. Suppose we have already obtained the inverse Hessian using the first $L$ data points. By separating off the contribution from data point $L + 1$, we obtain
+
 $$
 \mathbf{H}_{L+1} = \mathbf{H}_{L} + \mathbf{b}_{L+1}\mathbf{b}_{L+1}^{T}. \tag{5.87}
 $$
+
 In order to evaluate the inverse of the Hessian, we now consider the matrix identity
+
 $$
 (\mathbf{M} + \mathbf{v}\mathbf{v}^{T})^{-1} = \mathbf{M}^{-1} - \frac{(\mathbf{M}^{-1}\mathbf{v})(\mathbf{v}^{T}\mathbf{M}^{-1})}{1 + \mathbf{v}^{T}\mathbf{M}^{-1}\mathbf{v}} \tag{5.88}
 $$
+
 where $\mathbf{I}$ is the unit matrix, which is simply a special case of the Woodbury identity (C.7). If we now identify $\mathbf{H}_{L}$ with $\mathbf{M}$ and $\mathbf{b}_{L+1}$ with $\mathbf{v}$, we obtain
+
 $$
 \mathbf{H}_{L+1}^{-1} = \mathbf{H}_{L}^{-1} - \frac{\mathbf{H}_{L}^{-1}\mathbf{b}_{L+1}\mathbf{b}_{L+1}^{T}\mathbf{H}_{L}^{-1}}{1 + \mathbf{b}_{L+1}^{T}\mathbf{H}_{L}^{-1}\mathbf{b}_{L+1}}. \tag{5.89}
 $$
+
 In this way, data points are sequentially absorbed until $L+1 = N$ and the whole data set has been processed. This result therefore represents a procedure for evaluating the inverse of the Hessian using a single pass through the data set. The initial matrix $\mathbf{H}_{0}$ is chosen to be $\alpha\mathbf{I}$, where $\alpha$ is a small quantity, so that the algorithm actually finds the inverse of $\mathbf{H} + \alpha\mathbf{I}$. The results are not particularly sensitive to the precise value of $\alpha$. Extension of this algorithm to networks having more than one output is straightforward. We note here that the Hessian matrix can sometimes be calculated indirectly as part of the network training algorithm. In particular, quasi-Newton nonlinear optimization algorithms gradually build up an approximation to the inverse of the Hessian during training. Such algorithms are discussed in detail in Bishop and Nabney (2008).
 
 ###### 5.4.4 Finite differences
 
 As in the case of the first derivatives of the error function, we can find the second derivatives by using finite differences, with accuracy limited by numerical precision. If we perturb each possible pair of weights in turn, we obtain
+
 $$
 \begin{aligned}
 \frac{\partial^{2} E}{\partial w_{ji} \partial w_{lk}} &= \frac{1}{4\epsilon^{2}} \left\{ E(w_{ji} + \epsilon, w_{lk} + \epsilon) - E(w_{ji} + \epsilon, w_{lk} - \epsilon) \right. \\
 &\quad \left. - E(w_{ji} - \epsilon, w_{lk} + \epsilon) + E(w_{ji} - \epsilon, w_{lk} - \epsilon) \right\} + O(\epsilon^{2}).
 \end{aligned} \tag{5.90}
 $$
+
 [Page 273]
 
 Again, by using a symmetrical central differences formulation, we ensure that the residual errors are $O(\epsilon^2)$ rather than $O(\epsilon)$. Because there are $W^2$ elements in the Hessian matrix, and because the evaluation of each element requires four forward propagations each needing $O(W)$ operations (per pattern), we see that this approach will require $O(W^3)$ operations to evaluate the complete Hessian. It therefore has poor scaling properties, although in practice it is very useful as a check on the software implementation of backpropagation methods.
@@ -818,6 +918,7 @@ where $E_n$ is the contribution to the error from data point $n$. The Hessian ma
 $$
 \frac{\partial^2 E_n}{\partial w_{kj}^{(2)} \partial w_{k^\prime j^\prime}^{(2)}} = z_j z_{j^\prime} M_{k k^\prime}. \tag{5.93}
 $$
+
 [Page 274]
 
 - 2. Both weights in the first layer:
@@ -861,6 +962,7 @@ The technique is best illustrated with a simple example, and again we choose a t
 [Page 275]
 
 usual by summing over the contributions from each of the patterns separately. For the two-layer network, the forward-propagation equations are given by
+
 $$
 \begin{align}
 a_j &= \sum_{i} w_{ji} x_i \tag{5.98} \\
@@ -870,6 +972,7 @@ y_k &= \sum_{j} w_{kj} z_j. \tag{5.100}
 $$
 
 We now act on these equations using the $\mathcal{R}\{\cdot\}$ operator to obtain a set of forward propagation equations in the form
+
 $$
 \begin{align}
 \mathcal{R}\{a_j\} &= \sum_{i} v_{ji} x_i \tag{5.101} \\
@@ -881,6 +984,7 @@ $$
 where $v_{ji}$ is the element of the vector $\mathbf{v}$ that corresponds to the weight $w_{ji}$. Quantities of the form $\mathcal{R}\{z_j\}$, $\mathcal{R}\{a_j\}$, and $\mathcal{R}\{y_k\}$ are to be regarded as new variables whose values are found using the above equations.
 
 Because we are considering a sum-of-squares error function, we have the following standard backpropagation expressions:
+
 $$
 \begin{align}
 \delta_k &= y_k - t_k \tag{5.104} \\
@@ -889,6 +993,7 @@ $$
 $$
 
 Again, we act on these equations with the $\mathcal{R}\{\cdot\}$ operator to obtain a set of backpropagation equations in the form
+
 $$
 \begin{align}
 \mathcal{R}\{\delta_k\} &= \mathcal{R}\{y_k\} \tag{5.106} \\
@@ -898,12 +1003,14 @@ $$
 $$
 
 Finally, we have the usual equations for the first derivatives of the error
+
 $$
 \begin{align}
 \frac{\partial E}{\partial w_{kj}} &= \delta_k z_j \tag{5.108} \\
 \frac{\partial E}{\partial w_{ji}} &= \delta_j x_i \tag{5.109}
 \end{align}
 $$
+
 [Page 276]
 
 and acting on these with the $\mathcal{R}\{\cdot\}$ operator, we obtain expressions for the elements of the vector $\mathbf{v}^T\mathbf{H}$
@@ -1058,7 +1165,7 @@ If sufficiently large numbers of training patterns are available, then an adapti
 This approach may be impractical, however, if the number of training examples is limited, or if there are several invariants (because the number of combinations of transformations grows exponentially with the number of such transformations). We therefore seek alternative approaches for encouraging an adaptive model to exhibit the required invariances. These can broadly be divided into four categories:
 
 1. The training set is augmented using replicas of the training patterns, transformed according to the desired invariances. For instance, in our digit recognition example, we could make multiple copies of each example in which the
-[Page 282]
+   [Page 282]
 
 Figure 5.13 A schematic illustration of why early stopping can give similar results to weight decay in the case of a quadratic error function. The ellipse shows a contour of constant error, and $\mathbf{w}_{\text{ML}}$ denotes the minimum of the error function. If the weight vector starts at the origin and moves according to the local negative gradient direction, then it will follow the path shown by the curve. By stopping training early, a weight vector $\widetilde{\mathbf{w}}$ is found that is qualitatively similar to that obtained with a simple weight-decay regularizer and training to the minimum of the regularized error, as can be seen by comparing with Figure 3.15.
 
@@ -1089,19 +1196,25 @@ Figure 5.15 Illustration of a two-dimensional input space showing the effect of 
 [Page 284]
 
 will be one-dimensional, and will be parameterized by $\xi$. Let the vector that results from acting on $\mathbf{x}_n$ by this transformation be denoted by $\mathbf{s}(\mathbf{x}_n,\xi)$, which is defined so that $\mathbf{s}(\mathbf{x},0) = \mathbf{x}$. Then the tangent to the curve $\mathcal{M}$ is given by the directional derivative $\boldsymbol{\tau} = \partial\mathbf{s}/\partial\xi$, and the tangent vector at the point $\mathbf{x}_n$ is given by
+
 $$
 \boldsymbol{\tau}_n = \frac{\partial \mathbf{s}(\mathbf{x}_n, \xi)}{\partial \xi} \Bigg|_{\xi=0}. \tag{5.125}
 $$
 
 Under a transformation of the input vector, the network output vector will, in general, change. The derivative of output $k$ with respect to $\xi$ is given by
+
 $$
 \frac{\partial y_k}{\partial \xi} \Bigg|_{\xi=0} = \sum_{i=1}^{D} \frac{\partial y_k}{\partial x_i} \frac{\partial x_i}{\partial \xi} \Bigg|_{\xi=0} = \sum_{i=1}^{D} J_{ki} \tau_i \tag{5.126}
 $$
+
 where $J_{ki}$ is the $(k,i)$ element of the Jacobian matrix $\mathbf{J}$, as discussed in Section 5.3.4. The result (5.126) can be used to modify the standard error function, so as to encourage local invariance in the neighbourhood of the data points, by the addition to the original error function $E$ of a regularization function $\Omega$ to give a total error function of the form
+
 $$
 \widetilde{E} = E + \lambda \Omega \tag{5.127}
 $$
+
 where $\lambda$ is a regularization coefficient and
+
 $$
 \Omega = \frac{1}{2} \sum_{n} \sum_{k} \left( \frac{\partial y_{nk}}{\partial \xi} \Bigg|_{\xi=0} \right)^2 = \frac{1}{2} \sum_{n} \sum_{k} \left( \sum_{i=1}^{D} J_{nki} \tau_{ni} \right)^2 . \tag{5.128}
 $$
@@ -1234,31 +1347,43 @@ One way to reduce the effective complexity of a network with a large number of w
 [Page 290]
 
 Recall that the simple weight decay regularizer, given in (5.112), can be viewed as the negative log of a Gaussian prior distribution over the weights. We can encourage the weight values to form several groups, rather than just one group, by considering instead a probability distribution that is a mixture of Gaussians. The centres and variances of the Gaussian components, as well as the mixing coefﬁcients, will be considered as adjustable parameters to be determined as part of the learning process. Thus, we have a probability density of the form
+
 $$
 p(\mathbf{w}) = \prod_{i} p(w_{i}) \tag{5.136}
 $$
+
 where
+
 $$
 p(w_{i}) = \sum_{j=1}^{M} \pi_{j} \mathcal{N}(w_{i} | \mu_{j}, \sigma_{j}^{2}) \tag{5.137}
 $$
+
 and $\pi_j$ are the mixing coefﬁcients. Taking the negative logarithm then leads to a regularization function of the form
+
 $$
 \Omega(\mathbf{w}) = -\sum_{i} \ln \left( \sum_{j=1}^{M} \pi_{j} \mathcal{N}(w_{i} | \mu_{j}, \sigma_{j}^{2}) \right) . \tag{5.138}
 $$
+
 The total error function is then given by
+
 $$
 \widetilde{E}(\mathbf{w}) = E(\mathbf{w}) + \lambda \Omega(\mathbf{w}) \tag{5.139}
 $$
+
 where $\lambda$ is the regularization coefﬁcient. This error is minimized both with respect to the weights $w_i$ and with respect to the parameters $\{\pi_j, \mu_j, \sigma_j\}$ of the mixture model. If the weights were constant, then the parameters of the mixture model could be determined by using the EM algorithm discussed in Chapter 9. However, the distribution of weights is itself evolving during the learning process, and so to avoid numerical instability, a joint optimization is performed simultaneously over the weights and the mixture-model parameters. This can be done using a standard optimization algorithm such as conjugate gradients or quasi-Newton methods.
 
 In order to minimize the total error function, it is necessary to be able to evaluate its derivatives with respect to the various adjustable parameters. To do this it is convenient to regard the $\{\pi_j\}$ as prior probabilities and to introduce the corresponding posterior probabilities which, following (2.192), are given by Bayes' theorem in the form
+
 $$
 \gamma_{j}(w) = \frac{\pi_{j} \mathcal{N}(w | \mu_{j}, \sigma_{j}^{2})}{\sum_{k} \pi_{k} \mathcal{N}(w | \mu_{k}, \sigma_{k}^{2})} . \tag{5.140}
 $$
+
 The derivatives of the total error function with respect to the weights are then given by
+
 $$
 \frac{\partial \widetilde{E}}{\partial w_{i}} = \frac{\partial E}{\partial w_{i}} + \lambda \sum_{j} \gamma_{j}(w_{i}) \frac{(w_{i} - \mu_{j})}{\sigma_{j}^{2}} . \tag{5.141}
 $$
+
 [Page 291]
 
 The effect of the regularization term is therefore to pull each weight towards the centre of the $j$th Gaussian, with a force proportional to the posterior probability of that Gaussian for the given weight. This is precisely the kind of effect that we are seeking.
@@ -1408,6 +1533,7 @@ Finally, the derivatives with respect to the output activations controlling the 
 $$
 \frac{\partial E_n}{\partial a_{k}^{\sigma}} = - \gamma_k \left\{ \frac{\|\mathbf{t}_n - \boldsymbol{\mu}_k\|^2}{\sigma_k^3} - \frac{1}{\sigma_k} \right\}. \tag{5.157}
 $$
+
 [Page 296]
 
 Figure 5.21 (a) Plot of the mixing coefﬁcients $\pi_k(x)$ as a function of $x$ for the three kernel functions in a mixture density network trained on the data shown in Figure 5.19. The model has three Gaussian components, and uses a two-layer multilayer perceptron with ﬁve ‘tanh’ sigmoidal units in the hidden layer, and nine outputs (corresponding to the $3$ means and $3$ variances of the Gaussian components and the $3$ mixing coefﬁcients). At both small and large values of $x$, where the conditional probability density of the target data is unimodal, only one of the kernels has a high value for its prior probability, while at intermediate values of $x$, where the conditional density is trimodal, the three mixing coefﬁcients have comparable values. (b) Plots of the means $\mu_k(x)$ using the same colour coding as for the mixing coefﬁcients. (c) Plot of the contours of the corresponding conditional probability density of the target data for the same mixture density network. (d) Plot of the approximate conditional mode, shown by the red points, of the conditional density.
@@ -1421,6 +1547,7 @@ Once a mixture density network has been trained, it can predict the conditional 
 $$
 \mathbb{E}[t|x] = \int t p(t|x) \, dt = \sum_{k=1}^K \pi_k(x) \mu_k(x) \tag{5.158}
 $$
+
 [Page 297]
 
 where we have used (5.148). Because a standard network trained by least squares is approximating the conditional mean, we see that a mixture density network can reproduce the conventional least-squares result as a special case. Of course, as we have already noted, for a multimodal distribution the conditional mean is of limited value.
@@ -1438,7 +1565,7 @@ where we have used (5.148) and (5.158). This is more general than the correspond
 
 We have seen that for multimodal distributions, the conditional mean can give a poor representation of the data. For instance, in controlling the simple robot arm shown in Figure 5.18, we need to pick one of the two possible joint angle settings in order to achieve the desired end-effector location, whereas the average of the two solutions is not itself a solution. In such cases, the conditional mode may be of more value. Because the conditional mode for the mixture density network does not have a simple analytical solution, this would require numerical iteration. A simple alternative is to take the mean of the most probable component (i.e., the one with the largest mixing coefficient) at each value of $\mathbf{x}$. This is shown for the toy data set in Figure 5.21(d).
 
-## 5.7. Bayesian Neural Networks
+### 5.7. Bayesian Neural Networks
 
 So far, our discussion of neural networks has focussed on the use of maximum likelihood to determine the network parameters (weights and biases). Regularized maximum likelihood can be interpreted as a MAP (maximum posterior) approach in which the regularizer can be viewed as the logarithm of a prior parameter distribution. However, in a Bayesian treatment we need to marginalize over the distribution of parameters in order to make predictions.
 
@@ -1531,9 +1658,11 @@ We can therefore make use of the general result (2.115) for the marginal $p(t)$ 
 $$
 p(t|\mathbf{x}, \mathcal{D}, \alpha, \beta) = \mathcal{N}\left(t|y(\mathbf{x}, \mathbf{w}_{\text{MAP}}), \sigma^2(\mathbf{x})\right) \tag{5.172}
 $$
+
 [Page 300]
 
 where the input-dependent variance is given by
+
 $$
 \sigma^{2}(\mathbf{x}) = \beta^{-1} + \mathbf{g}^{T}\mathbf{A}^{-1}\mathbf{g}. \tag{5.173}
 $$
@@ -1545,16 +1674,19 @@ We see that the predictive distribution $p(t|\mathbf{x},\mathcal{D})$ is a Gauss
 So far, we have assumed that the hyperparameters $\alpha$ and $\beta$ are ﬁxed and known. We can make use of the evidence framework, discussed in Section 3.5, together with the Gaussian approximation to the posterior obtained using the Laplace approximation, to obtain a practical procedure for choosing the values of such hyperparameters.
 
 The marginal likelihood, or evidence, for the hyperparameters is obtained by integrating over the network weights
+
 $$
 p(\mathcal{D}|\alpha,\beta) = \int p(\mathcal{D}|\mathbf{w},\beta)p(\mathbf{w}|\alpha) \, d\mathbf{w}. \tag{5.174}
 $$
 
 This is easily evaluated by making use of the Laplace approximation result (4.135). Taking logarithms then gives
+
 $$
 \ln p(\mathcal{D}|\alpha,\beta) \simeq -E(\mathbf{w}_{\text{MAP}}) - \frac{1}{2} \ln |\mathbf{A}| + \frac{W}{2} \ln \alpha + \frac{N}{2} \ln \beta - \frac{N}{2} \ln (2\pi) \tag{5.175}
 $$
 
 where $W$ is the total number of parameters in $\mathbf{w}$, and the regularized error function is deﬁned by
+
 $$
 E(\mathbf{w}_{\text{MAP}}) = \frac{\beta}{2} \sum_{n=1}^{N} \{ y(\mathbf{x}_{n}, \mathbf{w}_{\text{MAP}}) - t_{n} \}^{2} + \frac{\alpha}{2} \mathbf{w}_{\text{MAP}}^{T} \mathbf{w}_{\text{MAP}}. \tag{5.176}
 $$
@@ -1562,14 +1694,17 @@ $$
 We see that this takes the same form as the corresponding result (3.86) for the linear regression model.
 
 In the evidence framework, we make point estimates for $\alpha$ and $\beta$ by maximizing $\ln p(\mathcal{D}|\alpha,\beta)$. Consider ﬁrst the maximization with respect to $\alpha$, which can be done by analogy with the linear regression case discussed in Section 3.5.2. We ﬁrst deﬁne the eigenvalue equation
+
 $$
 \beta \mathbf{H} \mathbf{u}_{i} = \lambda_{i} \mathbf{u}_{i} \tag{5.177}
 $$
 
 where $\mathbf{H}$ is the Hessian matrix comprising the second derivatives of the sum-of-squares error function, evaluated at $\mathbf{w} = \mathbf{w}_{\text{MAP}}$. By analogy with (3.92), we obtain
+
 $$
 \alpha = \frac{\gamma}{\mathbf{w}_{\text{MAP}}^{T} \mathbf{w}_{\text{MAP}}} \tag{5.178}
 $$
+
 [Page 301]
 
 Section 3.5.3 where $\gamma$ represents the effective number of parameters and is deﬁned by
@@ -1677,6 +1812,7 @@ Finally, to obtain the predictive distribution, we must marginalize over $a$ usi
 $$
 p(t = 1|\mathbf{x},\mathcal{D}) = \int \sigma(a)p(a|\mathbf{x},\mathcal{D}) \, da. \tag{5.189}
 $$
+
 [Page 304]
 
 ![The image consists of two parallel graphs, each with a blue line and a red line. The x-axis is labeled as days and the y-axis is labeled as total number of people. The graph on the left shows a pattern of the number of people over time, while the graph on the right shows a pattern of the number of people over time. The blue line on the left graph is a straight line with a positive slope, indicating that the number of people increases over time. The red line on the right graph is a straight line with a negative slope, indicating that the number of people decreases over time. The graph on the left has a larger number of people than the graph on the right. This is because the blue line on the left is more curved, which means it is more likely to be a straight line. The red line on the right is more curved, which means it is more likely to be a straight line. The graph](../Images/imageFile129.png)

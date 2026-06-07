@@ -1,23 +1,16 @@
 [Page 345]
 
-![In this image we can see a poster with some text.](../Images/imageFile30.png)
+![Chapter7](../Images/Chapters/Chapter7.png)
 
-# 7
-
-###### Sparse Kernel Machines
+# 7. Sparse Kernel Machines
 
 In the previous chapter, we explored a variety of learning algorithms based on nonlinear kernels. One of the signiﬁcant limitations of many such algorithms is that the kernel function $k(\mathbf{x}_n,\mathbf{x}_m)$ must be evaluated for all possible pairs $\mathbf{x}_n$ and $\mathbf{x}_m$ of training points, which can be computationally infeasible during training and can lead to excessive computation times when making predictions for new data points. In this chapter we shall look at kernel-based algorithms that have sparse solutions, so that predictions for new inputs depend only on the kernel function evaluated at a subset of the training data points.
 
-We begin by looking in some detail at the support vector machine (SVM), which became popular in some years ago for solving problems in classiﬁcation, regression, and novelty detection. An important property of support vector machines is that the determination of the model parameters corresponds to a convex optimization problem, and so any local solution is also a global optimum. Because the discussion of support vector machines makes extensive use of Lagrange multipliers, the reader is
-
-###### 325
-[Page 346]
-
-encouraged to review the key concepts covered in Appendix E. Additional information on support vector machines can be found in Vapnik (1995), Burges (1998), Cristianini and Shawe-Taylor (2000), M¨uller et al. (2001), Sch¨olkopf and Smola (2002), and Herbrich (2002).
+We begin by looking in some detail at the support vector machine (SVM), which became popular in some years ago for solving problems in classiﬁcation, regression, and novelty detection. An important property of support vector machines is that the determination of the model parameters corresponds to a convex optimization problem, and so any local solution is also a global optimum. Because the discussion of support vector machines makes extensive use of Lagrange multipliers, the reader is encouraged to review the key concepts covered in Appendix E. Additional information on support vector machines can be found in Vapnik (1995), Burges (1998), Cristianini and Shawe-Taylor (2000), M¨uller et al. (2001), Sch¨olkopf and Smola (2002), and Herbrich (2002).
 
 The SVM is a decision machine and so does not provide posterior probabilities. We have already discussed some of the beneﬁts of determining probabilities in Section 1.5.4. An alternative sparse kernel technique, known as the relevance vector machine (RVM), is based on a Bayesian formulation and provides posterior probabilistic outputs, as well as having typically much sparser solutions than the SVM.
 
-###### 7.1. Maximum Margin Classiﬁers
+## 7.1. Maximum Margin Classiﬁers
 
 We begin our discussion of support vector machines by returning to the two-class classiﬁcation problem using linear models of the form
 
@@ -92,6 +85,7 @@ $$
 $$
 0 = \sum_{n=1}^N a_n t_n. \tag{7.9}
 $$
+
 [Page 349]
 
 Eliminating $\mathbf{w}$ and $b$ from $L(\mathbf{w},b,\mathbf{a})$ using these conditions then gives the dual representation of the maximum margin problem in which we maximize
@@ -120,11 +114,8 @@ $$
 y(\mathbf{x}) = \sum_{n=1}^N a_n t_n k(\mathbf{x},\mathbf{x}_n) + b. \tag{7.13}
 $$
 
-![image 31](../Images/imageFile31.png)
+![Joseph-Louis Lagrange 1736–1813](../Images/Mathematicians/JosephLouisLagrange.png)
 
-###### Joseph-Louis Lagrange 1736–1813
-
-Although widely considered to be a French mathematician, Lagrange was born in Turin in Italy. By the age of nineteen, he had already made important contributions mathematics and had been appointed as Professor at the Royal Artillery School in Turin. For many years, Euler worked hard to persuade Lagrange to move to Berlin, which he eventually did in 1766 where he succeeded Euler as Director of Mathematics at the Berlin Academy. Later he moved to Paris, narrowly escaping with his life during the French revolution thanks to the personal intervention of Lavoisier (the French chemist who discovered oxygen) who himself was later executed at the guillotine. Lagrange made key contributions to the calculus of variations and the foundations of dynamics.
 [Page 350]
 
 In Appendix E, we show that a constrained optimization of this form satisﬁes the Karush-Kuhn-Tucker (KKT) conditions, which in this case require that the following three properties hold
@@ -176,7 +167,7 @@ form (6.23). Although the data set is not linearly separable in the two-dimensio
 
 This example also provides a geometrical insight into the origin of sparsity in the SVM. The maximum margin hyperplane is deﬁned by the location of the support vectors. Other data points can be moved around freely (so long as they remain outside the margin region) without changing the decision boundary, and so the solution will be independent of such data points.
 
-###### 7.1.1 Overlapping class distributions
+## 7.1.1 Overlapping class distributions
 
 So far, we have assumed that the training data points are linearly separable in the feature space $\boldsymbol{\phi}(\mathbf{x})$. The resulting support vector machine will give exact separation of the training data in the original input space $\mathbf{x}$, although the corresponding decision boundary will be nonlinear. In practice, however, the class-conditional distributions may overlap, in which case exact separation of the training data can lead to poor generalization.
 
@@ -208,6 +199,7 @@ We now wish to minimize (7.21) subject to the constraints (7.20) together with $
 $$
 L(\mathbf{w},b,\mathbf{a}) = \frac{1}{2} \|\mathbf{w}\|^2 + C \sum_{n=1}^N \xi_n - \sum_{n=1}^N a_n \{t_ny(\mathbf{x}_n) - 1 + \xi_n\} - \sum_{n=1}^N \mu_n\xi_n \tag{7.22}
 $$
+
 [Page 353]
 
 where $\{a_n \geqslant 0\}$ and $\{\mu_n \geqslant 0\}$ are Lagrange multipliers. The corresponding set of KKT conditions are given by
@@ -326,10 +318,7 @@ Figure 7.4 Illustration of the $\nu$-SVM applied to a nonseparable data set in t
 
 the quadratic programming problem. We ﬁrst note that the objective function $\widetilde{L}(\mathbf{a})$ given by (7.10) or (7.32) is quadratic and so any local optimum will also be a global optimum provided the constraints deﬁne a convex region (which they do as a consequence of being linear). Direct solution of the quadratic programming problem using traditional techniques is often infeasible due to the demanding computation and memory requirements, and so more practical approaches need to be found. The technique of chunking (Vapnik, 1982) exploits the fact that the value of the Lagrangian is unchanged if we remove the rows and columns of the kernel matrix corresponding to Lagrange multipliers that have value zero. This allows the full quadratic programming problem to be broken down into a series of smaller ones, whose goal is eventually to identify all of the nonzero Lagrange multipliers and discard the others. Chunking can be implemented using protected conjugate gradients (Burges, 1998). Although chunking reduces the size of the matrix in the quadratic function from the number of data points squared to approximately the number of nonzero Lagrange multipliers squared, even this may be too big to ﬁt in memory for large-scale applications. Decomposition methods (Osuna et al., 1996) also solve a series of smaller quadratic programming problems but are designed so that each of these is of a ﬁxed size, and so the technique can be applied to arbitrarily large data sets. However, it still involves numerical solution of quadratic programming subproblems and these can be problematic and expensive. One of the most popular approaches to training support vector machines is called sequential minimal optimization, or SMO (Platt, 1999). It takes the concept of chunking to the extreme limit and considers just two Lagrange multipliers at a time. In this case, the subproblem can be solved analytically, thereby avoiding numerical quadratic programming altogether. Heuristics are given for choosing the pair of Lagrange multipliers to be considered at each step. In practice, SMO is found to have a scaling with the number of data points that is somewhere between linear and quadratic depending on the particular application.
 
-We have seen that kernel functions correspond to inner products in feature spaces that can have high, or even inﬁnite, dimensionality. By working directly in terms of the kernel function, without introducing the feature space explicitly, it might therefore seem that support vector machines somehow manage to avoid the curse of di-
-[Page 356]
-
-mensionality. This is not the case, however, because there are constraints amongst the feature values that restrict the effective dimensionality of feature space. To see this consider a simple second-order polynomial kernel that we can expand in terms of its components
+We have seen that kernel functions correspond to inner products in feature spaces that can have high, or even inﬁnite, dimensionality. By working directly in terms of the kernel function, without introducing the feature space explicitly, it might therefore seem that support vector machines somehow manage to avoid the curse of dimensionality. This is not the case, however, because there are constraints amongst the feature values that restrict the effective dimensionality of feature space. To see this consider a simple second-order polynomial kernel that we can expand in terms of its components
 
 $$
 k(\mathbf{x},\mathbf{z}) = (1 + \mathbf{x}^T\mathbf{z})^2 = (1 + x_1z_1 + x_2z_2)^2 \\
@@ -350,7 +339,7 @@ $$
 
 where $y(\mathbf{x})$ is deﬁned by (7.1). Values for the parameters $A$ and $B$ are found by minimizing the cross-entropy error function deﬁned by a training set consisting of pairs of values $y(\mathbf{x}_n)$ and $t_n$. The data used to ﬁt the sigmoid needs to be independent of that used to train the original SVM in order to avoid severe over-ﬁtting. This twostage approach is equivalent to assuming that the output $y(\mathbf{x})$ of the support vector machine represents the log-odds of $\mathbf{x}$ belonging to class $t = 1$. Because the SVM training procedure is not speciﬁcally intended to encourage this, the SVM can give a poor approximation to the posterior probabilities (Tipping, 2001).
 
-###### 7.1.2 Relation to logistic regression
+## 7.1.2 Relation to logistic regression
 
 As with the separable case, we can re-cast the SVM for nonseparable distributions in terms of the minimization of a regularized error function. This will also allow us to highlight similarities, and differences, compared to the logistic regression model.
 
@@ -392,13 +381,14 @@ where
 $$
 E_{LR}(yt) = \ln(1 + \exp(-yt)). \tag{7.48}
 $$
+
 [Page 358]
 
 For comparison with other error functions, we can divide by $\ln(2)$ so that the error function passes through the point $(0,1)$. This rescaled error function is also plotted in Figure 7.5 and we see that it has a similar form to the support vector error function. The key difference is that the ﬂat region in $E_{SV}(yt)$ leads to sparse solutions.
 
 Both the logistic error and the hinge loss can be viewed as continuous approximations to the misclassiﬁcation error. Another continuous error function that has sometimes been used to solve classiﬁcation problems is the squared error, which is again plotted in Figure 7.5. It has the property, however, of placing increasing emphasis on data points that are correctly classiﬁed but that are a long way from the decision boundary on the correct side. Such points will be strongly weighted at the expense of misclassiﬁed points, and so if the objective is to minimize the misclassiﬁcation rate, then a monotonically decreasing error function would be a better choice.
 
-###### 7.1.3 Multiclass SVMs
+## 7.1.3 Multiclass SVMs
 
 The support vector machine is fundamentally a two-class classiﬁer. In practice, however, we often have to tackle problems involving $K > 2$ classes. Various methods have therefore been proposed for combining multiple two-class SVMs in order to build a multiclass classiﬁer.
 
@@ -423,7 +413,7 @@ A different approach to multiclass classiﬁcation, based on error-correcting ou
 
 There are also single-class support vector machines, which solve an unsupervised learning problem related to probability density estimation. Instead of modelling the density of data, however, these methods aim to ﬁnd a smooth boundary enclosing a region of high density. The boundary is chosen to represent a quantile of the density, that is, the probability that a data point drawn from the distribution will land inside that region is given by a ﬁxed number between $0$ and $1$ that is speciﬁed in advance. This is a more restricted problem than estimating the full density but may be sufﬁcient in speciﬁc applications. Two approaches to this problem using support vector machines have been proposed. The algorithm of Sch¨olkopf et al. (2001) tries to ﬁnd a hyperplane that separates all but a ﬁxed fraction $\nu$ of the training data from the origin while at the same time maximizing the distance (margin) of the hyperplane from the origin, while Tax and Duin (1999) look for the smallest sphere in feature space that contains all but a fraction $\nu$ of the data points. For kernels $k(\mathbf{x},\mathbf{x}')$ that are functions only of $\mathbf{x} - \mathbf{x}'$, the two algorithms are equivalent.
 
-###### 7.1.4 SVMs for regression
+## 7.1.4 SVMs for regression
 
 We now extend support vector machines to regression problems while at the same time preserving the property of sparseness. In simple linear regression, we
 [Page 360]
@@ -465,6 +455,7 @@ $$
 $$
 t_n \geqslant y(\mathbf{x}_n) - \epsilon - \widehat{\xi}_n. \tag{7.54}
 $$
+
 [Page 361]
 
 Figure 7.7 Illustration of SVM regression, showing the regression curve together with the insensitive ‘tube’. Also shown are examples of the slack variables $\xi$ and $\widehat{\xi}$. Points above the $\epsilon$-tube have $\xi > 0$ and $\widehat{\xi} = 0$, points below the $\epsilon$-tube have $\xi = 0$ and $\widehat{\xi} > 0$, and points inside the $\epsilon$-tube have $\xi = \widehat{\xi} = 0$.
@@ -596,7 +587,7 @@ Figure 7.8 Illustration of the $\nu$-SVM for regression applied to the sinusoida
 
 ![The image presents a line graph with several points on it. The graph is titled The Ladder, and it is labeled as The Ladder. The graph has a horizontal axis labeled t and a vertical axis labeled t. The x-axis is labeled t, and the y-axis is labeled t. The graph has seven points on the graph, each marked with a green dot. The points are connected by a red line that appears to be a curve. The points are scattered around the graph, with some of them closer to the x-axis and others farther away. The graph is not labeled, but it is clear that it is a line graph. The graph has a title, The Ladder, which is positioned at the top of the graph. The title is written in a sans-serif font, which is easy to read. The title is not very prominent, but it is clear that it is important to the graph.](../Images/imageFile153.png)
 
-###### 7.1.5 Computational learning theory
+## 7.1.5 Computational learning theory
 
 Historically, support vector machines have largely been motivated and analysed using a theoretical framework known as computational learning theory, also sometimes called statistical learning theory (Anthony and Biggs, 1992; Kearns and Vazirani, 1994; Vapnik, 1995; Vapnik, 1998). This has its origins with Valiant (1984) who formulated the probably approximately correct, or PAC, learning framework. The goal of the PAC framework is to understand how large a data set needs to be in order to give good generalization. It also gives bounds for the computational cost of learning, although we do not consider these here.
 
@@ -615,7 +606,7 @@ case, because they apply to any choice for the distribution $p(\mathbf{x}, t)$, 
 
 One attempt to improve the tightness of the PAC bounds is the PAC-Bayesian framework (McAllester, 2003), which considers a distribution over the space $\mathcal{F}$ of functions, somewhat analogous to the prior in a Bayesian treatment. This still considers any possible choice for $p(\mathbf{x}, t)$, and so although the bounds are tighter, they are still very conservative.
 
-###### 7.2. Relevance Vector Machines
+## 7.2. Relevance Vector Machines
 
 Support vector machines have been used in a variety of classiﬁcation and regression applications. Nevertheless, they suffer from a number of limitations, several of which have been highlighted already in this chapter. In particular, the outputs of an SVM represent decisions rather than posterior probabilities. Also, the SVM was originally formulated for two classes, and the extension to $K > 2$ classes is problematic. There is a complexity parameter $C$, or $\nu$ (as well as a parameter $\epsilon$ in the case of regression), that must be found using a hold-out method such as cross-validation. Finally, predictions are expressed as linear combinations of kernel functions that are centred on training data points and that are required to be positive deﬁnite.
 
@@ -623,13 +614,14 @@ The relevance vector machine or RVM (Tipping, 2001) is a Bayesian sparse kernel 
 
 In contrast to the SVM we shall ﬁnd it more convenient to introduce the regression form of the RVM ﬁrst and then consider the extension to classiﬁcation tasks.
 
-###### 7.2.1 RVM for regression
+## 7.2.1 RVM for regression
 
 The relevance vector machine for regression is a linear model of the form studied in Chapter 3 but with a modiﬁed prior that results in sparse solutions. The model deﬁnes a conditional distribution for a real-valued target variable $t$, given an input vector $\mathbf{x}$, which takes the form
 
 $$
 p(t|\mathbf{x}, \mathbf{w}, \beta) = \mathcal{N}(t|y(\mathbf{x}), \beta^{-1}) \tag{7.76}
 $$
+
 [Page 366]
 
 where $\beta = \sigma^{-2}$ is the noise precision (inverse noise variance), and the mean is given by a linear model of the form
@@ -749,7 +741,7 @@ Figure 7.9 shows an example of the RVM applied to the sinusoidal regression data
 
 The principal disadvantage of the RVM compared to the SVM is that training involves optimizing a nonconvex function, and training times can be longer than for a comparable SVM. For a model with $M$ basis functions, the RVM requires inversion of a matrix of size $M \times M$, which in general requires $O(M^3)$ computation. In the speciﬁc case of the SVM-like model (7.78), we have $M = N +1$. As we have noted, there are techniques for training SVMs whose cost is roughly quadratic in $N$. Of course, in the case of the RVM we always have the option of starting with a smaller number of basis functions than $N + 1$. More signiﬁcantly, in the relevance vector machine the parameters governing complexity and noise variance are determined automatically from a single training run, whereas in the support vector machine the parameters $C$ and $\epsilon$ (or $\nu$) are generally found using cross-validation, which involves multiple training runs. Furthermore, in the next section we shall derive an alternative procedure for training the relevance vector machine that improves training speed signiﬁcantly.
 
-###### 7.2.2 Analysis of sparsity
+## 7.2.2 Analysis of sparsity
 
 We have noted earlier that the mechanism of automatic relevance determination causes a subset of parameters to be driven to zero. We now examine in more detail
 [Page 370]
@@ -838,11 +830,11 @@ These two solutions are illustrated in Figure 7.11. We see that the relative siz
 
 Note that this approach has yielded a closed-form solution for $\alpha_i$, for given values of the other hyperparameters. As well as providing insight into the origin of sparsity in the RVM, this analysis also leads to a practical algorithm for optimizing the hyperparameters that has signiﬁcant speed advantages. This uses a ﬁxed set of candidate basis vectors, and then cycles through them in turn to decide whether each vector should be included in the model or not. The resulting sequential sparse Bayesian learning algorithm is described below.
 
-###### Sequential Sparse Bayesian Learning Algorithm
+## Sequential Sparse Bayesian Learning Algorithm
 
 1. If solving a regression problem, initialize $\beta$.
 2. Initialize using one basis function $\boldsymbol{\phi}_1$, with hyperparameter $\alpha_1$ set using (7.101), with the remaining hyperparameters $\alpha_j$ for $j \neq i$ initialized to inﬁnity, so that only $\boldsymbol{\phi}_1$ is included in the model.
-[Page 373]
+   [Page 373]
 
 3. Evaluate $\boldsymbol{\Sigma}$ and $\mathbf{m}$, along with $q_i$ and $s_i$ for all basis functions.
 4. Select a candidate basis function $\boldsymbol{\phi}_i$.
@@ -886,13 +878,14 @@ $$
 
 where $\mathbf{\Phi}$ and $\boldsymbol{\Sigma}$ involve only those basis vectors that correspond to ﬁnite hyperparameters $\alpha_i$. At each stage the required computations therefore scale like $O(M^3)$, where $M$ is the number of active basis vectors in the model and is typically much smaller than the number $N$ of training patterns.
 
-###### 7.2.3 RVM for classiﬁcation
+## 7.2.3 RVM for classiﬁcation
 
 We can extend the relevance vector machine framework to classiﬁcation problems by applying the ARD prior over weights to a probabilistic linear classiﬁcation model of the kind studied in Chapter 4. To start with, we consider two-class problems with a binary target variable $t \in \{0, 1\}$. The model now takes the form of a linear combination of basis functions transformed by a logistic sigmoid function
 
 $$
 y(\mathbf{x}, \mathbf{w}) = \sigma(\mathbf{w}^T\boldsymbol{\phi}(\mathbf{x})) \tag{7.108}
 $$
+
 [Page 374]
 
 where $\sigma(\cdot)$ is the logistic sigmoid function deﬁned by (4.59). If we introduce a Gaussian prior over the weight vector $\mathbf{w}$, then we obtain the model that has been considered already in Chapter 4. The difference here is that in the RVM, this model uses the ARD prior (7.80) in which there is a separate precision hyperparameter associated with each weight parameter.
@@ -981,6 +974,7 @@ So far, we have considered the RVM for binary classiﬁcation problems. For $K >
 $$
 a_k = \mathbf{w}_k^T\mathbf{x} \tag{7.120}
 $$
+
 [Page 376]
 
 ![The image is a scatter plot with two axes. The x-axis is labeled as x and the y-axis is labeled as y. There are four clusters of dots plotted on the graph. The dots are colored in blue, red, green, and orange. The dots are scattered in a random pattern. The background of the graph is purple.](../Images/imageFile32.png)

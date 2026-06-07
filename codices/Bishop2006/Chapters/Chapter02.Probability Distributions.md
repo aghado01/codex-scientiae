@@ -1,10 +1,8 @@
 [Page 87]
 
-# 2
+![Chapter2](../Images/Chapters/Chapter2.png)
 
-![In this image we can see a poster with some text.](../Images/imageFile9.png)
-
-# Probability Distributions
+# 2. Probability Distributions
 
 In Chapter 1, we emphasized the central role played by probability theory in the solution of pattern recognition problems. We turn now to an exploration of some particular examples of probability distributions and their properties. As well as being of great interest in their own right, these distributions can form building blocks for more complex models and will be used extensively throughout the book. The distributions introduced in this chapter will also serve another important purpose, namely to provide us with the opportunity to discuss some key statistical concepts, such as Bayesian inference, in the context of simple models before we encounter them in more complex situations in later chapters.
 
@@ -27,6 +25,7 @@ $$
 p(x = 1 \mid \mu) = \mu
 \tag{2.1}
 $$
+
 [Page 89]
 
 where $0 \le \mu \le 1$, from which it follows that $p(x = 0|\mu) = 1 - \mu$. The probability distribution over $x$ can therefore be written in the form
@@ -64,11 +63,12 @@ $$
 $$
 
 ###### Jacob Bernoulli
+
 ###### 1654–1705
 
 ![image 10](../Images/imageFile10.png)
 
-Jacob Bernoulli, also known as Jacques or James Bernoulli, was a Swiss mathematician and was the first of many in the Bernoulli family to pursue a career in science and mathematics. Although compelled to study philosophy and theology against his will by his parents, he travelled extensively after graduating in order to meet with many of the leading scientists of his time, including Boyle and Hooke in England. When he returned to Switzerland, he taught mechanics and became Professor of Mathematics at Basel in 1687. Unfortunately, rivalry between Jacob and his younger brother Johann turned an initially productive collaboration into a bitter and public dispute. Jacob’s most significant contributions to mathematics appeared in *The Art of Conjecture* published in 1713, eight years after his death, which deals with topics in probability theory including what has become known as the Bernoulli distribution.
+Jacob Bernoulli, also known as Jacques or James Bernoulli, was a Swiss mathematician and was the first of many in the Bernoulli family to pursue a career in science and mathematics. Although compelled to study philosophy and theology against his will by his parents, he travelled extensively after graduating in order to meet with many of the leading scientists of his time, including Boyle and Hooke in England. When he returned to Switzerland, he taught mechanics and became Professor of Mathematics at Basel in 1687. Unfortunately, rivalry between Jacob and his younger brother Johann turned an initially productive collaboration into a bitter and public dispute. Jacob’s most significant contributions to mathematics appeared in _The Art of Conjecture_ published in 1713, eight years after his death, which deals with topics in probability theory including what has become known as the Bernoulli distribution.
 [Page 90]
 
 Figure 2.1 Histogram plot of the binomial distribution (2.9) as a function of $m$ for $N = 10$ and $\mu = 0.25$.
@@ -76,24 +76,30 @@ Figure 2.1 Histogram plot of the binomial distribution (2.9) as a function of $m
 ![The image depicts a bar chart with a categorical scale starting from 0.1 and ending at 10. The x-axis is labeled m and the y-axis is labeled m. The chart is divided into four categories: 0.1, 1, 2, and 3. Each category has a corresponding bar corresponding to it. The bars are color-coded, with the color of the bar corresponding to the category. ### Description of the Chart: - **X-Axis (m):** The x-axis is labeled m and has a categorical scale starting from 0.1 to 10. - **Y-Axis (m):** The y-axis is labeled m and has a categorical scale starting from 0.1 to 10. ### Bar Chart Description: - **Bars:** The chart has four bars. The first bar is labeled 0.1 and is](../Images/imageFile40.png)
 
 which is also known as the sample mean. If we denote the number of observations of $x = 1$ (heads) within this data set by $m$, then we can write (2.7) in the form
+
 $$
 \mu_{\text{ML}} = \frac{m}{N}
 \tag{2.8}
 $$
+
 so that the probability of landing heads is given, in this maximum likelihood framework, by the fraction of observations of heads in the data set.
 
 Now suppose we flip a coin, say, 3 times and happen to observe 3 heads. Then $N = m = 3$ and $\mu_{\text{ML}} = 1$. In this case, the maximum likelihood result would predict that all future observations should give heads. Common sense tells us that this is unreasonable, and in fact this is an extreme example of the over-fitting associated with maximum likelihood. We shall see shortly how to arrive at more sensible conclusions through the introduction of a prior distribution over $\mu$.
 
 We can also work out the distribution of the number $m$ of observations of $x = 1$, given that the data set has size $N$. This is called the binomial distribution, and from (2.5) we see that it is proportional to $\mu^m(1 - \mu)^{N-m}$. In order to obtain the normalization coefficient we note that out of $N$ coin flips, we have to add up all of the possible ways of obtaining $m$ heads, so that the binomial distribution can be written
+
 $$
 \text{Bin}(m|N,\mu) = \binom{N}{m} \mu^m (1 - \mu)^{N-m}
 \tag{2.9}
 $$
+
 where
+
 $$
 \binom{N}{m} \equiv \frac{N!}{(N - m)!m!}
 \tag{2.10}
 $$
+
 is the number of ways of choosing $m$ objects out of a total of $N$ identical objects. Figure 2.1 shows a plot of the binomial distribution for $N = 10$ and $\mu = 0.25$.
 
 The mean and variance of the binomial distribution can be found by using the result of Exercise 1.10, which shows that for independent events the mean of the sum is the sum of the means, and the variance of the sum is the sum of the variances. Because $m = x_1 + \dots + x_N$, and for each observation the mean and variance are
@@ -142,6 +148,7 @@ The posterior distribution of $\mu$ is now obtained by multiplying the beta prio
 $$
 p(\mu|m,l,a,b) \propto \mu^{m+a-1}(1-\mu)^{l+b-1} \tag{2.17}
 $$
+
 [Page 92]
 
 ![The image presents a graph with two main axes: the x-axis and the y-axis. The x-axis is labeled as a = 0.1 and the y-axis is labeled as b = 0.1. The graph is a line graph with a linear scale of range 0.0 to 0.5 on the y-axis, and a linear scale of range 0.05 to 0.5 on the x-axis. The line on the graph is a straight line with a minimum value of 0.05 and a maximum value of 0.05. The line is relatively steep, indicating a high degree of curvature.](../Images/imageFile41.png)
@@ -262,23 +269,31 @@ Setting the derivative of (2.31) with respect to $\mu_k$ to zero, we obtain
 $$
 \mu_k = -m_k/\lambda. \tag{2.32}
 $$
+
 [Page 96]
 
 We can solve for the Lagrange multiplier $\lambda$ by substituting (2.32) into the constraint $\sum_k \mu_k = 1$ to give $\lambda = -N$. Thus we obtain the maximum likelihood solution in the form
+
 $$
 \mu_k^{\text{ML}} = \frac{m_k}{N} \tag{2.33}
 $$
+
 which is the fraction of the $N$ observations for which $x_k = 1$.
 
 We can consider the joint distribution of the quantities $m_1, \ldots, m_K$, conditioned on the parameters $\boldsymbol{\mu}$ and on the total number $N$ of observations. From (2.29) this takes the form
+
 $$
 \text{Mult}(m_1, m_2, \ldots, m_K | \boldsymbol{\mu}, N) = \binom{N}{m_1 m_2 \ldots m_K} \prod_{k=1}^{K} \mu_k^{m_k} \tag{2.34}
 $$
+
 which is known as the multinomial distribution. The normalization coefficient is the number of ways of partitioning $N$ objects into $K$ groups of size $m_1, \ldots, m_K$ and is given by
+
 $$
 \binom{N}{m_1 m_2 \ldots m_K} = \frac{N!}{m_1! m_2! \ldots m_K!} . \tag{2.35}
 $$
+
 Note that the variables $m_k$ are subject to the constraint
+
 $$
 \sum_{k=1}^{K} m_k = N . \tag{2.36}
 $$
@@ -286,19 +301,25 @@ $$
 ### 2.2.1 The Dirichlet distribution
 
 We now introduce a family of prior distributions for the parameters $\{\mu_k\}$ of the multinomial distribution (2.34). By inspection of the form of the multinomial distribution, we see that the conjugate prior is given by
+
 $$
 p(\boldsymbol{\mu}|\boldsymbol{\alpha}) \propto \prod_{k=1}^{K} \mu_k^{\alpha_k - 1} \tag{2.37}
 $$
+
 where $0 \le \mu_k \le 1$ and $\sum_k \mu_k = 1$. Here $\alpha_1, \ldots, \alpha_K$ are the parameters of the distribution, and $\boldsymbol{\alpha}$ denotes $(\alpha_1, \ldots, \alpha_K)^{\text{T}}$. Note that, because of the summation constraint, the distribution over the space of the $\{\mu_k\}$ is confined to a simplex of dimensionality $K - 1$, as illustrated for $K = 3$ in Figure 2.4.
 
 The normalized form for this distribution is by
+
 $$
 \text{Dir}(\boldsymbol{\mu}|\boldsymbol{\alpha}) = \frac{\Gamma(\alpha_0)}{\Gamma(\alpha_1) \cdots \Gamma(\alpha_K)} \prod_{k=1}^{K} \mu_k^{\alpha_k - 1} \tag{2.38}
 $$
+
 which is called the Dirichlet distribution. Here $\Gamma(x)$ is the gamma function defined by (1.141) while
+
 $$
 \alpha_0 = \sum_{k=1}^{K} \alpha_k . \tag{2.39}
 $$
+
 [Page 97]
 
 Figure 2.4 The Dirichlet distribution over three variables $\mu_1, \mu_2, \mu_3$ is confined to a simplex (a bounded linear manifold) of the form shown, as a consequence of the constraints $0 \leqslant \mu_k \leqslant 1$ and $\sum_k \mu_k = 1$.
@@ -325,6 +346,7 @@ where we have denoted $\mathbf{m} = (m_1, \ldots, m_K)^{\text{T}}$. As for the c
 Note that two-state quantities can either be represented as binary variables and
 
 ###### Lejeune Dirichlet
+
 ###### 1805–1859
 
 ![image 11](../Images/imageFile11.png)
@@ -343,13 +365,17 @@ modelled using the binomial distribution (2.9) or as 1-of-2 variables and modell
 ### 2.3. The Gaussian Distribution
 
 The Gaussian, also known as the normal distribution, is a widely used model for the distribution of continuous variables. In the case of a single variable $x$, the Gaussian distribution can be written in the form
+
 $$
 \mathcal{N}(x|\mu, \sigma^2) = \frac{1}{(2\pi\sigma^2)^{1/2}} \exp\left\{ -\frac{1}{2\sigma^2}(x - \mu)^2 \right\} \tag{2.42}
 $$
+
 where $\mu$ is the mean and $\sigma^2$ is the variance. For a $D$-dimensional vector $\mathbf{x}$, the multivariate Gaussian distribution takes the form
+
 $$
 \mathcal{N}(\mathbf{x}|\boldsymbol{\mu}, \boldsymbol{\Sigma}) = \frac{1}{(2\pi)^{D/2}} \frac{1}{|\boldsymbol{\Sigma}|^{1/2}} \exp\left\{ -\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu}) \right\} \tag{2.43}
 $$
+
 where $\boldsymbol{\mu}$ is a $D$-dimensional mean vector, $\boldsymbol{\Sigma}$ is a $D \times D$ covariance matrix, and $|\boldsymbol{\Sigma}|$ denotes the determinant of $\boldsymbol{\Sigma}$.
 
 The Gaussian distribution arises in many different contexts and can be motivated from a variety of different perspectives. For example, we have already seen that for a single real variable, the distribution that maximizes the entropy is the Gaussian. This property applies also to the multivariate Gaussian.
@@ -373,46 +399,61 @@ It is said that when Gauss went to elementary school at age 7, his teacher Bütt
 [Page 100]
 
 functional dependence of the Gaussian on $\mathbf{x}$ is through the quadratic form
+
 $$
 \Delta^2 = (\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu}) \tag{2.44}
 $$
+
 which appears in the exponent. The quantity $\Delta$ is called the Mahalanobis distance from $\boldsymbol{\mu}$ to $\mathbf{x}$ and reduces to the Euclidean distance when $\boldsymbol{\Sigma}$ is the identity matrix. The Gaussian distribution will be constant on surfaces in $\mathbf{x}$-space for which this quadratic form is constant.
 
 First of all, we note that the matrix $\boldsymbol{\Sigma}$ can be taken to be symmetric, without loss of generality, because any antisymmetric component would disappear from the exponent. Now consider the eigenvector equation for the covariance matrix
+
 $$
 \boldsymbol{\Sigma} \mathbf{u}_i = \lambda_i \mathbf{u}_i \tag{2.45}
 $$
+
 where $i = 1, \ldots, D$. Because $\boldsymbol{\Sigma}$ is a real, symmetric matrix its eigenvalues will be real, and its eigenvectors can be chosen to form an orthonormal set, so that
+
 $$
 \mathbf{u}_i^T \mathbf{u}_j = I_{ij} \tag{2.46}
 $$
+
 where $I_{ij}$ is the $i,j$ element of the identity matrix and satisfies
+
 $$
 I_{ij} = \begin{cases} 1, & \text{if } i = j \\ 0, & \text{otherwise.} \end{cases} \tag{2.47}
 $$
 
 The covariance matrix $\boldsymbol{\Sigma}$ can be expressed as an expansion in terms of its eigenvectors in the form
+
 $$
 \boldsymbol{\Sigma} = \sum_{i=1}^D \lambda_i \mathbf{u}_i \mathbf{u}_i^T \tag{2.48}
 $$
+
 and similarly the inverse covariance matrix $\boldsymbol{\Sigma}^{-1}$ can be expressed as
+
 $$
 \boldsymbol{\Sigma}^{-1} = \sum_{i=1}^D \frac{1}{\lambda_i} \mathbf{u}_i \mathbf{u}_i^T . \tag{2.49}
 $$
 
 Substituting (2.49) into (2.44), the quadratic form becomes
+
 $$
 \Delta^2 = \sum_{i=1}^D \frac{y_i^2}{\lambda_i} \tag{2.50}
 $$
+
 where we have defined
+
 $$
 y_i = \mathbf{u}_i^T (\mathbf{x} - \boldsymbol{\mu}) . \tag{2.51}
 $$
 
 We can interpret $\{y_i\}$ as a new coordinate system defined by the orthonormal vectors $\mathbf{u}_i$ that are shifted and rotated with respect to the original $x_i$ coordinates. Forming the vector $\mathbf{y} = (y_1, \ldots, y_D)^T$, we have
+
 $$
 \mathbf{y} = \mathbf{U}(\mathbf{x} - \boldsymbol{\mu}) \tag{2.52}
 $$
+
 [Page 101]
 
 Figure 2.7 The red curve shows the elliptical surface of constant probability density for a Gaussian in a two-dimensional space $\mathbf{x} = (x_1, x_2)$ on which the density is $\exp(-1/2)$ of its value at $\mathbf{x} = \boldsymbol{\mu}$. The major axes of the ellipse are defined by the eigenvectors $\mathbf{u}_i$ of the covariance matrix, with corresponding eigenvalues $\lambda_i$.
@@ -487,6 +528,7 @@ $$
 &= \frac{1}{(2\pi)^{D/2}} \frac{1}{|\Sigma|^{1/2}} \int \exp\left\{ -\frac{1}{2}\mathbf{z}^T \Sigma^{-1} \mathbf{z} \right\} (\mathbf{z} + \boldsymbol{\mu})(\mathbf{z} + \boldsymbol{\mu})^T \, d\mathbf{z}
 \end{aligned}
 $$
+
 [Page 103]
 
 where again we have changed variables using $\mathbf{z} = \mathbf{x} - \boldsymbol{\mu}$. Note that the cross-terms involving $\boldsymbol{\mu}\mathbf{z}^{\mathrm{T}}$ and $\boldsymbol{\mu}^{\mathrm{T}}\mathbf{z}$ will again vanish by symmetry. The term $\boldsymbol{\mu}\boldsymbol{\mu}^{\mathrm{T}}$ is constant and can be taken outside the integral, which itself is unity because the Gaussian distribution is normalized. Consider the term involving $\mathbf{z}\mathbf{z}^{\mathrm{T}}$. Again, we can make use of the eigenvector expansion of the covariance matrix given by (2.45), together with the completeness of the set of eigenvectors, to write
@@ -614,6 +656,7 @@ $$
 \boldsymbol{\Sigma}_{a|b} = \boldsymbol{\Lambda}_{aa}^{-1}.
 \tag{2.73}
 $$
+
 [Page 107]
 
 Now consider all of the terms in (2.70) that are linear in $\mathbf{x}_a$
@@ -769,6 +812,7 @@ Given a joint Gaussian distribution $\mathcal{N}(\mathbf{x}|\boldsymbol{\mu}, \b
 $$
 \mathbf{x} = \begin{pmatrix} \mathbf{x}_a \\ \mathbf{x}_b \end{pmatrix}, \quad \boldsymbol{\mu} = \begin{pmatrix} \boldsymbol{\mu}_a \\ \boldsymbol{\mu}_b \end{pmatrix} \tag{2.94}
 $$
+
 [Page 110]
 
 ![The image is a graph with two axes labeled as x and y. The x-axis is labeled as 0 and the y-axis is labeled as 0. There are two lines on the graph, one is a straight line with a slope of 0.7 and the other is a curve with a slope of 0.7. The line on the graph is a straight line with a slope of 0.7. The curve on the graph is a curve with a slope of 0.7.](../Images/imageFile50.png)
@@ -850,6 +894,7 @@ The covariance matrix is found by taking the inverse of the precision, which can
 $$
 \mathrm{cov}[\mathbf{z}] = \mathbf{R}^{-1} = \begin{pmatrix} \boldsymbol{\Lambda}^{-1} & \boldsymbol{\Lambda}^{-1} \mathbf{A}^T \\ \mathbf{A} \boldsymbol{\Lambda}^{-1} & \mathbf{L}^{-1} + \mathbf{A} \boldsymbol{\Lambda}^{-1} \mathbf{A}^T \end{pmatrix} . \tag{2.105}
 $$
+
 [Page 112]
 
 Similarly, we can find the mean of the Gaussian distribution over $\mathbf{z}$ by identifying the linear terms in (2.102), which are given by
@@ -944,6 +989,7 @@ and setting this derivative to zero, we obtain the solution for the maximum like
 $$
 \boldsymbol{\mu}_{\text{ML}} = \frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_n. \tag{2.121}
 $$
+
 [Page 114]
 
 which is the mean of the observed set of data points. The maximization of (2.118) with respect to $\boldsymbol{\Sigma}$ is rather more involved. The simplest approach is to ignore the symmetry constraint and show that the resulting solution is symmetric as required. Alternative derivations of this result, which impose the symmetry and positive definiteness constraints explicitly, can be found in Magnus and Neudecker (1999). The result is as expected and takes the form
@@ -986,6 +1032,7 @@ Figure 2.10 A schematic illustration of two correlated random variables $z$ and 
 ![The image is a graph titled curve. The graph has a linear scale from 0 to 1 on the x-axis, labeled as s(n). The graph has a linear scale from 0 to 1 on the y-axis, labeled as f(n). The graph shows a curve that starts at a point labeled 0 and ends at a point labeled f(n). The curve starts at the point 0 and ends at the point f(n). The curve is a straight line with a slight curve at the end.](../Images/imageFile51.png)
 
 dissect out the contribution from the final data point $\mathbf{x}_N$, we obtain
+
 $$
 \begin{align}
 \boldsymbol{\mu}_{\text{ML}}^{(N)} &= \frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_n \\
@@ -998,9 +1045,11 @@ $$
 This result has a nice interpretation, as follows. After observing $N - 1$ data points we have estimated $\boldsymbol{\mu}$ by $\boldsymbol{\mu}_{\text{ML}}^{(N-1)}$. We now observe data point $\mathbf{x}_N$, and we obtain our revised estimate $\boldsymbol{\mu}_{\text{ML}}^{(N)}$ by moving the old estimate a small amount, proportional to $1/N$, in the direction of the ‘error signal’ $(\mathbf{x}_N - \boldsymbol{\mu}_{\text{ML}}^{(N-1)})$. Note that, as $N$ increases, so the contribution from successive data points gets smaller.
 
 The result (2.126) will clearly give the same answer as the batch result (2.121) because the two formulae are equivalent. However, we will not always be able to derive a sequential algorithm by this route, and so we seek a more general formulation of sequential learning, which leads us to the Robbins-Monro algorithm. Consider a pair of random variables $\theta$ and $z$ governed by a joint distribution $p(z,\theta)$. The conditional expectation of $z$ given $\theta$ defines a deterministic function $f(\theta)$ that is given by
+
 $$
 f(\theta) \equiv \mathbb{E}[z|\theta] = \int z p(z|\theta) \, dz \tag{2.127}
 $$
+
 and is illustrated schematically in Figure 2.10. Functions defined in this way are called regression functions.
 
 Our goal is to find the root $\theta^\star$ at which $f(\theta^\star) = 0$. If we had a large data set of observations of $z$ and $\theta$, then we could model the regression function directly and then obtain an estimate of its root. Suppose, however, that we observe values of $z$ one at a time and we wish to find a corresponding sequential estimation scheme for $\theta$. The following general procedure for solving such problems was given by
@@ -1059,6 +1108,7 @@ $$
 \theta^{(N)} = \theta^{(N-1)} + a_{N-1} \frac{\partial}{\partial \theta^{(N-1)}} \ln p(x_N | \theta^{(N-1)}).
 \tag{2.135}
 $$
+
 [Page 117]
 
 ![The image depicts a diagram of a right triangle. The diagram consists of two parallel lines, labeled as ( \triangle A ) and ( \triangle B ). The line ( \triangle A ) is drawn with a horizontal line, while the line ( \triangle B ) is drawn with a vertical line. The angle between the two lines is labeled as ( \angle A ). ### Detailed Description: #### **Line Segments and Angles:** - **Line ( \triangle A ):** - The line ( \triangle A ) is a right triangle, meaning it has a right angle at the bottom. - The length of the line ( \triangle A ) is ( 1 ) unit. - **Line ( \triangle B ):** - The line ( \triangle B ) is a right triangle, meaning](../Images/imageFile52.png)
@@ -1066,6 +1116,7 @@ $$
 Figure 2.11 In the case of a Gaussian distribution, with $\theta$ corresponding to the mean $\mu$, the regression function illustrated in Figure 2.10 takes the form of a straight line, as shown in red. In this case, the random variable $z$ corresponds to the derivative of the log likelihood function and is given by $(x - \mu_{\text{ML}})/\sigma^2$, and its expectation that defines the regression function is a straight line given by $(\mu - \mu_{\text{ML}})/\sigma^2$. The root of the regression function corresponds to the maximum likelihood estimator $\mu_{\text{ML}}$.
 
 As a specific example, we consider once again the sequential estimation of the mean of a Gaussian distribution, in which case the parameter $\theta^{(N)}$ is the estimate $\mu_{\text{ML}}^{(N)}$ of the mean of the Gaussian, and the random variable $z$ is given by
+
 $$
 z = \frac{\partial}{\partial\mu_{\text{ML}}} \ln p(x|\mu_{\text{ML}},\sigma^2) = \frac{1}{\sigma^2}(x - \mu_{\text{ML}}). \tag{2.136}
 $$
@@ -1075,6 +1126,7 @@ Thus the distribution of $z$ is Gaussian with mean $\mu - \mu_{\text{ML}}$, as i
 ### 2.3.6 Bayesian inference for the Gaussian
 
 The maximum likelihood framework gave point estimates for the parameters $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$. Now we develop a Bayesian treatment by introducing prior distributions over these parameters. Let us begin with a simple example in which we consider a single Gaussian random variable $x$. We shall suppose that the variance $\sigma^2$ is known, and we consider the task of inferring the mean $\mu$ given a set of $N$ observations $\mathbf{X} = \{x_1,\ldots,x_N\}$. The likelihood function, that is the probability of the observed data given $\mu$, viewed as a function of $\mu$, is given by
+
 $$
 p(\mathbf{X}|\mu) = \prod_{n=1}^{N} p(x_n|\mu) = \frac{1}{(2\pi\sigma^2)^{N/2}} \exp \left\{ - \frac{1}{2\sigma^2} \sum_{n=1}^{N} (x_n - \mu)^2 \right\}. \tag{2.137}
 $$
@@ -1144,6 +1196,7 @@ So far, we have assumed that the variance of the Gaussian distribution over the 
 $$
 p(X \mid \lambda) = \prod_{n=1}^{N} \mathcal{N}(x_n \mid \mu, \lambda^{-1}) \propto \lambda^{N/2} \exp \left\{ -\frac{\lambda}{2} \sum_{n=1}^{N} (x_n - \mu)^2 \right\}. \tag{2.145}
 $$
+
 [Page 120]
 
 ![The image consists of three different diagrams, each with a red line. The line in each diagram is a straight line, and the points on the line are labeled as follows: 1. **Diagram 1**: - The line starts at point A and extends to point B. - Point B is located at the bottom of the line. - Point C is located at the top of the line. - Point D is located at the top of the line. 2. **Diagram 2**: - The line starts at point A and extends to point B. - Point B is located at the bottom of the line. - Point C is located at the top of the line. - Point D is located at the top of the line. 3. **Diagram 3**: - The line starts at point A and extends to point B. - Point B is located at the bottom of the line. - Point C is](../Images/imageFile54.png)
@@ -1327,17 +1380,23 @@ Figure 2.17 Illustration of the representation of values $\theta_n$ of a periodi
 ![The image depicts a geometric diagram with several points and lines. Here's a detailed description of the image: ### Description of the Image: - **Center of the Circle**: The center of the circle is marked as point ( \omega ). - **Radius of the Circle**: The radius of the circle is marked as ( r ). - **Diameter of the Circle**: The diameter of the circle is marked as ( d ). - **Angles and Lines**: - **Radius Line**: The radius of the circle is marked as ( r ). - **Diameter Line**: The diameter of the circle is marked as ( d ). - **Angles**: There are two angles labeled: ( \angle A ) and ( \angle B ). - **Lines**: There are two lines: ( \omega ) and ( \lambda ). - **Angles](../Images/imageFile58.png)
 
 instead to give
+
 $$
 \bar{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^{N} \mathbf{x}_{n} \tag{2.167}
 $$
+
 and then find the corresponding angle $\bar{\theta}$ of this average. Clearly, this definition will ensure that the location of the mean is independent of the origin of the angular coordinate. Note that $\bar{\mathbf{x}}$ will typically lie inside the unit circle. The Cartesian coordinates of the observations are given by $\mathbf{x}_n = (\cos\theta_n,\sin\theta_n)$, and we can write the Cartesian coordinates of the sample mean in the form $\bar{\mathbf{x}} = (\bar{r} \cos\bar{\theta},\bar{r} \sin\bar{\theta})$. Substituting into (2.167) and equating the $x_1$ and $x_2$ components then gives
+
 $$
 \bar{r} \cos \bar{\theta} = \frac{1}{N} \sum_{n=1}^{N} \cos \theta_{n}, \quad \bar{r} \sin \bar{\theta} = \frac{1}{N} \sum_{n=1}^{N} \sin \theta_{n}. \tag{2.168}
 $$
+
 Taking the ratio, and using the identity $\tan\theta = \sin\theta/\cos\theta$, we can solve for $\bar{\theta}$ to give
+
 $$
 \bar{\theta} = \tan^{-1} \left\{ \frac{\sum_{n} \sin \theta_{n}}{\sum_{n} \cos \theta_{n}} \right\} . \tag{2.169}
 $$
+
 Shortly, we shall see how this result arises naturally as the maximum likelihood estimator for an appropriately defined distribution over a periodic variable.
 
 We now consider a periodic generalization of the Gaussian called the von Mises distribution. Here we shall limit our attention to univariate distributions, although periodic distributions can also be found over hyperspheres of arbitrary dimension. For an extensive discussion of periodic distributions, see Mardia and Jupp (2000).
@@ -1349,12 +1408,15 @@ By convention, we will consider distributions $p(\theta)$ that have period $2\pi
 Figure 2.18 The von Mises distribution can be derived by considering a two-dimensional Gaussian of the form (2.173), whose density contours are shown in blue and conditioning on the unit circle shown in red.
 
 to one, but it must also be periodic. Thus $p(\theta)$ must satisfy the three conditions
+
 $$
 p(\theta) \geq 0 \tag{2.170}
 $$
+
 $$
 \int_{0}^{2\pi} p(\theta) \, d\theta = 1 \tag{2.171}
 $$
+
 $$
 p(\theta + 2\pi) = p(\theta). \tag{2.172}
 $$
@@ -1362,21 +1424,25 @@ $$
 From (2.172), it follows that $p(\theta + M2\pi) = p(\theta)$ for any integer $M$.
 
 We can easily obtain a Gaussian-like distribution that satisfies these three properties as follows. Consider a Gaussian distribution over two variables $\mathbf{x} = (x_1, x_2)$ having mean $\boldsymbol{\mu} = (\mu_1, \mu_2)$ and a covariance matrix $\boldsymbol{\Sigma} = \sigma^2\mathbf{I}$ where $\mathbf{I}$ is the $2 \times 2$ identity matrix, so that
+
 $$
 p(x_1, x_2) = \frac{1}{2\pi\sigma^2} \exp \left\{ -\frac{(x_1 - \mu_1)^2 + (x_2 - \mu_2)^2}{2\sigma^2} \right\}. \tag{2.173}
 $$
 
 The contours of constant $p(\mathbf{x})$ are circles, as illustrated in Figure 2.18. Now suppose we consider the value of this distribution along a circle of fixed radius. Then by construction this distribution will be periodic, although it will not be normalized. We can determine the form of this distribution by transforming from Cartesian coordinates $(x_1, x_2)$ to polar coordinates $(r, \theta)$ so that
+
 $$
 x_1 = r \cos \theta, \quad x_2 = r \sin \theta. \tag{2.174}
 $$
 
 We also map the mean $\boldsymbol{\mu}$ into polar coordinates by writing
+
 $$
 \mu_1 = r_0 \cos \theta_0, \quad \mu_2 = r_0 \sin \theta_0. \tag{2.175}
 $$
 
 Next we substitute these transformations into the two-dimensional Gaussian distribution (2.173), and then condition on the unit circle $r = 1$, noting that we are interested only in the dependence on $\theta$. Focussing on the exponent in the Gaussian distribution we have
+
 $$
 \begin{aligned}
 &-\frac{1}{2\sigma^2} \left\{ (r \cos \theta - r_0 \cos \theta_0)^2 + (r \sin \theta - r_0 \sin \theta_0)^2 \right\} \\
@@ -1384,6 +1450,7 @@ $$
 &= \frac{r_0}{\sigma^2} \cos(\theta - \theta_0) + \text{const}
 \end{aligned} \tag{2.176}
 $$
+
 [Page 128]
 
 ![The image is a graph that shows the relationship between two variables, represented by the red and blue lines. The x-axis represents the values of the variables, while the y-axis represents the values of the variables. The graph shows a downward trend, with the blue line decreasing as the red line increases. The red line is a straight line, which means it is a straight line that does not have any bends or curves. The blue line is a curved line, which means it has a more complex and irregular shape. The graph is labeled with the variables m and s, which are likely the values of the variables in the graph. The x-axis is labeled x, and the y-axis is labeled y. The graph is drawn on a white background, which makes the lines and their colors stand out clearly. The graph is not labeled, but it is clear that the variables are related. The red line is a straight line,](../Images/imageFile60.png)
@@ -1393,19 +1460,23 @@ $$
 Figure 2.19 The von Mises distribution plotted for two different parameter values, shown as a Cartesian plot on the left and as the corresponding polar plot on the right.
 
 where 'const' denotes terms independent of $\theta$, and we have made use of the following trigonometrical identities
+
 $$
 \cos^{2} A + \sin^{2} A = 1 \tag{2.177}
 $$
+
 $$
 \cos A \cos B + \sin A \sin B = \cos(A - B) . \tag{2.178}
 $$
 
 If we now define $m = r_0/\sigma^2$, we obtain our final expression for the distribution of $p(\theta)$ along the unit circle $r = 1$ in the form
+
 $$
 p(\theta|\theta_0,m) = \frac{1}{2\pi I_0(m)} \exp\{m\cos(\theta - \theta_0)\} \tag{2.179}
 $$
 
 which is called the von Mises distribution, or the circular normal. Here the parameter $\theta_0$ corresponds to the mean of the distribution, while $m$, which is known as the concentration parameter, is analogous to the inverse variance (precision) for the Gaussian. The normalization coefficient in (2.179) is expressed in terms of $I_0(m)$, which is the zeroth-order Bessel function of the first kind (Abramowitz and Stegun, 1965) and is defined by
+
 $$
 I_0(m) = \frac{1}{2\pi} \int_{0}^{2\pi} \exp\{m\cos\theta\} \, d\theta. \tag{2.180}
 $$
@@ -1413,9 +1484,11 @@ $$
 For large $m$, the distribution becomes approximately Gaussian. The von Mises distribution is plotted in Figure 2.19, and the function $I_0(m)$ is plotted in Figure 2.20.
 
 Now consider the maximum likelihood estimators for the parameters $\theta_0$ and $m$ for the von Mises distribution. The log likelihood function is given by
+
 $$
 \ln p(\mathcal{D}|\theta_0,m) = -N \ln(2\pi) - N \ln I_0(m) + m \sum_{n=1}^{N} \cos(\theta_n - \theta_0) . \tag{2.181}
 $$
+
 [Page 129]
 
 ![The image depicts two graphs, each with a horizontal axis labeled m and a vertical axis labeled 0.0. The x-axis is labeled m and the y-axis is labeled 0.0. Both graphs have a linear scale of range 0 to 1000 on the x-axis, and a linear scale of range 0 to 10 on the y-axis. The graph on the left has a horizontal line that is slightly higher than the graph on the right.](../Images/imageFile62.png)
@@ -1459,6 +1532,7 @@ The function $A(m)$ is plotted in Figure 2.20. Making use of the trigonometric i
 $$
 A(m_{\text{ML}}) = \left( \frac{1}{N} \sum_{n=1}^{N} \cos \theta_n \right) \cos \theta_{0}^{\text{ML}} + \left( \frac{1}{N} \sum_{n=1}^{N} \sin \theta_n \right) \sin \theta_{0}^{\text{ML}}. \tag{2.187}
 $$
+
 [Page 130]
 
 ![image 63](../Images/imageFile63.png)
@@ -1507,6 +1581,7 @@ Also, the requirement that $p(\mathbf{x}) \ge 0$, together with $\mathcal{N}(\ma
 $$
 0 \le \pi_k \le 1. \tag{2.190}
 $$
+
 [Page 132]
 
 ![In this image we can see a paper with some text and a picture of a paper.](../Images/imageFile14.png)
@@ -1534,6 +1609,7 @@ The form of the Gaussian mixture distribution is governed by the parameters $\bo
 $$
 \ln p(\mathbf{X}|\boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \sum_{n=1}^{N} \ln \left\{ \sum_{k=1}^{K} \pi_k \mathcal{N}(\mathbf{x}_n|\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right\} \tag{2.193}
 $$
+
 [Page 133]
 
 where $\mathbf{X} = \{\mathbf{x}_1, \ldots, \mathbf{x}_N\}$. We immediately see that the situation is now much more complex than with a single Gaussian, due to the presence of the summation over $k$ inside the logarithm. As a result, the maximum likelihood solution for the parameters no longer has a closed-form analytical solution. One approach to maximizing the likelihood function is to use iterative numerical optimization techniques (Fletcher, 1987; Nocedal and Wright, 1999; Bishop and Nabney, 2008). Alternatively we can employ a powerful framework called expectation maximization, which will be discussed at length in Chapter 9.
@@ -1576,6 +1652,7 @@ Comparison with (2.194) allows us to identify
 $$
 \eta = \ln \left( \frac{\mu}{1 - \mu} \right) \tag{2.198}
 $$
+
 [Page 134]
 
 which we can solve for $\mu$ to give $\mu = \sigma(\eta)$, where
@@ -1633,6 +1710,7 @@ so that, given any $M - 1$ of the parameters $\mu_k$, the value of the remaining
 $$
 0 \leqslant \mu_k \leqslant 1, \quad \sum_{k=1}^{M-1} \mu_k \leqslant 1. \tag{2.210}
 $$
+
 [Page 135]
 
 Making use of the constraint (2.209), the multinomial distribution in this representation then becomes
@@ -1656,7 +1734,7 @@ $$
 \mu_k = \frac{\exp(\eta_k)}{1 + \sum_j \exp(\eta_j)}. \tag{2.213}
 $$
 
-This is called the *softmax* function, or the *normalized exponential*. In this representation, the multinomial distribution therefore takes the form
+This is called the _softmax_ function, or the _normalized exponential_. In this representation, the multinomial distribution therefore takes the form
 
 $$
 p(\mathbf{x}|\boldsymbol{\eta}) = \left( 1 + \sum_{k=1}^{M-1} \exp(\eta_k) \right)^{-1} \exp(\boldsymbol{\eta}^{\text{T}} \mathbf{x}). \tag{2.214}
@@ -1684,6 +1762,7 @@ p(x|\mu, \sigma^2) &= \frac{1}{(2\pi\sigma^2)^{1/2}} \exp \left\{ -\frac{1}{2\si
 &= \frac{1}{(2\pi\sigma^2)^{1/2}} \exp \left\{ -\frac{1}{2\sigma^2} x^2 + \frac{\mu}{\sigma^2} x - \frac{1}{2\sigma^2} \mu^2 \right\} \\
 \end{aligned}
 $$
+
 [Page 136]
 
 which, after some simple rearrangement, can be cast in the standard exponential family form (2.194) with
@@ -1737,6 +1816,7 @@ Setting the gradient of $\ln p(\mathbf{X}|\boldsymbol{\eta})$ with respect to $\
 $$
 -\nabla \ln g(\boldsymbol{\eta}_{\mathrm{ML}}) = \frac{1}{N} \sum_{n=1}^N \mathbf{u}(\mathbf{x}_n) \tag{2.228}
 $$
+
 [Page 137]
 
 which can in principle be solved to obtain $\boldsymbol{\eta}_{\text{ML}}$. We see that the solution for the maximum likelihood estimator depends on the data only through $\sum_n \mathbf{u}(\mathbf{x}_n)$, which is therefore called the sufficient statistic of the distribution (2.194). We do not need to store the entire data set itself but only the value of the sufficient statistic. For the Bernoulli distribution, for example, the function $u(x)$ is given just by $x$ and so we need only keep the sum of the data points $\{x_n\}$, whereas for the Gaussian $\mathbf{u}(x) = (x, x^2)^{\text{T}}$, and so we should keep both the sum of $\{x_n\}$ and the sum of $\{x_n^2\}$.
@@ -1877,25 +1957,31 @@ this neighbourhood property was defined by the bins, and there is a natural ‘s
 ### 2.5.1 Kernel density estimators
 
 Let us suppose that observations are being drawn from some unknown probability density $p(\mathbf{x})$ in some $D$-dimensional space, which we shall take to be Euclidean, and we wish to estimate the value of $p(\mathbf{x})$. From our earlier discussion of locality, let us consider some small region $\mathcal{R}$ containing $\mathbf{x}$. The probability mass associated with this region is given by
+
 $$
 P = \int_{\mathcal{R}} p(\mathbf{x}) \, d\mathbf{x}. \tag{2.242}
 $$
 
 Now suppose that we have collected a data set comprising $N$ observations drawn from $p(\mathbf{x})$. Because each data point has a probability $P$ of falling within $\mathcal{R}$, the total number $K$ of points that lie inside $\mathcal{R}$ will be distributed according to the binomial distribution
+
 $$
 \text{Bin}(K|N,P) = \frac{N!}{K!(N - K)!} P^K (1 - P)^{1-K}. \tag{2.243}
 $$
 
 Using (2.11), we see that the mean fraction of points falling inside the region is $\mathbb{E}[K/N] = P$, and similarly using (2.12) we see that the variance around this mean is $\text{var}[K/N] = P(1 - P)/N$. For large $N$, this distribution will be sharply peaked around the mean and so
+
 $$
 K \simeq NP. \tag{2.244}
 $$
 
 If, however, we also assume that the region $\mathcal{R}$ is sufficiently small that the probability density $p(\mathbf{x})$ is roughly constant over the region, then we have
+
 $$
 P \simeq p(\mathbf{x})V \tag{2.245}
 $$
+
 where $V$ is the volume of $\mathcal{R}$. Combining (2.244) and (2.245), we obtain our density estimate in the form
+
 $$
 p(\mathbf{x}) = \frac{K}{NV}. \tag{2.246}
 $$
@@ -1908,7 +1994,7 @@ We can exploit the result (2.246) in two different ways. Either we can fix $K$ a
 We begin by discussing the kernel method in detail, and to start with we take the region $\mathcal{R}$ to be a small hypercube centred on the point $\mathbf{x}$ at which we wish to determine the probability density. In order to count the number $K$ of points falling within this region, it is convenient to define the following function
 
 $$
-k(\mathbf{u}) = \begin{cases} 
+k(\mathbf{u}) = \begin{cases}
 1, & |u_i| \leqslant 1/2, \quad i = 1, \ldots, D, \\
 0, & \text{otherwise}
 \end{cases} \tag{2.247}
@@ -1968,21 +2054,25 @@ Figure 2.26 Illustration of $K$-nearest-neighbour density estimation using the s
 density $p(\mathbf{x})$, and we allow the radius of the sphere to grow until it contains precisely $K$ data points. The estimate of the density $p(\mathbf{x})$ is then given by (2.246) with $V$ set to the volume of the resulting sphere. This technique is known as $K$ nearest neighbours and is illustrated in Figure 2.26, for various choices of the parameter $K$, using the same data set as used in Figure 2.24 and Figure 2.25. We see that the value of $K$ now governs the degree of smoothing and that again there is an optimum choice for $K$ that is neither too large nor too small. Note that the model produced by $K$ nearest neighbours is not a true density model because the integral over all space diverges.
 
 We close this chapter by showing how the $K$-nearest-neighbour technique for density estimation can be extended to the problem of classification. To do this, we apply the $K$-nearest-neighbour density estimation technique to each class separately and then make use of Bayes' theorem. Let us suppose that we have a data set comprising $N_k$ points in class $\mathcal{C}_k$ with $N$ points in total, so that $\sum_k N_k = N$. If we wish to classify a new point $\mathbf{x}$, we draw a sphere centred on $\mathbf{x}$ containing precisely $K$ points irrespective of their class. Suppose this sphere has volume $V$ and contains $K_k$ points from class $\mathcal{C}_k$. Then (2.246) provides an estimate of the density associated with each class
+
 $$
 p(\mathbf{x}|\mathcal{C}_k) = \frac{K_k}{N_k V}. \tag{2.253}
 $$
 
 Similarly, the unconditional density is given by
+
 $$
 p(\mathbf{x}) = \frac{K}{N V} \tag{2.254}
 $$
 
 while the class priors are given by
+
 $$
 p(\mathcal{C}_k) = \frac{N_k}{N}. \tag{2.255}
 $$
 
 We can now combine (2.253), (2.254), and (2.255) using Bayes' theorem to obtain the posterior probability of class membership
+
 $$
 p(\mathcal{C}_k|\mathbf{x}) = \frac{p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)}{p(\mathbf{x})} = \frac{K_k}{K}. \tag{2.256}
 $$

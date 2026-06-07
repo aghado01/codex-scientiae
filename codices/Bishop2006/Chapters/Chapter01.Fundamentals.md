@@ -1,8 +1,8 @@
 [Page 21]
 
-# 1 Introduction
+![Chapter1](../Images/Chapters/Chapter1.png)
 
-![In this image we can see a poster with some text.](../Images/imageFile3.png)
+# 1. Fundamentals
 
 The problem of searching for patterns in data is a fundamental one and has a long and successful history. For instance, the extensive astronomical observations of Tycho Brahe in the 16th century allowed Johannes Kepler to discover the empirical laws of planetary motion, which in turn provided a springboard for the development of classical mechanics. Similarly, the discovery of regularities in atomic spectra played a key role in the development and verification of quantum physics in the early twentieth century. The field of pattern recognition is concerned with the automatic discovery of regularities in data through the use of computer algorithms and with the use of these regularities to take actions such as classifying the data into different categories.
 
@@ -109,18 +109,19 @@ We can gain some insight into the problem by examining the values of the coeffic
 
 Table 1.1 Table of the coefficients $\mathbf{w}^{\star}$ for polynomials of various order. Observe how the typical magnitude of the coefficients increases dramatically as the order of the polynomial increases.
 
-| | $M = 0$ | $M = 1$ | $M = 3$ | $M = 9$ |
-| :--- | :--- | :--- | :--- | :--- |
-| $w_0^{\star}$ | $0.19$ | $0.82$ | $0.31$ | $0.35$ |
-| $w_1^{\star}$ | | $-1.27$ | $7.99$ | $232.37$ |
-| $w_2^{\star}$ | | | $-25.43$ | $-5321.83$ |
-| $w_3^{\star}$ | | | $17.37$ | $48568.31$ |
-| $w_4^{\star}$ | | | | $-231639.30$ |
-| $w_5^{\star}$ | | | | $640042.26$ |
-| $w_6^{\star}$ | | | | $-1061800.52$ |
-| $w_7^{\star}$ | | | | $1042400.18$ |
-| $w_8^{\star}$ | | | | $-557682.99$ |
-| $w_9^{\star}$ | | | | $125201.43$ |
+|               | $M = 0$ | $M = 1$ | $M = 3$  | $M = 9$       |
+| :------------ | :------ | :------ | :------- | :------------ |
+| $w_0^{\star}$ | $0.19$  | $0.82$  | $0.31$   | $0.35$        |
+| $w_1^{\star}$ |         | $-1.27$ | $7.99$   | $232.37$      |
+| $w_2^{\star}$ |         |         | $-25.43$ | $-5321.83$    |
+| $w_3^{\star}$ |         |         | $17.37$  | $48568.31$    |
+| $w_4^{\star}$ |         |         |          | $-231639.30$  |
+| $w_5^{\star}$ |         |         |          | $640042.26$   |
+| $w_6^{\star}$ |         |         |          | $-1061800.52$ |
+| $w_7^{\star}$ |         |         |          | $1042400.18$  |
+| $w_8^{\star}$ |         |         |          | $-557682.99$  |
+| $w_9^{\star}$ |         |         |          | $125201.43$   |
+
 [Page 29]
 
 ![The image is a scatter plot with two sets of data points. The x-axis is labeled N and the y-axis is labeled T. The data points are represented by red and green dots, respectively. The x-axis is labeled T and the y-axis is labeled T. The data points are scattered across the graph, with some points closer to the x-axis and others closer to the y-axis. The points are scattered in a random pattern, with no clear pattern or pattern in the data. The scatter plot is drawn with a white background and has a grid. The x-axis is labeled N and the y-axis is labeled T. The data points are scattered across the graph, with some points closer to the x-axis and others closer to the y-axis. The points are scattered in a random pattern, with no clear pattern or pattern in the data. The scatter plot is not perfectly symmetrical](../Images/imageFile9.png)
@@ -153,18 +154,18 @@ Figure 1.7 shows the results of fitting the polynomial of order $M = 9$ to the s
 
 **Table 1.2** Table of the coefficients $\mathbf{w}^{\star}$ for $M = 9$ polynomials with various values for the regularization parameter $\lambda$. Note that $\ln \lambda = -\infty$ corresponds to a model with no regularization, i.e., to the graph at the bottom right in Figure 1.4. We see that, as the value of $\lambda$ increases, the typical magnitude of the coefficients gets smaller.
 
-| | $\ln \lambda = -\infty$ | $\ln \lambda = -18$ | $\ln \lambda = 0$ |
-| :--- | :--- | :--- | :--- |
-| $w_0^{\star}$ | $0.35$ | $0.35$ | $0.13$ |
-| $w_1^{\star}$ | $232.37$ | $4.74$ | $-0.05$ |
-| $w_2^{\star}$ | $-5321.83$ | $-0.77$ | $-0.06$ |
-| $w_3^{\star}$ | $48568.31$ | $-31.97$ | $-0.05$ |
-| $w_4^{\star}$ | $-231639.30$ | $-3.89$ | $-0.03$ |
-| $w_5^{\star}$ | $640042.26$ | $55.28$ | $-0.02$ |
-| $w_6^{\star}$ | $-1061800.52$ | $41.32$ | $-0.01$ |
-| $w_7^{\star}$ | $1042400.18$ | $-45.95$ | $-0.00$ |
-| $w_8^{\star}$ | $-557682.99$ | $-91.53$ | $0.00$ |
-| $w_9^{\star}$ | $125201.43$ | $72.68$ | $0.01$ |
+|               | $\ln \lambda = -\infty$ | $\ln \lambda = -18$ | $\ln \lambda = 0$ |
+| :------------ | :---------------------- | :------------------ | :---------------- |
+| $w_0^{\star}$ | $0.35$                  | $0.35$              | $0.13$            |
+| $w_1^{\star}$ | $232.37$                | $4.74$              | $-0.05$           |
+| $w_2^{\star}$ | $-5321.83$              | $-0.77$             | $-0.06$           |
+| $w_3^{\star}$ | $48568.31$              | $-31.97$            | $-0.05$           |
+| $w_4^{\star}$ | $-231639.30$            | $-3.89$             | $-0.03$           |
+| $w_5^{\star}$ | $640042.26$             | $55.28$             | $-0.02$           |
+| $w_6^{\star}$ | $-1061800.52$           | $41.32$             | $-0.01$           |
+| $w_7^{\star}$ | $1042400.18$            | $-45.95$            | $-0.00$           |
+| $w_8^{\star}$ | $-557682.99$            | $-91.53$            | $0.00$            |
+| $w_9^{\star}$ | $125201.43$             | $72.68$             | $0.01$            |
 
 the magnitude of the coefficients.
 
@@ -266,27 +267,34 @@ Here $p(X, Y)$ is a joint probability and is verbalized as "the probability of $
 and is simply “the probability of $X$”. These two simple rules form the basis for all of the probabilistic machinery that we use throughout this book.
 
 From the product rule, together with the symmetry property $p(X,Y) = p(Y,X)$, we immediately obtain the following relationship between conditional probabilities
+
 $$
 p(Y|X) = \frac{p(X|Y)p(Y)}{p(X)} \tag{1.12}
 $$
+
 which is called Bayes’ theorem and which plays a central role in pattern recognition and machine learning. Using the sum rule, the denominator in Bayes’ theorem can be expressed in terms of the quantities appearing in the numerator
+
 $$
 p(X) = \sum_{Y} p(X|Y)p(Y). \tag{1.13}
 $$
+
 We can view the denominator in Bayes’ theorem as being the normalization constant required to ensure that the sum of the conditional probability on the left-hand side of (1.12) over all values of $Y$ equals one.
 
 In Figure 1.11, we show a simple example involving a joint distribution over two variables to illustrate the concept of marginal and conditional distributions. Here a finite sample of $N = 60$ data points has been drawn from the joint distribution and is shown in the top left. In the top right is a histogram of the fractions of data points having each of the two values of $Y$. From the definition of probability, these fractions would equal the corresponding probabilities $p(Y)$ in the limit $N \to \infty$. We can view the histogram as a simple way to model a probability distribution given only a finite number of points drawn from that distribution. Modelling distributions from data lies at the heart of statistical pattern recognition and will be explored in great detail in this book. The remaining two plots in Figure 1.11 show the corresponding histogram estimates of $p(X)$ and $p(X|Y = 1)$.
 
 Let us now return to our example involving boxes of fruit. For the moment, we shall once again be explicit about distinguishing between the random variables and their instantiations. We have seen that the probabilities of selecting either the red or the blue boxes are given by
+
 $$
 \begin{align}
 p(B = r) &= 4/10 \tag{1.14} \\
 p(B = b) &= 6/10 \tag{1.15}
 \end{align}
 $$
+
 respectively. Note that these satisfy $p(B = r) + p(B = b) = 1$.
 
 Now suppose that we pick a box at random, and it turns out to be the blue box. Then the probability of selecting an apple is just the fraction of apples in the blue box which is $3/4$, and so $p(F = a|B = b) = 3/4$. In fact, we can write out all four conditional probabilities for the type of fruit, given the selected box
+
 $$
 \begin{align}
 p(F = a|B = r) &= 1/4 \tag{1.16} \\
@@ -295,6 +303,7 @@ p(F = a|B = b) &= 3/4 \tag{1.18} \\
 p(F = o|B = b) &= 1/4. \tag{1.19}
 \end{align}
 $$
+
 [Page 36]
 
 ![The image is a bar chart titled Y=1 with four different categories represented by blue bars. The x-axis is labeled Y and the y-axis is labeled P(X). The bars are color-coded to represent different values of P(X). ### Description of the Bar Chart: - **Y-Axis (X-Axis)**: The x-axis is labeled Y and the y-axis is labeled P(X). - **Bars**: There are four different categories represented by blue bars: - **X**: The category labeled x - **Y**: The category labeled y - **P(X)**: The category labeled P(X) ### Analysis: - **Bars Color Coding**: The bars are color-coded to represent different values of P(X). The colors are blue for x and red for y. - **](../Images/imageFile14.png)
@@ -302,17 +311,21 @@ $$
 Figure 1.11 An illustration of a distribution over two variables, $X$, which takes $9$ possible values, and $Y$, which takes two possible values. The top left figure shows a sample of $60$ points drawn from a joint probability distribution over these variables. The remaining figures show histogram estimates of the marginal distributions $p(X)$ and $p(Y)$, as well as the conditional distribution $p(X|Y = 1)$ corresponding to the bottom row in the top left figure.
 
 Again, note that these probabilities are normalized so that
+
 $$
 p(F = a|B = r) + p(F = o|B = r) = 1
 \tag{1.20}
 $$
+
 and similarly
+
 $$
 p(F = a|B = b) + p(F = o|B = b) = 1.
 \tag{1.21}
 $$
 
 We can now use the sum and product rules of probability to evaluate the overall probability of choosing an apple
+
 $$
 \begin{align}
 p(F = a) &= p(F = a|B = r)p(B = r) + p(F = a|B = b)p(B = b) \\
@@ -343,6 +356,7 @@ As well as considering probabilities defined over discrete sets of events, we al
 $$
 p(x \in (a,b)) = \int_{a}^{b} p(x) \, dx. \tag{1.24}
 $$
+
 [Page 38]
 
 Figure 1.12 The concept of probability for discrete variables can be extended to that of a probability density $p(x)$ over a continuous variable $x$ and is such that the probability of $x$ lying in the interval $(x, x+\delta x)$ is given by $p(x)\delta x$ for $\delta x \to 0$. The probability density can be expressed as the derivative of a cumulative distribution function $P(x)$.
@@ -382,17 +396,20 @@ If we have several continuous variables $x_1, \ldots, x_D$, denoted collectively
 [Page 39]
 
 that the probability of $\mathbf{x}$ falling in an infinitesimal volume $\delta\mathbf{x}$ containing the point $\mathbf{x}$ is given by $p(\mathbf{x})\delta\mathbf{x}$. This multivariate probability density must satisfy
+
 $$
 \begin{align}
 p(\mathbf{x}) &\geq 0 \tag{1.29} \\
 \int p(\mathbf{x}) \, d\mathbf{x} &= 1 \tag{1.30}
 \end{align}
 $$
+
 in which the integral is taken over the whole of $\mathbf{x}$ space. We can also consider joint probability distributions over a combination of discrete and continuous variables.
 
 Note that if $x$ is a discrete variable, then $p(x)$ is sometimes called a probability mass function because it can be regarded as a set of ‘probability masses’ concentrated at the allowed values of $x$.
 
 The sum and product rules of probability, as well as Bayes’ theorem, apply equally to the case of probability densities, or to combinations of discrete and continuous variables. For instance, if $x$ and $y$ are two real variables, then the sum and product rules take the form
+
 $$
 \begin{align}
 p(x) &= \int p(x,y) \, dy \tag{1.31} \\
@@ -405,10 +422,13 @@ A formal justification of the sum and product rules for continuous variables (Fe
 ### 1.2.2 Expectations and covariances
 
 One of the most important operations involving probabilities is that of finding weighted averages of functions. The average value of some function $f(x)$ under a probability distribution $p(x)$ is called the expectation of $f(x)$ and will be denoted by $\mathbb{E}[f]$. For a discrete distribution, it is given by
+
 $$
 \mathbb{E}[f] = \sum_{x} p(x)f(x) \tag{1.33}
 $$
+
 so that the average is weighted by the relative probabilities of the different values of $x$. In the case of continuous variables, expectations are expressed in terms of an integration with respect to the corresponding probability density
+
 $$
 \mathbb{E}[f] = \int p(x)f(x) \, dx. \tag{1.34}
 $$
@@ -417,50 +437,65 @@ In either case, if we are given a finite number $N$ of points drawn from the pro
 [Page 40]
 
 finite sum over these points
+
 $$
 \mathbb{E}[f] \simeq \frac{1}{N} \sum_{n=1}^{N} f(x_{n}). \tag{1.35}
 $$
+
 We shall make extensive use of this result when we discuss sampling methods in Chapter 11. The approximation in (1.35) becomes exact in the limit $N \to \infty$.
 
 Sometimes we will be considering expectations of functions of several variables, in which case we can use a subscript to indicate which variable is being averaged over, so that for instance
+
 $$
 \mathbb{E}_{x}[f(x, y)] \tag{1.36}
 $$
+
 denotes the average of the function $f(x, y)$ with respect to the distribution of $x$. Note that $\mathbb{E}_{x}[f(x, y)]$ will be a function of $y$.
 
 We can also consider a conditional expectation with respect to a conditional distribution, so that
+
 $$
 \mathbb{E}_{x}[f|y] = \sum_{x} p(x|y)f(x) \tag{1.37}
 $$
+
 with an analogous definition for continuous variables. The variance of $f(x)$ is defined by
+
 $$
 \text{var}[f] = \mathbb{E}\left[ (f(x) - \mathbb{E}[f(x)])^{2} \right] \tag{1.38}
 $$
+
 and provides a measure of how much variability there is in $f(x)$ around its mean value $\mathbb{E}[f(x)]$. Expanding out the square, we see that the variance can also be written in terms of the expectations of $f(x)$ and $f(x)^{2}$
+
 $$
 \text{var}[f] = \mathbb{E}[f(x)^{2}] - \mathbb{E}[f(x)]^{2}. \tag{1.39}
 $$
 
 In particular, we can consider the variance of the variable $x$ itself, which is given by
+
 $$
 \text{var}[x] = \mathbb{E}[x^{2}] - \mathbb{E}[x]^{2}. \tag{1.40}
 $$
+
 For two random variables $x$ and $y$, the covariance is defined by
+
 $$
 \begin{aligned}
 \text{cov}[x, y] &= \mathbb{E}_{x,y}[\{x - \mathbb{E}[x]\}\{y - \mathbb{E}[y]\}] \\
 &= \mathbb{E}_{x,y}[xy] - \mathbb{E}[x]\mathbb{E}[y]
 \end{aligned} \tag{1.41}
 $$
+
 which expresses the extent to which $x$ and $y$ vary together. If $x$ and $y$ are independent, then their covariance vanishes.
 
 In the case of two vectors of random variables $\mathbf{x}$ and $\mathbf{y}$, the covariance is a matrix
+
 $$
 \begin{aligned}
 \text{cov}[\mathbf{x}, \mathbf{y}] &= \mathbb{E}_{\mathbf{x},\mathbf{y}}[\{\mathbf{x} - \mathbb{E}[\mathbf{x}]\}\{\mathbf{y}^{\text{T}} - \mathbb{E}[\mathbf{y}^{\text{T}}]\}] \\
 &= \mathbb{E}_{\mathbf{x},\mathbf{y}}[\mathbf{x}\mathbf{y}^{\text{T}}] - \mathbb{E}[\mathbf{x}]\mathbb{E}[\mathbf{y}^{\text{T}}].
 \end{aligned} \tag{1.42}
 $$
+
 If we consider the covariance of the components of a vector $\mathbf{x}$ with each other, then we use a slightly simpler notation $\text{cov}[\mathbf{x}] \equiv \text{cov}[\mathbf{x}, \mathbf{x}]$.
 [Page 41]
 
@@ -475,11 +510,11 @@ The use of probability to represent uncertainty, however, is not an ad-hoc choic
 In the field of pattern recognition, too, it is helpful to have a more general no-
 
 > **Thomas Bayes (1701–1761)**
-> 
+>
 > ![image 5](../Images/imageFile5.png)
-> 
+>
 > Thomas Bayes was born in Tunbridge Wells and was a clergyman as well as an amateur scientist and a mathematician. He studied logic and theology at Edinburgh University and was elected Fellow of the Royal Society in 1742. During the 18th century, issues regarding probability arose in connection with gambling and with the new concept of insurance. One particularly important problem concerned so-called inverse probability. A solution was proposed by Thomas Bayes in his paper ‘Essay towards solving a problem in the doctrine of chances’, which was published in 1764, some three years after his death, in the Philosophical Transactions of the Royal Society. In fact, Bayes only formulated his theory for the case of a uniform prior, and it was Pierre-Simon Laplace who independently rediscovered the theory in general form and who demonstrated its broad applicability.
-[Page 42]
+> [Page 42]
 
 tion of probability. Consider the example of polynomial curve fitting discussed in Section 1.1. It seems reasonable to apply the frequentist notion of probability to the random values of the observed variables $t_n$. However, we would like to address and quantify the uncertainty that surrounds the appropriate choice for the model parameters $\mathbf{w}$. We shall see that, from a Bayesian perspective, we can use the machinery of probability theory to describe the uncertainty in model parameters such as $\mathbf{w}$, or indeed in the choice of model itself.
 
@@ -616,35 +651,45 @@ For the moment, however, we shall determine values for the unknown parameters $\
 [Page 47]
 
 function can be written in the form
+
 $$
 \ln p(\mathbf{x} | \mu, \sigma^{2}) = -\frac{1}{2\sigma^{2}} \sum_{n=1}^{N} (x_{n} - \mu)^{2} - \frac{N}{2} \ln \sigma^{2} - \frac{N}{2} \ln (2\pi). \tag{1.54}
 $$
 
 Maximizing (1.54) with respect to $\mu$, we obtain the maximum likelihood solution given by
+
 $$
 \mu_{\text{ML}} = \frac{1}{N} \sum_{n=1}^{N} x_{n} \tag{1.55}
 $$
+
 which is the sample mean, i.e., the mean of the observed values $\{x_{n}\}$. Similarly, maximizing (1.54) with respect to $\sigma^{2}$, we obtain the maximum likelihood solution for the variance in the form
+
 $$
 \sigma_{\text{ML}}^{2} = \frac{1}{N} \sum_{n=1}^{N} (x_{n} - \mu_{\text{ML}})^{2} \tag{1.56}
 $$
+
 which is the sample variance measured with respect to the sample mean $\mu_{\text{ML}}$. Note that we are performing a joint maximization of (1.54) with respect to $\mu$ and $\sigma^{2}$, but in the case of the Gaussian distribution the solution for $\mu$ decouples from that for $\sigma^{2}$ so that we can first evaluate (1.55) and then subsequently use this result to evaluate (1.56).
 
 Later in this chapter, and also in subsequent chapters, we shall highlight the significant limitations of the maximum likelihood approach. Here we give an indication of the problem in the context of our solutions for the maximum likelihood parameter settings for the univariate Gaussian distribution. In particular, we shall show that the maximum likelihood approach systematically underestimates the variance of the distribution. This is an example of a phenomenon called bias and is related to the problem of over-fitting encountered in the context of polynomial curve fitting.
 
 We first note that the maximum likelihood solutions $\mu_{\text{ML}}$ and $\sigma_{\text{ML}}^{2}$ are functions of the data set values $x_{1}, \ldots, x_{N}$. Consider the expectations of these quantities with respect to the data set values, which themselves come from a Gaussian distribution with parameters $\mu$ and $\sigma^{2}$. It is straightforward to show that
+
 $$
 \mathbb{E}[\mu_{\text{ML}}] = \mu \tag{1.57}
 $$
+
 $$
 \mathbb{E}[\sigma_{\text{ML}}^{2}] = \left( \frac{N - 1}{N} \right) \sigma^{2} \tag{1.58}
 $$
+
 so that on average the maximum likelihood estimate will obtain the correct mean but will underestimate the true variance by a factor $(N - 1)/N$. The intuition behind this result is given by Figure 1.15.
 
 From (1.58) it follows that the following estimate for the variance parameter is unbiased
+
 $$
 \widetilde{\sigma}^{2} = \frac{N}{N - 1} \sigma_{\text{ML}}^{2} = \frac{1}{N - 1} \sum_{n=1}^{N} (x_{n} - \mu_{\text{ML}})^{2}. \tag{1.59}
 $$
+
 [Page 48]
 
 Figure 1.15 Illustration of how bias arises in using maximum likelihood to determine the variance of a Gaussian. The green curve shows the true Gaussian distribution from which data is generated, and the three red curves show the Gaussian distributions obtained by fitting to three data sets, each consisting of two data points shown in blue, using the maximum likelihood results (1.55) and (1.56). Averaged across the three data sets, the mean is correct, but the variance is systematically under-estimated because it is measured relative to the sample mean and not relative to the true mean.
@@ -696,26 +741,31 @@ We can also use maximum likelihood to determine the precision parameter $\beta$ 
 $$
 \frac{1}{\beta_{\text{ML}}} = \frac{1}{N} \sum_{n=1}^{N} \{y(x_n, \mathbf{w}_{\text{ML}}) - t_n\}^2. \tag{1.63}
 $$
+
 [Page 50]
 
 Again we can first determine the parameter vector $\mathbf{w}_{\text{ML}}$ governing the mean and subsequently use this to find the precision $\beta_{\text{ML}}$ as was the case for the simple Gaussian distribution.
 
 Having determined the parameters $\mathbf{w}$ and $\beta$, we can now make predictions for new values of $x$. Because we now have a probabilistic model, these are expressed in terms of the predictive distribution that gives the probability distribution over $t$, rather than simply a point estimate, and is obtained by substituting the maximum likelihood parameters into (1.60) to give
+
 $$
 p(t|x, \mathbf{w}_{\text{ML}}, \beta_{\text{ML}}) = \mathcal{N}\left(t|y(x, \mathbf{w}_{\text{ML}}), \beta_{\text{ML}}^{-1}\right). \tag{1.64}
 $$
 
 Now let us take a step towards a more Bayesian approach and introduce a prior distribution over the polynomial coefficients $\mathbf{w}$. For simplicity, let us consider a Gaussian distribution of the form
+
 $$
 p(\mathbf{w}|\alpha) = \mathcal{N}(\mathbf{w}|\mathbf{0}, \alpha^{-1}\mathbf{I}) = \left(\frac{\alpha}{2\pi}\right)^{(M+1)/2} \exp\left\{-\frac{\alpha}{2}\mathbf{w}^{\text{T}}\mathbf{w}\right\} \tag{1.65}
 $$
 
 where $\alpha$ is the precision of the distribution, and $M+1$ is the total number of elements in the vector $\mathbf{w}$ for an $M^{\text{th}}$ order polynomial. Variables such as $\alpha$, which control the distribution of model parameters, are called hyperparameters. Using Bayes’ theorem, the posterior distribution for $\mathbf{w}$ is proportional to the product of the prior distribution and the likelihood function
+
 $$
 p(\mathbf{w}|\mathbf{x}, \mathbf{t}, \alpha, \beta) \propto p(\mathbf{t}|\mathbf{x}, \mathbf{w}, \beta)p(\mathbf{w}|\alpha). \tag{1.66}
 $$
 
 We can now determine $\mathbf{w}$ by finding the most probable value of $\mathbf{w}$ given the data, in other words by maximizing the posterior distribution. This technique is called maximum posterior, or simply MAP. Taking the negative logarithm of (1.66) and combining with (1.62) and (1.65), we find that the maximum of the posterior is given by the minimum of
+
 $$
 \frac{\beta}{2} \sum_{n=1}^{N} \{y(x_{n}, \mathbf{w}) - t_{n}\}^{2} + \frac{\alpha}{2}\mathbf{w}^{\text{T}}\mathbf{w}. \tag{1.67}
 $$
@@ -730,15 +780,19 @@ Although we have included a prior distribution $p(\mathbf{w}|\alpha)$, we are so
 In the curve fitting problem, we are given the training data $\mathbf{x}$ and $\mathbf{t}$, along with a new test point $x$, and our goal is to predict the value of $t$. We therefore wish to evaluate the predictive distribution $p(t|x, \mathbf{x}, \mathbf{t})$. Here we shall assume that the parameters $\alpha$ and $\beta$ are fixed and known in advance (in later chapters we shall discuss how such parameters can be inferred from data in a Bayesian setting).
 
 A Bayesian treatment simply corresponds to a consistent application of the sum and product rules of probability, which allow the predictive distribution to be written in the form
+
 $$
 p(t|x, \mathbf{x}, \mathbf{t}) = \int p(t|x, \mathbf{w})p(\mathbf{w}|\mathbf{x}, \mathbf{t}) \mathrm{d}\mathbf{w}. \tag{1.68}
 $$
 
 Here $p(t|x, \mathbf{w})$ is given by (1.60), and we have omitted the dependence on $\alpha$ and $\beta$ to simplify the notation. Here $p(\mathbf{w}|\mathbf{x}, \mathbf{t})$ is the posterior distribution over parameters, and can be found by normalizing the right-hand side of (1.66). We shall see in Section 3.3 that, for problems such as the curve-fitting example, this posterior distribution is a Gaussian and can be evaluated analytically. Similarly, the integration in (1.68) can also be performed analytically with the result that the predictive distribution is given by a Gaussian of the form
+
 $$
 p(t|x, \mathbf{x}, \mathbf{t}) = \mathcal{N}(t|m(x), s^{2}(x)) \tag{1.69}
 $$
+
 where the mean and variance are given by
+
 $$
 \begin{align}
 m(x) &= \beta \boldsymbol{\phi}(x)^{\mathrm{T}} \mathbf{S} \sum_{n=1}^{N} \boldsymbol{\phi}(x_n) t_n \tag{1.70} \\
@@ -747,9 +801,11 @@ s^{2}(x) &= \beta^{-1} + \boldsymbol{\phi}(x)^{\mathrm{T}} \mathbf{S} \boldsymbo
 $$
 
 Here the matrix $\mathbf{S}$ is given by
+
 $$
 \mathbf{S}^{-1} = \alpha \mathbf{I} + \beta \sum_{n=1}^{N} \boldsymbol{\phi}(x_n) \boldsymbol{\phi}(x_n)^{\mathrm{T}} \tag{1.72}
 $$
+
 where $\mathbf{I}$ is the unit matrix, and we have defined the vector $\boldsymbol{\phi}(x)$ with elements $\phi_i(x) = x^i$ for $i = 0, \ldots, M$.
 
 We see that the variance, as well as the mean, of the predictive distribution in (1.69) is dependent on $x$. The first term in (1.71) represents the uncertainty in the predicted value of $t$ due to the noise on the target variables and was expressed already in the maximum likelihood predictive distribution (1.64) through $\beta_{\mathrm{ML}}^{-1}$. However, the second term arises from the uncertainty in the parameters $\mathbf{w}$ and is a consequence of the Bayesian treatment. The predictive distribution for the synthetic sinusoidal regression problem is illustrated in Figure 1.17.
@@ -869,15 +925,18 @@ Here we give an introduction to the key ideas of decision theory as required for
 the rest of the book. Further background, as well as more detailed accounts, can be found in Berger (1985) and Bather (2000).
 
 Before giving a more detailed analysis, let us first consider informally how we might expect probabilities to play a role in making decisions. When we obtain the X-ray image $\mathbf{x}$ for a new patient, our goal is to decide which of the two classes to assign to the image. We are interested in the probabilities of the two classes given the image, which are given by $p(\mathcal{C}_k|\mathbf{x})$. Using Bayes’ theorem, these probabilities can be expressed in the form
+
 $$
 p(\mathcal{C}_k|\mathbf{x}) = \frac{p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)}{p(\mathbf{x})} .
 \tag{1.77}
 $$
+
 Note that any of the quantities appearing in Bayes’ theorem can be obtained from the joint distribution $p(\mathbf{x}, \mathcal{C}_k)$ by either marginalizing or conditioning with respect to the appropriate variables. We can now interpret $p(\mathcal{C}_k)$ as the prior probability for the class $\mathcal{C}_k$, and $p(\mathcal{C}_k|\mathbf{x})$ as the corresponding posterior probability. Thus $p(\mathcal{C}_1)$ represents the probability that a person has cancer, before we take the X-ray measurement. Similarly, $p(\mathcal{C}_1|\mathbf{x})$ is the corresponding probability, revised using Bayes’ theorem in light of the information contained in the X-ray. If our aim is to minimize the chance of assigning $\mathbf{x}$ to the wrong class, then intuitively we would choose the class having the higher posterior probability. We now show that this intuition is correct, and we also discuss more general criteria for making decisions.
 
 ### 1.5.1 Minimizing the misclassification rate
 
 Suppose that our goal is simply to make as few misclassifications as possible. We need a rule that assigns each value of $\mathbf{x}$ to one of the available classes. Such a rule will divide the input space into regions $\mathcal{R}_k$ called decision regions, one for each class, such that all points in $\mathcal{R}_k$ are assigned to class $\mathcal{C}_k$. The boundaries between decision regions are called decision boundaries or decision surfaces. Note that each decision region need not be contiguous but could comprise some number of disjoint regions. We shall encounter examples of decision boundaries and decision regions in later chapters. In order to find the optimal decision rule, consider first of all the case of two classes, as in the cancer problem for instance. A mistake occurs when an input vector belonging to class $\mathcal{C}_1$ is assigned to class $\mathcal{C}_2$ or vice versa. The probability of this occurring is given by
+
 $$
 \begin{aligned}
 p(\text{mistake}) &= p(\mathbf{x} \in \mathcal{R}_1, \mathcal{C}_2) + p(\mathbf{x} \in \mathcal{R}_2, \mathcal{C}_1) \\
@@ -945,7 +1004,7 @@ is a minimum. This is clearly trivial to do, once we know the posterior class pr
 
 ###### 1.5.3 The reject option
 
-We have seen that classification errors arise from the regions of input space where the largest of the posterior probabilities $p(\mathcal{C}_k | \mathbf{x})$ is significantly less than unity, or equivalently where the joint distributions $p(\mathbf{x}, \mathcal{C}_k)$ have comparable values. These are the regions where we are relatively uncertain about class membership. In some applications, it will be appropriate to avoid making decisions on the difficult cases in anticipation of a lower error rate on those examples for which a classification decision is made. This is known as the *reject option*. For example, in our hypothetical medical illustration, it may be appropriate to use an automatic system to classify those X-ray images for which there is little doubt as to the correct class, while leaving a human expert to classify the more ambiguous cases. We can achieve this by introducing a threshold $\theta$ and rejecting those inputs $\mathbf{x}$ for which the largest of the posterior probabilities $p(\mathcal{C}_k | \mathbf{x})$ is less than or equal to $\theta$. This is illustrated for the case of two classes, and a single continuous input variable $x$, in Figure 1.26. Note that setting $\theta = 1$ will ensure that all examples are rejected, whereas if there are $K$ classes then setting $\theta < 1/K$ will ensure that no examples are rejected. Thus the fraction of examples that get rejected is controlled by the value of $\theta$.
+We have seen that classification errors arise from the regions of input space where the largest of the posterior probabilities $p(\mathcal{C}_k | \mathbf{x})$ is significantly less than unity, or equivalently where the joint distributions $p(\mathbf{x}, \mathcal{C}_k)$ have comparable values. These are the regions where we are relatively uncertain about class membership. In some applications, it will be appropriate to avoid making decisions on the difficult cases in anticipation of a lower error rate on those examples for which a classification decision is made. This is known as the _reject option_. For example, in our hypothetical medical illustration, it may be appropriate to use an automatic system to classify those X-ray images for which there is little doubt as to the correct class, while leaving a human expert to classify the more ambiguous cases. We can achieve this by introducing a threshold $\theta$ and rejecting those inputs $\mathbf{x}$ for which the largest of the posterior probabilities $p(\mathcal{C}_k | \mathbf{x})$ is less than or equal to $\theta$. This is illustrated for the case of two classes, and a single continuous input variable $x$, in Figure 1.26. Note that setting $\theta = 1$ will ensure that all examples are rejected, whereas if there are $K$ classes then setting $\theta < 1/K$ will ensure that no examples are rejected. Thus the fraction of examples that get rejected is controlled by the value of $\theta$.
 
 We can easily extend the reject criterion to minimize the expected loss, when a loss matrix is given, taking account of the loss incurred when a reject decision is made.
 
@@ -959,15 +1018,19 @@ subsequent decision stage in which we use these posterior probabilities to make 
 In fact, we can identify three distinct approaches to solving decision problems, all of which have been used in practical applications. These are given, in decreasing order of complexity, by:
 
 (a) First solve the inference problem of determining the class-conditional densities $p(\mathbf{x}|\mathcal{C}_k)$ for each class $\mathcal{C}_k$ individually. Also separately infer the prior class probabilities $p(\mathcal{C}_k)$. Then use Bayes' theorem in the form
+
 $$
 p(\mathcal{C}_k|\mathbf{x}) = \frac{p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k)}{p(\mathbf{x})}
 \tag{1.82}
 $$
+
 to find the posterior class probabilities $p(\mathcal{C}_k|\mathbf{x})$. As usual, the denominator in Bayes' theorem can be found in terms of the quantities appearing in the numerator, because
+
 $$
 p(\mathbf{x}) = \sum_k p(\mathbf{x}|\mathcal{C}_k)p(\mathcal{C}_k).
 \tag{1.83}
 $$
+
 Equivalently, we can model the joint distribution $p(\mathbf{x},\mathcal{C}_k)$ directly and then normalize to obtain the posterior probabilities. Having found the posterior probabilities, we use decision theory to determine class membership for each new input $\mathbf{x}$. Approaches that explicitly or implicitly model the distribution of inputs as well as outputs are known as generative models, because by sampling from them it is possible to generate synthetic data points in the input space.
 
 (b) First solve the inference problem of determining the posterior class probabilities $p(\mathcal{C}_k|\mathbf{x})$, and then subsequently use decision theory to assign each new $\mathbf{x}$ to one of the classes. Approaches that model the posterior probabilities directly are called discriminative models.
@@ -1002,11 +1065,14 @@ Combining models. For complex applications, we may wish to break the problem int
 [Page 66]
 
 independent, so that
+
 $$
 p(\mathbf{x}_I, \mathbf{x}_B|\mathcal{C}_k) = p(\mathbf{x}_I|\mathcal{C}_k)p(\mathbf{x}_B|\mathcal{C}_k).
 \tag{1.84}
 $$
+
 This is an example of conditional independence property, because the independence holds when the distribution is conditioned on the class $\mathcal{C}_k$. The posterior probability, given both the X-ray and blood data, is then given by
+
 $$
 \begin{aligned}
 p(\mathcal{C}_k|\mathbf{x}_I, \mathbf{x}_B) &\propto p(\mathbf{x}_I, \mathbf{x}_B|\mathcal{C}_k)p(\mathcal{C}_k) \\
@@ -1021,40 +1087,50 @@ Thus we need the class prior probabilities $p(\mathcal{C}_k)$, which we can easi
 ### 1.5.5 Loss functions for regression
 
 So far, we have discussed decision theory in the context of classification problems. We now turn to the case of regression problems, such as the curve fitting example discussed earlier. The decision stage consists of choosing a specific estimate $y(\mathbf{x})$ of the value of $t$ for each input $\mathbf{x}$. Suppose that in doing so, we incur a loss $L(t, y(\mathbf{x}))$. The average, or expected, loss is then given by
+
 $$
 \mathbb{E}[L] = \iint L(t, y(\mathbf{x}))p(\mathbf{x}, t) \, \mathrm{d}\mathbf{x} \, \mathrm{d}t.
 \tag{1.86}
 $$
 
 A common choice of loss function in regression problems is the squared loss given by $L(t, y(\mathbf{x})) = \{y(\mathbf{x}) - t\}^2$. In this case, the expected loss can be written
+
 $$
 \mathbb{E}[L] = \iint \{y(\mathbf{x}) - t\}^2 p(\mathbf{x}, t) \, \mathrm{d}\mathbf{x} \, \mathrm{d}t.
 \tag{1.87}
 $$
+
 Our goal is to choose $y(\mathbf{x})$ so as to minimize $\mathbb{E}[L]$. If we assume a completely flexible function $y(\mathbf{x})$, we can do this formally using the calculus of variations to give
+
 $$
 \frac{\delta \mathbb{E}[L]}{\delta y(\mathbf{x})} = 2 \int \{y(\mathbf{x}) - t\} p(\mathbf{x}, t) \, \mathrm{d}t = 0.
 \tag{1.88}
 $$
+
 Solving for $y(\mathbf{x})$, and using the sum and product rules of probability, we obtain
+
 $$
 y(\mathbf{x}) = \frac{\int t p(\mathbf{x}, t) \, \mathrm{d}t}{p(\mathbf{x})} = \int t p(t|\mathbf{x}) \, \mathrm{d}t = \mathbb{E}_t[t|\mathbf{x}]
 \tag{1.89}
 $$
+
 [Page 67]
 
 Figure 1.28 The regression function $y(\mathbf{x})$, which minimizes the expected squared loss, is given by the mean of the conditional distribution $p(t|\mathbf{x})$.
 
 ![The image depicts a graph with two lines, labeled as y(x) and y(t). The x-axis is labeled as t and the y-axis is labeled as p(t). The graph shows a linear relationship between the two lines, where the slope of the line on the left side of the graph is constant and the slope of the line on the right side of the graph is increasing. The line on the left side of the graph is shown to be a straight line, while the line on the right side of the graph is shown to be a curved line. The graph shows a general trend of increasing slope as the x-axis increases, and a general trend of decreasing slope as the y-axis increases. The slope of the line on the left side of the graph is constant, while the slope of the line on the right side of the graph is increasing. The graph also shows a general trend of increasing and decreasing on the right side of the graph](../Images/imageFile32.png)
 
-which is the conditional average of $t$ conditioned on $\mathbf{x}$ and is known as the *regression function*. This result is illustrated in Figure 1.28. It can readily be extended to multiple target variables represented by the vector $\mathbf{t}$, in which case the optimal solution is the conditional average $\mathbf{y}(\mathbf{x}) = \mathbb{E}_{\mathbf{t}}[\mathbf{t}|\mathbf{x}]$. We can also derive this result in a slightly different way, which will also shed light on the nature of the regression problem. Armed with the knowledge that the optimal solution is the conditional expectation, we can expand the square term as follows
+which is the conditional average of $t$ conditioned on $\mathbf{x}$ and is known as the _regression function_. This result is illustrated in Figure 1.28. It can readily be extended to multiple target variables represented by the vector $\mathbf{t}$, in which case the optimal solution is the conditional average $\mathbf{y}(\mathbf{x}) = \mathbb{E}_{\mathbf{t}}[\mathbf{t}|\mathbf{x}]$. We can also derive this result in a slightly different way, which will also shed light on the nature of the regression problem. Armed with the knowledge that the optimal solution is the conditional expectation, we can expand the square term as follows
+
 $$
 \begin{align*}
 \{y(\mathbf{x}) - t\}^{2} &= \{y(\mathbf{x}) - \mathbb{E}[t|\mathbf{x}] + \mathbb{E}[t|\mathbf{x}] - t\}^{2} \\
 &= \{y(\mathbf{x}) - \mathbb{E}[t|\mathbf{x}]\}^{2} + 2\{y(\mathbf{x}) - \mathbb{E}[t|\mathbf{x}]\}\{\mathbb{E}[t|\mathbf{x}] - t\} + \{\mathbb{E}[t|\mathbf{x}] - t\}^{2}
 \end{align*}
 $$
+
 where, to keep the notation uncluttered, we use $\mathbb{E}[t|\mathbf{x}]$ to denote $\mathbb{E}_{t}[t|\mathbf{x}]$. Substituting into the loss function and performing the integral over $t$, we see that the cross-term vanishes and we obtain an expression for the loss function in the form
+
 $$
 \mathbb{E}[L] = \int \{y(\mathbf{x}) - \mathbb{E}[t|\mathbf{x}]\}^{2} p(\mathbf{x})\,d\mathbf{x} + \int \{\mathbb{E}[t|\mathbf{x}] - t\}^{2} p(\mathbf{x})\,d\mathbf{x}. \tag{1.90}
 $$
@@ -1179,6 +1255,7 @@ $$
 \widetilde{H} = - \sum_i p(x_i) \ln p(x_i) + \lambda \left( \sum_i p(x_i) - 1 \right)
 \tag{1.99}
 $$
+
 [Page 72]
 
 ![The image is a bar chart titled probabilities. The chart is divided into two main sections: the x-axis and the y-axis. The x-axis is labeled probabilities and the y-axis is labeled probabilities. The chart has two categories, H and H - 1.77, with a range of 0.25 to 0.55. The y-axis is labeled probabilities and has a scale of range 0.0 to 0.55. The y-axis is labeled probabilities and has a scale of range 0.0 to 0.55. The chart has two sets of bars, one for each category. The first set of bars is labeled H and the second set of bars is labeled H - 1.77. The values of the bars for each category are as follows: - H](../Images/imageFile34.png)
@@ -1209,10 +1286,13 @@ where we have used $\sum_i p(x_i)\Delta = 1$, which follows from (1.101). We now
 [Page 73]
 
 $\Delta \to 0$. The first term on the right-hand side of (1.102) will approach the integral of $p(x) \ln p(x)$ in this limit so that
+
 $$
 \lim_{\Delta \to 0} \left\{ \sum_{i} p(x_i) \Delta \ln p(x_i) \right\} = - \int p(x) \ln p(x) \, dx \tag{1.103}
 $$
+
 where the quantity on the right-hand side is called the differential entropy. We see that the discrete and continuous forms of the entropy differ by a quantity $\ln \Delta$, which diverges in the limit $\Delta \to 0$. This reflects the fact that to specify a continuous variable very precisely requires a large number of bits. For a density defined over multiple continuous variables, denoted collectively by the vector $\mathbf{x}$, the differential entropy is given by
+
 $$
 H[\mathbf{x}] = - \int p(\mathbf{x}) \ln p(\mathbf{x}) \, d\mathbf{x}. \tag{1.104}
 $$
@@ -1228,6 +1308,7 @@ Ludwig Eduard Boltzmann was an Austrian physicist who created the field of stati
 [Page 74]
 
 three constraints
+
 $$
 \int_{-\infty}^{\infty} p(x) \,dx = 1 \tag{1.105}
 $$
@@ -1241,21 +1322,27 @@ $$
 $$
 
 The constrained maximization can be performed using Lagrange multipliers so that we maximize the following functional with respect to $p(x)$
+
 $$
 -\int_{-\infty}^{\infty} p(x) \ln p(x) \,dx + \lambda_1 \left( \int_{-\infty}^{\infty} p(x) \,dx - 1 \right) + \lambda_2 \left( \int_{-\infty}^{\infty} x p(x) \,dx - \mu \right) + \lambda_3 \left( \int_{-\infty}^{\infty} (x - \mu)^2 p(x) \,dx - \sigma^2 \right) .
 $$
 
 Using the calculus of variations, we set the derivative of this functional to zero giving
+
 $$
 p(x) = \exp \left\{ -1 + \lambda_1 + \lambda_2 x + \lambda_3 (x - \mu)^2 \right\} . \tag{1.108}
 $$
+
 The Lagrange multipliers can be found by back substitution of this result into the three constraint equations, leading finally to the result
+
 $$
 p(x) = \frac{1}{(2\pi\sigma^2)^{1/2}} \exp \left\{ -\frac{(x - \mu)^2}{2\sigma^2} \right\} \tag{1.109}
 $$
+
 and so the distribution that maximizes the differential entropy is the Gaussian. Note that we did not constrain the distribution to be nonnegative when we maximized the entropy. However, because the resulting distribution is indeed nonnegative, we see with hindsight that such a constraint is not necessary.
 
 If we evaluate the differential entropy of the Gaussian, we obtain
+
 $$
 H[x] = \frac{1}{2} \left\{ 1 + \ln(2\pi\sigma^2) \right\} . \tag{1.110}
 $$
@@ -1263,9 +1350,11 @@ $$
 Thus we see again that the entropy increases as the distribution becomes broader, i.e., as $\sigma^2$ increases. This result also shows that the differential entropy, unlike the discrete entropy, can be negative, because $H[x] < 0$ in (1.110) for $\sigma^2 < 1/(2\pi e)$.
 
 Suppose we have a joint distribution $p(x, y)$ from which we draw pairs of values of $x$ and $y$. If a value of $x$ is already known, then the additional information needed to specify the corresponding value of $y$ is given by $-\ln p(y|x)$. Thus the average additional information needed to specify $y$ can be written as
+
 $$
 H[y|x] = -\iint p(y, x) \ln p(y|x) \,dy \,dx \tag{1.111}
 $$
+
 [Page 75]
 
 which is called the conditional entropy of $y$ given $x$. It is easily seen, using the product rule, that the conditional entropy satisfies the relation
@@ -1333,6 +1422,7 @@ We can apply Jensen's inequality in the form (1.117) to the Kullback-Leibler div
 $$
 \mathrm{KL}(p\|q) = -\int p(x) \ln \left\{ \frac{q(x)}{p(x)} \right\} dx \geqslant -\ln \int q(x) \, dx = 0 \tag{1.118}
 $$
+
 [Page 77]
 
 where we have used the fact that $-\ln x$ is a convex function, together with the normalization condition $\int q(\mathbf{x}) \, \mathrm{d}\mathbf{x} = 1$. In fact, $-\ln x$ is a strictly convex function, so the equality will hold if, and only if, $q(\mathbf{x}) = p(\mathbf{x})$ for all $\mathbf{x}$. Thus we can interpret the Kullback-Leibler divergence as a measure of the dissimilarity of the two distributions $p(\mathbf{x})$ and $q(\mathbf{x})$.
@@ -1361,6 +1451,7 @@ which is called the mutual information between the variables $\mathbf{x}$ and $\
 $$
 I[\mathbf{x}, \mathbf{y}] = H[\mathbf{x}] - H[\mathbf{x}|\mathbf{y}] = H[\mathbf{y}] - H[\mathbf{y}|\mathbf{x}]. \tag{1.121}
 $$
+
 [Page 78]
 
 Thus we can view the mutual information as the reduction in the uncertainty about $\mathbf{x}$ by virtue of being told the value of $\mathbf{y}$ (or vice versa). From a Bayesian perspective, we can view $p(\mathbf{x})$ as the prior distribution for $\mathbf{x}$ and $p(\mathbf{x}|\mathbf{y})$ as the posterior distribution after we have observed new data $\mathbf{y}$. The mutual information therefore represents the reduction in uncertainty about $\mathbf{x}$ as a consequence of the new observation $\mathbf{y}$.

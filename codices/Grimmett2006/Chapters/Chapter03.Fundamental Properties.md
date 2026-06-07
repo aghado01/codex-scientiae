@@ -1,12 +1,12 @@
 <a id="ch-3"></a>
 
-## Chapter 3 Fundamental Properties
+# 3. Fundamental Properties
 
 Summary. The basic properties of random-cluster measures are presented in a manner suitable for future applications. Accounts of conditional randomclustermeasures andpositive associationare followed by differential formulae, a sharp-threshold theorem, and exponential steepness. There are several useful inequalities involving partition functions. Theseries/parallel laws are formulated, and the chapter ends with a discussion of negative correlation.
 
 <a id="sec-3-1"></a>
 
-### 3.1 Conditional probabilities
+## 3.1 Conditional probabilities
 
 Throughout this chapter, G = ( V , E ) will be assumed to be a finite graph. Let φ G , p , q be the random-cluster measure on G . Whether or not a given edge e is open depends on the conﬁguration on the remainder of the graph. The relevant conditional probabilities may be described in the following useful manner.
 
@@ -49,10 +49,13 @@ We shall sometimes need to condition on the states of more than one edge. Toward
 in Section 4.2. Let ξ ∈ , F ⊆ E, and let ξF be the subset of containing all conﬁgurations ψ satisfying ψ(e) = ξ(e) for all e ∈/ F. We deﬁne the random-
 
 cluster measure $\phi_{F,p,q}^{\xi}$ on $(\Omega, \mathcal{F})$ by
-$$ (3.5) \quad \phi_{F,p,q}^{\xi}(\omega_F) = \begin{cases}
+
+$$
+(3.5) \quad \phi_{F,p,q}^{\xi}(\omega_F) = \begin{cases}
 \phi_{p,q}(\omega_F \mid \Omega_F^{\xi}) & \text{if } \phi_{p,q}(\Omega_F^{\xi}) > 0, \\
 0 & \text{otherwise.}
-\end{cases} $$
+\end{cases}
+$$
 
 Here is a final note. Let p ∈ (0,1) and $q$ = 1. It is easily seen that the states of two distinct edges e, f are independent if and only if the pair e, f lies in no circuit of G. This may be proved either directly or via the simulation methods of Sections 3.4 and 8.2.
 
@@ -78,11 +81,11 @@ Proof of Theorem 3.7. This holds by repeated application of (3.2), with one appl
 
 <a id="sec-3-2"></a>
 
-### 3.2 Positive association
+## 3.2 Positive association
 
 Let φp,q denote the random-cluster measure on G with parameters p and q. We shall see that φp,q satisﬁes the FKG lattice condition (2.18) whenever q ≥ 1, and we arrive thus at the following conclusion.
 
-#### (3.8) Theorem (Positive association) [122]. Let p ∈ (0,1) and $q$ ∈ [1,∞).
+### (3.8) Theorem (Positive association) [122]. Let p ∈ (0,1) and $q$ ∈ [1,∞).
 
 - (a) The random-cluster measure φp,$q$ is strictly positive and satisﬁes the FKG lattice condition.
 - (b) The random-cluster measure φp,$q$ is strongly positively-associated, and in particular
@@ -119,7 +122,7 @@ Theorem 3.8 applies only to finite graphs G, whereas many potential applications
 
 <a id="sec-3-3"></a>
 
-### 3.3 Differential formulae and sharp thresholds
+## 3.3 Differential formulae and sharp thresholds
 
 One way of estimating the probability of an event A is via an estimate of its derivative dφp,q(A)/dp. When $q$ = 1, there is a formula for this derivative which has proved very useful in reliability theory, percolation, and elsewhere, see [22, 126, 154, 287]. This formula has been extended to random-cluster measures. For ω ∈ , let |η| = |η(ω)| = e∈E ω(e) be the number of open edges of ω as usual, and k = k(ω) the number of open clusters.
 
@@ -206,7 +209,7 @@ Proof of Theorem 3.16. With A as in the theorem, φp,$q$ is A-invariant since A 
 
 <a id="sec-3-4"></a>
 
-### 3.4 Comparison inequalities
+## 3.4 Comparison inequalities
 
 The comparison inequalities of this section are an important tool in the study of random-clustermeasures. As usual, we write φp,q for the random-clustermeasure on the finite graph G = (V, E).
 
@@ -570,7 +573,7 @@ and (3.75) follows as in part (a). The convexity is a consequence of the fact th
 
 <a id="sec-3-7"></a>
 
-### 3.7 Domination by the Ising model
+## 3.7 Domination by the Ising model
 
 Stochastic domination is an invaluable tool in the study of random-cluster measures. Since the random-cluster model is an ‘edge-model’, it is usual to make comparisons with other edge-models. The relationship when q ∈ {2,3,. . .} to Potts models suggest the possibility of comparison with a ‘vertex-model’, and a hint of how to achieve this is provided by the case of integral q.
 

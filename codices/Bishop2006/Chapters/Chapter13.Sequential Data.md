@@ -1,8 +1,8 @@
 [Page 625]
 
-# 13 Sequential Data
+![Chapter13](../Images/Chapters/Chapter13.png)
 
-![Figure 13.1](../Images/imageFile45.png)
+# 13. Sequential Data
 
 So far in this book, we have focussed primarily on sets of data points that were assumed to be independent and identically distributed (i.i.d.). This assumption allowed us to express the likelihood function as the product over all data points of the probability distribution evaluated at each data point. For many applications, however, the i.i.d. assumption will be a poor one. Here we consider a particularly important class of such data sets, namely those that describe sequential data. These often arise through measurement of time series, for example the rainfall measurements on successive days at a particular location, or the daily values of a currency exchange rate, or the acoustic features at successive time frames used for speech recognition. An example involving speech data is shown in Figure 13.1. Sequential data can also arise in contexts other than time series, for example the sequence of nucleotide base pairs along a strand of DNA or the sequence of characters in an English sentence. For convenience, we shall sometimes refer to ‘past’ and ‘future’ observations in a sequence. However, the models explored in this chapter are equally applicable to all
 [Page 626]
@@ -26,7 +26,7 @@ pendent of all but the most recent observations.
 
 Although such models are tractable, they are also severely limited. We can obtain a more general framework, while still retaining tractability, by the introduction of latent variables, leading to state space models. As in Chapters 9 and 12, we shall see that complex models can thereby be constructed from simpler components (in particular, from distributions belonging to the exponential family) and can be readily characterized using the framework of probabilistic graphical models. Here we focus on the two most important examples of state space models, namely the hidden Markov model, in which the latent variables are discrete, and linear dynamical systems, in which the latent variables are Gaussian. Both models are described by directed graphs having a tree structure (no loops) for which inference can be performed efﬁciently using the sum-product algorithm.
 
-### 13.1. Markov Models
+## 13.1. Markov Models
 
 The easiest way to treat sequential data would be simply to ignore the sequential aspects and treat the observations as i.i.d., corresponding to the graph in Figure 13.2. Such an approach, however, would fail to exploit the sequential patterns in the data, such as correlations between observations that are close in the sequence. Suppose, for instance, that we observe a binary variable denoting whether on a particular day it rained or not. Given a time series of recent observations of this variable, we wish to predict whether it will rain on the next day. If we treat the data as i.i.d., then the only information we can glean from the data is the relative frequency of rainy days. However, we know in practice that the weather often exhibits trends that may last for several days. Observing whether or not it rains today is therefore of signiﬁcant help in predicting if it will rain tomorrow.
 
@@ -85,6 +85,7 @@ Suppose we wish to build a model for sequences that is not limited by the Markov
 $$
 \mathbf{z}_{n+1} \perp\!\!\!\perp \mathbf{z}_{n-1} | \mathbf{z}_n. \tag{13.5}
 $$
+
 [Page 630]
 
 The joint distribution for this model is given by
@@ -97,7 +98,7 @@ Using the d-separation criterion, we see that there is always a path connecting 
 
 There are two important models for sequential data that are described by this graph. If the latent variables are discrete, then we obtain the hidden Markov model, or HMM (Elliott et al., 1995). Note that the observed variables in an HMM may be discrete or continuous, and a variety of different conditional distributions can be used to model them. If both the latent and the observed variables are Gaussian (with a linear-Gaussian dependence of the conditional distributions on their parents), then we obtain the linear dynamical system.
 
-### 13.2. Hidden Markov Models
+## 13.2. Hidden Markov Models
 
 The hidden Markov model can be viewed as a speciﬁc instance of the state space model of Figure 13.5 in which the latent variables are discrete. However, if we examine a single time slice of the model, we see that it corresponds to a mixture distribution, with component densities given by $p(\mathbf{x}|\mathbf{z})$. It can therefore also be interpreted as an extension of a mixture model in which the choice of mixture component for each observation is not selected independently but depends on the choice of component for the previous observation. The HMM is widely used in speech recognition (Jelinek, 1997; Rabiner and Juang, 1993), natural language modelling (Manning and Schütze, 1999), on-line handwriting recognition (Nag et al., 1986), and for the analysis of biological sequences such as proteins and DNA (Krogh et al., 1994; Durbin et al., 1998; Baldi and Brunak, 2001).
 
@@ -180,7 +181,7 @@ Figure 13.11 Top row: examples of on-line handwritten digits. Bottom row: synthe
 
 One of the most powerful properties of hidden Markov models is their ability to exhibit some degree of invariance to local warping (compression and stretching) of the time axis. To understand this, consider the way in which the digit ‘2’ is written in the on-line handwritten digits example. A typical digit comprises two distinct sections joined at a cusp. The ﬁrst part of the digit, which starts at the top left, has a sweeping arc down to the cusp or loop at the bottom left, followed by a second moreor-less straight sweep ending at the bottom right. Natural variations in writing style will cause the relative sizes of the two sections to vary, and hence the location of the cusp or loop within the temporal sequence will vary. From a generative perspective such variations can be accommodated by the hidden Markov model through changes in the number of transitions to the same state versus the number of transitions to the successive state. Note, however, that if a digit ‘2’ is written in the reverse order, that is, starting at the bottom right and ending at the top left, then even though the pen tip coordinates may be identical to an example from the training set, the probability of the observations under the model will be extremely small. In the speech recognition context, warping of the time axis is associated with natural variations in the speed of speech, and again the hidden Markov model can accommodate such a distortion and not penalize it too heavily.
 
-### 13.2.1 Maximum likelihood for the HMM
+## 13.2.1 Maximum likelihood for the HMM
 
 If we have observed a data set $\mathbf{X} = \{\mathbf{x}_1, \dots, \mathbf{x}_N\}$, we can determine the parameters of an HMM using maximum likelihood. The likelihood function is obtained from the joint distribution (13.10) by marginalizing over the latent variables
 
@@ -208,6 +209,7 @@ At this point, it is convenient to introduce some notation. We shall use $\gamma
 $$
 \gamma(\mathbf{z}_n) = p(\mathbf{z}_n|\mathbf{X}, \boldsymbol{\theta}^{\text{old}}) \tag{13.13}
 $$
+
 $$
 \xi(\mathbf{z}_{n-1}, \mathbf{z}_n) = p(\mathbf{z}_{n-1}, \mathbf{z}_n|\mathbf{X}, \boldsymbol{\theta}^{\text{old}}). \tag{13.14}
 $$
@@ -217,6 +219,7 @@ For each value of $n$, we can store $\gamma(\mathbf{z}_n)$ using a set of $K$ no
 $$
 \gamma(z_{nk}) = \mathbb{E}[z_{nk}] = \sum_{\mathbf{z}} \gamma(\mathbf{z}) z_{nk} \tag{13.15}
 $$
+
 $$
 \xi(z_{n-1,j}, z_{nk}) = \mathbb{E}[z_{n-1,j}z_{nk}] = \sum_{\mathbf{z}} \gamma(\mathbf{z}) z_{n-1,j} z_{nk}. \tag{13.16}
 $$
@@ -237,6 +240,7 @@ In the M step, we maximize $Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{ol
 $$
 \pi_k = \frac{\gamma(z_{1k})}{\sum_{j=1}^K \gamma(z_{1j})} \tag{13.18}
 $$
+
 $$
 A_{jk} = \frac{\sum_{n=2}^N \xi(z_{n-1,j}, z_{nk})}{\sum_{l=1}^K \sum_{n=2}^N \xi(z_{n-1,j}, z_{nl})}. \tag{13.19}
 $$
@@ -251,6 +255,7 @@ Gaussian emission densities we have $p(\mathbf{x}|\boldsymbol{\phi}_k) = \mathca
 $$
 \boldsymbol{\mu}_k = \frac{\sum_{n=1}^N \gamma(z_{nk})\mathbf{x}_n}{\sum_{n=1}^N \gamma(z_{nk})} \tag{13.20}
 $$
+
 $$
 \boldsymbol{\Sigma}_k = \frac{\sum_{n=1}^N \gamma(z_{nk})(\mathbf{x}_n - \boldsymbol{\mu}_k)(\mathbf{x}_n - \boldsymbol{\mu}_k)^{\text{T}}}{\sum_{n=1}^N \gamma(z_{nk})}. \tag{13.21}
 $$
@@ -271,7 +276,7 @@ An analogous result holds for Bernoulli observed variables.
 
 The EM algorithm requires initial values for the parameters of the emission distribution. One way to set these is ﬁrst to treat the data initially as i.i.d. and ﬁt the emission density by maximum likelihood, and then use the resulting values to initialize the parameters for EM.
 
-### 13.2.2 The forward-backward algorithm
+## 13.2.2 The forward-backward algorithm
 
 Next we seek an efﬁcient procedure for evaluating the quantities $\gamma(z_{nk})$ and $\xi(z_{n-1,j}, z_{nk})$, corresponding to the E step of the EM algorithm. The graph for the hidden Markov model, shown in Figure 13.5, is a tree, and so we know that the posterior distribution of the latent variables can be obtained efﬁciently using a twostage message passing algorithm. In the particular context of the hidden Markov model, this is known as the forward-backward algorithm (Rabiner, 1989), or the Baum-Welch algorithm (Baum, 1972). There are in fact several variants of the basic algorithm, all of which lead to the exact marginals, according to the precise form of
 [Page 639]
@@ -287,24 +292,31 @@ We therefore begin by writing down the following conditional independence proper
 $$
 p(\mathbf{X}|\mathbf{z}_n) = p(\mathbf{x}_1, \dots, \mathbf{x}_n|\mathbf{z}_n)p(\mathbf{x}_{n+1}, \dots, \mathbf{x}_N|\mathbf{z}_n) \tag{13.24}
 $$
+
 $$
 p(\mathbf{x}_1, \dots, \mathbf{x}_{n-1}|\mathbf{x}_n, \mathbf{z}_n) = p(\mathbf{x}_1, \dots, \mathbf{x}_{n-1}|\mathbf{z}_n) \tag{13.25}
 $$
+
 $$
 p(\mathbf{x}_1, \dots, \mathbf{x}_{n-1}|\mathbf{z}_{n-1}, \mathbf{z}_n) = p(\mathbf{x}_1, \dots, \mathbf{x}_{n-1}|\mathbf{z}_{n-1}) \tag{13.26}
 $$
+
 $$
 p(\mathbf{x}_{n+1}, \dots, \mathbf{x}_N|\mathbf{z}_n, \mathbf{z}_{n+1}) = p(\mathbf{x}_{n+1}, \dots, \mathbf{x}_N|\mathbf{z}_{n+1}) \tag{13.27}
 $$
+
 $$
 p(\mathbf{x}_{n+2}, \dots, \mathbf{x}_N|\mathbf{z}_{n+1}, \mathbf{x}_{n+1}) = p(\mathbf{x}_{n+2}, \dots, \mathbf{x}_N|\mathbf{z}_{n+1}) \tag{13.28}
 $$
+
 $$
 p(\mathbf{X}|\mathbf{z}_{n-1}, \mathbf{z}_n) = p(\mathbf{x}_1, \dots, \mathbf{x}_{n-1}|\mathbf{z}_{n-1})p(\mathbf{x}_n|\mathbf{z}_n)p(\mathbf{x}_{n+1}, \dots, \mathbf{x}_N|\mathbf{z}_n) \tag{13.29}
 $$
+
 $$
 p(\mathbf{x}_{N+1}|\mathbf{X}, \mathbf{z}_{N+1}) = p(\mathbf{x}_{N+1}|\mathbf{z}_{N+1}) \tag{13.30}
 $$
+
 $$
 p(\mathbf{z}_{N+1}|\mathbf{z}_N, \mathbf{X}) = p(\mathbf{z}_{N+1}|\mathbf{z}_N) \tag{13.31}
 $$
@@ -331,6 +343,7 @@ where we have deﬁned
 $$
 \alpha(\mathbf{z}_n) \equiv p(\mathbf{x}_1, \dots, \mathbf{x}_n, \mathbf{z}_n) \tag{13.34}
 $$
+
 $$
 \beta(\mathbf{z}_n) \equiv p(\mathbf{x}_{n+1}, \dots, \mathbf{x}_N|\mathbf{z}_n). \tag{13.35}
 $$
@@ -356,6 +369,7 @@ Making use of the deﬁnition (13.34) for $\alpha(\mathbf{z}_n)$, we then obtain
 $$
 \alpha(\mathbf{z}_n) = p(\mathbf{x}_n|\mathbf{z}_n) \sum_{\mathbf{z}_{n-1}} \alpha(\mathbf{z}_{n-1}) p(\mathbf{z}_n|\mathbf{z}_{n-1}). \tag{13.36}
 $$
+
 [Page 641]
 
 Figure 13.12 Illustration of the forward recursion (13.36) for evaluation of the $\alpha$ variables. In this fragment of the lattice, we see that the quantity $\alpha(z_{n1})$ is obtained by taking the elements $\alpha(z_{n-1,j})$ of $\alpha(\mathbf{z}_{n-1})$ at step $n-1$ and summing them up with weights given by $A_{j1}$, corresponding to the values of $p(\mathbf{z}_n|\mathbf{z}_{n-1})$, and then multiplying by the data contribution $p(\mathbf{x}_n|z_{n1})$.
@@ -383,6 +397,7 @@ $$
 &= \sum_{\mathbf{z}_{n+1}} p(\mathbf{x}_{n+2}, \dots, \mathbf{x}_N|\mathbf{z}_{n+1})p(\mathbf{x}_{n+1}|\mathbf{z}_{n+1})p(\mathbf{z}_{n+1}|\mathbf{z}_n).
 \end{aligned}
 $$
+
 [Page 642]
 
 Figure 13.13 Illustration of the backward recursion (13.38) for evaluation of the $\beta$ variables. In this fragment of the lattice, we see that the quantity $\beta(z_{n1})$ is obtained by taking the components $\beta(z_{n+1,k})$ of $\beta(\mathbf{z}_{n+1})$ at step $n + 1$ and summing them up with weights given by the products of $A_{1k}$, corresponding to the values of $p(\mathbf{z}_{n+1}|\mathbf{z}_n)$ and the corresponding values of the emission density $p(\mathbf{x}_n|z_{n+1,k})$.
@@ -474,7 +489,7 @@ Note that in (13.44), the inﬂuence of all data from $\mathbf{x}_1$ to $\mathbf
 
 Here we have discussed the estimation of the parameters of an HMM using maximum likelihood. This framework is easily extended to regularized maximum likelihood by introducing priors over the model parameters $\boldsymbol{\pi}$, $\mathbf{A}$ and $\boldsymbol{\phi}$ whose values are then estimated by maximizing their posterior probability. This can again be done using the EM algorithm in which the E step is the same as discussed above, and the M step involves adding the log of the prior distribution $p(\boldsymbol{\theta})$ to the function $Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}})$ before maximization and represents a straightforward application of the techniques developed at various points in this book. Furthermore, we can use variational methods to give a fully Bayesian treatment of the HMM in which we marginalize over the parameter distributions (MacKay, 1997). As with maximum likelihood, this leads to a two-pass forward-backward recursion to compute posterior probabilities.
 
-### 13.2.3 The sum-product algorithm for the HMM
+## 13.2.3 The sum-product algorithm for the HMM
 
 The directed graph that represents the hidden Markov model, shown in Figure 13.5, is a tree and so we can solve the problem of ﬁnding local marginals for the hidden variables using the sum-product algorithm. Not surprisingly, this turns out to be equivalent to the forward-backward algorithm considered in the previous section, and so the sum-product algorithm therefore provides us with a simple way to derive the alpha-beta recursion formulae.
 
@@ -483,9 +498,11 @@ We begin by transforming the directed graph of Figure 13.5 into a factor graph, 
 $$
 h(\mathbf{z}_1) = p(\mathbf{z}_1)p(\mathbf{x}_1|\mathbf{z}_1) \tag{13.45}
 $$
+
 $$
 f_n(\mathbf{z}_{n-1}, \mathbf{z}_n) = p(\mathbf{z}_n|\mathbf{z}_{n-1})p(\mathbf{x}_n|\mathbf{z}_n). \tag{13.46}
 $$
+
 [Page 646]
 
 Figure 13.15 A simpliﬁed form of factor graph to describe the hidden Markov model.
@@ -497,6 +514,7 @@ To derive the alpha-beta algorithm, we denote the ﬁnal hidden variable $\mathb
 $$
 \mu_{z_{n-1} \to f_n}(\mathbf{z}_{n-1}) = \mu_{f_{n-1} \to z_{n-1}}(\mathbf{z}_{n-1}) \tag{13.47}
 $$
+
 $$
 \mu_{f_n \to z_n}(\mathbf{z}_n) = \sum_{\mathbf{z}_{n-1}} f_n(\mathbf{z}_{n-1}, \mathbf{z}_n)\mu_{z_{n-1} \to f_n}(\mathbf{z}_{n-1}) \tag{13.48}
 $$
@@ -528,6 +546,7 @@ where, as before, we have eliminated the messages of the type $z \to f$ since th
 $$
 \beta(\mathbf{z}_n) = \mu_{f_{n+1} \to z_n}(\mathbf{z}_n) \tag{13.52}
 $$
+
 [Page 647]
 
 we obtain the beta recursion given by (13.38). Again, we can verify that the beta variables themselves are equivalent by noting that (8.70) implies that the initial message send by the root variable node is $\mu_{z_N \to f_N}(\mathbf{z}_N) = 1$, which is identical to the initialization of $\beta(\mathbf{z}_N)$ given in Section 13.2.2.
@@ -546,7 +565,7 @@ $$
 
 in agreement with (13.33). The result (13.43) can similarly be derived from (8.72).
 
-### 13.2.4 Scaling factors
+## 13.2.4 Scaling factors
 
 There is an important issue that must be addressed before we can make use of the forward backward algorithm in practice. From the recursion relation (13.36), we note that at each step the new value $\alpha(\mathbf{z}_n)$ is obtained from the previous value $\alpha(\mathbf{z}_{n-1})$ by multiplying by quantities $p(\mathbf{z}_n|\mathbf{z}_{n-1})$ and $p(\mathbf{x}_n|\mathbf{z}_n)$. Because these probabilities are often signiﬁcantly less than unity, as we work our way forward along the chain, the values of $\alpha(\mathbf{z}_n)$ can go to zero exponentially quickly. For moderate lengths of chain (say 100 or so), the calculation of the $\alpha(\mathbf{z}_n)$ will soon exceed the dynamic range of the computer, even if double precision ﬂoating point is used.
 
@@ -563,6 +582,7 @@ which we expect to be well behaved numerically because it is a probability distr
 $$
 c_n = p(\mathbf{x}_n|\mathbf{x}_1, \dots, \mathbf{x}_{n-1}). \tag{13.56}
 $$
+
 [Page 648]
 
 From the product rule, we then have
@@ -616,14 +636,16 @@ Similarly, using (13.33) and (13.43), together with (13.63), we see that the req
 $$
 \gamma(\mathbf{z}_n) = \widehat{\alpha}(\mathbf{z}_n)\widehat{\beta}(\mathbf{z}_n) \tag{13.64}
 $$
+
 $$
 \xi(\mathbf{z}_{n-1}, \mathbf{z}_n) = c_n \widehat{\alpha}(\mathbf{z}_{n-1})p(\mathbf{x}_n|\mathbf{z}_n)p(\mathbf{z}_n|\mathbf{z}_{n-1})\widehat{\beta}(\mathbf{z}_n). \tag{13.65}
 $$
+
 [Page 649]
 
 Finally, we note that there is an alternative formulation of the forward-backward algorithm (Jordan, 2007) in which the backward pass is deﬁned by a recursion based the quantities $\gamma(\mathbf{z}_n) = \widehat{\alpha}(\mathbf{z}_n)\widehat{\beta}(\mathbf{z}_n)$ instead of using $\widehat{\beta}(\mathbf{z}_n)$. This $\alpha$–$\gamma$ recursion requires that the forward pass be completed ﬁrst so that all the quantities $\widehat{\alpha}(\mathbf{z}_n)$ are available for the backward pass, whereas the forward and backward passes of the $\alpha$–$\beta$ algorithm can be done independently. Although these two algorithms have comparable computational cost, the $\alpha$–$\beta$ version is the most commonly encountered one in the case of hidden Markov models, whereas for linear dynamical systems a recursion analogous to the $\alpha$–$\gamma$ form is more usual.
 
-### 13.2.5 The Viterbi algorithm
+## 13.2.5 The Viterbi algorithm
 
 In many applications of hidden Markov models, the latent variables have some meaningful interpretation, and so it is often of interest to ﬁnd the most probable sequence of hidden states for a given observation sequence. For instance in speech recognition, we might wish to ﬁnd the most probable phoneme sequence for a given series of acoustic observations. Because the graph for the hidden Markov model is a directed tree, this problem can be solved exactly using the max-sum algorithm. We recall from our discussion in Section 8.4.5 that the problem of ﬁnding the most probable sequence of latent states is not the same as that of ﬁnding the set of states that are individually the most probable. The latter problem can be solved by ﬁrst running the forward-backward (sum-product) algorithm to ﬁnd the latent variable marginals $\gamma(\mathbf{z}_n)$ and then maximizing each of these individually (Duda et al., 2001). However, the set of such states will not, in general, correspond to the most probable sequence of states. In fact, this set of states might even represent a sequence having zero probability, if it so happens that two successive states, which in isolation are individually the most probable, are such that the transition matrix element connecting them is zero.
 
@@ -634,9 +656,11 @@ As with the sum-product algorithm, we ﬁrst represent the hidden Markov model a
 $$
 \mu_{z_n \to f_{n+1}}(\mathbf{z}_n) = \mu_{f_n \to z_n}(\mathbf{z}_n) \tag{13.66}
 $$
+
 $$
 \mu_{f_{n+1} \to z_{n+1}}(\mathbf{z}_{n+1}) = \max_{\mathbf{z}_n} \{ \ln f_{n+1}(\mathbf{z}_n, \mathbf{z}_{n+1}) + \mu_{z_n \to f_{n+1}}(\mathbf{z}_n) \}. \tag{13.67}
 $$
+
 [Page 650]
 
 Figure 13.16 A fragment of the HMM lattice showing two possible paths. The Viterbi algorithm efﬁciently determines the most probable path from amongst the exponentially many possibilities. For any given path, the corresponding probability is given by the product of the elements of the transition matrix $A_{jk}$, corresponding to the probabilities $p(\mathbf{z}_{n+1}|\mathbf{z}_n)$ for each segment of the path, along with the emission densities $p(\mathbf{x}_n|k)$ associated with each node on the path.
@@ -668,11 +692,12 @@ Once we have completed the ﬁnal maximization over $\mathbf{z}_N$, we will obta
 $$
 k_n^{\max} = \psi(k_{n+1}^{\max}). \tag{13.71}
 $$
+
 [Page 651]
 
 Intuitively, we can understand the Viterbi algorithm as follows. Naively, we could consider explicitly all of the exponentially many paths through the lattice, evaluate the probability for each, and then select the path having the highest probability. However, we notice that we can make a dramatic saving in computational cost as follows. Suppose that for each path we evaluate its probability by summing up products of transition and emission probabilities as we work our way forward along each path through the lattice. Consider a particular time step $n$ and a particular state $k$ at that time step. There will be many possible paths converging on the corresponding node in the lattice diagram. However, we need only retain that particular path that so far has the highest probability. Because there are $K$ states at time step $n$, we need to keep track of $K$ such paths. At time step $n + 1$, there will be $K^2$ possible paths to consider, comprising $K$ possible paths leading out of each of the $K$ current states, but again we need only retain $K$ of these corresponding to the best path for each state at time $n+1$. When we reach the ﬁnal time step $N$ we will discover which state corresponds to the overall most probable path. Because there is a unique path coming into that state we can trace the path back to step $N - 1$ to see what state it occupied at that time, and so on back through the lattice to the state $n = 1$.
 
-### 13.2.6 Extensions of the hidden Markov model
+## 13.2.6 Extensions of the hidden Markov model
 
 The basic hidden Markov model, along with the standard training algorithm based on maximum likelihood, has been extended in numerous ways to meet the requirements of particular applications. Here we discuss a few of the more important examples.
 
@@ -765,6 +790,7 @@ Because the model has linear-Gaussian conditional distributions, we can write th
 $$
 p(\mathbf{z}_n|\mathbf{z}_{n-1}) = \mathcal{N}(\mathbf{z}_n|\mathbf{A}\mathbf{z}_{n-1}, \mathbf{\Gamma}) \tag{13.75}
 $$
+
 $$
 p(\mathbf{x}_n|\mathbf{z}_n) = \mathcal{N}(\mathbf{x}_n|\mathbf{C}\mathbf{z}_n, \mathbf{\Sigma}). \tag{13.76}
 $$
@@ -780,9 +806,11 @@ Note that in order to simplify the notation, we have omitted additive constant t
 $$
 \mathbf{z}_n = \mathbf{A}\mathbf{z}_{n-1} + \mathbf{w}_n \tag{13.78}
 $$
+
 $$
 \mathbf{x}_n = \mathbf{C}\mathbf{z}_n + \mathbf{v}_n \tag{13.79}
 $$
+
 $$
 \mathbf{z}_1 = \boldsymbol{\mu}_0 + \mathbf{u} \tag{13.80}
 $$
@@ -792,9 +820,11 @@ where the noise terms have the distributions
 $$
 \mathbf{w} \sim \mathcal{N}(\mathbf{w}|\mathbf{0}, \mathbf{\Gamma}) \tag{13.81}
 $$
+
 $$
 \mathbf{v} \sim \mathcal{N}(\mathbf{v}|\mathbf{0}, \mathbf{\Sigma}) \tag{13.82}
 $$
+
 $$
 \mathbf{u} \sim \mathcal{N}(\mathbf{u}|\mathbf{0}, \mathbf{V}_0). \tag{13.83}
 $$
@@ -802,7 +832,7 @@ $$
 The parameters of the model, denoted by $\boldsymbol{\theta} = \{\mathbf{A}, \mathbf{\Gamma}, \mathbf{C}, \mathbf{\Sigma}, \boldsymbol{\mu}_0, \mathbf{V}_0\}$, can be determined using maximum likelihood through the EM algorithm. In the E step, we need to solve the inference problem of determining the local posterior marginals for the latent variables, which can be solved efﬁciently using the sum-product algorithm, as we discuss in the next section.
 [Page 658]
 
-### 13.3.1 Inference in LDS
+## 13.3.1 Inference in LDS
 
 We now turn to the problem of ﬁnding the marginal distributions for the latent variables conditional on the observation sequence. For given parameter settings, we also wish to make predictions of the next latent state $\mathbf{z}_n$ and of the next observation $\mathbf{x}_n$ conditioned on the observed data $\mathbf{x}_1, \dots, \mathbf{x}_{n-1}$ for use in real-time applications. These inference problems can be solved efﬁciently using the sum-product algorithm, which in the context of the linear dynamical system gives rise to the Kalman ﬁlter and Kalman smoother equations.
 
@@ -831,6 +861,7 @@ Here we are supposing that $\boldsymbol{\mu}_{n-1}$ and $\mathbf{V}_{n-1}$ are k
 $$
 \int \mathcal{N}(\mathbf{z}_n|\mathbf{A}\mathbf{z}_{n-1}, \mathbf{\Gamma})\mathcal{N}(\mathbf{z}_{n-1}|\boldsymbol{\mu}_{n-1}, \mathbf{V}_{n-1}) \mathrm{d}\mathbf{z}_{n-1} = \mathcal{N}(\mathbf{z}_n|\mathbf{A}\boldsymbol{\mu}_{n-1}, \mathbf{P}_{n-1}) \tag{13.87}
 $$
+
 [Page 659]
 
 where we have deﬁned
@@ -844,9 +875,11 @@ We can now combine this result with the ﬁrst factor on the right-hand side of 
 $$
 \boldsymbol{\mu}_n = \mathbf{A}\boldsymbol{\mu}_{n-1} + \mathbf{K}_n(\mathbf{x}_n - \mathbf{C}\mathbf{A}\boldsymbol{\mu}_{n-1}) \tag{13.89}
 $$
+
 $$
 \mathbf{V}_n = (\mathbf{I} - \mathbf{K}_n\mathbf{C})\mathbf{P}_{n-1} \tag{13.90}
 $$
+
 $$
 c_n = \mathcal{N}(\mathbf{x}_n|\mathbf{C}\mathbf{A}\boldsymbol{\mu}_{n-1}, \mathbf{C}\mathbf{P}_{n-1}\mathbf{C}^{\text{T}} + \mathbf{\Sigma}). \tag{13.91}
 $$
@@ -870,9 +903,11 @@ Because $p(\mathbf{z}_1)$ is given by (13.77), and $p(\mathbf{x}_1|\mathbf{z}_1)
 $$
 \boldsymbol{\mu}_1 = \boldsymbol{\mu}_0 + \mathbf{K}_1(\mathbf{x}_1 - \mathbf{C}\boldsymbol{\mu}_0) \tag{13.94}
 $$
+
 $$
 \mathbf{V}_1 = (\mathbf{I} - \mathbf{K}_1\mathbf{C})\mathbf{V}_0 \tag{13.95}
 $$
+
 $$
 c_1 = \mathcal{N}(\mathbf{x}_1|\mathbf{C}\boldsymbol{\mu}_0, \mathbf{C}\mathbf{V}_0\mathbf{C}^{\text{T}} + \mathbf{\Sigma}) \tag{13.96}
 $$
@@ -922,6 +957,7 @@ We now multiply both sides of (13.99) by $\widehat{\alpha}(\mathbf{z}_n)$ and su
 $$
 \widehat{\boldsymbol{\mu}}_n = \boldsymbol{\mu}_n + \mathbf{J}_n(\widehat{\boldsymbol{\mu}}_{n+1} - \mathbf{A}\boldsymbol{\mu}_n) \tag{13.100}
 $$
+
 $$
 \widehat{\mathbf{V}}_n = \mathbf{V}_n + \mathbf{J}_n(\widehat{\mathbf{V}}_{n+1} - \mathbf{P}_n)\mathbf{J}_n^{\text{T}} \tag{13.101}
 $$
@@ -948,9 +984,10 @@ Substituting for $\widehat{\alpha}(\mathbf{z}_n)$ using (13.84) and rearranging,
 $$
 \operatorname{cov}[\mathbf{z}_n, \mathbf{z}_{n-1}] = \mathbf{J}_{n-1} \widehat{\mathbf{V}}_n. \tag{13.104}
 $$
+
 [Page 662]
 
-### 13.3.2 Learning in LDS
+## 13.3.2 Learning in LDS
 
 So far, we have considered the inference problem for linear dynamical systems, assuming that the model parameters $\boldsymbol{\theta} = \{\mathbf{A}, \mathbf{\Gamma}, \mathbf{C}, \mathbf{\Sigma}, \boldsymbol{\mu}_0, \mathbf{V}_0\}$ are known. Next, we consider the determination of these parameters using maximum likelihood (Ghahramani and Hinton, 1996b). Because the model has latent variables, this can be addressed using the EM algorithm, which was discussed in general terms in Chapter 9.
 
@@ -959,9 +996,11 @@ We can derive the EM algorithm for the linear dynamical system as follows. Let u
 $$
 \mathbb{E}[\mathbf{z}_n] = \widehat{\boldsymbol{\mu}}_n \tag{13.105}
 $$
+
 $$
 \mathbb{E}[\mathbf{z}_n\mathbf{z}_{n-1}^{\text{T}}] = \mathbf{J}_{n-1}\widehat{\mathbf{V}}_n + \widehat{\boldsymbol{\mu}}_n\widehat{\boldsymbol{\mu}}_{n-1}^{\text{T}} \tag{13.106}
 $$
+
 $$
 \mathbb{E}[\mathbf{z}_n\mathbf{z}_n^{\text{T}}] = \widehat{\mathbf{V}}_n + \widehat{\boldsymbol{\mu}}_n\widehat{\boldsymbol{\mu}}_n^{\text{T}} \tag{13.107}
 $$
@@ -994,6 +1033,7 @@ where all terms not dependent on $\boldsymbol{\mu}_0$ or $\mathbf{V}_0$ have bee
 $$
 \boldsymbol{\mu}_0^{\text{new}} = \mathbb{E}[\mathbf{z}_1] \tag{13.110}
 $$
+
 $$
 \mathbf{V}_0^{\text{new}} = \mathbb{E}[\mathbf{z}_1\mathbf{z}_1^{\text{T}}] - \mathbb{E}[\mathbf{z}_1]\mathbb{E}[\mathbf{z}_1^{\text{T}}]. \tag{13.111}
 $$
@@ -1037,11 +1077,12 @@ $$
 &- \mathbf{x}_n\mathbb{E}[\mathbf{z}_n^{\text{T}}](\mathbf{C}^{\text{new}})^{\text{T}} + \mathbf{C}^{\text{new}}\mathbb{E}[\mathbf{z}_n\mathbf{z}_n^{\text{T}}](\mathbf{C}^{\text{new}})^{\text{T}} \}.
 \end{aligned} \tag{13.116}
 $$
+
 [Page 664]
 
 We have approached parameter learning in the linear dynamical system using maximum likelihood. Inclusion of priors to give a MAP estimate is straightforward, and a fully Bayesian treatment can be found by applying the analytical approximation techniques discussed in Chapter 10, though a detailed treatment is precluded here due to lack of space.
 
-### 13.3.3 Extensions of LDS
+## 13.3.3 Extensions of LDS
 
 As with the hidden Markov model, there is considerable interest in extending the basic linear dynamical system in order to increase its capabilities. Although the assumption of a linear-Gaussian model leads to efﬁcient algorithms for inference and learning, it also implies that the marginal distribution of the observed variables is simply a Gaussian, which represents a signiﬁcant limitation. One simple extension of the linear dynamical system is to use a Gaussian mixture as the initial distribution for $\mathbf{z}_1$. If this mixture has $K$ components, then the forward recursion equations (13.85) will lead to a mixture of $K$ Gaussians over each hidden variable $\mathbf{z}_n$, and so the model is again tractable.
 
@@ -1052,7 +1093,7 @@ More generally, introducing transition or emission models that depart from the l
 As with hidden Markov models, we can develop interesting extensions of the basic linear dynamical system by expanding its graphical representation. For example, the switching state space model (Ghahramani and Hinton, 1998) can be viewed as a combination of the hidden Markov model with a set of linear dynamical systems. The model has multiple Markov chains of continuous linear-Gaussian latent variables, each of which is analogous to the latent chain of the linear dynamical system discussed earlier, together with a Markov chain of discrete variables of the form used in a hidden Markov model. The output at each time step is determined by stochastically choosing one of the continuous latent chains, using the state of the discrete latent variable as a switch, and then emitting an observation from the corresponding conditional output distribution. Exact inference in this model is intractable, but variational methods lead to an efﬁcient inference scheme involving forward-backward recursions along each of the continuous and discrete Markov chains independently. Note that, if we consider multiple chains of discrete latent variables, and use one as the switch to select from the remainder, we obtain an analogous model having only discrete latent variables known as the switching hidden Markov model.
 [Page 665]
 
-### 13.3.4 Particle ﬁlters
+## 13.3.4 Particle ﬁlters
 
 For dynamical systems which do not have a linear-Gaussian, for example, if they use a non-Gaussian emission density, we can turn to sampling methods in order to ﬁnd a tractable inference algorithm. In particular, we can apply the samplingimportance-resampling formalism of Section 11.1.5 to obtain a sequential Monte Carlo algorithm known as the particle ﬁlter.
 
@@ -1095,6 +1136,7 @@ where we have made use of the conditional independence properties
 $$
 p(\mathbf{z}_{n+1}|\mathbf{z}_n, \mathbf{X}_n) = p(\mathbf{z}_{n+1}|\mathbf{z}_n) \tag{13.120}
 $$
+
 $$
 p(\mathbf{x}_n|\mathbf{z}_n, \mathbf{X}_{n-1}) = p(\mathbf{x}_n|\mathbf{z}_n) \tag{13.121}
 $$

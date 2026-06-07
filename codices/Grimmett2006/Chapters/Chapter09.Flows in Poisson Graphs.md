@@ -1,12 +1,12 @@
 <a id="ch-9"></a>
 
-## Chapter 9 Flows in Poisson Graphs
+# 9.1 Flows in Poisson Graphs
 
 Summary. The random-cluster partition function with integer q on a graph G may be transformed into the mean flow-polynomial of a ‘Poissonian’ random graph obtained from G by randomizing the numbers of edges between neighbouring pairs. This leads to a flow representation for the two-point Potts correlation function, and extends to general q the so-called ‘randomcurrent expansion’ of the Ising model. In the last case, one may derive the Simon–Lieb inequality together with largely complete solutions to the problems of exponential decay and the continuity of the phase transition. It is an open problem to adapt such methods to general Potts and random-cluster models.
 
 <a id="sec-9-1"></a>
 
-### 9.1 Potts models and flows
+## 9.1 Potts models and flows
 
 The Tutte polynomialis a function of two variables (see Section 3.6). For suitable values of these variables, one obtains counts of colourings, forests, and flows, together with other combinatorial quantities, in addition to the random-cluster and Potts partition functions. The algebra of the Tutte polynomial may be used to obtain representations of the Potts correlation functions, which have in turn the potential to explain the decay of correlations in the two phases of an infinitevolume Potts measure. It is thus that many beautiful results have been derived for the Ising model (when $q$ = 2), see [3, 5, 9]. The cases q ∈ {3,4,. . .}, and more generally q ∈ (1,∞), remain largely unexplained. We summarize this methodology in this chapter, beginning with the definition of a flow on a directed graph.
 
@@ -437,11 +437,11 @@ Figure 9.2. A cycle of length 8 with four marked vertices.
 
 <a id="sec-9-3"></a>
 
-### 9.3 Exponential decay for the Ising model
+## 9.3 Exponential decay for the Ising model
 
 In the remaining two sections of this chapter, we review certain aspects of the mathematics of the Ising model in two and more dimensions. Several of the outstandingproblemsforPottsandrandom-clustermodelshave rigoroussolutions in the Ising case, when $q$ = 2, and it is a challenge of substance to extend such results (where valid) to the case of general q ∈ [1,∞). Our account of the Ising model will be restricted to the work of Aizenman, Barsky, and Fernandez´ as reported in two major papers [5, 9], of which we begin in this section with the first. The principal technique of these papers is the so-called ‘random-current representation’, that is, the representation of the Ising random field in terms of non-zero mod-2 flows. See, for example, the representation (9.28) for the twopoint correlation function. Without more ado, we state the main theorem in the language of the random-cluster model.
 
-#### (9.53) Theorem (Finite susceptibility for $q$ = 2 random-cluster model) [5].
+### (9.53) Theorem (Finite susceptibility for $q$ = 2 random-cluster model) [5].
 
 Let p ∈ [0,1], $q$ = 2, d ≥ 2, and let φp1,q be the wired random-cluster measure on Ld. The open cluster C at the origin satisﬁes
 
@@ -500,7 +500,7 @@ Using an analysis presented in [4] for percolation, the three inequalities above
 
 <a id="sec-9-4"></a>
 
-### 9.4 The Ising model in four and more dimensions
+## 9.4 The Ising model in four and more dimensions
 
 Just as two-dimensionalsystems have special properties, so there are special arguments valid when the number d of dimensions is sufficiently large. For example, percolation in 19 and more dimensions is rather well understood through the work of Hara and Slade and others, [23], [154, Section 10.3], [179, 303], using the so-called ‘lace expansion’. One expects that results for percolation in high dimensions will be extended in due course to d > 6, and even in part to d ≥ 6. Key to this work is the so-called ‘triangle condition’, namely that T(pc) < ∞ where pc = pc(1) and
 

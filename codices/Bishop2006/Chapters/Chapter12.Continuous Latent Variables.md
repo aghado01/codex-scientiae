@@ -1,6 +1,6 @@
 [Page 579]
 
-![Figure 12.1](../Images/imageFile116.png)
+![Chapter12](../Images/Chapters/Chapter12.png)
 
 # 12. Continuous Latent Variables
 
@@ -28,13 +28,13 @@ Figure 12.2 Principal component analysis seeks a space of lower dimensionality, 
 
 a particular form of linear-Gaussian latent variable model. This probabilistic reformulation brings many advantages, such as the use of EM for parameter estimation, principled extensions to mixtures of PCA models, and Bayesian formulations that allow the number of principal components to be determined automatically from the data. Finally, we discuss brieﬂy several generalizations of the latent variable concept that go beyond the linear-Gaussian assumption including non-Gaussian latent variables, which leads to the framework of independent component analysis, as well as models having a nonlinear relationship between latent and observed variables.
 
-### 12.1. Principal Component Analysis
+## 12.1. Principal Component Analysis
 
 Principal component analysis, or PCA, is a technique that is widely used for applications such as dimensionality reduction, lossy data compression, feature extraction, and data visualization (Jolliffe, 2002). It is also known as the Karhunen-Loève transform.
 
 There are two commonly used deﬁnitions of PCA that give rise to the same algorithm. PCA can be deﬁned as the orthogonal projection of the data onto a lower dimensional linear space, known as the principal subspace, such that the variance of the projected data is maximized (Hotelling, 1933). Equivalently, it can be deﬁned as the linear projection that minimizes the average projection cost, deﬁned as the mean squared distance between the data points and their projections (Pearson, 1901). The process of orthogonal projection is illustrated in Figure 12.2. We consider each of these deﬁnitions in turn.
 
-#### 12.1.1 Maximum variance formulation
+### 12.1.1 Maximum variance formulation
 
 Consider a data set of observations $\{\mathbf{x}_n\}$ where $n = 1, \dots, N$, and $\mathbf{x}_n$ is a Euclidean variable with dimensionality $D$. Our goal is to project the data onto a space having dimensionality $M < D$ while maximizing the variance of the projected data. For the moment, we shall assume that the value of $M$ is given. Later in this
 [Page 582]
@@ -88,7 +88,7 @@ amongst all possible directions orthogonal to those already considered. If we co
 
 To summarize, principal component analysis involves evaluating the mean $\bar{\mathbf{x}}$ and the covariance matrix $\mathbf{S}$ of the data set and then ﬁnding the $M$ eigenvectors of $\mathbf{S}$ corresponding to the $M$ largest eigenvalues. Algorithms for ﬁnding eigenvectors and eigenvalues, as well as additional theorems related to eigenvector decomposition, can be found in Golub and Van Loan (1996). Note that the computational cost of computing the full eigenvector decomposition for a matrix of size $D \times D$ is $O(D^3)$. If we plan to project our data onto the ﬁrst $M$ principal components, then we only need to ﬁnd the ﬁrst $M$ eigenvalues and eigenvectors. This can be done with more efﬁcient techniques, such as the power method (Golub and Van Loan, 1996), that scale like $O(MD^2)$, or alternatively we can make use of the EM algorithm.
 
-#### 12.1.2 Minimum-error formulation
+### 12.1.2 Minimum-error formulation
 
 We now discuss an alternative formulation of PCA based on projection error minimization. To do this, we introduce a complete orthonormal set of $D$-dimensional basis vectors $\{\mathbf{u}_i\}$ where $i = 1, \dots, D$ that satisfy
 
@@ -113,6 +113,7 @@ Our goal, however, is to approximate this data point using a representation invo
 $$
 \tilde{\mathbf{x}}_n = \sum_{i=1}^M z_{ni} \mathbf{u}_i + \sum_{i=M+1}^D b_i \mathbf{u}_i \tag{12.10}
 $$
+
 [Page 584]
 
 where the $\{z_{ni}\}$ depend on the particular data point, whereas the $\{b_i\}$ are constants that are the same for all data points. We are free to choose the $\{\mathbf{u}_i\}$, the $\{z_{ni}\}$, and the $\{b_i\}$ so as to minimize the distortion introduced by the reduction in dimensionality. As our distortion measure, we shall use the squared distance between the original data point $\mathbf{x}_n$ and its approximation $\tilde{\mathbf{x}}_n$, averaged over the data set, so that our goal is to minimize
@@ -176,7 +177,7 @@ Although we have considered $M < D$, the PCA analysis still holds if $M = D$, in
 
 Finally, it is worth noting that there exists a closely related linear dimensionality reduction technique called canonical correlation analysis, or CCA (Hotelling, 1936; Bach and Jordan, 2002). Whereas PCA works with a single random variable, CCA considers two (or more) variables and tries to ﬁnd a corresponding pair of linear subspaces that have high cross-correlation, so that each component within one of the subspaces is correlated with a single component from the other subspace. Its solution can be expressed in terms of a generalized eigenvector problem.
 
-### 12.1.3 Applications of PCA
+## 12.1.3 Applications of PCA
 
 We can illustrate the use of PCA for data compression by considering the ofﬂine digits data set. Because each eigenvector of the covariance matrix is a vector
 [Page 586]
@@ -226,6 +227,7 @@ However, using PCA we can make a more substantial normalization of the data to g
 $$
 \mathbf{S}\mathbf{U} = \mathbf{U}\mathbf{L} \tag{12.23}
 $$
+
 [Page 588]
 
 ![Figure 12.6](../Images/imageFile125.png)
@@ -262,7 +264,7 @@ Figure 12.7 A comparison of principal component analysis with Fisher’s linear 
 
 Figure 12.8 Visualization of the oil ﬂow data set obtained by projecting the data onto the ﬁrst two principal components. The red, blue, and green points correspond to the ‘laminar’, ‘homogeneous’, and ‘annular’ ﬂow conﬁgurations respectively.
 
-### 12.1.4 PCA for high-dimensional data
+## 12.1.4 PCA for high-dimensional data
 
 In some applications of principal component analysis, the number of data points is smaller than the dimensionality of the data space. For example, we might want to apply PCA to a data set of a few hundred images, each of which corresponds to a vector in a space of potentially several million dimensions (corresponding to three colour values for each of the pixels in the image). Note that in a $D$-dimensional space a set of $N$ points, where $N < D$, deﬁnes a linear subspace whose dimensionality is at most $N - 1$, and so there is little point in applying PCA for values of $M$ that are greater than $N - 1$. Indeed, if we perform PCA we will ﬁnd that at least $D - N + 1$ of the eigenvalues are zero, corresponding to eigenvectors along whose directions the data set has zero variance. Furthermore, typical algorithms for ﬁnding the eigenvectors of a $D \times D$ matrix have a computational cost that scales like $O(D^3)$, and so for applications such as the image example, a direct application of PCA will be computationally infeasible.
 
@@ -301,12 +303,12 @@ $$
 
 In summary, to apply this approach we ﬁrst evaluate $\mathbf{X}\mathbf{X}^{\text{T}}$ and then ﬁnd its eigenvectors and eigenvalues and then compute the eigenvectors in the original data space using (12.30).
 
-### 12.2. Probabilistic PCA
+## 12.2. Probabilistic PCA
 
 The formulation of PCA discussed in the previous section was based on a linear projection of the data onto a subspace of lower dimensionality than the original data space. We now show that PCA can also be expressed as the maximum likelihood solution of a probabilistic latent variable model. This reformulation of PCA, known as probabilistic PCA, brings several advantages compared with conventional PCA:
 
 - Probabilistic PCA represents a constrained form of the Gaussian distribution in which the number of free parameters can be restricted while still allowing the model to capture the dominant correlations in a data set.
-[Page 591]
+  [Page 591]
 
 - We can derive an EM algorithm for PCA that is computationally efﬁcient in situations where only a few leading eigenvectors are required and that avoids having to evaluate the data covariance matrix as an intermediate step.
 - The combination of a probabilistic model and EM allows us to deal with missing values in the data set.
@@ -358,6 +360,7 @@ Because this corresponds to a linear-Gaussian model, this marginal distribution 
 $$
 p(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\boldsymbol{\mu}, \mathbf{C}) \tag{12.35}
 $$
+
 [Page 593]
 
 where the $D \times D$ covariance matrix $\mathbf{C}$ is deﬁned by
@@ -415,7 +418,7 @@ Note that the posterior mean depends on $\mathbf{x}$, whereas the posterior cova
 
 Figure 12.10 The probabilistic PCA model for a data set of $N$ observations of $\mathbf{x}$ can be expressed as a directed graph in which each observation $\mathbf{x}_n$ is associated with a value $\mathbf{z}_n$ of the latent variable.
 
-### 12.2.1 Maximum likelihood PCA
+## 12.2.1 Maximum likelihood PCA
 
 We next consider the determination of the model parameters using maximum likelihood. Given a data set $\mathbf{X} = \{\mathbf{x}_n\}$ of observed data points, the probabilistic PCA model can be expressed as a directed graph, as shown in Figure 12.10. The corresponding log likelihood function is given, from (12.35), by
 
@@ -503,7 +506,7 @@ $$
 
 The number of independent parameters in this model therefore only grows linearly with $D$, for ﬁxed $M$. If we take $M = D - 1$, then we recover the standard result for a full covariance Gaussian. In this case, the variance along $D - 1$ linearly independent directions is controlled by the columns of $\mathbf{W}$, and the variance along the remaining direction is given by $\sigma^2$. If $M = 0$, the model is equivalent to the isotropic covariance case.
 
-### 12.2.2 EM algorithm for PCA
+## 12.2.2 EM algorithm for PCA
 
 As we have seen, the probabilistic PCA model can be expressed in terms of a marginalization over a continuous latent space $\mathbf{z}$ in which for each data point $\mathbf{x}_n$, there is a corresponding latent variable $\mathbf{z}_n$. We can therefore make use of the EM algorithm to ﬁnd maximum likelihood estimates of the model parameters. This may seem rather pointless because we have already obtained an exact closed-form solution for the maximum likelihood parameter values. However, in spaces of high dimensionality, there may be computational advantages in using an iterative EM procedure rather than working directly with the sample covariance matrix. This EM procedure can also be extended to the factor analysis model, for which there is no closed-form solution. Finally, it allows missing data to be handled in a principled way.
 
@@ -582,7 +585,7 @@ subspace to minimize the squared reconstruction error in which the projections a
 
 We can give a simple physical analogy for this EM algorithm, which is easily visualized for $D = 2$ and $M = 1$. Consider a collection of data points in two dimensions, and let the one-dimensional principal subspace be represented by a solid rod. Now attach each data point to the rod via a spring obeying Hooke’s law (so that the energy is proportional to the square of the spring’s length). In the E step, we keep the rod ﬁxed and allow the attachment points to slide up and down the rod so as to minimize the energy. This causes each attachment point (independently) to position itself at the orthogonal projection of the corresponding data point onto the rod. In the M step, we keep the attachment points ﬁxed and then release the rod and allow it to move to the minimum energy position. The E and M steps are then repeated until a suitable convergence criterion is satisﬁed, as is illustrated in Figure 12.12.
 
-### 12.2.3 Bayesian PCA
+## 12.2.3 Bayesian PCA
 
 So far in our discussion of PCA, we have assumed that the value $M$ for the dimensionality of the principal subspace is given. In practice, we must choose a suitable value according to the application. For visualization, we generally choose $M = 2$, whereas for other applications the appropriate choice for $M$ may be less clear. One approach is to plot the eigenvalue spectrum for the data set, analogous to the example in Figure 12.4 for the off-line digits data set, and look to see if the eigenvalues naturally form two groups comprising a set of small values separated by a signiﬁcant gap from a set of relatively large values, indicating a natural choice for $M$. In practice, such a gap is often not seen.
 [Page 601]
@@ -641,7 +644,7 @@ Bayesian PCA provides an opportunity to illustrate the Gibbs sampling algorithm 
 
 The model described here involves a prior only over the matrix $\mathbf{W}$. A fully Bayesian treatment of PCA, including priors over $\boldsymbol{\mu}$, $\sigma^2$, and $\boldsymbol{\alpha}$, and solved using variational methods, is described in Bishop (1999b). For a discussion of various Bayesian approaches to determining the appropriate dimensionality for a PCA model, see Minka (2001c).
 
-### 12.2.4 Factor analysis
+## 12.2.4 Factor analysis
 
 Factor analysis is a linear-Gaussian latent variable model that is closely related to probabilistic PCA. Its deﬁnition differs from that of probabilistic PCA only in that the conditional distribution of the observed variable $\mathbf{x}$ given the latent variable $\mathbf{z}$ is
 [Page 604]
@@ -710,7 +713,7 @@ where the ‘diag’ operator sets all of the nondiagonal elements of a matrix t
 
 Another difference between probabilistic PCA and factor analysis concerns their different behaviour under transformations of the data set. For PCA and probabilistic PCA, if we rotate the coordinate system in data space, then we obtain exactly the same ﬁt to the data but with the $\mathbf{W}$ matrix transformed by the corresponding rotation matrix. However, for factor analysis, the analogous property is that if we make a component-wise re-scaling of the data vectors, then this is absorbed into a corresponding re-scaling of the elements of $\mathbf{\Psi}$.
 
-### 12.3. Kernel PCA
+## 12.3. Kernel PCA
 
 In Chapter 6, we saw how the technique of kernel substitution allows us to take an algorithm expressed in terms of scalar products of the form $\mathbf{x}^{\text{T}}\mathbf{x}'$ and generalize that algorithm by replacing the scalar products with a nonlinear kernel. Here we apply this technique of kernel substitution to principal component analysis, thereby obtaining a nonlinear generalization called kernel PCA (Schölkopf et al., 1998).
 
@@ -760,6 +763,7 @@ and so we see that (provided $\lambda_i > 0$) the vector $\mathbf{v}_i$ is given
 $$
 \mathbf{v}_i = \sum_{n=1}^N a_{in}\phi(\mathbf{x}_n). \tag{12.76}
 $$
+
 [Page 608]
 
 Substituting this expansion back into the eigenvector equation, we obtain
@@ -861,13 +865,13 @@ $$
 In kernel PCA, this will in general not be possible. To see this, note that the mapping $\phi(\mathbf{x})$ maps the $D$-dimensional $\mathbf{x}$ space into a $D$-dimensional manifold in the $M$-dimensional feature space. The vector $\mathbf{x}$ is known as the pre-image of the corresponding point $\phi(\mathbf{x})$. However, the projection of points in feature space onto the linear PCA subspace in that space will typically not lie on the nonlinear $D$dimensional manifold and so will not have a corresponding pre-image in data space. Techniques have therefore been proposed for ﬁnding approximate pre-images (Bakir et al., 2004).
 [Page 611]
 
-### 12.4. Nonlinear Latent Variable Models
+## 12.4. Nonlinear Latent Variable Models
 
 In this chapter, we have focussed on the simplest class of models having continuous latent variables, namely those based on linear-Gaussian distributions. As well as having great practical importance, these models are relatively easy to analyse and to ﬁt to data and can also be used as components in more complex models. Here we consider brieﬂy some generalizations of this framework to models that are either nonlinear or non-Gaussian, or both.
 
 In fact, the issues of nonlinearity and non-Gaussianity are related because a general probability density can be obtained from a simple ﬁxed reference density, such as a Gaussian, by making a nonlinear change of variables. This idea forms the basis of several practical latent variable models as we shall see shortly.
 
-### 12.4.1 Independent component analysis
+## 12.4.1 Independent component analysis
 
 We begin by considering models in which the observed variables are related linearly to the latent variables, but for which the latent distribution is non-Gaussian. An important class of such models, known as independent component analysis, or ICA, arises when we consider a distribution over the latent variables that factorizes, so that
 
@@ -894,7 +898,7 @@ which has heavy tails compared to a Gaussian, reﬂecting the observation that m
 
 The original ICA model (Bell and Sejnowski, 1995) was based on the optimization of an objective function deﬁned by information maximization. One advantage of a probabilistic latent variable formulation is that it helps to motivate and formulate generalizations of basic ICA. For instance, independent factor analysis (Attias, 1999a) considers a model in which the number of latent and observed variables can differ, the observed variables are noisy, and the individual latent variables have ﬂexible distributions modelled by mixtures of Gaussians. The log likelihood for this model is maximized using EM, and the reconstruction of the latent variables is approximated using a variational approach. Many other types of model have been considered, and there is now a huge literature on ICA and its applications (Jutten and Herault, 1991; Comon et al., 1991; Amari et al., 1996; Pearlmutter and Parra, 1997; Hyvärinen and Oja, 1997; Hinton et al., 2001; Miskin and MacKay, 2001; Højen-Sørensen et al., 2002; Choudrey and Roberts, 2003; Chan et al., 2003; Stone, 2004).
 
-### 12.4.2 Autoassociative neural networks
+## 12.4.2 Autoassociative neural networks
 
 In Chapter 5 we considered neural networks in the context of supervised learning, where the role of the network is to predict the output variables given values
 [Page 613]
@@ -931,7 +935,7 @@ Figure 12.20 Geometrical interpretation of the mappings performed by the network
 
 It has the advantage of not being limited to linear transformations, although it contains standard principal component analysis as a special case. However, training the network now involves a nonlinear optimization problem, since the error function (12.91) is no longer a quadratic function of the network parameters. Computationally intensive nonlinear optimization techniques must be used, and there is the risk of ﬁnding a suboptimal local minimum of the error function. Also, the dimensionality of the subspace must be speciﬁed before training the network.
 
-### 12.4.3 Modelling nonlinear manifolds
+## 12.4.3 Modelling nonlinear manifolds
 
 As we have already noted, many natural sources of data correspond to lowdimensional, possibly noisy, nonlinear manifolds embedded within the higher dimensional observed data space. Capturing this property explicitly can lead to improved density modelling compared with more general methods. Here we consider brieﬂy a range of techniques that attempt to do this.
 

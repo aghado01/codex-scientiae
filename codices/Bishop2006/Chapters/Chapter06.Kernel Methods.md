@@ -1,10 +1,8 @@
 [Page 311]
 
-# 6
+![Chapter6](../Images/Chapters/Chapter6.png)
 
-![image 80](../Images/imageFile80.png)
-
-###### Kernel Methods
+# Kernel Methods
 
 In Chapters 3 and 4, we considered linear parametric models for regression and classiﬁcation in which the form of the mapping $y(\mathbf{x},\mathbf{w})$ from input $\mathbf{x}$ to output $y$ is governed by a vector $\mathbf{w}$ of adaptive parameters. During the learning phase, a set of training data is used either to obtain a point estimate of the parameter vector or to determine a posterior distribution over this vector. The training data is then discarded, and predictions for new inputs are based purely on the learned parameter vector $\mathbf{w}$. This approach is also used in nonlinear parametric models such as neural networks.
 
@@ -30,7 +28,7 @@ There are numerous forms of kernel functions in common use, and we shall encount
 For recent textbooks on kernel methods, see Schölkopf and Smola (2002), Herbrich (2002), and Shawe-Taylor and Cristianini (2004).
 [Page 313]
 
-###### 6.1. Dual Representations
+## 6.1. Dual Representations
 
 Many linear models for regression and classiﬁcation can be reformulated in terms of a dual representation in which the kernel function arises naturally. This concept will play an important role when we consider support vector machines in the next chapter. Here we consider a linear regression model whose parameters are determined by minimizing a regularized sum-of-squares error function given by
 
@@ -73,6 +71,7 @@ Setting the gradient of $J(\mathbf{a})$ with respect to $\mathbf{a}$ to zero, we
 $$
 \mathbf{a} = (\mathbf{K} + \lambda\mathbf{I}_N)^{-1} \mathbf{t}. \tag{6.8}
 $$
+
 [Page 314]
 
 If we substitute this back into the linear regression model, we obtain the following prediction for a new input $\mathbf{x}$
@@ -87,7 +86,7 @@ In the dual formulation, we determine the parameter vector $\mathbf{a}$ by inver
 
 The existence of a dual representation based on the Gram matrix is a property of many linear models, including the perceptron. In Section 6.4, we will develop a duality between probabilistic linear models for regression and the technique of Gaussian processes. Duality will also play an important role when we discuss support vector machines in Chapter 7.
 
-###### 6.2. Constructing Kernels
+## 6.2. Constructing Kernels
 
 In order to exploit kernel substitution, we need to be able to construct valid kernel functions. One approach is to choose a feature space mapping $\boldsymbol{\phi}(\mathbf{x})$ and then use this to ﬁnd the corresponding kernel, as is illustrated in Figure 6.1. Here the kernel function is deﬁned for a one-dimensional input space by
 
@@ -102,6 +101,7 @@ An alternative approach is to construct kernel functions directly. In this case,
 $$
 k(\mathbf{x},\mathbf{z}) = (\mathbf{x}^T\mathbf{z})^2. \tag{6.11}
 $$
+
 [Page 315]
 
 ![The image is a graph with a title at the top that reads 1. There are three different sections of the graph, each labeled with a number from 0 to 1. The graph has a grid with a scale from 0 to 1 on the x-axis, labeled 0. The y-axis is labeled 1, and the graph has a scale from 0 to 1 on the x-axis, labeled 0. The graph has a few different lines and curves, but they are not clearly defined.](../Images/imageFile131.png)
@@ -121,7 +121,7 @@ More generally, however, we need a simple way to test whether a function constit
 One powerful technique for constructing new kernels is to build them out of simpler kernels as building blocks. This can be done using the following properties:
 [Page 316]
 
-###### Techniques for Constructing New Kernels.
+## Techniques for Constructing New Kernels.
 
 Given valid kernels $k_1(\mathbf{x},\mathbf{x}')$ and $k_2(\mathbf{x},\mathbf{x}')$, the following new kernels will also be valid:
 
@@ -167,7 +167,7 @@ $$
 k(\mathbf{x},\mathbf{x}') = \exp \left(-\frac{\mathbf{x}^T\mathbf{x}}{2\sigma^2}\right) \exp \left(\frac{\mathbf{x}^T\mathbf{x}'}{\sigma^2}\right) \exp \left(-\frac{(\mathbf{x}')^T\mathbf{x}'}{2\sigma^2}\right) \tag{6.25}
 $$
 
-and then making use of (6.14) and (6.16), together with the validity of the linear kernel $k(\mathbf{x},\mathbf{x}') = \mathbf{x}^T\mathbf{x}'$. Note that the feature vector that corresponds to the Gaussian kernel has inﬁnite dimensionality. 
+and then making use of (6.14) and (6.16), together with the validity of the linear kernel $k(\mathbf{x},\mathbf{x}') = \mathbf{x}^T\mathbf{x}'$. Note that the feature vector that corresponds to the Gaussian kernel has inﬁnite dimensionality.
 
 The Gaussian kernel is not restricted to the use of Euclidean distance. If we use kernel substitution in (6.24) to replace $\mathbf{x}^T\mathbf{x}'$ with a nonlinear kernel $\kappa(\mathbf{x},\mathbf{x}')$, we obtain
 
@@ -196,6 +196,7 @@ This is clearly a valid kernel function because we can interpret it as an inner 
 $$
 k(\mathbf{x},\mathbf{x}') = \sum_i p(\mathbf{x}|i)p(\mathbf{x}'|i)p(i). \tag{6.29}
 $$
+
 [Page 318]
 
 This is equivalent, up to an overall multiplicative constant, to a mixture distribution in which the components factorize, with the index $i$ playing the role of a ‘latent’ variable. Two inputs $\mathbf{x}$ and $\mathbf{x}'$ will give a large value for the kernel function, and hence appear similar, if they have signiﬁcant probability under a range of different components. Taking the limit of an inﬁnite sum, we can also consider kernels of the form
@@ -232,13 +233,14 @@ $$
 \mathbf{F} = \mathbb{E}_{\mathbf{x}} [ \mathbf{g}(\boldsymbol{\theta},\mathbf{x})\mathbf{g}(\boldsymbol{\theta},\mathbf{x})^T ] \tag{6.34}
 $$
 
-where the expectation is with respect to $\mathbf{x}$ under the distribution $p(\mathbf{x}|\boldsymbol{\theta})$. This can be motivated from the perspective of information geometry (Amari, 1998), which considers the differential geometry of the space of model parameters. Here we simply note that the presence of the Fisher information matrix causes this kernel to be invariant under a nonlinear re-parameterization of the density model $\boldsymbol{\theta} \to \boldsymbol{\psi}(\boldsymbol{\theta})$. 
+where the expectation is with respect to $\mathbf{x}$ under the distribution $p(\mathbf{x}|\boldsymbol{\theta})$. This can be motivated from the perspective of information geometry (Amari, 1998), which considers the differential geometry of the space of model parameters. Here we simply note that the presence of the Fisher information matrix causes this kernel to be invariant under a nonlinear re-parameterization of the density model $\boldsymbol{\theta} \to \boldsymbol{\psi}(\boldsymbol{\theta})$.
 
 In practice, it is often infeasible to evaluate the Fisher information matrix. One approach is simply to replace the expectation in the deﬁnition of the Fisher information with the sample average, giving
 
 $$
 \mathbf{F} \simeq \frac{1}{N} \sum_{n=1}^N \mathbf{g}(\boldsymbol{\theta},\mathbf{x}_n)\mathbf{g}(\boldsymbol{\theta},\mathbf{x}_n)^T. \tag{6.35}
 $$
+
 [Page 319]
 
 This is the covariance matrix of the Fisher scores, and so the Fisher kernel corresponds to a whitening of these scores. More simply, we can just omit the Fisher information matrix altogether and use the noninvariant kernel
@@ -257,7 +259,7 @@ $$
 
 whose Gram matrix in general is not positive semideﬁnite. This form of kernel has, however, been used in practice (Vapnik, 1995), possibly because it gives kernel expansions such as the support vector machine a superﬁcial resemblance to neural network models. As we shall see, in the limit of an inﬁnite number of basis functions, a Bayesian neural network with an appropriate prior reduces to a Gaussian process, thereby providing a deeper link between neural networks and kernel methods.
 
-###### 6.3. Radial Basis Function Networks
+## 6.3. Radial Basis Function Networks
 
 In Chapter 3, we discussed regression models based on linear combinations of ﬁxed basis functions, although we did not discuss in detail what form those basis functions might take. One choice that has been widely used is that of radial basis functions, which have the property that each basis function depends only on the radial distance (typically Euclidean) from a centre $\boldsymbol{\mu}_j$, so that $\phi_j(\mathbf{x}) = h(\|\mathbf{x} - \boldsymbol{\mu}_j\|)$.
 
@@ -307,7 +309,7 @@ Figure 6.2 Plot of a set of Gaussian basis functions on the left, together with 
 
 One of the simplest ways of choosing basis function centres is to use a randomly chosen subset of the data points. A more systematic approach is called orthogonal least squares (Chen et al., 1991). This is a sequential selection process in which at each step the next data point to be chosen as a basis function centre corresponds to the one that gives the greatest reduction in the sum-of-squares error. Values for the expansion coefﬁcients are determined as part of the algorithm. Clustering algorithms such as $K$-means have also been used, which give a set of basis function centres that no longer coincide with training data points.
 
-###### 6.3.1 Nadaraya-Watson model
+## 6.3.1 Nadaraya-Watson model
 
 In Section 3.3.3, we saw that the prediction of a linear regression model for a new input $\mathbf{x}$ takes the form of a linear combination of the training set target values with coefﬁcients given by the ‘equivalent kernel’ (3.62) where the equivalent kernel satisﬁes the summation constraint (3.64).
 
@@ -362,6 +364,7 @@ The result (6.45) is known as the Nadaraya-Watson model, or kernel regression (N
 $$
 \sum_{n=1}^N k(\mathbf{x},\mathbf{x}_n) = 1.
 $$
+
 [Page 323]
 
 Figure 6.3 Illustration of the Nadaraya-Watson kernel regression model using isotropic Gaussian kernels, for the sinusoidal data set. The original sine function is shown by the green curve, the data points are shown in blue, and each is the centre of an isotropic Gaussian kernel. The resulting regression function, given by the conditional mean, is shown by the red line, along with the two-standard-deviation region for the conditional distribution $p(t|\mathbf{x})$ shown by the red shading. The blue ellipse around each data point shows one standard deviation contour for the corresponding kernel. These appear noncircular due to the different scales on the horizontal and vertical axes.
@@ -380,7 +383,7 @@ As an illustration we consider the case of a single input variable $x$ in which 
 
 An obvious extension of this model is to allow for more ﬂexible forms of Gaussian components, for instance having different variance parameters for the input and target variables. More generally, we could model the joint distribution $p(t,\mathbf{x})$ using a Gaussian mixture model, trained using techniques discussed in Chapter 9 (Ghahramani and Jordan, 1994), and then ﬁnd the corresponding conditional distribution $p(t|\mathbf{x})$. In this latter case we no longer have a representation in terms of kernel functions evaluated at the training set data points. However, the number of components in the mixture model can be smaller than the number of training set points, resulting in a model that is faster to evaluate for test data points. We have thereby accepted an increased computational cost during the training phase in order to have a model that is faster at making predictions.
 
-###### 6.4. Gaussian Processes
+## 6.4. Gaussian Processes
 
 In Section 6.1, we introduced kernels by applying the concept of duality to a nonprobabilistic model for regression. Here we extend the role of kernels to probabilis-
 [Page 324]
@@ -393,7 +396,7 @@ In the Gaussian process viewpoint, we dispense with the parametric model and ins
 
 Models equivalent to Gaussian processes have been widely studied in many different ﬁelds. For instance, in the geostatistics literature Gaussian process regression is known as kriging (Cressie, 1993). Similarly, ARMA (autoregressive moving average) models, Kalman ﬁlters, and radial basis function networks can all be viewed as forms of Gaussian process models. Reviews of Gaussian processes from a machine learning perspective can be found in MacKay (1998), Williams (1999), and MacKay (2003), and a comparison of Gaussian process models with alternative approaches is given in Rasmussen (1996). See also Rasmussen and Williams (2006) for a recent textbook on Gaussian processes.
 
-###### 6.4.1 Linear regression revisited
+## 6.4.1 Linear regression revisited
 
 In order to motivate the Gaussian process viewpoint, let us return to the linear regression example and re-derive the predictive distribution by working in terms of distributions over functions $y(\mathbf{x},\mathbf{w})$. This will provide a speciﬁc example of a Gaussian process.
 
@@ -458,7 +461,7 @@ Figure 6.4 Samples from Gaussian processes for a ‘Gaussian’ kernel (left) an
 
 ![The image is a line graph that shows the trend of data over time. The x-axis represents the time in years, ranging from 0 to 1. The y-axis represents the values of the data, ranging from 0 to 1. The data is plotted with different colors, with blue representing the highest values and red representing the lowest values. The graph shows a general upward trend, with the highest values being around 1.5 and the lowest values being around -1.5. The data points are scattered throughout the graph, with some points being more spread out than others. The data points are not perfectly aligned, but they are generally in a consistent pattern. There are no specific labels or numbers on the graph, but the data points are clearly marked with a single point. The graph is not labeled, but it is clear that the data points are not just random points but are also scattered throughout the graph. ### Analysis and Description](../Images/imageFile134.png)
 
-###### 6.4.2 Gaussian processes for regression
+## 6.4.2 Gaussian processes for regression
 
 In order to apply Gaussian process models to the problem of regression, we need to take account of the noise on the observed target values, which are given by
 
@@ -491,6 +494,7 @@ In order to ﬁnd the marginal distribution $p(\mathbf{t})$, conditioned on the 
 $$
 p(\mathbf{t}) = \int p(\mathbf{t}|\mathbf{y})p(\mathbf{y}) d\mathbf{y} = \mathcal{N}(\mathbf{t}|\mathbf{0},\mathbf{C}) \tag{6.61}
 $$
+
 [Page 327]
 
 where the covariance matrix $\mathbf{C}$ has elements
@@ -585,7 +589,7 @@ Figure 6.8 Illustration of Gaussian process regression applied to the sinusoidal
 
 sian process regression have also been considered, for purposes such as modelling the distribution over low-dimensional manifolds for unsupervised learning (Bishop et al., 1998a) and the solution of stochastic differential equations (Graepel, 2003).
 
-###### 6.4.3 Learning the hyperparameters
+## 6.4.3 Learning the hyperparameters
 
 The predictions of a Gaussian process model will depend, in part, on the choice of covariance function. In practice, rather than ﬁxing the covariance function, we may prefer to use a parametric family of functions and then infer the parameter values from the data. These parameters govern such things as the length scale of the correlations and the precision of the noise and correspond to the hyperparameters in a standard parametric model.
 
@@ -616,7 +620,7 @@ Figure 6.9 Samples from the ARD prior for Gaussian processes, in which the kerne
 
 Gaussian process framework by introducing a second Gaussian process to represent the dependence of $\beta$ on the input $\mathbf{x}$ (Goldberg et al., 1998). Because $\beta$ is a variance, and hence nonnegative, we use the Gaussian process to model $\ln\beta(\mathbf{x})$.
 
-###### 6.4.4 Automatic relevance determination
+## 6.4.4 Automatic relevance determination
 
 In the previous section, we saw how maximum likelihood could be used to determine a value for the correlation length-scale parameter in a Gaussian process. This technique can usefully be extended by incorporating a separate parameter for each input variable (Rasmussen and Williams, 2006). The result, as we shall see, is that the optimization of these parameters by maximum likelihood allows the relative importance of different inputs to be inferred from the data. This represents an example in the Gaussian process context of automatic relevance determination, or ARD, which was originally formulated in the framework of neural networks (MacKay, 1994; Neal, 1996). The mechanism by which appropriate inputs are preferred is discussed in Section 7.2.2.
 
@@ -643,7 +647,7 @@ $$
 
 where $D$ is the dimensionality of the input space.
 
-###### 6.4.5 Gaussian processes for classiﬁcation
+## 6.4.5 Gaussian processes for classiﬁcation
 
 In a probabilistic approach to classiﬁcation, our goal is to model the posterior probabilities of the target variable for a new input vector, given a set of training data. These probabilities must lie in the interval $(0,1)$, whereas a Gaussian process model makes predictions that lie on the entire real axis. However, we can easily adapt Gaussian processes to classiﬁcation problems by transforming the output of the Gaussian process using an appropriate nonlinear activation function.
 
@@ -691,7 +695,7 @@ Three different approaches to obtaining a Gaussian approximation have been consi
 
 A second approach uses expectation propagation (Opper and Winther, 2000b; Minka, 2001b; Seeger, 2003). Because the true posterior distribution is unimodal, as we shall see shortly, the expectation propagation approach can give good results.
 
-###### 6.4.6 Laplace approximation
+## 6.4.6 Laplace approximation
 
 The third approach to Gaussian process classiﬁcation is based on the Laplace approximation, which we now consider in detail. In order to evaluate the predictive distribution (6.76), we seek a Gaussian approximation to the posterior distribution over $a_{N+1}$, which, using Bayes’ theorem, is given by
 
@@ -703,6 +707,7 @@ p(a_{N+1}|\mathbf{t}_N) &= \int p(a_{N+1},\mathbf{a}_N|\mathbf{t}_N) d\mathbf{a}
 &= \int p(a_{N+1}|\mathbf{a}_N)p(\mathbf{a}_N|\mathbf{t}_N) d\mathbf{a}_N
 \end{aligned} \tag{6.77}
 $$
+
 [Page 336]
 
 where we have used $p(\mathbf{t}_N|a_{N+1},\mathbf{a}_N) = p(\mathbf{t}_N|\mathbf{a}_N)$. The conditional distribution $p(a_{N+1}|\mathbf{a}_N)$ is obtained by invoking the results (6.66) and (6.67) for Gaussian process regression, to give
@@ -791,6 +796,7 @@ This integral is analytically intractable, so again we make use of the Laplace a
 $$
 \ln p(\mathbf{t}_N|\boldsymbol{\theta}) \simeq \Psi(\mathbf{a}_N^\star) - \frac{1}{2} \ln|\mathbf{W}_N + \mathbf{C}_N^{-1}| + \frac{N}{2} \ln(2\pi) \tag{6.90}
 $$
+
 [Page 338]
 
 where $\Psi(\mathbf{a}_N^\star) = \ln p(\mathbf{a}_N^\star|\boldsymbol{\theta}) + \ln p(\mathbf{t}_N|\mathbf{a}_N^\star)$. We also need to evaluate the gradient of $\ln p(\mathbf{t}_N|\boldsymbol{\theta})$ with respect to the parameter vector $\boldsymbol{\theta}$. Note that changes in $\boldsymbol{\theta}$ will cause changes in $\mathbf{a}_N^\star$, leading to additional terms in the gradient. Thus, when we differentiate (6.90) with respect to $\boldsymbol{\theta}$, we obtain two sets of terms, the ﬁrst arising from the dependence of the covariance matrix $\mathbf{C}_N$ on $\boldsymbol{\theta}$, and the rest arising from dependence of $\mathbf{a}_N^\star$ on $\boldsymbol{\theta}$.
@@ -828,7 +834,7 @@ We can illustrate the application of the Laplace approximation for Gaussian proc
 
 Figure 6.12 Illustration of the use of a Gaussian process for classiﬁcation, showing the data on the left together with the optimal decision boundary from the true distribution in green, and the decision boundary from the Gaussian process classiﬁer in black. On the right is the predicted posterior probability for the blue and red classes together with the Gaussian process decision boundary.
 
-###### 6.4.7 Connection to neural networks
+## 6.4.7 Connection to neural networks
 
 We have seen that the range of functions which can be represented by a neural network is governed by the number $M$ of hidden units, and that, for sufﬁciently large $M$, a two-layer network can approximate any given function with arbitrary accuracy. In the framework of maximum likelihood, the number of hidden units needs to be limited (to a level dependent on the size of the training set) in order to avoid over-ﬁtting. However, from a Bayesian perspective it makes little sense to limit the number of parameters in the network according to the size of the training set.
 

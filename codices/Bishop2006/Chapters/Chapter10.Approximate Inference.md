@@ -1,10 +1,8 @@
 [Page 481]
 
-# 10
+![Chapter10](../Images/Chapters/Chapter10.png)
 
-![image 111](../Images/imageFile111.png)
-
-## Approximate Inference
+# 10. Approximate Inference
 
 A central task in the application of probabilistic models is the evaluation of the posterior distribution $p(\mathbf{Z}|\mathbf{X})$ of the latent variables $\mathbf{Z}$ given the observed (visible) data variables $\mathbf{X}$, and the evaluation of expectations computed with respect to this distribution. The model might also contain some deterministic parameters, which we will leave implicit for the moment, or it may be a fully Bayesian model in which any unknown parameters are given prior distributions and are absorbed into the set of latent variables denoted by the vector $\mathbf{Z}$. For instance, in the EM algorithm we need to evaluate the expectation of the complete-data log likelihood with respect to the posterior distribution of the latent variables. For many models of practical interest, it will be infeasible to evaluate the posterior distribution or indeed to compute expectations with respect to this distribution. This could be because the dimensionality of the latent space is too high to work with directly or because the posterior distribution has a highly complex form for which expectations are not analytically tractable. In the case of continuous variables, the required integrations may not have closed-form
 [Page 482]
@@ -17,13 +15,14 @@ In this chapter, we introduce a range of deterministic approximation schemes, so
 
 In Section 4.4, we discussed the Laplace approximation, which is based on a local Gaussian approximation to a mode (i.e., a maximum) of the distribution. Here we turn to a family of approximation techniques called variational inference or variational Bayes, which use more global criteria and which have been widely applied. We conclude with a brief introduction to an alternative variational framework known as expectation propagation.
 
-### 10.1. Variational Inference
+## 10.1. Variational Inference
 
 Variational methods have their origins in the 18th century with the work of Euler, Lagrange, and others on the calculus of variations. Standard calculus is concerned with ﬁnding derivatives of functions. We can think of a function as a mapping that takes the value of a variable as the input and returns the value of the function as the output. The derivative of the function then describes how the output value varies as we make inﬁnitesimal changes to the input value. Similarly, we can deﬁne a functional as a mapping that takes a function as the input and that returns the value of the functional as the output. An example would be the entropy $\text{H}[p]$, which takes a probability distribution $p(\mathbf{x})$ as the input and returns the quantity
 
 $$
 \text{H}[p] = - \int p(\mathbf{x}) \ln p(\mathbf{x}) \text{d}\mathbf{x} \tag{10.1}
 $$
+
 [Page 483]
 
 as the output. We can then introduce the concept of a functional derivative, which expresses how the value of the functional changes in response to inﬁnitesimal changes to the input function (Feynman et al., 1964). The rules for the calculus of variations mirror those of standard calculus and are discussed in Appendix D. Many problems can be expressed in terms of an optimization problem in which the quantity being optimized is a functional. The solution is obtained by exploring all possible input functions to ﬁnd the one that maximizes, or minimizes, the functional. Variational methods have broad applicability and include such areas as ﬁnite element methods (Kapur, 1989) and maximum entropy (Schwarz, 1988).
@@ -59,13 +58,14 @@ We therefore consider instead a restricted family of distributions $q(\mathbf{Z}
 
 One way to restrict the family of approximating distributions is to use a parametric distribution $q(\mathbf{Z}|\boldsymbol{\omega})$ governed by a set of parameters $\boldsymbol{\omega}$. The lower bound $\mathcal{L}(q)$ then becomes a function of $\boldsymbol{\omega}$, and we can exploit standard nonlinear optimization techniques to determine the optimal values for the parameters. An example of this approach, in which the variational distribution is a Gaussian and we have optimized with respect to its mean and variance, is shown in Figure 10.1.
 
-### 10.1.1 Factorized distributions
+## 10.1.1 Factorized distributions
 
 Here we consider an alternative way in which to restrict the family of distributions $q(\mathbf{Z})$. Suppose we partition the elements of $\mathbf{Z}$ into disjoint groups that we denote by $\mathbf{Z}_i$ where $i = 1,\dots,M$. We then assume that the $q$ distribution factorizes with respect to these groups, so that
 
 $$
 q(\mathbf{Z}) = \prod_{i=1}^M q_i(\mathbf{Z}_i). \tag{10.5}
 $$
+
 [Page 485]
 
 It should be emphasized that we are making no further assumptions about the distribution. In particular, we place no restriction on the functional forms of the individual factors $q_i(\mathbf{Z}_i)$. This factorized form of variational inference corresponds to an approximation framework developed in physics called mean ﬁeld theory (Parisi, 1988).
@@ -119,7 +119,7 @@ In practice, we shall ﬁnd it more convenient to work with the form (10.9) and 
 
 The set of equations given by (10.9) for $j = 1,\dots,M$ represent a set of consistency conditions for the maximum of the lower bound subject to the factorization constraint. However, they do not represent an explicit solution because the expression on the right-hand side of (10.9) for the optimum $q_j^\star(\mathbf{Z}_j)$ depends on expectations computed with respect to the other factors $q_i(\mathbf{Z}_i)$ for $i \neq j$. We will therefore seek a consistent solution by ﬁrst initializing all of the factors $q_i(\mathbf{Z}_i)$ appropriately and then cycling through the factors and replacing each in turn with a revised estimate given by the right-hand side of (10.9) evaluated using the current estimates for all of the other factors. Convergence is guaranteed because bound is convex with respect to each of the factors $q_i(\mathbf{Z}_i)$ (Boyd and Vandenberghe, 2004).
 
-### 10.1.2 Properties of factorized approximations
+## 10.1.2 Properties of factorized approximations
 
 Our approach to variational inference is based on a factorized approximation to the true posterior distribution. Let us consider for a moment the problem of approximating a general distribution by a factorized distribution. To begin with, we discuss the problem of approximating a Gaussian distribution using a factorized Gaussian, which will provide useful insight into the types of inaccuracy introduced in using factorized approximations. Consider a Gaussian distribution $p(\mathbf{z}) = \mathcal{N}(\mathbf{z}|\boldsymbol{\mu}, \boldsymbol{\Lambda}^{-1})$ over two correlated variables $\mathbf{z} = (z_1, z_2)$ in which the mean and precision have elements
 
@@ -195,6 +195,7 @@ The difference between these two results can be understood by noting that there 
 $$
 \text{KL}(q \| p) = - \int q(\mathbf{Z}) \ln \left\{ \frac{p(\mathbf{Z})}{q(\mathbf{Z})} \right\} \text{d}\mathbf{Z} \tag{10.18}
 $$
+
 [Page 489]
 
 ![image 235](../Images/imageFile235.png)
@@ -222,7 +223,7 @@ $$
 
 The square root of the Hellinger distance is a valid distance metric.
 
-### 10.1.3 Example: The univariate Gaussian
+## 10.1.3 Example: The univariate Gaussian
 
 We now illustrate the factorized variational approximation using a Gaussian distribution over a single variable $x$ (MacKay, 2003). Our goal is to infer the posterior distribution for the mean $\mu$ and precision $\tau$, given a data set $\mathcal{D} = \{x_1,\dots,x_N\}$ of observed values of $x$ which are assumed to be drawn independently from the Gaussian. The likelihood function is given by
 
@@ -245,6 +246,7 @@ where $\text{Gam}(\tau|a_0, b_0)$ is the gamma distribution deﬁned by (2.146).
 $$
 q(\mu, \tau) = q_\mu(\mu) q_\tau(\tau). \tag{10.24}
 $$
+
 [Page 491]
 
 Note that the true posterior distribution does not factorize in this way. The optimum factors $q_\mu(\mu)$ and $q_\tau(\tau)$ can be obtained from the general result (10.9) as follows. For $q_\mu(\mu)$ we have
@@ -320,7 +322,7 @@ $$
 
 We recognize the right-hand side as the familiar unbiased estimator for the variance of a univariate Gaussian distribution, and so we see that the use of a Bayesian approach has avoided the bias of the maximum likelihood solution.
 
-### 10.1.4 Model comparison
+## 10.1.4 Model comparison
 
 As well as performing inference over the hidden variables $\mathbf{Z}$, we may also wish to compare a set of candidate models, labelled by the index $m$, and having prior probabilities $p(m)$. Our goal is then to approximate the posterior probabilities $p(m|\mathbf{X})$, where $\mathbf{X}$ is the observed data. This is a slightly more complex situation than that considered so far because different models may have different structure and indeed different dimensionality for the hidden variables $\mathbf{Z}$. We cannot therefore simply consider a factorized approximation $q(\mathbf{Z})q(m)$, but must instead recognize that the posterior over $\mathbf{Z}$ must be conditioned on $m$, and so we must consider $q(\mathbf{Z}, m) = q(\mathbf{Z}|m)q(m)$. We can readily verify the following decomposition based on this variational distribution
 
@@ -393,7 +395,7 @@ The resulting model can be represented as a directed graph as shown in Figure 10
 
 This example provides a nice illustration of the distinction between latent variables and parameters. Variables such as $\mathbf{z}_n$ that appear inside the plate are regarded as latent variables because the number of such variables grows with the size of the data set. By contrast, variables such as $\boldsymbol{\mu}$ that are outside the plate are ﬁxed in number independently of the size of the data set, and so are regarded as parameters. From the perspective of graphical models, however, there is really no fundamental difference between them.
 
-### 10.2.1 Variational distribution
+## 10.2.1 Variational distribution
 
 In order to formulate a variational treatment of this model, we next write down the joint distribution of all of the random variables, which is given by
 
@@ -450,6 +452,7 @@ Requiring that this distribution be normalized, and noting that for each value o
 $$
 q^\star(\mathbf{Z}) = \prod_{n=1}^N \prod_{k=1}^K r_{nk}^{z_{nk}} \tag{10.48}
 $$
+
 [Page 497]
 
 where
@@ -498,6 +501,7 @@ We observe that the right-hand side of this expression decomposes into a sum of 
 $$
 q(\boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Lambda}) = q(\boldsymbol{\pi}) \prod_{k=1}^K q(\boldsymbol{\mu}_k, \boldsymbol{\Lambda}_k). \tag{10.55}
 $$
+
 [Page 498]
 
 Identifying the terms on the right-hand side of (10.54) that depend on $\boldsymbol{\pi}$, we have
@@ -560,6 +564,7 @@ $$
 $$
 \ln \widetilde{\pi}_k \equiv \mathbb{E}[\ln \pi_k] = \psi(\alpha_k) - \psi(\widehat{\alpha}) \tag{10.66}
 $$
+
 [Page 499]
 
 where we have introduced deﬁnitions of $\widetilde{\Lambda}_k$ and $\widetilde{\pi}_k$, and $\psi(\cdot)$ is the digamma function deﬁned by (B.25), with $\widehat{\alpha} = \sum_k \alpha_k$. The results (10.65) and (10.66) follow from the standard properties of the Wishart and Dirichlet distributions.
@@ -602,7 +607,7 @@ As we have seen there is a close similarity between the variational solution for
 
 Indeed, these singularities are removed if we simply introduce a prior and then use a MAP estimate instead of maximum likelihood. Furthermore, there is no over-ﬁtting if we choose a large number $K$ of components in the mixture, as we saw in Figure 10.6. Finally, the variational treatment opens up the possibility of determining the optimal number of components in the mixture without resorting to techniques such as cross validation.
 
-### 10.2.2 Variational lower bound
+## 10.2.2 Variational lower bound
 
 We can also straightforwardly evaluate the lower bound (10.3) for this model. In practice, it is useful to be able to monitor the bound during the re-estimation in order to test for convergence. It can also provide a valuable check on both the mathematical expressions for the solutions and their software implementation, because at each step of the iterative re-estimation procedure the value of this bound should not decrease. We can take this a stage further to provide a deeper test of the correctness of both the mathematical derivation of the update equations and of their software implementation by using ﬁnite differences to check that each update does indeed give a (constrained) maximum of the bound (Svensén and Bishop, 2004).
 
@@ -633,6 +638,7 @@ $$
 $$
 \mathbb{E}[\ln p(\boldsymbol{\pi})] = \ln C(\boldsymbol{\alpha}_0) + (\alpha_0 - 1) \sum_{k=1}^K \ln \widetilde{\pi}_k \tag{10.73}
 $$
+
 [Page 502]
 
 $$
@@ -659,13 +665,14 @@ where $D$ is the dimensionality of $\mathbf{x}$, $H[q(\boldsymbol{\Lambda}_k)]$ 
 
 Finally, it is worth noting that the lower bound provides an alternative approach for deriving the variational re-estimation equations obtained in Section 10.2.1. To do this we use the fact that, since the model has conjugate priors, the functional form of the factors in the variational posterior distribution is known, namely discrete for $\mathbf{Z}$, Dirichlet for $\boldsymbol{\pi}$, and Gaussian-Wishart for $(\boldsymbol{\mu}_k, \boldsymbol{\Lambda}_k)$. By taking general parametric forms for these distributions we can derive the form of the lower bound as a function of the parameters of the distributions. Maximizing the bound with respect to these parameters then gives the required re-estimation equations.
 
-### 10.2.3 Predictive density
+## 10.2.3 Predictive density
 
 In applications of the Bayesian mixture of Gaussians model we will often be interested in the predictive density for a new value $\widehat{\mathbf{x}}$ of the observed variable. Associated with this observation will be a corresponding latent variable $\widehat{\mathbf{z}}$, and the predictive density is then given by
 
 $$
 p(\widehat{\mathbf{x}}|\mathbf{X}) = \sum_{\widehat{\mathbf{z}}} \iiint p(\widehat{\mathbf{x}}|\widehat{\mathbf{z}}, \boldsymbol{\mu}, \boldsymbol{\Lambda})p(\widehat{\mathbf{z}}|\boldsymbol{\pi})p(\boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Lambda}|\mathbf{X}) \text{d}\boldsymbol{\pi} \text{d}\boldsymbol{\mu} \text{d}\boldsymbol{\Lambda} \tag{10.78}
 $$
+
 [Page 503]
 
 where $p(\boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Lambda}|\mathbf{X})$ is the (unknown) true posterior distribution of the parameters. Using (10.37) and (10.38) we can ﬁrst perform the summation over $\widehat{\mathbf{z}}$ to give
@@ -694,7 +701,7 @@ $$
 
 in which $\nu_k$ is given by (10.63). When the size $N$ of the data set is large the predictive distribution (10.81) reduces to a mixture of Gaussians.
 
-### 10.2.4 Determining the number of components
+## 10.2.4 Determining the number of components
 
 We have seen that the variational lower bound can be used to determine a posterior distribution over the number $K$ of components in the mixture model. There is, however, one subtlety that needs to be addressed. For any given setting of the parameters in a Gaussian mixture model (except for speciﬁc degenerate settings), there will exist other parameter settings for which the density over the observed variables will be identical. These parameter values differ only through a re-labelling of the components. For instance, consider a mixture of two Gaussians and a single observed variable $x$, in which the parameters have the values $\pi_1 = a, \pi_2 = b, \mu_1 = c, \mu_2 = d, \sigma_1 = e, \sigma_2 = f$. Then the parameter values $\pi_1 = b, \pi_2 = a, \mu_1 = d, \mu_2 = c, \sigma_1 = f, \sigma_2 = e$, in which the two components have been exchanged, will by symmetry give rise to the same value of $p(x)$. If we have a mixture model comprising $K$ components, then each parameter setting will be a member of a family of $K!$ equivalent settings.
 
@@ -720,7 +727,7 @@ and this maximization is interleaved with the variational updates for the $q$ di
 
 to explaining the data will have their mixing coefﬁcients driven to zero during the optimization, and so they are effectively removed from the model through automatic relevance determination. This allows us to make a single training run in which we start with a relatively large initial value of $K$, and allow surplus components to be pruned out of the model. The origins of the sparsity when optimizing with respect to hyperparameters is discussed in detail in the context of the relevance vector machine.
 
-### 10.2.5 Induced factorizations
+## 10.2.5 Induced factorizations
 
 In deriving these variational update equations for the Gaussian mixture model, we assumed a particular factorization of the variational posterior distribution given by (10.42). However, the optimal solutions for the various factors exhibit additional factorizations. In particular, the solution for $q(\boldsymbol{\mu}, \boldsymbol{\Lambda})$ is given by the product of an independent distribution $q(\boldsymbol{\mu}_k, \boldsymbol{\Lambda}_k)$ over each of the components $k$ of the mixture, whereas the variational posterior distribution $q(\mathbf{Z})$ over the latent variables, given by (10.48), factorizes into an independent distribution $q(\mathbf{z}_n)$ for each observation $n$ (note that it does not further factorize with respect to $k$ because, for each value of $n$, the $z_{nk}$ are constrained to sum to one over $k$). These additional factorizations are a consequence of the interaction between the assumed factorization and the conditional independence properties of the true distribution, as characterized by the directed graph in Figure 10.5.
 
@@ -746,13 +753,14 @@ We now ask whether this resulting solution will factorize between $\mathbf{A}$ a
 $$
 \mathbf{A} \perp\!\!\!\perp \mathbf{B} | \mathbf{X}, \mathbf{C} \tag{10.86}
 $$
+
 [Page 506]
 
 is satisﬁed. We can test to see if this relation does hold, for any choice of $\mathbf{A}$ and $\mathbf{B}$ by making use of the d-separation criterion.
 
 To illustrate this, consider again the Bayesian mixture of Gaussians represented by the directed graph in Figure 10.5, in which we are assuming a variational factorization given by (10.42). We can see immediately that the variational posterior distribution over the parameters must factorize between $\boldsymbol{\pi}$ and the remaining parameters $\boldsymbol{\mu}$ and $\boldsymbol{\Lambda}$ because all paths connecting $\boldsymbol{\pi}$ to either $\boldsymbol{\mu}$ or $\boldsymbol{\Lambda}$ must pass through one of the nodes $\mathbf{z}_n$ all of which are in the conditioning set for our conditional independence test and all of which are head-to-tail with respect to such paths.
 
-### 10.3. Variational Linear Regression
+## 10.3. Variational Linear Regression
 
 As a second illustration of variational inference, we return to the Bayesian linear regression model of Section 3.3. In the evidence framework, we approximated the integration over $\alpha$ and $\beta$ by making point estimates obtained by maximizing the log marginal likelihood. A fully Bayesian approach would integrate over the hyperparameters as well as over the parameters. Although exact integration is intractable, we can use variational methods to ﬁnd a tractable approximation. In order to simplify the discussion, we shall suppose that the noise precision parameter $\beta$ is known, and is ﬁxed to its true value, although the framework is easily extended to include the distribution over $\beta$. For the linear regression model, the variational treatment will turn out to be equivalent to the evidence framework. Nevertheless, it provides a good exercise in the use of variational methods and will also lay the foundation for variational treatment of Bayesian logistic regression in Section 10.6.
 
@@ -780,7 +788,7 @@ $$
 
 This can be represented as a directed graphical model as shown in Figure 10.8.
 
-### 10.3.1 Variational distribution
+## 10.3.1 Variational distribution
 
 Our ﬁrst goal is to ﬁnd an approximation to the posterior distribution $p(\mathbf{w}, \alpha|\mathbf{t})$. To do this, we employ the variational framework of Section 10.1, with a variational
 [Page 507]
@@ -839,6 +847,7 @@ Because this is a quadratic form, the distribution $q^\star(\mathbf{w})$ is Gaus
 $$
 q^\star(\mathbf{w}) = \mathcal{N}(\mathbf{w}|\mathbf{m}_N, \mathbf{S}_N) \tag{10.99}
 $$
+
 [Page 508]
 
 where
@@ -873,7 +882,7 @@ $$
 
 Comparison with (9.63) shows that in the case of this particularly simple model, the variational approach gives precisely the same expression as that obtained by maximizing the evidence function using EM except that the point estimate for $\alpha$ is replaced by its expected value. Because the distribution $q(\mathbf{w})$ depends on $q(\alpha)$ only through the expectation $\mathbb{E}[\alpha]$, we see that the two approaches will give identical results for the case of an inﬁnitely broad prior.
 
-### 10.3.2 Predictive distribution
+## 10.3.2 Predictive distribution
 
 The predictive distribution over $t$, given a new input $\mathbf{x}$, is easily evaluated for this model using the Gaussian variational posterior for the parameters
 
@@ -885,6 +894,7 @@ p(t|\mathbf{x}, \mathbf{t}) &= \int p(t|\mathbf{x}, \mathbf{w})p(\mathbf{w}|\mat
 &= \mathcal{N}(t|\mathbf{m}_N^{\text{T}}\boldsymbol{\phi}(\mathbf{x}), \sigma^2(\mathbf{x}))
 \end{aligned} \tag{10.105}
 $$
+
 [Page 509]
 
 where we have evaluated the integral by making use of the result (2.115) for the linear-Gaussian model. Here the input-dependent variance is given by
@@ -895,7 +905,7 @@ $$
 
 Note that this takes the same form as the result (3.59) obtained with ﬁxed $\alpha$ except that now the expected value $\mathbb{E}[\alpha]$ appears in the deﬁnition of $\mathbf{S}_N$.
 
-### 10.3.3 Lower bound
+## 10.3.3 Lower bound
 
 Another quantity of importance is the lower bound $\mathcal{L}$ deﬁned by
 
@@ -945,7 +955,7 @@ Figure 10.9 Plot of the lower bound $\mathcal{L}$ versus the order $M$ of the po
 
 ![image 241](../Images/imageFile241.png)
 
-### 10.4. Exponential Family Distributions
+## 10.4. Exponential Family Distributions
 
 In Chapter 2, we discussed the important role played by the exponential family of distributions and their conjugate priors. For many of the models discussed in this book, the complete-data likelihood is drawn from the exponential family. However, in general this will not be the case for the marginal likelihood function for the observed data. For example, in a mixture of Gaussians, the joint distribution of observations $\mathbf{x}_n$ and corresponding hidden variables $\mathbf{z}_n$ is a member of the exponential family, whereas the marginal distribution of $\mathbf{x}_n$ is a mixture of Gaussians and hence is not.
 
@@ -1014,7 +1024,7 @@ $$
 
 Note that the solutions for $q(\mathbf{z}_n)$ and $q(\boldsymbol{\eta})$ are coupled, and so we solve them iteratively in a two-stage procedure. In the variational E step, we evaluate the expected sufﬁcient statistics $\mathbb{E}[\mathbf{u}(\mathbf{x}_n, \mathbf{z}_n)]$ using the current posterior distribution $q(\mathbf{z}_n)$ over the latent variables and use this to compute a revised posterior distribution $q(\boldsymbol{\eta})$ over the parameters. Then in the subsequent variational M step, we use this revised parameter posterior distribution to ﬁnd the expected natural parameters $\mathbb{E}[\boldsymbol{\eta}^{\text{T}}]$, which gives rise to a revised variational distribution over the latent variables.
 
-### 10.4.1 Variational message passing
+## 10.4.1 Variational message passing
 
 We have illustrated the application of variational methods by considering a speciﬁc model, the Bayesian mixture of Gaussians, in some detail. This model can be
 [Page 512]
@@ -1044,7 +1054,7 @@ Any terms on the right-hand side that do not depend on $\mathbf{x}_j$ can be abs
 If we now specialize to the case of a model in which all of the conditional distributions have a conjugate-exponential structure, then the variational update procedure can be cast in terms of a local message passing algorithm (Winn and Bishop, 2005). In particular, the distribution associated with a particular node can be updated once that node has received messages from all of its parents and all of its children. This in turn requires that the children have already received messages from their coparents. The evaluation of the lower bound can also be simpliﬁed because many of the required quantities are already evaluated as part of the message passing scheme. This distributed message passing formulation has good scaling properties and is well suited to large networks.
 [Page 513]
 
-### 10.5. Local Variational Methods
+## 10.5. Local Variational Methods
 
 The variational framework discussed in Sections 10.1 and 10.2 can be considered a ‘global’ method in the sense that it directly seeks an approximation to the full posterior distribution over all random variables. An alternative ‘local’ approach involves ﬁnding bounds on functions over individual variables or groups of variables within a model. For instance, we might seek a bound on a conditional distribution $p(y|\mathbf{x})$, which is itself just one factor in a much larger probabilistic model speciﬁed by a directed graph. The purpose of introducing the bound of course is to simplify the resulting distribution. This local approximation can be applied to multiple variables in turn until a tractable approximation is obtained, and in Section 10.6.1 we shall give a practical example of this approach in the context of logistic regression. Here we focus on developing the bounds themselves.
 
@@ -1096,6 +1106,7 @@ g(\lambda) &= -\min_x \{ f(x) - \lambda x \} \\
 &= \max_x \{ \lambda x - f(x) \}.
 \end{aligned} \tag{10.129}
 $$
+
 [Page 515]
 
 Now, instead of ﬁxing $\lambda$ and varying $x$, we can consider a particular $x$ and then adjust $\lambda$ until the tangent plane is tangent at that particular $x$. Because the $y$ value of the tangent line at a particular $x$ is maximized when that value coincides with its contact point, we have
@@ -1143,6 +1154,7 @@ which we recognize as the binary entropy function for a variable whose probabili
 $$
 \ln \sigma(x) \leqslant \lambda x - g(\lambda) \tag{10.136}
 $$
+
 [Page 516]
 
 Figure 10.12 The left-hand plot shows the logistic sigmoid function $\sigma(x)$ deﬁned by (10.134) in red, together with two examples of the exponential upper bound (10.137) shown in blue. The right-hand plot shows the logistic sigmoid again in red together with the Gaussian lower bound (10.144) shown in blue. Here the parameter $\xi = 2.5$, and the bound is exact at $x = \xi$ and $x = -\xi$, denoted by the dashed green lines.
@@ -1183,6 +1195,7 @@ If we denote this value of $x$, corresponding to the contact point of the tangen
 $$
 \lambda(\xi) = -\frac{1}{4\xi} \tanh\left( \frac{\xi}{2} \right) = -\frac{1}{2\xi} \left[ \sigma(\xi) - \frac{1}{2} \right]. \tag{10.141}
 $$
+
 [Page 517]
 
 Instead of thinking of $\lambda$ as the variational parameter, we can let $\xi$ play this role as this leads to simpler expressions for the conjugate function, which is then given by
@@ -1224,11 +1237,11 @@ We now have the freedom to choose the variational parameter $\xi$, which we do b
 
 Although the bound $\sigma(a) \geqslant f(a, \xi)$ on the logistic sigmoid can be optimized exactly, the required choice for $\xi$ depends on the value of $a$, so that the bound is exact for one value of $a$ only. Because the quantity $F(\xi)$ is obtained by integrating over all values of $a$, the value of $\xi$ represents a compromise, weighted by the distribution $p(a)$.
 
-### 10.6. Variational Logistic Regression
+## 10.6. Variational Logistic Regression
 
 We now illustrate the use of local variational methods by returning to the Bayesian logistic regression model studied in Section 4.5. There we focussed on the use of the Laplace approximation, while here we consider a variational treatment based on the approach of Jaakkola and Jordan (2000). Like the Laplace method, this also leads to a Gaussian approximation to the posterior distribution. However, the greater ﬂexibility of the variational approximation leads to improved accuracy compared to the Laplace method. Furthermore (unlike the Laplace method), the variational approach is optimizing a well deﬁned objective function given by a rigourous bound on the model evidence. Logistic regression has also been treated by Dybowski and Roberts (2005) from a Bayesian perspective using Monte Carlo sampling techniques.
 
-#### 10.6.1 Variational posterior distribution
+### 10.6.1 Variational posterior distribution
 
 Here we shall make use of a variational approximation based on the local bounds introduced in Section 10.5. This allows the likelihood function for logistic regression, which is governed by the logistic sigmoid, to be approximated by the exponential of a quadratic form. It is therefore again convenient to choose a conjugate Gaussian prior of the form (4.140). For the moment, we shall treat the hyperparameters $\mathbf{m}_0$ and $\mathbf{S}_0$ as ﬁxed constants. In Section 10.6.3, we shall demonstrate how the variational formalism can be extended to the case where there are unknown hyperparameters whose values are to be inferred from the data.
 
@@ -1300,6 +1313,7 @@ Substituting for the prior $p(\mathbf{w})$, the right-hand side of this inequali
 $$
 -\frac{1}{2} (\mathbf{w} - \mathbf{m}_0)^{\text{T}}\mathbf{S}_0^{-1}(\mathbf{w} - \mathbf{m}_0) + \sum_{n=1}^N \left\{ \mathbf{w}^{\text{T}}\boldsymbol{\phi}_n(t_n - 1/2) - \lambda(\xi_n)\mathbf{w}^{\text{T}}(\boldsymbol{\phi}_n\boldsymbol{\phi}_n^{\text{T}})\mathbf{w} \right\} + \text{const}. \tag{10.155}
 $$
+
 [Page 520]
 
 This is a quadratic function of $\mathbf{w}$, and so we can obtain the corresponding variational approximation to the posterior distribution by identifying the linear and quadratic terms in $\mathbf{w}$, giving a Gaussian variational posterior of the form
@@ -1324,7 +1338,7 @@ Here we have considered a batch learning context in which all of the training da
 
 Note that the bound given by (10.149) applies only to the two-class problem and so this approach does not directly generalize to classiﬁcation problems with $K > 2$ classes. An alternative bound for the multiclass case has been explored by Gibbs (1997).
 
-#### 10.6.2 Optimizing the variational parameters
+### 10.6.2 Optimizing the variational parameters
 
 We now have a normalized Gaussian approximation to the posterior distribution, which we shall use shortly to evaluate the predictive distribution for new data points. First, however, we need to determine the variational parameters $\{\xi_n\}$ by maximizing the lower bound on the marginal likelihood.
 
@@ -1387,7 +1401,7 @@ This variational framework can also be applied to situations in which the data i
 
 The predictive distribution is obtained by marginalizing over the posterior distribution, and takes the same form as for the Laplace approximation discussed in Section 4.5.2. Figure 10.13 shows the variational predictive distributions for a synthetic data set. This example provides interesting insights into the concept of ‘large margin’, which was discussed in Section 7.1 and which has qualitatively similar behaviour to the Bayesian solution.
 
-#### 10.6.3 Inference of hyperparameters
+### 10.6.3 Inference of hyperparameters
 
 So far, we have treated the hyperparameter $\alpha$ in the prior distribution as a known constant. We now extend the Bayesian logistic regression model to allow the value of this parameter to be inferred from the data set. This can be achieved by combining the global and local variational approximations into a single framework, so as to maintain a lower bound on the marginal likelihood at each stage. Such a combined approach was adopted by Bishop and Svensén (2003) in the context of a Bayesian treatment of the hierarchical mixture of experts model.
 [Page 523]
@@ -1450,6 +1464,7 @@ Next we assume that the variational distribution factorizes between parameters a
 $$
 q(\mathbf{w}, \alpha) = q(\mathbf{w})q(\alpha). \tag{10.173}
 $$
+
 [Page 524]
 
 With this factorization we can appeal to the general result (10.9) to ﬁnd expressions for the optimal factors. Consider ﬁrst the distribution $q(\mathbf{w})$. Discarding terms that are independent of $\mathbf{w}$, we have
@@ -1510,6 +1525,7 @@ $$
 $$
 b_N = b_0 + \frac{1}{2} \mathbb{E}_{\mathbf{w}} \left[ \mathbf{w}^{\text{T}}\mathbf{w} \right]. \tag{10.179}
 $$
+
 [Page 525]
 
 We also need to optimize the variational parameters $\xi_n$, and this is also done by maximizing the lower bound $\widetilde{\mathcal{L}}(q, \boldsymbol{\xi})$. Omitting terms that are independent of $\boldsymbol{\xi}$, and integrating over $\alpha$, we have
@@ -1534,7 +1550,7 @@ $$
 \mathbb{E}[\mathbf{w}^{\text{T}}\mathbf{w}] = \text{Tr}(\boldsymbol{\Sigma}_N) + \boldsymbol{\mu}_N^{\text{T}}\boldsymbol{\mu}_N. \tag{10.183}
 $$
 
-### 10.7. Expectation Propagation
+## 10.7. Expectation Propagation
 
 We conclude this chapter by discussing an alternative form of deterministic approximate inference, known as expectation propagation or EP (Minka, 2001a; Minka, 2001b). As with the variational Bayes methods discussed so far, this too is based on the minimization of a Kullback-Leibler divergence but now of the reverse form, which gives the approximation rather different properties.
 
@@ -1561,6 +1577,7 @@ However, we have already seen in (2.226) that the negative gradient of $\ln g(\b
 $$
 \mathbb{E}_{q(\mathbf{z})}[\mathbf{u}(\mathbf{z})] = \mathbb{E}_{p(\mathbf{z})}[\mathbf{u}(\mathbf{z})]. \tag{10.187}
 $$
+
 [Page 526]
 
 We see that the optimum solution simply corresponds to matching the expected sufﬁcient statistics. So, for instance, if $q(\mathbf{z})$ is a Gaussian $\mathcal{N}(\mathbf{z}|\boldsymbol{\mu}, \boldsymbol{\Sigma})$ then we minimize the Kullback-Leibler divergence by setting the mean $\boldsymbol{\mu}$ of $q(\mathbf{z})$ equal to the mean of the distribution $p(\mathbf{z})$ and the covariance $\boldsymbol{\Sigma}$ equal to the covariance of $p(\mathbf{z})$. This is sometimes called moment matching. An example of this was seen in Figure 10.3(a).
@@ -1627,6 +1644,7 @@ Note that we could instead ﬁnd $q^{\setminus j}(\boldsymbol{\theta})$ from the
 $$
 \frac{1}{Z_j} f_j(\boldsymbol{\theta}) q^{\setminus j}(\boldsymbol{\theta}) \tag{10.196}
 $$
+
 [Page 528]
 
 ![Figure 10.14](../Images/imageFile247.png)
@@ -1703,6 +1721,7 @@ $$
 $$
 q^{\setminus j}(\boldsymbol{\theta}) = \frac{q(\boldsymbol{\theta})}{\widetilde{f}_j(\boldsymbol{\theta})}. \tag{10.205}
 $$
+
 [Page 530]
 
 - (c) Evaluate the new posterior by setting the sufﬁcient statistics (moments) of $q^{\text{new}}(\boldsymbol{\theta})$ equal to those of $q^{\setminus j}(\boldsymbol{\theta})f_j(\boldsymbol{\theta})$, including evaluation of the normalization constant
@@ -1734,7 +1753,7 @@ Figure 10.15 Illustration of the clutter problem for a data space dimensionality
 
 ![Figure 10.15](../Images/imageFile248.png)
 
-### 10.7.1 Example: The clutter problem
+## 10.7.1 Example: The clutter problem
 
 Following Minka (2001b), we illustrate the EP algorithm using a simple example in which the goal is to infer the mean $\boldsymbol{\theta}$ of a multivariate Gaussian distribution over a variable $\mathbf{x}$ given a set of observations drawn from that distribution. To make the problem more interesting, the observations are embedded in background clutter, which itself is also Gaussian distributed, as illustrated in Figure 10.15. The distribution of observed values $\mathbf{x}$ is therefore a mixture of Gaussians, which we take to be of the form
 
@@ -1761,6 +1780,7 @@ To apply EP to the clutter problem, we ﬁrst identify the factors $f_0(\boldsym
 $$
 q(\boldsymbol{\theta}) = \mathcal{N}(\boldsymbol{\theta}|\mathbf{m}, v\mathbf{I}). \tag{10.212}
 $$
+
 [Page 532]
 
 The factor approximations will therefore take the form of exponential-quadratic functions of the form
@@ -1840,7 +1860,7 @@ $$
 
 Examples factor approximations for the clutter problem with a one-dimensional parameter space $\theta$ are shown in Figure 10.16. Note that the factor approximations can have inﬁnite or even negative values for the ‘variance’ parameter $v_n$. This simply corresponds to approximations that curve upwards instead of downwards and are not necessarily problematic provided the overall approximate posterior $q(\boldsymbol{\theta})$ has positive variance. Figure 10.17 compares the performance of EP with variational Bayes (mean ﬁeld theory) and the Laplace approximation on the clutter problem.
 
-### 10.7.2 Expectation propagation on graphs
+## 10.7.2 Expectation propagation on graphs
 
 So far in our general discussion of EP, we have allowed the factors $f_i(\boldsymbol{\theta})$ in the distribution $p(\boldsymbol{\theta})$ to be functions of all of the components of $\boldsymbol{\theta}$, and similarly for the approximating factors $\widetilde{f}_i(\boldsymbol{\theta})$ in the approximating distribution $q(\boldsymbol{\theta})$. We now consider situations in which the factors depend only on subsets of the variables. Such restrictions can be conveniently expressed using the framework of probabilistic graphical models, as discussed in Chapter 8. Here we use a factor graph representation because this encompasses both directed and undirected graphs.
 [Page 534]
@@ -1919,6 +1939,7 @@ $$
 $$
 \widetilde{f}_{b3}(x_3) \propto \sum_{x_2} \left\{ f_b(x_2, x_3) \widetilde{f}_{a2}(x_2) \widetilde{f}_{c2}(x_2) \right\}. \tag{10.235}
 $$
+
 [Page 536]
 
 These are precisely the messages obtained using belief propagation in which messages from variable nodes to factor nodes have been folded into the messages from factor nodes to variable nodes. In particular, $\widetilde{f}_{b2}(x_2)$ corresponds to the message $\mu_{f_b \to x_2}(x_2)$ sent by factor node $f_b$ to variable node $x_2$ and is given by (8.81). Similarly, if we substitute (8.78) into (8.79), we obtain (10.235) in which $\widetilde{f}_{a2}(x_2)$ corresponds to $\mu_{f_a \to x_2}(x_2)$ and $\widetilde{f}_{c2}(x_2)$ corresponds to $\mu_{f_c \to x_2}(x_2)$, giving the message $\widetilde{f}_{b3}(x_3)$ which corresponds to $\mu_{f_b \to x_3}(x_3)$.
@@ -1954,6 +1975,7 @@ Up to a multiplicative constant, this involves taking the marginal of $f_j(\bold
 $$
 \widetilde{f}_{jl}(\theta_l) \propto \sum_{\boldsymbol{\theta}_j \setminus \theta_l} f_j(\boldsymbol{\theta}_j) \prod_{m \neq l} \prod_{k \neq j} \widetilde{f}_{km}(\theta_m). \tag{10.240}
 $$
+
 [Page 537]
 
 We recognize this as the sum-product rule in the form in which messages from variable nodes to factor nodes have been eliminated, as illustrated by the example shown in Figure 8.50. The quantity $\widetilde{f}_{jm}(\theta_m)$ corresponds to the message $\mu_{f_j \to \theta_m}(\theta_m)$, which factor node $j$ sends to variable node $m$, and the product over $k$ in (10.240) is over all factors that depend on the variables $\theta_m$ that have variables (other than variable $\theta_l$) in common with factor $f_j(\boldsymbol{\theta}_j)$. In other words, to compute the outgoing message from a factor node, we take the product of all the incoming messages from other factor nodes, multiply by the local factor, and then marginalize.

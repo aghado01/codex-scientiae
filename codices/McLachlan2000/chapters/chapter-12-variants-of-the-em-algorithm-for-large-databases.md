@@ -83,7 +83,7 @@ $$
 and
 
 $$
-\Sigma _ { i } ^ { ( k + ( b + 1 ) / B ) } = \left \{ T _ { i 3 } ^ { ( k + b / B ) } - T _ { i 1 } ^ { ( k + b / B ) ^ { - 1 } } T _ { i 2 } ^ { ( k + b / B ) } T _ { i 2 } ^ { ( k + b / B ) ^ { T } } \right \} / T _ { i 1 } ^ { ( k + b / B ) } \\ 
+\Sigma _ { i } ^ { ( k + ( b + 1 ) / B ) } = \left \{ T _ { i 3 } ^ { ( k + b / B ) } - T _ { i 1 } ^ { ( k + b / B ) ^ { - 1 } } T _ { i 2 } ^ { ( k + b / B ) } T _ { i 2 } ^ { ( k + b / B ) ^ { T } } \right \} / T _ { i 1 } ^ { ( k + b / B ) } \\
 $$
 
 for i = 1,
@@ -710,4 +710,3 @@ Moore (1999) presented some simulations from normal mixture for various combinat
 Moore (1999) also reported encouraging results in preliminary experiments in applying the mrkd-tree-based EM algorithm to some large real data sets. For exam ple, on the clustering of 800,000 galaxies into 1,000 clusters on the basis of some three-dimensional data; the standard EM needed 35 minutes per iteration, while the mrkd-tree-based EM required only 13 seconds. With 1.6 million galaxies; the standard EM needed 70 minutes per iteration; while the mrkd-tree version required only 14 seconds.
 
 The sparse EM algorithm may be applied under the mrkd-tree data structure That is, instead of considering all g components at all nodes; it is possible to freeze those T; of those nodes. In particular; near the tree's leaves, the posterior probabilities of component membership need to be computed only for a small fraction of the number of components 9. This leads to a further reduction in computation time.
-

@@ -1,12 +1,12 @@
 <a id="ch-10"></a>
 
-## Chapter 10 On Other Graphs
+# 10. On Other Graphs
 
 Summary. Exact solutions are known for the random-cluster models on complete graphs and on regular trees, and these provide theories of meanfield-type. There is a special argument for the complete graph which utilizes the theory of Erdos–R˝ enyi´ random graphs, and leads to exact calculations valid for all values of $q$ ∈ (0, ∞). The transition is of first order if and only if $q$ ∈ (2, ∞). The (non-)uniqueness of random-cluster measures on a tree, when subject to a variety of boundary conditions, may be studied via an iterative formula permitting exact calculations of the critical value and the percolation probability. There is a discussion of the random-cluster model on a general non-amenable graph.
 
 <a id="sec-10-1"></a>
 
-### 10.1 Mean-field theory
+## 10.1 Mean-field theory
 
 The theory of phase transitions addresses primarily singularities associated with spaces of finite dimension. There are two reasons for considering a ‘mean-field’ theory in which the number d of dimensions may be considered to take the value ∞. Firstly, the major problemsconfrontingthe mathematicslie in the geometrical constraints imposed by finite-dimensional Euclidean space; a solution for ‘infinite dimension’ can cast light on the case of finite dimension. The second reason is the desire to understand better the d-dimensional process in the limit of large d. One is led thus to the problems of establishing the theory of a process viewed as ∞-dimensional, and to proving that this is the limit in an appropriate sense of the d-dimensional process. Progress is well advanced on these two problems for percolation (see [154, Chapter 10]) but there remains much to be done for the random-cluster model.
 
@@ -20,7 +20,7 @@ Trees are examples of graphs whose boxes have surface/volumeratios bounded away 
 
 <a id="sec-10-2"></a>
 
-### 10.2 On complete graphs
+## 10.2 On complete graphs
 
 ![image 1106](../Images/imageFile1106.png)
 
@@ -65,7 +65,7 @@ The material presented here for the random-cluster model on Kn is taken from [62
 
 <a id="sec-10-3"></a>
 
-### 10.3 Main results for the complete graph
+## 10.3 Main results for the complete graph
 
 Let q ∈ (0,∞) and $p$ = λ/n where λ is a positive constant. For ease of notation, we shall sometimes suppress explicit reference to q. We shall make heavy use of the critical value λc(q) given in (10.4), and the function θ(λ) = θ(λ,q) defined in (10.5)–(10.6). The properties of roots of (10.6) will be used in some detail, but these are deferred untilLemma 10.12. For the momentwe note only that θ(λ) = 0 if and only if: either λ < λc(q), or λ = λc(q) and $q$ ≤ 2.
 
@@ -83,7 +83,7 @@ P |Xn| ≤ f (n)/ω(n) → 1 as n → ∞ for some sequence ω(n) satisfying ω(
 
 (d) The number of edges in Gn,λ/n,$q$ is λn/(2q) + op(n).
 
-#### (10.8) Theorem (Supercritical case) [62]. Let q ∈ (0,∞) and λ > λc(q).
+### (10.8) Theorem (Supercritical case) [62]. Let q ∈ (0,∞) and λ > λc(q).
 
 - (a) Almost every Gn,λ/n,q consists of a giant component, trees, and unicyclic components.
 - (b) The number of vertices in the giant component is θ(λ)n + op(n), and the number of edges is
@@ -102,7 +102,7 @@ P |Xn| ≤ f (n)/ω(n) → 1 as n → ∞ for some sequence ω(n) satisfying ω(
 
 1 + (q − 1)θ(λ)2 n + op(n).
 
-#### (10.9) Theorem (Critical case) [62]. Let q ∈ [1,2] and λ = λc(q).
+### (10.9) Theorem (Critical case) [62]. Let q ∈ [1,2] and λ = λc(q).
 
 (a) Almost every Gn,λ/n,q consists of trees, unicyclic components, and Op(1)
 
@@ -190,7 +190,7 @@ n3/4≤m≤n
 
 <a id="sec-10-5"></a>
 
-### 10.5 The size of the largest component
+## 10.5 The size of the largest component
 
 We assume henceforth that q ∈ [1,∞). Let nn denote the number of vertices in the largest component of Gn,λ/n,q, and note that 0 < n ≤ 1. If two or more ‘largest components’ exist, we pick one of these at random. All other components are called ‘small’ and, by Lemma 10.17, all small components of almost every Gn,λ/n,q have orders less than n3/4.
 
@@ -314,7 +314,7 @@ Whereas we proved this theorem under the assumption that $q$ > 1, its conclusion
 
 <a id="sec-10-6"></a>
 
-### 10.6 Proofs of main results for complete graphs
+## 10.6 Proofs of main results for complete graphs
 
 The results derivedso far are combinednextwith a newargumentin orderto prove Theorems 10.7–10.9 for $q$ ∈ [1,∞). The results are well known when $q$ = 1 (see [61, Chapters V, VI] and [239]), and we assume henceforth that q ∈ (1,∞). The acyclic part of a graph is the union of all components that are trees, and the cyclic part is the union of the remaining components. A graph is called cyclic if its acyclic part is empty. We begin by showing that the cyclic part of almost every Gn,λ/n,q consists principally of the largest componentonly (when this component is cyclic).
 
@@ -506,7 +506,7 @@ This completes the proof of the assertions concerning the order of the largest c
 
 <a id="sec-10-7"></a>
 
-### 10.7 The nature of the singularity
+## 10.7 The nature of the singularity
 
 It is an important problem of statistical physics to understand the nature of the singularity at a point of phase transition. For the mean-field random-clustermodel on a complete graph, the necessary calculations may be performed explicitly, and the conclusions are as follows.
 
@@ -558,7 +558,7 @@ that ψ(λc−) = λc/(2q) < 12 < ψ(λc+). The pressure η is continuous at λc
 
 <a id="sec-10-8"></a>
 
-### 10.8 Large deviations
+## 10.8 Large deviations
 
 The partition function Zn,p,q of (10.2) may be written4 as the exponential expectation
 
@@ -598,7 +598,7 @@ Details of the above calculations may be found in [62]. We write Fλ,q for the s
 
 where Q is chosen to satisfy λ = λc(Q). The following LDP is a consequence of the Gartner–Ellis¨ theorem, [99, Thm 2.3.6].
 
-#### (10.58) Theorem (Large deviations) [62]. Let q ∈ [1,∞) and λ ∈ (0,∞).
+### (10.58) Theorem (Large deviations) [62]. Let q ∈ [1,∞) and λ ∈ (0,∞).
 
 ![image 1224](../Images/imageFile1224.png)
 
@@ -663,10 +663,13 @@ We deﬁne next a random-clustermeasure correspondingto a given equivalence
 relation ∼. Let ξ ∈ , and let p ∈ [0,1] and $q$ ∈ (0,∞). We deﬁne φ ,ξ,∼p,q as the random-cluster measure on the box ( , E ) with boundary condition (ξ,∼).
 
 More precisely, $\phi_{\Lambda, p, q}^{\xi, \sim}$ is the probability measure on the pair $(\Omega, \mathcal{F})$ given by
-$$ (10.64) \quad \phi_{\Lambda, p, q}^{\xi, \sim}(\omega) = \begin{cases}
+
+$$
+(10.64) \quad \phi_{\Lambda, p, q}^{\xi, \sim}(\omega) = \begin{cases}
 \frac{1}{Z} \left\{ \prod_{e \in E_\Lambda} p^{\omega(e)} (1-p)^{1-\omega(e)} \right\} q^{k_{\xi,\sim}(\Lambda,\omega)} & \text{if } \omega \in \Omega_{\Lambda}^{\xi}, \\
 0 & \text{otherwise.}
-\end{cases} $$
+\end{cases}
+$$
 
 boundary conditions, and it has been studied in a slightly disguised form in [167, 196].
 
@@ -766,7 +769,7 @@ Turning to the final statement of part (a), by the discussion around (10.71),
 
 <a id="sec-10-10"></a>
 
-### 10.10 The critical point for a tree
+## 10.10 The critical point for a tree
 
 We concentrate henceforth on the binary tree T = T2 = (V, E) and the wired equivalence relation ∼1. It is shown in this section how the series/parallel laws may be used to study random-cluster measures on T. Corresponding results are valid for the m-ary tree with m ≥ 2.
 
@@ -922,7 +925,7 @@ whence, for φp1,q-almost-every ξ ∈ Ke1,
 
 <a id="sec-10-11"></a>
 
-### 10.11 (Non-)uniqueness of measures on trees
+## 10.11 (Non-)uniqueness of measures on trees
 
 For which p, $q$ is there a unique wired random-cluster measure on the binary tree T? We assume for simplicity that q ∈ [1,∞). By Theorem 10.82, R1p,$q$ = {φπ} whenever $p$ is sufficiently small that φp1,q(0 ↔ ∞) = 0. The last holds if and only if $p$ ≤ κq for $q$ ∈ [1,2], < κq for $q$ ∈ (2,∞),
 
@@ -983,7 +986,7 @@ Sketch proof of Theorem 10.98. Note first that p ≥ 2q/(2q + 1) if and only if 
 
 <a id="sec-10-12"></a>
 
-### 10.12 On non-amenable graphs
+## 10.12 On non-amenable graphs
 
 Thepropertiesofinteractingsystemsontreesareoftenquitedifferentfromthoseof lattice systems, fortwo reasons. Firstly, trees have a multiplicity of ‘infinite ends’, and secondly, the surface/volume ratios of boxes are bounded away from 0. The latter property is especially interesting and leads to an important categorization of graphs. Let G = (V, E) be an infinite connected locally finite graph. We call G amenable if its ‘isoperimetric constant’
 

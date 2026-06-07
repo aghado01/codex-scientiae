@@ -1,6 +1,6 @@
 <a id="ch-6"></a>
 
-## Chapter 6 In Two Dimensions
+# 6. In Two Dimensions
 
 Summary. The dual of the random-cluster model on a planar graph is a random-cluster model also. The self-duality of the square lattice gives rise to the conjecture that pc(q) = psd(q) for $q$ ∈ [1,∞), where psd(q) denotes the self-dual point √q/(1+
 
@@ -12,7 +12,7 @@ Summary. The dual of the random-cluster model on a planar graph is a random-clus
 
 <a id="sec-6-1"></a>
 
-### 6.1 Planar duality
+## 6.1 Planar duality
 
 The duality theory of planar graphs provides a technique for studying randomcluster models in two dimensions. We shall see that, for a dual pair (G, Gd) of finite planar graphs, the measures φG,p,q and φGd,pd,q are dual measures in a certain sense to be explained soon, where $p$ and pd are related by pd/(1 − pd) = q(1 − p)/p. Such a duality survives the passage to a thermodynamic limit, and may therefore be applied also to infinite planar graphs including the square lattice L2. The square lattice has the further property of being isomorphic to its (infinite) dual, and this observation leads to many results of significance for the associated model. We begin with an account of planar duality in the random-cluster context.
 
@@ -205,7 +205,7 @@ where {0 ↔+ ∂ } is the event that there exists a path of joining 0 to some v
 
 <a id="sec-6-4"></a>
 
-### 6.4 First-order phase transition
+## 6.4 First-order phase transition
 
 The $q$ = 1 case of the random-cluster measure is the percolation model, with associated product measure φp = φp,1. One of the outstanding problems for percolation isto prove the continuityforall d of the percolation probability θ(p) = φp(0 ↔ ∞) at the critical point pc = pc(1), see [154, Section 8.3]. By a standard argument of semi-continuity, this amounts to proving that θ(pc) = 0, which is to say that there exists (almost surely) no infinite open cluster at the critical point. The situation for general $q$ is quite different. It turns out that θ1(pc(q),q) > 0 for all large q.
 
@@ -456,7 +456,7 @@ By part (i) applied to the dual lattice Ld, each hbL(x,q) is continuous at the p
 
 <a id="sec-6-6"></a>
 
-### 6.6 Square, triangular, and hexagonal lattices
+## 6.6 Square, triangular, and hexagonal lattices
 
 There is a host of exact but non-rigorous ‘results’ for two-dimensional models which, while widely accepted by physicists, continue to be subjected to mathematical investigations. Some of these claims have been made rigorous and, in so doing, mathematicians have discovered new structures of beauty and complexity. The outstanding contemporary example of new structure provoked by physics is the theory of stochastic Löwner evolutions (SLE). This has had considerable impact on percolation, Brownian motion, and on other systems with a property of conformal invariance; see Section 6.7 for a short account of SLE in the randomcluster context.
 
@@ -638,7 +638,7 @@ with a similar statement for H. It is not known how to make (6.71) rigorous, nei
 
 We move now to the special case of the homogeneous random-cluster model on T, with constant edge-parameter pe = p for every edge e. One part of the above discussion may be made rigorous, as follows.
 
-#### (6.72) Theorem. Let q ∈ [1,∞).
+### (6.72) Theorem. Let q ∈ [1,∞).
 
 (a) Consider the random-cluster model on the triangular lattice T, and let p be
 
@@ -664,7 +664,7 @@ Indeed, one expects that the critical surface is given by ψT(ph, pv, pd) = 0. T
 
 <a id="sec-6-7"></a>
 
-### 6.7 Stochastic L¨owner evolutions
+## 6.7 Stochastic L¨owner evolutions
 
 Many exact calculations are ‘known’ for critical processes in two dimensions, but the required physical arguments have sometimes appeared in varying degrees magical or revelationary to mathematicians. The recently developed technology of stochastic Löwner evolutions (SLE), discovered by Schramm [294], promises a rigorous underpinning of many such arguments in a manner consonant with modern probability theory. Roughly speaking, the theory of SLE informs us of the correctweak limit of a critical process in the limit of large spatial scales, and in addition provides a mechanism for performing calculations for the limit process.
 

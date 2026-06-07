@@ -1,12 +1,12 @@
 <a id="ch-7"></a>
 
-## Chapter 7 Duality in Higher Dimensions
+# 7. Duality in Higher Dimensions
 
 Summary. The boundaries of clusters in d dimensions are (topologically) (d − 1)-dimensional and, in their study, one encounters new geometrical difﬁculties when d ≥ 3. By representing the random-cluster model as a sequence of nested contours with alternately wired and free boundary conditions, one arrives at the proof that the phase transition is discontinuous for sufficiently large q. There is a random-cluster analysis of non-translationinvariant states of Dobrushin-type when d ≥ 3, q ∈ [1, ∞), and $p$ is sufficiently large.
 
 <a id="sec-7-1"></a>
 
-### 7.1 Surfaces and plaquettes
+## 7.1 Surfaces and plaquettes
 
 Dualityisafundamentaltechniqueinthestudyofanumberofstochasticmodelson a planar graph G = (V, E). Domains of G which are ‘switched-on’ in the model are surrounded by contours of the dual graph Gd which are ‘switched-off’. We make this more concrete as follows. We take as sample space the set \Omega = \{0,1\}^E where, as usual, an edge e is called open in ω ∈ if ω(e) = 1. There exists no open path between two vertices x, y of G if and only if there exists a contourin the dual graph that separates x and y and that traverses closed edges only. Such facts have been especially fruitful in the case of percolation, because the dual process of closed edges is itself a percolationprocess. We saw similarly in Section 6.1 that the dual of a random-clustermodel on a planar graph G is a random-clustermodel on the dual graph Gd, and this observation led to a largely complete theory of the random-cluster model on the square lattice. When d = 2, one may summarize this with the facile remark that 2 = 1 + 1, viewed as an expression of the fact that the co-dimension of a line in R2 is 1. The situation in three and more dimensions is much more complicated since the co-dimension of a line in Rd is d − 1, and one is led therefore to a consideration of surfaces and their geometry.
 
@@ -16,7 +16,7 @@ iciently large, [224]. The second component is the proof in Sections 7.6–7.11 
 
 <a id="sec-7-2"></a>
 
-### 7.2 Basic properties of surfaces
+## 7.2 Basic properties of surfaces
 
 The principal target of this section is to study the geometry of the dual surface corresponding to the external boundary of a finite connected subgraph of Ld. The results are presented for d ≥ 3, but the reader is advised to concentrate on the case d = 3. We write Ldd for the dual lattice of Ld, being the translate of Ld by the vector 12 = (21, 21,. . ., 21).
 
@@ -222,7 +222,7 @@ The connectivity of ( v,δC, e,δC) may be provedin very much the same way as in
 
 <a id="sec-7-3"></a>
 
-### 7.3 A contour representation
+## 7.3 A contour representation
 
 The dual of a two-dimensional random-cluster model is itself a random-cluster model, as explained in Chapter 6. The corresponding statement is plainly false in three or more dimensions, since the geometry of plaquettes differs from that of edges. Consider an edge-conﬁguration ω ∈ \Omega = \{0,1\}^Ed, and the corresponding plaquette-conﬁguration π = (π(h) : h ∈ H) given by
 
@@ -357,7 +357,7 @@ The nextstep is to transformthe random-clustermodelinto a so-called polymer mode
 
 <a id="sec-7-4"></a>
 
-### 7.4 Polymer models
+## 7.4 Polymer models
 
 The partition function of a lattice model in a finite volume of Rd may generally be written in the form
 
@@ -425,7 +425,7 @@ By (7.23), Z( 1 ∪ 2) = Z( 1)Z( 2) if 1 and 2 have no common vertex. By (7.28),
 
 <a id="sec-7-5"></a>
 
-### 7.5 Discontinuous phase transition for large q
+## 7.5 Discontinuous phase transition for large q
 
 It is a principal theorem for Potts and random-cluster models that the phase transition is discontinuous when $q$ is sufficiently large, see [68, 220, 251] for Potts models and [224] for random-cluster models. This is proved for random-cluster models by showing that the maximal contours of both wired and free models at $p$ = pc(q) have the same laws as those of certain convergent polymer models. Such use of contour expansions is normally termed a ‘Pirogov–Sinai’ approach9, after the authors of [274, 275].
 
@@ -886,7 +886,7 @@ whenever the derivative exists. By (7.48), either the left side equals 0, or it 
 
 ![image 824](../Images/imageFile824.png)
 
-##### (Ŵ)
+#### (Ŵ)
 
 ![image 825](../Images/imageFile825.png)
 
@@ -1096,7 +1096,7 @@ f ( 0w) = O(q−1/d), f ( 0f ) = O(q−1+(1/d)), and the claim follows by (7.66)
 
 <a id="sec-7-6"></a>
 
-### 7.6 Dobrushin interfaces
+## 7.6 Dobrushin interfaces
 
 Until now in this chapter we have studied the critical random-cluster model for large q. We turn now to the model with q ∈ [1,∞) and with large p, and we prove the existence of so-called Dobrushin interfaces.
 
@@ -1198,7 +1198,7 @@ The strategy of the proofs is to follow the milestones of the paper of Dobrushin
 
 <a id="sec-7-7"></a>
 
-### 7.7 Probabilistic and geometric preliminaries
+## 7.7 Probabilistic and geometric preliminaries
 
 ![image 881](../Images/imageFile881.png)
 
@@ -1282,7 +1282,7 @@ f1 = eK+1, f2, f3,. . . , ft of edges such that: (i) h( fi) ∈ Q for all i, (ii
 
 <a id="sec-7-8"></a>
 
-### 7.8 The law of the interface
+## 7.8 The law of the interface
 
 For conciseness of notation, we abbreviate φD L,M,p,q to φL,M, and φD L,M,p,q to φL,M. Let δ ∈ DL,M. The better to study φL,M(δ) = φL,M( = δ), we develop next an expression for this probability. Consider the connected components of the graph (Z3,η(ωδ)), and denote these components by (Sδi,Uδi), i = 1,2,. . .,kδ, where kδ = k(ωδ). Note that Uδi is empty whenever Sδi is a singleton. Let W(δ) be the edge-set EL,M \ {e ∈ E3 : h(e) ∈ δ}.
 
@@ -1409,7 +1409,7 @@ For Li > 0, δi ∈ DLi, and ei ∈ E(δi) ∩ ELi, let G(e1,δ1, EL1; e2,δ2, E
 
 On the event IL, is defined as before to be the maximal 1-connected set of open plaquettes that intersects δ0 \ EL.
 
-#### (7.118) Lemma.
+### (7.118) Lemma.
 
 ![image 928](../Images/imageFile928.png)
 
@@ -1441,7 +1441,7 @@ Let M → ∞ in (7.105), and use part (a) to obtain the claim.
 
 <a id="sec-7-9"></a>
 
-### 7.9 Geometry of interfaces
+## 7.9 Geometry of interfaces
 
 A taxonomy of interfaces is required, and this is the topic of this section. Let δ ∈ DL. While it was natural in Section 7.7 to introduce the extended interface δ, it turns out to be useful when studying the geometry of δ to work with its semi-extended interface
 
@@ -1485,7 +1485,7 @@ Ahorizontalplaquetteh ofthesemi-extendedinterfaceδ∗iscalledac-plaquette if h 
 
 π(W) = π(h) : h is a horizontal plaquette of W .
 
-#### (7.125) Lemma. Let δ ∈ DL.
+### (7.125) Lemma. Let δ ∈ DL.
 
 - (i) The set δ∗ \ δ contains no c-plaquette.
 - (ii) All plaquettes of δ∗ that are 1-connectedto some c-plaquette are horizontal plaquettes of δ. All horizontal plaquettes that are 0-connected to some c-plaquette belong to δ∗.
@@ -1692,7 +1692,7 @@ for which there exists no other plaquette h′′ ∈ G with π(h′′) = π(h�
 
 <a id="sec-7-10"></a>
 
-### 7.10 Exponential bounds for group probabilities
+## 7.10 Exponential bounds for group probabilities
 
 The probabilistic expressions of Section 7.8 may be combined with the classiﬁcation of Section 7.9 to obtain an estimate concerning the geometry of the interface. Let G = {Gh : h ∈ δ0} be a family of groups of walls. If G is admissible, there exists by Lemma 7.127 a unique corresponding interface δG. We may pick a random family ζ = {ζh : h ∈ δ0} of groups of walls according to the probability measure PL induced by φL thus:
 

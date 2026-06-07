@@ -1,21 +1,16 @@
 [Page 443]
 
-# 9
+![Chapter9](../Images/Chapters/Chapter9.png)
 
-![image 93](../Images/imageFile93.png)
-
-### Mixture Models and EM
+# 9. Mixture Models and EM
 
 If we deﬁne a joint distribution over observed and latent variables, the corresponding distribution of the observed variables alone is obtained by marginalization. This allows relatively complex marginal distributions over observed variables to be expressed in terms of more tractable joint distributions over the expanded space of observed and latent variables. The introduction of latent variables thereby allows complicated distributions to be formed from simpler components. In this chapter, we shall see that mixture distributions, such as the Gaussian mixture discussed in Section 2.3.9, can be interpreted in terms of discrete latent variables. Continuous latent variables will form the subject of Chapter 12.
 
-As well as providing a framework for building more complex probability distributions, mixture models can also be used to cluster data. We therefore begin our discussion of mixture distributions by considering the problem of ﬁnding clusters in a set of data points, which we approach ﬁrst using a nonprobabilistic technique called the $K$-means algorithm (Lloyd, 1982). Then we introduce the latent variable
-[Page 444]
-
-view of mixture distributions in which the discrete latent variables can be interpreted as deﬁning assignments of data points to speciﬁc components of the mixture. A general technique for ﬁnding maximum likelihood estimators in latent variable models is the expectation-maximization (EM) algorithm. We ﬁrst of all use the Gaussian mixture distribution to motivate the EM algorithm in a fairly informal way, and then we give a more careful treatment based on the latent variable viewpoint. We shall see that the $K$-means algorithm corresponds to a particular nonprobabilistic limit of EM applied to mixtures of Gaussians. Finally, we discuss EM in some generality.
+As well as providing a framework for building more complex probability distributions, mixture models can also be used to cluster data. We therefore begin our discussion of mixture distributions by considering the problem of ﬁnding clusters in a set of data points, which we approach ﬁrst using a nonprobabilistic technique called the $K$-means algorithm (Lloyd, 1982). Then we introduce the latent variable view of mixture distributions in which the discrete latent variables can be interpreted as deﬁning assignments of data points to speciﬁc components of the mixture. A general technique for ﬁnding maximum likelihood estimators in latent variable models is the expectation-maximization (EM) algorithm. We ﬁrst of all use the Gaussian mixture distribution to motivate the EM algorithm in a fairly informal way, and then we give a more careful treatment based on the latent variable viewpoint. We shall see that the $K$-means algorithm corresponds to a particular nonprobabilistic limit of EM applied to mixtures of Gaussians. Finally, we discuss EM in some generality.
 
 Gaussian mixture models are widely used in data mining, pattern recognition, machine learning, and statistical analysis. In many applications, their parameters are determined by maximum likelihood, typically using the EM algorithm. However, as we shall see there are some signiﬁcant limitations to the maximum likelihood approach, and in Chapter 10 we shall show that an elegant Bayesian treatment can be given using the framework of variational inference. This requires little additional computation compared with EM, and it resolves the principal difﬁculties of maximum likelihood while also allowing the number of components in the mixture to be inferred automatically from the data.
 
-### 9.1. $K$-means Clustering
+## 9.1. $K$-means Clustering
 
 We begin by considering the problem of identifying groups, or clusters, of data points in a multidimensional space. Suppose we have a data set $\{\mathbf{x}_1,\dots,\mathbf{x}_N\}$ consisting of $N$ observations of a random $D$-dimensional Euclidean variable $\mathbf{x}$. Our goal is to partition the data set into some number $K$ of clusters, where we shall suppose for the moment that the value of $K$ is given. Intuitively, we might think of a cluster as comprising a group of data points whose inter-point distances are small compared with the distances to points outside of the cluster. We can formalize this notion by ﬁrst introducing a set of $D$-dimensional vectors $\boldsymbol{\mu}_k$, where $k = 1,\dots,K$, in which $\boldsymbol{\mu}_k$ is a prototype associated with the $k^{\text{th}}$ cluster. As we shall see shortly, we can think of the $\boldsymbol{\mu}_k$ as representing the centres of the clusters. Our goal is then to ﬁnd an assignment of data points to clusters, as well as a set of vectors $\{\boldsymbol{\mu}_k\}$, such that the sum of the squares of the distances of each data point to its closest vector $\boldsymbol{\mu}_k$, is a minimum.
 
@@ -33,10 +28,10 @@ assigned vector $\boldsymbol{\mu}_k$. Our goal is to ﬁnd values for the $\{r_{
 Consider ﬁrst the determination of the $r_{nk}$. Because $J$ in (9.1) is a linear function of $r_{nk}$, this optimization can be performed easily to give a closed form solution. The terms involving different $n$ are independent and so we can optimize for each $n$ separately by choosing $r_{nk}$ to be $1$ for whichever value of $k$ gives the minimum value of $\| \mathbf{x}_n - \boldsymbol{\mu}_k \|^2$. In other words, we simply assign the $n^{\text{th}}$ data point to the closest cluster centre. More formally, this can be expressed as
 
 $$
-r_{nk} = 
-\begin{cases} 
-1 & \text{if } k = \arg \min_j \| \mathbf{x}_n - \boldsymbol{\mu}_j \|^2 \\ 
-0 & \text{otherwise.} 
+r_{nk} =
+\begin{cases}
+1 & \text{if } k = \arg \min_j \| \mathbf{x}_n - \boldsymbol{\mu}_j \|^2 \\
+0 & \text{otherwise.}
 \end{cases} \tag{9.2}
 $$
 
@@ -95,7 +90,7 @@ which gives the $K$-medoids algorithm. The E step again involves, for given clus
 
 One notable feature of the $K$-means algorithm is that at each iteration, every data point is assigned uniquely to one, and only one, of the clusters. Whereas some data points will be much closer to a particular centre $\boldsymbol{\mu}_k$ than to any other centre, there may be other data points that lie roughly midway between cluster centres. In the latter case, it is not clear that the hard assignment to the nearest cluster is the most appropriate. We shall see in the next section that by adopting a probabilistic approach, we obtain ‘soft’ assignments of data points to clusters in a way that reﬂects the level of uncertainty over the most appropriate assignment. This probabilistic formulation brings with it numerous beneﬁts.
 
-### 9.1.1 Image segmentation and compression
+## 9.1.1 Image segmentation and compression
 
 As an illustration of the application of the $K$-means algorithm, we consider the related problems of image segmentation and image compression. The goal of segmentation is to partition an image into regions each of which has a reasonably homogeneous visual appearance or which corresponds to objects or parts of objects (Forsyth and Ponce, 2003). Each pixel in an image is a point in a 3-dimensional space comprising the intensities of the red, blue, and green channels, and our segmentation algorithm simply treats each pixel in the image as a separate data point. Note that strictly this space is not Euclidean because the channel intensities are bounded by the interval $[0, 1]$. Nevertheless, we can apply the $K$-means algorithm without difﬁculty. We illustrate the result of running $K$-means to convergence, for any particular value of $K$, by re-drawing the image replacing each pixel vector with the $\{R, G, B\}$ intensity triplet given by the centre $\boldsymbol{\mu}_k$ to which that pixel has been assigned. Results for various values of $K$ are shown in Figure 9.3. We see that for a given value of $K$, the algorithm is representing the image using a palette of only $K$ colours. It should be emphasized that this use of $K$-means is not a particularly sophisticated approach to image segmentation, not least because it takes no account of the spatial proximity of different pixels. The image segmentation problem is in general extremely difﬁcult
 [Page 449]
@@ -118,7 +113,7 @@ We can also use the result of a clustering algorithm to perform data compression
 
 The image segmentation problem discussed above also provides an illustration of the use of clustering for data compression. Suppose the original image has $N$ pixels comprising $\{R, G, B\}$ values each of which is stored with 8 bits of precision. Then to transmit the whole image directly would cost $24N$ bits. Now suppose we ﬁrst run $K$-means on the image data, and then instead of transmitting the original pixel intensity vectors we transmit the identity of the nearest vector $\boldsymbol{\mu}_k$. Because there are $K$ such vectors, this requires $\log_2 K$ bits per pixel. We must also transmit the $K$ code book vectors $\boldsymbol{\mu}_k$, which requires $24K$ bits, and so the total number of bits required to transmit the image is $24K + N \log_2 K$ (rounding up to the nearest integer). The original image shown in Figure 9.3 has $240 \times 180 = 43,200$ pixels and so requires $24 \times 43,200 = 1,036,800$ bits to transmit directly. By comparison, the compressed images require $43,248$ bits ($K = 2$), $86,472$ bits ($K = 3$), and $173,040$ bits ($K = 10$), respectively, to transmit. These represent compression ratios compared to the original image of $4.2\%$, $8.3\%$, and $16.7\%$, respectively. We see that there is a trade-off between degree of compression and image quality. Note that our aim in this example is to illustrate the $K$-means algorithm. If we had been aiming to produce a good image compressor, then it would be more fruitful to consider small blocks of adjacent pixels, for instance $5 \times 5$, and thereby exploit the correlations that exist in natural images between nearby pixels.
 
-### 9.2. Mixtures of Gaussians
+## 9.2. Mixtures of Gaussians
 
 In Section 2.3.9 we motivated the Gaussian mixture model as a simple linear superposition of Gaussian components, aimed at providing a richer class of density models than the single Gaussian. We now turn to a formulation of Gaussian mixtures in terms of discrete latent variables. This will provide us with a deeper insight into this important distribution, and will also serve to motivate the expectation-maximization algorithm.
 
@@ -133,6 +128,7 @@ Let us introduce a $K$-dimensional binary random variable $\mathbf{z}$ having a 
 $$
 p(z_k = 1) = \pi_k
 $$
+
 [Page 451]
 
 Figure 9.4 Graphical representation of a mixture model, in which the joint distribution is expressed in the form $p(\mathbf{x}, \mathbf{z}) = p(\mathbf{z})p(\mathbf{x}|\mathbf{z})$.
@@ -194,7 +190,7 @@ We can use the technique of ancestral sampling to generate random samples distri
 
 We can also use this synthetic data set to illustrate the ‘responsibilities’ by evaluating, for every data point, the posterior probability for each component in the mixture distribution from which this data set was generated. In particular, we can represent the value of the responsibilities $\gamma(z_{nk})$ associated with data point $\mathbf{x}_n$ by plotting the corresponding point using proportions of red, blue, and green ink given by $\gamma(z_{nk})$ for $k = 1, 2, 3$, respectively, as shown in Figure 9.5(c). So, for instance, a data point for which $\gamma(z_{n1}) = 1$ will be coloured red, whereas one for which $\gamma(z_{n2}) = \gamma(z_{n3}) = 0.5$ will be coloured with equal proportions of blue and green ink and so will appear cyan. This should be compared with Figure 9.5(a) in which the data points were labelled using the true identity of the component from which they were generated.
 
-### 9.2.1 Maximum likelihood
+## 9.2.1 Maximum likelihood
 
 Suppose we have a data set of observations $\{\mathbf{x}_1,\dots,\mathbf{x}_N\}$, and we wish to model this data using a mixture of Gaussians. We can represent this data set as an $N \times D$
 [Page 453]
@@ -237,7 +233,7 @@ Maximizing the log likelihood function (9.14) for a Gaussian mixture model turns
 
 One approach is to apply gradient-based optimization techniques (Fletcher, 1987; Nocedal and Wright, 1999; Bishop and Nabney, 2008). Although gradient-based techniques are feasible, and indeed will play an important role when we discuss mixture density networks in Chapter 5, we now consider an alternative approach known as the EM algorithm which has broad applicability and which will lay the foundations for a discussion of variational inference techniques in Chapter 10.
 
-### 9.2.2 EM for Gaussian mixtures
+## 9.2.2 EM for Gaussian mixtures
 
 An elegant and powerful method for ﬁnding maximum likelihood solutions for models with latent variables is called the expectation-maximization algorithm, or EM algorithm (Dempster et al., 1977; McLachlan and Krishnan, 1997). Later we shall give a general treatment of EM, and we shall also show how EM can be generalized to obtain the variational inference framework. Initially, we shall motivate the EM algorithm by giving a relatively informal treatment in the context of the Gaussian mixture model. We emphasize, however, that EM has broad applicability, and indeed it will be encountered in the context of a variety of different models in this book.
 
@@ -258,6 +254,7 @@ where we have deﬁned
 $$
 N_k = \sum_{n=1}^N \gamma(z_{nk}). \tag{9.18}
 $$
+
 [Page 456]
 
 We can interpret $N_k$ as the effective number of points assigned to cluster $k$. Note carefully the form of this solution. We see that the mean $\boldsymbol{\mu}_k$ for the $k^{\text{th}}$ Gaussian component is obtained by taking a weighted mean of all of the points in the data set, in which the weighting factor for data point $\mathbf{x}_n$ is given by the posterior probability $\gamma(z_{nk})$ that component $k$ was responsible for generating $\mathbf{x}_n$.
@@ -304,7 +301,7 @@ Gaussian components are shown as blue and red circles. Plot (b) shows the result
 
 Note that the EM algorithm takes many more iterations to reach (approximate) convergence compared with the $K$-means algorithm, and that each cycle requires signiﬁcantly more computation. It is therefore common to run the $K$-means algorithm in order to ﬁnd a suitable initialization for a Gaussian mixture model that is subsequently adapted using EM. The covariance matrices can conveniently be initialized to the sample covariances of the clusters found by the $K$-means algorithm, and the mixing coefﬁcients can be set to the fractions of data points assigned to the respective clusters. As with gradient-based approaches for maximizing the log likelihood, techniques must be employed to avoid singularities of the likelihood function in which a Gaussian component collapses onto a particular data point. It should be emphasized that there will generally be multiple local maxima of the log likelihood function, and that EM is not guaranteed to ﬁnd the largest of these maxima. Because the EM algorithm for Gaussian mixtures plays such an important role, we summarize it below.
 
-### EM for Gaussian Mixtures
+## EM for Gaussian Mixtures
 
 Given a Gaussian mixture model, the goal is to maximize the likelihood function with respect to the parameters (comprising the means and covariances of the components and the mixing coefﬁcients).
 
@@ -314,6 +311,7 @@ Given a Gaussian mixture model, the goal is to maximize the likelihood function 
 $$
 \gamma(z_{nk}) = \frac{\pi_k \mathcal{N}(\mathbf{x}_n|\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{j=1}^K \pi_j \mathcal{N}(\mathbf{x}_n|\boldsymbol{\mu}_j, \boldsymbol{\Sigma}_j)}. \tag{9.23}
 $$
+
 [Page 459]
 
 3. **M step**. Re-estimate the parameters using the current responsibilities
@@ -344,7 +342,7 @@ $$
 
 and check for convergence of either the parameters or the log likelihood. If the convergence criterion is not satisﬁed return to step 2.
 
-### 9.3. An Alternative View of EM
+## 9.3. An Alternative View of EM
 
 In this section, we present a complementary view of the EM algorithm that recognizes the key role played by latent variables. We discuss this approach ﬁrst of all in an abstract setting, and then for illustration we consider once again the case of Gaussian mixtures.
 
@@ -381,12 +379,12 @@ Note that in the deﬁnition of $\mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\t
 
 The general EM algorithm is summarized below. It has the property, as we shall show later, that each cycle of EM will increase the incomplete-data log likelihood (unless it is already at a local maximum).
 
-### The General EM Algorithm
+## The General EM Algorithm
 
 Given a joint distribution $p(\mathbf{X}, \mathbf{Z}|\boldsymbol{\theta})$ over observed variables $\mathbf{X}$ and latent variables $\mathbf{Z}$, governed by parameters $\boldsymbol{\theta}$, the goal is to maximize the likelihood function $p(\mathbf{X}|\boldsymbol{\theta})$ with respect to $\boldsymbol{\theta}$.
 
 1. Choose an initial setting for the parameters $\boldsymbol{\theta}^{\text{old}}$.
-[Page 461]
+   [Page 461]
 
 2. **E step** Evaluate $p(\mathbf{Z}|\mathbf{X}, \boldsymbol{\theta}^{\text{old}})$.
 3. **M step** Evaluate $\boldsymbol{\theta}^{\text{new}}$ given by
@@ -413,7 +411,7 @@ The EM algorithm can also be used to ﬁnd MAP (maximum posterior) solutions for
 
 Here we have considered the use of the EM algorithm to maximize a likelihood function when there are discrete latent variables. However, it can also be applied when the unobserved variables correspond to missing values in the data set. The distribution of the observed values is obtained by taking the joint distribution of all the variables and then marginalizing over the missing ones. EM can then be used to maximize the corresponding likelihood function. We shall show an example of the application of this technique in the context of principal component analysis in Figure 12.11. This will be a valid procedure if the data values are missing at random, meaning that the mechanism causing values to be missing does not depend on the unobserved values. In many situations this will not be the case, for instance if a sensor fails to return a value whenever the quantity it is measuring exceeds some threshold.
 
-### 9.3.1 Gaussian mixtures revisited
+## 9.3.1 Gaussian mixtures revisited
 
 We now consider the application of this latent variable view of EM to the speciﬁc case of a Gaussian mixture model. Recall that our goal is to maximize the log likelihood function (9.14), which is computed using the observed data set $\mathbf{X}$, and we saw that this was more difﬁcult than for the case of a single Gaussian distribution due to the presence of the summation over $k$ that occurs inside the logarithm. Suppose then that in addition to the observed data set $\mathbf{X}$, we were also given the values of the corresponding discrete variables $\mathbf{Z}$. Recall that Figure 9.5(a) shows a ‘complete’ data set (i.e., one that includes labels showing which component generated each data point) while Figure 9.5(b) shows the corresponding ‘incomplete’ data set. The graphical model for the complete data is shown in Figure 9.9.
 [Page 462]
@@ -465,7 +463,7 @@ $$
 
 We can now proceed as follows. First we choose some initial values for the parameters $\boldsymbol{\mu}^{\text{old}}$, $\boldsymbol{\Sigma}^{\text{old}}$ and $\boldsymbol{\pi}^{\text{old}}$, and use these to evaluate the responsibilities (the E step). We then keep the responsibilities ﬁxed and maximize (9.40) with respect to $\boldsymbol{\mu}_k$, $\boldsymbol{\Sigma}_k$ and $\pi_k$ (the M step). This leads to closed form solutions for $\boldsymbol{\mu}^{\text{new}}$, $\boldsymbol{\Sigma}^{\text{new}}$ and $\boldsymbol{\pi}^{\text{new}}$ given by (9.17), (9.19), and (9.22) as before. This is precisely the EM algorithm for Gaussian mixtures as derived earlier. We shall gain more insight into the role of the expected complete-data log likelihood function when we give a proof of convergence of the EM algorithm in Section 9.4.
 
-### 9.3.2 Relation to K-means
+## 9.3.2 Relation to K-means
 
 Comparison of the $K$-means algorithm with the EM algorithm for Gaussian mixtures shows that there is a close similarity. Whereas the $K$-means algorithm performs a hard assignment of data points to clusters, in which each data point is associated uniquely with one cluster, the EM algorithm makes a soft assignment based on the posterior probabilities. In fact, we can derive the $K$-means algorithm as a particular limit of EM for Gaussian mixtures as follows.
 
@@ -498,7 +496,7 @@ Thus we see that in this limit, maximizing the expected complete-data log likeli
 
 Note that the $K$-means algorithm does not estimate the covariances of the clusters but only the cluster means. A hard-assignment version of the Gaussian mixture model with general covariance matrices, known as the elliptical $K$-means algorithm, has been considered by Sung and Poggio (1994).
 
-### 9.3.3 Mixtures of Bernoulli distributions
+## 9.3.3 Mixtures of Bernoulli distributions
 
 So far in this chapter, we have focussed on distributions over continuous variables described by mixtures of Gaussians. As a further example of mixture modelling, and to illustrate the EM algorithm in a different context, we now discuss mixtures of discrete binary variables described by Bernoulli distributions. This model is also known as latent class analysis (Lazarsfeld and Henry, 1968; McLachlan and Peel, 2000). As well as being of practical importance in its own right, our discussion of Bernoulli mixtures will also lay the foundation for a consideration of hidden Markov models over discrete variables.
 [Page 465]
@@ -583,6 +581,7 @@ where $\gamma(z_{nk}) = \mathbb{E}[z_{nk}]$ is the posterior probability, or res
 $$
 \gamma(z_{nk}) = \mathbb{E}[z_{nk}] = \frac{\sum_{z_{nk}} z_{nk} [\pi_k p(\mathbf{x}_n|\boldsymbol{\mu}_k)]^{z_{nk}}}{\sum_{z_{nj}} [\pi_j p(\mathbf{x}_n|\boldsymbol{\mu}_j)]^{z_{nj}}} = \frac{\pi_k p(\mathbf{x}_n|\boldsymbol{\mu}_k)}{\sum_{j=1}^K \pi_j p(\mathbf{x}_n|\boldsymbol{\mu}_j)}. \tag{9.56}
 $$
+
 [Page 467]
 
 If we consider the sum over $n$ in (9.55), we see that the responsibilities enter only through two terms, which can be written as
@@ -630,13 +629,14 @@ additional effective observations of $\mathbf{x}$. We can similarly introduce pr
 
 It is straightforward to extend the analysis of Bernoulli mixtures to the case of multinomial binary variables having $M > 2$ states by making use of the discrete distribution (2.26). Again, we can introduce Dirichlet priors over the model parameters if desired.
 
-### 9.3.4 EM for Bayesian linear regression
+## 9.3.4 EM for Bayesian linear regression
 
 As a third example of the application of EM, we return to the evidence approximation for Bayesian linear regression. In Section 3.5.2, we obtained the reestimation equations for the hyperparameters $\alpha$ and $\beta$ by evaluation of the evidence and then setting the derivatives of the resulting expression to zero. We now turn to an alternative approach for ﬁnding $\alpha$ and $\beta$ based on the EM algorithm. Recall that our goal is to maximize the evidence function $p(\mathbf{t}|\alpha,\beta)$ given by (3.77) with respect to $\alpha$ and $\beta$. Because the parameter vector $\mathbf{w}$ is marginalized out, we can regard it as a latent variable, and hence we can optimize this marginal likelihood function using EM. In the E step, we compute the posterior distribution of $\mathbf{w}$ given the current setting of the parameters $\alpha$ and $\beta$ and then use this to ﬁnd the expected complete-data log likelihood. In the M step, we maximize this quantity with respect to $\alpha$ and $\beta$. We have already derived the posterior distribution of $\mathbf{w}$ because this is given by (3.49). The complete-data log likelihood function is then given by
 
 $$
 \ln p(\mathbf{t}, \mathbf{w}|\alpha, \beta) = \ln p(\mathbf{t}|\mathbf{w}, \beta) + \ln p(\mathbf{w}|\alpha) \tag{9.61}
 $$
+
 [Page 469]
 
 where the likelihood $p(\mathbf{t}|\mathbf{w},\beta)$ and the prior $p(\mathbf{w}|\alpha)$ are given by (3.10) and (3.52), respectively, and $y(\mathbf{x},\mathbf{w})$ is given by (3.3). Taking the expectation with respect to the posterior distribution of $\mathbf{w}$ then gives
@@ -686,7 +686,7 @@ $$
 
 These re-estimation equations are formally equivalent to those obtained by direct maxmization.
 
-### 9.4. The EM Algorithm in General
+## 9.4. The EM Algorithm in General
 
 The expectation maximization algorithm, or EM algorithm, is a general technique for ﬁnding maximum likelihood solutions for probabilistic models having latent variables (Dempster et al., 1977; McLachlan and Krishnan, 1997). Here we give a very general treatment of the EM algorithm and in the process provide a proof that the EM algorithm derived heuristically in Sections 9.2 and 9.3 for Gaussian mixtures does indeed maximize the likelihood function (Csisz´ar and Tusn´ady, 1984; Hathaway, 1986; Neal and Hinton, 1999). Our discussion will also form the basis for the derivation of the variational inference framework.
 
@@ -745,7 +745,7 @@ shown in Figure 9.13. If we substitute $q(\mathbf{Z}) = p(\mathbf{Z}|\mathbf{X},
 $$
 \begin{aligned}
 \mathcal{L}(q, \boldsymbol{\theta}) &= \sum_{\mathbf{Z}} p(\mathbf{Z}|\mathbf{X}, \boldsymbol{\theta}^{\text{old}}) \ln p(\mathbf{X}, \mathbf{Z}|\boldsymbol{\theta}) - \sum_{\mathbf{Z}} p(\mathbf{Z}|\mathbf{X}, \boldsymbol{\theta}^{\text{old}}) \ln p(\mathbf{Z}|\mathbf{X}, \boldsymbol{\theta}^{\text{old}}) \\
-&= \mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}}) + \text{const} 
+&= \mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}}) + \text{const}
 \end{aligned}
 \tag{9.74}
 $$

@@ -1,8 +1,8 @@
 [Page 199]
 
-![In this image we can see a poster with some text.](../Images/imageFile19.png)
+![Chapter4](../Images/Chapters/Chapter4.png)
 
-# 4 Linear Models for Classification
+# 4. Linear Models for Classification
 
 In the previous chapter, we explored a class of regression models having particularly simple analytical and computational properties. We now discuss an analogous class of models for solving classification problems. The goal in classification is to take an input vector $\mathbf{x}$ and to assign it to one of $K$ discrete classes $\mathcal{C}_k$ where $k = 1, \ldots, K$. In the most common scenario, the classes are taken to be disjoint, so that each input is assigned to one and only one class. The input space is thereby divided into decision regions whose boundaries are called decision boundaries or decision surfaces. In this chapter, we consider linear models for classification, by which we mean that the decision surfaces are linear functions of the input vector $\mathbf{x}$ and hence are defined by $(D - 1)$-dimensional hyperplanes within the $D$-dimensional input space. Data sets whose classes can be separated exactly by linear decision surfaces are said to be linearly separable.
 
@@ -38,11 +38,11 @@ In the machine learning literature $f(\cdot)$ is known as an activation function
 
 The algorithms discussed in this chapter will be equally applicable if we first make a fixed nonlinear transformation of the input variables using a vector of basis functions $\boldsymbol{\phi}(\mathbf{x})$ as we did for regression models in Chapter 3. We begin by considering classification directly in the original input space $\mathbf{x}$, while in Section 4.3 we shall find it convenient to switch to a notation involving basis functions for consistency with later chapters.
 
-### 4.1. Discriminant Functions
+## 4.1. Discriminant Functions
 
 A discriminant is a function that takes an input vector $\mathbf{x}$ and assigns it to one of $K$ classes, denoted $\mathcal{C}_k$. In this chapter, we shall restrict attention to linear discriminants, namely those for which the decision surfaces are hyperplanes. To simplify the discussion, we consider first the case of two classes and then investigate the extension to $K > 2$ classes.
 
-#### 4.1.1 Two classes
+### 4.1.1 Two classes
 
 The simplest representation of a linear discriminant function is obtained by taking a linear function of the input vector so that
 
@@ -65,7 +65,7 @@ Furthermore, we note that the value of $y(\mathbf{x})$ gives a signed measure of
 
 Figure 4.1 Illustration of the geometry of a linear discriminant function in two dimensions. The decision surface, shown in red, is perpendicular to $\mathbf{w}$, and its displacement from the origin is controlled by the bias parameter $w_0$. Also, the signed orthogonal distance of a general point $\mathbf{x}$ from the decision surface is given by $y(\mathbf{x})/\|\mathbf{w}\|$.
 
-![The image depicts a geometric figure with several lines and points. Here is a detailed description of the image: ### Description: - **Lines and Points**: - There are two lines: - Line A is a straight line with a positive slope. - Line B is a straight line with a negative slope. - There are two points: - Point A is located on line A. - Point B is located on line B. - There are two points: - Point C is located on line A. - Point D is located on line B. - There are two points: - Point E is located on line A. - Point F is located on line B. - There are two points: - Point G is located on line A. - Point H is located on line B. - There are two points: - Point J is located on line A. - Point K is located on line](../Images/imageFile91.png)
+![The image depicts a geometric figure with several lines and points. Here is a detailed description of the image: ## Description: - **Lines and Points**: - There are two lines: - Line A is a straight line with a positive slope. - Line B is a straight line with a negative slope. - There are two points: - Point A is located on line A. - Point B is located on line B. - There are two points: - Point C is located on line A. - Point D is located on line B. - There are two points: - Point E is located on line A. - Point F is located on line B. - There are two points: - Point G is located on line A. - Point H is located on line B. - There are two points: - Point J is located on line A. - Point K is located on line](../Images/imageFile91.png)
 
 an arbitrary point $\mathbf{x}$ and let $\mathbf{x}_\perp$ be its orthogonal projection onto the decision surface, so that
 
@@ -92,7 +92,7 @@ $$
 
 In this case, the decision surfaces are $D$-dimensional hyperplanes passing through the origin of the $D + 1$-dimensional expanded input space.
 
-### 4.1.2 Multiple classes
+## 4.1.2 Multiple classes
 
 Now consider the extension of linear discriminants to $K > 2$ classes. We might be tempted to build a $K$-class discriminant by combining a number of two-class discriminant functions. However, this leads to some serious difficulties (Duda and Hart, 1973) as we now show.
 
@@ -126,11 +126,12 @@ The decision regions of such a discriminant are always singly connected and conv
 $$
 \widehat{\mathbf{x}} = \lambda \mathbf{x}_A + (1 - \lambda)\mathbf{x}_B \tag{4.11}
 $$
+
 [Page 204]
 
 Figure 4.3 Illustration of the decision regions for a multiclass linear discriminant, with the decision boundaries shown in red. If two points $\mathbf{x}_A$ and $\mathbf{x}_B$ both lie inside the same decision region $\mathcal{R}_k$, then any point $\widehat{\mathbf{x}}$ that lies on the line connecting these two points must also lie in $\mathcal{R}_k$, and hence the decision region must be singly connected and convex.
 
-![The image is a diagram of a geometric figure, specifically a right triangle. The triangle is labeled as R, with vertices labeled as A, B, and C. The vertices are connected by lines, and the triangle is formed by connecting the points of intersection of these lines. ### Description of the Triangle: - **Points of Intersection**: - A - B - C - R - R' - R' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R''](../Images/imageFile93.png)
+![The image is a diagram of a geometric figure, specifically a right triangle. The triangle is labeled as R, with vertices labeled as A, B, and C. The vertices are connected by lines, and the triangle is formed by connecting the points of intersection of these lines. ## Description of the Triangle: - **Points of Intersection**: - A - B - C - R - R' - R' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R'' - R''](../Images/imageFile93.png)
 
 where $0 \leqslant \lambda \leqslant 1$. From the linearity of the discriminant functions, it follows that
 
@@ -144,7 +145,7 @@ Note that for two classes, we can either employ the formalism discussed here, ba
 
 We now explore three approaches to learning the parameters of linear discriminant functions, based on least squares, Fisher’s linear discriminant, and the perceptron algorithm.
 
-### 4.1.3 Least squares for classification
+## 4.1.3 Least squares for classification
 
 In Chapter 3, we considered models that were linear functions of the parameters, and we saw that the minimization of a sum-of-squares error function led to a simple closed-form solution for the parameter values. It is therefore tempting to see if we can apply the same formalism to classification problems. Consider a general classification problem with $K$ classes, with a 1-of-$K$ binary coding scheme for the target vector $\mathbf{t}$. One justification for using least squares in such a context is that it approximates the conditional expectation $\mathbb{E}[\mathbf{t}|\mathbf{x}]$ of the target values given the input vector. For the binary coding scheme, this conditional expectation is given by the vector of posterior class probabilities. Unfortunately, however, these probabilities are typically approximated rather poorly, indeed the approximations can have values outside the range $(0,1)$, due to the limited flexibility of a linear model as we shall see shortly.
 
@@ -159,29 +160,37 @@ where $k = 1,\ldots,K$. We can conveniently group these together using vector no
 $$
 \mathbf{y}(\mathbf{x}) = \widetilde{\mathbf{W}}^{\mathrm{T}}\widetilde{\mathbf{x}} \tag{4.14}
 $$
+
 [Page 205]
 
 where $\widetilde{\mathbf{W}}$ is a matrix whose $k^{\text{th}}$ column comprises the $D+1$-dimensional vector $\widetilde{\mathbf{w}}_k = (w_{k0}, \mathbf{w}_k^{\text{T}})^{\text{T}}$ and $\widetilde{\mathbf{x}}$ is the corresponding augmented input vector $(1, \mathbf{x}^{\text{T}})^{\text{T}}$ with a dummy input $x_0 = 1$. This representation was discussed in detail in Section 3.1. A new input $\mathbf{x}$ is then assigned to the class for which the output $y_k = \widetilde{\mathbf{w}}_k^{\text{T}} \widetilde{\mathbf{x}}$ is largest.
 
 We now determine the parameter matrix $\widetilde{\mathbf{W}}$ by minimizing a sum-of-squares error function, as we did for regression in Chapter 3. Consider a training data set $\{\mathbf{x}_n, \mathbf{t}_n\}$ where $n = 1, \ldots, N$, and define a matrix $\mathbf{T}$ whose $n^{\text{th}}$ row is the vector $\mathbf{t}_n^{\text{T}}$, together with a matrix $\widetilde{\mathbf{X}}$ whose $n^{\text{th}}$ row is $\widetilde{\mathbf{x}}_n^{\text{T}}$. The sum-of-squares error function can then be written as
+
 $$
 E_D(\widetilde{\mathbf{W}}) = \frac{1}{2} \text{Tr}\left\{ (\widetilde{\mathbf{X}}\widetilde{\mathbf{W}} - \mathbf{T})^{\text{T}} (\widetilde{\mathbf{X}}\widetilde{\mathbf{W}} - \mathbf{T}) \right\} . \tag{4.15}
 $$
 
 Setting the derivative with respect to $\widetilde{\mathbf{W}}$ to zero, and rearranging, we then obtain the solution for $\widetilde{\mathbf{W}}$ in the form
+
 $$
 \widetilde{\mathbf{W}} = (\widetilde{\mathbf{X}}^{\text{T}}\widetilde{\mathbf{X}})^{-1}\widetilde{\mathbf{X}}^{\text{T}}\mathbf{T} = \widetilde{\mathbf{X}}^{\dagger}\mathbf{T} \tag{4.16}
 $$
+
 where $\widetilde{\mathbf{X}}^{\dagger}$ is the pseudo-inverse of the matrix $\widetilde{\mathbf{X}}$, as discussed in Section 3.1.1. We then obtain the discriminant function in the form
+
 $$
 \mathbf{y}(\mathbf{x}) = \widetilde{\mathbf{W}}^{\text{T}} \widetilde{\mathbf{x}} = \mathbf{T}^{\text{T}} (\widetilde{\mathbf{X}}^{\dagger})^{\text{T}} \widetilde{\mathbf{x}}. \tag{4.17}
 $$
 
 An interesting property of least-squares solutions with multiple target variables is that if every target vector in the training set satisfies some linear constraint
+
 $$
 \mathbf{a}^{\text{T}}\mathbf{t}_n + b = 0 \tag{4.18}
 $$
+
 for some constants $\mathbf{a}$ and $b$, then the model prediction for any value of $\mathbf{x}$ will satisfy the same constraint so that
+
 $$
 \mathbf{a}^{\text{T}}\mathbf{y}(\mathbf{x}) + b = 0. \tag{4.19}
 $$
@@ -201,7 +210,7 @@ However, problems with least squares can be more severe than simply lack of robu
 
 The failure of least squares should not surprise us when we recall that it corresponds to maximum likelihood under the assumption of a Gaussian conditional distribution, whereas binary target vectors clearly have a distribution that is far from Gaussian. By adopting more appropriate probabilistic models, we shall obtain classification techniques with much better properties than least squares. For the moment, however, we continue to explore alternative nonprobabilistic methods for setting the parameters in the linear classification models.
 
-### 4.1.4 Fisher’s linear discriminant
+## 4.1.4 Fisher’s linear discriminant
 
 One way to view a linear classification model is in terms of dimensionality reduction. Consider first the case of two classes, and suppose we take the $D$-
 [Page 207]
@@ -237,9 +246,10 @@ $$
 m_k = \mathbf{w}^{\mathrm{T}}\mathbf{m}_k
 \tag{4.23}
 $$
+
 [Page 208]
 
-![The image is a scatter plot with two sets of data. The x-axis is labeled days and the y-axis is labeled total. The plot consists of two sets of data, each set is represented by a different color. The first set of data is represented by blue and the second set is represented by red. ### Description of the Data Points: - **Blue Data Set (Days 1-2)**: - The blue data set has a relatively high value of 2. - The blue data set has a small but noticeable increase in the first few days. - The blue data set has a small but noticeable decrease in the second few days. - **Red Data Set (Days 3-5)**: - The red data set has a relatively high value of 2. - The red data set has a small but noticeable increase in the first few days. - The red data set has a small but noticeable decrease](../Images/imageFile96.png)
+![The image is a scatter plot with two sets of data. The x-axis is labeled days and the y-axis is labeled total. The plot consists of two sets of data, each set is represented by a different color. The first set of data is represented by blue and the second set is represented by red. ## Description of the Data Points: - **Blue Data Set (Days 1-2)**: - The blue data set has a relatively high value of 2. - The blue data set has a small but noticeable increase in the first few days. - The blue data set has a small but noticeable decrease in the second few days. - **Red Data Set (Days 3-5)**: - The red data set has a relatively high value of 2. - The red data set has a small but noticeable increase in the first few days. - The red data set has a small but noticeable decrease](../Images/imageFile96.png)
 
 Figure 4.6 The left plot shows samples from two classes (depicted in red and blue) along with the histograms resulting from projection onto the line joining the class means. Note that there is considerable class overlap in the projected space. The right plot shows the corresponding projection based on the Fisher linear discriminant, showing the greatly improved class separation.
 
@@ -292,7 +302,7 @@ Note that if the within-class covariance is isotropic, so that $\mathbf{S}_W$ is
 
 The result (4.30) is known as Fisher's linear discriminant, although strictly it is not a discriminant but rather a specific choice of direction for projection of the data down to one dimension. However, the projected data can subsequently be used to construct a discriminant, by choosing a threshold $y_0$ so that we classify a new point as belonging to $\mathcal{C}_1$ if $y(\mathbf{x}) \ge y_0$ and classify it as belonging to $\mathcal{C}_2$ otherwise. For example, we can model the class-conditional densities $p(y|\mathcal{C}_k)$ using Gaussian distributions and then use the techniques of Section 1.2.4 to find the parameters of the Gaussian distributions by maximum likelihood. Having found Gaussian approximations to the projected classes, the formalism of Section 1.5.1 then gives an expression for the optimal threshold. Some justification for the Gaussian assumption comes from the central limit theorem by noting that $y = \mathbf{w}^T\mathbf{x}$ is the sum of a set of random variables.
 
-### 4.1.5 Relation to least squares
+## 4.1.5 Relation to least squares
 
 The least-squares approach to the determination of a linear discriminant was based on the goal of making the model predictions as close as possible to a set of target values. By contrast, the Fisher criterion was derived by requiring maximum class separation in the output space. It is interesting to see the relationship between these two approaches. In particular, we shall show that, for the two-class problem, the Fisher criterion can be obtained as a special case of least squares.
 
@@ -350,7 +360,7 @@ $$
 where we have ignored irrelevant scale factors. Thus the weight vector coincides with that found from the Fisher criterion. In addition, we have also found an expression for the bias value $w_0$ given by (4.34). This tells us that a new vector $\mathbf{x}$ should be classified as belonging to class $\mathcal{C}_1$ if $y(\mathbf{x}) = \mathbf{w}^T(\mathbf{x} - \mathbf{m}) > 0$ and class $\mathcal{C}_2$ otherwise.
 [Page 211]
 
-### 4.1.6 Fisher’s discriminant for multiple classes
+## 4.1.6 Fisher’s discriminant for multiple classes
 
 We now consider the generalization of the Fisher discriminant to $K > 2$ classes, and we shall assume that the dimensionality $D$ of the input space is greater than the number $K$ of classes. Next, we introduce $D' > 1$ linear ‘features’ $y_k = \mathbf{w}_k^\text{T}\mathbf{x}$, where $k = 1,\ldots,D'$. These feature values can conveniently be grouped together to form a vector $\mathbf{y}$. Similarly, the weight vectors $\{\mathbf{w}_k\}$ can be considered to be the columns of a matrix $\mathbf{W}$, so that
 
@@ -435,13 +445,14 @@ Maximization of such criteria is straightforward, though somewhat involved, and 
 
 There is one important result that is common to all such criteria, which is worth emphasizing. We first note from (4.46) that $\mathbf{S}_B$ is composed of the sum of $K$ matrices, each of which is an outer product of two vectors and therefore of rank $1$. In addition, only $(K - 1)$ of these matrices are independent as a result of the constraint (4.44). Thus, $\mathbf{S}_B$ has rank at most equal to $(K - 1)$ and so there are at most $(K - 1)$ nonzero eigenvalues. This shows that the projection onto the $(K - 1)$-dimensional subspace spanned by the eigenvectors of $\mathbf{S}_B$ does not alter the value of $J(\mathbf{W})$, and so we are therefore unable to find more than $(K - 1)$ linear ‘features’ by this means (Fukunaga, 1990).
 
-### 4.1.7 The perceptron algorithm
+## 4.1.7 The perceptron algorithm
 
 Another example of a linear discriminant model is the perceptron of Rosenblatt (1962), which occupies an important place in the history of pattern recognition algorithms. It corresponds to a two-class model in which the input vector $\mathbf{x}$ is first transformed using a fixed nonlinear transformation to give a feature vector $\boldsymbol{\phi}(\mathbf{x})$, and this is then used to construct a generalized linear model of the form
 
 $$
 y(\mathbf{x}) = f(\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x})) \tag{4.52}
 $$
+
 [Page 213]
 
 where the nonlinear activation function $f(\cdot)$ is given by a step function of the form
@@ -454,7 +465,7 @@ The vector $\boldsymbol{\phi}(\mathbf{x})$ will typically include a bias compone
 
 The algorithm used to determine the parameters $\mathbf{w}$ of the perceptron can most easily be motivated by error function minimization. A natural choice of error function would be the total number of misclassified patterns. However, this does not lead to a simple learning algorithm because the error is a piecewise constant function of $\mathbf{w}$, with discontinuities wherever a change in $\mathbf{w}$ causes the decision boundary to move across one of the data points. Methods based on changing $\mathbf{w}$ using the gradient of the error function cannot then be applied, because the gradient is zero almost everywhere.
 
-We therefore consider an alternative error function known as the *perceptron criterion*. To derive this, we note that we are seeking a weight vector $\mathbf{w}$ such that patterns $\mathbf{x}_n$ in class $\mathcal{C}_1$ will have $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n) > 0$, whereas patterns $\mathbf{x}_n$ in class $\mathcal{C}_2$ have $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n) < 0$. Using the $t \in \{-1,+1\}$ target coding scheme it follows that we would like all patterns to satisfy $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n)t_n > 0$. The perceptron criterion associates zero error with any pattern that is correctly classified, whereas for a misclassified pattern $\mathbf{x}_n$ it tries to minimize the quantity $-\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n)t_n$. The perceptron criterion is therefore given by
+We therefore consider an alternative error function known as the _perceptron criterion_. To derive this, we note that we are seeking a weight vector $\mathbf{w}$ such that patterns $\mathbf{x}_n$ in class $\mathcal{C}_1$ will have $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n) > 0$, whereas patterns $\mathbf{x}_n$ in class $\mathcal{C}_2$ have $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n) < 0$. Using the $t \in \{-1,+1\}$ target coding scheme it follows that we would like all patterns to satisfy $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n)t_n > 0$. The perceptron criterion associates zero error with any pattern that is correctly classified, whereas for a misclassified pattern $\mathbf{x}_n$ it tries to minimize the quantity $-\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}(\mathbf{x}_n)t_n$. The perceptron criterion is therefore given by
 
 $$
 E_P(\mathbf{w}) = - \sum_{n \in \mathcal{M}} \mathbf{w}^{\mathrm{T}} \boldsymbol{\phi}_n t_n \tag{4.54}
@@ -462,7 +473,8 @@ $$
 
 ![image 20](../Images/imageFile20.png)
 
-###### Frank Rosenblatt
+##### Frank Rosenblatt
+
 1928–1969
 
 Rosenblatt’s perceptron played an important role in the history of machine learning. Initially, Rosenblatt simulated the perceptron on an IBM 704 computer at Cornell in 1957, but by the early 1960s he had built special-purpose hardware that provided a direct, parallel implementation of perceptron learning. Many of his ideas were encapsulated in “Principles of Neurodynamics: Perceptrons and the Theory of Brain Mechanisms” published in 1962. Rosenblatt’s work was criticized by Marvin Minksy, whose objections were published in the book “Perceptrons”, co-authored with Seymour Papert. This book was widely misinterpreted at the time as showing that neural networks were fatally flawed and could only learn solutions for linearly separable problems. In fact, it only proved such limitations in the case of single-layer networks such as the perceptron and merely conjectured (incorrectly) that they applied to more general network models. Unfortunately, however, this book contributed to the substantial decline in research funding for neural computing, a situation that was not reversed until the mid-1980s. Today, there are many hundreds, if not thousands, of applications of neural networks in widespread use, with examples in areas such as handwriting recognition and information retrieval being used routinely by millions of people.
@@ -508,7 +520,7 @@ Analogue hardware implementations of the perceptron were built by Rosenblatt, ba
 
 At the same time that the perceptron was being developed, a closely related system called the adaline, which is short for ‘adaptive linear element’, was being explored by Widrow and co-workers. The functional form of the model was the same as for the perceptron, but a different approach to training was adopted (Widrow and Hoff, 1960; Widrow and Lehr, 1990).
 
-## 4.2. Probabilistic Generative Models
+### 4.2. Probabilistic Generative Models
 
 We turn next to a probabilistic view of classification and show how models with linear decision boundaries arise from simple assumptions about the distribution of the data. In Section 1.5.4, we discussed the distinction between the discriminative and the generative approaches to classification. Here we shall adopt a generative
 [Page 217]
@@ -578,7 +590,7 @@ The normalized exponential is also known as the softmax function, as it represen
 
 We now investigate the consequences of choosing specific forms for the class-conditional densities, looking first at continuous input variables $\mathbf{x}$ and then discussing briefly the case of discrete inputs.
 
-### 4.2.1 Continuous inputs
+## 4.2.1 Continuous inputs
 
 Let us assume that the class-conditional densities are Gaussian and then explore the resulting form for the posterior probabilities. To start with, we shall assume that all classes share the same covariance matrix. Thus the density for class $\mathcal{C}_k$ is given by
 
@@ -609,7 +621,7 @@ $$
 We see that the quadratic terms in $\mathbf{x}$ from the exponents of the Gaussian densities have cancelled (due to the assumption of common covariance matrices) leading to a linear function of $\mathbf{x}$ in the argument of the logistic sigmoid. This result is illustrated for the case of a two-dimensional input space $\mathbf{x}$ in Figure 4.10. The resulting decision boundaries correspond to surfaces along which the posterior probabilities $p(\mathcal{C}_k|\mathbf{x})$ are constant and so will be given by linear functions of $\mathbf{x}$, and therefore the decision boundaries are linear in input space. The prior probabilities $p(\mathcal{C}_k)$ enter only through the bias parameter $w_0$ so that changes in the priors have the effect of making parallel shifts of the decision boundary and more generally of the parallel contours of constant posterior probability.
 [Page 219]
 
-![The image is a bar chart that shows the values of two variables, labeled x and y. The x-axis is labeled x and the y-axis is labeled y. The chart is divided into two sections, each labeled 1 and 1.1. The x-axis is labeled x and the y-axis is labeled y. The chart has a legend at the bottom right corner that indicates the values of x and y. ### Description of the Chart: - **Title**: The title of the chart is x and y. - **X-Axis**: The x-axis is labeled x and is marked with intervals of 0.0. - **Y-Axis**: The y-axis is labeled y and is marked with intervals of 0.1. - **Legend**: The legend at the bottom right corner of the chart indicates the values of](../Images/imageFile22.png)
+![The image is a bar chart that shows the values of two variables, labeled x and y. The x-axis is labeled x and the y-axis is labeled y. The chart is divided into two sections, each labeled 1 and 1.1. The x-axis is labeled x and the y-axis is labeled y. The chart has a legend at the bottom right corner that indicates the values of x and y. ## Description of the Chart: - **Title**: The title of the chart is x and y. - **X-Axis**: The x-axis is labeled x and is marked with intervals of 0.0. - **Y-Axis**: The y-axis is labeled y and is marked with intervals of 0.1. - **Legend**: The legend at the bottom right corner of the chart indicates the values of](../Images/imageFile22.png)
 
 Figure 4.10 The left-hand plot shows the class-conditional densities for two classes, denoted red and blue. On the right is the corresponding posterior probability $p(\mathcal{C}_1|\mathbf{x})$, which is given by a logistic sigmoid of a linear function of $\mathbf{x}$. The surface in the right-hand plot is coloured using a proportion of red ink given by $p(\mathcal{C}_1|\mathbf{x})$ and a proportion of blue ink given by $p(\mathcal{C}_2|\mathbf{x}) = 1 - p(\mathcal{C}_1|\mathbf{x})$.
 
@@ -640,7 +652,7 @@ If we relax the assumption of a shared covariance matrix and allow each class-co
 
 Figure 4.11 The left-hand plot shows the class-conditional densities for three classes each having a Gaussian distribution, coloured red, green, and blue, in which the red and green classes have the same covariance matrix. The right-hand plot shows the corresponding posterior probabilities, in which the RGB colour vector represents the posterior probabilities for the respective three classes. The decision boundaries are also shown. Notice that the boundary between the red and green classes, which have the same covariance matrix, is linear, whereas those between the other pairs of classes are quadratic.
 
-### 4.2.2 Maximum likelihood solution
+## 4.2.2 Maximum likelihood solution
 
 Once we have specified a parametric functional form for the class-conditional densities $p(\mathbf{x}|\mathcal{C}_k)$, we can then determine the values of the parameters, together with the prior class probabilities $p(\mathcal{C}_k)$, using maximum likelihood. This requires a data set comprising observations of $\mathbf{x}$ along with their corresponding class labels.
 
@@ -667,32 +679,41 @@ where $\mathbf{t} = (t_1, \ldots, t_N)^{\mathrm{T}}$. As usual, it is convenient
 [Page 221]
 
 the log likelihood function that depend on $\pi$ are
+
 $$
 \sum_{n=1}^{N} \{ t_n \ln \pi + (1 - t_n) \ln(1 - \pi) \}. \tag{4.72}
 $$
 
 Setting the derivative with respect to $\pi$ equal to zero and rearranging, we obtain
+
 $$
 \pi = \frac{1}{N} \sum_{n=1}^{N} t_n = \frac{N_1}{N} = \frac{N_1}{N_1 + N_2} \tag{4.73}
 $$
+
 where $N_1$ denotes the total number of data points in class $\mathcal{C}_1$, and $N_2$ denotes the total number of data points in class $\mathcal{C}_2$. Thus the maximum likelihood estimate for $\pi$ is simply the fraction of points in class $\mathcal{C}_1$ as expected. This result is easily generalized to the multiclass case where again the maximum likelihood estimate of the prior probability associated with class $\mathcal{C}_k$ is given by the fraction of the training set points assigned to that class.
 
 Now consider the maximization with respect to $\boldsymbol{\mu}_1$. Again we can pick out of the log likelihood function those terms that depend on $\boldsymbol{\mu}_1$ giving
+
 $$
 \sum_{n=1}^{N} t_n \ln \mathcal{N}(\mathbf{x}_n|\boldsymbol{\mu}_1, \boldsymbol{\Sigma}) = -\frac{1}{2} \sum_{n=1}^{N} t_n (\mathbf{x}_n - \boldsymbol{\mu}_1)^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}_n - \boldsymbol{\mu}_1) + \text{const}. \tag{4.74}
 $$
 
 Setting the derivative with respect to $\boldsymbol{\mu}_1$ to zero and rearranging, we obtain
+
 $$
 \boldsymbol{\mu}_1 = \frac{1}{N_1} \sum_{n=1}^{N} t_n \mathbf{x}_n \tag{4.75}
 $$
+
 which is simply the mean of all the input vectors $\mathbf{x}_n$ assigned to class $\mathcal{C}_1$. By a similar argument, the corresponding result for $\boldsymbol{\mu}_2$ is given by
+
 $$
 \boldsymbol{\mu}_2 = \frac{1}{N_2} \sum_{n=1}^{N} (1 - t_n) \mathbf{x}_n \tag{4.76}
 $$
+
 which again is the mean of all the input vectors $\mathbf{x}_n$ assigned to class $\mathcal{C}_2$.
 
 Finally, consider the maximum likelihood solution for the shared covariance matrix $\boldsymbol{\Sigma}$. Picking out the terms in the log likelihood function that depend on $\boldsymbol{\Sigma}$, we have
+
 $$
 \begin{aligned}
 &-\frac{1}{2} \sum_{n=1}^{N} t_n \ln |\boldsymbol{\Sigma}| - \frac{1}{2} \sum_{n=1}^{N} t_n (\mathbf{x}_n - \boldsymbol{\mu}_1)^T \boldsymbol{\Sigma}^{-1} (\mathbf{x}_n - \boldsymbol{\mu}_1) \\
@@ -700,6 +721,7 @@ $$
 &= -\frac{N}{2} \ln |\boldsymbol{\Sigma}| - \frac{N}{2} \text{Tr} \{ \boldsymbol{\Sigma}^{-1} \mathbf{S} \}
 \end{aligned} \tag{4.77}
 $$
+
 [Page 222]
 
 where we have defined
@@ -720,7 +742,7 @@ Using the standard result for the maximum likelihood solution for a Gaussian dis
 
 This result is easily extended to the $K$ class problem to obtain the corresponding maximum likelihood solutions for the parameters in which each class-conditional density is Gaussian with a shared covariance matrix. Note that the approach of fitting Gaussian distributions to the classes is not robust to outliers, because the maximum likelihood estimation of a Gaussian is not robust.
 
-### 4.2.3 Discrete features
+## 4.2.3 Discrete features
 
 Let us now consider the case of discrete feature values $x_i$. For simplicity, we begin by looking at binary feature values $x_i \in \{0, 1\}$ and discuss the extension to more general discrete features shortly. If there are $D$ inputs, then a general distribution would correspond to a table of $2^D$ numbers for each class, containing $2^D - 1$ independent variables (due to the summation constraint). Because this grows exponentially with the number of features, we might seek a more restricted representation. Here we will make the naive Bayes assumption in which the feature values are treated as independent, conditioned on the class $\mathcal{C}_k$. Thus we have class-conditional distributions of the form
 
@@ -736,7 +758,7 @@ $$
 
 which again are linear functions of the input values $x_i$. For the case of $K = 2$ classes, we can alternatively consider the logistic sigmoid formulation given by (4.57). Analogous results are obtained for discrete variables each of which can take $M > 2$ states.
 
-### 4.2.4 Exponential family
+## 4.2.4 Exponential family
 
 As we have seen, for both Gaussian distributed and discrete inputs, the posterior class probabilities are given by generalized linear models with logistic sigmoid ($K =
 [Page 223]
@@ -744,11 +766,13 @@ As we have seen, for both Gaussian distributed and discrete inputs, the posterio
 2 classes) or softmax ($K > 2$ classes) activation functions. These are particular cases of a more general result obtained by assuming that the class-conditional densities $p(\mathbf{x}|\mathcal{C}_k)$ are members of the exponential family of distributions.
 
 Using the form (2.194) for members of the exponential family, we see that the distribution of $\mathbf{x}$ can be written in the form
+
 $$
 p(\mathbf{x}|\boldsymbol{\lambda}_k) = h(\mathbf{x})g(\boldsymbol{\lambda}_k)\exp\left\{\boldsymbol{\lambda}_k^T\mathbf{u}(\mathbf{x})\right\}. \tag{4.83}
 $$
 
 We now restrict attention to the subclass of such distributions for which $\mathbf{u}(\mathbf{x}) = \mathbf{x}$. Then we make use of (2.236) to introduce a scaling parameter $s$, so that we obtain the restricted set of exponential family class-conditional densities of the form
+
 $$
 p(\mathbf{x}|\boldsymbol{\lambda}_k, s) = \frac{1}{s} h\left(\frac{1}{s}\mathbf{x}\right) g(\boldsymbol{\lambda}_k) \exp\left\{\frac{1}{s}\boldsymbol{\lambda}_k^T\mathbf{x}\right\}. \tag{4.84}
 $$
@@ -756,17 +780,20 @@ $$
 Note that we are allowing each class to have its own parameter vector $\boldsymbol{\lambda}_k$ but we are assuming that the classes share the same scale parameter $s$.
 
 For the two-class problem, we substitute this expression for the class-conditional densities into (4.58) and we see that the posterior class probability is again given by a logistic sigmoid acting on a linear function $a(\mathbf{x})$ which is given by
+
 $$
 a(\mathbf{x}) = (\boldsymbol{\lambda}_1 - \boldsymbol{\lambda}_2)^T\mathbf{x} + \ln g(\boldsymbol{\lambda}_1) - \ln g(\boldsymbol{\lambda}_2) + \ln p(\mathcal{C}_1) - \ln p(\mathcal{C}_2). \tag{4.85}
 $$
 
 Similarly, for the $K$-class problem, we substitute the class-conditional density expression into (4.63) to give
+
 $$
 a_k(\mathbf{x}) = \boldsymbol{\lambda}_k^T\mathbf{x} + \ln g(\boldsymbol{\lambda}_k) + \ln p(\mathcal{C}_k) \tag{4.86}
 $$
+
 and so again is a linear function of $\mathbf{x}$.
 
-## 4.3. Probabilistic Discriminative Models
+### 4.3. Probabilistic Discriminative Models
 
 For the two-class classification problem, we have seen that the posterior probability of class $\mathcal{C}_1$ can be written as a logistic sigmoid acting on a linear function of $\mathbf{x}$, for a wide choice of class-conditional distributions $p(\mathbf{x}|\mathcal{C}_k)$. Similarly, for the multiclass case, the posterior probability of class $\mathcal{C}_k$ is given by a softmax transformation of a linear function of $\mathbf{x}$. For specific choices of the class-conditional densities $p(\mathbf{x}|\mathcal{C}_k)$, we have used maximum likelihood to determine the parameters of the densities as well as the class priors $p(\mathcal{C}_k)$ and then used Bayes' theorem to find the posterior class probabilities.
 
@@ -781,7 +808,7 @@ Figure 4.12 Illustration of the role of nonlinear basis functions in linear clas
 
 Bayes’ theorem, represents an example of generative modelling, because we could take such a model and generate synthetic data by drawing values of $\mathbf{x}$ from the marginal distribution $p(\mathbf{x})$. In the direct approach, we are maximizing a likelihood function defined through the conditional distribution $p(\mathcal{C}_k|\mathbf{x})$, which represents a form of discriminative training. One advantage of the discriminative approach is that there will typically be fewer adaptive parameters to be determined, as we shall see shortly. It may also lead to improved predictive performance, particularly when the class-conditional density assumptions give a poor approximation to the true distributions.
 
-### 4.3.1 Fixed basis functions
+## 4.3.1 Fixed basis functions
 
 So far in this chapter, we have considered classification models that work directly with the original input vector $\mathbf{x}$. However, all of the algorithms are equally applicable if we first make a fixed nonlinear transformation of the inputs using a vector of basis functions $\boldsymbol{\phi}(\mathbf{x})$. The resulting decision boundaries will be linear in the feature space $\boldsymbol{\phi}$, and these correspond to nonlinear decision boundaries in the original $\mathbf{x}$ space, as illustrated in Figure 4.12. Classes that are linearly separable in the feature space $\boldsymbol{\phi}(\mathbf{x})$ need not be linearly separable in the original observation space $\mathbf{x}$. Note that as in our discussion of linear models for regression, one of the
 [Page 225]
@@ -792,22 +819,26 @@ For many problems of practical interest, there is significant overlap between th
 
 Such fixed basis function models have important limitations, and these will be resolved in later chapters by allowing the basis functions themselves to adapt to the data. Notwithstanding these limitations, models with fixed nonlinear basis functions play an important role in applications, and a discussion of such models will introduce many of the key concepts needed for an understanding of their more complex counterparts.
 
-### 4.3.2 Logistic regression
+## 4.3.2 Logistic regression
 
 We begin our treatment of generalized linear models by considering the problem of two-class classification. In our discussion of generative approaches in Section 4.2, we saw that under rather general assumptions, the posterior probability of class $\mathcal{C}_1$ can be written as a logistic sigmoid acting on a linear function of the feature vector $\boldsymbol{\phi}$ so that
+
 $$
 p(\mathcal{C}_1|\boldsymbol{\phi}) = y(\boldsymbol{\phi}) = \sigma(\mathbf{w}^T\boldsymbol{\phi})
 \tag{4.87}
 $$
+
 with $p(\mathcal{C}_2|\boldsymbol{\phi}) = 1 - p(\mathcal{C}_1|\boldsymbol{\phi})$. Here $\sigma(\cdot)$ is the logistic sigmoid function defined by (4.59). In the terminology of statistics, this model is known as logistic regression, although it should be emphasized that this is a model for classification rather than regression.
 
 For an $M$-dimensional feature space $\boldsymbol{\phi}$, this model has $M$ adjustable parameters. By contrast, if we had fitted Gaussian class conditional densities using maximum likelihood, we would have used $2M$ parameters for the means and $M(M + 1)/2$ parameters for the (shared) covariance matrix. Together with the class prior $p(\mathcal{C}_1)$, this gives a total of $M(M + 5)/2 + 1$ parameters, which grows quadratically with $M$, in contrast to the linear dependence on $M$ of the number of parameters in logistic regression. For large values of $M$, there is a clear advantage in working with the logistic regression model directly.
 
 We now use maximum likelihood to determine the parameters of the logistic regression model. To do this, we shall make use of the derivative of the logistic sigmoid function, which can conveniently be expressed in terms of the sigmoid function itself
+
 $$
 \frac{d\sigma}{da} = \sigma(1 - \sigma).
 \tag{4.88}
 $$
+
 [Page 226]
 
 For a data set $\{\boldsymbol{\phi}_n, t_n\}$, where $t_n \in \{0, 1\}$ and $\boldsymbol{\phi}_n = \boldsymbol{\phi}(\mathbf{x}_n)$, with $n = 1, \ldots, N$, the likelihood function can be written
@@ -838,7 +869,7 @@ If desired, we could make use of the result (4.91) to give a sequential algorith
 It is worth noting that maximum likelihood can exhibit severe over-fitting for data sets that are linearly separable. This arises because the maximum likelihood solution occurs when the hyperplane corresponding to $\sigma = 0.5$, equivalent to $\mathbf{w}^{\mathrm{T}}\boldsymbol{\phi} = 0$, separates the two classes and the magnitude of $\mathbf{w}$ goes to infinity. In this case, the logistic sigmoid function becomes infinitely steep in feature space, corresponding to a Heaviside step function, so that every training point from each class $k$ is assigned a posterior probability $p(\mathcal{C}_k|\mathbf{x}) = 1$. Furthermore, there is typically a continuum of such solutions because any separating hyperplane will give rise to the same posterior probabilities at the training data points, as will be seen later in Figure 10.13. Maximum likelihood provides no way to favour one such solution over another, and which solution is found in practice will depend on the choice of optimization algorithm and on the parameter initialization. Note that the problem will arise even if the number of data points is large compared with the number of parameters in the model, so long as the training data set is linearly separable. The singularity can be avoided by inclusion of a prior and finding a MAP solution for $\mathbf{w}$, or equivalently by adding a regularization term to the error function.
 [Page 227]
 
-###### 4.3.3 Iterative reweighted least squares
+##### 4.3.3 Iterative reweighted least squares
 
 In the case of the linear regression models discussed in Chapter 3, the maximum likelihood solution, on the assumption of a Gaussian noise model, leads to a closed-form solution. This was a consequence of the quadratic dependence of the log likelihood function on the parameter vector $\mathbf{w}$. For logistic regression, there is no longer a closed-form solution, due to the nonlinearity of the logistic sigmoid function. However, the departure from a quadratic form is not substantial. To be precise, the error function is concave, as we shall see shortly, and hence has a unique minimum. Furthermore, the error function can be minimized by an efficient iterative technique based on the Newton-Raphson iterative optimization scheme, which uses a local quadratic approximation to the log likelihood function. The Newton-Raphson update, for minimizing a function $E(\mathbf{w})$, takes the form (Fletcher, 1987; Bishop and Nabney, 2008)
 
@@ -878,6 +909,7 @@ $$
 $$
 \mathbf{H} = \nabla \nabla E(\mathbf{w}) = \sum_{n=1}^N y_n(1 - y_n)\boldsymbol{\phi}_n \boldsymbol{\phi}_n^{\mathrm{T}} = \boldsymbol{\Phi}^{\mathrm{T}}\mathbf{R}\boldsymbol{\Phi} \tag{4.97}
 $$
+
 [Page 228]
 
 where we have made use of (4.88). Also, we have introduced the $N \times N$ diagonal matrix $\mathbf{R}$ with elements
@@ -904,7 +936,7 @@ $$
 \mathbf{z} = \mathbf{\Phi}\mathbf{w}^{(\text{old})} - \mathbf{R}^{-1}(\mathbf{y} - \mathbf{t}). \tag{4.100}
 $$
 
-We see that the update formula (4.99) takes the form of a set of normal equations for a weighted least-squares problem. Because the weighting matrix $\mathbf{R}$ is not constant but depends on the parameter vector $\mathbf{w}$, we must apply the normal equations iteratively, each time using the new weight vector $\mathbf{w}$ to compute a revised weighting matrix $\mathbf{R}$. For this reason, the algorithm is known as *iterative reweighted least squares*, or IRLS (Rubin, 1983). As in the weighted least-squares problem, the elements of the diagonal weighting matrix $\mathbf{R}$ can be interpreted as variances because the mean and variance of $t$ in the logistic regression model are given by
+We see that the update formula (4.99) takes the form of a set of normal equations for a weighted least-squares problem. Because the weighting matrix $\mathbf{R}$ is not constant but depends on the parameter vector $\mathbf{w}$, we must apply the normal equations iteratively, each time using the new weight vector $\mathbf{w}$ to compute a revised weighting matrix $\mathbf{R}$. For this reason, the algorithm is known as _iterative reweighted least squares_, or IRLS (Rubin, 1983). As in the weighted least-squares problem, the elements of the diagonal weighting matrix $\mathbf{R}$ can be interpreted as variances because the mean and variance of $t$ in the logistic regression model are given by
 
 $$
 \mathbb{E}[t] = \sigma(\mathbf{x}) = y \tag{4.101}
@@ -922,37 +954,49 @@ a_n(\mathbf{w}) &\simeq a_n(\mathbf{w}^{(\text{old})}) + \left. \frac{\mathrm{d}
 &= \boldsymbol{\phi}_n^{\mathrm{T}}\mathbf{w}^{(\text{old})} - \frac{y_n - t_n}{y_n(1 - y_n)} = z_n.
 \end{aligned} \tag{4.103}
 $$
+
 [Page 229]
 
-### 4.3.4 Multiclass logistic regression
+## 4.3.4 Multiclass logistic regression
 
 In our discussion of generative models for multiclass classification, we have seen that for a large class of distributions, the posterior probabilities are given by a softmax transformation of linear functions of the feature variables, so that
+
 $$
 p(\mathcal{C}_k|\boldsymbol{\phi}) = y_k(\boldsymbol{\phi}) = \frac{\exp(a_k)}{\sum_j \exp(a_j)} \tag{4.104}
 $$
+
 where the 'activations' $a_k$ are given by
+
 $$
 a_k = \mathbf{w}_k^T \boldsymbol{\phi}. \tag{4.105}
 $$
 
 There we used maximum likelihood to determine separately the class-conditional densities and the class priors and then found the corresponding posterior probabilities using Bayes' theorem, thereby implicitly determining the parameters $\{\mathbf{w}_k\}$. Here we consider the use of maximum likelihood to determine the parameters $\{\mathbf{w}_k\}$ of this model directly. To do this, we will require the derivatives of $y_k$ with respect to all of the activations $a_j$. These are given by
+
 $$
 \frac{\partial y_k}{\partial a_j} = y_k(I_{kj} - y_j) \tag{4.106}
 $$
+
 where $I_{kj}$ are the elements of the identity matrix. Next we write down the likelihood function. This is most easily done using the 1-of-$K$ coding scheme in which the target vector $\mathbf{t}_n$ for a feature vector $\boldsymbol{\phi}_n$ belonging to class $\mathcal{C}_k$ is a binary vector with all elements zero except for element $k$, which equals one. The likelihood function is then given by
+
 $$
 p(\mathbf{T}|\mathbf{w}_1,\ldots,\mathbf{w}_K) = \prod_{n=1}^N \prod_{k=1}^K p(\mathcal{C}_k|\boldsymbol{\phi}_n)^{t_{nk}} = \prod_{n=1}^N \prod_{k=1}^K y_{nk}^{t_{nk}} \tag{4.107}
 $$
+
 where $y_{nk} = y_k(\boldsymbol{\phi}_n)$, and $\mathbf{T}$ is an $N \times K$ matrix of target variables with elements $t_{nk}$. Taking the negative logarithm then gives
+
 $$
 E(\mathbf{w}_1,\ldots,\mathbf{w}_K) = -\ln p(\mathbf{T}|\mathbf{w}_1,\ldots,\mathbf{w}_K) = -\sum_{n=1}^N \sum_{k=1}^K t_{nk} \ln y_{nk} \tag{4.108}
 $$
+
 which is known as the cross-entropy error function for the multiclass classification problem.
 
 We now take the gradient of the error function with respect to one of the parameter vectors $\mathbf{w}_j$. Making use of the result (4.106) for the derivatives of the softmax function, we obtain
+
 $$
 \nabla_{\mathbf{w}_j} E(\mathbf{w}_1,\ldots,\mathbf{w}_K) = \sum_{n=1}^N (y_{nj} - t_{nj}) \boldsymbol{\phi}_n \tag{4.109}
 $$
+
 [Page 230]
 
 where we have made use of $\sum_k t_{nk} = 1$. Once again, we see the same form arising for the gradient as was found for the sum-of-squares error function with the linear model and the cross-entropy error for the logistic regression model, namely the product of the error $(y_{nj} - t_{nj})$ times the basis function $\boldsymbol{\phi}_n$. Again, we could use this to formulate a sequential algorithm in which patterns are presented one at a time, in which each of the weight vectors is updated using (3.22).
@@ -968,7 +1012,7 @@ $$
 
 As with the two-class problem, the Hessian matrix for the multiclass logistic regression model is positive definite and so the error function again has a unique minimum. Practical details of IRLS for the multiclass case can be found in Bishop and Nabney (2008).
 
-### 4.3.5 Probit regression
+## 4.3.5 Probit regression
 
 We have seen that, for a broad range of class-conditional distributions, described by the exponential family, the resulting posterior class probabilities are given by a logistic (or softmax) transformation acting on a linear function of the feature variables. However, not all choices of class-conditional density give rise to such a simple form for the posterior probabilities (for instance, if the class-conditional densities are modelled using Gaussian mixtures). This suggests that it might be worth exploring other types of discriminative probabilistic model. For the purposes of this chapter, however, we shall return to the two-class case, and again remain within the framework of generalized linear models so that
 
@@ -988,6 +1032,7 @@ t_n = 0 & \text{otherwise.}
 \end{cases}
 \tag{4.112}
 $$
+
 [Page 231]
 
 Figure 4.13 Schematic example of a probability density $p(\theta)$ shown by the blue curve, given in this example by a mixture of two Gaussians, along with its cumulative distribution function $f(a)$, shown by the red curve. Note that the value of the blue curve at any point, such as that indicated by the vertical green line, corresponds to the slope of the red curve at the same point. Conversely, the value of the red curve at this point corresponds to the area under the blue curve indicated by the shaded green region. In the stochastic threshold model, the class label takes the value $t = 1$ if the value of $a = \mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}$ exceeds a threshold, otherwise it takes the value $t = 0$. This is equivalent to an activation function given by the cumulative distribution function $f(a)$.
@@ -995,20 +1040,27 @@ Figure 4.13 Schematic example of a probability density $p(\theta)$ shown by the 
 ![The image is a graph titled The Cumulative Frequency Distribution of a Sample. The graph shows the cumulative frequency distribution of a sample, which is a type of probability distribution where the frequency of each value is given. The graph is drawn with a light blue line and a red line. The x-axis represents the values of the sample, ranging from 0 to 4. The y-axis represents the cumulative frequency, ranging from 0 to 4. The cumulative frequency is a function of the values on the x-axis. The graph shows the following: 1. **Red Line**: - The red line starts at 0 and increases to 1. - It then decreases to 0.5. - It then increases to 0.5. - It then decreases to 0.5. - It then increases to 0.5. - It then decreases to 0.5. - It then increases](../Images/imageFile104.png)
 
 If the value of $\theta$ is drawn from a probability density $p(\theta)$, then the corresponding activation function will be given by the cumulative distribution function
+
 $$
 f(a) = \int_{-\infty}^{a} p(\theta) \, d\theta \tag{4.113}
 $$
+
 as illustrated in Figure 4.13.
 
 As a specific example, suppose that the density $p(\theta)$ is given by a zero mean, unit variance Gaussian. The corresponding cumulative distribution function is given by
+
 $$
 \Phi(a) = \int_{-\infty}^{a} \mathcal{N}(\theta|0,1) \, d\theta \tag{4.114}
 $$
+
 which is known as the probit function. It has a sigmoidal shape and is compared with the logistic sigmoid function in Figure 4.9. Note that the use of a more general Gaussian distribution does not change the model because this is equivalent to a re-scaling of the linear coefficients $\mathbf{w}$. Many numerical packages provide for the evaluation of a closely related function defined by
+
 $$
 \text{erf}(a) = \frac{2}{\sqrt{\pi}} \int_{0}^{a} \exp(-\theta^2/2) \, d\theta \tag{4.115}
 $$
+
 and known as the erf function or error function (not to be confused with the error function of a machine learning model). It is related to the probit function by
+
 $$
 \Phi(a) = \frac{1}{2} \left\{ 1 + \frac{1}{\sqrt{2}} \text{erf}(a) \right\} . \tag{4.116}
 $$
@@ -1023,6 +1075,7 @@ however, find another use for the probit model when we discuss Bayesian treatmen
 One issue that can occur in practical applications is that of outliers, which can arise for instance through errors in measuring the input vector $\mathbf{x}$ or through mislabelling of the target value $t$. Because such points can lie a long way to the wrong side of the ideal decision boundary, they can seriously distort the classifier. Note that the logistic and probit regression models behave differently in this respect because the tails of the logistic sigmoid decay asymptotically like $\exp(-x)$ for $x \to \infty$, whereas for the probit activation function they decay like $\exp(-x^2)$, and so the probit model can be significantly more sensitive to outliers.
 
 However, both the logistic and the probit models assume the data is correctly labelled. The effect of mislabelling is easily incorporated into a probabilistic model by introducing a probability $\epsilon$ that the target value $t$ has been flipped to the wrong value (Opper and Winther, 2000a), leading to a target value distribution for data point $\mathbf{x}$ of the form
+
 $$
 \begin{align}
 p(t|\mathbf{x}) &= (1 - \epsilon)\sigma(\mathbf{x}) + \epsilon(1 - \sigma(\mathbf{x})) \nonumber \\
@@ -1032,19 +1085,22 @@ $$
 
 where $\sigma(\mathbf{x})$ is the activation function with input vector $\mathbf{x}$. Here $\epsilon$ may be set in advance, or it may be treated as a hyperparameter whose value is inferred from the data.
 
-### 4.3.6 Canonical link functions
+## 4.3.6 Canonical link functions
 
 For the linear regression model with a Gaussian noise distribution, the error function, corresponding to the negative log likelihood, is given by (3.12). If we take the derivative with respect to the parameter vector $\mathbf{w}$ of the contribution to the error function from a data point $n$, this takes the form of the ‘error’ $y_n - t_n$ times the feature vector $\boldsymbol{\phi}_n$, where $y_n = \mathbf{w}^{\mathrm{T}}\boldsymbol{\phi}_n$. Similarly, for the combination of the logistic sigmoid activation function and the cross-entropy error function (4.90), and for the softmax activation function with the multiclass cross-entropy error function (4.108), we again obtain this same simple form. We now show that this is a general result of assuming a conditional distribution for the target variable from the exponential family, along with a corresponding choice for the activation function known as the canonical link function.
 
 We again make use of the restricted form (4.84) of exponential family distributions. Note that here we are applying the assumption of exponential family distribution to the target variable $t$, in contrast to Section 4.2.4 where we applied it to the input vector $\mathbf{x}$. We therefore consider conditional distributions of the target variable of the form
+
 $$
 p(t|\eta, s) = \frac{1}{s} h\left( \frac{t}{s} \right) g(\eta) \exp\left\{ \frac{\eta t}{s} \right\} . \tag{4.118}
 $$
 
 Using the same line of argument as led to the derivation of the result (2.226), we see that the conditional mean of $t$, which we denote by $y$, is given by
+
 $$
 y \equiv \mathbb{E}[t|\eta] = -s \frac{d}{d\eta} \ln g(\eta) . \tag{4.119}
 $$
+
 [Page 233]
 
 Thus $y$ and $\eta$ must be related, and we denote this relation through $\eta = \psi(y)$.
@@ -1086,7 +1142,7 @@ $$
 
 For the Gaussian $s = \beta^{-1}$, whereas for the logistic model $s = 1$.
 
-## 4.4. The Laplace Approximation
+### 4.4. The Laplace Approximation
 
 In Section 4.5 we shall discuss the Bayesian treatment of logistic regression. As we shall see, this is more complex than the Bayesian treatment of linear regression models, discussed in Sections 3.3 and 3.5. In particular, we cannot integrate exactly
 [Page 234]
@@ -1173,9 +1229,10 @@ and Nabney, 2008). Many of the distributions encountered in practice will be mul
 
 One major weakness of the Laplace approximation is that, since it is based on a Gaussian distribution, it is only directly applicable to real variables. In other cases it may be possible to apply the Laplace approximation to a transformation of the variable. For instance if $0 < \tau < \infty$ then we can consider a Laplace approximation of $\ln\tau$. The most serious limitation of the Laplace framework, however, is that it is based purely on the aspects of the true distribution at a specific value of the variable, and so can fail to capture important global properties. In Chapter 10 we shall consider alternative approaches which adopt a more global perspective.
 
-### 4.4.1 Model comparison and BIC
+## 4.4.1 Model comparison and BIC
 
 As well as approximating the distribution $p(\mathbf{z})$ we can also obtain an approximation to the normalization constant $Z$. Using the approximation (4.133) we have
+
 $$
 \begin{align}
 Z &= \int f(\mathbf{z}) \, d\mathbf{z} \\
@@ -1183,16 +1240,21 @@ Z &= \int f(\mathbf{z}) \, d\mathbf{z} \\
 &= f(\mathbf{z}_0) \frac{(2\pi)^{M/2}}{|\mathbf{A}|^{1/2}} \tag{4.135}
 \end{align}
 $$
+
 where we have noted that the integrand is Gaussian and made use of the standard result (2.43) for a normalized Gaussian distribution. We can use the result (4.135) to obtain an approximation to the model evidence which, as discussed in Section 3.4, plays a central role in Bayesian model comparison.
 
 Consider a data set $\mathcal{D}$ and a set of models $\{\mathcal{M}_i\}$ having parameters $\{\boldsymbol{\theta}_i\}$. For each model we define a likelihood function $p(\mathcal{D}|\boldsymbol{\theta}_i,\mathcal{M}_i)$. If we introduce a prior $p(\boldsymbol{\theta}_i|\mathcal{M}_i)$ over the parameters, then we are interested in computing the model evidence $p(\mathcal{D}|\mathcal{M}_i)$ for the various models. From now on we omit the conditioning on $\mathcal{M}_i$ to keep the notation uncluttered. From Bayes' theorem the model evidence is given by
+
 $$
 p(\mathcal{D}) = \int p(\mathcal{D}|\boldsymbol{\theta})p(\boldsymbol{\theta}) \, d\boldsymbol{\theta}. \tag{4.136}
 $$
+
 Identifying $f(\boldsymbol{\theta}) = p(\mathcal{D}|\boldsymbol{\theta})p(\boldsymbol{\theta})$ and $Z = p(\mathcal{D})$, and applying the result (4.135), we obtain
+
 $$
 \ln p(\mathcal{D}) \simeq \ln p(\mathcal{D}|\boldsymbol{\theta}_{\text{MAP}}) + \underbrace{\ln p(\boldsymbol{\theta}_{\text{MAP}}) + \frac{M}{2} \ln(2\pi) - \frac{1}{2} \ln|\mathbf{A}|}_{\text{Occam factor}} \tag{4.137}
 $$
+
 [Page 237]
 
 where $\boldsymbol{\theta}_{\text{MAP}}$ is the value of $\boldsymbol{\theta}$ at the mode of the posterior distribution, and $\mathbf{A}$ is the Hessian matrix of second derivatives of the negative log posterior
@@ -1213,11 +1275,11 @@ where $N$ is the number of data points, $M$ is the number of parameters in $\bol
 
 Complexity measures such as AIC and BIC have the virtue of being easy to evaluate, but can also give misleading results. In particular, the assumption that the Hessian matrix has full rank is often not valid since many of the parameters are not ‘well-determined’. We can use the result (4.137) to obtain a more accurate estimate of the model evidence starting from the Laplace approximation, as we illustrate in the context of neural networks in Section 5.7.
 
-### 4.5. Bayesian Logistic Regression
+## 4.5. Bayesian Logistic Regression
 
 We now turn to a Bayesian treatment of logistic regression. Exact Bayesian inference for logistic regression is intractable. In particular, evaluation of the posterior distribution would require normalization of the product of a prior distribution and a likelihood function that itself comprises a product of logistic sigmoid functions, one for every data point. Evaluation of the predictive distribution is similarly intractable. Here we consider the application of the Laplace approximation to the problem of Bayesian logistic regression (Spiegelhalter and Lauritzen, 1990; MacKay, 1992b).
 
-#### 4.5.1 Laplace approximation
+### 4.5.1 Laplace approximation
 
 Recall from Section 4.4 that the Laplace approximation is obtained by finding the mode of the posterior distribution and then fitting a Gaussian centred at that mode. This requires evaluation of the second derivatives of the log posterior, which is equivalent to finding the Hessian matrix.
 
@@ -1226,6 +1288,7 @@ Because we seek a Gaussian representation for the posterior distribution, it is 
 $$
 p(\mathbf{w}) = \mathcal{N}(\mathbf{w}|\mathbf{m}_0, \mathbf{S}_0) \tag{4.140}
 $$
+
 [Page 238]
 
 where $\mathbf{m}_0$ and $\mathbf{S}_0$ are fixed hyperparameters. The posterior distribution over $\mathbf{w}$ is given by
@@ -1257,7 +1320,7 @@ $$
 
 Having obtained a Gaussian approximation to the posterior distribution, there remains the task of marginalizing with respect to this distribution in order to make predictions.
 
-### 4.5.2 Predictive distribution
+## 4.5.2 Predictive distribution
 
 The predictive distribution for class $\mathcal{C}_1$, given a new feature vector $\boldsymbol{\phi}(\mathbf{x})$, is obtained by marginalizing with respect to the posterior distribution $p(\mathbf{w}|\mathbf{t})$, which is itself approximated by a Gaussian distribution $q(\mathbf{w})$ so that
 
@@ -1276,6 +1339,7 @@ where $\delta(\cdot)$ is the Dirac delta function. From this we obtain
 $$
 \int \sigma(\mathbf{w}^T \boldsymbol{\phi}) q(\mathbf{w}) \, d\mathbf{w} = \int \sigma(a) p(a) \, da \tag{4.147}
 $$
+
 [Page 239]
 
 where
@@ -1305,7 +1369,7 @@ $$
 p(\mathcal{C}_1|\mathbf{t}) = \int \sigma(a)p(a) \, da = \int \sigma(a)\mathcal{N}(a|\mu_a, \sigma_a^2) \, da. \tag{4.151}
 $$
 
-This result can also be derived directly by making use of the results for the marginal of a Gaussian distribution given in Section 2.3.2. 
+This result can also be derived directly by making use of the results for the marginal of a Gaussian distribution given in Section 2.3.2.
 
 The integral over $a$ represents the convolution of a Gaussian with a logistic sigmoid, and cannot be evaluated analytically. We can, however, obtain a good approximation (Spiegelhalter and Lauritzen, 1990; MacKay, 1992b; Barber and Bishop, 1998a) by making use of the close similarity between the logistic sigmoid function $\sigma(a)$ defined by (4.59) and the probit function $\Phi(a)$ defined by (4.114). In order to obtain the best approximation to the logistic function we need to re-scale the horizontal axis, so that we approximate $\sigma(a)$ by $\Phi(\lambda a)$. We can find a suitable value of $\lambda$ by requiring that the two functions have the same slope at the origin, which gives $\lambda^2 = \pi/8$. The similarity of the logistic sigmoid and the probit function, for this choice of $\lambda$, is illustrated in Figure 4.9.
 
@@ -1314,6 +1378,7 @@ The advantage of using a probit function is that its convolution with a Gaussian
 $$
 \int \Phi(\lambda a)\mathcal{N}(a|\mu, \sigma^2) \, da = \Phi\left( \frac{\mu}{(\lambda^{-2} + \sigma^2)^{1/2}} \right). \tag{4.152}
 $$
+
 [Page 240]
 
 We now apply the approximation $\sigma(a) \simeq \Phi(\lambda a)$ to the probit functions appearing on both sides of this equation, leading to the following approximation for the convolution of a logistic sigmoid with a Gaussian
