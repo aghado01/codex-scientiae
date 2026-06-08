@@ -36,9 +36,17 @@ Lionel Yelibi 1, ∗ and Tim Gebbie 1, †
 
 1 Department of Statistical Science, University of Cape Town, Rondebosch, South Africa
 
+### Cleaning Goals
+
+- Standardise heading hierarchy: document title remains `#`, all other sections become `##` or deeper.
+- Regenerate the Table of Contents to reflect updated headings.
+- Ensure all LaTeX math uses `$` for inline and `$$` for blocks.
+- Replace OCR ligatures (`ﬁ`, `ﬂ`, `ﬀ`, `ﬃ`, `ﬄ`) with ASCII equivalents.
+- Remove stray page markers and other OCR artifacts.
+
 We map stock market interactions to spin models to recover their hierarchical structure using a simulated annealing based Super-Paramagnetic Clustering (SPC) algorithm. This is directly compared to a modiﬁed implementation of a maximum likelihood approach we call fast SuperParamagnetic Clustering (f-SPC). The methods are ﬁrst applied standard toy test-case problems, and then to a data-set of 447 stocks traded on the New York Stock Exchange (NYSE) over 1249 days. The signal to noise ratio of stock market correlation matrices is brieﬂy considered. Our result recover approximately clusters representative of standard economic sectors and mixed ones whose dynamics shine light on the adaptive nature of ﬁnancial markets and raise concerns relating to the eﬀectiveness of industry based static ﬁnancial market classiﬁcation in the world of real-time data analytics. A key result is that we show that f-SPC maximum likelihood solutions converge to ones found within the Super-Paramagnetic Phase where the entropy is maximum, and those solutions are qualitatively better for high dimensionality data-sets.
 
-# I. INTRODUCTION
+## I. INTRODUCTION
 
 We consider the problem of unsupervised statistical learning for feature selection and classiﬁcation of ﬁnancial time-series data from similarity measures that can be represented as correlation matrices. Concretely, we consider Potts model [54] based [6, 7] methods optimized for performance [19, 24, 25, 35] using a Maximum Likelihood Estimation (MLE) approach based on the ground-state Noh Ansatz [40] compared to the ﬁnite-temperature approach using a cooling schedule to select conﬁgurations based on the susceptibility [6, 7].
 
