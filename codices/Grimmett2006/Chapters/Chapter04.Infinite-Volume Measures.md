@@ -2,6 +2,16 @@
 
 # 4. Infinite-Volume Measures
 
+## Table of Contents
+
+- [Infinite graphs](#sec-4-4-1)
+- [Boundary conditions](#sec-4-4-2)
+- [Infinite-volume weak limits](#sec-4-4-3)
+- [Infinite-volume random-cluster measures](#sec-4-4-4)
+- [Uniqueness via convexity of pressure](#sec-4-4-5)
+- [Potts and random-cluster models on infinite graphs](#sec-4-4-6)
+
+
 Summary. Random-cluster measures on infinite graphs may be defined either by passing to infinite-volume limits or by using the approach of Dobrushin, Lanford, and Ruelle. The problem of the uniqueness of infinitevolume measures is answered in part by way of an argument using the convexity of ‘pressure’. The random-cluster and Potts measures in infinite volume may be coupled, thereby permitting a study of the Potts model on the lattice Ld.
 
 <a id="sec-4-1"></a>
@@ -996,3 +1006,4 @@ For any event A defined in terms of the states of the edges ei, we have by (4.92
 n→∞
 
 The law of ωn is φn and, by Theorem 1.13(a), the vector (τx(ωn) : x ∈ n) has law π1 n,β,q. By Theorem 1.13(b), the last probability equals ψp(A) where ψp is product measure on {0,1}n with density p. The claim follows.
+

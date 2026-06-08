@@ -2,11 +2,27 @@
 
 # 1. Random-Cluster Measures
 
+## Table of Contents
+
+- [Random-cluster model](#sec-1-1-2)
+- [Ising and Potts models](#sec-1-1-3)
+- [Random-cluster and Ising/Potts models coupled](#sec-1-1-4)
+- [The limit as q ↓ 0](#sec-1-1-5)
+- [Basic notation](#sec-1-1-6)
+
+
+- [1.1 Introduction](#sec-1-1) — 1 (lines 137-511)
+- [1.2 Random-cluster model](#sec-1-2) — 4 (lines 137-511)
+- [1.3 Ising and Potts models](#sec-1-3) — 6 (lines 137-511)
+- [1.4 Random-cluster and Ising/Potts models coupled](#sec-1-4) — 8 (lines 137-511)
+- [1.5 The limit as q ↓ 0](#sec-1-5) — 13 (lines 137-511)
+- [1.6 Basic notation](#sec-1-6) — 15 (lines 137-511)
+
 Summary. The random-cluster model is introduced, and its relationship to Ising and Potts models is presented via a coupling of probability measures. In the limit as the cluster-weighting factor tends to 0, one arrives at electrical networks and uniform spanning trees and forests.
 
 <a id="sec-1-1"></a>
 
-## 1.1 Introduction
+## 1 Introduction
 
 In 1925 came the Ising model for a ferromagnet,and in 1957 the percolation model for a disordered medium. Each has since been the subject of intense study,and their theories have become elaborate. Each possesses a phase transition marking the onset of long-range order, defined in terms of correlation functions for the Ising model and in terms of the unboundedness of paths for percolation. These two phase transitions have been the scenes of notable exact (and rigorous) calculations which have since inspired many physicists and mathematicians.
 
@@ -16,9 +32,9 @@ The mathematics begins with a finite graph G = (V, E), and the associated Ising 
 
 ![image 5](../Images/imageFile5.png)
 
-1The so-called Ising model [190] was in fact proposed (to Ising) by Lenz. The Potts model [105, 278] originated in a proposal (to Potts) by Domb.
+The so-called Ising model [190] was in fact proposed (to Ising) by Lenz. The Potts model [105, 278] originated in a proposal (to Potts) by Domb.
 
-2 Random-Cluster Measures [1.1]
+### 2 Random-Cluster Measures [1.1]
 
 negativeof the sum of σxσy overall edges $e = \langle x, y \rangle$ of G. As β increases, greater probability is assigned to conﬁgurations having a large number of neighbouring pairs of vertices with equal signs. The Ising model has proved extraordinarily successful in generating beautiful mathematics of relevance to the physics, and it has been useful and provocative in the mathematical theory of phase transitions and cooperative phenomena (see, for example, [118]). The proof of the existence of a phase transition in two dimensions was completed by Peierls, [266], by way of his famous “argument”.
 
@@ -28,15 +44,11 @@ The (bond) percolation model was inspired by problems of physical type, and emer
 
 The theory of electrical networks on the graph G is of course more ancient than that of Ising and percolation models, dating back at least to the 1847 paper, [215], in which Kirchhoff set down a method for calculating macroscopic properties of an electrical network in terms of its local structure. Kirchhoff’s work explains in particular the relevance of counts of certain types of spanning trees of the graph. To import current language, an electrical network on a graph G may be studied via the properties of a ‘uniformly random spanning tree’ (UST) on G (see [31]).
 
-The three ingredients above seemed fairly distinct until Fortuin and Kasteleyn discovered around 1970, [120, 121, 122, 123, 203], that each features within a certain parametric family of models which they termed ‘random-cluster models’. They developed the basic theory of such models — correlation inequalities and the like — in this series of papers. The true power of random-cluster models as
+The three ingredients above seemed fairly distinct until Fortuin and Kasteleyn discovered around 1970, [120, 121, 122, 123, 203], that each features within a certain parametric family of models which they termed ‘random-cluster models’. They developed the basic theory of such models — correlation inequalities and the like — in this series of papers. The true power of random-cluster models as a mechanism for studying Ising/Potts models has emerged progressively over the intervening three decades.
 
 ![image 6](../Images/imageFile6.png)
 
-2See also the historical curiosity [323].
-
-[1.1] Introduction 3
-
-a mechanism for studying Ising/Potts models has emerged progressively over the intervening three decades.
+[1.1] Introduction 
 
 The conﬁguration space of the random-cluster model is the set of all subsets of the edge-set E, which we represent as the set \Omega = \{0,1\}^E of 0/1-vectors indexed by E. An edge e is termed open in the conﬁguration ω ∈ if ω(e) = 1, and it is termed closed if ω(e) = 0. The random-cluster model is thus an edge-model, in contrast to the Ising and Potts models which assign spins to the vertices of G. The subject of current study is the subgraph of G induced by the set of open edges of a conﬁguration chosen at random from according to a certain probability measure. Of particular importance is the existence (or not) of paths of open edges joining given vertices x and y, and thus the random-cluster model is a model in stochastic geometry.
 
@@ -66,11 +78,7 @@ Figure 1.1. Samples from the random-cluster measure with $q$ = 1 on a 40 × 40 b
 
 ![image 8](../Images/imageFile8.png)
 
-Figure 1.2. A picture of the random-cluster model with free boundary conditions on a 2048× 2048 box of L2, with $p$ = 0.585816 and $q$ = 2. The critical value of the model with $q$ = 2 is pc =
-
-√2) = 0.585786 ..., and therefore the simulation is of a mildly supercritical system. It was obtained by simulating the Ising model using Glauber dynamics (see Section 8.2), and then applying the coupling illustrated in Figure 1.3. Each individual cluster is highlighted with a different tint of gray, and the smaller clusters are not visible in the picture. This and later simulations in Section 5.7 are reproduced by kind permission of Raphaël Cerf.
-
-√2/(1 +
+Figure 1.2. A picture of the random-cluster model with free boundary conditions on a 2048× 2048 box of L2, with $p$ = 0.585816 and $q$ = 2. The critical value of the model with $q$ = 2 is pc = √2/(1 + √2) = 0.585786 ..., and therefore the simulation is of a mildly supercritical system. It was obtained by simulating the Ising model using Glauber dynamics (see Section 8.2), and then applying the coupling illustrated in Figure 1.3. Each individual cluster is highlighted with a different tint of gray, and the smaller clusters are not visible in the picture. This and later simulations in Section 5.7 are reproduced by kind permission of Raphaël Cerf.
 
 ![image 9](../Images/imageFile9.png)
 
@@ -84,9 +92,9 @@ In a famous experiment, a piece of iron is exposed to a magnetic field. The fiel
 
 ![image 11](../Images/imageFile11.png)
 
-3In an example of Stigler’s Law, [309], the existence of such a temperature was discovered before 1832 by Pouillet, see [198].
+In an example of Stigler’s Law, [309], the existence of such a temperature was discovered before 1832 by Pouillet, see [198].
 
-[1.3] Ising and Potts models 7
+[1.3] Ising and Potts models
 
 famous (Lenz–)Ising model for such ferromagnetism, [190], may be summarized as follows. One supposes that particles are positioned at the points of some lattice embedded in Euclidean space. Each particle may be in either of two states, representing the physical states of ‘spin-up’ and ‘spin-down’. Spin-values are chosen at random according to a certain probability measure, known as a ‘Gibbs state’, which is governed by interactions between neighbouring particles. The relevant probability measure is given as follows.
 
@@ -108,11 +116,9 @@ As pointed out by Baxter, [26], the Ising model permits an inﬁnity of generali
 
 Let q be an integer satisfying q ≥ 2, and take as sample space the set of vectors = {1,2,. . .,q}V. Thus each vertex of G may be in any of q states. For an edge
 
-$e = \langle x, y \rangle$ and a conﬁguration σ = ($\sigma_x$ : x ∈ V) ∈ , we write δe(σ) = δσx,$\sigma_y$ where δi,j is the Kronecker delta. The relevant probability measure is given by (1.5) πβ,q(σ) =
+$e = \langle x, y \rangle$ and a configuration $\sigma = (\sigma_x : x \in V) \in \{1,2,\dots,q\}^V$, we write $\delta_e(\sigma) = \delta_{\sigma_x,\sigma_y}$ where $\delta_{i,j}$ is the Kronecker delta. The relevant probability measure is given by (1.5)
 
-1 ZP
-
-e−βH′(σ), σ ∈ ,
+$$\pi_{\beta,q}(\sigma) = \frac{1}{Z_{p}}\, e^{-\beta H'(\sigma)}, \qquad \sigma \in \{1,2,\dots,q\}^V.$$
 
 ![image 13](../Images/imageFile13.png)
 
@@ -370,3 +376,4 @@ For any random variable X and appropriate probability measure µ, we write µ(X)
 µ(X) = X dµ.
 
 Let⌊a⌋and⌈a⌉denotetheintegerpartoftherealnumber a,andtheleastinteger not less than a, respectively. Finally, a ∧ b = min{a,b} and a ∨ b = max{a,b}.
+

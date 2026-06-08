@@ -2,6 +2,19 @@
 
 # 8. Dynamics of Random-Cluster Models
 
+## Table of Contents
+
+- [Time-evolution of the random-cluster model](#sec-8-8-1)
+- [Glauber dynamics](#sec-8-8-2)
+- [Gibbs sampler](#sec-8-8-3)
+- [Coupling from the past](#sec-8-8-4)
+- [Swendsen–Wang dynamics](#sec-8-8-5)
+- [Coupled dynamics on a finite graph](#sec-8-8-6)
+- [Box dynamics with boundary conditions](#sec-8-8-7)
+- [Coupled dynamics on the infinite lattice](#sec-8-8-8)
+- [Simultaneous uniqueness](#sec-8-8-9)
+
+
 Summary. Onemayassociatetime-dynamicswiththerandom-clustermodel in a variety of natural ways. Amongst Glauber-type processes, the Gibbs sampler is especially useful and is well suited to the construction of a ‘coupling from the past’ algorithm resulting in a sample with the randomcluster measure as its (exact) law. In the Swendsen–Wang algorithm, one interleaves transitions of the random-cluster model and the associated Potts model. The random-cluster model for different values of $p$ may be coupled together via a certain Markov process on a more general state space. This provides a mechanism for studying the ‘equilibrium’ model.
 
 <a id="sec-8-1"></a>
@@ -747,3 +760,4 @@ It must be the case that iq(p) = iq′ (p) for $p$ = pc(q). Here is a sufﬁcien
 |E |
 
 , µ-a.s.
+

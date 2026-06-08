@@ -2,6 +2,15 @@
 
 # 3. Fundamental Properties
 
+## Table of Contents
+
+- [Conditional probabilities](#sec-3-3-1)
+- [Positive association](#sec-3-3-2)
+- [Differential formulae and sharp thresholds](#sec-3-3-3)
+- [Comparison inequalities](#sec-3-3-4)
+- [Domination by the Ising model](#sec-3-3-7)
+
+
 Summary. The basic properties of random-cluster measures are presented in a manner suitable for future applications. Accounts of conditional randomclustermeasures andpositive associationare followed by differential formulae, a sharp-threshold theorem, and exponential steepness. There are several useful inequalities involving partition functions. Theseries/parallel laws are formulated, and the chapter ends with a discussion of negative correlation.
 
 <a id="sec-3-1"></a>
@@ -847,3 +856,4 @@ The usual proof of the Rayleigh principle makes use of the Thomson/Dirichlet var
 ![image 273](../Images/imageFile273.png)
 
 8When re-stated in terms of counts of spanning trees with certain properties, this is a consequence of the 1847 work of Kirchhoff [215] on electrical networks, as elaborated by Brooks, Smith, Stone, and Tutte in their famous paper [71] on the dissection of rectangles. Indeed, the difference µ(Je ∩ Jf ) − µ(Je)µ(Jf ) may be expressed in terms of a certain ‘transfer current matrix’. See [74] for an extension to more than two edges, and [31, 241] for related discussion.
+

@@ -2,6 +2,13 @@
 
 # 9.1 Flows in Poisson Graphs
 
+## Table of Contents
+
+- [Potts models and flows](#sec-9-9-1)
+- [Exponential decay for the Ising model](#sec-9-9-3)
+- [The Ising model in four and more dimensions](#sec-9-9-4)
+
+
 Summary. The random-cluster partition function with integer q on a graph G may be transformed into the mean flow-polynomial of a ‘Poissonian’ random graph obtained from G by randomizing the numbers of edges between neighbouring pairs. This leads to a flow representation for the two-point Potts correlation function, and extends to general q the so-called ‘randomcurrent expansion’ of the Ising model. In the last case, one may derive the Simon–Lieb inequality together with largely complete solutions to the problems of exponential decay and the continuity of the phase transition. It is an open problem to adapt such methods to general Potts and random-cluster models.
 
 <a id="sec-9-1"></a>
@@ -555,3 +562,4 @@ We refer the reader to [5, 9] for details of the random-current representation i
 ![image 1105](../Images/imageFile1105.png)
 
 6Note added at reprinting: a probabilistic proof can be found in [329, 330].
+

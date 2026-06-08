@@ -2,6 +2,20 @@
 
 # 7. Duality in Higher Dimensions
 
+## Table of Contents
+
+- [Surfaces and plaquettes](#sec-7-7-1)
+- [Basic properties of surfaces](#sec-7-7-2)
+- [A contour representation](#sec-7-7-3)
+- [Polymer models](#sec-7-7-4)
+- [Discontinuous phase transition for large q](#sec-7-7-5)
+- [Dobrushin interfaces](#sec-7-7-6)
+- [Probabilistic and geometric preliminaries](#sec-7-7-7)
+- [The law of the interface](#sec-7-7-8)
+- [Geometry of interfaces](#sec-7-7-9)
+- [Exponential bounds for group probabilities](#sec-7-7-10)
+
+
 Summary. The boundaries of clusters in d dimensions are (topologically) (d − 1)-dimensional and, in their study, one encounters new geometrical difﬁculties when d ≥ 3. By representing the random-cluster model as a sequence of nested contours with alternately wired and free boundary conditions, one arrives at the proof that the phase transition is discontinuous for sufficiently large q. There is a random-cluster analysis of non-translationinvariant states of Dobrushin-type when d ≥ 3, q ∈ [1, ∞), and $p$ is sufficiently large.
 
 <a id="sec-7-1"></a>
@@ -1900,3 +1914,4 @@ Proof of Theorem 7.144. If D(x, ) ≥ z, there exists r satisfying 1 ≤ r ≤ z
 ![image 1006](../Images/imageFile1006.png)
 
 ![image 1007](../Images/imageFile1007.png)
+

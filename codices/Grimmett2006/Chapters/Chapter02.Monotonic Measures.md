@@ -2,6 +2,15 @@
 
 # 2. Monotonic Measures
 
+## Table of Contents
+
+- [Stochastic ordering of measures](#sec-2-2-1)
+- [Positive association](#sec-2-2-2)
+- [Inﬂuence for monotonic measures](#sec-2-2-3)
+- [Sharp thresholds for increasing events](#sec-2-2-4)
+- [Exponential steepness](#sec-2-2-5)
+
+
 Summary. The property of monotonicity of measures leads naturally to positive association and the FKG inequality. A monotonic measure may be used as the seed for a parametric family of measures satisfying probabilistic inequalities including inﬂuence, sharp-threshold, and exponential-steepness inequalities.
 
 <a id="sec-2-1"></a>
@@ -572,3 +581,4 @@ Let A ∈ F be non-empty and increasing. Inequality (2.57) is usually used in in
 ![image 128](../Images/imageFile128.png)
 
 ≤ µs(A)exp −4(s − r)µs(HA) , 0 < r ≤ s < 1. This may sometimes be combined with a complementary inequality derived by a consideration of ‘finite energy’, see Theorem 3.45.
+

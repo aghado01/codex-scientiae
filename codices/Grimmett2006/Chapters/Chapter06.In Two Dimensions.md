@@ -2,6 +2,14 @@
 
 # 6. In Two Dimensions
 
+## Table of Contents
+
+- [Planar duality](#sec-6-6-1)
+- [First-order phase transition](#sec-6-6-4)
+- [Square, triangular, and hexagonal lattices](#sec-6-6-6)
+- [Stochastic L¨owner evolutions](#sec-6-6-7)
+
+
 Summary. The dual of the random-cluster model on a planar graph is a random-cluster model also. The self-duality of the square lattice gives rise to the conjecture that pc(q) = psd(q) for $q$ ∈ [1,∞), where psd(q) denotes the self-dual point √q/(1+
 
 √q). Using duality, one obtains the uniqueness of random-cluster measures for $p$ = psd(q) and $q$ ∈ [1, ∞). The phase transition is discontinuous if $q$ is sufficiently large. Results similar to those for the square lattice may be obtained for the triangular and hexagonal lattices, using the star–triangle transformation. It is expected when q ∈ [1,4) that the critical process may be described by a stochastic Lowner evolution.¨
@@ -715,3 +723,4 @@ cos(4π/κ) = −12
 This value is consistent with the above observation that κ(1) = 6, and also with the ﬁnding of [231]that the scaling limit of the uniformspanning-treePeano curve is SLE8. We recall from Theorem 1.23 that the uniform spanning-tree measure is obtained as a limit of the random-cluster measure as p,q ↓ 0.
 
 There are uncertainties over how this programme will develop. For a start, the theory of random-clustermodelsisnotso complete asthatof percolationandofthe uniformspanningtree. Secondly, the existenceof spatial limits is currentlyknown only in certain specialcases. The programme ishoweverambitiousandpromising, and may ultimately yield a full picture of the critical behaviour, including the numerical values of critical exponents, of random-cluster models with q ∈ [1,4), and hence of Ising/Pottsmodelsalso. There isgood reason to expectearlyprogress for the case $q$ = 2, for which the random-cluster interface should converge to SLE16/3, and the Ising (spin) interface to SLE3, [306]. The reader is referred to [295] for a survey of open problems and conjectures concerning SLE.
+

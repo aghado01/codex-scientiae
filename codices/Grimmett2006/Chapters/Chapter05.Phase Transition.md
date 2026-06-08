@@ -2,6 +2,17 @@
 
 # 5. Phase Transition
 
+## Table of Contents
+
+- [The critical point](#sec-5-5-1)
+- [Percolation probabilities](#sec-5-5-2)
+- [Uniqueness of random-cluster measures](#sec-5-5-3)
+- [The subcritical phase](#sec-5-5-4)
+- [Exponential decay of volume](#sec-5-5-6)
+- [The supercritical phase and the Wulff crystal](#sec-5-5-7)
+- [Uniqueness when $q$ < 1](#sec-5-5-8)
+
+
 Summary. When q ∈ [1, ∞), there exists a critical value pc(q) of the edgeparameter p, separating the phase with no infinite cluster from the phase with one or more infinite clusters. Partial results are known for both phases, but important open problems remain. In the subcritical phase, exponential decay is proved for sufficiently small p, and is conjectured to hold for all $p$ < pc(q). Much is known for the supercritical phase subject to the assumption that p exceeds a certain ‘slab critical point’ pc(q), conjectured to equal pc(q). The Wulff construction is a high point of the theory of the random-cluster model.
 
 <a id="sec-5-1"></a>
@@ -1023,3 +1034,4 @@ m→∞
 m→∞
 
 Asimilarproofofuniquenessisvalidforlarge p, using(5.117)andtheapproach taken for Theorem 5.33(b).
+

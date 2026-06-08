@@ -2,6 +2,20 @@
 
 # 10. On Other Graphs
 
+## Table of Contents
+
+- [Mean-field theory](#sec-10-10-1)
+- [On complete graphs](#sec-10-10-2)
+- [Main results for the complete graph](#sec-10-10-3)
+- [The size of the largest component](#sec-10-10-5)
+- [Proofs of main results for complete graphs](#sec-10-10-6)
+- [The nature of the singularity](#sec-10-10-7)
+- [Large deviations](#sec-10-10-8)
+- [The critical point for a tree](#sec-10-10-10)
+- [(Non-)uniqueness of measures on trees](#sec-10-10-11)
+- [On non-amenable graphs](#sec-10-10-12)
+
+
 Summary. Exact solutions are known for the random-cluster models on complete graphs and on regular trees, and these provide theories of meanfield-type. There is a special argument for the complete graph which utilizes the theory of Erdos–R˝ enyi´ random graphs, and leads to exact calculations valid for all values of $q$ ∈ (0, ∞). The transition is of first order if and only if $q$ ∈ (2, ∞). The (non-)uniqueness of random-cluster measures on a tree, when subject to a variety of boundary conditions, may be studied via an iterative formula permitting exact calculations of the critical value and the percolation probability. There is a discussion of the random-cluster model on a general non-amenable graph.
 
 <a id="sec-10-1"></a>
@@ -1144,3 +1158,4 @@ and the reader is referred to [174] for a discussion of this. The Burton–Keane
 It is natural to ask for the value of I when $p$ equals one of the critical values
 
 pcb, pub. The picture is far from complete, and the reader is referred to [29, 30, 33, 167, 174] and Section 10.11 for the current state of knowledge.
+

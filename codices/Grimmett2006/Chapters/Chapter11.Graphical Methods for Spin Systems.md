@@ -2,6 +2,16 @@
 
 # 11. Graphical Methods for Spin Systems
 
+## Table of Contents
+
+- [Random-cluster representations](#sec-11-11-1)
+- [The Potts model](#sec-11-11-2)
+- [The Ashkin–Teller model](#sec-11-11-3)
+- [The disordered Potts ferromagnet](#sec-11-11-4)
+- [The Edwards–Anderson spin-glass model](#sec-11-11-5)
+- [The Widom–Rowlinson lattice gas](#sec-11-11-6)
+
+
 Summary. Five applications are presented of the random-cluster model to lattice spin-systems, namely the Potts and Ashkin–Teller models, the disordered Potts ferromagnet, the Edwards–Anderson spin-glass model, and the Widom–Rowlinson lattice gas model.
 
 <a id="sec-11-1"></a>
@@ -571,3 +581,4 @@ It may be seen as in Section 11.2 that there exists a multiplicity of WR-Gibbs s
 ![image 1312](../Images/imageFile1312.png)
 
 10The proof utilizes arguments of [86, 138].
+
