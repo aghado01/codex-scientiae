@@ -1,0 +1,122 @@
+
+# References 
+[1] Abramov, A., Kulvicius, T., Wo¨rgo¨tter, F., Dellen, B., 2010. Facing the multicore-challenge, in: Keller, R., Kramer, D., Weiss, J.P. (Eds.), Facing the Multicorechallenge. Springer-Verlag, Berlin, Heidelberg. chapter Real-time Image Segmentation on a GPU, pp. 131–142. URL: http://dl.acm.org/citation.cfm?id=1980597. 1980615 .
+
+[2] Ackley, D.H., Hinton, G.E., Sejnowski, T.J., 1985. A learning algorithm for boltzmann machines. Cognitive Science 9, 147 – 169. URL: http://www.sciencedirect. com/science/article/pii/S0364021385800124 , doi: https://doi.org/10.1016/S0364-0213(85) 80012-4 .
+
+[3] Al-Futaisi, A., Patzek, T.W., 2003. Extension of hoshenkopelman algorithm to non-lattice environments. Physica A: Statistical Mechanics and its Applications 321, 665 – 678. URL: http://www.sciencedirect.com/ science/article/pii/S0378437102015868 , doi: https: //doi.org/10.1016/S0378-4371(02)01586-8 .
+
+[4] Baraba´si, A.L., Albert, R., 1999. Emergence of scaling in random networks. Science 286, 509–512. doi: 10.1126/ science.286.5439.509 .
+
+[5] Bianconi, G., Baraba´si, A.L., 2001. Bose-einstein condensation in complex networks. Phys. Rev. Lett. 86, 5632–5635. URL: https://link.aps. org/doi/10.1103/PhysRevLett.86.5632 , doi: 10.1103/ PhysRevLett.86.5632 .
+
+[6] Blatt, M., Wiseman, S., Domany, E., 1996. Superparamagnetic clustering of data. Phys. Rev. Lett. 76, 3251–3254. URL: https://link.aps. org/doi/10.1103/PhysRevLett.76.3251 , doi: 10.1103/ PhysRevLett.76.3251 .
+
+[7] Blatt, M., Wiseman, S., Domany, E., 1997. Data clustering using a model granular magnet. Neural Computation
+
+9, 1805–1842. doi: 10.1162/neco.1997.9.8.1805 .
+
+- [8] Blondel, V.D., Guillaume, J.L., Lambiotte, R., Lefebvre, E., 2008. Fast unfolding of communities in large networks. Journal of Statistical Mechanics: Theory and Experiment 2008, P10008. URL: http://stacks.iop. org/1742-5468/2008/i=10/a=P10008 .
+- [9] Bonanno, G., Lillo, F., Mantegna, R., 2001. Highfrequency cross-correlation in a set of stocks. Quantitative Finance 1, 96–104. URL: https://doi. org/10.1080/713665554 , doi: 10.1080/713665554 , arXiv:https://doi.org/10.1080/713665554 .
+
+
+[10] BRUSH, S.G., 1967. History of the lenz-ising model. Rev. Mod. Phys. 39, 883–893. URL: https: //link.aps.org/doi/10.1103/RevModPhys.39.883 , doi: 10.1103/RevModPhys.39.883 .
+
+[11] Castellani, T., Cavagna, A., 2005. Spin-glass theory for pedestrians. Journal of Statistical Mechanics: Theory and Experiment 2005, P05012. URL: https://doi.org/ 10.1088%2F1742-5468%2F2005%2F05%2Fp05012 , doi: 10. 1088/1742-5468/2005/05/p05012 .
+
+[12] Edwards, R.G., Sokal, A.D., 1988. Generalization of the fortuin-kasteleyn-swendsen-wang representation and monte carlo algorithm. Phys. Rev. D 38, 2009–2012. URL: https://link.aps.org/doi/10.1103/PhysRevD. 38.2009 , doi: 10.1103/PhysRevD.38.2009 .
+
+[13] Erdos, P., Re´nyi, A., 1960. On the evolution of random graphs. Publ. Math. Inst. Hung. Acad. Sci 5, 17–61.
+
+[14] Ester, M., Kriegel, H.P., Sander, J., Xu, X., 1996. A density-based algorithm for discovering clusters a density-based algorithm for discovering clusters in large spatial databases with noise, in: Proceedings of the Second International Conference on Knowledge Discovery and Data Mining, AAAI Press. pp. 226–231. URL: http: //dl.acm.org/citation.cfm?id=3001460.3001507 .
+
+[Page 26]
+
+[15] Farmer, J.D., Geanakoplos, J., 2009. The virtues and vices of equilibrium and the future of ﬁnancial economics. Complexity 14, 11–38. URL: https://onlinelibrary.wiley.com/doi/abs/ 10.1002/cplx.20261 , doi: 10.1002/cplx.20261 , arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/cplx.20261 . ter distribution. and critical 3438–3445. PhysRevB.14.3438 [28] Hubert, L., nal of
+
+i. cluster multiple labeling technique concentration algorithm. Phys. Rev. B 14, URL: https://link.aps.org/doi/10.1103/ , doi: 10.1103/PhysRevB.14.3438 .
+
+Arabie, P., 1985. Comparing partitions. JourClassiﬁcation 2, 193–218.
+
+- [29] Jaynes, E.T., 2003. Probability theory: The logic of science. volume II. Cambridge university press.
+- [30] Kruskal, J.B., 1956. On the shortest spanning subtree of a graph and the traveling salesman problem. Proceedings of the American Mathematical Society 7, 48–50. URL: http://www.jstor.org/stable/2033241 .
+
+
+[16] Fortuin, C., Kasteleyn, P., 1972. On the randomcluster model: I. introduction and relation to other models. Physica 57, 536 – 564. URL: http://www.sciencedirect.com/science/article/ pii/0031891472900456 , doi: https://doi.org/10. 1016/0031-8914(72)90045-6 .
+
+[17] Gebbie, T., Wilcox, D., Mbambiso, B., . Spin, stochastic factor models, and a ga, Citeseer.
+
+[31] Kullmann, L., Kertesz, J., Mantegna, R., 2000. Identiﬁcation of clusters of companies in stock indices via potts super-paramagnetic transitions. Physica A: Statistical Mechanics and its Applications 287, 412 – 419. URL: http://www.sciencedirect.com/ science/article/pii/S0378437100003800 , doi: https: //doi.org/10.1016/S0378-4371(00)00380-0 .
+
+[18] Getz, G., Levine, E., Domany, E., Zhang, M., 2000. Super-paramagnetic clustering of yeast gene expression proﬁles. Physica A: Statistical Mechanics and its Applications 279, 457 – 464. URL: http://www.sciencedirect.com/science/ article/pii/S0378437199005245 , doi: https: //doi.org/10.1016/S0378-4371(99)00524-5 .
+
+[32] Li, J., 2011. Potts model clustering for discovering patterns of epigenetic marks. Ph.D. thesis. Rutgers University-Graduate School-New Brunswick.
+
+[19] Giada, L., Marsili, M., 2001. Data clustering and noise undressing of correlation matrices. Phys. Rev. E 63, 061101. URL: https://link.aps.org/doi/10. 1103/PhysRevE.63.061101 , doi: 10.1103/PhysRevE.63. 061101 .
+
+- [33] Lloyd, S., 1982. Least squares quantization in pcm. IEEE Transactions on Information Theory 28, 129–137. doi: 10. 1109/TIT.1982.1056489 .
+- [34] Lo, A.W., 2004. The adaptive markets hypothesis. The Journal of Portfolio Management 30, 15–29. URL: http://jpm.iijournals.com/ content/30/5/15 , doi: 10.3905/jpm.2004.442611 , arXiv:http://jpm.iijournals.com/content/30/5/15.full.pdf .
+
+
+[20] Giada, L., Marsili, M., 2002. Algorithms of maximum likelihood data clustering with applications. Physica A: Statistical Mechanics and its Applications 315, 650 – 664. URL: http://www.sciencedirect.com/ science/article/pii/S0378437102009743 , doi: https: //doi.org/10.1016/S0378-4371(02)00974-3 .
+
+[35] Marsili, M., 2002. Dissecting ﬁnancial markets: sectors and states. Quantitative Finance 2, 297–302. URL: https://doi.org/10.1088/ 1469-7688/2/4/305 , doi: 10.1088/1469-7688/2/4/305 , arXiv:https://doi.org/10.1088/1469-7688/2/4/305 .
+
+[21] Good, B.H., de Montjoye, Y.A., Clauset, A., 2010. Performance of modularity maximization in practical contexts. Phys. Rev. E 81, 046106. URL: https://link.aps.org/doi/10.1103/PhysRevE. 81.046106 , doi: 10.1103/PhysRevE.81.046106 .
+
+[36] Marti, G., Nielsen, F., Bi´nkowski, M., Donnat, P., 2017. A review of two decades of correlations, hierarchies, networks and clustering in ﬁnancial markets. arXiv preprint arXiv:1703.00485 .
+
+- [22] Grimmett, G.R., 2006. The random-cluster model. volume 333. Springer Science & Business Media.
+- [23] Hacine-Gharbi, A., Ravier, P., Harba, R., Mohamadi, T., 2012. Low bias histogram-based estimation of mutual information for feature selection. Pattern Recognition Letters 33, 1302 – 1308. URL: http://www.sciencedirect.com/ science/article/pii/S0167865512000761 , doi: https: //doi.org/10.1016/j.patrec.2012.02.022 .
+
+
+- [37] McInnes, L., Healy, J., Saul, N., Groibberger, L., 2018. Umap: Uniform manifold approximation and projection. The Journal of Open Source Software 3, 861.
+- [38] Murua, A., Wicker, N., 2014. The conditionalpotts clustering model. Journal of Computational and Graphical Statistics 23, 717–739. URL: https://doi.org/10.1080/10618600.2013. 837828 , doi: 10.1080/10618600.2013.837828 , arXiv:https://doi.org/10.1080/10618600.2013.837828 .
+
+
+[24] Hendricks, D., Gebbie, T., Wilcox, D., 2016a. Detecting intraday ﬁnancial market states using temporal clustering. Quantitative Finance 16, 1657– 1678. URL: https://doi.org/10.1080/14697688. 2016.1171378 , doi: 10.1080/14697688.2016.1171378 , arXiv:https://doi.org/10.1080/14697688.2016.1171378 .
+
+[39] Musmeci, N., Aste, T., Di Matteo, T., 2015. Risk diversiﬁcation: a study of persistence with a ﬁltered correlationnetwork approach. Journal of Network Theory in Finance 1, 77–98. doi: 10.21314/JNTF.2015.005 .
+
+- [40] Noh, J.D., 2000. Model for correlations in stock markets. Phys. Rev. E 61, 5981–5982. URL: https: //link.aps.org/doi/10.1103/PhysRevE.61.5981 , doi: 10.1103/PhysRevE.61.5981 .
+- [41] Olshen, R.A., Rajaratnam, B., 2010. Successive normalization of rectangular arrays. Annals of Statistics 38, 1638.
+
+
+[25] Hendricks, D., Gebbie, T., Wilcox, D., 2016b. Highspeed detection of emergent market clustering via an unsupervised parallel genetic algorithm. South African Journal of Science 112, 9. URL: https: //www.sajs.co.za/article/view/4149 , doi: 10.17159/ sajs.2016/20140340 .
+
+[26] Hinton, G.E., Salakhutdinov, R.R., 2006. Reducing the dimensionality of data with neural networks. Science 313, 504–507. URL: http://science.sciencemag.org/ content/313/5786/504 , doi: 10.1126/science.1127647 , arXiv:http://science.sciencemag.org/content/313/5786/504.full.pdf . [42] Onsager, L., model with 117–149. PhysRev.65.117
+
+1944. Crystal statistics. i. a two-dimensional an order-disorder transition. Phys. Rev. 65, URL: https://link.aps.org/doi/10.1103/ , doi: 10.1103/PhysRev.65.117 .
+
+[27] Hoshen, J., Kopelman, R., 1976. Percolation and clus-
+
+[43] Osogami, T., 2017. Boltzmann machines and energy-
+
+[Page 27]
+
+based models. arXiv preprint arXiv:1708.06008 .
+
+[44] Ott, T., Kern, A., Schuﬀenhauer, A., Popov, M., Acklin, P., Jacoby, E., Stoop, R., 2004. Sequential superparamagnetic clustering for unbiased classiﬁcation of high-dimensional chemical data. Journal of Chemical Information and Computer Sciences 44, 1358–1364. URL: https://doi. org/10.1021/ci049905c , doi: 10.1021/ci049905c , arXiv:https://doi.org/10.1021/ci049905c . pMID: 15272844.
+
+[45] Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., Duchesnay, E., 2011. Scikit-learn: Machine Learning in Python . Journal of Machine Learning Research 12, 2825–2830.
+
+[46] Quiroga, R.Q., Nadasdy, Z., Ben-Shaul, Y., 2004. Unsupervised spike detection and sorting with wavelets and superparamagnetic clustering. Neural Computation 16, 1661–1687.
+
+[47] Rumelhart, D.E., McClelland, J.L., 1987. Information Processing in Dynamical Systems: Foundations of Harmony Theory. Technical Report. University of Colorado at Boulder. URL: https://ieeexplore.ieee.org/xpl/ articleDetails.jsp?arnumber=6302931 .
+
+[48] Sokal, A.D., 2005. The multivariate tutte polynomial (alias potts model) for graphs and matroids , 173– 226doi: 10.1017/CBO9780511734885.009 .
+
+[49] Stanberry, L., Murua, A., Cordes, D., 2007. Functional connectivity mapping using the ferromagnetic potts spin model. Human Brain Mapping 29, 422– 440. URL: https://onlinelibrary.wiley.com/ doi/abs/10.1002/hbm.20397 , doi: 10.1002/hbm.20397 , arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/hbm.20397
+
+[50] Swendsen, R.H., Wang, J.S., 1987. Nonuniversal critical dynamics in monte carlo simulations. Phys. Rev. Lett. 58, 86–88. URL: https://link.aps.org/doi/10.1103/ PhysRevLett.58.86 , doi: 10.1103/PhysRevLett.58.86 .
+
+- [51] West, D.B., et al., 2001. Introduction to graph theory. volume 2. Prentice hall Upper Saddle River.
+- [52] Wilcox, D., Gebbie, T., 2007. An analysis of cross-correlations in an emerging market. Physica A: Statistical Mechanics and its Applications 375, 584 – 598. URL: http://www.sciencedirect.com/ science/article/pii/S0378437106010351 , doi: https: //doi.org/10.1016/j.physa.2006.10.030 .
+
+
+[53] Wilcox, D., Gebbie, T., 2014. Hierarchical causality in ﬁnancial economics. https://ssrn.com/abstract=2544327
+
+- [54] Wu, F.Y., 1982. The potts model. Rev. Mod. Phys. 54, 235–268. URL: https://link.aps.org/doi/10.1103/ RevModPhys.54.235 , doi: 10.1103/RevModPhys.54.235 .
+- [55] Yelibi, L., 2017. Potts model clustering. https:// github.com/tehraio/potts-model-clustering .
+
+

@@ -1,6 +1,8 @@
 ## Subject Index
 
-_Page references link to the start of the containing section or appendix._
+_Byte offset references link to the start of the containing section or appendix._
+
+## TODO: update occurences of [page number] with target document-native byte offsets for each link contained below once there is an agent competant enough to perform the task 
 
 - adjacency: [15](<Chapters/Chapter01.Random-Cluster Measures.md#sec-1-6>)
 - admissibility: [211](<Chapters/Chapter07.Duality in Higher Dimensions.md#sec-7-9>)

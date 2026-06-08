@@ -43,3 +43,7 @@ Document ingestion is a fundamentally fuzzy problem. Depending on the ingestion 
 When managing large batches of document repair across swarms of subagents, overhead reduction is critical.
 - **Minimalist Agent Configurations**: Do not equip subagents with unnecessary tools (e.g., global file search, artifacts, or broad MCP servers) if they are only assigned a single-page rewrite task. This massively reduces context bloat and eliminates rate limits (429s).
 - **Worker Hygiene & Closing Ceremony**: Between large batches, ensure all workers successfully terminate. Perform a "Closing Ceremony" by actively validating output file counts and issuing a `kill_all` command to purge any stalled or orphaned zombie subagents. This maintains a clean workspace.
+
+## 6. Document Repair Checklist
+
+A reusable checklist for OCR‑artifact cleanup and markdown hygiene is provided in [checklist.md](file:///c:/Users/azrie/PDenv/UserGithub/codex-scientiae/checklist.md).

@@ -56,7 +56,7 @@ $$
 
 where r i is uniformly distributed random numbers between 0 and 1. The above equation is the inverse of the cumulative probability function of H S ( ) and the generated H S i ( ) follows the Boltzmann distribution at the temperature T as shown in Fig. 1 a .
 
-![image 1](images/imageFile1.png)
+![image 1](PKWang2020/images/imageFile1.png)
 
 Fig. 1 Clustering result of synthetic data based on parallel SPC a Red curve is Boltzmann distribution, blue bar is histogram of H ( S ) samples which were obtained by inverse transform sampling b Clustering result of concentric dataset classi ﬁ ed by parallel SPC algorithm, data points classi ﬁ ed to three clusters are shown with different colours, and unclassiﬁ ed data points (outliers) were labelled as black stars
 
@@ -68,7 +68,7 @@ Results: Two datasets were used to evaluate the accuracy of the parallel SPC met
 
 The ﬁ rst arti ﬁ cial dataset of concentric rings had 4800 data points distributed in the 2D feature space. Three concentric clusters were uniformly distributed across the 2 p angles with radii of 3, 2 and 1 and a variance of 0.15, and had 2400, 1600, and 800 data points, respectively. The synthetic dataset was then subjected to the parallel SPC algorithm for clustering with K = 10, q = 20, and M = 300. Fig. 1 a compares the generated H S i ( ) (blue histogram) to the Boltzmann distribution (red dotted curve) and the result indicates that the generated H S i ( ) closely follows the Boltzmann distribution. Based on the generated H S i ( ) , the spin states S i were generated in a parallel manner for the synthetic concentric dataset for SPC classi ﬁ cation. Fig. 1 b shows the classi ﬁ cation result for the synthetic concentric ring data, the data points classi ﬁ ed by the parallel SPC algorithm to three clusters are labelled in three different colours (red, green, and purple) and unclassi ﬁ ed data points are labelled in black. The unclassi ﬁ ed data points are mostly located at boundaries between the clusters contributed to <3% of the entire dataset. More than 97% of the data points (2321, 1551, 785) were correctly classi ﬁ ed with parallel SPC, and the result obtained is similar to that obtained from the conventional SPC method [ 8 ]. This proves that the parallel SPC method can achieve similar classi ﬁ cation results as with SW approximation. It is worth mentioning that the concentric ring dataset is a dif ﬁ cult dataset for conventional distance-based clustering methods, such as k -means, to classify since most of these techniques require the data distribution to
 
-![In this image, we can see a graph. There is a scale on the right side. There is a graph on the left side. There is a text on the left side. There is a graph on the right side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side.](images/imageFile2.png)
+![In this image, we can see a graph. There is a scale on the right side. There is a graph on the left side. There is a text on the left side. There is a graph on the right side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side.](PKWang2020/images/imageFile2.png)
 
 Fig. 2 Clustering result of IRIS data based on the parallel SPC algorithm a 3D plot of ﬁ rst three principal components (PC) of iris dataset in feature space b Number of data points of largest three clusters against temperature, illustrating SPC phase for optimal classi ﬁ cation
 
@@ -82,52 +82,14 @@ d ij for H S i ( ) in parallel. The arrays of accumulative total energies H a n 
 
 3000
 
-![In this image there is a graph.](images/imageFile3.png)
+![Fig.3](PKWang2020/images/imageFile3.png)
 
 Fig. 3 Speed comparison between conventional SPC and parallel SPC implementations against different sample sizes
 
-![image 4](images/imageFile4.png)
+![Fig.4](PKWang2020/images/imageFile4.png)
 
 Fig. 4 Hardware implementation structure of accelerator for parallel SPC algorithm
 
-Conclusion: Here we propose a parallel approach to the SPC neural spike sorting technique to replace the sequential SW approximation. The accuracy of the parallel technique was demonstrated by comparing the approach to the conventional method using both a synthetic dataset and the open-source IRIS datasets. Benchmarking was compared between the two techniques and an at least 8.7 times speed increase was observed with the parallel method, and an accelerating effect was also observed for larger sample size datasets. A hardware
+## Conclusion
 
-Acknowledgments: The authors would like to acknowledge the support by The Science and Technology Development Fund of Macau (FDCT) under grant nos. 093/2015/A3 and 088/2016/A2, 0144/2019/A3 and the University of Macau under grant nos. MYRG2018-00146-AMSV and MYRG2019-00056-AMSV.
-
-# © The Institution of Engineering and Technology 2020
-
-Submitted: 10 March 2020 Eﬁ rst: 12 May 2020
-
-doi: 10.1049/el.2020.0760
-
-One or more of the Figures in this Letter are available in colour online.
-
-Pan Ke Wang, Chang Hao Chen, Sio Hang Pun, Mang I. Vai and Tim C. Lei ( State Key Laboratory of Analog and Mixed-Signal VLSI, Institute of Microelectronics, University of Macau, People ’ s Republic of China )
-
-✉ E-mail: lodgepun@um.edu.mo
-
-Peng Un Mak ( Department of Electrical and Computer Engineering, University of Macau, Macau, People ’ s Republic of China )
-
-Baijun Zhang ( School of Electronics and Information Technology, State Key Laboratory of Optoelectronic Materials and Technologies, Sun Yat-sen University, Guangzhou, People ’ s Republic of China )
-
-Pan Ke Wang and Mang I. Vai: Also with Department of Electrical and Computer Engineering, University of Macau, Macau, People ’ s Republic of China
-
-Tim C. Lei: Also with Department of Electrical Engineering, University of Colorado, Denver CO, USA
-
-# References
-
-1 Quiroga, R.Q., Nadasdy, Z., and Ben-Shaul, Y.: ‘ Unsupervised spike detection and sorting with wavelets and superparamagnetic clustering ’ , Neural Comput. , 2004, 16 , (8), pp. 1661 – 1687 2 Rey, H.G., Pedreira, C., and Quian Quiroga, R.: ‘ Past, present and future
-
-2 Rey, H.G., Pedreira, C., and Quian Quiroga, R.: ' Past, present and future of spike sorting techniques ' , Brain Res. Bull. , 2015, 119 , pp. 106 -117
-
-3 Tetko, I.V., Facius, A., Ruepp, A., et al .: ' Super paramagnetic clustering of protein sequences ' , BMC Bioinformatics , 2005, 6 , (1), p. 82
-
-4 Getz, G., Levine, E., Domany, E., et al .: ' Super-paramagnetic clustering of yeast gene expression pro fi les ' , Physica A , 2000, 279 , (1), pp. 457 -464
-
-5 Wang, P.K., Pun, S.H., Chen, C.H., et al .: ' Low-latency single channel real-time neural spike sorting system based on template matching ' , PLoS One , 2019, 14 , (11), pp. 1 -30
-
-6 Ballini, M., Müller, J., Livi, P., et al .: ' A 1024-channel CMOS microelectrode array with 26,400 electrodes for recording and stimulation of electrogenic cells in vitro ' , IEEE J. Solid-State Circuits , 2014, 49 , (11), pp. 2705 -2719
-
-- 7 Blatt, M., Wiseman, S., and Domany, E.: ' Superparamagnetic clustering of data ' , Phys. Rev. Lett. , 1996, 76 , (18), p. 3251
-- 8 Blatt, M., Wiseman, S., and Domany, E.: ' Data clustering using a model granular magnet ' , Neural Comput. , 1997, 9 , (8), pp. 1805 -1842
-- 9 Wang, J.-S., and Swendsen, R.H.: ' Cluster Monte Carlo algorithms ' , Physica A , 1990, 167 , (3), pp. 565 -579
+Here we propose a parallel approach to the SPC neural spike sorting technique to replace the sequential SW approximation. The accuracy of the parallel technique was demonstrated by comparing the approach to the conventional method using both a synthetic dataset and the open-source IRIS datasets. Benchmarking was compared between the two techniques and an at least 8.7 times speed increase was observed with the parallel method, and an accelerating effect was also observed for larger sample size datasets. A hardware
