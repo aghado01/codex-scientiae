@@ -1,6 +1,4 @@
-# PowerShell script to replace "(lines A-B)" with "(bytes start-end)" in CONTENTS.md
-# It uses the existing line numbers to compute byte offsets within each chapter file.
-
+# PowerShell script to replace "(lines A-B)" with "(bytes start-end)" in CONTENTS.md and strip page numbers
 $contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
 $chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
 
@@ -20,6 +18,7 @@ function Get-ByteOffset([string]$filePath, [int]$lineNumber) {
 $updatedLines = @()
 Get-Content $contentsPath -Encoding UTF8 | ForEach-Object {
     $line = $_
+    # Replace any (lines X-Y) with (bytes startByte-endByte)
     if ($line -match '\(lines\s+(\d+)-(\d+)\)') {
         $startLine = [int]$Matches[1]
         $endLine   = [int]$Matches[2]
@@ -38,9 +37,11 @@ Get-Content $contentsPath -Encoding UTF8 | ForEach-Object {
             }
         }
     }
+    # Strip any stray page number before the byte span, e.g., "— 123 (bytes" -> "— (bytes"
+    $line = $line -replace '(—\s+)\d+\s+\(bytes', '$1(bytes'
     $updatedLines += $line
 }
 
 # Write back the transformed CONTENTS.md
 Set-Content -Path $contentsPath -Value ($updatedLines -join "`n") -Encoding UTF8
-Write-Host "CONTENTs.md updated: line spans replaced with byte offset spans."
+Write-Host "CONTENTs.md updated: line spans replaced with byte offset spans and page numbers stripped."

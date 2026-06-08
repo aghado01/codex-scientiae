@@ -1,5 +1,12 @@
+# The Random-Cluster Model
+
+Geoffrey Grimmett
+Statistical Laboratory Centre for Mathematical Sciences
+University of Cambridge
+
 ## Contents
 
+- [CONTENTS](Chapters/CONTENTS.md)
 - [Preface](Preface.md#ch-1)
 - [Chapter.01 Random-Cluster Measures](<Chapters/Chapter01.Random-Cluster Measures.md#ch-1>)
 - [Chapter.02 Monotonic Measures](<Chapters/Chapter02.Monotonic Measures.md#ch-2>)
