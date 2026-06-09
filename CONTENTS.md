@@ -1,4 +1,4 @@
 # Codex Scientiae
-- [codices](./codices/CONTENTS.md)
-- [compendia](./compendia/CONTENTS.md)
-- [corpora](./corpora/CONTENTS.md)
+- [codices](./codices/CODICES.md)
+- [compendia](./compendia/COMPENDIA.md)
+- [corpora](./corpora/CORPORA.md)

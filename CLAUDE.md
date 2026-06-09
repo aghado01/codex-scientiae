@@ -1,4 +1,4 @@
-This repository uses a cascading navigation mechanism in which higher-level CONTENTS.md files will point to nested CONTENTS.md file so you can zoom in and out
+This repository uses a telescoping navigation mechanism in which higher-level CONTENTS.md files will point to nested CONTENTS.md files 
 
 See CONTENTS.md for structure and navigation during reconaissance tasks 
 
