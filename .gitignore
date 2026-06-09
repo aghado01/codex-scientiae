@@ -2,5 +2,3 @@
 *.venv
 *.vscode
 *.ipynb_checkpoints
-*.copilot
-*.github
