@@ -1,0 +1,901 @@
+{
+  "file name" : "BWD1996.pdf",
+  "number of pages" : 4,
+  "author" : "Marcelo Blatt, Shai Wiseman, and Eytan Domany",
+  "title" : "Superparamagnetic Clustering of Data",
+  "creation date" : "D:19960419112319",
+  "modification date" : "D:19970101214419",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 102,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 201.84, 718.645, 407.912, 729.738 ],
+    "heading level" : 1,
+    "font" : "Times-Bold",
+    "font size" : 12.453,
+    "text color" : "[0.0]",
+    "content" : "Superparamagnetic Clustering of Data"
+  }, {
+    "type" : "paragraph",
+    "id" : 103,
+    "page number" : 1,
+    "bounding box" : [ 198.84, 695.12, 410.916, 704.245 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "Marcelo Blatt, Shai Wiseman, and Eytan Domany"
+  }, {
+    "type" : "paragraph",
+    "id" : 104,
+    "page number" : 1,
+    "bounding box" : [ 106.8, 672.2, 502.929, 690.541 ],
+    "font" : "Times-Italic",
+    "font size" : 9.465,
+    "text color" : "[0.0]",
+    "content" : "Department of Physics of Complex Systems, The Weizmann Institute of Science, Rehovot 76100, Israel ( Received 31 August 1995 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 105,
+    "page number" : 1,
+    "bounding box" : [ 104.636, 601.72, 505.176, 664.826 ],
+    "font" : "Times-Roman",
+    "font size" : 9.465,
+    "text color" : "[0.0]",
+    "content" : "We present a new approach for clustering, based on the physical properties of an inhomogeneous ferromagnetic model. We do not assume any structure of the underlying distribution of the data. A Potts spin is assigned to each data point and short range interactions between neighboring points are introduced. Spin-spin correlations, measured (by Monte Carlo procedure) in a superparamagnetic regime in which aligned domains appear, serve to partition the data points into clusters. Our method outperforms other algorithms for toy problems as well as for real data. [S0031-9007(96)00104-4]"
+  }, {
+    "type" : "paragraph",
+    "id" : 106,
+    "page number" : 1,
+    "bounding box" : [ 104.64, 582.019, 262.5, 589.406 ],
+    "font" : "Times-Roman",
+    "font size" : 8.468,
+    "text color" : "[0.0]",
+    "content" : "PACS numbers: 05.70.Fh, 02.50.Rj, 89.70.+c"
+  }, {
+    "type" : "paragraph",
+    "id" : 107,
+    "page number" : 1,
+    "bounding box" : [ 50.765, 454.996, 295.971, 571.765 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "Many natural phenomena can be viewed as optimization processes, and the drive to understand and analyze them yielded powerful mathematical methods. Thus when wishing to solve a hard optimization problem, it may be advantageous to identify a related physical problem, for which these methods can be used. In recent years there has been signiﬁcant interest in adapting numerical [1] as well as analytic [2,3] techniques from statistical physics to provide algorithms and estimates for good approximate solutions to hard optimization problems [4]."
+  }, {
+    "type" : "paragraph",
+    "id" : 109,
+    "page number" : 1,
+    "bounding box" : [ 50.765, 383.234, 295.929, 452.123 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "Cluster analysis is an important technique in exploratory data analysis. Partitional clustering methods, that divide the data according to natural classes present in it, have been used in a large variety of engineering and scientiﬁc disciplines such as pattern recognition [5], learning [6], and astrophysics [7]."
+  }, {
+    "type" : "paragraph",
+    "id" : 111,
+    "page number" : 1,
+    "bounding box" : [ 50.751, 299.595, 295.971, 380.36 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "The problem of partitional clustering can be formally stated as follows. With every one of i   1,2,.. ., N patterns represented as a point   x i in a d -dimensional metric space, determine the partition of these N points into M groups, called clusters, such that points in a cluster are more similar to each other than to points in different clusters. The value of M also has to be determined."
+  }, {
+    "type" : "paragraph",
+    "id" : 115,
+    "page number" : 1,
+    "bounding box" : [ 50.761, 168.069, 295.957, 296.721 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "The two main approaches to partitional clustering are called parametric and nonparametric . In parametric approaches some knowledge of the clusters’ structure is assumed (e.g., each cluster can be represented by a center and a spread around it). This assumption is incorporated in a global criterion . The goal is to assign the data points to clusters so that the criterion is minimized. Typical examples are variance minimization [8] and maximum likelihood [9]. In the last three years many parametric partitional cluster algorithms rooted in statistical physics were presented [8–10]."
+  }, {
+    "type" : "paragraph",
+    "id" : 117,
+    "page number" : 1,
+    "bounding box" : [ 50.751, 72.424, 295.884, 165.195 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "However, when there is no a priori knowledge about the data structure, it is more natural to adopt nonparametric methods, using a local criterion to build clusters by utilizing local structure of the data (e.g., by identifying high-density regions [11] in the data space). In the present work we use a physical problem as an analog to that of nonparametric clustering, analyzing it by the methodology of statistical physics."
+  }, {
+    "type" : "paragraph",
+    "id" : 108,
+    "page number" : 1,
+    "bounding box" : [ 313.782, 395.229, 558.946, 571.762 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "Clusters appear naturally in Potts models [12–14] as regions of aligned spins. Indeed, Fukunaga’s previously proposed method [11] can be formulated as a Metropolis relaxation of a ferromagnetic Potts model at T   0 . The relaxation process terminates at some local minimum of the energy function, and points with the same spin value are assigned to a cluster. This procedure depends strongly on the initial conditions and is likely to stop at a metastable state that does not correspond to the correct answer. Our method generalizes Fukunaga’s by introducing a ﬁnite temperature at which the division into clusters is stable and completely insensitive to the initial conditions and complements other, graph based algorithms [15] by providing a clustering criterion which is sensitive to collective features of the data set."
+  }, {
+    "type" : "paragraph",
+    "id" : 110,
+    "page number" : 1,
+    "bounding box" : [ 313.782, 358.502, 558.939, 395.693 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "A classiﬁcation   s   is deﬁned by assigning to each point   x i a label s i which may take integer values s i   1, . .., q . We deﬁne a cost function H    s    ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 112,
+    "page number" : 1,
+    "bounding box" : [ 400.225, 354.84, 411.941, 357.11 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "X"
+  }, {
+    "type" : "formula",
+    "id" : 113,
+    "page number" : 1,
+    "bounding box" : [ 340.336, 324.698, 558.916, 348.302 ],
+    "content" : "\\mathcal { H } [ \\{ s \\} ] & = - \\sum _ { \\langle i , j \\rangle } J _ { i j } \\delta _ { s _ { i } , s _ { j } } , \\quad s _ { i } = 1 , \\dots , q \\, , \\quad ( 1 ) \\\\ \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 114,
+    "page number" : 1,
+    "bounding box" : [ 313.793, 251.719, 558.947, 323.939 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "where   i , j   stands for neighboring points i and j , and J ij is some positive monotonically decreasing function of the distance, k   x i 2   x j k , so that the closer two points are to each other, the more they “like” to belong to the same class. This cost function is the Hamiltonian of an inhomogeneous ferromagnetic Potts model [16]."
+  }, {
+    "type" : "paragraph",
+    "id" : 116,
+    "page number" : 1,
+    "bounding box" : [ 313.793, 72.436, 558.957, 248.96 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "We want to select a good classiﬁcation using nothing but H    s    . Taking the usual path in information theory [17], we choose the probability distribution which has the most missing information and yet has some ﬁxed average cost E . The resulting probability distribution is that of a Potts system at equilibrium at inverse temperature b which is the Lagrange multiplier determining the average energy or cost E . Because the cost function (1) is symmetric with respect to a global permutation of all labels, each point is equally likely to belong to any of the q classes. Therefore the only way to extract meaningful information (or to assign clusters) out of the equilibrium probability distribution is through correlations. The average spinspin correlation function   d s i , s j   is thus used to decide whether or not two spins belong to the same cluster. In"
+  }, {
+    "type" : "paragraph",
+    "id" : 120,
+    "page number" : 2,
+    "bounding box" : [ 50.754, 539.711, 295.939, 692.361 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "As a concrete example, place a Potts spin at each of the data points of Fig. 1. At high temperatures the system is in a disordered (paramagnetic) phase. As the temperature is lowered a transition to a superparamagnetic phase occurs; spins within the same high density region become completely aligned, while different regions remain uncorrelated. As the temperature is further lowered, the effective coupling between the three clusters (induced via the dilute background spins) increases, until they become aligned. Even though this is a pseudotransition (note the ﬁnite number of participating clusters) and the transition temperature of the background is much lower, we call this “phase” of aligned clusters ferromagnetic."
+  }, {
+    "type" : "paragraph",
+    "id" : 124,
+    "page number" : 2,
+    "bounding box" : [ 50.754, 467.948, 295.939, 536.952 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "This simple qualitative picture is supported by the ﬁrst example presented in this Letter and by a mean ﬁeld calculation presented elsewhere [18]. “Real life” examples like the two presented at the end of the Letter have a more complicated structure of transitions and pseudotransitions. Next we give the details of our method."
+  }, {
+    "type" : "paragraph",
+    "id" : 126,
+    "page number" : 2,
+    "bounding box" : [ 50.752, 348.436, 295.937, 465.205 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "(A) Determination of the interactions J ij .—In common with other “local methods,” we ﬁrst determine a local length scale   a , which we chose to be equal to the average nearest-neighbor distance . The value of a is governed by the high density regions and is smaller than the typical distance between points in the low density regions. Our results depend only weakly on the deﬁnition of nearest neighbors. In the example of Fig. 1 we deﬁned neighbors as pairs of points whose Voronoi cells [19] have a common boundary. We set nearest-neighbor"
+  }, {
+    "type" : "image",
+    "page number" : 2,
+    "bounding box" : [ 56.28, 120.265, 291.745, 324.737 ],
+    "alt" : "The image is a black and white diagram consisting of a grid of squares. Each square contains a small, circular object that resembles a star or a nebula. The objects in the grid are scattered randomly, with no discernible pattern. The background of the image is filled with a very dark, almost black color, which might be a nebula or a star field. The image is labeled with the following text: - **Title**: Stars in the Milky Way - **Description**: The image contains a grid of squares, each square containing a small, circular object that resembles a star or a nebula. The objects in the grid are scattered randomly, with no discernible pattern. The background of the image is filled with a dark, almost black color. ### Analysis and Description: #### Objects in the Grid: 1. **Stars**: There are a few distinct objects in the grid, each with a circular shape. These objects are scattered randomly,",
+    "source" : "images/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 136,
+    "page number" : 2,
+    "bounding box" : [ 50.75, 73.498, 295.884, 112.979 ],
+    "font" : "Times-Roman",
+    "font size" : 9.465,
+    "text color" : "[0.0]",
+    "content" : "FIG. 1. The classiﬁed data set. Points classiﬁed (with T clus   0.075 and u   0.5 ) as belonging to the three largest clusters are marked by crosses, triangles, and 3 ’s. Single point clusters are denoted by squares."
+  }, {
+    "type" : "paragraph",
+    "id" : 118,
+    "page number" : 2,
+    "bounding box" : [ 505.08, 729.481, 510.363, 731.751 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "¶"
+  }, {
+    "type" : "formula",
+    "id" : 119,
+    "page number" : 2,
+    "bounding box" : [ 357.956, 696.354, 558.923, 724.943 ],
+    "content" : "J _ { i j } = J _ { j i } = \\frac { 1 } { \\hat { K } } \\exp \\left ( - \\frac { \\| \\vec { x } _ { i } - \\vec { x } _ { j } \\| ^ { 2 } } { 2 a ^ { 2 } } \\right ) , \\quad ( 2 ) \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 121,
+    "page number" : 2,
+    "bounding box" : [ 313.801, 678.564, 539.382, 692.271 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "b where K is the average number of neighbors per site."
+  }, {
+    "type" : "paragraph",
+    "id" : 122,
+    "page number" : 2,
+    "bounding box" : [ 313.79, 559.036, 558.964, 675.69 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "b (B) Calculation of thermodynamic quantities .—The ordering properties of the system are reﬂected by the susceptibility and the spin-spin correlation function   d s i , s j   (where   · ··   denotes a thermal average). Once the J ij have been determined, these quantities can be obtained by a Monte Carlo procedure. We used the SwendsenWang (SW) algorithm [14]; it exhibits much smaller autocorrelation times [14] than standard methods and also provides an improved estimator [20] of the spin-spin correlation function."
+  }, {
+    "type" : "paragraph",
+    "id" : 123,
+    "page number" : 2,
+    "bounding box" : [ 313.8, 499.157, 558.964, 556.163 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "(C) Locating the superparamagnetic phase .—In order to locate the temperature range in which the system is in the superparamagnetic phase we measure the susceptibility x of the system which is proportional to the variance of the magnetization m :"
+  }, {
+    "type" : "formula",
+    "id" : 125,
+    "page number" : 2,
+    "bounding box" : [ 323.299, 455.122, 558.925, 495.664 ],
+    "content" : "\\text {more} \\quad \\chi = \\frac { N } { T } \\left ( ( m ^ { 2 } \\rangle - \\langle m \\rangle ^ { 2 } ) , \\quad m = \\frac { ( N _ { \\max } / N ) q - 1 } { q - 1 } . \\\\ \\text {mon} \\quad \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\"
+  }, {
+    "type" : "paragraph",
+    "id" : 127,
+    "page number" : 2,
+    "bounding box" : [ 313.797, 427.041, 558.877, 451.502 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "Here N max   max   N 1 , N 2 , . .., N q   and N m is the number of spins with the value m ."
+  }, {
+    "type" : "paragraph",
+    "id" : 128,
+    "page number" : 2,
+    "bounding box" : [ 313.786, 234.304, 558.948, 424.168 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "At low temperatures the ﬂuctuations of the magnetization are negligible, so the susceptibility, x , is small. At T fs , the pseudotransition from the ferromagnetic phase to the superparamagnetic phase, we observed (see Fig. 2) a pronounced peak of x . In the superparamagnetic phase ﬂuctuations of the superspins or clusters acting as a whole result in a nearly constant susceptibility. As the temperature is further raised to T ps , the superparamagnetic to paramagnetic transition, x abruptly diminishes by a factor that is roughly the volume of the largest cluster. Thus the temperatures where a maximum of the susceptibility occurs and the temperature at which x decreases abruptly can serve as lower and upper bounds, respectively, for the superparamagnetic phase. A surprisingly good initial guess for T ps is provided [18] by T est   e 2 1   2   4 ln   1 1 p q   ."
+  }, {
+    "type" : "image",
+    "page number" : 2,
+    "bounding box" : [ 314.88, 100.346, 558.848, 215.622 ],
+    "alt" : "The image is a line graph titled Trend Analysis. The x-axis represents time, ranging from 0 to 10, with intervals of 10. The y-axis represents T/X, which stands for Trend. The graph shows a general upward trend over the years, with a slight dip in 2010. The graph has a linear scale of range 0 to 10 on the x-axis, with a minimum of 0 and a maximum of 10. The graph also has a linear scale of range 0 to 0.1 on the y-axis, with a minimum of 0 and a maximum of 0.1. There are two lines plotted on the graph: 1. A line that starts at the bottom of the graph and extends upwards, indicating a positive trend. 2. A line that starts at the top of the graph and extends downwards, indicating a negative",
+    "source" : "images/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 131,
+    "page number" : 2,
+    "bounding box" : [ 328.667, 207.0, 335.333, 215.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 132,
+    "page number" : 2,
+    "bounding box" : [ 323.0, 187.333, 343.0, 197.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.01"
+  }, {
+    "type" : "paragraph",
+    "id" : 133,
+    "page number" : 2,
+    "bounding box" : [ 323.046, 152.487, 346.954, 161.18 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10 -4"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 322.558, 116.517, 347.442, 142.085 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 322.558, 135.248, 347.442, 142.085 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "10-5",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 322.991, 116.517, 346.343, 124.483 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "10-6",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 137,
+    "page number" : 2,
+    "bounding box" : [ 404.333, 106.667, 424.333, 116.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 138,
+    "page number" : 2,
+    "bounding box" : [ 537.0, 106.667, 557.667, 116.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.15"
+  }, {
+    "type" : "footer",
+    "id" : 203,
+    "page number" : 2,
+    "bounding box" : [ 313.8, 73.492, 558.877, 91.706 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 205,
+      "page number" : 2,
+      "bounding box" : [ 313.8, 73.492, 558.877, 91.706 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "FIG. 2. The susceptibility density of the data set of Fig. 1 vs temperature. Note the logarithmic scale of the y axis."
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 140,
+    "page number" : 3,
+    "bounding box" : [ 50.75, 443.256, 295.939, 740.126 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "(D) The clustering procedure .—Our method consists of two main steps. First, we identify the range of temperatures where the clusters appear (in the superparamagnetic phase). Second, at some temperature within this range the correlation of nearest-neighbor spins is measured and used to identify the clusters. The procedure is summarized as follows: Assign to each point   x i a q -state Potts spin variable s i (here we chose q   20 ). (b) Find the nearest neighbors of each point according to a selected criterion (e.g., Voronoi tessellation [19]); measure the average nearest-neighbor distance a . (c) Calculate the strength of the nearest-neighbor interactions using Eq. (2). (d) Use an efﬁcient Monte Carlo procedure [14] with the Hamiltonian (1) to calculate the susceptibility x . (e) Identify the range of temperatures corresponding to the superparamagnetic phase, between T fs , the temperature of maximal x , and the (higher) temperature T ps where x diminishes abruptly. Cluster assignment is performed at T clus     T fs 1 T ps    2 . (f) Measure at T   T clus the spin-spin correlation function,   d s i , s j   , for all pairs of neighboring points   x i and   x j . (g) Clusters are identiﬁed according to a thresholding procedure. If   d s i , s j   . u , points   x i ,   x j are deﬁned as “friends.” Then all mutual friends (including friends of friends, etc.) are assigned to the same cluster. We chose u   0.5 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 158,
+    "page number" : 3,
+    "bounding box" : [ 50.741, 324.441, 295.937, 441.205 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "(E) The toy problem .—Figure 1 contains three dense regions of 2729, 1356, and 1084 points on a dilute background of 831 points. The points are uniformly distributed in each of the regions, but the three dense regions are 10 times denser than the background. Going through steps (a) to (d) we obtained the susceptibility as a function of temperature as presented in Fig. 2. Figure 1 presents the clusters obtained at T clus   0.075 using steps (f) and (g). The sizes of the three largest clusters are 2759, 1380, 1097 and the background decomposed into clusters of size 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 160,
+    "page number" : 3,
+    "bounding box" : [ 50.75, 157.153, 295.95, 321.683 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "Turning now to the effect of the parameters on the procedure, we found [18] that the number of Potts states, q , affects the sharpness of the transition [16] and the values of T fs and T ps . The higher q , the sharper the transition, but the inﬂuence of q on cluster assignment is very weak. Also, choosing clustering temperatures T clus other than the one suggested in (e) did not change the classiﬁcation signiﬁcantly. Classiﬁcation is not sensitive to the value of the threshold u , and values in the range 0.2 , u , 0.9 yielded similar results. The reason is that the frequency distribution of the values of the spin-spin correlation function exhibits two peaks, one near 1   q and the other close to 1, while for intermediate values it is very close to zero as is shown in Fig. 3(b)."
+  }, {
+    "type" : "paragraph",
+    "id" : 166,
+    "page number" : 3,
+    "bounding box" : [ 50.739, 72.568, 295.914, 154.279 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(F) The Iris data . - A popular benchmark problem for clustering procedures is the Iris data [5]. It consists of measurement of four quantities, performed on each of 150 flowers. The specimens were chosen from three species of Iris. The data constitute 150 points in fourdimensional space. We determined neighbors according to the mutual K ( K › 5 ) nearest-neighbors definition, applied our method, and we obtained the susceptibility curve of Fig. 4(a); it clearly shows two peaks. When heated, the system first breaks into two clusters at T ł 0.1 . At T clus › 0.2 we obtain two clusters, of sizes 80 and 40; points of the smaller cluster correspond to the species Iris Setosa . At T ł 0.6 another pseudotransition occurs where the larger cluster splits into two. At T clus › 0.7 we identified clusters of sizes 45, 40, and 38, corresponding to the species Iris Versicolor, Virginica, and Setosa, respectively."
+  }, {
+    "type" : "paragraph",
+    "id" : 143,
+    "page number" : 3,
+    "bounding box" : [ 436.667, 733.333, 452.0, 741.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.60-"
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 314.28, 624.026, 559.382, 739.868 ],
+    "alt" : "The image is a graph that shows the values of a variable over a period of time. The x-axis represents the time in years, ranging from 0 to 1000. The y-axis represents the values of the variable, ranging from 0 to 150. The graph shows a trend of increasing values over the years. Here is a detailed description of the graph: - **Title**: The title of the graph is Time Trend Analysis. - **X-Axis**: The x-axis is labeled Time (years) and ranges from 0 to 1000. - **Y-Axis**: The y-axis is labeled Values of the variable and ranges from 0 to 150. - **Data Points**: There are two sets of data points plotted on the graph. The first set of data points is labeled as a and the second set of data points is labeled",
+    "source" : "images/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 142,
+    "page number" : 3,
+    "bounding box" : [ 313.667, 733.0, 329.0, 739.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.15"
+  }, {
+    "type" : "paragraph",
+    "id" : 144,
+    "page number" : 3,
+    "bounding box" : [ 435.333, 724.667, 452.0, 732.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10.40"
+  }, {
+    "type" : "paragraph",
+    "id" : 145,
+    "page number" : 3,
+    "bounding box" : [ 436.0, 715.333, 452.0, 724.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.20-"
+  }, {
+    "type" : "paragraph",
+    "id" : 146,
+    "page number" : 3,
+    "bounding box" : [ 313.333, 702.0, 329.333, 710.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.10"
+  }, {
+    "type" : "paragraph",
+    "id" : 147,
+    "page number" : 3,
+    "bounding box" : [ 436.0, 689.333, 453.333, 698.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.06-"
+  }, {
+    "type" : "paragraph",
+    "id" : 149,
+    "page number" : 3,
+    "bounding box" : [ 436.0, 673.333, 454.0, 682.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.044"
+  }, {
+    "type" : "paragraph",
+    "id" : 148,
+    "page number" : 3,
+    "bounding box" : [ 313.333, 671.333, 329.333, 679.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 150,
+    "page number" : 3,
+    "bounding box" : [ 436.0, 657.333, 452.0, 666.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.02-"
+  }, {
+    "type" : "paragraph",
+    "id" : 152,
+    "page number" : 3,
+    "bounding box" : [ 436.0, 642.0, 452.0, 650.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00-"
+  }, {
+    "type" : "paragraph",
+    "id" : 151,
+    "page number" : 3,
+    "bounding box" : [ 313.333, 641.333, 329.333, 649.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 154,
+    "page number" : 3,
+    "bounding box" : [ 511.0, 622.333, 539.667, 645.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "<8s,8"
+  }, {
+    "type" : "paragraph",
+    "id" : 153,
+    "page number" : 3,
+    "bounding box" : [ 315.667, 628.333, 335.0, 642.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(a)0"
+  }, {
+    "type" : "paragraph",
+    "id" : 155,
+    "page number" : 3,
+    "bounding box" : [ 438.0, 628.667, 452.0, 639.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 156,
+    "page number" : 3,
+    "bounding box" : [ 313.791, 587.335, 558.953, 615.506 ],
+    "font" : "Times-Roman",
+    "font size" : 9.465,
+    "text color" : "[0.0]",
+    "content" : "FIG. 3. Frequency distribution of (a) distances between neighboring points of Fig. 1 (scaled by the average distance a ) and (b) spin-spin correlation functions of neighboring points."
+  }, {
+    "type" : "paragraph",
+    "id" : 157,
+    "page number" : 3,
+    "bounding box" : [ 313.792, 341.721, 558.914, 446.485 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "As opposed to the toy problem, the Iris data break into clusters in two stages . This reﬂects the fact that two of the three species are “closer” to each other than to the third one; our method clearly handles very well such hierarchical organization of the data. 125 samples were classiﬁed correctly (as compared with manual classiﬁcation); 25 were left unclassiﬁed. No further breaking of clusters was observed; all three disorder at T ps   0.8 (since all three are of about the same density)."
+  }, {
+    "type" : "paragraph",
+    "id" : 159,
+    "page number" : 3,
+    "bounding box" : [ 313.799, 222.194, 558.952, 338.848 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "(G) Landsat [21] data .—The following complications arise (in addition to unequal coupling between clusters): (a) the clusters differ in their density, and (b) the density of the points within a cluster is not uniform; it decreases towards the perimeter of the cluster. We analyzed data taken from a satellite image of the Earth consisting of 6437 “pixels,” each of which is represented by four spectral bands. The aim is to classify the terrain of each pixel. The susceptibility curve Fig. 4(b) reveals three pseudotransitions that reﬂect the presence of the following hierarchy of clusters."
+  }, {
+    "type" : "paragraph",
+    "id" : 162,
+    "page number" : 3,
+    "bounding box" : [ 444.0, 199.333, 467.333, 208.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.015"
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 318.36, 100.56, 555.714, 207.899 ],
+    "alt" : "The image is a graph with two axes labeled as X and Y. The x-axis is labeled as T and the y-axis is labeled as X. Both axes have a scale of range 0.05 to 0.15. The graph has two peaks on the y-axis, one at 0.15 and the other at 0.15. The graph also has two peaks on the x-axis, one at 0.2 and the other at 0.2.",
+    "source" : "images/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 163,
+    "page number" : 3,
+    "bounding box" : [ 326.0, 188.667, 346.667, 198.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.15"
+  }, {
+    "type" : "paragraph",
+    "id" : 164,
+    "page number" : 3,
+    "bounding box" : [ 448.667, 170.667, 466.667, 179.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.01"
+  }, {
+    "type" : "paragraph",
+    "id" : 165,
+    "page number" : 3,
+    "bounding box" : [ 331.333, 164.667, 344.667, 174.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.1"
+  }, {
+    "type" : "paragraph",
+    "id" : 168,
+    "page number" : 3,
+    "bounding box" : [ 438.686, 142.168, 469.981, 150.499 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5x10-J"
+  }, {
+    "type" : "paragraph",
+    "id" : 167,
+    "page number" : 3,
+    "bounding box" : [ 326.0, 138.667, 346.667, 148.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 169,
+    "page number" : 3,
+    "bounding box" : [ 360.0, 107.333, 374.667, 116.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 170,
+    "page number" : 3,
+    "bounding box" : [ 377.333, 107.333, 425.333, 116.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.4 0.6 0.8"
+  }, {
+    "type" : "paragraph",
+    "id" : 172,
+    "page number" : 3,
+    "bounding box" : [ 487.333, 105.333, 506.0, 114.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 173,
+    "page number" : 3,
+    "bounding box" : [ 515.333, 105.333, 528.0, 114.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.1"
+  }, {
+    "type" : "paragraph",
+    "id" : 174,
+    "page number" : 3,
+    "bounding box" : [ 538.0, 105.333, 556.667, 114.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.15"
+  }, {
+    "type" : "paragraph",
+    "id" : 171,
+    "page number" : 3,
+    "bounding box" : [ 389.0, 101.667, 395.667, 110.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T"
+  }, {
+    "type" : "footer",
+    "id" : 204,
+    "page number" : 3,
+    "bounding box" : [ 313.8, 73.612, 558.962, 94.845 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 206,
+      "page number" : 3,
+      "bounding box" : [ 313.8, 73.612, 558.962, 94.845 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "FIG. 4. Susceptibility density x T   N of the (a) Iris data and (b) Landsat data as a function of the temperature T ."
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 176,
+    "page number" : 4,
+    "bounding box" : [ 50.752, 622.879, 295.928, 740.126 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "At the lowest temperature two clusters A and B appear. Cluster A splits at the second pseudotransition into A 1 and A 2 . At the last pseudotransition cluster A 1 splits again into four clusters A i 1 , i   1,..., 4 . At this temperature the clusters A 2 and B are no longer identiﬁable; their spins are in a disordered state, since the density of points in A 2 and B is signiﬁcantly smaller than within the A i 1 clusters. Thus our method overcomes the difﬁculty of dealing with clusters of different densities by analyzing the data at several temperatures."
+  }, {
+    "type" : "paragraph",
+    "id" : 178,
+    "page number" : 4,
+    "bounding box" : [ 50.758, 491.352, 295.953, 620.005 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "To overcome the more difﬁcult problem posed by the fact that the density within the clusters is monotonically decreasing as their perimeter is approached we added a second operation to step (g) [see (D) above] of our procedure: we connected each point to the neighbor with which it had the highest correlation. The six large clusters which were identiﬁed in this manner, of sizes 1541, 1298, 1066, 563, 407, and 306, match the manually obtained land-use categories. 97% purity was obtained, meaning that points belonging to different categories were almost never assigned to the same cluster."
+  }, {
+    "type" : "paragraph",
+    "id" : 180,
+    "page number" : 4,
+    "bounding box" : [ 50.758, 276.18, 295.953, 488.385 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "(H) Comparison with the performance of other nonparametric clustering algorithms .—The algorithms [11,15] tested were valley seeking (Fukunaga), minimal spanning tree (Zhan), K shared neighbors (Jarvis), mutual neighborhood (Gowda), single linkage method, complete linkage method, minimum variance (Ward), and arithmetic averages (Sokal). The results from all these depend on various parameters in an uncontrolled way; for all methods we used the best result obtained. For the toy problem of (E) above only the single linkage and our method succeeded. The minimal spanning tree obtained the most accurate result for the Iris data, followed by our method, while the remaining clustering techniques failed to provide a satisfactory result. Only Fukunaga’s and our method succeeded in recovering the structure of the Landsat data. Fukunaga’s method, however, yielded for different (random) initial conditions grossly different answers, while our answer was stable."
+  }, {
+    "type" : "paragraph",
+    "id" : 193,
+    "page number" : 4,
+    "bounding box" : [ 50.756, 108.797, 295.931, 273.307 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "The central feature of our method is to change the similarity index of the problem from the interpoint distance k   x i 2   x j k to the spin-spin correlation function   d s i , s j   . This new similarity index has the enormous advantage that it is a function of a pair’s neighborhood. Two neighboring points in the low density region, with small k   x i 2   x j k are not in the same cluster, while points at the same distance, taken from the dense region, are . The magnetic model and its similarity index are sensitive to collective behavior of the region to which the pair belongs. As shown in Fig. 3(a), the frequency distribution of distances between neighboring points of Fig. 1 k   x i 2   x j k does not even hint that a natural cutoff distance, which separates neighboring points into two categories, exists. On the other hand,"
+  }, {
+    "type" : "paragraph",
+    "id" : 177,
+    "page number" : 4,
+    "bounding box" : [ 313.798, 599.474, 558.951, 656.479 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "We have also shown that our method is successful in real life problems, where existing methods failed to overcome the problems posed by the existence of different density distributions and many characteristic lengths in the data."
+  }, {
+    "type" : "paragraph",
+    "id" : 179,
+    "page number" : 4,
+    "bounding box" : [ 313.798, 539.71, 558.909, 596.715 ],
+    "font" : "Times-Roman",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "We thank I. Kanter and Y. Cohen for useful discussions and acknowledge the use of a public domain program [19]. This research is supported by the U.S.-Israel Binational Science Foundation (BSF), and the GermanyIsrael Science Foundation (GIF)."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 313.795, 273.326, 558.976, 492.1 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 12,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 470.614, 558.891, 492.1 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[1] S. Kirkpatrick, C.D. Gelatt, Jr., and M.P. Vecchi, Science 220 , 671 (1983).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 459.578, 548.65, 470.491 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[2] Y. Fu and P.W. Anderson, J. Phys. A 19 , 1605 (1986).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 448.655, 558.976, 459.568 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[3] M. Mézard and G. Parisi, J. Phys. (Paris) 47 , 1285 (1986).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 426.696, 558.929, 448.296 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[4] See, for example, A.L. Yuille and J.J. Kosowsky, Neural Comp. 6 , 341 (1994), and references therein.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 404.851, 558.891, 426.337 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[5] R. O. Duda and P.E. Hart, Pattern Classiﬁcation and Scene Analysis (Wiley, New York, 1973).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 393.815, 554.887, 404.728 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[6] J. Moody and C. J. Darken, Neural Comp. 1 , 281 (1989).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 382.892, 552.493, 393.806 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[7] A. Dekel and M.J. West, Astrophys. J. 288 , 411 (1985).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 360.934, 558.919, 382.883 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[8] K. Rose, E. Gurewitz, and G.C. Fox, Phys. Rev. Lett. 65 , 945 (1990).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 318.48, 339.088, 558.938, 360.924 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[9] N. Barkai and H. Sompolinsky, Phys. Rev. E 50 , 1766 (1994).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 317.13, 558.948, 338.615 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[10] J. M. Buhmann and H. Kühnel, IEEE Trans. Inf. Theory 39 , 1133 (1993).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 295.171, 558.938, 316.77 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[11] K. Fukunaga, Introduction to Statistical Pattern Recognition (Academic Press, San Diego, 1990).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.795, 273.326, 558.919, 295.161 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[12] C. M. Fortuin and P.W. Kasteleyn, Physica (Utrecht) 57 , 536 (1972).",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 313.804, 108.919, 558.976, 273.203 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 9,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 262.289, 546.861, 273.203 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[13] A. Coniglio and W. Klein, J. Phys. A 12 , 2775 (1980).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 240.444, 558.91, 261.93 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[14] S. Wang and R.H. Swendsen, Physica (Amsterdam) 167A , 565 (1990).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 218.485, 558.863, 239.971 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[15] A.K. Jain and R.C. Dubes, Algorithms for Clustering Data (Prentice Hall, Englewood Cliffs, NJ, 1988).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 196.64, 558.9, 218.126 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[16] W. Janke and R. Villanova, “Two-Dimensional 8-State Potts Model on Random Lattices” (to be published).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.804, 174.681, 558.976, 196.167 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[17] A. Katz, Principles of Statistical Mechanics (Freeman, San Francisco, 1967).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.814, 163.759, 541.788, 174.322 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[18] M. Blatt, S. Wiseman, and E. Domany (unpublished).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.814, 152.723, 517.226, 163.636 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[19] B. Joe, SIAM J. Sci. Comput. 14 , 1415 (1993).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.814, 141.8, 517.709, 152.713 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[20] F. Niedermayer, Phys. Lett. B 237 , 473 (1990).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 313.814, 108.919, 558.967, 141.44 ],
+      "font" : "Times-Roman",
+      "font size" : 9.465,
+      "text color" : "[0.0]",
+      "content" : "[21] Ashwin Srinivasan, UCI repository of machine learning databases (University of California, Irvine) maintained by P. Murphy and D. Aha (1994).",
+      "kids" : [ ]
+    } ]
+  } ]
+}

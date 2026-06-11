@@ -1,0 +1,3974 @@
+{
+  "file name" : "Green1995.pdf",
+  "number of pages" : 23,
+  "author" : null,
+  "title" : null,
+  "creation date" : "D:20070206134422-05'00'",
+  "modification date" : "D:20070206134422-05'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 401,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 43.199, 643.227, 454.871, 667.116 ],
+    "heading level" : 1,
+    "font" : "Times-Bold",
+    "font size" : 12.0,
+    "text color" : "[0.0]",
+    "content" : "Reversible Jump Markov Chain Monte Carlo Computation and Bayesian Model Determination"
+  }, {
+    "type" : "image",
+    "page number" : 1,
+    "bounding box" : [ 475.075, 648.2, 552.075, 732.2 ],
+    "source" : "images/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 1,
+    "bounding box" : [ 79.199, 613.88, 146.843, 624.348 ],
+    "font" : "Times-Roman",
+    "font size" : 12.0,
+    "text color" : "[0.0]",
+    "content" : "Peter J. Green"
+  }, {
+    "type" : "paragraph",
+    "id" : 403,
+    "page number" : 1,
+    "bounding box" : [ 79.199, 585.48, 340.499, 595.948 ],
+    "font" : "Times-Roman",
+    "font size" : 12.0,
+    "text color" : "[0.0]",
+    "content" : "Biometrika , Vol. 82, No. 4. (Dec., 1995), pp. 711-732."
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 558.501, 93.479, 567.224 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0]",
+    "content" : "Stable URL:"
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 544.301, 488.289, 553.024 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 1.0]",
+    "content" : "http://links.jstor.org/sici?sici=0006-3444%28199512%2982%3A4%3C711%3ARJMCMC%3E2.0.CO%3B2-F"
+  }, {
+    "type" : "paragraph",
+    "id" : 406,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 517.467, 262.909, 526.19 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0]",
+    "content" : "Biometrika is currently published by Biometrika Trust."
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 412.467, 548.739, 454.19 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0]",
+    "content" : "Your use of the JSTOR archive indicates your acceptance of JSTOR's Terms and Conditions of Use, available at http://www.jstor.org/about/terms.html . JSTOR's Terms and Conditions of Use provides, in part, that unless you have obtained prior permission, you may not download an entire issue of a journal or multiple copies of articles, and you may use content in the JSTOR archive only for your personal, non-commercial use."
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 379.467, 510.899, 399.19 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0]",
+    "content" : "Please contact the publisher regarding any further use of this work. Publisher contact information may be obtained at http://www.jstor.org/journals/bio.html ."
+  }, {
+    "type" : "paragraph",
+    "id" : 409,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 346.467, 540.619, 366.19 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0]",
+    "content" : "Each copy of any part of a JSTOR transmission must contain the same copyright notice that appears on the screen or printed page of such transmission."
+  }, {
+    "type" : "paragraph",
+    "id" : 410,
+    "page number" : 1,
+    "bounding box" : [ 43.199, 280.467, 536.729, 300.19 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0]",
+    "content" : "JSTOR is an independent not-for-profit organization dedicated to and preserving a digital archive of scholarly journals. For more information regarding JSTOR, please contact support@jstor.org."
+  }, {
+    "type" : "heading",
+    "id" : 411,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 49.333, 645.04, 460.333, 685.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Reversible jump Markov chain Monte Carlo computation and Bayesian model determination"
+  }, {
+    "type" : "heading",
+    "id" : 412,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 195.667, 623.373, 315.0, 635.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "BY PETER J. GREEN"
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "page number" : 2,
+    "bounding box" : [ 86.667, 604.707, 422.667, 621.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Department of Mathematics; University of Bristol, Bristol BS8 1TW, UK."
+  }, {
+    "type" : "heading",
+    "id" : 414,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 229.667, 581.373, 280.333, 593.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "SUMMARY"
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 2,
+    "bounding box" : [ 43.667, 446.373, 466.333, 578.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Markov chain Monte Carlo methods for Bayesian computation have until recently been restricted to problems  where the joint distribution of all variables has a density with respect to some fixed standard underlying measure. have therefore not been available for application to Bayesian model determination; where the dimensionality of the parameter vector is typically not fixed. This paper proposes a new framework for the construction of reversible Markov chain samplers that jump between parameter subspaces of differing dimensionality, which is flexible and entirely constructive It should therefore have wide applicability in model determination problems. The methodology is illustrated with appli cations to multiple change-point analysis in one and two dimensions; and to a Bayesian comparison of binomial experiments: They"
+  }, {
+    "type" : "paragraph",
+    "id" : 416,
+    "page number" : 2,
+    "bounding box" : [ 44.333, 414.707, 466.0, 438.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Some key words: Change-point analysis; Image segmentation; Jump diffusion; Markov chain Monte Carlo; Multiple binomial experiments; Multiple shrinkage; Step function; Voronoi tessellation."
+  }, {
+    "type" : "heading",
+    "id" : 417,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 209.333, 375.707, 300.333, 388.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1 . INTRODUCTION"
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "page number" : 2,
+    "bounding box" : [ 43.333, 294.04, 465.667, 374.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "There are a number of challenging statistical problems; often involving inference about curves; surfaces or images, where the dimension of the object of inference is not fixed. One example discussed in detail later in this paper concerns the multiple change-point problem for Poisson processes; where it is assumed that the rate is piecewise constant; but changes an unknown number of times. The times of change and the different rates are unknown. The object of inference is therefore a step function."
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 2,
+    "bounding box" : [ 43.0, 242.04, 464.667, 297.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "There are many problems of broadly similar vein; with the same general ingredients: a discrete choice   between a set of  models, a parameter vector with an interpretation depending on the model in question; and data, influenced by the model and parameter values, to be used as a basis for inference. Some examples are:"
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 2,
+    "bounding box" : [ 55.0, 228.707, 374.667, 245.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(a) factorial experiments, with a allowing factor effects to tie; prior"
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 2,
+    "bounding box" : [ 73.667, 216.707, 223.667, 231.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "variable selection in regression;"
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 2,
+    "bounding box" : [ 73.0, 203.707, 217.667, 218.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "non-nested regression models;"
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 2,
+    "bounding box" : [ 73.333, 188.707, 388.0, 206.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "mixture deconvolution with an unknown number of components;"
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 2,
+    "bounding box" : [ 73.333, 176.373, 410.0, 192.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Bayesian choice between models with different numbers of parameters;"
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "page number" : 2,
+    "bounding box" : [ 54.0, 164.373, 228.667, 181.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(f) multiple change-point problems;"
+  }, {
+    "type" : "paragraph",
+    "id" : 426,
+    "page number" : 2,
+    "bounding box" : [ 58.0, 150.04, 458.0, 167.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "image segmentation; the two-dimensional analogue of the change-point problem;"
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 2,
+    "bounding box" : [ 52.667, 137.707, 389.0, 154.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(h) object recognition; approached via marked spatial processes. point"
+  }, {
+    "type" : "paragraph",
+    "id" : 428,
+    "page number" : 2,
+    "bounding box" : [ 42.667, 98.04, 464.0, 141.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Model criticism; model choice, model selection; model averaging, etc, all require the same basic computational tasks; and it is a technology for these tasks that is the focus here. The aim of this paper is to add further weight to the assertions (i) that a Bayesian approach is attractive for such problems; and (ii) that the computations for such inference can be handled by Markov chain Monte Carlo methods. In particular, in $ 3 we introduce à novel class of such methods capable of jumping between subspaces of differing dimensionality. This   considerably  extends the scope of   Metropolis-Hastings  methods; and applies to very many varying-dimension problems."
+  }, {
+    "type" : "heading",
+    "id" : 429,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 145.333, 601.24, 432.333, 611.907 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2 BAYESIAN MODEL CHOICE AS HIERARCHICAL MODEL"
+  }, {
+    "type" : "paragraph",
+    "id" : 430,
+    "page number" : 3,
+    "bounding box" : [ 78.0, 530.24, 499.333, 597.907 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Suppose that we have a countable collection of candidate models { Alk, k € % }. Model Ak has a vector 0(k) of unknown parameters; assumed to lie in 9\" , where the dimension nk may vary from model to model.  With obvious changes; our methods would apply to an arbitrary collection of parameter subspaces:  We observe data y There is a natural hierarchical structure expressed by modelling the joint distribution of (k, 0(), y) as"
+  }, {
+    "type" : "formula",
+    "id" : 431,
+    "page number" : 3,
+    "bounding box" : [ 203.919, 513.181, 372.376, 526.684 ],
+    "content" : "p ( k , \\theta ^ { ( k ) } , y ) = p ( k ) p ( \\theta ^ { ( k ) } | k ) p ( y | k , \\theta ^ { ( k ) } ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 3,
+    "bounding box" : [ 78.667, 469.24, 171.532, 493.573 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "abbreviate the over 8 = pair"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 3,
+    "bounding box" : [ 78.0, 388.24, 499.667, 469.573 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "As a concrete example; consider a change-point problem in which there is an unknown number of change-points in a piecewise constant regression function on the interval [0, L]. }, model Mk says that there are exactly k change-points. To parametrise the resulting step function; we need to specify the position of each change-point; and the value of the function on each of the (k + 1) subintervals into which [0,L] is divided. Thus 0() is a vector of length nx = 2k + 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 3,
+    "bounding box" : [ 78.667, 348.24, 499.667, 390.907 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Bayesian inference about k and will be based on the joint posterior 0(k)|y), which is the target of the Markov chain Monte Carlo computations described below. It will often be appropriate to factorise this as 0(k) p(k,"
+  }, {
+    "type" : "formula",
+    "id" : 435,
+    "page number" : 3,
+    "bounding box" : [ 217.885, 331.573, 279.0, 344.907 ],
+    "content" : "p ( k , \\theta ^ { ( k ) } | y ) = p ("
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 3,
+    "bounding box" : [ 78.0, 285.24, 500.0, 327.907 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "and to interpret the two terms separately, thus avoiding any 'model averaging . Inference about the model indicator may sometimes be phrased in terms, not of p(kly) but of the Bayes factor for one model relative to another:"
+  }, {
+    "type" : "formula",
+    "id" : 437,
+    "page number" : 3,
+    "bounding box" : [ 250.333, 250.907, 323.667, 265.573 ],
+    "content" : "\\overline { p ( k _ { 0 } | y ) } \\overset { \\circledast } { \\cdot } \\overline { p ( k _ { 0 } ) } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 438,
+    "page number" : 3,
+    "bounding box" : [ 77.667, 141.573, 500.0, 248.573 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "which does not depend on the hyperprior p(k) All these quantities are readily estimated from the Markov chain Monte Carlo sample obtained by the methods below; if Bayes factors be specified to implement the computation, but it can be chosen on grounds of convenience. Note that regarding the posterior p(k, 0()|y) as the objective of the computation does not preclude model selection Or prediction ultimately based on a non-coherent principle such as that advocated by Madigan & Raftery (1994); thus the methods of the present paper would be applicable to their analysis. being"
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 3,
+    "bounding box" : [ 78.667, 79.24, 500.0, 144.573 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Recent work on Markov chain Monte Carlo computation with application to aspects of Bayesian model determination includes Phillips & Smith (1995), based on the jump diffusion samplers of Grenander & Miller (1994), Carlin & Chib (1995) who effectively work with M. Piccioni and G."
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 4,
+    "bounding box" : [ 41.0, 529.04, 463.667, 722.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "onto subsets of a single parameter space. Each of these approaches has its merits and its disadvantages. In jump-diffusion; there is a conflict between minimising the distortion caused by using a positive time increment; and improving Monte Carlo efficiency . Further, although the jump-diffusion principle is really rather general, the range of jump transitions discussed by Grenander & Miller; and used by Phillips & Smith, is somewhat limited, amounting to conditional versions of Gibbs kernels; and Hastings kernels based on proposals   generated from While these moves   seem adequate for Grenander & Miller's applications; they are perhaps too restricted for general Bayesian computation: The product space approach of Carlin & Chib requires that irrelevant parameters; the 0() for k different from the current k, need to be continually updated, which apparently limits the approach to a small set of models % . In recent unpublished work, A. OHagan and the author have pointed out that there is no need to update the irrelevant parameters to ensure the proper limiting distribution of the chain; but performance of the modified method is not very encouraging The embedding method seems cumbersome and inexplicit in use."
+  }, {
+    "type" : "heading",
+    "id" : 441,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 96.667, 496.707, 408.0, 510.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3 _ MARKOV CHAIN MONTE CARLO USING REVERSIBLE JUMPS"
+  }, {
+    "type" : "heading",
+    "id" : 442,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 212.667, 481.707, 292.0, 492.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3-1. Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 4,
+    "bounding box" : [ 40.0, 400.707, 463.0, 478.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a target distribution of interest. In Bayesian inference, this is the posterior distribution for the parameters given the data, and in the present context of model determination; 'parameters' include the indicator k for the model itself, as well as tation; we construct a Markov transition kernel P(x,dx' ) that is aperiodic and irreducible; and satisfies detailed balance:"
+  }, {
+    "type" : "formula",
+    "id" : 444,
+    "page number" : 4,
+    "bounding box" : [ 262.333, 366.04, 357.0, 387.04 ],
+    "content" : "= \\int _ { B } \\int _ { A } \\pi ( d x ^ { \\prime } ) P ( x ^ { \\prime } , d x ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 4,
+    "bounding box" : [ 40.667, 307.373, 462.667, 361.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "for all appropriate A, B, and then simulate this chain to obtain a dependent; approximate; the correct limiting distribution, in practical design of samplers it is a convenient restriction to impose."
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 4,
+    "bounding box" : [ 40.0, 152.04, 462.667, 309.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In straightforward cases; r(dx) is either a discrete probability distribution; or has a joint density with respect to some simple measure, usually Lebesgue; then methods for constructing suitable transition kernels are familiar: The two most popular methods are the Gibbs (Geman & Geman;   1984) and the Metropolis-Hastings method (Metropolis et al, 1953; Hastings, 1970). A full description and some comparisons are given by Tierney (1994), Besag et al. (1995), elsewhere. Briefly, each method proceeds by sweeping around all the variables x = (X1 X2, xn) visiting subsets of the indices in turn; either randomly or systematically. When a subset T of {1,2, n} is visited, the variables Xr:= {xi:ie T} are updated. In the Gibbs sampler, the new values are drawn method, proposed new values xr for these variables are drawn from an essentially arbitrary distribution qr(xr; x) Then; with probability sampler and"
+  }, {
+    "type" : "formula",
+    "id" : 447,
+    "page number" : 4,
+    "bounding box" : [ 230.0, 117.373, 332.333, 138.373 ],
+    "content" : "\\min \\left \\{ 1 , \\frac { \\pi ( x _ { T } | x _ { - T } ) q _ { T } ( x _ { T } , x ) } { \\pi ( x _ { T } | x _ { - T } ) q _ { T } ( x _ { T } ^ { \\prime } ; x ) } \\right \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "page number" : 4,
+    "bounding box" : [ 40.667, 98.04, 405.0, 114.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "the proposed values are accepted; otherwise; the existing values are retained."
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 5,
+    "bounding box" : [ 78.0, 605.373, 501.0, 697.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The Gibbs sampler hardly even makes sense when x has a length that is not fixed, and elements which need not have a fixed interpretation across all models; to resample some components conditional on the remainder would rarely be meaningful. We therefore concentrate on adapting the wider class of Hastings algorithms to the present situation; following the approach outlined by Green (1994), in discussion of Grenander & Miller (1994). This gives a framework for dealing with the case where there is no simple under lying measure."
+  }, {
+    "type" : "heading",
+    "id" : 450,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 240.333, 575.707, 339.667, 590.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3-2 The general case"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 5,
+    "bounding box" : [ 78.0, 496.707, 501.0, 579.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In a typical application with multiple parameter subspaces {8} of different dimen sionality; it will be necessary to devise different types of move between the subspaces. These will be combined to form what Tierney (1994) calls a hybrid sampler, by random choice between available moves at each transition; in order to traverse freely across the combined parameter space 8. We restrict attention to Markov chains in which detailed balance is attained within each move type."
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 5,
+    "bounding box" : [ 79.0, 444.04, 500.333, 498.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "When the current state is x; we propose a move of type m, that would take the state to dx' with probability qm(x; dx' ). For the moment, this is an arbitrary sub-probability measure on to the present state is proposed. Not all moves m will be available from all starting states"
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 5,
+    "bounding box" : [ 78.667, 379.04, 500.333, 432.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "As usual probability of acceptance will be denoted by am(x, x' ), and is left undefined at present; the objective of the following analysis is to derive an expression for %m(x, x') which achieves the stated aim of attaining detailed balance within each move type."
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 5,
+    "bounding box" : [ 90.333, 368.707, 342.333, 381.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The transition kernel we have defined can be written"
+  }, {
+    "type" : "formula",
+    "id" : 455,
+    "page number" : 5,
+    "bounding box" : [ 178.0, 338.373, 236.0, 355.04 ],
+    "content" : "P ( x , B ) = \\sum _ { m } \\left | \\Big | _ { B } \\right |"
+  }, {
+    "type" : "formula",
+    "id" : 456,
+    "page number" : 5,
+    "bounding box" : [ 161.333, 284.373, 206.0, 301.04 ],
+    "content" : "s ( x ) \\colon = \\sum _ { x } \\left | \\begin{matrix} 1 \\\\ 0 \\end{matrix} \\right |"
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 5,
+    "bounding box" : [ 78.0, 245.04, 499.667, 273.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "is the probability of not moving from x, either through a proposed move being rejected;, or because no move is attempted."
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 5,
+    "bounding box" : [ 79.333, 217.707, 498.667, 247.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The detailed balance relation (1) requires the equilibrium probability of moving from A to B to equal that from B to A, for all Borel sets A, B in <. Substituting (2), we need"
+  }, {
+    "type" : "paragraph",
+    "id" : 460,
+    "page number" : 5,
+    "bounding box" : [ 78.333, 129.373, 247.667, 142.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "For this to hold, it is sufficient that"
+  }, {
+    "type" : "formula",
+    "id" : 459,
+    "page number" : 5,
+    "bounding box" : [ 295.667, 146.707, 499.0, 170.373 ],
+    "content" : "( d x ^ { \\prime } ) \\int _ { A } q _ { m } ( x ^ { \\prime } , d x ) \\alpha _ { m } ( x ^ { \\prime } , x ) + \\int _ { B } \\bigcap _ { A } \\pi ( d x ^ { \\prime } ) s ( x ^ { \\prime } ) . \\ \\ ( 3 )"
+  }, {
+    "type" : "formula",
+    "id" : 461,
+    "page number" : 5,
+    "bounding box" : [ 155.0, 98.707, 438.0, 115.707 ],
+    "content" : "\\int _ { A } \\pi ( d x ) \\left | _ { B } q _ { m } ( x , d x ^ { \\prime } ) \\alpha _ { m } ( x , x ^ { \\prime } ) = \\left | _ { B } \\pi ( d x ^ { \\prime } ) \\right | _ { A } q _ { m } ( x ^ { \\prime } , d x ) \\alpha _ { m } ( x ^ { \\prime } , x )"
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 5,
+    "bounding box" : [ 77.333, 72.373, 397.333, 88.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "for each m, A, B, and to achieve this we choose %m(x, x) as follows."
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 6,
+    "bounding box" : [ 52.0, 679.707, 78.0, 690.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Then"
+  }, {
+    "type" : "formula",
+    "id" : 464,
+    "page number" : 6,
+    "bounding box" : [ 111.667, 575.373, 295.0, 663.373 ],
+    "content" : "\\int _ { A } \\pi ( d x ) \\int _ { B } q _ { m } ( x , d x ^ { \\prime } ) \\alpha _ { m } ( x , x ^ { \\prime } ) & = \\int _ { A } \\int _ { B } \\xi _ { m } ( d x , d x ^ { \\prime } ) \\\\ & = \\int _ { B } \\int _ { A } \\xi _ { m } ( d x ^ { \\prime } , d x ) \\\\ & = \\int _ { B } \\pi ( d x ^ { \\prime } ) \\int _ { A } q _ { m } ( x )"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 6,
+    "bounding box" : [ 41.333, 535.707, 62.667, 557.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "as that"
+  }, {
+    "type" : "formula",
+    "id" : 466,
+    "page number" : 6,
+    "bounding box" : [ 166.497, 515.124, 460.311, 527.727 ],
+    "content" : "\\alpha _ { m } ( x , x ^ { \\prime } ) f _ { m } ( x , x ^ { \\prime } ) = \\alpha _ { m } ( x ^ { \\prime } , x ) f _ { m } ( x ^ { \\prime } , x ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "page number" : 6,
+    "bounding box" : [ 40.0, 467.04, 462.667, 509.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "As shown by Peskun (1973) with a proof only for the finite state space case, it is optimal, in the sense of reducing autocorrelation in the realised chain, to make the acceptance probability as large as possible subject to retaining detailed balance. Thus we take"
+  }, {
+    "type" : "formula",
+    "id" : 468,
+    "page number" : 6,
+    "bounding box" : [ 262.0, 432.04, 457.0, 461.373 ],
+    "content" : "= \\min \\left \\{ 1 , \\frac { f _ { m } ( x ^ { \\prime } , x ) } { f _ { m } ( x , x ^ { \\prime } ) } \\right \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 6,
+    "bounding box" : [ 40.667, 372.04, 463.0, 425.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "which satisfies (4). The possibility that the denominator of the ratio above is zero is not of concern, since for such x;, dx' there is zero probability of proposing such a move, by definition of f; the ratio can therefore safely be set to an arbitrary value. Less formally; but more transparently, we could write this expression using a ratio of measures"
+  }, {
+    "type" : "formula",
+    "id" : 470,
+    "page number" : 6,
+    "bounding box" : [ 244.333, 347.373, 457.667, 356.707 ],
+    "content" : "= \\min \\left \\{ 1 , \\frac { \\kappa ( \\mu \\pi ) / q _ { m } ( \\lambda ^ { \\prime } , \\omega \\lambda ) } { \\omega } \\right \\} ."
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 6,
+    "bounding box" : [ 40.667, 290.373, 462.667, 331.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "For straightforward cases, the dimension-matching requirement can be imposed fairly simply; by following a standard 'template' . We give further details in $ 3-3, but in the meantime add a few remarks."
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 6,
+    "bounding box" : [ 40.333, 101.373, 462.333, 284.373 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 41.333, 256.707, 462.333, 284.373 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "Remark 1. The definition of the sampling method is entirely constructive. No integration; by simulation or otherwise; is needed to set up the transition mechanism.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 40.667, 197.707, 462.333, 253.707 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "Remark 2 The method allows great flexibility to the algorithm designer to the structure of the problem at hand. Intuition can be used to choose moves that plausibly induce a heavy burden of algebraic and analytic work to establish validity. exploit good",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 40.333, 101.373, 462.333, 194.373 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "Remark 3. Although as usual with Hastings methods, the distribution T need not be normalised, relative   normalising constants between different   subspaces are needed. Specifically, while it is not necessary that the distributions Ik) are properly normalised, there must be only one unknown multiplicative constant among all such priors; unless only posteriors conditional on k are needed. Detailed balance  between different   subspaces   could not be   achieved   otherwise, apparently missed   by Grenander & Miller (1994). prior point",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 7,
+    "bounding box" : [ 80.0, 517.373, 502.667, 698.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Remark 4. Our general framework includes various familiar special cases. When there is only one parameter subspace; with a single dominating measure; it is just the random scan Hastings  method.  Our framework   provides a natural   generalisation methods to general parameter spaces. In the case of point processes; the method is closely related to the spatial birth and death process studied by Preston (1977). Recently; Geyer & Møller (1994) have developed a Hastings sampler for point processes; which is a special case of our construction; derive likelihood inference procedures for point patterns based on this, and  prove results on convergence. The jump-diffusion processes of Grenander & Miller (1994), proposed for Bayesian computation in certain computer vision problems, also provide a special case of our method, but one in which withinparameter-subspace moves are made by a continuous-time diffusion process; which, when discretised temporally for computational purposes; only approximately maintains detailed balance. The range of jump transitions presented by Grenander & Miller is also somewhat restricted. they"
+  }, {
+    "type" : "heading",
+    "id" : 476,
+    "level" : "Doctitle",
+    "page number" : 7,
+    "bounding box" : [ 188.667, 481.373, 393.667, 499.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3-3. Switching between two simple subspaces"
+  }, {
+    "type" : "paragraph",
+    "id" : 477,
+    "page number" : 7,
+    "bounding box" : [ 79.333, 414.04, 500.667, 485.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The rather obscure 'dimension-matching' Assumption in $ 3-2 deserves interpretation in more intuitive terms. Suppose first that there are just two subspaces < {1} x 9 and move might be to {1, {(01 + 02)}. For this move type; the equilibrium joint proposal probability good"
+  }, {
+    "type" : "formula",
+    "id" : 478,
+    "page number" : 7,
+    "bounding box" : [ 250.667, 387.707, 343.0, 404.04 ],
+    "content" : "\\left | \\pi ( d x ) \\right | _ { \\mathcal { Q } _ { m } } q _ { m } ( x , d x ^ { \\prime } ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "page number" : 7,
+    "bounding box" : [ 78.0, 268.707, 500.333, 375.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where and Bc 2, must have a density with respect to a singular measure on on 93. For detailed balance to be attainable, therefore, it is necessary that the reverse move from A to B should be defined via a proposal distribution qm(x, dx') that for each X = For example, we might draw a random variable u from some distribution; independently of the current state 0, and set 01 = 0+u, 02 = 0 _ u. All that the Assumption does is to ensure that singularities of the sort arising above are self-consistent."
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 7,
+    "bounding box" : [ 76.667, 98.707, 500.343, 271.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "To describe in detail how to  implement the   dimension-matching   requirement in many standard cases, we consider a set-up a little more general than the example just and 'Ik = 2) are proper densities in 9\" and 9n2. Consider just one move type; which always switches subspaces; so that q(x, 81) = 0 for x € subscript m is suppressed . The probability of choosing this move will be denoted by j(x). A typical way of accomplishing a transition from < to <2 will be by generating a vector of continuous random variables u(1) of length m1 independently of 0(1), and then of length m2 will be generated and 0(1) set to some function of 0(2) and u(2) . For dimensionmatching, there must be a bijection between (0(1) , and u(2) ). In particular, the lengths of u(1) and u(2) must satisfy n1 + m1 = n2 + mz The proposal distribution q(x, dx') can now be defined by the distributions of u(1) and which we suppose given by proper p(0(2) | being u(2) u(1)) (0(2) , 4(2)"
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 8,
+    "bounding box" : [ 45.333, 711.04, 60.667, 721.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "set"
+  }, {
+    "type" : "formula",
+    "id" : 482,
+    "page number" : 8,
+    "bounding box" : [ 111.601, 690.152, 398.015, 702.776 ],
+    "content" : "\\xi ( A \\times B ) = \\xi ( B \\times A ) = \\lambda \\{ ( \\theta ^ { ( 1 ) } , u ^ { ( 1 ) } ) \\colon \\theta ^ { ( 1 ) } \\in A , \\, \\theta ^ { ( 2 ) } ( \\theta ^ { ( 1 ) } , u ^ { ( 1 ) } ) \\in B \\} ,"
+  }, {
+    "type" : "formula",
+    "id" : 483,
+    "page number" : 8,
+    "bounding box" : [ 117.142, 650.26, 391.841, 663.249 ],
+    "content" : "\\xi ( A \\times B ) = \\xi \\{ ( A \\cap \\mathcal { C } _ { 1 } ) \\times ( B \\cap \\mathcal { C } _ { 2 } ) \\} + \\xi \\{ ( A \\cap \\mathcal { C } _ { 2 } ) \\times ( B \\cap \\mathcal { C } _ { 1 } ) \\} ."
+  }, {
+    "type" : "formula",
+    "id" : 484,
+    "page number" : 8,
+    "bounding box" : [ 139.059, 611.226, 308.417, 624.12 ],
+    "content" : "f ( x , x ^ { \\prime } ) = p ( 1 , \\theta ^ { ( 1 ) } | y ) j ( 1 , \\theta ^ { ( 1 ) } ) q _ { 1 } ( u ^ { ( 1 ) } ) ,"
+  }, {
+    "type" : "formula",
+    "id" : 485,
+    "page number" : 8,
+    "bounding box" : [ 138.333, 582.04, 185.0, 596.04 ],
+    "content" : "f ( x ^ { \\prime } , x ) = p ("
+  }, {
+    "type" : "formula",
+    "id" : 486,
+    "page number" : 8,
+    "bounding box" : [ 182.488, 582.454, 205.845, 595.959 ],
+    "content" : "= p ( 2 , \\theta"
+  }, {
+    "type" : "paragraph",
+    "id" : 487,
+    "page number" : 8,
+    "bounding box" : [ 45.333, 538.707, 336.0, 556.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4 of the equilibrium joint proposal distribution n(dx)q(x, dx')"
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 8,
+    "bounding box" : [ 44.667, 514.707, 465.333, 544.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "According to (5), the appropriate acceptance probability for the proposed transition from x = (1,0(1)) to x' = (2,0(2)) is"
+  }, {
+    "type" : "formula",
+    "id" : 489,
+    "page number" : 8,
+    "bounding box" : [ 139.333, 487.04, 464.0, 511.04 ],
+    "content" : "\\min \\left \\{ 1 , \\frac { p ( 2 , \\theta ^ { ( 2 ) } | y ) j ( 2 , \\theta ^ { ( 2 ) } ) q _ { 2 } ( u ^ { ( 2 ) } ) } { p ( 1 , \\theta ^ { ( 1 ) } | y ) j ( 1 , \\theta ^ { ( 1 ) } ) q _ { 1 } ( u ^ { ( 1 ) } ) } \\left [ \\frac { \\partial ( \\theta ^ { ( 2 ) } , u ^ { ( 2 ) } ) } { \\partial ( \\theta ^ { ( 1 ) } , u ^ { ( 1 ) } ) } \\right ] \\right \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 8,
+    "bounding box" : [ 45.0, 446.707, 102.333, 458.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "used above."
+  }, {
+    "type" : "paragraph",
+    "id" : 491,
+    "page number" : 8,
+    "bounding box" : [ 43.333, 404.04, 465.0, 433.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "then; there is no need to generate the corresponding and the expression for the acceptance probability simplifies. For example; with m2 = 0, it becomes u(i)"
+  }, {
+    "type" : "formula",
+    "id" : 492,
+    "page number" : 8,
+    "bounding box" : [ 139.0, 371.81, 299.246, 401.707 ],
+    "content" : "\\min \\left \\{ 1 , \\frac { p ( 2 , \\theta ^ { ( 2 ) } | y ) j ( 2 , \\theta ^ { ( 2 ) } ) } { p ( 1 , \\theta ^ { ( 1 ) } | y ) j ( 1 , \\theta ^ { ( 1 ) } ) q _ { 1 } ( u ^ { ( 1 ) } ) } \\left | \\frac { \\partial ( \\theta ( \\theta ^ { ( 1 ) } ) } { \\partial ( \\theta ^ { ( 1 ) } ) } \\right |"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 8,
+    "bounding box" : [ 42.667, 283.04, 465.333, 364.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Finally, this example is somewhat simplified compared with many real applications; and appropriate modifications may need to be made: For example; may be generated dependently on 0(1, in which case q1(u(1)) is replaced by the conditional density. If other discrete variables are generated in making the proposals; the probability functions of their realised  values are multiplied into the move probabilities j(x). With this latter change, (8) is used repeatedly in the applications later in this paper. u(1)"
+  }, {
+    "type" : "heading",
+    "id" : 494,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 63.333, 247.707, 445.333, 261.707 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4 APPLICATION TO ONE-DIMENSIONAL MULTIPLE CHANGE-POINT PROBLEMS"
+  }, {
+    "type" : "heading",
+    "id" : 495,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 194.0, 231.373, 315.0, 244.707 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "41. Coal mining disasters"
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 8,
+    "bounding box" : [ 43.333, 190.04, 464.0, 232.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "As our first application of the general construction of $ 3, we present a new Bayesian model for multiple change-point analysis; and develop a reversible jump Markov chain Monte Carlo sampler to compute the posterior distribution"
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 8,
+    "bounding box" : [ 42.468, 99.373, 465.333, 192.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A data set that has been frequently used in illustrating new methods for change-point analysis is the process of dates of serious coal-mining disasters between 1851 and 1962, given by Raftery & Akman (1986) In contrast to some other previous analyses of these data, we will work in continuous time with the points recorded in rather than Figure 1 displays the dates of the 192 disasters in these 112 years 40 907 days as a jittered dot plot, together with the cumulative counting process; shown as a dotted line. n} e [0, L] from a Poisson process with rate given by the point days years."
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 9,
+    "bounding box" : [ 130.0, 683.04, 153.333, 693.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0010"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 9,
+    "bounding box" : [ 130.667, 647.707, 154.0, 657.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-008"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 9,
+    "bounding box" : [ 130.667, 611.707, 154.0, 621.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-006"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 9,
+    "bounding box" : [ 116.0, 560.373, 125.333, 597.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 9,
+    "bounding box" : [ 130.667, 576.373, 154.0, 586.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-004"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 9,
+    "bounding box" : [ 130.333, 540.373, 153.333, 551.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0002"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 9,
+    "bounding box" : [ 426.667, 665.707, 443.333, 675.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "200"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 9,
+    "bounding box" : [ 426.667, 631.707, 442.667, 642.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "150"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 9,
+    "bounding box" : [ 426.667, 599.04, 442.667, 609.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "100"
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 9,
+    "bounding box" : [ 426.667, 564.373, 438.667, 574.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 9,
+    "bounding box" : [ 130.0, 505.707, 153.333, 515.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0000"
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "page number" : 9,
+    "bounding box" : [ 216.0, 488.373, 240.667, 498.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10000"
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 9,
+    "bounding box" : [ 274.667, 487.707, 300.667, 497.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20000"
+  }, {
+    "type" : "paragraph",
+    "id" : 514,
+    "page number" : 9,
+    "bounding box" : [ 265.333, 471.707, 314.667, 485.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Time (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "page number" : 9,
+    "bounding box" : [ 335.333, 487.707, 360.667, 497.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30000"
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 9,
+    "bounding box" : [ 396.0, 487.707, 421.333, 497.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40000"
+  }, {
+    "type" : "paragraph",
+    "id" : 515,
+    "level" : "2",
+    "page number" : 9,
+    "bounding box" : [ 119.31, 442.707, 454.0, 466.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1. Coal mining disaster data, 1851-1962: dates of disasters, cumulative counting process (dotted curve) and posterior mean rate of occurrence (solid curve). Fig"
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 9,
+    "bounding box" : [ 75.333, 405.373, 239.333, 421.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "function x(t) the log-likelihood is"
+  }, {
+    "type" : "formula",
+    "id" : 517,
+    "page number" : 9,
+    "bounding box" : [ 236.333, 377.373, 351.0, 392.04 ],
+    "content" : "\\sum _ { i = 1 } ^ { n } \\log \\{ x ( y _ { i } ) \\} - \\left [ \\sum _ { x ( t ) } x ( t ) \\, d t ."
+  }, {
+    "type" : "heading",
+    "id" : 518,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 203.333, 338.04, 370.333, 352.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "42. A model for step functions prior"
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 9,
+    "bounding box" : [ 75.333, 297.707, 496.667, 339.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We develop a assuming that the rate function x(.) on [0,L] is a function: In this section; we formulate a prior distribution for x step"
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 9,
+    "bounding box" : [ 75.667, 246.04, 496.667, 298.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "<S2 < <Sk < L, and that the step function takes the value hj, which k, The prior model is specified by supposing that k is drawn from the Poisson distribution"
+  }, {
+    "type" : "formula",
+    "id" : 521,
+    "page number" : 9,
+    "bounding box" : [ 252.333, 213.04, 315.0, 241.373 ],
+    "content" : "p ( k ) = e ^ { - \\lambda } \\frac { \\lambda ^ { k } } { k ! } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 9,
+    "bounding box" : [ 75.667, 164.707, 496.333, 206.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "but conditioned on k < Given k, the step positions 51, S2, Sk are distributed as the even-numbered order statistics from 2k + 1 points uniformly distributed on and the heights ho, h1, hk are independently drawn from the kmax:"
+  }, {
+    "type" : "paragraph",
+    "id" : 523,
+    "page number" : 9,
+    "bounding box" : [ 74.667, 86.373, 497.0, 153.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "This model for step functions is intended to be close to 'uninformative . It is not appropriate to select an improper gamma distribution F(0, 0) for the heights, because that causes insurmountable difficulties with normalisation across differing numbers of steps; all of the probability in the posterior would be assigned to the simplest model. It would perhaps have been more natural to take the step positions independently uniformly distrib prior small:. Since there may be no data in the interval (sj, Sj+1), such short intervals are barely penalised by the likelihood and s0 survive in the posterior, giving a more complicated picture of the true step function than is really justified by the data. The modification used here has the effect of probabilistically spacing out the positions. step"
+  }, {
+    "type" : "heading",
+    "id" : 524,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 150.667, 640.04, 357.333, 656.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.3. Using reversible jumps for step functions"
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 10,
+    "bounding box" : [ 42.667, 550.04, 464.667, 640.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In developing a reversible jump Monte Carlo sampler for the change-point problem; we are guided by intuition in designing appropriate moves; coupled with the requirements that the dimensions can be balanced properly, that the moves can be simulated conveniently, and that the acceptance ratio can be computed economically. As always with Hastings methods, there is flexibility in this process, and we are not constrained by fine details of the model in question We make no claim of optimality for the particular choices made."
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 10,
+    "bounding box" : [ 41.333, 430.04, 464.0, 549.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "When the object x is a step function on [0, L], some possible transitions are: (a) a change to the height of a randomly chosen step, (b) a change to the position of a randomly chosen step, (c) 'birth' of a new step at a randomly chosen location in [0, L], and (d) 'death' of a randomly chosen step. Note that (c) and (d) involve changing the dimension of x, s0 that standard Markov chain Monte Carlo theory does not apply. In the general framework of 8 3 these transitions can be attained with a countable set of moves, which we denote by {H, P,0, 1,2, } Here H means a a position change; and m = 0, 1, 2, denotes the birth-death pair that increases the number of steps from m to m + 1 steps, or reduces it from m+1 to m"
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 10,
+    "bounding box" : [ 41.0, 378.707, 464.333, 434.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In some applications; the number of steps would be fixed in advance; often, changepoint analysis assumes   exactly one Nevertheless; there  are clear advantages for efficient Monte Carlo computation in allowing k to vary, but to condition on k when drawing information from the realisation: This will allow much better mixing: step."
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 10,
+    "bounding box" : [ 41.333, 288.373, 464.0, 381.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We now describe these transitions in more detail. At each transition; an independent random choice is made between attempting each of the at most four available move types (H, P;k,k _ 1) signifying height change; position change; birth or death respectively. These have probabilities nk for H, Tx for P, bk for k, and dk for k _ 1, depending only on the current number of steps k, and satisfying nk + Tk + bx + dk = 1. Naturally, do = To = 0, and 0 to impose the preassigned upper limit on the number of steps. Apart from these constraints; these probabilities were chosen s0 that kmax"
+  }, {
+    "type" : "formula",
+    "id" : 529,
+    "page number" : 10,
+    "bounding box" : [ 111.667, 268.746, 395.0, 285.04 ],
+    "content" : "b _ { k } = c \\min \\{ 1 , p ( k + 1 ) / p ( k ) \\} , \\ \\ d _ { k + 1 } = c \\min \\{ 1 , p ( k ) / p ( k + 1 ) \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 10,
+    "bounding box" : [ 42.333, 213.373, 464.0, 267.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "with the constant C as as possible subject to bk +dk < 09 for all k =0, 1, This choice ensures that bkp(k) = dk+1p(k + 1), which is the condition on bk and dk that would guarantee certain acceptance in the corresponding, but much simpler, Hastings sampler for the number of steps alone. Finally for k # 0, we took nk = Tklarge kmax'"
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 10,
+    "bounding box" : [ 53.333, 199.04, 464.333, 216.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "If a move of type H or P is chosen; the remaining details are straightforward. A change"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 10,
+    "bounding box" : [ 42.0, 148.707, 464.667, 203.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "to a height is attempted by first choosing one of ho, h1, hx at random; obtaining h; say, then proposing a change to h; such that log(h;/h;) is uniformly distributed on the interval [_4 +4]; this choice is made from convenience, the proposal density ratio taking a simple form: The acceptance probability for this move is found to be"
+  }, {
+    "type" : "formula",
+    "id" : 533,
+    "page number" : 10,
+    "bounding box" : [ 127.51, 130.982, 376.396, 144.318 ],
+    "content" : "\\min [ 1 , ( \\text {likelihood ratio} ) \\times ( h ^ { \\prime } _ { j } / h _ { j } ) ^ { \\alpha } \\exp \\{ - \\beta ( h ^ { \\prime } _ { j } - h _ { j } ) \\} ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 10,
+    "bounding box" : [ 42.0, 97.707, 464.333, 126.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "in the usual way. Here and later, 'likelihood ratio' means p(ylx')/p(ylx) where x and x' stand for the current and proposed new values of all parameters. For a position change move; one of S1, S2, Sk is drawn at random; obtaining say $j. The proposed replacement value is s5, drawn uniformly on Sj+1], and the acceptance probability turns out to be [sj-1"
+  }, {
+    "type" : "formula",
+    "id" : 535,
+    "page number" : 11,
+    "bounding box" : [ 169.667, 618.373, 396.0, 641.373 ],
+    "content" : "\\min \\left \\{ 1 , ( \\text {likelihood ratio} ) \\times \\frac { ( s _ { j + 1 } - s _ { j } ) ( s _ { j } - s _ { j - 1 } ) } { ( s _ { j + 1 } - s _ { j } ) ( s _ { j } - s _ { j - 1 } ) } \\right \\} ."
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 11,
+    "bounding box" : [ 76.333, 454.373, 498.667, 612.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The details for a birth of a step are more complicated, and follow the prescription in 8 3.3. We first choose a position $* for the proposed new step, uniformly distributed on [0L] This must lie, with probability 1, within an If accepted, Sj+1 will be set to s* and Sj+1, Sj+2, Sk will be relabelled as Sj+2, Sj+3, 8k+1, with corresponding changes to the labelling of heights. We wish to propose new heights hj, hj+1 for the step function on the subintervals (Sj, s* and (s*, Sj+1) which recognise that the current height hj on the union of these two intervals is typically well-supported in the posterior distribution; and should therefore not be completely discarded.  Thus the new heights h;, hj+1 should be perturbed in either direction from h; in such a way that h; is a compromise between them. To preserve positivity and maintain simplicity in the acceptance ratio calculations; we use a weighted geometric mean for this compromise; so that step"
+  }, {
+    "type" : "formula",
+    "id" : 537,
+    "page number" : 11,
+    "bounding box" : [ 150.0, 432.373, 235.333, 448.373 ],
+    "content" : "( s ^ { * } - s _ { j } ) \\log ( h ^ { \\prime } _ { j } ) + ( s _ { j + }"
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 11,
+    "bounding box" : [ 77.333, 411.04, 286.0, 427.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "and define the perturbation to be such that"
+  }, {
+    "type" : "formula",
+    "id" : 539,
+    "page number" : 11,
+    "bounding box" : [ 263.0, 374.04, 308.333, 393.373 ],
+    "content" : "\\frac { \\frac { h _ { j + 1 } } { h _ { j } ^ { \\prime } } } { u } = \\frac { 1 } { u }"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 11,
+    "bounding box" : [ 78.333, 353.373, 252.333, 368.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "with u drawn uniformly from [0,1]"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 11,
+    "bounding box" : [ 77.333, 288.373, 499.333, 356.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Following the analysis of $ 3-3, the acceptance probability for this proposal has to be calculated to achieve detailed balance with the corresponding death move, which we must therefore first specify . Dimension matching is achieved by reversing the above calculation; weighted geometric mean satisfying"
+  }, {
+    "type" : "formula",
+    "id" : 542,
+    "page number" : 11,
+    "bounding box" : [ 142.667, 266.04, 349.333, 282.373 ],
+    "content" : "( s _ { j + 1 } - s _ { j } ) \\log ( h _ { j } ) + ( s _ { j + 2 } - s _ { j + 1 } ) \\log ( h _ { j + 1 } ) = ( s _ { j + 1 } ^ { \\prime } - s _ { j + 1 } ^ { \\prime } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 11,
+    "bounding box" : [ 78.333, 245.707, 478.0, 260.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The $j+1 that is proposed for removal is simply drawn at random from S1, 82, Sk"
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 11,
+    "bounding box" : [ 78.0, 193.373, 499.667, 249.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The of birth and death moves thus defined satisfies the dimension-matching requirement. The birth increases the dimensionality from 2k +1 to 2k + 3, the difference accounted for by two continuous variables, the new position s* and the u used to separate hj and hj+1. pair being"
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 11,
+    "bounding box" : [ 77.667, 168.707, 499.333, 197.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In deriving an expression for the acceptance probability of the birth proposal, it is helpful to re-write (8) in the form"
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 11,
+    "bounding box" : [ 117.333, 147.04, 459.667, 163.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "min {1, (likelihood ratio) x (prior ratio) x (proposal ratio) x (Jacobian)} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 11,
+    "bounding box" : [ 77.0, 111.373, 499.333, 141.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "noting that p(xly) = p(ylx)p(x)/p(y). In the present context; the likelihood ratio is straightforward, using (9); the ratio, which was previously p(2, 0(2)/p(1, 0(1)), becomes prior"
+  }, {
+    "type" : "formula",
+    "id" : 548,
+    "page number" : 11,
+    "bounding box" : [ 78.333, 74.707, 379.0, 107.04 ],
+    "content" : "\\frac { p ( k + 1 ) } { p ( k ) } \\, \\frac { 2 ( k + 1 ) ( 2 k + 3 ) } { L ^ { 2 } } \\, \\frac { ( s ^ { * } - s _ { j } ) ( s _ { j + 1 } - s ^ { * } ) } { s _ { j + 1 } - s _ { j } } \\times \\frac { \\beta ^ { \\alpha } } { \\Gamma ( \\alpha ) } \\left ( \\frac { h _ { j } ^ { \\prime } h _ { j + 1 } ^ { \\prime } } { h _ { j } } \\right ) ^ { \\alpha - 1 } \\exp \\{ - \\beta ( h _ { j } ^ { \\prime } h _ { j + 1 } ^ { \\prime } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 12,
+    "bounding box" : [ 44.0, 707.12, 351.0, 725.453 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "the proposal ratio; which was j(2,062))/j(1, (u(1)), becomes"
+  }, {
+    "type" : "formula",
+    "id" : 550,
+    "page number" : 12,
+    "bounding box" : [ 230.667, 674.12, 276.333, 702.787 ],
+    "content" : "\\frac { d _ { k + 1 } L } { b _ { k } ( k + 1 ) } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 551,
+    "page number" : 12,
+    "bounding box" : [ 44.333, 656.12, 139.667, 668.12 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "and the Jacobian is which is not a step function: Figure 2 shows the posterior distribution of k, the number of steps: In Fig: 3, we show the posterior densities of the step positions; conditional on values k = 1, 2 and 3; the graphs become confusing to interpret with more than this many superimposed. The density estimates are obtained a Gaussian kernel with standard deviation 625 Similarly, Fig: 4 shows the corresponding conditional posterior density estimates of height, kernel standard deviation 00003 using days. using days step Some comparisons and contrasts with previous analyses of these data can be made: Raftery & Akman (1986) assume a single change-point, with location assumed a priori to be uniform on the interval [0, L] The step heights are drawn independently from the improper Gamma distribution F6, 0) use the point process likelihood, and calculate the posterior density of r and of the relative change in step height; and the Bayes factor for comparing the hypothesis of a change versus no change; all by numerical integration. The Bayes factor turns out to be over overwhelming evidence for a change. The posterior mode of the time of change is 10 March 1890 = 14313 and a 95% credible interval is [15 1887, 3 August 1895]=[13283,16285] in which compare with a mode of 25 June 1890=day 14420 and an interval of [24 1887, 7 1896] = [13292, 16563] for our analysis; conditional on k =1 Raftery & Akman also give substantive interpretation of their inference in the context of the historical circumstances underlying the data. Carlin, Gelfand & Smith (1992) develop a hierarchical Bayesian approach for the single change-point problem for regression: They apply this to Poisson process data such as the coal mining disaster data by discretising into counts in annual intervals. The position of change is taken as a discrete variable; the step heights are drawn produce posterior densities of heights change is 1891. Barry & Hartigan (1992, 1993) analyse change-point problems product-partition models; Markov chain Monte Carlo methods are used, but the change-points are coded discretely, s0 that they can be handled a fixed set of indicator variables. Stephens (1994) and Phillips & Smith (1995) develop Bayesian analyses for the multiple change-point regression problem; with the positions of change taken as discrete variables; and computations performed by Gibbs sampling and jump-diffusion sampling respectively; however, they do not adapt these methodologies for the process problem: None of these approaches treats the multiple change-point problem in genuinely continuous time; as does our proposed methodology. We see no difficulty with introducing a hierarchical structure into our modelling, if desired. They 1013 day May days, May May They step using again using point"
+  }, {
+    "type" : "formula",
+    "id" : 552,
+    "page number" : 12,
+    "bounding box" : [ 247.0, 618.12, 259.0, 632.12 ],
+    "content" : "h _ { j }"
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 12,
+    "bounding box" : [ 44.0, 584.787, 465.667, 613.453 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The acceptance probability for the corresponding death step has the same form with the appropriate change of labelling of the variables; and the ratio terms inverted."
+  }, {
+    "type" : "paragraph",
+    "id" : 554,
+    "page number" : 12,
+    "bounding box" : [ 44.0, 495.12, 465.667, 589.453 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "There have been at least two previous proposals for dealing with step functions with a variable number of steps by Markov chain Monte Carlo methods. Newton; Guttorp & Abkowitz (1992) build a model for a biological process a hidden continuous-time Markov chain; and Arjas & Gasbarra (1994) develop a nonparametric approach to sur vival analysis assuming a step function form for the hazard rate. In both of these cations, the step function is not tied down at the right-hand end of the observation interval, so that it can be encoded in a way that side-steps the varying dimensionality problem. using appli -"
+  }, {
+    "type" : "heading",
+    "id" : 555,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 153.333, 464.787, 358.0, 480.787 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "44. Analysis of the coal mining disaster data"
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 12,
+    "bounding box" : [ 43.333, 346.787, 466.333, 464.12 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Presentation of conclusions from Bayesian inference about any reasonably complicated partial. The displays given in Figs 1-4 should not be taken as examples of the last word, either about this particular data set, or about how to present inference for step functions in general. Figures 1 to 4 show different aspects of one particular analysis, in which the hyperparameters are fixed as 2 = 3, = and ß = 200. The Monte Carlo simulation was run for 40 000 updates; after a burn-in period of 4000 updates: A run established that one could have confidence that convergence had taken place by this The computation took 45 seconds on a workstation. In Fig: 1, the solid curve shows the estimated posterior mean curve E{x(t)ly} , kmax pilot point."
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 12,
+    "bounding box" : [ 128.667, 291.787, 142.667, 301.787 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "03"
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 12,
+    "bounding box" : [ 128.667, 248.453, 142.667, 258.453 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "02"
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 12,
+    "bounding box" : [ 128.667, 206.453, 140.667, 215.12 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "01"
+  }, {
+    "type" : "paragraph",
+    "id" : 561,
+    "page number" : 12,
+    "bounding box" : [ 128.667, 162.453, 142.667, 172.453 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "00"
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 12,
+    "bounding box" : [ 200.333, 147.453, 205.0, 155.453 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 12,
+    "bounding box" : [ 216.333, 130.453, 319.333, 144.12 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Number of change points"
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "level" : "3",
+    "page number" : 12,
+    "bounding box" : [ 125.985, 101.453, 385.0, 125.12 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2. Coal mining disaster data: posterior distribution of k, the number of change-points. Fig"
+  }, {
+    "type" : "image",
+    "page number" : 13,
+    "bounding box" : [ 0.0, 0.0, 541.44, 791.04 ],
+    "alt" : "The image is a line graph that shows the relationship between the rate of a certain process and the number of people who are affected by it. The x-axis represents the rate of the process, ranging from 0 to 1000, while the y-axis represents the number of people affected by the process. The graph shows a clear trend of increasing the rate of the process over time. The graph shows that the rate of the process increases as the number of people affected by it increases. This is indicated by the increasing trend in the graph, which shows a sharp increase in the rate of the process as the number of people affected increases. The graph also shows that the rate of the process increases at different rates for each of the following stages: 1. **0000**: The rate of the process increases rapidly, with a steep increase in the rate as the number of people affected increases. 2. **0004**: The rate of",
+    "source" : "images/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 13,
+    "bounding box" : [ 137.667, 658.373, 165.333, 669.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-0004"
+  }, {
+    "type" : "paragraph",
+    "id" : 567,
+    "page number" : 13,
+    "bounding box" : [ 138.0, 618.373, 165.333, 628.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-0003"
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 13,
+    "bounding box" : [ 138.0, 578.373, 165.333, 588.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-0002"
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 13,
+    "bounding box" : [ 138.0, 538.373, 164.667, 548.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-0001"
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 13,
+    "bounding box" : [ 137.333, 498.373, 165.333, 508.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "00000"
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 13,
+    "bounding box" : [ 232.667, 481.04, 257.333, 491.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10000"
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 13,
+    "bounding box" : [ 295.333, 481.04, 320.667, 491.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20000"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 13,
+    "bounding box" : [ 358.667, 480.373, 384.0, 490.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30000"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 13,
+    "bounding box" : [ 422.667, 480.373, 448.0, 490.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40000"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 13,
+    "bounding box" : [ 306.985, 463.753, 335.348, 478.66 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "change"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 13,
+    "bounding box" : [ 335.0, 464.373, 363.333, 478.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "points"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 13,
+    "bounding box" : [ 258.0, 467.04, 306.667, 477.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Positions of"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 122.0, 427.04, 454.0, 459.994 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3. Coal mining disaster data: posterior density estimates of positions of changepoints;   conditional on number of change-points k =1 (solid curve) k =2 (dotted curves) and k = 3 (broken curves). Fig"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 13,
+    "bounding box" : [ 148.667, 367.04, 165.333, 377.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "800"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 13,
+    "bounding box" : [ 149.333, 327.04, 165.333, 337.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "600"
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 13,
+    "bounding box" : [ 149.333, 287.04, 165.333, 297.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "400"
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 13,
+    "bounding box" : [ 149.333, 247.707, 165.333, 257.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "200"
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 13,
+    "bounding box" : [ 209.667, 189.04, 232.667, 200.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0002"
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 13,
+    "bounding box" : [ 174.0, 190.373, 187.333, 199.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-0"
+  }, {
+    "type" : "paragraph",
+    "id" : 586,
+    "page number" : 13,
+    "bounding box" : [ 250.0, 189.707, 272.667, 199.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-004"
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 13,
+    "bounding box" : [ 290.0, 189.04, 312.667, 199.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0006"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 13,
+    "bounding box" : [ 328.667, 189.04, 352.0, 199.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-008"
+  }, {
+    "type" : "paragraph",
+    "id" : 589,
+    "page number" : 13,
+    "bounding box" : [ 368.667, 189.04, 392.0, 199.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0010"
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 13,
+    "bounding box" : [ 408.667, 189.04, 431.333, 199.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0012"
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 13,
+    "bounding box" : [ 279.333, 174.373, 340.667, 185.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Rate of process"
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 123.327, 134.707, 453.0, 168.663 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4. Coal mining disaster data: posterior density estimates of heights of segments k = 2 (dotted curves) and k = 3 (broken curves) Fig"
+  }, {
+    "type" : "heading",
+    "id" : 593,
+    "level" : "Subtitle",
+    "page number" : 14,
+    "bounding box" : [ 119.333, 271.373, 389.333, 283.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5. IMAGE SEGMENTATION VIA VoRONOI TESSELLATION"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 14,
+    "bounding box" : [ 44.0, 240.707, 465.0, 269.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "There are various two-dimensional analogues of change-point analysis. The problem discussed briefly in this section is intended to give an idea of one possibility."
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 14,
+    "bounding box" : [ 43.667, 124.04, 465.333, 244.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Image segmentation is the process of subdividing a digital image into homogeneous regions, generally as a prelude to further analysis; see Sonka, Hlavac & Boyle (1993). What should be regarded as 'homogeneous' depends on context; often; for example, it involves texture more than intensity. However, here we consider only the simplest version of the problem; in which we wish to subdivide a image; ie. observations arranged on a noise, occurring independently and without blur at each pixel, it is natural to specify a regression model with a piecewise constant mean function; a form of two-dimensional step function: noisy regular tessellation of that part of the plane that is within the field of view. For a flexible and convenient tessellation; we use the Voronoi, or Dirichlet, tessellation; in which each individual polygon; or is defined to be that region of the plane nearer to that tiles generating than to any other. The tessellation is thus specified by the coordinates (u;, \") for i =1,2, k of the k generating points; and the entire step function by these points and the heights h; of the function within the ith tile The step function x therefore satisfies tile, point For a general discussion of the Voronoi tessellation; and an algorithm for its computation; see Green & Sibson (1978). The basic algorithm described there and its subsequent development in the TILE4 package by Sibson and co-workers at the University of Bath are ideally suited to the birth-death Markov chain Monte Carlo simulation methodology used in 8 4 for the one-dimensional change-point problem; appropriately modified."
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 14,
+    "bounding box" : [ 44.667, 97.707, 465.333, 127.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "For computational tractability, we consider here only step functions of this form in which the regions of constancy are polygonal; and we are thus concerned with a polygonal"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 15,
+    "bounding box" : [ 76.333, 500.707, 496.333, 541.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In our general notation; the candidate models are indexed by k € % = {1,2, and hood assumed here will be that based on independent Gaussian noise:"
+  }, {
+    "type" : "formula",
+    "id" : 598,
+    "page number" : 15,
+    "bounding box" : [ 173.333, 464.04, 292.333, 484.373 ],
+    "content" : "p ( y | k , \\theta ^ { ( k ) } ) \\infty \\exp \\left [ - \\frac { 1 } { 2 \\sigma ^ { 2 } } \\sum \\left \\{ y \\right \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 15,
+    "bounding box" : [ 76.333, 424.04, 147.0, 441.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "over all pixels."
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 15,
+    "bounding box" : [ 76.333, 371.707, 497.0, 425.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The number of tiles k is modelled to have a Poisson distribution with parameter 2, truncated to k =1,2, Given k, the locations (ui, v) of the generating points are independently and uniformly distributed over the unit square representing the field of view, and prior kmax"
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "page number" : 15,
+    "bounding box" : [ 74.667, 149.707, 498.0, 361.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The move types used in this problem correspond closely to H, and m = of 8 43; it is not computationally convenient to perform the analogue of P; to move generating point. However, the TILEA package includes routines for adding and deleting generating points, corresponding to birth and death of a and changing the height h; in one tile under detailed balance is entirely straightforward. To explain the birth and death transitions in more detail, some further notation is needed. Let the probabilities of proposing a birth or death when the current number of steps, namely tiles, is k be bk, dk respectively. Consider a proposed birth which would increase the number of steps from k to k+ 1, and suppose that the   new generating point is labelled k* . Its   location (uk*, Uk*) is drawn uniformly from the unit square, and the tessellation modified by the addition of this point; this modification is done on a trial basis; as this birth may not be accepted.  In the updated tessellation the new point has 'neighbours' (Green & Sibson; 1978), which we label as ie$. We compute the old and new areas of these tiles, and denote them by S; + t; and t; respectively. The total reduction Zie sS; gives the area of the tile of the new point k*. The height assigned to the new point is given by h* = hv, where ñ is the weighted geometric mean of the original heights for the neighbouring tiles: step,"
+  }, {
+    "type" : "formula",
+    "id" : 602,
+    "page number" : 15,
+    "bounding box" : [ 241.0, 112.04, 328.333, 140.707 ],
+    "content" : "\\tilde { h } = \\left ( \\prod _ { i \\in \\mathcal { I } } h _ { i } ^ { s _ { i } } \\right ) ^ { 1 / \\sum _ { i } s _ { i } } ;"
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 15,
+    "bounding box" : [ 75.667, 73.373, 496.667, 102.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "and v is drawn independently with density function f(v) = 5v4/(1 + v5)2, so that v has distribution symmetric about 0. Finally, the new heights for those tiles modified by the log addition are given by"
+  }, {
+    "type" : "formula",
+    "id" : 604,
+    "page number" : 16,
+    "bounding box" : [ 200.56, 691.606, 301.218, 703.547 ],
+    "content" : "h _ { i } ^ { \\prime } = \\{ h _ { i } ^ { s _ { i } + t _ { i } } ( h ^ { * } ) ^ { - s _ { i } } \\} ^ { 1 / t _ { i } } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 16,
+    "bounding box" : [ 40.667, 593.373, 462.667, 685.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The motivation for making these particular assignments is that the integral of h over the whole unit square is thereby left unchanged, while the height assigned to the new tile is a compromise between the heights previously assigned to points in that tile; modified by For the death transition corresponding to this birth; a randomly chosen generating point is deleted; and the points in its tile re-assigned to neighbours. Using ti and Si + t; to denote the old and new areas for neighbouring tile i, its height is changed to log"
+  }, {
+    "type" : "formula",
+    "id" : 606,
+    "page number" : 16,
+    "bounding box" : [ 213.374, 574.979, 289.406, 587.529 ],
+    "content" : "\\{ h _ { i } ^ { t _ { i } } ( h ^ { * } ) ^ { s _ { i } } \\} ^ { 1 / ( s _ { i } + t _ { i } ) } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 16,
+    "bounding box" : [ 41.667, 554.04, 306.333, 568.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "which has the effect of reversing the birth move exactly."
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 16,
+    "bounding box" : [ 40.667, 526.373, 462.0, 555.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "With this of proposal mechanisms; it turns out after some straightforward algebra that the acceptance ratio for the birth is min(1, R) and for the death min(1, R-1), where pair"
+  }, {
+    "type" : "formula",
+    "id" : 609,
+    "page number" : 16,
+    "bounding box" : [ 60.197, 491.31, 440.977, 522.562 ],
+    "content" : "R = ( \\text {likelihood ratio} ) \\times \\lambda \\, \\frac { \\beta ^ { x } } { \\Gamma ( \\alpha ) } \\left ( h ^ { * } \\right ) ^ { x - 1 } \\prod _ { i \\in \\mathcal { I } } \\left ( \\frac { h _ { i } ^ { x } } { h _ { i } } \\right ) ^ { x - 1 } \\exp \\left [ - \\beta \\left \\{ h ^ { * } + \\sum _ { i \\in \\mathcal { I } } \\left ( h _ { i } ^ { \\prime } - h _ { i } \\right ) \\right \\} \\right ]"
+  }, {
+    "type" : "formula",
+    "id" : 610,
+    "page number" : 16,
+    "bounding box" : [ 61.333, 455.04, 315.667, 521.707 ],
+    "content" : "R = ( \\text {likelihood ratio} ) \\times \\lambda \\, \\frac { \\beta ^ { x } } { \\Gamma ( \\alpha ) } \\left ( h ^ { * } \\right ) ^ { x - 1 } \\prod _ { i \\in \\mathcal { I } } \\left ( \\frac { h _ { i } ^ { h _ { i } ^ { \\prime } } } { h _ { i } } \\right ) ^ { x - 1 } \\exp \\left [ - \\beta \\left \\{ h ^ { * } \\\\ \\\\ x \\, \\frac { d _ { k + 1 } } { b _ { k } ( k + 1 ) f ( v ) } \\times \\tilde { h } \\sum _ { i \\in \\mathcal { I } } \\left \\{ \\frac { ( s _ { i } + t _ { i } ) h _ { i } ^ { \\prime } } { t _ { i } h _ { i } } \\right \\} , \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "page number" : 16,
+    "bounding box" : [ 40.333, 435.04, 86.333, 449.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "using (8)."
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "page number" : 16,
+    "bounding box" : [ 51.333, 420.04, 461.333, 437.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Figure 5 displays results from one simple example testing this methodology; based on synthetic data. A 'true' image consisting of a disc of intensity 20 against a background of a lower intensity 05 was degraded with additive Gaussian noise, independently at each pixel on a 50 x 50 grid, with standard deviation 0-7. Note that a disc cannot be perfectly fitted a finite union of Voronoi polygons: The hyperparameters in the were fixed at = = 10 and ß = 10. Figure 5 shows, on the left, the data y(u, v) and, on the right; the posterior mean surface E{x(u; v)ly}, estimated from a run of the sampling method described above, 20 000 sweeps  after a burn-in period of 4000 sweeps. by prior kmax Notwithstanding the apparent complexity of the geometrical calculations to maintain the tessellation and its modifications; and of the computations described in the paragraphs above; the entire sampler runs quickly. On a Sun Sparc 2 workstation, the run described above takes approximately 260 seconds. quite"
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "page number" : 16,
+    "bounding box" : [ 73.333, 268.373, 85.333, 278.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 619,
+    "page number" : 16,
+    "bounding box" : [ 73.333, 244.373, 84.667, 253.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 16,
+    "bounding box" : [ 73.333, 219.04, 84.667, 228.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 16,
+    "bounding box" : [ 73.333, 193.04, 84.667, 203.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 16,
+    "bounding box" : [ 270.667, 267.707, 282.667, 277.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 16,
+    "bounding box" : [ 270.667, 243.707, 282.667, 253.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 16,
+    "bounding box" : [ 270.667, 217.707, 282.0, 227.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 16,
+    "bounding box" : [ 270.667, 192.373, 282.0, 202.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 625,
+    "page number" : 16,
+    "bounding box" : [ 270.667, 167.04, 282.0, 177.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 16,
+    "bounding box" : [ 112.0, 131.04, 122.667, 140.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 16,
+    "bounding box" : [ 136.0, 130.373, 148.0, 140.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 16,
+    "bounding box" : [ 161.333, 130.373, 173.333, 140.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30"
+  }, {
+    "type" : "paragraph",
+    "id" : 629,
+    "page number" : 16,
+    "bounding box" : [ 186.667, 130.373, 198.0, 140.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 16,
+    "bounding box" : [ 212.0, 130.373, 222.667, 139.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 16,
+    "bounding box" : [ 306.667, 129.707, 318.0, 139.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 16,
+    "bounding box" : [ 332.667, 129.707, 344.0, 139.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 633,
+    "page number" : 16,
+    "bounding box" : [ 358.0, 129.707, 369.333, 139.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 16,
+    "bounding box" : [ 382.667, 129.707, 394.0, 139.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 635,
+    "page number" : 16,
+    "bounding box" : [ 408.0, 129.707, 418.667, 139.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 16,
+    "bounding box" : [ 66.333, 100.373, 433.0, 124.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Fig 5. Synthetic segmentation problem: on the left; noisy data; on the right, estimated posterior mean Upper plots show perspective views of the same surfaces displayed as images below."
+  }, {
+    "type" : "heading",
+    "id" : 637,
+    "level" : "Subtitle",
+    "page number" : 17,
+    "bounding box" : [ 248.333, 506.707, 346.667, 518.707 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "PARTITION MODELS"
+  }, {
+    "type" : "heading",
+    "id" : 638,
+    "level" : "Subtitle",
+    "page number" : 17,
+    "bounding box" : [ 173.333, 488.373, 408.0, 504.707 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "61. A hierarchical model for binomial probabilities"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 17,
+    "bounding box" : [ 78.667, 409.373, 501.0, 476.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "selection in regression and mixture deconvolution; have the common feature that the discrete model-choice problem is equivalent to determining a partition; either of the original data units or of some other labels applying to the data, for example factor levels. Here we describe a general partition sampler; and its application to an ANOVA-like problem for binomial data discussed by Consonni & Veronese 1995)."
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 17,
+    "bounding box" : [ 79.333, 369.04, 501.0, 412.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A partition of a set I = {1,2, n} is a collection g = {S1, S2, Sa} of subsets of I, which we call groups; where the S; are disjoint with union I. The number d of groups into which I is divided by g will be called the degree of g, and written d(g) To emphasise"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 17,
+    "bounding box" : [ 78.667, 282.04, 500.333, 359.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Suppose we have n responses Yns assumed drawn independently   from binomial distributions: Yi Bin(wi, 0;), where the index parameters {w;} are known; and the probabilities {@;} unknown. We construct a distribution for {@;} that acknowledges that these parameters may have similar values within groups defined by a partition g of I = {1, 2, n} . Within each group $;(g) the 0; are drawn independently from beta distributions: prior"
+  }, {
+    "type" : "formula",
+    "id" : 642,
+    "page number" : 17,
+    "bounding box" : [ 389.0, 260.04, 413.667, 274.04 ],
+    "content" : ", d ( g ) ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 17,
+    "bounding box" : [ 78.333, 123.707, 500.333, 255.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The group mean parameters   {%j} are in turn drawn independently from the uniform distribution U(O, 1) while the group precision parameter q is either fixed at a known value, Or drawn from a hyperdensity p(q) This is essentially the model proposed by Consonni & Veronese; except that took a more general beta distribution than U(O, 1) only. It would be routine to modify what follows to deal with this situation. Consonni & Veronese  used conventional numerical techniques to ft their model, and so were constrained to use conjugate distributions; for which these techniques were practicable. With reversible jump Markov chain Monte Carlo computation such constraints need not have been imposed. they"
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 17,
+    "bounding box" : [ 89.333, 111.04, 433.0, 127.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Following Consonni & Veronese; the distribution for g is taken as prior"
+  }, {
+    "type" : "formula",
+    "id" : 645,
+    "page number" : 17,
+    "bounding box" : [ 228.333, 82.707, 319.0, 106.707 ],
+    "content" : "p ( g ) \\circ c \\frac { d ( g ) ^ { - 1 } } { \\# \\{ g ^ { \\prime } \\colon d ( g ^ { \\prime } ) = d ( g ) }"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 18,
+    "bounding box" : [ 42.0, 671.373, 464.0, 723.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "giving equal probability to all partitions of the same degree, and placing probability on the set of g with degree d. Calculation with this is straightforward. It is necessary to count the number of partitions of degree d of a set of n items: this count c(n, d) is the solution of the recurrence relation prior"
+  }, {
+    "type" : "formula",
+    "id" : 647,
+    "page number" : 18,
+    "bounding box" : [ 165.0, 651.373, 339.667, 666.04 ],
+    "content" : "c ( n , d ) = d c ( n - 1 , d ) + c ( n - 1 , d - 1 ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 18,
+    "bounding box" : [ 41.333, 594.04, 464.333, 648.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Such counts become very large with n, and some care is needed to avoid overflow. An alternative model for the partitions that could have been used is Hartigan's productpartition model (Barry & Hartigan; 1992); for given d(g), this favours a more unequal distribution of the items into groups."
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 18,
+    "bounding box" : [ 53.667, 582.04, 335.0, 595.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The joint distribution of all variables is now determined as"
+  }, {
+    "type" : "formula",
+    "id" : 650,
+    "page number" : 18,
+    "bounding box" : [ 149.667, 487.04, 351.928, 537.707 ],
+    "content" : "& \\quad = p ( g ) \\times \\prod _ { j = 1 } ^ { d ( g ) } 1 \\times p ( q ) \\times \\prod _ { j = 1 } ^ { d ( g ) } \\prod _ { i \\in S _ { j } ( g ) } \\frac { \\theta _ { i } ^ { q \\alpha _ { j } - 1 } ( 1 - \\theta _ { i } ) ^ { q ( 1 - \\theta _ { i } ) } } { B \\{ q \\alpha _ { j } , q ( 1 - \\alpha _ { j } ) , q ( 1 - \\theta _ { i } ) \\} } \\\\ & \\quad \\times \\prod _ { j = 1 } ^ { n } \\left ( w _ { i } \\right ) \\theta _ { i } ^ { y _ { i } } ( 1 - \\theta _ { i } ) ^ { w _ { i } - y _ { i } } ,"
+  }, {
+    "type" : "formula",
+    "id" : 651,
+    "page number" : 18,
+    "bounding box" : [ 196.0, 471.04, 206.667, 481.707 ],
+    "content" : "y _ { i }"
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 18,
+    "bounding box" : [ 42.0, 424.373, 463.0, 466.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where B(.,.) is the beta function. In the general notation of $ 2, the model indicator k is g, while the   parameter vector 0(k) is 9 01, 0n), of dimension ng = n + d(g) + 1. d(g)"
+  }, {
+    "type" : "heading",
+    "id" : 653,
+    "level" : "Subtitle",
+    "page number" : 18,
+    "bounding box" : [ 91.0, 396.373, 415.0, 412.373 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6-2 Reversible jump Markov chain Monte Carlo for partition problems"
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 18,
+    "bounding box" : [ 41.333, 356.707, 463.0, 398.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Much of the following discussion would apply, with few changes; to other partition problems. First we deal with updating the elements of 0(k) . (i =1,2, n) are independent beta distributions"
+  }, {
+    "type" : "formula",
+    "id" : 655,
+    "page number" : 18,
+    "bounding box" : [ 249.0, 336.373, 381.333, 352.373 ],
+    "content" : ", q ( 1 - \\alpha _ { j } ) + w _ { i } - y _ { i } ) \\} \\quad ( i \\in S _ { j } ( g ) ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 18,
+    "bounding box" : [ 41.667, 319.04, 382.667, 335.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where, here and below, we use to denote all other variables among"
+  }, {
+    "type" : "formula",
+    "id" : 657,
+    "page number" : 18,
+    "bounding box" : [ 180.333, 300.707, 322.333, 314.707 ],
+    "content" : "\\{ g , \\alpha _ { 1 } , \\dots , \\alpha _ { d ( g ) } , q , \\theta _ { 1 } , \\dots , \\theta _ { n } \\} ."
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 18,
+    "bounding box" : [ 41.667, 282.373, 371.333, 299.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Therefore each 0; can be updated with a Gibbs kernel:. For 9 we find"
+  }, {
+    "type" : "formula",
+    "id" : 659,
+    "page number" : 18,
+    "bounding box" : [ 126.667, 247.04, 358.667, 279.311 ],
+    "content" : "p ( q | \\dots ) \\circ c \\, p ( q ) \\times \\prod _ { j = 1 } ^ { d ( g ) } \\left \\{ \\prod _ { i \\in S _ { j } ( g ) } \\theta _ { i } ^ { q \\alpha _ { j } - 1 } ( 1 - \\theta _ { i } ) ^ { q ( 1 - \\alpha _ { j } ) - 1 } \\right \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "page number" : 18,
+    "bounding box" : [ 41.0, 202.707, 462.667, 244.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "which is not a standard distribution but is easily evaluated;, and so we use it in a Hastings with proposal that, on the scale, is uniformly distributed about the current value. The group mean parameters are also conditionally independent: step, log"
+  }, {
+    "type" : "formula",
+    "id" : 661,
+    "page number" : 18,
+    "bounding box" : [ 225.0, 166.707, 274.333, 181.373 ],
+    "content" : "B \\{ q \\alpha _ { j } , q ( 1 -"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 18,
+    "bounding box" : [ 40.333, 135.707, 462.333, 165.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Application of Stirling's formula shows that this full conditional has a normal approximation; for large q:"
+  }, {
+    "type" : "formula",
+    "id" : 663,
+    "page number" : 18,
+    "bounding box" : [ 219.667, 99.707, 300.0, 122.707 ],
+    "content" : "\\dots \\sim N \\left \\{ \\mu , \\frac { \\mu ( 1 - \\mu ) } { q \\# S _ { j } ( g ) } \\right \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 19,
+    "bounding box" : [ 78.667, 658.04, 499.667, 699.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "approximately,  where ie S;(g). This approximation could have been used explicitly in an approximate Gibbs sampler; but we choose to use it as a proposal distribution for a Hastings step."
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 19,
+    "bounding box" : [ 78.0, 556.707, 500.333, 663.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Turning now to the step updating the partition g to g, say, we note that with the prior p(g) specified above all partitions have positive probability, and process that jumps between partitions making only the modest changes of splitting a group; a birth', and combining two groups; a 'death, will be irreducible. It would have been quite natural to have included a move that changed the partition by reallocation of items while fixing the number of groups, but that was not implemented here. We have found the following mechanisms for the partition moves effective in practice; applied to partitions of up to a few dozen objects."
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 19,
+    "bounding box" : [ 77.333, 478.707, 499.333, 544.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "first choose a group to uniformly among those with at least two items. This group is then split at random 'binomially, ie. each item is assigned to one of the two daughter subgroups independently, with probability one-half for each, but conditional on neither subgroup being empty: For a death; attempted with probability dg, we simply choose two groups at random to be combined into one. split;"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "page number" : 19,
+    "bounding box" : [ 78.0, 402.707, 499.0, 480.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Jumping to a new partition necessitates a change also to the vector a, since its length has to increase or decrease by 1. Our proposal for the additional component is Gaussian on a logit scale; and takes account of the numbers of binary responses influenced by each of the relevant %j. Specifically, suppose that a proposed birth Sj into subgroups Sj1 and $j2 Let aj be the current value, and aj1, %j2 the new values for the two subgroups. Then we set splits"
+  }, {
+    "type" : "formula",
+    "id" : 668,
+    "page number" : 19,
+    "bounding box" : [ 173.0, 363.04, 399.333, 391.373 ],
+    "content" : "\\alpha _ { j 1 } = \\frac { \\alpha _ { j } e ^ { \\sigma z / W _ { 1 } } } { 1 - \\alpha _ { j } + \\alpha _ { j } e ^ { \\sigma z / W _ { 1 } } } , \\quad \\alpha _ { j 2 } = \\frac { \\alpha _ { j } e ^ { - \\sigma z / W _ { 2 } } } { 1 - \\alpha _ { j } + \\alpha _ { j } e ^ { - \\sigma z / W _ { 2 } } } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 19,
+    "bounding box" : [ 78.333, 330.707, 498.667, 359.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "where W = wi (r = 1,2), z is an independent standard Gaussian random variable, and 0 is a spread  parameter to be chosen later. For the corresponding death move;"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 19,
+    "bounding box" : [ 77.333, 279.04, 498.667, 321.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "This   completes the specification of the jump proposal; its acceptance probability is necessarily somewhat complicated in form, but is calculated as usual from (8). For the birth and death, the probabilities are respectively min(1, R) and min(1, R-1) , where"
+  }, {
+    "type" : "formula",
+    "id" : 671,
+    "page number" : 19,
+    "bounding box" : [ 133.333, 148.04, 397.667, 274.04 ],
+    "content" : "third \\text { and } \\text { death, the probabilities are respectively } \\min ( 1 , R ) \\text { and } \\min ( 1 , R ^ { - 1 } ) , \\\\ R = \\frac { B \\{ q \\alpha _ { j } , q ( 1 - \\alpha _ { j } ) \\} ^ { \\# S _ { j } } } { B \\{ q \\alpha _ { j 1 } , q ( 1 - \\alpha _ { j 1 } ) \\} ^ { \\# S _ { 1 } } B \\{ q \\alpha _ { j 2 } , q ( 1 - \\alpha _ { j 2 } ) \\} ^ { \\# S _ { j 2 } } } \\\\ \\times \\ \\prod _ { i \\in S _ { j 1 } } \\left ( \\frac { \\theta _ { i } } { 1 - \\theta _ { i } } \\right ) ^ { q ( \\alpha _ { j 1 } - \\alpha _ { j } ) } \\prod _ { i \\in S _ { j 2 } } \\left ( \\frac { \\theta _ { i } } { 1 - \\theta _ { i } } \\right ) ^ { q ( \\alpha _ { j 2 } - \\alpha _ { j } ) } \\times \\frac { p ( g ^ { \\prime } ) } { p ( g ) } \\\\ \\times \\frac { d _ { g ^ { \\prime } } } { b _ { g } } \\# \\{ j \\colon \\S _ { j } ( g ) \\geqslant 2 \\} \\ \\frac { 2 } { d ( g ) \\{ d ( g ) + 1 \\} } \\left ( 2 ^ { \\# s _ { j } - 1 } - 1 \\right ) \\\\ \\times \\frac { \\alpha _ { j 1 } ( 1 - \\alpha _ { j 1 } ) \\alpha _ { j 2 } ( 1 - \\alpha _ { j 2 } ) } { \\alpha _ { j } ( 1 - \\alpha _ { j } ) } \\sigma ( W _ { 1 } ^ { - 1 } + W _ { 2 } ^ { - 1 } ) \\div ( 2 \\pi ) ^ { - \\ddagger } \\exp ( - \\frac { 1 } { 2 } z ^ { 2 } ) ."
+  }, {
+    "type" : "heading",
+    "id" : 672,
+    "level" : "Subtitle",
+    "page number" : 19,
+    "bounding box" : [ 180.0, 103.373, 395.333, 120.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6.3. Application to pine seedling mortality data"
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 19,
+    "bounding box" : [ 76.667, 74.707, 498.0, 105.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We apply the methodology described above to a small data set, one of those analysed by Consonni & Veronese (1955). This concerns 4 binomial responses y = (59,89,88,95), each based on wi = 100 trials. The data arise from a 2 x 2 factorial experiment; comparing two treatments (H, planting too high; D, planting too deep) on two varieties of pine seedling (L, longleaf; S, slash) The responses are indexed in the order (LH, LD, SH, SD). Consonni & Veronese   compare various statistical methods a Bayesian method based on their model described above, which has an 'adaptive multiple shrinkage'   property; see   also George (1986) The data determine a partition of the group S; borrow strength by shrinking towards a common value %j- Alternative estimators considered include the maximum likelihood estimators for both a saturated model and for an additive logistic regression; a parametric empirical Bayes estimator which shrinks all   0; together, and a nonparametric empirical Bayes estimator, which has   the multiple shrinkage property. again Our analysis has been confined to repeating that of Consonni & Veronese, but obtained reversible jump Markov chain Monte Carlo instead of their analytic approximations. We extend their results very slightly by allowing 9 to be random; as well as fixed at each of the values they use (100, 200 and 300). This adaptation made use of a p(q) under which 9 is uniform on the interval [log 100, 300]; the proposal for updating q described in the previous section was interpreted as wrapped periodically onto this interval. There were no other unspecified hyperparameters in the model defined above. using prior log log We refer the reader to Consonni & Veronese for further background, including discussion of some of the philosophical issues that arise in the modelling:"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 20,
+    "bounding box" : [ 41.448, 372.707, 463.333, 452.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The samplers were also completely specified above; except for the scale factor 0, which we took as 50, after a little experimentation, and the probabilities assigned to each move type. We took the birth and death rates bg and dg each to be 0-3 for all g, except for the extreme partitions where d(g) = 1 or n ( = 4) where bg and dg were taken as (0 6,0) and (0,0.6) At each transition, 0 was  updated with probability 02, and similarly for the (a, 9) pair"
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 20,
+    "bounding box" : [ 42.0, 305.707, 463.0, 373.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Results  are presented in Table 1, based on run lengths of 40 000 attempted updates; after burn-in periods of 4000; such runs took 36 seconds on a Sun Sparc 2 Posterior expectations of {0;} are close to those obtained by Consonni & Veronese: For the case where 9 was taken as random; with the hyperprior specified above; its posterior mean and standard deviation were estimated as 181 and 58. The sampling-based computation"
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 20,
+    "bounding box" : [ 60.333, 258.04, 445.0, 286.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Table 1. Mortality of pine seedlings: posterior means and standard deviations, in parentheses, of {@;}"
+  }, {
+    "type" : "table",
+    "id" : 677,
+    "level" : "3",
+    "page number" : 20,
+    "bounding box" : [ 59.664, 129.196, 442.554, 252.286 ],
+    "number of rows" : 10,
+    "number of columns" : 9,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 239.977, 102.207, 252.286 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 239.977, 144.75, 252.286 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 239.977, 272.381, 252.286 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 3,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 317,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 239.977, 272.381, 252.286 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Consonni & Veronese"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 239.977, 229.837, 252.286 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 239.977, 272.381, 252.286 ],
+        "row number" : 1,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 239.977, 442.554, 252.286 ],
+        "row number" : 1,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 4,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 318,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 239.977, 442.554, 252.286 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Reversible jump MCMC"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 239.977, 357.467, 252.286 ],
+        "row number" : 1,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 239.977, 400.011, 252.286 ],
+        "row number" : 1,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 239.977, 442.554, 252.286 ],
+        "row number" : 1,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 227.668, 102.207, 239.977 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 319,
+          "page number" : 20,
+          "bounding box" : [ 59.664, 227.668, 102.207, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Experiment"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 227.668, 144.75, 239.977 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 320,
+          "page number" : 20,
+          "bounding box" : [ 102.207, 227.668, 144.75, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Yi"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 227.668, 187.294, 239.977 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 321,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 227.668, 187.294, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "9 = 100"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 227.668, 229.837, 239.977 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 322,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 227.668, 229.837, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "9 = 200"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 227.668, 272.381, 239.977 ],
+        "row number" : 2,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 323,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 227.668, 272.381, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "9 = 300"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 227.668, 314.924, 239.977 ],
+        "row number" : 2,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 324,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 227.668, 314.924, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "9 = 100"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 227.668, 357.467, 239.977 ],
+        "row number" : 2,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 325,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 227.668, 357.467, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "9 = 200"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 227.668, 400.011, 239.977 ],
+        "row number" : 2,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 326,
+          "page number" : 20,
+          "bounding box" : [ 357.467, 227.668, 400.011, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "9 =300"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 227.668, 442.554, 239.977 ],
+        "row number" : 2,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 327,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 227.668, 442.554, 239.977 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "random q"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 215.359, 102.207, 227.668 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 328,
+          "page number" : 20,
+          "bounding box" : [ 59.664, 215.359, 102.207, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "LH"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 215.359, 144.75, 227.668 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 329,
+          "page number" : 20,
+          "bounding box" : [ 102.207, 215.359, 144.75, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "59"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 215.359, 187.294, 227.668 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 330,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 215.359, 187.294, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-589"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 215.359, 229.837, 227.668 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 331,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 215.359, 229.837, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-588"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 215.359, 272.381, 227.668 ],
+        "row number" : 3,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 332,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 215.359, 272.381, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0588"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 215.359, 314.924, 227.668 ],
+        "row number" : 3,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 333,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 215.359, 314.924, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.587"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 215.359, 357.467, 227.668 ],
+        "row number" : 3,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 334,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 215.359, 357.467, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-585"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 215.359, 400.011, 227.668 ],
+        "row number" : 3,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 335,
+          "page number" : 20,
+          "bounding box" : [ 357.467, 215.359, 400.011, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-586"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 215.359, 442.554, 227.668 ],
+        "row number" : 3,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 336,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 215.359, 442.554, 227.668 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0588"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 203.05, 102.207, 215.359 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 203.05, 144.75, 215.359 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 203.05, 187.294, 215.359 ],
+        "row number" : 4,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 337,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 144.75, 203.05, 187.294, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0059)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 203.05, 229.837, 215.359 ],
+        "row number" : 4,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 338,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 187.294, 203.05, 229.837, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0056)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 203.05, 272.381, 215.359 ],
+        "row number" : 4,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 339,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 229.837, 203.05, 272.381, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0054)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 203.05, 314.924, 215.359 ],
+        "row number" : 4,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 340,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 272.381, 203.05, 314.924, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0049)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 203.05, 357.467, 215.359 ],
+        "row number" : 4,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 341,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 314.924, 203.05, 357.467, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0050)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 203.05, 400.011, 215.359 ],
+        "row number" : 4,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 342,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 357.467, 203.05, 400.011, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0047)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 203.05, 442.554, 215.359 ],
+        "row number" : 4,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 343,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 203.05, 442.554, 215.359 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-049)"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 5,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 190.741, 102.207, 203.05 ],
+        "row number" : 5,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 344,
+          "page number" : 20,
+          "bounding box" : [ 59.664, 190.741, 102.207, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "LD"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 190.741, 144.75, 203.05 ],
+        "row number" : 5,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 345,
+          "page number" : 20,
+          "bounding box" : [ 102.207, 190.741, 144.75, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "89"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 190.741, 187.294, 203.05 ],
+        "row number" : 5,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 190.741, 229.837, 203.05 ],
+        "row number" : 5,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 346,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 190.741, 229.837, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0894"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 190.741, 272.381, 203.05 ],
+        "row number" : 5,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 347,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 190.741, 272.381, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-895"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 190.741, 314.924, 203.05 ],
+        "row number" : 5,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 348,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 190.741, 314.924, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0+892"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 190.741, 357.467, 203.05 ],
+        "row number" : 5,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 349,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 190.741, 357.467, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-893"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 190.741, 400.011, 203.05 ],
+        "row number" : 5,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 350,
+          "page number" : 20,
+          "bounding box" : [ 357.467, 190.741, 400.011, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-894"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 190.741, 442.554, 203.05 ],
+        "row number" : 5,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 351,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 190.741, 442.554, 203.05 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0893"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 6,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 178.432, 102.207, 190.741 ],
+        "row number" : 6,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 178.432, 144.75, 190.741 ],
+        "row number" : 6,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 178.432, 187.294, 190.741 ],
+        "row number" : 6,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 352,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 144.75, 178.432, 187.294, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0031)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 178.432, 229.837, 190.741 ],
+        "row number" : 6,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 353,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 178.432, 229.837, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-028)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 178.432, 272.381, 190.741 ],
+        "row number" : 6,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 354,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 229.837, 178.432, 272.381, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0027)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 178.432, 314.924, 190.741 ],
+        "row number" : 6,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 355,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 178.432, 314.924, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-027)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 178.432, 357.467, 190.741 ],
+        "row number" : 6,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 356,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 178.432, 357.467, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-026)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 178.432, 400.011, 190.741 ],
+        "row number" : 6,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 357,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 357.467, 178.432, 400.011, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0025)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 178.432, 442.554, 190.741 ],
+        "row number" : 6,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 358,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 178.432, 442.554, 190.741 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-026)"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 7,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 166.123, 102.207, 178.432 ],
+        "row number" : 7,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 359,
+          "page number" : 20,
+          "bounding box" : [ 59.664, 166.123, 102.207, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "SH"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 166.123, 144.75, 178.432 ],
+        "row number" : 7,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 360,
+          "page number" : 20,
+          "bounding box" : [ 102.207, 166.123, 144.75, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "88"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 166.123, 187.294, 178.432 ],
+        "row number" : 7,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 361,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 166.123, 187.294, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-886"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 166.123, 229.837, 178.432 ],
+        "row number" : 7,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 362,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 166.123, 229.837, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.889"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 166.123, 272.381, 178.432 ],
+        "row number" : 7,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 363,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 166.123, 272.381, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-891"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 166.123, 314.924, 178.432 ],
+        "row number" : 7,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 364,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 166.123, 314.924, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-886"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 166.123, 357.467, 178.432 ],
+        "row number" : 7,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 365,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 166.123, 357.467, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-890"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 166.123, 400.011, 178.432 ],
+        "row number" : 7,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 366,
+          "page number" : 20,
+          "bounding box" : [ 357.467, 166.123, 400.011, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-890"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 166.123, 442.554, 178.432 ],
+        "row number" : 7,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 367,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 166.123, 442.554, 178.432 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-888"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 8,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 153.814, 102.207, 166.123 ],
+        "row number" : 8,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 153.814, 144.75, 166.123 ],
+        "row number" : 8,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 153.814, 187.294, 166.123 ],
+        "row number" : 8,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 368,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 153.814, 187.294, 166.123 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0.032)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 153.814, 229.837, 166.123 ],
+        "row number" : 8,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 369,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 153.814, 229.837, 166.123 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-029)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 153.814, 272.381, 166.123 ],
+        "row number" : 8,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 370,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 153.814, 272.381, 166.123 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-028)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 153.814, 314.924, 166.123 ],
+        "row number" : 8,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 153.814, 357.467, 166.123 ],
+        "row number" : 8,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 371,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 153.814, 357.467, 166.123 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0.027)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 153.814, 400.011, 166.123 ],
+        "row number" : 8,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 372,
+          "level" : "1",
+          "page number" : 20,
+          "bounding box" : [ 357.467, 153.814, 400.011, 166.123 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0026)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 153.814, 442.554, 166.123 ],
+        "row number" : 8,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 373,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 153.814, 442.554, 166.123 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-026)"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 9,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 141.505, 102.207, 153.814 ],
+        "row number" : 9,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 374,
+          "page number" : 20,
+          "bounding box" : [ 59.664, 141.505, 102.207, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "SD"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 141.505, 144.75, 153.814 ],
+        "row number" : 9,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 375,
+          "page number" : 20,
+          "bounding box" : [ 102.207, 141.505, 144.75, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "95"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 141.505, 187.294, 153.814 ],
+        "row number" : 9,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 376,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 141.505, 187.294, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-929"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 141.505, 229.837, 153.814 ],
+        "row number" : 9,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 377,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 141.505, 229.837, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-924"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 141.505, 272.381, 153.814 ],
+        "row number" : 9,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 378,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 141.505, 272.381, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.922"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 141.505, 314.924, 153.814 ],
+        "row number" : 9,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 379,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 141.505, 314.924, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-930"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 141.505, 357.467, 153.814 ],
+        "row number" : 9,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 380,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 141.505, 357.467, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-926"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 141.505, 400.011, 153.814 ],
+        "row number" : 9,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 381,
+          "page number" : 20,
+          "bounding box" : [ 357.467, 141.505, 400.011, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-921"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 141.505, 442.554, 153.814 ],
+        "row number" : 9,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 382,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 141.505, 442.554, 153.814 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0-926"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 10,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 59.664, 129.196, 102.207, 141.505 ],
+        "row number" : 10,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 102.207, 129.196, 144.75, 141.505 ],
+        "row number" : 10,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 144.75, 129.196, 187.294, 141.505 ],
+        "row number" : 10,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 383,
+          "page number" : 20,
+          "bounding box" : [ 144.75, 129.196, 187.294, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-027)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 187.294, 129.196, 229.837, 141.505 ],
+        "row number" : 10,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 384,
+          "page number" : 20,
+          "bounding box" : [ 187.294, 129.196, 229.837, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-026)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 229.837, 129.196, 272.381, 141.505 ],
+        "row number" : 10,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 385,
+          "page number" : 20,
+          "bounding box" : [ 229.837, 129.196, 272.381, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-026)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 272.381, 129.196, 314.924, 141.505 ],
+        "row number" : 10,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 386,
+          "page number" : 20,
+          "bounding box" : [ 272.381, 129.196, 314.924, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0.023)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 314.924, 129.196, 357.467, 141.505 ],
+        "row number" : 10,
+        "column number" : 7,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 387,
+          "page number" : 20,
+          "bounding box" : [ 314.924, 129.196, 357.467, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-025)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 357.467, 129.196, 400.011, 141.505 ],
+        "row number" : 10,
+        "column number" : 8,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 388,
+          "page number" : 20,
+          "bounding box" : [ 357.467, 129.196, 400.011, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0.025)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 20,
+        "bounding box" : [ 400.011, 129.196, 442.554, 141.505 ],
+        "row number" : 10,
+        "column number" : 9,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 389,
+          "page number" : 20,
+          "bounding box" : [ 400.011, 129.196, 442.554, 141.505 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "(0-024)"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 20,
+    "bounding box" : [ 60.0, 113.707, 232.667, 123.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "MCMC, Monte Carlo Markov chain method."
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 20,
+    "bounding box" : [ 60.0, 100.707, 368.0, 114.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H, planting too high; D, planting too deep; L, longleaf seedling; s, slash seedling we show posterior density estimates for the {0;}, under the random q version of the model, together with the raw data, plotted with tick marks at the points yilwi. The adaptive multiple shrinkage is evident are shrunk together, and correspondingly have smaller posterior   variance The data suggest that treatment H increases mortality, but only on seedlings of type L: a more subtle conclusion than from the logistic regression analysis; which simply concludes that both treatment and variety factors have significant effects."
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 21,
+    "bounding box" : [ 146.667, 681.04, 158.0, 690.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "15"
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 21,
+    "bounding box" : [ 146.667, 621.04, 158.667, 630.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 686,
+    "page number" : 21,
+    "bounding box" : [ 132.0, 566.373, 140.667, 603.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 21,
+    "bounding box" : [ 152.333, 560.707, 157.667, 568.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 685,
+    "page number" : 21,
+    "bounding box" : [ 318.0, 603.707, 332.0, 611.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "LH"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 21,
+    "bounding box" : [ 388.0, 665.707, 401.333, 675.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "SH"
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 21,
+    "bounding box" : [ 420.0, 653.707, 432.667, 663.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "SD"
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 21,
+    "bounding box" : [ 166.667, 482.373, 180.0, 491.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-0"
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 21,
+    "bounding box" : [ 219.333, 481.04, 232.667, 491.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0-2"
+  }, {
+    "type" : "paragraph",
+    "id" : 690,
+    "page number" : 21,
+    "bounding box" : [ 322.0, 481.707, 335.333, 490.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "06"
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 21,
+    "bounding box" : [ 374.0, 480.373, 387.333, 490.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "08"
+  }, {
+    "type" : "paragraph",
+    "id" : 692,
+    "page number" : 21,
+    "bounding box" : [ 426.667, 480.373, 440.0, 490.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1-0"
+  }, {
+    "type" : "paragraph",
+    "id" : 693,
+    "page number" : 21,
+    "bounding box" : [ 123.0, 425.04, 454.333, 460.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Fig: 6. Posterior density estimates of {0;} for the pine seedling mortality data; together with raw data plotted as tick marks. H, planting too high; D, planting too longleaf seedling; s, slash seedling: deep;"
+  }, {
+    "type" : "heading",
+    "id" : 694,
+    "level" : "Doctitle",
+    "page number" : 21,
+    "bounding box" : [ 251.333, 260.707, 325.667, 272.707 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "7 . DISCUSSION"
+  }, {
+    "type" : "paragraph",
+    "id" : 695,
+    "page number" : 21,
+    "bounding box" : [ 77.0, 204.707, 499.333, 259.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The theory and applications presented in this paper have demonstrated that the advan tages of Markov chain Monte Carlo computation can be extended to new classes  of problems, where the object of inference has a dimension that is not fixed, including difficult Bayesian model-determination problems."
+  }, {
+    "type" : "paragraph",
+    "id" : 696,
+    "page number" : 21,
+    "bounding box" : [ 77.667, 126.707, 498.667, 206.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We have presented three applications of a new Markov chain Monte Carlo method other   implementations have also been developed. For example; jointly with Dr S. Richardson; the author is investigating Bayesian mixture estimation with an unknown number of components, Ph.D. students at Bristol are applying the methods to and in his PhD. thesis at Cambridge   University Dr R Morris has developed a new method of removal of scratches from movie film: ology;"
+  }, {
+    "type" : "paragraph",
+    "id" : 697,
+    "page number" : 21,
+    "bounding box" : [ 77.333, 73.707, 498.667, 129.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "There remain a number of questions about the methodology, to be resolved in future work: One concerns the development of understanding about moves that are likely to be effective generically, to aid intuition about the design of moves. Secondly; in situations where the collection of candidate models is restricted by practical or statistical consider -"
+  }, {
+    "type" : "paragraph",
+    "id" : 698,
+    "page number" : 22,
+    "bounding box" : [ 38.0, 592.04, 461.0, 724.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ations; there is the question of whether inventing additional models and corresponding parameter subspaces may facilitate mixing, and if so, how to do it effectively. In problems involving partitions of larger sets of items than those arising in 8 6, we need new jump proposal mechanisms. The proposals used in the pine seedling mortality study were completely 'blind in that made no reference to the current values of any of the other variables. It might be anticipated that taking account of the {%j} would allow the construction of much more efficient proposals; and indeed this is borne out in our recent experience with mixture estimation. Finally, the complications of multiple parameter subspaces of differing dimensionality make the problems of assessing convergence yet more difficult; and there is an urgent need for research on effective diagnostics of broad applicability. they"
+  }, {
+    "type" : "heading",
+    "id" : 699,
+    "level" : "Subtitle",
+    "page number" : 22,
+    "bounding box" : [ 198.0, 556.373, 301.333, 567.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ACKNOWLEDGEMENT"
+  }, {
+    "type" : "paragraph",
+    "id" : 700,
+    "page number" : 22,
+    "bounding box" : [ 37.333, 476.04, 460.667, 554.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "I wish particularly to thank Sylvia Richardson for stimulating discussions about this work, and for making many valuable suggestions. I also acknowledge comments, connec tions; corrections and correspondence from Julian Besag, Andrew Gelman; Charlie Geyer, Paolo Giudici, Vincent Granville; Andrew Lawson; Jesper   Møller, OHagan; David Stephens; Mike Titterington; and the referee and associate editor. Tony"
+  }, {
+    "type" : "heading",
+    "id" : 701,
+    "level" : "Subtitle",
+    "page number" : 22,
+    "bounding box" : [ 217.333, 436.707, 281.0, 449.04 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "REFERENCES"
+  }, {
+    "type" : "paragraph",
+    "id" : 702,
+    "page number" : 22,
+    "bounding box" : [ 39.0, 411.707, 457.957, 433.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ARJAS, E: & GASBARRA, D. (1994). Nonparametric Bayesian inference from right censored survival data the Gibbs sampler. Statist. Sinica 4, 505-24. using"
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 22,
+    "bounding box" : [ 38.333, 371.707, 458.0, 413.04 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 39.0, 392.373, 458.0, 413.04 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "BARRY, D. & HARTIGAN, J. (1992). Product partition models for change point problems. Ann. Statist. 20, 260-79.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 38.333, 371.707, 456.667, 393.373 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "BARRY, D. & HARTIGAN, J. (1993). A Bayesian analysis of change point problems. Am. Statist. Assoc_ 88, 309-19.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 705,
+    "page number" : 22,
+    "bounding box" : [ 38.0, 351.373, 459.0, 373.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "BESAG, J. , GREEN, P. J., HIGDON, D. & MENGERSEN, K. (1995). Bayesian computation and stochastic systems (with Discussion). Statist. Sci. 10, 3-66."
+  }, {
+    "type" : "paragraph",
+    "id" : 706,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 332.373, 458.333, 353.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "CARLIN, B P. & CHIB, S. (1995). Bayesian model choice via Markov chain Monte Carlo. J. R. Statist. Soc: B 57, 473-84."
+  }, {
+    "type" : "paragraph",
+    "id" : 707,
+    "page number" : 22,
+    "bounding box" : [ 38.667, 310.707, 459.0, 333.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "CARLIN B P. GELFAND, A E & SMITH, A F. M. 1992). Hierarchical Bayesian analysis of changepoint problems. Appl. Statist. 41, 389-405."
+  }, {
+    "type" : "paragraph",
+    "id" : 708,
+    "page number" : 22,
+    "bounding box" : [ 39.0, 291.707, 458.667, 313.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "CONSONNI, G. & VERONESE, P. (1995). A Bayesian method for combining results from several binomial experi ments J Am. Statist. Assoc. 90, 935-44."
+  }, {
+    "type" : "paragraph",
+    "id" : 709,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 271.04, 459.0, 294.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "GEMAN, $. & GEMAN; D. (1984): Stochastic relaxation; Gibbs distributions and the Bayesian restoration of images. IEEE Trans. Pat. Anal. Mach. Intel 6, 721-41."
+  }, {
+    "type" : "paragraph",
+    "id" : 710,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 260.373, 418.333, 274.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "GEORGE, E I. (1986). Combining minimax shrinkage estimators J Am. Statist. Assoc. 81, 437-45."
+  }, {
+    "type" : "paragraph",
+    "id" : 711,
+    "page number" : 22,
+    "bounding box" : [ 38.0, 249.707, 456.333, 264.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "GEYER, C. J & MøLLER; J. (1994) Simulation procedures and likelihood inference for spatial point processes"
+  }, {
+    "type" : "paragraph",
+    "id" : 712,
+    "page number" : 22,
+    "bounding box" : [ 38.0, 231.04, 448.333, 243.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "GREEN, P J. (1994). Discussion of paper by U. Grenander and M. Miller. J. R. Statist. Soc. B 56, 589-90."
+  }, {
+    "type" : "paragraph",
+    "id" : 713,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 220.707, 435.333, 234.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "GREEN, P J. & SIBSON, R. (1978). Computing Dirichlet tessellations in the plane. Comp. J. 21, 168-73"
+  }, {
+    "type" : "paragraph",
+    "id" : 714,
+    "page number" : 22,
+    "bounding box" : [ 38.0, 203.04, 457.0, 224.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "GRENANDER, U. & MILLER, M. (1994). Representations of knowledge in complex systems (with Discussion) . J.R. Statist. Soc. B 56, 549-603."
+  }, {
+    "type" : "paragraph",
+    "id" : 715,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 182.373, 457.0, 204.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "HASTINGS, W. K. (1970). Monte Carlo sampling methods  using Markov chains  and their   applications. Biometrika 57, 97-109."
+  }, {
+    "type" : "paragraph",
+    "id" : 716,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 160.755, 458.333, 184.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "MADIGAN, D & RAFTERY, A E. (1994) Model selection and accounting for model uncertainty in graphical models Occam's window. J. Am. Statist. Assoc. 89, 1335-46. using"
+  }, {
+    "type" : "paragraph",
+    "id" : 717,
+    "page number" : 22,
+    "bounding box" : [ 38.333, 141.373, 458.333, 164.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "METROPOLIS, N. ROosENBLUTH, A W ROsENBLUTH, M. N. TELLER, A. H. & TELLER, E. (1953). Equations of state calculations by fast computing machines. J Chem. Phys. 21, 1087-91."
+  }, {
+    "type" : "paragraph",
+    "id" : 718,
+    "page number" : 22,
+    "bounding box" : [ 37.667, 113.707, 458.667, 144.04 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "NEWTON, M. A., GUTTORP; P & ABKOWITZ, J. A. (1992). Bayesian inference by simulation in stochastic model from hematology. In Computing Science and Statistics; 24, Ed. H. J. Newton; pp. 449-55. Fairfax Station;, VA: Interface Foundation of North America Inc."
+  }, {
+    "type" : "paragraph",
+    "id" : 719,
+    "page number" : 22,
+    "bounding box" : [ 37.667, 101.04, 431.667, 114.707 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "PESKUN, P H. (1973). Optimum Monte-Carlo sampling using Markov chains. Biometrika 60, 607-12"
+  }, {
+    "type" : "paragraph",
+    "id" : 720,
+    "page number" : 23,
+    "bounding box" : [ 88.667, 676.213, 500.333, 708.547 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "F:M. (1995) Bayesian model comparison via jump diffusions. In Markov Chain Monte Carlo in Practice, Ed. W T. Richardson and D. J. Spiegelhalter, Ch. 13. London: Chapman and Hall."
+  }, {
+    "type" : "paragraph",
+    "id" : 721,
+    "page number" : 23,
+    "bounding box" : [ 79.667, 666.213, 445.0, 678.213 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "PRESTON, C J. (1977). Spatial birth-and-death processes. Bull. Int. Statist. Inst. 46 (2), 371-91."
+  }, {
+    "type" : "paragraph",
+    "id" : 722,
+    "page number" : 23,
+    "bounding box" : [ 80.333, 647.213, 500.333, 669.213 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "RAFTERY, A_ E. & AKMAN, V.E. (1986) Bayesian analysis of a Poisson process with a change point. Biometrika 73, 85-9."
+  }, {
+    "type" : "paragraph",
+    "id" : 723,
+    "page number" : 23,
+    "bounding box" : [ 79.0, 626.547, 500.0, 649.547 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "SONKA, M., HLAVAC, V. & BOYLE, R. (1993). Image Processing;  Analysis   and Machine Vision. London: Chapman and Hall."
+  }, {
+    "type" : "paragraph",
+    "id" : 724,
+    "page number" : 23,
+    "bounding box" : [ 79.333, 606.213, 498.333, 629.213 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "STEPHENS, D. A. (1994). Bayesian retrospective multiple-changepoint identification: Appl. Statist. 43, 159-78. TIERNEY, L. (1994) Markov chains for exploring posterior distributions. Ann. Statist. 22, 1701-28."
+  }, {
+    "type" : "paragraph",
+    "id" : 725,
+    "page number" : 23,
+    "bounding box" : [ 186.667, 583.547, 394.333, 600.547 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[Received January 1995. Revised June 1995]"
+  } ]
+}

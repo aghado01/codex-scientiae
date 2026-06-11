@@ -1,0 +1,1688 @@
+{
+  "file name" : "wang2020.pdf",
+  "number of pages" : 3,
+  "author" : null,
+  "title" : "untitled",
+  "creation date" : "D:20200629160230+05'30'",
+  "modification date" : "D:20200727020656-04'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 192,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 36.0, 780.572, 255.94, 794.381 ],
+    "heading level" : 1,
+    "font" : "AdvOT498dc33e.B",
+    "font size" : 11.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Parallel architecture to accelerate superparamagnetic clustering algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 193,
+    "page number" : 1,
+    "bounding box" : [ 35.999, 750.821, 273.624, 772.471 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Pan Ke Wang, Chang Hao Chen, Sio Hang Pun ✉ , Baijun Zhang, Peng Un Mak, Mang I. Vai and Tim C. Lei"
+  }, {
+    "type" : "paragraph",
+    "id" : 195,
+    "page number" : 1,
+    "bounding box" : [ 67.975, 560.112, 278.042, 737.607 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Superparamagnetic clustering (SPC) is an unsupervised classi ﬁ cation technique in which clusters are self-organised based on data density and mutual interaction energy. Traditional SPC algorithm uses the Swendsen – Wang Monte Carlo approximation technique to signi ﬁ cantly reduce the search space for reasonable clustering. However, Swendsen – Wang approximation is a Markov process which limits the conventional superparamagnetic technique to process data clustering in a sequential manner. Here the authors propose a parallel approach to replace the conventional appropriation to allow the algorithm to perform clustering in parallel. One synthetic and one open-source dataset were used to validate the accuracy of this parallel approach in which comparable clustering results were obtained as compared to the conventional implementation. The parallel method has an increase of clustering speed at least 8.7 times over the conventional approach, and the larger the sample size, the more increase in speed was observed. This can be explained by the higher degree of parallelism utilised for the increased data points. In addition, a hardware architecture was proposed to implement the parallel superparamagnetic algorithm using digital electronic technologies suitable for rapid or real-time neural spike sorting."
+  }, {
+    "type" : "paragraph",
+    "id" : 194,
+    "page number" : 1,
+    "bounding box" : [ 299.96, 653.675, 542.028, 751.021 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Methodologies: The SPC algorithm is based on the inhomogeneous ferromagnetic Potts model [ 7 , 8 ] which is modelled under the physics of real magnets. For neural spike sorting using the model, neural spikes are ﬁ rst transformed using techniques such as principle component analysis or wavelet transformation as neural data points in the phase space. Assume there are N neural data points, each data point x i can be assigned with an integer spin value s i [ 1 .. . q     and the entire data set can be considered to be in a magnetic state S = s i { } N i = 1 , and the Hamiltonian (total energy) H S ( ) of the state S can be estimated by"
+  }, {
+    "type" : "formula",
+    "id" : 196,
+    "page number" : 1,
+    "bounding box" : [ 378.368, 623.974, 541.958, 645.557 ],
+    "content" : "H ( S ) = \\sum _ { i , j } J _ { i j } ( 1 - \\delta _ { s _ { i } , s _ { j } } ) & & ( 1 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 197,
+    "page number" : 1,
+    "bounding box" : [ 299.962, 549.757, 542.041, 618.83 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where J ij / exp [−| x i − x j | 2 / 2 a 2 ] is the interactive energy between two data points at x i and x j and a is the average nearest-neighbours distance. Note that when two data points have the same spin value, the interaction energy contribution to the Hamiltonian is zero under this model ( d s i , s j = 1). Following the physics of thermal dynamics, the probability of a magnetic state S for the magnetic system at a temperature T follows the Boltzmann distribution"
+  }, {
+    "type" : "paragraph",
+    "id" : 198,
+    "page number" : 1,
+    "bounding box" : [ 35.999, 456.043, 278.041, 543.416 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Introduction: Superparamagnetic clustering (SPC) algorithm is an unsupervised data clustering algorithm that does not make assumptions on the data structure, such as Gaussian distributed. Since the algorithm does not require to specify the number of neural clusters existed in the neural recording, SPC is popular in the neuroscientist community to classify neural spikes to their respective neurons for neural signal analysis, such as using the sorted neural spikes to build post-stimulation temporal histograms [ 1 , 2 ]. SPC also ﬁ nds its use in protein sequence clustering [ 3 ] and gene expression pro ﬁ le analysis [ 4 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 202,
+    "page number" : 1,
+    "bounding box" : [ 35.997, 246.05, 278.056, 453.443 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Comparing to other data clustering algorithms, such as support vector machine or K-means [ 5 ], SPC is a density-based method in which SPC clusters are self-organised according to the mutual interaction inversely proportional to the Euclidian distances between neighbouring data points in the feature space. In addition, SPC has a ‘ temperature ’ parameter, which is used to describe how strong the mutual interaction is – the higher the temperature, the weaker the mutual interaction. Based on the mutual interaction, SPC clusters aggregate together as a single cluster at low temperature (ferromagnetic phase) and fracture into smaller clusters at high temperature (paramagnetic phase), similar to the aggregation of magnetic micro-domains in a real magnet under different ambient temperatures. For the SPC algorithm, there is a transition temperature (the superparamagnetic phase) in which the mutual interaction is at a critical level and the data are fractured into multiple larger clusters interconnecting with concentrated data points but are remained separated at larger distances. These domains or clusters at the superparamagnetic phase can be considered as optimal in classifying the underlying data. Therefore, SPC is a unique unsupervised clustering method that requires minimal user input (the temperature) to cluster the data structure in an unsupervised manner."
+  }, {
+    "type" : "paragraph",
+    "id" : 205,
+    "page number" : 1,
+    "bounding box" : [ 35.997, 106.015, 278.049, 243.393 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "In single-channel extracellular neural recording, SPC is effective to classify neural data since the amount of data measured is relatively small. However, neuroscience experiments are now moving towards measuring using high-density multi-channel probes, such as 1024 channels in a single probe [ 6 ], and much faster methods are required to process the larger data acquired. For instance, an 8 h recording of a 64-channel neural probe, sampling at 27-kHz with a 16-bit digitisation con ﬁ guration can accumulate >100 GB of data. It is estimated that 30 h of processing time is then required to sort the recorded action potentials using the conventional unmodi ﬁ ed SPC algorithms. Therefore, an improvement over the conventional SPC algorithm to attain a faster sorting speed without sacri ﬁ cing the sorting accuracy can make the SPC technique continue to be attractive for sorting multichannel recorded neural spikes."
+  }, {
+    "type" : "paragraph",
+    "id" : 209,
+    "page number" : 1,
+    "bounding box" : [ 35.997, 56.012, 277.993, 103.415 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "This Letter presents an improvement over the conventional SPC algorithm to achieve a signi ﬁ cant increase in sorting speed by implementing a parallel architecture to sort the recorded neural spikes. In the following, the parallel architecture of SPC will be introduced in the methodology section. Two datasets were then used to validate the"
+  }, {
+    "type" : "formula",
+    "id" : 199,
+    "page number" : 1,
+    "bounding box" : [ 359.716, 520.907, 541.957, 541.386 ],
+    "content" : "P ( S ) \\equiv P [ H ( S ) ] = \\frac { 1 } { Z } \\exp \\left ( - \\frac { H ( S ) } { T } \\right ) \\quad ( 2 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 200,
+    "page number" : 1,
+    "bounding box" : [ 299.961, 484.731, 541.987, 513.689 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where Z =   S exp − H S ( ) / T     is the normalisation constant. A physical quantity A can then be estimated by integrating over all the spin states according to the Boltzmann probability distribution"
+  }, {
+    "type" : "formula",
+    "id" : 201,
+    "page number" : 1,
+    "bounding box" : [ 362.326, 446.945, 541.957, 475.454 ],
+    "content" : "\\langle A \\rangle & = \\sum _ { S } P ( S ) A ( S ) \\simeq \\frac { 1 } { M } \\sum _ { i = 1 } ^ { M } A ( S _ { i } ) & ( 3 ) \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 203,
+    "page number" : 1,
+    "bounding box" : [ 299.961, 379.106, 541.994, 442.786 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "However, the total number of spin states is an astronomical large number ( q N ) and approximation techniques have to be employed to select a limited number of spin states in which the selected spin states should follow the Boltzmann distribution. The conventional SPC typically uses the Swendsen – Wang (SW) approximation algorithm [ 9 ] to select these spin states ( S i for i = 1 , .. . , M ) for the calculation. The SW approximation algorithm is a Markov process in which the"
+  }, {
+    "type" : "paragraph",
+    "id" : 204,
+    "page number" : 1,
+    "bounding box" : [ 299.961, 194.291, 542.042, 382.748 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "spin state S is generated in a sequential manner. The full description of the SW approximation algorithm can be found in [ 9 ] and a brief description of the algorithm is presented here. With the ﬁ rst spin state S 1 is randomly generated, the next spin state S i + 1 can be generated from the prior spin state S i using the concept of frozen bonds. Two nearest neighbouring points can be considered to be connected if the virtual bond between the two points are ‘ frozen ’ , and all the data points mutually connected by the frozen bonds are considered to belong to the same SW cluster. A bond can be considered to be frozen if a random number casted is lower than the frozen bond probability p f i , j = 1 − exp − ( J ij / T ) d s i , s j     . Once the SW clusters are determined based on the frozen bond mutual connections, a spin number s [ 1 , .. . , q     is randomly assigned to all the data points belonging to the same SW cluster. Based on this procedure, the next spin states S i + 1 can be estimated. It can be shown that all the spin states generated ( S i for i = 1 , . .. , M ) following this procedure roughly conforms to the Boltzmann distribution. The M estimated spin states S i can then be used to calculate the spin – spin correlation"
+  }, {
+    "type" : "formula",
+    "id" : 206,
+    "page number" : 1,
+    "bounding box" : [ 392.088, 157.584, 541.957, 186.093 ],
+    "content" : "\\langle G _ { i j } \\rangle \\simeq \\frac { 1 } { M } \\sum _ { i = 1 } ^ { M } \\delta _ { i j } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 207,
+    "page number" : 1,
+    "bounding box" : [ 299.96, 135.291, 541.941, 153.425 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "in which the data points i and j are considered to belong to the same cluster if k G ij l has a value >0.5. However, the major disadvantage of the SW approximation algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 208,
+    "page number" : 1,
+    "bounding box" : [ 299.961, 96.043, 541.966, 133.413 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "is that the spin states S i are sequentially estimated, making the SPC algorithm inherently slow especially when the number of data points is large, as in the multi-channel neural recording."
+  }, {
+    "type" : "paragraph",
+    "id" : 210,
+    "page number" : 1,
+    "bounding box" : [ 299.962, 49.721, 541.985, 93.443 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Here, we propose a parallel approach to generate the estimated spin states S i at the same time to accelerate this estimation process for more ef ﬁ cient SPC clustering. The Boltzmann distribution function is a probability density function of H S ( ) and a series of H S i ( )"
+  }, {
+    "type" : "footer",
+    "id" : 383,
+    "page number" : 1,
+    "bounding box" : [ 36.0, 33.864, 390.938, 43.541 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 385,
+      "page number" : 1,
+      "bounding box" : [ 36.0, 33.864, 390.938, 43.541 ],
+      "font" : "AdvOT396b1833.I",
+      "font size" : 10.5,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "ELECTRONICS LETTERS 9th July 2020 Vol. 56 No. 14 pp. 701 – 704"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 212,
+    "page number" : 2,
+    "bounding box" : [ 53.291, 794.16, 121.321, 801.539 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "can be estimated by"
+  }, {
+    "type" : "formula",
+    "id" : 213,
+    "page number" : 2,
+    "bounding box" : [ 100.46, 770.401, 295.286, 785.109 ],
+    "content" : "H ( S _ { i } ) = - T \\cdot \\ln [ 1 - r _ { i } ] \\ \\text { for } i = 1 , \\dots , M \\quad ( 5 ) \\quad \\text {mor} \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 214,
+    "page number" : 2,
+    "bounding box" : [ 53.291, 729.19, 295.374, 766.559 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "where r i is uniformly distributed random numbers between 0 and 1. The above equation is the inverse of the cumulative probability function of H S ( ) and the generated H S i ( ) follows the Boltzmann distribution at the temperature T as shown in Fig. 1 a ."
+  }, {
+    "type" : "image",
+    "page number" : 2,
+    "bounding box" : [ 78.648, 638.568, 174.526, 710.472 ],
+    "source" : "images/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 217,
+    "page number" : 2,
+    "bounding box" : [ 68.698, 701.365, 78.258, 705.909 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.12"
+  }, {
+    "type" : "paragraph",
+    "id" : 218,
+    "page number" : 2,
+    "bounding box" : [ 129.722, 701.086, 167.855, 704.721 ],
+    "font" : "Helvetica",
+    "font size" : 3.93,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Boltzmann distribution histogram of H ( S )"
+  }, {
+    "type" : "paragraph",
+    "id" : 225,
+    "page number" : 2,
+    "bounding box" : [ 184.955, 699.108, 191.782, 703.652 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 220,
+    "page number" : 2,
+    "bounding box" : [ 129.722, 697.046, 152.128, 700.681 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "histogram of"
+  }, {
+    "type" : "paragraph",
+    "id" : 221,
+    "page number" : 2,
+    "bounding box" : [ 152.123, 697.046, 154.922, 700.681 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 222,
+    "page number" : 2,
+    "bounding box" : [ 154.922, 697.046, 156.212, 700.681 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 223,
+    "page number" : 2,
+    "bounding box" : [ 156.212, 697.046, 158.797, 700.681 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "S"
+  }, {
+    "type" : "paragraph",
+    "id" : 224,
+    "page number" : 2,
+    "bounding box" : [ 158.797, 697.046, 160.088, 700.681 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 229,
+    "page number" : 2,
+    "bounding box" : [ 177.014, 656.291, 181.557, 696.157 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "feature 2, arb. unit"
+  }, {
+    "type" : "paragraph",
+    "id" : 232,
+    "page number" : 2,
+    "bounding box" : [ 184.955, 686.987, 191.782, 691.53 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 230,
+    "page number" : 2,
+    "bounding box" : [ 61.014, 665.709, 65.558, 688.093 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "probability"
+  }, {
+    "type" : "paragraph",
+    "id" : 231,
+    "page number" : 2,
+    "bounding box" : [ 68.698, 683.496, 78.258, 688.04 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.09"
+  }, {
+    "type" : "paragraph",
+    "id" : 233,
+    "page number" : 2,
+    "bounding box" : [ 189.051, 674.081, 191.782, 678.625 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 234,
+    "page number" : 2,
+    "bounding box" : [ 68.698, 667.082, 78.258, 671.626 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.06"
+  }, {
+    "type" : "paragraph",
+    "id" : 235,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 182.224, 661.104, 191.785, 665.648 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "–1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 236,
+    "page number" : 2,
+    "bounding box" : [ 68.698, 650.646, 78.258, 655.19 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.03"
+  }, {
+    "type" : "paragraph",
+    "id" : 237,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 182.224, 648.27, 191.785, 652.814 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "–3.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 238,
+    "page number" : 2,
+    "bounding box" : [ 101.125, 633.848, 109.319, 638.392 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "400"
+  }, {
+    "type" : "paragraph",
+    "id" : 239,
+    "page number" : 2,
+    "bounding box" : [ 125.626, 633.848, 133.82, 638.392 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "800"
+  }, {
+    "type" : "paragraph",
+    "id" : 240,
+    "page number" : 2,
+    "bounding box" : [ 150.731, 633.848, 161.657, 638.392 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1200"
+  }, {
+    "type" : "paragraph",
+    "id" : 246,
+    "page number" : 2,
+    "bounding box" : [ 119.351, 628.74, 122.898, 633.283 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 247,
+    "page number" : 2,
+    "bounding box" : [ 122.898, 628.74, 124.533, 633.283 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 248,
+    "page number" : 2,
+    "bounding box" : [ 124.533, 628.74, 127.81, 633.283 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "S"
+  }, {
+    "type" : "paragraph",
+    "id" : 249,
+    "page number" : 2,
+    "bounding box" : [ 127.81, 628.74, 129.445, 633.283 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 251,
+    "page number" : 2,
+    "bounding box" : [ 120.882, 620.458, 124.774, 626.933 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 201.959, 696.862, 216.81, 705.537 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 201.96, 701.902, 216.81, 705.537 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "cluster 1",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 201.959, 696.862, 216.81, 700.497 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "cluster 2",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 219,
+    "page number" : 2,
+    "bounding box" : [ 269.961, 702.507, 284.811, 706.142 ],
+    "font" : "Helvetica",
+    "font size" : 3.93,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "cluster 3 others"
+  }, {
+    "type" : "paragraph",
+    "id" : 228,
+    "page number" : 2,
+    "bounding box" : [ 269.961, 698.589, 280.881, 702.224 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "others"
+  }, {
+    "type" : "paragraph",
+    "id" : 241,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 201.322, 633.848, 210.881, 638.392 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "–3.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 242,
+    "level" : "3",
+    "page number" : 2,
+    "bounding box" : [ 219.722, 633.848, 229.281, 638.392 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 243,
+    "page number" : 2,
+    "bounding box" : [ 238.994, 633.848, 241.725, 638.392 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 244,
+    "page number" : 2,
+    "bounding box" : [ 255.224, 633.848, 262.052, 638.392 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 250,
+    "page number" : 2,
+    "bounding box" : [ 220.474, 628.739, 260.34, 633.283 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "feature 1, arb. unit"
+  }, {
+    "type" : "paragraph",
+    "id" : 252,
+    "page number" : 2,
+    "bounding box" : [ 238.366, 620.458, 242.258, 626.933 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "b"
+  }, {
+    "type" : "paragraph",
+    "id" : 245,
+    "page number" : 2,
+    "bounding box" : [ 272.173, 633.848, 279.001, 638.392 ],
+    "font" : "Helvetica",
+    "font size" : 4.912,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 253,
+    "page number" : 2,
+    "bounding box" : [ 53.291, 558.808, 295.339, 608.679 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Fig. 1 Clustering result of synthetic data based on parallel SPC a Red curve is Boltzmann distribution, blue bar is histogram of H ( S ) samples which were obtained by inverse transform sampling b Clustering result of concentric dataset classi ﬁ ed by parallel SPC algorithm, data points classi ﬁ ed to three clusters are shown with different colours, and unclassiﬁ ed data points (outliers) were labelled as black stars"
+  }, {
+    "type" : "paragraph",
+    "id" : 215,
+    "page number" : 2,
+    "bounding box" : [ 317.313, 564.156, 559.366, 761.514 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "The IRIS dataset was also used to evaluate the parallel SPC algorithm. The dataset contains three species (setosa, versicolor and virginica) that are described by four features and each species has 50 data points – a total of 150 samples for the entire dataset. Fig. 2 a shows the data points plotted with the ﬁ rst three principal components in the 3D feature space. From the ﬁ gure, it is observed that setosa is more easily separated from the other groups while the other two groups are more overlapped. Fig. 2 b shows the number of data points assigned to each group against the temperature classi ﬁ ed by parallel SPC clustering. For temperature below 1.1, the data points were only split into two groups, indicating that versicolor and virginica were not separated but merged in a large group. For temperature >1.4, the number of data points in the three groups signi ﬁ cantly reduced, indicating that the data points were separated into many small groups and the total number of groups were more than three groups. For temperature between 1.2 and 1.4 (SPC phase), the parallel SPC algorithm separated the IRIS dataset into three groups – 47 data points for versicolor, 39 data points for virginica and 38 data points for setosa – and this classi ﬁ cation results by parallel SPC is similar to that obtained from the conventional SPC [ 8 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 254,
+    "page number" : 2,
+    "bounding box" : [ 53.29, 347.137, 295.355, 545.411 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Once a series of H S i ( ) for i = 1 , . .. , M are determined, the process can be paralleled to increase classi ﬁ cation speed. At the beginning of the parallelism, the interaction energies J ij of a data point i to its K nearest neighbours are computed ( j = 1 , . .. , K ). All the calculated interaction energies J ij are then ranked in an increasing order to obtain J n for n = 1 , . .. , N ∗ K . Using the sorted J n , the accumulative total energies H a n =   n m = 1 J m can be computed. Since the interaction energies J ij used to construct H a n are known, the accumulative total energies H a n can in turn be used to ﬁ nd the values of d ij in H S i ( ) by matching the H S i ( ) to the closest H a n . According to (1), d ij = 0 for the J ij included in H a n , and d ij = 1 otherwise. Since value matching is not a Markov process, d ij values for all the H S i ( ) can be determined in a parallel manner to signi ﬁ cantly increase the speed in calculating the spin – spin correlation k G ij l for SPC clustering. Once all the d ij are determined, the spin – spin correlation k G ij l can simply be computed by taking an average on all the d ij values, according to (4). It is also worth mentioning that although matching H S i ( ) to H a n is not a random process, in contrast to SW approximation, the series of H S i ( ) is, however, randomly generated thus allowing the determination of d ij by a simple look-up process."
+  }, {
+    "type" : "paragraph",
+    "id" : 288,
+    "page number" : 2,
+    "bounding box" : [ 53.291, 296.056, 295.343, 333.425 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Results: Two datasets were used to evaluate the accuracy of the parallel SPC method. The ﬁ rst dataset is an arti ﬁ cial dataset with the data distributed in three concentric rings in the feature space, and the second dataset is the IRIS dataset obtained from [ 8 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 292,
+    "page number" : 2,
+    "bounding box" : [ 53.29, 56.017, 295.36, 293.4 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "The ﬁ rst arti ﬁ cial dataset of concentric rings had 4800 data points distributed in the 2D feature space. Three concentric clusters were uniformly distributed across the 2 p angles with radii of 3, 2 and 1 and a variance of 0.15, and had 2400, 1600, and 800 data points, respectively. The synthetic dataset was then subjected to the parallel SPC algorithm for clustering with K = 10, q = 20, and M = 300. Fig. 1 a compares the generated H S i ( ) (blue histogram) to the Boltzmann distribution (red dotted curve) and the result indicates that the generated H S i ( ) closely follows the Boltzmann distribution. Based on the generated H S i ( ) , the spin states S i were generated in a parallel manner for the synthetic concentric dataset for SPC classi ﬁ cation. Fig. 1 b shows the classi ﬁ cation result for the synthetic concentric ring data, the data points classi ﬁ ed by the parallel SPC algorithm to three clusters are labelled in three different colours (red, green, and purple) and unclassi ﬁ ed data points are labelled in black. The unclassi ﬁ ed data points are mostly located at boundaries between the clusters contributed to <3% of the entire dataset. More than 97% of the data points (2321, 1551, 785) were correctly classi ﬁ ed with parallel SPC, and the result obtained is similar to that obtained from the conventional SPC method [ 8 ]. This proves that the parallel SPC method can achieve similar classi ﬁ cation results as with SW approximation. It is worth mentioning that the concentric ring dataset is a dif ﬁ cult dataset for conventional distance-based clustering methods, such as k -means, to classify since most of these techniques require the data distribution to"
+  }, {
+    "type" : "image",
+    "page number" : 2,
+    "bounding box" : [ 377.568, 345.528, 518.832, 549.312 ],
+    "alt" : "In this image, we can see a graph. There is a scale on the right side. There is a graph on the left side. There is a text on the left side. There is a graph on the right side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side. There is a graph on the left side. There is a graph on the right side.",
+    "source" : "images/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 256,
+    "page number" : 2,
+    "bounding box" : [ 428.867, 534.46, 450.869, 540.01 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "virginica"
+  }, {
+    "type" : "paragraph",
+    "id" : 257,
+    "page number" : 2,
+    "bounding box" : [ 368.204, 528.85, 376.544, 534.4 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 258,
+    "page number" : 2,
+    "bounding box" : [ 428.867, 528.328, 454.535, 533.878 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "versicolor"
+  }, {
+    "type" : "paragraph",
+    "id" : 260,
+    "page number" : 2,
+    "bounding box" : [ 428.867, 522.37, 446.543, 527.92 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "setosa"
+  }, {
+    "type" : "paragraph",
+    "id" : 259,
+    "page number" : 2,
+    "bounding box" : [ 368.204, 517.95, 376.544, 523.5 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 261,
+    "page number" : 2,
+    "bounding box" : [ 353.933, 506.897, 367.271, 512.447 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "PC 3"
+  }, {
+    "type" : "paragraph",
+    "id" : 262,
+    "page number" : 2,
+    "bounding box" : [ 373.208, 505.714, 376.544, 511.264 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 2,
+    "bounding box" : [ 364.423, 475.017, 380.548, 500.863 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 364.868, 493.927, 376.544, 500.863 ],
+      "font" : "Helvetica",
+      "font size" : 6.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "–0.5",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 364.423, 475.017, 380.548, 487.96 ],
+      "font" : "Helvetica",
+      "font size" : 6.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "–1.0 2",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 265,
+    "page number" : 2,
+    "bounding box" : [ 377.212, 475.125, 380.548, 480.675 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 267,
+    "page number" : 2,
+    "bounding box" : [ 512.999, 471.952, 516.335, 477.502 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 266,
+    "page number" : 2,
+    "bounding box" : [ 391.561, 469.452, 394.897, 475.002 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 269,
+    "page number" : 2,
+    "bounding box" : [ 494.805, 466.669, 498.141, 472.219 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 268,
+    "page number" : 2,
+    "bounding box" : [ 409.025, 463.0, 412.361, 468.55 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 274,
+    "page number" : 2,
+    "bounding box" : [ 476.097, 461.68, 479.433, 467.23 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 270,
+    "page number" : 2,
+    "bounding box" : [ 390.897, 460.666, 404.235, 466.216 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "PC 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 273,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 457.812, 458.21, 464.484, 463.76 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "–2"
+  }, {
+    "type" : "paragraph",
+    "id" : 271,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 423.263, 456.104, 429.935, 461.654 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "–1"
+  }, {
+    "type" : "paragraph",
+    "id" : 275,
+    "page number" : 2,
+    "bounding box" : [ 477.399, 453.615, 490.737, 459.165 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "PC 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 272,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 438.472, 453.614, 445.144, 459.164 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "–4"
+  }, {
+    "type" : "paragraph",
+    "id" : 276,
+    "page number" : 2,
+    "bounding box" : [ 441.902, 441.059, 445.794, 447.534 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 277,
+    "page number" : 2,
+    "bounding box" : [ 368.942, 424.893, 378.95, 430.443 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "120"
+  }, {
+    "type" : "paragraph",
+    "id" : 278,
+    "page number" : 2,
+    "bounding box" : [ 361.108, 365.315, 366.658, 423.347 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "number of data points"
+  }, {
+    "type" : "paragraph",
+    "id" : 279,
+    "page number" : 2,
+    "bounding box" : [ 453.639, 413.523, 483.987, 419.073 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "SPC phase"
+  }, {
+    "type" : "paragraph",
+    "id" : 280,
+    "page number" : 2,
+    "bounding box" : [ 372.278, 398.34, 378.95, 403.89 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "80"
+  }, {
+    "type" : "paragraph",
+    "id" : 281,
+    "page number" : 2,
+    "bounding box" : [ 372.278, 371.659, 378.95, 377.209 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 282,
+    "page number" : 2,
+    "bounding box" : [ 375.614, 345.361, 378.95, 350.911 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 283,
+    "page number" : 2,
+    "bounding box" : [ 381.603, 339.181, 384.939, 344.731 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 284,
+    "page number" : 2,
+    "bounding box" : [ 412.7, 339.181, 421.04, 344.731 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 285,
+    "page number" : 2,
+    "bounding box" : [ 446.299, 339.181, 454.639, 344.731 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 286,
+    "page number" : 2,
+    "bounding box" : [ 479.897, 339.181, 488.237, 344.731 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 287,
+    "page number" : 2,
+    "bounding box" : [ 514.366, 339.181, 522.706, 344.731 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 289,
+    "page number" : 2,
+    "bounding box" : [ 426.52, 331.747, 483.881, 337.297 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "temperature, arb. unit"
+  }, {
+    "type" : "paragraph",
+    "id" : 290,
+    "page number" : 2,
+    "bounding box" : [ 450.326, 322.257, 454.218, 328.732 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "b"
+  }, {
+    "type" : "paragraph",
+    "id" : 291,
+    "page number" : 2,
+    "bounding box" : [ 317.31, 276.591, 559.36, 310.417 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Fig. 2 Clustering result of IRIS data based on the parallel SPC algorithm a 3D plot of ﬁ rst three principal components (PC) of iris dataset in feature space b Number of data points of largest three clusters against temperature, illustrating SPC phase for optimal classi ﬁ cation"
+  }, {
+    "type" : "paragraph",
+    "id" : 293,
+    "page number" : 2,
+    "bounding box" : [ 317.31, 116.053, 559.358, 263.41 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "In addition to comparing the accuracy between the conventional SPC method and the parallel SPC method, the speed increments of using parallel SPC were demonstrated using the arti ﬁ cial dataset under different sample sizes. Both the parallel and conventional SPC methods were implemented with the python programming language in-house with similar programming techniques to have a fair comparison. The classi ﬁ cation speed was compared using sample sizes of 1200, 2400, 4800, and 9600 samples of the arti ﬁ cial dataset. The computation times of the two methods are shown in Fig. 3 , it is apparent that the parallel SPC method was signi ﬁ cantly faster than the conventional methods – computational time reductions of 8.7, 9.6, 10.7, and 12.4 times for 1200, 2400, 4800, and 9600 samples. Owing to the parallel nature of the technique, the larger the sample size, the easier to take advantage of the computational parallelism, leading to a faster computational speed."
+  }, {
+    "type" : "paragraph",
+    "id" : 294,
+    "page number" : 2,
+    "bounding box" : [ 317.31, 49.721, 559.346, 113.397 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "The parallel algorithm can be implemented with digital electronic hardware, such as a FPGA or an application speci ﬁ c integrated circuit, for real-time or rapid neural spike sorting. Fig. 4 shows a schematic diagram showing the hardware blocks to implement the parallel SPC technique. An array of the Hamiltonian H S i ( ) is ﬁ rst generated and one of the H S i ( ) is sent to one of the M matching block to determine"
+  }, {
+    "type" : "footer",
+    "id" : 384,
+    "page number" : 2,
+    "bounding box" : [ 204.378, 33.864, 559.314, 43.541 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 386,
+      "page number" : 2,
+      "bounding box" : [ 204.378, 33.864, 559.314, 43.541 ],
+      "font" : "AdvOT396b1833.I",
+      "font size" : 10.5,
+      "text color" : "[0.0, 0.0, 0.0, 1.0]",
+      "content" : "ELECTRONICS LETTERS 9th July 2020 Vol. 56 No. 14 pp. 701 – 704"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 296,
+    "page number" : 3,
+    "bounding box" : [ 35.999, 714.11, 277.991, 802.912 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "d ij for H S i ( ) in parallel. The arrays of accumulative total energies H a n and the corresponding index matrix storing the indexes of J ij used to construct H a n were loaded to the matching blocks for rapid comparison. The control and comparing logic is then used to match the input H S i ( ) to determine the closest H a n , once the closest H a n is determined, the index matrix is then used to look up the constituting J ij indexes to generated d ij matrix. Finally, all the parallel generated d ij matrixes were averaged to obtain the spin – spin correlation matrix k G ij l for SPC clustering determination."
+  }, {
+    "type" : "paragraph",
+    "id" : 300,
+    "page number" : 3,
+    "bounding box" : [ 63.329, 691.494, 76.673, 697.044 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3000"
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 77.448, 560.568, 258.995, 695.592 ],
+    "alt" : "In this image there is a graph.",
+    "source" : "images/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 301,
+    "page number" : 3,
+    "bounding box" : [ 101.095, 688.612, 131.659, 693.699 ],
+    "font" : "Helvetica",
+    "font size" : 5.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "parallel SPC SPC"
+  }, {
+    "type" : "paragraph",
+    "id" : 303,
+    "page number" : 3,
+    "bounding box" : [ 101.095, 680.604, 112.404, 685.691 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "SPC"
+  }, {
+    "type" : "paragraph",
+    "id" : 304,
+    "page number" : 3,
+    "bounding box" : [ 231.966, 680.603, 247.868, 685.691 ],
+    "font" : "Helvetica",
+    "font size" : 5.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "12.4 X"
+  }, {
+    "type" : "paragraph",
+    "id" : 306,
+    "page number" : 3,
+    "bounding box" : [ 63.329, 669.84, 76.673, 675.39 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2500"
+  }, {
+    "type" : "paragraph",
+    "id" : 309,
+    "page number" : 3,
+    "bounding box" : [ 63.329, 648.186, 76.673, 653.736 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2000"
+  }, {
+    "type" : "paragraph",
+    "id" : 310,
+    "page number" : 3,
+    "bounding box" : [ 56.291, 620.242, 61.841, 637.912 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "time, s"
+  }, {
+    "type" : "paragraph",
+    "id" : 311,
+    "page number" : 3,
+    "bounding box" : [ 63.329, 626.532, 76.673, 632.082 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1500"
+  }, {
+    "type" : "paragraph",
+    "id" : 312,
+    "page number" : 3,
+    "bounding box" : [ 183.271, 620.869, 199.174, 625.957 ],
+    "font" : "Helvetica",
+    "font size" : 5.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "10.7 X"
+  }, {
+    "type" : "paragraph",
+    "id" : 314,
+    "page number" : 3,
+    "bounding box" : [ 63.329, 604.878, 76.673, 610.428 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1000"
+  }, {
+    "type" : "paragraph",
+    "id" : 316,
+    "page number" : 3,
+    "bounding box" : [ 142.354, 592.784, 155.198, 597.872 ],
+    "font" : "Helvetica",
+    "font size" : 5.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "9.6 X"
+  }, {
+    "type" : "paragraph",
+    "id" : 317,
+    "page number" : 3,
+    "bounding box" : [ 66.665, 583.223, 76.673, 588.773 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "500"
+  }, {
+    "type" : "paragraph",
+    "id" : 318,
+    "page number" : 3,
+    "bounding box" : [ 100.079, 580.539, 112.924, 585.626 ],
+    "font" : "Helvetica",
+    "font size" : 5.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "8.7 X"
+  }, {
+    "type" : "paragraph",
+    "id" : 320,
+    "page number" : 3,
+    "bounding box" : [ 73.337, 561.569, 76.673, 567.119 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 321,
+    "page number" : 3,
+    "bounding box" : [ 95.602, 553.921, 108.946, 559.471 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1200"
+  }, {
+    "type" : "paragraph",
+    "id" : 322,
+    "page number" : 3,
+    "bounding box" : [ 140.075, 553.921, 153.419, 559.471 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2400"
+  }, {
+    "type" : "paragraph",
+    "id" : 323,
+    "page number" : 3,
+    "bounding box" : [ 184.549, 553.921, 197.893, 559.471 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4800"
+  }, {
+    "type" : "paragraph",
+    "id" : 324,
+    "page number" : 3,
+    "bounding box" : [ 229.022, 553.921, 242.366, 559.471 ],
+    "font" : "Helvetica",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "9600"
+  }, {
+    "type" : "paragraph",
+    "id" : 325,
+    "page number" : 3,
+    "bounding box" : [ 142.206, 546.283, 193.224, 551.833 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "number of samples"
+  }, {
+    "type" : "paragraph",
+    "id" : 327,
+    "page number" : 3,
+    "bounding box" : [ 36.0, 518.566, 278.009, 534.468 ],
+    "font" : "AdvOT2ea83e65.I",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Fig. 3 Speed comparison between conventional SPC and parallel SPC implementations against different sample sizes"
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 56.808, 388.968, 257.602, 502.272 ],
+    "source" : "images/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 330,
+    "page number" : 3,
+    "bounding box" : [ 108.416, 495.652, 112.581, 500.277 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 5.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "M"
+  }, {
+    "type" : "paragraph",
+    "id" : 331,
+    "page number" : 3,
+    "bounding box" : [ 163.215, 494.865, 166.546, 499.558 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "J ij  "
+  }, {
+    "type" : "paragraph",
+    "id" : 332,
+    "page number" : 3,
+    "bounding box" : [ 167.658, 495.858, 189.219, 499.558 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "index matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 337,
+    "page number" : 3,
+    "bounding box" : [ 109.581, 490.354, 149.373, 494.054 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "accumulative energies"
+  }, {
+    "type" : "paragraph",
+    "id" : 333,
+    "page number" : 3,
+    "bounding box" : [ 76.853, 488.71, 80.463, 493.335 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 334,
+    "page number" : 3,
+    "bounding box" : [ 80.463, 488.71, 82.128, 493.335 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 335,
+    "page number" : 3,
+    "bounding box" : [ 82.128, 487.468, 88.586, 493.335 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "S M"
+  }, {
+    "type" : "paragraph",
+    "id" : 336,
+    "page number" : 3,
+    "bounding box" : [ 88.586, 488.71, 90.251, 493.335 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 338,
+    "page number" : 3,
+    "bounding box" : [ 100.135, 478.227, 102.915, 482.852 ],
+    "font" : "Helvetica",
+    "font size" : 5.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 340,
+    "page number" : 3,
+    "bounding box" : [ 159.763, 479.082, 182.436, 482.782 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "index matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 339,
+    "page number" : 3,
+    "bounding box" : [ 156.432, 478.089, 159.763, 482.782 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "J ij"
+  }, {
+    "type" : "paragraph",
+    "id" : 347,
+    "page number" : 3,
+    "bounding box" : [ 101.517, 473.694, 141.309, 477.394 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "accumulative energies"
+  }, {
+    "type" : "paragraph",
+    "id" : 346,
+    "page number" : 3,
+    "bounding box" : [ 78.31, 471.413, 79.975, 476.038 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 342,
+    "page number" : 3,
+    "bounding box" : [ 67.615, 471.413, 71.225, 476.038 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 343,
+    "page number" : 3,
+    "bounding box" : [ 71.225, 471.413, 72.89, 476.038 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 344,
+    "page number" : 3,
+    "bounding box" : [ 72.89, 471.413, 76.225, 476.038 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "S"
+  }, {
+    "type" : "paragraph",
+    "id" : 345,
+    "page number" : 3,
+    "bounding box" : [ 76.225, 470.172, 78.31, 473.64 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 349,
+    "page number" : 3,
+    "bounding box" : [ 91.357, 461.982, 94.137, 466.607 ],
+    "font" : "Helvetica",
+    "font size" : 5.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 351,
+    "page number" : 3,
+    "bounding box" : [ 151.37, 462.604, 174.043, 466.304 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "index matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 350,
+    "page number" : 3,
+    "bounding box" : [ 148.039, 461.611, 151.37, 466.304 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "J ij"
+  }, {
+    "type" : "paragraph",
+    "id" : 355,
+    "page number" : 3,
+    "bounding box" : [ 234.531, 457.051, 248.868, 460.751 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 353,
+    "page number" : 3,
+    "bounding box" : [ 227.751, 457.05, 230.087, 460.75 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "<"
+  }, {
+    "type" : "paragraph",
+    "id" : 354,
+    "page number" : 3,
+    "bounding box" : [ 230.087, 456.058, 234.531, 460.75 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Gij"
+  }, {
+    "type" : "paragraph",
+    "id" : 352,
+    "page number" : 3,
+    "bounding box" : [ 92.709, 453.38, 132.501, 457.08 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "accumulative energies"
+  }, {
+    "type" : "paragraph",
+    "id" : 364,
+    "page number" : 3,
+    "bounding box" : [ 102.309, 441.959, 104.394, 445.428 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 3,
+    "bounding box" : [ 123.958, 441.958, 126.043, 445.427 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 365,
+    "level" : "3",
+    "page number" : 3,
+    "bounding box" : [ 110.283, 440.035, 114.453, 444.66 ],
+    "font" : "Helvetica",
+    "font size" : 5.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 362,
+    "page number" : 3,
+    "bounding box" : [ 97.964, 440.035, 101.574, 444.66 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 3,
+    "bounding box" : [ 119.538, 438.793, 125.233, 444.66 ],
+    "font" : "Helvetica-Oblique",
+    "font size" : 3.75,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "H n a"
+  }, {
+    "type" : "paragraph",
+    "id" : 361,
+    "page number" : 3,
+    "bounding box" : [ 71.045, 439.183, 72.71, 443.808 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 357,
+    "page number" : 3,
+    "bounding box" : [ 60.35, 439.182, 63.96, 443.807 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 358,
+    "page number" : 3,
+    "bounding box" : [ 63.96, 439.182, 65.625, 443.807 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 359,
+    "page number" : 3,
+    "bounding box" : [ 65.625, 439.182, 68.96, 443.807 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "S"
+  }, {
+    "type" : "paragraph",
+    "id" : 363,
+    "page number" : 3,
+    "bounding box" : [ 101.574, 438.794, 103.659, 442.263 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 360,
+    "page number" : 3,
+    "bounding box" : [ 68.96, 437.941, 71.045, 441.41 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 3,
+    "bounding box" : [ 101.315, 406.848, 121.103, 410.548 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "control and comparing"
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 3,
+    "bounding box" : [ 101.873, 402.048, 120.545, 405.748 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "comparing"
+  }, {
+    "type" : "paragraph",
+    "id" : 372,
+    "page number" : 3,
+    "bounding box" : [ 107.985, 397.248, 114.433, 400.948 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "unit"
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 3,
+    "bounding box" : [ 155.219, 390.632, 157.195, 395.844 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "δ"
+  }, {
+    "type" : "paragraph",
+    "id" : 375,
+    "page number" : 3,
+    "bounding box" : [ 158.527, 390.976, 170.528, 394.676 ],
+    "font" : "Helvetica",
+    "font size" : 4.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 374,
+    "page number" : 3,
+    "bounding box" : [ 157.195, 389.983, 158.527, 392.758 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ij"
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 3,
+    "bounding box" : [ 36.0, 361.356, 278.008, 377.315 ],
+    "font" : "AdvOT2ea83e65.I",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Fig. 4 Hardware implementation structure of accelerator for parallel SPC algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 379,
+    "page number" : 3,
+    "bounding box" : [ 36.0, 269.525, 278.077, 346.918 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Conclusion: Here we propose a parallel approach to the SPC neural spike sorting technique to replace the sequential SW approximation. The accuracy of the parallel technique was demonstrated by comparing the approach to the conventional method using both a synthetic dataset and the open-source IRIS datasets. Benchmarking was compared between the two techniques and an at least 8.7 times speed increase was observed with the parallel method, and an accelerating effect was also observed for larger sample size datasets. A hardware"
+  }, {
+    "type" : "paragraph",
+    "id" : 297,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 724.147, 542.008, 771.494 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Acknowledgments: The authors would like to acknowledge the support by The Science and Technology Development Fund of Macau (FDCT) under grant nos. 093/2015/A3 and 088/2016/A2, 0144/2019/A3 and the University of Macau under grant nos. MYRG2018-00146-AMSV and MYRG2019-00056-AMSV."
+  }, {
+    "type" : "heading",
+    "id" : 298,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 299.963, 700.166, 489.88, 707.544 ],
+    "heading level" : 1,
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "© The Institution of Engineering and Technology 2020"
+  }, {
+    "type" : "paragraph",
+    "id" : 302,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 690.131, 472.586, 697.509 ],
+    "font" : "AdvOT2ea83e65.I",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Submitted: 10 March 2020 Eﬁ rst: 12 May 2020"
+  }, {
+    "type" : "paragraph",
+    "id" : 305,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 680.153, 389.903, 687.531 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "doi: 10.1049/el.2020.0760"
+  }, {
+    "type" : "paragraph",
+    "id" : 307,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 670.118, 541.98, 677.496 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "One or more of the Figures in this Letter are available in colour online."
+  }, {
+    "type" : "paragraph",
+    "id" : 308,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 627.144, 542.015, 664.513 ],
+    "font" : "AdvOT2ea83e65.I",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Pan Ke Wang, Chang Hao Chen, Sio Hang Pun, Mang I. Vai and Tim C. Lei ( State Key Laboratory of Analog and Mixed-Signal VLSI, Institute of Microelectronics, University of Macau, People ’ s Republic of China )"
+  }, {
+    "type" : "paragraph",
+    "id" : 313,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 614.161, 413.484, 622.458 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "✉ E-mail: lodgepun@um.edu.mo"
+  }, {
+    "type" : "paragraph",
+    "id" : 315,
+    "page number" : 3,
+    "bounding box" : [ 299.963, 590.065, 541.966, 608.501 ],
+    "font" : "AdvOT2ea83e65.I",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Peng Un Mak ( Department of Electrical and Computer Engineering, University of Macau, Macau, People ’ s Republic of China )"
+  }, {
+    "type" : "paragraph",
+    "id" : 319,
+    "page number" : 3,
+    "bounding box" : [ 299.962, 557.07, 542.069, 585.54 ],
+    "font" : "AdvOT2ea83e65.I",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Baijun Zhang ( School of Electronics and Information Technology, State Key Laboratory of Optoelectronic Materials and Technologies, Sun Yat-sen University, Guangzhou, People ’ s Republic of China )"
+  }, {
+    "type" : "paragraph",
+    "id" : 326,
+    "page number" : 3,
+    "bounding box" : [ 299.962, 525.154, 542.014, 552.544 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Pan Ke Wang and Mang I. Vai: Also with Department of Electrical and Computer Engineering, University of Macau, Macau, People ’ s Republic of China"
+  }, {
+    "type" : "paragraph",
+    "id" : 328,
+    "page number" : 3,
+    "bounding box" : [ 299.962, 502.136, 541.959, 519.493 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "Tim C. Lei: Also with Department of Electrical Engineering, University of Colorado, Denver CO, USA"
+  }, {
+    "type" : "heading",
+    "id" : 341,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 299.962, 482.039, 338.914, 483.875 ],
+    "heading level" : 1,
+    "font" : "AdvOT8d2f97f8.B",
+    "font size" : 8.5,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "References"
+  }, {
+    "type" : "paragraph",
+    "id" : 348,
+    "page number" : 3,
+    "bounding box" : [ 299.962, 449.235, 541.998, 478.031 ],
+    "font" : "AdvOT833fb896",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "1 Quiroga, R.Q., Nadasdy, Z., and Ben-Shaul, Y.: ‘ Unsupervised spike detection and sorting with wavelets and superparamagnetic clustering ’ , Neural Comput. , 2004, 16 , (8), pp. 1661 – 1687 2 Rey, H.G., Pedreira, C., and Quian Quiroga, R.: ‘ Past, present and future"
+  }, {
+    "type" : "paragraph",
+    "id" : 356,
+    "page number" : 3,
+    "bounding box" : [ 299.961, 431.206, 542.081, 451.045 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2 Rey, H.G., Pedreira, C., and Quian Quiroga, R.: ' Past, present and future of spike sorting techniques ' , Brain Res. Bull. , 2015, 119 , pp. 106 -117"
+  }, {
+    "type" : "paragraph",
+    "id" : 368,
+    "page number" : 3,
+    "bounding box" : [ 299.961, 413.235, 542.005, 433.073 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3 Tetko, I.V., Facius, A., Ruepp, A., et al .: ' Super paramagnetic clustering of protein sequences ' , BMC Bioinformatics , 2005, 6 , (1), p. 82"
+  }, {
+    "type" : "paragraph",
+    "id" : 370,
+    "page number" : 3,
+    "bounding box" : [ 299.961, 386.249, 542.022, 415.044 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4 Getz, G., Levine, E., Domany, E., et al .: ' Super-paramagnetic clustering of yeast gene expression pro fi les ' , Physica A , 2000, 279 , (1), pp. 457 -464"
+  }, {
+    "type" : "paragraph",
+    "id" : 376,
+    "page number" : 3,
+    "bounding box" : [ 299.961, 359.206, 542.025, 388.058 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5 Wang, P.K., Pun, S.H., Chen, C.H., et al .: ' Low-latency single channel real-time neural spike sorting system based on template matching ' , PLoS One , 2019, 14 , (11), pp. 1 -30"
+  }, {
+    "type" : "paragraph",
+    "id" : 378,
+    "page number" : 3,
+    "bounding box" : [ 299.961, 323.205, 541.998, 361.072 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6 Ballini, M., Müller, J., Livi, P., et al .: ' A 1024-channel CMOS microelectrode array with 26,400 electrodes for recording and stimulation of electrogenic cells in vitro ' , IEEE J. Solid-State Circuits , 2014, 49 , (11), pp. 2705 -2719"
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 3,
+    "bounding box" : [ 299.962, 269.235, 542.013, 325.072 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 299.962, 305.234, 542.006, 325.072 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "7 Blatt, M., Wiseman, S., and Domany, E.: ' Superparamagnetic clustering of data ' , Phys. Rev. Lett. , 1996, 76 , (18), p. 3251",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 299.962, 287.205, 542.013, 307.043 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "8 Blatt, M., Wiseman, S., and Domany, E.: ' Data clustering using a model granular magnet ' , Neural Comput. , 1997, 9 , (8), pp. 1805 -1842",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 299.963, 269.235, 542.0, 289.073 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "9 Wang, J.-S., and Swendsen, R.H.: ' Cluster Monte Carlo algorithms ' , Physica A , 1990, 167 , (3), pp. 565 -579",
+      "kids" : [ ]
+    } ]
+  } ]
+}
