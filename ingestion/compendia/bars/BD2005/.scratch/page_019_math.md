@@ -1,0 +1,11 @@
+[Page 19]
+
+2001) to include subject-speciﬁc basis coeﬃcients assumed to be centered around the population coeﬃcients for each of the sampled models.
+
+A diﬀerent method was developed independently by Verzilli et al. (2005) for predicting the functional consequences of amino acid polymorphisms. Their approach also relies on Bayesian multivariate adaptive regression splines, though they accommodate within-cluster dependency using a simple cluster-speciﬁc random intercept. A random intercept is not ﬂexible enough to accommodate the variability in hormone trajectories, motivating our use of a general hierarchical structure for the basis coeﬃcients.
+
+Analysis of the NCEPS data has yielded new insight about the relationship between progesterone and cycle conception status. It has been speculated that very low midluteal PdG may be indicative of a low fertility cycle, and also that signals from the conceptus may promote a pre-implantation increase in progesterone. Our results support both of these hypotheses, as we found evidence for a slightly steeper post-ovulatory PdG rise in conception cycles.
+
+Previous analyses of these and other data (Baird et al., 1997; Stewart et al., 1993) found that non-conception cycles have lower midluteal progesterone than conception cycles, but we found the opposite. However, these previous studies examined nonconception cycles from women of known fertility who were exposed to sperm during a potentially fertile phase of the cycle (either through intercourse or artiﬁcial insemination). These non-conception cycles were therefore likely to be of low fertility. A previous analysis of these data using non-conception cycles regardless of intercourse timing found that cycles with low midluteal progesterone were unlikely to be conception cycles (Baird et al., 1999). We found the same, but we also found that, on average, midluteal progesterone was higher in non-conception cycles.
+
+In light of these previous results, our findings suggest that those cycles with very low progesterone are of low fertility, but that high pre-ovulatory progesterone does not imply an increased probability of conception. Intercourse timing was not used as a covariate here, but it may be informative in future analyses to explicitly differentiate non-conception cycles that were due to lack of intercourse from those that were of low fertility.

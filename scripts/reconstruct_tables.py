@@ -1,24 +1,24 @@
 import json
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 def extract_tables_from_docling(json_filepath):
     """
     Parses a Docling JSON export to locate 'type': 'table' nodes and
     reconstructs them into valid Markdown pipe tables based on row/column indices.
+    Returns a list of (page_num, table_idx, md_table) tuples.
     """
     with open(json_filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    # We iterate over all blocks in the Docling JSON structure
-    # The JSON provided is flat in its text summary but structured internally
-    # We will assume a standard recursive search for node types
-    tables_found = []
+    tables_found = []  # list of (page_num, table_node)
 
     def search_for_tables(node):
         if isinstance(node, dict):
             if node.get("type") == "table":
-                tables_found.append(node)
+                page_num = node.get("page number", 0)
+                tables_found.append((page_num, node))
             for value in node.values():
                 search_for_tables(value)
         elif isinstance(node, list):
@@ -27,9 +27,9 @@ def extract_tables_from_docling(json_filepath):
 
     search_for_tables(data)
 
-    markdown_tables = []
+    results = []  # list of (page_num, table_idx, md_table)
 
-    for table_idx, table_node in enumerate(tables_found):
+    for table_idx, (page_num, table_node) in enumerate(tables_found):
         # Dictionary mapping (row_idx, col_idx) to cell content
         table_grid = defaultdict(str)
         max_row = 0
@@ -78,19 +78,41 @@ def extract_tables_from_docling(json_filepath):
                 separator = ["---"] * (max_col + 1)
                 md_lines.append("|" + "|".join(separator) + "|")
 
-        markdown_tables.append("\n".join(md_lines))
+        results.append((page_num, table_idx + 1, "\n".join(md_lines)))
 
-    return markdown_tables
+    return results
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python table_reconstructor.py <path_to_docling.json>")
+        print("Usage: python reconstruct_tables.py <path_to_docling.json>")
         sys.exit(1)
 
-    md_tables = extract_tables_from_docling(sys.argv[1])
+    json_path = Path(sys.argv[1])
+    results = extract_tables_from_docling(json_path)
 
-    print(f"Found {len(md_tables)} tables.\n")
-    for i, md_table in enumerate(md_tables):
-        print(f"--- Table {i+1} ---")
-        print(md_table)
-        print("\n")
+    scratch_dir = json_path.parent / ".scratch"
+    scratch_dir.mkdir(exist_ok=True)
+
+    # Write monolithic temp_tables.md for triage overview
+    mono_lines = [f"Found {len(results)} tables.\n"]
+    for page_num, table_idx, md_table in results:
+        mono_lines.append(f"--- Table {table_idx} (page {page_num}) ---")
+        mono_lines.append(md_table)
+        mono_lines.append("\n")
+    (scratch_dir / "temp_tables.md").write_text("\n".join(mono_lines), encoding="utf-8")
+
+    # Write per-page table artifacts coordinated with page_NNN.md slice filenames
+    by_page = defaultdict(list)
+    for page_num, table_idx, md_table in results:
+        by_page[page_num].append((table_idx, md_table))
+
+    for page_num in sorted(by_page.keys()):
+        page_lines = [f"[Page {page_num}] — Tables\n"]
+        for table_idx, md_table in by_page[page_num]:
+            page_lines.append(f"--- Table {table_idx} ---")
+            page_lines.append(md_table)
+            page_lines.append("")
+        page_file = scratch_dir / f"page_{page_num:03d}_tables.md"
+        page_file.write_text("\n".join(page_lines), encoding="utf-8")
+
+    print(f"[Written: temp_tables.md + {len(by_page)} page_NNN_tables.md files → {scratch_dir}]", file=sys.stderr)

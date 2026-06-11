@@ -1,5 +1,32 @@
 # CLUSTERING
 
+## [MCWs (MiCroWire sorter): A new framework for automated and reliable spike sorting in human intracerebral recordings](BRM2025.md)
+
+- [Abstract](BRM2025.md#abstract)
+- [1. Introduction](BRM2025.md#1-introduction)
+- [2. Methodology](BRM2025.md#2-methodology)
+  - [2.1 Data-Driven Noise Removal](BRM2025.md#21-data-driven-noise-removal)
+  - [2.2 Spike Detection](BRM2025.md#22-spike-detection)
+    - [Noise-Floor Estimation](BRM2025.md#noise-floor-estimation)
+    - [Threshold Selection and Adaptation](BRM2025.md#threshold-selection-and-adaptation)
+    - [Candidate Extraction and Alignment](BRM2025.md#candidate-extraction-and-alignment)
+  - [2.3 Preprocessing for Feature Extraction](BRM2025.md#23-preprocessing-for-feature-extraction)
+    - [Bundle-Level Artifact Removal](BRM2025.md#bundle-level-artifact-removal)
+    - [Within-Channel Artifact Rejection](BRM2025.md#within-channel-artifact-rejection)
+    - [Template Matching and Waveform Rescue](BRM2025.md#template-matching-and-waveform-rescue)
+  - [2.4 Experimental Task-Specific Processing](BRM2025.md#24-experimental-task-specific-processing)
+  - [2.5 Feature Extraction and Dimensionality Reduction](BRM2025.md#25-feature-extraction-and-dimensionality-reduction)
+  - [2.6 Clustering Algorithms](BRM2025.md#26-clustering-algorithms)
+    - [Available Methods](BRM2025.md#available-methods)
+  - [2.7 Quality Assessment](BRM2025.md#27-quality-assessment)
+    - [Quality Metrics Implementation](BRM2025.md#quality-metrics-implementation)
+    - [Sorting Agreement and Benchmarking](BRM2025.md#sorting-agreement-and-benchmarking)
+    - [Response-Profile Validation](BRM2025.md#response-profile-validation)
+- [3. Conclusion](BRM2025.md#3-conclusion)
+- [References](references/BRM2025.md)
+
+---
+
 ## [Clustering Data through an Analogy to the Potts Model](BWD1995.md)
 
 - [Abstract](BWD1995.md#abstract)
@@ -91,6 +118,32 @@
   - [3.5 fMRI Images](DMY1999.md#35-fmri-images)
 - [4. Summary](DMY1999.md#4-summary)
 - [References](references/DMY1999.md)
+
+---
+
+## [Reliable Analysis of Single-Unit Recordings from the Human Brain under Noisy Conditions: Tracking Neurons over Hours](NDK2016.md)
+
+- [Abstract](NDK2016.md#abstract)
+- [Introduction](NDK2016.md#introduction)
+- [Design and Implementation](NDK2016.md#design-and-implementation)
+  - [Channel selection and spike extraction](NDK2016.md#channel-selection-and-spike-extraction)
+  - [Pre-sorting artifact rejection](NDK2016.md#pre-sorting-artifact-rejection)
+  - [Segmentation and spike sorting in blocks](NDK2016.md#segmentation-and-spike-sorting-in-blocks)
+  - [Template matching across blocks](NDK2016.md#template-matching-across-blocks)
+  - [Post-sorting artifact rejection](NDK2016.md#post-sorting-artifact-rejection)
+  - [Merging of clusters from all blocks](NDK2016.md#merging-of-clusters-from-all-blocks)
+  - [Optional manual verification](NDK2016.md#optional-manual-verification)
+- [Results](NDK2016.md#results)
+  - [Validation on simulated model data](NDK2016.md#validation-on-simulated-model-data)
+  - [Validation on a picture presentation experiment](NDK2016.md#validation-on-a-picture-presentation-experiment)
+  - [Validation on whole-night recordings](NDK2016.md#validation-on-whole-night-recordings)
+- [Discussion](NDK2016.md#discussion)
+  - [Presence of numerous, possibly sparse, neurons](NDK2016.md#presence-of-numerous-possibly-sparse-neurons)
+  - [Large numbers of clusters per channel](NDK2016.md#large-numbers-of-clusters-per-channel)
+  - [Properties of block-wise sorting](NDK2016.md#properties-of-block-wise-sorting)
+  - [Applicability to neuroscientific studies](NDK2016.md#applicability-to-neuroscientific-studies)
+- [Future directions](NDK2016.md#future-directions)
+- [References](references/NDK2016.md)
 
 ---
 

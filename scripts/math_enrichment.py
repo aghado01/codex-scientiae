@@ -1,6 +1,7 @@
 import json
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 # Common LaTeX math fonts found in PDFs (Computer Modern Math Italic, Symbols, Extensions)
 # CMR (Roman) is excluded by default as it is often used for standard text or numbers,
@@ -67,12 +68,30 @@ if __name__ == "__main__":
         print("Usage: python math_enrichment.py <path_to_docling.json>")
         sys.exit(1)
 
-    pages = extract_and_wrap_math(sys.argv[1])
+    json_path = Path(sys.argv[1])
+    pages = extract_and_wrap_math(json_path)
 
-    print("--- ENRICHED TEXT OUTPUT ---")
+    scratch_dir = json_path.parent / ".scratch"
+    scratch_dir.mkdir(exist_ok=True)
+
+    # Write monolithic temp_math.md for triage overview
+    mono_lines = ["--- ENRICHED TEXT OUTPUT ---"]
     for page_num in sorted(pages.keys()):
-        print(f"\n[Page {page_num}]\n")
+        mono_lines.append(f"\n[Page {page_num}]\n")
         for item in pages[page_num]:
             clean = item.replace(" . ", ".").replace(" ,", ",")
-            print(clean)
-            print()
+            mono_lines.append(clean)
+            mono_lines.append("")
+    (scratch_dir / "temp_math.md").write_text("\n".join(mono_lines), encoding="utf-8")
+
+    # Write per-page math artifacts coordinated with page_NNN.md slice filenames
+    for page_num in sorted(pages.keys()):
+        page_lines = [f"[Page {page_num}]\n"]
+        for item in pages[page_num]:
+            clean = item.replace(" . ", ".").replace(" ,", ",")
+            page_lines.append(clean)
+            page_lines.append("")
+        page_file = scratch_dir / f"page_{page_num:03d}_math.md"
+        page_file.write_text("\n".join(page_lines), encoding="utf-8")
+
+    print(f"[Written: temp_math.md + {len(pages)} page_NNN_math.md files → {scratch_dir}]", file=sys.stderr)

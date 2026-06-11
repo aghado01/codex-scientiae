@@ -1,0 +1,7 @@
+[Page 20]
+
+The method was applied to longitudinal data, but it could be used in any hierarchical regression problem where the functional form of the relationship between the covariates and the response is unknown. The NCEPS data lends itself readily to a discussion of the incorporation of reference points, but this method is also appropriate for regression when there are no reference points of interest. In this sense, the regression model is widely applicable.
+
+In addition, reference points are not unique to longitudinal data. Brumback and Lindstrom (2004) use reference points to line up features of speech pattern data. Functional data can also occur over space (Morris et al., 2003), in which case the reference points are spatial rather than temporal locations. Rice (2004) discusses the similarities among modeling longitudinal and other types of functional data. Often, the analysis goals are the same, and methods designed for one tend to apply to both. This method is readily applicable to hierarchical functional data such as that studied by Morris et al. (2003).
+
+The Bayesian RJMCMC paradigm allowed estimation of a smooth function based on piecewise-linear models with unknown knots and estimation of the population regression function based on the subject-speciﬁc basis coeﬃcients. Although we used piecewise linear splines for their interpretability, this methods could be applied with other basis sets (see Denison et al., 2002 for a discussion).

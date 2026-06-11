@@ -1,0 +1,15 @@
+[Page 7]
+
+Remark 4. Our general framework includes various familiar special cases. When there is only one parameter subspace; with a single dominating measure; it is just the random scan Hastings  method.  Our framework   provides a natural   generalisation methods to general parameter spaces. In the case of point processes; the method is closely related to the spatial birth and death process studied by Preston (1977). Recently; Geyer & Møller (1994) have developed a Hastings sampler for point processes; which is a special case of our construction; derive likelihood inference procedures for point patterns based on this, and  prove results on convergence. The jump-diffusion processes of Grenander & Miller (1994), proposed for Bayesian computation in certain computer vision problems, also provide a special case of our method, but one in which withinparameter-subspace moves are made by a continuous-time diffusion process; which, when discretised temporally for computational purposes; only approximately maintains detailed balance. The range of jump transitions presented by Grenander & Miller is also somewhat restricted. they
+
+### 3.3. Switching between Two Simple Subspaces
+
+The rather obscure 'dimension-matching' Assumption in $ 3-2 deserves interpretation in more intuitive terms. Suppose first that there are just two subspaces < {1} x 9 and move might be to {1, {(01 + 02)}. For this move type; the equilibrium joint proposal probability good
+
+$$
+\left | \pi ( d x ) \right | _ { \mathcal { Q } _ { m } } q _ { m } ( x , d x ^ { \prime } ) ,
+$$
+
+where and Bc 2, must have a density with respect to a singular measure on on 93. For detailed balance to be attainable, therefore, it is necessary that the reverse move from A to B should be defined via a proposal distribution qm(x, dx') that for each X = For example, we might draw a random variable u from some distribution; independently of the current state 0, and set 01 = 0+u, 02 = 0 _ u. All that the Assumption does is to ensure that singularities of the sort arising above are self-consistent.
+
+To describe in detail how to  implement the   dimension-matching   requirement in many standard cases, we consider a set-up a little more general than the example just and 'Ik = 2) are proper densities in 9" and 9n2. Consider just one move type; which always switches subspaces; so that q(x, 81) = 0 for x € subscript m is suppressed . The probability of choosing this move will be denoted by j(x). A typical way of accomplishing a transition from < to <2 will be by generating a vector of continuous random variables u(1) of length m1 independently of 0(1), and then of length m2 will be generated and 0(1) set to some function of 0(2) and u(2) . For dimensionmatching, there must be a bijection between (0(1) , and u(2) ). In particular, the lengths of u(1) and u(2) must satisfy n1 + m1 = n2 + mz The proposal distribution q(x, dx') can now be defined by the distributions of u(1) and which we suppose given by proper p(0(2) | being u(2) u(1)) (0(2) , 4(2)

@@ -1,0 +1,5 @@
+[Page 20]
+
+Fig. 6. Functional   boxplots   of   the   estimated   additive   functions     η 2 obtained   by   the   least   squares   ( ls ),   quantile   ( l 1 )   and   MM -ﬁt   ( mm ),   under   Model   3.   The   true   function   η 2 is   plotted   with   a   solid   green   line.
+
+With   respect   to   the   estimation   of   the   constant   μ,   Table 6 reports   the   mean   and   standard   deviation   over   replications   of   the   classical   and   robust   estimates,   for   all   models   and   contamination   settings.   Under   C 0,   the   three   estimates   behave   similarly,   while   a   different   behavior is   observed   for   contaminated   samples.   More   precisely,   even   though   contamination   scheme   C 1 does   not   seriously   affect   the   bias   of   the   least   squares   estimates,   it   enlarges   its   variability.   The   quantile   and   MM -procedures   remain   stable   in   this   setting.   Under   schemes   C 2 and   C 3,   the   mean   of   the   classical   estimators   under   all   models   is   completely

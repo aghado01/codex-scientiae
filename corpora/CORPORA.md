@@ -1,3 +1,4 @@
 ## Corpora Level-1 TOC
-- [KisungYou](./KisungYou/CONTENTS.md)    
-- [VladVoroninski](./VladVoroninski/CONTENTS.md)
+
+- [KisungYou](./KisungYou/_CONTENTS.md)
+- [VladVoroninski](./VladVoroninski/_CONTENTS.md)
