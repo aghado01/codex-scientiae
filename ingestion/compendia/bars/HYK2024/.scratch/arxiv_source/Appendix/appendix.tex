@@ -1,0 +1,34 @@
+\newpage
+\section{Proofs}
+\subsection{Proof of Lemma 1}
+
+\begin{proof}[Proof of Lemma 1]
+    The marginal likelihood $p(y|k,\xi)$ is given by
+    \begin{equation*}
+        p(y|k,\xi)=p(y|Z) = \int_{(0,\infty)} \int_{\mathbb{R}^\nu} p(y|Z,\beta,\sigma) \pi(\beta|Z,\sigma)\pi(\sigma) d\beta d\sigma.
+    \end{equation*}
+    According to the specified priors, we have
+    \begin{equation*}
+        \begin{split}
+            p(y|Z,\beta,\sigma) = \frac{1}{(2\pi\sigma^2)^{m/2}}\exp\{-\frac{1}{2\sigma^2}(y-Z\beta)^\top(y-Z\beta)\},\\
+            \pi(\beta|Z,\sigma) = \frac{1}{(2\pi m \sigma^2)^{\nu/2}}|Z^\top Z|^{1/2}\exp \{ -\frac{1}{2m\sigma^2} \beta^\top Z^\top Z\beta\}.
+        \end{split}
+    \end{equation*}
+    Then the Fubini Thm implies that,
+    \begin{equation*}
+        p(y|k,\xi) = \int_0^\infty \frac{1}{(2\pi \sigma^2)^{m/2} (m+1)^{\nu/2} } \exp \{-\frac{1}{2\sigma^2} a_{k,\xi}\} \pi(\sigma) d\sigma,
+    \end{equation*}
+    where $a_{k,\xi}=y^\top (I_m-\frac{m}{m+1}Z(Z^\top Z)^{-1}Z^\top)y$. With change of variables $w = \sigma / \sqrt{a_{k,\xi}}$, we have $p(y|k,\xi)\propto (m+1)^{-\nu/2}a_{k,\xi}^{-m/2}$. It follows from $\pi(k,\xi)\propto \tau(\mathcal{M}_k)^{-\gamma}$ that $p(k,\xi|y)\propto (m+1)^{-\nu/2}a_{k,\xi}^{-m/2}\tau(\mathcal{M}_k)^{-\gamma}$.
+\end{proof}
+
+\subsection{Proof of Lemma 3}
+
+\begin{proof}[Proof of Lemma 3]
+    According to (9),
+    \begin{equation*}
+        \alpha(k',\xi'|k,\xi) = \min \left\{1,~ \frac{p(k',\xi'|y)q(k,\xi|k',\xi')}{p(k,\xi|y)q(k',\xi'|k,\xi)}\right\}.
+    \end{equation*}
+    Notably, $\pi(k,\xi)q(k',\xi'|k,\xi)=\pi(k',\xi')q(k,\xi|k',\xi')$ under the priors and proposals. Then we have $\alpha(k',\xi'|k,\xi) = \min\{1,~ p(y|k',\xi')/p(y|k,\xi)\}$. Thus (6) implies this lemma. For the EBIC approximation, we substitute $\hat{p}$ for the corresponding $p$.
+\end{proof}
+
+\input{Appendix/simulations}

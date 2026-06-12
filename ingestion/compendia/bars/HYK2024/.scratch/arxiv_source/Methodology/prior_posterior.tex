@@ -1,0 +1,56 @@
+\subsection{Prior \& posterior}
+
+% When $p,k,\xi$ are fixed, \eqref{eq:spline_regression} implies the linear dependencies. This restricts the modeling capacity. 
+Experiments have demonstrated that changes on $p$ have little impact on the performance; see \citet{perperoglou2019review}. Cubic splines $(p=3)$ and linear splines $(p=1)$ are the most common alternatives in the research. We will explore the two splines in the simulations. Given the degree, the number and position of knots determine basis functions of the spline space, affecting the non-linearity in the model. 
+%However, the non-differentiability of the likelihood on $k$ and $\xi$ causes a primary challenge in the estimation, prohibiting the gradient-based technique for optimization. Frequentist researchers utilize the modified derivatives or construct the smooth approximations at the non-differentiable points to solve the issue partially; see \citet{doi:10.1080/01621459.2015.1073154, doi:10.1080/01621459.2021.1947307}. They cannot handle the estimation of $k$ and the methods are complex. In contrast, Bayesian approaches provide a universal framework to resolve the varying dimension problem of parameters by reversible jump Markov chain Monte Carlo (RJMCMC) of \citet{10.1093/biomet/82.4.711}. 
+%In this section, we develop a Bayesian method to estimate $k,\xi$.
+
+We specify the priors of $k,\xi,\beta,\sigma$ in \eqref{eq:spline_regression} as follows. Firstly, we initialize enormous candidate knots. Owing to the specific structure of tensor product splines, the candidate knots can be chosen in each component separately. Let $n_i$ nodes $\eta_i\subset [0,1]$ be the $i$-th component. Then the overall candidate knots are given by $\eta=\bigotimes_{i=1}^d \eta_i$. To simplify the analysis, assume that the knots in $\eta_i$ are distinct. Nevertheless, when $n_i$ is sufficiently large and $\eta_i$ is sufficiently dense in $[0,1]$, we can still find a spline model to reflect jumping discontinuity well. %This is different from the smoothing spline case where excessive knots lead to overfitting. 
+For $i=1,\ldots,d$, let $\mathcal{M}_{k_i}$ be the model space containing all the possible location combinations with $k_i$ knots in $[0,1]$. Then the size of $\mathcal{M}_{k_i}$ is $\tau(\mathcal{M}_{k_i})=\binom{n_i}{k_i}$. Since $k_i<<n_i$, $\tau(\mathcal{M}_{k_i})$ is increasing as $k_i$ increases. Let $\mathcal{M}_k$ be $\bigotimes_{i=1}^d \mathcal{M}_{k_i}$. Then $\tau(\mathcal{M}_k)=\Pi_{i=1}^d \binom{n_i}{k_i}$. The priors of $k,\xi$ are specified as 
+\begin{equation}
+    \label{eq:prior}
+    \pi(k)\propto \tau(\mathcal{M}_k)^{1-\gamma},~\pi(\xi|k)={1}/{\tau(\mathcal{M}_k)},\quad 0\leq \gamma \leq 1.
+\end{equation}
+Consequently, $\pi(k,\xi)\propto \tau(\mathcal{M}_k)^{-\gamma}$. Given $k$, the prior probabilities of different position combinations are equal. The parameter $\gamma$ adjusts the growth rate of $\pi(k)$. It is equivalent to imposing a penalty on $\pi(k)$. As $\gamma$ increases from 0 to 1, the growth rate becomes milder gradually. Particularly, when $\gamma=0$, we have $\pi(k)\propto \tau(\mathcal{M}_k)$ and $\pi(k,\xi)\propto 1$, meaning the same prior probability for knots. Sometimes this $\gamma$ causes that excessive knots are selected.
+
+Suppose $k_1,\ldots,k_d<<m$, then $Z^\top Z$ is of full rank. In terms of $\beta,\sigma$, we assume
+\begin{equation}
+    \label{eq:prior_beta}
+    \beta|Z,\sigma \sim N_\nu\left(0,m\sigma^2(Z^\top Z)^{-1}\right),~\pi(\sigma)={1}/{\sigma},\quad \sigma>0.
+\end{equation}
+The prior of $\beta$ is the so-called unit information prior. According to the linear regression theory, the least squares estimator of $\beta$ is $\hat{\beta}=(Z^\top Z)^{-1}Z^\top y$. Then the precision matrix (inverse covariance) is given by $(Z^\top Z)/\sigma^2$. The unit precision matrix is defined as $(Z^\top Z)/m\sigma^2$, implying the prior of $\beta$ in \eqref{eq:prior_beta}. %Please refer to \citet{e447aec4-501c-3132-a415-1b260054b4a8} for detailed discussions about the unit information prior. 
+The prior of $\sigma$ is an improper prior as $\int_0^\infty 1/\sigma d\sigma=\infty$. % In fact, $\pi(\sigma)$ is not unique but $1/\sigma$ is the simplest case.
+
+According to the Bayesian formula, the posterior density of $k,\xi,\beta,\sigma$ is
+\begin{equation}
+    \label{eq:jointposterior}
+    p(k,\xi,\beta,\sigma|y)=p(\beta,\sigma|k,\xi,y)p(k,\xi|y),
+\end{equation}
+where $p(k,\xi|y)\propto p(y|k,\xi)\pi(k,\xi)$. Let $a_{k,\xi}=y^\top (I_m-\frac{m}{m+1}Z(Z^\top Z)^{-1}Z^\top)y$.
+
+\iffalse
+According to the Bayesian formula, the posterior density of $k,\xi$ is $p(k,\xi|y)\propto p(y|k,\xi)\pi(k,\xi)$. And $p(y|k,\xi)=p(y|Z)$ is the marginal likelihood given by
+\begin{equation}
+    \label{eq:likelihood}
+    p(y|Z) = \int_{(0,\infty)} \int_{\mathbb{R}^\nu} p(y|Z,\beta,\sigma) \pi(\beta|Z,\sigma)\pi(\sigma) d\beta d\sigma.
+\end{equation}
+Let $a_{k,\xi}=y^\top (I_m-\frac{m}{m+1}Z(Z^\top Z)^{-1}Z^\top)y$.
+\fi
+
+\begin{lemma}
+\label{lm:post}
+    With the above priors of $k,\xi,\beta,\sigma$ in \eqref{eq:spline_regression}, we have
+    \begin{equation}
+        \label{eq:posterior}
+        p(y|k,\xi)\propto (m+1)^{-\nu/2}a_{k,\xi}^{-m/2},~ p(k,\xi|y)\propto (m+1)^{-\nu/2}a_{k,\xi}^{-m/2} \tau(\mathcal{M}_k)^{-\gamma}.
+    \end{equation}
+\end{lemma}
+
+The posterior $p(k,\xi|y)$ consists of three main components. The first term $(m+1)^{-\nu/2}$ serves as the dimensional penalty. It balances the number of parameters and the bias of model fitting. The second term $a_{k,\xi}^{-m/2}$ represents the effect of the likelihood. When $m$ is sufficiently large, $a_{k,\xi}$ is approximately equal to the residual sum of squares. The third term $\tau(\mathcal{M}_k)^{-\gamma}$ corresponds to the priors of $k,\xi$. It takes the complexity of $\mathcal{M}_k$ into consideration. %The hyper-parameter $\gamma\in [0,1]$ adjusts the effect of $\tau(\mathcal{M}_k)$.
+
+Subsequently, we can simulate samples of $\beta,\sigma$ given $k,\xi$ from the conditional posterior density in \eqref{eq:jointposterior} via a Gibbs sampler, contributing to a fully Bayesian model.
+
+%According to Lemma \ref{lm:post}, $k,\xi$ are estimated by the posterior distribution in \eqref{eq:posterior}. Subsequently, we can construct the maximum likelihood estimation or least squares estimation for $\beta,\sigma$. The posterior expectations of $\beta,\sigma$ are also practicable, contributing to a fully Bayesian model. We adopt the maximum likelihood estimation in the paper.
+
+%\citet{10.1093/biomet/88.4.1055} proposed a Bayesian technique for the adaptive knot spline regression as well. However, their method is limited to the univariate splines, whereas our EBARS are extended to the multi-dimensional cases by tensor product splines. Besides, the priors of $k$ are different. They don't consider the effect of $\tau(\mathcal{M}_k)$ when the parametric dimension varies. This poses an incorrect estimation when the true $k$ is huge, illustrated in the simulation examples.
+

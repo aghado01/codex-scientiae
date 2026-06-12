@@ -1,0 +1,18 @@
+
+# Appendix A
+
+# Derivation of Sampling Schemes
+
+# A.1 BPS Sampling Scheme
+
+The derivation of the full conditional distributions for the BPS model is provided in this section.
+
+# 1. Sampling θ
+
+$$
+1 . \, & \, Sampling \theta \\ p ( \theta | \sigma ^ { 2 } _ { \epsilon } , \sigma ^ { 2 } _ { b } , y ) \, & \, \infty \, \ p ( y | \beta , b , \sigma ^ { 2 } _ { \epsilon } ) p ( b | \sigma ^ { 2 } _ { b } ) p ( \sigma ^ { 2 } _ { b } ) p ( \sigma ^ { 2 } _ { \epsilon } ) \\ & \, \infty \, \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { \epsilon } } ( y - T \theta ^ { \prime } ) ^ { ( y - T \theta ) } \right \} \times \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { b } } b ^ { \prime } b \right \} \times \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { \beta } } \beta ^ { \prime } \beta \right \} \\ & = \, \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { \epsilon } } ( y - T \theta ^ { \prime } ) ^ { ( y - T \theta ) } - \frac { 1 } { 2 \sigma ^ { 2 } _ { b } } b ^ { \prime } b - \frac { 1 } { 2 \sigma ^ { 2 } _ { \beta } } \beta ^ { \prime } \beta \right \} \\ & = \, \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { \epsilon } } ( y ^ { \prime } - \theta ^ { \prime } T ^ { \prime } ) ( y - T \theta ) - \frac { 1 } { 2 } \theta ^ { \prime } D ^ { - 1 } \theta \right \} \\ & = \, \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { \epsilon } } ( y ^ { \prime } y - 2 \theta ^ { \prime } T ^ { \prime } y + \theta ^ { \prime } T ^ { \prime } T \theta ) - \frac { 1 } { 2 } \theta ^ { \prime } D ^ { - 1 } \theta \right \} \\ & \quad \times \exp \left \{ - \frac { 1 } { 2 \sigma ^ { 2 } _ { \epsilon } } ( - 2 \theta ^ { \prime } T ^ { \prime } y + \theta ^ { \prime } T ^ { \prime } T \theta ) - \frac { 1 } { 2 } \theta ^ { \prime } D ^ { - 1 } \theta \right \} \\ & = \, \exp \left \{ \frac { 1 } { \sigma ^ { 2 } _ { \epsilon } } \theta ^ { \prime } T ^ { \prime } y - \frac { 1 } { 2 \sigma ^ { 2 } _ { \epsilon } } \theta ^ { \prime } T ^ { \prime } T \theta - \frac { 1 } { 2 } \theta ^ { \prime } D ^ { - 1 } \theta \right \} \\ & = \, \exp \left \{ \frac { 1 } { \sigma ^ { 2 } _ { \epsilon } } \theta ^ { \prime } T ^ { \prime } y - \frac { 1 } { 2 } \theta ^ { \prime } \left [ \frac { 1 } { \sigma ^ { 2 } _ { \epsilon } } T ^ { \prime } T + D ^ { - 1 } \right ] \theta \right \} \\ \\ & \quad \times \exp \left \{ \frac { 1 } { 2 } \theta ^ { \prime } T ^ { \prime } y - \frac { - 1 } { 2 } \theta ^ { \prime } \left [ \frac { 1 } { \sigma ^ { 2 } _ { \epsilon } } T ^ { \prime } T + D ^ { - 1 } \right ] \theta ^ { \prime } \right \} \\ & = \, \exp \left \{ \frac { 1 } { 2 } \theta ^ { \prime } T ^ { \prime } y - \frac { - 1 } { 2 } \theta ^ { \prime } \left [ \frac { 1 } { \sigma ^ { 2 } _ { \epsilon } } T ^ { \prime } T + D ^ { - 1 } \right ] \theta ^ { \prime } \right \} \\ & = \, \exp \left \{ \frac { 1 } { 2 } \theta ^ { \prime } T ^ { \prime } y - \frac { 1 } { 2 } \theta ^ { \prime } \left [ \frac { 1 } { \sigma ^ { 2 } _ { \epsilon } } T ^ { \prime } T + D ^ { - 1 } \right ] \theta ^ { \prime } \right \} \\
+$$
+
+$$
+& \text {Note that } \Sigma _ { \theta } = \left ( \frac { 1 } { \sigma _ { 2 } ^ { 2 } } T ^ { \prime } T + D ^ { - 1 } \right ) ^ { - 1 } = \sigma _ { \epsilon } ^ { 2 } ( T ^ { \prime } T + \sigma _ { \epsilon } ^ { 2 } D ^ { - 1 } ) ^ { - 1 } . \ \text {By solving for } \mu _ { \theta } , \, i . e . , \\ & \Sigma _ { \theta } ^ { - 1 } \mu _ { \theta } = \frac { 1 } { \sigma _ { 2 } ^ { 2 } } T ^ { \prime } y \Rightarrow \mu _ { \theta } = \frac { 1 } { \sigma _ { 2 } ^ { 2 } } \Sigma _ { \theta } T ^ { \prime } y .
+$$

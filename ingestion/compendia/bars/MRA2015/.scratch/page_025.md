@@ -1,0 +1,12 @@
+
+# Chapter 3
+
+# Spatially Adaptive Smoothing
+
+# 3.1 Literature Review
+
+There is a large literature on spatially adaptive smoothing. Ruppert and Carroll (2000) achieve spatial adaptability by using local smoothing parameters on the difference penalties of the regression coefficients. They then model the logarithm of the penalties as a linear spline. Denison et al. (1998) proposed a model using piecewise polynomials to estimate a function f ( x ). They fit low order polynomials that are non zero between knots whose locations are selected adaptively using MCMC methods. Their method fared well compared to the wavelet methods of Donoho and Johnstone (1994).
+
+More recently, DiMatteo et al. (2001) proposed adaptive models using free-knot splines. Their method is referred to as Bayesian adaptive regression splines (BARS). It incorporates knots that are located within the range of the data and assumes f ( x ) is a cubic regression spline constructed using cubic B-spline basis functions. The prior placed on the number of knots is Poisson. DiMatteo et al. (2001) show that the mean square error (MSE) of their method is significantly smaller compared to the method of Denison et al. (1998).
+
+Baladandayuthapani et al. (2005) model the smoothing parameter as a function of the covariate. The same idea is used by Crainiceanu et al. (2007). A set of knots κ 1 ,...,κ K is fixed over the range of x , with spline coefficients a i ,...,a K . More specifically, the smoothing parameter is modeled as a P-spline of degree d constructed using truncated polynomials. Their method was compared to that of Ruppert and Carroll (2000) who computed the average mean square error (AMSE) of over 100 simulations. Even though Crainiceanu et al. (2007)’s method performed slightly better than that of Ruppert and

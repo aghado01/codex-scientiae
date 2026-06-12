@@ -1,0 +1,18 @@
+\subsection{Tensor product spline regression model}
+
+The article utilizes tensor product splines to model the real multivariate function $f$. As the name implies, the tensor product spline space is the tensor product of $d$ univariate spline spaces corresponding to each component of $x$. The univariate spline space in $[0,1]$ of degree $p_i$ and non-decreasing knot sequence $\{\xi_{ij}\}_{j=0}^{k_i+1}$ allowing duplicates $(\xi_{i0}=0,\xi_{i(k_i+1)}=1)$ consists of the following univariate functions: (1) Be a polynomial of at most degree $p_i$ on each interval $(\xi_{ij},\xi_{i(j+1)})$; (2) Belong to $C^{p_i-1}([0,1])$ except for the coincident knots, and if $\xi_{i(j-1)}<\xi_{ij}=\ldots=\xi_{i(j+l)}<\xi_{i(j+l+1)}$, the function has continuous derivatives up to the order $p_i-1-l$ at that point $(l\leq p_i)$. Specifically, when $l=p_i$, the spline function may discontinue at the coincident knot.
+%illustrated in Figure \ref{fig:spline}. 
+%We refer readers to \citet{dierckx1995curve} for a comprehensive review of the splines with potential duplicate knots.
+
+\begin{remark}
+    The usual spline-based methods employ equidistant knots or quantile-based knots, posing the distinct knot assumption implicitly. This results in continuous splines. When the true function exists jumping discontinuity, the distinct knot spline will fail to make an accurate estimation. However, the spline with automatic knot selection can circumvent the problem by optimal placement.
+\end{remark}
+
+% As the boundary knots are given by 0 and 1, the unknown knots are $\{\xi_{ij}\}_{j=1}^{k_i}$. 
+Let $p=\{p_i\}_{i=1}^d$, $k=\{k_i\}_{i=1}^d$, and $\xi=\{\xi_i\}_{i=1}^d$ with $\xi_i=\{\xi_{ij}\}_{j=1}^{k_i}$. Denote the tensor product spline space as $\mathcal{S}_{p,k,\xi}$ and the univariate spline space as $\mathcal{S}_{p_i,k_i,\xi_i}$ for $i=1,\ldots,d$. Then $\mathcal{S}_{p,k,\xi}=\bigotimes_{i=1}^d \mathcal{S}_{p_i,k_i,\xi_i}$, where $\mathcal{S}_{p_i,k_i,\xi_i}$ is a linear space with the dimension of $k_i+p_i+1$. Let $\{b_{ij}\}_{j=1}^{k_i+p_i+1}$ be a basis of $\mathcal{S}_{p_i,k_i,\xi_i}$, such as B-splines. Consequently, the dimension of $\mathcal{S}_{p,k,\xi}$ is $\Pi_{i=1}^d (k_i+p_i+1)$, denoted as $\nu$. And $b=\bigotimes_{i=1}^d \{b_{ij}\}_{j=1}^{k_i+p_i+1}$ is a basis of $\mathcal{S}_{p,k,\xi}$. For simplicity, rewrite $b$ as $\{b_i\}_{i=1}^\nu$. Thus, any $f\in \mathcal{S}_{p,k,\xi}$ can be represented by $\sum_{i=1}^\nu \beta_i b_i$. Let $\beta=(\beta_1,\ldots,\beta_\nu)^\top$. Define the design matrix $Z$ by $Z_{ij}=b_j(x_i)$ for $i=1,\ldots,m$ and $j=1,\ldots,\nu$. Therefore, \eqref{eq:normal_regression} can be reformulated as
+\begin{equation}
+    \label{eq:spline_regression}
+    y = Z\beta + \epsilon,\quad \epsilon\sim N_m(0,\sigma^2 I_m),
+\end{equation}
+where $y,\epsilon \in \mathbb{R}^m$, $\beta\in \mathbb{R}^\nu$, $Z\in \mathbb{R}^{m\times \nu}$. Notably, \eqref{eq:spline_regression} is an ordinary linear regression model.
+%Thereby we can use those consequences of linear regression to make inferences.

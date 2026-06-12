@@ -2,59 +2,11 @@
 
 ![image 1](<DoCormo2016_images/imageFile1.png>)
 
+# DIFFERENTIAL GEOMETRY OF CURVES & SURFACES
 
+Revised & Updated (Second Edition)
 
-[Page 2]
-
-[Page 3]
-
-#### DIFFERENTIAL GEOMETRY
-
-OF
-
-#### CURVES & SURFACES
-
-[Page 4]
-
-[Page 5]
-
-### DIFFERENTIAL GEOMETRY
-
-###### OF
-
-### CURVES & SURFACES
-
-Revised & Updated
-
-SECOND EDITION
-
-###### Manfredo P. do Carmo
-
-Instituto Nacional de Matemática Pura e Aplicada (IMPA) Rio de Janeiro, Brazil
-
-DOVER PUBLICATIONS, INC. Mineola, New York
-
-[Page 6]
-
-Copyright
-
-Copyright © 1976, 2016 by Manfredo P. do Carmo All rights reserved.
-
-Bibliographical Note
-
-Differential Geometry of Curves and Surfaces: Revised & Updated Second Edition is a revised, corrected, and updated second edition of the work originally published in 1976 by Prentice-Hall, Inc., Englewood Cliffs, New Jersey. The author has also provided a new Preface for this edition.
-
-International Standard Book Number ISBN-13: 978-0-486-80699-0 ISBN-10: 0-486-80699-5
-
-Manufactured in the United States by LSC Communications 80699501 2016 www.doverpublications.com
-
-[Page 7]
-
-###### To Leny, for her indispensable assistance in all the stages of this book
-
-[Page 8]
-
-[Page 9]
+Manfredo P. do Carmo
 
 ###### Contents
 
@@ -122,7 +74,8 @@ x Contents
 - 5-8 Surfaces of Zero Gaussian Curvature 414
 - 5-9 Jacobi’s Theorems 421
 - 5-10 Abstract Surfaces; Further Generalizations 430
-- 5-11 Hilbert’s Theorem 451 Appendix: Point-Set Topology of Euclidean Spaces 460
+- 5-11 Hilbert’s Theorem 451 
+- Appendix: Point-Set Topology of Euclidean Spaces 460
 
 
 Bibliography and Comments 475
@@ -133,31 +86,17 @@ Index 503
 
 [Page 11]
 
-###### Preface to the Second Edition
-
-In this edition, I have included many of the corrections and suggestions kindly senttomebythosewhohaveusedthebook. Forseveralreasonsitisimpossible tomentionthenamesofallthepeoplewhogenerouslydonatedtheirtimedoing that. Here I would like to express my deep appreciation and thank them all.
-
-Thanks are also due to John Grafton, Senior Acquisitions Editor at Dover Publications, who believed that the book was still valuable and included in the text all of the changes I had in mind, and to the editor, James Miller, for his patience with my frequent requests.
-
-As usual, my wife, Leny A. Cavalcante, participated in the project as if it was a work of her own; and I might say that without her this volume would not exist.
-
-Finally, I would like to thank my son, Manfredo Jr., for helping me with several ﬁgures in this edition.
-
-Manfredo P. do Carmo September 20, 2016
-
 ###### xi
 
 [Page 12]
 
 [Page 13]
 
-###### Preface
+# Preface
 
 This book is an introduction to the differential geometry of curves and surfaces, both in its local and global aspects. The presentation differs from the traditional ones by a more extensive use of elementary linear algebra and by a certain emphasis placed on basic geometrical facts, rather than on machinery or random details.
 
-We have tried to build each chapter of the book around some simple and fundamental idea. Thus, Chapter 2 develops around the concept of a regular surface in R3; when this concept is properly developed, it is probably the best model for differentiable manifolds. Chapter 3 is built on the Gauss normal map and contains a large amount of the local geometry of surfaces in R3. Chapter
-
-- 4 uniﬁes the intrinsic geometry of surfaces around the concept of covariant derivative; again, our purpose was to prepare the reader for the basic notion of connection in Riemannian geometry. Finally, in Chapter 5, we use the ﬁrst and second variations of arc length to derive some global properties of surfaces. Near the end of Cbapter 5 (Sec. 5-10), we show how questions on surface theory, and the experience of Chapters 2 and 4, lead naturally to the consideration of differentiable manifolds and Riemannian metrics.
+We have tried to build each chapter of the book around some simple and fundamental idea. Thus, Chapter 2 develops around the concept of a regular surface in R3; when this concept is properly developed, it is probably the best model for differentiable manifolds. Chapter 3 is built on the Gauss normal map and contains a large amount of the local geometry of surfaces in R3. Chapter 4 uniﬁes the intrinsic geometry of surfaces around the concept of covariant derivative; again, our purpose was to prepare the reader for the basic notion of connection in Riemannian geometry. Finally, in Chapter 5, we use the ﬁrst and second variations of arc length to derive some global properties of surfaces. Near the end of Cbapter 5 (Sec. 5-10), we show how questions on surface theory, and the experience of Chapters 2 and 4, lead naturally to the consideration of differentiable manifolds and Riemannian metrics.
 
 
 To maintain the proper balance between ideas and facts, we have presented a large number of examples that are computed in detail. Furthermore, a reasonable supply of exercises is provided. Some factual material of classical differential geometry found its place in these exercises. Hints or answers are given for the exercises that are starred.

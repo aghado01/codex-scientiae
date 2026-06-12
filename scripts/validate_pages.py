@@ -79,10 +79,18 @@ def check_page(path: Path) -> list[tuple[int, str]]:
     return issues
 
 
-def validate_scratch(scratch_dir: Path) -> int:
-    page_files = sorted(scratch_dir.glob("page_???.md"))
+def validate_scratch(scratch_dir: Path, target_pages: list[str] = None) -> int:
+    if target_pages:
+        page_files = []
+        for p in target_pages:
+            pf = scratch_dir / p
+            if pf.exists():
+                page_files.append(pf)
+    else:
+        page_files = sorted(scratch_dir.glob("page_???.md"))
+
     if not page_files:
-        print(f"No page_*.md files found in {scratch_dir}", file=sys.stderr)
+        print(f"No page_*.md files found in {scratch_dir} matching criteria", file=sys.stderr)
         sys.exit(1)
 
     paper_name = scratch_dir.parent.name
@@ -101,7 +109,7 @@ def validate_scratch(scratch_dir: Path) -> int:
 
     header = [f"# Validation Report — {paper_name}\n"]
     if total == 0:
-        header.append("All page slices passed validation — safe to assemble.\n")
+        header.append("All targeted page slices passed validation.\n")
     else:
         header.append(
             f"> **{total} issue(s)** across {len([s for s in sections])} page file(s). "
@@ -120,8 +128,11 @@ def validate_scratch(scratch_dir: Path) -> int:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python validate_pages.py <scratch_dir>")
+        print("Usage: python validate_pages.py <scratch_dir> [page_001.md page_002.md ...]")
         sys.exit(1)
 
-    exit_code = validate_scratch(Path(sys.argv[1]))
+    scratch_dir = Path(sys.argv[1])
+    target_pages = sys.argv[2:] if len(sys.argv) > 2 else None
+
+    exit_code = validate_scratch(scratch_dir, target_pages)
     sys.exit(0 if exit_code == 0 else 1)

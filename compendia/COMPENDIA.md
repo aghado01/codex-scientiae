@@ -7,7 +7,7 @@
 
 ### Clustering
 
-- [MCWs (MiCroWire sorter): A new framework for automated and reliable spike sorting in human intracerebral recordings](clustering/BRM2025.md)
+- [A new framework for automated and reliable spike sorting in human intracerebral recordings](clustering/BRM2025.md)
 - [Clustering Data through an Analogy to the Potts Model](clustering/BWD1995.md)
 - [Superparamagnetic Clustering of Data](clustering/BWD1996.md)
 - [Data Clustering Using a Model Granular Magnet](clustering/BWD1997.md)
@@ -20,7 +20,10 @@
 
 ### BARS
 
-- [Reversible Jump Markov Chain Monte Carlo Computation and Bayesian Model Determination](bars/GRE1995.md)
-- [Bayesian Curve-Fitting with Free-Knot Splines](bars/DMGK2001.md)
 - [Bayesian Adaptive Regression Splines for Hierarchical Data](bars/BD2005.md)
-- [Robust Estimation for Partially Linear Additive Models with MM-Estimators and B-Splines](bars/BM2021.md)
+- [A Robust Spline Approach in Partially Linear Additive Models](bars/BM2021.md)
+- [Bayesian Curve-Fitting with Free-Knot Splines](bars/DMGK2001.md)
+- [Reversible Jump Markov Chain Monte Carlo Computation and Bayesian Model Determination](bars/GRE1995.md)
+- [Adaptive Bayesian Multivariate Spline Knot Inference with Prior Specifications on Model Complexity](bars/HYK2024.md)
+- [MRA2015](bars/MRA2015.md)
+- [WLS2008](bars/WLS2008.md)

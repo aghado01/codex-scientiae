@@ -14,8 +14,11 @@ Execute the workflow sequentially. Never skip a phase.
    scripts/math_enrichment.py     ← extract display equations and math-font spans from JSON
    scripts/reconstruct_tables.py  ← reconstruct pipe tables from JSON
    scripts/split_pages.py         ← split raw PAPER.md into per-page slices in .scratch/
+   scripts/clean_mechanical.py    ← scrub mechanical OCR artifacts from page slices in-place
    scripts/validate_pages.py      ← check repaired slices against STANDARDS before assembly
    scripts/assemble_pages.py      ← join repaired page slices and write final output files
+   scripts/generate_toc.py        ← extract headings and automatically build/inject Contents
+   scripts/read_span.py           ← read file segments by exact byte range to save context tokens
    ```
 
 3. Workflow items live under `ingestion/` with a directory structure parallel to their `codex-scientiae` endpoints, e.g. `ingestion/compendia/clustering/NDK2016/` mirrors `compendia/clustering/` (without the final paper file, which is written only after repair is complete).
@@ -75,12 +78,34 @@ After splitting, `.scratch/` contains `page_001.md`, `page_002.md`, … (plus `p
 
 ---
 
-### Phase 3: Triage & Manifest
+### Phase 2.5: Mechanical Pre-Cleaning
 
-Read the source `PAPER.md` and the monolithic `temp_math.md` / `temp_tables.md` artifacts for an overview of the paper. Produce `.scratch/manifest.md` with five sections. Every line not explicitly listed in a section is implicitly `KEEP_VERBATIM` — do not touch it in later phases.
+Before beginning manual triage or manifest creation, run the deterministic cleanup script on the page slices to scrub common OCR artifacts:
 
-Use `temp_math.md` and `temp_tables.md` only during this triage phase. During Phase 4 repair, load per-page artifacts (`page_NNN_math.md`, `page_NNN_tables.md`) one page at a time instead.
+```
+python scripts/clean_mechanical.py ingestion/.../PAPER/.scratch/
+```
 
+This script will run in-place on all `page_NNN.md` slice files to:
+* Collapse excessive prose spaces (preserving markdown table cells).
+* Strip `\intertext{...}` lines and empty alignment ampersand chains (`& & & &`) from math blocks.
+* Clean 1-2 character orphan residue lines while preserving valid lists, headings, and math operators.
+
+Doing this first ensures your context window is not cluttered with trivial mechanical noise.
+
+---
+
+### Phase 3 & 4: Chunk-Based Triage & Repair
+
+To prevent context exhaustion and keep repairs manageable, work through the document in chunks of 5-10 pages at a time. Do not attempt to process the entire document at once.
+
+For each chunk (e.g., Pages 1 to 10):
+1. **Identify Chunk Files**: Note the corresponding `page_NNN.md`, `page_NNN_math.md`, and `page_NNN_tables.md` files for the target chunk. Use `temp_math.md` and `temp_tables.md` only for broad overviews if needed.
+2. **Create Chunk Manifest**: Produce a `.scratch/manifest_START_END.md` (e.g., `manifest_001_010.md`) following the five-section format described below. Every line not explicitly listed in a section is implicitly `KEEP_VERBATIM` — do not touch it in later phases.
+3. **Apply Manifest**: Work through the chunk's manifest and apply each entry as a targeted `Edit` operation on the relevant `page_NNN.md` slice file. Touch nothing outside the manifest.
+4. **Validate Chunk**: Run the validation script on the chunk to ensure it's clean before moving to the next chunk.
+
+#### Triage Section Rules
 **DELETE** — blocks to remove entirely. List each as a description with enough identifying text to locate it (section header, first sentence of block). Typical candidates:
 - Journal metadata headers (citation info, DOI logos, editor names, dates, copyright)
 - Funding / grant statements and competing-interests declarations
@@ -113,12 +138,12 @@ Apply STANDARDS.md encoding: inline math as `$...$`, display math as `$$\n...\n$
 Example manifest structure:
 
 ```markdown
-# Repair Manifest — PAPER
+# Repair Manifest — PAPER (Pages 1-10)
 
 ## DELETE
 - Journal metadata header (page_001, ~lines 1–10): PLoS ONE citation block, editor/dates/copyright
 - Funding sidebar (page_004): begins "The authors declare..."
-- [Page N] markers: all occurrences throughout document
+- [Page N] markers: all occurrences throughout document chunk
 - OCR debris after Fig 1 (page_003): axis label fragments, panel letters
 
 ## FIX_IMAGES
@@ -137,20 +162,14 @@ Example manifest structure:
   Fix: `$s = \sqrt{\sum_{i=1}^N \text{var}(x_i)}$`
 ```
 
----
+#### Application Rules
 
-### Phase 4: Apply Manifest
+**One page at a time.** Process the pages in the chunk sequentially. For each page:
 
-Work through `manifest.md` and apply each entry as a targeted `Edit` operation on the relevant `page_NNN.md` slice file. Touch nothing outside the manifest.
-
-**One page at a time.** Process pages sequentially. For each page:
-
-1. Scan `manifest.md` to identify which sections have entries targeting this page.
+1. Scan the chunk manifest to identify which sections have entries targeting this page.
 2. If the page has any manifest entries: read `page_NNN.md` + `page_NNN_math.md` (if it exists) + `page_NNN_tables.md` (if it exists) into context.
 3. Apply all manifest entries for this page, in section order: DELETE → FIX_IMAGES → REPLACE_TABLES → REPAIR_PROSE → REPAIR_MATH.
-4. Finish all edits to this page, then move to the next page.
-
-Do not hold multiple pages' slice files or artifact files in context simultaneously. The page-slice architecture exists to keep each repair unit small — loading all pages at once defeats the purpose.
+4. Finish all edits to this page, then move to the next page in the chunk.
 
 Section-order rationale:
 
@@ -168,8 +187,14 @@ Section-order rationale:
 
 ### Phase 5: Validation
 
-Before assembling, run the validation script against all repaired page slices. This is a read-only standards check — it never modifies files.
+Before moving to the next chunk or assembling, run the validation script against the repaired page slices. This is a read-only standards check — it never modifies files.
 
+For validating a specific chunk:
+```
+python scripts/validate_pages.py ingestion/.../PAPER/.scratch/ page_001.md page_002.md ...
+```
+
+For validating the entire document (after all chunks are done):
 ```
 python scripts/validate_pages.py ingestion/.../PAPER/.scratch/
 ```
@@ -221,16 +246,16 @@ Three operations on the assembled `compendia/{topic}/PAPER.md`.
 1. **OCR ligatures**: replace `ﬁ` → `fi`, `ﬂ` → `fl`, `ﬃ` → `ffi`, `ﬀ` → `ff`, `ﬄ` → `ffl`. Use `replace_all: true`.
 2. **Hard mid-paragraph line-breaks**: where a paragraph has been hard-wrapped (a newline mid-sentence with no blank line separating it), join the lines. Only fix wraps that break prose flow; do not touch headings, list items, or captions.
 
-**CONTENTS Section** — insert a `## Contents` section immediately after the title and authors block. Include every remaining heading as a hierarchical list of anchor links. The References entry links to the sidecar file written in Phase 6:
+**CONTENTS Section** — run the automated TOC generator on the assembled document to build and inject the contents block:
 
+```
+python scripts/generate_toc.py compendia/{topic}/PAPER.md [--h3]
+```
+
+This automatically extracts all `##` (and optionally `###` if `--h3` is specified) headings, builds the hierarchical links, and injects the `## Contents` section right before the first `##` section.
+
+Remember to manually verify or add the References link pointing to the references sidecar:
 ```markdown
-## Contents
-
-- [Abstract](#abstract)
-- [1. Introduction](#1-introduction)
-- [2. Methodology](#2-methodology)
-  - [2.1 ...](#21-)
-  ...
 - [References](references/PAPER.md)
 ```
 
@@ -238,3 +263,17 @@ Three operations on the assembled `compendia/{topic}/PAPER.md`.
 - Italic journal names
 - Remove any `[Page N]` residue from page-boundary joins
 - Verify the heading is `# References — PAPER`
+
+---
+
+### In-Context Byte-Span Reading
+
+For textbooks or large files containing local sentinel files mapping anchors to byte ranges (e.g. `contents_byte_spans.json`), avoid reading the entire document to inspect small sections.
+
+Instead, query target sections by running `read_span.py`:
+
+```
+python scripts/read_span.py --file <file_path> --start <start_byte> --end <end_byte>
+```
+
+This reduces token costs by loading only the necessary range into context.

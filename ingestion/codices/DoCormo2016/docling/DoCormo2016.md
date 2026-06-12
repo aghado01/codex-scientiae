@@ -28,10 +28,6 @@ DOVER PUBLICATIONS, INC. Mineola, New York
 
 [Page 6]
 
-# Copyright
-
-Copyright © 1976, 2016 by Manfredo P. do Carmo All rights reserved.
-
 # Bibliographical Note
 
   Differential Geometry of Curves and Surfaces: Revised & Updated Second Edition is a revised, corrected, and updated second edition of the work originally published in 1976 by Prentice-Hall, Inc., Englewood Cliffs, New Jersey. The author has also provided a new Preface for this edition.

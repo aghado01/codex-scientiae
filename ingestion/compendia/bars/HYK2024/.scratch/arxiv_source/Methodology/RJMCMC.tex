@@ -1,0 +1,64 @@
+\section{Reversible jump Markov chain Monte Carlo}
+
+The reversible jump approach \citep{10.1093/biomet/82.4.711} is an extension of the standard Metropolis-Hastings algorithm, allowing the trans-dimensional movement. These algorithms are widely used in the (Bayesian) model determination problems where the dimension of parameters is unknown \citep{doi:10.1080/01621459.2018.1423984, https://doi.org/10.1002/sim.8511}. 
+
+In this section we use RJMCMC to obtain samples of $k,\xi$ from the posterior distribution \eqref{eq:posterior} or \eqref{eq:approx}. Due to the tensor product structure, the sampling procedure can be performed in the component individually. Suppose $x_i$ is the current update component. When modifying $x_i$, other components are invariant. We design three transition strategies to traverse the state space: (1) Birth: add a knot with the probability $b_{k_i}=c\min (1,\{(n_i-k_i)/(k_i+1)\}^{1-\gamma})$; (2) Death: delete a knot with the probability $d_{k_i}=c\min (1, \{k_i/(n_i-k_i+1)\}^{1-\gamma})$; (3) Relocation: change the position of one knot with the probability $r_{k_i}=1-b_{k_i}-d_{k_i}$. The hyper-parameter $c$ is of the interval $(0,0.5)$. Notably, $\pi(k_i)b_{k_i}=\pi(k_i+1)d_{k_i+1}$, satisfying the detailed balance equation for the prior of the knot number. Suppose the jumping probability is $q(k_i',\xi_i'|k_i,\xi_i)$. Let $\xi_{i,k_i}\subset \eta_i$ be the locations of $k_i$ knots in the $i$-th component. The concrete proposal distributions are specified in the following manner:
+\begin{enumerate}
+    \item \emph{Birth step}. Select a knot from the remaining candidate knots $\eta_i \backslash \xi_{i,k_i}$ uniformly, and add it into $\xi_{i,k_i}$. Then $q(k_i+1,\xi_{i,k_i+1}|k_i,\xi_{i,k_i})=b_{k_i}/(n_i-k_i)$.
+    \item \emph{Death step}. Select a knot from the current knots $\xi_{i,k_i}$ uniformly, and delete it. Then $q(k_i-1,\xi_{i,k_i-1}|k_i,\xi_{i,k_i})=d_{k_i}/k_i$.
+    \item \emph{Relocation step}. Select a knot from $\xi_{i,k_i}$ and another knot from $\eta_i\backslash \xi_{i,k_i}$ uniformly. Exchange their positions. Then $q(k_i,\xi_{i,k_i}' | k_i,\xi_{i,k_i})=r_{k_i}/\{k_i(n_i-k_i)\}$.
+\end{enumerate}
+
+\iffalse
+\emph{Birth step}. Select a knot from the remaining candidate knots $\eta_i \backslash \xi_{i,k_i}$ uniformly, and add it into $\xi_{i,k_i}$. Then $q(k_i+1,\xi_{i,k_i+1}|k_i,\xi_{i,k_i})=b_{k_i}/(n_i-k_i)$.
+
+\emph{Death step}. Select a knot from the current knots $\xi_{i,k_i}$ uniformly, and delete it. Then $q(k_i-1,\xi_{i,k_i-1}|k_i,\xi_{i,k_i})=d_{k_i}/k_i$.
+
+\emph{Relocation step}. Select a knot from $\xi_{i,k_i}$ and another knot from $\eta_i\backslash \xi_{i,k_i}$ uniformly. Exchange their positions. Then $q(k_i,\xi_{i,k_i}' | k_i,\xi_{i,k_i})=r_{k_i}/\{k_i(n_i-k_i)\}$.
+\fi
+
+Assume that $(k,\xi)$ is the current status and $(k',\xi')$ is the candidate status. To sample from the target posterior distribution, the Metropolis-Hastings algorithm implies that,
+\begin{equation}
+    \label{eq:detailed_balance}
+    p(k,\xi|y)q(k',\xi'|k,\xi)\alpha(k',\xi'|k,\xi) = p(k',\xi'|y)q(k,\xi|k',\xi')\alpha(k,\xi|k',\xi'),
+\end{equation}
+where $\alpha(k',\xi'|k,\xi),\alpha(k,\xi|k',\xi')$ are the acceptance probabilities. %Besides, the proposal distribution $q(k',\xi'|k,\xi)$ is $q(k_i',\xi_i'|k_i,\xi_i)$ when updating knots in the $i$-th component.
+
+\begin{lemma}
+\label{lm:accept}
+    With the specified proposal distribution and the posterior density of \eqref{eq:detailed_balance}, the acceptance probability and its EBIC approximation in RJMCMC are
+    \begin{equation}
+        \label{eq:accept}
+        \begin{split}
+            \alpha(k',\xi'|k,\xi) & = \min\{1, ~(m+1)^{(\nu-\nu')/2}(a_{k,\xi}/a_{k',\xi'})^{m/2}\},\\
+            \hat{\alpha}(k',\xi'|k,\xi) & = \min \{1, ~ m^{(\nu-\nu')/2} ( \hat{\sigma}^2/(\hat{\sigma}')^2 )^{m/2} \},\\
+        \end{split}
+    \end{equation}
+    where $\nu,\nu'$ are the dimensions of the spline space.
+\end{lemma}
+
+Lemma \ref{lm:accept} implies that $\sqrt{m+1},\sqrt{m}$ are the dimensional penalty factors for the likelihood. %This coincides to the method of \citet{10.1093/biomet/88.4.1055}. 
+Comparing $\alpha(k',\xi'|k,\xi)$ and $\hat{\alpha}(k',\xi'|k,\xi)$ in \eqref{eq:accept}, $\alpha\approx \hat{\alpha}$ when the sample size is sufficiently large. The overall extended Bayesian adaptive regression spline approach is listed as Algorithm \ref{alg:ebars}.
+
+\begin{algorithm}
+\caption{Extended Bayesian adaptive regression spline algorithm via RJMCMC}
+\label{alg:ebars}
+\begin{algorithmic}[1]
+\Statex \emph{Input:} Labeled observations $\{(x_i,y_i)\}_{i=1}^m$, hyper-parameters $0\leq \gamma\leq 1$ and $0<c<0.5$, jumping steps $I$, the number of candidate knots $n$.
+\State Create the candidate knots $\eta$. Initialize the starting knots $(k^{(0)},\xi^{(0)})$.
+\For{$i=0,\ldots,I-1$}
+\State Determine the $j$-th component to update randomly and choose the transition strategy.
+% \State Calculate $b_{k^{(i)}_j},d_{k^{(i)}_j},r_{k^{(i)}_j}$ to choose the transition strategy.
+\State Solve $(k',\xi')$ for the next movement by the proposal distribution.
+\State Compute $\alpha(k',\xi'|k^{(i)},\xi^{(i)})$ by \eqref{eq:accept}. Sample $u\sim U(0,1)$.
+\If{$u<\alpha(k',\xi'|k^{(i)},\xi^{(i)})$} 
+\State Update the knots by $(k^{(i+1)},\xi^{(i+1)})=(k',\xi')$;
+\Else
+\State Return to Step 3 and repeat.
+\EndIf
+\EndFor
+%\State Calculate the maximum likelihood estimators $\hat{\beta}^{(I)},\hat{\sigma}^{(I)}$ based on \eqref{eq:spline_regression}.
+%\Statex \emph{Output:} The estimators $k^{(I)},\xi^{(I)},\hat{\beta}^{(I)},\hat{\sigma}^{(I)}$.
+\Statex \emph{Output:} The posterior samples $\{k^{(i)},\xi^{(i)}\}_{i=1}^I$.
+\end{algorithmic}
+\end{algorithm}
