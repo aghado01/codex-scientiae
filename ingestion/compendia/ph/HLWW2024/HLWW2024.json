@@ -1,0 +1,1895 @@
+{
+  "file name" : "HLWW2024.pdf",
+  "number of pages" : 11,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20240623200609-04'00'",
+  "modification date" : "D:20240623200609-04'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 170,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 130.56, 703.987, 472.32, 713.795 ],
+    "heading level" : 1,
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "HOMOLOGY MANIFOLDS AND EUCLIDEAN BUNDLES"
+  }, {
+    "type" : "paragraph",
+    "id" : 171,
+    "page number" : 1,
+    "bounding box" : [ 108.96, 674.058, 494.111, 683.025 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "FABIAN HEBESTREIT, MARKUS LAND, MICHAEL WEISS, AND CHRISTOPH WINGES"
+  }, {
+    "type" : "paragraph",
+    "id" : 172,
+    "page number" : 1,
+    "bounding box" : [ 116.88, 580.219, 486.186, 654.945 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Abstract. We construct a Poincare´ complex whose periodic total surgery obstruction vanishes but whose Spivak normal ﬁbration does not admit a reduction to a stable euclidean bundle. This contradicts the conjunction of two claims in the literature: Namely, on the one hand that a Poincare´ complex with vanishing periodic total surgery obstruction is homotopy equivalent to a homology manifold, which appears in work of Bryant–Ferry–Mio–Weinberger, and on the other that the Spivak normal ﬁbration of a homology manifold always admits a reduction to a stable euclidean bundle, which appears in work of Ferry–Pedersen."
+  }, {
+    "type" : "paragraph",
+    "id" : 173,
+    "page number" : 1,
+    "bounding box" : [ 80.999, 386.773, 522.055, 553.082 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In his celebrated work on algebraic surgery theory, Ranicki associates to an oriented Poincare´ duality complex X an invariant, the total surgery obstruction tso( X ) of X , which for dim( X ) ≥ 5 vanishes if and only if X is realised by a closed, topological manifold [Ran79]. It encodes in a single invariant whether the Spivak normal ﬁbration of X admits a reduction to a stable euclidean bundle, and if so, whether any such reduction gives rise to a degree one normal map with trivial surgery obstruction. Through Siebenmann’s famous periodicity mistake and the consequent hunt for the missing manifolds, the question arose whether a similar total surgery obstruction for homology manifolds exists. This was ﬁnally established in [BFMW96] in terms of (what we shall refer to as) the periodic total surgery obstruction tso( X ) of X , a slightly coarser variant of Ranicki’s tso( X ). Based on earlier work of Ferry and Pedersen [FP95] that the Spivak normal ﬁbration of a homology manifold always admits a reduction to a stable euclidean bundle, they proved that tso( X ) = 0 if and only if X is realised by a homology manifold, and established a surgery exact sequence for homology manifolds."
+  }, {
+    "type" : "paragraph",
+    "id" : 174,
+    "page number" : 1,
+    "bounding box" : [ 81.0, 334.933, 522.034, 371.762 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The main goal of this note is to show that the results of [BFMW96] and [FP95] are incompatible by constructing Poincare´ complexes X with tso( X ) = 0 but whose Spivak normal ﬁbration do not admit reductions to euclidean bundles."
+  }, {
+    "type" : "paragraph",
+    "id" : 175,
+    "page number" : 1,
+    "bounding box" : [ 81.0, 315.133, 522.02, 326.042 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Acknowledgements. The authors heartily thank Shmuel Weinberger for helpful discussions."
+  }, {
+    "type" : "paragraph",
+    "id" : 176,
+    "page number" : 1,
+    "bounding box" : [ 81.0, 269.413, 522.022, 306.242 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Preliminaries. We will need the following facts surrounding the visible symmetric signatures and (periodic) total surgery obstructions of oriented Poincare´ complexes. In this part, X will usually refer to a general space, whereas P refers to an oriented Poincare´ complex."
+  }, {
+    "type" : "paragraph",
+    "id" : 177,
+    "page number" : 1,
+    "bounding box" : [ 104.759, 227.533, 521.923, 266.311 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(i) For a space X , we write L vr ( X ) = L(( D ( Z ) /X ) f , Ϙ vr ǫ ) for its visible quadratic (the case r = q) and visible symmetric (the case r = s) L-theory of Weiss and Ranicki, see [Ran92, Section 9] where the visible symmetric L-groups are denoted V L ∗ ( Z ,X )"
+  }, {
+    "type" : "paragraph",
+    "id" : 178,
+    "page number" : 1,
+    "bounding box" : [ 93.0, 205.698, 175.956, 214.665 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Date : June 24, 2024."
+  }, {
+    "type" : "paragraph",
+    "id" : 179,
+    "page number" : 1,
+    "bounding box" : [ 81.0, 140.058, 521.978, 203.744 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "FH, MW and CW were supported by the German Research Foundation (DFG) through the collaborative research centres “Integral structures in Geometry and Representation theory” (grant no. TRR 358–491392403) at the University of Bielefeld, “Geometry: Deformations and Rigidity” (grant no. SFB 1442–427320536) at the University of Mu¨nster and “Higher invariants” (grant no. SFB 1085–224262486) at the University of Regensburg, respectively. MW is furthermore a member of the cluster “Mathematics Mu¨nster: DynamicsGeometry-Structure” (grant no. EXC 2044–390685587) funded by the DFG at the University of Mu¨nster."
+  }, {
+    "type" : "paragraph",
+    "id" : 180,
+    "page number" : 2,
+    "bounding box" : [ 121.32, 577.692, 522.1, 747.63 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "in case X is represented by a ﬁnite simplicial complex and [CDH + 23, Variant 4.4.15] for a general treatment. Here ( D ( Z ) /X ) f denotes the full subcategory of the compact objects ( D ( Z ) /X ) ω of D ( Z ) /X on ﬁnite objects, i.e. those whose K -theory class lies in the image of K 0 ( Z ) → K 0 ( Z π 1 ( X )) ∼ = K 0 (( D ( Z ) /X ) ω ) and ǫ denotes the trivial rank 0 spherical ﬁbration over X to align with notation from [CDH + 23, CDH + 20a]. The visible L-spectra are functorial in X ; for a map f : X → Y we write f ! : L vr ( X ) → L vr ( Y ) for the induced map. We also have Ϙ vq ǫ = Ϙ q ǫ , so that visible quadratic Ltheory is simply quadratic L-theory. Moreover, the algebraic π π -theorem says that for X connected, the map X → Bπ 1 ( X ) induces an isomorphism in visible quadratic L-theory, see [Ran92, Section 10] and [CDH + 20b, Corollary 1.2.33]. The coﬁbre of the map L vq ( X ) → L vs ( X ) is denoted L vn ( X ) and called the visible normal L-theory of X . In classical terminology, the choice of working with ﬁnite objects corresponds to choosing decoration “h” for the L-spectra. vq q vs s vn n"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 98.76, 420.492, 522.175, 575.642 ],
+    "numbering style" : "roman numbers in upper case",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 101.761, 498.733, 522.044, 575.642 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(ii) We have L ( ∗ ) = L ( Z ), L ( ∗ ) = L ( Z ), and L ( ∗ ) = L ( Z ), the usual quadratic, symmetric, and normal L-theory spectrum of the integers, the latter two of which are ring spectra. In fact, they are E ∞ -ring spectra, but this will not matter for the purposes of this paper. From L n 0 ( Z ) ∼ = Z / 8 Z we see that L n ( Z )[ 1 2 ] = 0 so that the map L q ( Z )[ 1 2 ] → L s ( Z )[ 1 2 ] is an equivalence. Note also that L q ( Z ) does not refer to the qth symmetric L-group as it would in Ranicki’s notation.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 98.76, 420.492, 522.175, 496.682 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(iii) When P is an oriented Poincare´ complex of dimension d , there is a canonical point σ vs ( P ) in Ω d L vs ( P ), called the visible symmetric signature of P , see [Ran92, Example 9.13] and [CDH + 23, Corollary 4.4.20]. Its image σ vn ( P ) in Ω d L vn ( P ) is called the visible normal signature of P . These data ﬁt into the following commutative square whose left vertical arrow is the canonical forgetful map between oriented Poincare´ bordism and oriented normal bordism [Ran79].",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 185,
+    "page number" : 2,
+    "bounding box" : [ 255.569, 391.267, 266.003, 398.855 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "SP ("
+  }, {
+    "type" : "paragraph",
+    "id" : 184,
+    "page number" : 2,
+    "bounding box" : [ 247.649, 386.476, 255.525, 397.386 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Ω"
+  }, {
+    "type" : "paragraph",
+    "id" : 186,
+    "page number" : 2,
+    "bounding box" : [ 266.488, 386.476, 270.721, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 187,
+    "page number" : 2,
+    "bounding box" : [ 270.688, 386.476, 279.721, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "X"
+  }, {
+    "type" : "paragraph",
+    "id" : 188,
+    "page number" : 2,
+    "bounding box" : [ 280.528, 386.476, 284.761, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 190,
+    "page number" : 2,
+    "bounding box" : [ 328.226, 391.267, 336.005, 398.855 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "vs"
+  }, {
+    "type" : "paragraph",
+    "id" : 189,
+    "page number" : 2,
+    "bounding box" : [ 321.386, 386.476, 328.204, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "L"
+  }, {
+    "type" : "paragraph",
+    "id" : 191,
+    "page number" : 2,
+    "bounding box" : [ 336.506, 386.476, 340.738, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 192,
+    "page number" : 2,
+    "bounding box" : [ 340.706, 386.476, 349.738, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "X"
+  }, {
+    "type" : "paragraph",
+    "id" : 193,
+    "page number" : 2,
+    "bounding box" : [ 350.546, 386.476, 354.778, 397.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 195,
+    "page number" : 2,
+    "bounding box" : [ 255.276, 351.547, 266.293, 359.135 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "SN ("
+  }, {
+    "type" : "paragraph",
+    "id" : 194,
+    "page number" : 2,
+    "bounding box" : [ 247.357, 346.757, 255.233, 357.666 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Ω"
+  }, {
+    "type" : "paragraph",
+    "id" : 196,
+    "page number" : 2,
+    "bounding box" : [ 266.796, 346.757, 271.029, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 197,
+    "page number" : 2,
+    "bounding box" : [ 270.996, 346.757, 280.029, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "X"
+  }, {
+    "type" : "paragraph",
+    "id" : 198,
+    "page number" : 2,
+    "bounding box" : [ 280.836, 346.757, 285.069, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 200,
+    "page number" : 2,
+    "bounding box" : [ 327.544, 351.547, 336.686, 359.135 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "vn"
+  }, {
+    "type" : "paragraph",
+    "id" : 199,
+    "page number" : 2,
+    "bounding box" : [ 320.704, 346.757, 327.522, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "L"
+  }, {
+    "type" : "paragraph",
+    "id" : 201,
+    "page number" : 2,
+    "bounding box" : [ 337.264, 346.757, 341.496, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 202,
+    "page number" : 2,
+    "bounding box" : [ 341.464, 346.757, 350.496, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "X"
+  }, {
+    "type" : "paragraph",
+    "id" : 203,
+    "page number" : 2,
+    "bounding box" : [ 351.303, 346.757, 355.536, 357.666 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 204,
+    "page number" : 2,
+    "bounding box" : [ 121.319, 248.772, 521.956, 324.842 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The upper horizontal map takes the (Poincare´ bordism class of a) map f : P → X to f ! ( σ vs ( P )). In particular σ vs ( P ) is the image of [id P ] in Ω SP n ( P ), see [Ran92, Section 19]. Oriented normal bordism satisﬁes excision giving an equivalence Ω SN ( X ) ≃ X ⊗ MSG, and the lower horizontal arrow for X = ∗ is called Ranicki’s normal orientation , while the top horizontal arrow is often referred to as the Sullivan–Ranicki orientation ."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 98.999, 139.572, 522.02, 246.722 ],
+    "numbering style" : "roman numbers in lower case",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 98.999, 195.252, 521.966, 246.722 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(iv) For an oriented closed topological manifold M , we may view [id M ] as an element of Ω STop n ( M ), the oriented bordism of topological manifolds. By topological transversality [KS77], Ω STop ( X ) is equivalent to X ⊗ MSTop for any space X , showing that σ vs ( M ) canonically lifts along the assembly map M ⊗ L s ( Z ) → L vs ( M ) in this case.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 101.999, 139.572, 522.02, 193.201 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(v) To better incorporate the orientation behaviour of the above elements, one considers L n 1 / 2 ( Z ) = Z × Z / 8 Z τ ≥ 0 L n ( Z ), the 1/2-connective normal L-theory . We then obtain canonical maps MSG → L n 1 / 2 ( Z ) as well as τ ≥ 0 L s ( Z ) → L n 1 / 2 ( Z ) lifting the normal orientation MSG → L n ( Z ) and the canonical projection L s ( Z ) → L n ( Z ).",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 207,
+    "page number" : 3,
+    "bounding box" : [ 99.0, 703.227, 521.989, 748.535 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(vi) The assembly map in visible normal L-theory is an equivalence: X ⊗ L n ( Z ) ≃ −→ L vn ( X ), see [Ran92, Section 15]. We then denote by L vs 1 / 2 ( X ) the pullback of L vs ( X ) → L vn ( X ) ← X ⊗ L n 1 / 2 ( Z ) and note that above square reﬁnes to the following square."
+  }, {
+    "type" : "formula",
+    "id" : 208,
+    "page number" : 3,
+    "bounding box" : [ 245.592, 633.932, 357.287, 692.135 ],
+    "content" : "\\Omega ^ { S P } ( X ) \\longrightarrow L _ { 1 / 2 } ^ { v s } ( X ) \\\\ \\downharpoonleft _ { \\Omega ^ { S N } ( X ) } \\longrightarrow L _ { 1 / 2 } ^ { v n } ( X )"
+  }, {
+    "type" : "paragraph",
+    "id" : 209,
+    "page number" : 3,
+    "bounding box" : [ 121.32, 593.668, 521.967, 624.031 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Hence, the visible symmetric signature σ vs ( P ) canonically lifts to a point σ vs 1 / 2 ( P ) of L vs 1 / 2 ( P ). Its image σ vn 1 / 2 ( P ) in L vn 1 / 2 ( P ) is called the normal fundamental class of P . alg"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 3,
+    "bounding box" : [ 93.0, 467.067, 522.055, 590.477 ],
+    "numbering style" : "roman numbers in lower case",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 96.0, 521.067, 522.055, 590.477 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(vii) For a space X , we write S ( X ) = coﬁb[ X ⊗ L s ( Z ) → L vs ( X )] for the coﬁbre of the assembly map and S alg ( X ) = coﬁb[ X ⊗ τ ≥ 0 L vs ( Z ) → L s 1 / 2 ( X )]. There is a canonical map S alg ( X ) → S alg ( X ) induced by the maps τ ≥ 0 L s ( Z ) → L s ( Z ) and L vs 1 / 2 ( X ) → L vs ( X ). vs d vs d alg",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 93.0, 467.067, 522.044, 527.282 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(viii) The image of σ 1 / 2 ( P ) under the canonical map Ω L 1 / 2 ( P ) → Ω S ( P ) is denoted tso( P ) and called the total surgery obstruction of P . By point (iv) above, tso( P ) vanishes in case P is homotopy equivalent to a closed topological manifold, and the main result of [Ran79] says that for dim( P ) ≥ 5, the converse holds as well. alg",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 212,
+    "page number" : 3,
+    "bounding box" : [ 121.319, 391.812, 522.044, 474.751 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The image tso( P ) of tso( P ) under the canonical map Ω d S alg ( P ) → Ω d S ( P ), the periodic total surgery obstruction , is equally the image of σ vs ( P ) under the canonical map Ω d L vs ( P ) → Ω d S alg ( P ). [BFMW96, Main theorem] says that for dim( P ) ≥ 6, tso( P ) is a complete obstruction for P being homotopy equivalent to a closed homology manifold. Our results below imply that in this generality, the argument given in loc. cit. is not applicable, see also [BFMW24]."
+  }, {
+    "type" : "paragraph",
+    "id" : 213,
+    "page number" : 3,
+    "bounding box" : [ 99.0, 336.733, 521.978, 389.762 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(ix) As a consequence of the fact that visible normal L-theory is excisive and the above deﬁnitions, there are equivalences S alg ( X ) ≃ coﬁb[ X ⊗ L q ( Z ) → L vq ( X )] as well as S alg ( X ) = coﬁb[ X ⊗ τ ≥ 1 L q ( Z ) → L vq ( X )]. Indeed, to see the latter, we note that there is the following commutative diagram"
+  }, {
+    "type" : "formula",
+    "id" : 214,
+    "page number" : 3,
+    "bounding box" : [ 221.403, 273.626, 381.638, 327.523 ],
+    "content" : "X \\otimes \\tau _ { \\geq 0 } L ^ { s } ( \\mathbb { Z } ) & \\longrightarrow X \\otimes L _ { 1 / 2 } ^ { n } ( \\mathbb { Z } ) \\\\ & \\downarrow \\\\ L ^ { v s } ( X ) & \\longrightarrow L ^ { v n } ( X )"
+  }, {
+    "type" : "paragraph",
+    "id" : 215,
+    "page number" : 3,
+    "bounding box" : [ 121.32, 221.068, 521.967, 262.802 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "whose induced map from the top left corner to the pullback is the canonical map X ⊗ τ ≥ 0 L s ( Z ) → L vs 1 / 2 ( X ). The claimed description of its coﬁbre then follows from the canonical equivalence τ ≥ 1 L q ( Z ) ≃ ﬁb[ τ ≥ 0 L s ( Z ) → L n 1 / 2 ( Z )]. d alg d − 1 q"
+  }, {
+    "type" : "paragraph",
+    "id" : 216,
+    "page number" : 3,
+    "bounding box" : [ 102.0, 139.573, 522.141, 220.518 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(x) The image ro( P ) of tso( P ) under the boundary map Ω S ( P ) → Ω [ P ⊗ τ ≥ 1 L ( Z )], the reduction obstruction , is a complete obstruction for the Spivak normal ﬁbration of P to admit a reduction to a stable euclidean bundle [Ran79]. We denote by ro( P ) the image of ro( P ) under the canonical map induced by τ ≥ 1 L q ( Z ) → L q ( Z ). Note that ro( P ) is then also the image of tso( P ) under the boundary map Ω d S alg ( P ) → Ω d − 1 [ P ⊗ L q ( Z )]."
+  }, {
+    "type" : "paragraph",
+    "id" : 217,
+    "page number" : 4,
+    "bounding box" : [ 99.0, 668.009, 522.045, 746.162 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(xi) Using the above, Ranicki [Ran79] shows that the space of paths from tso( P ) to 0 inside Ω ∞ + d S alg ( P ) is canonically equivalent to the topological manifold block structure space   S ( P ). In particular, the topological block structure space   S ( M ) of a topological manifold M identiﬁes canonically with Ω ∞ + d +1 S alg ( M ). Likewise, [BFMW96] ought to give an identiﬁcation of the homology manifold block structure space   S H ( P ) with the space of paths from tso( P ) to 0 inside Ω ∞ + d S alg ( P )."
+  }, {
+    "type" : "paragraph",
+    "id" : 218,
+    "page number" : 4,
+    "bounding box" : [ 121.321, 665.412, 478.942, 676.322 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "space ( P ) with the space of paths from tso( P ) to 0 inside Ω ( P )."
+  }, {
+    "type" : "paragraph",
+    "id" : 219,
+    "page number" : 4,
+    "bounding box" : [ 121.32, 626.533, 522.032, 663.362 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Again, our results below imply that this last claim suﬀers from the defect indicated in point (viii): Even its consequence on π 0 currently relies on the existence of euclidean normal bundles for homology manifolds, see [BFMW24]."
+  }, {
+    "type" : "paragraph",
+    "id" : 220,
+    "page number" : 4,
+    "bounding box" : [ 81.0, 580.093, 522.022, 616.922 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Before coming to our main results, the construction of certain Poincare´ complexes, we prove the following positive result about the existence of euclidean reductions of Spivak normal ﬁbrations of oriented Poincare´ complexes."
+  }, {
+    "type" : "paragraph",
+    "id" : 221,
+    "page number" : 4,
+    "bounding box" : [ 81.0, 546.777, 521.977, 570.482 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1. Proposition. Let X be an oriented d -dimensional Poincare´ complex such that ro( X ) = 0 . Then the following statements are equivalent:"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 98.76, 488.547, 521.542, 541.322 ],
+    "numbering style" : "roman numbers in lower case",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 104.76, 530.413, 512.979, 541.322 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(i) The Spivak normal ﬁbration of X admits a reduction to a stable euclidean bundle,",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 101.76, 496.587, 521.542, 528.362 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(ii) there exists a degree one map M → X where M is an oriented closed topological manifold, and 1 1",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 98.76, 488.547, 514.538, 502.442 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(iii) the fundamental class [ X ] ∈ H d ( X ; Z [ 2 ]) lifts to a fundamental class in ko d ( X )[ 2 ] .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 225,
+    "page number" : 4,
+    "bounding box" : [ 80.999, 349.923, 522.055, 481.922 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. An argument of Sullivan’s shows that (i) implies that there exists a degree one normal map M → X for some closed topological manifold M , see [Wal99, Prop. 10.2] or [LM24, Theorem 7.19] for the smooth case. Using topological transversality [KS77] the same argument applies to the topological case. In particular, (i) implies (ii). Given (ii), we ﬁnd that [ M → X ] determines an element of MSTop d ( X ) which lifts the fundamental class [ X ] ∈ H d ( X ; Z ). In particular, after inverting 2, one may use the Sullivan–Ranicki orientation MSTop[ 1 2 ] → τ ≥ 0 L s ( Z )[ 1 2 ] ≃ ko[ 1 2 ] to lift the fundamental class in H d ( X ; Z [ 1 2 ]) to ko d ( X )[ 1 2 ]. See [LN18, Corollary 5.4 & following Remark] for an equivalence L s ( Z )[ 1 2 ] ≃ KO[ 1 2 ] of E ∞ ring spectra and [LNS23, Section 8] for perspectives on the Sullivan–Ranicki orientation and general information about π 0 Map E ∞ (MSTop[ 1 2 ] , ko[ 1 2 ]). 1 Finally, consider the exact sequence"
+  }, {
+    "type" : "formula",
+    "id" : 226,
+    "page number" : 4,
+    "bounding box" : [ 105.24, 326.308, 497.673, 342.991 ],
+    "content" : "\\pi _ { d } ( X \\otimes L ^ { q } ( \\mathbb { Z } ) ) \\stackrel { ( * ) } { \\longrightarrow } \\pi _ { d } ( X \\otimes \\tau _ { \\leq 0 } L ^ { q } ( \\mathbb { Z } ) ) \\to \\pi _ { d - 1 } ( X \\otimes \\tau _ { \\geq 1 } L ^ { q } ( \\mathbb { Z } ) ) \\to \\pi _ { d - 1 } ( X \\otimes L ^ { q } ( \\mathbb { Z } ) )"
+  }, {
+    "type" : "paragraph",
+    "id" : 227,
+    "page number" : 4,
+    "bounding box" : [ 81.0, 255.853, 522.053, 318.842 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "and recall that the second to last group contains the element ro( X ) which is sent to ro( X ) = 0 in the ﬁnal group above. Note that the map labelled ( ∗ ) is 2-locally surjective, as follows from the 2-local splitting of L q ( Z ) into Eilenberg-Mac Lane spectra. Away from 2, we may use the equivalence L q ( Z )[ 1 2 ] ≃ KO[ 1 2 ] so that under assumption (iii) 2 the map ( ∗ )[ 1 2 ] is also surjective, showing that ro( X ) = 0 and hence (i)."
+  }, {
+    "type" : "paragraph",
+    "id" : 228,
+    "page number" : 4,
+    "bounding box" : [ 513.481, 245.62, 521.957, 253.114 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/square"
+  }, {
+    "type" : "paragraph",
+    "id" : 229,
+    "page number" : 4,
+    "bounding box" : [ 81.0, 208.453, 522.098, 232.322 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We note that ro( X ) = 0 is implied by tso( X ) = 0, in which case the following also appears in [BFMW24]."
+  }, {
+    "type" : "paragraph",
+    "id" : 230,
+    "page number" : 4,
+    "bounding box" : [ 81.0, 175.136, 521.889, 198.842 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2. Corollary. Let X be an oriented Poincare´ complex with ro( X ) = 0 . If dim( X ) ≤ 6 , then the Spivak normal ﬁbration admits a reduction to a stable euclidean bundle."
+  }, {
+    "type" : "paragraph",
+    "id" : 231,
+    "page number" : 4,
+    "bounding box" : [ 93.0, 150.229, 521.915, 163.351 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "1 By a result of Sullivan’s [MM79, 5.12 & 5.24], one has Map E ∞ (MSTop[ 1 2 ] , ko[ 1 2 ]) ≃ Map E ∞ (MSO[ 1 2 ] , ko[ 1 2 ]). 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 232,
+    "page number" : 4,
+    "bounding box" : [ 93.0, 140.0, 494.794, 151.471 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Note that for E any spectrum, the canonical map π d ( X ⊗ τ ≥ 0 E ) → π d ( X ⊗ E ) is an isomorphism."
+  }, {
+    "type" : "paragraph",
+    "id" : 233,
+    "page number" : 5,
+    "bounding box" : [ 81.0, 709.333, 522.032, 746.162 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. It follows from work of Thom [Tho54] that any homology class of degree ≤ 6 is represented by a smooth, in particular by a topological, closed manifold, so Proposition 1 (ii) is valid.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 234,
+    "page number" : 5,
+    "bounding box" : [ 80.999, 579.733, 522.055, 699.482 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3. Remark. In the above argument, we have used that for an oriented Poincare´ complex X , ro( X ) = 0 implies that ro( X ) vanishes 2-locally. One may wonder whether the same is true for the total surgery obstructions: If tso( X ) = 0, does it follow that tso( X ) vanishes 2-locally? We do not know the answer to this question currently. Note, however, that the 2-local splitting of L q ( Z ) does not induce a 2-local splitting of S alg ( X ) into S alg ( X ) and a second summand: Indeed, suppose that X is d -dimensional aspherical Poincare´ complex and π 1 ( X ) is a Farrell–Jones group. Then S alg ( X ) = 0 but S alg ( X ) (2) ≃ [ X ⊗ τ ≤ 0 L q ( Z )] (2)   = 0. Nevertheless, at least conjecturally, one has tso( X ) = 0 whenever X is aspherical, see [Lu¨c24, Conjecture 9.178]."
+  }, {
+    "type" : "paragraph",
+    "id" : 235,
+    "page number" : 5,
+    "bounding box" : [ 501.24, 606.133, 501.24, 617.042 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 236,
+    "page number" : 5,
+    "bounding box" : [ 93.001, 558.973, 324.983, 569.882 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We come to the main contribution of this paper."
+  }, {
+    "type" : "paragraph",
+    "id" : 237,
+    "page number" : 5,
+    "bounding box" : [ 81.0, 525.417, 521.858, 549.122 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Main Theorem. There exists an oriented Poincare´ complex E with tso( E ) = 0 whose Spivak normal ﬁbration does not admit a reduction to a euclidean bundle."
+  }, {
+    "type" : "paragraph",
+    "id" : 238,
+    "page number" : 5,
+    "bounding box" : [ 81.0, 374.173, 522.056, 515.402 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We consider the following construction. Let ¯ x ∈ π ℓ (Bgl 1 ( S )) be an element of positive degree ℓ and order n . Let M ( Z /n Z ,ℓ ) be the corresponding mod n Moore space in dimension ℓ . By assumption, there is then a map x : M ( Z /n Z ,ℓ ) → Bgl 1 ( S ) whose composite with the tautological map S ℓ → M ( Z /n Z ,ℓ ) is ¯ x . By framed surgeries below the middle dimension, we may construct a map f : M → M ( Z /n Z ,ℓ ) inducing an isomorphism on π ℓ with M a stably framed (smooth) m -manifold for any m > 2 ℓ ; e.g. by framed surgery on an appropriately embedded ℓ -sphere in S ℓ × S m − ℓ . Let k ≥ ℓ +1 be suﬃciently large, so that − xf : M → Bgl 1 ( S ) lifts along Baut ∗ ( S k ) → Bgl 1 ( S ) and let π : E → M be the associated pointed spherical ﬁbration over M . By choice of k , the resulting map E → M ( Z /n Z ,ℓ ) is then again an isomorphism on π ℓ . Moreover, E is a Poincare´ complex with Spivak normal ﬁbration classiﬁed by the composite"
+  }, {
+    "type" : "formula",
+    "id" : 239,
+    "page number" : 5,
+    "bounding box" : [ 210.481, 353.523, 392.423, 370.877 ],
+    "content" : "E \\stackrel { \\pi } { \\rightarrow } M \\stackrel { x f } { \\longrightarrow } \\{ - d \\} \\times B g l _ { 1 } ( \\mathbb { S } ) \\subseteq P i c ( \\mathbb { S } ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 240,
+    "page number" : 5,
+    "bounding box" : [ 81.001, 337.813, 270.742, 348.722 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where d = m + k is the dimension of E ."
+  }, {
+    "type" : "paragraph",
+    "id" : 241,
+    "page number" : 5,
+    "bounding box" : [ 81.0, 302.773, 522.055, 329.642 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof of Main Theorem. Let ¯ x ∈ π 4 (Bgl 1 ( S )) ∼ = Z / 24 Z be a generator of the 3-torsion and consider the Poincare´ complex E associated to ¯ x as constructed above. Then, the composite"
+  }, {
+    "type" : "formula",
+    "id" : 242,
+    "page number" : 5,
+    "bounding box" : [ 219.12, 277.563, 383.913, 294.918 ],
+    "content" : "E \\stackrel { \\pi } { \\rightarrow } M \\stackrel { f } { \\rightarrow } M ( \\mathbb { Z } / 3 \\mathbb { Z } , 4 ) \\stackrel { x } { \\rightarrow } B g l _ { 1 } ( \\mathbb { S } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 243,
+    "page number" : 5,
+    "bounding box" : [ 81.0, 220.693, 522.033, 270.482 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "classiﬁes the Spivak normal ﬁbration of E but does not lift along BTop → Bgl 1 ( S ). Indeed, on π 4 it induces an inclusion Z / 3 Z ⊆ Z / 24 Z , which cannot factor through Z ⊕ Z / 2 ∼ = π 4 (BTop) [Mil88, Lemma 9]. It then remains to show tso( E ) = 0. To that end, note ﬁrst that E is simply connected. As a consequence of the π π -theorem, we thus ﬁnd that the map"
+  }, {
+    "type" : "formula",
+    "id" : 244,
+    "page number" : 5,
+    "bounding box" : [ 229.8, 198.493, 373.102, 213.631 ],
+    "content" : "\\Omega ^ { d \\overline { \\mathcal { S } } ^ { a l g } } ( E ) \\rightarrow \\Omega ^ { d - 1 } [ E \\otimes L ^ { q } ( \\mathbb { Z } ) ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 245,
+    "page number" : 5,
+    "bounding box" : [ 80.999, 139.573, 521.989, 189.602 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "is split injective on homotopy groups. In particular, to verify that tso( E ) = 0, it suﬃces to show that ro( E ) = 0. To do so, recall that the composite E → M ( Z / 3 Z , 4) → {− d } × Bgl 1 ( S ) is the Spivak normal ﬁbration D E of E . In particular, we obtain a map Th( D E ) → Ω d Th( x ), where Th( − ) is the Thom spectrum functor. Applying Spanier–Whitehead duality"
+  }, {
+    "type" : "formula",
+    "id" : 246,
+    "page number" : 6,
+    "bounding box" : [ 170.955, 659.268, 432.028, 711.471 ],
+    "content" : "\\pi _ { - 1 } ( D ( T h ( x ) ) \\otimes \\tau _ { \\geq 1 } L ^ { q } ( \\mathbb { Z } ) ) & \\longrightarrow \\pi _ { d - 1 } ( E \\otimes \\tau _ { \\geq 1 } L ^ { q } ( \\mathbb { Z } ) ) \\\\ & \\downarrow \\\\ \\pi _ { - 1 } ( D ( T h ( x ) ) \\otimes L ^ { q } ( \\mathbb { Z } ) ) & \\longrightarrow \\pi _ { d - 1 } ( E \\otimes L ^ { q } ( \\mathbb { Z } ) )"
+  }, {
+    "type" : "paragraph",
+    "id" : 247,
+    "page number" : 6,
+    "bounding box" : [ 80.999, 558.013, 522.087, 647.522 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Now, the element ro( E ) in the top right corner is in the image of the upper horizontal map, by naturality of Thom classes. The proof that ro( E ), and hence tso( E ), vanishes is hence ﬁnished once we show that the left lower corner in the above diagram is trivial. To that end, one ﬁrst computes that D (Th( x )) is equivalent to ﬁb( S x −→ S − 4 / 3); generally the Thom spectrum of a map Σ X → Bgl 1 ( S ), for a pointed space X , identiﬁes with the coﬁbre of the induced map Σ ∞ X → S , for example the argument in [Lan22, Section A.13] applies verbatim to general suspensions in place of spheres. Consequently, we obtain an exact sequence"
+  }, {
+    "type" : "formula",
+    "id" : 248,
+    "page number" : 6,
+    "bounding box" : [ 157.559, 535.443, 445.493, 551.118 ],
+    "content" : "\\pi _ { 0 } ( L ^ { q } ( \\mathbb { Z } ) ) \\stackrel { x } { \\longrightarrow } \\pi _ { 4 } ( L ^ { q } ( \\mathbb { Z } ) / 3 ) \\longrightarrow \\pi _ { - 1 } ( D ( T h ( x ) ) \\otimes L ^ { q } ( \\mathbb { Z } ) ) \\to 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 249,
+    "page number" : 6,
+    "bounding box" : [ 80.998, 462.603, 522.054, 526.322 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "with ﬁrst group isomorphic to Z and middle one isomorphic to Z / 3 Z . We claim that the map labelled x in this sequence is surjective. To prove this, we may localise at 3, so that L q ( Z ) may be replaced by KO, see again [LN18, Corollary 5.4] and the following remark. Then the claim follows from the fact that the map S / 3 → KO / 3 induced by the unit of KO induces a bijection on π 4 [Ada66, Thm. 1.7]. 3  "
+  }, {
+    "type" : "paragraph",
+    "id" : 250,
+    "page number" : 6,
+    "bounding box" : [ 80.997, 351.492, 522.03, 453.001 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "4. Remark. The above proof of Main Theorem works, essentially verbatim, more generally for any non-trivial element ¯ x ∈ π 4 k − 1 ( S ) of odd order n which is in the image of the J homomorphism. Indeed, one ﬁrst observes that [Bru68, Theorem 4.7 & Remark 4.9], together with the equivalence Top / PL ≃ K ( Z / 2 , 3) [KS77], says that the odd torsion of π 4 k (BTop) maps via the canonical map BTop → Bgl 1 ( S ) isomorphically onto the kernel of Adams’ e invariant. Since e (¯ x ) is non-zero [Ada66, Theorem 1.5 & 1.6] we deduce that the Spivak normal ﬁbration of the Poincare´ complex E constructed from ¯ x does not admit a reduction to a euclidean bundle. To see that tso( E ) = 0, it again suﬃces to show that the composite"
+  }, {
+    "type" : "formula",
+    "id" : 251,
+    "page number" : 6,
+    "bounding box" : [ 240.72, 329.173, 362.226, 343.998 ],
+    "content" : "\\mathbb { S } \\stackrel { x } { \\rightarrow } \\Omega ^ { 4 k } \\mathbb { S } / n \\rightarrow \\Omega ^ { 4 k } K O / n"
+  }, {
+    "type" : "paragraph",
+    "id" : 252,
+    "page number" : 6,
+    "bounding box" : [ 81.0, 268.693, 522.033, 320.718 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "is surjective on π 0 . To do this, one can reduce to the case where n = p l for some odd prime p . Then we use that the image of the J -homomorphism maps isomorphically onto π 4 k − 1 ( L K (1) S ) and that the map π 4 k (KO /n ) → π 4 k (KU /n ) is an isomorphism. Doing this, it will suﬃce to show that the map"
+  }, {
+    "type" : "formula",
+    "id" : 253,
+    "page number" : 6,
+    "bounding box" : [ 230.881, 250.948, 372.142, 263.282 ],
+    "content" : "\\pi _ { 4 k } ( L _ { K ( 1 ) } \\mathbb { S } / n ) \\to \\pi _ { 4 k } ( K U / n ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 254,
+    "page number" : 6,
+    "bounding box" : [ 81.0, 177.493, 522.099, 244.322 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "induced by the unit of KU and the fact that KU /n is K (1)-local, is an isomorphism. This follows from an inspection of the long exact sequence induced from the equivalence L K (1) S ≃ (KU ∧ p ) h Z × p together with the fact that n divides the order of π 4 k − 1 ( L K (1) S ). Concrete examples of elements ¯ x as needed are given by generators of the p -torsion of π 2 p − 3 ( S ) for any odd prime p . The case p = 3 is the one we used above."
+  }, {
+    "type" : "paragraph",
+    "id" : 255,
+    "page number" : 6,
+    "bounding box" : [ 81.0, 140.058, 521.951, 162.391 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "3 This statement can equivalently be phrased as saying that x , thought of as a map Σ 4 S / 3 → S / 3 is a v 1 -map in the sense of chromatic homotopy theory, i.e. induces an isomorphism in K -theory."
+  }, {
+    "type" : "paragraph",
+    "id" : 256,
+    "page number" : 7,
+    "bounding box" : [ 81.0, 735.253, 472.702, 746.162 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Consequences. Let us list a number of consequences of the above constructions."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 7,
+    "bounding box" : [ 98.761, 418.092, 525.143, 726.842 ],
+    "numbering style" : "roman numbers in lower case",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 104.76, 638.292, 522.175, 726.842 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(i) Main Theorem invalidates an implicit assumption made in the proof of the main result of [BFMW96], as is explained also in the recent erratum [BFMW24] to loc. cit. If, however, [BFMW96, Main theorem] is correct as stated, then the Poincare´ complexes E constructed before the proof of Main Theorem are homotopy equivalent to closed homology manifolds whose Spivak normal ﬁbrations do not admit reductions to stable euclidean bundles provided ¯ x ∈ π ℓ (Bgl 1 ( S )) has odd order and is in the image of the J -homomorphism, see Remark 4. This would invalidate [FP95, Theorem 16.6].",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 101.761, 573.492, 522.033, 636.242 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(ii) Weinberger informed us that he knows an argument that [BFMW96, Main Theorem] is correct as stated provided the Poincare´ complex X admits a π π -2-patch structure. This addition would imply that our complexes are realised by closed homology manifolds, as we show in Proposition 5 below that the Poincare´ complexes E constructed above admit such a structure.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 98.761, 456.972, 522.045, 571.442 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(iii) Weinberger also informed us that he knows an argument that a certain family version of [BFMW96, Main theorem], see point (xi) above, is correct for families with typical ﬁbre a topological manifold. We will show below that this implies that the ﬁbrations π : E → M constructed before the proof of Main Theorem are ﬁbre homotopy equivalent to block bundles with typical ﬁbre a homology manifold provided ¯ x ∈ π ℓ (Bgl 1 ( S )) has odd order, see Corollary 8. Again, it follows that E is homotopy equivalent to a closed homology manifold. Moreover, if ¯ x does not lie in the kernel of Adams’ e -invariant, then the Spivak normal ﬁbration of E does not admit a reduction to a euclidean bundle, see Remark 4.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 99.001, 418.092, 525.143, 454.921 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(iv) The discussion of Quinn’s resolution obstruction for homology manifolds in [BFMW96] also uses that the Spivak normal ﬁbration admits a reduction to a euclidean bundle, and hence suﬀers the same defect as [BFMW96, Main Theorem].",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 261,
+    "page number" : 7,
+    "bounding box" : [ 81.0, 342.507, 521.978, 393.241 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Patch structures. Let us recall that a π π -2-patch structure on a Poincare´ complex X consists of two manifolds M and M ′ whose boundary inclusions ∂M ⊆ M and ∂M ′ ⊆ M ′ are equivalences on 1-truncations, and homotopy equivalences ϕ : ∂M ≃ ∂M ′ as well as ψ : X ≃ M ∪ ϕ M ′ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 262,
+    "page number" : 7,
+    "bounding box" : [ 81.0, 306.372, 521.89, 330.241 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "5. Proposition. The Poincare´ complexes E constructed above admit π π -2-patch structures provided ℓ ≥ 3 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 263,
+    "page number" : 7,
+    "bounding box" : [ 80.999, 139.571, 522.054, 296.161 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We note that M ( Z /n Z ,ℓ ) ∼ = Σ M ( Z /n Z ,ℓ − 1) and consider a transverse inverse image N ⊆ M of M ( Z /n Z ,ℓ − 1) along f : M → M ( Z /n Z ,ℓ ). By construction N ⊆ M is a codimension one submanifold with trivial normal bundle. Since M ( Z /n Z ,ℓ − 1) is simply connected, by ambient surgeries on N , one can achieve that N is simply connected as well, see [Qui74] for general results along these lines. Consequently, M \\ N decomposes into a disjoint union of two pieces which are the interiors of compact manifolds M + and M − with common boundary N . Moreover, M ± is again simply connected, so that the inclusion N ⊆ M ± is an equivalence on 1-types. In other words, M is obtained from two manifolds M + and M − by glueing along a diﬀeomorphism ∂M + ∼ = ∂M − . Moreover, the ﬁbration classiﬁed by M → Baut ∗ ( S k ) is trivial when restricted to M ± . It follows that E is obtained from the two manifolds M + × S k and M − × S k by glueing along a homotopy equivalence ∂M + × S k ≃ ∂M − × S k , which is the promised π π -2-patch structure on E .  "
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 112.68, 607.213, 522.099, 706.877 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 112.68, 646.467, 522.099, 706.877 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "We recall that M admits a canonical orientation in L n ( Z )-homology via the map MSG → L n ( Z ), i.e. a point σ n ( M ) in Ω d [ M ⊗ L n ( Z )], capping with which induces Poincare´ duality. Applying this construction ﬁbrewise, we obtain a canonical section σ n ( π ) of the parametrised spectrum Ω d [( E,B ) ⊗ B L n ( Z )] of L n ( Z )-modules. alg",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 112.68, 607.213, 522.033, 650.042 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "Similarly, we may consider the parametrised spectrum S ( π ) over B sending a point b ∈ B to S alg ( E b ). The periodic total surgery obstructions tso( E b ) of the ﬁbres E b then assemble into a section tso( π ) of Ω d S alg ( π ).",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 266,
+    "page number" : 8,
+    "bounding box" : [ 93.0, 591.973, 289.222, 602.882 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We will now operate under the following."
+  }, {
+    "type" : "paragraph",
+    "id" : 267,
+    "page number" : 8,
+    "bounding box" : [ 81.0, 546.613, 521.935, 583.442 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Assumption. Given a oriented Poincare´ ﬁbration π : E → B , with typical ﬁbre F , then π is ﬁbre homotopy equivalent to a block bundle with typical ﬁbre a homology manifold (homotopy equivalent to F ) if and only if the just described section tso( π ) vanishes."
+  }, {
+    "type" : "paragraph",
+    "id" : 268,
+    "page number" : 8,
+    "bounding box" : [ 81.0, 488.293, 522.055, 538.082 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "As indicated above, when the typical ﬁbre F is a closed topological manifold, this follows from a family version of the results of [BFMW96], which Weinberger conﬁrmed to us is valid. In particular, when tso( π ) vanishes and B is a manifold, E is homotopy equivalent to a homology manifold."
+  }, {
+    "type" : "paragraph",
+    "id" : 269,
+    "page number" : 8,
+    "bounding box" : [ 81.0, 456.056, 521.389, 479.762 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "6. Lemma. The following are equivalent for a pointed oriented Poincar´ e ﬁbration π : E → B with simply connected ﬁbres."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 8,
+    "bounding box" : [ 101.761, 414.493, 521.185, 451.562 ],
+    "numbering style" : "roman numbers in lower case",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 104.76, 432.148, 519.775, 451.562 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(i) Giving a trivialisation of the ﬁbrewise periodic total surgery obstruction tso( π ) , and n d",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 101.761, 414.493, 521.185, 438.362 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(ii) giving a lift of the ﬁbrewise normal orientation σ ( π ) to a section of Ω [( E,B ) ⊗ B L s ( Z )] .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 272,
+    "page number" : 8,
+    "bounding box" : [ 81.001, 382.093, 522.044, 405.962 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We consider the following diagram of B -parametrised spectra: (we write everywhere the value of these objects over a point b , and note that all constructions are functorial in b )."
+  }, {
+    "type" : "formula",
+    "id" : 273,
+    "page number" : 8,
+    "bounding box" : [ 174.283, 279.55, 428.642, 374.112 ],
+    "content" : "\\text {of these objects over a point $b$, and note that all constructions are functor\n           L^{vq} (E_{b}, s(b))} \\\\ ( E _ { b } , s ( b ) ) \\otimes L ^ { s ( \\mathbb { Z } ) } & \\longrightarrow L ^ { \\nu s ( E _ { b } , s ( b ) ) } \\longrightarrow \\overline { s } ^ { \\arg } ( E _ { b } ) \\\\ \\downarrow & \\quad \\downarrow \\simeq \\\\ ( E _ { b } , s ( b ) ) \\otimes L ^ { n } ( \\mathbb { Z } ) & \\stackrel { \\simeq } { \\longrightarrow } L ^ { \\nu n } ( E _ { b } , s ( b ) ) \\\\ \\intertext { ( E _ { b } , s ( b ) ) \\otimes L ^ { n } ( \\mathbb { Z } ) } \\text {contol, and vertexi} \\, o n t i o n s \\, o r e \\, o s h a b \\, f i b e \\, o g u n o n s \\, \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text { } \\text {"
+  }, {
+    "type" : "paragraph",
+    "id" : 274,
+    "page number" : 8,
+    "bounding box" : [ 81.0, 139.573, 522.164, 271.231 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The horizontal and vertical composites are each ﬁbre sequences. This is because S alg ( E b ) is the coﬁbre of the assembly map in (visible) symmetric L-theory, which is, by construction, an equivalence on the basepoint s ( b ). We then note that the algebraic π π -theorem implies that the quadratic L-theory term on the very top vanishes as we assume E b to be simply connected. Moreover, we recall that the assembly map in visible normal L-theory is an equivalence. We therefore ﬁnd the two indicated equivalences. Passing to spaces of sections we obtain similar ﬁbre sequences and equivalences. Now, by construction, the canonical section of b  → ( E b ,s ( b )) ⊗ L n ( Z ) corresponds under the two indicated equivalences to the canonical section of b  → L vs ( E b ,s ( b )) taking the ﬁbrewise symmetric signature of the bundle E → B . Therefore, a lift of the left vertical map on spaces of sections is equivalent to the"
+  }, {
+    "type" : "paragraph",
+    "id" : 275,
+    "page number" : 9,
+    "bounding box" : [ 81.0, 672.853, 521.978, 709.682 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "7. Theorem. Let π : E → B be an oriented pointed spherical ﬁbration with typical ﬁbre homotopy equivalent to S d whose associated element in BSG 0 ( B ) is of odd order. Then there exists a trivialization of tso( π ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 276,
+    "page number" : 9,
+    "bounding box" : [ 81.0, 625.573, 521.913, 662.402 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. Recall that BSG and Bsl 1 ( S ) denote the same inﬁnite loop space. We will show that the data in (ii) of Lemma 6 can be given. First, we note that by classical orientation theory, the composite"
+  }, {
+    "type" : "formula",
+    "id" : 277,
+    "page number" : 9,
+    "bounding box" : [ 205.56, 607.563, 397.352, 620.282 ],
+    "content" : "\\ B s l _ { 1 } ( \\mathbb { S } _ { ( 2 ) } ) \\to B g l _ { 1 } ( \\mathbb { S } _ { ( 2 ) } ) \\to B g l _ { 1 } ( M S G _ { ( 2 ) } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 278,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 577.813, 522.032, 601.682 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "is canonically trivialised. More precisely, the null-homotopy is induced by the canonical nullhomotopy of the ﬁbre sequence"
+  }, {
+    "type" : "formula",
+    "id" : 279,
+    "page number" : 9,
+    "bounding box" : [ 225.119, 553.923, 377.331, 569.855 ],
+    "content" : "B s l _ { 1 } ( \\mathbb { S } _ { ( 2 ) } ) \\to B g l _ { 1 } ( \\mathbb { S } _ { ( 2 ) } ) \\to B \\mathbb { Z } _ { ( 2 ) } ^ { \\times }"
+  }, {
+    "type" : "paragraph",
+    "id" : 280,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 516.963, 521.782, 545.735 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "and a map B Z × (2) → Bgl 1 (MSG (2) ). On endomorphism spaces, this latter map sends a 2-local unit q to the self map of MSG (2) which is given by multiplication with q . 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 281,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 490.692, 522.044, 516.39 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Next, we note that the assumption that π ∈ BSG ( B ) is of odd order is equivalent to the statement that the composite"
+  }, {
+    "type" : "formula",
+    "id" : 282,
+    "page number" : 9,
+    "bounding box" : [ 240.119, 468.483, 362.912, 480.842 ],
+    "content" : "B \\rightarrow B s l _ { 1 } ( \\mathbb { S } ) \\rightarrow B s l _ { 1 } ( \\mathbb { S } _ { ( 2 ) } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 283,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 436.213, 521.933, 460.081 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "is null homotopic, where the ﬁrst map is the classifying map for the stable spherical ﬁbration associated to π : E → B . We therefore have two null-homotopies of the composite"
+  }, {
+    "type" : "formula",
+    "id" : 284,
+    "page number" : 9,
+    "bounding box" : [ 249.839, 412.203, 352.611, 428.255 ],
+    "content" : "B \\rightarrow B s l _ { 1 } ( \\mathbb { S } ) \\rightarrow B \\mathbb { Z } _ { ( 2 ) } ^ { \\times }"
+  }, {
+    "type" : "paragraph",
+    "id" : 285,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 388.083, 361.842, 404.015 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "which together determine a map B → Z × (2) . The composite"
+  }, {
+    "type" : "formula",
+    "id" : 286,
+    "page number" : 9,
+    "bounding box" : [ 199.799, 367.323, 403.232, 381.438 ],
+    "content" : "B \\rightarrow B s l _ { 1 } ( \\mathbb { S } ) \\rightarrow B s l _ { 1 } ( M S G ) \\rightarrow B s l _ { 1 } ( L ^ { n } ( \\mathbb { Z } ) )"
+  }, {
+    "type" : "paragraph",
+    "id" : 287,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 321.493, 522.163, 358.322 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "which induces the ﬁbrewise normal orientation, i.e. the canonical section of the bundle ( E,B ) ⊗ B L n ( Z ) discussed above, is therefore also null-homotopic in two ways, whose difference is determined by the composite"
+  }, {
+    "type" : "formula",
+    "id" : 288,
+    "page number" : 9,
+    "bounding box" : [ 207.239, 297.483, 395.661, 313.591 ],
+    "content" : "B \\rightarrow \\mathbb { Z } _ { ( 2 ) } ^ { \\times } \\rightarrow g l _ { 1 } ( M S G _ { ( 2 ) } ) \\rightarrow g l _ { 1 } ( L ^ { n } ( \\mathbb { Z } ) ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 289,
+    "page number" : 9,
+    "bounding box" : [ 80.998, 171.723, 522.097, 289.202 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "As a consequence, we ﬁnd that we can lift the ﬁbrewise normal orientation to a section of the bundle E ⊗ B L s ( Z ) (2) simply because we can tautologically lift the section coming from the trivialisation of E (2) → B itself, and can then multiply by the appropriate 2-local unit. Finally, we use that B is compact, see also [Ada63, Theorem 1.1] for a similar argument: This implies that the section B → E ⊗ L s ( Z ) (2) factors as a section of E ⊗ L s ( Z ) followed by the 2-localisation map (which is a ﬁltered colimit over multiplication by odd numbers) divided by an odd number α . The induced section of E ⊗ L n ( Z ) is then α times the canonical section. We may therefore multiply the section of E ⊗ L s ( Z ) with α and use that α 2 ≡ 1 modulo 8 and that L n 0 ( Z ) is Z / 8 to obtain a lift of the ﬁbrewise normal orientation as needed.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 290,
+    "page number" : 9,
+    "bounding box" : [ 80.999, 139.573, 521.857, 163.442 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "8. Corollary. For the spherical ﬁbrations π : E → M constructed from ¯ x ∈ π ℓ (Bgl 1 ( S )) before the proof of Main Theorem, we have tso( π ) = 0 provided the order n of ¯ x is odd."
+  }, {
+    "type" : "paragraph",
+    "id" : 291,
+    "page number" : 10,
+    "bounding box" : [ 81.0, 696.253, 522.055, 746.162 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. By Theorem 7, it suﬃces to show that the classifying map of π , viewed as an element in BSG 0 ( M ), is of odd order. But by construction, this classifying map is in the image of the map BSG 0 ( M ( Z /n Z ,ℓ )) → BSG 0 ( M ) and the source of this map is a ﬁnite group of odd order.  "
+  }, {
+    "type" : "heading",
+    "id" : 292,
+    "level" : "Doctitle",
+    "page number" : 10,
+    "bounding box" : [ 269.641, 628.834, 333.546, 638.751 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "table",
+    "id" : 293,
+    "level" : "3",
+    "page number" : 10,
+    "bounding box" : [ 79.631, 139.223, 522.774, 621.993 ],
+    "number of rows" : 19,
+    "number of columns" : 2,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 596.584, 301.203, 621.993 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 131,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 596.584, 301.203, 621.993 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Ada63] [Ada66]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 596.584, 522.774, 621.993 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 132,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 596.584, 522.774, 621.993 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "J. F. Adams, On the groups J ( X ) . I , Topology 2 (1963), 181-195. , On the groups J ( X ) . IV , Topology 5 (1966), 21-71."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 571.175, 301.203, 596.584 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 133,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 571.175, 301.203, 596.584 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[BFMW96]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 571.175, 522.774, 596.584 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 134,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 571.175, 522.774, 596.584 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "J. Bryant, S. Ferry, W. Mio, and S. Weinberger, Topology of homology manifolds , Ann. of Math. (2) 143 (1996), no. 3, 435-467."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 545.766, 301.203, 571.175 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 135,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 545.766, 301.203, 571.175 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[BFMW24] [Bru68] [CDH + 20a]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 545.766, 522.774, 571.175 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 136,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 545.766, 522.774, 571.175 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ", Erratum to 'Topology of homology manifolds' , Ann. of Math. (2), to appear (2024). G. Brumfiel, On the homotopy groups of BPL and PL / O, Ann. of Math. (2) 88 (1968), 291-311. B. Calm` es, E. Dotto, Y. Harpaz, F. Hebestreit, M. Land, K. Moi, D. Nardin, T. Nikolaus, and W. Steimle, Hermitian K-theory for stable ∞ -categories II: Cobordism categories and additivity , arXiv:2009.07224 (2020)."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 520.357, 301.203, 545.766 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 137,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 520.357, 301.203, 545.766 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[CDH + 20b]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 520.357, 522.774, 545.766 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 138,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 520.357, 522.774, 545.766 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ", Hermitian K-theory for stable ∞ -categories III: Grothendieck-Witt groups of rings , arXiv:2009.07225 (2020)."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 5,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 494.948, 301.203, 520.357 ],
+        "row number" : 5,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 139,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 494.948, 301.203, 520.357 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[CDH + 23]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 494.948, 522.774, 520.357 ],
+        "row number" : 5,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 140,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 494.948, 522.774, 520.357 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ", Hermitian K-theory for stable ∞ -categories I: Foundations , Selecta Math. (N.S.) 29 (2023), no. 1, Paper No. 10, 269."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 6,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 469.539, 301.203, 494.948 ],
+        "row number" : 6,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 141,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 469.539, 301.203, 494.948 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[FP95]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 469.539, 522.774, 494.948 ],
+        "row number" : 6,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 142,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 469.539, 522.774, 494.948 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "S. C. Ferry and E. K. Pedersen, Epsilon surgery theory , Novikov conjectures, index theorems and rigidity, Vol. 2 (Oberwolfach, 1993), London Math. Soc. Lecture Note Ser., vol. 227, Cambridge Univ. Press, Cambridge, 1995, pp. 167-226."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 7,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 444.13, 301.203, 469.539 ],
+        "row number" : 7,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 143,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 444.13, 301.203, 469.539 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[KS77]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 444.13, 522.774, 469.539 ],
+        "row number" : 7,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 144,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 444.13, 522.774, 469.539 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "R. C. Kirby and L. C. Siebenmann, Foundational essays on topological manifolds, smoothings, and triangulations , Princeton University Press, Princeton, N.J.; University of Tokyo Press, Tokyo, 1977, With notes by John Milnor and Michael Atiyah, Annals of Mathematics Studies, No. 88."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 8,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 418.721, 301.203, 444.13 ],
+        "row number" : 8,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 145,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 418.721, 301.203, 444.13 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Lan22]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 418.721, 522.774, 444.13 ],
+        "row number" : 8,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 146,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 418.721, 522.774, 444.13 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "M. Land, Reducibility of low-dimensional Poincar´ e duality spaces , M¨ unster J. Math. 15 (2022), no. 1, 47-81."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 9,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 393.312, 301.203, 418.721 ],
+        "row number" : 9,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 147,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 393.312, 301.203, 418.721 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[LM24]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 393.312, 522.774, 418.721 ],
+        "row number" : 9,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 148,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 393.312, 522.774, 418.721 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "W. L¨ uck and T. Macko, Surgery Theory: Foundations , Grundlehren der mathematischen Wis- senschaften, Springer Cham, 2024."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 10,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 367.903, 301.203, 393.312 ],
+        "row number" : 10,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 149,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 367.903, 301.203, 393.312 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[LN18]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 367.903, 522.774, 393.312 ],
+        "row number" : 10,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 150,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 367.903, 522.774, 393.312 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "M. Land and T. Nikolaus, On the relation between K - and L -theory of C ∗ -algebras , Math. Ann. 371 (2018), no. 1-2, 517-563."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 11,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 342.494, 301.203, 367.903 ],
+        "row number" : 11,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 151,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 342.494, 301.203, 367.903 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[LNS23]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 342.494, 522.774, 367.903 ],
+        "row number" : 11,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 152,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 342.494, 522.774, 367.903 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "M. Land, T. Nikolaus, and M. Schlichting, L-theory of C ∗ -algebras , Proc. Lond. Math. Soc. (3) 127 (2023), no. 5, 1451-1506."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 12,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 317.085, 301.203, 342.494 ],
+        "row number" : 12,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 153,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 317.085, 301.203, 342.494 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[L¨ uc24]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 317.085, 522.774, 342.494 ],
+        "row number" : 12,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 154,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 317.085, 522.774, 342.494 ],
+          "font" : "CMR9",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "and L -Theory , Springer, in preparation, 2024."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 13,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 291.676, 301.203, 317.085 ],
+        "row number" : 13,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 155,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 291.676, 301.203, 317.085 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Mil88]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 291.676, 522.774, 317.085 ],
+        "row number" : 13,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 156,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 291.676, 522.774, 317.085 ],
+          "font" : "CMR9",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Kirby-Siebenmann class , Algebraic topology and transNotes in Math., vol. 1361, Springer, Berlin, 1988,"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 14,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 266.267, 301.203, 291.676 ],
+        "row number" : 14,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 157,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 266.267, 301.203, 291.676 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[MM79]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 266.267, 522.774, 291.676 ],
+        "row number" : 14,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 158,
+          "level" : "1",
+          "page number" : 10,
+          "bounding box" : [ 301.203, 266.267, 522.774, 291.676 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "I. Madsen and R. J. Milgram, The classifying spaces for surgery and cobordism of manifolds , Annals of Mathematics Studies, No. 92, Princeton University Press, Princeton, N.J.; University of Tokyo Press, Tokyo, 1979."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 15,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 240.859, 301.203, 266.267 ],
+        "row number" : 15,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 159,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 240.859, 301.203, 266.267 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Qui74]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 240.859, 522.774, 266.267 ],
+        "row number" : 15,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 160,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 240.859, 522.774, 266.267 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "F. Quinn, Almost canonical inverse images , Comment. Math. Helv. 49 (1974), 168-174."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 16,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 215.45, 301.203, 240.859 ],
+        "row number" : 16,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 161,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 215.45, 301.203, 240.859 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Ran79]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 215.45, 522.774, 240.859 ],
+        "row number" : 16,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 162,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 215.45, 522.774, 240.859 ],
+          "font" : "CMR9",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : ", Algebraic topology, Aarhus 1978 (Proc. Sympos., in Math., vol. 763, Springer, Berlin, 1979, pp. 275–"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 17,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 190.041, 301.203, 215.45 ],
+        "row number" : 17,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 163,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 190.041, 301.203, 215.45 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Ran92]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 190.041, 522.774, 215.45 ],
+        "row number" : 17,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 164,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 190.041, 522.774, 215.45 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ", Algebraic L -theory and topological manifolds , Cambridge Tracts in Mathematics, vol. 102, Cambridge University Press, Cambridge, 1992."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 18,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 164.632, 301.203, 190.041 ],
+        "row number" : 18,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 165,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 164.632, 301.203, 190.041 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Tho54]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 164.632, 522.774, 190.041 ],
+        "row number" : 18,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 166,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 164.632, 522.774, 190.041 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "R. Thom, Quelques propri´ et´ es globales des vari´ et´ es diff´ erentiables , Comment. Math. Helv. 28 (1954), 17-86."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 19,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 79.631, 139.223, 301.203, 164.632 ],
+        "row number" : 19,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 167,
+          "page number" : 10,
+          "bounding box" : [ 79.631, 139.223, 301.203, 164.632 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[Wal99]"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 301.203, 139.223, 522.774, 164.632 ],
+        "row number" : 19,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 168,
+          "page number" : 10,
+          "bounding box" : [ 301.203, 139.223, 522.774, 164.632 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "C. T. C. Wall, Surgery on compact manifolds , second ed., Mathematical Surveys and Monographs, vol. 69, American Mathematical Society, Providence, RI, 1999."
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 294,
+    "page number" : 11,
+    "bounding box" : [ 93.0, 724.819, 446.976, 745.12 ],
+    "font" : "CMCSC10",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Universit ¨ at Bielefeld, Fakult ¨ at f ¨ ur Mathematik, 33501 Bielefeld, Germany Email address : hebestreit@math.uni-bielefeld.de"
+  }, {
+    "type" : "paragraph",
+    "id" : 295,
+    "page number" : 11,
+    "bounding box" : [ 81.0, 695.689, 522.02, 715.6 ],
+    "font" : "CMCSC10",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Ludwig-Maximilians-Universit ¨ at M ¨ unchen, Mathematisches Institut, 80333 M ¨ unchen, Germany"
+  }, {
+    "type" : "paragraph",
+    "id" : 296,
+    "page number" : 11,
+    "bounding box" : [ 93.0, 684.258, 264.267, 693.225 ],
+    "font" : "CMTT9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Email address : markus.land@math.lmu.de"
+  }, {
+    "type" : "paragraph",
+    "id" : 297,
+    "page number" : 11,
+    "bounding box" : [ 93.0, 654.739, 432.216, 675.04 ],
+    "font" : "CMCSC10",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Universit ¨ at M ¨ unster, Mathematisches Institut, 48149 M ¨ unster, Germany Email address : m.weiss@uni-muenster.de"
+  }, {
+    "type" : "paragraph",
+    "id" : 298,
+    "page number" : 11,
+    "bounding box" : [ 81.0, 625.609, 522.02, 645.4 ],
+    "font" : "CMCSC10",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Ludwig-Maximilians-Universit ¨ at M ¨ unchen, Mathematisches Institut, 80333 M ¨ unchen, Germany"
+  }, {
+    "type" : "paragraph",
+    "id" : 299,
+    "page number" : 11,
+    "bounding box" : [ 93.0, 614.178, 152.195, 623.145 ],
+    "font" : "CMTI9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Email address :"
+  }, {
+    "type" : "paragraph",
+    "id" : 300,
+    "page number" : 11,
+    "bounding box" : [ 156.6, 614.376, 240.867, 621.943 ],
+    "font" : "CMTT9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "winges@math.lmu.de"
+  } ]
+}

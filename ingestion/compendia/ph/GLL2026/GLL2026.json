@@ -1,0 +1,4028 @@
+{
+  "file name" : "GLL2026.pdf",
+  "number of pages" : 13,
+  "author" : "Chenming Gao; Hongwei Lin; Gengchen Li",
+  "title" : "Topology Understanding of B-Spline Surface/Surface Intersection with Mapper",
+  "creation date" : null,
+  "modification date" : null,
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 403,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 51.307, 695.866, 541.86, 751.767 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Regular",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "Topology Understanding of B-Spline Surface/Surface Intersection with Mapper"
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 1,
+    "bounding box" : [ 51.307, 672.719, 303.0, 696.319 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 11.955,
+    "text color" : "[0.5]",
+    "content" : "Chenming Gao a , Hongwei Lin b , ∗ and Gengchen Li c"
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 1,
+    "bounding box" : [ 51.307, 644.473, 322.043, 662.904 ],
+    "font" : "STIXGeneral-Italic",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "School of Mathematical Science, Zhejiang University, Hangzhou, 310027, China State Key Laboratory of CAD & CG, Zhejiang University, Hangzhou, 310058, China"
+  }, {
+    "type" : "heading",
+    "id" : 406,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 51.307, 613.988, 136.537, 633.654 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "ARTICLE INFO"
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 1,
+    "bounding box" : [ 51.307, 549.279, 139.942, 612.334 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Keywords : Surface/surface intersection Topology structure Topology understanding Mapper Topological data analysis"
+  }, {
+    "type" : "heading",
+    "id" : 407,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 223.742, 612.992, 287.403, 632.658 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "ABSTRACT"
+  }, {
+    "type" : "paragraph",
+    "id" : 409,
+    "page number" : 1,
+    "bounding box" : [ 223.742, 520.885, 543.965, 612.334 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "In the realm of computer-aided design (CAD) software, the intersection of B-spline surfaces stands as a fundamental operation. Despite the extensive history of surface intersection algorithms, the challenge of handling complex intersection topologies persists. While subdivision algorithms have demonstrated strong robustness in computing surface/surface intersection and are capable of addressing singular cases, determining the topology of the intersection obtained through these methods is a key factor for calculating correct intersection, and remains a difficult issue. To address this challenge, we propose a Mapper-based method for determining the topology of the intersection between two B-spline surfaces. Our algorithm is designed to efficiently handle various common and complex intersection topologies. Experimental results verify the robustness and topological correctness of this method."
+  }, {
+    "type" : "heading",
+    "id" : 411,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 51.307, 488.761, 131.204, 499.449 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "1. Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 412,
+    "page number" : 1,
+    "bounding box" : [ 51.307, 398.297, 288.676, 489.694 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "B-spline surface intersection is one of the fundamental operations in computer-aided design (CAD) software. Ensuring that surface intersection operations are robust, efficient, and topologically correct is of paramount importance. Despite the extensive history of surface intersection algorithms, complex intersection topology remains a persistent challenge. Subdivision method is a robust method for calculat-"
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 1,
+    "bounding box" : [ 51.307, 242.88, 288.676, 406.008 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "ing surface/surface intersections by recursively subdividing the parameter domains fo the two surfaces, leading to strip-shaped point cloud in each domain [ Lasser , 1986 ], [ De Figueiredo , 1996 ], [ Lin, Qin, Liao, and Xiong , 2013 ]. The key factor for computing the correct intersections is to understand the topological structure of the strips of point cloud correctly, i.e., determining the connected components, the openness or closeness of each connected component, and the bifurcation points. Because the surface/surface intersection can be very complicated in some cases, the topology structure of the strips of point cloud is also complicated, and hard to understand. To address this challenge, we propose a new method"
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 1,
+    "bounding box" : [ 51.307, 63.552, 288.676, 250.591 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "based on Mapper [ Singh, Mémoli, Carlsson, et al. , 2007 ] for understanding the topology of intersection curves between two B-spline surfaces. Mapper is a significant tool in topological data analysis that extracts topological features from high-dimensional data at various scales and projects them into 2D or 3D space for visualization. First, we employ a two-step Mapper algorithm to construct the Mapper graph of the intersection points to understand its topological structure. Next, we identify two types of characteristic vertices within the Mapper graph: singular vertices and boundary vertices. Finally, by removing these characteristic vertices from the Mapper graph, we can partition the intersection region into several simple open or closed curves. In summary, the main contributions of this study are as follows:"
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 1,
+    "bounding box" : [ 65.615, 47.415, 209.107, 63.148 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "∗ E-mail address: hwlin@zju.edu.cn (H. Lin)."
+  }, {
+    "type" : "paragraph",
+    "id" : 410,
+    "level" : "1",
+    "page number" : 1,
+    "bounding box" : [ 321.319, 465.047, 543.963, 508.623 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "• Topology structure of Surface/Surface intersection is understood by Mapper at the first time, showing its robustness and efficiency;"
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "level" : "1",
+    "page number" : 1,
+    "bounding box" : [ 321.319, 421.211, 543.963, 464.787 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "• A two-step mapper algorithm is developed to extract the structure of Surface/Surface intersection point sets."
+  }, {
+    "type" : "paragraph",
+    "id" : 414,
+    "page number" : 1,
+    "bounding box" : [ 306.604, 315.607, 543.973, 418.959 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The rest of the paper is organized as follows. In Section 2, we review related work on surface intersection algorithms and Mapper algorithm. In Section 3, preliminaries on the Mapper algorithm and surface intersection are introduced. In Section 4, we propose an algorithm for understanding the topology of the intersection of two B-spline surfaces. In Section 5, we verify the effectiveness of the algorithm experimentally. Finally, we conclude this study in Section 6."
+  }, {
+    "type" : "heading",
+    "id" : 416,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 306.604, 287.337, 389.537, 298.025 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2. Related work"
+  }, {
+    "type" : "heading",
+    "id" : 417,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 306.604, 257.651, 507.086, 280.4 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "2.1. Surface/Surface intersection and determination of intersection topology"
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "page number" : 1,
+    "bounding box" : [ 306.604, 194.78, 543.973, 262.267 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this section, we briefly review related work on Surface/Surface intersection. Surface intersection is a critical issue in geometric design and has been the subject of extensive research. In general, intersection methods can be categorized as follows. Algebraic methods typically involve converting one sur-"
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 1,
+    "bounding box" : [ 306.604, 51.318, 543.973, 202.491 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "face into its implicit equation. The parametric form of the other surface is then substituted into this implicit equation to compute the Surface/Surface intersection using elimination theory [ Sarraga , 1983 ], [ Manocha and Canny , 1991 ], [ Manocha and Krishnan , 1997 ]. These methods determine the topology of the intersection by identifying \"characteristic points\" such as border points, turning points, and singular points [ Farouki , 1986 ], [ Hass, Farouki, Han, Song, and Sederberg , 2007 ]. However, determining how these points are connected remains a challenge, as incorrect connections can lead to topological errors."
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 651.512, 288.676, 742.909 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Tracing methods generate intersections by stepping from initial points on a curve branch, following the local differential geometry of the curve [ Bajaj, Hoffmann, Lynch, and Hopcroft , 1988 ]. These methods require careful selection of valid initial points to ensure no branches are missed. Additionally, determining the tracking direction at singular points of the intersecting curves is challenging. Lattice methods decompose the Surface/Surface inter-"
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 579.78, 288.676, 659.222 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "section problem by computing the intersection of multiple isoparametric lines from one surface to another [ Rossignac and Requicha , 1987 ]. However, the choice of mesh resolution is crucial, as inappropriate resolutions may result in the omission of important characteristic points. Subdivision methods are recursive approaches that sub-"
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 484.139, 288.676, 587.491 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "divide surfaces into smaller facets and perform intersection tests between the facets of the two surfaces [ Lasser , 1986 ], [ De Figueiredo , 1996 ], [ Lin et al. , 2013 ]. These operations are repeated until the computed intersection meets accuracy requirements. While subdivision methods can achieve high accuracy in intersection curves, they struggle to determine the topology of intersections near singular points. Widely used methods in practice are hybrids of the"
+  }, {
+    "type" : "paragraph",
+    "id" : 431,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 376.543, 288.676, 491.85 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "above approaches. One example is the hybrid of subdivision and tracing methods, which first identifies all intersecting branches through subdivision and then tracks each intersecting curve [ Barnhill and Kersey , 1990 ], [ Sinha, Klassen, and Wang , 1985 ]. Another hybrid combines algebraic and tracing methods: algebraic methods are used to identify characteristic points, and then tracking methods are applied to obtain intersecting curves [ Krishnan and Manocha , 1997 ]. For more details on Surface/Surface intersection, please"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 352.632, 288.666, 384.253 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "For more details on Surface/Surface intersection, please refer to [Hoschek and Lasser, 1993], [Patrikalakis, 2002]."
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 256.991, 288.666, 360.343 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "methods to compute these characteristic points of intersection, thereby decomposing the intersection curve into several monotonic segments at the characteristic points to determine the topology of the intersection [ Grandine and Klein IV , 1997 ][ Hass et al. , 2007 ]. However, few studies focus on the overall topological structure of the intersection, such as the number of connected branches and cycles."
+  }, {
+    "type" : "heading",
+    "id" : 438,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 51.307, 237.072, 253.521, 246.87 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "2.2. Mapper algorithm and its applications"
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 2,
+    "bounding box" : [ 51.307, 54.649, 288.676, 241.688 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The Mapper algorithm was first proposed by Singh et al. in 2007 [ Singh et al. , 2007 ]. It aims to perform data visualization and cluster analysis based on topology, to extract the global topological features of data. The early Mapper algorithm had limitations in practical use, such as relying on parameter selections like coverage and overlap ratio. To address these issues, some studies have proposed adaptive coverage selection strategies based on statistical analysis [ Carriere, Michel, and Oudot , 2018 ], [ Belchí, Brodzki, Burfitt, and Niranjan , 2020 ]. In addition, scholars have developed Mapper variants based on different clustering algorithmsfor example, applying classic ones like Fuzzy Clustering [ Bui, Vo, Do, Hung, and Snasel , 2020 ] and GMeans [ Alvarado, Belton, Fischer, Lee, Palande, Percival, and Purvine , 2025 ] to Mapper’s clustering step."
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 639.556, 543.973, 742.908 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Currently,theMapperalgorithmhasbeenwidelyapplied in many fields, including computational biology [ Jeitziner, Carriere, Rougemont, Oudot, Hess, and Brisken , 2019 ], medicine [ Li, Cheng, Glicksberg, Gottesman, Tamler, Chen, Bottinger, and Dudley , 2015 ], manufacturing systems [ Guo and Banerjee , 2017 ], and machine learning [ Carrière and Michel , 2022 ]. However, its application in the CAD field remains scarce."
+  }, {
+    "type" : "heading",
+    "id" : 425,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 306.604, 613.457, 390.577, 624.145 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3. Preliminaries"
+  }, {
+    "type" : "paragraph",
+    "id" : 426,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 582.769, 543.963, 614.39 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this section, we introduce key concepts used in this paper."
+  }, {
+    "type" : "heading",
+    "id" : 428,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 306.604, 562.85, 366.264, 572.648 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "3.1. Mapper"
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 535.845, 543.973, 567.466 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Mapper is a tool in the field of topological data analysis proposed by Gurjeet Singh et al in 2007 [ Singh et al. , 2007 ]. The Mapper method extracts the topological structure"
+  }, {
+    "type" : "paragraph",
+    "id" : 430,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 404.338, 543.973, 543.556 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "of a high-dimensional dataset through partial clustering, represented as a simplicial complex. In general, we usually construct a two-dimensional simplex complex form, that is, an undirected and unweighted graph \uD835\uDC3A = ⟨ \uD835\uDC49 , \uD835\uDC38 ⟩ , where \uD835\uDC49 stands for nodes and \uD835\uDC38 stands for edges. Unless otherwise stated, this paper defaults to this form of Mapper’s output, which we call a Mapper graph . The Mapper algorithm is inspired by the Reeb graph. It can be proven that in the limit, the Mapper graph constructed using Mapper is equivalent to the Reeb graph [ Munch and Wang , 2015 ]. Given a dataset with known pairwise distances and a"
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 356.517, 543.973, 412.049 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC4B filter function \uD835\uDC53 ∶ \uD835\uDC4B → ℝ , the Mapper algorithm on \uD835\uDC4B computed with the filter function \uD835\uDC53 contains the following steps:"
+  }, {
+    "type" : "paragraph",
+    "id" : 435,
+    "page number" : 2,
+    "bounding box" : [ 319.057, 324.084, 543.973, 356.258 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1. Cover construction . Cover the range of values \uD835\uDC4C = \uD835\uDC53 ( \uD835\uDC4B ) with a set of overlapping intervals { \uD835\uDC3C \uD835\uDC60 } \uD835\uDC46 1 . 2. Preimage clustering . For each interval , the preim-"
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 2,
+    "bounding box" : [ 319.057, 287.576, 543.969, 331.152 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Preimage clustering . For each interval \uD835\uDC3C \uD835\uDC60 , the preimage \uD835\uDC4B\uD835\uDC60 = \uD835\uDC53 -1 ( \uD835\uDC3C \uD835\uDC60 ) is clustered using a chosen clustering algorithm, resulting in clusters { \uD835\uDC4B\uD835\uDC60,\uD835\uDC58 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 2,
+    "bounding box" : [ 319.057, 250.515, 543.973, 294.091 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Graph Construction ter \uD835\uDC4B \uD835\uDC60,\uD835\uDC58 , and edges are added between nodes if their corresponding clusters intersect (i. e. \uD835\uDC4B \uD835\uDC60,\uD835\uDC58 ⋂ \uD835\uDC4B \uD835\uDC61,\uD835\uDC59 ≠ ∅ )"
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 122.993, 543.973, 250.255 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Fig. 1 illustrates the Mapper algorithm applied to a noisy circle point set \uD835\uDC4B . The filter function is \uD835\uDC53 ( \uD835\uDC65 ) = \uD835\uDC65 1 , where \uD835\uDC65 = ( \uD835\uDC65 1 ,\uD835\uDC65 2 ) is a point in \uD835\uDC4B . We cover the range of \uD835\uDC53 with five equal-length intervals, with a 20% overlap of neighboring intervals. Then for each interval we find its clustering using DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm[ Ester, Kriegel, Sander, Xu, et al. , 1996 ]. Finally, we treat each cluster as a node in the Mapper graph and add edges between nodes if their corresponding clusters intersect. The choice of filter function, cover parameters, and clus-"
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 2,
+    "bounding box" : [ 306.604, 63.217, 543.973, 130.704 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "tering algorithm all influence the resulting Mapper graph. These parameters must be carefully selected to ensure that the topological features extracted by the algorithm accurately reflect the structure of the point set."
+  }, {
+    "type" : "paragraph",
+    "id" : 444,
+    "page number" : 3,
+    "bounding box" : [ 182.333, 714.368, 208.667, 720.368 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[0.00, 1.00]"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 3,
+    "bounding box" : [ 216.667, 714.368, 242.0, 719.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[1.60, 2.60]"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 3,
+    "bounding box" : [ 250.0, 714.368, 275.333, 719.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[3.20, 4.20]"
+  }, {
+    "type" : "paragraph",
+    "id" : 447,
+    "page number" : 3,
+    "bounding box" : [ 199.333, 695.034, 225.333, 700.368 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[0.80, 1.80]"
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "page number" : 3,
+    "bounding box" : [ 233.333, 695.034, 258.667, 700.368 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[2.40, 3.40]"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 3,
+    "bounding box" : [ 105.279, 656.261, 114.126, 671.994 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 60.85, 562.147, 171.695, 645.281 ],
+    "alt" : "In this image we can see a diagram with some text and numbers.",
+    "source" : "GLL2026/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 3,
+    "bounding box" : [ 74.0, 570.701, 159.0, 630.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "C)"
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 3,
+    "bounding box" : [ 110.207, 551.595, 119.054, 567.328 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 3,
+    "bounding box" : [ 222.655, 659.466, 231.948, 675.199 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 3,
+    "bounding box" : [ 230.045, 548.827, 239.338, 564.56 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 3,
+    "bounding box" : [ 51.307, 433.573, 288.673, 529.133 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Fig. 1: An example of the Mapper algorithm. The data is sampled from a noisy circle, and the filter function is \uD835\uDC53 ( \uD835\uDC65 ) = \uD835\uDC65 1 , where \uD835\uDC65 = ( \uD835\uDC65 1 ,\uD835\uDC65 2 ) is a point in \uD835\uDC4B . (a) The point set \uD835\uDC4B colored by the value of the filter function \uD835\uDC53 . (b)The range of \uD835\uDC53 is covered with five equal-length intervals, with a 20% overlap of neighboring intervals. (c)The DBSCAN algorithm [ Ester et al. , 1996 ] is used to cluster the preimage for each interval. (d)Nodes of the mapper graph are colored by the average filter function value."
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 3,
+    "bounding box" : [ 370.424, 629.783, 379.271, 645.516 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 3,
+    "bounding box" : [ 367.353, 517.912, 376.2, 533.645 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 3,
+    "bounding box" : [ 482.876, 629.783, 492.169, 645.516 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 439.538, 528.464, 532.646, 621.572 ],
+    "alt" : "In this image, we can see a graph. On the graph, we can see numbers.",
+    "source" : "GLL2026/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 3,
+    "bounding box" : [ 479.805, 517.912, 489.098, 533.645 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 3,
+    "bounding box" : [ 306.604, 436.342, 543.972, 499.024 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Fig. 2: An example of the subdivision method. (a)Initial axisaligned bounding box on the ( \uD835\uDC62,\uD835\uDC63 ) parameter domain. Each surface is initially divided into two surface patches within the parameter domain. (b)Results after 1 subdivision operation. (c)Results after 1000 subdivision operation. (d)Results after 4000 subdivision operation."
+  }, {
+    "type" : "heading",
+    "id" : 460,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 51.307, 397.148, 274.353, 406.946 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "3.2. Surface intersection by subdivision method"
+  }, {
+    "type" : "paragraph",
+    "id" : 461,
+    "page number" : 3,
+    "bounding box" : [ 51.307, 286.457, 288.676, 401.764 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this section, we introduce the general idea of the subdivision method for solving the intersection of B-spline surfaces without involving specific implementations. The core idea of the subdivision method in solving the intersection of B-spline surfaces is to narrow down potential intersection regions through gradual subdivision of the surface parameter domain and the judgment of geometric relationships, and finally determine the intersection point sets. Its basic steps are as follows. Construction of initial bounding boxes and predic-"
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 3,
+    "bounding box" : [ 51.307, 131.039, 288.676, 286.606 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "tion of intersection possibility . For the two B-spline surfaces \uD835\uDC35 1 ( \uD835\uDC62,\uD835\uDC63 ) and \uD835\uDC35 2 ( \uD835\uDC60,\uD835\uDC61 ) involved in the intersection calculation, first, initial surface patches are divided within their respective parameter domains, and an axis-aligned bounding box is constructed for each surface patch. By judging whether the bounding boxes of two surface patches intersect, we can quickly eliminate the combinations of surface patches that cannot have intersection curves: if the bounding boxes have no intersection, the corresponding surface patches must not intersect and can be directly eliminated; if the bounding boxes intersect, the surface patches may intersect and need to proceed to the next step of processing. Subdivision of parameter domain . For surface patches"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 3,
+    "bounding box" : [ 51.307, 47.353, 288.676, 138.75 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Subdivision of parameter domain . For surface patches with intersecting bounding boxes, it is necessary to subdivide the corresponding parameter domain rectangles, dividing the original rectangles into smaller sub-rectangles, each corresponding to a more refined sub-surface patch. At the same time, a new bounding box is constructed for each sub-surface patch, and the above-mentioned intersection possibility prediction process is repeated until the bounding boxes of the sub-surface patches do not intersect (and thus can be eliminated) or the size of the sub-surface patches reaches the preset precision threshold. Fig. 2 illustrates the subdivision process of the ( \uD835\uDC62, \uD835\uDC63 ) parameter domain. Each surface is initially divided into two surface patches within the parameter domain. Through iterative subdivision and intersection detection, the remaining rectangular bounding boxes progressively narrow in the actual intersection."
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 3,
+    "bounding box" : [ 306.604, 168.305, 543.973, 307.523 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "boxes progressively narrow in the actual intersection. Extraction of intersection point set . After iterative subdivision, we obtain two strip-shaped intersection regions on the parameter domains of two B-spline surfaces \uD835\uDC35 1 ( \uD835\uDC62,\uD835\uDC63 ) and \uD835\uDC35 2 ( \uD835\uDC60,\uD835\uDC61 ) . In fact, they correspond to two sets of rectangles on the respective parameter domains. We compute the centroid of each rectangle as a point on the parameter domain where the B-spline surfaces intersect. In conclusion. we get two piecesofintersectionpointsets \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 ontheparameter domains. In order to generate the desirable intersection curves, we should understand the topology structure of the strip-shaped point clouds \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 correctly."
+  }, {
+    "type" : "heading",
+    "id" : 464,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 306.604, 124.88, 521.57, 149.515 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "4. Topology understanding of intersecting curves in parameter domains"
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 3,
+    "bounding box" : [ 306.604, 46.37, 543.973, 125.812 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this paper, we use the affine arithmetic-based subdivision method proposed in [ Lin et al. , 2013 ] to obtain the intersection point sets \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 in the parameter domains of the two B-spline surfaces \uD835\uDC35 1 ( \uD835\uDC62,\uD835\uDC63 ) and \uD835\uDC35 2 ( \uD835\uDC60,\uD835\uDC61 ) , with their parameter ranges being [ \uD835\uDC62 \uD835\uDC60 ,\uD835\uDC62 \uD835\uDC52 ] × [ \uD835\uDC63 \uD835\uDC60 ,\uD835\uDC63 \uD835\uDC52 ] and [ \uD835\uDC60 \uD835\uDC60 ,\uD835\uDC60 \uD835\uDC52 ] × [ \uD835\uDC61 \uD835\uDC60 ,\uD835\uDC61 \uD835\uDC52 ] . In this section, we analyze the topological"
+  }, {
+    "type" : "heading",
+    "id" : 467,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 51.307, 691.368, 204.545, 701.166 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "4.1. Two-step Mapper algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 468,
+    "page number" : 4,
+    "bounding box" : [ 51.307, 568.722, 288.676, 695.985 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In Section 3.1 , we provide an overview of the basic process of the Mapper algorithm. In this paper, We develop a two-step Mapper algorithm to extract the topological structure of an input point set \uD835\uDC4B ⊆ ℝ 2 . This is outlined in Alg. 1 and explained in the following. First, we construct the initial Mapper graph using a filter function based on principal direction projections. Then, we subdivide the nodes in the Mapper graph along orthogonal directions to obtain the final Mapper graph. Algorithms for higher dimensions can be similarly generalized."
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 4,
+    "bounding box" : [ 306.604, 591.736, 543.973, 659.222 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "below. Filter function selection . To obtain general theoretical guarantees, the filter function should be Morse-type. A large class of Morse-type functions commonly used in Mapper constructions are Lipschitz continuous, i.e., there exists a constant \uD835\uDC50 > 0 such that the function \uD835\uDC53 ∶ \uD835\uDC4B → ℝ satisfies"
+  }, {
+    "type" : "formula",
+    "id" : 470,
+    "page number" : 4,
+    "bounding box" : [ 331.511, 569.818, 543.968, 589.484 ],
+    "content" : "| f ( x ) - f ( x ^ { \\prime } ) | \\leq c \\| x - x ^ { \\prime } \\| ."
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 4,
+    "bounding box" : [ 306.604, 476.169, 543.973, 567.566 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "| | ‖ ‖ In this paper, we employ linear projections as filter functions, for which the Lipschitz constant satisfies \uD835\uDC50 = 1 . When constructing the initial Mapper graph, we apply principal component analysis (PCA) [ Jolliffe , 1990 ] to compute the principal directions of \uD835\uDC4B , and adopt the projection of the data onto the first principal direction as the filter function. Specifically, we first compute the centroid \uD835\uDC65 \uD835\uDC50 of \uD835\uDC4B ,"
+  }, {
+    "type" : "heading",
+    "id" : 471,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 51.307, 544.916, 217.364, 564.582 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 1 Two-step Mapper algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 4,
+    "bounding box" : [ 51.307, 514.563, 288.669, 547.369 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Input: A point set \uD835\uDC4B ⊆ ℝ 2 , clustering parameter \uD835\uDEFF , overlap ratio \uD835\uDF03 ov Output: Mapper graph \uD835\uDC3A of \uD835\uDC4B"
+  }, {
+    "type" : "heading",
+    "id" : 474,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 51.307, 503.793, 178.101, 523.459 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Output: Mapper graph \uD835\uDC3A of \uD835\uDC4B"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 57.061, 479.883, 216.168, 511.504 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 491.838, 216.168, 511.504 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "1: Construct the initial Mapper graph \uD835\uDC3A",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 479.883, 126.176, 499.549 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "2: Set \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 = ∅ .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 477,
+    "page number" : 4,
+    "bounding box" : [ 57.061, 459.17, 288.476, 487.594 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "set \uD835\uDC4B \uD835\uDC56 corresponding to the node \uD835\uDC63 \uD835\uDC56 in \uD835\uDC3A do"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 57.061, 385.285, 543.97, 463.683 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 6,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 421.151, 288.666, 463.683 ],
+      "font" : "STIXGeneral-Regular",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "4: Compute the number of intervals \uD835\uDC46 \uD835\uDC56 corresponding to \uD835\uDC4B \uD835\uDC56 5: = 2",
+      "kids" : [ {
+        "type" : "formula",
+        "id" : 759,
+        "page number" : 4,
+        "bounding box" : [ 331.511, 437.842, 543.972, 468.546 ],
+        "content" : "x _ { c } = \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } x _ { i } ."
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 421.151, 142.104, 436.884 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "5: if \uD835\uDC46\uD835\uDC56 > = 2 then",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "id" : 481,
+      "page number" : 4,
+      "bounding box" : [ 306.604, 403.28, 543.97, 434.901 ],
+      "font" : "STIXGeneral-Regular",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "Next, we compute the covariance matrix Σ = ( \uD835\uDF0E \uD835\uDC56,\uD835\uDC57 ) of the centralized point set \uD835\uDC4B ,",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 408.152, 184.677, 427.818 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "6: Add the node \uD835\uDC63 \uD835\uDC56 to \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 397.24, 102.285, 412.973 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "7: end if",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 57.061, 385.285, 98.798, 401.018 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "8: end for",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 485,
+    "page number" : 4,
+    "bounding box" : [ 331.511, 381.362, 543.966, 401.028 ],
+    "content" : "\\sigma _ { i , j } = \\langle x _ { i } - x _ { c } , \\ x _ { j } - x _ { c } \\rangle , \\text { where } x _ { i } , \\ x _ { j } \\in X . \\quad ( 3 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 4,
+    "bounding box" : [ 57.061, 360.331, 288.668, 391.952 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "nodes in \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 that belong to the same connected component in \uD835\uDC3A into a single node. 10: for each point set corresponding to the node in"
+  }, {
+    "type" : "paragraph",
+    "id" : 487,
+    "page number" : 4,
+    "bounding box" : [ 306.604, 323.579, 543.973, 379.11 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "⟨ ⟩ The eigenvector corresponding to the largest eigenvalue of Σ is denoted by \uD835\uDC64 \uD835\uDC5D and defines the principal direction . The filter function \uD835\uDC53 is then defined as the projection of a data point \uD835\uDC65 onto \uD835\uDC64 \uD835\uDC5D :"
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 4,
+    "bounding box" : [ 53.076, 325.509, 288.671, 368.042 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10: for each point set \uD835\uDC4B\uD835\uDC56 corresponding to the node \uD835\uDC63 \uD835\uDC56 in \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 do 11:"
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 4,
+    "bounding box" : [ 78.204, 312.51, 288.671, 344.131 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Construct the Mapper subgraph \uD835\uDC3A\uD835\uDC56 corresponding to \uD835\uDC4B\uD835\uDC56 using \uD835\uDC53 ⟂ ."
+  }, {
+    "type" : "formula",
+    "id" : 492,
+    "page number" : 4,
+    "bounding box" : [ 331.511, 301.661, 543.965, 321.327 ],
+    "content" : "f ( x ) = \\langle x - x _ { c } , \\, w _ { p } \\rangle ."
+  }, {
+    "type" : "paragraph",
+    "id" : 491,
+    "page number" : 4,
+    "bounding box" : [ 78.204, 288.6, 288.675, 320.221 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "for each point set \uD835\uDC4B\uD835\uDC5B\uD835\uDC52\uD835\uDC56 corresponding to neighboring node \uD835\uDC63 \uD835\uDC5B\uD835\uDC52\uD835\uDC56 of \uD835\uDC63 \uD835\uDC56 in \uD835\uDC3A do"
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 4,
+    "bounding box" : [ 53.076, 301.599, 63.262, 317.332 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "12:"
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 4,
+    "bounding box" : [ 306.604, 219.967, 543.973, 299.409 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "⟨ ⟩ Clustering method and parameter calculation . To guarantee the topological correctness of the Mapper graph, the parameters used to construct the cover are intrinsically related to the clustering parameters. Therefore, we first introduce the clustering method and parameter computation before describing the cover construction. In the clustering step, we construct a -neighborhood"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 4,
+    "bounding box" : [ 88.164, 264.69, 288.667, 296.311 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Merge all nodes in \uD835\uDC3A\uD835\uDC56 where their corresponding point sets intersect with \uD835\uDC4B\uD835\uDC5B\uD835\uDC52\uD835\uDC56 into a single node."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 53.076, 229.868, 215.893, 293.422 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 53.076, 277.689, 63.262, 293.422 ],
+      "font" : "STIXGeneral-Regular",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "13:",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 53.076, 253.778, 108.761, 269.511 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "14: end for",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 53.076, 240.779, 215.893, 260.445 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "15: Replace \uD835\uDC63 \uD835\uDC56 with all nodes from \uD835\uDC3A\uD835\uDC56 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 53.076, 229.868, 98.798, 245.601 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "16: end for",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 4,
+    "bounding box" : [ 53.076, 204.914, 288.676, 236.535 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "edges to \uD835\uDC3A according to the edge addition rule of the Mapper algorithm. 18: return"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 4,
+    "bounding box" : [ 306.604, 148.236, 543.973, 227.678 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDEFF graph based on \uD835\uDC4B , where an edge is drawn between two distinct points if their Euclidean distance is less than \uD835\uDEFF . The connected components of the preimage of the filter function \uD835\uDC53 induced by this \uD835\uDEFF -neighborhood graph are then taken as the clustering results. The parameter should satisfy the following conditions:"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 4,
+    "bounding box" : [ 53.076, 194.003, 108.044, 209.736 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "18: return \uD835\uDC3A"
+  }, {
+    "type" : "heading",
+    "id" : 502,
+    "level" : "Doctitle",
+    "page number" : 4,
+    "bounding box" : [ 51.307, 159.842, 220.552, 169.162 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-BoldItalic",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "4.1.1. Generation of the Mapper graph"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 4,
+    "bounding box" : [ 51.307, 49.038, 288.676, 164.346 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "This section follows the work of Carrière et al. [ Carriere et al. , 2018 ], who investigated the convergence of the Mapper graph to its continuous analogue, namely the Reeb graph. They employed extended persistence and its associated metric, the bottleneck distance [ Edelsbrunner and Harer , 2010 ], to quantitatively characterize the topological similarity between the Mapper graph and the corresponding Reeb graph. Their analysis provides parameter selection criteria that guarantee the bottleneck distance between the"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 4,
+    "bounding box" : [ 321.548, 136.281, 543.963, 155.947 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The parameter \uD835\uDEFF should satisfy the following conditions:"
+  }, {
+    "type" : "formula",
+    "id" : 505,
+    "page number" : 4,
+    "bounding box" : [ 331.511, 102.408, 543.97, 122.074 ],
+    "content" : "4 d _ { H } ( \\mathcal { M } , X ) \\leq \\delta ,"
+  }, {
+    "type" : "formula",
+    "id" : 506,
+    "page number" : 4,
+    "bounding box" : [ 331.511, 53.027, 543.966, 76.515 ],
+    "content" : "\\delta \\leq \\frac { 1 } { 4 } \\min \\{ r c h , \\rho \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 5,
+    "bounding box" : [ 134.558, 568.837, 143.405, 584.57 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 5,
+    "bounding box" : [ 134.335, 396.021, 143.628, 411.754 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 5,
+    "bounding box" : [ 291.348, 568.837, 300.641, 584.57 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "image",
+    "page number" : 5,
+    "bounding box" : [ 223.738, 406.573, 371.538, 554.373 ],
+    "alt" : "The image is a diagram consisting of various geometric shapes arranged in a grid-like pattern. The shapes are colored in different colors, and each shape is connected by lines. The lines are interconnected, forming a complex network. Here is a detailed description of the image: ### Description of the Image: 1. **Top Left Section**: - The top left section contains a green shape with a circle inside it. - The circle is connected to the top left shape by a line. 2. **Top Right Section**: - The top right section contains a red shape with a circle inside it. - The circle is connected to the top right shape by a line. 3. **Bottom Left Section**: - The bottom left section contains a blue shape with a circle inside it. - The circle is connected to the bottom left shape by a line. 4. **Bottom Right Section**: - The bottom right section contains a green shape with a",
+    "source" : "GLL2026/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "page number" : 5,
+    "bounding box" : [ 291.571, 396.021, 300.418, 411.754 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(e)"
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "page number" : 5,
+    "bounding box" : [ 448.584, 562.583, 457.431, 578.316 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 5,
+    "bounding box" : [ 449.026, 396.021, 456.988, 411.754 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(f)"
+  }, {
+    "type" : "paragraph",
+    "id" : 514,
+    "page number" : 5,
+    "bounding box" : [ 51.307, 334.622, 543.972, 386.346 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Fig. 3: Generation of the initial Mapper graph, \uD835\uDF03 ov = 0 . 2 . (a)Input point set \uD835\uDC4B . (b) \uD835\uDC4B is colored according to the values of the filter function \uD835\uDC53 . The black dashed line passes through the center of \uD835\uDC4B , indicating the principal direction of \uD835\uDC4B . (c)Cover construction. Only a subset of intervals is visualized for clarity. Points corresponding to the same interval are enclosed between dashed lines, and the preimages of different intervals are translated for better visual separation (d)Initial Mapper graph. (e)The result of the node merging operation. (f)The final Mapper graph."
+  }, {
+    "type" : "paragraph",
+    "id" : 515,
+    "page number" : 5,
+    "bounding box" : [ 51.307, 209.275, 288.676, 312.627 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where \uD835\uDC5F\uD835\uDC50ℎ and \uD835\uDF0C denote the reach and convexity radius of  , respectively, and \uD835\uDC51 H denotes the Hausdorff distance. Here,the reach \uD835\uDC5F\uD835\uDC50ℎ is defined as the supremum of all \uD835\uDC5F > 0 such that every point \uD835\uDC65 with the Euclidean distance dist( \uD835\uDC65,  ) < \uD835\uDC5F admits a unique nearest point in  . The convexity radius \uD835\uDF0C is the largest \uD835\uDC5F > 0 such that for every \uD835\uDC5D ∈  , the geodesic ball \uD835\uDC35  ( \uD835\uDC5D,\uD835\uDC5F ) = { \uD835\uDC5E ∈  ∶ \uD835\uDC51  ( \uD835\uDC5D,\uD835\uDC5E ) < \uD835\uDC5F } is geodesically convex. Regarding condition ( 5 ), since each intersection point is"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 5,
+    "bounding box" : [ 51.307, 149.499, 288.676, 216.985 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "taken as the center of its corresponding bounding box, an upper bound for \uD835\uDC51 H (  ,\uD835\uDC4B ) is given by half the length of the bounding box diagonal. Accordingly, we select twice the diagonal length of the bounding box as the value of \uD835\uDEFF . For condition ( 6 ), if the intersection does not contain"
+  }, {
+    "type" : "paragraph",
+    "id" : 521,
+    "page number" : 5,
+    "bounding box" : [ 51.307, 53.857, 288.676, 157.21 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "singular points (i.e., points of tangential discontinuity), the numerical accuracy of standard surface/surface intersection algorithms is generally sufficient, and the above choice of \uD835\uDEFF naturally satisfies this constraint. However, if the intersection contains singular points, the manifold induced by the corresponding bounding box set may fail to possess a positive reach radius \uD835\uDC5F\uD835\uDC50ℎ and convexity radius \uD835\uDF0C . This leads"
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 5,
+    "bounding box" : [ 306.604, 208.089, 543.973, 276.761 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "issue later. Cover construction . Given the filter function \uD835\uDC53 ∶ \uD835\uDC4B → ℝ , we construct a uniform cover of \uD835\uDC53 ( \uD835\uDC4B ) such that no more than two intervals overlap at any point. Specifically, we use \uD835\uDC46 open intervals { \uD835\uDC3C \uD835\uDC60 } \uD835\uDC46 \uD835\uDC60 =1 of equal length \uD835\uDC59 . The overlap ratio \uD835\uDF03 ov between adjacent intervals is defined as"
+  }, {
+    "type" : "formula",
+    "id" : 518,
+    "page number" : 5,
+    "bounding box" : [ 331.511, 177.304, 543.967, 200.934 ],
+    "content" : "0 < \\theta _ { o v } = \\frac { \\ell ( I _ { s } \\cap I _ { s + 1 } ) } { l } < \\frac { 1 } { 2 } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 5,
+    "bounding box" : [ 306.604, 156.119, 497.866, 175.785 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where \uD835\uDCC1 ( ⋅ ) denotes the Lebesgue measure on ℝ . The interval length should satisfy the"
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 5,
+    "bounding box" : [ 306.604, 120.254, 543.973, 163.83 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC59 following condition related to the clustering parameter \uD835\uDEFF and the filter function \uD835\uDC53 :"
+  }, {
+    "type" : "formula",
+    "id" : 522,
+    "page number" : 5,
+    "bounding box" : [ 331.511, 75.159, 543.964, 112.433 ],
+    "content" : "l > l _ { 0 } = \\frac { | | x _ { i } - x _ { j } | | < \\delta , \\, x _ { i } \\in X , \\, x _ { j } \\in X } { \\theta _ { o v } } ."
+  }, {
+    "type" : "image",
+    "page number" : 6,
+    "bounding box" : [ 61.641, 582.968, 275.26, 738.431 ],
+    "alt" : "The image depicts a graph with two main axes: the x-axis and the y-axis. The x-axis is labeled as x and the y-axis is labeled as y. The graph is a line graph, with a single point at the end of the y-axis. The line is drawn from the point (0, 0) to the point (1, 1). The line is colored in blue and red. The points on the graph are connected by lines, and the line extends from the point (0, 0) to the point (1, 1).",
+    "source" : "GLL2026/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 449.025, 288.675, 566.502 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Fig. 4: An illustration of additional cross-graph edges introduced by independent subdivision of adjacent Mapper nodes. Top: data elements corresponding to two adjacent nodes, where node-specific elements are shown in red and blue, and their shared elements are shown in green. Middle: the corresponding two adjacent Mapper nodes and their connecting edge. Bottom: Mapper subgraphs generated independently from the two nodes. Due to inconsistent partitioning of shared elements, the edge addition rule based on whether corresponding element sets intersect introduced additional cross-graph edges (green dashed lines)."
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 395.408, 288.477, 427.029 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Since the number of intervals \uD835\uDC46 and the interval length \uD835\uDC59 satisfy,"
+  }, {
+    "type" : "formula",
+    "id" : 533,
+    "page number" : 6,
+    "bounding box" : [ 76.214, 367.423, 288.675, 393.156 ],
+    "content" : "S l - ( S - 1 ) \\theta _ { o v } l = \\sup _ { x _ { i } \\in X } f ( x _ { i } ) - i n f \\, f ( x _ { i } ) , \\quad \\ \\ ( 9 ) \\quad \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 332.605, 288.666, 364.227 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To ensure condition ( 8 ), we compute the number of intervals \uD835\uDC46 as"
+  }, {
+    "type" : "formula",
+    "id" : 536,
+    "page number" : 6,
+    "bounding box" : [ 76.214, 271.509, 288.667, 314.01 ],
+    "content" : "S = \\left \\lfloor \\frac { \\sup _ { x _ { i } \\in X } f ( x _ { i } ) - \\inf _ { x _ { i } \\in X } f ( x _ { i } ) - \\theta _ { o v } l ^ { \\prime } } { ( 1 - \\theta _ { o v } ) l ^ { \\prime } } \\right \\rfloor , \\quad ( 1 0 ) \\quad v _ { i } \\ \\ w i d g r a l { ( 1 0 ) } \\quad v _ { i } \\ \\ w i d g r a l { ( 1 0 ) }"
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 233.488, 288.671, 265.11 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "⎢ ⎣ ⎥ ⎦ where ⌊ ⋅ ⌋ denotes the floor operator and \uD835\uDC59 ′ = (1 + \uD835\uDEFC ) \uD835\uDC59 0 . In this paper, we set \uD835\uDEFC = 0 . 001 to ensure \uD835\uDC59 ′ > \uD835\uDC59 0 . Fig. 3 illustrates an example of constructing the initial"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 137.847, 288.676, 241.199 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Mapper graph \uD835\uDC3A . To better reflect the practical setting considered in this paper, we uniformly sample points from severalplanarcurvesusingafixedarc-length step size \uD835\uDC60\uD835\uDC4E\uD835\uDC5A\uD835\uDC5D\uD835\uDC59\uD835\uDC52 = 0 . 02 and add random offset noise with magnitude in the range [0 , 0 . 01] to each sampled point, yielding the point cloud \uD835\uDC4B . According to the parameter selection criterion in Eq. ( 6 ), we therefore set"
+  }, {
+    "type" : "formula",
+    "id" : 541,
+    "page number" : 6,
+    "bounding box" : [ 76.214, 106.17, 162.626, 129.957 ],
+    "content" : "\\delta = 4 \\left ( \\epsilon + \\frac { s a m p l e } { 2 } \\right )"
+  }, {
+    "type" : "paragraph",
+    "id" : 542,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 82.545, 114.41, 102.211 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "in this example."
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 6,
+    "bounding box" : [ 51.307, 46.679, 288.676, 90.255 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Wethen compute the centroid and the principal direction of \uD835\uDC4B using PCA, and evaluate the filter function \uD835\uDC53 accordingly. In Fig. 3(b), the points in \uD835\uDC4B are colored according to their corresponding filter function values. The black dashed line indicates the line segment passing through the centroid of \uD835\uDC4B and aligned with its principal direction. In Fig. 3(c), we employ 46 intervals to uniformly cover the range of the filter function \uD835\uDC53 . Finally, Fig. 3(d) presents the resulting initial Mapper graph constructed from these settings."
+  }, {
+    "type" : "heading",
+    "id" : 524,
+    "level" : "Subtitle",
+    "page number" : 6,
+    "bounding box" : [ 306.604, 644.656, 504.512, 653.976 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-BoldItalic",
+    "font size" : 10.461,
+    "text color" : "[0.0]",
+    "content" : "4.1.2. Subdivision in the orthogonal direction"
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 545.808, 543.973, 649.16 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In Fig. 3(c) , the points sampled from the middle curve segment in the example exhibit a very narrow range of values under the filter function \uD835\uDC53 . As a result, these points are assigned to the same interval, and are consequently aggregated into a single node in the Mapper graph, as indicated by the dashed box. Such aggregation weakens the ability of the Mapper graph to capture the geometric structure of the underlying data. To handle this issue, we analyze the initial Mapper graph"
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 486.032, 543.973, 553.519 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC3A in the direction orthogonal to the principal direction vector \uD835\uDC64 \uD835\uDC5D in Eq. ( 4 ). The core idea is to use the Mapper algorithm to split nodes with excessively large projection spans in the orthogonal direction into smaller nodes. Let be the unit vector orthogonal to the principal"
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 438.211, 543.972, 493.743 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC64 ⟂ direction vector \uD835\uDC64 \uD835\uDC5D , i.e. ⟨ \uD835\uDC64 ⟂ , \uD835\uDC64 \uD835\uDC5D ⟩ = 0 . We define a new filter function \uD835\uDC53 ⟂ as the projection of the data point \uD835\uDC65 onto \uD835\uDC64 ⟂ as follows:"
+  }, {
+    "type" : "formula",
+    "id" : 529,
+    "page number" : 6,
+    "bounding box" : [ 331.511, 416.293, 543.964, 435.959 ],
+    "content" : "f _ { \\perp } ( x ) = \\langle x _ { i } - x _ { c } , \\, w _ { \\perp } \\rangle"
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 394.376, 503.104, 414.042 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "⟨ ⟩ where \uD835\uDC65 \uD835\uDC50 is the center of \uD835\uDC4B calculated by Eq. ( 2 ). Let denote the set of points corresponding"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 346.555, 543.971, 402.087 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC4B \uD835\uDC56 to each node \uD835\uDC63 \uD835\uDC56 in \uD835\uDC3A . In Eq. ( 8 ) and ( 10 ) , we substitute \uD835\uDC53 ⟂ for \uD835\uDC53 and \uD835\uDC4B \uD835\uDC56 for \uD835\uDC4B to compute the number of intervals \uD835\uDC46 \uD835\uDC56 that \uD835\uDC4B \uD835\uDC56 can partition in the orthogonal direction. We denote the set of nodes awaiting splitting as ="
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 262.869, 543.972, 354.266 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 { \uD835\uDC63 ∈ \uD835\uDC3A,\uD835\uDC46 \uD835\uDC56 ≥ 2} . The straightforward idea is to use \uD835\uDC53 ⟂ instead of \uD835\uDC53 in the Mapper algorithm for each node \uD835\uDC63 in \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 , obtaining the subgraph \uD835\uDC3A \uD835\uDC56 and replace each such \uD835\uDC63 \uD835\uDC56 with all nodes in \uD835\uDC3A \uD835\uDC56 and add edges between different subgraph nodes based on the intersection relationships of corresponding clusters to achieve subdivision. However, if two adjacent nodes both require to be subdi-"
+  }, {
+    "type" : "paragraph",
+    "id" : 537,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 155.272, 543.973, 270.58 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "vided, this method may introduce additional edges because the classification results for elements in their overlapping region might differ across their subgraphs. However, when two adjacent nodes in the Mapper graph are both subject to subdivision, this strategy may introduce additional edges. The reason is that elements lying in the overlapping region of the two nodes may be classified differently in their respective subdivided subgraphs. Fig. 4 provides an illustrative example. The two original"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 95.496, 543.963, 162.983 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "nodes share a common subset of \uD835\uDC4B . However,these elements is separated into different clusters during the generation of the Mapper subgraph. Consequently, additional cross-graph edges are introduced. Therefore, to achieve effective subdivision while avoid-"
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 6,
+    "bounding box" : [ 306.604, 59.631, 543.973, 103.207 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "ing the generation of additional edges, we designed the following process for handling \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 675.422, 288.676, 742.909 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "First, we merge all adjacent nodes in \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 into a single node. If multiple nodes in \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 are mutually adjacent, we simultaneously merge them into a single node in \uD835\uDC3A . For brevity, we continue to denote the modified graph and the set of nodes to be split as \uD835\uDC3A and \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 , respectively. Next, for each node in , we use instead of in"
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 639.556, 288.676, 683.133 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Next, for each node \uD835\uDC63 \uD835\uDC56 in \uD835\uDC49 \uD835\uDC60\uD835\uDC5D\uD835\uDC59\uD835\uDC56\uD835\uDC61 , we use \uD835\uDC53 ⟂ instead of \uD835\uDC53 in the Mapper algorithm in section 4.1.1 to obtain the Mapper graph \uD835\uDC3A\uD835\uDC56 for \uD835\uDC4B\uD835\uDC56 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 531.96, 288.674, 647.267 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "node \uD835\uDC63 \uD835\uDC56 and one of its neighboring nodes \uD835\uDC63 \uD835\uDC57 may be assigned to multiple nodes in \uD835\uDC3A \uD835\uDC56 . In such cases, directly replacing \uD835\uDC63 \uD835\uDC56 with all nodes from \uD835\uDC3A \uD835\uDC56 may introduce redundant edges in the modified graph,as shown in Fig. 4 . Therefore, we iterate through each neighboring node \uD835\uDC63 \uD835\uDC57 of \uD835\uDC63 \uD835\uDC56 and merge all nodes in graph \uD835\uDC3A \uD835\uDC56 that share common points with \uD835\uDC63 \uD835\uDC57 into a single node. Subsequently, we modify \uD835\uDC3A by replacing \uD835\uDC63 \uD835\uDC56 with all nodes in \uD835\uDC3A \uD835\uDC56 . Finally, we add new edges to modified graph between"
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 484.139, 288.666, 539.671 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Finally, we add new edges to modified graph \uD835\uDC3A between nodes following the Mapper edge addition rule , i. e. edges exist if the intersection of the point sets corresponding to two nodes is non-empty."
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 400.453, 288.676, 491.85 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "ation. Specifically, the nodes in the lowest connected subgraph of \uD835\uDC3A are merged into a single node. Fig. 3(f) shows the final modified Mapper graph. Compared to the initial Mapper graph in Fig. 3(d) , the modified Mapper graph contains more nodes in the orthogonal direction, thereby better reflecting the structure of the input point set \uD835\uDC4B ."
+  }, {
+    "type" : "heading",
+    "id" : 557,
+    "level" : "Doctitle",
+    "page number" : 7,
+    "bounding box" : [ 51.307, 367.826, 261.148, 390.575 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "4.2. Partition of intersection set based on the Mapper graph"
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 316.911, 288.674, 372.442 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Using the two-step Mapper algorithm, we can generate the Mapper graph \uD835\uDC3A of the intersection point set \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 . Next, we partition \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 based on the characteristic nodes of the Mapper graph. We define two types of characteristic nodes in the Map-"
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 269.09, 288.676, 324.621 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We define two types of characteristic nodes in the Mapper graph: boundary nodes and singular nodes . They correspond respectively to the boundary points and singular points of the intersection point set."
+  }, {
+    "type" : "paragraph",
+    "id" : 561,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 233.224, 288.671, 276.801 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC35 1 \uD835\uDC62,\uD835\uDC63 [ \uD835\uDC62 \uD835\uDC60 ,\uD835\uDC62 \uD835\uDC52 ] × [ \uD835\uDC63 \uD835\uDC60 ,\uD835\uDC63 \uD835\uDC52 ] . A boundary point is an intersection point on the boundary lines:"
+  }, {
+    "type" : "formula",
+    "id" : 563,
+    "page number" : 7,
+    "bounding box" : [ 65.17, 211.916, 288.671, 231.582 ],
+    "content" : "l = \\left \\{ ( u , v ) \\in \\mathbb { R } ^ { 2 } \\, | \\, u = u _ { s } \\, o r \\, u = u _ { e } \\, o r \\, v = v _ { s } \\, o r \\, v = v _ { e } \\right \\} \\quad \\text {recurs} \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 142.786, 292.651, 210.273 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "{ } Duetotheoverestimationpropertyofthesubdivisionmethod, we need to perform dilation on the boundary point set. Specifically, we regard the points with a distance less than the clustering parameter \uD835\uDEFF to the boundary lines as the approximate boundary point set:"
+  }, {
+    "type" : "formula",
+    "id" : 566,
+    "page number" : 7,
+    "bounding box" : [ 76.214, 91.59, 288.672, 126.199 ],
+    "content" : "P _ { b } = \\{ ( u , v ) \\in P _ { 1 , u , v } \\ | \\ u < u _ { s } + \\delta , \\text { or } u > s _ { e } - \\delta , \\\\ \\text { or } v < v _ { s } + \\delta , \\text { or } v > v _ { e } - \\delta \\} \\ \\ ( 1 2 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 7,
+    "bounding box" : [ 51.307, 46.37, 288.676, 89.947 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Then we define a node \uD835\uDC63 \uD835\uDC4F\uD835\uDC5C\uD835\uDC62 as a boundary node if its corresponding point set intersects with the approximate boundary point set \uD835\uDC43 \uD835\uDC4F ."
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 651.511, 543.973, 742.908 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A singular point is a point where the curve does not have a unique tangent. For the intersection of two B-spline surfaces, such points are typically located within the crosstype regions of the intersection point set. These cross-type regions correspond to nodes with a degree greater than 2 in graph \uD835\uDC3A . Therefore, we define a node \uD835\uDC63 \uD835\uDC60\uD835\uDC56\uD835\uDC5B in the Mapper graph \uD835\uDC3A with a degree greater than 2 as a singular node . Then, we remove all boundary nodes and singular nodes"
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 531.96, 543.973, 659.222 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "from the Mapper graph \uD835\uDC3A . Finally, we partition \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 based on the connection relationships between nodes in \uD835\uDC3A . Specifically, we group all nodes in \uD835\uDC3A that are connected by a walk—i.e., nodes forming a connected component of \uD835\uDC3A into one group. The point sets corresponding to these nodes form a subset of \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 . In this way, we partition \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 into several subsets. Since each connected component of the modified graph \uD835\uDC3A is either a path, a cycle, or an isolated node, where,"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 7,
+    "bounding box" : [ 321.319, 468.199, 543.963, 531.7 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 321.319, 500.079, 543.963, 531.7 ],
+      "font" : "STIXGeneral-Regular",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• Each path corresponds to a simple open curve segment in the intersection set;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 321.319, 468.199, 543.963, 499.82 ],
+      "font" : "STIXGeneral-Regular",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• Each cycle corresponds to a simple closed curve segment;",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 554,
+    "level" : "1",
+    "page number" : 7,
+    "bounding box" : [ 321.319, 436.318, 543.963, 467.939 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "• Each isolated node corresponds to an isolated intersection point."
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 404.438, 543.969, 436.059 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Thus, through such grouping, we can partition \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 into several simple segments. Fig. 5 illustrates the process of intersection set partition"
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 308.796, 543.973, 412.149 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "based on the Mapper graph. In Fig. 5(c) , yellow and blue circles mark boundary nodes and singular nodes, respectively. After removing these two types of characteristic nodes, the Mapper graph shown in Fig. 5(d) contains four connected components. Based on this, we can partition the intersection set \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 into four mutually exclusive subsets and visualize each subset using distinct colors in Fig. 5(e) ."
+  }, {
+    "type" : "heading",
+    "id" : 560,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 306.604, 275.926, 540.445, 298.675 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "4.3. Correspondence between different parameter domains."
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 165.235, 543.973, 280.542 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Unlike algebraic methods, subdivision methods inherently preserve correspondence between intersection results across different surface parameter domains. Specifically, the subdivision method obtains intersection point sets by recursively detecting bounding box intersections in different parameter domains. In the resulting set \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 , each point’s correspondence to points in \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 is determined by the intersection relationships between their respective bounding boxes. Fig. 5(f) illustrates the corresponding result for ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 129.369, 543.969, 172.946 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 where matching partitioned subsets between \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 are colored identically."
+  }, {
+    "type" : "heading",
+    "id" : 567,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 306.604, 101.099, 468.442, 111.787 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "5. Experiments and discussions"
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 7,
+    "bounding box" : [ 306.604, 46.5, 543.973, 102.032 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "All experiments in this paper were implemented on a PC with a Intel Core Ultra 7 155H 3.80GHz CPU and 32GB RAM. We use python’s Giotto-tda library [ Tauzin, Lupo, Tunstall, Pérez, Caorsi, Medina-Mardones, Dassatti,"
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 8,
+    "bounding box" : [ 75.902, 594.75, 84.749, 610.483 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 8,
+    "bounding box" : [ 88.032, 594.75, 205.344, 610.483 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Two intersecting cylindrical surfaces"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 8,
+    "bounding box" : [ 247.846, 589.876, 257.139, 605.609 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 8,
+    "bounding box" : [ 260.423, 589.876, 341.152, 605.609 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "The intersection point set \uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 8,
+    "bounding box" : [ 343.144, 592.585, 347.879, 599.376 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 8,
+    "bounding box" : [ 350.871, 590.959, 359.718, 596.052 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 8,
+    "bounding box" : [ 347.882, 590.818, 350.871, 595.986 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 8,
+    "bounding box" : [ 411.443, 589.875, 491.582, 605.608 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c) The Mapper graph of \uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 8,
+    "bounding box" : [ 493.575, 592.584, 498.309, 599.375 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 8,
+    "bounding box" : [ 501.301, 590.959, 510.148, 596.052 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 8,
+    "bounding box" : [ 498.312, 590.818, 501.301, 595.986 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 8,
+    "bounding box" : [ 63.654, 427.192, 217.596, 452.389 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d) Mapper graph after removing characteristic nodes"
+  }, {
+    "type" : "image",
+    "page number" : 8,
+    "bounding box" : [ 231.128, 447.208, 364.141, 580.221 ],
+    "alt" : "The image is a diagram with five different types of curves. Each curve is labeled with a number and a symbol. The labels and symbols are as follows: 1. **Two intersecting cylindrical surfaces**: - The curve is labeled as Two intersecting cylindrical surfaces. - The symbol is a circle with a line segment connecting two points. 2. **Intersection point set**: - The curve is labeled as The intersection point set. - The symbol is a circle with a line segment connecting two points. 3. **Mapped graph of P**: - The curve is labeled as The mapped graph of P. - The symbol is a circle with a line segment connecting two points. 4. **Corresponding results of P**: - The curve is labeled as Corresponding results of P. - The symbol is a circle with a line segment connecting two points. 5. **Mapped graph of P**: - The curve is",
+    "source" : "GLL2026/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 8,
+    "bounding box" : [ 241.999, 436.656, 250.846, 452.389 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(e)"
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 8,
+    "bounding box" : [ 254.129, 436.656, 334.213, 452.389 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "The partitioning result of \uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 586,
+    "page number" : 8,
+    "bounding box" : [ 336.206, 439.365, 340.94, 446.156 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 8,
+    "bounding box" : [ 343.932, 437.74, 352.779, 442.833 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 8,
+    "bounding box" : [ 340.943, 437.599, 343.932, 442.767 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 8,
+    "bounding box" : [ 400.683, 436.656, 508.121, 452.389 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(f) Corresponding results of \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61"
+  }, {
+    "type" : "paragraph",
+    "id" : 589,
+    "page number" : 8,
+    "bounding box" : [ 149.581, 411.178, 442.622, 419.066 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Fig. 5: An example of intersecting set partition based on the Mapper graph."
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 8,
+    "bounding box" : [ 91.4, 311.13, 100.247, 326.863 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 8,
+    "bounding box" : [ 110.257, 311.13, 122.651, 326.863 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The"
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 8,
+    "bounding box" : [ 91.4, 301.665, 118.562, 317.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "point set"
+  }, {
+    "type" : "paragraph",
+    "id" : 619,
+    "page number" : 8,
+    "bounding box" : [ 120.555, 304.374, 125.289, 311.165 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDC43"
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 8,
+    "bounding box" : [ 134.247, 311.13, 171.436, 326.863 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "intersection"
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 8,
+    "bounding box" : [ 128.278, 302.749, 137.125, 307.842 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 8,
+    "bounding box" : [ 125.289, 302.608, 128.278, 307.776 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 8,
+    "bounding box" : [ 193.213, 310.986, 202.506, 326.719 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 8,
+    "bounding box" : [ 209.65, 310.038, 215.496, 321.838 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ov"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 8,
+    "bounding box" : [ 205.79, 313.695, 209.647, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDF03"
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 229.868, 313.695, 231.861, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "."
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 218.208, 313.507, 229.868, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "= 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 8,
+    "bounding box" : [ 231.861, 313.507, 235.846, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "image",
+    "page number" : 8,
+    "bounding box" : [ 264.385, 321.682, 330.891, 388.188 ],
+    "alt" : "In this image, we can see a diagram with a line and a point.",
+    "source" : "GLL2026/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 598,
+    "page number" : 8,
+    "bounding box" : [ 276.545, 310.986, 285.392, 326.719 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 604,
+    "page number" : 8,
+    "bounding box" : [ 292.536, 310.038, 298.382, 321.838 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ov"
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 8,
+    "bounding box" : [ 288.675, 313.695, 292.533, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDF03"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 312.754, 313.695, 314.747, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "."
+  }, {
+    "type" : "paragraph",
+    "id" : 606,
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 301.094, 313.507, 312.754, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "= 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 8,
+    "bounding box" : [ 314.747, 313.507, 318.732, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 8,
+    "bounding box" : [ 359.431, 310.986, 368.724, 326.719 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 8,
+    "bounding box" : [ 375.869, 310.038, 381.715, 321.838 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ov"
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 8,
+    "bounding box" : [ 372.008, 313.695, 375.865, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDF03"
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 396.087, 313.695, 398.08, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "."
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 384.427, 313.507, 396.087, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "= 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 8,
+    "bounding box" : [ 398.08, 313.507, 402.065, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 8,
+    "bounding box" : [ 442.764, 310.986, 451.611, 326.719 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(e)"
+  }, {
+    "type" : "paragraph",
+    "id" : 615,
+    "page number" : 8,
+    "bounding box" : [ 458.755, 310.038, 464.601, 321.838 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ov"
+  }, {
+    "type" : "paragraph",
+    "id" : 614,
+    "page number" : 8,
+    "bounding box" : [ 454.894, 313.695, 458.752, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDF03"
+  }, {
+    "type" : "paragraph",
+    "id" : 617,
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 478.973, 313.695, 480.966, 320.486 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "."
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 467.313, 313.507, 478.973, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "= 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 8,
+    "bounding box" : [ 480.966, 313.507, 484.951, 320.398 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 8,
+    "bounding box" : [ 145.629, 281.145, 446.575, 290.739 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Fig. 6: An example of the impact of changing the overlap ratio parameter \uD835\uDF03 ov ."
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 8,
+    "bounding box" : [ 51.307, 217.279, 288.666, 260.855 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "and Hess , 2021 ] to compute the Mapper graph. In our experiments, we will show that the algorithm can successfully understand the topology of intersection."
+  }, {
+    "type" : "heading",
+    "id" : 625,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 51.307, 184.408, 284.589, 207.158 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "5.1. Parameter selection for the Two-step Mapper algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 8,
+    "bounding box" : [ 51.307, 145.448, 288.667, 189.024 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The overlap ratio \uD835\uDF03 ov is a key parameter in the Mapper algorithm. This section analyzes its influence on the resulting graph structure. The overlap ratio controls the degree of overlap"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 8,
+    "bounding box" : [ 51.307, 61.762, 288.676, 153.159 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDF03 ov between two adjacent intervals when constructing the cover. According to Eq. 8 , the interval length \uD835\uDC59 is proportional to 1∕ \uD835\uDF03 ov .Consequently,increasing \uD835\uDF03 ov leadstoshorterintervals and a larger number of nodes in the resulting Mapper graph. This produces a more compact and detailed graph representation, but at the expense of increased computational cost."
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 8,
+    "bounding box" : [ 306.604, 133.592, 543.973, 260.855 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 6 illustrates the effect of varying \uD835\uDF03 ov . When \uD835\uDF03 ov = 0 . 1 , the graph is sparsely connected due to the large interval length. When \uD835\uDF03 ov = 0 . 2 , the node distribution becomes significantly denser and more informative. When \uD835\uDF03 ov is further increased to 0 . 4 , the graph continues to become denser; however, the growth trend becomes less pronounced. This behavior is consistent with the relationship between \uD835\uDC59 and \uD835\uDF03 ov . To balance the expressive capability of the Mapper representation and computational efficiency, we set \uD835\uDF03 ov = 0 . 2 in the following experiments."
+  }, {
+    "type" : "heading",
+    "id" : 628,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 306.604, 113.673, 426.297, 123.471 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "5.2. Experimental results"
+  }, {
+    "type" : "paragraph",
+    "id" : 629,
+    "page number" : 8,
+    "bounding box" : [ 306.604, 74.713, 543.963, 118.29 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this section, we apply the proposed algorithm to a series of surface/surface intersections with complex topology to validate its effectiveness."
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 9,
+    "bounding box" : [ 51.307, 691.434, 288.675, 732.198 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Table 1 Runtime for constructing the Mapper graph , where “Initial” is the time for constructing the initial Mapper graph, “Refinement” is the time for graph subdivision, and “Total” is the"
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 9,
+    "bounding box" : [ 51.307, 680.475, 111.458, 688.363 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "overall runtime."
+  }, {
+    "type" : "table",
+    "id" : 633,
+    "level" : "5",
+    "page number" : 9,
+    "bounding box" : [ 51.198, 545.226, 287.996, 676.888 ],
+    "number of rows" : 10,
+    "number of columns" : 5,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 663.722, 98.558, 676.888 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 344,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 663.722, 98.558, 676.888 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Example"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 663.722, 145.917, 676.888 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 345,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 663.722, 145.917, 676.888 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Number of"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 663.722, 193.277, 676.888 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 346,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 663.722, 193.277, 676.888 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Initial(s)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 663.722, 240.636, 676.888 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 347,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 663.722, 240.636, 676.888 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Subdivision (s)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 663.722, 287.996, 676.888 ],
+        "row number" : 1,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 348,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 663.722, 287.996, 676.888 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Total (s)"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 650.555, 98.558, 663.722 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 349,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 650.555, 98.558, 663.722 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Example 1"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 650.555, 145.917, 663.722 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 350,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 650.555, 145.917, 663.722 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "3214"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 650.555, 193.277, 663.722 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 351,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 650.555, 193.277, 663.722 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.1340"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 650.555, 240.636, 663.722 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 352,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 650.555, 240.636, 663.722 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.1573"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 650.555, 287.996, 663.722 ],
+        "row number" : 2,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 353,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 650.555, 287.996, 663.722 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.2913"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 637.389, 98.558, 650.555 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 354,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 637.389, 98.558, 650.555 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Example 1"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 637.389, 145.917, 650.555 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 355,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 637.389, 145.917, 650.555 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "2176"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 637.389, 193.277, 650.555 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 356,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 637.389, 193.277, 650.555 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1340"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 637.389, 240.636, 650.555 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 357,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 637.389, 240.636, 650.555 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.4427"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 637.389, 287.996, 650.555 ],
+        "row number" : 3,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 358,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 637.389, 287.996, 650.555 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.5372"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 624.223, 98.558, 637.389 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 359,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 624.223, 98.558, 637.389 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Example 3"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 624.223, 145.917, 637.389 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 360,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 624.223, 145.917, 637.389 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "1851"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 624.223, 193.277, 637.389 ],
+        "row number" : 4,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 361,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 624.223, 193.277, 637.389 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.1278"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 624.223, 240.636, 637.389 ],
+        "row number" : 4,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 362,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 624.223, 240.636, 637.389 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.1242"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 624.223, 287.996, 637.389 ],
+        "row number" : 4,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 363,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 624.223, 287.996, 637.389 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.2519"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 5,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 611.057, 98.558, 624.223 ],
+        "row number" : 5,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 364,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 611.057, 98.558, 624.223 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Example 4"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 611.057, 145.917, 624.223 ],
+        "row number" : 5,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 365,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 611.057, 145.917, 624.223 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "1902"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 611.057, 193.277, 624.223 ],
+        "row number" : 5,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 366,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 611.057, 193.277, 624.223 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.0901"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 611.057, 240.636, 624.223 ],
+        "row number" : 5,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 367,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 611.057, 240.636, 624.223 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.0661"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 611.057, 287.996, 624.223 ],
+        "row number" : 5,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 368,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 611.057, 287.996, 624.223 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1562"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 6,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 597.891, 98.558, 611.057 ],
+        "row number" : 6,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 369,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 597.891, 98.558, 611.057 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Example 5"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 597.891, 145.917, 611.057 ],
+        "row number" : 6,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 370,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 597.891, 145.917, 611.057 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "3318"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 597.891, 193.277, 611.057 ],
+        "row number" : 6,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 371,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 597.891, 193.277, 611.057 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1238"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 597.891, 240.636, 611.057 ],
+        "row number" : 6,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 372,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 597.891, 240.636, 611.057 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1677"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 597.891, 287.996, 611.057 ],
+        "row number" : 6,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 373,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 597.891, 287.996, 611.057 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.2915"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 7,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 584.724, 98.558, 597.891 ],
+        "row number" : 7,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 374,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 584.724, 98.558, 597.891 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Example 6"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 584.724, 145.917, 597.891 ],
+        "row number" : 7,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 375,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 584.724, 145.917, 597.891 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "2650"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 584.724, 193.277, 597.891 ],
+        "row number" : 7,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 376,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 584.724, 193.277, 597.891 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1262"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 584.724, 240.636, 597.891 ],
+        "row number" : 7,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 377,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 584.724, 240.636, 597.891 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.0830"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 584.724, 287.996, 597.891 ],
+        "row number" : 7,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 378,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 584.724, 287.996, 597.891 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.2092"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 8,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 571.558, 98.558, 584.724 ],
+        "row number" : 8,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 379,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 571.558, 98.558, 584.724 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "Example 7"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 571.558, 145.917, 584.724 ],
+        "row number" : 8,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 380,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 571.558, 145.917, 584.724 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "5352"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 571.558, 193.277, 584.724 ],
+        "row number" : 8,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 381,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 571.558, 193.277, 584.724 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1551"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 571.558, 240.636, 584.724 ],
+        "row number" : 8,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 382,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 571.558, 240.636, 584.724 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.1800"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 571.558, 287.996, 584.724 ],
+        "row number" : 8,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 383,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 571.558, 287.996, 584.724 ],
+          "font" : "SFSS0900",
+          "font size" : 8.966,
+          "text color" : "[0.0]",
+          "content" : "0.3350"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 9,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 558.392, 98.558, 571.558 ],
+        "row number" : 9,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 384,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 558.392, 98.558, 571.558 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Example 8"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 558.392, 145.917, 571.558 ],
+        "row number" : 9,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 385,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 558.392, 145.917, 571.558 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "4772"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 558.392, 193.277, 571.558 ],
+        "row number" : 9,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 386,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 558.392, 193.277, 571.558 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.1125"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 558.392, 240.636, 571.558 ],
+        "row number" : 9,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 387,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 558.392, 240.636, 571.558 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.3022"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 558.392, 287.996, 571.558 ],
+        "row number" : 9,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 388,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 558.392, 287.996, 571.558 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.4148"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 10,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 51.198, 545.226, 98.558, 558.392 ],
+        "row number" : 10,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 389,
+          "page number" : 9,
+          "bounding box" : [ 51.198, 545.226, 98.558, 558.392 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Example 9"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 98.558, 545.226, 145.917, 558.392 ],
+        "row number" : 10,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 390,
+          "page number" : 9,
+          "bounding box" : [ 98.558, 545.226, 145.917, 558.392 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "6284"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 145.917, 545.226, 193.277, 558.392 ],
+        "row number" : 10,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 391,
+          "page number" : 9,
+          "bounding box" : [ 145.917, 545.226, 193.277, 558.392 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.1673"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 193.277, 545.226, 240.636, 558.392 ],
+        "row number" : 10,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 392,
+          "page number" : 9,
+          "bounding box" : [ 193.277, 545.226, 240.636, 558.392 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.3527"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 240.636, 545.226, 287.996, 558.392 ],
+        "row number" : 10,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 393,
+          "page number" : 9,
+          "bounding box" : [ 240.636, 545.226, 287.996, 558.392 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "0.5200"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 9,
+    "bounding box" : [ 51.307, 519.46, 80.601, 527.329 ],
+    "font" : "SFSX0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Table 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 9,
+    "bounding box" : [ 51.307, 475.605, 288.672, 516.37 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "The intersection of two B-spline surfaces is divided into segments within the ( \uD835\uDC62,\uD835\uDC63 ) parameter domain. OCCT refers to the intersection algorithm in the Open Cascade Technology. Different segments are distinguished by different colors."
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 9,
+    "bounding box" : [ 141.962, 457.624, 166.836, 465.512 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "OCCT"
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 9,
+    "bounding box" : [ 228.497, 457.624, 246.741, 465.512 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Ours"
+  }, {
+    "type" : "paragraph",
+    "id" : 642,
+    "page number" : 9,
+    "bounding box" : [ 70.48, 414.032, 103.058, 421.92 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example"
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 9,
+    "bounding box" : [ 84.466, 403.073, 89.073, 410.961 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 9,
+    "bounding box" : [ 70.48, 336.85, 103.058, 344.738 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 9,
+    "bounding box" : [ 84.466, 325.891, 89.073, 333.779 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "8"
+  }, {
+    "type" : "image",
+    "page number" : 9,
+    "bounding box" : [ 118.966, 299.924, 192.86, 373.818 ],
+    "alt" : "In this image, we can see a table with some text and numbers.",
+    "source" : "GLL2026/imageFile7.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 9,
+    "bounding box" : [ 70.48, 259.668, 103.058, 267.556 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example"
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 9,
+    "bounding box" : [ 84.466, 248.71, 89.073, 256.598 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "9"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 9,
+    "bounding box" : [ 51.307, 86.193, 288.676, 201.5 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Table 1 reports the runtime statistics for constructing the initial Mapper graph, performing Mapper graph subdivision, and the total runtime. It can be observed that the graph subdivision stage dominates the overall computational cost. Moreover, the refinement time is closely related to the number of connected components in the intersection point set, as well as the number of singular points. Therefore, Examples 2, 8, and 9 exhibit the largest runtimes among all test examples. Multiple connected branches . We first consider the"
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 9,
+    "bounding box" : [ 51.307, 50.327, 288.676, 93.904 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "case where two intersecting surfaces contain multiple connected components. In Example 1 and Example 2 in Table"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 9,
+    "bounding box" : [ 306.604, 663.467, 543.973, 742.908 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3 , the intersection of these two surfaces contain multiple connected components. The results in Table 3 show that our algorithm can correctly identify and distinguish all connected branches of the intersection, and obtain a one-to-one correspondence between the parametric domains of the two surfaces. Singular points . We also investigated the performance"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 9,
+    "bounding box" : [ 306.604, 567.825, 543.973, 671.177 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "of the algorithm when dealing with intersections containing singular points. In the example 3 in Table 3 , the intersection of two B-spline surfaces contains two singular points. Our algorithm can detect the location of the two singular points and split the intersection point sets into some simple subsets at the singular points and keep the topology consistent across different parameter domains. Different topology in different parameter domains ."
+  }, {
+    "type" : "paragraph",
+    "id" : 635,
+    "page number" : 9,
+    "bounding box" : [ 306.604, 424.363, 543.973, 575.536 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Even when the topology of the intersection of different parameter domains is different, our method can still obtain the correct correspondence. Example 4 in Table 3 and Example 5 in Table 4 show the cases that two periodic B-spline surfaces intersecting. Due to periodicity, we need to partition the intersection set into different subsets at the boundary points in the parameter domain. Since the two surfaces \uD835\uDC35 1 ( \uD835\uDC62, \uD835\uDC63 ) and \uD835\uDC35 2 ( \uD835\uDC60, \uD835\uDC61 ) are unfolded at different positions in the parameter domain, the topology of the intersection point sets \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 of the parameter domain is different. However, we can still obtain the correct correspondence. Intersection with isolated points . Our method can also"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 9,
+    "bounding box" : [ 306.604, 340.677, 543.973, 432.074 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "precisely identify isolated intersection points. Example 6 in Table 4 demonstrates a case where two surfaces intersect at isolated tangent points. By locating nodes with degree 0 in the Mapper graph, our method can distinguish isolated tangent contact points and establish the correct correspondence between the parameter domains of the two surfaces. Combinations of multiple situations . Even when inter-"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 9,
+    "bounding box" : [ 306.604, 161.349, 543.973, 348.388 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "sections involve combinations of the aforementioned complex cases, our method achieves reliable topological understanding. In Example 7 in Table 4 , the intersection of the two surfaces contains both singular points and periodic boundary points. In Example 8 in Table 4 , the intersection of the two surfaces contains singular points and periodic boundary points, and multiple connected components. In Example 9 in Table 4 , the intersection of the two surfaces contains multiple singular points and periodic boundary points. Our method can effectively identifies their topological structures, correctly partition intersection point sets, and establishes accurate correspondences between the parameter domains of two intersecting surfaces. This validates the effectiveness of our method in handling complex topology."
+  }, {
+    "type" : "heading",
+    "id" : 650,
+    "level" : "Doctitle",
+    "page number" : 9,
+    "bounding box" : [ 306.604, 141.43, 386.264, 151.228 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "5.3. Comparison"
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 9,
+    "bounding box" : [ 306.604, 54.649, 543.973, 146.046 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To evaluate the effectiveness of the proposed method, we compare it with the intersection-processing module in the open-source software Open CASCADE Technology (OCCT). The version of OCCT employed in this work is 7.8.1. Table 2 summarizes the results for examples containing multiple singular points, with the ordering consistent with Tables 4 and 3 ."
+  }, {
+    "type" : "header",
+    "id" : 755,
+    "page number" : 10,
+    "bounding box" : [ 51.307, 724.329, 80.601, 732.198 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 757,
+      "page number" : 10,
+      "bounding box" : [ 51.307, 724.329, 80.601, 732.198 ],
+      "heading level" : 1,
+      "font" : "SFSX0900",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "Table 3"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 10,
+    "bounding box" : [ 51.307, 678.657, 543.972, 721.24 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Topology understanding of different surface/surface intersections ( \uD835\uDF03 ov = 0 . 2) . Corresponding results in different parameter domains are drawn for clarity. The first row shows the intersecting B-spline surfaces; the second and third rows are the intersection point sets \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 ; the fourth row is the Mapper graph of point set \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 ; the fifth and sixth rows are the results corresponding to \uD835\uDC43 1 ,\uD835\uDC62,\uD835\uDC63 and \uD835\uDC43 2 ,\uD835\uDC60,\uD835\uDC61 . Different intersection segments are represented in different colors."
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 10,
+    "bounding box" : [ 180.117, 661.12, 220.377, 669.008 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "page number" : 10,
+    "bounding box" : [ 263.337, 661.12, 303.597, 669.008 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 10,
+    "bounding box" : [ 346.556, 661.12, 386.816, 669.008 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 3"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 10,
+    "bounding box" : [ 429.776, 661.12, 470.036, 669.008 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 4"
+  }, {
+    "type" : "paragraph",
+    "id" : 661,
+    "page number" : 10,
+    "bounding box" : [ 115.204, 615.547, 147.192, 623.435 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Surfaces"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "level" : "3",
+    "page number" : 10,
+    "bounding box" : [ 255.333, 597.701, 304.667, 642.368 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 10,
+    "bounding box" : [ 122.368, 541.88, 127.694, 549.52 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 10,
+    "bounding box" : [ 130.683, 540.188, 139.53, 545.281 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 10,
+    "bounding box" : [ 127.694, 540.047, 130.683, 545.215 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 10,
+    "bounding box" : [ 123.047, 464.698, 128.373, 472.338 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 668,
+    "page number" : 10,
+    "bounding box" : [ 131.362, 463.007, 138.852, 468.1 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC60,\uD835\uDC61"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "page number" : 10,
+    "bounding box" : [ 128.373, 462.866, 131.362, 468.034 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 10,
+    "bounding box" : [ 116.451, 398.461, 145.948, 406.349 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Mapper"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 10,
+    "bounding box" : [ 115.103, 387.502, 147.29, 395.39 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "graph of"
+  }, {
+    "type" : "paragraph",
+    "id" : 672,
+    "page number" : 10,
+    "bounding box" : [ 122.368, 376.558, 127.694, 384.198 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 10,
+    "bounding box" : [ 130.683, 374.866, 139.53, 379.959 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 10,
+    "bounding box" : [ 127.694, 374.725, 130.683, 379.893 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 10,
+    "bounding box" : [ 257.0, 530.701, 317.333, 554.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "JOC"
+  }, {
+    "type" : "image",
+    "page number" : 10,
+    "bounding box" : [ 248.031, 433.237, 321.925, 507.131 ],
+    "alt" : "In this image there is a table with some objects on it.",
+    "source" : "GLL2026/imageFile8.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 671,
+    "page number" : 10,
+    "bounding box" : [ 258.0, 376.368, 316.0, 398.368 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "JOC"
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 10,
+    "bounding box" : [ 114.011, 315.799, 148.381, 323.687 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Result of"
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 10,
+    "bounding box" : [ 122.368, 304.856, 127.694, 312.496 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 10,
+    "bounding box" : [ 130.683, 303.164, 139.53, 308.257 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 10,
+    "bounding box" : [ 127.694, 303.023, 130.683, 308.191 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 10,
+    "bounding box" : [ 114.011, 238.618, 148.381, 246.506 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Result of"
+  }, {
+    "type" : "paragraph",
+    "id" : 680,
+    "page number" : 10,
+    "bounding box" : [ 123.047, 227.674, 128.373, 235.314 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 10,
+    "bounding box" : [ 131.362, 225.982, 138.852, 231.075 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC60,\uD835\uDC61"
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 10,
+    "bounding box" : [ 128.373, 225.841, 131.362, 231.009 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 10,
+    "bounding box" : [ 51.307, 77.098, 288.666, 180.45 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In example 3, both methods produce seven segments. In Example 8, OCCT generates only four segments because surface periodicity is not considered, whereas the proposed method produces eight segments. In Example 9, OCCT partitions the intersection into four segments, resulting in tangential discontinuities. In contrast, the proposed method separates the curve at all singular points and produces eight geometrically continuous segments. Overall, compared with OCCT, the proposed method"
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 10,
+    "bounding box" : [ 51.307, 53.187, 288.666, 84.808 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Overall, compared with OCCT, the proposed method achieves a finer and topologically consistent segmentation of the intersection. Although OCCT can partition the intersection into non-self-intersecting segments, it does not explicitly address topological transitions or geometric continuity at singular points. As a result, the intersection may not be fully separated at singularities, leading to discontinuities in tangent direction. By incorporating global topological information, the proposed method produces a finer partition in which each segment is free of self-intersection and maintains tangential continuity."
+  }, {
+    "type" : "header",
+    "id" : 756,
+    "page number" : 11,
+    "bounding box" : [ 51.307, 702.393, 543.967, 732.198 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 758,
+      "page number" : 11,
+      "bounding box" : [ 51.307, 702.393, 543.967, 732.198 ],
+      "font" : "SFSS0900",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "Table 4 More results of different surface/surface intersections ( \uD835\uDF03 ov = 0 . 2) . The arrangement of content in each row and column remains consistent with Table 3"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 11,
+    "bounding box" : [ 139.226, 686.155, 178.048, 694.043 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "example 5"
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 11,
+    "bounding box" : [ 221.727, 686.155, 261.987, 694.043 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 6"
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 11,
+    "bounding box" : [ 304.947, 686.155, 345.207, 694.043 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 7"
+  }, {
+    "type" : "paragraph",
+    "id" : 690,
+    "page number" : 11,
+    "bounding box" : [ 388.166, 686.155, 428.426, 694.043 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 8"
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 11,
+    "bounding box" : [ 471.386, 686.155, 511.646, 694.043 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Example 9"
+  }, {
+    "type" : "paragraph",
+    "id" : 692,
+    "page number" : 11,
+    "bounding box" : [ 73.595, 644.213, 105.583, 652.101 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Surfaces"
+  }, {
+    "type" : "paragraph",
+    "id" : 693,
+    "page number" : 11,
+    "bounding box" : [ 80.758, 574.176, 86.084, 581.816 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 695,
+    "page number" : 11,
+    "bounding box" : [ 89.073, 572.484, 97.92, 577.577 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 694,
+    "page number" : 11,
+    "bounding box" : [ 86.084, 572.343, 89.073, 577.511 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 696,
+    "page number" : 11,
+    "bounding box" : [ 81.437, 496.994, 86.763, 504.634 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 698,
+    "page number" : 11,
+    "bounding box" : [ 89.752, 495.303, 97.242, 500.396 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC60,\uD835\uDC61"
+  }, {
+    "type" : "paragraph",
+    "id" : 697,
+    "page number" : 11,
+    "bounding box" : [ 86.763, 495.162, 89.752, 500.33 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 702,
+    "page number" : 11,
+    "bounding box" : [ 74.842, 430.757, 104.339, 438.645 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Mapper"
+  }, {
+    "type" : "paragraph",
+    "id" : 703,
+    "page number" : 11,
+    "bounding box" : [ 73.493, 419.798, 105.68, 427.686 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "graph of"
+  }, {
+    "type" : "paragraph",
+    "id" : 704,
+    "page number" : 11,
+    "bounding box" : [ 80.758, 408.854, 86.084, 416.494 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 706,
+    "page number" : 11,
+    "bounding box" : [ 89.073, 407.162, 97.92, 412.255 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 705,
+    "page number" : 11,
+    "bounding box" : [ 86.084, 407.021, 89.073, 412.189 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 699,
+    "page number" : 11,
+    "bounding box" : [ 128.667, 397.701, 191.667, 446.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "00"
+  }, {
+    "type" : "paragraph",
+    "id" : 700,
+    "page number" : 11,
+    "bounding box" : [ 206.0, 396.034, 252.667, 446.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 707,
+    "page number" : 11,
+    "bounding box" : [ 72.401, 348.096, 106.771, 355.984 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Result of"
+  }, {
+    "type" : "paragraph",
+    "id" : 708,
+    "page number" : 11,
+    "bounding box" : [ 80.758, 337.152, 86.084, 344.792 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 710,
+    "page number" : 11,
+    "bounding box" : [ 89.073, 335.46, 97.92, 340.553 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC62,\uD835\uDC63"
+  }, {
+    "type" : "paragraph",
+    "id" : 709,
+    "page number" : 11,
+    "bounding box" : [ 86.084, 335.319, 89.073, 340.487 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "image",
+    "page number" : 11,
+    "bounding box" : [ 289.641, 388.351, 363.535, 462.245 ],
+    "alt" : "In this image there is a table with some text on it.",
+    "source" : "GLL2026/imageFile9.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 701,
+    "page number" : 11,
+    "bounding box" : [ 491.0, 401.034, 533.0, 445.701 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0o"
+  }, {
+    "type" : "paragraph",
+    "id" : 711,
+    "page number" : 11,
+    "bounding box" : [ 72.401, 270.914, 106.771, 278.802 ],
+    "font" : "SFSS0900",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Result of"
+  }, {
+    "type" : "paragraph",
+    "id" : 712,
+    "page number" : 11,
+    "bounding box" : [ 81.437, 259.97, 86.763, 267.61 ],
+    "font" : "STIXMath-Italic",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "\uD835\uDC43 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 714,
+    "page number" : 11,
+    "bounding box" : [ 89.752, 258.279, 97.242, 263.372 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",\uD835\uDC60,\uD835\uDC61"
+  }, {
+    "type" : "paragraph",
+    "id" : 713,
+    "page number" : 11,
+    "bounding box" : [ 86.763, 258.138, 89.752, 263.306 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "heading",
+    "id" : 715,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 51.307, 196.075, 195.723, 205.873 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 10.959,
+    "text color" : "[0.0]",
+    "content" : "5.4. Discussion and limitations"
+  }, {
+    "type" : "paragraph",
+    "id" : 716,
+    "page number" : 11,
+    "bounding box" : [ 51.307, 85.384, 288.676, 200.691 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Despite the promising results, the proposed algorithm has several limitations. One of the main limitations is related to the handling of clustered singular points. When multiple singular points are in close proximity, the current approach of constructing interval coverages for the filter function in the Mapper graph may assign these points to the same interval. As a result, they are clustered together as a single node in the Mapper graph, causing the algorithm to incorrectly identify them as a single singular point."
+  }, {
+    "type" : "heading",
+    "id" : 717,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 306.604, 192.884, 378.682, 203.572 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "6. Conclusion"
+  }, {
+    "type" : "paragraph",
+    "id" : 718,
+    "page number" : 11,
+    "bounding box" : [ 306.604, 78.509, 543.973, 193.817 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this paper, we present a new algorithm for understanding the topology of intersections between B-spline surfaces with Mapper. The algorithm first constructs a Mapper graph using a Two-step Mapper algorithm. Next, the algorithm identifies characteristic nodes in the Mapper graph. Finally, by partitioning the Mapper graph at these characteristic nodes, we divide the intersections into simpler segments, enabling a more desirable understanding of the topological structure of the intersections. The significance of our method lies in its ability to"
+  }, {
+    "type" : "paragraph",
+    "id" : 719,
+    "page number" : 11,
+    "bounding box" : [ 306.604, 54.599, 543.973, 86.22 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "determine the overall topology of the intersection, which is"
+  }, {
+    "type" : "paragraph",
+    "id" : 720,
+    "page number" : 12,
+    "bounding box" : [ 51.307, 687.377, 288.676, 742.909 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "fundamental to subsequent processes of surface/surface intersection calculation. The accurate topology understanding provided by our algorithm can enhance the robustness and efficiency of workflows in surface/surface intersection."
+  }, {
+    "type" : "heading",
+    "id" : 721,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 51.307, 659.107, 221.059, 669.795 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Declaration of competing interest"
+  }, {
+    "type" : "paragraph",
+    "id" : 722,
+    "page number" : 12,
+    "bounding box" : [ 51.307, 616.463, 288.676, 660.039 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper."
+  }, {
+    "type" : "heading",
+    "id" : 724,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 51.307, 723.047, 106.683, 733.735 ],
+    "heading level" : 1,
+    "font" : "STIXGeneral-Bold",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "paragraph",
+    "id" : 726,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 697.387, 288.673, 723.083 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Dieter Lasser. Intersection of parametric surfaces in the bernstein-bezier representation. Computer-Aided Design , 18(4):186–192, 1986. Luiz Henrique De Figueiredo. Surface intersection using a ne arithmetic. In"
+  }, {
+    "type" : "paragraph",
+    "id" : 727,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 667.499, 288.673, 703.158 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Luiz Henrique De Figueiredo. Surface intersection using a ne arithmetic. In Proceedings of graphics interface , volume 96, pages 168-175. Citeseer, 1996."
+  }, {
+    "type" : "paragraph",
+    "id" : 729,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 627.649, 288.673, 673.27 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Hongwei Lin, Yang Qin, Hongwei Liao, and Yunyang Xiong. Affine arithmetic-based b-spline surface intersection with gpu acceleration. IEEE transactions on visualization and computer graphics , 20(2):172181, 2013."
+  }, {
+    "type" : "paragraph",
+    "id" : 731,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 597.761, 288.673, 633.419 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Gurjeet Singh, Facundo Mémoli, Gunnar E Carlsson, et al. Topological methods for the analysis of high dimensional data sets and 3d object recognition. PBG@ Eurographics , 2:091-100, 2007."
+  }, {
+    "type" : "paragraph",
+    "id" : 733,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 567.873, 288.673, 603.531 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ramon F Sarraga. Algebraic methods for intersections of quadric surfaces in gmsolid. Computer Vision, Graphics, and Image Processing , 22(2): 222-238, 1983."
+  }, {
+    "type" : "paragraph",
+    "id" : 735,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 537.985, 288.673, 573.643 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Dinesh Manocha and John Canny. A new approach for surface intersection. In Proceedings of the first ACM symposium on Solid modeling foundations and CAD/CAM applications , pages 209-219, 1991."
+  }, {
+    "type" : "paragraph",
+    "id" : 737,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 508.097, 288.673, 543.755 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Dinesh Manocha and Shankar Krishnan. Algebraic pruning: a fast technique for curve and surface intersection. Computer Aided Geometric Design , 14(9):823-845, 1997."
+  }, {
+    "type" : "paragraph",
+    "id" : 740,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 478.209, 288.673, 513.868 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Rida T Farouki. The characterization of parametric surface sections. Computer Vision, Graphics, and Image Processing , 33(2):209-236, 1986."
+  }, {
+    "type" : "paragraph",
+    "id" : 741,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 428.396, 288.673, 483.98 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Thomas W Sederberg. Guaranteed consistency of surface intersections and trimmed surfaces using a coupled topology resolution and domain decomposition scheme. Advances in Computational Mathematics , 27: 1–26, 2007. Chandrajit L Bajaj, Christoph M Hoffmann, Robert E Lynch, and JEH"
+  }, {
+    "type" : "paragraph",
+    "id" : 742,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 398.508, 288.673, 434.166 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Chandrajit L Bajaj, Christoph M Hoffmann, Robert E Lynch, and JEH Hopcroft. Tracing surface intersections. Computer aided geometric design , 5(4):285-307, 1988."
+  }, {
+    "type" : "paragraph",
+    "id" : 743,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 368.62, 288.673, 404.278 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Jaroslaw R Rossignac and Aristides AG Requicha. Piecewise-circular curves for geometric modeling. IBM Journal of Research and Development , 31(3):296-313, 1987."
+  }, {
+    "type" : "paragraph",
+    "id" : 744,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 338.732, 288.673, 374.391 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Robert E Barnhill and Scott N Kersey. A marching method for parametric surface/surface intersection. Computer aided geometric design , 7(1-4): 257-280, 1990."
+  }, {
+    "type" : "paragraph",
+    "id" : 745,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 308.844, 288.673, 344.503 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Pradeep Sinha, Eric Klassen, and KK Wang. Exploiting topological and geometric properties for selective subdivision. In Proceedings of the first annual symposium on Computational geometry , pages 39-45, 1985."
+  }, {
+    "type" : "paragraph",
+    "id" : 746,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 278.956, 288.673, 314.615 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Shankar Krishnan and Dinesh Manocha. An efficient surface intersection algorithm based on lower-dimensional formulation. ACM Transactions on Graphics (TOG) , 16(1):74-106, 1997."
+  }, {
+    "type" : "paragraph",
+    "id" : 747,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 259.031, 288.673, 284.727 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Josef Hoschek and Dieter Lasser. Fundamentals of computer aided geometric design . AK Peters, Ltd., 1993."
+  }, {
+    "type" : "paragraph",
+    "id" : 748,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 239.106, 288.673, 264.801 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Nicholas M Patrikalakis. Surface-to-surface intersections. IEEE Computer Graphics and Applications , 13(1):89-95, 2002."
+  }, {
+    "type" : "paragraph",
+    "id" : 749,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 209.218, 288.673, 244.876 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Thomas A Grandine and Frederick W Klein IV. A new approach to the surface intersection problem. Computer Aided Geometric Design , 14 (2):111-134, 1997."
+  }, {
+    "type" : "paragraph",
+    "id" : 750,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 179.33, 288.673, 214.988 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Mathieu Carriere, Bertrand Michel, and Steve Oudot. Statistical analysis and parameter selection for mapper. Journal of Machine Learning Research , 19(12):1-39, 2018."
+  }, {
+    "type" : "paragraph",
+    "id" : 751,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 149.442, 288.673, 185.1 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Francisco Belchí, Jacek Brodzki, Matthew Burfitt, and Mahesan Niranjan. A numerical measure of the instability of mapper-type algorithms. Journal of Machine Learning Research , 21(202):1-45, 2020."
+  }, {
+    "type" : "paragraph",
+    "id" : 752,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 119.554, 288.673, 155.212 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Quang-Thinh Bui, Bay Vo, Hoang-Anh Nguyen Do, Nguyen Quoc Viet Hung, and Vaclav Snasel. F-mapper: A fuzzy mapper clustering algorithm. Knowledge-based systems , 189:105107, 2020."
+  }, {
+    "type" : "paragraph",
+    "id" : 753,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 79.703, 288.673, 125.324 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Enrique Alvarado, Robin Belton, Emily Fischer, Kang-Ju Lee, Sourabh Palande, Sarah Percival, and Emilie Purvine. g-mapper: Learning a cover in the mapper construction. SIAM Journal on Mathematics of Data Science , 7(2):572-596, 2025."
+  }, {
+    "type" : "paragraph",
+    "id" : 754,
+    "page number" : 13,
+    "bounding box" : [ 51.307, 49.816, 288.673, 85.474 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Kathryn Hess, and Cathrin Brisken. Two-tier mapper, an unbiased topology-based clustering method for enhanced global gene expression"
+  }, {
+    "type" : "paragraph",
+    "id" : 723,
+    "page number" : 13,
+    "bounding box" : [ 316.564, 724.286, 479.481, 740.019 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "analysis. Bioinformatics , 35(18):3339–3347, 2019. Li, Wei-Yi Cheng, Benjamin S Glicksberg, Omri"
+  }, {
+    "type" : "paragraph",
+    "id" : 725,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 674.473, 543.97, 730.057 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Li Gottesman, Ronald Tamler, Rong Chen, Erwin P Bottinger, and Joel T Dudley. Identification of type 2 diabetes subgroups through topological analysis of patient similarity. Science translational medicine , 7(311):311ra174–311ra174, 2015. Wei Guo and Ashis G Banerjee. Identification of key features using topo-"
+  }, {
+    "type" : "paragraph",
+    "id" : 728,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 644.585, 543.97, 680.243 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Wei Guo and Ashis G Banerjee. Identification of key features using topological data analysis for accurate prediction of manufacturing system outputs. Journal of Manufacturing Systems , 43:225-234, 2017."
+  }, {
+    "type" : "paragraph",
+    "id" : 730,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 614.697, 543.97, 650.355 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Mathieu Carrière and Bertrand Michel. Statistical analysis of mapper for stochastic and multivariate filters. Journal of Applied and Computational Topology , 6(3):331-369, 2022."
+  }, {
+    "type" : "paragraph",
+    "id" : 732,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 584.809, 543.97, 620.468 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Elizabeth Munch and Bei Wang. Convergence between categorical representations of reeb space and mapper. arXiv preprint arXiv:1512.04108 , 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 734,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 554.921, 543.97, 590.58 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Martin Ester, Hans-Peter Kriegel, Jörg Sander, Xiaowei Xu, et al. A densitybased algorithm for discovering clusters in large spatial databases with noise. In kdd , volume 96, pages 226-231, 1996."
+  }, {
+    "type" : "paragraph",
+    "id" : 736,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 534.996, 543.97, 560.692 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Herbert Edelsbrunner and John Harer. Computational topology: an introduction . American Mathematical Soc., 2010."
+  }, {
+    "type" : "paragraph",
+    "id" : 738,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 515.071, 543.97, 540.766 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ian T Jolliffe. Principal component analysis: a beginner's guide-i. introduction and application. Weather , 45(10):375-382, 1990."
+  }, {
+    "type" : "paragraph",
+    "id" : 739,
+    "page number" : 13,
+    "bounding box" : [ 306.604, 465.258, 543.97, 520.841 ],
+    "font" : "STIXGeneral-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Matteo Caorsi, Anibal M Medina-Mardones, Alberto Dassatti, and Kathryn Hess. giotto-tda:: A topological data analysis toolkit for machine learning and data exploration. Journal of Machine Learning Research , 22(39):1–6, 2021."
+  } ]
+}
