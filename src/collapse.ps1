@@ -123,7 +123,7 @@ function Invoke-Collapse {
             if ($cur) { $chunks.Add($cur) }
             $cur = [pscustomobject][ordered]@{
                 type = 'prose'; page = $nd.page; bbox = @($bbox[0], $bbox[1], $bbox[2], $bbox[3])
-                font = $nd.font; n_shards = 1; content = $content
+                font = $nd.font; font_size = $nd.font_size; n_shards = 1; content = $content
             }
             $lastTop = $ntop; $lastX1 = $nx1
         }
@@ -132,6 +132,8 @@ function Invoke-Collapse {
             $chunk = [ordered]@{ type = $t; page = $nd.page; bbox = $bbox; n_shards = 1; content = $content }
             if ($null -ne $nd.level) { $chunk['level'] = $nd.level }
             if ($null -ne $nd.font) { $chunk['font'] = $nd.font }
+            if ($null -ne $nd.font_size) { $chunk['font_size'] = $nd.font_size }
+            if ($nd.heading_source) { $chunk['heading_source'] = $nd.heading_source }
             if ($t -eq 'header' -or $t -eq 'footer') { $chunk['is_furniture'] = $true }
             $chunks.Add([pscustomobject]$chunk)
         }

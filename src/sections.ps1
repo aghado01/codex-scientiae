@@ -53,6 +53,13 @@ function Get-RunningHeadKey([string]$content) {
     return $s
 }
 
+# A block label (Theorem 2.1, Lemma 3.3, Proof, ...) is body content, not a section —
+# heading recovery promotes these to headings on their face, so guard them out of the
+# proto-TOC here. They keep their enclosing `section` but get no `section_level`.
+function Test-BlockLabel([string]$heading) {
+    return [bool]($heading -match '(?i)^\s*(theorem|lemma|proof|corollary|proposition|definition|remark|example|claim|fact|conjecture|notation|assumption|observation)\b')
+}
+
 function Invoke-Sections {
     [CmdletBinding()]
     param(
@@ -88,11 +95,17 @@ function Invoke-Sections {
                 $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue 'running_head' -Force
                 continue
             }
-            $role  = Get-SectionRole ([string]$c.content)
-            $level = Get-SectionLevel ([string]$c.content)
-            $c | Add-Member -NotePropertyName section_role  -NotePropertyValue $role  -Force
-            $c | Add-Member -NotePropertyName section_level -NotePropertyValue $level -Force
-            if ($level -eq 1) { $currentSection = [string]$c.content }
+            if ($c.boilerplate_hint) { continue }   # an email/url/etc promoted on its face is not a section
+            if (Test-BlockLabel ([string]$c.content)) {
+                $c | Add-Member -NotePropertyName is_block -NotePropertyValue $true -Force
+            }
+            else {
+                $role  = Get-SectionRole ([string]$c.content)
+                $level = Get-SectionLevel ([string]$c.content)
+                $c | Add-Member -NotePropertyName section_role  -NotePropertyValue $role  -Force
+                $c | Add-Member -NotePropertyName section_level -NotePropertyValue $level -Force
+                if ($level -eq 1) { $currentSection = [string]$c.content }
+            }
         }
         if ($currentSection) { $c | Add-Member -NotePropertyName section -NotePropertyValue $currentSection -Force }
     }

@@ -62,19 +62,9 @@ function Invoke-Zones {
         $c | Add-Member -NotePropertyName zone -NotePropertyValue $zone -Force
     }
 
-    # 2. title candidate — fallback chain robust to missing font metadata:
-    #    largest-font front-matter heading -> a 'Doctitle'-level heading -> first heading
-    $fm = @($chunks | Where-Object { $_.zone -eq 'frontmatter' -and $_.type -eq 'heading' })
-    $withFont = @($fm | Where-Object { $null -ne $_.font_size })
-    $titleChunk = if ($withFont.Count) {
-        $withFont | Sort-Object { [double]$_.font_size } -Descending | Select-Object -First 1
-    } else {
-        $dt = @($fm | Where-Object { $_.level -eq 'Doctitle' })
-        if ($dt.Count) { $dt[0] } elseif ($fm.Count) { $fm[0] } else { $null }
-    }
-    if ($titleChunk) { $titleChunk | Add-Member -NotePropertyName title_candidate -NotePropertyValue $true -Force }
-
-    # 3. universal boilerplate hints — anywhere (footnote MSC/funding lives in body)
+    # 2. universal boilerplate hints — anywhere (footnote MSC/funding lives in body).
+    #    Tagged before the title pick so a big-font boilerplate line (the arXiv margin
+    #    watermark, set at 20pt) can't be mistaken for the title.
     foreach ($c in $chunks) {
         $content = [string]$c.content
         if (-not $content) { continue }
@@ -85,6 +75,19 @@ function Invoke-Zones {
             }
         }
     }
+
+    # 3. title candidate — largest-font non-boilerplate front-matter heading, ties broken
+    #    by reading order (the title leads the page). Falls back to a 'Doctitle'-level
+    #    heading, then the first heading, when font metadata is absent.
+    $fm = @($chunks | Where-Object { $_.zone -eq 'frontmatter' -and $_.type -eq 'heading' -and -not $_.boilerplate_hint })
+    $withFont = @($fm | Where-Object { $null -ne $_.font_size })
+    $titleChunk = if ($withFont.Count) {
+        $withFont | Sort-Object @{Expression={[double]$_.font_size};Descending=$true}, @{Expression={[int]$_.id};Descending=$false} | Select-Object -First 1
+    } else {
+        $dt = @($fm | Where-Object { $_.level -eq 'Doctitle' })
+        if ($dt.Count) { $dt[0] } elseif ($fm.Count) { $fm[0] } else { $null }
+    }
+    if ($titleChunk) { $titleChunk | Add-Member -NotePropertyName title_candidate -NotePropertyValue $true -Force }
 
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'zones'
 
