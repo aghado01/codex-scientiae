@@ -12,13 +12,14 @@
     replacement_char  - the U+FFFD sentinel
     gibberish         - space-shattered single-char runs ("a o f i n t o o t")
     ligature_residue  - OCR ligatures that survived collapse
-    unbalanced_braces - `{` / `}` mismatch in math content
+    unbalanced_delimiters - {} / [] / () / \left..\right mismatch in math content
 
     . ./fidelity.ps1
     Invoke-Fidelity -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
 . "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/latex.ps1"
 
 function Get-CorruptionType($Chunk) {
     $content = [string]$Chunk.content
@@ -27,10 +28,14 @@ function Get-CorruptionType($Chunk) {
     if ($content.Contains([char]0xFFFD))         { return 'replacement_char' }
     if ($content -match '(?:\b\w\s+){6,}\b\w\b') { return 'gibberish' }
     if ($content -match '[ﬀ-ﬄ]')        { return 'ligature_residue' }
-    if ($Chunk.type -eq 'formula' -or $content.Contains('$')) {
-        $open  = ([regex]::Matches($content, '\{')).Count
-        $close = ([regex]::Matches($content, '\}')).Count
-        if ($open -ne $close) { return 'unbalanced_braces' }
+    # delimiter balance via the context-aware scanner (skips escaped \{ \(, pairs
+    # \left..\right): full balance for a pure formula; braces only for inline math in
+    # prose, where prose parens/brackets would otherwise false-positive.
+    if ($Chunk.type -eq 'formula') {
+        if (-not (Get-LatexBalance $content).full) { return 'unbalanced_delimiters' }
+    }
+    elseif ($content.Contains('$')) {
+        if (-not (Get-LatexBalance $content).braceBalanced) { return 'unbalanced_delimiters' }
     }
     return $null
 }
