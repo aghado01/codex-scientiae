@@ -1,0 +1,3058 @@
+{
+  "file name" : "BCKL2010.pdf",
+  "number of pages" : 23,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20180529063708-04'00'",
+  "modification date" : "D:20180529063708-04'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 365,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 127.8, 617.757, 484.27, 642.449 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "STATISTICAL TOPOLOGY VIA MORSE THEORY PERSISTENCE AND NONPARAMETRIC ESTIMATION"
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 1,
+    "bounding box" : [ 171.24, 575.789, 440.879, 597.752 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "PETER BUBENIK, GUNNAR CARLSON, PETER T. KIM, AND ZHI–MING LUO"
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 1,
+    "bounding box" : [ 162.48, 391.469, 449.769, 556.832 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Abstract. In this paper we examine the use of topological methods for multivariate statistics. Using persistent homology from computational algebraic topology, a random sample is used to construct estimators of persistent homology. This estimation procedure can then be evaluated using the bottleneck distance between the estimated persistent homology and the true persistent homology. The connection to statistics comes from the fact that when viewed as a nonparametric regression problem, the bottleneck distance is bounded by the sup-norm loss. Consequently, a sharp asymptotic minimax bound is determined under the sup–norm risk over Ho¨lder classes of functions for the nonparametric regression problem on manifolds. This provides good convergence properties for the persistent homology estimator in terms of the expected bottleneck distance."
+  }, {
+    "type" : "heading",
+    "id" : 368,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 257.88, 342.839, 354.009, 354.806 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "1. Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 1,
+    "bounding box" : [ 126.72, 196.44, 485.441, 333.926 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Quantitative scientists of diverse backgrounds are being asked to apply the techniques of their specialty to data which is greater in both size and complexity than that which has been studied previously. Massive, multivariate data sets, for which traditional linear methods are inadequate, pose challenges in representation, visualization, interpretation and analysis. A common ﬁnding is that these massive multivariate data sets require the development of new statistical methodology and that these advances are dependent on increasing technical sophistication. Two such data-analytic techniques that have recently come to the fore are computational algebraic topology and geometric statistics."
+  }, {
+    "type" : "paragraph",
+    "id" : 370,
+    "page number" : 1,
+    "bounding box" : [ 126.72, 162.869, 485.49, 184.832 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2000 Mathematics Subject Classiﬁcation. Primary 62C10, 62G08; Secondary 41A15, 55N99, 58J90."
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 1,
+    "bounding box" : [ 126.72, 127.229, 485.408, 161.072 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Key words and phrases. Bottleneck distance, critical values, geometric statistics, minimax, nonparametric regression, persistent homology, Plex, Riemannian manifold, sublevel sets."
+  }, {
+    "type" : "paragraph",
+    "id" : 372,
+    "page number" : 1,
+    "bounding box" : [ 126.72, 103.589, 485.383, 125.552 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Support for the second author was partially funded by DARPA, ONR, Air Force Oﬃce of Scientiﬁc Research, and NSF.."
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 1,
+    "bounding box" : [ 138.6, 91.589, 483.0, 101.552 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Support for the third author was partially funded by NSERC grant DG 46204."
+  }, {
+    "type" : "paragraph",
+    "id" : 374,
+    "page number" : 2,
+    "bounding box" : [ 126.72, 607.199, 485.366, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Commonly, one starts with data obtained from some induced geometric structure, such as a curved submanifold of a numerical space, or, a singular algebraic variety. The observed data is obtained as a random sample from this space, and the objective is to statistically recover features of the underlying space."
+  }, {
+    "type" : "paragraph",
+    "id" : 375,
+    "page number" : 2,
+    "bounding box" : [ 126.72, 356.16, 485.383, 605.247 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "In computational algebraic topology, one attempts to recover qualitative global features of the underlying data, such as connectedness, or the number of holes, or the existence of obstructions to certain constructions, based upon the random sample. In other words, one hopes to recover the underlying topology. An advantage of topology is that it is stable under deformations and thus can potentially lead to robust statistical procedures. A combinatorial construction such as the alpha complex or the ˇ Cech complex, see for example [33], converts the data into an object for which it is possible to compute the topology. However, it is quickly apparent that such a construction and its calculated topology depend on the scale at which one considers the data. A multi– scale solution to this problem is the technique of persistent homology. It quantiﬁes the persistence of topological features as the scale changes. Persistent homology is useful for visualization, feature detection and object recognition. Applications of persistent topology include protein structure analysis [30], gene expression [11], and sensor networks [8]. In a recent application to brain image data, a demonstration of persistent topology in discriminating between two populations is exhibited [5]."
+  }, {
+    "type" : "paragraph",
+    "id" : 376,
+    "page number" : 2,
+    "bounding box" : [ 126.72, 216.72, 485.375, 354.207 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "In geometric statistics one uses the underlying Riemannian structure to recover quantitative information concerning the underlying probability distribution and functionals thereof. The idea is to extend statistical estimation techniques to functions over Riemannian manifolds, utilizing the Riemannian structure. One then considers the magnitude of the statistical accuracy of these estimators. Considerable progress has been achieved in terms of optimal estimation [14, 12, 16, 26, 27, 19, 17]. Other related works include [28, 29, 23, 1, 3]. There is also a growing interest in function estimation over manifolds in the learning theory literature [7, 31, 2]; see also the references cited therein."
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 2,
+    "bounding box" : [ 126.719, 91.081, 485.382, 214.648 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Although computational algebraic topology and geometric statistics appear dissimilar and seem to have different objectives, it has recently been noticed that they share a commonality through statistical sampling. In particular, a pathway between them can be established by using elements of Morse theory. This is achieved through the fact that persistent homology can be applied to Morse functions and comparisons between two Morse functions can be assessed by a metric called the bottleneck distance. Furthermore, the bottleneck distance is bounded by the sup-norm distance between the two Morse functions on some underlying manifold. This framework thus provides just enough structure for a statistical interpretation. Indeed, consider a nonparametric regression problem on some manifold. Given data in this framework one can construct a nonparametric regression function estimator such that the persistent homology associated with this estimated regression function is an estimator for the persistent homology of the true regression function, as assessed by the bottleneck distance. Since this will be bounded by the sup-norm loss, by providing a sharp sup-norm minimax estimator of the regression function, we can effectively bound the expected bottleneck distance between the estimated persistent homology and the true persistent homology. Consequently, by showing consistency in the sup-norm risk, we can effectively show consistency in the bottleneck risk for persistent homology which is what we will demonstrate. Let us again emphasize that the pathway that allows us to connect computational algebraic topology with geometric statistics is Morse theory. This is very intriguing in that a pathway between the traditional subjects of geometry and topology is also Morse theory."
+  }, {
+    "type" : "paragraph",
+    "id" : 378,
+    "page number" : 3,
+    "bounding box" : [ 126.721, 300.36, 485.321, 437.847 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We now summarize this paper. In Section 2 we will lay down the topological preliminaries needed to state our main results. In Section 3, we go over the preliminaries needed for nonparametric regression on a Riemannian manifold. Section 4 states the main results where sharp sup-norm minimax bounds consisting of constant and rate, and sharp sup-norm estimators are presented. The connection to bounding the persistent homology estimators thus ensues. Following this in Section 5, a brief discussion of the implementation is given. Proofs to the main results are collected in Section 6. An Appendix that contains some technical material is included for completeness."
+  }, {
+    "type" : "heading",
+    "id" : 379,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 216.481, 275.76, 395.465, 287.727 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2. Topological Preliminaries"
+  }, {
+    "type" : "paragraph",
+    "id" : 380,
+    "page number" : 3,
+    "bounding box" : [ 126.721, 227.04, 485.338, 266.847 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Let us assume that M is a d − dimensional compact Riemannian manifold and suppose f : M → R is some smooth function. Consider the sublevel set, or, lower excursion set,"
+  }, {
+    "type" : "formula",
+    "id" : 381,
+    "page number" : 3,
+    "bounding box" : [ 126.721, 199.364, 422.401, 221.738 ],
+    "content" : "( 2 . 1 ) & \\quad \\mathbb { M } _ { f \\leq r } \\colon = \\{ x \\in \\mathbb { M } \\ | \\ f ( x ) \\leq r \\} = f ^ { - 1 } ( ( - \\infty , r ] ) . \\\\ \\intertext { l } \\mathbb { I } _ { i } \\ a o f i n t o o t \\ t o \\ n o t o \\ t h o t \\ f o r \\ o n t o i n \\ o l o c a o \\ o f \\ a m o o t h \\ f o n t i o n"
+  }, {
+    "type" : "paragraph",
+    "id" : 382,
+    "page number" : 3,
+    "bounding box" : [ 126.721, 160.92, 485.322, 200.727 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "It is of interest to note that for certain classes of smooth functions, the topology of M can be approached by studying the geometry of the function."
+  }, {
+    "type" : "paragraph",
+    "id" : 383,
+    "page number" : 3,
+    "bounding box" : [ 126.72, 90.288, 485.336, 158.847 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "To be more precise, for some smooth f : M → R , consider a point p ∈ M where in local coordinates the derivatives, ∂f/∂x j vanishes. Then that point is called a critical point, and the evaluation f ( p ) is called a critical value. A critical point p ∈ M is called non-degenerate if the Hessian ( ∂ 2 f/∂ i ∂ j ) is nonsingular. Such functions are called Morse"
+  }, {
+    "type" : "paragraph",
+    "id" : 384,
+    "page number" : 4,
+    "bounding box" : [ 126.72, 509.519, 485.337, 647.006 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The geometry of Morse functions can completely characterize the homotopy type of M by the way in which topological characteristics of sublevel sets (2.1) change at critical points. Indeed classical Morse theory tells us that the homotopy type of (2.1) is characterized by attaching a cell whose dimension is determined by the number of negative eigenvalues of the Hessian at a critical point to the boundary of the set (2.1) at the critical point. This indeed is a pathway that connects geometry with topology, and one in which we shall also use to bridge statistics. Some background material in topology and Morse theory is provided in Appendices A and B."
+  }, {
+    "type" : "paragraph",
+    "id" : 385,
+    "page number" : 4,
+    "bounding box" : [ 126.72, 467.76, 485.321, 507.567 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "As motivation let us consider a real valued function f that is a mixture of two bump functions on the disk of radius 10 in R 2 , see Figure 2.1."
+  }, {
+    "type" : "image",
+    "id" : 386,
+    "page number" : 4,
+    "bounding box" : [ 242.324, 307.753, 369.51, 415.946 ],
+    "source" : "BCKL2010/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 387,
+    "page number" : 4,
+    "bounding box" : [ 243.916, 397.127, 249.589, 400.902 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 388,
+    "page number" : 4,
+    "bounding box" : [ 243.917, 378.354, 249.59, 382.129 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 389,
+    "page number" : 4,
+    "bounding box" : [ 243.917, 359.989, 249.59, 363.764 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 390,
+    "page number" : 4,
+    "bounding box" : [ 360.638, 348.153, 367.67, 351.928 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 391,
+    "page number" : 4,
+    "bounding box" : [ 243.916, 341.215, 249.589, 344.99 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 392,
+    "page number" : 4,
+    "bounding box" : [ 356.148, 339.583, 363.18, 343.358 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 393,
+    "page number" : 4,
+    "bounding box" : [ 351.659, 331.421, 357.332, 335.196 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 4,
+    "bounding box" : [ 362.678, 329.788, 364.719, 333.563 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 396,
+    "page number" : 4,
+    "bounding box" : [ 347.578, 323.258, 353.251, 327.033 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 395,
+    "page number" : 4,
+    "bounding box" : [ 243.916, 322.85, 249.589, 326.625 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 397,
+    "page number" : 4,
+    "bounding box" : [ 255.752, 316.728, 262.784, 320.503 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 398,
+    "page number" : 4,
+    "bounding box" : [ 270.852, 314.688, 277.884, 318.463 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 401,
+    "page number" : 4,
+    "bounding box" : [ 343.089, 314.688, 348.762, 318.463 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 399,
+    "page number" : 4,
+    "bounding box" : [ 287.585, 312.647, 293.258, 316.422 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.0 y"
+  }, {
+    "type" : "paragraph",
+    "id" : 400,
+    "page number" : 4,
+    "bounding box" : [ 302.685, 310.607, 308.358, 314.382 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 4,
+    "bounding box" : [ 290.85, 308.566, 292.891, 312.341 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 403,
+    "page number" : 4,
+    "bounding box" : [ 318.194, 308.566, 323.867, 312.341 ],
+    "font" : "Helvetica",
+    "font size" : 4.081,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 4,
+    "bounding box" : [ 162.48, 258.119, 449.457, 284.006 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Figure 2.1. A mixture of two bump functions and various contours below which are the sublevel sets."
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 4,
+    "bounding box" : [ 126.721, 188.759, 485.215, 242.606 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "In this example, the maximum of f equals 2, so M f ≤ 2 = M . This sublevel set is the disk and therefore has no interesting topology since the disk is contractible. In contrast, consider the sublevel sets when r = 1, 1 . 2, and 1 . 5 (see Figures 2.2, 2.3 and 2.4)."
+  }, {
+    "type" : "paragraph",
+    "id" : 406,
+    "page number" : 4,
+    "bounding box" : [ 126.721, 82.603, 485.401, 186.807 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "In these cases, the sublevel sets M f ≤ r have non-trivial topology, namely one, two and one hole(s) respectively, each of whose boundaries is one-dimensional. This topology is detected algebraically by the ﬁrst integral homology group H 1 ( M f ≤ r ) which will be referred to as the homology of degree 1 at level r . This group enumerates the topologically distinct cycles in the sublevel set. In the ﬁrst and third cases, for each integer z ∈ Z , there is a cycle which wraps around the hole"
+  }, {
+    "type" : "paragraph",
+    "id" : 409,
+    "page number" : 5,
+    "bounding box" : [ 227.678, 642.09, 230.771, 644.149 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 411,
+    "page number" : 5,
+    "bounding box" : [ 226.343, 631.854, 230.673, 633.913 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.75"
+  }, {
+    "type" : "paragraph",
+    "id" : 414,
+    "page number" : 5,
+    "bounding box" : [ 227.678, 621.841, 230.771, 623.9 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 416,
+    "page number" : 5,
+    "bounding box" : [ 226.343, 611.605, 230.673, 613.664 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.25"
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 5,
+    "bounding box" : [ 227.678, 601.592, 230.771, 603.651 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "page number" : 5,
+    "bounding box" : [ 234.131, 598.255, 237.965, 600.314 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 5,
+    "bounding box" : [ 242.364, 597.142, 246.198, 599.201 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 435,
+    "page number" : 5,
+    "bounding box" : [ 251.487, 596.03, 254.58, 598.089 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 5,
+    "bounding box" : [ 253.267, 593.804, 254.38, 595.863 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "page number" : 5,
+    "bounding box" : [ 259.72, 594.917, 262.813, 596.976 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 5,
+    "bounding box" : [ 268.175, 593.804, 271.268, 595.863 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 291.317, 615.388, 295.151, 617.447 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 288.869, 610.715, 292.703, 612.774 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 417,
+    "page number" : 5,
+    "bounding box" : [ 286.421, 606.265, 289.514, 608.324 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 428,
+    "page number" : 5,
+    "bounding box" : [ 292.429, 605.375, 293.542, 607.434 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 5,
+    "bounding box" : [ 284.196, 601.815, 287.289, 603.874 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 426,
+    "page number" : 5,
+    "bounding box" : [ 281.749, 597.142, 284.842, 599.201 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 5,
+    "bounding box" : [ 320.603, 648.543, 324.437, 650.601 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 410,
+    "page number" : 5,
+    "bounding box" : [ 320.603, 639.198, 324.437, 641.256 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 412,
+    "page number" : 5,
+    "bounding box" : [ 318.378, 629.852, 319.49, 631.91 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 629.852, 325.031, 631.91 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 620.506, 325.031, 622.564 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 611.161, 325.031, 613.219 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 430,
+    "page number" : 5,
+    "bounding box" : [ 329.058, 603.15, 332.892, 605.208 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 5,
+    "bounding box" : [ 337.514, 603.15, 341.348, 605.208 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 431,
+    "page number" : 5,
+    "bounding box" : [ 346.859, 603.15, 349.952, 605.208 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 5,
+    "bounding box" : [ 349.752, 599.367, 350.865, 601.426 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 5,
+    "bounding box" : [ 355.538, 603.15, 358.63, 605.208 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 5,
+    "bounding box" : [ 364.215, 603.15, 367.308, 605.208 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 5,
+    "bounding box" : [ 170.64, 557.159, 441.24, 569.126 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Figure 2.2. The sublevel set at r = 1 has one hole."
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 5,
+    "bounding box" : [ 227.678, 505.334, 230.771, 507.393 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 442,
+    "page number" : 5,
+    "bounding box" : [ 226.343, 496.879, 230.673, 498.938 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.75"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 5,
+    "bounding box" : [ 227.678, 488.423, 230.771, 490.482 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 5,
+    "bounding box" : [ 226.343, 479.968, 230.673, 482.027 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.25"
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 5,
+    "bounding box" : [ 227.678, 471.512, 230.771, 473.571 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 5,
+    "bounding box" : [ 234.131, 468.175, 237.965, 470.234 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 5,
+    "bounding box" : [ 242.364, 467.062, 246.198, 469.121 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 5,
+    "bounding box" : [ 251.487, 465.95, 254.58, 468.009 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0.0 y"
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 5,
+    "bounding box" : [ 253.267, 463.725, 254.38, 465.784 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 464,
+    "page number" : 5,
+    "bounding box" : [ 259.72, 464.837, 262.813, 466.896 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 5,
+    "bounding box" : [ 268.175, 463.725, 271.268, 465.784 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 291.317, 485.308, 295.151, 487.367 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 447,
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 288.869, 480.635, 292.703, 482.694 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 5,
+    "bounding box" : [ 286.421, 476.185, 289.514, 478.244 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 5,
+    "bounding box" : [ 292.429, 475.295, 293.542, 477.354 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 5,
+    "bounding box" : [ 284.196, 471.735, 287.289, 473.794 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 5,
+    "bounding box" : [ 281.749, 467.062, 284.842, 469.121 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 5,
+    "bounding box" : [ 320.603, 518.462, 324.437, 520.521 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 5,
+    "bounding box" : [ 320.603, 509.117, 324.437, 511.175 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 5,
+    "bounding box" : [ 318.378, 499.771, 319.491, 501.83 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 444,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 499.771, 325.031, 501.83 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 490.426, 325.031, 492.484 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 481.08, 325.031, 483.139 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 5,
+    "bounding box" : [ 329.059, 473.07, 332.892, 475.128 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 5,
+    "bounding box" : [ 337.514, 473.07, 341.348, 475.128 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 5,
+    "bounding box" : [ 346.301, 473.07, 349.394, 475.128 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "y 0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "page number" : 5,
+    "bounding box" : [ 349.752, 469.287, 350.865, 471.345 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 460,
+    "page number" : 5,
+    "bounding box" : [ 354.979, 473.07, 358.072, 475.128 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 461,
+    "page number" : 5,
+    "bounding box" : [ 364.216, 473.07, 367.308, 475.128 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 468,
+    "page number" : 5,
+    "bounding box" : [ 163.44, 427.079, 448.44, 439.046 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Figure 2.3. The sublevel set at r = 1 . 2 has two holes."
+  }, {
+    "type" : "image",
+    "page number" : 5,
+    "bounding box" : [ 298.557, 356.363, 299.918, 356.587 ],
+    "source" : "BCKL2010/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 470,
+    "page number" : 5,
+    "bounding box" : [ 320.603, 388.503, 324.437, 390.561 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 5,
+    "bounding box" : [ 320.603, 379.157, 324.437, 381.215 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 5,
+    "bounding box" : [ 318.378, 369.812, 319.49, 371.87 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 369.812, 325.031, 371.87 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 360.466, 325.031, 362.524 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 5,
+    "bounding box" : [ 321.938, 351.12, 325.031, 353.179 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 476,
+    "page number" : 5,
+    "bounding box" : [ 329.058, 343.11, 332.892, 345.168 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 477,
+    "page number" : 5,
+    "bounding box" : [ 337.514, 343.11, 341.348, 345.168 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "−2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 5,
+    "bounding box" : [ 346.859, 343.11, 349.952, 345.168 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "y 0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "page number" : 5,
+    "bounding box" : [ 349.752, 339.327, 350.865, 341.386 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 5,
+    "bounding box" : [ 355.538, 343.11, 358.631, 345.168 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 5,
+    "bounding box" : [ 364.215, 343.11, 367.308, 345.168 ],
+    "font" : "Helvetica",
+    "font size" : 2.225,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 5,
+    "bounding box" : [ 166.08, 297.119, 445.8, 309.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Figure 2.4. The sublevel set at r = 1 . 5 has one hole."
+  }, {
+    "type" : "paragraph",
+    "id" : 483,
+    "page number" : 5,
+    "bounding box" : [ 126.72, 241.319, 485.246, 281.127 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "z times. We have H 1 ( M f ≤ r ) = Z . In the second case, we have two generating non-trivial cycles and so H 1 ( M f ≤ r ) = Z ⊕ Z . For a review of homology the reader can consult Appendix A for related discussions."
+  }, {
+    "type" : "paragraph",
+    "id" : 484,
+    "page number" : 5,
+    "bounding box" : [ 126.72, 82.603, 485.321, 228.686 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2.1. Persistent topology. A computational procedure for determining how the homology persists as the level r changes is provided in [10, 33]. In the above example there are two persistent homology classes (deﬁned below). One class is born when r = 1 . 1, the ﬁrst sublevel set that has two holes, and dies at r = 1 . 4 the ﬁrst sublevel set for which the second hole disappears. The other class is born at r = 0 and persists until r = 2. Thus the persistent homology can be completely described by the two ordered pairs { (1 . 1 , 1 . 4) , (0 , 2) } . This is called the reduced persistence diagram (deﬁned below) of f , denoted ¯ D ( f ). For a persistent homology class described by ( a, b ), call b − a its lifespan. From the"
+  }, {
+    "type" : "paragraph",
+    "id" : 485,
+    "page number" : 6,
+    "bounding box" : [ 138.6, 621.119, 330.84, 633.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We now give some precise deﬁnitions."
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 6,
+    "bounding box" : [ 126.719, 570.359, 485.272, 610.166 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 2.1. Let k be a nonnegative integer. Given f : M → R and a ≤ b ∈ R the inclusion of sublevel sets i b a : M f ≤ a ֒ → M f ≤ b induces a map on homology"
+  }, {
+    "type" : "formula",
+    "id" : 487,
+    "page number" : 6,
+    "bounding box" : [ 222.359, 539.443, 389.639, 561.938 ],
+    "content" : "H _ { k } ( i _ { a } ^ { b } ) \\colon H _ { k } ( \\mathbb { M } _ { f \\leq a } ) \\to H _ { k } ( \\mathbb { M } _ { f \\leq b } ) . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 6,
+    "bounding box" : [ 126.719, 497.399, 485.262, 538.658 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The image of H k ( i b a ) is the persistent homology group from a to b . Let β b a be its dimension. This counts the independent homology classes which are born by time a and die after time b ."
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 6,
+    "bounding box" : [ 126.72, 427.68, 485.217, 495.447 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Call a real number a a homological critical value of f if for all sufﬁciently small ǫ > 0 the map H k ( i a + ǫ a − ǫ ) is not an isomorphism. Call f tame if it has ﬁnitely many homological critical values, and for each a ∈ R , H k ( M f ≤ a ) is ﬁnite dimensional. In particular, any Morse function on a compact manifold is tame."
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 6,
+    "bounding box" : [ 126.72, 316.08, 485.383, 425.727 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Assume that f is tame. Choose ǫ smaller than the distance between any two homological critical values. For each pair of homological critical values a < b , we deﬁne their multiplicity µ b a which we interpret as the number of independent homology classes that are born at a and die at b . We count the homology classes born by time a + ǫ that die after time b − ǫ . Among these subtract those born by a − ǫ and subtract those that die after b + ǫ . This double counts those born by a − ǫ that die after b + ǫ , so we add them back. That is,"
+  }, {
+    "type" : "formula",
+    "id" : 491,
+    "page number" : 6,
+    "bounding box" : [ 225.48, 285.284, 386.52, 307.658 ],
+    "content" : "\\mu _ { a } ^ { b } = \\beta _ { a + \\epsilon } ^ { b - \\epsilon } - \\beta _ { a - \\epsilon } ^ { b - \\epsilon } - \\beta _ { a + \\epsilon } ^ { b + \\epsilon } + \\beta _ { a - \\epsilon } ^ { b + \\epsilon } . \\\\ \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 6,
+    "bounding box" : [ 126.72, 179.324, 485.376, 283.407 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The persistent homology of f may be encoded as follows. The reduced persistence diagram of f , ¯ D ( f ), is the multiset of pairs ( a, b ) together with their multiplicities µ b a . We call this a diagram since it is convenient to plot these points on the plane. We will see that it is useful to add homology classes which are born and die at the same time. Let the persistence diagram of f , D ( f ), be given by the union of ¯ D ( f ) and { ( a, a ) } a ∈ R where each ( a, a ) has inﬁnite multiplicity."
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 6,
+    "bounding box" : [ 126.721, 123.001, 485.339, 176.847 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2.2. Bottleneck distance. Cohen–Steiner, Edelsbrunner and Harer [6] introduced the following metric on the space of persistence diagrams. This metric is called the bottleneck distance and it bounds the Hausdorﬀ distance. It is given by"
+  }, {
+    "type" : "formula",
+    "id" : 494,
+    "page number" : 6,
+    "bounding box" : [ 126.721, 91.369, 408.241, 112.648 ],
+    "content" : "d _ { B } ( \\mathcal { D } ( f ) , \\mathcal { D } ( g ) ) = \\inf _ { \\gamma } \\sup _ { p \\in \\mathcal { D } ( f ) } \\| p - \\gamma ( p ) \\| _ { \\infty } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "page number" : 7,
+    "bounding box" : [ 126.72, 640.603, 485.293, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where the inﬁmum is taken over all bijections γ : D ( f ) → D ( g ) and   ·   ∞ denotes supremum–norm over sets. For example, let f be the function considered at the start of this"
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 7,
+    "bounding box" : [ 126.719, 529.003, 485.399, 647.006 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "section. Let g be a unimodal, radially-symmetric function on the same domain with maximum 2 . 2 at the origin and minimum 0. We showed that ¯ D ( f ) = { (1 . 1 , 1 . 4) , (0 , 2) } . Similarly, ¯ D ( g ) = (0 , 2 . 2). The bottleneck distance is achieved by the bijection γ which maps (0 , 2) to (0 , 2 . 2) and (1 . 1 , 1 . 4) to (1 . 25 , 1 . 25) and is the identity on all ‘diagonal’ points ( a, a ). Since the diagonal points have inﬁnite multiplicity this is a bijection. Thus, d B ( D ( f ) , D ( g )) = 0 . 2. In [6], the following result is proven:"
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 7,
+    "bounding box" : [ 138.6, 523.56, 323.88, 535.527 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In [6], the following result is proven:"
+  }, {
+    "type" : "formula",
+    "id" : 498,
+    "page number" : 7,
+    "bounding box" : [ 126.72, 482.923, 376.985, 503.367 ],
+    "content" : "d _ { B } ( \\mathcal { D } ( f ) , \\mathcal { D } ( g ) ) \\leq \\| f - g \\| _ { \\infty }"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 7,
+    "bounding box" : [ 126.72, 445.44, 485.304, 471.327 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where f, g : M → R are tame functions and   ·   ∞ denotes sup–norm over functions."
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 7,
+    "bounding box" : [ 126.72, 258.48, 485.366, 410.006 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2.3. Connection to Statistics. It is apparent that most articles on persistent topology do not as of yet incorporate statistical foundations although they do observe them heuristically. The approach in [25] combines topology and statistics and calculates how much data is needed to guarantee recovery of the underlying topology of the manifold. A drawback of that technique is that it supposes that the size of the smallest features of the data is known a priori. To date the most comprehensive parametric statistical approach is contained in [4]. In this paper, the unknown probability distribution is assumed to belong to a parametric family of distributions. The data is then used to estimate the level so as to recover the persistent topology of the underlying distribution."
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 7,
+    "bounding box" : [ 126.72, 91.08, 485.4, 256.527 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "As far as we are aware no statistical foundation for the nonparametric case has been formulated although [6] provide the topological machinery for making a concrete statistical connection. In particular, persistent homology of a function is encoded in its reduced persistence diagram. A metric on the space of persistence diagrams between two functions is available which bounds the Hausdorﬀ distance and this in turn is bounded by the sup–norm distance between the two functions. Thus by viewing one function as the parameter, while the other is viewed as its estimator, the asymptotic sup–norm risk bounds the expected Hausdorﬀ distance thus making a formal nonparametric statistical connection. This in turn lays down a framework for topologically classifying clusters in high dimensions."
+  }, {
+    "type" : "heading",
+    "id" : 502,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 175.32, 662.999, 436.504, 674.966 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3. Nonparametric regression on manifolds"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 8,
+    "bounding box" : [ 138.6, 642.119, 430.704, 654.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Consider the following nonparametric regression problem"
+  }, {
+    "type" : "formula",
+    "id" : 504,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 613.963, 362.641, 634.406 ],
+    "content" : "y = f ( x ) + \\varepsilon , \\ x \\in \\mathbb { M } , \\\\ \\intertext { w h o n $ \\mathbb { M } $ i s a $ d $ \\dim o n o l $ e $ o m o n o t $ D i m o n o p i n o n m o n o t $ }"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 575.039, 485.355, 614.846 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where M is a d − dimensional compact Riemannian manifold, f : M → R is the regression function and ε is a normal random variable with mean zero and variance σ 2 > 0. ˜"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 533.159, 485.213, 576.207 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For a given sample ( y 1 , x 1 ) , . . ., ( y n , x n ), let f be an estimator of f based on the regression model (3.1). We will assess the estimator’s performance by the sup–norm loss:"
+  }, {
+    "type" : "formula",
+    "id" : 507,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 504.288, 387.001, 528.207 ],
+    "content" : "\\| \\tilde { f } - f \\ \\| _ { \\infty } = \\sup _ { x \\in M } | \\tilde { f } ( x ) - f ( x ) | ."
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 472.079, 485.374, 497.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Furthermore, we will take as the parameter space, Λ( β, L ), the class of H¨older functions"
+  }, {
+    "type" : "formula",
+    "id" : 509,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 443.923, 474.0, 466.298 ],
+    "content" : "( 3 . 3 ) \\ \\Lambda ( \\beta , L ) & = \\{ f \\colon \\mathbb { M } \\to \\mathbb { R } \\ | \\ | f ( x ) - f ( z ) | \\leq L \\rho ( x , z ) ^ { \\beta } , x , z \\in \\mathbb { M } \\} , \\\\ \\intertext { w h o r } \\ w h o r \\ 0 \\ < \\beta < 1 \\ e n d \\ i s \\ t h o b \\ P i o m n o p n i o n \\ m o t i v o n \\ \\mathbb { M } \\ i \\ j \\ o l ( n \\ \\Omega ) \\ i s"
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 404.999, 485.334, 444.807 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where 0 < β ≤ 1 and ρ is the Riemannian metric on M , i.e., ρ ( x, z ) is the geodesic length (determined by the metric tensor) between x, z ∈ M ."
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 363.119, 485.246, 402.927 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For w ( u ), a continuous non-decreasing function which increases no faster than a power of its argument as u → ∞ with w (0) = 0, we deﬁne the sup-norm minimax risk by"
+  }, {
+    "type" : "formula",
+    "id" : 512,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 333.768, 422.279, 358.167 ],
+    "content" : "r _ { n } ( w , \\beta , L ) = \\inf _ { \\tilde { f } } \\sup _ { f \\in \\Lambda ( \\beta , L ) } \\mathbb { E } w ( \\psi _ { n } ^ { - 1 } \\, \\| \\, \\tilde { f } - f \\, \\| _ { \\infty } ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 300.719, 485.217, 326.606 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where the ψ n → 0 is the sup–norm minimax rate, as n → ∞ , and E denotes expectation with respect to (3.1) where ε is normally distributed."
+  }, {
+    "type" : "paragraph",
+    "id" : 514,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 250.319, 485.374, 290.247 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3.1. Asymptotic equidistance on manifolds. Consider a set of points z i ∈ M , i = 1 , · · · , m . We will say that the set of points is asymptotically equidistant if"
+  }, {
+    "type" : "formula",
+    "id" : 515,
+    "page number" : 8,
+    "bounding box" : [ 126.719, 214.483, 367.351, 244.418 ],
+    "content" : "\\inf _ { i \\neq j } \\rho ( z _ { i } , z _ { j } ) \\sim \\frac { ( \\text {vol} \\, \\mathbb { M } ) ^ { 1 / d } } { m }"
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 8,
+    "bounding box" : [ 248.159, 216.408, 248.159, 224.378 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 169.199, 485.378, 209.127 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "as m → ∞ for all i, j = 1 , . . ., m , where for two real sequences { a m } and { b m } , a m ∼ b m will mean | a m /b m | → 1 as m → ∞ , this implies that"
+  }, {
+    "type" : "formula",
+    "id" : 518,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 136.487, 372.96, 165.567 ],
+    "content" : "\\frac { \\max _ { j } \\min _ { i \\neq j } \\rho ( z _ { i } , z _ { j } ) } { \\min _ { j } \\min _ { i \\neq j } \\rho ( z _ { i } , z _ { j } ) } \\sim 1 \\ ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 8,
+    "bounding box" : [ 290.76, 152.808, 290.76, 160.778 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 8,
+    "bounding box" : [ 289.68, 136.487, 289.68, 144.458 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 521,
+    "page number" : 8,
+    "bounding box" : [ 126.72, 91.079, 485.366, 131.007 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "as m → ∞ . It will be assumed throughout that the manifold admits a collection of asymptotically equidistant points. This is certainly true for the sphere (in any dimension), and will be true for all compact"
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 9,
+    "bounding box" : [ 138.6, 635.039, 325.615, 647.006 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We will need the following constants"
+  }, {
+    "type" : "formula",
+    "id" : 523,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 588.132, 420.24, 632.415 ],
+    "content" : "W \\text { will } C _ { 0 } \\text { } L ^ { d / ( 2 \\beta + d ) } \\left ( \\frac { \\sigma ^ { 2 } v o l \\mathbb { M } \\left ( \\beta + d \\right ) d ^ { 2 } } { v o l \\mathbb { S } ^ { d - 1 } \\beta ^ { 2 } } \\right ) ^ { \\beta / ( 2 \\beta + d ) } ,"
+  }, {
+    "type" : "formula",
+    "id" : 524,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 540.373, 363.6, 584.655 ],
+    "content" : "( 3 . 8 ) & & \\psi _ { n } = \\left ( \\frac { \\log n } { n } \\right ) ^ { \\beta / ( 2 \\beta + d ) } , \\\\ \\intertext { s o n t a l } \\intertext { o n d e t a l } \\psi ^ { \\prime } \\log \\det a n t o { \\sigma _ { 0 } } { \\sigma _ { 1 } } \\log \\det a n t o { \\sigma _ { 2 } } { \\sigma _ { 3 } } \\log \\det a n t o { \\sigma _ { 4 } } { \\sigma _ { 5 } } \\log \\det a n t o { \\sigma _ { 6 } } { \\sigma _ { 7 } } \\log \\det a n t o { \\sigma _ { 8 } } { \\sigma _ { 9 } } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 498.119, 485.334, 539.258 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "and ‘vol’ denotes the volume of the object in question, where S d − 1 is the ( d − 1) − dimensional unit sphere with vol S d − 1 = 2 π d/ 2 / Γ( d/ 2) and Γ is the gamma function."
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 9,
+    "bounding box" : [ 138.6, 475.603, 452.209, 496.046 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁne the geodesic ball of radius r > 0 centered at z ∈ M by"
+  }, {
+    "type" : "formula",
+    "id" : 527,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 454.003, 383.4, 474.446 ],
+    "content" : "B _ { z } ( r ) = \\{ x \\in \\mathbb { M } \\, | \\rho ( x , z ) \\leq r \\} \\, . \\\\ \\\\ \\intertext { w h e r } \\intertext { w h e r } B _ { z } ( r ) = \\{ x \\in \\mathbb { M } \\, | \\rho ( x , z ) \\leq r \\} \\, ."
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 440.879, 485.366, 452.846 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We have the following result whose proof will be detailed in Section 6.1"
+  }, {
+    "type" : "paragraph",
+    "id" : 529,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 367.003, 485.388, 430.286 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3.1. Let z i ∈ M , i = 1 , · · · , m , be asymptotically equidistant. Let λ = λ ( m ) be the largest number such that   m i =1 B z i ( λ − 1 ) = M , where B z i ( λ − 1 ) is the closure of the geodesic ball of radius λ − 1 around z i . Then there is a C 1 > 0 such that limsup m →∞ mλ ( m ) − d ≤ C 1 ."
+  }, {
+    "type" : "heading",
+    "id" : 530,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 126.72, 352.919, 335.623, 364.886 ],
+    "heading level" : 1,
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3.2. An estimator. Fix a δ > 0 and let"
+  }, {
+    "type" : "formula",
+    "id" : 531,
+    "page number" : 9,
+    "bounding box" : [ 233.4, 307.452, 378.6, 355.334 ],
+    "content" : "\\text {ator.} \\ F i x \\ a \\ \\delta > 0 \\ \\text {and let} \\\\ m = \\left [ C _ { 1 } \\left ( \\frac { L ( 2 \\beta + d ) } { \\delta C _ { 0 } d \\psi _ { n } } \\right ) ^ { d / \\beta } \\right ] , \\\\ \\text {affix} \\ \\text {Let} \\ \\L l = \\text {contiguous} \\ F i x \\ \\L l ."
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 9,
+    "bounding box" : [ 126.72, 263.159, 485.302, 303.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where C 1 is a suﬃciently large constant from Lemma 3.1, hence m ≤ n and m → ∞ when n → ∞ and for s ∈ R , [ s ] denotes the greatest integer part."
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 9,
+    "bounding box" : [ 126.721, 198.763, 557.051, 270.855 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For the design points { x i : i = 1 , . . ., n } on M , assume that   x i j ∈ M , j = 1 , . . ., m   is an asymptotically equidistant subset on M . Let A j , j = 1 , . . ., m , be a partition of M such that A j is the set of those x ∈ M for which x i j is the closest point in the subset { x i 1 , . . ., x i m } . Thus, for j = 1 , . . ., m ,"
+  }, {
+    "type" : "formula",
+    "id" : 534,
+    "page number" : 9,
+    "bounding box" : [ 126.721, 162.733, 440.761, 207.015 ],
+    "content" : "& \\quad \\text {the closest point in the subset } \\{ x _ { i _ { 1 } } , \\dots , x _ { i _ { m } } \\} . \\ \\text {I has, for } j = 1 , \\dots , m , \\\\ & \\quad ( 3 . 1 0 ) & A _ { j } = \\left \\{ x \\in \\mathbb { M } \\, | \\, \\rho ( x _ { i _ { j } } , x ) = \\min _ { k = 1 , \\dots , m } \\{ \\rho ( x _ { i _ { k } } , x ) \\} \\right \\} . \\\\ & \\quad \\text {Let } A _ { j } = 1 \\quad \\text {m be as in } ( 3 . 1 0 ) \\text { and define } 1 \\cdot ( x ) \\text { to be the }"
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 9,
+    "bounding box" : [ 126.722, 134.568, 485.322, 161.247 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Let A j , j = 1 , . . ., m be as in (3.10) and deﬁne 1 A j ( x ) to be the indicator function on the set A j and consider the estimator"
+  }, {
+    "type" : "formula",
+    "id" : 536,
+    "page number" : 9,
+    "bounding box" : [ 126.721, 82.693, 357.962, 127.658 ],
+    "content" : "\\hat { f } ( x ) = \\sum _ { j = 1 } ^ { m } \\hat { a } _ { j } 1 _ { A _ { j } } ( x ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 537,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 654.523, 269.04, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where for L > 0, 0 < β ≤ 1,"
+  }, {
+    "type" : "formula",
+    "id" : 538,
+    "page number" : 10,
+    "bounding box" : [ 221.28, 558.973, 390.719, 666.375 ],
+    "content" : "> 0 , \\, 0 < \\beta \\leq 1 , \\\\ \\hat { a } _ { j } = \\frac { \\sum _ { i = 1 } ^ { n } K _ { \\kappa , x _ { i _ { j } } } ( x _ { i } ) y _ { i } } { \\sum _ { i = 1 } ^ { n } K _ { \\kappa , x _ { i _ { j } } } ( x _ { i } ) } , \\\\ K _ { \\kappa , x _ { i _ { j } } } ( \\omega ) = \\left ( 1 - ( \\kappa \\rho ( x _ { i _ { j } } , \\omega ) ) ^ { \\beta } \\right ) _ { + } , \\\\ \\kappa = \\left ( \\frac { C _ { 0 } \\varphi _ { n } } { L } \\right ) ^ { - 1 / \\beta } , \\\\ \\max ( s , 0 ) , \\, s \\in \\mathbb { R } . \\ \\text {We remark that when } m \\text { is also large, the support set of } K _ { \\kappa , x _ { i _ { j } } } ( \\omega )"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 516.1, 485.172, 562.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "and s + = max( s, 0), s ∈ R . We remark that when m is suﬃciently large hence κ is also large, the support set of K κ,x i j ( ω ) is the closed geodesic ball B x i j ( κ − 1 ) around x i j for j = 1 , . . ., m ."
+  }, {
+    "type" : "heading",
+    "id" : 540,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 257.76, 494.159, 354.304, 506.126 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "4. Main Results"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 422.923, 485.504, 485.246 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We now state the main results of this paper. The ﬁrst result provides an upper bound for the estimator (3.11), where the function w ( u ) satisﬁes w (0) = 0, w ( u ) = w ( − u ), w ( u ) does not decrease, and w ( u ) increases not faster than a power as u → ∞ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 542,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 397.401, 485.386, 422.726 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Theorem 4.1. For the regression model (3.1) and the estimator (3.11) , we have"
+  }, {
+    "type" : "formula",
+    "id" : 543,
+    "page number" : 10,
+    "bounding box" : [ 207.24, 349.093, 404.759, 407.775 ],
+    "content" : "\\sup _ { f \\in \\Lambda ( \\beta , L ) } \\mathbb { E } w \\left ( \\psi _ { n } ^ { - 1 } \\left \\| \\hat { f } - f \\right \\| _ { \\infty } \\right ) & \\leq w \\left ( C _ { 0 } \\right ) , \\\\ , \\, w h e r e \\, \\psi _ { n } = ( n ^ { - 1 } \\log n ) ^ { \\beta / ( 2 \\beta + d ) } . \\\\ \\text {ve the asymptotic minimum result for the sun-norm}"
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 346.363, 336.706, 368.138 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "    as n → 0 , where ψ n = ( n − 1 log n ) β/ (2 β + d ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 10,
+    "bounding box" : [ 138.6, 334.199, 461.039, 346.166 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We have the asymptotic minimax result for the sup–norm risk."
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 10,
+    "bounding box" : [ 126.719, 313.559, 362.503, 325.527 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Theorem 4.2. For the regression model (3.1)"
+  }, {
+    "type" : "formula",
+    "id" : 547,
+    "page number" : 10,
+    "bounding box" : [ 239.76, 288.648, 372.12, 306.686 ],
+    "content" : "\\lim _ { n \\to \\infty } r _ { n } ( w , \\beta , L ) = w \\left ( C _ { 0 } \\right ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 10,
+    "bounding box" : [ 138.6, 270.479, 363.839, 282.447 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "In particular, we have the immediate result."
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 249.84, 485.387, 261.807 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Corollary 4.3. For the regression model (3.1) and the estimator (3.11) ,"
+  }, {
+    "type" : "formula",
+    "id" : 550,
+    "page number" : 10,
+    "bounding box" : [ 199.44, 187.813, 411.892, 249.495 ],
+    "content" : "\\text {array} \\ 4 . 3 . \\ \\text {For the regression model} \\ n o d e l \\ ( 3 . 1 ) \\ a n d \\ t h e \\ e s t i m a t o r \\\\ \\sup _ { f \\in \\Lambda ( \\beta , L ) } \\ \\mathbb { E } \\left \\| \\hat { f } - f \\right \\| _ { \\infty } \\sim C _ { 0 } \\ \\left ( \\frac { \\log n } { n } \\right ) ^ { \\beta / ( 2 \\beta + d ) } \\\\ \\infty . \\\\ \\text {note that the above generalizes earlier one-dimensional res}"
+  }, {
+    "type" : "formula",
+    "id" : 551,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 187.843, 182.746, 208.286 ],
+    "content" : "\\ a s \\, n \\to \\infty . \\\\ \\intertext { a s \\, n \\to \\infty . } \\intertext { w h e r s } \\intertext { w h e r s } \\intertext { a s \\, n \\to \\infty . }"
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 147.719, 485.291, 187.646 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We note that the above generalizes earlier one-dimensional results in [20, 21], where the domain is the unit interval, whereas [18] generalizes this result to higher dimensional unit spheres."
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 10,
+    "bounding box" : [ 126.72, 91.079, 485.321, 145.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Now that a sharp sup–norm minimax estimator has been found we would like to see how we can use this for topological data analysis. The key is the sup–norm bound on the bottleneck distance for persistence diagrams. In particular, for the regression function f in (3.1) and ˆ f the"
+  }, {
+    "type" : "formula",
+    "id" : 554,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 584.293, 385.199, 635.655 ],
+    "content" : "2 . 2 , \\, & \\text { and in particular } ( 2 . 3 ) , \\, \\text { we have} \\\\ & ( 4 . 1 ) & d _ { B } \\left ( \\mathcal { D } ( \\hat { f } ) , \\mathcal { D } ( f ) \\right ) \\leq \\left \\| \\hat { f } - f \\right \\| _ { \\infty } . \\\\ & \\text { Let } \\Lambda _ { t } ( \\beta , L ) \\, \\text { denote the subset of same functions in } \\Lambda ( \\beta , L ) . \\\\ & l a r y \\, 4 . 3 , \\, \\text { the following result is immediate.}"
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 572.039, 485.336, 621.375 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "(4.1) d B   D ( ˆ f ) , D ( f )   ≤   ˆ f − f   ∞ . Let Λ t ( β, L ) denote the subset of tame functions in Λ( β, L ). By corollary 4.3, the following result is immediate."
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 527.443, 485.379, 564.927 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Corollary 4.4. For the nonparametric regression model (3.1) , let ˆ f be deﬁned by (3.11) . Then for 0 < β ≤ 1 and L > 0 , 2 2 β/ (2 β"
+  }, {
+    "type" : "formula",
+    "id" : 557,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 469.243, 503.332, 534.495 ],
+    "content" : "\\text {defined by (3.11).} \\ \\text {Then for } 0 < \\beta \\leq 1 \\text { and } L > 0 , \\\\ \\sup _ { f \\in \\Lambda _ { t } ( \\beta , L ) } \\mathbb { E } d _ { B } \\left ( \\mathcal { D } ( \\hat { f } ) , \\mathcal { D } ( f ) \\right ) & \\leq L ^ { d / ( 2 \\beta + d ) } \\left ( \\frac { \\sigma ^ { 2 } v o l \\, \\mathbb { M } \\ ( \\beta + d ) d ^ { 2 } } { v o l \\mathbb { S } ^ { d - 1 } \\beta ^ { 2 } } \\ \\frac { \\log n } { n } \\right ) ^ { \\beta / ( 2 \\beta + d ) } \\\\ \\ a s \\ n \\to 0 ."
+  }, {
+    "type" : "heading",
+    "id" : 558,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 267.12, 451.44, 345.009, 463.407 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "5. Discussion"
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 386.173, 485.291, 445.575 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "To calculate the persistence diagrams of the sublevel sets of   f , we suggest that because of the way   f is constructed, we can calculate its persistence diagrams using a triangulation, T of the manifold in question."
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 298.933, 485.382, 387.375 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We can then ﬁlter T using   f as follows. Let r 1 ≤ r 2 ≤ . . . ≤ r m be the ordered list of values of   f on the vertices of the triangulation. For 1 ≤ i ≤ m , let T i be the subcomplex of T containing all vertices v with   f ( v ) ≤ r i and all edges whose boundaries are in T i and all faces whose boundaries are in T i . We obtain the following ﬁltration of T , φ = T 0 ⊆ T 1 ⊆ T 2 ⊆ · · · ⊆ T m = T ."
+  }, {
+    "type" : "formula",
+    "id" : 561,
+    "page number" : 11,
+    "bounding box" : [ 217.199, 286.003, 394.799, 306.447 ],
+    "content" : "\\phi = \\mathcal { T } _ { 0 } \\subseteq \\mathcal { T } _ { 1 } \\subseteq T _ { 2 } \\subseteq \\cdots \\subseteq \\mathcal { T } _ { m } = \\mathcal { T } . \\\\ \\ddot { \\cdot } \\colon _ { 1 } \\colon _ { 0 } \\cdot _ { 1 } \\widehat { \\mathcal { T } } _ { 1 } \\subseteq _ { 1 } \\widehat { \\mathcal { T } } _ { 2 } \\subseteq \\cdots \\subseteq \\mathcal { T } _ { m } = \\mathcal { T } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 236.083, 485.374, 288.615 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Because the critical points of   f only occur at the vertices of T , Morse theory guarantees that the persistent homology of the sublevel sets of   f equals the persistent homology of the above ﬁltration of T . Using the software Plex, [9], we calculate the persistent homology,"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 174.84, 485.365, 259.575 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "in degrees 0, 1, 2, ..., d of the triangulation T ﬁltered according to the estimator. Since the data will be d –dimensional, we do not expect any interesting homology in higher degrees, and in fact, most of the interesting features would occur in the lower degrees."
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 11,
+    "bounding box" : [ 126.719, 91.08, 485.215, 172.887 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "A demonstration of this is provided in [5] for brain image data, where the topology of cortical thickness in an autism study takes place. The persistent homology, in degrees 0, 1 and 2 is calculated for 27 subjects. Since the data is two–dimensional, we do not expect any interesting homology in higher degrees. For an initial comparison of the autistic subjects and control subjects, we take the union of the persistence"
+  }, {
+    "type" : "heading",
+    "id" : 565,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 277.08, 569.999, 334.863, 581.966 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "6. Proofs"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 12,
+    "bounding box" : [ 138.6, 548.999, 383.639, 560.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Our proofs will use the ideas from [18] and [20]."
+  }, {
+    "type" : "heading",
+    "id" : 567,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 126.72, 518.639, 409.56, 530.606 ],
+    "heading level" : 1,
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "6.1. Upper Bound. We ﬁrst prove the earlier lemma."
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 12,
+    "bounding box" : [ 126.72, 441.253, 485.246, 506.258 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Proof of Lemma 3.1. Let ( U , ( x i )) be any normal coordinate chart centered at x i , then the components of the metric at x i are g ij = δ ij , so   | g ij ( x i ) | = 1, see [22]. Consequently, vol ( B ( λ − 1 )) =     g (exp ( x )) dx =   g (exp ( t ))  "
+  }, {
+    "type" : "formula",
+    "id" : 569,
+    "page number" : 12,
+    "bounding box" : [ 126.72, 396.763, 507.887, 461.055 ],
+    "content" : "\\sqrt { | g _ { i j } ( x _ { i } ) | } & = 1 , \\, \\text {see } [ 2 2 ] . \\text { Consequently} , \\\\ \\text {vol} \\left ( \\overline { B } _ { x _ { i } } ( \\lambda ^ { - 1 } ) \\right ) & = \\int _ { B ( \\lambda ^ { - 1 } ) } \\sqrt { | g _ { i j } ( \\exp _ { x _ { i } } ( x ) ) | } d x = \\sqrt { | g _ { i j } ( \\exp _ { x _ { i } } ( t ) ) | } \\int _ { B ( \\lambda ^ { - 1 } ) } d x \\\\ & \\sim \\text {vol } ( \\mathbb { B } ( \\lambda ^ { - 1 } ) ) = \\text {vol } ( \\mathbb { B } ( 1 ) ) \\lambda ^ { - d } = \\text {vol } ( \\mathbb { S } ^ { d - 1 } ) \\lambda ^ { d } / d \\, . \\\\ \\text {The first line uses the integration transformation, where exp _ { x } } \\colon B ( \\lambda ^ { - 1 } ) \\to \\text { } \\exp _ { x }"
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 12,
+    "bounding box" : [ 126.72, 299.137, 496.395, 394.897 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The ﬁrst line uses the integration transformation, where exp x i : B ( λ − 1 ) → B x i ( λ − 1 ) is the exponential map from the tangent space T M x i → M . The second line uses the integral mean value theorem and r is the radius from the origin to point x in the Euclidean ball B ( λ − 1 ). The third line is asymptotic as λ → ∞ and uses the fact that | g ij (exp x i ( t )) | → 1 when λ → ∞ . In the fourth line vol ( B (1)) is the volume of d -dimensional Euclidean unit ball. The last line uses the fact vol ( B (1)) = vol ( B d − 1 ) /d ."
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 12,
+    "bounding box" : [ 126.72, 245.323, 485.367, 308.247 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Let λ ′ = λ ′ ( m ) > 0 be the smallest number such that B x i (( λ ′ ) − 1 ) are disjoint. Then λ − 1 = c ( m ) × ( λ ′ ) − 1 , where c ( m ) > 1 and c ( m ) → 1 as m → ∞ . Consequently m"
+  }, {
+    "type" : "formula",
+    "id" : 572,
+    "page number" : 12,
+    "bounding box" : [ 168.241, 200.293, 443.879, 245.258 ],
+    "content" : "\\ v o l \\left ( \\mathbb { M } \\right ) & \\geq \\sum _ { i = 1 } ^ { m } \\text {vol} \\left ( \\overline { B } _ { x _ { i } } ( ( \\lambda ^ { \\prime } ) ^ { - 1 } ) \\right ) \\sim m \\text {vol} \\left ( \\mathbb { S } ^ { d - 1 } \\right ) ( \\lambda ^ { \\prime } ) ^ { - d } / d . \\\\ \\intertext { T L } \\text {vol} \\left ( \\mathbb { M } \\right ) & \\geq \\sum _ { i = 1 } ^ { m } \\text {vol} \\left ( \\overline { B } _ { x _ { i } } ( ( \\lambda ^ { \\prime } ) ^ { - 1 } ) \\right ) \\sim m \\text {vol} \\left ( \\mathbb { S } ^ { d - 1 } \\right ) ( \\lambda ^ { \\prime } ) ^ { - d } / d . \\\\ \\intertext { T L } \\text {vol} \\left ( \\mathbb { M } \\right ) & \\cdot \\text {vol} \\left ( \\overline { \\mathcal { M } } \\right ) \\cdot \\text {vol} \\left ( \\mathbb { M } \\right ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 12,
+    "bounding box" : [ 126.72, 171.84, 485.329, 198.697 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Thus limsup m →∞ mλ ( m ) − d = limsup m →∞ c ( m ) d m ( λ ′ ) − d ≤ d vol ( M ) vol ( S d − 1 ) .  "
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 12,
+    "bounding box" : [ 126.72, 129.119, 485.28, 155.007 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We now calculate the asymptotic variance of ˆ a j for j = 1 , . . ., m . Let"
+  }, {
+    "type" : "formula",
+    "id" : 575,
+    "page number" : 12,
+    "bounding box" : [ 241.08, 90.132, 370.92, 134.415 ],
+    "content" : "M = \\left [ \\frac { n v o l ( \\overline { B } _ { x _ { i _ { j } } } ( \\kappa ^ { - 1 } ) ) } { v o l ( \\mathbb { M } ) } \\right ] ."
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 13,
+    "bounding box" : [ 126.72, 662.999, 156.48, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Then,"
+  }, {
+    "type" : "formula",
+    "id" : 577,
+    "page number" : 13,
+    "bounding box" : [ 127.44, 497.413, 484.56, 657.975 ],
+    "content" : "T h e n , & & \\sigma ^ { 2 } \\sum _ { i = 1 } ^ { n } K _ { \\kappa , x _ { i j } } ^ { 2 } ( x _ { i } ) \\\\ & \\quad = \\frac { \\sigma ^ { 2 } \\sum _ { i = 1 } ^ { n } K _ { \\kappa , x _ { i j } } ( x _ { i } ) ^ { 2 } } { ( \\sum _ { i = 1 } ^ { n } K _ { \\kappa , x _ { i j } } ( x _ { i } ) ) ^ { 2 } } \\\\ & \\sim \\frac { \\sigma ^ { 2 } \\text {vol} \\left ( \\overline { B } _ { x _ { i j } } ( \\kappa ^ { - 1 } ) \\right ) \\int _ { \\overline { B } _ { x _ { i j } } ( \\kappa ^ { - 1 } ) } ( 1 - ( \\kappa \\rho ( x _ { i j } , \\omega ) ) ) ^ { \\beta } ) ^ { 2 } d \\omega } { M ( J _ { B x _ { i j } } ( \\overline { x } ^ { - 1 } ) ( 1 - ( \\kappa \\rho ( x _ { i j } , \\omega ) ) ) ^ { \\beta } ) d \\omega ) } \\\\ & = \\frac { \\sigma ^ { 2 } \\text {vol} \\left ( \\overline { B } _ { x _ { i j } } ( \\kappa ^ { - 1 } ) \\right ) \\int _ { B ( \\kappa ^ { - 1 } ) } ( 1 - ( \\kappa r ) ^ { \\beta } ) ^ { 2 } \\sqrt { | g _ { i j } ( \\exp _ { x _ { i j } } ( x ) ) | } d x } { M \\left ( \\int _ { B ( \\kappa ^ { - 1 } ) } ( 1 - ( \\kappa r ) ^ { \\beta } ) \\sqrt { | g _ { i j } ( \\exp _ { x _ { i j } } ( x ) ) | } d x \\right ) ^ { 2 } } . \\\\ \\intertext { This last expression evaluates as } 3 \\, \\lambda ^ { 2 } \\sqrt { \\overline { B } } _ { x } ( \\overline { x } ^ { - 1 } ) \\sqrt { \\log _ { i j } ( \\pi ^ { 2 } ) } + \\alpha ^ { \\pi } \\sqrt { \\pi } + \\alpha ^ { \\pi } \\sqrt { 2 \\pi } + \\alpha ^ { \\pi } + \\alpha ^ { \\beta } ) \\beta ^ { 2 } \\, d \\, 1 \\, , \\, \\lambda ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\alpha ^ { 2 } \\sqrt { \\omega ^ { 2 } } + \\"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 13,
+    "bounding box" : [ 126.72, 488.519, 292.974, 500.486 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "This last expression evaluates as"
+  }, {
+    "type" : "formula",
+    "id" : 579,
+    "page number" : 13,
+    "bounding box" : [ 127.92, 411.013, 515.912, 482.655 ],
+    "content" : "& \\quad \\text {This last expression evaluates as} \\\\ & \\quad \\frac { \\sigma ^ { 2 } v o l ( \\overline { B } _ { x _ { j } } ( \\kappa ^ { - 1 } ) ) \\sqrt { | g _ { i i } ( \\exp _ { x _ { j } } ( t ) ) | } \\int _ { 0 } ^ { \\kappa ^ { - 1 } } \\int _ { 0 } ^ { \\pi } \\cdots \\int _ { 0 } ^ { \\pi } \\int _ { 0 } ^ { 2 \\pi } ( 1 - ( \\kappa r ) ^ { \\beta } ) ^ { 2 } r ^ { d - 1 } d r d \\sigma _ { d - 1 } } { M \\left | g _ { i j } ( \\exp _ { x _ { j } } ( t ) ) | ( \\int _ { 0 } ^ { \\kappa ^ { - 1 } } \\int _ { 0 } ^ { \\pi } \\cdots \\int _ { 0 } ^ { \\kappa ^ { - 1 } } \\int _ { 0 } ^ { \\pi } \\cdots \\int _ { 0 } ^ { \\pi } \\int _ { 0 } ^ { 2 \\pi } ( 1 - ( \\kappa r ) ^ { \\beta } ) ^ { 2 } r ^ { d - 1 } d r d \\sigma _ { d - 1 } ) ^ { 2 } } \\\\ & \\quad \\text {so that we have}"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 13,
+    "bounding box" : [ 126.72, 404.279, 206.56, 416.246 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "so that we have"
+  }, {
+    "type" : "formula",
+    "id" : 581,
+    "page number" : 13,
+    "bounding box" : [ 146.64, 321.119, 463.792, 398.535 ],
+    "content" : "\\text { so that we have} \\\\ \\quad & \\quad \\sigma ^ { 2 } v o l \\left ( \\overline { B } _ { x _ { i } } ( \\kappa ^ { - 1 } ) d v o l \\left ( \\mathbb { B } ^ { d } \\right ) \\int _ { 0 } ^ { \\kappa ^ { - 1 } } ( 1 - ( \\kappa r ) ^ { \\beta } ) ^ { 2 } r ^ { d - 1 } d r \\\\ \\quad & \\quad \\frac { \\sigma ^ { 2 } v o l \\left ( \\overline { B } ^ { d } \\right ) ^ { 2 } ( \\int _ { 0 } ^ { \\kappa ^ { - 1 } } ( 1 - ( \\kappa r ) ^ { \\beta } ) r ^ { d - 1 } d r ) ^ { 2 } } { M \\ d ^ { 2 } v o l \\left ( \\mathbb { B } ^ { d } \\right ) ^ { 2 } ( \\int _ { 0 } ^ { \\kappa ^ { - 1 } } ( 1 - ( \\kappa r ) ^ { \\beta } ) r ^ { d - 1 } d r ) ^ { 2 } } \\\\ \\quad & = \\sigma ^ { 2 } \\kappa ^ { d } \\frac { \\ v o l \\left ( \\mathbb { M } \\right ) 2 d ( \\beta + d ) } { n v o l \\left ( \\mathbb { S } ^ { d - 1 } \\right ) ( 2 \\beta + d ) }"
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 13,
+    "bounding box" : [ 126.72, 285.763, 420.0, 307.538 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "as n → ∞ , where dσ d − 1 is the spherical measure on S d − 1 ."
+  }, {
+    "type" : "heading",
+    "id" : 583,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 126.72, 269.277, 195.25, 280.049 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Lemma 6.1."
+  }, {
+    "type" : "formula",
+    "id" : 584,
+    "page number" : 13,
+    "bounding box" : [ 173.64, 221.653, 438.326, 265.935 ],
+    "content" : "\\lim _ { n \\to \\infty } \\mathbb { P } \\left ( \\psi _ { n } ^ { - 1 } \\left \\| \\, \\hat { f } _ { n } - \\mathbb { E } \\hat { f } _ { n } \\, \\right \\| _ { \\infty } \\right ) & \\, ( 1 + \\delta ) C _ { 0 } \\frac { 2 \\beta } { 2 \\beta + d } \\right ) = 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 13,
+    "bounding box" : [ 126.72, 193.243, 365.441, 216.927 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Proof. Denote Z n ( x ) = ˆ f n ( x ) − E ˆ f n ( x ). Deﬁne"
+  }, {
+    "type" : "formula",
+    "id" : 586,
+    "page number" : 13,
+    "bounding box" : [ 167.76, 158.683, 444.24, 188.497 ],
+    "content" : "D _ { n } ^ { 2 } = \\text {var} ( \\psi _ { n } ^ { - 1 } Z _ { n } ( x _ { j } ) ) = \\psi _ { n } ^ { - 2 } \\text {var} ( \\hat { a } _ { j } ) \\sim \\frac { 2 \\beta ^ { 2 } C _ { 0 } ^ { 2 } } { d ( 2 \\beta + d ) \\log n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 13,
+    "bounding box" : [ 126.72, 132.168, 333.492, 144.927 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Denote y = (1 + δ ) C 0 2 β/ (2 β + d ). Then"
+  }, {
+    "type" : "formula",
+    "id" : 588,
+    "page number" : 13,
+    "bounding box" : [ 248.76, 88.127, 364.44, 119.738 ],
+    "content" : "\\frac { y ^ { 2 } } { D _ { n } ^ { 2 } } = \\frac { 2 d ( 1 + \\delta ) ^ { 2 } \\log n } { 2 \\beta + d } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 589,
+    "page number" : 14,
+    "bounding box" : [ 126.72, 654.523, 452.999, 676.297 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For suﬃciently large n , Z n ( x j ) ∼ N (0 , ψ 2 n D 2 n ), hence as n → ∞ ,"
+  }, {
+    "type" : "formula",
+    "id" : 590,
+    "page number" : 14,
+    "bounding box" : [ 126.72, 544.093, 495.24, 654.855 ],
+    "content" : "\\text {For sufficiently large $n$, $Z_{n}(x_{j})\\sim N(0,\\psi_{n}^{2}D_{n})$, hence as $n\\to \\infty$,} \\\\ \\\\ \\mathbb { P } \\left ( \\| \\psi _ { n } ^ { - 1 } Z _ { n } \\| _ { \\infty } > y \\right ) & \\ \\leq \\ \\mathbb { P } \\left ( \\max _ { i = 1 , \\cdots , m } \\psi _ { n } ^ { - 1 } | Z _ { n } ( x _ { j } ) | > y \\right ) \\\\ & \\leq \\ m \\mathbb { P } \\left ( D _ { n } ^ { - 1 } \\psi _ { n } ^ { - 1 } | Z _ { n } ( x _ { j } ) | > \\frac { y } { D _ { n } } \\right ) \\\\ & \\leq \\ m \\exp \\left \\{ - \\frac { 1 } { 2 } \\frac { y ^ { 2 } } { D _ { n } ^ { 2 } } \\right \\} = m \\exp \\left \\{ - \\frac { d ( 1 + \\delta ) ^ { 2 } \\log n } { 2 \\beta + d } \\right \\} . \\\\ \\text {Therefore}"
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 14,
+    "bounding box" : [ 126.72, 523.799, 175.721, 535.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Therefore"
+  }, {
+    "type" : "formula",
+    "id" : 592,
+    "page number" : 14,
+    "bounding box" : [ 126.72, 464.773, 517.92, 516.255 ],
+    "content" : "\\mathbb { P } \\left ( \\| \\psi _ { n } ^ { - 1 } Z _ { n } \\, | _ { \\infty } > y \\right ) \\leq n ^ { - d ( ( 1 + \\delta ) ^ { 2 } - 1 ) / ( 2 \\beta + d ) } ( \\log n ) ^ { - d / ( 2 \\beta + d ) } D _ { n } \\left ( \\frac { L ( 2 \\beta + d ) } { \\delta C _ { 0 } d } \\right ) ^ { d / \\beta } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 14,
+    "bounding box" : [ 476.04, 454.92, 485.329, 463.133 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/square"
+  }, {
+    "type" : "heading",
+    "id" : 594,
+    "level" : "Subtitle",
+    "page number" : 14,
+    "bounding box" : [ 126.72, 425.757, 195.25, 436.529 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Lemma 6.2."
+  }, {
+    "type" : "formula",
+    "id" : 595,
+    "page number" : 14,
+    "bounding box" : [ 173.88, 383.327, 436.873, 412.646 ],
+    "content" : "\\lim _ { n \\to \\infty } \\sup _ { f \\in \\Lambda ( \\beta , L ) } \\psi _ { n } ^ { - 1 } \\, \\| \\ f - \\mathbb { E } \\hat { f } _ { n } \\, \\| _ { \\infty } \\leq ( 1 + \\delta ) C _ { 0 } \\frac { d } { 2 \\beta + d }"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 14,
+    "bounding box" : [ 126.72, 356.999, 230.023, 368.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Proof. We note that"
+  }, {
+    "type" : "formula",
+    "id" : 597,
+    "page number" : 14,
+    "bounding box" : [ 137.16, 244.812, 472.858, 342.086 ],
+    "content" : "\\| \\ f - \\mathbb { E } \\hat { f } \\ \\| _ { \\infty } & \\ = \\ \\max _ { j = 1 , \\dots , m } \\sup _ { x \\in A _ { j } } | f ( x ) - \\mathbb { E } \\hat { f } ( x ) | \\\\ & \\leq \\ \\max _ { j = 1 , \\dots , m } \\sup _ { x \\in A _ { j } } \\left ( | f ( x ) - f ( x _ { j } ) | + | \\mathbb { E } \\hat { f } ( x _ { j } ) - f ( x _ { j } ) | \\right ) \\\\ & \\leq \\ \\max _ { j = 1 , \\dots , m } \\left ( | \\mathbb { E } \\hat { f } ( x _ { j } ) - f ( x _ { j } ) | + L \\sup _ { x \\in A _ { j } } \\rho ( x , x _ { j } ) ^ { \\beta } \\right ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 598,
+    "page number" : 14,
+    "bounding box" : [ 126.721, 206.563, 464.846, 228.338 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "When m is suﬃciently large, A j ⊂ B x j ( λ − 1 ), hence by Lemma 3.1"
+  }, {
+    "type" : "formula",
+    "id" : 599,
+    "page number" : 14,
+    "bounding box" : [ 168.0, 159.012, 444.0, 203.295 ],
+    "content" : "\\lim \\sup _ { n \\to \\infty } \\sup _ { x \\in A _ { j } } \\rho ( x , x _ { j } ) \\leq \\lim \\sup _ { n \\to \\infty } \\lambda ^ { - 1 } \\leq \\lim \\sup _ { n \\to \\infty } \\left ( \\frac { C _ { 1 } } { m } \\right ) ^ { 1 / d } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 14,
+    "bounding box" : [ 126.72, 136.799, 152.335, 148.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Thus"
+  }, {
+    "type" : "formula",
+    "id" : 601,
+    "page number" : 14,
+    "bounding box" : [ 146.76, 84.973, 465.24, 129.255 ],
+    "content" : "\\lim \\sup _ { n \\to \\infty } \\sup _ { x \\in A _ { j } } \\psi _ { n } ^ { - 1 } \\rho ( x , x _ { j } ) ^ { \\beta } \\leq \\lim _ { n \\to \\infty } \\sup _ { n } \\psi _ { n } ^ { - 1 } \\left ( \\frac { C _ { 1 } } { m } \\right ) ^ { \\beta / d } \\leq \\frac { \\delta C _ { 0 } d } { L ( 2 \\beta + d ) } ."
+  }, {
+    "type" : "formula",
+    "id" : 602,
+    "page number" : 15,
+    "bounding box" : [ 126.72, 654.523, 216.601, 674.966 ],
+    "content" : "\\text {For } j = 1 , \\cdots , m ,"
+  }, {
+    "type" : "formula",
+    "id" : 603,
+    "page number" : 15,
+    "bounding box" : [ 126.72, 497.803, 492.021, 652.935 ],
+    "content" : "\\text {For } j = 1 , \\cdots , m , \\\\ | \\mathbb { E } \\hat { f } ( x _ { i _ { j } } ) - f ( x _ { i _ { j } } ) | & \\ = \\ | E \\hat { a } _ { j } - f ( x _ { i _ { j } } ) | = \\left | \\frac { \\sum _ { j = 1 } ^ { m } K _ { \\kappa , x _ { i } } ( x _ { i _ { j } } ) f ( x _ { i _ { j } } ) } { \\sum _ { j = 1 } ^ { m } K _ { \\kappa , x _ { i } } ( x _ { i _ { j } } ) } - f ( x _ { i } ) \\right | \\\\ & \\leq \\ \\frac { \\sum _ { j = 1 } ^ { m } K _ { \\kappa , x _ { i } } ( x _ { i _ { j } } ) | f ( x _ { i _ { j } } ) - f ( x _ { i } ) | } { \\sum _ { j = 1 } ^ { m } K _ { \\kappa , x _ { i } } ( x _ { i _ { j } } ) } \\\\ & \\leq \\ \\frac { L \\int _ { \\overline { B } _ { x _ { i } } ( \\kappa ^ { - 1 } ) } ( 1 - ( \\kappa \\rho ( x _ { i } , \\omega ) ) ^ { \\beta } ) \\rho ( x _ { i } , \\omega ) ) ^ { \\beta } d \\omega } { \\int _ { \\overline { B } _ { x _ { i } } ( \\kappa ^ { - 1 } ) } ( 1 - ( \\kappa \\rho ( x _ { i } , \\omega ) ) ^ { \\beta } ) d \\omega } \\\\ & \\sim \\ \\frac { L } { \\kappa ^ { \\beta } } \\frac { d } { 2 \\beta + d } = C _ { 0 } \\psi _ { n } \\frac { d } { 2 \\beta + d } \\\\ \\intertext { a n d } \\text {as } n \\to \\infty ."
+  }, {
+    "type" : "formula",
+    "id" : 604,
+    "page number" : 15,
+    "bounding box" : [ 126.719, 459.643, 485.329, 480.086 ],
+    "content" : "\\text { as } n \\to \\infty ."
+  }, {
+    "type" : "heading",
+    "id" : 605,
+    "level" : "Subtitle",
+    "page number" : 15,
+    "bounding box" : [ 126.72, 431.997, 281.89, 442.769 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Proof of the upper bound."
+  }, {
+    "type" : "formula",
+    "id" : 606,
+    "page number" : 15,
+    "bounding box" : [ 159.479, 290.293, 470.439, 420.975 ],
+    "content" : "\\text {Proof of the upper bound.} \\\\ \\lim _ { n \\to \\infty } \\mathbb { P } \\left ( \\psi _ { n } ^ { - 1 } \\left \\| \\hat { f } - f \\right \\| _ { \\infty } > ( 1 + \\delta ) C _ { 0 } \\right ) \\\\ \\leq \\lim _ { n \\to \\infty } \\mathbb { P } \\left ( \\psi _ { n } ^ { - 1 } \\left \\| \\hat { f } - \\mathbb { E } \\hat { f } \\right \\| _ { \\infty } + \\psi _ { n } ^ { - 1 } \\left \\| \\mathbb { E } \\hat { f } - f \\right \\| _ { \\infty } > ( 1 + \\delta ) C _ { 0 } \\right ) \\\\ \\leq \\lim _ { n \\to \\infty } \\mathbb { P } \\left ( \\psi _ { n } ^ { - 1 } \\left \\| \\hat { f } - \\mathbb { E } \\hat { f } \\right \\| _ { \\infty } + ( 1 + \\delta ) C _ { 0 } \\frac { d } { 2 \\beta + d } > ( 1 + \\delta ) C _ { 0 } \\right ) \\\\ = \\lim _ { n \\to \\infty } \\mathbb { P } \\left ( \\psi _ { n } ^ { - 1 } \\left \\| \\hat { f } - \\mathbb { E } \\hat { f } \\right \\| _ { \\infty } > ( 1 + \\delta ) C _ { 0 } \\frac { 2 \\beta } { 2 \\beta + d } \\right ) = 0 \\\\ \\\\ \\text {the second inequality uses Lemma 6.2 and the last line uses Lemma 6.1.}"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 15,
+    "bounding box" : [ 126.72, 266.64, 485.28, 278.607 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "the second inequality uses Lemma 6.2 and the last line uses Lemma 6.1."
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 15,
+    "bounding box" : [ 138.6, 243.283, 419.172, 266.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Let g n be the density function of ψ − 1 n   ˆ f − f   ∞ , then"
+  }, {
+    "type" : "formula",
+    "id" : 609,
+    "page number" : 15,
+    "bounding box" : [ 146.64, 129.613, 518.04, 232.886 ],
+    "content" : "& \\lim _ { n \\to \\infty } \\sup \\mathbb { E } w ^ { 2 } ( \\psi _ { n } ^ { - 1 } \\left \\| \\hat { f } _ { n } - f \\right \\| _ { \\infty } ) \\\\ & = \\lim \\sup _ { n \\to \\infty } \\left ( \\int _ { 0 } ^ { ( 1 + \\delta ) C _ { 0 } } w ^ { 2 } ( x ) g _ { n } ( x ) d x + \\int _ { ( 1 + \\delta ) C _ { 0 } } ^ { \\infty } w ^ { 2 } ( x ) g _ { n } ( x ) d x \\right ) \\\\ & \\leq w ^ { 2 } ( ( 1 + \\delta ) C _ { 0 } ) + \\lim _ { n \\to \\infty } \\sup _ { ( 1 + \\delta ) C _ { 0 } } \\int _ { 0 } ^ { \\infty } x ^ { \\alpha } g _ { n } ( x ) d x = w ^ { 2 } ( ( 1 + \\delta ) C _ { 0 } ) \\leq B < \\infty , \\\\ & \\quad w h o r o t h o c n t a n t . \\ B \\ d o o s n t o n d o n o n f _ { \\ } t h o w t h i r d l i n o s u s c h t o r"
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 15,
+    "bounding box" : [ 126.72, 91.079, 485.321, 117.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where the constant B does not depend on f , the third lines uses the assumption on the power growth and non-decreasing property of the"
+  }, {
+    "type" : "formula",
+    "id" : 611,
+    "page number" : 16,
+    "bounding box" : [ 146.64, 554.568, 493.832, 655.286 ],
+    "content" : "& \\text {loss function} \\ w ( u ) . \\text { Using the Cauchy-Schwarz inequality, we have} \\\\ & \\quad \\lim \\sup _ { n \\to \\infty } \\mathbb { E } w ( \\psi _ { n } ^ { - 1 } \\ \\| \\ \\hat { f } _ { n } - f \\ \\| _ { \\infty } ) \\\\ & \\quad \\leq w ( ( 1 + \\delta ) C _ { 0 } ) \\lim \\sup _ { n \\to \\infty } \\mathbb { P } \\left ( \\psi _ { n } ^ { - 1 } \\ \\| \\ \\hat { f } - f \\ \\| _ { \\infty } \\leq ( 1 + \\delta ) C _ { 0 } \\right ) \\\\ & \\quad + \\lim \\sup \\left \\{ \\mathbb { E } w ^ { 2 } ( \\psi _ { n } ^ { - 1 } \\ \\| \\ \\hat { f } _ { n } - f \\ \\| _ { \\infty } ) \\mathbb { P } ( \\psi _ { n } ^ { - 1 } \\ \\| \\ \\hat { f } - f \\ \\| _ { \\infty } > ( 1 + \\delta ) C _ { 0 } ) \\right \\} ^ { 1 / 2 } \\\\ & \\quad = w ( ( 1 + \\delta ) C _ { 0 } ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "page number" : 16,
+    "bounding box" : [ 476.04, 537.0, 485.329, 545.213 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/square"
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 16,
+    "bounding box" : [ 126.72, 508.079, 485.281, 520.046 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "6.2. The lower bound. We now prove the lower bound result on M ."
+  }, {
+    "type" : "paragraph",
+    "id" : 614,
+    "page number" : 16,
+    "bounding box" : [ 126.72, 435.403, 485.38, 497.726 ],
+    "font" : "CMTI12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Lemma 6.3. For suﬃciently large κ , let N = N ( κ ) be such that N → ∞ when κ → ∞ and x i ∈ M , i = 1 , · · · , N , be such that x i are asymptotically equidistant,and such that B x i ( κ − 1 ) are disjoint. There is a constant 0 < D < ∞ such that − d"
+  }, {
+    "type" : "formula",
+    "id" : 615,
+    "page number" : 16,
+    "bounding box" : [ 126.72, 414.163, 361.2, 436.538 ],
+    "content" : "\\liminf _ { \\kappa \\to \\infty } N ( \\kappa ) \\kappa ^ { - d } \\geq D ."
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "page number" : 16,
+    "bounding box" : [ 126.72, 369.613, 485.378, 413.895 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Proof. Let κ ′ > 0 be the largest number such that   N ( κ ) i =1 B x i (( κ ′ ) − 1 ) = M . Then ( κ ′ ) − 1 = c ( κ ) κ − 1"
+  }, {
+    "type" : "formula",
+    "id" : 617,
+    "page number" : 16,
+    "bounding box" : [ 256.32, 354.163, 355.113, 376.538 ],
+    "content" : "( \\kappa ^ { \\prime } ) ^ { - 1 } = c ( \\kappa ) \\times \\kappa ^ { - 1 } \\\\ \\wr _ { \\kappa } ( \\omega ) = \\omega \\, \\Omega \\, \\sigma _ { \\kappa } \\, \\wr _ { \\omega } ( \\omega _ { \\kappa } ) \\, \\Omega"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 16,
+    "bounding box" : [ 126.721, 335.323, 379.68, 355.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where c ( κ ) > 1 and c ( κ ) → const. ≥ 1 as κ → ∞ . N"
+  }, {
+    "type" : "formula",
+    "id" : 619,
+    "page number" : 16,
+    "bounding box" : [ 169.32, 289.813, 442.753, 334.778 ],
+    "content" : "\\ v o l \\left ( \\mathbb { M } \\right ) \\leq \\sum _ { i = 1 } ^ { N } v o l \\left ( \\overline { B } _ { x _ { i } } ( ( \\kappa ^ { \\prime } ) ^ { - 1 } ) \\right ) \\sim N v o l \\left ( S ^ { d - 1 } \\right ) ( \\kappa ^ { \\prime } ) ^ { - d } / d \\\\ \\text {Thus}"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 16,
+    "bounding box" : [ 126.72, 279.119, 152.334, 291.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Thus"
+  }, {
+    "type" : "formula",
+    "id" : 621,
+    "page number" : 16,
+    "bounding box" : [ 147.24, 229.08, 485.329, 273.686 ],
+    "content" : "\\liminf _ { \\kappa \\to \\infty } N ( \\kappa ) \\kappa ^ { - d } = \\liminf _ { \\kappa \\to \\infty } c ( \\kappa ) ^ { - d } N ( \\kappa ^ { \\prime } ) ^ { - d } \\geq \\text {const.} \\times \\frac { d v o l \\left ( \\mathbb { M } \\right ) } { v o l \\left ( S ^ { d - 1 } \\right ) } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 16,
+    "bounding box" : [ 138.6, 194.563, 252.971, 215.007 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Let J κ,x : M → R , and − β"
+  }, {
+    "type" : "formula",
+    "id" : 623,
+    "page number" : 16,
+    "bounding box" : [ 187.2, 172.363, 424.8, 194.738 ],
+    "content" : "J _ { \\kappa , x } & = L \\kappa ^ { - \\beta } K _ { \\kappa , x } ( x ) = L \\kappa ^ { - \\beta } ( 1 - ( \\kappa d ( x , x ) ) ^ { \\beta } ) _ { + } , \\\\ \\\\ \\rho _ { \\kappa , x } & = \\varpi \\, \\Pi _ { \\kappa } \\, U _ { \\kappa } \\, \\Pi _ { x } \\, U _ { x } \\, ( x ) \\, \\Psi _ { \\kappa } \\, \\dot { \\cdot } \\, \\Psi _ { x } \\, \\Psi _ { x }"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 16,
+    "bounding box" : [ 126.72, 116.501, 485.383, 171.567 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where κ > 0 , x ∈ M . Let N = N ( κ ) be the greatest integer such that there exists observations x i ∈ M , i = 1 , · · · , N (with possible relabeling) in the observation set { x i , i = 1 , · · · , n } such that the functions J κ,x i have disjoint supports. From (6.1)"
+  }, {
+    "type" : "formula",
+    "id" : 625,
+    "page number" : 16,
+    "bounding box" : [ 243.481, 87.043, 368.52, 109.418 ],
+    "content" : "\\liminf _ { \\kappa \\to \\infty } N ( \\kappa ) \\kappa ^ { - d } \\geq c o n s t ."
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 662.999, 143.743, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Let"
+  }, {
+    "type" : "formula",
+    "id" : 627,
+    "page number" : 17,
+    "bounding box" : [ 177.24, 618.493, 434.76, 671.895 ],
+    "content" : "\\text {Let} \\\\ \\mathcal { C } ( \\kappa , \\{ x _ { i } \\} ) = \\left \\{ \\sum _ { i = 1 } ^ { N } \\theta _ { i } J _ { \\kappa , x _ { i } } \\colon | \\theta _ { i } | \\leq 1 , i = 1 , \\cdots , N \\right \\} , \\\\ \\text {where } \\mathcal { C } ( \\kappa , \\{ x _ { i } \\} ) \\subset \\Lambda ( \\beta , L ) \\text { when } 0 < \\beta \\leq 1 . \\text { The complete class of }"
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 588.763, 485.375, 623.126 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where C ( κ, { x i } ) ⊂ Λ( β, L ) when 0 < β ≤ 1. The complete class of estimators for estimating f ∈ C ( κ, { x i } ) consists of all of the form N"
+  }, {
+    "type" : "formula",
+    "id" : 629,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 544.813, 343.82, 589.778 ],
+    "content" : "\\hat { f } _ { n } = \\sum _ { i = 1 } ^ { N } \\hat { \\theta } _ { i } J _ { \\kappa , x _ { i } } \\\\ \\text {where } \\hat { \\theta } _ { i } = \\delta _ { i } ( z _ { 1 } \\cdots z _ { N } ) \\ i = 1 \\cdots N \\text { and}"
+  }, {
+    "type" : "formula",
+    "id" : 630,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 472.213, 356.82, 547.646 ],
+    "content" : "i = & 1 \\\\ \\text {where } \\hat { \\theta } _ { i } = \\delta _ { i } ( z _ { 1 } , \\cdots , z _ { N } ) , i = 1 , \\cdots , N , \\text { and} \\\\ & z _ { i } = \\frac { \\sum _ { j = 1 } ^ { n } J _ { \\kappa , x _ { i } } ( x _ { j } ) y _ { j } } { \\sum _ { j = 1 } ^ { n } J _ { \\kappa , x _ { i } } ^ { 2 } ( x _ { j } ) } . \\\\ \\text {When } \\hat { f } _ { n } \\text { is of the form } ( 6 . 2 ) \\text { and } f \\in \\mathcal { C } ( \\kappa , \\{ x _ { i } \\} ) \\text { then} \\\\ & \\| \\hat { f } _ { n } \\text { } f \\| _ { 0 } \\ > \\ \\max _ { \\hat { f } _ { n } } | \\hat { f } _ { n } ( x _ { j } ) \\ \\hat { f } ( x _ { j } ) | _ { 1 } \\ \\lfloor I _ { ( n + 1 ) } ( x _ { j } ) \\rfloor \\\\"
+  }, {
+    "type" : "formula",
+    "id" : 631,
+    "page number" : 17,
+    "bounding box" : [ 358.92, 503.891, 362.16, 515.846 ],
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 463.963, 398.052, 487.527 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "When ˆ f n is of the form (6.2) and f ∈ C ( κ, { x i } ) then ˆ ˆ"
+  }, {
+    "type" : "formula",
+    "id" : 633,
+    "page number" : 17,
+    "bounding box" : [ 140.64, 416.563, 467.464, 466.286 ],
+    "content" : "\\| \\hat { f } _ { n } - f \\ \\| _ { \\infty } & \\quad \\geq \\max _ { i = 1 , \\cdots , N } | \\hat { f } _ { n } ( x _ { i } ) - f ( x _ { i } ) | = | J _ { \\kappa , x _ { 1 } } ( x _ { 1 } ) | \\| \\ \\hat { \\theta } - \\theta \\ \\| _ { \\infty } \\\\ & = \\ L \\kappa ^ { - \\beta } \\ \\| \\hat { \\theta } - \\theta \\ \\| _ { \\infty }"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 405.359, 157.48, 417.327 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Hence"
+  }, {
+    "type" : "formula",
+    "id" : 635,
+    "page number" : 17,
+    "bounding box" : [ 199.32, 346.421, 412.68, 400.647 ],
+    "content" : "r _ { n } & \\ \\geq \\ \\inf _ { \\hat { f } _ { n } \\ f \\in \\mathcal { C } ( \\kappa , \\{ x _ { i } \\} ) } \\mathbb { E } w ( \\psi _ { n } ^ { - 1 } \\ \\| \\ \\hat { f } _ { n } - f \\ \\| _ { \\infty } ) \\\\ & \\geq \\ \\inf _ { \\hat { \\theta } } \\sup _ { | \\theta _ { i } | \\leq 1 } \\mathbb { E } w ( \\psi _ { \\varepsilon } ^ { - 1 } L \\kappa ^ { - \\beta } \\ \\| \\ \\hat { \\theta } - \\theta \\ \\| _ { \\infty } ) , \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 274.933, 513.96, 339.566 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where the expectation is with respect to a multivariate normal distribution with mean vector θ and the variance-covariance matrix σ 2 N I N , where I N is the N × N identity matrix and σ 2 N = var( z 1 ) = σ 2 /   N j =1 J 2 κ,x i ( x j ). Fix a small number δ such that 0 < δ < 2 and (2 δ )vol ( M )( β + d ) d 2 β/ (2 β + d )"
+  }, {
+    "type" : "formula",
+    "id" : 637,
+    "page number" : 17,
+    "bounding box" : [ 180.119, 192.493, 431.332, 285.255 ],
+    "content" : "\\text {Fix a small number $\\delta$ such that $0 < \\delta < 2$ and} \\\\ C _ { 0 } ^ { \\prime } = L ^ { d / ( 2 \\beta + d ) } \\left ( \\frac { ( 2 - \\delta ) v o l \\left ( \\mathbb { M } \\right ) ( \\beta + d ) d ^ { 2 } } { 2 v o l \\left ( \\mathbb { S } ^ { d - 1 } \\right ) \\beta ^ { 2 } } \\right ) ^ { \\beta / ( 2 \\beta + d ) } \\\\ \\kappa = \\left ( \\frac { C _ { 0 } ^ { \\prime } \\psi _ { \\varepsilon } } { L } \\right ) ^ { - 1 / \\beta } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 230.039, 145.572, 242.007 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "and"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 17,
+    "bounding box" : [ 126.72, 184.199, 153.281, 196.166 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Since"
+  }, {
+    "type" : "formula",
+    "id" : 640,
+    "page number" : 17,
+    "bounding box" : [ 176.161, 69.493, 434.653, 188.295 ],
+    "content" : "\\text {Since} & & \\sigma _ { N } ^ { - 1 } \\ = \\ \\sigma ^ { - 1 } \\sqrt { \\sum _ { j = 1 } ^ { N } J _ { \\kappa , x _ { i } } ^ { 2 } ( x _ { j } ) } \\sim \\sqrt { \\frac { ( 2 - \\delta ) d } { 2 \\beta + d } } \\log n \\\\ & \\leq \\ \\sqrt { ( 2 - \\delta ) ( \\log ( \\log n / n ) ^ { - d / ( 2 \\beta + d ) } ) } \\\\ & = \\ \\sqrt { 2 - \\delta } \\sqrt { \\log ( \\log n \\times \\kappa ^ { d } ) } = \\sqrt { 2 - \\delta } \\sqrt { \\log N }"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 18,
+    "bounding box" : [ 126.72, 662.999, 256.414, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "by (6.1), it follows that if"
+  }, {
+    "type" : "formula",
+    "id" : 642,
+    "page number" : 18,
+    "bounding box" : [ 250.92, 620.413, 359.773, 664.695 ],
+    "content" : "\\text {at if} \\quad \\sigma _ { N } ^ { - 1 } \\leq \\sqrt { 2 - \\delta } \\sqrt { \\log N } \\\\ \\text {then} \\quad \\sigma _ { N } ^ { - 1 } = \\tau _ { 0 } ( \\hat { u } _ { 0 } \\hat { \\sigma } _ { 0 } - \\sigma _ { 0 } \\| u \\| ) \\quad ( \\tau _ { 0 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 18,
+    "bounding box" : [ 126.72, 622.799, 252.612, 634.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "for some 0 < δ < 2, then"
+  }, {
+    "type" : "formula",
+    "id" : 644,
+    "page number" : 18,
+    "bounding box" : [ 223.08, 593.141, 389.04, 617.966 ],
+    "content" : "\\inf _ { \\hat { \\theta } } \\sup _ { | \\theta _ { i } | \\leq 1 } \\mathbb { E } w ( \\| \\hat { \\theta } - \\theta \\| _ { \\infty } ) \\to w ( 1 ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 18,
+    "bounding box" : [ 126.72, 566.443, 206.863, 586.886 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "as N → ∞ , but"
+  }, {
+    "type" : "formula",
+    "id" : 646,
+    "page number" : 18,
+    "bounding box" : [ 266.761, 558.648, 345.24, 574.538 ],
+    "content" : "\\psi _ { n } ^ { - 1 } L \\kappa ^ { - \\beta } = C _ { 0 } ^ { \\prime } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 18,
+    "bounding box" : [ 126.72, 543.839, 355.842, 555.807 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "By the continuity of the function w , we have"
+  }, {
+    "type" : "formula",
+    "id" : 648,
+    "page number" : 18,
+    "bounding box" : [ 194.641, 514.181, 417.361, 539.007 ],
+    "content" : "\\inf _ { \\hat { \\theta } } \\sup _ { | \\theta _ { i } | \\leq 1 } \\mathbb { E } w ( \\psi _ { n } ^ { - 1 } L \\kappa ^ { - \\beta } \\, \\| \\, \\hat { \\theta } - \\theta \\, \\| _ { \\infty } ) \\to w ( C _ { 0 } ^ { \\prime } ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 18,
+    "bounding box" : [ 126.721, 487.363, 455.88, 507.807 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "when N → ∞ . Since δ was chosen arbitrarily, the result follows."
+  }, {
+    "type" : "heading",
+    "id" : 650,
+    "level" : "Subtitle",
+    "page number" : 18,
+    "bounding box" : [ 187.561, 460.799, 424.33, 472.766 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Appendix A. Background on Topology"
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 18,
+    "bounding box" : [ 126.721, 411.959, 485.367, 451.766 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "In this appendix we present a technical overview of homology as used in our procedures. For an intensive treatment we refer the reader to the excellent text [32]."
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 18,
+    "bounding box" : [ 126.721, 119.04, 485.425, 410.006 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Homology is an algebraic procedure for counting holes in topological spaces. There are numerous variants of homology: we use simplicial homology with Z coeﬃcients. Given a set of points V , a k -simplex is an unordered subset { v 0 , v 1 , . . ., v k } where v i ∈ V and v i   = v j for all i   = j . The faces of this k -simplex consist of all ( k − 1)-simplices of the form { v 0 , . . ., v i − 1 , v i +1 , . . ., v k } for some 0 ≤ i ≤ k . Geometrically, the k simplex can be described as follows: given k +1 points in R m ( m ≥ k ), the k -simplex is a convex body bounded by the union of ( k − 1) linear subspaces of R m of deﬁned by all possible collections of k points (chosen out of k +1 points). A simplicial complex is a collection of simplices which is closed with respect to inclusion of faces. Triangulated surfaces form a concrete example, where the vertices of the triangulation correspond to V . The orderings of the vertices correspond to an orientation. Any abstract simplicial complex on a (ﬁnite) set of points V has a geometric realization in some R m . Let X denote a simplicial complex. Roughly speaking, the homology of X , denoted H ∗ ( X ), is a sequence of vector spaces { H k ( X ) : k = 0 , 1 , 2 , 3 , . . . } , where H k ( X ) is called the k -dimensional homology of X . The dimension of H k ( X ), called the k -th Betti number of X , is a coarse measurement of the number of diﬀerent holes in the space X that can be sensed by using subcomplexes of dimension k ."
+  }, {
+    "type" : "paragraph",
+    "id" : 653,
+    "page number" : 18,
+    "bounding box" : [ 398.402, 347.683, 398.402, 368.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 18,
+    "bounding box" : [ 464.162, 347.683, 464.162, 368.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/negationslash"
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 18,
+    "bounding box" : [ 126.722, 91.08, 485.339, 117.087 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For example, the dimension of H 0 ( X ) is equal to the number of connected components of X . These are the types of features (holes) in X"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 19,
+    "bounding box" : [ 126.72, 481.68, 485.412, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "that can be detected by using points and edges– with this construction one is answering the question: are two points connected by a sequence of edges or not? The simplest basis for H 0 ( X ) consists of a choice of vertices in X , one in each path-component of X . Likewise, the simplest basis for H 1 ( X ) consists of loops in X , each of which surrounds a hole in X . For example, if X is a graph, then the space H 1 ( X ) encodes the number and types of cycles in the graph, this space has the structure of a vector space. Let X denote a simplicial complex. Deﬁne for each k ≥ 0, the vector space C k ( X ) to be the vector space whose basis is the set of oriented k -simplices of X ; that is, a k -simplex { v 0 , . . ., v k } together with an order type denoted [ v 0 , . . ., v k ] where a change in orientation corresponds to a change in the sign of the coeﬃcient: [ v 0 , . . ., v i , . . ., v j , . . ., v k ] = − [ v 0 , . . ., v j , . . ., v i , . . ., v k ] if odd permutation is used."
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "page number" : 19,
+    "bounding box" : [ 126.721, 439.008, 485.202, 479.727 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For k larger than the dimension of X , we set C k ( X ) = 0. The boundary map is deﬁned to be the linear transformation ∂ : C k → C k − 1 which acts on basis elements [ v 0 , . . ., v k ] via"
+  }, {
+    "type" : "formula",
+    "id" : 658,
+    "page number" : 19,
+    "bounding box" : [ 126.722, 374.173, 445.921, 419.018 ],
+    "content" : "( A . 1 ) \\quad & \\partial [ v _ { 0 } , \\dots , v _ { k } ] \\coloneqq \\sum _ { i = 0 } ^ { k } ( - 1 ) ^ { i } [ v _ { 0 } , \\dots , v _ { i - 1 } , v _ { i + 1 } , \\dots , v _ { k } ] . \\\\ \\intertext { This gives rise to a chain complex: a sequence of vector spaces and }"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 19,
+    "bounding box" : [ 126.721, 348.84, 485.294, 374.727 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "This gives rise to a chain complex: a sequence of vector spaces and linear transformations"
+  }, {
+    "type" : "formula",
+    "id" : 660,
+    "page number" : 19,
+    "bounding box" : [ 184.562, 308.684, 426.994, 332.978 ],
+    "content" : "\\cdots \\stackrel { \\partial } { \\to } C _ { k + 1 } \\stackrel { \\partial } { \\to } C _ { k } \\stackrel { \\partial } { \\to } C _ { k - 1 } \\cdots \\stackrel { \\partial } { \\to } C _ { 2 } \\stackrel { \\partial } { \\to } C _ { 1 } \\stackrel { \\partial } { \\to } C _ { 0 } \\\\ \\sim \\\\ C o n s i d o n \\, t h o f l o w i n g \\, t w o b a n p o o e a \\, o f \\, C _ { 1 } \\, + \\, t h o w o l o n \\, ( t h o s e a n d o w s )"
+  }, {
+    "type" : "paragraph",
+    "id" : 661,
+    "page number" : 19,
+    "bounding box" : [ 126.722, 269.76, 485.219, 309.567 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Consider the following two subspaces of C k : the cycles (those subcomplexes without boundary) and the boundaries (those subcomplexes which are themselves boundaries) formally deﬁned as:"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 19,
+    "bounding box" : [ 153.482, 243.284, 370.065, 263.727 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "k -cycles: Z k ( X ) = ker( ∂ : C k → C k -1 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 19,
+    "bounding box" : [ 153.482, 229.364, 394.425, 249.807 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "k -boundaries: B k ( X ) = im( ∂ : C k +1 → C k )"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 19,
+    "bounding box" : [ 126.722, 122.16, 485.377, 231.807 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "A ◦ is, the boundary of a chain has empty boundary. It follows that B k is a subspace of Z k . This has great implications. The k -cycles in X are the basic objects which count the presence of a “hole of dimension k” in X . But, certainly, many of the k -cycles in X are measuring the same hole; still other cycles do not really detect a hole at all – they bound a subcomplex of dimension k + 1 in X . We say that two cycles ζ and η in Z k ( X ) are homologous if their diﬀerence is a boundary:"
+  }, {
+    "type" : "formula",
+    "id" : 665,
+    "page number" : 19,
+    "bounding box" : [ 231.003, 82.604, 381.003, 103.047 ],
+    "content" : "[ \\zeta ] = [ \\eta ] \\ \\leftrightarrow \\ \\zeta - \\eta \\in B _ { k } ( X ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 20,
+    "bounding box" : [ 126.72, 649.079, 485.143, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The k -dimensional homology of X , denoted H k ( X ) is the quotient vector space"
+  }, {
+    "type" : "formula",
+    "id" : 667,
+    "page number" : 20,
+    "bounding box" : [ 126.72, 596.927, 352.44, 626.006 ],
+    "content" : "H _ { k } ( X ) \\colon = \\frac { Z _ { k } ( X ) } { B _ { k } ( X ) } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 668,
+    "page number" : 20,
+    "bounding box" : [ 126.72, 545.76, 485.338, 585.566 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Speciﬁcally, an element of H k ( X ) is an equivalence class of homologous k -cycles. This inherits the structure of a vector space in the natural way [ ζ ] + [ η ] = [ ζ + η ] and c [ ζ ] = [ cζ ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 20,
+    "bounding box" : [ 126.721, 397.843, 485.369, 543.807 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "A map f : X → Y is a homotopy equivalence if there is a map g : Y → X so that f ◦ g is homotopic to the identity map on Y and g ◦ f is homotopic to the identity map on X . This notion is a weakening of the notion of homeomorphism, which requires the existence of a continuous map g so that f ◦ g and g ◦ f are equal to the corresponding identity maps. The less restrictive notion of homotopy equivalence is useful in understanding relationships between complicated spaces and spaces with simple descriptions. We say two spaces X and Y are homotopy equivalent, or have the same homotopy type if there is a homotopy equivalence from X to Y . This is denoted by X ∼ Y . By arguments utilizing barycentric subdivision, one may show that"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 20,
+    "bounding box" : [ 126.722, 280.799, 485.384, 404.247 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "the homology H ∗ ( X ) is a topological invariant of X : it is indeed an invariant of homotopy type. Readers familiar with the Euler characteristic of a triangulated surface will not ﬁnd it odd that intelligent counting of simplices yields an invariant. For a simple example, the reader is encouraged to contemplate the “physical” meaning of H 1 ( X ). Elements of H 1 ( X ) are equivalence classes of (ﬁnite collections of) oriented cycles in the 1-skeleton of X , the equivalence relation being determined by the 2-skeleton of X."
+  }, {
+    "type" : "paragraph",
+    "id" : 671,
+    "page number" : 20,
+    "bounding box" : [ 126.722, 155.159, 485.337, 278.727 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Is it often remarked that homology is functorial, by which it is meant that things behave the way they ought. A simple example of this which is crucial to our applications arises as follows. Consider two simplicial complexes X and X ′ . Let f : X → X ′ be a continuous simplicial map: f takes each k -simplex of X to a k ′ -simplex of X ′ , where k ′ ≤ k . Then, the map f induces a linear transformation f # : C k ( X ) → C k ( X ′ ). It is a simple lemma to show that f # takes cycles to cycles and boundaries to boundaries; hence there is a well-deﬁned linear transformation on the quotient spaces"
+  }, {
+    "type" : "formula",
+    "id" : 672,
+    "page number" : 20,
+    "bounding box" : [ 202.923, 121.723, 409.203, 144.097 ],
+    "content" : "f _ { * } \\colon H _ { k } ( X ) \\to H _ { k } ( X ^ { \\prime } ) , \\, f _ { * } ( [ \\zeta ] ) = [ f _ { \\# } ( \\zeta ) ] ."
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 20,
+    "bounding box" : [ 126.723, 82.603, 485.331, 117.086 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "This is called the induced homomorphism of f on H ∗ . Functoriality means that (1) if f : X → Y is continuous then f ∗ : H k ( X ) → H k ( Y )"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 21,
+    "bounding box" : [ 126.72, 640.603, 485.28, 674.966 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "is a group homomorphism; and (2) the composition of two maps g ◦ f induces the composition of the linear transformation: ( g ◦ f ) ∗ = g ∗ ◦ f ∗ ."
+  }, {
+    "type" : "heading",
+    "id" : 675,
+    "level" : "Subtitle",
+    "page number" : 21,
+    "bounding box" : [ 187.44, 619.439, 424.569, 631.406 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Appendix B. Background on Geometry"
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 21,
+    "bounding box" : [ 126.719, 570.719, 485.335, 610.527 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The development of Morse theory has been instrumental in classifying manifolds and represents a pathway between geometry and topology. A classic reference is Milnor [24]."
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 21,
+    "bounding box" : [ 126.719, 486.96, 485.399, 568.647 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For some smooth f : M → R , consider a point p ∈ M where in local coordinates the derivative vanishes, ∂f/∂x 1 = 0 , . . ., ∂f/∂x d = 0. Then that point is called a critical point, and the evaluation f ( p ) is called a critical value. A critical point p ∈ M is called non-degenerate if the Hessian ( ∂ 2 f/∂ i ∂ j ) is nonsingular. Such functions are called Morse functions."
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 21,
+    "bounding box" : [ 126.72, 402.528, 485.399, 485.007 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Since the Hessian at a critical point is nondegenerate, there will be a mixture of positive and negative eigenvalues. Let η be the number of negative eigenvalues of the Hessian at a critical point called the Morse index. The basic Morse lemma states that at a critical point p ∈ M with index η and some neighborhood U of p , there exists local coordinates x = ( x 1 , . . ., x d ) so that x ( p ) = 0 and"
+  }, {
+    "type" : "formula",
+    "id" : 679,
+    "page number" : 21,
+    "bounding box" : [ 157.44, 381.528, 453.993, 396.218 ],
+    "content" : "f ( q ) = f ( p ) - x _ { 1 } ( q ) ^ { 2 } - \\cdots - x _ { \\eta } ( q ) ^ { 2 } + x _ { \\eta + 1 } ( q ) ^ { 2 } + \\cdots x _ { d } ( q ) ^ { 2 }"
+  }, {
+    "type" : "formula",
+    "id" : 680,
+    "page number" : 21,
+    "bounding box" : [ 219.721, 373.843, 421.753, 394.287 ],
+    "content" : "= f ( p ) - x _ { 1 } ( q ) ^ { 2 } - \\dots - x _ { \\eta } ( q ) ^ { 2 } + x _ { \\eta + 1 } ( q ) ^ { 2 } + \\dots x _ { d } ( q ) ^ { 2 } \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 21,
+    "bounding box" : [ 126.721, 352.963, 192.961, 373.407 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "for all q ∈ U . Based on this"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 21,
+    "bounding box" : [ 126.721, 249.84, 485.377, 359.487 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "result one is able to show that at a critical point p ∈ M , with f ( p ) = a say, that the sublevel set M f ≤ a has the same homotopy type as that of the sublevel set M f ≤ a − ε (for some small ε > 0) with an η -dimensional cell attached to it. In fact, for a compact M , its homotopy type is that of a cell complex with one η -dimensional cell for each critical point of index η . This cell complex is known as a CW complex in homotopy theory, if the cells are attached in the order of their dimension."
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 21,
+    "bounding box" : [ 126.722, 221.208, 485.293, 247.887 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The famous set of Morse inequalities states that if β k is the k − th Betti number and m k is the number of critical points of index k , then"
+  }, {
+    "type" : "formula",
+    "id" : 684,
+    "page number" : 21,
+    "bounding box" : [ 200.522, 101.653, 410.914, 213.087 ],
+    "content" : "b _ { 1 } \\, \\text { and } m _ { k } \\, \\text { is the number of critical points of index } \\\\ \\beta _ { 0 } \\, \\text { } & \\leq \\, m _ { 0 } \\\\ \\beta _ { 1 } - \\beta _ { 0 } \\, \\text { } & \\leq \\, m _ { 1 } - m _ { 0 } \\\\ \\beta _ { 2 } - \\beta _ { 1 } + \\beta _ { 0 } \\, \\text { } & \\leq \\, m _ { 2 } - m _ { 1 } + m _ { 0 } \\\\ & \\cdots \\\\ \\chi ( M ) = \\sum _ { k = 0 } ^ { d } ( - 1 ) ^ { k } \\beta _ { k } \\, \\ = \\, \\sum _ { k = 0 } ^ { d } ( - 1 ) ^ { k } m _ { k } \\\\ \\chi \\, \\text { denotes the Euler characteristic.}"
+  }, {
+    "type" : "paragraph",
+    "id" : 685,
+    "page number" : 21,
+    "bounding box" : [ 126.722, 91.08, 336.602, 103.047 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where χ denotes the Euler characteristic."
+  }, {
+    "type" : "heading",
+    "id" : 686,
+    "level" : "Subtitle",
+    "page number" : 22,
+    "bounding box" : [ 271.2, 663.693, 341.104, 674.56 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 22,
+    "bounding box" : [ 126.721, 106.589, 485.881, 654.512 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 21,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 632.669, 485.399, 654.512 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[1] Angers, J.F., Kim, P.T. (2005). Multivariate Bayesian function estimation. Ann Statist 33 , 2967-2999.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 608.669, 485.358, 630.632 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[2] Belkin, M., Niyogi,P. (2004). Semi-Supervised Learning on Riemannian Manifolds. Mach Learn 56 , 209-239.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 572.789, 485.366, 606.752 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[3] Bissantz, N., Hohage, T., Munk, A., Ruymgaart, F. (2007). Convergence rates of general regularization methods for statistical inverse problems and applications. SIAM J Numerical Analysis 45 , 2610-2636.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 548.909, 485.519, 570.872 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[4] Bubenik, P., Kim, P.T. (2007). A statistical approach to persistent homology. Homology Homotopy and Applications 9 , 337-362.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 525.029, 485.52, 546.992 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[5] Chung, M.K., Bubenik, P., Kim, P.T. (2009). Persistence Diagrams of Cortical Surface Data. LNCS: Proceedings of IPMI 2009 , 5636 , 386–397.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 489.149, 485.417, 522.992 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[6] Cohen-Steiner, D., Edelsbrunner, H., and Harer, J. (2005). Stability of persistence diagrams. In SCG ’05: Proceedings of the twenty-ﬁrst annual symposium on Computational geometry . New York: ACM Press, 263–271.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.64, 465.269, 485.519, 487.112 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[7] Cucker, F., Smale, S. (2002). On the mathematical foundations of learning. Bull Amer Math Soc 39 , 1-49.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.641, 441.389, 485.29, 463.232 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[8] de Silva, V., Ghrist, R. (2007). Homological sensor networks. Notic Amer Math Soc 54 , 10-17.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 131.641, 417.389, 452.427, 439.352 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[9] de Silva, V. and Perry, P. (2005). Plex version 2.5. Available online at http://math.stanford.edu/comptop/programs/plex .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 393.509, 485.358, 415.472 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[10] Edelsbrunner, H., Letscher, D., and Zomorodian, A. (2001). Topological persistence and simpliﬁcation. Discrete Comput. Geom. 28 , 511-533.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 369.629, 485.462, 391.472 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[11] Edelsbrunner, H., Dequent, M-L., Mileyko, Y. and Pourquie, O. Assessing periodicity in gene expression as measured by microarray data. Preprint.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 345.629, 485.521, 367.592 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[12] Efromovich, S. (2000). On sharp adaptive estimation of multivariate curves. Math Methods Statist 9 , 117–139.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 321.749, 485.428, 343.711 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[13] Essen, D.C. van (1997). A tension–based theory of morphogenesis and compact wiring in the central nervous system. Nature 385 , 313–318.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.722, 297.869, 485.343, 319.832 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[14] Hendriks, H. (1990). Nonparametric estimation of a probability density on a Riemannian manifold using Fourier expansions. Ann Statist 18 , 832–849.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.722, 261.989, 485.479, 295.832 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[15] Hilgetag, C.C. and Barbas, H. (2006) Role of mechanical factors in the morphology of the primate cerebral cortex. PLoS Computational Biology . 2 , 146– 159.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 238.109, 485.352, 259.952 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[16] Kim, P.T., Koo, J.Y. (2005). Statistical inverse problems on manifolds. J Fourier Anal Appl 11 , 639–653.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 214.229, 485.41, 236.072 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[17] Kim, P.T, Koo, J.Y. and Luo, Z. (2009). Weyl eigenvalue asymptotics and sharp adaptation on vector bundles. J Multivariate Anal . In press.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 190.229, 485.264, 212.191 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[18] Klemel¨a, J. (1999). Asymptotic minimax risk for the white noise model on the sphere. Scand J Statist 26 , 465–473.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.721, 154.349, 485.359, 188.312 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[19] Koo, J.Y., Kim, P.T. (2008). Asymptotic minimax bounds for stochastic deconvolution over groups. IEEE Transactions on Information Theory 54 , 289 298.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.722, 130.469, 485.29, 152.432 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[20] Korostelev, A. P. (1993). An asymptotically minimax regression estimator in the uniform norm up to exact constant. Theory Probab. Appl. 38 , 737-743.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 22,
+      "bounding box" : [ 126.722, 106.589, 485.881, 128.552 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[21] Korostelev, A. P., Nussbaum, M. (1996). The asymptotic minimax constant for sup-norm loss in nonparametric density estimation. Bernoulli 5 , 1099-1118.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 23,
+    "bounding box" : [ 126.719, 364.589, 485.528, 673.472 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 12,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.72, 651.509, 485.397, 673.472 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[22] Lee, J. M. (1997). Riemannian Manifolds: An introduction to curvature. Springer.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.72, 627.629, 485.304, 649.592 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[23] Mair, B.A., Ruymgaart, F.H. (1996). Statistical inverse estimation in Hilbert scales. SIAM J Appl Math 56 , 1424-1444.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.72, 603.749, 485.236, 625.592 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[24] Milnor, J. (1963). Morse Theory. Annals of Math Studies. 51 , Princeton University Press, Princeton.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.72, 567.869, 485.438, 601.712 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[25] Niyogi, P., Smale, S., and Weinberger, S. (2008). Finding the homology of submanifolds with high conﬁdence from random samples. Discrete and Computational Geometry 39 , 419–441.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 543.989, 485.305, 565.832 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[26] Pelletier, B. (2005). Kernel density estimation on Riemannian manifolds. Stat Prob Letter 73 , 297-304.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 519.989, 485.356, 541.952 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[27] Pelletier, B. (2006). Non-parametric regression estimation on a closed Riemannian manifold. J Nonparametric Statist 18 , 57-67.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 484.229, 485.406, 518.072 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[28] Rooij, A.C.M. van, Ruymgaart, F.H. (1991). Regularized deconvolution on the circle and the sphere. In Nonparametric Functional Estimation and Related Topics (G. Roussas, ed.) 679–690. Kluwer, Amsterdam.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 460.229, 485.398, 482.192 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[29] Ruymgaart, F.H. (1993). A uniﬁed approach to inversion problems in statistics. Math Methods Statist , 2 , 130-146.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 424.349, 485.482, 458.312 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[30] Sacan, A., Ozturk, O., Ferhatosmanoglu, H. and Wang, Y. (2007). Lfm-pro: A tool for detecting signiﬁcant local structural sites in proteins. Bioinformatics 6 709-716",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 400.469, 485.528, 422.431 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[31] Smale, S., Zhou, D.-X. (2004). Shannon sampling and function reconstruction from point values. Bull Amer Math Soc 41 279-305.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 388.469, 423.238, 398.431 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[32] Spanier, E. H. (1966). Algebraic Topology . New York: Springer.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 23,
+      "bounding box" : [ 126.719, 364.589, 485.382, 386.551 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[33] Zomorodian, A., Carlsson, G. (2005). Computing persistent homology. Discrete Comput. Geom. 33 , 249-274.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 720,
+    "page number" : 23,
+    "bounding box" : [ 126.719, 330.837, 485.315, 351.772 ],
+    "font" : "CMCSC10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Department of Mathematics, Cleveland State University, Cleveland, Ohio 44115-2214"
+  }, {
+    "type" : "paragraph",
+    "id" : 721,
+    "page number" : 23,
+    "bounding box" : [ 138.599, 318.269, 321.67, 328.231 ],
+    "font" : "CMTT10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "E-mail address : p.bubenik@csuohio.edu"
+  }, {
+    "type" : "paragraph",
+    "id" : 722,
+    "page number" : 23,
+    "bounding box" : [ 126.719, 286.557, 485.316, 307.613 ],
+    "font" : "CMCSC10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Department of Mathematics, Stanford University, Stanford, California 94305"
+  }, {
+    "type" : "paragraph",
+    "id" : 723,
+    "page number" : 23,
+    "bounding box" : [ 138.599, 274.109, 337.269, 284.071 ],
+    "font" : "CMTT10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "E-mail address : gunnar@math.stanford.edu"
+  }, {
+    "type" : "paragraph",
+    "id" : 724,
+    "page number" : 23,
+    "bounding box" : [ 126.719, 242.396, 485.337, 263.333 ],
+    "font" : "CMCSC10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Department of Mathematics and Statistics, University of Guelph, Guelph, Ontario N1G 2W1, Canada"
+  }, {
+    "type" : "paragraph",
+    "id" : 725,
+    "page number" : 23,
+    "bounding box" : [ 138.599, 229.829, 295.51, 239.791 ],
+    "font" : "CMTT10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "E-mail address : pkim@uoguelph.ca"
+  }, {
+    "type" : "paragraph",
+    "id" : 726,
+    "page number" : 23,
+    "bounding box" : [ 126.719, 198.117, 485.338, 219.173 ],
+    "font" : "CMCSC10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Department of Statistics, Keimyung University, Dalseo-Gu, Daegu, 704-701, Korea"
+  }, {
+    "type" : "paragraph",
+    "id" : 727,
+    "page number" : 23,
+    "bounding box" : [ 138.6, 185.549, 206.519, 195.511 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "E-mail address :"
+  }, {
+    "type" : "paragraph",
+    "id" : 728,
+    "page number" : 23,
+    "bounding box" : [ 211.08, 185.758, 295.51, 194.954 ],
+    "font" : "CMTT10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "zluo@uoguelph.ca"
+  } ]
+}

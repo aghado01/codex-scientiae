@@ -1,0 +1,1509 @@
+{
+  "file name" : "MPH-REF.pdf",
+  "number of pages" : 8,
+  "author" : null,
+  "title" : null,
+  "creation date" : "D:20250523064951Z00'00'",
+  "modification date" : "D:20250523064951Z00'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 173,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 632.616, 169.222, 655.959 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 24.787,
+    "text color" : "[0.0]",
+    "content" : "Chapter 9"
+  }, {
+    "type" : "heading",
+    "id" : 174,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 582.802, 338.174, 606.145 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 24.787,
+    "text color" : "[0.0]",
+    "content" : "Multiparameter persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 175,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 502.652, 531.001, 542.648 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "This chapter closely follows the introductory paper [ 2 ] on multiparameter persistence. The interested reader is referred there for a (much) more comprehensive overview of the topic."
+  }, {
+    "type" : "paragraph",
+    "id" : 176,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 384.204, 531.001, 489.305 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "As we have seen, the persistence modules arising from the Čech or Vietoris-Rips complexes are stable under small perturbations of the underlying data, but not robust . That is, even a small number of outliers can drastically change the persistence diagram or barcode. We could try to remedy this problem by making these complexes density-aware in some way. For the Vietoris-Rips complex, a typical way to do this is as follows. For a vertex v in a simplicial complex, its degree deg ( v ) is the number of edges ( 1 -simplices) in the complex that contain v . Then. for d 2 , the degreed Vietoris-Rips complex is"
+  }, {
+    "type" : "paragraph",
+    "id" : 177,
+    "page number" : 1,
+    "bounding box" : [ 118.534, 361.235, 442.09, 379.733 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "r d ( X ) : = { \u0000 2 r ( X ) : each vertex of \u0000 has degree at least d } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 178,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 186.696, 531.021, 356.764 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Note that vertices corresponding to data points in high-density areas of X will have relatively higher degree, whereas outliers will have relatively lower degree. Thus, for d large enough, we should expect this modiﬁcation to reduce the impact of outliers. On the other hand, if d is too large, we are ‘throwing away the baby with the bathwater’. So, the question is: how to choose d ? Here, we run into the same issue that originally motivated persistence: there might not be one choice of d that accurately reﬂects the entire data set. Even if this choice would exist, it might be hard to determine. Instead, we would like to consider all choices of d simultaneously. The solution is to look at persistence w.r.t. both the scale parameter r and the density parameter d at the same time. In this chapter, we formalize such multiparameter persistence, and take a look at the representability and robustness of the resulting multiparameter persistence modules ."
+  }, {
+    "type" : "heading",
+    "id" : 179,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 149.568, 328.091, 163.079 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "9.1 Persistence modules indexed by a poset"
+  }, {
+    "type" : "paragraph",
+    "id" : 180,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 101.296, 531.003, 134.24 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "A persistence module (indexed by ) consists of a family of vectors spaces U a , a 2 , together with commuting maps U a ! U b for a 6 b . If we want to deﬁne persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 181,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 669.771, 530.677, 702.821 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.1. A poset (partially ordered set) is a tuple ( P, \u0000 ) consisting of a set P and a binary relation \u0000 on P satisfying"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 89.434, 620.1, 358.692, 667.536 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 644.307, 208.2, 667.536 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• a \u0000 a for all a 2 P ;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 620.1, 358.692, 643.329 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• a \u0000 b and b \u0000 a implies a = b for all a,b 2 P ;",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 184,
+    "page number" : 2,
+    "bounding box" : [ 89.434, 597.552, 367.416, 616.05 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a /precedesequal b and b /precedesequal c implies a /precedesequal c for all a, b, c ∈ P ;"
+  }, {
+    "type" : "paragraph",
+    "id" : 185,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 573.748, 531.001, 592.246 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We will sometimes simply write P if the (partial) ordering \u0000 is clear from context."
+  }, {
+    "type" : "paragraph",
+    "id" : 186,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 513.969, 531.001, 568.381 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Note that partial orderings allow for elements to be incomparable , i.e., it can happen for a,b 2 P that neither a \u0000 b nor b \u0000 a holds. In contrast, under a total ordering all elements in P must be comparable. All the posets we will see in this chapter are constructed from the following examples:"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 89.434, 418.283, 530.996, 505.353 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 474.397, 530.996, 505.353 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• The reals = ( , 6 ) and natural numbers = ( , 6 ) with their usual ordering are posets.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 442.49, 385.862, 465.719 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• If ( P, \u0000 ) is a poset, and Q ✓ P , then ( Q, \u0000 ) is a poset;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 418.283, 428.714, 442.066 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• For any poset ( P, \u0000 ) , we have the opposite poset P op = ( P, ⌫ ) ,",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 190,
+    "page number" : 2,
+    "bounding box" : [ 193.098, 419.942, 463.408, 440.998 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/precedesequal op /followsequal , where"
+  }, {
+    "type" : "formula",
+    "id" : 191,
+    "page number" : 2,
+    "bounding box" : [ 130.53, 394.245, 320.899, 412.743 ],
+    "content" : "a \\preceq b \\iff b \\preceq a \\quad \\text {for all $a,b\\in P$} ."
+  }, {
+    "type" : "paragraph",
+    "id" : 192,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 89.434, 363.669, 529.853, 382.167 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "• For two posets ( P, \u0000 P ) and ( Q, \u0000 Q ) we have the product poset ( P ⇥ Q, \u0000 ) , where"
+  }, {
+    "type" : "formula",
+    "id" : 193,
+    "page number" : 2,
+    "bounding box" : [ 128.426, 337.972, 530.999, 358.638 ],
+    "content" : "( p , q ) \\preceq ( p ^ { \\prime } , q ^ { \\prime } ) \\iff p \\preceq _ { P } p ^ { \\prime } \\text { and } q \\preceq _ { Q } q ^ { \\prime } \\quad \\text {for all } p , p ^ { \\prime } \\in P \\text { and } q , q ^ { \\prime } \\in Q ."
+  }, {
+    "type" : "paragraph",
+    "id" : 194,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 300.313, 531.001, 325.821 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We can now deﬁne ﬁltrations and persistence modules indexed by an arbitrary poset, generalizing our deﬁnitions from earlier chapters."
+  }, {
+    "type" : "paragraph",
+    "id" : 195,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 254.699, 530.996, 287.75 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.2. Let ( P, \u0000 ) be a poset. A family ( X p ) p 2 P of topological spaces (or simplicial complexes) is called a P -ﬁltration if X p ✓ X p 0 for all p,p 0 2 P with p \u0000 p 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 196,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 223.783, 530.999, 249.5 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.3. Let ( P, \u0000 ) be a poset, and let be a ﬁeld. A P -persistence module (over ) consists of"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 89.434, 152.333, 530.991, 214.215 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 190.986, 307.75, 214.215 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• An -vector space U p for each p 2 P ;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 89.434, 152.333, 530.991, 190.008 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• A linear map u p,p 0 : U p ! U p 0 for each p,p 0 2 P with p \u0000 p 0 , satisfying u p 2 ,p 3 \u0000 u p 1 ,p 2 = u p 1 ,p 3 for all p 1 ,p 2 ,p 3 2 P with p 1 \u0000 p 2 \u0000 p 3 .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 199,
+    "page number" : 2,
+    "bounding box" : [ 135.164, 153.992, 467.507, 188.506 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "′ ′ ◦ ∈ /precedesequal /precedesequal"
+  }, {
+    "type" : "paragraph",
+    "id" : 200,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 101.296, 533.934, 148.793 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Observation 9.4. If ( X p ) p 2 P is a P -ﬁltration for some poset P , then taking k -dimensional homology gives us a P -persistence module H k ( X p ) (where, as before, the maps u p,p 0 : H k ( X p ) ! H k ( X p 0 ) are induced by the inclusions X p , ! X p 0 )."
+  }, {
+    "type" : "paragraph",
+    "id" : 201,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 672.046, 531.001, 729.078 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We can now give two examples of ﬁltrations indexed by P = ⇥ op , each of which induces a P -persistence module via the observation above. The ﬁrst one formalizes the discussion at the beginning of the chapter. The second one applies a similar idea to the Čech complex."
+  }, {
+    "type" : "paragraph",
+    "id" : 202,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 629.16, 530.995, 662.211 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Example 9.5. Let X be a ﬁnite metric space. Then the family ( r d ( X )) r 2 ,d 2 deﬁned above is a ﬁltration indexed by ⇥ op . It is called the degree-Rips biﬁltration . n"
+  }, {
+    "type" : "paragraph",
+    "id" : 203,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 608.083, 489.68, 626.688 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Example 9.6. Let X ✓ be a ﬁnite point cloud. For r 2 and d 2 , deﬁne"
+  }, {
+    "type" : "formula",
+    "id" : 204,
+    "page number" : 3,
+    "bounding box" : [ 101.265, 585.568, 313.963, 606.409 ],
+    "content" : "\\mathcal { M } \\mathcal { C } _ { d } ^ { r } = \\{ x \\in \\mathbb { R } ^ { n } \\colon | B ( x , r ) \\cap X | \\geqslant d \\} \\subseteq \\mathbb { R } ^ { n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 205,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 541.496, 531.009, 581.551 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Note that, for d = 1 , this is just the union-of-balls used to deﬁne the Čech complex. The family ( MC r d ( X )) r 2 ,d 2 is a ﬁltration (of topological spaces) indexed by ⇥ op . It is called the multicover biﬁltration ."
+  }, {
+    "type" : "paragraph",
+    "id" : 206,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 462.664, 531.01, 531.51 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Both of the ﬁltrations above can also be thought of as indexed over 2 (after a reparameterization). In general, we call an n -ﬁltration (resp. n -persistence module) an n -parameter ﬁltration (resp. n -parameter persistence module). For n > 2 , we also say ‘multiparameter’. For n = 2 the terms biﬁltration and bipersistence module are common."
+  }, {
+    "type" : "heading",
+    "id" : 207,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 425.579, 398.73, 439.09 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "9.2 Representing persistence modules indexed by posets"
+  }, {
+    "type" : "heading",
+    "id" : 208,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 395.043, 171.606, 408.554 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "9.2.1 Barcodes?"
+  }, {
+    "type" : "paragraph",
+    "id" : 209,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 344.072, 531.019, 384.026 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Recall that a p.f.d. persistence module indexed by can be uniquely represented by a barcode. In Chapter 6, we saw that this follows from the fact that any such can be decomposed into interval modules in a unique way:"
+  }, {
+    "type" : "formula",
+    "id" : 210,
+    "page number" : 3,
+    "bounding box" : [ 113.22, 302.132, 176.216, 342.513 ],
+    "content" : "\\mathbb { U } \\cong \\bigoplus _ { i \\in I } \\mathbb { I } _ { \\langle a , b \\rangle } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 211,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 257.981, 531.003, 297.936 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Each interval in this decomposition corresponds to a bar in the barcode of . We could hope a similar statement holds for modules indexed by any poset P . The following deﬁnition and theorem should give us some hope:"
+  }, {
+    "type" : "paragraph",
+    "id" : 212,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 222.429, 531.0, 250.976 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.7. A persistence module is called indecomposable if ⇠ = 1 \u0000 2 implies that 1 = 0 or 2 = 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 213,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 201.352, 489.379, 212.623 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Exercise 9.8. Show that interval modules (indexed by ) are indecomposable."
+  }, {
+    "type" : "paragraph",
+    "id" : 214,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 165.829, 531.007, 191.545 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Theorem 9.9. Let be a p.f.d. persistence module (indexed by a poset P ). Then, there is a unique decomposition:"
+  }, {
+    "type" : "formula",
+    "id" : 215,
+    "page number" : 3,
+    "bounding box" : [ 113.22, 123.918, 161.822, 164.299 ],
+    "content" : "U \\cong \\bigoplus _ { i \\in I } \\mathbb { U } _ { i } , \\\\ 1 _ { i } = 1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 216,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 108.63, 365.549, 119.734 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where each persistence module i is indecomposable."
+  }, {
+    "type" : "paragraph",
+    "id" : 217,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 614.263, 531.024, 726.519 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Understanding P -persistence modules thus boils down to understanding indecomposables (indexed by P ). For P = , it turns out that indecomposables are precisely interval modules, leading to Theorem 6.36. However, for general P , the situation is much more complicated. Without going into details: It is not possible to parameterize indecomposables in terms of some nice family of subsets of P . The decomposition of Theorem 9.9 therefore does not lead to a workable notion of barcode in general. In fact, it is not possible to deﬁne any reasonable notion of a barcode for P -persistence modules, in the following sense."
+  }, {
+    "type" : "paragraph",
+    "id" : 218,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 579.45, 531.001, 605.167 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.10. Let ( P, \u0000 ) be a poset and let be a P -persistence module. We say a multiset B of subsets of P is a reasonable barcode for if"
+  }, {
+    "type" : "formula",
+    "id" : 219,
+    "page number" : 4,
+    "bounding box" : [ 101.265, 550.464, 341.615, 571.129 ],
+    "content" : "\\ r a n k ( u _ { p , p ^ { \\prime } } ) = | \\{ B \\in \\mathcal { B } \\colon p , p ^ { \\prime } \\in B \\} | \\quad ( \\forall p \\preceq p ^ { \\prime } ) . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 220,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 521.7, 530.997, 547.309 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "That is, the rank of the map u p,p 0 : U p ! U p 0 can be computed by counting the number of ‘bars’ that contain both p and p 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 221,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 486.916, 530.997, 512.632 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Exercise 9.11. Show that the usual barcode for a p.f.d. persistence module indexed by is reasonable in the above sense."
+  }, {
+    "type" : "paragraph",
+    "id" : 222,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 452.132, 531.006, 477.848 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Exercise 9.12. For p 2 P , show that dim U p is greater than or equal to the number of bars that contain p in a reasonable barcode for ."
+  }, {
+    "type" : "paragraph",
+    "id" : 223,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 417.348, 530.991, 443.064 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Example 9.13. Let P = { 0,1,2 } ⇥ { 0,1,2 } and consider the following persistence module indexed by P :"
+  }, {
+    "type" : "formula",
+    "id" : 224,
+    "page number" : 4,
+    "bounding box" : [ 83.955, 303.452, 379.675, 402.924 ],
+    "content" : "\\mathbb { F } & \\longrightarrow \\mathbb { F } \\longrightarrow 0 & f & \\colon a & \\mapsto ( a , 0 ) \\\\ \\text {id} & \\widehat { g } & \\widehat { \\uparrow } & g & \\colon ( a , b ) & \\mapsto a \\\\ \\mathbb { U } & = \\mathbb { F } \\longrightarrow \\mathbb { F } ^ { 2 } & \\mathbb { F } & \\, \\mathbb { F } \\, , & \\text {where} & h & \\colon ( a , b ) & \\mapsto a + b \\\\ & \\widehat { \\uparrow } & \\widehat { j } & \\widehat { \\uparrow } & \\text {id} & j & \\colon a & \\mapsto ( 0 , a ) \\\\ & 0 & \\longrightarrow \\mathbb { F } \\longrightarrow \\mathbb { F } \\\\ \\text {We claim} \\mathbb { U } & \\, \\text {can not have a reasonable hargcode} \\, \\text {to see this, sumpose}"
+  }, {
+    "type" : "paragraph",
+    "id" : 225,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 267.435, 530.999, 292.985 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "We claim cannot have a reasonable barcode. To see this, suppose B is a reasonable barcode for . Note that"
+  }, {
+    "type" : "formula",
+    "id" : 226,
+    "page number" : 4,
+    "bounding box" : [ 101.265, 238.449, 325.897, 256.947 ],
+    "content" : "\\ r a n k ( h \\circ f ) & = \\text {rank} ( g \\circ f ) = \\text {rank} ( h \\circ j ) = 1 . \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 227,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 216.797, 488.926, 235.295 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "By the reasonability assumption, there thus must be subsets I,J,K 2 B with"
+  }, {
+    "type" : "formula",
+    "id" : 228,
+    "page number" : 4,
+    "bounding box" : [ 101.265, 195.145, 378.262, 213.643 ],
+    "content" : "( 0 , 1 ) , ( 2 , 1 ) \\in I , \\quad ( 0 , 1 ) , ( 1 , 2 ) \\in J , \\quad ( 1 , 0 ) , ( 2 , 1 ) \\in K ."
+  }, {
+    "type" : "paragraph",
+    "id" : 229,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 144.601, 531.008, 191.99 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Since dim U 0,1 = dim U 2,1 = 1 , we know by Exercise 9.12 that ( 0,1 ) and ( 2,1 ) occur in at most one element of B . But that means that I = J , and I = K , and so in fact I = J = K ◆ { ( 0,1 ) , ( 2,1 ) , ( 1,2 ) } . Thus, using reasonability again, we ﬁnd that"
+  }, {
+    "type" : "formula",
+    "id" : 230,
+    "page number" : 4,
+    "bounding box" : [ 101.265, 122.948, 181.467, 143.789 ],
+    "content" : "\\text {rank} ( g \\circ j ) & \\geqslant 1 , \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 231,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 101.296, 269.38, 119.794 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "contradicting the fact that g \u0000 j = 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 232,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 643.126, 531.003, 726.447 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "For completeness, we note that it is possible to have reasonable barcodes for multiparameter persistence modules if we allow ‘bars’ to occur with negative multiplicity. This leads to so-called signed barcodes . Furthermore, there are several special classes of multiparameter persistence modules which do admit an interval decomposition (note that we did not formally deﬁne what an interval is in the poset-setting!). This is true in particular for so-called interlevel persistence . We will not discuss this further here."
+  }, {
+    "type" : "heading",
+    "id" : 233,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 72.0, 602.099, 339.488, 615.61 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "9.2.2 Other representations and visualizations"
+  }, {
+    "type" : "paragraph",
+    "id" : 234,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 549.599, 530.997, 589.554 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Even though we cannot hope for a barcode-like representation of multiparameter persistence modules, there are still several useful (partial) representations available. We mention just three of them here:"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 89.434, 334.124, 531.005, 535.759 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 89.434, 498.084, 530.677, 535.759 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• The Hilbert-function of a p.f.d. persistence module indexed by P sends p 2 P to dim U p 2 . It can be thought of as a ‘homological heatmap’.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 89.434, 419.954, 531.005, 493.267 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• The rank-invariant of sends a pair ( p,p 0 ) , p \u0000 p 0 to the rank rank ( u p,p 0 ) of the map between U p and U 0 p . Note that any two modules with ⇠ = have the same rank invariant. For modules indexed by , this implication also holds in the other direction. However, for general P , there exist nonisomorphic modules with the same rank-invariant;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 89.434, 334.124, 530.997, 407.436 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "• Let L : t 7! ta + b be an aﬃne line in 2 with non-negative slope. Then the restriction L of a persistence module indexed by 2 to the line L can be viewed as a persistence module indexed by (with its usual, total ordering). The Fibered Barcode of sends each such line L to the barcode B ( L ) . This idea can be extended to lines in n ;",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 238,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 292.924, 530.998, 318.641 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Exercise 9.14. Show that the rank-invariant of an 2 -persistence module can be recovered from its ﬁbered barcode, and vice versa."
+  }, {
+    "type" : "paragraph",
+    "id" : 239,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 250.461, 531.004, 277.728 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The RIVET software package ( rivet.readthedocs.io ) allows you to compute and visualize each of the invariants above for (among others) the degree-Rips biﬁltration."
+  }, {
+    "type" : "heading",
+    "id" : 240,
+    "level" : "Doctitle",
+    "page number" : 5,
+    "bounding box" : [ 72.0, 208.035, 396.699, 221.546 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "9.3 Distances and robustness for P -persistence modules"
+  }, {
+    "type" : "paragraph",
+    "id" : 241,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 151.152, 531.003, 191.178 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "As we generally do not have barcodes for P -persistence modules, we cannot rely on the Bottleneck distance to compare them. Instead, we work directly with interleaving distance, which is still well-deﬁned. For simplicity, we only consider P = n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 242,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 101.296, 531.001, 135.495 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Deﬁnition 9.15. Write 1 = ( 1,1,...,1 ) 2 n . Two n -persistence modules , are ✏ -interleaved if there exist two families of linear maps, ' a : U a ! V a + ✏ 1 and"
+  }, {
+    "type" : "paragraph",
+    "id" : 243,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 700.909, 530.997, 726.519 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "  a : V a ! U a + ✏ 1 , a 2 n , such that the following diagrams (and their symmetric counterparts obtained by exchanging the role of and ) are commutative:"
+  }, {
+    "type" : "paragraph",
+    "id" : 245,
+    "page number" : 6,
+    "bounding box" : [ 85.298, 669.917, 94.551, 681.03 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "U"
+  }, {
+    "type" : "paragraph",
+    "id" : 249,
+    "page number" : 6,
+    "bounding box" : [ 94.551, 670.0, 100.521, 673.678 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 247,
+    "page number" : 6,
+    "bounding box" : [ 167.02, 675.448, 168.987, 684.654 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "′"
+  }, {
+    "type" : "paragraph",
+    "id" : 246,
+    "page number" : 6,
+    "bounding box" : [ 148.887, 678.076, 166.358, 683.825 ],
+    "font" : "EURM7",
+    "font size" : 5.978,
+    "text color" : "[0.0]",
+    "content" : "u a,a 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 265,
+    "page number" : 6,
+    "bounding box" : [ 128.316, 658.149, 135.672, 661.827 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ϕ"
+  }, {
+    "type" : "paragraph",
+    "id" : 266,
+    "page number" : 6,
+    "bounding box" : [ 135.672, 657.186, 140.149, 659.944 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 278,
+    "page number" : 6,
+    "bounding box" : [ 143.539, 626.876, 151.262, 637.989 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "V"
+  }, {
+    "type" : "paragraph",
+    "id" : 291,
+    "page number" : 6,
+    "bounding box" : [ 169.657, 627.83, 174.83, 634.263 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 289,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 157.232, 626.068, 164.214, 633.131 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 288,
+    "page number" : 6,
+    "bounding box" : [ 151.262, 626.959, 157.232, 630.637 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 290,
+    "page number" : 6,
+    "bounding box" : [ 164.214, 626.959, 169.658, 630.637 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 248,
+    "page number" : 6,
+    "bounding box" : [ 217.851, 669.917, 227.104, 681.03 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "U"
+  }, {
+    "type" : "paragraph",
+    "id" : 251,
+    "page number" : 6,
+    "bounding box" : [ 233.738, 668.179, 235.705, 677.385 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "′"
+  }, {
+    "type" : "paragraph",
+    "id" : 250,
+    "page number" : 6,
+    "bounding box" : [ 227.104, 670.0, 233.074, 673.678 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 279,
+    "page number" : 6,
+    "bounding box" : [ 204.189, 635.532, 213.616, 641.281 ],
+    "font" : "EURM7",
+    "font size" : 5.978,
+    "text color" : "[0.0]",
+    "content" : "v a +"
+  }, {
+    "type" : "paragraph",
+    "id" : 280,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 213.616, 634.864, 218.852, 640.161 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 281,
+    "page number" : 6,
+    "bounding box" : [ 218.852, 635.532, 222.935, 638.29 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 284,
+    "page number" : 6,
+    "bounding box" : [ 234.199, 632.903, 236.166, 642.109 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "′"
+  }, {
+    "type" : "paragraph",
+    "id" : 282,
+    "page number" : 6,
+    "bounding box" : [ 222.935, 636.186, 226.814, 641.01 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 287,
+    "page number" : 6,
+    "bounding box" : [ 245.983, 636.186, 249.862, 641.01 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 285,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 236.664, 634.864, 241.9, 640.161 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 283,
+    "page number" : 6,
+    "bounding box" : [ 226.816, 635.532, 233.534, 638.29 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ",a"
+  }, {
+    "type" : "paragraph",
+    "id" : 286,
+    "page number" : 6,
+    "bounding box" : [ 241.901, 635.532, 245.984, 638.29 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 269,
+    "page number" : 6,
+    "bounding box" : [ 276.913, 654.271, 278.88, 663.477 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "′"
+  }, {
+    "type" : "paragraph",
+    "id" : 267,
+    "page number" : 6,
+    "bounding box" : [ 264.415, 658.971, 271.771, 662.649 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ϕ"
+  }, {
+    "type" : "paragraph",
+    "id" : 268,
+    "page number" : 6,
+    "bounding box" : [ 271.772, 656.9, 276.249, 659.658 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 270,
+    "page number" : 6,
+    "bounding box" : [ 324.204, 651.249, 344.595, 662.353 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "and"
+  }, {
+    "type" : "paragraph",
+    "id" : 252,
+    "page number" : 6,
+    "bounding box" : [ 354.656, 670.248, 363.909, 681.361 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "U"
+  }, {
+    "type" : "paragraph",
+    "id" : 259,
+    "page number" : 6,
+    "bounding box" : [ 363.91, 670.33, 369.88, 674.008 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 292,
+    "page number" : 6,
+    "bounding box" : [ 279.222, 626.876, 286.945, 637.989 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "V"
+  }, {
+    "type" : "paragraph",
+    "id" : 294,
+    "page number" : 6,
+    "bounding box" : [ 293.578, 625.138, 295.545, 634.344 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "′"
+  }, {
+    "type" : "paragraph",
+    "id" : 297,
+    "page number" : 6,
+    "bounding box" : [ 308.468, 627.83, 313.641, 634.263 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 295,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 296.043, 626.068, 303.025, 633.131 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 293,
+    "page number" : 6,
+    "bounding box" : [ 286.945, 626.959, 292.915, 630.637 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 296,
+    "page number" : 6,
+    "bounding box" : [ 303.025, 626.959, 308.469, 630.637 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 257,
+    "page number" : 6,
+    "bounding box" : [ 441.868, 679.557, 445.747, 684.381 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 253,
+    "page number" : 6,
+    "bounding box" : [ 411.338, 678.903, 428.809, 683.738 ],
+    "font" : "EURM7",
+    "font size" : 5.978,
+    "text color" : "[0.0]",
+    "content" : "u a,a +"
+  }, {
+    "type" : "paragraph",
+    "id" : 254,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 428.807, 678.235, 434.043, 683.532 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 255,
+    "page number" : 6,
+    "bounding box" : [ 434.043, 678.903, 437.785, 681.661 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 256,
+    "page number" : 6,
+    "bounding box" : [ 437.783, 678.903, 441.865, 681.661 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 271,
+    "page number" : 6,
+    "bounding box" : [ 397.786, 658.079, 405.142, 661.757 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ϕ"
+  }, {
+    "type" : "paragraph",
+    "id" : 272,
+    "page number" : 6,
+    "bounding box" : [ 405.142, 657.115, 409.619, 659.873 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 277,
+    "page number" : 6,
+    "bounding box" : [ 459.917, 657.537, 463.796, 662.361 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 273,
+    "page number" : 6,
+    "bounding box" : [ 438.844, 657.846, 446.121, 661.524 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ψ"
+  }, {
+    "type" : "paragraph",
+    "id" : 275,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 450.598, 656.215, 455.834, 661.512 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 274,
+    "page number" : 6,
+    "bounding box" : [ 446.12, 656.883, 450.597, 659.641 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 276,
+    "page number" : 6,
+    "bounding box" : [ 455.834, 656.883, 459.917, 659.641 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 298,
+    "page number" : 6,
+    "bounding box" : [ 412.898, 626.545, 420.621, 637.658 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "V"
+  }, {
+    "type" : "paragraph",
+    "id" : 302,
+    "page number" : 6,
+    "bounding box" : [ 439.016, 627.499, 444.189, 633.932 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 300,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 426.591, 625.737, 433.573, 632.8 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 299,
+    "page number" : 6,
+    "bounding box" : [ 420.621, 626.628, 426.591, 630.306 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 301,
+    "page number" : 6,
+    "bounding box" : [ 433.572, 626.628, 439.016, 630.306 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 258,
+    "page number" : 6,
+    "bounding box" : [ 487.21, 670.248, 496.463, 681.361 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "U"
+  }, {
+    "type" : "paragraph",
+    "id" : 264,
+    "page number" : 6,
+    "bounding box" : [ 519.847, 671.201, 525.02, 677.634 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 261,
+    "level" : "2",
+    "page number" : 6,
+    "bounding box" : [ 502.433, 669.439, 509.415, 676.502 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 260,
+    "page number" : 6,
+    "bounding box" : [ 496.463, 670.33, 502.433, 674.008 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 262,
+    "page number" : 6,
+    "bounding box" : [ 509.414, 670.33, 514.403, 674.008 ],
+    "font" : "EURM7",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "2✏"
+  }, {
+    "type" : "paragraph",
+    "id" : 263,
+    "page number" : 6,
+    "bounding box" : [ 514.4, 670.33, 519.844, 674.008 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "/epsilon1"
+  }, {
+    "type" : "paragraph",
+    "id" : 303,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 594.281, 530.848, 608.292 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The interleaving distance between , is d I ( , ) : = inf ✏ > 0 { , are ✏ -interleaved } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 304,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 514.394, 531.007, 583.312 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "The deﬁnition above agrees with our earlier deﬁnition of interleaving when n = 1 . Contrary to the 1 -dimensional case, computing the interleaving distance for n > 2 is an NP-hard problem (even if the persistence modules , are given to us in a ‘nice’ form). For this reason, the following alternative based on the ﬁbered barcode is sometimes used in practice. It is known to be eﬃciently computable when n = 2 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 305,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 489.385, 529.045, 500.656 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.16. The matching distance between p.f.d. n -persistence modules , is"
+  }, {
+    "type" : "formula",
+    "id" : 306,
+    "page number" : 6,
+    "bounding box" : [ 101.264, 441.112, 329.011, 484.332 ],
+    "content" : "d _ { \\text {match} } ( \\mathbb { U } , \\mathbb { V } ) \\coloneqq \\sup _ { L } \\ \\left \\{ d _ { B } ( \\mathcal { B } ( \\mathbb { U } _ { L } ) , \\ \\mathcal { B } ( \\mathbb { V } _ { L } ) ) \\right \\} , \\\\ \\intertext { w h e r e } \\ w h e r e \\ t h e \\ s u p r e m a y m i s t o k e n \\ o v e r \\ a l l \\ l i n e s \\ I \\colon t \\mapsto t a"
+  }, {
+    "type" : "paragraph",
+    "id" : 307,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 419.972, 502.402, 439.725 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "where the supremum is taken over all lines L : t 7! ta + b with a ⌫ 1 , b 2 n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 308,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 402.327, 431.767, 413.598 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Theorem 9.17 (see [ 3 ]) . For any two p.f.d. n -persistence modules,"
+  }, {
+    "type" : "formula",
+    "id" : 309,
+    "page number" : 6,
+    "bounding box" : [ 101.264, 373.521, 226.608, 389.09 ],
+    "content" : "d _ { \\text {match} } ( \\mathbb { U } , \\mathbb { V } ) \\leqslant d _ { I } ( \\mathbb { U } , \\mathbb { V } ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 310,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 329.903, 516.149, 369.549 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Exercise 9.18. Prove that d B \u0000 B ( L ) , B ( L ) \u0000 6 d I ( , ) for all lines L : t 7! t 1 + b ."
+  }, {
+    "type" : "heading",
+    "id" : 311,
+    "level" : "Subtitle",
+    "page number" : 6,
+    "bounding box" : [ 71.999, 311.686, 354.017, 325.197 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "9.3.1 Robustness of some bipersistence modules"
+  }, {
+    "type" : "paragraph",
+    "id" : 312,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 217.137, 531.006, 300.429 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Finally, we come back to the primary reason for studying multiparameter persistence: achieving robustness w.r.t. outliers in the data. To state formal guarantees of this form, we need to think about point-cloud data in a more probablistic way. For a ﬁnite (multi)set X ✓ n , we write µ X for the uniform probability measure on X , meaning the measure that assigns probability 1/ | X | to each x 2 X . The following can be thought of as a ‘probabilistic Hausdorﬀ distance’ between point clouds."
+  }, {
+    "type" : "paragraph",
+    "id" : 313,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 184.795, 493.044, 205.851 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Deﬁnition 9.19. Let X,Y ✓ n ﬁnite. The Prohorov distance 1 between µ X ,µ Y is"
+  }, {
+    "type" : "formula",
+    "id" : 314,
+    "page number" : 6,
+    "bounding box" : [ 101.264, 157.476, 505.571, 178.892 ],
+    "content" : "d _ { \\Pr } ( \\mu _ { X } , \\mu _ { Y } ) \\coloneqq \\supinf _ { A } \\{ \\delta \\geqslant 0 \\colon \\mu _ { X } ( A ) \\leqslant \\mu _ { Y } ( A ^ { \\delta } ) + \\delta \\ a n d \\ \\mu _ { Y } ( A ) \\leqslant \\mu _ { X } ( A ^ { \\delta } ) + \\delta \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 315,
+    "page number" : 6,
+    "bounding box" : [ 71.999, 123.87, 513.381, 144.711 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "where A ranges over all closed subsets of n and A \u0000 : = { y 2 n : dist ( y,A ) 6 \u0000 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 316,
+    "page number" : 6,
+    "bounding box" : [ 85.462, 109.13, 531.002, 120.827 ],
+    "font" : "SFORM10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1 The Prohorov distance can be deﬁned between any two measures µ, ⌫ on (the same) metric space M ."
+  }, {
+    "type" : "paragraph",
+    "id" : 317,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 700.938, 531.005, 726.447 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "While the deﬁnition of the Prohorov distance appears a bit complicated, the following observation suggests that it captures ‘robustness to outliers’ in a meaningful way."
+  }, {
+    "type" : "paragraph",
+    "id" : 318,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 666.626, 422.146, 685.231 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Exercise 9.20. Let X Y ✓ n , ﬁnite, non-empty sets. Show that"
+  }, {
+    "type" : "formula",
+    "id" : 319,
+    "page number" : 7,
+    "bounding box" : [ 101.265, 631.955, 214.206, 659.363 ],
+    "content" : "d _ { \\Pr } ( \\mu _ { X } , \\mu _ { Y } ) \\leqslant \\frac { | Y \\ \\ X | } { | X | } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 320,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 591.212, 530.999, 616.733 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "As an example, the normalized multicover persistence module turns out to be stable w.r.t. Prohorov distance (i.e., it is robust to outliers)."
+  }, {
+    "type" : "paragraph",
+    "id" : 321,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 556.899, 462.589, 575.504 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9.21. Let X ✓ n be a ﬁnite point cloud. For r, ⇢ 2 , the sets"
+  }, {
+    "type" : "formula",
+    "id" : 322,
+    "page number" : 7,
+    "bounding box" : [ 101.265, 517.485, 495.587, 557.131 ],
+    "content" : "\\mathcal { N M C } _ { \\rho } ^ { r } ( X ) & \\coloneqq \\{ x \\in \\mathbb { R } ^ { n } \\, \\colon | B ( x , r ) \\cap X | \\geqslant \\rho | X | \\} = \\{ x \\in \\mathbb { R } ^ { n } \\, \\colon \\mu _ { X } ( B ( x , r ) \\cap X ) \\geqslant \\rho \\} . \\\\ \\intertext { f o r m a b i l f l t r a t i o n o v e r R \\times \\mathbb { R } ^ { o p } c a l l e d t h e n o r m a l z i d u c t i v e b i f l t r a t i o n . }"
+  }, {
+    "type" : "paragraph",
+    "id" : 323,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 501.048, 492.143, 522.105 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "form a bilﬁltration over ⇥ op called the normalized multicover biﬁltration ."
+  }, {
+    "type" : "paragraph",
+    "id" : 324,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 474.099, 431.687, 494.94 ],
+    "font" : "SFOTI10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Theorem 9.22 (see [ 1 ]) . Let X,Y ✓ n ﬁnite. For all k > 0 , we have"
+  }, {
+    "type" : "formula",
+    "id" : 325,
+    "page number" : 7,
+    "bounding box" : [ 101.265, 434.685, 354.654, 474.331 ],
+    "content" : "d _ { I } \\left ( H _ { k } ( \\mathbb { N } \\mathcal { M } \\mathcal { C } ( X ) ) , \\ H _ { k } ( \\mathbb { N } \\mathcal { M } \\mathcal { C } ( Y ) ) \\right ) & \\leqslant d _ { \\Pr } ( \\mu _ { X } , \\mu _ { Y } ) . \\\\ P r o f , \\text { let } \\epsilon = d _ { \\Pr } ( \\mu _ { X } , \\mu _ { Y } ) , \\text { We will show that }"
+  }, {
+    "type" : "paragraph",
+    "id" : 326,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 423.905, 318.344, 436.238 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Proof. Let ✏ = d Pr ( µ X ,µ Y ) . We will show that"
+  }, {
+    "type" : "formula",
+    "id" : 327,
+    "page number" : 7,
+    "bounding box" : [ 101.265, 389.814, 379.194, 410.563 ],
+    "content" : "\\mathcal { N M C } _ { \\rho } ^ { r } ( X ) \\subseteq \\mathcal { N M C } _ { \\rho - \\epsilon } ^ { r + \\epsilon } ( Y ) \\subseteq \\mathcal { N M C } _ { \\rho - 2 \\epsilon } ^ { r + 2 \\epsilon } ( X ) \\quad \\forall r , \\rho \\in \\mathbb { R } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 328,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 369.252, 247.737, 380.315 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "These inclusions induce the maps"
+  }, {
+    "type" : "formula",
+    "id" : 329,
+    "page number" : 7,
+    "bounding box" : [ 101.265, 314.687, 348.519, 354.712 ],
+    "content" : "\\varphi _ { r , \\rho } \\colon H _ { k } ( \\mathcal { N M C } _ { \\rho } ^ { r } ( X ) ) \\to H _ { k } ( \\mathcal { N M C } _ { \\rho - \\epsilon } ^ { r + \\epsilon } ( Y ) ) , \\\\ \\psi _ { r + \\epsilon , \\rho - \\epsilon } \\colon H _ { k } ( \\mathcal { N M C } _ { \\rho - \\epsilon } ^ { r + \\epsilon } ( Y ) ) \\to H _ { k } ( \\mathcal { N M C } _ { \\rho - 2 \\epsilon } ^ { r + 2 \\epsilon } ( X ) )"
+  }, {
+    "type" : "formula",
+    "id" : 330,
+    "page number" : 7,
+    "bounding box" : [ 348.519, 322.148, 357.815, 332.743 ],
+    "content" : "\\cdot ) ) )"
+  }, {
+    "type" : "paragraph",
+    "id" : 331,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 294.125, 450.892, 305.26 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "required to show that H k ( NMC ( X )) and H k ( NMC ( Y )) are ✏ -interleaved. r"
+  }, {
+    "type" : "paragraph",
+    "id" : 332,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 250.279, 530.997, 290.306 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "So, let r, ⇢ 2 , and suppose that x 2 NMC ⇢ ( X ) . By deﬁnition, this means that µ X ( B ( x,r ) \\ X ) > ⇢ . Using the deﬁnition of the Prohorov distance, and the triangleinequality, this implies that"
+  }, {
+    "type" : "formula",
+    "id" : 333,
+    "page number" : 7,
+    "bounding box" : [ 101.265, 203.502, 466.763, 243.148 ],
+    "content" : "\\rho & \\leqslant \\mu _ { X } ( B ( x , r ) \\cap X ) \\leqslant \\mu _ { Y } ( B ( x , r ) ^ { \\epsilon } \\cap Y ) + \\epsilon \\leqslant \\mu _ { Y } ( B ( x , r + \\epsilon ) \\cap Y ) + \\epsilon . \\\\ \\intertext { T h a t is to say, } \\mu _ { X } ( B ( x , r + \\epsilon ) \\cap Y ) & \\geqslant \\rho - \\epsilon , \\, \\text {meaning } x \\in \\mathcal { N M C } _ { 0 } ^ { r + \\epsilon } ( Y ) , \\, \\text { giving us the first }"
+  }, {
+    "type" : "paragraph",
+    "id" : 334,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 165.536, 531.006, 207.906 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "That is to say, µ Y ( B ( x,r + ✏ ) \\ Y ) > ⇢ ✏ , meaning x 2 NMC r + ✏ ⇢ ✏ ( Y ) , giving us the ﬁrst inclusion. The second inclusion follows from an analogous argument, switching the roles of X and Y ."
+  }, {
+    "type" : "paragraph",
+    "id" : 335,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 108.659, 531.001, 148.614 ],
+    "font" : "SFORM10",
+    "font size" : 11.955,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "There are many similar theorems for other bipersistence modules, including the degree-Rips biﬁltration. They are often somewhat hard to state and prove, relying on variants of the Prohorov distance, as well as variants of the interleaving distance [ 1 ]."
+  }, {
+    "type" : "heading",
+    "id" : 336,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 72.0, 714.799, 127.526, 728.31 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "Questions"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 80.136, 580.911, 531.005, 702.542 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 80.136, 672.567, 531.002, 702.542 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "35. How can we deﬁne persistence modules over multiple parameters? Discuss the technical deﬁnitions that are needed.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 80.136, 637.2, 530.996, 667.175 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "36. What are some common bipersistence modules? How do they relate to the (1-parameter) persistence modules of earlier chapters?",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 80.136, 601.833, 531.005, 631.807 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "37. What is a major upside of multiparameter persistence? What is a major downside? Discuss robustness and representability.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 80.136, 580.911, 429.671, 596.44 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "38. How can we visualize multiparameter persistence modules?",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 341,
+    "level" : "Doctitle",
+    "page number" : 8,
+    "bounding box" : [ 72.0, 544.537, 132.901, 558.048 ],
+    "heading level" : 1,
+    "font" : "SFSSDC10",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 72.0, 410.152, 531.006, 532.281 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 72.0, 502.306, 530.99, 532.281 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "[1] Andrew J. Blumberg and Michael Lesnick, Stability of 2-parameter persistent homology. Found. Comput. Math. , 24/2, (2024), 385–427.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 72.0, 463.452, 531.0, 493.426 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0]",
+      "content" : "[2] Magnus Bakke Botnan and Michael Lesnick, An Introduction to Multiparameter Persistence . 2023.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 72.0, 410.152, 531.006, 454.572 ],
+      "font" : "SFORM10",
+      "font size" : 11.955,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "[3] Claudia Landi, The rank invariant stability via interleavings. In Research in computational topology , vol. 13 of Assoc. Women Math. Ser. , pp. 1–10, Springer, Cham, 2018.",
+      "kids" : [ ]
+    } ]
+  } ]
+}

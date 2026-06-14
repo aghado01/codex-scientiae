@@ -1,0 +1,119 @@
+# Manifest: Page 018
+
+## REPLACE_TABLES
+None
+
+## REPAIR_PROSE
+- RAW: ```
+The preceding lemma determines exactly which pairs of types can cancel a given non-admissible face. Thus, the one-step connectability relation plays the same role as the edge relations E 1 and E 2 in the graph Γ. In particular, sequences of one-step connectable types correspond to alternating paths in Γ. Therefore, the coexistence relation together with the connectivity relations on the γ i generates the equivalence classes of building blocks for minimal clusters.
+```
+  FIX: ```
+The preceding lemma determines exactly which pairs of types can cancel a given non-admissible face. Thus, the one-step connectability relation plays the same role as the edge relations \( E_{1} \) and \( E_{2} \) in the graph \( \Gamma \). In particular, sequences of one-step connectable types correspond to alternating paths in \( \Gamma \). Therefore, the coexistence relation together with the connectivity relations on the \( \gamma_{i} \) generates the equivalence classes of building blocks for minimal clusters.
+```
+- RAW: ```
+Theorem 3.8. The minimal clusters in Ω 2 3 are formed by the following groups
+```
+  FIX: ```
+Theorem 3.8. The minimal clusters in \( \Omega_{2}^{3} \) are formed by the following groups
+```
+- RAW: ```
+Proof. Let w ∈ Ω 2 3 be a minimal cluster. By Theorem 3.6, every component of w has image-type equal to one of
+```
+  FIX: ```
+Proof. Let \( w \in \Omega_{2}^{3} \) be a minimal cluster. By Theorem 3.6, every component of \( w \) has image-type equal to one of
+```
+- RAW: ```
+The types γ 8 = ( T,S,S,T ) and γ 9 = ( T,T,T,T ) contain no non-admissible face. Hence such components are already ∂ -invariant inside their own cluster. Therefore, by minimality, if one of these types occurs in w , then no other type can occur in the same minimal cluster. This gives the two isolated classes
+```
+  FIX: ```
+The types \( \gamma_{8} = (T, S, S, T) \) and \( \gamma_{9} = (T, T, T, T) \) contain no non-admissible face. Hence such components are already \( \partial \)-invariant inside their own cluster. Therefore, by minimality, if one of these types occurs in \( w \), then no other type can occur in the same minimal cluster. This gives the two isolated classes
+```
+- RAW: ```
+These are precisely the types containing at least one non-admissible face. Since w ∈ Ω 2 3 , every non-admissible face appearing in ∂w must cancel with the same non-admissible face coming from another component of w . Thus the components of w must be connected by successive one-step connectability relations.
+```
+  FIX: ```
+These are precisely the types containing at least one non-admissible face. Since \( w \in \Omega_{2}^{3} \), every non-admissible face appearing in \( \partial w \) must cancel with the same non-admissible face coming from another component of \( w \). Thus the components of \( w \) must be connected by successive one-step connectability relations.
+```
+- RAW: ```
+γ 1 ,γ 2 ,γ 4 ,γ 5 are connectable only to themselves and to γ 7 ,
+```
+  FIX: ```
+\( \gamma_{1}, \gamma_{2}, \gamma_{4}, \gamma_{5} \) are connectable only to themselves and to \( \gamma_{7} \),
+```
+- RAW: ```
+γ 7 is connectable to every element of L .
+```
+  FIX: ```
+\( \gamma_{7} \) is connectable to every element of \( \mathcal{L} \).
+```
+- RAW: ```
+Now the coexistence conditions separate the possible types into three families. The types γ 1 and γ 4 coexist with γ 7 since they admit e a,b as an edge, giving
+```
+  FIX: ```
+Now the coexistence conditions separate the possible types into three families. The types \( \gamma_{1} \) and \( \gamma_{4} \) coexist with \( \gamma_{7} \) since they admit \( e_{a,b} \) as an edge, giving
+```
+- RAW: ```
+Similarly, the types γ 2 and γ 5 coexist with γ 7 and with each other since e a,b is not an edge and there can be multiple e a, ∗ ,b 2 paths, giving
+```
+  FIX: ```
+Similarly, the types \( \gamma_{2} \) and \( \gamma_{5} \) coexist with \( \gamma_{7} \) and with each other since \( e_{a,b} \) is not an edge and there can be multiple \( e_{a, \ast, b^{2}} \) paths, giving
+```
+
+## REPAIR_MATH
+- RAW: ```
+T _ { 1 } = ( \gamma _ { 1 } , \gamma _ { 4 } , \gamma _ { 7 } ) , \ \ T _ { 2 } = ( \gamma _ { 2 } , \gamma _ { 5 } , \gamma _ { 7 } ) , \ \ T _ { 3 } = ( \gamma _ { 3 } , \gamma _ { 6 } , \gamma _ { 7 } ) , \ \ T _ { 4 } = ( \gamma _ { 7 } ) , \ \ T _ { 5 } = ( \gamma _ { 9 } ) , \ \ T _ { 6 } = ( \gamma _ { 8 } ) .
+```
+  FIX: ```
+$$
+T _ { 1 } = ( \gamma _ { 1 } , \gamma _ { 4 } , \gamma _ { 7 } ) , \ \ T _ { 2 } = ( \gamma _ { 2 } , \gamma _ { 5 } , \gamma _ { 7 } ) , \ \ T _ { 3 } = ( \gamma _ { 3 } , \gamma _ { 6 } , \gamma _ { 7 } ) , \ \ T _ { 4 } = ( \gamma _ { 7 } ) , \ \ T _ { 5 } = ( \gamma _ { 9 } ) , \ \ T _ { 6 } = ( \gamma _ { 8 } ) .
+$$
+```
+- RAW: ```
+\gamma _ { 1 } , \dots , \gamma _ { 9 } .
+```
+  FIX: ```
+$$
+\gamma _ { 1 } , \dots , \gamma _ { 9 } .
+$$
+```
+- RAW: ```
+T _ { 5 } = ( \gamma _ { 9 } ) , \quad T _ { 6 } = ( \gamma _ { 8 } ) .
+```
+  FIX: ```
+$$
+T _ { 5 } = ( \gamma _ { 9 } ) , \quad T _ { 6 } = ( \gamma _ { 8 } ) .
+$$
+```
+- RAW: ```
+\mathcal { L } = \{ \gamma _ { 1 } , \dots , \gamma _ { 7 } \} .
+```
+  FIX: ```
+$$
+\mathcal { L } = \{ \gamma _ { 1 } , \dots , \gamma _ { 7 } \} .
+$$
+```
+- RAW: ```
+\gamma _ { 3 } , \gamma _ { 6 } \ \text { are connectable only to } \gamma _ { 7 } ,
+```
+  FIX: ```
+$$
+\gamma _ { 3 } , \gamma _ { 6 } \ \text { are connectable only to } \gamma _ { 7 } ,
+$$
+```
+- RAW: ```
+T _ { 1 } = ( \gamma _ { 1 } , \gamma _ { 4 } , \gamma _ { 7 } ) .
+```
+  FIX: ```
+$$
+T _ { 1 } = ( \gamma _ { 1 } , \gamma _ { 4 } , \gamma _ { 7 } ) .
+$$
+```
+- RAW: ```
+T _ { 2 } = ( \gamma _ { 2 } , \gamma _ { 5 } , \gamma _ { 7 } ) .
+```
+  FIX: ```
+$$
+T _ { 2 } = ( \gamma _ { 2 } , \gamma _ { 5 } , \gamma _ { 7 } ) .
+$$
+```
+

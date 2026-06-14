@@ -14,7 +14,7 @@ To achieve this, agent workflows are governed by three core documents. You must 
 LLMs do not read visual pixels or HTML layouts; they read text tokens. All document structures must be optimized for semantic clarity and token efficiency. You must strictly adhere to the formatting rules defined in `STANDARDS.md` [file:5].
 
 **Key directives include:**
-- **Strict LaTeX Encapsulation:** Using `\( ... \)` for inline math and `\[ ... \]` for block math to prevent parsing collisions [file:5]. 
+- **Strict LaTeX Encapsulation:** Using `$ ... $` for inline math and `$$ ... $$` for block math to prevent parsing collisions [file:5]. 
 - **Pure Syntax:** Avoiding web-renderer specific macros (e.g., `\color`, `\vspace`) in favor of pure semantic LaTeX [file:5].
 - **Integration:** Incorporating floating equation numbers directly into math blocks using `\tag{}` [file:5].
 - **Data Structuring:** Converting raw tabular data into standard Markdown pipe `|` tables with correctly encapsulated math [file:5].

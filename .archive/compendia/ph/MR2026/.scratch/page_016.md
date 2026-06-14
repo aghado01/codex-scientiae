@@ -1,0 +1,19 @@
+[Page 16]
+
+All networks were trained in a supervised classification setting using cross-entropy loss and stochastic gradient-based optimization. Training was performed for a fixed number of epochs, with identical hyperparameters across realizations within each dataset–architecture pair. To account for stochasticity in the training dynamics, we repeated each experiment over R = 5 independent runs, corresponding to different random initializations of network weights and different random seeds for data shuffling. This ensemble-based approach allowed us to treat training trajectories as realizations of an underlying stochastic process.
+
+At each training epoch, we extracted weight-based representations by embedding hidden-layer neurons as points in a Euclidean space via their incoming weight vectors (including bias terms where applicable). Pairwise Euclidean distances between these vectors were used to construct distance matrices, which served as input to Vietoris–Rips filtrations. Persistent homology was then computed in homological degree H 1 , and the corresponding persistent entropy PE( H 1 ) was evaluated as a low-dimensional summary statistic of the topological complexity of the parameterspace geometry.
+
+In parallel, standard training observables such as the training loss were recorded. Rather than analyzing persistent entropy as a function of epoch index, we treated the training loss as an effective control parameter and aggregated results by binning loss values across realizations. This loss-based parametrization enables direct comparison between runs with different convergence speeds and provides a natural ordering of training stages in terms of optimization progress. For each bin, mean persistent entropy curves and 95% confidence intervals were computed, yielding the comparative plots summarized in Fig. 10.
+
+### 5.4.2 Neural networks: experimental output analysis
+
+Neural networks: DIGITS We begin with the DIGITS dataset, which represents a lowcomplexity supervised learning task characterized by low-dimensional inputs and limited intra-class variability. In this regime, stable internal representations are expected to emerge robustly during training, providing a favorable setting for the appearance of a limiting topological structure.
+
+The DIGITS results are shown in the leftmost column of Fig. 10. For the shallow architecture (MLP1, top row), persistent entropy exhibits a clear and monotone decay as the training loss decreases, together with a rapid reduction in variability across realizations. This behavior indicates convergence toward a stable low-complexity topology in parameter space, reflecting the emergence of an organized solution manifold during training.
+
+A similar but even more pronounced trend is observed for the deeper architecture (MLP2, middle row). As shown in Fig. 10, persistent entropy decreases smoothly across the full range of training loss values and exhibits minimal variability in the low-loss regime, indicating particularly robust convergence of the associated persistence diagrams. These results confirm that, for low-complexity tasks, convergence toward a stable topological structure occurs generically across architectures.
+
+Neural networks: MNIST We next consider the MNIST dataset, which represents a canonical intermediate-complexity benchmark between DIGITS and Fashion-MNIST. While MNIST images are higher-dimensional than DIGITS, they retain strong low-level regularities and well-separated class structure, making them amenable to a wide range of architectures.
+
+The MNIST results are shown in the second column of Fig. 10. For the shallow fully connected architecture (MLP1), persistent entropy decreases monotonically with training loss, indicating progressive simplification of the parameter-space topology. Compared to DIGITS, the decay occurs

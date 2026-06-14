@@ -56,6 +56,7 @@ def clean_content(text: str) -> str:
     
     in_display_math = False
     in_code_block = False
+    first_h1_seen = False
     
     for line in lines:
         stripped = line.strip()
@@ -85,16 +86,40 @@ def clean_content(text: str) -> str:
             if '&' in stripped and DEGENERATE_AMP.match(stripped):
                 continue
                 
+            # Strip \[ and \] if they are injected inside $$
+            if stripped in ['\\[', '\\]']:
+                continue
+                
             cleaned_lines.append(line)
         else:
             # 3. Strip short char-per-line sequences
             if should_strip_short_line(line):
                 continue
-                
+
             # 4. Collapse 3+ consecutive spaces in prose, avoiding markdown tables
             if '|' not in line:
                 line = re.sub(r' {3,}', ' ', line)
-                
+
+            # 5. Normalise bullet characters
+            # "- • text"  →  "- text"  (Docling emits both a markdown dash and a unicode bullet)
+            # "• text"    →  "- text"  (standalone unicode bullet → markdown list marker)
+            line = re.sub(r'^(\s*)-\s+•\s+', r'\1- ', line)
+            line = re.sub(r'^(\s*)•\s+', r'\1- ', line)
+
+            # 6. Heading Demotion
+            # Keep first H1 as document title, demote all subsequent H1s to H2
+            if line.startswith('# '):
+                if not first_h1_seen:
+                    first_h1_seen = True
+                else:
+                    line = '#' + line
+
+            # 7. Math Delimiter Standardization
+            # Convert \( and \) to $, and \[ and \] to $$
+            line = line.replace('\\(', '$').replace('\\)', '$')
+            if stripped == '\\[' or stripped == '\\]':
+                line = line.replace('\\[', '$$').replace('\\]', '$$')
+
             cleaned_lines.append(line)
             
     return '\n'.join(cleaned_lines) + '\n'

@@ -1,0 +1,25 @@
+[Page 6]
+
+For computations, we bank on the following result which extends Theorem 3.1 in Dey et al. (2024) from 2 -parameter persistence modules to the quasi zigzag persistence modules.
+
+Theorem 4.6. Let M be a quasi zigzag persistence module and I be a finite interval in the corresponding quasi zigzag poset. Then, rk M ( I ) = rk M ( ∂I ) .
+
+Proof. Let r denote the map r : lim I → colim I , and ϕ : lim I → lim ∂ L I and ψ : colim ∂ U I → colim I be the isomorphisms guaranteed by Proposition 4.4. Observe that rk M ( I ) = rank( ψ − 1 ◦ r ◦ ϕ − 1 ) . Now let r ′ denote the map r ′ : lim ∂I → colim ∂I . Consider the isomoprhisms ϕ ′ : lim ∂I → lim ∂ ( ∂ L I ) and ψ ′ : colim ∂ ( ∂ U I ) → colim ∂I again guaranteed by Proposition 4.4. Then, rk M ( ∂I ) = rank( ψ ′− 1 ◦ r ′ ◦ ϕ ′− 1 ) . But, ψ − 1 ◦ r ◦ ϕ − 1 = ψ ′− 1 ◦ r ′ ◦ ϕ ′− 1 because of Proposition 4.5.
+
+With this background, the pipeline for computing ZZ-GRIL in the QZPH framework can be described as follows. Suppose that we are given sequential data (sequence of point clouds, sequence of graphs, multivariate time series) with vertex-level correspondences between consecutive time steps. First, we build a quasi zigzag bi-filtration out of this data where time increases in x -direction and the threshold for constructing complexes increases in y -direction. The algorithm for building this bi-filtration out of raw data is described in section 4.1 where we make certain choices to make it efficient. Each simplicial complex in the bi-filtration is indexed by a finite grid G in Z 2 because ZZ × Z is equivalent to Z 2 as sets. We sample a set of center points S from G and compute ZZ-GRIL (Definition 3.4) at each of these center points. Taking advantage of Theorem 4.6, we compute ZZ-GRIL by computing the zigzag filtration along the boundary cap (a path) of a worm centering each point in S and then computing the number of full bars in the corresponding zigzag persistence module obtained by applying the homology functor.
+
+A sequence of point clouds (Figure 1) or graphs (Figure 4) or multivariate time-series data (refer section 5 for converting multivariate time-series to a sequence of point clouds or graphs) gives us a collection of simplicial complexes. Every simplex in each simplicial complex is assigned a weight which is derived from the input. We build a quasi zigzag bi-filtration from this collection of simplicial complexes.
+
+### 4.1 Building Quasi Zigzag Bi-filtration
+
+We explain the algorithm by considering an example of sequential graph data, as shown in Figure 3. We assume that each graph has edge-weights. In the top row of Figure 3, notice that the first two graphs can not be linked by an inclusion in any direction, i.e., neither is a subgraph of the other. This is because, there is an inclusion of an edge ( v 2 ,v 3 ) as well as a deletion ( v 1 ,v 4 ) . We circumvent this problem by clubbing all inclusions together followed by all deletions. This is equivalent to considering the union of the two graphs as the intermediary step and then deleting the edges which are not present in the previous graph. Refer to the bottom row of Figure 3, where the intermediary union graphs are shown along with the original graphs.
+
+A sequence of T number of graphs is converted into a zigzag filtration Z L of length 2 T − 1 by the above procedure because every consecutive pair of graphs introduces a union in between. For each graph in the zigzag filtration thus obtained, we construct its graph filtration based on edge-weights; see e.g. Dey & Wang (2022); Edelsbrunner & Harer (2010). We ensure that the length of each graph filtration remains the same by considering the sublevel sets of exactly L levels. The zigzag filtration at the highest level, Z L , can be pulled back to each lower level l . This ensures that we get a zigzag filtration Z l at each level 1 ≤ l < L of the filtration. This gives us a quasi zigzag bi-filtration. Refer to Figure 4 for an illustation of a quasi zigzag bi-filtration.
+
+While implementing this procedure, we need not compute the union graphs explicitly saving both storage and time because all necessary information is already present in the corresponding component graphs. We use the following procedure to efficiently build the quasi zigzag bi-filtration.
+
+Construct the graph filtration F t i of each of the T graphs in the sequential graph data, where 1 ≤ t i ≤ T . Let σ be a simplex that is inserted at the level l in the filtration F t i . We have three possible scenarios for σ in F t i +1 :
+
+- 1. σ is inserted in F t i +1 at m for some m < l : In this case, σ needs to be added on all the horizontal inclusion arrows K t i ,w −→ K t i ,w ∪ K t i +1 ,w for m ⩽ w < l .
+- 2. σ is inserted in F t i +1 at m for some m ⩾ l : In this case, σ needs to be added on all the horizontal inclusion arrows K t i +1 ,w −→ K t i ,w ∪ K t i +1 ,w for l ⩽ w < m .
+- 3. σ is not present in F t i +1 . In this case, we treat it as getting inserted at the maximum level L in F t i +1 and hence, will be added by the inclusion K t i +1 ,L −→ K t i ,L ∪ K t i +1 ,L .

@@ -93,26 +93,36 @@ if __name__ == "__main__":
     scratch_dir = json_path.parent / ".scratch"
     scratch_dir.mkdir(exist_ok=True)
 
-    # Write monolithic temp_tables.md for triage overview
-    mono_lines = [f"Found {len(results)} tables.\n"]
-    for page_num, table_idx, md_table in results:
-        mono_lines.append(f"--- Table {table_idx} (page {page_num}) ---")
-        mono_lines.append(md_table)
-        mono_lines.append("\n")
-    (scratch_dir / "temp_tables.md").write_text("\n".join(mono_lines), encoding="utf-8")
-
-    # Write per-page table artifacts coordinated with page_NNN.md slice filenames
+    # Write per-page table artifacts
     by_page = defaultdict(list)
     for page_num, table_idx, md_table in results:
         by_page[page_num].append((table_idx, md_table))
 
     for page_num in sorted(by_page.keys()):
+        # Write the artifacts file
         page_lines = [f"[Page {page_num}] — Tables\n"]
         for table_idx, md_table in by_page[page_num]:
-            page_lines.append(f"--- Table {table_idx} ---")
+            page_lines.append(f"### Table_{table_idx}")
             page_lines.append(md_table)
             page_lines.append("")
         page_file = scratch_dir / f"page_{page_num:03d}_tables.md"
         page_file.write_text("\n".join(page_lines), encoding="utf-8")
 
-    print(f"[Written: temp_tables.md + {len(by_page)} page_NNN_tables.md files → {scratch_dir}]", file=sys.stderr)
+        # Update the manifest file
+        manifest_file = scratch_dir / f"manifest_{page_num:03d}.md"
+        manifest_lines = []
+        if not manifest_file.exists():
+            manifest_lines.append(f"# Manifest: Page {page_num:03d}\n")
+        else:
+            manifest_lines.append("\n")
+
+        manifest_lines.append("## REPLACE_TABLES")
+        for table_idx, md_table in by_page[page_num]:
+            manifest_lines.append(f"- USE_ARTIFACT: page_{page_num:03d}_tables.md#Table_{table_idx}")
+            manifest_lines.append("  REPLACE_FROM: `FILL_ME_IN`")
+            manifest_lines.append("  REPLACE_TO: `FILL_ME_IN`")
+        
+        with open(manifest_file, "a", encoding="utf-8") as f:
+            f.write("\n".join(manifest_lines) + "\n")
+
+    print(f"[Tables: Wrote artifacts and updated {len(by_page)} manifest_NNN.md files → {scratch_dir}]", file=sys.stderr)

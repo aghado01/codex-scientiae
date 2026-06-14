@@ -1,0 +1,3280 @@
+{
+  "file name" : "SIFTS.pdf",
+  "number of pages" : 7,
+  "author" : "Xiaojin Zhu",
+  "title" : "Persistent Homology: An Introduction and a New Text Representation for Natural Language Processing",
+  "creation date" : "D:20130531234532-07'00'",
+  "modification date" : "D:20130627213335-07'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 356,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 120.821, 665.935, 491.182, 694.699 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "Persistent Homology: An Introduction and a New Text Representation for Natural Language Processing"
+  }, {
+    "type" : "heading",
+    "id" : 357,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 274.941, 639.746, 337.06, 650.434 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Xiaojin Zhu"
+  }, {
+    "type" : "paragraph",
+    "id" : 358,
+    "page number" : 1,
+    "bounding box" : [ 139.632, 597.937, 472.381, 636.506 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Department of Computer Sciences, University of Wisconsin-Madison Madison, Wisconsin, USA 53706 jerryzhu@cs.wisc.edu"
+  }, {
+    "type" : "heading",
+    "id" : 359,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 153.249, 563.532, 197.734, 574.22 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 361,
+    "page number" : 1,
+    "bounding box" : [ 73.925, 302.785, 277.082, 552.768 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Persistent homology is a mathematical tool from topological data analysis. It performs multi-scale analysis on a set of points and identiﬁes clusters, holes, and voids therein. These latter topological structures complement standard feature representations, making persistent homology an attractive feature extractor for artiﬁcial intelligence. Research on persistent homology for AI is in its infancy, and is currently hindered by two issues: the lack of an accessible introduction to AI researchers, and the paucity of applications. In response, the ﬁrst part of this paper presents a tutorial on persistent homology speciﬁcally aimed at a broader audience without sacriﬁcing mathematical rigor. The second part contains one of the ﬁrst applications of persistent homology to natural language processing. Speciﬁcally, our Similarity Filtration with Time Skeleton (SIFTS) algorithm identiﬁes holes that can be interpreted as semantic “tie-backs” in a text document, providing a new document structure representation. We illustrate our algorithm on documents ranging from nursery rhymes to novels, and on a corpus with child and adolescent writings."
+  }, {
+    "type" : "heading",
+    "id" : 363,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 54.0, 269.17, 136.814, 279.858 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 364,
+    "page number" : 1,
+    "bounding box" : [ 54.0, 87.967, 297.009, 261.238 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Imagine dividing a document into smaller units such as paragraphs. A paragraph can be represented by a point in some space, for example, as the bag-of-words vector in R d where d is the vocabulary size. All paragraphs in the document form a point cloud in this space. Now let us “connect the dots” by linking the point for the ﬁrst paragraph to the second, the second to the third, and so on. What does the curve look like? Certain structures of the curve capture information relevant to Natural Language Processing (NLP). For instance, a good essay may have a conclusion paragraph that “ties back” to the introduction paragraph. Thus the starting point and the ending point of the curve may be close in the space. If we further connect all points within some small   diameter, the curve may become a loop with a hole in the middle. In contrast, an essay without any tying back may not contain holes, no matter how large   is."
+  }, {
+    "type" : "paragraph",
+    "id" : 360,
+    "page number" : 1,
+    "bounding box" : [ 314.991, 366.741, 558.019, 572.888 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "There has been geometric methods for visualizing documents and information ﬂow, e.g. based on differential geometry [ Lebanon et al. , 2007; Lebanon, 2006; Gous, 1999; Hall and Hofmann, 2000 ] . In contrast, we introduce an algebraic method based on persistent homology. As a branch of topological data analysis, persistent homology has the advantage of capturing novel invariant structural features of documents. Intuitively, persistent homology can identify clusters (0-th order holes), holes (1st order, as in our loopy curve), voids (2nd order holes, the inside of a balloon), and so on in a point cloud. Considering the importance of clustering today, the value of these higher order structures is tantalizing. Indeed, in the last few years persistent homology has found applications in data analysis, including neuroscience [ Singh et al. , 2008 ] , bioinformatics [ Kasson et al. , 2007 ] , sensor networks [ de Silva and Ghrist, 2007a; de Silva and Ghrist, 2007b ] , medical imaging [ Chung et al. , 2009 ] , shape analysis [ Gamble and Heo, 2010 ] , and computer vision [ Freedman and Chen, 2011 ] ."
+  }, {
+    "type" : "paragraph",
+    "id" : 362,
+    "page number" : 1,
+    "bounding box" : [ 314.991, 245.107, 557.999, 363.584 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Unfortunately, existing homology literature requires advanced mathematical background not easily accessible to a broader audience. Our ﬁrst contribution is an accessible yet rigorous tutorial that contains many unpublished materials. Although a tutorial is unconventional in a technical paper, we feel that there is value to the AI community as it paves the way to further interdisciplinary research. Our second contribution is a novel text representation using persistent homology. It formalizes the curve-and-loop intuition based on Vietoris-Rips ﬁltration over semantic similarity. We hope this paper inspires future innovations on topology and AI."
+  }, {
+    "type" : "heading",
+    "id" : 365,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 315.0, 216.396, 438.617, 227.084 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2 Persistent Homology"
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 1,
+    "bounding box" : [ 315.0, 143.85, 558.018, 207.532 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We aim for mathematical rigor and intuition, but have to sacriﬁce completeness. Readers can follow up with [ Singh et al. , 2008; Giblin, 2010; Freedman and Chen, 2011; Zomorodian, 2001; Rote and Vegter, 2006; Edelsbrunner and Harer, 2010; Hatcher, 2001; Carlsson, 2009; Edelsbrunner and Harer, 2007; Balakrishnan et al. , 2012; 2013 ] for detailed treatment."
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 1,
+    "bounding box" : [ 315.01, 87.97, 558.008, 140.693 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Persistent homology ﬁnds “holes” by identifying equivalent cycles: Consider the following space in yellow with a small white hole. Imagine the blue cycle as a rubber band. It can be stretched and bent within the space into the green cycle, but not the red one without tearing itself."
+  }, {
+    "type" : "image",
+    "id" : 368,
+    "page number" : 2,
+    "bounding box" : [ 147.845, 701.712, 201.981, 739.099 ],
+    "source" : "SIFTS/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 2,
+    "bounding box" : [ 54.0, 656.131, 296.998, 697.895 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "There are two equivalent classes of rubber bands: some surround the hole and others do not. Conversely, two equivalent classes indicate one hole. To formalize this idea, we need to introduce some algebraic concepts."
+  }, {
+    "type" : "heading",
+    "id" : 372,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 54.0, 635.427, 145.931, 645.18 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.1 Group Theory"
+  }, {
+    "type" : "paragraph",
+    "id" : 374,
+    "page number" : 2,
+    "bounding box" : [ 53.98, 569.805, 297.0, 630.925 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 1. A group   G, ∗  is a set G with a binary operation ∗ such that (1. associative) a ∗ ( b ∗ c ) = ( a ∗ b ) ∗ c for all a,b,c ∈ G . (2. identity) ∃ e ∈ G so that e ∗ a = a ∗ e = a for all a ∈ G . (3. inverse) ∀ a ∈ G , ∃ a   ∈ G where a ∗ a   = a   ∗ a = e . For example, integer addition Z , + , real number addition"
+  }, {
+    "type" : "paragraph",
+    "id" : 376,
+    "page number" : 2,
+    "bounding box" : [ 54.001, 496.275, 297.036, 571.787 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "      R , +   are groups with identity 0 and a ’s inverse − a . Positive real numbers and multiplication is a group   R + , ×  with identity 1 and a ’s inverse 1 a . However,   R , ×  is not a group since 0 ∈ R does not have an inverse under × . Real numbers except 0 is again a group   R \\{ 0 } , ×  . Z 2 is the only group (up to element renaming) of size two:"
+  }, {
+    "type" : "formula",
+    "id" : 379,
+    "page number" : 2,
+    "bounding box" : [ 152.451, 458.606, 198.546, 490.1 ],
+    "content" : "\\frac { + _ { 2 } } { 0 } \\left | \\begin{array} { c c c } 0 & 1 \\\\ 0 & 1 \\\\ 1 & 1 & 0 \\end{array} \\right |"
+  }, {
+    "type" : "paragraph",
+    "id" : 381,
+    "page number" : 2,
+    "bounding box" : [ 53.998, 391.633, 297.005, 452.361 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We can think of + 2 as the XOR function or mod-2 addition. For any set A = { a 1 ,...,a n } , its power set forms a group   2 A , + 2   where + 2 is the symmetric difference: B + 2 C = ( B ∪ C ) \\ ( B ∩ C ) . The identity is the empty set ∅ , and the inverse of any B ⊆ A is B itself. Deﬁnition 2. A group G is abelian if the operation is com-"
+  }, {
+    "type" : "paragraph",
+    "id" : 386,
+    "page number" : 2,
+    "bounding box" : [ 54.007, 365.372, 297.025, 393.616 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Definition 2. A group G is abelian if the operation ∗ is commutative: ∀ a, b ∈ G,a ∗ b = b ∗ a ."
+  }, {
+    "type" : "paragraph",
+    "id" : 391,
+    "page number" : 2,
+    "bounding box" : [ 54.017, 335.682, 297.025, 366.488 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "non-abelian groups, consider n × n invertible matrices under matrix multiplication."
+  }, {
+    "type" : "paragraph",
+    "id" : 393,
+    "page number" : 2,
+    "bounding box" : [ 54.017, 301.89, 297.025, 330.134 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 3. A subset H ⊆ G of a group   G, ∗  is a subgroup of G if   H, ∗  is itself a group. e is the trivial subgroup of any group G (we often omit"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 2,
+    "bounding box" : [ 53.994, 244.174, 297.025, 303.873 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "{ } the operation when it is clear).   R + , ×  is a subgroup of   R \\{ 0 } , ×  by restricting multiplication to positive numbers. Note however multiplication on negative numbers   R − , ×  is not a subgroup because the result is not in R − . Deﬁnition 4. Given a subgroup H of an abelian group G , for"
+  }, {
+    "type" : "paragraph",
+    "id" : 396,
+    "page number" : 2,
+    "bounding box" : [ 53.971, 213.104, 296.989, 244.142 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "any a ∈ G , the set a ∗ H = { a ∗ h | h ∈ H } is the coset of H represented by a ."
+  }, {
+    "type" : "paragraph",
+    "id" : 398,
+    "page number" : 2,
+    "bounding box" : [ 53.992, 110.065, 297.005, 207.491 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Consider H = R + and G = R \\{ 0 } . Then 3 . 14 × R + is a coset which is the same as R + . In fact for any a > 0 , a × R + = R + , i.e., many different a ’s represent the same coset. On the other hand, − 1 × R + = R − , so R − is a coset represented by -1 (or any negative number, for that matter). Since R − is not a group, we see the cosets do not have to be subgroups. Also note that the two cosets, R + and R − , have equal size and partition G . This fact will be important for counting cycles for homology later."
+  }, {
+    "type" : "paragraph",
+    "id" : 400,
+    "page number" : 2,
+    "bounding box" : [ 54.009, 80.436, 297.007, 108.682 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We now consider mappings from one group   G, ∗  to another   G   ,    ."
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 2,
+    "bounding box" : [ 314.997, 707.514, 558.008, 737.107 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 5. A map φ : G  → G   is a homomorphism if φ ( a ∗ b ) = φ ( a )   φ ( b ) for ∀ a,b ∈ G . For example, the groups R , and Z , + do not look"
+  }, {
+    "type" : "paragraph",
+    "id" : 370,
+    "page number" : 2,
+    "bounding box" : [ 314.995, 636.529, 558.005, 708.61 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "  + ×    2 2   similar at all. But there is a trivial homomorphism φ ( a ) = 0 , ∀ a ∈ R + . Note the last 0 is in Z 2 . This simply says that we map all positive real numbers to the “0” in mod-2 addition. Obviously 0 = φ ( a × b ) = φ ( a ) + 2 φ ( b ) = 0 + 2 0 = 0 for ∀ a,b ∈ R + . As another example, consider the group of (somewhat arti-"
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 2,
+    "bounding box" : [ 315.001, 603.03, 558.007, 641.362 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "ﬁcial) negation in natural language: G N = {  , not } with the following operation, where   stands for whitespace: not"
+  }, {
+    "type" : "formula",
+    "id" : 375,
+    "page number" : 2,
+    "bounding box" : [ 405.443, 564.034, 467.55, 603.638 ],
+    "content" : "\\frac { * } { \\sqcup } \\left | \\, \\sqcup \\, \\, \\text { not } \\, \\substack { \\sqcup \\\\ \\text { not } \\, \\sqcup } \\right |"
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 2,
+    "bounding box" : [ 315.001, 522.378, 558.004, 564.143 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "i.e., single negation stays while double negation cancels. There is a homomorphism between G N and Z 2 : φ (   ) = 0 ,φ ( not ) = 1 . In fact, G N and Z 2 are identical up to renaming. There is a name for such homomorphisms:"
+  }, {
+    "type" : "paragraph",
+    "id" : 378,
+    "page number" : 2,
+    "bounding box" : [ 315.001, 495.23, 557.999, 515.057 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 6. A homomorphism that is a one-to-one correspondence is called an isomorphism ."
+  }, {
+    "type" : "paragraph",
+    "id" : 380,
+    "page number" : 2,
+    "bounding box" : [ 315.001, 457.178, 558.0, 490.141 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 7. The kernel of a homomorphism φ : G  → G   is ker φ = { a ∈ G | φ ( a ) = e   } . In other words, the kernel is the elements that map to identity."
+  }, {
+    "type" : "paragraph",
+    "id" : 382,
+    "page number" : 2,
+    "bounding box" : [ 315.001, 430.029, 558.002, 452.033 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 1. For any homomorphism φ : G  → G   , ker φ is a subgroup of G ."
+  }, {
+    "type" : "image",
+    "id" : 383,
+    "page number" : 2,
+    "bounding box" : [ 377.913, 364.342, 494.701, 424.651 ],
+    "source" : "SIFTS/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 384,
+    "page number" : 2,
+    "bounding box" : [ 400.357, 414.28, 408.139, 423.631 ],
+    "font" : "Times-Roman",
+    "font size" : 10.779,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "G"
+  }, {
+    "type" : "paragraph",
+    "id" : 385,
+    "page number" : 2,
+    "bounding box" : [ 471.594, 406.702, 482.966, 416.053 ],
+    "font" : "Times-Roman",
+    "font size" : 10.779,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "G’"
+  }, {
+    "type" : "paragraph",
+    "id" : 387,
+    "page number" : 2,
+    "bounding box" : [ 444.011, 387.716, 448.223, 395.057 ],
+    "font" : "Symbol",
+    "font size" : 8.084,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "φ"
+  }, {
+    "type" : "paragraph",
+    "id" : 388,
+    "page number" : 2,
+    "bounding box" : [ 477.358, 378.456, 483.639, 385.469 ],
+    "font" : "Times-Roman",
+    "font size" : 8.084,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "e’"
+  }, {
+    "type" : "paragraph",
+    "id" : 390,
+    "page number" : 2,
+    "bounding box" : [ 418.545, 374.078, 422.757, 381.419 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "φ"
+  }, {
+    "type" : "paragraph",
+    "id" : 389,
+    "page number" : 2,
+    "bounding box" : [ 405.813, 373.057, 417.486, 380.125 ],
+    "font" : "Times-Bold",
+    "font size" : 8.084,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "ker φ"
+  }, {
+    "type" : "paragraph",
+    "id" : 392,
+    "page number" : 2,
+    "bounding box" : [ 315.0, 296.312, 558.004, 360.613 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Because ker φ is a subgroup (depicted as the blue square above), we can partition G into cosets of the form a ∗ ker φ for a ∈ G . These cosets are the white or blue squares. For example, φ :   R \\{ 0 } , ×   → G N with φ ( a ) =   if a > 0 and “not” if a < 0 , then ker φ = R + is one coset and R − is the only other coset."
+  }, {
+    "type" : "paragraph",
+    "id" : 395,
+    "page number" : 2,
+    "bounding box" : [ 314.974, 229.932, 558.02, 294.481 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We need one more piece of deﬁnition. Let   H, ∗  be a subgroup of an abelian group   G, ∗  . We can introduce a new binary operation   not on the elements of G but on the cosets of H : ( a ∗ H )   ( b ∗ H ) = ( a ∗ b ) ∗ H, ∀ a,b ∈ G . The operation   is well-deﬁned and does not depend on the particular choice of representer."
+  }, {
+    "type" : "paragraph",
+    "id" : 397,
+    "page number" : 2,
+    "bounding box" : [ 314.974, 202.783, 557.972, 223.497 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 8. The cosets { a ∗ H | a ∈ G } under the operation   form a group, called the quotient group G/H ."
+  }, {
+    "type" : "paragraph",
+    "id" : 399,
+    "page number" : 2,
+    "bounding box" : [ 314.974, 80.436, 558.002, 195.482 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "It is useful to think of quotient groups as “higher level” groups deﬁned on the squares in the previous picture. ker φ (the blue square) is a subgroup of G . The elements of the quotient group G/ ker φ are the cosets of ker φ , i.e. all the squares. In a previous example G = R \\{ 0 } and ker φ = R + , and there were two cosets: R + and R − . Thus the quotient group ( R \\{ 0 } ) / R + is a small group with those two cosets as elements. Furthermore, note R −   R − = ( − 1 × R + )   ( − 1 × R + ) = ( − 1 × − 1) × R + = 1 × R + = R + . Therefore, this quotient group ( R \\{ 0 } ) / R + is isomorphic to Z 2 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 401,
+    "page number" : 3,
+    "bounding box" : [ 54.0, 704.143, 297.028, 735.758 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 9. Let S ⊂ G . The subgroup generated by S ,   S   , is the subgroup of all elements of G that can expressed as the ﬁnite operation of elements in S and their inverses."
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 3,
+    "bounding box" : [ 54.03, 671.31, 297.038, 699.554 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For example, Z is itself the subgroup generated by { 1 } , the group of even integers is the subgroup of Z generated by { 2 } . Deﬁnition 10. The rank of a group G is the size of the small-"
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 3,
+    "bounding box" : [ 54.04, 653.652, 297.038, 673.731 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Definition 10. The rank of a group G is the size of the smallest subset that generates G ."
+  }, {
+    "type" : "paragraph",
+    "id" : 406,
+    "page number" : 3,
+    "bounding box" : [ 54.04, 609.861, 297.068, 649.063 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For example, rank( Z ) = 1 since Z =  { 1 }  . rank( Z × Z ) = 2 since Z × Z =  { (0 , 1) , (1 , 0) }  . Note there is no one-element basis for Z × Z . Group theory is important because when counting “holes”"
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 3,
+    "bounding box" : [ 54.07, 518.761, 297.068, 615.32 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "in homology, G will be the group of cycles (the rubber bands). The blue square will be the subgroup of “uninteresting rubber bands” that do not surround holes, similar to the earlier blue and green rubber bands. The quotient group “all rubber bands”/“uninteresting rubber bands” will identify holes. However, the rubber bands are continuous and difﬁcult to compute. We ﬁrst need to discretize the space into a simpler structure called simplicial complex."
+  }, {
+    "type" : "heading",
+    "id" : 412,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 54.0, 499.262, 175.833, 509.015 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.2 Simplicial Homology"
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "page number" : 3,
+    "bounding box" : [ 54.0, 485.879, 275.429, 494.767 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The building blocks of our discrete space are simplices."
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 3,
+    "bounding box" : [ 54.0, 442.146, 297.006, 480.77 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 11. A p -simplex σ is the convex hull of p + 1 afﬁnely independent points x 0 ,x 1 ,...,x p ∈ R d . We denote σ = conv { x 0 ,...,x p } . The dimension of σ is p . Afﬁnely independent means the p vectors x i x 0 for i ="
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 3,
+    "bounding box" : [ 54.003, 391.556, 297.021, 445.146 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "− 1 ...p are linearly independent, i.e., they are in general position. The convex hull is simply the solid polyhedron determined by the p +1 vertices. A 0-simplex is a vertex, 1-simplex an edge, 2-simplex a triangle, and 3-simplex a tetrahedron:"
+  }, {
+    "type" : "image",
+    "id" : 421,
+    "page number" : 3,
+    "bounding box" : [ 115.205, 361.659, 234.972, 391.982 ],
+    "source" : "SIFTS/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 3,
+    "bounding box" : [ 54.0, 334.416, 297.0, 355.072 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 12. A face of σ is conv S where S ⊂ { x 0 ,...,x p } is a subset of the p + 1 vertices."
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "page number" : 3,
+    "bounding box" : [ 54.003, 276.237, 297.0, 328.96 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For example, a tetrahedron has four triangle faces corresponding to the four subsets S obtained by removing one vertex at a time from σ . These four triangle faces are 2 -simplices themselves. It also has six edge faces and four singleton vertex faces."
+  }, {
+    "type" : "paragraph",
+    "id" : 431,
+    "page number" : 3,
+    "bounding box" : [ 63.965, 265.278, 272.303, 274.166 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Our space of interest is properly arranged simplices:"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 3,
+    "bounding box" : [ 53.996, 217.134, 297.01, 260.168 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 13. A simplicial complex K is a ﬁnite collection of simplices such that σ ∈ K and τ being a face of σ implies τ ∈ K , and σ,σ   ∈ K implies σ ∩ σ   is either empty or a face of both σ and σ   ."
+  }, {
+    "type" : "paragraph",
+    "id" : 435,
+    "page number" : 3,
+    "bounding box" : [ 54.001, 159.995, 296.999, 212.719 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The intuition of simplicial complex is that if a simplex is in K , all its faces need to be in K , too. In addition, the simplices have to be glued together along whole faces or be separate. The ﬁgure on the left is a simplicial complex, while the one on the right is not:"
+  }, {
+    "type" : "image",
+    "id" : 438,
+    "page number" : 3,
+    "bounding box" : [ 99.586, 121.694, 250.443, 158.546 ],
+    "source" : "SIFTS/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 3,
+    "bounding box" : [ 54.0, 87.966, 296.998, 118.772 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Simplicial complex plays the role of the yellow space in the rubber band example. We next introduce the discrete version of the rubber bands."
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 715.1, 557.998, 735.178 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 14. A p -chain is a subset of p -simplices in a simplicial complex K ."
+  }, {
+    "type" : "paragraph",
+    "id" : 403,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 611.021, 558.01, 707.871 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For example, let K be a tetrahedron. By deﬁnition the four triangle faces (i.e., 2-simplices) are in K , too. A 2chain is a subset of these four triangles, e.g., all four triangle, the bottom triangle face only, or the empty set. There are 2 4 distinct 2-chains. Similarly, by deﬁnition all six edges of the tetrahedron are in K , too. Thus, there are 2 6 distinct 1-chains. Despite the name “chain,” a p -chain does not have to be connected. The ﬁgure below shows a 2chain on the left and a 1-chain (the blue edges) on the right:"
+  }, {
+    "type" : "image",
+    "id" : 408,
+    "page number" : 3,
+    "bounding box" : [ 397.632, 579.633, 474.79, 610.462 ],
+    "source" : "SIFTS/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 409,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 560.579, 549.131, 578.542 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Recall for any set A , its power set forms a group   2 A , + 2   . Deﬁnition 15. The set of p -chains of a simplicial complex K"
+  }, {
+    "type" : "paragraph",
+    "id" : 410,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 540.802, 557.281, 560.937 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Definition 15. The set of p -chains of a simplicial complex K form a p -chain group C p ."
+  }, {
+    "type" : "paragraph",
+    "id" : 411,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 491.572, 557.998, 533.626 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "When adding two p -chains we get another p chain with duplicate p -simplices cancel out. We have a separate chain group for each dimension p . Below is an example of 1 -chain addition:"
+  }, {
+    "type" : "image",
+    "id" : 414,
+    "page number" : 3,
+    "bounding box" : [ 332.028, 459.936, 539.357, 491.572 ],
+    "source" : "SIFTS/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 416,
+    "level" : "1",
+    "page number" : 3,
+    "bounding box" : [ 396.221, 467.783, 403.542, 479.044 ],
+    "font" : "Times-Roman",
+    "font size" : 12.98,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 417,
+    "level" : "2",
+    "page number" : 3,
+    "bounding box" : [ 469.232, 467.783, 476.553, 479.044 ],
+    "font" : "Times-Roman",
+    "font size" : 12.98,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "page number" : 3,
+    "bounding box" : [ 314.99, 432.362, 557.978, 453.018 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 16. The boundary of a p -simplex is the set of ( p − 1) -simplices faces."
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 3,
+    "bounding box" : [ 314.99, 394.038, 557.988, 424.844 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The boundary of a tetrahedron is the set of four triangles faces; the boundary of a triangle is its three edges; the boundary of an edge is its two vertices."
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 3,
+    "bounding box" : [ 314.99, 349.67, 557.996, 386.866 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 17. The boundary of a p -chain is the + 2 sum of the boundaries of its simplices. Taking the boundary is a group homomorphism ∂ p from C p to C p − 1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 3,
+    "bounding box" : [ 314.997, 328.456, 557.995, 348.303 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Note faces shared by an even number of p -simplices in the chain will cancel out:"
+  }, {
+    "type" : "image",
+    "id" : 426,
+    "page number" : 3,
+    "bounding box" : [ 347.688, 299.042, 522.773, 327.487 ],
+    "source" : "SIFTS/imageFile7.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 3,
+    "bounding box" : [ 392.82, 314.711, 396.934, 321.849 ],
+    "font" : "Times-Roman",
+    "font size" : 8.229,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 428,
+    "level" : "1",
+    "page number" : 3,
+    "bounding box" : [ 435.608, 301.976, 453.469, 321.012 ],
+    "font" : "Times-Roman",
+    "font size" : 21.943,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "level" : "2",
+    "page number" : 3,
+    "bounding box" : [ 478.809, 301.976, 491.184, 321.012 ],
+    "font" : "Times-Roman",
+    "font size" : 21.943,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 430,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 273.876, 557.998, 294.012 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We have ﬁnally reached our discrete p -dimensional rubber bands: the p -cycles."
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 3,
+    "bounding box" : [ 315.0, 240.472, 557.998, 266.705 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 18. A p -cycle c is a p -chain with empty boundary: ∂ p c = 0 (the identity in C p − 1 )."
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 3,
+    "bounding box" : [ 314.997, 208.299, 558.005, 239.394 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The ﬁgure below shows a 1 -cycle in blue on the left, and a 1 -chain on the right that is not a cycle because it has the red boundary vertices."
+  }, {
+    "type" : "image",
+    "id" : 436,
+    "page number" : 3,
+    "bounding box" : [ 387.836, 177.733, 483.635, 208.127 ],
+    "source" : "SIFTS/imageFile8.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 3,
+    "bounding box" : [ 314.998, 143.465, 558.009, 174.56 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Let Z p be all the p -cycles, i.e., all the “rubber bands.” Since ∂ p Z p = 0 , by deﬁnition 7 Z p is the kernel ker ∂ p , which is a subgroup of C p ."
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 3,
+    "bounding box" : [ 314.99, 87.964, 557.998, 140.687 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We now identify the “uninteresting rubber bands.” It may not be obvious but the boundary of any higher order ( p + 1) -chain is always a p -cycle. For example, the left ﬁgure below shows a simplicial complex containing a ( p + 1) = 2 chain (the yellow tri-"
+  }, {
+    "type" : "image",
+    "id" : 442,
+    "page number" : 4,
+    "bounding box" : [ 99.063, 685.174, 251.184, 727.167 ],
+    "source" : "SIFTS/imageFile9.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 4,
+    "bounding box" : [ 122.52, 684.655, 235.237, 699.511 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "c          c           c"
+  }, {
+    "type" : "paragraph",
+    "id" : 444,
+    "page number" : 4,
+    "bounding box" : [ 129.744, 683.566, 135.096, 692.851 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 4,
+    "bounding box" : [ 180.316, 683.566, 185.668, 692.851 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 4,
+    "bounding box" : [ 235.705, 683.566, 241.056, 692.851 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "page number" : 4,
+    "bounding box" : [ 53.99, 656.095, 296.988, 677.434 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 2. For every p and every ( p + 1) -chain c , ∂ p ( ∂ p +1 c ) = 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 4,
+    "bounding box" : [ 53.997, 631.403, 297.004, 651.481 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 19. A p -boundary-cycle is a p -cycle that is also the boundary of some ( p + 1) -chain."
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 4,
+    "bounding box" : [ 53.998, 572.518, 297.002, 625.53 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Let B p = ∂ p +1 C p +1 , namely all the p -boundary-cycles. B p are the uninteresting rubber bands. In the example above, B 1 = { 0 ,c 1 } , none surrounding any holes. It is easy to see that B p is a group, therefore a subgroup of Z p (all rubber bands)."
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 4,
+    "bounding box" : [ 53.999, 440.986, 297.0, 570.428 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Are there “interesting rubber bands”? In other words, do we have anything in Z p besides B p ? It depends on the structure of the simplicial complex. In the example above, the 1 -cycles c 2 and c 3 (red) are not in B 1 since the rectangle does not contain any 2 -simplices. These are interesting because they surround the hole in the rectangle. In fact, we can drag the rubber band c 2 over the yellow triangle and turn it into c 3 . Formally, we do this by c 3 = c 2 + c 1 . Intuitively, c 2 and c 3 are equivalent in the hole they surround. More generally, such equivalence class is obtained by c + B p : we are allowed to drag a p -cycle rubber band c over any ( p + 1) -simplices without changing the holes (or the lack thereof) it surrounds."
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 4,
+    "bounding box" : [ 53.999, 386.167, 297.001, 438.896 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Returning to the example, we now see all the 1-cycles for this simplicial complex: Z 1 = { 0 ,c 1 ,c 2 ,c 3 } . The uninteresting ones are B 1 = { 0 ,c 1 } , a subgroup of Z 1 . The interesting ones are c 2 + B 1 = c 3 + B 1 = { c 2 ,c 3 } : this should remind us of cosets and quotient group."
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 4,
+    "bounding box" : [ 54.001, 349.314, 297.01, 380.351 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 20. The p -th homology group is the quotient group H p = Z p /B p . The p -th Betti number is its rank: β p = rank( H p ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 476,
+    "page number" : 4,
+    "bounding box" : [ 53.997, 301.387, 297.004, 343.152 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We have arrived at the core of homology. In our example, H 1 = { 0 ,c 1 ,c 2 ,c 3 } / { 0 ,c 1 } which is isomorphic to Z 2 . The ﬁrst Betti number is β 1 = rank( Z 2 ) = 1 , indicating one independent 1st-order hole not ﬁlled in by triangles."
+  }, {
+    "type" : "paragraph",
+    "id" : 477,
+    "page number" : 4,
+    "bounding box" : [ 53.993, 190.57, 297.011, 299.586 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In general, β p is the number of independent p -th holes. For example, a tetrahedron has β 0 = 1 since the shape is connected, β 1 = β 2 = 0 since there is no holes or voids. A hollow tetrahedron has β 0 = 1 ,β 1 = 0 ,β 2 = 1 because of the void. Further removing the four triangle faces but keeping the six edges, the skeleton has β 0 = 1 , β 1 = 3 (there are 4 triangular holes but one is the sum of the other three), β 2 = 0 (no more void). Finally removing the edges but keeping the four vertices, β 0 = 4 (4 connected components each a single vertex) and β 1 = β 2 = 0 ."
+  }, {
+    "type" : "heading",
+    "id" : 479,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 54.0, 171.54, 174.982, 181.293 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.3 Persistent Homology"
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 4,
+    "bounding box" : [ 54.0, 113.918, 297.011, 168.187 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Usually we are given data as a point cloud x 1 ,...,x n ∈ R d . Where does the simplicial complex come from in the ﬁrst place? One way to create it is to examine all subsets of points. If any subset of p + 1 points are “close enough,” we add a p simplex σ with those points as vertices to the complex:"
+  }, {
+    "type" : "paragraph",
+    "id" : 483,
+    "page number" : 4,
+    "bounding box" : [ 54.013, 80.435, 297.011, 108.101 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 21. A Vietoris-Rips complex of diameter   is the simplicial complex V R (   ) = { σ | diam( σ ) ≤   } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 4,
+    "bounding box" : [ 315.013, 691.888, 558.031, 735.177 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Here diam( σ ) is the largest distance between two points in σ . Note if σ ∈ V R (   ) , all its faces are, too. The following ﬁgure shows four points (0,0), (0,1), (2,1), (2,0) and the VietorisRips complex with different   . V R ( √ 5) is a ﬂat tetrahedron."
+  }, {
+    "type" : "image",
+    "id" : 447,
+    "page number" : 4,
+    "bounding box" : [ 353.281, 651.657, 518.132, 692.071 ],
+    "source" : "SIFTS/imageFile10.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 4,
+    "bounding box" : [ 362.063, 651.819, 384.548, 659.454 ],
+    "font" : "Times-Roman",
+    "font size" : 8.8,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "VR(1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 4,
+    "bounding box" : [ 428.066, 651.819, 450.551, 659.454 ],
+    "font" : "Times-Roman",
+    "font size" : 8.8,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "VR(2)"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 4,
+    "bounding box" : [ 484.169, 651.819, 508.854, 659.454 ],
+    "font" : "Times-Roman",
+    "font size" : 8.8,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "VR( 5)"
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 4,
+    "bounding box" : [ 314.99, 615.93, 557.988, 647.025 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A natural question is what best   to use for any data set. Persistent homology examines all   ’s to see how the system of holes change."
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 4,
+    "bounding box" : [ 314.99, 569.665, 558.002, 611.658 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Deﬁnition 22. An increasing sequence of   produces a ﬁltration , i.e., a sequence of increasing simplicial complexes V R (   1 ) ⊆ V R (   2 ) ⊆ ... , with the property that a simplex enters the sequence no earlier than all its faces."
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 4,
+    "bounding box" : [ 314.984, 490.405, 557.992, 565.046 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Persistent homology tracks homology classes along the ﬁltration: at what value of   does a hole appear, and how long does it persist till it is ﬁlled in? A convenient way to visualize persistent homology is the barcode plot shown below. The x -axis is   . Each horizontal bar represents the birth–death of a separate homology class. Longer bars correspond to more robust topological structure in the data."
+  }, {
+    "type" : "image",
+    "id" : 458,
+    "page number" : 4,
+    "bounding box" : [ 344.03, 393.635, 539.544, 486.144 ],
+    "source" : "SIFTS/imageFile11.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 4,
+    "bounding box" : [ 413.28, 479.529, 466.999, 484.524 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "barcode (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 460,
+    "page number" : 4,
+    "bounding box" : [ 345.24, 440.109, 348.242, 445.104 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 461,
+    "page number" : 4,
+    "bounding box" : [ 380.34, 440.109, 387.846, 445.104 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 4,
+    "bounding box" : [ 420.3, 440.109, 423.302, 445.104 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 4,
+    "bounding box" : [ 455.4, 440.109, 462.906, 445.104 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1.5 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 464,
+    "page number" : 4,
+    "bounding box" : [ 495.36, 440.109, 498.362, 445.104 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 4,
+    "bounding box" : [ 531.0, 440.109, 538.506, 445.104 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "page number" : 4,
+    "bounding box" : [ 413.28, 433.629, 466.999, 438.624 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "barcode (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 468,
+    "page number" : 4,
+    "bounding box" : [ 345.24, 394.209, 348.242, 399.204 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 4,
+    "bounding box" : [ 380.34, 394.209, 387.846, 399.204 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 470,
+    "page number" : 4,
+    "bounding box" : [ 420.3, 394.209, 423.302, 399.204 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 4,
+    "bounding box" : [ 455.4, 394.209, 462.906, 399.204 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 4,
+    "bounding box" : [ 495.36, 394.209, 498.362, 399.204 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 4,
+    "bounding box" : [ 531.0, 394.209, 538.506, 399.204 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 4,
+    "bounding box" : [ 314.991, 247.588, 558.012, 388.271 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The top panel shows H 0 (0-th order holes or clusters). At   = 0 there are four bars for the four disconnected vertices in V R (0) . The Betti number at any given   is the number of bars above it, in this case β 0 = 4 . At   = 1 two edges appear in V R (1) , reducing the number of connected components to two. This is why the top two bars die and β 0 reduces to 2. At   = 2 , V R (2) forms a rectangle and becomes fully connected, so one more bar dies and β 0 = 1 thereafter. The remaining bar represents the one vertex that grabs everything to eventually become the fully connected component. It never dies (represented by the arrow at the end of the bar). We note that the clusters are precisely those obtained from hierarchical clustering with single-linkage."
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 4,
+    "bounding box" : [ 315.003, 168.41, 558.013, 245.806 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The bottom panel shows H 1 (1st order holes). In the example above, a homology class corresponding to the hole is born at   = 2 when the rectangle becomes connected. It persists until   = √ 5 and dies because the Vietoris-Rips complex becomes the solid tetrahedron. This is represented by the single short bar. The Betti number is β 1 = 1 in the interval [2 , √ 5) and 0 otherwise."
+  }, {
+    "type" : "heading",
+    "id" : 481,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 315.0, 145.544, 557.583, 156.232 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "3 A Natural Language Processing Application"
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 4,
+    "bounding box" : [ 314.996, 80.436, 558.004, 140.69 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We all have the intuition that some documents tell a straight story while others twist and turn. We hope persistent homology captures such structures. We assume that a document has been divided into small units x 1 ,...,x n . We are given a distance function D ( x i ,x j ) ≥ 0 so that similar units have small"
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 5,
+    "bounding box" : [ 54.0, 660.25, 297.008, 702.015 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Similarity Filtration (SIF). SIF is a simple method to compute persistent homology by creating a Vietoris-Rips complex over x 1 ,...,x n , where the diameter measures the similarity between text units:"
+  }, {
+    "type" : "paragraph",
+    "id" : 487,
+    "page number" : 5,
+    "bounding box" : [ 78.201, 603.823, 255.495, 647.489 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1. D max = max D ( x i ,x j ) , ∀ i,j = 1 ...n 2. FOR m = 0 , 1 ,...M 3. Add V R   m M D max   to the ﬁltration 4. END"
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 5,
+    "bounding box" : [ 78.201, 592.903, 272.8, 601.791 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "5. Compute persistent homology on the ﬁltration"
+  }, {
+    "type" : "paragraph",
+    "id" : 491,
+    "page number" : 5,
+    "bounding box" : [ 54.0, 536.052, 296.998, 579.02 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The growing diameter corresponds to allowing looser tiebacks: more dissimilar text units are linked together to form simplices in the Vietoris-Rips complex. Note the order of x 1 ...x n is ignored. Similarity Filtration with Time Skeleton (SIFTS). We"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 5,
+    "bounding box" : [ 53.997, 438.626, 297.008, 535.185 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "may be more interested in the ﬂow of the document. Recall we “connect the dots” in the introduction. This prompts us to add “time edges” ( x i ,x i +1 ) ,i = 1 ...n − 1 to the simplicial complex before any similarity ﬁltration. These edges form a “time skeleton” by connecting units in document order. The SIFTS algorithm implements time skeleton by adding the following preprocessing step before the SIF algorithm in section 3:"
+  }, {
+    "type" : "formula",
+    "id" : 495,
+    "page number" : 5,
+    "bounding box" : [ 94.897, 415.778, 256.106, 433.063 ],
+    "content" : "0 . \\ D ( x _ { i } , x _ { i + 1 } ) = 0 \\text { for } i = 1 , \\dots , n - 1 \\\\ \\intertext { s u l l } x _ { i } , x _ { i + 1 } , x _ { i + 2 } , x _ { i + 3 } , \\dots , x _ { i + 5 } , x _ { i + 6 } , x _ { i + 7 } , \\dots , x _ { i + 9 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 5,
+    "bounding box" : [ 54.0, 351.522, 297.016, 415.204 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The key difference between SIF and SIFTS is that a time-skeleton edge can be arbitrarily long as measured by D () . By adding the time skeleton upfront, we enable “tie-back” holes in SIFTS. This is illustrated by the toy document (0 , 0) , (1 , 0) , (2 , 0) , ( − 1 2 , 0) below, with the Vietoris-Rips complex V R (0 . 5) :"
+  }, {
+    "type" : "image",
+    "id" : 499,
+    "page number" : 5,
+    "bounding box" : [ 92.117, 328.74, 258.988, 353.273 ],
+    "source" : "SIFTS/imageFile12.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 5,
+    "bounding box" : [ 53.997, 193.723, 297.019, 324.364 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "SIF sees the Vietoris-Rips complex on the left as four vertices and an edge between (0 , 0) , ( − 1 2 , 0) . Even though the edge represents a tie-back between the ﬁrst and last units, no hole has formed. In contrast, SIFTS sees the combined complex on the right with time skeleton in red. The similarity and time edges together form a hole (i.e., β 1 = 1 ). The complete barcodes for SIF and SIFTS are presented below. SIF detects no hole at all ( β 1 = 0 always): as   increase the ﬁltration ﬁlls the complex with solid triangles, preventing holes. The hole detected by SIFTS persists until   is large enough to cover (1 , 0) and ( − 1 2 , 0) . Also note SIFTS complex is trivially connected by the time skeleton, hence β 0 = 1 always."
+  }, {
+    "type" : "image",
+    "id" : 504,
+    "page number" : 5,
+    "bounding box" : [ 82.025, 95.208, 271.616, 188.12 ],
+    "source" : "SIFTS/imageFile13.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 5,
+    "bounding box" : [ 100.944, 180.729, 143.555, 185.724 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 5,
+    "bounding box" : [ 206.318, 180.729, 255.83, 185.724 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 5,
+    "bounding box" : [ 83.124, 141.309, 86.126, 146.304 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 5,
+    "bounding box" : [ 113.363, 141.309, 116.365, 146.304 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "page number" : 5,
+    "bounding box" : [ 143.603, 141.309, 146.605, 146.304 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 5,
+    "bounding box" : [ 192.278, 141.309, 195.28, 146.304 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "page number" : 5,
+    "bounding box" : [ 222.517, 141.309, 225.519, 146.304 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 5,
+    "bounding box" : [ 252.757, 141.309, 255.759, 146.304 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 514,
+    "page number" : 5,
+    "bounding box" : [ 100.944, 134.829, 143.554, 139.824 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension"
+  }, {
+    "type" : "paragraph",
+    "id" : 515,
+    "page number" : 5,
+    "bounding box" : [ 206.318, 134.829, 255.83, 139.824 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension"
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 5,
+    "bounding box" : [ 83.124, 95.41, 86.126, 100.405 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 5,
+    "bounding box" : [ 113.363, 95.41, 116.365, 100.405 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 518,
+    "page number" : 5,
+    "bounding box" : [ 143.603, 95.41, 146.605, 100.405 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 5,
+    "bounding box" : [ 192.278, 95.41, 195.28, 100.405 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 5,
+    "bounding box" : [ 222.517, 95.41, 225.519, 100.405 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 521,
+    "page number" : 5,
+    "bounding box" : [ 252.757, 95.41, 255.759, 100.405 ],
+    "font" : "Helvetica",
+    "font size" : 5.4,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "heading",
+    "id" : 484,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 315.0, 725.768, 520.887, 735.521 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.1 On Nursery Rhymes and Other Stories"
+  }, {
+    "type" : "paragraph",
+    "id" : 485,
+    "page number" : 5,
+    "bounding box" : [ 315.0, 643.808, 558.008, 718.449 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We now illustrate persistent homology as computed by SIF and SIFTS on a few nursery rhymes. Nursery rhymes are repetitive and familiar, ideal for homology examples. Each unit is a sentence. We perform minimum tokenization by case-folding and punctuation removal only. The distance D () is the Euclidean distance between sentence-level bag-ofwords count vectors. All ﬁltrations has M = 100 steps."
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 5,
+    "bounding box" : [ 315.02, 599.146, 558.018, 640.91 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 1(a) shows Itsy Bitsy Spider . Its homology is strikingly similar to the previous toy document, as the spider climbed up the water spout in both the 1st and the 4th sentences. This hole is detected by SIFTS but not SIF."
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 5,
+    "bounding box" : [ 315.02, 564.229, 558.038, 596.248 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 1(b) shows Row Row Row Your Boat . Its four sentences are distinct from each other, forming a “linear progression.” Both SIF and SIFTS give β 1 = 0 : there is no hole."
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 5,
+    "bounding box" : [ 315.006, 476.93, 558.017, 562.534 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 1(c) shows London Bridge is Falling Down . The lyric has n = 48 sentences; The sentence “My fair Lady” repeats 12 times. With the time skeleton, SIFTS therefore detects 11 independent holes ( β 1 = 11 ) right away in V R (0) . These holes are not detected by SIF. Both SIF and SIFTS detect more holes later, some are caused by the near-repetition “Build it up with X and Y ”, where X,Y vary from wood and clay to silver and gold."
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 5,
+    "bounding box" : [ 315.006, 399.391, 558.014, 474.032 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We now move on to longer documents. Here and in next section, the text units are natural paragraphs (or chapters for Alice ). We perform Penn Treebank tokenization, case-folding, punctuation removal, and SMART stopword removal [ Salton, 1971 ] . Each text unit is converted to a tf.idf vector, where idf is computed within the document. We compute the cosine similarity then take the angular distance:  "
+  }, {
+    "type" : "formula",
+    "id" : 497,
+    "page number" : 5,
+    "bounding box" : [ 315.006, 376.652, 444.969, 398.747 ],
+    "content" : "t , \\quad D ( x _ { i } , x _ { j } ) = \\cos ^ { - 1 } \\left ( \\frac { x _ { i } ^ { \\top } x _ { j } } { \\| x _ { i } \\| \\cdot \\| x _ { j } \\| } \\right ) . \\\\ F i gure \\, I ( d e f ) \\, \\text {show the barcodes on}"
+  }, {
+    "type" : "paragraph",
+    "id" : 498,
+    "page number" : 5,
+    "bounding box" : [ 314.997, 314.788, 557.995, 378.47 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "   ·    Figure 1(d,e,f) show the barcodes on three stories. In general, SIFTS detects more holes and detects them earlier than SIF. The homology classes that persist the longest tend to be reappearance of salient words. For example, in Red-Cap the ﬁrst SIFTS hole is between the sentences “The better to see you with, my dear” and “The better to eat you with!”"
+  }, {
+    "type" : "heading",
+    "id" : 501,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 315.0, 292.138, 496.538, 301.891 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.2 On Child and Adolescent Writing"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 5,
+    "bounding box" : [ 315.0, 243.055, 557.998, 284.819 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As a real world example, we quantitatively study whether children’s writing become structurally richer as they grow up. Speciﬁcally, our hypothesis is that older writers have more 1homology groups than younger writers."
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 5,
+    "bounding box" : [ 315.0, 154.557, 558.008, 240.157 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We use the LUCY corpus which contains roughly matched child and adolescent writing [ Sampson, 2003 ] . We merge the F,H,K,M groups (ages 9–12, 150 essays) to form a childwriting set. We use the E group (undergraduates, 48 essays) as the adolescent-writing set. The main differences between the two sets are age and average article length (child=11.6 sentences, adolescent=25.8 sentences), see LUCY documentation for other minor differences."
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 5,
+    "bounding box" : [ 315.002, 86.983, 558.012, 151.659 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We compute each essay’s SIFTS barcode. To facilitate comparison, we extract two summary statistics. The ﬁrst is | H 1 | , the total number of 1st-order persistent homology classes (holes) over the whole   range. This is obtained by counting the number of bars. Note | H 1 | ≥ β 1 since the Betti number is for a speciﬁc   . The second is   ∗ , the smallest  "
+  }, {
+    "type" : "image",
+    "id" : 522,
+    "page number" : 6,
+    "bounding box" : [ 66.697, 569.605, 538.941, 736.954 ],
+    "description" : "This is an image of a graph. There are five categories on the x-axis, which are named as follows: (a) Itsy Bitsy Spider, (b) Row Row Your Boat, (c) London Bridge, (d) The Emperor's New Clothes, and (e) Alice in Wonderland. There are five categories on the y-axis, which are named as follows: (a) Little Red-Cap, (b) Row Row Your Boat, (c) London Bridge, (d) The Emperor's New Clothes, and (e) Alice in Wonderland. There are five categories on the x-axis, which are named as follows: (a) The Emperor's New Clothes, (b) Little Red-Cap, (c) London Bridge, (d) The Emperor's New Clothes, and (e) Alice in Wonderland. There are five categories on the y-axis, which are named as follows: (",
+    "source" : "SIFTS/imageFile14.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 523,
+    "page number" : 6,
+    "bounding box" : [ 80.754, 730.917, 111.686, 734.543 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 524,
+    "page number" : 6,
+    "bounding box" : [ 160.524, 730.917, 196.466, 734.543 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 6,
+    "bounding box" : [ 245.783, 730.917, 276.715, 734.543 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 6,
+    "bounding box" : [ 325.554, 730.917, 361.496, 734.543 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 6,
+    "bounding box" : [ 410.813, 730.917, 441.745, 734.543 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 6,
+    "bounding box" : [ 490.584, 730.917, 526.526, 734.543 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 529,
+    "page number" : 6,
+    "bounding box" : [ 67.818, 702.302, 69.997, 705.928 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 6,
+    "bounding box" : [ 82.714, 702.302, 84.893, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 6,
+    "bounding box" : [ 98.001, 702.302, 100.181, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 6,
+    "bounding box" : [ 113.289, 702.302, 115.468, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 6,
+    "bounding box" : [ 150.332, 702.302, 152.511, 705.928 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 6,
+    "bounding box" : [ 165.228, 702.302, 167.407, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 537,
+    "page number" : 6,
+    "bounding box" : [ 180.515, 702.302, 182.694, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 6,
+    "bounding box" : [ 195.803, 702.302, 197.982, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 6,
+    "bounding box" : [ 232.847, 702.302, 235.026, 705.928 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 6,
+    "bounding box" : [ 253.622, 702.302, 255.801, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 542,
+    "page number" : 6,
+    "bounding box" : [ 274.79, 702.302, 276.969, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 6,
+    "bounding box" : [ 315.362, 702.302, 317.541, 705.928 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 6,
+    "bounding box" : [ 336.137, 702.302, 338.316, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 6,
+    "bounding box" : [ 357.305, 702.302, 359.484, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 6,
+    "bounding box" : [ 397.877, 702.302, 400.056, 705.928 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 6,
+    "bounding box" : [ 420.22, 702.302, 422.399, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 6,
+    "bounding box" : [ 442.564, 702.302, 444.743, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 551,
+    "page number" : 6,
+    "bounding box" : [ 480.392, 702.302, 482.571, 705.928 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 6,
+    "bounding box" : [ 502.735, 702.302, 504.914, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 554,
+    "page number" : 6,
+    "bounding box" : [ 525.079, 702.302, 527.258, 705.928 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 6,
+    "bounding box" : [ 160.524, 697.598, 196.466, 701.224 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1 2 3 SIFTS (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 6,
+    "bounding box" : [ 410.813, 697.598, 441.745, 701.224 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2 4 SIF (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 6,
+    "bounding box" : [ 490.584, 697.598, 526.526, 701.224 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2 4 SIFTS (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 6,
+    "bounding box" : [ 80.754, 697.598, 111.686, 701.224 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1 2 3 SIF (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 6,
+    "bounding box" : [ 245.783, 697.598, 276.715, 701.224 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2 4 SIF (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 6,
+    "bounding box" : [ 325.554, 697.598, 361.495, 701.224 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2 4 SIFTS (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 6,
+    "bounding box" : [ 67.818, 668.982, 69.997, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 6,
+    "bounding box" : [ 82.714, 668.982, 84.893, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 557,
+    "page number" : 6,
+    "bounding box" : [ 98.001, 668.982, 100.181, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 6,
+    "bounding box" : [ 113.289, 668.982, 115.468, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 6,
+    "bounding box" : [ 150.332, 668.982, 152.511, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 6,
+    "bounding box" : [ 165.228, 668.982, 167.407, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 561,
+    "page number" : 6,
+    "bounding box" : [ 180.515, 668.982, 182.694, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 6,
+    "bounding box" : [ 195.803, 668.982, 197.982, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 6,
+    "bounding box" : [ 232.847, 668.982, 235.026, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 6,
+    "bounding box" : [ 253.622, 668.982, 255.801, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 6,
+    "bounding box" : [ 274.79, 668.982, 276.969, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 6,
+    "bounding box" : [ 315.362, 668.982, 317.541, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 567,
+    "page number" : 6,
+    "bounding box" : [ 336.137, 668.982, 338.316, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 6,
+    "bounding box" : [ 357.305, 668.982, 359.484, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 6,
+    "bounding box" : [ 397.877, 668.982, 400.056, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 6,
+    "bounding box" : [ 420.22, 668.982, 422.399, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 6,
+    "bounding box" : [ 442.564, 668.982, 444.743, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 6,
+    "bounding box" : [ 480.392, 668.982, 482.571, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 6,
+    "bounding box" : [ 502.735, 668.982, 504.914, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 6,
+    "bounding box" : [ 525.079, 668.982, 527.258, 672.608 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 6,
+    "bounding box" : [ 96.251, 654.449, 176.779, 663.337 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(a) Itsy Bitsy Spider"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 6,
+    "bounding box" : [ 242.552, 654.449, 360.529, 663.337 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(b) Row Row Row Your Boat"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 6,
+    "bounding box" : [ 429.5, 654.449, 503.652, 663.337 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(c) London Bridge"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 6,
+    "bounding box" : [ 80.754, 646.113, 111.686, 649.738 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 6,
+    "bounding box" : [ 160.524, 646.113, 196.466, 649.738 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 6,
+    "bounding box" : [ 245.783, 646.113, 276.715, 649.738 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 6,
+    "bounding box" : [ 325.554, 646.113, 361.496, 649.738 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 6,
+    "bounding box" : [ 410.813, 646.113, 441.745, 649.738 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIF (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 6,
+    "bounding box" : [ 490.584, 646.113, 526.526, 649.738 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "SIFTS (dimension 0)"
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 6,
+    "bounding box" : [ 67.818, 617.497, 69.997, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 586,
+    "page number" : 6,
+    "bounding box" : [ 83.498, 617.497, 88.946, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 6,
+    "bounding box" : [ 102.705, 617.497, 104.884, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 6,
+    "bounding box" : [ 118.385, 617.497, 123.834, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 589,
+    "page number" : 6,
+    "bounding box" : [ 150.332, 617.497, 152.511, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 6,
+    "bounding box" : [ 166.012, 617.497, 171.461, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 6,
+    "bounding box" : [ 185.219, 617.497, 187.398, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 6,
+    "bounding box" : [ 200.899, 617.497, 206.348, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 6,
+    "bounding box" : [ 232.847, 617.497, 235.026, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 6,
+    "bounding box" : [ 248.527, 617.497, 253.976, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 6,
+    "bounding box" : [ 267.734, 617.497, 269.913, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 598,
+    "page number" : 6,
+    "bounding box" : [ 283.414, 617.497, 288.863, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 6,
+    "bounding box" : [ 315.362, 617.497, 317.541, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "page number" : 6,
+    "bounding box" : [ 331.042, 617.497, 336.491, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 6,
+    "bounding box" : [ 350.249, 617.497, 352.428, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 6,
+    "bounding box" : [ 365.929, 617.497, 371.378, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 604,
+    "page number" : 6,
+    "bounding box" : [ 397.877, 617.497, 400.056, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 606,
+    "page number" : 6,
+    "bounding box" : [ 413.556, 617.497, 419.005, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 6,
+    "bounding box" : [ 432.764, 617.497, 434.943, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 6,
+    "bounding box" : [ 448.444, 617.497, 453.893, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 6,
+    "bounding box" : [ 480.392, 617.497, 482.571, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "page number" : 6,
+    "bounding box" : [ 496.072, 617.497, 501.521, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "page number" : 6,
+    "bounding box" : [ 515.279, 617.497, 517.458, 621.122 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 6,
+    "bounding box" : [ 530.959, 617.497, 536.408, 621.122 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 6,
+    "bounding box" : [ 80.754, 612.793, 111.686, 616.418 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5 1 SIF (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 6,
+    "bounding box" : [ 160.524, 612.793, 196.466, 616.418 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5 1 SIFTS (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 6,
+    "bounding box" : [ 245.783, 612.793, 276.715, 616.418 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5 1 SIF (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 6,
+    "bounding box" : [ 325.554, 612.793, 361.496, 616.418 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5 1 SIFTS (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 6,
+    "bounding box" : [ 410.813, 612.793, 441.745, 616.418 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5 1 SIF (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 6,
+    "bounding box" : [ 490.584, 612.793, 526.526, 616.418 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5 1 SIFTS (dimension 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 614,
+    "page number" : 6,
+    "bounding box" : [ 67.818, 584.178, 69.997, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 615,
+    "page number" : 6,
+    "bounding box" : [ 83.498, 584.178, 88.946, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "page number" : 6,
+    "bounding box" : [ 102.705, 584.178, 104.884, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 617,
+    "page number" : 6,
+    "bounding box" : [ 118.385, 584.178, 123.834, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 6,
+    "bounding box" : [ 150.332, 584.178, 152.511, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 619,
+    "page number" : 6,
+    "bounding box" : [ 166.012, 584.178, 171.461, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 6,
+    "bounding box" : [ 185.219, 584.178, 187.398, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 6,
+    "bounding box" : [ 200.899, 584.178, 206.348, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 6,
+    "bounding box" : [ 232.847, 584.178, 235.026, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 6,
+    "bounding box" : [ 248.527, 584.178, 253.976, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 6,
+    "bounding box" : [ 267.734, 584.178, 269.913, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 625,
+    "page number" : 6,
+    "bounding box" : [ 283.414, 584.178, 288.863, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 6,
+    "bounding box" : [ 315.362, 584.178, 317.541, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 6,
+    "bounding box" : [ 331.042, 584.178, 336.491, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 6,
+    "bounding box" : [ 350.249, 584.178, 352.428, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 629,
+    "page number" : 6,
+    "bounding box" : [ 365.929, 584.178, 371.378, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 6,
+    "bounding box" : [ 397.877, 584.178, 400.056, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 6,
+    "bounding box" : [ 413.556, 584.178, 419.005, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 6,
+    "bounding box" : [ 432.764, 584.178, 434.943, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 633,
+    "page number" : 6,
+    "bounding box" : [ 448.444, 584.178, 453.893, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 6,
+    "bounding box" : [ 480.392, 584.178, 482.571, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 635,
+    "page number" : 6,
+    "bounding box" : [ 496.072, 584.178, 501.521, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 6,
+    "bounding box" : [ 515.279, 584.178, 517.458, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 6,
+    "bounding box" : [ 530.959, 584.178, 536.408, 587.803 ],
+    "font" : "Helvetica",
+    "font size" : 3.92,
+    "text color" : "[0.0]",
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 6,
+    "bounding box" : [ 72.725, 569.644, 200.306, 578.532 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(d) The Emperor’s New Clothes"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 6,
+    "bounding box" : [ 265.023, 569.644, 338.069, 578.532 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(e) Little Red-Cap"
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 6,
+    "bounding box" : [ 418.975, 569.644, 514.178, 578.532 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(f) Alice in Wonderland"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 6,
+    "bounding box" : [ 173.038, 548.603, 438.955, 557.491 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 1: Persistent homology on nursery rhymes and other stories"
+  }, {
+    "type" : "table",
+    "id" : 642,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 65.48, 485.641, 285.256, 531.318 ],
+    "number of rows" : 4,
+    "number of columns" : 4,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 65.48, 519.899, 120.424, 531.318 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 120.424, 519.899, 175.368, 531.318 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 326,
+          "page number" : 6,
+          "bounding box" : [ 120.424, 519.899, 175.368, 531.318 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "child"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 175.368, 519.899, 230.312, 531.318 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 327,
+          "page number" : 6,
+          "bounding box" : [ 175.368, 519.899, 230.312, 531.318 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "adolescent"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 230.312, 519.899, 285.256, 531.318 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 328,
+          "page number" : 6,
+          "bounding box" : [ 230.312, 519.899, 285.256, 531.318 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "adol. trunc."
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 65.48, 508.48, 120.424, 519.899 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 329,
+          "page number" : 6,
+          "bounding box" : [ 65.48, 508.48, 120.424, 519.899 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "holes?"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 120.424, 508.48, 175.368, 519.899 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 330,
+          "page number" : 6,
+          "bounding box" : [ 120.424, 508.48, 175.368, 519.899 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "87%"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 175.368, 508.48, 230.312, 519.899 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 331,
+          "page number" : 6,
+          "bounding box" : [ 175.368, 508.48, 230.312, 519.899 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "100% ∗"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 230.312, 508.48, 285.256, 519.899 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 332,
+          "page number" : 6,
+          "bounding box" : [ 230.312, 508.48, 285.256, 519.899 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "98% ∗"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 65.48, 497.06, 120.424, 508.48 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 333,
+          "page number" : 6,
+          "bounding box" : [ 65.48, 497.06, 120.424, 508.48 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "| H 1 |"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 120.424, 497.06, 175.368, 508.48 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 334,
+          "page number" : 6,
+          "bounding box" : [ 120.424, 497.06, 175.368, 508.48 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "3.0 ( ± 0.2)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 175.368, 497.06, 230.312, 508.48 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 335,
+          "page number" : 6,
+          "bounding box" : [ 175.368, 497.06, 230.312, 508.48 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "17.6 ( ± 0.9) ∗"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 230.312, 497.06, 285.256, 508.48 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 336,
+          "page number" : 6,
+          "bounding box" : [ 230.312, 497.06, 285.256, 508.48 ],
+          "font" : "NimbusRomNo9L-Regu",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "3.9 ( ± 0.2) ∗ 1.38 ( .01)"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 65.48, 485.641, 120.424, 497.06 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 337,
+          "page number" : 6,
+          "bounding box" : [ 65.48, 485.641, 120.424, 497.06 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "/epsilon1 ∗"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 120.424, 485.641, 175.368, 497.06 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 338,
+          "page number" : 6,
+          "bounding box" : [ 120.424, 485.641, 175.368, 497.06 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "1.35 ( .02)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 175.368, 485.641, 230.312, 497.06 ],
+        "row number" : 4,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 339,
+          "page number" : 6,
+          "bounding box" : [ 175.368, 485.641, 230.312, 497.06 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "1.27 ( .02) ∗"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 6,
+        "bounding box" : [ 230.312, 485.641, 285.256, 497.06 ],
+        "row number" : 4,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 340,
+          "page number" : 6,
+          "bounding box" : [ 230.312, 485.641, 285.256, 497.06 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "1.38 ( .01)"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 6,
+    "bounding box" : [ 133.059, 479.638, 140.8, 496.923 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "±"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 6,
+    "bounding box" : [ 191.778, 479.638, 199.519, 496.923 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "±"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 6,
+    "bounding box" : [ 255.074, 479.638, 262.815, 496.923 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "±"
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 6,
+    "bounding box" : [ 54.0, 448.806, 296.998, 469.635 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Table 1: Statistics on child vs. adolescent writing. Entries signiﬁcantly different from child are marked by ∗"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 6,
+    "bounding box" : [ 54.0, 403.342, 297.0, 424.461 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "when the ﬁrst hole in H 1 forms. If there is no hole we set   ∗ = π/ 2 , the largest angular distance possible."
+  }, {
+    "type" : "paragraph",
+    "id" : 650,
+    "page number" : 6,
+    "bounding box" : [ 54.004, 331.748, 297.002, 395.43 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The ﬁrst two columns in Table 1 show a marked difference between child vs. adolescent writing. Only 87% of child essays have holes while all adolescent essays do ( p = 0 . 01 , Fisher’s test). The average child essay has 3 holes while adolescent has 17.6 ( p = 10 − 55 , t -test). First hole appears earlier in adolescent ( p = 0 . 01 , t -test)."
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 6,
+    "bounding box" : [ 53.996, 204.378, 297.022, 322.853 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "One has reason to suspect that the homology differs solely because adolescent essays are about twice as long. We thus create a third “adolescent truncated” data set, where we keep the ﬁrst 11 sentences in each adolescent essay to match child writing. This perhaps removed many later tie-backs in the essays. The third column in Table 1, however, still shows some differences compared to child writing: more truncated adolescent essays contain holes ( p = 0 . 03 , Fisher’s test). On average a truncated essay has one more hole ( p = 0 . 03 , t test). But the ﬁrst-birth   ∗ is no longer signiﬁcantly different ( p = 0 . 2 , t -test)."
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 6,
+    "bounding box" : [ 54.006, 87.965, 297.014, 195.483 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We conclude that persistent homology detects signiﬁcant differences between child and adolescent writing using only structural features. The point is not that classifying the two classes requires such sophisticated machinery – simpler features such as word usage probably sufﬁce. Rather, our experiment shows that there is useful information in homology. Incorporating such information into existing text representation for NLP tasks such as discourse structure modeling or parsing can potentially enhance these tasks. This remains future work."
+  }, {
+    "type" : "heading",
+    "id" : 643,
+    "level" : "Doctitle",
+    "page number" : 6,
+    "bounding box" : [ 315.0, 518.097, 531.019, 528.785 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "4 Discussion: Merely Counting Repeats?"
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 6,
+    "bounding box" : [ 314.988, 397.211, 558.002, 501.3 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Our nursery rhyme examples may give the impression that persistent homology computed by SIFTS is simply ﬁnding repeated (   -close) text units. After all, in a document x 1   x 2   x 3 where x 1 ,x 2 ,x 3 are within   of each other and   represents long sequence of mutually dissimilar units, SIFTS will identify exactly two independent holes: x 1   x 2 where x 2 ties back to x 1 , and similarly x 2   x 3 . k such repeats of x will generate k − 1 holes. It seems one can just count k the number of repeats to get the Betti number β 1 = k − 1 . This impression is incomplete. Consider the document"
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 6,
+    "bounding box" : [ 314.986, 355.971, 557.997, 398.944 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "x 1 x 2 x 3 y z x 4 depicted on left, where y and z are distant. The SIFTS time skeleton is in red. There are k = 4 repeats of x but β 1 = 1 not 3, since the x ’s form a 3-simplex (yellow). x x x"
+  }, {
+    "type" : "image",
+    "id" : 652,
+    "page number" : 6,
+    "bounding box" : [ 327.808, 296.981, 543.783, 356.937 ],
+    "source" : "SIFTS/imageFile15.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 653,
+    "page number" : 6,
+    "bounding box" : [ 342.244, 347.795, 347.48, 356.88 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 6,
+    "bounding box" : [ 381.517, 347.795, 386.754, 356.88 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "page number" : 6,
+    "bounding box" : [ 428.646, 347.794, 433.882, 356.879 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 6,
+    "bounding box" : [ 385.813, 345.272, 390.176, 352.844 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 6,
+    "bounding box" : [ 345.91, 345.115, 350.274, 352.687 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 6,
+    "bounding box" : [ 432.573, 344.225, 436.937, 351.797 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 6,
+    "bounding box" : [ 342.244, 332.085, 347.48, 341.171 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 6,
+    "bounding box" : [ 456.242, 329.765, 460.84, 339.274 ],
+    "font" : "Symbol",
+    "font size" : 10.473,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "ε"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "page number" : 6,
+    "bounding box" : [ 347.062, 330.872, 351.426, 338.443 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 661,
+    "page number" : 6,
+    "bounding box" : [ 381.517, 328.158, 386.754, 337.243 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "x"
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 6,
+    "bounding box" : [ 385.917, 326.526, 390.281, 334.097 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 6,
+    "bounding box" : [ 428.646, 321.813, 440.254, 333.316 ],
+    "font" : "Times-Roman",
+    "font size" : 8.728,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "x 13"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "page number" : 6,
+    "bounding box" : [ 396.075, 309.254, 401.311, 318.339 ],
+    "font" : "Times-Roman",
+    "font size" : 10.473,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "y"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 6,
+    "bounding box" : [ 331.928, 307.473, 336.578, 316.559 ],
+    "font" : "Times-Roman",
+    "font size" : 10.473,
+    "text color" : "[0.0, 0.0, 0.0, 1.0]",
+    "content" : "z"
+  }, {
+    "type" : "paragraph",
+    "id" : 668,
+    "page number" : 6,
+    "bounding box" : [ 314.997, 183.101, 558.0, 290.618 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Perhaps such problem can be dealt with by preprocessing, where one merges contiguous units within   ? Surely with x 1 x 2 x 3 merged into a super unit x   , we can using counting again to detect two repeats x   ,x 4 and correctly infer one hole. However, consider another document x 1 x 2 ...x 13 on the right, where all contiguous unit pairs are within   (the short diagonal length). The preprocessing will merge all units into a single super unit, thus incorrectly predicting 0 holes. In contrast, SIFTS can correctly identify the two holes. Homology is not just counting repeated text units."
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 6,
+    "bounding box" : [ 315.002, 128.009, 558.0, 177.304 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The barcodes in this paper were computed with the javaPlex software [ Tausz et al. , 2011 ] . Our data and SIF, SIFTS code is online at http://pages.cs.wisc.edu/ ∼ jerryzhu/publications.html. Acknowledgments: I thank Kevyn Collins-Thompson for dis-"
+  }, {
+    "type" : "paragraph",
+    "id" : 671,
+    "page number" : 6,
+    "bounding box" : [ 314.992, 88.176, 558.0, 129.046 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "cussions on corpora, the anonymous reviewers for helpful comments, and the support of NSF IIS-0953219, IIS-1216758, IIS1148012, IIS-0916038."
+  }, {
+    "type" : "heading",
+    "id" : 672,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 54.0, 725.55, 109.544, 736.238 ],
+    "heading level" : 1,
+    "font" : "NimbusRomNo9L-Medi",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 656.436, 297.008, 721.015 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Balakrishnan et al. , 2012 ] Sivaraman Balakrishnan, Alessandro Rinaldo, Don Sheehy, Aarti Singh, and Larry A. Wasserman. Minimax rates for homology inference. In The ﬁfteenth international conference on Artiﬁcial Intelligence and Statistics (AISTATS) , pages 64–72, 2012."
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 608.785, 296.998, 651.446 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Balakrishnan et al. , 2013 ] Sivaraman Balakrishnan, Brittany Fasy, Fabrizio Lecci, Alessandro Rinaldo, Aarti Singh, and Larry Wasserman. Statistical inference for persistent homology. In arXiv:1303.7117 , 2013."
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 572.093, 296.998, 603.795 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Carlsson, 2009 ] Gunnar Carlsson. Topology and data. Bulletin (New Series) of the American Mathematical Society , 46(2):255–308, 2009."
+  }, {
+    "type" : "paragraph",
+    "id" : 680,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 524.442, 296.998, 567.103 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Chung et al. , 2009 ] Moo K. Chung, Peter Bubenik, Peter T. Kim, Kim M. Dalton, and Richard J. Davidson. Persistence diagrams of cortical surface data. In Information Processing in Medical Imaging , pages 386–397, 2009."
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 487.75, 296.998, 519.452 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ de Silva and Ghrist, 2007a ] Vin de Silva and Robert Ghrist. Coverage in sensor networks via persistent homology. Algebraic & Geometric Topology , 7:339–358, 2007."
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 451.057, 296.998, 482.76 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ de Silva and Ghrist, 2007b ] Vin de Silva and Robert Ghrist. Homological sensor networks. Notices of the American Mathematical Society , 54, 2007."
+  }, {
+    "type" : "paragraph",
+    "id" : 685,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 403.406, 297.008, 446.067 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Edelsbrunner and Harer, 2007 ] H. Edelsbrunner and J. Harer. Persistent homology a survey. In Twenty Years After, eds. J. E. Goodman, J. Pach and R. Pollack, AMS. , 2007."
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 366.714, 297.008, 398.416 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Edelsbrunner and Harer, 2010 ] H. Edelsbrunner and J. Harer. Computational Topology: An Introduction . Applied mathematics. Amer Mathematical Society, 2010."
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 319.063, 297.008, 361.724 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Freedman and Chen, 2011 ] Daniel Freedman and Chao Chen. Algebraic topology for computer vision. In Sota R. Yoshida, editor, Computer Vision , chapter 5, pages 239– 268. Nova Science Pub. Inc., 2011."
+  }, {
+    "type" : "paragraph",
+    "id" : 690,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 271.412, 296.998, 314.073 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Gamble and Heo, 2010 ] Jennifer Gamble and Giseon Heo. Exploring uses of persistent homology for statistical analysis of landmark-based shape data. J. Multivariate Analysis , 101(9):2184–2199, 2010."
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 245.678, 296.998, 266.422 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Giblin, 2010 ] P. Giblin. Graphs, Surfaces and Homology . Cambridge University Press, 2010."
+  }, {
+    "type" : "paragraph",
+    "id" : 692,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 219.945, 296.998, 240.688 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Gous, 1999 ] Alan Gous. Spherical subfamily models. Technical report, 1999."
+  }, {
+    "type" : "paragraph",
+    "id" : 693,
+    "page number" : 7,
+    "bounding box" : [ 54.0, 172.307, 296.997, 214.955 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Hall and Hofmann, 2000 ] Keith Hall and Thomas Hofmann. Learning curved multinomial subfamilies for natural language processing and information retrieval. In ICML , pages 351–358, 2000."
+  }, {
+    "type" : "paragraph",
+    "id" : 694,
+    "page number" : 7,
+    "bounding box" : [ 53.999, 146.574, 297.007, 167.317 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Hatcher, 2001 ] Allen Hatcher. Algebraic Topology . Cambridge University Press, ﬁrst edition, December 2001."
+  }, {
+    "type" : "paragraph",
+    "id" : 695,
+    "page number" : 7,
+    "bounding box" : [ 53.999, 87.964, 297.0, 141.584 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Kasson et al. , 2007 ] Peter M. Kasson, Afra Zomorodian, Sanghyun Park, Nina Singhal, Leonidas J. Guibas, and Vijay S. Pande. Persistent voids: a new structural metric for membrane fusion. Bioinformatics , 23(14):1753–1759, 2007."
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 693.122, 558.007, 735.783 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Lebanon et al. , 2007 ] Guy Lebanon, Yi Mao, and Joshua V. Dillon. The locally weighted bag of words framework for document representation. Journal of Machine Learning Research , 8:2405–2441, 2007."
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 656.26, 557.997, 687.963 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Lebanon, 2006 ] Guy Lebanon. Sequential document representations and simplicial curves. In UAI . AUAI Press, 2006."
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 586.522, 558.007, 651.101 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Rote and Vegter, 2006 ] G¨ unter Rote and Gert Vegter. Computational topology: an introduction. In Jean-Daniel Boissonnat and Monique Teillaud, editors, Effective Computational Geometry for Curves and Surfaces , Mathematics and Visualization, chapter 7, pages 277–312. SpringerVerlag, 2006."
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 549.66, 557.997, 581.363 ],
+    "font" : "NimbusRomNo9L-ReguItal",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Salton, 1971 ] G. Salton, editor. The SMART Retrieval System Experiments in Automatic Document Processing. Englewood Cliffs: Prentice-Hall, 1971."
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 490.881, 557.997, 544.501 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Sampson, 2003 ] Geoffrey R. Sampson. The structure of children’s writing: moving from spoken to adult written norms. In S. Granger and S. Petch-Tyson, editors, Extending the Scope of Corpus-Based Research , pages 177–93. Rodopi, 2003. http://www.grsampson.net/RLucy.html."
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 443.061, 557.999, 485.722 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Singh et al. , 2008 ] Gurjeet Singh, Facundo Memoli, Tigran Ishkhanov, Guillermo Sapiro, Gunnar Carlsson, and Dario L. Ringach. Topological analysis of population activity in visual cortex. J. Vis. , 8(8):1–18, 6 2008."
+  }, {
+    "type" : "paragraph",
+    "id" : 686,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 395.24, 557.997, 437.901 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Tausz et al. , 2011 ] Andrew Tausz, Mikael VejdemoJohansson, and Henry Adams. Javaplex: A research software package for persistent (co)homology. Software available at http://code.google.com/javaplex, 2011."
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 7,
+    "bounding box" : [ 315.0, 347.42, 557.997, 390.081 ],
+    "font" : "NimbusRomNo9L-Regu",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "[ Zomorodian, 2001 ] Afra Joze Zomorodian. Computing and comprehending topology: persistence and hierarchical Morse complexes . PhD thesis, University of Illinois at Urbana-Champaign, 2001."
+  } ]
+}

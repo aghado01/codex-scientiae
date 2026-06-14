@@ -1,0 +1,3191 @@
+{
+  "file name" : "WLK2008.pdf",
+  "number of pages" : 20,
+  "author" : null,
+  "title" : null,
+  "creation date" : "D:20091001134741-05'00'",
+  "modification date" : "D:20091001134741-05'00'",
+  "kids" : [ {
+    "type" : "image",
+    "page number" : 1,
+    "bounding box" : [ 39.567, 721.459, 87.567, 769.459 ],
+    "source" : "WLK2008/imageFile1.png"
+  }, {
+    "type" : "heading",
+    "id" : 340,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 94.634, 733.642, 263.264, 773.638 ],
+    "heading level" : 1,
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 22.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "NIH Public Access Author Manuscript"
+  }, {
+    "type" : "paragraph",
+    "id" : 341,
+    "page number" : 1,
+    "bounding box" : [ 94.634, 720.716, 408.73, 732.882 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 11.0,
+    "text color" : "[0.7098, 0.78039, 0.87059]",
+    "content" : "J Stat Softw . Author manuscript; available in PMC 2009 September 22."
+  }, {
+    "type" : "paragraph",
+    "id" : 342,
+    "page number" : 1,
+    "bounding box" : [ 90.0, 704.478, 223.05, 713.201 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Published in final edited form as:"
+  }, {
+    "type" : "paragraph",
+    "id" : 344,
+    "page number" : 1,
+    "bounding box" : [ 143.222, 692.361, 251.272, 701.084 ],
+    "font" : "Times-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2008 June 1; 26(1): 1–21."
+  }, {
+    "type" : "paragraph",
+    "id" : 343,
+    "page number" : 1,
+    "bounding box" : [ 96.0, 692.389, 143.23, 700.994 ],
+    "font" : "Times-Italic",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "J Stat Softw ."
+  }, {
+    "type" : "heading",
+    "id" : 345,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 90.0, 623.561, 495.328, 662.275 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 14.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "An Implementation of Bayesian Adaptive Regression Splines (BARS) in C with S and R Wrappers"
+  }, {
+    "type" : "paragraph",
+    "id" : 346,
+    "page number" : 1,
+    "bounding box" : [ 90.0, 584.258, 192.81, 607.428 ],
+    "font" : "ArialMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Garrick Wallstrom , University of Pittsburgh"
+  }, {
+    "type" : "paragraph",
+    "id" : 347,
+    "page number" : 1,
+    "bounding box" : [ 90.0, 554.258, 209.47, 577.428 ],
+    "font" : "ArialMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Jeffrey Liebner , and Carnegie Mellon University"
+  }, {
+    "type" : "paragraph",
+    "id" : 348,
+    "page number" : 1,
+    "bounding box" : [ 90.0, 524.258, 209.47, 547.428 ],
+    "font" : "ArialMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Robert E. Kass Carnegie Mellon University"
+  }, {
+    "type" : "heading",
+    "id" : 349,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 90.0, 498.102, 138.672, 511.506 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 350,
+    "page number" : 1,
+    "bounding box" : [ 108.0, 338.147, 504.055, 493.207 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "BARS (DiMatteo, Genovese, and Kass 2001) uses the powerful reversible-jump MCMC engine to perform spline-based generalized nonparametric regression. It has been shown to work well in terms of having small mean-squared error in many examples (smaller than known competitors), as well as producing visually-appealing fits that are smooth (filtering out high-frequency noise) while adapting to sudden changes (retaining high-frequency signal). However, BARS is computationally intensive. The original implementation in S was too slow to be practical in certain situations, and was found to handle some data sets incorrectly. We have implemented BARS in C for the normal and Poisson cases, the latter being important in neurophysiological and other point-process applications. The C implementation includes all needed subroutines for fitting Poisson regression, manipulating Bsplines (using code created by Bates and Venables), and finding starting values for Poisson regression (using code for density estimation created by Kooperberg). The code utilizes only freely-available external libraries ( LAPACK and BLAS ) and is otherwise self-contained. We have also provided wrappers so that BARS can be used easily within S or R."
+  }, {
+    "type" : "heading",
+    "id" : 351,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 90.0, 302.043, 137.79, 313.213 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Keywords"
+  }, {
+    "type" : "paragraph",
+    "id" : 352,
+    "page number" : 1,
+    "bounding box" : [ 108.0, 273.539, 494.08, 296.682 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "curve-fitting; free-knot splines; nonparametric regression; peri-stimulus time histogram; Poisson process"
+  }, {
+    "type" : "heading",
+    "id" : 353,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 90.0, 236.817, 173.34, 250.221 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1. Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 354,
+    "page number" : 1,
+    "bounding box" : [ 150.0, 111.003, 522.052, 230.063 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Figure 1 displays a normalized histogram (called a peri-stimulus time histogram, or PSTH, in the neuroscience literature) of neuronal spiking events across time. This histogram may be considered an estimate of a Poisson process intensity function. Overlaid on the histogram is a Gaussian kernel density estimate (the dotted wiggly line) with bandwidth selected by unbiased cross-validation (Venables and Ripley 2002), which smooths the histogram. From a neurophysiological point of view, it is reasonable to expect the intensity function to vary slowly throughout much of its domain, but perhaps rapidly in a relative short interval. In this situation, the kernel density estimate oversmooths the rapid jump in the intensity, while undersmoothing the portion involving slow variation. It would be preferable to use a method of estimating the intensity function that adapts to functional variation across time."
+  }, {
+    "type" : "paragraph",
+    "id" : 355,
+    "page number" : 2,
+    "bounding box" : [ 150.0, 564.476, 522.03, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "For a Poisson process, when the events are put into small time bins, as in Figure 1, the data form a sequence of Poisson-distributed counts and estimation of the Poisson process intensity function becomes a Poisson regression problem. This problem motivated development of BARS (Bayesian adaptive regression splines, DiMatteo et al. 2001), which uses regression splines with knot sets determined adaptively via Markov chain Monte Carlo (MCMC). A substantial literature has documented the effectiveness of spline-based nonparametric regression and its generalizations, with the knots being determined empirically. See Hansen and Kooperberg (2002) and the accompanying discussion. The fits by BARS (represented by the thick smooth line) and another popular free-knot spline approach (thin line), logspline (Stone, Hansen, Kooperberg, and Truong 1997), are displayed in Figure 1 and represent marked improvements over the Gaussian kernel density estimate. DiMatteo et al. (2001) showed in several examples that BARS could perform dramatically better than two closely-related methods, which themselves were better in many examples than competitors such as waveletbased methods."
+  }, {
+    "type" : "paragraph",
+    "id" : 356,
+    "page number" : 2,
+    "bounding box" : [ 150.0, 446.476, 522.054, 553.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "BARS has been used in variety of applications in neurophysiology, imaging, genetics, and EEG analysis (see DiMatteo et al. 2001; Kass, Ventura, and Cai 2003; Kass and Wallstrom 2002; Zhang, Roeder, Wallstrom, and Devlin 2003; Wallstrom, Kass, Miller, Cohn, and Fox 2004). Furthermore, preliminary results have indicated that, with reasonable sample sizes, posterior credible regions produced by BARS have very close to the correct frequentist coverage probabilities. For example, simulating from a curve based on the firing-rate function displayed in Figure 1, the coverage of the 95% posterior credible region for location of the peak was 95.9%, with two-digit accuracy (simulation SE = .005, based on 7,600 simulated data sets)."
+  }, {
+    "type" : "paragraph",
+    "id" : 357,
+    "page number" : 2,
+    "bounding box" : [ 150.0, 340.476, 522.049, 435.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The original implementation of DiMatteo et al. (2001) was in S (Insightful Corp. 2003). It was very slow, and also su ered from bugs that caused occasional very poor fits. We wished to improve the implementation. In addition, in order to study frequentist coverage probabilities we had to use a parallel array of multiple processors, and therefore needed self-contained code. This article discusses a relatively fast, self-contained, and, we believe, careful BARS implementation in C with S and R wrappers. We give an overview of BARS in Section 2 and an overview of the code in Section 3. Section 4 describes the S and R wrappers and Section 5 gives pseudo-code for the C implementation."
+  }, {
+    "type" : "heading",
+    "id" : 358,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 90.0, 314.296, 208.704, 327.7 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2. Overview of BARS"
+  }, {
+    "type" : "paragraph",
+    "id" : 359,
+    "page number" : 2,
+    "bounding box" : [ 150.0, 246.912, 522.012, 307.542 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Consider the problem of making inferences about a function f ( t ), where t lies in an interval [ A, B ], based on data y = y 1 , . . . , y n obtained at t = t 1 , . . . , t n , with each Y j assumed to depend probabilistically on f ( t j ) (and, following the usual convention, y j represents the observed value of the random variable Y j ). To solve this problem BARS fits the spline-based generalized nonparametric regression model for data Y j depending on a variable t ,"
+  }, {
+    "type" : "formula",
+    "id" : 360,
+    "page number" : 2,
+    "bounding box" : [ 512.891, 204.986, 522.003, 215.13 ],
+    "content" : "( 1 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 361,
+    "page number" : 2,
+    "bounding box" : [ 150.0, 100.538, 522.052, 183.598 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "with f being a linear combination of splines having unknown sets of knot locations. Model (1) includes a vector of nuisance parameters ζ to indicate generality, though in the Poisson case there are no nuisance parameters. Writing f ( t ) in terms of basis functions b ξ,h ( t ) as f ( t ) = Σ h b ξ,h ( t ) β ξ,h the function evaluations f ( t 1 ), . . . , f ( t n ) may be collected into a vector ( f ( t 1 ), . . . , f ( t n )) ⊺ = X ξ β ξ , where X ξ is the design matrix and β ξ is the coefficient vector. For a given knot set ξ = ( ξ 1 , . . . , ξ k ) model (1) poses a relatively easy estimation problem; for exponentialfamily responses (such as Poisson) it becomes a generalized linear model. Selecting the interval"
+  }, {
+    "type" : "paragraph",
+    "id" : 362,
+    "page number" : 3,
+    "bounding box" : [ 150.0, 588.476, 522.307, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "[ A, B ] can be difficult in some problems due to spline boundary conditions (see Hansen and Kooperberg 2002, and the accompanying discussion), but in many problems such as the neuronal spiking problem, it is rarely an issue because data are often available outside of the time interval of interest, [ A, B ]. The hard part of the problem is determining the knot set ξ , and using the data to do so provides the ability to fit a wide range of functions (as reviewed by Hansen and Kooperberg 2002). BARS is an MCMC-based algorithm that samples from a suitable approximate posterior distribution on the knot set ξ . This, in turn, produces samples from the posterior on the space of splines. In practice, cubic splines and the natural spline basis have been used in most applications. BARS could be viewed as a powerful engine for searching for an “optimal” knot set, but because it generates a posterior on the space of splines it produces an improved spline estimate based on model averaging (e.g., Kass and Raftery 1995) and it also provides uncertainty assessments."
+  }, {
+    "type" : "heading",
+    "id" : 363,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 90.0, 564.413, 183.34, 575.583 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.1. MCMC in BARS"
+  }, {
+    "type" : "paragraph",
+    "id" : 364,
+    "page number" : 3,
+    "bounding box" : [ 150.0, 536.383, 518.01, 559.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Key features of the MCMC implementation of BARS include (i) a reversible-jump chain on ξ after integrating the marginal density"
+  }, {
+    "type" : "formula",
+    "id" : 365,
+    "page number" : 3,
+    "bounding box" : [ 512.891, 507.143, 522.003, 517.287 ],
+    "content" : "( 2 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 3,
+    "bounding box" : [ 150.0, 402.696, 522.033, 485.756 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(where y = ( y 1 , . . . , y n )), the integration being performed exactly for normal data and approximately, by Laplace’s method, otherwise, (ii) continuous proposals for ξ , and (iii) a locality heuristic for the proposals that attempts to place potential new knots near existing knots. For notational convenience here we are supressing the dependence of the knot set ξ on the number of knots k but BARS explores the space of generalized regression models defined by ξ and k and the prior on k can, in some cases, control the algorithm in important ways (see DiMatteo et al. 2001; Hansen and Kooperberg 2002; Kass and Wallstrom 2002)."
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 3,
+    "bounding box" : [ 150.0, 212.696, 522.19, 391.756 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The essential idea of using reversible-jump MCMC to select knots was suggested by Denison, Mallick, and Smith (1998), following the lead of Green (1995), who discussed the special case of change-point problems. However, aspects of BARS outlined in (i)-(iii) distinguish it from (and improve upon) the method of Denison et al. (1998) (see Kass and Wallstrom 2002). The first implementation feature, item (i) above, introduces an analytical step within the MCMC partly to simplify the problem of satisfying detailed balance and partly for the sake of MCMC efficiency (which is generally increased when parameters are integrated; see Liu, Wong, and Kong 1994). In addition, BARS takes advantage of the high accuracy of Laplace’s method in this context. In doing so the “unit-information” prior discussed by Kass and Wasserman (1995) and Pauler (1998) has been used (as π in (2)), and this gives the interpretation that the algorithm is essentially using BIC to define a Markov chain on the knot sets. The importance of performing the integral (2), at least approximately, has been stressed by Kass and Wallstrom (2002). Continuous proposals and the locality heuristic (items (ii) and (iii)) together allow knots to be placed close to one another, which is advantageous when there is a sudden jump in the function."
+  }, {
+    "type" : "paragraph",
+    "id" : 368,
+    "page number" : 3,
+    "bounding box" : [ 150.0, 124.328, 522.044, 196.939 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "For each draw ξ ( g ) from the posterior distribution of ξ , a draw is obtained from the conditional posterior of β ξ , conditionally on ξ ( g ) . The conditional posterior of β ξ often may be assumed normal, but in some cases the normal approximation is not very good. DiMatteo et al. (2001) described an importance reweighting scheme to improve upon the normal approximation. In the code discussed here, if the normal approximation seems poor, we instead use a conditional Metropolis update."
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 685.695, 522.011, 720.794 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "From we obtain fitted values for selected and these, in turn, may be used to produce a draw ϕ ( g ) from the posterior distribution of any characteristic ϕ = ϕ ( f ) (such as the value at which the maximum of f ( t ) occurs). Thus, the key output of BARS is the"
+  }, {
+    "type" : "formula",
+    "id" : 370,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 660.685, 511.828, 671.745 ],
+    "content" : "\\det \\text {of vectors} \\, ^ { f ^ { \\prime } } = \\left ( \\sqrt { g } \\left ( t _ { 1 } \\right ) , f ^ { ( g ) } ( t _ { 2 } ) , \\dots , f ^ { ( g ) } ( t _ { p } ) \\right ) \\text {for MC/CM iterates} \\, g = 1 , \\dots , G , \\text { each}"
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 628.04, 521.709, 651.919 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "being a vector of fits along a grid that suitably covers the interval [ A, B ]. The user may sample from the posterior distribution of any functional ϕ simply by evaluating"
+  }, {
+    "type" : "paragraph",
+    "id" : 372,
+    "level" : "1",
+    "page number" : 4,
+    "bounding box" : [ 198.6, 601.218, 502.18, 612.278 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : ". For instance, a sample from the posterior distribution of the location of the"
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 533.392, 522.256, 592.452 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "maximum of f ( t ) is obtained by finding the location of the maximum of for each g . This latter computation is performed in a suitable post-processing environment such as S or R . MCMC convergence may be assessed by standard methods (Gelman, Carlin, Stern, and Rubin 2004, Section 11.6) though this remains a topic of general research interest (Fan, Brooks, and Gelman 2006)."
+  }, {
+    "type" : "heading",
+    "id" : 374,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 90.0, 509.329, 331.72, 520.499 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2.2. Normal and Poisson implementations of BARS"
+  }, {
+    "type" : "paragraph",
+    "id" : 375,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 457.299, 522.017, 504.359 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We have implemented two versions of BARS. One implementation, barsN uses a normal model in (1). The second, barsP uses a Poisson model. Our choices were based on the general interest in ordinary curve-fitting (the normal case) and our deep and continuing interest in fitting neuronal data (the Poisson case)."
+  }, {
+    "type" : "paragraph",
+    "id" : 376,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 363.299, 522.046, 446.359 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The two implementations differ not only through the change of likelihood, and the resulting Laplace approximation to (2) implemented with BIC for the Poisson case, but also in the selection of starting values for the MCMC algorithm. Starting values are very important: poor choices of initial knot sets result in extremely long burn-in periods to achieve apparent stationarity. In the Poisson case we have taken advantage of the closely-related algorithm logspline (see Hansen and Kooperberg 2002) and have incorporated Charles Kooperberg’s C implementation of it for density estimation."
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 303.729, 522.044, 352.359 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Our ability to use Kooperberg’s implementation for density estimation rests on the duality of fitting Poisson process intensity functions and fitting probability densities: the inhomogeneous Poisson likelihood for an intensity function λ = λ( t ) based on a sequence of event times t 1 , t 2 , . . . , t n in an interval (0, T ] is"
+  }, {
+    "type" : "formula",
+    "id" : 378,
+    "page number" : 4,
+    "bounding box" : [ 261.333, 282.667, 306.333, 294.667 ],
+    "content" : "P ( t _ { 1 } , \\dots , t _ { n } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 379,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 205.804, 496.763, 228.864 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Here the number of events N is a Poisson random variable with expectation . Conditionally on the number of events N = n the probability density becomes"
+  }, {
+    "type" : "formula",
+    "id" : 380,
+    "page number" : 4,
+    "bounding box" : [ 226.976, 173.049, 249.357, 187.618 ],
+    "content" : "P ( t _ { 1 } , \\dots"
+  }, {
+    "type" : "paragraph",
+    "id" : 381,
+    "page number" : 4,
+    "bounding box" : [ 150.0, 130.346, 184.43, 141.406 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "If we set"
+  }, {
+    "type" : "formula",
+    "id" : 382,
+    "page number" : 5,
+    "bounding box" : [ 246.954, 694.037, 316.154, 720.561 ],
+    "content" : "f ( t ) = & \\frac { \\lambda ( t ) } { \\int _ { 0 } ^ { T } \\lambda ( u ) \\, d u }"
+  }, {
+    "type" : "paragraph",
+    "id" : 383,
+    "page number" : 5,
+    "bounding box" : [ 150.0, 619.51, 522.021, 670.508 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "then it becomes clear that estimation of λ( t ) amounts to estimation of the probability density f ( t ), together with estimation of . We use N = n as an estimate of , and apply logspline to estimate f ( t ). logspline returns a set of knots for a cubic spline, and these are used as initial values for BARS in the Poisson case."
+  }, {
+    "type" : "paragraph",
+    "id" : 384,
+    "page number" : 5,
+    "bounding box" : [ 150.0, 513.51, 522.055, 608.57 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "logspline is a carefully-implemented version of forward knot addition followed by backward elimination of knots. In the normal case we have simply begun with a large set of knots (defaulted to equally-spaced in the current version) and then performed backward elimination using BIC, until BIC fails to increase as knots are eliminated. Because logspline is itself an effective algorithm, we believe the Poisson version of our code is likely to be more efficient than the normal version in the sense that short MCMC run lengths can be used with Poisson. We have set the defaults for Poisson at 500 burn-in iterations and 2,000 run iterations, while for the normal these have been set to 5,000 and 20,000."
+  }, {
+    "type" : "paragraph",
+    "id" : 385,
+    "page number" : 5,
+    "bounding box" : [ 150.0, 419.51, 522.032, 502.57 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We describe below the code and wrappers for the Poisson versions. The normal versions omit statements involving logspline , and they also omit the regression step used to approximate the integral in (2). In describing the Poisson regressions we take the Poisson parameter to be μ . Thus, at time points t 1 , . . . , t n we have corresponding mean values μ 1 , . . . , μ n . (In the neuronal setting with m repeated trials, for the histogram bin centered at t j , the expected number of spiking events is μ j = mwλ ( t j ) where w is the bin width in seconds and λ( t ) is in units of spiking events per second.)"
+  }, {
+    "type" : "heading",
+    "id" : 386,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 90.0, 393.33, 202.716, 406.734 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3. Overview of code"
+  }, {
+    "type" : "paragraph",
+    "id" : 387,
+    "page number" : 5,
+    "bounding box" : [ 150.0, 363.516, 522.032, 386.576 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Our normal and Poisson BARS implementations proceed through the following general steps (see Figure 3):"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 5,
+    "bounding box" : [ 168.0, 278.596, 512.126, 357.926 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 344.596, 307.9, 357.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "1. Read user-defined parameters.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 326.596, 480.11, 339.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "2. Read data, and normalize function argument (e.g., time) to interval (0, 1).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 308.596, 266.57, 321.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3. Find initial knot set.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 278.596, 512.126, 303.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "4. Run MCMC. For g = 1, . . . , G b , where G b is the number of burn-in iterations, do steps (a) and (b) only; subsequently do all of (a)-(e):",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 5,
+    "bounding box" : [ 204.0, 164.596, 522.039, 275.184 ],
+    "numbering style" : "english letters in lower case",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 204.0, 260.596, 491.934, 275.184 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "a. Take knot step: addition, deletion, or relocation. This produces ξ ( g ) .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 204.0, 230.596, 515.85, 255.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "b. Evaluate integral in (2), exactly in normal case, approximately in Poisson case.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 204.0, 212.596, 277.393, 227.184 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "c. Generate β ( g ) .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 204.0, 182.596, 522.039, 209.184 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "d. Using β ( g ) , obtain fits and also BIC, loglikelihood, maximum, location of the maximum, and number of interior knots.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 204.0, 164.596, 378.08, 177.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "e. Update modal knot set (if appropriate).",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 5,
+    "bounding box" : [ 168.0, 98.596, 522.046, 159.926 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 134.596, 522.046, 159.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "5. Obtain mean and modal estimates of function values, both on a grid and at all observed argument values, and of the maximum and location of maximum.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 116.596, 476.52, 129.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "6. Obtain confidence intervals for the maximum and location of maximum.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 168.0, 98.596, 254.6, 111.926 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "7. Write the results.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 400,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 708.476, 511.59, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We next elaboarate on each of these steps. At the end of this section we discuss briefly the additional publicly-available subroutines that are used by BARS."
+  }, {
+    "type" : "heading",
+    "id" : 401,
+    "level" : "Doctitle",
+    "page number" : 6,
+    "bounding box" : [ 90.0, 684.413, 227.27, 695.583 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.1. User-defined parameters"
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 656.383, 522.054, 679.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The user may set various parameters by specifying their values in the optional parameters file. The following parameters are allowed."
+  }, {
+    "type" : "paragraph",
+    "id" : 403,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 634.383, 468.94, 645.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "burn-in_iterations: The number of burn-in MCMC iterations. Default value = 0."
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 612.383, 481.72, 623.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sample_iterations: The number of sample MCMC iterations. Default value = 2000."
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 578.383, 505.79, 601.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Use_Logspline: true or false to indicate whether Logspline is used for the initial knots. If Logspline is not used, evenly spaced knots are used. Default value = true."
+  }, {
+    "type" : "paragraph",
+    "id" : 406,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 544.383, 521.08, 567.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "initial_number_of_knots: The number of initial interior knots used. This only has an affect if Logspline is not used. Default value = 3."
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 486.383, 522.058, 533.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "beta_iterations: Number of iterations for the independence chain on beta for a particular set of knots. It only runs a chain if the initial beta variate is suspect. In this case, the independence chain is run starting from the mle and only the last variate is used. If no beta candidates were accepted, no beta is used although the knot set is not rejected. Default value = 3."
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 452.383, 515.23, 475.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "beta_threshhold: Threshhold for determining whether the initial beta variate is suspect. It is suspect if the log acceptance probability is less than the threshhold. Default value = -10.0."
+  }, {
+    "type" : "paragraph",
+    "id" : 409,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 406.383, 522.002, 441.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "prior_form: This is the prior on the number of knots k . Possible values: Uniform, Poisson, User (for user-defined). Default value = Uniform. Uniform refers to a uniform distribution on the interval ( L, U ). For User, see discussion following list of parameters."
+  }, {
+    "type" : "paragraph",
+    "id" : 410,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 384.383, 318.1, 395.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Uniform_parameter_L: Default value = 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 411,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 362.383, 391.51, 373.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Uniform_parameter_U: Default value = MAXKNOTS = 60."
+  }, {
+    "type" : "paragraph",
+    "id" : 412,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 340.383, 345.61, 351.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Poisson_parameter_lambda: Default value = 6.0."
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 317.564, 262.485, 330.244 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "For k   ∼ Uniform( L , . . . , U )"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 168.0, 263.424, 315.769, 312.754 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 168.0, 299.424, 295.24, 312.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• SET prior_form = Uniform",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 168.0, 281.424, 312.996, 294.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• SET Uniform_parameter_L = L",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 168.0, 263.424, 315.769, 276.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• SET Uniform_parameter_U = U",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 417,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 245.525, 229.717, 258.205 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "For k   ∼ Poisson( M )"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 168.0, 209.385, 335.775, 240.715 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 168.0, 227.385, 291.92, 240.715 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• SET prior_form = Poisson",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 168.0, 209.385, 335.775, 222.715 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• SET Poisson_parameter_lambda = M",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 167.486, 522.026, 203.365 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "proposal_parameter_tau: Parameter τ that controls the spread for the knot proposal distribution. A candidate knot is generated by first selecting a current knot t , 0 < t < 1, and then selecting candidate knot ∼ beta( tτ , (1t ) τ ). Default value = 50."
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 122.266, 519.46, 157.326 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "reversible_jump_constant_c: Parameter that controls the probability of birth and death candidates. It may be at most 0.5. Larger values increase the probability for birth death candidates. Smaller values increase the probability for knot relocation. Default value = 0.40."
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 6,
+    "bounding box" : [ 150.0, 100.266, 490.82, 111.326 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "confidence_level: The confidence level for parameter intervals. Default value = 0.95."
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 7,
+    "bounding box" : [ 150.0, 708.476, 517.73, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "number_of_grid_points: The number of evenly spaced points for the grid along which fitted values will be obtained. Default value = 500."
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 7,
+    "bounding box" : [ 150.0, 686.476, 431.41, 697.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "verbose: true or false to indicate verbose output. Default value = false."
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "page number" : 7,
+    "bounding box" : [ 150.0, 614.383, 522.031, 673.583 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "User-defined prior on number of knotsThe prior on the number of knots k is defaulted to a uniform distribution. However, as discussed by DiMatteo et al. (2001), Hansen and Kooperberg (2002), Kass and Wallstrom (2002), this prior can serve usefully to control fitting. A user may specify the prior by specifying its pdf values on a set of positive integers. This is done in a file. For example, the file"
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 7,
+    "bounding box" : [ 168.0, 505.463, 193.0, 608.603 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 6,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 168.0, 595.463, 193.0, 608.603 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "2 0.05",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 168.0, 577.463, 193.0, 590.603 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3 0.15",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 168.0, 559.463, 193.0, 572.603 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "4 0.30",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 168.0, 541.463, 193.0, 554.603 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "5 0.30",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 168.0, 523.463, 193.0, 536.603 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "6 0.10",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 168.0, 505.463, 193.0, 518.603 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "7 0.10",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 7,
+    "bounding box" : [ 150.0, 416.383, 522.029, 499.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "indicates that P( k = 2) = 0.05, . . . , P( k = 7) = 0.10. All zero probabilities that appear between the smallest k having non-zero probability and the largest k having non-zero probability are changed to an ε > 0. The probabilities are then scaled to sum to one. Note that very low prior probabilites may make it difficult for the chain to explore some posterior regions that have high posterior probability. For example, consider P( k = 2) = P( k = 4) = 0.499999, P( k = 3) = 0.000002. The resulting chain would generally get stuck in either the k = 2 region of the posterior, or the k = 4 region of the posterior."
+  }, {
+    "type" : "heading",
+    "id" : 433,
+    "level" : "Doctitle",
+    "page number" : 7,
+    "bounding box" : [ 90.0, 392.32, 157.25, 403.49 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.2. Read data"
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 7,
+    "bounding box" : [ 150.0, 376.29, 457.214, 387.35 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The data take the form of ( x, y ) pairs where x = t in the notation of Section 2."
+  }, {
+    "type" : "heading",
+    "id" : 435,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 90.0, 352.228, 200.59, 363.398 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.3. Find initial knot set"
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 7,
+    "bounding box" : [ 150.0, 298.628, 522.03, 347.258 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "By default, as discussed in Section 2, in the Poisson case the initial knot set is found using logspline. In the normal case evenly-spaced knots are placed and then backward elimination is used. Currently, an option to use evenly-spaced knots is also included for the Poisson case. (A planned improvement is to use every k -th value of t j in the data for both cases.)"
+  }, {
+    "type" : "heading",
+    "id" : 437,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 90.0, 276.135, 162.78, 287.305 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.4. Run MCMC"
+  }, {
+    "type" : "paragraph",
+    "id" : 438,
+    "page number" : 7,
+    "bounding box" : [ 168.0, 104.105, 522.07, 271.165 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "a. It is important to recognize that the Markov chain is on the knot sets ξ (after exact or approximate integration of (2)). As described by DiMatteo et al. (2001), the algorithm randomly selects as a proposal (in the Metropolis sense) either a new knot (a“birth” step), removal of a knot (a“death” step), or a relocation of a knot. Birth and relocation steps begin by randomly selecting a knot, with equal probabilities, from among all knots in the current knot set. If the proposal involves a birth step, then a location for the potential new knot is randomly selected by first randomly selecting an existing knot and then drawing from a beta distribution centered at that knot. This beta distribution is typically quite tight around its center (with spread controlled by an optional user-defined parameter τ ) in order to propose knots that are close to existing knots (as mentioned in Section 2). The same beta distribution is used to propose a knot relocation (the distribution being centered on the knot to be potentially relocated). As usual, the proposal to add, delete, or relocate is evaluated, and possibly accepted, via the Metropolis-Hastings ratio."
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 168.0, 460.084, 522.046, 732.886 ],
+    "numbering style" : "english letters in lower case",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 168.0, 695.556, 522.019, 732.886 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "b. Approximation of the integral in (2), in the Poisson case, is accomplished via BIC. This is obtained from the Poisson regression based on the proposed set of knots. This regression also produces the MLE and observed information matrix, needed in (c).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 168.0, 568.82, 522.046, 690.886 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "c. In the normal case, is produced by a draw from the relevant multivariate normal distribution of the posterior of β ξ conditionally on ξ = ξ ( g ) , obtained analytically. In the Poisson case, for sufficiently large samples, the normal approximation to the posterior based on the MLE and observed information may be used. The algorithm always attempts to draw from this approximating normal distribution. However, if the acceptance ratio is extremely small, a short MCMC run is used instead. We have found this to be quite important because in many of our applications a Poisson mean at some time t may be very small and thus may produce a highly skewed posterior distribution.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 168.0, 520.452, 508.43, 564.15 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "d. After is drawn from the conditional posterior, fits may be obtained. In our applications we are often interested in maxima and their locations. Therefore, by default, we compute these.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 168.0, 460.084, 521.77, 517.039 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "e. If BIC for the newly-obtained, current ξ ( g ) is larger than BIC for all preceding knot sets then the current ξ ( g ) is retained as the current modal knot set. The MLE (in the normal case, the least-squares estimate) is also retained so that modal fits can be produced for the final modal knot set.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 443,
+    "level" : "Doctitle",
+    "page number" : 8,
+    "bounding box" : [ 90.0, 436.941, 190.04, 448.111 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.5. Obtain estimates"
+  }, {
+    "type" : "paragraph",
+    "id" : 444,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 396.911, 522.046, 431.971 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Ater MCMC terminates, the iterations are used to find posterior mean and modal fits. The fits are obtained both at all t j values and on a user-specified grid. In addition, the mean and modal values of the function maximum and its location are computed."
+  }, {
+    "type" : "heading",
+    "id" : 445,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 90.0, 372.849, 231.16, 384.019 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.6. Obtain posterior intervals"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 308.819, 522.056, 367.879 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Based on the set of draws from the posteriors that are used to form estimates, quantiles are computed via partial sorting. By default the .025 and .975 quantiles form the 95% posterior (“credible”) intervals. Currently, confidence intervals are only obtained for the function maximum and location of the maximum. Other intervals may be obtained easily from the draws from the posterior in the output."
+  }, {
+    "type" : "heading",
+    "id" : 447,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 90.0, 284.756, 170.03, 295.926 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.7. Write results"
+  }, {
+    "type" : "heading",
+    "id" : 448,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 150.0, 268.663, 335.62, 279.833 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Results are written into a series of files"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 228.633, 517.99, 263.693 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampled_knots_file: The name of the output file for the sampled knot locations. Format is [iteration number] [number of interior knots] [knots . . .] Note that the number of entries per line will vary. Use none to indicate no file. Default value = none."
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 191.063, 516.595, 215.693 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampled_mu_file: The name of the output file for sampled fitted values ( μ ) at the observed argument points t 1 , . . . , t n . Use none to indicate no file. Default value = samp_mu."
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 156.633, 522.008, 179.693 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampled_mu-grid_file: The name of the output file for sampled fitted values ( μ ) on the evenly spaced grid points. Use none to indicate no file. Default value = none."
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 108.633, 522.036, 143.693 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampled_params_file: The name of the output file for sampled values of various parameters. The parameters given are iteration number, BIC, log likelihood, location of peak, height at peak, number of interior knots. Use none to indicate no file. Default value = samp_params."
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 696.476, 522.016, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "summary_mu_file: The name of the output file for summary fitted values ( μ ) at the observed argument points t 1 , . . . , t n . Three rows are given with the t values, posterior mean, and posterior mode, respectively. Use none to indicate no file. Default value = summ_mu."
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 648.476, 522.016, 683.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "summary_mu-grid_file: The name of the output file for summary fitted values ( μ ) on the evenly spaced grid points. Three rows are given with the t values, posterior mean, and posterior mode, respectively. Use none to indicate no file. Default value = none."
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 564.476, 522.067, 635.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "summary_params_file: The name of the output file for summary values of certain parameters. The first row is for the location of the peak, and the second is for the height, and the third is for the number of interior knots. The first two columns are quantiles giving a confidence interval for the specified confidence level (see parameter confidence_level). The third column is the posterior mean, and the fourth is the posterior mode. Use none to indicate no file. Default value = summ_params."
+  }, {
+    "type" : "heading",
+    "id" : 456,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 90.0, 540.413, 256.15, 551.583 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.8. External subroutines for BARS"
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 488.383, 522.173, 535.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In addition to incorporating the logspline code, we have used routines for manipulating Bsplines written by Bates and Venables (included in the release of R, see R Development Core Team 2006) and for random number generation obtained from Ranlib (Brown and Lovato 1996). These are part of the BARS code."
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 418.383, 522.02, 477.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "BARS also calls linear algebra subroutines from LAPACK and BLAS . These are available at http://www.netlib.org/lapack/ and http://www.netlib.org/blas/, respectively. They must be installed prior to compiling BARS. Information about these packages may be found in Anderson, Bai, Bischof, Blackford, Demmel, Dongarra, Du Croz, Greenbaum, Hammarling, McKenney, and Sorensen (1999); Dongarra, Croz, Hammarling, and Du (1990b,a)."
+  }, {
+    "type" : "heading",
+    "id" : 459,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 90.0, 392.203, 204.708, 405.607 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "4. R and S wrappers"
+  }, {
+    "type" : "paragraph",
+    "id" : 460,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 350.389, 522.038, 385.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Prior to using this wrapper, one must build a chapter using the file barsP.c. The shared library must be made available with the dyn.open(“S.so”) command. Also, the barsP.c program must be properly compiled, with the compiled program saved as barsP.out."
+  }, {
+    "type" : "paragraph",
+    "id" : 461,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 316.389, 516.61, 339.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Note that due to the large amount of output generated by the program, it is desirable to save the results of the program into a variable, for example:out_barsP.fun(x, y, .....)"
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 282.389, 522.043, 305.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The wrapper performs the operation by writing the data and settings into the files bars_points and bars_params, respectively."
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 260.389, 496.94, 271.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Following is the complete function call, including a description of its input and output."
+  }, {
+    "type" : "paragraph",
+    "id" : 464,
+    "page number" : 9,
+    "bounding box" : [ 150.0, 226.389, 511.08, 249.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "barsP.fun(x, y, initial, iknots, prior, priorparam, burnin, sims, tau, c, fits, peak, conf, trials, bins)"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "level" : "4",
+    "page number" : 9,
+    "bounding box" : [ 168.0, 208.389, 246.27, 219.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• Required Input"
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "level" : "5",
+    "page number" : 9,
+    "bounding box" : [ 204.0, 190.389, 260.32, 201.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Variables"
+  }, {
+    "type" : "list",
+    "level" : "6",
+    "page number" : 9,
+    "bounding box" : [ 204.0, 153.469, 454.22, 184.609 ],
+    "numbering style" : "english letters in lower case",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 9,
+      "bounding box" : [ 204.0, 171.469, 437.83, 184.609 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "x: a vector of the independent variable, in increasing order",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 9,
+      "bounding box" : [ 204.0, 153.469, 454.22, 166.609 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "y: a vector of the dependent variable, in the form of count data",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "level" : "4",
+    "page number" : 9,
+    "bounding box" : [ 168.0, 136.389, 244.61, 147.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• Optional Input"
+  }, {
+    "type" : "paragraph",
+    "id" : 470,
+    "level" : "6",
+    "page number" : 9,
+    "bounding box" : [ 204.0, 118.389, 303.12, 129.449 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Initial knots settings"
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 708.476, 521.18, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "initial: logspline, or even or equal for evenly spaced initial knots. Default value = logspline."
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 678.476, 513.43, 701.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "iknots: the initial number of knots for the spline if using evenly spaced knots. Default value = 3."
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "level" : "7",
+    "page number" : 10,
+    "bounding box" : [ 204.0, 660.476, 327.0, 671.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Settings on prior for knots"
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 630.476, 522.036, 653.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "prior: the type of prior being used for the knots. The only acceptable answers are Poisson, uniform, and user. Default value = uniform."
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 612.476, 359.23, 623.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "priorparam: the parameter for the prior"
+  }, {
+    "type" : "list",
+    "level" : "8",
+    "page number" : 10,
+    "bounding box" : [ 240.0, 509.556, 522.029, 606.696 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 240.0, 593.556, 435.62, 606.696 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "* if using Poisson, the choice for lambda = mean",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 240.0, 551.556, 516.92, 588.696 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "* if using uniform, a vector of length 2 which includes the minimum number of knots followed by the maximum number of knots. Default value = c(1,60).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 240.0, 509.556, 522.029, 546.696 ],
+      "font" : "TimesNewRomanPSMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "* if using user, a matrix with 2 columns. The first column should be the number of knots and the second column should be the probability of obtaining this number of knots.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "level" : "9",
+    "page number" : 10,
+    "bounding box" : [ 204.0, 492.476, 286.18, 503.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "MCMC settings"
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 462.476, 517.93, 485.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "burnin: the desired length of the burn-in for the MCMC chain. Default value = 200."
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 432.476, 517.67, 455.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sims: the number of simulations desired for the MCMC chain. Default value = 2000."
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 402.476, 522.03, 425.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "tau: parameter τ that controls the spread for the knot proposal distribution. Default value = 50.0."
+  }, {
+    "type" : "paragraph",
+    "id" : 483,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 372.476, 520.05, 395.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "c: parameter that controls the probability of birth and death candidates. Default value = 0.4."
+  }, {
+    "type" : "paragraph",
+    "id" : 484,
+    "level" : "10",
+    "page number" : 10,
+    "bounding box" : [ 204.0, 354.476, 282.84, 365.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Output settings"
+  }, {
+    "type" : "paragraph",
+    "id" : 485,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 300.476, 522.048, 347.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "fits: if T, the program will return the fitted values for each x-value for each run of the simulation. Default value = T. Please note that if the number of data points and/or simulations is large, there may be a lengthy delay as the necessary data is read."
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 270.476, 522.048, 293.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peak: if T, the program will return the location and height of the highest point on the fitted curve. Default value = F."
+  }, {
+    "type" : "paragraph",
+    "id" : 487,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 240.476, 522.044, 263.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "conf: for use with peak. Sets the probability for the credible intervals for the location and height of the peak. Default value = 0.95 for 95% credible intervals."
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "level" : "10",
+    "page number" : 10,
+    "bounding box" : [ 204.0, 222.476, 277.83, 233.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Other settings"
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 204.476, 516.24, 215.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "trials: the number of trials that are concatenated in the data. Default value = 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 174.476, 522.024, 197.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "bins: the number of bins the x -axis is divided into used to handle unbinned data and calculate posterior modes. Default value = 150."
+  }, {
+    "type" : "heading",
+    "id" : 491,
+    "level" : "Doctitle",
+    "page number" : 10,
+    "bounding box" : [ 168.0, 156.476, 213.78, 167.536 ],
+    "heading level" : 1,
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• Output"
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 10,
+    "bounding box" : [ 204.0, 120.476, 470.07, 149.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "postmeans: vector of the posterior means evaluated at the x values postmodes: vector of the posterior modes evaluated at the x values"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 708.476, 517.39, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sims: vector of each simulation number, beginning at burnin + 1 and ending at burnin + sims"
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 678.476, 522.038, 701.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "no.knots: vector of the number of knots used at each iteration, excluding burning iterations"
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 612.476, 521.76, 671.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampknots: matrix containing the position of the knots at each iteration. Length of the matrix is equal to the number of iterations, excluding burnin iterations, with the width of the matrix equal to the maximum number of knots at any iteration. NAs are used to fill in the matrix at iteration numbers that have less than the maximum number of knots."
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 582.476, 508.12, 605.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampBICs: vector of the calculated BIC at each iteration, excluding burning iterations"
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 552.476, 512.29, 575.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampllikes: vector of the calculated loglikelihood at each iteration, excluding burning iterations"
+  }, {
+    "type" : "heading",
+    "id" : 498,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 168.0, 534.476, 251.28, 545.536 ],
+    "heading level" : 1,
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• Optional Output"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "level" : "10",
+    "page number" : 11,
+    "bounding box" : [ 204.0, 516.476, 325.7, 527.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Optional output if fits = T"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 474.476, 521.47, 509.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sampfits: matrix of fits for each iteration, excluding burning iterations, with the rows of the matrix corresponding to the individual iteration. The columns represent the fits at each value of x."
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "level" : "10",
+    "page number" : 11,
+    "bounding box" : [ 204.0, 456.476, 331.8, 467.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Optional output if peak = T"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 426.476, 515.604, 449.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "samplpeaks: vector of the x location of the highest point in the fitted curve for each iteration, excluding burning iterations"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 396.476, 522.034, 419.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "samphpeaks: vector of the y value (height) of the highest point in the fitted curve for each iteration, excluding burning iterations"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 366.476, 516.397, 389.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peaklocationquantile: a credible interval for the x location of the highest peak; width of the interval is dependent upon the setting chosen for conf"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 348.476, 441.703, 359.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peaklocationmean: the mean x location for the highest peak"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 330.476, 442.826, 341.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peaklocationmode: the mode x location for the highest peak"
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 300.476, 522.021, 323.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peakheightquantile: a credible interval for the y value (height) of the highest peak; width of the interval is dependent upon the setting chosen for conf"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 282.476, 454.756, 293.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peakheightmean: the mean y value (height) of the highest peak"
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 11,
+    "bounding box" : [ 204.0, 264.476, 455.879, 275.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "peakheightmode: the mode y value (height) of the highest peak"
+  }, {
+    "type" : "heading",
+    "id" : 510,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 90.0, 242.296, 178.692, 255.7 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5. Pseudo-code"
+  }, {
+    "type" : "heading",
+    "id" : 511,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 90.0, 224.419, 297.25, 235.589 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.1. Function: BARS for Poisson count data"
+  }, {
+    "type" : "list",
+    "level" : "8",
+    "page number" : 11,
+    "bounding box" : [ 168.0, 111.469, 522.34, 220.799 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 11,
+      "bounding box" : [ 168.0, 171.469, 522.04, 220.799 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Read data: For Poisson count data, the data must take the form of pairs of bin midpoints and Poisson counts. The number of replicated data sets is also required. In neuron firing examples, this is the number of trials. In many other examples, the number of replicated data sets may be set to one.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 11,
+      "bounding box" : [ 168.0, 129.469, 522.052, 166.799 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Read user parameters: These include parameters that specify the form of the prior, prior parameters, mcmc parameters, and parameters that specify output variables and the destination files.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 11,
+      "bounding box" : [ 168.0, 111.469, 522.34, 124.799 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Normalize data: The bin midpoints are normalized to lie between 0 and 1, inclusive.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 677,
+    "page number" : 12,
+    "bounding box" : [ 168.0, 684.476, 367.63, 731.536 ],
+    "kids" : [ {
+      "type" : "list",
+      "id" : 679,
+      "page number" : 12,
+      "bounding box" : [ 168.0, 683.556, 367.63, 732.886 ],
+      "numbering style" : "unordered",
+      "number of list items" : 3,
+      "list items" : [ {
+        "type" : "list item",
+        "page number" : 12,
+        "bounding box" : [ 168.0, 719.556, 349.05, 732.886 ],
+        "font" : "TimesNewRomanPS-BoldMT",
+        "font size" : 10.0,
+        "text color" : "[0.0, 0.0, 0.0]",
+        "content" : "• MCMC: See function description below.",
+        "kids" : [ ]
+      }, {
+        "type" : "list item",
+        "page number" : 12,
+        "bounding box" : [ 168.0, 701.556, 367.63, 714.886 ],
+        "font" : "TimesNewRomanPS-BoldMT",
+        "font size" : 10.0,
+        "text color" : "[0.0, 0.0, 0.0]",
+        "content" : "• Write summary output of desired parameters.",
+        "kids" : [ ]
+      }, {
+        "type" : "list item",
+        "page number" : 12,
+        "bounding box" : [ 168.0, 683.556, 209.88, 696.886 ],
+        "font" : "TimesNewRomanPS-BoldMT",
+        "font size" : 10.0,
+        "text color" : "[0.0, 0.0, 0.0]",
+        "content" : "• return",
+        "kids" : [ ]
+      } ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 518,
+    "level" : "Doctitle",
+    "page number" : 12,
+    "bounding box" : [ 90.0, 660.413, 188.89, 671.583 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.2. Function: MCMC"
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 12,
+    "bounding box" : [ 150.0, 632.383, 502.301, 655.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In the following, a model M * contains information for an individual MCMC iteration. In particular, it contains"
+  }, {
+    "type" : "list",
+    "level" : "8",
+    "page number" : 12,
+    "bounding box" : [ 168.0, 450.038, 522.032, 626.793 ],
+    "numbering style" : "unordered",
+    "number of list items" : 8,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 612.077, 311.648, 626.793 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "k * , the number of interior knots",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 594.077, 292.052, 608.793 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "ξ * , the set of interior knots",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 553.463, 522.032, 590.793 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "X D ,* , the design basis, and X G ,* , the grid basis. The design basis is based on the input bin midpoints. The grid basis is based upon a grid of evenly spaced points, the number of which is user defined.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 523.463, 519.58, 548.793 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "statistical model fitting information, including parameter estimates, error estimates, and failure to fit.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 504.038, 273.127, 518.793 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "β *   ∼ π ( β | k * , ξ * , Data )",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 486.038, 257.901, 500.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "μ D ,* = exp ( X D β * )",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 468.038, 257.901, 482.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "μ G,* = exp ( X G β * )",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 450.038, 482.746, 464.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "The BIC and log likelihood for the full model with parameters ( k * , ξ * , β * ).",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "9",
+    "page number" : 12,
+    "bounding box" : [ 168.0, 373.424, 515.014, 446.754 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 432.038, 350.278, 446.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Declare models M curr , M cand , and M temp .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 403.424, 515.014, 428.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Set initial knots in M curr . The initial knots may be user defined, equally spaced, or obtained via logspline.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 373.424, 514.787, 398.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Calculate birth and death probabilities for each possible value of k , using the userdefined prior, as follows:",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 531,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 356.344, 296.647, 367.404 ],
+    "content" : "\\text {if } ( k > = \\max \\text {KNOTS} )"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 338.344, 286.032, 349.404 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "birth probability = 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 320.344, 219.55, 331.404 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "else"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 302.344, 373.321, 313.404 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "birth probability = c min (1, π ( k + 1)/ π ( k ))"
+  }, {
+    "type" : "formula",
+    "id" : 535,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 284.344, 244.987, 295.404 ],
+    "content" : "{ \\mathbf i } ( k < = 1 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 266.344, 288.8, 277.404 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "death probability = 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 537,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 248.344, 219.55, 259.404 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "else"
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 230.344, 373.78, 241.404 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "death probability = c min (1, π ( k 1)/ π ( k ))"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 212.344, 244.0, 223.404 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "comment:"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 12,
+    "bounding box" : [ 204.0, 194.344, 501.822, 205.404 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "probability of knot relocation is 1 ( birth probability + death probability )."
+  }, {
+    "type" : "list",
+    "level" : "9",
+    "page number" : 12,
+    "bounding box" : [ 168.0, 157.424, 401.415, 189.883 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 175.424, 401.415, 189.883 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Define μ (0) , used to start each iterative fitting process.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 12,
+      "bounding box" : [ 168.0, 157.424, 261.259, 170.754 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• for i ← 0 to ( n 1)",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 12,
+    "bounding box" : [ 168.0, 140.344, 171.5, 151.404 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "·"
+  }, {
+    "type" : "formula",
+    "id" : 544,
+    "page number" : 12,
+    "bounding box" : [ 264.672, 125.812, 335.022, 140.818 ],
+    "content" : "\\mu _ { i } ^ { ( 0 ) } = \\max \\left ( 0 . 1 , y _ { i } \\right )"
+  }, {
+    "type" : "header",
+    "id" : 678,
+    "page number" : 13,
+    "bounding box" : [ 168.0, 682.906, 486.969, 731.536 ],
+    "kids" : [ {
+      "type" : "list",
+      "id" : 680,
+      "page number" : 13,
+      "bounding box" : [ 168.0, 682.17, 486.969, 732.886 ],
+      "numbering style" : "unordered",
+      "number of list items" : 3,
+      "list items" : [ {
+        "type" : "list item",
+        "page number" : 13,
+        "bounding box" : [ 168.0, 718.17, 411.573, 732.886 ],
+        "font" : "TimesNewRomanPS-BoldMT",
+        "font size" : 10.0,
+        "text color" : "[0.0, 0.0, 0.0]",
+        "content" : "• Form the natural spline design basis for M curr → X D,curr",
+        "kids" : [ ]
+      }, {
+        "type" : "list item",
+        "page number" : 13,
+        "bounding box" : [ 168.0, 700.17, 486.969, 714.886 ],
+        "font" : "TimesNewRomanPS-BoldMT",
+        "font size" : 10.0,
+        "text color" : "[0.0, 0.0, 0.0]",
+        "content" : "• Fit the Poisson regression model for M curr . See function description below.",
+        "kids" : [ ]
+      }, {
+        "type" : "list item",
+        "page number" : 13,
+        "bounding box" : [ 168.0, 682.17, 270.863, 696.886 ],
+        "font" : "TimesNewRomanPS-BoldMT",
+        "font size" : 10.0,
+        "text color" : "[0.0, 0.0, 0.0]",
+        "content" : "• if (fit of M curr failed)",
+        "kids" : [ ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 13,
+    "bounding box" : [ 150.0, 602.538, 522.053, 677.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Remove knots through backwards elimination until a subset is found such that 1) the model fit does not fail, 2) the model has the greatest likelihood among the models with the same number of knots in which the fit does not fail, and 3) the knot subset has positive prior probability. If all models with a given number of knots fail to be fit, the model in which has the smallest condition number is selected, and the procedure continues by trying to remove an additional knot."
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 13,
+    "bounding box" : [ 150.0, 556.538, 522.054, 591.598 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "If backwards elimination fails to find a valid subset, the procedure tries to fit a model with the minimum number of knots that have positive prior probability, with the knots equally spaced. If the model fails to be fit, exit ."
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 13,
+    "bounding box" : [ 150.0, 532.968, 279.886, 545.598 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Set M curr to the resulting model."
+  }, {
+    "type" : "formula",
+    "id" : 551,
+    "page number" : 13,
+    "bounding box" : [ 150.0, 114.734, 466.2, 523.598 ],
+    "content" : "< If backwards elimination fails to find a valid subset, the procedure tries to fit a model with the minimum number of knots that have positive prior probability, with the knots equally spaced.\n   If the model fails to be fit, exit.\n\n   Set M curr to the resulting model.\n\n   maxBIC <- 0\n\n   total iterations -- burnin iterations + sampling iterations\n\n   for i <- 0 to total iterations - 1\n\n   u ~ U(0, 1)\n\n   if (u < birth probability)\n\n   s ~ Discrete Uniform(ccurr)\n\n   t ~ beta(a = (st, \\beta = (1 - s).t)\n\n   \\cand <- (ccurr U  {t}) \\ {s}\n\n   kand <- kcurr + 1\n\n   Form the natural spline design basis for M cand -> XD,cand\n\n   Fit the Poisson regression model for M cand:\n\n   if (fit of M cand failed) accept probability = 0\n\n   else\n\n   dens <- q(Mcand|Mcurr)kcurr = \\r=ccurrbeta(t|a = rt, \\beta = (1 - r).t)\n\n   accept probability = exp(l(cand - \\ccurr + log(kcurr) - log(dens) - 0.5 log(n)))\n\n   comment::*l in the above equation is the profile likelihood, \\* = supp(c(*, k*, \\beta)\n\n   else if (1 - u < death probability)\n\n   t ~ Discrete Uniform(ccurr)\n\n   \\cand <- \\ccurr \\ {t}\n\n\n\n          J Stat Software. Author manuscript; available in PMC 2009 September 22.\n\n"
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 13,
+    "bounding box" : [ 466.2, 182.382, 469.53, 193.442 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "formula",
+    "id" : 553,
+    "page number" : 14,
+    "bounding box" : [ 150.0, 718.906, 216.535, 731.536 ],
+    "content" : "k _ { c a n d } \\leftarrow k _ { c u r r } - 1"
+  }, {
+    "type" : "formula",
+    "id" : 554,
+    "page number" : 14,
+    "bounding box" : [ 150.0, 102.75, 477.077, 709.536 ],
+    "content" : "< _ { X } \\intertext { s t r o m et a l . } k c a n d \\leftarrow k u r - 1 \\quad & \\quad \\text {for } \\ m a t h s c r { I } \\text { and for } M c a n d \\rightarrow X d . c a n d \\\\ \\text { Form the natural spline design basis for } & \\quad \\text {for } M o i s p l a n g r e s s \\\\ \\text { Fit the Poisson regression model for } & \\quad \\text {for } M c a n d \\rightarrow X d . \\text { See function description below.} \\\\ \\text { if } & \\quad \\text {for } M c a n d \\left ( \\text { accepted probability } = 0 \\\\ \\text { else } & \\quad \\text {for } M c a n d \\right ) \\leqslant \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2 } \\exp ( \\frac { 1 } { 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 14,
+    "bounding box" : [ 477.077, 102.75, 496.684, 115.38 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : ", curr )."
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 14,
+    "bounding box" : [ 164.793, 69.255, 393.226, 78.103 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "J Stat Softw . Author manuscript; available in PMC 2009 September 22."
+  }, {
+    "type" : "formula",
+    "id" : 557,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 718.906, 259.094, 731.536 ],
+    "content" : "\\mu _ { D , c u r r } \\leftarrow \\exp ( X _ { D , c u r r } \\beta _ { c u r r } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 696.906, 365.573, 709.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Form the natural spline grid basis for M curr → X G,curr"
+  }, {
+    "type" : "formula",
+    "id" : 559,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 674.906, 259.094, 687.536 ],
+    "content" : "\\mu _ { G , c u r r } \\leftarrow \\exp ( X _ { G , c u r r } \\beta _ { c u r r } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 642.476, 522.048, 665.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "comment: Find mode and the mean function evaluated at the mode. In neuron firing examples, it produces the location of the peak firing rate, and the peak firing rate."
+  }, {
+    "type" : "paragraph",
+    "id" : 561,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 618.906, 323.286, 631.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Use μ G, curr to form an interpolating spline."
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 596.906, 390.885, 609.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Locate mode of interpolating spline → ( x mode , μ curr ( x mode ))"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 576.476, 286.07, 587.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Write desired parameters to a file."
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 554.476, 301.62, 565.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Store desired parameters for later use."
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 532.476, 374.669, 543.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "comment: update posterior modal values, if appropriate"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 508.906, 352.884, 521.536 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "if (( BIC curr > maxBIC ) or ( i == burnin iterations ))"
+  }, {
+    "type" : "formula",
+    "id" : 567,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 486.906, 227.653, 499.536 ],
+    "content" : "\\max { B I C } \\leftarrow { B I C } _ { c u r r }"
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 15,
+    "bounding box" : [ 150.0, 466.476, 332.44, 477.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "parameter modes ← current parameter values"
+  }, {
+    "type" : "list",
+    "level" : "9",
+    "page number" : 15,
+    "bounding box" : [ 168.0, 411.556, 493.43, 460.886 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 447.556, 493.43, 460.886 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Use partial sorting to form confidence intervals of desired stored parameters.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 429.556, 369.84, 442.886 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Calculate means of desired stored parameters.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 411.556, 209.88, 424.886 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• return",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 572,
+    "level" : "Doctitle",
+    "page number" : 15,
+    "bounding box" : [ 90.0, 388.413, 297.83, 399.583 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.3. Function: Fit Poisson regression model"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "level" : "4",
+    "page number" : 15,
+    "bounding box" : [ 168.0, 372.383, 212.12, 383.443 ],
+    "font" : "TimesNewRomanPS-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• input:"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 354.383, 304.907, 365.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "X , an n × p design matrix"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 336.383, 323.408, 347.443 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "y , a vector of observed counts"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 318.383, 326.658, 330.995 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "μ (0) , a vector of starting values"
+  }, {
+    "type" : "heading",
+    "id" : 577,
+    "level" : "Subtitle",
+    "page number" : 15,
+    "bounding box" : [ 168.0, 300.383, 217.67, 311.443 ],
+    "heading level" : 1,
+    "font" : "TimesNewRomanPS-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• output:"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 282.344, 301.46, 296.044 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "β ̂ , estimated coefficients"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 252.305, 510.16, 275.404 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "U , a p × p upper triangular matrix that contains information on the estimated covariance matrix of β ̂"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 234.305, 360.083, 245.365 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "error , a boolean indicator of fit failure."
+  }, {
+    "type" : "list",
+    "level" : "7",
+    "page number" : 15,
+    "bounding box" : [ 168.0, 143.385, 241.553, 229.844 ],
+    "numbering style" : "unordered",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 215.385, 220.367, 229.844 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• μ ← μ (0)",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 197.385, 208.778, 210.715 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• j ← 0",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 177.999, 214.165, 192.715 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• ℓ 0 ← 0",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 161.385, 241.553, 174.715 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• error ← false",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 168.0, 143.385, 213.21, 156.715 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• repeat",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 586,
+    "page number" : 15,
+    "bounding box" : [ 204.0, 108.305, 288.575, 137.365 ],
+    "content" : "j & \\leftarrow j + 1 \\\\ z & \\leftarrow \\log \\mu + ( y - \\mu ) / \\mu ."
+  }, {
+    "type" : "formula",
+    "id" : 587,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 720.476, 261.51, 731.536 ],
+    "content" : "W \\leftarrow D i a g \\left ( \\mu \\right )"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 702.476, 432.271, 713.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "H ← WX . comment: Use known diagonal structure of W"
+  }, {
+    "type" : "formula",
+    "id" : 589,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 684.476, 240.833, 697.759 ],
+    "content" : "J \\leftarrow H ^ { \\top } X"
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 654.476, 515.027, 679.759 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "U ← Upper triangular matrix from the Cholesky decomposition of J = U ⊺ U if Cholesky decomposition fails"
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 636.476, 257.883, 647.536 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "error ← true"
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 618.476, 251.204, 629.536 ],
+    "font" : "TimesNewRomanPS-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "exit ← true"
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 600.476, 219.55, 611.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "else"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 570.437, 522.005, 596.137 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "β ̂ ← Solution to Jβ = H ⊺ z . comment: Use Cholesky decomposition of J if unable to solve equation"
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 552.437, 257.883, 563.497 ],
+    "font" : "TimesNewRomanPS-ItalicMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "error ← true"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 534.437, 251.204, 545.497 ],
+    "font" : "TimesNewRomanPS-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "exit ← true"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 516.437, 219.55, 527.497 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "else"
+  }, {
+    "type" : "formula",
+    "id" : 598,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 498.398, 238.219, 512.098 ],
+    "content" : "\\eta \\leftarrow X \\beta"
+  }, {
+    "type" : "formula",
+    "id" : 599,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 480.398, 250.079, 491.458 ],
+    "content" : "\\mu \\leftarrow \\exp ( \\eta )"
+  }, {
+    "type" : "formula",
+    "id" : 600,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 460.828, 272.008, 473.458 ],
+    "content" : "\\ell _ { j } \\leftarrow \\Sigma _ { i } \\left ( y _ { i } \\eta _ { i } - \\mu _ { i } \\right )"
+  }, {
+    "type" : "formula",
+    "id" : 601,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 442.828, 391.233, 455.458 ],
+    "content" : "e x i t \\leftarrow ( ( ( | \\ell _ { j } - \\ell _ { j - 1 } | < \\varepsilon ) \\text { and } ( j > 1 ) ) \\text { or } ( j > 2 0 ) )"
+  }, {
+    "type" : "list",
+    "level" : "7",
+    "page number" : 16,
+    "bounding box" : [ 168.0, 407.478, 229.603, 438.808 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 168.0, 425.478, 229.603, 438.808 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• until ( exit )",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 168.0, 407.478, 209.88, 420.808 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• return",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 604,
+    "level" : "Doctitle",
+    "page number" : 16,
+    "bounding box" : [ 90.0, 384.335, 326.17, 395.505 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5.4. Function: Generate random coefficient vector"
+  }, {
+    "type" : "list",
+    "level" : "7",
+    "page number" : 16,
+    "bounding box" : [ 168.0, 247.346, 522.017, 381.982 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 168.0, 295.346, 522.017, 381.982 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.515,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Generates β posterior distribution π ( β | k , ξ , Data ) or from the N ( β ̂ , ( X ⊺ WX ) -1 ) approximation, as follows. One β is generated from the normal approximation. If β the appears to not be an outlier under the posterior distribution, the β variate is accepted and returned. If the β does appear to be an outlier, the routine takes a user-defined number of Metropolis-Hastings steps and returns the last sampled β . The β is identified as an outlier if its log Metropolis-Hastings acceptance probability is below a userdefined threshhold.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 168.0, 265.346, 504.585, 290.676 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• Let π * denote the density for the normal approximation. Note that the Cholesky decomposition of X ⊺ WX is already available from the last fitting iteration.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 168.0, 247.346, 212.12, 260.676 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• input:",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 230.227, 270.616, 243.927 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "β ̂ , the MLE of β ."
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 200.188, 510.16, 223.287 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "U , a p × p upper triangular matrix that contains information on the estimated covariance matrix of β ̂ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 170.188, 499.792, 193.248 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "MHI , the number of Metropolis-Hastings iterations. This is a user-defined parameter."
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "page number" : 16,
+    "bounding box" : [ 204.0, 116.188, 522.319, 163.248 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "MHT , the threshhold used to determine whether (a) the initial β variate from the normal approximation should be kept as the resulting variate, or (b) MHI Metropolis-Hastings iterations are used. MHT is compared to the log of the acceptance probability. MHT is a user-defined parameter."
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "level" : "4",
+    "page number" : 16,
+    "bounding box" : [ 168.0, 98.188, 217.67, 109.248 ],
+    "font" : "TimesNewRomanPS-BoldMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "• output:"
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 720.476, 346.193, 731.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "error , a boolean indicator of failure"
+  }, {
+    "type" : "paragraph",
+    "id" : 614,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 702.476, 397.545, 713.536 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "β , the random variate. Only defined if not   error ."
+  }, {
+    "type" : "list",
+    "level" : "6",
+    "page number" : 17,
+    "bounding box" : [ 168.0, 665.517, 264.589, 698.153 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 17,
+      "bounding box" : [ 168.0, 682.131, 227.912, 698.153 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.515,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• β curr ← β ̂",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 17,
+      "bounding box" : [ 168.0, 665.517, 264.589, 678.847 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• for i ← 0 to MHI 1",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 617,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 466.789, 352.312, 659.497 ],
+    "content" : "\\beta _ { c u r r } & \\leftarrow \\beta \\\\ \\text {for} & i \\leftarrow 0 \\, t o M H I - 1 \\\\ & \\quad i t e r \\leftarrow 0 , \\, e r r o \\leftarrow \\text {false, exit} \\leftarrow \\text {false} \\\\ & \\quad \\text {repeat} \\\\ & \\quad i t e r \\leftarrow \\text {iter} + 1 \\\\ & \\quad z \\sim N ( 0 , I ) \\\\ & \\quad A \\leftarrow \\text {Solution to U} ^ { T } A = z . \\\\ & \\quad \\text {error} \\leftarrow ( \\text {unable to solve equation} ) \\\\ & \\quad \\text {exit} \\leftarrow ( \\text {not error} ) \\, \\text {or} \\, ( \\text {iter} \\geq 2 0 ) ) \\\\ & \\quad \\text {until} \\left ( \\text {exit} \\right ) \\\\ & \\quad \\text {if} \\left ( \\text {error} \\right ) \\text { exit} \\\\ & \\quad \\text {else} \\\\ & \\quad \\beta _ { c a n d } \\leftarrow + \\beta + A \\\\ & \\quad \\\\ r & \\leftarrow \\log \\left ( \\frac { L \\left ( k , \\xi , \\beta _ { c a n d } \\right ) } { L \\left ( k , \\xi , \\beta _ { c a n d } \\right ) } \\frac { \\pi \\left ( \\beta _ { c a n d } | k , \\xi \\right ) } { \\pi \\left ( \\beta _ { c u r } | k , \\xi \\right ) } \\frac { \\pi ^ { * } \\left ( \\beta _ { c u r } | k \\right ) } { \\pi ^ { * } \\left ( \\beta _ { c u r } | k \\right ) }"
+  }, {
+    "type" : "formula",
+    "id" : 618,
+    "page number" : 17,
+    "bounding box" : [ 198.948, 425.588, 418.1, 450.247 ],
+    "content" : "r \\leftarrow \\log \\left ( \\frac { L ( k , \\xi , \\beta _ { c o n d } ) } { L ( k , \\xi , \\beta _ { c u r r } ) } \\frac { \\pi ( \\beta _ { c o n d } | k , \\xi ) } { \\pi ( \\beta _ { c u r r } | k , \\xi ) } \\frac { \\pi ^ { * } ( \\beta _ { c u r r } | k , \\xi , D a t a ) } { \\pi ^ { * } ( \\beta _ { c o n d } | k , \\xi , D a t a ) } \\right )"
+  }, {
+    "type" : "formula",
+    "id" : 619,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 395.113, 307.774, 406.173 ],
+    "content" : "\\text {if} \\left ( ( i = 0 ) \\text { and } ( r > M H T ) \\right )"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 377.113, 517.289, 388.173 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "comment: Accept the initial variate. No additional Metropolis-Hastings steps."
+  }, {
+    "type" : "formula",
+    "id" : 621,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 269.113, 252.882, 370.173 ],
+    "content" : "\\begin{array} { l } { { c o m m e n t \\colon A c c } } \\\\ { i \\leftarrow M H I } \\\\ { u \\leftarrow r - 1 . 0 } \\\\ { e l s e } \\\\ { u \\leftarrow U ( 0 , 1 ) } \\\\ { u \\leftarrow \\log ( u ) } \\\\ { i f ( u < r ) } \\\\ { c o m m e n t \\colon A c c } \\end{array}"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 251.113, 335.619, 262.173 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "comment: Accept the candidate β"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 17,
+    "bounding box" : [ 335.602, 251.113, 343.082, 262.173 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "β ."
+  }, {
+    "type" : "formula",
+    "id" : 624,
+    "page number" : 17,
+    "bounding box" : [ 204.0, 231.543, 258.29, 244.173 ],
+    "content" : "\\beta _ { c u r r } \\gets \\beta _ { c a n d }"
+  }, {
+    "type" : "list",
+    "level" : "6",
+    "page number" : 17,
+    "bounding box" : [ 168.0, 196.193, 239.475, 227.523 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 17,
+      "bounding box" : [ 168.0, 212.807, 239.475, 227.523 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• beta ← β curr .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 17,
+      "bounding box" : [ 168.0, 196.193, 209.88, 209.523 ],
+      "font" : "TimesNewRomanPS-BoldMT",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "• return",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 627,
+    "level" : "Doctitle",
+    "page number" : 17,
+    "bounding box" : [ 90.0, 167.933, 196.02, 181.337 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Acknowledgments"
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 17,
+    "bounding box" : [ 150.0, 141.974, 522.019, 160.322 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Support for the current work was provided by NIMH Program Project MH56193. The authors are grateful for helpful comments from the referees."
+  }, {
+    "type" : "heading",
+    "id" : 629,
+    "level" : "Subtitle",
+    "page number" : 18,
+    "bounding box" : [ 90.0, 716.296, 154.692, 729.7 ],
+    "heading level" : 1,
+    "font" : "Arial-BoldMT",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "References"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 677.197, 522.247, 709.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Anderson, E.; Bai, Z.; Bischof, C.; Blackford, S.; Demmel, J.; Dongarra, J.; Du Croz, J.; Greenbaum, A.; Hammarling, S.; McKenney, A.; Sorensen, D. LAPACK Users’ Guide. Vol. 3rd edition. Society for Industrial and Applied Mathematics; Philadelphia, PA: 1999."
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 653.197, 522.03, 674.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Baker CI, Behrmann M, Olson CR. Impact of Learning on Representation of Parts and Wholes in Monkey Inferotemporal Cortex. Nature Neuroscience 2002;5(11):1210–1216."
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 629.197, 482.217, 650.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Brown, BW.; Lovato, J. Library of C Routines for Random Number Generation. 1996. URL http://www.stat.umn.edu/HELP/ranlib-docs/ranlib.c.chs"
+  }, {
+    "type" : "paragraph",
+    "id" : 633,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 616.197, 512.52, 626.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Denison DGT, Mallick BK, Smith AFM. Bayesian MARS. Statistics and Comping 1998;8:337–346."
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 592.197, 498.984, 613.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "DiMatteo I, Genovese CR, Kass RE. Bayesian Curve Fitting with Free-Knot Splines. Biometrika 2001;88:1055–1073."
+  }, {
+    "type" : "paragraph",
+    "id" : 635,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 557.197, 512.691, 589.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Dongarra JJ, Croz JD, Hammarling S, Duff I. Algorithm 679: A Set of Level 3 Basic Linear Algebra Subprograms: Model Implementation and Test Programs. ACM Transactions on Mathematical Software 1990a;16(1):18–28."
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 533.197, 522.015, 554.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Dongarra JJ, Croz JD, Hammarling S, Duff I. A Set of Level 3 Basic Linear Algebra Subprograms. ACM Transactions on Mathematical Software 1990b;16(1):1–17."
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 509.197, 514.743, 530.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Fan Y, Brooks P, Gelman A. Output Assessment for Monte Carlo Simulations via the Score Statistic. Journal of Computational and Graphical Statistics 2006;15:178–206."
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 485.197, 522.033, 506.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Gelman, A.; Carlin, J.; Stern, H.; Rubin, D. Bayesian Data Analysis. Vol. 2nd edition. Chapman & Hall/ CRC; Boca Raton: 2004."
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 461.197, 522.036, 482.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Green PJ. Reversible Jump Markov Chain Monte Carlo Computation and Bayesian Model Determination. Biometrika 1995;82:711–732."
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 437.197, 489.957, 458.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Hansen MH, Kooperberg C. Spline Adaptation in Extended Linear Models. Statistical Science 2002;17:2–51."
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 424.197, 478.005, 434.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Insightful Corp. S-PLUS Version 6.2. Seattle, WA: 2003. URL http://www.insightful.com/"
+  }, {
+    "type" : "paragraph",
+    "id" : 642,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 411.197, 522.031, 421.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Kass RE, Raftery AE. Bayes Factors. Journal of the American Statistical Association 1995;90:773–795."
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 387.197, 518.973, 408.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Kass RE, Ventura V, Cai C. Statistical Smoothing of Neuronal Data. Network: Computation in Neural Systems 2003;14:5–15."
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 363.197, 520.467, 384.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Kass RE, Wallstrom G. Invited Comment on “Spline Adaptation in Extended Linear Models” by Mark H. Hansen and Charles Kooperberg. Statistical Science 2002;17:24–29."
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 339.197, 522.031, 360.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Kass RE, Wasserman LA. A Reference Bayesian Test for Nested Hypotheses and its Relationship to the Schwarz Criterion. Journal of the American Statistical Association 1995;90:928–934."
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 315.197, 498.966, 336.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Liu JS, Wong WH, Kong A. Covariance Structure of the Gibbs Sampler with Applications to the Comparisons of Estimators and Augmentation Schemes. Biometrika 1994;81:27–40."
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 291.197, 495.942, 312.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Pauler DK. The Schwarz Criterion and Related Methods for Normal Linear Models. Biometrika 1998;85:13–27."
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 256.197, 520.233, 288.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "R Development Core Team. R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing; Vienna, Austria: 2006. ISBN 3-900051-07-0, URL http://www.R-project.org/"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 232.197, 504.213, 253.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Stone CJ, Hansen M, Kooperberg C, Truong YK. The Use of Polynomial Splines and their Tensor Products in Extended Linear Modeling. The Annals of Statistics 1997;25:1371–1470."
+  }, {
+    "type" : "paragraph",
+    "id" : 650,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 208.197, 521.475, 229.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Venables, WN.; Ripley, BD. Modern Applied Statistics with S. Vol. 4th edition. Springer-Verlag; New York: 2002."
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 173.197, 522.025, 205.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Wallstrom GL, Kass RE, Miller A, Cohn JF, Fox NA. Automatic Correction of Ocular Artifact in the EEG: A Comparison of Regression-Based and Component-Based Methods. International Journal of Psychophysiology 2004;53:105–119. [PubMed: 15210288]"
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 18,
+    "bounding box" : [ 150.0, 138.197, 522.034, 170.151 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Zhang X, Roeder K, Wallstrom G, Devlin B. Integration of Association Statistics over Genomic Regions Using Bayesian Adaptive Regression Splines. Human Genomics 2003;1:20–29. [PubMed: 15601530]"
+  }, {
+    "type" : "image",
+    "page number" : 19,
+    "bounding box" : [ 121.08, 408.246, 550.92, 731.0 ],
+    "alt" : "The image is a line graph titled firing rate (spikes) (71). The x-axis represents time in minutes, ranging from 0 to 800, while the y-axis represents the firing rate (spikes) in milli seconds. The graph shows a clear upward trend in the firing rate, with the highest value being around 106 milli seconds. The graph also shows a significant drop in the firing rate as time increases, reaching a low of around 0 milli seconds. ### Analysis: #### Time Trend: - **Initial Trend:** The graph shows a general upward trend in the firing rate, with the highest value being around 106 milli seconds. - **Peak Value:** The graph shows a peak in the firing rate, around 107 milli seconds. - **Lowest Value:** The graph shows a low point in the firing rate, around 0 mill",
+    "source" : "WLK2008/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 19,
+    "bounding box" : [ 163.333, 426.667, 190.0, 438.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~200"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 19,
+    "bounding box" : [ 384.0, 426.667, 404.667, 438.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "400"
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "page number" : 19,
+    "bounding box" : [ 457.333, 426.667, 478.0, 438.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "600"
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 19,
+    "bounding box" : [ 529.333, 426.667, 550.667, 438.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "800"
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 19,
+    "bounding box" : [ 311.667, 427.0, 331.667, 437.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "200"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 19,
+    "bounding box" : [ 334.0, 408.667, 386.0, 422.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Time (ms)"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "page number" : 19,
+    "bounding box" : [ 150.0, 325.722, 522.008, 394.891 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Figure 1. Histogram and fits using a Gaussian kernel density estimator (dotted line), logspline (thin line), and BARS (thick line). Units are in spiking events per second, the usual units for intensity functions based on neuronal spiking events. The data come from a neuron in inferotemporal cortex recorded during 16 replications (in physiological jargon, 16 trials) of an experiment described by Baker et al. (2002)."
+  }, {
+    "type" : "image",
+    "page number" : 20,
+    "bounding box" : [ 114.605, 506.36, 557.395, 731.0 ],
+    "alt" : "At the top of the image, there is a title labeled User-defined Parameters and below it, there is a subtitle labeled Data and MCMC. On the right side of these two subtitle, there is a subtitle labeled Function Estimates and on the left side of this subtitle, there is a subtitle labeled Page 20.",
+    "source" : "WLK2008/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 20,
+    "bounding box" : [ 486.0, 709.333, 527.333, 722.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Sampled"
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 20,
+    "bounding box" : [ 133.333, 702.667, 192.0, 714.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "User-defined"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 20,
+    "bounding box" : [ 481.0, 697.667, 530.667, 710.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Parameter"
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 20,
+    "bounding box" : [ 134.333, 689.333, 188.667, 702.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Parameters"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 20,
+    "bounding box" : [ 490.333, 685.667, 522.333, 696.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Values"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "page number" : 20,
+    "bounding box" : [ 150.0, 620.667, 173.667, 633.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Data"
+  }, {
+    "type" : "paragraph",
+    "id" : 668,
+    "page number" : 20,
+    "bounding box" : [ 248.0, 620.667, 314.667, 632.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Initial Knot Set"
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 20,
+    "bounding box" : [ 379.667, 622.0, 412.333, 632.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "MCMC"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 20,
+    "bounding box" : [ 465.0, 621.0, 549.333, 632.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Function Estimates"
+  }, {
+    "type" : "paragraph",
+    "id" : 671,
+    "page number" : 20,
+    "bounding box" : [ 195.333, 539.333, 239.333, 552.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Logspline"
+  }, {
+    "type" : "paragraph",
+    "id" : 672,
+    "page number" : 20,
+    "bounding box" : [ 482.667, 538.667, 534.0, 550.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Confidence"
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 20,
+    "bounding box" : [ 189.333, 526.667, 250.0, 539.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Poisson only)"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 20,
+    "bounding box" : [ 488.0, 526.667, 527.333, 537.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Intervals"
+  }, {
+    "type" : "heading",
+    "id" : 675,
+    "level" : "Subtitle",
+    "page number" : 20,
+    "bounding box" : [ 150.0, 483.051, 184.497, 493.005 ],
+    "heading level" : 1,
+    "font" : "TimesNewRomanPS-BoldMT",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Figure 2."
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 20,
+    "bounding box" : [ 150.0, 435.836, 522.053, 482.896 ],
+    "font" : "TimesNewRomanPSMT",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Diagram of our normal and Poisson BARS implementations. User-defined parameters and data are input and used to create the initial knot set. In the Poisson case, logspline may be used to create the initial knot set. The MCMC runs starting from the initial knot set and outputs sampled parameter values, function estimates and confidence intervals."
+  } ]
+}

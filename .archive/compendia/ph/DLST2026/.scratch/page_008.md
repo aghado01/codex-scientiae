@@ -1,0 +1,16 @@
+[Page 8]
+
+We emphasize once more that the continuous example serves only as a source of intuition and an outline of the ultimate goal, which is beyond the scope of this paper. All results presented in this work are in the framework of combinatorial multivector fields (though, some can be also applied in the continuous case), which can serve as a model or an approximation of a continuous vector field. Nevertheless, we strongly believe that the presented construction of the ConleyMorse persistence barcode can be adapted to the continuous setting; we leave it for future work.
+
+All the dynamical concepts mentioned so far have their counterparts in combinatorial dynamics; see Section 4 . In this context, a multivector field V models a continuous vector field, and a multivalued map F V —the flow (Subsection 4.1 ). The theory provides the concept of combinatorial isolated invariant sets and isolating blocks (Definition 4.2 ), as well as Morse decomposition (Definition 4.7 ) and the Conley index (Definition 4.20 ). We also define a combinatorial continuation of an isolated invariant set (Definition 4.25 ).
+
+Figure 4 shows a combinatorial model of the example in Figure 1 . The hollow octahedron models the sphere and the sequence of multivector fields—as we argue in Section 4.4 —can be seen as a continuously parameterized combinatorial multivector field. Each stage in Figure 1 has a counterpart in Figure 4 with an isomorphic Morse decomposition and Conley indices. In particular, V λ corresponds to φ λ for all λ ∈ { 0 , 1 ,..., 5 } . We do not unfold this example in detail here, but we encourage the reader to take another look at the combinatorial example after going through Section 4 , to convince themselves that it indeed models the continuous flow shown in Figure 1 . Moreover, the Conley-Morse persistence barcode in Figure 2 describes the combinatorial dynamics in Figure 4 as well.
+
+2.2. Attractor-repeller split example. In this section we illustrate the key observation that allows us to construct the Conley-Morse persistence barcode. Consider again the Hopf bifurcation between λ = 0 and λ = 1 at the northern part of the sphere in Figure 1 , with the repelling equilibrium R turning into the attracting equilibrium E and the repelling periodic orbit O . Figure 5 provides a top view of the sphere as the bifurcation occurs.
+
+![The image depicts a circular periodic element with a central point labeled R. The element has a periodicity of 12, meaning that the element repeats the same pattern of electrons around the central point. The periodicity of the element is represented by the number of electrons it has, which is 12. The periodic element has a periodic orbitals. The outermost shell is represented by the red circle, and the inner shell is represented by the brown circle. The orbitals are arranged in a spiral pattern around the central point. The spiral pattern is made up of 12 equal rings, each with 7 electrons. The electrons in the outermost shell are located at the top of the spiral, while the electrons in the inner shell are located at the bottom. The periodic element has a net charge of 12, as indicated by the net charge of the outermost shell. This means that the electrons in the outermost shell are negatively charged, while the electrons in the inner](<DLST2026/imageFile4.png>)
+
+120
+
+1=1
+

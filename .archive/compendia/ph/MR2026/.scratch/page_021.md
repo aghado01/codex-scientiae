@@ -1,0 +1,15 @@
+[Page 21]
+
+- [21] Lars Q English. Synchronization of oscillators: an ideal introduction to phase transitions. European journal of physics , 29(1):143, 2007.
+- [22] R. González-Albaladejo, A. Carpio, and L. L. Bonilla. Scale-free chaos in the confined Vicsek flocking model. Physical Review E , 107(1):014209, 2023. GAP4: CRITICAL Finite-size scaling with TDA for Vicsek critical windows.
+- [23] Yu He, Shiqiang Xia, Dimitris G. Angelakis, Daohong Song, and Zhigang Chen. Persistent homology analysis of a generalized Aubry-André-Harper model. Physical Review B , 106(5):054210, 2022. GAP2: Phase-to-persistence mapping with finite-size analysis.
+- [24] Markus Heyl and Jan Carl Budich. Dynamical topological quantum phase transitions for mixed states. Physical Review B , 96(18):180304, 2017. GAP1: Dynamical quantum phase transitions and nonequilibrium topology.
+- [25] Mohsin Iqbal and Norbert Schuch. Entanglement order parameters and critical behavior for topological phase transitions and beyond. arXiv preprint arXiv:2011.04595 , 2020. GAP1: Universal critical exponents via tensor networks for topological transitions.
+- [26] Kazuha Itabashi, Quoc Hoan Tran, and Yoshihiko Hasegawa. Evaluating the phase dynamics of coupled oscillators via time-variant topological features. Physical Review E , 103(3):032207, 2021. GAP2: Time-variant topological features for oscillator dynamics.
+- [27] Kwangho Kim, Jisu Kim, Manzil Zaheer, Joon Kim, Frédéric Chazal, and Larry Wasserman. PLLay: Efficient topological layer based on persistent landscapes. In Advances in Neural Information Processing Systems , volume 33, pages 15965–15977, Feb 2020.
+- [28] Ranjith R. Kumar, Y. R. Kartik, and Sujit Sarkar. Topological phase transition between nonhigh symmetry critical phases and curvature function renormalization group. New Journal of Physics , 25:083010, 2023. GAP1: Extends curvature-function RG to non-symmetric cases, multicritical points.
+- [29] Emanuela Merelli, Matteo Rucco, Peter Sloot, and Luca Tesei. Topology driven modeling: the IS metaphor. Natural Computing , 14(3):421–430, 2015. GAP3: Early conceptual framework for persistent entropy in immune systems.
+- [30] Yuriy Mileyko, Sayan Mukherjee, and John Harer. Probability measures on the space of persistence diagrams. Inverse Problems , 27(12):124007, 2011. GAP4: FOUNDATIONAL Probabilistic framework for persistence diagrams as random objects.
+- [31] Edward Ott and Thomas M. Antonsen. Low dimensional behavior of large systems of globally coupled oscillators. Chaos: An Interdisciplinary Journal of Nonlinear Science , 18(3):037113, 2008. FOUNDATIONAL Ott-Antonsen ansatz for Kuramoto model.
+- [32] Murali Krishna Pasupuleti. AI in topological data analysis: Understanding high-dimensional data structures . Nov 2024.
+- [33] Marco Piangerelli, Matteo Rucco, Luca Tesei, and Emanuela Merelli. Topological classifier for detecting the emergence of epileptic seizures. BMC Research Notes , 11(1):368, 2018. GAP2: Applied dynamical phase-like transition detection with persistent entropy.

@@ -1,0 +1,13 @@
+[Page 15]
+
+- 2023. latent knowledge in language models without supervision,” in The Eleventh International Conference on Learning Representations . 2023.
+- [70] R. Socher, A. Perelygin, J. Wu, J. Chuang, C. D. Manning, A. Ng, and C. Potts, “Recursive deep models for semantic compositionality over a sentiment treebank,” in Proceedings of the 2013 Conference on Empirical Methods in Natural Language Processing , pp. 1631–1642. Association for Computational Linguistics, Seattle, Washington, USA, Oct., 2013. https://www.aclweb.org/anthology/D13-1170 .
+- [71] L. Gao, S. Biderman, S. Black, L. Golding, T. Hoppe, C. Foster, J. Phang, H. He, A. Thite, N. Nabeshima, S. Presser, and C. Leahy, “The Pile: An 800gb dataset of diverse text for language modeling,” arXiv preprint arXiv:2101.00027 (2020) .
+- [72] D. Hendrycks, C. Burns, S. Kadavath, A. Arora, S. Basart, E. Tang, D. Song, and J. Steinhardt, “Measuring mathematical problem solving with the MATH dataset,” in Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 2) . 2021. https://openreview.net/forum?id=7Bywt2mQsCe .
+- [73] D. Hendrycks, C. Burns, S. Basart, A. Zou, M. Mazeika, D. Song, and J. Steinhardt, “Measuring massive multitask language understanding,” Proceedings of the International Conference on Learning Representations (ICLR) (2021) .
+- [74] R. Zellers, A. Holtzman, Y. Bisk, A. Farhadi, and Y. Choi, “HellaSwag: Can a machine really finish your sentence?,” in Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics , A. Korhonen, D. Traum, and L. M` arquez, eds., pp. 4791–4800. Association for Computational Linguistics, Florence, Italy, July, 2019. https://aclanthology.org/P19-1472 .
+- [75] K. Sakaguchi, R. L. Bras, C. Bhagavatula, and Y. Choi, “Winogrande: An adversarial winograd schema challenge at scale,” 2019. https://arxiv.org/abs/1907.10641 .
+- [76] L. Gao, J. Tow, B. Abbasi, S. Biderman, S. Black, A. DiPofi, C. Foster, L. Golding, J. Hsu, A. Le Noac’h, H. Li, K. McDonell, N. Muennighoff, C. Ociepa, J. Phang, L. Reynolds, H. Schoelkopf, A. Skowron, L. Sutawika, E. Tang, A. Thite, B. Wang, K. Wang, and A. Zou, “A framework for few-shot language model evaluation,” 07, 2024. https://zenodo.org/records/12608602 .
+- [77] P. Gabriel, “Unzerlegbare darstellungen i,” manuscripta mathematica 6 no. 1, (Mar., 1972) 71–103. http://dx.doi.org/10.1007/BF01298413 .
+- [78] D. Morozov, “Dionysus2.” https://www.mrzv.org/software/dionysus2/ .
+- [79] J. Engels, E. J. Michaud, I. Liao, W. Gurnee, and M. Tegmark, “Not all language model features are one-dimensionally linear,” in The Thirteenth International Conference on Learning Representations . https://openreview.net/forum?id=d63a4AM4hb .

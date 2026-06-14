@@ -1,0 +1,17 @@
+[Page 1]
+
+# A Bayesian Framework for Persistent Homology
+
+Vasileios Maroulas Farzana Nasrin Christopher Oballe University of Tennessee, Knoxville
+
+## Abstract
+
+Persistence diagrams oﬀer a way to summarize topological and geometric properties latent in datasets. While several methods have been developed that utilize persistence diagrams in statistical inference, a full Bayesian treatment remains absent. This paper, relying on the theory of point processes, presents a Bayesian framework for inference with persistence diagrams relying on a substitution likelihood argument. In essence, we model persistence diagrams as Poisson point processes with prior intensities and compute posterior intensities by adopting techniques from the theory of marked point processes. We then propose a family of conjugate prior intensities via Gaussian mixtures to obtain a closed form of the posterior intensity. Finally we demonstrate the utility of this Bayesian framework with a classiﬁcation problem in materials science using Bayes factors.
+
+Keywords Bayesian inference and classiﬁcation, intensity, marked Poisson point processes, topological data analysis, high entropy alloys, atom probe tomography.
+
+## 1 Introduction
+
+A crucial ﬁrst step in understanding patterns and properties of a crystalline material is determining its crystal structure. For highly disordered metallic alloys, such as high entropy alloys (HEAs), atom probe tomography (APT) gives a snapshot of the local atomic environment; see Figure 1. However, APT has two main drawbacks: experimental noise and an abundance of missing data. Approximately 65% of the atoms in a sample are not registered in a typical experiment [50], and the spatial coordinates of those identiﬁed atoms are corrupted by experimental noise [42]. Understanding the atomic pattern within HEAs using an APT image requires observation of atomic cubic unit neighborhood cells under a microscope. This is problematic as APT may have a spatial resolution approximately the length of the unit cell under consideration [28, 42]. Hence, the process is unable to see the ﬁner details of a material, rendering the determination of a lattice structure a challenging problem [38, 55]. Existing algorithms for detecting the crystal structure [13,24,25,32,43,56] are not able to establish the crystal lattice of an APT dataset, as they rely on symmetry arguments based on identifying repeating parts of molecules. Consequently, the ﬁeld of atom probe crystallography, i.e., determining the crystal structure from APT data, has emerged in recent years [21] and [43]. Algorithms in this ﬁeld rely on knowing the global lattice structure a priori and aim to determine local small-scale structures within a larger sample. For some materials this information is readily known, while for others, such as HEAs, the global structure is unknown and must be inferred.
+
+A recent work [62] proposes a machine-learning approach to classifying crystal structures of a noisy and sparse materials dataset without knowing the global structure a priori . The authors employ a convolutional neural network for classifying the crystal structure by examining a diﬀraction image, a computer-generated diﬀraction pattern. The authors suggest their method could be used to determine the crystal structure of APT data. However, the synthetic data considered in [62] is not a realistic representation of experimental APT data, where about 65% of the data is missing and furthermore corrupted by observational noise. Most
