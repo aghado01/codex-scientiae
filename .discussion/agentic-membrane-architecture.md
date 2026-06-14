@@ -8,8 +8,11 @@ their *spirit* (smart procedure, token economy, internal validation) is the inhe
 **Scope:** this repairs the *export* (Docling / opendataloader JSON IR → clean corpus). Render-based
 re-extraction from the source PDF is explicitly OUT of scope — it belongs to the spiritual successor
 (`ps.core.pdfdig`: a hand-rolled PdfPig + Docling backend that takes opendataloader out of the loop).
-`needs_reextraction` is the hand-off boundary between the two stages; its *rate* is a quality metric of
-the export that the successor exists to shrink.
+Re-extraction is the LAST resort, expected *vanishingly rare*: the docling failure modes are tractable
+(the corpus was already ingested at scale without this tool), so the repair tiers run deterministic ->
+agent -> (only then) re-extraction. The deterministic pass declaring "I couldn't" escalates to the
+agent (`needs_repair`), never straight to hand-off; only the agent ALSO failing earns `unrecoverable`.
+A high `unrecoverable` rate indicts THIS tool's repair logic before it indicts the export.
 
 ## The stack — three layers
 
@@ -20,8 +23,9 @@ Layer 0  Pipeline       deterministic prep -> graded work-list (BUILT: project-i
 ```
 
 The pipeline does the maximal deterministic work and ends in a **graded work-list**
-(`repaired` / `needs_review` / `needs_reextraction`) — which is also the **dispatch plan**.
-Triage happens before any model is invoked.
+(`repaired` / `needs_review` / `needs_repair`) — which is also the **dispatch plan**. Triage happens
+before any model is invoked; `needs_repair` is the deterministic pass deferring to the *agent* (not a
+re-extraction hand-off — see Scope).
 
 ## Layer 1 — the membrane is an MCP server
 

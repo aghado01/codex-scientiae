@@ -40,15 +40,15 @@ function Get-IrSummary {
         zones    = ($chunks | Group-Object zone | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
         sections = @($chunks | Where-Object { $_.type -eq 'heading' -and $_.section_level -and $_.is_furniture -ne 'running_head' }).Count
         repaired = @($chunks | Where-Object { $_.fidelity -eq 'repaired' }).Count
-        flagged  = @($chunks | Where-Object { $_.fidelity -in 'suspect','needs_review','needs_reextraction' }).Count
-        hotspots = ($chunks | Where-Object { $_.corruption_type -and $_.fidelity -in 'suspect','needs_review','needs_reextraction' } | Group-Object corruption_type | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
+        flagged  = @($chunks | Where-Object { $_.fidelity -in 'suspect','needs_review','needs_repair' }).Count
+        hotspots = ($chunks | Where-Object { $_.corruption_type -and $_.fidelity -in 'suspect','needs_review','needs_repair' } | Group-Object corruption_type | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
     }
 }
 
 function Get-IrHotspots {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath, [string]$Type)
     Read-Chunks $ChunksPath |
-        Where-Object { $_.fidelity -in 'suspect','needs_review','needs_reextraction' -and (-not $Type -or $_.corruption_type -eq $Type) } |
+        Where-Object { $_.fidelity -in 'suspect','needs_review','needs_repair' -and (-not $Type -or $_.corruption_type -eq $Type) } |
         ForEach-Object {
             [pscustomobject]@{
                 id      = $_.id
@@ -163,15 +163,15 @@ function Get-BatchSummary {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$Root)
     Get-ChildItem -LiteralPath $Root -Filter '*.chunks.jsonl' -File -ErrorAction SilentlyContinue | ForEach-Object {
         $chunks = @(Read-Chunks $_.FullName)
-        $review = @($chunks | Where-Object { $_.fidelity -eq 'needs_review' -or $_.fidelity -eq 'suspect' })
+        $review = @($chunks | Where-Object { $_.fidelity -eq 'needs_review' -or $_.fidelity -eq 'needs_repair' -or $_.fidelity -eq 'suspect' })
         $bytes = 0; foreach ($r in $review) { $bytes += ([string]$r.content).Length }
         [pscustomobject]@{
             paper        = ($_.Name -replace '\.chunks\.jsonl$', '')
             chunks       = $chunks.Count
             pages        = (@($chunks.page | Sort-Object -Unique)).Count
             repaired     = @($chunks | Where-Object { $_.fidelity -eq 'repaired' }).Count
-            actionable   = $review.Count                                                    # agent can repair
-            handoff      = @($chunks | Where-Object { $_.fidelity -eq 'needs_reextraction' }).Count  # successor / re-export
+            actionable   = $review.Count                                                       # agent's work (review + repair)
+            handoff      = @($chunks | Where-Object { $_.fidelity -eq 'unrecoverable' }).Count  # rare terminal: agent also failed -> source PDF
             review_bytes = $bytes
         }
     }
@@ -196,7 +196,7 @@ function Invoke-Dispatch {
     foreach ($f in $files) {
         $name = $f.Name -replace '\.chunks\.jsonl$', ''
         foreach ($c in (Read-Chunks $f.FullName)) {
-            if ($c.fidelity -ne 'needs_review' -and $c.fidelity -ne 'suspect') { continue }
+            if ($c.fidelity -ne 'needs_review' -and $c.fidelity -ne 'needs_repair' -and $c.fidelity -ne 'suspect') { continue }
             $bytes = ([string]$c.content).Length
             if ($used + $bytes -le $BudgetBytes -or $batch.Count -eq 0) {     # always make progress
                 $batch.Add([pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam })

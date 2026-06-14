@@ -12,10 +12,16 @@
 
   Re-grades each suspect chunk's `fidelity` by corruption_type + head quality, using the
   context-aware delimiter scanner in latex.ps1:
-    repaired           - intertext, head FULLY delimiter-balanced + clean-ended -> tail excised
-    needs_review       - gibberish, or an intertext head with a delimiter partner left in the
-                         tail (`seam` noted) -> tail excised, spot-checkable
-    needs_reextraction - tiny/unbalanced head, unbalanced_braces -> left intact for the render
+    repaired      - intertext, head FULLY delimiter-balanced + clean-ended -> tail excised
+    needs_review  - gibberish, or an intertext head with a delimiter partner left in the tail
+                    (`seam` noted) -> tail excised, agent verifies
+    needs_repair  - the deterministic pass couldn't auto-fix (tiny/unbalanced head, unbalanced
+                    delimiters) -> left intact for the AGENT to repair. This is NOT a
+                    re-extraction hand-off: the docling failure modes are tractable, so the
+                    agent is the next tier, not the source PDF. True re-extraction
+                    (`unrecoverable`) is reached only if the agent ALSO fails -- expected to be
+                    vanishingly rare; a high needs_repair-survival rate indicts this tool's
+                    repair logic before it indicts the export.
 
     . ./repair.ps1
     Invoke-Repair -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>] [-MinHeadFrac 0.4]
@@ -48,7 +54,7 @@ function Invoke-Repair {
     }
 
     $excised = [System.Collections.Generic.List[object]]::new()
-    $tally = [ordered]@{ repaired = 0; needs_review = 0; needs_reextraction = 0 }
+    $tally = [ordered]@{ repaired = 0; needs_review = 0; needs_repair = 0 }
 
     foreach ($c in $chunks) {
         if ($c.fidelity -ne 'suspect') { continue }
@@ -56,7 +62,7 @@ function Invoke-Repair {
         $ct = [string]$c.corruption_type
         $onset = Get-CorruptionOnset $content
 
-        $grade = 'needs_reextraction'; $doExcise = $false; $bal = $null
+        $grade = 'needs_repair'; $doExcise = $false; $bal = $null
         if ($onset -gt 0 -and $content.Length -gt 0) {
             $head     = $content.Substring(0, $onset)
             $bal      = Get-LatexBalance $head
@@ -104,6 +110,6 @@ function Invoke-Repair {
     "repair: $($excised.Count) suffixes excised -> $($discManifest.Jsonl) (audit)"
     "  repaired (intertext) ........ $($tally.repaired)"
     "  needs_review (gibberish) .... $($tally.needs_review)"
-    "  needs_reextraction .......... $($tally.needs_reextraction)"
+    "  needs_repair (agent's turn) . $($tally.needs_repair)"
     return $manifest
 }
