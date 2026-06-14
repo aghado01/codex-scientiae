@@ -1,0 +1,6 @@
+# generated stage artifacts and build output
+.work/
+bin/
+obj/
+__pycache__/
+*.pyc
