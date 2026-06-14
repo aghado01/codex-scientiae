@@ -133,9 +133,17 @@ with per-chunk `.jidx` addressing than with page-manifests.
 - **Chokepoint depth** — deterministic validator only (`Get-LatexBalance`) vs + a model judge.
 - **Constitution content** — Layer 2, deferred.
 
-## Next build (smallest closed loop)
+## Build status
 
-Stand up the MCP server as a thin wrapper over the existing membrane functions + the write-side
-(`propose_repair` gated by `Get-LatexBalance`, `commit`). The pipeline stays PowerShell. That is
-the smallest thing that turns this conversation into a running loop a sighted agent can drive —
-without committing to any open fork above.
+- **DONE** — the closed loop in PowerShell. Read-side (`Get-IrSummary` / `Get-IrHotspots` /
+  `Get-Slice`) + write-side (`Add-RepairProposal` gated by `Get-CorruptionType`, per-chunk staging
+  so concurrent workers never conflict; `Invoke-RepairCommit` deterministic merge + `.commit-audit`
+  before/after). The detector *is* the merge-gate. Validated end-to-end (08fb9d9).
+- **DONE** — the MCP adapter: `src/mcp-server.ps1`, a *pure-PowerShell* stdio JSON-RPC 2.0 server
+  (no SDK, no Python/Node toolchain) exposing the membrane as 6 tools — `list_documents` /
+  `get_summary` / `get_hotspots` / `get_slice` / `propose_repair` / `commit` — paper-addressed under
+  `-Root` (one server, single doc or whole batch) and path-traversal-guarded. stdout carries protocol
+  frames only. Launch: `pwsh -NoProfile -File src/mcp-server.ps1 -Root <work-dir>`. Validated against a
+  full initialize / tools.list / tools.call handshake; the propose gate rejects over the wire (paren=1).
+- **NEXT** — the depth-n tools (`get_batch_summary`, budgeted `dispatch`) for the swarm, and Layer 2
+  (procedure + constitution). Commits to none of the open forks above.
