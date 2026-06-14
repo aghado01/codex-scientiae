@@ -7,13 +7,22 @@
   returns exactly one work-unit by id via the .jidx seek (a worker never loads
   more than its slice + the context it explicitly asks for).
 
+  The write-side closes the loop: a worker stages a *validated* repair for one chunk
+  (Add-RepairProposal — one file per id, so concurrent workers never conflict), and the
+  orchestrator merges all staged proposals deterministically (Invoke-RepairCommit). A
+  repair is accepted iff Get-CorruptionType finds nothing wrong with it — the detector is
+  the merge-gate. Before/after of every commit lands in a .commit-audit sidecar.
+
     . ./serving.ps1
-    Get-IrSummary  -ChunksPath <chunks.jsonl>
-    Get-IrHotspots -ChunksPath <chunks.jsonl> [-Type intertext]
-    Get-Slice      -ChunksPath <chunks.jsonl> -Id <n> [-Context 1]
+    Get-IrSummary       -ChunksPath <chunks.jsonl>
+    Get-IrHotspots      -ChunksPath <chunks.jsonl> [-Type intertext]
+    Get-Slice           -ChunksPath <chunks.jsonl> -Id <n> [-Context 1]
+    Add-RepairProposal  -ChunksPath <chunks.jsonl> -Id <n> -Content <repaired> [-Source <who>]
+    Invoke-RepairCommit -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
 . "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/fidelity.ps1"
 
 function Read-Chunks([string]$Path) {
     [System.IO.File]::ReadLines($Path) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json }
@@ -64,4 +73,84 @@ function Get-Slice {
     $lo = [Math]::Max(0, $Id - $Context)
     $hi = [Math]::Min($idx.LineCount - 1, $Id + $Context)
     for ($i = $lo; $i -le $hi; $i++) { Read-JsonlRecord -Path $ChunksPath -At $i }
+}
+
+# --- sub-agent-facing: stage a validated repair (one file per id -> conflict-free) ---
+
+function Add-RepairProposal {
+    [CmdletBinding()] param(
+        [Parameter(Mandatory)][string]$ChunksPath,
+        [Parameter(Mandatory)][int]$Id,
+        [Parameter(Mandatory)][string]$Content,
+        [string]$Source = 'worker'
+    )
+    $target = Read-JsonlRecord -Path $ChunksPath -At $Id
+    if (-not $target -or [int]$target.id -ne $Id) {
+        return [pscustomobject]@{ accepted = $false; id = $Id; reason = 'chunk id not found at that line' }
+    }
+    # gate: the repair is accepted iff the fidelity detector finds nothing wrong with it
+    $ct = Get-CorruptionType ([pscustomobject]@{ type = $target.type; content = $Content })
+    if ($ct) {
+        $diag = if ($ct -eq 'unbalanced_delimiters') {
+            $b = Get-LatexBalance $Content; "brace=$($b.brace) brack=$($b.brack) paren=$($b.paren) lr=$($b.lr)"
+        } else { '' }
+        return [pscustomobject]@{ accepted = $false; id = $Id; reason = "repair still flags as $ct"; diagnostic = $diag }
+    }
+    $propDir = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.proposals'
+    if (-not (Test-Path -LiteralPath $propDir)) { New-Item -ItemType Directory -Force -Path $propDir | Out-Null }
+    $rec = [ordered]@{ id = $Id; type = [string]$target.type; content = $Content; source = $Source }
+    ($rec | ConvertTo-Json -Compress -Depth 8) | Set-Content -LiteralPath (Join-Path $propDir "$Id.json") -Encoding utf8
+    return [pscustomobject]@{ accepted = $true; id = $Id }
+}
+
+# --- orchestrator-facing: merge staged proposals deterministically (the chokepoint) ---
+
+function Invoke-RepairCommit {
+    [CmdletBinding()] param(
+        [Parameter(Mandatory)][string]$ChunksPath,
+        [string]$NodesPath
+    )
+    $propDir = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.proposals'
+    $props = @{}
+    if (Test-Path -LiteralPath $propDir) {
+        foreach ($f in Get-ChildItem -LiteralPath $propDir -Filter '*.json' -File) {
+            $p = Get-Content -LiteralPath $f.FullName -Raw | ConvertFrom-Json
+            $props[[int]$p.id] = $p
+        }
+    }
+    if ($props.Count -eq 0) { "no staged proposals to commit"; return }
+
+    $chunks = [System.Collections.Generic.List[object]]::new()
+    foreach ($line in [System.IO.File]::ReadLines($ChunksPath)) {
+        if (-not [string]::IsNullOrWhiteSpace($line)) { $chunks.Add(($line | ConvertFrom-Json)) }
+    }
+
+    $audit = [System.Collections.Generic.List[object]]::new()
+    $applied = 0; $rejected = 0
+    foreach ($c in $chunks) {
+        if (-not $props.ContainsKey([int]$c.id)) { continue }
+        $p = $props[[int]$c.id]
+        # re-gate at the merge boundary (defense in depth)
+        if (Get-CorruptionType ([pscustomobject]@{ type = $c.type; content = [string]$p.content })) { $rejected++; continue }
+        $audit.Add([pscustomobject][ordered]@{
+            id = [int]$c.id; source = [string]$p.source
+            before = [string]$c.content; after = [string]$p.content; was = [string]$c.corruption_type
+        })
+        $c.content = [string]$p.content
+        $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'faithful'        -Force
+        $c | Add-Member -NotePropertyName repair        -NotePropertyValue 'agent_committed' -Force
+        $c | Add-Member -NotePropertyName repair_source -NotePropertyValue ([string]$p.source) -Force
+        $c.PSObject.Properties.Remove('corruption_type')
+        $c.PSObject.Properties.Remove('seam')
+        $applied++
+    }
+
+    $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'commit'
+    $auditPath = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.commit-audit.jsonl'
+    [void](Write-JsonlStage -Records $audit.ToArray() -OutputPath $auditPath -SourcePath $NodesPath -Stage 'commit-audit')
+    Remove-Item -LiteralPath $propDir -Recurse -Force -ErrorAction SilentlyContinue
+
+    "committed $applied repairs ($rejected re-rejected at merge gate) -> $ChunksPath"
+    "  before/after -> $auditPath (audit)"
+    return $manifest
 }
