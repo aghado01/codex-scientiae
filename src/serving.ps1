@@ -30,19 +30,21 @@ function Get-IrSummary {
         title    = ($chunks | Where-Object { $_.title_candidate } | Select-Object -First 1).content
         zones    = ($chunks | Group-Object zone | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
         sections = @($chunks | Where-Object { $_.type -eq 'heading' -and $_.section_level -and $_.is_furniture -ne 'running_head' }).Count
-        suspect  = @($chunks | Where-Object { $_.fidelity -eq 'suspect' }).Count
-        hotspots = ($chunks | Where-Object { $_.corruption_type } | Group-Object corruption_type | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
+        repaired = @($chunks | Where-Object { $_.fidelity -eq 'repaired' }).Count
+        flagged  = @($chunks | Where-Object { $_.fidelity -in 'suspect','needs_review','needs_reextraction' }).Count
+        hotspots = ($chunks | Where-Object { $_.corruption_type -and $_.fidelity -in 'suspect','needs_review','needs_reextraction' } | Group-Object corruption_type | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
     }
 }
 
 function Get-IrHotspots {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath, [string]$Type)
     Read-Chunks $ChunksPath |
-        Where-Object { $_.fidelity -eq 'suspect' -and (-not $Type -or $_.corruption_type -eq $Type) } |
+        Where-Object { $_.fidelity -in 'suspect','needs_review','needs_reextraction' -and (-not $Type -or $_.corruption_type -eq $Type) } |
         ForEach-Object {
             [pscustomobject]@{
                 id      = $_.id
                 page    = $_.page
+                grade   = $_.fidelity
                 type    = $_.corruption_type
                 section = $_.section
                 preview = ([string]$_.content).Substring(0, [Math]::Min(54, ([string]$_.content).Length))
