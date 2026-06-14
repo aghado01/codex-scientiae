@@ -1,0 +1,3831 @@
+{
+  "file name" : "VSMJ2011.pdf",
+  "number of pages" : 16,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20241127001005Z",
+  "modification date" : "D:20241127001005Z",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 393,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 162.892, 654.147, 449.109, 663.723 ],
+    "heading level" : 1,
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "DUALITIES IN PERSISTENT (CO)HOMOLOGY"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 1,
+    "bounding box" : [ 136.049, 624.639, 475.954, 632.475 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "VIN DE SILVA, DMITRIY MOROZOV, AND MIKAEL VEJDEMO-JOHANSSON"
+  }, {
+    "type" : "paragraph",
+    "id" : 395,
+    "page number" : 1,
+    "bounding box" : [ 107.865, 538.337, 504.136, 600.968 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Abstract. We consider sequences of absolute and relative homology and cohomology groups that arise naturally for a ﬁltered cell complex. We establish algebraic relationships between their persistence modules, and show that they contain equivalent information. We explain how one can use the existing algorithm for persistent homology to process any of the four modules, and relate it to a recently introduced persistent cohomology algorithm. We present experimental evidence for the practical eﬃciency of the latter algorithm."
+  }, {
+    "type" : "heading",
+    "id" : 396,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 261.958, 504.952, 350.043, 515.861 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1. Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 397,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 368.962, 540.006, 496.434 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The subject of inverse problems deals, fundamentally, with the inference of shape. From some related measurements such as a family of particular path integrals we try to deduce geometric information. With the classical techniques in the ﬁeld, with Fourier and other integral transforms, one can deduce an impressive amount of information. However, with non-linearity, and ill-posed, ill-conditioned situations, the classical methods need increasingly large amounts of regularization or data cleaning. Topology oﬀers a family of methods that allow the inference of information if not geometric, then at least topological into the ﬁeld. In particular, the recent development of persistent homology [1], and its applications to topological data analysis [2], demonstrate an approach to topological invariants that becomes applicable to high-dimensional, ﬁnite and discrete measurement sets."
+  }, {
+    "type" : "paragraph",
+    "id" : 398,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 278.302, 540.006, 366.919 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "To take an explicit example, geological sonar investigations employ inverse problem methods to investigate the geometric structure of the density sublevel sets in subterranean domains, relating density variations to occurrences of oil, water or mineral pockets. The kind of information sought starts out with a qualitative judgement: is there a pocket at all; are there several or few; are they connected or not? These ﬁrst questions, before the shape can be given an explicit geometric description, are a matter of topological properties, and the study of sublevel sets of functions on domains is one of the most convincing uses of persistent homology."
+  }, {
+    "type" : "paragraph",
+    "id" : 399,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 226.496, 540.005, 276.259 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The persistent homology algorithm of Edelsbrunner, Letscher, and Zomorodian [1] is now ten years old. In its natural general form [3], the input is a ﬁltered ‘space’ (topological space, or simplicial complex, or abstract chain complex) and the output is a collection of half-open real intervals known as a barcode or a persistence diagram."
+  }, {
+    "type" : "paragraph",
+    "id" : 400,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 161.739, 540.005, 224.454 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "These barcodes contain one bar for each topological feature found – one bar for each homology class, representing a hole or a higher-dimensional void. These bars come with a starting point, indicating the focal level at which the feature ﬁrst becomes visible, and an ending point, indicating the focal level at which the feature vanishes again. A fundamental tenet, as described in [2] is that the length of such a bar – the diﬀerence between when it shows up and when it vanishes – encodes"
+  }, {
+    "type" : "paragraph",
+    "id" : 401,
+    "page number" : 1,
+    "bounding box" : [ 88.588, 137.028, 193.22, 144.864 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Date : November 27, 2024."
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 82.243, 540.001, 133.915 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "VdS has been partially supported by DARPA, through grants HR0011-05-1-0007 (TDA) and HR0011-07-1-0002 (SToMP), and holds a Digiteo Chair. DM has been partially supported by DARPA grant HR0011-05-1-0007 (TDA) and by the DOE Oﬃce of Science, Advanced Scientiﬁc Computing Research, under award number KJ0402-KRD047, under contract number DE-AC02-05CH11231. MVJ has been partially supported by the Oﬃce of Naval Research, through grant N00014-08-1-0931."
+  }, {
+    "type" : "paragraph",
+    "id" : 403,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 581.781, 540.004, 670.399 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In many applications, all that is required is the barcode. This tells us how many homological features exist at any given level of the ﬁltration, and how many of those survive to any given subsequent level. This information is already very rich, and has been proven to be statistically robust [4, 5]. Sometimes more is required. The most common request is for geometric representatives of the features: in other words, explicit homology cycles representing each barcode interval. The original algorithm provides these cycles automatically: they are essential to the way in which the barcode intervals are calculated."
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 555.878, 540.0, 579.739 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In fact, there are at least four natural persistent objects that can be derived from a ﬁltered space. They are:"
+  }, {
+    "type" : "formula",
+    "id" : 405,
+    "page number" : 2,
+    "bounding box" : [ 206.916, 529.96, 405.084, 554.843 ],
+    "content" : "\\text {persistent} \\left \\{ \\begin{array} { l } { { \\ a b s { l u t e } } } \\\\ { { r e l a t i v e } } \\end{array} \\right \\} \\left \\{ \\begin{array} { l } { { h o m o l o g y } } \\\\ { { c o h o m o l o g y } } \\end{array} \\right \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 406,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 410.84, 540.006, 525.361 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The ‘standard’ object is persistent absolute homology, and most treatments focus on this. However, it has become increasingly clear that the other three objects are important in their own right. The transition between homology and cohomology is in some sense nothing more than the duality of vector spaces; persistent homology and cohomology have the same barcodes. However, homology cycles and cohomology cocycles are quite diﬀerent, and some applications call for cocycles rather than cycles [6]. The occasional utility of relative rather than absolute homology is probably easier to grasp intuitively; for example see [7] for an application in sensor networks. It is easy to ‘fake’ the calculation of relative homology using absolute homology and a cone construction, but we point out that this trick is unnecessary."
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 371.986, 539.999, 408.798 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Our goal in this paper is to provide a streamlined approach to calculating barcodes and (co)cycle representatives for all four persistent objects. We discuss this approach in terms of abstract algebra and in terms of matrix computations."
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 2,
+    "bounding box" : [ 83.955, 359.035, 164.657, 369.944 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We observe that:"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 97.895, 270.991, 539.995, 354.677 ],
+    "numbering style" : "unordered",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 97.895, 335.749, 393.326, 354.677 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• absolute homology and cohomology have the same barcode;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 97.895, 322.797, 389.062, 341.725 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• relative homology and cohomology have the same barcode;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 97.895, 309.846, 486.427, 328.774 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• the absolute barcode and the relative barcode can be deduced from each other;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 97.895, 291.689, 539.995, 315.822 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• the cycles and bounding chains of persistent absolute homology determine, and are determined by, the cycles and bounding chains of persistent relative homology;",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 97.895, 270.991, 485.304, 289.919 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• likewise, for absolute and relative cohomology cocycles and bounding cochains.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 414,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 237.295, 540.006, 274.106 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We discuss two diﬀerent dualities. There is the standard duality which interchanges homology and cohomology. We call this ‘pointwise’ duality. More interestingly, there is a diﬀerent duality which makes the following interchange:"
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 2,
+    "bounding box" : [ 210.803, 219.166, 411.505, 230.075 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "absolute homology ↔ relative cohomology"
+  }, {
+    "type" : "paragraph",
+    "id" : 416,
+    "page number" : 2,
+    "bounding box" : [ 200.5, 202.972, 401.203, 213.881 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "absolute cohomology ↔ relative homology"
+  }, {
+    "type" : "paragraph",
+    "id" : 417,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 145.985, 540.005, 195.749 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We call this ‘global’ duality, and it appears only in the context of persistent topology. Global duality ‘commutes’ with all possible algorithms and theorems: a method for calculating persistent absolute homology will equally well calculate persistent relative cohomology, once the input data have been turned upside-down in a particular way."
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 81.228, 540.003, 143.943 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Combining all of these equalities and dualities, it emerges that a single calculation (run twice) suﬃces to calculate all four persistent objects. Actually, we describe two diﬀerent algorithms for that calculation: pHcol (the ‘column algorithm’) and pHrow (the ‘row algorithm’). Here pHcol is essentially the classic algorithm of [1, 3]; pHrow organises the calculation quite diﬀerently. The preferred choice depends, in any given situation, on whether it is easier to look up rows or columns"
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 607.684, 540.004, 670.399 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We are rewarded by an unexpected payoﬀ. If we require only the absolute barcode, it turns out that the best choice is an optimised version of pHrow called pCoh (the ‘cohomology algorithm’). We give experimental evidence to this eﬀect. Standard practice has been to use pHcol . We therefore call on persistent topology library-writers to implement pCoh , and on persistent topology library-users to use it."
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 543.922, 540.004, 593.685 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "1.1. Outline of paper. Section 2 is devoted to the algebra underlying this work. In 2.1–2.5 we conduct the discussion at a high level (homology functors are assumed given, black-box style), and in 2.6–2.7 we go into the necessary chain-level details. In 2.8 we give a brief abstract description of the two dualities."
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 505.067, 540.006, 541.879 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Section 3 is about matrix algorithms. In 3.1–3.4 we interpret the preceding algebra in terms of matrix decomposition (following [8], again black-box style). In 3.5 we present the two algorithms, pHcol and pHrow , and explain why they give the same output."
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 466.213, 540.002, 503.025 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In Section 4 we relate the ideas in this paper to an earlier cohomology algorithm pCoh published in [6]. We indicate why we expect pCoh to be faster that pHcol and pHrow for computing barcodes of ﬁltered simplicial complexes, and we verify this by experiment."
+  }, {
+    "type" : "heading",
+    "id" : 423,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 275.458, 436.366, 336.542, 447.275 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2. Algebra"
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 403.987, 539.996, 427.848 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We will assume that the reader is familiar with homology theory. Our preference is to use cellular homology, because it is a little more general than simplicial homology."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 302.365, 540.002, 389.988 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 72.0, 340.225, 540.002, 389.988 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "2.1. Coeﬃcients. Individual (co)homology groups are deﬁned with coeﬃcients in a ﬁeld k , which remains ﬁxed throughout this paper. Persistent (co)homology then has the structure of a graded module over the polynomial ring k [ t ]. Many things go wrong when we replace the ﬁeld k with a ring, in particular the ring of integers Z . See [3].",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 72.0, 302.365, 539.996, 326.226 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "2.2. Filtered complexes. We are interested in the persistent topology of ﬁltered topological spaces. The simplest example is a ﬁltered cell complex, which is a sequence of cell complexes",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 427,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 275.62, 384.702, 293.049 ],
+    "content" : "\\Re \\colon \\ X _ { 1 } \\subset X _ { 2 } \\subset \\cdots \\subset X _ { n } = X _ { \\infty }"
+  }, {
+    "type" : "paragraph",
+    "id" : 428,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 235.11, 539.995, 272.824 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where X 1 is a vertex σ 1 , and thereafter each complex is obtained from the previous one by adding a single cell: X i = X i − 1 ∪ σ i . Here the index set is { 1 , 2 ,...,n } . Usually we attach real values a i to the indices, which must satisfy a 1 ≤ a 2 ≤ ··· ≤ a n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 215.019, 438.759, 225.928 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. Our running example will be a cellular ﬁltration of the 2-sphere:"
+  }, {
+    "type" : "image",
+    "id" : 430,
+    "page number" : 3,
+    "bounding box" : [ 92.73, 154.272, 518.051, 212.889 ],
+    "description" : "In this image, we can see a diagram with some shapes.",
+    "source" : "VSMJ2011/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 431,
+    "page number" : 3,
+    "bounding box" : [ 496.036, 197.233, 499.523, 204.207 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 3,
+    "bounding box" : [ 336.837, 191.287, 340.323, 198.261 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 3,
+    "bounding box" : [ 407.953, 191.287, 411.439, 198.261 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 3,
+    "bounding box" : [ 479.069, 191.287, 482.555, 198.261 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 435,
+    "page number" : 3,
+    "bounding box" : [ 99.727, 179.56, 103.214, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 3,
+    "bounding box" : [ 170.842, 179.56, 174.329, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 3,
+    "bounding box" : [ 224.335, 179.56, 227.822, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 438,
+    "page number" : 3,
+    "bounding box" : [ 241.958, 179.56, 245.445, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 3,
+    "bounding box" : [ 295.451, 179.56, 298.938, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 3,
+    "bounding box" : [ 313.074, 179.56, 316.561, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 3,
+    "bounding box" : [ 366.567, 179.56, 370.054, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 444,
+    "page number" : 3,
+    "bounding box" : [ 384.19, 179.56, 387.677, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 3,
+    "bounding box" : [ 437.683, 179.56, 441.17, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 447,
+    "page number" : 3,
+    "bounding box" : [ 455.306, 179.56, 458.793, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 3,
+    "bounding box" : [ 508.799, 179.56, 512.286, 186.534 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 3,
+    "bounding box" : [ 269.926, 175.189, 273.413, 182.163 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 442,
+    "page number" : 3,
+    "bounding box" : [ 341.042, 175.189, 344.529, 182.163 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 3,
+    "bounding box" : [ 412.158, 175.189, 415.645, 182.163 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "page number" : 3,
+    "bounding box" : [ 483.274, 175.189, 486.761, 182.163 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 3,
+    "bounding box" : [ 420.569, 160.832, 424.056, 167.806 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 3,
+    "bounding box" : [ 491.685, 160.832, 495.172, 167.806 ],
+    "font" : "CMR10",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 134.495, 432.111, 146.307 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "There are six cells, σ 1 ,...,σ 6 which appear at times a i = i , for i = 1 ,..., 6."
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 101.453, 539.997, 125.313 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.3. Persistent homology. If we apply a homology functor H ( − ) to a ﬁltered complex we obtain a diagram:"
+  }, {
+    "type" : "formula",
+    "id" : 454,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 80.326, 404.987, 92.137 ],
+    "content" : "H ( \\mathcal { X } ) \\colon \\ H ( X _ { 1 } ) \\to H ( X _ { 2 } ) \\to \\cdots \\to H ( X _ { n } )"
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 659.49, 540.0, 696.302 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Typically H ( − ) denotes the k -dimensional homology H k ( − ; k ) or the total homology H ∗ ( − ; k ). Then (2.2) is a diagram of ﬁnite-dimensional vector spaces and linear maps, also known as a persistence module ."
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 606.782, 540.003, 657.447 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "A persistence module decomposes as a direct sum of interval modules [3]. These are labelled by ordered pairs of integers [ p,q ], where 1 ≤ p ≤ q ≤ n . The pair [ p,q ] indicates a feature which persists over the index set { p,...,q } . We frequently interpret [ p,q ] as the half-open real interval [ a p ,a q +1 ), with the convention that a n +1 = ∞ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 580.879, 539.995, 605.642 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The persistence diagram or barcode is the multiset of ordered pairs [ p,q ] in the decomposition, or alternatively the multiset of half-open intervals [ a p ,a q +1 ). Thus we write:"
+  }, {
+    "type" : "formula",
+    "id" : 458,
+    "page number" : 4,
+    "bounding box" : [ 199.283, 541.856, 412.717, 570.722 ],
+    "content" : "P _ { \\ } \\text {Pers} ( H ( \\mathcal { V } ) ) & = \\{ [ p _ { 1 } , q _ { 1 } ] \\, , \\dots , [ p _ { m } , q _ { m } ] \\} \\\\ & = \\{ [ a _ { p _ { 1 } } , a _ { q _ { 1 } + 1 } ) \\, , \\dots , [ a _ { p _ { m } } , a _ { q _ { m } + 1 } ) \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 506.581, 540.001, 531.344 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "It is customary in applications to discard from the persistence diagram those intervals [ a p ,a q +1 ) for which a p = a q +1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 460,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 453.071, 540.004, 496.403 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. In our running example, the intermediate spaces S 1 ,S 3 ,S 5 are all contractible, whereas S 2 ,S 4 ,S 6 are homeomorphic to the 0-sphere, 1-sphere, and 2-sphere, respectively. There are four intervals in the persistence diagram of H ∗ ( ):"
+  }, {
+    "type" : "formula",
+    "id" : 461,
+    "page number" : 4,
+    "bounding box" : [ 120.871, 431.102, 491.129, 448.532 ],
+    "content" : "P _ { \\ } \\text {ers} ( H _ { * } ( S ) ) = \\{ [ 1 , 6 ] _ { 0 } \\, , [ 2 , 2 ] _ { 0 } \\, , [ 4 , 4 ] _ { 1 } \\, , [ 6 , 6 ] _ { 2 } \\} = \\{ [ 1 , \\infty ) _ { 0 } , [ 2 , 3 ) _ { 0 } , [ 4 , 5 ) _ { 1 } , [ 6 , \\infty ) _ { 2 } \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 413.163, 539.997, 426.563 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The subscript k in [ p,q ] k or [ a p ,a q +1 ) k indicates that the feature occurs in k -dimensional homology."
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 341.859, 540.0, 404.574 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.4. The four standard persistence modules. The standard persistent homology module H ∗ ( ) tells us how the absolute homology groups H ∗ ( X i ) relate to each other as i varies. We can play the same game with the absolute cohomology groups H ∗ ( X i ), the relative homology groups H ∗ ( X n ,X i ), and the relative cohomology groups H ∗ ( X n ,X i ). Here are the four sequences, lined up for comparison."
+  }, {
+    "type" : "formula",
+    "id" : 464,
+    "page number" : 4,
+    "bounding box" : [ 132.929, 262.911, 479.072, 330.8 ],
+    "content" : "H _ { * } ( \\emptyset ) & \\colon \\quad H _ { * } ( X _ { 1 } ) \\quad \\to \\dots \\ \\to H _ { * } ( X _ { n - 1 } ) \\quad \\to H _ { * } ( X _ { n } ) \\\\ H ^ { * } ( \\emptyset ) & \\colon \\quad H ^ { * } ( X _ { 1 } ) \\quad \\to \\dots \\ \\to H ^ { * } ( X _ { n - 1 } ) \\quad \\to H ^ { * } ( X _ { n } ) \\\\ H _ { * } ( X _ { \\infty } , \\emptyset ) & \\colon \\quad H _ { * } ( X _ { n } ) \\to H _ { * } ( X _ { n } , X _ { 1 } ) \\to \\dots \\ \\to H _ { * } ( X _ { n } , X _ { n - 1 } ) \\\\ H ^ { * } ( X _ { \\infty } , \\emptyset ) & \\colon \\quad H ^ { * } ( X _ { n } ) \\leftarrow H ^ { * } ( X _ { n } , X _ { 1 } ) \\leftarrow \\dots \\ \\to H ^ { * } ( X _ { n } , X _ { n - 1 } ) \\\\ \\intertext { The persistence diagram for absolute colhomology is a multiset of integer ordered pairs [ n , q ] with }"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 207.096, 540.004, 257.761 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The persistence diagram for absolute cohomology is a multiset of integer ordered pairs [ p,q ] with 1 ≤ p ≤ q ≤ n . For relative homology and cohomology, the persistence diagrams are multisets of pairs [ p,q ] with 0 ≤ p ≤ q ≤ n − 1. In all cases, we interpret [ p,q ] as the half-open interval [ a p ,a q +1 ), with the convention that a 0 = −∞ and a n +1 = ∞ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 186.009, 296.791, 196.918 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. In our running example, we compute"
+  }, {
+    "type" : "formula",
+    "id" : 467,
+    "page number" : 4,
+    "bounding box" : [ 101.827, 157.52, 510.174, 174.949 ],
+    "content" : "P e r s ( H _ { * } ( S _ { 6 } , S ) ) = \\{ [ 0 , 0 ] _ { 0 } \\, , [ 2 , 2 ] _ { 1 } \\, , [ 4 , 4 ] _ { 2 } \\, , [ 0 , 5 ] _ { 2 } \\} = \\{ [ - \\infty , 1 ) _ { 0 } , [ 2 , 3 ) _ { 1 } , [ 4 , 5 ) _ { 2 } , [ - \\infty , 6 ) _ { 2 } \\} \\, ."
+  }, {
+    "type" : "paragraph",
+    "id" : 468,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 115.267, 540.003, 152.981 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For instance, at index 2 we note that there is a nontrivial element of H 1 ( S 6 ,S 2 ) represented by any arc connecting the two points of S 2 . To be speciﬁc, the homology class is [ σ 3 ] = [ σ 4 ]. This class vanishes in H 1 ( S 6 ,S 3 ), and so it generates the interval [2 , 3)."
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 81.228, 540.0, 105.089 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The reader may detect a relationship between the barcodes for absolute and relative homology. We formalize this in the next section."
+  }, {
+    "type" : "heading",
+    "id" : 470,
+    "level" : "Doctitle",
+    "page number" : 5,
+    "bounding box" : [ 72.0, 685.393, 221.567, 696.302 ],
+    "heading level" : 1,
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.5. Barcode isomorphisms."
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 666.188, 209.667, 677.097 ],
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 2.3. For all k ,"
+  }, {
+    "type" : "formula",
+    "id" : 472,
+    "page number" : 5,
+    "bounding box" : [ 209.792, 624.978, 402.209, 661.708 ],
+    "content" : "\\begin{array} { r l r } { Pers ( H _ { k } ( \\mathcal { X } ) ) } & { = } & { Pers ( H ^ { k } ( \\mathcal { X } ) ) , } \\\\ { Pers ( H _ { k } ( X _ { \\infty } , \\mathcal { X } ) ) } & { = } & { Pers ( H ^ { k } ( X _ { \\infty } , \\mathcal { X } ) ) . } \\\\ { \\log a n d \\, c o h o m o l a g u h a v e \\, i d e n t i c a l \\, h a r c o d e s } \\end{array}"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 614.658, 386.078, 624.192 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In other words, homology and cohomology have identical barcodes."
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 594.809, 539.713, 605.718 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. The universal coeﬃcients theorem [9, Thm 3.2] asserts that there is a natural isomorphism"
+  }, {
+    "type" : "formula",
+    "id" : 475,
+    "page number" : 5,
+    "bounding box" : [ 233.176, 575.47, 378.825, 589.723 ],
+    "content" : "H ^ { k } ( X ; k ) \\equiv H o m ( H _ { k } ( X ; k ) , k ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 476,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 546.077, 539.997, 569.938 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In other words, cohomology and homology are dual as vector spaces, and hence have the same dimension. ‘Natural’ implies that the induced maps"
+  }, {
+    "type" : "formula",
+    "id" : 477,
+    "page number" : 5,
+    "bounding box" : [ 177.891, 527.345, 434.11, 541.597 ],
+    "content" : "H _ { k } ( X _ { i } ; k ) \\to H _ { k } ( X _ { j } ; k ) \\ \\text { and } \\ H ^ { k } ( X _ { i } ; k ) \\leftarrow H ^ { k } ( X _ { j } ; k )"
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 485.001, 540.0, 521.813 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "are adjoint, and hence have the same rank. Because of the way the barcode is uniquely determined by dimensions and ranks, it follows that the absolute homology and cohomology barcodes are the same. This argument applies equally well to the relative barcodes.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 465.796, 378.866, 476.705 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Notation. We partition each persistence diagram into two parts,"
+  }, {
+    "type" : "formula",
+    "id" : 480,
+    "page number" : 5,
+    "bounding box" : [ 254.09, 441.791, 357.911, 459.221 ],
+    "content" : "P _ { \\ } \\text {Pers} = P _ { \\ } \\text {Pers} _ { 0 } \\cup P _ { \\ } \\text {Pers} _ { \\infty } , \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 424.307, 540.0, 441.736 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where Pers 0 comprises the ﬁnite intervals [ a,b ), and Pers ∞ the inﬁnite intervals [ a, ∞ ) or [ −∞ ,b )."
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 411.623, 209.667, 422.532 ],
+    "font" : "CMBX10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 2.4. For all k ,"
+  }, {
+    "type" : "formula",
+    "id" : 483,
+    "page number" : 5,
+    "bounding box" : [ 208.049, 377.949, 402.133, 405.047 ],
+    "content" : "\\begin{array} { r c l } \\ P e r _ { 0 } ( H _ { k } ( \\mathcal { X } ) ) & = & \\ P e r _ { 0 } ( H _ { k + 1 } ( X _ { \\infty } , \\mathcal { X } ) ) , \\\\ \\ P e r _ { \\infty } ( H _ { k } ( \\mathcal { X } ) ) & = & \\ P e r _ { \\infty } ( H _ { k } ( X _ { \\infty } , \\mathcal { X } ) ) , \\end{array}"
+  }, {
+    "type" : "formula",
+    "id" : 484,
+    "page number" : 5,
+    "bounding box" : [ 228.595, 371.429, 371.411, 385.249 ],
+    "content" : "\\begin{array} { r c l } \\text {Pers} _ { \\infty } ( H _ { k } ( \\mathbb { X } ) ) & = & \\text {Pers} _ { \\infty } ( H _ { k } ( X _ { \\infty } , \\mathbb { X } ) ) , \\\\ \\\\ \\text {i} & \\colon & \\text {i} \\dots \\end{array}"
+  }, {
+    "type" : "paragraph",
+    "id" : 485,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 335.206, 540.001, 371.374 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where the second ‘equality’ is interpreted as a bijection with [ a, ∞ ) ↔ [ −∞ ,a ) . Thus, persistent homology and relative homology barcodes carry the same information, with a dimension shift for the ﬁnite intervals."
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 5,
+    "bounding box" : [ 83.955, 315.357, 243.168, 326.266 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The proof appears in Section 2.6."
+  }, {
+    "type" : "paragraph",
+    "id" : 487,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 270.25, 540.006, 307.061 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. Thus, provided we take the dimension shifts into account, all four barcodes carry exactly the same information. If we are only interested in barcodes, we can perform calculations in any one of the four basic sequences, whichever is the most convenient."
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 199.239, 540.006, 261.954 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Since the last term of H k ( ) is the same as the ﬁrst term of H k ( X ∞ , ), namely H k ( X n ), the two sequences can be concatenated into a single sequence, which we denote H k ( ) → H k ( X ∞ , ). The index set for this sequence is { 1 , 2 ,...,n = ¯ 0 , ¯ 1 , ¯ 2 ,..., n − 1 } , where we use barred numerals to indicate that we are in the relative homology part of the sequence. The persistence diagram for this complex will have intervals of three possible types:"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 5,
+    "bounding box" : [ 97.895, 149.486, 475.682, 195.203 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 97.895, 176.275, 475.682, 195.203 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• ( p,q ) where 1 ≤ p ≤ q < n , written as [ p,q + 1) or [ a p ,a q +1 ) in interval form.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 97.895, 162.881, 416.535, 181.809 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• (¯ p, ¯ q ) where 0 < p ≤ q ≤ n − 1, written as [¯ p, q + 1) or [¯ a p , ¯ a q +1 ).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 5,
+      "bounding box" : [ 97.895, 149.486, 449.75, 168.414 ],
+      "font" : "CMSY10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "• ( p, ¯ q ) where 1 ≤ p ≤ n , 0 ≤ q ≤ n − 1, written as [ p, q + 1) or [ a p , ¯ a q +1 ).",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 125.72, 539.998, 148.937 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 2.5. The barcode Pers( H k ( ) → H k ( X ∞ , )) comprises the following collection of intervals:"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "level" : "2",
+    "page number" : 5,
+    "bounding box" : [ 97.895, 108.815, 384.527, 120.767 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "• An interval [ a,b ) for every interval [ a,b ) in Pers 0 ( H k ( )) . ¯"
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 5,
+    "bounding box" : [ 97.895, 90.246, 395.348, 110.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "An interval [¯ a, ¯ b ) for every interval [ a, b ) in Pers 0 ( H k -1 ( ❳ )) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "page number" : 5,
+    "bounding box" : [ 97.895, 77.435, 396.073, 94.864 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "An interval [ a, ¯ a ) for every interval [ a, ∞ ) in Pers ∞ ( H k ( ❳ )) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 639.877, 540.003, 696.302 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. Note that the ﬁrst two classes of interval in Pers( H k ( ) → H k ( X ∞ , )) are those which do not meet the middle term H k ( X n ), and thus correspond exactly to ﬁnite intervals in Pers( H k ( )) and Pers( H k ( X ∞ , )). This explains the ﬁrst two cases, once we make the translation Pers 0 ( H k ( X ∞ , )) = Pers 0 ( H k − 1 ( )). It remains to show is that the intervals of type [ a, ¯ b ) are always of the form [ a, ¯ a ). 1 To do this, we"
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 601.028, 540.001, 647.239 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "need to compare the right ﬁltration of the sequence H k ( ) with the left ﬁltration of the sequence H k ( X ∞ , ). The ﬁrst ﬁltration is the nested sequence of subspaces"
+  }, {
+    "type" : "formula",
+    "id" : 498,
+    "page number" : 6,
+    "bounding box" : [ 195.211, 586.229, 416.79, 598.182 ],
+    "content" : "I m ( H _ { k } ( X _ { i } ) \\to H _ { k } ( X _ { n } ) ) , \\quad i = 1 , 2 , \\dots , n - 1 ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 565.954, 415.428, 577.906 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "of H k ( X n ), and the second ﬁltration is the nested sequence of subspaces"
+  }, {
+    "type" : "formula",
+    "id" : 500,
+    "page number" : 6,
+    "bounding box" : [ 185.586, 545.678, 426.415, 557.63 ],
+    "content" : "K e r ( H _ { k } ( X _ { n } ) \\rightarrow H _ { k } ( X _ { n } , X _ { i } ) ) \\quad i = 1 , 2 , \\dots , n - 1 ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 512.592, 540.0, 537.355 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "of H k ( X n ). But the image and kernel subspaces are equal for each i , by the homology long exact sequence for the pair ( X n ,X i ). Thus the ﬁltrations are the same.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 375.909, 540.004, 503.381 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. The sequence H k ( ) → H k ( X ∞ , ) is not the same as the extended persistence [10]. The latter, deﬁned for the sublevel sets of a real-valued function, requires the reversal of the cells in the relative half of the sequence it translates into the use of the superlevel sets of the function. The meaning of extended persistence for a general ﬁltered space is a lot less straight-forward. The most signiﬁcant diﬀerence between the two sequences (besides the deﬁnition) are the extended pairs, the intervals corresponding to [ a, ∞ ) in Pers ∞ ( H k ( )). In Proposition 2.5 they become the trivial intervals [ a, ¯ a ); on the other hand, they are the main reason extended persistence was introduced: these pairs carry the new information. Another notable diﬀerence is that the dualities in this paper apply to general ﬁltered spaces; Poincar´e and Lefschetz dualities involved in the analysis of the extended persistence require the domains to be manifolds."
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 328.082, 540.002, 365.796 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.6. Persistent chain complexes. We now give a more explicit description of the standard persistence modules, in terms of chain complexes. Among other things, this will lead to a clean proof of Proposition 2.4. Given a ﬁltered cell complex = σ 1 ∪ ··· ∪ σ n , deﬁne a persistence module"
+  }, {
+    "type" : "formula",
+    "id" : 504,
+    "page number" : 6,
+    "bounding box" : [ 241.3, 307.806, 370.202, 319.618 ],
+    "content" : "\\mathbb { C } \\colon \\ C _ { 1 } \\rightarrow C _ { 2 } \\rightarrow \\cdots \\rightarrow C _ { n }"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 262.53, 540.001, 299.342 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where C i =   σ 1 ,...,σ i   , the vector space over k with basis elements labelled σ 1 ,...,σ i . We also have a boundary map: the boundary of any σ j is a linear combination of cells which appear previously:"
+  }, {
+    "type" : "formula",
+    "id" : 506,
+    "page number" : 6,
+    "bounding box" : [ 268.477, 232.814, 343.025, 258.694 ],
+    "content" : "\\partial \\sigma _ { j } = \\sum _ { i < j } D _ { i j } \\sigma _ { i }"
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 201.956, 540.003, 226.718 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "for some collection of coeﬃcients D ij . Geometrically, the cells σ i for which D ij   = 0 will have dimension one less than the dimension of σ j . 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 6,
+    "bounding box" : [ 472.452, 216.609, 472.452, 225.987 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "glyph[negationslash]"
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 163.678, 540.001, 202.244 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The boundary map satisﬁes ∂ = 0, and it restricts to boundary maps ∂ i : C i → C i for each i . Then C ∗ ( X i ) = ( C i ,∂ i ) is the chain complex 2 for the absolute homology of X i , and C ∗ ( ) = ( ,∂ ) is the persistent version for . Accordingly, we deﬁne the persistent absolute homology of to be"
+  }, {
+    "type" : "formula",
+    "id" : 510,
+    "page number" : 6,
+    "bounding box" : [ 224.628, 136.882, 387.373, 154.311 ],
+    "content" : "H _ { * } ( \\mathcal { X } ) = H ( \\mathbb { C } , \\partial ) = K e r ( \\partial ) / \\text {Im} ( \\partial ) ."
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 72.0, 82.243, 540.004, 127.224 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 72.0, 87.778, 540.004, 127.224 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "1 Thus the paired intervals [ a, ∞ ) and [ -∞ , a ) in Pers ∞ ( H k ( ❳ )) and Pers ∞ ( H k ( X ∞ , ❳ )) are really the restrictions of a single interval [ a, ¯ a ) in the concatenated sequence.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 72.0, 82.243, 540.004, 104.366 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "2 For simplicity we generally suppress the homological grading within each C i , which comes from the geometric dimensions of the cells associated to the generators. We will refer to it only when necessary.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 685.393, 305.364, 696.302 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Shown explicitly as a persistence module, this is:"
+  }, {
+    "type" : "formula",
+    "id" : 514,
+    "page number" : 7,
+    "bounding box" : [ 186.34, 653.674, 425.66, 680.349 ],
+    "content" : "H ( \\mathbb { C } , \\partial ) \\colon \\ \\frac { K e r ( \\partial _ { 1 } ) } { I m ( \\partial _ { 1 } ) } \\rightarrow \\frac { K e r ( \\partial _ { 2 } ) } { I m ( \\partial _ { 2 } ) } \\rightarrow \\cdots \\rightarrow \\frac { K e r ( \\partial _ { n } ) } { I m ( \\partial _ { n } ) } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 515,
+    "page number" : 7,
+    "bounding box" : [ 83.955, 637.093, 398.023, 650.913 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For the absolute cohomology persistence module H ∗ ( ), we deﬁne"
+  }, {
+    "type" : "formula",
+    "id" : 516,
+    "page number" : 7,
+    "bounding box" : [ 238.153, 618.45, 373.348, 633.853 ],
+    "content" : "\\mathbb { C } ^ { * } \\colon \\ C _ { 1 } ^ { * } \\leftarrow C _ { 2 } ^ { * } \\leftarrow \\dots \\leftarrow C _ { n } ^ { * }"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 588.931, 540.006, 615.703 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where C ∗ i = Hom( C i , k ) =   σ ∗ 1 ,σ ∗ 2 ,...,σ ∗ i   , with { σ ∗ i } being the dual basis to { σ i } . The coboundary δ = ∂ ∗ is deﬁned to be the adjoint to ∂ . Then C ∗ ( ) = ( ∗ ,δ ) and"
+  }, {
+    "type" : "formula",
+    "id" : 518,
+    "page number" : 7,
+    "bounding box" : [ 223.967, 571.872, 388.034, 585.692 ],
+    "content" : "H ^ { * } ( \\mathcal { X } ) = H ( \\mathbb { C } ^ { * } , \\delta ) = K e r ( \\delta ) / \\text {Im} ( \\delta ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 554.647, 361.183, 565.556 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Again, this is a persistence module (with arrows to the left)."
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 535.151, 420.334, 546.06 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. In our running example, the boundary map is given as follows:"
+  }, {
+    "type" : "formula",
+    "id" : 521,
+    "page number" : 7,
+    "bounding box" : [ 254.943, 484.257, 357.057, 528.455 ],
+    "content" : "\\partial \\sigma _ { 1 } & = \\partial \\sigma _ { 2 } = 0 , \\\\ \\partial \\sigma _ { 3 } & = \\partial \\sigma _ { 4 } = \\sigma _ { 1 } - \\sigma _ { 2 } , \\\\ \\partial \\sigma _ { 5 } & = \\partial \\sigma _ { 6 } = \\sigma _ { 3 } - \\sigma _ { 4 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 467.55, 526.82, 478.459 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "This information is recorded in matrix D of Figure 1. The coboundary map is given as follows:"
+  }, {
+    "type" : "formula",
+    "id" : 523,
+    "page number" : 7,
+    "bounding box" : [ 249.539, 414.321, 359.431, 463.385 ],
+    "content" : "\\delta \\sigma _ { 1 } ^ { * } & = - \\delta \\sigma _ { 2 } = \\sigma _ { 3 } ^ { * } + \\sigma _ { 4 } ^ { * } , \\\\ \\delta \\sigma _ { 3 } ^ { * } & = - \\delta \\sigma _ { 4 } ^ { * } = \\sigma _ { 5 } ^ { * } + \\sigma _ { 6 } ^ { * } , \\\\ \\delta \\sigma _ { 5 } ^ { * } & = \\ \\delta \\sigma _ { 6 } ^ { * } = 0 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 524,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 395.832, 334.91, 409.652 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "This information is recorded in matrix D ⊥ of Figure 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 364.31, 540.002, 388.17 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The relative homology and cohomology persistence modules are deﬁned as the homology of the persistence modules"
+  }, {
+    "type" : "formula",
+    "id" : 526,
+    "page number" : 7,
+    "bounding box" : [ 153.447, 323.354, 458.055, 357.614 ],
+    "content" : "( C _ { n } / \\mathbb { C } ) \\ & \\colon \\ C _ { n } \\to ( C _ { n } / C _ { 1 } ) \\ \\to ( C _ { n } / C _ { 2 } ) \\ \\to \\ \\dots \\ \\to ( C _ { n } / C _ { n - 1 } ) \\\\ ( C _ { n } / \\mathbb { C } ) ^ { * } & \\colon \\ C _ { n } ^ { * } \\leftarrow ( C _ { n } / C _ { 1 } ) ^ { * } \\leftarrow ( C _ { n } / C _ { 2 } ) ^ { * } \\leftarrow \\dots \\ \\leftarrow ( C _ { n } / C _ { n - 1 } ) ^ { * } \\\\ \\intertext { o n d a r y a n d c o b o u n d y a r p s i n d e u c h i n d e f r o w a n t u r a l w a y T h u s }"
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 312.266, 460.865, 323.175 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "with boundary and coboundary maps induced from ∂,δ in the natural way. Thus"
+  }, {
+    "type" : "formula",
+    "id" : 528,
+    "page number" : 7,
+    "bounding box" : [ 142.463, 271.31, 469.537, 308.101 ],
+    "content" : "C _ { * } ( X _ { \\infty } , \\mathcal { X } ) & = ( C _ { n } / \\mathbb { C } , \\partial ) , & C ^ { * } ( X _ { \\infty } , \\mathcal { X } ) & = ( ( C _ { n } / \\mathbb { C } ) ^ { * } , \\delta ) . \\\\ H _ { * } ( X _ { \\infty } , \\mathcal { X } ) & = H ( C _ { n } / \\mathbb { C } , \\partial ) , & H ^ { * } ( X _ { \\infty } , \\mathcal { X } ) & = H ( ( C _ { n } / \\mathbb { C } ) ^ { * } , \\delta ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 529,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 205.918, 539.999, 270.619 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. We note that the maps → of and the maps ← of ( C n / ) ∗ are injective, whereas the maps ← of ∗ and the maps → of ( C n / ) are surjective. In other words, absolute homology and relative cohomology are structurally akin to each other; and qualitatively diﬀerent from absolute cohomology and relative homology. This is a symptom of the global duality mentioned in the introduction."
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 7,
+    "bounding box" : [ 83.955, 186.422, 390.745, 197.331 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The main theorem of [1, 3] can be restated in the following way."
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 166.926, 358.255, 177.835 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 2.6. Given ,∂ as above, there exists a partition"
+  }, {
+    "type" : "formula",
+    "id" : 532,
+    "page number" : 7,
+    "bounding box" : [ 244.346, 149.321, 366.768, 160.23 ],
+    "content" : "\\{ 1 , 2 , \\dots , n \\} = F \\sqcup G \\sqcup H"
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 131.716, 314.078, 142.625 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "with a bijective pairing G ↔ H , written as follows:"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 7,
+    "bounding box" : [ 187.791, 114.112, 424.209, 125.021 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "g is paired with h ⇔ [ g,h ) ∈ Pairs = Pairs( ,∂ ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 95.604, 363.715, 107.416 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Moreover, there is a new basis ˆ σ 1 , ˆ σ 2 ,..., ˆ σ n of C n such that:"
+  }, {
+    "type" : "formula",
+    "id" : 536,
+    "page number" : 7,
+    "bounding box" : [ 89.41, 80.326, 231.405, 92.137 ],
+    "content" : "( 1 ) \\ C _ { i } = \\langle \\hat { \\sigma } _ { 1 } , \\dots , \\hat { \\sigma } _ { i } \\rangle \\ f o r \\ a l l \\ i ."
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 89.41, 664.695, 353.07, 696.575 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 89.41, 677.647, 215.07, 696.575 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(2) ∂ ˆ σ f = 0 for all f ∈ F .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 8,
+      "bounding box" : [ 89.41, 664.695, 353.07, 683.623 ],
+      "font" : "CMR10",
+      "font size" : 10.909,
+      "text color" : "[0.0]",
+      "content" : "(3) ∂ ˆ σ h = ˆ σ g , and hence ∂ ˆ σ g = 0 , for all [ g,h ) ∈ Pairs .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 642.652, 540.0, 667.556 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "It follows that the persistence diagram Pers( H ( ,∂ )) consists of the intervals [ a f , ∞ ) for f ∈ F together with the intervals [ a g ,a h ) for [ g,h ) ∈ Pairs .  "
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 610.659, 540.002, 634.519 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We note that item (1) is equivalent to the assertion that the leading term of each ˆ σ i is σ i (up to a nonzero scalar)."
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 544.858, 540.004, 608.616 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In the language of [1], the index set F identiﬁes the positive simplices which remain unpaired, the index set G identiﬁes the positive simplices which do get paired, and the index set H identiﬁes the negative simplices. The vectors ˆ σ f and ˆ σ g are the cycles with leading terms σ f and σ g , and the vector ˆ σ h is the chain with leading term σ h which ‘kills’ the homology class of its paired ˆ σ g by means of the equation ∂ ˆ σ h = ˆ σ g ."
+  }, {
+    "type" : "paragraph",
+    "id" : 542,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 512.864, 540.001, 536.725 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. In our running example, F = { 1 , 6 } , G = { 2 , 4 } , H = { 3 , 5 } and Pairs = { [2 , 3) , [4 , 5) } . The new basis is"
+  }, {
+    "type" : "formula",
+    "id" : 543,
+    "page number" : 8,
+    "bounding box" : [ 136.903, 477.132, 475.098, 505.137 ],
+    "content" : "\\hat { \\sigma } _ { 1 } & = \\sigma _ { 1 } , & \\hat { \\sigma } _ { 3 } & = \\sigma _ { 3 } , & \\hat { \\sigma } _ { 5 } & = \\sigma _ { 5 } , \\\\ \\hat { \\sigma } _ { 2 } & = - \\sigma _ { 2 } + \\sigma _ { 1 } , & \\hat { \\sigma } _ { 4 } & = - \\sigma _ { 4 } + \\sigma _ { 3 } , & \\hat { \\sigma } _ { 6 } & = \\sigma _ { 6 } - \\sigma _ { 5 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 458.491, 511.902, 470.302 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The reader can easily verify that ∂ ˆ σ 1 = ∂ ˆ σ 2 = ∂ ˆ σ 4 = ∂ ˆ σ 6 = 0, that ∂ ˆ σ 3 = ˆ σ 2 , and ∂ ˆ σ 5 = ˆ σ 4 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 425.454, 539.996, 450.216 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof of Proposition 2.4. The decomposition { 1 , 2 ,...,n } = F   G   H and the new basis ˆ σ 1 , ˆ σ 2 ,..., ˆ σ n allow us to express as a direct sum of persistent chain complexes:"
+  }, {
+    "type" : "formula",
+    "id" : 546,
+    "page number" : 8,
+    "bounding box" : [ 230.32, 387.419, 381.183, 419.625 ],
+    "content" : "\\mathbb { C } & = \\bigoplus _ { f \\in F } \\mathbb { C } _ { f } \\quad \\oplus \\quad \\bigoplus _ { [ g , h ) \\in \\text {Pairs} } \\mathbb { C } _ { g , h } \\\\ \\langle \\hat { \\rho } _ { \\hat { \\ } h } \\rangle _ { \\hat { \\ } A } & = \\mathbb { M } [ g _ { \\ } h ] _ { \\hat { \\ } A } \\, t _ { h } \\, \\cdot \\, h \\, \\cdot \\, \\dots \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\, \\cdot \\"
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 348.453, 540.005, 385.265 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where f =   ˆ σ f   and g,h =   ˆ σ g , ˆ σ h   . Moreover, the boundary map ∂ respects this decomposition, mapping each summand into itself. We can therefore calculate H (( C n / ) ,∂ ) on each summand separately."
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 309.599, 540.001, 346.411 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For summands of type f , the persistence modules are constant over two phases, with index ranges { 0 ,...,f − 1 } and { f,...,n − 1 } . We can condense this information by representing them as two-term persistence modules (one term for each index range):"
+  }, {
+    "type" : "formula",
+    "id" : 549,
+    "page number" : 8,
+    "bounding box" : [ 265.66, 289.919, 382.268, 301.871 ],
+    "content" : "( ( C _ { f } ) _ { n } / \\mathbb { C } _ { f } ) \\colon \\ \\langle \\hat { \\sigma } _ { f } \\rangle \\to 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 8,
+    "bounding box" : [ 229.733, 239.52, 382.268, 285.072 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Ker( ∂ ) :   ˆ σ f   → 0 Im( ∂ ) : 0 → 0 H = Ker( ∂ ) / Im( ∂ ) :   ˆ σ f   → 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 551,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 207.322, 539.997, 232.225 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "It follows that H (( C f ) n / f ) contributes the interval [ −∞ ,a f ). This is generated by [ˆ σ f ] and hence has the same homological dimension as [ a f , ∞ ) in Pers( H ( ))."
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 182.462, 539.998, 206.322 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For summands of type g,h the persistence modules are constant over three phases, with index ranges { 0 ,...,g − 1 } , { g,...,h − 1 } and { h,...,n − 1 } :"
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 8,
+    "bounding box" : [ 203.286, 112.383, 408.716, 174.734 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "(( C g,h ) n / g,h ) :   ˆ σ g , ˆ σ h   →   ˆ σ h   → 0 Ker( ∂ ) :   ˆ σ g   →   ˆ σ h   → 0 Im( ∂ ) :   ˆ σ g   → 0 → 0 H = Ker( ∂ ) / Im( ∂ ) : 0 →   ˆ σ h   → 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 554,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 80.185, 540.0, 105.089 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "It follows that H (( C g,h ) n / g,h ) contributes a single interval, [ a g ,a h ). This is generated by [ˆ σ h ], and hence has dimension one greater than [ a g ,a h ) in Pers( H ( )), that being generated by [ˆ σ g ].  "
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 672.441, 540.003, 696.302 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The following table summarises the relationship between the three types of generator and the persistence intervals they generate."
+  }, {
+    "type" : "table",
+    "id" : 556,
+    "level" : "5",
+    "page number" : 9,
+    "bounding box" : [ 178.836, 624.71, 432.865, 666.241 ],
+    "number of rows" : 3,
+    "number of columns" : 4,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 178.836, 652.397, 242.343, 666.241 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 353,
+          "page number" : 9,
+          "bounding box" : [ 178.836, 652.397, 242.343, 666.241 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "generator"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 242.343, 652.397, 305.851, 666.241 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 354,
+          "page number" : 9,
+          "bounding box" : [ 242.343, 652.397, 305.851, 666.241 ],
+          "font" : "CMMI10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "ˆ σ f"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 305.851, 652.397, 369.358, 666.241 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 355,
+          "page number" : 9,
+          "bounding box" : [ 305.851, 652.397, 369.358, 666.241 ],
+          "font" : "CMMI10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "ˆ σ g"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 369.358, 652.397, 432.865, 666.241 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 356,
+          "page number" : 9,
+          "bounding box" : [ 369.358, 652.397, 432.865, 666.241 ],
+          "font" : "CMMI10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "ˆ σ h"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 178.836, 638.553, 242.343, 652.397 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 357,
+          "page number" : 9,
+          "bounding box" : [ 178.836, 638.553, 242.343, 652.397 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "absolute homology"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 242.343, 638.553, 305.851, 652.397 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 358,
+          "page number" : 9,
+          "bounding box" : [ 242.343, 638.553, 305.851, 652.397 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[ a f , ∞ )"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 305.851, 638.553, 369.358, 652.397 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 359,
+          "page number" : 9,
+          "bounding box" : [ 305.851, 638.553, 369.358, 652.397 ],
+          "font" : "CMMI10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "∞ ) [ a g ,a h )"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 369.358, 638.553, 432.865, 652.397 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 178.836, 624.71, 242.343, 638.553 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 360,
+          "page number" : 9,
+          "bounding box" : [ 178.836, 624.71, 242.343, 638.553 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "relative homology"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 242.343, 624.71, 305.851, 638.553 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 361,
+          "page number" : 9,
+          "bounding box" : [ 242.343, 624.71, 305.851, 638.553 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "[ -∞ ,a f )"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 305.851, 624.71, 369.358, 638.553 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 9,
+        "bounding box" : [ 369.358, 624.71, 432.865, 638.553 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 362,
+          "page number" : 9,
+          "bounding box" : [ 369.358, 624.71, 432.865, 638.553 ],
+          "font" : "CMMI10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "[ a g ,a h ) +"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 557,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 574.281, 540.005, 617.613 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The homological dimension of each interval is equal to the homological dimension of its generator. So, for any pair [ g,h ) ∈ Pairs, the dimension of [ a g ,a h ) in H ∗ ( X ∞ , ) is one greater than the dimension of [ a g ,a h ) in H ∗ ( ). We indicate this in the table with a + subscript."
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 548.423, 540.003, 572.283 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.7. Cohomology. Persistent relative cohomology is structurally similar to persistent absolute homology. To make this apparent, let us introduce new notation, writing"
+  }, {
+    "type" : "formula",
+    "id" : 559,
+    "page number" : 9,
+    "bounding box" : [ 230.48, 528.771, 381.021, 544.174 ],
+    "content" : "\\mathbb { C } ^ { \\perp } \\colon \\ C _ { 1 } ^ { \\perp } \\to C _ { 2 } ^ { \\perp } \\to \\ \\dots \\to C _ { n } ^ { \\perp }"
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 513.245, 216.758, 524.154 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "for the reverse of the sequence"
+  }, {
+    "type" : "formula",
+    "id" : 561,
+    "page number" : 9,
+    "bounding box" : [ 182.734, 489.24, 429.266, 509.201 ],
+    "content" : "( C _ { n } / \\mathbb { C } ) ^ { * } \\colon \\ C _ { n } ^ { * } \\leftarrow ( C _ { n } / C _ { 1 } ) ^ { * } \\leftarrow \\dots \\leftarrow ( C _ { n } / C _ { n - 1 } ) ^ { * } , \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 469.834, 173.64, 489.249 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "so C ⊥ i = ( C n /C n − i ) ∗ . Recall that σ ∗ 1 ,...,σ"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 442.512, 539.995, 476.298 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "∗ n denotes the basis of C ∗ n dual to the basis σ 1 ,...,σ n of C n . If we write τ i = σ ∗ n +1 − i , then ⊥ ∗ ∗ ∗"
+  }, {
+    "type" : "formula",
+    "id" : 564,
+    "page number" : 9,
+    "bounding box" : [ 166.701, 423.416, 445.3, 444.438 ],
+    "content" : "C _ { i } ^ { \\perp } = ( C _ { n } / C _ { n - i } ) = \\langle \\sigma _ { n } ^ { * } , \\sigma _ { n - 1 } ^ { * } , \\dots , \\sigma _ { n + 1 - i } ^ { * } \\rangle = \\langle \\tau _ { 1 } , \\tau _ { 2 } , \\dots , \\tau _ { i } \\rangle \\\\ \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\cdot \\"
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 392.117, 540.0, 425.342 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "− − by elementary linear algebra. Moreover, if ∂σ j =   i<j D ij σ i then δτ j =   i<j D ⊥ ij τ i . where D ⊥ ij = D ( n − j ) , ( n − i ) . On account of the formal similarity between ⊥ and we conclude:"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 9,
+    "bounding box" : [ 83.955, 383.594, 409.045, 397.414 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "On account of the formal similarity between ❈ ⊥ and ❈ we conclude:"
+  }, {
+    "type" : "paragraph",
+    "id" : 567,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 338.659, 540.0, 376.373 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Corollary 2.7. Suppose we have an algorithm which takes as input the sequence of cells σ 1 ,...,σ n and their boundaries ∂σ 1 ,...,∂σ n and produces as output the persistent absolute homology of = σ 1 ∪ ··· ∪ σ n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 312.756, 540.0, 337.519 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Then the same algorithm applied to the sequence of formal cells τ 1 ,...,τ n and coboundaries δτ 1 ,...,δτ n computes the persistent relative cohomology of .  "
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 281.653, 540.002, 305.513 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Persistent absolute cohomology can be thought of as ‘relative persistent relative cohomology’. More precisely, by elementary linear algebra:"
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 250.291, 540.0, 275.493 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 2.8. The persistence module ( C ⊥ n / ⊥ ) is the reverse of ∗ , and the respective coboundary maps agree.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 203.788, 540.0, 241.502 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Corollary 2.9. Suppose we have an algorithm which takes as input the sequence of cells σ 1 ,...,σ n and their boundaries ∂σ 1 ,...,∂σ n and produces as output the persistent relative homology of = σ 1 ∪ ··· ∪ σ n ."
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 177.885, 540.0, 202.648 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Then the same algorithm applied to the sequence of formal cells τ 1 ,...,τ n and coboundaries δτ 1 ,...,δτ n computes the persistent absolute cohomology of .  "
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 127.31, 540.002, 170.642 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. We must transcribe the indices correctly for these two corollaries. If such an algorithm applied to the τ i ,δτ i produces a persistence interval [ p,q − 1] for ⊥ then this is equivalent to [ n + 1 − q,n − p ] for ( C n / ) ∗ , and hence to the half-open real interval [ a n +1 − q ,a n +1 − p )."
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 87.883, 540.001, 126.946 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Suppose now we apply Theorem 2.6 to ⊥ to obtain a partition { 1 , 2 ,...,n } = R   S   T and new generators ˆ τ i , with δ ˆ τ r = 0, δ ˆ τ s = 0, and δ ˆ τ t = ˆ τ s for pairs [ s,t ) ∈ Pairs( ⊥ ,δ ). Then we obtain the following table:"
+  }, {
+    "type" : "table",
+    "id" : 575,
+    "level" : "6",
+    "page number" : 10,
+    "bounding box" : [ 132.349, 660.29, 479.583, 698.605 ],
+    "number of rows" : 3,
+    "number of columns" : 4,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 132.349, 685.833, 219.158, 698.605 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 364,
+          "page number" : 10,
+          "bounding box" : [ 132.349, 685.833, 219.158, 698.605 ],
+          "font" : "CMR10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "generator"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 219.158, 685.833, 305.966, 698.605 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 365,
+          "page number" : 10,
+          "bounding box" : [ 219.158, 685.833, 305.966, 698.605 ],
+          "font" : "CMR10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "ˆ τ r"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 305.966, 685.833, 392.775, 698.605 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 366,
+          "page number" : 10,
+          "bounding box" : [ 305.966, 685.833, 392.775, 698.605 ],
+          "font" : "CMR10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "ˆ τ s"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 392.775, 685.833, 479.583, 698.605 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 367,
+          "page number" : 10,
+          "bounding box" : [ 392.775, 685.833, 479.583, 698.605 ],
+          "font" : "CMR10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "ˆ τ t"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 132.349, 673.062, 219.158, 685.833 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 368,
+          "page number" : 10,
+          "bounding box" : [ 132.349, 673.062, 219.158, 685.833 ],
+          "font" : "CMR10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "relative cohomology"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 219.158, 673.062, 305.966, 685.833 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 369,
+          "page number" : 10,
+          "bounding box" : [ 219.158, 673.062, 305.966, 685.833 ],
+          "font" : "CMSY10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "[ −∞ ,a n +1 − r )"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 305.966, 673.062, 392.775, 685.833 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 370,
+          "page number" : 10,
+          "bounding box" : [ 305.966, 673.062, 392.775, 685.833 ],
+          "font" : "CMR7",
+          "font size" : 6.974,
+          "text color" : "[0.0]",
+          "content" : "[ a n +1 − t ,a n +1 − s ) +"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 392.775, 673.062, 479.583, 685.833 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 132.349, 660.29, 219.158, 673.062 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 371,
+          "page number" : 10,
+          "bounding box" : [ 132.349, 660.29, 219.158, 673.062 ],
+          "font" : "CMR10",
+          "font size" : 9.963,
+          "text color" : "[0.0]",
+          "content" : "absolute cohomology"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 219.158, 660.29, 305.966, 673.062 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 372,
+          "page number" : 10,
+          "bounding box" : [ 219.158, 660.29, 305.966, 673.062 ],
+          "font" : "CMR7",
+          "font size" : 6.974,
+          "text color" : "[0.0]",
+          "content" : "[ a n +1 − r , ∞ )"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 305.966, 660.29, 392.775, 673.062 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 392.775, 660.29, 479.583, 673.062 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 373,
+          "page number" : 10,
+          "bounding box" : [ 392.775, 660.29, 479.583, 673.062 ],
+          "font" : "CMR7",
+          "font size" : 6.974,
+          "text color" : "[0.0]",
+          "content" : "[ a n +1 − t ,a n +1 − s )"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "level" : "7",
+    "page number" : 10,
+    "bounding box" : [ 268.262, 656.481, 274.489, 668.567 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "level" : "7",
+    "page number" : 10,
+    "bounding box" : [ 425.16, 656.481, 431.387, 668.567 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "level" : "7",
+    "page number" : 10,
+    "bounding box" : [ 459.6, 656.481, 465.827, 668.567 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 641.72, 297.943, 652.629 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "By considering Proposition 2.3, we deduce that"
+  }, {
+    "type" : "formula",
+    "id" : 580,
+    "page number" : 10,
+    "bounding box" : [ 186.011, 623.7, 425.989, 634.609 ],
+    "content" : "R = n + 1 - F , \\ \\ S = n + 1 - H , \\ \\ T = n + 1 - G"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 592.728, 540.003, 618.574 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "and moreover ( s,t ) ∈ Pairs( ⊥ ,δ ) if and only if ( n + 1 − t,n + 1 − s ) ∈ Pairs( ,∂ ). Actually, this can also be inferred from the proof of the following proposition."
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 559.028, 540.005, 585.889 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proposition 2.10. Let ˆ σ ∗ 1 ,..., ˆ σ ∗ n denote the dual basis to ˆ σ 1 ,..., ˆ σ n , and write ˆ τ i = ˆ σ ∗ n +1 − i . Then the ˆ τ i are the generators described above (up to nonzero scalar multiples)."
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 524.341, 540.0, 553.092 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. By duality, we have δ ˆ σ ∗ f = 0 for all f ∈ F , and δ ˆ σ ∗ g = ˆ σ ∗ h for all [ g,h ) ∈ Pairs( ). Moreover, σ ∗ i is the trailing term of ˆ σ ∗ i . The proposition now follows, by bookkeeping.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 467.309, 540.004, 517.072 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "2.8. A remark for the algebraically-minded. According to [3], a persistence module can be regarded as a graded module over the ring k [ t ]. In particular, can be regarded as a free module over k [ t ] with n generators, σ 1 ,...,σ n , where σ i has degree i . The boundary map ∂ : → is then a homomorphism of graded modules."
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 441.406, 540.004, 465.266 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The ‘dual’ of such a module can be taken with respect to the ground ﬁeld k or the polynomial ring k [ t ]. Thus we can deﬁne the global dual"
+  }, {
+    "type" : "formula",
+    "id" : 586,
+    "page number" : 10,
+    "bounding box" : [ 187.393, 421.9, 290.343, 436.826 ],
+    "content" : "\\mathbb { C } ^ { \\circ } = H o m _ { k [ t ] } ( \\mathbb { C } , k [ t ] ) ,"
+  }, {
+    "type" : "formula",
+    "id" : 587,
+    "page number" : 10,
+    "bounding box" : [ 147.147, 404.623, 470.053, 420.026 ],
+    "content" : "\\text {where} \\ C _ { n } ^ { \\circ } = \\text {graded-module homomorphism} \\ \\mathbb { C } \\to \\mathbb { k } [ t ] \\ \\text {of degree} \\ n ;"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 388.561, 180.849, 399.47 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "and the pointwise dual"
+  }, {
+    "type" : "formula",
+    "id" : 589,
+    "page number" : 10,
+    "bounding box" : [ 187.864, 369.758, 272.58, 383.776 ],
+    "content" : "\\mathbb { C } ^ { \\dagger } = H o m _ { k } ( \\mathbb { C } , k ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 10,
+    "bounding box" : [ 147.147, 345.159, 403.858, 365.119 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "where C † n = vector-space homomorphisms C − n → k ."
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 306.88, 540.006, 345.943 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "These can be regarded as graded k [ t ]-modules in a natural way. Moreover, the operations − ◦ and − † are contravariant functors, so in particular the boundary map on induces boundary maps on the new modules."
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 10,
+    "bounding box" : [ 83.955, 293.928, 260.198, 304.837 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The interested reader can verify that"
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 10,
+    "bounding box" : [ 203.691, 275.908, 414.998, 286.817 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "H ( ,∂ ) = persistent absolute homology of"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 10,
+    "bounding box" : [ 195.167, 256.871, 425.301, 270.691 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "H ( † ,∂ † ) = persistent absolute cohomology of"
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 10,
+    "bounding box" : [ 194.226, 238.214, 421.029, 252.034 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "H ( ◦ ,∂ ◦ ) = persistent relative cohomology of"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 10,
+    "bounding box" : [ 186.699, 219.558, 410.726, 233.378 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "H ( ◦† ,∂ ◦† ) = persistent relative homology of"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 201.913, 209.666, 212.822 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "up to calibrating the indices."
+  }, {
+    "type" : "heading",
+    "id" : 598,
+    "level" : "Doctitle",
+    "page number" : 10,
+    "bounding box" : [ 244.816, 178.364, 367.183, 189.273 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3. Matrix Algorithms"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 74.708, 540.005, 169.846 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.1. The boundary matrix. We can represent a ﬁltered cell complex (at least, its homological information) by a strictly upper-triangular matrix D , whose entries D [ i,j ] are the coeﬃcients D ij of the boundary map ∂ deﬁned in Section 2.6. Thus the j -th column D [ j ] = D [ ..,j ] represents ∂σ j . With the cells listed in the ﬁltration order, the matrix D also encodes the ﬁltration of the complex. Indeed, the top-left square submatrix D [1 ..i, 1 ..i ] is the boundary matrix for X i = σ 1 ∪ ··· ∪ σ i , or, equivalently, the chain complex C i . Thus D is a representation of the chain complex for persistent absolute homology, C ∗ ( ) = ( ,∂ )."
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 626.535, 540.001, 698.287 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "If we ﬂip the matrix D across its minor diagonal, we get the anti-transpose D ⊥ , formally deﬁned by D ⊥ [ i,j ] = D [ n + 1 − j,n + 1 − i ]. Following the discussion in Section 2.7, we see that D ⊥ represents the cochain complex for persistent relative cohomology, C ∗ ( X ∞ , ) = (( C n / ) ∗ ,δ ). The top-left submatrix D ⊥ [1 ..i, 1 ..i ] is the coboundary matrix for C ∗ ( X ∞ ,X n − i ). Indeed, this is precisely the full coboundary matrix with entries in X n − i removed. It immediately follows that any procedure applied to matrix D that computes the intervals and"
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 594.201, 539.999, 631.013 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "generators of persistent absolute (resp. relative) homology, when applied to matrix D ⊥ will give us the intervals and generators of persistent relative (resp. absolute) cohomology."
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 533.417, 540.005, 583.18 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.2. Persistence by matrix decomposition. In [8], Cohen-Steiner et al. explain how to view the computation of persistent homology as a matrix decomposition problem, ﬁnding a factorization D = RU , where matrix R is reduced and U is invertible upper-triangular. Here we recap the relevant deﬁnitions."
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 493.608, 540.002, 531.374 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "For any matrix A , we deﬁne low A ( j ) to be the index of the lowest non-zero entry in the j -th column of A (that is, the largest index i such that A [ i,j ]   = 0); it is undeﬁned if the column is zero. We say that matrix R is reduced if low R is injective (over its domain of deﬁnition). 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 604,
+    "page number" : 11,
+    "bounding box" : [ 342.729, 508.314, 342.729, 517.692 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "glyph[negationslash]"
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 441.802, 540.002, 494.506 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In what follows it is more convenient to look at the inverse of U , matrix V = U − . The decomposition D = RU becomes R = DV . Whereas neither decomposition is unique, CohenSteiner et al. [8] show that the map low R is. It is precisely this map that gives the persistence pairing: a class born at the step g of the ﬁltration dies at the step h iﬀ low R ( h ) = g ."
+  }, {
+    "type" : "paragraph",
+    "id" : 606,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 371.479, 540.002, 440.714 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Suppose we have a decomposition R = DV . If the column R [ i ] = 0 (so low R ( i ) is undeﬁned), then the column V [ i ] is a cycle, by deﬁnition. Furthermore, since V is invertible upper-triangular, its diagonal entries are non-zero, and V [ i ] is a cycle that does not exist in X i − 1 , i.e. it is exactly the cycle born at H ∗ ( X i ). Similarly, if R [ j ]   = 0, then it is the cycle that falls in the kernel of the map H ∗ ( X j − 1 ) → H ∗ ( X j ), and V [ j ] is the chain that appears in X j and has that cycle as its boundary."
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 11,
+    "bounding box" : [ 261.041, 391.751, 261.041, 401.129 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "glyph[negationslash]"
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 316.171, 540.0, 366.978 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.3. Homology generators. To relate the matrix discussion to the algebra of the previous section, we observe that the new basis of Theorem 2.6 appears in the matrices R and V . The generator ˆ σ f of the inﬁnite interval [ a f , ∞ ) is the column V [ f ]; the generator ˆ σ g of the interval [ a g ,a h ) is the column R [ h ]; the chain ˆ σ h that kills it is the column V [ h ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 244.364, 540.001, 307.981 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. See Figure 1 for the matrices R,D,V of our running example. The map low R gives the absolute homology persistence intervals Pers( H ∗ ( )) = { [1 , ∞ ) 0 , [2 , 3) 0 , [4 , 5) 1 , [6 , ∞ ) 2 } where the subscript indicates the dimension of the homology class. Columns of the matrices V and R give the cycles generating each of the intervals: they are ˆ σ 1 = V [1] = σ 1 , ˆ σ 2 = R [3] = σ 1 − σ 2 , ˆ σ 4 = R [5] = σ 3 − σ 4 , and ˆ σ 6 = V [6] = σ 6 − σ 5 , respectively."
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 179.75, 540.006, 236.033 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In view of Proposition 2.4, we can also read oﬀ the generators for persistent relative homology: the column V [ f ] is the generator for the interval [ −∞ ,a f ), and the column V [ h ] is the generator for [ a g ,a h ) (the chain that it represents becomes a relative cycle in H ∗ ( X ∞ ,X g ), and remains nonzero until H ∗ ( X ∞ ,X h ))."
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 152.274, 539.999, 177.037 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. The four intervals of Pers( H ∗ ( S 6 , )) = { [ −∞ , 1) 0 , [2 , 3) 1 , [4 , 5) 2 , [ −∞ , 6) 2 } have respective generators ˆ σ 1 = V [1] = σ 1 , ˆ σ 3 = V [3] = σ 3 , ˆ σ 5 = V [5] = σ 5 , and ˆ σ 6 = V [6] = σ 6 − σ 5 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 106.206, 540.003, 143.943 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.4. Cohomology generators. We now take the global dual, and consider persistent relative and absolute cohomology. This time we compute the decomposition R ⊥ = D ⊥ V ⊥ for the anti-transpose D ⊥ of D ."
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 74.708, 540.002, 107.075 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We must take care to track the indices correctly. As a matrix, the rows and columns of D ⊥ are labelled { 1 ,...,n } in the usual order. However, row i and column i refer to cell σ n +1 − i in the"
+  }, {
+    "type" : "image",
+    "id" : 614,
+    "page number" : 12,
+    "bounding box" : [ 156.514, 555.22, 449.356, 699.377 ],
+    "description" : "The image consists of a diagram with four different shapes and their corresponding angles. The diagram is labeled as follows: 1. **Circle**: - The center of the circle is marked with a point labeled as 1. - The angle at the center of the circle is labeled as 1. 2. **Square**: - The square is marked with a point labeled as 2. - The angle at the center of the square is labeled as 2. 3. **Rectangle**: - The rectangle is marked with a point labeled as 3. - The angle at the center of the rectangle is labeled as 3. 4. **Triangle**: - The triangle is marked with a point labeled as 4. - The angle at the center of the triangle is labeled as 4. Each shape has a specific angle labeled as 1, and the angles are marked as 2, 3, and",
+    "source" : "VSMJ2011/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 615,
+    "page number" : 12,
+    "bounding box" : [ 271.69, 690.954, 315.925, 698.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1 2 3 4 5 6 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "page number" : 12,
+    "bounding box" : [ 335.69, 690.954, 379.925, 698.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1 1 1 2 3 4 5 6"
+  }, {
+    "type" : "paragraph",
+    "id" : 617,
+    "page number" : 12,
+    "bounding box" : [ 399.69, 690.954, 443.925, 698.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1 2 3 4 5 6 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 682.954, 267.925, 690.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 619,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 289.226, 682.954, 293.461, 690.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 12,
+    "bounding box" : [ 353.225, 682.954, 357.46, 690.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 12,
+    "bounding box" : [ 361.288, 682.954, 365.523, 690.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 12,
+    "bounding box" : [ 401.225, 682.954, 405.46, 690.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 286.465, 675.275, 293.523, 683.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 625,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 350.465, 675.275, 365.523, 683.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 674.954, 267.925, 682.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 12,
+    "bounding box" : [ 409.225, 674.954, 413.46, 682.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 633,
+    "page number" : 12,
+    "bounding box" : [ 422.465, 667.275, 429.523, 675.246 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 666.954, 267.925, 674.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 12,
+    "bounding box" : [ 305.288, 666.954, 309.523, 674.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 12,
+    "bounding box" : [ 369.288, 666.954, 381.523, 674.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 12,
+    "bounding box" : [ 417.225, 666.954, 421.46, 674.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 629,
+    "level" : "8",
+    "page number" : 12,
+    "bounding box" : [ 322.701, 664.337, 329.287, 672.308 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 12,
+    "bounding box" : [ 388.818, 658.405, 391.17, 672.225 ],
+    "font" : "CMSY8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "·"
+  }, {
+    "type" : "paragraph",
+    "id" : 635,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 302.465, 659.275, 309.523, 667.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 366.465, 659.275, 381.523, 667.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 658.954, 267.925, 666.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 12,
+    "bounding box" : [ 425.225, 658.954, 429.46, 666.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 12,
+    "bounding box" : [ 438.465, 651.275, 445.523, 659.246 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 650.954, 267.925, 658.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 12,
+    "bounding box" : [ 433.225, 650.954, 437.46, 658.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 12,
+    "bounding box" : [ 215.489, 648.379, 220.47, 658.342 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 642.954, 267.925, 650.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 12,
+    "bounding box" : [ 441.225, 642.954, 445.46, 650.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 642,
+    "page number" : 12,
+    "bounding box" : [ 191.249, 639.884, 196.231, 649.847 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 12,
+    "bounding box" : [ 309.994, 633.843, 316.372, 641.814 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "R"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 12,
+    "bounding box" : [ 373.994, 633.843, 380.942, 641.814 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 12,
+    "bounding box" : [ 437.994, 633.843, 442.926, 641.814 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "V"
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 12,
+    "bounding box" : [ 157.303, 623.131, 162.284, 633.094 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 12,
+    "bounding box" : [ 233.721, 623.131, 238.702, 633.094 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 650,
+    "page number" : 12,
+    "bounding box" : [ 197.257, 616.887, 202.239, 626.85 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 12,
+    "bounding box" : [ 271.69, 610.954, 315.925, 618.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6 5 4 3 2 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 12,
+    "bounding box" : [ 335.69, 610.954, 379.925, 618.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6 5 4 3 2 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 653,
+    "page number" : 12,
+    "bounding box" : [ 399.69, 610.954, 443.925, 618.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6 5 4 3 2 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 286.465, 603.275, 293.523, 611.246 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 350.465, 603.275, 357.523, 611.246 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 602.954, 267.925, 610.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 12,
+    "bounding box" : [ 361.288, 602.954, 365.523, 610.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 12,
+    "bounding box" : [ 401.225, 602.954, 405.46, 610.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 12,
+    "bounding box" : [ 209.273, 596.377, 214.254, 606.34 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 661,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 286.465, 595.275, 293.523, 603.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 350.465, 594.954, 365.46, 603.246 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 594.954, 267.925, 602.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 12,
+    "bounding box" : [ 409.225, 594.954, 413.46, 602.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 302.465, 587.275, 309.523, 595.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 366.465, 587.275, 373.523, 595.246 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 586.954, 267.925, 594.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 668,
+    "page number" : 12,
+    "bounding box" : [ 377.288, 586.954, 381.523, 594.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 12,
+    "bounding box" : [ 417.225, 586.954, 421.46, 594.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 671,
+    "page number" : 12,
+    "bounding box" : [ 425.225, 586.954, 429.46, 594.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "level" : "8",
+    "page number" : 12,
+    "bounding box" : [ 322.701, 584.337, 329.287, 592.308 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 12,
+    "bounding box" : [ 388.818, 578.406, 391.17, 592.226 ],
+    "font" : "CMSY8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "·"
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 302.465, 579.275, 309.523, 587.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "level" : "7",
+    "page number" : 12,
+    "bounding box" : [ 366.465, 579.275, 373.523, 587.246 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-1"
+  }, {
+    "type" : "paragraph",
+    "id" : 672,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 578.954, 267.925, 586.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 12,
+    "bounding box" : [ 377.288, 578.954, 381.523, 586.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 12,
+    "bounding box" : [ 425.225, 578.954, 429.46, 586.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 570.954, 267.925, 578.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 12,
+    "bounding box" : [ 433.225, 570.954, 437.46, 578.925 ],
+    "font" : "CMR8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 12,
+    "bounding box" : [ 441.225, 570.954, 445.46, 578.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 680,
+    "page number" : 12,
+    "bounding box" : [ 263.69, 562.954, 267.925, 570.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 12,
+    "bounding box" : [ 441.225, 562.954, 445.46, 570.925 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 12,
+    "bounding box" : [ 316.421, 552.982, 322.177, 563.347 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 685,
+    "page number" : 12,
+    "bounding box" : [ 381.177, 552.982, 386.933, 563.347 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 12,
+    "bounding box" : [ 444.807, 552.982, 450.563, 563.347 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 12,
+    "bounding box" : [ 309.994, 553.843, 316.372, 561.814 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "R"
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 12,
+    "bounding box" : [ 373.994, 553.843, 380.942, 561.814 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 686,
+    "page number" : 12,
+    "bounding box" : [ 437.994, 553.843, 442.926, 561.814 ],
+    "font" : "CMMI8",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "V"
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 12,
+    "bounding box" : [ 107.865, 506.679, 504.133, 543.49 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Figure 1. Filtration of a sphere, and the corresponding decompositions R = DV and R ⊥ = D ⊥ V ⊥ . Maps low R and low R ⊥ are shown with squares around the entries. We show only the non-zero entries of the matrices."
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 456.325, 540.001, 496.313 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "original complex. If we deﬁne i ∗ = n + 1 − i , then we can think of the rows and columns as being labelled { n ∗ ,..., 1 ∗ } , so that row i ∗ and column i ∗ do indeed refer to cell σ i . The numerical labels in Figure 1 for D ⊥ ,R ⊥ ,V ⊥ should be thought of as starred labels."
+  }, {
+    "type" : "paragraph",
+    "id" : 690,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 399.946, 540.005, 457.193 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The columns of R ⊥ and V ⊥ contain the cocycles of H ∗ ( X ∞ , ) and the cochains that kill them. If low R ⊥ ( g ∗ ) = h ∗ , then there is a ﬁnite interval [ a g ,a h ) generated by the cocycle ˆ σ ∗ h = R ⊥ [ g ∗ ] and killed by the cochain ˆ σ ∗ g = V ⊥ [ g ∗ ]. If R ⊥ [ f ∗ ] = 0, then there is an inﬁnite interval [ −∞ ,a f ) generated by ˆ σ ∗ f = V ⊥ [ f ∗ ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 355.149, 540.001, 396.862 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. The persistent relative cohomology Pers( H ∗ ( S 6 , )) has four intervals [ −∞ , 6) 2 , [4 , 5) 2 , [2 , 3) 1 , [ −∞ , 1) 0 , generated respectively by ˆ σ ∗ 6 = V ⊥ [6 ∗ ] = σ ∗ 6 , ˆ σ ∗ 5 = R ⊥ [4 ∗ ] = − σ ∗ 6 − σ ∗ 5 , ˆ σ ∗ 3 = R ⊥ [2 ∗ ] = − σ ∗ 3 − σ ∗ 2 , ˆ σ ∗ 1 = V ⊥ [1 ∗ ] = σ ∗ 1 + σ ∗ 2 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 692,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 310.002, 540.003, 352.303 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Finally, we can read oﬀ the generators for persistent absolute cohomology H ∗ ( ): when R ⊥ [ f ∗ ] = 0, the column V ⊥ [ f ∗ ] is the cocycle which generates the interval [ −∞ ,a f ); and when low R ⊥ ( g ∗ ) = h ∗ , the column V ⊥ [ g ∗ ] is the cocycle which generates [ a g ,a h )."
+  }, {
+    "type" : "paragraph",
+    "id" : 693,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 264.759, 540.001, 306.472 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Example. The persistent absolute cohomology Pers( H ∗ ( )) has four intervals [6 , + ∞ ) 2 , [4 , 5) 1 , [2 , 3) 0 , [1 , + ∞ ) 0 generated respectively by ˆ σ ∗ 6 = V ⊥ [6 ∗ ] = σ ∗ 6 , ˆ σ ∗ 4 = V ⊥ [4 ∗ ] = σ ∗ 4 , ˆ σ ∗ 2 = V ⊥ [2 ∗ ] = σ ∗ 2 , ˆ σ ∗ 1 = V ⊥ [1 ∗ ] = σ ∗ 1 + σ ∗ 2 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 694,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 223.577, 540.005, 260.389 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "3.5. Column and row algorithms. The original persistence algorithm [1, 3] ﬁnds the pairing by processing matrix D column-by-column to obtain the reduced matrix R . In the context of R = DV decomposition, one can express it as:"
+  }, {
+    "type" : "heading",
+    "id" : 695,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 72.0, 202.149, 259.772, 213.058 ],
+    "heading level" : 1,
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 1 Column algorithm pHcol ."
+  }, {
+    "type" : "paragraph",
+    "id" : 696,
+    "level" : "8",
+    "page number" : 12,
+    "bounding box" : [ 259.772, 160.74, 291.352, 213.058 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ". do"
+  }, {
+    "type" : "paragraph",
+    "id" : 697,
+    "page number" : 12,
+    "bounding box" : [ 82.909, 121.251, 274.473, 196.917 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "R = D ; V = I for i = 1 to n do while ∃ j < i with low R ( j ) = low c = R [ i ][low R i ] /R [ j ][low R j ] R [ i ] = R [ i ] − cR [ j ] V [ i ] = V [ i ] − cR [ j ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 698,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 81.228, 539.996, 105.089 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Here the deﬁnition of the constant c ensures that the lowest non-zero element in column i moves up after each iteration of the while loop. The condition of the while loop immediately implies"
+  }, {
+    "type" : "paragraph",
+    "id" : 699,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 633.587, 539.997, 670.399 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "The algorithm pHcol is essentially Gaussian elimination performed using column operations. More commonly one would use column operations, processing the matrix row-by-row from the bottom up:"
+  }, {
+    "type" : "heading",
+    "id" : 700,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 72.0, 606.967, 249.713, 617.876 ],
+    "heading level" : 1,
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 2 Row algorithm pHrow ."
+  }, {
+    "type" : "paragraph",
+    "id" : 701,
+    "page number" : 13,
+    "bounding box" : [ 82.909, 500.166, 388.664, 601.735 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "R = D ; V = I for i = n down to 1 do indices = [ j | low R ( j ) = i ] # lows in the row i of R p = indices [0] # pivot for j ∈ indices [1 .. ] do c = R [ j ][low R j ] /R [ p ][low R p ] R [ j ] = R [ j ] − cR [ p ] V [ j ] = V [ j ] − cV [ p ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 702,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 416.097, 540.005, 478.812 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "It is not diﬃcult to see that this algorithm also produces an R = DV decomposition where matrix R is reduced, and matrix V is invertible upper-triangular. What is less immediate is that the two algorithms produce identical decompositions, so we prove this fact formally. (Notice that the statement would not be true if, during pHrow , we tried to cancel all non-zero elements in row i of R , rather than restricting attention to the columns picked out by indices .)"
+  }, {
+    "type" : "paragraph",
+    "id" : 703,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 381.873, 539.995, 406.636 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Theorem 3.1 (Identical Output Theorem) . The decompositions R c = DV c and R r = DV r produced by column and row algorithms respectively are identical, i.e. R c = R r and V c = V r ."
+  }, {
+    "type" : "paragraph",
+    "id" : 704,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 271.744, 540.002, 373.313 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We observe that once it determines the lowest non-zero element in a given column of matrix R , neither algorithm changes that column in any subsequent operations. Given a matrix R = D we prove the claim by induction. The ﬁrst column with the lowest non-zero entry in R is not modiﬁed by either algorithm. Suppose that the columns with the lowest non-zero entries below i are identical in both R c and R r , and V c and V r . During the computation of the column with the lowest non-zero entry in row i we add columns with low R > i in a decreasing order dictated by the lowest non-zero entry of the column. Since the order and the columns are identical, so is the result.  "
+  }, {
+    "type" : "paragraph",
+    "id" : 705,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 238.422, 539.999, 262.282 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. Recently Milosavljevic, Morozov, and Skraba [11] showed that one can compute persistence in matrix multiplication time."
+  }, {
+    "type" : "paragraph",
+    "id" : 706,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 179.197, 540.001, 228.96 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. One can apply the two algorithms of this section to the restricted matrix D p that gives only the boundaries of the p -dimensional cells. We can still extract some information from the R p = D p V p decomposition of this matrix: the ﬁnite intervals [ g,h ) in dimension p − 1 and the births in dimension p , i.e. the endpoints g or h of any p -dimensional interval."
+  }, {
+    "type" : "heading",
+    "id" : 707,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 260.885, 152.461, 351.11, 163.37 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "4. Optimizations"
+  }, {
+    "type" : "paragraph",
+    "id" : 708,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 80.303, 540.002, 143.943 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "4.1. Cohomology algorithm. One of our goals has been to relate our present work to an algorithm pCoh for persistent absolute cohomology that we described in [6]. We based that algorithm on the idea of maintaining a right ﬁltration (deﬁned in [12]); as a result it looks diﬀerent from pHcol and pHrow above. In fact, we now show that one can view pCoh as an optimization of pHrow applied to the matrix D ⊥ . We begin by reviewing the algorithm:"
+  }, {
+    "type" : "paragraph",
+    "id" : 709,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 684.99, 281.743, 695.899 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 3 Cohomology algorithm pCoh ."
+  }, {
+    "type" : "paragraph",
+    "id" : 710,
+    "page number" : 14,
+    "bounding box" : [ 82.909, 522.396, 310.624, 679.705 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Z ⊥ = [] , birth = [] for i = 1 to n do indices = [ j | σ ∗ i ∈ δz ∗ j ,z ∗ j unmarked in Z ⊥ ] if indices are empty then prepend σ ∗ i to Z ⊥ and i to birth else prepend a marked σ ∗ i to Z ⊥ and i to birth p = indices [0] for j = 1 to size( indices ) do c = ( δZ ⊥ [ indices [ j ]])[ i ] / ( δZ ⊥ [ p ])[ i ] Z ⊥ [ indices [ j ]] = Z ⊥ [ indices [ j ]] − cZ ⊥ [ p ] mark Z ⊥ [ p ] and output the pair [ birth [ p ] ,i )"
+  }, {
+    "type" : "image",
+    "id" : 711,
+    "page number" : 14,
+    "bounding box" : [ 181.324, 422.654, 424.858, 507.853 ],
+    "source" : "VSMJ2011/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 712,
+    "level" : "9",
+    "page number" : 14,
+    "bounding box" : [ 258.907, 465.497, 266.656, 475.46 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 713,
+    "page number" : 14,
+    "bounding box" : [ 224.417, 446.287, 229.398, 456.25 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 715,
+    "page number" : 14,
+    "bounding box" : [ 242.548, 420.971, 248.775, 433.057 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 717,
+    "page number" : 14,
+    "bounding box" : [ 339.432, 420.971, 345.659, 433.057 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 719,
+    "page number" : 14,
+    "bounding box" : [ 418.932, 420.971, 425.159, 433.057 ],
+    "font" : "CMSY7",
+    "font size" : 6.974,
+    "text color" : "[0.0]",
+    "content" : "⊥"
+  }, {
+    "type" : "paragraph",
+    "id" : 714,
+    "page number" : 14,
+    "bounding box" : [ 234.907, 421.497, 242.472, 431.46 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "R"
+  }, {
+    "type" : "paragraph",
+    "id" : 716,
+    "page number" : 14,
+    "bounding box" : [ 330.907, 421.497, 339.155, 431.46 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 718,
+    "page number" : 14,
+    "bounding box" : [ 410.907, 421.497, 416.718, 431.46 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "V"
+  }, {
+    "type" : "paragraph",
+    "id" : 720,
+    "page number" : 14,
+    "bounding box" : [ 80.393, 395.429, 531.608, 409.249 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Figure 2. The structure of matrices R ⊥ = D ⊥ V ⊥ during the execution of the row algorithm."
+  }, {
+    "type" : "paragraph",
+    "id" : 721,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 316.533, 540.001, 382.136 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "List Z ⊥ maintains the cocycle basis for H ∗ ( X i ) in the right ﬁltration order dictated by the ﬁltration of the space. The marking above is for exposition only, in practice we drop a cocycle from the list Z ⊥ as soon as it dies. When a new cell σ i enters, it is necessarily a cocycle (since it has no cofaces), but it may fall into a coboundary of a former cocycle, in which case (the else clause) we update the right ﬁltration and drop the cocycle that σ i kills."
+  }, {
+    "type" : "paragraph",
+    "id" : 722,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 278.581, 540.004, 315.393 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "To see that this algorithm is a variation of the row algorithm from the previous section, observe that the cocycles that it maintains are stored in the bottom-right corner of matrix V ⊥ during the execution of the row algorithm."
+  }, {
+    "type" : "paragraph",
+    "id" : 723,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 245.25, 539.997, 272.021 ],
+    "font" : "CMTI10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Claim 4.1. The matrix Z ⊥ in the cohomology algorithm after iteration i is equal to the bottom-right corner of the matrix V ⊥ [( n − i ) ..n, ( n − i ) ..n ] after the i -th iteration of the row algorithm."
+  }, {
+    "type" : "paragraph",
+    "id" : 724,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 171.317, 540.006, 239.349 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Proof. We prove the claim inductively. Denoting with R ⊥ i ,V ⊥ i ,Z ⊥ i the various matrices after i iterations of both algorithms, assume the unmarked cocycles z ∗ j in Z ⊥ i are exactly the cocycles with low R ⊥ ( j ) > i . In other words, the corresponding columns R ⊥ i [ j ] = 0. Furthermore assume that the two matrices are identical, i.e. V ⊥ i = Z ⊥ i . The claim is true when i = 0. Our goal is to show it is true for i = k assuming it is true for i = k − 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 725,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 114.303, 540.002, 171.26 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "At the k -th iteration, if cell σ ∗ k does not appear in the coboundary of any cocycle, then its row in R ⊥ k − 1 = δV ⊥ k − 1 = δZ ⊥ k − 1 is zero. It follows that it is not in the image of the map low R ⊥ k − 1 and therefore neither algorithm performs any changes, so V ⊥ k = Z ⊥ k , and unmarked cocycles remain as claimed."
+  }, {
+    "type" : "paragraph",
+    "id" : 726,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 75.133, 540.002, 114.247 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "If cell σ ∗ k is in the coboundary of a cocycle z ∗ j then k is in the image imlow R ⊥ k − 1 . Moreover, from the inductive hypothesis the indices j of the columns of R ⊥ k − 1 that have low R ⊥ k − 1 ( j ) = i are exactly"
+  }, {
+    "type" : "paragraph",
+    "id" : 727,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 624.997, 540.0, 662.999 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Remark. Since the matrix R contains the ﬁnal persistence pairing, expressed as the map low R , the algorithm pHcol is commonly optimized to keep track only of this matrix (and ignore matrix V ). In contrast, pCoh maintains only matrix Z ⊥ = V ⊥ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 728,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 553.765, 540.005, 616.48 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "4.2. Practice. The algorithm pCoh above highlights the diﬀerence between the column and the row versions of the persistence algorithm. pHcol stores all the dead cycles since it has no choice: any of them might be required at some future point in the reduction. pHrow , on the other hand, is able to ‘examine the future’ by inspecting any chosen row. It is therefore free to drop a column once it has determined its pairing and used it in the update. pCoh does so explicitly."
+  }, {
+    "type" : "paragraph",
+    "id" : 729,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 463.105, 540.004, 551.723 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "In practice, such row access may be diﬃcult when computing homology: it requires quick access to the coboundary of a given cell (since that is what a row of D is). In simplicial complex implementations it is common to represent simplices as lists of vertices; then their boundary maps are easy to compute on the ﬂy, while their coboundaries require a full preprocessing of the entire boundary matrix. By switching to cohomology we turn the tables: all the primitives necessary for the row algorithm (and in particular the optimized version given in this section) are readily available."
+  }, {
+    "type" : "paragraph",
+    "id" : 730,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 388.64, 540.005, 451.355 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "4.3. Experiments. The practical improvement resulting from these observations is startling. In the following table we compare the traditional persistent homology algorithm pHcol with the cohomology algorithm pCoh . We list the total number of operations performed (in terms of primitive operations during chain arithmetic), total running time, and peak space usage in terms of the number of elements stored."
+  }, {
+    "type" : "table",
+    "id" : 731,
+    "level" : "10",
+    "page number" : 15,
+    "bounding box" : [ 148.233, 317.301, 463.156, 387.85 ],
+    "number of rows" : 3,
+    "number of columns" : 5,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 148.233, 364.333, 211.218, 387.85 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 375,
+          "page number" : 15,
+          "bounding box" : [ 148.233, 364.333, 211.218, 387.85 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "Dataset M-50"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 211.218, 364.333, 274.202, 387.85 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 376,
+          "page number" : 15,
+          "bounding box" : [ 211.218, 364.333, 274.202, 387.85 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "Algorithm pCoh"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 274.202, 364.333, 337.187, 387.85 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 377,
+          "page number" : 15,
+          "bounding box" : [ 274.202, 364.333, 337.187, 387.85 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Operations"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 337.187, 364.333, 400.171, 387.85 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 378,
+          "page number" : 15,
+          "bounding box" : [ 337.187, 364.333, 400.171, 387.85 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Time"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 400.171, 364.333, 463.156, 387.85 ],
+        "row number" : 1,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 379,
+          "page number" : 15,
+          "bounding box" : [ 400.171, 364.333, 463.156, 387.85 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Peak elements"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 148.233, 340.817, 211.218, 364.333 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 380,
+          "page number" : 15,
+          "bounding box" : [ 148.233, 340.817, 211.218, 364.333 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "M-50"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 211.218, 340.817, 274.202, 364.333 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 381,
+          "page number" : 15,
+          "bounding box" : [ 211.218, 340.817, 274.202, 364.333 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "pCoh pHcol"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 274.202, 340.817, 337.187, 364.333 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 382,
+          "page number" : 15,
+          "bounding box" : [ 274.202, 340.817, 337.187, 364.333 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "2,171,909,275 609,477,028,616"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 337.187, 340.817, 400.171, 364.333 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 383,
+          "page number" : 15,
+          "bounding box" : [ 337.187, 340.817, 400.171, 364.333 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "4160 s 6 s"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 400.171, 340.817, 463.156, 364.333 ],
+        "row number" : 2,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 384,
+          "page number" : 15,
+          "bounding box" : [ 400.171, 340.817, 463.156, 364.333 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "575,758 6,461,866"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 148.233, 317.301, 211.218, 340.817 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 385,
+          "page number" : 15,
+          "bounding box" : [ 148.233, 317.301, 211.218, 340.817 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "T-10,000"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 211.218, 317.301, 274.202, 340.817 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 386,
+          "page number" : 15,
+          "bounding box" : [ 211.218, 317.301, 274.202, 340.817 ],
+          "font" : "CMSS10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "pHcol"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 274.202, 317.301, 337.187, 340.817 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 387,
+          "page number" : 15,
+          "bounding box" : [ 274.202, 317.301, 337.187, 340.817 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "29,760,159,689"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 337.187, 317.301, 400.171, 340.817 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 388,
+          "page number" : 15,
+          "bounding box" : [ 337.187, 317.301, 400.171, 340.817 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "207 s"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 15,
+        "bounding box" : [ 400.171, 317.301, 463.156, 340.817 ],
+        "row number" : 3,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 389,
+          "page number" : 15,
+          "bounding box" : [ 400.171, 317.301, 463.156, 340.817 ],
+          "font" : "CMR10",
+          "font size" : 10.909,
+          "text color" : "[0.0]",
+          "content" : "693,031"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 732,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 198.369, 540.005, 312.889 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "We used the C ++ library Dionysus [13] to perform the above experiments. The homology algorithm pHcol in the above table computes only the matrix R since it suﬃces to extract the barcode. It also uses the original optimization of [1] and stores the non-zero coeﬃcients only in the rows that correspond to the positive cells. M-50 is a ﬁltration of an 8-skeleton of a Rips complex built on 50 random points of a Mumford dataset [14, 15] up to the maximum pairwise distance of 1.5; the largest complex consists of 663,901 simplices. T-10,000 is an alpha shape ﬁltration of 10,000 points sampled on a torus embedded in R 3 ; the size of the Delaunay triangulation is 557,727 simplices. The speed-up is encouraging. We would like to point out that these examples are not cherry-picked: we have yet to ﬁnd a ﬁltration on which pHcol is the faster of the two."
+  }, {
+    "type" : "paragraph",
+    "id" : 733,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 147.216, 540.003, 184.028 ],
+    "font" : "CMR10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "Conclusion. When combined, the algebraic and experimental observations suggest that if given a choice, one is better oﬀ using the cohomology algorithm. Most of the time one has such a choice: for example, when computing only the persistence diagram."
+  }, {
+    "type" : "heading",
+    "id" : 734,
+    "level" : "Doctitle",
+    "page number" : 15,
+    "bounding box" : [ 274.194, 123.308, 337.807, 128.915 ],
+    "heading level" : 1,
+    "font" : "CMCSC10",
+    "font size" : 10.909,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "11",
+    "page number" : 15,
+    "bounding box" : [ 76.608, 81.713, 540.004, 112.598 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.608, 92.672, 540.004, 112.598 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[1] Herbert Edelsbrunner, David Letscher, and Afra Zomorodian. Topological persistence and simpliﬁcation. Discrete and Computational Geometry , 28(4):511–533, 2002.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.608, 81.713, 462.008, 90.68 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[2] Gunnar Carlsson. Topology and data. American Mathematical Society , 46(2):255–308, 2009.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "11",
+    "page number" : 16,
+    "bounding box" : [ 72.0, 411.905, 540.004, 694.845 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 13,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 674.919, 540.0, 694.845 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[3] Afra Zomorodian and Gunnar Carlsson. Computing persistent homology. Discrete and Computational Geometry , 33(2):249–274, 2005.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 653.001, 540.001, 672.927 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[4] David Cohen-Steiner, Herbert Edelsbrunner, and John Harer. Stability of persistence diagrams. Discrete and Computational Geometry , 37(1):103–120, 2007.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 620.124, 540.004, 651.009 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[5] Fre´de´ric Chazal, David Cohen-Steiner, Marc Glisse, Leo Guibas, and Steve Oudot. Proximity of persistence modules and their diagrams. In Proceedings of the Annual Symposium on Computational Geometry , pages 237– 246, 2009.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 598.206, 540.001, 618.132 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[6] Vin de Silva, Dmitriy Morozov, and Mikael Vejdemo-Johansson. Persistent cohomology and circular coordinates. Discrete and Computational Geometry , 45(4):737–759, 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 576.289, 540.001, 596.214 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[7] Vin de Silva and Robert Ghrist. Coordinate-free coverage in sensor networks with controlled boundaries via homology. International Journal of Robotics Research , 25(12):1205–1222, December 2006.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 554.371, 540.001, 574.297 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[8] David Cohen-Steiner, Herbert Edelsbrunner, and Dmitriy Morozov. Vines and vineyards by updating persistence in linear time. In Proceedings of the Annual Symposium on Computational Geometry , pages 119–126, 2006.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 76.608, 543.412, 369.501, 552.379 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[9] Allen Hatcher. Algebraic topology . Cambridge University Press, 2002.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 521.494, 540.0, 541.42 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[10] David Cohen-Steiner, Herbert Edelsbrunner, and John Harer. Extending persistence using poincar´e and lefschetz duality. Foundations of Computational Mathematics , 9(1):79–103, 2009.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 499.576, 539.998, 519.502 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[11] Nikola Milosavljevic, Dmitriy Morozov, and Primoz Skraba. Zigzag persistent homology in matrix multiplication time. In Proceedings of the Annual Symposium on Computational Geometry , pages 216–225, 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 477.658, 540.004, 497.584 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[12] Gunnar Carlsson and Vin de Silva. Zigzag persistence. Foundations of Computational Mathematics , 10(4):367– 405, 2010.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 455.741, 540.002, 475.667 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[13] Dmitriy Morozov. Dionysus library for computing persistent homology. http://www.mrzv.org/software/ dionysus .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 433.823, 539.996, 453.749 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[14] Gunnar Carlsson, Tigran Ishkhanov, Vin de Silva, and Afra Zomorodian. On the local behavior of spaces of natural images. International Journal of Computer Vision , 76(1):1–12, January 2008.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 411.905, 539.998, 431.831 ],
+      "font" : "CMR9",
+      "font size" : 8.966,
+      "text color" : "[0.0]",
+      "content" : "[15] Ann B. Lee, Kim S. Pedersen, and David Mumford. The nonlinear statistics of high-contrast patches in natural images. Technical Report APPTS #01-3, Division of Applied Mathematics Brown University, December 2001.",
+      "kids" : [ ]
+    } ]
+  } ]
+}

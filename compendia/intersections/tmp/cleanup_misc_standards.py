@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Normalize compendia/misc docs: headings, TOC, strip boilerplate, references sidecar link."""
+"""Normalize compendia/intersections docs: headings, TOC, strip boilerplate, references sidecar link."""
 
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
-MISC = Path(__file__).resolve().parents[1]
+INTERSECTIONS = Path(__file__).resolve().parents[1]
 DOCS = [
     "TKH2022",
     "GLL2026",
@@ -276,7 +276,7 @@ def clean_title_footnotes(lines: list[str]) -> list[str]:
 
 
 def process_doc(doc_id: str) -> None:
-    path = MISC / f"{doc_id}.md"
+    path = INTERSECTIONS / f"{doc_id}.md"
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
 
@@ -314,8 +314,8 @@ def process_doc(doc_id: str) -> None:
 
 
 def fix_sgl_ref_casing():
-    src = MISC / "references" / "SGL2022.MD"
-    dst = MISC / "references" / "SGL2022.md"
+    src = INTERSECTIONS / "references" / "SGL2022.MD"
+    dst = INTERSECTIONS / "references" / "SGL2022.md"
     if src.exists() and not dst.exists():
         text = src.read_text(encoding="utf-8")
         if not text.startswith("# References"):

@@ -4,6 +4,7 @@
 
 - [Clustering](clustering/_CONTENTS.md)
 - [BARS](bars/_CONTENTS.md)
+- [Intersections](intersections/_CONTENTS.md)
 
 ### Clustering
 
@@ -24,6 +25,19 @@
 - [A Robust Spline Approach in Partially Linear Additive Models](bars/BM2021.md)
 - [Bayesian Curve-Fitting with Free-Knot Splines](bars/DMGK2001.md)
 - [Reversible Jump Markov Chain Monte Carlo Computation and Bayesian Model Determination](bars/GRE1995.md)
+- [Bayesian Regression of Piecewise Constant Functions](bars/HTR2005.md)
 - [Adaptive Bayesian Multivariate Spline Knot Inference with Prior Specifications on Model Complexity](bars/HYK2024.md)
-- [MRA2015](bars/MRA2015.md)
-- [WLS2008](bars/WLS2008.md)
+- [Spatially Adaptive Bayesian Penalized Splines for Nonparametric Regression](bars/MRA2015.md)
+- [Reversible jump MCMC for multi-model inference in Metabolic Flux Analysis](bars/TN2020.md)
+- [An Implementation of Bayesian Adaptive Regression Splines (BARS) in C with S and R Wrappers](bars/WLK2008.md)
+
+### Intersections
+
+- [Topology Understanding of B-Spline Surface/Surface Intersection with Mapper](intersections/GLL2026.md)
+- [PERSISTENT TOPOLOGICAL FEATURES IN LARGE LANGUAGE MODELS](intersections/GVPB2025.md)
+- [Nonparametric Estimation of Probability Density Functions of Random Persistence Diagrams](intersections/MMO2019.md)
+- [A Bayesian Framework for Persistent Homology](intersections/MNO2019.md)
+- [Persistent Entropy as a Detector of Phase Transitions](intersections/MR2026.md)
+- [Phase Transitions in Nonlinear Filtering](intersections/RVH2020.md)
+- [Quantitative analysis of phase transitions in two-dimensional XY models using persistent homology](intersections/SGL2022.md)
+- [Topological approximate Bayesian computation for parameter inference of an angiogenesis model](intersections/TKH2022.md)

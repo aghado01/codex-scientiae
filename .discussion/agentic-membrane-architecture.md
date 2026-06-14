@@ -5,6 +5,12 @@ pipeline (`src/`). Captures a converged design discussion; open forks flagged as
 Supersedes the procedural `WORKFLOW-2*.md` swarm — those are the process this replaces;
 their *spirit* (smart procedure, token economy, internal validation) is the inheritance.
 
+**Scope:** this repairs the *export* (Docling / opendataloader JSON IR → clean corpus). Render-based
+re-extraction from the source PDF is explicitly OUT of scope — it belongs to the spiritual successor
+(`ps.core.pdfdig`: a hand-rolled PdfPig + Docling backend that takes opendataloader out of the loop).
+`needs_reextraction` is the hand-off boundary between the two stages; its *rate* is a quality metric of
+the export that the successor exists to shrink.
+
 ## The stack — three layers
 
 ```
@@ -31,7 +37,7 @@ the membrane is *exposed* not built):
   - `get_hotspots` — the graded work-list (id, page, grade, corruption_type, `seam` diagnostic, section)
   - `get_slice(id, context)` — exactly one work-unit via the `.jidx` seek
   - `get_batch_summary` — per-paper work-list + cost estimate (the depth-up analog of `get_summary`)
-  - `get_render_region(id)` / `get_audit(id)` — the PDF region and the excised tail, for re-extraction
+  - `get_audit(id)` — the excised tail / repair-discards for a chunk (provenance; NOT render re-extraction — out of scope)
 - **Write (chunk-bounded, validated):**
   - `propose_repair(id, content)` — touches exactly one chunk; gated by `Get-LatexBalance`
   - `commit` — deterministic merge of validated repairs (conflict-free; each worker owns its id)
