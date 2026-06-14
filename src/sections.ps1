@@ -43,6 +43,16 @@ function Get-SectionLevel([string]$heading) {
     return 1
 }
 
+# Normalize a heading for running-head detection: strip a page number from either end
+# (recto "TITLE 3" / verso "2 AUTHORS") and collapse whitespace, so the per-page copies
+# group as one running head. A pure-number heading (a bare page number) -> empty key.
+function Get-RunningHeadKey([string]$content) {
+    $s = ($content -replace '^\s*\d+\s+', '') -replace '\s+\d+\s*$', ''
+    $s = ($s -replace '\s+', ' ').Trim().ToLowerInvariant()
+    if ($s -match '^\d*$') { return '' }
+    return $s
+}
+
 function Invoke-Sections {
     [CmdletBinding()]
     param(
@@ -59,7 +69,8 @@ function Invoke-Sections {
     $headingPages = @{}
     foreach ($c in $chunks) {
         if ($c.type -eq 'heading' -and $c.content) {
-            $k = [string]$c.content
+            $k = Get-RunningHeadKey ([string]$c.content)
+            if ($k -eq '') { continue }
             if (-not $headingPages.ContainsKey($k)) { $headingPages[$k] = [System.Collections.Generic.HashSet[int]]::new() }
             [void]$headingPages[$k].Add([int]$c.page)
         }
@@ -72,7 +83,8 @@ function Invoke-Sections {
     foreach ($c in $chunks) {
         if ($c.zone -eq 'frontmatter') { continue }
         if ($c.type -eq 'heading' -and $c.content) {
-            if ($runningHeads.Contains([string]$c.content)) {
+            $key = Get-RunningHeadKey ([string]$c.content)
+            if ($key -eq '' -or $runningHeads.Contains($key)) {
                 $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue 'running_head' -Force
                 continue
             }

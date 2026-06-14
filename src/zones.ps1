@@ -30,12 +30,12 @@ $script:BoilerplatePatterns = [ordered]@{
 
 # a heading that opens the body (first numbered section, or "Introduction")
 function Test-BodyStartHeading([string]$content) {
-    return ($content -match '^\s*\d+(\.\d+)*\.?\s+[A-Za-z]') -or ($content -match '^\s*Introduction\s*$')
+    return ($content -match '^\s*\d+(\.\d+)*\.?\s+[A-Za-z]') -or ($content -match '(?i)^\s*introduction\s*$')
 }
 
 # a heading that opens the back-matter (References / Bibliography)
 function Test-BackmatterHeading([string]$content) {
-    return $content -match '^\s*(\d+\.?\s+)?(References|Bibliography)\s*$'
+    return $content -match '(?i)^\s*(\d+\.?\s+)?(references|bibliography)\s*$'
 }
 
 function Invoke-Zones {
@@ -62,12 +62,17 @@ function Invoke-Zones {
         $c | Add-Member -NotePropertyName zone -NotePropertyValue $zone -Force
     }
 
-    # 2. title candidate = the largest-font heading in the front-matter zone
-    $fmHeadings = @($chunks | Where-Object { $_.zone -eq 'frontmatter' -and $_.type -eq 'heading' -and $null -ne $_.font_size })
-    if ($fmHeadings.Count) {
-        $titleChunk = $fmHeadings | Sort-Object { [double]$_.font_size } -Descending | Select-Object -First 1
-        $titleChunk | Add-Member -NotePropertyName title_candidate -NotePropertyValue $true -Force
+    # 2. title candidate — fallback chain robust to missing font metadata:
+    #    largest-font front-matter heading -> a 'Doctitle'-level heading -> first heading
+    $fm = @($chunks | Where-Object { $_.zone -eq 'frontmatter' -and $_.type -eq 'heading' })
+    $withFont = @($fm | Where-Object { $null -ne $_.font_size })
+    $titleChunk = if ($withFont.Count) {
+        $withFont | Sort-Object { [double]$_.font_size } -Descending | Select-Object -First 1
+    } else {
+        $dt = @($fm | Where-Object { $_.level -eq 'Doctitle' })
+        if ($dt.Count) { $dt[0] } elseif ($fm.Count) { $fm[0] } else { $null }
     }
+    if ($titleChunk) { $titleChunk | Add-Member -NotePropertyName title_candidate -NotePropertyValue $true -Force }
 
     # 3. universal boilerplate hints — anywhere (footnote MSC/funding lives in body)
     foreach ($c in $chunks) {
