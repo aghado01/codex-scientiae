@@ -45,6 +45,12 @@ $Tools = @(
     @{ name = 'commit'
        description = 'Merge all staged proposals for a document deterministically, re-grade to faithful, and write a before/after audit sidecar.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
+    @{ name = 'get_batch_summary'
+       description = 'Body-blind batch map: per document under the server root, counts (chunks, pages, repaired, actionable, handoff) plus the actionable byte-size. The orchestrator plans and budgets the whole batch from this without reading any bodies.'
+       inputSchema = @{ type = 'object'; properties = @{} } }
+    @{ name = 'dispatch'
+       description = 'Return the next bundle of agent-actionable work-unit pointers (paper, id, grade, section, seam — never content) whose total size fits a byte budget; the orchestrator fans its workers over them. Stateless: commit between dispatches.'
+       inputSchema = @{ type = 'object'; properties = @{ budget_bytes = @{ type = 'integer'; description = 'max total content bytes in the bundle (default 40000)' }; paper = @{ type = 'string'; description = 'optional: restrict to one document' } } } }
 )
 
 # --- helpers ---
@@ -72,6 +78,11 @@ function Invoke-Tool([string]$name, $arguments) {
             $out = Add-RepairProposal -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Content ([string]$arguments.content) -Source $src
         }
         'commit'       { $out = Invoke-RepairCommit -ChunksPath (Resolve-Paper $arguments.paper) }
+        'get_batch_summary' { $out = @(Get-BatchSummary -Root $Root) }
+        'dispatch' {
+            $bud = if ($arguments.budget_bytes) { [long]$arguments.budget_bytes } else { 40000 }
+            $out = if ($arguments.paper) { Invoke-Dispatch -Root $Root -BudgetBytes $bud -Paper ([string]$arguments.paper) } else { Invoke-Dispatch -Root $Root -BudgetBytes $bud }
+        }
         default        { throw "unknown tool: $name" }
     }
     $text = if ($null -eq $out) { '(no output)' } else { $out | ConvertTo-Json -Depth 12 -Compress }

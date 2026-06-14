@@ -151,5 +151,10 @@ with per-chunk `.jidx` addressing than with page-manifests.
   `-Root` (one server, single doc or whole batch) and path-traversal-guarded. stdout carries protocol
   frames only. Launch: `pwsh -NoProfile -File src/mcp-server.ps1 -Root <work-dir>`. Validated against a
   full initialize / tools.list / tools.call handshake; the propose gate rejects over the wire (paren=1).
-- **NEXT** — the depth-n tools (`get_batch_summary`, budgeted `dispatch`) for the swarm, and Layer 2
-  (procedure + constitution). Commits to none of the open forks above.
+- **DONE** — the depth-n tools: `get_batch_summary` (body-blind per-document counts + actionable
+  byte-size) and budgeted `dispatch` (next bundle of agent-actionable work-unit *pointers* within a
+  byte budget — never content). Stateless (commit re-grades → worked chunks drop from the next
+  dispatch); a lease for conflict-free *pre-commit* parallelism is the v2. Wired into the MCP server;
+  validated directly and over the wire (3000-byte budget → 7 pointers / 2998 bytes / 185 remaining).
+- **NEXT** — hooks (batch governance — the non-cage governor) and Layer 2 prose (procedure as MCP
+  prompts? + constitution). Commits to none of the open forks above.

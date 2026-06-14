@@ -154,3 +154,58 @@ function Invoke-RepairCommit {
     "  before/after -> $auditPath (audit)"
     return $manifest
 }
+
+# --- orchestrator-facing, depth-n: the batch view + budgeted work allocation ---
+# Same membrane one level up: counts/sizes only (body-blind), pointers not bodies. A
+# single server rooted at a work dir serves one document or a whole batch unchanged.
+
+function Get-BatchSummary {
+    [CmdletBinding()] param([Parameter(Mandatory)][string]$Root)
+    Get-ChildItem -LiteralPath $Root -Filter '*.chunks.jsonl' -File -ErrorAction SilentlyContinue | ForEach-Object {
+        $chunks = @(Read-Chunks $_.FullName)
+        $review = @($chunks | Where-Object { $_.fidelity -eq 'needs_review' -or $_.fidelity -eq 'suspect' })
+        $bytes = 0; foreach ($r in $review) { $bytes += ([string]$r.content).Length }
+        [pscustomobject]@{
+            paper        = ($_.Name -replace '\.chunks\.jsonl$', '')
+            chunks       = $chunks.Count
+            pages        = (@($chunks.page | Sort-Object -Unique)).Count
+            repaired     = @($chunks | Where-Object { $_.fidelity -eq 'repaired' }).Count
+            actionable   = $review.Count                                                    # agent can repair
+            handoff      = @($chunks | Where-Object { $_.fidelity -eq 'needs_reextraction' }).Count  # successor / re-export
+            review_bytes = $bytes
+        }
+    }
+}
+
+# Return the next bundle of agent-actionable work-unit POINTERS (never content) whose
+# total content size fits the byte budget — the orchestrator fans its workers over these,
+# each worker fetching its own slice. Stateless: commit re-grades to faithful, so worked
+# chunks drop out of the next dispatch. (Procedure: commit between dispatches; a lease that
+# makes that conflict-free even pre-commit is the v2.)
+function Invoke-Dispatch {
+    [CmdletBinding()] param(
+        [Parameter(Mandatory)][string]$Root,
+        [long]$BudgetBytes = 40000,
+        [string]$Paper
+    )
+    if ($Paper -and $Paper -notmatch '^[\w.\-]+$') { throw "invalid paper name: '$Paper'" }
+    $files = if ($Paper) { @(Get-Item -LiteralPath (Join-Path $Root "$Paper.chunks.jsonl") -ErrorAction SilentlyContinue) }
+             else { @(Get-ChildItem -LiteralPath $Root -Filter '*.chunks.jsonl' -File -ErrorAction SilentlyContinue) }
+    $batch = [System.Collections.Generic.List[object]]::new()
+    $used = 0L; $remChunks = 0; $remBytes = 0L
+    foreach ($f in $files) {
+        $name = $f.Name -replace '\.chunks\.jsonl$', ''
+        foreach ($c in (Read-Chunks $f.FullName)) {
+            if ($c.fidelity -ne 'needs_review' -and $c.fidelity -ne 'suspect') { continue }
+            $bytes = ([string]$c.content).Length
+            if ($used + $bytes -le $BudgetBytes -or $batch.Count -eq 0) {     # always make progress
+                $batch.Add([pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam })
+                $used += $bytes
+            } else { $remChunks++; $remBytes += $bytes }
+        }
+    }
+    [pscustomobject]@{
+        batch = $batch.ToArray(); count = $batch.Count; total_bytes = $used
+        remaining = [pscustomobject]@{ chunks = $remChunks; bytes = $remBytes }
+    }
+}
