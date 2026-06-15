@@ -80,18 +80,26 @@ function Invoke-Sections {
         if (-not [string]::IsNullOrWhiteSpace($line)) { $chunks.Add(($line | ConvertFrom-Json)) }
     }
 
-    # running-head furniture: heading text on >= 3 distinct pages
-    $headingPages = @{}
+    # heading furniture, two kinds: running heads (heading text on >= 3 distinct pages) and figure
+    # labels (a heading text repeated >= 2 times). A real section heading is unique, so any repeat is
+    # panel/legend text the struct-tree mis-typed as a heading — running-head's >=3-page rule misses
+    # these because multi-panel labels repeat on a SINGLE page.
+    $headingPages = @{}; $headingCount = @{}
     foreach ($c in $chunks) {
         if ($c.type -eq 'heading' -and $c.content) {
             $k = Get-RunningHeadKey ([string]$c.content)
             if ($k -eq '') { continue }
-            if (-not $headingPages.ContainsKey($k)) { $headingPages[$k] = [System.Collections.Generic.HashSet[int]]::new() }
+            if (-not $headingPages.ContainsKey($k)) { $headingPages[$k] = [System.Collections.Generic.HashSet[int]]::new(); $headingCount[$k] = 0 }
             [void]$headingPages[$k].Add([int]$c.page)
+            $headingCount[$k]++
         }
     }
     $runningHeads = [System.Collections.Generic.HashSet[string]]::new()
-    foreach ($k in $headingPages.Keys) { if ($headingPages[$k].Count -ge 3) { [void]$runningHeads.Add($k) } }
+    $repeatedHeads = [System.Collections.Generic.HashSet[string]]::new()
+    foreach ($k in $headingPages.Keys) {
+        if ($headingPages[$k].Count -ge 3) { [void]$runningHeads.Add($k) }
+        elseif ($headingCount[$k] -ge 2)   { [void]$repeatedHeads.Add($k) }
+    }
 
     # sectioning walk over body + back-matter
     $currentSection = $null
@@ -101,6 +109,11 @@ function Invoke-Sections {
             $key = Get-RunningHeadKey ([string]$c.content)
             if ($key -eq '' -or $runningHeads.Contains($key)) {
                 $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue 'running_head' -Force
+                continue
+            }
+            # a repeated heading that isn't numbered is a panel/legend label, not a section
+            if ($repeatedHeads.Contains($key) -and -not (Get-SectionLevel ([string]$c.content)).numbered) {
+                $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue 'figure_label' -Force
                 continue
             }
             if ($c.boilerplate_hint) { continue }   # an email/url/etc promoted on its face is not a section

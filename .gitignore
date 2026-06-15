@@ -3,3 +3,18 @@
 *.vscode
 *.ipynb_checkpoints
 **.scratch/**
+
+**__/pycache__/**
+**/.pytest_cache/**
+**/.mypy_cache/**
+**/.ruff_cache/**
+**/.vscode/**
+**/.idea/**
+**/.DS_Store**
+**/.env/**
+**/.venv/**
+
+# run artifacts (regenerable working output)
+**/.scratch/
+**/.work/
+**/__pycache__/
