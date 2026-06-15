@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "codex-membrane": {
+      "command": "pwsh",
+      "args": [
+        "-NoProfile",
+        "-File", "src/mcp-server.ps1",
+        "-Root", "ingestion/compendia"
+      ]
+    }
+  }
+}
