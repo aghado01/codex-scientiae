@@ -86,8 +86,9 @@ function Invoke-Finalize {
     $refDir   = Join-Path $OutputDir 'references'
     if (-not (Test-Path -LiteralPath $refDir)) { New-Item -ItemType Directory -Force -Path $refDir | Out-Null }
     $refPath  = Join-Path $refDir "$slug.md"
-    ($body -join "`n") | Set-Content -LiteralPath $bodyPath -Encoding utf8
-    ($refs -join "`n") | Set-Content -LiteralPath $refPath  -Encoding utf8
+    $utf8 = [System.Text.UTF8Encoding]::new($false)   # explicit no-BOM, LF-only — no Set-Content CRLF/formatter side-effects
+    [System.IO.File]::WriteAllText($bodyPath, (($body -join "`n") + "`n"), $utf8)
+    [System.IO.File]::WriteAllText($refPath,  (($refs -join "`n") + "`n"), $utf8)
 
     $sections = @($bodyC | Where-Object { [string]$_.type -eq 'heading' -and $_.section_level }).Count
     $pending  = @($live | Where-Object { $_.fidelity -in 'needs_review', 'needs_repair', 'suspect' }).Count
@@ -121,7 +122,7 @@ function Get-FinalReview([string]$ChunksPath) {
         bib        = $fin.bib
         pending    = $fin.pending
         flagged    = $flagged
-        body       = (Get-Content -LiteralPath $fin.body       -Raw)
-        references = (Get-Content -LiteralPath $fin.references -Raw)
+        body       = [System.IO.File]::ReadAllText($fin.body,       [System.Text.UTF8Encoding]::new($false))
+        references = [System.IO.File]::ReadAllText($fin.references, [System.Text.UTF8Encoding]::new($false))
     }
 }

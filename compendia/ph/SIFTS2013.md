@@ -42,55 +42,55 @@ There are two equivalent classes of rubber bands: some surround the hole and oth
 
 ## 2.1 Group Theory
 
-Definition 1. A group $ G, _ $ is a set $ G $ with a binary operation $ _ $ such that (1. associative) $ a _ (b _ c) = (a _ b) _ c $ for all $ a,b,c \in G $. (2. identity) $ \exists e \in G $ so that $ e _ a = a _ e = a $ for all $ a \in G $. (3. inverse) $ \forall a \in G $, $ \exists a^{-1} \in G $ where $ a _ a^{-1} = a^{-1} _ a = e $. For example, integer addition $ \mathbb{Z}, + $, real number addition
+Definition 1. A group $G,_$ is a set $G$ with a binary operation $_$ such that (1. associative) $a_(b_c) = (a_b)_c$ for all $a,b,c \in G$. (2. identity) $\exists e \in G$ so that $e_a = a_e = a$ for all $a \in G$. (3. inverse) $\forall a \in G$, $\exists a^{-1} \in G$ where $a_a^{-1} = a^{-1}_a = e$. For example, integer addition $Z, +$, real number addition
 
-$ \mathbb{R}, + $ are groups with identity $ 0 $ and $ a $'s inverse $ -a $. Positive real numbers and multiplication is a group $ \mathbb{R}^+, \times $ with identity $ 1 $ and $ a $'s inverse $ \frac{1}{a} $. However, $ \mathbb{R}, \times $ is not a group since $ 0 \in \mathbb{R} $ does not have an inverse under $ \times $. Real numbers except 0 is again a group $ \mathbb{R} \setminus \{ 0 \}, \times $. $ \mathbb{Z}\_2 $ is the only group (up to element renaming) of size two:
-
-FILL_ME_IN
-
-We can think of $ +\_2 $ as the XOR function or mod-2 addition. For any set $ A = \{ a_1,...,a_n \} $, its power set forms a group $ 2^A, +\_2 $ where $ +\_2 $ is the symmetric difference: $ B +\_2 C = ( B \cup C ) \setminus ( B \cap C ) $. The identity is the empty set $ \emptyset $, and the inverse of any $ B \subseteq A $ is $ B $ itself.
-
-Definition 2. A group $ G $ is abelian if the operation $ _ $ is commutative: $ \forall a, b \in G, a _ b = b \* a $.
-
-non-abelian groups, consider $ n \times n $ invertible matrices under matrix multiplication.
-
-Definition 3. A subset $ H \subseteq G $ of a group $ G, _ $ is a subgroup of $ G $ if $ H, _ $ is itself a group. $ \{ e \} $ is the trivial subgroup of any group $ G $ (we often omit
-
-the operation when it is clear). $ \mathbb{R}^+, \times $ is a subgroup of $ \mathbb{R} \setminus \{0\}, \times $ by restricting multiplication to positive numbers. Note however multiplication on negative numbers $ \mathbb{R}^-, \times $ is not a subgroup because the result is not in $ \mathbb{R}^- $. Definition 4. Given a subgroup $ H $ of an abelian group $ G $, for
-
-any $ a \in G $, the set $ a _ H = \{ a _ h \mid h \in H \} $ is the coset of $ H $ represented by $ a $.
-
-Consider $ H = \mathbb{R}^+ $ and $ G = \mathbb{R} \setminus \{ 0 \} $. Then $ 3.14 \times \mathbb{R}^+ $ is a coset which is the same as $ \mathbb{R}^+ $. In fact for any $ a > 0 $, $ a \times \mathbb{R}^+ = \mathbb{R}^+ $, i.e., many different $ a $'s represent the same coset. On the other hand, $ -1 \times \mathbb{R}^+ = \mathbb{R}^- $, so $ \mathbb{R}^- $ is a coset represented by $ -1 $ (or any negative number, for that matter). Since $ \mathbb{R}^- $ is not a group, we see the cosets do not have to be subgroups. Also note that the two cosets, $ \mathbb{R}^+ $ and $ \mathbb{R}^- $, have equal size and partition $ G $. This fact will be important for counting cycles for homology later.
-
-We now consider mappings from one group $ G, \* $ to another $ G', \cdot $.
-
-Definition 5. A map $ \phi : G \to G' $ is a homomorphism if $ \phi(a \* b) = \phi(a) \phi(b) $ for $ \forall a,b \in G $. For example, the groups $ \mathbb{R}^+, \times $ and $ \mathbb{Z}\_2, +\_2 $ do not look
-
-similar at all. But there is a trivial homomorphism $ \phi(a) = 0, \forall a \in \mathbb{R}^+ $. Note the last 0 is in $ \mathbb{Z}\_2 $. This simply says that we map all positive real numbers to the "0" in mod-2 addition. Obviously $ 0 = \phi(a \times b) = \phi(a) +\_2 \phi(b) = 0 +\_2 0 = 0 $ for $ \forall a,b \in \mathbb{R}^+ $. As another example, consider the group of (somewhat arti-
-
-ficial) negation in natural language: $ G_N = \{ \sqcup, \text{not} \} $ with the following operation, where $ \sqcup $ stands for whitespace:
+$R, +$ are groups with identity $0$ and $a$'s inverse $-a$. Positive real numbers and multiplication is a group $R^+, \times$ with identity $1$ and $a$'s inverse $\frac{1}{a}$. However, $R, \times$ is not a group since $0 \in R$ does not have an inverse under $\times$. Real numbers except 0 is again a group $R \setminus \{0 \}, \times$. $Z\_2$ is the only group (up to element renaming) of size two:
 
 FILL_ME_IN
 
-i.e., single negation stays while double negation cancels. There is a homomorphism between $ G_N $ and $ \mathbb{Z}\_2 $: $ \phi(\sqcup) = 0, \phi(\text{not}) = 1 $. In fact, $ G_N $ and $ \mathbb{Z}\_2 $ are identical up to renaming. There is a name for such homomorphisms:
+We can think of $+\_2$ as the XOR function or mod-2 addition. For any set $A = \{a_1,...,a_n \}$, its power set forms a group $2^A, +\_2$ where $+\_2$ is the symmetric difference: $B +\_2 C = ( B \cup C ) \setminus ( B \cap C )$. The identity is the empty set $\emptyset$, and the inverse of any $B \subseteq A$ is $B$ itself.
+
+Definition 2. A group $G$ is abelian if the operation $_$ is commutative: $\forall a, b \in G, a_b = b \* a$.
+
+non-abelian groups, consider $n \times n$ invertible matrices under matrix multiplication.
+
+Definition 3. A subset $H \subseteq G$ of a group $G,_$ is a subgroup of $G$ if $H,_$ is itself a group. $\{e \}$ is the trivial subgroup of any group $G$ (we often omit
+
+the operation when it is clear). $R^+, \times$ is a subgroup of $R \setminus \{0\}, \times$ by restricting multiplication to positive numbers. Note however multiplication on negative numbers $R^-, \times$ is not a subgroup because the result is not in $R^-$. Definition 4. Given a subgroup $H$ of an abelian group $G$, for
+
+any $a \in G$, the set $a_H = \{a_h \mid h \in H \}$ is the coset of $H$ represented by $a$.
+
+Consider $H = R^+$ and $G = R \setminus \{0 \}$. Then $3.14 \times R^+$ is a coset which is the same as $R^+$. In fact for any $a > 0$, $a \times R^+ = R^+$, i.e., many different $a$'s represent the same coset. On the other hand, $-1 \times R^+ = R^-$, so $R^-$ is a coset represented by $-1$ (or any negative number, for that matter). Since $R^-$ is not a group, we see the cosets do not have to be subgroups. Also note that the two cosets, $R^+$ and $R^-$, have equal size and partition $G$. This fact will be important for counting cycles for homology later.
+
+We now consider mappings from one group $G, \*$ to another $G', \cdot$.
+
+Definition 5. A map $\phi : G \to G'$ is a homomorphism if $\phi(a \* b) = \phi(a) \phi(b)$ for $\forall a,b \in G$. For example, the groups $R^+, \times$ and $Z\_2, +\_2$ do not look
+
+similar at all. But there is a trivial homomorphism $\phi(a) = 0, \forall a \in R^+$. Note the last 0 is in $Z\_2$. This simply says that we map all positive real numbers to the "0" in mod-2 addition. Obviously $0 = \phi(a \times b) = \phi(a) +\_2 \phi(b) = 0 +\_2 0 = 0$ for $\forall a,b \in R^+$. As another example, consider the group of (somewhat arti-
+
+ficial) negation in natural language: $G_N = \{\sqcup, \text{not} \}$ with the following operation, where $\sqcup$ stands for whitespace:
+
+FILL_ME_IN
+
+i.e., single negation stays while double negation cancels. There is a homomorphism between $G_N$ and $Z\_2$: $\phi(\sqcup) = 0, \phi(\text{not}) = 1$. In fact, $G_N$ and $Z\_2$ are identical up to renaming. There is a name for such homomorphisms:
 
 Definition 6. A homomorphism that is a one-to-one correspondence is called an isomorphism.
 
-Definition 7. The kernel of a homomorphism $ \phi : G \to G' $ is $ \ker \phi = \{ a \in G \mid \phi(a) = e' \} $. In other words, the kernel is the elements that map to identity.
+Definition 7. The kernel of a homomorphism $\phi : G \to G'$ is $\ker \phi = \{a \in G \mid \phi(a) = e' \}$. In other words, the kernel is the elements that map to identity.
 
-Theorem 1. For any homomorphism $ \phi : G \to G' $, $ \ker \phi $ is a subgroup of $ G $.
+Theorem 1. For any homomorphism $\phi : G \to G'$, $\ker \phi$ is a subgroup of $G$.
 
 ![image 2](SIFTS/imageFile2.png)
 
-$ \ker \phi $
+$\ker \phi$
 
-Because $ \ker \phi $ is a subgroup (depicted as the blue square above), we can partition $ G $ into cosets of the form $ a \* \ker \phi $ for $ a \in G $. These cosets are the white or blue squares. For example, $ \phi : \mathbb{R} \setminus \{ 0 \}, \times \to G_N $ with $ \phi(a) = \sqcup $ if $ a > 0 $ and "not" if $ a < 0 $, then $ \ker \phi = \mathbb{R}^+ $ is one coset and $ \mathbb{R}^- $ is the only other coset.
+Because $\ker \phi$ is a subgroup (depicted as the blue square above), we can partition $G$ into cosets of the form $a \* \ker \phi$ for $a \in G$. These cosets are the white or blue squares. For example, $\phi : R \setminus \{0 \}, \times \to G_N$ with $\phi(a) = \sqcup$ if $a > 0$ and "not" if $a < 0$, then $\ker \phi = R^+$ is one coset and $R^-$ is the only other coset.
 
-We need one more piece of definition. Let $ H, _ $ be a subgroup of an abelian group $ G, _ $. We can introduce a new binary operation not on the elements of $ G $ but on the cosets of $ H $: $ (a _ H) \cdot (b _ H) = (a _ b) _ H, \forall a,b \in G $. The operation is well-defined and does not depend on the particular choice of representer.
+We need one more piece of definition. Let $H,_$ be a subgroup of an abelian group $G,_$. We can introduce a new binary operation not on the elements of $G$ but on the cosets of $H$: $(a_H) \cdot (b_H) = (a_b)_H, \forall a,b \in G$. The operation is well-defined and does not depend on the particular choice of representer.
 
-Definition 8. The cosets $ \{ a \* H \mid a \in G \} $ under the operation $ \cdot $ form a group, called the quotient group $ G/H $.
+Definition 8. The cosets $\{a \* H \mid a \in G \}$ under the operation $\cdot$ form a group, called the quotient group $G/H$.
 
-It is useful to think of quotient groups as "higher level" groups defined on the squares in the previous picture. $ \ker \phi $ (the blue square) is a subgroup of $ G $. The elements of the quotient group $ G / \ker \phi $ are the cosets of $ \ker \phi $, i.e. all the squares. In a previous example $ G = \mathbb{R} \setminus \{ 0 \} $ and $ \ker \phi = \mathbb{R}^+ $, and there were two cosets: $ \mathbb{R}^+ $ and $ \mathbb{R}^- $. Thus the quotient group $ (\mathbb{R} \setminus \{ 0 \}) / \mathbb{R}^+ $ is a small group with those two cosets as elements. Furthermore, note $ \mathbb{R}^- \cdot \mathbb{R}^- = (-1 \times \mathbb{R}^+) \cdot (-1 \times \mathbb{R}^+) = (-1 \times -1) \times \mathbb{R}^+ = 1 \times \mathbb{R}^+ = \mathbb{R}^+ $. Therefore, this quotient group $ (\mathbb{R} \setminus \{ 0 \}) / \mathbb{R}^+ $ is isomorphic to $ \mathbb{Z}\_2 $.
+It is useful to think of quotient groups as "higher level" groups defined on the squares in the previous picture. $\ker \phi$ (the blue square) is a subgroup of $G$. The elements of the quotient group $G / \ker \phi$ are the cosets of $\ker \phi$, i.e. all the squares. In a previous example $G = R \setminus \{0 \}$ and $\ker \phi = R^+$, and there were two cosets: $R^+$ and $R^-$. Thus the quotient group $(R \setminus \{0 \}) / R^+$ is a small group with those two cosets as elements. Furthermore, note $R^- \cdot R^- = (-1 \times R^+) \cdot (-1 \times R^+) = (-1 \times -1) \times R^+ = 1 \times R^+ = R^+$. Therefore, this quotient group $(R \setminus \{0 \}) / R^+$ is isomorphic to $Z\_2$.
 
 Definition 9. Let S ⊂ G. The subgroup generated by S, S, is the subgroup of all elements of G that can expressed as the finite operation of elements in S and their inverses.
 
@@ -256,7 +256,7 @@ The key difference between SIF and SIFTS is that a time-skeleton edge can be arb
 
 ![image 12](SIFTS/imageFile12.png)
 
-SIF sees the Vietoris-Rips complex on the left as four vertices and an edge between $ (0, 0), (-\frac{1}{2}, 0) $. Even though the edge represents a tie-back between the first and last units, no hole has formed. In contrast, SIFTS sees the combined complex on the right with time skeleton in red. The similarity and time edges together form a hole (i.e., $ \beta_1 = 1 $). The complete barcodes for SIF and SIFTS are presented below. SIF detects no hole at all ($ \beta_1 = 0 $ always): as $ \epsilon $ increase the filtration fills the complex with solid triangles, preventing holes. The hole detected by SIFTS persists until $ \epsilon $ is large enough to cover $ (1, 0) $ and $ (-\frac{1}{2}, 0) $. Also note SIFTS complex is trivially connected by the time skeleton, hence $ \beta_0 = 1 $ always.
+SIF sees the Vietoris-Rips complex on the left as four vertices and an edge between $(0, 0), (-\frac{1}{2}, 0)$. Even though the edge represents a tie-back between the first and last units, no hole has formed. In contrast, SIFTS sees the combined complex on the right with time skeleton in red. The similarity and time edges together form a hole (i.e., $\beta_1 = 1$). The complete barcodes for SIF and SIFTS are presented below. SIF detects no hole at all ($\beta_1 = 0$ always): as $\epsilon$ increase the filtration fills the complex with solid triangles, preventing holes. The hole detected by SIFTS persists until $\epsilon$ is large enough to cover $(1, 0)$ and $(-\frac{1}{2}, 0)$. Also note SIFTS complex is trivially connected by the time skeleton, hence $\beta_0 = 1$ always.
 
 ![image 13](SIFTS/imageFile13.png)
 
@@ -266,9 +266,9 @@ We now illustrate persistent homology as computed by SIF and SIFTS on a few nurs
 
 Figure 1(a) shows Itsy Bitsy Spider. Its homology is strikingly similar to the previous toy document, as the spider climbed up the water spout in both the 1st and the 4th sentences. This hole is detected by SIFTS but not SIF.
 
-Figure 1(b) shows Row Row Row Your Boat. Its four sentences are distinct from each other, forming a “linear progression.” Both SIF and SIFTS give $ \beta_1 = 0 $: there is no hole.
+Figure 1(b) shows Row Row Row Your Boat. Its four sentences are distinct from each other, forming a “linear progression.” Both SIF and SIFTS give $\beta_1 = 0$: there is no hole.
 
-Figure 1(c) shows London Bridge is Falling Down. The lyric has $ n = 48 $ sentences; The sentence “My fair Lady” repeats 12 times. With the time skeleton, SIFTS therefore detects 11 independent holes ($ \beta_1 = 11 $) right away in $ VR(0) $. These holes are not detected by SIF. Both SIF and SIFTS detect more holes later, some are caused by the near-repetition “Build it up with X and Y ”, where $ X, Y $ vary from wood and clay to silver and gold.
+Figure 1(c) shows London Bridge is Falling Down. The lyric has $n = 48$ sentences; The sentence “My fair Lady” repeats 12 times. With the time skeleton, SIFTS therefore detects 11 independent holes ($\beta_1 = 11$) right away in $VR(0)$. These holes are not detected by SIF. Both SIF and SIFTS detect more holes later, some are caused by the near-repetition “Build it up with X and Y ”, where $X, Y$ vary from wood and clay to silver and gold.
 
 We now move on to longer documents. Here and in next section, the text units are natural paragraphs (or chapters for Alice ). We perform Penn Treebank tokenization, case-folding, punctuation removal, and SMART stopword removal [ Salton, 1971 ]. Each text unit is converted to a tf.idf vector, where idf is computed within the document. We compute the cosine similarity then take the angular distance:
 
@@ -284,7 +284,7 @@ As a real world example, we quantitatively study whether children’s writing be
 
 We use the LUCY corpus which contains roughly matched child and adolescent writing [ Sampson, 2003 ]. We merge the F,H,K,M groups (ages 9–12, 150 essays) to form a childwriting set. We use the E group (undergraduates, 48 essays) as the adolescent-writing set. The main differences between the two sets are age and average article length (child=11.6 sentences, adolescent=25.8 sentences), see LUCY documentation for other minor differences.
 
-We compute each essay’s SIFTS barcode. To facilitate comparison, we extract two summary statistics. The first is $ |H_1| $, the total number of 1st-order persistent homology classes (holes) over the whole $ \epsilon $ range. This is obtained by counting the number of bars. Note $ |H_1| \ge \beta_1 $ since the Betti number is for a specific $ \epsilon $. The second is $ \epsilon^\* $, the smallest
+We compute each essay’s SIFTS barcode. To facilitate comparison, we extract two summary statistics. The first is $|H_1|$, the total number of 1st-order persistent homology classes (holes) over the whole $\epsilon$ range. This is obtained by counting the number of bars. Note $|H_1| \ge \beta_1$ since the Betti number is for a specific $\epsilon$. The second is $\epsilon^\*$, the smallest
 
 ![This is an image of a graph. There are five categories on the x-axis, which are named as follows: (a) Itsy Bitsy Spider, (b) Row Row Your Boat, (c) London Bridge, (d) The Emperor's New Clothes, and (e) Alice in Wonderland. There are five categories on the y-axis, which are named as follows: (a) Little Red-Cap, (b) Row Row Your Boat, (c) London Bridge, (d) The Emperor's New Clothes, and (e) Alice in Wonderland. There are five categories on the x-axis, which are named as follows: (a) The Emperor's New Clothes, (b) Little Red-Cap, (c) London Bridge, (d) The Emperor's New Clothes, and (e) Alice in Wonderland. There are five categories on the y-axis, which are named as follows: (](SIFTS/imageFile14.png)
 

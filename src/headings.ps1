@@ -34,7 +34,10 @@ function Test-HeadingFace([string]$font) {
 function Get-BodyTypography($Records) {
     $sizeW = @{}; $fontW = @{}
     foreach ($r in $Records) {
-        $len = ([string]$r.content).Length
+        # weight = amount of body text (glyph count), not UTF-16 code units — otherwise an SMP-heavy
+        # display line is over-weighted 2x/glyph, working against the "few large lines can't outvote
+        # the body mass" intent. Text-element count keeps the modal-typography vote glyph-fair.
+        $len = [System.Globalization.StringInfo]::new([string]$r.content).LengthInTextElements
         if ($len -le 0) { continue }
         if ($null -ne $r.font_size) {
             $k = [math]::Round([double]$r.font_size, 1)
@@ -74,7 +77,9 @@ function Invoke-HeadingRecovery {
     foreach ($n in $nodes) {
         if ($n.type -ne 'paragraph') { continue }
         $content = [string]$n.content
-        $len = $content.Length
+        # "short heading" = glyph count, not UTF-16 code units: a math-bearing heading (SMP glyphs =
+        # 2 units each) would otherwise be wrongly rejected by the $MaxLen gate. Count text elements.
+        $len = [System.Globalization.StringInfo]::new($content).LengthInTextElements
         if ($len -le 0 -or $len -gt $MaxLen) { continue }
         if ($content -notmatch '[A-Za-z]{2,}') { continue }   # a heading is a word, not "(1)" / a drop cap / a symbol run
 

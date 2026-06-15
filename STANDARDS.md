@@ -47,3 +47,7 @@ This should be enforced after OCR and prose repair because some OCR/Docling proc
 ### 6. CONTENTS sections
 
 After repairing and standardizing markdown header sections for a document, add a `## Contents` section immediately below the title/authors block (H2, consistent with §5 — H1 is reserved for the document title only). The section lists every major and minor heading as a hierarchical anchor-link list, with the References entry pointing to the sidecar file.
+
+### 7. Daemon/Library Stream Discipline (src/)
+
+Daemon/library code in `src/` targets streams explicitly at the .NET level (`[Console]::Error` for logs, the owned stdout writer for protocol frames pinned to UTF-8); no `Write-Host`/`Write-Output`/`Out-*` for diagnostics; tool results are return values, never host writes.

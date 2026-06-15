@@ -32,6 +32,14 @@
 
 # Locate the corruption onset: the first \intertext marker, else the first space-shattered
 # run (gibberish). -1 when neither is present (e.g. a plain unbalanced-braces formula).
+#
+# SURROGATE-SAFE BY CONSTRUCTION: the returned offset is never arithmetic — it is either
+# String.IndexOf of the ASCII literal '\intertext' (offset lands on the '\' code unit) or
+# Regex.Match(...).Index, whose match begins at a '\w' character. A lone surrogate code unit has
+# Unicode category Cs, matched by neither '\' nor '\w', so $onset always lands on the FIRST code
+# unit of a non-surrogate (BMP) char — a valid UTF-16 boundary. The downstream
+# $content.Substring(0,$onset) / Substring($onset) split therefore can never bisect an SMP
+# surrogate pair (e.g. 𝔼 U+1D53C = D835 DD3C). No clamp needed.
 function Get-CorruptionOnset([string]$content) {
     $i = $content.IndexOf('\intertext')
     if ($i -ge 0) { return $i }

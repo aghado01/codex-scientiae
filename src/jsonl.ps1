@@ -102,21 +102,21 @@ function Write-JsonlStage {
         $sig['source_sha256'] = (Get-FileHash -LiteralPath $SourcePath -Algorithm SHA256).Hash.ToLowerInvariant()
     }
     $sigPath = "$OutputPath.sig"
-    ($sig | ConvertTo-Json) | Set-Content -LiteralPath $sigPath -Encoding utf8
+    [System.IO.File]::WriteAllText($sigPath, ($sig | ConvertTo-Json), [System.Text.UTF8Encoding]::new($false))
 
     # inventory: every durable artifact self-registers here — the cross-cutting "decorator"
     # realised via the single write-chokepoint. Best-effort: the artifact is ground truth, the
     # inventory a convenience window onto the in-play objects (one per scratch dir).
     try {
         $invPath = Join-Path ([System.IO.Path]::GetDirectoryName($OutputPath)) 'inventory.json'
-        $inv = if (Test-Path -LiteralPath $invPath) { Get-Content -LiteralPath $invPath -Raw | ConvertFrom-Json -AsHashtable } else { @{} }
+        $inv = if (Test-Path -LiteralPath $invPath) { [System.IO.File]::ReadAllText($invPath, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json -AsHashtable } else { @{} }
         $inv[[System.IO.Path]::GetFileName($OutputPath)] = @{
             stage   = $Stage
             records = $Records.Count
             bytes   = (Get-Item -LiteralPath $OutputPath).Length
             source  = if ($SourcePath) { [System.IO.Path]::GetFileName($SourcePath) } else { $null }
         }
-        ($inv | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $invPath -Encoding utf8
+        [System.IO.File]::WriteAllText($invPath, ($inv | ConvertTo-Json -Depth 6), [System.Text.UTF8Encoding]::new($false))
     } catch { }
 
     return [pscustomobject]@{ Jsonl = $OutputPath; Jidx = $jidxPath; Sig = $sigPath; Records = $Records.Count }
@@ -186,7 +186,7 @@ function Add-LedgerEntry([string]$ChunksPath, [string]$Stage, [hashtable]$Extra 
     $rec = [ordered]@{ stage = $Stage }
     foreach ($k in $Extra.Keys) { $rec[$k] = $Extra[$k] }
     $ledger = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.ledger.jsonl'
-    ($rec | ConvertTo-Json -Compress -Depth 6) | Add-Content -LiteralPath $ledger -Encoding utf8
+    [System.IO.File]::AppendAllText($ledger, (($rec | ConvertTo-Json -Compress -Depth 6) + "`n"), [System.Text.UTF8Encoding]::new($false))
 }
 
 function Get-LedgerStage([string]$ChunksPath) {
@@ -200,6 +200,6 @@ function Get-LedgerStage([string]$ChunksPath) {
 # the in-play artifacts registered alongside this document (the other window onto progress)
 function Get-Inventory([string]$ChunksPath) {
     $invPath = Join-Path ([System.IO.Path]::GetDirectoryName($ChunksPath)) 'inventory.json'
-    if (Test-Path -LiteralPath $invPath) { return Get-Content -LiteralPath $invPath -Raw | ConvertFrom-Json }
+    if (Test-Path -LiteralPath $invPath) { return [System.IO.File]::ReadAllText($invPath, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json }
     return $null
 }

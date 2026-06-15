@@ -140,7 +140,9 @@ function Get-FurnitureKind([object]$Chunk) {
     $t = ([string]$Chunk.content).Trim()
     if ($t -match '^(Figure|Fig\.?|Table|Tab\.?)\s*\d+\s*[:.]') { return 'caption' }
     if ($t -match '^\([a-z]\)\s')                                { return 'figure_label' }
-    if ($t.Length -le 4 -and $t -notmatch '[A-Za-z]{2,}')        { return 'crumb' }
+    # "short" = glyph count, not UTF-16 code units: an SMP run (each math glyph = 2 code units)
+    # would otherwise escape this crumb gate. Count text elements so 𝔼𝔽𝔾 reads as 3, not 6.
+    if ([System.Globalization.StringInfo]::new($t).LengthInTextElements -le 4 -and $t -notmatch '[A-Za-z]{2,}') { return 'crumb' }
     return $null
 }
 

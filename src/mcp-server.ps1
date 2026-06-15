@@ -10,14 +10,17 @@
   same server serves one document (depth-1) or a whole batch (depth-n) unchanged.
 
   Launch from a client's MCP config (-NoProfile keeps the profile off stdout):
-    pwsh -NoProfile -File src/mcp-server.ps1 -Root <work-dir>
+    pwsh -NoProfile -File src/mcp-server.ps1 [-Root <ingestion-subtree>]
+
+  -Root defaults to <repo>/ingestion (the raw-input boundary); which subtree to survey is a
+  per-call concern, carried by the optional `scope` arg on list_documents/get_batch_summary/dispatch.
 
   Tools: list_documents | get_summary | get_hotspots | get_slice | propose_repair | commit
 #>
 
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][string]$Root,
+    [string]$Root = (Join-Path (Split-Path -Parent $PSScriptRoot) 'ingestion'),
     [string]$ProtocolVersion = '2025-06-18'
 )
 
@@ -32,7 +35,7 @@ $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 $Tools = @(
     @{ name = 'list_documents'
        description = 'Survey the ingestion root: every {slug}/{slug}.json raw with whether it has been preprocessed and its current milestone stage. Body-blind. The "Go" starting point.'
-       inputSchema = @{ type = 'object'; properties = @{} } }
+       inputSchema = @{ type = 'object'; properties = @{ scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to survey, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'preprocess'
        description = 'Run the seven-stage pipeline on a document''s raw IR, landing the enriched chunk stream + sidecars in its .scratch/ and logging the preprocessed milestone. Refuses to clobber applied repairs unless force=true.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; force = @{ type = 'boolean' } }; required = @('paper') } }
@@ -77,10 +80,10 @@ $Tools = @(
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; ids = @{ type = 'array'; items = @{ type = 'integer' }; description = 'contiguous chunk ids' } }; required = @('paper', 'ids') } }
     @{ name = 'get_batch_summary'
        description = 'Body-blind batch map: per document under the server root, counts (chunks, pages, repaired, actionable, handoff) plus the actionable byte-size. The orchestrator plans and budgets the whole batch from this without reading any bodies.'
-       inputSchema = @{ type = 'object'; properties = @{} } }
+       inputSchema = @{ type = 'object'; properties = @{ scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to survey, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'dispatch'
        description = 'Return the next bundle of agent-actionable work-unit pointers (paper, id, grade, section, seam — never content) whose total size fits a byte budget; the orchestrator fans its workers over them. Stateless: commit between dispatches.'
-       inputSchema = @{ type = 'object'; properties = @{ budget_bytes = @{ type = 'integer'; description = 'max total content bytes in the bundle (default 40000)' }; paper = @{ type = 'string'; description = 'optional: restrict to one document' } } } }
+       inputSchema = @{ type = 'object'; properties = @{ budget_bytes = @{ type = 'integer'; description = 'max total content bytes in the bundle (default 40000)' }; paper = @{ type = 'string'; description = 'optional: restrict to one document' }; scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to draw work from, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'search'
        description = 'Restoration-native query over a document: filter chunks by any combination of zone, section (regex), grade, type, page, content (regex). Returns body-light pointers (id, page, type, grade, section, preview), capped at limit.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; zone = @{ type = 'string' }; section = @{ type = 'string'; description = 'regex' }; grade = @{ type = 'string'; description = 'faithful|repaired|needs_review|needs_repair|suspect|unrecoverable' }; type = @{ type = 'string'; description = 'prose|formula|heading|table|list' }; page = @{ type = 'integer' }; contains = @{ type = 'string'; description = 'content regex' }; limit = @{ type = 'integer' } }; required = @('paper') } }
@@ -108,10 +111,23 @@ function Resolve-Source([string]$paper) {
     if (-not $path) { throw "source raw not found: $paper" }
     return $path
 }
+# Work-scope (runtime concern): empty -> the whole ingestion root; else a subtree under it,
+# full-path-normalized and confined to $Root (no escaping via .. or absolute paths).
+function Resolve-Scope([string]$scope) {
+    if ([string]::IsNullOrWhiteSpace($scope)) { return $Root }
+    $rootFull = [System.IO.Path]::GetFullPath($Root)
+    $full     = [System.IO.Path]::GetFullPath((Join-Path $rootFull $scope))
+    $sep      = [System.IO.Path]::DirectorySeparatorChar
+    $rootPfx  = $rootFull.TrimEnd($sep) + $sep
+    if (-not ("$full$sep").StartsWith($rootPfx, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "scope escapes the ingestion root: '$scope'"
+    }
+    return $full
+}
 
 function Invoke-Tool([string]$name, $arguments) {
     switch ($name) {
-        'list_documents' { $out = @(Get-IngestionScan -Root $Root) }
+        'list_documents' { $out = @(Get-IngestionScan -Root (Resolve-Scope $arguments.scope)) }
         'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper) -Force:([bool]$arguments.force) }
         'get_inventory'  { $out = Get-Inventory (Resolve-Paper $arguments.paper) }
         'finalize'        { $out = Invoke-Finalize  -ChunksPath (Resolve-Paper $arguments.paper) }
@@ -135,10 +151,11 @@ function Invoke-Tool([string]$name, $arguments) {
         'retype_chunk' { $out = Set-ChunkType -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -NewType ([string]$arguments.new_type) }
         'split_chunk'  { $out = Split-Chunk   -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Before ([string]$arguments.before) }
         'merge_chunks' { $out = Merge-Chunks  -ChunksPath (Resolve-Paper $arguments.paper) -Ids ([int[]]@($arguments.ids)) }
-        'get_batch_summary' { $out = @(Get-BatchSummary -Root $Root) }
+        'get_batch_summary' { $out = @(Get-BatchSummary -Root (Resolve-Scope $arguments.scope)) }
         'dispatch' {
             $bud = if ($arguments.budget_bytes) { [long]$arguments.budget_bytes } else { 40000 }
-            $out = if ($arguments.paper) { Invoke-Dispatch -Root $Root -BudgetBytes $bud -Paper ([string]$arguments.paper) } else { Invoke-Dispatch -Root $Root -BudgetBytes $bud }
+            $eff = Resolve-Scope $arguments.scope
+            $out = if ($arguments.paper) { Invoke-Dispatch -Root $eff -BudgetBytes $bud -Paper ([string]$arguments.paper) } else { Invoke-Dispatch -Root $eff -BudgetBytes $bud }
         }
         'search' {
             $out = Search-Chunks -ChunksPath (Resolve-Paper $arguments.paper) `
@@ -155,18 +172,60 @@ function Invoke-Tool([string]$name, $arguments) {
     return @{ content = @(@{ type = 'text'; text = $text }) }
 }
 
+# Belt-and-suspenders around the tool dispatch: a stray Write-Host/Write-Warning/Write-Verbose/
+# Write-Debug inside a membrane call must never reach a stdout frame. PowerShell cannot redirect a
+# stream to stderr directly (`n>&2` is reserved), so we merge the Information(6)/Warning(3)/
+# Verbose(4)/Debug(5) streams into success and split by record type: the tool's stream-1 result
+# (a hashtable) is returned; everything else is forwarded to stderr. (The SetOut backstop already
+# routes host writes to stderr; this catches any host variant that bypasses [Console]::Out.)
+function Invoke-ToolGuarded([string]$name, $arguments) {
+    $result = $null
+    Invoke-Tool $name $arguments 3>&1 4>&1 5>&1 6>&1 | ForEach-Object {
+        if ($_ -is [System.Collections.IDictionary]) { $result = $_ }   # the tool result
+        else { [Console]::Error.WriteLine([string]$_) }                 # diagnostics -> stderr
+    }
+    return $result
+}
+
+# --- own the protocol channel at the .NET level, pinned to UTF-8 (no BOM) ---
+# Redirected std streams on Windows otherwise default to the ANSI/OEM code page, which collapses
+# SMP Unicode (𝔼, surrogate pairs) and accented glyphs to '?'/U+FFFD on both read and write. We
+# take explicit ownership before any frame moves: a UTF-8 reader on stdin, a UTF-8 auto-flushing
+# writer on stdout, and we point the ambient Console.Out at stderr so a stray host write from a
+# dot-sourced lib lands in the log, never mid-frame on stdout.
+$utf8 = [System.Text.UTF8Encoding]::new($false)                                   # no BOM
+$script:Rpc = [System.IO.StreamWriter]::new([Console]::OpenStandardOutput(), $utf8); $script:Rpc.AutoFlush = $true
+$script:In  = [System.IO.StreamReader]::new([Console]::OpenStandardInput(),  $utf8)
+[Console]::SetOut([Console]::Error)   # backstop: ambient console-out -> stderr (frames go via $script:Rpc)
+
+# Server-side logging: stderr only, never stdout (stdout carries protocol frames exclusively).
+function Write-Log([string]$m) { [Console]::Error.WriteLine($m) }
+
 # --- JSON-RPC framing (one compact line per message; stdout = protocol only) ---
 function Write-Rpc($id, $result) {
-    [Console]::Out.WriteLine((@{ jsonrpc = '2.0'; id = $id; result = $result } | ConvertTo-Json -Depth 16 -Compress))
+    $script:Rpc.WriteLine((@{ jsonrpc = '2.0'; id = $id; result = $result } | ConvertTo-Json -Depth 16 -Compress))
 }
 function Write-RpcError($id, [int]$code, [string]$message) {
-    [Console]::Out.WriteLine((@{ jsonrpc = '2.0'; id = $id; error = @{ code = $code; message = $message } } | ConvertTo-Json -Depth 8 -Compress))
+    $script:Rpc.WriteLine((@{ jsonrpc = '2.0'; id = $id; error = @{ code = $code; message = $message } } | ConvertTo-Json -Depth 8 -Compress))
 }
 
-[Console]::Error.WriteLine("codex-membrane MCP server up (root=$Root)")
+# Startup ceremony, part 1: confirm the root is a real directory. A missing/!directory root is a
+# deployment error, not a work state -- and the crawler (crawl.ps1) treats a dead root and an empty
+# one identically (both yield nothing), so an agent reading only a projection can't tell "nothing to
+# do" from "dead mount". We disambiguate at the ceremony: a dead root is fatal here; part 2 (the
+# discovery walk in `initialize`) hands the agent its bearings. With the derived default root this
+# fatal path is rare by construction.
+$script:Fatal = $null
+$script:Readiness = $null   # cached discovery summary, surfaced to the agent via initialize.instructions
+if (-not (Test-Path -LiteralPath $Root -PathType Container)) {
+    $script:Fatal = "ingestion root not found or not a directory: $Root -- correct the -Root launch argument or create the directory and reconnect, or escalate to the user. The server cannot survey documents or resolve papers until the root mounts."
+    Write-Log "FATAL: $script:Fatal"
+} else {
+    Write-Log "codex-membrane MCP server up (root=$Root)"
+}
 
-# --- main loop: newline-delimited JSON-RPC from stdin until EOF ---
-while ($null -ne ($line = [Console]::In.ReadLine())) {
+# --- main loop: newline-delimited JSON-RPC from stdin until EOF ($script:In.ReadLine() -> $null) ---
+while ($null -ne ($line = $script:In.ReadLine())) {
     if ([string]::IsNullOrWhiteSpace($line)) { continue }
     try { $req = $line | ConvertFrom-Json } catch { Write-RpcError $null -32700 'parse error'; continue }
 
@@ -176,14 +235,38 @@ while ($null -ne ($line = [Console]::In.ReadLine())) {
     switch ($req.method) {
         'initialize' {
             $pv = if ($req.params.protocolVersion) { [string]$req.params.protocolVersion } else { $ProtocolVersion }
-            Write-Rpc $id @{ protocolVersion = $pv; capabilities = @{ tools = @{} }; serverInfo = $ServerInfo }
+            $result = @{ protocolVersion = $pv; capabilities = @{ tools = @{} }; serverInfo = $ServerInfo }
+            # Ceremony part 2: the discovery walk IS the handshake. Hand the agent its bearings via
+            # `instructions` (clients inject this into the agent's context) so it never infers state from
+            # a possibly-empty projection. Walk once, cache; a dead root reports its diagnostic instead.
+            if ($script:Fatal) {
+                $result.instructions = "error: $($script:Fatal)"
+            } else {
+                if ($null -eq $script:Readiness) {
+                    $scan = @(Get-IngestionScan -Root $Root)
+                    $prepped = @($scan | Where-Object { $_.prepped }).Count
+                    $script:Readiness = if ($scan.Count -eq 0) {
+                        "codex-membrane: ingestion root '$Root' mounted but EMPTY -- 0 documents discovered (no {slug}/{slug}.json under it). Confirm this is the intended tree, pass a different -Root, or escalate to the user; do not assume there is simply no work."
+                    } else {
+                        "codex-membrane: serving ingestion root '$Root' -- $($scan.Count) document(s) discovered, $prepped preprocessed. Begin with get_batch_summary (orchestrator re-ground) or list_documents; narrow a survey with the optional scope arg. The repair workflow is in PROCEDURE.md."
+                    }
+                    Write-Log "discovery: $($scan.Count) document(s), $prepped preprocessed under $Root"
+                }
+                $result.instructions = $script:Readiness
+            }
+            Write-Rpc $id $result
         }
         'tools/list' { Write-Rpc $id @{ tools = $Tools } }
         'tools/call' {
-            try {
-                Write-Rpc $id (Invoke-Tool ([string]$req.params.name) $req.params.arguments)
-            } catch {
-                Write-Rpc $id @{ content = @(@{ type = 'text'; text = "error: $($_.Exception.Message)" }); isError = $true }
+            if ($script:Fatal) {
+                # Brief, in-feed notification: the working dir never mounted. Agent corrects or escalates.
+                Write-Rpc $id @{ content = @(@{ type = 'text'; text = "error: $($script:Fatal)" }); isError = $true }
+            } else {
+                try {
+                    Write-Rpc $id (Invoke-ToolGuarded ([string]$req.params.name) $req.params.arguments)
+                } catch {
+                    Write-Rpc $id @{ content = @(@{ type = 'text'; text = "error: $($_.Exception.Message)" }); isError = $true }
+                }
             }
         }
         'ping' { Write-Rpc $id @{} }

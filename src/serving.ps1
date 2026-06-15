@@ -59,12 +59,12 @@ function Get-IngestionScan([string]$Root) {
 #     file per document, so the per-paper state never contends.
 function Get-LeasedIds([string]$ChunksPath) {
     $p = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.leases.json'
-    if (Test-Path -LiteralPath $p) { return @((Get-Content -LiteralPath $p -Raw | ConvertFrom-Json).leased | ForEach-Object { [int]$_ }) }
+    if (Test-Path -LiteralPath $p) { return @(([System.IO.File]::ReadAllText($p, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json).leased | ForEach-Object { [int]$_ }) }
     return @()
 }
 function Set-LeasedIds([string]$ChunksPath, [int[]]$Ids) {
     $p = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.leases.json'
-    (@{ leased = @($Ids | Sort-Object -Unique) } | ConvertTo-Json -Compress) | Set-Content -LiteralPath $p -Encoding utf8
+    [System.IO.File]::WriteAllText($p, (@{ leased = @($Ids | Sort-Object -Unique) } | ConvertTo-Json -Compress), [System.Text.UTF8Encoding]::new($false))
 }
 function Clear-Leases([string]$ChunksPath, [int[]]$Ids) {
     if ($Ids -and $Ids.Count) { Set-LeasedIds $ChunksPath @(Get-LeasedIds $ChunksPath | Where-Object { $_ -notin $Ids }) }
@@ -125,7 +125,7 @@ function Get-Slice {
         # overlay a staged proposal if one exists, so re-grounding shows the true working state
         $pf = Join-Path $propDir "$($rec.id).json"
         if (Test-Path -LiteralPath $pf) {
-            $p = Get-Content -LiteralPath $pf -Raw | ConvertFrom-Json
+            $p = [System.IO.File]::ReadAllText($pf, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
             $rec | Add-Member -NotePropertyName content -NotePropertyValue ([string]$p.content) -Force
             $rec | Add-Member -NotePropertyName staged  -NotePropertyValue $true -Force
         }
@@ -157,7 +157,7 @@ function Add-RepairProposal {
     $propDir = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.proposals'
     if (-not (Test-Path -LiteralPath $propDir)) { New-Item -ItemType Directory -Force -Path $propDir | Out-Null }
     $rec = [ordered]@{ id = $Id; type = [string]$target.type; content = $Content; source = $Source }
-    ($rec | ConvertTo-Json -Compress -Depth 8) | Set-Content -LiteralPath (Join-Path $propDir "$Id.json") -Encoding utf8
+    [System.IO.File]::WriteAllText((Join-Path $propDir "$Id.json"), ($rec | ConvertTo-Json -Compress -Depth 8), [System.Text.UTF8Encoding]::new($false))
     return [pscustomobject]@{ accepted = $true; id = $Id }
 }
 
@@ -179,7 +179,7 @@ function Add-RepairEdit {
     $propDir = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.proposals'
     $propFile = Join-Path $propDir "$Id.json"
     if (Test-Path -LiteralPath $propFile) {
-        $p = Get-Content -LiteralPath $propFile -Raw | ConvertFrom-Json
+        $p = [System.IO.File]::ReadAllText($propFile, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
         $base = [string]$p.content; $type = [string]$p.type
     } else {
         $target = Read-JsonlRecord -Path $ChunksPath -At $Id
@@ -193,7 +193,7 @@ function Add-RepairEdit {
 
     if (-not (Test-Path -LiteralPath $propDir)) { New-Item -ItemType Directory -Force -Path $propDir | Out-Null }
     $rec = [ordered]@{ id = $Id; type = $type; content = $new; source = $Source }
-    ($rec | ConvertTo-Json -Compress -Depth 8) | Set-Content -LiteralPath $propFile -Encoding utf8
+    [System.IO.File]::WriteAllText($propFile, ($rec | ConvertTo-Json -Compress -Depth 8), [System.Text.UTF8Encoding]::new($false))
 
     $ct = Get-CorruptionType ([pscustomobject]@{ type = $type; content = $new })
     $diag = if ($ct -eq 'unbalanced_delimiters') { $b = Get-LatexBalance $new; "brace=$($b.brace) brack=$($b.brack) paren=$($b.paren) lr=$($b.lr)" } else { '' }
@@ -212,7 +212,7 @@ function Invoke-RepairApply {
     $props = @{}
     if (Test-Path -LiteralPath $propDir) {
         foreach ($f in Get-ChildItem -LiteralPath $propDir -Filter '*.json' -File) {
-            $p = Get-Content -LiteralPath $f.FullName -Raw | ConvertFrom-Json
+            $p = [System.IO.File]::ReadAllText($f.FullName, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
             $props[[int]$p.id] = $p
         }
     }
@@ -407,6 +407,6 @@ function Add-ReviewRequest {
         [Parameter(Mandatory)][string]$Message, [string]$Source = 'worker'
     )
     $reqPath = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.review-requests.jsonl'
-    (@{ id = $Id; message = $Message; source = $Source } | ConvertTo-Json -Compress) | Add-Content -LiteralPath $reqPath -Encoding utf8
+    [System.IO.File]::AppendAllText($reqPath, ((@{ id = $Id; message = $Message; source = $Source } | ConvertTo-Json -Compress) + "`n"), [System.Text.UTF8Encoding]::new($false))
     [pscustomobject]@{ ok = $true; id = $Id; queued = 'review-requests' }
 }

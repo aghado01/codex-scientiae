@@ -45,7 +45,7 @@ function Save-Structure($Chunks, $Affected, [string]$ChunksPath, [string]$NodesP
     }
     $manifest = Write-JsonlStage -Records $Chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'restructure'
     $auditPath = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.structure-audit.jsonl'
-    ($AuditRec | ConvertTo-Json -Compress -Depth 8) | Add-Content -LiteralPath $auditPath -Encoding utf8
+    [System.IO.File]::AppendAllText($auditPath, (($AuditRec | ConvertTo-Json -Compress -Depth 8) + "`n"), [System.Text.UTF8Encoding]::new($false))
     return $manifest
 }
 

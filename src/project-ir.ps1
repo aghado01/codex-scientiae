@@ -67,7 +67,7 @@ function Invoke-ProjectIr {
         [Parameter(Mandatory)] [string] $OutputPath
     )
 
-    $doc     = Get-Content -LiteralPath $JsonPath -Raw | ConvertFrom-Json
+    $doc     = [System.IO.File]::ReadAllText($JsonPath, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json   # .NET read: BOM-tolerant decode, no provider encoding ambiguity on external IR
     $nodes   = [System.Collections.Generic.List[object]]::new()
     $rawKeys = [System.Collections.Generic.HashSet[string]]::new()
 
