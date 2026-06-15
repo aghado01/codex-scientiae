@@ -36,11 +36,19 @@ function Get-SectionRole([string]$heading) {
     }
 }
 
+# Depth from the heading's own number, plus whether that number existed. Numeric "2.2.1"
+# -> depth 3; appendix-style "A.1" / "B.3.2" -> 1 + dotted depth (a lone "A Supplementary"
+# has no dotted number, so it falls through to the font pass, which avoids mistaking a section
+# that merely opens with "A " for an appendix). numbered=$false marks a provisional level the
+# font-calibration pass is free to overwrite.
 function Get-SectionLevel([string]$heading) {
-    if ($heading -match '^\s*(\d+(\.\d+)*)') {
-        return @(($Matches[1] -split '\.') | Where-Object { $_ -ne '' }).Count
+    if ($heading -match '^\s*(\d+(?:\.\d+)*)(?:\s|$|[.:])') {
+        return @{ level = @($Matches[1] -split '\.').Count; numbered = $true }
     }
-    return 1
+    if ($heading -match '^\s*[A-Z](?:\.\d+)+(?:\s|$|[.:])') {
+        return @{ level = 1 + @([regex]::Matches($Matches[0], '\.\d+')).Count; numbered = $true }
+    }
+    return @{ level = 1; numbered = $false }
 }
 
 # Normalize a heading for running-head detection: strip a page number from either end
@@ -100,20 +108,56 @@ function Invoke-Sections {
                 $c | Add-Member -NotePropertyName is_block -NotePropertyValue $true -Force
             }
             else {
-                $role  = Get-SectionRole ([string]$c.content)
-                $level = Get-SectionLevel ([string]$c.content)
-                $c | Add-Member -NotePropertyName section_role  -NotePropertyValue $role  -Force
-                $c | Add-Member -NotePropertyName section_level -NotePropertyValue $level -Force
-                if ($level -eq 1) { $currentSection = [string]$c.content }
+                $role = Get-SectionRole ([string]$c.content)
+                $lv   = Get-SectionLevel ([string]$c.content)
+                $c | Add-Member -NotePropertyName section_role  -NotePropertyValue $role     -Force
+                $c | Add-Member -NotePropertyName section_level -NotePropertyValue $lv.level  -Force
+                $c | Add-Member -NotePropertyName level_source  -NotePropertyValue $(if ($lv.numbered) { 'numbered' } else { 'default' }) -Force
+                if ($lv.level -eq 1) { $currentSection = [string]$c.content }
             }
         }
         if ($currentSection) { $c | Add-Member -NotePropertyName section -NotePropertyValue $currentSection -Force }
     }
 
+    # font-calibrated leveling for unnumbered headings. The numbered headings teach a
+    # font_size -> level map (their own numbers are ground truth); each unnumbered heading then
+    # inherits the level of its nearest font tier. An unnumbered heading with no usable font and
+    # numbered siblings to contrast against can't be placed deterministically — flag it for review
+    # rather than leave it silently at the top level.
+    $secHeads = @($chunks | Where-Object {
+        $_.type -eq 'heading' -and $null -ne $_.section_level -and $_.is_furniture -ne 'running_head' -and -not $_.title_candidate })
+    $cal = @{}
+    foreach ($h in $secHeads) {
+        if ($h.level_source -ne 'numbered' -or $null -eq $h.font_size) { continue }
+        $sz = [math]::Round([double]$h.font_size, 1)
+        if (-not $cal.ContainsKey($sz)) { $cal[$sz] = [System.Collections.Generic.List[int]]::new() }
+        $cal[$sz].Add([int]$h.section_level)
+    }
+    $sizeLevel = @{}
+    foreach ($sz in $cal.Keys) { $sizeLevel[$sz] = [int]($cal[$sz] | Group-Object | Sort-Object Count -Descending | Select-Object -First 1).Name }
+    $calSizes = @($sizeLevel.Keys)
+    $relevelled = 0; $flagged = 0
+    foreach ($h in $secHeads) {
+        if ($h.level_source -eq 'numbered') { continue }
+        if ($null -ne $h.font_size -and $calSizes.Count) {
+            $fs   = [double]$h.font_size
+            $near = $calSizes | Sort-Object { [math]::Abs($_ - $fs) } | Select-Object -First 1
+            $h.section_level = [int]$sizeLevel[$near]
+            $h.level_source  = 'font'
+            $relevelled++
+        }
+        elseif ($calSizes.Count) {
+            # numbered siblings exist but there's no usable font to place this heading against —
+            # record the uncertainty; fidelity (the next stage) lifts level_uncertain to needs_review.
+            $h | Add-Member -NotePropertyName level_uncertain -NotePropertyValue $true -Force
+            $flagged++
+        }
+    }
+
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'sections'
 
     $rh = @($chunks | Where-Object { $_.is_furniture -eq 'running_head' })
-    "sections tagged on $($chunks.Count) chunks  (running-head furniture: $($rh.Count) chunks) -> $ChunksPath"
+    "sections tagged on $($chunks.Count) chunks  (running-head furniture: $($rh.Count) chunks; unnumbered headings font-levelled: $relevelled, flagged: $flagged) -> $ChunksPath"
     "--- proto-TOC (body + back-matter section headings) ---"
     $chunks | Where-Object { $_.type -eq 'heading' -and $null -ne $_.section_level -and $_.is_furniture -ne 'running_head' } |
         ForEach-Object {

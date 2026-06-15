@@ -104,6 +104,21 @@ function Write-JsonlStage {
     $sigPath = "$OutputPath.sig"
     ($sig | ConvertTo-Json) | Set-Content -LiteralPath $sigPath -Encoding utf8
 
+    # inventory: every durable artifact self-registers here — the cross-cutting "decorator"
+    # realised via the single write-chokepoint. Best-effort: the artifact is ground truth, the
+    # inventory a convenience window onto the in-play objects (one per scratch dir).
+    try {
+        $invPath = Join-Path ([System.IO.Path]::GetDirectoryName($OutputPath)) 'inventory.json'
+        $inv = if (Test-Path -LiteralPath $invPath) { Get-Content -LiteralPath $invPath -Raw | ConvertFrom-Json -AsHashtable } else { @{} }
+        $inv[[System.IO.Path]::GetFileName($OutputPath)] = @{
+            stage   = $Stage
+            records = $Records.Count
+            bytes   = (Get-Item -LiteralPath $OutputPath).Length
+            source  = if ($SourcePath) { [System.IO.Path]::GetFileName($SourcePath) } else { $null }
+        }
+        ($inv | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $invPath -Encoding utf8
+    } catch { }
+
     return [pscustomobject]@{ Jsonl = $OutputPath; Jidx = $jidxPath; Sig = $sigPath; Records = $Records.Count }
 }
 
@@ -159,4 +174,32 @@ function Get-JsonlSchema {
             Types    = (($types[$k].Keys | Sort-Object) -join ',')
         }
     }
+}
+
+# --- ledger: per-document milestone record (process position, written by the stages) ---
+# A terse anti-amnesic ledger — not a verbose log. The process logs its own milestones as it
+# passes them; the last line is "where we are", the whole file is "how we got here". One file
+# per document, so fan-out never contends. Chunks stay ground truth; the ledger is the cheap
+# process-position projection.
+
+function Add-LedgerEntry([string]$ChunksPath, [string]$Stage, [hashtable]$Extra = @{}) {
+    $rec = [ordered]@{ stage = $Stage }
+    foreach ($k in $Extra.Keys) { $rec[$k] = $Extra[$k] }
+    $ledger = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.ledger.jsonl'
+    ($rec | ConvertTo-Json -Compress -Depth 6) | Add-Content -LiteralPath $ledger -Encoding utf8
+}
+
+function Get-LedgerStage([string]$ChunksPath) {
+    $ledger = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.ledger.jsonl'
+    if (-not (Test-Path -LiteralPath $ledger)) { return $null }
+    $last = [System.IO.File]::ReadLines($ledger) | Where-Object { $_ } | Select-Object -Last 1
+    if ($last) { return ($last | ConvertFrom-Json) }
+    return $null
+}
+
+# the in-play artifacts registered alongside this document (the other window onto progress)
+function Get-Inventory([string]$ChunksPath) {
+    $invPath = Join-Path ([System.IO.Path]::GetDirectoryName($ChunksPath)) 'inventory.json'
+    if (Test-Path -LiteralPath $invPath) { return Get-Content -LiteralPath $invPath -Raw | ConvertFrom-Json }
+    return $null
 }

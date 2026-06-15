@@ -54,9 +54,19 @@ function Invoke-Fidelity {
 
     foreach ($c in $chunks) {
         $ct = Get-CorruptionType $c
-        $fidelity = if ($ct) { 'suspect' } else { 'faithful' }
-        $c | Add-Member -NotePropertyName fidelity -NotePropertyValue $fidelity -Force
-        if ($ct) { $c | Add-Member -NotePropertyName corruption_type -NotePropertyValue $ct -Force }
+        if ($ct) {
+            $c | Add-Member -NotePropertyName fidelity        -NotePropertyValue 'suspect' -Force
+            $c | Add-Member -NotePropertyName corruption_type -NotePropertyValue $ct       -Force
+        }
+        elseif ($c.level_uncertain) {
+            # faithful content, but a heading we couldn't level deterministically — structural,
+            # not corruption, yet still a call the model must make. Surface it as actionable.
+            $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'needs_review'          -Force
+            $c | Add-Member -NotePropertyName review_reason -NotePropertyValue 'heading_level_unknown' -Force
+        }
+        else {
+            $c | Add-Member -NotePropertyName fidelity -NotePropertyValue 'faithful' -Force
+        }
     }
 
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'fidelity'
