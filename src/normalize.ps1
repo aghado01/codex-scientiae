@@ -89,9 +89,11 @@ function Convert-MathToLatex([string]$s) {
 }
 
 # A glyph token: a lone character, a number, a known math function, or a short index list (j,k).
-# Lone 'a'/'I' are excluded — the English article and pronoun are too ambiguous to claim as math.
+# Lone 'a'/'I' (article/pronoun) are NOT special-cased here: excluding them severed runs that
+# legitimately start with those variables ("I \in R", "a \le b"). The strong-math gate in Add-MathRun
+# is the real guard — a run carrying no \p{Sm}/Greek/relation is never wrapped, so a stray prose
+# "a"/"I" forms a lone, strong-less run and is left untouched.
 function Test-MathGlyphToken([string]$tok) {
-    if ($tok -ceq 'a' -or $tok -ceq 'I') { return $false }
     if ($tok.Length -eq 1) { return $true }
     if ($tok -match '^\d+$') { return $true }
     if ($script:MathFunc -contains $tok) { return $true }
@@ -110,8 +112,81 @@ function Test-StrongMath([string]$tok) {
     return ($tok -in '=', '<', '>', '+')
 }
 
-# Flush an accumulated glyph run: trailing sentence punctuation peels back to prose; the run is
-# wrapped in $...$ (unicode kept as-is) only if it carries a strong math character.
+# Net bracket contribution of a token: opens ( [ { minus closes ) ] }. Lets the run builder know it is
+# still inside an open delimiter, so a glued-punctuation filler (",r", "x*") doesn't cut the run before
+# its closer arrives.
+function Get-BracketDelta([string]$tok) {
+    $d = 0
+    foreach ($ch in $tok.ToCharArray()) {
+        if     ($ch -eq '(' -or $ch -eq '[' -or $ch -eq '{') { $d++ }
+        elseif ($ch -eq ')' -or $ch -eq ']' -or $ch -eq '}') { $d-- }
+    }
+    return $d
+}
+
+# Mid-expression filler: a non-glyph token that may be pulled INTO a run while a bracket is still open,
+# so "( 0 ,r x * )" stays one $...$ span instead of splitting at the glued ",r". Conservative — any
+# token carrying a 3+ letter word is prose (a real word inside the bracket means it was mis-tokenized,
+# not math), and it must be made only of letters/digits/math punctuation so no stray markup is swallowed.
+function Test-RunFiller([string]$tok) {
+    if ($tok -eq '') { return $false }
+    if ($tok -match '[A-Za-z]{3,}') { return $false }
+    return ($tok -match '^[\p{L}\p{N}\p{P}\p{S}]+$')
+}
+
+# Per-class, never-negative delimiter check for an inline run. No LaTeX escapes exist at this stage
+# (conversion to \command runs after wrapping, and adds only balanced braces), so a plain character
+# scan matches Get-LatexBalance.full — the exact predicate the closure scanner uses.
+function Test-RunBalanced([string]$s) {
+    $p = 0; $b = 0; $c = 0
+    foreach ($ch in $s.ToCharArray()) {
+        switch ($ch) {
+            '(' { $p++ } ')' { $p--; if ($p -lt 0) { return $false } }
+            '[' { $b++ } ']' { $b--; if ($b -lt 0) { return $false } }
+            '{' { $c++ } '}' { $c--; if ($c -lt 0) { return $false } }
+        }
+    }
+    return ($p -eq 0 -and $b -eq 0 -and $c -eq 0)
+}
+
+# Flag, per token, any bracket with no partner in the run (an unmatched closer, or an opener never
+# closed). Counts ( ) [ ] { } per class — matching Get-LatexBalance's per-class, never-negative rule —
+# and attributes each widowed delimiter to the token carrying it, so the wrap can fall on the balanced
+# side of it and the $...$ span we emit is always closed.
+function Get-RunOrphans($Run) {
+    $n = $Run.Count
+    $orphan = New-Object 'bool[]' $n
+    $stacks = @{ '(' = [System.Collections.Generic.Stack[int]]::new(); '[' = [System.Collections.Generic.Stack[int]]::new(); '{' = [System.Collections.Generic.Stack[int]]::new() }
+    $opener = @{ ')' = '('; ']' = '['; '}' = '{' }
+    for ($i = 0; $i -lt $n; $i++) {
+        foreach ($ch in ([string]$Run[$i]).ToCharArray()) {
+            $k = [string]$ch
+            if     ($stacks.ContainsKey($k)) { $stacks[$k].Push($i) }
+            elseif ($opener.ContainsKey($k)) {
+                $s = $stacks[$opener[$k]]
+                if ($s.Count -gt 0) { [void]$s.Pop() } else { $orphan[$i] = $true }
+            }
+        }
+    }
+    foreach ($key in @($stacks.Keys)) { while ($stacks[$key].Count -gt 0) { $orphan[$stacks[$key].Pop()] = $true } }
+    return ,$orphan
+}
+
+# Emit one balanced segment of a run: wrap it in $...$ when it carries a strong math character and is
+# delimiter-balanced, otherwise pass its tokens through as prose. The balance re-check is a backstop —
+# a glued bracket the orphan split couldn't isolate falls back to prose, never a broken span.
+function Add-RunSegment($Seg, $Out) {
+    if ($Seg.Count -eq 0) { return }
+    $strong = 0; foreach ($t in $Seg) { if (Test-StrongMath $t) { $strong++ } }
+    $body = $Seg -join ' '
+    if ($strong -ge 1 -and (Test-RunBalanced $body)) { $Out.Add('$' + (Convert-MathToLatex $body) + '$') }
+    else { foreach ($t in $Seg) { $Out.Add($t) } }
+    $Seg.Clear()
+}
+
+# Flush an accumulated glyph run: trailing sentence punctuation peels back to prose, then the run is
+# split at any unmatched bracket so a bracketed sub-expression is never cut across the $ boundary. Each
+# balanced segment is wrapped (if it carries strong math); the widowed delimiters stay as prose.
 function Add-MathRun($Run, $Out) {
     if ($Run.Count -eq 0) { return }
     $head = [System.Collections.Generic.List[string]]::new()
@@ -121,9 +196,13 @@ function Add-MathRun($Run, $Out) {
         $tail.Insert(0, $Run[$Run.Count - 1]); $Run.RemoveAt($Run.Count - 1)
     }
     foreach ($t in $head) { $Out.Add($t) }
-    $strong = 0; foreach ($t in $Run) { if (Test-StrongMath $t) { $strong++ } }
-    if ($Run.Count -ge 1 -and $strong -ge 1) { $Out.Add('$' + (Convert-MathToLatex ($Run -join ' ')) + '$') }
-    else { foreach ($t in $Run) { $Out.Add($t) } }
+    $orphan = Get-RunOrphans $Run
+    $seg = [System.Collections.Generic.List[string]]::new()
+    for ($i = 0; $i -lt $Run.Count; $i++) {
+        if ($orphan[$i]) { Add-RunSegment $seg $Out; $Out.Add($Run[$i]) }
+        else { $seg.Add($Run[$i]) }
+    }
+    Add-RunSegment $seg $Out
     foreach ($t in $tail) { $Out.Add($t) }
     $Run.Clear()
 }
@@ -139,10 +218,18 @@ function ConvertTo-InlineMath([string]$Content) {
     $c = [regex]::Replace($c,        '(?<=\d|\p{Sm}|\p{IsGreekandCoptic})([)\]},;])', ' $1')
     $out = [System.Collections.Generic.List[string]]::new()
     $run = [System.Collections.Generic.List[string]]::new()
+    $depth = 0      # net open brackets carried by $run; >0 means the run is still inside a delimiter
+    $filled = 0     # consecutive non-glyph fillers pulled in while mid-bracket (bounded, anti-runaway)
     foreach ($t in ($c -split '\s+')) {
         if ($t -eq '') { continue }
-        if (Test-MathGlyphToken $t) { $run.Add($t) }
-        else { Add-MathRun $run $out; $out.Add($t) }
+        if (Test-MathGlyphToken $t) {
+            $run.Add($t); $depth += (Get-BracketDelta $t); $filled = 0
+        }
+        elseif ($depth -gt 0 -and $filled -lt 3 -and (Test-RunFiller $t)) {
+            # mid-bracket: keep glued punctuation ( ",r" ) inside the run so "( ... )" stays one span
+            $run.Add($t); $depth += (Get-BracketDelta $t); $filled++
+        }
+        else { Add-MathRun $run $out; $out.Add($t); $depth = 0; $filled = 0 }
     }
     Add-MathRun $run $out
     return ($out -join ' ')

@@ -189,10 +189,68 @@ function Invoke-Sections {
         else { $i++ }
     }
 
+    # collapsed-frontmatter recovery: a letter-format paper with no section headings (only a title)
+    # gives the zone state machine no body-start heading to trip on, so every body paragraph stays
+    # zoned 'frontmatter' and finalize would render the whole intro/body above "## Contents". When
+    # that collapse is detected — no chunk ever reached the body zone AND the paper carries <= 1 real
+    # heading (the title) — re-establish the front->body boundary heuristically: front matter is the
+    # title plus the contiguous leading byline/affiliation/abstract block; everything after it (and not
+    # already routed to the citation-run backmatter) becomes body. Gated tightly so papers that DO
+    # carry section headings keep the boundary the state machine already placed.
+    #
+    # Scope note: the byline/affiliation and abstract frequently fuse into ONE chunk here (collapse
+    # merges adjacent paragraphs by bbox proximity, ignoring font-size — e.g. BWD1996 fuses the 10.5pt
+    # byline, the 9.5pt affiliation, and the 9.5pt abstract). Splitting that block so the abstract
+    # becomes its own "## Abstract" section is deliberately NOT done here: the abstract is detectable by
+    # typography, but the byline|abstract seam itself carries no typographic signal (same font, adjacent,
+    # no gap) — only content patterns, which would be brittle venue-specific magic strings. That seam is
+    # a semantic call, deferred to the membrane/content tier (split_chunk / retype_chunk), which reads
+    # the text. The whole fused block therefore rests in frontmatter, which is correct for the byline.
+    $demoted = 0
+    $realHeads = @($chunks | Where-Object {
+        $_.type -eq 'heading' -and $_.is_furniture -notin 'running_head','figure_label' -and -not $_.boilerplate_hint })
+    $hasBody = [bool]@($chunks | Where-Object { $_.zone -eq 'body' }).Count
+    if (-not $hasBody -and $realHeads.Count -le 1) {
+        # a leading chunk is still front matter if it carries an affiliation, an editorial date, a
+        # publication identifier, or an explicit Abstract label. The byline/abstract is commonly fused
+        # into one chunk (as here), so this fires on it while staying silent on the first body paragraph.
+        $isFrontSignal = {
+            param($t)
+            ($t -match '(?i)\b(department|institut|universit|laborator|college|facult|centre|center for|academ|école|hospital|school of)\b') -or
+            ($t -match '(?i)\(?\s*(received|revised|accepted|submitted)\b')                                                                 -or
+            ($t -match '\[\s*S?\d{4}-\d{3,4}')                                                                                              -or
+            ($t -match '(?i)^\s*abstract\b')
+        }
+        $titleIdx = -1
+        for ($t = 0; $t -lt $chunks.Count; $t++) { if ($chunks[$t].title_candidate) { $titleIdx = $t; break } }
+        # contiguous leading block from just after the title: the first non-empty chunk is taken as
+        # front matter (a byline is universal), then the block extends across further front-signal
+        # chunks and stops at the first body paragraph. Contiguity keeps a stray "University" deep in
+        # the body from dragging the boundary down.
+        $lastFront = $titleIdx; $started = $false
+        for ($k = $titleIdx + 1; $k -lt $chunks.Count; $k++) {
+            $c = $chunks[$k]
+            if ($c.is_reference -or $c.zone -ne 'frontmatter') { break }
+            $txt = [string]$c.content
+            if ([string]::IsNullOrWhiteSpace($txt)) { continue }
+            if (-not $started)         { $lastFront = $k; $started = $true; continue }
+            if (& $isFrontSignal $txt) { $lastFront = $k }
+            else                       { break }
+        }
+        # demote every remaining frontmatter chunk after the header block to body; references (already
+        # routed to backmatter by the citation-run detector) are left untouched.
+        for ($k = $lastFront + 1; $k -lt $chunks.Count; $k++) {
+            $c = $chunks[$k]
+            if ($c.is_reference -or $c.zone -ne 'frontmatter') { continue }
+            $c.zone = 'body'
+            $demoted++
+        }
+    }
+
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'sections'
 
     $rh = @($chunks | Where-Object { $_.is_furniture -eq 'running_head' })
-    "sections tagged on $($chunks.Count) chunks  (running-head furniture: $($rh.Count) chunks; unnumbered headings font-levelled: $relevelled, flagged: $flagged; references marked: $refMarked) -> $ChunksPath"
+    "sections tagged on $($chunks.Count) chunks  (running-head furniture: $($rh.Count) chunks; unnumbered headings font-levelled: $relevelled, flagged: $flagged; references marked: $refMarked; collapsed-frontmatter body recovered: $demoted) -> $ChunksPath"
     "--- proto-TOC (body + back-matter section headings) ---"
     $chunks | Where-Object { $_.type -eq 'heading' -and $null -ne $_.section_level -and $_.is_furniture -ne 'running_head' } |
         ForEach-Object {
