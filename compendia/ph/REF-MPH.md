@@ -28,7 +28,7 @@ Definition 9.1. A poset (partially ordered set) is a tuple ( P, ) consisting of 
 - a a for all a 2 P ;
 - a b and b a implies a = b for all a,b 2 P ;
 
-a /precedesequal b and b /precedesequal c implies a /precedesequal c for all a, b, c ∈ P ;
+a /precedesequal b and b /precedesequal c implies a /precedesequal c for all a, b, c $\in$ P ;
 
 We will sometimes simply write P if the (partial) ordering is clear from context.
 
@@ -41,13 +41,13 @@ Note that partial orderings allow for elements to be incomparable, i.e., it can 
 /precedesequal op /followsequal, where
 
 $$
-a \preceq b \iff b \preceq a \quad \text {for all $a,b\in P$}.
+a \preceq b \iff b \preceq a \quad \text {for all a,b\in P}.
 $$
 
 - For two posets ( P, P ) and ( Q, Q ) we have the product poset ( P ⇥ Q, ), where
 
 $$
-( p, q ) \preceq ( p ^ { \prime }, q ^ { \prime } ) \iff p \preceq _ { P } p ^ { \prime } \text { and } q \preceq _ { Q } q ^ { \prime } \quad \text {for all } p, p ^ { \prime } \in P \text { and } q, q ^ { \prime } \in Q.
+( p, q ) \preceq ( p ^{\prime}, q ^{\prime} ) \iff p \preceq _{P} p ^{\prime} \text {and} q \preceq _{Q} q ^{\prime} \quad \text {for all} p, p ^{\prime} \in P \text {and} q, q ^{\prime} \in Q.
 $$
 
 We can now define filtrations and persistence modules indexed by an arbitrary poset, generalizing our definitions from earlier chapters.
@@ -59,7 +59,7 @@ Definition 9.3. Let ( P, ) be a poset, and let be a field. A P -persistence modu
 - An -vector space U p for each p 2 P ;
 - A linear map u p,p 0 : U p ! U p 0 for each p,p 0 2 P with p p 0, satisfying u p 2,p 3 u p 1,p 2 = u p 1,p 3 for all p 1,p 2,p 3 2 P with p 1 p 2 p 3.
 
-′ ′ ◦ ∈ /precedesequal /precedesequal
+′ ′ ◦ $\in$ /precedesequal /precedesequal
 
 Observation 9.4. If ( X p ) p 2 P is a P -filtration for some poset P, then taking k -dimensional homology gives us a P -persistence module H k ( X p ) (where, as before, the maps u p,p 0 : H k ( X p ) ! H k ( X p 0 ) are induced by the inclusions X p, ! X p 0 ).
 
@@ -70,7 +70,7 @@ Example 9.5. Let X be a finite metric space. Then the family ( r d ( X )) r 2,d 
 Example 9.6. Let X ✓ be a finite point cloud. For r 2 and d 2, define
 
 $$
-\mathcal { M } \mathcal { C } _ { d } ^ { r } = \{ x \in \mathbb { R } ^ { n } \colon | B ( x, r ) \cap X | \geqslant d \} \subseteq \mathbb { R } ^ { n }.
+\mathcal {M} \mathcal {C} _{d} ^{r} = \{x \in \mathbb {R} ^{n} \colon | B ( x, r ) \cap X | \geqslant d \} \subseteq \mathbb {R} ^{n}.
 $$
 
 Note that, for d = 1, this is just the union-of-balls used to define the Čech complex. The family ( MC r d ( X )) r 2,d 2 is a filtration (of topological spaces) indexed by ⇥ op. It is called the multicover bifiltration.
@@ -84,7 +84,7 @@ Both of the filtrations above can also be thought of as indexed over 2 (after a 
 Recall that a p.f.d. persistence module indexed by can be uniquely represented by a barcode. In Chapter 6, we saw that this follows from the fact that any such can be decomposed into interval modules in a unique way:
 
 $$
-\mathbb { U } \cong \bigoplus _ { i \in I } \mathbb { I } _ { \langle a, b \rangle }.
+\mathbb {U} \cong \bigoplus _{i \in I} \mathbb {I} _{\langle a, b \rangle}.
 $$
 
 Each interval in this decomposition corresponds to a bar in the barcode of. We could hope a similar statement holds for modules indexed by any poset P. The following definition and theorem should give us some hope:
@@ -96,7 +96,7 @@ Exercise 9.8. Show that interval modules (indexed by ) are indecomposable.
 Theorem 9.9. Let be a p.f.d. persistence module (indexed by a poset P ). Then, there is a unique decomposition:
 
 $$
-U \cong \bigoplus _ { i \in I } \mathbb { U } _ { i }, \\ 1 _ { i } = 1.
+U \cong \bigoplus _{i \in I} \mathbb {U} _{i}, \\ 1 _{i} = 1.
 $$
 
 where each persistence module i is indecomposable.
@@ -106,7 +106,7 @@ Understanding P -persistence modules thus boils down to understanding indecompos
 Definition 9.10. Let ( P, ) be a poset and let be a P -persistence module. We say a multiset B of subsets of P is a reasonable barcode for if
 
 $$
-\ r a n k ( u _ { p, p ^ { \prime } } ) = | \{ B \in \mathcal { B } \colon p, p ^ { \prime } \in B \} | \quad ( \forall p \preceq p ^ { \prime } ). \\
+\ r a n k ( u _{p, p ^{\prime}} ) = | \{B \in \mathcal {B} \colon p, p ^{\prime} \in B \} | \quad ( \forall p \preceq p ^{\prime} ). \\
 $$
 
 That is, the rank of the map u p,p 0 : U p ! U p 0 can be computed by counting the number of ‘bars’ that contain both p and p 0.
@@ -118,7 +118,7 @@ Exercise 9.12. For p 2 P, show that dim U p is greater than or equal to the numb
 Example 9.13. Let P = { 0,1,2 } ⇥ { 0,1,2 } and consider the following persistence module indexed by P :
 
 $$
-\mathbb { F } & \longrightarrow \mathbb { F } \longrightarrow 0 & f & \colon a & \mapsto ( a, 0 ) \\ \text {id} & \widehat { g } & \widehat { \uparrow } & g & \colon ( a, b ) & \mapsto a \\ \mathbb { U } & = \mathbb { F } \longrightarrow \mathbb { F } ^ { 2 } & \mathbb { F } & \, \mathbb { F } \,, & \text {where} & h & \colon ( a, b ) & \mapsto a + b \\ & \widehat { \uparrow } & \widehat { j } & \widehat { \uparrow } & \text {id} & j & \colon a & \mapsto ( 0, a ) \\ & 0 & \longrightarrow \mathbb { F } \longrightarrow \mathbb { F } \\ \text {We claim} \mathbb { U } & \, \text {can not have a reasonable hargcode} \, \text {to see this, sumpose}
+\mathbb {F} & \longrightarrow \mathbb {F} \longrightarrow 0 & f & \colon a & \mapsto ( a, 0 ) \\ \text {id} & \widehat {g} & \widehat {\uparrow} & g & \colon ( a, b ) & \mapsto a \\ \mathbb {U} & = \mathbb {F} \longrightarrow \mathbb {F} ^{2} & \mathbb {F} & \, \mathbb {F} \,, & \text {where} & h & \colon ( a, b ) & \mapsto a + b \\ & \widehat {\uparrow} & \widehat {j} & \widehat {\uparrow} & \text {id} & j & \colon a & \mapsto ( 0, a ) \\ & 0 & \longrightarrow \mathbb {F} \longrightarrow \mathbb {F} \\ \text {We claim} \mathbb {U} & \, \text {can not have a reasonable hargcode} \, \text {to see this, sumpose}
 $$
 
 We claim cannot have a reasonable barcode. To see this, suppose B is a reasonable barcode for. Note that
@@ -210,7 +210,7 @@ The definition above agrees with our earlier definition of interleaving when n =
 Definition 9.16. The matching distance between p.f.d. n -persistence modules, is
 
 $$
-d _ { \text {match} } ( \mathbb { U }, \mathbb { V } ) \coloneqq \sup _ { L } \ \left \{ d _ { B } ( \mathcal { B } ( \mathbb { U } _ { L } ), \ \mathcal { B } ( \mathbb { V } _ { L } ) ) \right \}, \\ \intertext { w h e r e } \ w h e r e \ t h e \ s u p r e m a y m i s t o k e n \ o v e r \ a l l \ l i n e s \ I \colon t \mapsto t a
+d _{\text {match}} ( \mathbb {U}, \mathbb {V} ) \coloneqq \sup _{L} \ \left \{d _{B} ( \mathcal {B} ( \mathbb {U} _{L} ), \ \mathcal {B} ( \mathbb {V} _{L} ) ) \right \}, \\ \intertext {w h e r e} \ w h e r e \ t h e \ s u p r e m a y m i s t o k e n \ o v e r \ a l l \ l i n e s \ I \colon t \mapsto t a
 $$
 
 where the supremum is taken over all lines L : t 7! ta + b with a ⌫ 1, b 2 n.
@@ -218,31 +218,31 @@ where the supremum is taken over all lines L : t 7! ta + b with a ⌫ 1, b 2 n.
 Theorem 9.17 (see [3]). For any two p.f.d. n -persistence modules,
 
 $$
-d _ { \text {match} } ( \mathbb { U }, \mathbb { V } ) \leqslant d _ { I } ( \mathbb { U }, \mathbb { V } ).
+d _{\text {match}} ( \mathbb {U}, \mathbb {V} ) \leqslant d _{I} ( \mathbb {U}, \mathbb {V} ).
 $$
 
 Exercise 9.18. Prove that d B B ( L ), B ( L ) 6 d I (, ) for all lines L : t 7! t 1 + b.
 
 ## 9.3.1 Robustness of some bipersistence modules
 
-Finally, we come back to the primary reason for studying multiparameter persistence: achieving robustness w.r.t. outliers in the data. To state formal guarantees of this form, we need to think about point-cloud data in a more probablistic way. For a finite (multi)set X ✓ n, we write µ X for the uniform probability measure on X, meaning the measure that assigns probability 1/ | X | to each x 2 X. The following can be thought of as a ‘probabilistic Hausdorff distance’ between point clouds.
+Finally, we come back to the primary reason for studying multiparameter persistence: achieving robustness w.r.t. outliers in the data. To state formal guarantees of this form, we need to think about point-cloud data in a more probablistic way. For a finite (multi)set X ✓ n, we write $\mu$ X for the uniform probability measure on X, meaning the measure that assigns probability 1/ | X | to each x 2 X. The following can be thought of as a ‘probabilistic Hausdorff distance’ between point clouds.
 
-Definition 9.19. Let X,Y ✓ n finite. The Prohorov distance 1 between µ X,µ Y is
+Definition 9.19. Let X,Y ✓ n finite. The Prohorov distance 1 between $\mu$ X,$\mu$ Y is
 
 $$
-d _ { \Pr } ( \mu _ { X }, \mu _ { Y } ) \coloneqq \supinf _ { A } \{ \delta \geqslant 0 \colon \mu _ { X } ( A ) \leqslant \mu _ { Y } ( A ^ { \delta } ) + \delta \ a n d \ \mu _ { Y } ( A ) \leqslant \mu _ { X } ( A ^ { \delta } ) + \delta \},
+d _{\Pr} ( \mu _{X}, \mu _{Y} ) \coloneqq \supinf _{A} \{\delta \geqslant 0 \colon \mu _{X} ( A ) \leqslant \mu _{Y} ( A ^{\delta} ) + \delta \ a n d \ \mu _{Y} ( A ) \leqslant \mu _{X} ( A ^{\delta} ) + \delta \},
 $$
 
 where A ranges over all closed subsets of n and A : = { y 2 n : dist ( y,A ) 6 }.
 
-1 The Prohorov distance can be defined between any two measures µ, ⌫ on (the same) metric space M.
+1 The Prohorov distance can be defined between any two measures $\mu$, ⌫ on (the same) metric space M.
 
 While the definition of the Prohorov distance appears a bit complicated, the following observation suggests that it captures ‘robustness to outliers’ in a meaningful way.
 
 Exercise 9.20. Let X Y ✓ n, finite, non-empty sets. Show that
 
 $$
-d _ { \Pr } ( \mu _ { X }, \mu _ { Y } ) \leqslant \frac { | Y \ \ X | } { | X | }.
+d _{\Pr} ( \mu _{X}, \mu _{Y} ) \leqslant \frac {| Y \ \ X |} {| X |}.
 $$
 
 As an example, the normalized multicover persistence module turns out to be stable w.r.t. Prohorov distance (i.e., it is robust to outliers).
@@ -250,7 +250,7 @@ As an example, the normalized multicover persistence module turns out to be stab
 Definition 9.21. Let X ✓ n be a finite point cloud. For r, ⇢ 2, the sets
 
 $$
-\mathcal { N M C } _ { \rho } ^ { r } ( X ) & \coloneqq \{ x \in \mathbb { R } ^ { n } \, \colon | B ( x, r ) \cap X | \geqslant \rho | X | \} = \{ x \in \mathbb { R } ^ { n } \, \colon \mu _ { X } ( B ( x, r ) \cap X ) \geqslant \rho \}. \\ \intertext { f o r m a b i l f l t r a t i o n o v e r R \times \mathbb { R } ^ { o p } c a l l e d t h e n o r m a l z i d u c t i v e b i f l t r a t i o n. }
+\mathcal {N M C} _{\rho} ^{r} ( X ) & \coloneqq \{x \in \mathbb {R} ^{n} \, \colon | B ( x, r ) \cap X | \geqslant \rho | X | \} = \{x \in \mathbb {R} ^{n} \, \colon \mu _{X} ( B ( x, r ) \cap X ) \geqslant \rho \}. \\ \intertext {f o r m a b i l f l t r a t i o n o v e r R \times \mathbb {R} ^{o p} c a l l e d t h e n o r m a l z i d u c t i v e b i f l t r a t i o n.}
 $$
 
 form a bilfiltration over ⇥ op called the normalized multicover bifiltration.
@@ -258,42 +258,34 @@ form a bilfiltration over ⇥ op called the normalized multicover bifiltration.
 Theorem 9.22 (see [1]). Let X,Y ✓ n finite. For all k > 0, we have
 
 $$
-d _ { I } \left ( H _ { k } ( \mathbb { N } \mathcal { M } \mathcal { C } ( X ) ), \ H _ { k } ( \mathbb { N } \mathcal { M } \mathcal { C } ( Y ) ) \right ) & \leqslant d _ { \Pr } ( \mu _ { X }, \mu _ { Y } ). \\ P r o f, \text { let } \epsilon = d _ { \Pr } ( \mu _ { X }, \mu _ { Y } ), \text { We will show that }
+d _{I} \left ( H _{k} ( \mathbb {N} \mathcal {M} \mathcal {C} ( X ) ), \ H _{k} ( \mathbb {N} \mathcal {M} \mathcal {C} ( Y ) ) \right ) & \leqslant d _{\Pr} ( \mu _{X}, \mu _{Y} ). \\ P r o f, \text {let} \epsilon = d _{\Pr} ( \mu _{X}, \mu _{Y} ), \text {We will show that}
 $$
 
-Proof. Let ✏ = d Pr ( µ X,µ Y ). We will show that
+Proof. Let ✏ = d Pr ( $\mu$ X,$\mu$ Y ). We will show that
 
 $$
-\mathcal { N M C } _ { \rho } ^ { r } ( X ) \subseteq \mathcal { N M C } _ { \rho - \epsilon } ^ { r + \epsilon } ( Y ) \subseteq \mathcal { N M C } _ { \rho - 2 \epsilon } ^ { r + 2 \epsilon } ( X ) \quad \forall r, \rho \in \mathbb { R }.
+\mathcal {N M C} _{\rho} ^{r} ( X ) \subseteq \mathcal {N M C} _{\rho - \epsilon} ^{r + \epsilon} ( Y ) \subseteq \mathcal {N M C} _{\rho - 2 \epsilon} ^{r + 2 \epsilon} ( X ) \quad \forall r, \rho \in \mathbb {R}.
 $$
 
 These inclusions induce the maps
 
 $$
-\varphi _ { r, \rho } \colon H _ { k } ( \mathcal { N M C } _ { \rho } ^ { r } ( X ) ) \to H _ { k } ( \mathcal { N M C } _ { \rho - \epsilon } ^ { r + \epsilon } ( Y ) ), \\ \psi _ { r + \epsilon, \rho - \epsilon } \colon H _ { k } ( \mathcal { N M C } _ { \rho - \epsilon } ^ { r + \epsilon } ( Y ) ) \to H _ { k } ( \mathcal { N M C } _ { \rho - 2 \epsilon } ^ { r + 2 \epsilon } ( X ) )
+\varphi _{r, \rho} \colon H _{k} ( \mathcal {N M C} _{\rho} ^{r} ( X ) ) \to H _{k} ( \mathcal {N M C} _{\rho - \epsilon} ^{r + \epsilon} ( Y ) ), \\ \psi _{r + \epsilon, \rho - \epsilon} \colon H _{k} ( \mathcal {N M C} _{\rho - \epsilon} ^{r + \epsilon} ( Y ) ) \to H _{k} ( \mathcal {N M C} _{\rho - 2 \epsilon} ^{r + 2 \epsilon} ( X ) )
 $$
 
 \cdot ) ) )
 
 $$
-
 required to show that H k ( NMC ( X )) and H k ( NMC ( Y )) are ✏ -interleaved. r
-
 So, let r, ⇢ 2, and suppose that x 2 NMC ⇢ ( X ). By definition, this means that µ X ( B ( x,r ) \ X ) > ⇢. Using the definition of the Prohorov distance, and the triangleinequality, this implies that
-
-
 $$
 
 \rho & \leqslant \mu _ { X } ( B ( x, r ) \cap X ) \leqslant \mu _ { Y } ( B ( x, r ) ^ { \epsilon } \cap Y ) + \epsilon \leqslant \mu _ { Y } ( B ( x, r + \epsilon ) \cap Y ) + \epsilon. \\ \intertext { T h a t is to say, } \mu _ { X } ( B ( x, r + \epsilon ) \cap Y ) & \geqslant \rho - \epsilon, \, \text {meaning } x \in \mathcal { N M C } \_ { 0 } ^ { r + \epsilon } ( Y ), \, \text { giving us the first }
 
 $$
-
 That is to say, µ Y ( B ( x,r + ✏ ) \ Y ) > ⇢ ✏, meaning x 2 NMC r + ✏ ⇢ ✏ ( Y ), giving us the first inclusion. The second inclusion follows from an analogous argument, switching the roles of X and Y.
-
 There are many similar theorems for other bipersistence modules, including the degree-Rips bifiltration. They are often somewhat hard to state and prove, relying on variants of the Prohorov distance, as well as variants of the interleaving distance [1].
-
 ## Questions
-
 - 35. How can we define persistence modules over multiple parameters? Discuss the technical definitions that are needed.
 - 36. What are some common bipersistence modules? How do they relate to the (1-parameter) persistence modules of earlier chapters?
 - 37. What is a major upside of multiparameter persistence? What is a major downside? Discuss robustness and representability.

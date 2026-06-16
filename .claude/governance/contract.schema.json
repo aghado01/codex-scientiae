@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://codex-scientiae/governance/contract.schema.json",
+  "title": "Membrane Governance Contract",
+  "description": "Agnostic rule data governing restoration-agent behaviour. Per-agent adapters compile this to a harness hook surface. Mirrors the CyberneticCodePilot governator contract: rules are data, enforcement is a thin per-vendor shim.",
+  "type": "object",
+  "required": ["version", "rules"],
+  "properties": {
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "defaults": {
+      "type": "object",
+      "properties": { "mode": { "$ref": "#/$defs/mode" } },
+      "additionalProperties": false
+    },
+    "rules": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/rule" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "mode": {
+      "enum": ["advisory", "enforce"],
+      "description": "advisory = log the fire + inject a nudge, never block (paved-paths-before-teeth, and safe for the maintainer's own server testing). enforce = apply `outcome` to halt/steer. Flip a single rule advisory->enforce once the fire-log shows the paving holds."
+    },
+    "event": { "enum": ["PreToolUse", "PostToolUse", "Stop", "SubagentStop", "TaskCompleted"] },
+    "type": {
+      "enum": ["command", "prompt", "agent", "http"],
+      "description": "Evaluator class. command = cheap deterministic match (this adapter). prompt/agent = LLM/semantic supervision. http = POST hook input to an endpoint."
+    },
+    "outcome": {
+      "enum": ["blockingError", "preventContinuation", "stopReason"],
+      "description": "Applied ONLY when mode=enforce; ignored under advisory."
+    },
+    "rule": {
+      "type": "object",
+      "required": ["name", "event", "match", "type", "message"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "law": { "type": "string", "description": "Which PROCEDURE.md law this enforces (navigate-not-scan | slice-not-slurp | edit-not-regenerate | finish-clean)." },
+        "event": { "$ref": "#/$defs/event" },
+        "match": {
+          "type": "object",
+          "required": ["tool", "arg"],
+          "additionalProperties": false,
+          "properties": {
+            "tool": { "type": "string", "description": "'|'-alternated harness tool names, or '*' for any. Matched against the tool name." },
+            "arg": { "type": "string", "description": "'|'-alternated globs, or '*' for any. Matched against the tool's primary argument: the command string for Bash/PowerShell, the file path for Read/Write/Edit. Paths are '/'-normalized before matching." }
+          }
+        },
+        "type": { "$ref": "#/$defs/type" },
+        "mode": { "$ref": "#/$defs/mode" },
+        "outcome": { "$ref": "#/$defs/outcome" },
+        "message": { "type": "string", "description": "Steering text injected back to the agent — the 'errors are steering' channel. Names the correct next move, never just 'denied'." },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
