@@ -47,13 +47,19 @@ function Invoke-Finalize {
     $bodyC = [System.Collections.Generic.List[object]]::new()
     $bibC  = [System.Collections.Generic.List[object]]::new()
     $toc   = [System.Collections.Generic.List[string]]::new()
-    $inBib = $false
+    $inBib = $false; $refLinkAdded = $false
     foreach ($c in $live) {
+        # citation-run references (refs-in-lists, no "References" heading) route to the sidecar
+        # regardless of zone — they were marked is_reference by the structural citation detector.
+        if ($c.is_reference) {
+            if (-not $refLinkAdded) { $toc.Add("- [References](references/$slug.md)"); $refLinkAdded = $true }
+            $bibC.Add($c); continue
+        }
         $isHeading = ([string]$c.type -eq 'heading')
         if ($isHeading) {
             if ($c.section_role -eq 'references' -or ([string]$c.content -match '^\s*references\s*$')) {
                 $inBib = $true
-                $toc.Add("- [References](references/$slug.md)")   # link at its natural position
+                if (-not $refLinkAdded) { $toc.Add("- [References](references/$slug.md)"); $refLinkAdded = $true }
                 continue                                          # heading becomes the sidecar's own title
             }
             $inBib = $false                                       # any other heading closes the bibliography

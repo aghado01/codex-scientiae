@@ -161,6 +161,91 @@ function Get-FurnitureKind([object]$Chunk) {
     return $null
 }
 
+# ── display-vocabulary inline-script reconstruction ───────────────────────────
+# docling keeps DISPLAY math as structured LaTeX but flattens INLINE math to text ("x 0"), losing the
+# sub-vs-super distinction. The display formulas are a Rosetta Stone for the paper's own notation:
+# harvest each base's sub/superscript usage from them, then deterministically rebuild the flattened
+# inline occurrences. Only base+script pairs the display math actually uses are touched — an unknown
+# pair is left flat for reasoning, never guessed.
+function Get-MathVocab([string[]]$FormulaContents) {
+    $sub = @{}; $sup = @{}
+    foreach ($f in $FormulaContents) {
+        foreach ($m in [regex]::Matches([string]$f, '([A-Za-z])\s*(\^|_)\s*\{?\s*([A-Za-z0-9]{1,3})\s*\}?')) {
+            $k = $m.Groups[1].Value + '|' + $m.Groups[3].Value
+            if ($m.Groups[2].Value -eq '_') { $sub[$k] = [int]$sub[$k] + 1 } else { $sup[$k] = [int]$sup[$k] + 1 }
+        }
+    }
+    $v = @{}
+    foreach ($k in (@($sub.Keys) + @($sup.Keys) | Select-Object -Unique)) {
+        $script = ($k -split '\|')[1]
+        $v[$k] = if ([int]$sub[$k] -ge [int]$sup[$k]) { '_{' + $script + '}' } else { '^{' + $script + '}' }
+    }
+    return $v
+}
+
+$script:mdVocab = @{}; $script:mdScripts = 0
+# Rewrite "base SPACE script" -> "base_{script}"/"base^{script}" for vocab pairs only; lone a/I are
+# excluded (article/pronoun). $Wrap also wraps each rebuilt token in $...$ (for bare prose occurrences).
+function Reconstruct-Scripts([string]$s, [bool]$Wrap) {
+    # The vocab membership IS the safety gate (only notation the display math uses), so no need to
+    # exclude the article 'a' — that would also block the variable a_i. The trailing (?![...\.])
+    # guards abbreviations: "i.i.d", "a priori" don't reconstruct because the script is followed by a letter/dot.
+    return [regex]::Replace($s, '(?<![A-Za-z0-9$\\])([A-Za-z])\s+([A-Za-z0-9]{1,3})(?![A-Za-z0-9.])', {
+        param($m)
+        $k = $m.Groups[1].Value + '|' + $m.Groups[2].Value
+        if (-not $script:mdVocab.ContainsKey($k)) { return $m.Value }
+        $script:mdScripts++
+        $rebuilt = $m.Groups[1].Value + $script:mdVocab[$k]
+        if ($Wrap) { '$' + $rebuilt + '$' } else { $rebuilt }
+    })
+}
+
+# Apply reconstruction: inside existing $...$ spans (no re-wrap), and to bare vocab pairs in the prose
+# between spans (wrapped). Splitting on the spans keeps the two contexts from colliding.
+function Repair-InlineScripts([string]$Content, [hashtable]$Vocab) {
+    if ($Vocab.Count -eq 0) { return $Content }
+    $script:mdVocab = $Vocab
+    $parts = [regex]::Split($Content, '(\$[^$\n]+\$)')
+    for ($i = 0; $i -lt $parts.Count; $i++) {
+        if ($parts[$i] -match '^\$[^$\n]+\$$') {
+            $parts[$i] = '$' + (Reconstruct-Scripts $parts[$i].Substring(1, $parts[$i].Length - 2) $false) + '$'
+        }
+        else { $parts[$i] = Reconstruct-Scripts $parts[$i] $true }
+    }
+    return ($parts -join '')
+}
+
+# A formula row is math (not bled prose) if, after stripping command names, it carries at most a
+# couple of 4+ letter words — same heuristic the closure scanner uses, local so the pipeline needn't
+# dot-source md-cleanup.
+function Test-MathRow([string]$s) {
+    return (([regex]::Matches(($s -replace '\\[A-Za-z]+', ' '), '[A-Za-z]{4,}')).Count -le 2)
+}
+
+# Un-bleed prose docling merged into a display formula: it duplicates a paragraph into a trailing
+# \text{...} row of the preceding equation AND keeps the real prose chunk. Drop trailing prose rows
+# (Test-MathRow = false) — but ONLY when the bled text is confirmed duplicated in a nearby prose chunk,
+# so nothing is lost. Structural: must run before the vocab harvest so the Rosetta Stone stays clean.
+function Get-UnbledFormula($Chunks, $Index) {
+    $content = [string]$Chunks[$Index].content
+    $rows = $content -split '\\\s*\\'        # row breaks, tolerant of the raw's space-tokenization
+    if ($rows.Count -lt 2) { return $content }
+    $start = 0;               while ($start -lt $rows.Count - 1 -and -not (Test-MathRow $rows[$start])) { $start++ }  # leading prose
+    $end   = $rows.Count - 1; while ($end -gt $start           -and -not (Test-MathRow $rows[$end]))   { $end-- }     # trailing prose
+    if ($start -eq 0 -and $end -eq $rows.Count - 1) { return $content }
+    $dropped = @()
+    if ($start -gt 0)             { $dropped += $rows[0..($start - 1)] }
+    if ($end -lt $rows.Count - 1) { $dropped += $rows[($end + 1)..($rows.Count - 1)] }
+    $probe = ([regex]::Match(($dropped -join ' '), '[A-Za-z]{5,}')).Value
+    if (-not $probe) { return $content }
+    for ($j = [Math]::Max(0, $Index - 3); $j -le [Math]::Min($Index + 3, $Chunks.Count - 1); $j++) {
+        if ($j -ne $Index -and [string]$Chunks[$j].type -eq 'prose' -and [string]$Chunks[$j].content -match [regex]::Escape($probe)) {
+            return ($rows[$start..$end] -join '\\').Trim()   # duplicated nearby -> keep only the math core
+        }
+    }
+    return $content
+}
+
 function Invoke-Normalize {
     [CmdletBinding()]
     param(
@@ -173,28 +258,39 @@ function Invoke-Normalize {
         if (-not [string]::IsNullOrWhiteSpace($line)) { $chunks.Add(($line | ConvertFrom-Json)) }
     }
 
-    $mathFixed = 0; $inlineFixed = 0
+    $mathFixed = 0; $inlineFixed = 0; $unbled = 0; $script:mdScripts = 0
     $furn = [ordered]@{ caption = 0; figure_label = 0; crumb = 0 }
-    foreach ($c in $chunks) {
+    $formulaContents = [System.Collections.Generic.List[string]]::new()
+
+    # pass 1 (structural): un-bleed prose from formulas, de-space them (harvesting clean LaTeX for the
+    # vocab), and tag figure furniture — all before any content op assumes the structure is sound.
+    for ($i = 0; $i -lt $chunks.Count; $i++) {
+        $c = $chunks[$i]
         if ([string]$c.type -eq 'formula' -and $c.content) {
-            $orig = [string]$c.content
-            $norm = Convert-MathToLatex (Optimize-MathContent $orig $StripMacros)   # de-space, then unicode -> LaTeX
+            $orig  = [string]$c.content
+            $clean = Get-UnbledFormula $chunks $i
+            if ($clean -ne $orig) { $unbled++ }
+            $norm = Convert-MathToLatex (Optimize-MathContent $clean $StripMacros)   # un-bled, de-spaced, unicode -> LaTeX
             if ($norm -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $norm; $mathFixed++ }
+            $formulaContents.Add([string]$c.content)
             continue
         }
         $kind = Get-FurnitureKind $c
-        if ($kind) {
-            if (-not $c.is_furniture) { $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue $kind -Force; $furn[$kind]++ }
-            continue
-        }
-        if ([string]$c.type -eq 'prose' -and $c.content) {
+        if ($kind -and -not $c.is_furniture) { $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue $kind -Force; $furn[$kind]++ }
+    }
+
+    $vocab = Get-MathVocab $formulaContents.ToArray()   # the Rosetta Stone, harvested from un-bled formulas
+
+    # pass 2: prose — wrap inline-math runs, then reconstruct flattened scripts from the display vocab
+    foreach ($c in $chunks) {
+        if ([string]$c.type -eq 'prose' -and $c.content -and -not $c.is_furniture) {
             $orig    = [string]$c.content
-            $wrapped = ConvertTo-InlineMath $orig
+            $wrapped = Repair-InlineScripts (ConvertTo-InlineMath $orig) $vocab
             if ($wrapped -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $wrapped; $inlineFixed++ }
         }
     }
 
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'normalize'
-    "normalize: math tightened $mathFixed, inline-math wrapped $inlineFixed; furniture — caption $($furn.caption), figure_label $($furn.figure_label), crumb $($furn.crumb) -> $ChunksPath"
+    "normalize: formulas un-bled $unbled, math tightened $mathFixed, inline wrapped $inlineFixed, scripts reconstructed $($script:mdScripts) (vocab $($vocab.Count)); furniture — caption $($furn.caption), figure_label $($furn.figure_label), crumb $($furn.crumb) -> $ChunksPath"
     return $manifest
 }

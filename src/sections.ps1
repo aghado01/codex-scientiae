@@ -167,10 +167,32 @@ function Invoke-Sections {
         }
     }
 
+    # citation-run references: a contiguous run (>= 3) of bracketed/numbered citation chunks is the
+    # bibliography even with no "References" heading (refs-in-lists, common in letter-format papers).
+    # Mark them is_reference + backmatter so finalize routes them to the sidecar and the run fixes the
+    # back-matter boundary. Bracketed [N]/(N) is unambiguous; bare "N." must carry a (year) to qualify
+    # (so a numbered procedure list isn't mistaken for references).
+    $isCite = { param($t) ($t -match '^\s*(\[\d+\]|\(\d+\))\s+\S') -or ($t -match '^\s*\d+\.\s+[A-Z]' -and $t -match '\((1[89]|20)\d{2}\)') }
+    $refMarked = 0; $i = 0
+    while ($i -lt $chunks.Count) {
+        if (& $isCite ([string]$chunks[$i].content)) {
+            $j = $i; while ($j -lt $chunks.Count -and (& $isCite ([string]$chunks[$j].content))) { $j++ }
+            if (($j - $i) -ge 3) {
+                for ($k = $i; $k -lt $j; $k++) {
+                    $chunks[$k] | Add-Member -NotePropertyName is_reference -NotePropertyValue $true -Force
+                    $chunks[$k] | Add-Member -NotePropertyName zone         -NotePropertyValue 'backmatter' -Force
+                    $refMarked++
+                }
+            }
+            $i = $j
+        }
+        else { $i++ }
+    }
+
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'sections'
 
     $rh = @($chunks | Where-Object { $_.is_furniture -eq 'running_head' })
-    "sections tagged on $($chunks.Count) chunks  (running-head furniture: $($rh.Count) chunks; unnumbered headings font-levelled: $relevelled, flagged: $flagged) -> $ChunksPath"
+    "sections tagged on $($chunks.Count) chunks  (running-head furniture: $($rh.Count) chunks; unnumbered headings font-levelled: $relevelled, flagged: $flagged; references marked: $refMarked) -> $ChunksPath"
     "--- proto-TOC (body + back-matter section headings) ---"
     $chunks | Where-Object { $_.type -eq 'heading' -and $null -ne $_.section_level -and $_.is_furniture -ne 'running_head' } |
         ForEach-Object {
