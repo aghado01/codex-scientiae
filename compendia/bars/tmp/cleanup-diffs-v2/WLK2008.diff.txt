@@ -1,0 +1,195 @@
+# WLK2008.md
+changed_lines: 13
+
+--- line 46 ---
+  OLD (504 chars): Consider the problem of making inferences about a function $ f(t) $, where $ t $ lies in an interval $ [A, B] $, based on data $ y = y_1, \dots, y_n $ obtained at $ t = t_1, \dots, t_n $, with each $ ...
+  NEW (482 chars): Consider the problem of making inferences about a function $f(t)$, where $t$ lies in an interval $[A, B]$, based on data $y = y_1, \dots, y_n$ obtained at $t = t_1, \dots, t_n$, with each $Y_j$ assume...
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' t $ lies in an interval $ ' +'t$ lies in an interval $'
+  [replace] -' $, based on data $ ' +'$, based on data $'
+  [replace] -' $ obtained at $ ' +'$ obtained at $'
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  ... (truncated)
+
+--- line 52 ---
+  OLD (785 chars): with $ f $ being a linear combination of splines having unknown sets of knot locations. Model (1) includes a vector of nuisance parameters $ \zeta $ to indicate generality, though in the Poisson case ...
+  NEW (765 chars): with $f$ being a linear combination of splines having unknown sets of knot locations. Model (1) includes a vector of nuisance parameters $\zeta$ to indicate generality, though in the Poisson case ther...
+  [replace] -' f ' +'f'
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' f(t) $ in terms of basis functions $ ' +'f(t)$ in terms of basis functions $'
+  [replace] -' $ as $ ' +'$ as $'
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  ... (truncated)
+
+--- line 68 ---
+  OLD (276 chars): From we obtain fitted values for selected and these, in turn, may be used to produce a draw $ \phi^{(g)} $ from the posterior distribution of any characteristic $ \phi = \phi(f) $ (such as the value a...
+  NEW (270 chars): From we obtain fitted values for selected and these, in turn, may be used to produce a draw $\phi^{(g)}$ from the posterior distribution of any characteristic $\phi = \phi(f)$ (such as the value at wh...
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' f(t) ' +'f(t)'
+
+--- line 74 ---
+  OLD: being a vector of fits along a grid that suitably covers the interval $ [A, B] $. The user may sample from the posterior distribution of any functional $ \phi $ simply by evaluating
+  NEW: being a vector of fits along a grid that suitably covers the interval $[A, B]$. The user may sample from the posterior distribution of any functional $\phi$ simply by evaluating
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+--- line 78 ---
+  OLD (381 chars): maximum of $ f(t) $ is obtained by finding the location of the maximum of for each $ g $. This latter computation is performed in a suitable post-processing environment such as S or R . MCMC convergen...
+  NEW (377 chars): maximum of $f(t)$ is obtained by finding the location of the maximum of for each $g$. This latter computation is performed in a suitable post-processing environment such as S or R . MCMC convergence m...
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' g ' +'g'
+
+--- line 86 ---
+  OLD (349 chars): Our ability to use Kooperberg’s implementation for density estimation rests on the duality of fitting Poisson process intensity functions and fitting probability densities: the inhomogeneous Poisson l...
+  NEW (343 chars): Our ability to use Kooperberg’s implementation for density estimation rests on the duality of fitting Poisson process intensity functions and fitting probability densities: the inhomogeneous Poisson l...
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' $ is' +'$ is'
+
+--- line 522 ---
+  OLD: $ H \leftarrow WX $ . comment: Use known diagonal structure of $ W $
+  NEW: $H \leftarrow WX$ . comment: Use known diagonal structure of $W$
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+--- line 533 ---
+  OLD: $ U \leftarrow $ Upper triangular matrix from the Cholesky decomposition of $ J = U^\top U $ if Cholesky decomposition fails
+  NEW: $U \leftarrow$ Upper triangular matrix from the Cholesky decomposition of $J = U^\top U$ if Cholesky decomposition fails
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+--- line 535 ---
+  OLD: $ \text{error} \leftarrow \text{true} $
+  NEW: $\text{error} \leftarrow \text{true}$
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+--- line 537 ---
+  OLD: $ \text{exit} \leftarrow \text{true} $
+  NEW: $\text{exit} \leftarrow \text{true}$
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+--- line 541 ---
+  OLD: $ \hat{\beta} \leftarrow $ Solution to $ J\beta = H^\top z $ . comment: Use Cholesky decomposition of $ J $ if unable to solve equation
+  NEW: $\hat{\beta} \leftarrow$ Solution to $J\beta = H^\top z$ . comment: Use Cholesky decomposition of $J$ if unable to solve equation
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+--- line 543 ---
+  OLD: $ \text{error} \leftarrow \text{true} $
+  NEW: $\text{error} \leftarrow \text{true}$
+  [delete] -' ' +''
+  [delete] -' ' +''
+
+... 1 more changed lines (see full unified diff)
+--- a/WLK2008.md
++++ b/WLK2008.md
+@@ -43,13 +43,13 @@
+ 
+ ## 2. Overview of BARS
+ 
+-Consider the problem of making inferences about a function $ f(t) $, where $ t $ lies in an interval $ [A, B] $, based on data $ y = y_1, \dots, y_n $ obtained at $ t = t_1, \dots, t_n $, with each $ Y_j $ assumed to depend probabilistically on $ f(t_j) $ (and, following the usual convention, $ y_j $ represents the observed value of the random variable $ Y_j $). To solve this problem BARS fits the spline-based generalized nonparametric regression model for data $ Y_j $ depending on a variable $ t $,
++Consider the problem of making inferences about a function $f(t)$, where $t$ lies in an interval $[A, B]$, based on data $y = y_1, \dots, y_n$ obtained at $t = t_1, \dots, t_n$, with each $Y_j$ assumed to depend probabilistically on $f(t_j)$ (and, following the usual convention, $y_j$ represents the observed value of the random variable $Y_j$). To solve this problem BARS fits the spline-based generalized nonparametric regression model for data $Y_j$ depending on a variable $t$,
+ 
+ $$
+ ( 1 )
+ $$
+ 
+-with $ f $ being a linear combination of splines having unknown sets of knot locations. Model (1) includes a vector of nuisance parameters $ \zeta $ to indicate generality, though in the Poisson case there are no nuisance parameters. Writing $ f(t) $ in terms of basis functions $ b*{\xi,h}(t) $ as $ f(t) = \sum_h b*{\xi,h}(t) \beta*{\xi,h} $ the function evaluations $ f(t_1), \dots, f(t_n) $ may be collected into a vector $ (f(t_1), \dots, f(t_n))^\intercal = X*\xi \beta*\xi $, where $ X*\xi $ is the design matrix and $ \beta\_\xi $ is the coefficient vector. For a given knot set $ \xi = (\xi_1, \dots, \xi_k) $ model (1) poses a relatively easy estimation problem; for exponential-family responses (such as Poisson) it becomes a generalized linear model. Selecting the interval
++with $f$ being a linear combination of splines having unknown sets of knot locations. Model (1) includes a vector of nuisance parameters $\zeta$ to indicate generality, though in the Poisson case there are no nuisance parameters. Writing $f(t)$ in terms of basis functions $b*{\xi,h}(t)$ as $f(t) = \sum_h b*{\xi,h}(t) \beta*{\xi,h}$ the function evaluations $f(t_1), \dots, f(t_n)$ may be collected into a vector $(f(t_1), \dots, f(t_n))^\intercal = X*\xi \beta*\xi$, where $X*\xi$ is the design matrix and $\beta\_\xi$ is the coefficient vector. For a given knot set $\xi = (\xi_1, \dots, \xi_k)$ model (1) poses a relatively easy estimation problem; for exponential-family responses (such as Poisson) it becomes a generalized linear model. Selecting the interval
+ 
+ $[A, B]$ can be difficult in some problems due to spline boundary conditions (see Hansen and Kooperberg 2002, and the accompanying discussion), but in many problems such as the neuronal spiking problem, it is rarely an issue because data are often available outside of the time interval of interest, $[A, B]$. The hard part of the problem is determining the knot set $\xi$, and using the data to do so provides the ability to fit a wide range of functions (as reviewed by Hansen and Kooperberg 2002). BARS is an MCMC-based algorithm that samples from a suitable approximate posterior distribution on the knot set $\xi$. This, in turn, produces samples from the posterior on the space of splines. In practice, cubic splines and the natural spline basis have been used in most applications. BARS could be viewed as a powerful engine for searching for an “optimal” knot set, but because it generates a posterior on the space of splines it produces an improved spline estimate based on model averaging (e.g., Kass and Raftery 1995) and it also provides uncertainty assessments.
+ 
+@@ -65,17 +65,17 @@
+ 
+ For each draw $\xi^{(g)}$ from the posterior distribution of $\xi$, a draw is obtained from the conditional posterior of $\beta_\xi$, conditionally on $\xi^{(g)}$. The conditional posterior of $\beta_\xi$ often may be assumed normal, but in some cases the normal approximation is not very good. DiMatteo et al. (2001) described an importance reweighting scheme to improve upon the normal approximation. In the code discussed here, if the normal approximation seems poor, we instead use a conditional Metropolis update.
+ 
+-From we obtain fitted values for selected and these, in turn, may be used to produce a draw $ \phi^{(g)} $ from the posterior distribution of any characteristic $ \phi = \phi(f) $ (such as the value at which the maximum of $ f(t) $ occurs). Thus, the key output of BARS is the
++From we obtain fitted values for selected and these, in turn, may be used to produce a draw $\phi^{(g)}$ from the posterior distribution of any characteristic $\phi = \phi(f)$ (such as the value at which the maximum of $f(t)$ occurs). Thus, the key output of BARS is the
+ 
+ $$
+ \det \text {of vectors} \, ^ { f ^ { \prime } } = \left ( \sqrt { g } \left ( t _ { 1 } \right ) , f ^ { ( g ) } ( t _ { 2 } ) , \dots , f ^ { ( g ) } ( t _ { p } ) \right ) \text {for MC/CM iterates} \, g = 1 , \dots , G , \text { each}
+ $$
+ 
+-being a vector of fits along a grid that suitably covers the interval $ [A, B] $. The user may sample from the posterior distribution of any functional $ \phi $ simply by evaluating
++being a vector of fits along a grid that suitably covers the interval $[A, B]$. The user may sample from the posterior distribution of any functional $\phi$ simply by evaluating
+ 
+ . For instance, a sample from the posterior distribution of the location of the
+ 
+-maximum of $ f(t) $ is obtained by finding the location of the maximum of for each $ g $. This latter computation is performed in a suitable post-processing environment such as S or R . MCMC convergence may be assessed by standard methods (Gelman, Carlin, Stern, and Rubin 2004, Section 11.6) though this remains a topic of general research interest (Fan, Brooks, and Gelman 2006).
++maximum of $f(t)$ is obtained by finding the location of the maximum of for each $g$. This latter computation is performed in a suitable post-processing environment such as S or R . MCMC convergence may be assessed by standard methods (Gelman, Carlin, Stern, and Rubin 2004, Section 11.6) though this remains a topic of general research interest (Fan, Brooks, and Gelman 2006).
+ 
+ ### 2.2. Normal and Poisson implementations of BARS
+ 
+@@ -83,7 +83,7 @@
+ 
+ The two implementations differ not only through the change of likelihood, and the resulting Laplace approximation to (2) implemented with BIC for the Poisson case, but also in the selection of starting values for the MCMC algorithm. Starting values are very important: poor choices of initial knot sets result in extremely long burn-in periods to achieve apparent stationarity. In the Poisson case we have taken advantage of the closely-related algorithm logspline (see Hansen and Kooperberg 2002) and have incorporated Charles Kooperberg’s C implementation of it for density estimation.
+ 
+-Our ability to use Kooperberg’s implementation for density estimation rests on the duality of fitting Poisson process intensity functions and fitting probability densities: the inhomogeneous Poisson likelihood for an intensity function $ \lambda = \lambda(t) $ based on a sequence of event times $ t_1, t_2, \dots, t_n $ in an interval $ (0, T] $ is
++Our ability to use Kooperberg’s implementation for density estimation rests on the duality of fitting Poisson process intensity functions and fitting probability densities: the inhomogeneous Poisson likelihood for an intensity function $\lambda = \lambda(t)$ based on a sequence of event times $t_1, t_2, \dots, t_n$ in an interval $(0, T]$ is
+ 
+ $$
+ P ( t _ { 1 } , \dots
+@@ -519,7 +519,7 @@
+ 
+ $$
+ 
+-$ H \leftarrow WX $ . comment: Use known diagonal structure of $ W $
++$H \leftarrow WX$ . comment: Use known diagonal structure of $W$
+ 
+ 
+ $$
+@@ -530,19 +530,19 @@
+ 
+ $$
+ 
+-$ U \leftarrow $ Upper triangular matrix from the Cholesky decomposition of $ J = U^\top U $ if Cholesky decomposition fails
+-
+-$ \text{error} \leftarrow \text{true} $
+-
+-$ \text{exit} \leftarrow \text{true} $
++$U \leftarrow$ Upper triangular matrix from the Cholesky decomposition of $J = U^\top U$ if Cholesky decomposition fails
++
++$\text{error} \leftarrow \text{true}$
++
++$\text{exit} \leftarrow \text{true}$
+ 
+ else
+ 
+-$ \hat{\beta} \leftarrow $ Solution to $ J\beta = H^\top z $ . comment: Use Cholesky decomposition of $ J $ if unable to solve equation
+-
+-$ \text{error} \leftarrow \text{true} $
+-
+-$ \text{exit} \leftarrow \text{true} $
++$\hat{\beta} \leftarrow$ Solution to $J\beta = H^\top z$ . comment: Use Cholesky decomposition of $J$ if unable to solve equation
++
++$\text{error} \leftarrow \text{true}$
++
++$\text{exit} \leftarrow \text{true}$
+ 
+ else
+ 

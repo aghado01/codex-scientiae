@@ -155,13 +155,59 @@ dead/empty/wrong-mount cases are loud at the handshake instead of silently infer
 Verified (all via a single `initialize` frame): derived root → `7 document(s), 2 preprocessed`;
 fresh empty dir as `-Root` → the EMPTY instructions; non-existent `-Root` → the error instructions.
 
+## Batch robustness — fault isolation (follow-up; PARTIAL)
+
+Question raised: pointing an agent at a whole folder of units. The ceremony/discovery already extends
+to the batch (initialize reports `N document(s) discovered, M preprocessed` — the batch's bearings,
+and the orchestrator loop is `get_batch_summary → dispatch → apply`, PROCEDURE.md). The gap is
+**fault isolation**: the survey functions loop over units calling `Read-Chunks` (serving.ps1:31) /
+`Get-LedgerStage` (jsonl.ps1:192), both of which throw a *terminating* error on a malformed JSON line.
+One corrupt unit therefore aborts the entire loop → the orchestrator gets `isError` for the WHOLE
+batch and goes blind to every healthy unit. **Proven**: a temp root with one healthy unit + one
+corrupt `.chunks.jsonl` made `Get-BatchSummary` throw and return zero rows (healthy unit lost too).
+
+DONE this round (mcp-server.ps1 only — no serving.ps1 touch, no merge risk):
+- **Discovery guard** in `initialize`: the `Get-IngestionScan` walk is wrapped; a malformed unit no
+  longer crashes the handshake — the server mounts and `instructions` honestly warns that a unit is
+  unreadable and surveys may be affected until it is isolated.
+- **Daemon backstop** around the whole request switch: no single request can crash the read loop; an
+  uncaught handler exception becomes a `-32603` (if the request had an id) and the loop continues.
+- Verified: a root with a corrupt `.ledger.jsonl` → server exit 0, `initialize` mounts with the
+  degraded warning, `tools/list` still 21 tools; `list_documents` returns `isError` (not a crash).
+
+DONE — per-unit fault isolation in the three survey functions (user chose "implement now"):
+- **`Get-IngestionScan`** (serving.ps1, ~:48-56): the per-unit `Get-LedgerStage` call is wrapped; a
+  corrupt ledger sets `stage='unreadable'` for that unit instead of aborting the scan.
+- **`Get-BatchSummary`** (serving.ps1, ~:271-302): the whole per-unit body is wrapped; a malformed
+  unit emits a flagged row `{ stage='unreadable', actionable=0, error=<msg>, ... }` and the loop
+  continues.
+- **`Invoke-Dispatch`** (serving.ps1, ~:320-343): each unit's `Get-LeasedIds` + `Read-Chunks` are
+  materialized inside a try (so a corrupt line throws atomically, before any lease/add); a bad unit is
+  added to a new **`skipped`** array on the result and skipped, never aborting the bundle.
+- Verified end-to-end through the server on a batch of {healthy A, corrupt-chunks+corrupt-ledger B}:
+  `list_documents` → both rows (B `stage=unreadable`); `get_batch_summary` → both (B flagged + error,
+  A `actionable=1`); `dispatch` → `count=1 batch=[A] skipped=[B]`. Server exit 0, no wholesale isError.
+
 ## Merge coordination — `serving.ps1`
 
-**I edited NO functions in `serving.ps1`.** The three survey functions named in Item 2 —
-`Get-IngestionScan` (serving.ps1:41), `Get-BatchSummary` (serving.ps1:265), `Invoke-Dispatch`
-(serving.ps1:290) — already accept `-Root`, so the scope feature is implemented entirely in
-`mcp-server.ps1` by passing `Resolve-Scope $arguments.scope` as that `-Root`. The concurrent
-provider→.NET / rune-length sweep on `serving.ps1` has **no conflict** with this session.
+**Item 2 (scope) touched NO serving.ps1 functions** — the three survey functions already accept
+`-Root`, so scope is implemented entirely in `mcp-server.ps1`.
+
+**The batch follow-up DID edit three serving.ps1 functions** (fault isolation, per user's
+"implement now"): `Get-IngestionScan`, `Get-BatchSummary`, `Invoke-Dispatch` — and only those three.
+
+Reconciled with the concurrent codepoint follow-up (now finished — see
+`.claude/codepoint-followup-report.md`): **no logical conflict.** That sweep's serving.ps1 edits are in
+*different* functions (`Get-LeasedIds`/`Set-LeasedIds`, the proposal/edit/apply read-write paths,
+`Add-ReviewRequest`) and it explicitly left the `.Length` byte-budget proxies inside `Get-BatchSummary`
+and `Invoke-Dispatch` alone. I verified both sets of edits coexist in the current on-disk file (e.g.
+its `ReadAllText` leases read at serving.ps1:66 sits beside my fault-isolation block at serving.ps1:49)
+and the server loads + runs clean.
+
+CAVEAT for anyone cross-referencing line numbers: my three insertions ADD lines, so every
+serving.ps1 line number the codepoint report cites *below* my edits is now shifted down (e.g. its
+leases read cited `:62` is now `:66`; its `:270`/`:308` proxies and `:410` append are further offset).
+The function names in both reports are stable — trust those over the line numbers.
 
 ## Residual risks / recommendations
 
@@ -182,7 +228,17 @@ provider→.NET / rune-length sweep on `serving.ps1` has **no conflict** with th
 - A non-existent *scope* (vs root) is NOT fatal — it resolves cleanly and yields an empty survey
   (a subtree with no docs is legitimate). Only a missing/!directory *root* is fatal. Revisit if
   callers want missing scopes to error too.
+- A fault-isolated unit reports `stage='unreadable'` with `actionable=0`, so the orchestrator's
+  "prefer most-actionable" heuristic (PROCEDURE.md) will not auto-select it — the agent must treat
+  `unreadable` as an explicit escalation/repair signal, not skip it as "no work." Consider surfacing
+  an `unreadable` count in the discovery `instructions` if silent skipping becomes a concern.
+- `Get-BatchSummary`'s flagged row carries an extra `error` field that healthy rows lack (heterogeneous
+  shape); fine for JSON/agent consumption. `Invoke-Dispatch` adds a top-level `skipped` array to its
+  result — additive, not reflected in the tool's text description; update the `dispatch` description if
+  you want it documented for the agent.
 
 ## Net files touched
-`src/mcp-server.ps1`, `STANDARDS.md`, `src/SETUP.md`, and this report — **3 source/doc files + report;
-`serving.ps1` untouched.**
+`src/mcp-server.ps1` (UTF-8 channel, derived root + scope, fail-fast ceremony, discovery handshake,
+daemon backstop), `src/serving.ps1` (per-unit fault isolation in `Get-IngestionScan` /
+`Get-BatchSummary` / `Invoke-Dispatch` — coexists with the codepoint sweep, different functions),
+`STANDARDS.md` (§7), `src/SETUP.md`, and this report — **4 source/doc files + report.**

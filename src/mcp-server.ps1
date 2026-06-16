@@ -232,6 +232,9 @@ while ($null -ne ($line = $script:In.ReadLine())) {
     $hasId = $null -ne $req.PSObject.Properties['id']
     $id = if ($hasId) { $req.id } else { $null }
 
+    # Daemon backstop: no single request may crash the loop. tools/call has its own isError handling;
+    # this catches anything else (a survey throwing on a malformed unit, etc.) and keeps the server up.
+    try {
     switch ($req.method) {
         'initialize' {
             $pv = if ($req.params.protocolVersion) { [string]$req.params.protocolVersion } else { $ProtocolVersion }
@@ -243,14 +246,28 @@ while ($null -ne ($line = $script:In.ReadLine())) {
                 $result.instructions = "error: $($script:Fatal)"
             } else {
                 if ($null -eq $script:Readiness) {
-                    $scan = @(Get-IngestionScan -Root $Root)
-                    $prepped = @($scan | Where-Object { $_.prepped }).Count
-                    $script:Readiness = if ($scan.Count -eq 0) {
-                        "codex-membrane: ingestion root '$Root' mounted but EMPTY -- 0 documents discovered (no {slug}/{slug}.json under it). Confirm this is the intended tree, pass a different -Root, or escalate to the user; do not assume there is simply no work."
-                    } else {
-                        "codex-membrane: serving ingestion root '$Root' -- $($scan.Count) document(s) discovered, $prepped preprocessed. Begin with get_batch_summary (orchestrator re-ground) or list_documents; narrow a survey with the optional scope arg. The repair workflow is in PROCEDURE.md."
+                    try {
+                        $scan = @(Get-IngestionScan -Root $Root)
+                        $prepped = @($scan | Where-Object { $_.prepped }).Count
+                        # This connection IS your session: it is already live and persistent. Drive the whole
+                        # workflow by calling these tools directly. Do NOT launch pwsh, dot-source the .ps1
+                        # libraries, or pipe JSON-RPC into mcp-server.ps1 yourself -- that re-cold-starts a
+                        # throwaway server and is the source of shell boilerplate/syntax churn. Shell is for
+                        # out-of-band work only (git, staging new inputs into ingestion/), never to reach the membrane.
+                        $useTools = "This connection is your live, persistent session -- call the codex-membrane tools directly; never shell out to pwsh / mcp-server.ps1 to reach the membrane."
+                        $script:Readiness = if ($scan.Count -eq 0) {
+                            "codex-membrane: ingestion root '$Root' mounted but EMPTY -- 0 documents discovered (no {slug}/{slug}.json under it). Confirm this is the intended tree, pass a different -Root, or escalate to the user; do not assume there is simply no work. $useTools"
+                        } else {
+                            "codex-membrane: serving ingestion root '$Root' -- $($scan.Count) document(s) discovered, $prepped preprocessed. Begin with get_batch_summary (orchestrator re-ground) or list_documents; narrow a survey with the optional scope arg. The repair workflow is in PROCEDURE.md. $useTools"
+                        }
+                        Write-Log "discovery: $($scan.Count) document(s), $prepped preprocessed under $Root"
+                    } catch {
+                        # A single malformed unit in the batch (corrupt .chunks.jsonl / .ledger.jsonl) must not
+                        # crash the handshake. Mount anyway, but warn the agent that a unit is unreadable and
+                        # that surveys may be affected until it is isolated -- repair or escalate.
+                        $script:Readiness = "codex-membrane: serving ingestion root '$Root', but the discovery walk hit a malformed unit ($($_.Exception.Message)). A corrupt unit in the batch can disrupt surveys until isolated -- escalate to the user or identify and repair/quarantine the bad unit before relying on a batch survey."
+                        Write-Log "discovery error (non-fatal): $($_.Exception.Message)"
                     }
-                    Write-Log "discovery: $($scan.Count) document(s), $prepped preprocessed under $Root"
                 }
                 $result.instructions = $script:Readiness
             }
@@ -271,5 +288,9 @@ while ($null -ne ($line = $script:In.ReadLine())) {
         }
         'ping' { Write-Rpc $id @{} }
         default { if ($hasId) { Write-RpcError $id -32601 "method not found: $($req.method)" } }  # notifications ignored
+    }
+    } catch {
+        if ($hasId) { Write-RpcError $id -32603 "internal error: $($_.Exception.Message)" }
+        Write-Log "request error ($($req.method)): $($_.Exception.Message)"
     }
 }

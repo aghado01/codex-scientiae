@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 BARS = Path(__file__).resolve().parents[1]
+COMPENDIA = BARS.parent / "COMPENDIA.md"
 
 # Canonical main docs (WLK2008 only — WLS2008 was a filename misnomer for the same paper)
 DOCS = [
@@ -75,14 +76,30 @@ def render_doc(doc_id: str, title: str, headings: list[tuple[int, str]]) -> list
     return lines
 
 
+def update_compendia_bars(entries: list[tuple[str, str]]) -> None:
+    """Sync ### BARS paper list in compendia/COMPENDIA.md with canonical H1 titles."""
+    text = COMPENDIA.read_text(encoding="utf-8")
+    lines = [f"- [{title}](bars/{doc_id}.md)" for doc_id, title in entries]
+    block = "### BARS\n\n" + "\n".join(lines) + "\n"
+    pattern = re.compile(r"### BARS\n\n.*?(?=\n### )", re.S)
+    if not pattern.search(text):
+        raise SystemExit("COMPENDIA.md: ### BARS section not found")
+    text = pattern.sub(block.rstrip() + "\n", text, count=1)
+    COMPENDIA.write_text(text, encoding="utf-8")
+    print(f"Updated {COMPENDIA} (BARS section, {len(entries)} papers)")
+
+
 def main() -> None:
     out = ["# BARS", ""]
+    entries: list[tuple[str, str]] = []
     for doc_id in DOCS:
         path = BARS / f"{doc_id}.md"
         title, headings = parse_doc(path)
+        entries.append((doc_id, title))
         out.extend(render_doc(doc_id, title, headings))
     (BARS / "_CONTENTS.md").write_text("\n".join(out), encoding="utf-8")
     print(f"Wrote {BARS / '_CONTENTS.md'} ({len(out)} lines)")
+    update_compendia_bars(entries)
 
 
 if __name__ == "__main__":

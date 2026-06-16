@@ -1,0 +1,74 @@
+# HTR2005.md
+changed_lines: 8
+
+--- line 40 ---
+  OLD (615 chars): Setup. We are given a sequence $y = (y_1, \dots, y_n)$, e.g. times-series data or measurements of some function at locations $1 \dots n$, where each $y_i \in \mathbb{R}$ resulted from a noisy "measure...
+  NEW (606 chars): Setup. We are given a sequence $y = (y_1, \dots, y_n)$, e.g. times-series data or measurements of some function at locations $1 \dots n$, where each $y_i \in R$ resulted from a noisy "measurement" (mo...
+  [delete] -'\\mathbb{' +''
+  [delete] -'}' +''
+
+--- line 191 ---
+  OLD (414 chars): $(a)$ is just an instance of formula $P(A) = \sum _{i} P(A \mid H _ i)P(H _ i)$ for a partitioning $( H _ i)$ of the sample space. In $(b)$ we exploited uniformity (4) of $P(t _{l m} \mid m - l) = \bi...
+  NEW (400 chars): $(a)$ is just an instance of formula $P(A) = \sum_{i} P(A \mid H_i)P(H_i)$ for a partitioning $( H_i)$ of the sample space. In $(b)$ we exploited uniformity (4) of $P(t_{l m} \mid m - l) = \binom{j - ...
+  [delete] -' ' +''
+  [replace] -' _ ' +'_'
+  [replace] -' _ ' +'_'
+  [replace] -' _ ' +'_'
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' _ ' +'_'
+  ... (truncated)
+
+--- line 193 ---
+  OLD (256 chars): Left and right recursions. If we integrate (12) over $\mu _{l m}$, the integral factorizes and we get a recursion in (a quantity that is proportional to) the evidence of $y _{i j}$. Let us define more...
+  NEW (250 chars): Left and right recursions. If we integrate (12) over $\mu_{l m}$, the integral factorizes and we get a recursion in (a quantity that is proportional to) the evidence of $y_{i j}$. Let us define more g...
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' t ' +'t'
+  [delete] -' ' +''
+
+--- line 202 ---
+  OLD (258 chars): Depending on whether $h < t$ or $h \geq t$, the $( \mu _ t ^ ')^ r$ term combines with the right or left $Q$ in recursion (14) to $Q _ t ^ r$, while the other $Q$ simply gets integrated to $Q _ t ^ 0 ...
+  NEW (243 chars): Depending on whether $h < t$ or $h \geq t$, the $( \mu_t^')^r$ term combines with the right or left $Q$ in recursion (14) to $Q_t^r$, while the other $Q$ simply gets integrated to $Q_t^0 = Q^0$ indepe...
+  [delete] -' ' +''
+  [replace] -' t ^ ' +'t^'
+  [delete] -' ' +''
+  [delete] -' ' +''
+  [replace] -' t ^ ' +'t^'
+  [delete] -' ' +''
+  [replace] -' t ^ ' +'t^'
+  [replace] -' ^ ' +'^'
+  ... (truncated)
+
+--- line 209 ---
+  OLD (685 chars): Note $A _{i j} ^ 0 = P(y _{i j} \mid t _{m - 1 , m})$ is the evidence and $A _{i j} ^ r / A _{i j} ^ 0 = E [ \mu _ m ^ r \mid y _{i j} , t _{m - 1 , m} ]$ the $r^{\text{th}}$ moment of $\mu _ t ^ ' = ...
+  NEW (657 chars): Note $A_{i j}^0 = P(y_{i j} \mid t_{m - 1 , m})$ is the evidence and $A_{i j}^r / A_{i j}^0 = E [ \mu_m^r \mid y_{i j} , t_{m - 1 , m} ]$ the $r^{\text{th}}$ moment of $\mu_t^' = \mu_m$ in case $y_{i ...
+  [replace] -' _{i j} ' +'_{i j}'
+  [delete] -' ' +''
+  [replace] -' _{i j} \\mid t ' +'_{i j} \\mid t'
+  [replace] -' _{i j} ' +'_{i j}'
+  [delete] -' ' +''
+  [replace] -' _{i j} ' +'_{i j}'
+  [delete] -' ' +''
+  [replace] -' _ m ' +'_m'
+  ... (truncated)
+
+--- line 283 ---
+  OLD (614 chars): Regression curve. Recursion (5) allows in principle to compute the regression curve $\mathbb{E}[\mu'_t \mid y]$ by defining $(L_t^{r=1})_{kj}$ and $(R_t^{r=1})_{ki}$ analogous to $L_{kj}$ and $R_{ki}$...
+  NEW (605 chars): Regression curve. Recursion (5) allows in principle to compute the regression curve $E[\mu'_t \mid y]$ by defining $(L_t^{r=1})_{kj}$ and $(R_t^{r=1})_{ki}$ analogous to $L_{kj}$ and $R_{ki}$, but thi...
+  [delete] -'\\mathbb{' +''
+  [delete] -'}' +''
+
+--- line 582 ---
+  OLD: | Name | $\sigma$ | $n$ | P | $\hat{\nu}$ | $\hat{\rho}$ | $\hat{\sigma}$ | $\log E$ | $(ll-\mathbb{E})/\sigma_{ll}$ | $\hat{k}$ | $C_{\hat{k}}(\pm 1)$ |
+  NEW: | Name | $\sigma$ | $n$ | P | $\hat{\nu}$ | $\hat{\rho}$ | $\hat{\sigma}$ | $\log E$ | $(ll-E)/\sigma_{ll}$ | $\hat{k}$ | $C_{\hat{k}}(\pm 1)$ |
+  [delete] -'\\mathbb{' +''
+  [delete] -'}' +''
+
+--- line 624 ---
+  OLD (1178 chars): Piecewise linear (or other) continuous regression is more complicated. Assume that $\mu_p$ in (12) does not denote the level of the whole segment $p$, but its level at the right boundary, which togeth...
+  NEW (1169 chars): Piecewise linear (or other) continuous regression is more complicated. Assume that $\mu_p$ in (12) does not denote the level of the whole segment $p$, but its level at the right boundary, which togeth...
+  [delete] -'\\mathbb{' +''
+  [delete] -'}' +''

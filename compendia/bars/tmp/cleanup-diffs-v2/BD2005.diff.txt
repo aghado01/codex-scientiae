@@ -1,0 +1,8 @@
+# BD2005.md
+changed_lines: 1
+
+--- line 210 ---
+  OLD (341 chars): Since the integral we want to approximate is defined over $\mathbb{R}_+$ and the normal distribution is defined over the entire real line, we will transform $\delta_{k^*}$. Simulations show that this ...
+  NEW (332 chars): Since the integral we want to approximate is defined over $R_+$ and the normal distribution is defined over the entire real line, we will transform $\delta_{k^*}$. Simulations show that this has the a...
+  [delete] -'\\mathbb{' +''
+  [delete] -'}' +''

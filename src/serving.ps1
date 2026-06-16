@@ -45,11 +45,15 @@ function Get-IngestionScan([string]$Root) {
         if ((Split-Path -Leaf $paperDir) -ne $slug) { continue }   # only {slug}/{slug}.json raws (skips inventory.json etc.)
         $chunks  = Join-Path $paperDir '.scratch' "$slug.chunks.jsonl"
         $prepped = Test-Path -LiteralPath $chunks
+        $stage = $null
+        # Fault isolation: a corrupt ledger flags this one unit 'unreadable' instead of aborting the
+        # whole survey (one bad unit must not blind the agent to every healthy one in the batch).
+        if ($prepped) { try { $stage = (Get-LedgerStage $chunks).stage } catch { $stage = 'unreadable' } }
         [pscustomobject]@{
             paper   = $slug
             source  = ([System.IO.Path]::GetRelativePath($Root, $json) -replace '\\', '/')
             prepped = $prepped
-            stage   = if ($prepped) { (Get-LedgerStage $chunks).stage } else { $null }
+            stage   = $stage
         }
     }
 }
@@ -265,19 +269,36 @@ function Invoke-RepairApply {
 function Get-BatchSummary {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$Root)
     foreach ($cp in (Get-ChunkFiles $Root)) {
-        $chunks = @(Read-Chunks $cp)
-        $review = @($chunks | Where-Object { $_.fidelity -eq 'needs_review' -or $_.fidelity -eq 'needs_repair' -or $_.fidelity -eq 'suspect' })
-        $bytes = 0; foreach ($r in $review) { $bytes += ([string]$r.content).Length }
-        $ls = Get-LedgerStage $cp
-        [pscustomobject]@{
-            paper        = ((Split-Path -Leaf $cp) -replace '\.chunks\.jsonl$', '')
-            stage        = if ($ls) { [string]$ls.stage } else { 'unknown' }
-            chunks       = $chunks.Count
-            pages        = (@($chunks.page | Sort-Object -Unique)).Count
-            repaired     = @($chunks | Where-Object { $_.fidelity -eq 'repaired' }).Count
-            actionable   = $review.Count                                                       # agent's work (review + repair)
-            handoff      = @($chunks | Where-Object { $_.fidelity -eq 'unrecoverable' }).Count  # rare terminal: agent also failed -> source PDF
-            review_bytes = $bytes
+        $paper = ((Split-Path -Leaf $cp) -replace '\.chunks\.jsonl$', '')
+        try {
+            $chunks = @(Read-Chunks $cp)
+            $review = @($chunks | Where-Object { $_.fidelity -eq 'needs_review' -or $_.fidelity -eq 'needs_repair' -or $_.fidelity -eq 'suspect' })
+            $bytes = 0; foreach ($r in $review) { $bytes += ([string]$r.content).Length }
+            $ls = Get-LedgerStage $cp
+            [pscustomobject]@{
+                paper        = $paper
+                stage        = if ($ls) { [string]$ls.stage } else { 'unknown' }
+                chunks       = $chunks.Count
+                pages        = (@($chunks.page | Sort-Object -Unique)).Count
+                repaired     = @($chunks | Where-Object { $_.fidelity -eq 'repaired' }).Count
+                actionable   = $review.Count                                                       # agent's work (review + repair)
+                handoff      = @($chunks | Where-Object { $_.fidelity -eq 'unrecoverable' }).Count  # rare terminal: agent also failed -> source PDF
+                review_bytes = $bytes
+            }
+        } catch {
+            # Fault isolation: a malformed unit (corrupt .chunks.jsonl / .ledger.jsonl) surfaces as a
+            # flagged 'unreadable' row the agent can escalate, never aborting the whole-batch survey.
+            [pscustomobject]@{
+                paper        = $paper
+                stage        = 'unreadable'
+                chunks       = 0
+                pages        = 0
+                repaired     = 0
+                actionable   = 0
+                handoff      = 0
+                review_bytes = 0
+                error        = [string]$_.Exception.Message
+            }
         }
     }
 }
@@ -298,11 +319,20 @@ function Invoke-Dispatch {
              else { @(Get-ChunkFiles $Root) }
     $batch = [System.Collections.Generic.List[object]]::new()
     $newLeases = @{}
+    $skipped = [System.Collections.Generic.List[object]]::new()
     $used = 0L; $remChunks = 0; $remBytes = 0L
     foreach ($cp in $files) {
         $name = (Split-Path -Leaf $cp) -replace '\.chunks\.jsonl$', ''
-        $leased = Get-LeasedIds $cp
-        foreach ($c in (Read-Chunks $cp)) {
+        # Fault isolation: materialize the unit's reads up front so a corrupt line throws atomically
+        # (before any lease/add); a bad unit is skipped + reported, never aborting the whole bundle.
+        try {
+            $leased   = Get-LeasedIds $cp
+            $cpChunks = @(Read-Chunks $cp)
+        } catch {
+            $skipped.Add([pscustomobject]@{ paper = $name; error = [string]$_.Exception.Message })
+            continue
+        }
+        foreach ($c in $cpChunks) {
             if ($c.fidelity -ne 'needs_review' -and $c.fidelity -ne 'needs_repair' -and $c.fidelity -ne 'suspect') { continue }
             if ([int]$c.id -in $leased) { continue }   # already in flight
             $bytes = ([string]$c.content).Length
@@ -318,6 +348,7 @@ function Invoke-Dispatch {
     [pscustomobject]@{
         batch = $batch.ToArray(); count = $batch.Count; total_bytes = $used
         remaining = [pscustomobject]@{ chunks = $remChunks; bytes = $remBytes }
+        skipped = $skipped.ToArray()   # units that could not be read (malformed); surfaced, not silently dropped
     }
 }
 

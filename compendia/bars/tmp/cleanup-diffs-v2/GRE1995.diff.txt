@@ -1,0 +1,12 @@
+# GRE1995.md
+changed_lines: 1
+
+--- line 185 ---
+  OLD (1682 chars): To describe in detail how to implement the dimension-matching requirement in many standard cases, we consider a set-up a little more general than the example just described. Suppose there are two subs...
+  NEW (1646 chars): To describe in detail how to implement the dimension-matching requirement in many standard cases, we consider a set-up a little more general than the example just described. Suppose there are two subs...
+  [delete] -'\\mathbb{' +''
+  [replace] -'}^{n_1}$ and $\\mathbb{' +'^{n_1}$ and $'
+  [delete] -'}' +''
+  [delete] -'\\mathbb{' +''
+  [replace] -'}^{m_1}$ and $\\mathbb{' +'^{m_1}$ and $'
+  [delete] -'}' +''

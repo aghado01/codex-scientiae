@@ -187,3 +187,72 @@ function Find-MathClosureIssues {
     }
     return $out.ToArray()
 }
+
+# ── split-equation repair (write) ─────────────────────────────────────────────
+# A display equation broken across a page/column boundary leaves a $$ block that leaks openers
+# followed by one that leaks closers, bridged only by whitespace or a short leaked math fragment
+# (a stray ")" etc.). Join them when — and only when — the concatenation balances (Get-LatexBalance
+# .full). The balance close is the deterministic proof they were one equation; prose between the
+# halves aborts the join.
+
+# The text between two display blocks is bridgeable if it's a short math fragment, not prose: strip
+# LaTeX command names, then reject anything carrying a real (4+ letter) word or running long.
+function Test-MathBridge([string]$between) {
+    $t = ($between -replace '\\[A-Za-z]+', ' ').Trim()
+    return ($t.Length -le 40 -and $t -notmatch '[A-Za-z]{4,}')
+}
+
+# Is this span math, not prose? Strip LaTeX command names, then a span with more than a couple of
+# 4+ letter words is natural language ($$-wrapped prose) — balance alone can't tell, since prose has
+# no delimiters and reads as "balanced". Guards the merge against joining mis-paired prose blocks.
+function Test-IsMath([string]$s) {
+    return (([regex]::Matches(($s -replace '\\[A-Za-z]+', ' '), '[A-Za-z]{4,}')).Count -le 2)
+}
+
+function Repair-SplitEquations {
+    [CmdletBinding()] param([Parameter(Mandatory)][string]$Path, [switch]$Apply)
+    if (Test-Path -LiteralPath $Path -PathType Container) {
+        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
+                 ForEach-Object { Repair-SplitEquations -Path $_ -Apply:$Apply })
+    }
+    $raw  = [System.IO.File]::ReadAllText($Path)
+    $eol  = if ($raw.Contains("`r`n")) { "`r`n" } else { "`n" }
+    $text = $raw -replace "`r`n", "`n"
+    $file = [System.IO.Path]::GetFileName($Path)
+    $nl   = @([regex]::Matches($text, "`n") | ForEach-Object { $_.Index })
+
+    $blocks = @()
+    foreach ($m in [regex]::Matches($text, '(?s)\$\$(.+?)\$\$')) {
+        $blocks += [pscustomobject]@{ start = $m.Index; end = $m.Index + $m.Length; inner = $m.Groups[1].Value }
+    }
+    $merges = [System.Collections.Generic.List[object]]::new()
+    $i = 0
+    while ($i -lt $blocks.Count) {
+        $b = Get-LatexBalance $blocks[$i].inner
+        $leaksOpeners = (-not $b.full) -and (-not $b.everNegative) -and $b.brace -ge 0 -and $b.brack -ge 0 -and $b.paren -ge 0 -and $b.lr -ge 0
+        if (-not ($leaksOpeners -and (Test-IsMath $blocks[$i].inner))) { $i++; continue }
+        $acc = $blocks[$i].inner.Trim(); $j = $i; $done = $false
+        while (($j + 1) -lt $blocks.Count -and ($j - $i) -lt 3) {
+            $between = $text.Substring($blocks[$j].end, $blocks[$j + 1].start - $blocks[$j].end)
+            if (-not (Test-MathBridge $between)) { break }
+            $acc = ($acc + ' ' + $between.Trim() + ' ' + $blocks[$j + 1].inner.Trim()).Trim()
+            $j++
+            if ((Get-LatexBalance $acc).full) { if (Test-IsMath $acc) { $done = $true }; break }
+        }
+        if ($done) {
+            $line = 1; foreach ($p in $nl) { if ($p -lt $blocks[$i].start) { $line++ } else { break } }
+            $merges.Add([pscustomobject]@{ start = $blocks[$i].start; end = $blocks[$j].end; line = $line; parts = ($j - $i + 1); inner = $acc })
+            $i = $j + 1
+        }
+        else { $i++ }
+    }
+
+    $work = $text
+    for ($k = $merges.Count - 1; $k -ge 0; $k--) {
+        $mg = $merges[$k]
+        $work = $work.Substring(0, $mg.start) + '$$' + "`n" + $mg.inner + "`n" + '$$' + $work.Substring($mg.end)
+    }
+    $changed = $work -ne $text
+    if ($changed -and $Apply) { [System.IO.File]::WriteAllText($Path, ($work -replace "`n", $eol)) }
+    [pscustomobject]@{ file = $file; merges = $merges.Count; written = [bool]($changed -and $Apply); detail = $merges.ToArray() }
+}
