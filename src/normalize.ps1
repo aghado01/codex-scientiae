@@ -29,17 +29,32 @@
 # Compact a span of space-tokenized LaTeX: drop font-only macros, then tighten the delimiters the
 # tokenizer loosened. Conservative — only braces and sub/superscripts close up; spaces separating a
 # \command from its argument are left alone, so nothing is silently fused.
+# Row breaks (\\) and \text{...} bodies are masked before de-spacing so re-runs stay safe.
 function Optimize-MathContent([string]$Latex, [string[]]$StripMacros) {
     $s = $Latex
     foreach ($m in $StripMacros) {
         $s = [regex]::Replace($s, "\\$m\s*\{\s*([^{}]*?)\s*\}", '$1')   # \mathbb { E } -> E
         $s = [regex]::Replace($s, "\\$m\s+(\w)", '$1')                  # \mathbb E     -> E
     }
+
+    $masks = [System.Collections.Generic.List[string]]::new()
+    $mask = {
+        param($m)
+        $masks.Add($m.Value)
+        "MATHMASK$($masks.Count - 1)END"
+    }
+    $s = [regex]::Replace($s, '\\\\', $mask)                             # cases/array row breaks
+    $s = [regex]::Replace($s, '\\text\{[^{}]*\}', $mask)                 # \text{ if } spacing
+
     $s = $s -replace '\{\s+', '{'           # tighten inside opening brace
     $s = $s -replace '\s+\}', '}'           # tighten inside closing brace
     $s = $s -replace '\s+\{', '{'           # close \command { up to its group
     $s = $s -replace '\s*([_^])\s*', '$1'   # tighten sub/superscript
-    $s = $s -replace '[ \t]{2,}', ' '       # collapse space runs
+    $s = $s -replace '[ \t]{2,}', ' '       # collapse horizontal space runs (not newlines)
+
+    for ($i = $masks.Count - 1; $i -ge 0; $i--) {
+        $s = $s.Replace("MATHMASK${i}END", $masks[$i])
+    }
     return $s.Trim()
 }
 

@@ -12,6 +12,8 @@
   Markdown-aware and conservative: fenced code, display $$ blocks, inline code, links/images and
   existing inline math are protected; table rows are left unwrapped (pipes would mis-wrap); leading
   indentation and line endings are preserved. DRY-RUN by default — pass -Apply to write in place.
+  Pass -LigaturesOnly to run only ligature repair (safe on math-heavy compendia after layer 3).
+  Test-MarkdownCleanupIdempotent verifies a second pass is a no-op after one -Apply.
 
     . ./md-cleanup.ps1
     Invoke-MarkdownCleanup -Path file.md                 # report only
@@ -69,11 +71,12 @@ function Wrap-InlineMathMd([string]$Line) {
 function Invoke-MarkdownCleanup {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][string]$Path,
-        [switch]$Apply
+        [switch]$Apply,
+        [switch]$LigaturesOnly
     )
     if (Test-Path -LiteralPath $Path -PathType Container) {
         return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
-                 ForEach-Object { Invoke-MarkdownCleanup -Path $_ -Apply:$Apply })
+                 ForEach-Object { Invoke-MarkdownCleanup -Path $_ -Apply:$Apply -LigaturesOnly:$LigaturesOnly })
     }
 
     $raw  = [System.IO.File]::ReadAllText($Path)
@@ -94,6 +97,7 @@ function Invoke-MarkdownCleanup {
     $protect = { param($m) $script:mdStore.Add($m.Value); "$marker$($script:mdStore.Count - 1)$marker" }
 
     $work = $orig
+    if (-not $LigaturesOnly) {
     $work = [regex]::Replace($work, '(?ms)^```.*?^```', $protect)        # fenced code
     # \mathbb is styling we never want (minimalism) — strip it everywhere; code is already protected,
     # and stripping globally catches the copies the $$-pairing misses in malformed structure.
@@ -118,6 +122,7 @@ function Invoke-MarkdownCleanup {
         if ($clean -ne $m.Value) { $script:mdTight++ }
         $script:mdStore.Add($clean); "$marker$($script:mdStore.Count - 1)$marker"
     })
+    }
 
     # ligatures (all lines) + inline-math wrap (skip table rows — pipes would mis-wrap)
     $ligFixed = 0; $wrapped = 0
@@ -152,6 +157,36 @@ function Invoke-MarkdownCleanup {
         inline_wrapped = $wrapped
         math_tightened = $script:mdTight
         written        = [bool]($changed -and $Apply)
+        ligatures_only = [bool]$LigaturesOnly
+    }
+}
+
+function Test-MarkdownCleanupIdempotent {
+    [CmdletBinding()] param([Parameter(Mandatory)][string]$Path)
+    if (Test-Path -LiteralPath $Path -PathType Container) {
+        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
+                 ForEach-Object { Test-MarkdownCleanupIdempotent -Path $_ })
+    }
+    $first = Invoke-MarkdownCleanup -Path $Path
+    if (-not $first.changed) {
+        return [pscustomobject]@{ file = $first.file; idempotent = $true; note = 'already stable' }
+    }
+    $raw = [System.IO.File]::ReadAllText($Path)
+    $nl  = if ($raw.Contains("`r`n")) { "`r`n" } else { "`n" }
+    $tmp = [System.IO.Path]::ChangeExtension($Path, '.mdcleanup-idem.tmp')
+    try {
+        [System.IO.File]::WriteAllText($tmp, ($raw -replace "`r`n", "`n"))
+        Invoke-MarkdownCleanup -Path $tmp -Apply | Out-Null
+        $second = Invoke-MarkdownCleanup -Path $tmp
+        [pscustomobject]@{
+            file        = $first.file
+            idempotent  = -not $second.changed
+            first_pass  = $first.changed
+            second_pass = $second.changed
+        }
+    }
+    finally {
+        if (Test-Path -LiteralPath $tmp) { Remove-Item -LiteralPath $tmp -Force }
     }
 }
 
