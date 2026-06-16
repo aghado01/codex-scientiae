@@ -8,7 +8,7 @@
 
 ### Clustering
 
-- [A new framework for automated and reliable spike sorting in human intracerebral recordings](clustering/BRM2025.md)
+- [MCWs (MiCroWire sorter): A new framework for automated and reliable spike sorting in human intracerebral recordings](clustering/BRM2025.md)
 - [Clustering Data through an Analogy to the Potts Model](clustering/BWD1995.md)
 - [Superparamagnetic Clustering of Data](clustering/BWD1996.md)
 - [Data Clustering Using a Model Granular Magnet](clustering/BWD1997.md)

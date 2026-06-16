@@ -95,7 +95,18 @@ function Invoke-MarkdownCleanup {
 
     $work = $orig
     $work = [regex]::Replace($work, '(?ms)^```.*?^```', $protect)        # fenced code
-    $work = [regex]::Replace($work, '(?s)\$\$.+?\$\$', $protect)         # display math (untouched)
+    # \mathbb is styling we never want (minimalism) — strip it everywhere; code is already protected,
+    # and stripping globally catches the copies the $$-pairing misses in malformed structure.
+    $work = [regex]::Replace($work, '\\mathbb\s*\{\s*([^{}]*?)\s*\}', '$1')
+    $work = [regex]::Replace($work, '\\mathbb\s+([A-Za-z])', '$1')
+    # display math: minimalise (de-space, strip \mathbb, unicode->LaTeX), then protect from later passes.
+    # Balance is untouched, so a broken block stays broken and still surfaces in the closure scanner.
+    $work = [regex]::Replace($work, '(?s)\$\$(.+?)\$\$', {
+        param($m)
+        $rebuilt = '$$' + "`n" + (Convert-MathToLatex (Optimize-MathContent $m.Groups[1].Value @('mathbb'))) + "`n" + '$$'
+        if ($rebuilt -ne $m.Value) { $script:mdTight++ }
+        $script:mdStore.Add($rebuilt); "$marker$($script:mdStore.Count - 1)$marker"
+    })
     $work = [regex]::Replace($work, '`[^`\n]+`', $protect)               # inline code
     $work = [regex]::Replace($work, '!?\[[^\]]*\]\([^)]*\)', $protect)   # links / images
 

@@ -1,5 +1,6 @@
 *.code-workspace
 *.venv
+*.pyc
 *.vscode
 *.ipynb_checkpoints
 **.scratch/**
@@ -15,6 +16,13 @@
 **/.venv/**
 
 # run artifacts (regenerable working output)
+**tmp/
+**/tmp/**
 **/.scratch/
 **/.work/
 **/__pycache__/
+
+
+bin/
+obj/
+__pycache__/

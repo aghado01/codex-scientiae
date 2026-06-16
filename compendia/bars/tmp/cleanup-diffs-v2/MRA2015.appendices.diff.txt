@@ -1,8 +1,0 @@
-# MRA2015.appendices.md
-changed_lines: 1
-
---- line 253 ---
-  OLD (1802 chars): H=-o$hessian #Drawing bgamma b_gamma[i+1,]=mvrnorm(1,b_gamma_max,chol2inv(chol(H))) #Metropolis-Hastings Drawing b_gamma gamma_prop=Z_gamma%*%b_gamma[i+1,] D_gamma_prop=diag(c(exp(gamma_prop))) log_pr...
-  NEW (1799 chars): H=-o$hessian #Drawing bgamma b_gamma[i+1,]=mvrnorm(1,b_gamma_max,chol2inv(chol(H))) #Metropolis-Hastings Drawing b_gamma gamma_prop=Z_gamma%*%b_gamma[i+1,] D_gamma_prop=diag(c(exp(gamma_prop))) log_pr...
-  [replace] -' b_gamma[i+1,] = b_gamma[i,] ' +'b_gamma[i+1,] = b_gamma[i,]'
-  [delete] -' ' +''
