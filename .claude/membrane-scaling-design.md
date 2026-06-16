@@ -80,6 +80,37 @@ ONE HTTP membrane — single coordination point; state is per-{slug}
 .scratch/{slug}/… — durable ground truth (leases + per-id proposals + ledger)
 ```
 
+## Lifecycle / phasing — the pool is a phase tool, not the job
+
+**The runspace pool's lifetime ≠ the job's lifetime.** The pool opens, grinds the parallelizable
+*deterministic* work, and **closes before the job is done** — what follows (follow-up + final review)
+is partly model-driven and lives outside the pool. The colonel stays dumb and phase-scoped; the seeing
+agent owns the multi-phase lifecycle and its ordering.
+
+The pool may open/close **more than once** per job (one parallel phase per parallelizable deterministic
+stage), with model-driven phases between:
+
+```
+startup ceremony (global discovery handshake)
+  → [pool: preprocess across batch]            (deterministic, greedy; pool closes)
+  → repair                                      (agent + sub-agent fan-out, lease-serialized per {slug})
+  → per-unit closing ceremony  (×N, STAGGERED)  (each {slug}, as it finishes greedily:)
+        [pool: finalize] + review_document → resolve/escalate until pending == 0
+  → global batch closing ceremony               (the JOIN — begins strictly after all units closed)
+```
+
+**Closing is two-tiered and strictly ordered:**
+- **Per-unit closing** (each `{slug}`): follow-up (repair resolution) + final review (`finalize` →
+  `review_document` → `pending == 0` / escalations recorded). Resolves **per unit**, staggered in the
+  greedy loop — a unit reaches its own closing as it finishes, not at a shared barrier.
+- **Global closing** (the batch): begins **strictly after every** per-unit closing has resolved. The
+  join / final `get_batch_summary` reporting the batch done.
+
+Consequences: the L4 `finish-clean` gate is **two gates** (per-unit `pending==0` *and* the global join),
+not one end-of-job check; and the startup/closing ceremonies are symmetric — one global startup at the
+front, `{N staggered per-unit closings → one global closing}` at the back. All expressible in existing
+tools (`finalize`, `review_document`, `get_summary.pending`, `get_batch_summary`, the per-`{slug}` ledger).
+
 ## Two concurrency boundaries (each already handled)
 
 - **Cross-`{slug}` (runspace boundary):** disjoint file paths → race-free without locking.
@@ -92,6 +123,27 @@ ONE HTTP membrane — single coordination point; state is per-{slug}
 - **Sub-agent fan-out = the seeing agent's discipline** — policy-level, independent, operates *within* a
   runspace's `{slug}`-provenance under the per-id machinery. (Note: Claude-side `NO SUB-AGENT DISPATCH`
   bites only this axis; the deterministic runspace pool is unaffected — it spawns no agents.)
+
+**Why they compose — congruence + information hiding.** The runspace partition and the tool/artifact
+partition are **two congruent views of the one `{slug}` boundary**:
+- *Interface* (what a sub-agent sees): paper-addressed tools + `{slug}`-partitioned artifacts + per-id
+  proposals/leases.
+- *Implementation* (hidden): the runspace's structural path-confinement.
+
+A sub-agent programs against the interface and is **oblivious to runspaces**; because the interface
+*mirrors* the implementation's partition, the supervisor delegates a sub-agent into a runspace domain
+just by **assigning it a paper** — its tool-scoped behaviour automatically respects the runspace's
+file-scope. Consequences: (1) the orthogonality has a *reason* — both axes are projections of the same
+partition, so they can't disagree; (2) delegation is leak-free ("sub-agent, work paper X"); (3) the
+parallelism implementation is **substitutable** (runspaces → processes → HTTP-shared-daemon → serial)
+behind the stable tool/artifact contract.
+
+**Caveat (→ L4).** Paper-addressed tools resolve globally by name (`Resolve-Paper` crawls the whole
+root), so a sub-agent *can* address a paper outside its domain — congruence is upheld by delegation
+discipline + the deterministic pool's structural confinement, not a hard tool-layer sandbox. But
+**collision-safety holds regardless**: per-id proposals + leases serialize within a `{slug}`, so a
+strayed sub-agent contends/duplicates at worst, never corrupts. Hard per-sub-agent confinement (a
+session bound to `paper=X`) is an optional **L4 governance hook**, not a correctness requirement.
 
 ## Hygiene invariants (what the disjointness depends on — not excused by it)
 

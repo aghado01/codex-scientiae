@@ -190,10 +190,13 @@ function Test-MarkdownCleanupIdempotent {
     }
 }
 
-# ── closure scanner (read-only) ───────────────────────────────────────────────
-# Reports math spans whose delimiters don't close, via the PSLinter-derived Get-LatexBalance. It
-# detects, it does not fix — there's no deterministic spot for a missing brace — so it hands back a
-# punch-list (file / line / what's off / the span) for a human to close.
+# ── closure + structure scanner (read-only) ───────────────────────────────────
+# Hands back a punch-list of math that needs reasoning to fix — it detects, it never fixes:
+#   * delimiter closures (per span) — {} [] () \left\right that don't balance, via Get-LatexBalance
+#   * structure (per file)          — prose captured inside $$ (the tell of a mis-paired delimiter,
+#                                      aggregated since one break cascades) and odd-parity orphans
+#                                      (a literally unmatched $$, the root of the cascade)
+# Delimiter rows are precise (file/line/what's-off/span); structure rows are one verdict per file.
 
 function Format-Imbalance($b) {
     $p = [System.Collections.Generic.List[string]]::new()
@@ -224,12 +227,29 @@ function Find-MathClosureIssues {
     foreach ($m in [regex]::Matches($text,       '(?s)\$\$(.+?)\$\$')) { $spans += [pscustomobject]@{ idx = $m.Index; val = $m.Value; inner = $m.Groups[1].Value; kind = 'display' } }
     foreach ($m in [regex]::Matches($maskInline, '\$[^$\n]+\$'))       { $spans += [pscustomobject]@{ idx = $m.Index; val = $m.Value; inner = $m.Value.Substring(1, $m.Value.Length - 2); kind = 'inline' } }
 
+    $proseCount = 0; $proseLine = 0
     foreach ($s in $spans) {
         $b = Get-LatexBalance $s.inner
-        if ($b.full) { continue }
         $line = 1; foreach ($p in $nl) { if ($p -lt $s.idx) { $line++ } else { break } }
-        $span = ($s.val -replace "`n", ' '); if ($span.Length -gt 72) { $span = $span.Substring(0, 72) + '...' }
-        $out.Add([pscustomobject]@{ file = $file; line = $line; kind = $s.kind; issue = (Format-Imbalance $b); span = $span })
+        if (-not $b.full) {
+            $span = ($s.val -replace "`n", ' '); if ($span.Length -gt 72) { $span = $span.Substring(0, 72) + '...' }
+            $out.Add([pscustomobject]@{ file = $file; line = $line; kind = $s.kind; issue = (Format-Imbalance $b); span = $span })
+        }
+        elseif ($s.kind -eq 'display' -and -not (Test-IsMath $s.inner)) {
+            $proseCount++; if ($proseLine -eq 0) { $proseLine = $line }
+        }
+    }
+
+    # structure issues are AGGREGATED per file: one mis-paired $$ cascades into many prose-blocks
+    # downstream, so a single verdict (count = severity) is honest where N rows would imply N fixes.
+    if ($proseCount -gt 0) {
+        $out.Add([pscustomobject]@{ file = $file; line = $proseLine; kind = 'structure'; issue = ("$proseCount display block(s) read as prose - " + '$$' + ' pairing broken upstream'); span = '(first at this line)' })
+    }
+    $codeMasked = [regex]::Replace($text, '(?ms)^```.*?^```', { param($x) ($x.Value -replace '[^\n]', ' ') })
+    $dd = [regex]::Matches($codeMasked, '\$\$')
+    if (($dd.Count % 2) -ne 0) {
+        $last = $dd[$dd.Count - 1]; $line = 1; foreach ($p in $nl) { if ($p -lt $last.Index) { $line++ } else { break } }
+        $out.Add([pscustomobject]@{ file = $file; line = $line; kind = 'structure'; issue = ('unmatched ' + '$$' + ' delimiter (odd count ' + $dd.Count + ')'); span = '(orphan at/after this line)' })
     }
     return $out.ToArray()
 }
