@@ -27,6 +27,7 @@
 . "$PSScriptRoot/jsonl.ps1"
 . "$PSScriptRoot/fidelity.ps1"
 . "$PSScriptRoot/crawl.ps1"
+. "$PSScriptRoot/normalize.ps1"
 
 function Read-Chunks([string]$Path) {
     [System.IO.File]::ReadLines($Path) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json }
@@ -236,11 +237,19 @@ function Invoke-RepairApply {
         # the hard gate: only clean staged content merges. Still-flagged proposals are KEPT
         # staged (mid multi-step repair), not discarded.
         if (Get-CorruptionType ([pscustomobject]@{ type = $c.type; content = [string]$p.content })) { $held++; continue }
+        # deterministic content-tier normalization of the agent's edit — the SAME pass the normalize
+        # stage runs on docling content. An agent repairing a formula naturally types \mathbb / loose
+        # spacing / bare-& alignment; tidy it on the way in so the chunk stream stays minimal and the
+        # deliverable needs no separate md-cleanup pass (md-cleanup is then a verifier, not a fixer).
+        $newContent = [string]$p.content
+        if ([string]$c.type -eq 'formula') {
+            $newContent = Repair-MathAlignment (Convert-MathToLatex (Optimize-MathContent $newContent @('mathbb')))
+        }
         $audit.Add([pscustomobject][ordered]@{
             id = [int]$c.id; source = [string]$p.source
-            before = [string]$c.content; after = [string]$p.content; was = [string]$c.corruption_type
+            before = [string]$c.content; after = $newContent; was = [string]$c.corruption_type
         })
-        $c.content = [string]$p.content
+        $c.content = $newContent
         $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'faithful'      -Force
         $c | Add-Member -NotePropertyName repair        -NotePropertyValue 'agent_applied' -Force
         $c | Add-Member -NotePropertyName repair_source -NotePropertyValue ([string]$p.source) -Force

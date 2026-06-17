@@ -13,6 +13,12 @@
     gibberish         - space-shattered single-char runs ("a o f i n t o o t")
     ligature_residue  - OCR ligatures that survived collapse
     unbalanced_delimiters - {} / [] / () / \left..\right mismatch in math content
+    alignment_outside_env - & alignment tab in a formula with no \begin{...} (KaTeX parse error)
+    prose_in_formula  - a formula chunk that reads as natural language (mislabeled / leaked prose)
+
+  The last two are cross-derivation converges: the assembled closure scanner (Find-MathClosureIssues)
+  already flags them, but chunk-fidelity didn't — so the two derivations of "renderable math" could
+  disagree (a file the scanner later called broken passed fidelity clean). Checking here closes that.
 
     . ./fidelity.ps1
     Invoke-Fidelity -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
@@ -28,6 +34,12 @@ function Get-CorruptionType($Chunk) {
     if ($content.Contains([char]0xFFFD))         { return 'replacement_char' }
     if ($content -match '(?:\b\w\s+){6,}\b\w\b') { return 'gibberish' }
     if ($content -match '[ﬀ-ﬄ]')        { return 'ligature_residue' }
+    # the same impossibilities the assembled scanner checks, lifted to chunk level via the shared
+    # latex.ps1 predicates so the two derivations of "renderable math" can't disagree (a file the
+    # scanner later calls broken would otherwise pass fidelity clean). normalize auto-wraps docling
+    # formulas upstream, so the alignment case here is the safety net for anything that slips.
+    if ($Chunk.type -eq 'formula' -and (Test-AlignmentOutsideEnv $content)) { return 'alignment_outside_env' }
+    if ($Chunk.type -eq 'formula' -and -not (Test-IsMath $content))         { return 'prose_in_formula' }
     # delimiter balance via the context-aware scanner (skips escaped \{ \(, pairs
     # \left..\right): full balance for a pure formula; braces only for inline math in
     # prose, where prose parens/brackets would otherwise false-positive.
@@ -63,6 +75,13 @@ function Invoke-Fidelity {
             # not corruption, yet still a call the model must make. Surface it as actionable.
             $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'needs_review'          -Force
             $c | Add-Member -NotePropertyName review_reason -NotePropertyValue 'heading_level_unknown' -Force
+        }
+        elseif ([int]($c.math_dirt) -ge 2) {
+            # faithful prose carrying un-wrapped inline math (the normalize density∧¬mask signal) — the
+            # deterministic wrapper conservatively skipped it; the agent wraps it with judgment. The
+            # count rides along as math_dirt for dispatch prioritisation (denser = worse).
+            $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'needs_review'   -Force
+            $c | Add-Member -NotePropertyName review_reason -NotePropertyValue 'unwrapped_math' -Force
         }
         else {
             $c | Add-Member -NotePropertyName fidelity -NotePropertyValue 'faithful' -Force

@@ -49,3 +49,25 @@ function Get-LatexBalance([string]$s) {
         brace = $brace; brack = $brack; paren = $paren; lr = $lr; everNegative = $neg
     }
 }
+
+# ── shared math-structure predicates ──────────────────────────────────────────
+# One home for the checks several layers need, so independent derivations of the same property can't
+# drift apart: the chunk-level fidelity grader (Get-CorruptionType), the assembled closure scanner
+# (Find-MathClosureIssues), and the normalize fixer (Repair-MathAlignment) all read from here.
+
+# Alignment tab (&) outside an alignment environment is a hard KaTeX/MathJax parse error. \\ alone is a
+# legal display line break (untouched); \& is a literal ampersand (untouched). This is the *detector*;
+# Repair-MathAlignment in normalize.ps1 is the matching *fixer* and consumes this same predicate.
+function Test-AlignmentOutsideEnv([string]$math) {
+    return ($math -match '(?<!\\)&' -and $math -notmatch '\\begin\s*\{')
+}
+
+# Is this span math, not prose? \text{...}/\operatorname{...} carry intentional natural-language labels
+# (find, minimize, such that) inside legitimate math — feasibility programs, aligned derivations — so
+# strip them whole before counting; then command names; more than a couple of 4+ letter words left
+# means it's natural language. Balance alone can't tell (prose has no delimiters and reads "balanced").
+function Test-IsMath([string]$s) {
+    $t = $s -replace '\\(?:text|operatorname|mathrm|mbox|textrm|textbf|textit)\s*\{[^{}]*\}', ' '
+    $t = $t -replace '\\[A-Za-z]+', ' '
+    return (([regex]::Matches($t, '[A-Za-z]{4,}')).Count -le 2)
+}

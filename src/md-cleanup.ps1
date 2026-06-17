@@ -107,7 +107,7 @@ function Invoke-MarkdownCleanup {
     # Balance is untouched, so a broken block stays broken and still surfaces in the closure scanner.
     $work = [regex]::Replace($work, '(?s)\$\$(.+?)\$\$', {
         param($m)
-        $rebuilt = '$$' + "`n" + (Convert-MathToLatex (Optimize-MathContent $m.Groups[1].Value @('mathbb'))) + "`n" + '$$'
+        $rebuilt = '$$' + "`n" + (Repair-MathAlignment (Convert-MathToLatex (Optimize-MathContent $m.Groups[1].Value @('mathbb')))) + "`n" + '$$'
         if ($rebuilt -ne $m.Value) { $script:mdTight++ }
         $script:mdStore.Add($rebuilt); "$marker$($script:mdStore.Count - 1)$marker"
     })
@@ -231,6 +231,13 @@ function Find-MathClosureIssues {
     foreach ($s in $spans) {
         $b = Get-LatexBalance $s.inner
         $line = 1; foreach ($p in $nl) { if ($p -lt $s.idx) { $line++ } else { break } }
+        # alignment tab (&) outside an environment is a hard KaTeX/MathJax parse error — independent
+        # of brace balance (a block can be perfectly balanced yet still fail at the first &), so it's
+        # checked on its own. \\ alone is a legal display line break and is NOT flagged.
+        if (Test-AlignmentOutsideEnv $s.inner) {
+            $span = ($s.val -replace "`n", ' '); if ($span.Length -gt 72) { $span = $span.Substring(0, 72) + '...' }
+            $out.Add([pscustomobject]@{ file = $file; line = $line; kind = $s.kind; issue = ('alignment & outside ' + '\begin{...}' + ' (parse error)'); span = $span })
+        }
         if (-not $b.full) {
             $span = ($s.val -replace "`n", ' '); if ($span.Length -gt 72) { $span = $span.Substring(0, 72) + '...' }
             $out.Add([pscustomobject]@{ file = $file; line = $line; kind = $s.kind; issue = (Format-Imbalance $b); span = $span })
@@ -268,12 +275,9 @@ function Test-MathBridge([string]$between) {
     return ($t.Length -le 40 -and $t -notmatch '[A-Za-z]{4,}')
 }
 
-# Is this span math, not prose? Strip LaTeX command names, then a span with more than a couple of
-# 4+ letter words is natural language ($$-wrapped prose) — balance alone can't tell, since prose has
-# no delimiters and reads as "balanced". Guards the merge against joining mis-paired prose blocks.
-function Test-IsMath([string]$s) {
-    return (([regex]::Matches(($s -replace '\\[A-Za-z]+', ' '), '[A-Za-z]{4,}')).Count -le 2)
-}
+# Test-IsMath (math-vs-prose) and Test-AlignmentOutsideEnv now live in latex.ps1, shared with the
+# chunk-level fidelity grader so the two derivations of "is this math" can't drift apart. Both
+# Find-MathClosureIssues and Repair-SplitEquations below consume them via that sourced module.
 
 function Repair-SplitEquations {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$Path, [switch]$Apply)

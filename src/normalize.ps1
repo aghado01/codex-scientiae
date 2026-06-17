@@ -25,6 +25,7 @@
 #>
 
 . "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/latex.ps1"   # Test-AlignmentOutsideEnv (the predicate Repair-MathAlignment fixes against)
 
 # Compact a span of space-tokenized LaTeX: drop font-only macros, then tighten the delimiters the
 # tokenizer loosened. Conservative — only braces and sub/superscripts close up; spaces separating a
@@ -86,6 +87,17 @@ function Convert-MathToLatex([string]$s) {
         return $m.Value
     })
     return (($r -replace '\s{2,}', ' ').Trim())
+}
+
+# Alignment tabs (&) are a KaTeX/MathJax parse error OUTSIDE an alignment environment — docling
+# sometimes flattens a multi-line derivation to bare "$$ a &= b \\ &= c $$" with the \begin{aligned}
+# wrapper dropped, which fails at the first &. Wrap the body so it renders; only when there's an
+# unescaped & and no environment already present (\\ alone is a legal display line break — untouched).
+function Repair-MathAlignment([string]$math) {
+    if (Test-AlignmentOutsideEnv $math) {
+        return "\begin{aligned}`n" + $math.Trim() + "`n\end{aligned}"
+    }
+    return $math
 }
 
 # A glyph token: a lone character, a number, a known math function, or a short index list (j,k).
@@ -345,7 +357,7 @@ function Invoke-Normalize {
         if (-not [string]::IsNullOrWhiteSpace($line)) { $chunks.Add(($line | ConvertFrom-Json)) }
     }
 
-    $mathFixed = 0; $inlineFixed = 0; $unbled = 0; $script:mdScripts = 0
+    $mathFixed = 0; $inlineFixed = 0; $unbled = 0; $script:mdScripts = 0; $script:mdDirt = 0
     $furn = [ordered]@{ caption = 0; figure_label = 0; crumb = 0 }
     $formulaContents = [System.Collections.Generic.List[string]]::new()
 
@@ -357,7 +369,7 @@ function Invoke-Normalize {
             $orig  = [string]$c.content
             $clean = Get-UnbledFormula $chunks $i
             if ($clean -ne $orig) { $unbled++ }
-            $norm = Convert-MathToLatex (Optimize-MathContent $clean $StripMacros)   # un-bled, de-spaced, unicode -> LaTeX
+            $norm = Repair-MathAlignment (Convert-MathToLatex (Optimize-MathContent $clean $StripMacros))   # un-bled, de-spaced, unicode -> LaTeX, alignment-wrapped
             if ($norm -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $norm; $mathFixed++ }
             $formulaContents.Add([string]$c.content)
             continue
@@ -373,11 +385,22 @@ function Invoke-Normalize {
         if ([string]$c.type -eq 'prose' -and $c.content -and -not $c.is_furniture) {
             $orig    = [string]$c.content
             $wrapped = Repair-InlineScripts (ConvertTo-InlineMath $orig) $vocab
+            # tighten the inline spans the same way display math is tightened (de-space braces, strip
+            # \mathbb) — otherwise pre-wrapped set-builder notation keeps its OCR spacing, e.g. "{ X }".
+            $wrapped = [regex]::Replace($wrapped, '\$[^$\n]+\$', { param($m) '$' + (Optimize-MathContent ($m.Value.Substring(1, $m.Value.Length - 2)) @('mathbb')) + '$' })
             if ($wrapped -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $wrapped; $inlineFixed++ }
+            # dirt signal (density ∧ ¬mask): a math symbol / Greek letter surviving OUTSIDE the wrapped
+            # $...$ spans is un-wrapped inline math — "faithful but dirty" prose that ConvertTo-InlineMath's
+            # strong gate conservatively skipped (a known no-struct shortfall). Mask the spans, then count
+            # the residual math-register hits; the complement of the mask within the math register IS the
+            # dirt. Record the count (= density) and let fidelity flag it — we don't risk auto-wrapping prose.
+            $resid = [regex]::Replace($wrapped, '\$[^$\n]+\$', ' ')
+            $dirt  = $script:MathLatexRx.Matches($resid).Count
+            if ($dirt -gt 0) { $c | Add-Member -NotePropertyName math_dirt -NotePropertyValue $dirt -Force; $script:mdDirt += $dirt }
         }
     }
 
     $manifest = Write-JsonlStage -Records $chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'normalize'
-    "normalize: formulas un-bled $unbled, math tightened $mathFixed, inline wrapped $inlineFixed, scripts reconstructed $($script:mdScripts) (vocab $($vocab.Count)); furniture — caption $($furn.caption), figure_label $($furn.figure_label), crumb $($furn.crumb) -> $ChunksPath"
+    "normalize: formulas un-bled $unbled, math tightened $mathFixed, inline wrapped $inlineFixed, scripts reconstructed $($script:mdScripts), unwrapped-math signals $($script:mdDirt) (vocab $($vocab.Count)); furniture — caption $($furn.caption), figure_label $($furn.figure_label), crumb $($furn.crumb) -> $ChunksPath"
     return $manifest
 }
