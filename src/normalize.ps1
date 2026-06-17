@@ -389,13 +389,16 @@ function Invoke-Normalize {
             # \mathbb) — otherwise pre-wrapped set-builder notation keeps its OCR spacing, e.g. "{ X }".
             $wrapped = [regex]::Replace($wrapped, '\$[^$\n]+\$', { param($m) '$' + (Optimize-MathContent ($m.Value.Substring(1, $m.Value.Length - 2)) @('mathbb')) + '$' })
             if ($wrapped -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $wrapped; $inlineFixed++ }
-            # dirt signal (density ∧ ¬mask): a math symbol / Greek letter surviving OUTSIDE the wrapped
-            # $...$ spans is un-wrapped inline math — "faithful but dirty" prose that ConvertTo-InlineMath's
-            # strong gate conservatively skipped (a known no-struct shortfall). Mask the spans, then count
-            # the residual math-register hits; the complement of the mask within the math register IS the
-            # dirt. Record the count (= density) and let fidelity flag it — we don't risk auto-wrapping prose.
-            $resid = [regex]::Replace($wrapped, '\$[^$\n]+\$', ' ')
-            $dirt  = $script:MathLatexRx.Matches($resid).Count
+            # dirt signal (density ∧ ¬mask), now the NAMED mask-algebra instance the brief generalises
+            # from: the wrapped $...$ spans are the overlay; a math-register glyph (MathLatexRx) surviving
+            # in their COMPLEMENT is un-wrapped inline math — "faithful but dirty" prose that
+            # ConvertTo-InlineMath's strong gate conservatively skipped. `Density(MathLatexRx,
+            # Complement($…$_mask))` is value-identical to the old "blank the spans, count the residual"
+            # (MathLatexRx matches single glyphs; blank width is irrelevant), so the frozen math_dirt
+            # output the hotspots/dispatch ≥2 gate depends on is preserved exactly. Record the count
+            # (= density) and let fidelity flag it — we don't risk auto-wrapping prose.
+            $dollarMask = New-Mask $wrapped '\$[^$\n]+\$'
+            $dirt = Get-MaskDensity -Text $wrapped -Within (Complement-Mask $dollarMask) -Register $script:MathLatexRx
             if ($dirt -gt 0) { $c | Add-Member -NotePropertyName math_dirt -NotePropertyValue $dirt -Force; $script:mdDirt += $dirt }
         }
     }

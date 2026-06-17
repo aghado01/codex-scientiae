@@ -25,14 +25,37 @@
 #>
 
 . "$PSScriptRoot/jsonl.ps1"
-. "$PSScriptRoot/latex.ps1"
+. "$PSScriptRoot/latex.ps1"   # shared math predicates + (transitively) the mask algebra / SpanLevel
+
+$script:RxInlineMath = [regex]'\$\$[\s\S]*?\$\$|\$[^$\n]+\$'   # wrapped math is NOT shatter — mask it first
+
+# gibberish — space-shattered text ("a o f i n t o o t"). The math overlay is masked out (so wrapped
+# variables / flattened subscripts inside $...$ aren't mistaken for shatter), then per Line the longest
+# run of CONSECUTIVE single-ALPHABETIC tokens is the signal. Two construction fixes over the old
+# whole-content '(?:\b\w\s+){6,}' run:
+#   * ALPHABETIC singles only — "1 2 3 4 5 6 7" is tabular data, not shatter (the old \w counted digits);
+#   * the run, not a 7-long minimum — a shorter shatter trips it ("A l p h a", "r a n k" the old missed),
+#     while the run length is exactly what separates true shatter (4-5+) from flattened index variables
+#     ("b k i and d k i", broken every 3 by a real word).
+# MinRun is tunable; the default is calibrated against the corpus A/B (match-or-reduce false flags).
+function Test-IsGibberish([string]$content, [int]$MinRun = 4) {
+    $prose = Get-MaskedText -Text $content -Mask (New-Mask $content $script:RxInlineMath)
+    foreach ($unit in (Split-AtLevel -Text $prose -Level Line)) {
+        $run = 0
+        foreach ($t in @($unit.Text -split '\s+' | Where-Object { $_ -ne '' })) {
+            if ($t -match '^[A-Za-z]$') { $run++; if ($run -ge $MinRun) { return $true } }
+            else { $run = 0 }
+        }
+    }
+    return $false
+}
 
 function Get-CorruptionType($Chunk) {
     $content = [string]$Chunk.content
     if (-not $content) { return $null }
     if ($content.Contains('\intertext'))        { return 'intertext' }
     if ($content.Contains([char]0xFFFD))         { return 'replacement_char' }
-    if ($content -match '(?:\b\w\s+){6,}\b\w\b') { return 'gibberish' }
+    if (Test-IsGibberish $content)               { return 'gibberish' }
     if ($content -match '[ﬀ-ﬄ]')        { return 'ligature_residue' }
     # the same impossibilities the assembled scanner checks, lifted to chunk level via the shared
     # latex.ps1 predicates so the two derivations of "renderable math" can't disagree (a file the

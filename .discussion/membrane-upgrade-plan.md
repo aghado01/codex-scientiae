@@ -32,22 +32,37 @@ density-aware, gated* dispatch surface — with a substrate tail deferred.
 
 ## Re-layering: the algebra is the substrate, not a rung
 
-Updated after the interval-algebra (lite) work emerged mid-arc. The ladder below was conceived linearly
+*Status — 2026-06-17: substrate LANDED & validated; the merged Tracks 3+4 (pincer policy) are unblocked.* The ladder below was conceived linearly
 (1→2→3→4→tail); the mask algebra ([`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md)) inverts
 that into a **stack**:
 
 - **Done** — Track 1 (prompts), Track 2 (math hotspots — a pincer special-case in hindsight).
-- **Substrate (in flight)** — the mask algebra: overlay/complement over span levels + the pincer. It sits
-  *under* the rest and is now the **critical path**.
-- **Policy (was Tracks 3 + 4, merged)** — once the algebra exists, agreement-score and the impossibility gate
-  are not two builds but two readouts of one pincer (*agreement ranks, contradiction gates*). Each keeps only
-  thin wiring (a dispatch-ordering key; a rejection in the mutation ops); the substance lives in the algebra.
-  **Do not build these on the current predicates — they would be built twice.**
+- **Substrate — LANDED & validated** ([report](../.claude/mask-algebra-fidelity-report.md)). `src/masks.ps1`
+  (closed primitive set + `SpanLevel`) + four detectors re-expressed as overlay/complement behind the shared
+  `latex.ps1` home + the pincer coincidence law. 52-test Pester suite green; the three compatibility contracts
+  (merge-gate decision incl. the `detector∘normalize` fixed point, atomic three-consumer port, frozen
+  `math_dirt`/balance) verified *as passing tests*; differential A/B 1518/1522 identical, the 4 deltas all
+  genuine gibberish recall fixes. The delicate mechanics held; `masks.ps1` stayed lite (258 lines, pure).
+- **Policy (merged Tracks 3 + 4) — UNBLOCKED, not started.** Agreement-score and the impossibility gate are
+  two readouts of one pincer (*agreement ranks, contradiction gates*), now buildable **on the `masks.ps1`
+  primitives**: agreement = coincidence of two derivations' masks; impossibility = a mask-geometry predicate
+  (complement-must-be-empty / masks-may-not-overlap). Each is thin wiring (a dispatch-ordering key; a rejection
+  in the mutation ops); the substance lives in the algebra. **This is the next move forward — built on the
+  algebra, not the old predicates.**
 - **Tail, re-sorted** — OffsetMap **promoted** (it is the change-of-basis for masks — shared offset
   arithmetic); `inventory.jsonl` **retired** as a validation matrix (validation is now intrinsic via algebraic
   laws + the pincer; only a low-value "overlay catalogue" survives); hooks + constitution unchanged.
 
-**Carried constraint:** the substrate migration must be **contract-preserving** at the seams where rebuilt
+**Carried follow-ups (pre-flagged in the report):**
+- `Test-MathRow` (`normalize.ps1`, via `Get-UnbledFormula`) is the last un-consolidated "is-this-math"
+  derivation — still the old strip-list, now diverging from the hardened `Test-IsMath`. Fold it in before it
+  drifts (it is exactly the drift this effort set out to kill). **Top-priority cleanup.**
+- `Test-IsGibberish` `MinRun=4` is calibrated on the 3 preprocessed docs — re-validate when the other 19 get
+  a chunk stream.
+- Prose-context refinement of `math_dirt` (subtract a prose-context overlay) was deferred because it moves the
+  frozen value — it lands **with** the policy layer (update the hotspot consumers in lockstep + re-verify).
+
+**Carried constraint (held):** the substrate stayed lite (258 lines, pure, no engine) and contract-preserving at the seams where rebuilt
 detectors plug into the merge-gate, the three cross-derivation consumers, and the freshly-landed hotspot
 signals — see the brief's *Compatibility* section. The non-goals fence now protects the whole downstream: if
 the algebra sprawls, everything behind it stalls. (Tracks 3–4 below stand as detailed reference, read through
@@ -89,7 +104,8 @@ this policy lens.)
 > impossibility gate). Do it before/with this track; the regex layer is hardened *by construction* there, not
 > by a labeled corpus.
 - **Goal.** Turn binary flags into a confidence so dispatch spends budget on genuinely ambiguous regions,
-  not single-regex false positives. Directly builds on the predicates already consolidated to `latex.ps1`.
+  not single-regex false positives. **Now built as the pincer's _agreement_ readout on `masks.ps1`** (the
+  coincidence of two derivations' masks), not bespoke per-predicate scoring — the algebra has landed.
 - **Mechanism.** Per chunk, run ≥2 independent derivations of the same property (heading-by-font vs
   heading-by-`#`-atom; math-by-content `Test-IsMath` vs math-by-delimiter; renders via `Get-LatexBalance`
   vs reads-as-prose). Disagreement → an `agreement_score` (0–1) on the chunk. `dispatch` orders low-agreement
@@ -101,7 +117,8 @@ this policy lens.)
 ### Track 4 — impossibility gate (Tier-3) on the mutation path
 - **Goal.** Reject LLM-hallucinated structure before it enters the ledger. The two impossibilities in
   `fidelity.ps1` grade chunks; they don't yet *gate* the tools that mutate structure.
-- **Mechanism.** Declare a small impossibility set as data (seed: `alignment_outside_env`,
+- **Mechanism.** **Now the pincer's _contradiction_ readout — express impossibilities as mask-geometry
+  predicates on `masks.ps1`** (complement-must-be-empty, masks-may-not-overlap). Seed: `alignment_outside_env`,
   `prose_in_formula`; add "retype→formula must pass `Get-LatexBalance`", "heading chunk cannot hold a
   blank-line run"). Wire as a rejection gate on `retype_chunk`/`split_chunk`/`merge_chunks` and on `apply`,
   returning a precise diagnostic — exactly as `propose_repair` already rejects on the delimiter detector.
@@ -110,6 +127,8 @@ this policy lens.)
 - **Invariant.** Same shape as the existing propose-gate: reject with diagnostic, never silently mutate.
 
 ## Deferred substrate (design-in, don't build yet)
+
+*Live status in §Re-layering: `inventory.jsonl` retired as a validation matrix; OffsetMap already seeded by `masks.ps1` `Move-Mask`/`Limit-Mask` (the change-of-basis).*
 
 - **`inventory.jsonl`** — externalize the inline regex (`fidelity`/`zones`) to a `level`+`language`+`priority`
   data table. Auditable and composable, but a wide refactor for marginal near-term gain; Tracks 3–4 give the
