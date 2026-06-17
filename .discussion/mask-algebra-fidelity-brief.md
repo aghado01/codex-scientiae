@@ -122,6 +122,34 @@ The guardrails that keep the algebra from becoming the engine:
    corpus); (c) an A/B **diff of the work-list** against the current detectors over the 22-doc corpus —
    match-or-reduce false flags, never increase misses. None of these is a labeled should-match set.
 
+## Compatibility — don't break the membrane's delicate mechanics
+
+The algebra is pure and fenced, so the *substrate* disturbs nothing on its own; all risk is at the **seam**
+where a rebuilt detector plugs into its existing consumers. The membrane's mechanics depend on the detectors'
+*contracts at consumption*, not their internals — keep these fixed-or-better and nothing downstream falls
+apart. A ported detector MUST preserve:
+
+1. **The merge-gate decision.** `Get-CorruptionType` gates `propose_repair` (reject), `apply`
+   (only-clean-merges), `propose_edit` (report). The A/B diff must compare the **accept/reject decision per
+   chunk**, not just the flag count — a repair accepted today must not start rejecting. And the detector must
+   agree with `apply`'s content normalization (`Repair-MathAlignment`/`Convert-MathToLatex`/
+   `Optimize-MathContent`): a blessed repair must survive normalization **still blessed** — verify the
+   `detector ∘ normalize` fixed point, or `apply` oscillates (stage clean → normalize → re-flags).
+2. **Cross-derivation consistency (the drift the consolidation closed).** The detector is read in three places
+   — chunk grading (`fidelity.ps1`), the gate (`serving.ps1`), the assembled scanner (`md-cleanup.ps1`
+   `Find-MathClosureIssues`) — via the shared `latex.ps1` predicates. Port **all three atomically**; a partial
+   port reopens the "lying scanner." The algebra **replaces** the predicate's shared-home role, it is not a
+   second home beside it.
+3. **Frozen shared-signal contracts.** `math_dirt` and `Get-LatexBalance` outputs feed the freshly-landed
+   hotspots/dispatch code (the `math_dirt ≥ 2` density gate; balance for joins). Re-implementing
+   `unwrapped_math` must preserve `math_dirt`'s output, or update those consumers in lockstep and re-verify
+   hotspots. Treat these as fixed output contracts.
+
+(1)–(3) are the membrane-specific contracts the port must explicitly verify; the purity / totality /
+boundedness / codepoint-safe-offset constraints above cover the rest by construction — restated as the
+mechanics they guard: no persisted masks (ids renumber under split/merge), total on partial/mid-repair
+content, O(n) at the hot gate.
+
 ## Non-goals (the fence — what we are NOT building)
 
 Explicit, with teeth — if an op seems to need any of these, it is **out of scope; escalate, don't build it**:

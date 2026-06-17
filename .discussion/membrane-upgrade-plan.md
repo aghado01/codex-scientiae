@@ -30,6 +30,29 @@ Leasing and predicate-consolidation from these threads **already shipped**. What
 orthogonal quick win (Prompts) and a **doccer phase-2** — lift the consolidated predicates into a *scored,
 density-aware, gated* dispatch surface — with a substrate tail deferred.
 
+## Re-layering: the algebra is the substrate, not a rung
+
+Updated after the interval-algebra (lite) work emerged mid-arc. The ladder below was conceived linearly
+(1→2→3→4→tail); the mask algebra ([`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md)) inverts
+that into a **stack**:
+
+- **Done** — Track 1 (prompts), Track 2 (math hotspots — a pincer special-case in hindsight).
+- **Substrate (in flight)** — the mask algebra: overlay/complement over span levels + the pincer. It sits
+  *under* the rest and is now the **critical path**.
+- **Policy (was Tracks 3 + 4, merged)** — once the algebra exists, agreement-score and the impossibility gate
+  are not two builds but two readouts of one pincer (*agreement ranks, contradiction gates*). Each keeps only
+  thin wiring (a dispatch-ordering key; a rejection in the mutation ops); the substance lives in the algebra.
+  **Do not build these on the current predicates — they would be built twice.**
+- **Tail, re-sorted** — OffsetMap **promoted** (it is the change-of-basis for masks — shared offset
+  arithmetic); `inventory.jsonl` **retired** as a validation matrix (validation is now intrinsic via algebraic
+  laws + the pincer; only a low-value "overlay catalogue" survives); hooks + constitution unchanged.
+
+**Carried constraint:** the substrate migration must be **contract-preserving** at the seams where rebuilt
+detectors plug into the merge-gate, the three cross-derivation consumers, and the freshly-landed hotspot
+signals — see the brief's *Compatibility* section. The non-goals fence now protects the whole downstream: if
+the algebra sprawls, everything behind it stalls. (Tracks 3–4 below stand as detailed reference, read through
+this policy lens.)
+
 ## The ladder
 
 ### Track 1 — MCP Prompts (serve the procedure) — opener, ~half day
