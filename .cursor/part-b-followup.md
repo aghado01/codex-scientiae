@@ -33,5 +33,3 @@ $script:StructuralImpossibilityTypes = @('alignment_outside_env', 'prose_in_form
 Nothing weakens: `apply`'s content gate (`Get-CorruptionType`) still refuses to merge an unbalanced *proposal*, so unbalanced content never sneaks into the deliverable — the structural op just stops *deadlocking* on it. Test changes: the two "unbalanced retype/merge → rejected" tests flip to **pass**, and add the missing one — a **partial-balance** fragmented-formula merge must succeed (the case that was never tested).
 
 (If you'd rather keep *some* merge guard, the surgical alternative is to reject a merge only when it *worsens* balance — `joinRes > sumPartsRes` — which still lets every hotspot merge through. I lean toward the clean removal: unbalanced is the content path's job, full stop.)
-
-Want me to apply the removal + fix the tests now and re-run the suite, or hand it back to Cursor as a follow-up?

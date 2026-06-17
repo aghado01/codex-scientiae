@@ -1,6 +1,6 @@
 #requires -Version 7.0
-# Part B — structural impossibility gate on retype / split / merge. Reject cases (synthetic), legitimate
-# mutations (incl. fragmented-formula merge), and a check that the apply content-gate is unchanged.
+# Part B — structural impossibility gate on retype / split / merge. Geometry rejections, merge
+# balance-worsening guard (not full-balance), split orphan guard, partial-balance hotspot merge.
 
 BeforeAll {
     . "$PSScriptRoot/../src/restructure.ps1"
@@ -33,11 +33,9 @@ AfterAll {
     foreach ($r in $script:Roots) { if (Test-Path -LiteralPath $r) { Remove-Item -LiteralPath $r -Recurse -Force -ErrorAction SilentlyContinue } }
 }
 
-Describe 'Get-StructuralImpossibility — reuses the shared table (structural subset only)' {
-    It 'flags unbalanced_delimiters on a would-be formula' {
-        $imp = Get-StructuralImpossibility ([pscustomobject]@{ type = 'formula'; content = '\left( x' })
-        $imp.reason | Should -Be 'unbalanced_delimiters'
-        $imp.diagnostic | Should -Match 'lr=1'
+Describe 'Get-StructuralImpossibility — geometry only (mis-label / alignment)' {
+    It 'does NOT flag unbalanced delimiters — that is fixable corruption, not geometry' {
+        Get-StructuralImpossibility ([pscustomobject]@{ type = 'formula'; content = '\left( x' }) | Should -BeNullOrEmpty
     }
     It 'flags prose_in_formula when retyped content reads as prose' {
         $imp = Get-StructuralImpossibility ([pscustomobject]@{ type = 'formula'; content = 'the lazy brown fox jumps over many fences' })
@@ -47,7 +45,7 @@ Describe 'Get-StructuralImpossibility — reuses the shared table (structural su
         $imp = Get-StructuralImpossibility ([pscustomobject]@{ type = 'formula'; content = 'a & b' })
         $imp.reason | Should -Be 'alignment_outside_env'
     }
-    It 'does NOT flag content-only signatures (ligature) — those are the content-repair phase' {
+    It 'does NOT flag content-only signatures (ligature)' {
         Get-StructuralImpossibility ([pscustomobject]@{ type = 'formula'; content = ('x ' + $FB2) }) | Should -BeNullOrEmpty
     }
     It 'returns $null for a balanced formula' {
@@ -55,18 +53,24 @@ Describe 'Get-StructuralImpossibility — reuses the shared table (structural su
     }
 }
 
-Describe 'retype_chunk — rejects impossible results; valid retypes pass' {
-    It 'rejects retype to formula when delimiters do not balance (with seam diagnostic)' {
+Describe 'Test-ChunkUnbalanced — reuses the shared table row (split gate)' {
+    It 'flags unbalanced delimiters on a would-be formula' {
+        Test-ChunkUnbalanced ([pscustomobject]@{ type = 'formula'; content = '\left( x' }) | Should -BeTrue
+        Get-UnbalancedDiagnostic ([pscustomobject]@{ type = 'formula'; content = '\left( x' }) | Should -Match 'lr=1'
+    }
+}
+
+Describe 'retype_chunk — rejects geometry impossibilities; unbalanced content is allowed' {
+    It 'allows retype to formula when delimiters are not yet balanced (content path fixes after)' {
         $fx = New-GateFixture @(
             [pscustomobject]@{ id = 0; type = 'prose'; page = 1; content = '\left( x'; fidelity = 'faithful' }
         )
         $r = Set-ChunkType -ChunksPath $fx.cp -Id 0 -NewType 'formula'
-        $r.ok | Should -BeFalse
-        $r.id | Should -Be 0
-        $r.reason | Should -Be 'unbalanced_delimiters'
-        $r.diagnostic | Should -Match 'lr=1'
-        Count-Lines $fx.cp | Should -Be 1
-        (Read-ChunkContent $fx.cp 0) | Should -Be '\left( x'
+        $r.ok | Should -BeTrue
+        $r.to | Should -Be 'formula'
+        $rec = (Get-Content -LiteralPath $fx.cp -Raw).Trim() | ConvertFrom-Json
+        $rec.type | Should -Be 'formula'
+        $rec.fidelity | Should -Be 'suspect'
     }
     It 'rejects retype to formula when content reads as prose' {
         $fx = New-GateFixture @(
@@ -83,24 +87,36 @@ Describe 'retype_chunk — rejects impossible results; valid retypes pass' {
         $r = Set-ChunkType -ChunksPath $fx.cp -Id 0 -NewType 'formula'
         $r.ok | Should -BeTrue
         $r.to | Should -Be 'formula'
-        $rec = (Get-Content -LiteralPath $fx.cp -Raw).Trim() | ConvertFrom-Json
-        $rec.type | Should -Be 'formula'
     }
 }
 
-Describe 'merge_chunks — rejects unbalanced joins; fragmented-formula merge passes' {
-    It 'rejects a merge that would leave delimiters unbalanced' {
+Describe 'merge_chunks — balance-worsening guard; fragmented-formula merges pass' {
+    It 'Test-MergeBalanceWorsens is false when join improves (Group-MathHotspots promotion path)' {
+        Test-MergeBalanceWorsens @('\left( \left( a', 'b \right)') ('\left( \left( a b \right)') | Should -BeFalse
+    }
+    It 'allows a same-residual merge (not worsening) so Track 2 can merge-then-fix' {
         $fx = New-GateFixture @(
             [pscustomobject]@{ id = 0; type = 'formula'; page = 1; content = '\left('; fidelity = 'suspect' }
             [pscustomobject]@{ id = 1; type = 'formula'; page = 1; content = 'x'; fidelity = 'suspect' }
         )
         $r = Merge-Chunks -ChunksPath $fx.cp -Ids @(0, 1)
-        $r.ok | Should -BeFalse
-        $r.ids | Should -Be @(0, 1)
-        $r.reason | Should -Be 'unbalanced_delimiters'
-        Count-Lines $fx.cp | Should -Be 2
+        $r.ok | Should -BeTrue
+        Count-Lines $fx.cp | Should -Be 1
+        (Get-LatexBalance (Read-ChunkContent $fx.cp 0)).lr | Should -Be 1
     }
-    It 'accepts a fragmented-formula merge when the join balances (Track 2 dependency)' {
+    It 'accepts a partial-balance fragmented-formula merge (join improves but is still unbalanced)' {
+        $fx = New-GateFixture @(
+            [pscustomobject]@{ id = 0; type = 'formula'; page = 1; content = '\left( \left( a'; fidelity = 'suspect' }
+            [pscustomobject]@{ id = 1; type = 'formula'; page = 1; content = 'b \right)'; fidelity = 'suspect' }
+        )
+        $r = Merge-Chunks -ChunksPath $fx.cp -Ids @(0, 1)
+        $r.ok | Should -BeTrue
+        Count-Lines $fx.cp | Should -Be 1
+        $merged = Read-ChunkContent $fx.cp 0
+        (Get-LatexBalance $merged).full | Should -BeFalse
+        (Get-LatexBalance $merged).lr | Should -Be 1
+    }
+    It 'accepts a fully-balanced fragmented-formula merge (Track 2 dependency)' {
         $fx = New-GateFixture @(
             [pscustomobject]@{ id = 0; type = 'formula'; page = 1; content = 'x ='; fidelity = 'suspect' }
             [pscustomobject]@{ id = 1; type = 'formula'; page = 1; content = '\left( \frac{1}{2}'; fidelity = 'suspect' }
@@ -108,9 +124,7 @@ Describe 'merge_chunks — rejects unbalanced joins; fragmented-formula merge pa
         )
         $r = Merge-Chunks -ChunksPath $fx.cp -Ids @(0, 1, 2)
         $r.ok | Should -BeTrue
-        Count-Lines $fx.cp | Should -Be 1
-        $merged = Read-ChunkContent $fx.cp 0
-        (Get-LatexBalance $merged).full | Should -BeTrue
+        (Get-LatexBalance (Read-ChunkContent $fx.cp 0)).full | Should -BeTrue
     }
     It 'rejects merge producing alignment_outside_env' {
         $fx = New-GateFixture @(
@@ -148,7 +162,7 @@ Describe 'apply content-gate — unchanged by Part B (no regression)' {
         $fx = New-GateFixture @(
             [pscustomobject]@{ id = 0; type = 'formula'; page = 1; content = '\left( x'; fidelity = 'suspect'; corruption_type = 'unbalanced_delimiters' }
         )
-        $r = Add-RepairProposal -ChunksPath $fx.cp -Id 0 -Content '\left( x'   # still broken
+        $r = Add-RepairProposal -ChunksPath $fx.cp -Id 0 -Content '\left( x'
         $r.accepted | Should -BeFalse
         $r.reason | Should -Match 'unbalanced_delimiters'
         $r.diagnostic | Should -Match 'lr=1'

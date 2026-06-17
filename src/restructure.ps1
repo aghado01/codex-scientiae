@@ -69,6 +69,31 @@ function Test-StructImpossibility($Chunks, [int]$Id = -1, [int[]]$Ids = $null) {
     return $null
 }
 
+function New-StructReject([string]$Reason, [string]$Diagnostic, [int]$Id = -1, [int[]]$Ids = $null) {
+    $rej = [ordered]@{ ok = $false; reason = $Reason; diagnostic = $Diagnostic }
+    if ($Ids) { $rej['ids'] = $Ids } elseif ($Id -ge 0) { $rej['id'] = $Id }
+    return [pscustomobject]$rej
+}
+
+# Split gate — delimiter partners must not be orphaned across the cut (each half balanced per the table).
+function Test-SplitDelimiterOrphan($Chunks, [int]$Id) {
+    foreach ($c in $Chunks) {
+        if (Test-ChunkUnbalanced $c) {
+            return (New-StructReject 'unbalanced_delimiters' (Get-UnbalancedDiagnostic $c) -Id $Id)
+        }
+    }
+    return $null
+}
+
+# Merge gate — reject only when joining WORSENS delimiter balance vs the parts (same residual metric as
+# Group-MathHotspots). Partial-balance fragmented-formula joins (joinRes < sumPartsRes) must pass so the
+# worker can close the seam after merge; apply still gates the final content.
+function Test-MergeBalanceWorsens([string[]]$PartContents, [string]$Joined) {
+    $sumPartsRes = 0
+    foreach ($p in $PartContents) { $sumPartsRes += (Get-BalanceResidual $p) }
+    return ((Get-BalanceResidual $Joined) -gt $sumPartsRes)
+}
+
 function Set-ChunkType {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][string]$ChunksPath, [Parameter(Mandatory)][int]$Id,
@@ -104,10 +129,13 @@ function Split-Chunk {
     $first  | Add-Member -NotePropertyName content -NotePropertyValue ($content.Substring(0, $at).TrimEnd()) -Force
     $second | Add-Member -NotePropertyName content -NotePropertyValue ($content.Substring($at)) -Force
     $chunkType = [string]$first.type
-    $reject = Test-StructImpossibility @(
+    $halves = @(
         [pscustomobject]@{ type = $chunkType; content = [string]$first.content }
         [pscustomobject]@{ type = $chunkType; content = [string]$second.content }
-    ) -Id $Id
+    )
+    $reject = Test-StructImpossibility $halves -Id $Id
+    if ($reject) { return $reject }
+    $reject = Test-SplitDelimiterOrphan $halves -Id $Id
     if ($reject) { return $reject }
     $chunks.Insert($pos + 1, $second)
 
@@ -128,10 +156,14 @@ function Merge-Chunks {
     if ($leadPos -lt 0 -or $tailPos -lt 0 -or ($tailPos - $leadPos) -ne ($sorted.Count - 1)) { return [pscustomobject]@{ ok = $false; reason = 'ids not all found as a contiguous run' } }
 
     $lead = $chunks[$leadPos]
-    $merged = (($leadPos..$tailPos) | ForEach-Object { [string]$chunks[$_].content }) -join ' '
+    $parts = @(($leadPos..$tailPos) | ForEach-Object { [string]$chunks[$_].content })
+    $merged = $parts -join ' '
     $wouldBe = [pscustomobject]@{ type = [string]$lead.type; content = $merged }
     $reject = Test-StructImpossibility @($wouldBe) -Ids $sorted
     if ($reject) { return $reject }
+    if (Test-MergeBalanceWorsens $parts $merged) {
+        return (New-StructReject 'unbalanced_delimiters' (Get-UnbalancedDiagnostic $wouldBe) -Ids $sorted)
+    }
     $lead | Add-Member -NotePropertyName content -NotePropertyValue $merged -Force
     for ($j = $tailPos; $j -gt $leadPos; $j--) { $chunks.RemoveAt($j) }
 

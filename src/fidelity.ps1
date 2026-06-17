@@ -136,13 +136,12 @@ function Get-ChunkIssues($Chunk) {
     return $issues.ToArray()
 }
 
-# Structural impossibilities (Part B) — the mutation-path gate reads the SAME shared table, but only the
-# signatures whose firing means "this chunk cannot land from a structural op": mislabeled formula geometry
-# (alignment / prose-in-formula) and delimiter imbalance. Content-only signatures (ligature, gibberish, …)
-# are intentionally excluded — they are the parallel content-repair phase's job, not the structure gate.
-# Returns $null when the would-be chunk is structurally possible; else { reason, diagnostic } mirroring the
-# Add-RepairProposal rejection shape (reason = corruption type; diagnostic from the table's Diag scriptblock).
-$script:StructuralImpossibilityTypes = @('alignment_outside_env', 'prose_in_formula', 'unbalanced_delimiters')
+# Structural impossibilities (Part B) — mis-*geometry* only: a chunk cannot land when its type/label is
+# structurally wrong (alignment outside env, prose mislabeled as formula). unbalanced_delimiters is
+# fixable corruption (merge-then-fix, propose_edit) — NOT a global structural impossibility; it gets
+# op-specific guards instead (split orphaning; merge only when the join WORSENS balance vs the parts).
+# Content-only signatures (ligature, gibberish, …) stay on the content-repair path. ONE table, no fork.
+$script:StructuralImpossibilityTypes = @('alignment_outside_env', 'prose_in_formula')
 
 function Get-StructuralImpossibility($Chunk) {
     $content = [string]$Chunk.content
@@ -155,6 +154,25 @@ function Get-StructuralImpossibility($Chunk) {
         }
     }
     return $null
+}
+
+# Delimiter imbalance via the shared table's unbalanced_delimiters row — for op-specific gates (split
+# orphaning) that must reuse the SAME predicate/diagnostic, not a forked copy.
+function Test-ChunkUnbalanced($Chunk) {
+    $content = [string]$Chunk.content
+    if (-not $content) { return $false }
+    $sig = $script:CorruptionSignatures | Where-Object { $_.type -eq 'unbalanced_delimiters' } | Select-Object -First 1
+    return [bool](& $sig.Test ([string]$Chunk.type) $content)
+}
+
+function Get-UnbalancedDiagnostic($Chunk) {
+    $sig = $script:CorruptionSignatures | Where-Object { $_.type -eq 'unbalanced_delimiters' } | Select-Object -First 1
+    return [string](& $sig.Diag ([string]$Chunk.type) ([string]$Chunk.content))
+}
+
+function Get-BalanceResidual([string]$Content) {
+    $b = Get-LatexBalance $Content
+    return [Math]::Abs($b.brace) + [Math]::Abs($b.brack) + [Math]::Abs($b.paren) + [Math]::Abs($b.lr)
 }
 
 # ── agreement — structural-ambiguity score for dispatch RANKING (Part A; ranks, never gates) ───────
