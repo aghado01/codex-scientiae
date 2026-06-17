@@ -127,7 +127,10 @@ function Group-MathHotspots($chunks) {
     }
     
     foreach ($c in $chunks) {
-        $isMathDense = ($c.type -eq 'formula') -or ($c.content -match $script:MathLatexRx)
+        # math-dense = formula, or prose carrying enough un-wrapped math to be part of the equation
+        # (density via the normalize math_dirt count, NOT mere presence of one glyph -- presence would
+        # swallow ordinary prose that mentions a single symbol into the span). v1 per the brief.
+        $isMathDense = ($c.type -eq 'formula') -or ([int]$c.math_dirt -ge 2)
         if ($isMathDense) {
             $run.Add($c)
         } else {

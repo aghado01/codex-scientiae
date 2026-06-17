@@ -152,7 +152,7 @@ function Invoke-Tool([string]$name, $arguments) {
             $p = Resolve-Paper $arguments.paper
             $out = if ($arguments.type) { Get-IrHotspots -ChunksPath $p -Type ([string]$arguments.type) } else { Get-IrHotspots -ChunksPath $p }
         }
-        'get_slice'    { $out = Get-Slice -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Context ([int]$arguments.context) }
+        'get_slice'    { $out = Get-Slice -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Context ([int]$arguments.context) -ToId $(if ($null -ne $arguments.to_id) { [int]$arguments.to_id } else { -1 }) }
         'propose_edit' {
             $src = if ($arguments.source) { [string]$arguments.source } else { 'worker' }
             $out = Add-RepairEdit -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Find ([string]$arguments.find) -Replace ([string]$arguments.replace) -Source $src
