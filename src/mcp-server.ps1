@@ -53,7 +53,7 @@ $Tools = @(
        description = 'Body-blind metadata map of one document: title, zones, section count, repaired/flagged counts, remaining hotspots by type.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string'; description = 'document name, no extension' } }; required = @('paper') } }
     @{ name = 'get_hotspots'
-       description = 'The graded work-list for a document: each flagged chunk with id, page, grade, corruption_type, section, preview. Hotspots may span multiple chunks, returning span (array of ids) and kind (e.g. fragmented_formula).'
+       description = 'The graded work-list for a document: each flagged chunk with id, page, grade, corruption_type, section, agreement (0-1 structural-ambiguity score, lower = more disputed; a span takes the min over its members), preview. Hotspots may span multiple chunks, returning span (array of ids) and kind (e.g. fragmented_formula).'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; type = @{ type = 'string'; description = 'optional corruption_type filter' } }; required = @('paper') } }
     @{ name = 'get_slice'
        description = 'Return exactly one chunk by id (plus optional +/- context neighbours), seeked via the .jidx index. Can optionally bound the forward range precisely with to_id.'
@@ -83,7 +83,7 @@ $Tools = @(
        description = 'Body-blind batch map: per document under the server root, counts (chunks, pages, repaired, actionable, handoff) plus the actionable byte-size. The orchestrator plans and budgets the whole batch from this without reading any bodies.'
        inputSchema = @{ type = 'object'; properties = @{ scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to survey, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'dispatch'
-       description = 'Return the next bundle of agent-actionable work-unit pointers (paper, id, grade, section, seam — never content) whose total size fits a byte budget; the orchestrator fans its workers over them. Stateless: commit between dispatches. May return span (array of ids) and kind for grouped hotspots.'
+       description = 'Return the next bundle of agent-actionable work-unit pointers (paper, id, grade, section, seam, agreement — never content) whose total size fits a byte budget, ORDERED by ascending agreement (most structurally-disputed first; a stable sort, so ties keep document order and re-runs reproduce). Ranking only: the work-SET and budget gate are unchanged, only the order moves. The orchestrator fans its workers over them. Stateless: commit between dispatches. May return span (array of ids) and kind for grouped hotspots.'
        inputSchema = @{ type = 'object'; properties = @{ budget_bytes = @{ type = 'integer'; description = 'max total content bytes in the bundle (default 40000)' }; paper = @{ type = 'string'; description = 'optional: restrict to one document' }; scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to draw work from, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'search'
        description = 'Restoration-native query over a document: filter chunks by any combination of zone, section (regex), grade, type, page, content (regex). Returns body-light pointers (id, page, type, grade, section, preview), capped at limit.'

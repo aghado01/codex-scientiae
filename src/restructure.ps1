@@ -42,6 +42,7 @@ function Save-Structure($Chunks, $Affected, [string]$ChunksPath, [string]$NodesP
         $c | Add-Member -NotePropertyName fidelity -NotePropertyValue $(if ($ct) { 'suspect' } else { 'faithful' }) -Force
         if ($ct) { $c | Add-Member -NotePropertyName corruption_type -NotePropertyValue $ct -Force }
         else { $c.PSObject.Properties.Remove('corruption_type') }
+        Set-ChunkAgreement $c | Out-Null   # re-derive the ranking score so split/merge can't strand a stale one
     }
     $manifest = Write-JsonlStage -Records $Chunks.ToArray() -OutputPath $ChunksPath -SourcePath $NodesPath -Stage 'restructure'
     $auditPath = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.structure-audit.jsonl'

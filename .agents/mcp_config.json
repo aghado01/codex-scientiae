@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "codex-membrane": {
+      "command": "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/.agents/codex-membrane.cmd",
+      "args": [],
+      "cwd": "C:/Users/azrie/PDenv/UserGithub/codex-scientiae",
+      "env": {}
+    }
+  }
+}

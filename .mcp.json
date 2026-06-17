@@ -1,10 +1,11 @@
 {
   "mcpServers": {
     "codex-membrane": {
-      "command": "C:/Users/azrie/PDenv/PowerShell/PowerShell-7.6.2-win-x64-cursor-ide/pwsh.exe",
+      "command": "C:/Users/azrie/PDenv/PowerShell/PowerShell-7.6.0-win-x64-claude/powershell.exe",
       "args": [
         "-NoProfile",
-        "-File", "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/mcp-server.ps1"
+        "-File",
+        "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/mcp-server.ps1"
       ]
     }
   }

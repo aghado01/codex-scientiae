@@ -85,6 +85,11 @@ function Test-IsMath([string]$s) {
     return ($prose -le 2)
 }
 
+# The math-structure OVERLAY as a Mask — the math-by-content derivation the agreement layer consumes.
+# Exposed here (beside Test-IsMath, the SAME $script:RxMathStructure it scores) so "is-this-math" has a
+# single home and the agreement readout cannot drift from the fidelity grader. Pure; adds no primitive.
+function Get-MathStructureMask([string]$s) { return (New-Mask $s $script:RxMathStructure) }
+
 # Environment COVERAGE spans (\begin{...}...\end{...}), by a nesting stack like Get-LatexBalance's scan:
 # each \begin opens, each \end closes the innermost; an unclosed \begin covers to end-of-string (an open
 # environment still contains a trailing &, so we don't flag it — preserves the old \begin-present pass).

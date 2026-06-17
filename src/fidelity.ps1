@@ -75,6 +75,81 @@ function Get-CorruptionType($Chunk) {
     return $null
 }
 
+# ── agreement — structural-ambiguity score for dispatch RANKING (Part A; ranks, never gates) ───────
+# agreement ∈ [0,1] is the mask IoU (Jaccard) of >=2 INDEPENDENT derivations of the same property, each
+# rendered as a Mask: coverage(A∩B)/coverage(A∪B), defined 1 when the union is empty (both derivations
+# agree there is nothing). The score is the MIN over the applicable pairs (the most-disputed derivation
+# dominates), so dispatch can spend the agent's scarcest resource — budget — on genuinely uncertain
+# regions first, not on single-detector noise. Pure composition of the EXISTING set-ops + already-ported
+# detectors: adds NO mask primitive, NO new detection heuristic. It only RE-ORDERS the work-list; the
+# work-SET (the fidelity gate) and every accept/reject are untouched.
+#
+# Cardinality is Get-MaskCoverage (covered UTF-16 units) — the set size Jaccard needs; Get-MaskDensity
+# counts register tokens, a different thing. The derivation pairs, applied where the chunk type fits:
+#   math    — math-by-content (the RxMathStructure overlay, via Get-MathStructureMask) vs math-by-label
+#             (type=='formula' ⇒ the whole chunk is claimed math). GRADED: for a formula this is the
+#             fraction that is actual math structure, so prose leaked into a formula drives it down.
+#   heading — typography-derived (docling laid it out as a heading: type=='heading') vs markup-derived
+#             (the font/number leveler placed it: section_level present AND not level_uncertain). The
+#             heading the leveler could not place — the existing level_uncertain dispute — scores 0.
+#   closure — the pincer top-down==bottom-up coincidence (the substrate's tested law): the whole-chunk
+#             math-structure mask vs the per-line masks lifted back. <1 when a formula's structure spans
+#             a line boundary the per-line view can't see. Balance (Get-LatexBalance) already gates the
+#             SET as unbalanced_delimiters; it is NOT folded into the score (rank and gate stay distinct).
+function Get-MaskIoU($A, $B) {
+    $inter = Get-MaskCoverage (Intersect-Mask $A $B)
+    $union = Get-MaskCoverage (Union-Mask $A $B)
+    if ($union -le 0) { return 1.0 }     # empty union: both derivations agree there is nothing
+    return [double]$inter / [double]$union
+}
+
+function Get-AgreementScore($Chunk) {
+    $content = [string]$Chunk.content
+    if (-not $content) { return 1.0 }    # nothing to dispute
+    $type = [string]$Chunk.type
+    $len  = $content.Length
+    $full  = New-Mask -Spans @([pscustomobject]@{ Start = 0; End = $len }) -Length $len
+    $empty = New-Mask -Spans @() -Length $len
+    $scores = [System.Collections.Generic.List[double]]::new()
+
+    # math pair — any math signal: a formula label, or content the math-structure overlay matches
+    $byContent = Get-MathStructureMask $content
+    $isFormula = ($type -eq 'formula')
+    if ($isFormula -or -not (Test-MaskEmpty $byContent)) {
+        $byLabel = if ($isFormula) { $full } else { $empty }
+        $scores.Add((Get-MaskIoU $byContent $byLabel))
+    }
+
+    # heading pair — docling laid this out as a heading (typography); did the leveler place it (markup)?
+    if ($type -eq 'heading') {
+        $placed = ($null -ne $Chunk.section_level) -and (-not $Chunk.level_uncertain)
+        $markup = if ($placed) { $full } else { $empty }
+        $scores.Add((Get-MaskIoU $full $markup))
+    }
+
+    # closure pair (formula) — the pincer: whole-chunk structure mask (top-down) vs per-line lifted union
+    if ($isFormula) {
+        $bottomUp = $empty
+        foreach ($u in (Split-AtLevel -Text $content -Level Line)) {
+            $bottomUp = Union-Mask $bottomUp (Move-Mask (Get-MathStructureMask $u.Text) $u.Start $len)
+        }
+        $scores.Add((Get-MaskIoU $byContent $bottomUp))
+    }
+
+    if ($scores.Count -eq 0) { return 1.0 }   # no applicable pair: nothing disputed
+    return ($scores | Measure-Object -Minimum).Minimum
+}
+
+# Recompute + store agreement on a chunk EXACTLY like math_dirt: a per-chunk field (never a sidecar, so
+# split/merge id renumbering can't strand it), written only when there is dispute to record (<1.0) and
+# CLEARED when a re-grade returns it to 1.0, so a stale low score never lingers. Absent ⇒ 1.0 downstream.
+function Set-ChunkAgreement($Chunk) {
+    $a = Get-AgreementScore $Chunk
+    if ($a -lt 1.0) { $Chunk | Add-Member -NotePropertyName agreement -NotePropertyValue ([double]$a) -Force }
+    elseif ($Chunk.PSObject.Properties['agreement']) { $Chunk.PSObject.Properties.Remove('agreement') }
+    return $a
+}
+
 function Invoke-Fidelity {
     [CmdletBinding()]
     param(
@@ -88,6 +163,7 @@ function Invoke-Fidelity {
     }
 
     foreach ($c in $chunks) {
+        Set-ChunkAgreement $c | Out-Null   # recompute the ranking score every re-grade (ranks, never gates)
         $ct = Get-CorruptionType $c
         if ($ct) {
             $c | Add-Member -NotePropertyName fidelity        -NotePropertyValue 'suspect' -Force

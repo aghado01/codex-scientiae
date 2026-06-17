@@ -33,6 +33,14 @@ function Read-Chunks([string]$Path) {
     [System.IO.File]::ReadLines($Path) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json }
 }
 
+# agreement (Part A): a chunk's structural-ambiguity score for dispatch RANKING. Absent ⇒ 1.0 (nothing
+# disputed, lowest priority). fidelity.ps1 computes/stores it; here we only read it for ordering + surfacing.
+function Get-ChunkAgreement($Chunk) {
+    $v = $Chunk.agreement
+    if ($null -ne $v) { return [double]$v }
+    return 1.0
+}
+
 # --- discovery over the per-source .scratch layout (crawler, not -Recurse) ---
 function Get-ChunkFiles([string]$Root) {
     Invoke-Crawl -Root $Root -Patterns '**/.scratch/*.chunks.jsonl' -Semantics Include
@@ -147,6 +155,8 @@ function Get-IrHotspots {
     $spans = Group-MathHotspots $chunks
     $spanLookup = @{}
     foreach ($s in $spans) { foreach ($sid in $s.ids) { $spanLookup[[int]$sid] = $s } }
+    $byId = @{}
+    foreach ($c in $chunks) { $byId[[int]$c.id] = $c }
     $skipIds = @{}
     
     $chunks |
@@ -164,6 +174,7 @@ function Get-IrHotspots {
                     grade   = $_.fidelity
                     type    = $_.corruption_type
                     section = $_.section
+                    agreement = ($span.ids | ForEach-Object { Get-ChunkAgreement $byId[[int]$_] } | Measure-Object -Minimum).Minimum
                     preview = $span.preview_joined
                 }
             } else {
@@ -173,6 +184,7 @@ function Get-IrHotspots {
                     grade   = $_.fidelity
                     type    = $_.corruption_type
                     section = $_.section
+                    agreement = (Get-ChunkAgreement $_)
                     preview = ([string]$_.content).Substring(0, [Math]::Min(54, ([string]$_.content).Length))
                 }
             }
@@ -355,6 +367,8 @@ function Get-BatchSummary {
             $chunks = @(Read-Chunks $cp)
             $review = @($chunks | Where-Object { $_.fidelity -eq 'needs_review' -or $_.fidelity -eq 'needs_repair' -or $_.fidelity -eq 'suspect' })
             $bytes = 0; foreach ($r in $review) { $bytes += ([string]$r.content).Length }
+            # the paper's most-disputed actionable unit (min agreement) — where to point agents first
+            $agreement = if ($review.Count) { ($review | ForEach-Object { Get-ChunkAgreement $_ } | Measure-Object -Minimum).Minimum } else { 1.0 }
             $ls = Get-LedgerStage $cp
             [pscustomobject]@{
                 paper        = $paper
@@ -365,6 +379,7 @@ function Get-BatchSummary {
                 actionable   = $review.Count                                                       # agent's work (review + repair)
                 handoff      = @($chunks | Where-Object { $_.fidelity -eq 'unrecoverable' }).Count  # rare terminal: agent also failed -> source PDF
                 review_bytes = $bytes
+                agreement    = $agreement                                                          # 0-1; lowest = most structurally disputed
             }
         } catch {
             # Fault isolation: a malformed unit (corrupt .chunks.jsonl / .ledger.jsonl) surfaces as a
@@ -398,10 +413,10 @@ function Invoke-Dispatch {
     if ($Paper -and $Paper -notmatch '^[\w.\-]+$') { throw "invalid paper name: '$Paper'" }
     $files = if ($Paper) { @(Invoke-Crawl -Root $Root -Patterns "**/.scratch/$Paper.chunks.jsonl" -Semantics Include) }
              else { @(Get-ChunkFiles $Root) }
-    $batch = [System.Collections.Generic.List[object]]::new()
-    $newLeases = @{}
+    # Phase 1 — enumerate candidate work-unit POINTERS (the SAME eligible set + span grouping as before),
+    # each carrying its agreement. No leasing here: RANKING must not change WHICH units are eligible.
+    $candidates = [System.Collections.Generic.List[object]]::new()
     $skipped = [System.Collections.Generic.List[object]]::new()
-    $used = 0L; $remChunks = 0; $remBytes = 0L
     foreach ($cp in $files) {
         $name = (Split-Path -Leaf $cp) -replace '\.chunks\.jsonl$', ''
         # Fault isolation: materialize the unit's reads up front so a corrupt line throws atomically
@@ -416,6 +431,8 @@ function Invoke-Dispatch {
         $spans = Group-MathHotspots $cpChunks
         $spanLookup = @{}
         foreach ($s in $spans) { foreach ($sid in $s.ids) { $spanLookup[[int]$sid] = $s } }
+        $byId = @{}
+        foreach ($c in $cpChunks) { $byId[[int]$c.id] = $c }
         $skipIds = @{}
 
         foreach ($c in $cpChunks) {
@@ -432,29 +449,37 @@ function Invoke-Dispatch {
                 if ($overlap) { continue }
             }
 
-            if ($used + $bytes -le $BudgetBytes -or $batch.Count -eq 0) {     # always make progress
-                if ($span) {
-                    $batch.Add([pscustomobject]@{ paper = $name; id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam })
-                    if (-not $newLeases.ContainsKey($cp)) { $newLeases[$cp] = [System.Collections.Generic.List[int]]::new() }
-                    foreach ($sid in $span.ids) {
-                        $skipIds[[int]$sid] = $true
-                        $newLeases[$cp].Add([int]$sid)
-                    }
-                } else {
-                    $batch.Add([pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam })
-                    if (-not $newLeases.ContainsKey($cp)) { $newLeases[$cp] = [System.Collections.Generic.List[int]]::new() }
-                    $newLeases[$cp].Add([int]$c.id)
-                }
-                $used += $bytes
-            } else { 
-                if ($span) {
-                    $remChunks += $span.ids.Count
-                    foreach ($sid in $span.ids) { $skipIds[[int]$sid] = $true }
-                } else {
-                    $remChunks++
-                }
-                $remBytes += $bytes
+            if ($span) {
+                foreach ($sid in $span.ids) { $skipIds[[int]$sid] = $true }
+                # a fragmented-formula span takes the MIN agreement over its members (most-disputed leads)
+                $agreement = ($span.ids | ForEach-Object { Get-ChunkAgreement $byId[[int]$_] } | Measure-Object -Minimum).Minimum
+                $item = [pscustomobject]@{ paper = $name; id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam; agreement = $agreement }
+                $candidates.Add([pscustomobject]@{ cp = $cp; bytes = $bytes; agreement = [double]$agreement; leaseIds = @($span.ids | ForEach-Object { [int]$_ }); units = $span.ids.Count; item = $item })
+            } else {
+                $agreement = Get-ChunkAgreement $c
+                $item = [pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam; agreement = $agreement }
+                $candidates.Add([pscustomobject]@{ cp = $cp; bytes = $bytes; agreement = [double]$agreement; leaseIds = @([int]$c.id); units = 1; item = $item })
             }
+        }
+    }
+    # Phase 2 — order by ASCENDING agreement (most-disputed first), a STABLE sort: ties keep enumeration
+    # order (file + line), so an unscored corpus reproduces the OLD order exactly and re-runs are identical.
+    $ordered = @($candidates | Sort-Object -Stable -Property @{ Expression = { [double]$_.agreement } })
+
+    # Phase 3 — budget-fill in priority order; lease only what we actually hand out (per-item check, no
+    # break — a later smaller unit can still fit, exactly as before; only the order of consideration moved).
+    $batch = [System.Collections.Generic.List[object]]::new()
+    $newLeases = @{}
+    $used = 0L; $remChunks = 0; $remBytes = 0L
+    foreach ($cand in $ordered) {
+        if ($used + $cand.bytes -le $BudgetBytes -or $batch.Count -eq 0) {     # always make progress
+            $batch.Add($cand.item)
+            if (-not $newLeases.ContainsKey($cand.cp)) { $newLeases[$cand.cp] = [System.Collections.Generic.List[int]]::new() }
+            foreach ($lid in $cand.leaseIds) { $newLeases[$cand.cp].Add([int]$lid) }
+            $used += $cand.bytes
+        } else {
+            $remChunks += $cand.units
+            $remBytes  += $cand.bytes
         }
     }
     foreach ($cp in $newLeases.Keys) { Set-LeasedIds $cp (@(Get-LeasedIds $cp) + @($newLeases[$cp])) }   # lease the bundle
