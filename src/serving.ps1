@@ -97,18 +97,81 @@ function Get-IrSummary {
     }
 }
 
+function Group-MathHotspots($chunks) {
+    $spans = [System.Collections.Generic.List[object]]::new()
+    $run = [System.Collections.Generic.List[object]]::new()
+    $commitRun = {
+        if ($run.Count -gt 1) {
+            $join = ($run.content) -join "`n"
+            $balJoin = Get-LatexBalance $join
+            $hasUnbalanced = $false
+            $sumPartsRes = 0
+            foreach ($m in $run) {
+                $b = Get-LatexBalance $m.content
+                if (-not $b.full) { $hasUnbalanced = $true }
+                $sumPartsRes += [Math]::Abs($b.brace) + [Math]::Abs($b.brack) + [Math]::Abs($b.paren) + [Math]::Abs($b.lr)
+            }
+            $joinRes = [Math]::Abs($balJoin.brace) + [Math]::Abs($balJoin.brack) + [Math]::Abs($balJoin.paren) + [Math]::Abs($balJoin.lr)
+            
+            if ($hasUnbalanced -and ($balJoin.full -or $joinRes -lt $sumPartsRes)) {
+                $spans.Add([pscustomobject]@{
+                    ids = @($run.id)
+                    pages = @($run.page | Sort-Object -Unique)
+                    bytes = $join.Length
+                    joined_seam = "brace=$($balJoin.brace) brack=$($balJoin.brack) paren=$($balJoin.paren) lr=$($balJoin.lr)"
+                    preview_joined = $join.Substring(0, [Math]::Min(54, $join.Length))
+                })
+            }
+        }
+        $run.Clear()
+    }
+    
+    foreach ($c in $chunks) {
+        $isMathDense = ($c.type -eq 'formula') -or ($c.content -match $script:MathLatexRx)
+        if ($isMathDense) {
+            $run.Add($c)
+        } else {
+            & $commitRun
+        }
+    }
+    & $commitRun
+    return $spans
+}
+
 function Get-IrHotspots {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath, [string]$Type)
-    Read-Chunks $ChunksPath |
+    $chunks = @(Read-Chunks $ChunksPath)
+    $spans = Group-MathHotspots $chunks
+    $spanLookup = @{}
+    foreach ($s in $spans) { foreach ($sid in $s.ids) { $spanLookup[[int]$sid] = $s } }
+    $skipIds = @{}
+    
+    $chunks |
         Where-Object { $_.fidelity -in 'suspect','needs_review','needs_repair' -and (-not $Type -or $_.corruption_type -eq $Type) } |
         ForEach-Object {
-            [pscustomobject]@{
-                id      = $_.id
-                page    = $_.page
-                grade   = $_.fidelity
-                type    = $_.corruption_type
-                section = $_.section
-                preview = ([string]$_.content).Substring(0, [Math]::Min(54, ([string]$_.content).Length))
+            if ([int]$_.id -in $skipIds.Keys) { return }
+            if ($spanLookup.ContainsKey([int]$_.id)) {
+                $span = $spanLookup[[int]$_.id]
+                foreach ($sid in $span.ids) { $skipIds[[int]$sid] = $true }
+                [pscustomobject]@{
+                    id      = $span.ids[0]
+                    span    = $span.ids
+                    kind    = 'fragmented_formula'
+                    page    = $span.pages[0]
+                    grade   = $_.fidelity
+                    type    = $_.corruption_type
+                    section = $_.section
+                    preview = $span.preview_joined
+                }
+            } else {
+                [pscustomobject]@{
+                    id      = $_.id
+                    page    = $_.page
+                    grade   = $_.fidelity
+                    type    = $_.corruption_type
+                    section = $_.section
+                    preview = ([string]$_.content).Substring(0, [Math]::Min(54, ([string]$_.content).Length))
+                }
             }
         }
 }
@@ -119,12 +182,18 @@ function Get-Slice {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][string]$ChunksPath,
         [Parameter(Mandatory)][int]$Id,
-        [int]$Context = 0
+        [int]$Context = 0,
+        [int]$ToId = -1
     )
     $idx = [JsonlIndex]::Load("$ChunksPath.jidx")
     $propDir = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.proposals'
-    $lo = [Math]::Max(0, $Id - $Context)
-    $hi = [Math]::Min($idx.LineCount - 1, $Id + $Context)
+    if ($ToId -ge 0) {
+        $lo = $Id
+        $hi = [Math]::Min($idx.LineCount - 1, $ToId)
+    } else {
+        $lo = [Math]::Max(0, $Id - $Context)
+        $hi = [Math]::Min($idx.LineCount - 1, $Id + $Context)
+    }
     for ($i = $lo; $i -le $hi; $i++) {
         $rec = Read-JsonlRecord -Path $ChunksPath -At $i
         # overlay a staged proposal if one exists, so re-grounding shows the true working state
@@ -341,16 +410,48 @@ function Invoke-Dispatch {
             $skipped.Add([pscustomobject]@{ paper = $name; error = [string]$_.Exception.Message })
             continue
         }
+        $spans = Group-MathHotspots $cpChunks
+        $spanLookup = @{}
+        foreach ($s in $spans) { foreach ($sid in $s.ids) { $spanLookup[[int]$sid] = $s } }
+        $skipIds = @{}
+
         foreach ($c in $cpChunks) {
             if ($c.fidelity -ne 'needs_review' -and $c.fidelity -ne 'needs_repair' -and $c.fidelity -ne 'suspect') { continue }
             if ([int]$c.id -in $leased) { continue }   # already in flight
+            if ([int]$c.id -in $skipIds.Keys) { continue }
+
             $bytes = ([string]$c.content).Length
+            $span = $null
+            if ($spanLookup.ContainsKey([int]$c.id)) {
+                $span = $spanLookup[[int]$c.id]
+                $bytes = $span.bytes
+                $overlap = $span.ids | Where-Object { $_ -in $leased }
+                if ($overlap) { continue }
+            }
+
             if ($used + $bytes -le $BudgetBytes -or $batch.Count -eq 0) {     # always make progress
-                $batch.Add([pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam })
+                if ($span) {
+                    $batch.Add([pscustomobject]@{ paper = $name; id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam })
+                    if (-not $newLeases.ContainsKey($cp)) { $newLeases[$cp] = [System.Collections.Generic.List[int]]::new() }
+                    foreach ($sid in $span.ids) {
+                        $skipIds[[int]$sid] = $true
+                        $newLeases[$cp].Add([int]$sid)
+                    }
+                } else {
+                    $batch.Add([pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam })
+                    if (-not $newLeases.ContainsKey($cp)) { $newLeases[$cp] = [System.Collections.Generic.List[int]]::new() }
+                    $newLeases[$cp].Add([int]$c.id)
+                }
                 $used += $bytes
-                if (-not $newLeases.ContainsKey($cp)) { $newLeases[$cp] = [System.Collections.Generic.List[int]]::new() }
-                $newLeases[$cp].Add([int]$c.id)
-            } else { $remChunks++; $remBytes += $bytes }
+            } else { 
+                if ($span) {
+                    $remChunks += $span.ids.Count
+                    foreach ($sid in $span.ids) { $skipIds[[int]$sid] = $true }
+                } else {
+                    $remChunks++
+                }
+                $remBytes += $bytes
+            }
         }
     }
     foreach ($cp in $newLeases.Keys) { Set-LeasedIds $cp (@(Get-LeasedIds $cp) + @($newLeases[$cp])) }   # lease the bundle

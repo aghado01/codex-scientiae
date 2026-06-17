@@ -15,7 +15,8 @@
   -Root defaults to <repo>/ingestion (the raw-input boundary); which subtree to survey is a
   per-call concern, carried by the optional `scope` arg on list_documents/get_batch_summary/dispatch.
 
-  Tools: list_documents | get_summary | get_hotspots | get_slice | propose_repair | commit
+  Tools: 21 paper-addressed membrane ops (list_documents … request_review).
+  Prompts: restoration_procedure (serves PROCEDURE.md).
 #>
 
 [CmdletBinding()]
@@ -52,11 +53,11 @@ $Tools = @(
        description = 'Body-blind metadata map of one document: title, zones, section count, repaired/flagged counts, remaining hotspots by type.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string'; description = 'document name, no extension' } }; required = @('paper') } }
     @{ name = 'get_hotspots'
-       description = 'The graded work-list for a document: each flagged chunk with id, page, grade, corruption_type, section, preview.'
+       description = 'The graded work-list for a document: each flagged chunk with id, page, grade, corruption_type, section, preview. Hotspots may span multiple chunks, returning span (array of ids) and kind (e.g. fragmented_formula).'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; type = @{ type = 'string'; description = 'optional corruption_type filter' } }; required = @('paper') } }
     @{ name = 'get_slice'
-       description = 'Return exactly one chunk by id (plus optional +/- context neighbours), seeked via the .jidx index.'
-       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; context = @{ type = 'integer'; description = 'neighbours each side (default 0)' } }; required = @('paper', 'id') } }
+       description = 'Return exactly one chunk by id (plus optional +/- context neighbours), seeked via the .jidx index. Can optionally bound the forward range precisely with to_id.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; context = @{ type = 'integer'; description = 'neighbours each side (default 0)' }; to_id = @{ type = 'integer'; description = 'optional explicit upper bound id for exact range slicing' } }; required = @('paper', 'id') } }
     @{ name = 'propose_edit'
        description = 'Pointed surgical fix on one chunk: replace a UNIQUE find-string with replace (empty replace = delete). Never regenerates the chunk -- send only the diff. Stacks on prior staged edits; reports whether the result is clean or still flagged (with diagnostic). The hard gate is commit. PREFER this over propose_repair.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; find = @{ type = 'string'; description = 'exact substring to replace; must occur exactly once in the current content' }; replace = @{ type = 'string'; description = 'replacement text (empty string deletes the find)' }; source = @{ type = 'string' } }; required = @('paper', 'id', 'find', 'replace') } }
@@ -82,7 +83,7 @@ $Tools = @(
        description = 'Body-blind batch map: per document under the server root, counts (chunks, pages, repaired, actionable, handoff) plus the actionable byte-size. The orchestrator plans and budgets the whole batch from this without reading any bodies.'
        inputSchema = @{ type = 'object'; properties = @{ scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to survey, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'dispatch'
-       description = 'Return the next bundle of agent-actionable work-unit pointers (paper, id, grade, section, seam — never content) whose total size fits a byte budget; the orchestrator fans its workers over them. Stateless: commit between dispatches.'
+       description = 'Return the next bundle of agent-actionable work-unit pointers (paper, id, grade, section, seam — never content) whose total size fits a byte budget; the orchestrator fans its workers over them. Stateless: commit between dispatches. May return span (array of ids) and kind for grouped hotspots.'
        inputSchema = @{ type = 'object'; properties = @{ budget_bytes = @{ type = 'integer'; description = 'max total content bytes in the bundle (default 40000)' }; paper = @{ type = 'string'; description = 'optional: restrict to one document' }; scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to draw work from, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'search'
        description = 'Restoration-native query over a document: filter chunks by any combination of zone, section (regex), grade, type, page, content (regex). Returns body-light pointers (id, page, type, grade, section, preview), capped at limit.'
@@ -97,6 +98,20 @@ $Tools = @(
        description = 'Human check-in: queue a chunk for the supervising user with a message (surfaces as review_pending in get_summary). Use when uncertain rather than guessing.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; message = @{ type = 'string' } }; required = @('paper', 'id', 'message') } }
 )
+
+# --- prompt catalogue: the Layer-2 procedure, served so a client injects it into the agent's context ---
+# MVP is one prompt (the membrane is depth-invariant, so a single procedure text serves orchestrator and
+# worker alike); a later role-split (orchestrator_procedure / worker_procedure) + a constitution prompt slot here.
+$Prompts = @(
+    @{ name = 'restoration_procedure'
+       description = 'The canonical restoration workflow: the law of exposure, the orchestrator batch loop, the per-unit worker loop, the repair playbook by corruption_type, and escalation. Inject at the start of a repair session.' }
+)
+function Get-PromptText([string]$name) {
+    switch ($name) {
+        'restoration_procedure' { return [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'PROCEDURE.md'), [System.Text.UTF8Encoding]::new($false)) }
+        default { throw "prompt not found: $name" }
+    }
+}
 
 # --- helpers ---
 function Resolve-Paper([string]$paper) {
@@ -238,7 +253,7 @@ while ($null -ne ($line = $script:In.ReadLine())) {
     switch ($req.method) {
         'initialize' {
             $pv = if ($req.params.protocolVersion) { [string]$req.params.protocolVersion } else { $ProtocolVersion }
-            $result = @{ protocolVersion = $pv; capabilities = @{ tools = @{} }; serverInfo = $ServerInfo }
+            $result = @{ protocolVersion = $pv; capabilities = @{ tools = @{}; prompts = @{} }; serverInfo = $ServerInfo }
             # Ceremony part 2: the discovery walk IS the handshake. Hand the agent its bearings via
             # `instructions` (clients inject this into the agent's context) so it never infers state from
             # a possibly-empty projection. Walk once, cache; a dead root reports its diagnostic instead.
@@ -274,6 +289,17 @@ while ($null -ne ($line = $script:In.ReadLine())) {
             Write-Rpc $id $result
         }
         'tools/list' { Write-Rpc $id @{ tools = $Tools } }
+        'prompts/list' { Write-Rpc $id @{ prompts = $Prompts } }
+        'prompts/get' {
+            $pname = [string]$req.params.name
+            try {
+                $text = Get-PromptText $pname
+                $desc = (@($Prompts | Where-Object { $_.name -eq $pname }) | Select-Object -First 1).description
+                Write-Rpc $id @{ description = $desc; messages = @(@{ role = 'user'; content = @{ type = 'text'; text = $text } }) }
+            } catch {
+                Write-RpcError $id -32602 "prompt not found: $pname"
+            }
+        }
         'tools/call' {
             if ($script:Fatal) {
                 # Brief, in-feed notification: the working dir never mounted. Agent corrects or escalates.

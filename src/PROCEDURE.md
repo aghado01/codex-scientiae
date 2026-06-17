@@ -4,7 +4,7 @@ This is the system. Follow it precisely — it is written so that an agent that 
 nothing between steps can run it correctly. You *will* lose the thread mid-task; the
 procedure and the artifacts are your memory. Trust them, not your recollection.
 
-(Intended to be served to agents as MCP prompts by `mcp-server.ps1`; until then it is the
+(Served to agents as the `restoration_procedure` MCP prompt by `mcp-server.ps1` — and the
 canonical text of the workflow.)
 
 ## The law of exposure
@@ -73,6 +73,7 @@ You are handed one pointer: `{ paper, id, grade, corruption_type, seam }`. Hold 
 
 ## The repair playbook — by `corruption_type`
 
+- **fragmented_formula** — a block equation shattered across chunks. You are handed a `span` (e.g. `[lo..hi]`). Call `get_slice id=lo to_id=hi` to see all members. Structural repair first: `merge_chunks ids=[lo..hi]` into a single chunk. Re-ground (`get_slice`), then `propose_edit` to fix the join seams.
 - **intertext** — a degenerate loop bolted onto a complete head. The real content is the
   head; everything from the first `\intertext` (or the start of the verbatim repetition) is
   garbage. `propose_edit` with `find` = the garbage tail, `replace` = empty. If a delimiter's
