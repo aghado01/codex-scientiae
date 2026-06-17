@@ -136,6 +136,27 @@ function Get-ChunkIssues($Chunk) {
     return $issues.ToArray()
 }
 
+# Structural impossibilities (Part B) — the mutation-path gate reads the SAME shared table, but only the
+# signatures whose firing means "this chunk cannot land from a structural op": mislabeled formula geometry
+# (alignment / prose-in-formula) and delimiter imbalance. Content-only signatures (ligature, gibberish, …)
+# are intentionally excluded — they are the parallel content-repair phase's job, not the structure gate.
+# Returns $null when the would-be chunk is structurally possible; else { reason, diagnostic } mirroring the
+# Add-RepairProposal rejection shape (reason = corruption type; diagnostic from the table's Diag scriptblock).
+$script:StructuralImpossibilityTypes = @('alignment_outside_env', 'prose_in_formula', 'unbalanced_delimiters')
+
+function Get-StructuralImpossibility($Chunk) {
+    $content = [string]$Chunk.content
+    if (-not $content) { return $null }
+    $type = [string]$Chunk.type
+    foreach ($sig in $script:CorruptionSignatures) {
+        if ($sig.type -notin $script:StructuralImpossibilityTypes) { continue }
+        if (& $sig.Test $type $content) {
+            return [pscustomobject]@{ reason = $sig.type; diagnostic = [string](& $sig.Diag $type $content) }
+        }
+    }
+    return $null
+}
+
 # ── agreement — structural-ambiguity score for dispatch RANKING (Part A; ranks, never gates) ───────
 # agreement ∈ [0,1] is the mask IoU (Jaccard) of >=2 INDEPENDENT derivations of the same property, each
 # rendered as a Mask: coverage(A∩B)/coverage(A∪B), defined 1 when the union is empty (both derivations

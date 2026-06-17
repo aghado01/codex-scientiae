@@ -55,6 +55,20 @@ function Find-ChunkIndex($Chunks, [int]$Id) {
     return -1
 }
 
+# Part B — reject a structural op when the would-be result chunk(s) trip a structural impossibility.
+# Mirrors Add-RepairProposal's accepted=$false; reason; diagnostic shape (structural ops use ok=$false).
+function Test-StructImpossibility($Chunks, [int]$Id = -1, [int[]]$Ids = $null) {
+    foreach ($c in $Chunks) {
+        $imp = Get-StructuralImpossibility $c
+        if ($imp) {
+            $rej = [ordered]@{ ok = $false; reason = $imp.reason; diagnostic = $imp.diagnostic }
+            if ($Ids) { $rej['ids'] = $Ids } elseif ($Id -ge 0) { $rej['id'] = $Id }
+            return [pscustomobject]$rej
+        }
+    }
+    return $null
+}
+
 function Set-ChunkType {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][string]$ChunksPath, [Parameter(Mandatory)][int]$Id,
@@ -64,6 +78,9 @@ function Set-ChunkType {
     $i = Find-ChunkIndex $chunks $Id
     if ($i -lt 0) { return [pscustomobject]@{ ok = $false; reason = "chunk $Id not found" } }
     $old = [string]$chunks[$i].type
+    $wouldBe = [pscustomobject]@{ type = $NewType; content = [string]$chunks[$i].content }
+    $reject = Test-StructImpossibility @($wouldBe) -Id $Id
+    if ($reject) { return $reject }
     $chunks[$i] | Add-Member -NotePropertyName type -NotePropertyValue $NewType -Force
     [void](Save-Structure $chunks @($chunks[$i]) $ChunksPath $NodesPath ([ordered]@{ op = 'retype'; id = $Id; from = $old; to = $NewType }))
     [pscustomobject]@{ ok = $true; op = 'retype'; id = $Id; from = $old; to = $NewType; fidelity = [string]$chunks[$i].fidelity }
@@ -86,6 +103,12 @@ function Split-Chunk {
     $second = ($first | ConvertTo-Json -Depth 14 -Compress | ConvertFrom-Json)   # deep clone for the second half
     $first  | Add-Member -NotePropertyName content -NotePropertyValue ($content.Substring(0, $at).TrimEnd()) -Force
     $second | Add-Member -NotePropertyName content -NotePropertyValue ($content.Substring($at)) -Force
+    $chunkType = [string]$first.type
+    $reject = Test-StructImpossibility @(
+        [pscustomobject]@{ type = $chunkType; content = [string]$first.content }
+        [pscustomobject]@{ type = $chunkType; content = [string]$second.content }
+    ) -Id $Id
+    if ($reject) { return $reject }
     $chunks.Insert($pos + 1, $second)
 
     [void](Save-Structure $chunks @($first, $second) $ChunksPath $NodesPath ([ordered]@{ op = 'split'; id = $Id; before = $Before }))
@@ -106,6 +129,9 @@ function Merge-Chunks {
 
     $lead = $chunks[$leadPos]
     $merged = (($leadPos..$tailPos) | ForEach-Object { [string]$chunks[$_].content }) -join ' '
+    $wouldBe = [pscustomobject]@{ type = [string]$lead.type; content = $merged }
+    $reject = Test-StructImpossibility @($wouldBe) -Ids $sorted
+    if ($reject) { return $reject }
     $lead | Add-Member -NotePropertyName content -NotePropertyValue $merged -Force
     for ($j = $tailPos; $j -gt $leadPos; $j--) { $chunks.RemoveAt($j) }
 
