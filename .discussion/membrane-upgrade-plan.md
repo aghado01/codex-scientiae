@@ -32,7 +32,7 @@ density-aware, gated* dispatch surface — with a substrate tail deferred.
 
 ## Re-layering: the algebra is the substrate, not a rung
 
-*Status — 2026-06-17: substrate LANDED & validated; the merged Tracks 3+4 (pincer policy) are unblocked.* The ladder below was conceived linearly
+*Status — 2026-06-17: substrate LANDED; pincer Part A (agreement ranking) LANDED; the policy layer re-centred on the **issue-inventory spine** — re-layer #2, below.* The ladder below was conceived linearly
 (1→2→3→4→tail); the mask algebra ([`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md)) inverts
 that into a **stack**:
 
@@ -43,12 +43,18 @@ that into a **stack**:
   (merge-gate decision incl. the `detector∘normalize` fixed point, atomic three-consumer port, frozen
   `math_dirt`/balance) verified *as passing tests*; differential A/B 1518/1522 identical, the 4 deltas all
   genuine gibberish recall fixes. The delicate mechanics held; `masks.ps1` stayed lite (258 lines, pure).
-- **Policy (merged Tracks 3 + 4) — UNBLOCKED, not started.** Agreement-score and the impossibility gate are
-  two readouts of one pincer (*agreement ranks, contradiction gates*), now buildable **on the `masks.ps1`
-  primitives**: agreement = coincidence of two derivations' masks; impossibility = a mask-geometry predicate
-  (complement-must-be-empty / masks-may-not-overlap). Each is thin wiring (a dispatch-ordering key; a rejection
-  in the mutation ops); the substance lives in the algebra. **This is the next move forward — built on the
-  algebra, not the old predicates.** Brief: [`pincer-policy-brief.md`](pincer-policy-brief.md).
+- **Policy — operate on the issue-inventory (re-layer #2; the spine).** The merged Tracks 3+4 are not two
+  bolt-on features but **three readouts of one pincer over a per-document issue-inventory**:
+  - **difference DISPATCHES — the spine** ([`composite-work-orders-brief.md`](composite-work-orders-brief.md)):
+    inventory every flagged problem → group by the **deliverable** that must ship clean (a chunk, or a hotspot
+    span) → compose one **work-order** → resolve it whole. **NEXT.**
+  - **agreement RANKS** the work-orders — Part A, **LANDED** ([`pincer-policy-brief.md`](pincer-policy-brief.md)).
+  - **contradiction GATES** their outputs — Part B, queued (reject impossible edits; an output-guard *on* the
+    work-order, so it folds in after the spine).
+  Hotspots (Track 2) is re-read as the *first* deliverable-grouping rule; the mask detectors are the issue
+  sources. The dispatch model shifts from single-type `Get-CorruptionType`-as-work-spec to the **multi-issue
+  inventory** (the gate stays frozen for accept/reject), with a composable **playbook-as-data** map (recipes —
+  a different data-fication than the retired validation patterns) feeding the composer. Built on the algebra.
 - **Tail, re-sorted** — OffsetMap **promoted** (it is the change-of-basis for masks — shared offset
   arithmetic); `inventory.jsonl` **retired** as a validation matrix (validation is now intrinsic via algebraic
   laws + the pincer; only a low-value "overlay catalogue" survives); hooks + constitution unchanged.
@@ -141,6 +147,8 @@ this policy lens.)
 - **Constitution prose** — Layer-2; the orchestrator↔worker compact. Pairs with the Track-1 prompt split.
 
 ## Sequencing rationale
+
+*Live build order — see §Re-layering: substrate (done) → Part A agreement ranking (done) → the **issue-inventory spine** (NEXT) → Part B output-gate → tail. The original ladder rationale below is retained for the why of each piece.*
 
 1 is orthogonal, safe, and unblocks Layer-2 — it ships first. 2 is where budget bleeds *today*, so it leads
 the doccer phase-2. 3 reuses already-shipped predicates and sharpens the same dispatch surface 2 touched. 4
