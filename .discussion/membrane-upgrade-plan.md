@@ -48,7 +48,7 @@ that into a **stack**:
   primitives**: agreement = coincidence of two derivations' masks; impossibility = a mask-geometry predicate
   (complement-must-be-empty / masks-may-not-overlap). Each is thin wiring (a dispatch-ordering key; a rejection
   in the mutation ops); the substance lives in the algebra. **This is the next move forward — built on the
-  algebra, not the old predicates.**
+  algebra, not the old predicates.** Brief: [`pincer-policy-brief.md`](pincer-policy-brief.md).
 - **Tail, re-sorted** — OffsetMap **promoted** (it is the change-of-basis for masks — shared offset
   arithmetic); `inventory.jsonl` **retired** as a validation matrix (validation is now intrinsic via algebraic
   laws + the pincer; only a low-value "overlay catalogue" survives); hooks + constitution unchanged.
