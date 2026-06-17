@@ -50,29 +50,90 @@ function Test-IsGibberish([string]$content, [int]$MinRun = 4) {
     return $false
 }
 
+# ── corruption signatures — ONE definition per signature, the single home both derivations read ──────
+# The frozen single-type gate (Get-CorruptionType, first-match → accept/reject) and the multi-issue
+# inventory (Get-ChunkIssues, all-match → dispatch enrichment) are two derivations of "what is wrong with
+# this chunk." They MUST NOT drift, so they read this ONE ordered table instead of each carrying its own
+# copy of the per-signature predicate — the same cross-derivation discipline the mask-algebra substrate
+# enforced. Order is the gate's historical precedence: do NOT reorder — the gate returns the FIRST type
+# that fires and the corpus A/B pins that verdict. Each signature carries:
+#   type  — the corruption_type label
+#   Test  — predicate over ($type, $content) → bool   (the SAME check both derivations run)
+#   Diag  — the worker-facing diagnostic (the delimiter seam for unbalanced; '' where the name suffices)
+# The alignment / prose-in-formula pair are the cross-derivation converges the assembled closure scanner
+# (Find-MathClosureIssues) also checks, lifted to chunk level via the shared latex.ps1 predicates so the
+# two derivations of "renderable math" can't disagree. Delimiter balance via the context-aware scanner
+# (skips escaped \{ \(, pairs \left..\right): full balance for a pure formula; braces only for inline math
+# in prose, where prose parens/brackets would otherwise false-positive.
+$script:CorruptionSignatures = @(
+    [pscustomobject]@{ type = 'intertext'
+        Test = { param($type, $content) $content.Contains('\intertext') }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'replacement_char'
+        Test = { param($type, $content) $content.Contains([char]0xFFFD) }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'gibberish'
+        Test = { param($type, $content) Test-IsGibberish $content }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'ligature_residue'
+        Test = { param($type, $content) [bool]($content -match '[ﬀ-ﬄ]') }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'alignment_outside_env'
+        Test = { param($type, $content) $type -eq 'formula' -and (Test-AlignmentOutsideEnv $content) }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'prose_in_formula'
+        Test = { param($type, $content) $type -eq 'formula' -and -not (Test-IsMath $content) }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'unbalanced_delimiters'
+        Test = { param($type, $content)
+            if ($type -eq 'formula')         { -not (Get-LatexBalance $content).full }
+            elseif ($content.Contains('$'))  { -not (Get-LatexBalance $content).braceBalanced }
+            else                             { $false } }
+        Diag = { param($type, $content) $b = Get-LatexBalance $content; "brace=$($b.brace) brack=$($b.brack) paren=$($b.paren) lr=$($b.lr)" } }
+)
+
+# The frozen merge-gate: the FIRST signature that fires (historical precedence), else $null (clean). This
+# stays the sole driver of fidelity grading and the apply gate; the inventory below never moves it. Reads
+# the shared table, so it cannot drift from Get-ChunkIssues.
 function Get-CorruptionType($Chunk) {
     $content = [string]$Chunk.content
     if (-not $content) { return $null }
-    if ($content.Contains('\intertext'))        { return 'intertext' }
-    if ($content.Contains([char]0xFFFD))         { return 'replacement_char' }
-    if (Test-IsGibberish $content)               { return 'gibberish' }
-    if ($content -match '[ﬀ-ﬄ]')        { return 'ligature_residue' }
-    # the same impossibilities the assembled scanner checks, lifted to chunk level via the shared
-    # latex.ps1 predicates so the two derivations of "renderable math" can't disagree (a file the
-    # scanner later calls broken would otherwise pass fidelity clean). normalize auto-wraps docling
-    # formulas upstream, so the alignment case here is the safety net for anything that slips.
-    if ($Chunk.type -eq 'formula' -and (Test-AlignmentOutsideEnv $content)) { return 'alignment_outside_env' }
-    if ($Chunk.type -eq 'formula' -and -not (Test-IsMath $content))         { return 'prose_in_formula' }
-    # delimiter balance via the context-aware scanner (skips escaped \{ \(, pairs
-    # \left..\right): full balance for a pure formula; braces only for inline math in
-    # prose, where prose parens/brackets would otherwise false-positive.
-    if ($Chunk.type -eq 'formula') {
-        if (-not (Get-LatexBalance $content).full) { return 'unbalanced_delimiters' }
-    }
-    elseif ($content.Contains('$')) {
-        if (-not (Get-LatexBalance $content).braceBalanced) { return 'unbalanced_delimiters' }
+    $type = [string]$Chunk.type
+    foreach ($sig in $script:CorruptionSignatures) {
+        if (& $sig.Test $type $content) { return $sig.type }
     }
     return $null
+}
+
+# Multi-issue inventory (the DISPATCH derivation) — EVERY signature that fires, as {type, diagnostic},
+# not the gate's first-match. Additive and SEPARATE from Get-CorruptionType: it never touches accept/
+# reject; it only enriches what the worker is dispatched to do, so a chunk carrying e.g. ligature_residue
+# AND unbalanced_delimiters surfaces both for one composed work-order instead of N re-dispatches. Folds in
+# the two needs_review kinds Invoke-Fidelity routes on (content the gate calls clean but the stage still
+# flags): heading_level_unknown (level_uncertain) and unwrapped_math (math_dirt ≥ 2) — the SAME booleans
+# Invoke-Fidelity uses, so those don't drift either. Computed on demand (at dispatch / slice time), never
+# stored: the work-order is assembled lazily, so there is no sidecar to go stale under id renumbering.
+# Returns @() for a clean chunk.
+function Get-ChunkIssues($Chunk) {
+    $content = [string]$Chunk.content
+    $type    = [string]$Chunk.type
+    $issues  = [System.Collections.Generic.List[object]]::new()
+    if ($content) {
+        foreach ($sig in $script:CorruptionSignatures) {
+            if (& $sig.Test $type $content) {
+                $issues.Add([pscustomobject]@{ type = $sig.type; diagnostic = [string](& $sig.Diag $type $content) })
+            }
+        }
+    }
+    # the needs_review kinds — faithful content the fidelity stage still hands the agent (the gate is
+    # clean, so these are NOT in the shared table). Mirror Invoke-Fidelity's two branches exactly.
+    if ($Chunk.level_uncertain) {
+        $issues.Add([pscustomobject]@{ type = 'heading_level_unknown'; diagnostic = '' })
+    }
+    if ([int]($Chunk.math_dirt) -ge 2) {
+        $issues.Add([pscustomobject]@{ type = 'unwrapped_math'; diagnostic = "math_dirt=$([int]$Chunk.math_dirt)" })
+    }
+    return $issues.ToArray()
 }
 
 # ── agreement — structural-ambiguity score for dispatch RANKING (Part A; ranks, never gates) ───────

@@ -56,12 +56,19 @@ chunk stream — not a git commit. There is no "commit" in the membrane at all.)
 
 ## The per-unit repair loop — worker
 
-You are handed one pointer: `{ paper, id, grade, corruption_type, seam }`. Hold nothing else.
+You are handed one pointer: `{ paper, id, grade, corruption_type, seam, issues }`. Hold nothing else.
+(`issues` is the multi-issue profile — *every* problem the deliverable carries, not just the gate's one.)
 
-1. **See it.** `get_slice paper id` — the unit's content (plus a little context if you ask).
-   This, with the diagnostic you were handed, is everything you need.
-2. **Diagnose.** `grade` + `corruption_type` give the kind of damage; `seam` (when present)
-   names the exact open delimiter. Read the content against them — use the playbook below.
+1. **See it.** `get_slice paper id` — the unit's content **and** its `work_order`: the composed,
+   ordered list of every issue in the deliverable, each paired with its repair recipe. (For a span you
+   were handed, `get_slice id=lo to_id=hi` — the order pools all members under the merge instruction.)
+   This is everything you need.
+2. **Work the whole order in one pass.** The `work_order` is ordered **structural-before-content**
+   (retype / split / merge first, then content fixes — the "restructure first" rule of step 4). Resolve
+   *every* issue it lists, then move on; `apply` re-grades and the deliverable converges when they all
+   clear — one pass, not one re-dispatch per issue. `grade` / `corruption_type` / `seam` still name the
+   gate's single verdict; the prose playbook below is the frame and the fallback for anything the recipe
+   map does not yet carry.
 3. **Repair in place.** `propose_edit paper id find=<exact garbage> replace=<fix>`. The
    response says whether the unit is now `clean` or still `flagged` (with the diagnostic).
    Stack edits until it reads `clean`. Send only diffs.
@@ -72,6 +79,10 @@ You are handed one pointer: `{ paper, id, grade, corruption_type, seam }`. Hold 
    orchestrator's. Return a one-line digest. If you cannot make it clean, see Escalation.
 
 ## The repair playbook — by `corruption_type`
+
+This prose playbook is the frame and the fallback. Its machine-readable sibling (`src/playbook.ps1`) is
+what the `work_order` pools into a per-deliverable recipe list; when an issue has no data-fied recipe yet,
+fall back to the entry here.
 
 - **fragmented_formula** — a block equation shattered across chunks. You are handed a `span` (e.g. `[lo..hi]`). Call `get_slice id=lo to_id=hi` to see all members. Structural repair first: `merge_chunks ids=[lo..hi]` into a single chunk. Re-ground (`get_slice`), then `propose_edit` to fix the join seams.
 - **intertext** — a degenerate loop bolted onto a complete head. The real content is the

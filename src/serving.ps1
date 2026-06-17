@@ -26,6 +26,7 @@
 
 . "$PSScriptRoot/jsonl.ps1"
 . "$PSScriptRoot/fidelity.ps1"
+. "$PSScriptRoot/playbook.ps1"   # the repair recipes-as-data the work-order composer pools
 . "$PSScriptRoot/crawl.ps1"
 . "$PSScriptRoot/normalize.ps1"
 
@@ -149,6 +150,97 @@ function Group-MathHotspots($chunks) {
     return $spans
 }
 
+# ── composite work-orders — the dispatch SPINE: inventory → group by deliverable → compose ───────────
+# Turns per-chunk dispatch from "one corruption_type → look up the playbook" into a composite work-order:
+# inventory ALL flagged issues in a deliverable (Get-ChunkIssues), pool them, and compose ONE body-light
+# order (ordered recipes + diagnostics) the worker resolves in a single pass. Additive enrichment of the
+# pointer/slice — it never changes the dispatched deliverable SET, the agreement ordering, leasing, or the
+# budget; the single-type gate stays frozen. Body-light by construction: NEVER carries a chunk body.
+
+# Pool the inventory across a deliverable's member chunks (chunk-level for the MVP; intra-chunk
+# difference-localization spans are deferred). Each issue tags its source id. Shared by the composer and
+# the dispatch pointer profile, so the two never drift from the inventory.
+function Get-DeliverableIssues($Members) {
+    $out = [System.Collections.Generic.List[object]]::new()
+    foreach ($m in $Members) {
+        foreach ($iss in (Get-ChunkIssues $m)) {
+            $out.Add([pscustomobject]@{ type = [string]$iss.type; id = [int]$m.id; diagnostic = [string]$iss.diagnostic })
+        }
+    }
+    return $out.ToArray()
+}
+
+# The COMPOSER — assemble one body-light work-order for a deliverable. Pools every member's issues
+# (Get-DeliverableIssues), pairs each with its data-fied recipe fragment (playbook.ps1), and ORDERS them
+# structural-before-content (retype / split / merge / level placement first, then content edits — the
+# "restructure first" rule), a STABLE order so insertion (document/inventory) order holds within each
+# band and the result is deterministic. A fragmented-formula span leads with its merge instruction (the
+# deliverable-level structural frame), then pools each member's own issues. Carries types + diagnostics +
+# recipes ONLY — no chunk body — so the worker still slices its own content (the body-blind contract).
+function New-WorkOrder {
+    [CmdletBinding()] param(
+        [Parameter(Mandatory)][string]$Kind,        # 'chunk' | 'fragmented_formula'
+        [Parameter(Mandatory)][int]$Id,             # the anchor id (the deliverable handle)
+        [int[]]$Span,                               # member ids for a span deliverable, else $null
+        [Parameter(Mandatory)][object[]]$Members    # the member chunk object(s)
+    )
+    $pooled = [System.Collections.Generic.List[object]]::new()
+    if ($Kind -eq 'fragmented_formula') {
+        # the deliverable-level structural frame: merge the span before any member content edit
+        $r = Get-RepairRecipe 'fragmented_formula'
+        $pooled.Add([pscustomobject]@{ type = 'fragmented_formula'; id = $Id; diagnostic = ''; structural = $true; fix = [string]$r.fix })
+    }
+    foreach ($iss in (Get-DeliverableIssues $Members)) {
+        $r = Get-RepairRecipe $iss.type
+        $pooled.Add([pscustomobject]@{
+            type       = [string]$iss.type
+            id         = [int]$iss.id
+            diagnostic = [string]$iss.diagnostic
+            structural = [bool]($r -and $r.structural)
+            fix        = if ($r) { [string]$r.fix } else { '' }   # absent recipe → PROCEDURE.md is the fallback
+        })
+    }
+    # structural band before content band; STABLE within each (insertion order preserved). $false (0)
+    # sorts before $true (1), so "NOT structural" puts structural entries first.
+    $ordered = @($pooled | Sort-Object -Stable -Property @{ Expression = { -not $_.structural } })
+    [pscustomobject]@{
+        deliverable = $Kind
+        id          = $Id
+        span        = $Span
+        issues      = @($ordered | ForEach-Object { $_.type })   # the lightweight profile (also on the pointer)
+        recipes     = $ordered                                    # ordered { type; id; diagnostic; structural; fix }
+    }
+}
+
+# Piece 2 — bucket a document's actionable chunks into the deliverables that ship, each with its composed
+# work-order: default = the chunk; a fragmented-formula span (Group-MathHotspots, the first grouping rule)
+# = a multi-chunk deliverable pooling its members. Deterministic + lazy (from the live stream, no sidecar),
+# document order. Uses the SAME eligibility + span/skip bookkeeping as Invoke-Dispatch, so the deliverable
+# SET equals the dispatched work-SET (the composite is additive, never a new work-set). Leasing is the
+# in-flight filter dispatch layers on top; the SET itself is lease-agnostic.
+function Group-Deliverables($chunks) {
+    $spans = Group-MathHotspots $chunks
+    $spanLookup = @{}
+    foreach ($s in $spans) { foreach ($sid in $s.ids) { $spanLookup[[int]$sid] = $s } }
+    $byId = @{}
+    foreach ($c in $chunks) { $byId[[int]$c.id] = $c }
+    $skip = @{}
+    $out = [System.Collections.Generic.List[object]]::new()
+    foreach ($c in $chunks) {
+        if ($c.fidelity -ne 'needs_review' -and $c.fidelity -ne 'needs_repair' -and $c.fidelity -ne 'suspect') { continue }
+        if ([int]$c.id -in $skip.Keys) { continue }
+        if ($spanLookup.ContainsKey([int]$c.id)) {
+            $span = $spanLookup[[int]$c.id]
+            foreach ($sid in $span.ids) { $skip[[int]$sid] = $true }
+            $members = @($span.ids | ForEach-Object { $byId[[int]$_] })
+            $out.Add((New-WorkOrder -Kind 'fragmented_formula' -Id ([int]$span.ids[0]) -Span @($span.ids | ForEach-Object { [int]$_ }) -Members $members))
+        } else {
+            $out.Add((New-WorkOrder -Kind 'chunk' -Id ([int]$c.id) -Members @($c)))
+        }
+    }
+    return $out.ToArray()
+}
+
 function Get-IrHotspots {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath, [string]$Type)
     $chunks = @(Read-Chunks $ChunksPath)
@@ -209,6 +301,7 @@ function Get-Slice {
         $lo = [Math]::Max(0, $Id - $Context)
         $hi = [Math]::Min($idx.LineCount - 1, $Id + $Context)
     }
+    $recs = [System.Collections.Generic.List[object]]::new()
     for ($i = $lo; $i -le $hi; $i++) {
         $rec = Read-JsonlRecord -Path $ChunksPath -At $i
         # overlay a staged proposal if one exists, so re-grounding shows the true working state
@@ -218,8 +311,25 @@ function Get-Slice {
             $rec | Add-Member -NotePropertyName content -NotePropertyValue ([string]$p.content) -Force
             $rec | Add-Member -NotePropertyName staged  -NotePropertyValue $true -Force
         }
-        $rec
+        $recs.Add($rec)
     }
+    # Compose the body-light work-order for the deliverable the worker was routed to, attached to the
+    # anchor record (lazy: only when issues remain). The deliverable IS the slice you request — an explicit
+    # forward range (id..to_id, the dispatch span contract the procedure drives) is the fragmented-formula
+    # span: pool every member's issues under the merge frame; a plain slice is the single anchor chunk.
+    # Pools over EXACTLY the records already read — no second full-document pass — so get_slice stays
+    # seek-light; issues are recomputed from the staged-or-committed content in hand, so the order always
+    # reflects what is LEFT to fix. Never carries a body of its own (body-blind): the records carry content.
+    $anchor = $recs | Where-Object { [int]$_.id -eq $Id } | Select-Object -First 1
+    if ($anchor) {
+        $wo = if ($ToId -ge 0 -and $recs.Count -gt 1) {
+            New-WorkOrder -Kind 'fragmented_formula' -Id $Id -Span @($recs | ForEach-Object { [int]$_.id }) -Members @($recs)
+        } else {
+            New-WorkOrder -Kind 'chunk' -Id $Id -Members @($anchor)
+        }
+        if ($wo.recipes.Count -gt 0) { $anchor | Add-Member -NotePropertyName work_order -NotePropertyValue $wo -Force }
+    }
+    foreach ($r in $recs) { $r }
 }
 
 # --- sub-agent-facing: stage a validated repair (one file per id -> conflict-free) ---
@@ -453,11 +563,16 @@ function Invoke-Dispatch {
                 foreach ($sid in $span.ids) { $skipIds[[int]$sid] = $true }
                 # a fragmented-formula span takes the MIN agreement over its members (most-disputed leads)
                 $agreement = ($span.ids | ForEach-Object { Get-ChunkAgreement $byId[[int]$_] } | Measure-Object -Minimum).Minimum
-                $item = [pscustomobject]@{ paper = $name; id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam; agreement = $agreement }
+                # additive: the multi-issue profile pooled over the span's members (the inventory), for
+                # routing/visibility — the full composed work-order is assembled at get_slice time.
+                $issues = @(Get-DeliverableIssues @($span.ids | ForEach-Object { $byId[[int]$_] }) | ForEach-Object { $_.type } | Select-Object -Unique)
+                $item = [pscustomobject]@{ paper = $name; id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam; agreement = $agreement; issues = $issues }
                 $candidates.Add([pscustomobject]@{ cp = $cp; bytes = $bytes; agreement = [double]$agreement; leaseIds = @($span.ids | ForEach-Object { [int]$_ }); units = $span.ids.Count; item = $item })
             } else {
                 $agreement = Get-ChunkAgreement $c
-                $item = [pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam; agreement = $agreement }
+                # additive: the chunk's own multi-issue profile (the inventory) for routing/visibility
+                $issues = @(Get-ChunkIssues $c | ForEach-Object { $_.type })
+                $item = [pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam; agreement = $agreement; issues = $issues }
                 $candidates.Add([pscustomobject]@{ cp = $cp; bytes = $bytes; agreement = [double]$agreement; leaseIds = @([int]$c.id); units = 1; item = $item })
             }
         }
