@@ -49,7 +49,7 @@ that into a **stack**:
     inventory every flagged problem → group by the **deliverable** that must ship clean (a chunk, or a hotspot
     span) → compose one **work-order** → resolve it whole. **NEXT.**
   - **agreement RANKS** the work-orders — Part A, **LANDED** ([`pincer-policy-brief.md`](pincer-policy-brief.md)).
-  - **contradiction GATES** their outputs — Part B, queued (reject impossible edits; an output-guard *on* the
+  - **contradiction GATES** their outputs — Part B, **LANDED** (reject impossible edits; an output-guard *on* the
     work-order, so it folds in after the spine).
   Hotspots (Track 2) is re-read as the *first* deliverable-grouping rule; the mask detectors are the issue
   sources. The dispatch model shifts from single-type `Get-CorruptionType`-as-work-spec to the **multi-issue
