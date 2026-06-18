@@ -21,6 +21,32 @@ Describe 'Test-IsMath — prose-in-formula by overlay+complement' {
     ) { Test-IsMath $s | Should -BeTrue }
 }
 
+Describe 'Test-IsMath -Level Row — display-formula row (replaces Test-MathRow strip-list)' {
+    It 'matches the legacy strip-list on representative row fixtures' {
+        $rows = @(
+            '\frac{1}{\hat{K}} \exp\!\left(-\frac{d_{ij}^2}{2a^2}\right) & \text{if } v_i \text{ and } v_j \text{ are neighbors}'
+            '0 & 0'
+            '\text{This paragraph was duplicated from the body text below and should not stay in the formula.}'
+            'The quick brown fox jumps over the lazy dog'
+            'x = y + z'
+        )
+        foreach ($r in $rows) {
+            $legacy = (([regex]::Matches(($r -replace '\\[A-Za-z]+', ' '), '[A-Za-z]{4,}')).Count -le 2)
+            (Test-IsMath $r -Level Row) | Should -Be $legacy -Because "row: $r"
+        }
+    }
+    It 'flags a \text{...} prose row as non-math' {
+        Test-IsMath '\text{This paragraph was duplicated from the body text below.}' -Level Row | Should -BeFalse
+    }
+    It 'keeps a cases row with short \text fragments as math' {
+        Test-IsMath '\frac{a}{b} & \text{if } x \text{ else } y' -Level Row | Should -BeTrue
+    }
+    It 'Chunk level still masks \text{...} as structure (fidelity path unchanged)' {
+        Test-IsMath '\text{This paragraph reads as natural language inside a formula label}' | Should -BeTrue
+        Test-IsMath '\text{This paragraph reads as natural language inside a formula label}' -Level Row | Should -BeFalse
+    }
+}
+
 Describe 'Test-AlignmentOutsideEnv — bare & in the complement of the environment overlay' {
     It 'flags a bare & after a CLOSED env even when an env exists elsewhere (reproduced recall hole)' {
         Test-AlignmentOutsideEnv '$$ \begin{aligned} a &= b \end{aligned} \quad c &= d $$' | Should -BeTrue

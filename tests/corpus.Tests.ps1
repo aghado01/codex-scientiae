@@ -23,8 +23,7 @@ BeforeAll {
         elseif ($content.Contains('$')) { if (-not (Get-LatexBalance $content).braceBalanced) { return 'unbalanced_delimiters' } }
         return $null
     }
-    function Old-MathDirt([string]$w) { return ($script:MathLatexRx.Matches([regex]::Replace($w, '\$[^$\n]+\$', ' ')).Count) }
-    function New-MathDirt([string]$w) { return (Get-MaskDensity -Text $w -Within (Complement-Mask (New-Mask $w '\$[^$\n]+\$')) -Register $script:MathLatexRx) }
+    function Legacy-MathDirt([string]$w) { return ($script:MathLatexRx.Matches([regex]::Replace($w, '\$[^$\n]+\$', ' ')).Count) }
 
     $files = @(
         "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl"
@@ -45,11 +44,13 @@ BeforeAll {
             elseif ($null -eq $n) { $rejectToAccept++ }
             else { $typeChange++ }
         }
-        $dirtMismatch = 0; $storedMismatch = 0
+        $dirtMismatch = 0; $storedLegacyMismatch = 0; $refinedExceeds = 0
         foreach ($c in $all) {
             $x = [string]$c.content; if (-not $x) { continue }
-            if ((Old-MathDirt $x) -ne (New-MathDirt $x)) { $dirtMismatch++ }
-            if ($null -ne $c.math_dirt -and [int]$c.math_dirt -ne (New-MathDirt $x)) { $storedMismatch++ }
+            $legacy = (Legacy-MathDirt $x)
+            $refined = (Get-MathDirt $x)
+            if ($refined -gt $legacy) { $refinedExceeds++ }
+            if ($null -ne $c.math_dirt -and [int]$c.math_dirt -ne $legacy) { $storedLegacyMismatch++ }
         }
         $cleanBroke = 0
         foreach ($c in $all) {
@@ -95,10 +96,23 @@ Describe 'corpus A/B — compatibility with the pre-port detectors' {
         if (-not $hasCorpus) { Set-ItResult -Skipped; return }
         $nonGibberishFlip | Should -Be 0
     }
-    It 'math_dirt is value-identical over the corpus (frozen contract c)' {
+    It 'math_dirt stored on corpus chunks matches legacy residual (re-normalize to pick up refinement)' {
         if (-not $hasCorpus) { Set-ItResult -Skipped; return }
-        $dirtMismatch | Should -Be 0
-        $storedMismatch | Should -Be 0
+        $storedLegacyMismatch | Should -Be 0
+    }
+    It 'refined math_dirt never exceeds legacy residual' {
+        if (-not $hasCorpus) { Set-ItResult -Skipped; return }
+        $refinedExceeds | Should -Be 0
+    }
+    It 'Get-MathDirt is deterministic on corpus prose' {
+        if (-not $hasCorpus) { Set-ItResult -Skipped; return }
+        $bad = 0
+        foreach ($c in $all) {
+            if ([string]$c.type -ne 'prose') { continue }
+            $x = [string]$c.content; if (-not $x) { continue }
+            if ((Get-MathDirt $x) -ne (Get-MathDirt $x)) { $bad++ }
+        }
+        $bad | Should -Be 0
     }
     It 'detector∘normalize fixed point: clean formula chunks stay clean (no oscillation, compat a)' {
         if (-not $hasCorpus) { Set-ItResult -Skipped; return }

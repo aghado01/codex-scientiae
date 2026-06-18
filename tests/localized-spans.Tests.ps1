@@ -37,20 +37,74 @@ Describe 'Get-UnwrappedMathSpans — mask difference localizes un-wrapped tokens
     }
 }
 
-Describe 'Get-ChunkIssues — spans on unwrapped_math; empty on other kinds' {
+Describe 'Get-ChunkIssues — localized spans on all issue kinds' {
     It 'attaches localized spans to unwrapped_math when math_dirt fires' {
         $content = 'The value ' + $alpha + ' is positive and ' + $alpha + ' again'
-        $dirt = (Get-MaskDensity -Text $content -Within (Complement-Mask (Get-InlineMathMask $content)) -Register $script:MathLatexRx)
+        $dirt = Get-MathDirt $content
         if ($dirt -lt 2) { Set-ItResult -Skipped -Because 'fixture did not reach math_dirt threshold' }
         $c = [pscustomobject]@{ type = 'prose'; content = $content; math_dirt = $dirt }
         $u = @(Get-ChunkIssues $c | Where-Object { $_.type -eq 'unwrapped_math' })[0]
         $u.spans.Count | Should -BeGreaterThan 0
         $u.diagnostic | Should -Match 'math_dirt='
     }
-    It 'corruption signatures carry empty spans (not yet localized)' {
-        $c = [pscustomobject]@{ type = 'formula'; content = '\left( x' }
-        $u = @(Get-ChunkIssues $c | Where-Object { $_.type -eq 'unbalanced_delimiters' })[0]
-        @($u.spans).Count | Should -Be 0
+    It 'localizes unbalanced_delimiters from the first open delimiter to end' {
+        $content = '\left( x'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'formula'; content = $content }) | Where-Object { $_.type -eq 'unbalanced_delimiters' })[0]
+        $u.spans.Count | Should -Be 1
+        $u.spans[0].start | Should -Be 0
+        $u.spans[0].end | Should -Be $content.Length
+        $u.diagnostic | Should -Match 'lr=1'
+    }
+    It 'localizes ligature_residue at the OCR glyph' {
+        $fi = [char]0xFB01
+        $content = 'coefficient ' + $fi + 'eld'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'prose'; content = $content }) | Where-Object { $_.type -eq 'ligature_residue' })[0]
+        $u.spans.Count | Should -Be 1
+        $u.spans[0].start | Should -Be $content.IndexOf($fi)
+        $u.spans[0].end | Should -Be ($content.IndexOf($fi) + 1)
+    }
+    It 'localizes replacement_char at each U+FFFD' {
+        $content = 'lost ' + [char]0xFFFD + ' char'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'prose'; content = $content }) | Where-Object { $_.type -eq 'replacement_char' })[0]
+        $u.spans.Count | Should -Be 1
+        $u.spans[0].start | Should -Be 5
+        $u.spans[0].end | Should -Be 6
+    }
+    It 'localizes intertext from first \intertext to end' {
+        $content = 'a = b \intertext{junk} a = b'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'formula'; content = $content }) | Where-Object { $_.type -eq 'intertext' })[0]
+        $u.spans[0].start | Should -Be $content.IndexOf('\intertext')
+        $u.spans[0].end | Should -Be $content.Length
+    }
+    It 'localizes gibberish on the shatter run' {
+        $content = 'head intact a o f i n t o o t'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'prose'; content = $content }) | Where-Object { $_.type -eq 'gibberish' })[0]
+        $u.spans.Count | Should -Be 1
+        $runAt = $content.IndexOf('a o f i')
+        $hit = @($u.spans | Where-Object { $_.start -le $runAt -and $_.end -gt $runAt })
+        $hit.Count | Should -BeGreaterThan 0
+    }
+    It 'localizes alignment_outside_env at bare ampersands' {
+        $content = 'x &= y \\ z &= w'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'formula'; content = $content }) | Where-Object { $_.type -eq 'alignment_outside_env' })[0]
+        $u.spans.Count | Should -BeGreaterThan 0
+        $ampAt = $content.IndexOf('&')
+        $hit = @($u.spans | Where-Object { $_.start -le $ampAt -and $_.end -gt $ampAt })
+        $hit.Count | Should -BeGreaterThan 0
+    }
+    It 'localizes prose_in_formula on prose-word hits outside math structure' {
+        $content = 'This paragraph reads as natural language without math.'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'formula'; content = $content }) | Where-Object { $_.type -eq 'prose_in_formula' })[0]
+        $u.spans.Count | Should -BeGreaterThan 0
+        $wordAt = $content.IndexOf('paragraph')
+        $hit = @($u.spans | Where-Object { $_.start -le $wordAt -and $_.end -gt $wordAt })
+        $hit.Count | Should -BeGreaterThan 0
+    }
+    It 'localizes heading_level_unknown as whole-chunk structural span' {
+        $content = '## Ambiguous heading'
+        $u = @(Get-ChunkIssues ([pscustomobject]@{ type = 'heading'; content = $content; level_uncertain = $true }) | Where-Object { $_.type -eq 'heading_level_unknown' })[0]
+        $u.spans[0].start | Should -Be 0
+        $u.spans[0].end | Should -Be $content.Length
     }
     It 'the frozen single-type gate is unchanged on a multi-signal chunk' {
         $c = [pscustomobject]@{ type = 'formula'; content = '\left( x'; math_dirt = 0 }
@@ -61,7 +115,7 @@ Describe 'Get-ChunkIssues — spans on unwrapped_math; empty on other kinds' {
 Describe 'work-order delivery — spans propagate body-light through compose + get_slice' {
     It 'New-WorkOrder carries spans on the unwrapped_math recipe' {
         $content = 'rate $\alpha$ and ' + $alpha + ' outside, then ' + $alpha + ' more'
-        $dirt = (Get-MaskDensity -Text $content -Within (Complement-Mask (Get-InlineMathMask $content)) -Register $script:MathLatexRx)
+        $dirt = Get-MathDirt $content
         if ($dirt -lt 2) { Set-ItResult -Skipped -Because 'fixture did not reach math_dirt threshold' }
         $c = [pscustomobject]@{ id = 0; type = 'prose'; page = 1; content = $content; math_dirt = $dirt; fidelity = 'needs_review'; review_reason = 'unwrapped_math' }
         $wo = New-WorkOrder -Kind 'chunk' -Id 0 -Members @($c)
@@ -71,7 +125,7 @@ Describe 'work-order delivery — spans propagate body-light through compose + g
     }
     It 'get_slice returns work_order recipes with spans on the anchor' {
         $content = 'rate $\alpha$ and ' + $alpha + ' outside, then ' + $alpha + ' more'
-        $dirt = (Get-MaskDensity -Text $content -Within (Complement-Mask (Get-InlineMathMask $content)) -Register $script:MathLatexRx)
+        $dirt = Get-MathDirt $content
         if ($dirt -lt 2) { Set-ItResult -Skipped -Because 'fixture did not reach math_dirt threshold' }
         $fx = New-SpanFixture @(
             [pscustomobject]@{ id = 0; type = 'prose'; page = 1; content = $content; math_dirt = $dirt; fidelity = 'needs_review'; review_reason = 'unwrapped_math' }

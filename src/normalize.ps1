@@ -77,6 +77,34 @@ $byCode = @{
 foreach ($k in $byCode.Keys) { $script:MathLatex[([char]$k).ToString()] = $byCode[$k] }
 $script:MathLatexRx = [regex]('(' + (($script:MathLatex.Keys | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')')
 
+# Prose-context overlay for math_dirt — subtract from the un-wrapped residual so biochemistry /
+# unit / disjunctive prose mentions do not inflate the density gate. Same mask feeds
+# Get-UnwrappedMathSpans so dispatch spans stay aligned with the count.
+function Get-ProseContextMask([string]$s) {
+    if (-not $s) { return (New-Mask -Spans @() -Length 0) }
+    $spans = [System.Collections.Generic.List[object]]::new()
+    foreach ($m in [regex]::Matches($s, '[\p{IsGreekandCoptic}]-[A-Za-z][\w-]*')) {
+        $spans.Add([pscustomobject]@{ Start = $m.Index; End = $m.Index + $m.Length })
+    }
+    foreach ($m in [regex]::Matches($s, '\d+(?:\.\d+)?\s*[%°\u2103\u2032\u2033]')) {
+        $spans.Add([pscustomobject]@{ Start = $m.Index; End = $m.Index + $m.Length })
+    }
+    foreach ($m in [regex]::Matches($s, '[\p{IsGreekandCoptic}](?:\s+(?:and|or)\s+[\p{IsGreekandCoptic}])+')) {
+        $spans.Add([pscustomobject]@{ Start = $m.Index; End = $m.Index + $m.Length })
+    }
+    return (New-Mask -Spans $spans.ToArray() -Over $s)
+}
+
+function Get-MathDirtResidualMask([string]$Content) {
+    $outside = Complement-Mask (Get-InlineMathMask $Content)
+    return (Sub-Mask $outside (Get-ProseContextMask $Content))
+}
+
+function Get-MathDirt([string]$Content) {
+    if (-not $Content) { return 0 }
+    return (Get-MaskDensity -Text $Content -Within (Get-MathDirtResidualMask $Content) -Register $script:MathLatexRx)
+}
+
 # Convert the unicode in a wrapped run to LaTeX. Each mapped symbol gets a trailing space so a command
 # can't fuse with the next token (\Lambda x, never \Lambdax); runs of space then collapse.
 function Convert-MathToLatex([string]$s) {
@@ -382,16 +410,9 @@ function Invoke-Normalize {
             # \mathbb) — otherwise pre-wrapped set-builder notation keeps its OCR spacing, e.g. "{ X }".
             $wrapped = [regex]::Replace($wrapped, '\$[^$\n]+\$', { param($m) '$' + (Optimize-MathContent ($m.Value.Substring(1, $m.Value.Length - 2)) @('mathbb')) + '$' })
             if ($wrapped -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $wrapped; $inlineFixed++ }
-            # dirt signal (density ∧ ¬mask), now the NAMED mask-algebra instance the brief generalises
-            # from: the wrapped $...$ spans are the overlay; a math-register glyph (MathLatexRx) surviving
-            # in their COMPLEMENT is un-wrapped inline math — "faithful but dirty" prose that
-            # ConvertTo-InlineMath's strong gate conservatively skipped. `Density(MathLatexRx,
-            # Complement($…$_mask))` is value-identical to the old "blank the spans, count the residual"
-            # (MathLatexRx matches single glyphs; blank width is irrelevant), so the frozen math_dirt
-            # output the hotspots/dispatch ≥2 gate depends on is preserved exactly. Record the count
-            # (= density) and let fidelity flag it — we don't risk auto-wrapping prose.
-            $dollarMask = New-Mask $wrapped '\$[^$\n]+\$'
-            $dirt = Get-MaskDensity -Text $wrapped -Within (Complement-Mask $dollarMask) -Register $script:MathLatexRx
+            # dirt signal: Density(MathLatexRx, Sub(Complement($…$), prose_context)) — the named
+            # mask-algebra instance; prose-context subtracts α-helix / unit / disjunctive mentions.
+            $dirt = Get-MathDirt $wrapped
             if ($dirt -gt 0) { $c | Add-Member -NotePropertyName math_dirt -NotePropertyValue $dirt -Force; $script:mdDirt += $dirt }
         }
     }
@@ -407,9 +428,9 @@ function Invoke-Normalize {
 # math_dirt density pass; fidelity's Get-ChunkIssues calls this lazily for span hints on the work-order.
 function Get-UnwrappedMathSpans([string]$Content) {
     if (-not $Content) { return @() }
-    $inline = Get-InlineMathMask $Content
-    $outside = Complement-Mask $inline
-    $glyphs = Get-MaskDensity -Text $Content -Within $outside -Register $script:MathLatexRx -AsSpans
-    $structure = Get-UnwrappedMathStructureMask $Content
+    $residual = Get-MathDirtResidualMask $Content
+    $glyphs = Get-MaskDensity -Text $Content -Within $residual -Register $script:MathLatexRx -AsSpans
+    $suppress = Get-ProseContextMask $Content
+    $structure = Sub-Mask (Get-UnwrappedMathStructureMask $Content) $suppress
     return (Get-MaskSpanRecords (Union-Mask $structure $glyphs))
 }

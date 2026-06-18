@@ -106,6 +106,13 @@ Describe 'agreement — derivation pairs (synthetic)' {
         Get-AgreementScore ([pscustomobject]@{ type = 'prose'; content = '' })            | Should -Be 1.0
         Get-AgreementScore ([pscustomobject]@{ type = 'prose'; content = 'plain words' }) | Should -Be 1.0
     }
+    It 'prose with legit inline $...$ does not dispute the math pair (IoU 1 after inline subtract)' {
+        Get-AgreementScore ([pscustomobject]@{ type = 'prose'; content = 'The rate is $\alpha$ per unit.' }) | Should -Be 1.0
+    }
+    It 'prose with unwrapped math outside $...$ still disputes the math pair' {
+        $s = Get-AgreementScore ([pscustomobject]@{ type = 'prose'; content = 'The rate is $\alpha$ and \alpha outside.' })
+        $s | Should -BeLessThan 1.0
+    }
 }
 
 Describe 'agreement — stored like math_dirt (ranks, never gates)' {

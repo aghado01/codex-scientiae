@@ -5,9 +5,9 @@
 BeforeAll {
     . "$PSScriptRoot/../src/normalize.ps1"    # Optimize-MathContent, Convert-MathToLatex, $script:MathLatexRx
     . "$PSScriptRoot/../src/md-cleanup.ps1"   # Invoke-MarkdownCleanup
-    # the legacy (pre-port) math_dirt formula, kept here to pin the value-identity of the new one
-    function Old-MathDirt([string]$w) { return ($script:MathLatexRx.Matches([regex]::Replace($w, '\$[^$\n]+\$', ' ')).Count) }
-    function New-MathDirt([string]$w) { return (Get-MaskDensity -Text $w -Within (Complement-Mask (New-Mask $w '\$[^$\n]+\$')) -Register $script:MathLatexRx) }
+    # legacy blank-and-count (pre prose-context refinement); refined count via Get-MathDirt
+    function Legacy-MathDirt([string]$w) { return ($script:MathLatexRx.Matches([regex]::Replace($w, '\$[^$\n]+\$', ' ')).Count) }
+    function Mask-MathDirt([string]$w) { return (Get-MaskDensity -Text $w -Within (Complement-Mask (New-Mask $w '\$[^$\n]+\$')) -Register $script:MathLatexRx) }
     $casesBlock = @'
 \begin{cases}
   \frac{1}{\hat{K}} \exp\!\left(-\frac{d_{ij}^2}{2a^2}\right) & \text{if } v_i \text{ and } v_j \text{ are neighbors} \\
@@ -34,8 +34,8 @@ Describe 'Optimize-MathContent' {
     }
 }
 
-Describe 'math_dirt — mask-algebra value-identical to the legacy blank-and-count (frozen contract)' {
-    It 'matches on fixed inputs including SMP and bare symbols' {
+Describe 'math_dirt — mask algebra + prose-context refinement' {
+    It 'mask-algebra matches legacy blank-and-count (pre prose-context layer)' {
         $blackboardE = [char]::ConvertFromUtf32(0x1D53C)   # SMP 𝔼 (two UTF-16 units)
         $alpha = [char]0x03B1; $in = [char]0x2208; $sum = [char]0x2211; $int = [char]0x222B
         $samples = @(
@@ -44,7 +44,58 @@ Describe 'math_dirt — mask-algebra value-identical to the legacy blank-and-cou
             "`$\alpha \beta`$ everything wrapped"
             "$sum $int bare operators outside any span"
         )
-        foreach ($s in $samples) { (New-MathDirt $s) | Should -Be (Old-MathDirt $s) }
+        foreach ($s in $samples) { (Mask-MathDirt $s) | Should -Be (Legacy-MathDirt $s) }
+    }
+    It 'Get-MathDirt subtracts hyphenated Greek prose compounds (α-helix)' {
+        $a = [char]0x03B1
+        Get-MathDirt ("The " + $a + "-helix motif appears often.") | Should -Be 0
+        (Legacy-MathDirt ("The " + $a + "-helix motif appears often.")) | Should -BeGreaterThan 0
+    }
+    It 'Get-MathDirt subtracts disjunctive Greek mentions (α and β)' {
+        $a = [char]0x03B1; $b = [char]0x03B2
+        Get-MathDirt ("Types " + $a + " and " + $b + " are common.") | Should -Be 0
+    }
+    It 'Get-MathDirt subtracts numeric unit suffixes' {
+        Get-MathDirt 'Accuracy was 95% on the holdout.' | Should -Be 0
+    }
+    It 'Get-MathDirt still counts genuine un-wrapped math runs' {
+        $a = [char]0x03B1
+        $content = 'The value ' + $a + ' is positive and ' + $a + ' again'
+        Get-MathDirt $content | Should -BeGreaterOrEqual 2
+    }
+    It 'refined count is never greater than the legacy residual' {
+        $a = [char]0x03B1; $b = [char]0x03B2; $in = [char]0x2208
+        foreach ($s in @(
+            'The value ' + $a + ' is positive and ' + $a + ' again'
+            $a + '-helix and ' + $b + ' sheet'
+            'rate $\alpha$ and ' + $a + ' outside'
+            "$in $a bare operators"
+        )) {
+            (Get-MathDirt $s) | Should -BeLessOrEqual (Mask-MathDirt $s)
+        }
+    }
+}
+
+Describe 'Get-UnbledFormula — trim bled prose rows via Test-IsMath -Level Row' {
+    It 'drops a trailing \text row when the prose is duplicated in a nearby chunk' {
+        $dup = 'This duplicated paragraph appears in both places.'
+        $chunks = @(
+            [pscustomobject]@{ type = 'prose'; content = "Intro. $dup More intro." }
+            [pscustomobject]@{ type = 'formula'; content = "x = 1 \\ \text{$dup}" }
+        )
+        Get-UnbledFormula $chunks 1 | Should -Be 'x = 1'
+    }
+    It 'keeps trailing prose when it is NOT confirmed duplicated nearby' {
+        $unique = 'This unique trailing sentence is not duplicated elsewhere.'
+        $chunks = @(
+            [pscustomobject]@{ type = 'prose'; content = 'Unrelated paragraph without the probe word.' }
+            [pscustomobject]@{ type = 'formula'; content = "x = 1 \\ \text{$unique}" }
+        )
+        Get-UnbledFormula $chunks 1 | Should -Be "x = 1 \\ \text{$unique}"
+    }
+    It 'returns single-row content unchanged' {
+        $chunks = @([pscustomobject]@{ type = 'formula'; content = 'E = mc^2' })
+        Get-UnbledFormula $chunks 0 | Should -Be 'E = mc^2'
     }
 }
 

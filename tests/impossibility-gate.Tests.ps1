@@ -138,6 +138,24 @@ Describe 'merge_chunks — balance-worsening guard; fragmented-formula merges pa
 }
 
 Describe 'split_chunk — rejects delimiter orphaning across the cut' {
+    It 'Test-SplitDelimiterOrphan allows a clean split of an already-unbalanced chunk (not worsening)' {
+        $original = '\left( x part two'
+        $halves = @(
+            [pscustomobject]@{ content = '\left( x' }
+            [pscustomobject]@{ content = 'part two' }
+        )
+        Test-SplitDelimiterOrphan $original $halves | Should -BeNullOrEmpty
+    }
+    It 'accepts splitting an already-unbalanced formula when imbalance stays in one half' {
+        $fx = New-GateFixture @(
+            [pscustomobject]@{ id = 0; type = 'formula'; page = 1; content = '\left( x part two'; fidelity = 'suspect'; corruption_type = 'unbalanced_delimiters' }
+        )
+        $r = Split-Chunk -ChunksPath $fx.cp -Id 0 -Before 'part'
+        $r.ok | Should -BeTrue
+        Count-Lines $fx.cp | Should -Be 2
+        (Get-LatexBalance (Read-ChunkContent $fx.cp 0)).lr | Should -Be 1
+        (Get-LatexBalance (Read-ChunkContent $fx.cp 1)).full | Should -BeTrue
+    }
     It 'rejects a split that orphans \left..\right partners' {
         $fx = New-GateFixture @(
             [pscustomobject]@{ id = 0; type = 'formula'; page = 1; content = 'x = \left( a + b \right)'; fidelity = 'faithful' }
