@@ -3,6 +3,17 @@
 # $script:RepairPlaybook. Adding a new corruption signature or needs_review kind without a recipe
 # breaks this test, forcing the author to single-source the instruction in playbook.ps1.
 
+BeforeDiscovery {
+    # -ForEach test cases are bound at DISCOVERY time, before BeforeAll runs — so the emittable-type
+    # list that drives the per-type cases must be built here, or each case binds to $null.
+    . "$PSScriptRoot/../src/fidelity.ps1"
+    . "$PSScriptRoot/../src/playbook.ps1"
+    $AllEmittableTypes =
+        @($script:CorruptionSignatures | ForEach-Object { $_.type }) +   # 7 corruption signatures
+        @('heading_level_unknown', 'unwrapped_math') +                   # needs_review kinds Invoke-Fidelity routes on
+        @('fragmented_formula')                                          # hotspot span kind (Group-MathHotspots)
+}
+
 BeforeAll {
     . "$PSScriptRoot/../src/fidelity.ps1"    # loads the corruption signatures table + needs_review kinds
     . "$PSScriptRoot/../src/playbook.ps1"    # loads the repair playbook data map
@@ -19,7 +30,7 @@ BeforeAll {
 
 Describe 'playbook coverage — every emittable issue type has a paired recipe' {
     It 'RepairPlaybook covers all <type>' -ForEach @(
-        $script:AllEmittableTypes | ForEach-Object { @{ type = $_ } }
+        $AllEmittableTypes | ForEach-Object { @{ type = $_ } }
     ) {
         $script:RepairPlaybook.Contains($type) | Should -BeTrue -Because "issue type '$type' is emittable but has no recipe in playbook.ps1"
         $recipe = Get-RepairRecipe $type
