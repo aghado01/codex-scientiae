@@ -80,23 +80,16 @@ You are handed one pointer: `{ paper, id, grade, corruption_type, seam, issues }
 
 ## The repair playbook — by `corruption_type`
 
-This prose playbook is the frame and the fallback. Its machine-readable sibling (`src/playbook.ps1`) is
-what the `work_order` pools into a per-deliverable recipe list; when an issue has no data-fied recipe yet,
-fall back to the entry here.
+The **live recipe** is delivered inline in the `work_order` on `get_slice`, pooled from `src/playbook.ps1`
+(the single source of truth — 10 entries covering every issue type the membrane can emit). Work the whole
+order in one pass; each recipe tells you whether the fix is structural (reframe first) or content (in-place
+edit). Below is one worked example to show the shape; for every other type, the `work_order` carries the
+recipe — do not duplicate them here (the drift surface that causes).
 
-- **fragmented_formula** — a block equation shattered across chunks. You are handed a `span` (e.g. `[lo..hi]`). Call `get_slice id=lo to_id=hi` to see all members. Structural repair first: `merge_chunks ids=[lo..hi]` into a single chunk. Re-ground (`get_slice`), then `propose_edit` to fix the join seams.
-- **intertext** — a degenerate loop bolted onto a complete head. The real content is the
-  head; everything from the first `\intertext` (or the start of the verbatim repetition) is
-  garbage. `propose_edit` with `find` = the garbage tail, `replace` = empty. If a delimiter's
-  partner was lost inside the tail (the `seam`), add it back.
-- **unbalanced_delimiters** — one delimiter is open or extra. The `seam` names it
-  (`paren=1` → one unclosed `(`; `lr=-1` → a dangling `\right`). Add or remove exactly that
-  one; touch nothing else.
-- **gibberish** — space-shattered text (`a o f i n t o`). The head is usually intact, the tail
-  shattered. Repair the readable intent or delete the unrecoverable run.
-- **ligature_residue** — `ﬁ ﬂ ﬃ` survivors → `fi fl ffi`. A direct substitution.
-- **replacement_char** — `U+FFFD` marks a lost character. Restore from context if certain;
-  else escalate.
+**Worked example — `intertext`:** a degenerate loop bolted onto a complete head. The real content is the
+head; everything from the first `\intertext` (or the start of the verbatim repetition) is garbage.
+`propose_edit` with `find` = the garbage tail, `replace` = empty. If a delimiter's partner was lost inside
+the tail (the `seam`), add it back.
 
 ## Escalation
 
