@@ -131,3 +131,60 @@ function Test-AlignmentOutsideEnv([string]$math) {
     $bareAmp = New-Mask $math '(?<!\\)&'
     return (-not (Test-MaskEmpty (Sub-Mask $bareAmp $env)))
 }
+
+# Same Sub(bareAmp, env) geometry as Test-AlignmentOutsideEnv — difference-localization for work-order spans.
+function Get-AlignmentOutsideEnvSpans([string]$math) {
+    $env     = New-Mask -Spans (Get-EnvironmentSpans $math) -Over $math
+    $bareAmp = New-Mask $math '(?<!\\)&'
+    return (Get-MaskSpanRecords (Sub-Mask $bareAmp $env))
+}
+
+# Prose-word hits outside the math-structure overlay — the SAME register Test-IsMath scores.
+function Get-ProseInFormulaSpans([string]$s) {
+    $structure = Get-MathStructureMask $s
+    $proseRegion = Complement-Mask $structure
+    return (Get-MaskSpanRecords (Get-MaskDensity -Text $s -Within $proseRegion -Register $script:RxProseWord -AsSpans))
+}
+
+# Repair hint from the first open/extra delimiter named in Get-LatexBalance's seam diagnostic.
+function Get-UnbalancedDelimiterSpans([string]$content) {
+    if (-not $content) { return @() }
+    $b = Get-LatexBalance $content
+    $start = 0
+    if ($b.lr -ne 0) {
+        $pat = if ($b.lr -gt 0) { '\\left\b' } else { '\\right\b' }
+        $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
+    }
+    elseif ($b.paren -ne 0) {
+        $pat = if ($b.paren -gt 0) { '(?<!\\)\(' } else { '(?<!\\)\)' }
+        $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
+    }
+    elseif ($b.brace -ne 0) {
+        $pat = if ($b.brace -gt 0) { '(?<!\\)\{' } else { '(?<!\\)\}' }
+        $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
+    }
+    elseif ($b.brack -ne 0) {
+        $pat = if ($b.brack -gt 0) { '(?<!\\)\[' } else { '(?<!\\)\]' }
+        $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
+    }
+    return @([pscustomobject]@{ start = [int]$start; end = $content.Length })
+}
+
+function Get-IntertextSpans([string]$content) {
+    $i = $content.IndexOf('\intertext')
+    if ($i -lt 0) { return @() }
+    return @([pscustomobject]@{ start = $i; end = $content.Length })
+}
+
+function Get-ReplacementCharSpans([string]$content) {
+    $fffd = [char]0xFFFD
+    $list = [System.Collections.Generic.List[object]]::new()
+    for ($i = 0; $i -lt $content.Length; $i++) {
+        if ($content[$i] -eq $fffd) { $list.Add([pscustomobject]@{ start = $i; end = $i + 1 }) }
+    }
+    return $list.ToArray()
+}
+
+function Get-LigatureSpans([string]$content) {
+    return (Get-MaskSpanRecords (New-Mask $content '[ﬀ-ﬄ]'))
+}

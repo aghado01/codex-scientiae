@@ -38,16 +38,51 @@ $script:RxInlineMath = [regex]'\$\$[\s\S]*?\$\$|\$[^$\n]+\$'   # wrapped math is
 #     while the run length is exactly what separates true shatter (4-5+) from flattened index variables
 #     ("b k i and d k i", broken every 3 by a real word).
 # MinRun is tunable; the default is calibrated against the corpus A/B (match-or-reduce false flags).
-function Test-IsGibberish([string]$content, [int]$MinRun = 4) {
+function Get-GibberishSpans([string]$content, [int]$MinRun = 4) {
+    $spans = [System.Collections.Generic.List[object]]::new()
     $prose = Get-MaskedText -Text $content -Mask (New-Mask $content $script:RxInlineMath)
     foreach ($unit in (Split-AtLevel -Text $prose -Level Line)) {
-        $run = 0
-        foreach ($t in @($unit.Text -split '\s+' | Where-Object { $_ -ne '' })) {
-            if ($t -match '^[A-Za-z]$') { $run++; if ($run -ge $MinRun) { return $true } }
-            else { $run = 0 }
+        $run = 0; $runStart = -1
+        foreach ($tm in [regex]::Matches($unit.Text, '\S+')) {
+            if ($tm.Value -match '^[A-Za-z]$') {
+                if ($run -eq 0) { $runStart = $tm.Index }
+                $run++
+                if ($run -ge $MinRun) {
+                    $spans.Add([pscustomobject]@{ start = $unit.Start + $runStart; end = $unit.Start + $tm.Index + $tm.Length })
+                    return $spans.ToArray()   # same first-hit semantics as the bool test
+                }
+            }
+            else { $run = 0; $runStart = -1 }
         }
     }
-    return $false
+    return @()
+}
+
+function Test-IsGibberish([string]$content, [int]$MinRun = 4) {
+    return @(Get-GibberishSpans $content $MinRun).Count -gt 0
+}
+
+# Difference-localization for Get-ChunkIssues — reuses the SAME geometry as each signature's Test predicate.
+function Get-IssueSpans([string]$IssueType, [string]$ChunkType, [string]$Content) {
+    if (-not $Content) { return @() }
+    switch ($IssueType) {
+        'intertext'               { return @(Get-IntertextSpans $Content) }
+        'replacement_char'        { return @(Get-ReplacementCharSpans $Content) }
+        'gibberish'               { return @(Get-GibberishSpans $Content) }
+        'ligature_residue'        { return @(Get-LigatureSpans $Content) }
+        'alignment_outside_env'     { if ($ChunkType -eq 'formula') { return @(Get-AlignmentOutsideEnvSpans $Content) }; return @() }
+        'prose_in_formula'        { if ($ChunkType -eq 'formula') { return @(Get-ProseInFormulaSpans $Content) }; return @() }
+        'unbalanced_delimiters'   { return @(Get-UnbalancedDelimiterSpans $Content) }
+        'heading_level_unknown'   { return @([pscustomobject]@{ start = 0; end = $Content.Length }) }
+        'unwrapped_math' {
+            if (-not $script:NormalizeSpanLoaded) {
+                . "$PSScriptRoot/normalize.ps1"
+                $script:NormalizeSpanLoaded = $true
+            }
+            return @(Get-UnwrappedMathSpans $Content)
+        }
+        default { return @() }
+    }
 }
 
 # ── corruption signatures — ONE definition per signature, the single home both derivations read ──────
@@ -114,7 +149,7 @@ function Get-CorruptionType($Chunk) {
 # Invoke-Fidelity uses, so those don't drift either. Computed on demand (at dispatch / slice time), never
 # stored: the work-order is assembled lazily, so there is no sidecar to go stale under id renumbering.
 # `spans` are half-open [start,end) UTF-16 offsets into the chunk — repair hints, not sub work-units;
-# only unwrapped_math localizes today (mask difference); other kinds carry @() until localized.
+# localized via Get-IssueSpans (same geometry as each signature's Test predicate).
 # Returns @() for a clean chunk.
 function Get-ChunkIssues($Chunk) {
     $content = [string]$Chunk.content
@@ -125,7 +160,7 @@ function Get-ChunkIssues($Chunk) {
             if (& $sig.Test $type $content) {
                 $issues.Add([pscustomobject]@{
                     type       = $sig.type
-                    spans      = @()
+                    spans      = @(Get-IssueSpans $sig.type $type $content)
                     diagnostic = [string](& $sig.Diag $type $content)
                 })
             }
@@ -134,16 +169,16 @@ function Get-ChunkIssues($Chunk) {
     # the needs_review kinds — faithful content the fidelity stage still hands the agent (the gate is
     # clean, so these are NOT in the shared table). Mirror Invoke-Fidelity's two branches exactly.
     if ($Chunk.level_uncertain) {
-        $issues.Add([pscustomobject]@{ type = 'heading_level_unknown'; spans = @(); diagnostic = '' })
+        $issues.Add([pscustomobject]@{
+            type       = 'heading_level_unknown'
+            spans      = @(Get-IssueSpans 'heading_level_unknown' $type $content)
+            diagnostic = ''
+        })
     }
     if ([int]($Chunk.math_dirt) -ge 2) {
-        if (-not $script:NormalizeSpanLoaded) {
-            . "$PSScriptRoot/normalize.ps1"
-            $script:NormalizeSpanLoaded = $true
-        }
         $issues.Add([pscustomobject]@{
             type       = 'unwrapped_math'
-            spans      = @(Get-UnwrappedMathSpans $content)
+            spans      = @(Get-IssueSpans 'unwrapped_math' $type $content)
             diagnostic = "math_dirt=$([int]$Chunk.math_dirt)"
         })
     }

@@ -25,12 +25,12 @@ $script:RepairPlaybook = [ordered]@{
     prose_in_formula      = @{ structural = $true;  fix = 'Formula chunk reads as prose: retype_chunk to prose; if real math leaked in, wrap it in $...$ after retyping.' }
     heading_level_unknown = @{ structural = $true;  fix = 'The leveler could not place this heading: set its level from document context (## major, ### sub, per STANDARDS §5), or request_review if genuinely ambiguous.' }
     # ── content — in-place edits, AFTER any structural reframing ──────────────────────────────────────
-    intertext             = @{ structural = $false; fix = 'Degenerate \intertext loop bolted onto a complete head: propose_edit find=<the tail from the first \intertext> replace=empty; restore any delimiter partner lost in the tail (the seam).' }
-    unbalanced_delimiters = @{ structural = $false; fix = 'One delimiter open or extra; the seam names it (paren=1 → one unclosed "("; lr=-1 → a dangling \right). Add or remove exactly that one, touch nothing else.' }
-    alignment_outside_env = @{ structural = $false; fix = 'A bare & outside an alignment environment is a KaTeX parse error: wrap the rows in \begin{aligned}...\end{aligned}, or remove the stray &.' }
-    gibberish             = @{ structural = $false; fix = 'Space-shattered text ("a o f i n t o"): the head is usually intact, the tail shattered. Repair the readable intent or delete the unrecoverable run.' }
-    ligature_residue      = @{ structural = $false; fix = 'OCR ligature survivors → fi fl ffi: a direct propose_edit substitution.' }
-    replacement_char      = @{ structural = $false; fix = 'U+FFFD marks a lost character: restore from context if certain, else request_review.' }
+    intertext             = @{ structural = $false; fix = 'Degenerate \intertext loop bolted onto a complete head: propose_edit find=<the tail from the first \intertext> replace=empty; restore any delimiter partner lost in the tail (the seam). The work-order span covers [first \intertext, end).' }
+    unbalanced_delimiters = @{ structural = $false; fix = 'One delimiter open or extra; the seam names it (paren=1 → one unclosed "("; lr=-1 → a dangling \right). Add or remove exactly that one, touch nothing else. The span anchors from the first offending delimiter to end.' }
+    alignment_outside_env = @{ structural = $false; fix = 'A bare & outside an alignment environment is a KaTeX parse error: wrap the rows in \begin{aligned}...\end{aligned}, or remove the stray &. Spans list each bare &.' }
+    gibberish             = @{ structural = $false; fix = 'Space-shattered text ("a o f i n t o"): the head is usually intact, the tail shattered. Repair the readable intent or delete the unrecoverable run. The span covers the shatter run.' }
+    ligature_residue      = @{ structural = $false; fix = 'OCR ligature survivors → fi fl ffi: a direct propose_edit substitution at each listed span.' }
+    replacement_char      = @{ structural = $false; fix = 'U+FFFD marks a lost character: restore from context if certain, else request_review. Spans list each sentinel position.' }
     unwrapped_math        = @{ structural = $false; fix = 'Un-wrapped inline math in prose: wrap each span in $...$ (the work-order lists [start,end) offsets). math_dirt counts tokens the auto-wrapper skipped.' }
 }
 
