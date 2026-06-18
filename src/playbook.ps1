@@ -31,7 +31,7 @@ $script:RepairPlaybook = [ordered]@{
     gibberish             = @{ structural = $false; fix = 'Space-shattered text ("a o f i n t o"): the head is usually intact, the tail shattered. Repair the readable intent or delete the unrecoverable run.' }
     ligature_residue      = @{ structural = $false; fix = 'OCR ligature survivors → fi fl ffi: a direct propose_edit substitution.' }
     replacement_char      = @{ structural = $false; fix = 'U+FFFD marks a lost character: restore from context if certain, else request_review.' }
-    unwrapped_math        = @{ structural = $false; fix = 'Un-wrapped inline math in prose (math_dirt counts the un-wrapped tokens): wrap each math span in $...$ with judgment.' }
+    unwrapped_math        = @{ structural = $false; fix = 'Un-wrapped inline math in prose: wrap each span in $...$ (the work-order lists [start,end) offsets). math_dirt counts tokens the auto-wrapper skipped.' }
 }
 
 # The recipe fragment for one issue type, or $null when the type has no data-fied recipe yet — the prose

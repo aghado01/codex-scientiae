@@ -90,6 +90,21 @@ function Test-IsMath([string]$s) {
 # single home and the agreement readout cannot drift from the fidelity grader. Pure; adds no primitive.
 function Get-MathStructureMask([string]$s) { return (New-Mask $s $script:RxMathStructure) }
 
+# Inline $...$ spans already wrapped (the SAME pattern normalize uses for math_dirt's dollar overlay).
+# Display $$...$$ is part of RxMathStructure but excluded here — prose chunks carry inline $ only.
+$script:RxInlineDollar = [regex]'\$[^$\n]+\$'
+function Get-InlineMathMask([string]$s) { return (New-Mask $s $script:RxInlineDollar) }
+
+# Mask → body-light issue spans [{start, end}, ...] for the work-order (half-open UTF-16 offsets).
+function Get-MaskSpanRecords($Mask) {
+    return @($Mask.Spans | ForEach-Object { [pscustomobject]@{ start = [int]$_.Start; end = [int]$_.End } })
+}
+
+# Math-structure extent minus already-wrapped inline $...$ — the difference-localization for unwrapped math.
+function Get-UnwrappedMathStructureMask([string]$s) {
+    return (Sub-Mask (Get-MathStructureMask $s) (Get-InlineMathMask $s))
+}
+
 # Environment COVERAGE spans (\begin{...}...\end{...}), by a nesting stack like Get-LatexBalance's scan:
 # each \begin opens, each \end closes the innermost; an unclosed \begin covers to end-of-string (an open
 # environment still contains a trailing &, so we don't flag it — preserves the old \begin-present pass).

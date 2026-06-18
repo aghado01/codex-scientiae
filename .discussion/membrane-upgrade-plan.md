@@ -1,165 +1,124 @@
-# codex-membrane upgrades — prioritized implementation plan
+# codex-membrane — implementation plan
 
-Companion to [`agentic-membrane-architecture.md`](agentic-membrane-architecture.md) (the design frame) and
-[`doccer-membrane-integration.md`](doccer-membrane-integration.md) (the doccer borrowings that already
-shipped). Those record the *frame* and *phase-1*; this is the *forward* cut — the sequenced build-list for
-what the doccer threads + the MCP-feedback note still point at, reconciled against the **live 21-tool
-server**, not the 6-tool prototype the design doc describes.
+Companion to [`agentic-membrane-architecture.md`](agentic-membrane-architecture.md) (design frame) and
+[`doccer-membrane-integration.md`](doccer-membrane-integration.md) (doccer phase-1 borrowings). Reconciled
+against the **live 21-tool** [`src/mcp-server.ps1`](../src/mcp-server.ps1) server — not the 6-tool prototype
+the architecture doc describes.
 
-## Reconciliation — the design docs lag the code
+*Status — 2026-06-17: the **pincer policy layer is complete**. This doc is the single forward plan: what
+landed, what's next, and the discipline that carries.*
 
-`agentic-membrane-architecture.md` describes a 6-tool server with "leasing as the v2." Reality is well past
-that: [`src/mcp-server.ps1`](../src/mcp-server.ps1) exposes **21 tools**; leasing is fully landed
-([`serving.ps1`](../src/serving.ps1) `*.leases.json` + the `release` tool); `propose_edit` surgical diffs,
-the structural ops (`retype`/`split`/`merge_chunks`), `finalize`/`review_document`, and escalation
-(`request_review`/`mark_unrecoverable`) are all live. The doccer threads are therefore a **gap map**, not a
-greenfield. What still hasn't landed:
+Per-feature design briefs: [`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md),
+[`pincer-policy-brief.md`](pincer-policy-brief.md), [`composite-work-orders-brief.md`](composite-work-orders-brief.md),
+[`math-hotspots-brief.md`](math-hotspots-brief.md).
 
-| Upgrade | Source thread | State in code |
+---
+
+## Re-layering — the stack (complete)
+
+The mask algebra ([`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md)) is the **substrate**;
+policy readouts stack on top. All layers below **Forward work** are **LANDED** — do not re-do.
+
+| Layer | What | Where |
 |---|---|---|
-| **MCP Prompts** (serve `PROCEDURE.md`) | `gemini-mcp-feedback` #1 | **Absent** — `capabilities = @{ tools = @{} }`; PROCEDURE.md still says "until then" |
-| **Math-density hotspots** (group fragmented formulae) | `gemini-doccer` #5, `cursor` #3 | **Absent** — dispatch hands arbitrary IR chunks; agent must `merge_chunks` by hand |
-| **Agreement-score** dispatch ranking (Tier-2) | `doccer-membrane-integration` Parked #2 | **Predicates consolidated** (`latex.ps1`) but no score; dispatch ranks by bytes, not ambiguity |
-| **Impossibility gate** (Tier-3) on structural ops + `apply` | `cursor` #4 | **Partial** — 2 checks live in `fidelity.ps1` as chunk grades, not as a mutation gate |
-| **Suppression masks** generalized | `gemini-doccer` #4 | **Narrow** — `normalize.ps1` masks `$…$` only for the `math_dirt` count |
-| **Pattern `inventory.jsonl`** (level/language as data) | `cursor` #2 | **Absent** — regex inline in `fidelity`/`zones` |
-| **OffsetMap** / byte-exact source coords | `doccer-membrane-integration` Parked #1 | **Absent** — `propose_edit` anchors finalized output, not source |
-| **Hooks** (batch governor) + **constitution** prose | architecture "NEXT" | **Absent** — Layer 2 deferred |
+| **Infrastructure** | 21 tools, leasing, structural ops, `propose_edit`, finalize/review, escalation | `mcp-server.ps1`, `serving.ps1`, `restructure.ps1` |
+| **Track 1 — Prompts** | `restoration_procedure` serves `PROCEDURE.md` | `mcp-server.ps1` (`prompts/list`, `prompts/get`) |
+| **Substrate** | `masks.ps1` + 4 mask-algebra detectors; shared `latex.ps1` home; pincer coincidence law | [`mask-algebra-fidelity-report.md`](../.claude/mask-algebra-fidelity-report.md) |
+| **Track 2 — Hotspots** | `Group-MathHotspots` — fragmented-formula span grouping | `serving.ps1` |
+| **Spine — difference DISPATCHES** | `Get-ChunkIssues` → `Group-Deliverables` → `playbook.ps1` → `New-WorkOrder` on `get_slice` | `fidelity.ps1`, `serving.ps1`, `playbook.ps1` |
+| **Part A — agreement RANKS** | `Get-AgreementScore` + stable-sort dispatch (ranks, never gates) | `fidelity.ps1`, `serving.ps1` |
+| **Part B — contradiction GATES** | Geometry impossibilities + merge/split *worsens* guards (same residual metric as hotspots) | `fidelity.ps1`, `restructure.ps1` |
 
-Leasing and predicate-consolidation from these threads **already shipped**. What remains splits into one
-orthogonal quick win (Prompts) and a **doccer phase-2** — lift the consolidated predicates into a *scored,
-density-aware, gated* dispatch surface — with a substrate tail deferred.
+**Part B gate (as shipped):**
 
-## Re-layering: the algebra is the substrate, not a rung
+- **All structural ops** — geometry only via `Get-StructuralImpossibility`: `alignment_outside_env`, `prose_in_formula`.
+- **Merge** — reject only when `joinRes > sumPartsRes` (partial-balance hotspot merges pass; worker closes seam after).
+- **Split** — reject only when the cut **worsens** balance vs the original (clean split of already-unbalanced chunk allowed).
+- **Retype** — unbalanced content allowed; content path + `apply` gate fix it after.
+- **One table** — `$script:CorruptionSignatures`; no fork. **`apply`'s content gate unchanged.**
 
-*Status — 2026-06-17: substrate LANDED; pincer Part A (agreement ranking) LANDED; the policy layer re-centred on the **issue-inventory spine** — re-layer #2, below.* The ladder below was conceived linearly
-(1→2→3→4→tail); the mask algebra ([`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md)) inverts
-that into a **stack**:
+**Validation:** 122 Pester tests green (corpus differential A/B live on 1,522 chunks where preprocessed).
 
-- **Done** — Track 1 (prompts), Track 2 (math hotspots — a pincer special-case in hindsight).
-- **Substrate — LANDED & validated** ([report](../.claude/mask-algebra-fidelity-report.md)). `src/masks.ps1`
-  (closed primitive set + `SpanLevel`) + four detectors re-expressed as overlay/complement behind the shared
-  `latex.ps1` home + the pincer coincidence law. 52-test Pester suite green; the three compatibility contracts
-  (merge-gate decision incl. the `detector∘normalize` fixed point, atomic three-consumer port, frozen
-  `math_dirt`/balance) verified *as passing tests*; differential A/B 1518/1522 identical, the 4 deltas all
-  genuine gibberish recall fixes. The delicate mechanics held; `masks.ps1` stayed lite (258 lines, pure).
-- **Policy — operate on the issue-inventory (re-layer #2; the spine).** The merged Tracks 3+4 are not two
-  bolt-on features but **three readouts of one pincer over a per-document issue-inventory**:
-  - **difference DISPATCHES — the spine** ([`composite-work-orders-brief.md`](composite-work-orders-brief.md)):
-    inventory every flagged problem → group by the **deliverable** that must ship clean (a chunk, or a hotspot
-    span) → compose one **work-order** → resolve it whole. **NEXT.**
-  - **agreement RANKS** the work-orders — Part A, **LANDED** ([`pincer-policy-brief.md`](pincer-policy-brief.md)).
-  - **contradiction GATES** their outputs — Part B, **LANDED** (reject impossible edits; an output-guard *on* the
-    work-order, so it folds in after the spine).
-  Hotspots (Track 2) is re-read as the *first* deliverable-grouping rule; the mask detectors are the issue
-  sources. The dispatch model shifts from single-type `Get-CorruptionType`-as-work-spec to the **multi-issue
-  inventory** (the gate stays frozen for accept/reject), with a composable **playbook-as-data** map (recipes —
-  a different data-fication than the retired validation patterns) feeding the composer. Built on the algebra.
-- **Tail, re-sorted** — OffsetMap **promoted** (it is the change-of-basis for masks — shared offset
-  arithmetic); `inventory.jsonl` **retired** as a validation matrix (validation is now intrinsic via algebraic
-  laws + the pincer; only a low-value "overlay catalogue" survives); hooks + constitution unchanged.
+**Retired:** `inventory.jsonl` as a validation matrix (validation is intrinsic via algebraic laws + pincer).
 
-**Carried follow-ups (pre-flagged in the report):**
-- `Test-MathRow` (`normalize.ps1`, via `Get-UnbledFormula`) is the last un-consolidated "is-this-math"
-  derivation — still the old strip-list, now diverging from the hardened `Test-IsMath`. Fold it in before it
-  drifts (it is exactly the drift this effort set out to kill). **Top-priority cleanup.**
-- `Test-IsGibberish` `MinRun=4` is calibrated on the 3 preprocessed docs — re-validate when the other 19 get
-  a chunk stream.
-- Prose-context refinement of `math_dirt` (subtract a prose-context overlay) was deferred because it moves the
-  frozen value — it lands **with** the policy layer (update the hotspot consumers in lockstep + re-verify).
+---
 
-**Carried constraint (held):** the substrate stayed lite (258 lines, pure, no engine) and contract-preserving at the seams where rebuilt
-detectors plug into the merge-gate, the three cross-derivation consumers, and the freshly-landed hotspot
-signals — see the brief's *Compatibility* section. The non-goals fence now protects the whole downstream: if
-the algebra sprawls, everything behind it stalls. (Tracks 3–4 below stand as detailed reference, read through
-this policy lens.)
+## Forward work (prioritized)
 
-## The ladder
+1. **Localized spans — LANDED (MVP: `unwrapped_math`).** Work-order issues carry `{type, spans, diagnostic}` —
+   half-open `[start,end)` UTF-16 offsets as repair hints (not sub work-units). `Get-UnwrappedMathSpans`
+   unions `Sub(math-structure, inline-$…$)` with `MathLatexRx` glyphs outside wrapped spans; flows through
+   `Get-ChunkIssues` → `New-WorkOrder` → `get_slice`. Other issue kinds carry empty `@()` spans until
+   localized. Pairs with #2/#3 on the shared inline-math mask.
 
-### Track 1 — MCP Prompts (serve the procedure) — opener, ~half day
-- **Goal.** Deliver the architecture doc's "procedure as MCP prompts" Layer-2 item; close the "until then"
-  gap in `PROCEDURE.md` so a connecting client injects the workflow into the agent's context automatically.
-- **Mechanism.** Declare the `prompts` capability in `initialize`; add `prompts/list` + `prompts/get`
-  handlers serving `PROCEDURE.md` as a `restoration_procedure` prompt (UTF-8, read from `$PSScriptRoot`).
-- **Files.** [`src/mcp-server.ps1`](../src/mcp-server.ps1) only; header note in [`src/PROCEDURE.md`](../src/PROCEDURE.md).
-- **Invariant.** stdout stays protocol-only; logs to stderr — unchanged.
-- **Validation.** `initialize` advertises `prompts`; `prompts/list` returns the entry; `prompts/get` returns
-  the procedure text without error; unknown name → `-32602`.
-- **Refinement (later).** Split into role-scoped `orchestrator_procedure` / `worker_procedure` prompts;
-  add `constitution` once Layer-2 prose lands. MVP serves the whole procedure as one prompt (depth-invariant,
-  so one text is defensible).
+2. **Agreement math-pair refinement** *(safe, quick — do anytime)*. In `Get-AgreementScore`'s prose branch,
+   `Sub` the inline-`$…$` mask before the IoU so legit inline-math prose scores 1, not 0 (today the math pair
+   pins any prose-with-inline-math to max-dispute). *Scope:* one spot in `fidelity.ps1`; expose
+   `Get-InlineMathMask` beside `Get-MathStructureMask` in `latex.ps1` (one home); add a test. Does **not**
+   touch the frozen `math_dirt`. Low risk.
 
-### Track 2 — math-density hotspots — highest operational value
-> Detailed design brief: [`math-hotspots-brief.md`](math-hotspots-brief.md).
-- **Goal.** Stop wasting agent budget on Docling's layout seams: a block equation shattered across chunks is
-  dispatched today as N arbitrary blind units. Surface the *semantic* repair unit instead.
-- **Mechanism.** A derived **hotspot overlay**, not a destructive merge: in preprocess (or a post-pass),
-  detect contiguous math-dense runs (doccer's `unicode.math_dense_region` + rolling density over the
-  `math_dirt`/`Test-IsMath` signal) and register a hotspot span (id-range + density). `get_hotspots`/`dispatch`
-  emit the span as one pointer; `get_slice` can return the whole range. Chunks stay atomic (IR fidelity
-  preserved); grouping is advisory, and the agent still has `merge_chunks` to make it permanent.
-- **Files.** [`src/preprocess.ps1`](../src/preprocess.ps1) (detect + register), `serving.ps1`
-  (`Get-IrHotspots`/`Invoke-Dispatch` emit spans, `Get-Slice` accept a range), `mcp-server.ps1` (schema).
-- **Invariant.** Body-blind dispatch — the span pointer carries id-range + density, never content.
-- **First step.** Read `preprocess.ps1` + the `dispatch`/`get_slice` paths in `serving.ps1` before designing
-  the overlay record shape.
+3. **`math_dirt` prose-context refinement** *(moves the frozen value — lockstep)*. Subtract a prose-context
+   overlay (`α-helix`, unit glyphs, isolated symbols) from the `math_dirt` residual to cut false un-wrapped
+   flags. *Scope:* `normalize.ps1`; **moves the frozen `math_dirt` value → MUST update the hotspot consumer
+   (`Group-MathHotspots` `math_dirt ≥ 2`) in lockstep + re-verify the frozen-contract test.** Higher risk
+   than #2; pairs with #1/#2.
 
-### Track 3 — agreement-score dispatch ranking (Tier-2 cross-derivation)
-> Substrate brief: [`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md) — the overlay/complement
-> calculus that grounds both this score (agreement = pincer convergence) and Track 4 (contradiction = the
-> impossibility gate). Do it before/with this track; the regex layer is hardened *by construction* there, not
-> by a labeled corpus.
-- **Goal.** Turn binary flags into a confidence so dispatch spends budget on genuinely ambiguous regions,
-  not single-regex false positives. **Now built as the pincer's _agreement_ readout on `masks.ps1`** (the
-  coincidence of two derivations' masks), not bespoke per-predicate scoring — the algebra has landed.
-- **Mechanism.** Per chunk, run ≥2 independent derivations of the same property (heading-by-font vs
-  heading-by-`#`-atom; math-by-content `Test-IsMath` vs math-by-delimiter; renders via `Get-LatexBalance`
-  vs reads-as-prose). Disagreement → an `agreement_score` (0–1) on the chunk. `dispatch` orders low-agreement
-  first within budget; `get_hotspots`/`get_batch_summary` expose it.
-- **Files.** [`src/fidelity.ps1`](../src/fidelity.ps1) (compute the score from existing predicates),
-  `serving.ps1` (dispatch ordering + surface), `mcp-server.ps1` (none, or a doc tweak).
-- **Invariant.** The detector stays the merge-gate; the score *ranks*, it does not gate.
+4. **`Test-MathRow` consolidation**. Fold `Test-MathRow` (`normalize.ps1`, via `Get-UnbledFormula`) into the
+   hardened `Test-IsMath` — the last un-consolidated "is-this-math" derivation, still on the old strip-list
+   (the exact drift the effort set out to kill). Lives in the un-bleed/vocab subsystem; verify that path.
 
-### Track 4 — impossibility gate (Tier-3) on the mutation path
-- **Goal.** Reject LLM-hallucinated structure before it enters the ledger. The two impossibilities in
-  `fidelity.ps1` grade chunks; they don't yet *gate* the tools that mutate structure.
-- **Mechanism.** **Now the pincer's _contradiction_ readout — express impossibilities as mask-geometry
-  predicates on `masks.ps1`** (complement-must-be-empty, masks-may-not-overlap). Seed: `alignment_outside_env`,
-  `prose_in_formula`; add "retype→formula must pass `Get-LatexBalance`", "heading chunk cannot hold a
-  blank-line run"). Wire as a rejection gate on `retype_chunk`/`split_chunk`/`merge_chunks` and on `apply`,
-  returning a precise diagnostic — exactly as `propose_repair` already rejects on the delimiter detector.
-- **Files.** `fidelity.ps1`/[`src/latex.ps1`](../src/latex.ps1) (predicates),
-  [`src/restructure.ps1`](../src/restructure.ps1) (gate the structural tools), `serving.ps1` (gate `apply`).
-- **Invariant.** Same shape as the existing propose-gate: reject with diagnostic, never silently mutate.
+5. **Playbook-as-data: complete + de-duplicate**. Recipes live in **both** `PROCEDURE.md` (prose) and
+   `playbook.ps1` (data) — a drift surface. Pick a single source (generate one from the other, or a check
+   that they match) and fill any missing entries. Low risk.
 
-## Deferred substrate (design-in, don't build yet)
+6. **Split-guard regression tests** *(quick — do anytime)*. Add: a clean split of an already-unbalanced chunk
+   **passes** (imbalance falls in one half, doesn't worsen); an orphaning split still **rejects**. The
+   relative worsens guard is wired but the pass case is not yet unit-tested.
 
-*Live status in §Re-layering: `inventory.jsonl` retired as a validation matrix; OffsetMap already seeded by `masks.ps1` `Move-Mask`/`Limit-Mask` (the change-of-basis).*
+7. **`gibberish` `MinRun` re-calibration**. `Test-IsGibberish MinRun=4` is calibrated on the 3 preprocessed
+   docs; re-validate (re-run the corpus A/B) when the other docs get a chunk stream. Data-dependent.
 
-- **`inventory.jsonl`** — externalize the inline regex (`fidelity`/`zones`) to a `level`+`language`+`priority`
-  data table. Auditable and composable, but a wide refactor for marginal near-term gain; Tracks 3–4 give the
-  80/20 without it.
-- **OffsetMap / byte-exact source coords** — would let `propose_edit` anchor against *source* markdown, not
-  finalized output. Real workflow gain, larger coordinate-model change; revisit after the dispatch surface
-  sharpens.
-- **Hooks (batch governor)** — the non-cage per-agent budget+nudge; the architecture doc's residual
-  "linear reach-past" defense. Belongs with the constitution.
-- **Constitution prose** — Layer-2; the orchestrator↔worker compact. Pairs with the Track-1 prompt split.
+8. **Deferred tail (long-horizon)** — see §Deferred substrate below.
 
-## Sequencing rationale
+### Sequencing
 
-*Live build order — see §Re-layering: substrate (done) → Part A agreement ranking (done) → the **issue-inventory spine** (NEXT) → Part B output-gate → tail. The original ladder rationale below is retained for the why of each piece.*
+#6 and #2 anytime. **#2 (agreement math-pair)** is the next mask refinement; pairs with localized spans.
+#3 needs lockstep-with-hotspots discipline. #4/#5/#7 independent cleanups. #8 is the tail.
 
-1 is orthogonal, safe, and unblocks Layer-2 — it ships first. 2 is where budget bleeds *today*, so it leads
-the doccer phase-2. 3 reuses already-shipped predicates and sharpens the same dispatch surface 2 touched. 4
-is guardrail wiring of checks that already exist. The substrate tail is bigger surface for lower marginal
-value, so it waits.
+### Discipline (carries to all forward work)
+
+Frozen single-type gate · body-light dispatch · chunk-level deliverable granularity · reuse the shared table
+/ `masks.ps1` (no fork, no drift) · codepoint safety (UTF-8-no-BOM, surrogate-safe offsets) · no rule-engine ·
+lazy / no sidecars · behavior-preserving-or-better, guarded by the differential A/B + the 122-test suite.
+
+---
+
+## Still narrow / not built (gap map)
+
+| Item | State |
+|---|---|
+| **Suppression masks** generalized | **Narrow** — `normalize.ps1` masks `$…$` only for the `math_dirt` count |
+| **OffsetMap** / byte-exact source coords | **Absent** — `propose_edit` anchors finalized output, not source |
+| **Hooks** (batch governor) + **constitution** prose | **Absent** — Layer 2 deferred |
+
+---
+
+## Deferred substrate (long-horizon)
+
+- **OffsetMap** — byte-exact source coords; seeded by `masks.ps1` `Move-Mask`/`Limit-Mask` (the change-of-basis);
+  lets `propose_edit` anchor against source, not finalized output. Revisit after localized spans sharpen the
+  dispatch surface.
+- **Hooks (batch governor) + constitution prose** — Layer-2 governance (reach-past defense + orchestrator↔worker
+  compact). Pairs with a future Track-1 split into role-scoped prompts.
+- **`inventory.jsonl`** — stays **retired** as a validation matrix; optional low-value overlay catalogue only.
+
+---
 
 ## Provenance
 
 Seeded by the doccer threads — [`gemini-doccer-discussion.md`](gemini-doccer-discussion.md),
 [`cursor-doccer-concepts-interation.md`](cursor-doccer-concepts-interation.md),
-[`doccer-membrane-integration.md`](doccer-membrane-integration.md) — and the server-implementation note
+[`doccer-membrane-integration.md`](doccer-membrane-integration.md) — and
 [`gemini-mcp-feedback.md`](gemini-mcp-feedback.md). doccer (spcx Phase 0) remains the substrate to keep
 mining; this plan lifts its *calculus* (cross-derivation, density, impossibility) into the membrane's
 fidelity/dispatch layer and nothing below it.

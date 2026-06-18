@@ -105,7 +105,7 @@ function Get-CorruptionType($Chunk) {
     return $null
 }
 
-# Multi-issue inventory (the DISPATCH derivation) — EVERY signature that fires, as {type, diagnostic},
+# Multi-issue inventory (the DISPATCH derivation) — EVERY signature that fires, as {type, spans, diagnostic},
 # not the gate's first-match. Additive and SEPARATE from Get-CorruptionType: it never touches accept/
 # reject; it only enriches what the worker is dispatched to do, so a chunk carrying e.g. ligature_residue
 # AND unbalanced_delimiters surfaces both for one composed work-order instead of N re-dispatches. Folds in
@@ -113,6 +113,8 @@ function Get-CorruptionType($Chunk) {
 # flags): heading_level_unknown (level_uncertain) and unwrapped_math (math_dirt ≥ 2) — the SAME booleans
 # Invoke-Fidelity uses, so those don't drift either. Computed on demand (at dispatch / slice time), never
 # stored: the work-order is assembled lazily, so there is no sidecar to go stale under id renumbering.
+# `spans` are half-open [start,end) UTF-16 offsets into the chunk — repair hints, not sub work-units;
+# only unwrapped_math localizes today (mask difference); other kinds carry @() until localized.
 # Returns @() for a clean chunk.
 function Get-ChunkIssues($Chunk) {
     $content = [string]$Chunk.content
@@ -121,17 +123,29 @@ function Get-ChunkIssues($Chunk) {
     if ($content) {
         foreach ($sig in $script:CorruptionSignatures) {
             if (& $sig.Test $type $content) {
-                $issues.Add([pscustomobject]@{ type = $sig.type; diagnostic = [string](& $sig.Diag $type $content) })
+                $issues.Add([pscustomobject]@{
+                    type       = $sig.type
+                    spans      = @()
+                    diagnostic = [string](& $sig.Diag $type $content)
+                })
             }
         }
     }
     # the needs_review kinds — faithful content the fidelity stage still hands the agent (the gate is
     # clean, so these are NOT in the shared table). Mirror Invoke-Fidelity's two branches exactly.
     if ($Chunk.level_uncertain) {
-        $issues.Add([pscustomobject]@{ type = 'heading_level_unknown'; diagnostic = '' })
+        $issues.Add([pscustomobject]@{ type = 'heading_level_unknown'; spans = @(); diagnostic = '' })
     }
     if ([int]($Chunk.math_dirt) -ge 2) {
-        $issues.Add([pscustomobject]@{ type = 'unwrapped_math'; diagnostic = "math_dirt=$([int]$Chunk.math_dirt)" })
+        if (-not $script:NormalizeSpanLoaded) {
+            . "$PSScriptRoot/normalize.ps1"
+            $script:NormalizeSpanLoaded = $true
+        }
+        $issues.Add([pscustomobject]@{
+            type       = 'unwrapped_math'
+            spans      = @(Get-UnwrappedMathSpans $content)
+            diagnostic = "math_dirt=$([int]$Chunk.math_dirt)"
+        })
     }
     return $issues.ToArray()
 }

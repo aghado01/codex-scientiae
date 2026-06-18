@@ -407,3 +407,16 @@ function Invoke-Normalize {
     "normalize: formulas un-bled $unbled, math tightened $mathFixed, inline wrapped $inlineFixed, scripts reconstructed $($script:mdScripts), unwrapped-math signals $($script:mdDirt) (vocab $($vocab.Count)); furniture — caption $($furn.caption), figure_label $($furn.figure_label), crumb $($furn.crumb) -> $ChunksPath"
     return $manifest
 }
+
+# Difference-localization for unwrapped_math — the mask union the math_dirt signal and the structure
+# overlay both read: math-structure minus inline $...$, PLUS any MathLatexRx glyph surviving outside
+# wrapped spans (Unicode α etc. that RxMathStructure may miss but math_dirt counts). One home beside the
+# math_dirt density pass; fidelity's Get-ChunkIssues calls this lazily for span hints on the work-order.
+function Get-UnwrappedMathSpans([string]$Content) {
+    if (-not $Content) { return @() }
+    $inline = Get-InlineMathMask $Content
+    $outside = Complement-Mask $inline
+    $glyphs = Get-MaskDensity -Text $Content -Within $outside -Register $script:MathLatexRx -AsSpans
+    $structure = Get-UnwrappedMathStructureMask $Content
+    return (Get-MaskSpanRecords (Union-Mask $structure $glyphs))
+}

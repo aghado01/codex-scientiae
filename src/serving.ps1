@@ -157,14 +157,19 @@ function Group-MathHotspots($chunks) {
 # pointer/slice — it never changes the dispatched deliverable SET, the agreement ordering, leasing, or the
 # budget; the single-type gate stays frozen. Body-light by construction: NEVER carries a chunk body.
 
-# Pool the inventory across a deliverable's member chunks (chunk-level for the MVP; intra-chunk
-# difference-localization spans are deferred). Each issue tags its source id. Shared by the composer and
-# the dispatch pointer profile, so the two never drift from the inventory.
+# Pool the inventory across a deliverable's member chunks (chunk-level deliverable granularity; spans are
+# per-chunk repair hints, not sub work-units). Each issue tags its source id + localized spans. Shared by
+# the composer and the dispatch pointer profile, so the two never drift from the inventory.
 function Get-DeliverableIssues($Members) {
     $out = [System.Collections.Generic.List[object]]::new()
     foreach ($m in $Members) {
         foreach ($iss in (Get-ChunkIssues $m)) {
-            $out.Add([pscustomobject]@{ type = [string]$iss.type; id = [int]$m.id; diagnostic = [string]$iss.diagnostic })
+            $out.Add([pscustomobject]@{
+                type       = [string]$iss.type
+                id         = [int]$m.id
+                spans      = @($iss.spans)
+                diagnostic = [string]$iss.diagnostic
+            })
         }
     }
     return $out.ToArray()
@@ -188,13 +193,14 @@ function New-WorkOrder {
     if ($Kind -eq 'fragmented_formula') {
         # the deliverable-level structural frame: merge the span before any member content edit
         $r = Get-RepairRecipe 'fragmented_formula'
-        $pooled.Add([pscustomobject]@{ type = 'fragmented_formula'; id = $Id; diagnostic = ''; structural = $true; fix = [string]$r.fix })
+        $pooled.Add([pscustomobject]@{ type = 'fragmented_formula'; id = $Id; spans = @(); diagnostic = ''; structural = $true; fix = [string]$r.fix })
     }
     foreach ($iss in (Get-DeliverableIssues $Members)) {
         $r = Get-RepairRecipe $iss.type
         $pooled.Add([pscustomobject]@{
             type       = [string]$iss.type
             id         = [int]$iss.id
+            spans      = @($iss.spans)
             diagnostic = [string]$iss.diagnostic
             structural = [bool]($r -and $r.structural)
             fix        = if ($r) { [string]$r.fix } else { '' }   # absent recipe → PROCEDURE.md is the fallback
@@ -208,7 +214,7 @@ function New-WorkOrder {
         id          = $Id
         span        = $Span
         issues      = @($ordered | ForEach-Object { $_.type })   # the lightweight profile (also on the pointer)
-        recipes     = $ordered                                    # ordered { type; id; diagnostic; structural; fix }
+        recipes     = $ordered                                    # ordered { type; id; spans; diagnostic; structural; fix }
     }
 }
 
