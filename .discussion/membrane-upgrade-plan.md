@@ -37,7 +37,7 @@ policy readouts stack on top. All layers below **Forward work** are **LANDED** �
 - **Retype** — unbalanced content allowed; content path + `apply` gate fix it after.
 - **One table** — `$script:CorruptionSignatures`; no fork. **`apply`'s content gate unchanged.**
 
-**Validation:** 122 Pester tests green (corpus differential A/B live on 1,522 chunks where preprocessed).
+**Validation:** 147 Pester tests green (corpus differential A/B live on 1,522 chunks where preprocessed).
 
 **Retired:** `inventory.jsonl` as a validation matrix (validation is intrinsic via algebraic laws + pincer).
 
@@ -45,35 +45,34 @@ policy readouts stack on top. All layers below **Forward work** are **LANDED** �
 
 ## Forward work (prioritized)
 
-1. **Localized spans — LANDED (MVP: `unwrapped_math`).** Work-order issues carry `{type, spans, diagnostic}` —
-   half-open `[start,end)` UTF-16 offsets as repair hints (not sub work-units). `Get-UnwrappedMathSpans`
-   unions `Sub(math-structure, inline-$…$)` with `MathLatexRx` glyphs outside wrapped spans; flows through
-   `Get-ChunkIssues` → `New-WorkOrder` → `get_slice`. Other issue kinds carry empty `@()` spans until
-   localized. Pairs with #2/#3 on the shared inline-math mask.
+1. **Localized spans — LANDED.** Work-order issues carry `{type, spans, diagnostic}` —
+   half-open `[start,end)` UTF-16 offsets as repair hints (not sub work-units). `Get-IssueSpans` localizes
+   every inventory kind via the same geometry as each signature's Test predicate: mask difference for
+   `unwrapped_math` / `alignment_outside_env` / `prose_in_formula`; regex/char hits for ligature /
+   replacement / intertext; shatter-run for gibberish; seam anchor for unbalanced delimiters; whole-chunk
+   for `heading_level_unknown`. Flows through `Get-ChunkIssues` → `New-WorkOrder` → `get_slice`. Pairs
+   with #2/#3 on the shared inline-math mask.
 
-2. **Agreement math-pair refinement** *(safe, quick — do anytime)*. In `Get-AgreementScore`'s prose branch,
-   `Sub` the inline-`$…$` mask before the IoU so legit inline-math prose scores 1, not 0 (today the math pair
-   pins any prose-with-inline-math to max-dispute). *Scope:* one spot in `fidelity.ps1`; expose
-   `Get-InlineMathMask` beside `Get-MathStructureMask` in `latex.ps1` (one home); add a test. Does **not**
-   touch the frozen `math_dirt`. Low risk.
+2. **Agreement math-pair refinement — LANDED.** Prose branch of `Get-AgreementScore` subtracts
+   `Get-InlineMathMask` before the math-pair IoU so legit inline-math prose scores 1; unwrapped math
+   outside `$…$` still disputes. Does not touch frozen `math_dirt`.
 
-3. **`math_dirt` prose-context refinement** *(moves the frozen value — lockstep)*. Subtract a prose-context
-   overlay (`α-helix`, unit glyphs, isolated symbols) from the `math_dirt` residual to cut false un-wrapped
-   flags. *Scope:* `normalize.ps1`; **moves the frozen `math_dirt` value → MUST update the hotspot consumer
-   (`Group-MathHotspots` `math_dirt ≥ 2`) in lockstep + re-verify the frozen-contract test.** Higher risk
-   than #2; pairs with #1/#2.
+3. **`math_dirt` prose-context refinement — LANDED.** `Get-MathDirt` =
+   `Density(MathLatexRx, Sub(Complement($…$), prose_context))` via `Get-ProseContextMask` (Greek-hyphen
+   compounds, numeric unit suffixes, disjunctive `α and β` mentions). `Get-UnwrappedMathSpans` shares
+   `Get-MathDirtResidualMask`. Hotspots / fidelity still gate on `math_dirt ≥ 2` (field recomputed at
+   normalize). Corpus stored values match legacy until re-normalize.
 
-4. **`Test-MathRow` consolidation**. Fold `Test-MathRow` (`normalize.ps1`, via `Get-UnbledFormula`) into the
-   hardened `Test-IsMath` — the last un-consolidated "is-this-math" derivation, still on the old strip-list
-   (the exact drift the effort set out to kill). Lives in the un-bleed/vocab subsystem; verify that path.
+4. **`Test-MathRow` consolidation — LANDED.** `Test-MathRow` removed; `Get-UnbledFormula` calls
+   `Test-IsMath -Level Row` (adds `\text{...}` interior to the prose region for row breaks). Chunk-level
+   `Test-IsMath` / fidelity `prose_in_formula` unchanged. One home in `latex.ps1`.
 
 5. **Playbook-as-data: complete + de-duplicate**. Recipes live in **both** `PROCEDURE.md` (prose) and
    `playbook.ps1` (data) — a drift surface. Pick a single source (generate one from the other, or a check
    that they match) and fill any missing entries. Low risk.
 
-6. **Split-guard regression tests** *(quick — do anytime)*. Add: a clean split of an already-unbalanced chunk
-   **passes** (imbalance falls in one half, doesn't worsen); an orphaning split still **rejects**. The
-   relative worsens guard is wired but the pass case is not yet unit-tested.
+6. **Split-guard regression tests — LANDED.** Clean split of an already-unbalanced chunk passes (imbalance
+   falls in one half, doesn't worsen); orphaning split still rejects.
 
 7. **`gibberish` `MinRun` re-calibration**. `Test-IsGibberish MinRun=4` is calibrated on the 3 preprocessed
    docs; re-validate (re-run the corpus A/B) when the other docs get a chunk stream. Data-dependent.
@@ -82,14 +81,13 @@ policy readouts stack on top. All layers below **Forward work** are **LANDED** �
 
 ### Sequencing
 
-#6 and #2 anytime. **#2 (agreement math-pair)** is the next mask refinement; pairs with localized spans.
-#3 needs lockstep-with-hotspots discipline. #4/#5/#7 independent cleanups. #8 is the tail.
+**#5** playbook de-duplication is the next independent low-risk cleanup. #7 data-dependent; #8 is the tail.
 
 ### Discipline (carries to all forward work)
 
 Frozen single-type gate · body-light dispatch · chunk-level deliverable granularity · reuse the shared table
 / `masks.ps1` (no fork, no drift) · codepoint safety (UTF-8-no-BOM, surrogate-safe offsets) · no rule-engine ·
-lazy / no sidecars · behavior-preserving-or-better, guarded by the differential A/B + the 122-test suite.
+lazy / no sidecars · behavior-preserving-or-better, guarded by the differential A/B + the 147-test suite.
 
 ---
 
@@ -97,7 +95,7 @@ lazy / no sidecars · behavior-preserving-or-better, guarded by the differential
 
 | Item | State |
 |---|---|
-| **Suppression masks** generalized | **Narrow** — `normalize.ps1` masks `$…$` only for the `math_dirt` count |
+| **Suppression masks** generalized | **Partial** — `$…$` + prose-context overlay on `math_dirt`; not yet generalized beyond un-wrapped-math |
 | **OffsetMap** / byte-exact source coords | **Absent** — `propose_edit` anchors finalized output, not source |
 | **Hooks** (batch governor) + **constitution** prose | **Absent** — Layer 2 deferred |
 
