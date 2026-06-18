@@ -75,14 +75,16 @@ function New-StructReject([string]$Reason, [string]$Diagnostic, [int]$Id = -1, [
     return [pscustomobject]$rej
 }
 
-# Split gate — delimiter partners must not be orphaned across the cut (each half balanced per the table).
-function Test-SplitDelimiterOrphan($Chunks, [int]$Id) {
-    foreach ($c in $Chunks) {
-        if (Test-ChunkUnbalanced $c) {
-            return (New-StructReject 'unbalanced_delimiters' (Get-UnbalancedDiagnostic $c) -Id $Id)
-        }
-    }
-    return $null
+# Split gate — reject only when the cut WORSENS delimiter balance vs the original (a partner orphaned
+# across the split): the halves' total residual exceeds the original's. A clean split of an already-
+# unbalanced chunk (the imbalance falls wholly in one half) does not worsen and is allowed — the same
+# relative metric as the merge guard, so neither structural op deadlocks on pre-existing imbalance.
+function Test-SplitDelimiterOrphan([string]$Original, $Halves, [int]$Id = -1) {
+    $sumHalves = 0
+    foreach ($h in $Halves) { $sumHalves += (Get-BalanceResidual ([string]$h.content)) }
+    if ((Get-BalanceResidual $Original) -ge $sumHalves) { return $null }   # not worsened -- clean cut
+    $worst = $Halves | Sort-Object { Get-BalanceResidual ([string]$_.content) } -Descending | Select-Object -First 1
+    return (New-StructReject 'unbalanced_delimiters' (Get-UnbalancedDiagnostic $worst) -Id $Id)
 }
 
 # Merge gate — reject only when joining WORSENS delimiter balance vs the parts (same residual metric as
@@ -135,7 +137,7 @@ function Split-Chunk {
     )
     $reject = Test-StructImpossibility $halves -Id $Id
     if ($reject) { return $reject }
-    $reject = Test-SplitDelimiterOrphan $halves -Id $Id
+    $reject = Test-SplitDelimiterOrphan $content $halves -Id $Id
     if ($reject) { return $reject }
     $chunks.Insert($pos + 1, $second)
 
