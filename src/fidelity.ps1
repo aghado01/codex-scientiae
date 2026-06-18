@@ -261,10 +261,13 @@ function Get-AgreementScore($Chunk) {
     $empty = New-Mask -Spans @() -Length $len
     $scores = [System.Collections.Generic.List[double]]::new()
 
-    # math pair — any math signal: a formula label, or content the math-structure overlay matches
+    # math pair — any math signal: a formula label, or content the math-structure overlay matches.
+    # Prose: subtract already-wrapped inline $...$ before IoU so legit inline-math prose scores 1, not 0;
+    # unwrapped math outside $...$ still disputes (pairs with Get-InlineMathMask / localized spans).
     $byContent = Get-MathStructureMask $content
     $isFormula = ($type -eq 'formula')
     if ($isFormula -or -not (Test-MaskEmpty $byContent)) {
+        if (-not $isFormula) { $byContent = Sub-Mask $byContent (Get-InlineMathMask $content) }
         $byLabel = if ($isFormula) { $full } else { $empty }
         $scores.Add((Get-MaskIoU $byContent $byLabel))
     }

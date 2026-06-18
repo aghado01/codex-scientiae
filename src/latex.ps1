@@ -79,9 +79,22 @@ $script:RxProseWord = [regex]'[A-Za-z]{4,}'   # a 4+-letter run reads as a natur
 # means it is prose. Balance alone can't tell (prose has no delimiters and reads "balanced"). Threshold
 # (<=2) and decision boundary are unchanged from the strip-list version; only WHAT gets counted changed
 # — env names, command names and braced arguments are now masked by the overlay, so they can't leak.
-function Test-IsMath([string]$s) {
-    $structure  = New-Mask $s $script:RxMathStructure
-    $prose      = Get-MaskDensity -Text $s -Within (Complement-Mask $structure) -Register $script:RxProseWord
+# Level Row (display-formula row breaks in Get-UnbledFormula): also counts prose inside \text{...} as
+# prose — the old Test-MathRow strip-list behaviour, now on the shared mask algebra.
+function Get-TextInteriorMask([string]$s) {
+    $list = [System.Collections.Generic.List[object]]::new()
+    foreach ($m in [regex]::Matches($s, '\\text\s*\{([^{}]*)\}')) {
+        $g = $m.Groups[1]
+        if ($g.Length -gt 0) { $list.Add([pscustomobject]@{ Start = $g.Index; End = $g.Index + $g.Length }) }
+    }
+    return (New-Mask -Spans $list.ToArray() -Over $s)
+}
+
+function Test-IsMath([string]$s, [ValidateSet('Chunk', 'Row')][string]$Level = 'Chunk') {
+    $structure   = Get-MathStructureMask $s
+    $proseRegion = Complement-Mask $structure
+    if ($Level -eq 'Row') { $proseRegion = Union-Mask $proseRegion (Get-TextInteriorMask $s) }
+    $prose = Get-MaskDensity -Text $s -Within $proseRegion -Register $script:RxProseWord
     return ($prose -le 2)
 }
 

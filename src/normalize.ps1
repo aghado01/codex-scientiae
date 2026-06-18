@@ -314,23 +314,16 @@ function Repair-InlineScripts([string]$Content, [hashtable]$Vocab) {
     return ($parts -join '')
 }
 
-# A formula row is math (not bled prose) if, after stripping command names, it carries at most a
-# couple of 4+ letter words — same heuristic the closure scanner uses, local so the pipeline needn't
-# dot-source md-cleanup.
-function Test-MathRow([string]$s) {
-    return (([regex]::Matches(($s -replace '\\[A-Za-z]+', ' '), '[A-Za-z]{4,}')).Count -le 2)
-}
-
 # Un-bleed prose docling merged into a display formula: it duplicates a paragraph into a trailing
 # \text{...} row of the preceding equation AND keeps the real prose chunk. Drop trailing prose rows
-# (Test-MathRow = false) — but ONLY when the bled text is confirmed duplicated in a nearby prose chunk,
-# so nothing is lost. Structural: must run before the vocab harvest so the Rosetta Stone stays clean.
+# (Test-IsMath -Level Row = false) — but ONLY when the bled text is confirmed duplicated in a nearby
+# prose chunk, so nothing is lost. Structural: must run before the vocab harvest so the Rosetta Stone stays clean.
 function Get-UnbledFormula($Chunks, $Index) {
     $content = [string]$Chunks[$Index].content
     $rows = $content -split '\\\s*\\'        # row breaks, tolerant of the raw's space-tokenization
     if ($rows.Count -lt 2) { return $content }
-    $start = 0;               while ($start -lt $rows.Count - 1 -and -not (Test-MathRow $rows[$start])) { $start++ }  # leading prose
-    $end   = $rows.Count - 1; while ($end -gt $start           -and -not (Test-MathRow $rows[$end]))   { $end-- }     # trailing prose
+    $start = 0;               while ($start -lt $rows.Count - 1 -and -not (Test-IsMath $rows[$start] -Level Row)) { $start++ }  # leading prose
+    $end   = $rows.Count - 1; while ($end -gt $start           -and -not (Test-IsMath $rows[$end] -Level Row))   { $end-- }     # trailing prose
     if ($start -eq 0 -and $end -eq $rows.Count - 1) { return $content }
     $dropped = @()
     if ($start -gt 0)             { $dropped += $rows[0..($start - 1)] }
