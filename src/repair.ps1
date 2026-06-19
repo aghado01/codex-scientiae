@@ -77,15 +77,20 @@ function Invoke-Repair {
             $cleanEnd = [bool]($head.TrimEnd() -match '[\\}\])\.,]$')
             $hasWord  = [bool]($head -match '[A-Za-z]{3,}')
             $frac     = $head.Length / $content.Length
+            # the \end that closes a \begin in the head can sit IN the tail; excising it would orphan the
+            # environment. The head stays brace-balanced, so $bal (Get-LatexBalance) is blind to the break
+            # — check \begin/\end closure of the head explicitly and DON'T excise when it would leave an
+            # environment open. A deferred chunk stays flagged for the agent, who has context to close it.
+            $envOk    = (Get-EnvironmentBalance $head).balanced
 
             # intertext: a brace-balanced, clean-ended head is the real formula -> excise the
             # loop. Grade by FULL delimiter balance (incl []/() and \left\right via the scanner):
             # all-balanced -> repaired; a partner left in the tail -> needs_review (seam noted).
-            if ($ct -eq 'intertext' -and $bal.braceBalanced -and $cleanEnd) {
+            if ($ct -eq 'intertext' -and $bal.braceBalanced -and $cleanEnd -and $envOk) {
                 $doExcise = $true
                 $grade = if ($bal.full) { 'repaired' } else { 'needs_review' }
             }
-            elseif ($ct -eq 'gibberish' -and $bal.braceBalanced -and $hasWord -and $frac -ge $MinHeadFrac) {
+            elseif ($ct -eq 'gibberish' -and $bal.braceBalanced -and $hasWord -and $frac -ge $MinHeadFrac -and $envOk) {
                 $doExcise = $true; $grade = 'needs_review'
             }
         }

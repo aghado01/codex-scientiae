@@ -73,6 +73,7 @@ function Get-IssueSpans([string]$IssueType, [string]$ChunkType, [string]$Content
         'alignment_outside_env'     { if ($ChunkType -eq 'formula') { return @(Get-AlignmentOutsideEnvSpans $Content) }; return @() }
         'prose_in_formula'        { if ($ChunkType -eq 'formula') { return @(Get-ProseInFormulaSpans $Content) }; return @() }
         'unbalanced_delimiters'   { return @(Get-UnbalancedDelimiterSpans $Content) }
+        'unclosed_environment'    { return @(Get-UnclosedEnvironmentSpans $Content) }
         'heading_level_unknown'   { return @([pscustomobject]@{ start = 0; end = $Content.Length }) }
         'unwrapped_math' {
             if (-not $script:NormalizeSpanLoaded) {
@@ -125,6 +126,14 @@ $script:CorruptionSignatures = @(
             elseif ($content.Contains('$'))  { -not (Get-LatexBalance $content).braceBalanced }
             else                             { $false } }
         Diag = { param($type, $content) $b = Get-LatexBalance $content; "brace=$($b.brace) brack=$($b.brack) paren=$($b.paren) lr=$($b.lr)" } }
+    # APPENDED — never reordered (precedence note above). The \begin{...}/\end{...} closure invariant
+    # Get-LatexBalance can't see: an \end carried off with a degenerate tail leaves an open environment
+    # that is brace-balanced (so unbalanced_delimiters passes) yet breaks the math parser. Last in
+    # precedence, so it only wins the gate when nothing above fires; Get-ChunkIssues still surfaces it
+    # alongside any earlier match.
+    [pscustomobject]@{ type = 'unclosed_environment'
+        Test = { param($type, $content) -not (Get-EnvironmentBalance $content).balanced }
+        Diag = { param($type, $content) $f = (Get-EnvironmentBalance $content).fault; if ($f) { '{0} {1} @ {2}' -f $f.kind, $f.name, $f.index } else { '' } } }
 )
 
 # The frozen merge-gate: the FIRST signature that fires (historical precedence), else $null (clean). This

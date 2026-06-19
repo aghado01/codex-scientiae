@@ -133,6 +133,47 @@ function Get-EnvironmentSpans([string]$s) {
     return , $spans.ToArray()   # comma-wrap so an empty result stays an array, not $null
 }
 
+# Environment CLOSURE balance — the \begin{...}/\end{...} invariant Get-LatexBalance cannot see. That
+# scanner counts braces/brackets/parens/\left\right; the {aligned} of \begin{aligned} is itself brace-
+# balanced, so an environment whose \end was carried off with a degenerate tail scores .full=true and
+# slips the delimiter gate, then breaks the math parser downstream. This is the name-aware nesting check:
+# each \begin pushes its name, each \end must close the innermost matching name. Returns balanced + the
+# first fault { kind, name, index } (kind: unclosed_begin | dangling_end | mismatched_end) for the seam
+# diagnostic and the repair span. Empty when there are no \begin/\end tokens (the common case) — cheap,
+# and fires only where environment syntax is actually present and broken.
+function Get-EnvironmentBalance([string]$s) {
+    $stack = [System.Collections.Generic.Stack[object]]::new()
+    $fault = $null
+    foreach ($m in [regex]::Matches($s, '\\(begin|end)\s*\{([^{}]*)\}')) {
+        $name = $m.Groups[2].Value.Trim()
+        if ($m.Groups[1].Value -eq 'begin') {
+            $stack.Push([pscustomobject]@{ name = $name; index = $m.Index })
+        }
+        elseif ($stack.Count -eq 0) {
+            if (-not $fault) { $fault = [pscustomobject]@{ kind = 'dangling_end'; name = $name; index = $m.Index } }
+        }
+        elseif ($stack.Peek().name -ne $name) {
+            if (-not $fault) { $fault = [pscustomobject]@{ kind = 'mismatched_end'; name = $name; index = $m.Index } }
+            [void]$stack.Pop()
+        }
+        else { [void]$stack.Pop() }
+    }
+    if (-not $fault -and $stack.Count -gt 0) {
+        $open = @($stack.ToArray())[-1]   # bottom of the stack = the earliest \begin still unclosed
+        $fault = [pscustomobject]@{ kind = 'unclosed_begin'; name = $open.name; index = $open.index }
+    }
+    return [pscustomobject]@{ balanced = (-not $fault); fault = $fault }
+}
+
+# Repair hint for an unclosed/dangling/mismatched environment: from the orphaned \begin (or dangling \end)
+# the balance fault names, to end-of-chunk — where the missing \end{<name>} is added (or the stray removed).
+function Get-UnclosedEnvironmentSpans([string]$content) {
+    if (-not $content) { return @() }
+    $bal = Get-EnvironmentBalance $content
+    if ($bal.balanced) { return @() }
+    return @([pscustomobject]@{ start = [int]$bal.fault.index; end = $content.Length })
+}
+
 # Alignment tab (&) outside an alignment environment is a hard KaTeX/MathJax parse error. The bare-& mask
 # minus the environment overlay is the set of &'s no \begin{...}...\end{...} span covers — flagged even
 # when another environment exists elsewhere in the chunk (the old whole-chunk "\begin present?" test

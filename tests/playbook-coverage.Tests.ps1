@@ -9,7 +9,7 @@ BeforeDiscovery {
     . "$PSScriptRoot/../src/fidelity.ps1"
     . "$PSScriptRoot/../src/playbook.ps1"
     $AllEmittableTypes =
-        @($script:CorruptionSignatures | ForEach-Object { $_.type }) +   # 7 corruption signatures
+        @($script:CorruptionSignatures | ForEach-Object { $_.type }) +   # 8 corruption signatures
         @('heading_level_unknown', 'unwrapped_math') +                   # needs_review kinds Invoke-Fidelity routes on
         @('fragmented_formula')                                          # hotspot span kind (Group-MathHotspots)
 }
@@ -19,7 +19,7 @@ BeforeAll {
     . "$PSScriptRoot/../src/playbook.ps1"    # loads the repair playbook data map
 
     # The complete set of issue types the membrane can emit to a work-order:
-    #   - the 7 corruption signatures in $script:CorruptionSignatures
+    #   - the 8 corruption signatures in $script:CorruptionSignatures
     #   - the 2 needs_review kinds Invoke-Fidelity routes on: heading_level_unknown, unwrapped_math
     #   - fragmented_formula (the hotspot span kind, emitted by Group-MathHotspots in serving.ps1)
     $script:CorruptionKinds = @($script:CorruptionSignatures | ForEach-Object { $_.type })
@@ -38,8 +38,8 @@ Describe 'playbook coverage — every emittable issue type has a paired recipe' 
         $recipe.fix | Should -Not -BeNullOrEmpty -Because "recipe for '$type' must have a non-empty fix instruction"
     }
 
-    It 'the total emittable type count is 10 (7 signatures + 2 needs_review + 1 span)' {
-        $script:AllEmittableTypes.Count | Should -Be 10
+    It 'the total emittable type count is 11 (8 signatures + 2 needs_review + 1 span)' {
+        $script:AllEmittableTypes.Count | Should -Be 11
     }
 
     It 'RepairPlaybook has no orphan entries (every recipe maps to an emittable type)' {
@@ -48,7 +48,7 @@ Describe 'playbook coverage — every emittable issue type has a paired recipe' 
         }
     }
 
-    It 'corruption signatures table has exactly 7 entries (the frozen gate)' {
-        $script:CorruptionSignatures.Count | Should -Be 7
+    It 'corruption signatures table has exactly 8 entries (the frozen gate)' {
+        $script:CorruptionSignatures.Count | Should -Be 8
     }
 }
