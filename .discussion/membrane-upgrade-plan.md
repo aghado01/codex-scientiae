@@ -67,9 +67,10 @@ policy readouts stack on top. All layers below **Forward work** are **LANDED** �
    `Test-IsMath -Level Row` (adds `\text{...}` interior to the prose region for row breaks). Chunk-level
    `Test-IsMath` / fidelity `prose_in_formula` unchanged. One home in `latex.ps1`.
 
-5. **Playbook-as-data: complete + de-duplicate**. Recipes live in **both** `PROCEDURE.md` (prose) and
-   `playbook.ps1` (data) — a drift surface. Pick a single source (generate one from the other, or a check
-   that they match) and fill any missing entries. Low risk.
+5. **Playbook-as-data: single-source**. The data table (`playbook.ps1`) is **already complete** — all **10**
+   issue types have recipes. `PROCEDURE.md`'s prose playbook covers only **6** of 10, making it the laggard
+   and the drift surface. Single-source: cut the prose list to a pointer + one worked example, and lock the
+   coverage invariant with a Pester test (`RepairPlaybook.Keys ⊇ emittable issue types`). Low risk.
 
 6. **Split-guard regression tests — LANDED.** Clean split of an already-unbalanced chunk passes (imbalance
    falls in one half, doesn't worsen); orphaning split still rejects.
@@ -96,8 +97,8 @@ lazy / no sidecars · behavior-preserving-or-better, guarded by the differential
 | Item | State |
 |---|---|
 | **Suppression masks** generalized | **Partial** — `$…$` + prose-context overlay on `math_dirt`; not yet generalized beyond un-wrapped-math |
-| **OffsetMap** / byte-exact source coords | **Absent** — `propose_edit` anchors finalized output, not source |
-| **Hooks** (batch governor) + **constitution** prose | **Absent** — Layer 2 deferred |
+| **OffsetMap** / byte-exact source coords | **Seeded** — substrate primitives `Move-Mask`/`Limit-Mask` already exist in `masks.ps1`; the full coordinate transform is not built, but it is not greenfield |
+| **Hooks** (batch governor) + **constitution** prose | **Working prototype — advisory, uninstalled** — 4-rule `contract.json` + Claude adapter (`compile.ps1`/`evaluate.ps1`) at `.claude/governance/`, every rule `mode: advisory`; not yet installed into any harness |
 
 ---
 
