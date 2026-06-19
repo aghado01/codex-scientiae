@@ -2,6 +2,16 @@
 # Integration / regression: the serving layer + a differential A/B of the rebuilt detectors against the
 # pre-port versions over the preprocessed corpus. Corpus-dependent assertions skip cleanly when no
 # document is preprocessed to the chunk stage; the synthetic hotspot test always runs.
+#
+# Two pools, because they answer different questions:
+#   LEGACY  — streams preprocessed by the PRE-refinement engine (WRD2025, DBK2023, 1109.4499v1). The
+#             old-vs-new detector differential and the "stored math_dirt == legacy residual" pin are
+#             defined against this baseline; a divergence here would be a real port regression.
+#   CURRENT — streams normalized by the CURRENT engine (2008.10579v1 and later). Old-vs-new divergence
+#             here is the new pipeline being *better* (the old detector false-positives on content the
+#             new one cleaned), and stored math_dirt is the REFINED value by construction — so the
+#             legacy-baseline pins do NOT apply. Only the engine-internal invariants (refined<=legacy,
+#             determinism, normalize fixed point) run over the whole corpus, where 2008 strengthens them.
 
 BeforeAll {
     . "$PSScriptRoot/../src/serving.ps1"   # fidelity (new) + normalize + latex + masks + crawl
@@ -25,32 +35,49 @@ BeforeAll {
     }
     function Legacy-MathDirt([string]$w) { return ($script:MathLatexRx.Matches([regex]::Replace($w, '\$[^$\n]+\$', ' ')).Count) }
 
-    $files = @(
+    function Read-Stream($Paths) {
+        $list = [System.Collections.Generic.List[object]]::new()
+        foreach ($f in $Paths) { foreach ($ln in [System.IO.File]::ReadLines($f)) { if ($ln.Trim()) { $list.Add(($ln | ConvertFrom-Json)) } } }
+        return $list
+    }
+
+    $legacyFiles = @(
         "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl"
         "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.chunks.jsonl"
         "$PSScriptRoot/../ingestion/corpora/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
     ) | Where-Object { Test-Path -LiteralPath $_ }
-    $hasCorpus = $files.Count -gt 0
+    $currentFiles = @(
+        "$PSScriptRoot/../ingestion/corpora/voroninski/2008.10579v1/.scratch/2008.10579v1.chunks.jsonl"
+    ) | Where-Object { Test-Path -LiteralPath $_ }
 
-    if ($hasCorpus) {
-        $all = [System.Collections.Generic.List[object]]::new()
-        foreach ($f in $files) { foreach ($ln in [System.IO.File]::ReadLines($f)) { if ($ln.Trim()) { $all.Add(($ln | ConvertFrom-Json)) } } }
+    $hasLegacy = $legacyFiles.Count -gt 0
+    $hasCorpus = ($legacyFiles.Count + $currentFiles.Count) -gt 0
 
+    # LEGACY-pool baseline: the old-vs-new differential + stored math_dirt matches legacy residual.
+    if ($hasLegacy) {
+        $legacy = Read-Stream $legacyFiles
         $acceptToReject = 0; $rejectToAccept = 0; $typeChange = 0; $nonGibberishFlip = 0
-        foreach ($c in $all) {
+        foreach ($c in $legacy) {
             $o = Old-CorruptionType $c; $n = Get-CorruptionType $c
             if ($o -eq $n) { continue }
             if ($null -eq $o) { $acceptToReject++; if ($n -ne 'gibberish') { $nonGibberishFlip++ } }
             elseif ($null -eq $n) { $rejectToAccept++ }
             else { $typeChange++ }
         }
-        $dirtMismatch = 0; $storedLegacyMismatch = 0; $refinedExceeds = 0
+        $storedLegacyMismatch = 0
+        foreach ($c in $legacy) {
+            $x = [string]$c.content; if (-not $x) { continue }
+            if ($null -ne $c.math_dirt -and [int]$c.math_dirt -ne (Legacy-MathDirt $x)) { $storedLegacyMismatch++ }
+        }
+    }
+
+    # WHOLE-corpus engine-internal invariants (hold on any stream; current-engine streams strengthen them).
+    if ($hasCorpus) {
+        $all = Read-Stream ($legacyFiles + $currentFiles)
+        $refinedExceeds = 0
         foreach ($c in $all) {
             $x = [string]$c.content; if (-not $x) { continue }
-            $legacy = (Legacy-MathDirt $x)
-            $refined = (Get-MathDirt $x)
-            if ($refined -gt $legacy) { $refinedExceeds++ }
-            if ($null -ne $c.math_dirt -and [int]$c.math_dirt -ne $legacy) { $storedLegacyMismatch++ }
+            if ((Get-MathDirt $x) -gt (Legacy-MathDirt $x)) { $refinedExceeds++ }
         }
         $cleanBroke = 0
         foreach ($c in $all) {
@@ -83,23 +110,26 @@ Describe 'Group-MathHotspots (synthetic)' {
     }
 }
 
-Describe 'corpus A/B — compatibility with the pre-port detectors' {
+Describe 'corpus A/B — compatibility with the pre-port detectors (legacy pool)' {
     It 'merge-gate never increases misses (0 reject->accept)' {
-        if (-not $hasCorpus) { Set-ItResult -Skipped -Because 'no document preprocessed to the chunk stage'; return }
+        if (-not $hasLegacy) { Set-ItResult -Skipped -Because 'no legacy document preprocessed to the chunk stage'; return }
         $rejectToAccept | Should -Be 0
     }
     It 'merge-gate makes no corruption_type changes' {
-        if (-not $hasCorpus) { Set-ItResult -Skipped; return }
+        if (-not $hasLegacy) { Set-ItResult -Skipped; return }
         $typeChange | Should -Be 0
     }
     It 'every new accept->reject flip is a gibberish recall fix' {
-        if (-not $hasCorpus) { Set-ItResult -Skipped; return }
+        if (-not $hasLegacy) { Set-ItResult -Skipped; return }
         $nonGibberishFlip | Should -Be 0
     }
     It 'math_dirt stored on corpus chunks matches legacy residual (re-normalize to pick up refinement)' {
-        if (-not $hasCorpus) { Set-ItResult -Skipped; return }
+        if (-not $hasLegacy) { Set-ItResult -Skipped; return }
         $storedLegacyMismatch | Should -Be 0
     }
+}
+
+Describe 'corpus invariants — engine-internal, whole corpus (incl. current-engine streams)' {
     It 'refined math_dirt never exceeds legacy residual' {
         if (-not $hasCorpus) { Set-ItResult -Skipped; return }
         $refinedExceeds | Should -Be 0

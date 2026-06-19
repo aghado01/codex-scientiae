@@ -5,8 +5,10 @@ Companion to [`agentic-membrane-architecture.md`](agentic-membrane-architecture.
 against the **live 21-tool** [`src/mcp-server.ps1`](../src/mcp-server.ps1) server — not the 6-tool prototype
 the architecture doc describes.
 
-*Status — 2026-06-17: the **pincer policy layer is complete**. This doc is the single forward plan: what
-landed, what's next, and the discipline that carries.*
+*Status — 2026-06-19: re-layering complete; **first light flown** on an Orc (`2008.10579v1`, not the DoCarmo
+balrog) — see [`first-light-brief.md`](first-light-brief.md). The run surfaced and fixed a real engine gap
+(the `unclosed_environment` signature — an 8th gate type) and re-pinned the corpus regression. This doc is
+the single forward plan: what landed, what's next, and the discipline that carries.*
 
 Per-feature design briefs: [`mask-algebra-fidelity-brief.md`](mask-algebra-fidelity-brief.md),
 [`pincer-policy-brief.md`](pincer-policy-brief.md), [`composite-work-orders-brief.md`](composite-work-orders-brief.md),
@@ -37,7 +39,10 @@ policy readouts stack on top. All layers below **Forward work** are **LANDED** �
 - **Retype** — unbalanced content allowed; content path + `apply` gate fix it after.
 - **One table** — `$script:CorruptionSignatures`; no fork. **`apply`'s content gate unchanged.**
 
-**Validation:** 147 Pester tests green (corpus differential A/B live on 1,522 chunks where preprocessed).
+**Validation:** 173 Pester tests green. **Eight** corruption signatures (the `unclosed_environment` gate
+joined after first light). Corpus A/B is now **two-pool**: the pre-port differential stays scoped to its
+legacy baseline (WRD2025 + DBK2023 + 1109.4499v1), while the engine-internal invariants (refined≤legacy,
+determinism, normalize fixed-point) run over the whole corpus, incl. the current-engine `2008.10579v1` stream.
 
 **Retired:** `inventory.jsonl` as a validation matrix (validation is intrinsic via algebraic laws + pincer).
 
@@ -67,18 +72,29 @@ policy readouts stack on top. All layers below **Forward work** are **LANDED** �
    `Test-IsMath -Level Row` (adds `\text{...}` interior to the prose region for row breaks). Chunk-level
    `Test-IsMath` / fidelity `prose_in_formula` unchanged. One home in `latex.ps1`.
 
-5. **Playbook-as-data: single-source**. The data table (`playbook.ps1`) is **already complete** — all **10**
-   issue types have recipes. `PROCEDURE.md`'s prose playbook covers only **6** of 10, making it the laggard
-   and the drift surface. Single-source: cut the prose list to a pointer + one worked example, and lock the
-   coverage invariant with a Pester test (`RepairPlaybook.Keys ⊇ emittable issue types`). Low risk.
+5. **Playbook-as-data: single-source — coverage test LANDED.** The coverage invariant
+   (`RepairPlaybook.Keys ⊇ every emittable issue type`) is pinned by `tests/playbook-coverage.Tests.ps1`
+   (**11** types: 8 signatures + 2 needs_review + `fragmented_formula`). Adding a signature without a recipe
+   now fails the suite — it already forced the `unclosed_environment` recipe (#9). **STILL OPEN:** cut
+   `PROCEDURE.md`'s prose playbook (covers 6 of 11) to a pointer + one worked example, so the recipe text is
+   single-sourced in `playbook.ps1`.
 
 6. **Split-guard regression tests — LANDED.** Clean split of an already-unbalanced chunk passes (imbalance
    falls in one half, doesn't worsen); orphaning split still rejects.
 
-7. **`gibberish` `MinRun` re-calibration**. `Test-IsGibberish MinRun=4` is calibrated on the 3 preprocessed
-   docs; re-validate (re-run the corpus A/B) when the other docs get a chunk stream. Data-dependent.
+7. **`gibberish` `MinRun` re-calibration — validated.** First light gave `2008.10579v1` a chunk stream; the
+   harvest confirmed `MinRun=4` holds at book scale (1 formula false positive, chunk 616; `MinRun=5`→0), and
+   the paper is now pinned into the corpus regression (engine-internal pool) so future detector changes are
+   guarded against it. `MinRun=4` stands.
 
 8. **Deferred tail (long-horizon)** — see §Deferred substrate below.
+
+9. **`unclosed_environment` signature — LANDED (first light).** `Get-LatexBalance` can't see `\begin`/`\end`
+   closure, so an `\end` excised with a degenerate `\intertext` tail left a brace-balanced-but-open
+   environment that slipped `flagged=0` and broke the parser (79 `\begin` vs 76 `\end` in `2008.10579v1`).
+   Added `Get-EnvironmentBalance` (latex.ps1), the appended 8th corruption signature (fidelity.ps1, last-in-
+   precedence so the corpus A/B verdicts are unperturbed), its playbook recipe, and a `repair.ps1` excision
+   env-guard so the pipeline no longer *creates* the orphan. Cover: `tests/environment-closure.Tests.ps1`.
 
 ### Sequencing
 
@@ -99,6 +115,7 @@ lazy / no sidecars · behavior-preserving-or-better, guarded by the differential
 | **Suppression masks** generalized | **Partial** — `$…$` + prose-context overlay on `math_dirt`; not yet generalized beyond un-wrapped-math |
 | **OffsetMap** / byte-exact source coords | **Seeded** — substrate primitives `Move-Mask`/`Limit-Mask` already exist in `masks.ps1`; the full coordinate transform is not built, but it is not greenfield |
 | **Hooks** (batch governor) + **constitution** prose | **Working prototype — advisory, uninstalled** — 4-rule `contract.json` + Claude adapter (`compile.ps1`/`evaluate.ps1`) at `.claude/governance/`, every rule `mode: advisory`; not yet installed into any harness |
+| **Enrichment tier** (ASCII under-markup, e.g. `O(s log n)`) | **Designed, not built** — the fidelity gate correctly leaves valid ASCII math `faithful`; wrapping it in `$…$` is house-style enrichment, not corruption. Sketched in [`enrichment-tier-brief.md`](enrichment-tier-brief.md); deliberately NOT a new signature (that is the brittle-rule trap first light flagged). |
 
 ---
 
