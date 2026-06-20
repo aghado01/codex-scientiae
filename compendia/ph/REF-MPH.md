@@ -41,13 +41,13 @@ Note that partial orderings allow for elements to be incomparable, i.e., it can 
 /precedesequal op /followsequal, where
 
 $$
-a \preceq b \iff b \preceq a \quad \text {for all a,b\in P}.
+a \preceq b \iff b \preceq a \quad \text{for all a,b\in P}.
 $$
 
 - For two posets ( P, P ) and ( Q, Q ) we have the product poset ( P ⇥ Q, ), where
 
 $$
-( p, q ) \preceq ( p ^{\prime}, q ^{\prime} ) \iff p \preceq _{P} p ^{\prime} \text {and} q \preceq _{Q} q ^{\prime} \quad \text {for all} p, p ^{\prime} \in P \text {and} q, q ^{\prime} \in Q.
+( p, q ) \preceq ( p^{\prime}, q^{\prime} ) \iff p \preceq_{P} p^{\prime} \text{and} q \preceq_{Q} q^{\prime} \quad \text{for all} p, p^{\prime} \in P \text{and} q, q^{\prime} \in Q.
 $$
 
 We can now define filtrations and persistence modules indexed by an arbitrary poset, generalizing our definitions from earlier chapters.
@@ -70,7 +70,7 @@ Example 9.5. Let X be a finite metric space. Then the family ( r d ( X )) r 2,d 
 Example 9.6. Let X ✓ be a finite point cloud. For r 2 and d 2, define
 
 $$
-\mathcal {M} \mathcal {C} _{d} ^{r} = \{x \in \mathbb {R} ^{n} \colon | B ( x, r ) \cap X | \geqslant d \} \subseteq \mathbb {R} ^{n}.
+\mathcal{M} \mathcal{C}_{d}^{r} = \{x \in R^{n} \colon | B ( x, r ) \cap X | \geqslant d \} \subseteq R^{n}.
 $$
 
 Note that, for d = 1, this is just the union-of-balls used to define the Čech complex. The family ( MC r d ( X )) r 2,d 2 is a filtration (of topological spaces) indexed by ⇥ op. It is called the multicover bifiltration.
@@ -84,7 +84,7 @@ Both of the filtrations above can also be thought of as indexed over 2 (after a 
 Recall that a p.f.d. persistence module indexed by can be uniquely represented by a barcode. In Chapter 6, we saw that this follows from the fact that any such can be decomposed into interval modules in a unique way:
 
 $$
-\mathbb {U} \cong \bigoplus _{i \in I} \mathbb {I} _{\langle a, b \rangle}.
+U \cong \bigoplus_{i \in I} I_{\langle a, b \rangle}.
 $$
 
 Each interval in this decomposition corresponds to a bar in the barcode of. We could hope a similar statement holds for modules indexed by any poset P. The following definition and theorem should give us some hope:
@@ -96,7 +96,7 @@ Exercise 9.8. Show that interval modules (indexed by ) are indecomposable.
 Theorem 9.9. Let be a p.f.d. persistence module (indexed by a poset P ). Then, there is a unique decomposition:
 
 $$
-U \cong \bigoplus _{i \in I} \mathbb {U} _{i}, \\ 1 _{i} = 1.
+U \cong \bigoplus_{i \in I} U_{i}, \\ 1_{i} = 1.
 $$
 
 where each persistence module i is indecomposable.
@@ -106,7 +106,7 @@ Understanding P -persistence modules thus boils down to understanding indecompos
 Definition 9.10. Let ( P, ) be a poset and let be a P -persistence module. We say a multiset B of subsets of P is a reasonable barcode for if
 
 $$
-\ r a n k ( u _{p, p ^{\prime}} ) = | \{B \in \mathcal {B} \colon p, p ^{\prime} \in B \} | \quad ( \forall p \preceq p ^{\prime} ). \\
+\ r a n k ( u_{p, p^{\prime}} ) = | \{B \in \mathcal{B} \colon p, p^{\prime} \in B \} | \quad ( \forall p \preceq p^{\prime} ). \\
 $$
 
 That is, the rank of the map u p,p 0 : U p ! U p 0 can be computed by counting the number of ‘bars’ that contain both p and p 0.
@@ -118,13 +118,17 @@ Exercise 9.12. For p 2 P, show that dim U p is greater than or equal to the numb
 Example 9.13. Let P = { 0,1,2 } ⇥ { 0,1,2 } and consider the following persistence module indexed by P :
 
 $$
-\mathbb {F} & \longrightarrow \mathbb {F} \longrightarrow 0 & f & \colon a & \mapsto ( a, 0 ) \\ \text {id} & \widehat {g} & \widehat {\uparrow} & g & \colon ( a, b ) & \mapsto a \\ \mathbb {U} & = \mathbb {F} \longrightarrow \mathbb {F} ^{2} & \mathbb {F} & \, \mathbb {F} \,, & \text {where} & h & \colon ( a, b ) & \mapsto a + b \\ & \widehat {\uparrow} & \widehat {j} & \widehat {\uparrow} & \text {id} & j & \colon a & \mapsto ( 0, a ) \\ & 0 & \longrightarrow \mathbb {F} \longrightarrow \mathbb {F} \\ \text {We claim} \mathbb {U} & \, \text {can not have a reasonable hargcode} \, \text {to see this, sumpose}
+\begin{aligned}
+F & \longrightarrow F \longrightarrow 0 & f & \colon a & \mapsto ( a, 0 ) \\ \text{id} & \widehat{g} & \widehat{\uparrow} & g & \colon ( a, b ) & \mapsto a \\ U & = F \longrightarrow F^{2} & F & \, F \,, & \text{where} & h & \colon ( a, b ) & \mapsto a + b \\ & \widehat{\uparrow} & \widehat{j} & \widehat{\uparrow} & \text{id} & j & \colon a & \mapsto ( 0, a ) \\ & 0 & \longrightarrow F \longrightarrow F \\ \text{We claim} U & \, \text{can not have a reasonable hargcode} \, \text{to see this, sumpose}
+\end{aligned}
 $$
 
 We claim cannot have a reasonable barcode. To see this, suppose B is a reasonable barcode for. Note that
 
 $$
-\ r a n k ( h \circ f ) & = \text {rank} ( g \circ f ) = \text {rank} ( h \circ j ) = 1. \\
+\begin{aligned}
+\ r a n k ( h \circ f ) & = \text{rank} ( g \circ f ) = \text{rank} ( h \circ j ) = 1. \\
+\end{aligned}
 $$
 
 By the reasonability assumption, there thus must be subsets I,J,K 2 B with
@@ -136,7 +140,9 @@ $$
 Since dim U 0,1 = dim U 2,1 = 1, we know by Exercise 9.12 that ( 0,1 ) and ( 2,1 ) occur in at most one element of B. But that means that I = J, and I = K, and so in fact I = J = K ◆ { ( 0,1 ), ( 2,1 ), ( 1,2 ) }. Thus, using reasonability again, we find that
 
 $$
-\text {rank} ( g \circ j ) & \geqslant 1, \\
+\begin{aligned}
+\text{rank} ( g \circ j ) & \geqslant 1, \\
+\end{aligned}
 $$
 
 contradicting the fact that g j = 0.
@@ -210,7 +216,7 @@ The definition above agrees with our earlier definition of interleaving when n =
 Definition 9.16. The matching distance between p.f.d. n -persistence modules, is
 
 $$
-d _{\text {match}} ( \mathbb {U}, \mathbb {V} ) \coloneqq \sup _{L} \ \left \{d _{B} ( \mathcal {B} ( \mathbb {U} _{L} ), \ \mathcal {B} ( \mathbb {V} _{L} ) ) \right \}, \\ \intertext {w h e r e} \ w h e r e \ t h e \ s u p r e m a y m i s t o k e n \ o v e r \ a l l \ l i n e s \ I \colon t \mapsto t a
+d_{\text{match}} ( U, V ) \coloneqq \sup_{L} \ \left \{d_{B} ( \mathcal{B} ( U_{L} ), \ \mathcal{B} ( V_{L} ) ) \right \}, \\ \intertext{w h e r e} \ w h e r e \ t h e \ s u p r e m a y m i s t o k e n \ o v e r \ a l l \ l i n e s \ I \colon t \mapsto t a
 $$
 
 where the supremum is taken over all lines L : t 7! ta + b with a ⌫ 1, b 2 n.
@@ -218,7 +224,7 @@ where the supremum is taken over all lines L : t 7! ta + b with a ⌫ 1, b 2 n.
 Theorem 9.17 (see [3]). For any two p.f.d. n -persistence modules,
 
 $$
-d _{\text {match}} ( \mathbb {U}, \mathbb {V} ) \leqslant d _{I} ( \mathbb {U}, \mathbb {V} ).
+d_{\text{match}} ( U, V ) \leqslant d_{I} ( U, V ).
 $$
 
 Exercise 9.18. Prove that d B B ( L ), B ( L ) 6 d I (, ) for all lines L : t 7! t 1 + b.
@@ -230,7 +236,7 @@ Finally, we come back to the primary reason for studying multiparameter persiste
 Definition 9.19. Let X,Y ✓ n finite. The Prohorov distance 1 between $\mu$ X,$\mu$ Y is
 
 $$
-d _{\Pr} ( \mu _{X}, \mu _{Y} ) \coloneqq \supinf _{A} \{\delta \geqslant 0 \colon \mu _{X} ( A ) \leqslant \mu _{Y} ( A ^{\delta} ) + \delta \ a n d \ \mu _{Y} ( A ) \leqslant \mu _{X} ( A ^{\delta} ) + \delta \},
+d_{\Pr} ( \mu_{X}, \mu_{Y} ) \coloneqq \supinf_{A} \{\delta \geqslant 0 \colon \mu_{X} ( A ) \leqslant \mu_{Y} ( A^{\delta} ) + \delta \ a n d \ \mu_{Y} ( A ) \leqslant \mu_{X} ( A^{\delta} ) + \delta \},
 $$
 
 where A ranges over all closed subsets of n and A : = { y 2 n : dist ( y,A ) 6 }.
@@ -242,7 +248,7 @@ While the definition of the Prohorov distance appears a bit complicated, the fol
 Exercise 9.20. Let X Y ✓ n, finite, non-empty sets. Show that
 
 $$
-d _{\Pr} ( \mu _{X}, \mu _{Y} ) \leqslant \frac {| Y \ \ X |} {| X |}.
+d_{\Pr} ( \mu_{X}, \mu_{Y} ) \leqslant \frac{| Y \ \ X |}{| X |}.
 $$
 
 As an example, the normalized multicover persistence module turns out to be stable w.r.t. Prohorov distance (i.e., it is robust to outliers).
@@ -250,7 +256,9 @@ As an example, the normalized multicover persistence module turns out to be stab
 Definition 9.21. Let X ✓ n be a finite point cloud. For r, ⇢ 2, the sets
 
 $$
-\mathcal {N M C} _{\rho} ^{r} ( X ) & \coloneqq \{x \in \mathbb {R} ^{n} \, \colon | B ( x, r ) \cap X | \geqslant \rho | X | \} = \{x \in \mathbb {R} ^{n} \, \colon \mu _{X} ( B ( x, r ) \cap X ) \geqslant \rho \}. \\ \intertext {f o r m a b i l f l t r a t i o n o v e r R \times \mathbb {R} ^{o p} c a l l e d t h e n o r m a l z i d u c t i v e b i f l t r a t i o n.}
+\begin{aligned}
+\mathcal{N M C}_{\rho}^{r} ( X ) & \coloneqq \{x \in R^{n} \, \colon | B ( x, r ) \cap X | \geqslant \rho | X | \} = \{x \in R^{n} \, \colon \mu_{X} ( B ( x, r ) \cap X ) \geqslant \rho \}. \\ \intertext{f o r m a b i l f l t r a t i o n o v e r R \times R^{o p} c a l l e d t h e n o r m a l z i d u c t i v e b i f l t r a t i o n.}
+\end{aligned}
 $$
 
 form a bilfiltration over ⇥ op called the normalized multicover bifiltration.
@@ -258,19 +266,21 @@ form a bilfiltration over ⇥ op called the normalized multicover bifiltration.
 Theorem 9.22 (see [1]). Let X,Y ✓ n finite. For all k > 0, we have
 
 $$
-d _{I} \left ( H _{k} ( \mathbb {N} \mathcal {M} \mathcal {C} ( X ) ), \ H _{k} ( \mathbb {N} \mathcal {M} \mathcal {C} ( Y ) ) \right ) & \leqslant d _{\Pr} ( \mu _{X}, \mu _{Y} ). \\ P r o f, \text {let} \epsilon = d _{\Pr} ( \mu _{X}, \mu _{Y} ), \text {We will show that}
+\begin{aligned}
+d_{I} \left ( H_{k} ( N \mathcal{M} \mathcal{C} ( X ) ), \ H_{k} ( N \mathcal{M} \mathcal{C} ( Y ) ) \right ) & \leqslant d_{\Pr} ( \mu_{X}, \mu_{Y} ). \\ P r o f, \text{let} \epsilon = d_{\Pr} ( \mu_{X}, \mu_{Y} ), \text{We will show that}
+\end{aligned}
 $$
 
 Proof. Let ✏ = d Pr ( $\mu$ X,$\mu$ Y ). We will show that
 
 $$
-\mathcal {N M C} _{\rho} ^{r} ( X ) \subseteq \mathcal {N M C} _{\rho - \epsilon} ^{r + \epsilon} ( Y ) \subseteq \mathcal {N M C} _{\rho - 2 \epsilon} ^{r + 2 \epsilon} ( X ) \quad \forall r, \rho \in \mathbb {R}.
+\mathcal{N M C}_{\rho}^{r} ( X ) \subseteq \mathcal{N M C}_{\rho - \epsilon}^{r + \epsilon} ( Y ) \subseteq \mathcal{N M C}_{\rho - 2 \epsilon}^{r + 2 \epsilon} ( X ) \quad \forall r, \rho \in R.
 $$
 
 These inclusions induce the maps
 
 $$
-\varphi _{r, \rho} \colon H _{k} ( \mathcal {N M C} _{\rho} ^{r} ( X ) ) \to H _{k} ( \mathcal {N M C} _{\rho - \epsilon} ^{r + \epsilon} ( Y ) ), \\ \psi _{r + \epsilon, \rho - \epsilon} \colon H _{k} ( \mathcal {N M C} _{\rho - \epsilon} ^{r + \epsilon} ( Y ) ) \to H _{k} ( \mathcal {N M C} _{\rho - 2 \epsilon} ^{r + 2 \epsilon} ( X ) )
+\varphi_{r, \rho} \colon H_{k} ( \mathcal{N M C}_{\rho}^{r} ( X ) ) \to H_{k} ( \mathcal{N M C}_{\rho - \epsilon}^{r + \epsilon} ( Y ) ), \\ \psi_{r + \epsilon, \rho - \epsilon} \colon H_{k} ( \mathcal{N M C}_{\rho - \epsilon}^{r + \epsilon} ( Y ) ) \to H_{k} ( \mathcal{N M C}_{\rho - 2 \epsilon}^{r + 2 \epsilon} ( X ) )
 $$
 
 \cdot ) ) )

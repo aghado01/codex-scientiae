@@ -117,7 +117,7 @@
 
 ---
 
-## [P ERSISTENT T OPOLOGICAL F EATURES IN L ARGE L ANGUAGE M ODELS](GVPB2025.md)
+## [PERSISTENT TOPOLOGICAL FEATURES IN LARGE LANGUAGE MODELS](GVPB2025.md)
 
 - [A BSTRACT](GVPB2025.md#a-bstract)
 - [1 Introduction](GVPB2025.md#1-introduction)
@@ -148,17 +148,6 @@
 
 ---
 
-## [Bayesian Regression of Piecewise Constant Functions](HTR2005.md)
-
-- [Marcus Hutter](HTR2005.md#marcus-hutter)
-- [Abstract](HTR2005.md#abstract)
-- [Keywords](HTR2005.md#keywords)
-- [1 Introduction](HTR2005.md#1-introduction)
-- [2 The General Model](HTR2005.md#2-the-general-model)
-- [8 The Algorithm](HTR2005.md#8-the-algorithm)
-- [9 Synthetic Examples](HTR2005.md#9-synthetic-examples)
-- [Table 1: Regression algorithm in pseudo C code](HTR2005.md#table-1-regression-algorithm-in-pseudo-c-code)
-
 ---
 
 ## [Mayer Path Homology](KGW2026.md)
@@ -173,7 +162,7 @@
 - [2.2.3 Path Homology](KGW2026.md#2-2-3-path-homology)
 - [3 Mayer Path Homology](KGW2026.md#3-mayer-path-homology)
 - [3.1 Properties of N -Chain Complexes of Path Complexes induced by Digraphs](KGW2026.md#3-1-properties-of-n-chain-complexes-of-path-complexes-induced-by-digraphs)
-- [3.1.1 ∂ -invariant 2 -path Ω N 2](KGW2026.md#3-1-1-∂-invariant-2-path-ω-n-2)
+- [3.1.1 $\partial$ -invariant 2 -path $Ω N$ 2](KGW2026.md#3-1-1-∂-invariant-2-path-ω-n-2)
 - [3.1.2 $ \partial $-invariant 3-path $ \Omega _ { N } ^ { 3 } $](KGW2026.md#3-1-2-$-\partial-$-invariant-3-path-$-\omega-_-n-^-3-$)
 - [3.2 The First Mayer Path Homology Group H N,q 1](KGW2026.md#3-2-the-first-mayer-path-homology-group-h-n-q-1)
 
@@ -301,9 +290,9 @@
 
 - [Abstract](RVH2020.md#abstract)
 - [1 Introduction](RVH2020.md#1-introduction)
-- [2 Filtering in inﬁnite dimension](RVH2020.md#2-filtering-in-inﬁnite-dimension)
-- [2.1 Nonlinear ﬁltering and ergodicity](RVH2020.md#2-1-nonlinear-ﬁltering-and-ergodicity)
-- [2.2 The inﬁnite-dimensional model](RVH2020.md#2-2-the-inﬁnite-dimensional-model)
+- [2 Filtering in infinite dimension](RVH2020.md#2-filtering-in-infinite-dimension)
+- [2.1 Nonlinear filtering and ergodicity](RVH2020.md#2-1-nonlinear-filtering-and-ergodicity)
+- [2.2 The infinite-dimensional model](RVH2020.md#2-2-the-infinite-dimensional-model)
 - [3 A conditional phase transition](RVH2020.md#3-a-conditional-phase-transition)
 - [3.1 Model and results](RVH2020.md#3-1-model-and-results)
 - [4 Symmetry breaking and observability](RVH2020.md#4-symmetry-breaking-and-observability)
@@ -340,7 +329,7 @@
 - [A. Background on Persistent Homology and Persistence Images](SGL2022.md#a-background-on-persistent-homology-and-persistence-images)
 - [B. Filtrations](SGL2022.md#b-filtrations)
 - [C. Logistic Regression](SGL2022.md#c-logistic-regression)
-- [D. k-Nearest Neighbours Classiﬁcation](SGL2022.md#d-k-nearest-neighbours-classiﬁcation)
+- [D. k-Nearest Neighbours Classification](SGL2022.md#d-k-nearest-neighbours-classification)
 - [E. Finite-Size Scaling Analysis](SGL2022.md#e-finite-size-scaling-analysis)
 - [F. Statistical Analysis](SGL2022.md#f-statistical-analysis)
 - [G. Analysis Pipeline](SGL2022.md#g-analysis-pipeline)

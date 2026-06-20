@@ -132,7 +132,7 @@ Example 3.2. Let Filt = ( F r ) r $\in$ T be a filtration of a simplicial comple
 In many cases, a persistence module can be decomposed into a direct sum of intervals modules I ( b,d ) of the form
 
 $$
-\cdots \to 0 \to \cdots \to 0 \to \mathbb {Z} _{2} \to \cdots \to \mathbb {Z} _{2} \to 0 \to \cdots
+\cdots \to 0 \to \cdots \to 0 \to Z_{2} \to \cdots \to Z_{2} \to 0 \to \cdots
 $$
 
 where the maps Z 2 $\to$ Z 2 are identity maps while all the other maps are 0. Denoting b (resp. d ) the infimum (resp. supremum) of the interval of indices corresponding to non zero vector spaces, such a module can be interpreted as a feature that appears in the filtration at index b and disappear at index d. When a persistence module V can be decomposed as a direct sum of interval modules, one can show that this decomposition is unique up to reordering the intervals (see [CdSGO16, Theorem 2.7]). As a consequence, the set of resulting intervals is independent of the decomposition of V and is called the persistence barcode of V.
@@ -183,7 +183,7 @@ In other words, for any p ∈ dgm 1 \ ∆, and for any q ∈ dgm 2 \ ∆, ( { p 
 Definition 4.2 (Bottleneck Distance). The bottleneck distance between dgm 1 and dgm 2 is then defined by
 
 $$
-d _{b} ( d g m _{1}, d g m _{2} ) = \inf _{\ m a t h i n g {\ m} \left ( p, q \right ) \in m} \max _{\} \left \| p - q \right \| _{\infty}.
+d_{b} ( d g m_{1}, d g m_{2} ) = \inf_{\ m a t h i n g{\ m} \left ( p, q \right ) \in m} \max_{\} \left \| p - q \right \|_{\infty}.
 $$
 
 ![The image presents a graph with two sets of points. The graph is titled d and has a legend in the top right corner. The legend indicates that the points are labeled as follows: - **d(gdm,dgm2)** - **d(gdm,dgm3)** - **d(gdm,dgm4)** The graph is labeled as d and has a scale of range 0 to 100. The x-axis is labeled d and the y-axis is labeled d(gdm,dgm2). The graph shows a trend of increasing values of the function d as the x-axis increases. The points are scattered around the x-axis, with some points closer to the x-axis and others farther away. The graph also includes a scale labeled b with a value of 0 to 100. The](<PH-REF/imageFile7.png>)
@@ -201,7 +201,7 @@ Figure 4. A perfect matching and the bottleneck distance between a blue and a re
 (ii) The bottleneck metric is a L ∞ -like metric. It turns out to be the natural one to express stability properties of persistence diagrams presented in Section 5, but it suffers from the same drawbacks as the usual L ∞ norms, i.e. it is completely determined by the largest distance among the pairs and do not take into account the closeness of the remaining pairs of points. A variant, to overcome this issue, the so-called Wasserstein distance between diagrams is sometimes considered. Given p 1, it is defined by
 
 $$
-W _{p} ( d g m _{1}, d g m _{2} ) ^{p} = \inf _{\text {matching}} \sum _{( p, q ) \in m} \| p - q \| _{\infty} ^{p}.
+W_{p} ( d g m_{1}, d g m_{2} )^{p} = \inf_{\text{matching}} \sum_{( p, q ) \in m} \| p - q \|_{\infty}^{p}.
 $$
 
 Useful stability results for persistence in the metric W p exist among the literature, but they rely on assumptions that make them consequences of the stability results in the bottleneck metric.
@@ -243,7 +243,7 @@ Definition 5.1 (Homomorphism of Persistence Modules). Let V, W be two persistenc
 +
 
 $$
-T h a t \text {is, for all} r \leqslant s, \, \phi _{s} \circ v _{s} ^{r} = w _{s + \delta} ^{r + \delta} \circ \phi _{r}.
+T h a t \text{is, for all} r \leqslant s, \, \phi_{s} \circ v_{s}^{r} = w_{s + \delta}^{r + \delta} \circ \phi_{r}.
 $$
 
 An important example of homomorphism of degree $\delta$ is the shift endomorphism 1 $\delta$ V which consists of the families of linear maps $\varphi$ r = v r r + $\delta$. Notice also that homomorphisms of persistence modules can naturally be composed: the composition of a homomorphism Ψ of degree $\delta$ between U and V and a homomorphism $\Phi$ of degree $\delta$ between V and W naturally gives rise to a homomorphism $\Phi$Ψ of degree $\delta$ + $\delta$ between U and W.
@@ -321,25 +321,27 @@ Although it does not define a metric on the space of persistence modules, the no
 Theorem 5.3 (Stability of Persistence). Let V and W be two q-tame persistence modules. If V and W are $\delta$ -interleaved for some $\delta$ 0, then
 
 $$
-d _{b} ( d g m ( \mathbb {V} ), d g m ( \mathbb {W} ) ) \leqslant \delta.
+d_{b} ( d g m ( V ), d g m ( W ) ) \leqslant \delta.
 $$
 
 Proof.
 
 $$
-P r o f. \, \text {See} [ \text {CdSGO116} ]. & & \Box
+\begin{aligned}
+P r o f. \, \text{See} [ \text{CdSGO116} ]. & & \Box
+\end{aligned}
 $$
 
 Remark 5.4. One can actually show that there is an isometry between q-tame persistence modules a purely algebraic construction —, and persistence diagrams points above the diagonal [CdSGO16]. Indeed, defining the interleaving distance as
 
 $$
-d _{i} ( \mathbb {V}, \mathbb {W} ) = \inf \left \{\delta > 0 | \mathbb {V} \text {and} \mathbb {W} \text {are} \delta \text {-interleaved} \right \},
+d_{i} ( V, W ) = \inf \left \{\delta > 0 | V \text{and} W \text{are} \delta \text{-interleaved} \right \},
 $$
 
 we have, for all q-tame persistence modules V and W,
 
 $$
-d _{b} ( d g m ( \mathbb {V} ), d g m ( \mathbb {W} ) ) = d _{i} ( \mathbb {V}, \mathbb {W} ).
+d_{b} ( d g m ( V ), d g m ( W ) ) = d_{i} ( V, W ).
 $$
 
 ### 5.2. Stability for Functions
@@ -353,13 +355,13 @@ Proposition 5.6. If f : M $\to$ R is continuous and M is finitely triangulable (
 Proof. Fpr simplicity, let us write M r = f − 1 (( −∞,r ]), for r $\in$ R. For all b < c, we must show that H ( M b ) $\to$ H ( M c ) has finite rank. Begin with any finite triangulation of M, and subdivide it repeatedly until no simplex meets both f − 1 ( b ) and f − 1 ( c ). If we define K to be the union of the closed simplices which meet M b, then we have
 
 $$
-M _{b} \subset \mathcal {K} \subset M _{c},
+M_{b} \subset \mathcal{K} \subset M_{c},
 $$
 
 and hence the factorization
 
 $$
-H ( M _{b} ) \rightarrow H ( \mathcal {K} ) \rightarrow H ( M _{c} ).
+H ( M_{b} ) \rightarrow H ( \mathcal{K} ) \rightarrow H ( M_{c} ).
 $$
 
 Since K is (a geometric realization of) a finite simplicial complex, H ( K ) is finite dimensional and so H ( M b ) $\to$ H ( M c ) has finite rank.
@@ -367,7 +369,7 @@ Since K is (a geometric realization of) a finite simplicial complex, H ( K ) is 
 Theorem 5.7. Let f,g : M $\to$ R be q-tame. Then for any integer k,
 
 $$
-d _{b} ( d g m _{k} ( f ), d g m _{k} ( g ) ) \leqslant \| f - g \| _{\infty} = \sup _{x \in M} | f ( x ) - g ( x ) |
+d_{b} ( d g m_{k} ( f ), d g m_{k} ( g ) ) \leqslant \| f - g \|_{\infty} = \sup_{x \in M} | f ( x ) - g ( x ) |
 $$
 
 where dgm k ( f ) (resp. dgm k ( g ) ) is the persistence diagram of the persistence module ( H k ( f − 1 ( −∞,r ])) | r $\in$ R ) (resp. ( H k ( g − 1 ( −∞,r ])) | r $\in$ R ) ) where the linear maps are the one induced by the canonical inclusion maps between sublevel sets.
@@ -387,7 +389,7 @@ Theorem 5.3 also implies a stability result for the persistence diagrams of filt
 Theorem 5.9. Let X and Y be two compact metric spaces and let Filt( X ) and Filt( Y ) be the Vietoris-Rips of ˇ Cech filtrations built on top X and Y. Then
 
 $$
-d _{b} \left ( d g m ( F i l t ( \mathbb {X} ) ), d g m ( F i l t ( \mathbb {Y} ) ) \right ) \leqslant 2 \, d _{G H} ( \mathbb {X}, \mathbb {Y} ),
+d_{b} \left ( d g m ( F i l t ( X ) ), d g m ( F i l t ( Y ) ) \right ) \leqslant 2 \, d_{G H} ( X, Y ),
 $$
 
 where dgm(Filt( X )) and dgm(Filt( Y )) denote the persistence diagram of the filtrations Filt( X ) and Filt( X ).
@@ -431,18 +433,18 @@ Figure 6. Discussion on the tightness of Theorem 5.9.
 (ii) In general, this is only an upper bound. Indeed, write
 
 $$
-\mathbb {X} = \{( 0, 0 ), ( 1, 0 ), ( 1 / 2, \sqrt {3} / 2 ) \} \subset \mathbb {R} ^{2}
+X = \{( 0, 0 ), ( 1, 0 ), ( 1 / 2, \sqrt{3} / 2 ) \} \subset R^{2}
 $$
 
-\text { and } \mathbb { Y } = \{ - 1, 0, 1 \} \ ( \text {see Figure 6b} ). \text { Then } d _ { G H } ( \mathbb { X }, \mathbb { Y } ) = 1 / 2, \text { while}
+\text { and } Y = \{ - 1, 0, 1 \} \ ( \text {see Figure 6b} ). \text { Then } d _ { G H } ( X, Y ) = 1 / 2, \text { while}
 $$
-\deg _{0} ( F i l t ( \mathbb {X} ) ) = \{( 0, \infty ), ( 0, 1 ), ( 0, 1 ) \} = \deg _{0} ( F i l t ( \mathbb {Y} ) ),
+\deg_{0} ( F i l t ( X ) ) = \{( 0, \infty ), ( 0, 1 ), ( 0, 1 ) \} = \deg_{0} ( F i l t ( Y ) ),
 $$
 
 so that
 
 $$
-d _{b} \left ( d g m _{0} ( F i l t ( \mathbb {X} ) ), d g m _{0} ( F i l t ( \mathbb {Y} ) ) \right ) = 0.
+d_{b} \left ( d g m_{0} ( F i l t ( X ) ), d g m_{0} ( F i l t ( Y ) ) \right ) = 0.
 $$
 
 - (iii) The proofs never use the triangle inequality! The previous approach and results easily extend to other settings like, e.g. spaces endowed with a similarity measure.
@@ -463,7 +465,7 @@ Remark 6.1. Note that in some cases the space M can be unknown and the observati
 Definition 6.2 (( a,b )-Standard Measure). The distribution $\mu$ is said to be ( a,b ) -standard if for all x $\in$ supp( $\mu$ ) and all r 0,
 
 $$
-\mu \left ( B ( x, r ) \right ) \geqslant \min ( a r ^{b}, 1 ).
+\mu \left ( B ( x, r ) \right ) \geqslant \min ( a r^{b}, 1 ).
 $$
 
 The finite set X n := { X 1,...,X n } is a natural estimator of the support X $\mu$. In several contexts discussed in the following, X n shows optimal rates of convergence to X $\mu$ with respect to the Hausdorff distance. A slight variant of this assumption has already been used in the previous lessons.
@@ -483,31 +485,33 @@ Theorem 6.4. If $\mu$ is ( a,b ) -standard on ( M,$\rho$ ), then :
 - (i) For all $\varepsilon$ > 0,
 
 $$
-\mathbb {P} \left ( d _{b} \left ( d g m ( F i l t ( \mathbb {X} _{\mu} ) ), d g m ( F i l t ( \mathbb {X} _{n} ) ) \right ) > \varepsilon \right ) \leqslant \min \left ( \frac {2 ^{b}} {a \varepsilon ^{b}} \exp ( - n a \varepsilon ^{b} ), 1 \right ).
+P \left ( d_{b} \left ( d g m ( F i l t ( X_{\mu} ) ), d g m ( F i l t ( X_{n} ) ) \right ) > \varepsilon \right ) \leqslant \min \left ( \frac{2^{b}}{a \varepsilon^{b}} \exp ( - n a \varepsilon^{b} ), 1 \right ).
 $$
 
 - (ii) For n large enough,
 
 $$
-\sup _{\mu \in \mathcal {P} _{M, a, b}} \mathbb {E} _{\mu} \left [ d _{b} ( d g m ( F i l t ( \mathbb {X} _{\mu} ) ), d g m ( F i l t ( \mathbb {X} _{n} ) ) ) \right ] \leqslant C _{a, b} \left ( \frac {\log n} {n} \right ) ^{1 / b}.
+\sup_{\mu \in \mathcal{P}_{M, a, b}} E_{\mu} \left [ d_{b} ( d g m ( F i l t ( X_{\mu} ) ), d g m ( F i l t ( X_{n} ) ) ) \right ] \leqslant C_{a, b} \left ( \frac{\log n}{n} \right )^{1 / b}.
 $$
 
 Proof. To get (i), we apply the stability of persistence for spaces Theorem 5.9 to get
 
 $$
-\mathbb {P} \left ( d _{b} \left ( d g m ( \text {Filt} ( \mathbb {X} _{\mu} ) ), d g m ( \text {Filt} ( \mathbb {X} _{n} ) ) \right ) & > \varepsilon \right ) \leq & \, \mathbb {P} \left ( d _{G H} \left ( \mathbb {X} _{\mu}, \mathbb {X} _{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \mathbb {P} \left ( d _{H} \left ( \mathbb {X} _{\mu}, \mathbb {X} _{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \min \left ( \frac {2 ^{b}} {a ^{\varepsilon} b} \exp ( - n a \varepsilon ^{b} ), 1 \right ), \\ \intertext {w h e r e} \mathbb {W} \left ( d _{b} \left ( d g m ( \text {Filt} ( \mathbb {X} _{\mu} ) ), d g m ( \text {Filt} ( \mathbb {X} _{n} ) ) > \varepsilon \right ) & < \mathbb {P} \left ( d _{G} \left ( \mathbb {X} _{\mu}, \mathbb {X} _{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \mathbb {P} \left ( d _{H} \left ( \mathbb {X} _{\mu}, \mathbb {X} _{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \min \left ( \frac {2 ^{b}} {a ^{\varepsilon} b} \exp ( - n a \varepsilon ^{b} ), 1 \right ),
+\begin{aligned}
+P \left ( d_{b} \left ( d g m ( \text{Filt} ( X_{\mu} ) ), d g m ( \text{Filt} ( X_{n} ) ) \right ) & > \varepsilon \right ) \leq & \, P \left ( d_{G H} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq P \left ( d_{H} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \min \left ( \frac{2^{b}}{a^{\varepsilon} b} \exp ( - n a \varepsilon^{b} ), 1 \right ), \\ \intertext{w h e r e} W \left ( d_{b} \left ( d g m ( \text{Filt} ( X_{\mu} ) ), d g m ( \text{Filt} ( X_{n} ) ) > \varepsilon \right ) & < P \left ( d_{G} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq P \left ( d_{H} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \min \left ( \frac{2^{b}}{a^{\varepsilon} b} \exp ( - n a \varepsilon^{b} ), 1 \right ),
+\end{aligned}
 $$
 
 where the last inequality follows from a packing argument, as already detailed in the previous lessons. Moving to the proof of (ii), we use Fubini’s theorem to write
 
 $$
-\mathbb {E} _{\mu ^{n}} \left [ d _{b} ( d g m ( F i l t ( \mathbb {X} _{\mu} ) ), d g m ( F i l t ( \mathbb {X} _{n} ) ) ) \right ] \\ = \int _{0} ^{\infty} \mathbb {P} \left ( d _{b} ( d g m ( F i l t ( \mathbb {X} _{\mu} ) ), d g m ( F i l t ( \mathbb {X} _{n} ) ) ) > \varepsilon \right ) d \varepsilon.
+E_{\mu^{n}} \left [ d_{b} ( d g m ( F i l t ( X_{\mu} ) ), d g m ( F i l t ( X_{n} ) ) ) \right ] \\ = \int_{0}^{\infty} P \left ( d_{b} ( d g m ( F i l t ( X_{\mu} ) ), d g m ( F i l t ( X_{n} ) ) ) > \varepsilon \right ) d \varepsilon.
 $$
 
 Let $\varepsilon$ n = 4 log n an 1 /b. By bounding the probability inside this integral by one on [0,$\varepsilon$ n ], we get
 
 $$
-\text {on} [ 0, \varepsilon _{n} ], \text {we get} \\ \mathbb {E} _{\mu ^{n}} \left [ d _{b} ( d g m ( F i l t ( \mathbb {X} _{\mu} ) ), d g m ( F i l t ( \widehat {\mathbb {X}} _{n} ) ) ) \right ] \\ \leqslant \varepsilon _{n} + \int _{\varepsilon _{n}} ^{\infty} \frac {8 ^{b}} {a} \exp ( - n a \varepsilon ^{b} / 4 ^{b} ) d \varepsilon \\ \leqslant \varepsilon _{n} + \frac {4 n 2 ^{b}} {b} ( n a ) ^{- 1 / b} \int _{\log n} ^{\infty} u ^{1 / b - 2} \exp ( - u ) d u. \\ \text {now distinguish two cases.}
+\text{on} [ 0, \varepsilon_{n} ], \text{we get} \\ E_{\mu^{n}} \left [ d_{b} ( d g m ( F i l t ( X_{\mu} ) ), d g m ( F i l t ( \widehat{X}_{n} ) ) ) \right ] \\ \leqslant \varepsilon_{n} + \int_{\varepsilon_{n}}^{\infty} \frac{8^{b}}{a} \exp ( - n a \varepsilon^{b} / 4^{b} ) d \varepsilon \\ \leqslant \varepsilon_{n} + \frac{4 n 2^{b}}{b} ( n a )^{- 1 / b} \int_{\log n}^{\infty} u^{1 / b - 2} \exp ( - u ) d u. \\ \text{now distinguish two cases.}
 $$
 
 We now distinguish two cases.
@@ -515,7 +519,9 @@ We now distinguish two cases.
 If b glyph[greaterorequalslant] 1 2 : then u 1 /b -2 glyph[lessorequalslant] (log n ) 1 /b -2 for all u glyph[greaterorequalslant] log n and then
 
 $$
-\mathbb {E} \left [ d _{b} ( d g m ( \text {Filt} ( X _{\mu} ) ), d g m ( \text {Filt} ( \widehat {X} _{n} ) ) ) \right ] & \leqslant \varepsilon _{n} + 4 \frac {2 ^{b}} {b} \left ( \frac {\log n} {n} \right ) ^{1 / b} ( \log n ) ^{- 2} \\ & \leqslant C _{a, b} \left ( \frac {\log n} {n} \right ) ^{1 / b},
+\begin{aligned}
+E \left [ d_{b} ( d g m ( \text{Filt} ( X_{\mu} ) ), d g m ( \text{Filt} ( \widehat{X}_{n} ) ) ) \right ] & \leqslant \varepsilon_{n} + 4 \frac{2^{b}}{b} \left ( \frac{\log n}{n} \right )^{1 / b} ( \log n )^{- 2} \\ & \leqslant C_{a, b} \left ( \frac{\log n}{n} \right )^{1 / b},
+\end{aligned}
 $$
 
 where C a,b only depends only a and b.
@@ -523,7 +529,9 @@ where C a,b only depends only a and b.
 If 0 < b < 1 2 : we let p := 1 /b and u n := log n. Using iterated integrations by parts yields
 
 $$
-b & < 2. \quad \text {we} \iota ( \rho \cdot \underbar {=} [ 1 / 0 ] \text {and} u _{n} \cdot \underbar {=} \log h ! \text {casing} \text {Recall} c d \text {incgurations by} \text {parts} \\ & \quad \text {yields} \\ & \quad \int _{u _{n}} ^{\infty} u ^{1 / b - 2} \exp ( - u ) d u \\ & = u _{n} ^{1 / b - 2} \exp ( u _{n} ) + ( \frac {1} {b} - 2 ) u _{n} ^{1 / b - 3} \exp ( u _{n} ) + \dots + \\ & \quad + \prod _{i = 2} ^{p} \left ( \frac {1} {b} - i \right ) u _{n} ^{1 / b - p} \exp ( u _{n} ) + \int _{\log n} ^{\infty} u ^{1 / b - p - 1} \exp ( - u ) d u \\ & \leqslant C _{a, b} ^{\prime} \frac {( \log n ) ^{1 / b - 2}} {n}, \\ & \text {where} C _{a, b} ^{\prime} \text {only depends only} a \text {and} b.
+\begin{aligned}
+b & < 2. \quad \text{we} \iota ( \rho \cdot \underbar{=} [ 1 / 0 ] \text{and} u_{n} \cdot \underbar{=} \log h ! \text{casing} \text{Recall} c d \text{incgurations by} \text{parts} \\ & \quad \text{yields} \\ & \quad \int_{u_{n}}^{\infty} u^{1 / b - 2} \exp ( - u ) d u \\ & = u_{n}^{1 / b - 2} \exp ( u_{n} ) + ( \frac{1}{b} - 2 ) u_{n}^{1 / b - 3} \exp ( u_{n} ) + \dots + \\ & \quad + \prod_{i = 2}^{p} \left ( \frac{1}{b} - i \right ) u_{n}^{1 / b - p} \exp ( u_{n} ) + \int_{\log n}^{\infty} u^{1 / b - p - 1} \exp ( - u ) d u \\ & \leqslant C_{a, b}^{\prime} \frac{( \log n )^{1 / b - 2}}{n}, \\ & \text{where} C_{a, b}^{\prime} \text{only depends only} a \text{and} b.
+\end{aligned}
 $$
 
 where C a,b only depends only a and b.
@@ -537,7 +545,7 @@ glyph[square]
 Lemma 6.5 (Le Cam). Let Q be a set of probability distributions, and $\theta$ : Q $\to$ Θ be a parameter of interest, where (Θ, ) is a metric space. Then for all Q,Q $\in$ Q,
 
 $$
-\inf _{\hat {\theta}} \sup _{Q \in \mathcal {Q}} \mathbb {E} _{Q ^{n}} \ell ( \theta ( Q ), \hat {\theta} _{n} ) \geq \frac {1} {2} \ell \left ( \theta ( Q ), \theta ( Q ^{\prime} ) \right ) \left ( 1 - T V ( Q, Q ^{\prime} ) \right ) ^{n},
+\inf_{\hat{\theta}} \sup_{Q \in \mathcal{Q}} E_{Q^{n}} \ell ( \theta ( Q ), \hat{\theta}_{n} ) \geq \frac{1}{2} \ell \left ( \theta ( Q ), \theta ( Q^{\prime} ) \right ) \left ( 1 - T V ( Q, Q^{\prime} ) \right )^{n},
 $$
 
 where ˆ $\theta$ n = ˆ $\theta$ n ( X 1,...,X n ) ranges among all the measurable maps ˆ $\theta$ n : X n $\to$ Θ based on an i.i.d. n -sample.
@@ -545,7 +553,7 @@ where ˆ $\theta$ n = ˆ $\theta$ n ( X 1,...,X n ) ranges among all the measura
 Theorem 6.6. Assume that there exists a non isolated point x in M and consider any sequence ( x n ) n ∈ ( M \ { x } ) N such that ρ ( x,x n ) ( an ) − 1 /b. Then for all estimator dgm n = dgm n ( X 1,...,X n ),
 
 $$
-\liminf _{n \to \infty} \rho ( x, x _{n} ) ^{- 1} \sup _{\mu \in \mathcal {P} _{M, a, b}} \mathbb {E} _{\mu ^{n}} \left [ d _{b} ( d g m ( \text {Filt} ( \mathbb {X} _{\mu} ) ), \widehat {d g m} _{n} ) \right ] \geqslant e ^{- 1} / 4.
+\liminf_{n \to \infty} \rho ( x, x_{n} )^{- 1} \sup_{\mu \in \mathcal{P}_{M, a, b}} E_{\mu^{n}} \left [ d_{b} ( d g m ( \text{Filt} ( X_{\mu} ) ), \widehat{d g m}_{n} ) \right ] \geqslant e^{- 1} / 4.
 $$
 
 Remark 6.7. Consequently, the estimator dgm(Filt( X n )) is minimax optimal on the space P M,a,b up to a logarithmic term as soon as we can find a non-isolated point in M and a sequence ( x n ) in M such that $\rho$ ( x n,x ) ∼ ( an ) − 1 /b. This is obviously the case for the Euclidean space R d.
@@ -555,19 +563,19 @@ Proof. We will apply Le Cam’s lemma with model Q = P M,a,b, parameter of inter
 To prove the lower bound, it will be sufficient to consider two Dirac distributions. We let $\mu$ 0 = $\delta$ x be the Dirac distribution on X 0 := { x }. It is clear that $\mu$ 0 $\in$ P M,a,b. Let $\mu$ 1,n be the distribution 1 n $\delta$ x n + (1 − 1 n ) $\mu$ 0. The support of $\mu$ 1,n is denoted X 1,n := { x,x n }. Note that for all n 2 and r $\rho$ ( x,x n ),
 
 $$
-\mu _{1, n} \left ( B ( x, r ) \right ) = 1 - \frac {1} {n} \geqslant \frac {1} {2} \geqslant \frac {1} {2 \rho ( x, x _{n} ) ^{b}} r ^{b} \geqslant a r ^{b}
+\mu_{1, n} \left ( B ( x, r ) \right ) = 1 - \frac{1}{n} \geqslant \frac{1}{2} \geqslant \frac{1}{2 \rho ( x, x_{n} )^{b}} r^{b} \geqslant a r^{b}
 $$
 
 and
 
 $$
-\mu _{1, n} \left ( B ( x _{n}, r ) \right ) = \frac {1} {n} = \frac {1} {n \rho ( x, x _{n} ) ^{b}} r ^{b} \geqslant a r ^{b}.
+\mu_{1, n} \left ( B ( x_{n}, r ) \right ) = \frac{1}{n} = \frac{1}{n \rho ( x, x_{n} )^{b}} r^{b} \geqslant a r^{b}.
 $$
 
 Moreover, for r > $\rho$ ( x,x n ), $\mu$ 1,n (B( x,r )) = $\mu$ 1,n (B( x n,r )) = 1. Thus, for all r > 0 and x $\in$ X 1,n,
 
 $$
-\mu _{1, n} \left ( B ( x, r ) \right ) \geqslant \min \{a r ^{b}, 1 \},
+\mu_{1, n} \left ( B ( x, r ) \right ) \geqslant \min \{a r^{b}, 1 \},
 $$
 
 meaning that $\mu$ 1,n belongs to P M,a,b.
@@ -575,7 +583,7 @@ meaning that $\mu$ 1,n belongs to P M,a,b.
 The probability measure $\mu$ 0 is absolutely continuous with respect to $\mu$ 1,n and the density of $\mu$ 0 with respect to $\mu$ 1,n is p 0,n := n n − 1 { x }. Then
 
 $$
-\text {the probability measure} \mu _{0} \text {is absolutely continuous with respect to} \\ \text {the density of} \mu _{0} \text {with respect to} \mu _{1, n} \text {is} p _{0, n} \colon = \frac {n} {n - 1} \mathbb {I} _{\{x \}}. \text {Then} \\ \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \text {} \
+\text{the probability measure} \mu_{0} \text{is absolutely continuous with respect to} \\ \text{the density of} \mu_{0} \text{with respect to} \mu_{1, n} \text{is} p_{0, n} \colon = \frac{n}{n - 1} I_{\{x \}}. \text{Then} \\ \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \text{} \
 $$
 
 so that (1 -TV( $\mu$ 0, $\mu$ 1,n )) n = ( 1 -1 n ) n $\to$ e -1 as n goes to infinity.
@@ -583,12 +591,16 @@ so that (1 -TV( $\mu$ 0, $\mu$ 1,n )) n = ( 1 -1 n ) n $\to$ e -1 as n goes to i
 It remains to compute d b (dgm(Filt( X 0 )), dgm(Filt( X 1,n ))). For both X 0 and X 1,n, notice that the diagrams induced by the Rips and ˇ Cech filtrations are equal and that these diagrams are non-trivial only for the 0-dimensional homology. Furthermore, dgm 0 (Filt( X 0 )) is the singleton { (0, + ∞ ) }. On the other hand, dgm 0 (Filt( X 1,n )) = { (0, ∞ ), (0, $\rho$ ( x, x n )) }. Thus,
 
 $$
-d _{b} ( d g m ( F i l t ( \mathbb {X} _{0} ) ), d g m ( F i l t ( \mathbb {X} _{1, n} ) ) ) & = \min _{p \in \Delta} \| p - ( 0, \rho ( x, x _{n} ) ) \
+\begin{aligned}
+d_{b} ( d g m ( F i l t ( X_{0} ) ), d g m ( F i l t ( X_{1, n} ) ) ) & = \min_{p \in \Delta} \| p - ( 0, \rho ( x, x_{n} ) ) \
+\end{aligned}
 $$
 
 | _ { \infty }
 $$
-\\ & = \frac {\rho ( x, x _{n} )} {2}.
+\begin{aligned}
+\\ & = \frac{\rho ( x, x_{n} )}{2}.
+\end{aligned}
 $$
 
 | _ { \infty }
@@ -609,7 +621,7 @@ The persistence landscape is a collection of continuous, piecewise linear functi
 ![The image is a diagram, which consists of a graph with two axes labeled as x and y. The graph is a line graph, and it is drawn with a dashed line. The x-axis is labeled as x and the y-axis is labeled as y. The graph has two points labeled as A and B. Point A is located at the left side of the graph, and point B is located at the right side of the graph. The graph is connected by a dashed line, which is labeled as t. The dashed line is drawn from point A to point B.](<PH-REF/imageFile12.png>)
 
 $$
-Λ p ( t ) =      t - x + y t ∈ [ x - y, x ] x + y - t t ∈ ( x, x + y ] 0 otherwise =      t - α birth t ∈ [ α birth, α birth + α death 2 ] α death - t t ∈ ( α birth + α death 2, α death ] 0 otherwise.
+\Lambda p ( t ) =      t - x + y t \in [ x - y, x ] x + y - t t \in ( x, x + y ] 0 otherwise =      t - \alpha birth t \in [ \alpha birth, \alpha birth + \alpha death 2 ] \alpha death - t t \in ( \alpha birth + \alpha death 2, \alpha death ] 0 otherwise.
 $$
 
 -
@@ -637,7 +649,7 @@ The persistence landscape of dgm is a summary of the arrangement of the tents di
 Definition 7.1 (Landscape of a Diagram). The persistence landscape of a diagram dgm is the collection of functions, indexed by k $\in$ N, and defined by
 
 $$
-\lambda _{d g m} ( k, t ) = \kmax _{p \in d g m} \Lambda _{p} ( t ), \ \ t \in [ 0, T ],
+\lambda_{d g m} ( k, t ) = \kmax_{p \in d g m} \Lambda_{p} ( t ), \ \ t \in [ 0, T ],
 $$
 
 where kmax is the k th largest value in the set; in particular, 1max is the usual maximum function.
@@ -656,7 +668,9 @@ Proposition 7.2 (Basic Properties of Landscapes). For all k 0,
 Proof.
 
 $$
-P r o f. \, \text {See [Bub1 5, Lemma 4].} &. & \Box
+\begin{aligned}
+P r o f. \, \text{See [Bub1 5, Lemma 4].} &. & \Box
+\end{aligned}
 $$
 
 ### 7.2. Stability
@@ -666,13 +680,15 @@ From the definition of persistence landscape, we immediately observe that $\lamb
 Theorem 7.3 (Stability of Landscapes). Let dgm 1 and dgm 2 be two q-tame diagrams. Then for all k 0,
 
 $$
-\left \| \lambda _{d g m _{1}} ( k, \cdot ) - \lambda _{d g m _{2}} ( k, \cdot ) \right \| _{\infty} \leqslant d _{b} ( d g m _{1}, d g m _{2} ).
+\left \| \lambda_{d g m_{1}} ( k, \cdot ) - \lambda_{d g m_{2}} ( k, \cdot ) \right \|_{\infty} \leqslant d_{b} ( d g m_{1}, d g m_{2} ).
 $$
 
 Proof.
 
 $$
-P r o f. \, \text {See [Bub1 5, Theorem 17].} & & \Box
+\begin{aligned}
+P r o f. \, \text{See [Bub1 5, Theorem 17].} & & \Box
+\end{aligned}
 $$
 
 Remark 7.4. In particular, Theorem 7.3 allows to derive a stability result for landscapes associated to:
@@ -691,7 +707,7 @@ We assume that the diameter of M is finite and upper bounded by 2, where T is th
 For any positive integer m, let X = { x 1, $\cdot \cdot \cdot$ ,x m } $\subset$ X $\mu$ be a sample of m points from $\mu$. The corresponding persistence landscape is $\lambda$ X and we denote by Ψ m $\mu$ the measure induced by $\mu \otimes$ m on the space of persistence landscapes. Note that the persistence landscape $\lambda$ X can be seen as a single draw from the measure Ψ m $\mu$. The point-wise expectations of the (random) persistence landscape under this measure is defined by E Ψ m $\mu$ [ $\lambda$ X ( t )],t $\in$ [0,T ]. The average landscape E Ψ m $\mu$ [ $\lambda$ X ] has a natural empirical counterpart, which can be used as its unbiased estimator. Let S m 1,...,S m be independent samples of size m from $\mu \otimes$ m. We define the empirical average landscape as
 
 $$
-\overline {\lambda _{\ell} ^{m}} ( t ) = \frac {1} {b} \sum _{i = 1} ^{b} \lambda _{S _{i} ^{m}} ( t ), \quad \text {for all} t \in [ 0, T ],
+\overline{\lambda_{\ell}^{m}} ( t ) = \frac{1}{b} \sum_{i = 1}^{b} \lambda_{S_{i}^{m}} ( t ), \quad \text{for all} t \in [ 0, T ],
 $$
 
 and propose to use $\lambda$ m to estimate $\lambda$ X $\mu$.
@@ -705,19 +721,21 @@ The average landscape E Ψ m $\mu$ [ $\lambda$ X ] is an interesting quantity on
 Theorem 7.6. Let X ∼ $\mu \otimes$ m and Y ∼ $\nu \otimes$ m, where $\mu$ and $\nu$ are two probability measures on M. For any p 1 we have
 
 $$
-\left \| \mathbb {E} _{\Psi _{\mu} ^{m}} [ \lambda _{X} ] - \mathbb {E} _{\Psi _{\nu} ^{m}} [ \lambda _{Y} ] \right \| _{\infty} \leqslant 2 m ^{\frac {1} {p}} \ W _{p} ( \mu, \nu ),
+\left \| E_{\Psi_{\mu}^{m}} [ \lambda_{X} ] - E_{\Psi_{\nu}^{m}} [ \lambda_{Y} ] \right \|_{\infty} \leqslant 2 m^{\frac{1}{p}} \ W_{p} ( \mu, \nu ),
 $$
 
  where W p stands for the p th Wasserstein distance on M, defined by
 
 $$
-W _{p} ( \mu, \nu ) = \inf _{\pi \in \Pi ( \mu, \nu )} \left ( \int _{M \times M} \rho ( x, y ) ^{p} \pi ( d x, d y ) \right ) ^{\frac {1} {\frac {p} {p}}},
+W_{p} ( \mu, \nu ) = \inf_{\pi \in \Pi ( \mu, \nu )} \left ( \int_{M \times M} \rho ( x, y )^{p} \pi ( d x, d y ) \right )^{\frac{1}{\frac{p}{p}}},
 $$
 
 where Π( $\mu$,$\nu$ ) is the set of probability measures on M $\times$ M with marginal distributions $\mu$ and $\nu$,
 
 $$
-\text {See} [ \text {CFL} ^{+} 1 5, \text {Thereom 5} ] & & \Box
+\begin{aligned}
+\text{See} [ \text{CFL}^{+} 1 5, \text{Thereom 5} ] & & \Box
+\end{aligned}
 $$
 
 Proof. See [CFL +
@@ -725,7 +743,7 @@ Proof. See [CFL +
 Remark 7.7. (i) For measures that are not defined on the same metric space, the inequality of Theorem 7.6 can be extended, to the condition of using the so-called Gromov-Wasserstein metric, and writes as
 
 $$
-\left \| \mathbb {E} _{\Psi _{\mu} ^{m}} [ \lambda _{X} ] - \mathbb {E} _{\Psi _{\nu} ^{m}} [ \lambda _{Y} ] \right \| _{\infty} \leqslant 2 m ^{\frac {1} {p}} G W _{\rho, p} ( \mu, \nu ).
+\left \| E_{\Psi_{\mu}^{m}} [ \lambda_{X} ] - E_{\Psi_{\nu}^{m}} [ \lambda_{Y} ] \right \|_{\infty} \leqslant 2 m^{\frac{1}{p}} G W_{\rho, p} ( \mu, \nu ).
 $$
 
  (ii) The result of Theorem 7.6 is useful for two reasons. First, it tells us that for a fixed m, the expected ”topological behavior” of a set of m points carries some stable information about the underlying measure from which the data are generated. Second, it provides a lower bound for the Wasserstein distance between two measures, based on the topological signature of samples of m points.

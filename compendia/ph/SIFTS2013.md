@@ -249,7 +249,7 @@ The growing diameter corresponds to allowing looser tiebacks: more dissimilar te
 may be more interested in the flow of the document. Recall we “connect the dots” in the introduction. This prompts us to add “time edges” $ (x*i, x*{i+1}), i = 1 \dots n - 1 $ to the simplicial complex before any similarity filtration. These edges form a “time skeleton” by connecting units in document order. The SIFTS algorithm implements time skeleton by adding the following preprocessing step before the SIF algorithm in section 3:
 
 $$
-0. \ D ( x _{i}, x _{i + 1} ) = 0 \text {for} i = 1, \dots, n - 1 \\ \intertext {s u l l} x _{i}, x _{i + 1}, x _{i + 2}, x _{i + 3}, \dots, x _{i + 5}, x _{i + 6}, x _{i + 7}, \dots, x _{i + 9}
+0. \ D ( x_{i}, x_{i + 1} ) = 0 \text{for} i = 1, \dots, n - 1 \\ \intertext{s u l l} x_{i}, x_{i + 1}, x_{i + 2}, x_{i + 3}, \dots, x_{i + 5}, x_{i + 6}, x_{i + 7}, \dots, x_{i + 9}
 $$
 
 The key difference between SIF and SIFTS is that a time-skeleton edge can be arbitrarily long as measured by $ D() $. By adding the time skeleton upfront, we enable “tie-back” holes in SIFTS. This is illustrated by the toy document $ (0, 0), (1, 0), (2, 0), (-\frac{1}{2}, 0) $ below, with the Vietoris-Rips complex $ VR(0.5) $:
@@ -273,7 +273,7 @@ Figure 1(c) shows London Bridge is Falling Down. The lyric has $n = 48$ sentence
 We now move on to longer documents. Here and in next section, the text units are natural paragraphs (or chapters for Alice ). We perform Penn Treebank tokenization, case-folding, punctuation removal, and SMART stopword removal [ Salton, 1971 ]. Each text unit is converted to a tf.idf vector, where idf is computed within the document. We compute the cosine similarity then take the angular distance:
 
 $$
-t, \quad D ( x _{i}, x _{j} ) = \cos ^{- 1} \left ( \frac {x _{i} ^{\top} x _{j}} {\| x _{i} \| \cdot \| x _{j} \|} \right ). \\ F i gure \, I ( d e f ) \, \text {show the barcodes on}
+t, \quad D ( x_{i}, x_{j} ) = \cos^{- 1} \left ( \frac{x_{i}^{\top} x_{j}}{\| x_{i} \| \cdot \| x_{j} \|} \right ). \\ F i gure \, I ( d e f ) \, \text{show the barcodes on}
 $$
 
  $\cdot$ Figure 1(d,e,f) show the barcodes on three stories. In general, SIFTS detects more holes and detects them earlier than SIF. The homology classes that persist the longest tend to be reappearance of salient words. For example, in Red-Cap the first SIFTS hole is between the sentences “The better to see you with, my dear” and “The better to eat you with!”

@@ -16,6 +16,19 @@
 - [6. Discussion](BD2005.md#6-discussion)
 - [References](references/BD2005.md)
 
+
+## [Bayesian Regression of Piecewise Constant Functions](HTR2005.md)
+
+- [Marcus Hutter](HTR2005.md#marcus-hutter)
+- [Abstract](HTR2005.md#abstract)
+- [Keywords](HTR2005.md#keywords)
+- [1 Introduction](HTR2005.md#1-introduction)
+- [2 The General Model](HTR2005.md#2-the-general-model)
+- [8 The Algorithm](HTR2005.md#8-the-algorithm)
+- [9 Synthetic Examples](HTR2005.md#9-synthetic-examples)
+- [Table 1: Regression algorithm in pseudo C code](HTR2005.md#table-1-regression-algorithm-in-pseudo-c-code)
+
+
 ## [A Robust Spline Approach in Partially Linear Additive Models](BM2021.md)
 
 - [Abstract](BM2021.md#abstract)
