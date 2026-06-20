@@ -183,7 +183,7 @@ In other words, for any p ∈ dgm 1 \ ∆, and for any q ∈ dgm 2 \ ∆, ( { p 
 Definition 4.2 (Bottleneck Distance). The bottleneck distance between dgm 1 and dgm 2 is then defined by
 
 $$
-d_{b} ( d g m_{1}, d g m_{2} ) = \inf_{\ m a t h i n g{\ m} \left ( p, q \right ) \in m} \max_{\} \left \| p - q \right \|_{\infty}.
+d_b(\mathrm{dgm}_1, \mathrm{dgm}_2) = \inf_{\text{matching } m} \max_{(p,q) \in m} \| p - q \|_\infty.
 $$
 
 ![The image presents a graph with two sets of points. The graph is titled d and has a legend in the top right corner. The legend indicates that the points are labeled as follows: - **d(gdm,dgm2)** - **d(gdm,dgm3)** - **d(gdm,dgm4)** The graph is labeled as d and has a scale of range 0 to 100. The x-axis is labeled d and the y-axis is labeled d(gdm,dgm2). The graph shows a trend of increasing values of the function d as the x-axis increases. The points are scattered around the x-axis, with some points closer to the x-axis and others farther away. The graph also includes a scale labeled b with a value of 0 to 100. The](<PH-REF/imageFile7.png>)
@@ -498,7 +498,10 @@ Proof. To get (i), we apply the stability of persistence for spaces Theorem 5.9 
 
 $$
 \begin{aligned}
-P \left ( d_{b} \left ( d g m ( \text{Filt} ( X_{\mu} ) ), d g m ( \text{Filt} ( X_{n} ) ) \right ) & > \varepsilon \right ) \leq & \, P \left ( d_{G H} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq P \left ( d_{H} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \min \left ( \frac{2^{b}}{a^{\varepsilon} b} \exp ( - n a \varepsilon^{b} ), 1 \right ), \\ \intertext{w h e r e} W \left ( d_{b} \left ( d g m ( \text{Filt} ( X_{\mu} ) ), d g m ( \text{Filt} ( X_{n} ) ) > \varepsilon \right ) & < P \left ( d_{G} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq P \left ( d_{H} \left ( X_{\mu}, X_{n} \right ) > \varepsilon / 2 \right ) \\ & \leq \min \left ( \frac{2^{b}}{a^{\varepsilon} b} \exp ( - n a \varepsilon^{b} ), 1 \right ),
+P \left( d_b \left( \mathrm{dgm}(\mathrm{Filt}(X_\mu)), \mathrm{dgm}(\mathrm{Filt}(\widehat{X}_n)) \right) > \varepsilon \right)
+&\leq P \left( d_{GH}(X_\mu, X_n) > \varepsilon/2 \right) \\
+&\leq P \left( d_H(X_\mu, X_n) > \varepsilon/2 \right) \\
+&\leq \min \left( \frac{2^b}{a \varepsilon^b} \exp(- n a \varepsilon^b), 1 \right),
 \end{aligned}
 $$
 
@@ -530,9 +533,15 @@ If 0 < b < 1 2 : we let p := 1 /b and u n := log n. Using iterated integrations 
 
 $$
 \begin{aligned}
-b & < 2. \quad \text{we} \iota ( \rho \cdot \underbar{=} [ 1 / 0 ] \text{and} u_{n} \cdot \underbar{=} \log h ! \text{casing} \text{Recall} c d \text{incgurations by} \text{parts} \\ & \quad \text{yields} \\ & \quad \int_{u_{n}}^{\infty} u^{1 / b - 2} \exp ( - u ) d u \\ & = u_{n}^{1 / b - 2} \exp ( u_{n} ) + ( \frac{1}{b} - 2 ) u_{n}^{1 / b - 3} \exp ( u_{n} ) + \dots + \\ & \quad + \prod_{i = 2}^{p} \left ( \frac{1}{b} - i \right ) u_{n}^{1 / b - p} \exp ( u_{n} ) + \int_{\log n}^{\infty} u^{1 / b - p - 1} \exp ( - u ) d u \\ & \leqslant C_{a, b}^{\prime} \frac{( \log n )^{1 / b - 2}}{n}, \\ & \text{where} C_{a, b}^{\prime} \text{only depends only} a \text{and} b.
+\int_{u_n}^{\infty} u^{1/b - 2} \exp(-u)\, du
+&= u_n^{1/b - 2} \exp(-u_n) + \left(\frac{1}{b} - 2\right) u_n^{1/b - 3} \exp(-u_n) + \cdots \\
+&\quad + \prod_{i=2}^{p} \left(\frac{1}{b} - i\right) u_n^{1/b - p} \exp(-u_n)
++ \int_{\log n}^{\infty} u^{1/b - p - 1} \exp(-u)\, du \\
+&\leqslant C_{a,b}' \frac{(\log n)^{1/b - 2}}{n},
 \end{aligned}
 $$
+
+where $C_{a,b}'$ depends only on $a$ and $b$.
 
 where C a,b only depends only a and b.
 
@@ -621,26 +630,17 @@ The persistence landscape is a collection of continuous, piecewise linear functi
 ![The image is a diagram, which consists of a graph with two axes labeled as x and y. The graph is a line graph, and it is drawn with a dashed line. The x-axis is labeled as x and the y-axis is labeled as y. The graph has two points labeled as A and B. Point A is located at the left side of the graph, and point B is located at the right side of the graph. The graph is connected by a dashed line, which is labeled as t. The dashed line is drawn from point A to point B.](<PH-REF/imageFile12.png>)
 
 $$
-\Lambda p ( t ) =      t - x + y t \in [ x - y, x ] x + y - t t \in ( x, x + y ] 0 otherwise =      t - \alpha birth t \in [ \alpha birth, \alpha birth + \alpha death 2 ] \alpha death - t t \in ( \alpha birth + \alpha death 2, \alpha death ] 0 otherwise.
+\Lambda_p(t) = \begin{cases}
+t - x + y & t \in [x-y,\, x], \\
+x + y - t & t \in \left(x,\, x+y\right], \\
+0 & \text{otherwise},
+\end{cases}
+= \begin{cases}
+t - \alpha_{\mathrm{birth}} & t \in \left[\alpha_{\mathrm{birth}},\, \alpha_{\mathrm{birth}} + \tfrac{\alpha_{\mathrm{death}}}{2}\right], \\
+\alpha_{\mathrm{death}} - t & t \in \left(\alpha_{\mathrm{birth}} + \tfrac{\alpha_{\mathrm{death}}}{2},\, \alpha_{\mathrm{death}}\right], \\
+0 & \text{otherwise}.
+\end{cases}
 $$
-
--
-
-+
-
-,
-
-)
-
-+
-
-,
-
-)
-
-,
-
-)
 
 Figure 7. An example of persistence landscape (right) associated to a persistence diagram (left). The first landscape is in blue, the second one in red and the last one in orange. All the other landscapes are zero.
 

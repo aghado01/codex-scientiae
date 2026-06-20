@@ -216,10 +216,10 @@ The definition above agrees with our earlier definition of interleaving when n =
 Definition 9.16. The matching distance between p.f.d. n -persistence modules, is
 
 $$
-d_{\text{match}} ( U, V ) \coloneqq \sup_{L} \ \left \{d_{B} ( \mathcal{B} ( U_{L} ), \ \mathcal{B} ( V_{L} ) ) \right \}, \\ \intertext{w h e r e} \ w h e r e \ t h e \ s u p r e m a y m i s t o k e n \ o v e r \ a l l \ l i n e s \ I \colon t \mapsto t a
+d_{\text{match}}(U, V) \coloneqq \sup_{L} \left\{d_{B}(\mathcal{B}(U_L), \mathcal{B}(V_L))\right\},
 $$
 
-where the supremum is taken over all lines L : t 7! ta + b with a ⌫ 1, b 2 n.
+where the supremum is taken over all lines $L \colon t \mapsto ta + b$ with $a \nparallel 1$, $b \in \mathbb{R}^n$.
 
 Theorem 9.17 (see [3]). For any two p.f.d. n -persistence modules,
 
@@ -257,21 +257,22 @@ Definition 9.21. Let X ✓ n be a finite point cloud. For r, ⇢ 2, the sets
 
 $$
 \begin{aligned}
-\mathcal{N M C}_{\rho}^{r} ( X ) & \coloneqq \{x \in R^{n} \, \colon | B ( x, r ) \cap X | \geqslant \rho | X | \} = \{x \in R^{n} \, \colon \mu_{X} ( B ( x, r ) \cap X ) \geqslant \rho \}. \\ \intertext{f o r m a b i l f l t r a t i o n o v e r R \times R^{o p} c a l l e d t h e n o r m a l z i d u c t i v e b i f l t r a t i o n.}
+\mathcal{NMC}_{\rho}^{r}(X) &\coloneqq \{x \in R^{n} \colon |B(x,r) \cap X| \geqslant \rho |X|\} \\
+&= \{x \in R^{n} \colon \mu_{X}(B(x,r) \cap X) \geqslant \rho \}.
 \end{aligned}
 $$
 
-form a bilfiltration over ⇥ op called the normalized multicover bifiltration.
+form a bilfiltration over $\mathbb{R} \times \mathbb{R}^{\mathrm{op}}$ called the normalized multicover bifiltration.
 
 Theorem 9.22 (see [1]). Let X,Y ✓ n finite. For all k > 0, we have
 
 $$
 \begin{aligned}
-d_{I} \left ( H_{k} ( N \mathcal{M} \mathcal{C} ( X ) ), \ H_{k} ( N \mathcal{M} \mathcal{C} ( Y ) ) \right ) & \leqslant d_{\Pr} ( \mu_{X}, \mu_{Y} ). \\ P r o f, \text{let} \epsilon = d_{\Pr} ( \mu_{X}, \mu_{Y} ), \text{We will show that}
+d_{I}\left(H_k(\mathcal{NMC}^r(X)), H_k(\mathcal{NMC}^r(Y))\right) &\leqslant d_{\Pr}(\mu_X, \mu_Y).
 \end{aligned}
 $$
 
-Proof. Let ✏ = d Pr ( $\mu$ X,$\mu$ Y ). We will show that
+Proof. Let $\epsilon = d_{\Pr}(\mu_X, \mu_Y)$. We will show that
 
 $$
 \mathcal{N M C}_{\rho}^{r} ( X ) \subseteq \mathcal{N M C}_{\rho - \epsilon}^{r + \epsilon} ( Y ) \subseteq \mathcal{N M C}_{\rho - 2 \epsilon}^{r + 2 \epsilon} ( X ) \quad \forall r, \rho \in R.
@@ -301,4 +302,3 @@ There are many similar theorems for other bipersistence modules, including the d
 - 36. What are some common bipersistence modules? How do they relate to the (1-parameter) persistence modules of earlier chapters?
 - 37. What is a major upside of multiparameter persistence? What is a major downside? Discuss robustness and representability.
 - 38. How can we visualize multiparameter persistence modules?
-$$
