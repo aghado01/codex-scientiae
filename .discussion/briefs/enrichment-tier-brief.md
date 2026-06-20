@@ -3,9 +3,9 @@
 The principled home for the problem first light surfaced and the user refused to solve with rules:
 plain-ASCII mathematics like `O(s log n)`, `m = O(s \log(n/s))`, `s`-sparse, `R^n` that reads as math but
 carries no LaTeX structure, so the fidelity gate leaves it `faithful` — yet house style (STANDARDS) wants it
-in `$…$`. Companion to [`membrane-upgrade-plan.md`](membrane-upgrade-plan.md) (gap map: *Enrichment tier —
+in `$…$`. Companion to [`membrane-upgrade-plan.md`](../membrane-upgrade-plan.md) (gap map: *Enrichment tier —
 designed, not built*) and [`first-light-brief.md`](first-light-brief.md). Reviewed cold by Cursor
-([`cursor/cursor-enrichment-feedback.md`](cursor/cursor-enrichment-feedback.md)); this refresh folds its
+([`cursor/cursor-enrichment-feedback.md`](../cursor/cursor-enrichment-feedback.md)); this refresh folds its
 accepted points in.
 
 ---

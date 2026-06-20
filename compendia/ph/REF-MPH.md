@@ -280,20 +280,21 @@ $$
 These inclusions induce the maps
 
 $$
-\varphi_{r, \rho} \colon H_{k} ( \mathcal{N M C}_{\rho}^{r} ( X ) ) \to H_{k} ( \mathcal{N M C}_{\rho - \epsilon}^{r + \epsilon} ( Y ) ), \\ \psi_{r + \epsilon, \rho - \epsilon} \colon H_{k} ( \mathcal{N M C}_{\rho - \epsilon}^{r + \epsilon} ( Y ) ) \to H_{k} ( \mathcal{N M C}_{\rho - 2 \epsilon}^{r + 2 \epsilon} ( X ) )
+\begin{aligned}
+\varphi_{r,\rho} &\colon H_k(\mathcal{NMC}_\rho^r(X)) \to H_k(\mathcal{NMC}_{\rho-\epsilon}^{r+\epsilon}(Y)), \\
+\psi_{r+\epsilon,\rho-\epsilon} &\colon H_k(\mathcal{NMC}_{\rho-\epsilon}^{r+\epsilon}(Y)) \to H_k(\mathcal{NMC}_{\rho-2\epsilon}^{r+2\epsilon}(X))
+\end{aligned}
 $$
 
-\cdot ) ) )
+required to show that $H_k(\mathcal{NMC}^r(X))$ and $H_k(\mathcal{NMC}^r(Y))$ are $\epsilon$-interleaved.
+
+So, let $r, \rho \geq 0$, and suppose that $x \in \mathcal{NMC}_\rho^r(X)$. By definition, this means that $\mu_X(B(x,r) \cap X) > \rho$. Using the definition of the Prohorov distance, and the triangle inequality, this implies that
 
 $$
-required to show that H k ( NMC ( X )) and H k ( NMC ( Y )) are ✏ -interleaved. r
-So, let r, ⇢ 2, and suppose that x 2 NMC ⇢ ( X ). By definition, this means that µ X ( B ( x,r ) \ X ) > ⇢. Using the definition of the Prohorov distance, and the triangleinequality, this implies that
+\rho \leqslant \mu_X(B(x,r) \cap X) \leqslant \mu_Y(B(x,r)^\epsilon \cap Y) + \epsilon \leqslant \mu_Y(B(x,r+\epsilon) \cap Y) + \epsilon.
 $$
 
-\rho & \leqslant \mu _ { X } ( B ( x, r ) \cap X ) \leqslant \mu _ { Y } ( B ( x, r ) ^ { \epsilon } \cap Y ) + \epsilon \leqslant \mu _ { Y } ( B ( x, r + \epsilon ) \cap Y ) + \epsilon. \\ \intertext { T h a t is to say, } \mu _ { X } ( B ( x, r + \epsilon ) \cap Y ) & \geqslant \rho - \epsilon, \, \text {meaning } x \in \mathcal { N M C } \_ { 0 } ^ { r + \epsilon } ( Y ), \, \text { giving us the first }
-
-$$
-That is to say, µ Y ( B ( x,r + ✏ ) \ Y ) > ⇢ ✏, meaning x 2 NMC r + ✏ ⇢ ✏ ( Y ), giving us the first inclusion. The second inclusion follows from an analogous argument, switching the roles of X and Y.
+That is to say, $\mu_Y(B(x,r+\epsilon) \cap Y) \geqslant \rho - \epsilon$, meaning $x \in \mathcal{NMC}_{\rho-\epsilon}^{r+\epsilon}(Y)$, giving us the first inclusion. The second inclusion follows from an analogous argument, switching the roles of $X$ and $Y$.
 There are many similar theorems for other bipersistence modules, including the degree-Rips bifiltration. They are often somewhat hard to state and prove, relying on variants of the Prohorov distance, as well as variants of the interleaving distance [1].
 ## Questions
 - 35. How can we define persistence modules over multiple parameters? Discuss the technical definitions that are needed.

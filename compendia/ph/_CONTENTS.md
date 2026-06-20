@@ -27,6 +27,14 @@
 
 ---
 
+## [CONLEY-MORSE PERSISTENCE BARCODE: A HOMOLOGICAL SIGNATURE OF COMBINATORIAL BIFURCATIONS](DLST2026.md)
+
+- [TAMAL K. DEY 1 , MICHA L LIPI ´ NSKI 2 ∗ AND MANUEL SORIANO-TRIGUEROS 2 , 3](DLST2026.md#tamal-k-dey-1-micha-l-lipi-´-nski-2-∗-and-manuel-soriano-trigueros-2-3)
+- [1. Introduction](DLST2026.md#1-introduction)
+- [2. Motivation and Main Ideas](DLST2026.md#2-motivation-and-main-ideas)
+
+---
+
 ## [Zigzag Persistent Homology and Real-valued Functions ∗](CDSM2009.md)
 
 - [ABSTRACT](CDSM2009.md#abstract)
@@ -37,15 +45,6 @@
 - [2. ZIGZAG PERSISTENCE](CDSM2009.md#2-zigzag-persistence)
 - [3. CONNECTION TO EXTENDED PERSISTENCE](CDSM2009.md#3-connection-to-extended-persistence)
 - [4. ALGORITHM](CDSM2009.md#4-algorithm)
-
----
-
-## [CONLEY-MORSE PERSISTENCE BARCODE: A HOMOLOGICAL SIGNATURE OF COMBINATORIAL BIFURCATIONS](DLST2026.md)
-
-- [TAMAL K. DEY 1 , MICHA L LIPI ´ NSKI 2 ∗ AND MANUEL SORIANO-TRIGUEROS 2 , 3](DLST2026.md#tamal-k-dey-1-micha-l-lipi-´-nski-2-∗-and-manuel-soriano-trigueros-2-3)
-- [1. Introduction](DLST2026.md#1-introduction)
-- [2. Motivation and Main Ideas](DLST2026.md#2-motivation-and-main-ideas)
-
 ---
 
 ## [Quasi Zigzag Persistence: A Topological Framework for Analyzing Time-Varying Data](DS2026.md)
@@ -146,7 +145,6 @@
 - [Consequences](HLWW2024.md#consequences)
 - [Patch Structures](HLWW2024.md#patch-structures)
 
----
 
 ---
 

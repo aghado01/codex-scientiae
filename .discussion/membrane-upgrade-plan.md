@@ -115,7 +115,7 @@ lazy / no sidecars · behavior-preserving-or-better, guarded by the differential
 | **Suppression masks** generalized | **Partial** — `$…$` + prose-context overlay on `math_dirt`; not yet generalized beyond un-wrapped-math |
 | **OffsetMap** / byte-exact source coords | **Seeded** — substrate primitives `Move-Mask`/`Limit-Mask` already exist in `masks.ps1`; the full coordinate transform is not built, but it is not greenfield |
 | **Hooks** (batch governor) + **constitution** prose | **Working prototype — advisory, uninstalled** — 4-rule `contract.json` + Claude adapter (`compile.ps1`/`evaluate.ps1`) at `.claude/governance/`, every rule `mode: advisory`; not yet installed into any harness |
-| **Enrichment tier** (ASCII under-markup, e.g. `O(s log n)`) | **Designed, not built** — the fidelity gate correctly leaves valid ASCII math `faithful`; wrapping it in `$…$` is house-style enrichment, not corruption. Sketched in [`enrichment-tier-brief.md`](enrichment-tier-brief.md); deliberately NOT a new signature (that is the brittle-rule trap first light flagged). |
+| **Enrichment tier** (ASCII under-markup, e.g. `O(s log n)`) | **Tier 1 landed (chunk substrate)** — `src/enrichment.ps1`, `get_enrichables`, enrichable count in `get_summary`. Sketched in [`briefs/enrichment-tier-brief.md`](briefs/enrichment-tier-brief.md); deliberately NOT a new signature. |
 
 ---
 
@@ -126,6 +126,11 @@ lazy / no sidecars · behavior-preserving-or-better, guarded by the differential
   dispatch surface.
 - **Hooks (batch governor) + constitution prose** — Layer-2 governance (reach-past defense + orchestrator↔worker
   compact). Pairs with a future Track-1 split into role-scoped prompts.
+- **Local gguf worker backend** — a quota-free, hook-respecting stand-in for the worker/subagent tier, serving
+  the same `dispatch → worker` slot for repair *and* enrichment. The Claude-subagent ban is provider-specific
+  and *temporary* — token economics, not principle; it loosens once the engine stops burning tokens — so the
+  durable worker tier is a local model, not a Claude subagent. Needs wiring + its own governance design; pairs
+  with the governance plane (advisory→enforce rules to constrain an autonomous local worker).
 - **`inventory.jsonl`** — stays **retired** as a validation matrix; optional low-value overlay catalogue only.
 
 ---
