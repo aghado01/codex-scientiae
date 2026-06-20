@@ -204,15 +204,27 @@
 
 ---
 
+## [PERSISTENT HOMOLOGY](PH-REF.md)
+
+- [1. Filtrations](PH-REF.md#1-filtrations)
+- [2. Starting with a Few Examples](PH-REF.md#2-starting-with-a-few-examples)
+- [3. Persistent Modules and Persistence Diagrams](PH-REF.md#3-persistent-modules-and-persistence-diagrams)
+- [4. Metrics on the Space of Persistence Diagrams](PH-REF.md#4-metrics-on-the-space-of-persistence-diagrams)
+- [5. Stability](PH-REF.md#5-stability)
+- [6. Rates of Convergence for Random Point Clouds](PH-REF.md#6-rates-of-convergence-for-random-point-clouds)
+  - [6.2. Minimax Lower Bound. Let us recall Le Cam’s Lemma.](PH-REF.md#6-2-minimax-lower-bound-let-us-recall-le-cam’s-lemma)
+
+---
+
 ## [Multiparameter Persistence Chapter 9](MPH-REF.md)
 
 - [Multiparameter persistence](MPH-REF.md#multiparameter-persistence)
 - [9.1 Persistence modules indexed by a poset](MPH-REF.md#9-1-persistence-modules-indexed-by-a-poset)
 - [9.2 Representing persistence modules indexed by posets](MPH-REF.md#9-2-representing-persistence-modules-indexed-by-posets)
-- [9.2.1 Barcodes?](MPH-REF.md#9-2-1-barcodes)
-- [9.2.2 Other representations and visualizations](MPH-REF.md#9-2-2-other-representations-and-visualizations)
+  - [9.2.1 Barcodes?](MPH-REF.md#9-2-1-barcodes)
+  - [9.2.2 Other representations and visualizations](MPH-REF.md#9-2-2-other-representations-and-visualizations)
 - [9.3 Distances and robustness for P -persistence modules](MPH-REF.md#9-3-distances-and-robustness-for-p-persistence-modules)
-- [9.3.1 Robustness of some bipersistence modules](MPH-REF.md#9-3-1-robustness-of-some-bipersistence-modules)
+  - [9.3.1 Robustness of some bipersistence modules](MPH-REF.md#9-3-1-robustness-of-some-bipersistence-modules)
 
 ---
 
@@ -242,17 +254,6 @@
   - [5.4.3 Relation to the general theorem.](MR2026.md#5-4-3-relation-to-the-general-theorem)
 - [6 Conclusions](MR2026.md#6-conclusions)
 
----
-
-## [PERSISTENT HOMOLOGY](PH-REF.md)
-
-- [1. Filtrations](PH-REF.md#1-filtrations)
-- [2. Starting with a Few Examples](PH-REF.md#2-starting-with-a-few-examples)
-- [3. Persistent Modules and Persistence Diagrams](PH-REF.md#3-persistent-modules-and-persistence-diagrams)
-- [4. Metrics on the Space of Persistence Diagrams](PH-REF.md#4-metrics-on-the-space-of-persistence-diagrams)
-- [5. Stability](PH-REF.md#5-stability)
-- [6. Rates of Convergence for Random Point Clouds](PH-REF.md#6-rates-of-convergence-for-random-point-clouds)
-- [6.2. Minimax Lower Bound. Let us recall Le Cam’s Lemma.](PH-REF.md#6-2-minimax-lower-bound-let-us-recall-le-cam’s-lemma)
 
 ---
 
