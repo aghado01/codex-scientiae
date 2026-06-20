@@ -115,8 +115,11 @@ nothing unattended.
   fight with three hand-tuned filters. Reuse the live tokenizer (`Test-MathGlyphToken`, `$script:MathFunc`);
   require an operator / function / function-application (the filter the probe converged on).
 - **Bucket** each candidate safe-wrap vs lossy via Threshold-A typology.
-- **Adjudication = the driving agent, inline** (no sub-agent dispatch). Every safe-wrap is *proposed* via
-  `propose_edit` and confirmed by a human/agent; **lossy → `request_review`, never wrapped.**
+- **Adjudication = the worker role** — the seeing agent inline at depth-1, or a dispatched worker at scale.
+  Every safe-wrap is *proposed* via `propose_edit` and confirmed; **lossy → `request_review`, never wrapped.**
+  Enrichment needs **no judge of its own**: classifying a candidate is ordinary worker work. The worker
+  *backend* — a Claude agent vs a local gguf model standing in for the subagent tier — is a membrane-wide
+  substrate question (repair and enrichment alike), out of scope here.
 - **Surface:** `get_enrichables` (post-`finalize`, chunk substrate, separate lane from `dispatch`); an
   `enrichable` count in `get_summary`, orthogonal to `flagged`/`pending`.
 - **Stop condition:** opt-in per run ("enrich this paper"); defer threshold-based termination.
@@ -127,12 +130,11 @@ let *those* auto-wrap — every wrap logged to the apply-audit, reversible. Ever
 propose-for-review. Add **canonical normalization** (next section) as a separate, even-more-conservative
 sub-mode.
 
-**Tier 3 — model-assisted review + (eventually) reconstruction.** A local `llama.cpp` judge
-(`LLAMA_CPP_BIN`) works the **review tier only** — pre-classifying ambiguous safe/lossy and pre-filtering
-the propose pile so the human sees fewer. Hard-constrained: *classify + wrap-the-unambiguous; never emit a
-reconstructed glyph.* It never expands the auto-tier. **Reconstruction of the lossy 20% stays out** until
-OffsetMap lets the adjudicator consult the source — it is a subscript-recovery problem, exactly what a model
-does confidently and wrong.
+**Tier 3 — reconstruction, gated on OffsetMap.** The lossy ~20% (lost subscripts) stays out until OffsetMap
+lets the adjudicator consult the *source glyph* instead of guessing. Reconstruction from the chunk alone is a
+subscript-recovery problem — exactly what any worker, human or model, does confidently and wrong — so this
+tier waits on the **substrate**, not on a cleverer judge. Nothing here needs a new component; it needs source
+coordinates.
 
 ---
 
