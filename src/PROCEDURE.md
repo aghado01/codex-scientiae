@@ -81,7 +81,7 @@ You are handed one pointer: `{ paper, id, grade, corruption_type, seam, issues }
 ## The repair playbook — by `corruption_type`
 
 The **live recipe** is delivered inline in the `work_order` on `get_slice`, pooled from `src/playbook.ps1`
-(the single source of truth — 10 entries covering every issue type the membrane can emit). Work the whole
+(the single source of truth — 11 entries covering every issue type the membrane can emit). Work the whole
 order in one pass; each recipe tells you whether the fix is structural (reframe first) or content (in-place
 edit). Below is one worked example to show the shape; for every other type, the `work_order` carries the
 recipe — do not duplicate them here (the drift surface that causes).

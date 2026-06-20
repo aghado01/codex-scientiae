@@ -72,12 +72,12 @@ determinism, normalize fixed-point) run over the whole corpus, incl. the current
    `Test-IsMath -Level Row` (adds `\text{...}` interior to the prose region for row breaks). Chunk-level
    `Test-IsMath` / fidelity `prose_in_formula` unchanged. One home in `latex.ps1`.
 
-5. **Playbook-as-data: single-source — coverage test LANDED.** The coverage invariant
+5. **Playbook-as-data: single-source — LANDED.** The coverage invariant
    (`RepairPlaybook.Keys ⊇ every emittable issue type`) is pinned by `tests/playbook-coverage.Tests.ps1`
-   (**11** types: 8 signatures + 2 needs_review + `fragmented_formula`). Adding a signature without a recipe
-   now fails the suite — it already forced the `unclosed_environment` recipe (#9). **STILL OPEN:** cut
-   `PROCEDURE.md`'s prose playbook (covers 6 of 11) to a pointer + one worked example, so the recipe text is
-   single-sourced in `playbook.ps1`.
+   (**11** types: 8 signatures + 2 needs_review + `fragmented_formula`); adding a signature without a recipe
+   now fails the suite (it already forced the `unclosed_environment` recipe, #9). And `PROCEDURE.md`'s prose
+   playbook is now cut to a pointer + one worked example (`intertext`), so the recipe text is single-sourced
+   in `playbook.ps1`. Drift surface closed.
 
 6. **Split-guard regression tests — LANDED.** Clean split of an already-unbalanced chunk passes (imbalance
    falls in one half, doesn't worsen); orphaning split still rejects.
