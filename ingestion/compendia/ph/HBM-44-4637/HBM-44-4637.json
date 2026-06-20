@@ -1,0 +1,4070 @@
+{
+  "file name" : "HBM-44-4637.pdf",
+  "number of pages" : 15,
+  "author" : null,
+  "title" : "The Robustness of Persistent Homology of Brain Networks to Data Acquisition‐related Non‐neural Variability in Resting state fMRI",
+  "creation date" : "D:20230731065334+05'30'",
+  "modification date" : "D:20230731065334+05'30'",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 413,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 45.638, 703.06, 155.423, 711.143 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "R E S E A R C H A R T I C L E"
+  }, {
+    "type" : "heading",
+    "id" : 414,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 45.638, 608.507, 524.701, 670.652 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 18.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The robustness of persistent homology of brain networks to data acquisition-related non-neural variability in resting state fMRI"
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 1,
+    "bounding box" : [ 45.638, 570.553, 134.805, 583.767 ],
+    "font" : "AdvTT6071803a.B",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Sidharth Kumar 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 416,
+    "page number" : 1,
+    "bounding box" : [ 146.778, 570.553, 149.898, 581.331 ],
+    "font" : "AdvTT6071803a.B",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "|"
+  }, {
+    "type" : "paragraph",
+    "id" : 417,
+    "page number" : 1,
+    "bounding box" : [ 161.915, 570.553, 306.754, 583.767 ],
+    "font" : "AdvTT6071803a.B",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Ahmedur Rahman Shovon 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "page number" : 1,
+    "bounding box" : [ 318.784, 570.553, 321.904, 581.331 ],
+    "font" : "AdvTT6071803a.B",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "|"
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 1,
+    "bounding box" : [ 333.864, 570.553, 517.6, 583.767 ],
+    "font" : "AdvTT6071803a.B",
+    "font size" : 12.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Gopikrishna Deshpande 2,3,4,5,6,7,8,9"
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "page number" : 1,
+    "bounding box" : [ 45.637, 517.445, 185.771, 545.098 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1 Computer Science Department, University of Alabama at Birmingham, Birmingham, Alabama, USA"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 1,
+    "bounding box" : [ 45.637, 313.406, 187.536, 513.088 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 8,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 484.393, 187.536, 513.088 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "2 Department of Electrical and Computer Engineering, AU MRI Research Center, Auburn University, Alabama, USA",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 461.432, 173.666, 480.092 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3 Department of Psychological Sciences, Auburn University, Auburn, Alabama, USA",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 438.415, 171.349, 457.075 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "4 Alabama Advanced Imaging Consortium, Birmingham, Alabama, USA",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 415.397, 184.069, 434.114 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "5 Center for Neuroscience, Auburn University, Auburn, Alabama, USA",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 392.437, 162.501, 411.097 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "6 School of Psychology, Capital Normal University, Beijing, China",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 369.419, 180.169, 388.08 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "7 Key Laboratory for Learning and Cognition, Capital Normal University, Beijing, China",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 336.425, 183.473, 365.119 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "8 Department of Psychiatry, National Institute of Mental Health and Neurosciences, Bangalore, India",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 1,
+      "bounding box" : [ 45.637, 313.406, 184.864, 332.067 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 7.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "9 Centre for Brain Research, Indian Institute of Science, Bangalore, India",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 431,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 45.637, 293.406, 96.722, 299.693 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Correspondence"
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 1,
+    "bounding box" : [ 45.637, 253.424, 185.066, 289.666 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Gopikrishna Deshpande, Department of Electrical and Computer Engineering, AU MRI Research Center, Auburn University, AL, USA. Email: gopi@auburn.edu"
+  }, {
+    "type" : "heading",
+    "id" : 433,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 45.638, 233.426, 109.438, 239.713 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Funding information"
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 1,
+    "bounding box" : [ 45.638, 153.42, 188.076, 229.686 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "National Institute of Mental Health, Grant/Award Number: R01MH094639-01; New York State Office of Mental Health; Research Foundation for Mental Hygiene; Child Mind Institute, Grant/Award Number: 1FDN2012-1; NKI Center for Advanced Brain Imaging (CABI); Brain Research Foundation; Stavros Niarchos Foundation"
+  }, {
+    "type" : "heading",
+    "id" : 421,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 210.161, 527.42, 247.731, 536.402 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "page number" : 1,
+    "bounding box" : [ 210.161, 197.567, 542.657, 520.592 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 9.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "There is increasing interest in investigating brain function based on functional connectivity networks (FCN) obtained from resting-state functional magnetic resonance imaging (fMRI). FCNs, typically obtained using measures of time series association such as Pearson's correlation, are sensitive to data acquisition parameters such as sampling period. This introduces non-neural variability in data pooled from different acquisition protocols and MRI scanners, negating the advantages of larger sample sizes in pooled data. To address this, we hypothesize that the topology or shape of brain networks must be preserved irrespective of how densely it is sampled, and metrics which capture this topology may be statistically similar across sampling periods, thereby alleviating this source of non-neural variability. Accordingly, we present an end-to-end pipeline that uses persistent homology (PH), a branch of topological data analysis, to demonstrate similarity across FCNs acquired at different temporal sampling periods. PH, as a technique, extracts topological features by capturing the network organization across all continuous threshold values, as opposed to graph theoretic methods, which fix a discrete network topology by thresholding the connectivity matrix. The extracted topological features are encoded in the form of persistent diagrams that can be compared against one another using the earth-moving metric, also popularly known as the Wasserstein distance. We extract topological features from three data cohorts, each acquired at different temporal sampling periods and demonstrate that these features are statistically the same, hence, empirically showing that PH may be robust to changes in data acquisition parameters such as sampling period."
+  }, {
+    "type" : "heading",
+    "id" : 435,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 210.161, 173.955, 259.704, 180.242 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "K E Y W O R D S"
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 1,
+    "bounding box" : [ 210.161, 161.746, 409.686, 168.89 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "fMRI, persistent homology, TDA, topological data analysis"
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 1,
+    "bounding box" : [ 45.637, 42.925, 535.212, 69.188 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "This is an open access article under the terms of the Creative Commons Attribution-NonCommercial-NoDerivs License, which permits use and distribution in any medium, provided the original work is properly cited, the use is non-commercial and no modifications or adaptations are made. © 2023 The Authors. Human Brain Mapping published by Wiley Periodicals LLC."
+  }, {
+    "type" : "heading",
+    "id" : 438,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 45.638, 721.631, 165.237, 730.631 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1 | INTRODUCTION"
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 2,
+    "bounding box" : [ 45.638, 566.027, 288.485, 703.164 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Studying the functional and anatomical connectivity of the human brain has given us a deeper understanding of the characteristics of the brain, from microscale connectivity between single neurons to macroscale connectivity between regions of interest in whole brain images. One of the routinely employed approaches for characterizing macroscale connectivity utilizes measures of statistical association (such as Pearson's correlation) obtained from resting-state functional magnetic resonance imaging (rs-fMRI) times series corresponding to specific ROIs in the human brain. The connectivity matrix thus obtained is an algebraic representation of the weighted brain network, which shows the relationship between all pairs of nodes."
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 2,
+    "bounding box" : [ 45.638, 305.974, 288.524, 560.132 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Functional connectivity obtained from rs-fMRI has been shown to be extremely sensitive to mental health disorders (Fornito & Bullmore, 2010 ) as well as predictive of behavior in healthy individuals (Miller et al., 2016 ). This has kindled interest in using functional connectivity networks (FCNs) as potential biomarkers of mental disorders. The sensitivity and specificity of these biomarkers and their generalizability to the general population seem to increase with sample size (Schnack & Kahn, 2016 ). However, acquiring data from larger samples at any given site can be economically and logistically prohibitive. Therefore, there has been a recent impetus toward post-hoc aggregation of data acquired at different sites to form larger datasets. Examples include the Autism Brain Imaging Data Exchange (ABIDE; Di Martino et al., 2014 ) and ADHD-200 (Bellec et al., 2017 ). In such large publicly available datasets, it has been found that biomarkers do not generalize well to data acquired at different sites (Abraham et al., 2017 ; Khalili-Mahani et al., 2017 ). This has been attributed to the fact that MRI scanners and data acquisition protocols are different across sites, and this induces an element of non-neural variability in the data that tend to make it difficult for us to discover consistent inter-group FCN differences that are at least partly neural in origin."
+  }, {
+    "type" : "paragraph",
+    "id" : 442,
+    "page number" : 2,
+    "bounding box" : [ 45.638, 45.984, 288.502, 300.136 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Topological data analysis (TDA) is an emerging field that has found recent applications in functional neuroimaging. Traditionally, graph-theoretic tools, which can be construed as special cases of the more generic concepts of TDA, have been extensively used to study and quantify FCNs. More recently, advanced tools from TDA, such as persistent homology (PH) (Rubinov & Sporns, 2010 ) have been used to study complex networks. PH investigates connections between different parts of networks using algorithms designed to encode and measure the significance of relationships across multiple scales (thresholds). In the context of networks, topological features refer to the 0-, 1-, and 2-dimensional homology groups of a metric space that describe its connected components , tunnels , and voids , respectively. Most graph-theoretic techniques for analyzing weighted brain networks can only measure the topological features of the network at a specific threshold and cannot capture how these features change as the threshold value is varied. PH provides a principled approach to quantifying these features for all thresholds; more precisely, it can track when features (such as connected components, loops, and voids) are created and destroyed with varying scales (threshold). The technique quantifies the individual topological events (birth and death of"
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 2,
+    "bounding box" : [ 306.879, 98.025, 549.721, 560.131 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The input to our TDA-based pipeline is subject-specific FCNs from three data cohorts, corresponding to data acquired from the same individuals at three different sampling periods (TR): 645 ms, 1400 ms, and 2500 ms. The cohort consists of rs-fMRI data from 316 subjects (totaling 3   316 scans). In our pipeline, the topological features of each network instance are extracted using PH and encoded with a barcode. The barcodes are compared against each other by using the WD. In particular, we perform two sets of experiments to demonstrate that the FCNs indeed capture the same structure irrespective of the temporal sampling periods: (a) making a direct pairwise comparison of the same subjects across different temporal sampling periods and (b) performing pairwise comparison within a cohort (same temporal sampling period) to extract the overall pattern of subjects and then comparing that pattern across the sampling periods. The statistical analysis is made possible because the barcodes (our metric) can be compared against one another using the WD (Edelsbrunner, 2013 ; Vallender, 1974 ). In our first set of experiments, we perform pairwise WD computation of the same subjects but between different sampling periods (across the data cohorts), and this yields three groups of measurements: WD between (645 and 1400 ms), (1400 and 2500 ms), and (2500 and 645 ms). We then demonstrate similarity among these distributions by performing ANOVA and t -tests, further establishing the fact that FCNs capture similar information, irrespective of the data acquisition parameters. In our second set of experiments, we calculate pairwise WD between persistence diagrams of all 316 subjects within the same sampling rate. As we have data from three TRs, this step yields three sets of adjacency matrices (of size 316   316). To apply statistical comparison in this high dimensional data, we perform multidimensional scaling (MDS; Carroll & Arabie, 1998 ; Cox & Cox, 2008 ) with two components that reduces it to a 2D space and then apply clustering techniques to segregate the subjects into clusters. Finally, we analyze the number of overlapping subjects across the clusters to examine the similarity between the subjects across various parameters using the PH-based pipeline. In particular, our paper makes the following three contributions to the literature:"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 2,
+    "bounding box" : [ 306.88, 45.982, 549.703, 79.148 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1. Demonstrate that the barcode obtained from the PH of resting state fMRI data is a compact representation of topological information of an FCN."
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 3,
+    "bounding box" : [ 45.638, 618.011, 288.481, 730.817 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 45.638, 657.017, 288.481, 730.817 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "2. Present an end-to-end pipeline that uses PH-based techniques to demonstrate that TDA-based metrics derived from FCN networks are statistically similar even when data acquisition parameters such as temporal sampling periods (TR) are varied, potentially removing a source of noise in multi-site case – control studies, thereby improving the effect sizes in group comparisons.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 3,
+      "bounding box" : [ 45.638, 618.011, 288.48, 652.81 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3. Present an open-source and reproducible codebase for all components of our work. Code, including scripts, documentation, and data, can be found here: https://github.com/harp-lab/brainPH",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 3,
+    "bounding box" : [ 45.638, 513.979, 288.491, 599.132 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The rest of the paper is organized as follows: In Section 2 , we present relevant related work covering both graph-based and topology-based FCN analysis frameworks. In Section 3 , we present our end-to-end TDA pipeline comprising four key steps. Finally, in Section 4 , we present the result of applying our methods to real data. And we then conclude with a discussion in Section 5 and a conclusion in Section 6 ."
+  }, {
+    "type" : "heading",
+    "id" : 447,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 45.638, 474.62, 164.831, 483.62 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2 | RELATED WORK"
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "page number" : 3,
+    "bounding box" : [ 45.638, 150.01, 288.5, 456.153 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Existing methods in analyzing and characterizing FCNs rely heavily on graph analysis measures (Andellini et al., 2015 ; Aurich et al., 2015 ; Ginestet et al., 2014 ; Termenon et al., 2016 ) such as clustering coefficient and node degree. These measures are well known to summarize a single weighted network and also to compare FCNs within a collection of networks. For network comparison, typically, there are two cases: comparing two individual networks or comparing two collections of networks where the networks may be paired or unpaired between collections. Networks can be compared either at single nodes and links (Ginestet et al., 2014 ; Narayan & Allen, 2015 ), or via some functional or transform summarizing each network (Simpson et al., 2013 ) using graph analysis approaches. Graph analysis measures, however, have been criticized for being dependent on the choice of network link threshold (Garrison et al., 2015 ). Graph analysis methods typically use binary measures of link strength, ignoring the weights of links. However, not all FCN links are equal. Some links are expected to be detected more frequently or be more strongly detected than others, and recognizing these differences in link strength allows us to understand the function within networks. Weighted graph analysis methods have been proposed (Rubinov & Sporns, 2010 ), but are still susceptible to variation with respect to network density (Ginestet et al., 2014 ). Graph analysis of weighted brain networks at multiple thresholds has also been proposed (Drakesmith et al., 2015 )."
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 3,
+    "bounding box" : [ 45.638, 45.979, 288.492, 144.116 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In recent years, multi-site fMRI studies have become more common as they allow for faster participant recruitment and larger sample sizes, resulting in increased statistical power (Biswal et al., 2010; Noble et al., 2017). This is especially important when studying rare disorders, subtle effects, and diverse populations (Dansereau et al., 2017). However, non-biological variability in these studies can arise from differences in scanner manufacturers, imaging acquisition parameters, and other factors (Shinohara et al., 2017). These sources of variability can decrease statistical power and produce misleading results. Many studies have reported site or scanner effects in fMRI data, but only a few have attempted to standardize protocols and image acquisition parameters to mitigate these effects (Chavez et al., 2018; Shinohara et al., 2017). Despite efforts to standardize protocols and image acquisition parameters, scanner-to-scanner variation caused by the use of scanners from different manufacturers remains present (Noble et al., 2017). An independent component analysis (ICA)-based approach was employed in one study to decrease scanner differences in multi-site resting-state fMRI post-acquisition (Feis et al., 2015). However, this approach was not completely successful in eliminating the structured noise that arises from the use of different scanners (Yu et al., 2018). Thus, the generation of harmonization techniques for multi-site data has become an emerging topic in neuroimaging (Roffet et al., 2022). ComBat is one of the prominent and fast harmonization methods that can reduce the multi-site or multi-scanner effect (Bell et al., 2022; Fortin et al., 2017, 2018; Ingalhalikar et al., 2021; Yu et al., 2018). Existing literature indicates that ComBat may not completely retain inter-subject biological variability following harmonization, particularly in the presence of nonlinear scanner contributions (Cetin-Karayumak et al., 2020, 2023). Even though this was shown for diffusion data, the principles are equally applicable to fMRI data."
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 3,
+    "bounding box" : [ 306.879, 253.985, 549.696, 430.132 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "TDA of networks goes beyond graph-theoretic analysis by utilizing tools from computational topology to describe the architecture of networks or data structures in more flexible ways (Edelsbrunner & Harer, 2022 ; Ghrist, 2008 ). In particular, it encodes higher-order (not just pairwise) interactions in the system and studies the topological features of a network across all possible thresholds. PH, an advanced technique in TDA, is an emerging tool for studying complex networks, including brain networks (Cassidy et al., 2015 ; Dabaghian et al., 2012 ; Lee et al., 2011 ). PH-based methods have shown promising results in modeling transitions between brain states in fMRI data (Saggar et al., 2018 ). There are many excellent introductions to PH, such as the books (Ghrist, 2014 ; Oudot, 2015 ; Zomorodian, 2005 ) and the papers (Edelsbrunner & Harer, 2008a , 2022 ; Ghrist, 2008 ; Patania et al., 2017 ; Weinberger, 2011 )."
+  }, {
+    "type" : "heading",
+    "id" : 450,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 306.879, 214.626, 394.213, 223.627 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3 | METHODS"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 3,
+    "bounding box" : [ 306.879, 45.98, 549.707, 196.159 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In a typical connectivity analysis framework, the correlation matrix (FCN) is thresholded to obtain a graph of the brain network. The graph thus obtained merely captures a snapshot of the FCN whose topology is dictated by the choice of the threshold. The onus, therefore, is to pick the correct threshold, which is a very challenging task, and moreover, usually, one threshold (and one graph) is not enough to capture the complex connectivity information of the FCN (see Figure 1 ). PH, a branch of TDA, allows one to capture the change of topological structures over the whole range of thresholds. Our approach thus uses PH to extract topological features from rs-fMRI FCNs. The features are used to demonstrate a notion of similarity across FCNs extracted from datasets acquired with different data"
+  }, {
+    "type" : "image",
+    "id" : 453,
+    "page number" : 4,
+    "bounding box" : [ 44.379, 746.065, 130.997, 762.284 ],
+    "source" : "HBM-44-4637/imageFile1.png"
+  }, {
+    "type" : "image",
+    "id" : 454,
+    "page number" : 4,
+    "bounding box" : [ 53.715, 401.996, 540.925, 731.994 ],
+    "description" : "In this image, we can see a diagram, which is labeled as B. We can see some numbers and some lines. We can see some points and some lines. We can see some text and numbers.",
+    "source" : "HBM-44-4637/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 4,
+    "bounding box" : [ 392.582, 720.49, 399.183, 727.328 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 4,
+    "bounding box" : [ 512.056, 696.886, 518.656, 703.724 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 4,
+    "bounding box" : [ 120.8, 690.843, 127.401, 697.681 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 4,
+    "bounding box" : [ 240.273, 667.239, 246.874, 674.077 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 4,
+    "bounding box" : [ 323.828, 661.636, 330.428, 668.474 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 460,
+    "page number" : 4,
+    "bounding box" : [ 59.405, 632.116, 66.005, 638.954 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 461,
+    "page number" : 4,
+    "bounding box" : [ 525.384, 621.33, 531.984, 628.168 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "page number" : 4,
+    "bounding box" : [ 253.602, 591.683, 260.202, 598.521 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 4,
+    "bounding box" : [ 320.137, 573.058, 403.277, 582.175 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 12.189,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Threshold: 3.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 464,
+    "page number" : 4,
+    "bounding box" : [ 430.483, 569.533, 436.58, 576.371 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "E"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 4,
+    "bounding box" : [ 392.188, 552.305, 398.789, 559.143 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 4,
+    "bounding box" : [ 158.701, 539.886, 164.798, 546.724 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "E"
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "page number" : 4,
+    "bounding box" : [ 510.985, 528.939, 517.585, 535.777 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "C"
+  }, {
+    "type" : "table",
+    "id" : 468,
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 79.237, 431.317, 236.217, 529.445 ],
+    "number of rows" : 6,
+    "number of columns" : 6,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 79.237, 513.09, 105.4, 529.445 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 105.4, 513.09, 131.563, 529.445 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 350,
+          "page number" : 4,
+          "bounding box" : [ 105.4, 513.09, 131.563, 529.445 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "A"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 131.563, 513.09, 157.727, 529.445 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 351,
+          "page number" : 4,
+          "bounding box" : [ 131.563, 513.09, 157.727, 529.445 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "B"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 157.727, 513.09, 183.89, 529.445 ],
+        "row number" : 1,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 352,
+          "page number" : 4,
+          "bounding box" : [ 157.727, 513.09, 183.89, 529.445 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "C"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 183.89, 513.09, 210.053, 529.445 ],
+        "row number" : 1,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 353,
+          "page number" : 4,
+          "bounding box" : [ 183.89, 513.09, 210.053, 529.445 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "D"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 210.053, 513.09, 236.217, 529.445 ],
+        "row number" : 1,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 354,
+          "page number" : 4,
+          "bounding box" : [ 210.053, 513.09, 236.217, 529.445 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "E"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 79.237, 496.736, 105.4, 513.09 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 355,
+          "page number" : 4,
+          "bounding box" : [ 79.237, 496.736, 105.4, 513.09 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "A"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 105.4, 496.736, 131.563, 513.09 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 356,
+          "page number" : 4,
+          "bounding box" : [ 105.4, 496.736, 131.563, 513.09 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "0"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 131.563, 496.736, 157.727, 513.09 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 357,
+          "page number" : 4,
+          "bounding box" : [ 131.563, 496.736, 157.727, 513.09 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "2.83"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 157.727, 496.736, 183.89, 513.09 ],
+        "row number" : 2,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 358,
+          "page number" : 4,
+          "bounding box" : [ 157.727, 496.736, 183.89, 513.09 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "6.08"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 183.89, 496.736, 210.053, 513.09 ],
+        "row number" : 2,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 359,
+          "page number" : 4,
+          "bounding box" : [ 183.89, 496.736, 210.053, 513.09 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "6.08"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 210.053, 496.736, 236.217, 513.09 ],
+        "row number" : 2,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 360,
+          "page number" : 4,
+          "bounding box" : [ 210.053, 496.736, 236.217, 513.09 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "3.6"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 79.237, 480.381, 105.4, 496.736 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 361,
+          "page number" : 4,
+          "bounding box" : [ 79.237, 480.381, 105.4, 496.736 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "B"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 105.4, 480.381, 131.563, 496.736 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 362,
+          "page number" : 4,
+          "bounding box" : [ 105.4, 480.381, 131.563, 496.736 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "2.83"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 131.563, 480.381, 157.727, 496.736 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 363,
+          "page number" : 4,
+          "bounding box" : [ 131.563, 480.381, 157.727, 496.736 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "0"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 157.727, 480.381, 183.89, 496.736 ],
+        "row number" : 3,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 364,
+          "page number" : 4,
+          "bounding box" : [ 157.727, 480.381, 183.89, 496.736 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "4.12"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 183.89, 480.381, 210.053, 496.736 ],
+        "row number" : 3,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 365,
+          "page number" : 4,
+          "bounding box" : [ 183.89, 480.381, 210.053, 496.736 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "5"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 210.053, 480.381, 236.217, 496.736 ],
+        "row number" : 3,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 366,
+          "page number" : 4,
+          "bounding box" : [ 210.053, 480.381, 236.217, 496.736 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "4.12"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 79.237, 464.026, 105.4, 480.381 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 367,
+          "page number" : 4,
+          "bounding box" : [ 79.237, 464.026, 105.4, 480.381 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "C"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 105.4, 464.026, 131.563, 480.381 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 368,
+          "page number" : 4,
+          "bounding box" : [ 105.4, 464.026, 131.563, 480.381 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "6.08"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 131.563, 464.026, 157.727, 480.381 ],
+        "row number" : 4,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 369,
+          "page number" : 4,
+          "bounding box" : [ 131.563, 464.026, 157.727, 480.381 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "4.12"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 157.727, 464.026, 183.89, 480.381 ],
+        "row number" : 4,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 370,
+          "page number" : 4,
+          "bounding box" : [ 157.727, 464.026, 183.89, 480.381 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "0"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 183.89, 464.026, 210.053, 480.381 ],
+        "row number" : 4,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 371,
+          "page number" : 4,
+          "bounding box" : [ 183.89, 464.026, 210.053, 480.381 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "2"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 210.053, 464.026, 236.217, 480.381 ],
+        "row number" : 4,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 372,
+          "page number" : 4,
+          "bounding box" : [ 210.053, 464.026, 236.217, 480.381 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "4.24"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 5,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 79.237, 447.671, 105.4, 464.026 ],
+        "row number" : 5,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 373,
+          "page number" : 4,
+          "bounding box" : [ 79.237, 447.671, 105.4, 464.026 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "D"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 105.4, 447.671, 131.563, 464.026 ],
+        "row number" : 5,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 374,
+          "page number" : 4,
+          "bounding box" : [ 105.4, 447.671, 131.563, 464.026 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "6.08"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 131.563, 447.671, 157.727, 464.026 ],
+        "row number" : 5,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 375,
+          "page number" : 4,
+          "bounding box" : [ 131.563, 447.671, 157.727, 464.026 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "5"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 157.727, 447.671, 183.89, 464.026 ],
+        "row number" : 5,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 376,
+          "page number" : 4,
+          "bounding box" : [ 157.727, 447.671, 183.89, 464.026 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "2"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 183.89, 447.671, 210.053, 464.026 ],
+        "row number" : 5,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 377,
+          "page number" : 4,
+          "bounding box" : [ 183.89, 447.671, 210.053, 464.026 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "0"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 210.053, 447.671, 236.217, 464.026 ],
+        "row number" : 5,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 378,
+          "page number" : 4,
+          "bounding box" : [ 210.053, 447.671, 236.217, 464.026 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "3.16"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 6,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 79.237, 431.317, 105.4, 447.671 ],
+        "row number" : 6,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 379,
+          "page number" : 4,
+          "bounding box" : [ 79.237, 431.317, 105.4, 447.671 ],
+          "font" : "HelveticaLTStd-Bold",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "E"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 105.4, 431.317, 131.563, 447.671 ],
+        "row number" : 6,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 380,
+          "page number" : 4,
+          "bounding box" : [ 105.4, 431.317, 131.563, 447.671 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "3.6"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 131.563, 431.317, 157.727, 447.671 ],
+        "row number" : 6,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 381,
+          "page number" : 4,
+          "bounding box" : [ 131.563, 431.317, 157.727, 447.671 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "3.6"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 157.727, 431.317, 183.89, 447.671 ],
+        "row number" : 6,
+        "column number" : 4,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 382,
+          "page number" : 4,
+          "bounding box" : [ 157.727, 431.317, 183.89, 447.671 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "4.24"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 183.89, 431.317, 210.053, 447.671 ],
+        "row number" : 6,
+        "column number" : 5,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 383,
+          "page number" : 4,
+          "bounding box" : [ 183.89, 431.317, 210.053, 447.671 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "3.16"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 4,
+        "bounding box" : [ 210.053, 431.317, 236.217, 447.671 ],
+        "row number" : 6,
+        "column number" : 6,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 384,
+          "page number" : 4,
+          "bounding box" : [ 210.053, 431.317, 236.217, 447.671 ],
+          "font" : "HelveticaLTStd-Roman",
+          "font size" : 9.142,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "0"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 4,
+    "bounding box" : [ 116.482, 517.481, 123.082, 524.319 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 470,
+    "page number" : 4,
+    "bounding box" : [ 142.599, 517.481, 149.2, 524.319 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 4,
+    "bounding box" : [ 168.598, 517.481, 175.199, 524.319 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 4,
+    "bounding box" : [ 193.984, 517.481, 200.584, 524.319 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 4,
+    "bounding box" : [ 220.531, 517.481, 226.629, 524.319 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "E"
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 4,
+    "bounding box" : [ 90.61, 501.483, 97.211, 508.321 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 4,
+    "bounding box" : [ 116.975, 499.545, 122.058, 508.321 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 476,
+    "page number" : 4,
+    "bounding box" : [ 137.059, 499.545, 154.849, 508.321 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2.83"
+  }, {
+    "type" : "paragraph",
+    "id" : 477,
+    "page number" : 4,
+    "bounding box" : [ 162.93, 499.545, 180.72, 508.321 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6.08"
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 4,
+    "bounding box" : [ 188.801, 499.545, 206.591, 508.321 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6.08"
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "page number" : 4,
+    "bounding box" : [ 216.994, 499.545, 229.701, 508.321 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.6"
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 4,
+    "bounding box" : [ 323.828, 494.045, 330.428, 500.883 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 4,
+    "bounding box" : [ 90.848, 485.485, 97.448, 492.323 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 4,
+    "bounding box" : [ 111.179, 483.547, 128.969, 492.323 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2.83"
+  }, {
+    "type" : "paragraph",
+    "id" : 483,
+    "page number" : 4,
+    "bounding box" : [ 142.846, 483.547, 147.929, 492.323 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 484,
+    "page number" : 4,
+    "bounding box" : [ 162.93, 483.547, 180.72, 492.323 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.12"
+  }, {
+    "type" : "paragraph",
+    "id" : 485,
+    "page number" : 4,
+    "bounding box" : [ 194.597, 483.547, 199.68, 492.323 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 4,
+    "bounding box" : [ 214.683, 483.547, 232.472, 492.323 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.12"
+  }, {
+    "type" : "paragraph",
+    "id" : 487,
+    "page number" : 4,
+    "bounding box" : [ 90.976, 469.487, 97.576, 476.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 4,
+    "bounding box" : [ 111.188, 467.549, 128.978, 476.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6.08"
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 4,
+    "bounding box" : [ 137.059, 467.549, 154.849, 476.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.12"
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 4,
+    "bounding box" : [ 168.726, 467.549, 173.809, 476.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 491,
+    "page number" : 4,
+    "bounding box" : [ 194.597, 467.549, 199.68, 476.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 4,
+    "bounding box" : [ 214.683, 467.549, 232.472, 476.325 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.24"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 4,
+    "bounding box" : [ 524.241, 454.142, 530.841, 460.98 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 4,
+    "bounding box" : [ 90.483, 453.489, 97.083, 460.327 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 4,
+    "bounding box" : [ 111.179, 451.551, 128.969, 460.327 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6.08"
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "page number" : 4,
+    "bounding box" : [ 142.846, 451.551, 147.929, 460.327 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 4,
+    "bounding box" : [ 168.717, 451.551, 173.8, 460.327 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 4,
+    "bounding box" : [ 194.588, 451.551, 199.671, 460.327 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 498,
+    "page number" : 4,
+    "bounding box" : [ 214.672, 451.551, 232.462, 460.327 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.16"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 4,
+    "bounding box" : [ 91.15, 437.491, 97.247, 444.329 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "E"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 4,
+    "bounding box" : [ 113.491, 435.553, 126.198, 444.329 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.6"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 4,
+    "bounding box" : [ 139.363, 435.553, 152.07, 444.329 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.6"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 4,
+    "bounding box" : [ 162.921, 435.553, 180.711, 444.329 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.24"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 4,
+    "bounding box" : [ 188.792, 435.553, 206.582, 444.329 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.16"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 4,
+    "bounding box" : [ 220.459, 435.553, 225.542, 444.329 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 4,
+    "bounding box" : [ 321.026, 407.339, 394.039, 416.456 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 12.189,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Threshold: 5"
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 4,
+    "bounding box" : [ 423.829, 405.956, 429.927, 412.794 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.142,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "E"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 4,
+    "bounding box" : [ 45.638, 368.335, 546.744, 386.573 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "FIGURE 1 An example of graph analytics-based approach for analysis of FCNs. Here, the two thresholds yield graphs of completely different topologies."
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 4,
+    "bounding box" : [ 318.102, 292.99, 549.712, 339.138 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "architectures within a collection of networks and between collections of networks; both analyses demonstrate that PH-based techniques are robust to changes in data-acquisition parameters (Section 3.4 )."
+  }, {
+    "type" : "heading",
+    "id" : 510,
+    "level" : "Doctitle",
+    "page number" : 4,
+    "bounding box" : [ 306.879, 240.648, 544.082, 249.649 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.1 | Experimental data and network construction"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 4,
+    "bounding box" : [ 45.638, 45.98, 288.481, 197.851 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 45.638, 150.011, 288.476, 197.851 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "1. Reduce spatiotemporal fMRI data to FCNs: rs-fMRI data are subjected to a standard pre-processing pipeline followed by estimation of FCNs using Pearson correlation between time series extracted from pre-defined regions across the brain (Section 3.1 ).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 45.639, 111.006, 288.481, 145.804 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "2. Embed FCNs in metric space: This is a pre-processing step required for the execution of TDA. It yields a weighted graph that encodes the correlation between every node pair (Section 3.2 ).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 45.639, 72.001, 288.454, 106.856 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3. Apply PH to metric space: This step yields barcodes/persistent diagrams. These barcodes/persistent diagrams act as fingerprints of an FCN (Section 3.3 ).",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 45.638, 45.98, 288.476, 67.851 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "4. Statistical analysis on persistent diagrams: Two kinds of analysis are performed; we show methods for both comparing the",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 4,
+    "bounding box" : [ 306.876, 39.733, 549.707, 222.125 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Structural T1-weighted and rs-fMRI data were obtained from the openly available Enhanced Nathan Kline Institute Rockland Sample database (NKI-RS; Nooner et al., 2012 ). The MRI data were obtained using a 3 T Siemens Magnetom Tim Trio scanner. The data acquisition parameters for the T1-weighted structural data were: 1.0 mm isotropic voxels with 176 slices, repetition time (TR) = 1900 ms, echo time (TE) = 2.52 ms, and field of view (FOV) = 250   250. Resting-state fMRI data were acquired using multiband echo-planar imaging (EPI; Feinberg et al., 2010 ) from each subject using three different acquisition protocols with different parameters as follows: (1) 3.0 mm isotropic voxels with 40 slices, TR = 645 ms, TE = 30 ms, FOV = 222   222 mm, number of volumes = 900, and multi-band factor = 4. (2) 2.0 mm isotropic voxels with 64 slices, TR = 1400 ms, TE = 30 ms, FOV = 224   224 mm, number of volumes = 404 and"
+  }, {
+    "type" : "image",
+    "id" : 516,
+    "page number" : 5,
+    "bounding box" : [ 463.591, 744.937, 549.571, 761.928 ],
+    "source" : "HBM-44-4637/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 5,
+    "bounding box" : [ 533.596, 751.882, 549.611, 758.169 ],
+    "font" : "AdvTT6071803a.B",
+    "font size" : 7.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "4641"
+  }, {
+    "type" : "paragraph",
+    "id" : 518,
+    "page number" : 5,
+    "bounding box" : [ 45.636, 358.017, 288.517, 651.122 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The MRI data were subjected to a standard pre-processing pipeline, including the first five volume removal, slice time correction, and motion correction. T1-weighted anatomical images were coregistered to the mean functional images, using which the fMRI images were spatially registered to a standard MNI152 template. Nuisance variables such as low-frequency drifts, and motion parameters were regressed out. Unwanted physiological fluctuations (white-matter and cerebrospinal fluid signals) were removed using aCOMPCor (anatomical component-based noise correction). After removing subjects that failed quality control, 316 subjects were identified to have usable data from all three acquisition protocols. Subsequently, mean time series from 113 brain regions (obtained using the Yeo parcellation template; Thomas Yeo et al., 2011 ) were obtained for each subject and acquisition protocol. Using Pearson's correlation, FCN matrices were estimated from these mean time series. At the end of this phase, we end up with one weighted network represented per fMRI scan. The network is stored in the form of a symmetric adjacency matrix W of dimension 113   113, where w ij corresponds to the correlation coefficient between brain parcels (nodes) i and j . For the three data cohorts and 316 subjects per cohort, we get 948 3   336 ð Þ adjacency matrices. The FCN for subject 31 for the three sampling periods (645, 1400, and 2500ms) is shown in Figure 2 as a representative example."
+  }, {
+    "type" : "heading",
+    "id" : 523,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 45.638, 318.658, 234.97, 327.658 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.2 | Mapping network to metric space"
+  }, {
+    "type" : "paragraph",
+    "id" : 524,
+    "page number" : 5,
+    "bounding box" : [ 45.638, 228.022, 288.452, 300.134 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Well-understood techniques in TDA typically focus on the study of point cloud data under the metric space setting. In order to study FCN data, our approach is to embed the weighted graph in a metric space where topological techniques can be applied. Once a network is embedded in the metric space, topological features in the form of barcodes can be effectively extracted using PH."
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 5,
+    "bounding box" : [ 45.638, 150.015, 288.475, 222.127 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In this paper, the association between any two nodes u and v in the brain network is measured by their Pearson's correlation coefficients corr u , v ð Þ . The idea is to map this association to a distance measure such that higher correlations between nodes map to smaller distances. We use the following mapping to all 3   316 (316 subjects across three temporal frequencies) FCNs:"
+  }, {
+    "type" : "formula",
+    "id" : 528,
+    "page number" : 5,
+    "bounding box" : [ 130.677, 119.73, 203.375, 133.611 ],
+    "content" : "d ( u , v ) = 1 - c o r r ( u , v )"
+  }, {
+    "type" : "paragraph",
+    "id" : 529,
+    "page number" : 5,
+    "bounding box" : [ 45.637, 45.979, 288.466, 105.173 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Although other measures of association between time series have been explored for constructing FCNs, Pearson's correlation is by far the most popular method, and the mentioned mapping is used in existing literature (Cassidy et al., 2015; Edelsbrunner & Harer, 2008b; Lee et al., 2011, 2012; Smith et al., 2011). That said, the pipeline proposed here does not depend on how the FCN is constructed and could be applied to scenarios where FCN is constructed using measures other than Pearson's correlation. In such cases, the mapping of the network to metric space would have to be adapted accordingly. The applied correlation value will be different for correlated and anticorrelated nodes. As the correlation between two nodes increases, the distance between them will decrease. We also experiment with positive and negative correlation separately and observe that the positive correlation produces a similar result to the original dataset (discussed in the supplement). We hypothesize that this is due to the fact that only 10% of all connections (across all subjects) have a negative correlation; therefore, it does not have a major impact on the analysis. Hence, we have included both positive and negative correlations in our analyses."
+  }, {
+    "type" : "heading",
+    "id" : 519,
+    "level" : "Doctitle",
+    "page number" : 5,
+    "bounding box" : [ 306.879, 513.625, 482.209, 522.625 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.3 | Extracting topological features"
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 5,
+    "bounding box" : [ 306.879, 435.969, 549.692, 495.158 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We apply PH on the metric space representation of brain fMRI graphs to extract topological features. To describe our process, we first briefly review PH, including barcodes and the WD metric. For more details and background on persistence homology, see (Edelsbrunner & Harer, 2008a , 2022 )."
+  }, {
+    "type" : "heading",
+    "id" : 521,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 306.879, 396.667, 443.271, 405.598 ],
+    "heading level" : 1,
+    "font" : "AdvTTa9c1b374",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.3.1 | Topological features"
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 5,
+    "bounding box" : [ 306.879, 241.003, 549.701, 378.144 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Homology deals with the topological features of a space. More precisely, the homology of a topological space  is represented by its homology groups H 0  ð Þ , H 1  ð Þ , and H 2  ð Þ … , where the k th homology group H k  ð Þ describes, informally, the number of k-dimensional holes in  . The 0-, 1-, and 2-dimensional homology groups, denoted as H 0  ð Þ , H 1  ð Þ , and H 2  ð Þ , respectively, correspond to (connected) components, tunnels, and voids of  . In our experimental setup, we focus on the 0-dimensional topological features of an FCN ( W ), which correspond to H 0  ð Þ of its metric space representation. The 0-dimensional topological features, roughly speaking, capture connected components by vertices in the instances."
+  }, {
+    "type" : "heading",
+    "id" : 526,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 306.879, 201.644, 444.303, 210.574 ],
+    "heading level" : 1,
+    "font" : "AdvTTa9c1b374",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.3.2 | Persistent homology"
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 5,
+    "bounding box" : [ 306.879, 45.982, 549.717, 183.12 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In practice, these features, such as connected components, loops, and voids in an FCN, can also be captured by the traditional graph analytic approach using thresholding. An example of this pipeline is shown in Figure 1 ; here, we have an FCN with five nodes and the pairwise distance between every node. We demonstrate how different thresholds can yield different instances of graphs with completely different topologies and connectivity. For instance, a threshold of 3.2 yields a sparse graph with two connected components, and a threshold of 5 yields a relatively denser graph with only one connected component. In practice, there does not exist a unique scale (threshold) that captures the topological structure and connectivity of a weighted"
+  }, {
+    "type" : "image",
+    "page number" : 6,
+    "bounding box" : [ 95.641, 58.394, 477.694, 719.758 ],
+    "alt" : "The image is a bar chart that shows the percentage of people who have read a book in the past 24 hours. The chart is divided into three sections, each with a different color. The x-axis represents the time in hours, while the y-axis represents the percentage of people who have read the book. The chart is labeled with the following labels: - The first section is labeled 1 hour and has a color of light blue. - The second section is labeled 2 hours and has a color of light green. - The third section is labeled 3 hours and has a color of light yellow. Each section of the chart has a different color, with the following values: - The first section has a light blue color. - The second section has a light green color. - The third section has a light yellow color. The chart also includes a legend at the bottom of the chart that explains the",
+    "source" : "HBM-44-4637/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 6,
+    "bounding box" : [ 492.677, 47.395, 517.163, 725.57 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "FIGURE 2 FCN (top-row) and extracted topological feature (bottom-row) for Subject 31 for temporal sampling period 645 ms (left), 1400 ms (center), and 2500 ms(right). The adjacency matrix is of size 113   113. (a) Temporal sampling period 645 ms. (b) Temporal sampling period 1400 ms. (c) Temporal sampling period 2500 ms."
+  }, {
+    "type" : "image",
+    "id" : 532,
+    "page number" : 7,
+    "bounding box" : [ 463.422, 745.428, 549.676, 762.104 ],
+    "source" : "HBM-44-4637/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 7,
+    "bounding box" : [ 45.638, 559.778, 288.491, 677.144 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "PH is a multi-scale notion of homology that captures the change of topological structures over the whole range of thresholds. Similar to the example of Figure 1 , we start with a set F of point cloud data consisting of p points, with a known distance between every pair of points. Two points i and j will be connected by an edge if the distance d i , j ð Þ is smaller than ϵ , forming a 1-simplex. Similarly, a 2-simplex (a triangular face) will be formed among three points if there is an edge between every pair of points. The generated graph is a Rips complex and denoted by Rips F , ϵ ð Þ . Figure 3c – f shows a toy example of constructed Rips complex"
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 7,
+    "bounding box" : [ 45.638, 513.98, 288.482, 561.896 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "with different ϵ . It can be seen that Rips F , t ð Þ   Rips F , s ð Þ whenever t ≤ s . This topological transition with increasing filtration value ϵ is called as a Rips filtration and is the key idea behind PH."
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 7,
+    "bounding box" : [ 45.639, 377.734, 288.474, 509.246 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "More formally, for a real number t ≥ 0, a Rips complex denoted as Rips F , t ð Þ , is formed by considering a set of balls of radius t = 2 centered at points in F . A 1-simplex (an edge) is formed between two points in F if and only if their balls intersect (see Figure 3c ). Given a finite point set F , continuously increasing the radius forms a one-parameter family of nested unions of balls; and, correspondingly, a one-parameter family of nested Rips complexes referred to as a Rips filtration. Let 0 ¼ r 0 ≤ r 1 ≤ r 2 ≤ r 3 … ≤ r m denote a finite sequence of increasing radius. The Rips filtration is a sequence of Rips complexes connected by inclusions, R r 0 ð Þ  R r 1 ð Þ  R r 2 ð Þ  R r 3 ð Þ  …   R r m ð Þ . As t increases, we focus on the important events when the topol-"
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 7,
+    "bounding box" : [ 45.638, 358.017, 288.461, 378.144 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "As t increases, we focus on the important events when the topology of the space changes. This change occurs when components merge with one another to form larger components. We track the birth and death times of each topological feature (a component or a tunnel ), and visualize them in the form of barcodes . The lifetime of a feature ( t death � t birth ) is called its persistence. In Figure 3, each colored point (red, green, blue, purple, and yellow) is born (appears) at t ¼ 0 as an independent (connected) component. At t ¼ 2, the blue component merges with the purple component and dies (disappears). Therefore, the blue component has a persistence of 2. At t ¼ 2 : 2, the yellow component merges into the purple component and dies. Hence, it has a persistence of 2 : 2. Similarly, the green component dies at t ¼ 2 : 8, and the red component dies at t ¼ 3 : 15. The purple component born at time 0 never dies, and thus it has a persistence of ∞ . In Figure 3g, we visualize the appearance (birth), the disappearance (death), and the persistence of these topological features via the barcode , where each feature is summarized by a horizontal bar that begins at its birth time and ends at its death time in the X -axis. The Y -axis depicts that the bars are from 0-dimensional homology groups ( H 0  ð Þ ; Ghrist, 2008). In our setting, for every FCN, all 113 vertices form a finite set of points F , and di encodes the pairwise distance among points in F . We apply PH on all our 3 -316 FCNs (3 scans for every 316 subject) and extract its barcode. The right part of Figure 2 shows the barcodes generated from experimental fMRI data from an illustrative subject. We used the Gudhi library to compute the 0-dimensional persistence diagram from the simplex tree (The GUDHI Project, 2015). As we set min_persistence to zero, any value greater than this in the simplex tree will be considered for computing the persistent diagram. For range, the method finds all the barcodes until there is only one connected component, as we set max_dimension to 1 in simplex tree creation."
+  }, {
+    "type" : "image",
+    "id" : 537,
+    "page number" : 7,
+    "bounding box" : [ 53.718, 105.843, 541.199, 332.835 ],
+    "description" : "The image is a bar chart with five categories and five values. The x-axis is labeled T, and the y-axis is labeled T=2.8. The chart is divided into five segments, each representing a different category. The values for each category are as follows: 1. **T=2.8**: - The first segment is labeled T=2.8 and has a value of 2.8. - The second segment is labeled T=2.8 and has a value of 2.8. - The third segment is labeled T=2.8 and has a value of 2.8. - The fourth segment is labeled T=2.8 and has a value of 2.8. - The fifth segment is labeled T=2.8 and has a value of 2.8. 2. **T=1**: - The",
+    "source" : "HBM-44-4637/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 7,
+    "bounding box" : [ 72.328, 323.197, 93.664, 330.665 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "T = 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 7,
+    "bounding box" : [ 177.498, 323.197, 198.864, 330.665 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "T = 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 7,
+    "bounding box" : [ 289.498, 323.197, 309.465, 330.665 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "T = 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 7,
+    "bounding box" : [ 421.894, 323.197, 450.188, 330.665 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "T = 2.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 542,
+    "page number" : 7,
+    "bounding box" : [ 64.331, 242.636, 76.551, 252.235 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 7,
+    "bounding box" : [ 178.584, 242.636, 190.804, 252.235 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 7,
+    "bounding box" : [ 292.837, 242.636, 304.496, 252.235 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 545,
+    "page number" : 7,
+    "bounding box" : [ 423.411, 242.636, 435.631, 252.235 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 7,
+    "bounding box" : [ 61.206, 217.328, 89.5, 224.796 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "T = 2.8"
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 7,
+    "bounding box" : [ 214.45, 217.328, 248.324, 224.796 ],
+    "font" : "HelveticaLTStd-Bold",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "T = 3.15"
+  }, {
+    "type" : "paragraph",
+    "id" : 548,
+    "page number" : 7,
+    "bounding box" : [ 368.77, 156.344, 381.164, 169.838 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.882,
+    "text color" : "[0.9882352948188782, 0.3960784375667572, 0.13333334028720856]",
+    "content" : "H 0"
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 7,
+    "bounding box" : [ 430.523, 114.124, 470.011, 123.709 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T"
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 7,
+    "bounding box" : [ 462.621, 114.124, 534.54, 123.709 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 9.984,
+    "text color" : "[0.772549033164978, 0.3529411852359772, 0.06666667014360428]",
+    "content" : "2.2 2.8 3.15"
+  }, {
+    "type" : "paragraph",
+    "id" : 551,
+    "page number" : 7,
+    "bounding box" : [ 64.318, 107.974, 76.538, 117.574 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(e)"
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 7,
+    "bounding box" : [ 211.214, 107.974, 220.654, 117.574 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(f)"
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 7,
+    "bounding box" : [ 374.433, 107.974, 386.653, 117.574 ],
+    "font" : "HelveticaLTStd-Roman",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "(g)"
+  }, {
+    "type" : "footer",
+    "id" : 780,
+    "page number" : 7,
+    "bounding box" : [ 45.638, 45.979, 529.381, 86.39 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 785,
+      "page number" : 7,
+      "bounding box" : [ 45.638, 45.979, 529.381, 86.39 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "FIGURE 3 Computing the persistent homology of a point cloud. At T = 0, there are five topological features, corresponding to the five connected components, as we increase T , we see these connected components merge. (c – f), each shows a T where connected components merge, which corresponds to the death of topological features. The birth and death of these topological features are captured in the form of barcodes shown in (g)."
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 556,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 45.638, 721.631, 180.725, 730.631 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.4 | Statistical inferencing"
+  }, {
+    "type" : "heading",
+    "id" : 557,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 306.879, 721.631, 472.751, 730.561 ],
+    "heading level" : 1,
+    "font" : "AdvTTa9c1b374",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3.4.1 | Comparison across cohorts"
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 8,
+    "bounding box" : [ 45.638, 566.023, 288.5, 703.164 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "A barcode can be interchanged with a persistent diagram without the loss of any information. A barcode can be drawn in the form of persistent diagrams that records the birth threshold ( X -axis) and death threshold ( Y -axis) of all topological features (bars). Every bar of the barcode is reduced to a point in the persistent diagram. The persistent diagrams are then used in a statistical inference framework to establish that PH, in general, is robust to data acquisition parameters such as sampling rate. The core idea behind the statistical inference framework is our ability to quantify the difference between two persistent diagrams using the earth moving distance, such as the WD (Edelsbrunner, 2013 ; Vallender, 1974 )."
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 8,
+    "bounding box" : [ 45.638, 358.017, 288.513, 560.128 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "To quantify the structural difference between two FCN instances W i and W j , we compute the WD between their persistent diagrams. WD is defined as the minimum value achieved by a perfect matching between the points (features) of the two persistent diagrams. It is achieved by capturing the perturbation across every pair of points (feature) in the diagrams. In particular, the WD measures the similarity between two persistence diagrams using the sum of all edge lengths between every feature pair. The ability to compare two persistent diagrams using the Wasserstein metrics provides the foundation to develop our statistical inference framework. The goal is to establish a notion of similarity between FCNs that are derived at different sampling rates. We perform three kinds of statistical analysis: (a) comparison across cohorts, (b) comparison within a cohort, and (c) comparison with traditional FCN analysis. We used the Gudhi framework (Kerber et al., 2017 ) to compute the WD between two persistent diagrams."
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 8,
+    "bounding box" : [ 306.876, 358.017, 549.716, 703.164 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In this first set of experiments, we perform a comparison of persistent diagrams across cohorts. In particular, we compute the WD between the persistent diagram of the same subject but with data acquired at different sampling rates and other acquisition parameters. Since we have data at three temporal sampling rates (TR): 645, 1400, and 2500 ms, for each subject, we compute three WD between persistent diagrams of data acquired at (1) TR = 645 and 1400 ms, (2) TR = 1400 and 2500 ms, and (3) TR = 2500 and 645 ms. For the three pairs, we get three distributions, each with 316 data points ( = number of subjects). We perform the Analysis of Variance (ANOVA) test to demonstrate statistical similarity among the three distributions. ANOVA is a collection of statistical models and their associated estimation procedures (such as the variation among and between groups) used to analyze the differences among means. ANOVA provides a statistical test of whether two or more population means are equal and therefore generalizes the t -test beyond two means. The ANOVA test yields a p value, and typically in statistics, a high p -value >0 : 05 ð Þ is a strong indication that distributions have identical means, that is, the null hypothesis is true. In our case, a high p -value would indicate that three WD between the pairs is statistically the same data and that the three data cohorts 645, 1400, and 2500ms are encoding the same underlying data, and thus would infer that the PH-based technique is indeed robust to data acquisition parameters. Along with the ANOVA test, we also perform pairwise t -value tests between the three distributions, establishing statistical similarity across the distributions in a more conservative sense. An illustration of this pipeline is given in Figure 4 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 8,
+    "bounding box" : [ 234.0, 318.362, 305.333, 330.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 8,
+    "bounding box" : [ 146.667, 318.695, 217.0, 329.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 8,
+    "bounding box" : [ 311.0, 318.695, 381.0, 329.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 8,
+    "bounding box" : [ 70.0, 318.695, 141.0, 329.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 8,
+    "bounding box" : [ 398.667, 318.695, 469.667, 329.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 567,
+    "page number" : 8,
+    "bounding box" : [ 473.0, 318.695, 543.667, 329.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "image",
+    "page number" : 8,
+    "bounding box" : [ 53.461, 92.183, 541.783, 327.855 ],
+    "alt" : "In this image there is a diagram.",
+    "source" : "HBM-44-4637/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 8,
+    "bounding box" : [ 83.0, 308.695, 127.0, 319.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 8,
+    "bounding box" : [ 155.667, 308.695, 209.667, 319.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 316"
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 8,
+    "bounding box" : [ 247.667, 308.695, 291.0, 319.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 8,
+    "bounding box" : [ 319.0, 308.695, 373.667, 319.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 316"
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 8,
+    "bounding box" : [ 411.667, 309.362, 455.667, 319.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 8,
+    "bounding box" : [ 481.0, 308.695, 535.667, 319.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 316"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 8,
+    "bounding box" : [ 87.0, 299.362, 124.333, 310.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(std2500)"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 8,
+    "bounding box" : [ 163.0, 299.362, 201.0, 310.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(std2500)"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 8,
+    "bounding box" : [ 327.667, 300.695, 363.667, 310.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(mx1400)"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 8,
+    "bounding box" : [ 417.667, 300.695, 449.667, 310.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(mx645)"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 8,
+    "bounding box" : [ 491.667, 299.362, 524.333, 310.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(mx645)"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 8,
+    "bounding box" : [ 396.333, 174.029, 531.0, 184.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD between subjects of resolution"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 8,
+    "bounding box" : [ 233.0, 173.362, 367.667, 184.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD between subjects of resolution"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 8,
+    "bounding box" : [ 69.0, 172.695, 203.667, 183.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD between subjects of resolution"
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 8,
+    "bounding box" : [ 258.333, 164.029, 342.333, 174.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "mx140O and std2500"
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 8,
+    "bounding box" : [ 424.333, 165.362, 502.333, 174.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "mx645 and mx1400"
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 8,
+    "bounding box" : [ 96.667, 163.362, 175.0, 172.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "std2500 and mx645"
+  }, {
+    "type" : "heading",
+    "id" : 585,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 245.333, 143.695, 345.333, 158.695 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Statistical analysis_"
+  }, {
+    "type" : "heading",
+    "id" : 586,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 173.667, 100.029, 417.0, 118.029 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Statistical inferencing using ANOVA and t-test"
+  }, {
+    "type" : "footer",
+    "id" : 781,
+    "page number" : 8,
+    "bounding box" : [ 45.638, 59.018, 544.24, 77.257 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 786,
+      "page number" : 8,
+      "bounding box" : [ 45.638, 59.018, 544.24, 77.257 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "FIGURE 4 Comparison of WD across cohorts. Here, WD is obtained by comparing persistent diagrams obtained from the same subjects but with data acquired using different temporal samplings."
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 783,
+    "page number" : 9,
+    "bounding box" : [ 45.638, 721.631, 214.667, 730.561 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 788,
+      "page number" : 9,
+      "bounding box" : [ 45.638, 721.631, 214.667, 730.561 ],
+      "heading level" : 1,
+      "font" : "AdvTTa9c1b374",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3.4.2 | Comparison within a cohort"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 9,
+    "bounding box" : [ 45.638, 488.02, 288.527, 703.164 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In this second set of experiments, we compute the pairwise WD between persistence diagrams of subjects within each of the data cohorts. Since we have data from three sampling periods, we get three adjacency matrices (of size 316 -316) encoding the pairwise WD for all 316 subjects. An adjacency matrix of 316 -316 is representative of a high dimensional space (of dimension 316), and it is often a challenging task to perform an interpretable form of statistical comparison for high dimensional data. We, therefore, use the commonly used dimensionality reduction technique, MDS. For an adjacency matrix, storing the distances between each pair of objects in a set and a chosen number of dimensions, N , an MDS algorithm places each object into N -dimensional space ( N is lowerdimensional) such that the between-object distances are preserved as well as possible. We use N ¼ 2 in our experiments, which results in scatter plots. Applying clustering to the scatter plot generated by MDS is common, yielding segregated groups/clusters. Therefore, we apply k-means clustering using the silhouette coefficient to automatically divide the subjects into clusters. As the ground truth of the clustering is not known, we specify the number of clusters using the silhouette coefficient (Pedregosa et al., 2011; Rousseeuw, 1987). We perform this pipeline on all three data cohorts corresponding to the three temporal sampling frequencies. Only the number of clusters is not a good parameter to analyze the similarity of subjects across different TRs -as this method is coarse-grained and loses the identity information of the subjects. We, therefore, performed further finegrained analysis on the clustering result, taking into account the identities of all subjects. In particular, we compute the set intersection (overlaps) of subjects across the clusters to keep the identity information of the subjects. Ideally, the same set of subjects should be clustered together in the three TR plots. The higher number of overlapping subjects across the clusters will indicate the higher similarity of subjects across different temporal sampling rates. We also compare the result obtained from original data with a null distribution obtained from random FC matrices to verify that the set intersection (overlaps) of subjects across the clusters is statistically significant as compared to random chance. An illustration of this pipeline is given in Figure 5."
+  }, {
+    "type" : "image",
+    "page number" : 9,
+    "bounding box" : [ 70.469, 106.696, 524.952, 463.408 ],
+    "alt" : "In this image there are some numbers and some text.",
+    "source" : "HBM-44-4637/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 9,
+    "bounding box" : [ 85.667, 449.029, 152.333, 461.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 9,
+    "bounding box" : [ 310.0, 449.695, 375.333, 460.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 9,
+    "bounding box" : [ 392.0, 449.695, 457.333, 460.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 9,
+    "bounding box" : [ 157.333, 450.029, 223.333, 460.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 9,
+    "bounding box" : [ 238.667, 450.029, 304.667, 460.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 9,
+    "bounding box" : [ 460.667, 450.029, 526.0, 460.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Persistent diagram"
+  }, {
+    "type" : "paragraph",
+    "id" : 598,
+    "page number" : 9,
+    "bounding box" : [ 98.0, 440.695, 139.333, 450.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 9,
+    "bounding box" : [ 165.333, 440.695, 215.333, 450.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 316"
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 9,
+    "bounding box" : [ 251.333, 440.695, 292.0, 450.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "page number" : 9,
+    "bounding box" : [ 318.0, 440.695, 368.0, 450.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 316"
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 9,
+    "bounding box" : [ 404.0, 440.695, 444.667, 450.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 9,
+    "bounding box" : [ 468.667, 441.362, 518.667, 450.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "of subject 316"
+  }, {
+    "type" : "heading",
+    "id" : 604,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 188.333, 384.695, 403.0, 398.029 ],
+    "heading level" : 1,
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Pairwise Wasserstein distance computation"
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 9,
+    "bounding box" : [ 72.667, 312.695, 80.667, 323.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 9,
+    "bounding box" : [ 379.0, 307.029, 385.667, 315.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 606,
+    "page number" : 9,
+    "bounding box" : [ 73.333, 300.029, 81.333, 313.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 9,
+    "bounding box" : [ 72.667, 272.695, 81.333, 298.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "page number" : 9,
+    "bounding box" : [ 378.0, 266.029, 388.0, 277.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "page number" : 9,
+    "bounding box" : [ 444.0, 268.695, 458.667, 277.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD"
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 9,
+    "bounding box" : [ 292.0, 268.695, 306.0, 276.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD"
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 9,
+    "bounding box" : [ 139.333, 268.029, 154.0, 276.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD"
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 259.362, 82.667, 272.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 615,
+    "page number" : 9,
+    "bounding box" : [ 225.333, 259.362, 235.333, 271.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "m"
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "page number" : 9,
+    "bounding box" : [ 255.333, 258.029, 344.667, 267.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "between subject 3 and 5"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 9,
+    "bounding box" : [ 407.333, 258.029, 496.667, 267.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "between subject 3 and 5"
+  }, {
+    "type" : "paragraph",
+    "id" : 614,
+    "page number" : 9,
+    "bounding box" : [ 102.667, 257.362, 192.667, 266.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "between subject 3 and 5"
+  }, {
+    "type" : "paragraph",
+    "id" : 617,
+    "page number" : 9,
+    "bounding box" : [ 379.0, 254.362, 385.667, 262.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "s"
+  }, {
+    "type" : "paragraph",
+    "id" : 619,
+    "page number" : 9,
+    "bounding box" : [ 73.667, 247.029, 80.333, 255.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "s"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 9,
+    "bounding box" : [ 217.667, 227.029, 371.0, 240.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Multidimensional scaling (MDS)"
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 9,
+    "bounding box" : [ 255.667, 163.695, 336.333, 176.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Cluster analysis"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 9,
+    "bounding box" : [ 250.333, 128.362, 362.333, 140.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Set intersection (overlaps) of"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 9,
+    "bounding box" : [ 399.0, 128.362, 511.0, 140.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Set intersection (overlaps) of"
+  }, {
+    "type" : "paragraph",
+    "id" : 622,
+    "page number" : 9,
+    "bounding box" : [ 98.0, 129.362, 209.333, 140.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Set intersection (overlaps) of"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 9,
+    "bounding box" : [ 259.667, 118.362, 353.0, 130.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "subjects across clusters"
+  }, {
+    "type" : "paragraph",
+    "id" : 625,
+    "page number" : 9,
+    "bounding box" : [ 106.667, 119.362, 199.333, 130.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "subjects across clusters"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 9,
+    "bounding box" : [ 408.0, 119.362, 501.333, 130.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "subjects across clusters"
+  }, {
+    "type" : "footer",
+    "id" : 782,
+    "page number" : 9,
+    "bounding box" : [ 45.638, 73.532, 522.199, 91.77 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 787,
+      "page number" : 9,
+      "bounding box" : [ 45.638, 73.532, 522.199, 91.77 ],
+      "font" : "AdvTTa9c1b374",
+      "font size" : 8.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "FIGURE 5 Comparison of WD within a given cohort. Here, WD is obtained by comparing persistent diagrams obtained from different subjects but within the same data cohort, acquired using the same temporal sampling."
+    } ]
+  }, {
+    "type" : "header",
+    "id" : 784,
+    "page number" : 10,
+    "bounding box" : [ 45.638, 721.631, 273.605, 730.561 ],
+    "kids" : [ {
+      "type" : "heading",
+      "id" : 789,
+      "page number" : 10,
+      "bounding box" : [ 45.638, 721.631, 273.605, 730.561 ],
+      "heading level" : 1,
+      "font" : "AdvTTa9c1b374",
+      "font size" : 10.0,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "3.4.3 | Comparison with traditional FCN analysis"
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 10,
+    "bounding box" : [ 45.638, 513.984, 288.48, 703.164 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The true efficacy of the TDA-based pipeline can be demonstrated further by comparing it against the traditional FC analysis pipeline. Traditionally, raw FCNs are used instead of using a topological feature, for example, a common pipeline is to perform ANOVA across all subjects for every node of the raw FCN. This gives one p -value per entry of the FCN. With our FCN of size 113   113, we get 113   113 p -values. The p -values can then be thresholded using a typical significance level of α = 0.05. A value of 1 is assigned if the p -value is less than 0.05, or else 0 is assigned. The thresholded output can then be analyzed to see if a majority of values are less than 1 or not. If a majority of values are 1 ( p -value less than 0.05), then this is a strong indication that FC is finding differences in the brain network of the same individual constructed from data acquired with different parameters. This is not ideal since we want a metric that is robust to non-neural variability in the data."
+  }, {
+    "type" : "heading",
+    "id" : 633,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 45.638, 474.62, 124.637, 483.62 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "4 | RESULTS"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 10,
+    "bounding box" : [ 45.638, 397.021, 288.486, 456.153 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The first step (Section 3.1) yields one FCN per fMRI scan, stored in the form of an adjacency matrix. We obtain a total of 3 -316 matrices, corresponding to three scans of different temporal samplings for 316 subjects. As an illustrative example, we have plotted the FCN for subject 31 for the three data acquisition protocols in Figure 2. The next step (Section 3.2) embeds the FCN in a metric space, limiting the entries between 0 and 1. Finally, PH is applied to the metric space FCN to extract dimension-0 features, which are stored in the form of persistent barcodes. Figure 2 also shows the barcodes for subject 31 for the three temporal sampling periods. With the barcodes extracted for all 3 -316 fMRI scans, we move on to statistical inference. We perform two sets of TDA-based experiments, as presented in Section 3.4, where we compare FCNs across cohorts and within the cohort."
+  }, {
+    "type" : "image",
+    "page number" : 10,
+    "bounding box" : [ 46.375, 231.194, 287.738, 365.273 ],
+    "alt" : "The image is a bar chart titled Distance Distribution. The chart is divided into three vertical bars, each representing a different distribution of distances. The x-axis represents the distances, ranging from 0 to 17 meters, while the y-axis represents the distances in meters. The first bar, labeled WD(455m-1400mrs), is positioned at the top of the chart. This bar represents the distance from 0 meters to 17 meters. The second bar, labeled WD(1400m-2500mrs), is positioned at the top of the chart. This bar represents the distance from 0 meters to 2500 meters. The third bar, labeled WD(2500m-645mrs), is positioned at the top of the chart. This bar represents the distance from 0 meters to 645 meters. The x-",
+    "source" : "HBM-44-4637/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 10,
+    "bounding box" : [ 53.667, 356.362, 67.667, 363.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "17.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 10,
+    "bounding box" : [ 53.333, 339.362, 68.667, 347.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "15.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 10,
+    "bounding box" : [ 53.667, 324.362, 68.333, 331.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "12.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 10,
+    "bounding box" : [ 54.333, 308.362, 68.333, 315.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 10,
+    "bounding box" : [ 57.667, 293.029, 68.333, 299.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "7.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 10,
+    "bounding box" : [ 57.667, 277.029, 67.667, 283.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 642,
+    "page number" : 10,
+    "bounding box" : [ 57.667, 261.029, 68.333, 267.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 10,
+    "bounding box" : [ 58.333, 245.029, 68.333, 251.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 10,
+    "bounding box" : [ 76.667, 237.362, 138.667, 245.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD(645ms-14OOms)"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 10,
+    "bounding box" : [ 146.333, 237.362, 211.667, 245.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD(14OOms-25ooms)"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 10,
+    "bounding box" : [ 220.0, 237.362, 282.0, 245.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "WD(25OOms-645ms)"
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 10,
+    "bounding box" : [ 160.0, 229.362, 198.667, 237.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Distributions"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 10,
+    "bounding box" : [ 45.637, 175.976, 287.944, 216.211 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "FIGURE 6 Wasserstein distance computation for all 316 subjects between the three cohorts: WD (TR = 645 and 1400 ms), WD (TR = 1400 and 2500 ms), WD (TR = 2500 and 645 ms), yielding three distributions. The three distributions are plotted using box plots."
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 10,
+    "bounding box" : [ 306.878, 253.986, 549.71, 612.116 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "In our first set of experiments, we compare FCNs across cohorts. For all 316 subjects, we compute the WD for the following three pairs: (1) TR = 645 and 1400 ms, (2) TR = 1400 and 2500 ms, and (3) TR = 2500 and 645 ms. The results of the three distributions (with 316 samples each) are plotted using box plots in Figure 6 (Williamson et al., 1989 ). As can be seen, the box plots are a strong qualitative indication of the similarity among the three distributions, with the median, interquartile region, minimum and maximum (excluding the outliers) all aligning across the three distributions. To further test their statistical equivalence, an ANOVA test was performed on these three distributions. The p -value yielded by the ANOVA test determines whether the differences between group means are statistically significant. To determine whether any of the differences between the means are statistically significant, one typically compares the p -value to a chosen significance level to assess the null hypothesis. The null hypothesis states that the population means are all equal. Usually, a significance level (denoted as α ) of 0.05 works well. A significance level of 0.05 indicates a 5 % risk of concluding that a difference exists when there is no actual difference. The ANOVA test on our distribution yielded a p -value of 0 : 29. Since the p -value is greater than the significance level ( α = 0.05), implying that the null hypothesis cannot be rejected, and hence the WD between the three data cohorts indeed have statistically identical means. In addition to the ANOVA test, we also performed t -value tests on the three pairs the results of which are shown in Table 1 . Note that this is a more stringent test as compared to an ANOVA. As can be seen in Table 1 , all the p -values are greater than 0 : 05, also implying that the means of WD distributions for each cohort comparison are statistically similar."
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 10,
+    "bounding box" : [ 306.88, 175.483, 549.72, 248.148 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We also investigate the three distributions in isolation. For all the 316 subjects, the WD between FCNs with temporal sampling period 645 and 1400ms, we find that 13 % of subjects have a WD less than 2, 65 % of subjects have a WD less than 5, and only 1 % of subjects have a WD greater than 10. The mean WD for the three distributions across all 316 subjects is 4 : 30, 4 : 01, and 4 : 14, respectively."
+  }, {
+    "type" : "table",
+    "id" : 650,
+    "level" : "2",
+    "page number" : 10,
+    "bounding box" : [ 44.619, 83.599, 388.94, 142.566 ],
+    "number of rows" : 4,
+    "number of columns" : 3,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 44.619, 127.824, 159.393, 142.566 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 159.393, 127.824, 274.166, 142.566 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 274.166, 127.824, 388.94, 142.566 ],
+        "row number" : 1,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 386,
+          "page number" : 10,
+          "bounding box" : [ 274.166, 127.824, 388.94, 142.566 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "p -value"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 44.619, 113.082, 159.393, 127.824 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 387,
+          "page number" : 10,
+          "bounding box" : [ 44.619, 113.082, 159.393, 127.824 ],
+          "font" : "AdvTTa9c1b374",
+          "font size" : 7.5,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "WD (TR = 645, TR = 1400)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 159.393, 113.082, 274.166, 127.824 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 388,
+          "page number" : 10,
+          "bounding box" : [ 159.393, 113.082, 274.166, 127.824 ],
+          "font" : "AdvTTa9c1b374",
+          "font size" : 7.5,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "WD (TR = 1400, TR = 2500)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 274.166, 113.082, 388.94, 127.824 ],
+        "row number" : 2,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 389,
+          "level" : "1",
+          "page number" : 10,
+          "bounding box" : [ 274.166, 113.082, 388.94, 127.824 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ".088"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 44.619, 98.341, 159.393, 113.082 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 390,
+          "page number" : 10,
+          "bounding box" : [ 44.619, 98.341, 159.393, 113.082 ],
+          "font" : "AdvTTa9c1b374",
+          "font size" : 7.5,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "WD (TR = 1400, TR = 2500)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 159.393, 98.341, 274.166, 113.082 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 391,
+          "page number" : 10,
+          "bounding box" : [ 159.393, 98.341, 274.166, 113.082 ],
+          "font" : "AdvTTa9c1b374",
+          "font size" : 7.5,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "WD (TR = 2500, TR = 645)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 274.166, 98.341, 388.94, 113.082 ],
+        "row number" : 3,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 392,
+          "level" : "1",
+          "page number" : 10,
+          "bounding box" : [ 274.166, 98.341, 388.94, 113.082 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ".519"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 44.619, 83.599, 159.393, 98.341 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 393,
+          "page number" : 10,
+          "bounding box" : [ 44.619, 83.599, 159.393, 98.341 ],
+          "font" : "AdvTTa9c1b374",
+          "font size" : 7.5,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "WD (TR = 2500, TR = 645)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 159.393, 83.599, 274.166, 98.341 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 394,
+          "page number" : 10,
+          "bounding box" : [ 159.393, 83.599, 274.166, 98.341 ],
+          "font" : "AdvTTa9c1b374",
+          "font size" : 7.5,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "WD (TR = 645, TR = 1400)"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 274.166, 83.599, 388.94, 98.341 ],
+        "row number" : 4,
+        "column number" : 3,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 395,
+          "level" : "1",
+          "page number" : 10,
+          "bounding box" : [ 274.166, 83.599, 388.94, 98.341 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : ".387"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 10,
+    "bounding box" : [ 45.638, 59.107, 382.205, 76.293 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Note : Since all p -values are greater than .05, the means of WD distributions for each cohort comparison are statistically similar."
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 10,
+    "bounding box" : [ 405.636, 111.97, 540.302, 141.263 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "TABLE 1 t -values and p -values obtained by pairwise t -tests comparing the WDs between data cohorts."
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 11,
+    "bounding box" : [ 142.667, 724.362, 204.0, 732.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "mx645: 2 clusters mxl4OO: 2 clusters"
+  }, {
+    "type" : "image",
+    "page number" : 11,
+    "bounding box" : [ 45.638, 337.493, 549.581, 730.602 ],
+    "alt" : "The image is a scatter plot with two clusters of clusters. The x-axis is labeled cluster 1 and the y-axis is labeled std250: 2 clusters. The scatter plot is drawn with a blue and orange color scheme. The clusters are represented by blue dots and orange dots. The clusters are scattered across the x-axis, with the clusters at the top of the graph being blue and the clusters at the bottom of the graph being orange. The clusters are scattered across the y-axis, with the clusters at the top of the graph being blue and the clusters at the bottom of the graph being orange. The scatter plot is drawn with a blue and orange color scheme. The clusters are scattered across the x-axis, with the clusters at the top of the graph being blue and the clusters at the bottom of the graph being orange. The clusters are scattered across the y-axis, with the clusters at the top of the graph being blue and the",
+    "source" : "HBM-44-4637/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 11,
+    "bounding box" : [ 49.0, 712.695, 57.0, 719.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 11,
+    "bounding box" : [ 311.667, 712.695, 320.333, 719.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "page number" : 11,
+    "bounding box" : [ 256.333, 712.029, 281.667, 718.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "cluster 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 11,
+    "bounding box" : [ 342.333, 712.029, 367.667, 718.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "cluster 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "page number" : 11,
+    "bounding box" : [ 256.333, 703.362, 281.667, 710.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "cluster 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 661,
+    "page number" : 11,
+    "bounding box" : [ 342.333, 703.362, 367.667, 710.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "cluster 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 11,
+    "bounding box" : [ 45.667, 583.362, 57.667, 589.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~10"
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 11,
+    "bounding box" : [ 308.333, 583.362, 320.333, 589.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~10"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "page number" : 11,
+    "bounding box" : [ 76.333, 553.362, 88.333, 560.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~10"
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 11,
+    "bounding box" : [ 260.333, 553.362, 269.0, 560.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "page number" : 11,
+    "bounding box" : [ 523.667, 553.362, 531.667, 560.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 11,
+    "bounding box" : [ 339.667, 553.362, 351.667, 559.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~10"
+  }, {
+    "type" : "paragraph",
+    "id" : 668,
+    "page number" : 11,
+    "bounding box" : [ 169.0, 536.695, 175.667, 544.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "a"
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 11,
+    "bounding box" : [ 282.667, 523.695, 348.667, 531.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "std2500: 2 clusters"
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 11,
+    "bounding box" : [ 191.0, 512.029, 199.667, 518.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 11,
+    "bounding box" : [ 398.333, 502.695, 423.667, 518.029 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 11,
+      "bounding box" : [ 398.333, 511.362, 423.667, 518.029 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "cluster 1",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 11,
+      "bounding box" : [ 398.333, 502.695, 423.667, 509.362 ],
+      "font" : null,
+      "font size" : 12.0,
+      "text color" : "null",
+      "content" : "cluster 2",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 11,
+    "bounding box" : [ 218.333, 352.695, 230.333, 359.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~10"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 11,
+    "bounding box" : [ 402.333, 352.695, 411.0, 359.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 11,
+    "bounding box" : [ 45.638, 292.747, 549.531, 322.743 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "FIGURE 7 MDS plots of the three data cohorts (TR = 645, 1400, and 2500 ms) have similar structures, and all 316 subjects within the cohorts are segregated into two clusters. (a) Clustering result on MDS data for TR = 645 ms. (b) Clustering result on MDS data for TR = 1400 ms. (c) Clustering result on MDS data for TR = 2500 ms."
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 11,
+    "bounding box" : [ 45.638, 59.021, 288.512, 261.129 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Next, we perform a pairwise WD computation among all 316 subjects for the three data cohorts in the second set of experiments. This yields three adjacency A ð Þ matrices for the three temporal cohorts where a ij correspond to the WD between persistent diagram of subjects i and j . It is difficult to compare adjacency matrices (both statistically and visually), and therefore we perform dimensionality reduction using MDS to reduce the matrix (316-dimensional data) to a 2D plane (2-dimensional data). We plot the MDS plots for the three adjacency matrices in Figure 7 . We also applied clustering on the MDS plots to segregate the subjects, and we can see that all three cohorts result in two distinct clusters (as determined by the Silhouette criterion). When we compute the set intersection (overlaps) of subjects across the clusters of different TRs, we observe 198 out of 316 subjects reside in the same cluster group for all three TRs. This number rises to 251 subjects for pairwise cluster intersection. This intersection was statistically very significant (a p -value of 0) when compared with the null"
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 11,
+    "bounding box" : [ 306.878, 59.021, 549.671, 196.164 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Finally, we perform the third set of experiments detailed in Section 3 . These experiments are not based on TDA and follow the traditional analysis pipeline. We plot the result of the thresholded image in Figure 8 . It can be seen from the figure that the majority of pixels are black, which corresponds to a p -value of less than 0.05. In particular, there are 7732 connections that showed significant differences in connectivity across the same subjects for data acquired from different sampling periods versus 5037 connections that did not. This result strongly indicates that the traditional analysis method fails to identify connections from the same subjects but acquired with different sampling periods as the same connections in a majority of cases."
+  }, {
+    "type" : "image",
+    "page number" : 12,
+    "bounding box" : [ 45.638, 489.316, 358.045, 730.601 ],
+    "alt" : "In this image, we can see a barcode.",
+    "source" : "HBM-44-4637/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 680,
+    "page number" : 12,
+    "bounding box" : [ 50.667, 704.362, 62.0, 713.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 701.029, 359.333, 709.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.9"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 683.695, 62.0, 693.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 678.362, 359.333, 687.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.8"
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 663.695, 62.0, 673.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "30"
+  }, {
+    "type" : "paragraph",
+    "id" : 685,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 655.695, 359.333, 664.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.7"
+  }, {
+    "type" : "paragraph",
+    "id" : 686,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 643.695, 62.0, 653.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 633.029, 360.0, 641.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.6"
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 623.695, 62.0, 633.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 610.362, 360.0, 619.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 690,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 603.695, 62.0, 613.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "60"
+  }, {
+    "type" : "paragraph",
+    "id" : 692,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 587.695, 359.333, 596.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.4"
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 583.695, 62.0, 593.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "70"
+  }, {
+    "type" : "paragraph",
+    "id" : 694,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 565.029, 359.333, 573.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.3"
+  }, {
+    "type" : "paragraph",
+    "id" : 693,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 563.695, 62.0, 573.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "80"
+  }, {
+    "type" : "paragraph",
+    "id" : 695,
+    "page number" : 12,
+    "bounding box" : [ 50.0, 543.695, 62.0, 553.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "90"
+  }, {
+    "type" : "paragraph",
+    "id" : 696,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 542.362, 359.333, 551.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 697,
+    "page number" : 12,
+    "bounding box" : [ 44.0, 523.695, 61.333, 533.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "100"
+  }, {
+    "type" : "paragraph",
+    "id" : 698,
+    "page number" : 12,
+    "bounding box" : [ 346.0, 519.695, 358.667, 528.362 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.1"
+  }, {
+    "type" : "paragraph",
+    "id" : 699,
+    "page number" : 12,
+    "bounding box" : [ 44.0, 503.695, 60.667, 513.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "110"
+  }, {
+    "type" : "paragraph",
+    "id" : 700,
+    "page number" : 12,
+    "bounding box" : [ 103.333, 487.695, 115.333, 497.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 701,
+    "page number" : 12,
+    "bounding box" : [ 149.333, 487.695, 161.333, 497.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "40"
+  }, {
+    "type" : "paragraph",
+    "id" : 702,
+    "page number" : 12,
+    "bounding box" : [ 194.667, 487.695, 206.667, 497.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "60"
+  }, {
+    "type" : "paragraph",
+    "id" : 703,
+    "page number" : 12,
+    "bounding box" : [ 240.0, 487.695, 252.0, 497.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "80"
+  }, {
+    "type" : "paragraph",
+    "id" : 704,
+    "page number" : 12,
+    "bounding box" : [ 283.333, 487.029, 300.0, 497.029 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "100"
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 12,
+    "bounding box" : [ 374.91, 667.617, 541.572, 729.849 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "FIGURE 8 Result after ANOVA test performed for all 316 subjects for every node of the FCN. White pixels correspond to those connections which were significantly different across the same subjects for data acquired from different sampling periods."
+  }, {
+    "type" : "heading",
+    "id" : 705,
+    "level" : "Doctitle",
+    "page number" : 12,
+    "bounding box" : [ 45.638, 461.637, 145.574, 470.638 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5 | DISCUSSION"
+  }, {
+    "type" : "paragraph",
+    "id" : 706,
+    "page number" : 12,
+    "bounding box" : [ 45.638, 111.014, 288.509, 443.114 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "MRI scanners across the world have different configurations and field strengths. 1 Data acquired from different scanners with different parameters have some degree of noise in them due to non-neural variability introduced by different scanner configurations and data acquisition parameters, which makes it difficult for datasets acquired from different machines to be pooled into one large dataset for analysis within a single framework. As a result, conducting research on brain networks obtained from fMRI is primarily concentrated at localized sites. Such studies are limited by the fact that the number of subjects that can be scanned at a single scanner is limited, which tends to reduce the sample size and hence the generalizability of the results. This can be overcome by conducting multi-site studies with sites that are geographically closer to the population of interest. However, as mentioned above, data acquired from different scanners and parameters introduces noise, which reduces the effect of interest that is neural in origin, and hence reduces the utility of such a multi-site effort. Our paper aims to address precisely this aspect. Accordingly, we have proposed PH-based techniques (which are based on TDA) as a means to overcome noise introduced by non-neural factors such as different data acquisition parameters and extract the inherent structural topology underlying brain networks characterized by fMRI. Computational topology is known to extract underlying shapes from complex data structures. We have shown that the topology-based metric for the brain network is invariant to data acquisition parameters such as sampling period. The metric captures the underlying shape of the brain network in topological space, thus creating a common ground to"
+  }, {
+    "type" : "paragraph",
+    "id" : 709,
+    "page number" : 12,
+    "bounding box" : [ 45.638, 46.334, 287.59, 88.923 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 6.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1 For example, the MRI machines available for research in the state of Alabama in the United States Siemens 7 T Magnetom and 3 T Verio at Auburn University, Siemens 3 T Prisma at the University of Alabama Birmingham, Philips 3 T Achieva at the University of South Alabama, and Siemens 3 T Prisma at the University of Alabama Tuscaloosa all have different configurations."
+  }, {
+    "type" : "paragraph",
+    "id" : 707,
+    "page number" : 12,
+    "bounding box" : [ 306.878, 136.979, 549.723, 443.121 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We were able to establish the efficacy of the TDA-based pipeline by comparing it against the traditional data analysis pipeline presented in Section 3 . In a traditional pipeline, raw FCNs are used directly instead of using a topological feature. The results of this pipeline are a strong indication that these traditional techniques are not able to establish similarity across FCNs of the same subjects acquired with different TRs and acquisition parameters. While the opposite was true for the TDA-based metric, wherein we showed both qualitatively and quantitatively that the metric remains statistically invariant across the same subjects irrespective of the sampling period with which restingstate fMRI data was acquired. This demonstrates the utility of TDAbased analysis because, in principle, data acquired using different parameters from the same subject should still capture the same brain network. Certain limitations of our work must be kept in mind while interpreting the results. Even though the sampling period was different across the three different acquisitions, some other parameters, such as number of volumes, multiband factor, FOV, and voxel size, also varied across the three cohorts. Ideally, we would want to investigate the limits of parameter variability that would show invariance in the TDA metric by varying only one parameter at a time. This will be part of our future work in this area. Furthermore, future work can investigate whether the TDA metric is invariant to differences in other variables, such as vendors (such as Siemens, GE, and Philips) and scanner models within a given vendor."
+  }, {
+    "type" : "heading",
+    "id" : 708,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 306.879, 97.669, 412.73, 106.669 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 10.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "6 | CONCLUSION"
+  }, {
+    "type" : "paragraph",
+    "id" : 710,
+    "page number" : 12,
+    "bounding box" : [ 306.879, 45.98, 549.673, 79.145 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In this paper, we have demonstrated the efficacy of TDA-based techniques in establishing a notion of similarity between FCN. FCNs of subjects acquired from different scanners or at different sampling rates have some degree of noise, reducing the efficacy of traditional network analysis pipelines. We have used PH to extract topological features in the form of barcodes from FCNs; these barcodes can then be used to compare and contrast different FCNs. We demonstrated that barcodes extracted from scans of the same subject but acquired with different temporal sampling periods capture the same structure. We presented two analysis pipelines for TDA-based analysis. In the first pipeline, we compared scans of the same subject acquired at different sampling rates, and in the second pipeline, we compared scans of all subjects with the same sampling period. Both our analysis pipelines demonstrated the efficacy of PH in performing analysis of FCNs that are acquired with differing parameters (such as sampling periods). Finally, we have open-sourced all our code, script, data, and documentation at https://github.com/harp-lab/brainPH, making this work reproducible."
+  }, {
+    "type" : "heading",
+    "id" : 718,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 45.639, 513.994, 141.301, 521.179 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "ACKNOWLEDGMENTS"
+  }, {
+    "type" : "paragraph",
+    "id" : 719,
+    "page number" : 13,
+    "bounding box" : [ 45.638, 319.018, 288.526, 508.141 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "We thank Xi-Nian Zuo from the Beijing Normal University for sharing some of the data with us. We are also grateful to the entire Enhanced Nathan Kline Institute Rockland Sample (NKI-RS) team for providing free access to the raw MRI data. Principal support for the enhanced NKI-RS project was provided by the NIMH BRAINS R01MH094639-01 (PI Milham). Funding for key personnel was also provided in part by the New York State Office of Mental Health and Research Foundation for Mental Hygiene. Funding for the decompression and augmentation of administrative and phenotypic protocols was provided by a grant from the Child Mind Institute (1FDN2012-1). Additional personnel support was provided by the Center for the Developing Brain at the Child Mind Institute, as well as NIMH R01MH081218, R01MH083246, and R21MH084126. Project support was also provided by the NKI Center for Advanced Brain Imaging (CABI), the Brain Research Foundation, and the Stavros Niarchos Foundation."
+  }, {
+    "type" : "heading",
+    "id" : 726,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 45.638, 293.011, 189.632, 300.197 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "DATA AVAILABILITY STATEMENT"
+  }, {
+    "type" : "paragraph",
+    "id" : 727,
+    "page number" : 13,
+    "bounding box" : [ 45.638, 253.985, 288.45, 287.158 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The code, script, data, and documentation has been publicly shared on GitHub and can be accessed using the following link: https://github. com/harp-lab/brainPH ."
+  }, {
+    "type" : "heading",
+    "id" : 729,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 45.638, 228.035, 73.942, 235.22 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "ORCID"
+  }, {
+    "type" : "paragraph",
+    "id" : 730,
+    "page number" : 13,
+    "bounding box" : [ 45.638, 214.981, 123.854, 222.125 ],
+    "font" : "AdvTTeb5f0e55.I",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Gopikrishna Deshpande"
+  }, {
+    "type" : "paragraph",
+    "id" : 731,
+    "page number" : 13,
+    "bounding box" : [ 135.893, 214.98, 278.886, 222.125 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.08627451211214066, 0.30980393290519714, 0.6117647290229797]",
+    "content" : "https://orcid.org/0000-0001-7471-5357"
+  }, {
+    "type" : "heading",
+    "id" : 733,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 45.638, 189.03, 101.385, 196.215 ],
+    "heading level" : 1,
+    "font" : "AdvTT6071803a.B",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "REFERENCES"
+  }, {
+    "type" : "paragraph",
+    "id" : 734,
+    "page number" : 13,
+    "bounding box" : [ 45.638, 144.294, 288.377, 182.762 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Abraham, A., Milham, M. P., Di Martino, A., Craddock, R. C., Samaras, D., Thirion, B., & Varoquaux, G. (2017). Deriving reproducible biomarkers from multi-site resting-state data: An autism-based example. NeuroImage , 147 , 736 – 745."
+  }, {
+    "type" : "paragraph",
+    "id" : 736,
+    "page number" : 13,
+    "bounding box" : [ 45.638, 102.285, 288.417, 140.811 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Andellini, M., Cannatà, V., Gazzellini, S., Bernardi, B., & Napolitano, A. (2015). Test-retest reliability of graph metrics of resting state MRI functional brain networks: A review. Journal of Neuroscience Methods , 253 , 183 – 192."
+  }, {
+    "type" : "paragraph",
+    "id" : 739,
+    "page number" : 13,
+    "bounding box" : [ 45.638, 60.584, 288.404, 98.802 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Aurich, N. K., Alves Filho, J. O., Marques da Silva, A. M., & Franco, A. R. (2015). Evaluating the reliability of different preprocessing steps to estimate graph theoretical measures in resting state fmri data. Frontiers in Neuroscience , 9 , 48."
+  }, {
+    "type" : "image",
+    "id" : 711,
+    "page number" : 13,
+    "bounding box" : [ 463.541, 745.304, 549.625, 761.841 ],
+    "source" : "HBM-44-4637/imageFile16.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 712,
+    "page number" : 13,
+    "bounding box" : [ 306.878, 701.554, 549.627, 729.228 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Bell, T. K., Godfrey, K. J., Ware, A. L., Yeates, K. O., & Harris, A. D. (2022). Harmonization of multi-site mrs data with combat. NeuroImage , 257 , 119330."
+  }, {
+    "type" : "paragraph",
+    "id" : 713,
+    "page number" : 13,
+    "bounding box" : [ 306.878, 669.726, 549.624, 697.707 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Bellec, P., Chu, C., Chouinard-Decorte, F., Benhajali, Y., Margulies, D. S., & Craddock, R. C. (2017). The neuro bureau adhd-200 preprocessed repository. NeuroImage , 144 , 275 – 286."
+  }, {
+    "type" : "paragraph",
+    "id" : 714,
+    "page number" : 13,
+    "bounding box" : [ 306.878, 606.742, 549.621, 666.243 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Biswal, B. B., Mennes, M., Zuo, X.-N., Gohel, S., Kelly, C., Smith, S. M., Beckmann, C. F., Adelstein, J. S., Buckner, R. L., Colcombe, S., Dogonowski, A. M., Ernst, M., Fair, D., Hampson, M., Hoptman, M. J., Hyde, J. S., Kiviniemi, V. J., Kötter, R., Li, S. J., … Milham, M. P. (2010). Toward discovery science of human brain function. Proceedings of the National Academy of Sciences , 107 (10), 4734 – 4739."
+  }, {
+    "type" : "paragraph",
+    "id" : 715,
+    "page number" : 13,
+    "bounding box" : [ 306.877, 585.709, 549.565, 603.259 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Carroll, J. D., & Arabie, P. (1998). Multidimensional scaling. In Measurement, Judgment and Decision Making (pp. 179 – 250). Elsevier."
+  }, {
+    "type" : "paragraph",
+    "id" : 716,
+    "page number" : 13,
+    "bounding box" : [ 306.877, 554.245, 549.62, 582.225 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Cassidy, B., Rae, C., & Solo, V. Brain activity: Conditional dissimilarity and persistent homology. In 2015 IEEE 12th International Symposium on Biomedical Imaging (ISBI) . 2015, 1356 – 1359."
+  }, {
+    "type" : "paragraph",
+    "id" : 717,
+    "page number" : 13,
+    "bounding box" : [ 306.877, 502.049, 549.673, 550.762 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Cetin-Karayumak, S., Stegmayer, K., Walther, S., Szeszko, P. R., Crow, T., James, A., Keshavan, M., Kubicki, M., & Rathi, Y. (2020). Exploring the limits of combat method for multi-site diffusion MRI harmonization. bioRxiv . https://www.biorxiv.org/content/early/2020/11/21/2020.11. 20.390120"
+  }, {
+    "type" : "paragraph",
+    "id" : 720,
+    "page number" : 13,
+    "bounding box" : [ 306.879, 460.04, 549.617, 498.258 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Cetin-Karayumak, S., Zhang, F., Billah, T., Zekelman, L., Makris, N., Pieper, S., O'Donnell, L. J., & Rathi, Y. (2023). Harmonized diffusion mri data and white matter measures from the baseline adolescent brain cognitive development (ABCD) study. bioRxiv ."
+  }, {
+    "type" : "paragraph",
+    "id" : 721,
+    "page number" : 13,
+    "bounding box" : [ 306.878, 417.724, 549.627, 456.25 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Chavez, S., Viviano, J., Zamyadi, M., Kingsley, P. B., Kochunov, P., Strother, S., & Voineskos, A. (2018). A novel DTI-QA tool: Automated metric extraction exploiting the sphericity of an agar filled phantom. Magnetic Resonance Imaging , 46 , 28 – 39."
+  }, {
+    "type" : "paragraph",
+    "id" : 722,
+    "page number" : 13,
+    "bounding box" : [ 306.877, 396.748, 549.621, 414.241 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Cox, M. A., & Cox, T. F. (2008). Multidimensional scaling. In Handbook of data visualization (pp. 315 – 347). Springer."
+  }, {
+    "type" : "paragraph",
+    "id" : 723,
+    "page number" : 13,
+    "bounding box" : [ 306.878, 355.044, 549.587, 393.208 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Dabaghian, Y., Mémoli, F., Frank, L., & Carlsson, G. (2012). A topological paradigm for hippocampal spatial map formation using persistent homology. PLoS Computational Biology , 8 (8), 1 – 14. doi: 10.1371/ journal.pcbi.1002581"
+  }, {
+    "type" : "paragraph",
+    "id" : 724,
+    "page number" : 13,
+    "bounding box" : [ 306.879, 323.216, 549.658, 351.253 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Dansereau, C., Benhajali, Y., Risterucci, C., Pich, E. M., Orban, P., Arnold, D., & Bellec, P. (2017). Statistical power and prediction accuracy in multisite resting-state fmri connectivity. NeuroImage , 149 , 220 – 232."
+  }, {
+    "type" : "paragraph",
+    "id" : 725,
+    "page number" : 13,
+    "bounding box" : [ 306.879, 249.744, 549.612, 319.733 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Di Martino, A., Yan, C.-G., Li, Q., Denio, E., Castellanos, F. X., Alaerts, K., Anderson, J. S., Assaf, M., Bookheimer, S. Y., Dapretto, M., Deen, B., Delmonte, S., Dinstein, I., Ertl-Wagner, B., Fair, D. A., Gallagher, L., Kennedy, D. P., Keown, C. L., Keysers, C., … Milham, M. P. (2014). The autism brain imaging data exchange: Towards a large-scale evaluation of the intrinsic brain architecture in autism. Molecular Psychiatry , 19 (6), 659 – 667."
+  }, {
+    "type" : "paragraph",
+    "id" : 728,
+    "page number" : 13,
+    "bounding box" : [ 306.879, 207.735, 549.617, 246.204 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Drakesmith, M., Caeyenberghs, K., Dutt, A., Lewis, G., David, A., & Jones, D. (2015). Overcoming the effects of false positives and threshold bias in graph theoretical analyses of neuroimaging data. NeuroImage , 118 , 313 – 333."
+  }, {
+    "type" : "paragraph",
+    "id" : 732,
+    "page number" : 13,
+    "bounding box" : [ 306.879, 176.518, 549.59, 204.252 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Edelsbrunner, H. (2013). Persistent homology: Theory and practice. Lawrence Berkeley National Laboratory. https://escholarship.org/uc/ item/2h33d90r"
+  }, {
+    "type" : "paragraph",
+    "id" : 735,
+    "page number" : 13,
+    "bounding box" : [ 306.879, 144.747, 549.621, 172.727 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Edelsbrunner, H., & Harer, J. (2008a). Surveys on discrete and computational geometry. Contemporary Mathematics (American Mathematical Society, Providence, RI) , 453 , 257 – 282."
+  }, {
+    "type" : "paragraph",
+    "id" : 737,
+    "page number" : 13,
+    "bounding box" : [ 306.878, 123.714, 549.6, 142.864 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Edelsbrunner, H., & Harer, J. (2008b). Persistent homology a survey. Contemporary Mathematics , 453 (26), 257 – 282."
+  }, {
+    "type" : "paragraph",
+    "id" : 738,
+    "page number" : 13,
+    "bounding box" : [ 306.877, 103.045, 549.653, 120.231 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Edelsbrunner, H., & Harer, J. (2022). Computational topology: An introduction . American Mathematical Society."
+  }, {
+    "type" : "paragraph",
+    "id" : 740,
+    "page number" : 13,
+    "bounding box" : [ 306.877, 61.037, 549.615, 99.255 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Feinberg, D. A., Moeller, S., Smith, S. M., Auerbach, E., Ramanna, S., Glasser, M. F., Miller, K. L., Ugurbil, K., & Yacoub, E. (2010). Multiplexed echo planar imaging for sub-second whole brain fmri and fast diffusion imaging. PLoS One , 5 (12), e15710."
+  }, {
+    "type" : "paragraph",
+    "id" : 741,
+    "page number" : 14,
+    "bounding box" : [ 45.638, 680.517, 288.41, 729.225 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Feis, R. A., Smith, S. M., Filippini, N., Douaud, G., Dopper, E. G., Heise, V., Trachtenberg, A. J., van Swieten, J. C., van Buchem, M. A., Rombouts, S. A., & Mackay, C. E. (2015). ICA-based artifact removal diminishes scan site differences in multi-center resting-state fMRI. Frontiers in Neuroscience , 9 , 395."
+  }, {
+    "type" : "paragraph",
+    "id" : 744,
+    "page number" : 14,
+    "bounding box" : [ 45.637, 638.202, 288.412, 676.727 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Fornito, A., & Bullmore, E. T. (2010). What can spontaneous fluctuations of the blood oxygenation-level-dependent signal tell us about psychiatric disorders? Current Opinion in Psychiatry , 23 (3), 239 – 249."
+  }, {
+    "type" : "paragraph",
+    "id" : 746,
+    "page number" : 14,
+    "bounding box" : [ 45.637, 585.705, 288.404, 634.719 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Fortin, J.-P., Cullen, N., Sheline, Y. I., Taylor, W. D., Aselcioglu, I., Cook, P. A., Adams, P., Cooper, C., Fava, M., McGrath, P. J., McInnis, M., Phillips, M. L., Trivedi, M. H., Weissman, M. M., & Shinohara, R. T. (2018). Harmonization of cortical thickness measurements across scanners and sites. NeuroImage , 167 , 104 – 120."
+  }, {
+    "type" : "paragraph",
+    "id" : 749,
+    "page number" : 14,
+    "bounding box" : [ 45.637, 543.753, 288.41, 582.222 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Fortin, J.-P., Parker, D., Tunç, B., Watanabe, T., Elliott, M. A., Ruparel, K., Roalf, D. R., Satterthwaite, T. D., Gur, R. C., Gur, R. E., Schultz, R. T., Verma, R., & Shinohara, R. T. (2017). Harmonization of multi-site diffusion tensor imaging data. NeuroImage , 161 , 149 – 170."
+  }, {
+    "type" : "paragraph",
+    "id" : 751,
+    "page number" : 14,
+    "bounding box" : [ 45.637, 512.233, 288.419, 540.213 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Garrison, K. A., Scheinost, D., Finn, E. S., Shen, X., & Constable, R. T. (2015). The (in)stability of functional brain network measures across thresholds. NeuroImage , 118 , 651 – 661."
+  }, {
+    "type" : "paragraph",
+    "id" : 753,
+    "page number" : 14,
+    "bounding box" : [ 45.636, 491.257, 288.368, 508.75 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Ghrist, R. (2008). Barcodes: The persistent topology of data. Bulletin of the American Mathematical Society , 45 (1), 61 – 75."
+  }, {
+    "type" : "paragraph",
+    "id" : 754,
+    "page number" : 14,
+    "bounding box" : [ 45.636, 470.531, 288.335, 487.717 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Ghrist, R. W. (2014). Elementary applied topology (Vol. 1). Createspace Seattle."
+  }, {
+    "type" : "paragraph",
+    "id" : 756,
+    "page number" : 14,
+    "bounding box" : [ 45.636, 439.011, 288.353, 466.741 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Ginestet, C. E., Fournel, A. P., & Simmons, A. (2014). Statistical network analysis for functional MRI: Summary networks and group comparisons. Frontiers in Computational Neuroscience , 8 , 51."
+  }, {
+    "type" : "paragraph",
+    "id" : 758,
+    "page number" : 14,
+    "bounding box" : [ 45.636, 396.752, 288.376, 435.221 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Ingalhalikar, M., Shinde, S., Karmarkar, A., Rajan, A., Rangaprakash, D., & Deshpande, G. (2021). Functional connectivity-based prediction of autism on site harmonized ABIDE dataset. IEEE Transactions on Biomedical Engineering , 68 (12), 3628 – 3637."
+  }, {
+    "type" : "paragraph",
+    "id" : 760,
+    "page number" : 14,
+    "bounding box" : [ 45.635, 365.232, 288.384, 393.212 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Kerber, M., Morozov, D., & Nigmetov, A. (2017). Geometry helps to compare persistence diagrams. Journal of Experimental Algorithmics (JEA) , 22 , 1 – 20."
+  }, {
+    "type" : "paragraph",
+    "id" : 762,
+    "page number" : 14,
+    "bounding box" : [ 45.634, 291.76, 288.404, 361.749 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Khalili-Mahani, N., Rombouts, S. A., van Osch, M. J., Duff, E. P., Carbonell, F., Nickerson, L. D., Becerra, L., Dahan, A., Evans, A. C., Soucy, J.-P., Wise, R., Zijdenbos, A. P., & van Gerven, J. M. (2017). Biomarkers, designs, and interpretations of resting-state fMRI in translational pharmacological research: A review of state-of-the-art, challenges, and opportunities for studying brain chemistry. Human Brain Mapping , 38 (4), 2276 – 2325."
+  }, {
+    "type" : "paragraph",
+    "id" : 764,
+    "page number" : 14,
+    "bounding box" : [ 45.633, 249.751, 288.408, 288.22 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Lee, H., Chung, M. K., Kang, H., Kim, B., & Lee, D. S. (2011). Discriminative persistent homology of brain networks. In IEEE International Symposium on Biomedical Imaging: From Nano to Macro, 841 – 844."
+  }, {
+    "type" : "paragraph",
+    "id" : 766,
+    "page number" : 14,
+    "bounding box" : [ 45.633, 218.23, 288.417, 246.211 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Lee, H., Kang, H., Chung, M. K., Kim, B., & Lee, D. S. (2012). Persistent brain network homology from the perspective of dendrogram. IEEE Transactions on Medical Imaging , 31 (12), 2267 – 2277."
+  }, {
+    "type" : "paragraph",
+    "id" : 768,
+    "page number" : 14,
+    "bounding box" : [ 45.638, 144.748, 288.443, 214.737 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Miller, K. L., Alfaro-Almagro, F., Bangerter, N. K., Thomas, D. L., Yacoub, E., Xu, J., Bartsch, A. J., Jbabdi, S., Sotiropoulos, S. N., Andersson, J. L., Griffanti, L., Douaud, G., Okell, T. W., Weale, P., Dragonu, I., Garratt, S., Hudson, S., Collins, R., Jenkinson, M., … Smith, S. M. (2016). Multimodal population brain imaging in the UK biobank prospective epidemiological study. Nature Neuroscience , 19 (11), 1523 – 1536."
+  }, {
+    "type" : "paragraph",
+    "id" : 771,
+    "page number" : 14,
+    "bounding box" : [ 45.637, 113.227, 288.404, 141.208 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Narayan, M., & Allen, G. I. (2015). Population inference for node level differences in multi ‐ subject functional connectivity. International Workshop on Pattern Recognition in NeuroImaging, IEEE, 53 – 56."
+  }, {
+    "type" : "paragraph",
+    "id" : 772,
+    "page number" : 14,
+    "bounding box" : [ 45.636, 60.731, 288.419, 109.744 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Noble, S., Scheinost, D., Finn, E. S., Shen, X., Papademetris, X., McEwen, S. C., Bearden, C. E., Addington, J., Goodyear, B., Cadenhead, K. S., Mirzakhanian, H., Cornblatt, B. A., Olvet, D. M., Mathalon, D. H., McGlashan, T. H., Perkins, D. O., Belger, A., Seidman, L. J., Thermenos, H., … Constable, R. T. (2017). Multisite"
+  }, {
+    "type" : "paragraph",
+    "id" : 742,
+    "page number" : 14,
+    "bounding box" : [ 319.859, 711.735, 549.626, 729.228 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "reliability of mr-based functional connectivity. NeuroImage , 146 , 959 – 970."
+  }, {
+    "type" : "paragraph",
+    "id" : 743,
+    "page number" : 14,
+    "bounding box" : [ 306.876, 649.058, 549.631, 708.252 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Nooner, K. B., Colcombe, S., Tobe, R., Mennes, M., Benedict, M., Moreno, A., Panek, L., Brown, S., Zavitz, S., Li, Q., Sikka, S., Gutman, D., Bangaru, S., Schlachter, R. T., Kamiel, S. M., Anwar, A. R., Hinz, C. M., Kaplan, M. S., Rachlin, A. B., … Milham, M. P. (2012). The NKI-Rockland sample: A model for accelerating the pace of discovery science in psychiatry. Frontiers in Neuroscience , 6 , 152."
+  }, {
+    "type" : "paragraph",
+    "id" : 745,
+    "page number" : 14,
+    "bounding box" : [ 306.875, 628.025, 549.607, 645.211 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Oudot, S. Y. (2015). Persistence theory: From quiver representations to data analysis (Vol. 209). American Mathematical Society Providence."
+  }, {
+    "type" : "paragraph",
+    "id" : 747,
+    "page number" : 14,
+    "bounding box" : [ 306.875, 606.742, 549.604, 624.235 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Patania, A., Vaccarino, F., & Petri, G. (2017). Topological analysis of data. EPJ Data Science , 6 , 1 – 6."
+  }, {
+    "type" : "paragraph",
+    "id" : 748,
+    "page number" : 14,
+    "bounding box" : [ 306.874, 554.244, 549.612, 603.259 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, E. (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research , 12 , 2825 – 2830."
+  }, {
+    "type" : "paragraph",
+    "id" : 750,
+    "page number" : 14,
+    "bounding box" : [ 306.873, 523.031, 549.606, 550.761 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Roffet, F., Delrieux, C., & Patow, G. (2022). Assessing multi-site rsfMRI-based connectomic harmonization using information theory. Brain Sciences , 12 (9), 1219."
+  }, {
+    "type" : "paragraph",
+    "id" : 752,
+    "page number" : 14,
+    "bounding box" : [ 306.872, 491.26, 549.602, 519.241 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Rousseeuw, P. J. (1987). Silhouettes: A graphical aid to the interpretation and validation of cluster analysis. Journal of Computational and Applied Mathematics , 20 , 53 – 65."
+  }, {
+    "type" : "paragraph",
+    "id" : 755,
+    "page number" : 14,
+    "bounding box" : [ 306.872, 459.74, 549.621, 487.72 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Rubinov, M., & Sporns, O. (2010). Complex network measures of brain connectivity: Uses and interpretations. NeuroImage , 52 (3), 1059 – 1069."
+  }, {
+    "type" : "paragraph",
+    "id" : 757,
+    "page number" : 14,
+    "bounding box" : [ 306.873, 407.542, 549.647, 456.257 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Saggar, M., Sporns, O., Gonzalez-Castillo, J., Bandettini, P. A., Carlsson, G., Glover, G., & Reiss, A. L. (2018). Towards a new approach to reveal dynamical organization of the brain using topological data analysis. Nature Communications , 9 (1), 1399. https://doi.org/10.1038/s41467018-03664-4"
+  }, {
+    "type" : "paragraph",
+    "id" : 759,
+    "page number" : 14,
+    "bounding box" : [ 306.879, 376.02, 549.628, 403.751 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Schnack, H. G., & Kahn, R. S. (2016). Detecting neuroimaging biomarkers for psychiatric disorders: Sample size matters. Frontiers in Psychiatry , 7 , 50."
+  }, {
+    "type" : "paragraph",
+    "id" : 761,
+    "page number" : 14,
+    "bounding box" : [ 306.879, 302.241, 549.617, 372.23 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Shinohara, R. T., Oh, J., Nair, G., Calabresi, P. A., Davatzikos, C., Doshi, J., Henry, R. G., Kim, G., Linn, K. A., Papinutto, N., Pelletier, D., Pham, D. L., Reich, D. S., Rooney, W., Roy, S., Stern, W., Tummala, S., Yousuf, F., Zhu, A., … the NAIMS Cooperative. (2017). Volumetric analysis from a harmonized multisite brain MRI study of a single subject with multiple sclerosis. American Journal of Neuroradiology , 38 (8), 1501 – 1509."
+  }, {
+    "type" : "paragraph",
+    "id" : 763,
+    "page number" : 14,
+    "bounding box" : [ 306.878, 270.721, 549.645, 298.758 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Simpson, S. L., Bowman, F. D., & Laurienti, P. J. (2013). Analyzing complex functional brain networks: Fusing statistics and network science to understand the brain. Statistics Surveys , 7 , 1 – 36."
+  }, {
+    "type" : "paragraph",
+    "id" : 765,
+    "page number" : 14,
+    "bounding box" : [ 306.878, 228.712, 549.623, 267.238 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Smith, S. M., Miller, K. L., Salimi-Khorshidi, G., Webster, M., Beckmann, C. F., Nichols, T. E., Ramsey, J. D., & Woolrich, M. W. (2011). Network modelling methods for fMRI. NeuroImage , 54 (2), 875 – 891."
+  }, {
+    "type" : "paragraph",
+    "id" : 767,
+    "page number" : 14,
+    "bounding box" : [ 306.878, 186.704, 549.627, 225.229 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Termenon, M., Jaillard, A., Delon-Martin, C., & Achard, S. (2016). Reliability of graph analysis of resting state fMRI using test-retest dataset from the human connectome project. NeuroImage , 142 , 172 – 187."
+  }, {
+    "type" : "paragraph",
+    "id" : 769,
+    "page number" : 14,
+    "bounding box" : [ 306.878, 166.03, 549.606, 183.221 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The GUDHI Project. (2015). GUDHI user and reference manual . GUDHI Editorial Board. http://gudhi.gforge.inria.fr/doc/latest/"
+  }, {
+    "type" : "paragraph",
+    "id" : 770,
+    "page number" : 14,
+    "bounding box" : [ 306.879, 113.226, 549.626, 162.239 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Thomas Yeo, B., Krienen, F. M., Sepulcre, J., Sabuncu, M. R., Lashkari, D., Hollinshead, M., Roffman, J. L., Smoller, J. W., Zöllei, L., Polimeni, J. R., Fischl, B., Liu, H., & Buckner, R. L. (2011). The organization of the human cerebral cortex estimated by intrinsic functional connectivity. Journal of Neurophysiology , 106 (3), 1125 – 1165."
+  }, {
+    "type" : "paragraph",
+    "id" : 773,
+    "page number" : 14,
+    "bounding box" : [ 306.878, 81.705, 549.628, 109.743 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Vallender, S. (1974). Calculation of the Wasserstein distance between probability distributions on the line. Theory of Probability & its Applications , 18 (4), 784 – 786."
+  }, {
+    "type" : "paragraph",
+    "id" : 774,
+    "page number" : 14,
+    "bounding box" : [ 306.877, 60.729, 549.627, 79.88 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Weinberger, S. (2011). What is … Persistent homology. Notices of the AMS , 58 (1), 36 – 39."
+  }, {
+    "type" : "paragraph",
+    "id" : 776,
+    "page number" : 15,
+    "bounding box" : [ 45.638, 701.244, 288.4, 729.225 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Williamson, D. F., Parker, R. A., & Kendrick, J. S. (1989). The box plot: A simple visual method to interpret data. Annals of Internal Medicine , 110 (11), 916 – 921."
+  }, {
+    "type" : "paragraph",
+    "id" : 778,
+    "page number" : 15,
+    "bounding box" : [ 45.638, 648.747, 288.419, 697.704 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Yu, M., Linn, K. A., Cook, P. A., Phillips, M. L., McInnis, M., Fava, M., Trivedi, M. H., Weissman, M. M., Shinohara, R. T., & Sheline, Y. I. (2018). Statistical harmonization corrects site effects in functional connectivity measurements from multi-site fMRI data. Human Brain Mapping , 39 (11), 4213 – 4227."
+  }, {
+    "type" : "paragraph",
+    "id" : 779,
+    "page number" : 15,
+    "bounding box" : [ 45.637, 628.022, 288.337, 645.207 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 7.5,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Zomorodian, A. J. (2005). Topology for computing (Vol. 16). Cambridge University Press."
+  }, {
+    "type" : "image",
+    "id" : 775,
+    "page number" : 15,
+    "bounding box" : [ 463.262, 745.524, 549.706, 762.342 ],
+    "source" : "HBM-44-4637/imageFile17.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 777,
+    "page number" : 15,
+    "bounding box" : [ 319.861, 657.935, 534.101, 717.45 ],
+    "font" : "AdvTTa9c1b374",
+    "font size" : 8.0,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "How to cite this article: Kumar, S., Shovon, A. R., & Deshpande, G. (2023). The robustness of persistent homology of brain networks to data acquisition-related non-neural variability in resting state fMRI. Human Brain Mapping , 44 (13), 4637 – 4651. https://doi.org/10.1002/hbm.26403"
+  } ]
+}

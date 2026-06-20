@@ -1,0 +1,3835 @@
+{
+  "file name" : "2205.11338v3.pdf",
+  "number of pages" : 15,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20230815012911Z",
+  "modification date" : "D:20230815012911Z",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 464,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 722.914, 365.543, 734.48 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 12.951,
+    "text color" : "[0.0]",
+    "content" : "Temporal Network Analysis Using Zigzag Persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 682.25, 324.605, 705.066 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Audun D. Myers · David E. Muñoz · Firas A. Khasawneh ∗ · Elizabeth Munch"
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 605.639, 169.65, 612.621 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Preprint as of August 15, 2023"
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 465.24, 523.276, 581.803 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Abstract This work presents a framework for studying temporal networks using zigzag persistence, a tool from the field of Topological Data Analysis (TDA). The resulting approach is general and applicable to a wide variety of time-varying graphs. For example, these graphs may correspond to a system modeled as a network with edges whose weights are functions of time, or they may represent a time series of a complex dynamical system. We use simplicial complexes to represent snapshots of the temporal networks that can then be analyzed using zigzag persistence. We show two applications of our method to dynamic networks: an analysis of commuting trends on multiple temporal scales, e.g., daily and weekly, in the Great Britain transportation network, and the detection of periodic/chaotic transitions due to intermittency in dynamical systems represented by temporal ordinal partition networks. Our findings show that the resulting zeroand one-dimensional zigzag persistence diagrams can detect changes in the networks’ shapes that are missed by traditional connectivity and centrality graph statistics."
+  }, {
+    "type" : "paragraph",
+    "id" : 468,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 434.281, 504.387, 455.382 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Keywords Zigzag Persistence · Temporal Graph · Topological Signal Processing · Dynamical Network · Topological Data Analysis · Persistent Homology · Signal Processing · Transportation Network"
+  }, {
+    "type" : "heading",
+    "id" : 469,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 396.794, 134.396, 405.69 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 470,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 253.667, 523.276, 381.945 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Network data, that is, the encoding of connections between objects, is a natural form of information representation in many fields [ 1 ]. While the analysis of static networks or graphs is already a broad field of research in itself, there is often much information ignored. In particular, we are interested in the case of temporal networks [ 2 , 3 ]; that is, the case of a dynamical system represented by a network evolving over time. These networks can arise in many different cases, such as social networks [ 4 ], disease spread dynamics [ 5 ], manufacturer-supplier networks [ 6 ], power grid network [ 7 ], and transportation networks [ 8 ]. Many important characteristics of a dynamical network can be extracted from the data. These include source and rate of disease spread as well as predictions on future infections [ 9 ], weak branches in supply chains and possible failures [ 6 , 10 ], changes in infrastructure to avoid cascade failures in power grids [ 7 , 11 ], transportation network optimal routing (finding an optimal minimum time route between) [ 12 ], fault analysis (detecting transportation disruptions) in transportation networks [ 13 ], and flow pattern analysis (visualization) [ 14 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 192.606, 523.276, 250.081 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Temporal graph data is commonly represented using attributed information on the edges for the time intervals or instances in which the edges are active [ 15 , 16 ]. Using this attributed information, we can represent the graph in several ways including edge labeling, snapshots, and static graph representations [ 17 ]. In this work we will first represent the data in the standard attributed (labeled) temporal graph structure and then use the graph snapshots approach, where our input is a sequence of static graphs \uD835\uDC3A 0 , \uD835\uDC3A 1 , . . . , \uD835\uDC3A \uD835\uDC5B ."
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 173.431, 101.824, 180.413 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A. Myers"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 154.502, 232.972, 170.949 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "State University, College of Engineering E-mail: myersau3@msu.edu"
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 140.056, 104.319, 147.038 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "D. Muñoz"
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 130.592, 232.972, 137.574 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "State University, College of Engineering"
+  }, {
+    "type" : "paragraph",
+    "id" : 476,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 97.217, 195.74, 125.088 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "F. Khasawneh ( ∗ corresponding author) Michigan State University, College of E-mail: khasawn3@egr.msu.edu"
+  }, {
+    "type" : "paragraph",
+    "id" : 477,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 106.682, 232.972, 113.664 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Michigan State University, College of Engineering"
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 82.771, 103.315, 89.753 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "E. Munch"
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 73.307, 232.972, 80.289 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "State University, College of Engineering"
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 698.049, 523.276, 766.552 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The available tools for analyzing such data is often inspired by the tools from the static network community; for instance, centrality or flow measures [ 18 ]; temporal clustering for event detection [ 19 – 21 ]; and connectedness [ 22 ]. However, these tools do not account for higher-dimensional structures (e.g., loops as a one-dimensional structure). It may be important to account for evolving higher-dimensional structures in temporal networks to understand the changing structure better. For example, a highly connected network may only have one connected component with no clear clusters, but the number of loops within the network may detect the change."
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 572.748, 523.276, 689.071 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For this reason, we introduce a method for incorporating ideas from Topological Data Analysis (TDA) [ 23 , 24 ] to encode more complex structure than can be seen in the standard graph tools. The mainstay of TDA is persistent homology, colloquially referred to as persistence, which encodes structure by analyzing the changing shape of a simplicial complex (a higher dimensional generalization of a network) over a filtration (a nested sequence of subcomplexes \uD835\uDC3E 1 ⊆ \uD835\uDC3E 2 ⊆ · · · ⊆ \uD835\uDC3E \uD835\uDC5B ). This shape is measured via homology, a vector space encoding information about topological structure of the space. Different dimensions of homology measure different things: 0-dimensional homology encodes information about connected components; 1-dimensional homology encodes loops; 2-dimensional homology encodes voids. How these structures change over the filtration (e.g. when a loop appears and then subsequently fills in) can be stored as a persistence diagram; that is, a collection of points in the upper half plane where a point at ( \uD835\uDC56, \uD835\uDC57 ) means that a structure appeared at \uD835\uDC3E \uD835\uDC56 but was lost at \uD835\uDC3E \uD835\uDC57 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 471.356, 523.276, 563.769 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "However, a major limitation of standard persistence for the temporal network input data is the requirement that inclusions only go one way. Over the evolution parameter, our temporal graphs might add or remove edges, and we would like to build a system that can account for this. Thus, to study the evolving higher dimensional structures within a temporal network, we will leverage zigzag persistence [ 25 ], which allows for insertions and deletions of simplices at every step. The same mathematical theorems that make it possible to represent the information of standard persistence in a persistence diagram or barcode can be used in the case of a zigzag filtration. Zigzag persistence tracks the formation and disappearance of homological structures through a persistence diagram as a two-dimensional summary diagram."
+  }, {
+    "type" : "paragraph",
+    "id" : 483,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 369.965, 523.276, 462.378 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The tools we employ will treat the graph input itself as a topological structure by using it to extract distance information between the vertices. For the work discussed here, we will assume the input networks are unweighted graphs and thus use the shortest path distance between vertices. However, this is by no means the only way to incorporate graph data for persistent homology; see [ 26 ] for a survey. Further, because we generally treat our networks as a metric space, our intuition is that the tools developed here are most applicable to data where vertices have a geometric component (such as networks where nodes come from geo-spatial data) rather than only combinatorial data (such as human proximity networks, even if this has to do with physical proximity), but we look forward to being proven wrong."
+  }, {
+    "type" : "paragraph",
+    "id" : 484,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 256.618, 523.276, 360.987 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We thus apply our methods to two sample data sets. The first is transportation data from Great Britain [ 27 ], where we can use the zigzag persistent homology for understanding higher order structures in the system, and see behavior such as daily periodicity represented automatically in the diagram output. The second data comes from input data from time series analysis. We have previously used zigzag persistence to detect Hopf bifurcations by taking as input a point cloud approximation of the underlying attractor to the time series [ 28 ]. However, the computational limitations of zigzag persistence on large point clouds makes its use in this setting unwieldy. Thus, we combine these ideas with recently available network representations of time series [ 29 ] to instead encode the structure of the time series in a graph. Previous work shows that measuring this structure using standard persistent homology can be used to differentiate between behaviors in the underlying dynamical system [ 30 , 31 ]."
+  }, {
+    "type" : "heading",
+    "id" : 485,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 72.0, 170.527, 139.437, 179.254 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1.1 Organization"
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 69.898, 523.276, 150.356 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We will start in Section 2 with an introductory background on persistent homology and zigzag persistence. Next, in Section 3 , we overview the general pipeline for applying zigzag persistence to temporal graph data. We couple this explanation with a demonstrative toy example. In Section 4 we introduce the two systems we will study. The first is a dataset collected over a week of the Great Britain transportation system [ 27 ]. The second is an intermittent Lorenz system simulation, where we generate a temporal network through complex networks of sliding windows. Then we apply zigzag persistence to our two examples and show how the resulting persistence diagrams help visualize the underlying dynamics in comparison to standard temporal network analysis techniques."
+  }, {
+    "type" : "image",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 586.768, 523.26, 769.888 ],
+    "alt" : "In this image, we can see some text and numbers. There are some shapes and numbers. We can see some text and numbers.",
+    "source" : "2205.11338v3/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 3,
+    "bounding box" : [ 388.667, 755.223, 400.0, 763.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 3,
+    "bounding box" : [ 387.333, 745.89, 400.0, 754.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 3,
+    "bounding box" : [ 243.667, 746.223, 248.333, 754.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 3,
+    "bounding box" : [ 387.333, 737.223, 400.0, 745.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 491,
+    "page number" : 3,
+    "bounding box" : [ 243.667, 736.89, 248.333, 744.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 3,
+    "bounding box" : [ 243.667, 726.223, 249.0, 733.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "page number" : 3,
+    "bounding box" : [ 388.667, 719.223, 400.0, 727.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 3,
+    "bounding box" : [ 243.667, 715.557, 248.333, 723.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "8"
+  }, {
+    "type" : "paragraph",
+    "id" : 498,
+    "page number" : 3,
+    "bounding box" : [ 387.333, 710.557, 400.0, 719.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 3,
+    "bounding box" : [ 339.667, 708.223, 345.667, 716.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 3,
+    "bounding box" : [ 239.333, 704.557, 250.0, 713.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 3,
+    "bounding box" : [ 388.0, 701.223, 400.0, 709.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 3,
+    "bounding box" : [ 239.333, 694.557, 249.333, 703.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "12"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 3,
+    "bounding box" : [ 387.333, 692.557, 400.0, 701.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 3,
+    "bounding box" : [ 238.667, 684.557, 248.667, 693.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "14"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 3,
+    "bounding box" : [ 388.0, 683.223, 400.0, 691.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 3,
+    "bounding box" : [ 136.333, 673.557, 185.667, 685.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G = (V.E)"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 3,
+    "bounding box" : [ 300.0, 675.223, 310.667, 684.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 3,
+    "bounding box" : [ 434.667, 675.89, 448.0, 684.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 3,
+    "bounding box" : [ 451.333, 675.89, 459.333, 684.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 3,
+    "bounding box" : [ 276.667, 665.223, 303.333, 675.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Node j"
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 3,
+    "bounding box" : [ 430.667, 666.557, 450.667, 675.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth"
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 3,
+    "bounding box" : [ 368.0, 584.557, 405.667, 598.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "RB(V ,d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "page number" : 3,
+    "bounding box" : [ 102.333, 584.89, 138.333, 597.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ro(V ,d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "page number" : 3,
+    "bounding box" : [ 457.667, 584.89, 494.333, 597.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "R4(V ,d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 561.674, 523.273, 578.312 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 1 An example of a Rips filtration where the input is the shortest path distance on an example graph \uD835\uDC3A . The persistence diagram in the top right is for standard persistence rather than zigzag as will be discussed later in the paper."
+  }, {
+    "type" : "heading",
+    "id" : 514,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 530.338, 132.543, 539.234 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2 Background"
+  }, {
+    "type" : "heading",
+    "id" : 515,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 507.119, 171.227, 515.846 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2.1 Persistent Homology"
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 424.195, 523.276, 492.698 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Persistent homology, the flagship tool from the field of Topological Data Analysis (TDA), is used to measure the shape of a dataset at multiple dimensions. For example, it can measure connected components (dimension zero), loops (dimension one), voids (dimension two), and higher dimensional analogues. Persistent homology measures these shapes using a parameterized filtration to detect when the structures are born (appear) and die (disappear). We give the basic ideas in this section and direct the interested reader to more complete introductions to standard homology [ 32 , 33 ] and persistent homology [ 23 , 24 , 34 ]."
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 400.285, 523.271, 421.386 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The required input for persistence is a filtration of a simplicial complex \uD835\uDC3E . Specifically, a filtration { \uD835\uDC3E \uD835\uDC4E \uD835\uDC56 } \uD835\uDC56 is a parameterized sequence of simplicial complexes which are nested; i.e."
+  }, {
+    "type" : "formula",
+    "id" : 518,
+    "page number" : 3,
+    "bounding box" : [ 233.359, 378.772, 523.275, 389.599 ],
+    "content" : "K _ { \\alpha _ { 0 } } \\subseteq K _ { \\alpha _ { 1 } } \\subseteq K _ { \\alpha _ { 2 } } \\subseteq \\dots \\subseteq K _ { \\alpha _ { n } } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 312.8, 523.278, 369.767 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Under this notation, there are \uD835\uDC5B + 1 simplicial complexes; and it is often the case that \uD835\uDC3E \uD835\uDEFC 0 is either the empty complex or the complex consisting of only the vertex set. We can then calculate the homology of dimension \uD835\uDC5D for each complex, \uD835\uDC3B \uD835\uDC5D ( \uD835\uDC3E \uD835\uDC4E \uD835\uDC56 ) , which is a vector space representing the \uD835\uDC5D -dimensional structure of the space such as loops, voids, etc. Surprisingly, there is further information to be used, namely that the inclusions on the simplicial complexes induce linear maps on the vector spaces resulting in a construction called a persistence module:"
+  }, {
+    "type" : "formula",
+    "id" : 520,
+    "page number" : 3,
+    "bounding box" : [ 184.367, 291.287, 523.275, 302.114 ],
+    "content" : "H _ { p } ( K _ { \\alpha _ { 0 } } ) \\rightarrow H _ { p } ( K _ { \\alpha _ { 1 } } ) \\rightarrow H _ { p } ( K _ { \\alpha _ { 2 } } ) \\rightarrow \\dots \\rightarrow H _ { p } ( K _ { \\alpha _ { n } } ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 521,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 237.27, 523.278, 281.863 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The appearance and disappearance of classes in this object can be tracked, resulting in a representation of the information known as a persistence diagram. For each class which appears at \uD835\uDC3E \uD835\uDC4F \uD835\uDC56 and disappears at \uD835\uDC3E \uD835\uDC51 \uD835\uDC56 , we draw a point in the plane at ( \uD835\uDC4F \uD835\uDC56 , \uD835\uDC51 \uD835\uDC56 ) . Taken together, the collection of points (also called persistence pairs), all of which are above the diagonal Δ = {( \uD835\uDC65, \uD835\uDC66 ) | \uD835\uDC65 = \uD835\uDC66 } , is called a persistence diagram."
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 189.45, 523.276, 234.461 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "One common approach to obtain this setup is in the case where the input data is a finite metric space ( \uD835\uDC40, \uD835\uDC51 ) ; i.e. a finite set \uD835\uDC40 with distances given by \uD835\uDC51 ( \uD835\uDC5A 1 , \uD835\uDC5A 2 ) . For example, \uD835\uDC40 might be a finite point cloud \uD835\uDF12 ⊂ R \uD835\uDC58 with \uD835\uDC51 given by Euclidean distance. In the case of a graph \uD835\uDC3A as input data, we can have \uD835\uDC40 = \uD835\uDC49 the vertex set, and \uD835\uDC51 ( \uD835\uDC62, \uD835\uDC63 ) as the number of edges in the shortest path between vertex \uD835\uDC62 and vertex \uD835\uDC63 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 523,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 117.718, 523.278, 186.64 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "From this metric space data, we fix a value \uD835\uDEFC ≥ 0 and construct the Vietoris-Rips (VR) complex, denoted \uD835\uDC45 \uD835\uDEFC ( \uD835\uDC40 ) . In the VR construction, we have a vertex set \uD835\uDC40 and a simplex \uD835\uDF0E ⊆ \uD835\uDC40 is included in the abstract simplicial complex \uD835\uDC45 \uD835\uDEFC ( \uD835\uDC40 ) whenever \uD835\uDC51 ( \uD835\uDC63, \uD835\uDC64 ) ≤ \uD835\uDEFC for all \uD835\uDC63, \uD835\uDC64 ∈ \uD835\uDF0E . Then by definition, \uD835\uDC45 \uD835\uDEFC ( \uD835\uDF12 ) ⊆ \uD835\uDC45 \uD835\uDEFC ′ ( \uD835\uDF12 ) whenever \uD835\uDEFC ≤ \uD835\uDEFC ′ . In this particular context, the axes of the persistence diagram correspond to distances between points. So, for example, points in the diagram that are far from the diagonal of the 1-dimensional persistence diagram represent large loop structures in the input data."
+  }, {
+    "type" : "paragraph",
+    "id" : 524,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 69.898, 523.276, 114.49 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "See Fig. 1 for an example of the filtration in this setting. The graph \uD835\uDC3A is shown at the top left, and the distance defined on the nodes is given in the matrix at the top middle. The bottom row shows the Rips complexes for different choices of \uD835\uDEFC parameter. In particular, note that \uD835\uDC45 1 ( \uD835\uDC49, \uD835\uDC51 ) has the graph \uD835\uDC3A as the 1-skeleton, but includes an additional triangle not present in the graph. The top right shows the 1-dimensional persistence diagram. Note"
+  }, {
+    "type" : "image",
+    "id" : 525,
+    "page number" : 4,
+    "bounding box" : [ 108.142, 654.078, 485.203, 772.73 ],
+    "description" : "The image is a graph depicting the relationship between the number of eggs laid by a bird and the number of eggs laid by the same bird. The graph is titled Eggs and Eggs and is labeled as Eggs and Eggs. The x-axis represents the number of eggs laid by the bird, ranging from 0 to 100. The y-axis represents the number of eggs laid by the bird, ranging from 0 to 100. The graph shows a linear relationship between the number of eggs laid by the bird and the number of eggs laid by the same bird. The line appears to be a straight line, with a positive slope. This means that as the number of eggs laid by the bird increases, the number of eggs laid by the same bird also increases. There are two key points on the graph: 1. **Highest Number of Eggs (100 Eggs)**: This point is at the top of the graph",
+    "source" : "2205.11338v3/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 619.623, 523.275, 646.703 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 2 Example application of zigzag persistence to study changing topology of simplicial complex sequence. This example shows the sequence of simplicial complexes with intermediate unions and corresponding time stamps on the left and on the right the resulting zigzag persistence diagram on the right for dimension 0 and 1 as \uD835\uDC3B 0 and \uD835\uDC3B 1 , respectively."
+  }, {
+    "type" : "heading",
+    "id" : 527,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 72.0, 539.982, 162.351, 548.709 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2.2 Zigzag Persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 468.805, 523.276, 525.352 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A limitation of the standard setup of persistent homology is that it requires each simplicial complex to be a subset of the next, as shown in Eq. ( 1 ). This means that at each step, we are only allowed to add new simplices to the previous complex to build this filtration. However, temporal graphs have no such behavior. Thus, this issue can be alleviated through zigzag persistence [ 25 , 35 ], which allows for inclusions which can go either way at each step. This is often written as"
+  }, {
+    "type" : "formula",
+    "id" : 529,
+    "page number" : 4,
+    "bounding box" : [ 226.934, 453.92, 523.275, 464.747 ],
+    "content" : "K _ { \\alpha _ { 0 } } \\leftrightarrow K _ { \\alpha _ { 1 } } \\leftrightarrow K _ { \\alpha _ { 2 } } \\leftrightarrow \\dots \\leftrightarrow K _ { \\alpha _ { n } } ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 437.144, 292.615, 446.29 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where ↔ denotes one of the two inclusions ↩ → and ← ↪ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 400.143, 523.276, 433.707 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A common special case of this definition is where the left and right inclusions alternate, which can arise by taking a sequence of simplicial complexes, and interleaving them with either unions or intersections of the adjacent complexes. Focusing on the case of the union, denote \uD835\uDC3E \uD835\uDC56,\uD835\uDC56 + 1 = \uD835\uDC3E \uD835\uDC56 ∪ \uD835\uDC3E \uD835\uDC56 + 1 to get the zigzag filtration"
+  }, {
+    "type" : "formula",
+    "id" : 532,
+    "page number" : 4,
+    "bounding box" : [ 132.032, 377.681, 463.224, 388.508 ],
+    "content" : "K _ { \\alpha _ { 0 } } \\hookrightarrow K _ { \\alpha _ { 0 } , \\alpha _ { 1 } } \\hookrightarrow K _ { \\alpha _ { 1 } } \\hookrightarrow K _ { \\alpha _ { 1 } , \\alpha _ { 2 } } \\hookrightarrow K _ { \\alpha _ { 2 } } \\hookrightarrow \\dots \\hookrightarrow K _ { \\alpha _ { n - 1 } } \\hookrightarrow K _ { \\alpha _ { n - 1 } , \\alpha _ { n } } \\hookrightarrow K _ { \\alpha _ { n } } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 297.67, 523.276, 366.173 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The same algebra that makes it possible for standard persistence to be represented in a diagram allows for computation of when homology features are born and die based on the zigzag persistence, however one must take care as some of the intuition from standard persistence is lost. We can again track this with a persistence diagram consisting of persistence pairs ( \uD835\uDC4F \uD835\uDC56 , \uD835\uDC51 \uD835\uDC56 ) . In the case of a class appearing or disappearing at the union complex \uD835\uDC3E \uD835\uDEFC \uD835\uDC56 ,\uD835\uDEFC \uD835\uDC56 + 1 , we draw the index at the average ( \uD835\uDEFC \uD835\uDC56 + \uD835\uDEFC \uD835\uDC56 + 1 )/ 2. If a topological feature persists through the last simplicial complex we set its death as the end time of the last window or index \uD835\uDC5B + 0 . 5."
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 176.983, 523.278, 294.234 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To demonstrate how zigzag persistence tracks the changing topology in a sequence of simplicial complexes we will use a simple example shown in Fig. 2 . The sequence of simplicial complexes are shown as [ \uD835\uDC3E 0 , \uD835\uDC3E 1 , \uD835\uDC3E 2 ] , with unions given by \uD835\uDC3E 0 , 1 and \uD835\uDC3E 1 , 2 . The persistence diagram then tracks where topological features of various dimensions of \uD835\uDC3B \uD835\uDC5D (dimension 0 and 1 for this example) form and disappear. For example, for \uD835\uDC3B 0 there are two components in \uD835\uDC3E 0 . At the next simplicial complex \uD835\uDC3E 0 , 1 the two 0-dimensional features combine signifying one of their deaths which is tracked in the persistence diagram as the persistence pair ( 0 , 0 . 5 ) since 0.5 is the average of 0 and 1. The component that persists remains throughout all of the simplicial complexes. Therefore, we set its death as the last time stamp plus 0.5 and record the persistence pair as ( 0 , 2 . 5 ) . On the other hand, there is a single loop (a 1-dimensional feature) which is shown only at \uD835\uDC3E 0 , 1 . For technical reasons, this is drawn as a point with birth time 0.5 (the average of 0 and 1) and death time 1 since it dies entering \uD835\uDC3E 1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 535,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 105.971, 523.276, 174.474 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "It should be noted that sometimes zigzag persistence results are counter-intuitive to those used to standard persistence interpretation. For example, consider the example of Fig. 3 . The first two filtrations each appear to have a circular structure which lasts through the duration of the filtration, however, the zigzag persistence diagram sees the first case as a class living throughout, while the second breaks this class into two individual bars. In this case at least, the issue can be mitigated by including a triangle at the top of the house filling in the short cycle, resulting in both filtrations having only a single point in the persistence diagram representing the loop in the house."
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 69.898, 523.276, 102.535 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Secondly, we also note that the axes in the zigzag diagram correspond to indexing in the zigzag diagram. This means that a point far from the diagonal means there is a loop structure that is present for a large portion of the index set, rather than being a measurement of size of that same loop."
+  }, {
+    "type" : "paragraph",
+    "id" : 538,
+    "page number" : 5,
+    "bounding box" : [ 103.23, 571.684, 135.541, 578.666 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a) Case 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 5,
+    "bounding box" : [ 221.842, 570.797, 254.599, 577.779 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b) Case 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 540,
+    "page number" : 5,
+    "bounding box" : [ 340.9, 570.503, 373.211, 577.485 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c) Case 3"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 5,
+    "bounding box" : [ 459.512, 570.094, 492.269, 577.076 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d) Case 4"
+  }, {
+    "type" : "paragraph",
+    "id" : 542,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 516.862, 523.275, 561.893 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 3 Several examples showing how the zigzag persistence diagram can be affected by the existence of small loops. The first and third; and the second and fourth examples have the same filtration with the addition of a single triangle in the later case. In each case, the generators of homology are shown with the interval decomposition drawn below. The resulting persistence diagrams show that the third and fourth examples show a single bar representing the persisting loop. However in the first two intervals are quite different, where the long lived bar is split into two pieces in the second example."
+  }, {
+    "type" : "image",
+    "page number" : 5,
+    "bounding box" : [ 267.984, 466.916, 293.259, 484.149 ],
+    "alt" : "In this image, we can see a graph.",
+    "source" : "2205.11338v3/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 544,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 399.843, 523.279, 425.945 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 4 Pipeline for applying zigzag persistence to temporal networks. Begin with an unweighted and undirected temporal graph where each edge is on at a point or interval of time. Create graph snapshots using a sliding window interval over the time domain. Create a sequence of simplicial complexes from the graphs and apply zigzag persistence to the union zigzag simplicial complexes."
+  }, {
+    "type" : "heading",
+    "id" : 545,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 72.0, 367.042, 113.405, 375.938 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3 Method"
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 5,
+    "bounding box" : [ 71.98, 223.854, 523.279, 352.132 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To apply zigzag persistence for studying temporal graphs, we use the pipeline shown in Fig. 4 which we describe more specifically here. A temporal graph is a graph structure that incorporates time information on when edges and/or nodes are present in the graph. We will only be using the case of temporal information attributed to the edges in this work and assume nodes are included as part of an edge-induced subgraph. Thus, our starting data is a graph \uD835\uDC3A = ( \uD835\uDC49, \uD835\uDC38 ) where each edge \uD835\uDC52 has a collection of closed intervals I \uD835\uDC52 = { \uD835\uDC3C \uD835\uDC52, 1 , · · · , \uD835\uDC3C \uD835\uDC52,\uD835\uDC58 \uD835\uDC52 } associated to it for when that edge is active. Fitting with the previous section, we fix a collection of times \uD835\uDC61 0 ≤ \uD835\uDC61 1 ≤ · · · ≤ \uD835\uDC61 \uD835\uDC5B and a choice of window size \uD835\uDC64 . Then \uD835\uDC3A \uD835\uDC56 = ( \uD835\uDC49 \uD835\uDC56 , \uD835\uDC38 \uD835\uDC56 ) is the graph induced by edges present within a window [ \uD835\uDC61 \uD835\uDC56 − \uD835\uDC64 / 2 , \uD835\uDC61 \uD835\uDC56 + \uD835\uDC64 / 2 ] . Please note that to ease notation, we are using subscripts \uD835\uDC56 for the graphs, but the graphs should be thought of as encoding information for the interval centered at \uD835\uDC61 \uD835\uDC56 and thus when computing persistence, the birth and death times are associated to the \uD835\uDC61 \uD835\uDC56 ’s rather than the \uD835\uDC56 ’s. Finally, we define \uD835\uDC3A \uD835\uDC56,\uD835\uDC56 + 1 = \uD835\uDC3A \uD835\uDC56 ∪ \uD835\uDC3A \uD835\uDC56 + 1 to be the union of the two adjacent graphs."
+  }, {
+    "type" : "paragraph",
+    "id" : 547,
+    "page number" : 5,
+    "bounding box" : [ 86.944, 211.48, 292.642, 220.207 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "While we can construct a zigzag filtration of graphs"
+  }, {
+    "type" : "formula",
+    "id" : 548,
+    "page number" : 5,
+    "bounding box" : [ 154.359, 187.582, 440.326, 197.656 ],
+    "content" : "G _ { 0 } \\hookrightarrow G _ { 0 , 1 } \\hookrightarrow G _ { 1 } \\hookrightarrow G _ { 1 , 2 } \\hookrightarrow G _ { 2 } \\hookrightarrow \\dots \\hookrightarrow G _ { n - 1 } \\hookrightarrow G _ { n - 1 , n } \\hookrightarrow G _ { n }"
+  }, {
+    "type" : "paragraph",
+    "id" : 549,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 69.898, 523.277, 174.266 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "this is not actually the zigzag we will be using since, as noted earlier, it is not flexible enough to find some of the loop structures needed in the later analysis. So, for any graph \uD835\uDC3A \uD835\uDC56 with vertex set \uD835\uDC49 \uD835\uDC56 ⊆ \uD835\uDC49 , we let \uD835\uDC51 \uD835\uDC56 be the shortest path distance on that graph. That is, \uD835\uDC51 \uD835\uDC56 : \uD835\uDC49 \uD835\uDC56 × \uD835\uDC49 \uD835\uDC56 → R where \uD835\uDC51 \uD835\uDC56 ( \uD835\uDC62, \uD835\uDC63 ) is the number of edges needed to get from vertex \uD835\uDC62 to vertex \uD835\uDC63 . Fixing an \uD835\uDC5F ≥ 0, let \uD835\uDC3E \uD835\uDC5F \uD835\uDC56 : = \uD835\uDC45 \uD835\uDC5F ( \uD835\uDC49 \uD835\uDC56 , \uD835\uDC51 \uD835\uDC56 ) be the Rips complex constructed from this distance information. First, we note that \uD835\uDC3E 0 \uD835\uDC56 is the simplicial complex with only the vertex set \uD835\uDC49 \uD835\uDC56 . When \uD835\uDC5F = 1, \uD835\uDC3E 1 \uD835\uDC56 is the clique complex of the original graph \uD835\uDC3A \uD835\uDC56 ; where the 1-simplices are the same as that of the graph, but higher dimensional simplices are filled in when available. Then for higher \uD835\uDC5F , we have more and more edges added to the original graph, so this construction is more complicated than simply treating the graph itself as a simplicial complex."
+  }, {
+    "type" : "image",
+    "page number" : 6,
+    "bounding box" : [ 72.0, 614.845, 360.818, 769.889 ],
+    "alt" : "The image is a bar graph that shows the percentage of deaths from various causes in a population. The x-axis represents the time, ranging from 0 to 10, while the y-axis shows the percentage of deaths, ranging from 0 to 10. The bars are colored blue and red, with blue representing deaths and red representing deaths. Here is a detailed breakdown of the data: 1. **Title**: The title of the graph is Death. 2. **Data Points**: - **Time**: 0.01 - **Percentage of Deaths**: 1.00 - **Percentage of Deaths**: 1.00 - **Percentage of Deaths**: 1.00 - **Percentage of Deaths**: 1.00 - **Percentage of Deaths**: 1.00 - **Percentage of Deaths**: 1.00",
+    "source" : "2205.11338v3/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 552,
+    "page number" : 6,
+    "bounding box" : [ 151.333, 758.557, 168.0, 768.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G1,2"
+  }, {
+    "type" : "paragraph",
+    "id" : 551,
+    "page number" : 6,
+    "bounding box" : [ 126.667, 758.557, 143.333, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Go,1"
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 6,
+    "bounding box" : [ 201.333, 758.557, 217.333, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G3,4"
+  }, {
+    "type" : "paragraph",
+    "id" : 554,
+    "page number" : 6,
+    "bounding box" : [ 226.0, 758.557, 242.667, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G4,5"
+  }, {
+    "type" : "paragraph",
+    "id" : 555,
+    "page number" : 6,
+    "bounding box" : [ 251.333, 758.557, 268.0, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G5,6"
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 6,
+    "bounding box" : [ 276.0, 758.557, 288.0, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G6,"
+  }, {
+    "type" : "paragraph",
+    "id" : 557,
+    "page number" : 6,
+    "bounding box" : [ 300.667, 758.557, 317.333, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G7,8"
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 6,
+    "bounding box" : [ 326.0, 758.557, 342.667, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "G8,9"
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 6,
+    "bounding box" : [ 83.333, 681.89, 107.333, 691.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(3, 4)"
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 6,
+    "bounding box" : [ 83.333, 671.223, 107.333, 680.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(2, 3)"
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 6,
+    "bounding box" : [ 75.857, 652.567, 81.81, 677.546 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ";"
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 6,
+    "bounding box" : [ 83.333, 659.223, 107.333, 669.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(1, 2)"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 6,
+    "bounding box" : [ 83.333, 648.557, 107.333, 658.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(0, 4)"
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 6,
+    "bounding box" : [ 83.333, 637.223, 108.0, 647.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(0, 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 6,
+    "bounding box" : [ 230.0, 627.223, 238.0, 635.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 6,
+    "bounding box" : [ 204.0, 627.223, 213.333, 635.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 6,
+    "bounding box" : [ 304.0, 627.223, 312.667, 635.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "8"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 6,
+    "bounding box" : [ 222.0, 617.89, 244.667, 626.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Time"
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "page number" : 6,
+    "bounding box" : [ 396.333, 749.89, 407.667, 758.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 6,
+    "bounding box" : [ 400.667, 739.557, 407.333, 748.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "9"
+  }, {
+    "type" : "paragraph",
+    "id" : 561,
+    "page number" : 6,
+    "bounding box" : [ 401.333, 729.557, 407.333, 738.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "8"
+  }, {
+    "type" : "paragraph",
+    "id" : 562,
+    "page number" : 6,
+    "bounding box" : [ 401.333, 720.223, 407.333, 728.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "7"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 6,
+    "bounding box" : [ 401.333, 708.89, 408.0, 718.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 6,
+    "bounding box" : [ 401.333, 698.89, 408.0, 708.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 566,
+    "page number" : 6,
+    "bounding box" : [ 401.333, 688.223, 407.333, 696.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 567,
+    "page number" : 6,
+    "bounding box" : [ 401.333, 678.223, 407.333, 687.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 6,
+    "bounding box" : [ 501.667, 666.557, 513.667, 675.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ho"
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 6,
+    "bounding box" : [ 501.667, 653.89, 513.0, 663.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H1"
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 6,
+    "bounding box" : [ 411.0, 635.223, 521.667, 645.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0 1 2 3 4 5 6 7 8 910"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 6,
+    "bounding box" : [ 453.0, 625.223, 477.667, 634.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 579.308, 523.278, 606.388 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 5 Example zigzag persistence applied to a simple temporal graph with temporal information stored for each edge as intervals. (Left) Edge intervals with sliding windows highlighted (alternating blue-red) with corresponding graphs and union graphs above. (Right) Zigzag persistence diagram for both \uD835\uDC3B 0 and \uD835\uDC3B 1 . The birth and death of a feature is encoded as the midpoint of the interval where the event happened."
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 536.364, 523.277, 557.223 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Assuming we have similar notation for the union graph information ( \uD835\uDC51 \uD835\uDC56,\uD835\uDC56 + 1 , \uD835\uDC3E \uD835\uDC5F \uD835\uDC56,\uD835\uDC56 + 1 , etc), we form a zigzag filtration by replacing \uD835\uDC3A \uD835\uDC56 with its Vietoris-Rips complex,"
+  }, {
+    "type" : "formula",
+    "id" : 583,
+    "page number" : 6,
+    "bounding box" : [ 155.381, 513.512, 439.875, 525.373 ],
+    "content" : "K _ { 0 } ^ { r } \\hookrightarrow K _ { 0 , 1 } ^ { r } \\leftarrow K _ { 1 } ^ { r } \\hookrightarrow K _ { 1 , 2 } ^ { r } \\leftarrow K _ { 2 } ^ { r } \\hookrightarrow \\dots \\leftarrow K _ { n - 1 } ^ { r } \\hookrightarrow K _ { n - 1 , n } ^ { r } \\leftarrow K _ { n } ^ { r } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 584,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 471.668, 523.273, 504.306 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Finally, we compute the \uD835\uDC5D -dimensional homology at each step and from there compute the zigzag persistence diagram. Our code uses the Dionysus2 package [ 36 ] for this last step. Again, be aware that the indices on the zigzag persistence points correspond to the \uD835\uDC61 \uD835\uDC56 value associated to the given complex."
+  }, {
+    "type" : "heading",
+    "id" : 585,
+    "level" : "Subtitle",
+    "page number" : 6,
+    "bounding box" : [ 72.0, 437.393, 123.088, 446.12 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3.1 Example"
+  }, {
+    "type" : "paragraph",
+    "id" : 586,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 318.604, 523.279, 422.972 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In the following simple example shown in Fig. 5 , we describe the method in more detail and show how to interpret the resulting zigzag persistence diagram. In this example, we measure the changing structure of a simple 5-node cycle graph as edges are added and removed based on the temporal information. Fixing \uD835\uDC5F = 1, the simplicial complexes are exactly the same as the graphs \uD835\uDC3E \uD835\uDC56 = \uD835\uDC3A \uD835\uDC56 as there are no cliques in this particular example. The bottom left of Fig. 5 a shows the times associated to each edge, and the resulting graphs are shown above. In this notation, the subscripts correspond to the interval of time used to build the graphs. Then we have \uD835\uDC64 = 0 . 5, and the centers of intervals are \uD835\uDC61 0 = 0 . 5, \uD835\uDC61 1 = 1 . 5, · · · , \uD835\uDC61 9 = 9 . 5. This results in intervals for graph \uD835\uDC3A \uD835\uDC56 of the form ( \uD835\uDC56,\uD835\uDC56 + 1 ) and intervals for the union graphs \uD835\uDC3A \uD835\uDC56,\uD835\uDC56 + 1 as ( \uD835\uDC56,\uD835\uDC56 + 2 ) . At the end of the sliding windows, we consider the graph empty and set the death of any remaining homology features as the end time of the last window (i.e., \uD835\uDC61 = 10 for this example)."
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 257.764, 523.279, 315.376 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The resulting zigzag persistence diagram is shown in Fig. 5 b. This persistence diagram shows the zerodimensional and one-dimensional features as \uD835\uDC3B 0 and \uD835\uDC3B 1 , respectively. There are two zero-dimensional features at persistence pairs ( 1 , 3 ) and ( 0 . 5 , 10 ) . The later represents the connected component which appears at the first graph and lasts throughout the filtration. The other component is the piece consisting of vertices 3 and 4 which appears at union graph \uD835\uDC3A ( 0 , 2 ) , thus is associated to a birth at the midpoint of this interval occurring at 1. The one-dimensional feature (the cycle represented in ) is present twice in the persistence diagram. This is"
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 221.899, 523.277, 255.6 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "The one-dimensional feature (the cycle represented in \uD835\uDC3B 1) is present twice in the persistence diagram. This is due to it first appearing in \uD835\uDC3A ( 3 , 5 ) and then disappearing at \uD835\uDC3A ( 4 , 5 ) with corresponding persistence pair ( 4 , 4 . 5 ) . The cycle then reappears at \uD835\uDC3A ( 5 , 7 ) and disappears at \uD835\uDC3A ( 8 , 9 ) resulting in persistence pair at ( 6 , 8 . 5 ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 589,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 175.142, 523.276, 219.734 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "tiple dimensions. It is possible to also capture higher-dimensional structures using higher-dimensional homology, although we do not investigate this direction in this work. In particular, it is not clear what higher dimensional homology would represent in the context of data coming from 1-dimensional graph structures."
+  }, {
+    "type" : "heading",
+    "id" : 590,
+    "level" : "Subtitle",
+    "page number" : 6,
+    "bounding box" : [ 72.0, 140.937, 111.093, 149.833 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4 Results"
+  }, {
+    "type" : "paragraph",
+    "id" : 591,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 69.898, 523.276, 126.446 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To demonstrate the functionality of zigzag persistence for analyzing temporal graphs, we will use two examples. The first is an analysis of transportation data from Great Britain in Section 4.1 . The second is a simulated dataset from the Lorenz system that exhibits intermittency, a dynamical system phenomenon where the dynamic state transition from periodic to chaotic in irregular intervals with results in Section 4.2 . We study this signal using the temporal ordinal partition network framework as described in Section 4.2.1 . We compare our results for both"
+  }, {
+    "type" : "image",
+    "page number" : 7,
+    "bounding box" : [ 227.691, 613.153, 367.585, 753.332 ],
+    "alt" : "The image is a graphical representation of data, specifically a graph showing the relationship between two variables. The x-axis represents the number of births, while the y-axis represents the death rate (days). The graph is titled Death Rate (Days) and is labeled as Death Rate (Days) = 6. The graph shows a linear relationship between the number of births and the death rate. The graph shows a positive correlation between the two variables, meaning that as the number of births increases, the death rate also increases. This is indicated by the line that connects the two points on the graph, which is a straight line. The graph also shows a linear trend, meaning that the relationship between the two variables is constant. This is indicated by the line that connects the two points on the graph, which is a straight line. The graph also shows a negative correlation between the two variables. This is indicated by the line that connects the two points on the graph",
+    "source" : "2205.11338v3/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 7,
+    "bounding box" : [ 238.333, 706.89, 244.333, 714.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 7,
+    "bounding box" : [ 238.333, 678.223, 244.333, 685.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 7,
+    "bounding box" : [ 350.0, 639.89, 360.0, 647.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ho"
+  }, {
+    "type" : "paragraph",
+    "id" : 598,
+    "page number" : 7,
+    "bounding box" : [ 277.333, 624.557, 288.0, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 7,
+    "bounding box" : [ 306.0, 624.557, 317.333, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 7,
+    "bounding box" : [ 291.667, 624.89, 298.333, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 601,
+    "page number" : 7,
+    "bounding box" : [ 321.0, 624.89, 327.667, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 7,
+    "bounding box" : [ 335.667, 624.89, 342.333, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 609,
+    "page number" : 7,
+    "bounding box" : [ 303.0, 613.557, 328.667, 625.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 608,
+    "page number" : 7,
+    "bounding box" : [ 283.333, 615.89, 303.333, 623.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth"
+  }, {
+    "type" : "paragraph",
+    "id" : 611,
+    "page number" : 7,
+    "bounding box" : [ 95.828, 588.38, 188.066, 595.362 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a) Full Rail Travel Network."
+  }, {
+    "type" : "paragraph",
+    "id" : 612,
+    "page number" : 7,
+    "bounding box" : [ 232.626, 588.53, 362.65, 595.512 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b) Zero-dimensional zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 614,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 572.857, 347.622, 580.03 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 6 Zigzag persistence diagrams of the rail transportation network of Great Britain."
+  }, {
+    "type" : "paragraph",
+    "id" : 595,
+    "page number" : 7,
+    "bounding box" : [ 395.0, 663.557, 399.667, 670.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 7,
+    "bounding box" : [ 462.0, 624.557, 472.0, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 603,
+    "page number" : 7,
+    "bounding box" : [ 433.0, 624.89, 439.667, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 604,
+    "page number" : 7,
+    "bounding box" : [ 447.0, 624.89, 453.667, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 606,
+    "page number" : 7,
+    "bounding box" : [ 476.333, 624.89, 483.0, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 610,
+    "page number" : 7,
+    "bounding box" : [ 439.333, 614.557, 483.333, 623.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 7,
+    "bounding box" : [ 505.333, 640.557, 514.667, 648.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H1"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 7,
+    "bounding box" : [ 491.667, 624.89, 498.333, 632.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 613,
+    "page number" : 7,
+    "bounding box" : [ 389.422, 588.53, 517.23, 595.512 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c) One-dimensional zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 615,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 480.349, 523.278, 524.942 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The two connectivity statistics analyze the Connected Components (CCs). The first CC statistic is the number of connected components \uD835\uDC41 \uD835\uDC50\uD835\uDC50 , which provides a simple shape summary of the graph snapshots by understanding the number of disconnected subgraphs. The second statistic is the average size (number of nodes) of the connected components ¯ \uD835\uDC46 \uD835\uDC50\uD835\uDC50 . This statistic provides insight into how significant the components are for each graph snapshot."
+  }, {
+    "type" : "paragraph",
+    "id" : 616,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 420.34, 523.276, 476.888 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The second statistic type is on centrality measures. The three centrality measures we use are the average and standardized degree centrality ¯ \uD835\uDC36 \uD835\uDC51 , betweenness centrality ¯ \uD835\uDC36 \uD835\uDC4F , and closeness centrality ¯ \uD835\uDC36 \uD835\uDC50 . The degree centrality measures the number of edges connected to a node, the betweenness centrality measures how often a node is used in all possible shortest paths, and the closeness centrality measures how close the node is to all other nodes through the shortest path. For details on the implementation of each centrality measure, we direct the reader to [ 37 ]."
+  }, {
+    "type" : "heading",
+    "id" : 617,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 72.0, 383.904, 278.395, 392.631 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4.1 Great Britain Temporal Transportation Network"
+  }, {
+    "type" : "paragraph",
+    "id" : 618,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 252.927, 523.276, 369.25 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We use temporal networks created from the Great Britain (GB) temporal transportation dataset [ 27 ] for the air, rail, and coach transportation methods. This data provides the destinations (nodes) and connections (edges) for public transportation in GB. Additionally, the departure and arrival times are provided to allow a temporal analysis. This temporal data was collected for one week, Monday through Sunday. In this section, we use both the rail and coach data; similar calculations for air data are included in Appendix A . The rail graph constructed without the inclusion of temporal information is shown at left in Fig. 6 where the destinations are overlaid with a GB map outline. Figures for the similar air and coach graphs are included in Appendix A . In all three cases, we set the sliding windows to have width \uD835\uDC64 = 20 minutes. Because the average wait time was 7 minutes and 7 seconds with a standard deviation of 7 minutes and 24 seconds from a collected sample [ 38 ], this ensures that we retain connectivity. Additionally, we used an overlap of 50% between adjacent windows."
+  }, {
+    "type" : "heading",
+    "id" : 619,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 72.0, 225.141, 111.85, 233.656 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Italic",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4.1.1 Rail"
+  }, {
+    "type" : "paragraph",
+    "id" : 620,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 94.041, 523.276, 210.574 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We first focus on the rail data, for which we use the VR complex with \uD835\uDC5F = 1. The 0and 1-dimensional zigzag diagrams are shown in Fig. 6 . The first noticeable feature is that the 1-dimensional diagram has a clear daily pattern of points, implying that there are many loops in the rail network that persist during the day, but become disconnected in the evenings when the trains are no longer running. However, there is still an overarching connectivity of the rail network seen during the week, as noted by the high persistence point at approximately ( 0 , 6 ) in the 0-dimensional diagram. We note that this does not mean that the entire graph is connected for the entirety of the days Monday through Saturday, but instead that there is some connected area that remains running even overnight. We suspect this would be tied to some of the more urban areas such as London, but further work would be needed to implement code to obtain generators of the zigzag diagram. This lower connectivity on Saturday and Sunday can also be seen in the additional sparsity in the day 6 and day 7 peaks in the 1-dimensional diagram."
+  }, {
+    "type" : "paragraph",
+    "id" : 621,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 69.898, 523.276, 90.58 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We compare these interpretations to the standard graph analysis tools [ 3 ]. The standard centrality and connectivity statistics for the same data are shown in Fig. 7 . We can clearly see that there is a daily periodicity in the data"
+  }, {
+    "type" : "image",
+    "page number" : 8,
+    "bounding box" : [ 74.255, 550.226, 521.033, 769.891 ],
+    "alt" : "The image is a line graph with a title at the top that reads Days. The graph has a grid of lines, each representing a different day of the week. The lines are color-coded, with blue lines representing the days of the week, and green lines representing the days of the week. The x-axis is labeled Days, and the y-axis is labeled Number of Days. The graph has a title, Days, and a legend at the bottom of the graph. The legend indicates that the x-axis represents the days of the week, and the y-axis represents the number of days. The graph has a grid of lines, each representing a different day of the week. The lines are color-coded, with blue lines representing the days of the week, and green lines representing the days of the week. The x-axis represents the days of the week, and the y-axis represents the number of days. The",
+    "source" : "2205.11338v3/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 623,
+    "page number" : 8,
+    "bounding box" : [ 104.667, 753.223, 124.667, 763.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "200"
+  }, {
+    "type" : "paragraph",
+    "id" : 624,
+    "page number" : 8,
+    "bounding box" : [ 93.333, 744.557, 102.667, 754.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 625,
+    "page number" : 8,
+    "bounding box" : [ 111.333, 709.89, 124.667, 720.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 8,
+    "bounding box" : [ 90.0, 667.89, 124.667, 678.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0005"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 8,
+    "bounding box" : [ 90.0, 653.89, 125.333, 663.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0000"
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 8,
+    "bounding box" : [ 90.0, 631.223, 124.667, 641.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0025"
+  }, {
+    "type" : "paragraph",
+    "id" : 629,
+    "page number" : 8,
+    "bounding box" : [ 90.0, 613.89, 125.333, 624.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0000"
+  }, {
+    "type" : "paragraph",
+    "id" : 630,
+    "page number" : 8,
+    "bounding box" : [ 96.0, 589.89, 124.667, 600.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.025"
+  }, {
+    "type" : "paragraph",
+    "id" : 631,
+    "page number" : 8,
+    "bounding box" : [ 96.0, 573.89, 124.667, 583.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.000"
+  }, {
+    "type" : "paragraph",
+    "id" : 632,
+    "page number" : 8,
+    "bounding box" : [ 290.333, 566.89, 296.333, 575.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 634,
+    "page number" : 8,
+    "bounding box" : [ 307.333, 551.223, 341.0, 564.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(Days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 633,
+    "page number" : 8,
+    "bounding box" : [ 302.333, 554.89, 307.0, 562.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "t"
+  }, {
+    "type" : "paragraph",
+    "id" : 635,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 534.597, 335.795, 541.77 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 7 Connectivity and centrality analysis on temporal Great Britain rail network."
+  }, {
+    "type" : "paragraph",
+    "id" : 636,
+    "page number" : 8,
+    "bounding box" : [ 83.667, 487.557, 89.0, 494.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 637,
+    "page number" : 8,
+    "bounding box" : [ 238.333, 473.557, 244.333, 480.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 638,
+    "page number" : 8,
+    "bounding box" : [ 238.333, 444.89, 244.333, 452.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 639,
+    "page number" : 8,
+    "bounding box" : [ 238.333, 430.223, 244.333, 437.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 642,
+    "page number" : 8,
+    "bounding box" : [ 150.0, 391.223, 173.333, 399.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4   5"
+  }, {
+    "type" : "paragraph",
+    "id" : 643,
+    "page number" : 8,
+    "bounding box" : [ 179.333, 391.223, 190.0, 399.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 651,
+    "page number" : 8,
+    "bounding box" : [ 127.333, 381.223, 172.0, 390.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 654,
+    "page number" : 8,
+    "bounding box" : [ 79.039, 371.82, 204.855, 378.802 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(a) One-dimensional zigzag persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 657,
+    "page number" : 8,
+    "bounding box" : [ 108.732, 362.356, 175.163, 369.338 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "using original graph."
+  }, {
+    "type" : "paragraph",
+    "id" : 641,
+    "page number" : 8,
+    "bounding box" : [ 350.333, 407.557, 359.0, 414.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 644,
+    "page number" : 8,
+    "bounding box" : [ 262.667, 391.223, 302.0, 399.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1   2   3"
+  }, {
+    "type" : "paragraph",
+    "id" : 645,
+    "page number" : 8,
+    "bounding box" : [ 306.0, 391.223, 331.333, 399.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4   5"
+  }, {
+    "type" : "paragraph",
+    "id" : 646,
+    "page number" : 8,
+    "bounding box" : [ 334.667, 391.223, 346.0, 399.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 652,
+    "page number" : 8,
+    "bounding box" : [ 283.333, 380.89, 328.0, 391.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 655,
+    "page number" : 8,
+    "bounding box" : [ 234.507, 371.82, 360.769, 378.802 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(b) One-dimensional zigzag persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 660,
+    "level" : "1",
+    "page number" : 8,
+    "bounding box" : [ 333.224, 362.627, 337.942, 369.506 ],
+    "font" : "txmiaX",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 658,
+    "page number" : 8,
+    "bounding box" : [ 249.141, 362.356, 324.801, 369.338 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "using VR complex with"
+  }, {
+    "type" : "paragraph",
+    "id" : 661,
+    "page number" : 8,
+    "bounding box" : [ 340.157, 362.356, 346.135, 369.338 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1."
+  }, {
+    "type" : "paragraph",
+    "id" : 659,
+    "page number" : 8,
+    "bounding box" : [ 326.715, 363.966, 330.262, 367.529 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDC5F"
+  }, {
+    "type" : "paragraph",
+    "id" : 666,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 346.682, 355.465, 353.855 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 8 Zigzag persistence diagrams of the coach transportation network of Great Britain."
+  }, {
+    "type" : "paragraph",
+    "id" : 640,
+    "page number" : 8,
+    "bounding box" : [ 395.0, 430.223, 399.667, 437.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 647,
+    "page number" : 8,
+    "bounding box" : [ 432.0, 391.223, 458.0, 399.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2   3"
+  }, {
+    "type" : "paragraph",
+    "id" : 649,
+    "page number" : 8,
+    "bounding box" : [ 476.0, 391.223, 484.0, 399.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 650,
+    "page number" : 8,
+    "bounding box" : [ 491.333, 391.223, 499.333, 399.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 648,
+    "page number" : 8,
+    "bounding box" : [ 462.333, 391.557, 473.0, 397.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 653,
+    "page number" : 8,
+    "bounding box" : [ 438.667, 381.223, 483.333, 390.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 656,
+    "page number" : 8,
+    "bounding box" : [ 390.42, 371.82, 516.236, 378.802 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(c) One-dimensional zigzag persistence"
+  }, {
+    "type" : "paragraph",
+    "id" : 664,
+    "level" : "1",
+    "page number" : 8,
+    "bounding box" : [ 488.915, 362.627, 493.633, 369.506 ],
+    "font" : "txmiaX",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 662,
+    "page number" : 8,
+    "bounding box" : [ 404.832, 362.356, 480.492, 369.338 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "using VR complex with"
+  }, {
+    "type" : "paragraph",
+    "id" : 665,
+    "page number" : 8,
+    "bounding box" : [ 495.847, 362.356, 501.825, 369.338 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2."
+  }, {
+    "type" : "paragraph",
+    "id" : 663,
+    "page number" : 8,
+    "bounding box" : [ 482.405, 363.966, 485.952, 367.529 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "\uD835\uDC5F"
+  }, {
+    "type" : "paragraph",
+    "id" : 667,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 252.341, 523.276, 320.843 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "from these standard tools as was seen in the zigzag persistence. Specifically, all the connectivity and centrality measures increase during peak travel hours. What is lost, and which can be augmented with the zigzag viewpoint, is the ability to connect the clustering and centrality measures from one time step to the next. There is no way to determine, say, from the \uD835\uDC41 \uD835\uDC50\uD835\uDC50 graph that there is some portion of the graph that remains connected for 6 out of the 7 days. For this reason, we believe that the zigzag setting can be used along side the standard measures in order to strengthen analysis of given temporal graph information."
+  }, {
+    "type" : "heading",
+    "id" : 668,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 72.0, 215.253, 120.956, 223.768 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Italic",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4.1.2 Coach"
+  }, {
+    "type" : "paragraph",
+    "id" : 669,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 154.85, 523.276, 199.443 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Now, we use the coach network data to illustrate using the VR complexes with different \uD835\uDC5F values. In Fig. 8 , 1-dimensional zigzag persistence diagrams are displayed. The leftmost diagram is computed using the graphs directly as input to the zigzag persistence without taking the VR complex. The second and third were obtained using the graph and VR complexes with \uD835\uDC5F = 1 and \uD835\uDC5F = 2 respectively."
+  }, {
+    "type" : "paragraph",
+    "id" : 670,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 69.898, 523.276, 150.356 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Both diagrams (a) and (b) show periodic structure during the day which is to be expected as the number of buses running diminishes overnight. However, in diagram (b) we can clearly see a daily trend. While unfortunately difficult to see on the diagram, this is in fact points in the diagram overlaid, implying we have two loops of more than three edges that persist during the day. If the loops had length 3, they would be filled in by triangles when replacing the graph with the VR complex. This further implies that the noise seen in (a) is the existence of a great deal of triangles; not surprising in a highly connected local system like a bus network. But then, we can also compare persistence diagram Fig. 8 (b) to the analagous Fig. 6 (c) from the rail network. The more locally connected"
+  }, {
+    "type" : "image",
+    "page number" : 9,
+    "bounding box" : [ 112.613, 675.155, 482.661, 769.89 ],
+    "alt" : "The image depicts a graph with two axes, labeled as t and r(t). The x-axis is labeled as t and the y-axis is labeled as r(t). The graph shows a wave-like pattern with a peak at the point labeled as t = 10, indicating that the wave is at its highest point at t = 10. The wave appears to be oscillating, with the amplitude of the wave increasing as it approaches t = 10. The graph also includes a scale labeled as t with a minimum of 0 and a maximum of 1. The scale is marked with intervals of 10, with the intervals being marked as 0.5 and 1. The scale is labeled as t = 10, indicating that the graph is scaled to have a range of 0 to 10. The graph also includes a scale labeled as r",
+    "source" : "2205.11338v3/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 672,
+    "page number" : 9,
+    "bounding box" : [ 133.0, 759.223, 146.333, 767.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 674,
+    "page number" : 9,
+    "bounding box" : [ 455.333, 755.557, 465.333, 762.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T6"
+  }, {
+    "type" : "paragraph",
+    "id" : 673,
+    "page number" : 9,
+    "bounding box" : [ 424.667, 755.557, 433.333, 761.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "75"
+  }, {
+    "type" : "paragraph",
+    "id" : 676,
+    "page number" : 9,
+    "bounding box" : [ 274.333, 745.223, 285.0, 753.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T5"
+  }, {
+    "type" : "paragraph",
+    "id" : 675,
+    "page number" : 9,
+    "bounding box" : [ 133.0, 743.89, 147.0, 753.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 678,
+    "page number" : 9,
+    "bounding box" : [ 274.333, 731.89, 285.0, 741.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T4"
+  }, {
+    "type" : "paragraph",
+    "id" : 677,
+    "page number" : 9,
+    "bounding box" : [ 133.0, 728.557, 147.0, 737.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 679,
+    "page number" : 9,
+    "bounding box" : [ 274.333, 721.223, 285.0, 729.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "73"
+  }, {
+    "type" : "paragraph",
+    "id" : 680,
+    "page number" : 9,
+    "bounding box" : [ 126.333, 712.557, 146.333, 721.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "~0.5"
+  }, {
+    "type" : "paragraph",
+    "id" : 681,
+    "page number" : 9,
+    "bounding box" : [ 274.333, 708.557, 284.333, 717.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T2"
+  }, {
+    "type" : "paragraph",
+    "id" : 682,
+    "level" : "1",
+    "page number" : 9,
+    "bounding box" : [ 125.667, 697.223, 146.333, 706.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "=10"
+  }, {
+    "type" : "paragraph",
+    "id" : 683,
+    "page number" : 9,
+    "bounding box" : [ 274.333, 697.223, 284.333, 705.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "T1"
+  }, {
+    "type" : "paragraph",
+    "id" : 685,
+    "page number" : 9,
+    "bounding box" : [ 159.0, 687.89, 209.667, 698.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2   4   6   8"
+  }, {
+    "type" : "paragraph",
+    "id" : 686,
+    "page number" : 9,
+    "bounding box" : [ 213.667, 688.557, 225.667, 698.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 688,
+    "page number" : 9,
+    "bounding box" : [ 351.667, 687.89, 391.667, 698.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10 12 14"
+  }, {
+    "type" : "paragraph",
+    "id" : 684,
+    "page number" : 9,
+    "bounding box" : [ 145.0, 689.223, 153.0, 697.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 687,
+    "page number" : 9,
+    "bounding box" : [ 228.333, 687.89, 254.333, 697.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "12 14"
+  }, {
+    "type" : "paragraph",
+    "id" : 689,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 650.06, 523.276, 666.842 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 9 Example formation of an ordinal partition network for a sinusoidal signal \uD835\uDC65 ( \uD835\uDC61 ) = sin ( \uD835\uDC61 ) with permutations of dimension \uD835\uDC5B = 3. The resulting permutation sequence Π shows how these permutations transition, which is captured by the ordinal partition network on the right."
+  }, {
+    "type" : "paragraph",
+    "id" : 690,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 607.215, 523.276, 627.897 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "nature of the bus system means that many of these small loops are not included when using the VR complex; however the rail system is more spread out, thus resulting in longer loops that are not filled in by a choice of \uD835\uDC5F = 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 691,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 559.394, 523.278, 603.986 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Finally, we observe that in the persistence diagram of Fig. 8 (c), where there is very little of the periodic structure remaining. From this, we can assume that the many small loops seen in the \uD835\uDC5F = 1 diagram have been filled in by our choice of \uD835\uDC5F = 2, thus meaning that the loops are of length at most 6 (See the text surrounding Fig.6 of [ 30 ] for a discussion of lifetime of loops by length in this setting)."
+  }, {
+    "type" : "heading",
+    "id" : 692,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 526.195, 343.6, 534.922 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4.2 Temporal Ordinal Partition Network for Intermittency Detection"
+  }, {
+    "type" : "paragraph",
+    "id" : 693,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 431.316, 523.276, 511.774 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this section we apply the zigzag methods to study time series data encoded using complex networks; namely, the ordinal partition network. Ordinal partition networks [ 29 ] are a graph representation of time series data based on permutation transitions. As such, they encapsulate the state space structure of the underlying system. While we only use the ordinal partition network in this work, there are several other transitional complex networks from timeseries data that a similar analysis could be done. These include \uD835\uDC58 -nearest-neighbors [ 39 ], epsilon-recurrence [ 40 ], and coarse-grained state-space networks [ 41 , 42 ]. We begin by giving a brief introduction to the construction of the network from time series data, followed by the results of analysis using zigzag persistence."
+  }, {
+    "type" : "heading",
+    "id" : 694,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 406.768, 239.77, 415.283 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Italic",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4.2.1 Temporal Ordinal Partition Network"
+  }, {
+    "type" : "paragraph",
+    "id" : 695,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 359.587, 523.279, 392.643 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Given a time series \uD835\uDC65 = [ \uD835\uDC65 0 , \uD835\uDC65 1 , \uD835\uDC65 2 , . . . , \uD835\uDC65 \uD835\uDC5B ] for a sequence of times \uD835\uDC61 = [ \uD835\uDC61 0 , · · · , \uD835\uDC61 \uD835\uDC5B ] , the ordinal partition network is formed by first generating a sequence of permutations using a fixed permutation dimension \uD835\uDC5A and delay \uD835\uDF0F . We generate a sequence of permutations by assigning each vector embedding"
+  }, {
+    "type" : "formula",
+    "id" : 696,
+    "page number" : 9,
+    "bounding box" : [ 164.712, 339.207, 523.275, 349.417 ],
+    "content" : "v _ { i } = [ x _ { i } , x _ { i + \\tau } , x _ { i + 2 \\tau } , \\dots , x _ { i + ( m - 1 ) \\tau } ] = [ v _ { i } ( 0 ) , v _ { i } ( 1 ) \\dots , v _ { i } ( m - 1 ) ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 697,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 297.044, 523.28, 329.681 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "to one of the \uD835\uDC5A ! possible permutations. We give an arbitrary ordering to the permutations for labeling purposes, and assign the permutation \uD835\uDF0B \uD835\uDC57 = [ \uD835\uDF0B \uD835\uDC57 ( 0 ) , . . . \uD835\uDF0B \uD835\uDC57 ( \uD835\uDC5A − 1 )] ∈ Z \uD835\uDC5A based on the ordinal pattern of \uD835\uDC63 \uD835\uDC56 such that \uD835\uDC63 \uD835\uDC56 ( \uD835\uDF0B \uD835\uDC57 ( 0 )) ≤ \uD835\uDC63 \uD835\uDC56 ( \uD835\uDF0B \uD835\uDC57 ( 1 )) ≤ . . . ≤ \uD835\uDC63 \uD835\uDC56 ( \uD835\uDF0B \uD835\uDC57 ( \uD835\uDC5A − 1 )) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 698,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 249.223, 523.275, 294.235 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Using the chronologically ordered sequence of permutations Π , we can form a graph \uD835\uDC3A ( \uD835\uDC38,\uD835\uDC49 ) by setting the vertices \uD835\uDC49 as all permutations used and edges for transitions from \uD835\uDF0B \uD835\uDC4E to \uD835\uDF0B \uD835\uDC4F with \uD835\uDC4E, \uD835\uDC4F ≤ \uD835\uDC5A ! and \uD835\uDC4E ≠ \uD835\uDC4F (no self-loops). We will not add weight or directionality to the graph for this formation. However, we will track the index \uD835\uDC56 for the corresponding time \uD835\uDC65 \uD835\uDC56 when the edge is activated as the temporal data for the graph."
+  }, {
+    "type" : "paragraph",
+    "id" : 699,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 165.537, 523.28, 245.995 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In Fig. 9 we demonstrate the ordinal partition network formation procedure for a simple example signal as \uD835\uDC65 ( \uD835\uDC61 ) = sin ( \uD835\uDC61 ) , where \uD835\uDC61 ∈ [ 0 , 15 ] sampled at a rate of \uD835\uDC53 \uD835\uDC60 = 25 Hz. Using the method of multi-scale permutation entropy we selected \uD835\uDF0F = 52 and set \uD835\uDC5B = 3 for demonstrative purposes. The corresponding permutations to delay embedding vector \uD835\uDC63 \uD835\uDC56 is shown as a sequence Π in the middle subfigure of Fig. 9 . This sequence captures the periodic nature of the signal which is then summarized as the ordinal partition network on the right with each permutation as a vertex and edges added for permutation transitions in Π . For more details and examples of the ordinal partition network, we direct the reader to [ 29 , 30 ]."
+  }, {
+    "type" : "heading",
+    "id" : 700,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 140.989, 230.804, 149.504 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Italic",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4.2.2 Ordinal Partition Network Results"
+  }, {
+    "type" : "paragraph",
+    "id" : 701,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 69.898, 523.276, 126.445 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Using a sliding window technique, we can represent ordinal partition networks as temporal graphs. However, instead of each edge having a set of intervals associated with it as in the example in Section 3.1 , they have time instances where the edge is active based on when a transition between unique permutations occur. For example, the transition from \uD835\uDF0B \uD835\uDC56 to \uD835\uDF0B \uD835\uDC56 + 1 occurring at time \uD835\uDC61 \uD835\uDC57 would be active for the moment in time \uD835\uDC61 \uD835\uDC57 . If the sliding window contains an edge’s activation instance, we add that edge to the sliding window graph."
+  }, {
+    "type" : "image",
+    "page number" : 10,
+    "bounding box" : [ 74.255, 598.863, 521.021, 769.89 ],
+    "alt" : "In this image, we can see a graph. There are numbers on the graph.",
+    "source" : "2205.11338v3/imageFile7.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 703,
+    "page number" : 10,
+    "bounding box" : [ 390.0, 738.557, 402.667, 746.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "500"
+  }, {
+    "type" : "paragraph",
+    "id" : 704,
+    "page number" : 10,
+    "bounding box" : [ 390.333, 723.557, 402.333, 730.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "490"
+  }, {
+    "type" : "paragraph",
+    "id" : 705,
+    "page number" : 10,
+    "bounding box" : [ 391.0, 707.557, 402.333, 714.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "480"
+  }, {
+    "type" : "paragraph",
+    "id" : 707,
+    "page number" : 10,
+    "bounding box" : [ 390.0, 691.223, 403.333, 699.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "470"
+  }, {
+    "type" : "paragraph",
+    "id" : 706,
+    "page number" : 10,
+    "bounding box" : [ 383.0, 684.223, 389.667, 697.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "8"
+  }, {
+    "type" : "paragraph",
+    "id" : 709,
+    "page number" : 10,
+    "bounding box" : [ 390.333, 676.223, 402.333, 682.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "460"
+  }, {
+    "type" : "paragraph",
+    "id" : 708,
+    "page number" : 10,
+    "bounding box" : [ 84.667, 671.89, 97.333, 679.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "250"
+  }, {
+    "type" : "paragraph",
+    "id" : 711,
+    "page number" : 10,
+    "bounding box" : [ 390.667, 659.89, 402.667, 667.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "450"
+  }, {
+    "type" : "paragraph",
+    "id" : 710,
+    "page number" : 10,
+    "bounding box" : [ 85.667, 656.223, 97.0, 662.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "200"
+  }, {
+    "type" : "paragraph",
+    "id" : 713,
+    "page number" : 10,
+    "bounding box" : [ 390.0, 643.89, 402.667, 651.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "440"
+  }, {
+    "type" : "paragraph",
+    "id" : 712,
+    "page number" : 10,
+    "bounding box" : [ 85.0, 640.223, 97.0, 646.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "150"
+  }, {
+    "type" : "paragraph",
+    "id" : 715,
+    "page number" : 10,
+    "bounding box" : [ 391.0, 628.89, 402.333, 635.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "430"
+  }, {
+    "type" : "paragraph",
+    "id" : 714,
+    "page number" : 10,
+    "bounding box" : [ 84.667, 623.223, 97.333, 631.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "100"
+  }, {
+    "type" : "paragraph",
+    "id" : 717,
+    "page number" : 10,
+    "bounding box" : [ 415.333, 621.89, 427.333, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "440"
+  }, {
+    "type" : "paragraph",
+    "id" : 718,
+    "page number" : 10,
+    "bounding box" : [ 430.0, 621.89, 442.667, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "450"
+  }, {
+    "type" : "paragraph",
+    "id" : 719,
+    "page number" : 10,
+    "bounding box" : [ 445.333, 621.89, 458.0, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "460"
+  }, {
+    "type" : "paragraph",
+    "id" : 720,
+    "page number" : 10,
+    "bounding box" : [ 460.667, 621.89, 473.333, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "470"
+  }, {
+    "type" : "paragraph",
+    "id" : 721,
+    "page number" : 10,
+    "bounding box" : [ 476.0, 621.89, 488.667, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "480"
+  }, {
+    "type" : "paragraph",
+    "id" : 722,
+    "page number" : 10,
+    "bounding box" : [ 490.667, 621.89, 503.333, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "490"
+  }, {
+    "type" : "paragraph",
+    "id" : 723,
+    "page number" : 10,
+    "bounding box" : [ 506.0, 621.89, 518.667, 629.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "500"
+  }, {
+    "type" : "paragraph",
+    "id" : 716,
+    "page number" : 10,
+    "bounding box" : [ 399.667, 622.223, 411.667, 628.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "430"
+  }, {
+    "type" : "paragraph",
+    "id" : 724,
+    "page number" : 10,
+    "bounding box" : [ 452.333, 614.223, 467.667, 620.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth"
+  }, {
+    "type" : "paragraph",
+    "id" : 725,
+    "page number" : 10,
+    "bounding box" : [ 132.0, 601.89, 144.667, 609.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "440"
+  }, {
+    "type" : "paragraph",
+    "id" : 726,
+    "page number" : 10,
+    "bounding box" : [ 173.333, 601.89, 186.0, 609.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "450"
+  }, {
+    "type" : "paragraph",
+    "id" : 727,
+    "page number" : 10,
+    "bounding box" : [ 214.667, 601.89, 227.333, 609.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "460"
+  }, {
+    "type" : "paragraph",
+    "id" : 728,
+    "page number" : 10,
+    "bounding box" : [ 256.0, 601.89, 268.667, 609.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "470"
+  }, {
+    "type" : "paragraph",
+    "id" : 729,
+    "page number" : 10,
+    "bounding box" : [ 297.333, 601.89, 310.0, 609.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "480"
+  }, {
+    "type" : "paragraph",
+    "id" : 730,
+    "page number" : 10,
+    "bounding box" : [ 339.333, 601.89, 351.333, 609.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "490"
+  }, {
+    "type" : "paragraph",
+    "id" : 731,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 564.305, 523.275, 590.407 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 10 One the left, the \uD835\uDC67 solution of the intermittent Lorenz system described in Eq. ( 5 ) is shown, along with four different graphs obtained from the corresponding ordinal partition networks in the windows of matching color. On the right, the one-dimensional zigzag persistence diagram."
+  }, {
+    "type" : "paragraph",
+    "id" : 732,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 507.503, 523.276, 540.141 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We will show how this procedure can be used to detect chaotic and periodic windows in a signal exhibiting intermittency (i.e., the irregular transitions from periodic to chaotic dynamics). The signal used here is the \uD835\uDC67 solution to the simulated Lorenz system defined as"
+  }, {
+    "type" : "formula",
+    "id" : 733,
+    "page number" : 10,
+    "bounding box" : [ 198.036, 474.982, 523.275, 493.015 ],
+    "content" : "\\frac { d x } { d t } = \\sigma ( y - x ) , \\ \\frac { d y } { d t } = x ( \\rho - z ) - y , \\ \\frac { d z } { d t } = x y - \\beta z"
+  }, {
+    "type" : "paragraph",
+    "id" : 734,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 405.929, 523.277, 462.896 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "with system parameters \uD835\uDF0E = 10, \uD835\uDEFD = 8 / 3, and \uD835\uDF0C = 166 . 18 for a response with type 1 intermittency [ 43 ]. We simulated the system with a sampling rate of 100 Hz for 500 seconds with only the last 70 seconds used. To construct the ordinal partition network, we choose \uD835\uDC5A = 6 and \uD835\uDF0F using the multi-scale permutation entropy method as suggested in [ 44 ]. We set the sliding windows for generating graph snapshots to have a width of 5 \uD835\uDF0F and 80% overlap between adjacent windows."
+  }, {
+    "type" : "paragraph",
+    "id" : 735,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 250.083, 523.277, 402.691 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The resulting signal \uD835\uDC67 ( \uD835\uDC61 ) from simulating the Lorenz system in Eq. ( 5 ) is shown in Fig. 10 , with four examples of ordinal partition networks generated at several window locations. These sample graph snapshots show that the structure of the ordinal partition network significantly changes depending on the dynamic state of the window’s time-series segment. At right in the figure, we see the 1-dimensional zigzag diagram for the data. Of particular note is that there are several high persistence points in the diagram. Recalling that the coordinates of these points are associated to time of appearance of loops rather than size of the loops themselves, we have marked the regions of the times series associated to these points in blue at left. From visual inspection, it appears that these regions correspond to periodic behavior in the time series. The remaining chaotic windows characteristically have many low-lifetime persistence pairs seen close to the diagonal in the persistence diagram. This is in line with the results in [ 30 ] that showed ordinal partition networks from chaotic signals tend to have persistence diagrams with many features in \uD835\uDC3B 1 when compared to their periodic counterpart. The fact that this labeling is done with only the user’s choice of threshold for what is considered a high-persistence point makes this a potentially exciting avenue for future work to understand how it can be used in the case of labeling intermittency in time series."
+  }, {
+    "type" : "paragraph",
+    "id" : 736,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 165.968, 523.276, 246.426 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Additionally, note in the persistence diagram in Fig. 10 the point near the diagonal, at around second 442, representing a loop in the network that quickly disappears, as seen also in the first three ordinal partition networks shown at left of Fig. 10 . This tells us that low-lifetime loops may show up in the middle of periodic regions while the main periodic trend is preserved, confirming that we can still trust the coordinates of high persistence points as the bounds of periodic regions. Thus, in general, we can use the persistence diagram to identify periodic regions by looking for intervals where there are persistent loops over relatively long periods and very few (or no) other shorter-living loops, which is easily identified from the persistent points coordinates."
+  }, {
+    "type" : "paragraph",
+    "id" : 737,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 69.898, 523.276, 162.311 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To compare with the standard tools from temporal network analysis, we show the connectivity and centrality measures of the graph snapshots in Fig. 11 . The number of components \uD835\uDC41 \uD835\uDC50\uD835\uDC50 is constant due to the nature of the ordinal partition network, where the sequence of permutation transitions creates a chain of connected edges. As such, there is no structural information in the number of components. However, the size of the components does increase during the chaotic windows. This increase is due to, in general, more unique permutations and thus nodes used in a chaotic signal compared to periodic. Of the centrality statistics, only the average closeness centrality shows an apparent increase during chaotic regions. The increase in centrality is most likely due to the chaotic regions causing a more highly connected graph as demonstrated in the chaotic window and corresponding network"
+  }, {
+    "type" : "image",
+    "page number" : 11,
+    "bounding box" : [ 74.255, 474.638, 521.012, 769.892 ],
+    "alt" : "The image is a line graph titled Line Graph: 2015-2016. The graph is divided into four horizontal rows and four vertical columns, each representing a different year. The x-axis is labeled Time, and the y-axis is labeled Price. The graph shows data for five different lines, each representing a different year. ### Data Points: - **2015:** - **X-axis:** 2015 - **Y-axis:** Price - **Data Points:** 15, 16, 17, 18, 19 - **2016:** - **X-axis:** 2016 - **Y-axis:** Price - **Data Points:** 19, 20, 21, 22, 23 ### Analysis: - **2015:**",
+    "source" : "2205.11338v3/imageFile8.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 739,
+    "page number" : 11,
+    "bounding box" : [ 88.0, 749.223, 102.0, 757.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "250"
+  }, {
+    "type" : "paragraph",
+    "id" : 740,
+    "page number" : 11,
+    "bounding box" : [ 88.0, 729.89, 102.0, 738.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "200"
+  }, {
+    "type" : "paragraph",
+    "id" : 741,
+    "page number" : 11,
+    "bounding box" : [ 88.0, 711.223, 101.333, 719.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "150"
+  }, {
+    "type" : "paragraph",
+    "id" : 742,
+    "page number" : 11,
+    "bounding box" : [ 88.0, 692.557, 101.333, 701.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "100"
+  }, {
+    "type" : "paragraph",
+    "id" : 743,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 670.557, 102.0, 678.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 744,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 655.223, 101.333, 663.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 745,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 639.89, 102.0, 648.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.95"
+  }, {
+    "type" : "paragraph",
+    "id" : 746,
+    "page number" : 11,
+    "bounding box" : [ 92.0, 618.557, 102.667, 627.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "50"
+  }, {
+    "type" : "paragraph",
+    "id" : 748,
+    "page number" : 11,
+    "bounding box" : [ 92.0, 596.557, 102.0, 609.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "04"
+  }, {
+    "type" : "paragraph",
+    "id" : 747,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 596.557, 94.0, 604.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0."
+  }, {
+    "type" : "paragraph",
+    "id" : 749,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 581.223, 102.0, 589.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.02"
+  }, {
+    "type" : "paragraph",
+    "id" : 750,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 565.89, 102.0, 574.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 751,
+    "page number" : 11,
+    "bounding box" : [ 91.0, 549.557, 101.0, 556.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.1"
+  }, {
+    "type" : "paragraph",
+    "id" : 752,
+    "page number" : 11,
+    "bounding box" : [ 90.0, 529.89, 102.0, 537.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 753,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 517.89, 102.0, 526.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.10"
+  }, {
+    "type" : "paragraph",
+    "id" : 754,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 505.89, 102.0, 514.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 755,
+    "page number" : 11,
+    "bounding box" : [ 86.0, 493.223, 102.0, 501.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 756,
+    "page number" : 11,
+    "bounding box" : [ 154.667, 487.223, 168.0, 495.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "440"
+  }, {
+    "type" : "paragraph",
+    "id" : 757,
+    "page number" : 11,
+    "bounding box" : [ 216.667, 487.223, 230.0, 495.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "450"
+  }, {
+    "type" : "paragraph",
+    "id" : 758,
+    "page number" : 11,
+    "bounding box" : [ 278.0, 487.223, 292.0, 495.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "460"
+  }, {
+    "type" : "paragraph",
+    "id" : 759,
+    "page number" : 11,
+    "bounding box" : [ 340.0, 487.223, 354.0, 495.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "470"
+  }, {
+    "type" : "paragraph",
+    "id" : 760,
+    "page number" : 11,
+    "bounding box" : [ 402.0, 487.223, 415.333, 495.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "480"
+  }, {
+    "type" : "paragraph",
+    "id" : 761,
+    "page number" : 11,
+    "bounding box" : [ 463.333, 487.223, 477.333, 495.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "490"
+  }, {
+    "type" : "paragraph",
+    "id" : 762,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 449.544, 523.274, 466.181 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 11 Connectivity and centrality analysis on temporal ordinal partition network with periodic regions as labeled with the zigzag persistence points highlighted in blue."
+  }, {
+    "type" : "heading",
+    "id" : 763,
+    "level" : "Subtitle",
+    "page number" : 11,
+    "bounding box" : [ 72.0, 346.506, 127.91, 355.402 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "5 Conclusion"
+  }, {
+    "type" : "paragraph",
+    "id" : 764,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 214.526, 523.276, 330.849 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this work we investigated one method for applying zigzag persistence to temporal graphs and discussed interpretation in several settings. We treated these graphs as inputs to create a metric space, and then studied the zigzag constructed by the changing graph over time for a fixed connectivity parameter. Zigzag persistence provides a unique perspective when studying the evolving structure of a temporal graph by tracking the standard lowerdimensional features (e.g., connected components), but also higher-dimensional features (e.g., loops and voids) through a sequence of simplicial complexes. This allows for an understanding of the evolving topology of a temporal graph which can be used in addition to more standard techniques for their analysis. We showed interpretation for these tools on two examples: the Great Britain transportation network and temporal ordinal partition networks. Our results showed that the informative zero and one-dimensional zigzag persistence provided insights into the structure of the temporal graph that were not easily gleaned from standard centrality and connectivity statistics."
+  }, {
+    "type" : "paragraph",
+    "id" : 765,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 69.898, 523.279, 210.132 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "It should be noted that the work here is essentially functioning as a more computationally tractable version of what we would like to do, namely two-parameter persistence. Because multiparameter persistence presents mathematical barriers to simplified representations in the spirit of persistence diagrams [ 35 ], many other workarounds have sprung up. These include vineyards [ 45 ], where we study a one parameter family of persistence diagrams; or CROCKER plots [ 46 , 47 ], where we can study a similarly evolving Betti curve. There has been previous work investigating the use of zigzag persistence in graph based applications in the broader theoretical framework of formigrams [ 48 , 49 ] with additional results on stability [ 50 ]. These include applications to dynamic metric spaces [ 51 , 52 ] and brain networks [ 53 ], although this setting is restricted to 0-dimensional persistence due to its tight connection to time-varying clustering. Even though in theory the running time of zigzag persistence should be similar to standard persistence [ 54 ], in practice it has not seen the flurry of optimizations available in the regular case [ 55 , 56 ]. However, recent work [ 57 – 59 ] promises substantial improvements in the potentially available code, which should further make the tools discussed in this paper more accessible to a wide array of data sets."
+  }, {
+    "type" : "paragraph",
+    "id" : 766,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 674.139, 523.278, 766.552 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We believe zigzag persistence could also be leveraged to study other temporal graphs including flock behavior models (e.g., Viscsek model) and the emergence of coordinated motion, power grid dynamics with the topological characteristics of a cascade failures, and supplier-manufacture networks through the effects of trade failures on production and consumption. Future work could involve an analysis on deciding an optimal window size and overlap, a method to incorporate edge weight and directionality, and temporal information on both the nodes and edges. It would also be worth investigating higher-dimensional features (e.g., voids through \uD835\uDC3B 2 ), although more likely because of the 1-dimensional structure of the input data, it is less clear what sorts of behavior might arise in the form of interesting behavior in the zigzag diagrams."
+  }, {
+    "type" : "paragraph",
+    "id" : 767,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 614.188, 523.276, 670.735 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Additionally, the method presented here is by no means the only way to incorporate the input temporal graph in a form that could generate a zigzag complex. We direct the interested reader to [ 26 ] for a large collection of possible 1-parameter filtrations that could be generated from a fixed graph. Utilizing any of these for some fixed filtration parameter evolving over the temporal graph information could yield a zigzag diagram whose structure may be useful for additional interpretation in other applications."
+  }, {
+    "type" : "paragraph",
+    "id" : 768,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 578.567, 523.275, 595.204 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Acknowledgements This material is based upon work supported by the Air Force Office of Scientific Research under award number FA955022-1-0007."
+  }, {
+    "type" : "heading",
+    "id" : 769,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 72.0, 542.297, 151.033, 551.193 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Conflict of interest"
+  }, {
+    "type" : "paragraph",
+    "id" : 770,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 518.904, 434.698, 527.631 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "On behalf of all authors, the corresponding author states that there is no conflict of interest."
+  }, {
+    "type" : "heading",
+    "id" : 771,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 72.0, 483.054, 117.868, 491.95 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "paragraph",
+    "id" : 772,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 453.107, 523.279, 469.553 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "1. Mason A. Porter. Nonlinearity + networks: A 2020 vision. In Emerging Frontiers in Nonlinear Science, pages 131–159. Springer International Publishing, 2020. 2. Petter Holme and Jari Saramäki, editors. Temporal Networks. Springer Berlin Heidelberg, 2013."
+  }, {
+    "type" : "paragraph",
+    "id" : 773,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 443.467, 394.948, 450.449 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Petter Holme and Jari Saramäki, editors. Temporal Networks. Springer Berlin Heidelberg, 2013."
+  }, {
+    "type" : "paragraph",
+    "id" : 774,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 433.827, 452.788, 440.809 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Petter Holme. Modern temporal network theory: a colloquium. The European Physical Journal B, 88(9), sep 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 775,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 414.723, 523.276, 431.169 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "B. Skyrms and R. Pemantle. A dynamic model of social network formation. Proceedings of the National Academy of Sciences, 97(16):9340-9346, aug 2000."
+  }, {
+    "type" : "paragraph",
+    "id" : 776,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 395.618, 523.275, 412.065 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ismail Husein, Herman Mawengkang, Saib Suwilo, and Mardiningsih. Modeling the transmission of infectious disease in a dynamic network. Journal of Physics: Conference Series, 1255(1):012052, aug 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 777,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 376.514, 523.275, 392.96 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Mengkai Xu, Srinivasan Radhakrishnan, Sagar Kamarthi, and Xiaoning Jin. Resiliency of mutualistic supplier-manufacturer networks. Scientific Reports, 9(1), sep 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 778,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 357.41, 523.275, 373.856 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Benjamin Schäfer, Dirk Witthaut, Marc Timme, and Vito Latora. Dynamically induced cascading failures in power grids. Nature Communications, 9(1), may 2018."
+  }, {
+    "type" : "paragraph",
+    "id" : 779,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 347.77, 417.886, 354.752 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Bin Ran David Boyce. Modeling Dynamic Transportation Networks. Springer Berlin Heidelberg, 2012."
+  }, {
+    "type" : "paragraph",
+    "id" : 780,
+    "page number" : 12,
+    "bounding box" : [ 75.985, 338.13, 442.586, 345.112 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Jessica Enright and Rowland Raymond Kao. Epidemics on dynamic networks. Epidemics, 24:88-97, sep 2018."
+  }, {
+    "type" : "paragraph",
+    "id" : 781,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 319.025, 523.275, 335.472 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Philip Nuss, T.E. Graedel, Elisa Alonso, and Adam Carroll. Mapping supply chain risk by network analysis of product platforms. Sustainable Materials and Technologies, 10:14-22, dec 2016."
+  }, {
+    "type" : "paragraph",
+    "id" : 782,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 299.921, 523.276, 316.368 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Saleh Soltan, Dorian Mazauric, and Gil Zussman. Cascading failures in power grids. In Proceedings of the 5th international conference on Future energy systems. ACM, jun 2014."
+  }, {
+    "type" : "paragraph",
+    "id" : 783,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 280.817, 523.275, 297.263 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Hannah Bast, Daniel Delling, Andrew Goldberg, Matthias Müller-Hannemann, Thomas Pajor, Peter Sanders, Dorothea Wagner, and Renato F. Werneck. Route planning in transportation networks, 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 784,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 261.712, 523.275, 278.159 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Kashin Sugishita and Yasuo Asakura. Vulnerability studies in the fields of transportation and complex networks: a citation network analysis. Public Transport, 13(1):1-34, sep 2020."
+  }, {
+    "type" : "paragraph",
+    "id" : 785,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 242.608, 523.276, 259.055 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Jürgen Hackl and Bryan T. Adey. Estimation of traffic flow changes using networks in networks approaches. Applied Network Science, 4(1), may 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 786,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 223.504, 523.276, 239.95 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Xiaoying Chen, Chong Zhang, Bin Ge, and Weidong Xiao. Temporal query processing in social network. Journal of Intelligent Information Systems, 49(2):147-166, dec 2016."
+  }, {
+    "type" : "paragraph",
+    "id" : 787,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 204.399, 523.275, 220.846 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Silu Huang, Ada Wai-Chee Fu, and Ruifeng Liu. Minimum spanning trees in temporal graphs. In Proceedings of the 2015 ACM SIGMOD International Conference on Management of Data. ACM, may 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 788,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 185.295, 523.276, 201.741 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Yishu Wang, Ye Yuan, Yuliang Ma, and Guoren Wang. Time-dependent graphs: Definitions, applications, and algorithms. Data Science and Engineering, 4(4):352-366, sep 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 789,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 175.655, 375.733, 182.637 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Stephen P. Borgatti. Centrality and network flow. Social Networks, 27(1):55-71, jan 2005."
+  }, {
+    "type" : "paragraph",
+    "id" : 790,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 156.551, 523.275, 172.997 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Joseph Crawford and Tijana Milenković. ClueNet: Clustering a temporal network based on topological similarity rather than denseness. PLOS ONE, 13(5):e0195993, may 2018."
+  }, {
+    "type" : "paragraph",
+    "id" : 791,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 137.446, 523.275, 153.893 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Jingyi You, Chenlong Hu, Hidetaka Kamigaito, Kotaro Funakoshi, and Manabu Okumura. Robust dynamic clustering for temporal networks. In Proceedings of the 30th ACM International Conference on Information & Knowledge Management. ACM, oct 2021."
+  }, {
+    "type" : "paragraph",
+    "id" : 792,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 118.342, 523.273, 134.788 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Pablo Moriano, Jorge Finke, and Yong-Yeol Ahn. Community-based event detection in temporal networks. Scientific Reports, 9(1), mar 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 793,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 99.238, 523.276, 115.684 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "David Kempe, Jon Kleinberg, and Amit Kumar. Connectivity and inference problems for temporal networks. Journal of Computer and System Sciences, 64(4):820-842, jun 2002."
+  }, {
+    "type" : "paragraph",
+    "id" : 794,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 89.598, 439.669, 96.58 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Tamal K Dey and Yusu Wang. Computational Topology for Data Analysis. Cambridge University Press, 2021."
+  }, {
+    "type" : "paragraph",
+    "id" : 795,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 79.958, 453.035, 86.94 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Elizabeth Munch. A user's guide to topological data analysis. Journal of Learning Analytics, 4(2):47-61, jul 2017."
+  }, {
+    "type" : "paragraph",
+    "id" : 796,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 70.318, 490.335, 77.3 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Gunnar Carlsson and Vin de Silva. Zigzag persistence. Foundations of Computational Mathematics, 10(4):367-405, apr 2010."
+  }, {
+    "type" : "paragraph",
+    "id" : 797,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 748.781, 523.276, 765.227 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "26. Mehmet E. Aktas, Esra Akbas, and Ahmed El Fatmaoui. Persistence homology of networks: methods and applications. Applied Network Science, 4(1), aug 2019. 27. Riccardo Gallotti and Marc Barthelemy. The multilayer temporal network of public transport in great britain. Scientific Data, 2(1), jan"
+  }, {
+    "type" : "paragraph",
+    "id" : 798,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 729.662, 523.276, 746.108 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Riccardo Gallotti and Marc Barthelemy. The multilayer temporal network of public transport in great britain. Scientific Data, 2(1), jan 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 799,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 710.543, 523.275, 726.99 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Sarah Tymochko, Elizabeth Munch, and Firas A. Khasawneh. Using zigzag persistent homology to detect hopf bifurcations in dynamical systems. Algorithms, 13(11):278, oct 2020."
+  }, {
+    "type" : "paragraph",
+    "id" : 800,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 691.424, 523.275, 707.871 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Michael McCullough, Michael Small, Thomas Stemler, and Herbert Ho-Ching Iu. Time lagged ordinal partition networks for capturing dynamics of continuous dynamical systems. Chaos: An Interdisciplinary Journal of Nonlinear Science, 25(5):053101, may 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 801,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 672.305, 523.275, 688.752 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Audun Myers, Elizabeth Munch, and Firas A. Khasawneh. Persistent homology of complex networks for dynamic state detection. Physical Review E, 100(2), aug 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 802,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 653.187, 523.275, 669.633 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Audun Myers, Firas A. Khasawneh, and Elizabeth Munch. Topological signal processing using the weighted ordinal partition network. apr 2022."
+  }, {
+    "type" : "paragraph",
+    "id" : 803,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 643.532, 315.814, 650.514 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Allen Hatcher. Algebraic Topology. Cambridge University Press, 2002."
+  }, {
+    "type" : "paragraph",
+    "id" : 804,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 633.878, 332.829, 640.86 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "James R. Munkres. Elements of Algebraic Topology. Addison Wesley, 1993."
+  }, {
+    "type" : "paragraph",
+    "id" : 805,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 614.759, 523.275, 631.206 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "S. Y. Oudot. Persistence theory: from quiver representations to data analysis, volume 209 of AMS Mathematical Surveys and Monographs. American Mathematical Society, 2015."
+  }, {
+    "type" : "paragraph",
+    "id" : 806,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 595.64, 523.276, 612.087 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Gunnar Carlsson, Vin de Silva, and Dmitriy Morozov. Zigzag persistent homology and real-valued functions. In Proceedings of the 25th annual symposium on Computational geometry - SCG 09. ACM Press, 2009."
+  }, {
+    "type" : "paragraph",
+    "id" : 807,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 585.986, 371.166, 592.968 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Dmitriy Morozov. Dionysus2. http://www.mrzv.org/software/dionysus2/ , 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 808,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 566.867, 523.276, 583.314 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Andrea Landherr, Bettina Friedl, and Julia Heidemann. A critical review of centrality measures in social networks. Business & Information Systems Engineering, 2(6):371-385, oct 2010."
+  }, {
+    "type" : "paragraph",
+    "id" : 809,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 557.213, 399.436, 564.195 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "M. van Hagen. Waiting experience at train stations. PhD thesis, University of Twente, April 2011."
+  }, {
+    "type" : "paragraph",
+    "id" : 810,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 538.094, 523.275, 554.541 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Alexander Khor and Michael Small. Examining k-nearest neighbour networks: Superfamily phenomena and inversion. Chaos: An Interdisciplinary Journal of Nonlinear Science, 26(4):043101, apr 2016."
+  }, {
+    "type" : "paragraph",
+    "id" : 811,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 518.975, 523.276, 535.422 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Rinku Jacob, K. P. Harikrishnan, R. Misra, and G. Ambika. Weighted recurrence networks for the analysis of time-series data. Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, 475(2221):20180256, jan 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 812,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 499.857, 523.275, 516.303 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Michael Small, Jie Zhang, and Xiaoke Xu. Transforming time series into complex networks. In Lecture Notes of the Institute for Computer Sciences, Social Informatics and Telecommunications Engineering, pages 2078-2089. Springer Berlin Heidelberg, 2009."
+  }, {
+    "type" : "paragraph",
+    "id" : 813,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 480.738, 523.276, 497.184 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Michael Small. Complex networks from time series: Capturing dynamics. In 2013 IEEE International Symposium on Circuits and Systems (ISCAS2013). IEEE, may 2013."
+  }, {
+    "type" : "paragraph",
+    "id" : 814,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 461.619, 523.276, 478.066 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "YvesPomeauandPaulManneville. Intermittent transition to turbulence in dissipative dynamical systems. Communications in Mathematical Physics, 74(2):189-197, jun 1980."
+  }, {
+    "type" : "paragraph",
+    "id" : 815,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 442.5, 523.275, 458.947 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Audun Myers and Firas A. Khasawneh. On the automatic parameter selection for permutation entropy. Chaos: An Interdisciplinary Journal of Nonlinear Science, 30(3):033130, mar 2020."
+  }, {
+    "type" : "paragraph",
+    "id" : 816,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 423.381, 523.276, 439.828 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "David Cohen-Steiner, Herbert Edelsbrunner, and Dmitriy Morozov. Vines and vineyards by updating persistence in linear time. Proceedings of the twenty-second annual symposium on Computational geometry - SCG '06, page 119, 2006."
+  }, {
+    "type" : "paragraph",
+    "id" : 817,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 404.263, 523.275, 420.709 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "M. Ulmer, Lori Ziegelmeier, and Chad M. Topaz. A topological approach to selecting models of biological experiments. PLOS ONE, 14(3):e0213679, mar 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 818,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 385.144, 523.275, 401.59 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "İsmail Güzel, Elizabeth Munch, and Firas A. Khasawneh. Detecting bifurcations in dynamical systems with CROCKER plots. Chaos: An Interdisciplinary Journal of Nonlinear Science, 32(9):093111, sep 2022."
+  }, {
+    "type" : "paragraph",
+    "id" : 819,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 375.49, 436.186, 382.472 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Woojin Kim and Facundo Mémoli. Extracting persistent clusters in dynamic data via möbius inversion, 2022."
+  }, {
+    "type" : "paragraph",
+    "id" : 820,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 356.371, 523.275, 372.817 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Woojin Kim, Facundo Mémoli, and Anastasios Stefanou. Interleaving by parts: Join decompositions of interleavings and join-assemblage of geodesics. December 2019."
+  }, {
+    "type" : "paragraph",
+    "id" : 821,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 327.787, 523.275, 353.698 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Woojin Kim, Facundo Mémoli, and Zane Smith. Analysis of dynamic graphs and dynamic metric spaces via zigzag persistence. In Nils A. Baas, Gunnar E. Carlsson, Gereon Quick, Markus Szymik, and Marius Thaule, editors, Topological Data Analysis, pages 371-389, Cham, 2020. Springer International Publishing."
+  }, {
+    "type" : "paragraph",
+    "id" : 822,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 318.133, 409.08, 325.115 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Woojin Kim. The Persistent Topology of Dynamic Data. phdthesis, The Ohio State University, 2020."
+  }, {
+    "type" : "paragraph",
+    "id" : 823,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 299.014, 523.275, 315.461 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Woojin Kim and Facundo Mémoli. Spatiotemporal persistent homology for dynamic metric spaces. Discrete & Computational Geometry, 66(3):831-875, 2021."
+  }, {
+    "type" : "paragraph",
+    "id" : 824,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 279.896, 523.275, 296.342 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Samir Chowdhury, Bowen Dai, and Facundo Mémoli. The importance of forgetting: Limiting memory improves recovery of topological characteristics from neural data. PLOS ONE, 13(9):1-20, 09 2018."
+  }, {
+    "type" : "paragraph",
+    "id" : 825,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 260.777, 523.276, 277.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Nikola Milosavljevic, Dmitriy Morozov, and Primoz Skraba. Zigzag persistent homology in matrix multiplication time. In Proceedings of the 27th Annual Symposium on Computational Geometry, 2011."
+  }, {
+    "type" : "paragraph",
+    "id" : 826,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 241.658, 523.272, 258.104 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ulrich Bauer. Ripser: efficient computation of vietoris-rips persistence barcodes. Journal of Applied and Computational Topology, jun 2021."
+  }, {
+    "type" : "paragraph",
+    "id" : 827,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 222.539, 523.275, 238.986 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Nina Otter, Mason A Porter, Ulrike Tillmann, Peter Grindrod, and Heather A Harrington. A roadmap for the computation of persistent homology. EPJ Data Science, 6(1), aug 2017."
+  }, {
+    "type" : "paragraph",
+    "id" : 828,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 212.885, 414.563, 219.867 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Tamal K. Dey and Tao Hou. Computing zigzag persistence on graphs in near-linear time. March 2021."
+  }, {
+    "type" : "paragraph",
+    "id" : 829,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 203.231, 344.561, 210.213 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Tamal K. Dey and Tao Hou. Fast computation of zigzag persistence. April 2022."
+  }, {
+    "type" : "paragraph",
+    "id" : 830,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 193.576, 430.694, 200.558 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Tamal K. Dey and Tao Hou. Updating barcodes and representatives for zigzag persistence. December 2021."
+  }, {
+    "type" : "heading",
+    "id" : 831,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 72.0, 157.177, 381.199, 166.073 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Bold",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A Great Britain Transportation Networks Results: Air and Coach Travel"
+  }, {
+    "type" : "paragraph",
+    "id" : 832,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 136.679, 479.782, 143.661 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "For completeness, we include figures and persistence diagrams for the Great Britain transportation data not included in Sec. 4.1 ."
+  }, {
+    "type" : "heading",
+    "id" : 833,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 72.0, 100.21, 216.348, 108.937 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A.1 Coach Travel Network Analysis"
+  }, {
+    "type" : "paragraph",
+    "id" : 834,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 70.318, 523.275, 86.765 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Figure 12 shows the full network for the coach data, and the 0and 1-dimensional zigzag diagrams in the top row. The standard statistics for temporal graphs are shown in the bottom row. See Sec. 4.1.2 for a full discussion of the coach data."
+  }, {
+    "type" : "paragraph",
+    "id" : 836,
+    "page number" : 14,
+    "bounding box" : [ 231.0, 697.89, 240.333, 721.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "["
+  }, {
+    "type" : "paragraph",
+    "id" : 837,
+    "page number" : 14,
+    "bounding box" : [ 399.0, 710.89, 403.667, 718.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 838,
+    "page number" : 14,
+    "bounding box" : [ 348.0, 646.557, 358.0, 655.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ho"
+  }, {
+    "type" : "paragraph",
+    "id" : 839,
+    "page number" : 14,
+    "bounding box" : [ 348.0, 646.557, 358.0, 655.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ho"
+  }, {
+    "type" : "paragraph",
+    "id" : 841,
+    "page number" : 14,
+    "bounding box" : [ 279.333, 631.89, 290.667, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 845,
+    "page number" : 14,
+    "bounding box" : [ 323.333, 631.89, 332.667, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 844,
+    "page number" : 14,
+    "bounding box" : [ 309.667, 632.89, 319.0, 639.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 846,
+    "page number" : 14,
+    "bounding box" : [ 324.333, 632.223, 331.0, 639.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 842,
+    "page number" : 14,
+    "bounding box" : [ 295.0, 632.223, 301.667, 639.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 843,
+    "page number" : 14,
+    "bounding box" : [ 309.667, 632.89, 317.667, 638.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 855,
+    "page number" : 14,
+    "bounding box" : [ 284.0, 622.223, 327.333, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 857,
+    "page number" : 14,
+    "bounding box" : [ 303.0, 622.223, 327.333, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 856,
+    "page number" : 14,
+    "bounding box" : [ 284.333, 624.223, 303.0, 630.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth"
+  }, {
+    "type" : "paragraph",
+    "id" : 847,
+    "page number" : 14,
+    "bounding box" : [ 339.667, 632.223, 346.333, 639.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 861,
+    "page number" : 14,
+    "bounding box" : [ 232.626, 609.801, 362.65, 616.783 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b) Zero-dimensional zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 840,
+    "page number" : 14,
+    "bounding box" : [ 506.333, 647.557, 513.667, 654.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 848,
+    "page number" : 14,
+    "bounding box" : [ 435.333, 631.89, 446.0, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 849,
+    "page number" : 14,
+    "bounding box" : [ 435.333, 631.89, 456.667, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2   3"
+  }, {
+    "type" : "paragraph",
+    "id" : 850,
+    "page number" : 14,
+    "bounding box" : [ 463.333, 631.89, 474.667, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 852,
+    "page number" : 14,
+    "bounding box" : [ 477.333, 631.89, 485.333, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 854,
+    "page number" : 14,
+    "bounding box" : [ 491.333, 631.89, 500.0, 639.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 853,
+    "page number" : 14,
+    "bounding box" : [ 477.667, 632.223, 484.333, 639.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 851,
+    "page number" : 14,
+    "bounding box" : [ 464.333, 632.223, 474.333, 638.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 860,
+    "page number" : 14,
+    "bounding box" : [ 460.333, 620.89, 485.333, 632.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 858,
+    "page number" : 14,
+    "bounding box" : [ 441.333, 623.223, 461.333, 631.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth"
+  }, {
+    "type" : "paragraph",
+    "id" : 859,
+    "page number" : 14,
+    "bounding box" : [ 442.0, 621.89, 484.667, 631.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 862,
+    "page number" : 14,
+    "bounding box" : [ 391.679, 609.525, 519.488, 616.507 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c) One-dimensional zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 863,
+    "page number" : 14,
+    "bounding box" : [ 90.983, 595.67, 188.402, 602.652 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a) Full coach Travel Network."
+  }, {
+    "type" : "image",
+    "page number" : 14,
+    "bounding box" : [ 74.255, 374.27, 521.033, 593.935 ],
+    "alt" : "The image is a line graph with a title at the top that reads Death (days) and a source axis labeled Death (days) with a scale of range 0 to 7 on the y-axis. The x-axis is labeled Birth (days) and has a scale of range 0 to 7. There is a legend on the right side of the graph that indicates the following: - The x-axis is labeled Birth (days) and the y-axis is labeled Death (days). - The x-axis is labeled Birth (days) and the y-axis is labeled Death (days). - The x-axis is labeled Birth (days) and the y-axis is labeled Death (days). - The x-axis is labeled Birth (days) and the y-axis is labeled Death (days). - The x-axis is labeled Birth (days) and the",
+    "source" : "2205.11338v3/imageFile9.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 864,
+    "page number" : 14,
+    "bounding box" : [ 105.0, 568.89, 131.0, 582.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "250"
+  }, {
+    "type" : "paragraph",
+    "id" : 865,
+    "page number" : 14,
+    "bounding box" : [ 123.667, 559.557, 129.667, 566.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 866,
+    "page number" : 14,
+    "bounding box" : [ 117.333, 542.557, 130.667, 553.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "10"
+  }, {
+    "type" : "paragraph",
+    "id" : 867,
+    "page number" : 14,
+    "bounding box" : [ 90.0, 495.89, 130.667, 506.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00100"
+  }, {
+    "type" : "paragraph",
+    "id" : 868,
+    "page number" : 14,
+    "bounding box" : [ 90.0, 484.557, 130.667, 495.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00075"
+  }, {
+    "type" : "paragraph",
+    "id" : 869,
+    "page number" : 14,
+    "bounding box" : [ 102.0, 451.223, 129.333, 461.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.001"
+  }, {
+    "type" : "paragraph",
+    "id" : 870,
+    "page number" : 14,
+    "bounding box" : [ 102.0, 437.89, 130.667, 448.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.000"
+  }, {
+    "type" : "paragraph",
+    "id" : 871,
+    "page number" : 14,
+    "bounding box" : [ 108.0, 417.89, 130.0, 427.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.01"
+  }, {
+    "type" : "paragraph",
+    "id" : 872,
+    "page number" : 14,
+    "bounding box" : [ 108.0, 396.557, 130.667, 407.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 874,
+    "page number" : 14,
+    "bounding box" : [ 293.667, 390.89, 299.667, 399.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 873,
+    "page number" : 14,
+    "bounding box" : [ 239.0, 390.89, 245.0, 398.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 876,
+    "page number" : 14,
+    "bounding box" : [ 310.0, 375.89, 344.333, 388.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(Days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 875,
+    "page number" : 14,
+    "bounding box" : [ 305.0, 378.89, 309.667, 386.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "t"
+  }, {
+    "type" : "paragraph",
+    "id" : 877,
+    "page number" : 14,
+    "bounding box" : [ 167.689, 363.123, 427.586, 370.105 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d) Connectivity and centrality analysis on temporal Great Britain coach network."
+  }, {
+    "type" : "paragraph",
+    "id" : 878,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 347.45, 294.35, 354.623 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 12 Results for the coach transportation network of Great Britain."
+  }, {
+    "type" : "heading",
+    "id" : 879,
+    "level" : "Subtitle",
+    "page number" : 14,
+    "bounding box" : [ 72.0, 315.417, 204.323, 324.144 ],
+    "heading level" : 1,
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A.2 Air Travel Network Analysis"
+  }, {
+    "type" : "paragraph",
+    "id" : 880,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 257.321, 523.279, 302.161 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Figures 13 shows the zigzag diagrams and standard measures for the air travel data. Like rail and coach, the air travel network clearly has regular daily structure as seen in both diagrams. Interestingly, here we have a daily persistence point in 0-dimensions with splits in the middle, meaning that the air network does not retain any connected regions overnight. This, again, is not surprising as there is more tendency for airports to have absolutely no flights overnight as opposed to late-night bus systems. The lack of high persistence points in \uD835\uDC3B 1 suggests that there are not even many small loops in the network at any given time, which might be caused by having considerably fewer edges in this network than the others."
+  }, {
+    "type" : "paragraph",
+    "id" : 882,
+    "page number" : 15,
+    "bounding box" : [ 241.0, 726.223, 246.333, 733.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 884,
+    "page number" : 15,
+    "bounding box" : [ 231.0, 699.223, 240.333, 722.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "["
+  }, {
+    "type" : "paragraph",
+    "id" : 886,
+    "page number" : 15,
+    "bounding box" : [ 241.0, 670.223, 245.667, 677.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 883,
+    "page number" : 15,
+    "bounding box" : [ 399.0, 726.223, 403.667, 733.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 885,
+    "page number" : 15,
+    "bounding box" : [ 398.333, 684.89, 403.667, 692.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 887,
+    "page number" : 15,
+    "bounding box" : [ 399.0, 670.223, 403.667, 677.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 888,
+    "page number" : 15,
+    "bounding box" : [ 348.0, 647.223, 358.0, 655.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ho"
+  }, {
+    "type" : "paragraph",
+    "id" : 889,
+    "page number" : 15,
+    "bounding box" : [ 348.0, 647.223, 358.0, 655.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Ho"
+  }, {
+    "type" : "paragraph",
+    "id" : 890,
+    "page number" : 15,
+    "bounding box" : [ 506.333, 648.89, 515.0, 655.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 891,
+    "page number" : 15,
+    "bounding box" : [ 506.333, 648.89, 515.0, 655.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "H"
+  }, {
+    "type" : "paragraph",
+    "id" : 892,
+    "page number" : 15,
+    "bounding box" : [ 263.667, 633.557, 272.333, 640.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 893,
+    "page number" : 15,
+    "bounding box" : [ 277.333, 633.223, 298.667, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2   3"
+  }, {
+    "type" : "paragraph",
+    "id" : 897,
+    "page number" : 15,
+    "bounding box" : [ 319.333, 633.223, 327.333, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 895,
+    "page number" : 15,
+    "bounding box" : [ 305.333, 633.223, 327.333, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4   5"
+  }, {
+    "type" : "paragraph",
+    "id" : 894,
+    "page number" : 15,
+    "bounding box" : [ 277.667, 633.557, 299.0, 640.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2   3"
+  }, {
+    "type" : "paragraph",
+    "id" : 896,
+    "page number" : 15,
+    "bounding box" : [ 306.333, 633.557, 317.0, 639.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 904,
+    "page number" : 15,
+    "bounding box" : [ 284.0, 623.223, 326.667, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 905,
+    "page number" : 15,
+    "bounding box" : [ 284.0, 623.223, 327.333, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 898,
+    "page number" : 15,
+    "bounding box" : [ 334.0, 633.223, 342.0, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 908,
+    "page number" : 15,
+    "bounding box" : [ 232.626, 610.97, 362.65, 617.952 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(b) Zero-dimensional zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 899,
+    "page number" : 15,
+    "bounding box" : [ 435.333, 633.223, 459.333, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2   3"
+  }, {
+    "type" : "paragraph",
+    "id" : 900,
+    "page number" : 15,
+    "bounding box" : [ 463.333, 633.223, 486.0, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4   5"
+  }, {
+    "type" : "paragraph",
+    "id" : 902,
+    "page number" : 15,
+    "bounding box" : [ 477.667, 633.557, 484.333, 640.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 901,
+    "page number" : 15,
+    "bounding box" : [ 463.667, 633.557, 474.333, 640.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 906,
+    "page number" : 15,
+    "bounding box" : [ 441.333, 623.223, 484.667, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 907,
+    "page number" : 15,
+    "bounding box" : [ 442.0, 623.223, 484.667, 632.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Birth (days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 903,
+    "page number" : 15,
+    "bounding box" : [ 492.0, 633.223, 500.667, 641.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 909,
+    "page number" : 15,
+    "bounding box" : [ 391.679, 610.97, 519.488, 617.952 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(c) One-dimensional zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 910,
+    "page number" : 15,
+    "bounding box" : [ 96.012, 598.56, 183.372, 605.542 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(a) Full air Travel Network."
+  }, {
+    "type" : "image",
+    "page number" : 15,
+    "bounding box" : [ 74.255, 377.21, 521.025, 596.825 ],
+    "alt" : "The image is a line graph that shows data on the death rate of people in different age groups. The x-axis represents the number of days, and the y-axis represents the death rate (in thousands). The graph is titled Death Rate (Days) and has a title at the top. The graph is labeled Death Rate (Days) and has a title at the bottom. The graph has a legend on the right side of the graph. The legend is labeled Death Rate (Days) and has a title at the top. The graph also has a title at the bottom. The graph has a title at the top, which reads Death Rate (Days). The graph is labeled Death Rate (Days) and has a title at the bottom. The graph is labeled Death Rate (Days) and has a title at the top. The graph has a title at the top, which reads Death Rate (Days). The graph is labeled",
+    "source" : "2205.11338v3/imageFile10.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 912,
+    "page number" : 15,
+    "bounding box" : [ 236.667, 569.89, 285.667, 591.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Inn"
+  }, {
+    "type" : "paragraph",
+    "id" : 911,
+    "page number" : 15,
+    "bounding box" : [ 105.0, 578.89, 111.667, 588.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 913,
+    "page number" : 15,
+    "bounding box" : [ 98.667, 535.223, 112.667, 545.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "20"
+  }, {
+    "type" : "paragraph",
+    "id" : 914,
+    "page number" : 15,
+    "bounding box" : [ 105.667, 521.557, 111.667, 529.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 915,
+    "page number" : 15,
+    "bounding box" : [ 90.0, 495.223, 112.667, 505.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 916,
+    "page number" : 15,
+    "bounding box" : [ 90.0, 481.223, 112.667, 491.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 917,
+    "page number" : 15,
+    "bounding box" : [ 90.0, 466.557, 112.667, 476.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.05"
+  }, {
+    "type" : "paragraph",
+    "id" : 918,
+    "page number" : 15,
+    "bounding box" : [ 90.0, 441.223, 112.667, 451.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.00"
+  }, {
+    "type" : "paragraph",
+    "id" : 919,
+    "page number" : 15,
+    "bounding box" : [ 96.0, 417.89, 112.667, 428.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 920,
+    "page number" : 15,
+    "bounding box" : [ 96.0, 401.89, 112.0, 411.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0.0"
+  }, {
+    "type" : "paragraph",
+    "id" : 922,
+    "page number" : 15,
+    "bounding box" : [ 283.0, 394.223, 289.667, 402.89 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 921,
+    "page number" : 15,
+    "bounding box" : [ 225.667, 393.557, 232.333, 402.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 923,
+    "page number" : 15,
+    "bounding box" : [ 398.333, 394.223, 403.0, 401.557 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 924,
+    "page number" : 15,
+    "bounding box" : [ 301.333, 378.557, 335.0, 392.223 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "(Days)"
+  }, {
+    "type" : "paragraph",
+    "id" : 925,
+    "page number" : 15,
+    "bounding box" : [ 173.714, 366.064, 421.56, 373.046 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "(d)Connectivity and centrality analysis on temporal Great Britain air network."
+  }, {
+    "type" : "paragraph",
+    "id" : 926,
+    "page number" : 15,
+    "bounding box" : [ 72.0, 350.391, 284.292, 357.564 ],
+    "font" : "TeXGyreTermesX-Regular",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Fig. 13 Results for the air transportation network of Great Britain."
+  } ]
+}

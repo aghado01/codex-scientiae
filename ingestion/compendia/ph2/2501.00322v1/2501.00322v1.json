@@ -1,0 +1,2834 @@
+{
+  "file name" : "2501.00322v1.pdf",
+  "number of pages" : 14,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20250103012108Z",
+  "modification date" : "D:20250103012108Z",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 317,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 154.576, 681.029, 440.695, 689.836 ],
+    "heading level" : 1,
+    "font" : "SFBX1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "BIPATH PERSISTENCE AS ZIGZAG PERSISTENCE"
+  }, {
+    "type" : "paragraph",
+    "id" : 318,
+    "page number" : 1,
+    "bounding box" : [ 209.438, 651.528, 385.835, 658.565 ],
+    "font" : "SFRM0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "ÁNGEL JAVIER ALONSO AND ENHAO LIU"
+  }, {
+    "type" : "paragraph",
+    "id" : 319,
+    "page number" : 1,
+    "bounding box" : [ 154.176, 564.595, 441.102, 631.407 ],
+    "font" : "SFRM0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Abstract. Persistence modules that decompose into interval modules are important in topological data analysis because we can interpret such intervals as the lifetime of topological features in the data. We can classify the settings in which persistence modules always decompose into intervals, by a recent result of Aoki, Escolar and Tada: these are standard single-parameter persistence, zigzag persistence, and bipath persistence. No other setting offers such guarantees."
+  }, {
+    "type" : "paragraph",
+    "id" : 320,
+    "page number" : 1,
+    "bounding box" : [ 154.176, 494.856, 441.102, 561.669 ],
+    "font" : "SFRM0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "We show that a bipath persistence module can be decomposed via a closely related infinite zigzag persistence module, understood as a covering. This allows us to translate techniques of zigzag persistence, like recent advancements in its efficient computation by Dey and Hou, to bipath persistence. In addition, and again by the relation with the infinite zigzag, we can define an interleaving and bottleneck distance on bipath persistence. In turn, the algebraic stability of zigzag persistence implies the algebraic stability of bipath persistence."
+  }, {
+    "type" : "heading",
+    "id" : 321,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 257.461, 444.209, 337.818, 453.006 ],
+    "heading level" : 1,
+    "font" : "SFCC1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1. Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 322,
+    "page number" : 1,
+    "bounding box" : [ 118.31, 258.904, 476.97, 435.073 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Intervals have an outsized role in persistent homology: we interpret them as the lifetime of topological features in the data. In standard single-parameter persistence, where we consider persistence modules over a totally ordered set, the modules always decompose into interval modules. The intervals in the decomposition are the barcode of the module. The same happens in zigzag persistence, where we consider persistence modules over a zigzag partially ordered set (poset); all modules decompose into interval modules [12]. Even in settings where modules do not always decompose into interval modules, like multiparameter persistence—where the underlying poset is a grid—, intervals are useful in applications. For example, consider the fibered barcode [22], which consists of single-parameter slices of a multiparameter module, and whose intervals, apart from being useful on their own, also give the multiparameter landscape [25]. In this regard, it is unsurprising that much work on multiparameter persistence aims at understanding when multiparameter modules are interval-decomposable [16, 18, 1, 2, 8, 9, 5], or at approximations by using the intervals [21, 22, 6, 7, 13, 14]."
+  }, {
+    "type" : "paragraph",
+    "id" : 323,
+    "page number" : 1,
+    "bounding box" : [ 118.31, 187.173, 476.969, 255.746 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We can classify the settings where we always have interval decomposability by a recent result of Aoki, Escolar and Tada [3]: persistence modules over a finite poset always decompose into interval modules if and only if the poset is a totally ordered set (single-parameter persistence), a zigzag poset or a bipath poset. A bipath poset is the disjoint union of two finite totally ordered sets, with a common bottom and top element added; see Figure 1."
+  }, {
+    "type" : "paragraph",
+    "id" : 324,
+    "page number" : 1,
+    "bounding box" : [ 118.31, 127.397, 476.969, 184.015 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "One can obtain a bipath module—a persistence module over a bipath posetby an order-preserving map between a bipath poset and another poset, like R 2 ; much like one embeds a totally ordered set to obtain a fiber of the fibered barcode. Indeed, in Section 5 we show two non-isomorphic persistence modules with equal fibered barcode, but that can be distinguished by considering bipath modules via"
+  }, {
+    "type" : "paragraph",
+    "id" : 325,
+    "page number" : 1,
+    "bounding box" : [ 118.31, 93.621, 476.961, 110.62 ],
+    "font" : "SFRM0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "This research was funded in whole, or in part, by the Austrian Science Fund (FWF) 10.55776/P33765. Enhao Liu is supported by JST SPRING, Grant Number JPMJSP2110."
+  }, {
+    "type" : "image",
+    "id" : 326,
+    "page number" : 2,
+    "bounding box" : [ 116.644, 632.394, 437.141, 746.119 ],
+    "description" : "The image depicts a graph with three main components: a horizontal axis labeled total order and a vertical axis labeled Zigzag. The horizontal axis is labeled total order and the vertical axis is labeled Zigzag. The graph is divided into three sections, each representing a different type of data. ### Horizontal Axis: - **X-axis**: The horizontal axis represents the values of the data. The values range from 0 to 2, with values ranging from 0 to 2. - **Y-axis**: The Y-axis represents the values of the data. The values range from 0 to 2, with values ranging from 0 to 2. ### Vertical Axis: - **X-axis**: The vertical axis represents the values of the data. The values range from 0 to 2, with values ranging from 0 to 2. - **Y-axis**: The Y",
+    "source" : "2501.00322v1/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 328,
+    "page number" : 2,
+    "bounding box" : [ 279.644, 633.311, 307.871, 642.017 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Zigzag"
+  }, {
+    "type" : "paragraph",
+    "id" : 329,
+    "page number" : 2,
+    "bounding box" : [ 380.594, 633.255, 410.344, 641.961 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Bipath"
+  }, {
+    "type" : "paragraph",
+    "id" : 327,
+    "page number" : 2,
+    "bounding box" : [ 168.185, 632.287, 217.224, 640.993 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Total order"
+  }, {
+    "type" : "paragraph",
+    "id" : 330,
+    "page number" : 2,
+    "bounding box" : [ 195.131, 609.963, 400.146, 618.76 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 1. Posets that decompose as an interval"
+  }, {
+    "type" : "image",
+    "id" : 331,
+    "page number" : 2,
+    "bounding box" : [ 117.287, 424.837, 481.41, 588.803 ],
+    "description" : "The image consists of two graphs, labeled as n0 and n1. The graph n0 is a circle with a small loop at the center, while the graph n1 is a square with a larger loop at the center. Both graphs are connected by a line. The graph n0 is connected to the graph n1 by a line. The line is labeled with the letter n. The graph n0 is connected to the graph n1 by a line. The line is labeled with the letter n. The graph n0 is connected to the graph n1 by a line. The line is labeled with the letter n. The graph n0 is connected to the graph n1 by a line. The line is labeled with the letter n. The graph n0 is connected to the graph n1 by a",
+    "source" : "2501.00322v1/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 332,
+    "page number" : 2,
+    "bounding box" : [ 368.648, 569.605, 374.207, 577.441 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 333,
+    "page number" : 2,
+    "bounding box" : [ 374.207, 569.18, 377.86, 574.404 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 334,
+    "page number" : 2,
+    "bounding box" : [ 135.695, 546.981, 140.303, 554.817 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 335,
+    "page number" : 2,
+    "bounding box" : [ 140.303, 546.556, 143.956, 551.78 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 336,
+    "page number" : 2,
+    "bounding box" : [ 220.283, 537.107, 225.842, 544.943 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 337,
+    "page number" : 2,
+    "bounding box" : [ 225.842, 536.682, 229.495, 541.906 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 338,
+    "page number" : 2,
+    "bounding box" : [ 135.695, 525.315, 140.303, 533.151 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 339,
+    "page number" : 2,
+    "bounding box" : [ 140.303, 524.89, 143.956, 530.114 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 340,
+    "page number" : 2,
+    "bounding box" : [ 319.902, 520.859, 325.461, 528.695 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 342,
+    "page number" : 2,
+    "bounding box" : [ 325.461, 520.434, 329.114, 525.658 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 341,
+    "page number" : 2,
+    "bounding box" : [ 220.283, 515.857, 225.842, 523.693 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 343,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 225.842, 515.517, 231.598, 520.656 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 344,
+    "page number" : 2,
+    "bounding box" : [ 231.598, 515.432, 235.251, 520.656 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 345,
+    "page number" : 2,
+    "bounding box" : [ 379.957, 509.066, 384.565, 516.902 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 347,
+    "page number" : 2,
+    "bounding box" : [ 384.565, 508.641, 388.218, 513.865 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 346,
+    "page number" : 2,
+    "bounding box" : [ 129.939, 504.065, 134.547, 511.901 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 348,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 134.547, 503.725, 140.303, 508.864 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 349,
+    "page number" : 2,
+    "bounding box" : [ 140.303, 503.64, 143.956, 508.864 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 350,
+    "page number" : 2,
+    "bounding box" : [ 220.283, 494.191, 225.842, 502.027 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 351,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 225.842, 493.851, 231.598, 498.99 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 352,
+    "page number" : 2,
+    "bounding box" : [ 231.598, 493.766, 235.251, 498.99 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 353,
+    "page number" : 2,
+    "bounding box" : [ 263.252, 461.558, 268.811, 469.394 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 359,
+    "page number" : 2,
+    "bounding box" : [ 465.582, 460.781, 471.141, 468.617 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 356,
+    "page number" : 2,
+    "bounding box" : [ 331.21, 460.32, 335.818, 468.156 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 358,
+    "page number" : 2,
+    "bounding box" : [ 395.977, 459.822, 400.585, 467.658 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 354,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 268.811, 461.218, 274.567, 466.357 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 355,
+    "page number" : 2,
+    "bounding box" : [ 274.567, 461.133, 278.22, 466.357 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 357,
+    "page number" : 2,
+    "bounding box" : [ 335.818, 459.895, 339.471, 465.119 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 361,
+    "page number" : 2,
+    "bounding box" : [ 220.283, 455.364, 225.842, 463.2 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 360,
+    "page number" : 2,
+    "bounding box" : [ 139.846, 454.405, 144.454, 462.241 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 362,
+    "page number" : 2,
+    "bounding box" : [ 162.207, 402.495, 433.064, 411.292 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 2. Illustration of the covering map defined in Section 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 363,
+    "page number" : 2,
+    "bounding box" : [ 118.31, 207.008, 476.969, 347.312 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Given the role they play in understanding persistence modules that always decompose into intervals, we aim to further the theoretical and computational understanding of bipath modules. Such a study has been started by Aoki, Escolar and Tada [3, 4]. They define persistence diagrams in this context, and provide a matrixbased algorithm to decompose bipath persistence modules [4]. Here, among other consequences detailed below, we show that a bipath module can be decomposed by directly decomposing a related (finite) zigzag module. This allows us to use the zigzag decomposition algorithm, in the case of the modules being the homology of a simplex-wise filtration, of Dey and Hou [17], which works by decomposing a related standard single-parameter persistence module. Thus, any improvement to the decomposition of standard persistence transfers to zigzag persistence and then to bipath persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 364,
+    "page number" : 2,
+    "bounding box" : [ 118.31, 153.009, 476.969, 185.727 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1.1. Contributions. We define a poset map from an infinite zigzag to the bipath, which we call the covering map and is inspired by the universal covering of the circle. See Figure 2 for an illustration."
+  }, {
+    "type" : "footer",
+    "id" : 629,
+    "page number" : 2,
+    "bounding box" : [ 118.31, 93.233, 476.967, 149.851 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 631,
+      "page number" : 2,
+      "bounding box" : [ 118.31, 93.233, 476.967, 149.851 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "We translate elements of the theory of zigzag persistence to bipath persistence using this covering map. In Section 2, we use the restriction functor induced by the covering map to obtain an infinite zigzag persistence module R ( M ) from a bipath module M . Such a zigzag module R ( M ) has an infinite but periodic barcode, and the barcodes of R ( M ) and M determine each other, in the sense of Theorem 2.3."
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 641.179, 476.97, 721.707 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In Section 3, we establish algebraic stability for bipath persistence. This is a consequence of the algebraic stability of zigzag modules, which is, in turn, a consequence of the algebraic stability of block-decomposable modules [11, 10]. Specifically, we define the interleaving and bottleneck distance between bipath modules M and N to be the interleaving and bottleneck distance between R ( M ) and R ( N ) , as zigzag modules—much like one does for zigzag modules and block-decomposable modules [11, 10]."
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 605.313, 476.966, 638.021 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In Section 4, we observe that to decompose the bipath module one does not need to consider the infinite zigzag module in its entirety, but just a finite slice of it, of size O ( K ) , where K is the maximum length of a chain in the bipath poset."
+  }, {
+    "type" : "paragraph",
+    "id" : 368,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 581.403, 476.962, 602.155 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Finally, in Section 5 we define the fibered arc code for persistence module over R 2 , and compare it with other invariants through examples."
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 474.19, 476.966, 566.683 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1.2. Related work. Aoki, Emerson and Tada initiated the study of bipath persistence and provided an algorithm to decompose bipath modules and a way to visualize such a decomposition [4]. Their algorithm is based on column and row operations on matrices. In a recent seminar, Tada [24] has mentioned ongoing work on a stability theory for functions from a certain continuous version of bipath posets to topological spaces. A priori, this is unrelated to the algebraic stability theorem we state here, which is a direct consequence of the covering map of Section 2 that relates bipath to zigzag persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 370,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 414.414, 476.968, 471.032 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Also recently, Asashiba and Liu [8] decompose a bipath module by decomposing two related zigzag modules, inspired by the notion of essential cover that they introduce. In our approach, we use a single zigzag, which, apart from simplifying the computation, allows us to translate the algebraic stability of zigzag modules to this setting, as mentioned."
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 342.683, 476.969, 411.256 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In the context of circle-valued maps and level persistence, Burghelea and Dey [15] have studied (pointwise finite-dimensional) persistence modules over finite subsets of the circle S 1 equipped with a specific partial order. Such persistence modules decompose as a direct sum of interval modules and Jordan cells. Since their methods can be used to decompose zigzag modules, and as a consequence of our work, their methods could also be applied to decompose bipath modules."
+  }, {
+    "type" : "paragraph",
+    "id" : 372,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 270.952, 476.968, 339.525 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Sala and Schiffmann [23] have studied a similar finite persistence module over S 1 with the cyclic order. Hanson and Rock [20] study continuous pointwise finitedimensional persistence modules over S 1 equipped with certain general partial orders (which include the cyclic order and the bipath order) and provide a decomposition theorem into intervals and Jordan cells. Recently, Gao and Zhao [19] prove an isometry theorem for nilpotent persistence modules over S 1 with the cyclic order."
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 223.366, 476.966, 256.233 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1.3. Acknowledgments. The authors would like to thank Prof. Hideto Asashiba for helpful conversations on the naming of the arc code, and fruitful discussions on the covering technique of representations over the quiver of type ˜ A ."
+  }, {
+    "type" : "heading",
+    "id" : 374,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 250.072, 195.051, 345.201, 203.848 ],
+    "heading level" : 1,
+    "font" : "SFCC1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2. Bipath as zigzag"
+  }, {
+    "type" : "paragraph",
+    "id" : 375,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 165.163, 476.968, 185.915 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this section, we cover the bipath poset with an infinite zigzag, and describe its consequences."
+  }, {
+    "type" : "footer",
+    "id" : 630,
+    "page number" : 3,
+    "bounding box" : [ 118.31, 92.766, 476.969, 162.005 ],
+    "kids" : [ {
+      "type" : "paragraph",
+      "id" : 632,
+      "page number" : 3,
+      "bounding box" : [ 118.31, 92.766, 476.969, 162.005 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "We take a functorial perspective. A persistence module over a poset P is a functor F : P → Vec from P , viewed as a category, to the category Vec of finitedimensional vector spaces over a fixed field k . We denote by Vec P the category of persistence modules over P where the morphisms are natural transformations. We denote the internal maps of a persistence module F by F p → q for all p ≤ q ∈ P . A persistence module F is indecomposable if F ∼ = A ⊕ B then either A = 0 or B = 0 ."
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 4,
+    "bounding box" : [ 118.31, 665.089, 476.969, 721.707 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Throughout this work, a multiset A is a pair ( S,µ ) where S is a set and µ : S → N ≥ 0 is a function that specifies the multiplicity of s ∈ S in A . We consider actions on multisets in the following sense: a group G has an action α on the multiset A if G has an action α : G × S → S on S such that µ ( α ( g,a )) = µ ( a ) . Such an action α is free if α : G × S → S is free."
+  }, {
+    "type" : "paragraph",
+    "id" : 378,
+    "page number" : 4,
+    "bounding box" : [ 118.31, 570.09, 476.966, 650.628 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2.1. Intervals in a bipath. Let us start by describing how bipath modules (that is, persistence modules over the bipath poset) decompose into interval modules, following Aoki, Emerson and Tada [4]. Recall that an interval I of a poset P is a connected non-empty subposet that is also convex, meaning that if for three p ≤ z ≤ q we have that p,q ∈ I then z ∈ I too. The interval module supported on an interval I ⊂ P , denoted by k I , is the indecomposable persistence module (see [11, Proposition 2.2]) given by"
+  }, {
+    "type" : "formula",
+    "id" : 379,
+    "page number" : 4,
+    "bounding box" : [ 130.8, 534.766, 463.278, 561.685 ],
+    "content" : "( \\mathbb { k } I ) _ { p } = \\begin{cases} \\mathbb { k } , & \\text {if } p \\in I , \\\\ 0 , & \\text {otherwise} , \\end{cases} \\quad \\text {with internal maps} \\quad ( \\mathbb { k } I ) _ { p \\to q } = \\begin{cases} \\text {id} , & \\text {if } p , q \\in I , \\\\ 0 , & \\text {otherwise} . \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 380,
+    "page number" : 4,
+    "bounding box" : [ 118.31, 491.242, 476.966, 523.949 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We work on a fixed bipath poset B . That is, we fix n,m ∈ N greater than 1 and set B : = { 0 ,...,n + m − 1 } with the order given by two maximal chains 0 < 1 < ··· < n and 0 < n + m − 1 < n + m − 2 < ··· < n :"
+  }, {
+    "type" : "image",
+    "id" : 381,
+    "page number" : 4,
+    "bounding box" : [ 176.718, 427.089, 417.079, 482.807 ],
+    "source" : "2501.00322v1/imageFile3.png"
+  }, {
+    "type" : "formula",
+    "id" : 382,
+    "page number" : 4,
+    "bounding box" : [ 178.009, 426.349, 417.266, 481.235 ],
+    "content" : "1 2 · · · n - 1 0 n. n + m - 1 n + m - 2 · · · n +1"
+  }, {
+    "type" : "paragraph",
+    "id" : 383,
+    "page number" : 4,
+    "bounding box" : [ 118.31, 370.659, 476.97, 415.322 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "By the result of Aoki, Escolar and Tada [3, Theorem 1.3] mentioned in the introduction, every persistence module over B decomposes into interval modules. It is straightforward to verify that an interval of B belongs to one of the following types (see Figure 3)."
+  }, {
+    "type" : "list",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 135.246, 198.939, 476.966, 366.546 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 135.246, 354.013, 346.884, 366.546 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "(1) The full interval , which is the poset B itself,",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 135.246, 330.103, 476.966, 354.591 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "(2) a left interval for some i ∈ { 0 , 1 ,...,n − 1 } and j ∈ { 0 ,n + m − 1 ,...,n +1 } , such that",
+      "kids" : [ {
+        "type" : "formula",
+        "id" : 633,
+        "page number" : 4,
+        "bounding box" : [ 187.496, 312.592, 407.781, 321.644 ],
+        "content" : "[ i , j ] _ { \\diamond } \\coloneqq \\{ z \\in B \\, | \\, 0 \\leq z \\leq i \\} \\cup \\{ z \\in B \\, | \\, 0 \\leq z \\leq j \\} ,"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 135.246, 280.533, 476.966, 305.022 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "(3) a right interval for some i ∈ { 1 ,...,n − 1 ,n } and j ∈ { n + m − 1 ,...,n +1 ,n } , such that",
+      "kids" : [ {
+        "type" : "formula",
+        "id" : 634,
+        "page number" : 4,
+        "bounding box" : [ 186.497, 263.022, 408.779, 272.074 ],
+        "content" : "[ i , j ] _ { \\triangleright } \\colon = \\{ z \\in B \\, | \\, i \\leq z \\leq n \\} \\cup \\{ z \\in B \\, | \\, j \\leq z \\leq n \\} ,"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 135.246, 236.553, 385.155, 255.452 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "(4) a top interval for some i,j ∈ { 1 ,...,n − 1 } such that",
+      "kids" : [ {
+        "type" : "formula",
+        "id" : 635,
+        "page number" : 4,
+        "bounding box" : [ 224.548, 224.584, 370.728, 234.46 ],
+        "content" : "[ i , j ] _ { \\top } \\coloneqq \\{ z \\in B \\, | \\, i \\leq z \\leq j \\} , \\text { and}"
+      } ]
+    }, {
+      "type" : "list item",
+      "page number" : 4,
+      "bounding box" : [ 135.246, 198.939, 439.762, 217.838 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "(5) a bottom interval for some i,j ∈ { n + m − 1 ,...,n + 1 } such that",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 392,
+    "page number" : 4,
+    "bounding box" : [ 235.062, 186.97, 360.215, 196.846 ],
+    "content" : "[ i , j ] _ { \\perp } \\coloneqq \\{ z \\in B \\, | \\, j \\leq z \\leq i \\} ."
+  }, {
+    "type" : "image",
+    "id" : 393,
+    "page number" : 4,
+    "bounding box" : [ 144.83, 119.29, 448.551, 166.94 ],
+    "source" : "2501.00322v1/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 396,
+    "page number" : 4,
+    "bounding box" : [ 290.265, 120.507, 304.656, 129.213 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "top"
+  }, {
+    "type" : "paragraph",
+    "id" : 398,
+    "page number" : 4,
+    "bounding box" : [ 415.105, 120.112, 435.887, 128.818 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "right"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 4,
+    "bounding box" : [ 162.581, 119.144, 176.696, 127.85 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "full"
+  }, {
+    "type" : "paragraph",
+    "id" : 395,
+    "page number" : 4,
+    "bounding box" : [ 226.431, 119.144, 240.545, 127.85 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "left"
+  }, {
+    "type" : "paragraph",
+    "id" : 397,
+    "page number" : 4,
+    "bounding box" : [ 345.557, 119.144, 377.385, 127.85 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "bottom"
+  }, {
+    "type" : "paragraph",
+    "id" : 399,
+    "page number" : 4,
+    "bounding box" : [ 193.844, 96.82, 401.433, 105.617 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 3. Types of intervals of the bipath poset"
+  }, {
+    "type" : "paragraph",
+    "id" : 400,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 688.058, 476.962, 721.707 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Since every bipath module is interval-decomposable, and by the Krull-Schmidt theorem, there is a uniquely defined multiset of intervals of B for every bipath module M , denoted by B ( M ) , such that"
+  }, {
+    "type" : "formula",
+    "id" : 401,
+    "page number" : 5,
+    "bounding box" : [ 262.437, 656.648, 476.965, 680.907 ],
+    "content" : "M \\cong \\bigoplus _ { I \\in \\mathcal { B } ( M ) } \\mathbb { k } I ."
+  }, {
+    "type" : "paragraph",
+    "id" : 402,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 627.635, 476.968, 648.497 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In what follows, instead of the bar code, we would call B ( M ) the arc code of the bipath module M . See Figure 4 for an illustration."
+  }, {
+    "type" : "image",
+    "id" : 403,
+    "page number" : 5,
+    "bounding box" : [ 260.403, 539.49, 333.889, 613.957 ],
+    "source" : "2501.00322v1/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 5,
+    "bounding box" : [ 219.201, 518.006, 376.069, 526.803 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 4. Illustration of an arc code"
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 477.98, 476.965, 498.842 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Considering the previously mentioned types of intervals, the arc code B ( M ) can be written as the union"
+  }, {
+    "type" : "formula",
+    "id" : 406,
+    "page number" : 5,
+    "bounding box" : [ 165.255, 459.142, 430.021, 468.99 ],
+    "content" : "\\mathcal { B } ( M ) = \\mathcal { B } _ { \\text {full} } ( M ) \\cup \\mathcal { B } _ { \\diamond } ( M ) \\cup \\mathcal { B } _ { \\triangleright } ( M ) \\cup \\mathcal { B } _ { \\triangleright } ( M ) \\cup \\mathcal { B } _ { \\top } ( M ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 430.231, 478.967, 451.093 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where B full ( M ) denotes the submultiset of B ( M ) consisting of full intervals, B ◁ ( M ) denotes the submultiset consisting of left intervals, and analogously for the rest."
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 384.873, 476.971, 419.095 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2.2. Covering map. The zigzag poset ZZ is the subposet of Z op × Z given by { ( a,b ) ∈ Z op × Z | a = b or a = b + 1 } . A zigzag module is a persistence module over the zigzag poset."
+  }, {
+    "type" : "paragraph",
+    "id" : 409,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 353.981, 476.97, 374.743 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Definition 2.1. We define a poset map ζ : ZZ → B that we call the covering map as follows, where we set N : = n + m − 1 ,"
+  }, {
+    "type" : "formula",
+    "id" : 410,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 289.459, 499.254, 344.821 ],
+    "content" : "\\zeta ( k N + 1 , k N ) & = 0 , \\\\ \\zeta ( k N + i , k N + i ) & = \\zeta ( k N + i + 1 , k N + i ) = i , \\quad \\text { for } i \\in \\{ 1 , \\dots , n - 1 \\} , \\\\ \\zeta ( k N + n , k N + n ) & = n , \\\\ \\zeta ( k N - i + 1 , k N - i ) & = \\zeta ( k N - i + 1 , k N - i + 1 ) = n + m - i , \\ \\text { for } i \\in \\{ 1 , \\dots , m - 1 \\} , \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 411,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 271.518, 328.334, 280.315 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "for every k ∈ Z . See Figure 5 for an illustration."
+  }, {
+    "type" : "paragraph",
+    "id" : 412,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 216.478, 476.97, 263.495 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The covering map ζ : ZZ → B induces a functor R : Vec B → Vec ZZ , called the restriction functor , by precomposition M  → M ◦ ζ . It is easy to check, since our persistence modules are pointwise finite-dimensional, the restriction functor R preserves direct sums."
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 154.667, 476.966, 213.32 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Shortly, we describe the arc code of the bipath module M in terms of the barcode of R ( M ) . Indeed, persistence modules over ZZ (when they are pointwise finitedimensional, like here) have a barcode, that is, for every module Z ∈ Vec ZZ there is a unique multiset B ( Z ) of intervals such that Z ∼ =   I ∈ B ( Z ) k I , by a result of Botnan [12]."
+  }, {
+    "type" : "paragraph",
+    "id" : 414,
+    "page number" : 5,
+    "bounding box" : [ 118.31, 130.757, 476.96, 151.509 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Following Bjerkevik [10], we adopt the following notation to refer to the intervals of ZZ , where a,b ∈ Z ∪ {±∞} :"
+  }, {
+    "type" : "formula",
+    "id" : 415,
+    "page number" : 5,
+    "bounding box" : [ 129.271, 97.349, 463.237, 121.943 ],
+    "content" : "[ a , b ] _ { \\mathbb { Z } \\mathbb { Z } } & \\coloneqq \\{ ( c , d ) \\in \\mathbb { Z } \\mathbb { Z } \\, | \\, c \\leq b , d \\geq a \\} , \\quad [ a , b ) _ { \\mathbb { Z } \\mathbb { Z } } \\coloneqq \\{ ( c , d ) \\in \\mathbb { Z } \\mathbb { Z } \\, | \\, a \\leq d < b \\} , \\\\ ( a , b ) _ { \\mathbb { Z } \\mathbb { Z } } & \\coloneqq \\{ ( c , d ) \\in \\mathbb { Z } \\mathbb { Z } \\, | \\, a < c \\leq b \\} , \\quad ( a , b ) _ { \\mathbb { Z } \\mathbb { Z } } \\coloneqq \\{ ( c , d ) \\in \\mathbb { Z } \\mathbb { Z } \\, | \\, c > a , d < b \\} ."
+  }, {
+    "type" : "formula",
+    "id" : 416,
+    "page number" : 5,
+    "bounding box" : [ 463.237, 97.349, 466.005, 106.055 ],
+    "content" : "-"
+  }, {
+    "type" : "image",
+    "id" : 417,
+    "page number" : 6,
+    "bounding box" : [ 160.67, 520.96, 434.008, 724.836 ],
+    "description" : "The image is a diagram of a graph, specifically a graph with two main nodes labeled as A and B. The graph has a single node labeled as A, and there are multiple nodes labeled as B and C. The nodes are connected by arrows, with arrows pointing from node A to node B and from node B to node C. The graph is connected by a single line, with the arrow from node A to node B and from node B to node C. The graph is labeled with the labels A, B, and C, and the nodes are labeled with the labels N, K, and N+1, respectively.",
+    "source" : "2501.00322v1/imageFile6.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "page number" : 6,
+    "bounding box" : [ 232.533, 703.436, 236.117, 711.272 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "page number" : 6,
+    "bounding box" : [ 236.117, 703.436, 248.542, 711.272 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "kN"
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 251.561, 703.436, 258.729, 711.272 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "page number" : 6,
+    "bounding box" : [ 260.776, 703.436, 282.862, 711.272 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n, kN"
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 285.875, 703.436, 293.043, 711.272 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "+"
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 6,
+    "bounding box" : [ 295.09, 703.436, 300.649, 711.272 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 6,
+    "bounding box" : [ 300.649, 703.436, 304.233, 711.272 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "page number" : 6,
+    "bounding box" : [ 330.233, 645.011, 334.592, 653.717 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.635, 0.635, 0.635]",
+    "content" : "ζ"
+  }, {
+    "type" : "paragraph",
+    "id" : 426,
+    "page number" : 6,
+    "bounding box" : [ 162.435, 631.436, 166.019, 639.272 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 6,
+    "bounding box" : [ 166.019, 631.436, 178.444, 639.272 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "kN"
+  }, {
+    "type" : "paragraph",
+    "id" : 428,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 181.463, 631.436, 195.283, 639.272 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "+ 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "page number" : 6,
+    "bounding box" : [ 195.286, 631.436, 211.813, 639.272 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : ", kN"
+  }, {
+    "type" : "paragraph",
+    "id" : 430,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 214.826, 631.436, 232.23, 639.272 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "+ 1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 431,
+    "page number" : 6,
+    "bounding box" : [ 364.233, 621.194, 368.841, 629.03 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 432,
+    "page number" : 6,
+    "bounding box" : [ 388.233, 621.194, 392.841, 629.03 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 6,
+    "bounding box" : [ 412.233, 621.194, 416.841, 629.03 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 6,
+    "bounding box" : [ 170.689, 605.436, 174.273, 613.272 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 435,
+    "page number" : 6,
+    "bounding box" : [ 174.273, 605.436, 203.682, 613.272 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "kN, kN )"
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 6,
+    "bounding box" : [ 204.649, 605.436, 208.233, 613.272 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 6,
+    "bounding box" : [ 428.233, 598.305, 432.841, 606.141 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "4"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 6,
+    "bounding box" : [ 337.625, 591.416, 342.233, 599.252 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "0"
+  }, {
+    "type" : "paragraph",
+    "id" : 438,
+    "page number" : 6,
+    "bounding box" : [ 240.233, 590.47, 243.817, 598.306 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 439,
+    "page number" : 6,
+    "bounding box" : [ 243.817, 590.47, 256.242, 598.306 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "kN"
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 259.261, 590.47, 273.081, 598.306 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "+ 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 6,
+    "bounding box" : [ 273.084, 590.47, 289.611, 598.306 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : ", kN )"
+  }, {
+    "type" : "paragraph",
+    "id" : 442,
+    "page number" : 6,
+    "bounding box" : [ 290.576, 590.47, 294.16, 598.306 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : ")"
+  }, {
+    "type" : "paragraph",
+    "id" : 444,
+    "page number" : 6,
+    "bounding box" : [ 364.233, 575.416, 368.841, 583.252 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "7"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 6,
+    "bounding box" : [ 388.233, 575.416, 392.841, 583.252 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "6"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 6,
+    "bounding box" : [ 412.233, 575.416, 416.841, 583.252 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "5"
+  }, {
+    "type" : "paragraph",
+    "id" : 447,
+    "page number" : 6,
+    "bounding box" : [ 216.233, 566.47, 219.817, 574.306 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "("
+  }, {
+    "type" : "paragraph",
+    "id" : 448,
+    "page number" : 6,
+    "bounding box" : [ 219.817, 566.47, 249.226, 574.306 ],
+    "font" : "CMMI9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "kN, kN"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "level" : "1",
+    "page number" : 6,
+    "bounding box" : [ 252.241, 566.598, 259.409, 574.306 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 6,
+    "bounding box" : [ 261.456, 566.47, 269.648, 574.306 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "1)"
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 6,
+    "bounding box" : [ 154.176, 487.769, 441.098, 508.521 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 5. Illustration of the covering map ζ : ZZ → B . In this case, n = m = 4"
+  }, {
+    "type" : "image",
+    "id" : 452,
+    "page number" : 6,
+    "bounding box" : [ 122.549, 389.551, 471.583, 473.32 ],
+    "description" : "In this image, we can see some numbers.",
+    "source" : "2501.00322v1/imageFile7.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 455,
+    "page number" : 6,
+    "bounding box" : [ 335.045, 390.024, 349.436, 398.73 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "top"
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 6,
+    "bounding box" : [ 242.645, 389.628, 263.427, 398.334 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "right"
+  }, {
+    "type" : "paragraph",
+    "id" : 453,
+    "page number" : 6,
+    "bounding box" : [ 156.775, 388.66, 170.889, 397.366 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "left"
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 6,
+    "bounding box" : [ 415.533, 388.66, 447.361, 397.366 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "bottom"
+  }, {
+    "type" : "paragraph",
+    "id" : 457,
+    "page number" : 6,
+    "bounding box" : [ 154.176, 354.381, 441.098, 375.133 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 6. Illustration of interval modules over the bipath poset, and their image under the restriction functor R , as in Lemma 2.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 6,
+    "bounding box" : [ 118.31, 291.355, 476.969, 326.417 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We describe the image under the restriction functor R : Vec B → Vec ZZ of the different types of intervals of a bipath B in the following lemma, illustrated in Figure 6."
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 6,
+    "bounding box" : [ 118.31, 260.791, 476.962, 281.553 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 2.2. For each type of interval module over the bipath poset B , the following results hold."
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 142.991, 226.566, 320.994, 257.37 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 142.991, 238.521, 320.994, 257.37 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For the full interval B , R ( k B ) = kZZ .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 6,
+      "bounding box" : [ 142.991, 226.566, 261.628, 245.415 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For a left interval [ i,j ] ◁ :",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 462,
+    "level" : "4",
+    "page number" : 6,
+    "bounding box" : [ 163.274, 219.855, 414.273, 232.046 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "– if j = 0 , then R ( k [ i, 0] ◁ ) = k ∈ Z k ( kN,kN + i + 1) ZZ . – if , then"
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 6,
+    "bounding box" : [ 163.274, 207.87, 469.894, 220.061 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "j ̸ = 0 R ( k [ i,j ] ◁ ) =   k ∈ Z k ( kN − n − m + j,kN + i + 1) ZZ . For a right interval , ."
+  }, {
+    "type" : "paragraph",
+    "id" : 464,
+    "page number" : 6,
+    "bounding box" : [ 191.095, 210.43, 191.095, 218.994 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 465,
+    "page number" : 6,
+    "bounding box" : [ 142.991, 195.885, 448.577, 208.076 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "For a right interval [ i, j ] ▷ , R ( k [ i, j ] ▷ ) = ⊕ k ∈ Z k [ kN + i, kN + j ] ZZ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 6,
+    "bounding box" : [ 142.991, 183.9, 460.096, 196.091 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "For a top interval [ i, j ] ⊤ , R ( k [ i, j ] ⊤ ) = ⊕ k ∈ Z k [ kN + i, kN + j +1) ZZ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "level" : "5",
+    "page number" : 6,
+    "bounding box" : [ 142.991, 171.915, 475.623, 184.106 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "• [ i,j ] ⊥ R ( k [ i,j ] ⊥ ) =   k ∈ Z k ( kN + i − 1 ,kN + j ] ZZ ."
+  }, {
+    "type" : "heading",
+    "id" : 468,
+    "level" : "Doctitle",
+    "page number" : 6,
+    "bounding box" : [ 118.31, 159.663, 252.659, 168.746 ],
+    "heading level" : 1,
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Recalling that N : = n + m − 1 ."
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 6,
+    "bounding box" : [ 118.31, 92.292, 476.97, 149.851 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Note that each R ( k I ) for an interval I of B , except for the full interval, is an infinitely periodic direct sum of interval modules over ZZ with disjoint support. Due to this periodicity and since R preserves direct sums, for a bipath module M , we have a free action of Z on the barcode B ( R ( M )) , given by adding zN to each endpoint of an interval J for z ∈ Z and J ∈ B ( R ( M )) . We denote by"
+  }, {
+    "type" : "paragraph",
+    "id" : 470,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 658.612, 476.966, 691.429 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 2.3. Let M be a bipath module and B ( M ) : = ( S,µ ) the arc code of M . Then the barcode B ( R ( M )) : = ( S ′ ,µ ′ ) of the zigzag module R ( M ) is a complete invariant up to isomorphism."
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 634.701, 476.963, 658.052 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Moreover, there is a bijection ϕ : S ∼ = S ′ / Z such that µ ′ ( ϕ ( I )) = µ ( I ) holds for each I ∈ S . Here S ′ / Z denotes the orbit space of S ′ ."
+  }, {
+    "type" : "heading",
+    "id" : 472,
+    "level" : "Subtitle",
+    "page number" : 7,
+    "bounding box" : [ 241.126, 611.879, 354.148, 620.676 ],
+    "heading level" : 1,
+    "font" : "SFCC1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3. Algebraic stability"
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 510.26, 476.967, 602.743 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As we have seen in Theorem 2.3, the covering map ζ : ZZ → B allows us to translate the arc code of the bipath module to the barcode of the infinite zigzag module, and vice versa. Furthermore, and as we do shortly, the covering map can be used to study the algebraic stability of bipath modules, via the algebraic stability of zigzag modules, which is well-established following Botnan and Lesnick [11] and Bjerkevik [10]. These stability results depend on the concept of block-decomposable modules, which we review first after recalling the definitions of interleavings and bottleneck distance."
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 400.672, 476.968, 500.889 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3.1. Interleavings and matchings. We review interleavings over R op × R and the bottleneck distance. Recall that for an ϵ ∈ [0 , ∞ ] , we define the shift functor ( · )( ϵ ): Vec R op × R → Vec R op × R by sending M to the persistence module given by M ( ϵ ) ( x,y ) : = M ( x − ϵ,y + ϵ ) and M ( ϵ ) ( x,y ) → ( w,z ) : = M ( x − ϵ,y + ϵ ) → ( w − ϵ,z + ϵ ) . On morphisms f : M → N , we set f ( ϵ ) ( x,y ) : = f ( x − ϵ,y + ϵ ) . For every module M , we define a morphism ϕ M ϵ : M → M ( ϵ ) by the internal maps M ( x,y ) → ( x − ϵ,y + ϵ ) . We say that two persistence modules M,N ∈ Vec R op × R are ϵ -interleaved if there exist morphisms f : M → N ( ϵ ) and g : N → M ( ϵ ) such that g ( ϵ ) ◦ f = ϕ M 2 ϵ and f ( ϵ ) ◦ g = ϕ N 2 ϵ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 354.722, 476.967, 399.385 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As in [10], we describe matchings in terms of interleavings between interval modules. Let A and B be two multisets of intervals of R op × R . An ϵ -matching between A and B is given by a bijection σ : A ′ → B ′ for some subsets A ′ ⊂ A and B ′ ⊂ B such that"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 7,
+    "bounding box" : [ 142.991, 308.696, 476.966, 351.506 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 142.991, 327.018, 476.966, 351.506 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• every interval I in A \\ A ′ and B \\ B ′ satisfies that k I is ϵ -interleaved with the zero module, and",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 7,
+      "bounding box" : [ 142.991, 308.696, 419.442, 327.595 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• for every I ∈ A ′ , the modules k I and k σ ( I ) are ϵ -interleaved.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 277.933, 476.963, 310.64 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Then, the interleaving distance d I ( M,N ) between two persistence modules M,N : R op × R → Vec and the bottleneck distance d B ( C,D ) between two multisets of intervals C and D are given by"
+  }, {
+    "type" : "paragraph",
+    "id" : 479,
+    "page number" : 7,
+    "bounding box" : [ 162.471, 244.484, 432.805, 269.715 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "d I ( M,N ) : = inf { ϵ | M and N are ϵ -interleaved } , d B ( C,D ) : = inf { ϵ | there is an ϵ -matching between C and D } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 202.913, 476.969, 236.562 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In the sequel, for two persistence modules M and N , d B ( M,N ) denotes the bottleneck distance between the barcodes B ( M ) and B ( N ) . Namely, d B ( M,N ) : = d B ( B ( M ) , B ( N )) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 160.262, 476.967, 194.484 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3.2. Block-decomposable modules. Let U be the subposet of R op × R given by { ( a,b ) ∈ R op × R | a ≤ b } . As in [11, 10], we are interested in the following four types of intervals of U ."
+  }, {
+    "type" : "paragraph",
+    "id" : 482,
+    "page number" : 7,
+    "bounding box" : [ 118.31, 129.874, 476.965, 150.636 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Definition 3.1. The following intervals of U are called blocks , where a,b ∈ R ∪ {±∞} and a ≤ b ,"
+  }, {
+    "type" : "formula",
+    "id" : 483,
+    "page number" : 7,
+    "bounding box" : [ 132.532, 96.426, 462.744, 121.943 ],
+    "content" : "[ a , b ] _ { B L } & \\coloneqq \\{ ( c , d ) \\in \\mathbb { U } \\, | \\, c \\leq b , d \\geq a \\} , \\quad [ a , b ) _ { B L } \\coloneqq \\{ ( c , d ) \\in \\mathbb { U } \\, | \\, a \\leq d < b \\} , \\\\ ( a , b ) _ { B L } & \\coloneqq \\{ ( c , d ) \\in \\mathbb { U } \\, | \\, a < c \\leq b \\} , \\quad ( a , b ) _ { B L } \\coloneqq \\{ ( c , d ) \\in \\mathbb { U } \\, | \\, c > a , d < b \\} ."
+  }, {
+    "type" : "image",
+    "id" : 484,
+    "page number" : 8,
+    "bounding box" : [ 131.464, 654.388, 203.384, 725.878 ],
+    "source" : "2501.00322v1/imageFile8.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 8,
+    "bounding box" : [ 158.099, 639.943, 177.604, 648.649 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "[ a,b ] [ a,b ]"
+  }, {
+    "type" : "image",
+    "id" : 485,
+    "page number" : 8,
+    "bounding box" : [ 216.334, 639.332, 288.145, 725.643 ],
+    "source" : "2501.00322v1/imageFile9.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 8,
+    "bounding box" : [ 241.914, 639.943, 263.632, 648.649 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "( a,b )"
+  }, {
+    "type" : "image",
+    "id" : 486,
+    "page number" : 8,
+    "bounding box" : [ 304.402, 639.16, 376.515, 725.878 ],
+    "source" : "2501.00322v1/imageFile10.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 8,
+    "bounding box" : [ 330.595, 639.943, 351.206, 648.649 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "[ a,b )"
+  }, {
+    "type" : "image",
+    "id" : 487,
+    "page number" : 8,
+    "bounding box" : [ 391.165, 655.018, 462.533, 725.947 ],
+    "source" : "2501.00322v1/imageFile11.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 491,
+    "page number" : 8,
+    "bounding box" : [ 417.12, 639.943, 437.732, 648.649 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "( a,b ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 8,
+    "bounding box" : [ 154.176, 604.142, 441.096, 624.894 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 7. Illustration of the correspondence between the interval of ZZ and the block of U , as in Lemma 3.4"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 545.667, 476.968, 578.374 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A block module is an interval module k I , where I is a block as defined above. A persistence module over U is block-decomposable if it decomposes into a direct sum of block modules."
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 516.881, 476.96, 537.634 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The following establishes the algebraic stability of block-decomposable modules and is due to Bjerkevik [10, Theorem 4.18]."
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 487.204, 475.879, 508.858 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 3.2 (Block isometry theorem) . For two block-decomposable modules M and N , d I ( M,N ) = d B ( M,N ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 459.311, 476.964, 480.063 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We have the following on the structure of matchings between barcodes of blockdecomposable modules, see [11, Lemma 3.1]."
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 418.57, 476.966, 451.288 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3.3. Let M and N be block-decomposable modules and consider an ϵ matching σ : C → D for subsets C ⊂ B ( M ) and D ⊂ B ( N ) . Then the blocks I and σ ( I ) are of the same type for every I ∈ C ."
+  }, {
+    "type" : "paragraph",
+    "id" : 498,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 329.771, 476.967, 410.547 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3.3. Extension of zigzag to block-decomposable modules. Consider the inclusion ι : ZZ   → R op × R . By composing first the left Kan extension along ι and then the restriction functor of the inclusion U → R op × R , one obtains the block extension functor E : Vec ZZ → Vec U ; we refer to [11, 10] for more context on this functor and the definitions involved. The block extension functor preserves direct sums, and sends barcodes of zigzag modules to barcodes of block-decomposable modules, by which we mean the following. See Figure 7 for an illustration."
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 312.941, 471.548, 321.748 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3.4. Let M be a zigzag module. Then E ( M ) is block-decomposable, and"
+  }, {
+    "type" : "formula",
+    "id" : 500,
+    "page number" : 8,
+    "bounding box" : [ 167.25, 295.909, 269.847, 305.539 ],
+    "content" : "E ( \\mathbb { k } [ a , b ] _ { \\mathbb { Z } \\mathbb { Z } } ) = \\mathbb { k } [ a , b ] _ { B L } ,"
+  }, {
+    "type" : "formula",
+    "id" : 502,
+    "page number" : 8,
+    "bounding box" : [ 167.25, 280.368, 272.061, 289.997 ],
+    "content" : "E ( \\mathbb { k } ( a , b ] _ { \\mathbb { Z } \\mathbb { Z } } ) = \\mathbb { k } ( a , b ] _ { B L } ,"
+  }, {
+    "type" : "formula",
+    "id" : 504,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 263.582, 250.155, 273.43 ],
+    "content" : "T h u s , \\, \\mathcal { B } ( E ( M ) ) = E ( \\mathcal { B } ( M ) ) ."
+  }, {
+    "type" : "formula",
+    "id" : 501,
+    "page number" : 8,
+    "bounding box" : [ 322.11, 296.833, 425.722, 305.539 ],
+    "content" : "E ( \\mathbb { k } [ a , b ) _ { \\mathbb { Z } \\mathbb { Z } } ) = \\mathbb { k } [ a , b ) _ { \\mathbb { Z } \\mathbb { Z } } ,"
+  }, {
+    "type" : "formula",
+    "id" : 503,
+    "page number" : 8,
+    "bounding box" : [ 320.997, 280.368, 428.026, 289.997 ],
+    "content" : "E ( \\mathbf k ( a , b ) _ { \\mathbb { Z } \\mathbb { Z } } ) = \\mathbf k ( a , b ) _ { \\mathbb { B } L } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 235.738, 476.963, 256.49 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As in [11, 10], this lemma motivates the definition of interleaving and bottleneck distance of two zigzag modules M and N by setting"
+  }, {
+    "type" : "formula",
+    "id" : 506,
+    "page number" : 8,
+    "bounding box" : [ 152.886, 218.706, 442.39, 228.395 ],
+    "content" : "d _ { I } ( M , N ) \\coloneqq d _ { I } ( E ( M ) , E ( N ) ) \\text { and } d _ { B } ( M , N ) \\coloneqq d _ { B } ( E ( M ) , E ( N ) ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 203.459, 378.745, 212.256 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As such, Theorem 3.2 translates directly to zigzag modules."
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 137.468, 476.962, 194.333 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "3.4. Algebraic stability of bipath persistence. Recall the restriction functor R : Vec B → Vec ZZ induced by the covering map defined in Definition 2.1. Also recall that by Theorem 2.3, R preserves arc codes up to the action of Z . In turn, and in parallel to the definition of interleaving and bottleneck distances in zigzag modules, for two bipath modules M and N , we define"
+  }, {
+    "type" : "formula",
+    "id" : 509,
+    "page number" : 8,
+    "bounding box" : [ 153.46, 120.436, 441.816, 130.125 ],
+    "content" : "d _ { I } ( M , N ) \\coloneqq d _ { I } ( R ( M ) , R ( N ) ) \\text { and } d _ { B } ( M , N ) \\coloneqq d _ { B } ( R ( M ) , R ( N ) ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "page number" : 8,
+    "bounding box" : [ 118.31, 93.234, 476.967, 113.986 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Combining this with the block isometry theorem (Theorem 3.2), we immediately obtain the isometry theorem for bipath persistence."
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 700.062, 476.964, 721.717 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 3.5 (Bipath isometry theorem) . Let M and N be bipath modules. Then d I ( M,N ) = d B ( M,N ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 659.992, 476.97, 692.809 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Recall that the ϵ -matching between B ( R ( M )) and B ( R ( N )) is indeed the matching between infinite periodic barcodes, but can be made equivariant in the following sense:"
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 607.073, 476.967, 651.746 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3.6. Let M and N be bipath modules. If there exists an ϵ -matching between B ( R ( M )) and B ( R ( N )) , then there exists an ϵ -matching given by a bijection σ : C → D , for some C ⊂ B ( R ( M )) and D ⊂ B ( R ( N )) that is equivariant with respect to the action of Z , meaning that"
+  }, {
+    "type" : "heading",
+    "id" : 515,
+    "level" : "Doctitle",
+    "page number" : 9,
+    "bounding box" : [ 118.31, 574.794, 188.789, 583.591 ],
+    "heading level" : 1,
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "for every I ∈ C ."
+  }, {
+    "type" : "formula",
+    "id" : 514,
+    "page number" : 9,
+    "bounding box" : [ 255.065, 590.965, 340.211, 599.671 ],
+    "content" : "\\sigma ( z \\uparrow I ) = z \\uparrow \\sigma ( I ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 462.1, 476.969, 566.649 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. Take an ϵ -matching between B ( R ( M )) and B ( R ( N )) given by the bijection τ : E → F . Suppose that there exist some z ∈ Z and I ∈ E such that τ ( z ↑ I ) ̸ = z ↑ τ ( I ) . For such the interval I , we can construct a new ϵ -matching given by the bijection σ : E ∪ { z ′ ↑ I | z ′ ∈ Z } → F ∪ { z ′ ↑ τ ( I ) | z ′ ∈ Z } , where σ ( z ′ ↑ I ) : = z ′ ↑ τ ( I ) for every z ′ ∈ Z and σ ( J ) : = τ ( J ) for any J ∈ E that is not in the orbit { z ′ ↑ I | z ′ ∈ Z } of I . We note the reader that σ ( I ) = σ (0 ↑ I ) = 0 ↑ τ ( I ) = τ ( I ) by the definition, it then follows that σ ( z ′ ↑ I ) = z ′ ↑ σ ( I ) for every z ′ ∈ Z . Finally, since there is a finite number of orbits in B ( R ( M )) , we can repeat the procedure just described to obtain the desired ϵ -matching. □"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 9,
+    "bounding box" : [ 469.216, 545.959, 469.216, 554.523 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 518,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 432.212, 476.964, 452.964 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Such equivariance suggests the following definition of ϵ -matching between arc codes of bipath modules."
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 390.308, 476.965, 423.967 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Definition 3.7. Let M and N be bipath modules. An ϵ -matching between the arc codes B ( M ) and B ( N ) is given by a bijection σ : C → D for two subsets C ⊂ B ( M ) and D ⊂ B ( N ) such that"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 9,
+    "bounding box" : [ 142.991, 345.661, 476.967, 388.47 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 9,
+      "bounding box" : [ 142.991, 363.982, 476.965, 388.47 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• every interval I in B ( M ) \\ C and B ( N ) \\ D satisfies that E ◦ R ( k I ) is ϵ -interleaved with the zero module, and",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 9,
+      "bounding box" : [ 142.991, 345.661, 476.967, 364.56 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• for every I ∈ C , the modules E ◦ R ( k I ) and E ◦ R ( k σ ( I )) are ϵ -interleaved.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 324.284, 476.964, 345.036 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "It is now clear that an equivalent definition of the bottleneck distance between bipath modules M and N can be given by"
+  }, {
+    "type" : "formula",
+    "id" : 523,
+    "page number" : 9,
+    "bounding box" : [ 142.388, 307.203, 452.888, 317.051 ],
+    "content" : "d _ { B } ( M , N ) \\coloneqq \\inf \\{ \\epsilon \\, | \\, \\text {there is an $\\epsilon$-matching between $\\mathcal{Ob}(M)$ and $\\mathcal{Ob}(N)$} \\} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 524,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 280.05, 476.968, 300.802 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "and such the ϵ -matchings need to match intervals of the same type in the bipath poset, as in the situation for block-decomposable modules of Lemma 3.3."
+  }, {
+    "type" : "heading",
+    "id" : 525,
+    "level" : "Doctitle",
+    "page number" : 9,
+    "bounding box" : [ 258.848, 259.726, 336.427, 268.523 ],
+    "heading level" : 1,
+    "font" : "SFCC1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "4. Computation"
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 217.883, 476.969, 250.59 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We have related bipath persistence with an infinite periodic zigzag. We now show how to actually compute it, by taking a finite slice. This will allow us to decompose any bipath persistence module by decomposing a single finite zigzag."
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 158.107, 476.969, 217.024 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Let ZZ ′ ⊂ ZZ be the subposet of ZZ given by ZZ ′ : = ( − m + 1 ,n + m ) ZZ , which contains (2 n + 4 m − 3) elements. We write ζ ′ : ZZ ′ → B for the restriction of the covering map ζ to ZZ ′ . As before, we write R ′ as the restriction functor induced by ζ ′ . In the following, we abuse the notation ( a,b ) ZZ (resp. [ a,b ] ZZ , [ a,b ) ZZ , ( a,b ] ZZ ) also for the interval ( a,b ) ZZ ′ in ZZ ′ if there seems to be no ambiguity."
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 133.256, 476.963, 154.949 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Since an arc code is a multiset of intervals, we write µ M ( I ) for the multiplicity of the interval I in the arc code B ( M ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 529,
+    "page number" : 9,
+    "bounding box" : [ 118.31, 93.233, 476.968, 125.951 ],
+    "font" : "SFTI1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 4.1. The multiplicity of each interval in the arc code can be obtained from the multiplicity of the corresponding interval in the barcode of the finite zigzag ZZ ′ , as in Table 1. Namely, the following equalities hold for any bipath module M ."
+  }, {
+    "type" : "table",
+    "id" : 530,
+    "level" : "4",
+    "page number" : 10,
+    "bounding box" : [ 207.376, 639.574, 387.356, 725.683 ],
+    "number of rows" : 2,
+    "number of columns" : 2,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 207.376, 682.628, 297.366, 725.683 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 298,
+          "page number" : 10,
+          "bounding box" : [ 207.376, 682.628, 297.366, 725.683 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "interval over B"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 297.366, 682.628, 387.356, 725.683 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 299,
+          "page number" : 10,
+          "bounding box" : [ 297.366, 682.628, 387.356, 725.683 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "interval over ZZ ′"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 207.376, 639.574, 297.366, 682.628 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 300,
+          "page number" : 10,
+          "bounding box" : [ 207.376, 639.574, 297.366, 682.628 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "B [ i, 0] ◁ [ i, j ] ◁ ( j = 0) [ i, j ] ▷ [ i, j ] ⊤ [ i, j ] ⊥"
+        } ]
+      }, {
+        "type" : "table cell",
+        "page number" : 10,
+        "bounding box" : [ 297.366, 639.574, 387.356, 682.628 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "id" : 301,
+          "page number" : 10,
+          "bounding box" : [ 297.366, 639.574, 387.356, 682.628 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "ZZ ′ (0 , i +1) ZZ - n - m + j, i +1) ZZ [ i, j ] ZZ [ i, j +1) ZZ ( i - 1 , j ] ZZ"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 10,
+    "bounding box" : [ 255.928, 678.014, 255.928, 686.578 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 10,
+    "bounding box" : [ 154.176, 605.712, 441.098, 626.464 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Table 1. Correspondence between the intervals in the equalities of multiplicities"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 10,
+    "bounding box" : [ 142.991, 556.348, 357.478, 587.777 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 568.359, 357.478, 587.777 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For the full interval B , µ M ( B ) = µ R ′ ( M ) ( ZZ ′ ) .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 556.348, 261.628, 575.197 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For a left interval [ i,j ] ◁ :",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 10,
+    "bounding box" : [ 163.274, 532.383, 431.807, 563.312 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 163.274, 548.613, 391.683, 563.312 ],
+      "font" : "SFBX1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "– if j = 0 , then µ M ( k [ i, 0] ◁ ) = µ R ′ ( M ) ((0 ,i + 1) ZZ ) .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 163.274, 532.383, 431.807, 551.302 ],
+      "font" : "SFBX1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "– if j ̸ = 0 , then µ M ([ i,j ] ◁ ) = µ R ′ ( M ) (( − n − m + j,i + 1) ZZ ) .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 537,
+    "page number" : 10,
+    "bounding box" : [ 191.095, 540.187, 191.095, 548.751 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 10,
+    "bounding box" : [ 142.991, 496.351, 429.788, 539.221 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 520.372, 402.741, 539.221 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For a right interval [ i,j ] ▷ , µ M ([ i,j ] ▷ ) = µ R ′ ( M ) ([ i,j ] ZZ ) .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 508.361, 414.261, 527.21 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For a top interval [ i,j ] ⊤ , µ M ([ i,j ] ⊤ ) = µ R ′ ( M ) ([ i,j + 1) ZZ ) .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 496.351, 429.788, 515.2 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For a bottom interval [ i,j ] ⊥ , µ M ([ i,j ] ⊥ ) = µ R ′ ( M ) (( i − 1 ,j ] ZZ ) .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 10,
+    "bounding box" : [ 118.31, 473.725, 476.968, 494.477 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. Since every bipath module is interval-decomposable, we write the indecomposable decomposition of the bipath module M as"
+  }, {
+    "type" : "formula",
+    "id" : 542,
+    "page number" : 10,
+    "bounding box" : [ 172.861, 433.272, 421.917, 467.373 ],
+    "content" : "M & \\cong ( \\mathbb { k } B ) ^ { \\mu _ { M } ( B ) } \\oplus \\bigoplus \\mathbb { k } [ i , j ] _ { \\uparrow } ^ { \\mu _ { M } ( [ i , j ] _ { \\uparrow } ) } \\oplus \\bigoplus \\mathbb { k } [ i , j ] _ { \\downarrow } ^ { \\mu _ { M } ( [ i , j ] _ { \\downarrow } ) } \\\\ & \\quad \\oplus \\bigoplus \\mathbb { k } [ i , j ] _ { \\top } ^ { \\mu _ { M } ( [ i , j ] _ { \\top } ) } \\oplus \\bigoplus \\mathbb { k } [ i , j ] _ { \\perp } ^ { \\mu _ { M } ( [ i , j ] _ { \\perp } ) } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 543,
+    "page number" : 10,
+    "bounding box" : [ 118.31, 416.782, 428.519, 427.093 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Applying the restriction functor R ′ yields the decomposition of R ′ ( M ) :"
+  }, {
+    "type" : "formula",
+    "id" : 544,
+    "page number" : 10,
+    "bounding box" : [ 125.555, 397.538, 469.222, 409.801 ],
+    "content" : "R ^ { \\prime } ( M ) \\cong & R ^ { \\prime } ( | k B | ^ { \\mu _ { R ^ { \\prime } ( M ) } ( \\mathbb { Z } ) } \\oplus \\bigoplus R ^ { \\prime } ( | k [ i , j ] _ { \\diamond } ) ^ { \\mu _ { M } ( [ i , j ] _ { \\diamond } ) } \\oplus \\bigoplus R ^ { \\prime } ( | k [ i , j ] _ { \\diamond } ) ^ { \\mu _ { M } ( [ i , j ] _ { \\diamond } ) } \\\\"
+  }, {
+    "type" : "formula",
+    "id" : 545,
+    "page number" : 10,
+    "bounding box" : [ 187.142, 377.286, 476.965, 389.876 ],
+    "content" : "\\oplus \\bigoplus R ^ { \\prime } ( \\mathbb { k } [ i , j ] _ { \\top } ) ^ { \\mu _ { M } ( [ i , j ] _ { \\top } ) } \\oplus \\bigoplus R ^ { \\prime } ( \\mathbb { k } [ i , j ] _ { \\perp } ) ^ { \\mu _ { M } ( [ i , j ] _ { \\perp } ) } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 546,
+    "page number" : 10,
+    "bounding box" : [ 118.31, 347.349, 476.961, 368.101 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We focus on the restriction of interval modules in (2). It is not difficult to see the following from Lemma 2.2."
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 10,
+    "bounding box" : [ 142.991, 313.393, 324.99, 344.766 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 325.348, 324.99, 344.766 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For the full interval B , R ′ ( k B ) = kZZ ′ .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 313.393, 306.59, 332.292 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For the left interval [ i,j ] ◁ , we have",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "formula",
+    "id" : 549,
+    "page number" : 10,
+    "bounding box" : [ 149.18, 287.752, 444.901, 314.641 ],
+    "content" : "R ^ { \\prime } ( \\mathbb { k } [ i , j ] _ { \\triangle } ) = \\begin{cases} \\mathbb { k } ( 0 , i + 1 ) _ { \\mathbb { Z } \\mathbb { Z } } , & j = 0 , \\\\ \\mathbb { k } ( - n - m + j , i + 1 ) _ { \\mathbb { Z } \\mathbb { Z } } \\oplus \\mathbb { k } ( j - 1 , n + m ) _ { \\mathbb { Z } \\mathbb { Z } } , & j \\neq 0 . \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 550,
+    "page number" : 10,
+    "bounding box" : [ 426.635, 287.894, 426.635, 296.458 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 551,
+    "level" : "4",
+    "page number" : 10,
+    "bounding box" : [ 142.991, 269.521, 313.257, 278.318 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "• For the right interval [ i,j ] ▷ , we have"
+  }, {
+    "type" : "formula",
+    "id" : 552,
+    "page number" : 10,
+    "bounding box" : [ 155.268, 236.25, 438.811, 263.139 ],
+    "content" : "R ^ { \\prime } ( \\mathbf k [ i , j ] _ { \\triangleright } ) = \\begin{cases} \\mathbf k [ i , n ] _ { \\mathbb { Z } \\mathbb { Z } } , & j = n , \\\\ \\mathbf k [ i , j ] _ { \\mathbb { Z } \\mathbb { Z } } \\oplus \\mathbf k ( - m + 1 , - n - m + j + 1 ] _ { \\mathbb { Z } \\mathbb { Z } } , & j \\neq n . \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 553,
+    "page number" : 10,
+    "bounding box" : [ 419.548, 236.392, 419.548, 244.956 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "list",
+    "level" : "3",
+    "page number" : 10,
+    "bounding box" : [ 142.991, 186.46, 476.966, 229.27 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 210.371, 388.789, 229.27 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For the top interval [ i,j ] ⊤ , R ′ ( k [ i,j ] ⊤ ) = k [ i,j + 1) ZZ .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 10,
+      "bounding box" : [ 142.991, 186.46, 476.966, 217.314 ],
+      "font" : "CMSY10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• For the bottom interval [ i,j ] ⊥ , R ′ ( k [ i,j ] ⊥ ) = k ( i − 1 ,j ] ZZ ⊕ k ( − n − m + i, − n − m + j + 1] ZZ .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 556,
+    "page number" : 10,
+    "bounding box" : [ 118.31, 155.811, 476.967, 188.518 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "From the above list, it turns out that every zigzag module that appeared in the right-hand side of multiplicity equalities is the indecomposable direct summand of the corresponding R ′ ( k I ) µ M ( k I ) , and is not the direct summand of   R ′ ( k J ) µ M ( k J )"
+  }, {
+    "type" : "paragraph",
+    "id" : 557,
+    "page number" : 10,
+    "bounding box" : [ 401.901, 147.419, 406.308, 153.513 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "J"
+  }, {
+    "type" : "paragraph",
+    "id" : 558,
+    "page number" : 10,
+    "bounding box" : [ 406.967, 147.518, 406.967, 153.513 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 559,
+    "level" : "4",
+    "page number" : 10,
+    "bounding box" : [ 406.967, 147.419, 413.083, 153.513 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "="
+  }, {
+    "type" : "paragraph",
+    "id" : 560,
+    "page number" : 10,
+    "bounding box" : [ 413.083, 147.419, 416.614, 153.513 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "I"
+  }, {
+    "type" : "paragraph",
+    "id" : 561,
+    "page number" : 10,
+    "bounding box" : [ 118.31, 135.998, 145.421, 144.795 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "in (2)."
+  }, {
+    "type" : "formula",
+    "id" : 562,
+    "page number" : 10,
+    "bounding box" : [ 149.855, 135.998, 476.966, 144.795 ],
+    "content" : "\\text { in } ( 2 ) . \\text { Therefore, the assertions follow.} & & \\Box"
+  }, {
+    "type" : "paragraph",
+    "id" : 563,
+    "page number" : 10,
+    "bounding box" : [ 118.31, 92.341, 476.97, 125.951 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Remark 4.2. We emphasize here that to compute the multiplicity of an interval I it is crucial to find the corresponding indecomposable module of R ′ ( M ) . For example, to compute µ M ([0 ,j ] ◁ ) ( j ̸ = 0 ), the interval ( j − 1 ,n + m ) ZZ is not the"
+  }, {
+    "type" : "paragraph",
+    "id" : 564,
+    "page number" : 10,
+    "bounding box" : [ 278.574, 93.406, 278.574, 101.97 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 565,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 700.955, 476.961, 721.707 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "desired corresponding interval because it also corresponds to the direct summand R ′ ( k [1 ,j ] ◁ ) ."
+  }, {
+    "type" : "heading",
+    "id" : 566,
+    "level" : "Doctitle",
+    "page number" : 11,
+    "bounding box" : [ 222.853, 669.363, 372.427, 678.16 ],
+    "heading level" : 1,
+    "font" : "SFCC1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "5. Fibered bar and arc codes"
+  }, {
+    "type" : "paragraph",
+    "id" : 567,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 578.807, 476.969, 660.227 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lesnick and Wright [22] introduced the fibered barcode , an invariant of persistence modules over R 2 given by the collection of barcodes of all 1-D affine slices. In detail, denoting by L the collection of all (unparametrized) lines in R 2 with non-negative slope and for a fixed persistence module M : R 2 → Vec , each line l ∈ L induces a single-parameter persistence module M | l = M ◦ i L along the inclusion i L : l   → R 2 . The fibered barcode of M is then the assignment of each line l ∈ L to the barcode of M | l ."
+  }, {
+    "type" : "paragraph",
+    "id" : 568,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 531.878, 476.966, 576.541 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Closely following the construction of the fibered barcode, and due to bipath modules having arc codes, given a bipath poset B and a persistence module M : R 2 → Vec , an order-preserving map f : B → R 2 induces a bipath module M | f = M ◦ f and we can define the fibered arc code :"
+  }, {
+    "type" : "paragraph",
+    "id" : 569,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 486.889, 476.962, 522.003 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Definition 5.1. The fibered arc code of a persistence module M : R 2 → Vec is the assignment of each order-preserving map f : B → R 2 , where B is a bipath poset, to the arc code of M | f ."
+  }, {
+    "type" : "paragraph",
+    "id" : 570,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 371.954, 476.968, 476.392 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As already known, the fibered barcode is an incomplete invariant. The same applies to the fibered arc code. Still, the fibered arc code gives more information than the fibered barcode: in Example 5.2 below we show two non-isomorphic persistence modules with equal fibered barcode, but different fibered arc code. In addition, in Example 5.3 we show two non-isomorphic persistence modules with equal fibered arc code. To distinguish the modules in this last example, one would need to use different invariants like the interval rank invariant , proposed by Asashiba, Gauthier and Liu [7], or other related invariants like the generalized rank invariant , proposed by Kim and Mémoli [21]."
+  }, {
+    "type" : "paragraph",
+    "id" : 571,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 339.812, 476.968, 360.575 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Example 5.2. We take an example from Asashiba, Gauthier and Liu [7, Example 6.2]. Let G be the grid"
+  }, {
+    "type" : "formula",
+    "id" : 572,
+    "page number" : 11,
+    "bounding box" : [ 204.675, 285.992, 387.17, 326.681 ],
+    "content" : "G \\coloneqq \\bigcup _ { ( 1 , 1 ) \\to ( 1 , 2 ) \\to ( 1 , 3 ) \\to ( 1 , 4 ) \\to ( 2 , 5 ) } ( 2 , 1 ) \\to ( 2 , 2 ) \\to ( 2 , 3 ) \\to ( 2 , 4 ) \\to ( 2 , 5 ) \\\\"
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 263.737, 416.797, 273.427 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "and let M λ , for a λ ∈ k , be the following persistence module over G :"
+  }, {
+    "type" : "formula",
+    "id" : 574,
+    "page number" : 11,
+    "bounding box" : [ 200.856, 194.823, 394.42, 252.867 ],
+    "content" : "M _ { \\lambda } \\colon = \\underset { \\substack { \\uparrow \\\\ 0 } } { \\uparrow } \\underset { \\substack { \\uparrow ( 1 ) \\\\ | ( 1 ) } } { \\uparrow } \\underset { \\substack { \\uparrow ( 0 ) \\\\ | \\uparrow d } } { \\uparrow } \\underset { \\substack { \\uparrow ( \\lambda , - 1 ) \\uparrow \\\\ | ( \\lambda , - 1 ) } } { \\uparrow } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 11,
+    "bounding box" : [ 118.31, 150.552, 476.964, 183.259 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We focus on the two non-isomorphic modules M 1 and M − 1 . Let B the bipath poset with n = 3 and m = 1 and consider the order-preserving map f : B → G whose image is"
+  }, {
+    "type" : "formula",
+    "id" : 576,
+    "page number" : 11,
+    "bounding box" : [ 244.508, 95.415, 355.056, 141.295 ],
+    "content" : "\\begin{array} { c c c } ( 2 , 3 ) \\rightarrow ( 2 , 4 ) \\rightarrow ( 2 , 5 ) \\\\ \\uparrow & & \\uparrow \\\\ ( 1 , 3 ) \\longrightarrow ( 1 , 5 ) \\end{array}"
+  }, {
+    "type" : "paragraph",
+    "id" : 577,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 711.969, 449.77, 721.817 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Then the arc code B ( M 1 | f ) consists of two intervals of B that we depict by"
+  }, {
+    "type" : "formula",
+    "id" : 578,
+    "page number" : 12,
+    "bounding box" : [ 221.127, 656.491, 378.438, 702.371 ],
+    "content" : "\\begin{array} { c c c c c c c c } ( 2 , 3 ) & \\rightarrow ( 2 , 4 ) & & & & ( 2 , 3 ) & \\\\ & \\uparrow & & & & & \\text {and} & \\uparrow \\\\ ( 1 , 3 ) & \\longrightarrow ( 1 , 5 ) & & & ( 1 , 3 ) & \\end{array}"
+  }, {
+    "type" : "paragraph",
+    "id" : 579,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 636.603, 476.969, 646.451 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "while the arc code B ( M − 1 | f ) consists of two other intervals of B that we depict by"
+  }, {
+    "type" : "formula",
+    "id" : 580,
+    "page number" : 12,
+    "bounding box" : [ 202.202, 581.126, 390.306, 627.005 ],
+    "content" : "\\begin{array} { c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c"
+  }, {
+    "type" : "paragraph",
+    "id" : 581,
+    "level" : "5",
+    "page number" : 12,
+    "bounding box" : [ 394.594, 602.203, 397.362, 610.909 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "."
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 561.896, 418.858, 571.586 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We conclude that the fibered arc codes of M 1 and M − 1 are different."
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 538.878, 476.964, 559.631 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "On the other hand, M 1 and M − 1 have the same fibered barcodes. It suffices to check three affine lines in red, as illustrated in Figure 8."
+  }, {
+    "type" : "image",
+    "id" : 584,
+    "page number" : 12,
+    "bounding box" : [ 200.892, 411.146, 393.852, 527.238 ],
+    "source" : "2501.00322v1/imageFile12.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 12,
+    "bounding box" : [ 154.176, 388.799, 441.101, 397.596 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 8. Illustration of the three affine lines used in Example 5.2"
+  }, {
+    "type" : "paragraph",
+    "id" : 586,
+    "page number" : 12,
+    "bounding box" : [ 130.265, 361.552, 466.41, 371.853 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For the red line L 0 with slope 0, M 1 | L 0 and M − 1 | L 0 have the same barcodes:"
+  }, {
+    "type" : "formula",
+    "id" : 587,
+    "page number" : 12,
+    "bounding box" : [ 152.562, 344.14, 447.003, 352.937 ],
+    "content" : "( 2 , 1 ) \\longrightarrow ( 2 , 2 ) \\longrightarrow ( 2 , 3 ) \\longrightarrow ( 2 , 4 ) \\text { and } ( 2 , 2 ) \\longrightarrow ( 2 , 3 ) \\ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 588,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 313.879, 476.964, 334.631 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The same happens for the red line L 1 with slope 1 , where the barcodes are given by"
+  }, {
+    "type" : "formula",
+    "id" : 589,
+    "page number" : 12,
+    "bounding box" : [ 234.493, 299.701, 365.072, 308.498 ],
+    "content" : "( 1 , 3 ) \\longrightarrow ( 2 , 4 ) \\text { and } ( 1 , 3 ) \\ ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 590,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 281.68, 398.214, 291.674 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "and for the red line L 1 / 2 with slope 1 / 2 , where the barcodes are"
+  }, {
+    "type" : "formula",
+    "id" : 591,
+    "page number" : 12,
+    "bounding box" : [ 257.874, 262.94, 341.69, 271.646 ],
+    "content" : "( 1 , 2 ) \\longrightarrow ( 2 , 4 ) \\ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 242.851, 453.097, 251.658 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Example 5.3. Consider two bifiltrations on 3 points illustrated in Figure 9."
+  }, {
+    "type" : "paragraph",
+    "id" : 593,
+    "page number" : 12,
+    "bounding box" : [ 224.32, 130.932, 370.952, 139.729 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 9. Two different filtrations"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 12,
+    "bounding box" : [ 118.31, 93.234, 476.967, 114.272 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We apply the 0-th reduced homology, with the coefficient field k := Z 2 , on both. The persistent homology obtained from the left (resp. right) filtration is denoted by M (resp. N ). It is not hard to verify that M and N share the same fibered arc code. For instance, restricting to the order-preserving map f : B → Q , where Q is the grid, depicted by yields that arc codes B ( M | f ) and B ( N | f ) share the same intervals as illustrated below:"
+  }, {
+    "type" : "image",
+    "id" : 595,
+    "page number" : 13,
+    "bounding box" : [ 219.488, 607.757, 374.954, 686.912 ],
+    "source" : "2501.00322v1/imageFile13.png"
+  }, {
+    "type" : "image",
+    "id" : 596,
+    "page number" : 13,
+    "bounding box" : [ 219.486, 499.956, 374.984, 579.038 ],
+    "source" : "2501.00322v1/imageFile14.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 597,
+    "page number" : 13,
+    "bounding box" : [ 118.31, 448.426, 476.968, 493.088 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "On the other hand, we can distinguish these two filtrations by using the interval rank invariant [7]. More concretely, if we take the interval J of the grid illustrated in Figure 10 and use the source-sink compression system (see [7]), then the J -rank of M is 1 while that of N is 0 ."
+  }, {
+    "type" : "image",
+    "id" : 598,
+    "page number" : 13,
+    "bounding box" : [ 219.364, 359.69, 374.756, 437.928 ],
+    "source" : "2501.00322v1/imageFile15.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 599,
+    "page number" : 13,
+    "bounding box" : [ 224.347, 337.552, 370.925, 346.349 ],
+    "font" : "SFRM1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 10. An interval of the grid"
+  }, {
+    "type" : "heading",
+    "id" : 600,
+    "level" : "Subtitle",
+    "page number" : 13,
+    "bounding box" : [ 268.598, 300.397, 326.676, 305.448 ],
+    "heading level" : 1,
+    "font" : "SFCC1000",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "6",
+    "page number" : 13,
+    "bounding box" : [ 122.543, 92.305, 476.968, 291.933 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 7,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 261.67, 476.965, 291.933 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[1] Ángel Javier Alonso and Michael Kerber. Decomposition of Zero-Dimensional Persistence Modules via Rooted Subsets. Discrete & Computational Geometry , November 2024. doi: 10.1007/s00454-024-00700-7 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 231.783, 476.966, 262.045 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[2] Ángel Javier Alonso, Michael Kerber, and Primoz Skraba. Probabilistic Analysis of Multiparameter Persistence Decompositions into Intervals. LIPIcs, Volume 293, SoCG 2024 , 293:6:1–6:19, 2024. doi:10.4230/LIPICS.SOCG.2024.6 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 201.895, 476.965, 232.157 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[3] Toshitaka Aoki, Emerson G. Escolar, and Shunsuke Tada. Summand-Injectivity of Interval Covers and Monotonicity of Interval Resolution Global Dimensions, November 2023. arXiv: 2308.14979 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 181.969, 476.966, 202.269 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[4] Toshitaka Aoki, Emerson G. Escolar, and Shunsuke Tada. Bipath Persistence. Japan Journal of Industrial and Applied Mathematics , December 2024. doi:10.1007/s13160-024-00681-3 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 152.081, 476.966, 182.344 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[5] Hideto Asashiba, Mickaël Buchet, Emerson G. Escolar, Ken Nakashima, and Michio Yoshiwaki. On Interval Decomposability of 2D Persistence Modules. Computational Geometry , 105–106:101879, August 2022. doi:10.1016/j.comgeo.2022.101879 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 112.231, 476.968, 152.456 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[6] Hideto Asashiba, Emerson G. Escolar, Ken Nakashima, and Michio Yoshiwaki. Approximation by Interval-Decomposables and Interval Resolutions of Persistence Modules. Journal of Pure and Applied Algebra , 227(10):107397, October 2023. arXiv:2207.03663 , doi: 10.1016/j.jpaa.2023.107397 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 13,
+      "bounding box" : [ 122.543, 92.305, 476.968, 112.605 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[7] Hideto Asashiba, Etienne Gauthier, and Enhao Liu. Interval Replacements of Persistence Modules, June 2024. arXiv:2403.08308 .",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "6",
+    "page number" : 14,
+    "bounding box" : [ 118.31, 223.738, 476.969, 722.319 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 18,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 122.543, 702.019, 476.963, 722.319 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[8] Hideto Asashiba and Enhao Liu. Interval Multiplicities of Persistence Modules, November 2024. arXiv:2411.11594 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 122.543, 682.094, 476.961, 702.393 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[9] Ulrich Bauer and Luis Scoccola. Generic Multi-Parameter Persistence Modules are Nearly Indecomposable, October 2023. arXiv:2211.15306 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 652.206, 476.967, 682.468 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[10] Håvard Bakke Bjerkevik. On the Stability of Interval Decomposable Persistence Modules. Discrete & Computational Geometry , 66(1):92–121, July 2021. doi:10.1007/ s00454-021-00298-0 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 622.318, 476.968, 652.58 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[11] Magnus Botnan and Michael Lesnick. Algebraic Stability of Zigzag Persistence Modules. Algebraic & Geometric Topology , 18(6):3133–3204, October 2018. doi:10.2140/agt.2018. 18.3133 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 592.43, 476.965, 622.692 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[12] Magnus Bakke Botnan. Interval Decomposition of Infinite Zigzag Persistence Modules. Proceedings of the American Mathematical Society , 145(8):3571–3577, January 2017. doi: 10.1090/proc/13465 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 552.579, 476.968, 592.804 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[13] Magnus Bakke Botnan, Steffen Oppermann, and Steve Oudot. Signed Barcodes for MultiParameter Persistence via Rank Decompositions. In LIPIcs, Volume 224, SoCG 2022 , volume 224, pages 19:1–19:18. Schloss Dagstuhl – Leibniz-Zentrum für Informatik, 2022. doi:10. 4230/LIPICS.SOCG.2022.19 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 522.692, 476.968, 552.954 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[14] Magnus Bakke Botnan, Steffen Oppermann, and Steve Oudot. Signed Barcodes for Multiparameter Persistence via Rank Decompositions and Rank-Exact Resolutions. Foundations of Computational Mathematics , September 2024. doi:10.1007/s10208-024-09672-9 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 502.766, 476.964, 523.066 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[15] Dan Burghelea and Tamal K. Dey. Topological Persistence for Circle-Valued Maps. Discrete & Computational Geometry , 50(1):69–98, July 2013. doi:10.1007/s00454-013-9497-x .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 472.878, 476.962, 503.141 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[16] Chen Cai, Woojin Kim, Facundo Memoli, and Yusu Wang. Elder-Rule-Staircodes for Augmented Metric Spaces. SIAM Journal on Applied Algebra and Geometry , 5(3):417–454, January 2021. doi:10.1137/20M1353605 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 452.953, 476.969, 473.253 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[17] Tamal K. Dey and Tao Hou. Fast Computation of Zigzag Persistence. LIPIcs, Volume 244, ESA 2022 , 244:43:1–43:15, 2022. doi:10.4230/LIPICS.ESA.2022.43 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 415.6, 476.967, 453.327 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[18] Tamal K. Dey, Woojin Kim, and Facundo Mémoli. Computing Generalized Rank Invariant for 2-Parameter Persistence Modules via Zigzag Persistence and Its Applications. Discrete & Computational Geometry , 71(1):67–94, January 2024. doi:10.1007/s00454-023-00584-z . ˜",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 396.972, 476.966, 423.054 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[19] Xiaowen Gao and Minghui Zhao. Isometry Theorem for Continuous Quiver of Type A , December 2024. arXiv:2412.12462 , doi:10.48550/arXiv.2412.12462 . 1",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 372.866, 476.962, 403.129 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[20] Eric J. Hanson and Job Daisie Rock. Decomposition of Pointwise Finite-Dimensional S Persistence Modules. Journal of Algebra and Its Applications , 23(03):2450054, March 2024. doi:10.1142/S0219498824500543 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 342.979, 476.968, 373.241 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[21] Woojin Kim and Facundo Mémoli. Generalized Persistence Diagrams for Persistence Modules over Posets. Journal of Applied and Computational Topology , 5(4):533–581, December 2021. doi:10.1007/s41468-021-00075-1 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 323.053, 476.963, 343.353 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[22] Michael Lesnick and Matthew Wright. Interactive Visualization of 2-D Persistence Modules, December 2015. arXiv:1512.00180 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 293.165, 476.967, 323.428 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[23] Francesco Sala and Olivier Schiffmann. Fock Space Representation of the Circle Quantum Group. International Mathematics Research Notices , 2021(22):17025–17070, November 2021. doi:10.1093/imrn/rnz268 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 243.352, 476.968, 293.54 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[24] Shunsuke Tada. A Computation of Bipath Persistent Homology and Bipath Persistence Diagrams. Seminar presented at Asia Pacific Seminar on Applied Topology and Geometry , September 2024. Slides available at https://shunsuketada1357.github.io/documents/ slide2024-09-20.pdf . Recording movie available at https://drive.google.com/drive/u/0/ folders/1MB4wFxrQe6ph9hBde8CLGWiBSYZya6Pf .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 118.31, 223.738, 476.965, 243.726 ],
+      "font" : "SFRM0800",
+      "font size" : 7.97,
+      "text color" : "[0.0]",
+      "content" : "[25] Oliver Vipond. Multiparameter Persistence Landscapes. Journal of Machine Learning Research , 21(61):1–38, 2020.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 626,
+    "page number" : 14,
+    "bounding box" : [ 130.265, 195.876, 434.557, 211.41 ],
+    "font" : "SFCC0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Institute of Geometry, Graz University of Technology, Graz, Austria Email address : alonsohernandez@tugraz.at"
+  }, {
+    "type" : "paragraph",
+    "id" : 627,
+    "page number" : 14,
+    "bounding box" : [ 118.31, 170.746, 476.968, 184.511 ],
+    "font" : "SFCC0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Department of Mathematics, Kyoto University, Kitashirakawa Oiwake-cho, Sakyoku, Kyoto 606-8502, Japan."
+  }, {
+    "type" : "paragraph",
+    "id" : 628,
+    "page number" : 14,
+    "bounding box" : [ 130.265, 159.015, 290.852, 166.275 ],
+    "font" : "SFTT0800",
+    "font size" : 7.97,
+    "text color" : "[0.0]",
+    "content" : "Email address : liu.enhao.b93@kyoto-u.jp"
+  } ]
+}
