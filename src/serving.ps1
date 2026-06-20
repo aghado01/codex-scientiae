@@ -29,6 +29,7 @@
 . "$PSScriptRoot/playbook.ps1"   # the repair recipes-as-data the work-order composer pools
 . "$PSScriptRoot/crawl.ps1"
 . "$PSScriptRoot/normalize.ps1"
+. "$PSScriptRoot/enrichment.ps1"
 
 function Read-Chunks([string]$Path) {
     [System.IO.File]::ReadLines($Path) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json }
@@ -92,6 +93,7 @@ function Get-IrSummary {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath)
     $chunks = @(Read-Chunks $ChunksPath)
     $reqPath = ($ChunksPath -replace '\.chunks\.jsonl$', '') + '.review-requests.jsonl'
+    $enrich  = Get-EnrichmentCounts (Get-EnrichablesFromChunks $chunks)
     [pscustomobject]@{
         chunks   = $chunks.Count
         pages    = (@($chunks.page | Sort-Object -Unique)).Count
@@ -103,7 +105,14 @@ function Get-IrSummary {
         unrecoverable = @($chunks | Where-Object { $_.fidelity -eq 'unrecoverable' }).Count
         hotspots = ($chunks | Where-Object { $_.corruption_type -and $_.fidelity -in 'suspect','needs_review','needs_repair' } | Group-Object corruption_type | ForEach-Object { "$($_.Name)=$($_.Count)" }) -join ' '
         review_pending = $(if (Test-Path -LiteralPath $reqPath) { @([System.IO.File]::ReadLines($reqPath) | Where-Object { $_ }).Count } else { 0 })
+        enrichable     = $enrich.enrichable
+        enrichable_buckets = "safe-wrap=$($enrich.safe_wrap) lossy=$($enrich.lossy) auto=$($enrich.auto_tier) review=$($enrich.review_tier)"
     }
+}
+
+function Get-Enrichables {
+    [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath)
+    return @(Get-EnrichablesFromChunks @(Read-Chunks $ChunksPath))
 }
 
 function Group-MathHotspots($chunks) {

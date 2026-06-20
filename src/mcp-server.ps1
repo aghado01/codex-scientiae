@@ -15,7 +15,7 @@
   -Root defaults to <repo>/ingestion (the raw-input boundary); which subtree to survey is a
   per-call concern, carried by the optional `scope` arg on list_documents/get_batch_summary/dispatch.
 
-  Tools: 21 paper-addressed membrane ops (list_documents … request_review).
+  Tools: 22 paper-addressed membrane ops (list_documents … get_enrichables).
   Prompts: restoration_procedure (serves PROCEDURE.md).
 #>
 
@@ -50,8 +50,11 @@ $Tools = @(
        description = 'The one sanctioned holistic read. The membrane is body-blind by design — the repair loop works through scoped slices and never re-reads the whole paper. Call this ONCE at the end, after repairs are applied: it assembles the current deliverable and returns the full body + references sidecar for a final spot-check, alongside the still-flagged chunks (id + reason) so the read is targeted. Content IS the return here. Anything you catch, fix with propose_edit on the named chunk, then review again.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
     @{ name = 'get_summary'
-       description = 'Body-blind metadata map of one document: title, zones, section count, repaired/flagged counts, remaining hotspots by type.'
+       description = 'Body-blind metadata map of one document: title, zones, section count, repaired/flagged counts, remaining hotspots by type, enrichable count (orthogonal to flagged/pending).'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string'; description = 'document name, no extension' } }; required = @('paper') } }
+    @{ name = 'get_enrichables'
+       description = 'Post-fidelity enrichment lane: surface unwrapped ASCII-math candidates from prose chunk content (faithful, math_dirt<2), bucketed safe-wrap vs lossy and labeled auto/review/escalate. Separate from dispatch; does not move flagged/pending. Tier 1 is propose-only — worker confirms each safe-wrap via propose_edit.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
     @{ name = 'get_hotspots'
        description = 'The graded work-list for a document: each flagged chunk with id, page, grade, corruption_type, section, agreement (0-1 structural-ambiguity score, lower = more disputed; a span takes the min over its members), preview. Hotspots may span multiple chunks, returning span (array of ids) and kind (e.g. fragmented_formula).'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; type = @{ type = 'string'; description = 'optional corruption_type filter' } }; required = @('paper') } }
@@ -148,6 +151,7 @@ function Invoke-Tool([string]$name, $arguments) {
         'finalize'        { $out = Invoke-Finalize  -ChunksPath (Resolve-Paper $arguments.paper) }
         'review_document' { $out = Get-FinalReview  (Resolve-Paper $arguments.paper) }
         'get_summary'  { $out = Get-IrSummary -ChunksPath (Resolve-Paper $arguments.paper) }
+        'get_enrichables' { $out = @(Get-Enrichables -ChunksPath (Resolve-Paper $arguments.paper)) }
         'get_hotspots' {
             $p = Resolve-Paper $arguments.paper
             $out = if ($arguments.type) { Get-IrHotspots -ChunksPath $p -Type ([string]$arguments.type) } else { Get-IrHotspots -ChunksPath $p }
