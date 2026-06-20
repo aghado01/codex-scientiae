@@ -204,7 +204,7 @@
 
 ---
 
-## [Chapter 9](MPH-REF.md)
+## [Multiparameter Persistence Chapter 9](MPH-REF.md)
 
 - [Multiparameter persistence](MPH-REF.md#multiparameter-persistence)
 - [9.1 Persistence modules indexed by a poset](MPH-REF.md#9-1-persistence-modules-indexed-by-a-poset)

@@ -1,0 +1,2667 @@
+{
+  "file name" : "2412.02591v2.pdf",
+  "number of pages" : 18,
+  "author" : "",
+  "title" : "",
+  "creation date" : "D:20250401010808Z",
+  "modification date" : "D:20250401010808Z",
+  "kids" : [ {
+    "type" : "heading",
+    "id" : 305,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 111.649, 664.89, 500.354, 679.952 ],
+    "heading level" : 1,
+    "font" : "CMR17",
+    "font size" : 17.215,
+    "text color" : "[0.0]",
+    "content" : "Persistent (Co)Homology in Matrix Multiplication Time"
+  }, {
+    "type" : "paragraph",
+    "id" : 306,
+    "page number" : 1,
+    "bounding box" : [ 205.836, 637.02, 405.667, 649.085 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "Dmitriy Morozov 1 and Primoz Skraba 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 308,
+    "page number" : 1,
+    "bounding box" : [ 201.293, 618.209, 205.528, 625.175 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 307,
+    "page number" : 1,
+    "bounding box" : [ 128.881, 599.162, 483.123, 623.557 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "1 Lawrence Berkeley National Laboratory 2 School of Mathematical Sciences, Queen Mary University of London"
+  }, {
+    "type" : "paragraph",
+    "id" : 309,
+    "page number" : 1,
+    "bounding box" : [ 272.673, 567.281, 339.333, 577.729 ],
+    "font" : "CMR12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "April 1, 2025"
+  }, {
+    "type" : "heading",
+    "id" : 310,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 285.706, 531.98, 326.294, 539.85 ],
+    "heading level" : 1,
+    "font" : "CMBX9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Abstract"
+  }, {
+    "type" : "paragraph",
+    "id" : 311,
+    "page number" : 1,
+    "bounding box" : [ 96.907, 417.74, 515.098, 524.206 ],
+    "font" : "CMR9",
+    "font size" : 8.966,
+    "text color" : "[0.0]",
+    "content" : "Most algorithms for computing persistent homology do so by tracking cycles that represent homology classes. There are many choices of such cycles, and specific choices have found different uses in applications. Although it is known that persistence diagrams can be computed in matrix multiplication time for the more general case of zigzag persistent homology [1], it is not clear how to extract cycle representatives, especially if specific representatives are desired. In this paper, we provide the same matrix multiplication bound for computing representatives for the two choices common in applications in the case of ordinary persistent (co)homology. We first provide a fast version of the reduction algorithm, which is simpler than the algorithm in [1], but returns a different set of representatives than the standard algorithm [2]. We then give a fast version of a variant called the row algorithm [3], which returns the same representatives as the standard algorithm."
+  }, {
+    "type" : "heading",
+    "id" : 312,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 383.755, 185.027, 396.347 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "1 Introduction"
+  }, {
+    "type" : "paragraph",
+    "id" : 313,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 279.097, 540.004, 371.489 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Persistent homology [2] is one of the core techniques in topological data analysis. Because of its theoretical importance as well as its wide use in applications, a lot of work has been dedicated to its efficient computation both in theory [1, 3, 4, 5, 6] and in practice [7, 8, 9, 10, 11, 12]. On the theoretical side, the connection between persistent homology and Gaussian elimination was established early on [13], and as a result it has been long accepted that persistence can be computed in matrix multiplication time. Milosavljevic et al. [1] gave an explicit algorithm for the more general case of zigzag persistence [14, 15]. The main difficulty in applying standard linear algebra techniques is the strict constraint on the row and column ordering of the boundary matrix."
+  }, {
+    "type" : "paragraph",
+    "id" : 314,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 219.321, 540.001, 275.878 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As persistent homology evolved as a field, the significance of its formulation as an R = DV decomposition [16] of the input boundary matrix D has become clear. The cycles and chains recovered from this decomposition found many uses in attributing topological features to the input data [17, 18, 19]. However, it is not immediately clear from the algorithm in [1] how to recover the matrices R and V necessary in applications."
+  }, {
+    "type" : "paragraph",
+    "id" : 315,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 135.635, 540.004, 216.072 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Instead of trying to deconstruct the algorithm of Milosavljevic et al. [1], we simplify it for the case of ordinary persistence. We describe how to compute two different forms of the R = DV decomposition that come up in applications lazy and exhaustive reductions which lets us recover specific cycle representatives in matrix multiplication time. As a benefit, because of its simpler setting, the algorithms in this paper are greatly simplified, compared to [1]. Additionally, using Dey and Hou’s fast zigzag construction [20], which reduces computation of zigzag persistence to ordinary persistence; the algorithms in this paper give another way to compute zigzag persistence in matrix multiplication time."
+  }, {
+    "type" : "heading",
+    "id" : 316,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 72.0, 707.286, 189.708, 719.878 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "2 Preliminaries"
+  }, {
+    "type" : "paragraph",
+    "id" : 317,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 674.359, 540.001, 695.02 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We are concerned with the persistent homology of a filtration, an increasing sequence of simplicial complexes indexed by the natural numbers N :"
+  }, {
+    "type" : "formula",
+    "id" : 318,
+    "page number" : 2,
+    "bounding box" : [ 238.963, 651.518, 372.324, 661.147 ],
+    "content" : "\\emptyset = K _ { 0 } \\subset K _ { 1 } \\subset \\dots \\subset K _ { N } = K"
+  }, {
+    "type" : "paragraph",
+    "id" : 319,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 582.703, 540.002, 639.23 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "While persistent homology can be defined more generally, from an algorithmic perspective this is sufficiently general as nearly all considered cases may be reduced to this setting. We further assume that | K i − K i − 1 | = 1, or equivalently that the filtration is a total order, i.e., each step in the filtration adds a single cell. If the initial filtration does not satisfy this requirement, and defines only a partial order, we may always extend it to an arbitrary compatible total order, e.g., breaking ties by lexicographical ordering and dimension."
+  }, {
+    "type" : "paragraph",
+    "id" : 320,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 565.07, 308.317, 573.814 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Notation Throughout, we use the following notation:"
+  }, {
+    "type" : "list",
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 86.945, 456.893, 540.005, 556.39 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 86.945, 525.536, 540.005, 556.39 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• Matrices are denoted by bold capital letters, e.g., M , with sub-matrices indexed by square brackets, e.g., the j -th column is M [ · ,j ], the i -th row is M [ i, · ].",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 86.945, 500.729, 539.999, 524.51 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• Indexing starts at 1 and indices may be indexed by sets, e.g., A = { 1 ,...,k } , M [ · ,A ] refers to the first k columns. Note that the set may not refer to contiguous columns/rows.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 2,
+      "bounding box" : [ 86.945, 456.893, 540.003, 492.629 ],
+      "font" : "SFRM1000",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "• We consider permutations implicitly, so ( P · M )[ A, · ] refers to the rows indexed after the permutation P is applied to matrix M . For all the algorithms, performing an explicit permutation, then undoing it, does not affect the asymptotic running time.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 324,
+    "level" : "Doctitle",
+    "page number" : 2,
+    "bounding box" : [ 72.0, 429.202, 233.347, 439.696 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2.1 Persistence Algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 325,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 351.428, 540.003, 419.91 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For completeness, we recount the standard persistence algorithm, see [2], [13], and [21] for a more complete description. Let D denote the boundary operator, which we represent as an n × n -matrix over some fixed (finite) field F . The rows (top-down) and columns (left-right) are ordered by appearance in the filtration. Hence, the i -th row and column represents the simplex σ = K i − K i − 1 and D [ · ,i ] represents the boundary of σ respectively. The goal is to compute the RV -decomposition [16]. That is, find matrices R and V such that"
+  }, {
+    "type" : "formula",
+    "id" : 326,
+    "page number" : 2,
+    "bounding box" : [ 281.277, 339.465, 330.724, 348.209 ],
+    "content" : "R = D \\cdot V ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 327,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 309.585, 468.68, 331.821 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where R is a column-reduced matrix and V is full-rank upper-triangular; we let U = V − 1 . We introduce the helper function"
+  }, {
+    "type" : "formula",
+    "id" : 328,
+    "page number" : 2,
+    "bounding box" : [ 242.855, 280.026, 369.146, 296.403 ],
+    "content" : "\\text {low} ( j ) = \\arg \\max _ { i } R [ i , j ] \\neq 0 ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 329,
+    "page number" : 2,
+    "bounding box" : [ 350.88, 287.809, 350.88, 296.373 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 330,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 236.11, 540.001, 268.764 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "which is defined whenever R [ · ,j ] ̸ = 0 . When defined, it returns the largest row index i where the column is non-zero; we refer to these lowest non-zero elements as pivots . Throughout this paper, low always applies to R . The persistence diagram is then given by:"
+  }, {
+    "type" : "paragraph",
+    "id" : 331,
+    "page number" : 2,
+    "bounding box" : [ 217.126, 260.17, 217.126, 268.734 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "formula",
+    "id" : 332,
+    "page number" : 2,
+    "bounding box" : [ 152.914, 214.192, 459.087, 222.936 ],
+    "content" : "\\text {dgm} = \\{ ( i , j ) \\ | \\ i = \\text {low} ( j ) \\} \\ \\cup \\ \\{ ( i , \\infty ) \\ | \\ \\text {R} [ \\cdot , i ] = 0 \\text { and } i \\neq \\text {ow} ( j ) \\ \\forall j \\} \\, ."
+  }, {
+    "type" : "paragraph",
+    "id" : 333,
+    "page number" : 2,
+    "bounding box" : [ 396.738, 214.342, 396.738, 222.906 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 334,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 108.588, 540.003, 200.988 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The standard algorithm is given by a variant of Gaussian elimination. Algorithm 1, which we call the lazy reduction , reduces each column by considering pivots in the columns to the left. In each step of the loop, it removes the lowest non-zero entry until a new pivot is found or the entire column is zeroed out. A straightforward analysis gives a running time bound of O ( n 3 ). In [22], it was shown that this bound is tight by giving an example filtration where this algorithm takes cubic time. The updates of matrix V follow those of matrix R . The updates in matrix U undo the updates in V to maintain U · V = I . Because the columns of R are processed from left to right, during the update of matrix U , the row U [ j, · ] has a single (diagonal) element. Therefore, the update in U is equivalent to just setting the entry U [ j ′ ,j ] to α ."
+  }, {
+    "type" : "paragraph",
+    "id" : 335,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 447.464, 442.102, 716.572 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 1 Standard Persistence Algorithm (Lazy reduction) 1: R = D 2: V = I n , U = I n 3: for j = 1 to n do 4: while R [ · ,j ] ̸ = 0 and ∃ j ′ < j such that low ( j ) = low ( j ′ ) do 5: i ← low ( j ) 6: α ← R [ i,j ] / R [ i,j ′ ] 7: R [ · ,j ] ← R [ · ,j ] − α · R [ · ,j ′ ] 8: V [ · ,j ] ← V [ · ,j ] − α · V [ · ,j ′ ] 9: U [ j ′ , · ] ← U [ j ′ , · ] + α · U [ j, · ] (equivalently, U [ j ′ ,j ] ← α ) Algorithm 2 “Look-ahead” Variant of Standard Persistence (Exhaustive reduction) 1: R = D 2: V = I n , U = I n 3: for j = 1 to n do 4: if low ( j ) is defined then 5: i ← low ( j ) 6: for j ′ > j and R [ low ( j ) ,j ′ ] ̸ = 0 do 7: α ← R [ i,j ′ ] / R [ i,j ] 8: R [ · ,j ′ ] ← R [ · ,j ′ ] − α · R [ · ,j ] 9: V [ · ,j ′ ] ← V [ · ,j ′ ] − α · V [ · ,j ] 10: U [ j, · ] ← U [ j, · ] + α · U [ j ′ , · ] ( not the same as U [ j,j ′ ] ← α !)"
+  }, {
+    "type" : "paragraph",
+    "id" : 336,
+    "page number" : 3,
+    "bounding box" : [ 162.22, 658.403, 162.22, 666.967 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 337,
+    "page number" : 3,
+    "bounding box" : [ 242.449, 495.434, 242.449, 503.998 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 338,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 338.354, 540.003, 418.799 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We introduce another variant of persistence computation used in applications. This one “looks ahead” and eliminates as many elements from the matrix as it can; so we call it the exhaustive reduction . In Algorithm 2, by the time a column is considered, it is already reduced. It is then applied to all columns to the right, zeroing out the entire row. In this way, when a column is processed, all previous pivots have already been applied. Because column R [ · ,j ′ ] may have already been used to reduce another column R [ · ,j ′′ ], when an update is applied to it, the row U [ j ′ , · ] need not consist of a single diagonal element. Hence, the row update in matrix U is not equivalent to just setting U [ j,j ′ ] to α , like in the lazy version of the algorithm."
+  }, {
+    "type" : "paragraph",
+    "id" : 339,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 263.796, 540.004, 332.308 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lazy vs. Exhaustive. The algorithms based on the two reductions are in a sense the extreme cases: lazy reduction reduces columns only when necessary; and the exhaustive reduction reduces them as much as possible. To illustrate the difference, in the exhaustive reduction, the entire row to the right of a pivot will be zeroed out, whereas in the case of the lazy reduction, only those columns will be zeroed out which have a conflicting pivot in the same row. There are, of course, any number of possible other reductions between these but we do not know of any applications that rely on them."
+  }, {
+    "type" : "paragraph",
+    "id" : 340,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 219.96, 540.002, 252.607 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Remark 2.1. As noted in [3, Section 3.4], persistent cohomology can be computed by performing the same algorithm on the anti-transpose of D . As such all the algorithms in this paper can compute persistent cohomology."
+  }, {
+    "type" : "heading",
+    "id" : 341,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 72.0, 191.681, 232.499, 202.175 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "2.2 Cycle Representatives"
+  }, {
+    "type" : "paragraph",
+    "id" : 342,
+    "page number" : 3,
+    "bounding box" : [ 72.0, 137.817, 540.002, 182.418 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Given an R = DV decomposition, we distinguish between two types of simplices in the filtration: positive simplices create new homology classes; negative simplices destroy them. From the matrix decomposition, one can recover a set of cycle representatives of persistent homology. There are two sources of this information, although with different content."
+  }, {
+    "type" : "paragraph",
+    "id" : 343,
+    "page number" : 3,
+    "bounding box" : [ 84.177, 103.936, 540.002, 124.635 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1. V matrix: The columns of positive simplices in V correspond to zero columns in the reduced matrix R . These columns in V are cycles, by definition."
+  }, {
+    "type" : "paragraph",
+    "id" : 344,
+    "page number" : 4,
+    "bounding box" : [ 84.177, 696.18, 539.998, 716.871 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "2. R matrix: The columns of negative simplices in R are non-zero. They store linear combinations of boundaries, which are cycles (at the time of their birth) that eventually die in the filtration."
+  }, {
+    "type" : "paragraph",
+    "id" : 345,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 614.486, 540.004, 682.998 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The cycles one recovers from matrix R differ between the lazy and exhaustive reductions. What we call exhaustive reduction, Cohen-Steiner et al. [18] called total reduction. They show that these cycles form a lexicographically optimal basis, which in turn can be used to triangulate point cloud data. Nigmetov and Morozov [19] use the lazy reduction specifically, the columns and rows from matrices V and U to recover what they called “critical sets,” subsets of simplicial complexes affected by optimization with the loss formulated in terms of a persistence diagram."
+  }, {
+    "type" : "paragraph",
+    "id" : 346,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 551.876, 540.0, 608.433 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Minimum Spanning Acycle Basis. The negative simplices in the filtration represent a minimal spanning acycle (MSA) [23, 24]. The columns in V obtained from either lazy or exhaustive reduction or any reduction that never adds columns of positive simplices to other columns have the form   τ ∈ MSA λ τ τ + λ σ σ . The support of the chain is one (positive) simplex σ plus a linear combination of simplices in the minimum spanning acycle."
+  }, {
+    "type" : "paragraph",
+    "id" : 347,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 531.943, 464.321, 540.687 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 2.2. The representatives from V are the same for lazy and exhaustive reduction."
+  }, {
+    "type" : "paragraph",
+    "id" : 348,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 464.205, 540.003, 520.761 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. Which columns of R are non-zero does not depend on the algorithm used; the set of negative simplices only depends on the order of the filtration. We observe that the boundaries of the negative simplices form a basis (since their pivots are in distinct rows). By definition, the boundary of a positive simplex may be expressed as a linear combination of boundaries of negative simplices. Since the boundaries of the negative simplices form a basis, this linear combination is unique."
+  }, {
+    "type" : "paragraph",
+    "id" : 349,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 408.414, 540.001, 453.015 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Death Basis. An alternative is to get cycle representatives directly from the R matrix. Its non-zero columns represent cycles because multiplying D · R = 0. This follows directly since R = D · V , so D · R = D · D · V = 0 , since D · D = 0 . These columns give cycle representatives for all finite classes, i.e., those homology classes which eventually die."
+  }, {
+    "type" : "paragraph",
+    "id" : 350,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 316.749, 540.005, 397.225 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Remark 2.3. Following [3], we can use the same approach for cohomology applying the same algorithms to D ⊥ , the anti-transpose of D to obtain the decomposition R ⊥ = D ⊥ · V ⊥ . The cocycle representatives are then given by columns in V ⊥ . To see that these are cocycles, we observe that by construction, they map to zero via the coboundary operator D ⊥ before the corresponding death time, i.e., below the pivot in the corresponding column in R ⊥ , as we have reversed the indexing with the anti-transpose. Likewise, the cocycle representatives of essential cocycles are given by the columns of V ⊥ whose: corresponding columns in R ⊥ are zero and they must not be coboundaries, i.e., the corresponding rows in R ⊥ must not contain pivots."
+  }, {
+    "type" : "heading",
+    "id" : 351,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 72.0, 282.963, 244.111, 295.555 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "3 Matrix Preliminaries"
+  }, {
+    "type" : "paragraph",
+    "id" : 352,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 261.991, 537.257, 270.697 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We recount a few classical results on matrix multiplication. We assume the matrices are over some field F ."
+  }, {
+    "type" : "paragraph",
+    "id" : 353,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 230.11, 539.996, 250.801 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3.1. Let B be an n × k matrix and C be a k × k matrix. The product B · C can be computed in O ( nk ω − 1 ) -time."
+  }, {
+    "type" : "paragraph",
+    "id" : 354,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 207.321, 315.275, 220.773 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. Divide B into ⌈ n k ⌉ sub-matrices B i of size k × k :"
+  }, {
+    "type" : "formula",
+    "id" : 355,
+    "page number" : 4,
+    "bounding box" : [ 222.789, 143.698, 389.211, 197.367 ],
+    "content" : "B \\cdot C = \\left [ \\begin{array} { c } B _ { 1 } \\\\ \\vdots \\\\ B _ { \\lceil n / k \\rceil } \\end{array} \\right ] \\cdot C = \\left [ \\begin{array} { c } B _ { 1 } \\cdot C \\\\ B _ { 2 } \\cdot C \\\\ \\vdots \\\\ B _ { \\lceil n / k \\rceil } \\cdot C \\end{array} \\right ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 356,
+    "page number" : 4,
+    "bounding box" : [ 72.0, 108.089, 539.999, 133.496 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Each B i · C is a product of two k × k matrices, which by definition takes O ( k ω ) time. There are ⌈ n k ⌉ products to compute yielding a running time of O   n +1 k k ω   = O ( nk ω − 1 )."
+  }, {
+    "type" : "paragraph",
+    "id" : 357,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 684.225, 540.003, 716.871 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Column Operations via Matrix Multiplication. Here we relate matrix multiplication with the reduction steps used in the persistence algorithms, i.e., representing column operations via matrix multiplication. Assume that we have the following block matrix,"
+  }, {
+    "type" : "formula",
+    "id" : 358,
+    "page number" : 5,
+    "bounding box" : [ 194.542, 662.307, 417.458, 672.678 ],
+    "content" : "\\left [ \\ B \\ | \\ C \\ \\right ] = \\left [ \\ b ( 1 ) \\ \\dots \\ \\ b ( n ) \\ | \\ c ( 1 ) \\ \\dots \\ \\ c ( m ) \\ \\right ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 359,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 628.434, 540.002, 650.67 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where b ( i ) and c ( j ) are (column) vectors. Reducing c ( j ) which we denote c ′ ( j ), using the vectors b ( i ), is expressed as a linear combination"
+  }, {
+    "type" : "formula",
+    "id" : 360,
+    "page number" : 5,
+    "bounding box" : [ 247.227, 603.856, 364.774, 626.806 ],
+    "content" : "c ^ { \\prime } ( j ) = c ( j ) + \\sum _ { i } \\lambda _ { i } ( j ) b ( i ) ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 361,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 586.92, 454.139, 596.579 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where λ i ( j ) are the coefficients. Reducing only the j -th column of C may be written as"
+  }, {
+    "type" : "formula",
+    "id" : 362,
+    "page number" : 5,
+    "bounding box" : [ 227.154, 553.146, 384.846, 576.296 ],
+    "content" : "\\left [ B \\ c ^ { \\prime } ( j ) \\right ] = \\left [ B \\ c ( j ) \\right ] \\cdot \\left [ \\begin{matrix} \\mathbf I & \\lambda ( j ) \\\\ 0 & \\mathbf 1 _ { j } \\end{matrix} \\right ] ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 363,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 520.089, 540.0, 540.788 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where 1 j is a column vector where the j -th entry is 1 and zero everywhere else. If we consider Λ [ i,j ] := λ i ( j ) , we can rewrite the reduction of C by"
+  }, {
+    "type" : "formula",
+    "id" : 364,
+    "page number" : 5,
+    "bounding box" : [ 240.717, 486.869, 371.283, 509.104 ],
+    "content" : "[ B \\ C ^ { \\prime } ] = [ B \\ C ] \\cdot \\left [ _ { 0 } ^ { I } \\ \\overset { \\Lambda } { I } \\right ] ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 365,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 464.834, 309.125, 475.122 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "or equivalently, the reduced matrix is C ′ = C − B · Λ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 366,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 444.909, 467.115, 453.653 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 3.2. Multiplying a permutation matrix with an n × m matrix, takes O ( nm ) time."
+  }, {
+    "type" : "paragraph",
+    "id" : 367,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 424.991, 540.002, 433.697 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. As a permutation matrix rewrites each element once, the total number of elements gives the bound."
+  }, {
+    "type" : "heading",
+    "id" : 368,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 72.0, 379.241, 236.125, 391.833 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "4 Column Algorithms"
+  }, {
+    "type" : "paragraph",
+    "id" : 369,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 346.306, 539.996, 366.975 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Here we describe the algorithm in [1] for the special case of classical persistent homology. To aid in exposition, we first recall the Schur complement . Given a block matrix"
+  }, {
+    "type" : "formula",
+    "id" : 370,
+    "page number" : 5,
+    "bounding box" : [ 280.865, 312.171, 331.135, 335.321 ],
+    "content" : "\\begin{bmatrix} B _ { 1 } & C _ { 1 } \\\\ B _ { 2 } & C _ { 2 } \\end{bmatrix} ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 371,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 279.675, 540.0, 300.366 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "assuming B 2 is non-singular, we can compute an updated matrix where the rows corresponding to B 2 are zeroed out by the following transformation:"
+  }, {
+    "type" : "formula",
+    "id" : 372,
+    "page number" : 5,
+    "bounding box" : [ 192.094, 245.089, 540.0, 268.894 ],
+    "content" : "\\begin{bmatrix} B _ { 1 } & C _ { 1 } \\\\ B _ { 2 } & C _ { 2 } \\end{bmatrix} \\begin{bmatrix} I & - B _ { 2 } ^ { - 1 } C _ { 2 } \\\\ 0 & I \\end{bmatrix} = \\begin{bmatrix} B _ { 1 } & C _ { 1 } - B _ { 1 } B _ { 2 } ^ { - 1 } C _ { 2 } \\\\ B _ { 2 } & 0 \\end{bmatrix}"
+  }, {
+    "type" : "paragraph",
+    "id" : 373,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 224.61, 344.509, 237.622 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where C 1 − B 1 B − 1 2 C 2 is referred to as the Schur complement."
+  }, {
+    "type" : "paragraph",
+    "id" : 374,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 192.73, 539.999, 217.697 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Observation 4.1. The matrix B − 1 2 C 2 encodes the column operations required to zero out C 2 , that is, B − 1 2 C 2 = Λ ."
+  }, {
+    "type" : "paragraph",
+    "id" : 375,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 162.935, 539.999, 183.596 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "A key fact we will use in the algorithm is that matrix inversion has the same algorithmic complexity as matrix multiplication."
+  }, {
+    "type" : "paragraph",
+    "id" : 376,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 131.054, 540.003, 151.745 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 4.2. Inverting a (square) non-singular (upper or lower) triangular matrix can be done in matrix multiplication time."
+  }, {
+    "type" : "paragraph",
+    "id" : 377,
+    "page number" : 5,
+    "bounding box" : [ 72.0, 111.129, 455.06, 119.835 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. See Appendix A for a simplified proof for the special case of triangular matrices."
+  }, {
+    "type" : "paragraph",
+    "id" : 378,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 707.828, 265.23, 716.572 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 3 Column Algorithm( A = [ i,j ])"
+  }, {
+    "type" : "paragraph",
+    "id" : 379,
+    "page number" : 6,
+    "bounding box" : [ 73.134, 514.716, 540.003, 702.78 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1: if i = j then ▷ leaf 2: if R [ · ,i ] = 0 then ▷ If no pivot exists 3: ℓ ← arg min ℓ>n R [ · ,ℓ ] ̸ = 0 ▷ find the next pivot in I m + n 4: Permute columns i and ℓ 5: Z ← Z ∪ i 6: else 7: B ← [ i, ( i + j ) / 2) ▷ left child 8: C ← [( i + j ) / 2 ,j ] ▷ right child 9: Recurse on B 10: Apply updates from columns B to C : 11: L ← ⟨ low ( ℓ ) : ℓ ∈ B ⟩ ▷ Implicit permutation; L preserves order 12: Λ ← R [ L,B ] − 1 · R [ L,C ] ▷ A − 1 2 B 2 13: R [ ¯ L,C ] ← R [ ¯ L,C ] − R [ ¯ L,B ] · Λ ▷ Apply B to C ; Schur update ( k × k ) · ( k × n ) 14: R [ L,C ] = 0 15: V [ · ,C ] ← V [ · ,C ] − V [ · ,B ] · Λ ▷ Matching update in V 16: Recurse on C"
+  }, {
+    "type" : "paragraph",
+    "id" : 380,
+    "page number" : 6,
+    "bounding box" : [ 215.627, 670.275, 215.627, 678.839 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "heading",
+    "id" : 381,
+    "level" : "Subtitle",
+    "page number" : 6,
+    "bounding box" : [ 72.0, 479.437, 261.032, 489.931 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "4.1 Fast Exhaustive Algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 382,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 413.618, 540.002, 470.145 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We present a fast version of exhaustive reduction in Algorithm 3. The general structure follows Algorithm 2. However, rather than apply the pivots when we find them, we apply them in batches via the Schur complement. We first augment the boundary matrix with an identity matrix, which is of size at least n , for reasons we shall describe below. To simplify notation, we assume n is a power of 2. If it is not, we can set the size of the identity matrix to m + n with m < n such that m + 2 n = 2 x . Therefore, our initial matrices are:"
+  }, {
+    "type" : "formula",
+    "id" : 383,
+    "page number" : 6,
+    "bounding box" : [ 220.085, 379.475, 391.916, 402.624 ],
+    "content" : "R = \\left [ \\begin{matrix} D & 0 \\\\ 0 & I _ { m + n } \\end{matrix} \\right ] , \\quad V = I _ { m + 2 n } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 384,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 298.235, 540.004, 367.64 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Throughout the algorithm, we implicitly perform two types of permutations by taking appropriate subsets of rows and columns. The first are column permutations. To ensure that the appropriate submatrices are invertible, we require that after processing k columns of R , there are k pivots, or, equivalently, that the matrix corresponding to the processed columns is full (column) rank. Because cycles reduce to zero columns, the if-statement in Line 2 permutes a zero column from R with a non-zero column from the identity matrix I m + n , and records the indices of such columns in list Z , to eventually undo the permutation. 1"
+  }, {
+    "type" : "paragraph",
+    "id" : 385,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 250.414, 540.003, 297.483 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We must also consider row permutations. To apply Theorem 4.2, we must find the inverse R − [ L,B ] in Line 12, which is used in the Schur complement. We construct a sequence L = ⟨ low R [ · ,ℓ ] : ℓ ∈ B ⟩ of the pivot rows in columns B . Denoting by ¯ L the sequence of rows outside of L , we denote a permutation that places rows L below ¯ L as P L : ¯"
+  }, {
+    "type" : "formula",
+    "id" : 386,
+    "page number" : 6,
+    "bounding box" : [ 259.169, 228.072, 540.0, 251.26 ],
+    "content" : "( P _ { L } \\cdot R ) = \\begin{bmatrix} R [ \\bar { L } , \\cdot ] \\\\ R [ L , \\cdot ] \\end{bmatrix} . \\quad & ( 2 )"
+  }, {
+    "type" : "paragraph",
+    "id" : 387,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 210.048, 323.533, 218.754 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "See Figure 2(b-c). The permutation is explicitly given by,"
+  }, {
+    "type" : "formula",
+    "id" : 388,
+    "page number" : 6,
+    "bounding box" : [ 184.366, 187.206, 427.634, 196.866 ],
+    "content" : "P _ { L } \\colon \\text {low} ( B ( i ) ) \\mapsto m + n - | B | + i \\quad \\text {for } i = 1 , \\dots , | B |"
+  }, {
+    "type" : "paragraph",
+    "id" : 389,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 166.212, 279.73, 174.918 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where B ( i ) is the i -th entry of the indices in B ."
+  }, {
+    "type" : "paragraph",
+    "id" : 390,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 145.363, 540.001, 155.023 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 4.3. After permuting the rows by P L , the bottom-left k × k matrix is lower triangular, where k = | L | ."
+  }, {
+    "type" : "paragraph",
+    "id" : 391,
+    "page number" : 6,
+    "bounding box" : [ 72.0, 102.451, 540.002, 135.067 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We delay the proof until after the description of the algorithm. We now follow a recursion: we split matrix R into the first half of the columns denoted by B and the second half denoted by C . We proceed to call the algorithm on the first half of the matrix. Once we reach a leaf in the recursion tree (shown in Figure 3), the matrix consists of a single column. The key invariant is that whenever we reach a leaf, the corresponding column is reduced with respect to all the columns which come prior to it in the filtration. For the first column, this is tautologically true and we delay the proof for the general case until later."
+  }, {
+    "type" : "image",
+    "id" : 392,
+    "page number" : 7,
+    "bounding box" : [ 70.333, 547.212, 541.402, 693.595 ],
+    "description" : "The image is a bar graph that shows the results of a survey. The graph has four horizontal bars, each representing a different category. The bars are colored blue, orange, green, and purple. The x-axis is labeled a and the y-axis is labeled b. The bars are arranged in a vertical sequence from left to right, with each bar corresponding to a different category. ### Description of the Bar Graph: 1. **Title and Labels**: - The title of the graph is Bar Graph: Results of a Survey. - The labels on the bars are a, b, c, and d. 2. **Bars and Colors**: - The horizontal bars are blue, orange, green, and purple. - The x-axis is labeled a and the y-axis is labeled b. 3. **Bars and Colors**: - The horizontal bars are blue, orange",
+    "source" : "2412.02591v2/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 393,
+    "page number" : 7,
+    "bounding box" : [ 203.011, 682.587, 208.198, 691.293 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "k"
+  }, {
+    "type" : "paragraph",
+    "id" : 394,
+    "page number" : 7,
+    "bounding box" : [ 231.113, 682.587, 236.3, 691.293 ],
+    "font" : "CMMI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "k"
+  }, {
+    "type" : "paragraph",
+    "id" : 395,
+    "page number" : 7,
+    "bounding box" : [ 135.503, 642.174, 145.812, 652.668 ],
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "D"
+  }, {
+    "type" : "paragraph",
+    "id" : 396,
+    "page number" : 7,
+    "bounding box" : [ 113.795, 587.167, 118.804, 597.661 ],
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "I"
+  }, {
+    "type" : "paragraph",
+    "id" : 397,
+    "page number" : 7,
+    "bounding box" : [ 121.641, 549.162, 134.371, 557.868 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 398,
+    "page number" : 7,
+    "bounding box" : [ 238.464, 549.162, 251.748, 557.868 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 399,
+    "page number" : 7,
+    "bounding box" : [ 359.398, 549.162, 371.574, 557.868 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 400,
+    "page number" : 7,
+    "bounding box" : [ 478.288, 549.162, 491.572, 557.868 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 401,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 449.702, 540.003, 518.184 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 1: An example of the column permutation in the exhaustive algorithm. (a) Initially, we append an identity matrix to the boundary matrix. (b) Assume we have processed the first k columns. The blue entries represent non-zero entries, and the dark blue boxes represent the pivots. To apply these pivots to next k columns (shown in gray), the first k columns must contain k pivots. (c-d) If there is a a zero column (shown in orange), we transpose it with the first non-zero entry in the appended identity matrix, ensuring the processed k columns all have pivots."
+  }, {
+    "type" : "image",
+    "id" : 402,
+    "page number" : 7,
+    "bounding box" : [ 70.372, 234.697, 541.662, 383.292 ],
+    "description" : "The image is a grid of 50 tiles arranged in a 5x5 grid. Each tile is a square with a different color and pattern. The tiles are arranged in a horizontal row, with each tile occupying a single square. The tiles are of different colors, including blue, green, brown, and purple. The tiles are arranged in a grid pattern, with each tile occupying a single square. The tiles are of different colors, including blue, green, brown, and purple. The tiles are arranged in a grid pattern, with each tile occupying a single square. The tiles are of different colors, including blue, green, brown, and purple. The tiles are arranged in a grid pattern, with each tile occupying a single square. The tiles are of different colors, including blue, green, brown, and purple. The tiles are arranged in a grid pattern, with each tile occupying a single square.",
+    "source" : "2412.02591v2/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 403,
+    "page number" : 7,
+    "bounding box" : [ 98.227, 236.617, 110.957, 245.323 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 404,
+    "page number" : 7,
+    "bounding box" : [ 184.131, 236.617, 197.415, 245.323 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 405,
+    "page number" : 7,
+    "bounding box" : [ 298.039, 236.617, 310.215, 245.323 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(c)"
+  }, {
+    "type" : "paragraph",
+    "id" : 406,
+    "page number" : 7,
+    "bounding box" : [ 385.546, 236.617, 398.83, 245.323 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(d)"
+  }, {
+    "type" : "paragraph",
+    "id" : 407,
+    "page number" : 7,
+    "bounding box" : [ 501.791, 236.617, 513.967, 245.323 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(e)"
+  }, {
+    "type" : "paragraph",
+    "id" : 408,
+    "page number" : 7,
+    "bounding box" : [ 72.0, 137.157, 540.004, 205.639 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 2: An example of the row permutations. (a) A submatrix consisting of 8 columns where the 4 columns on the left have been reduced, and we need to apply the pivots to the following 4 columns (in gray). (b-c) Each row which has a pivot gets permuted to the bottom of the matrix in the same order as the columns – resulting in a lower triangular matrix. (d) Applying the Schur complement zeros out the gray entries on the bottom right and we update the entries in the upper right (dark gray). (e) With the pivot rows zeroed out on the right, we reverse the permutation."
+  }, {
+    "type" : "image",
+    "id" : 409,
+    "page number" : 8,
+    "bounding box" : [ 209.059, 551.223, 397.168, 720.767 ],
+    "description" : "In this image, we can see a diagram. There are two circles, which are connected by a line. There are some numbers written on the circles.",
+    "source" : "2412.02591v2/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 410,
+    "page number" : 8,
+    "bounding box" : [ 346.225, 706.021, 353.965, 714.407 ],
+    "font" : "CMR10",
+    "font size" : 9.596,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "[1"
+  }, {
+    "type" : "paragraph",
+    "id" : 411,
+    "page number" : 8,
+    "bounding box" : [ 353.965, 706.021, 364.365, 714.407 ],
+    "font" : "CMMI10",
+    "font size" : 9.596,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : ",n ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 412,
+    "page number" : 8,
+    "bounding box" : [ 364.361, 706.021, 367.125, 714.407 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "]"
+  }, {
+    "type" : "paragraph",
+    "id" : 413,
+    "level" : "2",
+    "page number" : 8,
+    "bounding box" : [ 315.354, 678.367, 334.547, 692.232 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 414,
+    "level" : "2",
+    "page number" : 8,
+    "bounding box" : [ 378.357, 678.367, 397.549, 692.232 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 415,
+    "page number" : 8,
+    "bounding box" : [ 289.713, 648.618, 297.177, 657.004 ],
+    "font" : "CMMI10",
+    "font size" : 9.596,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 416,
+    "page number" : 8,
+    "bounding box" : [ 251.487, 616.509, 259.035, 624.895 ],
+    "font" : "CMMI10",
+    "font size" : 9.596,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 417,
+    "page number" : 8,
+    "bounding box" : [ 329.467, 616.509, 336.579, 624.895 ],
+    "font" : "CMMI10",
+    "font size" : 9.596,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 418,
+    "level" : "2",
+    "page number" : 8,
+    "bounding box" : [ 225.815, 587.846, 245.007, 601.712 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 419,
+    "level" : "2",
+    "page number" : 8,
+    "bounding box" : [ 268.627, 587.846, 287.819, 601.712 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 420,
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 303.795, 587.846, 322.987, 601.712 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 421,
+    "level" : "2",
+    "page number" : 8,
+    "bounding box" : [ 346.607, 587.846, 365.799, 601.712 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 422,
+    "level" : "3",
+    "page number" : 8,
+    "bounding box" : [ 307.862, 558.015, 327.055, 571.881 ],
+    "font" : "CMMI10",
+    "font size" : 15.866,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 423,
+    "page number" : 8,
+    "bounding box" : [ 217.887, 556.296, 251.745, 564.545 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "∞ ∈"
+  }, {
+    "type" : "paragraph",
+    "id" : 424,
+    "page number" : 8,
+    "bounding box" : [ 266.814, 556.296, 276.209, 564.545 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "∋"
+  }, {
+    "type" : "paragraph",
+    "id" : 425,
+    "level" : "4",
+    "page number" : 8,
+    "bounding box" : [ 291.28, 556.296, 303.441, 564.545 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "△"
+  }, {
+    "type" : "paragraph",
+    "id" : 426,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 504.001, 540.003, 536.617 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 3: The standard binary recursion tree in how we split the matrix by column. Observe that | B | = | C | = | L | in Algorithm 3 and that R [ L,B ] = ( P L · R )[ { n − | B | + 1 ,...,n } ,B ], the bottom | B | rows in the permuted matrix."
+  }, {
+    "type" : "paragraph",
+    "id" : 427,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 411.909, 539.996, 445.449 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "If we are not in the base case (a single column), we must apply the pivots in the columns indexed by B (left half of the submatrix) to the the columns indexed by C (right half of the submatrix). As described in Equation (2), we construct the permutation P L such that"
+  }, {
+    "type" : "formula",
+    "id" : 428,
+    "page number" : 8,
+    "bounding box" : [ 215.391, 379.592, 396.609, 402.78 ],
+    "content" : "( P _ { L } \\cdot \\mathbf R ) [ \\cdot , B \\cup C ] ) = \\begin{bmatrix} \\mathbf R [ \\bar { L } , B ] & \\mathbf R [ \\bar { L } , C ] \\\\ \\mathbf R [ L , B ] & \\mathbf R [ L , C ] \\end{bmatrix}"
+  }, {
+    "type" : "paragraph",
+    "id" : 429,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 334.213, 540.002, 366.859 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "By construction of P L , R [ L,B ] is lower-triangular with non-zero diagonal entries and so is full-rank. We can then apply the Schur complement to zero out all the corresponding rows in the columns C , R [ L,C ] ← 0 and update the rest of the rows:"
+  }, {
+    "type" : "formula",
+    "id" : 430,
+    "page number" : 8,
+    "bounding box" : [ 144.515, 293.751, 467.486, 324.061 ],
+    "content" : "\\underbrace { R [ \\bar { L } , C ] } _ { C _ { 1 } } \\leftarrow \\underbrace { R [ \\bar { L } , C ] - \\underbrace { R [ \\bar { L } , B ] } _ { B _ { 1 } } \\cdot \\underbrace { R [ L , B ] ^ { - 1 } } _ { B _ { 2 } ^ { - 1 } } } _ { B _ { 2 } ^ { - 1 } } \\cdot \\underbrace { R [ L , C ] } _ { C _ { 2 } } = R [ \\bar { L } , C ] - R [ \\bar { L } , B ] \\cdot \\Lambda"
+  }, {
+    "type" : "paragraph",
+    "id" : 431,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 273.264, 444.968, 283.553 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To update matrix V , we perform the same operations Λ = R [ L,B ] − 1 · R [ L,C ] on V :"
+  }, {
+    "type" : "formula",
+    "id" : 432,
+    "page number" : 8,
+    "bounding box" : [ 234.457, 251.888, 377.543, 263.12 ],
+    "content" : "V [ \\bar { L } , C ] \\leftarrow V [ \\bar { L } , C ] - V [ \\bar { L } , C ] \\cdot \\Lambda"
+  }, {
+    "type" : "paragraph",
+    "id" : 433,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 206.609, 540.0, 239.225 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Once the left half of the matrix has been applied to the right half, we recurse on the second half, i.e., C . Here again, because R [ L,B ] is lower-triangular full-rank and R [ L,C ] = 0, the first column of R [ · ,C ] is reduced. We now prove correctness."
+  }, {
+    "type" : "paragraph",
+    "id" : 434,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 187.108, 507.197, 195.852 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 4.4. When the recursion base case is reached for column k , R [ low ( j ) ,k ] = 0 for all j < k ."
+  }, {
+    "type" : "paragraph",
+    "id" : 435,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 143.713, 540.003, 176.36 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. For k = 1, this is tautological since low ( j ) is empty. For k > 1, we observe that entry R [ low ( i ) ,k ] was made zero when i ∈ B and k ∈ C . As the recursion always splits the column range in half, this condition must be satisfied somewhere in the recursion before the base case of k is reached."
+  }, {
+    "type" : "paragraph",
+    "id" : 436,
+    "page number" : 8,
+    "bounding box" : [ 72.0, 99.986, 539.999, 132.632 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof of Lemma 4.3. We observe that when P L is applied, the columns corresponding to L have a pivot. By construction, P L places the pivots onto the diagonal in the bottom | L | rows. For any of these rows above the diagonal, the entries are 0 by Lemma 4.4, implying the bottom k × k matrix is lower triangular."
+  }, {
+    "type" : "paragraph",
+    "id" : 437,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 708.127, 386.746, 716.871 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 4.5. Algorithm 3 computes the persistence diagram correctly."
+  }, {
+    "type" : "paragraph",
+    "id" : 438,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 678.781, 539.996, 699.472 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. It suffices to show that for all i , low ( i ) is computed correctly. For i = 1, this is trivially true. For i > 1, we first note that at any step of the algorithm, we maintain"
+  }, {
+    "type" : "formula",
+    "id" : 439,
+    "page number" : 9,
+    "bounding box" : [ 281.277, 660.012, 330.724, 668.756 ],
+    "content" : "R = D \\cdot V ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 440,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 593.439, 540.004, 649.995 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "as any operations on R are applied to V . Assuming the pivots are correct for j < i , by the above and Lemma 4.4, V gives a transformation depending only on columns j < i , such that all elements in R [ low ( j ) ,i ] = 0. If low ( i ) does not exist, D [ · ,i ] was in the span of the previous columns and hence a cycle. If low ( i ) exists, it is distinct from { low ( j ) } j<i and so we have a new pairing. The correctness of this pairing follows from the Pairing Uniqueness Lemma [16]."
+  }, {
+    "type" : "paragraph",
+    "id" : 441,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 514.369, 540.0, 582.881 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Running Time Analysis The base case takes O (1) time. For a general step where | B | = | C | = k , applying the update requires a row permutation of a 2 n × 2 k matrix which takes O ( nk ) time. We must compute R [ L,B ] − 1 which is inverting a k × k matrix. Multiplying it with R [ L,C ] takes O ( k ω ) time as both are k × k matrices. Finally, we multiply this product with the n × k matrix R [ ¯ L,C ], which by Lemma 3.1, takes O ( nk ω − 1 ) time. Solving the recursion, we find that the total running time is O ( n ω ) for ω > 2 or O ( n 2 log n ) if ω = 2. For completeness, we include the derivation in Appendix B."
+  }, {
+    "type" : "heading",
+    "id" : 442,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 481.118, 205.486, 493.71 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "5 Row Algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 443,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 424.28, 540.004, 468.852 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "While Algorithm 3 produces the exhaustive reduction in matrix multiplication time, a natural question is whether the same can be done for computing the lazy reduction (and its representatives). In this section, we present an algorithm which achieves this. We first give the iterative version before describing how it can be computed in O ( n ω ). The idea behind this reduction is to consider rows from the bottom up. Observe that a"
+  }, {
+    "type" : "heading",
+    "id" : 444,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 401.381, 258.397, 410.125 ],
+    "heading level" : 1,
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 4 Incremental Row Algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 445,
+    "page number" : 9,
+    "bounding box" : [ 77.369, 280.629, 255.976, 396.969 ],
+    "font" : "CMBX10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1: R = D 2: V = I n , U = I n 3: for i = n to 1 do 4: if lft ( i ) is defined then 5: j ← lft ( i ) 6: for j ′ > j and low ( j ′ ) = i do 7: α ← R [ i,j ′ ] / R [ i,j ] 8: R [ · ,j ′ ] ← R [ · ,j ′ ] − α · R [ · ,j ] 9: V [ · ,j ′ ] ← V [ · ,j ′ ] − α · V [ · ,j ] 10: U [ j, · ] ← U [ j, · ] + α · U [ j ′ , · ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 446,
+    "page number" : 9,
+    "bounding box" : [ 73.135, 280.629, 402.579, 313.253 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(equivalently, U [ j,j ′ ] ← α )"
+  }, {
+    "type" : "paragraph",
+    "id" : 447,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 229.079, 540.004, 261.725 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "pivot in the bottom row can be directly identified in D as the earliest (leftmost) non-zero entry, similarly as the pivot in the first column can be directly identified. To formalize the notion of the earliest eligible pivot in a given row, we define"
+  }, {
+    "type" : "formula",
+    "id" : 448,
+    "page number" : 9,
+    "bounding box" : [ 216.557, 209.482, 395.442, 225.859 ],
+    "content" : "\\text {lift} ( i ) = \\arg \\min _ { j } \\{ \\text {R} [ i , j ] \\neq 0 \\colon \\text {low} ( j ) = i \\}"
+  }, {
+    "type" : "paragraph",
+    "id" : 449,
+    "page number" : 9,
+    "bounding box" : [ 320.498, 217.265, 320.498, 225.829 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "̸"
+  }, {
+    "type" : "paragraph",
+    "id" : 450,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 134.785, 540.003, 203.297 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "As in the case of low , we only apply this function to R . The function lft returns the earliest column j which is non-zero and is the lowest such non-zero entry in its column. This condition is important as the earliest (left-most) non-zero entry may have pivots below it. This column is used to zero out the i -th row in columns to the right provided they do not already contain a pivot, i.e., if low ( j ) = i , then the column is applied. This condition is why we obtain equivalence with the lazy reduction we do not apply the pivot column to later columns which already contain a pivot."
+  }, {
+    "type" : "paragraph",
+    "id" : 451,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 117.377, 439.823, 126.121 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Lemma 5.1. Algorithm 4 is produces the same decomposition as the lazy reduction."
+  }, {
+    "type" : "paragraph",
+    "id" : 452,
+    "page number" : 9,
+    "bounding box" : [ 72.0, 99.986, 269.679, 108.692 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. This is equivalent to [3, Theorem 3.1]."
+  }, {
+    "type" : "heading",
+    "id" : 453,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 72.0, 707.744, 222.588, 718.238 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 11.955,
+    "text color" : "[0.0]",
+    "content" : "5.1 Fast Row Algorithm"
+  }, {
+    "type" : "paragraph",
+    "id" : 454,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 653.88, 540.003, 698.452 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The fast version of Algorithm 4 is given in Algorithm 5. As above, it reduces the matrix row by row from the bottom up. This variant does not require matrix inversion and requires less padding. The trade-off is that it requires a more complex sequence of updates. Assuming D is an n × n matrix, we set m < n such that m + n = 2 x . We initialize our matrices as:"
+  }, {
+    "type" : "formula",
+    "id" : 455,
+    "page number" : 10,
+    "bounding box" : [ 215.033, 619.682, 396.968, 642.832 ],
+    "content" : "R = \\left [ \\begin{array} { c | c } D & \\Big | \\, I _ { m + n } \\, \\Big ] , & \\Lambda = I _ { m + n } . \\end{array} \\right ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 456,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 578.662, 540.002, 611.279 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "To simplify notation, from this point on, we assume n is a power of 2 (as m + n < 2 n ), so the resulting matrix is   D I n   . This ensures that lft ( i ) is defined for all i in R , i.e., the identity matrix ensures there are no zero rows."
+  }, {
+    "type" : "heading",
+    "id" : 457,
+    "level" : "Subtitle",
+    "page number" : 10,
+    "bounding box" : [ 72.0, 556.438, 250.148, 565.182 ],
+    "heading level" : 1,
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 5 Row Algorithm( A = [ i,j ])"
+  }, {
+    "type" : "paragraph",
+    "id" : 458,
+    "page number" : 10,
+    "bounding box" : [ 73.134, 359.669, 540.003, 551.389 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "1: if i = j then ▷ leaf 2: k ← lft ( n − i + 1) ▷ Identify the pivot in row ( n − i + 1) 3: Update permutation matrix P with transposition i ↔ k . 4: ( P · Λ · P )[ i,j ] ← − ( R · P )[ n − i +1 ,j ] ( R · P )[ n − i +1 ,i ] for j > i . 5: ( R · P )[ n − i + 1 , { i + 1 ,...,n } ] ← 0 ▷ Zero out ( n − i + 1) -st row; see Remark 5.2 ; 6: else 7: B ← [ i, ( i + j ) / 2) ▷ left child 8: C ← [( i + j ) / 2 ,j ] ▷ right child 9: C r ← n − C + 1 ▷ Rows are indexed top-down but the algorithm goes bottom up 10: Recurse on B 11: Apply updates from rows B to C : ▷ full row update; ( k × k ) · ( k × n ) ( R · P )[ C r , · ] ← ( R · P )[ C r , · ] + ( R · P )[ C r ,B ])( P · Λ · P )[ B, · ] 12: Recurse on C 13: ¯ A r = [1 ,i ] ▷ everything above A 14: Full column update: ( R · P )[ ¯ A r ,C ] ← ( R · P )[ ¯ A r ,C ] + ( R · P )[ ¯ A r ,B ] · ( P · Λ · P )[ B,C ] ▷ ( n × k ) · ( k × k )"
+  }, {
+    "type" : "paragraph",
+    "id" : 459,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 305.281, 540.0, 337.898 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "It will be convenient to again consider permutations, but here they will be column permutations. We build up the permutation incrementally. In the i -th step, we update the permutation with the column transposition"
+  }, {
+    "type" : "formula",
+    "id" : 460,
+    "page number" : 10,
+    "bounding box" : [ 253.575, 293.318, 358.426, 302.062 ],
+    "content" : "\\pi ( i ) \\colon \\text {lift} ( n - i + 1 ) \\leftrightarrow i ."
+  }, {
+    "type" : "paragraph",
+    "id" : 461,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 263.438, 539.998, 284.129 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "which we use a shorthand for the two mappings lft ( n − i + 1)  → i and i  → lft ( n − i + 1). As lft is always defined, two columns are permuted in each step. The permutation after i steps is then given by"
+  }, {
+    "type" : "formula",
+    "id" : 462,
+    "page number" : 10,
+    "bounding box" : [ 275.969, 228.732, 336.032, 251.847 ],
+    "content" : "P _ { i } = \\prod _ { j \\leq i } \\pi ( j ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 463,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 160.11, 540.003, 216.637 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Note that we apply the permutations in order, i.e., for i = 1 , 2 ,... While the columns corresponding to lft ( n − i + 1) are fixed at i for all permutations, the original column at i may be permuted several times. In the algorithm, we omit the subscript; P refers to the accumulated permutation. As in the case of the column algorithm, we perform the permutations implicitly. We observe that in the permuted order, we arrange pivots on the left along the anti-diagonal, see Figure 4."
+  }, {
+    "type" : "paragraph",
+    "id" : 464,
+    "page number" : 10,
+    "bounding box" : [ 72.0, 136.2, 539.998, 156.891 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We keep track of the operations directly in the matrix Λ which is initialized as the identity matrix. Before delving into the details of the algorithm, assume that the all rows below the i -th row have been reduced."
+  }, {
+    "type" : "image",
+    "id" : 465,
+    "page number" : 11,
+    "bounding box" : [ 138.871, 527.451, 469.381, 721.028 ],
+    "description" : "The image is a bar chart with two sets of bars. Each set of bars is colored in a different color, with the colors being blue and gray. The x-axis is labeled a and the y-axis is labeled b. The bars are arranged in a horizontal line, with the blue bars on the left and the gray bars on the right. The bars are of different lengths, with the blue bars being shorter than the gray bars. The bars are not aligned in any particular order. ### Description of the Bar Chart: 1. **X-Axis (a)**: The x-axis is labeled a and has a label b. 2. **Y-Axis (b)**: The y-axis is labeled b and has a label a. 3. **Bars**: There are two sets of bars, each set of bars colored in blue and gray. The blue bars are on the left and the gray bars",
+    "source" : "2412.02591v2/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 466,
+    "page number" : 11,
+    "bounding box" : [ 212.697, 530.381, 225.427, 539.087 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 467,
+    "page number" : 11,
+    "bounding box" : [ 389.537, 530.381, 402.821, 539.087 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 468,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 478.742, 539.999, 511.358 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 4: The permutation of the columns so that the pivots in the bottom k rows are on the right. An important observation is that despite this reshuffling of columns, because of the definition of lft ( · ), we never “accidentally” reduce columns which occur earlier in the filtration order."
+  }, {
+    "type" : "paragraph",
+    "id" : 469,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 437.816, 250.443, 446.522 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The updates in the i -th row are given by"
+  }, {
+    "type" : "formula",
+    "id" : 470,
+    "page number" : 11,
+    "bounding box" : [ 195.128, 386.367, 415.107, 427.452 ],
+    "content" : "( P \\cdot \\Lambda \\cdot P ) \\left [ i , j \\right ] = \\begin{cases} - \\frac { ( R \\cdot P ) [ n - i + 1 , j ] } { ( R \\cdot P ) [ n - i + 1 , i ] } & j > i \\\\ 1 & n - i + 1 = j \\\\ 0 & \\text {else} \\end{cases}"
+  }, {
+    "type" : "paragraph",
+    "id" : 471,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 305.478, 540.004, 373.968 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We digress here to explain why this works. As mentioned above, if we consider the column-permuted matrix R · P , it has the pivots in the bottom-left along the anti-diagonal (Figure 4). The i -th column corresponds to the column given by lft ( n − i +1) (in the original filtration order). Hence, it is the earliest column with a non-zero entry in the i -th row from the bottom such that there is no pivot below. For any non-zero entry to the right of i , it must occur to the right of i in the original filtration order (before permuting), or it would have been returned by lft ( n − i + 1) rather than the current i -th column in the permuted order."
+  }, {
+    "type" : "paragraph",
+    "id" : 472,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 262.512, 540.001, 295.158 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Remark 5.2. Hence in Line 5, all non-zeros in the row to the right of i are pivots (lowest entries), because every column with a pivot below n − i + 1 has been moved to the left of i in the permuted order and so no reduction will be applied, i.e., coefficient will be 0."
+  }, {
+    "type" : "paragraph",
+    "id" : 473,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 219.538, 540.005, 252.184 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Finally, as we permute the columns we must also permute the rows of the Λ matrix so that the recorded column operations match. This represents the base case of the recursion. As Λ is initialized as the identity matrix, the case n − i + 1 = j is taken care of implicitly."
+  }, {
+    "type" : "paragraph",
+    "id" : 474,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 171.709, 540.003, 216.288 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Returning to the algorithm, we proceed by recursing as in the column algorithm, but on the rows rather than on the columns. We divide the rows of the sub-matrix into the top and bottom halves. We recurse first on the bottom half. Because the pivots are determined by rows below the current one, we can directly identify the pivot with lft ."
+  }, {
+    "type" : "paragraph",
+    "id" : 475,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 123.888, 540.001, 168.468 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "The base case is a single row. By assumption, rows below the current row have been updated. At row n − i + 1, we first find the left-most non-zero entry and perform a column permutation setting the column lft ( n − i + 1) to the i -th column, making R [ n − i,i ] a pivot as required. By the reasoning above, we may zero out the row, recording the operations in Λ and we can update ( R · P )[ n − i, { i + 1 ,...,n } ] ← 0."
+  }, {
+    "type" : "paragraph",
+    "id" : 476,
+    "page number" : 11,
+    "bounding box" : [ 72.0, 99.986, 540.003, 120.647 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Though the recursion proceeds as in Algorithm 3, splitting the matrix into the indices in the “first half” and “second half,” a complication is that the columns are processed left to right (same as the indexing),"
+  }, {
+    "type" : "formula",
+    "id" : 477,
+    "page number" : 12,
+    "bounding box" : [ 270.635, 687.283, 341.366, 696.913 ],
+    "content" : "C _ { r } = n - C + 1 ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 478,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 643.444, 540.0, 676.984 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "by which we mean for any i ∈ C , i  → n − i + 1. This indexes the rows from the bottom of the matrix as required by the algorithm. Returning to the recursion, once we processed the columns for B , we first apply the updates to the rows C r ,"
+  }, {
+    "type" : "formula",
+    "id" : 479,
+    "page number" : 12,
+    "bounding box" : [ 167.784, 623.516, 444.216, 633.175 ],
+    "content" : "( R \\cdot P ) [ C _ { r } , \\cdot ] \\leftarrow ( R \\cdot P ) [ C _ { r } , \\cdot ] + ( R \\cdot P ) [ C _ { r } , B ] \\cdot ( P \\cdot \\Lambda \\cdot P ) [ B , \\cdot ] ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 480,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 544.734, 540.003, 613.216 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "shown in orange in Figure 5. Note that though B r is shown in Figure 5, it is not used explicitly in the algorithm as all the operations in those rows have already been performed. On the other hand, B in ( P · Λ · P )[ B, · ] and in ( R · P )[ C r ,B ] do not need to be reversed, as they both represent column operations which are in the standard order. After this, the first row in C r is now up-to-date with all operations from rows below it. This allows us to correctly identify lft for this row and perform the column transposition accordingly. Hence, when we recurse on C , the base case can be carried out."
+  }, {
+    "type" : "paragraph",
+    "id" : 481,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 507.946, 540.003, 541.485 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Returning from C , we complete the recursion by performing the update operations on the remaining parts of the columns in C , shown in green in Figure 5. Note, the columns are indexed by C not C r . Let ¯ A r = { 1 ,..., min( C r ) − 1 } . The column update is given as"
+  }, {
+    "type" : "formula",
+    "id" : 482,
+    "page number" : 12,
+    "bounding box" : [ 161.042, 488.017, 450.959, 500.165 ],
+    "content" : "( R \\cdot P ) [ \\bar { A } _ { r } , C ] \\leftarrow ( R \\cdot P ) [ \\bar { A } _ { r } , C ] + ( R \\cdot P ) [ \\bar { A } _ { r } , B ] \\cdot ( P \\cdot \\Lambda \\cdot P ) [ B , C ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 483,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 444.178, 540.003, 477.718 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Now all columns prior to and including C and all rows below and including C r are up to date. We show the update sequence in Figure 5 (omitting the permutations). Note that in the column update, the rows in ¯ A r are correctly indexed, so no reversal is necessary."
+  }, {
+    "type" : "heading",
+    "id" : 484,
+    "level" : "Subtitle",
+    "page number" : 12,
+    "bounding box" : [ 72.0, 426.759, 321.698, 435.503 ],
+    "heading level" : 1,
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 5.3. Algorithm 5 computes the lazy reduction."
+  }, {
+    "type" : "paragraph",
+    "id" : 485,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 372.568, 540.002, 417.139 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. The algorithm is equivalent to Algorithm 4, but it performs the operations by batches. Observe that in the base case for row n − i + 1, the column operations recorded in Λ are equal to α in the i -th step of Algorithm 4. If we performed the operations on the entire column, we would, in fact, obtain exactly Algorithm 4 (since there would be no need for any further updates in the recursion)."
+  }, {
+    "type" : "paragraph",
+    "id" : 486,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 299.913, 540.003, 369.349 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Hence, to show correctness, we need to ensure that we can correctly compute lft ( i ) in each base case. This is trivially true in the first step. In further steps, we need to ensure that all the column operations have been applied to ( R · P )[ C, · ]. We can directly verify that any column operations coming from row j < i , fall in exactly one B (with i in C ) in the recursion and hence are applied before the base case for i . It only remains to show that the columns ( R · P )[ · ,C ] are up to date before the columns operations from rows in C r are applied in the appropriate rows of ( R · P )[ ¯ A r , · ], which is done in line 14."
+  }, {
+    "type" : "formula",
+    "id" : 487,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 281.301, 443.637, 291.59 ],
+    "content" : "\\text {Theorem } 5 . 4 . \\ M a t r i x \\ U = 2 \\cdot \\text {I-} \\ \\Lambda \\ s a t i s f i e s \\ \\text {D} = \\text {R} \\cdot \\text {U} , \\ o r \\ e q u i v a l e n t h y , \\ V = \\text {U} ^ { - 1 } ."
+  }, {
+    "type" : "paragraph",
+    "id" : 488,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 191.236, 540.005, 271.711 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. During a regular reduction, Algorithm 4, updates in matrix U use row operations to “undo” the column operations in matrices R and V . When a column j in R is subtracted from column j ′ , which itself has not been used to reduce any other column, its corresponding row U [ j ′ , · ] contains a single diagonal element. – compare Algorithms 1 and 2. In this case, the update in matrix U is equivalent to setting entry U [ j ′ ,j ] to the coefficient that is the negation of the coefficient used for the column update. When a column j in R is subtracted from column j ′ , which itself has not been used to reduce any other column, its corresponding row U [ j ′ , · ] contains a single diagonal element."
+  }, {
+    "type" : "paragraph",
+    "id" : 489,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 131.46, 540.001, 187.995 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Algorithm 5 satisfies this property (which is why it produces a lazy reduction): when an update is recorded in matrix Λ , the column that is being updated has not yet been used to reduce any other column. Therefore, off the diagonal, the corresponding matrix U is the negation of matrix Λ compare the coefficients in Algorithm 5 with α in Algorithm 4. On the diagonal, both Λ and U are all ones. So adding 2 · I to − Λ recovers U ."
+  }, {
+    "type" : "paragraph",
+    "id" : 490,
+    "page number" : 12,
+    "bounding box" : [ 72.0, 99.986, 540.0, 122.221 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Remark 5.5. As U is an upper triangular matrix, by Theorem 4.2, it can be inverted in O ( n ω ) -time as required."
+  }, {
+    "type" : "image",
+    "id" : 491,
+    "page number" : 13,
+    "bounding box" : [ 70.198, 374.088, 537.109, 580.663 ],
+    "description" : "In this image there is a diagram, which is a table, and there are some numbers on the table.",
+    "source" : "2412.02591v2/imageFile5.png"
+  }, {
+    "type" : "paragraph",
+    "id" : 492,
+    "page number" : 13,
+    "bounding box" : [ 471.975, 561.572, 480.309, 570.601 ],
+    "font" : "CMR10",
+    "font size" : 10.332,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "[1"
+  }, {
+    "type" : "paragraph",
+    "id" : 493,
+    "page number" : 13,
+    "bounding box" : [ 480.309, 561.572, 491.507, 570.601 ],
+    "font" : "CMMI10",
+    "font size" : 10.332,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : ",n ]"
+  }, {
+    "type" : "paragraph",
+    "id" : 494,
+    "page number" : 13,
+    "bounding box" : [ 491.503, 561.572, 494.48, 570.601 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "]"
+  }, {
+    "type" : "paragraph",
+    "id" : 495,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 429.511, 532.765, 450.177, 547.695 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 496,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 513.406, 532.654, 534.071, 547.584 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 497,
+    "page number" : 13,
+    "bounding box" : [ 72.412, 519.699, 79.341, 527.773 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 498,
+    "page number" : 13,
+    "bounding box" : [ 79.341, 518.843, 82.771, 524.495 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 499,
+    "page number" : 13,
+    "bounding box" : [ 403.49, 501.24, 411.527, 510.27 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 500,
+    "page number" : 13,
+    "bounding box" : [ 411.527, 500.283, 415.506, 506.603 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 502,
+    "page number" : 13,
+    "bounding box" : [ 520.897, 482.282, 526.254, 491.311 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "¯"
+  }, {
+    "type" : "paragraph",
+    "id" : 501,
+    "page number" : 13,
+    "bounding box" : [ 518.069, 479.669, 526.105, 488.699 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 503,
+    "page number" : 13,
+    "bounding box" : [ 526.106, 478.712, 530.084, 485.032 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 506,
+    "page number" : 13,
+    "bounding box" : [ 447.802, 467.408, 455.461, 476.437 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 504,
+    "page number" : 13,
+    "bounding box" : [ 363.402, 467.334, 371.529, 476.363 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 507,
+    "page number" : 13,
+    "bounding box" : [ 455.461, 466.45, 459.44, 472.771 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 505,
+    "page number" : 13,
+    "bounding box" : [ 371.53, 466.376, 375.508, 472.697 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 508,
+    "page number" : 13,
+    "bounding box" : [ 88.875, 443.968, 95.478, 452.042 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 510,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 337.315, 435.632, 357.98, 450.561 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 511,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 383.413, 435.632, 404.078, 450.561 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 512,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 421.279, 435.632, 441.945, 450.561 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 513,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 467.377, 435.632, 488.043, 450.561 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 509,
+    "page number" : 13,
+    "bounding box" : [ 95.479, 443.111, 98.909, 448.763 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 514,
+    "page number" : 13,
+    "bounding box" : [ 72.412, 427.504, 79.341, 435.578 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "A"
+  }, {
+    "type" : "paragraph",
+    "id" : 515,
+    "page number" : 13,
+    "bounding box" : [ 79.341, 426.648, 82.771, 432.3 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 518,
+    "level" : "2",
+    "page number" : 13,
+    "bounding box" : [ 425.292, 404.824, 445.958, 419.754 ],
+    "font" : "CMMI10",
+    "font size" : 17.083,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "..."
+  }, {
+    "type" : "paragraph",
+    "id" : 516,
+    "page number" : 13,
+    "bounding box" : [ 88.875, 411.041, 95.883, 419.114 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 517,
+    "page number" : 13,
+    "bounding box" : [ 95.883, 410.184, 99.313, 415.836 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "r"
+  }, {
+    "type" : "paragraph",
+    "id" : 519,
+    "page number" : 13,
+    "bounding box" : [ 325.922, 404.824, 331.124, 412.127 ],
+    "font" : "CMMI10",
+    "font size" : 8.356,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 520,
+    "page number" : 13,
+    "bounding box" : [ 345.255, 404.824, 350.456, 412.127 ],
+    "font" : "CMMI10",
+    "font size" : 8.356,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 521,
+    "level" : "3",
+    "page number" : 13,
+    "bounding box" : [ 352.383, 404.943, 359.123, 412.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 522,
+    "page number" : 13,
+    "bounding box" : [ 361.048, 404.824, 365.382, 412.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "1"
+  }, {
+    "type" : "paragraph",
+    "id" : 523,
+    "page number" : 13,
+    "bounding box" : [ 371.374, 404.824, 376.576, 412.127 ],
+    "font" : "CMMI10",
+    "font size" : 8.356,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 524,
+    "level" : "3",
+    "page number" : 13,
+    "bounding box" : [ 378.502, 404.943, 385.243, 412.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 525,
+    "page number" : 13,
+    "bounding box" : [ 387.168, 404.824, 391.501, 412.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2"
+  }, {
+    "type" : "paragraph",
+    "id" : 526,
+    "page number" : 13,
+    "bounding box" : [ 397.901, 404.824, 403.103, 412.127 ],
+    "font" : "CMMI10",
+    "font size" : 8.356,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "n"
+  }, {
+    "type" : "paragraph",
+    "id" : 527,
+    "level" : "3",
+    "page number" : 13,
+    "bounding box" : [ 405.029, 404.943, 411.77, 412.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "-"
+  }, {
+    "type" : "paragraph",
+    "id" : 528,
+    "page number" : 13,
+    "bounding box" : [ 413.695, 404.824, 418.028, 412.127 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "3"
+  }, {
+    "type" : "paragraph",
+    "id" : 529,
+    "page number" : 13,
+    "bounding box" : [ 120.156, 383.049, 127.164, 391.123 ],
+    "font" : "CMMI10",
+    "font size" : 9.239,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "B"
+  }, {
+    "type" : "paragraph",
+    "id" : 530,
+    "page number" : 13,
+    "bounding box" : [ 153.083, 383.049, 159.686, 391.123 ],
+    "font" : "CMMI10",
+    "font size" : 9.239,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "C"
+  }, {
+    "type" : "paragraph",
+    "id" : 531,
+    "page number" : 13,
+    "bounding box" : [ 177.854, 375.89, 190.584, 384.596 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(a)"
+  }, {
+    "type" : "paragraph",
+    "id" : 532,
+    "page number" : 13,
+    "bounding box" : [ 430.509, 375.89, 443.793, 384.596 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "(b)"
+  }, {
+    "type" : "paragraph",
+    "id" : 533,
+    "page number" : 13,
+    "bounding box" : [ 72.0, 251.596, 540.004, 344.912 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Figure 5: The updating steps in Algorithm 5. On the right we have the recursion tree for the rows, as opposed to the columns which is the same as in Figure 3 as rows proceed bottom-up and columns proceed left to right. When we return from the recursion on B (or B r ), we have zeroed out all the entries to the right of columns B in rows B r . We then first need to apply these to the rows in C r (line 11 in Algorithm 5), shown in orange. We can then identify the correct pivot columns for rows C r (after recursing), and complete the step by applying the operations from columns B to C above. This is shown in green and corresponding to the right of A r = B r ∪ C r in the recursion tree (the rows above A r – denoted ¯ A r ) to the right of the dashed line. This makes columns B ∪ C and rows A r completely processed/reduced."
+  }, {
+    "type" : "paragraph",
+    "id" : 534,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 600.539, 540.004, 716.871 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Running Time Analysis The base case takes O ( n ) time as recording the permutation and zeroing out operations each take linear time. Hence the base case takes O ( n ) time. For the general case, we need to first apply the column permutations. Since we are permuting at most an n × k (or k × n ) matrix, applying the permutation (and undoing it) takes O ( nk ) time by Lemma 3.2. Next, applying the row updates from B r to C r , assuming | B | = | C | = k , requires multiplying ( P · Λ · P )[ B, · ], a k × n matrix, with ( R · P )[ C r ,B ], a k × k matrix taking O ( nk ω − 1 ) time by Lemma 3.1. To complete the update, the subtractions take O ( nk ) time. To compute the column updates, we must multiply ( R · P )[ ¯ A r ,B ], an n × k matrix with ( P · Λ · P )[ B,C ], a k × k matrix, which again takes O ( nk ω − 1 ) time. Putting these together, we find that the full step can be completed in O ( nk ω − 1 ) time and as in the column algorithm case, solving the recursion gives an O ( n ω ) running time for ω > 2 and a O ( n 2 log n ) running time for ω = 2."
+  }, {
+    "type" : "heading",
+    "id" : 535,
+    "level" : "Subtitle",
+    "page number" : 14,
+    "bounding box" : [ 72.0, 566.744, 169.822, 579.336 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "6 Discussion"
+  }, {
+    "type" : "paragraph",
+    "id" : 536,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 521.862, 539.999, 554.478 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "In this paper, we have shown that in the case of persistent (co)homology, the standard bases returned by the exhaustive and lazy reductions can be computed in matrix multiplication time. It is worth noting that while both the columns and row algorithms utilize batch updates, they are qualitatively different."
+  }, {
+    "type" : "list",
+    "level" : "4",
+    "page number" : 14,
+    "bounding box" : [ 84.176, 469.467, 539.997, 511.31 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 84.176, 501.347, 392.492, 511.31 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "1. Only the column algorithm critically relies on fast matrix inversion.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 84.176, 469.467, 539.997, 491.385 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "2. The row algorithm update sequence is substantially more complex but only requires column permutations.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "id" : 539,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 378.4, 540.002, 458.837 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "While one can use the column algorithm to compute the lazy basis and the row algorithm for the exhaustive basis in the same asymptotic running time, the resulting algorithms are both complex and not particularly illuminating. There are also numerous technical complications to deal with, so we omit them from this paper. Another outstanding issue is whether it is possible to transform the exhaustive representatives to lazy representatives and vice versa without redoing the reduction. Again we believe this possible, but omit it due to space and because the asymptotic running time is same. Finally an open question is regarding representatives in zigzag persistence which has recently been addressed in [25, 26]."
+  }, {
+    "type" : "heading",
+    "id" : 540,
+    "level" : "Doctitle",
+    "page number" : 14,
+    "bounding box" : [ 72.0, 344.605, 199.525, 357.197 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "Acknowledgement"
+  }, {
+    "type" : "paragraph",
+    "id" : 541,
+    "page number" : 14,
+    "bounding box" : [ 72.0, 287.767, 540.004, 332.339 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Dmitriy Morozov was supported by the Director, Office of Science, Office of Advanced Scientific Computing Research, of the U.S. Department of Energy under Contract No. DE-AC02-05CH11231. Primoz Skraba was supported by the EPSRC AI Hub on Mathematical Foundations of Intelligence: An “Erlangen Programme” for AI No. EP/Y028872/1."
+  }, {
+    "type" : "heading",
+    "id" : 542,
+    "level" : "Subtitle",
+    "page number" : 14,
+    "bounding box" : [ 72.0, 253.972, 147.523, 266.564 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "References"
+  }, {
+    "type" : "list",
+    "level" : "5",
+    "page number" : 14,
+    "bounding box" : [ 76.981, 112.86, 540.003, 242.375 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 76.981, 208.501, 540.003, 242.375 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[1] Nikola Milosavljevi´c, Dmitriy Morozov, and Primoz Skraba. Zigzag persistent homology in matrix multiplication time. In Proceedings of the twenty-seventh Annual Symposium on Computational Geometry , pages 216–225, 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 76.981, 176.621, 540.002, 198.539 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[2] H. Edelsbrunner, D. Letscher, and A. Zomorodian. Topological persistence and simplification. Discrete & computational geometry , 28:511–533, 2002.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 76.981, 144.74, 540.002, 166.658 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[3] Vin De Silva, Dmitriy Morozov, and Mikael Vejdemo-Johansson. Dualities in persistent (co) homology. Inverse Problems , 27(12):124003, 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 14,
+      "bounding box" : [ 76.981, 112.86, 539.996, 134.778 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[4] Chao Chen and Michael Kerber. An output-sensitive algorithm for persistent homology. In Proceedings of the twenty-seventh annual symposium on Computational geometry , pages 207–216, 2011.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "5",
+    "page number" : 15,
+    "bounding box" : [ 72.0, 109.788, 540.005, 717.509 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 16,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.981, 683.636, 540.002, 717.509 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[5] Oleksiy Busaryev, Sergio Cabello, Chao Chen, Tamal K Dey, and Yusu Wang. Annotating simplices with a homology basis and its applications. In Scandinavian workshop on algorithm theory , pages 189–200. Springer, 2012.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.981, 639.8, 539.999, 673.674 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[6] Michael Kerber, Donald R Sheehy, and Primoz Skraba. Persistent homology and nested dissection. In Proceedings of the Twenty-Seventh Annual ACM-SIAM Symposium on Discrete Algorithms , pages 1234–1245. SIAM, 2016.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.981, 595.965, 539.998, 629.838 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[7] Ulrich Bauer, Michael Kerber, and Jan Reininghaus. Clear and compress: Computing persistent homology in chunks. In Topological Methods in Data Analysis and Visualization III: Theory, Algorithms, and Applications , pages 103–117. Springer, 2014.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.981, 564.084, 539.998, 586.002 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[8] Ulrich Bauer, Michael Kerber, Jan Reininghaus, and Hubert Wagner. Phat–persistent homology algorithms toolbox. Journal of symbolic computation , 78:76–90, 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 76.981, 532.204, 540.004, 554.122 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[9] Ulrich Bauer. Ripser: efficient computation of vietoris–rips persistence barcodes. Journal of Applied and Computational Topology , 5(3):391–423, 2021.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 488.368, 540.003, 522.242 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[10] Alan Hylton, Greg Henselman-Petrusek, Janche Sang, and Robert Short. Performance enhancement of a computational persistent homology package. In 2017 IEEE 36th international performance computing and communications conference (IPCCC) , pages 1–8. IEEE, 2017.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 456.488, 539.996, 478.406 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[11] G. Henselman and R. Ghrist. Matroid Filtrations and Computational Persistent Homology. ArXiv e-prints , June 2016. arXiv:1606.00199 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 412.652, 540.003, 446.525 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[12] Hubert Wagner, Chao Chen, and Erald Vu¸cini. Efficient computation of persistent homology for cubical data. In Topological methods in data analysis and visualization II: theory, algorithms, and applications , pages 91–106. Springer, 2011.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 380.772, 540.003, 402.69 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[13] Afra Zomorodian and Gunnar Carlsson. Computing persistent homology. In Proceedings of the twentieth annual symposium on Computational geometry , pages 347–356, 2004.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 348.891, 540.001, 370.809 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[14] Gunnar Carlsson and Vin de Silva. Zigzag persistence. Foundations of computational mathematics , 10(4):367–405, August 2010. doi:10.1007/s10208-010-9066-0 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 305.056, 540.005, 338.929 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[15] Gunnar Carlsson, Vin de Silva, and Dmitriy Morozov. Zigzag persistent homology and real-valued functions. In Proceedings of the Twenty-fifth Annual Symposium on Computational Geometry , SCG ’09, pages 247–256, New York, NY, USA, 2009. ACM. doi:10.1145/1542362.1542408 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 261.22, 539.997, 295.093 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[16] David Cohen-Steiner, Herbert Edelsbrunner, and Dmitriy Morozov. Vines and vineyards by updating persistence in linear time. In Proceedings of the twenty-second annual symposium on Computational geometry , pages 119–126, 2006.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 217.384, 540.0, 251.258 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[17] Vin de Silva, Dmitriy Morozov, and Mikael Vejdemo-Johansson. Persistent cohomology and circular coordinates. Discrete & computational geometry , 45(4):737–759, June 2011. doi:10.1007/ s00454-011-9344-x .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 173.549, 539.997, 207.422 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[18] David Cohen-Steiner, Andr´e Lieutier, and Julien Vuillamy. Lexicographic optimal homologous chains and applications to point cloud triangulations. Discrete & computational geometry , 68(4):1155–1174, December 2022. doi:10.1007/s00454-022-00432-6 .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 141.668, 539.999, 163.586 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[19] Arnur Nigmetov and Dmitriy Morozov. Topological optimization with big steps. Discrete & computational geometry , 72(1):310–344, July 2024. doi:10.1007/s00454-023-00613-x .",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 15,
+      "bounding box" : [ 72.0, 109.788, 540.004, 131.706 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[20] Tamal K Dey and Tao Hou. Fast computation of zigzag persistence. In 30th Annual European Symposium on Algorithms (ESA 2022) . Schloss Dagstuhl-Leibniz-Zentrum fu¨r Informatik, 2022.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "list",
+    "level" : "5",
+    "page number" : 16,
+    "bounding box" : [ 72.0, 484.383, 540.003, 717.509 ],
+    "numbering style" : "arabic numbers",
+    "number of list items" : 8,
+    "list items" : [ {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 695.591, 540.003, 717.509 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[21] Herbert Edelsbrunner and John L Harer. Computational topology: an introduction . American Mathematical Society, 2022.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 663.711, 540.003, 685.629 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[22] Dmitriy Morozov. Persistence algorithm takes cubic time in worst case. BioGeometry News, Dept. Comput. Sci., Duke Univ , 2, 2005.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 631.83, 539.996, 653.748 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[23] Gil Kalai. Enumeration of q-acyclic simplicial complexes. Israel Journal of Mathematics , 45:337–351, 1983.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 599.95, 539.996, 621.868 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[24] Primoz Skraba, Gugan Thoppe, and D Yogeshwaran. Randomly weighted d -complexes: Minimal spanning acycles and persistence diagrams. The Electronic Journal of Combinatorics , pages P2–11, 2020.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 568.069, 540.001, 589.988 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[25] Tamal K Dey and Tao Hou. Updating barcodes and representatives for zigzag persistence. arXiv preprint arXiv:2112.02352 , 2021.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 536.189, 539.996, 558.107 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[26] Tamal K Dey, Tao Hou, and Dmitriy Morozov. A fast algorithm for computing zigzag representatives. arXiv preprint arXiv:2410.20565 , 2024.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 516.264, 529.995, 526.227 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[27] Volker Strassen. Gaussian elimination is not optimal. Numerische mathematik , 13(4):354–356, 1969.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "page number" : 16,
+      "bounding box" : [ 72.0, 484.383, 539.999, 506.301 ],
+      "font" : "CMR10",
+      "font size" : 9.963,
+      "text color" : "[0.0]",
+      "content" : "[28] James R Bunch and John E Hopcroft. Triangular factorization and inversion by fast matrix multiplication. Mathematics of Computation , 28(125):231–236, 1974.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "id" : 571,
+    "level" : "Doctitle",
+    "page number" : 16,
+    "bounding box" : [ 72.0, 451.177, 439.957, 463.769 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "A Matrix Inversion in Matrix Multiplication Time"
+  }, {
+    "type" : "paragraph",
+    "id" : 572,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 370.429, 540.005, 438.911 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "We present a simplified proof for the special case of triangular matrices. This can be shown with greater generality and was stated as Fact 4 in Strassen’s original paper on sub-cubic matrix multiplication time [27]. While Strassen’s result required certain submatrices to be non-singular, these constraints where removed by Bunch and Hopcroft [28]. We include the proof for completeness. Importantly, this makes no assumption on the underlying field. We provide the proof for lower triangular matrices, but it holds equivalently for upper triangular, by transposition. We begin with the following observation."
+  }, {
+    "type" : "paragraph",
+    "id" : 573,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 338.549, 540.004, 359.24 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Observation A.1. A lower triangular matrix is non-singular if and only if the diagonal elements are nonzero."
+  }, {
+    "type" : "paragraph",
+    "id" : 574,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 306.669, 539.996, 327.33 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "This follows from the fact that the columns must be linearly independent and so the matrix is full rank and hence invertible."
+  }, {
+    "type" : "paragraph",
+    "id" : 575,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 274.788, 540.003, 295.479 ],
+    "font" : "CMTI10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Theorem 4.2. Inverting a (square) non-singular (upper or lower) triangular matrix can be done in matrix multiplication time."
+  }, {
+    "type" : "paragraph",
+    "id" : 576,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 242.908, 540.005, 263.599 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Proof. Consider a non-singular lower triangular n × n matrix A . Further assume that n is a power of 2. If it is not we can consider the matrix A 0"
+  }, {
+    "type" : "formula",
+    "id" : 577,
+    "page number" : 16,
+    "bounding box" : [ 271.313, 220.664, 340.687, 243.814 ],
+    "content" : "\\begin{bmatrix} A & 0 _ { n \\times m } \\\\ 0 _ { m \\times n } & I _ { m } \\end{bmatrix}"
+  }, {
+    "type" : "paragraph",
+    "id" : 578,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 202.173, 443.946, 212.462 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where m = 2 ⌈ log 2 n ⌉ − n . From now on assuming n is a power of 2, we can write A as"
+  }, {
+    "type" : "formula",
+    "id" : 579,
+    "page number" : 16,
+    "bounding box" : [ 287.23, 168.953, 324.77, 191.188 ],
+    "content" : "\\begin{bmatrix} B & 0 \\\\ C & D \\end{bmatrix}"
+  }, {
+    "type" : "paragraph",
+    "id" : 580,
+    "page number" : 16,
+    "bounding box" : [ 72.0, 135.527, 540.004, 158.078 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where all sub-matrices are of size n 2 . Observe that B and D lower diagonal with a non-zero diagonal elements – the same as A – and so are non-singular. Through direct computation, we note that the inverse is"
+  }, {
+    "type" : "formula",
+    "id" : 581,
+    "page number" : 16,
+    "bounding box" : [ 242.523, 102.307, 369.477, 124.551 ],
+    "content" : "A ^ { - 1 } = \\begin{bmatrix} B ^ { - 1 } & 0 \\\\ - D ^ { - 1 } C B ^ { - 1 } & D ^ { - 1 } \\end{bmatrix}"
+  }, {
+    "type" : "paragraph",
+    "id" : 582,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 669.405, 540.003, 718.416 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "That this is the inverse can be directly verified by expanding A − 1 · A or vice versa. Therefore, we can compute the inverse by computing the inverse of B and D . Therefore, we require the inversion of two n 2 × n 2 matrices, and two matrix multiplications. As B and D are both lower triangular with a non-zero diagonal, we can further subdivide and compute the inverse as above but with the initial matrix being of size n 2 × n 2 . To bound the total computational complexity, we let I ( n ) be the time to invert an n n (lower triangular)"
+  }, {
+    "type" : "paragraph",
+    "id" : 583,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 648.36, 539.999, 669.021 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "× matrix and M ( n ) the time to perform matrix multiplication of two n × n matrices. This gives the recurrence"
+  }, {
+    "type" : "formula",
+    "id" : 584,
+    "page number" : 17,
+    "bounding box" : [ 246.742, 616.619, 365.258, 638.899 ],
+    "content" : "I ( n ) \\leq 2 I \\left ( \\frac { n } { 2 } \\right ) + 2 M \\left ( \\frac { n } { 2 } \\right ) ."
+  }, {
+    "type" : "paragraph",
+    "id" : 585,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 596.278, 425.647, 607.482 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Let M ( n ) ≤ c 1 n ω with M (1) = c 1 and I (1) = c 2 . Assuming n = 2 k , we can write"
+  }, {
+    "type" : "formula",
+    "id" : 586,
+    "page number" : 17,
+    "bounding box" : [ 211.556, 426.368, 400.444, 586.062 ],
+    "content" : "M ( 1 ) & = c _ { 1 } \\text { and } I ( 1 ) = c _ { 2 } . \\text { Assuming } n = 2 ^ { k } , \\text { we can write} \\\\ I ( 2 ^ { k } ) & \\leq 2 I ( 2 ^ { k - 1 } ) + 2 M ( 2 ^ { k - 1 } ) \\\\ & \\leq 2 ^ { 2 } ( I ( 2 ^ { k - 2 } ) + M ( 2 ^ { k - 2 } ) + 2 M ( 2 ^ { k - 1 } ) ) \\\\ & \\vdots \\\\ & \\leq 2 ^ { k } I ( 1 ) + \\sum _ { j = 1 } ^ { k } 2 ^ { j } M ( 2 ^ { k - j } ) \\\\ & \\leq c _ { 2 } 2 ^ { k } + c _ { 1 } \\sum _ { j = 1 } ^ { k - 1 } 2 ^ { j } 2 ^ { ( k - j ) \\omega } \\\\ & \\geq 2 ,"
+  }, {
+    "type" : "paragraph",
+    "id" : 587,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 405.568, 198.249, 414.274 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "We observe that since ω ≥ 2, n is a power of 2, for ℓ = 2 k ,"
+  }, {
+    "type" : "formula",
+    "id" : 588,
+    "page number" : 17,
+    "bounding box" : [ 236.97, 363.195, 375.03, 393.497 ],
+    "content" : "\\sum _ { j = 1 } ^ { k - 1 } 2 ^ { - j ( \\omega - 1 ) } \\leq \\sum _ { j = 0 } ^ { \\infty } 2 ^ { - j ( \\omega - 1 ) } \\leq 2"
+  }, {
+    "type" : "paragraph",
+    "id" : 589,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 340.855, 270.899, 351.135 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Substituting in and using that n = 2 k , we get"
+  }, {
+    "type" : "formula",
+    "id" : 590,
+    "page number" : 17,
+    "bounding box" : [ 202.844, 281.695, 409.157, 328.785 ],
+    "content" : "I ( 2 ^ { k } ) & \\leq c _ { 2 } 2 ^ { k } + c _ { 1 } 2 ^ { k \\omega } \\sum _ { j = 1 } ^ { k - 1 } 2 ^ { - j ( \\omega - 1 ) } \\\\ & \\leq c _ { 2 } 2 ^ { k } + 2 c _ { 1 } ( 2 ^ { k } ) ^ { \\omega } = O ( n + n ^ { \\omega } ) = O ( n ^ { \\omega } ) ."
+  }, {
+    "type" : "heading",
+    "id" : 591,
+    "level" : "Subtitle",
+    "page number" : 17,
+    "bounding box" : [ 72.0, 226.905, 336.887, 239.497 ],
+    "heading level" : 1,
+    "font" : "CMBX12",
+    "font size" : 14.346,
+    "text color" : "[0.0]",
+    "content" : "B Analysis of Persistence Recursion"
+  }, {
+    "type" : "paragraph",
+    "id" : 592,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 205.933, 291.617, 214.639 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "For all the algorithms, the recursion is of the form"
+  }, {
+    "type" : "formula",
+    "id" : 593,
+    "page number" : 17,
+    "bounding box" : [ 228.896, 169.726, 382.607, 195.208 ],
+    "content" : "P H ( \\ell ) \\leq 2 P H \\left ( \\frac { \\ell } { 2 } \\right ) + c _ { 1 } n \\left ( \\frac { \\ell } { 2 } \\right ) ^ { \\omega - 1 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 594,
+    "page number" : 17,
+    "bounding box" : [ 72.0, 136.709, 540.002, 157.371 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "where PH ( n ) is the running time for persistent (co)homology on a filtration with n cells and c 1 takes into account the constant in terms of number of applications as well as for the matrix multiplication. Assuming"
+  }, {
+    "type" : "formula",
+    "id" : 595,
+    "page number" : 18,
+    "bounding box" : [ 177.602, 536.914, 433.9, 696.996 ],
+    "content" : "of 2 , \\, \\text {for } \\ell = 2 ^ { k } , \\\\ \\quad P H ( 2 ^ { k } ) \\leq 2 P H ( 2 ^ { k - 1 } ) + c _ { 1 } n 2 ^ { ( k - 1 ) ( \\omega - 1 ) } \\\\ \\leq 2 ^ { 2 } P H ( 2 ^ { k - 2 } ) + 2 c _ { 1 } n 2 ^ { ( k - 2 ) ( \\omega - 1 ) } + c _ { 1 } n 2 ^ { ( k - 1 ) ( \\omega - 1 ) } \\\\ \\vdots \\\\ \\leq 2 ^ { k } P H ( 1 ) + c _ { 1 } n \\sum _ { j = 0 } ^ { k - 1 } 2 ^ { j } 2 ^ { ( k - 1 - j ) ( \\omega - 1 ) } \\\\ = 2 ^ { k } P H ( 1 ) + c _ { 1 } n 2 ^ { ( k - 1 ) ( \\omega - 1 ) } \\sum _ { j = 0 } ^ { k - 1 } 2 ^ { j - j ( \\omega - 1 ) } \\\\ = 2 ^ { k } P H ( 1 ) + c _ { 1 } n 2 ^ { ( k - 1 ) ( \\omega - 1 ) } \\sum _ { j = 0 } ^ { k - 1 } 2 ^ { - j ( \\omega - 2 ) } \\\\ > 2 , \\, \\text {we note that}"
+  }, {
+    "type" : "paragraph",
+    "id" : 596,
+    "page number" : 18,
+    "bounding box" : [ 72.0, 516.114, 203.754, 524.82 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Assuming ω > 2, we note that"
+  }, {
+    "type" : "formula",
+    "id" : 597,
+    "page number" : 18,
+    "bounding box" : [ 201.954, 473.742, 409.548, 504.043 ],
+    "content" : "\\sum _ { j = 0 } ^ { k - 1 } 2 ^ { - j ( \\omega - 2 ) } \\leq \\sum _ { j = 0 } ^ { \\infty } 2 ^ { - j ( \\omega - 2 ) } = \\frac { 1 } { 1 - 2 ^ { - ( \\omega - 2 ) } } \\leq c _ { 2 }"
+  }, {
+    "type" : "paragraph",
+    "id" : 598,
+    "page number" : 18,
+    "bounding box" : [ 72.0, 452.018, 309.475, 461.647 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Observe that c 2 depends on ω . Substituting in, we get"
+  }, {
+    "type" : "formula",
+    "id" : 599,
+    "page number" : 18,
+    "bounding box" : [ 197.385, 393.393, 414.118, 440.871 ],
+    "content" : "P H ( 2 ^ { k } ) & \\leq 2 ^ { k } P H ( 1 ) + c _ { 1 } n 2 ^ { ( k - 1 ) ( \\omega - 1 ) } \\sum _ { j = 0 } ^ { k - 1 } 2 ^ { - j ( \\omega - 2 ) } \\\\ & \\leq 2 ^ { k } P H ( 1 ) + c _ { 1 } c _ { 2 } n 2 ^ { ( k - 1 ) ( \\omega - 1 ) }"
+  }, {
+    "type" : "paragraph",
+    "id" : 600,
+    "page number" : 18,
+    "bounding box" : [ 72.0, 371.313, 154.001, 381.593 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "If ℓ = n = 2 k , then"
+  }, {
+    "type" : "paragraph",
+    "id" : 602,
+    "page number" : 18,
+    "bounding box" : [ 72.0, 321.199, 189.698, 330.829 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Since PH (1) ≤ c 3 n , we get"
+  }, {
+    "type" : "paragraph",
+    "id" : 604,
+    "page number" : 18,
+    "bounding box" : [ 72.0, 292.235, 122.751, 300.941 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "as required."
+  }, {
+    "type" : "paragraph",
+    "id" : 605,
+    "page number" : 18,
+    "bounding box" : [ 86.944, 280.279, 147.19, 288.985 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "If ω = 2, then"
+  }, {
+    "type" : "formula",
+    "id" : 601,
+    "page number" : 18,
+    "bounding box" : [ 244.33, 340.553, 366.922, 362.833 ],
+    "content" : "P H ( n ) \\leq n P H ( 1 ) + \\frac { c _ { 1 } c _ { 2 } } { 2 } n ^ { \\omega }"
+  }, {
+    "type" : "formula",
+    "id" : 603,
+    "page number" : 18,
+    "bounding box" : [ 238.732, 310.167, 373.268, 320.946 ],
+    "content" : "P H ( n ) \\leq O ( n ^ { 2 } + n ^ { \\omega } ) = O ( n ^ { \\omega } )"
+  }, {
+    "type" : "formula",
+    "id" : 606,
+    "page number" : 18,
+    "bounding box" : [ 230.547, 237.907, 381.453, 268.209 ],
+    "content" : "\\sum _ { j = 0 } ^ { k - 1 } 2 ^ { - j ( \\omega - 2 ) } = \\sum _ { j = 0 } ^ { k - 1 } 1 = k \\leq c _ { 4 } \\log n"
+  }, {
+    "type" : "paragraph",
+    "id" : 607,
+    "page number" : 18,
+    "bounding box" : [ 72.0, 217.107, 171.405, 225.813 ],
+    "font" : "CMR10",
+    "font size" : 9.963,
+    "text color" : "[0.0]",
+    "content" : "Substituting in, we get"
+  }, {
+    "type" : "formula",
+    "id" : 608,
+    "page number" : 18,
+    "bounding box" : [ 208.232, 120.455, 403.271, 205.036 ],
+    "content" : "P H ( 2 ^ { k } ) & \\leq 2 ^ { k } P H ( 1 ) + c _ { 1 } n 2 ^ { ( k - 1 ) } \\sum _ { j = 0 } ^ { k - 1 } 2 ^ { - j ( \\omega - 2 ) } \\\\ & \\leq 2 ^ { k } P H ( 1 ) + c _ { 1 } c _ { 2 } c _ { 4 } n 2 ^ { ( k - 1 ) } \\log n \\\\ & = 2 ^ { k } P H ( 1 ) + \\frac { c _ { 1 } c _ { 2 } c _ { 4 } } { 2 } n 2 ^ { k } \\log n \\\\ & \\leq O ( n ^ { 2 } + n ^ { 2 } \\log n ) = O ( n ^ { 2 } \\log n )"
+  } ]
+}
