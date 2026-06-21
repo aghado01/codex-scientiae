@@ -68,6 +68,13 @@ function Test-BlockLabel([string]$heading) {
     return [bool]($heading -match '(?i)^\s*(theorem|lemma|proof|corollary|proposition|definition|remark|example|claim|fact|conjecture|notation|assumption|observation)\b')
 }
 
+# A bibliography line in a heading-less citation run. Only bracketed [N] is unambiguous; parenthesized
+# (N) and bare "N." must each carry a (year) to qualify — otherwise an in-body enumerated list
+# ((1)…(N) differences, steps, cases) is mistaken for a reference and mis-zoned to back-matter.
+function Test-IsCitationLine([string]$t) {
+    return ($t -match '^\s*\[\d+\]\s+\S') -or (($t -match '^\s*(\(\d+\)|\d+\.)\s+[A-Z]') -and ($t -match '\((1[89]|20)\d{2}\)'))
+}
+
 function Invoke-Sections {
     [CmdletBinding()]
     param(
@@ -170,13 +177,11 @@ function Invoke-Sections {
     # citation-run references: a contiguous run (>= 3) of bracketed/numbered citation chunks is the
     # bibliography even with no "References" heading (refs-in-lists, common in letter-format papers).
     # Mark them is_reference + backmatter so finalize routes them to the sidecar and the run fixes the
-    # back-matter boundary. Bracketed [N]/(N) is unambiguous; bare "N." must carry a (year) to qualify
-    # (so a numbered procedure list isn't mistaken for references).
-    $isCite = { param($t) ($t -match '^\s*(\[\d+\]|\(\d+\))\s+\S') -or ($t -match '^\s*\d+\.\s+[A-Z]' -and $t -match '\((1[89]|20)\d{2}\)') }
+    # back-matter boundary. Test-IsCitationLine gates the run (see its note on the (N)/year guard).
     $refMarked = 0; $i = 0
     while ($i -lt $chunks.Count) {
-        if (& $isCite ([string]$chunks[$i].content)) {
-            $j = $i; while ($j -lt $chunks.Count -and (& $isCite ([string]$chunks[$j].content))) { $j++ }
+        if (Test-IsCitationLine ([string]$chunks[$i].content)) {
+            $j = $i; while ($j -lt $chunks.Count -and (Test-IsCitationLine ([string]$chunks[$j].content))) { $j++ }
             if (($j - $i) -ge 3) {
                 for ($k = $i; $k -lt $j; $k++) {
                     $chunks[$k] | Add-Member -NotePropertyName is_reference -NotePropertyValue $true -Force
