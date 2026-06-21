@@ -2,6 +2,13 @@
 
 NICHOLAS J. CAVANNA AND DONALD R. SHEEHY
 
+## Contents
+
+- [Introduction](#introduction)
+- [Background](#background)
+- [Results](#results)
+- [References](references/PNV20XX.md)
+
 ## Introduction
 
 The nerve of a cover is a simplicial complex corresponding to the collection of intersections of a cover of a nice topological space. Nerves show up all over computational geometry and topology as they provide a discrete representation of a continuous space. In fact if one has a good cover of a space, then the nerve has the same homotopy type, and thus homology, as the space. Nerves are used in surface reconstruction, homology inference, and homological sensor networks.
@@ -45,8 +52,4 @@ This lifting operation also preserves chain homotopies on the new spaces. Thus w
 d_{B} ( \operatorname{Pers}_{r} ( \mathcal{W} ) , \operatorname{Pers}_{r} ( \operatorname{Nerve} \mathcal{U} ) ) \leq ( r + 1 ) \varepsilon
 
 Thus the bottleneck distance of the persistence diagrams for the r -th persistent homology of the simplicial filtration and the nerve filtration is bounded above $( r +1 ) \varepsilon$ . Furthermore, the bottleneck distance is upper-bounded by $( D + 1 ) \varepsilon$ , where D is the maximal dimension of the nerve.Since the maps ¯ a and p ◦ ¯ q are natural by construction, they commute with the shift homomorphisms at the homology level, and thus induce the interleaving homomorphisms between N and B , implying our result. An overview of the proof is as follows. One has the equality Pers( W ) $=$ Pers( B ), and thus one must find an interleaving between the chains of $N \alpha$ and $B \alpha$ to prove the theorem, where $N \alpha$ is the barycentric subdivision of Nerve $U \alpha$ . Define $N = ( N \alpha ) \alpha \geq 0$ . Since $N \alpha$ is homeomorphic to Nerve $U \alpha$ , for all $\alpha$ , it follows that Pers( N ) $=$ Pers(Nerve U ). For each vertex v of $N \alpha$ , there is a corresponding nonempty set $U \alpha v$ . There exists a projection $p \alpha : B \alpha \to N \alpha$ , which we use to define a map $¯ q \alpha$ from $N \alpha$ to $B \alpha + t$ , where t is a function of $\varepsilon$ , such that $p \alpha + t ◦ ¯ q \alpha$ commutes with $N \alpha \to N \alpha + t$ and $¯ q \alpha ◦ p \alpha$ is chain homotopic to the inclusion $b \alpha : B \alpha \to B \alpha + t$ .
-
-## Contents
-
-- [References](references/PNV20XX.md)
 
