@@ -591,3 +591,53 @@
   - [B.7 Computational performance for model with both zero-dimensional and one-dimensional features](WRD2025.md#b7-computational-performance-for-model-with-both-zero-dimensional-and-one-dimensional-features)
 
 ---
+
+## [Nonparametric Estimation of Probability Density Functions of Random Persistence Diagrams](MMO2019.md)
+
+- [Abstract](MMO2019.md#abstract)
+- [1. Introduction](MMO2019.md#1-introduction)
+- [2. Topological Data Analysis Background](MMO2019.md#2-topological-data-analysis-background)
+- [3. Random Persistence Diagrams](MMO2019.md#3-random-persistence-diagrams)
+- [4. Kernel Density Estimation](MMO2019.md#4-kernel-density-estimation)
+  - [4.1. Construction](MMO2019.md#41-construction)
+  - [4.2. Convergence of the Kernel Density Estimator](MMO2019.md#42-convergence-of-the-kernel-density-estimator)
+  - [4.3. A Measure of Dispersion](MMO2019.md#43-a-measure-of-dispersion)
+- [5. Examples](MMO2019.md#5-examples)
+- [6. Discussion and Conclusions](MMO2019.md#6-discussion-and-conclusions)
+- [References](references/MMO2019.md)
+
+---
+
+## [Quantitative analysis of phase transitions in two-dimensional XY models using persistent homology](SGL2022.md)
+
+- [Abstract](SGL2022.md#abstract)
+- [I. INTRODUCTION](SGL2022.md#i-introduction)
+- [II. METHOD](SGL2022.md#ii-method)
+  - [A. Background on Persistent Homology and Persistence Images](SGL2022.md#a-background-on-persistent-homology-and-persistence-images)
+  - [B. Filtrations](SGL2022.md#b-filtrations)
+  - [C. Logistic Regression](SGL2022.md#c-logistic-regression)
+  - [D. k-Nearest Neighbours Classiﬁcation](SGL2022.md#d-k-nearest-neighbours-classiﬁcation)
+  - [E. Finite-Size Scaling Analysis](SGL2022.md#e-finite-size-scaling-analysis)
+  - [F. Statistical Analysis](SGL2022.md#f-statistical-analysis)
+  - [G. Analysis Pipeline](SGL2022.md#g-analysis-pipeline)
+- [III. ANALYSIS](SGL2022.md#iii-analysis)
+  - [A. XY Model](SGL2022.md#a-xy-model)
+  - [1. Logistic Regression Analysis](SGL2022.md#1-logistic-regression-analysis)
+  - [2. k-Nearest Neighbours Analysis](SGL2022.md#2-k-nearest-neighbours-analysis)
+  - [B. Constrained XY Model](SGL2022.md#b-constrained-xy-model)
+  - [1. Logistic Regression Analysis](SGL2022.md#1-logistic-regression-analysis)
+  - [2. k-Nearest Neighbours Analysis](SGL2022.md#2-k-nearest-neighbours-analysis)
+  - [C. Nematic XY Model](SGL2022.md#c-nematic-xy-model)
+  - [2. k-Nearest Neighbours Analysis of Magnetic-Nematic Transition](SGL2022.md#2-k-nearest-neighbours-analysis-of-magnetic-nematic-transition)
+  - [1. Logistic Regression Analysis of Magnetic-Nematic Transition](SGL2022.md#1-logistic-regression-analysis-of-magnetic-nematic-transition)
+  - [3. Logistic Regression Analysis of Nematic-Paramagnetic Transition](SGL2022.md#3-logistic-regression-analysis-of-nematic-paramagnetic-transition)
+  - [4. k-Nearest Neighbours Analysis of Nematic-Paramagnetic Transition](SGL2022.md#4-k-nearest-neighbours-analysis-of-nematic-paramagnetic-transition)
+- [IV. CONCLUSIONS AND DISCUSSION](SGL2022.md#iv-conclusions-and-discussion)
+- [Appendix A: Cubical Complexes and Homology](SGL2022.md#appendix-a-cubical-complexes-and-homology)
+- [Appendix B: Stability of Filtration](SGL2022.md#appendix-b-stability-of-filtration)
+- [Appendix C: Histogram Reweighting](SGL2022.md#appendix-c-histogram-reweighting)
+- [Appendix D: Bootstrap Error Estimation](SGL2022.md#appendix-d-bootstrap-error-estimation)
+  - [Bootstrap procedure](SGL2022.md#bootstrap-procedure)
+- [References](references/SGL2022.md)
+
+---
