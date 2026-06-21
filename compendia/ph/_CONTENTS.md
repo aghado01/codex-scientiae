@@ -3,20 +3,40 @@
 ## [Strong Collapse for Persistence ∗](1809.10945v1.md)
 
 - [Introduction](1809.10945v1.md#introduction)
-- [Schloss Dagstuhl - Leibniz-Zentrum für Informatik, Dagstuhl Publishing, Germany](1809.10945v1.md#schloss-dagstuhl---leibniz-zentrum-für-informatik-dagstuhl-publishing-germany)
-- [XX :2](1809.10945v1.md#xx-2)
 - [2 Preliminaries](1809.10945v1.md#2-preliminaries)
 - [3 Strong collapse of a simplicial complex](1809.10945v1.md#3-strong-collapse-of-a-simplicial-complex)
-- [Algorithm 1 Core algorithm](1809.10945v1.md#algorithm-1-core-algorithm)
 - [4 Strong collapse of a sequence of simplicial complexes](1809.10945v1.md#4-strong-collapse-of-a-sequence-of-simplicial-complexes)
-- [XX :10](1809.10945v1.md#xx-10)
 - [5 Computational experiments](1809.10945v1.md#5-computational-experiments)
-- [dragon](1809.10945v1.md#dragon)
-- [Pnt](1809.10945v1.md#pnt)
-- [Threshold](1809.10945v1.md#threshold)
-- [eleg](1809.10945v1.md#eleg)
 - [6 Discussion](1809.10945v1.md#6-discussion)
 - [References](references/1809.10945v1.md)
+
+---
+
+## [Computing Zigzag Persistence on Graphs in Near-Linear Time ∗](2103.07353v1.md)
+
+- [1 Introduction](2103.07353v1.md#1-introduction)
+- [2 Preliminaries](2103.07353v1.md#2-preliminaries)
+- [3 Zero-dimensional zigzag persistence](2103.07353v1.md#3-zero-dimensional-zigzag-persistence)
+  - [3.1 Implementation](2103.07353v1.md#31-implementation)
+  - [3.2 Justification](2103.07353v1.md#32-justification)
+- [4 One-dimensional zigzag persistence](2103.07353v1.md#4-one-dimensional-zigzag-persistence)
+  - [4.1 Efficient implementation](2103.07353v1.md#41-efficient-implementation)
+- [5 Codimension-one zigzag persistence of embedded complexes](2103.07353v1.md#5-codimension-one-zigzag-persistence-of-embedded-complexes)
+- [6 Conclusions](2103.07353v1.md#6-conclusions)
+- [References](references/2103.07353v1.md)
+
+---
+
+## [FAST COMPUTATION OF PERSISTENT HOMOLOGY REPRESENTATIVES WITH INVOLUTED PERSISTENT HOMOLOGY](2105.03629v2.md)
+
+- [1. Introduction](2105.03629v2.md#1-introduction)
+- [2. Theoretical background](2105.03629v2.md#2-theoretical-background)
+- [3. Algorithm](2105.03629v2.md#3-algorithm)
+  - [3.1. The algorithm](2105.03629v2.md#31-the-algorithm)
+- [4. Experiments](2105.03629v2.md#4-experiments)
+- [5. Analysis](2105.03629v2.md#5-analysis)
+- [6. Conclusions](2105.03629v2.md#6-conclusions)
+- [References](references/2105.03629v2.md)
 
 ---
 
@@ -30,15 +50,7 @@
   - [3.2 Conversion to up-down filtration](2204.11080v2.md#32-conversion-to-up-down-filtration)
   - [3.3 Conversion to non-zigzag filtration](2204.11080v2.md#33-conversion-to-non-zigzag-filtration)
   - [3.4 Summary of filtration conversion](2204.11080v2.md#34-summary-of-filtration-conversion)
-  - [Algorithm 3.1 Pseudocode for converting input filtration](2204.11080v2.md#algorithm-31-pseudocode-for-converting-input-filtration)
-  - [Algorithm 3.2 Pseudocode for FastZigzag](2204.11080v2.md#algorithm-32-pseudocode-for-fastzigzag)
   - [3.5 Experiments](2204.11080v2.md#35-experiments)
-  - [Dio2](2204.11080v2.md#dio2)
-  - [T Gudhi](2204.11080v2.md#t-gudhi)
-  - [T FZZ](2204.11080v2.md#t-fzz)
-  - [M Dio2](2204.11080v2.md#m-dio2)
-  - [M Gudhi](2204.11080v2.md#m-gudhi)
-  - [M FZZ](2204.11080v2.md#m-fzz)
 - [4 Conclusions](2204.11080v2.md#4-conclusions)
 - [Acknowledgment:](2204.11080v2.md#acknowledgment)
 - [References](references/2204.11080v2.md)
@@ -47,8 +59,6 @@
 
 ## [Persistent (Co)Homology in Matrix Multiplication Time](2412.02591v2.md)
 
-- [1 Lawrence Berkeley National Laboratory 2 School of Mathematical Sciences, Queen Mary University of London](2412.02591v2.md#1-lawrence-berkeley-national-laboratory-2-school-of-mathematical-sciences-queen-mary-university-of-london)
-  - [April 1, 2025](2412.02591v2.md#april-1-2025)
   - [Abstract](2412.02591v2.md#abstract)
 - [1 Introduction](2412.02591v2.md#1-introduction)
 - [2 Preliminaries](2412.02591v2.md#2-preliminaries)
@@ -58,15 +68,12 @@
 - [4 Column Algorithms](2412.02591v2.md#4-column-algorithms)
   - [4.1 Fast Exhaustive Algorithm](2412.02591v2.md#41-fast-exhaustive-algorithm)
 - [5 Row Algorithm](2412.02591v2.md#5-row-algorithm)
-  - [Algorithm 4 Incremental Row Algorithm](2412.02591v2.md#algorithm-4-incremental-row-algorithm)
   - [5.1 Fast Row Algorithm](2412.02591v2.md#51-fast-row-algorithm)
-  - [Algorithm 5 Row Algorithm( A = [ i,j ])](2412.02591v2.md#algorithm-5-row-algorithm-a-ij-)
 - [6 Discussion](2412.02591v2.md#6-discussion)
 - [Acknowledgement](2412.02591v2.md#acknowledgement)
-- [References](references/2412.02591v2.md)
 - [A Matrix Inversion in Matrix Multiplication Time](2412.02591v2.md#a-matrix-inversion-in-matrix-multiplication-time)
-  - [We observe that since ω ≥ 2, n is a power of 2, for ℓ = 2 k ,](2412.02591v2.md#we-observe-that-since-ω-2-n-is-a-power-of-2-for-ℓ-2-k-)
 - [B Analysis of Persistence Recursion](2412.02591v2.md#b-analysis-of-persistence-recursion)
+- [References](references/2412.02591v2.md)
 
 ---
 
@@ -125,9 +132,8 @@
 - [2. ZIGZAG PERSISTENCE](CDSM2009.md#2-zigzag-persistence)
 - [3. CONNECTION TO EXTENDED PERSISTENCE](CDSM2009.md#3-connection-to-extended-persistence)
 - [4. ALGORITHM](CDSM2009.md#4-algorithm)
-- [1. Prepend D i C i [ j ] to Z i to get Z i](CDSM2009.md#1-prepend-d-i-c-i-j-to-z-i-to-get-z-i)
-- [2. Let c = C i [ j ][ σ ] be the coefficient of σ in the chain C i [ j ]](CDSM2009.md#2-let-c-c-i-j-σ-be-the-coefficient-of-σ-in-the-chain-c-i-j)
 - [5. DISCUSSION](CDSM2009.md#5-discussion)
+- [6. ACKNOWLEDGEMENTS](CDSM2009.md#6-acknowledgements)
 - [References](references/CDSM2009.md)
 
 ---
@@ -268,6 +274,12 @@
 
 ---
 
+## [The robustness of persistent homology of brain networks to data acquisition-related non-neural variability in resting state fMRI](HBM-44-4637.md)
+
+- [References](references/HBM-44-4637.md)
+
+---
+
 ## [HOMOLOGY MANIFOLDS AND EUCLIDEAN BUNDLES](HLWW2024.md)
 
 - [Abstract](HLWW2024.md#abstract)
@@ -340,6 +352,12 @@
   - [5.4.3 Relation to the general theorem.](MR2026.md#543-relation-to-the-general-theorem)
 - [6 Conclusions](MR2026.md#6-conclusions)
 - [References](references/MR2026.md)
+
+---
+
+## [PERSISTENT NERVES REVISITED](PNV20XX.md)
+
+- [References](references/PNV20XX.md)
 
 ---
 
@@ -498,8 +516,6 @@
 - [2. Algebra](VSMJ2011.md#2-algebra)
   - [2.5. Barcode isomorphisms.](VSMJ2011.md#25-barcode-isomorphisms)
 - [3. Matrix Algorithms](VSMJ2011.md#3-matrix-algorithms)
-- [Algorithm 1 Column algorithm pHcol .](VSMJ2011.md#algorithm-1-column-algorithm-phcol-)
-- [Algorithm 2 Row algorithm pHrow .](VSMJ2011.md#algorithm-2-row-algorithm-phrow-)
 - [4. Optimizations](VSMJ2011.md#4-optimizations)
 - [References](references/VSMJ2011.md)
 
