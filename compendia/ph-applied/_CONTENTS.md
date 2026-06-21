@@ -1,0 +1,60 @@
+## [PERSISTENT TOPOLOGICAL FEATURES IN LARGE LANGUAGE MODELS](GVPB2025.md)
+
+- [Abstract](GVPB2025.md#abstract)
+- [1 Introduction](GVPB2025.md#1-introduction)
+- [2 Related Work](GVPB2025.md#2-related-work)
+- [3 Method](GVPB2025.md#3-method)
+  - [3.1 Topological Data Analysis](GVPB2025.md#31-topological-data-analysis)
+  - [3.2 Zigzag Persistence for Layer Analysis](GVPB2025.md#32-zigzag-persistence-for-layer-analysis)
+  - [3.3 Zigzag Descriptors](GVPB2025.md#33-zigzag-descriptors)
+- [4 Experiments](GVPB2025.md#4-experiments)
+  - [4.1 Models, Datasets and Benchmarks](GVPB2025.md#41-models-datasets-and-benchmarks)
+  - [4.2 Zigzag persistence applied to LLM models](GVPB2025.md#42-zigzag-persistence-applied-to-llm-models)
+  - [4.3 Interpretation and implications for the model’s performance](GVPB2025.md#43-interpretation-and-implications-for-the-models-performance)
+  - [4.4 Layer Pruning](GVPB2025.md#44-layer-pruning)
+- [5 Conclusions](GVPB2025.md#5-conclusions)
+- [References](references/GVPB2025.md)
+
+---
+
+## [The robustness of persistent homology of brain networks to data acquisition-related non-neural variability in resting state fMRI](HBM-44-4637.md)
+
+- [Abstract](HBM-44-4637.md#abstract)
+- [Introduction](HBM-44-4637.md#introduction)
+- [Related Work](HBM-44-4637.md#related-work)
+- [Methods](HBM-44-4637.md#methods)
+  - [Experimental Data and Network Construction](HBM-44-4637.md#experimental-data-and-network-construction)
+  - [Mapping Network to Metric Space](HBM-44-4637.md#mapping-network-to-metric-space)
+  - [Extracting Topological Features](HBM-44-4637.md#extracting-topological-features)
+    - [Topological Features](HBM-44-4637.md#topological-features)
+    - [Persistent Homology](HBM-44-4637.md#persistent-homology)
+  - [Statistical Inferencing](HBM-44-4637.md#statistical-inferencing)
+    - [Comparison Across Cohorts](HBM-44-4637.md#comparison-across-cohorts)
+    - [Comparison Within a Cohort](HBM-44-4637.md#comparison-within-a-cohort)
+    - [Comparison with Traditional FCN Analysis](HBM-44-4637.md#comparison-with-traditional-fcn-analysis)
+- [Results](HBM-44-4637.md#results)
+- [Discussion](HBM-44-4637.md#discussion)
+- [Conclusion](HBM-44-4637.md#conclusion)
+- [References](references/HBM-44-4637.md)
+
+---
+
+## [Persistent Sheaf Laplacian Analysis of Protein Stability and Solubility Changes upon Mutation](RWGW2026.md)
+
+- [Abstract](RWGW2026.md#abstract)
+- [1 Introduction](RWGW2026.md#1-introduction)
+- [2 Results](RWGW2026.md#2-results)
+  - [2.1 Overview of SheafLapNet](RWGW2026.md#21-overview-of-sheaflapnet)
+  - [2.2 Prediction of Mutation-Induced Protein Stability Changes](RWGW2026.md#22-prediction-of-mutation-induced-protein-stability-changes)
+  - [2.3 Classification of Mutation-Induced Protein Solubility Changes](RWGW2026.md#23-classification-of-mutation-induced-protein-solubility-changes)
+- [3 Materials and Methods](RWGW2026.md#3-materials-and-methods)
+  - [3.1 Persistent Sheaf Laplacian](RWGW2026.md#31-persistent-sheaf-laplacian)
+  - [3.2 Sheaf Laplacian feature generation for protein](RWGW2026.md#32-sheaf-laplacian-feature-generation-for-protein)
+  - [3.3 Auxiliary Features](RWGW2026.md#33-auxiliary-features)
+  - [3.4 Sequence Features](RWGW2026.md#34-sequence-features)
+  - [3.5 SheafLapNet model hyperparameters](RWGW2026.md#35-sheaflapnet-model-hyperparameters)
+- [4 Conclusion](RWGW2026.md#4-conclusion)
+- [Data and Code Availability](RWGW2026.md#data-and-code-availability)
+- [References](references/RWGW2026.md)
+
+---

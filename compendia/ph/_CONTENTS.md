@@ -1,5 +1,59 @@
 # Persistent Homology Compendium
 
+## [Multiparameter persistence](REF-MPH.md)
+
+- [9.1 Persistence modules indexed by a poset](REF-MPH.md#91-persistence-modules-indexed-by-a-poset)
+- [9.2 Representing persistence modules indexed by posets](REF-MPH.md#92-representing-persistence-modules-indexed-by-posets)
+  - [9.2.1 Barcodes?](REF-MPH.md#921-barcodes)
+  - [9.2.2 Other representations and visualizations](REF-MPH.md#922-other-representations-and-visualizations)
+  - [9.3 Distances and robustness for P -persistence modules](REF-MPH.md#93-distances-and-robustness-for-p--persistence-modules)
+  - [9.3.1 Robustness of some bipersistence modules](REF-MPH.md#931-robustness-of-some-bipersistence-modules)
+- [Questions](REF-MPH.md#questions)
+- [References](references/REF-MPH.md)
+
+---
+
+## [Persistent Homology](REF-PH.md)
+
+- [1. Filtrations](REF-PH.md#1-filtrations)
+- [2. Starting with a Few Examples](REF-PH.md#2-starting-with-a-few-examples)
+- [3. Persistent Modules and Persistence Diagrams](REF-PH.md#3-persistent-modules-and-persistence-diagrams)
+- [4. Metrics on the Space of Persistence Diagrams](REF-PH.md#4-metrics-on-the-space-of-persistence-diagrams)
+- [5. Stability](REF-PH.md#5-stability)
+  - [5.1. A General Result](REF-PH.md#51-a-general-result)
+  - [5.2. Stability for Functions](REF-PH.md#52-stability-for-functions)
+  - [5.3. Stability for Spaces](REF-PH.md#53-stability-for-spaces)
+- [6. Rates of Convergence for Random Point Clouds](REF-PH.md#6-rates-of-convergence-for-random-point-clouds)
+  - [6.1. Minimax Upper Bound](REF-PH.md#61-minimax-upper-bound)
+- [7. Persistence Landscapes](REF-PH.md#7-persistence-landscapes)
+  - [7.1. Construction](REF-PH.md#71-construction)
+  - [7.2. Stability](REF-PH.md#72-stability)
+  - [7.3. Central Tendency for Persistent Homology](REF-PH.md#73-central-tendency-for-persistent-homology)
+- [8. Further Sources](REF-PH.md#8-further-sources)
+- [References](references/REF-PH.md)
+
+---
+
+## [PERSISTENT NERVES REVISITED](PNV20XX.md)
+
+- [Introduction](PNV20XX.md#introduction)
+- [Background](PNV20XX.md#background)
+- [Results](PNV20XX.md#results)
+- [References](references/PNV20XX.md)
+
+---
+
+## [DUALITIES IN PERSISTENT (CO)HOMOLOGY](VSMJ2011.md)
+
+- [1. Introduction](VSMJ2011.md#1-introduction)
+- [2. Algebra](VSMJ2011.md#2-algebra)
+  - [2.5. Barcode isomorphisms.](VSMJ2011.md#25-barcode-isomorphisms)
+- [3. Matrix Algorithms](VSMJ2011.md#3-matrix-algorithms)
+- [4. Optimizations](VSMJ2011.md#4-optimizations)
+- [References](references/VSMJ2011.md)
+
+---
+
 ## [Strong Collapse for Persistence ∗](1809.10945v1.md)
 
 - [Introduction](1809.10945v1.md#introduction)
@@ -77,55 +131,6 @@
 
 ---
 
-## [Interval multiplicities of persistence modules](AL2026.md)
-
-- [Abstract](AL2026.md#abstract)
-- [1 Introduction](AL2026.md#1-introduction)
-  - [1.1 Notation conventions](AL2026.md#11-notation-conventions)
-  - [1.2 Purposes](AL2026.md#12-purposes)
-  - [1.3 Our contributions](AL2026.md#13-our-contributions)
-  - [1.4 Organization](AL2026.md#14-organization)
-- [2 Preliminaries](AL2026.md#2-preliminaries)
-- [3 The formula of interval multiplicities](AL2026.md#3-the-formula-of-interval-multiplicities)
-  - [3.1 The general poset case](AL2026.md#31-the-general-poset-case)
-    - [3.1.1 The case where V I is injective](AL2026.md#311-the-case-where-v-i-is-injective)
-    - [3.1.2 The case where $ V_I $ is non-injective](AL2026.md#312-the-case-where-$-v_i-$-is-non-injective)
-  - [3.2 The case of a 2D-grid](AL2026.md#32-the-case-of-a-2d-grid)
-    - [3.2.1 The case where V I is injective](AL2026.md#321-the-case-where-v-i-is-injective)
-  - [3.3 Reducing candidates of the interval direct summands](AL2026.md#33-reducing-candidates-of-the-interval-direct-summands)
-- [4 Essential cover](AL2026.md#4-essential-cover)
-- [5 Interval multiplicities by presentations](AL2026.md#5-interval-multiplicities-by-presentations)
-  - [5.1 The formula by projective presentations](AL2026.md#51-the-formula-by-projective-presentations)
-  - [5.2 The formula by injective copresentations](AL2026.md#52-the-formula-by-injective-copresentations)
-- [6 Examples](AL2026.md#6-examples)
-  - [6.1 The case of 2D-grids](AL2026.md#61-the-case-of-2d-grids)
-  - [6.2 The case of Dynkin type $ D $](AL2026.md#62-the-case-of-dynkin-type-$-d-$)
-  - [6.3 The case of bipath posets](AL2026.md#63-the-case-of-bipath-posets)
-- [Appendix A The salamander lemma](AL2026.md#appendix-a-the-salamander-lemma)
-- [References](references/AL2026.md)
-
----
-
-## [Statistical Topology via Morse Theory Persistence and Nonparametric estimation](BCKL2010.md)
-
-- [Abstract](BCKL2010.md#abstract)
-- [1. Introduction](BCKL2010.md#1-introduction)
-- [2. Topological Preliminaries](BCKL2010.md#2-topological-preliminaries)
-  - [2.1. Persistent topology](BCKL2010.md#21-persistent-topology)
-  - [2.2. Bottleneck distance](BCKL2010.md#22-bottleneck-distance)
-  - [2.3. Connection to Statistics](BCKL2010.md#23-connection-to-statistics)
-- [3. Nonparametric regression on manifolds](BCKL2010.md#3-nonparametric-regression-on-manifolds)
-  - [3.1. Asymptotic equidistance on manifolds](BCKL2010.md#31-asymptotic-equidistance-on-manifolds)
-- [4. Main Results](BCKL2010.md#4-main-results)
-- [5. Discussion](BCKL2010.md#5-discussion)
-- [6. Proofs](BCKL2010.md#6-proofs)
-  - [6.2. The lower bound](BCKL2010.md#62-the-lower-bound)
-- [Appendix A. Background on Topology](BCKL2010.md#appendix-a-background-on-topology)
-- [Appendix B. Background on Geometry](BCKL2010.md#appendix-b-background-on-geometry)
-- [References](references/BCKL2010.md)
-
----
-
 ## [Zigzag Persistent Homology and Real-valued Functions](CDSM2009.md)
 
 - [1. INTRODUCTION](CDSM2009.md#1-introduction)
@@ -135,70 +140,6 @@
 - [5. DISCUSSION](CDSM2009.md#5-discussion)
 - [6. ACKNOWLEDGEMENTS](CDSM2009.md#6-acknowledgements)
 - [References](references/CDSM2009.md)
-
----
-
-## [Persistent homology for high-dimensional data based on spectral methods](DBK2023.md)
-
-- [1 Introduction](DBK2023.md#1-introduction)
-- [2 Related work](DBK2023.md#2-related-work)
-- [3 Background: persistent homology](DBK2023.md#3-background-persistent-homology)
-- [4 The curse of dimensionality for persistence homology](DBK2023.md#4-the-curse-of-dimensionality-for-persistence-homology)
-- [5 Background: effective resistance and diffusion distances](DBK2023.md#5-background-effective-resistance-and-diffusion-distances)
-- [6 Spectral distances find holes in high-dimensional spaces](DBK2023.md#6-spectral-distances-find-holes-in-high-dimensional-spaces)
-  - [6.1 Benchmark setup](DBK2023.md#61-benchmark-setup)
-  - [6.2 Benchmark results](DBK2023.md#62-benchmark-results)
-- [7 Relation between spectral distances](DBK2023.md#7-relation-between-spectral-distances)
-- [8 Detecting cycles in single-cell RNA-sequencing data](DBK2023.md#8-detecting-cycles-in-single-cell-rna-sequencing-data)
-- [9 Discussion](DBK2023.md#9-discussion)
-  - [Acknowledgments](DBK2023.md#acknowledgments)
-- [Reproducibility statement](DBK2023.md#reproducibility-statement)
-- [References](references/DBK2023.md)
-- [Supplementary text](DBK2023.md#supplementary-text)
-- [A Effective resistance as spectral method](DBK2023.md#a-effective-resistance-as-spectral-method)
-- [B Pairwise noise distances in high-dimensional spaces](DBK2023.md#b-pairwise-noise-distances-in-high-dimensional-spaces)
-- [C Details on the distances](DBK2023.md#c-details-on-the-distances)
-- [D Datasets](DBK2023.md#d-datasets)
-  - [D.1 Synthetic datasets](DBK2023.md#d1-synthetic-datasets)
-  - [D.2 Single-cell datasets](DBK2023.md#d2-single-cell-datasets)
-- [E Hyperparameter selection](DBK2023.md#e-hyperparameter-selection)
-- [F Implementation details](DBK2023.md#f-implementation-details)
-- [G Additional figures](DBK2023.md#g-additional-figures)
-
----
-
-## [CONLEY-MORSE PERSISTENCE BARCODE: A HOMOLOGICAL SIGNATURE OF COMBINATORIAL BIFURCATIONS](DLST2026.md)
-
-- [Abstract](DLST2026.md#abstract)
-- [1. Introduction](DLST2026.md#1-introduction)
-- [2. Motivation and Main Ideas](DLST2026.md#2-motivation-and-main-ideas)
-  - [2.1. The sphere example](DLST2026.md#21-the-sphere-example)
-  - [2.2. Attractor-repeller split example](DLST2026.md#22-attractor-repeller-split-example)
-  - [2.3. Homological signature of a bifurcation](DLST2026.md#23-homological-signature-of-a-bifurcation)
-- [3. Preliminaries](DLST2026.md#3-preliminaries)
-  - [3.3. Relations](DLST2026.md#33-relations)
-  - [3.4. Finite topological spaces](DLST2026.md#34-finite-topological-spaces)
-- [4. Combinatorial Multivector Fields Theory](DLST2026.md#4-combinatorial-multivector-fields-theory)
-  - [4.1. Elementary notions](DLST2026.md#41-elementary-notions)
-  - [4.2. Morse and block decomposition](DLST2026.md#42-morse-and-block-decomposition)
-  - [4.3. Conley Index.](DLST2026.md#43-conley-index)
-  - [4.4. Combinatorial continuation](DLST2026.md#44-combinatorial-continuation)
-- [5. Transition Diagram for a Zigzag Filtration of Block Decompositions](DLST2026.md#5-transition-diagram-for-a-zigzag-filtration-of-block-decompositions)
-  - [5.1. Filtration of block decompositions](DLST2026.md#51-filtration-of-block-decompositions)
-  - [5.2. Transition diagram for a basic zigzag filtration](DLST2026.md#52-transition-diagram-for-a-basic-zigzag-filtration)
-  - [5.3. Transition diagram for a non-basic zigzag filtration](DLST2026.md#53-transition-diagram-for-a-non-basic-zigzag-filtration)
-  - [5.4. Construction of the transition diagram](DLST2026.md#54-construction-of-the-transition-diagram)
-- [6. Persistence Modules and Gentle Algebras](DLST2026.md#6-persistence-modules-and-gentle-algebras)
-  - [6.1. Quivers](DLST2026.md#61-quivers)
-  - [6.2. Gentle algebras](DLST2026.md#62-gentle-algebras)
-  - [6.3. Persistence modules](DLST2026.md#63-persistence-modules)
-- [7. Conley-Morse Persistence Barcode](DLST2026.md#7-conley-morse-persistence-barcode)
-- [8. Algorithm](DLST2026.md#8-algorithm)
-  - [8.1. Incremental zigzag persistence algorithm](DLST2026.md#81-incremental-zigzag-persistence-algorithm)
-    - [8.1.1. Computing the bars](DLST2026.md#811-computing-the-bars)
-  - [8.2. Correctness](DLST2026.md#82-correctness)
-- [9. Discussion](DLST2026.md#9-discussion)
-- [References](references/DLST2026.md)
 
 ---
 
@@ -255,56 +196,6 @@
 
 ---
 
-## [PERSISTENT TOPOLOGICAL FEATURES IN LARGE LANGUAGE MODELS](GVPB2025.md)
-
-- [Abstract](GVPB2025.md#abstract)
-- [1 Introduction](GVPB2025.md#1-introduction)
-- [2 Related Work](GVPB2025.md#2-related-work)
-- [3 Method](GVPB2025.md#3-method)
-  - [3.1 Topological Data Analysis](GVPB2025.md#31-topological-data-analysis)
-  - [3.2 Zigzag Persistence for Layer Analysis](GVPB2025.md#32-zigzag-persistence-for-layer-analysis)
-  - [3.3 Zigzag Descriptors](GVPB2025.md#33-zigzag-descriptors)
-- [4 Experiments](GVPB2025.md#4-experiments)
-  - [4.1 Models, Datasets and Benchmarks](GVPB2025.md#41-models-datasets-and-benchmarks)
-  - [4.2 Zigzag persistence applied to LLM models](GVPB2025.md#42-zigzag-persistence-applied-to-llm-models)
-  - [4.3 Interpretation and implications for the model’s performance](GVPB2025.md#43-interpretation-and-implications-for-the-models-performance)
-  - [4.4 Layer Pruning](GVPB2025.md#44-layer-pruning)
-- [5 Conclusions](GVPB2025.md#5-conclusions)
-- [References](references/GVPB2025.md)
-
----
-
-## [The robustness of persistent homology of brain networks to data acquisition-related non-neural variability in resting state fMRI](HBM-44-4637.md)
-
-- [Abstract](HBM-44-4637.md#abstract)
-- [Introduction](HBM-44-4637.md#introduction)
-- [Related Work](HBM-44-4637.md#related-work)
-- [Methods](HBM-44-4637.md#methods)
-  - [Experimental Data and Network Construction](HBM-44-4637.md#experimental-data-and-network-construction)
-  - [Mapping Network to Metric Space](HBM-44-4637.md#mapping-network-to-metric-space)
-  - [Extracting Topological Features](HBM-44-4637.md#extracting-topological-features)
-    - [Topological Features](HBM-44-4637.md#topological-features)
-    - [Persistent Homology](HBM-44-4637.md#persistent-homology)
-  - [Statistical Inferencing](HBM-44-4637.md#statistical-inferencing)
-    - [Comparison Across Cohorts](HBM-44-4637.md#comparison-across-cohorts)
-    - [Comparison Within a Cohort](HBM-44-4637.md#comparison-within-a-cohort)
-    - [Comparison with Traditional FCN Analysis](HBM-44-4637.md#comparison-with-traditional-fcn-analysis)
-- [Results](HBM-44-4637.md#results)
-- [Discussion](HBM-44-4637.md#discussion)
-- [Conclusion](HBM-44-4637.md#conclusion)
-- [References](references/HBM-44-4637.md)
-
----
-
-## [HOMOLOGY MANIFOLDS AND EUCLIDEAN BUNDLES](HLWW2024.md)
-
-- [Abstract](HLWW2024.md#abstract)
-- [Preliminaries](HLWW2024.md#preliminaries)
-- [Consequences](HLWW2024.md#consequences)
-- [References](references/HLWW2024.md)
-
----
-
 ## [Mayer Path Homology](KGW2026.md)
 
 - [Abstract](KGW2026.md#abstract)
@@ -325,58 +216,75 @@
 
 ---
 
-## [A Bayesian Framework for Persistent Homology](MNO2019.md)
+## [CONLEY-MORSE PERSISTENCE BARCODE: A HOMOLOGICAL SIGNATURE OF COMBINATORIAL BIFURCATIONS](DLST2026.md)
 
-- [Abstract](MNO2019.md#abstract)
-- [1 Introduction](MNO2019.md#1-introduction)
-- [2 Background](MNO2019.md#2-background)
-  - [2.1 Persistence Diagrams](MNO2019.md#21-persistence-diagrams)
-  - [2.2 Poisson Point Processes](MNO2019.md#22-poisson-point-processes)
-- [3 Bayesian Inference](MNO2019.md#3-bayesian-inference)
-  - [3.2 A Conjugate Family of Prior Intensities: Gaussian Mixtures](MNO2019.md#32-a-conjugate-family-of-prior-intensities-gaussian-mixtures)
-    - [3.2.1 Example](MNO2019.md#321-example)
-- [4 Classification](MNO2019.md#4-classification)
-- [5 Discussion and Conclusions](MNO2019.md#5-discussion-and-conclusions)
-- [Appendix A-Proof of Theorem 3.1](MNO2019.md#appendix-a-proof-of-theorem-31)
-- [References](references/MNO2019.md)
-
----
-
-## [Persistent Entropy as a Detector of Phase Transitions](MR2026.md)
-
-- [Abstract](MR2026.md#abstract)
-- [1 Introduction](MR2026.md#1-introduction)
-- [2 Related work and state of the art](MR2026.md#2-related-work-and-state-of-the-art)
-  - [2.1 Persistent entropy](MR2026.md#21-persistent-entropy)
-- [3 Research gaps and contributions](MR2026.md#3-research-gaps-and-contributions)
-- [4 Phase transitions and persistence diagrams: Main theorem](MR2026.md#4-phase-transitions-and-persistence-diagrams-main-theorem)
-  - [4.1 Mathematical framework](MR2026.md#41-mathematical-framework)
-  - [4.2 Main theorem](MR2026.md#42-main-theorem)
-- [5 Numerical experiments](MR2026.md#5-numerical-experiments)
-  - [5.1 Dynamic identification of the critical control parameter](MR2026.md#51-dynamic-identification-of-the-critical-control-parameter)
-  - [5.2 The Kuramoto model](MR2026.md#52-the-kuramoto-model)
-    - [5.2.1 Kuramoto model: experimental setup](MR2026.md#521-kuramoto-model-experimental-setup)
-    - [5.2.2 Kuramoto model: experimental output analysis](MR2026.md#522-kuramoto-model-experimental-output-analysis)
-    - [5.2.3 Relation to the general theorem.](MR2026.md#523-relation-to-the-general-theorem)
-  - [5.3 The Vicsek model](MR2026.md#53-the-vicsek-model)
-    - [5.3.1 Vicksek model: experimental setup](MR2026.md#531-vicksek-model-experimental-setup)
-    - [5.3.2 Vicksek model: experimental output analysis](MR2026.md#532-vicksek-model-experimental-output-analysis)
-    - [5.3.3 Relation to the general theorem.](MR2026.md#533-relation-to-the-general-theorem)
-  - [5.4 Neural network training dynamics](MR2026.md#54-neural-network-training-dynamics)
-    - [5.4.1 Neural networks: experimental setup](MR2026.md#541-neural-networks-experimental-setup)
-    - [5.4.2 Neural networks: experimental output analysis](MR2026.md#542-neural-networks-experimental-output-analysis)
-    - [5.4.3 Relation to the general theorem.](MR2026.md#543-relation-to-the-general-theorem)
-- [6 Conclusions](MR2026.md#6-conclusions)
-- [References](references/MR2026.md)
+- [Abstract](DLST2026.md#abstract)
+- [1. Introduction](DLST2026.md#1-introduction)
+- [2. Motivation and Main Ideas](DLST2026.md#2-motivation-and-main-ideas)
+  - [2.1. The sphere example](DLST2026.md#21-the-sphere-example)
+  - [2.2. Attractor-repeller split example](DLST2026.md#22-attractor-repeller-split-example)
+  - [2.3. Homological signature of a bifurcation](DLST2026.md#23-homological-signature-of-a-bifurcation)
+- [3. Preliminaries](DLST2026.md#3-preliminaries)
+  - [3.3. Relations](DLST2026.md#33-relations)
+  - [3.4. Finite topological spaces](DLST2026.md#34-finite-topological-spaces)
+- [4. Combinatorial Multivector Fields Theory](DLST2026.md#4-combinatorial-multivector-fields-theory)
+  - [4.1. Elementary notions](DLST2026.md#41-elementary-notions)
+  - [4.2. Morse and block decomposition](DLST2026.md#42-morse-and-block-decomposition)
+  - [4.3. Conley Index.](DLST2026.md#43-conley-index)
+  - [4.4. Combinatorial continuation](DLST2026.md#44-combinatorial-continuation)
+- [5. Transition Diagram for a Zigzag Filtration of Block Decompositions](DLST2026.md#5-transition-diagram-for-a-zigzag-filtration-of-block-decompositions)
+  - [5.1. Filtration of block decompositions](DLST2026.md#51-filtration-of-block-decompositions)
+  - [5.2. Transition diagram for a basic zigzag filtration](DLST2026.md#52-transition-diagram-for-a-basic-zigzag-filtration)
+  - [5.3. Transition diagram for a non-basic zigzag filtration](DLST2026.md#53-transition-diagram-for-a-non-basic-zigzag-filtration)
+  - [5.4. Construction of the transition diagram](DLST2026.md#54-construction-of-the-transition-diagram)
+- [6. Persistence Modules and Gentle Algebras](DLST2026.md#6-persistence-modules-and-gentle-algebras)
+  - [6.1. Quivers](DLST2026.md#61-quivers)
+  - [6.2. Gentle algebras](DLST2026.md#62-gentle-algebras)
+  - [6.3. Persistence modules](DLST2026.md#63-persistence-modules)
+- [7. Conley-Morse Persistence Barcode](DLST2026.md#7-conley-morse-persistence-barcode)
+- [8. Algorithm](DLST2026.md#8-algorithm)
+  - [8.1. Incremental zigzag persistence algorithm](DLST2026.md#81-incremental-zigzag-persistence-algorithm)
+    - [8.1.1. Computing the bars](DLST2026.md#811-computing-the-bars)
+  - [8.2. Correctness](DLST2026.md#82-correctness)
+- [9. Discussion](DLST2026.md#9-discussion)
+- [References](references/DLST2026.md)
 
 ---
 
-## [PERSISTENT NERVES REVISITED](PNV20XX.md)
+## [Statistical Topology via Morse Theory Persistence and Nonparametric estimation](BCKL2010.md)
 
-- [Introduction](PNV20XX.md#introduction)
-- [Background](PNV20XX.md#background)
-- [Results](PNV20XX.md#results)
-- [References](references/PNV20XX.md)
+- [Abstract](BCKL2010.md#abstract)
+- [1. Introduction](BCKL2010.md#1-introduction)
+- [2. Topological Preliminaries](BCKL2010.md#2-topological-preliminaries)
+  - [2.1. Persistent topology](BCKL2010.md#21-persistent-topology)
+  - [2.2. Bottleneck distance](BCKL2010.md#22-bottleneck-distance)
+  - [2.3. Connection to Statistics](BCKL2010.md#23-connection-to-statistics)
+- [3. Nonparametric regression on manifolds](BCKL2010.md#3-nonparametric-regression-on-manifolds)
+  - [3.1. Asymptotic equidistance on manifolds](BCKL2010.md#31-asymptotic-equidistance-on-manifolds)
+- [4. Main Results](BCKL2010.md#4-main-results)
+- [5. Discussion](BCKL2010.md#5-discussion)
+- [6. Proofs](BCKL2010.md#6-proofs)
+  - [6.2. The lower bound](BCKL2010.md#62-the-lower-bound)
+- [Appendix A. Background on Topology](BCKL2010.md#appendix-a-background-on-topology)
+- [Appendix B. Background on Geometry](BCKL2010.md#appendix-b-background-on-geometry)
+- [References](references/BCKL2010.md)
+
+---
+
+## [PERSISTENT PATH LAPLACIAN](WGW2023.md)
+
+- [Abstract](WGW2023.md#abstract)
+- [1. Introduction](WGW2023.md#1-introduction)
+- [2. Background on path homology and directed graph](WGW2023.md#2-background-on-path-homology-and-directed-graph)
+  - [2.1. Paths on a finite set](WGW2023.md#21-paths-on-a-finite-set)
+  - [2.2. Path complex](WGW2023.md#22-path-complex)
+  - [2.4. Path homology of directed graphs](WGW2023.md#24-path-homology-of-directed-graphs)
+- [3. Path Laplacian and persistent path Laplacian](WGW2023.md#3-path-laplacian-and-persistent-path-laplacian)
+  - [3.1. Path Laplacian](WGW2023.md#31-path-laplacian)
+  - [3.2. Persistent path Laplacian](WGW2023.md#32-persistent-path-laplacian)
+- [4. Application](WGW2023.md#4-application)
+- [5. Conclusion](WGW2023.md#5-conclusion)
+- [References](references/WGW2023.md)
 
 ---
 
@@ -417,57 +325,66 @@
 
 ---
 
-## [Multiparameter persistence](REF-MPH.md)
+## [Quantitative analysis of phase transitions in two-dimensional XY models using persistent homology](SGL2022.md)
 
-- [9.1 Persistence modules indexed by a poset](REF-MPH.md#91-persistence-modules-indexed-by-a-poset)
-- [9.2 Representing persistence modules indexed by posets](REF-MPH.md#92-representing-persistence-modules-indexed-by-posets)
-  - [9.2.1 Barcodes?](REF-MPH.md#921-barcodes)
-  - [9.2.2 Other representations and visualizations](REF-MPH.md#922-other-representations-and-visualizations)
-  - [9.3 Distances and robustness for P -persistence modules](REF-MPH.md#93-distances-and-robustness-for-p--persistence-modules)
-  - [9.3.1 Robustness of some bipersistence modules](REF-MPH.md#931-robustness-of-some-bipersistence-modules)
-- [Questions](REF-MPH.md#questions)
-- [References](references/REF-MPH.md)
+- [Abstract](SGL2022.md#abstract)
+- [I. INTRODUCTION](SGL2022.md#i-introduction)
+- [II. METHOD](SGL2022.md#ii-method)
+  - [A. Background on Persistent Homology and Persistence Images](SGL2022.md#a-background-on-persistent-homology-and-persistence-images)
+  - [B. Filtrations](SGL2022.md#b-filtrations)
+  - [C. Logistic Regression](SGL2022.md#c-logistic-regression)
+  - [D. k-Nearest Neighbours Classiﬁcation](SGL2022.md#d-k-nearest-neighbours-classiﬁcation)
+  - [E. Finite-Size Scaling Analysis](SGL2022.md#e-finite-size-scaling-analysis)
+  - [F. Statistical Analysis](SGL2022.md#f-statistical-analysis)
+  - [G. Analysis Pipeline](SGL2022.md#g-analysis-pipeline)
+- [III. ANALYSIS](SGL2022.md#iii-analysis)
+  - [A. XY Model](SGL2022.md#a-xy-model)
+  - [1. Logistic Regression Analysis](SGL2022.md#1-logistic-regression-analysis)
+  - [2. k-Nearest Neighbours Analysis](SGL2022.md#2-k-nearest-neighbours-analysis)
+  - [B. Constrained XY Model](SGL2022.md#b-constrained-xy-model)
+  - [1. Logistic Regression Analysis](SGL2022.md#1-logistic-regression-analysis)
+  - [2. k-Nearest Neighbours Analysis](SGL2022.md#2-k-nearest-neighbours-analysis)
+  - [C. Nematic XY Model](SGL2022.md#c-nematic-xy-model)
+  - [2. k-Nearest Neighbours Analysis of Magnetic-Nematic Transition](SGL2022.md#2-k-nearest-neighbours-analysis-of-magnetic-nematic-transition)
+  - [1. Logistic Regression Analysis of Magnetic-Nematic Transition](SGL2022.md#1-logistic-regression-analysis-of-magnetic-nematic-transition)
+  - [3. Logistic Regression Analysis of Nematic-Paramagnetic Transition](SGL2022.md#3-logistic-regression-analysis-of-nematic-paramagnetic-transition)
+  - [4. k-Nearest Neighbours Analysis of Nematic-Paramagnetic Transition](SGL2022.md#4-k-nearest-neighbours-analysis-of-nematic-paramagnetic-transition)
+- [IV. CONCLUSIONS AND DISCUSSION](SGL2022.md#iv-conclusions-and-discussion)
+- [Appendix A: Cubical Complexes and Homology](SGL2022.md#appendix-a-cubical-complexes-and-homology)
+- [Appendix B: Stability of Filtration](SGL2022.md#appendix-b-stability-of-filtration)
+- [Appendix C: Histogram Reweighting](SGL2022.md#appendix-c-histogram-reweighting)
+- [Appendix D: Bootstrap Error Estimation](SGL2022.md#appendix-d-bootstrap-error-estimation)
+  - [Bootstrap procedure](SGL2022.md#bootstrap-procedure)
+- [References](references/SGL2022.md)
 
 ---
 
-## [PERSISTENT HOMOLOGY](REF-PH.md)
+## [Persistent Entropy as a Detector of Phase Transitions](MR2026.md)
 
-- [1. Filtrations](REF-PH.md#1-filtrations)
-- [2. Starting with a Few Examples](REF-PH.md#2-starting-with-a-few-examples)
-- [3. Persistent Modules and Persistence Diagrams](REF-PH.md#3-persistent-modules-and-persistence-diagrams)
-- [4. Metrics on the Space of Persistence Diagrams](REF-PH.md#4-metrics-on-the-space-of-persistence-diagrams)
-- [5. Stability](REF-PH.md#5-stability)
-  - [5.1. A General Result](REF-PH.md#51-a-general-result)
-  - [5.2. Stability for Functions](REF-PH.md#52-stability-for-functions)
-  - [5.3. Stability for Spaces](REF-PH.md#53-stability-for-spaces)
-- [6. Rates of Convergence for Random Point Clouds](REF-PH.md#6-rates-of-convergence-for-random-point-clouds)
-  - [6.1. Minimax Upper Bound](REF-PH.md#61-minimax-upper-bound)
-- [7. Persistence Landscapes](REF-PH.md#7-persistence-landscapes)
-  - [7.1. Construction](REF-PH.md#71-construction)
-  - [7.2. Stability](REF-PH.md#72-stability)
-  - [7.3. Central Tendency for Persistent Homology](REF-PH.md#73-central-tendency-for-persistent-homology)
-- [8. Further Sources](REF-PH.md#8-further-sources)
-- [References](references/REF-PH.md)
-
----
-
-## [Persistent Sheaf Laplacian Analysis of Protein Stability and Solubility Changes upon Mutation](RWGW2026.md)
-
-- [Abstract](RWGW2026.md#abstract)
-- [1 Introduction](RWGW2026.md#1-introduction)
-- [2 Results](RWGW2026.md#2-results)
-  - [2.1 Overview of SheafLapNet](RWGW2026.md#21-overview-of-sheaflapnet)
-  - [2.2 Prediction of Mutation-Induced Protein Stability Changes](RWGW2026.md#22-prediction-of-mutation-induced-protein-stability-changes)
-  - [2.3 Classification of Mutation-Induced Protein Solubility Changes](RWGW2026.md#23-classification-of-mutation-induced-protein-solubility-changes)
-- [3 Materials and Methods](RWGW2026.md#3-materials-and-methods)
-  - [3.1 Persistent Sheaf Laplacian](RWGW2026.md#31-persistent-sheaf-laplacian)
-  - [3.2 Sheaf Laplacian feature generation for protein](RWGW2026.md#32-sheaf-laplacian-feature-generation-for-protein)
-  - [3.3 Auxiliary Features](RWGW2026.md#33-auxiliary-features)
-  - [3.4 Sequence Features](RWGW2026.md#34-sequence-features)
-  - [3.5 SheafLapNet model hyperparameters](RWGW2026.md#35-sheaflapnet-model-hyperparameters)
-- [4 Conclusion](RWGW2026.md#4-conclusion)
-- [Data and Code Availability](RWGW2026.md#data-and-code-availability)
-- [References](references/RWGW2026.md)
+- [Abstract](MR2026.md#abstract)
+- [1 Introduction](MR2026.md#1-introduction)
+- [2 Related work and state of the art](MR2026.md#2-related-work-and-state-of-the-art)
+  - [2.1 Persistent entropy](MR2026.md#21-persistent-entropy)
+- [3 Research gaps and contributions](MR2026.md#3-research-gaps-and-contributions)
+- [4 Phase transitions and persistence diagrams: Main theorem](MR2026.md#4-phase-transitions-and-persistence-diagrams-main-theorem)
+  - [4.1 Mathematical framework](MR2026.md#41-mathematical-framework)
+  - [4.2 Main theorem](MR2026.md#42-main-theorem)
+- [5 Numerical experiments](MR2026.md#5-numerical-experiments)
+  - [5.1 Dynamic identification of the critical control parameter](MR2026.md#51-dynamic-identification-of-the-critical-control-parameter)
+  - [5.2 The Kuramoto model](MR2026.md#52-the-kuramoto-model)
+    - [5.2.1 Kuramoto model: experimental setup](MR2026.md#521-kuramoto-model-experimental-setup)
+    - [5.2.2 Kuramoto model: experimental output analysis](MR2026.md#522-kuramoto-model-experimental-output-analysis)
+    - [5.2.3 Relation to the general theorem.](MR2026.md#523-relation-to-the-general-theorem)
+  - [5.3 The Vicsek model](MR2026.md#53-the-vicsek-model)
+    - [5.3.1 Vicksek model: experimental setup](MR2026.md#531-vicksek-model-experimental-setup)
+    - [5.3.2 Vicksek model: experimental output analysis](MR2026.md#532-vicksek-model-experimental-output-analysis)
+    - [5.3.3 Relation to the general theorem.](MR2026.md#533-relation-to-the-general-theorem)
+  - [5.4 Neural network training dynamics](MR2026.md#54-neural-network-training-dynamics)
+    - [5.4.1 Neural networks: experimental setup](MR2026.md#541-neural-networks-experimental-setup)
+    - [5.4.2 Neural networks: experimental output analysis](MR2026.md#542-neural-networks-experimental-output-analysis)
+    - [5.4.3 Relation to the general theorem.](MR2026.md#543-relation-to-the-general-theorem)
+- [6 Conclusions](MR2026.md#6-conclusions)
+- [References](references/MR2026.md)
 
 ---
 
@@ -487,22 +404,6 @@
 - [7 Discussion](SGW2025.md#7-discussion)
 - [8 Conclusion](SGW2025.md#8-conclusion)
 - [References](references/SGW2025.md)
-
----
-
-## [Persistent Homology and Similarity Filtration with Time Skeletons](SIFTS2013.md)
-
-- [Abstract](SIFTS2013.md#abstract)
-- [1 Introduction](SIFTS2013.md#1-introduction)
-- [2 Persistent Homology](SIFTS2013.md#2-persistent-homology)
-  - [2.1 Group Theory](SIFTS2013.md#21-group-theory)
-  - [2.2 Simplicial Homology](SIFTS2013.md#22-simplicial-homology)
-  - [2.3 Persistent Homology](SIFTS2013.md#23-persistent-homology)
-- [3 A Natural Language Processing Application](SIFTS2013.md#3-a-natural-language-processing-application)
-  - [3.1 On Nursery Rhymes and Other Stories](SIFTS2013.md#31-on-nursery-rhymes-and-other-stories)
-  - [3.2 On Child and Adolescent Writing](SIFTS2013.md#32-on-child-and-adolescent-writing)
-- [4 Discussion: Merely Counting Repeats?](SIFTS2013.md#4-discussion-merely-counting-repeats)
-- [References](references/SIFTS2013.md)
 
 ---
 
@@ -529,31 +430,32 @@
 
 ---
 
-## [DUALITIES IN PERSISTENT (CO)HOMOLOGY](VSMJ2011.md)
+## [Persistent homology for high-dimensional data based on spectral methods](DBK2023.md)
 
-- [1. Introduction](VSMJ2011.md#1-introduction)
-- [2. Algebra](VSMJ2011.md#2-algebra)
-  - [2.5. Barcode isomorphisms.](VSMJ2011.md#25-barcode-isomorphisms)
-- [3. Matrix Algorithms](VSMJ2011.md#3-matrix-algorithms)
-- [4. Optimizations](VSMJ2011.md#4-optimizations)
-- [References](references/VSMJ2011.md)
-
----
-
-## [PERSISTENT PATH LAPLACIAN](WGW2023.md)
-
-- [Abstract](WGW2023.md#abstract)
-- [1. Introduction](WGW2023.md#1-introduction)
-- [2. Background on path homology and directed graph](WGW2023.md#2-background-on-path-homology-and-directed-graph)
-  - [2.1. Paths on a finite set](WGW2023.md#21-paths-on-a-finite-set)
-  - [2.2. Path complex](WGW2023.md#22-path-complex)
-  - [2.4. Path homology of directed graphs](WGW2023.md#24-path-homology-of-directed-graphs)
-- [3. Path Laplacian and persistent path Laplacian](WGW2023.md#3-path-laplacian-and-persistent-path-laplacian)
-  - [3.1. Path Laplacian](WGW2023.md#31-path-laplacian)
-  - [3.2. Persistent path Laplacian](WGW2023.md#32-persistent-path-laplacian)
-- [4. Application](WGW2023.md#4-application)
-- [5. Conclusion](WGW2023.md#5-conclusion)
-- [References](references/WGW2023.md)
+- [1 Introduction](DBK2023.md#1-introduction)
+- [2 Related work](DBK2023.md#2-related-work)
+- [3 Background: persistent homology](DBK2023.md#3-background-persistent-homology)
+- [4 The curse of dimensionality for persistence homology](DBK2023.md#4-the-curse-of-dimensionality-for-persistence-homology)
+- [5 Background: effective resistance and diffusion distances](DBK2023.md#5-background-effective-resistance-and-diffusion-distances)
+- [6 Spectral distances find holes in high-dimensional spaces](DBK2023.md#6-spectral-distances-find-holes-in-high-dimensional-spaces)
+  - [6.1 Benchmark setup](DBK2023.md#61-benchmark-setup)
+  - [6.2 Benchmark results](DBK2023.md#62-benchmark-results)
+- [7 Relation between spectral distances](DBK2023.md#7-relation-between-spectral-distances)
+- [8 Detecting cycles in single-cell RNA-sequencing data](DBK2023.md#8-detecting-cycles-in-single-cell-rna-sequencing-data)
+- [9 Discussion](DBK2023.md#9-discussion)
+  - [Acknowledgments](DBK2023.md#acknowledgments)
+- [Reproducibility statement](DBK2023.md#reproducibility-statement)
+- [References](references/DBK2023.md)
+- [Supplementary text](DBK2023.md#supplementary-text)
+- [A Effective resistance as spectral method](DBK2023.md#a-effective-resistance-as-spectral-method)
+- [B Pairwise noise distances in high-dimensional spaces](DBK2023.md#b-pairwise-noise-distances-in-high-dimensional-spaces)
+- [C Details on the distances](DBK2023.md#c-details-on-the-distances)
+- [D Datasets](DBK2023.md#d-datasets)
+  - [D.1 Synthetic datasets](DBK2023.md#d1-synthetic-datasets)
+  - [D.2 Single-cell datasets](DBK2023.md#d2-single-cell-datasets)
+- [E Hyperparameter selection](DBK2023.md#e-hyperparameter-selection)
+- [F Implementation details](DBK2023.md#f-implementation-details)
+- [G Additional figures](DBK2023.md#g-additional-figures)
 
 ---
 
@@ -592,6 +494,77 @@
 
 ---
 
+## [Persistent Homology and Similarity Filtration with Time Skeletons](SIFTS2013.md)
+
+- [Abstract](SIFTS2013.md#abstract)
+- [1 Introduction](SIFTS2013.md#1-introduction)
+- [2 Persistent Homology](SIFTS2013.md#2-persistent-homology)
+  - [2.1 Group Theory](SIFTS2013.md#21-group-theory)
+  - [2.2 Simplicial Homology](SIFTS2013.md#22-simplicial-homology)
+  - [2.3 Persistent Homology](SIFTS2013.md#23-persistent-homology)
+- [3 A Natural Language Processing Application](SIFTS2013.md#3-a-natural-language-processing-application)
+  - [3.1 On Nursery Rhymes and Other Stories](SIFTS2013.md#31-on-nursery-rhymes-and-other-stories)
+  - [3.2 On Child and Adolescent Writing](SIFTS2013.md#32-on-child-and-adolescent-writing)
+- [4 Discussion: Merely Counting Repeats?](SIFTS2013.md#4-discussion-merely-counting-repeats)
+- [References](references/SIFTS2013.md)
+
+---
+
+## [Interval multiplicities of persistence modules](AL2026.md)
+
+- [Abstract](AL2026.md#abstract)
+- [1 Introduction](AL2026.md#1-introduction)
+  - [1.1 Notation conventions](AL2026.md#11-notation-conventions)
+  - [1.2 Purposes](AL2026.md#12-purposes)
+  - [1.3 Our contributions](AL2026.md#13-our-contributions)
+  - [1.4 Organization](AL2026.md#14-organization)
+- [2 Preliminaries](AL2026.md#2-preliminaries)
+- [3 The formula of interval multiplicities](AL2026.md#3-the-formula-of-interval-multiplicities)
+  - [3.1 The general poset case](AL2026.md#31-the-general-poset-case)
+    - [3.1.1 The case where V I is injective](AL2026.md#311-the-case-where-v-i-is-injective)
+    - [3.1.2 The case where $ V_I $ is non-injective](AL2026.md#312-the-case-where-$-v_i-$-is-non-injective)
+  - [3.2 The case of a 2D-grid](AL2026.md#32-the-case-of-a-2d-grid)
+    - [3.2.1 The case where V I is injective](AL2026.md#321-the-case-where-v-i-is-injective)
+  - [3.3 Reducing candidates of the interval direct summands](AL2026.md#33-reducing-candidates-of-the-interval-direct-summands)
+- [4 Essential cover](AL2026.md#4-essential-cover)
+- [5 Interval multiplicities by presentations](AL2026.md#5-interval-multiplicities-by-presentations)
+  - [5.1 The formula by projective presentations](AL2026.md#51-the-formula-by-projective-presentations)
+  - [5.2 The formula by injective copresentations](AL2026.md#52-the-formula-by-injective-copresentations)
+- [6 Examples](AL2026.md#6-examples)
+  - [6.1 The case of 2D-grids](AL2026.md#61-the-case-of-2d-grids)
+  - [6.2 The case of Dynkin type $ D $](AL2026.md#62-the-case-of-dynkin-type-$-d-$)
+  - [6.3 The case of bipath posets](AL2026.md#63-the-case-of-bipath-posets)
+- [Appendix A The salamander lemma](AL2026.md#appendix-a-the-salamander-lemma)
+- [References](references/AL2026.md)
+
+---
+
+## [HOMOLOGY MANIFOLDS AND EUCLIDEAN BUNDLES](HLWW2024.md)
+
+- [Abstract](HLWW2024.md#abstract)
+- [Preliminaries](HLWW2024.md#preliminaries)
+- [Consequences](HLWW2024.md#consequences)
+- [References](references/HLWW2024.md)
+
+---
+
+## [A Bayesian Framework for Persistent Homology](MNO2019.md)
+
+- [Abstract](MNO2019.md#abstract)
+- [1 Introduction](MNO2019.md#1-introduction)
+- [2 Background](MNO2019.md#2-background)
+  - [2.1 Persistence Diagrams](MNO2019.md#21-persistence-diagrams)
+  - [2.2 Poisson Point Processes](MNO2019.md#22-poisson-point-processes)
+- [3 Bayesian Inference](MNO2019.md#3-bayesian-inference)
+  - [3.2 A Conjugate Family of Prior Intensities: Gaussian Mixtures](MNO2019.md#32-a-conjugate-family-of-prior-intensities-gaussian-mixtures)
+    - [3.2.1 Example](MNO2019.md#321-example)
+- [4 Classification](MNO2019.md#4-classification)
+- [5 Discussion and Conclusions](MNO2019.md#5-discussion-and-conclusions)
+- [Appendix A-Proof of Theorem 3.1](MNO2019.md#appendix-a-proof-of-theorem-31)
+- [References](references/MNO2019.md)
+
+---
+
 ## [Nonparametric Estimation of Probability Density Functions of Random Persistence Diagrams](MMO2019.md)
 
 - [Abstract](MMO2019.md#abstract)
@@ -605,39 +578,5 @@
 - [5. Examples](MMO2019.md#5-examples)
 - [6. Discussion and Conclusions](MMO2019.md#6-discussion-and-conclusions)
 - [References](references/MMO2019.md)
-
----
-
-## [Quantitative analysis of phase transitions in two-dimensional XY models using persistent homology](SGL2022.md)
-
-- [Abstract](SGL2022.md#abstract)
-- [I. INTRODUCTION](SGL2022.md#i-introduction)
-- [II. METHOD](SGL2022.md#ii-method)
-  - [A. Background on Persistent Homology and Persistence Images](SGL2022.md#a-background-on-persistent-homology-and-persistence-images)
-  - [B. Filtrations](SGL2022.md#b-filtrations)
-  - [C. Logistic Regression](SGL2022.md#c-logistic-regression)
-  - [D. k-Nearest Neighbours Classiﬁcation](SGL2022.md#d-k-nearest-neighbours-classiﬁcation)
-  - [E. Finite-Size Scaling Analysis](SGL2022.md#e-finite-size-scaling-analysis)
-  - [F. Statistical Analysis](SGL2022.md#f-statistical-analysis)
-  - [G. Analysis Pipeline](SGL2022.md#g-analysis-pipeline)
-- [III. ANALYSIS](SGL2022.md#iii-analysis)
-  - [A. XY Model](SGL2022.md#a-xy-model)
-  - [1. Logistic Regression Analysis](SGL2022.md#1-logistic-regression-analysis)
-  - [2. k-Nearest Neighbours Analysis](SGL2022.md#2-k-nearest-neighbours-analysis)
-  - [B. Constrained XY Model](SGL2022.md#b-constrained-xy-model)
-  - [1. Logistic Regression Analysis](SGL2022.md#1-logistic-regression-analysis)
-  - [2. k-Nearest Neighbours Analysis](SGL2022.md#2-k-nearest-neighbours-analysis)
-  - [C. Nematic XY Model](SGL2022.md#c-nematic-xy-model)
-  - [2. k-Nearest Neighbours Analysis of Magnetic-Nematic Transition](SGL2022.md#2-k-nearest-neighbours-analysis-of-magnetic-nematic-transition)
-  - [1. Logistic Regression Analysis of Magnetic-Nematic Transition](SGL2022.md#1-logistic-regression-analysis-of-magnetic-nematic-transition)
-  - [3. Logistic Regression Analysis of Nematic-Paramagnetic Transition](SGL2022.md#3-logistic-regression-analysis-of-nematic-paramagnetic-transition)
-  - [4. k-Nearest Neighbours Analysis of Nematic-Paramagnetic Transition](SGL2022.md#4-k-nearest-neighbours-analysis-of-nematic-paramagnetic-transition)
-- [IV. CONCLUSIONS AND DISCUSSION](SGL2022.md#iv-conclusions-and-discussion)
-- [Appendix A: Cubical Complexes and Homology](SGL2022.md#appendix-a-cubical-complexes-and-homology)
-- [Appendix B: Stability of Filtration](SGL2022.md#appendix-b-stability-of-filtration)
-- [Appendix C: Histogram Reweighting](SGL2022.md#appendix-c-histogram-reweighting)
-- [Appendix D: Bootstrap Error Estimation](SGL2022.md#appendix-d-bootstrap-error-estimation)
-  - [Bootstrap procedure](SGL2022.md#bootstrap-procedure)
-- [References](references/SGL2022.md)
 
 ---
