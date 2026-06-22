@@ -236,6 +236,7 @@ function Write-RpcError($id, [int]$code, [string]$message) {
 # fatal path is rare by construction.
 $script:Fatal = $null
 $script:Readiness = $null   # cached discovery summary, surfaced to the agent via initialize.instructions
+$script:Initialized = $false
 if (-not (Test-Path -LiteralPath $Root -PathType Container)) {
     $script:Fatal = "ingestion root not found or not a directory: $Root -- correct the -Root launch argument or create the directory and reconnect, or escalate to the user. The server cannot survey documents or resolve papers until the root mounts."
     Write-Log "FATAL: $script:Fatal"
@@ -254,6 +255,10 @@ while ($null -ne ($line = $script:In.ReadLine())) {
     # Daemon backstop: no single request may crash the loop. tools/call has its own isError handling;
     # this catches anything else (a survey throwing on a malformed unit, etc.) and keeps the server up.
     try {
+    if (-not $script:Initialized -and $req.method -ne 'initialize' -and $req.method -ne 'ping') {
+        if ($hasId) { Write-RpcError $id -32600 "not initialized" }
+        continue
+    }
     switch ($req.method) {
         'initialize' {
             $pv = if ($req.params.protocolVersion) { [string]$req.params.protocolVersion } else { $ProtocolVersion }
@@ -290,8 +295,10 @@ while ($null -ne ($line = $script:In.ReadLine())) {
                 }
                 $result.instructions = $script:Readiness
             }
+            $script:Initialized = $true
             Write-Rpc $id $result
         }
+        'notifications/initialized' { }
         'tools/list' { Write-Rpc $id @{ tools = $Tools } }
         'prompts/list' { Write-Rpc $id @{ prompts = $Prompts } }
         'prompts/get' {

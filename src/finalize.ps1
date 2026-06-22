@@ -16,7 +16,9 @@
 . "$PSScriptRoot/serving.ps1"
 
 function ConvertTo-Anchor([string]$h) {
-    (($h.ToLowerInvariant() -replace '[^\w\s-]', '') -replace '\s+', '-')
+    $a = (($h.ToLowerInvariant() -replace '[^\w\s-]', '') -replace '\s+', '-').Trim('-')
+    if ($a -eq '') { return "section-$($h.GetHashCode().ToString('x8'))" }
+    return $a
 }
 
 # caption furniture -> italic, heading -> #*(level+1), block formula -> $$ fence, else content as-is
