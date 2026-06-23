@@ -302,6 +302,36 @@ function ConvertFrom-ArxivAtom {
     return $results
 }
 
+# Feed-level OpenSearch counters: how many matched in total (vs how many this page returned) + the
+# page offset. Lets an agentic-RAG loop tell "this query matched 4823, refine it" from "matched 3,
+# done", and page deeper on a good query. Returns -1 for a field arXiv omitted.
+function Get-ArxivFeedMeta {
+    param([string]$Xml)
+    $doc = [xml]$Xml
+    $ns  = [System.Xml.XmlNamespaceManager]::new($doc.NameTable)
+    $ns.AddNamespace('os', 'http://a9.com/-/spec/opensearch/1.1/')
+    $get = { param($n) $node = $doc.SelectSingleNode("//os:$n", $ns); if ($node -and $node.InnerText) { [int]$node.InnerText } else { -1 } }
+    return [pscustomobject]@{
+        total    = & $get 'totalResults'
+        start    = & $get 'startIndex'
+        per_page = & $get 'itemsPerPage'
+    }
+}
+
+# arXiv's feed carries opensearch:totalResults — how many papers match across ALL of arXiv, not just
+# this page. Surfacing it lets an agent run an INFORMED sweep (huge -> narrow; 0 -> rephrase; page on).
+function Get-ArxivTotalResults {
+    param([string]$Xml)
+    try {
+        $doc = [xml]$Xml
+        $ns  = [System.Xml.XmlNamespaceManager]::new($doc.NameTable)
+        $ns.AddNamespace('os', 'http://a9.com/-/spec/opensearch/1.1/')
+        $n = $doc.SelectSingleNode('//os:totalResults', $ns)
+        if ($n -and $n.InnerText) { return [long]$n.InnerText }
+    } catch {}
+    return $null
+}
+
 # Build the arXiv search_query exactly as arXiv expects: parts joined by AND, categories OR'd, dates as
 # submittedDate:[start+TO+end]. The '+' inside '+TO+' must stay literal, so we encode by token replacement
 # (the same dance the upstream Python server does) rather than a blanket URL-encode that would mangle it.
@@ -329,16 +359,28 @@ function Invoke-ArxivSearch {
         [string]$DateFrom,
         [string]$DateTo,
         [string]$SortBy = 'relevance',
-        [int]$MaxResults = 10
+        [int]$MaxResults = 10,
+        [int]$Start = 0
     )
-    $max = [Math]::Min([Math]::Max($MaxResults, 1), 50)
-    $sort = if ($SortBy -eq 'date') { 'submittedDate' } else { 'relevance' }
-    $sq  = Build-ArxivSearchQuery -Query $Query -Categories $Categories -DateFrom $DateFrom -DateTo $DateTo
-    $xml = Invoke-ArxivApi -Query ([ordered]@{
-        search_query = $sq; start = 0; max_results = $max; sortBy = $sort; sortOrder = 'descending'
+    $max   = [Math]::Min([Math]::Max($MaxResults, 1), 50)
+    $start = [Math]::Max($Start, 0)
+    $sort  = if ($SortBy -eq 'date') { 'submittedDate' } else { 'relevance' }
+    $sq    = Build-ArxivSearchQuery -Query $Query -Categories $Categories -DateFrom $DateFrom -DateTo $DateTo
+    $xml   = Invoke-ArxivApi -Query ([ordered]@{
+        search_query = $sq; start = $start; max_results = $max; sortBy = $sort; sortOrder = 'descending'
     })
     $papers = @(ConvertFrom-ArxivAtom $xml)
-    return [pscustomobject]@{ total_results = $papers.Count; query = $sq; papers = $papers }
+    $feed   = Get-ArxivFeedMeta $xml
+    # next_start guides the agent's paging: the offset for the next page, or -1 when the window is exhausted.
+    $next = if ($feed.total -ge 0 -and ($start + $papers.Count) -lt $feed.total) { $start + $papers.Count } else { -1 }
+    return [pscustomobject]@{
+        total_available = $feed.total      # how many papers match the query in all of arXiv (-1 if unknown)
+        returned        = $papers.Count    # how many this page carries
+        start           = $start
+        next_start      = $next            # feed to the next search's start, or -1 if done
+        query           = $sq
+        papers          = $papers
+    }
 }
 
 # Single (or comma-separated) id -> full metadata via id_list. Latest version if no vN given.

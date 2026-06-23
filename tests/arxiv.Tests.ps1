@@ -9,7 +9,10 @@ BeforeAll {
     # a pdf link, a doi, and whitespace in the title/summary to prove collapsing + the external mark.
     $script:AtomFixture = @'
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+  <opensearch:totalResults>4823</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <opensearch:itemsPerPage>2</opensearch:itemsPerPage>
   <entry>
     <id>http://arxiv.org/abs/2008.10579v1</id>
     <title>Neural
@@ -195,6 +198,19 @@ Describe 'ConvertFrom-ArxivAtom' {
         $p = $script:papers[1]
         $p.id      | Should -Be 'math.GT/0309136'
         $p.pdf_url | Should -Be 'https://arxiv.org/pdf/math.GT/0309136'
+    }
+}
+
+Describe 'Get-ArxivFeedMeta (pagination counters)' {
+    It 'reads the OpenSearch total/start/per-page for paged hunting' {
+        $m = Get-ArxivFeedMeta $script:AtomFixture
+        $m.total    | Should -Be 4823
+        $m.start    | Should -Be 0
+        $m.per_page | Should -Be 2
+    }
+    It 'returns -1 for counters arXiv omits' {
+        $bare = '<feed xmlns="http://www.w3.org/2005/Atom"></feed>'
+        (Get-ArxivFeedMeta $bare).total | Should -Be -1
     }
 }
 
