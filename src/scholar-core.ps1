@@ -90,9 +90,13 @@ function Invoke-ScholarApi {
     }
 }
 # JSON convenience for the JSON sources (OpenAlex / Semantic Scholar); arXiv-style XML uses Invoke-ScholarApi.
+# -AsHashtable is REQUIRED for sources whose JSON has keys differing only in case (e.g. OpenAlex's
+# abstract_inverted_index 'The'/'the') — a PSCustomObject can't hold those and ConvertFrom-Json throws.
 function Get-ScholarJson {
-    param([string]$Url, [hashtable]$Headers = @{}, [int]$MinIntervalMs = 1000, [int]$TimeoutSec = 30, [int]$MaxAttempts = 3, [string]$RateKey)
-    return (Invoke-ScholarApi -Url $Url -Headers $Headers -MinIntervalMs $MinIntervalMs -TimeoutSec $TimeoutSec -MaxAttempts $MaxAttempts -RateKey $RateKey) | ConvertFrom-Json
+    param([string]$Url, [hashtable]$Headers = @{}, [int]$MinIntervalMs = 1000, [int]$TimeoutSec = 30, [int]$MaxAttempts = 3, [string]$RateKey, [switch]$AsHashtable)
+    $raw = Invoke-ScholarApi -Url $Url -Headers $Headers -MinIntervalMs $MinIntervalMs -TimeoutSec $TimeoutSec -MaxAttempts $MaxAttempts -RateKey $RateKey
+    if ($AsHashtable) { return $raw | ConvertFrom-Json -AsHashtable }
+    return $raw | ConvertFrom-Json
 }
 
 # --- the normalized Work model ----------------------------------------------------------------------

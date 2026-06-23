@@ -283,6 +283,43 @@ an EDA reference (Mühlenbein / Larrañaga).
    port (SPCX / ThermoMapper). The substrate-agnostic-instrument telos argues for standalone with
    pluggable encodings + objective.
 
+## 8. Implementation substrate — the `graphs` lineage
+
+**Decision (locked, user-stated):** BP-CSR (Batch-Parallel CSR, Wheatman–Burns–Xu 2024;
+`ingestion/compendia/fresh/BPCSR2024`) is implemented as a **`graphs`-layer primitive, a sibling to
+static CSR** — its own mini-engine and lineage — and `tda`/`ph` *imports* it. One-way dependency:
+`graphs {CSR | BP-CSR}` ← `tda/ph` ← inference engines. (Code home: the SPCX project, where the SW
+union-find on CSR and the PH-engine port already live.)
+
+Why this cut:
+- BP-CSR's value (batch-parallel insert/delete at ~CSR traversal speed) is **general-purpose** — it
+  serves any evolving-graph workload (SW on changing graphs, streaming/spectral), not just TDA.
+  Burying it in `tda` would strand a reusable primitive.
+- It establishes a **CSR ⇆ BP-CSR interface seam**: algorithms written against the common `graphs`
+  primitive run on either backend; choose static vs. dynamic per *workload*, not per algorithm.
+- It localizes the C++→.NET port to **one** place (`graphs`), not scattered through persistence.
+
+Backend choice by consumer (the static-vs-dynamic split):
+
+| Consumer | Backend | Why |
+|---|---|---|
+| Swendsen–Wang union-find (fixed lattice) | **CSR** | topology static; only a bond *mask* varies |
+| minimal-cycle GA over ∂ (Engine 3) | **CSR** + GF(2) bit-packing | ∂ fixed; candidates are bit-vectors; XOR = word-parallel |
+| filtration / **zigzag** persistence | **BP-CSR** | complex grows *and shrinks* in batches (insert+delete, symmetric in BP-CSR) |
+| incremental void-merge tracking | **BP-CSR** (dynamic CC) | growing dual graph; CC + batch insert is BP-CSR's wheelhouse — composes with the union-find primitive |
+| connection/Hodge Laplacian (Engine 1) | CSR, or BP-CSR if filtration-parametric | depends whether the operator is rebuilt per threshold |
+
+Carry-forward caveats:
+- **min-cut/max-flow is not in BP-CSR's benchmarked algorithm set** (BFS/CC/LDD/PR/coloring/…) —
+  validate the DHM Algorithm-4.1 hot loop on the dynamic backend before trusting it.
+- ∂_d (d≥1) is a **bipartite incidence** (d ↔ (d+1)-simplices), stored as CSR/BP-CSR over incidences
+  — not geometric edges; mind the higher-dim encoding.
+- BP-CSR is a C++ reference impl; SPCX is .NET/PowerShell — interop/port cost lands in `graphs`.
+
+This partially resolves §7's open decision (3): the **substrate** lives in `graphs`; the
+population-MCMC / cycle / synchronization engines live above `tda/ph`. SW cluster-flip remains a
+candidate EMC move type — its union-find already rides the same `graphs` primitive.
+
 ## What this file deliberately does NOT do
 
 - No commitment to an implementation language/home — that's decision (7.3).
