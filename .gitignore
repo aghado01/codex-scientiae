@@ -23,6 +23,10 @@
 **/.work/
 **/__pycache__/
 
+# codex-arxiv acquisition inbox: staged PDFs + metadata sidecars, pre-ingestion working output.
+# Tracks the default staging_root in src/arxiv-staging.json — update if you re-point it.
+ingestion/_inbox/
+
 
 bin/
 obj/

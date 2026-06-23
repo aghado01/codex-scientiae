@@ -8,6 +8,8 @@ See WORKFLOW.md for guidance on deploying swarms and PDF conversion failure mode
 
 See CHECKLIST.md for summary repair workflow 
 
+The `codex-arxiv` MCP (src/arxiv-server.ps1, registered in .mcp.json) is the acquisition lane: it searches/fetches PDFs into ingestion/_inbox and hands off — the first of a planned web-fetcher family (sci-hub next) feeding a forthcoming from-scratch PdfPig-based, membrane-like transcription workflow that will coalesce variable paper formats into the codex-scientiae standard before the existing membrane repairs/publishes. 
+
 Since this project exists to inspire and guide development on other projects, user will often ask you to commit analysis and briefs to other projects particularly "ThermoMapper" aka "SPCX" aka the current ps.core.pwshspc 
 
 `C:\Users\azrie\PDenv\UserGithub\PowerShellCore\ps.core.pwshspc` 
