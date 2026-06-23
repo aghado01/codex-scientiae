@@ -1,0 +1,3 @@
+﻿codex-membrane MCP server up (root=C:\Users\azrie\PDenv\UserGithub\codex-scientiae\ingestion)
+discovery: 60 document(s), 12 preprocessed under C:\Users\azrie\PDenv\UserGithub\codex-scientiae\ingestion
+

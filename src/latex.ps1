@@ -18,6 +18,12 @@
 
 function Get-LatexBalance([string]$s) {
     $brace = 0; $brack = 0; $paren = 0; $lr = 0; $neg = $false
+    # Literal [] and () are tracked as ONE combined class ($lit), NOT two independent ones. Interval
+    # notation ([0,1), (a,b], [0,\infty)) deliberately crosses bracket and paren, so requiring each to
+    # zero out on its own mis-flags valid math. The combined count still catches a genuinely missing ]
+    # or an extra ) (lit != 0, or litNeg when a closer precedes its opener), while accepting intervals.
+    # Braces {} and \left..\right keep their own strict pairing — those MUST match.
+    $lit = 0; $litNeg = $false; $braceNeg = $false
     $i = 0; $n = $s.Length
     while ($i -lt $n) {
         $ch = $s[$i]
@@ -39,16 +45,19 @@ function Get-LatexBalance([string]$s) {
             } else { $i++; continue }
         }
         switch -CaseSensitive ($ch) {
-            '{' { $brace++ } '}' { $brace--; if ($brace -lt 0) { $neg = $true } }
-            '[' { $brack++ } ']' { $brack--; if ($brack -lt 0) { $neg = $true } }
-            '(' { $paren++ } ')' { $paren--; if ($paren -lt 0) { $neg = $true } }
+            '{' { $brace++ } '}' { $brace--; if ($brace -lt 0) { $neg = $true; $braceNeg = $true } }
+            '[' { $brack++; $lit++ } ']' { $brack--; $lit--; if ($brack -lt 0) { $neg = $true }; if ($lit -lt 0) { $litNeg = $true } }
+            '(' { $paren++; $lit++ } ')' { $paren--; $lit--; if ($paren -lt 0) { $neg = $true }; if ($lit -lt 0) { $litNeg = $true } }
         }
         $i++
     }
     [pscustomobject]@{
-        full          = ($brace -eq 0 -and $brack -eq 0 -and $paren -eq 0 -and $lr -eq 0 -and -not $neg)
+        # interval-tolerant balance: braces + \left\right pair strictly; [] and () balance as one
+        # combined literal class, so half-open intervals read as balanced while real gaps still flag.
+        full          = ($brace -eq 0 -and -not $braceNeg -and $lr -eq 0 -and $lit -eq 0 -and -not $litNeg)
         braceBalanced = ($brace -eq 0)
-        brace = $brace; brack = $brack; paren = $paren; lr = $lr; everNegative = $neg
+        brace = $brace; brack = $brack; paren = $paren; lr = $lr; lit = $lit
+        everNegative = $neg; litNegative = $litNeg
     }
 }
 
@@ -209,16 +218,14 @@ function Get-UnbalancedDelimiterSpans([string]$content) {
         $pat = if ($b.lr -gt 0) { '\\left\b' } else { '\\right\b' }
         $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
     }
-    elseif ($b.paren -ne 0) {
-        $pat = if ($b.paren -gt 0) { '(?<!\\)\(' } else { '(?<!\\)\)' }
-        $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
-    }
     elseif ($b.brace -ne 0) {
         $pat = if ($b.brace -gt 0) { '(?<!\\)\{' } else { '(?<!\\)\}' }
         $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
     }
-    elseif ($b.brack -ne 0) {
-        $pat = if ($b.brack -gt 0) { '(?<!\\)\[' } else { '(?<!\\)\]' }
+    elseif ($b.lit -ne 0) {
+        # combined literal class: the first unmatched round/square opener (lit>0) or closer (lit<0).
+        # Keyed on $lit, not paren/brack, so a stray interval can't drag the hint onto a valid delimiter.
+        $pat = if ($b.lit -gt 0) { '(?<!\\)[\[(]' } else { '(?<!\\)[\])]' }
         $m = [regex]::Match($content, $pat); if ($m.Success) { $start = $m.Index }
     }
     return @([pscustomobject]@{ start = [int]$start; end = $content.Length })

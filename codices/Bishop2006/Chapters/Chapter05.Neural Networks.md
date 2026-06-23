@@ -1025,20 +1025,20 @@ $$
 
 The implementation of this algorithm involves the introduction of additional variables $\mathcal{R}\{a_j\}$, $\mathcal{R}\{z_j\}$ and $\mathcal{R}\{\delta_j\}$ for the hidden units and $\mathcal{R}\{\delta_k\}$ and $\mathcal{R}\{y_k\}$ for the output units. For each input pattern, the values of these quantities can be found using the above results, and the elements of $\mathbf{v}^T\mathbf{H}$ are then given by (5.110) and (5.111). An elegant aspect of this technique is that the equations for evaluating $\mathbf{v}^T\mathbf{H}$ mirror closely those for standard forward and backward propagation, and so the extension of existing software to compute this product is typically straightforward.
 
-If desired, the technique can be used to evaluate the full Hessian matrix by choosing the vector $\mathbf{v}$ to be given successively by a series of unit vectors of the form $(0,0,\dots,1,\dots,0)$ each of which picks out one column of the Hessian. This leads to a formalism that is analytically equivalent to the backpropagation procedure of Bishop (1992), as described in Section 5.4.5, though with some loss of efﬁciency due to redundant calculations.
+If desired, the technique can be used to evaluate the full Hessian matrix by choosing the vector $\mathbf{v}$ to be given successively by a series of unit vectors of the form $(0,0,\dots,1,\dots,0)$ each of which picks out one column of the Hessian. This leads to a formalism that is analytically equivalent to the backpropagation procedure of Bishop (1992), as described in Section 5.4.5, though with some loss of efficiency due to redundant calculations.
 
 ### 5.5. Regularization in Neural Networks
 
-The number of input and outputs units in a neural network is generally determined by the dimensionality of the data set, whereas the number $M$ of hidden units is a free parameter that can be adjusted to give the best predictive performance. Note that $M$ controls the number of parameters (weights and biases) in the network, and so we might expect that in a maximum likelihood setting there will be an optimum value of $M$ that gives the best generalization performance, corresponding to the optimum balance between under-ﬁtting and over-ﬁtting. Figure 5.9 shows an example of the effect of different values of $M$ for the sinusoidal regression problem.
+The number of input and outputs units in a neural network is generally determined by the dimensionality of the data set, whereas the number $M$ of hidden units is a free parameter that can be adjusted to give the best predictive performance. Note that $M$ controls the number of parameters (weights and biases) in the network, and so we might expect that in a maximum likelihood setting there will be an optimum value of $M$ that gives the best generalization performance, corresponding to the optimum balance between under-fitting and over-fitting. Figure 5.9 shows an example of the effect of different values of $M$ for the sinusoidal regression problem.
 
-The generalization error, however, is not a simple function of $M$ due to the presence of local minima in the error function, as illustrated in Figure 5.10. Here we see the effect of choosing multiple random initializations for the weight vector for a range of values of $M$. The overall best validation set performance in this case occurred for a particular solution having $M = 8$. In practice, one approach to choosing $M$ is in fact to plot a graph of the kind shown in Figure 5.10 and then to choose the speciﬁc solution having the smallest validation set error.
+The generalization error, however, is not a simple function of $M$ due to the presence of local minima in the error function, as illustrated in Figure 5.10. Here we see the effect of choosing multiple random initializations for the weight vector for a range of values of $M$. The overall best validation set performance in this case occurred for a particular solution having $M = 8$. In practice, one approach to choosing $M$ is in fact to plot a graph of the kind shown in Figure 5.10 and then to choose the specific solution having the smallest validation set error.
 
-There are, however, other ways to control the complexity of a neural network model in order to avoid over-ﬁtting. From our discussion of polynomial curve ﬁtting in Chapter 1, we see that an alternative approach is to choose a relatively large value for $M$ and then to control complexity by the addition of a regularization term to the error function. The simplest regularizer is the quadratic, giving a regularized error
+There are, however, other ways to control the complexity of a neural network model in order to avoid over-fitting. From our discussion of polynomial curve fitting in Chapter 1, we see that an alternative approach is to choose a relatively large value for $M$ and then to control complexity by the addition of a regularization term to the error function. The simplest regularizer is the quadratic, giving a regularized error
 [Page 277]
 
 ![The image presents a graph with three different sets of data points. The x-axis is labeled as M = 1 and the y-axis is labeled as M = 3. The data points are represented by red circles. The data points are scattered around the x-axis, but they are not perfectly aligned. There are two sets of data points, each with three data points. The first set of data points is located at the top of the graph, while the second set of data points is located at the bottom of the graph.](../Images/imageFile115.png)
 
-Figure 5.9 Examples of two-layer networks trained on 10 data points drawn from the sinusoidal data set. The graphs show the result of ﬁtting networks having $M = 1$, $3$ and $10$ hidden units, respectively, by minimizing a sum-of-squares error function using a scaled conjugate-gradient algorithm.
+Figure 5.9 Examples of two-layer networks trained on 10 data points drawn from the sinusoidal data set. The graphs show the result of fitting networks having $M = 1$, $3$ and $10$ hidden units, respectively, by minimizing a sum-of-squares error function using a scaled conjugate-gradient algorithm.
 
 $$
 \widetilde{E}(\mathbf{w}) = E(\mathbf{w}) + \frac{\lambda}{2} \mathbf{w}^T\mathbf{w}. \tag{5.112}
@@ -1048,7 +1048,7 @@ also known as weight decay. The effective model complexity is then determined by
 
 ### 5.5.1 Consistent Gaussian priors
 
-One of the limitations of simple weight decay in the form (5.112) is that is inconsistent with certain scaling properties of network mappings. To illustrate this, consider a multilayer perceptron network having two layers of weights and linear output units, which performs a mapping from a set of input variables $\{x_i\}$ to a set of output variables $\{y_k\}$. The activations of the hidden units in the ﬁrst hidden layer
+One of the limitations of simple weight decay in the form (5.112) is that is inconsistent with certain scaling properties of network mappings. To illustrate this, consider a multilayer perceptron network having two layers of weights and linear output units, which performs a mapping from a set of input variables $\{x_i\}$ to a set of output variables $\{y_k\}$. The activations of the hidden units in the first hidden layer
 
 Figure 5.10 Plot of the sum-of-squares test-set error for the polynomial data set versus the number of hidden units in the network, with 30 random starts for each network size, showing the effect of local minima. For each new start, the weight vector was initialized by sampling from an isotropic Gaussian distribution having a mean of zero and a variance of $10$.
 
@@ -1107,7 +1107,7 @@ $$
 \frac{\lambda_1}{2} \sum_{w \in \mathcal{W}_1} w^2 + \frac{\lambda_2}{2} \sum_{w \in \mathcal{W}_2} w^2 \tag{5.121}
 $$
 
-where $\mathcal{W}_1$ denotes the set of weights in the ﬁrst layer, $\mathcal{W}_2$ denotes the set of weights in the second layer, and biases are excluded from the summations. This regularizer
+where $\mathcal{W}_1$ denotes the set of weights in the first layer, $\mathcal{W}_2$ denotes the set of weights in the second layer, and biases are excluded from the summations. This regularizer
 [Page 279]
 
 will remain unchanged under the weight transformations provided the regularization parameters are re-scaled using $\lambda_1 \rightarrow a^{1/2} \lambda_1$ and $\lambda_2 \rightarrow c^{-1/2} \lambda_2$.
@@ -1118,7 +1118,7 @@ $$
 p(\mathbf{w}|\alpha_1, \alpha_2) \propto \exp \left( -\frac{\alpha_1}{2} \sum_{w \in \mathcal{W}_1} w^2 - \frac{\alpha_2}{2} \sum_{w \in \mathcal{W}_2} w^2 \right). \tag{5.122}
 $$
 
-Note that priors of this form are improper (they cannot be normalized) because the bias parameters are unconstrained. The use of improper priors can lead to difﬁculties in selecting regularization coefﬁcients and in model comparison within the Bayesian framework, because the corresponding evidence is zero. It is therefore common to include separate priors for the biases (which then break shift invariance) having their own hyperparameters. We can illustrate the effect of the resulting four hyperparameters by drawing samples from the prior and plotting the corresponding network functions, as shown in Figure 5.11.
+Note that priors of this form are improper (they cannot be normalized) because the bias parameters are unconstrained. The use of improper priors can lead to difficulties in selecting regularization coefficients and in model comparison within the Bayesian framework, because the corresponding evidence is zero. It is therefore common to include separate priors for the biases (which then break shift invariance) having their own hyperparameters. We can illustrate the effect of the resulting four hyperparameters by drawing samples from the prior and plotting the corresponding network functions, as shown in Figure 5.11.
 
 More generally, we can consider priors in which the weights are divided into any number of groups $\mathcal{W}_k$ so that
 
@@ -1136,7 +1136,7 @@ As a special case of this prior, if we choose the groups to correspond to the se
 
 ### 5.5.2 Early stopping
 
-An alternative to regularization as a way of controlling the effective complexity of a network is the procedure of early stopping. The training of nonlinear network models corresponds to an iterative reduction of the error function deﬁned with respect to a set of training data. For many of the optimization algorithms used for network training, such as conjugate gradients, the error is a nonincreasing function of the iteration index. However, the error measured with respect to independent data, generally called a validation set, often shows a decrease at ﬁrst, followed by an increase as the network starts to over-ﬁt. Training can therefore be stopped at the point of smallest error with respect to the validation data set, as indicated in Figure 5.12, in order to obtain a network having good generalization performance.
+An alternative to regularization as a way of controlling the effective complexity of a network is the procedure of early stopping. The training of nonlinear network models corresponds to an iterative reduction of the error function defined with respect to a set of training data. For many of the optimization algorithms used for network training, such as conjugate gradients, the error is a nonincreasing function of the iteration index. However, the error measured with respect to independent data, generally called a validation set, often shows a decrease at first, followed by an increase as the network starts to over-fit. Training can therefore be stopped at the point of smallest error with respect to the validation data set, as indicated in Figure 5.12, in order to obtain a network having good generalization performance.
 
 The behaviour of the network in this case is sometimes explained qualitatively in terms of the effective number of degrees of freedom in the network, in which this number starts out small and then to grows during the training process, corresponding to a steady increase in the effective complexity of the model. Halting training before
 [Page 280]
@@ -1299,7 +1299,7 @@ $$
 y(\mathbf{x}) = \mathbb{E}[t|\mathbf{x}] + O(\xi). \tag{5.133}
 $$
 
-Thus, to leading order in $\xi$, the ﬁrst term in the regularizer vanishes and we are left with
+Thus, to leading order in $\xi$, the first term in the regularizer vanishes and we are left with
 
 $$
 \Omega = \frac{1}{2} \int \left( \boldsymbol{\tau}^T \nabla y(\mathbf{x}) \right)^2 p(\mathbf{x}) \, \mathrm{d}\mathbf{x} \tag{5.134}
@@ -1319,7 +1319,7 @@ which is known as Tikhonov regularization (Tikhonov and Arsenin, 1977; Bishop, 1
 
 Another approach to creating models that are invariant to certain transformation of the inputs is to build the invariance properties into the structure of a neural network. This is the basis for the convolutional neural network (Le Cun et al., 1989; LeCun et al., 1998), which has been widely applied to image data.
 
-Consider the speciﬁc task of recognizing handwritten digits. Each input image comprises a set of pixel intensity values, and the desired output is a posterior probability distribution over the ten digit classes. We know that the identity of the digit is invariant under translations and scaling as well as (small) rotations. Furthermore, the network must also exhibit invariance to more subtle transformations such as elastic deformations of the kind illustrated in Figure 5.14. One simple approach would be to treat the image as the input to a fully connected network, such as the kind shown in Figure 5.1. Given a sufﬁciently large training set, such a network could in principle yield a good solution to this problem and would learn the appropriate invariances by example.
+Consider the specific task of recognizing handwritten digits. Each input image comprises a set of pixel intensity values, and the desired output is a posterior probability distribution over the ten digit classes. We know that the identity of the digit is invariant under translations and scaling as well as (small) rotations. Furthermore, the network must also exhibit invariance to more subtle transformations such as elastic deformations of the kind illustrated in Figure 5.14. One simple approach would be to treat the image as the input to a fully connected network, such as the kind shown in Figure 5.1. Given a sufficiently large training set, such a network could in principle yield a good solution to this problem and would learn the appropriate invariances by example.
 
 However, this approach ignores a key property of images, which is that nearby pixels are more strongly correlated than more distant pixels. Many of the modern approaches to computer vision exploit this property by extracting local features that depend only on small subregions of the image. Information from such features can then be merged in later stages of processing in order to detect higher-order features
 [Page 288]
@@ -1335,18 +1335,18 @@ These notions are incorporated into convolutional neural networks through three 
 
 the network outputs to translations and distortions of the input image. Because we will typically need to detect multiple features in order to build an effective model, there will generally be multiple feature maps in the convolutional layer, each having its own set of weight and bias parameters.
 
-The outputs of the convolutional units form the inputs to the subsampling layer of the network. For each feature map in the convolutional layer, there is a plane of units in the subsampling layer and each unit takes inputs from a small receptive ﬁeld in the corresponding feature map of the convolutional layer. These units perform subsampling. For instance, each subsampling unit might take inputs from a $2 \times 2$ unit region in the corresponding feature map and would compute the average of those inputs, multiplied by an adaptive weight with the addition of an adaptive bias parameter, and then transformed using a sigmoidal nonlinear activation function. The receptive ﬁelds are chosen to be contiguous and nonoverlapping so that there are half the number of rows and columns in the subsampling layer compared with the convolutional layer. In this way, the response of a unit in the subsampling layer will be relatively insensitive to small shifts of the image in the corresponding regions of the input space.
+The outputs of the convolutional units form the inputs to the subsampling layer of the network. For each feature map in the convolutional layer, there is a plane of units in the subsampling layer and each unit takes inputs from a small receptive field in the corresponding feature map of the convolutional layer. These units perform subsampling. For instance, each subsampling unit might take inputs from a $2 \times 2$ unit region in the corresponding feature map and would compute the average of those inputs, multiplied by an adaptive weight with the addition of an adaptive bias parameter, and then transformed using a sigmoidal nonlinear activation function. The receptive fields are chosen to be contiguous and nonoverlapping so that there are half the number of rows and columns in the subsampling layer compared with the convolutional layer. In this way, the response of a unit in the subsampling layer will be relatively insensitive to small shifts of the image in the corresponding regions of the input space.
 
-In a practical architecture, there may be several pairs of convolutional and subsampling layers. At each stage there is a larger degree of invariance to input transformations compared to the previous layer. There may be several feature maps in a given convolutional layer for each plane of units in the previous subsampling layer, so that the gradual reduction in spatial resolution is then compensated by an increasing number of features. The ﬁnal layer of the network would typically be a fully connected, fully adaptive layer, with a softmax output nonlinearity in the case of multiclass classiﬁcation.
+In a practical architecture, there may be several pairs of convolutional and subsampling layers. At each stage there is a larger degree of invariance to input transformations compared to the previous layer. There may be several feature maps in a given convolutional layer for each plane of units in the previous subsampling layer, so that the gradual reduction in spatial resolution is then compensated by an increasing number of features. The final layer of the network would typically be a fully connected, fully adaptive layer, with a softmax output nonlinearity in the case of multiclass classification.
 
-The whole network can be trained by error minimization using backpropagation to evaluate the gradient of the error function. This involves a slight modiﬁcation of the usual backpropagation algorithm to ensure that the shared-weight constraints are satisﬁed. Due to the use of local receptive ﬁelds, the number of weights in the network is smaller than if the network were fully connected. Furthermore, the number of independent parameters to be learned from the data is much smaller still, due to the substantial numbers of constraints on the weights.
+The whole network can be trained by error minimization using backpropagation to evaluate the gradient of the error function. This involves a slight modification of the usual backpropagation algorithm to ensure that the shared-weight constraints are satisfied. Due to the use of local receptive fields, the number of weights in the network is smaller than if the network were fully connected. Furthermore, the number of independent parameters to be learned from the data is much smaller still, due to the substantial numbers of constraints on the weights.
 
 ### 5.5.7 Soft weight sharing
 
-One way to reduce the effective complexity of a network with a large number of weights is to constrain weights within certain groups to be equal. This is the technique of weight sharing that was discussed in Section 5.5.6 as a way of building translation invariance into networks used for image interpretation. It is only applicable, however, to particular problems in which the form of the constraints can be speciﬁed in advance. Here we consider a form of soft weight sharing (Nowlan and Hinton, 1992) in which the hard constraint of equal weights is replaced by a form of regularization in which groups of weights are encouraged to have similar values. Furthermore, the division of weights into groups, the mean weight value for each group, and the spread of values within the groups are all determined as part of the learning process.
+One way to reduce the effective complexity of a network with a large number of weights is to constrain weights within certain groups to be equal. This is the technique of weight sharing that was discussed in Section 5.5.6 as a way of building translation invariance into networks used for image interpretation. It is only applicable, however, to particular problems in which the form of the constraints can be specified in advance. Here we consider a form of soft weight sharing (Nowlan and Hinton, 1992) in which the hard constraint of equal weights is replaced by a form of regularization in which groups of weights are encouraged to have similar values. Furthermore, the division of weights into groups, the mean weight value for each group, and the spread of values within the groups are all determined as part of the learning process.
 [Page 290]
 
-Recall that the simple weight decay regularizer, given in (5.112), can be viewed as the negative log of a Gaussian prior distribution over the weights. We can encourage the weight values to form several groups, rather than just one group, by considering instead a probability distribution that is a mixture of Gaussians. The centres and variances of the Gaussian components, as well as the mixing coefﬁcients, will be considered as adjustable parameters to be determined as part of the learning process. Thus, we have a probability density of the form
+Recall that the simple weight decay regularizer, given in (5.112), can be viewed as the negative log of a Gaussian prior distribution over the weights. We can encourage the weight values to form several groups, rather than just one group, by considering instead a probability distribution that is a mixture of Gaussians. The centres and variances of the Gaussian components, as well as the mixing coefficients, will be considered as adjustable parameters to be determined as part of the learning process. Thus, we have a probability density of the form
 
 $$
 p(\mathbf{w}) = \prod_{i} p(w_{i}) \tag{5.136}
@@ -1358,7 +1358,7 @@ $$
 p(w_{i}) = \sum_{j=1}^{M} \pi_{j} \mathcal{N}(w_{i} | \mu_{j}, \sigma_{j}^{2}) \tag{5.137}
 $$
 
-and $\pi_j$ are the mixing coefﬁcients. Taking the negative logarithm then leads to a regularization function of the form
+and $\pi_j$ are the mixing coefficients. Taking the negative logarithm then leads to a regularization function of the form
 
 $$
 \Omega(\mathbf{w}) = -\sum_{i} \ln \left( \sum_{j=1}^{M} \pi_{j} \mathcal{N}(w_{i} | \mu_{j}, \sigma_{j}^{2}) \right) . \tag{5.138}
@@ -1370,7 +1370,7 @@ $$
 \widetilde{E}(\mathbf{w}) = E(\mathbf{w}) + \lambda \Omega(\mathbf{w}) \tag{5.139}
 $$
 
-where $\lambda$ is the regularization coefﬁcient. This error is minimized both with respect to the weights $w_i$ and with respect to the parameters $\{\pi_j, \mu_j, \sigma_j\}$ of the mixture model. If the weights were constant, then the parameters of the mixture model could be determined by using the EM algorithm discussed in Chapter 9. However, the distribution of weights is itself evolving during the learning process, and so to avoid numerical instability, a joint optimization is performed simultaneously over the weights and the mixture-model parameters. This can be done using a standard optimization algorithm such as conjugate gradients or quasi-Newton methods.
+where $\lambda$ is the regularization coefficient. This error is minimized both with respect to the weights $w_i$ and with respect to the parameters $\{\pi_j, \mu_j, \sigma_j\}$ of the mixture model. If the weights were constant, then the parameters of the mixture model could be determined by using the EM algorithm discussed in Chapter 9. However, the distribution of weights is itself evolving during the learning process, and so to avoid numerical instability, a joint optimization is performed simultaneously over the weights and the mixture-model parameters. This can be done using a standard optimization algorithm such as conjugate gradients or quasi-Newton methods.
 
 In order to minimize the total error function, it is necessary to be able to evaluate its derivatives with respect to the various adjustable parameters. To do this it is convenient to regard the $\{\pi_j\}$ as prior probabilities and to introduce the corresponding posterior probabilities which, following (2.192), are given by Bayes' theorem in the form
 
@@ -1400,7 +1400,7 @@ $$
 \frac{\partial \widetilde{E}}{\partial \sigma_j} = \lambda \sum_{i} \gamma_j(w_i) \left( \frac{1}{\sigma_j} - \frac{(w_i - \mu_j)^2}{\sigma_j^3} \right) \tag{5.143}
 $$
 
-which drives $\sigma_j$ towards the weighted average of the squared deviations of the weights around the corresponding centre $\mu_j$, where the weighting coefﬁcients are again given by the posterior probability that each weight is generated by component $j$. Note that in a practical implementation, new variables $\eta_j$ deﬁned by
+which drives $\sigma_j$ towards the weighted average of the squared deviations of the weights around the corresponding centre $\mu_j$, where the weighting coefficients are again given by the posterior probability that each weight is generated by component $j$. Note that in a practical implementation, new variables $\eta_j$ defined by
 
 $$
 \sigma_j^2 = \exp(\eta_j) \tag{5.144}
@@ -1408,13 +1408,13 @@ $$
 
 are introduced, and the minimization is performed with respect to the $\eta_j$. This ensures that the parameters $\sigma_j$ remain positive. It also has the effect of discouraging pathological solutions in which one or more of the $\sigma_j$ goes to zero, corresponding to a Gaussian component collapsing onto one of the weight parameter values. Such solutions are discussed in more detail in the context of Gaussian mixture models in Section 9.2.1.
 
-For the derivatives with respect to the mixing coefﬁcients $\pi_j$, we need to take account of the constraints
+For the derivatives with respect to the mixing coefficients $\pi_j$, we need to take account of the constraints
 
 $$
 \sum_{j} \pi_j = 1, \quad 0 \leqslant \pi_j \leqslant 1 \tag{5.145}
 $$
 
-which follow from the interpretation of the $\pi_j$ as prior probabilities. This can be done by expressing the mixing coefﬁcients in terms of a set of auxiliary variables $\{\eta_j\}$ using the softmax function given by
+which follow from the interpretation of the $\pi_j$ as prior probabilities. This can be done by expressing the mixing coefficients in terms of a set of auxiliary variables $\{\eta_j\}$ using the softmax function given by
 
 $$
 \pi_j = \frac{\exp(\eta_j)}{\sum_{k=1}^{M} \exp(\eta_k)}. \tag{5.146}
@@ -1423,7 +1423,7 @@ $$
 The derivatives of the regularized error function with respect to the $\{\eta_j\}$ then take the form
 [Page 292]
 
-Figure 5.18 The left ﬁgure shows a two-link robot arm, in which the Cartesian coordinates $(x_1, x_2)$ of the end effector are determined uniquely by the two joint angles $\theta_1$ and $\theta_2$ and the (ﬁxed) lengths $L_1$ and $L_2$ of the arms. This is known as the forward kinematics of the arm. In practice, we have to ﬁnd the joint angles that will give rise to a desired end effector position and, as shown in the right ﬁgure, this inverse kinematics has two solutions corresponding to ‘elbow up’ and ‘elbow down’.
+Figure 5.18 The left figure shows a two-link robot arm, in which the Cartesian coordinates $(x_1, x_2)$ of the end effector are determined uniquely by the two joint angles $\theta_1$ and $\theta_2$ and the (fixed) lengths $L_1$ and $L_2$ of the arms. This is known as the forward kinematics of the arm. In practice, we have to find the joint angles that will give rise to a desired end effector position and, as shown in the right figure, this inverse kinematics has two solutions corresponding to ‘elbow up’ and ‘elbow down’.
 
 ![In this image, we can see a diagram. There are two lines, which are represented by blue color dots. We can also see a red color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a red color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line. We can see a black color line. We can see a white color line.](../Images/imageFile124.png)
 
@@ -1435,22 +1435,22 @@ We see that $\pi_j$ is therefore driven towards the average posterior probabilit
 
 ###### 5.6. Mixture Density Networks
 
-The goal of supervised learning is to model a conditional distribution $p(\mathbf{t}|\mathbf{x})$, which for many simple regression problems is chosen to be Gaussian. However, practical machine learning problems can often have signiﬁcantly non-Gaussian distributions. These can arise, for example, with inverse problems in which the distribution can be multimodal, in which case the Gaussian assumption can lead to very poor predictions.
+The goal of supervised learning is to model a conditional distribution $p(\mathbf{t}|\mathbf{x})$, which for many simple regression problems is chosen to be Gaussian. However, practical machine learning problems can often have significantly non-Gaussian distributions. These can arise, for example, with inverse problems in which the distribution can be multimodal, in which case the Gaussian assumption can lead to very poor predictions.
 
-As a simple example of an inverse problem, consider the kinematics of a robot arm, as illustrated in Figure 5.18. The forward problem involves ﬁnding the end effector position given the joint angles and has a unique solution. However, in practice we wish to move the end effector of the robot to a speciﬁc position, and to do this we must set appropriate joint angles. We therefore need to solve the inverse problem, which has two solutions as seen in Figure 5.18.
+As a simple example of an inverse problem, consider the kinematics of a robot arm, as illustrated in Figure 5.18. The forward problem involves finding the end effector position given the joint angles and has a unique solution. However, in practice we wish to move the end effector of the robot to a specific position, and to do this we must set appropriate joint angles. We therefore need to solve the inverse problem, which has two solutions as seen in Figure 5.18.
 
-Forward problems often correspond to causality in a physical system and generally have a unique solution. For instance, a speciﬁc pattern of symptoms in the human body may be caused by the presence of a particular disease. In pattern recognition, however, we typically have to solve an inverse problem, such as trying to predict the presence of a disease given a set of symptoms. If the forward problem involves a many-to-one mapping, then the inverse problem will have multiple solutions. For instance, several different diseases may result in the same symptoms.
+Forward problems often correspond to causality in a physical system and generally have a unique solution. For instance, a specific pattern of symptoms in the human body may be caused by the presence of a particular disease. In pattern recognition, however, we typically have to solve an inverse problem, such as trying to predict the presence of a disease given a set of symptoms. If the forward problem involves a many-to-one mapping, then the inverse problem will have multiple solutions. For instance, several different diseases may result in the same symptoms.
 
-In the robotics example, the kinematics is deﬁned by geometrical equations, and the multimodality is readily apparent. However, in many machine learning problems the presence of multimodality, particularly in problems involving spaces of high dimensionality, can be less obvious. For tutorial purposes, however, we shall consider a simple toy problem for which we can easily visualize the multimodality. Data for this problem is generated by sampling a variable $x$ uniformly over the interval $(0,1)$, to give a set of values $\{x_n\}$, and the corresponding target values $t_n$ are obtained
+In the robotics example, the kinematics is defined by geometrical equations, and the multimodality is readily apparent. However, in many machine learning problems the presence of multimodality, particularly in problems involving spaces of high dimensionality, can be less obvious. For tutorial purposes, however, we shall consider a simple toy problem for which we can easily visualize the multimodality. Data for this problem is generated by sampling a variable $x$ uniformly over the interval $(0,1)$, to give a set of values $\{x_n\}$, and the corresponding target values $t_n$ are obtained
 [Page 293]
 
-Figure 5.19 On the left is the data set for a simple ‘forward problem’ in which the red curve shows the result of ﬁtting a two-layer neural network by minimizing the sum-of-squares error function. The corresponding inverse problem, shown on the right, is obtained by exchanging the roles of $x$ and $t$. Here the same network trained again by minimizing the sum-of-squares error function gives a very poor ﬁt to the data due to the multimodality of the data set.
+Figure 5.19 On the left is the data set for a simple ‘forward problem’ in which the red curve shows the result of fitting a two-layer neural network by minimizing the sum-of-squares error function. The corresponding inverse problem, shown on the right, is obtained by exchanging the roles of $x$ and $t$. Here the same network trained again by minimizing the sum-of-squares error function gives a very poor fit to the data due to the multimodality of the data set.
 
 ![The image is a scatter plot with two sets of data points. The x-axis is labeled 1 and the y-axis is labeled 0. The data points are represented by green dots. The plot shows a downward trend over the years, with the lowest points being around 0.1 and 0.2. The highest points are around 0.5. The trend is not linear, but rather a downward trend.](../Images/imageFile125.png)
 
-by computing the function $x_n + 0.3\sin(2\pi x_n)$ and then adding uniform noise over the interval $(-0.1, 0.1)$. The inverse problem is then obtained by keeping the same data points but exchanging the roles of $x$ and $t$. Figure 5.19 shows the data sets for the forward and inverse problems, along with the results of ﬁtting two-layer neural networks having 6 hidden units and a single linear output unit by minimizing a sum-of-squares error function. Least squares corresponds to maximum likelihood under a Gaussian assumption. We see that this leads to a very poor model for the highly non-Gaussian inverse problem.
+by computing the function $x_n + 0.3\sin(2\pi x_n)$ and then adding uniform noise over the interval $(-0.1, 0.1)$. The inverse problem is then obtained by keeping the same data points but exchanging the roles of $x$ and $t$. Figure 5.19 shows the data sets for the forward and inverse problems, along with the results of fitting two-layer neural networks having 6 hidden units and a single linear output unit by minimizing a sum-of-squares error function. Least squares corresponds to maximum likelihood under a Gaussian assumption. We see that this leads to a very poor model for the highly non-Gaussian inverse problem.
 
-We therefore seek a general framework for modelling conditional probability distributions. This can be achieved by using a mixture model for $p(\mathbf{t}|\mathbf{x})$ in which both the mixing coefﬁcients as well as the component densities are ﬂexible functions of the input vector $\mathbf{x}$, giving rise to the mixture density network. For any given value of $\mathbf{x}$, the mixture model provides a general formalism for modelling an arbitrary conditional density function $p(\mathbf{t}|\mathbf{x})$. Provided we consider a sufﬁciently ﬂexible network, we then have a framework for approximating arbitrary conditional distributions.
+We therefore seek a general framework for modelling conditional probability distributions. This can be achieved by using a mixture model for $p(\mathbf{t}|\mathbf{x})$ in which both the mixing coefficients as well as the component densities are flexible functions of the input vector $\mathbf{x}$, giving rise to the mixture density network. For any given value of $\mathbf{x}$, the mixture model provides a general formalism for modelling an arbitrary conditional density function $p(\mathbf{t}|\mathbf{x})$. Provided we consider a sufficiently flexible network, we then have a framework for approximating arbitrary conditional distributions.
 
 Here we shall develop the model explicitly for Gaussian components, so that
 
@@ -1460,7 +1460,7 @@ $$
 
 This is an example of a heteroscedastic model since the noise variance on the data is a function of the input vector $\mathbf{x}$. Instead of Gaussians, we can use other distributions for the components, such as Bernoulli distributions if the target variables are binary rather than continuous. We have also specialized to the case of isotropic covariances for the components, although the mixture density network can readily be extended to allow for general covariance matrices by representing the covariances using a Cholesky factorization (Williams, 1996). Even with isotropic components, the conditional distribution $p(\mathbf{t}|\mathbf{x})$ does not assume factorization with respect to the components of $\mathbf{t}$ (in contrast to the standard sum-of-squares regression model) as a consequence of the mixture distribution.
 
-We now take the various parameters of the mixture model, namely the mixing coefﬁcients $\pi_k(\mathbf{x})$, the means $\boldsymbol{\mu}_k(\mathbf{x})$, and the variances $\sigma_k^2(\mathbf{x})$, to be governed by the outputs of a conventional neural network that takes $\mathbf{x}$ as its input. The structure of this mixture density network is illustrated in Figure 5.20. The mixture density network is closely related to the mixture of experts discussed in Section 14.5.3. The principle difference is that in the mixture density network the same function is used to predict the parameters of all of the component densities as well as the mixing coefficients, and so the nonlinear hidden units are shared amongst the input-dependent functions.
+We now take the various parameters of the mixture model, namely the mixing coefficients $\pi_k(\mathbf{x})$, the means $\boldsymbol{\mu}_k(\mathbf{x})$, and the variances $\sigma_k^2(\mathbf{x})$, to be governed by the outputs of a conventional neural network that takes $\mathbf{x}$ as its input. The structure of this mixture density network is illustrated in Figure 5.20. The mixture density network is closely related to the mixture of experts discussed in Section 14.5.3. The principle difference is that in the mixture density network the same function is used to predict the parameters of all of the component densities as well as the mixing coefficients, and so the nonlinear hidden units are shared amongst the input-dependent functions.
 [Page 294]
 
 ![The image depicts a diagram of a network, specifically a graph. The graph consists of a set of interconnected nodes, each connected to the others. The nodes are connected by lines, which are represented by circles. The nodes are connected by arrows, which indicate the direction of the flow of data or information. The graph is labeled as p(t|x), which stands for p(t|x) is the probability of the event occurring. This means that the probability of an event occurring is given by the probability of the event occurring in the event. The diagram is labeled as follows: - The nodes are labeled as follows: - A - B - C - D - E - F - G - H - I - J - K - L - M - N - O - P - Q - R - S - T - U - V](../Images/imageFile126.png)
@@ -1498,7 +1498,7 @@ $$
 \mu_{kj}(\mathbf{x}) = a_{kj}^{\mu}. \tag{5.152}
 $$
 
-The adaptive parameters of the mixture density network comprise the vector $\mathbf{w}$ of weights and biases in the neural network, that can be set by maximum likelihood, or equivalently by minimizing an error function deﬁned to be the negative logarithm of the likelihood. For independent data, this error function takes the form
+The adaptive parameters of the mixture density network comprise the vector $\mathbf{w}$ of weights and biases in the neural network, that can be set by maximum likelihood, or equivalently by minimizing an error function defined to be the negative logarithm of the likelihood. For independent data, this error function takes the form
 
 $$
 E(\mathbf{w}) = - \sum_{n=1}^{N} \ln \left\{ \sum_{k=1}^{K} \pi_{k}(\mathbf{x}_{n}, \mathbf{w}) \mathcal{N} \left( \mathbf{t}_{n} | \boldsymbol{\mu}_{k}(\mathbf{x}_{n}, \mathbf{w}), \sigma_{k}^{2}(\mathbf{x}_{n}, \mathbf{w}) \right) \right\} \tag{5.153}
@@ -1506,9 +1506,9 @@ $$
 
 where we have made the dependencies on $\mathbf{w}$ explicit.
 
-In order to minimize the error function, we need to calculate the derivatives of the error $E(\mathbf{w})$ with respect to the components of $\mathbf{w}$. These can be evaluated by using the standard backpropagation procedure, provided we obtain suitable expressions for the derivatives of the error with respect to the output-unit activations. These represent error signals $\delta$ for each pattern and for each output unit, and can be backpropagated to the hidden units and the error function derivatives evaluated in the usual way. Because the error function (5.153) is composed of a sum of terms, one for each training data point, we can consider the derivatives for a particular pattern $n$ and then ﬁnd the derivatives of $E$ by summing over all patterns.
+In order to minimize the error function, we need to calculate the derivatives of the error $E(\mathbf{w})$ with respect to the components of $\mathbf{w}$. These can be evaluated by using the standard backpropagation procedure, provided we obtain suitable expressions for the derivatives of the error with respect to the output-unit activations. These represent error signals $\delta$ for each pattern and for each output unit, and can be backpropagated to the hidden units and the error function derivatives evaluated in the usual way. Because the error function (5.153) is composed of a sum of terms, one for each training data point, we can consider the derivatives for a particular pattern $n$ and then find the derivatives of $E$ by summing over all patterns.
 
-Because we are dealing with mixture distributions, it is convenient to view the mixing coefﬁcients $\pi_k(\mathbf{x})$ as $\mathbf{x}$-dependent prior probabilities and to introduce the corresponding posterior probabilities given by
+Because we are dealing with mixture distributions, it is convenient to view the mixing coefficients $\pi_k(\mathbf{x})$ as $\mathbf{x}$-dependent prior probabilities and to introduce the corresponding posterior probabilities given by
 
 $$
 \gamma_{k}(\mathbf{t}|\mathbf{x}) = \frac{\pi_{k} \mathcal{N}_{nk}}{\sum_{l=1}^{K} \pi_{l} \mathcal{N}_{nl}} \tag{5.154}
@@ -1516,7 +1516,7 @@ $$
 
 where $\mathcal{N}_{nk}$ denotes $\mathcal{N}(\mathbf{t}_n | \boldsymbol{\mu}_k(\mathbf{x}_n), \sigma_k^2(\mathbf{x}_n))$.
 
-The derivatives with respect to the network output activations governing the mixing coefﬁcients are given by
+The derivatives with respect to the network output activations governing the mixing coefficients are given by
 
 $$
 \frac{\partial E_n}{\partial a_{k}^{\pi}} = \pi_k - \gamma_k. \tag{5.155}
@@ -1536,13 +1536,13 @@ $$
 
 [Page 296]
 
-Figure 5.21 (a) Plot of the mixing coefﬁcients $\pi_k(x)$ as a function of $x$ for the three kernel functions in a mixture density network trained on the data shown in Figure 5.19. The model has three Gaussian components, and uses a two-layer multilayer perceptron with ﬁve ‘tanh’ sigmoidal units in the hidden layer, and nine outputs (corresponding to the $3$ means and $3$ variances of the Gaussian components and the $3$ mixing coefﬁcients). At both small and large values of $x$, where the conditional probability density of the target data is unimodal, only one of the kernels has a high value for its prior probability, while at intermediate values of $x$, where the conditional density is trimodal, the three mixing coefﬁcients have comparable values. (b) Plots of the means $\mu_k(x)$ using the same colour coding as for the mixing coefﬁcients. (c) Plot of the contours of the corresponding conditional probability density of the target data for the same mixture density network. (d) Plot of the approximate conditional mode, shown by the red points, of the conditional density.
+Figure 5.21 (a) Plot of the mixing coefficients $\pi_k(x)$ as a function of $x$ for the three kernel functions in a mixture density network trained on the data shown in Figure 5.19. The model has three Gaussian components, and uses a two-layer multilayer perceptron with five ‘tanh’ sigmoidal units in the hidden layer, and nine outputs (corresponding to the $3$ means and $3$ variances of the Gaussian components and the $3$ mixing coefficients). At both small and large values of $x$, where the conditional probability density of the target data is unimodal, only one of the kernels has a high value for its prior probability, while at intermediate values of $x$, where the conditional density is trimodal, the three mixing coefficients have comparable values. (b) Plots of the means $\mu_k(x)$ using the same colour coding as for the mixing coefficients. (c) Plot of the contours of the corresponding conditional probability density of the target data for the same mixture density network. (d) Plot of the approximate conditional mode, shown by the red points, of the conditional density.
 
 ![The image is a graph with three different lines. The lines are labeled as A, B, and C. The x-axis is labeled as a, the y-axis is labeled as b, and the title of the graph is A, B, C. The lines are drawn in a way that they are all parallel to each other. The lines are colored in red, blue, and green. The red line is the highest line, and the green line is the lowest line.](../Images/imageFile127.png)
 
-We illustrate the use of a mixture density network by returning to the toy example of an inverse problem shown in Figure 5.19. Plots of the mixing coefﬁcients $\pi_k(x)$, the means $\mu_k(x)$, and the conditional density contours corresponding to $p(t|x)$, are shown in Figure 5.21. The outputs of the neural network, and hence the parameters in the mixture model, are necessarily continuous single-valued functions of the input variables. However, we see from Figure 5.21(c) that the model is able to produce a conditional density that is unimodal for some values of $x$ and trimodal for other values by modulating the amplitudes of the mixing components $\pi_k(x)$.
+We illustrate the use of a mixture density network by returning to the toy example of an inverse problem shown in Figure 5.19. Plots of the mixing coefficients $\pi_k(x)$, the means $\mu_k(x)$, and the conditional density contours corresponding to $p(t|x)$, are shown in Figure 5.21. The outputs of the neural network, and hence the parameters in the mixture model, are necessarily continuous single-valued functions of the input variables. However, we see from Figure 5.21(c) that the model is able to produce a conditional density that is unimodal for some values of $x$ and trimodal for other values by modulating the amplitudes of the mixing components $\pi_k(x)$.
 
-Once a mixture density network has been trained, it can predict the conditional density function of the target data for any given value of the input vector. This conditional density represents a complete description of the generator of the data, so far as the problem of predicting the value of the output vector is concerned. From this density function we can calculate more speciﬁc quantities that may be of interest in different applications. One of the simplest of these is the mean, corresponding to the conditional average of the target data, and is given by
+Once a mixture density network has been trained, it can predict the conditional density function of the target data for any given value of the input vector. This conditional density represents a complete description of the generator of the data, so far as the problem of predicting the value of the output vector is concerned. From this density function we can calculate more specific quantities that may be of interest in different applications. One of the simplest of these is the mean, corresponding to the conditional average of the target data, and is given by
 
 $$
 \mathbb{E}[t|x] = \int t p(t|x) \, dt = \sum_{k=1}^K \pi_k(x) \mu_k(x) \tag{5.158}
@@ -1667,11 +1667,11 @@ $$
 \sigma^{2}(\mathbf{x}) = \beta^{-1} + \mathbf{g}^{T}\mathbf{A}^{-1}\mathbf{g}. \tag{5.173}
 $$
 
-We see that the predictive distribution $p(t|\mathbf{x},\mathcal{D})$ is a Gaussian whose mean is given by the network function $y(\mathbf{x},\mathbf{w}_{\text{MAP}})$ with the parameter set to their MAP value. The variance has two terms, the ﬁrst of which arises from the intrinsic noise on the target variable, whereas the second is an $\mathbf{x}$-dependent term that expresses the uncertainty in the interpolant due to the uncertainty in the model parameters $\mathbf{w}$. This should be compared with the corresponding predictive distribution for the linear regression model, given by (3.58) and (3.59).
+We see that the predictive distribution $p(t|\mathbf{x},\mathcal{D})$ is a Gaussian whose mean is given by the network function $y(\mathbf{x},\mathbf{w}_{\text{MAP}})$ with the parameter set to their MAP value. The variance has two terms, the first of which arises from the intrinsic noise on the target variable, whereas the second is an $\mathbf{x}$-dependent term that expresses the uncertainty in the interpolant due to the uncertainty in the model parameters $\mathbf{w}$. This should be compared with the corresponding predictive distribution for the linear regression model, given by (3.58) and (3.59).
 
 ### 5.7.2 Hyperparameter optimization
 
-So far, we have assumed that the hyperparameters $\alpha$ and $\beta$ are ﬁxed and known. We can make use of the evidence framework, discussed in Section 3.5, together with the Gaussian approximation to the posterior obtained using the Laplace approximation, to obtain a practical procedure for choosing the values of such hyperparameters.
+So far, we have assumed that the hyperparameters $\alpha$ and $\beta$ are fixed and known. We can make use of the evidence framework, discussed in Section 3.5, together with the Gaussian approximation to the posterior obtained using the Laplace approximation, to obtain a practical procedure for choosing the values of such hyperparameters.
 
 The marginal likelihood, or evidence, for the hyperparameters is obtained by integrating over the network weights
 
@@ -1685,7 +1685,7 @@ $$
 \ln p(\mathcal{D}|\alpha,\beta) \simeq -E(\mathbf{w}_{\text{MAP}}) - \frac{1}{2} \ln |\mathbf{A}| + \frac{W}{2} \ln \alpha + \frac{N}{2} \ln \beta - \frac{N}{2} \ln (2\pi) \tag{5.175}
 $$
 
-where $W$ is the total number of parameters in $\mathbf{w}$, and the regularized error function is deﬁned by
+where $W$ is the total number of parameters in $\mathbf{w}$, and the regularized error function is defined by
 
 $$
 E(\mathbf{w}_{\text{MAP}}) = \frac{\beta}{2} \sum_{n=1}^{N} \{ y(\mathbf{x}_{n}, \mathbf{w}_{\text{MAP}}) - t_{n} \}^{2} + \frac{\alpha}{2} \mathbf{w}_{\text{MAP}}^{T} \mathbf{w}_{\text{MAP}}. \tag{5.176}
@@ -1693,7 +1693,7 @@ $$
 
 We see that this takes the same form as the corresponding result (3.86) for the linear regression model.
 
-In the evidence framework, we make point estimates for $\alpha$ and $\beta$ by maximizing $\ln p(\mathcal{D}|\alpha,\beta)$. Consider ﬁrst the maximization with respect to $\alpha$, which can be done by analogy with the linear regression case discussed in Section 3.5.2. We ﬁrst deﬁne the eigenvalue equation
+In the evidence framework, we make point estimates for $\alpha$ and $\beta$ by maximizing $\ln p(\mathcal{D}|\alpha,\beta)$. Consider first the maximization with respect to $\alpha$, which can be done by analogy with the linear regression case discussed in Section 3.5.2. We first define the eigenvalue equation
 
 $$
 \beta \mathbf{H} \mathbf{u}_{i} = \lambda_{i} \mathbf{u}_{i} \tag{5.177}
@@ -1707,7 +1707,7 @@ $$
 
 [Page 301]
 
-Section 3.5.3 where $\gamma$ represents the effective number of parameters and is deﬁned by
+Section 3.5.3 where $\gamma$ represents the effective number of parameters and is defined by
 
 $$
 \gamma = \sum_{i=1}^W \frac{\lambda_i}{\alpha + \lambda_i}. \tag{5.179}
@@ -1725,18 +1725,18 @@ As with the linear model, we need to alternate between re-estimation of the hype
 
 Section 5.1.1 as a consequence of the interchange and sign reversal symmetries in the hidden units are identical so far as predictions are concerned, and it is irrelevant which of the equivalent solutions is found. However, there may be inequivalent solutions as well, and these will generally yield different values for the optimized hyperparameters.
 
-In order to compare different models, for example neural networks having different numbers of hidden units, we need to evaluate the model evidence $p(\mathcal{D})$. This can be approximated by taking (5.175) and substituting the values of $\alpha$ and $\beta$ obtained from the iterative optimization of these hyperparameters. A more careful evaluation is obtained by marginalizing over $\alpha$ and $\beta$, again by making a Gaussian approximation (MacKay, 1992c; Bishop, 1995a). In either case, it is necessary to evaluate the determinant $|\mathbf{A}|$ of the Hessian matrix. This can be problematic in practice because the determinant, unlike the trace, is sensitive to the small eigenvalues that are often difﬁcult to determine accurately.
+In order to compare different models, for example neural networks having different numbers of hidden units, we need to evaluate the model evidence $p(\mathcal{D})$. This can be approximated by taking (5.175) and substituting the values of $\alpha$ and $\beta$ obtained from the iterative optimization of these hyperparameters. A more careful evaluation is obtained by marginalizing over $\alpha$ and $\beta$, again by making a Gaussian approximation (MacKay, 1992c; Bishop, 1995a). In either case, it is necessary to evaluate the determinant $|\mathbf{A}|$ of the Hessian matrix. This can be problematic in practice because the determinant, unlike the trace, is sensitive to the small eigenvalues that are often difficult to determine accurately.
 
 The Laplace approximation is based on a local quadratic expansion around a mode of the posterior distribution over weights. We have seen in Section 5.1.1 that any given mode in a two-layer network is a member of a set of $M!2^M$ equivalent modes that differ by interchange and sign-change symmetries, where $M$ is the number of hidden units. When comparing networks having different numbers of hidden units, this can be taken into account by multiplying the evidence by a factor of $M!2^M$.
 
-### 5.7.3 Bayesian neural networks for classiﬁcation
+### 5.7.3 Bayesian neural networks for classification
 
-So far, we have used the Laplace approximation to develop a Bayesian treatment of neural network regression models. We now discuss the modiﬁcations to
+So far, we have used the Laplace approximation to develop a Bayesian treatment of neural network regression models. We now discuss the modifications to
 [Page 302]
 
-this framework that arise when it is applied to classiﬁcation. Here we shall consider a network having a single logistic sigmoid output corresponding to a two-class classiﬁcation problem. The extension to networks with multiclass softmax outputs
+this framework that arise when it is applied to classification. Here we shall consider a network having a single logistic sigmoid output corresponding to a two-class classification problem. The extension to networks with multiclass softmax outputs
 
-Exercise 5.40 is straightforward. We shall build extensively on the analogous results for linear classiﬁcation models discussed in Section 4.5, and so we encourage the reader to familiarize themselves with that material before studying this section.
+Exercise 5.40 is straightforward. We shall build extensively on the analogous results for linear classification models discussed in Section 4.5, and so we encourage the reader to familiarize themselves with that material before studying this section.
 
 The log likelihood function for this model is given by
 
@@ -1746,7 +1746,7 @@ $$
 
 where $t_n \in \{0,1\}$ are the target values, and $y_n \equiv y(\mathbf{x}_n,\mathbf{w})$. Note that there is no hyperparameter $\beta$, because the data points are assumed to be correctly labelled. As before, the prior is taken to be an isotropic Gaussian of the form (5.162).
 
-The ﬁrst stage in applying the Laplace framework to this model is to initialize the hyperparameter $\alpha$, and then to determine the parameter vector $\mathbf{w}$ by maximizing the log posterior distribution. This is equivalent to minimizing the regularized error function
+The first stage in applying the Laplace framework to this model is to initialize the hyperparameter $\alpha$, and then to determine the parameter vector $\mathbf{w}$ by maximizing the log posterior distribution. This is equivalent to minimizing the regularized error function
 
 $$
 E(\mathbf{w}) = -\ln p(\mathcal{D}|\mathbf{w}) + \frac{\alpha}{2} \mathbf{w}^T\mathbf{w} \tag{5.182}
@@ -1764,7 +1764,7 @@ $$
 \ln p(\mathcal{D}|\alpha) \simeq -E(\mathbf{w}_{\text{MAP}}) - \frac{1}{2} \ln |\mathbf{A}| + \frac{W}{2} \ln \alpha + \text{const} \tag{5.183}
 $$
 
-where the regularized error function is deﬁned by
+where the regularized error function is defined by
 
 $$
 E(\mathbf{w}_{\text{MAP}}) = - \sum_{n=1}^N \{t_n \ln y_n + (1 - t_n)\ln(1 - y_n)\} + \frac{\alpha}{2} \mathbf{w}_{\text{MAP}}^T \mathbf{w}_{\text{MAP}} \tag{5.184}
@@ -1774,10 +1774,10 @@ in which $y_n \equiv y(\mathbf{x}_n,\mathbf{w}_{\text{MAP}})$. Maximizing this e
 
 The use of the evidence procedure to determine $\alpha$ is illustrated in Figure 5.22 for the synthetic two-dimensional data discussed in Appendix A.
 
-Finally, we need the predictive distribution, which is deﬁned by (5.168). Again, this integration is intractable due to the nonlinearity of the network function. The
+Finally, we need the predictive distribution, which is defined by (5.168). Again, this integration is intractable due to the nonlinearity of the network function. The
 [Page 303]
 
-Figure 5.22 Illustration of the evidence framework applied to a synthetic two-class data set. The green curve shows the optimal decision boundary, the black curve shows the result of ﬁtting a two-layer network with 8 hidden units by maximum likelihood, and the red curve shows the result of including a regularizer in which $\alpha$ is optimized using the evidence procedure, starting from the initial value $\alpha = 0$. Note that the evidence procedure greatly reduces the over-ﬁtting of the network.
+Figure 5.22 Illustration of the evidence framework applied to a synthetic two-class data set. The green curve shows the optimal decision boundary, the black curve shows the result of fitting a two-layer network with 8 hidden units by maximum likelihood, and the red curve shows the result of including a regularizer in which $\alpha$ is optimized using the evidence procedure, starting from the initial value $\alpha = 0$. Note that the evidence procedure greatly reduces the over-fitting of the network.
 
 ![The image is a graphical representation of a map, specifically a choropleth map. The map is divided into different colored regions, each representing a different area. The colors are arranged in a grid pattern, with each color corresponding to a different color in the map. The map is labeled with the names of different regions, such as California, New York, and Texas. The map is labeled with the names of the regions, and the labels are written in a clear, readable font. The map is not shaded, so it does not provide any additional information beyond the labels. The map is not shaded, so it does not provide any additional information beyond the labels. There are several elements present on the map: 1. **Color Coding**: The map uses different colors to represent different regions. The colors are arranged in a grid pattern, with each color corresponding to a different color in the map. 2. **Geographical Information**: The map includes](../Images/imageFile128.png)
 
@@ -1817,7 +1817,7 @@ $$
 
 ![The image consists of two parallel graphs, each with a blue line and a red line. The x-axis is labeled as days and the y-axis is labeled as total number of people. The graph on the left shows a pattern of the number of people over time, while the graph on the right shows a pattern of the number of people over time. The blue line on the left graph is a straight line with a positive slope, indicating that the number of people increases over time. The red line on the right graph is a straight line with a negative slope, indicating that the number of people decreases over time. The graph on the left has a larger number of people than the graph on the right. This is because the blue line on the left is more curved, which means it is more likely to be a straight line. The red line on the right is more curved, which means it is more likely to be a straight line. The graph](../Images/imageFile129.png)
 
-Figure 5.23 An illustration of the Laplace approximation for a Bayesian neural network having 8 hidden units with ‘tanh’ activation functions and a single logistic-sigmoid output unit. The weight parameters were found using scaled conjugate gradients, and the hyperparameter $\alpha$ was optimized using the evidence framework. On the left is the result of using the simple approximation (5.185) based on a point estimate $\mathbf{w}_{\text{MAP}}$ of the parameters, in which the green curve shows the $y = 0.5$ decision boundary, and the other contours correspond to output probabilities of $y = 0.1$, $0.3$, $0.7$, and $0.9$. On the right is the corresponding result obtained using (5.190). Note that the effect of marginalization is to spread out the contours and to make the predictions less conﬁdent, so that at each input point $\mathbf{x}$, the posterior probabilities are shifted towards $0.5$, while the $y = 0.5$ contour itself is unaffected.
+Figure 5.23 An illustration of the Laplace approximation for a Bayesian neural network having 8 hidden units with ‘tanh’ activation functions and a single logistic-sigmoid output unit. The weight parameters were found using scaled conjugate gradients, and the hyperparameter $\alpha$ was optimized using the evidence framework. On the left is the result of using the simple approximation (5.185) based on a point estimate $\mathbf{w}_{\text{MAP}}$ of the parameters, in which the green curve shows the $y = 0.5$ decision boundary, and the other contours correspond to output probabilities of $y = 0.1$, $0.3$, $0.7$, and $0.9$. On the right is the corresponding result obtained using (5.190). Note that the effect of marginalization is to spread out the contours and to make the predictions less confident, so that at each input point $\mathbf{x}$, the posterior probabilities are shifted towards $0.5$, while the $y = 0.5$ contour itself is unaffected.
 
 The convolution of a Gaussian with a logistic sigmoid is intractable. We therefore apply the approximation (4.153) to (5.189) giving
 
@@ -1825,4 +1825,4 @@ $$
 p(t = 1|\mathbf{x},\mathcal{D}) = \sigma \left( \kappa(\sigma_a^2) \mathbf{b}^T \mathbf{w}_{\text{MAP}} \right) \tag{5.190}
 $$
 
-where $\kappa(\cdot)$ is deﬁned by (4.154). Recall that both $\sigma_a^2$ and $\mathbf{b}$ are functions of $\mathbf{x}$. Figure 5.23 shows an example of this framework applied to the synthetic classiﬁcation data set described in Appendix A.
+where $\kappa(\cdot)$ is defined by (4.154). Recall that both $\sigma_a^2$ and $\mathbf{b}$ are functions of $\mathbf{x}$. Figure 5.23 shows an example of this framework applied to the synthetic classification data set described in Appendix A.

@@ -98,3 +98,40 @@ the tail (the `seam`), add it back.
 - **`mark_unrecoverable paper id reason`** — you tried and the content genuinely cannot be
   recovered from the export. Use sparingly: a high unrecoverable rate indicts the repair
   attempt, not the export. This is the rare terminal that hands off to re-extraction.
+
+## Closing the loop — finalize → review → publish
+
+When `dispatch` is empty for a document (all units faithful/repaired), close it out. These are
+**tools**, not console commands — never shell out to do this.
+
+1. **`finalize paper`** — serialize the repaired chunk stream into the deliverable
+   (`{slug}.md` + `references/{slug}.md`) in the document's `.scratch/`. `pending > 0` means
+   chunks are still flagged: the deliverable is provisional.
+2. **`review_document paper`** — the one sanctioned holistic read. Returns the assembled body in
+   full plus the still-flagged chunks. Anything you catch, fix with `propose_edit` on the named
+   chunk → `apply` → review again.
+3. **`publish paper topic`** — promote the finalized deliverable into `compendia/{topic}/`. It
+   (re)finalizes, writes the body (figure links rewritten to `images/{slug}/`), the references
+   sidecar, and the referenced figures, and upserts the `_CONTENTS.md` block. Always **`dry_run=true`
+   first** to read the manifest. Refuses while `pending > 0` unless `force=true`.
+   - **`figures_omitted`** — preprocessing strips images from the chunk stream, so finalize emits an
+     image-less body. Publish places the real figure FILES under `images/{slug}/` and returns a
+     ready `![…](…)` snippet per omitted figure. Splice each into the published body with
+     `splice_md` (see below). This is the one stage publish cannot finish for you.
+   - **`contents.action = appended`** — a new slug went to the end of `_CONTENTS.md`; reposition it
+     by theme (the index ordering is a human curation act — publish never re-sorts).
+
+## Post-promotion repair — the byte-offset lane (promoted markdown only)
+
+After promotion there is no JSON/IR; you work the raw `.md` by byte-offset anchor, the markdown
+analog of a chunk id. Path is repo-relative (e.g. `compendia/ph/{slug}.md`).
+
+- **`repair_headings path`** — detect over-promoted headings; `apply=true` auto-demotes the
+  confident ones (float captions, theorem labels → bold) back-to-front. Returns an **escalation
+  list**, each with an `{offset, length, raw}` anchor.
+- **`splice_md path offset length replacement expect`** — land a hand-authored fix (a heading
+  escalation, or a `figures_omitted` snippet): replace `length` bytes at `offset`. Pass `expect`
+  (the anchor's `raw`) so a shifted offset fails loudly instead of corrupting. After any splice the
+  offsets below it shift — re-run `repair_headings` to re-anchor before the next.
+- **`update_doc_contents path`** — regenerate the in-doc `## Contents` from the current KEEP
+  headings, after you've demoted/spliced. `apply=true` rewrites it.

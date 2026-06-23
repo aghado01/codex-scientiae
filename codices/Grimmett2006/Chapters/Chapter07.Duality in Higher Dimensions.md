@@ -16,7 +16,7 @@
 - [Exponential bounds for group probabilities](#sec-7-7-10)
 
 
-Summary. The boundaries of clusters in d dimensions are (topologically) (d − 1)-dimensional and, in their study, one encounters new geometrical difﬁculties when d ≥ 3. By representing the random-cluster model as a sequence of nested contours with alternately wired and free boundary conditions, one arrives at the proof that the phase transition is discontinuous for sufficiently large q. There is a random-cluster analysis of non-translationinvariant states of Dobrushin-type when d ≥ 3, q ∈ [1, ∞), and $p$ is sufficiently large.
+Summary. The boundaries of clusters in d dimensions are (topologically) (d − 1)-dimensional and, in their study, one encounters new geometrical difficulties when d ≥ 3. By representing the random-cluster model as a sequence of nested contours with alternately wired and free boundary conditions, one arrives at the proof that the phase transition is discontinuous for sufficiently large q. There is a random-cluster analysis of non-translationinvariant states of Dobrushin-type when d ≥ 3, q ∈ [1, ∞), and $p$ is sufficiently large.
 
 <a id="sec-7-1"></a>
 
@@ -72,11 +72,11 @@ h1 ∼0 h2, ifh1∩h2 = ∅. Notethath1 d∼−2 h2 ifandonlyifh1∩h2 ishomeomo
 
 when viewed as the vertex-set of a graph with adjacency relation ∼s . Of particular importance is the case s = d − 2. The distance h1,h2 between two plaquettes h1, h2 is defined to be the L∞ distance between their centres. For any set H of plaquettes, we write E(H) for the set of edges of Ld to which they are dual.
 
-We consider next some geometricalmatters. The words ‘connected’and ‘component’ should be interpreted for the moment in their topological sense. Let T ⊆ Rd, and write T for the closure of T in Rd. We deﬁne the inside ins(T) to be the union of all bounded connected components of Rd \ T; the outside out(T) is the union of all unbounded connected components of Rd \ T. The set T is said to
+We consider next some geometricalmatters. The words ‘connected’and ‘component’ should be interpreted for the moment in their topological sense. Let T ⊆ Rd, and write T for the closure of T in Rd. We define the inside ins(T) to be the union of all bounded connected components of Rd \ T; the outside out(T) is the union of all unbounded connected components of Rd \ T. The set T is said to
 
 ![image 630](../Images/imageFile630.png)
 
-separate Rd if Rd \ T has more than one connected component. For a set H ⊆ H of plaquettes, we deﬁne the set [H] ⊆ Rd by
+separate Rd if Rd \ T has more than one connected component. For a set H ⊆ H of plaquettes, we define the set [H] ⊆ Rd by
 
 (7.2) [H] = {x ∈ Rd : x ∈ h for some h ∈ H}. We call a finite set H of plaquettes a splitting set if it is (d − 2)-connected and Rd \ [H] contains at least one bounded connected component.
 
@@ -88,7 +88,7 @@ The two theorems that follow are in a sense dual to one another. The first is an
 
 (iii) if W is a connected set of vertices of Ld such that V ∩ W = ∅, and there exists an infinite path on Ld starting in W that uses no vertex in V, then W ⊆ out([Q]).
 
-For any set δ of plaquettes, we deﬁne its closure δ to be the set (7.4) δ = δ ∪ h ∈ H : h is (d − 2)-connected to some member of δ .
+For any set δ of plaquettes, we define its closure δ to be the set (7.4) δ = δ ∪ h ∈ H : h is (d − 2)-connected to some member of δ .
 
 ![image 631](../Images/imageFile631.png)
 
@@ -160,7 +160,7 @@ Let i = j. We claim that: (7.7) either Pi ∩ Pj is thin, or one of the sets Pi,
 
 ![image 648](../Images/imageFile648.png)
 
-Suppose further that Pi ∩[Pj] is fat. Since [Pj] is a union of plaquettes and Pi is a union of plaquettes and cubes, all with cornersin Zd + 21, there exists a pair h1, h2 of plaquettesofLdd such thath1 d∼−2 h2, and g = h1∩h2 satisﬁes g ⊆ Pi ∩[Pj]. We cannot have g ⊆ [Pi] since [Pi] ∩ [Pj] is thin, whence int(g) ⊆ ins([Pi]), where int(g) denotes the interior of g viewed as a subset of Rd−2. Now, [Pj] is (d − 2)-connected and [Pi] ∩ [Pj] is thin, so that [Pj] is contained in the closure of ins([Pi]), implying that [Pj] ⊆ Pi and therefore Pj ⊆ Pi.
+Suppose further that Pi ∩[Pj] is fat. Since [Pj] is a union of plaquettes and Pi is a union of plaquettes and cubes, all with cornersin Zd + 21, there exists a pair h1, h2 of plaquettesofLdd such thath1 d∼−2 h2, and g = h1∩h2 satisfies g ⊆ Pi ∩[Pj]. We cannot have g ⊆ [Pi] since [Pi] ∩ [Pj] is thin, whence int(g) ⊆ ins([Pi]), where int(g) denotes the interior of g viewed as a subset of Rd−2. Now, [Pj] is (d − 2)-connected and [Pi] ∩ [Pj] is thin, so that [Pj] is contained in the closure of ins([Pi]), implying that [Pj] ⊆ Pi and therefore Pj ⊆ Pi.
 
 ![image 649](../Images/imageFile649.png)
 
@@ -192,7 +192,7 @@ Suppose next that Pi ∩ [Pj] is thin but Pi ∩ ins([Pj]) is fat. Since [Pi] is
 
 ![image 662](../Images/imageFile662.png)
 
-By (7.7), we may write R = ni=1 Pi as the union of distinct closed bounded sets Pi, i = 1,2,. . .,k, where k ≤ n, that do not separate Rd and such that Pi ∩ Pj is thin for i = j. By Theorem 11 of [223, §59, Section II]2, R does not separate Rd. By assumption, x ∈/ R, whence x lies in the unique component of the complement Rd \ R, in contradiction of the assumption that x ∈ ins([P]). We deduce that there exists k such that x ∈ ins([Pk]), and we deﬁne Q = Pk.
+By (7.7), we may write R = ni=1 Pi as the union of distinct closed bounded sets Pi, i = 1,2,. . .,k, where k ≤ n, that do not separate Rd and such that Pi ∩ Pj is thin for i = j. By Theorem 11 of [223, §59, Section II]2, R does not separate Rd. By assumption, x ∈/ R, whence x lies in the unique component of the complement Rd \ R, in contradiction of the assumption that x ∈ ins([P]). We deduce that there exists k such that x ∈ ins([Pk]), and we define Q = Pk.
 
 ![image 663](../Images/imageFile663.png)
 
@@ -238,7 +238,7 @@ The connectivity of ( v,δC, e,δC) may be provedin very much the same way as in
 
 ## 7.3 A contour representation
 
-The dual of a two-dimensional random-cluster model is itself a random-cluster model, as explained in Chapter 6. The corresponding statement is plainly false in three or more dimensions, since the geometry of plaquettes differs from that of edges. Consider an edge-conﬁguration ω ∈ \Omega = \{0,1\}^Ed, and the corresponding plaquette-conﬁguration π = (π(h) : h ∈ H) given by
+The dual of a two-dimensional random-cluster model is itself a random-cluster model, as explained in Chapter 6. The corresponding statement is plainly false in three or more dimensions, since the geometry of plaquettes differs from that of edges. Consider an edge-configuration ω ∈ \Omega = \{0,1\}^Ed, and the corresponding plaquette-configuration π = (π(h) : h ∈ H) given by
 
 (7.9) π(h(e)) = 1 − ω(e), e ∈ Ed.
 
@@ -252,7 +252,7 @@ Cluster (or ‘polymer’) expansions form a classical topic of statistical mech
 
 Henceforthin this chapterwe shall assume, unless otherwise stated, that d = 3. Similar results are valid whenever d ≥ 3, and stronger results hold when d = 2. A plaquette is taken to be a closed unit square of the dual lattice L3d, and each plaquette h = h(e) is pierced by a unique edge e of L3.
 
-Since the random-cluster model involves probability measures on the set of edge-conﬁgurations, we shall consider functions on the power set of the edgeset E3 rather than of the vertex-set Z3. Let E be a finite subset of E3, and let LE = (VE, E) denote the induced subgraph of L3. We shall consider the partition functions of the wired and free random-cluster measures on this graph, and to this end we introduce various notions of ‘boundary’. Let D be a (finite or infinite) subset of E3, and write D = E3 \ D for its complement.
+Since the random-cluster model involves probability measures on the set of edge-configurations, we shall consider functions on the power set of the edgeset E3 rather than of the vertex-set Z3. Let E be a finite subset of E3, and let LE = (VE, E) denote the induced subgraph of L3. We shall consider the partition functions of the wired and free random-cluster measures on this graph, and to this end we introduce various notions of ‘boundary’. Let D be a (finite or infinite) subset of E3, and write D = E3 \ D for its complement.
 
 ![image 667](../Images/imageFile667.png)
 
@@ -272,7 +272,7 @@ We shall require three (related) types of ‘edge-boundaries’ of D. (ii) The 1
 
 3When working with Ld for general d, ∂eD would be taken to be the (d − 2)-edge-boundary, given similarly but with 1 replaced by d − 2.
 
-Let p ∈ (0,1), q ∈ (0,∞), and r = p/(1 − p). As is usual in classical statistical mechanics, it is the partition functions which play leading roles. Henceforth, we take E to be a finite subset of E3. We consider first the wired measure on LE, which we deﬁne via its partition function4
+Let p ∈ (0,1), q ∈ (0,∞), and r = p/(1 − p). As is usual in classical statistical mechanics, it is the partition functions which play leading roles. Henceforth, we take E to be a finite subset of E3. We consider first the wired measure on LE, which we define via its partition function4
 
 r|D|qk1(D,E),
 
@@ -282,7 +282,7 @@ D: D⊆E D⊇∂eE
 
 where k1(D, E) denotes the number of connected components (including the infinite cluster and any isolated vertices) of L3 after the removalof edges in E \ D. This definition (7.10) differs slightly from that of (4.12) with ξ = 1, but it may be seen via Theorem 7.5 that the corresponding probability measure amounts to the wired measure on the edge-set E \ ∂eE. It is presented in the above manner in order to facilitate certain relations to be derived soon.
 
-We deﬁne similarly the free partition function on LE by (7.11) Z0(E) =
+We define similarly the free partition function on LE by (7.11) Z0(E) =
 
 r|D|qk0(VE\∂E,D),
 
@@ -304,7 +304,7 @@ We introduce next the classes of ‘wired’ and ‘free’ contours of the latt
 
 ![image 674](../Images/imageFile674.png)
 
-- 4It is convenient in the present setting to think of a conﬁguration as a subset of edges rather than as a 0/1-vector. We adopt the convention that Z1(∅) = 1.
+- 4It is convenient in the present setting to think of a configuration as a subset of edges rather than as a 0/1-vector. We adopt the convention that Z1(∅) = 1.
 - 5We set Z0(E) = 1 if E \ intE = ∅. In particular, Z0(∅) = 1.
 
 It may be seen by Theorem 7.5 that (7.18) intγ = γ, γ ∈ Cw.
@@ -385,17 +385,17 @@ where the summation7 is overall compatible families in (includingthe empty famil
 
 The discontinuityof the Potts phase transition was provedfirst in [220]via a socalled chessboard estimate. This striking result, combined with the work of [218], inspired the proof via polymer models of the discontinuity of the random-cluster phase transition, [224]. The last paper is the basis for the present account.
 
-The study of polymer models is wider than is required for our speciﬁc applications, and a general approachmay be found in [219]. For the sake of concreteness, we note the following. Our applications will involve co-connected subsets of E3. Our polymers will be either wired or free contours in the sense of the last section, and ‘compatible’ shall be interpreted in the sense of that section. Our weight functions will be assumed henceforth to be strictly positive and automorphisminvariant, in that (γ) = (τγ) for any automorphism τ of L3.
+The study of polymer models is wider than is required for our specific applications, and a general approachmay be found in [219]. For the sake of concreteness, we note the following. Our applications will involve co-connected subsets of E3. Our polymers will be either wired or free contours in the sense of the last section, and ‘compatible’ shall be interpreted in the sense of that section. Our weight functions will be assumed henceforth to be strictly positive and automorphisminvariant, in that (γ) = (τγ) for any automorphism τ of L3.
 
 ![image 690](../Images/imageFile690.png)
 
 ![image 691](../Images/imageFile691.png)
 
-Theprincipalconclusionsthatfollowarenotstatedunambiguouslyasatheorem since their exact hypotheses will not be speciﬁed. Throughout this and the next section, the terms c and ci are positive finite constants which depend only on the particular type of model and not on the function . These constants may depend on the underlying lattice (which we shall take to be L3), and may therefore vary with the number d of dimensions.
+Theprincipalconclusionsthatfollowarenotstatedunambiguouslyasatheorem since their exact hypotheses will not be specified. Throughout this and the next section, the terms c and ci are positive finite constants which depend only on the particular type of model and not on the function . These constants may depend on the underlying lattice (which we shall take to be L3), and may therefore vary with the number d of dimensions.
 
 (7.27) ‘Theorem’. There exist c,c1,c2 ∈ (0,∞) such that the following holds. Let be a τ-functional with τ > c.
 
-(a) The limit f ( ) exists in (7.24), and satisﬁes 0 ≤ f ( ) ≤ e−c1τ. (b) The deviation in (7.25) satisﬁes |σ( , )| ≤ |∂ |e−c2τ for all finite .
+(a) The limit f ( ) exists in (7.24), and satisfies 0 ≤ f ( ) ≤ e−c1τ. (b) The deviation in (7.25) satisfies |σ( , )| ≤ |∂ |e−c2τ for all finite .
 
 The polymer model is said to be convergent when the condition of the above ‘Theorem’ is satisfied. Sketch proof. Here are some commentson the proof. The existence of the pressure
 
@@ -415,7 +415,7 @@ E⊆
 
 ψ(E).
 
-By (7.23), Z( 1 ∪ 2) = Z( 1)Z( 2) if 1 and 2 have no common vertex. By (7.28), ψ is automorphism-invariant and satisﬁes
+By (7.23), Z( 1 ∪ 2) = Z( 1)Z( 2) if 1 and 2 have no common vertex. By (7.28), ψ is automorphism-invariant and satisfies
 
 (7.30) ψ(E) = 0 if E is not connected. Under the assumption of ‘Theorem’ 7.27, one may obtain after a calculation that (7.31) |ψ(E)| ≤ e−c3τ E for a suitable definition of the size E and for some c3 ∈ (0,∞).
 
@@ -451,7 +451,7 @@ Here are the main results, expressed for a general number d of dimensions.
 
 are discontinuous functions of p at the critical point pc(q). (b) The percolation probabilities satisfy
 
-θ0(pc(q),q) = 0, θ1(pc(q),q) > 0. (c) There is a unique random-cluster measure when $p$ = pc(q), and at least two random-cluster measures when $p$ = pc(q), in that φ0pc(q),$q$ = φ1pc(q),q. (d) If $p$ < pc(q), there is exponential decay and a non-vanishing mass gap, in that the unique random-cluster measure satisﬁes
+θ0(pc(q),q) = 0, θ1(pc(q),q) > 0. (c) There is a unique random-cluster measure when $p$ = pc(q), and at least two random-cluster measures when $p$ = pc(q), in that φ0pc(q),$q$ = φ1pc(q),q. (d) If $p$ < pc(q), there is exponential decay and a non-vanishing mass gap, in that the unique random-cluster measure satisfies
 
 φp,q(0 ↔ x) ≤ e−α|x|, x ∈ Zd, for some α = α(p,q) satisfying α ∈ (0,∞) and
 
@@ -483,7 +483,7 @@ It is not especially fruitful to seek numerical estimates on the Q(d) above. Suc
 
 (7.36) Q(2) = 4, Q(d) = 2 for d ≥ 6. No proof of Theorem 7.35 is included here, and the reader is referred for more details to the given references.
 
-Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 and $p$ = 1 − e−β, and consider the q-state Potts model on Ld with inversetemperature β. Let q be large. When β < βc(q) (respectively, β > βc(q)), the number of distinct translation-invariant Gibbs states is 1 (respectively, q). When β = βc(q), there are q + 1 distinct extremal translation-invariant Gibbs states, correspondingto the free measure and the ‘b-boundary-condition’measure for b ∈ {1,2,. . .,q}, and every translation-invariant Gibbs state is a convex combination of these q + 1 states. When d ≥ 3, there exist in addition an inﬁnityofnon-translation-invariantGibbsstatesatthecriticalpointβc(q). Further discussion may be found in [65, 66, 68, 136, 224, 251, 254].
+Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 and $p$ = 1 − e−β, and consider the q-state Potts model on Ld with inversetemperature β. Let q be large. When β < βc(q) (respectively, β > βc(q)), the number of distinct translation-invariant Gibbs states is 1 (respectively, q). When β = βc(q), there are q + 1 distinct extremal translation-invariant Gibbs states, correspondingto the free measure and the ‘b-boundary-condition’measure for b ∈ {1,2,. . .,q}, and every translation-invariant Gibbs state is a convex combination of these q + 1 states. When d ≥ 3, there exist in addition an infinityofnon-translation-invariantGibbsstatesatthecriticalpointβc(q). Further discussion may be found in [65, 66, 68, 136, 224, 251, 254].
 
 ![image 702](../Images/imageFile702.png)
 
@@ -491,7 +491,7 @@ Numerous facts for Potts models with large q follow from the above. Let d ≥ 2 
 
 The letter (respectively, Ŵ) will always denote a family of pairwise compatible contours (respectively, pairwise externally-compatible contours).
 
-Let β ∈ R. In either of the cases above, we deﬁne
+Let β ∈ R. In either of the cases above, we define
 
 ![image 703](../Images/imageFile703.png)
 
@@ -527,7 +527,7 @@ d = 3. (7.42) Theorem [224]. Let d ≥ 2, p ∈ (0,1), q ∈ [1,∞), and r = p/
 
 There exists Q = Q(d) such that the following hold when $q$ > Q.
 
-(a) There exist reals bw,bf ∈ [0,∞) such that bww and bff are τ-functionals with τ > c, with c as in the hypothesis of ‘Theorem’ 7.27, and that the pressure F(p,q) of (7.12) satisﬁes
+(a) There exist reals bw,bf ∈ [0,∞) such that bww and bff are τ-functionals with τ > c, with c as in the hypothesis of ‘Theorem’ 7.27, and that the pressure F(p,q) of (7.12) satisfies
 
 F(p,q) = f ( bww) + bw + logr = f ( bff) + bf +
 
@@ -545,7 +545,7 @@ if $p$ < p, then bw > 0, bf = 0, if $p$ = p, then bw = 0, bf = 0, if $p$ > p, th
 
 Proof of Theorem 7.42. We follow the scheme of [224] which in turn makes use of [218, 326]. For any given βw,βf ∈ [0,∞), equations (7.41) may be combined with (7.19)–(7.22) to obtain (7.43).
 
-For βw,βf ∈ [0,∞), let w = βww, f = βf f be given by (7.41). Let τ = τ(q) be as in (7.44), and choose Q′ such that τ(Q′) > c where c is the constant in the hypothesis of ‘Theorem’ 7.27. We assume henceforth that (7.47) $q$ > Q′. We deﬁne the τ-functionals
+For βw,βf ∈ [0,∞), let w = βww, f = βf f be given by (7.41). Let τ = τ(q) be as in (7.44), and choose Q′ such that τ(Q′) > c where c is the constant in the hypothesis of ‘Theorem’ 7.27. We assume henceforth that (7.47) $q$ > Q′. We define the τ-functionals
 
 βw
 
@@ -635,7 +635,7 @@ This implies in particular that w = w and f = f, and then (7.45) follows from (7
 
 ![image 734](../Images/imageFile734.png)
 
-It is not difﬁcult to see that (7.55) holds for γw ∈ Cw with |γw| ≤ 1, and for γf ∈ Cf with |γf| ≤ 2. This is trivial in the latter case since the free contour γf with smallest γf has γf = 2(2d −1), and it is proved in the former case as follows. Let γw ∈ Cw be such that |γw| = 1, which is to say that γw comprises a single edge. By (7.41), w(γw) = (rebw)−1. By (7.12), F(p,q) ≥ d−1 logq, and the claim follows by (7.53) and the fact that f ( w) ≤ 1, see ‘Theorem’ 7.27(a).
+It is not difficult to see that (7.55) holds for γw ∈ Cw with |γw| ≤ 1, and for γf ∈ Cf with |γf| ≤ 2. This is trivial in the latter case since the free contour γf with smallest γf has γf = 2(2d −1), and it is proved in the former case as follows. Let γw ∈ Cw be such that |γw| = 1, which is to say that γw comprises a single edge. By (7.41), w(γw) = (rebw)−1. By (7.12), F(p,q) ≥ d−1 logq, and the claim follows by (7.53) and the fact that f ( w) ≤ 1, see ‘Theorem’ 7.27(a).
 
 ![image 735](../Images/imageFile735.png)
 
@@ -653,7 +653,7 @@ Let k ≥ 1 and assume that (7.55) holds for all γw ∈ Cw satisfying |γw| ≤
 
 ![image 741](../Images/imageFile741.png)
 
-Any contour γw′ ∈ Cw contributing to Z(intγw; w) satisﬁes |γw′ | ≤ k. By the induction hypothesis, (7.56) Z(intγw; w) = Z(intγw; w)
+Any contour γw′ ∈ Cw contributing to Z(intγw; w) satisfies |γw′ | ≤ k. By the induction hypothesis, (7.56) Z(intγw; w) = Z(intγw; w)
 
 ![image 742](../Images/imageFile742.png)
 
@@ -667,7 +667,7 @@ Any contour γw′ ∈ Cw contributing to Z(intγw; w) satisﬁes |γw′ | ≤ 
 
 σ(E, ) = |E| f ( ) − logZ(E; )
 
-as in (7.25). Any contour γf ∈ Cf contributing to Z(γw; f) is a subset of γw, and therefore satisﬁes |γf| ≤ k + 1. By the induction hypothesis as above,
+as in (7.25). Any contour γf ∈ Cf contributing to Z(γw; f) is a subset of γw, and therefore satisfies |γf| ≤ k + 1. By the induction hypothesis as above,
 
 ![image 746](../Images/imageFile746.png)
 
@@ -817,7 +817,7 @@ F(p,q) ≤ logr + βw + f ( βww) in contradiction of (7.64). Therefore, (7.62) 
 
 Next we show that there exists a unique p such that bw(p) = bf(p) = 0. The proof is deferred until later in the section.
 
-- (7.65) Lemma. There exists Q′′′ ≥ Q′′ such that the following holds. For $q$ > Q′′′, there is a unique p′ ∈ (0,1) such that bw(p′) = bf(p′) = 0. The ratio r′ = p′/(1 − p′) satisﬁes
+- (7.65) Lemma. There exists Q′′′ ≥ Q′′ such that the following holds. For $q$ > Q′′′, there is a unique p′ ∈ (0,1) such that bw(p′) = bf(p′) = 0. The ratio r′ = p′/(1 − p′) satisfies
 - (7.66) r′ = q1/d exp f ( 0f ) − f ( 0w) . Let $q$ > Q = Q′′′ and $p$ = p′, where Q′′′ and $p$′ are as given in this lemma.
 
 By (7.45) and the fact that F(p,q) → d−1 logq as p ↓ 0, f ( bff) → 0 and bf(p) → 0 as p ↓ 0. Similarly, bw(p) → ∞ as p ↓ 0. By a similar argument for $p$ close to 1, bw(p) → 0 and bf(p) → ∞ as p ↑ 1. Statement (7.46) follows by Lemma 7.65 and the continuity of bw(p) and bf(p), (7.54). This completes the proof of Theorem 7.42.
@@ -886,7 +886,7 @@ Let γ ∈ Cw. We claim that (7.69) | ′(γ)| ≤ 2|γ| (γ)
 
 ![image 819](../Images/imageFile819.png)
 
-whenever the derivative exists. By (7.48), either the left side equals 0, or it equals | ′(γ)|, and we may assume that the latter holds. Write Y(γ) = Z(intγ; ). The function = w β satisﬁes (γ) = (γ)Y by (7.41), and also
+whenever the derivative exists. By (7.48), either the left side equals 0, or it equals | ′(γ)|, and we may assume that the latter holds. Write Y(γ) = Z(intγ; ). The function = w β satisfies (γ) = (γ)Y by (7.41), and also
 
 (7.70) ′(γ) = −|γ| (γ) = −|γ| (γ)Y(γ). Hence, (7.71) ′(γ) =
 
@@ -1018,11 +1018,11 @@ e−τ ν ,
 
 ν: x,y∈Vintν
 
-by Theorem 7.32 and the fact that 0w is a τ-functional. The numberof such wired contours ν with ν = n grows at most exponentially in n. The leading term in the aboveseries arises from the contour ν having smallest ν , and such ν satisﬁes
+by Theorem 7.32 and the fact that 0w is a τ-functional. The numberof such wired contours ν with ν = n grows at most exponentially in n. The leading term in the aboveseries arises from the contour ν having smallest ν , and such ν satisfies
 
 [7.5] Discontinuous phase transition for large q 193
 
-ν ≥ b(1 + |x − y|) for some absolute constant b > 0. We may therefore ﬁnd absolute constants Q′ ≥ Q and a > 0 such that, for $q$ ≥ Q′, (7.79) φ1 (F (x, y)) ≤ e−aτ(1+|x−y|).
+ν ≥ b(1 + |x − y|) for some absolute constant b > 0. We may therefore find absolute constants Q′ ≥ Q and a > 0 such that, for $q$ ≥ Q′, (7.79) φ1 (F (x, y)) ≤ e−aτ(1+|x−y|).
 
 Take x = y in (7.79), and let ↑ Zd to obtain by Proposition 5.11 that
 
@@ -1046,7 +1046,7 @@ Parts (b) and (d) of the theorem have been proved for $q$ ≥ Q′′. Part (b) 
 
 that φ0pc(q),$q$ = φ1pc(q),q, and hence (a) via Theorem 4.63. The uniqueness of random-cluster measures holds generally when $p$ < pc(q), Theorem 5.33. The proof of uniqueness when $p$ > pc(q) has much in common with the proofs of Proposition 5.30 and Theorem 11.40, and so we present a sketch only.
 
-Letq ≥ Q′′ and $p$ ∈ (pc(q),1). Weshallshowthath1(p,q) = φp1,q(e is open) satisﬁes (7.84) h1(p − ǫ,q) ↑ h1(p,q) as ǫ ↓ 0, and the claim will follow by Proposition 4.28(b) and Theorem 4.63.
+Letq ≥ Q′′ and $p$ ∈ (pc(q),1). Weshallshowthath1(p,q) = φp1,q(e is open) satisfies (7.84) h1(p − ǫ,q) ↑ h1(p,q) as ǫ ↓ 0, and the claim will follow by Proposition 4.28(b) and Theorem 4.63.
 
 ![image 857](../Images/imageFile857.png)
 
@@ -1078,7 +1078,7 @@ Let e = 0, z and n > 23m. We couple the measures φn1,p−ǫ and φn1,p in such 
 
 ![image 861](../Images/imageFile861.png)
 
-Suppose that ∂ m ⇒/ ∂ n in ω0. Let A be the set of edges in ∂ m that are closed in ω0. If A = ∅, we sample the states of the remaining edges of m in an arbitrary order as above. Suppose A = ∅. Pick f ∈ A, and sample the states of edges in the (d − 2)-connected closed cluster Ff = Ff (ω0) of f in the lower conﬁguration ω0. When this has been done for every f ∈ A, we complete the construction of ω0 and ω1 according to an arbitrary ordering of the remaining edges in m.
+Suppose that ∂ m ⇒/ ∂ n in ω0. Let A be the set of edges in ∂ m that are closed in ω0. If A = ∅, we sample the states of the remaining edges of m in an arbitrary order as above. Suppose A = ∅. Pick f ∈ A, and sample the states of edges in the (d − 2)-connected closed cluster Ff = Ff (ω0) of f in the lower configuration ω0. When this has been done for every f ∈ A, we complete the construction of ω0 and ω1 according to an arbitrary ordering of the remaining edges in m.
 
 In examining the statesofedgesin Ff we willdiscovera set (Ff )of edges,not belonging to Ff but (d −2)-connected to Ff , such that ω0(g) = 1 for g ∈ (Ff ). Let v, f be the set of all vertices v ∈ n lying in the infinite component of (Zd,Ed \ Ff ) and such that there exists w ∈ n with v,w ∈ (Ff ) ∪ Ff . Let
 
@@ -1088,7 +1088,7 @@ Suppose ω0 ∈ Em,n. By the above, ∂ m ∪ f∈A v, f contains a (random) cut
 
 states of edges of out( ), the coupled conditional measures of φn1,p−ǫ and φn1,p on the remaining edges of ∪ int( ) are the appropriate wired measures.
 
-Therefore, hn(p) = φn1,p(Je) satisﬁes
+Therefore, hn(p) = φn1,p(Je) satisfies
 
 φσ,1 p(Je) − φσ,1 p−ǫ(Je) φn1,p−ǫ( = σ) ≤ η + max
 
@@ -1100,9 +1100,9 @@ hn(p) − hn(p − ǫ) ≤ η +
 
 σ∈C
 
-where C is the set of all cutsets of m and φσ,1 p denotes the wired random-cluster measure on σ ∪ int(σ). Since m is ﬁxed, C is bounded, and (7.84) follows on letting n → ∞, ǫ ↓ 0, and η ↓ 0 in that order.
+where C is the set of all cutsets of m and φσ,1 p denotes the wired random-cluster measure on σ ∪ int(σ). Since m is fixed, C is bounded, and (7.84) follows on letting n → ∞, ǫ ↓ 0, and η ↓ 0 in that order.
 
-Proof of Theorem7.34. Let q be large. Then pc(q) = r′/(1+r′) wherer′ is given in Lemma 7.65 and satisﬁes (7.66). Let $p$ = pc(q). By (7.44) and ‘Theorem’ 7.27, f ( 0f ), f ( 0w) → 0 as q → ∞, and therefore r′ ∼ q1/d. We sketch a derivation of the errortermO(q−2/d). The rate atwhich f ( 0f ) → 0 (respectively,
+Proof of Theorem7.34. Let q be large. Then pc(q) = r′/(1+r′) wherer′ is given in Lemma 7.65 and satisfies (7.66). Let $p$ = pc(q). By (7.44) and ‘Theorem’ 7.27, f ( 0f ), f ( 0w) → 0 as q → ∞, and therefore r′ ∼ q1/d. We sketch a derivation of the errortermO(q−2/d). The rate atwhich f ( 0f ) → 0 (respectively,
 
 f ( 0w) → 0) is determined by the value 0f (γf) (respectively, 0w(γw)) on the smallest free contour γf (respectively, smallest wired contour γw). The smallest free contour is the external edge-boundary γf of a single edge, and it is easily seen from (7.41) that 0f (γf) = r′q−1 ∼ q−1+(1/d). The shortest wired contour γw is a single edge, and 0w(γw) = 1/r′ ∼ q−1/d. By (7.24), as q → ∞,
 
@@ -1118,11 +1118,11 @@ Consider for illustration the Ising model on Z3 with ‘inverse-temperature’ �
 
 196 Duality in Higher Dimensions [7.6]
 
-result of Dobrushin, [103], that, for large β in the limit as L → ∞, L deviates only locally from the horizontal plane through the centre of L. This implies in particular that there exist non-translation-invariant Gibbs measures for the threedimensional Ising model with large β. The argument is valid in all dimensions of three or more, but not in two dimensions, for which case the interface may be thought of as a line subject to Gaussian ﬂuctuations (see [127, 137, 187]).
+result of Dobrushin, [103], that, for large β in the limit as L → ∞, L deviates only locally from the horizontal plane through the centre of L. This implies in particular that there exist non-translation-invariant Gibbs measures for the threedimensional Ising model with large β. The argument is valid in all dimensions of three or more, but not in two dimensions, for which case the interface may be thought of as a line subject to Gaussian fluctuations (see [127, 137, 187]).
 
-Dobrushin’s proof was the starting point for the study of interfaces in spin systems. His conclusions may be reformulated and generalized in the context of the random-cluster model in three or more dimensions with q ∈ [1,∞). This generalization of Dobrushin’s theorem is achieved by deﬁning a family of conditioned random-cluster measures, and by showing the stiffness of the ensuing interface. It is a striking fact that the conclusions hold even for the percolation model.
+Dobrushin’s proof was the starting point for the study of interfaces in spin systems. His conclusions may be reformulated and generalized in the context of the random-cluster model in three or more dimensions with q ∈ [1,∞). This generalization of Dobrushin’s theorem is achieved by defining a family of conditioned random-cluster measures, and by showing the stiffness of the ensuing interface. It is a striking fact that the conclusions hold even for the percolation model.
 
-When cast in the more general setting of the random-clustermodel on a box , the correct interpretation of the boundary condition is as follows. The vertices on the upper (respectively, lower) hemisphere of are wired together into a single composite vertex labelled ∂+ (respectively, ∂− ). Let D be the event that no open path of exists joining ∂− to ∂+ , and let φ ,p,q be the random-cluster measure on with the above boundary condition and conditioned on the event D. It is a geometrical fact that, under φ ,p,q, there exists an interface separating an upper region of containing ∂+ and a lower region containing ∂− , and each of these regions is in the wired phase. Dobrushin’s theorem amounts to the statement that, when $q$ = 2 and $p$ is sufficiently large, this interface deviates only locally from the horizontal plane through the equator of . It was proved in [139] that the same conclusion is valid for all q ∈ [1,∞) and all sufficiently large p, and this result is presented in the remainder of this chapter. The geometry of the interfaces for the random-cluster model is notably different from that of a spin model since the conﬁgurations are indexed by edges rather than by vertices, and this leads to difﬁculties not encountered in the Ising model.
+When cast in the more general setting of the random-clustermodel on a box , the correct interpretation of the boundary condition is as follows. The vertices on the upper (respectively, lower) hemisphere of are wired together into a single composite vertex labelled ∂+ (respectively, ∂− ). Let D be the event that no open path of exists joining ∂− to ∂+ , and let φ ,p,q be the random-cluster measure on with the above boundary condition and conditioned on the event D. It is a geometrical fact that, under φ ,p,q, there exists an interface separating an upper region of containing ∂+ and a lower region containing ∂− , and each of these regions is in the wired phase. Dobrushin’s theorem amounts to the statement that, when $q$ = 2 and $p$ is sufficiently large, this interface deviates only locally from the horizontal plane through the equator of . It was proved in [139] that the same conclusion is valid for all q ∈ [1,∞) and all sufficiently large p, and this result is presented in the remainder of this chapter. The geometry of the interfaces for the random-cluster model is notably different from that of a spin model since the configurations are indexed by edges rather than by vertices, and this leads to difficulties not encountered in the Ising model.
 
 ![image 862](../Images/imageFile862.png)
 
@@ -1136,7 +1136,7 @@ Theresultsareprovedundertheassumptionthat q ∈ [1,∞)and pissufficiently large
 
 ![image 864](../Images/imageFile864.png)
 
-such a ‘rougheningtransition’ by concentrating on the special case of percolation. The two core problems here are the following. Let p(q) be the inﬁmum of all values of $p$ at which the above interface is localized (a rigorous interpretation of this definition is evident after reading Theorems 7.87 and 7.142).
+such a ‘rougheningtransition’ by concentrating on the special case of percolation. The two core problems here are the following. Let p(q) be the infimum of all values of $p$ at which the above interface is localized (a rigorous interpretation of this definition is evident after reading Theorems 7.87 and 7.142).
 
 ![image 865](../Images/imageFile865.png)
 
@@ -1150,7 +1150,7 @@ In the case of the Ising model ($q$ = 2), it is generally believed that pc(2) < 
 
 ![image 868](../Images/imageFile868.png)
 
-A certain amount of notation and preliminary work is required before the main theoremsmay be stated (in Section 7.11). In orderto whet appetites, a preliminary result is included towards the end of the current section. Sections 7.7–7.8 contain some preliminary facts about random-cluster measures and interfaces. A detailed geometrical analysis of interfaces is included in Section 7.9 along the lines of Dobrushin’s classiﬁcation of ‘walls’ and ‘ceilings’. This is followed in Section 7.10 by an exponential bound for the probability of ﬁnding local perturbations of a ﬂat interface.
+A certain amount of notation and preliminary work is required before the main theoremsmay be stated (in Section 7.11). In orderto whet appetites, a preliminary result is included towards the end of the current section. Sections 7.7–7.8 contain some preliminary facts about random-cluster measures and interfaces. A detailed geometrical analysis of interfaces is included in Section 7.9 along the lines of Dobrushin’s classification of ‘walls’ and ‘ceilings’. This is followed in Section 7.10 by an exponential bound for the probability of finding local perturbations of a flat interface.
 
 The upper and lower boundaries of a set of vertices are defined as
 
@@ -1176,7 +1176,7 @@ We shall be particularly concerned with a boundary condition D corresponding to 
 
 D(e) =
 
-See Figure 7.4. Let DL,M be the set of conﬁgurations ω ∈ such that ω( f ) = D( f ) if f ∈/ EL,M, and let IL,M be the event that there exists no open path connecting a vertex of ∂+ L,M to a vertex of ∂− L,M. The probability measure of current interest is the random-cluster measure φD M,N,p,q conditioned on the event IL,M, which we denote by φD L,M,p,q.
+See Figure 7.4. Let DL,M be the set of configurations ω ∈ such that ω( f ) = D( f ) if f ∈/ EL,M, and let IL,M be the event that there exists no open path connecting a vertex of ∂+ L,M to a vertex of ∂− L,M. The probability measure of current interest is the random-cluster measure φD M,N,p,q conditioned on the event IL,M, which we denote by φD L,M,p,q.
 
 ![image 873](../Images/imageFile873.png)
 
@@ -1200,7 +1200,7 @@ consequence of Theorems 7.87 and 7.142 that, for sufficiently large p, any such 
 
 ![image 879](../Images/imageFile879.png)
 
-It is shown in addition at Theorem 7.144 that there exists a geometric bound, uniformly in L, on the tail of the displacement of the interface from the ﬂat plane.
+It is shown in addition at Theorem 7.144 that there exists a geometric bound, uniformly in L, on the tail of the displacement of the interface from the flat plane.
 
 By making use of the relationship between random-cluster models and Potts models (see Sections 1.4 and 4.6), one obtains a generalization of the theorem of Dobrushin [103] to include percolation and Potts models.
 
@@ -1230,7 +1230,7 @@ The strategy of the proofs is to follow the milestones of the paper of Dobrushin
 
 p
 
-Let n ≥ 1. We pursue the method of proof of Theorem 5.33(b), and shall use the notation therein. Let V be the set of vertices that are incident in L3 to edges of both n(e) and its complement. We deﬁne B to be the union of V together with all vertices x0 ∈ Z3 for which there exists a path x0, x1,. . ., xm of L such that x0, x1,. . ., xm−1 ∈/ V, xm ∈ V, and x0, x1,. . ., xm−1 are black. Let Wn be the event that there exists no x ∈ B such that x − z ≤ 10, say, where z is the centre of e. By (5.36)–(5.37) together with estimates at the beginning of the proof of [211, Lemma (2.24)],
+Let n ≥ 1. We pursue the method of proof of Theorem 5.33(b), and shall use the notation therein. Let V be the set of vertices that are incident in L3 to edges of both n(e) and its complement. We define B to be the union of V together with all vertices x0 ∈ Z3 for which there exists a path x0, x1,. . ., xm of L such that x0, x1,. . ., xm−1 ∈/ V, xm ∈ V, and x0, x1,. . ., xm−1 are black. Let Wn be the event that there exists no x ∈ B such that x − z ≤ 10, say, where z is the centre of e. By (5.36)–(5.37) together with estimates at the beginning of the proof of [211, Lemma (2.24)],
 
 (7.95) φ0 n(e),r,q(Wn) ≥ 1 − cn(1 − ρ)en,
 
@@ -1244,17 +1244,17 @@ As explained in Sections 7.1–7.2, the dual of the random-cluster model on L3 i
 
 The regular interface of L3 is the set δ0 of plaquettes given by δ0 = h ∈ H : h = h( x, y ) for some x = (x1, x2,0) and y = (x1, x2,1) .
 
-The interface (ω) of a conﬁguration ω ∈ IL,M ∩ DL,M is defined to be the maximal 1-connected set of open plaquettes containing the plaquettes in the set
+The interface (ω) of a configuration ω ∈ IL,M ∩ DL,M is defined to be the maximal 1-connected set of open plaquettes containing the plaquettes in the set
 
 δ0 \ {h(e) : e ∈ EL,M}. The set of all interfaces is
 
 (7.97) DL,M = (ω) : ω ∈ IL,M ∩ DL,M .
 
-It is tempting to think of an interface as part of a deformed plane. Interfaces may however have more complex geometry involving cavities and attachments, see Figure 7.4. The following proposition conﬁrms that the interfaces in DL,M separate the top of L,M from its bottom.
+It is tempting to think of an interface as part of a deformed plane. Interfaces may however have more complex geometry involving cavities and attachments, see Figure 7.4. The following proposition confirms that the interfaces in DL,M separate the top of L,M from its bottom.
 
-(7.98) Lemma. The event IL,M ∩ DL,M comprises those conﬁgurations ω ∈ D L,M for which there exists δ ∈ DL,M satisfying: ω(e) = 0 whenever h(e) ∈ δ.
+(7.98) Lemma. The event IL,M ∩ DL,M comprises those configurations ω ∈ D L,M for which there exists δ ∈ DL,M satisfying: ω(e) = 0 whenever h(e) ∈ δ.
 
-For δ ∈ DL,M, we deﬁne its extended interface (or closure) δ to be the set (7.99) δ = δ ∪ h ∈ H : h is 1-connected to some member of δ . See (7.4). It will be useful to introduce the ‘maximal’ (denoted by ωδ) and ‘minimal’ (denoted by ωδ) conﬁgurations in DL,M that are compatible with δ:
+For δ ∈ DL,M, we define its extended interface (or closure) δ to be the set (7.99) δ = δ ∪ h ∈ H : h is 1-connected to some member of δ . See (7.4). It will be useful to introduce the ‘maximal’ (denoted by ωδ) and ‘minimal’ (denoted by ωδ) configurations in DL,M that are compatible with δ:
 
 ![image 888](../Images/imageFile888.png)
 
@@ -1274,7 +1274,7 @@ D(e) if e ∈/ EL,M, 1 if e ∈ EL,M ∩ (δ \ δ), 0 otherwise.
 
 ![image 894](../Images/imageFile894.png)
 
-Proof of Lemma 7.98. If ω ∈ IL,M ∩ DL,M, then ω(e) = 0 whenever h(e) ∈ (ω). Suppose conversely that δ ∈ DL,M, and let ω ∈ DL,M satisfy ω(e) = 0 whenever h(e) ∈ δ. Since ω ≤ ωδ, it sufﬁces to show that ωδ ∈ IL,M. Since δ ∈ DL,M, there exists ξ ∈ IL,M ∩ DL,M such that δ = (ξ). Note that ξ ≤ ωδ. Suppose for the sake of obtaining a contradiction that ωδ ∈/ IL,M, and think of ωδ as being obtained from ξ by declaring, in turn, a certain sequence e1,e2,. . . ,er with ξ(ei) = 0, i = 1,2,. . .,r, to be open. Let ξk be obtainedfrom ξ by η(ξk) = η(ξ) ∪ {e1,e2,. . . ,ek}. By assumption, there exists K such that ξK ∈ IL,M but ξK+1 ∈/ IL,M. For ψ ∈ DL,M, let J(ψ) denote the set of edges e having endvertices in L,M, with ψ(e) = 1, and both of whose endvertices are attainable from ∂+ L,M by open paths of ψ. We apply Theorem 7.3 to the finite connected graph induced by J(ξK) to ﬁnd that there exists a splitting set Q of plaquettes such that: ∂+ L,M ⊆ ins([Q]), ∂− L,M ⊆ out([Q]), and ξK(e) = 0 whenever e ∈ EL,M and h(e) ∈ Q. It must be the case that h(eK+1) ∈ Q, since ξK+1 ∈/ IL,M. By the 1-connectedness of Q, there exists a sequence
+Proof of Lemma 7.98. If ω ∈ IL,M ∩ DL,M, then ω(e) = 0 whenever h(e) ∈ (ω). Suppose conversely that δ ∈ DL,M, and let ω ∈ DL,M satisfy ω(e) = 0 whenever h(e) ∈ δ. Since ω ≤ ωδ, it suffices to show that ωδ ∈ IL,M. Since δ ∈ DL,M, there exists ξ ∈ IL,M ∩ DL,M such that δ = (ξ). Note that ξ ≤ ωδ. Suppose for the sake of obtaining a contradiction that ωδ ∈/ IL,M, and think of ωδ as being obtained from ξ by declaring, in turn, a certain sequence e1,e2,. . . ,er with ξ(ei) = 0, i = 1,2,. . .,r, to be open. Let ξk be obtainedfrom ξ by η(ξk) = η(ξ) ∪ {e1,e2,. . . ,ek}. By assumption, there exists K such that ξK ∈ IL,M but ξK+1 ∈/ IL,M. For ψ ∈ DL,M, let J(ψ) denote the set of edges e having endvertices in L,M, with ψ(e) = 1, and both of whose endvertices are attainable from ∂+ L,M by open paths of ψ. We apply Theorem 7.3 to the finite connected graph induced by J(ξK) to find that there exists a splitting set Q of plaquettes such that: ∂+ L,M ⊆ ins([Q]), ∂− L,M ⊆ out([Q]), and ξK(e) = 0 whenever e ∈ EL,M and h(e) ∈ Q. It must be the case that h(eK+1) ∈ Q, since ξK+1 ∈/ IL,M. By the 1-connectedness of Q, there exists a sequence
 
 ![image 895](../Images/imageFile895.png)
 
@@ -1407,7 +1407,7 @@ In the second part of this section, we consider measures and interfaces for the 
 
 M→∞
 
-exists. Let DL be the set of all conﬁgurations ω such that ω(e) = D(e) for e ∈/ EL = limM→∞ EL,M, and let IL be the event that no vertex of ∂ +L is joined by an open path to a vertex of ∂ −L . The set of interfaces on which we concentrate isDL = M DL,M = limM→∞ DL,M. Thus,DL isthesetofinterfacesthatspan
+exists. Let DL be the set of all configurations ω such that ω(e) = D(e) for e ∈/ EL = limM→∞ EL,M, and let IL be the event that no vertex of ∂ +L is joined by an open path to a vertex of ∂ −L . The set of interfaces on which we concentrate isDL = M DL,M = limM→∞ DL,M. Thus,DL isthesetofinterfacesthatspan
 
 L, and every member of DL is bounded in the direction of the third coordinate. It is easy to see that IL ⊇ limM→∞ IL,M, and it is a consequence of the next lemma that the difference between these two events has φL-probability zero.
 
@@ -1431,7 +1431,7 @@ On the event IL, is defined as before to be the maximal 1-connected set of open 
 
 e∈E(δ)∩EL
 
-where ZL is the appropriate normalizing constant. Proof of Lemma 7.117. It sufﬁces for the claim of weak convergence that (7.122) φL,M(F ∩ IL,M) → φL(F ∩ IL) for all cylinder events F.
+where ZL is the appropriate normalizing constant. Proof of Lemma 7.117. It suffices for the claim of weak convergence that (7.122) φL,M(F ∩ IL,M) → φL(F ∩ IL) for all cylinder events F.
 
 Let AL,M = [−L, L]2 × {−M} and BL,M = [−L, L]2 × {M}, and let TL,M be the event that no open path exists between a vertex of ∂ +L,M \ BL,M and a vertex of ∂ −L,M \ AL,M. Note that TL,M → IL as M → ∞. Let F be a cylinder event. Then
 
@@ -1495,7 +1495,7 @@ Let x = (x1, x2, x3) ∈ Z3. The projection π(h) of a horizontal plaquette h = 
 
 ![image 943](../Images/imageFile943.png)
 
-Ahorizontalplaquetteh ofthesemi-extendedinterfaceδ∗iscalledac-plaquette if h is the uniquememberof δ∗ with projection π(h). All otherplaquettesof δ∗ are called w-plaquettes. A ceiling of δ is a maximal 0-connected set of c-plaquettes. The projection of a ceiling C is the set π(C) = {π(h) : h ∈ C}. Similarly, we deﬁne a wall W of δ as a maximal 0-connected set of w-plaquettes, and its projection as
+Ahorizontalplaquetteh ofthesemi-extendedinterfaceδ∗iscalledac-plaquette if h is the uniquememberof δ∗ with projection π(h). All otherplaquettesof δ∗ are called w-plaquettes. A ceiling of δ is a maximal 0-connected set of c-plaquettes. The projection of a ceiling C is the set π(C) = {π(h) : h ∈ C}. Similarly, we define a wall W of δ as a maximal 0-connected set of w-plaquettes, and its projection as
 
 π(W) = π(h) : h is a horizontal plaquette of W .
 
@@ -1607,9 +1607,9 @@ Proof of Lemma 7.126. Let δ ∈ DL have unique wall S = (A, B). By definition, 
 
 i ∈ A, whence, by Lemma 7.125(iii), the height of Ci is determined uniquely by knowledge of S. Hence δ is unique.
 
-Proof of Lemma 7.127. Let δ ∈ DL. Let W1, W2,. . ., Wn be the non-emptywalls of δ∗, and write Wi = (Ai, Bi) where Ai = Wi ∩ δ, Bi = Wi ∩ (δ∗ \ δ). Let si be the altitude of Wi. We claim that τ(0,0,−si)Wi is a standard wall, and we prove this asfollows. LetCij , j = 1,2,. . .,k, be the ceilingsthatare 0-connected to Wi, and let Hij be the maximal 0-connected set of plaquettes in δ0 \π(Wi) onto which Cij projects. See Lemma 7.125(vii). It sufﬁces to construct an interface δ(Wi) having τ(0,0,−si)Wi as its unique wall. To this end, we add to τ(0,0,−si)Ai the plaquettes in τ(0,0,−si)Cij , j = 1,2,. . .,k, together with, for each j, the horizontal plaquettes in the maximal 0-connected set of horizontal plaquettes that contains τ(0,0,−si)Cij and elements of which project onto Hij .
+Proof of Lemma 7.127. Let δ ∈ DL. Let W1, W2,. . ., Wn be the non-emptywalls of δ∗, and write Wi = (Ai, Bi) where Ai = Wi ∩ δ, Bi = Wi ∩ (δ∗ \ δ). Let si be the altitude of Wi. We claim that τ(0,0,−si)Wi is a standard wall, and we prove this asfollows. LetCij , j = 1,2,. . .,k, be the ceilingsthatare 0-connected to Wi, and let Hij be the maximal 0-connected set of plaquettes in δ0 \π(Wi) onto which Cij projects. See Lemma 7.125(vii). It suffices to construct an interface δ(Wi) having τ(0,0,−si)Wi as its unique wall. To this end, we add to τ(0,0,−si)Ai the plaquettes in τ(0,0,−si)Cij , j = 1,2,. . .,k, together with, for each j, the horizontal plaquettes in the maximal 0-connected set of horizontal plaquettes that contains τ(0,0,−si)Cij and elements of which project onto Hij .
 
-We now deﬁne the family {Sh : h ∈ δ0} of standard walls by
+We now define the family {Sh : h ∈ δ0} of standard walls by
 
 τ(0,0,−si)Wi if h is the origin of τ(0,0,−si)Wi, Eh if h is the origin of no τ(0,0,−si)Wi.
 
@@ -1689,7 +1689,7 @@ horizontal plaquette of δ∗S projecting onto h0. Only one such plaquette, howe
 
 We now prove (7.130) as follows. Since h1 is a w-plaquette, there exists h2 ∈ A ∪ B, h2 = h1, such that π(h2) = h0. If there exists such h2 belonging to A, then (7.130) holds. Suppose the contrary, and let h2 be such a plaquette with h2 ∈ B. Since h1 ∈ A, for every η ∈ U(h0) ∩ π(S), η = h0, there exists
 
-η′ ∈ A such that π(η′) ⊆ [η] and η′ ∼1 h1. [If this were false for some η then, as in the proof of Lemma 7.125(ii), in any conﬁguration with interface δS, there would exist a path of open edges joining the vertex just above h1 to the vertex just beneath h1. Since, by assumption, all plaquettes of A ∪ B other than h1, having projection h0, lie in B, this would contradict the fact that δS is an interface.] If any such η′ is vertical, then (7.130) follows. Assume that all such η′ are horizontal.
+η′ ∈ A such that π(η′) ⊆ [η] and η′ ∼1 h1. [If this were false for some η then, as in the proof of Lemma 7.125(ii), in any configuration with interface δS, there would exist a path of open edges joining the vertex just above h1 to the vertex just beneath h1. Since, by assumption, all plaquettes of A ∪ B other than h1, having projection h0, lie in B, this would contradict the fact that δS is an interface.] If any such η′ is vertical, then (7.130) follows. Assume that all such η′ are horizontal.
 
 Since h2 ∈ B, there exists h3 ∈ A such that h3 ∼1 h2, and (7.130) holds in this case also.
 
@@ -1708,7 +1708,7 @@ for which there exists no other plaquette h′′ ∈ G with π(h′′) = π(h�
 
 ## 7.10 Exponential bounds for group probabilities
 
-The probabilistic expressions of Section 7.8 may be combined with the classiﬁcation of Section 7.9 to obtain an estimate concerning the geometry of the interface. Let G = {Gh : h ∈ δ0} be a family of groups of walls. If G is admissible, there exists by Lemma 7.127 a unique corresponding interface δG. We may pick a random family ζ = {ζh : h ∈ δ0} of groups of walls according to the probability measure PL induced by φL thus:
+The probabilistic expressions of Section 7.8 may be combined with the classification of Section 7.9 to obtain an estimate concerning the geometry of the interface. Let G = {Gh : h ∈ δ0} be a family of groups of walls. If G is admissible, there exists by Lemma 7.127 a unique corresponding interface δG. We may pick a random family ζ = {ζh : h ∈ δ0} of groups of walls according to the probability measure PL induced by φL thus:
 
 ![image 961](../Images/imageFile961.png)
 
@@ -1760,7 +1760,7 @@ and the reader may be prepared to omit the explanation that follows. We claim th
 
 ![image 971](../Images/imageFile971.png)
 
-where P(δ) (respectively, P(δ′)) is the set of plaquettes in δ \ δ (respectively, δ′ \ δ′) that project into [π(Gh′)]. In order to see that (7.137) implies (7.136), we argue as follows. The extended interface δ may be constructed from δ′ in the following manner. First, we remove all the plaquettes from δ′ that project into [π(Gh′)], and we ﬁll the gaps by introducing the walls of Gh′ one by one along the lines of the proof of Lemma 7.127. Then we add the plaquettes of δ \ δ that project into [π(Gh′)]. During this operation on interfaces, we remove P(δ′) and add P(δ), and the claim follows.
+where P(δ) (respectively, P(δ′)) is the set of plaquettes in δ \ δ (respectively, δ′ \ δ′) that project into [π(Gh′)]. In order to see that (7.137) implies (7.136), we argue as follows. The extended interface δ may be constructed from δ′ in the following manner. First, we remove all the plaquettes from δ′ that project into [π(Gh′)], and we fill the gaps by introducing the walls of Gh′ one by one along the lines of the proof of Lemma 7.127. Then we add the plaquettes of δ \ δ that project into [π(Gh′)]. During this operation on interfaces, we remove P(δ′) and add P(δ), and the claim follows.
 
 ![image 972](../Images/imageFile972.png)
 
@@ -1790,11 +1790,11 @@ By Lemma 7.125(viii), there exists no vertical plaquette of δ′ \ δ′ that p
 
 ![image 984](../Images/imageFile984.png)
 
-It is therefore sufﬁcient to construct an injective map T that maps each vertical plaquette, 1-connected with π(Gh′), to a different vertical plaquette in P(δ). We noted in the proof of Lemma 7.128(i) that, for every h0 ∈ π(G′
+It is therefore sufficient to construct an injective map T that maps each vertical plaquette, 1-connected with π(Gh′), to a different vertical plaquette in P(δ). We noted in the proof of Lemma 7.128(i) that, for every h0 ∈ π(G′
 
 ![image 985](../Images/imageFile985.png)
 
-h), there exists a horizontal plaquette h1 ∈ δ with π(h1) = h0. For every vertical plaquette hv ∼1 h0, there exists a translate hv1 ∼1 h1. Suppose hv lies above δ0. If hv1 ∈ δ \ δ, we set T(hv) = hv1. If hv1 ∈ δ, we consider the (unique) vertical plaquette ‘above’ it, which we denote by hv2. We repeat this procedure up to the first n for which we meet a plaquette hvn ∈ δ \ δ, and we set T(hv) = hvn. When hv lies below δ0, we act similarly to ﬁnd a plaquette T(hv) of δ \ δ beneath hv. The resulting T is as required.
+h), there exists a horizontal plaquette h1 ∈ δ with π(h1) = h0. For every vertical plaquette hv ∼1 h0, there exists a translate hv1 ∼1 h1. Suppose hv lies above δ0. If hv1 ∈ δ \ δ, we set T(hv) = hv1. If hv1 ∈ δ, we consider the (unique) vertical plaquette ‘above’ it, which we denote by hv2. We repeat this procedure up to the first n for which we meet a plaquette hvn ∈ δ \ δ, and we set T(hv) = hvn. When hv lies below δ0, we act similarly to find a plaquette T(hv) of δ \ δ beneath hv. The resulting T is as required.
 
 ![image 986](../Images/imageFile986.png)
 
@@ -1824,7 +1824,7 @@ If e is such that h(e) ∈ U,
 
 ![image 990](../Images/imageFile990.png)
 
-The principal theorem states in rough terms the following. Let q ∈ [1,∞) and let p be sufficiently large. With φL-probability close to 1, the interface (ω) deviates from the ﬂat plane δ0 only through local perturbations. An ant living on (ω) is able, with large probability, to visit a positive density of the interface via horizontal meanderings only.
+The principal theorem states in rough terms the following. Let q ∈ [1,∞) and let p be sufficiently large. With φL-probability close to 1, the interface (ω) deviates from the flat plane δ0 only through local perturbations. An ant living on (ω) is able, with large probability, to visit a positive density of the interface via horizontal meanderings only.
 
 ![image 991](../Images/imageFile991.png)
 
@@ -1841,7 +1841,7 @@ Since, following Theorem 7.142, h ∈ δ0 is a c-plaquette with high probability
 
 to ∂− L (respectively, ∂+ L) with high probability. Theorem 7.87 follows. Furthermore, since h ↔ ∞ with high probability, such connectionsmay be found within the plane of Z3 comprising vertices x with x3 = 0 (respectively, x3 = 1).
 
-The existence of non-translation-invariant (conditioned) random-cluster measures follows from Theorem 7.142, as in the following sketch argument. For e ∈ E3, let e± = e ± (0,0,1), and let ω ∈ . If h = h(e) ∈ δ0 is a c-plaquette of = (ω), then e is closed, and h(e±) ∈/ . The conﬁgurations in the two regions above and below are governed by wired random-cluster measures14. Therefore, under (7.143),
+The existence of non-translation-invariant (conditioned) random-cluster measures follows from Theorem 7.142, as in the following sketch argument. For e ∈ E3, let e± = e ± (0,0,1), and let ω ∈ . If h = h(e) ∈ δ0 is a c-plaquette of = (ω), then e is closed, and h(e±) ∈/ . The configurations in the two regions above and below are governed by wired random-cluster measures14. Therefore, under (7.143),
 
 ![image 993](../Images/imageFile993.png)
 
@@ -1859,7 +1859,7 @@ The existence of non-translation-invariant (conditioned) random-cluster measures
 
 by stochastic ordering. Note that these inequalities concern the probabilities of cylinder events. This implies Theorem 7.89.
 
-Our second main result concerns the vertical displacement of the interface, and asserts the existence of a geometric bound on the tail of the displacement, uniformly in L. Let δ ∈ DL, (x1, x2) ∈ Z2, and x = (x1, x2, 21). We deﬁne the displacement of δ at x by
+Our second main result concerns the vertical displacement of the interface, and asserts the existence of a geometric bound on the tail of the displacement, uniformly in L. Let δ ∈ DL, (x1, x2) ∈ Z2, and x = (x1, x2, 21). We define the displacement of δ at x by
 
 ![image 997](../Images/imageFile997.png)
 
@@ -1873,7 +1873,7 @@ D(x,δ) = sup |z − 21| : (x1, x2, z) ∈ [δ] .
 
 ![image 999](../Images/imageFile999.png)
 
-Proof of Theorem 7.142. Let h ∈ δ0. We have not so far speciﬁed the ordering of plaquettes in δ0 used to identify the origin of a standard wall or of a groupof walls. We assume henceforth that this ordering is such that: for h1,h2 ∈ δ0, h1 > h2 implies h,h1 ≥ h,h2 .
+Proof of Theorem 7.142. Let h ∈ δ0. We have not so far specified the ordering of plaquettes in δ0 used to identify the origin of a standard wall or of a groupof walls. We assume henceforth that this ordering is such that: for h1,h2 ∈ δ0, h1 > h2 implies h,h1 ≥ h,h2 .
 
 For any standard wall S there exists, by Lemma 7.125(vi), a unique maximal
 
@@ -1889,7 +1889,7 @@ each such wall S, h belongs to I(S). Suppose on the contrary that h ∈/ I(Sj) f
 
 Let K be as in Lemma 7.131, and $p$∗, C4 as in Lemma 7.132. Let p be sufficiently large that $p$ > p∗ and that
 
-λ = λ(p) = −131 log[KC4(1 − p)] satisﬁes λ( p) > 0. By the last lemma, when $p$ > p,
+λ = λ(p) = −131 log[KC4(1 − p)] satisfies λ( p) > 0. By the last lemma, when $p$ > p,
 
 ![image 1001](../Images/imageFile1001.png)
 

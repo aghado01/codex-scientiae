@@ -1,6 +1,13 @@
 # Document Repair Checklist
 
-This checklist is used by subagents to systematically audit and repair extracted Markdown documents for LLM ingestion. Follow these steps sequentially.
+> **This is a quality rubric, not an editing procedure.** It defines the bar a finished deliverable must
+> meet. The *how* is the membrane (`restoration_procedure` / `src/PROCEDURE.md`): you do NOT open the
+> `.md` and edit it directly — you work the chunk stream (`get_slice` → `propose_edit` → `apply`), then
+> `finalize`/`publish`. Heading hygiene and the in-doc `## Contents` (§1) are landed post-promotion with
+> the `repair_headings` / `update_doc_contents` tools, not by hand. Read each item below as "what the
+> repaired chunk / promoted document must satisfy," and reach it through the tools.
+
+The items below are the per-deliverable audit. Each maps to a membrane signature or recipe.
 
 ### 1. Heading Hygiene
 - [ ] Keep a single `H1` (`#`) title at the very top of the file.

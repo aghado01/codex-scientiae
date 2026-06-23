@@ -13,11 +13,11 @@ Use the properties $\mathbb{E}[z_1] = m_1$ and $\mathbb{E}[z_2] = m_2$ to solve 
 
 ## 10.3 Variational Factor Minimization ($\star$)
 
-Consider a factorized variational distribution $q(\mathbf{Z})$ of the form (10.5). By using the technique of Lagrange multipliers, verify that minimization of the Kullback-Leibler divergence $\text{KL}(p || q)$ with respect to one of the factors $q_i(\mathbf{Z}_i)$, keeping all other factors ﬁxed, leads to the solution (10.17).
+Consider a factorized variational distribution $q(\mathbf{Z})$ of the form (10.5). By using the technique of Lagrange multipliers, verify that minimization of the Kullback-Leibler divergence $\text{KL}(p || q)$ with respect to one of the factors $q_i(\mathbf{Z}_i)$, keeping all other factors fixed, leads to the solution (10.17).
 
 ## 10.4 Gaussian Approximation via KL ($\star$)
 
-Suppose that $p(\mathbf{x})$ is some ﬁxed distribution and that we wish to approximate it using a Gaussian distribution $q(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\boldsymbol{\mu}, \boldsymbol{\Sigma})$. By writing down the form of the KL divergence $\text{KL}(p || q)$ for a Gaussian $q(\mathbf{x})$ and then differentiating, show that
+Suppose that $p(\mathbf{x})$ is some fixed distribution and that we wish to approximate it using a Gaussian distribution $q(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\boldsymbol{\mu}, \boldsymbol{\Sigma})$. By writing down the form of the KL divergence $\text{KL}(p || q)$ for a Gaussian $q(\mathbf{x})$ and then differentiating, show that
 [Page 538]
 
 minimization of $\text{KL}(p || q)$ with respect to $\boldsymbol{\mu}$ and $\boldsymbol{\Sigma}$ leads to the result that $\boldsymbol{\mu}$ is given by the expectation of $\mathbf{x}$ under $p(\mathbf{x})$ and that $\boldsymbol{\Sigma}$ is given by the covariance.
@@ -28,7 +28,7 @@ Consider a model in which the set of all hidden stochastic variables, denoted co
 
 ## 10.6 Alpha Divergence to KL ($\star$)
 
-The alpha family of divergences is deﬁned by (10.19). Show that the Kullback-Leibler divergence $\text{KL}(p || q)$ corresponds to $\alpha \to 1$. This can be done by writing $p^\epsilon = \exp(\epsilon \ln p) = 1 + \epsilon \ln p + \mathcal{O}(\epsilon^2)$ and then taking $\epsilon \to 0$. Similarly show that $\text{KL}(q || p)$ corresponds to $\alpha \to -1$.
+The alpha family of divergences is defined by (10.19). Show that the Kullback-Leibler divergence $\text{KL}(p || q)$ corresponds to $\alpha \to 1$. This can be done by writing $p^\epsilon = \exp(\epsilon \ln p) = 1 + \epsilon \ln p + \mathcal{O}(\epsilon^2)$ and then taking $\epsilon \to 0$. Similarly show that $\text{KL}(q || p)$ corresponds to $\alpha \to -1$.
 
 ## 10.7 Variational Factors for Gaussian ($\star$)
 
@@ -44,7 +44,7 @@ By making use of the standard result $\mathbb{E}[\tau] = a_N/b_N$ for the mean o
 
 ## 10.10 Model Posterior Decomposition ($\star$)
 
-Derive the decomposition given by (10.34) that is used to ﬁnd approximate posterior distributions over models using variational inference.
+Derive the decomposition given by (10.34) that is used to find approximate posterior distributions over models using variational inference.
 
 ## 10.11 Maximum of Model Lower Bound ($\star$)
 
@@ -65,11 +65,11 @@ Using the distribution (10.59), verify the result (10.64).
 
 ## 10.15 Expected Mixing Coefficients ($\star$)
 
-Using the result (B.17), show that the expected value of the mixing coefﬁcients in the variational mixture of Gaussians is given by (10.69).
+Using the result (B.17), show that the expected value of the mixing coefficients in the variational mixture of Gaussians is given by (10.69).
 
 ## 10.16 First Terms of Lower Bound ($\star$)
 
-Verify the results (10.71) and (10.72) for the ﬁrst two terms in the lower bound for the variational Gaussian mixture model given by (10.70).
+Verify the results (10.71) and (10.72) for the first two terms in the lower bound for the variational Gaussian mixture model given by (10.70).
 
 ## 10.17 Remaining Terms of Lower Bound ($\star$)
 
@@ -77,7 +77,7 @@ Verify the results (10.73)–(10.77) for the remaining terms in the lower bound 
 
 ## 10.18 Variational Re-estimation via Differentiation ($\star$)
 
-In this exercise, we shall derive the variational re-estimation equations for the Gaussian mixture model by direct differentiation of the lower bound. To do this we assume that the variational distribution has the factorization deﬁned by (10.42) and (10.55) with factors given by (10.48), (10.57), and (10.59). Substitute these into (10.70) and hence obtain the lower bound as a function of the parameters of the variational distribution. Then, by maximizing the bound with respect to these parameters, derive the re-estimation equations for the factors in the variational distribution, and show that these are the same as those obtained in Section 10.2.1.
+In this exercise, we shall derive the variational re-estimation equations for the Gaussian mixture model by direct differentiation of the lower bound. To do this we assume that the variational distribution has the factorization defined by (10.42) and (10.55) with factors given by (10.48), (10.57), and (10.59). Substitute these into (10.70) and hence obtain the lower bound as a function of the parameters of the variational distribution. Then, by maximizing the bound with respect to these parameters, derive the re-estimation equations for the factors in the variational distribution, and show that these are the same as those obtained in Section 10.2.1.
 
 ## 10.19 Predictive Distribution for Mixture ($\star$)
 
@@ -87,7 +87,7 @@ Derive the result (10.81) for the predictive distribution in the variational tre
 
 This exercise explores the variational Bayes solution for the mixture of Gaussians model when the size $N$ of the data set is large and shows that it reduces (as we would expect) to the maximum likelihood solution based on EM derived in Chapter 9. Note that results from Appendix B may be used to help answer this exercise.
 
-First show that the posterior distribution $q^\star(\boldsymbol{\Lambda}_k)$ of the precisions becomes sharply peaked around the maximum likelihood solution. Do the same for the posterior distribution of the means $q^\star(\boldsymbol{\mu}_k|\boldsymbol{\Lambda}_k)$. Next consider the posterior distribution $q^\star(\boldsymbol{\pi})$ for the mixing coefﬁcients and show that this too becomes sharply peaked around the maximum likelihood solution. Similarly, show that the responsibilities become equal to the corresponding maximum likelihood values for large $N$, by making use of the following asymptotic result for the digamma function for large $x$
+First show that the posterior distribution $q^\star(\boldsymbol{\Lambda}_k)$ of the precisions becomes sharply peaked around the maximum likelihood solution. Do the same for the posterior distribution of the means $q^\star(\boldsymbol{\mu}_k|\boldsymbol{\Lambda}_k)$. Next consider the posterior distribution $q^\star(\boldsymbol{\pi})$ for the mixing coefficients and show that this too becomes sharply peaked around the maximum likelihood solution. Similarly, show that the responsibilities become equal to the corresponding maximum likelihood values for large $N$, by making use of the following asymptotic result for the digamma function for large $x$
 
 $$
 \psi(x) = \ln x + \mathcal{O}(1/x). \tag{10.241}
@@ -102,11 +102,11 @@ Show that the number of equivalent parameter settings due to interchange symmetr
 
 ## 10.22 Lower Bound with Mode Mixture ($\star$)
 
-We have seen that each mode of the posterior distribution in a Gaussian mixture model is a member of a family of $K!$ equivalent modes. Suppose that the result of running the variational inference algorithm is an approximate posterior distribution $q$ that is localized in the neighbourhood of one of the modes. We can then approximate the full posterior distribution as a mixture of $K!$ such $q$ distributions, once centred on each mode and having equal mixing coefﬁcients. Show that if we assume negligible overlap between the components of the $q$ mixture, the resulting lower bound differs from that for a single component $q$ distribution through the addition of an extra term $\ln K!$.
+We have seen that each mode of the posterior distribution in a Gaussian mixture model is a member of a family of $K!$ equivalent modes. Suppose that the result of running the variational inference algorithm is an approximate posterior distribution $q$ that is localized in the neighbourhood of one of the modes. We can then approximate the full posterior distribution as a mixture of $K!$ such $q$ distributions, once centred on each mode and having equal mixing coefficients. Show that if we assume negligible overlap between the components of the $q$ mixture, the resulting lower bound differs from that for a single component $q$ distribution through the addition of an extra term $\ln K!$.
 
 ## 10.23 Maximizing Lower Bound over Mixing Coefficients ($\star$)
 
-Consider a variational Gaussian mixture model in which there is no prior distribution over mixing coefﬁcients $\{\pi_k\}$. Instead, the mixing coefﬁcients are treated as parameters, whose values are to be found by maximizing the variational lower bound on the log marginal likelihood. Show that maximizing this lower bound with respect to the mixing coefﬁcients, using a Lagrange multiplier to enforce the constraint that the mixing coefﬁcients sum to one, leads to the re-estimation result (10.83). Note that there is no need to consider all of the terms in the lower bound but only the dependence of the bound on the $\{\pi_k\}$.
+Consider a variational Gaussian mixture model in which there is no prior distribution over mixing coefficients $\{\pi_k\}$. Instead, the mixing coefficients are treated as parameters, whose values are to be found by maximizing the variational lower bound on the log marginal likelihood. Show that maximizing this lower bound with respect to the mixing coefficients, using a Lagrange multiplier to enforce the constraint that the mixing coefficients sum to one, leads to the re-estimation result (10.83). Note that there is no need to consider all of the terms in the lower bound but only the dependence of the bound on the $\{\pi_k\}$.
 
 ## 10.24 Singularities in MAP Estimation ($\star$)
 
@@ -122,16 +122,16 @@ Extend the variational treatment of Bayesian linear regression to include a gamm
 
 ## 10.27 Lower Bound for Basis Function Regression ($\star$)
 
-By making use of the formulae given in Appendix B show that the variational lower bound for the linear basis function regression model, deﬁned by (10.107), can be written in the form (10.107) with the various terms deﬁned by (10.108)–(10.112).
+By making use of the formulae given in Appendix B show that the variational lower bound for the linear basis function regression model, defined by (10.107), can be written in the form (10.107) with the various terms defined by (10.108)–(10.112).
 
 ## 10.28 Exponential Family Variational Formulation ($\star$)
 
-Rewrite the model for the Bayesian mixture of Gaussians, introduced in Section 10.2, as a conjugate model from the exponential family, as discussed in Section 10.4. Hence use the general results (10.115) and (10.119) to derive the speciﬁc results (10.48), (10.57), and (10.59).
+Rewrite the model for the Bayesian mixture of Gaussians, introduced in Section 10.2, as a conjugate model from the exponential family, as discussed in Section 10.4. Hence use the general results (10.115) and (10.119) to derive the specific results (10.48), (10.57), and (10.59).
 [Page 541]
 
 ## 10.29 Dual Function for Logarithm ($\star$)
 
-Show that the function $f(x) = \ln(x)$ is concave for $0 < x < \infty$ by computing its second derivative. Determine the form of the dual function $g(\lambda)$ deﬁned by (10.133), and verify that minimization of $\lambda x - g(\lambda)$ with respect to $\lambda$ according to (10.132) indeed recovers the function $\ln(x)$.
+Show that the function $f(x) = \ln(x)$ is concave for $0 < x < \infty$ by computing its second derivative. Determine the form of the dual function $g(\lambda)$ defined by (10.133), and verify that minimization of $\lambda x - g(\lambda)$ with respect to $\lambda$ according to (10.132) indeed recovers the function $\ln(x)$.
 
 ## 10.30 Variational Bound for Log Logistic ($\star$)
 
@@ -139,7 +139,7 @@ By evaluating the second derivative, show that the log logistic function $f(x) =
 
 ## 10.31 Logistic Sigmoid Lower Bound ($\star$)
 
-By ﬁnding the second derivative with respect to $x$, show that the function $f(x) = -\ln(e^{x/2} + e^{-x/2})$ is a concave function of $x$. Now consider the second derivatives with respect to the variable $x^2$ and hence show that it is a convex function of $x^2$. Plot graphs of $f(x)$ against $x$ and against $x^2$. Derive the lower bound (10.144) on the logistic sigmoid function directly by making a ﬁrst order Taylor series expansion of the function $f(x)$ in the variable $x^2$ centred on the value $\xi^2$.
+By finding the second derivative with respect to $x$, show that the function $f(x) = -\ln(e^{x/2} + e^{-x/2})$ is a concave function of $x$. Now consider the second derivatives with respect to the variable $x^2$ and hence show that it is a convex function of $x^2$. Plot graphs of $f(x)$ against $x$ and against $x^2$. Derive the lower bound (10.144) on the logistic sigmoid function directly by making a first order Taylor series expansion of the function $f(x)$ in the variable $x^2$ centred on the value $\xi^2$.
 
 ## 10.32 Sequential Variational Logistic Regression ($\star$)
 
@@ -147,15 +147,15 @@ Consider the variational treatment of logistic regression with sequential learni
 
 ## 10.33 Update Equation for Variational Parameter ($\star$)
 
-By differentiating the quantity $Q(\boldsymbol{\xi}, \boldsymbol{\xi}^{\text{old}})$ deﬁned by (10.161) with respect to the variational parameter $\xi_n$ show that the update equation for $\xi_n$ for the Bayesian logistic regression model is given by (10.163).
+By differentiating the quantity $Q(\boldsymbol{\xi}, \boldsymbol{\xi}^{\text{old}})$ defined by (10.161) with respect to the variational parameter $\xi_n$ show that the update equation for $\xi_n$ for the Bayesian logistic regression model is given by (10.163).
 
 ## 10.34 Re-estimation by Direct Maximization ($\star$)
 
-In this exercise we derive re-estimation equations for the variational parameters $\boldsymbol{\xi}$ in the Bayesian logistic regression model of Section 4.5 by direct maximization of the lower bound given by (10.164). To do this set the derivative of $\mathcal{L}(\boldsymbol{\xi})$ with respect to $\xi_n$ equal to zero, making use of the result (3.117) for the derivative of the log of a determinant, together with the expressions (10.157) and (10.158) which deﬁne the mean and covariance of the variational posterior distribution $q(\mathbf{w})$.
+In this exercise we derive re-estimation equations for the variational parameters $\boldsymbol{\xi}$ in the Bayesian logistic regression model of Section 4.5 by direct maximization of the lower bound given by (10.164). To do this set the derivative of $\mathcal{L}(\boldsymbol{\xi})$ with respect to $\xi_n$ equal to zero, making use of the result (3.117) for the derivative of the log of a determinant, together with the expressions (10.157) and (10.158) which define the mean and covariance of the variational posterior distribution $q(\mathbf{w})$.
 
 ## 10.35 Derive Variational Logistic Lower Bound ($\star$)
 
-Derive the result (10.164) for the lower bound $\mathcal{L}(\boldsymbol{\xi})$ in the variational logistic regression model. This is most easily done by substituting the expressions for the Gaussian prior $q(\mathbf{w}) = \mathcal{N}(\mathbf{w}|\mathbf{m}_0, \mathbf{S}_0)$, together with the lower bound $h(\mathbf{w}, \boldsymbol{\xi})$ on the likelihood function, into the integral (10.159) which deﬁnes $\mathcal{L}(\boldsymbol{\xi})$. Next gather together the terms which depend on $\mathbf{w}$ in the exponential and complete the square to give a Gaussian integral, which can then be evaluated by invoking the standard result for the normalization coefﬁcient of a multivariate Gaussian. Finally take the logarithm to obtain (10.164).
+Derive the result (10.164) for the lower bound $\mathcal{L}(\boldsymbol{\xi})$ in the variational logistic regression model. This is most easily done by substituting the expressions for the Gaussian prior $q(\mathbf{w}) = \mathcal{N}(\mathbf{w}|\mathbf{m}_0, \mathbf{S}_0)$, together with the lower bound $h(\mathbf{w}, \boldsymbol{\xi})$ on the likelihood function, into the integral (10.159) which defines $\mathcal{L}(\boldsymbol{\xi})$. Next gather together the terms which depend on $\mathbf{w}$ in the exponential and complete the square to give a Gaussian integral, which can then be evaluated by invoking the standard result for the normalization coefficient of a multivariate Gaussian. Finally take the logarithm to obtain (10.164).
 
 ## 10.36 Model Evidence in ADF Approximation ($\star$)
 
@@ -166,7 +166,7 @@ p_j(\mathcal{D}) \simeq p_{j-1}(\mathcal{D})Z_j \tag{10.242}
 $$
 [Page 542]
 
-where $Z_j$ is the normalization constant deﬁned by (10.197). By applying this result recursively, and initializing with $p_0(\mathcal{D}) = 1$, derive the result
+where $Z_j$ is the normalization constant defined by (10.197). By applying this result recursively, and initializing with $p_0(\mathcal{D}) = 1$, derive the result
 
 $$
 p(\mathcal{D}) \simeq \prod_j Z_j. \tag{10.243}
@@ -174,17 +174,17 @@ $$
 
 ## 10.37 Exact Prior Incorporation in EP ($\star$)
 
-Consider the expectation propagation algorithm from Section 10.7, and suppose that one of the factors $f_0(\boldsymbol{\theta})$ in the deﬁnition (10.188) has the same exponential family functional form as the approximating distribution $q(\boldsymbol{\theta})$. Show that if the factor $\widetilde{f}_0(\boldsymbol{\theta})$ is initialized to be $f_0(\boldsymbol{\theta})$, then an EP update to reﬁne $\widetilde{f}_0(\boldsymbol{\theta})$ leaves $\widetilde{f}_0(\boldsymbol{\theta})$ unchanged. This situation typically arises when one of the factors is the prior $p(\boldsymbol{\theta})$, and so we see that the prior factor can be incorporated once exactly and does not need to be reﬁned.
+Consider the expectation propagation algorithm from Section 10.7, and suppose that one of the factors $f_0(\boldsymbol{\theta})$ in the definition (10.188) has the same exponential family functional form as the approximating distribution $q(\boldsymbol{\theta})$. Show that if the factor $\widetilde{f}_0(\boldsymbol{\theta})$ is initialized to be $f_0(\boldsymbol{\theta})$, then an EP update to refine $\widetilde{f}_0(\boldsymbol{\theta})$ leaves $\widetilde{f}_0(\boldsymbol{\theta})$ unchanged. This situation typically arises when one of the factors is the prior $p(\boldsymbol{\theta})$, and so we see that the prior factor can be incorporated once exactly and does not need to be refined.
 
 ## 10.38 EP Algorithm for Clutter Problem ($\star$)
 
 In this exercise and the next, we shall verify the results (10.214)–(10.224) for the expectation propagation algorithm applied to the clutter problem. Begin by using the division formula (10.205) to derive the expressions (10.214) and (10.215) by completing the square inside the exponential to identify the mean and variance.
 
-Also, show that the normalization constant $Z_n$, deﬁned by (10.206), is given for the clutter problem by (10.216). This can be done by making use of the general result (2.115).
+Also, show that the normalization constant $Z_n$, defined by (10.206), is given for the clutter problem by (10.216). This can be done by making use of the general result (2.115).
 
 ## 10.39 Mean and Variance for Clutter EP ($\star$)
 
-Show that the mean and variance of $q^{\text{new}}(\boldsymbol{\theta})$ for EP applied to the clutter problem are given by (10.217) and (10.218). To do this, ﬁrst prove the following results for the expectations of $\boldsymbol{\theta}$ and $\boldsymbol{\theta}\boldsymbol{\theta}^{\text{T}}$ under $q^{\text{new}}(\boldsymbol{\theta})$
+Show that the mean and variance of $q^{\text{new}}(\boldsymbol{\theta})$ for EP applied to the clutter problem are given by (10.217) and (10.218). To do this, first prove the following results for the expectations of $\boldsymbol{\theta}$ and $\boldsymbol{\theta}\boldsymbol{\theta}^{\text{T}}$ under $q^{\text{new}}(\boldsymbol{\theta})$
 
 $$
 \mathbb{E}[\boldsymbol{\theta}] = \mathbf{m}^{\setminus n} + v^{\setminus n}\nabla_{\mathbf{m}^{\setminus n}} \ln Z_n \tag{10.244}

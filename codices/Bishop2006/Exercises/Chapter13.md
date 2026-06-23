@@ -5,14 +5,14 @@
 
 ## 13.1 Conditional independence in Markov models ($\star$)
 
-Use the technique of d-separation, discussed in Section 8.2, to verify that the Markov model shown in Figure 13.3 having $N$ nodes in total satisﬁes the conditional independence properties (13.3) for $n = 2, \dots, N$. Similarly, show that a model described by the graph in Figure 13.4 in which there are $N$ nodes in total
+Use the technique of d-separation, discussed in Section 8.2, to verify that the Markov model shown in Figure 13.3 having $N$ nodes in total satisfies the conditional independence properties (13.3) for $n = 2, \dots, N$. Similarly, show that a model described by the graph in Figure 13.4 in which there are $N$ nodes in total
 [Page 667]
 
-Figure 13.23 Schematic illustration of the operation of the particle ﬁlter for a one-dimensional latent space. At time step $n$, the posterior $p(z_n|x_n)$ is represented as a mixture distribution, shown schematically as circles whose sizes are proportional to the weights $w_n^{(l)}$. A set of $L$ samples is then drawn from this distribution and the new weights $w_{n+1}^{(l)}$ evaluated using $p(x_{n+1}|z_{n+1}^{(l)})$.
+Figure 13.23 Schematic illustration of the operation of the particle filter for a one-dimensional latent space. At time step $n$, the posterior $p(z_n|x_n)$ is represented as a mixture distribution, shown schematically as circles whose sizes are proportional to the weights $w_n^{(l)}$. A set of $L$ samples is then drawn from this distribution and the new weights $w_{n+1}^{(l)}$ evaluated using $p(x_{n+1}|z_{n+1}^{(l)})$.
 
 ![Figure 13.23](../Images/imageFile323.png)
 
-satisﬁes the conditional independence properties
+satisfies the conditional independence properties
 
 $$
 p(\mathbf{x}_n|\mathbf{x}_1, \dots, \mathbf{x}_{n-1}) = p(\mathbf{x}_n|\mathbf{x}_{n-1}, \mathbf{x}_{n-2}) \tag{13.122}
@@ -22,7 +22,7 @@ for $n = 3, \dots, N$.
 
 ## 13.2 Joint distribution conditional independence ($\star$)
 
-Consider the joint probability distribution (13.2) corresponding to the directed graph of Figure 13.3. Using the sum and product rules of probability, verify that this joint distribution satisﬁes the conditional independence property (13.3) for $n = 2, \dots, N$. Similarly, show that the second-order Markov model described by the joint distribution (13.4) satisﬁes the conditional independence property
+Consider the joint probability distribution (13.2) corresponding to the directed graph of Figure 13.3. Using the sum and product rules of probability, verify that this joint distribution satisfies the conditional independence property (13.3) for $n = 2, \dots, N$. Similarly, show that the second-order Markov model described by the joint distribution (13.4) satisfies the conditional independence property
 
 $$
 p(\mathbf{x}_n|\mathbf{x}_1, \dots, \mathbf{x}_{n-1}) = p(\mathbf{x}_n|\mathbf{x}_{n-1}, \mathbf{x}_{n-2}) \tag{13.123}
@@ -32,7 +32,7 @@ for $n = 3, \dots, N$.
 
 ## 13.3 State space model independence properties ($\star$)
 
-By using d-separation, show that the distribution $p(\mathbf{x}_1, \dots, \mathbf{x}_N)$ of the observed data for the state space model represented by the directed graph in Figure 13.5 does not satisfy any conditional independence properties and hence does not exhibit the Markov property at any ﬁnite order.
+By using d-separation, show that the distribution $p(\mathbf{x}_1, \dots, \mathbf{x}_N)$ of the observed data for the state space model represented by the directed graph in Figure 13.5 does not satisfy any conditional independence properties and hence does not exhibit the Markov property at any finite order.
 
 ## 13.4 Learning emission density parameters ($\star$)
 
@@ -57,11 +57,11 @@ For a hidden Markov model having discrete observations governed by a multinomial
 
 ## 13.9 d-separation in hidden Markov models ($\star$)
 
-Use the d-separation criterion to verify that the conditional independence properties (13.24)-(13.31) are satisﬁed by the joint distribution for the hidden Markov model deﬁned by (13.6).
+Use the d-separation criterion to verify that the conditional independence properties (13.24)-(13.31) are satisfied by the joint distribution for the hidden Markov model defined by (13.6).
 
 ## 13.10 Sum-product rules for HMM independence ($\star$)
 
-By applying the sum and product rules of probability, verify that the conditional independence properties (13.24)-(13.31) are satisﬁed by the joint distribution for the hidden Markov model deﬁned by (13.6).
+By applying the sum and product rules of probability, verify that the conditional independence properties (13.24)-(13.31) are satisfied by the joint distribution for the hidden Markov model defined by (13.6).
 
 ## 13.11 Joint posterior over successive latents ($\star$)
 
@@ -72,7 +72,7 @@ Starting from the expression (8.72) for the marginal distribution over the varia
 Suppose we wish to train a hidden Markov model by maximum likelihood using data that comprises $R$ independent sequences of observations, which we denote by $\mathbf{X}^{(r)}$ where $r = 1, \dots, R$. Show that in the E step of the EM algorithm, we simply evaluate posterior probabilities for the latent variables by running the $\alpha$ and $\beta$ recursions independently for each of the sequences. Also show that in the M step, the initial probability and transition probability parameters are re-estimated
 [Page 669]
 
-using modiﬁed forms of (13.18) and (13.19) given by
+using modified forms of (13.18) and (13.19) given by
 
 $$
 \pi_k = \frac{\sum_{r=1}^R \gamma(z_{1k}^{(r)})}{\sum_{r=1}^R \sum_{j=1}^K \gamma(z_{1j}^{(r)})} \tag{13.124}
@@ -92,11 +92,11 @@ Note that the M-step equations for other emission model parameters and distribut
 
 ## 13.13 Alpha message in factor graph ($\star$)
 
-Use the deﬁnition (8.64) of the messages passed from a factor node to a variable node in a factor graph, together with the expression (13.6) for the joint distribution in a hidden Markov model, to show that the deﬁnition (13.50) of the alpha message is the same as the deﬁnition (13.34).
+Use the definition (8.64) of the messages passed from a factor node to a variable node in a factor graph, together with the expression (13.6) for the joint distribution in a hidden Markov model, to show that the definition (13.50) of the alpha message is the same as the definition (13.34).
 
 ## 13.14 Beta message in factor graph ($\star$)
 
-Use the deﬁnition (8.67) of the messages passed from a factor node to a variable node in a factor graph, together with the expression (13.6) for the joint distribution in a hidden Markov model, to show that the deﬁnition (13.52) of the beta message is the same as the deﬁnition (13.35).
+Use the definition (8.67) of the messages passed from a factor node to a variable node in a factor graph, together with the expression (13.6) for the joint distribution in a hidden Markov model, to show that the definition (13.52) of the beta message is the same as the definition (13.35).
 
 ## 13.15 Marginals for re-scaled variables ($\star$)
 
@@ -107,7 +107,7 @@ Use the expressions (13.33) and (13.43) for the marginals in a hidden Markov mod
 In this exercise, we derive the forward message passing equation for the Viterbi algorithm directly from the expression (13.6) for the joint distribution. This involves maximizing over all of the hidden variables $\mathbf{z}_1, \dots, \mathbf{z}_N$. By taking the logarithm and then exchanging maximizations and summations, derive the recursion
 [Page 670]
 
-(13.68) where the quantities $\omega(\mathbf{z}_n)$ are deﬁned by (13.70). Show that the initial condition for this recursion is given by (13.69).
+(13.68) where the quantities $\omega(\mathbf{z}_n)$ are defined by (13.70). Show that the initial condition for this recursion is given by (13.69).
 
 ## 13.17 Input-output HMM factor graph ($\star$)
 
@@ -119,7 +119,7 @@ Using the result of Exercise 13.17, derive the recursion equations, including th
 
 ## 13.19 Most probable sequence in LDS ($\star$)
 
-The Kalman ﬁlter and smoother equations allow the posterior distributions over individual latent variables, conditioned on all of the observed variables, to be found efﬁciently for linear dynamical systems. Show that the sequence of latent variable values obtained by maximizing each of these posterior distributions individually is the same as the most probable sequence of latent values. To do this, simply note that the joint distribution of all latent and observed variables in a linear dynamical system is Gaussian, and hence all conditionals and marginals will also be Gaussian, and then make use of the result (2.98).
+The Kalman filter and smoother equations allow the posterior distributions over individual latent variables, conditioned on all of the observed variables, to be found efficiently for linear dynamical systems. Show that the sequence of latent variable values obtained by maximizing each of these posterior distributions individually is the same as the most probable sequence of latent values. To do this, simply note that the joint distribution of all latent and observed variables in a linear dynamical system is Gaussian, and hence all conditionals and marginals will also be Gaussian, and then make use of the result (2.98).
 
 ## 13.20 Proving conditional Gaussian result ($\star$)
 
@@ -127,15 +127,15 @@ Use the result (2.115) to prove (13.87).
 
 ## 13.21 Deriving Kalman filter equations ($\star\star$)
 
-Use the results (2.115) and (2.116), together with the matrix identities (C.5) and (C.7), to derive the results (13.89), (13.90), and (13.91), where the Kalman gain matrix $\mathbf{K}_n$ is deﬁned by (13.92).
+Use the results (2.115) and (2.116), together with the matrix identities (C.5) and (C.7), to derive the results (13.89), (13.90), and (13.91), where the Kalman gain matrix $\mathbf{K}_n$ is defined by (13.92).
 
 ## 13.22 Deriving Kalman gain properties ($\star$)
 
-Using (13.93), together with the deﬁnitions (13.76) and (13.77) and the result (2.115), derive (13.96).
+Using (13.93), together with the definitions (13.76) and (13.77) and the result (2.115), derive (13.96).
 
 ## 13.23 Predictive and updated state covariances ($\star\star$)
 
-Using (13.93), together with the deﬁnitions (13.76) and (13.77) and the result (2.116), derive (13.94), (13.95) and (13.97).
+Using (13.93), together with the definitions (13.76) and (13.77) and the result (2.116), derive (13.94), (13.95) and (13.97).
 
 ## 13.24 Adding constant terms in LDS ($\star$)
 
@@ -148,18 +148,18 @@ $$
 p(\mathbf{x}_n|\mathbf{z}_n) = \mathcal{N}(\mathbf{x}_n|\mathbf{C}\mathbf{z}_n + \mathbf{c}, \mathbf{\Sigma}). \tag{13.128}
 $$
 
-Show that this extension can be re-case in the framework discussed in this chapter by deﬁning a state vector $\mathbf{z}$ with an additional component ﬁxed at unity, and then augmenting the matrices $\mathbf{A}$ and $\mathbf{C}$ using extra columns corresponding to the parameters $\mathbf{a}$ and $\mathbf{c}$.
+Show that this extension can be re-case in the framework discussed in this chapter by defining a state vector $\mathbf{z}$ with an additional component fixed at unity, and then augmenting the matrices $\mathbf{A}$ and $\mathbf{C}$ using extra columns corresponding to the parameters $\mathbf{a}$ and $\mathbf{c}$.
 
 ## 13.25 Kalman filter for independent observations ($\star\star$)
 
-In this exercise, we show that when the Kalman ﬁlter equations are applied to independent observations, they reduce to the results given in Section 2.3 for the maximum likelihood solution for a single Gaussian distribution. Consider the problem of ﬁnding the mean $\boldsymbol{\mu}$ of a single Gaussian random variable $\mathbf{x}$, in which we are given a set of independent observations $\{\mathbf{x}_1, \dots, \mathbf{x}_N\}$. To model this we can use
+In this exercise, we show that when the Kalman filter equations are applied to independent observations, they reduce to the results given in Section 2.3 for the maximum likelihood solution for a single Gaussian distribution. Consider the problem of finding the mean $\boldsymbol{\mu}$ of a single Gaussian random variable $\mathbf{x}$, in which we are given a set of independent observations $\{\mathbf{x}_1, \dots, \mathbf{x}_N\}$. To model this we can use
 [Page 671]
 
-a linear dynamical system governed by (13.75) and (13.76), with latent variables $\{\mathbf{z}_1, \dots, \mathbf{z}_N\}$ in which $\mathbf{C}$ becomes the identity matrix and where the transition probability $\mathbf{A} = \mathbf{0}$ because the observations are independent. Let the parameters $\boldsymbol{\mu}_0$ and $\mathbf{V}_0$ of the initial state be denoted by $\boldsymbol{\mu}_0$ and $\sigma_0^2\mathbf{I}$, respectively, and suppose that $\mathbf{\Sigma}$ becomes $\sigma^2\mathbf{I}$. Write down the corresponding Kalman ﬁlter equations starting from the general results (13.89) and (13.90), together with (13.94) and (13.95). Show that these are equivalent to the results (2.141) and (2.142) obtained directly by considering independent data.
+a linear dynamical system governed by (13.75) and (13.76), with latent variables $\{\mathbf{z}_1, \dots, \mathbf{z}_N\}$ in which $\mathbf{C}$ becomes the identity matrix and where the transition probability $\mathbf{A} = \mathbf{0}$ because the observations are independent. Let the parameters $\boldsymbol{\mu}_0$ and $\mathbf{V}_0$ of the initial state be denoted by $\boldsymbol{\mu}_0$ and $\sigma_0^2\mathbf{I}$, respectively, and suppose that $\mathbf{\Sigma}$ becomes $\sigma^2\mathbf{I}$. Write down the corresponding Kalman filter equations starting from the general results (13.89) and (13.90), together with (13.94) and (13.95). Show that these are equivalent to the results (2.141) and (2.142) obtained directly by considering independent data.
 
 ## 13.26 LDS equivalence to probabilistic PCA ($\star\star$)
 
-Consider a special case of the linear dynamical system of Section 13.3 that is equivalent to probabilistic PCA, so that the transition matrix $\mathbf{A} = \mathbf{0}$, the covariance $\mathbf{\Gamma} = \mathbf{I}$, and the noise covariance $\mathbf{\Sigma} = \sigma^2\mathbf{I}$. By making use of the matrix inversion identity (C.7) show that, if the emission density matrix $\mathbf{C}$ is denoted $\mathbf{W}$, then the posterior distribution over the hidden states deﬁned by (13.89) and (13.90) reduces to the result (12.42) for probabilistic PCA.
+Consider a special case of the linear dynamical system of Section 13.3 that is equivalent to probabilistic PCA, so that the transition matrix $\mathbf{A} = \mathbf{0}$, the covariance $\mathbf{\Gamma} = \mathbf{I}$, and the noise covariance $\mathbf{\Sigma} = \sigma^2\mathbf{I}$. By making use of the matrix inversion identity (C.7) show that, if the emission density matrix $\mathbf{C}$ is denoted $\mathbf{W}$, then the posterior distribution over the hidden states defined by (13.89) and (13.90) reduces to the result (12.42) for probabilistic PCA.
 
 ## 13.27 Zero observation noise limit LDS ($\star$)
 
@@ -175,7 +175,7 @@ Starting from the backwards recursion equation (13.99), derive the RTS smoothing
 
 ## 13.30 Pairwise posterior marginal in LDS ($\star\star$)
 
-Starting from the result (13.65) for the pairwise posterior marginal in a state space model, derive the speciﬁc form (13.103) for the case of the Gaussian linear dynamical system.
+Starting from the result (13.65) for the pairwise posterior marginal in a state space model, derive the specific form (13.103) for the case of the Gaussian linear dynamical system.
 
 ## 13.31 Cross-covariance in linear dynamical systems ($\star\star$)
 

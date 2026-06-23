@@ -38,10 +38,10 @@
 
 [ Salton, 1971 ] G. Salton, editor. The SMART Retrieval System Experiments in Automatic Document Processing. Englewood Cliffs: Prentice-Hall, 1971.
 
-[ Sampson, 2003 ] Geoffrey R. Sampson. The structure of children’s writing: moving from spoken to adult written norms. In S. Granger and S. Petch-Tyson, editors, Extending the Scope of Corpus-Based Research, pages 177–93. Rodopi, 2003. http://///www.grsampson.net/RLucy.html.
+[ Sampson, 2003 ] Geoffrey R. Sampson. The structure of children’s writing: moving from spoken to adult written norms. In S. Granger and S. Petch-Tyson, editors, Extending the Scope of Corpus-Based Research, pages 177–93. Rodopi, 2003. http://www.grsampson.net/RLucy.html.
 
 [ Singh et al., 2008 ] Gurjeet Singh, Facundo Memoli, Tigran Ishkhanov, Guillermo Sapiro, Gunnar Carlsson, and Dario L. Ringach. Topological analysis of population activity in visual cortex. J. Vis., 8(8):1–18, 6 2008.
 
-[ Tausz et al., 2011 ] Andrew Tausz, Mikael VejdemoJohansson, and Henry Adams. Javaplex: A research software package for persistent (co)homology. Software available at http://///code.google.com/javaplex, 2011.
+[ Tausz et al., 2011 ] Andrew Tausz, Mikael VejdemoJohansson, and Henry Adams. Javaplex: A research software package for persistent (co)homology. Software available at http://code.google.com/javaplex, 2011.
 
 [ Zomorodian, 2001 ] Afra Joze Zomorodian. Computing and comprehending topology: persistence and hierarchical Morse complexes. PhD thesis, University of Illinois at Urbana-Champaign, 2001.

@@ -5,7 +5,7 @@
 
 ## 11.1 Finite Sample Estimator Variance ($\star$)
 
-Show that the ﬁnite sample estimator $\widehat{f}$ deﬁned by (11.2) has mean equal to $\mathbb{E}[f]$ and variance given by (11.3).
+Show that the finite sample estimator $\widehat{f}$ defined by (11.2) has mean equal to $\mathbb{E}[f]$ and variance given by (11.3).
 
 ## 11.2 Inverse Transform Sampling ($\star$)
 
@@ -13,7 +13,7 @@ Suppose that $z$ is a random variable with uniform distribution over $(0, 1)$ an
 
 ## 11.3 Generating Cauchy Distributed Samples ($\star$)
 
-Given a random variable $z$ that is uniformly distributed over $(0, 1)$, ﬁnd a transformation $y = f(z)$ such that $y$ has a Cauchy distribution given by (11.8).
+Given a random variable $z$ that is uniformly distributed over $(0, 1)$, find a transformation $y = f(z)$ such that $y$ has a Cauchy distribution given by (11.8).
 
 ## 11.4 Box-Muller Transformation Derivation ($\star$)
 
@@ -21,7 +21,7 @@ Suppose that $z_1$ and $z_2$ are uniformly distributed over the unit circle, as 
 
 ## 11.5 Multivariate Gaussian using Cholesky ($\star\star$)
 
-Let $\mathbf{z}$ be a $D$-dimensional random variable having a Gaussian distribution with zero mean and unit covariance matrix, and suppose that the positive deﬁnite symmetric matrix $\mathbf{\Sigma}$ has the Cholesky decomposition $\mathbf{\Sigma} = \mathbf{L}\mathbf{L}^{\text{T}}$ where $\mathbf{L}$ is a lower triangular matrix (i.e., one with zeros above the leading diagonal). Show that the variable $\mathbf{y} = \boldsymbol{\mu} + \mathbf{L}\mathbf{z}$ has a Gaussian distribution with mean $\boldsymbol{\mu}$ and covariance $\mathbf{\Sigma}$. This provides a technique for generating samples from a general multivariate Gaussian using samples from a univariate Gaussian having zero mean and unit variance.
+Let $\mathbf{z}$ be a $D$-dimensional random variable having a Gaussian distribution with zero mean and unit covariance matrix, and suppose that the positive definite symmetric matrix $\mathbf{\Sigma}$ has the Cholesky decomposition $\mathbf{\Sigma} = \mathbf{L}\mathbf{L}^{\text{T}}$ where $\mathbf{L}$ is a lower triangular matrix (i.e., one with zeros above the leading diagonal). Show that the variable $\mathbf{y} = \boldsymbol{\mu} + \mathbf{L}\mathbf{z}$ has a Gaussian distribution with mean $\boldsymbol{\mu}$ and covariance $\mathbf{\Sigma}$. This provides a technique for generating samples from a general multivariate Gaussian using samples from a univariate Gaussian having zero mean and unit variance.
 
 ## 11.6 Validity of Rejection Sampling ($\star\star$)
 
@@ -33,15 +33,15 @@ Suppose that $z$ has a uniform distribution over the interval $[0, 1]$. Show tha
 
 ## 11.8 Envelope Distribution Coefficients ($\star\star$)
 
-Determine expressions for the coefﬁcients $k_i$ in the envelope distribution (11.17) for adaptive rejection sampling using the requirements of continuity and normalization.
+Determine expressions for the coefficients $k_i$ in the envelope distribution (11.17) for adaptive rejection sampling using the requirements of continuity and normalization.
 
 ## 11.9 Sampling Piecewise Exponential Distribution ($\star\star$)
 
-By making use of the technique discussed in Section 11.1.1 for sampling from a single exponential distribution, devise an algorithm for sampling from the piecewise exponential distribution deﬁned by (11.17).
+By making use of the technique discussed in Section 11.1.1 for sampling from a single exponential distribution, devise an algorithm for sampling from the piecewise exponential distribution defined by (11.17).
 
 ## 11.10 Random Walk Variance Growth ($\star$)
 
-Show that the simple random walk over the integers deﬁned by (11.34), (11.35), and (11.36) has the property that $\mathbb{E}[(z^{(\tau)})^2] = \mathbb{E}[(z^{(\tau-1)})^2] + 1/2$ and hence by induction that $\mathbb{E}[(z^{(\tau)})^2] = \tau/2$.
+Show that the simple random walk over the integers defined by (11.34), (11.35), and (11.36) has the property that $\mathbb{E}[(z^{(\tau)})^2] = \mathbb{E}[(z^{(\tau-1)})^2] + 1/2$ and hence by induction that $\mathbb{E}[(z^{(\tau)})^2] = \tau/2$.
 [Page 577]
 
 ![Figure 11.15](../Images/imageFile270.png)
@@ -50,7 +50,7 @@ Figure 11.15 A probability distribution over two variables $z_1$ and $z_2$ that 
 
 ## 11.11 Detailed Balance in Gibbs Sampling ($\star\star$)
 
-Show that the Gibbs sampling algorithm, discussed in Section 11.3, satisﬁes detailed balance as deﬁned by (11.40).
+Show that the Gibbs sampling algorithm, discussed in Section 11.3, satisfies detailed balance as defined by (11.40).
 
 ## 11.12 Ergodicity in Gibbs Sampling ($\star$)
 

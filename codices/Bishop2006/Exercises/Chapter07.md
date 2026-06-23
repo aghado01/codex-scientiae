@@ -5,7 +5,7 @@
 
 ## 7.1 Parzen Kernel Density Classification ($\star$)
 
-Suppose we have a data set of input vectors $\{\mathbf{x}_n\}$ with corresponding target values $t_n \in \{-1, 1\}$, and suppose that we model the density of input vectors within each class separately using a Parzen kernel density estimator (see Section 2.5.1) with a kernel $k(\mathbf{x}, \mathbf{x}')$. Write down the minimum misclassiﬁcation-rate decision rule assuming the two classes have equal prior probability. Show also that, if the kernel is chosen to be $k(\mathbf{x}, \mathbf{x}') = \mathbf{x}^T\mathbf{x}'$, then the classiﬁcation rule reduces to simply assigning a new input vector to the class having the closest mean. Finally, show that, if the kernel takes the form $k(\mathbf{x}, \mathbf{x}') = \phi(\mathbf{x})^T\boldsymbol{\phi}(\mathbf{x}')$, that the classiﬁcation is based on the closest mean in the feature space $\boldsymbol{\phi}(\mathbf{x})$.
+Suppose we have a data set of input vectors $\{\mathbf{x}_n\}$ with corresponding target values $t_n \in \{-1, 1\}$, and suppose that we model the density of input vectors within each class separately using a Parzen kernel density estimator (see Section 2.5.1) with a kernel $k(\mathbf{x}, \mathbf{x}')$. Write down the minimum misclassification-rate decision rule assuming the two classes have equal prior probability. Show also that, if the kernel is chosen to be $k(\mathbf{x}, \mathbf{x}') = \mathbf{x}^T\mathbf{x}'$, then the classification rule reduces to simply assigning a new input vector to the class having the closest mean. Finally, show that, if the kernel takes the form $k(\mathbf{x}, \mathbf{x}') = \phi(\mathbf{x})^T\boldsymbol{\phi}(\mathbf{x}')$, that the classification is based on the closest mean in the feature space $\boldsymbol{\phi}(\mathbf{x})$.
 
 ## 7.2 Maximum Margin Constant Invariance ($\star$)
 
@@ -13,7 +13,7 @@ Show that, if the $1$ on the right-hand side of the constraint (7.5) is replaced
 
 ## 7.3 Two Point Margin Hyperplane ($\star$)
 
-Show that, irrespective of the dimensionality of the data space, a data set consisting of just two data points, one from each class, is sufﬁcient to determine the location of the maximum-margin hyperplane.
+Show that, irrespective of the dimensionality of the data space, a data set consisting of just two data points, one from each class, is sufficient to determine the location of the maximum-margin hyperplane.
 
 ## 7.4 Maximum Margin Value Expression ($\star\star$)
 
@@ -33,7 +33,7 @@ $$
 \frac{1}{\rho^2} = 2 \widetilde{L}(\mathbf{a}) \tag{7.124}
 $$
 
-where $\widetilde{L}(\mathbf{a})$ is deﬁned by (7.10). Similarly, show that
+where $\widetilde{L}(\mathbf{a})$ is defined by (7.10). Similarly, show that
 
 $$
 \frac{1}{\rho^2} = \|\mathbf{w}\|^2. \tag{7.125}
@@ -41,7 +41,7 @@ $$
 
 ## 7.6 Regularized Logistic Regression Formulation ($\star$)
 
-Consider the logistic regression model with a target variable $t \in \{-1, 1\}$. If we deﬁne $p(t = 1|y) = \sigma(y)$ where $y(\mathbf{x})$ is given by (7.1), show that the negative log likelihood, with the addition of a quadratic regularization term, takes the form (7.47).
+Consider the logistic regression model with a target variable $t \in \{-1, 1\}$. If we define $p(t = 1|y) = \sigma(y)$ where $y(\mathbf{x})$ is given by (7.1), show that the negative log likelihood, with the addition of a quadratic regularization term, takes the form (7.47).
 
 ## 7.7 Regression SVM Dual Lagrangian ($\star\star$)
 
@@ -66,7 +66,7 @@ Repeat the above exercise, but this time make use of the general result (2.115).
 
 ## 7.12 RVM Marginal Likelihood Maximization ($\star\star$)
 
-Show that direct maximization of the log marginal likelihood (7.85) for the regression relevance vector machine leads to the re-estimation equations (7.87) and (7.88) where $\gamma_i$ is deﬁned by (7.89).
+Show that direct maximization of the log marginal likelihood (7.85) for the regression relevance vector machine leads to the re-estimation equations (7.87) and (7.88) where $\gamma_i$ is defined by (7.89).
 
 ## 7.13 Regression RVM Gamma Hyperpriors ($\star\star$)
 
@@ -78,7 +78,7 @@ Derive the result (7.90) for the predictive distribution in the relevance vector
 
 ## 7.15 RVM Sparsity Quality Factors ($\star\star$)
 
-Using the results (7.94) and (7.95), show that the marginal likelihood (7.85) can be written in the form (7.96), where $\lambda(\alpha_n)$ is deﬁned by (7.97) and the sparsity and quality factors are deﬁned by (7.98) and (7.99), respectively.
+Using the results (7.94) and (7.95), show that the marginal likelihood (7.85) can be written in the form (7.96), where $\lambda(\alpha_n)$ is defined by (7.97) and the sparsity and quality factors are defined by (7.98) and (7.99), respectively.
 
 ## 7.16 RVM Marginal Likelihood Maximum ($\star\star$)
 
@@ -86,12 +86,12 @@ By taking the second derivative of the log marginal likelihood (7.97) for the re
 
 ## 7.17 RVM Matrix Identity Quantities ($\star\star$)
 
-Using (7.83) and (7.86), together with the matrix identity (C.7), show that the quantities $S_n$ and $Q_n$ deﬁned by (7.102) and (7.103) can be written in the form (7.106) and (7.107).
+Using (7.83) and (7.86), together with the matrix identity (C.7), show that the quantities $S_n$ and $Q_n$ defined by (7.102) and (7.103) can be written in the form (7.106) and (7.107).
 
 ## 7.18 Classification RVM Gradient Hessian ($\star$)
 
-Show that the gradient vector and Hessian matrix of the log posterior distribution (7.109) for the classiﬁcation relevance vector machine are given by (7.110) and (7.111).
+Show that the gradient vector and Hessian matrix of the log posterior distribution (7.109) for the classification relevance vector machine are given by (7.110) and (7.111).
 
 ## 7.19 Classification RVM Hyperparameter Reestimation ($\star\star$)
 
-Verify that maximization of the approximate log marginal likelihood function (7.114) for the classiﬁcation relevance vector machine leads to the result (7.116) for re-estimation of the hyperparameters.
+Verify that maximization of the approximate log marginal likelihood function (7.114) for the classification relevance vector machine leads to the result (7.116) for re-estimation of the hyperparameters.

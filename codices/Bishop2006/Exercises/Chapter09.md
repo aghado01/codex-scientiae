@@ -5,11 +5,11 @@
 
 ## 9.1 K-means Algorithm Convergence ($\star$)
 
-Consider the $K$-means algorithm discussed in Section 9.1. Show that as a consequence of there being a ﬁnite number of possible assignments for the set of discrete indicator variables $r_{nk}$, and that for each such assignment there is a unique optimum for the $\{\boldsymbol{\mu}_k\}$, the $K$-means algorithm must converge after a ﬁnite number of iterations.
+Consider the $K$-means algorithm discussed in Section 9.1. Show that as a consequence of there being a finite number of possible assignments for the set of discrete indicator variables $r_{nk}$, and that for each such assignment there is a unique optimum for the $\{\boldsymbol{\mu}_k\}$, the $K$-means algorithm must converge after a finite number of iterations.
 
 ## 9.2 Stochastic K-means Estimation ($\star$)
 
-Apply the Robbins-Monro sequential estimation procedure described in Section 2.3.5 to the problem of ﬁnding the roots of the regression function given by the derivatives of $J$ in (9.1) with respect to $\boldsymbol{\mu}_k$. Show that this leads to a stochastic $K$-means algorithm in which, for each data point $\mathbf{x}_n$, the nearest prototype $\boldsymbol{\mu}_k$ is updated using (9.5).
+Apply the Robbins-Monro sequential estimation procedure described in Section 2.3.5 to the problem of finding the roots of the regression function given by the derivatives of $J$ in (9.1) with respect to $\boldsymbol{\mu}_k$. Show that this leads to a stochastic $K$-means algorithm in which, for each data point $\mathbf{x}_n$, the nearest prototype $\boldsymbol{\mu}_k$ is updated using (9.5).
 [Page 476]
 
 ## 9.3 Marginal of Gaussian Mixture ($\star$)
@@ -18,7 +18,7 @@ Consider a Gaussian mixture model in which the marginal distribution $p(\mathbf{
 
 ## 9.4 EM for Posterior Maximization ($\star$)
 
-Suppose we wish to use the EM algorithm to maximize the posterior distribution over parameters $p(\boldsymbol{\theta}|\mathbf{X})$ for a model containing latent variables, where $\mathbf{X}$ is the observed data set. Show that the E step remains the same as in the maximum likelihood case, whereas in the M step the quantity to be maximized is given by $\mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}}) + \ln p(\boldsymbol{\theta})$ where $\mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}})$ is deﬁned by (9.30).
+Suppose we wish to use the EM algorithm to maximize the posterior distribution over parameters $p(\boldsymbol{\theta}|\mathbf{X})$ for a model containing latent variables, where $\mathbf{X}$ is the observed data set. Show that the E step remains the same as in the maximum likelihood case, whereas in the M step the quantity to be maximized is given by $\mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}}) + \ln p(\boldsymbol{\theta})$ where $\mathcal{Q}(\boldsymbol{\theta}, \boldsymbol{\theta}^{\text{old}})$ is defined by (9.30).
 
 ## 9.5 Posterior Factorization in Mixtures ($\star$)
 
@@ -34,15 +34,15 @@ Consider a special case of a Gaussian mixture model in which the covariance matr
 
 ## 9.7 Independent Fitting of Components ($\star\star$)
 
-Verify that maximization of the complete-data log likelihood (9.36) for a Gaussian mixture model leads to the result that the means and covariances of each component are ﬁtted independently to the corresponding group of data points, and the mixing coefﬁcients are given by the fractions of points in each group.
+Verify that maximization of the complete-data log likelihood (9.36) for a Gaussian mixture model leads to the result that the means and covariances of each component are fitted independently to the corresponding group of data points, and the mixing coefficients are given by the fractions of points in each group.
 
 ## 9.8 Maximizing with Respect to Means ($\star$)
 
-Show that if we maximize (9.40) with respect to $\boldsymbol{\mu}_k$ while keeping the responsibilities $\gamma(z_{nk})$ ﬁxed, we obtain the closed form solution given by (9.17).
+Show that if we maximize (9.40) with respect to $\boldsymbol{\mu}_k$ while keeping the responsibilities $\gamma(z_{nk})$ fixed, we obtain the closed form solution given by (9.17).
 
 ## 9.9 Maximizing Covariances and Mixing Coefficients ($\star$)
 
-Show that if we maximize (9.40) with respect to $\boldsymbol{\Sigma}_k$ and $\pi_k$ while keeping the responsibilities $\gamma(z_{nk})$ ﬁxed, we obtain the closed form solutions given by (9.19) and (9.22).
+Show that if we maximize (9.40) with respect to $\boldsymbol{\Sigma}_k$ and $\pi_k$ while keeping the responsibilities $\gamma(z_{nk})$ fixed, we obtain the closed form solutions given by (9.19) and (9.22).
 
 ## 9.10 Conditional of Mixture Distribution ($\star\star$)
 
@@ -52,7 +52,7 @@ $$
 p(\mathbf{x}) = \sum_{k=1}^K \pi_k p(\mathbf{x}|k) \tag{9.81}
 $$
 
-and suppose that we partition the vector $\mathbf{x}$ into two parts so that $\mathbf{x} = (\mathbf{x}_a, \mathbf{x}_b)$. Show that the conditional density $p(\mathbf{x}_b|\mathbf{x}_a)$ is itself a mixture distribution and ﬁnd expressions for the mixing coefﬁcients and for the component densities.
+and suppose that we partition the vector $\mathbf{x}$ into two parts so that $\mathbf{x} = (\mathbf{x}_a, \mathbf{x}_b)$. Show that the conditional density $p(\mathbf{x}_b|\mathbf{x}_a)$ is itself a mixture distribution and find expressions for the mixing coefficients and for the component densities.
 [Page 477]
 
 ## 9.11 K-means as EM Limit ($\star$)
@@ -77,7 +77,7 @@ $$
 \mathbb{E}[\mathbf{x}] = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n \equiv \overline{\mathbf{x}}. \tag{9.83}
 $$
 
-Hence show that if the parameters of this model are initialized such that all components have the same mean $\boldsymbol{\mu}_k = \boldsymbol{\mu}$ for $k = 1,\dots,K$, then the EM algorithm will converge after one iteration, for any choice of the initial mixing coefﬁcients, and that this solution has the property $\boldsymbol{\mu}_k = \overline{\mathbf{x}}$. Note that this represents a degenerate case of the mixture model in which all of the components are identical, and in practice we try to avoid such solutions by using an appropriate initialization.
+Hence show that if the parameters of this model are initialized such that all components have the same mean $\boldsymbol{\mu}_k = \boldsymbol{\mu}$ for $k = 1,\dots,K$, then the EM algorithm will converge after one iteration, for any choice of the initial mixing coefficients, and that this solution has the property $\boldsymbol{\mu}_k = \overline{\mathbf{x}}$. Note that this represents a degenerate case of the mixture model in which all of the components are identical, and in practice we try to avoid such solutions by using an appropriate initialization.
 
 ## 9.14 Marginalizing Bernoulli Joint Distribution ($\star$)
 
@@ -89,11 +89,11 @@ Show that if we maximize the expected complete-data log likelihood function (9.5
 
 ## 9.16 M-step for Bernoulli Mixing Coefficients ($\star$)
 
-Show that if we maximize the expected complete-data log likelihood function (9.55) for a mixture of Bernoulli distributions with respect to the mixing coefﬁcients $\pi_k$, using a Lagrange multiplier to enforce the summation constraint, we obtain the M step equation (9.60).
+Show that if we maximize the expected complete-data log likelihood function (9.55) for a mixture of Bernoulli distributions with respect to the mixing coefficients $\pi_k$, using a Lagrange multiplier to enforce the summation constraint, we obtain the M step equation (9.60).
 
 ## 9.17 Bounded Bernoulli Log Likelihood ($\star$)
 
-Show that as a consequence of the constraint $0 \le p(x_{ni}|\mu_{ki}) \le 1$ for the discrete variable $x_{ni}$, the incomplete-data log likelihood function for a mixture of Bernoulli distributions is bounded above, and hence that there are no singularities for which the likelihood goes to inﬁnity.
+Show that as a consequence of the constraint $0 \le p(x_{ni}|\mu_{ki}) \le 1$ for the discrete variable $x_{ni}$, the incomplete-data log likelihood function for a mixture of Bernoulli distributions is bounded above, and hence that there are no singularities for which the likelihood goes to infinity.
 [Page 478]
 
 ## 9.18 EM for Bayesian Bernoulli Mixture ($\star$)
@@ -114,7 +114,7 @@ $$
 p(\mathbf{x}|\boldsymbol{\mu}_k) = \prod_{i=1}^D \prod_{j=1}^M \mu_{kij}^{x_{ij}}. \tag{9.85}
 $$
 
-The parameters $\mu_{kij}$ represent the probabilities $p(x_{ij} = 1|\boldsymbol{\mu}_k)$ and must satisfy $0 \le \mu_{kij} \le 1$ together with the constraint $\sum_j \mu_{kij} = 1$ for all values of $k$ and $i$. Given an observed data set $\{\mathbf{x}_n\}$, where $n = 1,\dots,N$, derive the E and M step equations of the EM algorithm for optimizing the mixing coefﬁcients $\pi_k$ and the component parameters $\mu_{kij}$ of this distribution by maximum likelihood.
+The parameters $\mu_{kij}$ represent the probabilities $p(x_{ij} = 1|\boldsymbol{\mu}_k)$ and must satisfy $0 \le \mu_{kij} \le 1$ together with the constraint $\sum_j \mu_{kij} = 1$ for all values of $k$ and $i$. Given an observed data set $\{\mathbf{x}_n\}$, where $n = 1,\dots,N$, derive the E and M step equations of the EM algorithm for optimizing the mixing coefficients $\pi_k$ and the component parameters $\mu_{kij}$ of this distribution by maximum likelihood.
 
 ## 9.20 M-step for Bayesian Linear Regression ($\star$)
 
@@ -126,15 +126,15 @@ Using the evidence framework of Section 3.5, derive the M-step re-estimation equ
 
 ## 9.22 M-step for RVM Hyperparameters ($\star$)
 
-By maximization of the expected complete-data log likelihood deﬁned by (9.66), derive the M step equations (9.67) and (9.68) for re-estimating the hyperparameters of the relevance vector machine for regression.
+By maximization of the expected complete-data log likelihood defined by (9.66), derive the M step equations (9.67) and (9.68) for re-estimating the hyperparameters of the relevance vector machine for regression.
 
 ## 9.23 Equivalence of RVM Re-estimations ($\star$)
 
-In Section 7.2.1 we used direct maximization of the marginal likelihood to derive the re-estimation equations (7.87) and (7.88) for ﬁnding values of the hyperparameters $\alpha$ and $\beta$ for the regression RVM. Similarly, in Section 9.3.4 we used the EM algorithm to maximize the same marginal likelihood, giving the re-estimation equations (9.67) and (9.68). Show that these two sets of re-estimation equations are formally equivalent.
+In Section 7.2.1 we used direct maximization of the marginal likelihood to derive the re-estimation equations (7.87) and (7.88) for finding values of the hyperparameters $\alpha$ and $\beta$ for the regression RVM. Similarly, in Section 9.3.4 we used the EM algorithm to maximize the same marginal likelihood, giving the re-estimation equations (9.67) and (9.68). Show that these two sets of re-estimation equations are formally equivalent.
 
 ## 9.24 Verify Variational Lower Bound ($\star$)
 
-Verify the relation (9.70) in which $\mathcal{L}(q,\boldsymbol{\theta})$ and $\text{KL}(q \| p)$ are deﬁned by (9.71) and (9.72), respectively.
+Verify the relation (9.70) in which $\mathcal{L}(q,\boldsymbol{\theta})$ and $\text{KL}(q \| p)$ are defined by (9.71) and (9.72), respectively.
 [Page 479]
 
 ## 9.25 Lower Bound Gradient Equivalence ($\star$)
@@ -143,9 +143,9 @@ Show that the lower bound $\mathcal{L}(q,\boldsymbol{\theta})$ given by (9.71), 
 
 ## 9.26 Incremental EM for Means ($\star$)
 
-Consider the incremental form of the EM algorithm for a mixture of Gaussians, in which the responsibilities are recomputed only for a speciﬁc data point $\mathbf{x}_m$. Starting from the M-step formulae (9.17) and (9.18), derive the results (9.78) and (9.79) for updating the component means.
+Consider the incremental form of the EM algorithm for a mixture of Gaussians, in which the responsibilities are recomputed only for a specific data point $\mathbf{x}_m$. Starting from the M-step formulae (9.17) and (9.18), derive the results (9.78) and (9.79) for updating the component means.
 
 ## 9.27 Incremental EM for Covariances ($\star\star$)
 
-Derive M-step formulae for updating the covariance matrices and mixing coefﬁcients in a Gaussian mixture model when the responsibilities are updated incrementally, analogous to the result (9.78) for updating the means.
+Derive M-step formulae for updating the covariance matrices and mixing coefficients in a Gaussian mixture model when the responsibilities are updated incrementally, analogous to the result (9.78) for updating the means.
 [Page 480]

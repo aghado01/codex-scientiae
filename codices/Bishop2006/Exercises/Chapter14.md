@@ -9,7 +9,7 @@ Consider a set models of the form $p(t|\mathbf{x}, z_h, \boldsymbol{\theta}_h, h
 
 ## 14.2 Expected error of committee models ($\star$)
 
-The expected sum-of-squares error $E_{\text{AV}}$ for a simple committee model can be deﬁned by (14.10), and the expected error of the committee itself is given by (14.11). Assuming that the individual errors satisfy (14.12) and (14.13), derive the result (14.14).
+The expected sum-of-squares error $E_{\text{AV}}$ for a simple committee model can be defined by (14.10), and the expected error of the committee itself is given by (14.11). Assuming that the individual errors satisfy (14.12) and (14.13), derive the result (14.14).
 
 ## 14.3 Committee error bound via Jensen ($\star$)
 
@@ -37,7 +37,7 @@ $$
 y_{\min}(\mathbf{x}) \le y_{\text{COM}}(\mathbf{x}) \le y_{\max}(\mathbf{x}). \tag{14.56}
 $$
 
-Show that a necessary and sufﬁcient condition for this constraint is that the coefﬁcients $\alpha_m$ satisfy
+Show that a necessary and sufficient condition for this constraint is that the coefficients $\alpha_m$ satisfy
 
 $$
 \alpha_m \ge 0, \quad \sum_{m=1}^M \alpha_m = 1. \tag{14.57}
@@ -46,7 +46,7 @@ $$
 
 ## 14.6 AdaBoost parameter update derivation ($\star$)
 
-By differentiating the error function (14.23) with respect to $\alpha_m$, show that the parameters $\alpha_m$ in the AdaBoost algorithm are updated using (14.17) in which $\epsilon_m$ is deﬁned by (14.16).
+By differentiating the error function (14.23) with respect to $\alpha_m$, show that the parameters $\alpha_m$ in the AdaBoost algorithm are updated using (14.17) in which $\epsilon_m$ is defined by (14.16).
 
 ## 14.7 Minimizing expected exponential error ($\star$)
 
@@ -58,7 +58,7 @@ Show that the exponential error function (14.20), which is minimized by the AdaB
 
 ## 14.9 Sequential minimization of sum-of-squares ($\star$)
 
-Show that the sequential minimization of the sum-of-squares error function for an additive model of the form (14.21) in the style of boosting simply involves ﬁtting each new base classiﬁer to the residual errors $t_n - f_{m-1}(\mathbf{x}_n)$ from the previous model.
+Show that the sequential minimization of the sum-of-squares error function for an additive model of the form (14.21) in the style of boosting simply involves fitting each new base classifier to the residual errors $t_n - f_{m-1}(\mathbf{x}_n)$ from the previous model.
 
 ## 14.10 Optimal prediction for squared loss ($\star$)
 
@@ -66,7 +66,7 @@ Verify that if we minimize the sum-of-squares error between a set of training va
 
 ## 14.11 Comparing classification tree splits ($\star$)
 
-Consider a data set comprising 400 data points from class $\mathcal{C}_1$ and 400 data points from class $\mathcal{C}_2$. Suppose that a tree model A splits these into $(300, 100)$ at the ﬁrst leaf node and $(100, 300)$ at the second leaf node, where $(n, m)$ denotes that $n$ points are assigned to $\mathcal{C}_1$ and $m$ points are assigned to $\mathcal{C}_2$. Similarly, suppose that a second tree model B splits them into $(200, 400)$ and $(200, 0)$. Evaluate the misclassiﬁcation rates for the two trees and hence show that they are equal. Similarly, evaluate the cross-entropy (14.32) and Gini index (14.33) for the two trees and show that they are both lower for tree B than for tree A.
+Consider a data set comprising 400 data points from class $\mathcal{C}_1$ and 400 data points from class $\mathcal{C}_2$. Suppose that a tree model A splits these into $(300, 100)$ at the first leaf node and $(100, 300)$ at the second leaf node, where $(n, m)$ denotes that $n$ points are assigned to $\mathcal{C}_1$ and $m$ points are assigned to $\mathcal{C}_2$. Similarly, suppose that a second tree model B splits them into $(200, 400)$ and $(200, 0)$. Evaluate the misclassification rates for the two trees and hence show that they are equal. Similarly, evaluate the cross-entropy (14.32) and Gini index (14.33) for the two trees and show that they are both lower for tree B than for tree A.
 
 ## 14.12 Mixture of linear regression models ($\star$)
 
@@ -78,7 +78,7 @@ Verify that the complete-data log likelihood function for the mixture of linear 
 
 ## 14.14 M-step for regression mixing coefficients ($\star$)
 
-Use the technique of Lagrange multipliers (Appendix E) to show that the M-step re-estimation equation for the mixing coefﬁcients in the mixture of linear regression models trained by maximum likelihood EM is given by (14.38).
+Use the technique of Lagrange multipliers (Appendix E) to show that the M-step re-estimation equation for the mixing coefficients in the mixture of linear regression models trained by maximum likelihood EM is given by (14.38).
 
 ## 14.15 Conditional mean for regression mixture ($\star$)
 
@@ -87,7 +87,7 @@ We have already noted that if we use a squared loss function in a regression pro
 
 ## 14.16 Mixture of softmax classifiers ($\star$)
 
-Extend the logistic regression mixture model of Section 14.5.2 to a mixture of softmax classiﬁers representing $C \ge 2$ classes. Write down the EM algorithm for determining the parameters of this model through maximum likelihood.
+Extend the logistic regression mixture model of Section 14.5.2 to a mixture of softmax classifiers representing $C \ge 2$ classes. Write down the EM algorithm for determining the parameters of this model through maximum likelihood.
 
 ## 14.17 Hierarchical versus single-level mixtures ($\star\star$)
 
@@ -97,4 +97,4 @@ $$
 p(t|\mathbf{x}) = \sum_{k=1}^K \pi_k \psi_k(t|\mathbf{x}) \tag{14.58}
 $$
 
-in which each mixture component $\psi_k(t|\mathbf{x})$ is itself a mixture model. Show that this two-level hierarchical mixture is equivalent to a conventional single-level mixture model. Now suppose that the mixing coefﬁcients in both levels of such a hierarchical model are arbitrary functions of $\mathbf{x}$. Again, show that this hierarchical model is again equivalent to a single-level model with $\mathbf{x}$-dependent mixing coefﬁcients. Finally, consider the case in which the mixing coefﬁcients at both levels of the hierarchical mixture are constrained to be linear classiﬁcation (logistic or softmax) models. Show that the hierarchical mixture cannot in general be represented by a single-level mixture having linear classiﬁcation models for the mixing coefﬁcients. Hint: to do this it is sufﬁcient to construct a single counter-example, so consider a mixture of two components in which one of those components is itself a mixture of two components, with mixing coefﬁcients given by linear-logistic models. Show that this cannot be represented by a single-level mixture of 3 components having mixing coefﬁcients determined by a linear-softmax model.
+in which each mixture component $\psi_k(t|\mathbf{x})$ is itself a mixture model. Show that this two-level hierarchical mixture is equivalent to a conventional single-level mixture model. Now suppose that the mixing coefficients in both levels of such a hierarchical model are arbitrary functions of $\mathbf{x}$. Again, show that this hierarchical model is again equivalent to a single-level model with $\mathbf{x}$-dependent mixing coefficients. Finally, consider the case in which the mixing coefficients at both levels of the hierarchical mixture are constrained to be linear classification (logistic or softmax) models. Show that the hierarchical mixture cannot in general be represented by a single-level mixture having linear classification models for the mixing coefficients. Hint: to do this it is sufficient to construct a single counter-example, so consider a mixture of two components in which one of those components is itself a mixture of two components, with mixing coefficients given by linear-logistic models. Show that this cannot be represented by a single-level mixture of 3 components having mixing coefficients determined by a linear-softmax model.

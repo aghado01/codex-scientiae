@@ -14,14 +14,20 @@
 
   -Root defaults to <repo>/ingestion (the raw-input boundary); which subtree to survey is a
   per-call concern, carried by the optional `scope` arg on list_documents/get_batch_summary/dispatch.
+  The server's purview is the whole repo: read/repair are scoped to -Root (ingestion), while the
+  post-finalize publish lane writes into -CompendiaRoot (<repo>/compendia by default).
 
-  Tools: 22 paper-addressed membrane ops (list_documents … get_enrichables).
+  Tools: 26 ops. The 22 paper-addressed membrane ops (list_documents … get_enrichables), plus the
+  post-finalize lane that closes the loop into the published corpus: `publish` (promote a finalized
+  deliverable into compendia/{topic}/) and three path-addressed tools over promoted markdown —
+  `repair_headings`, `update_doc_contents`, `splice_md` (the byte-offset analog of propose_edit).
   Prompts: restoration_procedure (serves PROCEDURE.md).
 #>
 
 [CmdletBinding()]
 param(
     [string]$Root = (Join-Path (Split-Path -Parent $PSScriptRoot) 'ingestion'),
+    [string]$CompendiaRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) 'compendia'),
     [string]$ProtocolVersion = '2025-06-18'
 )
 
@@ -29,6 +35,8 @@ param(
 . "$PSScriptRoot/restructure.ps1"
 . "$PSScriptRoot/preprocess.ps1"
 . "$PSScriptRoot/finalize.ps1"
+. "$PSScriptRoot/md-repair.ps1"
+. "$PSScriptRoot/publish.ps1"
 
 $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 
@@ -100,6 +108,18 @@ $Tools = @(
     @{ name = 'request_review'
        description = 'Human check-in: queue a chunk for the supervising user with a message (surfaces as review_pending in get_summary). Use when uncertain rather than guessing.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; message = @{ type = 'string' } }; required = @('paper', 'id', 'message') } }
+    @{ name = 'publish'
+       description = 'Close the loop into the published corpus: promote a finalized deliverable from its .scratch/ staging into compendia/{topic}/. (Re)materializes via finalize, then writes {slug}.md (figure links rewritten to the nested images/{slug}/ form), the references/{slug}.md sidecar, and only the figures the body references (images/{slug}/imageFileN). Upserts the paper''s _CONTENTS.md block non-destructively — replaced in place if present (thematic ordering preserved), else appended and flagged for the curator. Refuses while the deliverable is provisional (pending>0) unless force=true. Pass dry_run=true to preview the full manifest without moving anything. Logs the published milestone.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; topic = @{ type = 'string'; description = 'compendia subfolder, e.g. "ph" or "mapper"' }; force = @{ type = 'boolean'; description = 'publish even while pending>0' }; dry_run = @{ type = 'boolean'; description = 'preview the manifest, move nothing' } }; required = @('paper', 'topic') } }
+    @{ name = 'repair_headings'
+       description = 'Detect + (optionally) auto-fix over-promoted headings in a PROMOTED markdown file by byte-offset anchor: float captions ("Figure 1 ...") and theorem-environment labels ("Proposition 3 ...") demote to bold; furniture / fused-body / table-fragment headings are isolated as escalations. With apply=false (default) it only reports; with apply=true it lands the confident fixes back-to-front. Returns a digest plus the escalation list, each carrying the {offset,length,raw} anchor to hand to splice_md. Path is repo-relative (e.g. "compendia/ph/1907.04889v2.md").'
+       inputSchema = @{ type = 'object'; properties = @{ path = @{ type = 'string'; description = 'repo-relative path to a .md file' }; apply = @{ type = 'boolean'; description = 'land the confident fixes (default: report only)' } }; required = @('path') } }
+    @{ name = 'update_doc_contents'
+       description = 'Regenerate a promoted document''s "## Contents" block from its current KEEP headings (H2+), so the in-doc TOC stops listing demoted/escalated headings and dead anchors. Indentation is hierarchical (2 spaces per heading level); an existing References sidecar link is preserved. apply=false (default) reports the entry count; apply=true rewrites the block. Run after repair_headings. Path is repo-relative.'
+       inputSchema = @{ type = 'object'; properties = @{ path = @{ type = 'string'; description = 'repo-relative path to a .md file' }; apply = @{ type = 'boolean' } }; required = @('path') } }
+    @{ name = 'splice_md'
+       description = 'The byte-offset analog of propose_edit for promoted markdown (no JSON/IR post-promotion): replace exactly `length` bytes at byte `offset` with `replacement`. Pass `expect` (the current bytes at that span, e.g. an escalation''s `raw`) and a stale/shifted offset fails loudly instead of corrupting. This is how an agent lands a hand-authored fix for a repair_headings escalation. Path is repo-relative. UTF-8 no-BOM; offsets index on-disk bytes so SMP math / ligatures stay exact.'
+       inputSchema = @{ type = 'object'; properties = @{ path = @{ type = 'string'; description = 'repo-relative path to a .md file' }; offset = @{ type = 'integer' }; length = @{ type = 'integer' }; replacement = @{ type = 'string' }; expect = @{ type = 'string'; description = 'optional guard: the exact bytes currently at [offset,+length]' } }; required = @('path', 'offset', 'length', 'replacement') } }
 )
 
 # --- prompt catalogue: the Layer-2 procedure, served so a client injects it into the agent's context ---
@@ -140,6 +160,22 @@ function Resolve-Scope([string]$scope) {
     if (-not ("$full$sep").StartsWith($rootPfx, [System.StringComparison]::OrdinalIgnoreCase)) {
         throw "scope escapes the ingestion root: '$scope'"
     }
+    return $full
+}
+# Resolve a path-addressed argument (promoted markdown) for the md-repair lane. Accepts a repo-relative
+# path (e.g. "compendia/ph/1907.04889v2.md") or an absolute one, normalizes it, and confines it to the
+# repo root (the server's purview) — no escaping via .. or a foreign drive. Must be an existing file.
+function Resolve-RepoPath([string]$path) {
+    if ([string]::IsNullOrWhiteSpace($path)) { throw "path required" }
+    $repoFull  = [System.IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
+    $candidate = if ([System.IO.Path]::IsPathRooted($path)) { $path } else { Join-Path $repoFull $path }
+    $full      = [System.IO.Path]::GetFullPath($candidate)
+    $sep       = [System.IO.Path]::DirectorySeparatorChar
+    $repoPfx   = $repoFull.TrimEnd($sep) + $sep
+    if (-not "$full".StartsWith($repoPfx, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "path escapes the repo root: '$path'"
+    }
+    if (-not (Test-Path -LiteralPath $full -PathType Leaf)) { throw "file not found: $path" }
     return $full
 }
 
@@ -185,6 +221,20 @@ function Invoke-Tool([string]$name, $arguments) {
         'get_audit'          { $out = Get-Audit -ChunksPath (Resolve-Paper $arguments.paper) -Id $(if ($null -ne $arguments.id) { [int]$arguments.id } else { -1 }) -Kind ([string]$arguments.kind) }
         'mark_unrecoverable' { $out = Set-Unrecoverable -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Reason ([string]$arguments.reason) }
         'request_review'     { $out = Add-ReviewRequest -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Message ([string]$arguments.message) }
+        'publish' {
+            $out = Invoke-Publish -ChunksPath (Resolve-Paper $arguments.paper) -CompendiaRoot $CompendiaRoot `
+                -Topic ([string]$arguments.topic) -Force:([bool]$arguments.force) -DryRun:([bool]$arguments.dry_run)
+        }
+        'repair_headings'     { $out = Repair-MdHeadings -Path (Resolve-RepoPath ([string]$arguments.path)) -Apply:([bool]$arguments.apply) }
+        'update_doc_contents' { $out = Update-MdContents  -Path (Resolve-RepoPath ([string]$arguments.path)) -Apply:([bool]$arguments.apply) }
+        'splice_md' {
+            $p = Resolve-RepoPath ([string]$arguments.path)
+            $out = if ($null -ne $arguments.expect) {
+                Set-MdSpan -Path $p -Offset ([int]$arguments.offset) -Length ([int]$arguments.length) -Replacement ([string]$arguments.replacement) -Expect ([string]$arguments.expect)
+            } else {
+                Set-MdSpan -Path $p -Offset ([int]$arguments.offset) -Length ([int]$arguments.length) -Replacement ([string]$arguments.replacement)
+            }
+        }
         default        { throw "unknown tool: $name" }
     }
     $text = if ($null -eq $out) { '(no output)' } else { $out | ConvertTo-Json -Depth 12 -Compress }
@@ -212,6 +262,12 @@ function Invoke-ToolGuarded([string]$name, $arguments) {
 # take explicit ownership before any frame moves: a UTF-8 reader on stdin, a UTF-8 auto-flushing
 # writer on stdout, and we point the ambient Console.Out at stderr so a stray host write from a
 # dot-sourced lib lands in the log, never mid-frame on stdout.
+# Belt-and-suspenders: pin the console code page to UTF-8 too. The StreamReader/Writer below already
+# own the protocol channel, so this does NOT fix the channel — it protects any *child* process the
+# server (or a future tool) spawns from inheriting the host's ANSI/OEM (cp1252) code page. (The
+# encoding crashes in the field briefs were in agent-authored scratch scripts, not this server.)
+[Console]::InputEncoding  = [System.Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 $utf8 = [System.Text.UTF8Encoding]::new($false)                                   # no BOM
 $script:Rpc = [System.IO.StreamWriter]::new([Console]::OpenStandardOutput(), $utf8); $script:Rpc.AutoFlush = $true
 $script:In  = [System.IO.StreamReader]::new([Console]::OpenStandardInput(),  $utf8)

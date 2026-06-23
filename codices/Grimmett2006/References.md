@@ -36,7 +36,7 @@ Journal of Statistical Physics 44 (1986), 393–454. Aizenman, M., Grimmett, G. 
 
 Journal of Statistical Physics 63 (1991), 817–835. Aizenman, M., Klein, A., Newman, C. M.
 
-11. Percolation methods for disordered quantum Ising models, Phase Transitions: Mathematics, Physics, Biology, . . . (R. Kotecky,´ ed.), World Scientiﬁc, Singapore, 1992, pp. 129–137.
+11. Percolation methods for disordered quantum Ising models, Phase Transitions: Mathematics, Physics, Biology, . . . (R. Kotecky,´ ed.), World Scientific, Singapore, 1992, pp. 129–137.
 
 Aizenman, M., Nachtergaele, B.
 
@@ -48,7 +48,7 @@ Physics 164 (1994), 17–63. Alexander, K.
 - 14. Weak mixing in lattice models, Probability Theory and Related Fields 110 (1998), 441–471.
 - 15. The asymmetric random cluster model and comparison of Ising and Potts models, Probability Theory and Related Fields 120 (2001), 395–444.
 - 16. Power-law corrections to exponential decay of connectivities and correlations in lattice models, Annals of Probability 29 (2001), 92–122.
-- 17. Cube-root boundary ﬂuctuations for droplets in random cluster models, Communications in Mathematical Physics 224 (2001), 733–781.
+- 17. Cube-root boundary fluctuations for droplets in random cluster models, Communications in Mathematical Physics 224 (2001), 733–781.
 - 18. The single-droplet theorem for random-cluster models, In and Out of Equilibrium (V. Sidoravicius, ed.), Birkhauser,¨ Boston, 2002, pp. 47–73.
 - 19. Mixing properties and exponential decay for lattice systems in finite volumes,
 
@@ -92,7 +92,7 @@ nications in Probability 1 (1996), 71–82.
 
 14 (2001), 487–507. Ben-Or, M., Linial, N.
 
-- 34. Collective coin ﬂipping, Randomness and Computation, Academic Press, New York, 1990, pp. 91–115. Berg, J. van den, Häggström, O., Kahn, J.
+- 34. Collective coin flipping, Randomness and Computation, Academic Press, New York, 1990, pp. 91–115. Berg, J. van den, Häggström, O., Kahn, J.
 - 35. Some conditional correlation inequalities for percolation and related processes,
 
 Random Structures and Algorithms 29 (2006), 417–435. Berg, J. van den, Keane, M.
@@ -116,7 +116,7 @@ Communications in Mathematical Physics 158 (1993), 1–16. Biggs, N. L.
 - 40. Algebraic Graph Theory, Cambridge University Press, Cambridge, 1984.
 - 41. Interaction Models, London Mathematical Society Lecture Notes, vol. 30, Cambridge University Press, Cambridge, 1977. Billingsley, P.
 - 42. Convergence of Probability Measures, Wiley, New York, 1968. Biskup, M.
-- 43. Reﬂection positivity of the random-cluster measure invalidated for non-integer q,
+- 43. Reflection positivity of the random-cluster measure invalidated for non-integer q,
 
 Journal of Statistical Physics 92 (1998), 369–375. Biskup, M., Borgs, C., Chayes, J. T., Kotecky,´ R.
 
@@ -194,7 +194,7 @@ Statistical Physics 109 (2002), 67–131. Borgs, C., Kotecky,´ R., Miracle-Sole
 
 Bourgain, J., Kahn, J., Kalai, G., Katznelson, Y., Linial, N.
 
-67. The inﬂuence of variables in product spaces, Israel Journal of Mathematics 77
+67. The influence of variables in product spaces, Israel Journal of Mathematics 77
 
 (1992), 55–64. Bricmont, J., Kuroda, K., Lebowitz, J. L.
 
@@ -225,7 +225,7 @@ site percolation, Israel Journal of Mathematics 76 (1991), 299–316. Burton, R.
 
 Mathematical Physics 268 (2006), 1–38. Campanino, M., Chayes, J. T., Chayes, L.
 
-77. Gaussian ﬂuctuations of connectivities in the subcritical regime of percolation,
+77. Gaussian fluctuations of connectivities in the subcritical regime of percolation,
 
 Probability Theory and Related Fields 88 (1991), 269–341. Campanino, M., Ioffe, D., Velenik, Y.
 
@@ -284,7 +284,7 @@ Couronne,´ O., Messikh, R. J.
 
 96. Surface order large deviations for 2d FK-percolation and Potts models, Stochastic
 
-Processes and their Applications 113 (2004), 81–99. Cox, J. T., Gandolﬁ, A., Grifﬁn, P., Kesten, H.
+Processes and their Applications 113 (2004), 81–99. Cox, J. T., Gandolfi, A., Griffin, P., Kesten, H.
 
 97. GreedylatticeanimalsI:Upperbounds,AdvancesinAppliedProbability 3(1993),
 
@@ -368,7 +368,7 @@ bility 3 (1993), 746–762; Erratum 4, 254. Fortuin, C. M.
 
 ematical Physics 22 (1971), 89–103. Friedgut, E.
 
-125. Inﬂuences in product spaces: KKL and BKKKL revisited, Combinatorics, Proba-
+125. Influences in product spaces: KKL and BKKKL revisited, Combinatorics, Proba-
 
 bility, Computing 13 (2004), 17–29. Friedgut, E., Kalai, G.
 
@@ -382,11 +382,11 @@ Gallavotti, G., Miracle-Sole,´ S.
 
 128. Equilibrium states of the Ising model in the two-phase region, Physical Review B 5 (1972), 2555–2559.
 
-Gandolﬁ, A., Keane, M., Newman, C. M.
+Gandolfi, A., Keane, M., Newman, C. M.
 
 129. Uniqueness of the infinite component in a random graph with applications to percolation and spin glasses, Probability Theory and Related Fields 92 (1992), 511–527.
 
-Gandolﬁ, A., Keane, M., Russo, L.
+Gandolfi, A., Keane, M., Russo, L.
 
 130. On the uniqueness of the infinite occupied cluster in dependent two-dimensional
 
@@ -423,10 +423,10 @@ Statistical Physics 109 (2002), 1–37. Gobron, T., Merola, I.
 
 of Statistical Physics 126 (2007), 507–583. Graham, B. T., Grimmett, G. R.
 
-- 141. Inﬂuence and sharp-threshold theorems for monotonic measures, Annals of Probability 34 (2006), 1726–1745.
+- 141. Influence and sharp-threshold theorems for monotonic measures, Annals of Probability 34 (2006), 1726–1745.
 - 142. Random-cluster representation of the Blume–Capel model, Journal of Statistical
 
-Physics 25 (2006), 283–316. Grifﬁths, R. B., Lebowitz, J. L.
+Physics 25 (2006), 283–316. Griffiths, R. B., Lebowitz, J. L.
 
 143. Random spin systems: some rigorous results, Journal of Mathematical Physics 9
 
@@ -572,11 +572,11 @@ ability 12 (1999), 549–559. Jossang,¨ P., Jossang,¨ A.
 Kahn, J.
 
 - 199. A normal law for matchings, Combinatorica 20 (2000), 339–391. Kahn, J., Kalai, G., Linial, N.
-- 200. The inﬂuence of variables on Boolean functions, Proceedings of 29th Symposium on the Foundations of Computer Science, Computer Science Press, 1988, pp. 68– 80.
+- 200. The influence of variables on Boolean functions, Proceedings of 29th Symposium on the Foundations of Computer Science, Computer Science Press, 1988, pp. 68– 80.
 
 Kalai, G., Safra, S.
 
-201. Threshold phenomena and inﬂuence, Computational Complexity and Statistical Physics (A. G. Percus, G. Istrate, C. Moore, eds.), Oxford University Press, New York, 2006.
+201. Threshold phenomena and influence, Computational Complexity and Statistical Physics (A. G. Percus, G. Istrate, C. Moore, eds.), Oxford University Press, New York, 2006.
 
 Kasai, J., Okiji, A.
 
@@ -617,7 +617,7 @@ Kim, D., Joseph, R. I.
 
 (1974), L167–L169. Kirchhoff, G.
 
-215. Uber¨ die Auﬂ¨osung der Gleichungen, auf welche man bei der Untersuchung der linearen Verteilung galvanischer Strome gefuhrt wird, Annalen der Physik und Chemie 72 (1847), 497–508.
+215. Uber¨ die Aufl¨osung der Gleichungen, auf welche man bei der Untersuchung der linearen Verteilung galvanischer Strome gefuhrt wird, Annalen der Physik und Chemie 72 (1847), 497–508.
 
 Kotecky,´ R.
 
@@ -652,7 +652,7 @@ representation, Communications in Mathematical Physics 140 (1991), 81–91. Laan
 
 Mathematical Physics 105 (1986), 527–545. Lanford, O. E., Ruelle, D.
 
-226. Observables at inﬁnity and states with short range correlations in statistical me-
+226. Observables at infinity and states with short range correlations in statistical me-
 
 chanics, Communications in Mathematical Physics 13 (1969), 194–215. Langlands, R., Pouliot, P., Saint-Aubin, Y.
 
@@ -679,7 +679,7 @@ trees, Annals of Probability 32 (2004), 939–995. Lebowitz, J. L., Gallavotti, 
 
 in Mathematical Physics 25 (1972), 276–282. Lieb, E. H.
 
-234. A reﬁnement of Simon’s correlation inequality, Communications in Mathematical
+234. A refinement of Simon’s correlation inequality, Communications in Mathematical
 
 Physics 77 (1980), 127–135. Liggett, T. M.
 
@@ -782,16 +782,16 @@ Society 36 (1936), 477–481. Pemantle, R.
 
 269. Equilibrium statistical mechanics of frustrated spin glasses: a survey of mathematical results, Annales de l’Institut Henri Poincare,´ Physique Theorique´ 84
 
-(1996), 255–288. Pﬁster, C.-E.
+(1996), 255–288. Pfister, C.-E.
 
 - 270. Translation invariant equilibrium states of ferromagnetic abelian lattice systems, Communications in Mathematical Physics 86 (1982), 375–390.
 - 271. Phase transitions in the Ashkin–Teller model, Journal of Statistical Physics 29
 
-(1982), 113–116. Pﬁster, C.-E., Vande Velde, K.
+(1982), 113–116. Pfister, C.-E., Vande Velde, K.
 
 272. Almost sure quasilocality in the random cluster model, Journal of Statistical Phy-
 
-sics 79 (1995), 765–774. Pﬁster, C.-E., Velenik, Y.
+sics 79 (1995), 765–774. Pfister, C.-E., Velenik, Y.
 
 273. Random-cluster representation for the Ashkin–Teller model, Journal of Statistical
 
@@ -908,7 +908,7 @@ ters 58 (1987), 86–88. Sykes, M. E., Essam, J. W.
 
 311. Exact critical percolation probabilities for site and bond problems in two dimen-
 
-sions, Journal of Mathematical Physics 5 (1964), 1117–1127. Troﬁmov, V. I.
+sions, Journal of Mathematical Physics 5 (1964), 1117–1127. Trofimov, V. I.
 
 312. Automorphism groups of graphs as topological groups, Mathematical Notes 38
 
@@ -947,9 +947,9 @@ Physics 52 (1970), 1670–1684. Wilson, R. J.
 
 - 323. Problem 5, American Mathematical Monthly 1 (1894), 99, 211–212. Wu, F. Y.
 - 324. The Potts model, Reviews in Modern Physics 54 (1982), 235–268. Wulff, G.
-- 325. Zur Frage der Geschwindigkeit des Wachsturms und der Auﬂ¨osung der Krys-
+- 325. Zur Frage der Geschwindigkeit des Wachsturms und der Aufl¨osung der Krys-
 
-tallﬂ¨achen, Zeitschrift fur¨ Krystallographie und Mineralogie 34 (1901), 449–530. Zahradn´ık, M.
+tallfl¨achen, Zeitschrift fur¨ Krystallographie und Mineralogie 34 (1901), 449–530. Zahradn´ık, M.
 
 326. An alternate version of Pirogov–Sinai theory, Communications in Mathematical Physics 93, 559–581.
 

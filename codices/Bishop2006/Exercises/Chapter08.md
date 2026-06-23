@@ -79,7 +79,7 @@ $$
 p(D = 0|G = 0) = 0.9. \tag{8.106}
 $$
 
-Suppose that the driver tells us that the fuel gauge shows empty, in other words that we observe $D = 0$. Evaluate the probability that the tank is empty given only this observation. Similarly, evaluate the corresponding probability given also the observation that the battery is ﬂat, and note that this second probability is lower. Discuss the intuition behind this result, and relate the result to Figure 8.54.
+Suppose that the driver tells us that the fuel gauge shows empty, in other words that we observe $D = 0$. Evaluate the probability that the tank is empty given only this observation. Similarly, evaluate the corresponding probability given also the observation that the battery is flat, and note that this second probability is lower. Discuss the intuition behind this result, and relate the result to Figure 8.54.
 
 ## 8.12 Number of Undirected Graphs ($\star$)
 
@@ -87,11 +87,11 @@ Show that there are $2^{M(M-1)/2}$ distinct undirected graphs over a set of $M$ 
 
 ## 8.13 ICM Energy Function Difference ($\star$)
 
-Consider the use of iterated conditional modes (ICM) to minimize the energy function given by (8.42). Write down an expression for the difference in the values of the energy associated with the two states of a particular variable $x_j$, with all other variables held ﬁxed, and show that it depends only on quantities that are local to $x_j$ in the graph.
+Consider the use of iterated conditional modes (ICM) to minimize the energy function given by (8.42). Write down an expression for the difference in the values of the energy associated with the two states of a particular variable $x_j$, with all other variables held fixed, and show that it depends only on quantities that are local to $x_j$ in the graph.
 
 ## 8.14 Most Probable Latent Configuration ($\star$)
 
-Consider a particular case of the energy function given by (8.42) in which the coefﬁcients $\beta = h = 0$. Show that the most probable conﬁguration of the latent variables is given by $x_i = y_i$ for all $i$.
+Consider a particular case of the energy function given by (8.42) in which the coefficients $\beta = h = 0$. Show that the most probable configuration of the latent variables is given by $x_i = y_i$ for all $i$.
 
 ## 8.15 Neighboring Nodes Joint Distribution ($\star$)
 
@@ -100,7 +100,7 @@ Show that the joint distribution $p(x_{n-1}, x_n)$ for two neighbouring nodes in
 
 ## 8.16 Message Passing Algorithm Efficiency ($\star$)
 
-Consider the inference problem of evaluating $p(x_n|x_N)$ for the graph shown in Figure 8.38, for all nodes $n \in \{1, \dots, N - 1\}$. Show that the message passing algorithm discussed in Section 8.4.1 can be used to solve this efﬁciently, and discuss which messages are modiﬁed and in what way.
+Consider the inference problem of evaluating $p(x_n|x_N)$ for the graph shown in Figure 8.38, for all nodes $n \in \{1, \dots, N - 1\}$. Show that the message passing algorithm discussed in Section 8.4.1 can be used to solve this efficiently, and discuss which messages are modified and in what way.
 
 ## 8.17 D-Separation Message Passing Independence ($\star$)
 
@@ -116,11 +116,11 @@ Apply the sum-product algorithm derived in Section 8.4.4 to the chain-of-nodes m
 
 ## 8.20 Sum-Product Protocol Valid Ordering ($\star$)
 
-Consider the message passing protocol for the sum-product algorithm on a tree-structured factor graph in which messages are ﬁrst propagated from the leaves to an arbitrarily chosen root node and then from the root node out to the leaves. Use proof by induction to show that the messages can be passed in such an order that at every step, each node that must send a message has received all of the incoming messages necessary to construct its outgoing messages.
+Consider the message passing protocol for the sum-product algorithm on a tree-structured factor graph in which messages are first propagated from the leaves to an arbitrarily chosen root node and then from the root node out to the leaves. Use proof by induction to show that the messages can be passed in such an order that at every step, each node that must send a message has received all of the incoming messages necessary to construct its outgoing messages.
 
 ## 8.21 Factor Graph Marginal Distributions ($\star$)
 
-Show that the marginal distributions $p(\mathbf{x}_s)$ over the sets of variables $\mathbf{x}_s$ associated with each of the factors $f_s(\mathbf{x}_s)$ in a factor graph can be found by ﬁrst running the sum-product message passing algorithm and then evaluating the required marginals using (8.72).
+Show that the marginal distributions $p(\mathbf{x}_s)$ over the sets of variables $\mathbf{x}_s$ associated with each of the factors $f_s(\mathbf{x}_s)$ in a factor graph can be found by first running the sum-product message passing algorithm and then evaluating the required marginals using (8.72).
 
 ## 8.22 Connected Subgraph Marginal Distribution ($\star$)
 
@@ -137,11 +137,11 @@ Show that the marginal distribution for the variables $\mathbf{x}_s$ in a factor
 
 ## 8.25 Sum-Product Correct Marginals Verification ($\star$)
 
-In (8.86), we veriﬁed that the sum-product algorithm run on the graph in Figure 8.51 with node $x_3$ designated as the root node gives the correct marginal for $x_2$. Show that the correct marginals are obtained also for $x_1$ and $x_3$. Similarly, show that the use of the result (8.72) after running the sum-product algorithm on this graph gives the correct joint distribution for $x_1, x_2$.
+In (8.86), we verified that the sum-product algorithm run on the graph in Figure 8.51 with node $x_3$ designated as the root node gives the correct marginal for $x_2$. Show that the correct marginals are obtained also for $x_1$ and $x_3$. Similarly, show that the use of the result (8.72) after running the sum-product algorithm on this graph gives the correct joint distribution for $x_1, x_2$.
 
 ## 8.26 Joint Distribution Successive Clamping ($\star$)
 
-Consider a tree-structured factor graph over discrete variables, and suppose we wish to evaluate the joint distribution $p(x_a, x_b)$ associated with two variables $x_a$ and $x_b$ that do not belong to a common factor. Deﬁne a procedure for using the sum-product algorithm to evaluate this joint distribution in which one of the variables is successively clamped to each of its allowed values.
+Consider a tree-structured factor graph over discrete variables, and suppose we wish to evaluate the joint distribution $p(x_a, x_b)$ associated with two variables $x_a$ and $x_b$ that do not belong to a common factor. Define a procedure for using the sum-product algorithm to evaluate this joint distribution in which one of the variables is successively clamped to each of its allowed values.
 
 ## 8.27 Maximal Marginals Zero Joint ($\star$)
 
@@ -149,8 +149,8 @@ Consider two discrete variables $x$ and $y$ each having three possible states, f
 
 ## 8.28 Pending Messages in Cycles ($\star$)
 
-The concept of a pending message in the sum-product algorithm for a factor graph was deﬁned in Section 8.4.7. Show that if the graph has one or more cycles, there will always be at least one pending message irrespective of how long the algorithm runs.
+The concept of a pending message in the sum-product algorithm for a factor graph was defined in Section 8.4.7. Show that if the graph has one or more cycles, there will always be at least one pending message irrespective of how long the algorithm runs.
 
 ## 8.29 Tree Structure No Pending Messages ($\star$)
 
-Show that if the sum-product algorithm is run on a factor graph with a tree structure (no loops), then after a ﬁnite number of messages have been sent, there will be no pending messages.
+Show that if the sum-product algorithm is run on a factor graph with a tree structure (no loops), then after a finite number of messages have been sent, there will be no pending messages.

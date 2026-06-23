@@ -13,27 +13,18 @@ This README is only the top-level map; deeper chapter and section navigation liv
 
 ## Resource Map
 
-### Codices
+Navigation is telescoping — the single source of truth is [CONTENTS.md](CONTENTS.md), which points to the
+per-collection roots ([codices](codices/CODICES.md), [compendia](compendia/COMPENDIA.md),
+[corpora](corpora/CORPORA.md)); each of those points further down. Don't duplicate the tree here — it drifts.
 
-- [codices/](codices/)
-  - [Bishop2006/](codices/Bishop2006/)
-    - [CONTENTS.md](codices/Bishop2006/CONTENTS.md)
-      - [Chapters/CONTENTS.md](codices/Bishop2006/Chapters/CONTENTS.md)
-      - [Appendix/CONTENTS.md](codices/Bishop2006/Appendix/CONTENTS.md)
-  - [DoCormo2016/](codices/DoCormo2016/)
-    - `CONTENTS.md` not yet present
-    - [DoCormo2016.md](codices/DoCormo2016/DoCormo2016.md)
-  - [Grimmet2006/](codices/Grimmet2006/)
-    - [CONTENTS.md](codices/Grimmet2006/CONTENTS.md)
-      - [Chapters/CONTENTS.md](codices/Grimmet2006/Chapters/CONTENTS.md)
-  - [McLachlan2000/](codices/McLachlan2000/)
-    - [CONTENTS.md](codices/McLachlan2000/CONTENTS.md)
+The three collections:
+- **codices/** — long-form textbooks (Bishop2006, Grimmett2006, McLachlan2000).
+- **compendia/** — curated, theme-ordered paper collections (ph, ph-applied, mapper, statistics, …).
+- **corpora/** — author/topic paper sets (KisungYou, VladVoroninski).
 
-### Corpora
+## Pipeline (how documents get here)
 
-- [corpora/](corpora/)
-  - [K.You/](corpora/K.You/)
-    - [CONTENTS.md](corpora/K.You/CONTENTS.md)
-  - [V.Voroninski/](corpora/V.Voroninski/)
-    - `CONTENTS.md` not yet present
-    - [Helm.ai Tech Stack Deep Dive.md](corpora/V.Voroninski/Helm.ai%20Tech%20Stack%20Deep%20Dive.md)
+Published documents are produced by the **codex-membrane** restoration pipeline, not by hand. Raw extracts
+land under `ingestion/` (`ingestion/{codices,compendia,corpora}/…`), are repaired chunk-by-chunk through the
+membrane (the MCP server in `src/`; workflow in `src/PROCEDURE.md`), then `publish`ed into the collections
+above. See [WORKFLOW.md](WORKFLOW.md) (failure taxonomy) and [STANDARDS.md](STANDARDS.md) (output format).

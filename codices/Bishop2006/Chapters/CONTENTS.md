@@ -108,7 +108,7 @@
   - [5.7. Bayesian Neural Networks](Chapter05.Neural%20Networks.md#57-bayesian-neural-networks)
     - [5.7.1 Posterior parameter distribution](Chapter05.Neural%20Networks.md#571-posterior-parameter-distribution)
     - [5.7.2 Hyperparameter optimization](Chapter05.Neural%20Networks.md#572-hyperparameter-optimization)
-    - [5.7.3 Bayesian neural networks for classiﬁcation](Chapter05.Neural%20Networks.md#573-bayesian-neural-networks-for-classiﬁcation)
+    - [5.7.3 Bayesian neural networks for classification](Chapter05.Neural%20Networks.md#573-bayesian-neural-networks-for-classification)
 
 - [6](Chapter06.Kernel%20Methods.md#6)
 
@@ -203,7 +203,7 @@
     - [13.3.1 Inference in LDS](Chapter13.Sequential%20Data.md#1331-inference-in-lds)
     - [13.3.2 Learning in LDS](Chapter13.Sequential%20Data.md#1332-learning-in-lds)
     - [13.3.3 Extensions of LDS](Chapter13.Sequential%20Data.md#1333-extensions-of-lds)
-    - [13.3.4 Particle ﬁlters](Chapter13.Sequential%20Data.md#1334-particle-ﬁlters)
+    - [13.3.4 Particle filters](Chapter13.Sequential%20Data.md#1334-particle-filters)
 
 - [14 Combining Models](Chapter14.Combining%20Models.md#14-combining-models)
   - [14.1. Bayesian Model Averaging](Chapter14.Combining%20Models.md#141-bayesian-model-averaging)

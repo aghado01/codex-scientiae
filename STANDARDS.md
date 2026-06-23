@@ -51,3 +51,14 @@ After repairing and standardizing markdown header sections for a document, add a
 ### 7. Daemon/Library Stream Discipline (src/)
 
 Daemon/library code in `src/` targets streams explicitly at the .NET level (`[Console]::Error` for logs, the owned stdout writer for protocol frames pinned to UTF-8); no `Write-Host`/`Write-Output`/`Out-*` for diagnostics; tool results are return values, never host writes.
+
+### 8. Published Compendium Layout (the `publish` contract)
+
+When a finalized deliverable is promoted into a `compendia/{topic}/` collection (by the membrane's `publish` tool, never by hand), the on-disk layout is fixed:
+
+- **Body**: `compendia/{topic}/{slug}.md` — H1 title, the `## Contents` block (§6), then sections.
+- **References sidecar**: `compendia/{topic}/references/{slug}.md`, linked from the Contents block.
+- **Figures (nested)**: `compendia/{topic}/images/{slug}/imageFileN.png`. In-doc image links use the `images/{slug}/…` path. (Older papers using the flat `{slug}/…` form are legacy outliers being migrated.)
+- **Index**: `compendia/{topic}/_CONTENTS.md` carries one `## [title]({slug}.md)` block per paper, with the Contents entries re-anchored to `{slug}.md#…`. Ordering is **human thematic curation** — `publish` upserts a paper's block in place (or appends a new one for repositioning) and never re-sorts.
+
+All file I/O is UTF-8 without BOM (§ stream discipline), so SMP math, accents, and ligatures round-trip.

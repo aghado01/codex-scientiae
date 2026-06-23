@@ -46,7 +46,10 @@ Definition 1. A group $G,_$ is a set $G$ with a binary operation $_$ such that (
 
 $R, +$ are groups with identity $0$ and $a$'s inverse $-a$. Positive real numbers and multiplication is a group $R^+, \times$ with identity $1$ and $a$'s inverse $\frac{1}{a}$. However, $R, \times$ is not a group since $0 \in R$ does not have an inverse under $\times$. Real numbers except 0 is again a group $R \setminus \{0 \}, \times$. $Z\_2$ is the only group (up to element renaming) of size two:
 
-FILL_ME_IN
+| $+_2$ | $0$ | $1$ |
+| --- | --- | --- |
+| $0$ | $0$ | $1$ |
+| $1$ | $1$ | $0$ |
 
 We can think of $+\_2$ as the XOR function or mod-2 addition. For any set $A = \{a_1,...,a_n \}$, its power set forms a group $2^A, +\_2$ where $+\_2$ is the symmetric difference: $B +\_2 C = ( B \cup C ) \setminus ( B \cap C )$. The identity is the empty set $\emptyset$, and the inverse of any $B \subseteq A$ is $B$ itself.
 
@@ -70,7 +73,10 @@ similar at all. But there is a trivial homomorphism $\phi(a) = 0, \forall a \in 
 
 ficial) negation in natural language: $G_N = \{\sqcup, \text{not} \}$ with the following operation, where $\sqcup$ stands for whitespace:
 
-FILL_ME_IN
+| $*$ | $\sqcup$ | $\text{not}$ |
+| --- | --- | --- |
+| $\sqcup$ | $\sqcup$ | $\text{not}$ |
+| $\text{not}$ | $\text{not}$ | $\sqcup$ |
 
 i.e., single negation stays while double negation cancels. There is a homomorphism between $G_N$ and $Z\_2$: $\phi(\sqcup) = 0, \phi(\text{not}) = 1$. In fact, $G_N$ and $Z\_2$ are identical up to renaming. There is a name for such homomorphisms:
 
@@ -420,4 +426,4 @@ x 1 x 2 x 3 y z x 4 depicted on left, where y and z are distant. The SIFTS time 
 
 Perhaps such problem can be dealt with by preprocessing, where one merges contiguous units within ? Surely with x 1 x 2 x 3 merged into a super unit x, we can using counting again to detect two repeats x,x 4 and correctly infer one hole. However, consider another document x 1 x 2...x 13 on the right, where all contiguous unit pairs are within (the short diagonal length). The preprocessing will merge all units into a single super unit, thus incorrectly predicting 0 holes. In contrast, SIFTS can correctly identify the two holes. Homology is not just counting repeated text units.
 
-The barcodes in this paper were computed with the javaPlex software [ Tausz et al., 2011 ]. Our data and SIF, SIFTS code is online at http://///pages.cs.wisc.edu/ ∼ jerryzhu/publications.html.
+The barcodes in this paper were computed with the javaPlex software [ Tausz et al., 2011 ]. Our data and SIF, SIFTS code is online at http://pages.cs.wisc.edu/ ∼ jerryzhu/publications.html.

@@ -26,7 +26,7 @@ The theory of phase transitions addresses primarily singularities associated wit
 
 Being informed by progress for percolation, it is natural to consider as meanfield modelsthe random-clustermodelsoncomplete graphsand on an infinite tree. In the formercase, we consider the modelon the complete graph Kn on n vertices, and we pass to the limit as n → ∞. The vertex-degrees tend to ∞ as n → ∞, and some re-scaling is done in order to establish a non-trivial limit. The correct
 
-way to do this is to set $p$ = λ/n for ﬁxed λ > 0. The consequent theory may be regarded as an extension of the usual Erdos–R˝ enyi´ theory of random graphs, [61, 194]. This model is expounded in Section 10.2. The main results are described in Section 10.3, and are proved in Sections 10.4–10.6. The nature of the phase transition is discussed in Section 10.7, and the consequences for large deviations of cluster-counts are presented in Section 10.8. The principal reference1 is [62], of which heavy use is made in this chapter.
+way to do this is to set $p$ = λ/n for fixed λ > 0. The consequent theory may be regarded as an extension of the usual Erdos–R˝ enyi´ theory of random graphs, [61, 194]. This model is expounded in Section 10.2. The main results are described in Section 10.3, and are proved in Sections 10.4–10.6. The nature of the phase transition is discussed in Section 10.7, and the consequences for large deviations of cluster-counts are presented in Section 10.8. The principal reference1 is [62], of which heavy use is made in this chapter.
 
 The random-cluster model on a finite tree is essentially trivial. Owing to the absenceofcircuits,arandom-clustermeasurethereonissimplyaproductmeasure. The tree is a more interesting setting when it is infinite and subjected to boundary conditions. There is a continuum of random-cluster measures indexed by the set of possible boundaryconditions. The present state of knowledgeis summarizedin Sections 10.9–10.11. The relevant references are [160, 167, 196] but the current treatment is fundamentally different.
 
@@ -62,7 +62,7 @@ We note some of the properties of θ(λ,q). Firstly, θ(λ,q) > 0 if and only if
 
 see Lemma 10.12. Secondly, for all q ∈ (0,∞), θ(λ,q) is non-decreasing in λ, and it follows that θ(·,q) is continuous if $q$ ∈ (0,2], and has a unique (jump) discontinuity at λ = λc(q) if $q$ ∈ (2,∞). This jump discontinuity corresponds to a phase transition of first order.
 
-We say that ‘almost every (a.e.) Gn,p,q satisﬁes property ’, for a given sequence $p$ = pn and a ﬁxed q, if
+We say that ‘almost every (a.e.) Gn,p,q satisfies property ’, for a given sequence $p$ = pn and a fixed q, if
 
 φn,p,q(Gn,p,q has ) → 1 as n → ∞. We summarize the main results of the following sections as follows. (a) If 0 < λ < λc(q) and $q$ ∈ (0,∞), then almost every Gn,λ/n,q has largest component of order log n.
 
@@ -71,7 +71,7 @@ We say that ‘almost every (a.e.) Gn,p,q satisﬁes property ’, for a given s
 
 The behaviourof Gn,λ/n,q with q ∈ (2,∞) and λ = λn → λc(q)has been studied further in the combinatorial analysis of [238].
 
-There are two main steps in establishing the abovefacts. The first is to establish the relation (10.6) by studying the size of the largestcomponentof Gn,λ/n,q. When q ∈ (2,∞), (10.6) has three solutions for large λ, see Figure 10.2. In order to decide which of these is the density of the largest component, we shall study the number of edges in Gn,λ/n,q. That is to say, we shall ﬁnd the function ψ(λ,q) such that almost every Gn,λ/n,q has (order) ψ(λ,q)n edges. It will turn out that the function ψ(·,q) is discontinuous at the critical point of a first-order phase transition.
+There are two main steps in establishing the abovefacts. The first is to establish the relation (10.6) by studying the size of the largestcomponentof Gn,λ/n,q. When q ∈ (2,∞), (10.6) has three solutions for large λ, see Figure 10.2. In order to decide which of these is the density of the largest component, we shall study the number of edges in Gn,λ/n,q. That is to say, we shall find the function ψ(λ,q) such that almost every Gn,λ/n,q has (order) ψ(λ,q)n edges. It will turn out that the function ψ(·,q) is discontinuous at the critical point of a first-order phase transition.
 
 The material presented here for the random-cluster model on Kn is taken from [62]. See also [238].
 
@@ -124,7 +124,7 @@ components with more than one cycle. (b) The largest component has order op(n). 
 
 More detailed asymptotics are available for Gn,λ/n,q by lookingdeeperinto the proofs. The last theorem has been extendedto the cases q ∈ (0,1) and $q$ ∈ (2,∞) in [238], where a detailed combinatorial analysis has been performed.
 
-The giant component, when it exists, has orderapproximatelyθ(λ)n, with θ(λ) given by (10.5)–(10.6). We study next the roots of (10.6). Note first that θ = 0 satisﬁes (10.6) for all λ and $q$, and that all strictly positive roots satisfy 0 < θ < 1. Let
+The giant component, when it exists, has orderapproximatelyθ(λ)n, with θ(λ) given by (10.5)–(10.6). We study next the roots of (10.6). Note first that θ = 0 satisfies (10.6) for all λ and $q$, and that all strictly positive roots satisfy 0 < θ < 1. Let
 
 1 θ
 
@@ -134,9 +134,9 @@ log{1 + (q − 1)θ} − log(1 − θ) , θ ∈ (0,1),
 
 ![image 1117](../Images/imageFile1117.png)
 
-and note that θ ∈ (0,1) satisﬁes (10.6) if and only if f (θ) = λ. Here are two elementary lemmas concerning the function f .
+and note that θ ∈ (0,1) satisfies (10.6) if and only if f (θ) = λ. Here are two elementary lemmas concerning the function f .
 
-(10.11)Lemma. Thefunction f isstrictlyconvexon(0,1),andsatisﬁes f (0+) = q and f (1−) = ∞.
+(10.11)Lemma. Thefunction f isstrictlyconvexon(0,1),andsatisfies f (0+) = q and f (1−) = ∞.
 
 (a) If q ∈ (0,2], the function f is strictly increasing. (b) If q ∈ (2,∞), there exists θmin ∈ (0,1) such that f is strictly decreasing
 
@@ -186,7 +186,7 @@ Here is a corollary which will be of use later.
 
 (10.17) Lemma. Let q ∈ [1,∞). For any sequence $p$ = pn, almost every Gn,p,q has at most one component with order at least n3/4.
 
-Proof. Let L = L(G) be the number of components of a random graph G having order at least n3/4. Suppose L ≥ 2, and pick two of these in some arbitrary way. With probability r2 both of these are coloured red. Setting r = q−1, we ﬁnd by [61, Thm VI.9] that
+Proof. Let L = L(G) be the number of components of a random graph G having order at least n3/4. Suppose L ≥ 2, and pick two of these in some arbitrary way. With probability r2 both of these are coloured red. Setting r = q−1, we find by [61, Thm VI.9] that
 
 r2φn,p,q(L ≥ 2) ≤
 
@@ -248,7 +248,7 @@ In the first case, the red graph is distributed as a supercritical Gn′,λ′/n
 
 (10.18) Lemma. If λ > q ≥ 1, there exists θ0 > 0 such that n ≥ θ0 for almost every Gn,λ/n,q. Proof. The assertionis wellknownwhen $q$ = 1, see forexample[61, ThmVI.11]. Therefore, we may assume $q$ > 1 and thus r < 1.
 
-Let θ0 = (λ−q)/(2λ), πn = φn,p,q( n < θ0), and ǫ > 0. By considering the event that the largest component is not coloured red, we ﬁnd that, with probability at least (1 − r)πn + o(1), the number N of red vertices satisﬁes
+Let θ0 = (λ−q)/(2λ), πn = φn,p,q( n < θ0), and ǫ > 0. By considering the event that the largest component is not coloured red, we find that, with probability at least (1 − r)πn + o(1), the number N of red vertices satisfies
 
 N ≥ r(1 − θ0)n − ǫn,
 
@@ -334,7 +334,7 @@ The results derivedso far are combinednextwith a newargumentin orderto prove The
 
 (10.29) Lemma. The numbers of vertices and edges in the small cyclic components of Gn,λ/n,q are op(n).
 
-Proof. Let k be an integer satisfying k ≥ q. In the colouring scheme of Section 10.4 with r = q−1, we introduce the reﬁnement that each component is coloured dark red with probability k−1 and light red with probability r − k−1. Let M be the number of edges in the small cyclic components of Gn,λ/n,q.
+Proof. Let k be an integer satisfying k ≥ q. In the colouring scheme of Section 10.4 with r = q−1, we introduce the refinement that each component is coloured dark red with probability k−1 and light red with probability r − k−1. Let M be the number of edges in the small cyclic components of Gn,λ/n,q.
 
 ![image 1142](../Images/imageFile1142.png)
 
@@ -342,7 +342,7 @@ Proof. Let k be an integer satisfying k ≥ q. In the colouring scheme of Sectio
 
 Therefore, with probability at least r/k, the red subgraph contains the largest componenttogetherwith smallcyclic componentshavingatleast M/k edges. The result now follows from the known case $q$ = 1, see [60], [61, Thm VI.11].
 
-Let Pn,p,q(m, j,k,l) be the sum of Pn,p,q(F) over edge-sets F that deﬁne a graph with |F| = m edges and a cyclic part with j components, k vertices, and l
+Let Pn,p,q(m, j,k,l) be the sum of Pn,p,q(F) over edge-sets F that define a graph with |F| = m edges and a cyclic part with j components, k vertices, and l
 
 edges. Since such graphs have an acyclic part with n −k vertices and m −l edges, and therefore n − k − m + l components, we obtain (10.30)
 
@@ -534,7 +534,7 @@ It is an important problem of statistical physics to understand the nature of th
 
 describingthe orderof the giantcomponent,and the numbers of edgesin the graph and in its giant component, respectively. All three functions are non-decreasing on (0,∞). In addition, ψ is strictly increasing, while θ(λ) and ξ(λ) equal 0 for λ < λc and are strictly increasing on [λc,∞).
 
-A fourth function of interest is the pressure η(λ) given in Theorem 10.14. These four functions are real-analytic on (0,∞) \ {λc}. At the singularity λc, the following may be veriﬁed with reasonable ease.
+A fourth function of interest is the pressure η(λ) given in Theorem 10.14. These four functions are real-analytic on (0,∞) \ {λc}. At the singularity λc, the following may be verified with reasonable ease.
 
 (a) Let q ∈ [1,2). Then θ, ψ, ξ, and η are continuous at the point λc(q) = q. The functions θ and ξ have discontinuous first derivatives at λc, with
 
@@ -636,7 +636,7 @@ n→∞
 
 exists, and the probabilities φn,p,q(Cn ≤ αn), φn,p,q(Cn ≥ βn) decay at least as fast as exponentially when α < κ < β. The exact (exponential) rate of decay can be determined except when the levels αn and βn lie within the interval of discontinuity of a first-order phase transition. In the exceptional case with λ = λc(q) and $q$ ∈ (2,∞), a similar conclusion holds when α < κ− and β > κ+.
 
-Since first-order transitions occur only when q ∈ (2,∞), and since the critical λ-values of such q ﬁll the interval (2,∞), there is a weak sense in which the value λ = 2 marks a singularity of the asymptotics of the random graph Gn,λ/n,q. This holds for any value of $q$, including $q$ = 1. That is, the Erdos–R˝ enyi´ random graph senses the existence of a first-order phase transition in the random-cluster model, butonly throughits large deviations. Itis well knownthat the Erdos–R˝ enyi´ random graph undergoes a type of phase transition at λ = 1, and it follows from the above that it has a (weak) singularity at λ = 2 also.
+Since first-order transitions occur only when q ∈ (2,∞), and since the critical λ-values of such q fill the interval (2,∞), there is a weak sense in which the value λ = 2 marks a singularity of the asymptotics of the random graph Gn,λ/n,q. This holds for any value of $q$, including $q$ = 1. That is, the Erdos–R˝ enyi´ random graph senses the existence of a first-order phase transition in the random-cluster model, butonly throughits large deviations. Itis well knownthat the Erdos–R˝ enyi´ random graph undergoes a type of phase transition at λ = 1, and it follows from the above that it has a (weak) singularity at λ = 2 also.
 
 ![image 1229](../Images/imageFile1229.png)
 
@@ -652,7 +652,7 @@ Let T be an infinite labelled tree with root 0, and let R = R(T) be the set of a
 
 Figure 10.4. Part of the infinite binary tree T2.
 
-‘physical’ meaning of which is that two rays ρ, ρ′ are considered to be ‘connected at inﬁnity’ whenever ρ ∼ ρ′. Such connections affect the counts of connected components of subgraphs. The two extremal boundary conditions are usually termed ‘free’ (meaning that there exist no connections at inﬁnity) and ‘wired’ (meaning that all rays are equivalent). The wired boundary condition on T has been studied in [167, 196], and general boundary conditions in [160]. There has been a similar development for Ising models on trees with boundary conditions, see for example [48, 49, 188] in the statistical-physics literature and [114, 248, 256] in the probability literature under the title ‘broadcasting on trees’.
+‘physical’ meaning of which is that two rays ρ, ρ′ are considered to be ‘connected at infinity’ whenever ρ ∼ ρ′. Such connections affect the counts of connected components of subgraphs. The two extremal boundary conditions are usually termed ‘free’ (meaning that there exist no connections at infinity) and ‘wired’ (meaning that all rays are equivalent). The wired boundary condition on T has been studied in [167, 196], and general boundary conditions in [160]. There has been a similar development for Ising models on trees with boundary conditions, see for example [48, 49, 188] in the statistical-physics literature and [114, 248, 256] in the probability literature under the title ‘broadcasting on trees’.
 
 We restrict ourselves to the so-called binary tree T = T2, the calculations are easily extended to a regular m-ary tree Tm with m ∈ {2,3,. . .}. Thus T = (V, E) is taken henceforth to be a regular labelled tree, with a distinguished root labelled 0, and such that every vertex has degree 3. See Figure 10.4.
 
@@ -660,7 +660,7 @@ We turn T into a directed tree by directing every edge away from 0. There follow
 
 Let E be the set of equivalencerelations on the set R. Any equivalencerelation ∼ on R may be extendedto an equivalencerelation on v∈V Rv by: for ρu ∈ Ru, ρv ∈ Rv, we have ρu ∼ ρv if and only if ρu′ ∼ ρv′ .
 
-One may deﬁne the random-cluster measure corresponding to any given member ∼ of a fairly large sub-class of E, but for the sake of simplicity we shall concentrate in the main on the two extremal equivalence relations, as follows.
+One may define the random-cluster measure corresponding to any given member ∼ of a fairly large sub-class of E, but for the sake of simplicity we shall concentrate in the main on the two extremal equivalence relations, as follows.
 
 There is a partial order ≤ on E given by: (10.63) ∼1 ≤ ∼2 if: for all ρ,ρ′ ∈ R, ρ ∼2 ρ′ whenever ρ ∼1 ρ′.
 
@@ -668,13 +668,13 @@ There is a minimal (respectively, maximal) partial order which we denote by ∼0
 
 Let be a finite subset of V, and let E be the set of edges of T having both endvertices in . For ξ ∈ \Omega = \{0,1\}^E, we write ξ for the (finite) subset of
 
-containing all conﬁgurations ω satisfying ω(e) = ξ(e) for e ∈ E \ E ; these are the conﬁgurations that agree with ξ off . For simplicity, we shall restrict ourselves to sets of a certain form. A subset C of V is called a cutset if every infinite path from 0 intersects C, and C is minimal with this property. It may be seen by an elementary argument that every cutset is finite. Let C be a cutset, and write out(C) for the set of all vertices x such that: x ∈/ C and the (unique) path from 0 to x intersects C. A box is a set of the form V \ out(C) for some cutset C, and we write ∂ for the corresponding C.
+containing all configurations ω satisfying ω(e) = ξ(e) for e ∈ E \ E ; these are the configurations that agree with ξ off . For simplicity, we shall restrict ourselves to sets of a certain form. A subset C of V is called a cutset if every infinite path from 0 intersects C, and C is minimal with this property. It may be seen by an elementary argument that every cutset is finite. Let C be a cutset, and write out(C) for the set of all vertices x such that: x ∈/ C and the (unique) path from 0 to x intersects C. A box is a set of the form V \ out(C) for some cutset C, and we write ∂ for the corresponding C.
 
-Let be a box, and let ∼ ∈ E, ξ ∈ , and ω ∈ ξ . The conﬁguration ω gives rise to an ‘open graph’ on , namely G( ,ω) = ( ,η(ω) ∩ E ). We augment this graph by adding certain new edges representing the action of the equivalence relation ∼ in the presence of the externalconﬁguration ξ. Speciﬁcally, for distinct u,v ∈ ∂ , we add a new edge between the pair u, v if there exist ξ-open rays ρu ∈ Ru, ρv ∈ Rv satisfying ρu ∼ ρv. We write Gξ,∼( ,ω) for the resulting augmented graph, and we let kξ,∼( ,ω) be the number of connected components of Gξ,∼( ,ω). These definitions are motivated by the idea that each equivalence class of rays leads to a common ‘point at inﬁnity’ through which vertices may be connected by open paths.
+Let be a box, and let ∼ ∈ E, ξ ∈ , and ω ∈ ξ . The configuration ω gives rise to an ‘open graph’ on , namely G( ,ω) = ( ,η(ω) ∩ E ). We augment this graph by adding certain new edges representing the action of the equivalence relation ∼ in the presence of the externalconfiguration ξ. Specifically, for distinct u,v ∈ ∂ , we add a new edge between the pair u, v if there exist ξ-open rays ρu ∈ Ru, ρv ∈ Rv satisfying ρu ∼ ρv. We write Gξ,∼( ,ω) for the resulting augmented graph, and we let kξ,∼( ,ω) be the number of connected components of Gξ,∼( ,ω). These definitions are motivated by the idea that each equivalence class of rays leads to a common ‘point at infinity’ through which vertices may be connected by open paths.
 
-We deﬁne next a random-clustermeasure correspondingto a given equivalence
+We define next a random-clustermeasure correspondingto a given equivalence
 
-relation ∼. Let ξ ∈ , and let p ∈ [0,1] and $q$ ∈ (0,∞). We deﬁne φ ,ξ,∼p,q as the random-cluster measure on the box ( , E ) with boundary condition (ξ,∼).
+relation ∼. Let ξ ∈ , and let p ∈ [0,1] and $q$ ∈ (0,∞). We define φ ,ξ,∼p,q as the random-cluster measure on the box ( , E ) with boundary condition (ξ,∼).
 
 More precisely, $\phi_{\Lambda, p, q}^{\xi, \sim}$ is the probability measure on the pair $(\Omega, \mathcal{F})$ given by
 
@@ -689,7 +689,7 @@ boundary conditions, and it has been studied in a slightly disguised form in [16
 
 For any finite subset ⊆ V, let T denote the σ-field generated by the set {ω(e) : e ∈ E \ E } of states of edges having at least one endvertex outside . For e ∈ E, Te denotes the σ-field generated by the states of edges other than e.
 
-Let p ∈ [0,1], q ∈ (0,∞), and let ∼ be an equivalence relation that satisﬁes a certain measurability condition to be stated soon. A probability measure φ on ($\Omega, \mathcal{F}$) is called a (∼)DLR-random-cluster measure with parameters p and $q$ if: for all A ∈ F and all boxes ,
+Let p ∈ [0,1], q ∈ (0,∞), and let ∼ be an equivalence relation that satisfies a certain measurability condition to be stated soon. A probability measure φ on ($\Omega, \mathcal{F}$) is called a (∼)DLR-random-cluster measure with parameters p and $q$ if: for all A ∈ F and all boxes ,
 
 (10.66) φ(A | T )(ξ) = φ ,ξ,∼p,q(A) for φ-a.e. ξ. The set of such measures is denoted by R∼p,q. The set R∼p,$q$ is convex whenever it is non-empty (as in Theorem 4.34).
 
@@ -723,7 +723,7 @@ have the binomial bin(2,π) distribution. That is, π ≤ 21 if and only if (10.
 
 see [164, Thm 5.4.5]. It turns out that the product measure φπ lies in R1p,q if and only if it does not ‘feel’ the wired boundary condition ∼1, that is to say, if there exist (φπ-almost-surely) no infinite clusters6.
 
-We turn brieﬂy to more general boundary conditions than merely the free and wired, see [160] for further details. The set R of rays may be viewed as a compact topological space with the product topology. Let ∼ be an equivalence relation on R. We call ∼ closed if the set {(ρ1,ρ2) ∈ R2 : ρ1 ∼ ρ2} is a closed subset of R2. It turns out that closed equivalence relations are necessarily measurable. For q ∈ [1,∞) and a closed relation ∼, the existence of the weak limit φp1,,∼$q$ = lim ↑V φ ,1,∼p,q follows by stochastic ordering, and it may be shown that φp1,,∼$q$ is a (∼)DLR-random-cluster measure.
+We turn briefly to more general boundary conditions than merely the free and wired, see [160] for further details. The set R of rays may be viewed as a compact topological space with the product topology. Let ∼ be an equivalence relation on R. We call ∼ closed if the set {(ρ1,ρ2) ∈ R2 : ρ1 ∼ ρ2} is a closed subset of R2. It turns out that closed equivalence relations are necessarily measurable. For q ∈ [1,∞) and a closed relation ∼, the existence of the weak limit φp1,,∼$q$ = lim ↑V φ ,1,∼p,q follows by stochastic ordering, and it may be shown that φp1,,∼$q$ is a (∼)DLR-random-cluster measure.
 
 Theorem 10.67 leaves open the questions of deciding when φπ = φp1,q, and
 
@@ -749,7 +749,7 @@ e φ-almost-surely, where Je = {e is open}.
 
 (10.71) φ(Je | Te) = π + (p − π)1K1
 
-For ξ ∈ and W ⊆ V, write [ξ]W for the set of all conﬁgurations that agree
+For ξ ∈ and W ⊆ V, write [ξ]W for the set of all configurations that agree
 
 ![image 1237](../Images/imageFile1237.png)
 
@@ -807,7 +807,7 @@ fp,q(x) = x, (b) pc(q) = κq where κq is given in (10.78), (c) φp1,q ∈ R1p,q
 
 This theorem may be found in essence in [167] but with different proofs. In contrast to the direct calculations7 of this section, the proofs in [167] proceed via a representation of random-cluster measures on T in terms of a certain class of multi-type branching processes.
 
-Proof of Theorem 10.74. We use the series/parallel laws of Theorem 3.89. The basic fact is that three edges in the conﬁguration on the left side of Figure 10.6, with parameter-values as given there, may be replaced as indicated by a single edge with parameter Fp,q(x, y). This is easy to check: the two lower edges in parallel may be replaced by a single edge with parameter 1 − (1 − x)(1− y), and the latter may then be combined with the upper edge in series.
+Proof of Theorem 10.74. We use the series/parallel laws of Theorem 3.89. The basic fact is that three edges in the configuration on the left side of Figure 10.6, with parameter-values as given there, may be replaced as indicated by a single edge with parameter Fp,q(x, y). This is easy to check: the two lower edges in parallel may be replaced by a single edge with parameter 1 − (1 − x)(1− y), and the latter may then be combined with the upper edge in series.
 
 Let n = {x ∈ V : |x| ≤ n}, where |x| denotes the number of edges in the path from 0 to x. We consider first the measures φ1 n,p,q, in the limit as n → ∞.
 
@@ -849,7 +849,7 @@ Proof of Theorem 10.82. (a) Let ρ be as given. We claim that
 
 (10.87) φ1 n,p,q(0 ↔ ∂ n) → gq(ρ) as n → ∞. By series/parallel replacement as in the proof of Theorem 10.74,
 
-θn(p,q) = φ1 n,p,q(0 ↔ ∂ n) satisﬁes
+θn(p,q) = φ1 n,p,q(0 ↔ ∂ n) satisfies
 
 θn(p,q) = θ1( fp(,nq)(1),q).
 
@@ -905,7 +905,7 @@ r→∞
 
 where φr1,∞ is defined after (10.85).
 
-For ω ∈ and r ≥ 0, let Gr be the set of vertices x ∈ ∂ r such that 0 is joined to x by an open path of the tree, and write Nr = |Gr|. We claim that (10.92) for k = 1,2,. . ., φp1,q(1 ≤ Nr ≤ k) → 0 as r → ∞, and we prove this as follows. Let k ∈ {1,2,. . .}, and deﬁne the random sequence R(0), R(1), R(2),. . . by R(0) = 0 and
+For ω ∈ and r ≥ 0, let Gr be the set of vertices x ∈ ∂ r such that 0 is joined to x by an open path of the tree, and write Nr = |Gr|. We claim that (10.92) for k = 1,2,. . ., φp1,q(1 ≤ Nr ≤ k) → 0 as r → ∞, and we prove this as follows. Let k ∈ {1,2,. . .}, and define the random sequence R(0), R(1), R(2),. . . by R(0) = 0 and
 
 R(i + 1) = min s > R(i) : 1 ≤ Ns ≤ k , i ≥ 0.
 
@@ -919,7 +919,7 @@ Let i ≥ 0, and suppose we are given that I(ω) ≥ i. Conditional on R(0), R(1
 
 φp1,q(I ≥ i + 1 | I ≥ i) ≤ 1 − (1 − π)2k, i ≥ 0, whence
 
-φp1,q(I ≥ i) ≤ 1 − (1 − π)2k i, i ≥ 0, and, in particular, (10.93) holds. Hence, M = sup{r : 1 ≤ Nr ≤ k} satisﬁes φp1,q(M < ∞) = 1, implying as required that
+φp1,q(I ≥ i) ≤ 1 − (1 − π)2k i, i ≥ 0, and, in particular, (10.93) holds. Hence, M = sup{r : 1 ≤ Nr ≤ k} satisfies φp1,q(M < ∞) = 1, implying as required that
 
 ![image 1242](../Images/imageFile1242.png)
 
@@ -972,7 +972,7 @@ measure on each of the sets Exi, i = 1,2,. . .. This results in a probability me
 
 are uncountably many choices for x, and therefore uncountably many distinct members of R1p,q. For the sake of clarity, we point out that one way to choose a large class of possible x is to take an infinite directed path of T, and to consider the power set of the set of all neighbours of that do not belong to .
 
-Partial progress towards a veriﬁcation of Conjecture 10.97 may be found in [196]. A broader class of equivalence relations has been considered in [160]. (10.98) Theorem [160, 196]. Let q ∈ [1,∞) and let p ≥ 2q/(2q + 1). The set R1p,q comprises the singleton φp1,q only.
+Partial progress towards a verification of Conjecture 10.97 may be found in [196]. A broader class of equivalence relations has been considered in [160]. (10.98) Theorem [160, 196]. Let q ∈ [1,∞) and let p ≥ 2q/(2q + 1). The set R1p,q comprises the singleton φp1,q only.
 
 The condition of this theorem is not best possible in the case $q$ = 1, and therefore is unlikely to be best possible for $q$ ∈ (1,∞).
 
@@ -980,7 +980,7 @@ There has been extensive study of the Ising model on a tree. It turns out that t
 
 ![image 1244](../Images/imageFile1244.png)
 
-√2), see [49, 188, 189, 250]. This value arises also in the study of a related ‘Edwards–Anderson’spin-glass problem on T, see [89] and Section 11.5. Itmay be seen by a processof spin-ﬂippingthat the spin-glassmodel with ±1 interactionscan be mappedto a ferromagneticIsing modelwith boundary conditions taken uniformly and independently from the spin space {−1,+1}. It turns out that this model has critical value psg also, and for this reason psg is commonly referred to as the ‘spin-glass critical point’.
+√2), see [49, 188, 189, 250]. This value arises also in the study of a related ‘Edwards–Anderson’spin-glass problem on T, see [89] and Section 11.5. Itmay be seen by a processof spin-flippingthat the spin-glassmodel with ±1 interactionscan be mappedto a ferromagneticIsing modelwith boundary conditions taken uniformly and independently from the spin space {−1,+1}. It turns out that this model has critical value psg also, and for this reason psg is commonly referred to as the ‘spin-glass critical point’.
 
 ![image 1245](../Images/imageFile1245.png)
 
@@ -994,7 +994,7 @@ For p ∈ (32, psg), the + Gibbs state differs from the free state, whereas ‘t
 
 cordingto the free state) result in the free measure. When $p$ > psg, the free state is no longeran extremalGibbsstate. This doubletransitionis notevidentin the analysis of this chapter since it is restricted to boundary conditions of ‘unconditioned’ random-cluster-type.
 
-Sketch proof of Theorem 10.98. Note first that p ≥ 2q/(2q + 1) if and only if π = p/[p + q(1 − p)] satisﬁes π ≥ 32. Under this condition we may obtain, by a branching-process argument, the φπ-almost-sure existence in T of a (random) set W of vertices such that: (i) every 0-ray passes through some vertex of W, and (ii) every w ∈ W is the root of an infinite open sub-tree of T. The argument then continues rather as in the proof of Theorem 5.33(b). The details may be found in [160, 196].
+Sketch proof of Theorem 10.98. Note first that p ≥ 2q/(2q + 1) if and only if π = p/[p + q(1 − p)] satisfies π ≥ 32. Under this condition we may obtain, by a branching-process argument, the φπ-almost-sure existence in T of a (random) set W of vertices such that: (i) every 0-ray passes through some vertex of W, and (ii) every w ∈ W is the root of an infinite open sub-tree of T. The argument then continues rather as in the proof of Theorem 5.33(b). The details may be found in [160, 196].
 
 ![image 1248](../Images/imageFile1248.png)
 
@@ -1010,7 +1010,7 @@ Thepropertiesofinteractingsystemsontreesareoftenquitedifferentfromthoseof lattic
 
 ![image 1249](../Images/imageFile1249.png)
 
-satisﬁes χ(G) = 0. The graph is called non-amenable if χ(G) > 0. It is easily seen that the lattices Ld and the regular m-ary tree Tm satisfy
+satisfies χ(G) = 0. The graph is called non-amenable if χ(G) > 0. It is easily seen that the lattices Ld and the regular m-ary tree Tm satisfy
 
 χ(Ld) = 0, χ(Tm) > 0 for m ≥ 2, so that lattices are amenable, and regular trees of degree 3 or more are not.
 
@@ -1058,7 +1058,7 @@ n→∞
 
 exists, and it is called the ‘free’ random-cluster measure on G. We note as before that the limit measure φp0,q does not depend on the choice of , and that φp0,$q$ is automorphism-invariant.
 
-In deﬁningthe wired measure, we veertowardsthe recipeof Section 10.9rather than the lattice-theoretic (4.11). This amounts in rough terms to the following. Let be a finite subset of V, and identify the set ∂ as a single vertex. Write φ ,1 p,q for the random-cluster measure with parameters p, q on this new graph, and view φ ,1 p,q as a measure on the infinite measurable pair ( ,F ). As above, the limit
+In definingthe wired measure, we veertowardsthe recipeof Section 10.9rather than the lattice-theoretic (4.11). This amounts in rough terms to the following. Let be a finite subset of V, and identify the set ∂ as a single vertex. Write φ ,1 p,q for the random-cluster measure with parameters p, q on this new graph, and view φ ,1 p,q as a measure on the infinite measurable pair ( ,F ). As above, the limit
 
 φp1,$q$ = lim
 
@@ -1086,7 +1086,7 @@ in that, for ǫ > 0, there exists N such that
 
 φpb,q(A ∩ γx,yB) − φpb,q(A)φpb,q(B) < ǫ if δ(x, y) ≥ N, where δ(x, y) denotes the length of the shortest path from x to y.
 
-The measures φpb,q satisfy different ‘one-point speciﬁcations’, namely:
+The measures φpb,q satisfy different ‘one-point specifications’, namely:
 
 φp0,q(Je | Te) = π + (p − π)1Ke, φp0,q-a.s., φp1,q(Je | Te) = π + (p − π)1K1
 
@@ -1108,11 +1108,11 @@ By the tail-triviality of the φpb,q,
 
 We note the elementaryinequality pc1(q) ≤ pc0(q). Itis an openquestionto decide when strict inequality holds here. As in (5.4), we have that pc1(q) = pc0(q) for lattices, and the proof of this may be extended to all amenable graphs, [196]. On the other hand, by Theorem 10.82, pc1(q) < pc0(q) for the regular binary tree T2 when q ∈ (2,∞).
 
-If there exists an infinite open cluster with positive probability, under what further conditions is this cluster almost-surely unique? The property of having a uniqueinfinite clusteris notmonotoneinthe conﬁguration: thereexist ω1,ω2 ∈ such that ω1 ≤ ω2 and I(ω1) = 1, I(ω2) ≥ 2. Nevertheless, it turns out that, for transitive unimodular graphs, the set of values of $p$ for which I = 1 is indeed (almost surely) an interval.
+If there exists an infinite open cluster with positive probability, under what further conditions is this cluster almost-surely unique? The property of having a uniqueinfinite clusteris notmonotoneinthe configuration: thereexist ω1,ω2 ∈ such that ω1 ≤ ω2 and I(ω1) = 1, I(ω2) ≥ 2. Nevertheless, it turns out that, for transitive unimodular graphs, the set of values of $p$ for which I = 1 is indeed (almost surely) an interval.
 
 The ‘uniqueness critical point’ is given by
 
-pub(q) = inf p : φpb,q(I = 1) = 1 , b = 0,1. and satisﬁes
+pub(q) = inf p : φpb,q(I = 1) = 1 , b = 0,1. and satisfies
 
 pcb(q) ≤ pub(q), b = 0,1. Since G is transitive, Aut(G) has an infinite orbit. The event {I = 1} is Aut(G)invariant whence, by the Aut(G)-ergodicity of the φpb,q,
 
@@ -1126,7 +1126,7 @@ The proof is based upon the following proposition whose proof is omitted from th
 
 µ(Ae) > 0 whenever µ(A) > 0,
 
-where Ae is the set of conﬁgurations obtained from members of A by declaring e to be an open edge. Insertion-tolerance is a weak form of finite-energy, see (3.4). The symbol 0 denotes an arbitary vertex of G called its ‘origin’.
+where Ae is the set of configurations obtained from members of A by declaring e to be an open edge. Insertion-tolerance is a weak form of finite-energy, see (3.4). The symbol 0 denotes an arbitary vertex of G called its ‘origin’.
 
 (10.102) Proposition [242]. Let G be an infinite connected locally finite graph that is transitive and unimodular, and let µ be an Aut(G)-ergodic probability measure on ($\Omega, \mathcal{F}$) that is positively associated and insertion-tolerant. Then µ(I = 1) = 1 if and only if
 
@@ -1149,7 +1149,7 @@ I = \begin{cases}
 \quad \phi_{p,q}^b\text{-a.s.}
 $$
 
-It is an open problem to obtain necessary and sufﬁcient criteria for the strict inequalities
+It is an open problem to obtain necessary and sufficient criteria for the strict inequalities
 
 (10.103) pc1(q) < pu1(q), pc0(q) < pu0(q),
 

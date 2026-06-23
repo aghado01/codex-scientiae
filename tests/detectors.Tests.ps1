@@ -77,6 +77,20 @@ Describe 'Get-CorruptionType — the merge-gate verdict' {
     It 'flags an unbalanced formula' {
         Get-CorruptionType ([pscustomobject]@{ type = 'formula'; content = '\left( \frac{1}{2}' }) | Should -Be 'unbalanced_delimiters'
     }
+    # interval notation crosses [] and () on purpose — the combined-class balance must NOT flag it
+    It 'does NOT flag valid interval notation: <s>' -ForEach @(
+        @{ s = 'x \in [0,1)' }
+        @{ s = '[0, \infty) \subset \mathbb{R}' }
+        @{ s = '\alpha \in (0, 1]' }
+        @{ s = 'f \colon [a,b) \to \mathbb{R}' }
+    ) { Get-CorruptionType ([pscustomobject]@{ type = 'formula'; content = $s }) | Should -BeNullOrEmpty }
+    It 'still flags a real gap even when a valid interval is present (interval tolerated, brace gap caught)' {
+        Get-CorruptionType ([pscustomobject]@{ type = 'formula'; content = 'x \in [0,1) + \frac{1}{2' }) | Should -Be 'unbalanced_delimiters'
+    }
+    It 'still flags a genuinely missing/extra literal delimiter: <s>' -ForEach @(
+        @{ s = 'x \in [0,1' }           # missing ]
+        @{ s = '\alpha + \beta ) \gamma' }  # extra )
+    ) { Get-CorruptionType ([pscustomobject]@{ type = 'formula'; content = $s }) | Should -Be 'unbalanced_delimiters' }
     It 'flags the U+FFFD replacement char' {
         Get-CorruptionType ([pscustomobject]@{ type = 'prose'; content = "lost $([char]0xFFFD) char" }) | Should -Be 'replacement_char'
     }

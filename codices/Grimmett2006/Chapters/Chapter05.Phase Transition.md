@@ -21,7 +21,7 @@ Summary. When q ∈ [1, ∞), there exists a critical value pc(q) of the edgepar
 
 The random-cluster model possesses an infinite open cluster if and only if $p$ is sufficiently large. There is a critical value of $p$ separating the regime in which all open clusters are finite from that in which infinite clusters exist. We explore this phasetransitioninthischapter. WiththeexceptionofthefinalSection5.8,weshall assume for the entirety of the chapter that q ∈ [1,∞), and we shall concentrate on the extremal random-cluster measures φp0,q and φp1,q. The quantities of principal interest are the φpb,q-percolation-probabilities,
 
-(5.1) θb(p,q) = φpb,q(0 ↔ ∞), b = 0,1. We deﬁne the critical points (5.2) pcb(q) = sup p : θb(p,q) = 0 , b = 0,1. By Proposition 4.28(a), the θb(·,q) are non-decreasing functions, and therefore (5.3) θb(p,q) = 0 if $p$ < pcb(q),
+(5.1) θb(p,q) = φpb,q(0 ↔ ∞), b = 0,1. We define the critical points (5.2) pcb(q) = sup p : θb(p,q) = 0 , b = 0,1. By Proposition 4.28(a), the θb(·,q) are non-decreasing functions, and therefore (5.3) θb(p,q) = 0 if $p$ < pcb(q),
 
 > 0 if $p$ > pcb(q).
 
@@ -31,7 +31,7 @@ By Theorem 4.63, φp0,$q$ = φp1,q for almost every p ∈ [0,1]. Therefore,
 
 (5.4) pc(q) = pc0(q) = pc1(q), and we refer to pc(q) as the critical point of the random-cluster model.
 
-It is almost trivial to prove that pc(q) = 1 in the very special case when the number d of dimensions satisﬁes d = 1. In contrast, it is fundamental that 0 < pc(q) < 1 when d ≥ 2. Not a great deal is known in general1 about the way in which pc(q) behaves when viewed as a function of q. The following basic inequalities are consequences of the comparison inequalities of Proposition 4.28.
+It is almost trivial to prove that pc(q) = 1 in the very special case when the number d of dimensions satisfies d = 1. In contrast, it is fundamental that 0 < pc(q) < 1 when d ≥ 2. Not a great deal is known in general1 about the way in which pc(q) behaves when viewed as a function of q. The following basic inequalities are consequences of the comparison inequalities of Proposition 4.28.
 
 - (5.5) Theorem [8]. We have that
 - (5.6)
@@ -128,7 +128,7 @@ The continuityofthe percolationprobabilitiesθb(p,q)is relatedtothe uniqueness o
 
 4.63. (d) Let $p$ = pc(q). The functions θ0(·,q) and θ1(·,q) are continuous at the point p if and only if $p$ ∈/ Dq.
 
-Clearly, θ0(p,q) = θ1(p,q) = 0 if $q$ ∈ [1,∞) and $p$ < pc(q), and hence Dq∩[0, pc(q)) = ∅, bypart(c). Itispresumablythecasethatθ0(·,q)andθ1(·,q) are continuous except possibly at $p$ = pc(q). In addition it may be conjectured that θ0(·,q) is left-continuous on the entire interval (0,1]. A veriﬁcation of this conjecture would include a proof that
+Clearly, θ0(p,q) = θ1(p,q) = 0 if $q$ ∈ [1,∞) and $p$ < pc(q), and hence Dq∩[0, pc(q)) = ∅, bypart(c). Itispresumablythecasethatθ0(·,q)andθ1(·,q) are continuous except possibly at $p$ = pc(q). In addition it may be conjectured that θ0(·,q) is left-continuous on the entire interval (0,1]. A verification of this conjecture would include a proof that
 
 θ0(pc(q),q) = lim
 
@@ -158,7 +158,7 @@ on noting that the θb(·,q) are non-decreasing. It remains to prove (c). Certai
 
 Let e = u,v be an edge, and Je the event that e is open. For w ∈ Zd, let Iw = {w ↔ ∞}, and let Hw be the event that w is in an infinite open path of Ed \ {e}. As in the proof of Proposition 4.6, there exists a probability measure ψ
 
-on ($\Omega, \mathcal{F}$)2 with marginals φp0,q and φp1,q, and assigning probability 1 to the set of pairs (ω0,ω1) ∈ 2 satisfying ω0 ≤ ω1. Let F(ω) be the set of vertices that are joined to inﬁnity by open paths of the conﬁguration ω ∈ . We have that
+on ($\Omega, \mathcal{F}$)2 with marginals φp0,q and φp1,q, and assigning probability 1 to the set of pairs (ω0,ω1) ∈ 2 satisfying ω0 ≤ ω1. Let F(ω) be the set of vertices that are joined to infinity by open paths of the configuration ω ∈ . We have that
 
 φp1,q(Iw) − φp0,q(Iw) = 0, by (5.20). The event Je ∩ Iu ∩ Iv is increasing, whence (5.23) φp0,q(Je ∩ Iu ∩ Iv) ≤ φp1,q(Je ∩ Iu ∩ Iv). Also, (5.24) φp0,q(Je ∩ Iu ∩ Iv) = φp0,q(Je ∩ Hu ∩ Hv)
 
@@ -282,11 +282,11 @@ Therefore,
 
 by (5.29). Let ↑ Zd, ↑ Zd, and ǫ ↓ 0 in that order, to obtain (5.28).
 
-Proof of Proposition 5.30. Let φb = φ ,b p,q. Since φ0 ≤st φ1, there exists a coupled probability measure on 0 × 1 with marginals φ0, φ1, and that allocates probability 1 to the set of pairs (ω0,ω1) with ω0 ≤ ω1. This fact is immediate from the stochastic ordering, but we require in addition the special property stated in the proposition, and to this end we shall develop a special coupling not dissimilar to those used in [38] and [259, p. 254]. We do this by building a random conﬁguration (ω0,ω1) ∈ 0 × 1 in a sequential manner, and we shall speak of ω0 (respectively, ω1) as the lower (respectively, upper) conﬁguration. We shall proceed edge by edge, and shall check the (conditional) stochastic ordering at each stage.
+Proof of Proposition 5.30. Let φb = φ ,b p,q. Since φ0 ≤st φ1, there exists a coupled probability measure on 0 × 1 with marginals φ0, φ1, and that allocates probability 1 to the set of pairs (ω0,ω1) with ω0 ≤ ω1. This fact is immediate from the stochastic ordering, but we require in addition the special property stated in the proposition, and to this end we shall develop a special coupling not dissimilar to those used in [38] and [259, p. 254]. We do this by building a random configuration (ω0,ω1) ∈ 0 × 1 in a sequential manner, and we shall speak of ω0 (respectively, ω1) as the lower (respectively, upper) configuration. We shall proceed edge by edge, and shall check the (conditional) stochastic ordering at each stage.
 
 After stage n we will have found the (paired) states of edges belonging to some subset Sn of E . We begin with S0 = ∅, and we build inwards starting at the boundary of . Let (el : l = 1,2,. . ., L) be a deterministic ordering of the edges in E . Let ej1 be the earliest edge in this ordering that is incident to some vertex in ∂ , and let
 
-I0b = {every edge outside E has state b}, b = 0,1. By the usual stochastic ordering, (5.31) φ0(ej1 is open | I00) ≤ φ1(ej1 is open | I01). Therefore,we may ﬁnd {0,1}-valuedrandomvariables ω0(ej1), ω1(ej1) with mean values as in (5.31) and satisfying ω0(ej1) ≤ ω1(ej1). We set S1 = {ej1} and
+I0b = {every edge outside E has state b}, b = 0,1. By the usual stochastic ordering, (5.31) φ0(ej1 is open | I00) ≤ φ1(ej1 is open | I01). Therefore,we may find {0,1}-valuedrandomvariables ω0(ej1), ω1(ej1) with mean values as in (5.31) and satisfying ω0(ej1) ≤ ω1(ej1). We set S1 = {ej1} and
 
 I1b = I0b ∩ {ej1 has state ωb(ej1)}, b = 0,1.
 
@@ -298,15 +298,15 @@ is valid since, by construction, ω0(ejs) ≤ ω1(ejs) for s = 1,2,. . .,r. Thus
 
 Next is described how we choose the edges ej2,ej3,. . .. Suppose the first r stages of the above process are complete, and write Sr = {ejs : s = 1,2,. . .,r}. Let Kr be the set of vertices x ∈ such that there exists a path π joining x to some z ∈ ∂ , with the property that ω1(e) = 1 for all e ∈ π. (This requires that every edge e in π has been considered in the first r stages, and that the ω1-value of each such e was found to be 1.) We let ejr+1 be the earliest edge in the given ordering of E that does not belong to Sr but possesses an endvertex in Kr.
 
-Let us call a temporary halt at the stage when no new edge can be found. At this stage, R say, we have revealed the states of edges in a certain (random) set SR. Let FR be the set of edges in E that are closed in the upper conﬁguration. By construction, FR contains exactly those edges of E that have at least one endvertex in KR and that have been determined to be closed in the upper conﬁguration. By the ordering, the edges in FR are closed in the lower conﬁgurationalso. By construction, the lower (respectively, upper) conﬁguration so far revealed is governed by the measure φ0 (respectively, φ1).
+Let us call a temporary halt at the stage when no new edge can be found. At this stage, R say, we have revealed the states of edges in a certain (random) set SR. Let FR be the set of edges in E that are closed in the upper configuration. By construction, FR contains exactly those edges of E that have at least one endvertex in KR and that have been determined to be closed in the upper configuration. By the ordering, the edges in FR are closed in the lower configurationalso. By construction, the lower (respectively, upper) configuration so far revealed is governed by the measure φ0 (respectively, φ1).
 
-Suppose for the moment that = , in which case G(ω1) = \ KR. When extending the upper and lower conﬁgurations to edges in EG, the only relevant informationgathered to date is that all edges in the edge-boundary eG are closed in both conﬁgurations. We may therefore complete ω0, ω1 at one stroke by taking them to be equal, with (common) law φG0 ,p,q. This proves the proposition in the special case when = . Consider now the general case ⊆ .
+Suppose for the moment that = , in which case G(ω1) = \ KR. When extending the upper and lower configurations to edges in EG, the only relevant informationgathered to date is that all edges in the edge-boundary eG are closed in both configurations. We may therefore complete ω0, ω1 at one stroke by taking them to be equal, with (common) law φG0 ,p,q. This proves the proposition in the special case when = . Consider now the general case ⊆ .
 
-We explainnexthowto re-startthe processat stage R. We beganabovewith the ‘seed’ ∂ and we built a set of edges connected to ∂ by paths of open edges in the upper conﬁguration, together with its closed edge-boundary. Having reached stage R, we choose a vertex x ∈ satisfying x ∈/ KR ∪ ( \ ∂ ) that is incident to some edge of FR. We then re-start the process with x as seed, and we continue until we have revealed the open cluster Cx(ω1) at x in the upper conﬁguration. We add the vertex-set of Cx(ω1) to KR to obtain a larger set K′. To FR, we add all edges incident to vertices in this cluster that are closed in the upper conﬁguration, obtaining thus a larger set F′. Next, we ﬁnd another seed y ∈/ K′ ∪ ( \ ∂ ) incident to some edge in F′. This process is iterated until no new seed may be found.
+We explainnexthowto re-startthe processat stage R. We beganabovewith the ‘seed’ ∂ and we built a set of edges connected to ∂ by paths of open edges in the upper configuration, together with its closed edge-boundary. Having reached stage R, we choose a vertex x ∈ satisfying x ∈/ KR ∪ ( \ ∂ ) that is incident to some edge of FR. We then re-start the process with x as seed, and we continue until we have revealed the open cluster Cx(ω1) at x in the upper configuration. We add the vertex-set of Cx(ω1) to KR to obtain a larger set K′. To FR, we add all edges incident to vertices in this cluster that are closed in the upper configuration, obtaining thus a larger set F′. Next, we find another seed y ∈/ K′ ∪ ( \ ∂ ) incident to some edge in F′. This process is iterated until no new seed may be found.
 
 At the end of all this, we have revealed the paired states of all edges in some set S. Let T be the union of the vertex-sets of the open clusters of all seeds. Since no further seed may be found, it is the case that G(ω1) = \ T. As before, the
 
-lower and upper conﬁgurations may be completed at one stroke by sampling the states of edges in EG according to the free measure φG,p,q.
+lower and upper configurations may be completed at one stroke by sampling the states of edges in EG according to the free measure φG,p,q.
 
 Proof of Theorem 5.17. Let µ be the (coupled) probability measure on × given by the recipe of Theorem 4.91(a). We have that
 
@@ -344,17 +344,17 @@ Slightly more is known in the case of two dimensions. It is proved in Theorem 6.
 
 √q/(1 +
 
-√q) is the ‘self-dual’ value of p. It is conjectured that pc(q) = psd(q) for $q$ ∈ [1,∞). Proof of Theorem 5.33. The sufﬁciency of (a) was proved in Theorem 5.16(c).
+√q) is the ‘self-dual’ value of p. It is conjectured that pc(q) = psd(q) for $q$ ∈ [1,∞). Proof of Theorem 5.33. The sufficiency of (a) was proved in Theorem 5.16(c).
 
 ![image 432](../Images/imageFile432.png)
 
 ![image 433](../Images/imageFile433.png)
 
-We sketch a proof that φp0,$q$ = φp1,q if $p$ is sufficiently close to 1. There are certain topological complications in this3, and we refrain from giving all the relevant details, most of which may be found in a closely related passage of [211, Section 2]. We begin by deﬁning a lattice L with the same vertex set as Ld but with edge-relation
+We sketch a proof that φp0,$q$ = φp1,q if $p$ is sufficiently close to 1. There are certain topological complications in this3, and we refrain from giving all the relevant details, most of which may be found in a closely related passage of [211, Section 2]. We begin by defining a lattice L with the same vertex set as Ld but with edge-relation
 
 x ∼ y if |xi − yi| ≤ 1 for 1 ≤ i ≤ d.
 
-For ω ∈ , we call a vertex x white if ω(e) = 1 for all e incident with x in Ld, and black otherwise. Foranyset V ofverticesof L, we deﬁneits blackcluster B(V)as the union of V together with the set of all vertices x0 of L for which the following holds: there exists a path x0,e0, x1,e1,. . .,en−1, xn of alternating vertices and edges of L such that x0, x1,. . ., xn−1 ∈/ V, xn ∈ V, and x0, x1,. . ., xn−1 are black. Note that the colours of vertices in V have no effect on B(V), and that V ⊆ B(V). Let
+For ω ∈ , we call a vertex x white if ω(e) = 1 for all e incident with x in Ld, and black otherwise. Foranyset V ofverticesof L, we defineits blackcluster B(V)as the union of V together with the set of all vertices x0 of L for which the following holds: there exists a path x0,e0, x1,e1,. . .,en−1, xn of alternating vertices and edges of L such that x0, x1,. . ., xn−1 ∈/ V, xn ∈ V, and x0, x1,. . ., xn−1 are black. Note that the colours of vertices in V have no effect on B(V), and that V ⊆ B(V). Let
 
 d
 
@@ -370,7 +370,7 @@ For an integer n and a vertex x, the event { B(x) ≥ n} is a decreasing event, 
 
 (5.35) φp0,q( B(x) ≥ n) ≤ φ ,0 p,q( B(x) ≥ n) for any box ≤ φ ,π( B(x) ≥ n),
 
-where φ ,π is product measure on E with density π = p/[p + q(1 − p)], and we have used the comparison inequality of Proposition 4.28(a). By a Peierls argument (see [211, pp. 151–152]) there exists α(p) such that: the percolation (product) measure φπ = lim ↑Zd φ ,π satisﬁes
+where φ ,π is product measure on E with density π = p/[p + q(1 − p)], and we have used the comparison inequality of Proposition 4.28(a). By a Peierls argument (see [211, pp. 151–152]) there exists α(p) such that: the percolation (product) measure φπ = lim ↑Zd φ ,π satisfies
 
 (5.36) φπ( B(x) ≥ n) ≤ e−nα(p), n ≥ 1,
 
@@ -380,7 +380,7 @@ where φ ,π is product measure on E with density π = p/[p + q(1 − p)], and w
 
 and furthermore α(p) > 0 if $p$ is sufficiently large, say $p$ > p′ for some p′ ∈ [pc(q),1).
 
-Let A be an increasingcylinderevent, and ﬁnd a finite box such that A ∈ F . Let be a box satisfying ⊆ . For any subset S of = Zd \ containing ∂ , we deﬁne the ‘internal boundary’ D(S) of S to be the set of all vertices x of L satisfying:
+Let A be an increasingcylinderevent, and find a finite box such that A ∈ F . Let be a box satisfying ⊆ . For any subset S of = Zd \ containing ∂ , we define the ‘internal boundary’ D(S) of S to be the set of all vertices x of L satisfying:
 
 ![image 435](../Images/imageFile435.png)
 
@@ -392,7 +392,7 @@ Let S = S ∪ D(S), and denote by I(S) the set of vertices x0 for which there ex
 
 Let ǫ > 0 and $p$ > p′, where $p$′ is given after (5.36). By (5.35)–(5.36), there exists a box ′ sufficiently large that (5.37) φp0,q(K , ) ≥ 1 − ǫ, ⊇ ′, where K , = B(∂ ) ∩ = ∅ . We pick ′ accordingly, and let ⊇ ′.
 
-Assume that K , occurs, so that I = I(B(∂ )) satisﬁes I ⊇ . Let H be the set of all subsets h of such that h ⊆ . We note three facts about B(∂ ) and D(B(∂ )):
+Assume that K , occurs, so that I = I(B(∂ )) satisfies I ⊇ . Let H be the set of all subsets h of such that h ⊆ . We note three facts about B(∂ ) and D(B(∂ )):
 
 ![image 436](../Images/imageFile436.png)
 
@@ -424,7 +424,7 @@ Let ↑ Zd and ǫ ↓ 0 in that order, and deduce that φp0,q ≥st φp1,q. Sinc
 
 The random-cluster model is said to be in the subcritical phase when $p$ < pc(q), and this phase is the subject of the next three sections. Let q ∈ [1,∞), d ≥ 2, and $p$ < pc(q). By Theorem 5.33(a), φp0,$q$ = φp1,q, and hence |Wp,q| = |Rp,q| = 1. We shall denote the unique random-cluster measure by φp0,q.
 
-The subcritical phase is characterized by the (almost-sure) absence of an infinite open cluster. Thus all open clusters are almost-surely finite, and one seeks estimates on the tail of the size of such a cluster. As described in [154, Chapter 6], one may study both the ‘radius’ and the ‘volume’ of a cluster C. We concentrate here on the cluster C = C0 at the origin, and we deﬁne its radius4 by
+The subcritical phase is characterized by the (almost-sure) absence of an infinite open cluster. Thus all open clusters are almost-surely finite, and one seeks estimates on the tail of the size of such a cluster. As described in [154, Chapter 6], one may study both the ‘radius’ and the ‘volume’ of a cluster C. We concentrate here on the cluster C = C0 at the origin, and we define its radius4 by
 
 (5.39) rad(C) = max{ y : y ∈ C} = max{ y : 0 ↔ y}.
 
@@ -440,7 +440,7 @@ It is quite another matter to show as expected that
 
 (5.43) ψ(p,q) > 0, ζ(p,q) > 0 for $p$ < pc(q).
 
-We conﬁne ourselves in this section to ‘soft’ arguments concerning the existence of ψ and ζ; the ‘harder’ arguments relevant to strict positivity are deferred to the next two sections. We begin by considering the radius of the cluster at the origin. The existence of the limit in (5.41) relies essentially on positive association. We write en = (n,0,0,. . . ,0).
+We confine ourselves in this section to ‘soft’ arguments concerning the existence of ψ and ζ; the ‘harder’ arguments relevant to strict positivity are deferred to the next two sections. We begin by considering the radius of the cluster at the origin. The existence of the limit in (5.41) relies essentially on positive association. We write en = (n,0,0,. . . ,0).
 
 ![image 442](../Images/imageFile442.png)
 
@@ -458,11 +458,11 @@ n→∞
 
 n→∞
 
-exists and satisﬁes 0 ≤ ψ = ψ(p,q) < ∞. There exists a constant σ = σ(d) such that
+exists and satisfies 0 ≤ ψ = ψ(p,q) < ∞. There exists a constant σ = σ(d) such that
 
 (5.46) φp0,q(0 ↔ en) ≤ e−nψ, φp0,q(0 ↔ ∂ n) ≤ σnd−1e−nψ, n ≥ 1.
 
-Proofs of Theorem 5.44 and Corollary 5.45. The proof of Theorem 5.44 follows exactlythatofthecorrespondingpartsof[154,Thms6.10,6.44],andthedetailsare omitted. For the second proof, it sufﬁces to check that φp0,q satisﬁes the conditions of Theorem 5.44.
+Proofs of Theorem 5.44 and Corollary 5.45. The proof of Theorem 5.44 follows exactlythatofthecorrespondingpartsof[154,Thms6.10,6.44],andthedetailsare omitted. For the second proof, it suffices to check that φp0,q satisfies the conditions of Theorem 5.44.
 
 We turn next to the volume |C| of the open cluster at the origin. A probability measure µ on ($\Omega, \mathcal{F}$) is said to satisfy the ‘uniform insertion-tolerancecondition’ if, for some α,β ∈ (0,1),
 
@@ -520,7 +520,7 @@ In the case of percolation, a useful intermediate step was the proof by Hammersl
 
 x∈Zd
 
-Similarly, Simon [300] and Lieb [234] proved the exponential decay of the twopoint function of Ising and other models under a summability assumption on this function, see Section 9.3. Such conclusions provoke the following question in the current context: if φp0,q(0 ↔ ∂ n) decays at some polynomial rate as n → ∞, then must it necessarily decay at an exponential rate? An afﬁrmative answer is provided in the discussion that follows.
+Similarly, Simon [300] and Lieb [234] proved the exponential decay of the twopoint function of Ising and other models under a summability assumption on this function, see Section 9.3. Such conclusions provoke the following question in the current context: if φp0,q(0 ↔ ∂ n) decays at some polynomial rate as n → ∞, then must it necessarily decay at an exponential rate? An affirmative answer is provided in the discussion that follows.
 
 We concentrate here on the quantity (5.57) L(p,q) = lim sup
 
@@ -552,7 +552,7 @@ There is a converse statement. If $p$ < pc(q) then L(p,q) < ∞, implying that n
 
 This in turn implies, as in [164, Exercise 5.6.4], that φp0,q(Rc) < ∞ for all c < d − 1.
 
-We state nextthe main conclusionof this section. A related result is to be found at Theorem 5.86. (5.60) Theorem. Let q ∈ [1,∞). The function ψ in (5.56) satisﬁes ψ(p,q) > 0 whenever 0 < $p$ < pc(q).
+We state nextthe main conclusionof this section. A related result is to be found at Theorem 5.86. (5.60) Theorem. Let q ∈ [1,∞). The function ψ in (5.56) satisfies ψ(p,q) > 0 whenever 0 < $p$ < pc(q).
 
 The proof, which is delayed until later in the section, uses the method of exponential steepness described in Section 3.5. Let A be an event, and recall from (2.54) the definition of the random variable HA,
 
@@ -576,7 +576,7 @@ We apply this to the measure µ = φp0,q to deduce the existence, φp0,q-almosts
 
 1 n
 
-Hn . By Proposition 4.28, η(p,q) is non-increasing in p, and we deﬁne (5.63) ptc(q) = sup p : η(p,q) > 0 . We seek a condition under which η(p,q) > 0. As usual, C denotes the vertex set of the open cluster at the origin.
+Hn . By Proposition 4.28, η(p,q) is non-increasing in p, and we define (5.63) ptc(q) = sup p : η(p,q) > 0 . We seek a condition under which η(p,q) > 0. As usual, C denotes the vertex set of the open cluster at the origin.
 
 ![image 455](../Images/imageFile455.png)
 
@@ -584,7 +584,7 @@ n→∞
 
 (5.64) Theorem (Positivity of time-constant) [163]. Let p ∈ (0,1) and $q$ ∈ [1,∞). If φp0,q(|C|2d+ǫ) < ∞ for some ǫ > 0, then η(p,q) > 0.
 
-We deﬁne the further critical point (5.65) pg(q) = sup p : ψ(p,q) > 0 , with ψ(p,q) as in (5.56). The correlation length ξ(p,q) is defined by
+We define the further critical point (5.65) pg(q) = sup p : ψ(p,q) > 0 , with ψ(p,q) as in (5.56). The correlation length ξ(p,q) is defined by
 
 ξ(p,q) = ψ(p,q)−1, subject to the conventionthat 0−1 = ∞. Note that ξ(p,q) is non-decreasingin p. Thusφp0,q(0 ↔ ∂ n)decaysexponentially asn → ∞ if and only if ξ(p,q) < ∞. (5.66) Theorem. Let q ∈ [1,∞). It is the case that ptc(q) = pg(q).
 
@@ -681,9 +681,9 @@ Let { Cx : x ∈ Zd} be a collection of independent subsets of Zd with the prope
 
 Mx = sup | Cy| : y ∈ Zd, x ∈ Cy ,
 
-and we shall prove this inductively. Let v1,v2,. . . be a deterministic ordering of Zd. Given the random variables { Cx : x ∈ Zd}, we shall construct a family {Dx : x ∈ Zd} having the same joint law as {Cx : x ∈ Zd} and satisfying: for each x, there exists y such that Dx ⊆ Cy. First, we set Dv1 = Cv1. Given Dv1, Dv2,. . ., Dvn, we deﬁne E = ni=1 Dvi. If vn+1 ∈ E, we set Dvn+1 = Dvj for some j such that vn+1 ∈ Dvj . If vn+1 ∈/ E, we proceed as follows. Let
+and we shall prove this inductively. Let v1,v2,. . . be a deterministic ordering of Zd. Given the random variables { Cx : x ∈ Zd}, we shall construct a family {Dx : x ∈ Zd} having the same joint law as {Cx : x ∈ Zd} and satisfying: for each x, there exists y such that Dx ⊆ Cy. First, we set Dv1 = Cv1. Given Dv1, Dv2,. . ., Dvn, we define E = ni=1 Dvi. If vn+1 ∈ E, we set Dvn+1 = Dvj for some j such that vn+1 ∈ Dvj . If vn+1 ∈/ E, we proceed as follows. Let
 
-eE be the set of edges of Zd having exactly one endvertex in E. We may ﬁnd a (random) subset F of Cvn+1 such that F has the conditional law of Cvn+1 given that all edges in eE are closed; we now set Dvn+1 = F. We are using two
+eE be the set of edges of Zd having exactly one endvertex in E. We may find a (random) subset F of Cvn+1 such that F has the conditional law of Cvn+1 given that all edges in eE are closed; we now set Dvn+1 = F. We are using two
 
 properties of φp0,q here. Firstly, the law of Cvn+1 given Cv1,Cv2,. . .,Cvn depends only on eE, and secondly, φp0,$q$ is positively associated. We obtain the required stochastic domination accordingly.
 
@@ -731,17 +731,17 @@ Here is the main result of this section.
 
 φp0,q(|C| ≥ n) ≤ e−nρ, n ≥ 1.
 
-The hypothesis $p$ < pc∞(q) is slightly stronger than that of Theorem 5.60, and so is the conclusion, since φp0,q(rad(C) ≥ n) ≤ φp0,q(|C| ≥ n). Proof. We adapt the arguments of [209, Section 2], from which we extract the main steps. For N ≥ 1 and i = 1,2,. . . ,d, we deﬁne the box
+The hypothesis $p$ < pc∞(q) is slightly stronger than that of Theorem 5.60, and so is the conclusion, since φp0,q(rad(C) ≥ n) ≤ φp0,q(|C| ≥ n). Proof. We adapt the arguments of [209, Section 2], from which we extract the main steps. For N ≥ 1 and i = 1,2,. . . ,d, we define the box
 
 TN(i) = [0,3N]i−1 × [0, N] × [0,3N]d−i.
 
-For ω ∈ , an i-crossing of TN(i) is an open path x0,e0, x1,e1,. . .,em of alternating vertices and edges of TN(i) such that the ith coordinate of x0 (respectively, xm) is 0 (respectively, N). Such crossings are in the short direction. For b > 3, we deﬁne
+For ω ∈ , an i-crossing of TN(i) is an open path x0,e0, x1,e1,. . .,em of alternating vertices and edges of TN(i) such that the ith coordinate of x0 (respectively, xm) is 0 (respectively, N). Such crossings are in the short direction. For b > 3, we define
 
 (5.87) τNb = φ1 bN,p,q TN(i) has an i-crossing ,
 
 noting by rotation-invariance that τNb does not depend on the value of i.
 
-Let N be a ﬁxed positive integer. From Ld we construct a new lattice L as follows. First, LhasvertexsetZd. Twoverticesx,yofLaredeemedadjacentinL if andonlyif |xi −yi| ≤ 3 forall i = 1,2,. . .,d. The betterto distinguishvertices of Ld and L, we shall use bold letters to indicate the latter. Let ω ∈ . Vertex x of L is coloured white if there exists i ∈ {1,2,. . .,d} such that Nx + TN(i) has an i-crossing, and is coloured black otherwise. The event {x is white} is increasing, and is defined in terms of the states of edges in the box (x) = Nx + [0,3N]d.
+Let N be a fixed positive integer. From Ld we construct a new lattice L as follows. First, LhasvertexsetZd. Twoverticesx,yofLaredeemedadjacentinL if andonlyif |xi −yi| ≤ 3 forall i = 1,2,. . .,d. The betterto distinguishvertices of Ld and L, we shall use bold letters to indicate the latter. Let ω ∈ . Vertex x of L is coloured white if there exists i ∈ {1,2,. . .,d} such that Nx + TN(i) has an i-crossing, and is coloured black otherwise. The event {x is white} is increasing, and is defined in terms of the states of edges in the box (x) = Nx + [0,3N]d.
 
 The following lemma relates the size of the open cluster C at the origin of Ld to the sizes of white clusters of L. For x ∈ Zd, we write Wx for the connected cluster of white vertices of L containing x.
 
@@ -791,7 +791,7 @@ Let $p$ < pc∞(q), and choose a > 1 such that $p$ < pca(q). With b > 3 + a, the
 
 Percolation theory is a source of intuition for the more general random-cluster model, but it has not always been possible to make such intuition rigorous. This is certainly so in the supercritical phase, where several of the basic questions remain unanswered to date. We shall work in this section with the free and wired measures, φp0,q and φp1,q, and we assume throughout that q ∈ [1,∞).
 
-The first property of note is the almost-sure uniqueness of the infinite open cluster. A probability measure φ on ($\Omega, \mathcal{F}$) is said to have the 0/1-infinite-cluster property if the number I of infinite open clusters satisﬁes φ(I ∈ {0,1}) = 1. We recall from Theorem 4.33(c) that every translation-invariant member of the closed convex hull of Wp,q has the 0/1-infinite-cluster property. By ergodicity, see Corollary 4.23, we arrive at the following.
+The first property of note is the almost-sure uniqueness of the infinite open cluster. A probability measure φ on ($\Omega, \mathcal{F}$) is said to have the 0/1-infinite-cluster property if the number I of infinite open clusters satisfies φ(I ∈ {0,1}) = 1. We recall from Theorem 4.33(c) that every translation-invariant member of the closed convex hull of Wp,q has the 0/1-infinite-cluster property. By ergodicity, see Corollary 4.23, we arrive at the following.
 
 (5.99) Theorem (Uniqueness of infinite open cluster). Let p ∈ [0,1] and $q$ ∈ [1,∞). We have for b = 0,1 that (5.100) φpb,q(I = 1) = 1 whenever θb(p,q) > 0.
 
@@ -825,7 +825,7 @@ and let ψpL,,qn = φS0(L,n),p,q be the random-clustermeasure on S(L,n) with par
 
 there exists α > 0 such that, for all n and all x ∈ S(L,n),ψpL,,qn(0 ↔ x) > α.
 
-It is not hard to see that (p, L) ⇒ (p′, L′) if $p$ ≤ p′ and L ≤ L′, and it is thus natural to deﬁne the quantities
+It is not hard to see that (p, L) ⇒ (p′, L′) if $p$ ≤ p′ and L ≤ L′, and it is thus natural to define the quantities
 
 (5.102) pc(q, L) = inf p : (p, L) occurs , pc(q) = lim
 
@@ -851,9 +851,9 @@ We state next an exponential-decay theorem for the radius of a finite cluster; t
 
 φp1,q(n ≤ rad(C) < ∞) ≤ e−nσ, n ≥ 1.
 
-We turn now to the Wulff construction. Subject to a veriﬁcation of Conjecture 5.103, and of a positive answerto the questionof the uniquenessof random-cluster measureswhen $p$ > pc(q),theblockargumentsofCerfandPisztorayieldalargely complete picture of the Wulff theory of random-cluster models with q ∈ [1,∞), see [83, 276] and also [84]. Paper [81] is a ﬁne review of Wulff constructions for percolation, Ising, and random-cluster models.
+We turn now to the Wulff construction. Subject to a verification of Conjecture 5.103, and of a positive answerto the questionof the uniquenessof random-cluster measureswhen $p$ > pc(q),theblockargumentsofCerfandPisztorayieldalargely complete picture of the Wulff theory of random-cluster models with q ∈ [1,∞), see [83, 276] and also [84]. Paper [81] is a fine review of Wulff constructions for percolation, Ising, and random-cluster models.
 
-The reader is referred to [81] for an introductory discussion to the physical background of the Wulff construction. It may be summarized as follows for random-cluster models. Let n = [−n,n]d, and consider the wired randomcluster measure φ1 n,p,q with $p$ > pc(q). The larger an open cluster, the more likely it is to be joined to the boundary ∂ n. Suppose that we condition on the event that there exists in n an open cluster C that does not intersect ∂ n and that has volume of the order of the volume nd of the box. What can be said about the shape of C? Since $p$ > pc(q), there is little cost in having large volume, and the price of such a cluster accumulates around its external boundary. It turns out that the price may be expressed as a surface integral of an appropriate function termed ‘surface tension’. This ‘surface tension’ may be speciﬁed as the exponential rate of decay of a certain probability. The Wulff prediction for the shape of C is that, when re-scaled in the limit of large n, it converges to the solution of a certain variational problem, that is, the limit shape is obtained by minimizing a certain surface integral subject to a constraint on its volume.
+The reader is referred to [81] for an introductory discussion to the physical background of the Wulff construction. It may be summarized as follows for random-cluster models. Let n = [−n,n]d, and consider the wired randomcluster measure φ1 n,p,q with $p$ > pc(q). The larger an open cluster, the more likely it is to be joined to the boundary ∂ n. Suppose that we condition on the event that there exists in n an open cluster C that does not intersect ∂ n and that has volume of the order of the volume nd of the box. What can be said about the shape of C? Since $p$ > pc(q), there is little cost in having large volume, and the price of such a cluster accumulates around its external boundary. It turns out that the price may be expressed as a surface integral of an appropriate function termed ‘surface tension’. This ‘surface tension’ may be specified as the exponential rate of decay of a certain probability. The Wulff prediction for the shape of C is that, when re-scaled in the limit of large n, it converges to the solution of a certain variational problem, that is, the limit shape is obtained by minimizing a certain surface integral subject to a constraint on its volume.
 
 For A ⊆ Zd, let ρ(A) be the number of vertices x ∈ A such that x ↔ ∂ A. When $p$ > pc(q), ρ( n) has order | n|. Let C be the open cluster at the origin, and suppose we condition on the event {|C| ≥ αnd, C ∩∂ n = ∅} where α > 0. This conditioning implies a change in value of ρ( n)/| n| amounting to a large deviation. The link between Wulff theory and large deviations is made more concrete in the next theorem. The set Dq is given in Theorem 4.63 as the (at most
 
@@ -887,7 +887,7 @@ logφp1,q(nd ≤ |C| < ∞) → −γ as n → ∞.
 
 ![image 489](../Images/imageFile489.png)
 
-The above results are valid in two dimensions also although, as noted earlier, this case is special. When d = 2, the slab critical point pc(q) is replaced by the inﬁmumofvalues patwhichthedualprocesshasexponentialdecayofconnections (see (6.5) for the relation between the dual and primal parameter-values). That is, when d = 2,
+The above results are valid in two dimensions also although, as noted earlier, this case is special. When d = 2, the slab critical point pc(q) is replaced by the infimumofvalues patwhichthedualprocesshasexponentialdecayofconnections (see (6.5) for the relation between the dual and primal parameter-values). That is, when d = 2,
 
 q(1 − pg(q)) pg(q) + q(1 − pg(q))
 
@@ -897,13 +897,13 @@ pc(q) =
 
 where pg(q) is given at (5.65). Fluctuations in droplet shape for random-cluster models in two dimensions have been studied in [17, 18].
 
-ProofofTheorem5.104. Weadapttheproofof[87]asreportedin[154,Thm8.21]. We shall build the cluster C at the origin (viewed as a set of open edges) step by step, in a manner akin to the proof of Proposition 5.30. First, we order the edges of Ld in some arbitrary but deterministic way, and we write ei for the ith edge in this ordering. Let ω ∈ . We shall construct a sequence (C0, D0),(C1, D1),. . . of pairs of (random) edge-sets such that Ci ⊆ Ci+1 and Di ⊆ Di+1 for each i. Every edge in each Ci (respectively, Di) will be open (respectively, closed). Let C0 = D0 = ∅. Having found (Cm, Dm) for m = 0,1,. . .,n, we ﬁnd the earliest edge e ∈/ Cn ∪ Dn in the above ordering such that e has an endvertex in common with some member of Cn; if Cn = ∅ we take e ∈/ Dn to be the earliest edge incident to the origin if such an edge exists. We now deﬁne
+ProofofTheorem5.104. Weadapttheproofof[87]asreportedin[154,Thm8.21]. We shall build the cluster C at the origin (viewed as a set of open edges) step by step, in a manner akin to the proof of Proposition 5.30. First, we order the edges of Ld in some arbitrary but deterministic way, and we write ei for the ith edge in this ordering. Let ω ∈ . We shall construct a sequence (C0, D0),(C1, D1),. . . of pairs of (random) edge-sets such that Ci ⊆ Ci+1 and Di ⊆ Di+1 for each i. Every edge in each Ci (respectively, Di) will be open (respectively, closed). Let C0 = D0 = ∅. Having found (Cm, Dm) for m = 0,1,. . .,n, we find the earliest edge e ∈/ Cn ∪ Dn in the above ordering such that e has an endvertex in common with some member of Cn; if Cn = ∅ we take e ∈/ Dn to be the earliest edge incident to the origin if such an edge exists. We now define
 
 (Cn+1, Dn+1) =
 
 (Cn ∪ {e}, Dn) if e is open, (Cn, Dn ∪ {e}) if e is closed.
 
-This process is continued until no candidate edge e may be found, which is to say that we have exhausted the open cluster C. If Cn = C for some n then we deﬁne Cl = C for l ≥ n, so that
+This process is continued until no candidate edge e may be found, which is to say that we have exhausted the open cluster C. If Cn = C for some n then we define Cl = C for l ≥ n, so that
 
 (5.109) C = lim
 
@@ -915,13 +915,13 @@ Let Hn = {x ∈ Zd : x1 = n}, and let Gn be the event that the origin belongs to
 
 (5.110) φp1,q 0 ↔ ∂ n, |C| < ∞ ≤ 2dφp1,q(Gn). We shall prove that, for $p$ > pc(q), there exists γ > 0 such that (5.111) φp1,q(Gn) ≤ e−nγ , n ≥ 1, and the claim of the theorem is an immediate consequence.
 
-The idea of the proof of (5.111) is as follows. Since $p$ > pc(q) by assumption, we may ﬁnd an integer L such that $p$ > pc(q, L). Write S(L) = [0, L) × Zd−1, and
+The idea of the proof of (5.111) is as follows. Since $p$ > pc(q) by assumption, we may find an integer L such that $p$ > pc(q, L). Write S(L) = [0, L) × Zd−1, and
 
 (5.112) Si(L) = S(L) + (i − 1)Le1 = (i − 1)L,iL × Zd−1,
 
 where e1 = (1,0,0,. . .,0). Suppose that GmL occurs for some m ≥ 1. Then each of the regions Si(L), i = 1,2,. . .,m, is traversedby an open path π from the origin. Since $p$ > pc(q, L), there is φS0i(L),p,q-probability 1 that Si(L) contains an infinite open cluster, and π must avoid all such clusters for i = 1,2,. . .,m.
 
-Let S(L, N) = [0, L)×[−N, N]d−1. Since $p$ > pc(q, L), we may ﬁnd α > 0 such that
+Let S(L, N) = [0, L)×[−N, N]d−1. Since $p$ > pc(q, L), we may find α > 0 such that
 
 φS0(L,N),p,q(0 ↔ v) > α, v ∈ S(L, N). By positive association,
 
@@ -973,7 +973,7 @@ Let N → ∞ and M → ∞ to obtain that
 
 φp1,q(0 ↔ Hn, 0 ↔/ ∞) ≤ (1 − α2)⌊n/L⌋, n ≥ 1, and (5.111) follows as required.
 
-It remains to prove (5.116), which we do by a coupling argument. Suppose that we have ‘built’ the cluster at the origin until the first epoch m = mj at which Cm touches Sj(L) and, in so doing, we have discovered that vj = v, T ≥ j, and Aj−1 occurs. The event Ev = {v ↔/ ∂ M in Sj(L)} is measurable on the σ-field generated by the edge-states in Sj(L), and the conﬁguration on Sj(L) is governed by a certain conditional probability measure, namely that featuring in (5.116). This conditional measure on Sj(L) dominates (stochastically) the free random-cluster measure on Sj(L) ∩ N = S(L, N) + (j − 1)Le1. Since the last region is a translate of S(L, N),
+It remains to prove (5.116), which we do by a coupling argument. Suppose that we have ‘built’ the cluster at the origin until the first epoch m = mj at which Cm touches Sj(L) and, in so doing, we have discovered that vj = v, T ≥ j, and Aj−1 occurs. The event Ev = {v ↔/ ∂ M in Sj(L)} is measurable on the σ-field generated by the edge-states in Sj(L), and the configuration on Sj(L) is governed by a certain conditional probability measure, namely that featuring in (5.116). This conditional measure on Sj(L) dominates (stochastically) the free random-cluster measure on Sj(L) ∩ N = S(L, N) + (j − 1)Le1. Since the last region is a translate of S(L, N),
 
 ψN(Ev | vj = v, T ≥ j, Aj−1) ≤ 1 − α2, by (5.113), and (5.116) is proved.
 

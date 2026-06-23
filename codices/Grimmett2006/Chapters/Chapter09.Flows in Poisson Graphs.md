@@ -52,7 +52,7 @@ v|F′|(v/u)k(H′), u,v = 0.
 
 F′⊆F
 
-The flow polynomial of H satisﬁes (9.5) CH(q) = (−1)|F|WH(−1,−q)
+The flow polynomial of H satisfies (9.5) CH(q) = (−1)|F|WH(−1,−q)
 
 = (−1)c(H)TH(0,1 − q), q ∈ {2,3,. . .}.
 
@@ -64,7 +64,7 @@ e∈E
 
 ![image 1043](../Images/imageFile1043.png)
 
-This differs slightly from (1.5)–(1.6) in that different edges e may have different interactions Je, and these interactions have been ‘re-parametrized’ by the factor q. The reason for deﬁning πβJ,q thus will emerge in the calculations that follow.
+This differs slightly from (1.5)–(1.6) in that different edges e may have different interactions Je, and these interactions have been ‘re-parametrized’ by the factor q. The reason for defining πβJ,q thus will emerge in the calculations that follow.
 
 ![image 1044](../Images/imageFile1044.png)
 
@@ -128,7 +128,7 @@ Whereas Theorem 9.11 concerns Potts models only, there is a random-cluster gener
 
 (9.19) φG,p(2k(ω)) = 2|V|Pλ(GP is even).
 
-This may be simpliﬁed further. Let ζ(e) = P(e) modulo 2. It is easily seen that GP is even if and only if Gζ is even, and that the ζ(e), e ∈ E, are independent Bernoulli variables with
+This may be simplified further. Let ζ(e) = P(e) modulo 2. It is easily seen that GP is even if and only if Gζ is even, and that the ζ(e), e ∈ E, are independent Bernoulli variables with
 
 Pλ(ζ(e) = 1) = 21(1 − e−2λ) = 12 p. Equation (9.18) may therefore be written as (9.20) φG,p(2k(ω)) = 2|V|φG,p/2(the open subgraph of G is even). Proof ofTheorem 9.11. Since the parameter β appearsalways with the multiplicative factor Je, we may without loss of generality take β = 1.
 
@@ -165,7 +165,7 @@ The following technical lemma is pivotal for the computations that follow.
 
 PM ∂N = {x, y}, ∂(M \ N) = A = PM ∂N = ∅, ∂(M \ N) = A △ {x, y} .
 
-Proof. Take Me to be the set of edges of Gm parallel to e, and assume that x ↔ y in m. Let A ⊆ V. Let M be the set of all vectors n = (ne : e ∈ E) with ne ⊆ Me for e ∈ E. Let α be a ﬁxed path of Gm with endvertices x, y, viewed as a set of edges, and consider the map ρ : M → M given by
+Proof. Take Me to be the set of edges of Gm parallel to e, and assume that x ↔ y in m. Let A ⊆ V. Let M be the set of all vectors n = (ne : e ∈ E) with ne ⊆ Me for e ∈ E. Let α be a fixed path of Gm with endvertices x, y, viewed as a set of edges, and consider the map ρ : M → M given by
 
 ρ(n) = n △ α, n ∈ M.
 
@@ -325,7 +325,7 @@ Furthermore, φp,q(0 ↔ z) < 1 for z = 0, and the claim follows.
 
 We close this section with an improvementof the Simon inequality due to Lieb [234]. This improvement may seem at first sight to be slender, but it leads to a significant conclusion termed the ‘vanishing of the mass gap’.
 
-We first re-visit Theorem 9.31. As usual, G = (V, E) is a finite graph, and we partition E as E = F ∪ H, where F ∩ H = ∅. Let M = (Me : e ∈ E) be a vector of disjoint finite sets with cardinalities me = |Me|. We write MF = (Me : e ∈ F) and deﬁne the vector mF by
+We first re-visit Theorem 9.31. As usual, G = (V, E) is a finite graph, and we partition E as E = F ∪ H, where F ∩ H = ∅. Let M = (Me : e ∈ E) be a vector of disjoint finite sets with cardinalities me = |Me|. We write MF = (Me : e ∈ F) and define the vector mF by
 
 me if e ∈ F, 0 otherwise,
 
@@ -345,7 +345,7 @@ PM ∂NF = {x, y}, ∂NH = ∅, ∂(M \ N) = A
 
 = PM ∂NF = ∅, ∂NH = ∅, ∂(M \ N) = A △ {x, y} .
 
-Proof. This follows that of Theorem 9.31. Let α be a ﬁxed path of GmF with endvertices x and y, and consider the map ρ(n) = n △ α, n ∈ M. This map is a one–one correspondence between the two subsets of M corresponding to the two events in question.
+Proof. This follows that of Theorem 9.31. Let α be a fixed path of GmF with endvertices x and y, and consider the map ρ(n) = n △ α, n ∈ M. This map is a one–one correspondence between the two subsets of M corresponding to the two events in question.
 
 We obtain as in the switching lemma, Corollary 9.32, the following corollary involving the two independent random vectors M and M′, each being such that me = |Me| and m′e = |Me′| have the Poisson distribution with parameter λ ∈ [0,∞). The proof follows that of Corollary 9.32.
 
@@ -450,7 +450,7 @@ In the remaining two sections of this chapter, we review certain aspects of the 
 
 ### (9.53) Theorem (Finite susceptibility for $q$ = 2 random-cluster model) [5].
 
-Let p ∈ [0,1], $q$ = 2, d ≥ 2, and let φp1,q be the wired random-cluster measure on Ld. The open cluster C at the origin satisﬁes
+Let p ∈ [0,1], $q$ = 2, d ≥ 2, and let φp1,q be the wired random-cluster measure on Ld. The open cluster C at the origin satisfies
 
 φp1,q(|C|) < ∞, $p$ < pc(q).
 
@@ -464,7 +464,7 @@ This implies exponential decay, by Theorem 9.38: if $p$ < pc(q), the connectivit
 
 ![image 1091](../Images/imageFile1091.png)
 
-- (9.54)Theorem(Mean-fieldbound)[5]. UndertheconditionsstatedinTheorem 9.53, there exists a constant c = c(d) > 0 such that the percolation probability θ1(p,q) = φp1,q(0 ↔ ∞) satisﬁes
+- (9.54)Theorem(Mean-fieldbound)[5]. UndertheconditionsstatedinTheorem 9.53, there exists a constant c = c(d) > 0 such that the percolation probability θ1(p,q) = φp1,q(0 ↔ ∞) satisfies
 - (9.55) θ1(p,2) ≥ c(p − pc)12, $p$ > pc = pc(2).
 
 ![image 1092](../Images/imageFile1092.png)
@@ -489,7 +489,7 @@ If this is true, then b ≤ 21 by Theorem 9.54. It turns out that the latter ine
 
 as we shall see in Section 10.7 in the context of the random-cluster model on a complete graph.
 
-Proofs of the above theorems may be found in [5], and are omitted from the current work since they are Ising-speciﬁc and have not (yet) been generalized to the random-clustersetting for general q. The key ingredientis the random-current representation of the last section, utilized with ingenuity.
+Proofs of the above theorems may be found in [5], and are omitted from the current work since they are Ising-specific and have not (yet) been generalized to the random-clustersetting for general q. The key ingredientis the random-current representation of the last section, utilized with ingenuity.
 
 ![image 1096](../Images/imageFile1096.png)
 

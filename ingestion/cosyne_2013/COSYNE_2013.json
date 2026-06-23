@@ -1,0 +1,1320 @@
+{
+  "file name": "COSYNE_2013.pdf",
+  "number of pages": 6,
+  "author": null,
+  "title": null,
+  "creation date": "D:20250710011229-07'00'",
+  "modification date": "D:20250710011229-07'00'",
+  "kids": [
+    {
+      "type": "heading",
+      "pdfua_tag": "H1",
+      "id": 134,
+      "level": "Doctitle",
+      "page number": 1,
+      "bounding box": [72.0, 719.328, 532.462, 751.925],
+      "heading level": 1,
+      "font": "TimesNewRoman,Bold",
+      "font size": 15.96,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Contextual uncertainty in the primate locus coeruleus: Reconciling theory, behavior and physiology through a combined approach"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 135,
+      "page number": 1,
+      "bounding box": [72.0, 707.778, 378.085, 716.832],
+      "font": "TimesNewRoman",
+      "font size": 9.96,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Azriel Ghadooshahy, Ritwik K. Niyogi, Sheeraz Ahmad, Robert Desimone"
+    },
+    {
+      "type": "heading",
+      "pdfua_tag": "H1",
+      "id": 136,
+      "level": "Subtitle",
+      "page number": 1,
+      "bounding box": [72.0, 682.5, 128.634, 693.204],
+      "heading level": 1,
+      "font": "TimesNewRoman,Bold",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Summary"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 137,
+      "page number": 1,
+      "bounding box": [72.0, 585.9, 542.994, 679.608],
+      "font": "TimesNewRoman",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Mounting theoretical and experimental evidence suggests that major ascending modulatory systems including dopamine, norepinephrine, serotonin and acetylcholine play specific computational roles in neural processing beyond their classically attributed roles in mediating non-specific arousal. Indeed, recent computational work has linked activity in the locus coeruleus-norepinephrine (LC-NE) system to statistical properties of the environment in the form of unexpected uncertainty at two distinct timescales (Yu and Dayan, 2005 Dayan and Yu, 2006)."
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 138,
+      "page number": 1,
+      "bounding box": [72.0, 434.1, 542.994, 583.008],
+      "font": "TimesNewRoman",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "A key feature—and challenge—of modeling the LC-NE system with Bayesian theory is to take into account the observer’s (subjective) beliefs about behavioral context and task demands. Thus, our approach is to construct generative models of behavioral strategy from choice-behavior, reaction time data and pupil diameter measurements that allow us to quantitatively test model-driven hypothesis about task-related LC neuronal activity. We believe that this approach will enable an unprecedented degree of interpretive power and specificity in studying the LC-NE system and its role in cognitive-behavioral control. Moreover, this work is likely to clarify the relationship between LC-NE activity and non-luminance-mediated pupil diameter modulations, which provide a valuable link to human studies and may to be useful as a non-invasive measurement of otherwise hidden internal states related to arousal and cognitive control."
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 139,
+      "page number": 1,
+      "bounding box": [71.994, 365.1, 542.994, 431.208],
+      "font": "TimesNewRoman",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Here we present data from preliminary experimental and modeling efforts. A promising candidate model of behavioral strategy qualitatively captures the biasing effects of contextual priors on choice-behavior and reaction times. In addition, preliminary pupillometric and putative LC recording data reveal complex effects of both withinand between-trial contextual uncertainty."
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 142,
+      "page number": 1,
+      "bounding box": [92.333, 360.667, 103.0, 365.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Start"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 143,
+      "page number": 1,
+      "bounding box": [134.333, 359.333, 143.0, 364.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Cue"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 146,
+      "page number": 1,
+      "bounding box": [258.354, 75.191, 542.995, 362.004],
+      "font": "TimesNewRoman",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Figure 1. Behavioral task and generative model. (Top)   Schematic of the behavioral paradigm, including instructive and feedback periods. Directional cues (oriented gratings) are more difficult for orientations close to vertical and easier further away. A long delay period ensures the engagement of working memory and temporally disassociates cue-related pupil and LC responses from saccade and feedback-related activity. Feedback tones are either positive (1000hz) or negative (400hz) depending on the correctness of the subject’s choice with 100% validity. Statistical contexts are operationalized by the within-block prior probability of drawing from the set of left versus right cues. Neutral blocks are 50/50 and bias blocks are 80/20 for a given direction, and each session is counter balanced to include bias blocks in both directions with the within-session block order randomly chosen day-to-day. (Bottom)   Generative model representing one plausible behavioral strategy. Context ( λ n ) on trial n represents the prior probability of cue direction. On each trial n , cue ( z n ) generates noisy temporal observations x n 0 ,…x n t within the"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 144,
+      "page number": 1,
+      "bounding box": [174.333, 356.667, 185.667, 362.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Delay"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 141,
+      "page number": 1,
+      "bounding box": [89.667, 356.0, 106.333, 360.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "1000ms"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 145,
+      "page number": 1,
+      "bounding box": [209.667, 354.667, 224.333, 360.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Targets"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 147,
+      "page number": 1,
+      "bounding box": [213.667, 350.667, 230.333, 355.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "deadline"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 148,
+      "page number": 1,
+      "bounding box": [87.667, 292.0, 103.667, 297.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Caplure"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 151,
+      "page number": 1,
+      "bounding box": [131.667, 290.667, 141.667, 295.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Tone"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 149,
+      "page number": 1,
+      "bounding box": [89.0, 287.333, 103.667, 292.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "5OOms)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 152,
+      "page number": 1,
+      "bounding box": [174.333, 286.667, 183.667, 291.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Wat"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 150,
+      "page number": 1,
+      "bounding box": [129.0, 285.333, 145.0, 290.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "(ooms)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 153,
+      "page number": 1,
+      "bounding box": [213.0, 280.667, 226.333, 286.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "3OOms"
+    },
+    {
+      "type": "image",
+      "pdfua_tag": "Figure",
+      "page number": 1,
+      "bounding box": [70.68, 142.56, 249.36, 217.2],
+      "alt": "In this image there is a diagram with some text and icons.",
+      "source": "2509.21340v1/imageFile1.png"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 155,
+      "page number": 2,
+      "bounding box": [117.333, 667.667, 151.333, 675.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "Experiment"
+    },
+    {
+      "type": "image",
+      "pdfua_tag": "Figure",
+      "page number": 2,
+      "bounding box": [61.56, 564.36, 308.28, 675.36],
+      "alt": "The image is a scatter plot graph with four different categories labeled Experiment, Model, and two additional categories labeled Model and Model. The x-axis is labeled Experiment and the y-axis is labeled Time. The data points are represented by blue and red lines. ### Description of the Data Points: - **Experiment**: The x-axis is labeled Experiment and the y-axis is labeled Time. - **Model**: The x-axis is labeled Model and the y-axis is labeled Time. - **Two Additional Categories**: There are two additional categories labeled Model and Model. ### Analysis: 1. **Experiment**: The x-axis is labeled Experiment and the y-axis is labeled Time. 2. **Model**: The x-axis is labeled Model and the y-axis is labeled Time. 3. **Two Additional Categories**: There are two additional",
+      "source": "2509.21340v1/imageFile2.png"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 156,
+      "page number": 2,
+      "bounding box": [244.333, 668.667, 263.667, 675.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Model"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 157,
+      "page number": 2,
+      "bounding box": [318.0, 457.5, 542.995, 675.204],
+      "font": "TimesNewRoman",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Figure 2. Candidate model qualitatively captures contextual effects in behavioral data . (Top) In an earlier reaction time version of the task, due to contextual bias, reaction times are slower on improbable/unexpected trials. The generative model captures qualitative differences in reaction times on expected and unexpected switch trials (trials in which cue direction changes from trial n-1 to n ). (Bottom) In an earlier version of the task with nine cue orientations for each side, our model captures the shift in the psychometric function due to contextual bias. Note that the model reaction times are collapsed into “easy”, “medium” and “difficult” categories."
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 160,
+      "page number": 2,
+      "bounding box": [210.333, 571.333, 221.0, 575.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "A<s"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 159,
+      "page number": 2,
+      "bounding box": [163.0, 570.667, 173.0, 574.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "420s"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 158,
+      "page number": 2,
+      "bounding box": [124.333, 568.0, 137.667, 572.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Contcrt"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 161,
+      "page number": 2,
+      "bounding box": [249.0, 567.333, 263.0, 572.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Conter"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 162,
+      "page number": 2,
+      "bounding box": [86.667, 552.333, 107.0, 558.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "Pright) =05"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 163,
+      "page number": 2,
+      "bounding box": [212.667, 553.667, 221.333, 556.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "205"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 164,
+      "page number": 2,
+      "bounding box": [65.667, 526.0, 70.333, 533.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "5"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 166,
+      "page number": 2,
+      "bounding box": [247.667, 459.333, 266.333, 463.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Onenution"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 165,
+      "page number": 2,
+      "bounding box": [103.0, 457.333, 123.0, 462.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Orientation"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 167,
+      "page number": 2,
+      "bounding box": [72.0, 429.9, 542.995, 454.404],
+      "font": "TimesNewRoman,Bold",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "Figure 3. Preliminary LC recordings and pupillometry indicate complex effects of withinand between-trial uncertainty."
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 169,
+      "page number": 2,
+      "bounding box": [320.634, 82.86, 542.995, 427.008],
+      "font": "TimesNewRoman",
+      "font size": 12.0,
+      "text color": "[0.0, 0.0, 0.0]",
+      "content": "  (Top)   During neutral blocks that follow biased blocks, cue-related pupil dilations are larger on unexpected ( left ) versus expected ( right ) switch trials around the block boundary but not later in the same block, indicating within-trial sensitivity to contextual switches. ( Middle ) Both putative LC neuronal activity ( left ) and pupil diameter ( right ) demonstrate sensitivity to previous trial outcomes, with LC activation leading pupil dilation. Shown here are responses in both measurements to feedback tones when trial n-1 was incorrect. Both pupil and LC responses to positive, but not negative, feedback tone are enhanced when the previous trial was incorrect. (Bottom) Cue difficulty and cue probability also interact with pupil diameter measurements. Shown here, when trial n-1 was improbable, on trial n the pupil dilates significantly more during the cue and subsequent delay period following the presentation of difficult cues which indicates that pupil dilations may reflect both withinand between-trial uncertainty."
+    },
+    {
+      "type": "image",
+      "pdfua_tag": "Figure",
+      "page number": 2,
+      "bounding box": [72.0, 221.16, 195.48, 331.2],
+      "alt": "The image is a line graph that shows the percentage of people who have used the internet in the United States from 2000 to 2010. The x-axis represents the years, while the y-axis shows the percentage of people who have used the internet. The graph is titled Internet Usage in the United States, 2000-2010 and is labeled as U.S. Internet Usage, 2000-2010. The graph has a title at the top, which reads U.S. Internet Usage, 2000-2010. The x-axis is labeled Years, and the y-axis is labeled Percentage of People who have Used the Internet. The graph shows a trend of increasing internet usage over the years. The percentage of people who have used the internet has increased from 2000 to 201",
+      "source": "2509.21340v1/imageFile3.png"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 170,
+      "page number": 2,
+      "bounding box": [71.0, 184.667, 79.0, 189.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "0 12"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 171,
+      "page number": 2,
+      "bounding box": [69.0, 150.667, 79.0, 155.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "0006"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 172,
+      "page number": 2,
+      "bounding box": [71.333, 129.0, 78.667, 131.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "002"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 173,
+      "page number": 2,
+      "bounding box": [79.667, 97.333, 87.0, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "200"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 174,
+      "page number": 2,
+      "bounding box": [120.333, 97.333, 127.667, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "200"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 175,
+      "page number": 2,
+      "bounding box": [130.333, 97.333, 137.667, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "300"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 176,
+      "page number": 2,
+      "bounding box": [151.0, 97.333, 158.333, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "500"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 177,
+      "page number": 2,
+      "bounding box": [161.0, 97.333, 168.333, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "600"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 178,
+      "page number": 2,
+      "bounding box": [191.667, 97.333, 199.0, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "900"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 179,
+      "page number": 2,
+      "bounding box": [201.0, 97.333, 209.667, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1000"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 180,
+      "page number": 2,
+      "bounding box": [211.0, 97.333, 220.333, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1100"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 181,
+      "page number": 2,
+      "bounding box": [221.667, 97.333, 230.333, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1200"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 182,
+      "page number": 2,
+      "bounding box": [231.667, 97.333, 240.333, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1300"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 183,
+      "page number": 2,
+      "bounding box": [241.667, 97.333, 251.0, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1400"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 184,
+      "page number": 2,
+      "bounding box": [252.333, 97.333, 261.0, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1500"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 185,
+      "page number": 2,
+      "bounding box": [262.333, 97.333, 271.0, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1600"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 186,
+      "page number": 2,
+      "bounding box": [272.333, 97.333, 281.667, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "170o"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 187,
+      "page number": 2,
+      "bounding box": [283.0, 97.333, 291.667, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1800"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 188,
+      "page number": 2,
+      "bounding box": [293.0, 97.333, 301.667, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "1900"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 189,
+      "page number": 2,
+      "bounding box": [303.0, 97.333, 312.333, 101.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "2000"
+    },
+    {
+      "type": "image",
+      "pdfua_tag": "Figure",
+      "id": 190,
+      "page number": 3,
+      "bounding box": [5.274, 4.785, 227.588, 351.36],
+      "description": "The image depicts a diagram with three main components: a circle labeled a and two other circles connected by lines. The circle labeled a is connected to the two other circles, which are labeled n-1 and n+1. These circles are connected to the line labeled n-1 and the line labeled n+1 respectively. The line labeled n-1 is connected to the line labeled n+1 and the line labeled n+1 respectively. This line is connected to the line labeled n and the line labeled n+1 respectively. The line labeled n is connected to the line labeled n-1 and the line labeled n+1 respectively. This line is connected to the line labeled n and the line labeled n+1 respectively. The line labeled n is connected to the line labeled n-1",
+      "source": "2509.21340v1/imageFile4.png"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 193,
+      "page number": 3,
+      "bounding box": [25.044, 250.058, 47.289, 267.662],
+      "font": null,
+      "font size": 12.0,
+      "content": "An-1"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 194,
+      "page number": 3,
+      "bounding box": [108.333, 252.36, 123.667, 266.36],
+      "font": null,
+      "font size": 12.0,
+      "content": "An"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 195,
+      "page number": 3,
+      "bounding box": [188.667, 253.36, 208.0, 262.693],
+      "font": null,
+      "font size": 12.0,
+      "content": "'n+l"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 199,
+      "page number": 3,
+      "bounding box": [183.652, 173.073, 206.681, 187.98],
+      "font": null,
+      "font size": 12.0,
+      "content": "2n+1"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 198,
+      "page number": 3,
+      "bounding box": [109.0, 175.027, 123.0, 187.027],
+      "font": null,
+      "font size": 12.0,
+      "content": "2n"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 197,
+      "page number": 3,
+      "bounding box": [24.667, 176.027, 48.0, 186.693],
+      "font": null,
+      "font size": 12.0,
+      "content": "2n-1"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 201,
+      "page number": 3,
+      "bounding box": [42.368, 99.739, 64.632, 112.314],
+      "font": null,
+      "font size": 12.0,
+      "content": "In-1,"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 203,
+      "page number": 3,
+      "bounding box": [25.059, 17.049, 47.941, 40.337],
+      "font": null,
+      "font size": 12.0,
+      "content": "Rn-1"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 204,
+      "page number": 3,
+      "bounding box": [108.333, 23.693, 125.0, 38.36],
+      "font": null,
+      "font size": 12.0,
+      "content": "Rn"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 191,
+      "page number": 3,
+      "bounding box": [270.0, 329.027, 312.333, 345.36],
+      "font": null,
+      "font size": 12.0,
+      "content": "Volatility"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 192,
+      "page number": 3,
+      "bounding box": [271.333, 260.027, 311.667, 272.693],
+      "font": null,
+      "font size": 12.0,
+      "content": "Context"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 196,
+      "page number": 3,
+      "bounding box": [237.0, 246.36, 345.667, 260.027],
+      "font": null,
+      "font size": 12.0,
+      "content": "(prior probability Right)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 200,
+      "page number": 3,
+      "bounding box": [261.0, 176.36, 325.667, 188.36],
+      "font": null,
+      "font size": 12.0,
+      "content": "Stimulus Cue"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 202,
+      "page number": 3,
+      "bounding box": [259.333, 100.693, 323.333, 111.36],
+      "font": null,
+      "font size": 12.0,
+      "content": "Observations"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 205,
+      "page number": 3,
+      "bounding box": [266.667, 24.027, 315.333, 34.693],
+      "font": null,
+      "font size": 12.0,
+      "content": "Feedback"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 207,
+      "page number": 4,
+      "bounding box": [86.0, 277.167, 128.333, 290.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "Context"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 208,
+      "page number": 4,
+      "bounding box": [151.667, 275.833, 182.333, 290.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "y(t-1)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 209,
+      "page number": 4,
+      "bounding box": [240.333, 275.167, 261.0, 289.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "y(t)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 216,
+      "page number": 4,
+      "bounding box": [24.667, 242.5, 95.333, 255.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "self-transition"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 215,
+      "page number": 4,
+      "bounding box": [17.0, 245.833, 24.333, 252.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "2"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 214,
+      "page number": 4,
+      "bounding box": [4.333, 243.833, 9.0, 251.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "1"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 218,
+      "page number": 4,
+      "bounding box": [2.0, 224.167, 58.667, 240.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "probability"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 219,
+      "page number": 4,
+      "bounding box": [2.333, 207.5, 80.333, 221.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "t = trial number"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 224,
+      "page number": 4,
+      "bounding box": [20.667, 170.167, 60.0, 187.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "Bo(dz(t)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 225,
+      "level": "1",
+      "page number": 4,
+      "bounding box": [58.0, 175.5, 67.333, 184.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "="
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 229,
+      "page number": 4,
+      "bounding box": [3.333, 122.167, 97.333, 139.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "P= cue probability"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 232,
+      "page number": 4,
+      "bounding box": [17.667, 100.833, 106.0, 119.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "specific stimulus"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 231,
+      "page number": 4,
+      "bounding box": [3.333, 104.833, 19.333, 114.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "2 ="
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 222,
+      "page number": 4,
+      "bounding box": [164.333, 192.5, 210.333, 205.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "Stimulus"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 223,
+      "page number": 4,
+      "bounding box": [242.333, 192.5, 259.667, 204.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "2(t)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 227,
+      "page number": 4,
+      "bounding box": [203.333, 142.167, 232.0, 158.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "9(2)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 233,
+      "page number": 4,
+      "bounding box": [142.667, 102.5, 211.667, 116.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "Observations"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 210,
+      "page number": 4,
+      "bounding box": [319.333, 274.5, 353.667, 291.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "y(t+1)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 212,
+      "page number": 4,
+      "bounding box": [435.0, 273.5, 483.333, 290.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "difficulty"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 211,
+      "page number": 4,
+      "bounding box": [395.667, 273.167, 437.0, 287.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "7 = cue"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 213,
+      "page number": 4,
+      "bounding box": [399.333, 256.167, 494.0, 272.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "k = timestep within"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 217,
+      "page number": 4,
+      "bounding box": [397.667, 243.167, 426.333, 257.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "trials"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 221,
+      "page number": 4,
+      "bounding box": [303.667, 203.833, 318.333, 216.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "Rt"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 220,
+      "page number": 4,
+      "bounding box": [370.0, 204.833, 426.0, 222.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "Bly(t) |Rt,"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 226,
+      "page number": 4,
+      "bounding box": [378.667, 174.5, 447.667, 188.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "R = Feedback"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 228,
+      "page number": 4,
+      "bounding box": [365.0, 135.167, 500.0, 154.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "B(dzt)(k) | xt(k), Xt(k-1) _)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 230,
+      "page number": 4,
+      "bounding box": [374.333, 111.167, 477.667, 126.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "d = direction (L or R)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 234,
+      "page number": 4,
+      "bounding box": [28.0, 29.5, 74.0, 46.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "Bo(dz(t) ="
+    },
+    {
+      "type": "heading",
+      "pdfua_tag": "H1",
+      "id": 235,
+      "level": "Subtitle",
+      "page number": 5,
+      "bounding box": [55.333, 241.5, 449.667, 280.5],
+      "heading level": 1,
+      "font": null,
+      "font size": 12.0,
+      "content": "Predicted NE phasic activation"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 241,
+      "page number": 5,
+      "bounding box": [57.16, 177.305, 81.174, 184.695],
+      "font": null,
+      "font size": 12.0,
+      "content": "p=.8"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 242,
+      "page number": 5,
+      "bounding box": [98.333, 175.5, 115.0, 187.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "z(t)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 243,
+      "page number": 5,
+      "bounding box": [121.0, 178.167, 127.0, 186.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "L"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 239,
+      "page number": 5,
+      "bounding box": [138.0, 191.167, 158.667, 201.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "7(2)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 248,
+      "page number": 5,
+      "bounding box": [24.802, 108.277, 43.198, 118.389],
+      "font": null,
+      "font size": 12.0,
+      "content": "y(t)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 244,
+      "page number": 5,
+      "bounding box": [243.0, 179.5, 249.0, 188.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "5"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 245,
+      "page number": 5,
+      "bounding box": [242.0, 147.833, 250.0, 157.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "4"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 246,
+      "page number": 5,
+      "bounding box": [229.333, 100.5, 240.0, 149.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "1"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 247,
+      "page number": 5,
+      "bounding box": [242.333, 117.5, 249.0, 126.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "3"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 249,
+      "page number": 5,
+      "bounding box": [242.333, 86.833, 249.0, 96.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "2"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 237,
+      "page number": 5,
+      "bounding box": [281.333, 198.5, 296.0, 209.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "NE"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 238,
+      "page number": 5,
+      "bounding box": [299.667, 199.5, 306.333, 208.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "L"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 240,
+      "page number": 5,
+      "bounding box": [281.333, 186.5, 307.333, 197.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "NE |R"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 250,
+      "page number": 5,
+      "bounding box": [56.333, 37.833, 81.0, 50.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "P=.2"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 251,
+      "page number": 5,
+      "bounding box": [97.0, 36.167, 128.333, 48.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "z(t) = R"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 252,
+      "page number": 5,
+      "bounding box": [137.0, 23.5, 159.0, 35.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "7(2)"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 253,
+      "page number": 5,
+      "bounding box": [305.333, 17.167, 314.667, 25.833],
+      "font": null,
+      "font size": 12.0,
+      "content": "3"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 254,
+      "page number": 5,
+      "bounding box": [335.333, 17.833, 344.667, 26.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "4"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 255,
+      "page number": 5,
+      "bounding box": [364.667, 16.5, 374.667, 26.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "5"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 256,
+      "page number": 5,
+      "bounding box": [394.0, 17.833, 411.333, 26.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "6"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 259,
+      "page number": 5,
+      "bounding box": [343.0, 3.167, 391.333, 17.167],
+      "font": null,
+      "font size": 12.0,
+      "content": "Timesteps"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 257,
+      "page number": 5,
+      "bounding box": [453.333, 17.167, 461.333, 26.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "8"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 258,
+      "page number": 5,
+      "bounding box": [483.667, 17.5, 489.667, 25.5],
+      "font": null,
+      "font size": 12.0,
+      "content": "9"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 262,
+      "page number": 6,
+      "bounding box": [34.667, 237.333, 75.333, 253.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Sulsul"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 263,
+      "page number": 6,
+      "bounding box": [34.0, 216.667, 74.0, 232.667],
+      "font": null,
+      "font size": 12.0,
+      "content": "Sulsu"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 264,
+      "page number": 6,
+      "bounding box": [34.0, 196.667, 151.333, 213.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Sulsulsulsulsulsu"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 265,
+      "page number": 6,
+      "bounding box": [34.667, 176.0, 135.333, 192.0],
+      "font": null,
+      "font size": 12.0,
+      "content": "Sulsulsulsulsu"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 261,
+      "page number": 6,
+      "bounding box": [275.333, 154.667, 397.333, 275.333],
+      "font": null,
+      "font size": 12.0,
+      "content": "Su Sulsulsulsulsulsu Bulsulsulsulsulsu Sulsulsulsulsulsu Sulsulsulsulsulsu Sulsulsulsulsulsu"
+    },
+    {
+      "type": "paragraph",
+      "pdfua_tag": "P",
+      "id": 266,
+      "page number": 6,
+      "bounding box": [183.0, 31.0, 415.024, 59.626],
+      "font": null,
+      "font size": 12.0,
+      "content": "UF SURPRISE"
+    }
+  ]
+}

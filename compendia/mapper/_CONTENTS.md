@@ -1,3 +1,12 @@
+## [PERSISTENT NERVES REVISITED](PNV20XX.md)
+
+- [Introduction](PNV20XX.md#introduction)
+- [Background](PNV20XX.md#background)
+- [Results](PNV20XX.md#results)
+- [References](references/PNV20XX.md)
+
+---
+
 ## [Topology Understanding of B-Spline Surface/Surface Intersection with Mapper](GLL2026.md)
 
 - [Abstract](GLL2026.md#abstract)

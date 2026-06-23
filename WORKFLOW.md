@@ -1,5 +1,13 @@
 # Agent Playbook: Extraction Failure Modes & Repair Workflows
 
+> **Canonical workflow = the membrane.** The *how* of repair is the `codex-membrane` MCP server's
+> `restoration_procedure` prompt (`src/PROCEDURE.md`): navigate don't scan, slice don't slurp, edit
+> don't regenerate — orchestrator (`get_batch_summary`/`dispatch`) fans pointers to workers, each pulls
+> its own `get_slice`, fixes with `propose_edit`, and the loop closes `apply` → `finalize` → `publish`.
+> This document is the *what*: the extraction-failure taxonomy and repair judgment a worker applies
+> **inside** that loop. It is NOT a license to open whole `.md` files or spin up ad-hoc subagent swarms
+> (see §5). For ingested papers (`ingestion/` → `compendia/`, `corpora/`) the membrane is the only lane.
+
 Document ingestion is a fundamentally fuzzy problem. When converting, auditing, or repairing academic texts via pipelines like Docling, agents must be aware of common extraction failure modes and adopt an adaptive, context-aware approach to structural repair.
 
 ### 1. Active Inline Math Enrichment
@@ -23,7 +31,15 @@ Agents may have access to parallel channels (JSON IR sidecars, Docling-based exp
 - **Private Use Area (PUA) Elements**: Treat PUA blank lines or boxes placed by the typesetter as semantic hints for structural roles (e.g., grouping, delimiter scope) rather than noise.
 - **Ligature Errors**: Be on the lookout for OCR translation errors, such as literal Unicode typographic ligatures being output instead of distinct letters (e.g., the `ffi` ligature replacing `f f i`).
 
-### 5. Token Economy & Swarm Efficiency
-When managing large batches of document repair across swarms of subagents, overhead reduction is critical.
-- **Minimalist Agent Configurations**: Do not equip subagents with unnecessary tools (e.g., global file search or broad MCP servers) if they are only assigned a single-page rewrite task. This massively reduces context bloat and prevents 429 rate limits.
-- **Worker Hygiene (Closing Ceremony)**: Between large batches, ensure all workers successfully terminate. Perform a "Closing Ceremony" by actively validating output file counts and issuing a `killall` command to purge any stalled or orphaned zombie subagents.
+### 5. Token Economy & Orchestration (membrane model)
+The membrane *is* the token discipline — it is body-blind by construction. Honor it; do not revert to
+the legacy "swarm of subagents each rewriting a whole page" model (superseded, and sub-agent dispatch is
+governed/restricted — confirm before fanning out).
+- **Pointers, never bodies.** The orchestrator plans from `get_batch_summary` / `dispatch` — counts and
+  work-unit *pointers*, never content. A worker pulls exactly the one unit it was handed (`get_slice`) and
+  holds nothing else. "Give me the file" does not exist; that is what keeps context flat across a batch.
+- **Diffs, never regenerations.** Repair with `propose_edit` (a surgical find/replace) — send only the
+  change, never reproduce a chunk you were shown. `propose_repair` (whole-chunk) is the rare fallback.
+- **Stateless between steps.** Nothing is held between iterations; re-ground from a projection
+  (`get_batch_summary`) at any time. There is no "closing ceremony" / `killall` — the membrane leases
+  work and `release`s abandoned units; `apply` folds clean proposals and holds the rest.
