@@ -150,6 +150,53 @@ function New-ScholarWork {
     }
 }
 
+# --- cross-source dedup/merge -----------------------------------------------------------------------
+# The same paper surfaces in more than one graph; collapse them. Merge fills each null field from the
+# other source (prefer present, keep the richer author/field list), unions external_ids, and records the
+# contributing sources (e.g. "openalex+semanticscholar").
+function Merge-ScholarWork {
+    param([pscustomobject]$A, [pscustomobject]$B)
+    if (-not $B) { return $A }
+    if (-not $A) { return $B }
+    $pick = { param($x, $y) if ($null -ne $x -and "$x" -ne '') { $x } else { $y } }
+    $authors = if (@($A.authors).Count -ge @($B.authors).Count) { @($A.authors) } else { @($B.authors) }
+    $fields  = @(@($A.fields) + @($B.fields) | Where-Object { $_ } | Select-Object -Unique)
+    $ext = @{}
+    foreach ($h in @($A.external_ids, $B.external_ids)) {
+        if ($h) { foreach ($k in $h.Keys) { if (-not $ext.ContainsKey($k)) { $ext[$k] = $h[$k] } } }
+    }
+    $srcs = (@(($A.source -split '\+') + ($B.source -split '\+')) | Where-Object { $_ } | Select-Object -Unique) -join '+'
+    return [pscustomobject]@{
+        source           = $srcs
+        source_id        = & $pick $A.source_id $B.source_id
+        doi              = & $pick $A.doi $B.doi
+        arxiv_id         = & $pick $A.arxiv_id $B.arxiv_id
+        title            = & $pick $A.title $B.title
+        authors          = @($authors)
+        abstract         = & $pick $A.abstract $B.abstract
+        year             = & $pick $A.year $B.year
+        venue            = & $pick $A.venue $B.venue
+        oa_url           = & $pick $A.oa_url $B.oa_url
+        pdf_url          = & $pick $A.pdf_url $B.pdf_url
+        citation_count   = & $pick $A.citation_count $B.citation_count
+        references_count = & $pick $A.references_count $B.references_count
+        tldr             = & $pick $A.tldr $B.tldr
+        fields           = $fields
+        external_ids     = $ext
+    }
+}
+# Dedup a (possibly multi-source) list by Get-ScholarWorkKey, merging collisions. Stable: first-seen order.
+function Merge-ScholarWorks {
+    param([pscustomobject[]]$Works)
+    $byKey = [ordered]@{}
+    foreach ($w in @($Works)) {
+        if (-not $w) { continue }
+        $k = Get-ScholarWorkKey $w
+        if ($byKey.Contains($k)) { $byKey[$k] = Merge-ScholarWork $byKey[$k] $w } else { $byKey[$k] = $w }
+    }
+    return @($byKey.Values)
+}
+
 # --- paging envelope (consistent with codex-arxiv's search shape) -----------------------------------
 function New-ScholarPage {
     param([string]$Source, [int]$Total = -1, [int]$Start = 0, [pscustomobject[]]$Works = @())

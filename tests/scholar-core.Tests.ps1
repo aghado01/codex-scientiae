@@ -69,6 +69,30 @@ Describe 'New-ScholarPage (paging envelope)' {
     }
 }
 
+Describe 'Merge-ScholarWork / Merge-ScholarWorks (cross-source dedup)' {
+    It 'merges two records of the same paper, filling nulls and unioning sources' {
+        $a = New-ScholarWork -Source openalex       -SourceId W1 -Doi '10.1/x' -Title 'A Paper' -Authors @('X','Y') -CitationCount 10 -Fields @('Math')
+        $b = New-ScholarWork -Source semanticscholar -SourceId P1 -Doi '10.1/x' -Tldr 'short' -ArxivId '2008.10579' -Fields @('CS')
+        $m = Merge-ScholarWork $a $b
+        $m.source   | Should -Be 'openalex+semanticscholar'
+        $m.title    | Should -Be 'A Paper'        # from A
+        $m.tldr     | Should -Be 'short'          # filled from B
+        $m.arxiv_id | Should -Be '2008.10579'     # filled from B
+        $m.citation_count | Should -Be 10
+        ($m.fields | Sort-Object) | Should -Be @('CS','Math')
+    }
+    It 'dedups a mixed list by DOI/arXiv/source key' {
+        $works = @(
+            (New-ScholarWork -Source openalex       -SourceId W1 -Doi '10.1/x' -Title 'A'),
+            (New-ScholarWork -Source semanticscholar -SourceId P1 -Doi '10.1/X' -Tldr 't'),   # same DOI (case-insensitive)
+            (New-ScholarWork -Source openalex       -SourceId W2 -Doi '10.2/y' -Title 'B')
+        )
+        $merged = Merge-ScholarWorks $works
+        $merged.Count | Should -Be 2
+        ($merged | Where-Object { $_.doi -eq '10.1/x' }).source | Should -Be 'openalex+semanticscholar'
+    }
+}
+
 Describe 'Wait-ScholarRate (per-host clock)' {
     It 'records a per-key timestamp and no-ops a zero interval' {
         Wait-ScholarRate -Key 'host-a' -MinIntervalMs 50

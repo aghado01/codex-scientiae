@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "description": "codex-scholar discovery server config. NON-SECRET defaults only. SECRETS + personal contact go in ENVIRONMENT VARIABLES, never in this committed file.",
+  "env": {
+    "CODEX_SCHOLAR_MAILTO": "your email, opts into OpenAlex's faster 'polite pool' (also passable via -Mailto). Optional but recommended.",
+    "SEMANTIC_SCHOLAR_API_KEY": "PLACEHOLDER — optional Semantic Scholar API key. Unset = keyless shared pool (heavily rate-limited, ~1 req/s, frequent 429s). Set it once you have a key to lift the limits (the adapter tightens its interval automatically). Get one at https://www.semanticscholar.org/product/api."
+  },
+  "default_sources": ["openalex", "semanticscholar"],
+  "per_page": 25
+}

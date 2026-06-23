@@ -15,6 +15,14 @@
         "-File",
         "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/arxiv-server.ps1"
       ]
+    },
+    "codex-scholar": {
+      "command": "C:/Users/azrie/PDenv/PowerShell/PowerShell-7.6.0-win-x64-claude/powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-File",
+        "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/scholar-server.ps1"
+      ]
     }
   }
 }
