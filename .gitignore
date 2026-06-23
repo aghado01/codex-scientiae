@@ -4,6 +4,7 @@
 *.vscode
 *.ipynb_checkpoints
 **.scratch/**
+**scratch**git
 
 **__/pycache__/**
 **/.pytest_cache/**
