@@ -114,29 +114,43 @@ The escalation is per-mirror and lazy: try cheap, climb only on failure.
 
 ---
 
-## 5. Open questions — VERIFY before building (the no-assumptions list)
+## 5. Recon findings — VERIFIED (2026-06-23, observe-only probe)
 
-- [ ] Is classic Sci-Hub currently reachable at all, and from which live mirror domains? (corpus is
-      reportedly frozen ~2021 — confirm, and confirm what "frozen" excludes.)
-- [ ] What does a DOI request actually return today — server HTML with an inline PDF/iframe, or a
-      JS/Cloudflare-gated page? (This single answer decides §4 and §6.)
-- [ ] Is there any captcha in the common path, or only on abuse?
-- [ ] Where does a reliable, maintained mirror list come from, and how often does it churn?
-- [ ] Confirm the Sci-Hub vs **Sci-Net** distinction (Sci-Net = the account + credit/"crypto" request
-      platform; out of scope here). Verify current state of both — this brief's premise is classic,
-      no-account Sci-Hub only.
-- [ ] Web-search backend choice (§2 open decision) — availability, ToS, cost, key handling.
+A polite, observe-only probe (DNS + one DOI page per mirror + one HEAD on the storage PDF; DOI
+`10.1007/s00454-004-1146-y`, frozen-corpus era):
+
+- [x] **Reachable, but mirror-dependent.** `sci-hub.ru` → HTTP 200 (real page); `sci-hub.st` → HTTP 403
+      (blocked); `sci-hub.se` → dead DNS. So mirror **rotation + health-check is mandatory** (the variance
+      is the proof), and the live set must be discovered at run time, not hard-coded.
+- [x] **DOI request returns server-rendered HTML with the PDF URL directly in the markup** — not even an
+      iframe. `sci-hub.ru` exposed `//sci-hub.cat/storage/.../zomorodian2004.pdf`. **No Cloudflare, no JS
+      challenge** (`challenge=False`, no `cf-ray`).
+- [x] **No captcha in the common path.** Latent captcha *JS* exists in the page (`var captcha = {}`,
+      anti-abuse machinery) but did NOT fire — the PDF was served directly. Captcha is conditional, not
+      a happy-path gate.
+- [x] **The download leg is ungated.** `HEAD` on the storage URL → `200, application/pdf, ~482 KB`. No
+      auth, no captcha, no Cloudflare on the storage domain (`sci-hub.cat`).
+- [x] **Sci-Hub vs Sci-Net confirmed.** This is classic no-account Sci-Hub (frozen corpus); Sci-Net (the
+      account/credit platform) is separate and out of scope.
+- [x] **DOI discovery is already solved upstream.** The scholar framework (`resolve_doi` / `get_work` / the
+      `Work.doi` cross-walk) feeds canonical DOIs, so the §2 "web-search backend" open decision is moot for
+      v1 — the relational graph IS the DOI source. (Generic web-search DOI mining stays a future fallback.)
 
 ---
 
-## 6. Substrate decision — deferred to §5, on purpose
+## 6. Substrate decision — RESOLVED by §5: plain HTTP in PowerShell (no browser for v1)
 
-- Plain-HTML surface → a **PowerShell sibling** (clone `arxiv.ps1`) keeps it in-family, zero new runtime.
-- JS/Cloudflare surface → a **Node or Python component with Playwright** for retrieval; it can still be
-  a sibling because it honors the same inbox contract. DOI fact-finding (§2) could even stay PowerShell
-  while only the guarded-fetch leg is browser-driven — split by need, not dogma.
+The happy path is fully plain-HTTP, so the fetcher is a **PowerShell sibling/adapter in-family** (reuses
+`scholar-core.ps1`'s rate-limited+retried client + the `%PDF` guard), **zero new runtime**:
 
-Do not pre-commit. The §5 observation picks this.
+1. health-check a configurable mirror list → pick a 200-returning mirror;
+2. `GET {mirror}/{doi}` → server-rendered HTML;
+3. scrape the `.pdf` URL from the markup (protocol-relative → prepend `https:`);
+4. `GET` it from the storage domain → `%PDF`-guard → stage into the shared inbox by sanitized-DOI key.
+
+**Playwright is now a confirmed *contingency only*** (§4): reserved for the case where a mirror returns a
+captcha-active page (no PDF URL present) — detected (`PDF absent + captcha element live`) and escalated to
+human-in-the-loop, NOT built for v1. Split by need, not dogma — and need says PowerShell.
 
 ---
 
