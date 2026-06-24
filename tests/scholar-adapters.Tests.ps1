@@ -7,6 +7,17 @@ BeforeAll {
     . "$PSScriptRoot/../src/scholar-core.ps1"
     . "$PSScriptRoot/../src/openalex.ps1"
     . "$PSScriptRoot/../src/semanticscholar.ps1"
+    . "$PSScriptRoot/../src/arxiv.ps1"
+    . "$PSScriptRoot/../src/arxiv-adapter.ps1"
+
+    $script:ArxivPaper = [pscustomobject]@{
+        id = '2008.10579'; idv = '2008.10579v1'; title = 'Compressive Phase Retrieval'
+        authors = @('Paul Hand', 'Vladislav Voroninski'); abstract = '[external:untrusted] We study compressive phase retrieval.'
+        categories = @('cs.IT', 'math.OC'); primary_category = 'cs.IT'
+        published = '2020-08-24T17:59:00Z'; updated = '2020-09-01T00:00:00Z'
+        doi = $null; journal_ref = $null; comment = $null
+        pdf_url = 'https://arxiv.org/pdf/2008.10579v1'; abs_url = 'https://arxiv.org/abs/2008.10579v1'
+    }
 
     $script:OaWork = @'
 {
@@ -92,6 +103,23 @@ Describe 'ConvertFrom-S2Paper' {
     }
     It 'returns null for an empty/keyless object' {
         ConvertFrom-S2Paper ([pscustomobject]@{}) | Should -BeNullOrEmpty
+    }
+}
+
+Describe 'ConvertFrom-ArxivToWork' {
+    BeforeAll { $script:a = ConvertFrom-ArxivToWork $script:ArxivPaper }
+    It 'maps the arXiv record and strips the untrusted marker' {
+        $a.source     | Should -Be 'arxiv'
+        $a.source_id  | Should -Be '2008.10579v1'
+        $a.arxiv_id   | Should -Be '2008.10579v1'
+        $a.abstract   | Should -Be 'We study compressive phase retrieval.'   # marker stripped
+        $a.year       | Should -Be 2020
+        $a.fields     | Should -Be @('cs.IT','math.OC')
+        $a.pdf_url    | Should -Be 'https://arxiv.org/pdf/2008.10579v1'
+        $a.citation_count | Should -BeNullOrEmpty   # arXiv has no citation graph
+    }
+    It 'dedups to the version-stripped arXiv key' {
+        Get-ScholarWorkKey $script:a | Should -Be 'arxiv:2008.10579'
     }
 }
 

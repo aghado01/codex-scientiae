@@ -23,9 +23,11 @@ param(
 . "$PSScriptRoot/scholar-core.ps1"
 . "$PSScriptRoot/openalex.ps1"
 . "$PSScriptRoot/semanticscholar.ps1"
+. "$PSScriptRoot/arxiv.ps1"           # arXiv search/metadata + Invoke-ArxivFetch (acquisition hand-off)
+. "$PSScriptRoot/arxiv-adapter.ps1"   # arXiv -> Work adapter
 
 $ProgressPreference = 'SilentlyContinue'
-$ServerInfo = @{ name = 'codex-scholar'; version = '0.1.0' }
+$ServerInfo = @{ name = 'codex-scholar'; version = '0.2.0' }
 
 # Config (non-secret defaults) + identification. Contact: -Mailto > env CODEX_SCHOLAR_MAILTO (no hardcode).
 $Config = if (Test-Path -LiteralPath $ConfigPath -PathType Leaf) {
@@ -37,13 +39,20 @@ $contact = if ($Mailto) { $Mailto } elseif ($env:CODEX_SCHOLAR_MAILTO) { $env:CO
 if ($contact) { Set-ScholarContact $contact }
 $PerPage = if ($Config.per_page) { [int]$Config.per_page } else { 25 }
 
-$SourceEnumAll = @('openalex', 'semanticscholar', 'all')
-$SourceEnumOne = @('openalex', 'semanticscholar')
+# The acquisition hand-off reuses the codex-arxiv inbox + staging convention (shared inbox, one config).
+$RepoRoot = (Split-Path -Parent $PSScriptRoot)
+$ArxivConfig = Get-ArxivConfig -Path (Join-Path $PSScriptRoot 'arxiv-staging.json')
+$rawArxivRoot = [string]$ArxivConfig.staging_root
+$ArxivStagingRoot = if ([System.IO.Path]::IsPathRooted($rawArxivRoot)) { [System.IO.Path]::GetFullPath($rawArxivRoot) } else { [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawArxivRoot)) }
+
+$SourceEnumAll  = @('openalex', 'semanticscholar', 'arxiv', 'all')   # discover_search (search sources + fan)
+$SourceEnumOne  = @('openalex', 'semanticscholar')                   # discover_related / resolve_doi (graph/DOI only)
+$SourceEnumWork = @('openalex', 'semanticscholar', 'arxiv')          # get_work
 
 # --- tool catalogue ---
 $Tools = @(
     @{ name = 'discover_search'
-       description = 'Search the scholarly graph for papers — the discovery half of cross-source agentic RAG. source="all" (default) fans across OpenAlex + Semantic Scholar and returns ONE deduped+merged record per paper (source="openalex+semanticscholar"); a single source returns that source''s page with a total_available/next_start envelope. Each Work carries doi AND arxiv_id when known (the acquisition cross-walk), plus abstract/tldr/citation_count. Semantic Scholar is keyless-rate-limited, so a fan degrades gracefully (returns OpenAlex + notes the S2 error). Metadata + abstracts, not paper bodies.'
+       description = 'Search the scholarly graph for papers — the discovery half of cross-source agentic RAG. source="all" (default) fans across OpenAlex + Semantic Scholar + arXiv and returns ONE deduped+merged record per paper (deduped by DOI / version-stripped arXiv id; source e.g. "openalex+arxiv"); a single source ("openalex"|"semanticscholar"|"arxiv") returns that source''s page with a total_available/next_start envelope. Each Work carries doi AND arxiv_id when known (the acquisition cross-walk), plus abstract/tldr/citation_count. Any single source failing (e.g. an S2 429) degrades gracefully — the fan returns the others and notes the error. Metadata + abstracts, not paper bodies.'
        inputSchema = @{ type = 'object'; properties = @{
            query = @{ type = 'string'; description = 'free-text or fielded query' }
            source = @{ type = 'string'; enum = $SourceEnumAll; description = 'which graph (default "all" = fan + dedup)' }
@@ -69,7 +78,13 @@ $Tools = @(
        description = 'Full normalized Work for one identifier (Work id, DOI, or arXiv id). Same record shape as discover_search results. No disk writes.'
        inputSchema = @{ type = 'object'; properties = @{
            id = @{ type = 'string'; description = 'a Work id, DOI, or arXiv id' }
-           source = @{ type = 'string'; enum = $SourceEnumOne; description = 'which graph (default openalex)' }
+           source = @{ type = 'string'; enum = $SourceEnumWork; description = 'which source (default openalex; "arxiv" for an arXiv id)' }
+       }; required = @('id') } }
+    @{ name = 'acquire'
+       description = 'The discovery -> acquisition BRIDGE: take an arXiv id, DOI, or Work id surfaced by discovery and stage it for ingestion in one move. Routing, graph-aware: an arXiv id (or a DOI the citation graph shows is ALSO on arXiv) stages the arXiv artifacts (LaTeX "source" preferred for math, then pdf) into the shared codex-arxiv inbox and returns the staged manifest. A DOI with no arXiv copy is returned ready for the DOI fetcher (sci-hub) — route="doi", status="pending" — which is the seam that fetcher will fill. Reuses codex-arxiv''s inbox + staging config; this is the only codex-scholar tool that writes bytes.'
+       inputSchema = @{ type = 'object'; properties = @{
+           id = @{ type = 'string'; description = 'an arXiv id, a DOI, or a Work id (W…/paperId) from discovery' }
+           artifacts = @{ type = 'array'; items = @{ type = 'string'; enum = @('pdf','source','html') }; description = 'arXiv artifacts to stage (default ["source","pdf"] — LaTeX first for math)' }
        }; required = @('id') } }
 )
 
@@ -96,14 +111,18 @@ function Invoke-Tool([string]$name, $arguments) {
             switch ($src) {
                 'openalex'        { $out = OpenAlex-Search -Query $q -Filters $filters -Start $start -PerPage $max }
                 'semanticscholar' { $out = SemanticScholar-Search -Query $q -Start $start -Limit $max }
+                'arxiv'           { $out = Arxiv-Search -Query $q -Start $start -Limit $max }
                 default {
-                    # fan across both, dedup+merge; ANY single source failing (e.g. an S2 429 or a
+                    # fan across all sources, dedup+merge; ANY single source failing (e.g. an S2 429 or a
                     # transient blip) is noted per-source, never sinks the whole search.
                     $perSource = @(); $all = @()
-                    foreach ($srcName in @('openalex', 'semanticscholar')) {
+                    foreach ($srcName in @('openalex', 'semanticscholar', 'arxiv')) {
                         try {
-                            $pg = if ($srcName -eq 'openalex') { OpenAlex-Search -Query $q -Filters $filters -Start $start -PerPage $max }
-                                  else { SemanticScholar-Search -Query $q -Start $start -Limit $max }
+                            $pg = switch ($srcName) {
+                                'openalex'        { OpenAlex-Search -Query $q -Filters $filters -Start $start -PerPage $max }
+                                'semanticscholar' { SemanticScholar-Search -Query $q -Start $start -Limit $max }
+                                'arxiv'           { Arxiv-Search -Query $q -Start $start -Limit $max }
+                            }
                             $perSource += [pscustomobject]@{ source = $srcName; total_available = $pg.total_available; returned = $pg.returned }
                             $all += @($pg.works)
                         } catch {
@@ -139,7 +158,32 @@ function Invoke-Tool([string]$name, $arguments) {
             $src = if ($arguments.source) { [string]$arguments.source } else { 'openalex' }
             $out = switch ($src) {
                 'semanticscholar' { SemanticScholar-GetWork $id }
+                'arxiv'           { Arxiv-GetWork $id }
                 default           { OpenAlex-GetWork $id }
+            }
+        }
+        'acquire' {
+            $id   = [string]$arguments.id
+            $arts = if ($arguments.artifacts) { [string[]]@($arguments.artifacts) } else { @('source', 'pdf') }
+            # Determine the best acquisition route. The graph is the leverage: given a DOI (or a Work id),
+            # we ask OpenAlex whether the paper is ALSO on arXiv and, if so, prefer the arXiv source.
+            $arxivId = $null; $doi = $null
+            if (Test-ArxivId $id) {
+                $arxivId = $id
+            } elseif ($id -match '10\.\d{4,9}/\S+') {
+                $doi = $Matches[0]
+                try { $w = OpenAlex-GetWork "doi:$doi"; if ($w.arxiv_id) { $arxivId = $w.arxiv_id } } catch { }
+            } else {
+                try { $w = OpenAlex-GetWork $id; if ($w) { $arxivId = $w.arxiv_id; $doi = $w.doi } } catch { }
+            }
+            if ($arxivId) {
+                $manifest = Invoke-ArxivFetch -Id $arxivId -Config $ArxivConfig -StagingRoot $ArxivStagingRoot -RepoRoot $RepoRoot -Artifacts $arts
+                $out = [pscustomobject]@{ route = 'arxiv'; arxiv_id = $arxivId; doi = $doi; staged = $manifest }
+            } elseif ($doi) {
+                $out = [pscustomobject]@{ route = 'doi'; doi = $doi; status = 'pending'
+                    note = 'DOI ready for the DOI fetcher (sci-hub) — not yet wired; no arXiv copy found via the graph.' }
+            } else {
+                $out = [pscustomobject]@{ route = 'none'; note = "could not resolve '$id' to an arXiv id or DOI" }
             }
         }
         default { throw "unknown tool: $name" }
@@ -197,7 +241,7 @@ while ($null -ne ($line = $script:In.ReadLine())) {
             $pv = if ($req.params.protocolVersion) { [string]$req.params.protocolVersion } else { $ProtocolVersion }
             $result = @{ protocolVersion = $pv; capabilities = @{ tools = @{}; prompts = @{} }; serverInfo = $ServerInfo }
             if ($null -eq $script:Readiness) {
-                $script:Readiness = "codex-scholar: cross-source scholarly DISCOVERY (OpenAlex + Semantic Scholar), sibling to codex-arxiv (acquisition). Use discover_search (fan + dedup) to find papers, discover_related to walk citations/references/recommendations, resolve_doi to cross-walk, get_work for full records — every result is a normalized Work carrying doi + arxiv_id for the acquisition hand-off. This connection is your live session — call these tools directly. Semantic Scholar is keyless-rate-limited ($s2key); fans degrade gracefully. Inject the discovery_procedure prompt for the full agentic-RAG playbook. Discovery only — staging bytes is codex-arxiv / sci-hub."
+                $script:Readiness = "codex-scholar: cross-source scholarly DISCOVERY (OpenAlex + Semantic Scholar + arXiv), sibling to codex-arxiv (acquisition). discover_search (fan + dedup) to find papers, discover_related to walk citations/references/recommendations, resolve_doi to cross-walk, get_work for full records — every result is a normalized Work carrying doi + arxiv_id. Then acquire (the one-move discovery->acquisition bridge): hand it an arXiv id / DOI / Work id and it routes to a fetcher — arXiv (or a DOI the graph shows is on arXiv) stages the LaTeX source into the shared inbox; a DOI-only paper is returned ready for the sci-hub fetcher (pending). This connection is your live session — call these tools directly. Semantic Scholar is keyless-rate-limited ($s2key); fans degrade gracefully. Inject the discovery_procedure prompt for the full agentic-RAG playbook."
             }
             $result.instructions = $script:Readiness
             $script:Initialized = $true

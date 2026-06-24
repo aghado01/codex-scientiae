@@ -36,7 +36,7 @@ Describe 'ConvertTo-NormalizedDoi' {
 Describe 'Get-ScholarWorkKey (dedup identity)' {
     It 'prefers DOI, then arXiv id, then source:id' {
         Get-ScholarWorkKey (New-ScholarWork -Source openalex -SourceId W1 -Doi '10.1/A' -ArxivId '2008.10579') | Should -Be 'doi:10.1/a'
-        Get-ScholarWorkKey (New-ScholarWork -Source s2 -SourceId P9 -ArxivId '2008.10579V1')                  | Should -Be 'arxiv:2008.10579v1'
+        Get-ScholarWorkKey (New-ScholarWork -Source s2 -SourceId P9 -ArxivId '2008.10579V1')                  | Should -Be 'arxiv:2008.10579'   # version-stripped
         Get-ScholarWorkKey (New-ScholarWork -Source s2 -SourceId P9)                                          | Should -Be 's2:P9'
     }
 }

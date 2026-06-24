@@ -111,11 +111,12 @@ function ConvertTo-NormalizedDoi {
     return $d.ToLowerInvariant()
 }
 
-# A stable identity key for cross-source dedup: prefer DOI, then arXiv id, then source:source_id.
+# A stable identity key for cross-source dedup: prefer DOI, then arXiv id (version-stripped, so v1/v2 of
+# the same paper and a versionless OpenAlex/S2 cross-walk all collapse), then source:source_id.
 function Get-ScholarWorkKey {
     param([pscustomobject]$Work)
     if ($Work.doi)      { return "doi:$($Work.doi)" }
-    if ($Work.arxiv_id) { return "arxiv:$(([string]$Work.arxiv_id).ToLowerInvariant())" }
+    if ($Work.arxiv_id) { return "arxiv:$((([string]$Work.arxiv_id).ToLowerInvariant()) -replace 'v\d+$','')" }
     return "$($Work.source):$($Work.source_id)"
 }
 

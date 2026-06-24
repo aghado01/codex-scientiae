@@ -7,9 +7,10 @@ hand the best candidates to acquisition. Hold the synthesis in your own context 
 
 ## The loop
 
-1. **Orient — `discover_search`** (fan across sources by default). Read the abstracts/TLDRs to learn the
-   vocabulary, key authors, and the seminal works. Each result is a normalized `Work` carrying both
-   `doi` and `arxiv_id` when known — that cross-walk is your acquisition route later.
+1. **Orient — `discover_search`** (fan across OpenAlex + Semantic Scholar + arXiv by default). Read the
+   abstracts/TLDRs to learn the vocabulary, key authors, and the seminal works. Each result is a
+   normalized `Work` carrying both `doi` and `arxiv_id` when known — that cross-walk is your acquisition
+   route later. The fan dedups the same paper across sources into one record.
 2. **Iterate** — refine the query; narrow with source-specific filters when you target one source.
    `total_available` per source tells you if a query is too broad (narrow it) vs tight (page via
    `next_start`). Fan results are **deduped+merged** across sources automatically (one paper, one record,
@@ -21,10 +22,11 @@ hand the best candidates to acquisition. Hold the synthesis in your own context 
    Seed from a seminal `Work` you found, expand, fold new finds into your synthesis.
 4. **Cross-walk — `resolve_doi`**. Turn a loose reference/title into a canonical DOI + `Work` (the key for
    acquisition and for linking the same paper across sources).
-5. **Converge & acquire.** When fresh queries/expansions stop surfacing new relevant works, stop. Hand the
-   keepers to acquisition by their identifiers: **arXiv id → codex-arxiv `fetch` (prefer `source` for
-   math)**; otherwise **DOI → the DOI-based fetcher (sci-hub, when built)**. This server discovers; it does
-   not stage bytes.
+5. **Converge & acquire — `acquire`.** When fresh queries/expansions stop surfacing new relevant works,
+   stop, and stage the keepers in one move: pass an `arxiv_id` / `doi` / Work id to **`acquire`**. It
+   routes — an arXiv id (or a DOI the graph shows is *also* on arXiv) stages the LaTeX **source** into the
+   shared inbox; a DOI with no arXiv copy comes back `route="doi"` ready for the sci-hub fetcher. (You can
+   still call codex-arxiv `fetch` directly for fine control.)
 
 ## Discipline
 
