@@ -2,8 +2,8 @@
 # This script scans each chapter markdown file for anchor tags (<a id="sec-...">) and records the byte offset of each anchor.
 # Then it rewrites the corresponding entries in CONTENTS.md, replacing "(lines X‑Y)" with "(bytes start‑end)".
 
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
-$chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$chapterDir   = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 # Load CONTENTS.md as a single string and split into lines
 $contentsRaw   = Get-Content $contentsPath -Encoding UTF8 -Raw

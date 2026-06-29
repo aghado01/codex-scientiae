@@ -1,7 +1,7 @@
 # PowerShell script to generate a structured JSON file with byte offset spans for each TOC entry in CONTENTS.md
 # Output JSON will be written to .antigravity/helpers/contents_byte_spans.json
 
-$repoRoot   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae"
+$repoRoot   = "D:\aghado01\codex-scientiae"
 $contentsPath = Join-Path $repoRoot "codices\Grimmett2006\Chapters\CONTENTS.md"
 $chapterDir   = Join-Path $repoRoot "codices\Grimmett2006\Chapters"
 $outputPath   = Join-Path $repoRoot ".antigravity\helpers\contents_byte_spans.json"

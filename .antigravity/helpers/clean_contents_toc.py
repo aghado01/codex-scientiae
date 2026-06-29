@@ -5,7 +5,7 @@ Replace patterns like "— 19 (bytes 614-11366)" with "— bytes 614-11366".
 import re
 from pathlib import Path
 
-repo_root = Path(r"C:\Users\azrie\PDenv\UserGithub\codex-scientiae")
+repo_root = Path(r"D:\aghado01\codex-scientiae")
 contents_path = repo_root / "codices" / "Grimmett2006" / "Chapters" / "CONTENTS.md"
 
 text = contents_path.read_text(encoding='utf-8')

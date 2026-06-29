@@ -1,6 +1,6 @@
 # PowerShell script to insert internal TOCs into Grimmett2006 chapters
 # Assumes files are located in the repository root under codices/Grimmett2006/Chapters
-$chapterDir = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$chapterDir = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 $files = Get-ChildItem -Path $chapterDir -Filter "Chapter??.*.md"
 foreach ($file in $files) {
     $content = Get-Content $file.FullName -Raw

@@ -1,0 +1,15 @@
+{
+  "version": "0.1.0",
+  "description": "Sci-Hub mirror candidates for the DOI fetcher (scihub-get.ps1). Mirrors rotate and die (recon 2026-06-23: .ru=200, .st=403, .se=dead) — they are health-checked PER DOI at fetch time and the fetcher falls through on 403/timeout/no-PDF/captcha. Conventions-as-data: re-point when the live set changes. Classic no-account Sci-Hub only (frozen corpus, ~pre-2021); Sci-Net is out of scope.",
+  "mirrors": [
+    "https://sci-hub.ru",
+    "https://sci-hub.st",
+    "https://sci-hub.se",
+    "https://sci-hub.wf",
+    "https://sci-hub.ee"
+  ],
+  "request_interval_ms": 2000,
+  "pdf_min_bytes": 1024,
+  "timeout_sec": 20,
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0"
+}

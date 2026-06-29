@@ -5,7 +5,7 @@
       "args": [
         "-NoProfile",
         "-File",
-        "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/mcp-server.ps1"
+        "D:/aghado01/codex-scientiae/src/mcp-server.ps1"
       ]
     },
     "codex-arxiv": {
@@ -13,7 +13,7 @@
       "args": [
         "-NoProfile",
         "-File",
-        "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/arxiv-server.ps1"
+        "D:/aghado01/codex-scientiae/src/arxiv-server.ps1"
       ]
     },
     "codex-scholar": {
@@ -21,7 +21,7 @@
       "args": [
         "-NoProfile",
         "-File",
-        "C:/Users/azrie/PDenv/UserGithub/codex-scientiae/src/scholar-server.ps1"
+        "D:/aghado01/codex-scientiae/src/scholar-server.ps1"
       ]
     }
   }

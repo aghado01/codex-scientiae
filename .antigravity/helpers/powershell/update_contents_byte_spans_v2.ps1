@@ -1,8 +1,8 @@
 # PowerShell script to replace "(lines X-Y)" with "(bytes start-end)" in CONTENTS.md
 # It builds a map of section anchors to byte offsets for each chapter file.
 
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
-$chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$chapterDir   = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 # Build anchor -> byte offset map per chapter file
 $anchorMap = @{}

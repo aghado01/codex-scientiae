@@ -6,6 +6,10 @@
 **.scratch/**
 **scratch**git
 
+scratch/
+.legacy
+lib/
+
 **__/pycache__/**
 **/.pytest_cache/**
 **/.mypy_cache/**

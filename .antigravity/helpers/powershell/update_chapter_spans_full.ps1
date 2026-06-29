@@ -1,5 +1,5 @@
 param(
-    [string]$repoRoot = "c:\\Users\\azrie\\PDenv\\UserGithub\\codex-scientiae"
+    [string]$repoRoot = "d:\\aghado01\\codex-scientiae"
 )
 
 # Resolve absolute paths

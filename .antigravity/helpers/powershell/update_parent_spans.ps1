@@ -1,6 +1,6 @@
 # PowerShell script to set each chapter's parent byte span to the full file size
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
-$chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$chapterDir   = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 # Read all lines of the TOC
 $lines = Get-Content $contentsPath -Encoding UTF8

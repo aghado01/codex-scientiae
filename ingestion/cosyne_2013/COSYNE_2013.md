@@ -256,17 +256,4 @@ Timesteps
 
 9
 
-[Page 6]
-
-Sulsul
-
-Sulsu
-
-Sulsulsulsulsulsu
-
-Sulsulsulsulsu
-
-Su Sulsulsulsulsulsu Bulsulsulsulsulsu Sulsulsulsulsulsu Sulsulsulsulsulsu Sulsulsulsulsulsu
-
-UF SURPRISE
 

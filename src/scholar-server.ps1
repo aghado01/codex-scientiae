@@ -25,9 +25,10 @@ param(
 . "$PSScriptRoot/semanticscholar.ps1"
 . "$PSScriptRoot/arxiv.ps1"           # arXiv search/metadata + Invoke-ArxivFetch (acquisition hand-off)
 . "$PSScriptRoot/arxiv-adapter.ps1"   # arXiv -> Work adapter
+. "$PSScriptRoot/scihub-get.ps1"      # DOI -> PDF fetcher (acquire's route=doi)
 
 $ProgressPreference = 'SilentlyContinue'
-$ServerInfo = @{ name = 'codex-scholar'; version = '0.2.0' }
+$ServerInfo = @{ name = 'codex-scholar'; version = '0.3.0' }
 
 # Config (non-secret defaults) + identification. Contact: -Mailto > env CODEX_SCHOLAR_MAILTO (no hardcode).
 $Config = if (Test-Path -LiteralPath $ConfigPath -PathType Leaf) {
@@ -44,6 +45,7 @@ $RepoRoot = (Split-Path -Parent $PSScriptRoot)
 $ArxivConfig = Get-ArxivConfig -Path (Join-Path $PSScriptRoot 'arxiv-staging.json')
 $rawArxivRoot = [string]$ArxivConfig.staging_root
 $ArxivStagingRoot = if ([System.IO.Path]::IsPathRooted($rawArxivRoot)) { [System.IO.Path]::GetFullPath($rawArxivRoot) } else { [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawArxivRoot)) }
+$ScihubConfig = Get-ScihubConfig -Path (Join-Path $PSScriptRoot 'scihub-mirrors.json')   # DOI fetcher mirror list
 
 $SourceEnumAll  = @('openalex', 'semanticscholar', 'arxiv', 'all')   # discover_search (search sources + fan)
 $SourceEnumOne  = @('openalex', 'semanticscholar')                   # discover_related / resolve_doi (graph/DOI only)
@@ -81,7 +83,7 @@ $Tools = @(
            source = @{ type = 'string'; enum = $SourceEnumWork; description = 'which source (default openalex; "arxiv" for an arXiv id)' }
        }; required = @('id') } }
     @{ name = 'acquire'
-       description = 'The discovery -> acquisition BRIDGE: take an arXiv id, DOI, or Work id surfaced by discovery and stage it for ingestion in one move. Routing, graph-aware: an arXiv id (or a DOI the citation graph shows is ALSO on arXiv) stages the arXiv artifacts (LaTeX "source" preferred for math, then pdf) into the shared codex-arxiv inbox and returns the staged manifest. A DOI with no arXiv copy is returned ready for the DOI fetcher (sci-hub) — route="doi", status="pending" — which is the seam that fetcher will fill. Reuses codex-arxiv''s inbox + staging config; this is the only codex-scholar tool that writes bytes.'
+       description = 'The discovery -> acquisition BRIDGE: take an arXiv id, DOI, or Work id surfaced by discovery and stage it for ingestion in one move. Routing, graph-aware (the input-quality ladder): an arXiv id (or a DOI the citation graph shows is ALSO on arXiv) stages the arXiv artifacts (LaTeX "source" preferred for math, then pdf) into the shared inbox; a DOI with NO arXiv copy falls to the Sci-Hub DOI fetcher, which health-checks mirrors, scrapes the PDF, and stages it (route="scihub"). If no mirror serves it (outside Sci-Hub''s frozen corpus, or a captcha gate), returns route="doi", status="failed" with the reason. Reuses the shared inbox; this is the only codex-scholar tool that writes bytes.'
        inputSchema = @{ type = 'object'; properties = @{
            id = @{ type = 'string'; description = 'an arXiv id, a DOI, or a Work id (W…/paperId) from discovery' }
            artifacts = @{ type = 'array'; items = @{ type = 'string'; enum = @('pdf','source','html') }; description = 'arXiv artifacts to stage (default ["source","pdf"] — LaTeX first for math)' }
@@ -180,8 +182,13 @@ function Invoke-Tool([string]$name, $arguments) {
                 $manifest = Invoke-ArxivFetch -Id $arxivId -Config $ArxivConfig -StagingRoot $ArxivStagingRoot -RepoRoot $RepoRoot -Artifacts $arts
                 $out = [pscustomobject]@{ route = 'arxiv'; arxiv_id = $arxivId; doi = $doi; staged = $manifest }
             } elseif ($doi) {
-                $out = [pscustomobject]@{ route = 'doi'; doi = $doi; status = 'pending'
-                    note = 'DOI ready for the DOI fetcher (sci-hub) — not yet wired; no arXiv copy found via the graph.' }
+                # No arXiv copy in the graph -> the DOI fetcher (Sci-Hub): scrape the PDF into the same inbox.
+                $sh = Invoke-ScihubFetch -Doi $doi -Config $ScihubConfig -StagingRoot $ArxivStagingRoot -RepoRoot $RepoRoot
+                $out = if ($sh.available -eq $false) {
+                    [pscustomobject]@{ route = 'doi'; doi = $doi; status = 'failed'; note = $sh.reason }
+                } else {
+                    [pscustomobject]@{ route = 'scihub'; doi = $doi; staged = $sh }
+                }
             } else {
                 $out = [pscustomobject]@{ route = 'none'; note = "could not resolve '$id' to an arXiv id or DOI" }
             }
@@ -241,7 +248,7 @@ while ($null -ne ($line = $script:In.ReadLine())) {
             $pv = if ($req.params.protocolVersion) { [string]$req.params.protocolVersion } else { $ProtocolVersion }
             $result = @{ protocolVersion = $pv; capabilities = @{ tools = @{}; prompts = @{} }; serverInfo = $ServerInfo }
             if ($null -eq $script:Readiness) {
-                $script:Readiness = "codex-scholar: cross-source scholarly DISCOVERY (OpenAlex + Semantic Scholar + arXiv), sibling to codex-arxiv (acquisition). discover_search (fan + dedup) to find papers, discover_related to walk citations/references/recommendations, resolve_doi to cross-walk, get_work for full records — every result is a normalized Work carrying doi + arxiv_id. Then acquire (the one-move discovery->acquisition bridge): hand it an arXiv id / DOI / Work id and it routes to a fetcher — arXiv (or a DOI the graph shows is on arXiv) stages the LaTeX source into the shared inbox; a DOI-only paper is returned ready for the sci-hub fetcher (pending). This connection is your live session — call these tools directly. Semantic Scholar is keyless-rate-limited ($s2key); fans degrade gracefully. Inject the discovery_procedure prompt for the full agentic-RAG playbook."
+                $script:Readiness = "codex-scholar: cross-source scholarly DISCOVERY (OpenAlex + Semantic Scholar + arXiv), sibling to codex-arxiv (acquisition). discover_search (fan + dedup) to find papers, discover_related to walk citations/references/recommendations, resolve_doi to cross-walk, get_work for full records — every result is a normalized Work carrying doi + arxiv_id. Then acquire (the one-move discovery->acquisition bridge): hand it an arXiv id / DOI / Work id and it routes to a fetcher along the input-quality ladder — arXiv (or a DOI the graph shows is on arXiv) stages the LaTeX source; a DOI with no arXiv copy falls to the Sci-Hub DOI fetcher (scrapes the PDF into the same inbox). This connection is your live session — call these tools directly. Semantic Scholar is keyless-rate-limited ($s2key); fans degrade gracefully. Inject the discovery_procedure prompt for the full agentic-RAG playbook."
             }
             $result.instructions = $script:Readiness
             $script:Initialized = $true

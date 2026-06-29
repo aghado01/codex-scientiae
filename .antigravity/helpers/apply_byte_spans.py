@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import re
 
-repo_root = Path(r"C:\Users\azrie\PDenv\UserGithub\codex-scientiae")
+repo_root = Path(r"D:\aghado01\codex-scientiae")
 contents_path = repo_root / "codices" / "Grimmett2006" / "Chapters" / "CONTENTS.md"
 json_path = repo_root / ".antigravity" / "helpers" / "contents_byte_spans.json"
 

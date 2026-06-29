@@ -1,8 +1,8 @@
 # PowerShell script to replace "(lines A-B)" with "(bytes start-end)"
 # and to normalise dash/byte‑span formatting in CONTENTS.md.
 
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
-$chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$chapterDir   = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 function Get-ByteOffset([string]$filePath, [int]$lineNumber) {
     $bytes = 0

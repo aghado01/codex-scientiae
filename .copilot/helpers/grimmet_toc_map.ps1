@@ -1,4 +1,4 @@
-$root = 'c:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmet2006\Chapters'
+$root = 'd:\aghado01\codex-scientiae\codices\Grimmet2006\Chapters'
 $files = Get-ChildItem -LiteralPath $root -Filter 'Chapter*.md' | Sort-Object Name
 
 function Get-RelativeChapterLink([string]$fileName, [string]$anchor) {

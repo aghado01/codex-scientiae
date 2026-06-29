@@ -1,8 +1,8 @@
 # PowerShell script to replace "(lines A-B)" with "(bytes start-end)" in CONTENTS.md using header anchors
 # It builds a map of anchor IDs to byte offsets for each chapter file, then updates the TOC.
 
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
-$chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$chapterDir   = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 # Build a map: ChapterFile -> AnchorID -> StartByteOffset
 $anchorMap = @{}

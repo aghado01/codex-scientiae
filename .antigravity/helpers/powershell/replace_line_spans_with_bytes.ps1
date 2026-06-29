@@ -1,6 +1,6 @@
 # PowerShell script to replace "(lines A-B)" with "(bytes start-end)" in CONTENTS.md and strip page numbers
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
-$chapterDir   = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$chapterDir   = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 # Helper: compute byte offset of a given 1‑based line number in a file (UTF‑8, including newline)
 function Get-ByteOffset([string]$filePath, [int]$lineNumber) {

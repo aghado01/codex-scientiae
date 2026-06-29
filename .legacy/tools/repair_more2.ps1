@@ -1,5 +1,5 @@
 param(
-    [string]$Path = 'c:\Users\azrie\PDenv\UserGithub\codex-scientiae\corpora\V.Voroninski\1506.01437v2.md'
+    [string]$Path = 'd:\aghado01\codex-scientiae\corpora\V.Voroninski\1506.01437v2.md'
 )
 if (-not (Test-Path $Path)) { Write-Error "File not found: $Path"; exit 2 }
 $orig = Get-Content -Raw -Encoding UTF8 -Path $Path

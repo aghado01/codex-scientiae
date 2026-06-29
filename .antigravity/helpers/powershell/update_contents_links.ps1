@@ -1,5 +1,5 @@
 # PowerShell script to update CONTENTS.md links to be file-aware for all chapters
-$contentsPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
+$contentsPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters\CONTENTS.md"
 
 # Read file as lines
 $raw = Get-Content $contentsPath -Encoding UTF8 -Raw

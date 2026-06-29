@@ -1,4 +1,4 @@
-$venv = "$env:PORTABLE_ROOT/UserGithub/codex-scientiae/.venv"
+$venv = "D:/aghado01/codex-scientiae/.venv"
 & "$venv/Scripts/Activate.ps1"
 $py_venv = "$venv/Scripts/python.exe"
 

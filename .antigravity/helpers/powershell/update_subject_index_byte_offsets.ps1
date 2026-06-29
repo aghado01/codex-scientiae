@@ -1,7 +1,7 @@
 # PowerShell script to replace page numbers with byte offsets in SubjectIndex.md
 
-$subjectIndexPath = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\SubjectIndex.md"
-$chapterDir = "C:\Users\azrie\PDenv\UserGithub\codex-scientiae\codices\Grimmett2006\Chapters"
+$subjectIndexPath = "D:\aghado01\codex-scientiae\codices\Grimmett2006\SubjectIndex.md"
+$chapterDir = "D:\aghado01\codex-scientiae\codices\Grimmett2006\Chapters"
 
 # Helper to compute byte offset of a given 1‑based line number in a file (UTF‑8, including newline)
 function Get-ByteOffset([string]$filePath, [int]$lineNumber) {

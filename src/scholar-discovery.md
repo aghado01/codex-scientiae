@@ -24,9 +24,10 @@ hand the best candidates to acquisition. Hold the synthesis in your own context 
    acquisition and for linking the same paper across sources).
 5. **Converge & acquire — `acquire`.** When fresh queries/expansions stop surfacing new relevant works,
    stop, and stage the keepers in one move: pass an `arxiv_id` / `doi` / Work id to **`acquire`**. It
-   routes — an arXiv id (or a DOI the graph shows is *also* on arXiv) stages the LaTeX **source** into the
-   shared inbox; a DOI with no arXiv copy comes back `route="doi"` ready for the sci-hub fetcher. (You can
-   still call codex-arxiv `fetch` directly for fine control.)
+   routes along the input-quality ladder — an arXiv id (or a DOI the graph shows is *also* on arXiv) stages
+   the LaTeX **source**; a DOI with no arXiv copy falls to the **Sci-Hub** fetcher (scrapes the PDF into the
+   same inbox, `route="scihub"`). If a DOI can't be served (outside the frozen corpus / captcha), it comes
+   back `route="doi", status="failed"`. (You can still call codex-arxiv `fetch` directly for fine control.)
 
 ## Discipline
 
