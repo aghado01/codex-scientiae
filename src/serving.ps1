@@ -267,7 +267,7 @@ function Get-IrHotspots {
     $skipIds = @{}
     
     $chunks |
-        Where-Object { $_.fidelity -in 'suspect','needs_review','needs_repair' -and (-not $Type -or $_.corruption_type -eq $Type) } |
+        Where-Object { $_.fidelity -in 'suspect','needs_review','needs_repair' -and (-not $Type -or $_.corruption_type -eq $Type -or $_.review_reason -eq $Type) } |
         ForEach-Object {
             if ([int]$_.id -in $skipIds.Keys) { return }
             if ($spanLookup.ContainsKey([int]$_.id)) {
@@ -279,7 +279,7 @@ function Get-IrHotspots {
                     kind    = 'fragmented_formula'
                     page    = $span.pages[0]
                     grade   = $_.fidelity
-                    type    = $_.corruption_type
+                    type    = $(if ($_.corruption_type) { $_.corruption_type } else { $_.review_reason })
                     section = $_.section
                     agreement = ($span.ids | ForEach-Object { Get-ChunkAgreement $byId[[int]$_] } | Measure-Object -Minimum).Minimum
                     preview = $span.preview_joined
@@ -289,7 +289,7 @@ function Get-IrHotspots {
                     id      = $_.id
                     page    = $_.page
                     grade   = $_.fidelity
-                    type    = $_.corruption_type
+                    type    = $(if ($_.corruption_type) { $_.corruption_type } else { $_.review_reason })
                     section = $_.section
                     agreement = (Get-ChunkAgreement $_)
                     preview = ([string]$_.content).Substring(0, [Math]::Min(54, ([string]$_.content).Length))
@@ -464,6 +464,7 @@ function Invoke-RepairApply {
         $c | Add-Member -NotePropertyName repair_source -NotePropertyValue ([string]$p.source) -Force
         $c.PSObject.Properties.Remove('corruption_type')
         $c.PSObject.Properties.Remove('seam')
+        $c.PSObject.Properties.Remove('seam_merge')   # the cross-chunk soft flag clears on a merged fix too
         $appliedIds.Add([int]$c.id)
     }
 

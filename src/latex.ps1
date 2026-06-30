@@ -249,3 +249,125 @@ function Get-ReplacementCharSpans([string]$content) {
 function Get-LigatureSpans([string]$content) {
     return (Get-MaskSpanRecords (New-Mask $content '[ﬀ-ﬄ]'))
 }
+
+# ── valid-but-wrong math detectors (SOFT signals) ────────────────────────────────────────────────────
+# Structural TELLS of converter corruption the balance / environment gate cannot see: content that is
+# structurally valid LaTeX (delimiters and environments balance, reads as math) yet is semantically wrong.
+# Each predicate is paired with a span localizer for the work-order. fidelity.ps1 wires these as the SOFT
+# band of the corruption table — they route to needs_review, never the frozen hard gate (corpus A/B pinned).
+
+# Glyph-name leaks — a PDF font glyph NAME left as literal text ("glyph[negationslash]") where a LaTeX
+# command belongs. Deterministic and ~zero false-positive (no real prose contains "glyph[<name>]"). The map
+# is the known txfonts / glyphtounicode names the corpus has surfaced; extend as new ones appear.
+$script:GlyphNameMap = [ordered]@{
+    'negationslash'       = '\neq'
+    'lscript'             = '\ell'
+    'greaterorequalslant' = '\geqslant'
+    'lessorequalslant'    = '\leqslant'
+    'greaterequal'        = '\geq'
+    'lessequal'           = '\leq'
+    'element'             = '\in'
+    'reflexsubset'        = '\subseteq'
+    'logicaland'          = '\wedge'
+    'logicalor'           = '\vee'
+    'circlemultiply'      = '\otimes'
+    'circleplus'          = '\oplus'
+}
+$script:RxGlyphLeak = [regex]'glyph\[[A-Za-z]+\]'
+function Test-GlyphNameLeak([string]$s) { return $script:RxGlyphLeak.IsMatch($s) }
+function Get-GlyphNameLeakSpans([string]$s) { return (Get-MaskSpanRecords (New-Mask $s $script:RxGlyphLeak)) }
+
+# Dangling operator — a display-math chunk whose LAST token is an infix / relational operator with no right
+# operand: the converter truncated the tail. Trim trailing layout (whitespace, \\, \quad-family spacing, a
+# closing \end{...}) then test the final token. End-of-CHUNK only by construction — an operator before a \\
+# with a continuation row is legal aligned math, not a dangle, because it is not the final token.
+$script:RxTrailingLayout = [regex]'(?:\s|\\\\|\\quad|\\qquad|\\,|\\;|\\:|\\!|\\end\s*\{[^{}]*\})+$'
+# longest-first so a word op is matched whole (\leqslant before \leq before \le); symbol ops are unambiguous
+$script:DanglingOps = @(
+    '\leqslant','\geqslant','\implies','\Longrightarrow','\mapsto','\subseteq','\supseteq','\equiv','\approx',
+    '\simeq','\cong','\propto','\otimes','\oplus','\times','\cdot','\div','\circ','\leq','\geq','\neq','\sim',
+    '\cup','\cap','\subset','\supset','\wedge','\vee','\land','\lor','\pm','\mp','\ast','\to','\in','\ni',
+    '\le','\ge','<','>','=','+','-'
+)
+function Get-DanglingOperatorSpan([string]$s) {
+    if (-not $s) { return $null }
+    $t = ($script:RxTrailingLayout.Replace($s, '')).TrimEnd()
+    if (-not $t) { return $null }
+    foreach ($op in $script:DanglingOps) {
+        if ($t.EndsWith($op)) {
+            $start = $t.Length - $op.Length
+            # a \word op must sit on a command boundary — reject a coincidental suffix (e.g. \sin ~ \in)
+            if ($op[0] -eq '\' -and $start -gt 0 -and [char]::IsLetter($t[$start - 1])) { continue }
+            return [pscustomobject]@{ start = $start; end = $s.Length }
+        }
+    }
+    return $null
+}
+function Test-DanglingOperator([string]$s) { return ($null -ne (Get-DanglingOperatorSpan $s)) }
+function Get-DanglingOperatorSpans([string]$s) { $sp = Get-DanglingOperatorSpan $s; if ($sp) { return @($sp) }; return @() }
+
+# Prose smuggled inside \text{} blocks of a formula. Legitimate math \text{} is a short label (s.t., where,
+# for all); a formula carrying >= MinWords prose-words across its \text{} interiors has a sentence merged in
+# (the converter pulled the next line's prose into the equation). Counts INSIDE \text{} — exactly the region
+# Test-IsMath (chunk level) shelters as structure, which is why the hard gate is blind to it.
+function Get-TextProseWordCount([string]$s) {
+    return (Get-MaskDensity -Text $s -Within (Get-TextInteriorMask $s) -Register $script:RxProseWord)
+}
+function Test-TextSentenceInMath([string]$s, [int]$MinWords = 4) { return ((Get-TextProseWordCount $s) -ge $MinWords) }
+function Get-TextSentenceInMathSpans([string]$s) {
+    return (Get-MaskSpanRecords (Get-MaskDensity -Text $s -Within (Get-TextInteriorMask $s) -Register $script:RxProseWord -AsSpans))
+}
+
+# A lone integer on its own alignment row (\\ & \quad 4) — a page / footnote number the converter swept into
+# the math. A \\-delimited (or chunk-edge) row whose only content, after stripping a leading & and \quad-
+# family spacing, is digits. A row carrying any real token (x = 4, 0 & 0) is left alone by the end-lookahead.
+$script:RxBareNumberRow = [regex]'(?:\\\\|^)\s*(?:&\s*)?(?:\\(?:quad|qquad|,|;|:|!)\s*)*\d+\s*(?=\\\\|$)'
+function Test-BareNumberRow([string]$s) { return $script:RxBareNumberRow.IsMatch($s) }
+function Get-BareNumberRowSpans([string]$s) {
+    $list = [System.Collections.Generic.List[object]]::new()
+    foreach ($m in $script:RxBareNumberRow.Matches($s)) { $list.Add([pscustomobject]@{ start = $m.Index; end = $m.Index + $m.Length }) }
+    return $list.ToArray()
+}
+
+# Degenerate structure — a \substack whose body carries NO constraint (the "\max_{\substack{s.t.\\s.t.}}"
+# PhaseMax-LP case): the equation was destroyed by the converter and only the operator scaffold survived,
+# still valid LaTeX. Narrow by construction: a real \substack constraint carries a relation or a number; the
+# mangled one is bare abbreviation text. (Relation/digit ⇒ real; symbol-only stacks carry no literal letters
+# ⇒ not flagged, so \substack{\alpha\\\beta} is safe.)
+function Test-DegenerateSubstack([string]$inner) {
+    $hasRelation = $inner -match '[<>=]|\\(le|leq|ge|geq|ne|neq|in|ni|leqslant|geqslant|sim|approx|subset|supset|equiv|mid|to)\b'
+    $hasDigit    = $inner -match '\d'
+    $literalText = ((($inner -replace '\\[A-Za-z]+', ' ') -replace '\\\\', ' ') -match '[A-Za-z]')
+    return (-not $hasRelation -and -not $hasDigit -and $literalText)
+}
+function Test-DegenerateStructure([string]$s) {
+    foreach ($m in [regex]::Matches($s, '\\substack\s*\{([^{}]*)\}')) {
+        if (Test-DegenerateSubstack $m.Groups[1].Value) { return $true }
+    }
+    return $false
+}
+function Get-DegenerateStructureSpans([string]$s) {
+    $list = [System.Collections.Generic.List[object]]::new()
+    foreach ($m in [regex]::Matches($s, '\\substack\s*\{([^{}]*)\}')) {
+        if (Test-DegenerateSubstack $m.Groups[1].Value) { $list.Add([pscustomobject]@{ start = $m.Index; end = $m.Index + $m.Length }) }
+    }
+    return $list.ToArray()
+}
+
+# Plain-prose normalization for CROSS-CHUNK seam comparison — lowercase, every non-alphanumeric run → one
+# space, collapsed and trimmed. So a formula's "\text{we will take}" and the neighbour's "Later, we will
+# take $\delta_1 < K$." compare on the same word run, despite the \text{} / $...$ / punctuation differences.
+function Get-NormalizedProse([string]$s) {
+    if (-not $s) { return '' }
+    return (($s.ToLowerInvariant() -replace '[^a-z0-9]+', ' ')).Trim()
+}
+
+# Self-cancelling subexpression — a token immediately minus an IDENTICAL token (k_i - k_i ≡ 0), a hallmark of
+# OCR / VLM hallucination injected into otherwise-valid math. Token = a symbol with an optional subscript,
+# >= 2 chars so trivial "x - x" intermediate steps don't fire; the backreference makes it identical-only.
+$script:RxSelfCancel = [regex]'(\\?[A-Za-z]+(?:_\{[^{}]+\}|_[A-Za-z0-9])?)\s*-\s*\1(?![A-Za-z0-9])'
+function Get-SelfCancelMatches([string]$s) { return @($script:RxSelfCancel.Matches($s) | Where-Object { $_.Groups[1].Value.Length -ge 2 }) }
+function Test-HallucinatedSubexpr([string]$s) { return ((Get-SelfCancelMatches $s).Count -gt 0) }
+function Get-HallucinatedSubexprSpans([string]$s) {
+    return @(Get-SelfCancelMatches $s | ForEach-Object { [pscustomobject]@{ start = $_.Index; end = $_.Index + $_.Length } })
+}

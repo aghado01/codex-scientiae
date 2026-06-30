@@ -62,7 +62,10 @@ You are handed one pointer: `{ paper, id, grade, corruption_type, seam, issues }
 1. **See it.** `get_slice paper id` — the unit's content **and** its `work_order`: the composed,
    ordered list of every issue in the deliverable, each paired with its repair recipe. (For a span you
    were handed, `get_slice id=lo to_id=hi` — the order pools all members under the merge instruction.)
-   This is everything you need.
+   This is everything you need. **Seam exception:** when the damage straddles the chunk boundary — a prose
+   tail merged in from the next line, a delimiter partner lost into the neighbour — take a single
+   `get_slice id context=1` glance at the seam to confirm where the content belongs. Bounded and
+   seam-local; it does not license scanning the document.
 2. **Work the whole order in one pass.** The `work_order` is ordered **structural-before-content**
    (retype / split / merge first, then content fixes — the "restructure first" rule of step 4). Resolve
    *every* issue it lists, then move on; `apply` re-grades and the deliverable converges when they all
@@ -95,6 +98,11 @@ the tail (the `seam`), add it back.
 
 - **`request_review paper id message`** — you are uncertain. Surface it to the supervising
   user rather than guessing. This is not failure; it is the system working.
+- **Recover from source.** When an equation reads as destroyed or truncated — a converter loss, not a
+  surface typo — and the paper is on arXiv, acquire its LaTeX source (`codex-scholar acquire
+  id=<arxiv> artifacts=["source"]` → `.tar.gz` in `_inbox`), then restore the equation from the `.tex`.
+  Do **not** reconstruct the paper's mathematics from memory. The acquisition lane is part of the repair
+  toolkit, not just intake — prefer this over `mark_unrecoverable` for anything still on arXiv.
 - **`mark_unrecoverable paper id reason`** — you tried and the content genuinely cannot be
   recovered from the export. Use sparingly: a high unrecoverable rate indicts the repair
   attempt, not the export. This is the rare terminal that hands off to re-extraction.
@@ -107,9 +115,23 @@ When `dispatch` is empty for a document (all units faithful/repaired), close it 
 1. **`finalize paper`** — serialize the repaired chunk stream into the deliverable
    (`{slug}.md` + `references/{slug}.md`) in the document's `.scratch/`. `pending > 0` means
    chunks are still flagged: the deliverable is provisional.
-2. **`review_document paper`** — the one sanctioned holistic read. Returns the assembled body in
-   full plus the still-flagged chunks. Anything you catch, fix with `propose_edit` on the named
-   chunk → `apply` → review again.
+2. **`review_document paper`** — the one sanctioned holistic read, and the only pass that reads the
+   assembled body for *sense*. It returns the full body + references sidecar plus the still-flagged
+   chunks (id + reason). **`faithful` means the LaTeX is structurally valid — delimiters, environments
+   and labels balance — NOT that the math is correct.** The gate never reads an equation for meaning;
+   that is this pass's job. Read every display equation as a mathematical statement, not a string, and
+   look for:
+   - **Completeness** — does it end mid-operator (`… <`), carry a degenerate construct (`\substack{s.t.}`,
+     a `\max`/`\min` with no objective), or read thinner than its label implies?
+   - **`\text{}` sentences** — does a `\text{}` inside math read as a sentence fragment, especially one
+     that duplicates the surrounding paragraph? That prose was merged in from the next line; it belongs to
+     the neighbour, not the equation.
+   - **Symbol provenance** — a symbol that appears in exactly one equation and nowhere else is a
+     hallucination tell; real notation is introduced, then used.
+   - **Figure captions** — does the caption plausibly describe *this paper's* subject?
+
+   Anything you catch, fix with `propose_edit` on the named chunk → `apply` → review again. If an equation
+   is destroyed beyond in-place repair, recover it from source (see Escalation).
 3. **`publish paper topic`** — promote the finalized deliverable into `compendia/{topic}/`. It
    (re)finalizes, writes the body (figure links rewritten to `images/{slug}/`), the references
    sidecar, and the referenced figures, and upserts the `_CONTENTS.md` block. Always **`dry_run=true`

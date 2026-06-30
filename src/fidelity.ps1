@@ -74,6 +74,12 @@ function Get-IssueSpans([string]$IssueType, [string]$ChunkType, [string]$Content
         'prose_in_formula'        { if ($ChunkType -eq 'formula') { return @(Get-ProseInFormulaSpans $Content) }; return @() }
         'unbalanced_delimiters'   { return @(Get-UnbalancedDelimiterSpans $Content) }
         'unclosed_environment'    { return @(Get-UnclosedEnvironmentSpans $Content) }
+        'glyph_name_leak'         { return @(Get-GlyphNameLeakSpans $Content) }
+        'degenerate_structure'    { if ($ChunkType -eq 'formula') { return @(Get-DegenerateStructureSpans $Content) }; return @() }
+        'hallucinated_subexpr'    { if ($ChunkType -eq 'formula') { return @(Get-HallucinatedSubexprSpans $Content) }; return @() }
+        'dangling_operator'       { if ($ChunkType -eq 'formula') { return @(Get-DanglingOperatorSpans $Content) }; return @() }
+        'text_sentence_in_math'   { if ($ChunkType -eq 'formula') { return @(Get-TextSentenceInMathSpans $Content) }; return @() }
+        'bare_number_row'         { if ($ChunkType -eq 'formula') { return @(Get-BareNumberRowSpans $Content) }; return @() }
         'heading_level_unknown'   { return @([pscustomobject]@{ start = 0; end = $Content.Length }) }
         'unwrapped_math' {
             if (-not $script:NormalizeSpanLoaded) {
@@ -101,26 +107,29 @@ function Get-IssueSpans([string]$IssueType, [string]$ChunkType, [string]$Content
 # two derivations of "renderable math" can't disagree. Delimiter balance via the context-aware scanner
 # (skips escaped \{ \(, pairs \left..\right): full balance for a pure formula; braces only for inline math
 # in prose, where prose parens/brackets would otherwise false-positive.
+#   severity — 'hard' (the frozen gate; corpus A/B pins it) or 'soft' (the needs_review lane). The gate
+#     Get-CorruptionType reads ONLY hard rows, so the soft band is invisible to it and the differential is
+#     untouched; Get-SoftReviewType reads the soft band, and Get-ChunkIssues reads BOTH (the inventory).
 $script:CorruptionSignatures = @(
-    [pscustomobject]@{ type = 'intertext'
+    [pscustomobject]@{ type = 'intertext'; severity = 'hard'
         Test = { param($type, $content) $content.Contains('\intertext') }
         Diag = { param($type, $content) '' } }
-    [pscustomobject]@{ type = 'replacement_char'
+    [pscustomobject]@{ type = 'replacement_char'; severity = 'hard'
         Test = { param($type, $content) $content.Contains([char]0xFFFD) }
         Diag = { param($type, $content) '' } }
-    [pscustomobject]@{ type = 'gibberish'
+    [pscustomobject]@{ type = 'gibberish'; severity = 'hard'
         Test = { param($type, $content) Test-IsGibberish $content }
         Diag = { param($type, $content) '' } }
-    [pscustomobject]@{ type = 'ligature_residue'
+    [pscustomobject]@{ type = 'ligature_residue'; severity = 'hard'
         Test = { param($type, $content) [bool]($content -match '[ﬀ-ﬄ]') }
         Diag = { param($type, $content) '' } }
-    [pscustomobject]@{ type = 'alignment_outside_env'
+    [pscustomobject]@{ type = 'alignment_outside_env'; severity = 'hard'
         Test = { param($type, $content) $type -eq 'formula' -and (Test-AlignmentOutsideEnv $content) }
         Diag = { param($type, $content) '' } }
-    [pscustomobject]@{ type = 'prose_in_formula'
+    [pscustomobject]@{ type = 'prose_in_formula'; severity = 'hard'
         Test = { param($type, $content) $type -eq 'formula' -and -not (Test-IsMath $content) }
         Diag = { param($type, $content) '' } }
-    [pscustomobject]@{ type = 'unbalanced_delimiters'
+    [pscustomobject]@{ type = 'unbalanced_delimiters'; severity = 'hard'
         Test = { param($type, $content)
             if ($type -eq 'formula')         { -not (Get-LatexBalance $content).full }
             elseif ($content.Contains('$'))  { -not (Get-LatexBalance $content).braceBalanced }
@@ -131,9 +140,33 @@ $script:CorruptionSignatures = @(
     # that is brace-balanced (so unbalanced_delimiters passes) yet breaks the math parser. Last in
     # precedence, so it only wins the gate when nothing above fires; Get-ChunkIssues still surfaces it
     # alongside any earlier match.
-    [pscustomobject]@{ type = 'unclosed_environment'
+    [pscustomobject]@{ type = 'unclosed_environment'; severity = 'hard'
         Test = { param($type, $content) -not (Get-EnvironmentBalance $content).balanced }
         Diag = { param($type, $content) $f = (Get-EnvironmentBalance $content).fault; if ($f) { '{0} {1} @ {2}' -f $f.kind, $f.name, $f.index } else { '' } } }
+
+    # ── SOFT band — valid-but-wrong TELLS (severity='soft'). Structurally valid LaTeX that is semantically
+    # wrong: balance / is-math both pass, so the hard gate is blind. NEVER seen by Get-CorruptionType (it
+    # filters to 'hard'), so corpus A/B is untouched; they route to needs_review via Get-SoftReviewType and
+    # surface in the work-order inventory (Get-ChunkIssues reads the whole table). Order within the band is
+    # the soft-gate precedence (the needs_review headline); the inventory still lists every soft match.
+    [pscustomobject]@{ type = 'glyph_name_leak'; severity = 'soft'
+        Test = { param($type, $content) Test-GlyphNameLeak $content }
+        Diag = { param($type, $content) (($script:RxGlyphLeak.Matches($content) | ForEach-Object { $_.Value }) | Select-Object -Unique) -join ',' } }
+    [pscustomobject]@{ type = 'degenerate_structure'; severity = 'soft'
+        Test = { param($type, $content) $type -eq 'formula' -and (Test-DegenerateStructure $content) }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'hallucinated_subexpr'; severity = 'soft'
+        Test = { param($type, $content) $type -eq 'formula' -and (Test-HallucinatedSubexpr $content) }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'dangling_operator'; severity = 'soft'
+        Test = { param($type, $content) $type -eq 'formula' -and (Test-DanglingOperator $content) }
+        Diag = { param($type, $content) '' } }
+    [pscustomobject]@{ type = 'text_sentence_in_math'; severity = 'soft'
+        Test = { param($type, $content) $type -eq 'formula' -and (Test-TextSentenceInMath $content) }
+        Diag = { param($type, $content) "text_prose_words=$(Get-TextProseWordCount $content)" } }
+    [pscustomobject]@{ type = 'bare_number_row'; severity = 'soft'
+        Test = { param($type, $content) $type -eq 'formula' -and (Test-BareNumberRow $content) }
+        Diag = { param($type, $content) '' } }
 )
 
 # The frozen merge-gate: the FIRST signature that fires (historical precedence), else $null (clean). This
@@ -144,6 +177,21 @@ function Get-CorruptionType($Chunk) {
     if (-not $content) { return $null }
     $type = [string]$Chunk.type
     foreach ($sig in $script:CorruptionSignatures) {
+        if ($sig.severity -ne 'hard') { continue }   # the frozen gate sees ONLY hard signals (corpus A/B pinned)
+        if (& $sig.Test $type $content) { return $sig.type }
+    }
+    return $null
+}
+
+# The SOFT counterpart of the gate: the first soft signal that fires, else $null. Drives the needs_review
+# lane in Invoke-Fidelity — actionable + surfaced, but never moves the hard accept/reject. Reads the SAME
+# shared table (soft rows only), so it cannot drift from Get-ChunkIssues or the gate.
+function Get-SoftReviewType($Chunk) {
+    $content = [string]$Chunk.content
+    if (-not $content) { return $null }
+    $type = [string]$Chunk.type
+    foreach ($sig in $script:CorruptionSignatures) {
+        if ($sig.severity -ne 'soft') { continue }
         if (& $sig.Test $type $content) { return $sig.type }
     }
     return $null
@@ -189,6 +237,15 @@ function Get-ChunkIssues($Chunk) {
             type       = 'unwrapped_math'
             spans      = @(Get-IssueSpans 'unwrapped_math' $type $content)
             diagnostic = "math_dirt=$([int]$Chunk.math_dirt)"
+        })
+    }
+    # the cross-chunk seam merge — its span is stored on the chunk (Set-SeamMergeFlags has the neighbours;
+    # Get-IssueSpans is per-chunk and cannot recompute it), so read it directly here.
+    if ($Chunk.seam_merge) {
+        $issues.Add([pscustomobject]@{
+            type       = 'prose_seam_merge'
+            spans      = @($Chunk.seam_merge)
+            diagnostic = ''
         })
     }
     return $issues.ToArray()
@@ -311,6 +368,52 @@ function Set-ChunkAgreement($Chunk) {
     return $a
 }
 
+# ── prose_seam_merge — the CROSS-CHUNK tell ───────────────────────────────────────────────────────────
+# The per-chunk signature table can grade a chunk only from its own content; this one needs its NEIGHBOURS.
+# A formula whose \text{} prose duplicates the adjacent paragraph verbatim is a converter merge: the next
+# line's prose was pulled into the equation tail (forward), or the previous line's tail into a lead-in row
+# (backward). A pass over the ORDERED chunk list (sibling to Group-MathHotspots) sets a stored `seam_merge`
+# field {start,end} the grader and the inventory read — exactly like level_uncertain / math_dirt, so a
+# cross-chunk signal flows through the body-blind per-chunk serving layer. Recomputed every grade and CLEARED
+# when absent, so a fixed seam never lingers. High precision by construction: a >=12-char verbatim run shared
+# between a formula's \text{} and a NON-formula neighbour's seam edge is a merge, not chance; legitimate short
+# annotations (\text{if}, \text{for all}) are below the length floor.
+$script:SeamMergeMinChars = 12
+$script:SeamMergeWindow    = 250
+function Get-SeamMergeSpan($Chunks, [int]$Index) {
+    $c = $Chunks[$Index]
+    if ([string]$c.type -ne 'formula') { return $null }
+    $content = [string]$c.content
+    $texts = @([regex]::Matches($content, '\\text\s*\{([^{}]*)\}') |
+        Where-Object { (Get-NormalizedProse $_.Groups[1].Value).Length -ge $script:SeamMergeMinChars })
+    if ($texts.Count -eq 0) { return $null }
+    # the seam edges of the NON-formula neighbours (the prose the merge came from)
+    $nHead = ''; $pTail = ''
+    if ($Index + 1 -lt $Chunks.Count -and [string]$Chunks[$Index + 1].type -ne 'formula') {
+        $nx = [string]$Chunks[$Index + 1].content
+        $nHead = Get-NormalizedProse $nx.Substring(0, [Math]::Min($script:SeamMergeWindow, $nx.Length))
+    }
+    if ($Index - 1 -ge 0 -and [string]$Chunks[$Index - 1].type -ne 'formula') {
+        $pv = [string]$Chunks[$Index - 1].content
+        $pTail = Get-NormalizedProse $(if ($pv.Length -gt $script:SeamMergeWindow) { $pv.Substring($pv.Length - $script:SeamMergeWindow) } else { $pv })
+    }
+    if (-not $nHead -and -not $pTail) { return $null }
+    foreach ($m in $texts) {
+        $norm = Get-NormalizedProse $m.Groups[1].Value
+        if (($nHead -and $nHead.Contains($norm)) -or ($pTail -and $pTail.Contains($norm))) {
+            return [pscustomobject]@{ start = [int]$m.Index; end = [int]($m.Index + $m.Length) }
+        }
+    }
+    return $null
+}
+function Set-SeamMergeFlags($Chunks) {
+    for ($i = 0; $i -lt $Chunks.Count; $i++) {
+        $span = Get-SeamMergeSpan $Chunks $i
+        if ($span) { $Chunks[$i] | Add-Member -NotePropertyName seam_merge -NotePropertyValue $span -Force }
+        elseif ($Chunks[$i].PSObject.Properties['seam_merge']) { $Chunks[$i].PSObject.Properties.Remove('seam_merge') }
+    }
+}
+
 function Invoke-Fidelity {
     [CmdletBinding()]
     param(
@@ -322,6 +425,8 @@ function Invoke-Fidelity {
     foreach ($line in [System.IO.File]::ReadLines($ChunksPath)) {
         if (-not [string]::IsNullOrWhiteSpace($line)) { $chunks.Add(($line | ConvertFrom-Json)) }
     }
+
+    Set-SeamMergeFlags $chunks   # cross-chunk pass: set the stored seam_merge field BEFORE per-chunk grading
 
     foreach ($c in $chunks) {
         Set-ChunkAgreement $c | Out-Null   # recompute the ranking score every re-grade (ranks, never gates)
@@ -335,6 +440,19 @@ function Invoke-Fidelity {
             # not corruption, yet still a call the model must make. Surface it as actionable.
             $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'needs_review'          -Force
             $c | Add-Member -NotePropertyName review_reason -NotePropertyValue 'heading_level_unknown' -Force
+        }
+        elseif ($srt = Get-SoftReviewType $c) {
+            # the hard gate is clean, but a SOFT tell fired — structurally valid yet semantically wrong
+            # math (a destroyed equation, prose smuggled in \text{}, a dangling operator, a glyph-name
+            # leak). Surface it as needs_review: actionable + read by review_document, never a hard reject.
+            $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'needs_review' -Force
+            $c | Add-Member -NotePropertyName review_reason -NotePropertyValue $srt           -Force
+        }
+        elseif ($c.seam_merge) {
+            # the cross-chunk soft tell: this formula's \text{} prose duplicates the adjacent paragraph
+            # (Set-SeamMergeFlags set the stored span above). Same needs_review lane as the per-chunk soft band.
+            $c | Add-Member -NotePropertyName fidelity      -NotePropertyValue 'needs_review'     -Force
+            $c | Add-Member -NotePropertyName review_reason -NotePropertyValue 'prose_seam_merge' -Force
         }
         elseif ([int]($c.math_dirt) -ge 2) {
             # faithful prose carrying un-wrapped inline math (the normalize density∧¬mask signal) — the

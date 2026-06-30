@@ -9,9 +9,9 @@ BeforeDiscovery {
     . "$PSScriptRoot/../src/fidelity.ps1"
     . "$PSScriptRoot/../src/playbook.ps1"
     $AllEmittableTypes =
-        @($script:CorruptionSignatures | ForEach-Object { $_.type }) +   # 8 corruption signatures
-        @('heading_level_unknown', 'unwrapped_math') +                   # needs_review kinds Invoke-Fidelity routes on
-        @('fragmented_formula')                                          # hotspot span kind (Group-MathHotspots)
+        @($script:CorruptionSignatures | ForEach-Object { $_.type }) +              # 14 corruption signatures (8 hard gate + 6 soft tells)
+        @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge') +          # needs_review kinds Invoke-Fidelity routes on (the last is cross-chunk)
+        @('fragmented_formula')                                                     # hotspot span kind (Group-MathHotspots)
 }
 
 BeforeAll {
@@ -19,11 +19,14 @@ BeforeAll {
     . "$PSScriptRoot/../src/playbook.ps1"    # loads the repair playbook data map
 
     # The complete set of issue types the membrane can emit to a work-order:
-    #   - the 8 corruption signatures in $script:CorruptionSignatures
-    #   - the 2 needs_review kinds Invoke-Fidelity routes on: heading_level_unknown, unwrapped_math
+    #   - the 14 corruption signatures in $script:CorruptionSignatures (8 hard gate + 6 soft tells)
+    #   - the 3 needs_review kinds Invoke-Fidelity routes on: heading_level_unknown, unwrapped_math,
+    #     prose_seam_merge (the cross-chunk seam tell, set by Set-SeamMergeFlags)
     #   - fragmented_formula (the hotspot span kind, emitted by Group-MathHotspots in serving.ps1)
-    $script:CorruptionKinds = @($script:CorruptionSignatures | ForEach-Object { $_.type })
-    $script:NeedsReviewKinds = @('heading_level_unknown', 'unwrapped_math')
+    $script:CorruptionKinds  = @($script:CorruptionSignatures | ForEach-Object { $_.type })
+    $script:HardKinds        = @($script:CorruptionSignatures | Where-Object { $_.severity -eq 'hard' } | ForEach-Object { $_.type })
+    $script:SoftKinds        = @($script:CorruptionSignatures | Where-Object { $_.severity -eq 'soft' } | ForEach-Object { $_.type })
+    $script:NeedsReviewKinds = @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge')
     $script:SpanKinds = @('fragmented_formula')
     $script:AllEmittableTypes = $script:CorruptionKinds + $script:NeedsReviewKinds + $script:SpanKinds
 }
@@ -38,8 +41,8 @@ Describe 'playbook coverage — every emittable issue type has a paired recipe' 
         $recipe.fix | Should -Not -BeNullOrEmpty -Because "recipe for '$type' must have a non-empty fix instruction"
     }
 
-    It 'the total emittable type count is 11 (8 signatures + 2 needs_review + 1 span)' {
-        $script:AllEmittableTypes.Count | Should -Be 11
+    It 'the total emittable type count is 18 (14 signatures + 3 needs_review + 1 span)' {
+        $script:AllEmittableTypes.Count | Should -Be 18
     }
 
     It 'RepairPlaybook has no orphan entries (every recipe maps to an emittable type)' {
@@ -48,7 +51,18 @@ Describe 'playbook coverage — every emittable issue type has a paired recipe' 
         }
     }
 
-    It 'corruption signatures table has exactly 8 entries (the frozen gate)' {
-        $script:CorruptionSignatures.Count | Should -Be 8
+    It 'the HARD gate has exactly 8 entries (frozen — corpus A/B pins these)' {
+        $script:HardKinds.Count | Should -Be 8
+    }
+
+    It 'the SOFT band has exactly 6 entries (the needs_review tells)' {
+        $script:SoftKinds.Count | Should -Be 6
+    }
+
+    It 'every soft signature carries severity=soft and the gate ignores it' {
+        foreach ($t in $script:SoftKinds) {
+            (Get-CorruptionType ([pscustomobject]@{ type = 'formula'; content = 'x \in' })) | Should -Not -Be $t
+        }
+        $script:HardKinds + $script:SoftKinds | Should -HaveCount 14
     }
 }
