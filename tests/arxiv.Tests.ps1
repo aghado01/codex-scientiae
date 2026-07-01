@@ -227,3 +227,91 @@ Describe 'Build-ArxivSearchQuery' {
         { Build-ArxivSearchQuery -Query '' } | Should -Throw
     }
 }
+
+Describe 'async fetch jobs' {
+    # Offline coverage of the job registry. We set up the registry + queue directly (NOT via
+    # Initialize-ArxivJobs, which would spin a worker runspace that hits the network) so enqueue, the
+    # output projection, and TTL eviction are all exercised without touching arXiv. The live worker path
+    # is verified by an integration probe, not here.
+    Context 'ConvertTo-ArxivJobView (output projection)' {
+        It 'surfaces result only when done' {
+            $rec = @{ id='job-1'; arxiv_id='2008.10579'; artifacts=@('pdf'); status='done'
+                      enqueued_at='t0'; started_at='t1'; finished_at='t2'; result=[pscustomobject]@{ ok=$true }; reason=$null }
+            $v = ConvertTo-ArxivJobView $rec
+            $v.status                     | Should -Be 'done'
+            $v.PSObject.Properties.Name   | Should -Contain 'result'
+            $v.PSObject.Properties.Name   | Should -Not -Contain 'reason'
+        }
+        It 'surfaces reason only when failed' {
+            $rec = @{ id='job-2'; arxiv_id='x'; artifacts=@('pdf'); status='failed'
+                      enqueued_at='t0'; started_at='t1'; finished_at='t2'; result=$null; reason='boom' }
+            $v = ConvertTo-ArxivJobView $rec
+            $v.reason                   | Should -Be 'boom'
+            $v.PSObject.Properties.Name | Should -Not -Contain 'result'
+        }
+        It 'omits both while still running' {
+            $rec = @{ id='job-3'; arxiv_id='x'; artifacts=@('pdf'); status='running'
+                      enqueued_at='t0'; started_at='t1'; finished_at=$null; result=$null; reason=$null }
+            $v = ConvertTo-ArxivJobView $rec
+            $v.PSObject.Properties.Name | Should -Not -Contain 'result'
+            $v.PSObject.Properties.Name | Should -Not -Contain 'reason'
+        }
+    }
+    Context 'enqueue + registry (no worker)' {
+        BeforeEach {
+            $script:ArxivJobs     = [System.Collections.Concurrent.ConcurrentDictionary[string,hashtable]]::new()
+            $script:ArxivQueue    = [System.Collections.Concurrent.BlockingCollection[string]]::new()
+            $script:ArxivWorkerPS = $null   # no live worker in these offline tests
+        }
+        AfterEach { $script:ArxivJobs = $null; $script:ArxivQueue = $null }
+
+        It 'rejects an invalid id synchronously (no job created)' {
+            { Add-ArxivFetchJob -Id 'not-an-id' } | Should -Throw
+            $script:ArxivQueue.Count | Should -Be 0
+        }
+        It 'enqueues a valid id as a queued job with lowercased, de-duped artifacts' {
+            $j = Add-ArxivFetchJob -Id '2008.10579' -Artifacts @('SOURCE','pdf','source')
+            $j.status                | Should -Be 'queued'
+            $j.artifacts             | Should -Be @('source','pdf')
+            $script:ArxivQueue.Count | Should -Be 1
+            (Get-ArxivFetchJob -JobId $j.job_id).status | Should -Be 'queued'
+        }
+        It 'evicts terminal jobs past the TTL but keeps queued/running' {
+            $old  = @{ id='job-old'; arxiv_id='x'; artifacts=@('pdf'); status='done'
+                       enqueued_at='t'; started_at='t'; finished_at=(Get-Date).AddMinutes(-60).ToString('o'); result=$null; reason=$null }
+            $live = @{ id='job-live'; arxiv_id='y'; artifacts=@('pdf'); status='running'
+                       enqueued_at='t'; started_at='t'; finished_at=$null; result=$null; reason=$null }
+            [void]$script:ArxivJobs.TryAdd('job-old', $old)
+            [void]$script:ArxivJobs.TryAdd('job-live', $live)
+            Clear-ArxivStaleJobs -TtlMinutes 30
+            $script:ArxivJobs.ContainsKey('job-old')  | Should -BeFalse
+            $script:ArxivJobs.ContainsKey('job-live') | Should -BeTrue
+        }
+        It 'long-poll returns immediately for an already-terminal job' {
+            $done = @{ id='job-done'; arxiv_id='x'; artifacts=@('pdf'); status='done'
+                       enqueued_at='t'; started_at='t'; finished_at='t'; result=[pscustomobject]@{ ok=$true }; reason=$null }
+            [void]$script:ArxivJobs.TryAdd('job-done', $done)
+            $sw = [System.Diagnostics.Stopwatch]::StartNew()
+            $v  = Get-ArxivFetchJob -JobId 'job-done' -WaitSeconds 5
+            $sw.Stop()
+            $v.status                | Should -Be 'done'
+            $sw.Elapsed.TotalSeconds | Should -BeLessThan 1
+        }
+        It 'long-poll on a running job with a dead worker bails fast and flags it stalled' {
+            $run = @{ id='job-run'; arxiv_id='x'; artifacts=@('pdf'); status='running'
+                      enqueued_at='t'; started_at='t'; finished_at=$null; result=$null; reason=$null }
+            [void]$script:ArxivJobs.TryAdd('job-run', $run)      # $script:ArxivWorkerPS is $null => worker dead
+            $sw = [System.Diagnostics.Stopwatch]::StartNew()
+            $v  = Get-ArxivFetchJob -JobId 'job-run' -WaitSeconds 5
+            $sw.Stop()
+            $v.status                     | Should -Be 'running'
+            $v.stalled                    | Should -BeTrue
+            $v.PSObject.Properties.Name   | Should -Contain 'worker_error'
+            $sw.Elapsed.TotalSeconds      | Should -BeLessThan 1
+        }
+    }
+    It 'refuses to enqueue when jobs are not initialized' {
+        $script:ArxivJobs = $null
+        { Add-ArxivFetchJob -Id '2008.10579' } | Should -Throw '*not initialized*'
+    }
+}

@@ -13,10 +13,17 @@
   id handling, template expansion) without touching the network. The protocol shell is arxiv-server.ps1.
 #>
 
-# arXiv asks for >= 3s between programmatic requests; a ban is the cost of ignoring it. The server is
-# long-lived, so a single script-scoped clock throttles every call (search, metadata, pdf) in one runspace.
-$script:ArxivLastRequest   = [datetime]::MinValue
+# arXiv asks for >= 3s between programmatic requests; a ban is the cost of ignoring it. The floor is ONE
+# global clock, but the server now spans two runspaces (the main loop issues search/metadata; a background
+# worker issues fetch downloads), so the clock can't be a plain script variable — two copies would each
+# think they were first and fire <3s apart. It lives in a synchronized holder that the server injects into
+# BOTH runspaces (see Use-ArxivRateState); Wait-ArxivRateLimit locks it across the read-sleep-stamp so every
+# arXiv request, from either runspace, is serialized behind the floor.
+$script:ArxivRateState     = [hashtable]::Synchronized(@{ LastRequestTicks = [long]0 })
 $script:ArxivMinIntervalMs = 3000
+# This library's own path, captured at dot-source time, so the server can hand the worker runspace the exact
+# file to dot-source into itself (a fresh runspace shares no functions with the main one).
+$script:ArxivLibPath       = Join-Path $PSScriptRoot 'arxiv.ps1'
 $script:ArxivUserAgent     = 'codex-arxiv-mcp/0.1 (+https://github.com/blazickjp/arxiv-mcp-server; research tool, in-house port)'
 $script:ArxivApiUrl        = 'https://export.arxiv.org/api/query'
 $script:ArxivNs            = @{ atom = 'http://www.w3.org/2005/Atom'; arxiv = 'http://arxiv.org/schemas/atom' }
@@ -180,12 +187,25 @@ function Resolve-ArxivStageTarget {
 }
 
 # --- arXiv API ---------------------------------------------------------------------------------------
+# Point this runspace's limiter at a shared rate-state holder. The server calls this inside the worker
+# runspace (passing the main runspace's holder) so the two share ONE clock; the main runspace and the
+# offline unit tests use the module-scope default created above.
+function Use-ArxivRateState {
+    param([hashtable]$State)
+    if ($State) { $script:ArxivRateState = $State }
+}
+
 function Wait-ArxivRateLimit {
-    $elapsed = ([datetime]::UtcNow - $script:ArxivLastRequest).TotalMilliseconds
-    if ($elapsed -lt $script:ArxivMinIntervalMs) {
-        Start-Sleep -Milliseconds ([int]($script:ArxivMinIntervalMs - $elapsed))
-    }
-    $script:ArxivLastRequest = [datetime]::UtcNow
+    $st = $script:ArxivRateState
+    [System.Threading.Monitor]::Enter($st)
+    try {
+        $last    = [datetime]::new([long]$st['LastRequestTicks'], [System.DateTimeKind]::Utc)
+        $elapsed = ([datetime]::UtcNow - $last).TotalMilliseconds
+        if ($elapsed -lt $script:ArxivMinIntervalMs) {
+            Start-Sleep -Milliseconds ([int]($script:ArxivMinIntervalMs - $elapsed))
+        }
+        $st['LastRequestTicks'] = [datetime]::UtcNow.Ticks
+    } finally { [System.Threading.Monitor]::Exit($st) }
 }
 
 # Pull (http-status, message) out of a caught web error. status = 0 when the failure is below HTTP
@@ -224,7 +244,12 @@ function Invoke-ArxivApi {
     for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
         Wait-ArxivRateLimit
         try {
-            return [string](Invoke-WebRequest -Uri $url -Headers $headers -TimeoutSec 30 -MaximumRedirection 3 -ErrorAction Stop).Content
+            # ConnectionTimeoutSeconds = total request budget; OperationTimeoutSeconds = per-read (idle)
+            # timeout so a stalled socket fails fast instead of hanging the whole budget. HTTP/1.1 avoids
+            # intermittent HTTP/2 stalls on the CDN. (This is the flakier endpoint — Atom hits arXiv's origin.)
+            return [string](Invoke-WebRequest -Uri $url -Headers $headers `
+                -ConnectionTimeoutSeconds 30 -OperationTimeoutSeconds 15 -HttpVersion 1.1 `
+                -MaximumRedirection 3 -ErrorAction Stop).Content
         } catch {
             $ep  = Get-ArxivErrorParts $_
             $cls = Get-ArxivTransience -Code $ep.Code -Message $ep.Message
@@ -437,7 +462,12 @@ function Invoke-ArxivFetch {
         for ($attempt = 1; $attempt -le 3; $attempt++) {
             Wait-ArxivRateLimit
             try {
-                Invoke-WebRequest -Uri $url -OutFile $tmp -Headers $headers -TimeoutSec 180 -MaximumRedirection 5 -ErrorAction Stop
+                # OperationTimeoutSeconds is the key setting: a dead/stalled transfer now aborts in ~30s
+                # (per-read idle) and retries, instead of parking on the full 120s budget. HTTP/1.1 removes
+                # HTTP/2 as an intermittent-stall variable for these plain CDN file pulls.
+                Invoke-WebRequest -Uri $url -OutFile $tmp -Headers $headers `
+                    -ConnectionTimeoutSeconds 120 -OperationTimeoutSeconds 30 -HttpVersion 1.1 `
+                    -MaximumRedirection 5 -ErrorAction Stop
                 $downloaded = $true; break
             } catch {
                 $ep  = Get-ArxivErrorParts $_
@@ -555,4 +585,186 @@ function Remove-ArxivInboxItem {
     $n = @(Get-ChildItem -LiteralPath $dirFull -Recurse -File -ErrorAction SilentlyContinue).Count
     Remove-Item -LiteralPath $dirFull -Recurse -Force
     return [pscustomobject]@{ removed = $hit.idv; dir = $hit.dir; files_removed = $n }
+}
+
+# --- async fetch jobs --------------------------------------------------------------------------------
+# A fetch can take many seconds (cold/large e-print packaging on export.arxiv.org), which would freeze the
+# single-threaded server and outlast the MCP client's call timeout. So fetch is ENQUEUED onto a background
+# worker and returns a job handle immediately; the client polls Get-ArxivFetchJob. ONE worker (not a pool)
+# is deliberate: it keeps every download behind the shared 3s arXiv floor, so the server stays non-blocking
+# without risking the ban that concurrent downloads would earn.
+$script:ArxivJobs        = $null   # ConcurrentDictionary[string, hashtable]  -- the job registry
+$script:ArxivQueue       = $null   # BlockingCollection[string]               -- job ids awaiting the worker
+$script:ArxivWorkerPS    = $null   # [powershell] running the drain loop
+$script:ArxivWorkerAsync = $null   # its IAsyncResult handle
+
+# Stand up the registry, queue, and single worker runspace. Idempotent (a second call is a no-op) so the
+# server can call it unconditionally at startup. The worker dot-sources THIS library into its own runspace
+# and is pinned to the main runspace's rate-state holder so both honour the one 3s clock.
+function Initialize-ArxivJobs {
+    param(
+        [pscustomobject]$Config,
+        [string]$StagingRoot,
+        [string]$RepoRoot,
+        [string]$LibPath = $script:ArxivLibPath
+    )
+    if ($script:ArxivJobs) { return }
+    $script:ArxivJobs  = [System.Collections.Concurrent.ConcurrentDictionary[string,hashtable]]::new()
+    $script:ArxivQueue = [System.Collections.Concurrent.BlockingCollection[string]]::new()
+
+    # CreateDefault() (not CreateDefault2) so the worker runspace has Management + Utility loaded — it needs
+    # Invoke-WebRequest, New-Item/Move-Item/Get-Item, ConvertTo/From-Json, Get-Date, Start-Sleep.
+    $iss = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
+    $rs  = [runspacefactory]::CreateRunspace($iss)
+    $rs.Open()
+    $rs.SessionStateProxy.SetVariable('WJobs',        $script:ArxivJobs)
+    $rs.SessionStateProxy.SetVariable('WQueue',       $script:ArxivQueue)
+    $rs.SessionStateProxy.SetVariable('WRateState',   $script:ArxivRateState)
+    $rs.SessionStateProxy.SetVariable('WConfig',      $Config)
+    $rs.SessionStateProxy.SetVariable('WStagingRoot', $StagingRoot)
+    $rs.SessionStateProxy.SetVariable('WRepoRoot',    $RepoRoot)
+    $rs.SessionStateProxy.SetVariable('WLibPath',     $LibPath)
+
+    $ps = [powershell]::Create()
+    $ps.Runspace = $rs
+    [void]$ps.AddScript({
+        # Progress UI would spray the host stream that the protocol channel shares; this runspace does not
+        # inherit the main runspace's preference, so silence it here too.
+        $ProgressPreference = 'SilentlyContinue'
+        . $WLibPath
+        Use-ArxivRateState $WRateState          # share the ONE 3s clock with the main runspace
+        # Drain the queue one job at a time until the server completes it (shutdown). GetConsumingEnumerable
+        # blocks with no busy-wait and ends cleanly once CompleteAdding is called.
+        foreach ($jobId in $WQueue.GetConsumingEnumerable()) {
+            $rec = $null
+            if (-not $WJobs.TryGetValue($jobId, [ref]$rec)) { continue }
+            $rec.status     = 'running'
+            $rec.started_at = (Get-Date).ToString('o')
+            try {
+                $out = Invoke-ArxivFetch -Id $rec.arxiv_id -Config $WConfig `
+                    -StagingRoot $WStagingRoot -RepoRoot $WRepoRoot `
+                    -Artifacts ([string[]]$rec.artifacts) -Force:([bool]$rec.force)
+                $rec.result = $out
+                $rec.status = 'done'
+            } catch {
+                $rec.reason = [string]$_.Exception.Message
+                $rec.status = 'failed'
+            }
+            $rec.finished_at = (Get-Date).ToString('o')
+        }
+    })
+    $script:ArxivWorkerPS    = $ps
+    $script:ArxivWorkerAsync = $ps.BeginInvoke()
+}
+
+# Enqueue a fetch. Validates the id synchronously (so a bad id fails the tool call now, not silently on the
+# worker) then returns a { job_id, status: queued } handle. The download itself happens on the worker.
+function Add-ArxivFetchJob {
+    param([string]$Id, [string[]]$Artifacts = @('pdf'), [switch]$Force)
+    if (-not $script:ArxivJobs) { throw 'fetch jobs not initialized (call Initialize-ArxivJobs first)' }
+    if (-not (Test-ArxivId $Id)) { throw "invalid arXiv id: '$Id'" }
+    $want = @($Artifacts | ForEach-Object { ([string]$_).ToLowerInvariant() } | Select-Object -Unique)
+    if (-not $want.Count) { $want = @('pdf') }
+    $jobId = 'job-' + [guid]::NewGuid().ToString('N').Substring(0, 12)
+    $rec = @{
+        id = $jobId; arxiv_id = $Id; artifacts = $want; force = [bool]$Force
+        status = 'queued'; result = $null; reason = $null
+        enqueued_at = (Get-Date).ToString('o'); started_at = $null; finished_at = $null
+    }
+    [void]$script:ArxivJobs.TryAdd($jobId, $rec)
+    $script:ArxivQueue.Add($jobId)
+    return [pscustomobject]@{
+        job_id = $jobId; status = 'queued'; arxiv_id = $Id; artifacts = $want
+        note = 'fetch running in background — poll fetch_status with this job_id'
+    }
+}
+
+# Project a job record to a clean output view (result only when done, reason only when failed).
+function ConvertTo-ArxivJobView {
+    param([hashtable]$Rec)
+    $v = [ordered]@{
+        job_id = $Rec.id; arxiv_id = $Rec.arxiv_id; artifacts = $Rec.artifacts; status = $Rec.status
+        enqueued_at = $Rec.enqueued_at; started_at = $Rec.started_at; finished_at = $Rec.finished_at
+    }
+    if ($Rec.status -eq 'done')   { $v['result'] = $Rec.result }
+    if ($Rec.status -eq 'failed') { $v['reason'] = $Rec.reason }
+    return [pscustomobject]$v
+}
+
+# Is the background worker still draining the queue? Its normal state is Running (parked on the queue);
+# any other state while the server is up means the drain loop exited unexpectedly and queued/running jobs
+# will never progress. Used to (a) stop a long-poll from waiting out its whole window on a dead worker and
+# (b) flag stalled jobs so the agent stops polling a job that can't advance.
+function Test-ArxivWorkerAlive {
+    if (-not $script:ArxivWorkerPS) { return $false }
+    return ($script:ArxivWorkerPS.InvocationStateInfo.State -in @('Running', 'NotStarted'))
+}
+
+# Best-effort reason a dead worker died, for the stalled-job annotation.
+function Get-ArxivWorkerError {
+    if (-not $script:ArxivWorkerPS) { return 'worker not started' }
+    $e = $script:ArxivWorkerPS.Streams.Error | Select-Object -First 1
+    if ($e) { return [string]$e } else { return 'worker drain loop exited without an error record' }
+}
+
+# One job by id, or (no id) every job newest-first. Evicts terminal jobs past the TTL first so the registry
+# doesn't grow without bound in a long-lived server.
+#
+# WaitSeconds > 0 is the opt-in long-poll: block up to that many seconds (hard-capped at $MaxWaitSeconds so
+# the call can't outlive the MCP client's own tool timeout) for a still-running job to finish, returning the
+# instant it goes terminal. The worker mutates the SAME $rec hashtable from its runspace, so re-reading
+# $rec.status here sees its progress with no re-lookup. A dead worker breaks the wait immediately and the
+# returned view is flagged stalled + worker_error so the caller stops polling.
+function Get-ArxivFetchJob {
+    param([string]$JobId, [int]$TtlMinutes = 30, [int]$WaitSeconds = 0, [int]$MaxWaitSeconds = 55)
+    if (-not $script:ArxivJobs) { throw 'fetch jobs not initialized' }
+    Clear-ArxivStaleJobs -TtlMinutes $TtlMinutes
+    if ($JobId) {
+        $rec = $null
+        if (-not $script:ArxivJobs.TryGetValue($JobId, [ref]$rec)) { throw "no such fetch job: $JobId" }
+        if ($WaitSeconds -gt 0 -and $rec.status -in @('queued', 'running')) {
+            $deadline = (Get-Date).AddSeconds([Math]::Min($WaitSeconds, $MaxWaitSeconds))
+            while ($rec.status -in @('queued', 'running') -and (Get-Date) -lt $deadline) {
+                if (-not (Test-ArxivWorkerAlive)) { break }
+                Start-Sleep -Milliseconds 500
+            }
+        }
+        $view = ConvertTo-ArxivJobView $rec
+        if ($rec.status -in @('queued', 'running') -and -not (Test-ArxivWorkerAlive)) {
+            $view | Add-Member -NotePropertyName stalled      -NotePropertyValue $true                 -Force
+            $view | Add-Member -NotePropertyName worker_error -NotePropertyValue (Get-ArxivWorkerError) -Force
+        }
+        return $view
+    }
+    return @($script:ArxivJobs.Values | ForEach-Object { ConvertTo-ArxivJobView $_ } |
+             Sort-Object -Property enqueued_at -Descending)
+}
+
+# Drop done/failed jobs whose finished_at is older than the TTL. Queued/running jobs are never evicted.
+function Clear-ArxivStaleJobs {
+    param([int]$TtlMinutes = 30)
+    if (-not $script:ArxivJobs) { return }
+    $cutoff = (Get-Date).AddMinutes(-$TtlMinutes)
+    foreach ($pair in $script:ArxivJobs.ToArray()) {
+        $r = $pair.Value
+        if ($r.status -notin @('done','failed') -or -not $r.finished_at) { continue }
+        # Tolerant parse: a malformed finished_at must never crash a status poll — just skip its eviction.
+        $fin = [datetime]::MinValue
+        if ([datetime]::TryParse([string]$r.finished_at, [ref]$fin) -and $fin -lt $cutoff) {
+            $tmp = $null; [void]$script:ArxivJobs.TryRemove($pair.Key, [ref]$tmp)
+        }
+    }
+}
+
+# Graceful shutdown for tests/teardown: stop accepting work, let the worker exit its drain loop, dispose.
+# The live server doesn't call this (process exit reaps the worker); it exists so tests don't leak runspaces.
+function Stop-ArxivJobs {
+    if ($script:ArxivQueue)    { try { $script:ArxivQueue.CompleteAdding() } catch {} }
+    if ($script:ArxivWorkerPS) {
+        try { [void]$script:ArxivWorkerPS.EndInvoke($script:ArxivWorkerAsync) } catch {}
+        try { $script:ArxivWorkerPS.Runspace.Dispose() } catch {}
+        try { $script:ArxivWorkerPS.Dispose() } catch {}
+    }
+    $script:ArxivWorkerPS = $null; $script:ArxivWorkerAsync = $null
+    $script:ArxivJobs = $null; $script:ArxivQueue = $null
 }

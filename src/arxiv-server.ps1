@@ -15,7 +15,7 @@
   -ConfigPath defaults to src/arxiv-staging.json; -StagingRoot (if given) overrides the config's
   staging_root. Everywhere a path is computed it is confined under the staging root (see arxiv.ps1).
 
-  Tools (6): search, get_metadata, fetch, list_inbox, inspect, clear.
+  Tools (7): search, get_metadata, fetch (async), fetch_status, list_inbox, inspect, clear.
 #>
 
 [CmdletBinding()]
@@ -32,7 +32,7 @@ param(
 $ProgressPreference = 'SilentlyContinue'
 
 $RepoRoot = (Split-Path -Parent $PSScriptRoot)
-$ServerInfo = @{ name = 'codex-arxiv'; version = '0.3.0' }
+$ServerInfo = @{ name = 'codex-arxiv'; version = '0.4.0' }
 
 # Resolve config + the effective staging root once. Precedence: -StagingRoot param > config.staging_root.
 # A relative staging_root is anchored on the repo root (the server's purview), mirroring the membrane.
@@ -43,6 +43,10 @@ $EffectiveStagingRoot = if ([System.IO.Path]::IsPathRooted($rawRoot)) {
 } else {
     [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawRoot))
 }
+
+# Stand up the background fetch worker (single runspace, shared 3s clock) so 'fetch' returns a job handle
+# immediately instead of blocking the protocol loop for the length of a download. Poll via 'fetch_status'.
+Initialize-ArxivJobs -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot -LibPath (Join-Path $PSScriptRoot 'arxiv.ps1')
 
 # --- tool catalogue: name -> description + JSON-Schema for arguments ---
 $Tools = @(
@@ -63,12 +67,18 @@ $Tools = @(
            id = @{ type = 'string'; description = 'arXiv id, e.g. 2008.10579 or 2008.10579v1 or math.GT/0309136; comma-separate for several' }
        }; required = @('id') } }
     @{ name = 'fetch'
-       description = 'Stage a paper for ingestion: download one or more artifact types and write/merge a metadata sidecar into the inbox, at the paths the layout config dictates (one folder per arXiv id by default). Artifacts: "pdf" (default); "source" = the arXiv e-print package, normally a gzip tarball of the LaTeX (.tex/.bbl/figures) and the richest input for math papers — a PDF-only submission has none and is reported unavailable; "html" = arXiv native HTML5/MathML, only for papers compiled since ~late 2023, else reported unavailable. Per-artifact and independent: a 404 / wrong-payload is reported as available:false + reason and does NOT abort the others. Idempotent — skips an already-staged artifact unless force=true; re-fetching one artifact preserves the sidecar records of the rest. Returns a per-artifact result map (staged repo-relative path + bytes, or unavailable + reason). Handoff point to the membrane / a converter; this server does NOT itself convert.'
+       description = 'Stage a paper for ingestion — NON-BLOCKING: enqueues the download on a background worker and returns immediately with { job_id, status: "queued" }. Poll fetch_status with the job_id for progress and the result. (A fetch can take many seconds for cold or large e-print source; backgrounding it keeps this call fast and avoids client-side timeouts.) The worker downloads one or more artifact types and writes/merges a metadata sidecar into the inbox, at the paths the layout config dictates (one folder per arXiv id by default). Artifacts: "pdf" (default); "source" = the arXiv e-print package, normally a gzip tarball of the LaTeX (.tex/.bbl/figures) and the richest input for math papers — a PDF-only submission has none and is reported unavailable; "html" = arXiv native HTML5/MathML, only for papers compiled since ~late 2023, else reported unavailable. Per-artifact and independent: a 404 / wrong-payload is reported as available:false + reason and does NOT abort the others. Idempotent — skips an already-staged artifact unless force=true; re-fetching one artifact preserves the sidecar records of the rest. All downloads are serialized behind arXiv''s 3s floor by the single worker. Handoff point to the membrane / a converter; this server does NOT itself convert.'
        inputSchema = @{ type = 'object'; properties = @{
            id = @{ type = 'string'; description = 'arXiv id to fetch (version optional)' }
            artifacts = @{ type = 'array'; items = @{ type = 'string'; enum = @('pdf','source','html') }; description = 'artifact types to stage (default ["pdf"]). "source" = LaTeX/e-print (best for math); "html" = native arXiv HTML.' }
            force = @{ type = 'boolean'; description = 're-download even if an artifact is already staged' }
        }; required = @('id') } }
+    @{ name = 'fetch_status'
+       description = 'Poll a background fetch started by the fetch tool. With a job_id, returns that job''s status (queued | running | done | failed) plus arxiv_id, artifacts, and timestamps — and, once done, the per-artifact result map (staged repo-relative path + bytes, or available:false + reason); on failure, a reason. With NO job_id, returns every known job, newest first. Completed jobs are retained ~30 min then evicted. Once a job is done, use list_inbox / inspect to work with the staged files. OPTIONAL long-poll: pass wait=N to block up to N seconds (server-capped ~55s) for a still-running job to finish before returning — it returns the instant the job goes terminal, or the current state if the window elapses. Use wait only when you are READY to collect the result (e.g. after finishing other work), like waiting on a test run; during your other work, just fire fetch and keep going. If the worker has died, the response is flagged stalled=true + worker_error so you stop polling. Omit wait (or 0) to return immediately.'
+       inputSchema = @{ type = 'object'; properties = @{
+           job_id = @{ type = 'string'; description = 'the job_id returned by fetch; omit to list all jobs' }
+           wait   = @{ type = 'integer'; description = 'optional: seconds to block waiting for a running job to finish (server-capped ~55s to stay under the client timeout); 0 or omitted returns immediately. Only meaningful with a job_id.' }
+       } } }
     @{ name = 'list_inbox'
        description = 'List papers already staged in the inbox (read from their metadata sidecars): id, idv, title, primary_category, fetched_at, the staged artifacts present (which of pdf/source/html), total bytes, and repo-relative dir. The "what have I acquired but not yet ingested" view.'
        inputSchema = @{ type = 'object'; properties = @{} } }
@@ -110,9 +120,9 @@ function Invoke-Tool([string]$name, $arguments) {
         'get_metadata' { $out = Get-ArxivMetadata ([string]$arguments.id) }
         'fetch' {
             $arts = if ($arguments.artifacts) { [string[]]@($arguments.artifacts) } else { @('pdf') }
-            $out = Invoke-ArxivFetch -Id ([string]$arguments.id) -Config $Config `
-                -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot -Artifacts $arts -Force:([bool]$arguments.force)
+            $out = Add-ArxivFetchJob -Id ([string]$arguments.id) -Artifacts $arts -Force:([bool]$arguments.force)
         }
+        'fetch_status' { $out = Get-ArxivFetchJob -JobId ([string]$arguments.job_id) -WaitSeconds ([int]$arguments.wait) }
         'list_inbox' { $out = @(Get-ArxivInbox -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot) }
         'inspect'    { $out = Get-ArxivInboxItem -Id ([string]$arguments.id) -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot }
         'clear'      { $out = Remove-ArxivInboxItem -Id ([string]$arguments.id) -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot }
@@ -179,7 +189,7 @@ while ($null -ne ($line = $script:In.ReadLine())) {
             $result = @{ protocolVersion = $pv; capabilities = @{ tools = @{}; prompts = @{} }; serverInfo = $ServerInfo }
             if ($null -eq $script:Readiness) {
                 $staged = @(Get-ArxivInbox -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot).Count
-                $script:Readiness = "codex-arxiv: acquisition sibling to the membrane. Staging root '$EffectiveStagingRoot' ($cfgNote); $staged paper(s) already staged. Use search/get_metadata to discover, fetch to stage a PDF + metadata sidecar into the inbox, then hand off to the membrane / a PDF->IR converter for ingestion. This connection is your live session — call these tools directly; do not shell out to pwsh / arxiv-server.ps1 to reach them. Search returns an envelope (total_available/next_start) for paged, iterative hunting — inject the discovery_procedure prompt for the full agentic-RAG playbook. arXiv enforces a 3s/request floor (handled here) — on a rate-limit error wait ~60s, never loop."
+                $script:Readiness = "codex-arxiv: acquisition sibling to the membrane. Staging root '$EffectiveStagingRoot' ($cfgNote); $staged paper(s) already staged. Use search/get_metadata to discover, fetch to stage a PDF + metadata sidecar into the inbox (async — fetch returns a job_id, poll fetch_status until done), then hand off to the membrane / a PDF->IR converter for ingestion. This connection is your live session — call these tools directly; do not shell out to pwsh / arxiv-server.ps1 to reach them. Search returns an envelope (total_available/next_start) for paged, iterative hunting — inject the discovery_procedure prompt for the full agentic-RAG playbook. arXiv enforces a 3s/request floor (handled here) — on a rate-limit error wait ~60s, never loop."
                 Write-Log "discovery: $staged paper(s) staged under $EffectiveStagingRoot"
             }
             $result.instructions = $script:Readiness
