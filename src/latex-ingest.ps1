@@ -71,6 +71,25 @@ function Convert-BorderMatrix {
     return $T
 }
 
+function Convert-Tabular {
+    param([string]$Spec, [string]$Body)   # basic {tabular} -> GitHub markdown table (data tables; image grids are handled separately)
+    $Body = $Body -replace '\\(?:hline|toprule|midrule|bottomrule)\b', '' -replace '\\cline\{[^}]*\}', ''
+    $Body = [regex]::Replace($Body, '\\multicolumn\{\d+\}\{[^}]*\}\{([^{}]*)\}', '$1')
+    $s = $Spec -replace '\|', '' -replace '[@<>]\{[^}]*\}', '' -replace '[pmb]\{[^}]*\}', 'X'
+    $ncol = ($s -replace '[^clrX]', '').Length
+    if ($ncol -lt 1) { $ncol = 1 }
+    $rows = @([regex]::Split($Body, '\\\\') | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' })
+    if (-not $rows.Count) { return '' }
+    $out = New-Object System.Collections.Generic.List[string]
+    for ($i = 0; $i -lt $rows.Count; $i++) {
+        $cells = @([regex]::Split($rows[$i], '(?<!\\)&') | ForEach-Object { $_.Trim() -replace '\\&', '&' })
+        while ($cells.Count -lt $ncol) { $cells += '' }
+        $out.Add('| ' + (($cells[0..($ncol - 1)]) -join ' | ') + ' |')
+        if ($i -eq 0) { $out.Add('| ' + ((1..$ncol | ForEach-Object { '---' }) -join ' | ') + ' |') }
+    }
+    return "`n`n" + ($out -join "`n") + "`n`n"
+}
+
 # --- algorithmic (algpseudocode) -> fenced pseudocode. The \State/\If/\While furniture is not markdown, so
 # render it as a titled ```text``` block with keywords + indentation and the (simple) inline math flattened to
 # unicode. Parallel arrays not a hashtable: PS hash keys are case-insensitive so \delta/\Delta would collide;
@@ -200,7 +219,7 @@ function Get-LatexMacros {
         $body = Get-LatexBracedArg $Tex ($m.Index + $m.Length - 1)
         if ($null -ne $body) { $macros[$name] = [pscustomobject]@{ nargs = $nargs; opt = $opt; body = $body } }
     }
-    foreach ($m in ([regex]'\\DeclareMathOperator\*?\s*\{\s*\\([A-Za-z]+)\s*\}\s*\{').Matches($Tex)) {
+    foreach ($m in ([regex]'\\DeclareMathOperator\*?\s*\{?\s*\\([A-Za-z]+)\s*\}?\s*\{').Matches($Tex)) {   # braces around the operator name are optional
         $name = $m.Groups[1].Value; $body = Get-LatexBracedArg $Tex ($m.Index + $m.Length - 1)
         if ($null -ne $body) { $macros[$name] = [pscustomobject]@{ nargs = 0; opt = $null; body = "\operatorname{$body}" } }
     }
@@ -262,7 +281,8 @@ function Build-CiteMap {
 }
 function Resolve-Refs {
     param([string]$T, $Maps, $CiteMap)
-    $T = [regex]::Replace($T, '\\cite[a-z]*\{([^{}]+)\}', { param($m) '[' + (($m.Groups[1].Value -split '\s*,\s*' | ForEach-Object { if ($CiteMap.ContainsKey($_)) { $CiteMap[$_] } else { '?' } }) -join ', ') + ']' })
+    # consume natbib optional pre/post-notes (\citep[see][p. 7]{key}) — else the [..] brackets leak and read as broken reference links
+    $T = [regex]::Replace($T, '\\cite[a-z]*(?:\[[^\]]*\])?(?:\[[^\]]*\])?\s*\{([^{}]+)\}', { param($m) '[' + (($m.Groups[1].Value -split '\s*,\s*' | ForEach-Object { if ($CiteMap.ContainsKey($_)) { $CiteMap[$_] } else { '?' } }) -join ', ') + ']' })
     $T = [regex]::Replace($T, '\\eqref\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' } })
     $T = [regex]::Replace($T, '\\(?:ref|autoref|cref)\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.thm.ContainsKey($k)) { "$($Maps.thm[$k])" } elseif ($Maps.eq.ContainsKey($k)) { "$($Maps.eq[$k])" } else { '?' } })
     return $T
@@ -288,14 +308,19 @@ function Protect-LatexMath {
     $Text = [regex]::Replace($Text, "\\begin\{gather\*?\}(.*?)\\end\{gather\*?\}", { param($m) Store-Math ("\begin{gathered}`n" + $m.Groups[1].Value.Trim() + "`n\end{gathered}") $true }, $SL)
     $Text = [regex]::Replace($Text, "\\begin\{(equation|displaymath|math)\*?\}(.*?)\\end\{\1\*?\}", { param($m) Store-Math ($m.Groups[2].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '\\\[(.*?)\\\]', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
-    $Text = [regex]::Replace($Text, '(?<!\\)\$\$(.*?)\$\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
+    $Text = [regex]::Replace($Text, '(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '\\\((.*?)\\\)', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
-    $Text = [regex]::Replace($Text, '(?<!\\)\$(.+?)(?<!\\)\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
+    $Text = [regex]::Replace($Text, '(?<=(?:^|[^\\])(?:\\\\)*)\$(.+?)(?<!\\)\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
     return $Text
 }
 function Restore-LatexMath {
     param([string]$Text)
-    foreach ($id in $script:LtxMathStore.Keys) { $Text = $Text.Replace($id, $script:LtxMathStore[$id]) }
+    # iterate to a fixed point: a stored span can contain another placeholder (nested $..$ around a display
+    # placeholder), and hashtable key order is arbitrary — a single ordered pass can re-introduce an already-
+    # processed placeholder and leak it. Re-run until none remain (bounded by nesting depth).
+    for ($pass = 0; $pass -lt 8 -and ($Text -match '@@LMATH\d+@@'); $pass++) {
+        $Text = [regex]::Replace($Text, '@@LMATH\d+@@', { param($m) if ($script:LtxMathStore.Contains($m.Value)) { $script:LtxMathStore[$m.Value] } else { $m.Value } })
+    }
     return $Text
 }
 
@@ -328,10 +353,23 @@ function ConvertFrom-Latex {
     $bm = [regex]::Match($Tex, '\\begin\{document\}(.*)\\end\{document\}', [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $body = if ($bm.Success) { $bm.Groups[1].Value } else { $Tex }
 
+    # fallback for manually-typeset titles (no \title{}): first {\Large..}/{\LARGE..}/{\huge..} block in the frontmatter
+    if (-not $title) {
+        $lm = [regex]::Match($body, '\{\s*\\(?:Large|LARGE|huge|Huge)\b')
+        if ($lm.Success) {
+            $g = Get-LatexBracedArg $body $lm.Index
+            if ($g) { $title = (($g -replace '\\(?:Large|LARGE|huge|Huge|large|Huge|textbf|textsc|textit|textsl|emph|bf|it|sc|em|mathbf|mathrm|textnormal|centering|newline)\b', '' -replace '\\\\', ' ' -replace '[{}]', '') -replace '\s+', ' ').Trim() }
+        }
+    }
+
     # excluded content never renders in the PDF, so it must not pollute the ground-truth markdown: the
     # `comment` environment (comment package) and \iffalse..\fi conditional blocks are dropped wholesale.
     $body = [regex]::Replace($body, '(?s)\\begin\{comment\}.*?\\end\{comment\}', '')
     $body = [regex]::Replace($body, '(?s)\\iffalse\b.*?\\fi\b', '')
+
+    # old-style $$display$$ -> \[..\] up front: display and inline math otherwise share the `$` delimiter, so
+    # the regex parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
+    $body = [regex]::Replace($body, '(?s)(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', '\[$1\]')
 
     # TikZ pictures are vector-drawing source, not renderable to an image here — replace each with a figure
     # marker (its \caption is emitted separately) so the diagram's place in the flow survives, not raw \draw code.
@@ -339,8 +377,8 @@ function ConvertFrom-Latex {
 
     # figure-grid tabulars (cells are \includegraphics) are not renderable tables, and their inline-$ caption
     # cells can swallow the whole grid into a spurious math span — collapse them to a figure marker up front.
-    $body = [regex]::Replace($body, '(?s)\\begin\{tabular\}(?:\[[^\]]*\])?\s*\{[^}]*\}((?:(?!\\end\{tabular\}).)*?)\\end\{tabular\}', {
-            param($m) if ($m.Groups[1].Value -match '\\includegraphics') { "`n`n*[figure]*`n`n" } else { $m.Value } })
+    $body = [regex]::Replace($body, '(?s)\\begin\{tabular\}(?:\[[^\]]*\])?\s*\{([^}]*)\}((?:(?!\\end\{tabular\}).)*?)\\end\{tabular\}', {
+            param($m) if ($m.Groups[2].Value -match '\\includegraphics') { "`n`n*[figure]*`n`n" } else { Convert-Tabular $m.Groups[1].Value $m.Groups[2].Value } })
 
     # nicematrix envs are unsupported by KaTeX (STANDARDS §1): map to the stock math matrices (prefix kept:
     # b->bmatrix, p->pmatrix, …) and drop the [first-row/col,code-for-…] option block. Labels survive as
@@ -350,9 +388,13 @@ function ConvertFrom-Latex {
 
     # KaTeX ships \xrightarrow / \xleftarrow but not the amsmath \xlong… variants
     $body = $body -replace '\\xlong(right|left)arrow', '\x$1arrow'
+    $body = $body -replace '\\lefteqn\b', ''                                   # KaTeX-unsupported; drop, keep its {group}
     $body = Convert-BorderMatrix $body                                         # \bordermatrix -> ruled array
 
     $body = Expand-LatexMacros $body $macros                                   # macros (incl inside math)
+    # accents/single-arg ops written without braces around a (now-expanded) macro arg break KaTeX
+    # (e.g. source \underline\IK -> \underline \mathbb{K}); re-brace the argument.
+    $body = $body -replace '\\(underline|overline|widehat|widetilde|widecheck|hat|bar|tilde|vec|check|breve|acute|grave|dot|ddot|mathring)\s+(\\[A-Za-z]+\{[^{}]*\})', '\$1{$2}'
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl
     $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
@@ -377,6 +419,16 @@ function ConvertFrom-Latex {
             $note = if ($m.Groups[2].Success) { " ($($m.Groups[2].Value))" } else { '' }; "`n`n**$lab$note.** " })
     $body = $body -replace "\\end\{($script:thmLike)\}", ''
 
+    # custom \newtheorem environments (short names like cor/prop) surfaced via their DECLARED display name;
+    # the fixed-name families above are already handled, this covers whatever the preamble additionally defines.
+    $thmMap = @{}
+    foreach ($nt in [regex]::Matches($Tex, '\\newtheorem\*?\s*\{([^{}]+)\}(?:\[[^\]]*\])?\s*\{([^{}]+)\}')) { $thmMap[$nt.Groups[1].Value] = $nt.Groups[2].Value }
+    if ($thmMap.Count) {
+        $ntNames = (($thmMap.Keys | Sort-Object { $_.Length } -Descending | ForEach-Object { [regex]::Escape($_) }) -join '|')
+        $body = [regex]::Replace($body, "\\begin\{($ntNames)\}(?:\s*\[([^\]]*)\])?", { param($m) $disp = $thmMap[$m.Groups[1].Value]; $note = if ($m.Groups[2].Success) { " ($($m.Groups[2].Value))" } else { '' }; "`n`n**$disp$note.** " })
+        $body = [regex]::Replace($body, "\\end\{($ntNames)\}", '')
+    }
+
     # tcolorbox callouts: surface the box title (title= key, usually last in the option list) as a bold
     # label and keep the body prose; drop the wrapper rather than leaking \begin{tcolorbox}[...] verbatim.
     $body = [regex]::Replace($body, '\\begin\{tcolorbox\}(?:\[([^\]]*)\])?', {
@@ -395,6 +447,8 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"   # escape `$1: double-quoted, PS would else interpolate it away
     $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m) $c = $m.Groups[1].Value.Trim(); if ($c) { "`n`n*$c*`n" } else { '' } })   # trim: no space inside emphasis (MD037)
     $body = $body -replace '\\(?:begin|end)\{(?:figure|table|center|wrapfigure)\*?\}(?:\[[^\]]*\])?', ''
+    $body = $body -replace '\\(?:begin|end)\{(?:flushleft|flushright|appendices|subequations|quote|quotation)\}', ''   # structural wrappers, keep content
+    $body = $body -replace '\\begin\{minipage\}(?:\[[^\]]*\])?\{[^}]*\}', '' -replace '\\end\{minipage\}', ''
     $body = $body -replace '\\begin\{subfigure\}(?:\[[^\]]*\])?(?:\{[^}]*\})?', '' -replace '\\end\{subfigure\}', ''   # keep panel content, drop wrapper
     $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\}', "`n`n"   # blank lines around lists (MD032)
     $body = $body -replace '\\item\s*', "`n- "
