@@ -19,10 +19,22 @@ knobs IWR doesn't expose**, not correctness.
 both `/pdf` and `/e-print` (requesting 3.0 negotiated 3.0). Browsers use HTTP/2–3; a user reports manual
 browser downloads that "never time out." The old code pinned **HTTP/1.1** — the least loss-resilient option
 (a lost packet head-of-line-blocks the whole TCP stream). We flipped the IWR pin to **HTTP/2** as an interim
-fix (v0.4.0 follow-up), but **IWR caps at h2** — requesting 3.0 falls back to 2.0. **HTTP/3 is only reachable
-via this SocketsHttpHandler engine** (`RequestVersionOrHigher` negotiated h3 in the probe). That makes h3 —
-not just resume — the primary reliability reason to build this, and it likely explains most of the
-browser-never-stalls gap.
+fix (v0.4.0 follow-up), and **IWR caps at h2** — requesting 3.0 falls back to 2.0. **HTTP/3 is only reachable
+via this SocketsHttpHandler engine.**
+
+**BUT the h3 policy is thorny (probed 2026-07-01):** `Version 3.0 + RequestVersionOrHigher` negotiates h3,
+but that *forces* QUIC with **no fallback** — and h3 is UDP/443, which plenty of networks/firewalls block.
+`Version 3.0 + RequestVersionOrLower` does **not** try h3 at all (it gives h2). So there is **no single
+policy** for "h3 if available, else h2." Safe h3 = **force h3, catch the QUIC connection failure, retry the
+request forced to h2** — application-level fallback the engine must implement, or it breaks every fetch on a
+UDP-blocked network.
+
+**Reframed priority:** since **h2 is already landed** (IWR) and is the reliable baseline (TCP, works
+everywhere, already a big jump from the old h1.1 pin), the incremental h2→h3 gain is **situational** (only
+helps on lossy links) and **costs the force+fallback complexity above**. So the sockets engine's real
+sure-win is **resume (Range)** for large/interrupted source; **h3 is a bonus behind a config flag + the
+fallback dance**, not the headline. Build for resume when large-source interruption is evidenced; add h3
+opportunistically.
 
 ## What a shared HttpClient/SocketsHttpHandler unlocks
 
@@ -73,11 +85,14 @@ analog of the reference's proven httpx approach.
 
 ## When to build (gate on evidence)
 
-Only if, in practice, **large or cold source fetches still stall or truncate** despite the v0.4.0 idle
-timeout + completeness guard. The symptoms to watch: repeated `truncated download` / idle-timeout retries in
-worker logs for big e-prints, or resume-worthy failures on multi-MB source. If those don't materialize, this
-stays on the shelf — the guard already rejects a bad tarball, and async means a slow retry costs the agent
-nothing.
+Only if, in practice, **large or cold source fetches still stall or truncate** despite the common-case
+hardening now landed: async (non-blocking), idle timeout, completeness guard, **HTTP/2** (h1.1→2.0), and the
+**direct-URL escalation** (export/e-print → arxiv.org/src fallback). Those together closed most of the gap.
+The remaining trigger is specifically **resume-worthy failures on multi-MB source** (repeated
+`truncated download` / idle-timeout retries on big e-prints) — i.e. the case where restarting a 40 MB
+download from byte 0 is the pain. If that doesn't materialize, this stays on the shelf: the guard already
+rejects a bad tarball, and async means a slow retry costs the agent nothing. (h3 rides along only as the
+config-gated bonus described above, not a reason to build on its own.)
 
 ## Scope
 
