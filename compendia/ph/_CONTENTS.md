@@ -591,3 +591,76 @@
   - [B.7 Computational performance for model with both zero-dimensional and one-dimensional features](WRD2025.md#b7-computational-performance-for-model-with-both-zero-dimensional-and-one-dimensional-features)
 
 ---
+
+## [Persistent sheaf Laplacians](2112.10906v4.md)
+
+- [1 Introduction](2112.10906v4.md#1-introduction)
+- [2 Preliminaries](2112.10906v4.md#2-preliminaries)
+  - [2.1 Cellular sheaves](2112.10906v4.md#21-cellular-sheaves)
+  - [2.2 Sheaf cohomology](2112.10906v4.md#22-sheaf-cohomology)
+  - [2.3 Cellular sheaves on a labeled simplicial complex](2112.10906v4.md#23-cellular-sheaves-on-a-labeled-simplicial-complex)
+  - [2.4 Sheaf Laplacian](2112.10906v4.md#24-sheaf-laplacian)
+- [3 Persistent Sheaf Laplacians](2112.10906v4.md#3-persistent-sheaf-laplacians)
+  - [3.1 Persistent Laplacians](2112.10906v4.md#31-persistent-laplacians)
+  - [3.2 Persistent sheaf cohomology and persistent sheaf Laplacians](2112.10906v4.md#32-persistent-sheaf-cohomology-and-persistent-sheaf-laplacians)
+- [4 Experiments](2112.10906v4.md#4-experiments)
+  - [4.1 Simple shapes](2112.10906v4.md#41-simple-shapes)
+  - [4.2 Complex molecules](2112.10906v4.md#42-complex-molecules)
+- [5 Concluding remarks](2112.10906v4.md#5-concluding-remarks)
+- [Acknowledgments](2112.10906v4.md#acknowledgments)
+- [References](references/2112.10906v4.md)
+
+---
+
+---
+
+## [The persistent Laplacian of non-branching complexes](2408.16741v2.md)
+
+- [Abstract](2408.16741v2.md#abstract)
+- [Introduction](2408.16741v2.md#introduction)
+  - [Overview and contributions](2408.16741v2.md#overview-and-contributions)
+- [Column reduction of non-branching matrices](2408.16741v2.md#column-reduction-of-non-branching-matrices)
+  - [Oriented matrices](2408.16741v2.md#oriented-matrices)
+  - [Regular matrices](2408.16741v2.md#regular-matrices)
+  - [Irregular matrices](2408.16741v2.md#irregular-matrices)
+  - [Row-singular matrices](2408.16741v2.md#row-singular-matrices)
+  - [Wrapping up the proof of  1](2408.16741v2.md#wrapping-up-the-proof-of-1)
+  - [Algorithms and running times](2408.16741v2.md#algorithms-and-running-times)
+- [A faster algorithm for the up persistent Laplacian](2408.16741v2.md#a-faster-algorithm-for-the-up-persistent-laplacian)
+  - [Background material](2408.16741v2.md#background-material)
+  - [Computation of the up persistent Laplacian](2408.16741v2.md#computation-of-the-up-persistent-laplacian)
+  - [The up persistent Laplacian for filtrations](2408.16741v2.md#the-up-persistent-laplacian-for-filtrations)
+- [A generalized Kron reduction and a Cheeger inequality](2408.16741v2.md#a-generalized-kron-reduction-and-a-cheeger-inequality)
+  - [The Kron reduction](2408.16741v2.md#the-kron-reduction)
+  - [A Cheeger-type inequality](2408.16741v2.md#a-cheeger-type-inequality)
+  - [An example](2408.16741v2.md#an-example)
+- [Computing eigenvalues](2408.16741v2.md#computing-eigenvalues)
+- [Cubical complexes and X-Ray images](2408.16741v2.md#cubical-complexes-and-x-ray-images)
+  - [A worked-out example](2408.16741v2.md#a-worked-out-example)
+  - [Experiments on a chest X-Ray image](2408.16741v2.md#experiments-on-a-chest-x-ray-image)
+    - [The speed of computing $B_1^{\mathcal{L}^j, \mathcal{K}_n^j}$ and $\Delta_{1, \text{up}}^{\mathcal{K}^j_n, \mathcal{L}^j}$](2408.16741v2.md#the-speed-of-computing-b1mathcallj-mathcalknj-and-delta1-textupmathcalkjn-mathcallj)
+- [Discussion and further work](2408.16741v2.md#discussion-and-further-work)
+- [Graphs and incidence matrices](2408.16741v2.md#graphs-and-incidence-matrices)
+- [Pseudocodes associated with Union-Find (DSU) algorithm](2408.16741v2.md#pseudocodes-associated-with-union-find-dsu-algorithm)
+- [Oriented hypergraphs](2408.16741v2.md#oriented-hypergraphs)
+- [Cubical complexes](2408.16741v2.md#cubical-complexes)
+- [Golub-Kahan-Lanczos method](2408.16741v2.md#golub-kahan-lanczos-method)
+- [Numerical linear algebra example](2408.16741v2.md#numerical-linear-algebra-example)
+- [References](references/2408.16741v2.md)
+
+---
+
+## [Memory as Structured Trajectories: Persistent Homology and Contextual Sheaves](2508.11646v1.md)
+
+- [Abstract](2508.11646v1.md#abstract)
+- [Introduction](2508.11646v1.md#introduction)
+- [From Spiking Dynamics to Topology](2508.11646v1.md#from-spiking-dynamics-to-topology)
+  - [Spatiotemporal Complexes from Time-Locked Spikes](2508.11646v1.md#spatiotemporal-complexes-from-time-locked-spikes)
+  - [Chain Complex and Homology of Spiking Trajectories](2508.11646v1.md#chain-complex-and-homology-of-spiking-trajectories)
+- [Combinatorial Compression of Topological Dynamics](2508.11646v1.md#combinatorial-compression-of-topological-dynamics)
+- [Delta-Homology as a Memory Substrate](2508.11646v1.md#delta-homology-as-a-memory-substrate)
+- [Memory-Amortized Inference over Delta-Homology Structures](2508.11646v1.md#memory-amortized-inference-over-delta-homology-structures)
+- [Conclusions](2508.11646v1.md#conclusions)
+- [Appendix](2508.11646v1.md#appendix)
+- [References](references/2508.11646v1.md)
+

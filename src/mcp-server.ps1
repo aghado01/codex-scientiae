@@ -17,9 +17,12 @@
   The server's purview is the whole repo: read/repair are scoped to -Root (ingestion), while the
   post-finalize publish lane writes into -CompendiaRoot (<repo>/compendia by default).
 
-  Tools: 26 ops. The 22 paper-addressed membrane ops (list_documents … get_enrichables), plus the
-  post-finalize lane that closes the loop into the published corpus: `publish` (promote a finalized
-  deliverable into compendia/{topic}/) and three path-addressed tools over promoted markdown —
+  Tools: 29 ops. The paper-addressed membrane ops (list_documents … get_enrichables); `latex_convert`, the
+  id-addressed LaTeX-oracle input lane (staged arXiv source -> codex markdown ground truth, the benchmark
+  answer key); `render_check` + `markdown_lint`, the paper/path-addressed validity gates (does the math render
+  under KaTeX; does the markdown structure conform to the standard); plus the post-finalize lane that closes
+  the loop into the published corpus: `publish` (promote a
+  finalized deliverable into compendia/{topic}/) and three path-addressed tools over promoted markdown —
   `repair_headings`, `update_doc_contents`, `splice_md` (the byte-offset analog of propose_edit).
   Prompts: restoration_procedure (serves PROCEDURE.md).
 #>
@@ -37,6 +40,9 @@ param(
 . "$PSScriptRoot/finalize.ps1"
 . "$PSScriptRoot/md-repair.ps1"
 . "$PSScriptRoot/publish.ps1"
+. "$PSScriptRoot/latex-ingest.ps1"   # the LaTeX oracle lane (latex_convert): arXiv source -> codex markdown
+. "$PSScriptRoot/render-check.ps1"   # math render-validity gate (render_check): does every span render in KaTeX
+. "$PSScriptRoot/md-lint.ps1"        # markdown structure lint (markdown_lint): the non-math half of the standard
 
 $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 
@@ -48,6 +54,15 @@ $Tools = @(
     @{ name = 'preprocess'
        description = 'Run the seven-stage pipeline on a document''s raw IR, landing the enriched chunk stream + sidecars in its .scratch/ and logging the preprocessed milestone. Refuses to clobber applied repairs unless force=true.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; force = @{ type = 'boolean' } }; required = @('paper') } }
+    @{ name = 'latex_convert'
+       description = 'The LaTeX ORACLE: convert a staged arXiv LaTeX source into codex-standard markdown — the near-lossless, algorithmic ground truth used as the answer key for benchmarking docling-repair conversion quality (the benchmark workflow). This is the in-house alternative to pandoc/latexml — do NOT shell out to pandoc. It expands \newcommand macros to primitives (renderable KaTeX), wraps alignment envs in \begin{aligned}, resolves \cite/\ref/\eqref to numbers, numbers theorems/lemmas, and emits a references section. Reads the staged _inbox/<id>/<id>.tar.gz and writes _inbox/<id>/<id>.latex.md; returns the path + stats (bytes, macros expanded, sections, references). Requires the "source" artifact staged first via codex-arxiv fetch (artifacts: ["source"]) — a PDF-only paper has no LaTeX source.'
+       inputSchema = @{ type = 'object'; properties = @{ id = @{ type = 'string'; description = 'arXiv id whose LaTeX source is already staged in _inbox, e.g. 1611.03935' } }; required = @('id') } }
+    @{ name = 'render_check'
+       description = 'Validate that every math span in a markdown deliverable RENDERS under KaTeX — the objective math standard (STANDARDS §1): KaTeX-strict-clean implies it renders on GitHub''s MathJax. Reports total/ok/failed plus each failure with its exact KaTeX error (undefined control sequence, unbalanced delimiters, bare & outside an environment — the render-level view of the membrane detectors). Address by `paper` (its finalized .scratch/<slug>.md) OR a repo-relative `path` (e.g. the LaTeX oracle _inbox/<id>/<id>.latex.md, or a promoted compendia file). strict=true is the KaTeX-strict bar. Requires node + the pinned katex in tools/render-check.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; path = @{ type = 'string'; description = 'repo-relative .md path (alternative to paper)' }; strict = @{ type = 'boolean'; description = 'KaTeX-strict bar (default false)' } } } }
+    @{ name = 'markdown_lint'
+       description = 'Structure-lint a markdown deliverable with markdownlint against the codex-aligned config (heading hierarchy §5, spacing hygiene §4; line-length disabled since the codex removes hard wraps). The NON-math half of the standard — math render-validity is the separate render_check gate. Reports each issue with line + rule (e.g. MD022 blanks-around-headings, MD012 no-multiple-blanks, MD018 no-missing-space-atx). Address by `paper` (.scratch/<slug>.md) OR a repo-relative `path`. Requires node + markdownlint in tools/md-lint.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; path = @{ type = 'string'; description = 'repo-relative .md path (alternative to paper)' } } } }
     @{ name = 'get_inventory'
        description = 'The in-play artifacts registered for a document: each durable file with stage, record count, byte size, and source (the build chain). The object-state window, complementing the milestone ledger.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
@@ -178,11 +193,33 @@ function Resolve-RepoPath([string]$path) {
     if (-not (Test-Path -LiteralPath $full -PathType Leaf)) { throw "file not found: $path" }
     return $full
 }
+# Resolve a markdown deliverable to lint/render-check: a `path` (repo-relative, e.g. the oracle or a promoted
+# file) takes precedence; else a `paper` resolves to its finalized .scratch/<slug>.md sibling of the chunk stream.
+function Resolve-Deliverable([string]$paper, [string]$path) {
+    if (-not [string]::IsNullOrWhiteSpace($path)) { return Resolve-RepoPath $path }
+    if (-not [string]::IsNullOrWhiteSpace($paper)) {
+        $md = (Resolve-Paper $paper) -replace '\.chunks\.jsonl$', '.md'
+        if (-not (Test-Path -LiteralPath $md)) { throw "no finalized deliverable for '$paper' (run finalize first): $md" }
+        return $md
+    }
+    throw 'provide paper or path'
+}
 
 function Invoke-Tool([string]$name, $arguments) {
     switch ($name) {
         'list_documents' { $out = @(Get-IngestionScan -Root (Resolve-Scope $arguments.scope)) }
         'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper) -Force:([bool]$arguments.force) }
+        'latex_convert' {
+            $id = [string]$arguments.id
+            if ([string]::IsNullOrWhiteSpace($id) -or $id -notmatch '^[\w.\-]+$') { throw "invalid arXiv id: '$id'" }
+            $dir = Join-Path $Root "_inbox/$id"
+            $tarItem = if (Test-Path -LiteralPath $dir) { Get-ChildItem -LiteralPath $dir -Filter '*.tar.gz' -File -ErrorAction SilentlyContinue | Select-Object -First 1 } else { $null }
+            $tar = if ($tarItem) { $tarItem.FullName } else { @(Invoke-Crawl -Root $Root -Patterns "**/_inbox/$id/*.tar.gz" -Semantics Include) | Select-Object -First 1 }
+            if (-not $tar) { throw "no staged LaTeX source (.tar.gz) for '$id' under _inbox -- stage it first with codex-arxiv fetch (artifacts: source)" }
+            $out = Invoke-ArxivLatexToMarkdown -TarGz $tar -Slug "$id.latex" -OutDir (Split-Path -Parent $tar)
+        }
+        'render_check'  { $out = Test-MathRenders  -Path (Resolve-Deliverable ([string]$arguments.paper) ([string]$arguments.path)) -Strict:([bool]$arguments.strict) }
+        'markdown_lint' { $out = Test-MarkdownLint -Path (Resolve-Deliverable ([string]$arguments.paper) ([string]$arguments.path)) }
         'get_inventory'  { $out = Get-Inventory (Resolve-Paper $arguments.paper) }
         'finalize'        { $out = Invoke-Finalize  -ChunksPath (Resolve-Paper $arguments.paper) }
         'review_document' { $out = Get-FinalReview  (Resolve-Paper $arguments.paper) }

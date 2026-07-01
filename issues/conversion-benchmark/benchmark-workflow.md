@@ -55,9 +55,21 @@ loop), `playbook.ps1`, most of `finalize.ps1`.
 - **N1 · Math render-normalization pass** — flatten nested `$…$` inside `\text{}` to `\text{…} math \text{…}`;
   guarantee render-clean primitives. SHARED by the oracle converter *and* docling finalize (both must render
   clean). Small; lives beside the math predicates in `latex.ps1`.
-- **N2 · KaTeX render validator** — parse each math span under KaTeX → renders / red-error. A gate both lanes
-  pass AND a benchmark dimension ("render success rate"). Tooling dependency to settle (Node KaTeX vs a port).
-- **N3 · `latex-convert` tool** — MCP wrapper over `Invoke-ArxivLatexToMarkdown`.
+- **N2 · KaTeX render validator — LANDED 2026-06-30.** `tools/render-check/` (pinned `katex`) + `src/render-check.ps1`
+  (`Test-MathRenders`), exposed as the **`render_check`** membrane MCP tool (paper/path-addressed). Parses each
+  math span under KaTeX → renders / red-error; a gate both lanes pass AND a benchmark dimension ("render success
+  rate"). Tooling question resolved: Node `katex` (both Node + dotnet are in the portable env).
+- **N2b · markdown structure lint — LANDED 2026-06-30.** `tools/md-lint/` (pinned `markdownlint`) +
+  `src/md-lint.ps1` (`Test-MarkdownLint`), exposed as the **`markdown_lint`** membrane MCP tool. The non-math
+  half of the standard (heading hierarchy §5, spacing §4); config disables line-length (§4 removes hard wraps).
+  It immediately caught + fixed an MD022 (heading-not-followed-by-blank) bug in latex-ingest's section transform.
+  Both gates require a **server reboot** to appear in `tools/list`.
+- **N3 · `latex_convert` tool — LANDED 2026-06-30.** Registered on **codex-membrane** (not codex-arxiv, which
+  explicitly disclaims conversion: "this server ACQUIRES; the membrane INGESTS"). `mcp-server.ps1` dot-sources
+  `latex-ingest.ps1`, adds the `latex_convert {id}` tool + dispatch (resolves `_inbox/<id>/*.tar.gz`, runs
+  `Invoke-ArxivLatexToMarkdown`, writes `_inbox/<id>/<id>.latex.md`). No name collisions with the membrane. NB:
+  the earlier symptom (another session's agent hunting for pandoc) was this tool being unregistered — the oracle
+  existed only as a function. Requires a **server reboot** to appear in `tools/list`.
 - **N4 · `generate-target-schema` tool** — the thin rubric (above).
 - **N5 · `benchmark-finalize`** — schema-parameterized serializer mode: render-clean, inline refs, no TOC.
 - **N6 · `measure` tool** — vendored ThermoMapper `Hashish` + `Maths.Information` DLLs; the multi-measure panel

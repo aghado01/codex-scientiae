@@ -194,6 +194,29 @@ function ConvertFrom-Latex {
     $bm = [regex]::Match($Tex, '\\begin\{document\}(.*)\\end\{document\}', [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $body = if ($bm.Success) { $bm.Groups[1].Value } else { $Tex }
 
+    # excluded content never renders in the PDF, so it must not pollute the ground-truth markdown: the
+    # `comment` environment (comment package) and \iffalse..\fi conditional blocks are dropped wholesale.
+    $body = [regex]::Replace($body, '(?s)\\begin\{comment\}.*?\\end\{comment\}', '')
+    $body = [regex]::Replace($body, '(?s)\\iffalse\b.*?\\fi\b', '')
+
+    # TikZ pictures are vector-drawing source, not renderable to an image here — replace each with a figure
+    # marker (its \caption is emitted separately) so the diagram's place in the flow survives, not raw \draw code.
+    $body = [regex]::Replace($body, '(?s)\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}', "`n`n*[diagram]*`n`n")
+
+    # figure-grid tabulars (cells are \includegraphics) are not renderable tables, and their inline-$ caption
+    # cells can swallow the whole grid into a spurious math span — collapse them to a figure marker up front.
+    $body = [regex]::Replace($body, '(?s)\\begin\{tabular\}(?:\[[^\]]*\])?\s*\{[^}]*\}((?:(?!\\end\{tabular\}).)*?)\\end\{tabular\}', {
+            param($m) if ($m.Groups[1].Value -match '\\includegraphics') { "`n`n*[figure]*`n`n" } else { $m.Value } })
+
+    # nicematrix envs are unsupported by KaTeX (STANDARDS §1): map to the stock math matrices (prefix kept:
+    # b->bmatrix, p->pmatrix, …) and drop the [first-row/col,code-for-…] option block. Labels survive as
+    # ordinary first row/column entries.
+    $body = $body -replace '\\begin\{([bpBvV]?)NiceMatrix\}\s*(?:\[[^\]]*\])?', '\begin{${1}matrix}'
+    $body = $body -replace '\\end\{([bpBvV]?)NiceMatrix\}', '\end{${1}matrix}'
+
+    # KaTeX ships \xrightarrow / \xleftarrow but not the amsmath \xlong… variants
+    $body = $body -replace '\\xlong(right|left)arrow', '\x$1arrow'
+
     $body = Expand-LatexMacros $body $macros                                   # macros (incl inside math)
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl
     $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
@@ -207,13 +230,30 @@ function ConvertFrom-Latex {
     $body = [regex]::Replace($body, '\\begin\{proof\}(?:\s*\[([^\]]*)\])?', { param($m) $t = if ($m.Groups[1].Success) { $m.Groups[1].Value } else { 'Proof' }; "`n`n*$t.* " })
     $body = $body -replace '\\end\{(theorem|lemma|corollary|proposition|proof)\}', ''
 
+    # other theorem-like environments: surface as bold labels rather than leaking raw \begin{..}. Left
+    # UNNUMBERED on purpose — their counters aren't tracked in Build-LabelMaps, so fabricating a number
+    # would risk disagreeing with the rendered paper (worse than an honest unnumbered label).
+    $script:thmLike = 'definition|defn|remark|example|note|claim|observation|notation|conjecture|assumption|fact|property|question|construction|convention|resultx|result'
+    $body = [regex]::Replace($body, "\\begin\{($script:thmLike)\}(?:\s*\[([^\]]*)\])?", {
+            param($m) $raw = $m.Groups[1].Value
+            $lab = if ($raw -in 'resultx', 'result') { 'Result' } elseif ($raw -eq 'defn') { 'Definition' } else { (Get-Culture).TextInfo.ToTitleCase($raw) }
+            $note = if ($m.Groups[2].Success) { " ($($m.Groups[2].Value))" } else { '' }; "`n`n**$lab$note.** " })
+    $body = $body -replace "\\end\{($script:thmLike)\}", ''
+
+    # tcolorbox callouts: surface the box title (title= key, usually last in the option list) as a bold
+    # label and keep the body prose; drop the wrapper rather than leaking \begin{tcolorbox}[...] verbatim.
+    $body = [regex]::Replace($body, '\\begin\{tcolorbox\}(?:\[([^\]]*)\])?', {
+            param($m) $tm = [regex]::Match($m.Groups[1].Value, 'title\s*=\s*\{?(.+?)\}?\s*$')
+            if ($tm.Success) { "`n`n**$($tm.Groups[1].Value.Trim())**`n`n" } else { "`n`n" } })
+    $body = $body -replace '\\end\{tcolorbox\}', "`n`n"
+
     $body = Replace-BracedCommand $body '\abstract' { param($a) "`n## Abstract`n`n$a`n" }
     $body = Replace-BracedCommand $body '\footnote' { param($a) " ($($a.Trim()))" }
 
     $body = Protect-LatexMath $body                                            # protect BEFORE text regexes
 
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
-    $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "$h $($_.Groups[1].Value)" }
+    $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
     $body = $body -replace '\\paragraph\*?\s*\{([^{}]*)\}', '**$1** '
     $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![]($1)`n"
     $body = $body -replace '\\caption\{([^{}]*)\}', "`n`n*$1*`n"
@@ -231,6 +271,9 @@ function ConvertFrom-Latex {
     $body = $body -replace '~', ' ' -replace '\\,|\\;|\\:|\\!|\\ ', ' ' -replace '``|''''', '"'
 
     $body = Restore-LatexMath $body
+    # \textsc has no KaTeX equivalent; prose occurrences already became **bold** above, so any survivor is
+    # math-mode small-caps (algorithm pseudocode) — map the control word to \text, preserving its brace group.
+    $body = $body -replace '\\textsc(?=\s*\{)', '\text'
     $body = [regex]::Replace($body, '[ \t]+\r?\n', "`n")
     $body = [regex]::Replace($body, '\n{3,}', "`n`n")
 
