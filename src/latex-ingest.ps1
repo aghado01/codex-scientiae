@@ -51,6 +51,140 @@ function Replace-BracedCommand {
     }
     return $T
 }
+function Convert-BorderMatrix {
+    param([string]$T)   # plain-TeX \bordermatrix (KaTeX-unsupported) -> ruled array; brace-aware (bodies hold \frac{}{})
+    while ($true) {
+        $m = [regex]::Match($T, '\\bordermatrix\s*\{')
+        if (-not $m.Success) { break }
+        $open = $m.Index + $m.Length - 1; $end = Get-BraceGroupEnd $T $open
+        if ($end -lt 0) { break }
+        $inner = $T.Substring($open + 1, $end - $open - 2)
+        $rows = @(($inner -split '\\cr') | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' })
+        if ($rows.Count) {
+            $rows[0] = $rows[0] -replace '^\s*~\s*', ' '                 # top-left corner cell -> empty
+            $spec = 'c|' + ('c' * ([regex]::Matches($rows[0], '&').Count))
+            $data = if ($rows.Count -gt 1) { ($rows[1..($rows.Count - 1)] -join ' \\ ') + ' \\ ' } else { '' }
+            $out = "\begin{array}{$spec} " + $rows[0] + " \\ \hline " + $data + "\end{array}"
+        } else { $out = '' }
+        $T = $T.Substring(0, $m.Index) + $out + $T.Substring($end)
+    }
+    return $T
+}
+
+# --- algorithmic (algpseudocode) -> fenced pseudocode. The \State/\If/\While furniture is not markdown, so
+# render it as a titled ```text``` block with keywords + indentation and the (simple) inline math flattened to
+# unicode. Parallel arrays not a hashtable: PS hash keys are case-insensitive so \delta/\Delta would collide;
+# substituted with -creplace since LaTeX command case is significant. ---------------------------------------
+$script:AlgKeys = @('gets', 'leftarrow', 'to', 'rightarrow', 'Rightarrow', 'mapsto', 'leq', 'le', 'geq', 'ge', 'neq', 'ne', 'times', 'cdot', 'div', 'cdots', 'ldots', 'dots', 'vdots', 'ddots', 'in', 'notin', 'subseteq', 'subset', 'supseteq', 'cup', 'cap', 'emptyset', 'varnothing', 'setminus', 'infty', 'pm', 'approx', 'equiv', 'land', 'wedge', 'lor', 'vee', 'neg', 'lnot', 'forall', 'exists', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'varepsilon', 'lambda', 'mu', 'sigma', 'tau', 'phi', 'omega', 'Delta', 'Sigma', 'Omega', 'Lambda', 'Phi', 'langle', 'rangle', 'lceil', 'rceil', 'lfloor', 'rfloor', 'backslash')
+$script:AlgVals = @('←', '←', '→', '→', '⇒', '↦', '≤', '≤', '≥', '≥', '≠', '≠', '×', '·', '÷', '⋯', '…', '…', '⋮', '⋱', '∈', '∉', '⊆', '⊂', '⊇', '∪', '∩', '∅', '∅', '∖', '∞', '±', '≈', '≡', '∧', '∧', '∨', '∨', '¬', '¬', '∀', '∃', 'α', 'β', 'γ', 'δ', 'ε', 'ε', 'λ', 'μ', 'σ', 'τ', 'φ', 'ω', 'Δ', 'Σ', 'Ω', 'Λ', 'Φ', '⟨', '⟩', '⌈', '⌉', '⌊', '⌋', '∖')
+function Flatten-AlgText {
+    param([string]$s)
+    if (-not $s) { return '' }
+    for ($i = 0; $i -lt 4; $i++) { $s = [regex]::Replace($s, '\\(?:text|textrm|textnormal|mathrm|mathbf|textbf|textit|textsl|textsc|emph|mathcal|mathbb|mathit|mathsf|mathtt|operatorname\*?)\s*\{([^{}]*)\}', '$1') }
+    for ($i = 0; $i -lt $script:AlgKeys.Count; $i++) { $s = $s -creplace ('\\' + $script:AlgKeys[$i] + '(?![a-zA-Z])'), $script:AlgVals[$i] }
+    $s = $s -replace '\\left', '' -replace '\\right', ''
+    $s = $s -replace '\\\{', '{' -replace '\\\}', '}' -replace '\\,|\\;|\\:|\\!', ' ' -replace '\\ ', ' '
+    $s = $s -replace '\$', '' -replace '~', ' '
+    $s = [regex]::Replace($s, ' *([←→⇒↦≤≥≠×·÷∈∉∪∩∖]) *', ' $1 ')
+    $s = [regex]::Replace($s, '[ \t]{2,}', ' ')
+    return $s.Trim()
+}
+function Get-AlgCond {
+    param($Line, $Cmd)
+    $m = [regex]::Match($Line, [regex]::Escape($Cmd) + '\s*\{')
+    if (-not $m.Success) { return (Flatten-AlgText ($Line -replace ('^' + [regex]::Escape($Cmd) + '\s*'), '')) }
+    $a = Get-LatexBracedArg $Line ($m.Index + $m.Length - 1)
+    return (Flatten-AlgText $(if ($null -ne $a) { $a } else { '' }))
+}
+function Get-AlgFn {
+    param($Line, $Cmd)
+    $m = [regex]::Match($Line, [regex]::Escape($Cmd) + '\s*\{'); if (-not $m.Success) { return '' }
+    $o1 = $m.Index + $m.Length - 1; $name = Get-LatexBracedArg $Line $o1; $e1 = Get-BraceGroupEnd $Line $o1
+    $args = ''; if ($e1 -ge 0) { $rest = $Line.Substring($e1); $m2 = [regex]::Match($rest, '^\s*\{'); if ($m2.Success) { $args = Get-LatexBracedArg $rest ($m2.Index + $m2.Length - 1) } }
+    return (Flatten-AlgText $name) + '(' + (Flatten-AlgText $args) + ')'
+}
+function Format-Algorithmic {
+    param([string]$Body)
+    $Body = $Body -replace '\\label\{[^{}]*\}', '' -replace '(?m)^\s*%.*$', ''
+    $cmds = 'Statex|State|Require|Ensure|Return|ElsIf|Else|EndIf|If|EndWhile|While|ForAll|EndFor|For|EndProcedure|Procedure|EndFunction|Function|Repeat|Until|EndLoop|Loop'
+    $Body = [regex]::Replace($Body, "\\($cmds)(?![a-zA-Z])", "`n`$0")
+    $lines = ($Body -split "`n") | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' }
+    $depth = 0; $out = New-Object System.Collections.Generic.List[string]
+    foreach ($raw in $lines) {
+        $ln = $raw; $comment = ''
+        $cm = [regex]::Match($ln, '\\Comment\s*\{')
+        if ($cm.Success) { $o = $cm.Index + $cm.Length - 1; $a = Get-LatexBracedArg $ln $o; $e = Get-BraceGroupEnd $ln $o; if ($null -ne $a -and $e -ge 0) { $comment = Flatten-AlgText $a; $ln = ($ln.Substring(0, $cm.Index) + $ln.Substring($e)).Trim() } }
+        $d = $depth; $next = $depth; $text = $null
+        switch -regex ($ln) {
+            '^\\Statex\b' { $text = Flatten-AlgText ($ln -replace '^\\Statex\s*', ''); break }
+            '^\\State\b' { $text = Flatten-AlgText ($ln -replace '^\\State\s*', ''); break }
+            '^\\Require\b' { $text = 'Require: ' + (Flatten-AlgText ($ln -replace '^\\Require\s*', '')); break }
+            '^\\Ensure\b' { $text = 'Ensure: ' + (Flatten-AlgText ($ln -replace '^\\Ensure\s*', '')); break }
+            '^\\Return\b' { $text = 'return ' + (Flatten-AlgText ($ln -replace '^\\Return\s*', '')); break }
+            '^\\ElsIf\b' { $d = [Math]::Max(0, $depth - 1); $text = 'else if ' + (Get-AlgCond $ln '\ElsIf') + ' then'; break }
+            '^\\Else\b' { $d = [Math]::Max(0, $depth - 1); $text = 'else'; break }
+            '^\\EndIf\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end if'; break }
+            '^\\If\b' { $text = 'if ' + (Get-AlgCond $ln '\If') + ' then'; $next = $depth + 1; break }
+            '^\\EndWhile\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end while'; break }
+            '^\\While\b' { $text = 'while ' + (Get-AlgCond $ln '\While') + ' do'; $next = $depth + 1; break }
+            '^\\ForAll\b' { $text = 'for all ' + (Get-AlgCond $ln '\ForAll') + ' do'; $next = $depth + 1; break }
+            '^\\EndFor\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end for'; break }
+            '^\\For\b' { $text = 'for ' + (Get-AlgCond $ln '\For') + ' do'; $next = $depth + 1; break }
+            '^\\Repeat\b' { $text = 'repeat'; $next = $depth + 1; break }
+            '^\\Until\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'until ' + (Get-AlgCond $ln '\Until'); break }
+            '^\\Loop\b' { $text = 'loop'; $next = $depth + 1; break }
+            '^\\EndLoop\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end loop'; break }
+            '^\\EndFunction\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end function'; break }
+            '^\\Function\b' { $text = 'function ' + (Get-AlgFn $ln '\Function'); $next = $depth + 1; break }
+            '^\\EndProcedure\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end procedure'; break }
+            '^\\Procedure\b' { $text = 'procedure ' + (Get-AlgFn $ln '\Procedure'); $next = $depth + 1; break }
+            default { $text = Flatten-AlgText $ln }
+        }
+        if ($null -eq $text) { $text = '' }
+        $content = $text.Trim()
+        if ($content -eq '' -and $comment -ne '' -and $out.Count -gt 0) {
+            $out[$out.Count - 1] = $out[$out.Count - 1].TrimEnd() + '   ▷ ' + $comment
+        } elseif ($content -ne '' -or $comment -ne '') {
+            if ($comment) { $content = ($content + '   ▷ ' + $comment).Trim() }
+            $out.Add(('    ' * $d) + $content)
+        }
+        $depth = $next
+    }
+    return ($out -join "`n")
+}
+$script:AlgStore = @{}
+$script:AlgStoreIdx = 0
+function Convert-Algorithms {
+    param([string]$T)
+    # stash each rendered algorithm as a placeholder and restore AFTER all text passes — else the smart-quote
+    # rule (`` -> ") shreds the ```` code fences. Mirrors the math store.
+    $script:AlgStore = @{}; $script:AlgStoreIdx = 0; $script:algCounter = 0
+    $T = [regex]::Replace($T, '(?s)\\begin\{algorithm\*?\}(?:\[[^\]]*\])?(.*?)\\end\{algorithm\*?\}', {
+            param($m)
+            $script:algCounter++
+            $inner = $m.Groups[1].Value; $cap = ''
+            $cm = [regex]::Match($inner, '\\caption\s*\{')
+            if ($cm.Success) { $a = Get-LatexBracedArg $inner ($cm.Index + $cm.Length - 1); if ($a) { $cap = (Flatten-AlgText $a) } }
+            $bm = [regex]::Match($inner, '(?s)\\begin\{algorithmic\}(?:\[[^\]]*\])?(.*?)\\end\{algorithmic\}')
+            $code = if ($bm.Success) { Format-Algorithmic $bm.Groups[1].Value } else { '' }
+            $title = if ($cap) { "Algorithm $($script:algCounter): $cap" } else { "Algorithm $($script:algCounter)" }
+            $id = "@@ALG$($script:AlgStoreIdx)@@"; $script:AlgStoreIdx++
+            $script:AlgStore[$id] = '```text' + "`n$title`n`n$code`n" + '```'   # title inside the fence: no heading-level / TOC-indent lint
+            "`n`n$id`n`n"
+        })
+    $T = [regex]::Replace($T, '(?s)\\begin\{algorithmic\}(?:\[[^\]]*\])?(.*?)\\end\{algorithmic\}', {
+            param($m)
+            $id = "@@ALG$($script:AlgStoreIdx)@@"; $script:AlgStoreIdx++
+            $script:AlgStore[$id] = '```text' + "`n" + (Format-Algorithmic $m.Groups[1].Value) + "`n" + '```'
+            "`n`n$id`n`n"
+        })
+    return $T
+}
+function Restore-Algorithms {
+    param([string]$T)
+    foreach ($id in $script:AlgStore.Keys) { $T = $T.Replace($id, $script:AlgStore[$id]) }
+    return $T
+}
 
 # --- macro expansion: the key to faithful math. arXiv papers define many \newcommand macros used INSIDE
 # math; KaTeX cannot render \R, \eps, \norm{} without the definitions. Parse the preamble definitions and
@@ -201,7 +335,7 @@ function ConvertFrom-Latex {
 
     # TikZ pictures are vector-drawing source, not renderable to an image here — replace each with a figure
     # marker (its \caption is emitted separately) so the diagram's place in the flow survives, not raw \draw code.
-    $body = [regex]::Replace($body, '(?s)\\begin\{tikzpicture\}.*?\\end\{tikzpicture\}', "`n`n*[diagram]*`n`n")
+    $body = [regex]::Replace($body, '(?s)\\begin\{(tikzpicture|tikzcd)\}.*?\\end\{\1\}', "`n`n*[diagram]*`n`n")
 
     # figure-grid tabulars (cells are \includegraphics) are not renderable tables, and their inline-$ caption
     # cells can swallow the whole grid into a spurious math span — collapse them to a figure marker up front.
@@ -216,11 +350,14 @@ function ConvertFrom-Latex {
 
     # KaTeX ships \xrightarrow / \xleftarrow but not the amsmath \xlong… variants
     $body = $body -replace '\\xlong(right|left)arrow', '\x$1arrow'
+    $body = Convert-BorderMatrix $body                                         # \bordermatrix -> ruled array
 
     $body = Expand-LatexMacros $body $macros                                   # macros (incl inside math)
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl
     $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
+
+    $body = Convert-Algorithms $body                                          # algpseudocode -> fenced pseudocode
 
     # theorem family (shared counter) + proof, numbered to match the rendered paper
     $script:thmCounter = 0
@@ -255,15 +392,19 @@ function ConvertFrom-Latex {
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
     $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
     $body = $body -replace '\\paragraph\*?\s*\{([^{}]*)\}', '**$1** '
-    $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![]($1)`n"
-    $body = $body -replace '\\caption\{([^{}]*)\}', "`n`n*$1*`n"
+    $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"   # escape `$1: double-quoted, PS would else interpolate it away
+    $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m) $c = $m.Groups[1].Value.Trim(); if ($c) { "`n`n*$c*`n" } else { '' } })   # trim: no space inside emphasis (MD037)
     $body = $body -replace '\\(?:begin|end)\{(?:figure|table|center|wrapfigure)\*?\}(?:\[[^\]]*\])?', ''
-    $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\}', "`n" -replace '\\end\{(?:itemize|enumerate|description)\}', "`n"
+    $body = $body -replace '\\begin\{subfigure\}(?:\[[^\]]*\])?(?:\{[^}]*\})?', '' -replace '\\end\{subfigure\}', ''   # keep panel content, drop wrapper
+    $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\}', "`n`n"   # blank lines around lists (MD032)
     $body = $body -replace '\\item\s*', "`n- "
     $body = $body -replace '\\(?:textbf|textsc)\{([^{}]*)\}', '**$1**'
     $body = $body -replace '\\(?:emph|textit|textsl)\{([^{}]*)\}', '*$1*'
     $body = $body -replace '\\texttt\{([^{}]*)\}', '`$1`'
     $body = $body -replace '\\(?:textrm|textnormal|mbox|text|underline)\{([^{}]*)\}', '$1'
+    $body = $body -replace '\\(?:textcolor|colorbox)\{[^{}]*\}\{([^{}]*)\}', '$1' -replace '\\color\{[^{}]*\}', ''   # drop colour styling, keep text
+    $body = $body -replace '\\hyperlink\{(https?://[^{}]*)\}\{[^{}]*\}', '<$1>' -replace '\\(?:hyperlink|hypertarget)\{[^{}]*\}\{([^{}]*)\}', '$1'
+    $body = $body -replace '\\href\{([^{}]*)\}\{([^{}]*)\}', '[$2]($1)' -replace '\\url\{([^{}]*)\}', '<$1>'   # links, angle-bracketed (MD034)
     $body = $body -replace '\\bibliographystyle\s*\{[^{}]*\}', '' -replace '\\bibliography\s*\{[^{}]*\}', ''
     $body = $body -replace '\\(?:maketitle|tableofcontents|newpage|clearpage|noindent|centering|bigskip|medskip|smallskip|vfill|hfill|par)\b', ''
     $body = $body -replace '\\(?:vspace|hspace)\*?\{[^{}]*\}', ''
@@ -274,8 +415,11 @@ function ConvertFrom-Latex {
     # \textsc has no KaTeX equivalent; prose occurrences already became **bold** above, so any survivor is
     # math-mode small-caps (algorithm pseudocode) — map the control word to \text, preserving its brace group.
     $body = $body -replace '\\textsc(?=\s*\{)', '\text'
+    $body = $body -replace '\t', ' '                                          # hard tabs -> space (MD010)
     $body = [regex]::Replace($body, '[ \t]+\r?\n', "`n")
+    $body = [regex]::Replace($body, '(?m)^[ \t]+', '')                        # dedent: source indentation is meaningless in md and reads as spurious indented-code blocks
     $body = [regex]::Replace($body, '\n{3,}', "`n`n")
+    $body = Restore-Algorithms $body                                          # swap fenced pseudocode back in (keeps its own indentation)
 
     $h1 = if ($title) { '# ' + (Convert-LatexInline $title) } else { '# (untitled)' }
     return ($h1 + "`n`n" + $body.Trim() + "`n")
