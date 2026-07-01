@@ -112,6 +112,34 @@ function Get-ArxivPayloadKind {
     return 'unknown'
 }
 
+# Prove a gzip payload is complete: inflate it AND check the inflated byte count against the gzip ISIZE
+# trailer (last 4 bytes = uncompressed size mod 2^32). This catches the "incomplete response body" failure
+# the upstream arxiv-mcp-server documented for larger e-prints — a magic-byte check only sees the first two
+# bytes, and .NET's GZipStream does NOT reliably throw on a truncated deflate stream (it can stop silently),
+# so the count-vs-ISIZE comparison is what makes truncation detectable. Used as the completeness guard when
+# the server withheld a Content-Length to size-check against.
+function Test-ArxivGzipIntact {
+    param([string]$Path)
+    try {
+        $len = (Get-Item -LiteralPath $Path).Length
+        if ($len -lt 18) { return $false }   # gzip header(10) + at least a byte + trailer(8)
+        $fs = [System.IO.File]::OpenRead($Path)
+        try {
+            $trailer = [byte[]]::new(4)
+            [void]$fs.Seek(-4, [System.IO.SeekOrigin]::End)
+            [void]$fs.Read($trailer, 0, 4)
+            $isize = [System.BitConverter]::ToUInt32($trailer, 0)
+            [void]$fs.Seek(0, [System.IO.SeekOrigin]::Begin)
+            $gz = [System.IO.Compression.GZipStream]::new($fs, [System.IO.Compression.CompressionMode]::Decompress)
+            try {
+                $buf = [byte[]]::new(131072); [uint64]$count = 0
+                while (($n = $gz.Read($buf, 0, $buf.Length)) -gt 0) { $count += $n }
+            } finally { $gz.Dispose() }
+            return (($count -band 0xFFFFFFFF) -eq $isize)   # inflated size must match the declared ISIZE
+        } finally { $fs.Dispose() }
+    } catch { return $false }   # inflate threw (mid-block truncation) => not intact
+}
+
 function Get-ArxivConfig {
     param([string]$Path)
     if (-not $Path -or -not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $script:ArxivDefaultConfig }
@@ -227,7 +255,7 @@ function Get-ArxivTransience {
         if ($Code -eq 500 -or $Code -eq 502 -or $Code -eq 504) { return [pscustomobject]@{ Transient = $true; Code = $Code; Message = "arXiv server error (HTTP $Code): $Message" } }
         return [pscustomobject]@{ Transient = $false; Code = $Code; Message = "arXiv request failed (HTTP $Code): $Message" }
     }
-    if ($Message -match 'No such host is known|name or service not known|actively refused|connection.*(reset|closed|refused|aborted|forcibly)|reset by peer|timed out|timeout|unreachable|temporar') {
+    if ($Message -match 'No such host is known|name or service not known|actively refused|connection.*(reset|closed|refused|aborted|forcibly)|reset by peer|timed out|timeout|unreachable|temporar|truncat|incomplete') {
         return [pscustomobject]@{ Transient = $true; Code = 0; Message = "arXiv network error: $Message" }
     }
     return [pscustomobject]@{ Transient = $false; Code = 0; Message = "arXiv request failed: $Message" }
@@ -464,10 +492,23 @@ function Invoke-ArxivFetch {
             try {
                 # OperationTimeoutSeconds is the key setting: a dead/stalled transfer now aborts in ~30s
                 # (per-read idle) and retries, instead of parking on the full 120s budget. HTTP/1.1 removes
-                # HTTP/2 as an intermittent-stall variable for these plain CDN file pulls.
-                Invoke-WebRequest -Uri $url -OutFile $tmp -Headers $headers `
+                # HTTP/2 as an intermittent-stall variable for these plain CDN file pulls. -PassThru hands
+                # back the response so we can verify the body isn't truncated.
+                $resp = Invoke-WebRequest -Uri $url -OutFile $tmp -Headers $headers -PassThru `
                     -ConnectionTimeoutSeconds 120 -OperationTimeoutSeconds 30 -HttpVersion 1.1 `
                     -MaximumRedirection 5 -ErrorAction Stop
+                # Truncation guard (arxiv-mcp-server saw "incomplete response bodies" on larger e-prints): a
+                # stalled/cut connection can leave a short file that still passes the magic-byte kind check.
+                # If the server gave a Content-Length, a size match is conclusive (TLS guarantees the bytes);
+                # when it's absent (chunked), prove a source tarball inflates end-to-end. A miss throws, which
+                # Get-ArxivTransience now classes transient, so it retries like any other transport blip.
+                $clen = if ($resp -and $resp.Headers.ContainsKey('Content-Length')) { [int64]($resp.Headers['Content-Length'] | Select-Object -First 1) } else { $null }
+                $got  = (Get-Item -LiteralPath $tmp).Length
+                if ($null -ne $clen) {
+                    if ($got -ne $clen) { throw "truncated download: got $got of $clen bytes" }
+                } elseif ($a -eq 'source' -and (Get-ArxivPayloadKind -Head (Get-FileHeadBytes -Path $tmp -Count 2)) -eq 'gzip' -and -not (Test-ArxivGzipIntact -Path $tmp)) {
+                    throw 'truncated download: source gzip is incomplete (failed to inflate)'
+                }
                 $downloaded = $true; break
             } catch {
                 $ep  = Get-ArxivErrorParts $_

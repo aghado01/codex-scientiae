@@ -139,6 +139,10 @@ Describe 'Get-ArxivTransience (retry policy)' {
         (Get-ArxivTransience -Code 502 -Message 'x').Transient | Should -BeTrue
         (Get-ArxivTransience -Code 504 -Message 'x').Transient | Should -BeTrue
     }
+    It 'retries a truncated / incomplete download (worth another try)' {
+        (Get-ArxivTransience -Code 0 -Message 'truncated download: got 1048576 of 5242880 bytes').Transient | Should -BeTrue
+        (Get-ArxivTransience -Code 0 -Message 'source gzip is incomplete (failed to inflate)').Transient   | Should -BeTrue
+    }
     It 'fast-fails rate limiting (429/503) so it does not deepen a ban' {
         (Get-ArxivTransience -Code 429 -Message 'x').Transient | Should -BeFalse
         $r = Get-ArxivTransience -Code 503 -Message 'x'
@@ -160,6 +164,24 @@ Describe 'Get-ArxivPayloadKind' {
         Get-ArxivPayloadKind -Head ([byte[]](0x1F,0x8B,0x08,0x00))                  | Should -Be 'gzip'   # gzip
         Get-ArxivPayloadKind -Head ([byte[]][Text.Encoding]::ASCII.GetBytes('<!DOCTYPE html>')) | Should -Be 'html'
         Get-ArxivPayloadKind -Head ([byte[]](0x00,0x01,0x02,0x03))                  | Should -Be 'unknown'
+    }
+}
+
+Describe 'Test-ArxivGzipIntact (truncation guard)' {
+    It 'accepts a complete gzip and rejects a truncated one' {
+        $raw = [byte[]]((0..255) * 8)
+        $ms  = [System.IO.MemoryStream]::new()
+        $gz  = [System.IO.Compression.GZipStream]::new($ms, [System.IO.Compression.CompressionMode]::Compress)
+        $gz.Write($raw, 0, $raw.Length); $gz.Dispose()
+        $good = $ms.ToArray()
+
+        $goodPath = Join-Path $TestDrive 'good.gz'
+        [System.IO.File]::WriteAllBytes($goodPath, $good)
+        Test-ArxivGzipIntact -Path $goodPath | Should -BeTrue
+
+        $badPath = Join-Path $TestDrive 'bad.gz'
+        [System.IO.File]::WriteAllBytes($badPath, $good[0..([int]($good.Length / 2))])
+        Test-ArxivGzipIntact -Path $badPath | Should -BeFalse
     }
 }
 
