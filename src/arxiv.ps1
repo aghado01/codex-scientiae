@@ -272,11 +272,13 @@ function Invoke-ArxivApi {
     for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
         Wait-ArxivRateLimit
         try {
-            # ConnectionTimeoutSeconds = total request budget; OperationTimeoutSeconds = per-read (idle)
-            # timeout so a stalled socket fails fast instead of hanging the whole budget. HTTP/1.1 avoids
-            # intermittent HTTP/2 stalls on the CDN. (This is the flakier endpoint — Atom hits arXiv's origin.)
+            # ConnectionTimeoutSeconds = total budget; OperationTimeoutSeconds = per-read (idle) timeout so a
+            # stalled socket fails fast. HTTP/2 (falls back to 1.1) is what browsers use and is far more
+            # resilient to a lossy link than a pinned 1.1 over TCP (no head-of-line block on a lost packet).
+            # Fastly also serves HTTP/3, which IWR can't negotiate — that needs the SocketsHttpHandler engine
+            # (see issues/arxiv-async/sockets-httphandler-fetch-engine.md).
             return [string](Invoke-WebRequest -Uri $url -Headers $headers `
-                -ConnectionTimeoutSeconds 30 -OperationTimeoutSeconds 15 -HttpVersion 1.1 `
+                -ConnectionTimeoutSeconds 30 -OperationTimeoutSeconds 15 -HttpVersion 2.0 `
                 -MaximumRedirection 3 -ErrorAction Stop).Content
         } catch {
             $ep  = Get-ArxivErrorParts $_
@@ -490,12 +492,14 @@ function Invoke-ArxivFetch {
         for ($attempt = 1; $attempt -le 3; $attempt++) {
             Wait-ArxivRateLimit
             try {
-                # OperationTimeoutSeconds is the key setting: a dead/stalled transfer now aborts in ~30s
-                # (per-read idle) and retries, instead of parking on the full 120s budget. HTTP/1.1 removes
-                # HTTP/2 as an intermittent-stall variable for these plain CDN file pulls. -PassThru hands
-                # back the response so we can verify the body isn't truncated.
+                # OperationTimeoutSeconds is the key setting: a dead/stalled transfer aborts in ~30s (per-read
+                # idle) and retries instead of parking on the full budget. HTTP/2 (falls back to 1.1) is what
+                # browsers use and is far more resilient to a lossy link than a pinned 1.1 over TCP — a lost
+                # packet head-of-line-blocks a 1.1 stream but not h2/h3. (Fastly also serves HTTP/3, which IWR
+                # can't negotiate; the SocketsHttpHandler engine can — see the brief.) -PassThru lets us verify
+                # the body isn't truncated.
                 $resp = Invoke-WebRequest -Uri $url -OutFile $tmp -Headers $headers -PassThru `
-                    -ConnectionTimeoutSeconds 120 -OperationTimeoutSeconds 30 -HttpVersion 1.1 `
+                    -ConnectionTimeoutSeconds 120 -OperationTimeoutSeconds 30 -HttpVersion 2.0 `
                     -MaximumRedirection 5 -ErrorAction Stop
                 # Truncation guard (arxiv-mcp-server saw "incomplete response bodies" on larger e-prints): a
                 # stalled/cut connection can leave a short file that still passes the magic-byte kind check.

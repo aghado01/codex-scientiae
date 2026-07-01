@@ -15,10 +15,20 @@ The reference implementation (`packages/arxiv-mcp-server`) fetches with **httpx 
 `-OperationTimeoutSeconds`, so mechanism-wise IWR is already at parity. Going lower-level buys **robustness
 knobs IWR doesn't expose**, not correctness.
 
+**Headline driver (added 2026-07-01): HTTP/3.** Probing showed Fastly serves arXiv over **HTTP/3 (QUIC)** on
+both `/pdf` and `/e-print` (requesting 3.0 negotiated 3.0). Browsers use HTTP/2–3; a user reports manual
+browser downloads that "never time out." The old code pinned **HTTP/1.1** — the least loss-resilient option
+(a lost packet head-of-line-blocks the whole TCP stream). We flipped the IWR pin to **HTTP/2** as an interim
+fix (v0.4.0 follow-up), but **IWR caps at h2** — requesting 3.0 falls back to 2.0. **HTTP/3 is only reachable
+via this SocketsHttpHandler engine** (`RequestVersionOrHigher` negotiated h3 in the probe). That makes h3 —
+not just resume — the primary reliability reason to build this, and it likely explains most of the
+browser-never-stalls gap.
+
 ## What a shared HttpClient/SocketsHttpHandler unlocks
 
 | capability | via Invoke-WebRequest | via SocketsHttpHandler |
 |---|---|---|
+| **HTTP/3 (QUIC)** — no TCP head-of-line block on a lost packet; the big loss-resilience win | **no** — IWR caps at HTTP/2 | **yes** — `RequestVersionOrHigher` negotiates h3 (Fastly serves it) |
 | connect vs read (idle) timeout split | yes (`-ConnectionTimeoutSeconds`/`-OperationTimeoutSeconds`) | yes (`ConnectTimeout` + per-read `CancellationToken`) |
 | Content-Length verify | manual post-hoc (`-PassThru`, done in v0.4.0) | inline while streaming |
 | **connection reuse** across the long-lived server | no — IWR builds a fresh handler per call | **yes** — `PooledConnectionIdleTimeout`, kept-alive sockets |
