@@ -167,6 +167,21 @@ Describe 'Get-ArxivPayloadKind' {
     }
 }
 
+Describe 'artifact route lists (direct-URL escalation)' {
+    BeforeAll { $script:m = [pscustomobject]@{ idv = '2204.11080v2'; pdf_url = 'https://arxiv.org/pdf/2204.11080v2' } }
+    It 'source escalates export e-print -> direct arxiv.org/src' {
+        $urls = @(& $script:ArxivArtifacts['source'].Build $script:m)
+        $urls.Count | Should -Be 2
+        $urls[0]    | Should -Be 'https://export.arxiv.org/e-print/2204.11080v2'   # primary: documented, polite
+        $urls[1]    | Should -Be 'https://arxiv.org/src/2204.11080v2'              # fallback: direct CDN, no redirect
+    }
+    It 'pdf is a single route (the API pdf_url, already the direct CDN URL)' {
+        $urls = @(& $script:ArxivArtifacts['pdf'].Build $script:m)
+        $urls.Count | Should -Be 1
+        $urls[0]    | Should -Be 'https://arxiv.org/pdf/2204.11080v2'
+    }
+}
+
 Describe 'Test-ArxivGzipIntact (truncation guard)' {
     It 'accepts a complete gzip and rejects a truncated one' {
         $raw = [byte[]]((0..255) * 8)

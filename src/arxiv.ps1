@@ -86,10 +86,17 @@ $script:ArxivDefaultConfig = [pscustomobject]@{
 # (arxiv.org/pdf, export.arxiv.org/e-print, arxiv.org/html), so it lives in code; only the on-disk PATH
 # is fluid and lives in config.layout. 'Expect' is the payload kind a healthy fetch should yield — used
 # to reject error pages and (for source) to tell a real LaTeX package from a PDF-only submission.
+#
+# Build returns an ORDERED ROUTE LIST (primary first, optional fallbacks). The fetch loop escalates to the
+# next route on a transient failure, so a stall on one host/path gets a genuinely different shot rather than
+# just re-hitting the same URL. 'source' primary is arXiv's documented, polite export e-print endpoint (which
+# 301-redirects to /src); the fallback is the direct CDN /src URL a browser uses — no redirect, different
+# host, hot edge cache — the route to try when the export origin throttles or stalls.
 $script:ArxivArtifacts = [ordered]@{
-    pdf    = @{ Build = { param($m) [string]$m.pdf_url };                           Expect = 'pdf'  }
-    source = @{ Build = { param($m) "https://export.arxiv.org/e-print/$($m.idv)" }; Expect = 'gzip' }
-    html   = @{ Build = { param($m) "https://arxiv.org/html/$($m.idv)" };           Expect = 'html' }
+    pdf    = @{ Build = { param($m) @([string]$m.pdf_url) };                Expect = 'pdf'  }
+    source = @{ Build = { param($m) @("https://export.arxiv.org/e-print/$($m.idv)",
+                                      "https://arxiv.org/src/$($m.idv)") }; Expect = 'gzip' }
+    html   = @{ Build = { param($m) @("https://arxiv.org/html/$($m.idv)") }; Expect = 'html' }
 }
 
 # Read up to N leading bytes without slurping a (possibly multi-MB) artifact into memory.
@@ -485,11 +492,15 @@ function Invoke-ArxivFetch {
             $results[$a] = @{ staged = $true; already_present = $true; path = (Get-RepoRelative $dest $RepoRoot); bytes = (Get-Item -LiteralPath $dest).Length }
             continue
         }
-        $url = & ($script:ArxivArtifacts[$a].Build) $meta
+        $urls   = @(& ($script:ArxivArtifacts[$a].Build) $meta)   # primary first, then fallback route(s)
         $expect = $script:ArxivArtifacts[$a].Expect
         $tmp = "$dest.part"
         $downloaded = $false
         for ($attempt = 1; $attempt -le 3; $attempt++) {
+            # Escalate to the next route each retry (a transient stall on the primary then tries a different
+            # host/path — for source, export.arxiv.org/e-print -> arxiv.org/src: no redirect, CDN, hot cache),
+            # sticking on the last route once routes are exhausted.
+            $url = $urls[[Math]::Min($attempt - 1, $urls.Count - 1)]
             Wait-ArxivRateLimit
             try {
                 # OperationTimeoutSeconds is the key setting: a dead/stalled transfer aborts in ~30s (per-read
