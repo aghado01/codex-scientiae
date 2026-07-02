@@ -76,6 +76,14 @@ function Invoke-HeadingRecovery {
     $promoted = 0
     foreach ($n in $nodes) {
         if ($n.type -ne 'paragraph') { continue }
+        # No real font => this node came from the Docling backend unenriched: opendataloader's
+        # DoclingSchemaTransformer stamps a hardcoded font=null / size=12.0 PLACEHOLDER on every
+        # element the geometric enrichment couldn't bbox-match to a PDFBox TextChunk (see
+        # HybridDocumentProcessor.enrichSingleTextNode). That 12.0 is not a measured size, so the
+        # contrast test below misfires: 12.0 >= (real ~10pt body) * 1.15 fires $bigger on EVERY short
+        # unenriched element (2066 phantom headings corpus-wide). Typography is the ground truth here;
+        # a node with no font carries none, so defer to the converter's own paragraph classification.
+        if (-not $n.font) { continue }
         $content = [string]$n.content
         # "short heading" = glyph count, not UTF-16 code units: a math-bearing heading (SMP glyphs =
         # 2 units each) would otherwise be wrongly rejected by the $MaxLen gate. Count text elements.

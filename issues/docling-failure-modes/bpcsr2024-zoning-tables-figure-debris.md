@@ -1,6 +1,7 @@
 # Docling failure-mode characterization: zoning collapse, table shattering, figure-text bleed
 
-**Status:** findings only — no fix landed; discussing the right level of intervention
+**Status:** GROUNDED (2026-07-01) — source-vs-IR comparison + corpus survey done; root cause identified, priorities re-sized.
+See the **Grounding pass** section at the bottom for the mechanism, the survey numbers, and resolutions of the open questions. The original characterization below stands, with two corrections it makes: the converter is opendataloader-pdf (not raw Docling), and the brief's proposed zoning fix (Docling's `level`) is refuted by the data.
 **Origin:** hand-finalizing `ingestion/compendia/fresh/BPCSR2024` (2026-07-01) — see memory `bp-csr-graphs-primitive`
 **Engine:** `src/zones.ps1`, `src/finalize.ps1`, `src/normalize.ps1` (membrane); upstream: Docling's PDF→JSON conversion
 **Related:** `no-magic-string-structural-heuristics` (memory — the principle this brief is testing itself against),
@@ -182,3 +183,112 @@ serializer" or a genuinely bigger investment.
 - Scope of the survey: worth running before any fix lands, to size how many papers each failure mode actually
   touches — do we want that as a `corpus-audit.ps1` extension (it already does drift-detection sweeps per
   `corpus-convention-parity` memory) or a standalone one-off script?
+
+---
+
+# Grounding pass — source-vs-IR comparison + corpus survey (2026-07-01)
+
+Follow-up dig: verified every code claim above, then compared the **raw converter output** — `BPCSR2024.json`
+(the node model the membrane ingests) and its sibling `BPCSR2024.md` (the converter's *own* markdown export,
+untouched by the membrane) — against the membrane IR (`.scratch/BPCSR2024.chunks.jsonl`), and ran the corpus
+survey across all 43 preprocessed docs. Headline: the four failures are **not four problems** — they share one
+root, and two of them are the membrane *destroying* structure the converter already got right.
+
+## Attribution correction
+
+The converter feeding this is **opendataloader-pdf** (memory `opendataloader-pdf-recon`), not raw Docling. Its
+JSON is a recursive `kids` tree — every node carries
+`type, pdfua_tag, id, level, page number, bounding box, heading level, font, font size, text color, content` —
+not the `DoclingDocument` `texts/tables/body` schema. opendataloader wraps Docling for pieces (e.g. SemanticFormula),
+and the ghost layer below is a tagged-PDF artifact it surfaces. Filename kept for continuity; the fixes land in the
+membrane and at the opendataloader boundary, and `pdfdig` (roadmap) is the eventual replacement for both.
+
+## The shared root cause: a metadata-less ActualText layer + a membrane promoter that feeds on it
+
+The source PDF carries **two parallel text layers**; opendataloader emits both without reconciling them:
+
+- **content-stream layer** (the real, rendered glyphs): `font: NimbusRomNo9L-*`, real `font size`, `text color: "[0.0]"`.
+- **ActualText / accessibility layer** (logical text, no rendering metadata): **`font: null`, `font size: 12.0`,
+  `text color: null`** — a clean 3-field signature. (`pdfua_tag` is uselessly uniform — `"P"` on all 393 paragraphs —
+  so it is *not* the discriminator; the metadata-absence triple is.)
+
+In BPCSR2024's 393 source paragraphs: **294 real, 99 ghost.** The two layers are **complementary, not duplicate** —
+e.g. in the references the content-stream layer keeps the `[1]…[2]` numbers but runs entries together, while the ghost
+layer splits each entry onto its own line but drops the number. This is why Failure 5's references are incoherent: the
+membrane kept some entries from each layer. **Consequence: the ghost layer is NOT safe to blanket-drop** — for references
+it is the only per-entry-separated copy.
+
+## What the source got right that the IR breaks (the decisive table)
+
+| Signal | Source JSON (`kids`) | Source markdown (`BPCSR2024.md`) | Membrane IR (`chunks.jsonl`) |
+|---|---|---|---|
+| Headings | **22** (`type: heading`) | **22** (`#` lines) | **45** — 22 native + **23 phantom** |
+| Table I taxonomy | 1 `table` node | proper **`\|Category\|Problem\|`** pipe table | **shattered**; "Category"/"Problem"/… promoted to *headings* |
+| Tables total | 5 `table` nodes | 45 pipe-table lines | 235 `table cell` + 40 `table row`, **no serializer** |
+| Node census | 429 = 393 para + 22 heading + 6 image + 5 table + 3 list | 927 lines, 8 `[Page N]` markers | 679 chunks |
+
+- The **23 phantom headings are 100% membrane-manufactured** (`heading_source: geometric`); every one sits on the ghost
+  layer (`font=null`). The source and its own markdown contain no such headings — Docling's `level` field is *also*
+  scrambled (6 `Doctitle`, "II. Preliminaries"=Doctitle but "I. Introduction"=Subtitle), so **the brief's "Nth Doctitle
+  opens the body" fix would skip the Introduction.** `level` is not usable; `heading_source`/`font`-presence is.
+- The **table shatter is 100% a membrane intake defect** — opendataloader's own markdown proves the 5 table nodes
+  serialize to clean pipe tables. The membrane flattens them to cells and has no `table` case in `Format-Chunk`.
+- Only the **ghost/dual-layer itself is a genuine source defect** — present in the JSON *and* opendataloader's markdown
+  (neither dedups the references). Table integrity, by contrast, opendataloader's markdown preserves and the membrane loses.
+
+**Net: opendataloader's markdown export is strictly better than the membrane's JSON intake for tables and heading counts.**
+The membrane uses the JSON (not the md) because it needs `font`/`bbox`/`size` for math/script repair — but in gaining
+geometry it dropped the converter's table serialization and re-introduced the phantom-heading problem via its own promoter.
+
+## Corpus survey — sizing each failure mode across 43 preprocessed docs
+
+| Failure mode | fingerprint | docs hit | corpus volume |
+|---|---|---|---|
+| **F3 — table shatter** | `type:table cell` present | **27 / 43** | **8,076 cells** |
+| **F5 — ghost ActualText layer** | `font=null ∧ size=12 ∧ color=null` | **41 / 43** | **5,021 chunks** |
+| **F1-noise — geometric over-promotion** | `heading_source:geometric` | **36 / 43** | **2,184 headings** — 2,066 (94.6%) on ghost, 118 on named-font (25 docs) |
+| **F1-acute — Roman-numeral zoning collapse** | body-zone == 0 chunks | **3 / 43** | BPCSR2024, 2508.11646v1, 2310.08970v2 (all 3 = the only Roman-numeral docs) |
+
+This **re-orders the brief's own priorities**: the Roman-numeral collapse it opens with is the *narrowest* mode (3 docs);
+the ghost layer it files last as "open, characterize later" is the *most systemic* (41 docs) and is the shared root; and
+the table serializer is the biggest content-recovery win (8k cells / 27 docs). (Secondary signal for later: a few large
+docs — 2408.06958v3 @ 4% body, 1606.04970v3 @ 3% — aren't fully stuck but have suspiciously low body-zone %, hinting at a
+milder non-Roman zoning failure not chased here.)
+
+## Resolutions of the open questions
+
+1. **Zoning — structure vs. widen-regex?** Neither as framed. Docling's `level` is scrambled (refuted above). The
+   structural replacement should key on **font-size tiering among named-font, source-native headings** (per-paper
+   relative: title = unique max; sections/subsections cluster below), which only becomes clean *after* the geometric
+   promoter is gated. Until then, the stopgap regex is fine but needs **three** fixes, not one: Roman numerals, the
+   injected drop-cap space (`I. I NTRODUCTION` — confirmed an opendataloader artifact, present in its own markdown), and
+   `R EFERENCES`. Cheap, unblocks exactly the 3 acute docs.
+2. **Failure 2 (dup regex) → finalize reads the zone?** Yes, unconditionally correct — single source of truth regardless
+   of what replaces the detector.
+3. **Failure 3 (table serializer) build now?** Yes — highest ROI, lowest risk, and we now have opendataloader's own
+   markdown pipe tables as a **reference oracle** for the expected output. One coupling: the geometric promoter *steals
+   table header cells* into phantom headings, so gate the promoter first (or in the same change) or the serializer emits
+   headerless tables.
+4. **Failure 4 (bbox containment reliable?)** Data-wise yes — bbox present on 639/679 chunks (94%). Note font-provenance
+   and geometry do *different* jobs: the `font=null` triple identifies the ghost layer; **bbox-in-image** tells you which
+   ghost chunks are figure-debris vs. real (numberless) references — both are `font=null`, so font alone over-drops.
+5. **Failure 5 root-cause / systemic?** Answered: systemic (41/43), and it is the tagged-PDF ActualText layer, metadata-less
+   (`font=null ∧ size=12 ∧ color=null`). It manifests as per-entry source inconsistency, not wholesale duplication, and the
+   two layers are complementary — so the reconciliation is a *merge* (prefer content-stream numbering + ghost-layer entry
+   splitting), not a drop.
+
+## The single highest-leverage fix, and the data-supported priority order
+
+**Gate geometric heading-promotion on the ghost signature** — never promote a `font=null` (ActualText) node to `heading`.
+This removes 2,066 phantom headings corpus-wide (94.6% of all geometric promotions), preserves the 118 named-font
+promotions that might be legitimate, and is a *principled typographic* gate ("a heading is set in a real font"), exactly
+what `no-magic-string-structural-heuristics` and the `ingestion-heading-overpromotion` thread call for.
+
+Priority by ROI/risk (data-supported, differs from the brief's ordering):
+1. **Gate the geometric promoter on `font!=null`** — systemic root, low risk, also un-steals F3's table headers and removes the figure-debris-as-headings slice of F4.
+2. **Table serializer (F3)** — biggest content recovery (8,076 cells / 27 docs); validate output against opendataloader's own markdown pipe tables.
+3. **finalize-reads-zone (F2)** — trivial correctness/dedup, do regardless.
+4. **Roman-numeral zoning stopgap (F1-acute)** — 3 docs; font-tier structural replacement later.
+5. **bbox-containment for residual figure-prose (F4)** and **reference two-layer merge (F5)** — lower volume, need geometry + merge logic.
+
+*Survey per-doc numbers saved to `%TEMP%/bpcsr_survey.json` at time of writing (disposable).*
