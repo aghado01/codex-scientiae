@@ -123,11 +123,19 @@ function Get-AlgFn {
     return (Flatten-AlgText $name) + '(' + (Flatten-AlgText $args) + ')'
 }
 function Format-Algorithmic {
-    param([string]$Body)
+    param([string]$Body, [bool]$Ordered = $false)
+    # Emission is a NESTED MARKDOWN LIST, not a code fence: algorithmic renders in the PDF as numbered,
+    # indented lines with bold keywords and live math — never monospace — so a fence would misstate the
+    # source presentation AND kill math rendering. $Ordered mirrors the source's own choice: \begin{algorithmic}[1]
+    # asks for line numbers (ordered list), bare algorithmic renders unnumbered (bullets). Math rides
+    # through as @@LMATHn@@ placeholders (protection precedes this) and is restored $-delimited, so
+    # subscripts/wrappers render exactly as in body prose — one expression, one token stream.
     $Body = $Body -replace '\\label\{[^{}]*\}', '' -replace '(?m)^\s*%.*$', ''
     $cmds = 'Statex|State|Require|Ensure|Return|ElsIf|Else|EndIf|If|EndWhile|While|ForAll|EndFor|For|EndProcedure|Procedure|EndFunction|Function|Repeat|Until|EndLoop|Loop'
     $Body = [regex]::Replace($Body, "\\($cmds)(?![a-zA-Z])", "`n`$0")
     $lines = ($Body -split "`n") | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' }
+    $indent = if ($Ordered) { '   ' } else { '  ' }   # child must reach the parent marker's content column (3 for '1. ', 2 for '- ')
+    $marker = if ($Ordered) { '1. ' } else { '- ' }
     $depth = 0; $out = New-Object System.Collections.Generic.List[string]
     foreach ($raw in $lines) {
         $ln = $raw; $comment = ''
@@ -137,35 +145,35 @@ function Format-Algorithmic {
         switch -regex ($ln) {
             '^\\Statex\b' { $text = Flatten-AlgText ($ln -replace '^\\Statex\s*', ''); break }
             '^\\State\b' { $text = Flatten-AlgText ($ln -replace '^\\State\s*', ''); break }
-            '^\\Require\b' { $text = 'Require: ' + (Flatten-AlgText ($ln -replace '^\\Require\s*', '')); break }
-            '^\\Ensure\b' { $text = 'Ensure: ' + (Flatten-AlgText ($ln -replace '^\\Ensure\s*', '')); break }
-            '^\\Return\b' { $text = 'return ' + (Flatten-AlgText ($ln -replace '^\\Return\s*', '')); break }
-            '^\\ElsIf\b' { $d = [Math]::Max(0, $depth - 1); $text = 'else if ' + (Get-AlgCond $ln '\ElsIf') + ' then'; break }
-            '^\\Else\b' { $d = [Math]::Max(0, $depth - 1); $text = 'else'; break }
-            '^\\EndIf\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end if'; break }
-            '^\\If\b' { $text = 'if ' + (Get-AlgCond $ln '\If') + ' then'; $next = $depth + 1; break }
-            '^\\EndWhile\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end while'; break }
-            '^\\While\b' { $text = 'while ' + (Get-AlgCond $ln '\While') + ' do'; $next = $depth + 1; break }
-            '^\\ForAll\b' { $text = 'for all ' + (Get-AlgCond $ln '\ForAll') + ' do'; $next = $depth + 1; break }
-            '^\\EndFor\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end for'; break }
-            '^\\For\b' { $text = 'for ' + (Get-AlgCond $ln '\For') + ' do'; $next = $depth + 1; break }
-            '^\\Repeat\b' { $text = 'repeat'; $next = $depth + 1; break }
-            '^\\Until\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'until ' + (Get-AlgCond $ln '\Until'); break }
-            '^\\Loop\b' { $text = 'loop'; $next = $depth + 1; break }
-            '^\\EndLoop\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end loop'; break }
-            '^\\EndFunction\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end function'; break }
-            '^\\Function\b' { $text = 'function ' + (Get-AlgFn $ln '\Function'); $next = $depth + 1; break }
-            '^\\EndProcedure\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = 'end procedure'; break }
-            '^\\Procedure\b' { $text = 'procedure ' + (Get-AlgFn $ln '\Procedure'); $next = $depth + 1; break }
+            '^\\Require\b' { $text = '**Require:** ' + (Flatten-AlgText ($ln -replace '^\\Require\s*', '')); break }
+            '^\\Ensure\b' { $text = '**Ensure:** ' + (Flatten-AlgText ($ln -replace '^\\Ensure\s*', '')); break }
+            '^\\Return\b' { $text = '**return** ' + (Flatten-AlgText ($ln -replace '^\\Return\s*', '')); break }
+            '^\\ElsIf\b' { $d = [Math]::Max(0, $depth - 1); $text = '**else if** ' + (Get-AlgCond $ln '\ElsIf') + ' **then**'; break }
+            '^\\Else\b' { $d = [Math]::Max(0, $depth - 1); $text = '**else**'; break }
+            '^\\EndIf\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**end if**'; break }
+            '^\\If\b' { $text = '**if** ' + (Get-AlgCond $ln '\If') + ' **then**'; $next = $depth + 1; break }
+            '^\\EndWhile\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**end while**'; break }
+            '^\\While\b' { $text = '**while** ' + (Get-AlgCond $ln '\While') + ' **do**'; $next = $depth + 1; break }
+            '^\\ForAll\b' { $text = '**for all** ' + (Get-AlgCond $ln '\ForAll') + ' **do**'; $next = $depth + 1; break }
+            '^\\EndFor\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**end for**'; break }
+            '^\\For\b' { $text = '**for** ' + (Get-AlgCond $ln '\For') + ' **do**'; $next = $depth + 1; break }
+            '^\\Repeat\b' { $text = '**repeat**'; $next = $depth + 1; break }
+            '^\\Until\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**until** ' + (Get-AlgCond $ln '\Until'); break }
+            '^\\Loop\b' { $text = '**loop**'; $next = $depth + 1; break }
+            '^\\EndLoop\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**end loop**'; break }
+            '^\\EndFunction\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**end function**'; break }
+            '^\\Function\b' { $text = '**function** ' + (Get-AlgFn $ln '\Function'); $next = $depth + 1; break }
+            '^\\EndProcedure\b' { $depth = [Math]::Max(0, $depth - 1); $d = $depth; $next = $depth; $text = '**end procedure**'; break }
+            '^\\Procedure\b' { $text = '**procedure** ' + (Get-AlgFn $ln '\Procedure'); $next = $depth + 1; break }
             default { $text = Flatten-AlgText $ln }
         }
         if ($null -eq $text) { $text = '' }
         $content = $text.Trim()
         if ($content -eq '' -and $comment -ne '' -and $out.Count -gt 0) {
-            $out[$out.Count - 1] = $out[$out.Count - 1].TrimEnd() + '   ▷ ' + $comment
+            $out[$out.Count - 1] = $out[$out.Count - 1].TrimEnd() + ' ▷ *' + $comment + '*'
         } elseif ($content -ne '' -or $comment -ne '') {
-            if ($comment) { $content = ($content + '   ▷ ' + $comment).Trim() }
-            $out.Add(('    ' * $d) + $content)
+            if ($comment) { $content = ($content + ' ▷ *' + $comment + '*').Trim() }
+            $out.Add(($indent * $d) + $marker + $content)
         }
         $depth = $next
     }
@@ -175,34 +183,78 @@ $script:AlgStore = @{}
 $script:AlgStoreIdx = 0
 function Convert-Algorithms {
     param([string]$T)
-    # stash each rendered algorithm as a placeholder and restore AFTER all text passes — else the smart-quote
-    # rule (`` -> ") shreds the ```` code fences. Mirrors the math store.
+    # stash each rendered algorithm as a placeholder and restore AFTER all text passes — the dedent
+    # pass would otherwise strip the nested-list indentation that encodes pseudocode depth.
     $script:AlgStore = @{}; $script:AlgStoreIdx = 0; $script:algCounter = 0
     $T = [regex]::Replace($T, '(?s)\\begin\{algorithm\*?\}(?:\[[^\]]*\])?(.*?)\\end\{algorithm\*?\}', {
             param($m)
             $script:algCounter++
             $inner = $m.Groups[1].Value; $cap = ''
             $cm = [regex]::Match($inner, '\\caption\s*\{')
-            if ($cm.Success) { $a = Get-LatexBracedArg $inner ($cm.Index + $cm.Length - 1); if ($a) { $cap = (Flatten-AlgText $a) } }
-            $bm = [regex]::Match($inner, '(?s)\\begin\{algorithmic\}(?:\[[^\]]*\])?(.*?)\\end\{algorithmic\}')
-            $code = if ($bm.Success) { Format-Algorithmic $bm.Groups[1].Value } else { '' }
-            $title = if ($cap) { "Algorithm $($script:algCounter): $cap" } else { "Algorithm $($script:algCounter)" }
+            if ($cm.Success) {
+                $o = $cm.Index + $cm.Length - 1
+                $a = Get-LatexBracedArg $inner $o; $e = Get-BraceGroupEnd $inner $o
+                if ($null -ne $a -and $e -ge 0) { $cap = (Flatten-AlgText $a); $inner = $inner.Substring(0, $cm.Index) + $inner.Substring($e) }
+            }
+            $list = ''
+            $bm = [regex]::Match($inner, '(?s)\\begin\{algorithmic\}(?:\[([^\]]*)\])?(.*?)\\end\{algorithmic\}')
+            if ($bm.Success) {
+                $list = Format-Algorithmic $bm.Groups[2].Value ($bm.Groups[1].Success -and $bm.Groups[1].Value.Trim() -ne '')
+                $inner = $inner.Remove($bm.Index, $bm.Length)
+            }
+            $title = if ($cap) { "**Algorithm $($script:algCounter): $cap**" } else { "**Algorithm $($script:algCounter)**" }
             $id = "@@ALG$($script:AlgStoreIdx)@@"; $script:AlgStoreIdx++
-            $script:AlgStore[$id] = '```text' + "`n$title`n`n$code`n" + '```'   # title inside the fence: no heading-level / TOC-indent lint
-            "`n`n$id`n`n"
+            $script:AlgStore[$id] = $title + $(if ($list) { "`n`n$list" } else { '' })
+            # float content that is NOT the caption/algorithmic (enumerate-style pseudocode, prose) stays
+            # INLINE so the downstream passes convert it — it used to be discarded wholesale with the float.
+            "`n`n$id`n`n" + $inner.Trim() + "`n`n"
         })
-    $T = [regex]::Replace($T, '(?s)\\begin\{algorithmic\}(?:\[[^\]]*\])?(.*?)\\end\{algorithmic\}', {
+    $T = [regex]::Replace($T, '(?s)\\begin\{algorithmic\}(?:\[([^\]]*)\])?(.*?)\\end\{algorithmic\}', {
             param($m)
             $id = "@@ALG$($script:AlgStoreIdx)@@"; $script:AlgStoreIdx++
-            $script:AlgStore[$id] = '```text' + "`n" + (Format-Algorithmic $m.Groups[1].Value) + "`n" + '```'
+            $script:AlgStore[$id] = Format-Algorithmic $m.Groups[2].Value ($m.Groups[1].Success -and $m.Groups[1].Value.Trim() -ne '')
             "`n`n$id`n`n"
         })
     return $T
 }
 function Restore-Algorithms {
     param([string]$T)
-    foreach ($id in $script:AlgStore.Keys) { $T = $T.Replace($id, $script:AlgStore[$id]) }
+    # Algorithm blocks were captured with math already protected, so the stashed lists still hold
+    # @@LMATHn@@ placeholders — and the body-level Restore-LatexMath ran before this (it must: the
+    # dedent pass would shred list indentation if blocks were restored first). Restore math INSIDE
+    # each stashed block here, so pseudocode carries its $-delimited math live.
+    foreach ($id in $script:AlgStore.Keys) { $T = $T.Replace($id, (Restore-LatexMath $script:AlgStore[$id])) }
+    # verbatim-family fences were stashed BEFORE comment-strip/macros/math-protection: byte-verbatim,
+    # no placeholders inside by construction — plain swap.
+    foreach ($id in $script:VerbStore.Keys) { $T = $T.Replace($id, $script:VerbStore[$id]) }
     return $T
+}
+
+# --- verbatim-family code: the ONLY constructs the PDF really presents as monospace blocks, so the ONLY
+# ones that become markdown code fences (fence-only-if-monospace). Stashed from the RAW source before
+# comment-stripping, macro expansion, and math protection — inside code, `%` is not a comment and `$` is
+# not a math delimiter (a PowerShell listing's $env:PATH must survive byte-verbatim). Language tag comes
+# from the source's own declaration (lstlisting language= / minted {lang}), else 'text'. ----------------
+$script:VerbStore = @{}
+$script:VerbStoreIdx = 0
+function Add-VerbBlock([string]$Lang, [string]$Code) {
+    $id = "@@VERB$($script:VerbStoreIdx)@@"; $script:VerbStoreIdx++
+    $code = $Code -replace '^\r?\n', '' -replace '\r?\n[ \t]*$', ''
+    $script:VerbStore[$id] = '```' + $Lang.ToLowerInvariant() + "`n" + $code + "`n" + '```'
+    return "`n`n$id`n`n"
+}
+function Protect-VerbatimBlocks {
+    param([string]$Text)
+    $script:VerbStore = @{}; $script:VerbStoreIdx = 0
+    $SL = [System.Text.RegularExpressions.RegexOptions]::Singleline
+    $Text = [regex]::Replace($Text, '\\begin\{lstlisting\}(?:\[([^\]]*)\])?(.*?)\\end\{lstlisting\}', {
+            param($m) $lm = [regex]::Match($m.Groups[1].Value, 'language\s*=\s*(?:\[[^\]]*\])?\s*([A-Za-z][A-Za-z0-9+#]*)')
+            Add-VerbBlock $(if ($lm.Success) { $lm.Groups[1].Value } else { 'text' }) $m.Groups[2].Value }, $SL)
+    $Text = [regex]::Replace($Text, '\\begin\{minted\}(?:\[[^\]]*\])?\{([^{}]+)\}(.*?)\\end\{minted\}', {
+            param($m) Add-VerbBlock $m.Groups[1].Value $m.Groups[2].Value }, $SL)
+    $Text = [regex]::Replace($Text, '\\begin\{(verbatim|Verbatim|alltt)\*?\}(?:\[[^\]]*\])?(.*?)\\end\{\1\*?\}', {
+            param($m) Add-VerbBlock 'text' $m.Groups[2].Value }, $SL)
+    return $Text
 }
 
 # --- macro expansion: the key to faithful math. arXiv papers define many \newcommand macros used INSIDE
@@ -347,6 +399,7 @@ function Apply-Accents {
 # --- the core transform: LaTeX -> markdown ----------------------------------------------------------
 function ConvertFrom-Latex {
     param([string]$Tex, [string]$Bbl)
+    $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
     $Tex = [regex]::Replace($Tex, '(?m)(?<!\\)%.*$', '')                       # strip comments
     $macros = Get-LatexMacros $Tex
     $title = Get-LatexCommandArg $Tex '\title'
@@ -399,6 +452,13 @@ function ConvertFrom-Latex {
     $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
+    # Protect math BEFORE the algorithm/theorem/text passes. Position is load-bearing for TOKENIZATION
+    # CONSISTENCY: algorithm-internal math ($x_i$, \mathbf, \gets) must reach the store INTACT so the
+    # pseudocode fences carry the same $-delimited, macro-expanded KaTeX-primitive tokens as body math —
+    # Flatten-AlgText then only ever sees scaffold prose (placeholders carry the math past it), never
+    # math. One expression, one token stream, wherever it appears.
+    $body = Protect-LatexMath $body
+
     $body = Convert-Algorithms $body                                          # algpseudocode -> fenced pseudocode
 
     # theorem family (shared counter) + proof, numbered to match the rendered paper
@@ -438,8 +498,6 @@ function ConvertFrom-Latex {
 
     $body = Replace-BracedCommand $body '\abstract' { param($a) "`n## Abstract`n`n$a`n" }
     $body = Replace-BracedCommand $body '\footnote' { param($a) " ($($a.Trim()))" }
-
-    $body = Protect-LatexMath $body                                            # protect BEFORE text regexes
 
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
     $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
