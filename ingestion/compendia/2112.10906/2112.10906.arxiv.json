@@ -1,0 +1,34 @@
+{
+  "id": "2112.10906",
+  "idv": "2112.10906v4",
+  "title": "Persistent sheaf Laplacians",
+  "authors": [
+    "Xiaoqi Wei",
+    "Guo-Wei Wei"
+  ],
+  "abstract": "[external:untrusted] Recently various types of topological Laplacians have been studied from the perspective of data analysis. The spectral theory of these Laplacians has significantly extended the scope of algebraic topology and data analysis. Inspired by the theory of persistent Laplacians and cellular sheaves, this work develops the theory of persistent sheaf Laplacians for cellular sheaves, and describes how to construct sheaves for a point cloud where each point is associated with a quantity that can be devised to embed physical properties. As a result, the spectra of persistent sheaf Laplacians encode both geometrical and non-geometrical information of the given point cloud. The theory of persistent sheaf Laplacians is an elegant method for fusing different types of data and has huge potential for future development.",
+  "categories": [
+    "math.AT"
+  ],
+  "primary_category": "math.AT",
+  "published": "2021-12-20T23:26:46Z",
+  "updated": "2023-12-05T18:55:54Z",
+  "doi": null,
+  "journal_ref": null,
+  "comment": "[external:untrusted] revision",
+  "abs_url": "https://arxiv.org/abs/2112.10906v4",
+  "pdf_url": "https://arxiv.org/pdf/2112.10906v4",
+  "fetched_at": "2026-06-23T15:45:29.9581596-07:00",
+  "fetched_by": "codex-arxiv-mcp/0.2",
+  "artifacts": {
+    "pdf": {
+      "kind": "pdf",
+      "already_present": false,
+      "staged": true,
+      "fetched_at": "2026-06-23T15:45:29.9479064-07:00",
+      "path": "ingestion/_inbox/2112.10906/2112.10906.pdf",
+      "bytes": 2369345,
+      "url": "https://arxiv.org/pdf/2112.10906v4"
+    }
+  }
+}

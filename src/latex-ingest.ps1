@@ -18,6 +18,9 @@
   Entry point: Invoke-ArxivLatexToMarkdown -TarGz <source.tar.gz> -Slug <name> -OutDir <dir>
 #>
 
+. "$PSScriptRoot/runs.ps1"          # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
+. "$PSScriptRoot/tikz-render.ps1"   # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
+
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
     param([string]$Text, [int]$OpenBraceIndex)
@@ -424,9 +427,32 @@ function ConvertFrom-Latex {
     # the regex parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
     $body = [regex]::Replace($body, '(?s)(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', '\[$1\]')
 
-    # TikZ pictures are vector-drawing source, not renderable to an image here — replace each with a figure
-    # marker (its \caption is emitted separately) so the diagram's place in the flow survives, not raw \draw code.
-    $body = [regex]::Replace($body, '(?s)\\begin\{(tikzpicture|tikzcd)\}.*?\\end\{\1\}', "`n`n*[diagram]*`n`n")
+    # TikZ pictures: STASH the source and drop a numbered marker in the flow. The source is the
+    # AUTHORITY for diagrams (PDF-side image extraction is unreliable) — Invoke-ArxivLatexToMarkdown
+    # renders each stashed env to SVG via node-tikzjax and swaps the marker for a live image link;
+    # where the renderer is absent or a diagram fails to compile, the addressable marker stays.
+    # Preamble hints (tikz libraries + tikz-adjacent packages) are captured for the renderer.
+    $pre = $Tex.Substring(0, [Math]::Max(0, $Tex.IndexOf('\begin{document}')))
+    # dedupe, and drop the externalization libraries: they are build-time caching (shell-escape),
+    # absent from the wasm texmf tree, and one bad library in the shared list poisons EVERY job
+    $script:TikzLibs = (@([regex]::Matches($pre, '\\usetikzlibrary\{([^{}]+)\}') |
+            ForEach-Object { $_.Groups[1].Value -split '\s*,\s*' } |
+            Where-Object { $_ -and $_ -notin 'external', 'pgfplots.external' } |
+            Select-Object -Unique) -join ',')
+    $script:TikzPkgs = @{}
+    foreach ($p in 'tikz-cd', 'pgfplots', 'amssymb', 'amsmath') {
+        if ([regex]::IsMatch($pre, '\\usepackage(?:\[[^\]]*\])?\{[^{}]*' + [regex]::Escape($p) + '[^{}]*\}')) { $script:TikzPkgs[$p] = '' }
+    }
+    # custom colors defined in the preamble (\definecolor/\colorlet) are load-bearing for node fills —
+    # carry them into the renderer's preamble or every diagram using them fails to compile
+    $script:TikzPre = (@([regex]::Matches($pre, '\\(?:definecolor|colorlet)\{[^{}]+\}(?:\{[^{}]+\})?\{[^{}]+\}') |
+            ForEach-Object { $_.Value }) -join "`n")
+    $script:tikzCounter = 0
+    $script:TikzStore = [System.Collections.Generic.List[object]]::new()
+    $body = [regex]::Replace($body, '(?s)\\begin\{(tikzpicture|tikzcd)\}.*?\\end\{\1\}', {
+            param($m) $script:tikzCounter++
+            $script:TikzStore.Add([pscustomobject]@{ n = $script:tikzCounter; env = $m.Groups[1].Value; source = $m.Value })
+            "`n`n*[diagram $($script:tikzCounter) — TikZ source, not rendered]*`n`n" })
 
     # figure-grid tabulars (cells are \includegraphics) are not renderable tables, and their inline-$ caption
     # cells can swallow the whole grid into a spurious math span — collapse them to a figure marker up front.
@@ -590,11 +616,50 @@ function Resolve-LatexInputs {
 }
 
 # --- orchestrator -----------------------------------------------------------------------------------
+# Carry the figures the markdown references OUT of the (about-to-be-deleted) tarball workdir, so image
+# links resolve beside the deliverable instead of dying with the temp dir. Targets are probed against the
+# workdir tree by leaf name with extension fallback — \includegraphics routinely omits the extension and
+# \graphicspath redirects the dir; a recursive leaf search sidesteps both. Raster formats stay image
+# links (they render); vector-only source figures (pdf/eps/ps) become plain links — a markdown image tag
+# on a .pdf renders broken, and the honest form is still clickable and machine-findable for weaving.
+function Copy-LatexFigures {
+    param([string]$Markdown, [string]$WorkDir, [string]$OutDir, [string]$Slug)
+    $raster = @('.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp')
+    $state = @{ copied = 0; missing = 0 }
+    $destRoot = Join-Path $OutDir $Slug
+    $Markdown = [regex]::Replace($Markdown, '!\[\]\(([^)\s]+)\)', {
+            param($m)
+            $target = $m.Groups[1].Value
+            if ($target -match '^[a-z][a-z0-9+.\-]*://') { return $m.Value }   # web URL: leave as-is
+            $leaf = [System.IO.Path]::GetFileName($target)
+            $hit = $null
+            $cand = Join-Path $WorkDir $target
+            if ([System.IO.File]::Exists($cand)) { $hit = Get-Item -LiteralPath $cand }
+            if (-not $hit) {
+                $pattern = if ([System.IO.Path]::GetExtension($leaf)) { $leaf } else { "$leaf.*" }
+                $hit = @(Get-ChildItem -Path $WorkDir -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue |
+                         Sort-Object { $raster.IndexOf($_.Extension.ToLowerInvariant()) -lt 0 }) | Select-Object -First 1   # prefer a raster sibling over the .pdf twin
+            }
+            if (-not $hit) { $state.missing++; return "*[figure: $leaf — source file not found]*" }
+            if (-not (Test-Path -LiteralPath $destRoot)) { New-Item -ItemType Directory -Force -Path $destRoot | Out-Null }
+            Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
+            $state.copied++
+            $rel = "$Slug/$($hit.Name)"
+            if ($raster -contains $hit.Extension.ToLowerInvariant()) { return "![]($rel)" }
+            return "[figure ($($hit.Extension.TrimStart('.'))): $($hit.Name)]($rel)"
+        })
+    return [pscustomobject]@{ markdown = $Markdown; copied = $state.copied; missing = $state.missing }
+}
+
 function Invoke-ArxivLatexToMarkdown {
     param([string]$TarGz, [string]$Slug, [string]$OutDir)
     $u8 = [System.Text.UTF8Encoding]::new($false)
-    $work = Join-Path ([System.IO.Path]::GetTempPath()) ("ltx_" + [System.IO.Path]::GetFileNameWithoutExtension($TarGz) + "_" + $Slug)
-    if (Test-Path $work) { Remove-Item -LiteralPath $work -Recurse -Force }
+    # the tex unpacks into a runstamped working dir BESIDE the tarball — an intermediate workflow
+    # artifact like any other (gitignored, non-destructive across passes), not a throwaway temp dir.
+    # It PERSISTS: downstream consumers (math bank, structure skeleton) re-read the source without
+    # re-extraction, and a conversion is inspectable after the fact.
+    $run  = New-RunDir (Split-Path -Parent (Resolve-Path -LiteralPath $TarGz).Path)
+    $work = Join-Path $run 'tex'
     Expand-ArxivSourceTarball -TarGz $TarGz -WorkDir $work | Out-Null
 
     $main = Find-LatexMain $work
@@ -607,14 +672,49 @@ function Invoke-ArxivLatexToMarkdown {
     if ($refs) { $md += "`n## References`n`n$refs`n" }
 
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
+    $figs = Copy-LatexFigures -Markdown $md -WorkDir $work -OutDir $OutDir -Slug $Slug
+    $md = $figs.markdown
+
+    # source-authoritative diagrams: render the stashed TikZ envs to SVG and swap their markers for
+    # live image links. Macro-expanded first (node labels use the paper's \newcommand vocabulary).
+    # Graceful degradation at every level: renderer absent -> all markers stay; one diagram failing
+    # to compile -> that marker stays; nothing throws the conversion.
+    $rendered = 0
+    if ($script:TikzStore.Count -gt 0 -and (Test-TikzRenderAvailable)) {
+        $texMacros = Get-LatexMacros $tex
+        $jobs = @(foreach ($t in $script:TikzStore) {
+                $pkgs = @{} + $script:TikzPkgs
+                if ($t.env -eq 'tikzcd') { $pkgs['tikz-cd'] = '' }
+                $src = Expand-LatexMacros $t.source $texMacros
+                # the tikz stash happens BEFORE the body-wide NiceMatrix normalization — apply the same
+                # rewrite here (nicematrix is not in the renderer's texmf tree; stock matrices are)
+                $src = $src -replace '\\begin\{([bpBvV]?)NiceMatrix\}\s*(?:\[[^\]]*\])?', '\begin{${1}matrix}'
+                $src = $src -replace '\\end\{([bpBvV]?)NiceMatrix\}', '\end{${1}matrix}'
+                @{ id = "diagram-$($t.n)"; source = $src
+                    tikzLibraries = [string]$script:TikzLibs; texPackages = $pkgs; preamble = [string]$script:TikzPre }
+            })
+        try {
+            $rep = Invoke-TikzRender -Jobs $jobs -OutDir (Join-Path $OutDir $Slug)
+            foreach ($res in @($rep.results)) {
+                if (-not $res.ok) { continue }
+                $n = [int]($res.id -replace '^diagram-', '')
+                $md = $md.Replace("*[diagram $n — TikZ source, not rendered]*", "![]($Slug/$($res.id).svg)")
+                $rendered++
+            }
+        } catch { Write-Verbose "tikz-render failed: $($_.Exception.Message)" }
+    }
+
     $outPath = Join-Path $OutDir "$Slug.md"
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
-    Remove-Item -LiteralPath $work -Recurse -Force -ErrorAction SilentlyContinue
 
     return [pscustomobject]@{
         slug = $Slug; out = $outPath; main_tex = (Split-Path -Leaf $main)
+        run = (Split-Path -Leaf $run); tex = $work   # the persisted unpacked source (run artifact)
         bytes = $md.Length; macros = (Get-LatexMacros $tex).Count
         sections = ([regex]::Matches($md, '(?m)^##\s')).Count
         references = if ($refs) { @($refs -split "`n").Count } else { 0 }
+        figures = $figs.copied; figures_missing = $figs.missing
+        diagrams = [int]$script:tikzCounter            # TikZ envs found in source
+        diagrams_rendered = $rendered                  # markers swapped for source-rendered SVGs
     }
 }

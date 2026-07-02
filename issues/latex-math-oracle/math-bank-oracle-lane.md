@@ -17,6 +17,22 @@ verification tier below is that brief's missing ground truth), the Voroninski 16
 
 ---
 
+## The target register (design north star)
+
+The published deliverable is **semantically faithful markdown, not a typeset carbon copy of the
+source**. Conversion (from PDF *or* LaTeX) is inherently lossy; the losses are acceptable exactly when
+prose and semantically meaningful formatting survive and typesetting minutiae are left behind. For math
+the register is **canonical KaTeX** — the unambiguous, model-readable language (`\mathbb{R}`, never a
+unicode ℝ glyph) — which is why macro expansion is a *feature*, not a fidelity loss: the author's
+private vocabulary (`\R`) compiles down to the shared language. This is also Docling's stated goal, so
+the two lanes share a target language — Docling *guesses* its way there from rendered glyphs, the
+source lane *compiles* there from truth, and the verification tier is a diff between two strings in the
+same canonical vocabulary. "Tokenization consistency" (Invariant 0) means one CANONICAL token stream per
+expression everywhere — not source-verbatim preservation. Corollaries: a unicode→KaTeX canonicalization
+pass for PDF-lane math spans is a natural enrichment-tier addition; and the someday diagram-semantics
+mapping should run TikZ-source→Mermaid (the source states nodes/edges; the SVG is the diagram's "PDF"),
+for which the persisted run-dir tex + the stashed TikZ envs are the preserved inputs.
+
 ## The claim
 
 When a paper's arXiv LaTeX source is staged (and for this corpus it often already is — the tarball sits
@@ -232,6 +248,51 @@ disk → the tool says so; nothing else in the membrane changes.
    provenance in the audit log.
 4. **Run-independence.** The bank derives from source, lives per-paper, and survives re-preprocessing;
    run immutability is untouched.
+
+## Diagrams and figures (converter fixes LANDED 2026-07-01; weaving = the two-view step)
+
+The "dead `*[diagram]*`" complaint decomposed into two defects with different owners:
+
+- **`\includegraphics` figures died with the temp dir** — the tarball *contains* the pixels, but
+  `Invoke-ArxivLatexToMarkdown` deleted its workdir, leaving every `![](…)` link dangling. **Fixed:**
+  `Copy-LatexFigures` resolves each link against the extracted tree (leaf-name recursive probe — handles
+  extensionless `\includegraphics{figs/arch}` and `\graphicspath` at once, and prefers a raster twin over
+  its `.pdf` sibling), copies the file to `{outdir}/{slug}/`, and rewrites the link. Raster → live image
+  link; vector-only (pdf/eps) → plain clickable link (an image tag on a .pdf renders broken); unresolved →
+  an addressable `*[figure: name — source file not found]*` marker. The tool result now reports
+  `figures / figures_missing / diagrams`.
+- **TikZ is genuinely unrenderable converter-side** (vector-drawing source, no TeX engine) — but the
+  rendered pixels EXIST in the other view: the PDF extraction's `{slug}/imageFileN.png`. Markers are now
+  **numbered** (`*[diagram N — TikZ source, not rendered]*`) so a weaving step can target them.
+  Real-paper scale: 2509.20220v2 = **26 TikZ diagrams + 1 raster figure** — the figure now carries out
+  live; the 26 markers await weaving.
+- **The weaving step is the same two-view merge as everything else here** — source gives figure
+  identity/order/captions, PDF extraction gives pixels — and it is ALSO the same gap the membrane publish
+  lane already has (finalize emits image-less bodies; publish carries files but "can't weave placement",
+  per the publish-lane thread). One aligner should serve both: match diagram/figure markers to
+  `imageFileN.png` by document order + caption text, emit the splice. Phase-2 scope alongside the
+  skeleton.
+- **Source-rendered diagrams (LANDED 2026-07-01):** PDF-side image extraction is unreliable
+  (opendataloader sometimes misses figures entirely), so the SOURCE is the diagram authority when it
+  exists. New `tools/tikz-render` (node-tikzjax: wasm TeX + dvi→SVG, vendored node_modules) +
+  `src/tikz-render.ps1` shim (batch-oriented — one wasm init per paper; per-job fault isolation) —
+  the converter stashes each `tikzpicture`/`tikzcd` env, macro-expands it, and renders to
+  `{slug}/diagram-N.svg`, swapping the numbered marker for a live image link; a failed diagram keeps
+  its marker (weaving fallback). Compile-hardening learned on the real paper: filter the
+  externalization libraries from `\usetikzlibrary` capture (shell-escape caching, absent from the
+  wasm texmf, and ONE bad library in the shared list poisons every job); carry preamble
+  `\definecolor`/`\colorlet` into the render preamble (custom node fills); re-apply the
+  NiceMatrix→matrix rewrite to stashed sources (stash precedes the body-wide pass). Result on
+  2509.20220v2: **26/26 diagrams render** (~57s batch). Residual: `\tikzset` style blocks not yet
+  carried (brace-aware capture, follow-up); font CSS in SVGs is a CDN `@import` (may fall back to
+  default fonts in strict `<img>` contexts). KaTeX (`tools/render-check`) remains math-only — it can
+  bake rendered HTML for math-bank entries but has no TikZ grammar; weaving from PDF-extracted
+  pixels is now the fallback for no-source papers only.
+- **Unpacking is a run artifact (LANDED):** the tarball unpacks into `{tar-dir}/.runs/{stamp}/tex` —
+  persisted, gitignored, non-destructive across passes — instead of a deleted system temp dir. The
+  Phase-0 extraction (math bank + skeleton) reads the SAME unpacked tree instead of re-extracting; the
+  tool result reports `run`/`tex`. The run-layout helpers were split out of serving.ps1 into
+  `src/runs.ps1` so non-membrane lanes share the layout without dragging the serving stack.
 
 ## Open questions
 
