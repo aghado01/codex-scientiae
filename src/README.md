@@ -15,14 +15,17 @@ To wire it up, see **[SETUP.md](SETUP.md)**. For the agent workflow once it's ru
 raw {slug}.json                                          deliverable
   │  Invoke-Preprocess (8 deterministic stages)            ▲  finalize
   ▼                                                        │
-.scratch/{slug}.chunks.jsonl  ──►  membrane tools  ──►  {slug}.md + references/{slug}.md
-   (graded chunk stream)            (the MCP)              (corpus markdown, LaTeX-consistent)
+.runs/{stamp}/{slug}.chunks.jsonl  ──►  membrane tools  ──►  {slug}.md + references/{slug}.md
+   (graded chunk stream)                 (the MCP)             (corpus markdown, LaTeX-consistent)
 ```
 
 The **preprocess** pipeline is deterministic and does everything it can without a model:
 `project-ir → headings → collapse → zones → sections → normalize → fidelity → repair`. It lands an
-enriched, graded chunk stream in a `.scratch/` directory **beside the source** (source-tracked by
-position, fan-out friendly). The **membrane** is the MCP surface a seeing agent drives to resolve
+enriched, graded chunk stream in a fresh runstamped directory (`.runs/{yyyyMMdd_HHmmss}/`) **beside
+the source** (source-tracked by position, fan-out friendly). Runs are append-only — **every
+preprocess pass creates a NEW run** and never touches a prior one (preprocess starts a workflow; the
+read/repair tools continue one). A legacy `.scratch/` dir reads as the oldest run; resolution is
+newest-run-wins, or pin any run explicitly as `{paper}@{runstamp}` (`@.scratch` for the legacy dir). The **membrane** is the MCP surface a seeing agent drives to resolve
 what's left; **finalize** assembles the corpus deliverable.
 
 ## The membrane's discipline
@@ -30,7 +33,7 @@ what's left; **finalize** assembles the corpus deliverable.
 - **Navigate → slice → edit → proofread.** Most tools return metadata + pointers; content comes back
   only where content *is* the point (`get_slice`, `get_audit`, `review_document`). The orchestrator
   stays body-blind — it reasons over the work-list, not the prose.
-- **Artifacts are ground truth.** The server is RPC over stdio; state lives in the `.scratch/`
+- **Artifacts are ground truth.** The server is RPC over stdio; state lives in the run-dir
   artifacts, not the process. An amnesic agent re-grounds from `get_batch_summary` and resumes.
 - **Three windows on a document:** the **ledger** (`*.ledger.jsonl`, milestones — verbs), the
   **inventory** (`inventory.json`, in-play artifacts — nouns), the **audit** (`*-audit.jsonl`,
@@ -43,7 +46,7 @@ what's left; **finalize** assembles the corpus deliverable.
 
 | Family | Tools |
 |---|---|
-| **On-ramp** | `list_documents` (survey the ingestion root), `preprocess` (run the pipeline → `.scratch/`) |
+| **On-ramp** | `list_documents` (survey the ingestion root), `preprocess` (run the pipeline → a fresh `.runs/{stamp}/`) |
 | **Inspect** (pointers) | `get_summary`, `get_hotspots`, `get_batch_summary`, `get_inventory`, `get_audit`, `search` |
 | **Slice** (content) | `get_slice` (scoped, staged-aware) |
 | **Repair — content** | `propose_edit` (surgical find/replace), `propose_repair` (wholesale), `apply`, `release` |

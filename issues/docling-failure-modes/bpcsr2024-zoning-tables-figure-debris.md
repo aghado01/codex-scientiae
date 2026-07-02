@@ -1,7 +1,12 @@
 # Docling failure-mode characterization: zoning collapse, table shattering, figure-text bleed
 
-**Status:** GROUNDED (2026-07-01) — source-vs-IR comparison + corpus survey done; root cause identified, priorities re-sized.
-See the **Grounding pass** section at the bottom for the mechanism, the survey numbers, and resolutions of the open questions. The original characterization below stands, with two corrections it makes: the converter is opendataloader-pdf (not raw Docling), and the brief's proposed zoning fix (Docling's `level`) is refuted by the data.
+**Status:** ROOT-CAUSED + TIER-1 FIX VERIFIED (2026-07-01) — source-vs-IR comparison + corpus survey done; root cause
+confirmed **in opendataloader-pdf's own source** (which supersedes this brief's first grounding-pass attribution — see
+below); the geometric-promoter gate is landed in `headings.ps1` (commit 382e527) and verified against the virgin
+`ingestion/compendia/membrane-testing` bed (see **Verification** at the bottom).
+See the **Grounding pass** section for the mechanism, the survey numbers, and resolutions of the open questions. The
+original characterization below stands, with two corrections it makes: the converter is opendataloader-pdf (not raw
+Docling), and the brief's proposed zoning fix (Docling's `level`) is refuted by the data.
 **Origin:** hand-finalizing `ingestion/compendia/fresh/BPCSR2024` (2026-07-01) — see memory `bp-csr-graphs-primitive`
 **Engine:** `src/zones.ps1`, `src/finalize.ps1`, `src/normalize.ps1` (membrane); upstream: Docling's PDF→JSON conversion
 **Related:** `no-magic-string-structural-heuristics` (memory — the principle this brief is testing itself against),
@@ -199,21 +204,35 @@ root, and two of them are the membrane *destroying* structure the converter alre
 The converter feeding this is **opendataloader-pdf** (memory `opendataloader-pdf-recon`), not raw Docling. Its
 JSON is a recursive `kids` tree — every node carries
 `type, pdfua_tag, id, level, page number, bounding box, heading level, font, font size, text color, content` —
-not the `DoclingDocument` `texts/tables/body` schema. opendataloader wraps Docling for pieces (e.g. SemanticFormula),
-and the ghost layer below is a tagged-PDF artifact it surfaces. Filename kept for continuity; the fixes land in the
-membrane and at the opendataloader boundary, and `pdfdig` (roadmap) is the eventual replacement for both.
+not the `DoclingDocument` `texts/tables/body` schema. opendataloader wraps Docling as its hybrid backend
+(these conversions run `hybrid_mode = "full"`). Filename kept for continuity. **opendataloader-pdf is fixed
+upstream — mined for insight, never modified**; all fixes land in the membrane, and `pdfdig` (roadmap) is the
+eventual replacement for the conversion layer.
 
-## The shared root cause: a metadata-less ActualText layer + a membrane promoter that feeds on it
+## The shared root cause: an unenriched-Docling placeholder layer + a membrane promoter that feeds on it
 
-The source PDF carries **two parallel text layers**; opendataloader emits both without reconciling them:
+*(Corrected same-day by reading opendataloader-pdf's source. This pass first attributed the ghost layer to a
+tagged-PDF ActualText/accessibility layer in the source PDF — that theory is **refuted**; the layer is a converter
+fusion-seam artifact. The observational signature and all survey numbers below are unchanged.)*
 
-- **content-stream layer** (the real, rendered glyphs): `font: NimbusRomNo9L-*`, real `font size`, `text color: "[0.0]"`.
-- **ActualText / accessibility layer** (logical text, no rendering metadata): **`font: null`, `font size: 12.0`,
-  `text color: null`** — a clean 3-field signature. (`pdfua_tag` is uselessly uniform — `"P"` on all 393 paragraphs —
-  so it is *not* the discriminator; the metadata-absence triple is.)
+The IR carries **two provenance classes of text node**; opendataloader emits both without serializing which is which:
 
-In BPCSR2024's 393 source paragraphs: **294 real, 99 ghost.** The two layers are **complementary, not duplicate** —
-e.g. in the references the content-stream layer keeps the `[1]…[2]` numbers but runs entries together, while the ghost
+- **enriched layer** (bbox-matched to real extraction): `font: NimbusRomNo9L-*`, real `font size`, `text color: "[0.0]"`.
+- **ghost layer** (Docling-backend, enrichment-unmatched): **`font: null`, `font size: 12.0`, `text color: null`** —
+  a clean 3-field signature. (`pdfua_tag` is uselessly uniform — `"P"` on all 393 paragraphs — so it is *not* the
+  discriminator; the metadata-absence triple is.)
+
+The verified chain, from opendataloader's code: `hybrid_mode=full` routes **all** pages through Docling
+(`HybridDocumentProcessor`); `DoclingSchemaTransformer` stamps every Docling element with a **hardcoded
+`font=null / size=12.0` placeholder**; `enrichBackendResults`/`enrichSingleTextNode` then swaps in real PDFBox
+`TextChunk` metadata wherever a bbox-overlapping, not-yet-consumed Java chunk exists. **`font=null` survivors are
+the elements that lost that enrichment match** — recorded internally as `"ocr-fallback"`, a provenance the JSON
+serializer does not emit. So `font=null` is a *fusion-seam provenance marker* ("Docling saw this; the geometric
+layer didn't"), and is often the **better** extraction. The placeholder's `12.0` clearing the promoter's contrast
+test (`12.0 ≥ real ~10pt body × 1.15`) is the exact arithmetic behind every phantom heading.
+
+In BPCSR2024's 393 source paragraphs: **294 enriched, 99 ghost.** The two layers are **complementary, not duplicate** —
+e.g. in the references the enriched layer keeps the `[1]…[2]` numbers but runs entries together, while the ghost
 layer splits each entry onto its own line but drops the number. This is why Failure 5's references are incoherent: the
 membrane kept some entries from each layer. **Consequence: the ghost layer is NOT safe to blanket-drop** — for references
 it is the only per-entry-separated copy.
@@ -245,7 +264,7 @@ geometry it dropped the converter's table serialization and re-introduced the ph
 | Failure mode | fingerprint | docs hit | corpus volume |
 |---|---|---|---|
 | **F3 — table shatter** | `type:table cell` present | **27 / 43** | **8,076 cells** |
-| **F5 — ghost ActualText layer** | `font=null ∧ size=12 ∧ color=null` | **41 / 43** | **5,021 chunks** |
+| **F5 — ghost (Docling-unenriched) layer** | `font=null ∧ size=12 ∧ color=null` | **41 / 43** | **5,021 chunks** |
 | **F1-noise — geometric over-promotion** | `heading_source:geometric` | **36 / 43** | **2,184 headings** — 2,066 (94.6%) on ghost, 118 on named-font (25 docs) |
 | **F1-acute — Roman-numeral zoning collapse** | body-zone == 0 chunks | **3 / 43** | BPCSR2024, 2508.11646v1, 2310.08970v2 (all 3 = the only Roman-numeral docs) |
 
@@ -272,10 +291,11 @@ milder non-Roman zoning failure not chased here.)
 4. **Failure 4 (bbox containment reliable?)** Data-wise yes — bbox present on 639/679 chunks (94%). Note font-provenance
    and geometry do *different* jobs: the `font=null` triple identifies the ghost layer; **bbox-in-image** tells you which
    ghost chunks are figure-debris vs. real (numberless) references — both are `font=null`, so font alone over-drops.
-5. **Failure 5 root-cause / systemic?** Answered: systemic (41/43), and it is the tagged-PDF ActualText layer, metadata-less
-   (`font=null ∧ size=12 ∧ color=null`). It manifests as per-entry source inconsistency, not wholesale duplication, and the
-   two layers are complementary — so the reconciliation is a *merge* (prefer content-stream numbering + ghost-layer entry
-   splitting), not a drop.
+5. **Failure 5 root-cause / systemic?** Answered: systemic (41/43), and it is the **Docling-backend enrichment seam**
+   (`font=null ∧ size=12 ∧ color=null` = the hardcoded placeholder on elements that failed the bbox enrichment-match —
+   see the corrected root-cause section above). It manifests as per-entry source inconsistency, not wholesale
+   duplication, and the two layers are complementary — so the reconciliation is a *merge* (prefer enriched-layer
+   numbering + ghost-layer entry splitting), not a drop.
 
 ## The single highest-leverage fix, and the data-supported priority order
 
@@ -292,3 +312,32 @@ Priority by ROI/risk (data-supported, differs from the brief's ordering):
 5. **bbox-containment for residual figure-prose (F4)** and **reference two-layer merge (F5)** — lower volume, need geometry + merge logic.
 
 *Survey per-doc numbers saved to `%TEMP%/bpcsr_survey.json` at time of writing (disposable).*
+
+---
+
+# Verification — Tier-1 promoter gate (2026-07-01, `membrane-testing` bed)
+
+The fix landed in `headings.ps1`'s promotion loop (commit 382e527): `if (-not $n.font) { continue }` — a node with
+no measured typography cannot pass a typographic contrast test; its `12.0` is the converter placeholder, not a size.
+
+Verified on `ingestion/compendia/membrane-testing/` — virgin copies of the ph-temp docs (no `.scratch`), originals
+untouched. Gated (new) runs vs. the ph-temp pre-gate baselines, with opendataloader's own `{slug}.md` as the
+heading oracle:
+
+| Doc | Headings: baseline → gated | Null-font phantoms removed | Native vs `.md` oracle | Zoning |
+|---|---|---|---|---|
+| 2112.10906v4 | 19 → 19 | 0 (already clean) | **18 = 18** | healthy (body: 185) |
+| 2408.16741v2 | 82 → **41** | **41** | **39 = 39** | healthy (body: 367) |
+| 2508.11646v1 (Roman-numeral) | 97 → **28** | **69** | **28 = 28** | still 100% frontmatter |
+
+- **Native heading sets match the converter's own markdown exactly on all three docs.** The only extras are 3
+  named-font geometric promotions: two author/affiliation lines (2408.16741v2, `CMR12 @ 11.96pt`, zoned frontmatter
+  anyway) and one bold `Proposition 2.1 …` head (2112.10906v4, `SFBX1095` — typographically real; whether theorem
+  heads should be headings is a standards question, not a defect).
+- **Secondary win:** phantom headings had been breaking `collapse`'s paragraph merging — gated runs produce fewer,
+  better-merged chunks (529→501, 307→291).
+- **Confirmed independence:** 2508.11646v1 now has a perfect heading set but still zones 100% frontmatter — the
+  Roman-numeral zoning stopgap (priority #4) is untouched by this fix, as predicted.
+- **Residual watch-item:** a doc whose text is wholly unenriched (scan-like, everything `font=null`) with no
+  converter-native headings would now get zero headings and silently zone-collapse. Cheap telemetry: flag
+  `native headings == 0 ∧ gated promotions > 0` for review.

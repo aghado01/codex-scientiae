@@ -4,13 +4,19 @@
 
   Takes a raw Docling / opendataloader IR JSON and runs project-ir -> headings -> collapse ->
   zones -> sections -> normalize -> fidelity -> repair, landing the enriched chunk stream + sidecars in a
-  `.scratch/` directory BESIDE the source (source-tracked by position, fan-out-friendly — each
-  paper's artifacts are self-contained). Logs the 'preprocessed' milestone to the ledger, and
-  every write self-registers in the inventory via Write-JsonlStage. Refuses to clobber a paper
-  that already carries applied agent repairs unless -Force.
+  fresh runstamped directory BESIDE the source — `{paper}/.runs/{yyyyMMdd_HHmmss}/` (source-tracked by
+  position, fan-out-friendly — each paper's artifacts are self-contained; a legacy `.scratch/` dir reads
+  as the oldest run). Logs the 'preprocessed' milestone to the ledger, and every write self-registers in
+  the inventory via Write-JsonlStage.
+
+  EVERY invocation creates a NEW run — preprocess starts a workflow; the read/repair tools continue one
+  (they resolve the latest run, or any pinned '{paper}@{run}'). Prior runs are never touched, but a new
+  run DOES become the paper's current view: when the displaced run carries agent work (applied/finalized/
+  published) the result says so and names the pin address. Batch on-ramps should preprocess only docs the
+  scan shows unprepped.
 
     . ./preprocess.ps1
-    Invoke-Preprocess -JsonPath <…/{slug}/{slug}.json> [-Force]
+    Invoke-Preprocess -JsonPath <…/{slug}/{slug}.json>
 #>
 
 . "$PSScriptRoot/project-ir.ps1"
@@ -25,22 +31,25 @@
 
 function Invoke-Preprocess {
     [CmdletBinding()] param(
-        [Parameter(Mandatory)][string]$JsonPath,
-        [switch]$Force
+        [Parameter(Mandatory)][string]$JsonPath
     )
     if (-not (Test-Path -LiteralPath $JsonPath)) { return [pscustomobject]@{ ok = $false; reason = "source not found: $JsonPath" } }
-    $slug    = [System.IO.Path]::GetFileNameWithoutExtension($JsonPath)
-    $scratch = Join-Path (Split-Path -Parent $JsonPath) '.scratch'
+    $slug     = [System.IO.Path]::GetFileNameWithoutExtension($JsonPath)
+    $paperDir = Split-Path -Parent $JsonPath
+
+    # every invocation is a NEW run; prior runs are preserved untouched, by construction. But the new
+    # run becomes the paper's current view — if the run it displaces carries agent work, say so loudly.
+    $prior = @(Get-RunChunks $paperDir $slug)
+    $displaced = $null
+    if ($prior.Count) {
+        $pStage = try { (Get-LedgerStage $prior[0]).stage } catch { $null }
+        if ($pStage -and $pStage -ne 'preprocessed') {
+            $displaced = "prior run '$(Get-RunName $prior[0])' carries '$pStage' work — it stays intact; address it as $slug@$(Get-RunName $prior[0])"
+        }
+    }
+    $scratch = New-RunDir $paperDir
     $chunks  = Join-Path $scratch "$slug.chunks.jsonl"
     $nodes   = Join-Path $scratch "$slug.nodes.jsonl"
-
-    # no-clobber: never wipe a paper that already carries applied agent repairs
-    if ((Test-Path -LiteralPath $chunks) -and -not $Force) {
-        $stage = (Get-LedgerStage $chunks).stage
-        if ($stage -eq 'applied') { return [pscustomobject]@{ ok = $false; paper = $slug; reason = 'already worked (applied repairs); pass -Force to re-preprocess' } }
-        return [pscustomobject]@{ ok = $true; paper = $slug; skipped = $true; reason = 'already preprocessed'; path = $chunks }
-    }
-    if (-not (Test-Path -LiteralPath $scratch)) { New-Item -ItemType Directory -Force -Path $scratch | Out-Null }
 
     Invoke-ProjectIr       -JsonPath $JsonPath -OutputPath $nodes | Out-Null
     Invoke-HeadingRecovery -NodesPath $nodes | Out-Null
@@ -59,5 +68,7 @@ function Invoke-Preprocess {
     }
     Add-LedgerEntry $chunks 'preprocessed' $tally
 
-    [pscustomobject]@{ ok = $true; paper = $slug; chunks = $c.Count; tally = $tally; path = $chunks }
+    $out = [ordered]@{ ok = $true; paper = $slug; run = (Get-RunName $chunks); chunks = $c.Count; tally = $tally; path = $chunks; prior_runs = $prior.Count }
+    if ($displaced) { $out.displaced = $displaced }
+    [pscustomobject]$out
 }

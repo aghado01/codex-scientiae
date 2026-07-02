@@ -27,7 +27,7 @@
 │ ARTIFACTS ON DISK = GROUND TRUTH (tools return projections, never the file) │
 │ │
 │ ingestion/{slug}/{slug}.json ......... raw IR (the export, body-blind survey unit)│
-│ ingestion/{slug}/.scratch/ │
+│ ingestion/{slug}/.runs/{stamp}/ (legacy .scratch/ = oldest run; newest wins) │
 │ {slug}.chunks.jsonl ............... enriched chunk stream ◄── the live object │
 │ {slug}.jidx ....................... seek index (get_slice by id) │
 │ + leases · staged proposals · .ledger.jsonl milestones · audit log │
@@ -45,7 +45,8 @@ THE WORKFLOW THE 26 TOOLS DRIVE ────────────────
 ▼
 ┌─ 1. PREPROCESS ───────────────────────────────────────────────────────────┐
 │ preprocess paper → seven-stage pipeline: raw {slug}.json → enriched │
-│ chunk stream + sidecars in .scratch/ │
+│ chunk stream + sidecars in a FRESH .runs/{stamp}/ (every call = new │
+│ run; continue/pin existing work via the other tools, {paper}@{run}) │
 └───────────────────────────────┬───────────────────────────────────────────┘
 ▼
 ┌─ 2. THE REPAIR LOOP (hold nothing between iterations) ────────────────────┐
@@ -72,7 +73,7 @@ THE WORKFLOW THE 26 TOOLS DRIVE ────────────────
 └───────────────────────────────┬───────────────────────────────────────────┘
 ▼
 ┌─ 3. CLOSE THE LOOP ───────────────────────────────────────────────────────┐
-│ finalize paper ──► serialize stream → {slug}.md + references/ in .scratch│
+│ finalize paper ──► serialize stream → {slug}.md + references/ in run dir│
 │ │ (pending>0 ⇒ provisional) │
 │ ▼ │
 │ review_document paper ──► the ONE sanctioned holistic read (content IS │

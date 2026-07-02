@@ -1,7 +1,7 @@
 #requires -Version 7.0
 <#
-  src/publish.ps1 — promote a finalized deliverable from its .scratch/ staging into the live
-  compendium tree (compendia/{topic}/). This is the post-`finalize` stage the membrane did not
+  src/publish.ps1 — promote a finalized deliverable from its run-dir staging (.runs/{stamp}/,
+  legacy .scratch/) into the live compendium tree (compendia/{topic}/). This is the post-`finalize` stage the membrane did not
   previously expose as a tool, so agents hand-scripted it from the console (the source of the
   cp1252 / parser churn in the feedback briefs). It crosses the ingestion→compendia boundary
   deliberately: the server now anchors at the repo root so this lane can reach the published corpus.
@@ -144,7 +144,7 @@ function Invoke-Publish {
     if ($Topic -notmatch '^[\w.\-]+$') { throw "invalid topic: '$Topic'" }
 
     # (re)materialize the deliverable from the chunk stream so what we promote reflects the latest
-    # applied repairs — finalize is idempotent and writes into .scratch/.
+    # applied repairs — finalize is idempotent and writes into the run dir beside the chunks.
     $fin = Invoke-Finalize -ChunksPath $ChunksPath
     $slug = $fin.paper
     # Policy gates enforce on a real publish; a dry run is a pure preview — it reports every blocker in the
@@ -153,8 +153,13 @@ function Invoke-Publish {
         throw "deliverable is provisional: $($fin.pending) chunk(s) still flagged. Resolve them (or pass force=true to publish anyway)."
     }
 
-    $scratchDir = Split-Path -Parent $ChunksPath
-    $paperDir   = Split-Path -Parent $scratchDir
+    # paper dir = nearest ancestor named {slug} (layout-agnostic: {slug}/.runs/{stamp}/ or legacy {slug}/.scratch/)
+    $paperDir = Split-Path -Parent $ChunksPath
+    while ($paperDir -and (Split-Path -Leaf $paperDir) -ne $slug) {
+        $up = Split-Path -Parent $paperDir
+        if (-not $up -or $up -eq $paperDir) { throw "cannot locate the paper dir (…/$slug/…) above: $ChunksPath" }
+        $paperDir = $up
+    }
     $rawImgDir  = Join-Path $paperDir $slug                       # ingestion/.../{slug}/{slug}/imageFileN
 
     $topicDir = Join-Path $CompendiaRoot $Topic

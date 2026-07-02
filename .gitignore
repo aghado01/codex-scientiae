@@ -24,6 +24,7 @@ lib/
 **tmp/
 **/tmp/**
 **/.scratch/
+**/.runs/
 **/.work/
 **/__pycache__/
 

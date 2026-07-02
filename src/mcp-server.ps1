@@ -47,34 +47,36 @@ param(
 $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 
 # --- tool catalogue: name -> description + JSON-Schema for arguments ---
+# paper addressing (shared): a unique slug, or an ingestion-root-relative path when the slug is ambiguous
+$PaperArg = @{ type = 'string'; description = 'a document slug (must be unique under the ingestion root — an ambiguous slug ERRORS listing the candidates) or an ingestion-root-relative paper-dir path to disambiguate, e.g. "compendia/membrane-testing/2508.11646v1". Resolves to the paper''s LATEST run; pin a specific run with @, e.g. "2508.11646v1@20260701_203601" (legacy dir: "@.scratch") — list_documents reports each paper''s latest_run.' }
 $Tools = @(
     @{ name = 'list_documents'
        description = 'Survey the ingestion root: every {slug}/{slug}.json raw with whether it has been preprocessed and its current milestone stage. Body-blind. The "Go" starting point.'
        inputSchema = @{ type = 'object'; properties = @{ scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to survey, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'preprocess'
-       description = 'Run the seven-stage pipeline on a document''s raw IR, landing the enriched chunk stream + sidecars in its .scratch/ and logging the preprocessed milestone. Refuses to clobber applied repairs unless force=true.'
-       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; force = @{ type = 'boolean' } }; required = @('paper') } }
+       description = 'START a fresh workflow: run the seven-stage pipeline on a document''s raw IR, landing the enriched chunk stream + sidecars in a NEW runstamped dir ({paper}/.runs/{yyyyMMdd_HHmmss}/) and logging the preprocessed milestone. Every call creates a new run — prior runs are never touched, but the new run becomes the paper''s current view (the result flags a displaced run that carries applied/finalized work, with its @pin address). To CONTINUE existing work use the read/repair tools, which resolve the latest run or any pinned {paper}@{run}. Batch on-ramps: preprocess only docs list_documents shows unprepped.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = $PaperArg }; required = @('paper') } }
     @{ name = 'latex_convert'
        description = 'The LaTeX ORACLE: convert a staged arXiv LaTeX source into codex-standard markdown — the near-lossless, algorithmic ground truth used as the answer key for benchmarking docling-repair conversion quality (the benchmark workflow). This is the in-house alternative to pandoc/latexml — do NOT shell out to pandoc. It expands \newcommand macros to primitives (renderable KaTeX), wraps alignment envs in \begin{aligned}, resolves \cite/\ref/\eqref to numbers, numbers theorems/lemmas, and emits a references section. Reads the staged _inbox/<id>/<id>.tar.gz and writes _inbox/<id>/<id>.latex.md; returns the path + stats (bytes, macros expanded, sections, references). Requires the "source" artifact staged first via codex-arxiv fetch (artifacts: ["source"]) — a PDF-only paper has no LaTeX source.'
        inputSchema = @{ type = 'object'; properties = @{ id = @{ type = 'string'; description = 'arXiv id whose LaTeX source is already staged in _inbox, e.g. 1611.03935' } }; required = @('id') } }
     @{ name = 'render_check'
-       description = 'Validate that every math span in a markdown deliverable RENDERS under KaTeX — the objective math standard (STANDARDS §1): KaTeX-strict-clean implies it renders on GitHub''s MathJax. Reports total/ok/failed plus each failure with its exact KaTeX error (undefined control sequence, unbalanced delimiters, bare & outside an environment — the render-level view of the membrane detectors). Address by `paper` (its finalized .scratch/<slug>.md) OR a repo-relative `path` (e.g. the LaTeX oracle _inbox/<id>/<id>.latex.md, or a promoted compendia file). strict=true is the KaTeX-strict bar. Requires node + the pinned katex in tools/render-check.'
+       description = 'Validate that every math span in a markdown deliverable RENDERS under KaTeX — the objective math standard (STANDARDS §1): KaTeX-strict-clean implies it renders on GitHub''s MathJax. Reports total/ok/failed plus each failure with its exact KaTeX error (undefined control sequence, unbalanced delimiters, bare & outside an environment — the render-level view of the membrane detectors). Address by `paper` (its latest run''s finalized <slug>.md) OR a repo-relative `path` (e.g. the LaTeX oracle _inbox/<id>/<id>.latex.md, or a promoted compendia file). strict=true is the KaTeX-strict bar. Requires node + the pinned katex in tools/render-check.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; path = @{ type = 'string'; description = 'repo-relative .md path (alternative to paper)' }; strict = @{ type = 'boolean'; description = 'KaTeX-strict bar (default false)' } } } }
     @{ name = 'markdown_lint'
-       description = 'Structure-lint a markdown deliverable with markdownlint against the codex-aligned config (heading hierarchy §5, spacing hygiene §4; line-length disabled since the codex removes hard wraps). The NON-math half of the standard — math render-validity is the separate render_check gate. Reports each issue with line + rule (e.g. MD022 blanks-around-headings, MD012 no-multiple-blanks, MD018 no-missing-space-atx). Address by `paper` (.scratch/<slug>.md) OR a repo-relative `path`. Requires node + markdownlint in tools/md-lint.'
+       description = 'Structure-lint a markdown deliverable with markdownlint against the codex-aligned config (heading hierarchy §5, spacing hygiene §4; line-length disabled since the codex removes hard wraps). The NON-math half of the standard — math render-validity is the separate render_check gate. Reports each issue with line + rule (e.g. MD022 blanks-around-headings, MD012 no-multiple-blanks, MD018 no-missing-space-atx). Address by `paper` (latest run''s <slug>.md) OR a repo-relative `path`. Requires node + markdownlint in tools/md-lint.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; path = @{ type = 'string'; description = 'repo-relative .md path (alternative to paper)' } } } }
     @{ name = 'get_inventory'
        description = 'The in-play artifacts registered for a document: each durable file with stage, record count, byte size, and source (the build chain). The object-state window, complementing the milestone ledger.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
     @{ name = 'finalize'
-       description = 'Close the loop: serialize the repaired chunk stream into the corpus deliverable — a {slug}.md body (H1 title, Contents, sections at depth, block math fenced) plus a references/{slug}.md bibliography sidecar, per STANDARDS.md. First pass writes into the document''s .scratch/. Returns counts; pending = flagged chunks still unresolved (the deliverable is provisional while pending > 0). Logs the finalized milestone.'
+       description = 'Close the loop: serialize the repaired chunk stream into the corpus deliverable — a {slug}.md body (H1 title, Contents, sections at depth, block math fenced) plus a references/{slug}.md bibliography sidecar, per STANDARDS.md. First pass writes into the document''s current run dir. Returns counts; pending = flagged chunks still unresolved (the deliverable is provisional while pending > 0). Logs the finalized milestone.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
     @{ name = 'review_document'
        description = 'The one sanctioned holistic read, and the only pass that reads the assembled body for sense. The membrane is body-blind by design — the repair loop works scoped slices and never re-reads the whole paper. Call this ONCE at the end, after repairs are applied: it assembles the deliverable and returns the full body + references sidecar plus the still-flagged chunks (id + reason). Content IS the return here. NOTE: faithful means the LaTeX is structurally valid (delimiters/environments balance), NOT that the math is correct — the gate never reads an equation for meaning; that is this pass. Read every display equation as a statement and check: completeness (ends mid-operator? degenerate \substack / \max with no body? thinner than its label?), prose smuggled into \text{} that duplicates a neighbouring paragraph, a symbol that appears in exactly one equation (hallucination tell), and figure captions that do not match the paper subject. Fix anything you catch with propose_edit on the named chunk, then review again; if an equation is destroyed beyond in-place repair, recover from source (acquire the arXiv LaTeX).'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
     @{ name = 'get_summary'
        description = 'Body-blind metadata map of one document: title, zones, section count, repaired/flagged counts, remaining hotspots by type, enrichable count (orthogonal to flagged/pending).'
-       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string'; description = 'document name, no extension' } }; required = @('paper') } }
+       inputSchema = @{ type = 'object'; properties = @{ paper = $PaperArg }; required = @('paper') } }
     @{ name = 'get_enrichables'
        description = 'Post-fidelity enrichment lane: surface unwrapped ASCII-math candidates from prose chunk content (faithful, math_dirt<2), bucketed safe-wrap vs lossy and labeled auto/review/escalate. Separate from dispatch; does not move flagged/pending. Tier 1 is propose-only — worker confirms each safe-wrap via propose_edit.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
@@ -124,7 +126,7 @@ $Tools = @(
        description = 'Human check-in: queue a chunk for the supervising user with a message (surfaces as review_pending in get_summary). Use when uncertain rather than guessing.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; message = @{ type = 'string' } }; required = @('paper', 'id', 'message') } }
     @{ name = 'publish'
-       description = 'Close the loop into the published corpus: promote a finalized deliverable from its .scratch/ staging into compendia/{topic}/. (Re)materializes via finalize, then writes {slug}.md (figure links rewritten to the nested images/{slug}/ form), the references/{slug}.md sidecar, and only the figures the body references (images/{slug}/imageFileN). Upserts the paper''s _CONTENTS.md block non-destructively — replaced in place if present (thematic ordering preserved), else appended and flagged for the curator. Refuses while the deliverable is provisional (pending>0) unless force=true. Pass dry_run=true to preview the full manifest without moving anything. Logs the published milestone.'
+       description = 'Close the loop into the published corpus: promote a finalized deliverable from its run-dir staging into compendia/{topic}/. (Re)materializes via finalize, then writes {slug}.md (figure links rewritten to the nested images/{slug}/ form), the references/{slug}.md sidecar, and only the figures the body references (images/{slug}/imageFileN). Upserts the paper''s _CONTENTS.md block non-destructively — replaced in place if present (thematic ordering preserved), else appended and flagged for the curator. Refuses while the deliverable is provisional (pending>0) unless force=true. Pass dry_run=true to preview the full manifest without moving anything. Logs the published milestone.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; topic = @{ type = 'string'; description = 'compendia subfolder, e.g. "ph" or "mapper"' }; force = @{ type = 'boolean'; description = 'publish even while pending>0' }; dry_run = @{ type = 'boolean'; description = 'preview the manifest, move nothing' } }; required = @('paper', 'topic') } }
     @{ name = 'repair_headings'
        description = 'Detect + (optionally) auto-fix over-promoted headings in a PROMOTED markdown file by byte-offset anchor: float captions ("Figure 1 ...") and theorem-environment labels ("Proposition 3 ...") demote to bold; furniture / fused-body / table-fragment headings are isolated as escalations. With apply=false (default) it only reports; with apply=true it lands the confident fixes back-to-front. Returns a digest plus the escalation list, each carrying the {offset,length,raw} anchor to hand to splice_md. Path is repo-relative (e.g. "compendia/ph/1907.04889v2.md").'
@@ -152,18 +154,11 @@ function Get-PromptText([string]$name) {
 }
 
 # --- helpers ---
-function Resolve-Paper([string]$paper) {
-    if ([string]::IsNullOrWhiteSpace($paper) -or $paper -notmatch '^[\w.\-]+$') { throw "invalid paper name: '$paper'" }
-    $path = @(Invoke-Crawl -Root $Root -Patterns "**/.scratch/$paper.chunks.jsonl" -Semantics Include) | Select-Object -First 1
-    if (-not $path) { throw "document not found or not preprocessed: $paper" }
-    return $path
-}
-function Resolve-Source([string]$paper) {
-    if ([string]::IsNullOrWhiteSpace($paper) -or $paper -notmatch '^[\w.\-]+$') { throw "invalid paper name: '$paper'" }
-    $path = @(Invoke-Crawl -Root $Root -Patterns "**/$paper/$paper.json" -Semantics Include) | Select-Object -First 1
-    if (-not $path) { throw "source raw not found: $paper" }
-    return $path
-}
+# Paper addressing delegates to serving.ps1 (Resolve-PaperDir and friends): a bare slug must be
+# UNIQUE under $Root — an ambiguous slug throws listing the candidates (never first-hit-wins) —
+# or an ingestion-root-relative paper-dir path disambiguates. Chunks resolve to the LATEST run.
+function Resolve-Paper([string]$paper)  { return Resolve-PaperChunks -Root $Root -Paper $paper }
+function Resolve-Source([string]$paper) { return Resolve-PaperSource -Root $Root -Paper $paper }
 # Work-scope (runtime concern): empty -> the whole ingestion root; else a subtree under it,
 # full-path-normalized and confined to $Root (no escaping via .. or absolute paths).
 function Resolve-Scope([string]$scope) {
@@ -194,7 +189,7 @@ function Resolve-RepoPath([string]$path) {
     return $full
 }
 # Resolve a markdown deliverable to lint/render-check: a `path` (repo-relative, e.g. the oracle or a promoted
-# file) takes precedence; else a `paper` resolves to its finalized .scratch/<slug>.md sibling of the chunk stream.
+# file) takes precedence; else a `paper` resolves to the finalized <slug>.md sibling of its latest run's chunk stream.
 function Resolve-Deliverable([string]$paper, [string]$path) {
     if (-not [string]::IsNullOrWhiteSpace($path)) { return Resolve-RepoPath $path }
     if (-not [string]::IsNullOrWhiteSpace($paper)) {
@@ -208,7 +203,7 @@ function Resolve-Deliverable([string]$paper, [string]$path) {
 function Invoke-Tool([string]$name, $arguments) {
     switch ($name) {
         'list_documents' { $out = @(Get-IngestionScan -Root (Resolve-Scope $arguments.scope)) }
-        'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper) -Force:([bool]$arguments.force) }
+        'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper) }
         'latex_convert' {
             $id = [string]$arguments.id
             if ([string]::IsNullOrWhiteSpace($id) -or $id -notmatch '^[\w.\-]+$') { throw "invalid arXiv id: '$id'" }

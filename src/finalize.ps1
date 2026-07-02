@@ -6,8 +6,8 @@
   STANDARDS.md: an H1 title, a `## Contents` block, body sections at H2/H3/H4 by depth, prose
   paragraphs, block math fenced in $$, and running-head furniture dropped. The back-matter
   (References) is split into a sidecar references/{slug}.md, linked from Contents. First pass
-  writes into the document's own .scratch/ — get the SHAPE right; the move to compendia/{topic}/
-  is a later concern. Logs the 'finalized' milestone.
+  writes into the document's own run dir (.runs/{stamp}/, legacy .scratch/) — get the SHAPE right;
+  the move to compendia/{topic}/ is a later concern. Logs the 'finalized' milestone.
 
     . ./finalize.ps1
     Invoke-Finalize -ChunksPath <chunks.jsonl> [-OutputDir <dir>]
@@ -38,7 +38,7 @@ function Invoke-Finalize {
     )
     $chunks = @(Read-Chunks $ChunksPath)
     $slug = (Split-Path -Leaf $ChunksPath) -replace '\.chunks\.jsonl$', ''
-    if (-not $OutputDir) { $OutputDir = Split-Path -Parent $ChunksPath }   # .scratch, first pass
+    if (-not $OutputDir) { $OutputDir = Split-Path -Parent $ChunksPath }   # the run dir, first pass
     $live  = @($chunks | Where-Object { $_.is_furniture -notin 'running_head', 'figure_label', 'crumb' })
     $title = ($live | Where-Object { $_.title_candidate } | Select-Object -First 1).content
 
