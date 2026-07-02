@@ -622,6 +622,7 @@ function Get-BatchSummary {
             $ls = Get-LedgerStage $cp
             [pscustomobject]@{
                 paper        = $paper
+                run          = (Get-RunName $cp)                                                    # the CURRENT view; pin as {paper}@{run}
                 stage        = if ($ls) { [string]$ls.stage } else { 'unknown' }
                 chunks       = $chunks.Count
                 pages        = (@($chunks.page | Sort-Object -Unique)).Count
@@ -636,6 +637,7 @@ function Get-BatchSummary {
             # flagged 'unreadable' row the agent can escalate, never aborting the whole-batch survey.
             [pscustomobject]@{
                 paper        = $paper
+                run          = (Get-RunName $cp)
                 stage        = 'unreadable'
                 chunks       = 0
                 pages        = 0
@@ -705,13 +707,13 @@ function Invoke-Dispatch {
                 # additive: the multi-issue profile pooled over the span's members (the inventory), for
                 # routing/visibility — the full composed work-order is assembled at get_slice time.
                 $issues = @(Get-DeliverableIssues @($span.ids | ForEach-Object { $byId[[int]$_] }) | ForEach-Object { $_.type } | Select-Object -Unique)
-                $item = [pscustomobject]@{ paper = $name; id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam; agreement = $agreement; issues = $issues }
+                $item = [pscustomobject]@{ paper = $name; run = (Get-RunName $cp); id = [int]$span.ids[0]; span = $span.ids; kind = 'fragmented_formula'; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = $span.joined_seam; agreement = $agreement; issues = $issues }
                 $candidates.Add([pscustomobject]@{ cp = $cp; bytes = $bytes; agreement = [double]$agreement; leaseIds = @($span.ids | ForEach-Object { [int]$_ }); units = $span.ids.Count; item = $item })
             } else {
                 $agreement = Get-ChunkAgreement $c
                 # additive: the chunk's own multi-issue profile (the inventory) for routing/visibility
                 $issues = @(Get-ChunkIssues $c | ForEach-Object { $_.type })
-                $item = [pscustomobject]@{ paper = $name; id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam; agreement = $agreement; issues = $issues }
+                $item = [pscustomobject]@{ paper = $name; run = (Get-RunName $cp); id = [int]$c.id; grade = [string]$c.fidelity; bytes = $bytes; section = [string]$c.section; seam = [string]$c.seam; agreement = $agreement; issues = $issues }
                 $candidates.Add([pscustomobject]@{ cp = $cp; bytes = $bytes; agreement = [double]$agreement; leaseIds = @([int]$c.id); units = 1; item = $item })
             }
         }

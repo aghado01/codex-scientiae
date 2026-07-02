@@ -180,6 +180,31 @@ Describe 'preprocess — every invocation is a NEW run (starts a workflow; never
     }
 }
 
+Describe 'run visibility — surveys and dispatch pointers NAME the run (the agent never guesses)' {
+    It 'get_batch_summary rows carry the current run' {
+        $root = New-LayoutRoot
+        [void](New-Paper $root 'compendia/t' 'r1' -RunStamps '20260101_000000', '20260102_000000')
+        $rows = @(Get-BatchSummary -Root $root)
+        $rows.Count | Should -Be 1
+        $rows[0].run | Should -Be '20260102_000000'
+    }
+    It 'dispatch pointers carry the run they were drawn from' {
+        $root = New-LayoutRoot
+        $pd = New-Paper $root 'compendia/t' 'r2' -RunStamps '20260101_000000'
+        # make the run's chunk actionable so dispatch surfaces it
+        $cp = Join-Path $pd '.runs' '20260101_000000' 'r2.chunks.jsonl'
+        [void](Write-JsonlStage -Records @([pscustomobject]@{ id = 0; type = 'prose'; content = 'broken bit'; fidelity = 'needs_review' }) -OutputPath $cp -Stage 'fidelity')
+        $d = Invoke-Dispatch -Root $root -BudgetBytes 1000
+        $d.count | Should -Be 1
+        @($d.batch)[0].run | Should -Be '20260101_000000'
+    }
+    It 'the scan names the latest run for pinning' {
+        $root = New-LayoutRoot
+        [void](New-Paper $root 'compendia/t' 'r3' -RunStamps '20260101_000000' -Legacy)
+        (@(Get-IngestionScan $root) | Where-Object paper -eq 'r3').latest_run | Should -Be '20260101_000000'
+    }
+}
+
 Describe 'paper addressing — @{run} pins a specific run' {
     It 'unpinned resolves latest; @stamp pins an older run; @.scratch pins the legacy dir' {
         $root = New-LayoutRoot

@@ -28,6 +28,24 @@ unsure what state something is in, re-read it — never assume from memory. You 
 resume at any point by re-grounding from a projection; nothing is lost, because nothing is
 held.
 
+## Runs — know which one you are on
+
+A paper's working state lives in runstamped runs (`{paper}/.runs/{stamp}/`; a legacy
+`.scratch/` is the oldest run). `preprocess` always **starts a new run**; every other tool
+**continues** one — the latest by default, or exactly the run you pin with
+`{paper}@{stamp}`. Three rules:
+
+1. **Read the run back, never assume it.** Every paper-addressed result echoes the `run` it
+   operated on (list results carry it on the envelope; `dispatch` pointers and
+   `get_batch_summary` rows carry it per row). If the echoed run is not the one you meant,
+   stop and re-address with `{paper}@{stamp}`.
+2. **Do not preprocess to resume.** A new run becomes the paper's current view and hides
+   (never destroys) prior work from the default resolution. Re-enter existing work through
+   the read/repair tools; on-ramp only documents `list_documents` shows unprepped.
+3. **Pin when it matters.** Working a specific run across several calls (or comparing two
+   runs of one paper), address `{paper}@{stamp}` explicitly rather than trusting
+   newest-wins to stay stable under you.
+
 ## The batch loop — orchestrator (the seeing agent)
 
 Move a batch to completion by looping. You hold nothing between iterations.

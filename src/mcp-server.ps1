@@ -156,8 +156,14 @@ function Get-PromptText([string]$name) {
 # --- helpers ---
 # Paper addressing delegates to serving.ps1 (Resolve-PaperDir and friends): a bare slug must be
 # UNIQUE under $Root — an ambiguous slug throws listing the candidates (never first-hit-wins) —
-# or an ingestion-root-relative paper-dir path disambiguates. Chunks resolve to the LATEST run.
-function Resolve-Paper([string]$paper)  { return Resolve-PaperChunks -Root $Root -Paper $paper }
+# or an ingestion-root-relative paper-dir path disambiguates. Chunks resolve to the LATEST run
+# unless the address pins one ({paper}@{run}). Every resolution records WHICH run it landed on
+# ($script:RunCtx) so the tool result can echo it — the agent must never have to guess its run.
+function Resolve-Paper([string]$paper) {
+    $c = Resolve-PaperChunks -Root $Root -Paper $paper
+    $script:RunCtx = [pscustomobject]@{ paper = ((Split-Path -Leaf $c) -replace '\.chunks\.jsonl$', ''); run = (Get-RunName $c) }
+    return $c
+}
 function Resolve-Source([string]$paper) { return Resolve-PaperSource -Root $Root -Paper $paper }
 # Work-scope (runtime concern): empty -> the whole ingestion root; else a subtree under it,
 # full-path-normalized and confined to $Root (no escaping via .. or absolute paths).
@@ -201,6 +207,7 @@ function Resolve-Deliverable([string]$paper, [string]$path) {
 }
 
 function Invoke-Tool([string]$name, $arguments) {
+    $script:RunCtx = $null   # set by Resolve-Paper when this call addresses a paper's chunk stream
     switch ($name) {
         'list_documents' { $out = @(Get-IngestionScan -Root (Resolve-Scope $arguments.scope)) }
         'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper) }
@@ -268,6 +275,18 @@ function Invoke-Tool([string]$name, $arguments) {
             }
         }
         default        { throw "unknown tool: $name" }
+    }
+    # --- run visibility: every paper-addressed result names the run it operated on, so the agent
+    #     never has to guess which run is active. Object results carry paper/run in place; list
+    #     results are enveloped as {paper, run, count, items}. (dispatch/get_batch_summary rows
+    #     carry per-row run themselves — they are root-scoped, not paper-addressed.)
+    if ($script:RunCtx -and $null -ne $out) {
+        if ($out -is [System.Management.Automation.PSCustomObject]) {
+            if (-not $out.PSObject.Properties['paper']) { $out | Add-Member -NotePropertyName paper -NotePropertyValue $script:RunCtx.paper }
+            if (-not $out.PSObject.Properties['run'])   { $out | Add-Member -NotePropertyName run   -NotePropertyValue $script:RunCtx.run }
+        } elseif ($out -is [System.Collections.IEnumerable] -and $out -isnot [string]) {
+            $out = [pscustomobject]@{ paper = $script:RunCtx.paper; run = $script:RunCtx.run; count = @($out).Count; items = @($out) }
+        }
     }
     $text = if ($null -eq $out) { '(no output)' } else { $out | ConvertTo-Json -Depth 12 -Compress }
     return @{ content = @(@{ type = 'text'; text = $text }) }
@@ -370,7 +389,7 @@ while ($null -ne ($line = $script:In.ReadLine())) {
                         $script:Readiness = if ($scan.Count -eq 0) {
                             "codex-membrane: ingestion root '$Root' mounted but EMPTY -- 0 documents discovered (no {slug}/{slug}.json under it). Confirm this is the intended tree, pass a different -Root, or escalate to the user; do not assume there is simply no work. $useTools"
                         } else {
-                            "codex-membrane: serving ingestion root '$Root' -- $($scan.Count) document(s) discovered, $prepped preprocessed. Begin with get_batch_summary (orchestrator re-ground) or list_documents; narrow a survey with the optional scope arg. The repair workflow is in PROCEDURE.md. $useTools"
+                            "codex-membrane: serving ingestion root '$Root' -- $($scan.Count) document(s) discovered, $prepped preprocessed. Begin with get_batch_summary (orchestrator re-ground) or list_documents; narrow a survey with the optional scope arg. RUN MODEL: a paper's work lives in runstamped runs ({paper}/.runs/{stamp}); preprocess always STARTS a new run, the other tools CONTINUE the latest (or any pinned {paper}@{run}), and every paper-addressed result echoes the run it operated on -- read it back rather than assuming. The repair workflow is in PROCEDURE.md. $useTools"
                         }
                         Write-Log "discovery: $($scan.Count) document(s), $prepped preprocessed under $Root"
                     } catch {
