@@ -58,6 +58,15 @@ null, the engine falls back to *font evidence*: any letters matching a font-role
 domain `tex-origin` ⇒ `tex_origin: true, cue: "fonts"`. The cue ships in the IR header so
 downstream always knows which sense produced the verdict.
 
+## Who consumes what
+
+| Store | Substrate (`pdfdig-ir.ps1`) | Classifier (`pdfdig-classify.ps1`) |
+|---|---|---|
+| `font-roles.jsonl` | family/role census, origin font-evidence | role per run (math/prose/mono; unknown ⇒ flag) |
+| `producer-map.jsonl` | origin ladder (producer > creator > fonts) | inherits verdict from the IR envelope |
+| `classify-config.json` | columns + rules knobs, `config_hash` | script/heading/display-math/furniture knobs |
+| `symbol-map.jsonl` | — (substrate stays byte-faithful) | glyph corrections (math) + ligatures (prose) at node emission |
+
 ## specimens.jsonl (one level up)
 
 The specimen registry — per-PDF record of producer, fonts encountered, pathologies, what

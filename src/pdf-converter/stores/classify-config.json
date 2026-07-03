@@ -22,6 +22,24 @@
     "baseline_tolerance_pt": 2.5,
     "space_gap_fraction": 0.18
   },
+  "headings": {
+    "_doc": "CLASSIFIER-PHASE heading-candidate call from per-document calibration: a line whose modal size is at least min_size_ratio_over_body x body size sits in the tier ladder; a line at body size qualifies when at least bold_line_frac of its letters are bold-by-name (the -Medi/CMBX cue — IsBold flag is unreliable, capability map 1a). Candidates are cross-derived against the bookmark outline (normalized contains-match, page +/-1) — confirmation is a flag, never a gate. tier_merge_gap_pt: adjacent ladder sizes closer than this merge into one tier BAND — office pipelines emit continuous size jitter (specimen 2504.09042: 18 raw sizes 16.3-16.7 etc), not TeX's quantized magsteps; more than max_tiers_before_flag bands after merging flags tier_ladder_noisy.",
+    "min_size_ratio_over_body": 1.04,
+    "bold_line_frac": 0.6,
+    "max_line_letters": 200,
+    "tier_merge_gap_pt": 0.25,
+    "max_tiers_before_flag": 8
+  },
+  "display_math": {
+    "_doc": "CLASSIFIER-PHASE formula-block call: a line whose math-role letter fraction is at least min_math_frac, no wider than max_width_frac_of_block of its block, emits as formula-block. Consecutive formula lines closer than stack_gap_factor x line size share a formula group and are flagged needs_2d_assembly (fractions/matrices pending the C# AST tier).",
+    "min_math_frac": 0.55,
+    "max_width_frac_of_block": 0.92,
+    "stack_gap_factor": 1.8
+  },
+  "furniture": {
+    "_doc": "CLASSIFIER-PHASE marker call (running heads, page numbers, the arXiv stamp): a line whose baseline sits within margin_frac of the page top/bottom at no more than body size, or whose modal orientation is not Horizontal (rotated stamps/sidebars).",
+    "margin_frac": 0.06
+  },
   "dla": {
     "_doc": "DLA algorithm option overrides (IDlaOptions), applied when constructing segmenter/word-extractor instances. Empty = library defaults (Docstrum within=3.0/between=1.3, XYCut MinimumWidth=1). Populate per-domain when a specimen motivates it.",
     "xycut": {},

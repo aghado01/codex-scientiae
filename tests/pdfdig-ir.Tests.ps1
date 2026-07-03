@@ -11,7 +11,7 @@
 #>
 
 BeforeAll {
-    . "$PSScriptRoot/../src/pdf-converter/pdfdig-ir.ps1"
+    . "$PSScriptRoot/../src/pdf-converter/pdfdig-classify.ps1"   # dot-sources pdfdig-ir.ps1 itself
     $script:SpecimenPdf = "$PSScriptRoot/../ingestion/_inbox/2508.11646/2508.11646.pdf"
 }
 
@@ -142,6 +142,31 @@ Describe 'column-band labeling' {
     }
 }
 
+Describe 'classifier helpers' {
+    BeforeAll { Import-SymbolMap | Out-Null }
+
+    It 'loads symbol-map.jsonl' {
+        Import-SymbolMap | Should -BeGreaterThan 5
+    }
+
+    It 'maps CMSY k to Vert in math scope only (the kuk class)' {
+        Resolve-Symbol 'CMSY10' 'k' 'math'  | Should -Be '‖'
+        Resolve-Symbol 'CMSY10' 'k' 'prose' | Should -BeNullOrEmpty     # scope-gated
+        Resolve-Symbol 'NimbusRomNo9L-Regu' 'k' 'math' | Should -BeNullOrEmpty  # font-gated
+    }
+
+    It 'expands ligatures font-independently in prose scope' {
+        Resolve-Symbol 'AnyFont' 'ﬁ' 'prose' | Should -Be 'fi'
+        Resolve-Symbol 'CMR10' 'ﬄ' 'prose'  | Should -Be 'ffl'
+    }
+
+    It 'normalizes titles across numbering dialects' {
+        $a = ConvertTo-NormalizedTitle 'II. FROM SPIKING DYNAMICS TO TOPOLOGY'
+        $b = ConvertTo-NormalizedTitle 'From Spiking Dynamics to Topology'
+        $a.Contains($b) | Should -BeTrue
+    }
+}
+
 Describe 'end-to-end (golden specimen 2508.11646, pages 1-2)' {
     BeforeAll {
         $script:skip = -not (Test-Path $script:SpecimenPdf)
@@ -193,5 +218,29 @@ Describe 'end-to-end (golden specimen 2508.11646, pages 1-2)' {
             if ($o.text -eq 'δ' -and $o.family -eq 'cm') { $found = $true; break }
         }
         $found | Should -BeTrue
+    }
+
+    It 'classifier emits typed nodes with membrane-canonical fields' -Skip:$script:skip {
+        $script:cls = ConvertTo-PdfDigNodes -IrDir $script:outDir -Slug '2508.11646'
+        $script:cls.Nodes | Should -BeGreaterThan 300
+        $script:cls.Calibration.body_size | Should -Be 10.0
+        $n = ([System.IO.File]::ReadAllLines((Join-Path $script:outDir '2508.11646.nodes.jsonl'))[0]) | ConvertFrom-Json
+        foreach ($k in 'type','page','content','font','font size','bounding box','role','script','flags') {
+            $n.PSObject.Properties[$k] | Should -Not -BeNullOrEmpty -Because "node must carry '$k'"
+        }
+    }
+
+    It 'classifier finds headings via both witnesses and calls scripts' -Skip:$script:skip {
+        $script:cls.Health.heading_candidates | Should -BeGreaterThan 0
+        $script:cls.Health.bookmarks_matched | Should -BeGreaterThan 1     # Introduction + p2 sections in range
+        $sawScript = $false; $sawMathRole = $false
+        foreach ($line in [System.IO.File]::ReadAllLines((Join-Path $script:outDir '2508.11646.nodes.jsonl'))) {
+            $o = $line | ConvertFrom-Json
+            if ($o.script -in 'sub','super') { $sawScript = $true }
+            if ($o.role -eq 'math') { $sawMathRole = $true }
+            if ($sawScript -and $sawMathRole) { break }
+        }
+        $sawScript | Should -BeTrue
+        $sawMathRole | Should -BeTrue
     }
 }
