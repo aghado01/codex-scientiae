@@ -17,7 +17,9 @@
   The server's purview is the whole repo: read/repair are scoped to -Root (ingestion), while the
   post-finalize publish lane writes into -CompendiaRoot (<repo>/compendia by default).
 
-  Tools: 29 ops. The paper-addressed membrane ops (list_documents … get_enrichables); `latex_convert`, the
+  Tools: 29 core ops + 3 opt-in EXPERIMENTAL (reflect / surface_candidate / harvest — the
+  self-improving + benchmarking lanes, advertised only under -Experimental / CODEX_MEMBRANE_EXPERIMENTAL
+  so the default surface stays lean). The paper-addressed membrane ops (list_documents … get_enrichables); `latex_convert`, the
   id-addressed LaTeX-oracle input lane (staged arXiv source -> codex markdown ground truth, the benchmark
   answer key); `render_check` + `markdown_lint`, the paper/path-addressed validity gates (does the math render
   under KaTeX; does the markdown structure conform to the standard); plus the post-finalize lane that closes
@@ -31,8 +33,14 @@
 param(
     [string]$Root = (Join-Path (Split-Path -Parent $PSScriptRoot) 'ingestion'),
     [string]$CompendiaRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) 'compendia'),
-    [string]$ProtocolVersion = '2025-06-18'
+    [string]$ProtocolVersion = '2025-06-18',
+    # OPT-IN experimental tools (reflect / surface_candidate / harvest). OFF by default so the
+    # advertised surface stays lean — unused tools are cognitive clutter and a spurious-invocation
+    # risk. Enable per session with -Experimental in the client's MCP args, or CODEX_MEMBRANE_EXPERIMENTAL=1
+    # in its env; then RESTART the server. When off, these tools are neither advertised nor callable.
+    [switch]$Experimental
 )
+if (-not $Experimental -and $env:CODEX_MEMBRANE_EXPERIMENTAL -in '1','true','yes','on') { $Experimental = $true }
 
 . "$PSScriptRoot/serving.ps1"
 . "$PSScriptRoot/restructure.ps1"
@@ -43,6 +51,7 @@ param(
 . "$PSScriptRoot/latex-ingest.ps1"   # the LaTeX oracle lane (latex_convert): arXiv source -> codex markdown
 . "$PSScriptRoot/render-check.ps1"   # math render-validity gate (render_check): does every span render in KaTeX
 . "$PSScriptRoot/md-lint.ps1"        # markdown structure lint (markdown_lint): the non-math half of the standard
+. "$PSScriptRoot/benchmark.ps1"      # EXPERIMENTAL: Export-BenchmarkTrial (harvest well-posed repair problems)
 
 $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 
@@ -122,12 +131,6 @@ $Tools = @(
     @{ name = 'mark_unrecoverable'
        description = 'Terminal escalation: the agent tried and cannot repair this chunk from the export. Sets fidelity=unrecoverable (the rare hand-off that earns re-extraction by the successor) and drops any staged edit. Use sparingly -- a high unrecoverable rate indicts the repair attempt, not the export.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; reason = @{ type = 'string' } }; required = @('paper', 'id') } }
-    @{ name = 'reflect'
-       description = 'OPTIONAL post-hoc introspection over a run''s worked examples — never required, never interferes with the work; invoke it at a natural boundary (after a repair run/batch) if you want to look for generalizable patterns. Returns the run''s applied repairs grouped by class (before->after) + structural ops + an introspection prompt. The question it poses: is any hand-repair a pattern the DETERMINISTIC tier could handle (a store entry, geometry/typography rule, symbol map) rather than a per-document fix? You NEVER promote — you surface candidates (surface_candidate / spawn_task) for a HUMAN to examine. Surfacing is cheap and good; a single suggestive example is reason enough.'
-       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
-    @{ name = 'surface_candidate'
-       description = 'Raise a promotion candidate for HUMAN examination — the machine never promotes, it surfaces. Appends to issues/promotion-candidates.jsonl (durable, human-reviewed). Use after reflect when a repair pattern looks generalizable. State the pattern in INTRINSIC terms (geometry / typography / font register / symbol map / store entry); if you can only state it as a regex matching a specific string, say so in expressibility (that is the overfit tell, not a rule). Include the supporting examples and your recommendation. You are gathering evidence for a person, not deciding.'
-       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; pattern = @{ type = 'string'; description = 'the generalization, in intrinsic terms' }; class = @{ type = 'string'; description = 'the corruption/issue class it addresses' }; examples = @{ type = 'array'; items = @{ type = 'string' }; description = 'supporting refs, e.g. "BPCSR2024:653"' }; expressibility = @{ type = 'string'; description = 'geometry/font/store terms, or "regex-only" (overfit tell)' }; recommendation = @{ type = 'string' } }; required = @('pattern') } }
     @{ name = 'request_review'
        description = 'Human check-in: queue a chunk for the supervising user with a message (surfaces as review_pending in get_summary). Use when uncertain rather than guessing.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; message = @{ type = 'string' } }; required = @('paper', 'id', 'message') } }
@@ -144,6 +147,24 @@ $Tools = @(
        description = 'The byte-offset analog of propose_edit for promoted markdown (no JSON/IR post-promotion): replace exactly `length` bytes at byte `offset` with `replacement`. Pass `expect` (the current bytes at that span, e.g. an escalation''s `raw`) and a stale/shifted offset fails loudly instead of corrupting. This is how an agent lands a hand-authored fix for a repair_headings escalation. Path is repo-relative. UTF-8 no-BOM; offsets index on-disk bytes so SMP math / ligatures stay exact.'
        inputSchema = @{ type = 'object'; properties = @{ path = @{ type = 'string'; description = 'repo-relative path to a .md file' }; offset = @{ type = 'integer' }; length = @{ type = 'integer' }; replacement = @{ type = 'string' }; expect = @{ type = 'string'; description = 'optional guard: the exact bytes currently at [offset,+length]' } }; required = @('path', 'offset', 'length', 'replacement') } }
 )
+
+# --- EXPERIMENTAL tools (opt-in via -Experimental / CODEX_MEMBRANE_EXPERIMENTAL). Appended to the
+#     catalogue ONLY when enabled, so the default surface a client sees stays lean. These are the
+#     self-improving / benchmarking lanes: introspect a run for generalizable patterns (reflect),
+#     surface a promotion candidate for human review (surface_candidate), and opportunistically
+#     harvest well-posed repair problems into the challenge library (harvest). ------------------------
+$ExperimentalTools = @(
+    @{ name = 'reflect'
+       description = 'EXPERIMENTAL. OPTIONAL post-hoc introspection over a run''s worked examples — never required, never interferes with the work; invoke at a natural boundary (after a repair run/batch) if you want to look for generalizable patterns. Returns the run''s applied repairs grouped by class (before->after) + structural ops + an introspection prompt: is any hand-repair a pattern the DETERMINISTIC tier could handle (a store entry, geometry/typography rule, symbol map) rather than a per-document fix? You NEVER promote — you surface candidates for a HUMAN. Surfacing is cheap and good; a single suggestive example is reason enough.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
+    @{ name = 'surface_candidate'
+       description = 'EXPERIMENTAL. Raise a promotion candidate for HUMAN examination — the machine never promotes, it surfaces. Appends to issues/promotion-candidates.jsonl (durable, human-reviewed). Use after reflect when a repair pattern looks generalizable. State the pattern in INTRINSIC terms (geometry / typography / font register / symbol map / store entry); if you can only state it as a regex matching a specific string, say so in expressibility (that is the overfit tell, not a rule). Include supporting examples + your recommendation. You gather evidence for a person, not decide.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; pattern = @{ type = 'string'; description = 'the generalization, in intrinsic terms' }; class = @{ type = 'string' }; examples = @{ type = 'array'; items = @{ type = 'string' }; description = 'supporting refs, e.g. "BPCSR2024:653"' }; expressibility = @{ type = 'string'; description = 'geometry/font/store terms, or "regex-only" (overfit tell)' }; recommendation = @{ type = 'string' } }; required = @('pattern') } }
+    @{ name = 'harvest'
+       description = 'EXPERIMENTAL. Opportunistically harvest a paper''s flagged repair problems into the benchmark challenge library (ingestion double-duty). Each flagged formula chunk becomes a well-posed trial (broken content + math_evidence geometry + gate + difficulty tags), uniqueness-gated: novel content, near-dups under a per-tier redundancy cap, and same-shape-different-difficulty are KEPT; only same-tier duplicates over the cap are skipped. Returns harvested/skipped counts + library size. Append-only, never mutates the paper.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; redundancy_cap = @{ type = 'integer'; description = 'near-dups allowed per difficulty tier (default 2)' } }; required = @('paper') } }
+)
+if ($Experimental) { $Tools += $ExperimentalTools }
 
 # --- prompt catalogue: the Layer-2 procedure, served so a client injects it into the agent's context ---
 # MVP is one prompt (the membrane is depth-invariant, so a single procedure text serves orchestrator and
@@ -269,13 +290,33 @@ function Invoke-Tool([string]$name, $arguments) {
         'get_audit'          { $out = Get-Audit -ChunksPath (Resolve-Paper $arguments.paper) -Id $(if ($null -ne $arguments.id) { [int]$arguments.id } else { -1 }) -Kind ([string]$arguments.kind) }
         'mark_unrecoverable' { $out = Set-Unrecoverable -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Reason ([string]$arguments.reason) }
         'request_review'     { $out = Add-ReviewRequest -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Message ([string]$arguments.message) }
-        'reflect'            { $out = Get-RunReflection -ChunksPath (Resolve-Paper $arguments.paper) }
+        'reflect'            {
+            if (-not $Experimental) { throw 'reflect is experimental; restart the server with -Experimental (or CODEX_MEMBRANE_EXPERIMENTAL=1)' }
+            $out = Get-RunReflection -ChunksPath (Resolve-Paper $arguments.paper)
+        }
         'surface_candidate'  {
+            if (-not $Experimental) { throw 'surface_candidate is experimental; restart the server with -Experimental (or CODEX_MEMBRANE_EXPERIMENTAL=1)' }
             $out = Add-PromotionCandidate -RepoRoot ([System.IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))) `
                 -Pattern ([string]$arguments.pattern) -Class ([string]$arguments.class) `
                 -Examples @($arguments.examples | ForEach-Object { [string]$_ }) `
                 -Expressibility ([string]$arguments.expressibility) -Recommendation ([string]$arguments.recommendation) `
                 -Paper ([string]$arguments.paper)
+        }
+        'harvest'            {
+            if (-not $Experimental) { throw 'harvest is experimental; restart the server with -Experimental (or CODEX_MEMBRANE_EXPERIMENTAL=1)' }
+            $cp = Resolve-Paper $arguments.paper
+            $paperDir = Split-Path (Split-Path (Split-Path $cp -Parent) -Parent) -Parent
+            $slug = (Split-Path -Leaf $cp) -replace '\.chunks\.jsonl$', ''
+            $lib = Join-Path $Root 'benchmarks/trials.jsonl'
+            $cap = if ($null -ne $arguments.redundancy_cap) { [int]$arguments.redundancy_cap } else { 2 }
+            $flagged = @(Read-Chunks $cp | Where-Object { [string]$_.type -eq 'formula' -and $_.flags })
+            $kept = 0; $skip = 0
+            foreach ($c in $flagged) {
+                $r = Export-BenchmarkTrial -Chunk $c -PaperDir $paperDir -Slug $slug -LibraryPath $lib -RedundancyCap $cap
+                if ($r.harvested) { $kept++ } else { $skip++ }
+            }
+            $size = if (Test-Path $lib) { @([System.IO.File]::ReadLines($lib) | Where-Object { $_ }).Count } else { 0 }
+            $out = [pscustomobject]@{ paper = $slug; flagged = $flagged.Count; harvested = $kept; skipped = $skip; library = $lib; library_size = $size }
         }
         'publish' {
             $out = Invoke-Publish -ChunksPath (Resolve-Paper $arguments.paper) -CompendiaRoot $CompendiaRoot `
