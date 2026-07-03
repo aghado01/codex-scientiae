@@ -129,10 +129,18 @@ function Invoke-Sections {
             }
             else {
                 $role = Get-SectionRole ([string]$c.content)
-                $lv   = Get-SectionLevel ([string]$c.content)
-                $c | Add-Member -NotePropertyName section_role  -NotePropertyValue $role     -Force
-                $c | Add-Member -NotePropertyName section_level -NotePropertyValue $lv.level  -Force
-                $c | Add-Member -NotePropertyName level_source  -NotePropertyValue $(if ($lv.numbered) { 'numbered' } else { 'default' }) -Force
+                # an explicit heading_level from the IR (the pig lane's PDF-outline / typographic-tier
+                # depth) is authoritative — it is exactly what the font-calibration pass reverse-engineers
+                # for the docling lane. Honor it over the text-numbering guess and skip re-levelling.
+                if ($null -ne $c.heading_level) {
+                    $lv = @{ level = [int]$c.heading_level; source = 'ir' }
+                } else {
+                    $g = Get-SectionLevel ([string]$c.content)
+                    $lv = @{ level = $g.level; source = $(if ($g.numbered) { 'numbered' } else { 'default' }) }
+                }
+                $c | Add-Member -NotePropertyName section_role  -NotePropertyValue $role      -Force
+                $c | Add-Member -NotePropertyName section_level -NotePropertyValue $lv.level   -Force
+                $c | Add-Member -NotePropertyName level_source  -NotePropertyValue $lv.source  -Force
                 if ($lv.level -eq 1) { $currentSection = [string]$c.content }
             }
         }
@@ -158,7 +166,7 @@ function Invoke-Sections {
     $calSizes = @($sizeLevel.Keys)
     $relevelled = 0; $flagged = 0
     foreach ($h in $secHeads) {
-        if ($h.level_source -eq 'numbered') { continue }
+        if ($h.level_source -in 'numbered','ir') { continue }   # 'ir' = pig outline/tier depth, already authoritative
         if ($null -ne $h.font_size -and $calSizes.Count) {
             $fs   = [double]$h.font_size
             $near = $calSizes | Sort-Object { [math]::Abs($_ - $fs) } | Select-Object -First 1

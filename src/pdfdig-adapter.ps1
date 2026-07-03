@@ -106,12 +106,24 @@ function Invoke-ProjectPdfDigNodes {
     }
     if ($cur) { $lines.Add($cur) }
 
+    # max run font size on a line (title = the doc's largest; carried so zones picks the title by
+    # typography, not just reading order)
+    $lineFontSize = {
+        param($runsArr)
+        $mx = 0.0
+        foreach ($r in $runsArr) { $s = [double]$r.'font size'; if ($s -gt $mx) { $mx = $s } }
+        if ($mx -gt 0) { $mx } else { $null }
+    }
+
     # emit membrane nodes: paragraph | heading | formula (grouped) — markers dropped + counted
     $out = [System.Collections.Generic.List[object]]::new(8192)
     $id = 0
     $markersDropped = 0; $flagged = 0; $formulaLines = 0
     $counts = @{ paragraph = 0; heading = 0; formula = 0 }
     $formulaOpen = $null   # @{ group; content(List); runs(List) } — consecutive same-group lines merge
+    # @{ key; page; level; runs; contentLines; flags } — consecutive lines sharing a merge key
+    # (same outline entry, or the tier-0 title) are physical wraps of ONE logical heading
+    $headingOpen = $null
 
     $closeFormula = {
         if ($null -ne $formulaOpen) {
@@ -124,6 +136,19 @@ function Invoke-ProjectPdfDigNodes {
             $counts.formula++
         }
     }
+    $closeHeading = {
+        if ($null -ne $headingOpen) {
+            $out.Add([ordered]@{
+                id = $id; type = 'heading'; page = $headingOpen.page
+                bbox = (Merge-RunBbox $headingOpen.runs.ToArray())
+                content = ($headingOpen.contentLines -join ' ')   # wrapped physical lines rejoin with a space
+                heading_level = $headingOpen.level
+                font_size = (& $lineFontSize $headingOpen.runs.ToArray())
+                flags = @($headingOpen.flags)
+            })
+            $counts.heading++
+        }
+    }
 
     foreach ($ln in $lines) {
         $first = $ln[0]
@@ -132,9 +157,14 @@ function Invoke-ProjectPdfDigNodes {
         foreach ($r in $ln) { foreach ($f in $r.flags) { [void]$lineFlags.Add([string]$f) } }
         if ($lineFlags.Count -gt 0) { $flagged++ }
 
-        if ($ltype -eq 'marker') { $markersDropped++; continue }
+        if ($ltype -eq 'marker') {
+            & $closeFormula; if ($null -ne $formulaOpen) { $id++; $formulaOpen = $null }
+            & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
+            $markersDropped++; continue
+        }
 
         if ($ltype -eq 'formula-block') {
+            & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
             $formulaLines++
             $g = $first.formula_group
             if ($null -ne $formulaOpen -and $formulaOpen.group -eq $g) {
@@ -158,29 +188,61 @@ function Invoke-ProjectPdfDigNodes {
         & $closeFormula; if ($null -ne $formulaOpen) { $id++; $formulaOpen = $null }
 
         if ($ltype -eq 'heading-candidate') {
+            # heading_level: the PDF outline is authoritative when it matched; else fall back to the
+            # typographic tier (0=title/largest .. bold-body run-in = deepest), clamped to md's H1..H6.
+            # This is the "outline knows the true depth" fix for -Medi run-in over-promotion.
             $hl = $null
             if ($null -ne $first.outline_level) { $hl = [int]$first.outline_level + 1 }
-            $out.Add([ordered]@{
-                id = $id; type = 'heading'; page = $first.page
-                bbox = (Merge-RunBbox $ln.ToArray())
-                content = (ConvertTo-SeamedText $ln.ToArray() $false)
-                heading_level = $hl
-                flags = @($lineFlags)
-            })
-            $counts.heading++; $id++
+            elseif ($null -ne $first.tier)      { $hl = [math]::Min(6, [int]$first.tier + 1) }
+            $tier = if ($null -ne $first.tier) { [int]$first.tier } else { -1 }
+
+            # merge key: a wrapped heading's physical lines share ONE key and re-fuse. Same outline
+            # entry (section titles that wrap mid-phrase — "…TOPOLOGICAL" / "DYNAMICS"), or the
+            # tier-0 title (unique-largest font, no outline entry). A null key = standalone: author
+            # blocks / run-in bold heads (same tier but distinct lines) must NOT fuse.
+            $mergeKey = if ($null -ne $first.outline_ref) { "ol:$($first.outline_ref)" }
+                        elseif ($tier -eq 0) { "title:$($first.page)" }
+                        else { $null }
+            $seamed = ConvertTo-SeamedText $ln.ToArray() $false
+
+            if ($null -ne $mergeKey -and $null -ne $headingOpen -and $headingOpen.key -eq $mergeKey -and $headingOpen.page -eq $first.page) {
+                $headingOpen.runs.AddRange($ln)
+                $headingOpen.contentLines.Add($seamed)
+                if ($null -ne $hl -and ($null -eq $headingOpen.level -or $hl -lt $headingOpen.level)) { $headingOpen.level = $hl }
+                foreach ($f in $lineFlags) { [void]$headingOpen.flags.Add($f) }
+                continue
+            }
+            & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
+            $newHead = @{
+                key = $mergeKey; page = $first.page; level = $hl
+                runs = [System.Collections.Generic.List[object]]::new()
+                contentLines = [System.Collections.Generic.List[string]]::new()
+                flags = [System.Collections.Generic.SortedSet[string]]::new([StringComparer]::Ordinal)
+            }
+            $newHead.runs.AddRange($ln); $newHead.contentLines.Add($seamed)
+            foreach ($f in $lineFlags) { [void]$newHead.flags.Add($f) }
+            if ($null -eq $mergeKey) {
+                # standalone: emit immediately, don't hold open (never merges with a neighbor)
+                $headingOpen = $newHead; & $closeHeading; $id++; $headingOpen = $null
+            } else {
+                $headingOpen = $newHead
+            }
             continue
         }
+        & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
 
         # prose / anything else -> paragraph shard (collapse agglomerates by bbox continuity)
         $out.Add([ordered]@{
             id = $id; type = 'paragraph'; page = $first.page
             bbox = (Merge-RunBbox $ln.ToArray())
             content = (ConvertTo-SeamedText $ln.ToArray() $false)
+            font_size = (& $lineFontSize $ln.ToArray())
             flags = @($lineFlags)
         })
         $counts.paragraph++; $id++
     }
     & $closeFormula; if ($null -ne $formulaOpen) { $id++; $formulaOpen = $null }
+    & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
 
     $null = Write-JsonlStage -Records $out.ToArray() -OutputPath $OutputPath -SourcePath $SourcePath -Stage 'pdfdig-adapter'
 

@@ -67,6 +67,16 @@ function ConvertTo-NormalizedTitle([string] $s) {
     return (($s -replace '[^\p{L}\p{Nd}]', '')).ToLowerInvariant()
 }
 
+# outline KEY: strip a leading section number (Roman "III.", Arabic "3"/"3.2", letter "A.") BEFORE
+# normalizing, so a numbered on-page heading matches its number-less bookmark title — otherwise the
+# numeral prefix ("iii…") defeats the substring test and a wrapped section's first line goes
+# unmatched (its wrap tail then orphans as a phantom heading — 2508.11646 §III/§V).
+function ConvertTo-OutlineKey([string] $s) {
+    if (-not $s) { return '' }
+    $t = $s -replace '^\s*([IVXLCDM]+|\d+(\.\d+)*|[A-Za-z])[.)]\s+', ''
+    return ConvertTo-NormalizedTitle $t
+}
+
 function Read-JsonlLane([string] $Path) {
     if (-not (Test-Path $Path)) { throw "lane not found: $Path (run ConvertTo-PdfDigIr first)" }
     # per-line -AsHashtable: measured fastest on the 84p bench (18.8s vs 23.7s PSCustomObject
@@ -84,7 +94,7 @@ function Read-JsonlLane([string] $Path) {
 # ── run assembly + node emission for one line. $Ctx carries all cross-line mutable state:
 #    nid, formulaGroup, subs, ligs, nodes(List), typeCounts(hashtable), cfg, fontRole. ─────────────
 function Emit-PdfDigLine {
-    param($Ctx, $Letters, $LineId, $BlockId, $Col, [string]$LineType, $Tier, [string[]]$LineFlags, $St, $OutlineLevel)
+    param($Ctx, $Letters, $LineId, $BlockId, $Col, [string]$LineType, $Tier, [string[]]$LineFlags, $St, $OutlineLevel, $OutlineRef)
 
     $cfg = $Ctx.cfg
     # key-array sort, not Sort-Object{} — no per-comparison scriptblock in the hot path.
@@ -170,6 +180,7 @@ function Emit-PdfDigLine {
         }
         if ($null -ne $Tier) { $rec.tier = $Tier }
         if ($null -ne $OutlineLevel) { $rec.outline_level = $OutlineLevel }
+        if ($null -ne $OutlineRef) { $rec.outline_ref = $OutlineRef }
         if ($LineType -eq 'formula-block') { $rec.formula_group = $Ctx.formulaGroup }
         $fl = [System.Collections.Generic.SortedSet[string]]::new([StringComparer]::Ordinal)
         foreach ($f in $run.flags)  { if ($f) { [void]$fl.Add($f) } }
@@ -307,11 +318,14 @@ function ConvertTo-PdfDigNodes {
         $calibration.prose_letter_sizes[$kv.Key] = $kv.Value
     }
 
-    # bookmark outline (normalized) for heading cross-derivation
-    $outline = @(foreach ($bm in $envelope.bookmarks) {
-        @{ norm = (ConvertTo-NormalizedTitle $bm.title); title = $bm.title; page = $bm.page
-           level = $bm.level; matched = $false }
-    })
+    # bookmark outline (number-stripped key) for heading cross-derivation. `ref` = stable index — a
+    # wrapped heading's fragments all match the SAME ref, which the adapter uses to re-fuse them.
+    $outline = @(); $oi = 0
+    foreach ($bm in $envelope.bookmarks) {
+        $outline += @{ norm = (ConvertTo-OutlineKey $bm.title); title = $bm.title; page = $bm.page
+                       level = $bm.level; ref = $oi; matched = $false }
+        $oi++
+    }
 
     # ══ Stage B: TYPED EMISSION — run-level nodes in resolved reading order ════════════════════
     $ctx = @{
@@ -373,7 +387,7 @@ function ConvertTo-PdfDigNodes {
                 # (heading_from_outline + outline_level), never a fabricated tier.
                 $outlineHit = $null
                 if ($outline.Count -gt 0 -and $st.n -le $cfg.headings.max_line_letters) {
-                    $lineNorm = ConvertTo-NormalizedTitle $ln.text
+                    $lineNorm = ConvertTo-OutlineKey $ln.text
                     foreach ($o in $outline) {
                         if (-not $o.norm) { continue }
                         if ([math]::Abs(($o.page ?? $b.page) - $b.page) -gt 1) { continue }
@@ -411,9 +425,10 @@ function ConvertTo-PdfDigNodes {
                 }
             }
             $prevFormulaBase = if ($lineType -eq 'formula-block') { $st.base } else { $null }
-            $olv = if ($lineType -eq 'heading-candidate' -and $outlineHit) { $outlineHit.level } else { $null }
+            $olv = $null; $oref = $null
+            if ($lineType -eq 'heading-candidate' -and $outlineHit) { $olv = $outlineHit.level; $oref = $outlineHit.ref }
             Emit-PdfDigLine -Ctx $ctx -Letters $ls -LineId ([int]$ln.id) -BlockId $b.id -Col $b.column_band `
-                            -LineType $lineType -Tier $tier -LineFlags $lineFlags.ToArray() -St $st -OutlineLevel $olv
+                            -LineType $lineType -Tier $tier -LineFlags $lineFlags.ToArray() -St $st -OutlineLevel $olv -OutlineRef $oref
         }
     }
 

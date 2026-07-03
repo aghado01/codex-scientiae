@@ -131,6 +131,7 @@ function Invoke-Collapse {
             if ($cur) { $chunks.Add($cur); $cur = $null }
             $chunk = [ordered]@{ type = $t; page = $nd.page; bbox = $bbox; n_shards = 1; content = $content }
             if ($null -ne $nd.level) { $chunk['level'] = $nd.level }
+            if ($null -ne $nd.heading_level) { $chunk['heading_level'] = $nd.heading_level }   # pig lane: outline/tier depth
             if ($null -ne $nd.font) { $chunk['font'] = $nd.font }
             if ($null -ne $nd.font_size) { $chunk['font_size'] = $nd.font_size }
             if ($nd.heading_source) { $chunk['heading_source'] = $nd.heading_source }
