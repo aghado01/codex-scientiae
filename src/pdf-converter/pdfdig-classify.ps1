@@ -417,8 +417,13 @@ function ConvertTo-PdfDigNodes {
         }
     }
 
-    # orphan letters (no substrate line): grouped by baseline proximity, honestly flagged
-    foreach ($pg in ($orphans.Keys | Sort-Object)) {
+    # orphan letters (no substrate line): grouped by baseline proximity, honestly flagged.
+    # typed-array sort, NOT `$orphans.Keys | Sort-Object` — pipeline output is PSObject-wrapped,
+    # and a wrapped int stored into a node record blows up the substrate's Newtonsoft fast path
+    $orphanPages = [int[]]::new($orphans.Keys.Count)
+    $orphans.Keys.CopyTo($orphanPages, 0)
+    [Array]::Sort($orphanPages)
+    foreach ($pg in $orphanPages) {
         $tol = $cfg.line_grouping.baseline_tolerance_pt
         $groups = [System.Collections.Generic.List[object]]::new()
         foreach ($lt in ($orphans[$pg] | Sort-Object { -$_.base[1] }, { $_.base[0] })) {

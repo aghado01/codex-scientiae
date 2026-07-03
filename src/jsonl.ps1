@@ -20,24 +20,32 @@ class JsonlIndex {
     [int]    $LineCount
     hidden [long[]] $Offsets
 
-    # Byte-scan a JSONL for line-start offsets and write the JSOI index — no parse.
-    static [JsonlIndex] Build([string]$JsonlPath, [string]$IndexPath) {
-        $bytes = [System.IO.File]::ReadAllBytes($JsonlPath)
-        $offsetList = [System.Collections.Generic.List[long]]::new()
-        if ($bytes.Length -gt 0) { $offsetList.Add(0L) }
-        for ($i = 0; $i -lt $bytes.Length; $i++) {
-            if ($bytes[$i] -eq 0x0A -and ($i + 1) -lt $bytes.Length) {
-                $offsetList.Add([long]($i + 1))
-            }
-        }
+    # Write line-start offsets as a JSOI index file.
+    static [void] WriteIndex([string]$IndexPath, [System.Collections.Generic.List[long]]$Offsets) {
         $fs = [System.IO.File]::Create($IndexPath)
         $bw = [System.IO.BinaryWriter]::new($fs)
         try {
             $bw.Write([System.Text.Encoding]::ASCII.GetBytes('JSOI'))
             $bw.Write([int]1)
-            $bw.Write([int]$offsetList.Count)
-            foreach ($o in $offsetList) { $bw.Write([long]$o) }
+            $bw.Write([int]$Offsets.Count)
+            foreach ($o in $Offsets) { $bw.Write([long]$o) }
         } finally { $bw.Dispose(); $fs.Dispose() }
+    }
+
+    # Byte-scan a JSONL for line-start offsets and write the JSOI index — no parse.
+    # ([Array]::IndexOf hops newline-to-newline natively; a per-byte PS loop cost 17.5s on a
+    # 33MB lane. Write-JsonlStage doesn't come through here — it accumulates offsets while
+    # writing; this stays for indexing files produced elsewhere.)
+    static [JsonlIndex] Build([string]$JsonlPath, [string]$IndexPath) {
+        $bytes = [System.IO.File]::ReadAllBytes($JsonlPath)
+        $offsetList = [System.Collections.Generic.List[long]]::new()
+        if ($bytes.Length -gt 0) { $offsetList.Add(0L) }
+        $i = [Array]::IndexOf($bytes, [byte]0x0A)
+        while ($i -ge 0 -and ($i + 1) -lt $bytes.Length) {
+            $offsetList.Add([long]($i + 1))
+            $i = [Array]::IndexOf($bytes, [byte]0x0A, $i + 1)
+        }
+        [JsonlIndex]::WriteIndex($IndexPath, $offsetList)
         return [JsonlIndex]::Load($IndexPath)
     }
 
@@ -66,6 +74,10 @@ class JsonlIndex {
     }
 }
 
+$script:NsjSettings = $null
+$script:NsjFallbacks = 0      # records that dropped from the Newtonsoft fast path to the cmdlet
+$script:NsjLastError = $null  # last fast-path failure message (diagnostic)
+
 function Write-JsonlStage {
     <#
     .SYNOPSIS  Emit a stage's records as JSONL plus coordinated .jidx and .sig sidecars.
@@ -84,13 +96,43 @@ function Write-JsonlStage {
         New-Item -ItemType Directory -Force -Path $dir | Out-Null
     }
 
-    $sw = [System.IO.StreamWriter]::new($OutputPath, $false, [System.Text.UTF8Encoding]::new($false))
+    # Newtonsoft direct for dictionary records — byte-identical to ConvertTo-Json (PS7's cmdlet is
+    # Newtonsoft-backed with StringEscapeHandling.Default: control chars escaped, <>&' LITERAL —
+    # EscapeHtml was tried first and diverged on math glyphs; full-lane byte parity verified on the
+    # 84p bench) minus ~160k cmdlet invocations per document. PSCustomObject records keep the
+    # cmdlet path: Newtonsoft would serialize the PSObject wrapper, not the properties.
+    if ($null -eq $script:NsjSettings -and ('Newtonsoft.Json.JsonConvert' -as [type])) {
+        $script:NsjSettings = [Newtonsoft.Json.JsonSerializerSettings]::new()
+        $script:NsjSettings.StringEscapeHandling = [Newtonsoft.Json.StringEscapeHandling]::Default
+        $script:NsjSettings.Formatting = [Newtonsoft.Json.Formatting]::None
+    }
+
+    # line-start offsets accumulate DURING the write (GetByteCount per line) — the writer knows
+    # every length; re-scanning the finished file per-byte cost 17.5s on a 33MB lane
+    $offsets = [System.Collections.Generic.List[long]]::new()
+    $utf8 = [System.Text.UTF8Encoding]::new($false)
+    $sw = [System.IO.StreamWriter]::new($OutputPath, $false, $utf8)
     try {
-        foreach ($r in $Records) { $sw.WriteLine(($r | ConvertTo-Json -Compress -Depth $Depth)) }
+        $nlBytes = [long]$utf8.GetByteCount($sw.NewLine)
+        $pos = 0L
+        foreach ($r in $Records) {
+            $json = $null
+            if ($null -ne $script:NsjSettings -and $r -is [System.Collections.IDictionary]) {
+                # per-record fallback: a PSObject-wrapped value hiding in a dictionary makes
+                # Newtonsoft reflect the wrapper (self-referencing loop) — that record drops to
+                # the cmdlet path instead of failing the stage
+                try { $json = [Newtonsoft.Json.JsonConvert]::SerializeObject($r, $script:NsjSettings) }
+                catch { $json = $null; $script:NsjFallbacks++; $script:NsjLastError = $_.Exception.Message }
+            }
+            if ($null -eq $json) { $json = $r | ConvertTo-Json -Compress -Depth $Depth }
+            $offsets.Add($pos)
+            $pos += [long]$utf8.GetByteCount($json) + $nlBytes
+            $sw.WriteLine($json)
+        }
     } finally { $sw.Dispose() }
 
     $jidxPath = "$OutputPath.jidx"
-    [void][JsonlIndex]::Build($OutputPath, $jidxPath)
+    [JsonlIndex]::WriteIndex($jidxPath, $offsets)
 
     $sig = [ordered]@{
         stage   = $Stage
