@@ -31,6 +31,75 @@ function Format-Chunk($c) {
     }
 }
 
+# ── caption relocation — reunite a shattered caption with its figure's in-text anchor ──────────────
+# The caption's own figure/table handle: the leading "Fig. 1" / "Table 3" a caption furniture chunk
+# opens with (the SAME shape normalize's Get-FurnitureKind gates on). Returns { kind; num } — kind
+# normalized to 'figure'/'table' so a "Fig." caption anchors to a "Figure 1" reference — or $null when
+# the chunk is not a caption / carries no leading numbered label (leave it exactly where it is).
+function Get-CaptionLabel($c) {
+    if ([string]$c.is_furniture -ne 'caption') { return $null }
+    $m = [regex]::Match(([string]$c.content).Trim(), '^(Figure|Fig\.?|Table|Tab\.?)\s*(\d+)', 'IgnoreCase')
+    if (-not $m.Success) { return $null }
+    $kind = if ($m.Groups[1].Value -match '^(?i:fig)') { 'figure' } else { 'table' }
+    return [pscustomobject]@{ kind = $kind; num = $m.Groups[2].Value }
+}
+
+# Does a body chunk carry an in-text mention of (kind num) — "Figure 1", "Fig. 1", "(Figure 1 ,",
+# "see Fig. 6", "shown in Table 3"? CASE-SENSITIVE (real references are capitalized) so a lowercase
+# "table"/"figure" prose word is never a false anchor; word-anchored + digit-bounded so "Figure 1"
+# never matches "Figure 10"/"Figure 12".
+function Test-FigureReference($c, $Label) {
+    $verb = if ($Label.kind -eq 'figure') { '(?:Figure|Fig\.?)' } else { '(?:Table|Tab\.?)' }
+    $rx = '(?<![A-Za-z])' + $verb + '\s*' + [regex]::Escape($Label.num) + '(?![0-9])'
+    return [regex]::IsMatch([string]$c.content, $rx)
+}
+
+# Docling frequently shatters a FIGURE caption away from its figure and drops it mid-prose; normalize.ps1
+# CLASSIFIES the stray as is_furniture='caption' but leaves it in place, so it interrupts the body flow.
+# Here — at EMISSION only, never touching the persisted chunk stream or its id==line-number seek
+# invariant — relocate each figure caption to sit immediately after the FIRST body chunk that references
+# its figure number in-text (the anchor the paper's own prose gives, and the exact spot the publish/splice
+# tier later weaves the figure pixels into — preprocess strips images, so the caption is what's orphaned).
+# A caption whose number is nowhere referenced in the body stays exactly where it was — never lost, never
+# mis-placed. Pure list transform over an unchanging input: recomputes the same order every run, so a
+# second pass is a no-op (idempotent).
+#
+# FIGURE captions only — deliberately NOT tables. The image-stripping "reunite the orphan with its splice
+# point" rationale is figure-specific (a table's own cells are not stripped, so its caption is not orphaned
+# the same way), and a table's "Tab. N"/"Table N" cue collides with bibliographic citations of OTHER works'
+# tables ("Vinh et al , 2010 , Tab. 2") — anchoring on those would mis-place the caption. Table captions
+# stay in reading order rather than ride a reference signal that can't tell a cross-cite from a real anchor.
+function Move-CaptionsToAnchors($BodyChunks) {
+    $items = @($BodyChunks)
+    # capIndex -> anchor chunk id it should trail (only figure captions with a resolvable in-text reference)
+    $anchorId = @{}
+    for ($i = 0; $i -lt $items.Count; $i++) {
+        $label = Get-CaptionLabel $items[$i]
+        if (-not $label -or $label.kind -ne 'figure') { continue }   # figure captions only (see note above)
+        for ($j = 0; $j -lt $items.Count; $j++) {
+            if ($j -eq $i -or [string]$items[$j].is_furniture -eq 'caption') { continue }   # anchors are real body prose, never another caption
+            if (Test-FigureReference $items[$j] $label) { $anchorId[$i] = [int]$items[$j].id; break }
+        }
+    }
+    if ($anchorId.Count -eq 0) { return $items }
+    # captions to inject after each anchor id, keyed by anchor id, in stable original-body order
+    $trailing = @{}
+    foreach ($ci in ($anchorId.Keys | Sort-Object)) {
+        $aid = $anchorId[$ci]
+        if (-not $trailing.ContainsKey($aid)) { $trailing[$aid] = [System.Collections.Generic.List[object]]::new() }
+        $trailing[$aid].Add($items[$ci])
+    }
+    $out = [System.Collections.Generic.List[object]]::new()
+    for ($i = 0; $i -lt $items.Count; $i++) {
+        if ($anchorId.ContainsKey($i)) { continue }                    # a relocated caption — emitted after its anchor below
+        $out.Add($items[$i])
+        if ($trailing.ContainsKey([int]$items[$i].id)) {
+            foreach ($cap in $trailing[[int]$items[$i].id]) { $out.Add($cap) }
+        }
+    }
+    return $out.ToArray()
+}
+
 function Invoke-Finalize {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][string]$ChunksPath,
@@ -82,6 +151,9 @@ function Invoke-Finalize {
     $body.Add('## Contents'); $body.Add('')
     foreach ($line in $toc) { $body.Add($line) }
     $body.Add('')
+    # reunite shattered captions with their in-text figure/table anchor before serializing (emission-order
+    # only; the persisted chunk stream + its id==line seek invariant are untouched). TOC is already built.
+    $bodyC = Move-CaptionsToAnchors $bodyC
     foreach ($c in $bodyC) { $body.Add((Format-Chunk $c)); $body.Add('') }
 
     # ── references sidecar ────────────────────────────────────────────────

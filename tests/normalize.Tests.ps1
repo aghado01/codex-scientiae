@@ -132,3 +132,109 @@ Describe 'Get-FurnitureKind — furniture classification + small-font gate' {
         Get-FurnitureKind (New-Chunk 'The manifold hypothesis states data lies on a low-dimensional manifold.' 'CMR10' 9.963) $median | Should -BeNullOrEmpty
     }
 }
+
+Describe 'Move-CaptionsToAnchors — relocate a shattered caption to its in-text figure anchor' {
+    # The emission-order reorder is the OTHER half of the leaked-caption story: normalize CLASSIFIES the
+    # stray "Fig. 1 ..." as is_furniture='caption' (above); finalize must then move it beside the paragraph
+    # that first references Figure 1, instead of leaving it stranded mid-prose. Functions live in finalize.ps1.
+    BeforeAll {
+        . "$PSScriptRoot/../src/finalize.ps1"   # Get-CaptionLabel, Test-FigureReference, Move-CaptionsToAnchors
+        function New-BodyChunk($id, $content, $furn) { [pscustomobject]@{ id = $id; type = 'prose'; content = $content; is_furniture = $furn } }
+        # the 2207.00510 specimen, trimmed to the local reading order around the leaked Fig. 1 caption
+        function New-Specimen {
+            @(
+                New-BodyChunk 137 'Figure 1 shows the Adjusted Rand Index (ARI) and the Normalized Mutual Information (NMI) for different values.' $null
+                New-BodyChunk 138 'Several aspects need to be emphasized. First of all, the effect is complicated (Figure 1 , first column (A)).' $null
+                New-BodyChunk 139 '1000-dimensional data ( 2nd row) than in the 100-dimensional data.' $null
+                New-BodyChunk 141 'Fig. 1 ARI and NMI as a function of $\varepsilon$ for the synthetic settings (see Table 1 for specifications). For the explored ranges, see Fig. 6 .' 'caption'
+                New-BodyChunk 142 'Secondly, finding a suitable value of $\varepsilon$ is very challenging using DBSCAN alone.' $null
+                New-BodyChunk 143 'Finally, the crucial point we want to highlight with these examples (see Figure 1 B).' $null
+            )
+        }
+    }
+
+    It 'moves the leaked "Fig. 1 ..." caption to immediately after the first "Figure 1 shows ..." anchor' {
+        $out = @(Move-CaptionsToAnchors (New-Specimen))
+        $ids = @($out | ForEach-Object { [int]$_.id })
+        $ids | Should -Be @(137, 141, 138, 139, 142, 143)   # caption (141) now trails its anchor (137)
+    }
+
+    It 'restores the interrupted First/Secondly/Finally argument to a contiguous run' {
+        $out = @(Move-CaptionsToAnchors (New-Specimen))
+        $prose = @($out | Where-Object { -not $_.is_furniture } | ForEach-Object { [int]$_.id })
+        $prose | Should -Be @(137, 138, 139, 142, 143)      # no caption breaks the flow anymore
+    }
+
+    It 'is idempotent — a second pass is a no-op' {
+        $once  = @(Move-CaptionsToAnchors (New-Specimen))
+        $twice = @(Move-CaptionsToAnchors $once)
+        (@($twice | ForEach-Object { [int]$_.id })) | Should -Be (@($once | ForEach-Object { [int]$_.id }))
+    }
+
+    It 'leaves a caption in place when its figure number is never referenced in the body' {
+        $chunks = @(
+            New-BodyChunk 10 'Ordinary opening paragraph with no figure reference at all.' $null
+            New-BodyChunk 11 'Fig. 9 an orphaned caption whose figure is never cited by number.' 'caption'
+            New-BodyChunk 12 'A closing paragraph, also with no figure reference.' $null
+        )
+        (@(Move-CaptionsToAnchors $chunks | ForEach-Object { [int]$_.id })) | Should -Be @(10, 11, 12)
+    }
+
+    It 'preserves reading order untouched when there are no captions to move' {
+        $chunks = @(
+            New-BodyChunk 1 'First paragraph mentioning Figure 1 in passing.' $null
+            New-BodyChunk 2 'Second paragraph of ordinary body prose.' $null
+            New-BodyChunk 3 'Third paragraph, still no furniture.' $null
+        )
+        (@(Move-CaptionsToAnchors $chunks | ForEach-Object { [int]$_.id })) | Should -Be @(1, 2, 3)
+    }
+
+    It 'moves a caption DOWN when it precedes its first reference (both directions covered)' {
+        $chunks = @(
+            New-BodyChunk 20 'Fig. 5 Effect of UMAP on data with connected components.' 'caption'   # caption precedes its ref
+            New-BodyChunk 21 'Body prose in between, no figure reference here.' $null
+            New-BodyChunk 22 'First of all, consider Figure 5 A, which shows a 2D dataset.' $null     # the anchor, later
+        )
+        (@(Move-CaptionsToAnchors $chunks | ForEach-Object { [int]$_.id })) | Should -Be @(21, 22, 20)  # caption now trails id 22
+    }
+
+    It 'leaves TABLE captions in reading order — figure-only scope (tables are not image-stripped)' {
+        $chunks = @(
+            New-BodyChunk 20 'Table 3 Maximum ARI and NMI ranges for FCPS data.' 'caption'   # a figure caption here WOULD move
+            New-BodyChunk 21 'Body prose in between, no reference here.' $null
+            New-BodyChunk 22 'Full numbers are shown in Table 3 for the FCPS data.' $null      # a real Table 3 reference, later
+        )
+        (@(Move-CaptionsToAnchors $chunks | ForEach-Object { [int]$_.id })) | Should -Be @(20, 21, 22)  # table caption unmoved
+    }
+
+    It 'does not drag a Table 2 caption onto a "Tab. 2" bibliographic cross-cite (the specimen false-anchor)' {
+        $chunks = @(
+            New-BodyChunk 30 'Figure 1 shows the NMI with maximum normalization ( Vinh et al , 2010 , Tab. 2 ) here.' $null
+            New-BodyChunk 31 'Body prose in between with no table reference.' $null
+            New-BodyChunk 32 'Table 2 Characteristics of the FCPS datasets.' 'caption'
+        )
+        # the "Tab. 2" above cites ANOTHER work's table; this paper's Table 2 caption must stay put, not jump to id 30
+        (@(Move-CaptionsToAnchors $chunks | ForEach-Object { [int]$_.id })) | Should -Be @(30, 31, 32)
+    }
+
+    It 'Get-CaptionLabel reads the LEADING label, ignoring cross-refs inside the caption body' {
+        $lab = Get-CaptionLabel (New-BodyChunk 0 'Fig. 1 ... (see Table 1 for specifications) ... see Fig. 6 .' 'caption')
+        $lab.kind | Should -Be 'figure'
+        $lab.num  | Should -Be '1'
+        Get-CaptionLabel (New-BodyChunk 0 'Table 3 Maximum ARI and NMI.' 'caption') | ForEach-Object { "$($_.kind)$($_.num)" } | Should -Be 'table3'
+        Get-CaptionLabel (New-BodyChunk 0 'An ordinary paragraph, not a caption.' $null) | Should -BeNullOrEmpty
+    }
+
+    It 'Test-FigureReference is digit-bounded ("Figure 1" never matches "Figure 10")' {
+        $fig1 = [pscustomobject]@{ kind = 'figure'; num = '1' }
+        Test-FigureReference (New-BodyChunk 0 'As seen in Figure 1 the trend holds.' $null) $fig1  | Should -BeTrue
+        Test-FigureReference (New-BodyChunk 0 '(Figure 1 , first column (A)) shows this.' $null) $fig1 | Should -BeTrue
+        Test-FigureReference (New-BodyChunk 0 'As seen in Figure 10 the trend holds.' $null) $fig1 | Should -BeFalse
+        Test-FigureReference (New-BodyChunk 0 'Nothing about figures here at all.' $null) $fig1     | Should -BeFalse
+    }
+    It 'Test-FigureReference is case-sensitive so a lowercase word is never a false anchor' {
+        $fig1 = [pscustomobject]@{ kind = 'figure'; num = '1' }
+        # real in-text references are capitalized; a lowercase "figure 1" (or a word like "reconfigure 1") must not match
+        Test-FigureReference (New-BodyChunk 0 'the figure 1 rows above are illustrative' $null) $fig1 | Should -BeFalse
+    }
+}
