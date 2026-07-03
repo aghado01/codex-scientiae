@@ -1,0 +1,2597 @@
+{
+  "file name" : "Slide-NoEmbedded.pdf",
+  "number of pages" : 9,
+  "author" : "Evelina",
+  "title" : "Slides-NoEmbedded",
+  "creation date" : "D:20260616170813Z00'00'",
+  "modification date" : "D:20260616170813Z00'00'",
+  "kids" : [ {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 248,
+    "level" : "Doctitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 665.506, 482.149, 692.777 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 30.0,
+    "text color" : "[0.3450980484485626, 0.27449455857276917, 0.9882047772407532]",
+    "content" : "  Slides No Embedded Decks"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 249,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 620.844, 529.308, 643.847 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "      If you are unable to open a deck or it appears to require repair you MUST follow the steps in   Corrupted Files   before escalating the task."
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "page number" : 1,
+    "bounding box" : [ 71.844, 596.584, 82.154, 606.893 ],
+    "source" : "Slide-NoEmbedded/imageFile1.png"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 251,
+    "page number" : 1,
+    "bounding box" : [ 84.75, 594.93, 409.744, 604.018 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Youʼll be working in the   Artifacts] Slides Eval   campaign in Feather."
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "page number" : 1,
+    "bounding box" : [ 74.25, 374.004, 537.75, 578.263 ],
+    "alt" : "In this image we can see a web page. On the right side of the image we can see a green button.",
+    "source" : "Slide-NoEmbedded/imageFile2.png"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 253,
+    "page number" : 1,
+    "bounding box" : [ 79.0, 569.333, 101.667, 574.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Campaigns"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 254,
+    "page number" : 1,
+    "bounding box" : [ 78.333, 553.333, 173.0, 566.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "[Artifacts] Slides Eval"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 255,
+    "page number" : 1,
+    "bounding box" : [ 91.667, 526.667, 105.667, 531.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ACTIVE"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 256,
+    "page number" : 1,
+    "bounding box" : [ 86.333, 508.667, 99.0, 514.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Tasks"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 257,
+    "page number" : 1,
+    "bounding box" : [ 110.0, 509.0, 143.333, 513.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Announcements"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 258,
+    "page number" : 1,
+    "bounding box" : [ 157.667, 508.667, 181.667, 513.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Escalations"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 259,
+    "page number" : 1,
+    "bounding box" : [ 189.0, 508.667, 214.333, 513.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Instructions"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 260,
+    "page number" : 1,
+    "bounding box" : [ 223.667, 508.667, 239.667, 513.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Metrics"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 261,
+    "page number" : 1,
+    "bounding box" : [ 249.0, 508.667, 271.667, 513.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Comments"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 262,
+    "page number" : 1,
+    "bounding box" : [ 92.333, 490.0, 108.333, 495.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Search"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 263,
+    "page number" : 1,
+    "bounding box" : [ 159.333, 485.0, 242.667, 493.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Tasks from all task batches"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 264,
+    "page number" : 1,
+    "bounding box" : [ 471.667, 486.667, 513.667, 491.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Find new review task"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 265,
+    "page number" : 1,
+    "bounding box" : [ 83.667, 479.333, 111.0, 484.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "TASK BATCHES"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 266,
+    "page number" : 1,
+    "bounding box" : [ 83.667, 469.333, 115.0, 474.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "All task batches"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 272,
+    "page number" : 1,
+    "bounding box" : [ 316.667, 466.333, 341.0, 472.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Fixing done"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 275,
+    "page number" : 1,
+    "bounding box" : [ 408.0, 466.333, 425.667, 472.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Reviews"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 267,
+    "page number" : 1,
+    "bounding box" : [ 164.333, 466.667, 186.333, 472.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Unclaimed"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 269,
+    "page number" : 1,
+    "bounding box" : [ 226.333, 466.667, 249.0, 472.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Completed"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 271,
+    "page number" : 1,
+    "bounding box" : [ 284.333, 466.667, 309.0, 472.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Needs work"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 273,
+    "page number" : 1,
+    "bounding box" : [ 349.0, 466.667, 370.333, 472.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Signed off"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 274,
+    "page number" : 1,
+    "bounding box" : [ 379.0, 466.667, 399.0, 472.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Cancelled"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 268,
+    "page number" : 1,
+    "bounding box" : [ 194.333, 466.667, 217.667, 471.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In progress"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 270,
+    "page number" : 1,
+    "bounding box" : [ 257.0, 466.667, 276.333, 471.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "In revicw"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 276,
+    "page number" : 1,
+    "bounding box" : [ 83.667, 458.0, 103.0, 462.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "ACTIVE (2)"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 277,
+    "page number" : 1,
+    "bounding box" : [ 105.667, 458.0, 132.333, 462.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "CLICK TO HIDE"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 278,
+    "page number" : 1,
+    "bounding box" : [ 83.667, 448.0, 107.667, 453.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-17"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 280,
+    "page number" : 1,
+    "bounding box" : [ 173.667, 438.0, 249.0, 444.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Search by tag; description; or user"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 279,
+    "page number" : 1,
+    "bounding box" : [ 83.667, 438.667, 108.333, 443.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-16"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 282,
+    "page number" : 1,
+    "bounding box" : [ 219.667, 422.0, 250.333, 427.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "DESCRIPTION"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 281,
+    "page number" : 1,
+    "bounding box" : [ 163.0, 422.0, 191.0, 426.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "CREATED AT"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 283,
+    "page number" : 1,
+    "bounding box" : [ 363.0, 422.0, 391.667, 426.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "TASK BATCH"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 284,
+    "page number" : 1,
+    "bounding box" : [ 429.667, 422.0, 441.667, 426.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "KIND"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 285,
+    "page number" : 1,
+    "bounding box" : [ 463.667, 422.0, 476.333, 426.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "TAGS"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 286,
+    "page number" : 1,
+    "bounding box" : [ 164.333, 410.667, 212.333, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "18 Apr 2026, 2122 GMT-7"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 287,
+    "page number" : 1,
+    "bounding box" : [ 221.0, 410.667, 238.333, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Unknown"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 288,
+    "page number" : 1,
+    "bounding box" : [ 240.333, 410.667, 255.667, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "General"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 289,
+    "page number" : 1,
+    "bounding box" : [ 258.333, 410.667, 295.0, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Presentation Create"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 290,
+    "page number" : 1,
+    "bounding box" : [ 297.0, 410.667, 310.333, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Simple"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 291,
+    "page number" : 1,
+    "bounding box" : [ 364.333, 410.667, 387.0, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-17"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 292,
+    "page number" : 1,
+    "bounding box" : [ 431.0, 410.0, 457.0, 415.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "widget-layout"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 293,
+    "page number" : 1,
+    "bounding box" : [ 164.333, 400.667, 211.667, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "18 Apr 2026, 21.21 GMT-7"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 294,
+    "page number" : 1,
+    "bounding box" : [ 221.0, 401.333, 238.333, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Unknown"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 295,
+    "page number" : 1,
+    "bounding box" : [ 240.333, 401.333, 255.667, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "General"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 296,
+    "page number" : 1,
+    "bounding box" : [ 258.333, 401.333, 295.0, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Presentation Create"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 297,
+    "page number" : 1,
+    "bounding box" : [ 297.0, 401.333, 310.333, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Simple"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 298,
+    "page number" : 1,
+    "bounding box" : [ 364.333, 401.333, 387.0, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-17"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 299,
+    "page number" : 1,
+    "bounding box" : [ 431.0, 400.667, 457.0, 406.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "widget-layout"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 303,
+    "page number" : 1,
+    "bounding box" : [ 258.333, 391.0, 310.333, 397.0 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Presentation Create - Simple"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 300,
+    "page number" : 1,
+    "bounding box" : [ 164.333, 391.333, 211.667, 396.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "18 Apr 2026, 21.21 GMT-7"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 301,
+    "page number" : 1,
+    "bounding box" : [ 221.0, 392.0, 238.333, 396.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Unknown"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 302,
+    "page number" : 1,
+    "bounding box" : [ 240.333, 392.0, 255.667, 396.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "General"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 304,
+    "page number" : 1,
+    "bounding box" : [ 364.333, 392.0, 387.0, 396.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-17"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 305,
+    "page number" : 1,
+    "bounding box" : [ 431.0, 391.333, 457.0, 396.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "widget-layout"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 306,
+    "page number" : 1,
+    "bounding box" : [ 164.333, 382.0, 211.667, 387.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "18 Apr 2026, 21*21 GMT-7"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 307,
+    "page number" : 1,
+    "bounding box" : [ 221.0, 382.0, 238.333, 386.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Unknown"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 308,
+    "page number" : 1,
+    "bounding box" : [ 240.333, 382.0, 255.667, 386.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "General"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 309,
+    "page number" : 1,
+    "bounding box" : [ 258.333, 382.0, 295.0, 386.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Presentation Create"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 310,
+    "page number" : 1,
+    "bounding box" : [ 297.0, 382.0, 310.333, 386.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Simple"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 311,
+    "page number" : 1,
+    "bounding box" : [ 364.333, 382.0, 387.0, 386.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-17"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 312,
+    "page number" : 1,
+    "bounding box" : [ 431.0, 382.0, 457.0, 386.667 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "widget-layout"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 313,
+    "page number" : 1,
+    "bounding box" : [ 221.0, 372.667, 239.0, 377.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Unknown"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 314,
+    "page number" : 1,
+    "bounding box" : [ 240.333, 372.667, 256.333, 377.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "General"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 315,
+    "page number" : 1,
+    "bounding box" : [ 258.333, 372.667, 295.0, 377.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Presentation Create"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 316,
+    "page number" : 1,
+    "bounding box" : [ 297.0, 372.667, 310.333, 377.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "Simole"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 317,
+    "page number" : 1,
+    "bounding box" : [ 364.333, 372.667, 387.0, 377.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "2026-04-17"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 318,
+    "page number" : 1,
+    "bounding box" : [ 431.0, 372.667, 457.0, 377.333 ],
+    "font" : null,
+    "font size" : 12.0,
+    "content" : "widaet-lavout"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 319,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 340.63, 210.959, 355.173 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 15.997,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Slides Rationales"
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "page number" : 1,
+    "bounding box" : [ 71.844, 314.92, 82.154, 325.23 ],
+    "source" : "Slide-NoEmbedded/imageFile3.png"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 321,
+    "page number" : 1,
+    "bounding box" : [ 84.75, 313.266, 243.789, 322.354 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.06669718772172928, 0.3333028256893158, 0.800000011920929]",
+    "content" : "READ MORE   Writing Rationales"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 322,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 287.351, 327.519, 296.44 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Here are some examples of Slides specific rationales."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 323,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 247.522, 539.141, 270.525 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Score each required sub-axis based on the deckʼs actual quality in that area. Do not allow one axis   to bleed into another."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 325,
+    "page number" : 1,
+    "bounding box" : [ 72.0, 204.693, 521.337, 227.696 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "      Do not penalize the model for simply being provided poor quality inputs   – such as an ugly   template, messy source material, poor data/inputs, etc."
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "page number" : 1,
+    "bounding box" : [ 71.844, 180.433, 82.154, 190.743 ],
+    "alt" : "In this image there is a text written on the image.",
+    "source" : "Slide-NoEmbedded/imageFile4.png"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 326,
+    "page number" : 1,
+    "bounding box" : [ 84.75, 178.779, 153.68, 187.867 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  The goal is to  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 327,
+    "page number" : 1,
+    "bounding box" : [ 153.683, 178.779, 288.758, 187.867 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "judge instruction-following   ,"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 328,
+    "page number" : 1,
+    "bounding box" : [ 286.389, 178.779, 541.425, 187.867 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "not the quality of the materials the model was given."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 329,
+    "level" : "Subtitle",
+    "page number" : 1,
+    "bounding box" : [ 72.0, 149.864, 108.965, 158.952 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Check:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "1",
+    "page number" : 1,
+    "bounding box" : [ 90.0, 97.434, 475.353, 135.445 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 1,
+      "bounding box" : [ 90.0, 123.348, 358.317, 135.445 ],
+      "font" : "ArialMT",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   How well requested amendments were implemented.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 1,
+      "bounding box" : [ 90.0, 97.434, 475.353, 109.53 ],
+      "font" : "ArialMT",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Whether the rest of the template was reproduced accurately and consistently.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "caption",
+    "id" : 1,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 707.901, 383.361, 719.998 ],
+    "linked content id" : 2,
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Any deviations or reproduction errors should be treated as issues."
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "id" : 2,
+    "page number" : 2,
+    "bounding box" : [ 71.844, 684.242, 82.154, 694.552 ],
+    "source" : "Slide-NoEmbedded/imageFile5.png"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H3",
+    "id" : 3,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 87.559, 681.986, 381.38, 694.083 ],
+    "heading level" : 3,
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Note: Accurately reproducing templates is difficult for LLMs."
+  }, {
+    "type" : "caption",
+    "id" : 4,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 642.157, 533.232, 668.169 ],
+    "linked content id" : 5,
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "The model does not directly edit the original template – it generates its own approximation using a code library. This often introduces formatting inconsistencies or structural errors."
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "id" : 5,
+    "page number" : 2,
+    "bounding box" : [ 71.781, 610.561, 86.214, 624.993 ],
+    "source" : "Slide-NoEmbedded/imageFile6.png"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H2",
+    "id" : 6,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 90.815, 607.404, 207.777, 624.337 ],
+    "heading level" : 2,
+    "font" : "Inter-ExtraBold",
+    "font size" : 13.995,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Strong Examples"
+  }, {
+    "type" : "image",
+    "pdfua_tag" : "Figure",
+    "id" : 7,
+    "page number" : 2,
+    "bounding box" : [ 71.844, 585.018, 82.154, 595.328 ],
+    "source" : "Slide-NoEmbedded/imageFile7.png"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 8,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 568.848, 532.548, 594.859 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Your task may have different dimensions youʼre required to rate for, or it may have only one field for an overall rationale. Use your best judgement, and read the task instructions carefully."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 9,
+    "page number" : 2,
+    "bounding box" : [ 72.0, 540.387, 163.042, 552.484 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Content quality - 3"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "id" : 10,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 90.0, 415.156, 539.092, 524.655 ],
+    "numbering style" : "unordered",
+    "number of list items" : 2,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 2,
+      "bounding box" : [ 90.0, 484.729, 539.092, 524.655 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "- The deck has a fundamental accuracy issue - the itinerary is somewhat unrealistic given the distances to be covered Madrid - Granada is a minimum 3.5 hour train ride. Marbella to Madrid is 4.5 - 5.5 hours) and the activities suggested.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 2,
+      "bounding box" : [ 90.0, 415.156, 533.738, 468.996 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "- No meaningful detail is given to turn this into a workable itinerary e.g. locations, opening times, a workable itinerary etc. In terms of friction points the very first thing that should be booked is actually train tickets as these book up long in advance in Spain for high speed services.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H3",
+    "id" : 11,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 72.0, 387.327, 144.556, 399.424 ],
+    "heading level" : 3,
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Storytelling - 2"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "id" : 12,
+    "level" : "1",
+    "page number" : 2,
+    "bounding box" : [ 90.0, 262.096, 534.947, 371.594 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 2,
+      "bounding box" : [ 90.0, 331.669, 534.947, 371.594 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "- The deck feels confused and disjointed in places - although there is a partially chronological narrative that runs through it, this isn't obvious and at first glance it's hard to trace.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 2,
+      "bounding box" : [ 90.0, 303.84, 379.513, 315.936 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "- A lack of clear signposting creates a feeling of confusion.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 2,
+      "bounding box" : [ 90.0, 262.096, 528.55, 288.107 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.998,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "- The flow lacks a logical structure with the overall itinerary spread over several slides with nothing clearly signposted.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H3",
+    "id" : 13,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 72.0, 234.267, 140.539, 246.363 ],
+    "heading level" : 3,
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Aesthetics – 2"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 14,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 90.0, 192.523, 526.944, 218.534 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "- The deck is messy and chaotic, despite the use of some strong imagery. Use of colour is inconsistent and colour coding doesn't follow through from slide to slide."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H3",
+    "id" : 15,
+    "level" : "Subtitle",
+    "page number" : 2,
+    "bounding box" : [ 72.0, 164.694, 121.173, 176.791 ],
+    "heading level" : 3,
+    "font" : "Inter-Bold",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Layout – 2"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 16,
+    "level" : "2",
+    "page number" : 2,
+    "bounding box" : [ 90.0, 95.121, 537.44, 148.962 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "- The layout is jumbled and confusing, with text overlapping other text (slide 2, slide 6, elements not properly aligned, inconsistent spacing with boxes flush to the edge of the page in places (slide 4 and generally a confused and overwhelming jumble of text, images and boxes. The layout distracts completely from the content making it hard to understand."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 332,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 74.833, 709.513, 141.539, 718.492 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Editability – 6"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 333,
+    "page number" : 3,
+    "bounding box" : [ 92.615, 654.529, 534.966, 690.999 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "    The deck appears to be fully editable and all objects can be moved, including boxes, icons   and images. This would be easy to update, however the cluttered layout is likely to mean it   would require quite a lot of edits to make it usable."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 334,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 74.833, 627.037, 127.221, 636.015 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Overall – 2"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "1",
+    "page number" : 3,
+    "bounding box" : [ 92.615, 530.22, 523.428, 610.901 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 585.204, 523.428, 610.901 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    Although there is plenty of useful information present in the deck, the fact it doesn't take   travel time into account limits the utility of the suggestions.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 543.966, 513.807, 583.408 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    Overall the deck is jumbled and confused, lacking clear navigation and appropriate   signposting. The cluttered layout with overlapping text and illogical choices in terms of   content placement add to this, making it feel overwhelming.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 530.22, 450.941, 542.17 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    It would require more edits to make it usable than would be realistic here.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 338,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 74.833, 503.322, 178.21, 512.3 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Final Overall Ranking"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "1",
+    "page number" : 3,
+    "bounding box" : [ 92.615, 379.013, 536.597, 487.186 ],
+    "numbering style" : "unordered",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 447.743, 534.561, 487.186 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    The clear winner was Response E. The deck is well laid out with a clear narrative structure,   has a lot of the information required for the trip, with a more realistic timeline and proposed   activities. It's also by far the most polished with far fewer formatting errors than the others.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 433.997, 464.309, 445.947 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    Response C came second, but there is a significant gap between this and E.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 406.505, 527.934, 432.201 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    B, A and D were tied for last place, however B despite messy formatting and layout issues   balanced this with more useful information so took third place.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 379.013, 536.597, 404.709 ],
+      "font" : "Inter-Regular",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "    D was exceptionally messy, leaving A – cleaner but with a somewhat dingy colourway – just   beating it to Rank 4, as it was the more usable of the two.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 343,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 90.392, 345.511, 204.713, 358.08 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 13.826,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Weak Examples"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 344,
+    "page number" : 3,
+    "bounding box" : [ 74.833, 307.185, 406.251, 316.163 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  These examples were taken from tasks going through the QC process:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "1",
+    "page number" : 3,
+    "bounding box" : [ 92.615, 204.356, 534.731, 291.049 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 279.099, 473.585, 291.049 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Editability   : \"The elements of the deck appear to be easily editable if need be\"",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 241.728, 525.512, 267.424 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Editability   : \"The deck appears to be easy to update with individual items and no full slide   images.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 3,
+      "bounding box" : [ 92.615, 204.356, 534.731, 230.053 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Storytelling   : \"The storytelling is clear and understandable and more importantly correct. It   is easy to follow and has clear transition to the conclusion.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 348,
+    "level" : "Doctitle",
+    "page number" : 3,
+    "bounding box" : [ 74.833, 160.14, 202.687, 174.507 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 15.804,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Grading Criteria"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 349,
+    "page number" : 3,
+    "bounding box" : [ 74.833, 138.046, 455.281, 147.025 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  You may be required to rate responses for one or more of the following criteria:"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 350,
+    "level" : "Subtitle",
+    "page number" : 3,
+    "bounding box" : [ 259.663, 114.372, 354.405, 125.149 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 11.855,
+    "text color" : "[1.0, 1.0, 1.0]",
+    "content" : "  Grading Criteria"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 351,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 60.755, 701.363, 137.358, 710.341 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Content quality"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 363,
+    "level" : "Doctitle",
+    "page number" : 4,
+    "bounding box" : [ 60.755, 435.723, 119.254, 444.702 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Storytelling"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 375,
+    "level" : "Doctitle",
+    "page number" : 4,
+    "bounding box" : [ 60.755, 183.829, 114.967, 192.807 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Aesthetics"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 352,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 689.508, 521.425, 698.487 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  How   complete   ,   accurate   , and   useful   the content is."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 353,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 276.363, 663.907, 320.617, 672.886 ],
+    "heading level" : 1,
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Look for:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 294.145, 527.491, 516.429, 649.663 ],
+    "numbering style" : "unordered",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 637.713, 516.429, 649.663 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Coverage of   key concepts   from the source.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 614.088, 442.115, 626.038 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Accuracy   and   faithfulness.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 590.463, 435.832, 602.413 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   No   misleading omissions.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 566.838, 483.815, 578.788 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   No   incorrect   or   irrelevant additions.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 527.491, 498.779, 553.187 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Whether the content helps the audience   understand the topic.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 359,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 502.484, 336.839, 511.462 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Low scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 360,
+    "page number" : 4,
+    "bounding box" : [ 336.837, 502.484, 533.009, 511.462 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "missing ideas, distortions, fluff, unreliable"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 361,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 476.884, 339.38, 485.862 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  High scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 362,
+    "page number" : 4,
+    "bounding box" : [ 339.817, 476.884, 509.677, 485.862 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "complete, accurate, relevant, useful"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 364,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 423.869, 512.966, 432.847 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  How well the deck works as a   cohesive narrative   ."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 365,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 276.363, 398.268, 320.617, 407.246 ],
+    "heading level" : 1,
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Look for:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "2",
+    "page number" : 4,
+    "bounding box" : [ 294.145, 275.597, 468.186, 384.023 ],
+    "numbering style" : "unordered",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 372.072, 468.186, 384.023 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Clear   structure   and   progression.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 348.447, 400.565, 360.398 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Strong   transitions.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 324.823, 436.434, 336.773 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Logical or emotional   build.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 301.198, 460.774, 313.148 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Clear   purpose   and   momentum.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 4,
+      "bounding box" : [ 294.145, 275.597, 444.13, 287.547 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Feels   engaging   , not list-like.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 371,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 250.59, 336.839, 259.569 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Low scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 372,
+    "page number" : 4,
+    "bounding box" : [ 337.276, 250.59, 472.829, 259.569 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "disconnected, repetitive, flat"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 373,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 224.989, 339.38, 233.968 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  High scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 374,
+    "page number" : 4,
+    "bounding box" : [ 339.379, 224.989, 485.932, 233.968 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "clear flow, intentional structure"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 376,
+    "page number" : 4,
+    "bounding box" : [ 276.363, 171.974, 526.247, 180.953 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  How   polished   and   visually appealing   the deck feels."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 377,
+    "level" : "Subtitle",
+    "page number" : 4,
+    "bounding box" : [ 276.363, 146.374, 320.617, 155.352 ],
+    "heading level" : 1,
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Look for:"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 387,
+    "level" : "Doctitle",
+    "page number" : 5,
+    "bounding box" : [ 60.755, 536.151, 95.836, 545.129 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Layout"
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 400,
+    "level" : "Doctitle",
+    "page number" : 5,
+    "bounding box" : [ 60.755, 260.632, 111.432, 269.611 ],
+    "heading level" : 1,
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Editability"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "2",
+    "page number" : 5,
+    "bounding box" : [ 294.145, 627.918, 517.254, 712.719 ],
+    "numbering style" : "unordered",
+    "number of list items" : 4,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 700.769, 466.41, 712.719 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Effective   color use   and harmony.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 677.144, 438.816, 689.094 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Consistency   across slides.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 653.519, 418.046, 665.469 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Enough   visual variety.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 627.918, 517.254, 639.868 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Quality of   charts   ,   diagrams   ,   images   ,   icons.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 383,
+    "page number" : 5,
+    "bounding box" : [ 276.363, 602.912, 336.839, 611.89 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Low scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 384,
+    "page number" : 5,
+    "bounding box" : [ 336.837, 602.912, 537.002, 611.89 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "sloppy, inconsistent, dated, harsh, generic"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 385,
+    "page number" : 5,
+    "bounding box" : [ 276.363, 577.311, 339.38, 586.289 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  High scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 386,
+    "page number" : 5,
+    "bounding box" : [ 339.379, 577.311, 491.714, 586.289 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "polished, professional, coherent"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 388,
+    "page number" : 5,
+    "bounding box" : [ 276.363, 524.296, 527.207, 533.274 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  How elements are   arranged   within and across slides."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 389,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 276.363, 498.695, 320.617, 507.673 ],
+    "heading level" : 1,
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Look for:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "2",
+    "page number" : 5,
+    "bounding box" : [ 294.145, 352.4, 443.302, 484.451 ],
+    "numbering style" : "unordered",
+    "number of list items" : 6,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 472.501, 443.302, 484.451 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Clear   spacing   and   margins.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 448.876, 415.895, 460.826 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Consistent   alignment.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 425.251, 395.154, 437.201 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Logical   grouping.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 401.625, 425.434, 413.575 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Strong   visual hierarchy.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 378.001, 414.454, 389.951 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   No   clutter   or   overlap.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 352.4, 375.406, 364.35 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Easy to   scan.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 396,
+    "page number" : 5,
+    "bounding box" : [ 276.363, 327.393, 336.839, 336.371 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Low scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 397,
+    "page number" : 5,
+    "bounding box" : [ 336.837, 327.393, 488.232, 336.371 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "crowded, misaligned, confusing"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 398,
+    "page number" : 5,
+    "bounding box" : [ 276.363, 301.792, 339.38, 310.77 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  High scores:  "
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 399,
+    "page number" : 5,
+    "bounding box" : [ 339.817, 301.792, 467.929, 310.77 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "clean, structured, readable"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 401,
+    "page number" : 5,
+    "bounding box" : [ 276.363, 248.778, 480.289, 257.756 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  How easy the deck is to   update   and   reuse   ."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 402,
+    "level" : "Subtitle",
+    "page number" : 5,
+    "bounding box" : [ 276.363, 223.177, 320.617, 232.155 ],
+    "heading level" : 1,
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Look for:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "2",
+    "page number" : 5,
+    "bounding box" : [ 294.145, 149.732, 493.677, 208.932 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 196.981, 444.318, 208.932 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Movable   , editable elements.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 173.357, 464.144, 185.307 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Avoidance of   full slide images.",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 5,
+      "bounding box" : [ 294.145, 149.732, 493.677, 161.682 ],
+      "font" : "ArialMT",
+      "font size" : 9.876,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Maintainable   charts   ,   text   , and   shapes.",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "table",
+    "pdfua_tag" : "Table",
+    "id" : 407,
+    "level" : "3",
+    "page number" : 6,
+    "bounding box" : [ 52.305, 351.04, 558.09, 722.355 ],
+    "number of rows" : 2,
+    "number of columns" : 2,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 52.305, 536.697, 305.197, 722.355 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 305.197, 536.697, 558.09, 722.355 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 222,
+          "page number" : 6,
+          "bounding box" : [ 305.197, 536.697, 558.09, 722.355 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Low scores: hard to modify, flattened, fragile High scores: flexible, reusable, easy to update"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 52.305, 351.04, 305.197, 536.697 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 223,
+          "page number" : 6,
+          "bounding box" : [ 52.305, 351.04, 305.197, 536.697 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Overall"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 305.197, 351.04, 558.09, 536.697 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 224,
+          "page number" : 6,
+          "bounding box" : [ 305.197, 351.04, 558.09, 536.697 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Your holistic judgment of the deck as a complete presentation artifact . Use the criteria above as key inputs, but do not treat them as a full checklist . Consider any additional factors that affect real-world quality , usefulness , and readiness . Ask yourself: ● How good is this deck overall ? ● How ready is it for real use ? ● How much revision is needed before it can be shared or presented confidently? Important: Overall is not a simple average of the scores . A major weakness in one area in a deck can significantly lower the score , even if other areas are strong."
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 408,
+    "level" : "Doctitle",
+    "page number" : 6,
+    "bounding box" : [ 74.833, 304.449, 169.658, 317.018 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 13.826,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Rating Rubric"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 409,
+    "page number" : 6,
+    "bounding box" : [ 74.833, 279.869, 330.335, 288.847 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.876,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Use the   full scale   . Do not cluster scores in the middle."
+  }, {
+    "type" : "table",
+    "pdfua_tag" : "Table",
+    "id" : 410,
+    "level" : "4",
+    "page number" : 6,
+    "bounding box" : [ 53.189, 89.285, 557.389, 264.525 ],
+    "number of rows" : 3,
+    "number of columns" : 2,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 53.189, 206.112, 557.389, 264.525 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 2,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 226,
+          "page number" : 6,
+          "bounding box" : [ 53.189, 206.112, 557.389, 264.525 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Ratings"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 53.189, 147.699, 305.289, 206.112 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 227,
+          "page number" : 6,
+          "bounding box" : [ 53.189, 147.699, 305.289, 206.112 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "1 - Very Poor"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 305.289, 147.699, 557.389, 206.112 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 228,
+          "page number" : 6,
+          "bounding box" : [ 305.289, 147.699, 557.389, 206.112 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Severely broken or unusable . Typical signs:"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 53.189, 89.285, 305.289, 147.699 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 6,
+        "bounding box" : [ 305.289, 89.285, 557.389, 147.699 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 229,
+          "level" : "1",
+          "page number" : 6,
+          "bounding box" : [ 305.289, 89.285, 557.389, 147.699 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "● Content is wrong , missing , or misleading ● No clear story ● Chaotic or unreadable design ● Layout blocks understanding ● Requires near - total rebuild"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "table",
+    "pdfua_tag" : "Table",
+    "id" : 411,
+    "level" : "5",
+    "page number" : 7,
+    "bounding box" : [ 53.16, 91.249, 558.138, 720.731 ],
+    "number of rows" : 5,
+    "number of columns" : 2,
+    "rows" : [ {
+      "type" : "table row",
+      "row number" : 1,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 53.16, 594.834, 305.649, 720.731 ],
+        "row number" : 1,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 231,
+          "page number" : 7,
+          "bounding box" : [ 53.16, 594.834, 305.649, 720.731 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "2 - Poor"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 305.649, 594.834, 558.138, 720.731 ],
+        "row number" : 1,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 232,
+          "page number" : 7,
+          "bounding box" : [ 305.649, 594.834, 558.138, 720.731 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Major weaknesses make the deck risky to use . Typical signs: ● Significant content gaps or accuracy issues ● Confusing structure ● Clear visual or layout failures"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 2,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 53.16, 468.938, 305.649, 594.834 ],
+        "row number" : 2,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 233,
+          "page number" : 7,
+          "bounding box" : [ 53.16, 468.938, 305.649, 594.834 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "3 - Fair"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 305.649, 468.938, 558.138, 594.834 ],
+        "row number" : 2,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 234,
+          "page number" : 7,
+          "bounding box" : [ 305.649, 468.938, 558.138, 594.834 ],
+          "font" : "Inter-Regular",
+          "font size" : 9.9,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "below a solid standard. content   , but key gaps remain storytelling design or layout issues   , but needs meaningful revision"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 3,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 53.16, 343.042, 305.649, 468.938 ],
+        "row number" : 3,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 235,
+          "page number" : 7,
+          "bounding box" : [ 53.16, 343.042, 305.649, 468.938 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "4 - Mixed"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 305.649, 343.042, 558.138, 468.938 ],
+        "row number" : 3,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 236,
+          "page number" : 7,
+          "bounding box" : [ 305.649, 343.042, 558.138, 468.938 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Adequate baseline with clear strengths and weaknesses. Typical signs: ● Core ideas are mostly present ● Deck basically works ● Noticeable rough edges ● Quality is uneven ● Suitable as an internal draft , not polished"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 4,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 53.16, 217.145, 305.649, 343.042 ],
+        "row number" : 4,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 237,
+          "page number" : 7,
+          "bounding box" : [ 53.16, 217.145, 305.649, 343.042 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "5 - Good"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 305.649, 217.145, 558.138, 343.042 ],
+        "row number" : 4,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 238,
+          "page number" : 7,
+          "bounding box" : [ 305.649, 217.145, 558.138, 343.042 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "Strong, usable deck with some fixable issues. Typical signs: ● Solid, mostly complete content ● Clear narrative flow ● Professional visuals ● Clean layout ● Needs moderate polish , not major changes"
+        } ]
+      } ]
+    }, {
+      "type" : "table row",
+      "row number" : 5,
+      "cells" : [ {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 53.16, 91.249, 305.649, 217.145 ],
+        "row number" : 5,
+        "column number" : 1,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 239,
+          "page number" : 7,
+          "bounding box" : [ 53.16, 91.249, 305.649, 217.145 ],
+          "font" : null,
+          "font size" : 12.0,
+          "content" : "6 - Very good"
+        } ]
+      }, {
+        "type" : "table cell",
+        "pdfua_tag" : "TD",
+        "page number" : 7,
+        "bounding box" : [ 305.649, 91.249, 558.138, 217.145 ],
+        "row number" : 5,
+        "column number" : 2,
+        "row span" : 1,
+        "column span" : 1,
+        "kids" : [ {
+          "type" : "paragraph",
+          "pdfua_tag" : "P",
+          "id" : 240,
+          "page number" : 7,
+          "bounding box" : [ 305.649, 91.249, 558.138, 217.145 ],
+          "font" : "Inter-Regular",
+          "font size" : 9.9,
+          "text color" : "[0.0, 0.0, 0.0]",
+          "content" : "polish   , not major changes to presentation ready.   nearly all criteria"
+        } ]
+      } ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 415,
+    "page number" : 8,
+    "bounding box" : [ 58.675, 642.722, 120.752, 651.722 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  7 – Excellent"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "6",
+    "page number" : 8,
+    "bounding box" : [ 235.442, 680.416, 414.006, 719.953 ],
+    "numbering style" : "unordered",
+    "number of list items" : 3,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 707.974, 339.189, 719.953 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Only   minor issues",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 694.195, 402.941, 706.174 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Feels   professional and credible",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 680.416, 414.006, 692.395 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Ready for real use with light polish",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 416,
+    "page number" : 8,
+    "bounding box" : [ 217.616, 628.943, 529.763, 651.722 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Outstanding with no meaningful weaknesses. This should be used   sparingly."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 417,
+    "level" : "Doctitle",
+    "page number" : 8,
+    "bounding box" : [ 217.616, 603.28, 284.311, 612.28 ],
+    "heading level" : 1,
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Typical signs:"
+  }, {
+    "type" : "list",
+    "pdfua_tag" : "L",
+    "level" : "6",
+    "page number" : 8,
+    "bounding box" : [ 235.442, 521.903, 457.408, 589.0 ],
+    "numbering style" : "unordered",
+    "number of list items" : 5,
+    "list items" : [ {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 577.021, 457.408, 589.0 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Complete, accurate, high quality content",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 563.241, 415.5, 575.221 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Compelling, cohesive storytelling",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 549.463, 436.945, 561.442 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Polished design and layout   throughout",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 535.683, 397.195, 547.662 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Highly   refined   and easy to use",
+      "kids" : [ ]
+    }, {
+      "type" : "list item",
+      "pdfua_tag" : "LI",
+      "page number" : 8,
+      "bounding box" : [ 235.442, 521.903, 407.526, 533.882 ],
+      "font" : "ArialMT",
+      "font size" : 9.9,
+      "text color" : "[0.0, 0.0, 0.0]",
+      "content" : "  ●   Ready to   present or share as is",
+      "kids" : [ ]
+    } ]
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 423,
+    "level" : "Doctitle",
+    "page number" : 8,
+    "bounding box" : [ 74.272, 450.496, 291.177, 468.497 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 19.801,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Submission Checklist"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 424,
+    "page number" : 8,
+    "bounding box" : [ 74.272, 408.661, 508.331, 431.44 ],
+    "font" : "Inter-Bold",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Use this   checklist before every submission   . Focus on   deck-level quality   , not just individual   slides."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 425,
+    "page number" : 8,
+    "bounding box" : [ 74.272, 369.218, 533.266, 391.998 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  We donʼt want a   laundry list of issues   , and youʼre not expected to catch everything. Focus on the   key issues   and explain   why they matter   ."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 426,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 341.946, 292.677, 350.946 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I have not already completed this task."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 427,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 326.557, 218.312, 335.557 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I read the task prompt."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 428,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 311.169, 377.483, 320.169 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I downloaded all responses and fully reviewed each one."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 429,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 295.78, 267.094, 304.78 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I reviewed any provided sources."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 430,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 280.391, 386.735, 289.391 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I validated factual claims via web search where applicable."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 431,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 248.282, 532.578, 272.532 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I used the Grading Criteria if relevant and Rating Rubric in Rating Responses section when   working on the task."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 432,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 231.423, 409.901, 240.423 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I rated each response independently and gave an overall rating."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 433,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 199.314, 527.971, 223.564 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Iʼve checked all responses for spelling, grammar and formatting errors and ensured each   rationale is clearly and concisely written."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 434,
+    "level" : "Subtitle",
+    "page number" : 8,
+    "bounding box" : [ 74.272, 167.329, 225.411, 181.73 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 15.842,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  Fit and Confidence"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 435,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 140.601, 351.494, 149.602 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I read the user request before claiming to check fit."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 436,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 125.213, 406.749, 134.213 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  The task sits within my domain expertise or clear comfort area."
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 437,
+    "page number" : 8,
+    "bounding box" : [ 109.922, 109.824, 347.119, 118.824 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.9,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "  I'm confident in my ratings; if not, I did not submit."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 17,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 700.641, 204.594, 719.998 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 15.997,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Individual Rating"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 18,
+    "page number" : 9,
+    "bounding box" : [ 108.0, 613.479, 521.841, 686.109 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "I rated all decks provided scale. I focused on overall deck quality , not isolated slide moments. I wrote a clear and concise rationale for each, ideally with examples. I rated each deck as independently as possible – one deck's weakness didn't inflate the other's score."
+  }, {
+    "type" : "heading",
+    "pdfua_tag" : "H1",
+    "id" : 19,
+    "level" : "Subtitle",
+    "page number" : 9,
+    "bounding box" : [ 72.0, 582.305, 190.719, 601.662 ],
+    "heading level" : 1,
+    "font" : "Inter-ExtraBold",
+    "font size" : 15.997,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "Preferred Deck"
+  }, {
+    "type" : "paragraph",
+    "pdfua_tag" : "P",
+    "id" : 20,
+    "page number" : 9,
+    "bounding box" : [ 108.0, 509.058, 491.384, 567.773 ],
+    "font" : "Inter-Regular",
+    "font size" : 9.998,
+    "text color" : "[0.0, 0.0, 0.0]",
+    "content" : "I selected a preferred deck. I compared overall deck quality, not slide-by-slide. My rationale for the preference is informative and specific, not just \"A is better.\" If there was a tie-break, I used my best judgement and provided a clear rationale."
+  } ]
+}
