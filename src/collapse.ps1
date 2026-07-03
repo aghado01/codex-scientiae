@@ -143,6 +143,9 @@ function Invoke-Collapse {
             if ($null -ne $nd.font) { $chunk['font'] = $nd.font }
             if ($null -ne $nd.font_size) { $chunk['font_size'] = $nd.font_size }
             if ($nd.heading_source) { $chunk['heading_source'] = $nd.heading_source }
+            # pig converter's self-reported residue (unbalanced_delimiters, needs_2d_assembly, …) —
+            # the dispatchable "isolation" signal for the membrane's gated math-repair loop
+            if ($nd.flags -and @($nd.flags).Count -gt 0) { $chunk['flags'] = @($nd.flags) }
             if ($t -eq 'header' -or $t -eq 'footer') { $chunk['is_furniture'] = $true }
             $chunks.Add([pscustomobject]$chunk)
         }
