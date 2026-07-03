@@ -51,11 +51,11 @@ $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 $PaperArg = @{ type = 'string'; description = 'a document slug (must be unique under the ingestion root — an ambiguous slug ERRORS listing the candidates) or an ingestion-root-relative paper-dir path to disambiguate, e.g. "compendia/membrane-testing/2508.11646v1". Resolves to the paper''s LATEST run; pin a specific run with @, e.g. "2508.11646v1@20260701_203601" (legacy dir: "@.scratch") — list_documents reports each paper''s latest_run.' }
 $Tools = @(
     @{ name = 'list_documents'
-       description = 'Survey the ingestion root: every {slug}/{slug}.json raw with whether it has been preprocessed and its current milestone stage. Body-blind. The "Go" starting point.'
+       description = 'Survey the ingestion root: every paper raw with whether it has been preprocessed and its current milestone stage. Each row carries `lanes` — which IR intake dialect(s) exist for the paper: "opendataloader" ({slug}.json, the docling-era converter) and/or "pdfdig" ({slug}.pdfdig.json + {slug}.nodes.jsonl, the in-house deterministic PdfPig lane). Body-blind. The "Go" starting point.'
        inputSchema = @{ type = 'object'; properties = @{ scope = @{ type = 'string'; description = 'optional subtree under the ingestion root to survey, e.g. "compendia/ph" or "codices" (default: whole ingestion root)' } } } }
     @{ name = 'preprocess'
-       description = 'START a fresh workflow: run the seven-stage pipeline on a document''s raw IR, landing the enriched chunk stream + sidecars in a NEW runstamped dir ({paper}/.runs/{yyyyMMdd_HHmmss}/) and logging the preprocessed milestone. Every call creates a new run — prior runs are never touched, but the new run becomes the paper''s current view (the result flags a displaced run that carries applied/finalized work, with its @pin address). To CONTINUE existing work use the read/repair tools, which resolve the latest run or any pinned {paper}@{run}. Batch on-ramps: preprocess only docs list_documents shows unprepped.'
-       inputSchema = @{ type = 'object'; properties = @{ paper = $PaperArg }; required = @('paper') } }
+       description = 'START a fresh workflow: run the staged pipeline on a document''s raw IR, landing the enriched chunk stream + sidecars in a NEW runstamped dir ({paper}/.runs/{yyyyMMdd_HHmmss}/) and logging the preprocessed milestone. TWO IR LANES are accepted (see list_documents `lanes`; choose with the optional `lane` arg, default prefers opendataloader when both exist): "opendataloader" = docling-era IR — heading recovery + furniture detection run downstream to compensate converter damage; "pdfdig" = the in-house deterministic lane — headings arrive PRE-typed (typography + PDF-outline cross-derivation; heading recovery is skipped), inline math carries $-seams with geometric sub/superscripts, formula chunks are grouped display-math lines (2-D assembly pending), page furniture is already dropped, ligatures/symbol corrections already applied; node flags[] are the converter''s own uncertainty markers, not detected corruption. The result echoes ir_lane (+ lane_notes on pdfdig). Every call creates a new run — prior runs are never touched, but the new run becomes the paper''s current view (the result flags a displaced run that carries applied/finalized work, with its @pin address). To CONTINUE existing work use the read/repair tools, which resolve the latest run or any pinned {paper}@{run}. Batch on-ramps: preprocess only docs list_documents shows unprepped.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = $PaperArg; lane = @{ type = 'string'; enum = @('auto','opendataloader','pdfdig'); description = 'IR intake lane (default auto: opendataloader if present, else pdfdig)' } }; required = @('paper') } }
     @{ name = 'latex_convert'
        description = 'The LaTeX ORACLE: convert a staged arXiv LaTeX source into codex-standard markdown — the near-lossless, algorithmic ground truth used as the answer key for benchmarking docling-repair conversion quality (the benchmark workflow). This is the in-house alternative to pandoc/latexml — do NOT shell out to pandoc. It expands \newcommand macros to primitives (renderable KaTeX), wraps alignment envs in \begin{aligned}, resolves \cite/\ref/\eqref to numbers, numbers theorems/lemmas, and emits a references section. Reads the staged _inbox/<id>/<id>.tar.gz, unpacks the source into a runstamped working dir beside it (.runs/{stamp}/tex — persisted like any other intermediate, so the math-bank/skeleton lanes can re-read it), writes _inbox/<id>/<id>.latex.md, and carries referenced figures out beside the deliverable; returns the path + stats (bytes, macros, sections, references, figures, diagrams, run). Requires the "source" artifact staged first via codex-arxiv fetch (artifacts: ["source"]) — a PDF-only paper has no LaTeX source.'
        inputSchema = @{ type = 'object'; properties = @{ id = @{ type = 'string'; description = 'arXiv id whose LaTeX source is already staged in _inbox, e.g. 1611.03935' } }; required = @('id') } }
@@ -164,7 +164,10 @@ function Resolve-Paper([string]$paper) {
     $script:RunCtx = [pscustomobject]@{ paper = ((Split-Path -Leaf $c) -replace '\.chunks\.jsonl$', ''); run = (Get-RunName $c) }
     return $c
 }
-function Resolve-Source([string]$paper) { return Resolve-PaperSource -Root $Root -Paper $paper }
+function Resolve-Source([string]$paper, [string]$lane = 'auto') {
+    if ([string]::IsNullOrWhiteSpace($lane)) { $lane = 'auto' }
+    return Resolve-PaperSource -Root $Root -Paper $paper -Lane $lane
+}
 # Work-scope (runtime concern): empty -> the whole ingestion root; else a subtree under it,
 # full-path-normalized and confined to $Root (no escaping via .. or absolute paths).
 function Resolve-Scope([string]$scope) {
@@ -210,7 +213,7 @@ function Invoke-Tool([string]$name, $arguments) {
     $script:RunCtx = $null   # set by Resolve-Paper when this call addresses a paper's chunk stream
     switch ($name) {
         'list_documents' { $out = @(Get-IngestionScan -Root (Resolve-Scope $arguments.scope)) }
-        'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper) }
+        'preprocess'     { $out = Invoke-Preprocess -JsonPath (Resolve-Source $arguments.paper $arguments.lane) }
         'latex_convert' {
             $id = [string]$arguments.id
             if ([string]::IsNullOrWhiteSpace($id) -or $id -notmatch '^[\w.\-]+$') { throw "invalid arXiv id: '$id'" }

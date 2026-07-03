@@ -82,7 +82,9 @@ function Resolve-PaperDir([string]$Root, [string]$Paper) {
         return $full
     }
     if ($p -notmatch '^[\w.\-]+$') { throw "invalid paper name: '$Paper'" }
-    $hits = @(Invoke-Crawl -Root $Root -Patterns "**/$p/$p.json" -Semantics Include |
+    # a paper dir is recognized by EITHER IR lane's raw — {slug}.json (opendataloader) or
+    # {slug}.pdfdig.json (pdfdig). A pig-only paper must be discoverable too.
+    $hits = @(Invoke-Crawl -Root $Root -Patterns "**/$p/$p.json", "**/$p/$p.pdfdig.json" -Semantics Include |
               ForEach-Object { Split-Path -Parent $_ } | Sort-Object -Unique)
     if ($hits.Count -eq 0) { throw "document not found: $p" }
     if ($hits.Count -gt 1) {
@@ -113,12 +115,30 @@ function Resolve-PaperChunks([string]$Root, [string]$Paper) {
     return $c
 }
 
-function Resolve-PaperSource([string]$Root, [string]$Paper) {
+function Resolve-PaperSource([string]$Root, [string]$Paper, [string]$Lane = 'auto') {
     $addr = Split-PaperAddress $Paper
     if ($addr[1]) { throw "runs are immutable — preprocess always creates a NEW run, so '@$($addr[1])' cannot be re-entered; address the pinned run on the read/repair tools instead" }
     $dir  = Resolve-PaperDir $Root $addr[0]
     $slug = Split-Path -Leaf $dir
-    $j = Join-Path $dir "$slug.json"
-    if (-not (Test-Path -LiteralPath $j)) { throw "source raw not found: $slug" }
-    return $j
+    # two IR lanes share the positional contract: {slug}.json (opendataloader/docling era) and
+    # {slug}.pdfdig.json (the pdfdig converter's envelope, {slug}.nodes.jsonl beside it).
+    # 'auto' prefers opendataloader while it remains the established baseline; pass lane='pdfdig'
+    # to choose the pig IR explicitly when both exist.
+    $odl = Join-Path $dir "$slug.json"
+    $pig = Join-Path $dir "$slug.pdfdig.json"
+    switch ($Lane) {
+        'opendataloader' {
+            if (Test-Path -LiteralPath $odl) { return $odl }
+            throw "opendataloader source not found for '$slug' ({slug}.json)"
+        }
+        'pdfdig' {
+            if (Test-Path -LiteralPath $pig) { return $pig }
+            throw "pdfdig source not found for '$slug' ({slug}.pdfdig.json — run the pdf-converter lane first)"
+        }
+        default {
+            if (Test-Path -LiteralPath $odl) { return $odl }
+            if (Test-Path -LiteralPath $pig) { return $pig }
+            throw "source raw not found: $slug (neither {slug}.json nor {slug}.pdfdig.json)"
+        }
+    }
 }

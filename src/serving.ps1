@@ -59,22 +59,39 @@ function Get-ChunkFiles([string]$Root) {
     }
 }
 
-# survey the ingestion target: each {slug}/{slug}.json raw + whether it's been preprocessed
+# survey the ingestion target: each paper raw + whether it's been preprocessed. A paper may carry
+# one or both IR lanes — {slug}/{slug}.json (opendataloader/docling era) and/or
+# {slug}/{slug}.pdfdig.json (the pdfdig converter's envelope) — aggregated into one row with a
+# `lanes` field so the agent can see what intake dialects exist and pick one at preprocess.
 function Get-IngestionScan([string]$Root) {
+    $papers = [ordered]@{}
     foreach ($json in (Invoke-Crawl -Root $Root -Patterns '**/*.json' -Semantics Include)) {
-        $slug     = [System.IO.Path]::GetFileNameWithoutExtension($json)
+        $base = [System.IO.Path]::GetFileNameWithoutExtension($json)
+        $lane = 'opendataloader'; $slug = $base
+        if ($base.EndsWith('.pdfdig')) { $lane = 'pdfdig'; $slug = $base.Substring(0, $base.Length - 7) }
         $paperDir = Split-Path -Parent $json
-        if ((Split-Path -Leaf $paperDir) -ne $slug) { continue }   # only {slug}/{slug}.json raws (skips inventory.json etc.)
-        $runs    = @(Get-RunChunks $paperDir $slug)
+        if ((Split-Path -Leaf $paperDir) -ne $slug) { continue }   # only {slug}/{slug}[.pdfdig].json raws (skips inventory.json etc.)
+        $key = "$paperDir|$slug"
+        if (-not $papers.Contains($key)) {
+            $papers[$key] = @{ slug = $slug; dir = $paperDir; lanes = [System.Collections.Generic.List[string]]::new(); src = @{} }
+        }
+        if (-not $papers[$key].lanes.Contains($lane)) { $papers[$key].lanes.Add($lane) }
+        $papers[$key].src[$lane] = $json
+    }
+    foreach ($key in $papers.Keys) {
+        $p = $papers[$key]
+        $runs    = @(Get-RunChunks $p.dir $p.slug)
         $chunks  = if ($runs.Count) { $runs[0] } else { $null }
         $prepped = [bool]$chunks
         $stage = $null
         # Fault isolation: a corrupt ledger flags this one unit 'unreadable' instead of aborting the
         # whole survey (one bad unit must not blind the agent to every healthy one in the batch).
         if ($prepped) { try { $stage = (Get-LedgerStage $chunks).stage } catch { $stage = 'unreadable' } }
+        $srcPath = if ($p.src.ContainsKey('opendataloader')) { $p.src['opendataloader'] } else { $p.src['pdfdig'] }
         [pscustomobject]@{
-            paper      = $slug
-            source     = ([System.IO.Path]::GetRelativePath($Root, $json) -replace '\\', '/')
+            paper      = $p.slug
+            source     = ([System.IO.Path]::GetRelativePath($Root, $srcPath) -replace '\\', '/')
+            lanes      = @($p.lanes | Sort-Object)
             prepped    = $prepped
             stage      = $stage
             runs       = $runs.Count

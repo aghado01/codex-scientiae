@@ -28,9 +28,13 @@ $script:BoilerplatePatterns = [ordered]@{
     funding  = '(?i)(funded by|supported by|support for|grant\b|\bnsf\b|\bnih\b)'
 }
 
-# a heading that opens the body (first numbered section, or "Introduction")
+# a heading that opens the body (first numbered section, or "Introduction"). Numbering dialects:
+# Arabic "1 ..." / "1. ...", ROMAN "I. ..." (IEEE style — the 2508.11646 zoning failure, both
+# lanes), and "Introduction" with or without either prefix.
 function Test-BodyStartHeading([string]$content) {
-    return ($content -match '^\s*\d+(\.\d+)*\.?\s+[A-Za-z]') -or ($content -match '(?i)^\s*introduction\s*$')
+    return ($content -match '^\s*\d+(\.\d+)*\.?\s+[A-Za-z]') -or
+           ($content -cmatch '^\s*[IVXL]+\.\s+\S') -or
+           ($content -match '(?i)^\s*((\d+(\.\d+)*|[IVXL]+)\.?\s+)?introduction\s*$')
 }
 
 # a heading that opens the back-matter (References / Bibliography)
