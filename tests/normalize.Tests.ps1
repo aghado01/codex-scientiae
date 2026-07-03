@@ -107,3 +107,28 @@ Describe 'Invoke-MarkdownCleanup — idempotency after -Apply' {
         (Invoke-MarkdownCleanup -Path $f).changed | Should -BeFalse
     }
 }
+
+Describe 'Get-FurnitureKind — furniture classification + small-font gate' {
+    BeforeAll {
+        $median = 9.963   # body CMR10 baseline, the median over the specimen's prose nodes
+        function New-Chunk($content, $font, $size) { [pscustomobject]@{ type = 'prose'; content = $content; font = $font; font_size = $size } }
+    }
+    It 'flags a colon-less caption typeset below the body median (the leaked "Fig. 1 ..." case)' {
+        Get-FurnitureKind (New-Chunk 'Fig. 1 ARI and NMI as a function of e for the synthetic settings' 'CMR8' 7.97) $median | Should -Be 'caption'
+    }
+    It 'does NOT flag body prose that opens with a figure mention at body font ("Figure 6 shows ...")' {
+        Get-FurnitureKind (New-Chunk 'Figure 6 shows ARI and NMI as a function of e for the datasets.' 'CMR10' 9.963) $median | Should -BeNullOrEmpty
+    }
+    It 'still flags a colon-delimited caption regardless of font (legacy path preserved)' {
+        Get-FurnitureKind (New-Chunk 'Figure 2: A schematic overview of the pipeline.' 'CMR10' 9.963) $median | Should -Be 'caption'
+    }
+    It 'does not treat a ghost-layer node (font=null) as small-font furniture' {
+        Get-FurnitureKind (New-Chunk 'Fig. 3 in the ghost layer with a null font' $null 12.0) $median | Should -BeNullOrEmpty
+    }
+    It 'no-ops the small-font gate when no median is available (non-docling input)' {
+        Get-FurnitureKind (New-Chunk 'Fig. 4 caption without any font metadata here' $null $null) 0 | Should -BeNullOrEmpty
+    }
+    It 'leaves ordinary body prose unflagged' {
+        Get-FurnitureKind (New-Chunk 'The manifold hypothesis states data lies on a low-dimensional manifold.' 'CMR10' 9.963) $median | Should -BeNullOrEmpty
+    }
+}

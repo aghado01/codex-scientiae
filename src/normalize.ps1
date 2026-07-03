@@ -277,11 +277,17 @@ function ConvertTo-InlineMath([string]$Content) {
 
 # Body prose that is really figure apparatus, by leading shape: a figure/table caption, a subfigure
 # label, or a short non-linguistic OCR crumb. null = leave it as body content.
-function Get-FurnitureKind([object]$Chunk) {
+function Get-FurnitureKind([object]$Chunk, [double]$MedianFont = 0) {
     if ([string]$Chunk.type -ne 'prose') { return $null }
     $t = ([string]$Chunk.content).Trim()
-    if ($t -match '^(Figure|Fig\.?|Table|Tab\.?)\s*\d+\s*[:.]') { return 'caption' }
-    if ($t -match '^\([a-z]\)\s')                                { return 'figure_label' }
+    # small-font gate (principled typography signal): a prose node typeset well below the body median
+    # is caption/footnote-grade. It GUARDS the colon-less caption cue, so body prose like "Figure 6
+    # shows ..." at body size is never mistaken for a caption. font=null ghosts score 0 -> skip.
+    $fs = if ($null -ne $Chunk.font_size) { [double]$Chunk.font_size } else { 0.0 }
+    $small = ($MedianFont -gt 0 -and $Chunk.font -and $fs -gt 0 -and $fs -lt 0.85 * $MedianFont)
+    if ($t -match '^(Figure|Fig\.?|Table|Tab\.?)\s*\d+\s*[:.]')        { return 'caption' }
+    if ($small -and $t -match '^(Figure|Fig\.?|Table|Tab\.?)\s*\d+\b') { return 'caption' }   # colon-less caption, font-guarded
+    if ($t -match '^\([a-z]\)\s')                                      { return 'figure_label' }
     # "short" = glyph count, not UTF-16 code units: an SMP run (each math glyph = 2 code units)
     # would otherwise escape this crumb gate. Count text elements so 𝔼𝔽𝔾 reads as 3, not 6.
     if ([System.Globalization.StringInfo]::new($t).LengthInTextElements -le 4 -and $t -notmatch '[A-Za-z]{2,}') { return 'crumb' }
@@ -382,6 +388,17 @@ function Invoke-Normalize {
     $furn = [ordered]@{ caption = 0; figure_label = 0; crumb = 0 }
     $formulaContents = [System.Collections.Generic.List[string]]::new()
 
+    # body font-size baseline for the furniture small-font gate: median over prose nodes with a real
+    # font (ghost-layer font=null placeholders excluded, so they can't drag the median toward 12pt).
+    $bodyFonts = [System.Collections.Generic.List[double]]::new()
+    foreach ($c in $chunks) {
+        if ([string]$c.type -eq 'prose' -and $c.font -and $null -ne $c.font_size) {
+            $v = [double]$c.font_size; if ($v -gt 0) { $bodyFonts.Add($v) }
+        }
+    }
+    $medianFont = 0.0
+    if ($bodyFonts.Count) { $sorted = @($bodyFonts | Sort-Object); $medianFont = $sorted[[int][math]::Floor($sorted.Count / 2)] }
+
     # pass 1 (structural): un-bleed prose from formulas, de-space them (harvesting clean LaTeX for the
     # vocab), and tag figure furniture — all before any content op assumes the structure is sound.
     for ($i = 0; $i -lt $chunks.Count; $i++) {
@@ -395,7 +412,7 @@ function Invoke-Normalize {
             $formulaContents.Add([string]$c.content)
             continue
         }
-        $kind = Get-FurnitureKind $c
+        $kind = Get-FurnitureKind $c $medianFont
         if ($kind -and -not $c.is_furniture) { $c | Add-Member -NotePropertyName is_furniture -NotePropertyValue $kind -Force; $furn[$kind]++ }
     }
 

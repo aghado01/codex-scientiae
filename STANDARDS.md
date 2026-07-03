@@ -62,3 +62,13 @@ When a finalized deliverable is promoted into a `compendia/{topic}/` collection 
 - **Index**: `compendia/{topic}/_CONTENTS.md` carries one `## [title]({slug}.md)` block per paper, with the Contents entries re-anchored to `{slug}.md#…`. Ordering is **human thematic curation** — `publish` upserts a paper's block in place (or appends a new one for repositioning) and never re-sorts.
 
 All file I/O is UTF-8 without BOM (§ stream discipline), so SMP math, accents, and ligatures round-trip.
+
+### 9. Ingestion Lane Output Naming (inbox slug root)
+
+While a paper is staged under `ingestion/_inbox/{slug}/`, each converter lane writes its finalized markdown to the slug root, tagged by lane so the lanes sit side-by-side for cross-examination:
+
+- **Docling** (the base drop, beside the JSON IR): bare `{slug}.md` — the opendataloader default, *not* suffixed.
+- **LaTeX** (`latex-ingest.ps1` / `latex_convert`): `{slug}-latex.md`.
+- **Membrane** (`finalize`): the authoritative copy stays in the run dir (`.runs/{stamp}/{slug}.md`); a convenience mirror is copied up to `{slug}-membrane.md`.
+
+Promotion (§8) is the only step that writes a bare `{slug}.md`, and it does so at the *destination* (`compendia/{topic}/`). It shares the basename with the inbox docling drop but never the location — the two are not to be conflated.

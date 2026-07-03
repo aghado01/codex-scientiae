@@ -218,7 +218,7 @@ function Invoke-Tool([string]$name, $arguments) {
             $tarItem = if (Test-Path -LiteralPath $dir) { Get-ChildItem -LiteralPath $dir -Filter '*.tar.gz' -File -ErrorAction SilentlyContinue | Select-Object -First 1 } else { $null }
             $tar = if ($tarItem) { $tarItem.FullName } else { @(Invoke-Crawl -Root $Root -Patterns "**/_inbox/$id/*.tar.gz" -Semantics Include) | Select-Object -First 1 }
             if (-not $tar) { throw "no staged LaTeX source (.tar.gz) for '$id' under _inbox -- stage it first with codex-arxiv fetch (artifacts: source)" }
-            $out = Invoke-ArxivLatexToMarkdown -TarGz $tar -Slug "$id.latex" -OutDir (Split-Path -Parent $tar)
+            $out = Invoke-ArxivLatexToMarkdown -TarGz $tar -Slug $id -OutDir (Split-Path -Parent $tar)   # lane tag is added by the write target -> {id}-latex.md (STANDARDS §9)
         }
         'render_check'  { $out = Test-MathRenders  -Path (Resolve-Deliverable ([string]$arguments.paper) ([string]$arguments.path)) -Strict:([bool]$arguments.strict) }
         'markdown_lint' { $out = Test-MarkdownLint -Path (Resolve-Deliverable ([string]$arguments.paper) ([string]$arguments.path)) }

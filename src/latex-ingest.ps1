@@ -38,7 +38,7 @@ function Get-BraceGroupEnd {
 }
 function Get-LatexCommandArg {
     param([string]$Text, [string]$Command)   # e.g. '\title'
-    $m = [regex]::Match($Text, [regex]::Escape($Command) + '\s*\{')
+    $m = [regex]::Match($Text, [regex]::Escape($Command) + '\s*(?:\[[^\]]*\])?\s*\{')   # skip an optional [..] arg, e.g. \title[short]{long}
     if (-not $m.Success) { return $null }
     return Get-LatexBracedArg $Text ($m.Index + $m.Length - 1)
 }
@@ -704,7 +704,7 @@ function Invoke-ArxivLatexToMarkdown {
         } catch { Write-Verbose "tikz-render failed: $($_.Exception.Message)" }
     }
 
-    $outPath = Join-Path $OutDir "$Slug.md"
+    $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
     return [pscustomobject]@{

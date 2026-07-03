@@ -140,10 +140,11 @@ Describe 'figures — carried out of the tarball, links live; TikZ markers numbe
         [System.IO.File]::WriteAllBytes((Join-Path $src 'figs/arch.png'), [byte[]](137, 80, 78, 71))
         [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'), '\documentclass{article}\begin{document}Fig: \includegraphics{figs/arch}\end{document}', [System.Text.UTF8Encoding]::new($false))
         Push-Location $src; tar -czf (Join-Path $root 'p.tar.gz') .; Pop-Location
-        $r = Invoke-ArxivLatexToMarkdown -TarGz (Join-Path $root 'p.tar.gz') -Slug 'p.latex' -OutDir $out
+        $r = Invoke-ArxivLatexToMarkdown -TarGz (Join-Path $root 'p.tar.gz') -Slug 'p' -OutDir $out
         $r.figures | Should -Be 1
-        (Get-Content (Join-Path $out 'p.latex.md') -Raw) | Should -Match ([regex]::Escape('![](p.latex/arch.png)'))
-        Test-Path (Join-Path $out 'p.latex/arch.png') | Should -BeTrue
+        # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
+        (Get-Content (Join-Path $out 'p-latex.md') -Raw) | Should -Match ([regex]::Escape('![](p/arch.png)'))
+        Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
         # the unpacked tex is a PERSISTED run artifact beside the tarball ({dir}/.runs/{stamp}/tex),
         # not a deleted temp dir — downstream consumers (math bank, skeleton) re-read it
         $r.tex | Should -BeLike (Join-Path $root '.runs' '*' 'tex')
@@ -191,5 +192,20 @@ Describe 'pipeline hygiene' {
     It 'body math (inline + display) is unaffected' {
         $md | Should -BeLike '*$y_{i+1} = \mathbf{A} x_i^2$*'
         $md | Should -Match '(?s)\$\$\s*\nd\(v\) \\ge \\tau\s*\n\$\$'
+    }
+}
+
+Describe 'title extraction — optional [..] arg before the braced title (\title[short]{long})' {
+    It 'Get-LatexCommandArg skips the optional bracket and returns the braced title' {
+        Get-LatexCommandArg '\title[Short Running Head]{The Full Descriptive Title}' '\title' | Should -Be 'The Full Descriptive Title'
+    }
+    It 'still returns the title when there is no optional bracket' {
+        Get-LatexCommandArg '\title{Just A Title}' '\title' | Should -Be 'Just A Title'
+    }
+    It 'ConvertFrom-Latex lifts an optional-arg title into the H1 (not "# (untitled)")' {
+        $t = '\documentclass{article}\title[Short]{Enhancing Cluster Analysis}\begin{document}Body text.\end{document}'
+        $out = ConvertFrom-Latex $t ''
+        $out | Should -Match '(?m)^# Enhancing Cluster Analysis$'
+        $out | Should -Not -Match ([regex]::Escape('# (untitled)'))
     }
 }

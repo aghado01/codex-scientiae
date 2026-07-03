@@ -98,6 +98,14 @@ function Invoke-Finalize {
     [System.IO.File]::WriteAllText($bodyPath, (($body -join "`n") + "`n"), $utf8)
     [System.IO.File]::WriteAllText($refPath,  (($refs -join "`n") + "`n"), $utf8)
 
+    # lane mirror (STANDARDS §9): copy the finalized body up to the paper's slug root as
+    # {slug}-membrane.md so the latex/membrane/docling lanes sit side-by-side for cross-examination.
+    # The run-dir copy above stays authoritative; only mirror when OutputDir is a real run dir.
+    $paperRoot = $OutputDir -replace '[\\/]\.(?:runs[\\/][^\\/]+|scratch)$', ''
+    if ($paperRoot -ne $OutputDir) {
+        [System.IO.File]::WriteAllText((Join-Path $paperRoot "$slug-membrane.md"), (($body -join "`n") + "`n"), $utf8)
+    }
+
     $sections = @($bodyC | Where-Object { [string]$_.type -eq 'heading' -and $_.section_level }).Count
     $pending  = @($live | Where-Object { $_.fidelity -in 'needs_review', 'needs_repair', 'suspect' }).Count
     Add-LedgerEntry $ChunksPath 'finalized' @{ body = "$slug.md"; references = "references/$slug.md"; sections = $sections; bib = $bibC.Count; pending = $pending }
