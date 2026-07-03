@@ -209,3 +209,35 @@ Describe 'title extraction — optional [..] arg before the braced title (\title
         $out | Should -Not -Match ([regex]::Escape('# (untitled)'))
     }
 }
+
+Describe 'frontmatter — sn-jnl author metadata stripped, abstract + keywords kept' {
+    BeforeAll {
+        $tex = @'
+\documentclass{article}
+\begin{document}
+\title[Short RH]{Full Title Here}
+\author*[1]{\fnm{Ada} \sur{Lovelace}}\email{ada@x.test}
+\author[2]{\fnm{Alan} \sur{Turing}}\email{alan@y.test}
+\equalcont{These authors contributed equally.}
+\affil[1]{\orgdiv{Dept}, \orgname{Uni}, \orgaddress{\city{Munich}, \country{Germany}}}
+\abstract{We show a $\lambda$-calculus result of note.}
+\keywords{Alpha, Beta, Gamma}
+\maketitle
+\section{Introduction}
+Body text with no macros.
+\end{document}
+'@
+        $script:fm = ConvertFrom-Latex $tex ''
+    }
+    It 'keeps the title as the H1' { $fm | Should -Match '(?m)^# Full Title Here$' }
+    It 'keeps the abstract (with its inline math) as a section' {
+        $fm | Should -Match '(?m)^## Abstract$'
+        $fm | Should -Match ([regex]::Escape('$\lambda$-calculus'))
+    }
+    It 'emits keywords as a bold lead line' { $fm | Should -Match ([regex]::Escape('**Keywords:** Alpha, Beta, Gamma')) }
+    It 'strips every author/affiliation metadata macro (no raw LaTeX leaks)' {
+        foreach ($leak in '\title', '\author', '\affil', '\email', '\equalcont', '\fnm', '\sur', '\orgdiv') {
+            $fm | Should -Not -Match ([regex]::Escape($leak))
+        }
+    }
+}

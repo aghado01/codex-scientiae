@@ -45,7 +45,7 @@ function Get-LatexCommandArg {
 function Replace-BracedCommand {
     param([string]$T, [string]$Cmd, [scriptblock]$Fmt)   # replace every \Cmd{...} with &Fmt($arg)
     while ($true) {
-        $m = [regex]::Match($T, [regex]::Escape($Cmd) + '\s*\{')
+        $m = [regex]::Match($T, [regex]::Escape($Cmd) + '\*?(?:\[[^\]]*\])?\s*\{')   # tolerate a *-variant + optional [..] arg (e.g. \author*[1]{..})
         if (-not $m.Success) { break }
         $open = $m.Index + $m.Length - 1; $end = Get-BraceGroupEnd $T $open
         if ($end -lt 0) { break }
@@ -524,6 +524,13 @@ function ConvertFrom-Latex {
 
     $body = Replace-BracedCommand $body '\abstract' { param($a) "`n## Abstract`n`n$a`n" }
     $body = Replace-BracedCommand $body '\footnote' { param($a) " ($($a.Trim()))" }
+    $body = Replace-BracedCommand $body '\keywords' { param($a) "`n**Keywords:** " + (($a -replace '\s+', ' ').Trim()) + "`n" }
+    # sn-jnl / article author metadata is not part of the corpus format (STANDARDS §8): strip it brace-aware
+    # so \author*[1]{\fnm{}\sur{}}, \affil[..]{\orgdiv{}…}, \email, \equalcont, \orcid stop leaking into the
+    # body. \title is already lifted to the H1 (Get-LatexCommandArg above); the raw command is dropped here.
+    foreach ($fm in '\title', '\author', '\affil', '\email', '\equalcont', '\orcid', '\orcidlink', '\thanks') {
+        $body = Replace-BracedCommand $body $fm { '' }
+    }
 
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
     $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
