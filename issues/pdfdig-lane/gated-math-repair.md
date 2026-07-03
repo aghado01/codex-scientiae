@@ -73,51 +73,55 @@ Full suite 495+ green.
 - **The C# AST tier still owns true 2-D** — this loop is the *interim* path to correct display math
   now (reasoning over evidence), while the deterministic 2-D assembler matures.
 
-## Promotion discipline — a repair is a data point, not a rule (guard against n=1 overfit)
+## Promotion discipline — surface on evidence, HUMAN decides (guard against n=1 overfit)
 
-A reasoning-model fix to ONE example is evidence of exactly one case. It may generalize; it may be a
-one-off the model pattern-matched. Promoting it into the deterministic tier (a store entry, an
-assembler rule, a threshold) on that single observation is fitting a rule to n=1 — the failure mode
-this discipline exists to prevent. Promotion is a **gated inference**, not an automatic reflex.
-A repair is RECORDED (raw material); it is PROMOTED only when it clears every gate below.
+**The machine never promotes. It gathers evidence and SURFACES candidates; a human examines and
+decides.** Human-in-the-loop is the final, non-negotiable gate — no reasoning-tier repair becomes a
+deterministic rule (store entry, assembler change, threshold) without human sign-off. This is the
+real overfit guard: not a machine-chosen recurrence threshold (which is itself an n=1 guess about
+what "enough evidence" means), but a person judging whether a pattern generalizes.
 
-1. **Recurrence, not repetition** — the same *pattern* (expressed geometrically), independently
-   observed across ≥K distinct examples/specimens. One example is a hypothesis; a pattern is a
-   candidate. The math-repair audit + specimen registry accumulate the evidence; a lone repair never
-   trips promotion.
-2. **Principled expressibility (no-magic-string, applied to promotion)** — the rule must be statable
-   in PDF-intrinsic terms (geometry / typography / font register / symbol map), NOT a content regex
-   that matches the motivating string. If the only way to reproduce the fix is to pattern-match the
-   specific text, it has NOT generalized — it stays in the reasoning tier by construction. This is the
-   sharpest overfit filter: a rule that can't be stated without naming the example is the example.
-3. **Corpus verification = the falsification gate** — the accepted repairs are not just "the spec,"
-   they are the **experiment set a deterministic hypothesis must survive**. A candidate rule, run over
-   the accumulated repair corpus, must (a) REPRODUCE the gate-accepted repairs of its claimed class
-   (it actually does what the model did) AND (b) REGRESS NOTHING — every prior specimen and every
-   other accepted repair stays green (monotone-corpus-green). A rule that breaks any prior case is
-   overfit or wrong → rejected. The audit-log-as-spec clause means exactly this: the log is the
-   regression corpus, not an answer key to copy.
-4. **Held-out honesty** — a rule derived from examples A…B and tested only on A…B has proven nothing
-   (circular). It must correctly predict *confirming* examples C…D it was NOT fit to. Split the
-   recurrence set into motivating vs confirming; a rule that only passes what it was tuned on is not
-   promoted.
-5. **Provenance + reversibility** — a promoted rule records which examples motivated and which
-   confirmed it. A later falsifying specimen NARROWS its domain or ROLLS IT BACK — promotion is a
-   standing conjecture, not enshrinement (givens are conjectures, all the way up).
+The **surfacing bar is low, deliberately.** Evidence raising a candidate — even a single repair that
+*looks* like it might generalize — is reason enough to surface it for examination/discussion.
+Surfacing is cheap and good; suppressing a real generalization is the costlier error. A lone repair
+does not auto-promote, but it absolutely earns a place in the discussion queue.
+
+The evidence dimensions below are **decision-support the machine attaches to a surfaced candidate**,
+NOT autonomous filters that block surfacing. They sharpen the human's judgment; they don't replace it:
+
+- **Recurrence** — how many distinct examples/specimens show this pattern so far (1 is fine to
+  surface; the count informs confidence). Accumulated from the math-repair audit + specimen registry.
+- **Principled expressibility (the sharpest signal)** — can the fix be stated in PDF-intrinsic terms
+  (geometry / typography / font register / symbol map), or only as a content regex matching the
+  example string? A rule that can't be stated without naming the example IS the example — the machine
+  flags this so the human sees the overfit risk plainly. (This is `no-magic-string` as a *tell*, not
+  a gate.)
+- **Trial reproduce/regress** — when a candidate deterministic rule is drafted, replay it over the
+  accepted-repair corpus and report: does it reproduce its class's repairs, and does it regress any
+  prior specimen (monotone-corpus-green)? Numbers for the human, run on request — not an autonomous
+  verdict. The audit log is the experiment set, offered to the person, never a self-approving oracle.
+- **Held-out** — of the recurrence examples, which did the draft rule predict that it was NOT fit to?
+  A confirming-vs-motivating split, surfaced so the human can see whether it's circular.
+
+A promoted rule (once the human approves) carries provenance — which examples motivated it, the trial
+numbers, who signed off — and stays a **standing conjecture**: a later falsifying specimen re-surfaces
+it for the human to narrow or roll back. Givens are conjectures, all the way up.
 
 **Same caution turned inward:** the assembler's own knobs (`size_ratio`, `baseline_tol_frac`) were
-tuned on 2508.11646 — themselves an n=1 calibration. They inherit the identical obligation: validate
-across the specimen registry before trusting, degrade unknown cues to flags, and treat every constant
-as a conjecture awaiting its falsifying specimen (the brief's "beware calibration-set overfit").
+tuned on 2508.11646 — themselves an n=1 calibration that no human vetted across specimens. They owe
+the identical treatment: surface them as standing conjectures, validate across the registry, degrade
+unknown cues to flags (the brief's "beware calibration-set overfit").
 
 ### The enabling mechanism (build WHEN repairs start flowing, not before)
 
-To make gate 3 executable, each gate-accepted math repair is captured as a **promotion-regression
-fixture**: `{ geometry-evidence, accepted-LaTeX, class, specimen }`. The membrane's apply already
-writes a before/after audit; the math-repair path additionally stashes the `math_evidence` + accepted
-content so the (geometry → correct-LaTeX) pair is preserved in a replayable form. A `vet-promotion`
-harness then replays a candidate deterministic change against that fixture corpus and reports
-reproduce/regress counts — promotion is a green run, nothing else. NOT built yet: there are zero
+Each gate-accepted math repair is captured as a **candidate fixture**:
+`{ geometry-evidence, accepted-LaTeX, class, specimen }` (the membrane's apply already writes a
+before/after audit; the math-repair path additionally stashes the `math_evidence` + accepted content
+so the geometry → correct-LaTeX pair is replayable). When a repair looks generalizable, it is
+**surfaced for human examination** — the natural channels already exist: a candidate entry under
+`issues/` for discussion, or a `spawn_task` chip flagging it (the repo's "chip off a follow-up,
+consult the user" pattern). A `vet-promotion` replay harness then reports reproduce/regress numbers
+*to the human on request* — decision-support, not an autopilot. NOT built yet: there are zero
 accumulated repairs (the loop just landed), so building the harness now would itself be speculative.
 The hook to wire first, when the loop goes live, is the fixture capture — everything downstream is a
 replay over data that doesn't exist yet.
