@@ -1,10 +1,13 @@
 # pdfdig generic IR — the JSONL substrate
 
-**Status:** DESIGN (2026-07-02), grounded in `pdfpig-capability-map.md`. This is the *generic,
-opinion-free* PDF→IR the whole lane stands on: a faithful, richer-than-needed projection of
-everything PdfPig can see, with **no classification cleverness** (no math/heading/prose verdicts,
-no column reasoning beyond recording which segmenter said what). Classification, symbol correction,
-math assembly, and the de-novo workflow all consume THIS; none of them is baked in here.
+**Status:** IMPLEMENTED (design 2026-07-02, built 2026-07-02; this doc is the spec `pdfdig-ir.ps1`
+realizes — envelope + all 4 lanes landed & deterministic). Grounded in `pdfpig-capability-map.md`.
+This is the *generic, opinion-free* PDF→IR the whole lane stands on: a faithful, richer-than-needed
+projection of everything PdfPig can see, with **no classification cleverness** (no math/heading/prose
+verdicts, no column reasoning beyond recording which segmenter said what). Classification, symbol
+correction, math assembly, and the de-novo workflow all consume THIS; none of them is baked in here.
+(One field-name note: the built envelope uses `{slug}.pdfdig.json` + per-lane `{slug}.<lane>.jsonl`
+beside the PDF, as this doc specifies.)
 
 **Design axiom (from the capability map):** capture **multiple parallel lanes** — the raw atomic
 layer AND the derived structure AND the document lanes — because no single consumer needs all of it

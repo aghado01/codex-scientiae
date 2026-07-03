@@ -1,7 +1,11 @@
 # pdfdig-PS — the opendataloader-pdf replacement lane for codex-scientiae
 
-**Status:** DESIGN (2026-07-02). The deterministic, VLM-free PDF→IR converter for the membrane's
-ingestion needs, in PowerShell, driving the custom PdfPig fork directly.
+**Status:** LARGELY LANDED (updated 2026-07-03; born as DESIGN 2026-07-02). The end-to-end path
+**PDF → multi-lane IR → classified nodes → membrane → finalized markdown** is built, tested (500+
+Pester), and validated on 2508.11646 (structure now matches the LaTeX oracle 1:1; math 87% render-
+clean with the residue honestly flagged + doled to a gated reasoning-repair loop). The design body
+below is the rationale; the dashboard next is the current state + what's left. The deterministic,
+VLM-free PDF→IR converter for the membrane's ingestion needs, in PowerShell, driving PdfPig directly.
 **Division of concerns (user-decided):** THIS lane (codex, PS) = the *converter* — PDF → membrane IR,
 "membrane style." **`Markpig.Pdf` (C#) remains** and shifts to the *PDF-AST tier* — 2-D math-structure
 assembly, render-back verification, foreign-AST → `New-MarkdigAst`. Same family, two tiers.
@@ -12,6 +16,67 @@ validated (pdfdig recon + first dig).
 **Related:** pdfdig SHAPE.md (MarkPig), `issues/conversion-metric/` (the acceptance harness),
 `issues/latex-math-oracle/` (the fidelity net over this lane), `issues/docling-failure-modes/`
 (the catalog of what this lane must not reproduce).
+
+---
+
+## Progress dashboard (2026-07-03) — what's landed, what's next
+
+**The lane, end to end.** `src/pdf-converter/` (converter) + `src/pdfdig-adapter.ps1` + membrane:
+- **IR substrate** (`pdfdig-ir.ps1`) — envelope + 4 lanes (letters / words / blocks+reading-order /
+  paths), all born signals, opinion-free. Deterministic (byte-identical re-runs). → `ir-schema.md`,
+  `pdfpig-capability-map.md`.
+- **Config stores** (`stores/`) — `font-roles`, `producer-map`, `symbol-map`, `classify-config`, all
+  wired + validated; `specimens.jsonl` registry (6 specimens). Rules-as-data; growth loop proven
+  (known-font-role 0.03→1.0 via store edits).
+- **Classifier** (`pdfdig-classify.ps1`) — order-statistics calibration + typed node stream
+  (role/script/heading-tier/formula/marker), bidirectional outline cross-derivation, wrapped-heading
+  re-fusion. Heading structure MATCHES the oracle on 2508.11646.
+- **Math assembler (1.5-D)** (`math-assembler.ps1`) — recursive size-tier script NESTING
+  (`t_{v_{i+1}}`, not the invalid flat `t_{v}_{1}`). Delimiter-balance flags.
+- **Membrane dual-lane intake** — `membrane-handoff.md` (LANDED): membrane ingests pig IR OR
+  opendataloader through one on-ramp.
+- **Gated math repair** — `gated-math-repair.md` (LANDED): flagged residue → `math_evidence`
+  geometry transcript → dispatch → reasoning-model repair → `render_check` gate. Promotion of a fix to
+  the deterministic tier is HUMAN-gated (the machine surfaces, never promotes).
+- **Perf + substrate** — advance-based spacing, lane-gated normalize, dehyphenation; jsonl bulk-write
+  + inline `.jidx`; encoding-invariants test suite. 84p warm: IR 148→51s.
+
+**v1 must-haves — status against §"v1 must-haves" below:**
+1. Column detection — ✅ (RecursiveXYCut, the vendored DLA solved "THE gap"; not built from scratch).
+2. All-pages + assembly — ✅. 3. Satellite reattachment — ⚠️ partial (DLA line-grouping; no explicit
+second pass yet). 4. Font-tier headings — ✅ (+ outline cross-derivation, beyond the plan).
+5. Display-math regions + `$…$` seams — ✅ (1-D + now 1.5-D nesting). 6. Symbol correction — ✅
+(store, math scope). 7. Ligatures/NFKC — ✅ (dehyphenation too). 8. Figures — ⚠️ v1.0 path markers
+only; pixel extraction NOT done (no raster specimen yet).
+
+**Open decisions — RESOLVED:** node shape = flat JSONL per lane w/ back-refs (✅). Conversions land
+beside the PDF as `{slug}.*` (✅). Fork = vendored `lib/pdfpig` 0.1.14 (✅). Perf = low-level loops,
+interior-swap hatch unused so far (✅, and the encoding-invariants suite guards determinism).
+
+### Next steps — scoped for a future session (priority order)
+
+1. **Delimiter-aware display-equation region assembly** (the deterministic frontier). Today's dominant
+   residue is NOT fractions — it's `‖…‖`/`(…)` spans FRACTURED across formula-block lines (honest
+   `unbalanced_delimiters`). Group all glyphs of one display equation (2-D region, not line-by-line)
+   before assembling, so delimiters stay paired. Shrinks what the reasoning tier gets doled. This is
+   the highest-leverage next build.
+2. **Cross-specimen validation of the assembler's n=1 knobs.** `size_ratio`/`baseline_tol_frac` were
+   tuned on 2508.11646 alone — run the classifier+assembler over the other 5 registry specimens
+   (Latin-Modern, cmbright, newtx, office), measure render-clean %, and treat every constant as a
+   conjecture (the "beware calibration-set overfit" discipline). Likely surfaces new store gaps.
+3. **A/B campaign vs opendataloader** (the acceptance criterion, `issues/conversion-metric/`). Same
+   dual-availability papers, both lanes, scored against the LaTeX oracle — the replacement claim as a
+   number per lane. Needs the conversion-metric aligner (also unblocks oracle-backed benchmark trials).
+4. **Figure/raster lane** — needs a raster-bearing specimen first (the inbox corpus is all vector);
+   `TryGetPng` + the `TryGetBytesAsMemory` PS shim. Path-command bbox for bezier figure regions.
+5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
+   role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
+6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
+   footnote-superscript fracture in the pig lane.
+7. **Wire the refined benchmark harvest** (`issues/benchmark-harvest.md`): prompt + oracle-reference
+   capture in the post-hoc review.
+
+**Restart the live codex-membrane MCP server** to pick up any stage-script edits from this work.
 
 ---
 
