@@ -64,14 +64,60 @@ Verified: `get_slice` on 2508.11646 chunk 68 (`needs_2d_assembly`) returns work-
 [`unbalanced_delimiters`, `needs_2d_assembly`] + the full `math_evidence` transcript in 1.7s.
 Full suite 495+ green.
 
-## Discipline (from the brief)
+## Discipline
 
-- **Distillation, not delegation** — the model reasons over pig-intrinsic geometry; when it exposes a
-  *systematic* class the assembler should have handled (e.g. a recurring fraction pattern), the fix
-  lands in `math-assembler.ps1` / a store, not as a per-document model patch. The evidence corpus of
-  what the model repaired = the spec for growing the deterministic tier (the audit-log-as-spec clause).
+- **Distillation, not delegation** — the model reasons over pig-intrinsic geometry; it is never
+  handed a sidecar answer across the modality wall.
 - **Honest residue** — flags are the converter's self-report, not detected corruption; the transcript
   shows the model exactly what geometry was ambiguous. Nothing is silently guessed.
 - **The C# AST tier still owns true 2-D** — this loop is the *interim* path to correct display math
-  now (reasoning over evidence), while the deterministic 2-D assembler matures. Cases the model
-  repairs teach both tiers.
+  now (reasoning over evidence), while the deterministic 2-D assembler matures.
+
+## Promotion discipline — a repair is a data point, not a rule (guard against n=1 overfit)
+
+A reasoning-model fix to ONE example is evidence of exactly one case. It may generalize; it may be a
+one-off the model pattern-matched. Promoting it into the deterministic tier (a store entry, an
+assembler rule, a threshold) on that single observation is fitting a rule to n=1 — the failure mode
+this discipline exists to prevent. Promotion is a **gated inference**, not an automatic reflex.
+A repair is RECORDED (raw material); it is PROMOTED only when it clears every gate below.
+
+1. **Recurrence, not repetition** — the same *pattern* (expressed geometrically), independently
+   observed across ≥K distinct examples/specimens. One example is a hypothesis; a pattern is a
+   candidate. The math-repair audit + specimen registry accumulate the evidence; a lone repair never
+   trips promotion.
+2. **Principled expressibility (no-magic-string, applied to promotion)** — the rule must be statable
+   in PDF-intrinsic terms (geometry / typography / font register / symbol map), NOT a content regex
+   that matches the motivating string. If the only way to reproduce the fix is to pattern-match the
+   specific text, it has NOT generalized — it stays in the reasoning tier by construction. This is the
+   sharpest overfit filter: a rule that can't be stated without naming the example is the example.
+3. **Corpus verification = the falsification gate** — the accepted repairs are not just "the spec,"
+   they are the **experiment set a deterministic hypothesis must survive**. A candidate rule, run over
+   the accumulated repair corpus, must (a) REPRODUCE the gate-accepted repairs of its claimed class
+   (it actually does what the model did) AND (b) REGRESS NOTHING — every prior specimen and every
+   other accepted repair stays green (monotone-corpus-green). A rule that breaks any prior case is
+   overfit or wrong → rejected. The audit-log-as-spec clause means exactly this: the log is the
+   regression corpus, not an answer key to copy.
+4. **Held-out honesty** — a rule derived from examples A…B and tested only on A…B has proven nothing
+   (circular). It must correctly predict *confirming* examples C…D it was NOT fit to. Split the
+   recurrence set into motivating vs confirming; a rule that only passes what it was tuned on is not
+   promoted.
+5. **Provenance + reversibility** — a promoted rule records which examples motivated and which
+   confirmed it. A later falsifying specimen NARROWS its domain or ROLLS IT BACK — promotion is a
+   standing conjecture, not enshrinement (givens are conjectures, all the way up).
+
+**Same caution turned inward:** the assembler's own knobs (`size_ratio`, `baseline_tol_frac`) were
+tuned on 2508.11646 — themselves an n=1 calibration. They inherit the identical obligation: validate
+across the specimen registry before trusting, degrade unknown cues to flags, and treat every constant
+as a conjecture awaiting its falsifying specimen (the brief's "beware calibration-set overfit").
+
+### The enabling mechanism (build WHEN repairs start flowing, not before)
+
+To make gate 3 executable, each gate-accepted math repair is captured as a **promotion-regression
+fixture**: `{ geometry-evidence, accepted-LaTeX, class, specimen }`. The membrane's apply already
+writes a before/after audit; the math-repair path additionally stashes the `math_evidence` + accepted
+content so the (geometry → correct-LaTeX) pair is preserved in a replayable form. A `vet-promotion`
+harness then replays a candidate deterministic change against that fixture corpus and reports
+reproduce/regress counts — promotion is a green run, nothing else. NOT built yet: there are zero
+accumulated repairs (the loop just landed), so building the harness now would itself be speculative.
+The hook to wire first, when the loop goes live, is the fixture capture — everything downstream is a
+replay over data that doesn't exist yet.
