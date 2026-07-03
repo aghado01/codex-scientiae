@@ -30,6 +30,7 @@
 # ── symbol-map store: font-aware glyph corrections (math) + ligature expansion (prose).
 #    Substrate-faithful discipline: these fire at NODE emission only. ──────────────────────────────
 $script:SymbolMap = $null
+$script:SymbolMapByChar = $null
 function Import-SymbolMap {
     [CmdletBinding()] param([string] $Path = (Join-Path $PSScriptRoot 'stores/symbol-map.jsonl'))
     $rows = foreach ($o in (Read-JsonlStore $Path @('char','unicode','scope'))) {
@@ -37,12 +38,21 @@ function Import-SymbolMap {
                            char=$o.char; unicode=$o.unicode; scope=$o.scope }
     }
     $script:SymbolMap = @($rows)
+    $script:SymbolMapByChar = @{}
+    foreach ($e in $script:SymbolMap) {
+        if (-not $script:SymbolMapByChar.ContainsKey($e.char)) {
+            $script:SymbolMapByChar[$e.char] = [System.Collections.Generic.List[object]]::new()
+        }
+        $script:SymbolMapByChar[$e.char].Add($e)
+    }
     $script:SymbolMap.Count
 }
 
 function Resolve-Symbol([string] $font, [string] $ch, [string] $role) {
-    foreach ($e in $script:SymbolMap) {
-        if ($e.char -ne $ch) { continue }
+    # char-keyed index: the overwhelmingly common case (no entry for this char) is one dict miss
+    $list = $script:SymbolMapByChar[$ch]
+    if ($null -eq $list) { return $null }
+    foreach ($e in $list) {
         if ($e.scope -ne '*' -and $e.scope -ne $role) { continue }
         if ($e.font_pattern -eq '*' -or $font.StartsWith($e.font_pattern, [StringComparison]::OrdinalIgnoreCase)) {
             return $e.unicode
@@ -59,11 +69,16 @@ function ConvertTo-NormalizedTitle([string] $s) {
 
 function Read-JsonlLane([string] $Path) {
     if (-not (Test-Path $Path)) { throw "lane not found: $Path (run ConvertTo-PdfDigIr first)" }
-    $out = [System.Collections.Generic.List[object]]::new()
-    foreach ($line in [System.IO.File]::ReadAllLines($Path)) {
-        if (-not [string]::IsNullOrWhiteSpace($line)) { $out.Add(($line | ConvertFrom-Json)) }
+    # per-line -AsHashtable: measured fastest on the 84p bench (18.8s vs 23.7s PSCustomObject
+    # vs 26.3s single batched parse — Newtonsoft's large-array conversion LOSES to per-line);
+    # comma-wrapped return so the 126k-element result isn't streamed element-wise
+    $out = [System.Collections.Generic.List[object]]::new(131072)
+    foreach ($l in [System.IO.File]::ReadAllLines($Path)) {
+        if (-not [string]::IsNullOrWhiteSpace($l)) {
+            $out.Add((ConvertFrom-Json -InputObject $l -AsHashtable))
+        }
     }
-    return $out
+    return ,$out
 }
 
 # ── run assembly + node emission for one line. $Ctx carries all cross-line mutable state:
@@ -72,7 +87,14 @@ function Emit-PdfDigLine {
     param($Ctx, $Letters, $LineId, $BlockId, $Col, [string]$LineType, $Tier, [string[]]$LineFlags, $St, $OutlineLevel)
 
     $cfg = $Ctx.cfg
-    $sorted = @($Letters | Sort-Object { $_.bx[0] })
+    # key-array sort, not Sort-Object{} — no per-comparison scriptblock in the hot path.
+    # [Array]::Sort is UNSTABLE: augment the key with the index tiebreak or overprint/combining
+    # glyphs sharing an x-coordinate swap between runs and change run splits (determinism!)
+    $n = $Letters.Count
+    $sorted = [object[]]::new($n)
+    $keys = [double[]]::new($n)
+    for ($i = 0; $i -lt $n; $i++) { $sorted[$i] = $Letters[$i]; $keys[$i] = $Letters[$i].bx[0] * 1000000.0 + $i }
+    [Array]::Sort($keys, $sorted)
     $spaceGap = $cfg.line_grouping.space_gap_fraction * $St.size
     $runs = [System.Collections.Generic.List[object]]::new()
     $cur = @{ sb=[System.Text.StringBuilder]::new(); role=''; script=''; font=''; size=0.0
@@ -149,9 +171,11 @@ function Emit-PdfDigLine {
         if ($null -ne $Tier) { $rec.tier = $Tier }
         if ($null -ne $OutlineLevel) { $rec.outline_level = $OutlineLevel }
         if ($LineType -eq 'formula-block') { $rec.formula_group = $Ctx.formulaGroup }
-        $allFlags = @($run.flags) + @($LineFlags)
-        $rec.flags = @($allFlags | Where-Object { $_ } | Sort-Object -Unique)
-        $Ctx.nodes.Add([pscustomobject]$rec)
+        $fl = [System.Collections.Generic.SortedSet[string]]::new([StringComparer]::Ordinal)
+        foreach ($f in $run.flags)  { if ($f) { [void]$fl.Add($f) } }
+        foreach ($f in $LineFlags)  { if ($f) { [void]$fl.Add($f) } }
+        $rec.flags = @($fl)
+        $Ctx.nodes.Add($rec)
         $Ctx.nid++
     }
     $Ctx.typeCounts[$LineType] = 1 + ($Ctx.typeCounts[$LineType] ?? 0)
@@ -208,14 +232,18 @@ function ConvertTo-PdfDigNodes {
         foreach ($ln in $b.lines) {
             $ls = $lineLetters[[int]$ln.id]
             if (-not $ls -or $ls.Count -eq 0) { continue }
-            $modalSize = [double](Get-Modal @($ls | ForEach-Object size))
-            $baseY = [double](Get-Modal @($ls | ForEach-Object { $_.base[1] }))
+            $cnt = $ls.Count
+            $sizes = [double[]]::new($cnt); $bases = [double[]]::new($cnt)
             $boldN = 0; $mathN = 0; $rotN = 0
-            foreach ($lt in $ls) {
+            for ($i = 0; $i -lt $cnt; $i++) {
+                $lt = $ls[$i]
+                $sizes[$i] = $lt.size; $bases[$i] = $lt.base[1]
                 if ($lt.bold_name) { $boldN++ }
                 if ($fontRole[$lt.font] -eq 'math') { $mathN++ }
                 if ($lt.orient -ne 'Horizontal') { $rotN++ }
             }
+            $modalSize = [double](Get-Modal $sizes)
+            $baseY = [double](Get-Modal $bases)
             $lineStats[[int]$ln.id] = @{
                 size=$modalSize; base=$baseY; n=$ls.Count
                 bold_frac=$boldN/$ls.Count; math_frac=$mathN/$ls.Count; rot_frac=$rotN/$ls.Count
@@ -307,7 +335,15 @@ function ConvertTo-PdfDigNodes {
     }
 
     $headingCandidates = 0; $headingsConfirmed = 0; $orphanLines = 0
-    foreach ($b in ($blocks | Sort-Object { [int]$_.page }, { [int]$_.reading_order })) {
+    # composite-key array sort (page, reading_order) — no per-comparison scriptblocks
+    $blocksSorted = [object[]]::new($blocks.Count)
+    $bKeys = [long[]]::new($blocks.Count)
+    for ($i = 0; $i -lt $blocks.Count; $i++) {
+        $blocksSorted[$i] = $blocks[$i]
+        $bKeys[$i] = ([long][int]$blocks[$i].page -shl 32) -bor ([long][int]$blocks[$i].reading_order -band 0xFFFFFFFFL)
+    }
+    [Array]::Sort($bKeys, $blocksSorted)
+    foreach ($b in $blocksSorted) {
         $prevFormulaBase = $null
         foreach ($ln in $b.lines) {
             $ls = $lineLetters[[int]$ln.id]

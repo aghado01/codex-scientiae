@@ -313,6 +313,11 @@ function ConvertTo-PdfDigIr {
         $roDetector  = [UglyToad.PdfPig.DocumentLayoutAnalysis.ReadingOrderDetector.UnsupervisedReadingOrderDetector]::Instance
 
         # ── lanes + rolling census/health accumulators ──────────────────────────────────────
+        # per-document hot-loop caches: raw FontName → resolved {stripped,family,role,bold}
+        # (kills a 65-entry store scan + regex per letter), IColor instance → hex (ref-keyed;
+        # GrayColor.Black is a shared instance on most letters)
+        $resolveCache = @{}
+        $colorCache = [System.Collections.Generic.Dictionary[object,object]]::new([System.Collections.Generic.ReferenceEqualityComparer]::Instance)
         $letters   = [System.Collections.Generic.List[object]]::new()
         $wordRecs  = [System.Collections.Generic.List[object]]::new()
         $blockRecs = [System.Collections.Generic.List[object]]::new()
@@ -333,47 +338,65 @@ function ConvertTo-PdfDigIr {
             # Letter doesn't override Equals; DLA hands back the same instances)
             $refMap = [System.Collections.Generic.Dictionary[object,int]]::new([System.Collections.Generic.ReferenceEqualityComparer]::Instance)
 
-            # ── LANE 1: letters ──────────────────────────────────────────────────────────────
+            # ── LANE 1: letters (hot loop: cached font/color resolution, hashtable records,
+            #    no per-letter function calls — low-level per the repo's engine-code discipline) ─
             foreach ($lt in $pl) {
-                $stripped = Get-FontSubsetStripped $lt.FontName
-                $fam = Resolve-Family $stripped
+                $rawName = $lt.FontName ?? ''
+                $fc = $resolveCache[$rawName]
+                if ($null -eq $fc) {
+                    $stripped0 = Get-FontSubsetStripped $rawName
+                    $fam0 = Resolve-Family $stripped0
+                    $fc = @{ stripped=$stripped0; family=$fam0.family; role=$fam0.role; bold=(Test-BoldByName $stripped0) }
+                    $resolveCache[$rawName] = $fc
+                }
+                $stripped = $fc.stripped
 
                 if (-not $fontCensus.ContainsKey($stripped)) {
-                    $fontCensus[$stripped] = @{ family=$fam.family; role=$fam.role;
+                    $fontCensus[$stripped] = @{ family=$fc.family; role=$fc.role;
                                                 sizes=[System.Collections.Generic.HashSet[double]]::new(); count=0 }
                 }
                 $c = $fontCensus[$stripped]
-                [void]$c.sizes.Add([math]::Round($lt.PointSize,1)); $c.count++
-                $famSeen[$fam.family] = $true
+                $sz = [math]::Round($lt.PointSize,1)
+                [void]$c.sizes.Add($sz); $c.count++
+                $famSeen[$fc.family] = $true
 
                 $lettersTotal++
-                if ($fam.family -eq 'unknown') { $unknownRole++ }
-                if ($lt.Value -and $lt.Value.Contains([char]0xFFFD)) { $unmapped++ }
+                if ($fc.family -eq 'unknown') { $unknownRole++ }
+                $txt = $lt.Value
+                if ($txt -and $txt.Contains([char]0xFFFD)) { $unmapped++ }
                 $rm = [string]$lt.RenderingMode
                 if ($rm -eq 'NeitherClip' -or $rm -eq 'Neither') { $invisible++ }
-
-                $orient[[string]$lt.TextOrientation] = 1 + ($orient[[string]$lt.TextOrientation] ?? 0)
+                $ori = [string]$lt.TextOrientation
+                $orient[$ori] = 1 + ($orient[$ori] ?? 0)
                 $modes[$rm] = 1 + ($modes[$rm] ?? 0)
 
-                $letters.Add([pscustomobject]([ordered]@{
+                $col = $lt.Color
+                $hex = $null
+                if ($null -ne $col -and -not $colorCache.TryGetValue($col, [ref]$hex)) {
+                    $hex = ConvertTo-HexColor $col
+                    $colorCache[$col] = $hex
+                }
+
+                $bb = $lt.BoundingBox
+                $letters.Add([ordered]@{
                     id     = $lid
                     page   = $pn
                     seq    = $lt.TextSequence
-                    text   = $lt.Value
-                    bx     = (ConvertTo-BxArray $lt.BoundingBox)
+                    text   = $txt
+                    bx     = @([math]::Round($bb.Left,2),[math]::Round($bb.Bottom,2),[math]::Round($bb.Right,2),[math]::Round($bb.Top,2))
                     base   = @([math]::Round($lt.StartBaseLine.X,2),[math]::Round($lt.StartBaseLine.Y,2))
                     ebase  = @([math]::Round($lt.EndBaseLine.X,2),[math]::Round($lt.EndBaseLine.Y,2))
-                    size   = [math]::Round($lt.PointSize,1)
+                    size   = $sz
                     font   = $stripped
-                    family = $fam.family
+                    family = $fc.family
                     italic = [bool]$lt.FontDetails.IsItalic
-                    bold_name = (Test-BoldByName $stripped)
+                    bold_name = $fc.bold
                     wadv   = [math]::Round($lt.Width,2)
                     render = $rm
-                    orient = [string]$lt.TextOrientation
-                    color  = (ConvertTo-HexColor $lt.Color)
+                    orient = $ori
+                    color  = $hex
                     block  = $null; line = $null; word = $null
-                }))
+                })
                 $refMap[$lt] = $lid
                 $lid++
             }
@@ -384,6 +407,16 @@ function ConvertTo-PdfDigIr {
             $wordIdMap = [System.Collections.Generic.Dictionary[object,int]]::new([System.Collections.Generic.ReferenceEqualityComparer]::Instance)
             if ($pl.Count -gt 0) {
                 foreach ($w in $page.GetWords($nnExtractor)) { $pageWords.Add($w) }
+                # canonical word order: NN extraction parallelizes internally and emits words in
+                # NONDETERMINISTIC order across runs — sort by first-letter content position so
+                # the lanes are regenerable and version-diffable (byte-identical re-runs)
+                if ($pageWords.Count -gt 1) {
+                    $wArr = $pageWords.ToArray()
+                    $wKeys = [int[]]::new($wArr.Length)
+                    for ($wi = 0; $wi -lt $wArr.Length; $wi++) { $wKeys[$wi] = $refMap[$wArr[$wi].Letters[0]] }
+                    [Array]::Sort($wKeys, $wArr)
+                    $pageWords.Clear(); $pageWords.AddRange($wArr)
+                }
                 foreach ($w in $pageWords) {
                     $letterIds = [System.Collections.Generic.List[int]]::new()
                     foreach ($wl in $w.Letters) {
@@ -393,14 +426,14 @@ function ConvertTo-PdfDigIr {
                             $letters[$i].word = $wid
                         }
                     }
-                    $wordRecs.Add([pscustomobject]([ordered]@{
+                    $wordRecs.Add([ordered]@{
                         id = $wid; page = $pn; text = $w.Text
                         bx = (ConvertTo-BxArray $w.BoundingBox)
                         font = (Get-FontSubsetStripped $w.FontName)
                         orient = [string]$w.TextOrientation
                         letters = $letterIds.ToArray()
                         block = $null; line = $null
-                    }))
+                    })
                     $wordIdMap[$w] = $wid
                     $wid++
                 }
@@ -445,14 +478,14 @@ function ConvertTo-PdfDigIr {
                         }
                         $preview = ($b.Text -replace '\s+',' ')
                         if ($preview.Length -gt 100) { $preview = $preview.Substring(0,100) }
-                        $rec = [pscustomobject]([ordered]@{
+                        $rec = [ordered]@{
                             id = $bid; page = $pn
                             bx = (ConvertTo-BxArray $b.BoundingBox)
                             segmenter = 'xycut'; reading_order = $ro
                             column_band = $null
                             lines = $lineRecs.ToArray()
                             text_preview = $preview
-                        })
+                        }
                         $blockRecs.Add($rec); $pageBlockRecs.Add($rec)
                         $bid++; $ro++
                     }
@@ -493,7 +526,7 @@ function ConvertTo-PdfDigIr {
                     if ($h -le $rc.max_thickness_pt -and $w -gt $rc.min_length_pt) { $rule = 'hrule' }
                     elseif ($w -le $rc.max_thickness_pt -and $h -gt $rc.min_length_pt) { $rule = 'vrule' }
                 }
-                $pathRecs.Add([pscustomobject]([ordered]@{
+                $pathRecs.Add([ordered]@{
                     id = $vpid; page = $pn
                     is_clipping = $path.IsClipping; is_filled = $path.IsFilled; is_stroked = $path.IsStroked
                     line_width = [math]::Round($path.LineWidth, 2)
@@ -501,7 +534,7 @@ function ConvertTo-PdfDigIr {
                     kinds = @($kinds)
                     bbox = $bx; bbox_source = $bxSource
                     rule = $rule
-                }))
+                })
                 $vpid++
             }
 
