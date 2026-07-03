@@ -13,6 +13,14 @@
       .jidx never carried.
 
   Dot-source to use:  . "$PSScriptRoot/jsonl.ps1"
+
+  ENCODING + DETERMINISM INVARIANTS (enforced by tests/encoding-invariants.Tests.ps1 — run it
+  after ANY change here): UTF-8-no-BOM everywhere; SMP/ligature/U+FFFD codepoints round-trip
+  byte-exact; the Newtonsoft fast path and ConvertTo-Json produce IDENTICAL bytes (PS7's cmdlet
+  = Newtonsoft + StringEscapeHandling.Default — NOT EscapeHtml); .jidx offsets are exact over
+  multibyte content; same records written twice = identical .jsonl AND .jidx bytes. The known
+  poison: PIPELINE-emitted values are PSObject-wrapped and must never be stored into records
+  (if-expressions, @() over collections, and hashtable members are safe — tested).
 #>
 
 class JsonlIndex {
@@ -111,6 +119,7 @@ function Write-JsonlStage {
     # every length; re-scanning the finished file per-byte cost 17.5s on a 33MB lane
     $offsets = [System.Collections.Generic.List[long]]::new()
     $utf8 = [System.Text.UTF8Encoding]::new($false)
+    $fbBefore = $script:NsjFallbacks
     $sw = [System.IO.StreamWriter]::new($OutputPath, $false, $utf8)
     try {
         $nlBytes = [long]$utf8.GetByteCount($sw.NewLine)
@@ -130,6 +139,15 @@ function Write-JsonlStage {
             $sw.WriteLine($json)
         }
     } finally { $sw.Dispose() }
+
+    # loud, attributed telemetry: a fallback means some record carried a PSObject-wrapped value
+    # (classic source: `$hash.Keys | Sort-Object` — pipeline output is wrapped). The output is
+    # still correct, but the emitting stage should unwrap at the source. Tested by
+    # tests/encoding-invariants.Tests.ps1.
+    $fbDelta = $script:NsjFallbacks - $fbBefore
+    if ($fbDelta -gt 0) {
+        Write-Warning "Write-JsonlStage[$Stage -> $(Split-Path -Leaf $OutputPath)]: $fbDelta record(s) fell back from the Newtonsoft fast path (PSObject-wrapped value in a dictionary record; last error: $script:NsjLastError)"
+    }
 
     $jidxPath = "$OutputPath.jidx"
     [JsonlIndex]::WriteIndex($jidxPath, $offsets)
