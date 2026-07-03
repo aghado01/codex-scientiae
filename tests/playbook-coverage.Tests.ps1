@@ -10,7 +10,7 @@ BeforeDiscovery {
     . "$PSScriptRoot/../src/playbook.ps1"
     $AllEmittableTypes =
         @($script:CorruptionSignatures | ForEach-Object { $_.type }) +              # 14 corruption signatures (8 hard gate + 6 soft tells)
-        @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge') +          # needs_review kinds Invoke-Fidelity routes on (the last is cross-chunk)
+        @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge', 'needs_2d_assembly') + # needs_review kinds (last: pig-lane flattened 2-D, flag-based)
         @('fragmented_formula')                                                     # hotspot span kind (Group-MathHotspots)
 }
 
@@ -26,7 +26,7 @@ BeforeAll {
     $script:CorruptionKinds  = @($script:CorruptionSignatures | ForEach-Object { $_.type })
     $script:HardKinds        = @($script:CorruptionSignatures | Where-Object { $_.severity -eq 'hard' } | ForEach-Object { $_.type })
     $script:SoftKinds        = @($script:CorruptionSignatures | Where-Object { $_.severity -eq 'soft' } | ForEach-Object { $_.type })
-    $script:NeedsReviewKinds = @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge')
+    $script:NeedsReviewKinds = @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge', 'needs_2d_assembly')
     $script:SpanKinds = @('fragmented_formula')
     $script:AllEmittableTypes = $script:CorruptionKinds + $script:NeedsReviewKinds + $script:SpanKinds
 }
@@ -41,8 +41,8 @@ Describe 'playbook coverage — every emittable issue type has a paired recipe' 
         $recipe.fix | Should -Not -BeNullOrEmpty -Because "recipe for '$type' must have a non-empty fix instruction"
     }
 
-    It 'the total emittable type count is 18 (14 signatures + 3 needs_review + 1 span)' {
-        $script:AllEmittableTypes.Count | Should -Be 18
+    It 'the total emittable type count is 19 (14 signatures + 4 needs_review + 1 span)' {
+        $script:AllEmittableTypes.Count | Should -Be 19
     }
 
     It 'RepairPlaybook has no orphan entries (every recipe maps to an emittable type)' {

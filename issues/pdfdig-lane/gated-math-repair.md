@@ -1,7 +1,9 @@
 # Gated math repair — doling the converter's hard math to the reasoning tier
 
-**Status:** modality bridge LANDED, membrane wiring DESIGNED (2026-07-03). How the pig lane isolates
-the display-math it can't deterministically assemble and hands it to the membrane's model-in-the-loop.
+**Status:** LANDED end-to-end (2026-07-03). The pig lane isolates the display-math it can't
+deterministically assemble and hands it to the membrane's model-in-the-loop, gated by render_check.
+A `get_slice` on a flagged formula returns the chunk + work-order recipes + a `math_evidence`
+transcript in ~1.7s (page-prefiltered geometry load).
 
 ## The insight
 
@@ -34,26 +36,33 @@ Proven end-to-end on 2508.11646 chunk 655: the assembler fragmented
 evidence shows the complete pairable structure (norm bars matched, parens matched) plus trailing
 prose the chunk over-captured — everything the model needs to reconstruct it and split the prose.
 
-## The membrane wiring (the remaining plumbing)
+## The membrane wiring (LANDED)
 
-The pig side now emits: flagged formula chunks (`flags`, `page`, `bbox`, best-effort `content`) +
-the geometry beside the PDF. Four small membrane additions complete the loop, all reusing the
-existing dispatch → propose → gate → apply machinery:
+The pig side emits flagged formula chunks (`flags`, `page`, `bbox`, best-effort `content`) + the
+geometry beside the PDF. Four additions complete the loop, all reusing the existing dispatch →
+propose → gate → apply machinery:
 
-1. **fidelity issue `math_assembly`** (`fidelity.ps1`) — fires on a formula chunk when
-   `Measure-DelimiterBalance(content) ≠ 0` (lane-agnostic re-derivation) OR the chunk carries a pig
-   `unbalanced_delimiters`/`needs_2d_assembly` flag. Severity: `needs_repair`. Reuses the multi-issue
-   inventory so it flows into dispatch like every other class.
-2. **get_slice enrichment** — when the sliced chunk is a `math_assembly` unit and pig geometry is
-   staged, call `Get-ChunkMathEvidence` and include the transcript in the slice payload (a new
-   `math_evidence` field). The agent reads the geometry, not just the broken LaTeX.
-3. **playbook recipe** (`playbook.ps1`) — the `math_assembly` recipe: "read `math_evidence`;
-   reconstruct the display equation as KaTeX-valid LaTeX honoring the tier structure (nested scripts)
-   and the spatial layout (fractions from `─`, paired delimiters); split any trailing prose into a
-   separate chunk via `split_chunk`. Do NOT invent symbols the geometry doesn't show."
-4. **gate** — `render_check` (already the math gate): a proposal that doesn't render under KaTeX is
-   rejected. Balance is a cheap pre-check. This keeps the model *behind* the gate (brief §"gated model
-   proposals"): models allowed on the residue, never in front of the deterministic extraction.
+1. **fidelity issue `needs_2d_assembly`** (`fidelity.ps1` `Get-ChunkIssues`) — a flag-based
+   needs-review kind (the CONTENT of a flattened fraction — `a/b` — is valid LaTeX and renders, so
+   the content signatures are blind; only the converter's self-report reveals it). Folded in exactly
+   like `heading_level_unknown`/`unwrapped_math`. The `unbalanced_delimiters` cases are ALSO caught
+   independently by the existing hard content signature (`Get-LatexBalance`), so a fragmented span
+   surfaces both issues — one composed work-order.
+2. **get_slice enrichment** (`serving.ps1` `Get-Slice`) — when the anchor is a formula with a
+   work-order and pig geometry is staged, attach `Get-ChunkMathEvidence` as a `math_evidence` field.
+   Page-prefiltered (`"page":N,` string-match before parse) so the geometry load is ~1.7s, not the
+   20s full-file parse. Docling-lane / geometry-absent chunks return null and are skipped; wrapped in
+   try/catch so evidence never breaks a slice.
+3. **playbook recipe** (`playbook.ps1`) — the `needs_2d_assembly` recipe: read `math_evidence`,
+   reconstruct KaTeX from the glyph tier table + spatial layout (`\frac` from `─`, nested scripts by
+   tier, paired delimiters), `split_chunk` any trailing prose, invent nothing. Registered in the
+   playbook-coverage invariant (19 emittable types).
+4. **gate** — `render_check` (already the apply-time math gate): a proposal that doesn't render under
+   KaTeX is rejected, keeping the model *behind* the gate (brief §"gated model proposals").
+
+Verified: `get_slice` on 2508.11646 chunk 68 (`needs_2d_assembly`) returns work-order recipes
+[`unbalanced_delimiters`, `needs_2d_assembly`] + the full `math_evidence` transcript in 1.7s.
+Full suite 495+ green.
 
 ## Discipline (from the brief)
 

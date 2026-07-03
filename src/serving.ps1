@@ -31,6 +31,7 @@
 . "$PSScriptRoot/runs.ps1"       # run layout ({paper}/.runs/{stamp}) + {paper}@{run} addressing
 . "$PSScriptRoot/normalize.ps1"
 . "$PSScriptRoot/enrichment.ps1"
+. "$PSScriptRoot/pdf-converter/math-evidence.ps1"   # Get-ChunkMathEvidence: geometry -> slice payload for gated math repair
 
 function Read-Chunks([string]$Path) {
     [System.IO.File]::ReadLines($Path) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json }
@@ -374,6 +375,18 @@ function Get-Slice {
             New-WorkOrder -Kind 'chunk' -Id $Id -Members @($anchor)
         }
         if ($wo.recipes.Count -gt 0) { $anchor | Add-Member -NotePropertyName work_order -NotePropertyValue $wo -Force }
+
+        # GATED MATH REPAIR (pig lane): a flagged formula gets the geometric evidence the deterministic
+        # assembler couldn't linearize, so the reasoning tier reconstructs from geometry, not the broken
+        # LaTeX alone. Only when there's a work-order (issues remain) AND pig geometry is staged beside
+        # the PDF ({slug}.letters.jsonl); docling-lane / already-clean chunks return null and are skipped.
+        if ($wo.recipes.Count -gt 0 -and [string]$anchor.type -eq 'formula') {
+            $paperDir = Split-Path (Split-Path (Split-Path $ChunksPath -Parent) -Parent) -Parent   # {paper}/.runs/{stamp}/x.chunks.jsonl -> {paper}
+            $slug     = (Split-Path -Leaf $ChunksPath) -replace '\.chunks\.jsonl$', ''
+            $ev = $null
+            try { $ev = Get-ChunkMathEvidence -Chunk $anchor -PaperDir $paperDir -Slug $slug } catch { $ev = $null }
+            if ($ev) { $anchor | Add-Member -NotePropertyName math_evidence -NotePropertyValue $ev -Force }
+        }
     }
     foreach ($r in $recs) { $r }
 }

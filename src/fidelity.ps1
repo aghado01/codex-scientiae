@@ -248,6 +248,17 @@ function Get-ChunkIssues($Chunk) {
             diagnostic = ''
         })
     }
+    # pig converter's 2-D residue: a flattened fraction/matrix/stacked-script the geometry assembler
+    # could not resolve. Flag-based (the CONTENT often renders — a fraction as "a/b" is valid LaTeX —
+    # so the content signatures are blind; only the converter's self-report reveals it). The slice
+    # enriches this with math_evidence so the agent reconstructs from geometry (see playbook).
+    if ($Chunk.flags -and (@($Chunk.flags) -contains 'needs_2d_assembly')) {
+        $issues.Add([pscustomobject]@{
+            type       = 'needs_2d_assembly'
+            spans      = @()
+            diagnostic = 'converter flattened 2-D structure; geometry in math_evidence'
+        })
+    }
     return $issues.ToArray()
 }
 

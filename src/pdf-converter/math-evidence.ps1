@@ -125,9 +125,12 @@ function Get-ChunkMathEvidence {
     $pg = [int]$Chunk.page
     $x0=[double]$bb[0]-$Margin; $y0=[double]$bb[1]-$Margin; $x1=[double]$bb[2]+$Margin; $y1=[double]$bb[3]+$Margin
 
+    # cheap page pre-filter: string-match "page":N, before ConvertFrom-Json so only the anchor's page
+    # (~one page of glyphs) is parsed, not the whole 90k-letter file (keeps get_slice interactive)
+    $pageTok = '"page":' + $pg + ','
     $inRegion = [System.Collections.Generic.List[object]]::new()
     foreach ($line in [System.IO.File]::ReadAllLines($lettersPath)) {
-        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        if (-not $line.Contains($pageTok)) { continue }
         $g = $line | ConvertFrom-Json
         if ([int]$g.page -ne $pg) { continue }
         # glyph center inside the (margined) chunk bbox

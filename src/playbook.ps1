@@ -42,6 +42,11 @@ $script:RepairPlaybook = [ordered]@{
     text_sentence_in_math = @{ structural = $false; fix = 'A sentence fragment is smuggled inside \text{} blocks of this formula — prose merged in from the next line. Glance at the seam (get_slice context=1): the prose belongs to the neighbouring chunk. propose_edit the merged tail (the trailing \text{...} and any math pulled in with it) to empty; the real equation is what remains.' }
     bare_number_row       = @{ structural = $false; fix = 'A lone integer on its own alignment row (\\ & \quad 4) is a page / footnote number the converter swept into the math: propose_edit the row (from its \\) to empty.' }
     prose_seam_merge      = @{ structural = $false; fix = 'This formula''s \text{} prose duplicates the adjacent paragraph verbatim — the converter merged a prose line into the equation. The duplicate belongs to the neighbour (get_slice context=1 to confirm): propose_edit the flagged \text{...} (and any math pulled in with it) to empty; the real equation is what remains.' }
+
+    # pig-lane 2-D residue: the deterministic geometry assembler flattened structure it could not
+    # resolve (fraction/matrix/stacked scripts). Repaired by READING geometry, not guessing — the
+    # slice carries math_evidence (glyph tier table + spatial layout). Gated by render_check.
+    needs_2d_assembly     = @{ structural = $false; fix = 'The converter flattened a 2-D structure it could not assemble deterministically (a fraction, matrix, or stacked scripts). READ this chunk''s math_evidence on the slice: the glyph table gives script depth by size (tier), and the spatial layout draws the geometry (─ marks a fraction/rule bar; rows show vertical stacking). Reconstruct KaTeX-valid LaTeX FROM the geometry — \frac{num}{denom} where content sits above/below a bar, nested scripts honoring the tier depth, matrices from grid alignment, paired delimiters the 1-D split fractured. Split any trailing prose into its own chunk (split_chunk). Invent nothing the geometry does not show; render_check gates the result.' }
 }
 
 # The recipe fragment for one issue type, or $null when the type has no data-fied recipe yet — the prose
