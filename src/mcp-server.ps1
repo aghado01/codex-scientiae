@@ -122,6 +122,12 @@ $Tools = @(
     @{ name = 'mark_unrecoverable'
        description = 'Terminal escalation: the agent tried and cannot repair this chunk from the export. Sets fidelity=unrecoverable (the rare hand-off that earns re-extraction by the successor) and drops any staged edit. Use sparingly -- a high unrecoverable rate indicts the repair attempt, not the export.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; reason = @{ type = 'string' } }; required = @('paper', 'id') } }
+    @{ name = 'reflect'
+       description = 'OPTIONAL post-hoc introspection over a run''s worked examples — never required, never interferes with the work; invoke it at a natural boundary (after a repair run/batch) if you want to look for generalizable patterns. Returns the run''s applied repairs grouped by class (before->after) + structural ops + an introspection prompt. The question it poses: is any hand-repair a pattern the DETERMINISTIC tier could handle (a store entry, geometry/typography rule, symbol map) rather than a per-document fix? You NEVER promote — you surface candidates (surface_candidate / spawn_task) for a HUMAN to examine. Surfacing is cheap and good; a single suggestive example is reason enough.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' } }; required = @('paper') } }
+    @{ name = 'surface_candidate'
+       description = 'Raise a promotion candidate for HUMAN examination — the machine never promotes, it surfaces. Appends to issues/promotion-candidates.jsonl (durable, human-reviewed). Use after reflect when a repair pattern looks generalizable. State the pattern in INTRINSIC terms (geometry / typography / font register / symbol map / store entry); if you can only state it as a regex matching a specific string, say so in expressibility (that is the overfit tell, not a rule). Include the supporting examples and your recommendation. You are gathering evidence for a person, not deciding.'
+       inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; pattern = @{ type = 'string'; description = 'the generalization, in intrinsic terms' }; class = @{ type = 'string'; description = 'the corruption/issue class it addresses' }; examples = @{ type = 'array'; items = @{ type = 'string' }; description = 'supporting refs, e.g. "BPCSR2024:653"' }; expressibility = @{ type = 'string'; description = 'geometry/font/store terms, or "regex-only" (overfit tell)' }; recommendation = @{ type = 'string' } }; required = @('pattern') } }
     @{ name = 'request_review'
        description = 'Human check-in: queue a chunk for the supervising user with a message (surfaces as review_pending in get_summary). Use when uncertain rather than guessing.'
        inputSchema = @{ type = 'object'; properties = @{ paper = @{ type = 'string' }; id = @{ type = 'integer' }; message = @{ type = 'string' } }; required = @('paper', 'id', 'message') } }
@@ -263,6 +269,14 @@ function Invoke-Tool([string]$name, $arguments) {
         'get_audit'          { $out = Get-Audit -ChunksPath (Resolve-Paper $arguments.paper) -Id $(if ($null -ne $arguments.id) { [int]$arguments.id } else { -1 }) -Kind ([string]$arguments.kind) }
         'mark_unrecoverable' { $out = Set-Unrecoverable -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Reason ([string]$arguments.reason) }
         'request_review'     { $out = Add-ReviewRequest -ChunksPath (Resolve-Paper $arguments.paper) -Id ([int]$arguments.id) -Message ([string]$arguments.message) }
+        'reflect'            { $out = Get-RunReflection -ChunksPath (Resolve-Paper $arguments.paper) }
+        'surface_candidate'  {
+            $out = Add-PromotionCandidate -RepoRoot ([System.IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))) `
+                -Pattern ([string]$arguments.pattern) -Class ([string]$arguments.class) `
+                -Examples @($arguments.examples | ForEach-Object { [string]$_ }) `
+                -Expressibility ([string]$arguments.expressibility) -Recommendation ([string]$arguments.recommendation) `
+                -Paper ([string]$arguments.paper)
+        }
         'publish' {
             $out = Invoke-Publish -ChunksPath (Resolve-Paper $arguments.paper) -CompendiaRoot $CompendiaRoot `
                 -Topic ([string]$arguments.topic) -Force:([bool]$arguments.force) -DryRun:([bool]$arguments.dry_run)

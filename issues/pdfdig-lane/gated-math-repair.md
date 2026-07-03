@@ -125,3 +125,26 @@ consult the user" pattern). A `vet-promotion` replay harness then reports reprod
 accumulated repairs (the loop just landed), so building the harness now would itself be speculative.
 The hook to wire first, when the loop goes live, is the fixture capture — everything downstream is a
 replay over data that doesn't exist yet.
+
+### Post-hoc reflection — the surfacing action (LANDED)
+
+The bridge from episodic work to surfaced candidates is an **optional, opt-in** action, exposed in
+the membrane toolset but never required and never interfering with the work:
+
+- **`reflect` (MCP)** — post-hoc introspection over a run's worked examples. `Get-RunReflection`
+  gathers the run's apply/structure audit (what was actually changed), groups by corruption class so
+  a recurring hand-repair is visible, and returns the before→after examples + the introspection
+  prompt (`$script:ReflectionPrompt`: recurrence? principled-expressibility? held-out?). Reading the
+  digest, the agent introspects; the tool decides nothing.
+- **`surface_candidate` (MCP)** — `Add-PromotionCandidate` appends to `issues/promotion-candidates.jsonl`
+  (durable, human-reviewed) at `status: surfaced`. The agent states the pattern in intrinsic terms,
+  attaches examples + an expressibility read, and recommends — for a HUMAN to examine. `spawn_task`
+  is the alternative channel for immediate attention.
+
+Opt-in by construction: nothing auto-invokes `reflect`; it is a boundary action the agent MAY take.
+Validated on BPCSR2024's run — reflecting on its 24 reference repairs surfaced a real candidate
+(reference entries get sequential `[N]` numbering + straight→curly quote normalization; both
+deterministic, expressible as `is_reference`-run ordinal + a codepoint rule, NOT a string regex). The
+first entry now sits in the candidates file awaiting human judgment. This is the general form of the
+math-promotion loop: reflection surfaces ANY generalizable lesson (store entry, geometry rule, new
+flag, workflow note), not only display-math rules.

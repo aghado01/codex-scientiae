@@ -727,6 +727,105 @@ function Get-Audit {
     $out
 }
 
+# --- reflection: the OPTIONAL, opt-in post-hoc introspection over a run's worked examples ---
+# The bridge from episodic work (a run's repairs) to durable knowledge (surfaced promotion candidates
+# a HUMAN examines). Never runs automatically, never interferes with the work — it is a tool the agent
+# MAY invoke at a run boundary. Reads the apply/structure audit (what was actually changed), groups by
+# corruption class so a recurring hand-repair pattern is visible, and hands back the introspection
+# prompt. Surfacing is cheap and good (Add-PromotionCandidate); PROMOTION is the human's call.
+
+$script:ReflectionPrompt = @'
+Reflect on the repairs below (grouped by class). For each class, introspect on GENERALIZABILITY —
+is any of this a pattern the DETERMINISTIC tier could have handled, rather than a per-document fix?
+Ask, per pattern:
+  1. Recurrence — does it show up across several examples here (or that you recall from other runs)?
+     One example is enough to SURFACE for discussion; it just carries less weight.
+  2. Principled expressibility (the sharpest tell) — can the fix be stated in intrinsic terms
+     (geometry / typography / font register / symbol map / a store entry), or ONLY as a regex that
+     matches this specific string? If you cannot state it without naming the example, it IS the
+     example — say so plainly; that is an overfit signal, not a rule.
+  3. Held-out — would the rule you imagine also fix examples it was NOT derived from?
+Then SURFACE any candidate worth a human's eye via surface_candidate (or spawn_task for immediate
+attention) — with the pattern, the supporting examples, your expressibility assessment, and a
+recommendation. You NEVER promote; you raise it for examination. When in doubt, surface it.
+'@
+
+# Gather a run's worked examples into a reflection digest: per corruption class, the count + a bounded
+# set of before->after examples; plus the structural ops. Body-scoped to what was CHANGED (not the
+# whole document). math_evidence-bearing repairs (pig lane) are noted when the fixture is present.
+function Get-RunReflection {
+    [CmdletBinding()] param([Parameter(Mandatory)][string]$ChunksPath, [int]$PerClass = 8)
+    $base = $ChunksPath -replace '\.chunks\.jsonl$', ''
+    $applyPath = "$base.apply-audit.jsonl"
+    $structPath = "$base.structure-audit.jsonl"
+
+    $byClass = [ordered]@{}
+    if (Test-Path -LiteralPath $applyPath) {
+        foreach ($line in [System.IO.File]::ReadLines($applyPath)) {
+            if ([string]::IsNullOrWhiteSpace($line)) { continue }
+            $r = $line | ConvertFrom-Json
+            $cls = if ($r.was) { [string]$r.was } else { 'unclassified' }
+            if (-not $byClass.Contains($cls)) { $byClass[$cls] = [System.Collections.Generic.List[object]]::new() }
+            $byClass[$cls].Add($r)
+        }
+    }
+    $classes = foreach ($cls in $byClass.Keys) {
+        $recs = $byClass[$cls]
+        [pscustomobject][ordered]@{
+            type     = $cls
+            count    = $recs.Count
+            examples = @($recs | Select-Object -First $PerClass | ForEach-Object {
+                [ordered]@{ id = [int]$_.id; before = [string]$_.before; after = [string]$_.after }
+            })
+        }
+    }
+    $structOps = @()
+    if (Test-Path -LiteralPath $structPath) {
+        $structOps = @([System.IO.File]::ReadLines($structPath) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json } |
+            Group-Object op | ForEach-Object { [pscustomobject]@{ op = $_.Name; count = $_.Count } })
+    }
+    $total = @($classes | Measure-Object -Property count -Sum).Sum
+    [pscustomobject][ordered]@{
+        paper          = (Split-Path -Leaf $base)
+        applied_total  = [int]$total
+        classes        = @($classes | Sort-Object count -Descending)
+        structure_ops  = $structOps
+        reflection     = $script:ReflectionPrompt
+        note           = if ([int]$total -eq 0) { 'No applied repairs in this run — nothing to reflect on yet.' } else { 'Introspect per the reflection prompt; surface generalizable candidates for human examination. You never promote.' }
+    }
+}
+
+# The durable, human-examinable sink: append a surfaced promotion candidate to the repo-level
+# issues/promotion-candidates.jsonl. Accumulation, never auto-action — a human reads this file and
+# decides. Provenance (paper, run, examples, expressibility) travels with each entry.
+function Add-PromotionCandidate {
+    [CmdletBinding()] param(
+        [Parameter(Mandatory)][string]$RepoRoot,
+        [Parameter(Mandatory)][string]$Pattern,           # the generalization, stated in intrinsic terms
+        [string]$Class,                                   # the corruption/issue class it addresses
+        [string[]]$Examples = @(),                        # supporting example refs (paper:id)
+        [string]$Expressibility,                          # geometry/font/store terms, or 'regex-only' (overfit tell)
+        [string]$Recommendation,                          # the surfacing agent's read
+        [string]$Paper, [string]$Run
+    )
+    if ([string]::IsNullOrWhiteSpace($Pattern)) { throw 'a candidate needs a Pattern (the generalization, in intrinsic terms)' }
+    $dir = Join-Path $RepoRoot 'issues'
+    if (-not (Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+    $path = Join-Path $dir 'promotion-candidates.jsonl'
+    $rec = [ordered]@{
+        pattern        = $Pattern
+        class          = $Class
+        examples       = @($Examples)
+        expressibility = $Expressibility
+        recommendation = $Recommendation
+        paper          = $Paper
+        run            = $Run
+        status         = 'surfaced'   # human sets examined/promoted/rejected; the machine only surfaces
+    }
+    [System.IO.File]::AppendAllText($path, (($rec | ConvertTo-Json -Compress -Depth 6) + "`n"), [System.Text.UTF8Encoding]::new($false))
+    [pscustomobject]@{ surfaced = $true; sink = $path; pattern = $Pattern }
+}
+
 # --- escalate: the rare terminal (agent gave up) + the human check-in ---
 
 function Set-Unrecoverable {
