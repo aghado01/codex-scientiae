@@ -1,0 +1,31 @@
+{
+  "columns": {
+    "_doc": "Column-band labeling of the XYCut claim lane (pdfdig-ir Get-ColumnBands). narrow_width_frac: blocks narrower than this fraction of text width participate in left-edge clustering; cluster_gap_frac: a left-edge gap larger than this fraction of text width starts a new cluster; span_width_frac: blocks at least this wide are labeled 'span'; assign_tolerance_frac: slack when matching a block's left edge to a cluster range. Values tuned on specimen 2508.11646 (two-column IEEE).",
+    "narrow_width_frac": 0.62,
+    "cluster_gap_frac": 0.12,
+    "span_width_frac": 0.70,
+    "assign_tolerance_frac": 0.05
+  },
+  "rules": {
+    "_doc": "Thin-bbox rule tagging in the paths lane. A non-bezier path whose bbox is at most max_thickness_pt thick and at least min_length_pt long is tagged hrule/vrule. Specimen 2508.11646: 14 hrules + 7 vrules across 18 pages.",
+    "max_thickness_pt": 2.0,
+    "min_length_pt": 20.0
+  },
+  "script": {
+    "_doc": "CLASSIFIER-PHASE (not consulted by the substrate emitter). Sub/superscript call from size ratio + baseline delta, ported from Markpig Extractor.cs constants (validated on p1..p5 in recon): a glyph smaller than size_ratio_max x line size whose baseline deviates beyond sub_min_drop/super_min_rise points is a script candidate.",
+    "size_ratio_max": 0.85,
+    "sub_min_drop": 1.0,
+    "super_min_rise": 1.0
+  },
+  "line_grouping": {
+    "_doc": "CLASSIFIER-PHASE. Baseline clustering tolerance in points (Extractor.cs GroupLines) and the gap fraction of line size treated as an inter-word space (Extractor.cs SpaceFrac; PDFs encode spaces as gaps, not glyphs).",
+    "baseline_tolerance_pt": 2.5,
+    "space_gap_fraction": 0.18
+  },
+  "dla": {
+    "_doc": "DLA algorithm option overrides (IDlaOptions), applied when constructing segmenter/word-extractor instances. Empty = library defaults (Docstrum within=3.0/between=1.3, XYCut MinimumWidth=1). Populate per-domain when a specimen motivates it.",
+    "xycut": {},
+    "docstrum": {},
+    "nearest_neighbour_words": {}
+  }
+}

@@ -30,9 +30,12 @@ $doc = [UglyToad.PdfPig.PdfDocument]::Open($pdfPath)
 - **Load order matters** — dependencies first (`Tokens` → `Core` → `Tokenization` → `Fonts` →
   `PdfPig` → `DocumentLayoutAnalysis`). `Add-Type -Path` in that order loads clean, no build step.
 - PS 7.6 / .NET: confirmed. No server, no NuGet restore at runtime — pure vendored `Add-Type`.
-- **Nullable-struct interop trap:** methods returning `PdfRectangle?` (e.g.
-  `GetBoundingRectangle()`) — check `.HasValue` **before** `.Value`. PS unwraps a null Nullable to
-  `$null`, and `$null.HasValue` silently prints blank rather than erroring. Bit us in probe 2.
+- **Nullable-struct interop trap:** PS **auto-unwraps** `Nullable<T>` returns (e.g.
+  `GetBoundingRectangle(): PdfRectangle?`) — you receive `$null` when empty, the **bare struct**
+  when present. NEVER test `.HasValue`/`.Value` on the result: the unwrapped `PdfRectangle` has no
+  such members, the access silently yields `$null`, and the guard reads as *always false*. Test
+  `$null -ne $result` and use the result directly. (This silent-false bit us TWICE — first in
+  probe 2, then it manufactured the refuted §5 "bezier returns null" claim.)
 - **`out`-param interop trap:** `TryGet*([ref]$x)` binds for `XmpMetadata`/`Bookmarks` (ref-type or
   simple out), but `IPdfImage.TryGetBytesAsMemory(out Memory<byte>)` will **not** bind from PS
   (`Memory<byte>` out param) — must call via a tiny C# shim or use `TryGetPng`/`RawMemory` instead.
@@ -159,7 +162,7 @@ the URW/TeX Times clone). The `tex_origin` verdict ships with a `cue` field (`pr
 | Bookmarks outline | **high when present** | optional; absent on many PDFs; titles may differ from on-page heading text |
 | Marked-content / struct tree | witness-only | absent here; when present may be *corrupted* (ghost-layer saga) — cross-derive, never obey |
 | `RenderingMode == Invisible` | high signal | OCR text-over-image layer ⇒ classify scanned/hybrid, flag out-of-domain |
-| Vector paths (rules) | usable via bbox | **only line/rectangle subpaths** yield `GetBoundingRectangle()`; bezier-only figure paths return **null** (§5) |
+| Vector paths (rules + figures) | **high** — bbox for ALL path kinds | earlier "bezier returns null" claim REFUTED (§5): it was the PS nullable-unwrap trap, not the API |
 | Raster images | untested | no raster images in inbox corpus (all vector); `TryGetBytesAsMemory` needs a shim from PS |
 
 ---
@@ -171,15 +174,16 @@ the URW/TeX Times clone). The `tex_origin` verdict ships with a `cue` field (`pr
 `LineWidth`, `LineDashPattern`. Each `PdfSubpath` is a command list: `Move`, `Line`,
 `CubicBezierCurve`, `Rectangle`, `Close` (via `.Commands`).
 
-- **Rules** (fraction bars, table gridlines, hlines) are drawn as `LineTo`/`Rectangle` commands →
-  `GetBoundingRectangle()` returns a real box → thin-rectangle test (`H<2 ∧ W>20` = HRULE) works.
-- **Figure curves** (this specimen's p3/p4 TDA-diagram nodes/arrows) are `CubicBezierCurve`-only
-  subpaths → **`GetBoundingRectangle()` returns null in 0.1.14** (bounds only computed from line/rect
-  segments). For figure-region bboxes we must aggregate the bezier commands' points ourselves. This
-  is why the specimen showed HRULE=0 despite 30 paths — correctly, they're curves, not rules.
-- → v1 IR: record path count + per-path `{isFilled,isStroked,lineWidth,subpaths,bboxFromCommands}`
-  where a **manual command-point bbox** fills the bezier gap. Rule-vs-shape classification and
-  table-lattice detection are v1.1 (brief defers tables/figures anyway).
+- **`GetBoundingRectangle()` returns a real bbox for ALL path kinds** — line/rect rules AND
+  bezier-only figure curves (verified: 42/42 paths on specimen p3+p4 yield `PdfRectangle`).
+  An earlier probe concluded "bezier-only returns null in 0.1.14" — **REFUTED**: that blank was the
+  PS nullable-unwrap trap (§0) masquerading as a null return, a false finding manufactured by the
+  instrument. Corrected 2026-07-02; the emitter keeps a manual command-point bbox
+  (`bbox_source:"commands"`) only as a genuine-null fallback and tags which source produced each box.
+- **Rules** (fraction bars, table gridlines, hlines): thin-bbox test (`H≤2 ∧ W>20` = hrule) over
+  non-bezier paths works — specimen yields 14 hrules + 7 vrules across 18 pages.
+- → v1 IR: per-path `{is_clipping,is_filled,is_stroked,line_width,subpaths,kinds,bbox,bbox_source,rule}`.
+  Rule-vs-shape refinement and table-lattice detection are v1.1 (brief defers tables/figures anyway).
 
 **Images.** `IPdfImage` (`WidthInSamples/HeightInSamples`, `BitsPerComponent`, `ColorSpaceDetails`,
 `RawMemory`, `TryGetPng(out byte[])`, `TryGetBytesAsMemory(out Memory<byte>)`, `IsImageMask`,

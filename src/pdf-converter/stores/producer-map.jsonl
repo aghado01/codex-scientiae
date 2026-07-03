@@ -1,0 +1,22 @@
+{"pattern":"pdfTeX","origin":"pdftex","tex":true,"provenance":"specimens 2105.07025/2210.00916/2401.13157","notes":"the dominant arXiv engine"}
+{"pattern":"XeTeX","origin":"xetex","tex":true,"provenance":"seed","notes":"Unicode TeX engine (OpenType fonts — font-role domain may differ from CM)"}
+{"pattern":"LuaHBTeX","origin":"luatex","tex":true,"provenance":"seed","notes":"LuaTeX w/ HarfBuzz"}
+{"pattern":"LuaTeX","origin":"luatex","tex":true,"provenance":"seed","notes":"Lua TeX engine"}
+{"pattern":"dvipdfm","origin":"dvipdfm","tex":true,"provenance":"seed","notes":"DVI->PDF driver (covers dvipdfmx/xdvipdfmx via substring)"}
+{"pattern":"dvips","origin":"dvips","tex":true,"provenance":"seed","notes":"DVI->PS (usually then Ghostscript-distilled; Nimbus fonts era)"}
+{"pattern":"tex2pdf","origin":"arxiv-genpdf","tex":true,"provenance":"specimen 2508.11646","notes":"arXiv GenPDF creator string — survives pikepdf producer rewrite"}
+{"pattern":"TeX Live","origin":"texlive","tex":true,"provenance":"seed","notes":"distribution string"}
+{"pattern":"MiKTeX","origin":"miktex","tex":true,"provenance":"seed","notes":"distribution string"}
+{"pattern":"VTeX","origin":"vtex","tex":true,"provenance":"seed","notes":"commercial TeX (publisher pipelines)"}
+{"pattern":"LaTeX","origin":"latex","tex":true,"provenance":"seed","notes":"generic LaTeX mention (creator strings like 'LaTeX with hyperref')"}
+{"pattern":"pikepdf","origin":"pikepdf","tex":null,"rewriter":true,"provenance":"specimens 2508.11646/2603.03375","notes":"arXiv post-processor — OVERWRITES producer+XMP; origin must come from creator/fonts"}
+{"pattern":"qpdf","origin":"qpdf","tex":null,"rewriter":true,"provenance":"seed","notes":"pikepdf's underlying library; same rewriter class"}
+{"pattern":"Ghostscript","origin":"ghostscript","tex":null,"rewriter":true,"provenance":"seed","notes":"distiller/rewriter — upstream engine unknowable from this string alone"}
+{"pattern":"iText","origin":"itext","tex":null,"rewriter":true,"provenance":"seed","notes":"Java PDF library — often stamping/post-processing"}
+{"pattern":"Adobe PDF Library","origin":"adobe","tex":false,"provenance":"specimen 2504.09042","notes":"Adobe pipeline (InDesign/FrameMaker/etc feed this) — office/publisher domain"}
+{"pattern":"Acrobat Distiller","origin":"distiller","tex":false,"provenance":"seed","notes":"PS->PDF distillation, office/publisher domain"}
+{"pattern":"Microsoft","origin":"word","tex":false,"provenance":"seed","notes":"Word/Office export ('Microsoft® Word' variants)"}
+{"pattern":"LibreOffice","origin":"libreoffice","tex":false,"provenance":"seed","notes":"LibreOffice export"}
+{"pattern":"InDesign","origin":"indesign","tex":false,"provenance":"seed","notes":"publisher layout"}
+{"pattern":"Prince","origin":"prince","tex":false,"provenance":"seed","notes":"HTML->PDF"}
+{"pattern":"wkhtmltopdf","origin":"wkhtmltopdf","tex":false,"provenance":"seed","notes":"HTML->PDF"}

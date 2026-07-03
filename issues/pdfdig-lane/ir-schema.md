@@ -146,17 +146,17 @@ applied to layout.
 ## LANE 4 — `{slug}.paths.jsonl` (vector)
 
 ```jsonc
-{ "id": 3, "page": 4, "is_filled": true, "is_stroked": true, "line_width": 0.4,
-  "subpaths": 2, "kinds": ["bezier","bezier"],       // Move/Line/Bezier/Rectangle command census
-  "bbox": [220.1, 540.0, 268.9, 588.2],              // GetBoundingRectangle, OR manual command-point bbox for bezier-only
-  "bbox_source": "commands",                          // "api" | "commands" (bezier fallback) | null
-  "rule": null }                                      // "hrule"|"vrule" when thin-rect; else null (v1.1 refines)
+{ "id": 3, "page": 4, "is_clipping": false, "is_filled": true, "is_stroked": true, "line_width": 0.4,
+  "subpaths": 2, "kinds": ["cubicbeziercurve"],      // command census (move/close elided)
+  "bbox": [220.1, 540.0, 268.9, 588.2],              // GetBoundingRectangle (all path kinds — §5 corrected)
+  "bbox_source": "api",                               // "api" | "commands" (genuine-null fallback) | null
+  "rule": null }                                      // "hrule"|"vrule" when thin non-bezier; else null (v1.1 refines)
 ```
 
-Handles the capability-map §5 finding: bezier-only figure paths return null from
-`GetBoundingRectangle()`, so we compute a conservative bbox from the command points and tag
-`bbox_source:"commands"`. Rules (line/rect subpaths) get `bbox_source:"api"` and a `rule` tag.
-Images get a parallel lane when a raster-bearing specimen arrives (untested — §5).
+`GetBoundingRectangle()` covers all path kinds (the earlier bezier-null reading was the PS
+nullable-unwrap trap — capability map §5); the conservative command-point bbox remains as a
+genuine-null fallback, and `bbox_source` tags which source produced each box. Images get a parallel
+lane when a raster-bearing specimen arrives (untested — §5).
 
 ---
 
