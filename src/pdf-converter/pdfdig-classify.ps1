@@ -25,7 +25,8 @@
   desynchronize; member mutation on a captured reference does not.
 #>
 
-. "$PSScriptRoot/pdfdig-ir.ps1"   # store loaders, Get-Modal, jsonl substrate
+. "$PSScriptRoot/pdfdig-ir.ps1"        # store loaders, Get-Modal, jsonl substrate
+. "$PSScriptRoot/math-assembler.ps1"   # ConvertTo-NestedMath: recursive size-tier script nesting
 
 # ── symbol-map store: font-aware glyph corrections (math) + ligature expansion (prose).
 #    Substrate-faithful discipline: these fire at NODE emission only. ──────────────────────────────
@@ -97,6 +98,36 @@ function Emit-PdfDigLine {
     param($Ctx, $Letters, $LineId, $BlockId, $Col, [string]$LineType, $Tier, [string[]]$LineFlags, $St, $OutlineLevel, $OutlineRef)
 
     $cfg = $Ctx.cfg
+
+    # DISPLAY MATH: assemble the whole line with recursive size-tier script NESTING (not the flat
+    # per-glyph script call below, which emits the invalid t_{v}_{1} for nested t_{v_{i+1}}). One
+    # math run carries the assembled LaTeX; the adapter joins group lines as $$...$$.
+    if ($LineType -eq 'formula-block') {
+        $ma = $cfg.math_assembler
+        $symFn = $Ctx.mathSymbolFn
+        $latex = ConvertTo-NestedMath -Letters $Letters -SizeRatio $ma.size_ratio -BaselineTolFrac $ma.baseline_tol_frac -SymbolFn $symFn
+        $bx0=[double]::MaxValue; $by0=[double]::MaxValue; $bx1=[double]::MinValue; $by1=[double]::MinValue
+        foreach ($lt in $Letters) {
+            if ($lt.bx[0] -lt $bx0) { $bx0=$lt.bx[0] }; if ($lt.bx[1] -lt $by0) { $by0=$lt.bx[1] }
+            if ($lt.bx[2] -gt $bx1) { $bx1=$lt.bx[2] }; if ($lt.bx[3] -gt $by1) { $by1=$lt.bx[3] }
+        }
+        $rec = [ordered]@{
+            id = $Ctx.nid; type = $LineType; page = $St.page; line_id = $LineId; block = $BlockId; col = $Col
+            baseline_y = [math]::Round($St.base, 2); content = $latex; font = ''; 'font size' = $St.size
+            'bounding box' = @([math]::Round($bx0,2),[math]::Round($by0,2),[math]::Round($bx1,2),[math]::Round($by1,2))
+            role = 'math'; script = 'normal'
+        }
+        $rec.formula_group = $Ctx.formulaGroup
+        $fl = [System.Collections.Generic.SortedSet[string]]::new([StringComparer]::Ordinal)
+        foreach ($f in $LineFlags) { if ($f) { [void]$fl.Add($f) } }
+        # balance check: unclosed delimiter in the assembled span is a dispatchable flag, not a guess
+        if ((Measure-DelimiterBalance $latex) -ne 0) { [void]$fl.Add('unbalanced_delimiters') }
+        $rec.flags = @($fl)
+        $Ctx.nodes.Add($rec); $Ctx.nid++
+        $Ctx.typeCounts[$LineType] = 1 + ($Ctx.typeCounts[$LineType] ?? 0)
+        return
+    }
+
     # key-array sort, not Sort-Object{} — no per-comparison scriptblock in the hot path.
     # [Array]::Sort is UNSTABLE: augment the key with the index tiebreak or overprint/combining
     # glyphs sharing an x-coordinate swap between runs and change run splits (determinism!)
@@ -343,6 +374,8 @@ function ConvertTo-PdfDigNodes {
         nodes = [System.Collections.Generic.List[object]]::new()
         typeCounts = @{}
         cfg = $cfg; fontRole = $fontRole
+        # store-driven glyph correction for the assembler (math scope): CMSY-k/‖ -> \|, etc.
+        mathSymbolFn = { param($t, $f) Resolve-Symbol $f $t 'math' }
     }
     $docFlags = [System.Collections.Generic.List[object]]::new()
     if ($envelope.fonts | Where-Object { $_.family -eq 'cmbright' } | Select-Object -First 1) {

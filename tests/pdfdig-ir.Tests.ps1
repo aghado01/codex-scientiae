@@ -149,8 +149,8 @@ Describe 'classifier helpers' {
         Import-SymbolMap | Should -BeGreaterThan 5
     }
 
-    It 'maps CMSY k to Vert in math scope only (the kuk class)' {
-        Resolve-Symbol 'CMSY10' 'k' 'math'  | Should -Be '‖'
+    It 'maps CMSY k to the KaTeX norm delimiter in math scope only (the kuk class)' {
+        Resolve-Symbol 'CMSY10' 'k' 'math'  | Should -Be '\|'   # \| renders as ‖ in KaTeX math mode
         Resolve-Symbol 'CMSY10' 'k' 'prose' | Should -BeNullOrEmpty     # scope-gated
         Resolve-Symbol 'NimbusRomNo9L-Regu' 'k' 'math' | Should -BeNullOrEmpty  # font-gated
     }

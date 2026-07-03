@@ -37,6 +37,11 @@
     "max_width_frac_of_block": 0.92,
     "stack_gap_factor": 1.8
   },
+  "math_assembler": {
+    "_doc": "1.5-D math structure assembler (math-assembler.ps1): recursive size-tier script nesting for display math. size_ratio: a glyph smaller than base*size_ratio can be a script (CM ladder 10/7/5 -> 0.75 separates tiers); baseline_tol_frac: baseline delta beyond this fraction of the glyph's own size counts as displaced (sub/super). Inverts TeX's forward script placement so t/v/(i+1) at sizes 10/7/5 assemble as t_{v_{i+1}} not the invalid flat t_{v}_{1}.",
+    "size_ratio": 0.78,
+    "baseline_tol_frac": 0.12
+  },
   "furniture": {
     "_doc": "CLASSIFIER-PHASE marker call (running heads, page numbers, the arXiv stamp): a line whose baseline sits within margin_frac of the page top/bottom at no more than body size, or whose modal orientation is not Horizontal (rotated stamps/sidebars).",
     "margin_frac": 0.06
