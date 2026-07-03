@@ -377,8 +377,13 @@ function Invoke-Normalize {
     param(
         [Parameter(Mandatory)] [string] $ChunksPath,
         [string] $NodesPath,
-        [string[]] $StripMacros = @('mathbb')
+        [string[]] $StripMacros = @('mathbb'),
+        # 'opendataloader' (docling) needs the flattened-inline-math RECONSTRUCTION (space-separated
+        # glyph runs -> $...$, script reconstruction). The pig lane already emits $-wrapped inline math
+        # with correct advance-metric spacing, so that pass only corrupts it (un-gluing "[1]"->"[ 1 ]").
+        [string] $Lane = 'opendataloader'
     )
+    $reconstructInline = ($Lane -ne 'pdfdig')
     $chunks = [System.Collections.Generic.List[object]]::new()
     foreach ($line in [System.IO.File]::ReadLines($ChunksPath)) {
         if (-not [string]::IsNullOrWhiteSpace($line)) { $chunks.Add(($line | ConvertFrom-Json)) }
@@ -422,7 +427,9 @@ function Invoke-Normalize {
     foreach ($c in $chunks) {
         if ([string]$c.type -eq 'prose' -and $c.content -and -not $c.is_furniture) {
             $orig    = [string]$c.content
-            $wrapped = Repair-InlineScripts (ConvertTo-InlineMath $orig) $vocab
+            # pig lane: inline math is already $-wrapped by the converter (geometry) — do NOT
+            # re-detect/re-tokenize (that spaces citations); only tighten the existing spans below.
+            $wrapped = if ($reconstructInline) { Repair-InlineScripts (ConvertTo-InlineMath $orig) $vocab } else { $orig }
             # tighten the inline spans the same way display math is tightened (de-space braces, strip
             # \mathbb) — otherwise pre-wrapped set-builder notation keeps its OCR spacing, e.g. "{ X }".
             $wrapped = [regex]::Replace($wrapped, '\$[^$\n]+\$', { param($m) '$' + (Optimize-MathContent ($m.Value.Substring(1, $m.Value.Length - 2)) @('mathbb')) + '$' })

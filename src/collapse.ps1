@@ -112,8 +112,16 @@ function Invoke-Collapse {
                     continue
                 }
                 if ($dtop -ge 0.5 * $lh -and $dtop -le 1.8 * $lh) {
-                    $sep = if ($cur.content.EndsWith('-')) { '' } else { ' ' }
-                    $cur.content += $sep + $content
+                    # line-break join. A trailing hyphen before a lowercase continuation is a
+                    # word-wrap soft hyphen (Clas-/sical) → strip it. BUT a genuine compound can wrap
+                    # at its own hyphen (delta-/homology); we can't tell without a lexicon, so we
+                    # dehyphenate best-effort and FLAG the chunk for the enrichment tier to verify.
+                    if ($cur.content.EndsWith('-') -and $content -match '^[a-z]') {
+                        $cur.content = $cur.content.Substring(0, $cur.content.Length - 1) + $content
+                        $cur | Add-Member -NotePropertyName dehyphenated -NotePropertyValue $true -Force
+                    }
+                    elseif ($cur.content.EndsWith('-')) { $cur.content += $content }   # uppercase/other continuation: keep the hyphen
+                    else { $cur.content += ' ' + $content }
                     $cur.bbox = Merge-Bbox $cur.bbox $bbox
                     $cur.n_shards++
                     $lastTop = $ntop; $lastX1 = $nx1

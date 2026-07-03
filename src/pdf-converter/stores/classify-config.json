@@ -28,7 +28,8 @@
     "bold_line_frac": 0.6,
     "max_line_letters": 200,
     "tier_merge_gap_pt": 0.25,
-    "max_tiers_before_flag": 8
+    "max_tiers_before_flag": 8,
+    "run_in_min_tail": 3
   },
   "display_math": {
     "_doc": "CLASSIFIER-PHASE formula-block call: a line whose math-role letter fraction is at least min_math_frac, no wider than max_width_frac_of_block of its block, emits as formula-block. Consecutive formula lines closer than stack_gap_factor x line size share a formula group and are flagged needs_2d_assembly (fractions/matrices pending the C# AST tier).",

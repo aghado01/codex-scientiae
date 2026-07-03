@@ -75,7 +75,7 @@ function Invoke-Preprocess {
     Invoke-Collapse        -NodesPath $nodes -OutputPath $chunks | Out-Null
     Invoke-Zones           -ChunksPath $chunks -NodesPath $nodes | Out-Null
     Invoke-Sections        -ChunksPath $chunks -NodesPath $nodes | Out-Null
-    Invoke-Normalize       -ChunksPath $chunks -NodesPath $nodes | Out-Null
+    Invoke-Normalize       -ChunksPath $chunks -NodesPath $nodes -Lane $lane | Out-Null
     Invoke-Fidelity        -ChunksPath $chunks -NodesPath $nodes | Out-Null
     Invoke-Repair          -ChunksPath $chunks -NodesPath $nodes | Out-Null
 

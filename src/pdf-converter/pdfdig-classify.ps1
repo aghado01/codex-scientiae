@@ -138,7 +138,11 @@ function Emit-PdfDigLine {
              else { 'prose' }
         $unknownRole = ($fr -notin 'math','mono','prose')
 
-        $space = (-not [double]::IsNaN($prevRight)) -and (($lt.bx[0] - $prevRight) -gt $spaceGap)
+        # ADVANCE-based gap, not glyph-box gap: prevRight is the pen position after the previous
+        # glyph's advance (start + wadv), compared to this glyph's START (base x). A narrow glyph
+        # like "1" has a box far narrower than its advance, so a box-to-box gap spuriously exceeds
+        # threshold and injects "[ 1 ]"; the advance is the true pen metric (pdftotext/pdf.js do this).
+        $space = (-not [double]::IsNaN($prevRight)) -and (($lt.base[0] - $prevRight) -gt $spaceGap)
         $boundary = ($cur.sb.Length -eq 0) -or ($r -ne $cur.role) -or ($s -ne $cur.script) -or ($lt.font -ne $cur.font)
         if ($boundary) {
             if ($space -and $cur.sb.Length -gt 0) { [void]$cur.sb.Append(' ') }   # trailing space stays on the flushed run
@@ -158,7 +162,9 @@ function Emit-PdfDigLine {
         [void]$cur.sb.Append($txt)
         if ($lt.bx[0] -lt $cur.l) { $cur.l = $lt.bx[0] }; if ($lt.bx[1] -lt $cur.b) { $cur.b = $lt.bx[1] }
         if ($lt.bx[2] -gt $cur.r) { $cur.r = $lt.bx[2] }; if ($lt.bx[3] -gt $cur.t) { $cur.t = $lt.bx[3] }
-        $prevRight = $lt.bx[2]
+        # pen after this glyph = its start + advance width (falls back to box-right if wadv absent)
+        $adv = [double]$lt.wadv
+        $prevRight = if ($adv -gt 0) { [double]$lt.base[0] + $adv } else { [double]$lt.bx[2] }
     }
     & $flush
 
@@ -245,19 +251,23 @@ function ConvertTo-PdfDigNodes {
             if (-not $ls -or $ls.Count -eq 0) { continue }
             $cnt = $ls.Count
             $sizes = [double[]]::new($cnt); $bases = [double[]]::new($cnt)
-            $boldN = 0; $mathN = 0; $rotN = 0
+            $boldN = 0; $mathN = 0; $rotN = 0; $lastBold = -1
             for ($i = 0; $i -lt $cnt; $i++) {
                 $lt = $ls[$i]
                 $sizes[$i] = $lt.size; $bases[$i] = $lt.base[1]
-                if ($lt.bold_name) { $boldN++ }
+                if ($lt.bold_name) { $boldN++; $lastBold = $i }
                 if ($fontRole[$lt.font] -eq 'math') { $mathN++ }
                 if ($lt.orient -ne 'Horizontal') { $rotN++ }
             }
             $modalSize = [double](Get-Modal $sizes)
             $baseY = [double](Get-Modal $bases)
+            # bold_tail = glyphs after the last bold one. A bold PREFIX with a real tail is a run-in
+            # paragraph lead ("Cycles as Fundamental Memory Units. We then…"), not a section heading.
+            $boldTail = if ($lastBold -ge 0) { $cnt - 1 - $lastBold } else { $cnt }
             $lineStats[[int]$ln.id] = @{
                 size=$modalSize; base=$baseY; n=$ls.Count
                 bold_frac=$boldN/$ls.Count; math_frac=$mathN/$ls.Count; rot_frac=$rotN/$ls.Count
+                bold_tail=$boldTail
                 page=[int]$b.page
             }
         }
@@ -381,38 +391,50 @@ function ConvertTo-PdfDigNodes {
                 }
                 $isTierSize = $tierIdx -ge 0
                 $isBoldBody = ($st.bold_frac -ge $cfg.headings.bold_line_frac) -and ($st.size -ge $bodySize - 0.1) -and (-not $isTierSize)
+                # RUN-IN detection: a bold PREFIX followed by a substantial regular tail is a
+                # paragraph lead ("Chain Complex: <definition>"), not a section heading. Requires
+                # actual bold (bold_tail < n ⟺ some bold present) so non-bold outline headings are
+                # not caught. Blocks BOTH promotion paths below — a run-in lead can spuriously
+                # prefix-match a section bookmark ("Chain Complex" ⊂ "Chain Complex and Homology…").
+                $isRunIn = ($st.bold_tail -ge $cfg.headings.run_in_min_tail) -and ($st.bold_tail -lt $st.n)
+                if ($isBoldBody -and $isRunIn) { $isBoldBody = $false }
                 # outline witness runs in BOTH directions: it confirms typographic candidates AND
                 # proposes headings typography cannot see (body-size regular-face all-caps section
                 # heads — specimen 2508.11646's IEEE style). A proposed heading carries provenance
                 # (heading_from_outline + outline_level), never a fabricated tier.
-                $outlineHit = $null
+                $outlineHit = $null; $outlineFragment = $false
                 if ($outline.Count -gt 0 -and $st.n -le $cfg.headings.max_line_letters) {
                     $lineNorm = ConvertTo-OutlineKey $ln.text
                     foreach ($o in $outline) {
                         if (-not $o.norm) { continue }
                         if ([math]::Abs(($o.page ?? $b.page) - $b.page) -gt 1) { continue }
-                        # bidirectional contains: forward = line holds the whole title; reverse =
-                        # the line is a FRAGMENT of a long title wrapped across column lines
-                        # (2508.11646 sections III/V). Matched entries stay eligible so every
-                        # wrapped fragment promotes; length guard keeps trivial lines out.
-                        if ($lineNorm.Contains($o.norm) -or
-                            ($lineNorm.Length -ge 8 -and $o.norm.Contains($lineNorm))) {
-                            $outlineHit = $o; break
-                        }
+                        # bidirectional contains: FORWARD = line holds the whole title (a full heading);
+                        # REVERSE = line is a FRAGMENT of a longer title wrapped across lines (III/V).
+                        # A reverse-only match is flagged: a wrapped fragment re-fuses with its sibling
+                        # in the adapter, but a LONE reverse fragment (e.g. the common word "Homology"
+                        # matching a section title that contains it) is spurious and gets demoted there.
+                        $fwd = $lineNorm.Contains($o.norm)
+                        $rev = ($lineNorm.Length -ge 8 -and $o.norm.Contains($lineNorm))
+                        if ($fwd -or $rev) { $outlineHit = $o; $outlineFragment = (-not $fwd); break }
                     }
                 }
-                if (($isTierSize -or $isBoldBody) -and $st.n -le $cfg.headings.max_line_letters) {
+                # a heading is prose, not math — a large display delimiter ("[" from \left[) matches a
+                # size tier by font but is math (math_frac high); route it to formula, not a heading.
+                # Also require a real prose WORD: a large "[γ]" display fragment has math_frac only ~0.3
+                # (prose brackets + one math glyph) yet is plainly not a heading.
+                $mathHeavy = ($st.math_frac -ge 0.5) -or (-not ($ln.text -match '[A-Za-z]{2,}'))
+                if (($isTierSize -or $isBoldBody) -and -not $mathHeavy -and $st.n -le $cfg.headings.max_line_letters) {
                     $lineType = 'heading-candidate'
                     $tier = if ($isTierSize) { $tierIdx } else { $boldBodyTier }
                     $headingCandidates++
                     if ($outlineHit) {
                         $outlineHit.matched = $true; $lineFlags.Add('heading_confirmed_outline'); $headingsConfirmed++
                     }
-                } elseif ($outlineHit) {
+                } elseif ($outlineHit -and -not $isRunIn -and -not $mathHeavy) {
                     $lineType = 'heading-candidate'
                     $tier = $null   # semantic level comes from the outline, not typography
                     $outlineHit.matched = $true
-                    $lineFlags.Add('heading_from_outline')
+                    $lineFlags.Add($(if ($outlineFragment) { 'outline_fragment' } else { 'heading_from_outline' }))
                     $headingCandidates++; $headingsConfirmed++
                 } elseif ($st.math_frac -ge $cfg.display_math.min_math_frac) {
                     $lineW = $ln.bx[2] - $ln.bx[0]; $blockW = $b.bx[2] - $b.bx[0]

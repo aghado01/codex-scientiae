@@ -138,15 +138,22 @@ function Invoke-ProjectPdfDigNodes {
     }
     $closeHeading = {
         if ($null -ne $headingOpen) {
-            $out.Add([ordered]@{
-                id = $id; type = 'heading'; page = $headingOpen.page
-                bbox = (Merge-RunBbox $headingOpen.runs.ToArray())
-                content = ($headingOpen.contentLines -join ' ')   # wrapped physical lines rejoin with a space
-                heading_level = $headingOpen.level
-                font_size = (& $lineFontSize $headingOpen.runs.ToArray())
-                flags = @($headingOpen.flags)
-            })
-            $counts.heading++
+            # a lone outline_fragment (reverse-only bookmark match that never merged with a sibling
+            # wrap line) is a spurious match — demote it to prose rather than emit a phantom heading
+            $lone = ($headingOpen.contentLines.Count -eq 1 -and $headingOpen.flags.Contains('outline_fragment'))
+            $bx = (Merge-RunBbox $headingOpen.runs.ToArray())
+            $content = ($headingOpen.contentLines -join ' ')   # wrapped physical lines rejoin with a space
+            $fsz = (& $lineFontSize $headingOpen.runs.ToArray())
+            if ($lone) {
+                $out.Add([ordered]@{ id = $id; type = 'paragraph'; page = $headingOpen.page
+                    bbox = $bx; content = $content; font_size = $fsz; flags = @($headingOpen.flags) })
+                $counts.paragraph++
+            } else {
+                $out.Add([ordered]@{ id = $id; type = 'heading'; page = $headingOpen.page
+                    bbox = $bx; content = $content; heading_level = $headingOpen.level
+                    font_size = $fsz; flags = @($headingOpen.flags) })
+                $counts.heading++
+            }
         }
     }
 
