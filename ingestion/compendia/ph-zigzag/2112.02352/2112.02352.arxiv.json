@@ -1,0 +1,44 @@
+{
+  "id": "2112.02352",
+  "idv": "2112.02352v2",
+  "title": "Updating Barcodes and Representatives for Zigzag Persistence",
+  "authors": [
+    "Tamal K. Dey",
+    "Tao Hou"
+  ],
+  "abstract": "[external:untrusted] Computing persistence over changing filtrations give rise to a stack of 2D persistence diagrams where the birth-death points are connected by the so-called `vines'. We consider computing these vines over changing filtrations for zigzag persistence. We observe that eight atomic operations are sufficient for changing one zigzag filtration to another and provide update algorithms for each of them. Six of these operations that have some analogues to one or multiple transpositions in the non-zigzag case can be executed as efficiently as their non-zigzag counterparts. This approach takes advantage of a recently discovered algorithm for computing zigzag barcodes by converting a zigzag filtration to a non-zigzag one and then connecting barcodes of the two with a bijection. The remaining two atomic operations do not have a strict analogue in the non-zigzag case. For them, we propose algorithms based on explicit maintenance of representatives (homology cycles) which can be useful in their own rights for applications requiring explicit updates of representatives.",
+  "categories": [
+    "cs.CG",
+    "math.AT"
+  ],
+  "primary_category": "cs.CG",
+  "published": "2021-12-04T14:51:55Z",
+  "updated": "2022-08-01T23:08:28Z",
+  "doi": null,
+  "journal_ref": null,
+  "comment": null,
+  "abs_url": "https://arxiv.org/abs/2112.02352v2",
+  "pdf_url": "https://arxiv.org/pdf/2112.02352v2",
+  "fetched_at": "2026-07-01T23:22:12.6364518-07:00",
+  "fetched_by": "codex-arxiv-mcp/0.2",
+  "artifacts": {
+    "pdf": {
+      "url": "https://arxiv.org/pdf/2112.02352v2",
+      "already_present": false,
+      "bytes": 708350,
+      "kind": "pdf",
+      "fetched_at": "2026-07-01T23:22:09.1637044-07:00",
+      "staged": true,
+      "path": "ingestion/_inbox/2112.02352/2112.02352.pdf"
+    },
+    "source": {
+      "url": "https://export.arxiv.org/e-print/2112.02352v2",
+      "already_present": false,
+      "bytes": 72792,
+      "kind": "gzip",
+      "fetched_at": "2026-07-01T23:22:12.6360735-07:00",
+      "staged": true,
+      "path": "ingestion/_inbox/2112.02352/2112.02352.tar.gz"
+    }
+  }
+}

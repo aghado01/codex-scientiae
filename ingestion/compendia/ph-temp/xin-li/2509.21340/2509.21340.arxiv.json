@@ -1,0 +1,45 @@
+{
+  "id": "2509.21340",
+  "idv": "2509.21340v1",
+  "title": "Cycle is All You Need: More Is Different",
+  "authors": [
+    "Xin Li"
+  ],
+  "abstract": "[external:untrusted] We propose an information-topological framework in which cycle closure is the fundamental mechanism of memory and consciousness. Memory is not a static store but the ability to re-enter latent cycles in neural state space, with invariant cycles serving as carriers of meaning by filtering order-specific noise and preserving what persists across contexts. The dot-cycle dichotomy captures this: transient dots scaffold exploration, while nontrivial cycles encode low-entropy content invariants that stabilize memory. Biologically, polychronous neural groups realize 1-cycles through delay-locked spiking reinforced by STDP, nested within theta-gamma rhythms that enforce boundary cancellation. These micro-cycles compose hierarchically, extending navigation loops into general memory and cognition. The perception-action cycle introduces high-order invariance: closure holds even across sense-act alternations, generalizing ancestral homing behavior. Sheaf-cosheaf duality formalizes this process: sheaves glue perceptual fragments into global sections, cosheaves decompose global plans into actions and closure aligns top-down predictions with bottom-up cycles. Consciousness then arises as the persistence of high-order invariants that integrate (unity) yet differentiate (richness) across contexts. We conclude that cycle is all you need: persistent invariants enable generalization in non-ergodic environments with long-term coherence at minimal energetic cost.",
+  "categories": [
+    "cs.NE",
+    "cs.AI",
+    "cs.LG",
+    "q-bio.NC"
+  ],
+  "primary_category": "cs.NE",
+  "published": "2025-09-15T21:48:30Z",
+  "updated": "2025-09-15T21:48:30Z",
+  "doi": null,
+  "journal_ref": null,
+  "comment": null,
+  "abs_url": "https://arxiv.org/abs/2509.21340v1",
+  "pdf_url": "https://arxiv.org/pdf/2509.21340v1",
+  "fetched_at": "2026-07-01T23:26:24.7740103-07:00",
+  "fetched_by": "codex-arxiv-mcp/0.2",
+  "artifacts": {
+    "source": {
+      "url": "https://export.arxiv.org/e-print/2509.21340v1",
+      "already_present": false,
+      "bytes": 106647,
+      "kind": "gzip",
+      "fetched_at": "2026-07-01T23:26:24.7726452-07:00",
+      "staged": true,
+      "path": "ingestion/_inbox/2509.21340/2509.21340.tar.gz"
+    },
+    "pdf": {
+      "url": "https://arxiv.org/pdf/2509.21340v1",
+      "already_present": false,
+      "bytes": 584000,
+      "kind": "pdf",
+      "fetched_at": "2026-07-01T23:23:30.3690511-07:00",
+      "staged": true,
+      "path": "ingestion/_inbox/2509.21340/2509.21340.pdf"
+    }
+  }
+}

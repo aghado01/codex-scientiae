@@ -1,0 +1,46 @@
+{
+  "id": "2403.08308",
+  "idv": "2403.08308v4",
+  "title": "Interval Replacements of Persistence Modules",
+  "authors": [
+    "Hideto Asashiba",
+    "Etienne Gauthier",
+    "Enhao Liu"
+  ],
+  "abstract": "[external:untrusted] We define two notions. The first one is a $rank\\ compression\\ system$ $ξ$ for a finite poset $\\mathbf{P}$ that assigns each interval subposet $I$ to an order-preserving map $ξ_I \\colon I^ξ \\to \\mathbf{P}$ satisfying some conditions, where $I^ξ$ is a connected finite poset. An example is given by the $total$ compression system that assigns each $I$ to the inclusion of $I$ into $\\mathbf{P}$. The second one is an $I$-$rank$ of a persistence module $M$ under $ξ$, the family of which is called the $interval\\ rank\\ invariant$ of $M$ under $ξ$. A compression system $ξ$ makes it possible to define the $interval\\ replacement$ (also called the interval-decomposable approximation) not only for 2D persistence modules but also for any persistence modules over any finite poset. We will show that the forming of the interval replacement preserves the interval rank invariant, which is a stronger property than the preservation of the usual rank invariant. Moreover, to know what is preserved by the replacement explicitly, we will give a formula of the $I$-rank of $M$ under $ξ$ in terms of the structure linear maps of $M$ for any compression system $ξ$. The formula leads us to a concept of essential cover, which gives us a sufficient condition for the $I$-rank of $M$ under $ξ$ to coincide with that under another compression system $ζ$. This is applied to the case where $ξ= \\mathrm{tot}$, the value of $I$-rank under which is equal to the generalized rank invariant introduced by Kim--Mémoli, to give an alternative proof of the Dey--Kim--Mémoli theorem computing the generalized rank invariant by using a zigzag path.",
+  "categories": [
+    "math.RT",
+    "math.AT",
+    "math.RA"
+  ],
+  "primary_category": "math.RT",
+  "published": "2024-03-13T07:37:43Z",
+  "updated": "2026-01-23T13:18:42Z",
+  "doi": null,
+  "journal_ref": null,
+  "comment": "[external:untrusted] Major updates: (1) a general formula for computing interval multiplicity (resp. rank) invariants of persistence modules under any (resp. rank) compression system $ξ$; (2) clearer definition of essential covers (relative to $ξ$); (3) added GitHub link for interval rank invariant and replacement computations (under tot and ss); (4) fixed typos and refined notions",
+  "abs_url": "https://arxiv.org/abs/2403.08308v4",
+  "pdf_url": "https://arxiv.org/pdf/2403.08308v4",
+  "fetched_at": "2026-07-01T23:22:48.9077993-07:00",
+  "fetched_by": "codex-arxiv-mcp/0.2",
+  "artifacts": {
+    "pdf": {
+      "url": "https://arxiv.org/pdf/2403.08308v4",
+      "already_present": false,
+      "bytes": 1250148,
+      "kind": "pdf",
+      "fetched_at": "2026-07-01T23:22:46.1168691-07:00",
+      "staged": true,
+      "path": "ingestion/_inbox/2403.08308/2403.08308.pdf"
+    },
+    "source": {
+      "url": "https://export.arxiv.org/e-print/2403.08308v4",
+      "already_present": false,
+      "bytes": 131298,
+      "kind": "gzip",
+      "fetched_at": "2026-07-01T23:22:48.9069194-07:00",
+      "staged": true,
+      "path": "ingestion/_inbox/2403.08308/2403.08308.tar.gz"
+    }
+  }
+}
