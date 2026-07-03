@@ -41,6 +41,21 @@ validated (pdfdig recon + first dig).
 - **Perf + substrate** — advance-based spacing, lane-gated normalize, dehyphenation; jsonl bulk-write
   + inline `.jidx`; encoding-invariants test suite. 84p warm: IR 148→51s.
 
+**Clustering engine (HDBSCAN) — BUILD IN PROGRESS (2026-07-03).** The density-clustering capability
+the earlier design reserved for the two genuinely-continuous problems (figure-region assembly + a
+segmentation THIRD-witness — NOT the quantized-typography classifier spine, which stays order
+statistics). User is rebuilding the ThermoMapper custom HDBSCAN (ripped out with its frayed wires)
+as a **standalone C# CLI executable** (`hdbscan.exe`, mirroring TM's `user-repl`: load CSV/JSONL →
+cluster → emit `partition.csv` / `summary.json` / `dendrogram.json` to `--out-dir`), which the PS
+lane invokes as a subprocess (not `Add-Type`). New repo dotnet architecture landed this direction:
+`Directory.Build.props` (repo-wide net10 / nullable / artifacts→`artifacts/bin/{project}`),
+`src/hdbscan/` (the engine — CoreDistances / Prim-MST / DendrogramBuilder / condensation / Metric),
+`tests/hdbscan/` (smoke `Program.cs`), `projects/` (build defs; `dotnet publish -o bin/{project}` for
+the release the PS workflow consumes). Scoping done with Gemini (plan at
+`~/.gemini/…/66066885-…/implementation_plan.md`), NOT yet acted. **Open (user's call):** MSBuild
+`src`/`projects` split wiring — per-csproj `<Compile Include>` vs auto-route in `Directory.Build.props`;
+a `projects/tests` csproj for the moved smoke test; then `HdbscanCli.cs` (the arg-parse/IO entry).
+
 **v1 must-haves — status against §"v1 must-haves" below:**
 1. Column detection — ✅ (RecursiveXYCut, the vendored DLA solved "THE gap"; not built from scratch).
 2. All-pages + assembly — ✅. 3. Satellite reattachment — ⚠️ partial (DLA line-grouping; no explicit
@@ -68,7 +83,9 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    dual-availability papers, both lanes, scored against the LaTeX oracle — the replacement claim as a
    number per lane. Needs the conversion-metric aligner (also unblocks oracle-backed benchmark trials).
 4. **Figure/raster lane** — needs a raster-bearing specimen first (the inbox corpus is all vector);
-   `TryGetPng` + the `TryGetBytesAsMemory` PS shim. Path-command bbox for bezier figure regions.
+   `TryGetPng` + the `TryGetBytesAsMemory` PS shim. Path-command bbox for bezier figure regions. This
+   is the **first consumer of the HDBSCAN CLI** (build-in-progress, above): cluster Lane-4 path bboxes
+   + satellite text into figure regions, with stray rules/underlines falling out as the noise class.
 5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
    role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
 6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
