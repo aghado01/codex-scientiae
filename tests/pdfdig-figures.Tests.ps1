@@ -1,8 +1,8 @@
 #requires -Version 7
 # Figure-region clustering (src/pdf-converter/pdfdig-figures.ps1): a synthetic paths.jsonl —
-# two well-spaced figures + a stray rule on one page, a tiny marker cluster on another —
-# exercises the whole path: per-page rectangle-gap clustering via hdbscan.exe, kind tagging,
-# noise fallout. Fixture is self-contained (does not depend on the git-ignored inbox corpus).
+# two well-spaced figures + a stray rule on one page, a tiny marker cluster on another, a thin
+# degenerate line on a third — plus a letters.jsonl so the em^2 (text-normalized) path is
+# exercised. Fixtures are self-contained (do not depend on the git-ignored inbox corpus).
 
 BeforeAll {
     $repo = Split-Path $PSScriptRoot -Parent
@@ -24,14 +24,28 @@ BeforeAll {
     }
     # Page 1: one isolated stray rule far above both figures.
     $rows.Add(('{{"id":{0},"page":1,"bbox":[0,300,140,301]}}' -f $id++))
-    # Page 2: four tiny boxes forming one small marker cluster (union area well under 200 pt^2).
+    # Page 2: four tiny boxes forming one small marker cluster (~0.3 em^2 at 10pt body).
     foreach ($m in @(@(293, 279), @(296, 279), @(293, 283), @(296, 283))) {
         $rows.Add(('{{"id":{0},"page":2,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $m[0], $m[1], ($m[0] + 2), ($m[1] + 2)))
+    }
+    # Page 3: four collinear boxes forming a thin (0.4pt tall) degenerate line cluster.
+    foreach ($lx in @(50, 62, 74, 86)) {
+        $rows.Add(('{{"id":{0},"page":3,"bbox":[{1},100,{2},100.4]}}' -f $id++, $lx, ($lx + 10)))
     }
     $pathsFile = Join-Path $work 'synth.paths.jsonl'
     [IO.File]::WriteAllLines($pathsFile, $rows)
 
+    # Letters lane so body font size is detected as 10pt (modal size).
+    $letters = [System.Collections.Generic.List[string]]::new()
+    1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+    1..2  | ForEach-Object { $letters.Add('{"size":23.9}') }   # a couple of title glyphs
+    [IO.File]::WriteAllLines((Join-Path $work 'synth.letters.jsonl'), $letters)
+
     $result = ConvertTo-FigureRegions -PathsJsonl $pathsFile -PassThru
+
+    # Empty input (no clusterable paths) — must write an empty file, not throw.
+    $emptyPaths = Join-Path $work 'empty.paths.jsonl'
+    [IO.File]::WriteAllLines($emptyPaths, @())
 }
 
 AfterAll {
@@ -47,24 +61,37 @@ Describe 'pdfdig figure-region clustering' {
         $result.Summary.noise_paths | Should -Be 1
     }
 
-    It 'tags a tiny marker cluster as kind=mark, keeping it (nothing dropped)' {
+    It 'tags a tiny marker cluster as kind=mark below the glyph floor' {
         $p2 = @($result.Figures | Where-Object { $_.page -eq 2 })
         $p2.Count       | Should -Be 1
         $p2[0].kind     | Should -Be 'mark'
-        $p2[0].area     | Should -BeLessThan 200
+        $p2[0].area_em2 | Should -BeLessThan 2.0
     }
 
-    It 'emits {slug}.figures.jsonl beside the paths lane' {
-        $result.OutPath | Should -Match 'synth\.figures\.jsonl$'
-        Test-Path $result.OutPath | Should -BeTrue
+    It 'tags a thin collinear cluster as kind=degenerate' {
+        $p3 = @($result.Figures | Where-Object { $_.page -eq 3 })
+        $p3.Count   | Should -Be 1
+        $p3[0].kind | Should -Be 'degenerate'
     }
 
-    It 'writes well-formed region records (bbox/area/kind/path_ids)' {
+    It 'detects body font size and records text-normalized area on figures' {
+        $result.Summary.body_font_pt | Should -Be 10.0
+        $fig = @($result.Figures | Where-Object { $_.kind -eq 'figure' })[0]
+        $fig.area_em2 | Should -BeGreaterThan 2.0
+    }
+
+    It 'writes well-formed region records (bbox/area/area_em2/kind/path_ids)' {
         $rec = Get-Content $result.OutPath -TotalCount 1 | ConvertFrom-Json
-        $rec.PSObject.Properties.Name | Should -Contain 'bbox'
-        $rec.PSObject.Properties.Name | Should -Contain 'area'
-        $rec.PSObject.Properties.Name | Should -Contain 'kind'
-        $rec.PSObject.Properties.Name | Should -Contain 'path_ids'
+        foreach ($f in 'bbox', 'area', 'area_em2', 'kind', 'path_ids') {
+            $rec.PSObject.Properties.Name | Should -Contain $f
+        }
         $rec.bbox.Count | Should -Be 4
+    }
+
+    It 'writes an empty figures.jsonl for empty input (no throw)' {
+        $o = Join-Path $work 'empty.figures.jsonl'
+        { ConvertTo-FigureRegions -PathsJsonl $emptyPaths -OutPath $o } | Should -Not -Throw
+        Test-Path $o | Should -BeTrue
+        (Get-Content $o -Raw) | Should -BeNullOrEmpty
     }
 }

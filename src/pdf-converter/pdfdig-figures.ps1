@@ -13,9 +13,13 @@
 
   Per-page: figures never span pages and page coordinate systems are independent. The clustering
   engine stays a black-box CLI (Invoke-Hdbscan -> hdbscan.exe); no clustering logic lives here.
-  Params are config-as-data (classify-config.json "figure_regions"). Each region records its
-  union-bbox `area` (a measurement) and a `kind` tag (figure|mark) applied at the documented,
-  tunable min_region_area_pt2 threshold — nothing is dropped, so downstream can retune.
+  Params are config-as-data (classify-config.json "figure_regions").
+
+  Each region records raw union-bbox `area` and, when the letters lane gives a body font size,
+  a TEXT-NORMALIZED `area_em2` (area / body_font^2 = "how many glyphs big"). `kind` is tagged
+  (nothing dropped): degenerate (thinner than degenerate_min_extent_pt on either axis = a
+  rule/line cluster) | mark (below the glyph-scale floor) | figure. The corpus is NOT universally
+  bimodal in region area, so the floor is a conservative glyph-scale FLOOR, not a valley estimate.
 #>
 
 . (Join-Path $PSScriptRoot '../hdbscan/Invoke-Hdbscan.ps1')
@@ -52,6 +56,22 @@ function Read-PartitionLabels([string] $Csv) {
     , $out.ToArray()
 }
 
+# Body font size = the modal letter size in {slug}.letters.jsonl (body text dominates the letter
+# count). Streamed regex read of just the `size` field — fast on large lanes; null if absent.
+function Get-BodyFontSize([string] $LettersJsonl) {
+    if (-not (Test-Path $LettersJsonl)) { return $null }
+    $counts = @{}
+    foreach ($line in [System.IO.File]::ReadLines($LettersJsonl)) {
+        $m = [regex]::Match($line, '"size":\s*([0-9.]+)')
+        if ($m.Success) {
+            $s = [math]::Round([double]$m.Groups[1].Value, 1)
+            $counts[$s] = (($counts[$s]) ?? 0) + 1
+        }
+    }
+    if ($counts.Count -eq 0) { return $null }
+    ($counts.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 1).Key
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -68,7 +88,10 @@ function ConvertTo-FigureRegions {
     $minPts         = [int]$cfg.min_pts
     $minClusterSize = [int]$cfg.min_cluster_size
     $allowSingle    = [bool]$cfg.allow_single_cluster
-    $minArea        = [double]$cfg.min_region_area_pt2
+    $floorEm        = [double]$cfg.min_region_area_em2
+    $fallbackPt2    = [double]$cfg.min_region_area_pt2
+    $degenEps       = [double]$cfg.degenerate_min_extent_pt
+    $fragMin        = [int]$cfg.fragmentation_flag_min_clusters
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -76,25 +99,42 @@ function ConvertTo-FigureRegions {
         $OutPath = Join-Path $dir "$slug.figures.jsonl"
     }
 
-    $figures = [System.Collections.Generic.List[object]]::new()
-    $summary = [ordered]@{ pages = 0; regions = 0; figures = 0; marks = 0; noise_paths = 0; too_few_pages = 0 }
+    # Text-scale reference: normalize region area to em^2 so the mark floor transports across
+    # page AND font size. Falls back to a raw-pt^2 floor when the letters lane isn't beside us.
+    $bodyPt   = Get-BodyFontSize ($PathsJsonl -replace '\.paths\.jsonl$', '.letters.jsonl')
+    $bodyArea = if ($bodyPt) { [double]$bodyPt * [double]$bodyPt } else { $null }
 
-    # Build + record one region; area is measured, kind is the tunable opinion. Nothing dropped.
-    # id is the sequential region index (= list count before append); $figures/$summary/$minArea
-    # resolve through the enclosing function scope, and the List/dictionary are mutated in place.
+    $figures = [System.Collections.Generic.List[object]]::new()
+    $summary = [ordered]@{
+        pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
+        noise_paths = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; body_font_pt = $bodyPt
+    }
+
+    # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
+    # kind is the tunable opinion (degenerate|mark|figure). Nothing is dropped. id = list count
+    # before append; $figures/$summary and the config scalars resolve through the enclosing scope.
     $addRegion = {
         param($page, $members, $flag)
         $bbox = Get-FigureUnionBbox $members
         if (-not $bbox) { return }
-        $area = [math]::Round(($bbox[2] - $bbox[0]) * ($bbox[3] - $bbox[1]), 1)
-        $kind = if ($area -ge $minArea) { 'figure' } else { 'mark' }
+        $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
+        $area = [math]::Round($w * $h, 1)
+        $areaEm = if ($bodyArea) { [math]::Round($area / $bodyArea, 3) } else { $null }
+        $kind =
+            if ($w -lt $degenEps -or $h -lt $degenEps) { 'degenerate' }
+            elseif ($null -ne $bodyArea) { if ($areaEm -lt $floorEm) { 'mark' } else { 'figure' } }
+            else { if ($area -lt $fallbackPt2) { 'mark' } else { 'figure' } }
         $figures.Add([ordered]@{
-            id = $figures.Count; page = $page; bbox = $bbox; area = $area
+            id = $figures.Count; page = $page; bbox = $bbox; area = $area; area_em2 = $areaEm
             path_ids = @($members.id); path_count = @($members).Count
             kind = $kind; flag = $flag
         })
         $summary.regions++
-        if ($kind -eq 'figure') { $summary.figures++ } else { $summary.marks++ }
+        switch ($kind) {
+            'figure'     { $summary.figures++ }
+            'mark'       { $summary.marks++ }
+            'degenerate' { $summary.degenerate++ }
+        }
     }
 
     # Load paths with a usable bbox (a genuine-null bbox path can't be placed).
@@ -147,6 +187,7 @@ function ConvertTo-FigureRegions {
                 if (-not $byLabel.ContainsKey($lab)) { $byLabel[$lab] = [System.Collections.Generic.List[object]]::new() }
                 $byLabel[$lab].Add($pagePaths[$i])
             }
+            if ($byLabel.Count -gt $fragMin) { $summary.fragmentation_suspect_pages++ }
             foreach ($lab in ($byLabel.Keys | Sort-Object)) {
                 & $addRegion $page $byLabel[$lab] $null
             }
@@ -156,11 +197,12 @@ function ConvertTo-FigureRegions {
         Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue
     }
 
-    $lines = $figures | ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 5 }
+    # [string[]]@(...) so an empty page-set writes an empty file instead of throwing on null.
+    $lines = [string[]]@($figures | ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 5 })
     [System.IO.File]::WriteAllLines($OutPath, $lines, [System.Text.UTF8Encoding]::new($false))
 
-    Write-Verbose ("regions: {0} ({1} figure / {2} mark) over {3} page(s); {4} stray path(s), {5} too-few page(s) -> {6}" -f `
-        $summary.regions, $summary.figures, $summary.marks, $summary.pages, $summary.noise_paths, $summary.too_few_pages, $OutPath)
+    Write-Verbose ("regions: {0} ({1} figure / {2} mark / {3} degenerate) over {4} page(s); {5} stray path(s), body {6}pt -> {7}" -f `
+        $summary.regions, $summary.figures, $summary.marks, $summary.degenerate, $summary.pages, $summary.noise_paths, $summary.body_font_pt, $OutPath)
 
     if ($PassThru) {
         [pscustomobject]@{ OutPath = $OutPath; Figures = $figures; Summary = [pscustomobject]$summary }
