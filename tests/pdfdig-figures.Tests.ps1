@@ -41,6 +41,13 @@ BeforeAll {
     1..2  | ForEach-Object { $letters.Add('{"size":23.9}') }   # a couple of title glyphs
     [IO.File]::WriteAllLines((Join-Path $work 'synth.letters.jsonl'), $letters)
 
+    # Blocks lane: a cue-matched caption below figure A (x<50); a bare heading below figure B (x>90).
+    $blocks = @(
+        '{"id":1,"page":1,"bx":[0,-15,40,-5],"text_preview":"Figure 1: the alpha figure"}'
+        '{"id":2,"page":1,"bx":[100,-15,140,-5],"text_preview":"3. Results and discussion"}'
+    )
+    [IO.File]::WriteAllLines((Join-Path $work 'synth.blocks.jsonl'), $blocks)
+
     $result = ConvertTo-FigureRegions -PathsJsonl $pathsFile -PassThru
 
     # Empty input (no clusterable paths) — must write an empty file, not throw.
@@ -114,5 +121,17 @@ Describe 'pdfdig figure-region clustering' {
         $elbow | Should -BeLessThan 6.7
         # a stricter gap requirement finds no clear elbow → null (leave a continuum alone)
         Find-FragmentElbow $dend $labels 3.0 | Should -BeNullOrEmpty
+    }
+
+    It 'reattaches a cue-matched caption below a figure and rejects a bare heading' {
+        $figs = @($result.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
+        $figA = $figs | Where-Object { $_.bbox[0] -lt 50 } | Select-Object -First 1     # has "Figure 1:" below
+        $figB = $figs | Where-Object { $_.bbox[0] -gt 90 } | Select-Object -First 1     # has only a heading below
+        $figA.caption          | Should -Not -BeNullOrEmpty
+        $figA.caption.text     | Should -Match 'Figure 1'
+        $figA.caption.cue      | Should -BeTrue
+        $figA.caption.position | Should -Be 'below'
+        $figB.caption          | Should -BeNullOrEmpty
+        $result.Summary.captioned_figures | Should -Be 1
     }
 }

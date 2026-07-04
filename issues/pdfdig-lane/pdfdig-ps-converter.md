@@ -69,8 +69,8 @@ visible; treat every constant as falsifiable (beware calibration-set overfit).
 second pass yet). 4. Font-tier headings — ✅ (+ outline cross-derivation, beyond the plan).
 5. Display-math regions + `$…$` seams — ✅ (1-D + now 1.5-D nesting). 6. Symbol correction — ✅
 (store, math scope). 7. Ligatures/NFKC — ✅ (dehyphenation too). 8. Figures — region DETECTION ✅ (vector:
-per-page rectangle-gap clustering + em² mark floor + dendrogram de-fragmentation); caption reattachment ⚠️
-IN PROGRESS; pixel/raster extraction ❌ NOT done (no raster specimen yet).
+per-page rectangle-gap clustering + em² mark floor + dendrogram de-fragmentation); caption reattachment ✅
+(geometry finds candidates, the Figure/Table cue selects); pixel/raster extraction ❌ NOT done (no raster specimen yet).
 
 **Open decisions — RESOLVED:** node shape = flat JSONL per lane w/ back-refs (✅). Conversions land
 beside the PDF as `{slug}.*` (✅). Fork = vendored `lib/pdfpig` 0.1.14 (✅). Perf = low-level loops,
@@ -91,10 +91,14 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    dual-availability papers, both lanes, scored against the LaTeX oracle — the replacement claim as a
    number per lane. Needs the conversion-metric aligner (also unblocks oracle-backed benchmark trials).
 4. **Figure lane — region DETECTION LANDED (above); two remainders.**
-   (a) **Caption reattachment** (the "+ satellite text" of the original #4) — associate each figure region
-   with its caption: the adjacent text block (Lane-3 blocks) below (figures) / above (tables) the region,
-   gap-gated in em, with the caption cue (Figure/Fig./Table N…) recorded as a non-gating SIGNAL (geometry
-   decides adjacency; the membrane's caption-relocation lane consumes the link). IN PROGRESS.
+   (a) **Caption reattachment — LANDED** (the "+ satellite text" of the original #4). Each `kind=figure`
+   region gets its caption: geometry finds candidate Lane-3 blocks (adjacent below / above, overlapping ≥
+   `caption_min_overlap_frac`, gap-gated by `caption_max_gap_em`); the caption cue (Figure/Fig/Table N,
+   prefix-scanned so "δ Fig. 3" matches, length-capped so mid-sentence "see Figure 3" doesn't) SELECTS
+   among them — so an adjacent section heading or body paragraph is NOT mis-attached and a caption-less
+   region stays null. On 2508: 11/17 regions captioned (9 of 10 figures; the one miss = Fig 4's 76pt gap),
+   zero false attachments. Region carries `caption {block_id, bbox, text, cue, position, gap}`; the
+   membrane's caption-relocation lane consumes the link.
    (b) **Raster/pixel extraction** — the "close the figure loop to a deliverable" gap. Needs a raster-bearing
    specimen first (the inbox corpus is all vector): `TryGetPng` + the `TryGetBytesAsMemory` PS shim →
    `{slug}/imageFileN.png` (DCT passthrough first, Flate→PNG next). Vector figures are detected as regions

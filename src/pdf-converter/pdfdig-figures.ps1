@@ -108,6 +108,65 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
     $elbow
 }
 
+# Reattach caption text to each kind=figure region. Geometry finds the CANDIDATES — Lane-3 text
+# blocks directly BELOW (figures) or, failing that, ABOVE (tables), horizontally overlapping the
+# figure by >= caption_min_overlap_frac and within caption_max_gap_em text-heights. The caption
+# CUE (Figure/Fig/Table N in the block's first ~14 chars) SELECTS the caption among them, so an
+# adjacent section heading or body paragraph (no cue) is not attached, and a caption-less region
+# stays null rather than grabbing the wrong block. Prefix-scanned (not ^-anchored) so a leading
+# glyph ("δ Fig. 3") still matches; length-capped so a mid-sentence "see Figure 3" reference does
+# not. Cue words are config-as-data. Sets the caption field in place; returns nothing.
+function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, [string] $BlocksJsonl,
+    [double] $BodyPt, $Cfg, $Summary) {
+    if (-not (Test-Path $BlocksJsonl)) { return }
+    $blocks = Get-Content $BlocksJsonl | Where-Object { $_.Trim() } |
+        ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.bx }
+    if (-not $blocks) { return }
+    $byPage = @{}
+    foreach ($blk in $blocks) {
+        $p = [int]$blk.page
+        if (-not $byPage.ContainsKey($p)) { $byPage[$p] = [System.Collections.Generic.List[object]]::new() }
+        $byPage[$p].Add($blk)
+    }
+
+    $bp     = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
+    $maxGap = [double]$Cfg.caption_max_gap_em * $bp
+    $minOvl = [double]$Cfg.caption_min_overlap_frac
+    $cueRe  = '(' + (($Cfg.caption_cue_words | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')\.?\s*\d'
+
+    foreach ($fig in $Figures) {
+        if ($fig.kind -ne 'figure') { continue }
+        $pageBlocks = $byPage[[int]$fig.page]
+        if (-not $pageBlocks) { continue }
+        $figL = $fig.bbox[0]; $figB = $fig.bbox[1]; $figR = $fig.bbox[2]; $figT = $fig.bbox[3]
+        $figW = $figR - $figL
+        if ($figW -le 0) { continue }
+
+        $best = $null; $bestGap = [double]::MaxValue; $bestPos = $null; $bestTxt = ''
+        foreach ($pos in @('below', 'above')) {   # prefer below (figures); only look above (tables) if nothing below
+            foreach ($blk in $pageBlocks) {
+                $bl = $blk.bx[0]; $bb = $blk.bx[1]; $br = $blk.bx[2]; $bt = $blk.bx[3]
+                $ovl = [math]::Min($figR, $br) - [math]::Max($figL, $bl)
+                if ($ovl / $figW -lt $minOvl) { continue }
+                $gap = if ($pos -eq 'below') { $figB - $bt } else { $bb - $figT }
+                if ($gap -lt -2 -or $gap -gt $maxGap -or $gap -ge $bestGap) { continue }
+                $txt = if ($blk.text_preview) { [string]$blk.text_preview } else { '' }
+                if ($txt.Substring(0, [math]::Min(14, $txt.Length)) -match $cueRe) {
+                    $best = $blk; $bestGap = $gap; $bestPos = $pos; $bestTxt = $txt
+                }
+            }
+            if ($best) { break }
+        }
+        if ($best) {
+            $fig['caption'] = [ordered]@{
+                block_id = $best.id; bbox = $best.bx; text = $bestTxt
+                cue = $true; position = $bestPos; gap = [math]::Round($bestGap, 1)
+            }
+            $Summary.captioned_figures++
+        }
+    }
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -130,6 +189,7 @@ function ConvertTo-FigureRegions {
     $fragMin        = [int]$cfg.fragmentation_flag_min_clusters
     $defragEnabled  = [bool]$cfg.defrag_enabled
     $defragMinLogGap = [double]$cfg.defrag_min_elbow_log_gap
+    $captionEnabled = [bool]$cfg.caption_enabled
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -145,7 +205,8 @@ function ConvertTo-FigureRegions {
     $figures = [System.Collections.Generic.List[object]]::new()
     $summary = [ordered]@{
         pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
-        noise_paths = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0; body_font_pt = $bodyPt
+        noise_paths = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0
+        captioned_figures = 0; body_font_pt = $bodyPt
     }
 
     # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
@@ -165,7 +226,7 @@ function ConvertTo-FigureRegions {
         $figures.Add([ordered]@{
             id = $figures.Count; page = $page; bbox = $bbox; area = $area; area_em2 = $areaEm
             path_ids = @($members.id); path_count = @($members).Count
-            kind = $kind; flag = $flag
+            kind = $kind; flag = $flag; caption = $null
         })
         $summary.regions++
         switch ($kind) {
@@ -255,8 +316,13 @@ function ConvertTo-FigureRegions {
         Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue
     }
 
+    # Reattach captions from the Lane-3 blocks lane (if present beside the paths lane).
+    if ($captionEnabled) {
+        Add-FigureCaptions $figures ($PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl') $bodyPt $cfg $summary
+    }
+
     # [string[]]@(...) so an empty page-set writes an empty file instead of throwing on null.
-    $lines = [string[]]@($figures | ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 5 })
+    $lines = [string[]]@($figures | ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 6 })
     [System.IO.File]::WriteAllLines($OutPath, $lines, [System.Text.UTF8Encoding]::new($false))
 
     Write-Verbose ("regions: {0} ({1} figure / {2} mark / {3} degenerate) over {4} page(s); {5} stray path(s), body {6}pt -> {7}" -f `
