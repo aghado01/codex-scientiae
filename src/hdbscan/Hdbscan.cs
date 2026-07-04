@@ -51,13 +51,18 @@ public sealed class HdbscanRunner
     /// by EOM — useful when the input is one dense blob with outliers (mapper-style
     /// cover patches). If false, datasets with no real splits return all-noise
     /// (sklearn default behaviour).</param>
+    /// <param name="clusterSelectionEpsilon">Optional HDBSCAN/DBSCAN hybrid: merge any two
+    /// clusters separated by a mutual-reachability distance below this value (0 disables). Any
+    /// selected cluster born from a finer split walks up to its lowest ancestor born at a split
+    /// ≥ epsilon — de-fragments over-split structure without reverting to a single global cut.</param>
     public HdbscanResult Run<TMetric>(
         ReadOnlySpan<double> data,
         int                  dim,
         int                  minPts,
         TMetric              metric,
-        int?                 minClusterSize     = null,
-        bool                 allowSingleCluster = true)
+        int?                 minClusterSize          = null,
+        bool                 allowSingleCluster      = true,
+        double               clusterSelectionEpsilon = 0.0)
         where TMetric : struct, IDistanceMetric
     {
         if (minPts < 2)
@@ -107,7 +112,7 @@ public sealed class HdbscanRunner
             CostAxis:  "mutual_reachability_distance");
 
         // ── Phase 5: condense + extract clusters ─────────────────────────────
-        return ExtractClusters(tree, n, effMinClusterSize, allowSingleCluster, dendrogram);
+        return ExtractClusters(tree, n, effMinClusterSize, allowSingleCluster, dendrogram, clusterSelectionEpsilon);
     }
 
     // ── Phase 5 ───────────────────────────────────────────────────────────────
@@ -137,7 +142,8 @@ public sealed class HdbscanRunner
         int              n,
         int              minClusterSize,
         bool             allowSingleCluster,
-        Dendrogram       dendrogram)
+        Dendrogram       dendrogram,
+        double           clusterSelectionEpsilon)
     {
         int numMerges = tree.Length;
 
@@ -278,6 +284,41 @@ public sealed class HdbscanRunner
             int p = cParent[i];
             hasSelectedAncestor[i] = hasSelectedAncestor[p] || selected[p];
             if (hasSelectedAncestor[i]) selected[i] = false;
+        }
+
+        // ── Cluster-selection-epsilon (optional HDBSCAN/DBSCAN hybrid) ───────
+        // Merge clusters separated by less than epsilon: any selected cluster born from a
+        // split at distance < epsilon walks up to its lowest ancestor born at a split ≥ epsilon.
+        // cBirth[c] is the birth λ, so the birth split-distance is 1/cBirth[c] (root: cBirth=0
+        // → +inf, so the walk stops there). This is the reference `cluster_selection_epsilon` —
+        // it de-fragments over-split structure (one figure shattered into density-coherent
+        // sub-blobs) without reverting to a single global threshold.
+        if (clusterSelectionEpsilon > 0.0)
+        {
+            bool[] epsSelected = new bool[numCondensed];
+            for (int c = loopStart; c < numCondensed; c++)
+            {
+                if (!selected[c]) continue;
+                int cur = c, prev = c;
+                while (cParent[cur] >= 0)
+                {
+                    double birthDist = cBirth[cur] > 0.0 ? 1.0 / cBirth[cur] : double.PositiveInfinity;
+                    if (birthDist < clusterSelectionEpsilon) { prev = cur; cur = cParent[cur]; }
+                    else break;
+                }
+                if (cur == 0 && !allowSingleCluster) cur = prev;   // don't collapse to the disallowed root
+                epsSelected[cur] = true;
+            }
+            Array.Copy(epsSelected, selected, numCondensed);
+
+            // Re-enforce the antichain (drop any merged ancestor now nested under another).
+            Array.Clear(hasSelectedAncestor, 0, numCondensed);
+            for (int i = 1; i < numCondensed; i++)
+            {
+                int p = cParent[i];
+                hasSelectedAncestor[i] = hasSelectedAncestor[p] || selected[p];
+                if (hasSelectedAncestor[i]) selected[i] = false;
+            }
         }
 
         // ── Label assignment + membership probability ────────────────────────

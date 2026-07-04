@@ -29,6 +29,7 @@ function Invoke-Hdbscan {
         [ValidateSet('csv', 'jsonl')] [string] $Format,
         [switch] $NoHeader,
         [switch] $NoAllowSingleCluster,
+        [double] $ClusterSelectionEpsilon,
         [string] $ConfigPath,
         [string] $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
     )
@@ -42,6 +43,7 @@ function Invoke-Hdbscan {
     if ($Format)         { $cliArgs += @('--format', $Format) }
     if ($NoHeader)       { $cliArgs += '--no-header' }
     if ($NoAllowSingleCluster) { $cliArgs += '--no-allow-single-cluster' }
+    if ($PSBoundParameters.ContainsKey('ClusterSelectionEpsilon')) { $cliArgs += @('--cluster-selection-epsilon', $ClusterSelectionEpsilon) }
     if ($ConfigPath)     { $cliArgs += @('--config', $ConfigPath) }
 
     $exe = Join-Path $RepoRoot 'bin/hdbscan/hdbscan.exe'

@@ -94,4 +94,25 @@ Describe 'pdfdig figure-region clustering' {
         Test-Path $o | Should -BeTrue
         (Get-Content $o -Raw) | Should -BeNullOrEmpty
     }
+
+    It 'Find-FragmentElbow locates the fragment-adjacency elbow' {
+        # 6 leaves, 3 fragments {0,1}{2,3}{4,5}; inter-fragment merges at d=2 (frag0↔frag1)
+        # and d=20 (frag01↔frag2). Elbow = geo-mean of the gap = sqrt(2*20) ≈ 6.32.
+        $dend = Join-Path $work 'synth.dendrogram.json'
+        @'
+{"leaf_count":6,"cost_axis":"d","merges":[
+{"left_child":0,"right_child":1,"distance":0.5,"size":2,"lambda":2.0},
+{"left_child":2,"right_child":3,"distance":0.5,"size":2,"lambda":2.0},
+{"left_child":4,"right_child":5,"distance":0.5,"size":2,"lambda":2.0},
+{"left_child":6,"right_child":7,"distance":2.0,"size":4,"lambda":0.5},
+{"left_child":9,"right_child":8,"distance":20.0,"size":6,"lambda":0.05}
+]}
+'@ | Set-Content $dend -Encoding utf8
+        $labels = [int[]]@(0, 0, 1, 1, 2, 2)
+        $elbow = Find-FragmentElbow $dend $labels 1.0
+        $elbow | Should -BeGreaterThan 6.0
+        $elbow | Should -BeLessThan 6.7
+        # a stricter gap requirement finds no clear elbow → null (leave a continuum alone)
+        Find-FragmentElbow $dend $labels 3.0 | Should -BeNullOrEmpty
+    }
 }

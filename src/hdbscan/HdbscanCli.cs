@@ -65,7 +65,7 @@ public static class HdbscanCli
             throw new UsageException($"--min-pts ({s.MinPts}) exceeds point count ({ds.N}).");
 
         var runner = new HdbscanRunner(ds.N);
-        return DispatchMetric(s.Metric, runner, ds.Data, ds.Dim, s.MinPts, s.MinClusterSize, s.AllowSingleCluster);
+        return DispatchMetric(s.Metric, runner, ds.Data, ds.Dim, s.MinPts, s.MinClusterSize, s.AllowSingleCluster, s.ClusterSelectionEpsilon);
     }
 
     /// <summary>
@@ -75,14 +75,14 @@ public static class HdbscanCli
     /// </summary>
     private static HdbscanResult DispatchMetric(
         string metricSpec, HdbscanRunner runner, ReadOnlySpan<double> data, int dim,
-        int minPts, int minClusterSize, bool allowSingle)
+        int minPts, int minClusterSize, bool allowSingle, double epsilon)
     {
         string spec = metricSpec.Trim().ToLowerInvariant();
 
         if (spec.StartsWith("minkowski", StringComparison.Ordinal))
         {
             double p = ParseMinkowskiOrder(spec);
-            return runner.Run(data, dim, minPts, new MinkowskiMetric(p), minClusterSize, allowSingle);
+            return runner.Run(data, dim, minPts, new MinkowskiMetric(p), minClusterSize, allowSingle, epsilon);
         }
 
         if (spec is "rectangle-gap" or "rect-gap" or "bbox-gap")
@@ -90,18 +90,18 @@ public static class HdbscanCli
             if ((dim & 1) != 0)
                 throw new UsageException(
                     $"--distance-metric rectangle-gap needs even-length box vectors [x0,y0,x1,y1,…]; got dim {dim}.");
-            return runner.Run(data, dim, minPts, new RectangleGapMetric(), minClusterSize, allowSingle);
+            return runner.Run(data, dim, minPts, new RectangleGapMetric(), minClusterSize, allowSingle, epsilon);
         }
 
         return spec switch
         {
-            "euclidean" or "l2"                    => runner.Run(data, dim, minPts, new EuclideanMetric(), minClusterSize, allowSingle),
-            "manhattan" or "l1" or "cityblock"     => runner.Run(data, dim, minPts, new ManhattanMetric(), minClusterSize, allowSingle),
-            "chebyshev" or "chebychev" or "linf"   => runner.Run(data, dim, minPts, new ChebyshevMetric(), minClusterSize, allowSingle),
-            "cosine"                               => runner.Run(data, dim, minPts, new CosineMetric(), minClusterSize, allowSingle),
-            "hamming"                              => runner.Run(data, dim, minPts, new HammingMetric(), minClusterSize, allowSingle),
-            "poincare" or "poincaré"               => runner.Run(data, dim, minPts, new PoincareMetric(), minClusterSize, allowSingle),
-            "hyperboloid" or "lorentz"             => runner.Run(data, dim, minPts, new HyperboloidMetric(), minClusterSize, allowSingle),
+            "euclidean" or "l2"                    => runner.Run(data, dim, minPts, new EuclideanMetric(), minClusterSize, allowSingle, epsilon),
+            "manhattan" or "l1" or "cityblock"     => runner.Run(data, dim, minPts, new ManhattanMetric(), minClusterSize, allowSingle, epsilon),
+            "chebyshev" or "chebychev" or "linf"   => runner.Run(data, dim, minPts, new ChebyshevMetric(), minClusterSize, allowSingle, epsilon),
+            "cosine"                               => runner.Run(data, dim, minPts, new CosineMetric(), minClusterSize, allowSingle, epsilon),
+            "hamming"                              => runner.Run(data, dim, minPts, new HammingMetric(), minClusterSize, allowSingle, epsilon),
+            "poincare" or "poincaré"               => runner.Run(data, dim, minPts, new PoincareMetric(), minClusterSize, allowSingle, epsilon),
+            "hyperboloid" or "lorentz"             => runner.Run(data, dim, minPts, new HyperboloidMetric(), minClusterSize, allowSingle, epsilon),
             _                                      => throw new UsageException($"unknown --distance-metric '{metricSpec}'."),
         };
     }
@@ -210,7 +210,7 @@ public static class HdbscanCli
         var summary = new SummaryJson(
             Algorithm: "hdbscan",
             Dataset:   new DatasetMeta(ds.SourcePath, ds.N, ds.Dim, ds.Format),
-            Hdbscan:   new HdbscanParams(s.MinPts, s.MinClusterSize, s.AllowSingleCluster, s.Metric),
+            Hdbscan:   new HdbscanParams(s.MinPts, s.MinClusterSize, s.AllowSingleCluster, s.Metric, s.ClusterSelectionEpsilon),
             ReferenceLabels: ds.LabelSource,   // null when the input carried no labels
             Result:    new ResultMeta(
                            ClusterCount: result.ClusterCount,
@@ -314,6 +314,8 @@ public static class HdbscanCli
                 case "--allow-single-cluster":     map["allow-single-cluster"] = "true"; break;
                 case "--no-allow-single-cluster":  map["allow-single-cluster"] = "false"; break;
                 case "--no-header":                map["no-header"] = "true"; break;
+                case "--cluster-selection-epsilon":
+                case "--epsilon":                  map["cluster-selection-epsilon"] = Next(args, ref i, a); break;
                 case "--config":                   configPath = Next(args, ref i, a); break;
                 default:
                     throw new UsageException($"unknown argument '{a}'.");
@@ -352,6 +354,7 @@ OPTIONS
   --label-column <name|idx>    CSV ground-truth column → true_label + reference_labels.
   --delimiter <char|tab>       CSV delimiter (default: ',', or tab for .tsv).
   --no-header                  CSV has no header row.
+  --cluster-selection-epsilon <d>  Merge clusters separated by < d (HDBSCAN/DBSCAN hybrid; 0=off).
   --format <csv|jsonl>         Override the sniffed input format.
   --config <preset.json>       JSON preset (snake_case keys); explicit flags override.
   -h, --help                   This message.
@@ -380,6 +383,7 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
         public char   Delimiter;
         public bool   HasHeader;
         public required string Format;   // "csv" | "jsonl"
+        public double ClusterSelectionEpsilon;
 
         public static Settings Resolve(Dictionary<string, string> cli, string? configPath)
         {
@@ -410,6 +414,8 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
 
             bool hasHeader = !GetBool(merged, "no-header", false);
             char delim = ResolveDelimiter(merged, format, @in);
+            double epsilon = GetDouble(merged, "cluster-selection-epsilon", 0.0);
+            if (epsilon < 0.0) throw new UsageException("--cluster-selection-epsilon must be >= 0.");
 
             return new Settings
             {
@@ -418,6 +424,7 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
                 AllowSingleCluster = allowSingle, Metric = metric,
                 LabelColumn = labelCol, Delimiter = delim,
                 HasHeader = hasHeader, Format = format,
+                ClusterSelectionEpsilon = epsilon,
             };
         }
 
@@ -453,6 +460,14 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
             if (!int.TryParse(v, NumberStyles.Integer, CultureInfo.InvariantCulture, out int i))
                 throw new UsageException($"--{key} must be an integer, got '{v}'.");
             return i;
+        }
+
+        private static double GetDouble(Dictionary<string, string> m, string key, double fallback)
+        {
+            if (!m.TryGetValue(key, out var v) || v.Length == 0) return fallback;
+            if (!double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out double d))
+                throw new UsageException($"--{key} must be a number, got '{v}'.");
+            return d;
         }
 
         private static bool GetBool(Dictionary<string, string> m, string key, bool fallback)
@@ -701,7 +716,7 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
         RunMeta Run);
 
     private sealed record DatasetMeta(string Source, int PointCount, int Dimension, string Format);
-    private sealed record HdbscanParams(int MinPts, int MinClusterSize, bool AllowSingleCluster, string Metric);
+    private sealed record HdbscanParams(int MinPts, int MinClusterSize, bool AllowSingleCluster, string Metric, double ClusterSelectionEpsilon);
     private sealed record ResultMeta(
         int ClusterCount, int NoiseCount,
         EvaluatorScores? EvaluatorScores,

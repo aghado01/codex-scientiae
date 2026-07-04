@@ -190,6 +190,34 @@ Console.WriteLine("Clustering correctness (clean blobs):");
     Near("blobs.purity",       s.Purity,       1.0);
 }
 
+// ── Layer 2c: cluster_selection_epsilon de-fragmentation ─────────────────────────────
+Console.WriteLine("cluster_selection_epsilon:");
+{
+    // Two close sub-blobs (gap ~2.6) HDBSCAN splits, plus a far blob (gap ~37).
+    const int dim = 2, per = 6;
+    (double cx, double cy)[] centers = { (0, 0), (3, 0), (40, 0) };
+    var pts = new List<double[]>();
+    var rng = new Random(5);
+    foreach (var (cx, cy) in centers)
+        for (int i = 0; i < per; i++)
+            pts.Add(new[] { cx + (rng.NextDouble() - 0.5) * 0.4, cy + (rng.NextDouble() - 0.5) * 0.4 });
+    int n = pts.Count;
+    var data = new double[n * dim];
+    for (int i = 0; i < n; i++) { data[i * dim] = pts[i][0]; data[i * dim + 1] = pts[i][1]; }
+
+    var runner = new HdbscanRunner(n);
+    var noEps = runner.Run(data, dim, minPts: 3, new EuclideanMetric(), minClusterSize: 3, allowSingleCluster: false);
+    Check($"no epsilon → 3 clusters (got {noEps.ClusterCount})", noEps.ClusterCount == 3);
+
+    var withEps = runner.Run(data, dim, minPts: 3, new EuclideanMetric(), minClusterSize: 3,
+                             allowSingleCluster: false, clusterSelectionEpsilon: 5.0);
+    Check($"epsilon=5 merges the close pair → 2 clusters (got {withEps.ClusterCount})", withEps.ClusterCount == 2);
+
+    var bigEps = runner.Run(data, dim, minPts: 3, new EuclideanMetric(), minClusterSize: 3,
+                            allowSingleCluster: true, clusterSelectionEpsilon: 1000.0);
+    Check($"huge epsilon (allow-single) → 1 cluster (got {bigEps.ClusterCount})", bigEps.ClusterCount == 1);
+}
+
 // ── Layer 3: determinism / regression guard ─────────────────────────────────────────
 Console.WriteLine("Determinism:");
 {

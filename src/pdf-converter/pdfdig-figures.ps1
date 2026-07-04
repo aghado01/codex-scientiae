@@ -72,6 +72,42 @@ function Get-BodyFontSize([string] $LettersJsonl) {
     ($counts.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 1).Key
 }
 
+# Walk the per-page single-linkage dendrogram for the fragment-adjacency elbow: the largest
+# log-gap in the distances at which DISTINCT sub-clusters first merge. Below it = intra-figure
+# fragment joins; above = inter-figure/column separation. Returns that distance (to feed
+# --cluster-selection-epsilon), or null when there's no clear elbow (< MinLogGap) so a size
+# continuum is left alone. Noise-robust: only merges between non-noise fragments count.
+function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] $MinLogGap) {
+    if (-not (Test-Path $DendrogramJson)) { return $null }
+    $merges = (Get-Content $DendrogramJson -Raw | ConvertFrom-Json).merges
+    if (-not $merges) { return $null }
+    $N = $Labels.Count
+    $repFrag = New-Object 'int[]' (2 * $N - 1)          # a representative fragment in each node's subtree (-1 = all noise)
+    for ($i = 0; $i -lt $N; $i++) { $repFrag[$i] = $Labels[$i] }
+    $uf = @{}                                            # fragment union-find (parent map)
+    $inter = [System.Collections.Generic.List[double]]::new()
+    for ($i = 0; $i -lt $merges.Count; $i++) {
+        $m = $merges[$i]; $node = $N + $i
+        $fL = $repFrag[$m.left_child]; $fR = $repFrag[$m.right_child]
+        $repFrag[$node] = if ($fL -ge 0) { $fL } else { $fR }
+        if ($fL -ge 0 -and $fR -ge 0) {
+            $rl = $fL; while ($uf.ContainsKey($rl) -and $uf[$rl] -ne $rl) { $rl = $uf[$rl] }
+            $rr = $fR; while ($uf.ContainsKey($rr) -and $uf[$rr] -ne $rr) { $rr = $uf[$rr] }
+            if ($rl -ne $rr) { $inter.Add([double]$m.distance); $uf[$rl] = $rl; $uf[$rr] = $rl }
+        }
+    }
+    $d = @($inter | Sort-Object)
+    if ($d.Count -lt 2) { return $null }
+    $best = 0.0; $elbow = $null
+    for ($i = 1; $i -lt $d.Count; $i++) {
+        if ($d[$i - 1] -le 0) { continue }
+        $g = [math]::Log($d[$i]) - [math]::Log($d[$i - 1])
+        if ($g -gt $best) { $best = $g; $elbow = [math]::Sqrt($d[$i - 1] * $d[$i]) }
+    }
+    if ($best -lt $MinLogGap) { return $null }
+    $elbow
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -92,6 +128,8 @@ function ConvertTo-FigureRegions {
     $fallbackPt2    = [double]$cfg.min_region_area_pt2
     $degenEps       = [double]$cfg.degenerate_min_extent_pt
     $fragMin        = [int]$cfg.fragmentation_flag_min_clusters
+    $defragEnabled  = [bool]$cfg.defrag_enabled
+    $defragMinLogGap = [double]$cfg.defrag_min_elbow_log_gap
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -107,7 +145,7 @@ function ConvertTo-FigureRegions {
     $figures = [System.Collections.Generic.List[object]]::new()
     $summary = [ordered]@{
         pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
-        noise_paths = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; body_font_pt = $bodyPt
+        noise_paths = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0; body_font_pt = $bodyPt
     }
 
     # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
@@ -179,6 +217,27 @@ function ConvertTo-FigureRegions {
                 throw "page ${page}: partition rows $($labels.Count) != paths $($pagePaths.Count)"
             }
 
+            # De-fragmentation: an over-split page (a complex figure shattered into many density
+            # sub-clusters) is repaired by walking its dendrogram for the fragment-adjacency elbow,
+            # then re-running with that distance as cluster_selection_epsilon so intra-figure
+            # fragments merge while figures / columns stay separate.
+            $distinct = @($labels | Where-Object { $_ -ge 0 } | Select-Object -Unique).Count
+            if ($distinct -gt $fragMin) {
+                $summary.fragmentation_suspect_pages++
+                if ($defragEnabled) {
+                    $elbow = Find-FragmentElbow (Join-Path $outDir 'hdbscan_dendrogram.json') $labels $defragMinLogGap
+                    if ($elbow) {
+                        $outDir2 = "$outDir.defrag"
+                        $hdbArgs2 = @{} + $hdbArgs
+                        $hdbArgs2.OutDir = $outDir2
+                        $hdbArgs2.ClusterSelectionEpsilon = $elbow
+                        Invoke-Hdbscan @hdbArgs2 | Out-Null
+                        $labels = Read-PartitionLabels (Join-Path $outDir2 'hdbscan_partition.csv')
+                        $summary.defragged_pages++
+                    }
+                }
+            }
+
             # Group members by cluster label; label -1 = noise (stray path).
             $byLabel = @{}
             for ($i = 0; $i -lt $pagePaths.Count; $i++) {
@@ -187,7 +246,6 @@ function ConvertTo-FigureRegions {
                 if (-not $byLabel.ContainsKey($lab)) { $byLabel[$lab] = [System.Collections.Generic.List[object]]::new() }
                 $byLabel[$lab].Add($pagePaths[$i])
             }
-            if ($byLabel.Count -gt $fragMin) { $summary.fragmentation_suspect_pages++ }
             foreach ($lab in ($byLabel.Keys | Sort-Object)) {
                 & $addRegion $page $byLabel[$lab] $null
             }
