@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Smoke test for the HDBSCAN library. Compiles the shared library sources at
+       src\hdbscan (SharedSource override — the project name is 'hdbscan.tests', so the
+       default route would look for a non-existent src\hdbscan.tests) plus the standalone
+       test Program at tests\hdbscan. The library sources carry no entry point, so the
+       test's top-level Program is the only Main. Run it from projects\tests via dotnet run. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>hdbscan.tests</AssemblyName>
+    <RootNamespace>CodexSci.Hdbscan</RootNamespace>
+    <SharedSource>hdbscan</SharedSource>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(RepositoryRoot)tests\hdbscan\**\*.cs" />
+  </ItemGroup>
+
+</Project>

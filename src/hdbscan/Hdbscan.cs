@@ -1,11 +1,6 @@
-// src/clustering/hdbscan/HdbscanRunner.cs
 using System;
-using Clustering.Dendrograms;
-using Graphs.Distance;
-using Graphs.Primitives;
-using Graphs.Primitives.Mst;
 
-namespace Clustering.Graphical.HdbScan;
+namespace CodexSci.Hdbscan;
 
 /// <summary>
 /// Full HDBSCAN pipeline. Pre-allocates all scratch at construction time and
@@ -363,9 +358,9 @@ public sealed class HdbscanResult(
     /// Raw single-linkage dendrogram produced in Phase 4. Cost axis is
     /// mutual-reachability distance; λ = 1/cost is the persistence
     /// scalar HDBSCAN's condensation pass consumes. Preserved on the
-    /// result so downstream plotting / re-analysis (and the
-    /// <c>userrepl hdbscan</c> persistence layer) can render the merge
-    /// tree without re-running the pipeline.
+    /// result so downstream plotting / re-analysis (and the CLI's
+    /// dendrogram.json writer) can render the merge tree without
+    /// re-running the pipeline.
     /// </summary>
     public Dendrogram Dendrogram               { get; } = dendrogram;
 
@@ -374,10 +369,9 @@ public sealed class HdbscanResult(
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
 //
-// The single-linkage dendrogram record (<c>DendrogramNode</c>) now lives in
-// <see cref="Clustering.Dendrograms"/> so other agglomerative algorithms (GMM
-// entropy-merge, future SPC threshold-sweep hierarchies) can emit the same
-// shape. The HDBSCAN convention still applies: nodes 0..N-1 are leaves; nodes
-// N..2N-2 are internal merge nodes assigned by the UnionFind during Kruskal's
-// pass; Distance is the mutual-reachability weight, and λ = 1/Distance is the
-// persistence value the excess-of-mass selection pass consumes.
+// The single-linkage dendrogram record (<c>DendrogramNode</c>) is a standalone
+// merge-tree primitive, so any agglomerative algorithm can emit the same shape.
+// The HDBSCAN convention applies here: nodes 0..N-1 are leaves; nodes N..2N-2 are
+// internal merge nodes assigned by the UnionFind during Kruskal's pass; Distance
+// is the mutual-reachability weight, and λ = 1/Distance is the persistence value
+// the excess-of-mass selection pass consumes.

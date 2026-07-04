@@ -1,0 +1,33 @@
+<Project>
+  <PropertyGroup>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <ArtifactsRoot>$(RepositoryRoot)artifacts\</ArtifactsRoot>
+
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <DefineConstants Condition="'$(ExtraDefineConstants)' != ''">$(DefineConstants);$(ExtraDefineConstants)</DefineConstants>
+
+    <BaseOutputPath>$(ArtifactsRoot)bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(ArtifactsRoot)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <!-- Shared-source routing (repo convention). A codex C# tool keeps its code under
+       src\{tool} and a thin .csproj under projects\{tool}; the project compiles the
+       sources at src\$(SharedSource). SharedSource defaults to the project name, so
+       projects\foo\foo.csproj auto-picks-up src\foo with no boilerplate. Override it
+       to point elsewhere (a test project compiling the library it exercises sets
+       <SharedSource>foo</SharedSource>), or set EnableSharedSourceRouting=false to
+       opt a project out entirely. Items resolve after all properties, so the per-csproj
+       override wins even though this block lives in the imported props. -->
+  <PropertyGroup>
+    <SharedSource Condition="'$(SharedSource)' == '' AND '$(EnableSharedSourceRouting)' != 'false'">$(MSBuildProjectName)</SharedSource>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(SharedSource)' != '' AND Exists('$(RepositoryRoot)src\$(SharedSource)')">
+    <Compile Include="$(RepositoryRoot)src\$(SharedSource)\**\*.cs" />
+  </ItemGroup>
+</Project>

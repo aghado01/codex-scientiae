@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- CLI entry point for the standalone HDBSCAN tool → hdbscan.exe.
+       Algorithm + CLI logic live under ..\..\src\hdbscan and are routed in by the
+       SharedSource convention in Directory.Build.props; this project supplies only
+       Program.cs (the entry point). Framework / nullable / artifacts paths are all
+       inherited from Directory.Build.props — keep this file minimal. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>hdbscan</AssemblyName>
+    <RootNamespace>CodexSci.Hdbscan</RootNamespace>
+    <SharedSource>hdbscan</SharedSource>
+  </PropertyGroup>
+
+</Project>

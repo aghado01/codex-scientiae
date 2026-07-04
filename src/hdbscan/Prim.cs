@@ -1,46 +1,23 @@
-using Graphs.Distance;
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Graphs.Primitives.Mst;
-
-// =========================================================================
-// MST primitive family — Prim
-// =========================================================================
-// Sibling primitives in this namespace:
-//   Prim       — incremental tree growth from a seed; best when the weight
-//                matrix is implicit / dense and is cheaper to recompute than
-//                materialize. Used by HDBSCAN over the mutual-reachability
-//                graph; struct-generic over the distance metric so the JIT
-//                inlines the per-edge weight computation.
-//   Boruvka    — parallel-phase cheapest-cross-edge selection; best when
-//                the input graph already has explicit components (e.g. a
-//                shattered Mutual-kNN graph that needs minimal bridge
-//                injection — Borůvka's pre-seeded Union-Find naturally
-//                emits only the MST-min cross-component bridges).
-//   (Kruskal)  — not present yet. Best when edges are already materialised
-//                and sortable; will be added when a consumer arrives
-//                (e.g. an MstAllRepair stage that operates over the
-//                explicit edge set of a post-filter NeighborSelection).
-//
-// All three produce the same MST given unique edge weights. The choice is
-// driven by access pattern and allocation budget, not by output semantics.
-// =========================================================================
+namespace CodexSci.Hdbscan;
 
 /// <summary>
-/// Zero-allocation implicit Prim's MST. No edge list is materialised; the
-/// N×N weight matrix is evaluated on the fly inside the hot loop.
+/// Zero-allocation implicit Prim's MST over the mutual-reachability graph. No edge list is
+/// materialised — the dense N×N weight matrix is evaluated on the fly inside the hot loop,
+/// which is why Prim (incremental tree growth from a seed) fits: the weights are implicit
+/// and cheaper to recompute than to store. Struct-generic over the distance metric so the
+/// JIT inlines the per-edge weight with no virtual dispatch in the inner loop.
 /// </summary>
 public static class Prim
 {
     /// <summary>
-    /// Computes the minimum spanning tree over the mutual-reachability
-    /// metric for HDBSCAN. The weight between two nodes is
-    /// <c>max(core(u), core(v), metric.Distance(u, v))</c>; the distance
-    /// computation is inlined through the struct-generic
-    /// <typeparamref name="TMetric"/> so no virtual dispatch occurs in the
-    /// inner loop.
+    /// Computes the minimum spanning tree over the mutual-reachability metric for HDBSCAN.
+    /// The weight between two nodes is <c>max(core(u), core(v), metric.Distance(u, v))</c>;
+    /// the distance is inlined through the struct-generic <typeparamref name="TMetric"/> so
+    /// no virtual dispatch occurs in the inner loop.
     /// </summary>
     /// <param name="data">Flat row-major buffer, length <c>N × dim</c>.</param>
     /// <param name="n">Node count.</param>
@@ -53,8 +30,8 @@ public static class Prim
     /// fill with <see cref="double.PositiveInfinity"/> before each call.</param>
     /// <param name="parent">Output MST parent indices, length ≥ <paramref name="n"/>;
     /// <c>parent[0]</c> is the root (self-referential).</param>
-    /// <param name="metric">Distance metric struct; instance is consumed by
-    /// value so the JIT can inline <see cref="Graphs.Distance.IDistanceMetric.Distance(System.ReadOnlySpan{double}, System.ReadOnlySpan{double})"/>.</param>
+    /// <param name="metric">Distance metric struct; consumed by value so the JIT can inline
+    /// its <c>Distance(ref double, ref double, int)</c> in the relaxation loop.</param>
     public static void ComputeMutualReachabilityMst<TMetric>(
         ReadOnlySpan<double> data,
         int                  n,
