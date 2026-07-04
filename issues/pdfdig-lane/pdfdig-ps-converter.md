@@ -41,29 +41,36 @@ validated (pdfdig recon + first dig).
 - **Perf + substrate** — advance-based spacing, lane-gated normalize, dehyphenation; jsonl bulk-write
   + inline `.jidx`; encoding-invariants test suite. 84p warm: IR 148→51s.
 
-**Clustering engine (HDBSCAN) — BUILD IN PROGRESS (2026-07-03).** The density-clustering capability
-the earlier design reserved for the two genuinely-continuous problems (figure-region assembly + a
-segmentation THIRD-witness — NOT the quantized-typography classifier spine, which stays order
-statistics). User is rebuilding the ThermoMapper custom HDBSCAN (ripped out with its frayed wires)
-as a **standalone C# CLI executable** (`hdbscan.exe`, mirroring TM's `user-repl`: load CSV/JSONL →
-cluster → emit `partition.csv` / `summary.json` / `dendrogram.json` to `--out-dir`), which the PS
-lane invokes as a subprocess (not `Add-Type`). New repo dotnet architecture landed this direction:
-`Directory.Build.props` (repo-wide net10 / nullable / artifacts→`artifacts/bin/{project}`),
-`src/hdbscan/` (the engine — CoreDistances / Prim-MST / DendrogramBuilder / condensation / Metric),
-`tests/hdbscan/` (smoke `Program.cs`), `projects/` (build defs; `dotnet publish -o bin/{project}` for
-the release the PS workflow consumes). **Audit done — the migration is self-contained (no missing ThermoMapper deps); the reshape is
-cosmetic (namespace 5→1, doc-comment de-TM-ification) + the CLI to write.** Full audit + generic CLI
-spec + do-order: **`issues/hdbscan-cli.md`**. Open items are the user's call (MSBuild src/projects
-wiring A/B; projects/tests csproj). Scoped with Gemini
-(`~/.gemini/…/66066885-…/implementation_plan.md`); not yet acted.
+**Clustering engine (HDBSCAN) — LANDED (2026-07-03).** The density-clustering capability reserved for the
+genuinely-continuous problems (figure-region assembly + a segmentation THIRD-witness — NOT the
+quantized-typography classifier spine, which stays order statistics). Built as a standalone C# CLI
+(`hdbscan.exe`; code in `src/hdbscan/`, ns `CodexSci.Hdbscan`, published to `bin/hdbscan/` via
+`scripts/build-hdbscan.ps1`) that the PS lane invokes as a subprocess. Full state + do-order in
+**`issues/hdbscan-cli.md`**: 9 distance metrics (incl. `rectangle-gap` for layout, poincaré/hyperboloid for
+hierarchy), 6 sklearn-compatible external evaluators, a trust harness (C# unit + Pester e2e), and
+`--cluster-selection-epsilon` (the HDBSCAN/DBSCAN hybrid). **First consumer LANDED — figure-region
+detection** (`src/pdf-converter/pdfdig-figures.ps1`): per-page rectangle-gap clustering of Lane-4 path bboxes
+→ `{slug}.figures.jsonl` (union bbox + `area` + em²-normalized `kind` figure|mark|degenerate), stray rules →
+noise (-1), plus a dendrogram-walk de-fragmentation pass (over-split complex figures re-merge via the
+fragment-adjacency elbow → `--cluster-selection-epsilon`). Validated across the 14-paper inbox (2205's
+883-path page: 38 fragments → 2 figures; conservative — a no-clear-elbow page is left alone).
+
+**Hand-tuning caveat (the standing discipline).** The figure-lane thresholds in `classify-config.json`
+`figure_regions` (`min_region_area_em2`, `defrag_min_elbow_log_gap`, `fragmentation_flag_min_clusters`,
+`min_pts`) are CONJECTURES tuned on the current inbox — exactly like the assembler's `size_ratio` (next-step
+§2). em²-normalization already makes the mark floor transport across page + font size, and the de-frag elbow
+is per-run, but the guard constants themselves want corpus-driven revision. `summary` records
+`fragmentation_suspect_pages` / `defragged_pages` and each region's `area` + `area_em2` so drift stays
+visible; treat every constant as falsifiable (beware calibration-set overfit).
 
 **v1 must-haves — status against §"v1 must-haves" below:**
 1. Column detection — ✅ (RecursiveXYCut, the vendored DLA solved "THE gap"; not built from scratch).
 2. All-pages + assembly — ✅. 3. Satellite reattachment — ⚠️ partial (DLA line-grouping; no explicit
 second pass yet). 4. Font-tier headings — ✅ (+ outline cross-derivation, beyond the plan).
 5. Display-math regions + `$…$` seams — ✅ (1-D + now 1.5-D nesting). 6. Symbol correction — ✅
-(store, math scope). 7. Ligatures/NFKC — ✅ (dehyphenation too). 8. Figures — ⚠️ v1.0 path markers
-only; pixel extraction NOT done (no raster specimen yet).
+(store, math scope). 7. Ligatures/NFKC — ✅ (dehyphenation too). 8. Figures — region DETECTION ✅ (vector:
+per-page rectangle-gap clustering + em² mark floor + dendrogram de-fragmentation); caption reattachment ⚠️
+IN PROGRESS; pixel/raster extraction ❌ NOT done (no raster specimen yet).
 
 **Open decisions — RESOLVED:** node shape = flat JSONL per lane w/ back-refs (✅). Conversions land
 beside the PDF as `{slug}.*` (✅). Fork = vendored `lib/pdfpig` 0.1.14 (✅). Perf = low-level loops,
@@ -83,10 +90,15 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
 3. **A/B campaign vs opendataloader** (the acceptance criterion, `issues/conversion-metric/`). Same
    dual-availability papers, both lanes, scored against the LaTeX oracle — the replacement claim as a
    number per lane. Needs the conversion-metric aligner (also unblocks oracle-backed benchmark trials).
-4. **Figure/raster lane** — needs a raster-bearing specimen first (the inbox corpus is all vector);
-   `TryGetPng` + the `TryGetBytesAsMemory` PS shim. Path-command bbox for bezier figure regions. This
-   is the **first consumer of the HDBSCAN CLI** (build-in-progress, above): cluster Lane-4 path bboxes
-   + satellite text into figure regions, with stray rules/underlines falling out as the noise class.
+4. **Figure lane — region DETECTION LANDED (above); two remainders.**
+   (a) **Caption reattachment** (the "+ satellite text" of the original #4) — associate each figure region
+   with its caption: the adjacent text block (Lane-3 blocks) below (figures) / above (tables) the region,
+   gap-gated in em, with the caption cue (Figure/Fig./Table N…) recorded as a non-gating SIGNAL (geometry
+   decides adjacency; the membrane's caption-relocation lane consumes the link). IN PROGRESS.
+   (b) **Raster/pixel extraction** — the "close the figure loop to a deliverable" gap. Needs a raster-bearing
+   specimen first (the inbox corpus is all vector): `TryGetPng` + the `TryGetBytesAsMemory` PS shim →
+   `{slug}/imageFileN.png` (DCT passthrough first, Flate→PNG next). Vector figures are detected as regions
+   but not yet rendered to images; the LaTeX lane's source-rendered SVGs cover dual-availability papers meanwhile.
 5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
    role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
 6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
