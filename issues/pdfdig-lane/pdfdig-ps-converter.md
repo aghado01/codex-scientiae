@@ -51,10 +51,11 @@ lane invokes as a subprocess (not `Add-Type`). New repo dotnet architecture land
 `Directory.Build.props` (repo-wide net10 / nullable / artifacts→`artifacts/bin/{project}`),
 `src/hdbscan/` (the engine — CoreDistances / Prim-MST / DendrogramBuilder / condensation / Metric),
 `tests/hdbscan/` (smoke `Program.cs`), `projects/` (build defs; `dotnet publish -o bin/{project}` for
-the release the PS workflow consumes). Scoping done with Gemini (plan at
-`~/.gemini/…/66066885-…/implementation_plan.md`), NOT yet acted. **Open (user's call):** MSBuild
-`src`/`projects` split wiring — per-csproj `<Compile Include>` vs auto-route in `Directory.Build.props`;
-a `projects/tests` csproj for the moved smoke test; then `HdbscanCli.cs` (the arg-parse/IO entry).
+the release the PS workflow consumes). **Audit done — the migration is self-contained (no missing ThermoMapper deps); the reshape is
+cosmetic (namespace 5→1, doc-comment de-TM-ification) + the CLI to write.** Full audit + generic CLI
+spec + do-order: **`issues/hdbscan-cli.md`**. Open items are the user's call (MSBuild src/projects
+wiring A/B; projects/tests csproj). Scoped with Gemini
+(`~/.gemini/…/66066885-…/implementation_plan.md`); not yet acted.
 
 **v1 must-haves — status against §"v1 must-haves" below:**
 1. Column detection — ✅ (RecursiveXYCut, the vendored DLA solved "THE gap"; not built from scratch).
