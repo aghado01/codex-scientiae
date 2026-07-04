@@ -1,0 +1,33 @@
+# pdf-raster
+
+Pig-lane raster tool: render a PDF page or clip-region to **PNG** via MuPDF (WASM). Sibling to
+`tools/render-check` (katex) and `tools/tikz-render` (node-tikzjax); same vendored-`node_modules` shape.
+
+## Why
+
+The pig figure lane detects figure *regions* (`{slug}.figures.jsonl`), but the vendored PdfPig can only
+extract *embedded bitmaps* — it cannot rasterize vector (TikZ) figures, which most of the corpus uses.
+MuPDF (WASM) rasterizes *whatever is drawn* in a region, so one mechanism covers vector **and** raster
+figures, is source-agnostic (works on the bare PDF, the mission), outputs PNG, and never emits a
+sub-PDF/SVG. `src/pdf-converter/pdfdig-images.ps1` drives it into the `.runs/{stamp}/pig/` convention.
+
+## Usage
+
+```
+# single region
+node render.mjs --pdf in.pdf --out fig.png --page 2 --bbox 115,515,234,623 --dpi 150
+
+# batch — one WASM load + one doc open for all a paper's figures (the fast path)
+node render.mjs --pdf in.pdf --jobs jobs.json --dpi 150
+```
+
+- `--page` is **0-based** (PdfPig pages are 1-based — subtract 1).
+- `--bbox` is PDF points, y-up, PdfPig `[left, bottom, right, top]`; omit to render the whole page.
+- `--jobs` file: `[{ "page": N, "bbox": [x0,y0,x1,y1] | null, "out": "<path>" }, …]`.
+- stdout: one JSON results array — `[{out, ok, bytes, w, h} | {out, ok:false, error}]`.
+- Exit 0 (results printed even if some jobs failed), 2 usage.
+
+## Dependency
+
+`mupdf` — the WASM MuPDF build (Artifex). Pure WASM, no per-platform native binaries. The `.wasm` is
+~10 MB (vendored under `node_modules/` per the tools convention).

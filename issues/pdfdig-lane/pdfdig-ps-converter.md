@@ -70,7 +70,7 @@ second pass yet). 4. Font-tier headings — ✅ (+ outline cross-derivation, bey
 5. Display-math regions + `$…$` seams — ✅ (1-D + now 1.5-D nesting). 6. Symbol correction — ✅
 (store, math scope). 7. Ligatures/NFKC — ✅ (dehyphenation too). 8. Figures — region DETECTION ✅ (vector:
 per-page rectangle-gap clustering + em² mark floor + dendrogram de-fragmentation); caption reattachment ✅
-(geometry finds candidates, the Figure/Table cue selects); pixel/raster extraction ❌ NOT done (no raster specimen yet).
+(geometry finds candidates, the Figure/Table cue selects); image extraction ✅ (MuPDF-WASM region render → PNG under .runs/{stamp}/pig/, tools/pdf-raster + pdfdig-images.ps1).
 
 **Open decisions — RESOLVED:** node shape = flat JSONL per lane w/ back-refs (✅). Conversions land
 beside the PDF as `{slug}.*` (✅). Fork = vendored `lib/pdfpig` 0.1.14 (✅). Perf = low-level loops,
@@ -99,10 +99,18 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    region stays null. On 2508: 11/17 regions captioned (9 of 10 figures; the one miss = Fig 4's 76pt gap),
    zero false attachments. Region carries `caption {block_id, bbox, text, cue, position, gap}`; the
    membrane's caption-relocation lane consumes the link.
-   (b) **Raster/pixel extraction** — the "close the figure loop to a deliverable" gap. Needs a raster-bearing
-   specimen first (the inbox corpus is all vector): `TryGetPng` + the `TryGetBytesAsMemory` PS shim →
-   `{slug}/imageFileN.png` (DCT passthrough first, Flate→PNG next). Vector figures are detected as regions
-   but not yet rendered to images; the LaTeX lane's source-rendered SVGs cover dual-availability papers meanwhile.
+   (b) **Image extraction — LANDED (2026-07-04), the figure deliverable.** Rather than PdfPig's `TryGetPng`
+   (embedded bitmaps only — half the corpus is all-vector), the pig lane RENDERS each figure region to PNG via
+   vendored **MuPDF-WASM** (`tools/pdf-raster/render.mjs`, batched: one WASM load + doc-open per paper), which
+   rasterizes vector TikZ AND embedded bitmaps uniformly — source-agnostic, PNG out, no sub-PDF/SVG.
+   `src/pdf-converter/pdfdig-images.ps1` (`Export-PdfFigureImages`) → `.runs/{runstamp}/pig/images/imageFile{N}.png`
+   + `images.jsonl` manifest (per figure: png, dims, caption, status). **Run convention:** mirrors
+   `.runs/{stamp}/tex/`; `-pig`-namespaced so it never collides with Docling `{slug}/imageFileN.png` or the LaTeX
+   source extract at `{slug}/{slug}/`; `.runs/` is git-ignored (regenerable staging, `publish` promotes). Verified:
+   2508's 17 figures → PNG (a Fig-1 vector diagram renders pixel-perfect). Caveat surfaced: figure DETECTION
+   over-includes boxed callouts / framed display-equations (rendered faithfully but not real figures — the
+   manifest's null `caption` flags low-confidence, so `publish` can select captioned figures). PdfPig `TryGetPng`
+   remains a future NATIVE-resolution path for pure embedded bitmaps (higher fidelity than re-rasterizing).
 5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
    role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
 6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
