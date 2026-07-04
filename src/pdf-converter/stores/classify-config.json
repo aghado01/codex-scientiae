@@ -11,6 +11,14 @@
     "max_thickness_pt": 2.0,
     "min_length_pt": 20.0
   },
+  "figure_regions": {
+    "_doc": "CONSUMER PHASE (pdfdig-figures.ps1): cluster each page's Lane-4 vector-path bboxes into figure regions via hdbscan.exe with the rectangle-gap metric (density over white-space gaps between axis-aligned boxes); stray rules/underlines fall out as HDBSCAN's noise class (-1), never forced into a region. Per-page (figures don't span pages, page coordinate systems are independent). min_pts/min_cluster_size are the HDBSCAN density params; a page with at most min_pts paths is too few for density and is grouped as one tentative region flagged too_few_to_cluster. allow_single_cluster lets a lone dense figure be a single cluster while still splitting well-separated multi-figure pages (excess-of-mass prefers the more-stable separate clusters). min_region_area_pt2 tags each region kind=figure|mark by union-bbox area (nothing is dropped; area is recorded so downstream can retune) — a CONJECTURE tuned to exclude 2508.11646's ~42pt2 marker circles (4-bezier dots at fixed margins) from real figures (smallest ~3600pt2); expect it to need corpus-driven revision (beware calibration-set overfit). Provenance: rectangle-gap metric + wiring landed 2026-07-03 against specimen 2508.11646 vector figures.",
+    "metric": "rectangle-gap",
+    "min_pts": 3,
+    "min_cluster_size": 3,
+    "allow_single_cluster": true,
+    "min_region_area_pt2": 200
+  },
   "script": {
     "_doc": "CLASSIFIER-PHASE (not consulted by the substrate emitter). Sub/superscript call from size ratio + baseline delta, ported from Markpig Extractor.cs constants (validated on p1..p5 in recon): a glyph smaller than size_ratio_max x line size whose baseline deviates beyond sub_min_drop/super_min_rise points is a script candidate.",
     "size_ratio_max": 0.85,

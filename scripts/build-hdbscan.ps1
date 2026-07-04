@@ -40,12 +40,11 @@ if (-not $csproj) { throw "no .csproj under projects/$Project" }
 
 if (-not $OutDir) { $OutDir = Join-Path $root "bin/$Project" }
 
-$scArg = if ($SelfContained) { 'true' } else { 'false' }
 $dotnetArgs = @(
     'publish', $csproj.FullName
     '-c', $Configuration
     '-r', $Rid
-    "--self-contained", $scArg
+    ($SelfContained ? '--self-contained' : '--no-self-contained')   # bare switches; the space form '--self-contained false' misparses to true
     '-p:PublishSingleFile=true'
     '-o', $OutDir
 )
