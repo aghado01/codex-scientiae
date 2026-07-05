@@ -28,7 +28,14 @@
     "subfigure_grouping_enabled": true,
     "caption_max_gap_em": 4.0,
     "caption_min_overlap_frac": 0.25,
-    "caption_cue_words": ["Figure", "Fig", "Table", "Tab", "Algorithm", "Listing"]
+    "caption_cue_words": ["Figure", "Fig", "Table", "Tab", "Algorithm", "Listing"],
+    "consensus": {
+      "_doc": "CONSENSUS m1 (Join-FigureViews, issues/clustering/consensus-milestone1-design.md): OR-combine of two per-page co-membership VIEWS in one union-find pass -- V_geom (the HDBSCAN partition, as-is) and V_stream (contiguous content-stream draw-runs over Lane-4 paths). Per-page path ids are contiguous by construction, so the splitter is the SPATIAL JUMP between consecutive ids, never an id gap: stream blocks = the id-sorted path sequence split where the consecutive rectangle-gap exceeds stream_jump_em text-heights (a TikZ/xy diagram is one draw-run that stays spatially coherent; between two figures the pen teleports). Within a block, consecutive paths within t_far_em chain-union and sub-chains re-glue to fixpoint while their union bboxes stay within t_far_em (block-scoped) -- t_far carries the separation load when the jump splitter misses a close float boundary. XObjects carry no stream evidence at m1 (separate id sequence); they still union via V_geom. rule is named config-as-data: m1 supports 'inclusive' (OR); 'mutual'/'mean' arrive with the SymmetrizationRule port (m2). CALIBRATION (scratch/stream-calib.ps1, ph-zigzag 2026-07-05): true float-boundary teleports (consecutive pairs straddling two CAPTIONED regions) min 7.24em / p50 26em; intra-figure steps p50 0.63em / p95 7.9em; zero page-spanning paths corpus-wide -> stream_jump_em 6.0 catches 100% of observed boundaries with margin, t_far_em 4.0 sits ~45% under the boundary minimum. summary counters: stream_blocks, consensus_unions, consensus_changed_pages; regions whose component the stream view reshaped carry flag=consensus_merged.",
+      "enabled": true,
+      "rule": "inclusive",
+      "stream_jump_em": 6.0,
+      "t_far_em": 4.0
+    }
   },
   "script": {
     "_doc": "CLASSIFIER-PHASE (not consulted by the substrate emitter). Sub/superscript call from size ratio + baseline delta, ported from Markpig Extractor.cs constants (validated on p1..p5 in recon): a glyph smaller than size_ratio_max x line size whose baseline deviates beyond sub_min_drop/super_min_rise points is a script candidate.",

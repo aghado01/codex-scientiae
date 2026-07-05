@@ -13,7 +13,9 @@
 
   Per-page: figures never span pages and page coordinate systems are independent. The clustering
   engine stays a black-box CLI (Invoke-Hdbscan -> hdbscan.exe); no clustering logic lives here.
-  Params are config-as-data (classify-config.json "figure_regions").
+  Params are config-as-data (classify-config.json "figure_regions"). CONSENSUS m1 (Join-FigureViews,
+  "figure_regions.consensus") OR-combines the geometry partition with content-stream draw-run
+  evidence before region assembly — policy lives in the lane, the engine stays a black box.
 
   Each region records raw union-bbox `area` and, when the letters lane gives a body font size,
   a TEXT-NORMALIZED `area_em2` (area / body_font^2 = "how many glyphs big"). `kind` is tagged
@@ -38,6 +40,15 @@ function Get-FigureUnionBbox($items) {
     }
     if (-not $any) { return $null }
     @([math]::Round($minX, 2), [math]::Round($minY, 2), [math]::Round($maxX, 2), [math]::Round($maxY, 2))
+}
+
+# Rectangle-gap between two [x0,y0,x1,y1] boxes: Euclidean norm over the per-axis white-space gaps,
+# sqrt(max(0,gx)^2 + max(0,gy)^2) — the same form as the engine's RectangleGapMetric, so the PS-side
+# consensus reasons in the SAME distance the geometry view clustered with. 0 when boxes touch/overlap.
+function Get-RectangleGap([double[]] $A, [double[]] $B) {
+    $gx = [math]::Max($B[0] - $A[2], $A[0] - $B[2]); if ($gx -lt 0) { $gx = 0.0 }
+    $gy = [math]::Max($B[1] - $A[3], $A[1] - $B[3]); if ($gy -lt 0) { $gy = 0.0 }
+    [math]::Sqrt($gx * $gx + $gy * $gy)
 }
 
 # Reads the 'label' column (input-row order) out of hdbscan_partition.csv. The CLI preserves
@@ -106,6 +117,148 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
     }
     if ($best -lt $MinLogGap) { return $null }
     $elbow
+}
+
+# CONSENSUS m1 (issues/clustering/consensus-milestone1-design.md): OR-combine two per-page
+# co-membership VIEWS over the clustering items in one union-find pass.
+#   V_geom   — the HDBSCAN partition (labels), taken as-is.
+#   V_stream — contiguous content-stream draw-runs. Per-page path ids are CONTIGUOUS by construction
+#              (document-sequential emission order), so id-GAP splitting cannot work: two figures drawn
+#              back-to-back are id-adjacent. The splitter is the SPATIAL JUMP between consecutive ids —
+#              a TikZ/xy diagram is one draw-run that stays spatially coherent; between two figures the
+#              pen "teleports". Blocks = id-sorted paths split where the consecutive rectangle-gap
+#              exceeds stream_jump_em.
+# Combine rule 'inclusive': union(i,j) iff same-V_geom-cluster OR stream evidence, where stream
+# evidence = same block AND spatially co-located under t_far_em — consecutive paths within t_far_em
+# chain-union, then the resulting sub-chains re-glue to fixpoint while their union bboxes stay within
+# t_far_em of each other (block-scoped). The bbox-level re-glue stands in for the design's literal
+# all-pairs test, which is O(n^2) on thousand-path draw-runs (2603's dense figures); same granularity
+# where it matters — near sub-runs re-glue, distant sub-runs (a run that wandered) stay apart, so
+# t_far carries the separation load when the jump splitter misses a close float boundary.
+# XObjects carry NO stream evidence at m1 (their ids are a separate lane's sequence); they still
+# union via V_geom, and noise xobjects keep their singleton rescue downstream.
+# Returns @{ Labels = int[] dense component labels aligned to $PageItems (-1 = singleton noise);
+#            Changed = @{label -> $true} for components a stream union actually reshaped }.
+# Counters: stream_blocks (multi-path blocks), consensus_unions (stream joins that merged distinct
+# components), consensus_changed_pages. V_geom-noise paths welded into a component by stream evidence
+# are RESCUED (no longer noise); a component of former-noise fragments is a real region by evidence.
+function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $BodyPt, $Cons, $Summary) {
+    $n = $PageItems.Count
+    $parent = [int[]]::new($n)
+    for ($i = 0; $i -lt $n; $i++) { $parent[$i] = $i }
+    $touched = [bool[]]::new($n)   # root-indexed: component was reshaped by stream evidence
+    $find = {                      # path-halving find (mirrors src/hdbscan UnionFind.cs)
+        param([int] $x)
+        while ($parent[$x] -ne $x) { $parent[$x] = $parent[$parent[$x]]; $x = $parent[$x] }
+        $x
+    }
+    $unions = 0
+
+    # V_geom evidence: union items sharing a cluster label (-1 noise stays apart)
+    $firstOf = @{}
+    for ($i = 0; $i -lt $n; $i++) {
+        $lab = $Labels[$i]
+        if ($lab -lt 0) { continue }
+        if ($firstOf.ContainsKey($lab)) {
+            $ra = & $find $firstOf[$lab]; $rb = & $find $i
+            if ($ra -ne $rb) { $parent[$rb] = $ra; if ($touched[$rb]) { $touched[$ra] = $true } }
+        }
+        else { $firstOf[$lab] = $i }
+    }
+
+    # V_stream evidence over id-sorted path items (xobjects excluded)
+    $bp     = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
+    $jumpPt = [double]$Cons.stream_jump_em * $bp
+    $tfarPt = [double]$Cons.t_far_em * $bp
+    $idL  = [System.Collections.Generic.List[int]]::new()
+    $idxL = [System.Collections.Generic.List[int]]::new()
+    for ($i = 0; $i -lt $n; $i++) {
+        if ($PageItems[$i].prov -ne 'xobject') { $idL.Add([int]$PageItems[$i].id); $idxL.Add($i) }
+    }
+    $m = $idL.Count
+    if ($m -gt 1) {
+        $idArr = $idL.ToArray(); $ordArr = $idxL.ToArray()
+        [Array]::Sort($idArr, $ordArr)                       # emission IS id order; sort defensively
+        $bx = [object[]]::new($m)                            # double[4] cache — no PSObject walks in the hot loop
+        for ($k = 0; $k -lt $m; $k++) { $bx[$k] = [double[]]@($PageItems[$ordArr[$k]].bbox) }
+
+        # split into stream blocks at consecutive-gap > jump; chain-union consecutive pairs <= t_far
+        $blockStart = [System.Collections.Generic.List[int]]::new()
+        $blockEnd   = [System.Collections.Generic.List[int]]::new()
+        $bs = 0
+        for ($k = 1; $k -lt $m; $k++) {
+            $a = $bx[$k - 1]; $b = $bx[$k]
+            $gx = [math]::Max($b[0] - $a[2], $a[0] - $b[2]); if ($gx -lt 0) { $gx = 0.0 }
+            $gy = [math]::Max($b[1] - $a[3], $a[1] - $b[3]); if ($gy -lt 0) { $gy = 0.0 }
+            $gap = [math]::Sqrt($gx * $gx + $gy * $gy)
+            if ($gap -gt $jumpPt) {
+                if ($k - 1 -gt $bs) { $blockStart.Add($bs); $blockEnd.Add($k - 1) }
+                $bs = $k
+                continue
+            }
+            if ($gap -le $tfarPt) {
+                $ra = & $find $ordArr[$k - 1]; $rb = & $find $ordArr[$k]
+                if ($ra -ne $rb) { $parent[$rb] = $ra; $touched[$ra] = $true; $unions++ }
+            }
+        }
+        if ($m - 1 -gt $bs) { $blockStart.Add($bs); $blockEnd.Add($m - 1) }
+        $Summary.stream_blocks += $blockStart.Count
+
+        # sub-chain re-glue, per block, to fixpoint: components whose union bboxes (over THIS block's
+        # members) sit within t_far re-join — heals raster-scan draw orders where consecutive steps
+        # exceed t_far but the sub-runs interleave in space.
+        for ($bi = 0; $bi -lt $blockStart.Count; $bi++) {
+            $s0 = $blockStart[$bi]; $e0 = $blockEnd[$bi]
+            do {
+                $rootBox = @{}
+                for ($k = $s0; $k -le $e0; $k++) {
+                    $r = & $find $ordArr[$k]
+                    $b = $bx[$k]
+                    $cur = $rootBox[$r]
+                    if ($null -eq $cur) { $rootBox[$r] = [double[]]@($b[0], $b[1], $b[2], $b[3]) }
+                    else {
+                        if ($b[0] -lt $cur[0]) { $cur[0] = $b[0] }
+                        if ($b[1] -lt $cur[1]) { $cur[1] = $b[1] }
+                        if ($b[2] -gt $cur[2]) { $cur[2] = $b[2] }
+                        if ($b[3] -gt $cur[3]) { $cur[3] = $b[3] }
+                    }
+                }
+                $joinedAny = $false
+                if ($rootBox.Count -ge 2) {
+                    $roots = [int[]]@($rootBox.Keys)
+                    for ($x = 0; $x -lt $roots.Length -and -not $joinedAny; $x++) {
+                        for ($y = $x + 1; $y -lt $roots.Length; $y++) {
+                            if ((Get-RectangleGap $rootBox[$roots[$x]] $rootBox[$roots[$y]]) -le $tfarPt) {
+                                $parent[$roots[$y]] = $roots[$x]
+                                $touched[$roots[$x]] = $true
+                                $unions++; $joinedAny = $true
+                                break
+                            }
+                        }
+                    }
+                }
+            } while ($joinedAny)
+        }
+    }
+
+    # dense component labels; singleton components stay noise (-1)
+    $size = [int[]]::new($n); $rootArr = [int[]]::new($n)
+    for ($i = 0; $i -lt $n; $i++) { $r = & $find $i; $rootArr[$i] = $r; $size[$r]++ }
+    $labelOf = @{}; $next = 0
+    $out = [int[]]::new($n); $changed = @{}
+    for ($i = 0; $i -lt $n; $i++) {
+        $r = $rootArr[$i]
+        if ($size[$r] -lt 2) { $out[$i] = -1; continue }
+        if (-not $labelOf.ContainsKey($r)) {
+            $labelOf[$r] = $next
+            if ($touched[$r]) { $changed[$next] = $true }
+            $next++
+        }
+        $out[$i] = $labelOf[$r]
+    }
+    $Summary.consensus_unions += $unions
+    if ($unions -gt 0) { $Summary.consensus_changed_pages++ }
+    @{ Labels = $out; Changed = $changed }
 }
 
 # Reattach caption text to each kind=figure region. Geometry finds the CANDIDATES — Lane-3 text
@@ -266,6 +419,12 @@ function ConvertTo-FigureRegions {
     $minDensity     = [double]$cfg.min_region_density
     $captionEnabled = [bool]$cfg.caption_enabled
     $subfigGrouping = [bool]$cfg.subfigure_grouping_enabled
+    # consensus m1 (absent block = disabled, so pre-consensus configs/fixtures behave exactly as before)
+    $cons = $cfg.consensus
+    $consensusEnabled = ($null -ne $cons -and [bool]$cons.enabled)
+    if ($consensusEnabled -and [string]$cons.rule -ne 'inclusive') {
+        throw "figure_regions.consensus.rule '$($cons.rule)' not supported at m1 (only 'inclusive')"
+    }
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -285,6 +444,7 @@ function ConvertTo-FigureRegions {
         captioned_figures = 0; body_font_pt = $bodyPt
         xobjects = 0; xobject_regions = 0   # LANE 5: bitmap points loaded / regions carrying a bitmap
         subfigure_groups = 0; subfigures_merged = 0   # subfigure grouping: multi-caption groups / regions merged away
+        stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0   # consensus m1 drift visibility
     }
 
     # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
@@ -426,6 +586,17 @@ function ConvertTo-FigureRegions {
                 }
             }
 
+            # CONSENSUS m1: OR-combine the geometry partition with content-stream draw-run evidence
+            # (Join-FigureViews) — a distinct view-join step between clustering and region assembly.
+            # The combined component labels replace the raw ones (-1 stays noise); components the stream
+            # view reshaped are flagged consensus_merged on their regions for drift visibility.
+            $changedLabels = $null
+            if ($consensusEnabled) {
+                $joined = Join-FigureViews $pageItems $labels $bodyPt $cons $summary
+                $labels = $joined.Labels
+                $changedLabels = $joined.Changed
+            }
+
             # Group members by cluster label; label -1 = noise. A noise VECTOR path is a stray stroke
             # (dropped, as before); a noise BITMAP is RESCUED as its own singleton figure — an isolated
             # placed raster is a real figure that simply had no neighbours to cluster with, and must never
@@ -442,7 +613,8 @@ function ConvertTo-FigureRegions {
                 $byLabel[$lab].Add($pageItems[$i])
             }
             foreach ($lab in ($byLabel.Keys | Sort-Object)) {
-                & $addRegion $page $byLabel[$lab] $null
+                $regFlag = if ($null -ne $changedLabels -and $changedLabels.ContainsKey($lab)) { 'consensus_merged' } else { $null }
+                & $addRegion $page $byLabel[$lab] $regFlag
             }
             foreach ($nx in $noiseXobjs) { & $addRegion $page @($nx) 'xobject_singleton' }
         }

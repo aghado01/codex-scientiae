@@ -305,6 +305,165 @@ Describe 'pdfdig figure-region clustering — subfigure grouping' {
     }
 }
 
+Describe 'pdfdig figure-region clustering — consensus m1 (Join-FigureViews unit)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:consCfg = [pscustomobject]@{ enabled = $true; rule = 'inclusive'; stream_jump_em = 6.0; t_far_em = 4.0 }
+        # body 10pt → jump 60pt, t_far 40pt
+        $script:NewSummary = { [ordered]@{ stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0 } }
+        # one dense clump: 2x2 boxes of 4pt at 6pt pitch (bbox ~10x10), ids from $id0, drawn in one run
+        $script:NewClump = {
+            param($x, $y, $id0)
+            $o = [System.Collections.Generic.List[object]]::new()
+            foreach ($c in @(@(0, 0), @(6, 0), @(0, 6), @(6, 6))) {
+                $o.Add(@{ id = $id0; prov = 'path'; bbox = [double[]]@(($x + $c[0]), ($y + $c[1]), ($x + $c[0] + 4), ($y + $c[1] + 4)) })
+                $id0++
+            }
+            , $o
+        }
+    }
+
+    It 'welds two geometry clusters that share one spatially-coherent draw-run' {
+        # clump B starts 28pt from clump A's right edge: same block (28 <= 60), chain union (28 <= 40)
+        $items = @((& $NewClump 0 0 0) + (& $NewClump 38 0 4))
+        $s = & $NewSummary
+        $j = Join-FigureViews $items ([int[]]@(0, 0, 0, 0, 1, 1, 1, 1)) 10.0 $consCfg $s
+        (@($j.Labels | Select-Object -Unique)).Count | Should -Be 1
+        $j.Changed.Count           | Should -Be 1
+        $s.consensus_unions        | Should -Be 1
+        $s.stream_blocks           | Should -Be 1
+        $s.consensus_changed_pages | Should -Be 1
+    }
+
+    It 'T_far guards the union: same draw-run but not co-located stays split' {
+        # 50pt step: same block (50 <= 60) but no chain union (50 > 40) and no bbox re-glue (50 > 40)
+        $items = @((& $NewClump 0 0 0) + (& $NewClump 60 0 4))
+        $s = & $NewSummary
+        $j = Join-FigureViews $items ([int[]]@(0, 0, 0, 0, 1, 1, 1, 1)) 10.0 $consCfg $s
+        (@($j.Labels | Select-Object -Unique)).Count | Should -Be 2
+        $s.consensus_unions | Should -Be 0
+        $j.Changed.Count    | Should -Be 0
+    }
+
+    It 'splits the stream at a pen teleport (block boundary)' {
+        # 90pt step > 60pt jump → two blocks, two components
+        $items = @((& $NewClump 0 0 0) + (& $NewClump 100 0 4))
+        $s = & $NewSummary
+        $j = Join-FigureViews $items ([int[]]@(0, 0, 0, 0, 1, 1, 1, 1)) 10.0 $consCfg $s
+        (@($j.Labels | Select-Object -Unique)).Count | Should -Be 2
+        $s.stream_blocks    | Should -Be 2
+        $s.consensus_unions | Should -Be 0
+    }
+
+    It 'rescues chained noise fragments as one component, keeps lone noise as noise' {
+        $items = @((& $NewClump 0 0 0))
+        $items += @{ id = 4; prov = 'path'; bbox = [double[]]@(300, 300, 306, 306) }   # far lone stray
+        $s = & $NewSummary
+        $j = Join-FigureViews $items ([int[]]@(-1, -1, -1, -1, -1)) 10.0 $consCfg $s
+        $j.Labels[0..3] | Should -Be @(0, 0, 0, 0)     # welded rescue
+        $j.Labels[4]    | Should -Be -1                # singleton stays noise
+        $s.consensus_unions | Should -Be 3
+        $j.Changed.ContainsKey(0) | Should -BeTrue
+    }
+
+    It 'gives xobjects no stream evidence (an id-adjacent bitmap must not bridge a teleport)' {
+        # two clumps 90pt apart (teleport) with a bitmap sitting midway, id BETWEEN the two runs:
+        # if it entered V_stream it would chain both sides (40 <= 40 each); excluded, they stay split
+        $items = @((& $NewClump 0 0 0))
+        $items += @{ id = 4; prov = 'xobject'; bbox = [double[]]@(50, 0, 60, 10) }
+        $items += @((& $NewClump 100 0 5))
+        $s = & $NewSummary
+        $labels = [int[]]@(0, 0, 0, 0, -1, 1, 1, 1, 1)
+        $j = Join-FigureViews $items $labels 10.0 $consCfg $s
+        $j.Labels[0] | Should -Not -Be $j.Labels[5]
+        $j.Labels[4] | Should -Be -1                   # noise bitmap left for the singleton rescue
+        $s.consensus_unions | Should -Be 0
+    }
+
+    It 're-glues sub-chains of one run whose bboxes stay co-located' {
+        # one run drawn as: clump A, a 42pt hop right (same block, chain severed: 42 > 40), then a
+        # back-fill clump overlapping A — the A∪backfill bbox ends 34pt from B, so the re-glue welds all 3
+        $items = @((& $NewClump 0 0 0) + (& $NewClump 52 0 4) + (& $NewClump 8 0 8))
+        $s = & $NewSummary
+        $j = Join-FigureViews $items ([int[]]@(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0)) 10.0 $consCfg $s
+        (@($j.Labels | Select-Object -Unique)).Count | Should -Be 1
+        $s.consensus_unions | Should -BeGreaterThan 0
+    }
+
+    It 'is the identity when stream evidence agrees with geometry' {
+        $items = @((& $NewClump 0 0 0))
+        $s = & $NewSummary
+        $j = Join-FigureViews $items ([int[]]@(0, 0, 0, 0)) 10.0 $consCfg $s
+        $j.Labels | Should -Be @(0, 0, 0, 0)
+        $j.Changed.Count    | Should -Be 0
+        $s.consensus_unions | Should -Be 0
+    }
+}
+
+Describe 'pdfdig figure-region clustering — consensus m1 (integration)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:wc = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-cons-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wc | Out-Null
+
+        # Page 1: a "shattered diagram" — two tight 2x2 clumps (3pt boxes, 4pt pitch, ~7x7 bboxes) with a
+        # 31pt valley, drawn as ONE contiguous run (ids 0..7) — plus a well-separated dense 3x3 anchor
+        # grid (ids 8..16). V_geom splits the clumps (tight cores vs the valley) and each 0.49 em²
+        # fragment demotes to kind=mark; the stream chain re-welds them into one 3.15 em² FIGURE —
+        # exactly the ledger's E-item shape (post-merge the size floor passes).
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($ox in 0, 38) {
+            foreach ($c in @(@(0, 0), @(4, 0), @(0, 4), @(4, 4))) {
+                $x = $ox + $c[0]; $y = 100 + $c[1]
+                $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x, $y, ($x + 3), ($y + 3)))
+            }
+        }
+        for ($gx = 0; $gx -lt 3; $gx++) { for ($gy = 0; $gy -lt 3; $gy++) {
+            $x = 300 + $gx * 10; $y = 300 + $gy * 10
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x, $y, ($x + 6), ($y + 6)))
+        } }
+        [IO.File]::WriteAllLines((Join-Path $script:wc 'c.paths.jsonl'), $paths)
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:wc 'c.letters.jsonl'), $letters)
+
+        # config clone with consensus disabled — the passthrough control
+        $cfgObj = Get-Content (Join-Path $repo 'src/pdf-converter/stores/classify-config.json') -Raw | ConvertFrom-Json
+        $cfgObj.figure_regions.consensus.enabled = $false
+        $script:cfgOff = Join-Path $script:wc 'config-consensus-off.json'
+        [IO.File]::WriteAllText($script:cfgOff, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+
+        $script:rOn  = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wc 'c.paths.jsonl') `
+                        -OutPath (Join-Path $script:wc 'on.figures.jsonl') -PassThru
+        $script:rOff = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wc 'c.paths.jsonl') `
+                        -OutPath (Join-Path $script:wc 'off.figures.jsonl') -ConfigPath $script:cfgOff -PassThru
+    }
+    AfterAll { if ($script:wc -and (Test-Path $script:wc)) { Remove-Item -Recurse -Force $script:wc } }
+
+    It 'merges a stream-coherent shattered diagram into one flagged region' {
+        $figs = @($script:rOn.Figures | Where-Object { $_.kind -eq 'figure' })
+        $figs.Count | Should -Be 2                       # welded diagram + anchor grid
+        $merged = @($figs | Where-Object { $_.flag -eq 'consensus_merged' })
+        $merged.Count         | Should -Be 1
+        $merged[0].path_count | Should -Be 8
+        $script:rOn.Summary.consensus_unions        | Should -BeGreaterThan 0
+        $script:rOn.Summary.consensus_changed_pages | Should -Be 1
+        $script:rOn.Summary.stream_blocks           | Should -Be 2
+    }
+
+    It 'is a pure passthrough when consensus is disabled (fragments stay sub-floor marks)' {
+        $figs = @($script:rOff.Figures | Where-Object { $_.kind -eq 'figure' })
+        $figs.Count | Should -Be 1                       # anchor grid only
+        @($script:rOff.Figures | Where-Object { $_.kind -eq 'mark' }).Count | Should -Be 2   # the fragments
+        @($script:rOff.Figures | Where-Object { $_.flag -eq 'consensus_merged' }).Count | Should -Be 0
+        $script:rOff.Summary.consensus_unions | Should -Be 0
+        $script:rOff.Summary.stream_blocks    | Should -Be 0
+    }
+}
+
 Describe 'pdfdig figure-region clustering — narrow-caption overlap denominator' {
     BeforeAll {
         $script:wn = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-capfix-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
