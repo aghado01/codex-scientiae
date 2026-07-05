@@ -335,7 +335,38 @@ function Build-LabelMaps {
         if ($env -eq 'figure') { $fc++; if ($lbl.Success) { $fig[$lbl.Groups[1].Value] = $fc } }
         else { $bc++; if ($lbl.Success) { $tab[$lbl.Groups[1].Value] = $bc } }
     }
-    return @{ thm = $thm; eq = $eq; fig = $fig; tab = $tab }
+    # counts ride alongside the label→number maps: the maps only hold LABELLED floats/envs, but the raw
+    # counters saw every one — so counts.figures ($fc) is the true float count, ≥ maps.fig.Count. The
+    # oracle-batch harness reads these back (persisted via Get-LatexOracleCounts) as the figure-count truth.
+    return @{ thm = $thm; eq = $eq; fig = $fig; tab = $tab
+              counts = @{ figures = $fc; tables = $bc; theorems = $tc; equations = $ec } }
+}
+
+# Oracle object-count model (the ONE source of truth, reused by both the persist path in
+# Invoke-ArxivLatexToMarkdown and the harness fallback in Compare-FigureCounts): count the drawn
+# figure OBJECTS a faithful render shows, straight off the LaTeX source, at the granularity pig's
+# figure-REGION count actually measures — visual bitmaps + vector diagrams, merging nearby ones:
+#   images   = \includegraphics placements (each a drawn bitmap the PDF paints; pig's raster/xobject lane)
+#   diagrams = TikZ pictures (tikzpicture|tikzcd — vector figures pig sees as clustered path regions)
+#   oracle_figures = images + diagrams  ← the count the pig figure-region lane is scored against.
+# NOT \begin{figure} FLOATS ($fc, kept as figure_floats for reference): a float may wrap a TikZ (0
+# bitmaps) or N subfigures (N bitmaps), so float-count is the wrong granularity — empirically it flips
+# 2205's raster-blind −8 to a false over-count, whereas images+diagrams reproduces the recon (2205 −8,
+# 2210 +over). Runs on the RESOLVED (\input-flattened) body; the env-name regexes are macro-robust.
+function Get-LatexOracleCounts {
+    param([Parameter(Mandatory)][string]$Body)
+    $maps = Build-LabelMaps $Body
+    $incg = ([regex]'\\includegraphics(?:\[[^\]]*\])?\{').Matches($Body).Count
+    $tikz = ([regex]'\\begin\{(tikzpicture|tikzcd)\}').Matches($Body).Count
+    return [ordered]@{
+        figure_floats  = [int]$maps.counts.figures       # \begin{figure} envs (reference; NOT the object count)
+        images         = [int]$incg                       # \includegraphics placements (drawn bitmaps)
+        tables         = [int]$maps.counts.tables
+        diagrams       = [int]$tikz                        # TikZ pictures (vector figures)
+        theorems       = [int]$maps.counts.theorems
+        equations      = [int]$maps.counts.equations
+        oracle_figures = [int]$incg + [int]$tikz           # drawn figure objects — the pig comparison target
+    }
 }
 function Build-CiteMap {
     param([string]$Bbl)   # \bibitem order = citation number (\bibliographystyle{plain} renders these)
@@ -942,6 +973,9 @@ function Invoke-ArxivLatexToMarkdown {
 
     $main = Find-LatexMain $work
     $tex = Resolve-LatexInputs -MainPath $main
+    # oracle object counts off the resolved source (macro-robust env regexes) — persisted below as the
+    # {slug}.oracle-counts.json sidecar the figure-count harness scores pig against.
+    $oracleCounts = Get-LatexOracleCounts $tex
     $bbl = @(Get-ChildItem -Recurse -File -Filter *.bbl $work) | Select-Object -First 1
     $bblTxt = if ($bbl) { [System.IO.File]::ReadAllText($bbl.FullName, $u8) } else { '' }
     # biblatex/biber .bbl (\entry{}, no \bibitem): re-serialize to synthetic \bibitem form so refs survive.
@@ -990,6 +1024,30 @@ function Invoke-ArxivLatexToMarkdown {
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
+    # oracle-counts sidecar: persist the figure/table/diagram truth INTO the tex run dir ($work =
+    # .runs/{stamp}/tex, git-ignored) so the standing figure-count harness (Compare-FigureCounts) reads
+    # it back with newest-run-wins, instead of the deleted ad-hoc one-off. figures_missing is the
+    # oracle-CONFIDENCE flag (referenced images the source never provided → the count is low-confidence,
+    # to be ANNOTATED not chased). UTF-8-no-BOM like every content artifact.
+    $oracleSidecar = [ordered]@{
+        schema            = 'oracle-counts/1'
+        slug              = $Slug
+        images            = $oracleCounts.images          # \includegraphics placements (drawn bitmaps)
+        diagrams          = $oracleCounts.diagrams        # TikZ pictures (vector figures)
+        oracle_figures    = $oracleCounts.oracle_figures  # images + diagrams — the pig comparison target
+        figure_floats     = $oracleCounts.figure_floats   # \begin{figure} envs (reference, not the object count)
+        tables            = $oracleCounts.tables
+        theorems          = $oracleCounts.theorems
+        equations         = $oracleCounts.equations
+        figures_copied    = [int]$figs.copied             # \includegraphics images actually resolved on disk
+        figures_missing   = [int]$figs.missing            # referenced-but-absent → oracle CONFIDENCE flag
+        diagrams_rendered = [int]$rendered                # TikZ markers swapped for source-rendered SVGs
+        main_tex          = (Split-Path -Leaf $main)
+        run_utc           = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+    }
+    [System.IO.File]::WriteAllText((Join-Path $work "$Slug.oracle-counts.json"),
+        ($oracleSidecar | ConvertTo-Json -Depth 4), $u8)
+
     return [pscustomobject]@{
         slug = $Slug; out = $outPath; main_tex = (Split-Path -Leaf $main)
         run = (Split-Path -Leaf $run); tex = $work   # the persisted unpacked source (run artifact)
@@ -997,6 +1055,7 @@ function Invoke-ArxivLatexToMarkdown {
         sections = ([regex]::Matches($md, '(?m)^##\s')).Count
         references = if ($refs) { @($refs -split "`n").Count } else { 0 }
         figures = $figs.copied; figures_missing = $figs.missing
+        oracle_figures = $oracleCounts.oracle_figures  # \includegraphics placements + TikZ diagrams
         diagrams = [int]$script:tikzCounter            # TikZ envs found in source
         diagrams_rendered = $rendered                  # markers swapped for source-rendered SVGs
     }
