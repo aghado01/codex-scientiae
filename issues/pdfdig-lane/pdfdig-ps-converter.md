@@ -246,6 +246,53 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    benchmark; only THEN graft the validated abstraction back to ThermoMapper (feedback stays codex →
    ThermoMapper, user-driven). Do NOT build the framework speculatively ahead of a working pig lane. See
    [[thermomapper-concept]], [[backbone-conditioned-persistence]].
+
+   **ThermoMapper porting map — points of interest for spelunking (2026-07-04).** Source root
+   `D:\aghado01\ThermoMapper\src` (structure verified to match the `project-snapshots/ThermoMapper` snapshot;
+   its graph layer already speaks our `IDistanceMetric`, so ports are mechanical). READ-ONLY reference — copy
+   code INTO codex `src/hdbscan/`, never edit ThermoMapper (concurrent agents run there —
+   [[multi-agent-repo-concurrency]]); re-verify against live source at port time in case it drifted.
+   - **Milestone-1 (provenance view + flat consensus) — PORT:**
+     - `maths/distance/Jaccard.cs` — binary/multi-hot `1 − |A∩B|/|A∪B|` (empty=identical guard); wrap the
+       ~8-line core as a struct `JaccardMetric : IDistanceMetric`. (`maths/distance/Cosine.cs` = reference;
+       we already have `cosine` as a zero-port starting view.)
+     - `graphs/primitives/UnionFind.cs` — consensus labeling.
+     - `graphs/primitives/EdgeFieldSymmetrization.cs` + `SymmetrizationRule.cs` — the view-combine operator
+       (Mutual=min / Inclusive=max / Mean = AND / OR / weighted consensus).
+     - `graphs/primitives/mst/Boruvka.cs` (`AddMinimalBridges(pairDistance, UnionFind)`) — optional component
+       bridging / reconnection.
+     - Parity reference (we already have equivalents): `graphs/primitives/mst/{Prim,CoreDistances}.cs`,
+       `graphs/distance/{MetricRegistry,MetricProperties}.cs`.
+     - Consensus-labeling prior art (STUDY): `clustering/graphical/spc/partitions/strategies/UnionFindLabeler.cs`
+       + `ThresholdCoMembership.cs` — turning graded co-association into a cut.
+   - **Milestone-2 (`IClusterLineage` / cophenetic abstraction) — STUDY, then design the shared interface:**
+     - `clustering/dendrogram/{Dendrogram,DendrogramNode,DendrogramBuilder}.cs` — the merge-tree data model →
+       the `IClusterLineage` shape (birth / death / persistence per node).
+     - `clustering/dendrogram/{SingleLinkage,Condensation}.cs` — single-linkage + condensed tree (the
+       re-linkage step for a COMBINED cophenetic matrix).
+     - `clustering/dendrogram/ThermalDendrogram.cs` — the SPC-side dendrogram (the OTHER implementation the
+       interface must cover).
+     - `clustering/dendrogram/{LandscapeWalk,PeripheryPolicies}.cs` — dendrogram walk + cut/selection policies
+       (cophenetic-level extraction + cut).
+     - `clustering/graphical/spc/partitions/hierarchical/{HierarchyEom,LineagePersistence}.cs` — THE CRUX:
+       excess-of-mass on the hierarchy + lineage persistence = the HDBSCAN-EOM ≡ SPC-thermal-stability
+       unification point.
+     - `.../hierarchical/{PartitionHierarchy,PartitionHierarchyDendrogram}.cs` — how SPC's partition hierarchy
+       already maps onto the shared `Dendrogram` (the half-built unification). (`MagnetizationPeakDetector`,
+       `IPseudoTransitionDetector`, `DenseTStack`, `BlattPartitionStrategy` = SPC thermal-axis machinery,
+       reference only.)
+   - **Optional refinements — PORT if the batch motivates:**
+     - `hashish/idf.cs` + `tfidf.cs` — IDF-weight provenance tags (the principled coarse-tag guard).
+     - `hashish/jaccard.cs` — grab-bag Jaccard; check for a CONTAINMENT variant (asymmetric overlap for
+       "small element ⊂ a figure's tag-set"). `hashish/measure.cs` = a similarity-abstraction interface pattern.
+     - `clustering/evaluation/external/ContingencyTable.cs` (+ `AdjustedRandIndex`, `NormalizedMutualInformation`)
+       — quantify how much `P_geom` and `P_prov` AGREE per paper (a diagnostic for whether consensus is even
+       needed there; same evaluator family as our `src/hdbscan/Evaluators.cs`).
+   - **DECLINE (do not port):** `hashish/{minhash,simhash,bloom,hyperloglog,countmin,ctph,tlsh,ncd,bm25,
+     tfidf_search,levenshtein,histogram,seeded}.cs` (approximate-set / fuzzy-hash / text-search scale machinery
+     — a page is ≤ ~900 paths); `maths/distance/{Mahalanobis,Canberra,EarthMover,Ncd}.cs` + `geodesic/*` +
+     `euclidean/*` (metrics irrelevant to figure layout); `graphs/primitives/CoMembership.cs` (an SPC
+     replica-state record `{Temperature, Q, G[], ReplicaIndex}` — NOT a co-association primitive).
 5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
    role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
 6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
