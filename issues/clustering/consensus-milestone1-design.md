@@ -1,6 +1,7 @@
 # Consensus milestone-1 — stream-block view + OR-combine (design)
 
-**Status:** DESIGN (2026-07-05), pre-implementation. The first increment of the ensemble/consensus spine
+**Status:** LANDED 2026-07-05 (`ea13156` implementation + calibration; measured results + ablations in
+the section at the end). The first increment of the ensemble/consensus spine
 (`issues/pdfdig-lane/pdfdig-ps-converter.md` §"Ensemble / consensus spine"), deliberately minimal but built
 around the SEAM milestone-2 slots into (Jaccard provenance view, `SymmetrizationRule`, `IClusterLineage`
 cophenetic combine) so no rewrite is needed later. Scored against the standing gate
@@ -77,3 +78,43 @@ Jaccard/IDF provenance view; clip-group-id / color-bucket / marked-content IR en
 — `is_clipping` is a boolean, cannot seed classes); `SymmetrizationRule`/`Boruvka` ports; cophenetic combine
 / `IClusterLineage`; em-anisotropic dilation (stays the provenance-absent fallback); ThermoMapper grafting
 (milestone-2+, user-driven, codex→ThermoMapper direction only).
+
+---
+
+## As landed + measured (2026-07-05, `ea13156`)
+
+**Calibration (scratch/stream-calib.ps1, committed).** Consecutive-id gaps in em, classed by the caption
+ground truth: TRUE float-boundary teleports (pairs straddling two captioned regions) min **7.24em** /
+p50 26em (11 samples, raw: 7.2 11.5 15.9 19.2 23.8 26.1 26.8 34.3 37.6 37.8 43.3); intra-figure steps
+p50 0.63em / p95 7.9em; intra-uncaptioned p50 0.91em. **Zero page-spanning paths corpus-wide** (the
+watermark/background hazard is absent here — no span guard needed). → `stream_jump_em 6.0` (catches
+100% of observed boundaries), `t_far_em 4.0` (~45% under the boundary minimum).
+
+**One implementation deviation.** The literal all-pairs `gap(i,j) ≤ T_far` union is O(n²)-hostile on
+thousand-path draw-runs (2603's dense figures, one page = 23k paths). As landed: consecutive pairs
+≤ t_far chain-union, then sub-chains re-glue to fixpoint on **block-scoped union-bbox proximity**
+(≤ t_far). Same granularity where it matters — near sub-runs re-glue, distant sub-runs stay apart.
+
+**Gate (both populations) + ablations (scratch/consensus-ablation.ps1, committed):**
+
+| variant | mean dFig | mean dInl |
+|---|---|---|
+| consensus-off (reproduces the pre-m1 table EXACTLY — clean attribution) | 1.5 | 9.1 |
+| **consensus m1** | **1.5** | **8.3** |
+| consensus on, defrag off | 1.5 | 9.3 |
+
+**Predictions scored:**
+- *SECONDARY collapses toward the oracle* — PARTIAL. 9.1 → 8.3 mean; the target paper 2210 went
+  50 → 39 uncaptioned (dInl 27 → 16), not to ~23. Residual question for the next lever: what are
+  2210's remaining 16 extra regions (fragments split at >6em pen steps? rescued furniture?).
+  2111/2403 dInl rose ~2 each — noise-RESCUED fragments becoming visible regions (new evidence,
+  not necessarily wrong; needs the same per-region diagnosis).
+- *PRIMARY may partially self-heal* — DID NOT HAPPEN. dFig row-identical to pre-m1 (consensus is
+  PRIMARY-neutral; no regression either). Ledger items B/C/E all SURVIVED the reshaped regions —
+  re-diagnosed and reclassified as REAL in `tier2-handoff.md`'s ledger.
+- *Epsilon de-frag becomes vestigial* — **FALSIFIED, keep defrag.** defrag-off degrades SECONDARY
+  to 9.3, worse than no consensus at all on 2111 (+6), 2205 (+6), 2307 (+8): the dendrogram-elbow
+  pass merges geometry fragmentation that stream evidence does not cover (different draw-runs, same
+  figure). The two mechanisms are complementary, not redundant.
+- Counters landed (`stream_blocks`, `consensus_unions`, `consensus_changed_pages`, per-region
+  `flag=consensus_merged`) and flow through to `pig-run.json`.
