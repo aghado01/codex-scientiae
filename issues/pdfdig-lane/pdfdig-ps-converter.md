@@ -132,7 +132,7 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    over-includes boxed callouts / framed display-equations (rendered faithfully but not real figures — the
    manifest's null `caption` flags low-confidence, so `publish` can select captioned figures). PdfPig `TryGetPng`
    remains a future NATIVE-resolution path for pure embedded bitmaps (higher fidelity than re-rasterizing).
-   (c) **Detection reformulation (Tier-2) — REVISED PLAN (2026-07-04), not yet built.** The oracle batch
+   (c) **Detection reformulation (Tier-2) — REVISED PLAN (2026-07-04), not yet built; REFINED into an ENSEMBLE spine — read "Ensemble / consensus spine" below as the current architecture, this subsection as its component rationale.** The oracle batch
    (dashboard) proved the raw region count is bidirectionally unreliable and un-tunable by thresholds. The
    fix is **feature engineering of the clustering INPUT, not a new engine** — HDBSCAN + `rectangle-gap`
    stays; we shape better inputs to it. The guiding principle (the reasoning behind every accept/decline
@@ -179,6 +179,73 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    — better inputs to the existing metric, no new engine. **Sequence:** images lane → dilation →
    stream-axis, re-running the oracle batch after EACH so the table (not theory) says which dimension buys
    separability; watch whether the `+38 / −8` tails collapse.
+
+   **Ensemble / consensus spine — the revised architecture (2026-07-04, with ThermoMapper `hashish` + graph
+   prior art).** §4c's three fixes are correct but they are *components*; the architecture that composes them
+   is **multi-view consensus**, because the two error directions need two VIEWS, not one metric bent to carry
+   both. Provenance is RELATIONAL (a shared-tag relation between paths), so its home is distance/graph space,
+   not a coordinate axis (the conclusion from the one-hot discussion).
+   - **Geometry view** — HDBSCAN(`rectangle-gap`) on bboxes, exactly as today; dilation from §4c(ii) demotes
+     to the provenance-ABSENT fallback (hand-made PDFs with no structure). → partition `P_geom`.
+   - **Provenance view** — each path's tag-set {XObject-id, clip-group (`is_clipping`), stream-block bucket,
+     color-bucket, marked-content / `/Artifact`} as a multi-hot vector; graded similarity by **Jaccard** (or
+     IDF-weighted Jaccard). Either HDBSCAN it (→ `P_prov`) or, cheaper, take shared-tag equivalence classes by
+     union-find directly. A tag's BINDING strength is gated by RARITY: a tag shared by more than τ of the
+     page's paths is furniture (a page-background XObject) and is down-weighted to ~0 — that is IDF, and it is
+     the guard against a coarse tag collapsing the whole page.
+   - **Consensus** — union-find over paths; `union(i,j)` iff `same-cluster-in-P_geom` **OR**
+     (`provenance-linked(i,j)` **AND** `gap(i,j) < T_far`). The geometry-OR is identity; the provenance-OR
+     RE-MERGES the fragments geometry split (the `+38` over-count fix — cleaner than a dilation knob because
+     it needs no em-calibration); and once the images lane makes a bitmap a first-class point, its provenance
+     links it to its label/caption group even with zero strokes (the `−8` under-count fix). `T_far` blocks the
+     one real failure mode (a rare-but-page-spanning tag). Default combine-rule is **Inclusive (OR)**; a
+     **Mutual (AND)** pass gives a high-precision variant — this is exactly SPCX's `SymmetrizationRule
+     {Mutual=min, Inclusive=max, Mean}`. Final regions = union-find components, assembled (bbox/kind) as today.
+     Knobs τ / T_far / rule, each scored against the standing oracle batch.
+
+   **ThermoMapper prior art to incorporate — SPCX's graph layer already speaks our `IDistanceMetric`
+   (verified: `CoreDistances.Compute<TMetric>` / `Prim.ComputeMutualReachabilityMst<TMetric>` are the same
+   struct-generic pattern), so ports are mechanical:**
+   - **Jaccard** (`maths/distance/Jaccard.cs`) — binary/multi-hot `1 − |A∩B|/|A∪B|`, empty=identical guard,
+     ~8-line core. **ADOPT**: wrap as a `JaccardMetric` struct implementing our interface (the provenance-view
+     metric). NB our engine ALREADY has `cosine`, so a cosine-on-multi-hot provenance view is a zero-port
+     starting point before Jaccard lands.
+   - **Consensus primitives** — `UnionFind` (final labeling), the `SymmetrizationRule` combine (Mutual /
+     Inclusive / Mean = AND / OR / weighted), and `Boruvka.AddMinimalBridges(pairDistance, UnionFind)` for
+     optional component bridging. **ADOPT the pattern** — small, and it is genuinely new capability for our
+     hdbscan: multi-view consensus.
+   - **IDF / TF-IDF** (`hashish/idf.cs`, `hashish/tfidf.cs`) — the principled form of the coarse-tag guard
+     (down-weight page-wide provenance tags by rarity). **OPTIONAL** refinement; a size-cap τ suffices for v1.
+   - **DECLINE at our scale** — `hashish/minhash.cs` + `simhash.cs` + LSH + `bloom`/`hyperloglog`/`countmin`
+     are approximate-set + blocking machinery for MILLIONS of items; a page has ≤ ~900 paths so exact Jaccard
+     is microseconds — no MinHash/LSH. `Mahalanobis` (needs a covariance) and the geodesic / `Wasserstein`
+     metrics are irrelevant to figure layout. (And `graphs/primitives/CoMembership.cs` is an SPC replica-state
+     record — spin `Temperature`/`Q`/`G[]` — NOT a generic co-association primitive; don't reach for it.)
+
+   **Net Tier-2 spine:** images lane (raster-blindness) + **(geometry ⊕ provenance-Jaccard) consensus**
+   (fragmentation, via union-find + Inclusive/Mutual combine), dilation demoted to the provenance-absent
+   fallback, MinHash/LSH declined. Sequence: land each step and re-score the oracle batch (`compare.ps1`).
+
+   **Cross-algorithm abstraction — codex as ThermoMapper's sandbox (2026-07-04, user-directed).** Build the
+   consensus at an altitude ABOVE HDBSCAN, because the same abstraction is a pending (unfinished) unification
+   in ThermoMapper (SPCX): **HDBSCAN's excess-of-mass selection and SPC's thermal stability are the SAME
+   quantity** — cluster PERSISTENCE along a monotone filtration parameter (λ = 1/distance for HDBSCAN,
+   temperature T for SPC). The common language is the **merge-tree + its COPHENETIC (ultrametric) distance**
+   = the parameter level at which two points first share a cluster. SPCX is half-way there already (a shared
+   `Dendrogram` + `ThermalDendrogram` + `HierarchyEom` + `LineagePersistence`); what is missing is the common
+   SEMANTICS. So prototype the pig consensus over a thin **`IClusterLineage`** {monotone filtration axis,
+   per-node persistence, `CopheneticLevel(i,j)`}: HDBSCAN satisfies it from the dendrogram it ALREADY emits
+   (we walk it for de-frag), the provenance view trivially (same-binding-tag → level 0, else ∞, or IDF-graded),
+   and SPC's `ThermalDendrogram` later with ZERO change to the consensus code. Consensus then = **combine the
+   views' cophenetic ultrametrics** (the `SymmetrizationRule` min/max/mean IS the ultrametric combine) →
+   single-linkage the combined matrix → cut — i.e. Fred-Jain evidence accumulation generalized from BINARY
+   co-association to GRADED cophenetic levels (strictly richer, algorithm-agnostic). Sits on the
+   persistence-as-primitive telos (a merge-tree is 0-dim persistence → the SPC⇄HDBSCAN⇄PH junction). **DISCIPLINE
+   / SEQUENCE:** deploy the concrete pig fix FIRST — flat-partition union-find consensus is an acceptable
+   milestone-1, oracle-scored — then EARN the lineage/cophenetic abstraction as milestone-2 against the same
+   benchmark; only THEN graft the validated abstraction back to ThermoMapper (feedback stays codex →
+   ThermoMapper, user-driven). Do NOT build the framework speculatively ahead of a working pig lane. See
+   [[thermomapper-concept]], [[backbone-conditioned-persistence]].
 5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
    role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
 6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
