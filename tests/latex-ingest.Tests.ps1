@@ -319,4 +319,30 @@ By \cref{thm:b} and \cref{def:a} in \cref{sec:one}, plus \cref{lem:c}.
         $out | Should -Match ([regex]::Escape('By 1.2 and 1.1 in 1, plus 1.'))   # \cref resolves (incl label AFTER the theorem statement)
         $out | Should -Not -Match '\?'
     }
+    It 'resolves text-mode accents + ligatures in body PROSE (M\''{e}moli -> Mémoli)' {
+        $tex = @'
+\documentclass{article}
+\title{T}
+\begin{document}
+Work by M\'{e}moli and M\"{o}bius; also G\"odel and stra\ss e.
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $out | Should -Match 'Mémoli'
+        $out | Should -Match 'Möbius'
+        $out | Should -Match 'Gödel'
+        $out | Should -Match 'straße'
+    }
+    It 'cleans reference accents, ligatures, bibtex protective braces, and math \mbox' {
+        $bbl = @'
+\bibitem{x} Gor{\^o} Azumaya and H{\aa}vard {K}rull-{R}emak. $\ell^{\mbox{p}}$ spaces. 2020.
+'@
+        $refs = Get-LatexReferences $bbl @{ x = 1 }
+        $refs | Should -Match 'Gorô'
+        $refs | Should -Match 'Håvard'
+        $refs | Should -Match 'Krull-Remak'
+        $refs | Should -Match ([regex]::Escape('\text{p}'))
+        $refs | Should -Not -Match ([regex]::Escape('\mbox'))
+        $refs | Should -Not -Match ([regex]::Escape('{K}'))
+    }
 }

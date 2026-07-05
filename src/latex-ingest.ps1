@@ -412,11 +412,39 @@ function Convert-LatexInline {
     $T = $T -replace '~', ' ' -replace '\\,|\\;|\\:|\\!', ' ' -replace '``|''''', '"'
     return $T.Trim()
 }
-$script:AccentMap = @{ "\'e" = 'é'; "\`e" = 'è'; '\"e' = 'ë'; '\^e' = 'ê'; "\'a" = 'á'; "\`a" = 'à'; '\"a' = 'ä'; "\'o" = 'ó'; '\"o' = 'ö'; "\'i" = 'í'; '\"u' = 'ü'; "\'u" = 'ú'; "\'c" = 'ç'; '\~n' = 'ñ' }
+# Case-sensitive (ORDINAL) maps: a PowerShell hashtable is case-INSENSITIVE, so \'a and \'A would collide —
+# build Dictionaries with an ordinal comparer instead. Keys are the LaTeX accent spelling (grave `` -> real
+# backtick), values the precomposed glyph; Apply-Accents normalizes the braced form \'{e} to \'e first. The
+# accent-command family (\c \v \u \H) normalizes to a SPACE key (\c c); the diacritic family (\' \` \" \^ \~
+# \= \.) to a no-space key (\'e, \=o).
+$script:AccentMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+$script:LigatureMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+$__accPairs = @(
+    "\'a", 'á', "\'e", 'é', "\'i", 'í', "\'o", 'ó', "\'u", 'ú', "\'y", 'ý', "\'n", 'ń', "\'c", 'ć', "\'s", 'ś', "\'z", 'ź', "\'r", 'ŕ', "\'l", 'ĺ',
+    "\'A", 'Á', "\'E", 'É', "\'I", 'Í', "\'O", 'Ó', "\'U", 'Ú', "\'C", 'Ć', "\'N", 'Ń', "\'S", 'Ś', "\'Z", 'Ź',
+    "\``a", 'à', "\``e", 'è', "\``i", 'ì', "\``o", 'ò', "\``u", 'ù', "\``A", 'À', "\``E", 'È', "\``O", 'Ò', "\``U", 'Ù',
+    '\"a', 'ä', '\"e', 'ë', '\"i', 'ï', '\"o', 'ö', '\"u', 'ü', '\"y', 'ÿ', '\"A', 'Ä', '\"E', 'Ë', '\"O', 'Ö', '\"U', 'Ü',
+    '\^a', 'â', '\^e', 'ê', '\^i', 'î', '\^o', 'ô', '\^u', 'û', '\^A', 'Â', '\^E', 'Ê', '\^O', 'Ô', '\^U', 'Û',
+    '\~n', 'ñ', '\~a', 'ã', '\~o', 'õ', '\~N', 'Ñ', '\~A', 'Ã', '\~O', 'Õ',
+    '\c c', 'ç', '\c C', 'Ç', '\c s', 'ş',
+    '\v s', 'š', '\v c', 'č', '\v z', 'ž', '\v e', 'ě', '\v r', 'ř', '\v n', 'ň', '\v S', 'Š', '\v C', 'Č', '\v Z', 'Ž',
+    '\=a', 'ā', '\=e', 'ē', '\=i', 'ī', '\=o', 'ō', '\=u', 'ū', '\.z', 'ż', '\u g', 'ğ', '\H o', 'ő', '\H u', 'ű'
+)
+for ($__i = 0; $__i -lt $__accPairs.Count; $__i += 2) { $script:AccentMap[$__accPairs[$__i]] = $__accPairs[$__i + 1] }
+$__ligPairs = @('aa', 'å', 'AA', 'Å', 'ae', 'æ', 'AE', 'Æ', 'oe', 'œ', 'OE', 'Œ', 'ss', 'ß', 'o', 'ø', 'O', 'Ø', 'l', 'ł', 'L', 'Ł', 'i', 'ı', 'j', 'ȷ')
+for ($__i = 0; $__i -lt $__ligPairs.Count; $__i += 2) { $script:LigatureMap[$__ligPairs[$__i]] = $__ligPairs[$__i + 1] }
 function Apply-Accents {
     param([string]$T)
+    # normalize the braced/grouped spellings so ONE map covers all forms: \'{e}->\'e ; \c{c}->\c c (space key).
+    $T = [regex]::Replace($T, "\\([``'^""~=.])\s*\{([a-zA-Z])\}", '\$1$2')
+    $T = [regex]::Replace($T, '\\([cvuH])\s*\{([a-zA-Z])\}', '\$1 $2')
     foreach ($k in $script:AccentMap.Keys) { $T = $T.Replace($k, $script:AccentMap[$k]) }
-    $T = [regex]::Replace($T, "\\([``'^""~])\{([a-zA-Z])\}", { param($m) $key = '\' + $m.Groups[1].Value + $m.Groups[2].Value; if ($script:AccentMap.ContainsKey($key)) { $script:AccentMap[$key] } else { $m.Groups[2].Value } })
+    # a diacritic we have no glyph for: drop the accent, keep the base letter (never leak \'x into prose)
+    $T = [regex]::Replace($T, "\\([``'^""~=.])\s*([a-zA-Z])", '$2')
+    $T = [regex]::Replace($T, '\\([cvuH])\s+([a-zA-Z])', '$2')
+    # single-token ligatures/specials: \aa \o \ss \ae \oe \l (+ upper), dotless \i \j — word-bounded (\o != \omega),
+    # then SWALLOW the control-word terminator ({} or one space) so \ss e -> "ße", not "ß e".
+    $T = [regex]::Replace($T, '\\(aa|AA|ae|AE|oe|OE|ss|o|O|l|L|i|j)(?![a-zA-Z])(?:\{\}|[ \t])?', { param($m) if ($script:LigatureMap.ContainsKey($m.Groups[1].Value)) { $script:LigatureMap[$m.Groups[1].Value] } else { $m.Value } })
     return $T
 }
 
@@ -742,6 +770,7 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\(?:textcolor|colorbox)\{[^{}]*\}\{([^{}]*)\}', '$1' -replace '\\color\{[^{}]*\}', ''   # drop colour styling, keep text
     $body = $body -replace '\\hyperlink\{(https?://[^{}]*)\}\{[^{}]*\}', '<$1>' -replace '\\(?:hyperlink|hypertarget)\{[^{}]*\}\{([^{}]*)\}', '$1'
     $body = $body -replace '\\href\{([^{}]*)\}\{([^{}]*)\}', '[$2]($1)' -replace '\\url\{([^{}]*)\}', '<$1>'   # links, angle-bracketed (MD034)
+    $body = Apply-Accents $body                                               # text-mode accents/ligatures in PROSE (M\'{e}moli -> Mémoli); math is placeholder-safe here
     $body = $body -replace '\\bibliographystyle\s*\{[^{}]*\}', '' -replace '\\bibliography\s*\{[^{}]*\}', ''
     $body = $body -replace '\\(?:maketitle|tableofcontents|newpage|clearpage|noindent|centering|bigskip|medskip|smallskip|vfill|hfill|par)\b', ''
     $body = $body -replace '\\(?:vspace|hspace)\*?\{[^{}]*\}', ''
@@ -776,12 +805,16 @@ function Get-LatexReferences {
         $key = ([regex]::Match($it, '^\s*(?:\[[^\]]*\])?\s*\{([^}]+)\}')).Groups[1].Value
         $num = if ($CiteMap -and $CiteMap.ContainsKey($key)) { $CiteMap[$key] } else { '?' }
         $txt = ($it -replace '^\s*(?:\[[^\]]*\])?\s*\{[^}]+\}', '')
+        $txt = $txt -replace '\\(?:mbox|hbox)(?=\s*\{)', '\text'                # KaTeX-safe math text in refs ($\ell^{\mbox{p}}$ -> \text{p})
         $txt = (Protect-LatexMath $txt)
         $txt = Apply-Accents $txt
         $txt = [regex]::Replace($txt, '\{\\(?:em|it|sl)\s+([^{}]*)\}', '*$1*')
         $txt = $txt -replace '\\(?:em|it|sl)\b', ''
         $txt = Convert-LatexInline $txt
         $txt = $txt -replace '--', [char]0x2013 -replace '\\end\{thebibliography\}', ''
+        # bibtex protective braces ({K}rull, {Krull-Remak}, and {$math$} groups) are grouping-only — strip the
+        # bare braces (math is a placeholder here, so this never touches real math braces). Iterate for nesting.
+        for ($bp = 0; $bp -lt 3 -and $txt -match '\{[^{}\\]*\}'; $bp++) { $txt = [regex]::Replace($txt, '\{([^{}\\]*)\}', '$1') }
         $txt = (Restore-LatexMath $txt)
         $txt = [regex]::Replace($txt, '\s+', ' ').Trim()
         # a \bibitem whose key never appears in the cite map resolves to '?' — sort it to the END rather than
