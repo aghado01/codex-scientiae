@@ -167,6 +167,72 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
     }
 }
 
+# Merge a set of subfigure regions (all sharing one float caption) into one figure region. Union bbox,
+# concatenated members, recomputed area/em^2/density; kind stays figure, caption kept from the first
+# member, flag records the merge. Emits the SAME record shape as $addRegion (key order matched) so the
+# lane's schema stays uniform. $BodyArea = body_font_pt^2 for the em^2 normalization (may be $null).
+function Merge-FigureGroup([System.Collections.Generic.List[object]] $Members, $BodyArea) {
+    $bbox = Get-FigureUnionBbox $Members
+    $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
+    $area = [math]::Round($w * $h, 1)
+    $pathIds = [System.Collections.Generic.List[object]]::new()
+    $xobjIds = [System.Collections.Generic.List[object]]::new()
+    $pathCount = 0; $xobjCount = 0
+    foreach ($m in $Members) {
+        foreach ($pmid in @($m.path_ids)) { $pathIds.Add($pmid) }
+        foreach ($xmid in @($m.xobject_ids)) { $xobjIds.Add($xmid) }
+        $pathCount += [int]$m.path_count; $xobjCount += [int]$m.xobject_count
+    }
+    $hasXobj = $xobjCount -gt 0
+    $areaEm  = if ($BodyArea) { [math]::Round($area / $BodyArea, 3) } else { $null }
+    $density = if ($areaEm -and $areaEm -gt 0) { [math]::Round($pathCount / $areaEm, 4) } else { $null }
+    $first = $Members[0]
+    [ordered]@{
+        id = $first.id; page = $first.page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
+        path_ids = @(foreach ($p in $pathIds) { $p }); path_count = $pathCount
+        xobject_ids = @(foreach ($x in $xobjIds) { $x }); xobject_count = $xobjCount
+        provenance = if ($hasXobj -and $pathCount) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
+        kind = 'figure'; flag = 'subfigure_merged'; caption = $first.caption
+    }
+}
+
+# Subfigure grouping: a \begin{figure} float with N subfigures currently yields N separate kind=figure
+# regions that each reattach to the float's SINGLE caption (side-by-side subfigures all overlap the one
+# caption block below them). Merge captioned figures sharing (page, caption.block_id) into ONE region —
+# the shared caption is the ground-truth grouping signal (each float has exactly one caption), so this is
+# principled, not a spatial threshold. Non-figure and uncaptioned-figure regions pass through untouched.
+# Ids are renumbered to preserve the id = list-index invariant. Adjusts the figure/region/caption counters
+# and records subfigure_groups / subfigures_merged. Returns the rebuilt list.
+function Group-SubfiguresByCaption([System.Collections.Generic.List[object]] $Figures, $BodyArea, $Summary) {
+    $groups = @{}   # (page:block_id) -> members, in first-seen order
+    foreach ($fig in $Figures) {
+        if ($fig.kind -eq 'figure' -and $fig.caption) {
+            $key = '{0}:{1}' -f $fig.page, $fig.caption.block_id
+            if (-not $groups.ContainsKey($key)) { $groups[$key] = [System.Collections.Generic.List[object]]::new() }
+            $groups[$key].Add($fig)
+        }
+    }
+    $result  = [System.Collections.Generic.List[object]]::new()
+    $emitted = @{}; $mergedAway = 0; $multiGroups = 0
+    foreach ($fig in $Figures) {
+        $key = if ($fig.kind -eq 'figure' -and $fig.caption) { '{0}:{1}' -f $fig.page, $fig.caption.block_id } else { $null }
+        if ($key -and $groups[$key].Count -gt 1) {
+            if ($emitted.ContainsKey($key)) { continue }   # a later subfigure of an already-merged group
+            $emitted[$key] = $true; $multiGroups++
+            $mergedAway += $groups[$key].Count - 1
+            $result.Add((Merge-FigureGroup $groups[$key] $BodyArea))
+        }
+        else { $result.Add($fig) }
+    }
+    for ($i = 0; $i -lt $result.Count; $i++) { $result[$i].id = $i }   # keep id = index
+    $Summary.figures           -= $mergedAway
+    $Summary.regions           -= $mergedAway
+    $Summary.captioned_figures -= $mergedAway
+    $Summary.subfigure_groups   = $multiGroups
+    $Summary.subfigures_merged  = $mergedAway
+    return , $result
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -191,6 +257,7 @@ function ConvertTo-FigureRegions {
     $defragMinLogGap = [double]$cfg.defrag_min_elbow_log_gap
     $minDensity     = [double]$cfg.min_region_density
     $captionEnabled = [bool]$cfg.caption_enabled
+    $subfigGrouping = [bool]$cfg.subfigure_grouping_enabled
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -209,6 +276,7 @@ function ConvertTo-FigureRegions {
         noise_paths = 0; sparse = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0
         captioned_figures = 0; body_font_pt = $bodyPt
         xobjects = 0; xobject_regions = 0   # LANE 5: bitmap points loaded / regions carrying a bitmap
+        subfigure_groups = 0; subfigures_merged = 0   # subfigure grouping: multi-caption groups / regions merged away
     }
 
     # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
@@ -375,9 +443,14 @@ function ConvertTo-FigureRegions {
         Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue
     }
 
-    # Reattach captions from the Lane-3 blocks lane (if present beside the paths lane).
+    # Reattach captions from the Lane-3 blocks lane (if present beside the paths lane), then group
+    # subfigures: N regions reattached to one float caption collapse to one figure (the shared caption
+    # is the grouping signal). Grouping needs the caption links, so it runs after reattachment.
     if ($captionEnabled) {
         Add-FigureCaptions $figures ($PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl') $bodyPt $cfg $summary
+        if ($subfigGrouping) {
+            $figures = Group-SubfiguresByCaption $figures $bodyArea $summary
+        }
     }
 
     # [string[]]@(...) so an empty page-set writes an empty file instead of throwing on null.

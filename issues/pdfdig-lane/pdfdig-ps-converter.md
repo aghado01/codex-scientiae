@@ -132,7 +132,10 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    over-includes boxed callouts / framed display-equations (rendered faithfully but not real figures — the
    manifest's null `caption` flags low-confidence, so `publish` can select captioned figures). PdfPig `TryGetPng`
    remains a future NATIVE-resolution path for pure embedded bitmaps (higher fidelity than re-rasterizing).
-   (c) **Detection reformulation (Tier-2) — REVISED PLAN (2026-07-04), not yet built; REFINED into an ENSEMBLE spine — read "Ensemble / consensus spine" below as the current architecture, this subsection as its component rationale.** The oracle batch
+   (c) **Detection reformulation (Tier-2) — REVISED PLAN (2026-07-04), not yet built; REFINED into an ENSEMBLE spine — read "Ensemble / consensus spine" below as the current architecture, this subsection as its component rationale.**
+   > **FOUNDATION CARVE-OUT + 2 CORRECTIONS (2026-07-04 recon — see `issues/clustering/foundation-scope.md`, chipped as a separate task).** Recon of the actual code reordered this plan. **(1) The "standing oracle benchmark / `compare.ps1`" does NOT exist as committed tooling** — the `+38/−8` numbers below were an ad-hoc one-off; `.runs/*/compare/pig` dirs are empty. So a committed harness is prerequisite Step 0, not an assumed given. **(2) Provenance is far THINNER in the current IR than this section assumes:** `paths.jsonl` carries only `id, bbox, is_clipping(bool), is_filled(bool), is_stroked, kinds, line_width, rule, subpaths`. Of the five consensus provenance axes, only **content-stream order (`id`) is richly reachable today**; XObject-id, color-bucket, and marked-content are **not emitted**, and **`is_clipping` is a BOOLEAN, not a clip-group id — it CANNOT seed co-membership classes** (the claim below that it's an "already-in-IR provenance axis available the same way" is **WRONG**). Consequence: the geometry⊕provenance **consensus is gated behind unscheduled IR-emitter work**; the **stream-order axis (iii) is the cheapest fragmentation fix that works NOW** (zero engine change — `RectangleGapMetric` is k-generic) and should be tried before the consensus machinery. **Revised sequence: (0) commit the harness → (1) images/xobjects Lane 5 [cures the `−8` tail] → (2) stream-order axis [cures the `+38` tail, reachable now] → (3) dilation [fallback] → (4) provenance enrichment + consensus [only if 1–3 leave residual fragmentation].** Steps 0–1 are the carved-out foundation (`foundation-scope.md`); 2–4 stay here, each gated on the harness. `UnionFind.cs` already exists in `src/hdbscan/` (de-risks the eventual flat consensus).
+
+   The oracle batch
    (dashboard) proved the raw region count is bidirectionally unreliable and un-tunable by thresholds. The
    fix is **feature engineering of the clustering INPUT, not a new engine** — HDBSCAN + `rectangle-gap`
    stays; we shape better inputs to it. The guiding principle (the reasoning behind every accept/decline
@@ -517,8 +520,14 @@ not the bar. The gaps between the first dig and a usable converter, in priority 
 
 ## Deferred (and to WHERE)
 
-- **2-D math structure** (fractions, matrices, aligned) — `Markpig.Pdf` AST tier + mathdig; the
-  membrane's repair loop + LaTeX oracle carry math fidelity meanwhile.
+- **2-D math structure** (fractions, matrices, aligned, commutative diagrams) — pdfdig's OWN geometry
+  frontier (the `Markpig.Pdf` AST tier, blind-father modality). **NOT deferred to mathdig** — the symbolic
+  sibling has no organ to receive PDF geometry (see "modality compartmentalization" above); delegation across
+  the boundary is impossible, not merely discouraged. The honest INTERIM for 2-D content the geometry can't
+  yet structure is an **image-crop at oracle parity** — the LaTeX oracle ITSELF renders tikz/xy to SVG images
+  (`tikz-render.ps1`), so a cropped region MATCHES the ground truth's representation of a diagram rather than
+  falling short of it — plus an explicit flag. Never a promise that a downstream tier will transcribe it.
+  See [[mathdig-is-downstream-not-a-pdf-solver]].
 - **Render-back verification** — AST tier (its falsifiability gate).
 - **Tables** — v1 emits `possible_table_region` flags (ruled-line vector paths + grid-ish bbox
   lattices); serialization comes later. opendataloader's tables arrived shattered anyway — flagged

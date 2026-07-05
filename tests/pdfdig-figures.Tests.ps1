@@ -250,3 +250,57 @@ Describe 'pdfdig figure-region clustering — Lane 5 (xobject image union)' {
         $script:r5.Summary.xobject_regions | Should -Be 3
     }
 }
+
+Describe 'pdfdig figure-region clustering — subfigure grouping' {
+    BeforeAll {
+        $script:wg = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-subfig-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wg | Out-Null
+
+        # Two tight, well-separated figure clusters on page 1 (panels a, b), each 4 paths, both sitting
+        # above ONE wide caption block below them → they reattach to the SAME caption and must merge.
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($ox in 100, 300) {                       # panel A at x~100, panel B at x~300 (178pt apart)
+            foreach ($c in @(@(0, 0), @(20, 0), @(0, 20), @(20, 20))) {
+                $x = $ox + $c[0]; $y = 100 + $c[1]
+                $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x, $y, ($x + 2), ($y + 2)))
+            }
+        }
+        [IO.File]::WriteAllLines((Join-Path $script:wg 'g.paths.jsonl'), $paths)
+
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:wg 'g.letters.jsonl'), $letters)
+
+        # One caption spanning both panels' x-range, sitting just below them (y 80..90; panels bottom 100).
+        [IO.File]::WriteAllLines((Join-Path $script:wg 'g.blocks.jsonl'),
+            @('{"id":1,"page":1,"bx":[100,80,322,90],"text_preview":"Figure 7: two panels a and b"}'))
+
+        $script:rg = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wg 'g.paths.jsonl') -PassThru
+    }
+    AfterAll { if ($script:wg -and (Test-Path $script:wg)) { Remove-Item -Recurse -Force $script:wg } }
+
+    It 'merges two subfigures sharing one caption into a single figure' {
+        $figs = @($script:rg.Figures | Where-Object { $_.kind -eq 'figure' })
+        $figs.Count | Should -Be 1
+    }
+    It 'flags the merged region and records the grouping in the summary' {
+        $merged = @($script:rg.Figures | Where-Object { $_.flag -eq 'subfigure_merged' })
+        $merged.Count                        | Should -Be 1
+        $merged[0].caption.text              | Should -Match 'Figure 7'
+        $merged[0].path_count                | Should -Be 8      # 4 + 4 members concatenated
+        @($merged[0].path_ids).Count         | Should -Be 8
+        $merged[0].provenance                | Should -Be 'path'
+        $script:rg.Summary.subfigure_groups  | Should -Be 1
+        $script:rg.Summary.subfigures_merged | Should -Be 1
+    }
+    It 'keeps id = list index after the merge' {
+        $ids = @($script:rg.Figures | ForEach-Object { $_.id })
+        $ids | Should -Be (0..($ids.Count - 1))
+    }
+    It 'does NOT merge figures with distinct or absent captions (main fixture)' {
+        # the shared fixture's page-1 figures have a caption vs a rejected heading → no shared block
+        $result.Summary.subfigures_merged | Should -Be 0
+        $result.Summary.subfigure_groups  | Should -Be 0
+    }
+}
