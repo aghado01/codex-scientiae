@@ -10,9 +10,9 @@
   envelope + nodes + classify + figures BESIDE the source (not git-ignored).
 
   Chain (all outputs -> the one pig run dir):
-    1. ConvertTo-PdfDigIr     -> {slug}.pdfdig.json + {slug}.{letters,words,blocks,paths}.jsonl
+    1. ConvertTo-PdfDigIr     -> {slug}.pdfdig.json + {slug}.{letters,words,blocks,paths,xobjects}.jsonl
     2. ConvertTo-PdfDigNodes  -> {slug}.nodes.jsonl + {slug}.classify.json   (reads the envelope+lanes)
-    3. ConvertTo-FigureRegions-> {slug}.figures.jsonl                        (reads paths+letters+blocks)
+    3. ConvertTo-FigureRegions-> {slug}.figures.jsonl                        (reads paths+xobjects+letters+blocks)
     4. Export-PdfFigureImages -> images/imageFile{N}.png + images.jsonl      (same runstamp -> same dir)
   plus a small pig-run.json manifest. .runs/ is git-ignored, so this structurally prevents recurrence.
 
@@ -87,9 +87,9 @@ function Invoke-Pdfdig {
         pig_dir  = $pigDir
         pages    = $ir.Pages
         steps    = [ordered]@{
-            ir       = [ordered]@{ letters = $ir.Letters; words = $ir.Words; blocks = $ir.Blocks; paths = $ir.Paths; origin = $ir.Origin }
+            ir       = [ordered]@{ letters = $ir.Letters; words = $ir.Words; blocks = $ir.Blocks; paths = $ir.Paths; xobjects = $ir.Xobjects; origin = $ir.Origin }
             classify = [ordered]@{ nodes = $cls.Nodes; body_size = $cls.Calibration.body_size }
-            figures  = [ordered]@{ regions = $fig.Summary.regions; figures = $fig.Summary.figures; marks = $fig.Summary.marks; sparse = $fig.Summary.sparse; captioned = $fig.Summary.captioned_figures }
+            figures  = [ordered]@{ regions = $fig.Summary.regions; figures = $fig.Summary.figures; marks = $fig.Summary.marks; sparse = $fig.Summary.sparse; captioned = $fig.Summary.captioned_figures; xobjects = $fig.Summary.xobjects; xobject_regions = $fig.Summary.xobject_regions }
             images   = if ($img) { [ordered]@{ rendered = $img.Summary.rendered; failed = $img.Summary.failed } } else { 'skipped' }
         }
         run_utc  = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')

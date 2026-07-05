@@ -322,13 +322,14 @@ function ConvertTo-PdfDigIr {
         $wordRecs  = [System.Collections.Generic.List[object]]::new()
         $blockRecs = [System.Collections.Generic.List[object]]::new()
         $pathRecs  = [System.Collections.Generic.List[object]]::new()
+        $xobjRecs  = [System.Collections.Generic.List[object]]::new()   # LANE 5: placed bitmap rectangles
         $fontCensus = @{}    # stripped name -> @{ family; role; sizes(HashSet); count }
         $famSeen    = @{}    # family -> $true (for origin evidence)
         $pageStats  = [System.Collections.Generic.List[object]]::new()
         $flags      = [System.Collections.Generic.List[object]]::new()
         $lettersTotal = 0; $unknownRole = 0; $unmapped = 0; $invisible = 0
         $blocksTotal = 0; $blocksConfident = 0
-        $lid = 0; $wid = 0; $bid = 0; $lnid = 0; $vpid = 0   # vpid: $pid is a PS automatic (read-only) var
+        $lid = 0; $wid = 0; $bid = 0; $lnid = 0; $vpid = 0; $xid = 0   # vpid: $pid is a PS automatic (read-only) var
 
         foreach ($pn in $pageList) {
             $page = $doc.GetPage($pn)
@@ -538,6 +539,21 @@ function ConvertTo-PdfDigIr {
                 $vpid++
             }
 
+            # ── LANE 5: xobject images ───────────────────────────────────────────────────────
+            # placed bitmap rectangles (IPdfImage.Bounds — the post-transform page-coordinate rect,
+            # exactly the clustering input; the raw image matrix is unnecessary). The raster figures the
+            # vector lanes are blind to. One record per GetImages() image; NOT injected into paths.jsonl
+            # (that lane's contract is pure vector). The envelope's per-page `images` already COUNTS these
+            # (below); this lane adds their GEOMETRY so a bitmap becomes a first-class clustered point.
+            foreach ($img in $page.GetImages()) {
+                $xobjRecs.Add([ordered]@{
+                    id = $xid; page = $pn
+                    bbox = (ConvertTo-BxArray $img.Bounds)
+                    kind = 'image'
+                })
+                $xid++
+            }
+
             $pageStats.Add([ordered]@{
                 n=$pn; w=[math]::Round($page.Width,1); h=[math]::Round($page.Height,1)
                 rotation=$page.Rotation.Value; letters=$pl.Count
@@ -601,10 +617,11 @@ function ConvertTo-PdfDigIr {
         # ── write ────────────────────────────────────────────────────────────────────────────
         $outputs = [ordered]@{}
         $lanes = @(
-            @{ name='letters'; recs=$letters },
-            @{ name='words';   recs=$wordRecs },
-            @{ name='blocks';  recs=$blockRecs },
-            @{ name='paths';   recs=$pathRecs }
+            @{ name='letters';  recs=$letters },
+            @{ name='words';    recs=$wordRecs },
+            @{ name='blocks';   recs=$blockRecs },
+            @{ name='paths';    recs=$pathRecs },
+            @{ name='xobjects'; recs=$xobjRecs }   # LANE 5 (NOT 'images' — that's the MuPDF render manifest)
         )
         foreach ($lane in $lanes) {
             $p = Join-Path $OutDir "$slug.$($lane.name).jsonl"
@@ -616,7 +633,7 @@ function ConvertTo-PdfDigIr {
 
         [pscustomobject]@{
             Slug = $slug; Envelope = $envPath
-            Letters = $letters.Count; Words = $wordRecs.Count; Blocks = $blockRecs.Count; Paths = $pathRecs.Count
+            Letters = $letters.Count; Words = $wordRecs.Count; Blocks = $blockRecs.Count; Paths = $pathRecs.Count; Xobjects = $xobjRecs.Count
             Pages = $pageList.Count
             Origin = "$($origin.tag) (cue=$($origin.cue))"; Fonts = @($fonts).Count
             Health = $health; Flags = $flags.Count

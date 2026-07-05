@@ -148,4 +148,105 @@ Describe 'pdfdig figure-region clustering' {
         $figB.caption          | Should -BeNullOrEmpty
         $result.Summary.captioned_figures | Should -Be 1
     }
+
+    It 'is backward-compatible when no xobjects lane sits beside the paths lane' {
+        $result.Summary.xobjects        | Should -Be 0
+        $result.Summary.xobject_regions | Should -Be 0
+    }
+}
+
+Describe 'pdfdig figure-region clustering — Lane 5 (xobject image union)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:w5 = Join-Path ([IO.Path]::GetTempPath()) ("pdfdig-fig5-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:w5 | Out-Null
+
+        # dense 3x3 grid of 6pt boxes (10pt pitch) at an x-offset — one vector figure.
+        $grid = {
+            param($list, $page, $xoff, [ref]$idref)
+            for ($gx = 0; $gx -lt 3; $gx++) { for ($gy = 0; $gy -lt 3; $gy++) {
+                $x = $xoff + $gx * 10; $y = $gy * 10
+                $list.Add(('{{"id":{0},"page":{1},"bbox":[{2},{3},{4},{5}]}}' -f $idref.Value, $page, $x, $y, ($x + 6), ($y + 6)))
+                $idref.Value++
+            } }
+        }
+        $paths = [System.Collections.Generic.List[string]]::new(); $pidref = [ref]0
+        & $grid $paths 10 0   $pidref                       # p10: one grid (bitmap overlaps it → mixed merge)
+        & $grid $paths 11 0   $pidref                       # p11: two well-separated grids + a far bitmap
+        & $grid $paths 11 100 $pidref                       #      (far bitmap → noise → rescued singleton)
+        [IO.File]::WriteAllLines((Join-Path $script:w5 'x.paths.jsonl'), $paths)
+
+        # p10 bitmap OVERLAPS the grid (rectangle-gap distance 0 → same cluster, mixed); p11 bitmap far
+        # from both grids (→ noise → rescued); p12 bitmap alone on an empty page (→ too-few → singleton).
+        # All 200x200pt so density (1 point / 400 em²) < 0.01 floor: they'd be 'sparse' but for the raster
+        # bypass — so kind=figure proves the bypass fires.
+        $xo = @(
+            '{"id":0,"page":10,"bbox":[0,0,200,200],"kind":"image"}',
+            '{"id":1,"page":11,"bbox":[400,400,600,600],"kind":"image"}',
+            '{"id":2,"page":12,"bbox":[100,100,300,300],"kind":"image"}'
+        )
+        [IO.File]::WriteAllLines((Join-Path $script:w5 'x.xobjects.jsonl'), $xo)
+
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:w5 'x.letters.jsonl'), $letters)
+
+        $script:r5 = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:w5 'x.paths.jsonl') -PassThru
+        $script:regions5 = @(Get-Content $script:r5.OutPath | ForEach-Object { $_ | ConvertFrom-Json })
+    }
+    AfterAll { if ($script:w5 -and (Test-Path $script:w5)) { Remove-Item -Recurse -Force $script:w5 } }
+
+    It 'loads the xobjects lane and reports the input count' {
+        $script:r5.Summary.xobjects | Should -Be 3
+    }
+
+    It 'merges a bitmap overlapping a vector cluster into ONE mixed figure (no double count)' {
+        $p10 = @($script:regions5 | Where-Object { $_.page -eq 10 -and $_.kind -eq 'figure' })
+        $p10.Count            | Should -Be 1
+        $p10[0].provenance    | Should -Be 'mixed'
+        $p10[0].xobject_count | Should -Be 1
+        $p10[0].path_count    | Should -BeGreaterThan 0
+    }
+
+    It 'never loses a bitmap to the noise class (raster-blindness cured)' {
+        # whether the far bitmap merges or is rescued, its membership must be accounted for as a figure
+        $p11figs = @($script:regions5 | Where-Object { $_.page -eq 11 -and $_.kind -eq 'figure' })
+        (($p11figs.xobject_count | Measure-Object -Sum).Sum) | Should -Be 1
+    }
+
+    It 'rescues an isolated bitmap as its own singleton figure' {
+        $p11xobj = @($script:regions5 | Where-Object { $_.page -eq 11 -and $_.provenance -eq 'xobject' })
+        $p11xobj.Count    | Should -Be 1
+        $p11xobj[0].flag  | Should -Be 'xobject_singleton'
+        $p11xobj[0].kind  | Should -Be 'figure'
+    }
+
+    It 'emits a bitmap-only page as an xobject singleton figure (too-few-to-cluster path)' {
+        $p12 = @($script:regions5 | Where-Object { $_.page -eq 12 })
+        $p12.Count         | Should -Be 1
+        $p12[0].kind       | Should -Be 'figure'
+        $p12[0].provenance | Should -Be 'xobject'
+        $p12[0].flag       | Should -Be 'xobject_singleton'
+    }
+
+    It 'bypasses the density gate for a large low-density bitmap (figure, not sparse)' {
+        foreach ($f in @($script:regions5 | Where-Object { $_.provenance -eq 'xobject' })) {
+            $f.density | Should -BeLessThan 0.01     # would be sparse under the vector-ink gate
+            $f.kind    | Should -Be 'figure'          # raster bypass wins
+        }
+    }
+
+    It 'records clean provenance id arrays ([] not [null]) on pure regions' {
+        $pureXobj = @($script:regions5 | Where-Object { $_.provenance -eq 'xobject' })[0]
+        $pureXobj.path_ids.Count    | Should -Be 0
+        $pureXobj.xobject_ids.Count | Should -Be 1
+        $purePath = @($script:regions5 | Where-Object { $_.provenance -eq 'path' })[0]
+        $purePath.xobject_ids.Count | Should -Be 0
+        $purePath.path_ids.Count    | Should -BeGreaterThan 0
+    }
+
+    It 'counts every region carrying a bitmap' {
+        $script:r5.Summary.xobject_regions | Should -Be 3
+    }
 }

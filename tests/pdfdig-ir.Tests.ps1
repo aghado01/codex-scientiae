@@ -180,8 +180,8 @@ Describe 'end-to-end (golden specimen 2508.11646, pages 1-2)' {
         if (-not $script:skip -and (Test-Path $script:outDir)) { Remove-Item $script:outDir -Recurse -Force }
     }
 
-    It 'emits all four lanes plus envelope with sidecars' -Skip:$script:skip {
-        foreach ($lane in 'letters','words','blocks','paths') {
+    It 'emits all five lanes plus envelope with sidecars' -Skip:$script:skip {
+        foreach ($lane in 'letters','words','blocks','paths','xobjects') {   # xobjects = LANE 5 (may be empty, still emitted)
             Join-Path $script:outDir "2508.11646.$lane.jsonl" | Should -Exist
             Join-Path $script:outDir "2508.11646.$lane.jsonl.sig" | Should -Exist
         }
@@ -274,8 +274,8 @@ Describe 'pig orchestrator (Invoke-Pdfdig) — all IR under .runs/{stamp}/pig, n
 
     It 'writes every IR artifact under the pig run dir' -Skip:$script:orchSkip {
         foreach ($f in '2508.11646.pdfdig.json','2508.11646.letters.jsonl','2508.11646.words.jsonl',
-                       '2508.11646.blocks.jsonl','2508.11646.paths.jsonl','2508.11646.nodes.jsonl',
-                       '2508.11646.classify.json','2508.11646.figures.jsonl','pig-run.json') {
+                       '2508.11646.blocks.jsonl','2508.11646.paths.jsonl','2508.11646.xobjects.jsonl',
+                       '2508.11646.nodes.jsonl','2508.11646.classify.json','2508.11646.figures.jsonl','pig-run.json') {
             Join-Path $script:orch.PigDir $f | Should -Exist
         }
     }

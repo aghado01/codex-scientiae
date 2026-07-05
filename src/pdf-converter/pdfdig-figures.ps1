@@ -208,6 +208,7 @@ function ConvertTo-FigureRegions {
         pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
         noise_paths = 0; sparse = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0
         captioned_figures = 0; body_font_pt = $bodyPt
+        xobjects = 0; xobject_regions = 0   # LANE 5: bitmap points loaded / regions carrying a bitmap
     }
 
     # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
@@ -223,22 +224,37 @@ function ConvertTo-FigureRegions {
         $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
         $area = [math]::Round($w * $h, 1)
         $pc = @($members).Count
+        # split members by provenance (Lane-4 vector vs Lane-5 raster). A region carrying ANY xobject is
+        # a placed bitmap → it BYPASSES the density gate: density = paths/area is a vector-INK-coverage
+        # proxy, meaningless for a raster whose entire "ink" is one placed object (a big bitmap is 1 point
+        # over a large area ⇒ near-zero density ⇒ would be wrongly demoted to 'sparse'). Size floors
+        # (degenerate/mark) still apply, so a tiny icon bitmap is still a mark.
+        $pathMembers = [System.Collections.Generic.List[object]]::new()
+        $xobjMembers = [System.Collections.Generic.List[object]]::new()
+        foreach ($m in $members) { if ($m.prov -eq 'xobject') { $xobjMembers.Add($m) } else { $pathMembers.Add($m) } }
+        $hasXobj = $xobjMembers.Count -gt 0
         $areaEm  = if ($bodyArea) { [math]::Round($area / $bodyArea, 3) } else { $null }
         $density = if ($areaEm -and $areaEm -gt 0) { [math]::Round($pc / $areaEm, 4) } else { $null }
         $kind =
             if ($w -lt $degenEps -or $h -lt $degenEps) { 'degenerate' }
             elseif ($null -ne $bodyArea) {
                 if     ($areaEm -lt $floorEm)                             { 'mark' }
+                elseif ($hasXobj)                                         { 'figure' }   # raster: density gate N/A
                 elseif ($null -ne $density -and $density -lt $minDensity) { 'sparse' }
                 else                                                      { 'figure' }
             }
             else { if ($area -lt $fallbackPt2) { 'mark' } else { 'figure' } }
         $figures.Add([ordered]@{
             id = $figures.Count; page = $page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
-            path_ids = @($members.id); path_count = $pc
+            # explicit foreach (NOT @($list.id)) — member-access enumeration on an EMPTY List yields a lone
+            # $null, which would serialize as [null] on a pure-path or pure-xobject region; foreach gives []
+            path_ids = @(foreach ($m in $pathMembers) { $m.id }); path_count = $pathMembers.Count
+            xobject_ids = @(foreach ($m in $xobjMembers) { $m.id }); xobject_count = $xobjMembers.Count
+            provenance = if ($hasXobj -and $pathMembers.Count) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
             kind = $kind; flag = $flag; caption = $null
         })
         $summary.regions++
+        if ($hasXobj) { $summary.xobject_regions++ }
         switch ($kind) {
             'figure'     { $summary.figures++ }
             'mark'       { $summary.marks++ }
@@ -253,26 +269,47 @@ function ConvertTo-FigureRegions {
     # rejected downstream by the density gate, not by dropping their strokes here.
     $paths = @(Get-Content $PathsJsonl | Where-Object { $_.Trim() } |
         ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.bbox })
+    foreach ($p in $paths) { $p.PSObject.Properties.Add([psnoteproperty]::new('prov', 'path')) }
+
+    # LANE 5: union the placed bitmap rectangles ({slug}.xobjects.jsonl, beside the paths lane) into the
+    # per-page point cloud, so a figure that IS one big bitmap becomes a first-class CLUSTERED point
+    # instead of being invisible to the vector-only lanes (the raster-blindness under-count). Absent/empty
+    # lane ⇒ behaves exactly as before. Each xobject is provenance-tagged so a region can report path vs
+    # xobject membership; ids come from the IR's own per-document xobject sequence.
+    $xobjPath = $PathsJsonl -replace '\.paths\.jsonl$', '.xobjects.jsonl'
+    $xobjs = @()
+    if (Test-Path $xobjPath) {
+        $xobjs = @(Get-Content $xobjPath | Where-Object { $_.Trim() } |
+            ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.bbox })
+        foreach ($x in $xobjs) { $x.PSObject.Properties.Add([psnoteproperty]::new('prov', 'xobject')) }
+    }
+    $summary.xobjects = $xobjs.Count
+    $items = @($paths) + @($xobjs)
 
     $work = Join-Path ([IO.Path]::GetTempPath()) ("pdfdig-figures-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
     New-Item -ItemType Directory -Force -Path $work | Out-Null
 
     try {
-        foreach ($grp in ($paths | Group-Object page | Sort-Object { [int]$_.Name })) {
+        foreach ($grp in ($items | Group-Object page | Sort-Object { [int]$_.Name })) {
             $page      = [int]$grp.Name
-            $pagePaths = @($grp.Group)
+            $pageItems = @($grp.Group)
             $summary.pages++
 
-            # Too few paths for density clustering: group as one tentative region, flagged honestly.
-            if ($pagePaths.Count -le $minPts) {
+            # Too few points for density clustering: group stray VECTOR paths as one tentative region,
+            # but emit each bitmap as its OWN figure (a placed raster is self-evidently a figure — it
+            # needs no cluster support), so a bitmap-only / bitmap-plus-a-few-strokes page still yields
+            # figures instead of being lost.
+            if ($pageItems.Count -le $minPts) {
                 $summary.too_few_pages++
-                & $addRegion $page $pagePaths 'too_few_to_cluster'
+                $pathItems = @($pageItems | Where-Object { $_.prov -ne 'xobject' })
+                if ($pathItems.Count) { & $addRegion $page $pathItems 'too_few_to_cluster' }
+                foreach ($x in @($pageItems | Where-Object { $_.prov -eq 'xobject' })) { & $addRegion $page @($x) 'xobject_singleton' }
                 continue
             }
 
             # Emit points (v = [x0,y0,x1,y1]); the write order is the id-index mapping.
             $pts = [System.Collections.Generic.List[string]]::new()
-            foreach ($p in $pagePaths) {
+            foreach ($p in $pageItems) {
                 $b = $p.bbox
                 $pts.Add(('{{"id":{0},"v":[{1},{2},{3},{4}]}}' -f $p.id, $b[0], $b[1], $b[2], $b[3]))
             }
@@ -288,8 +325,8 @@ function ConvertTo-FigureRegions {
             Invoke-Hdbscan @hdbArgs | Out-Null
 
             $labels = Read-PartitionLabels (Join-Path $outDir 'hdbscan_partition.csv')
-            if ($labels.Count -ne $pagePaths.Count) {
-                throw "page ${page}: partition rows $($labels.Count) != paths $($pagePaths.Count)"
+            if ($labels.Count -ne $pageItems.Count) {
+                throw "page ${page}: partition rows $($labels.Count) != points $($pageItems.Count)"
             }
 
             # De-fragmentation: an over-split page (a complex figure shattered into many density
@@ -313,17 +350,25 @@ function ConvertTo-FigureRegions {
                 }
             }
 
-            # Group members by cluster label; label -1 = noise (stray path).
+            # Group members by cluster label; label -1 = noise. A noise VECTOR path is a stray stroke
+            # (dropped, as before); a noise BITMAP is RESCUED as its own singleton figure — an isolated
+            # placed raster is a real figure that simply had no neighbours to cluster with, and must never
+            # be silently lost to the noise class (that would re-introduce the raster-blindness gap).
             $byLabel = @{}
-            for ($i = 0; $i -lt $pagePaths.Count; $i++) {
+            $noiseXobjs = [System.Collections.Generic.List[object]]::new()
+            for ($i = 0; $i -lt $pageItems.Count; $i++) {
                 $lab = $labels[$i]
-                if ($lab -lt 0) { $summary.noise_paths++; continue }
+                if ($lab -lt 0) {
+                    if ($pageItems[$i].prov -eq 'xobject') { $noiseXobjs.Add($pageItems[$i]) } else { $summary.noise_paths++ }
+                    continue
+                }
                 if (-not $byLabel.ContainsKey($lab)) { $byLabel[$lab] = [System.Collections.Generic.List[object]]::new() }
-                $byLabel[$lab].Add($pagePaths[$i])
+                $byLabel[$lab].Add($pageItems[$i])
             }
             foreach ($lab in ($byLabel.Keys | Sort-Object)) {
                 & $addRegion $page $byLabel[$lab] $null
             }
+            foreach ($nx in $noiseXobjs) { & $addRegion $page @($nx) 'xobject_singleton' }
         }
     }
     finally {
@@ -339,8 +384,8 @@ function ConvertTo-FigureRegions {
     $lines = [string[]]@($figures | ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 6 })
     [System.IO.File]::WriteAllLines($OutPath, $lines, [System.Text.UTF8Encoding]::new($false))
 
-    Write-Verbose ("regions: {0} ({1} figure / {2} mark / {3} sparse / {4} degenerate) over {5} page(s); {6} stray path(s), body {7}pt -> {8}" -f `
-        $summary.regions, $summary.figures, $summary.marks, $summary.sparse, $summary.degenerate, $summary.pages, $summary.noise_paths, $summary.body_font_pt, $OutPath)
+    Write-Verbose ("regions: {0} ({1} figure / {2} mark / {3} sparse / {4} degenerate) over {5} page(s); {6} stray path(s), {7} xobject(s) in {8} region(s), body {9}pt -> {10}" -f `
+        $summary.regions, $summary.figures, $summary.marks, $summary.sparse, $summary.degenerate, $summary.pages, $summary.noise_paths, $summary.xobjects, $summary.xobject_regions, $summary.body_font_pt, $OutPath)
 
     if ($PassThru) {
         [pscustomobject]@{ OutPath = $OutPath; Figures = $figures; Summary = [pscustomobject]$summary }
