@@ -20,6 +20,8 @@
 
 . "$PSScriptRoot/runs.ps1"          # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
 . "$PSScriptRoot/tikz-render.ps1"   # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
+. "$PSScriptRoot/pdf-raster.ps1"    # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
+. "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -396,11 +398,362 @@ function Resolve-Refs {
     return $T
 }
 
+# --- diagram transpilers (ENCODE-FIRST): xy-pic + tikzcd -> semantic KaTeX ---------------------------
+# Doctrine (issues/latex-oracle-images.md, 2026-07-05): a diagram that CAN be expressed as semantic,
+# KaTeX-renderable math MUST be — an image is the LAST resort. The corpus is consumed by reasoning
+# models: $0 \longrightarrow K$ is legible content; a PNG (or a \begin{CD} wrapper) is not. Two
+# deterministic rungs share one grid model (rows of { node; arrows }, each arrow { dir; style;
+# over; under }) and one emitter:
+#   1-D  — a SINGLE-ROW diagram with r/l arrows -> inline arrows (\longrightarrow, or
+#          \xrightarrow[under]{over} when the morphism is labelled, per faithful-not-filtered).
+#   2-D  — an ORTHOGONAL grid (r/l/u/d single-step arrows only) -> the core \begin{array} primitive;
+#          vertical arrows are \uparrow/\downarrow with labels as superscript beside the arrow
+#          (under-labels as subscript — user convention 2026-07-05).
+# ANY construct beyond that (diagonals, curves/loops/bends, rotation options, styles with no exact
+# KaTeX form) returns $null — never a guessed encoding — and the diagram falls to the render ladder +
+# the diagrams work-list (the reasoning-agent seam).
+function Format-VerticalArrow {
+    param($G)   # vertical slot arrow -> KaTeX, or $null (only PLAIN verticals have a KaTeX form — no \hookuparrow etc.)
+    if ($G.style -ne 'plain') { return $null }
+    $a = if ($G.dir -ceq 'd') { '\downarrow' } else { '\uparrow' }
+    if ($null -ne $G.under) { $a += '_{' + $G.under + '}' }
+    if ($null -ne $G.over) { $a += '^{' + $G.over + '}' }
+    return $a
+}
+function Format-DiagramGrid {
+    param($Rows)   # rows of cells (@{ node; arrows }) -> inline chain (1 row) | \begin{array} (grid) | $null
+    $R = $Rows.Count
+    # NOTE: PS variables are case-INSENSITIVE — a `$r` loop variable here would clobber `$R`
+    $C = 0; foreach ($row in $Rows) { if ($row.Count -gt $C) { $C = $row.Count } }
+    if ($R -lt 1 -or $C -lt 1 -or ($R -eq 1 -and $C -lt 2)) { return $null }
+    # place every arrow into its slot between adjacent cells; off-grid or double-booked slots bail
+    $h = @{}; $v = @{}   # "i,j" -> arrow; h: cell (i,j)->(i,j+1); v: cell (i,j)->(i+1,j)
+    for ($i = 0; $i -lt $R; $i++) {
+        for ($j = 0; $j -lt $Rows[$i].Count; $j++) {
+            foreach ($g in $Rows[$i][$j].arrows) {
+                $isH = $g.dir -ceq 'r' -or $g.dir -ceq 'l'
+                $gi = if ($g.dir -ceq 'u') { $i - 1 } else { $i }
+                $gj = if ($g.dir -ceq 'l') { $j - 1 } else { $j }
+                if ($isH) { if ($gi -lt 0 -or $gj -lt 0 -or $gj -ge $C - 1 -or $h.ContainsKey("$gi,$gj")) { return $null }; $h["$gi,$gj"] = $g }
+                else { if ($gi -lt 0 -or $gi -ge $R - 1 -or $gj -lt 0 -or $v.ContainsKey("$gi,$gj")) { return $null }; $v["$gi,$gj"] = $g }
+            }
+        }
+    }
+    $node = { param($i, $j) if ($j -lt $Rows[$i].Count -and $Rows[$i][$j].node -ne '') { $Rows[$i][$j].node } else { '' } }
+    if ($R -eq 1) {
+        # 1-D chain: nodes joined by their gap arrows (a gap with no morphism drawn renders as spacing)
+        $out = [System.Text.StringBuilder]::new()
+        for ($j = 0; $j -lt $C; $j++) {
+            $n = & $node 0 $j
+            [void]$out.Append($(if ($n -ne '') { $n } else { '{}' }))
+            if ($j -lt $C - 1) {
+                $arrow = if ($h.ContainsKey("0,$j")) { Format-CdArrow $h["0,$j"] } else { '\quad' }
+                if ($null -eq $arrow) { return $null }
+                [void]$out.Append(' ').Append($arrow).Append(' ')
+            }
+        }
+        return $out.ToString()
+    }
+    # 2-D grid: array columns/rows interleave nodes with arrow slots (2C-1 x 2R-1)
+    $lines = [System.Collections.Generic.List[string]]::new()
+    for ($i = 0; $i -lt $R; $i++) {
+        $cells = [System.Collections.Generic.List[string]]::new()
+        for ($j = 0; $j -lt $C; $j++) {
+            $cells.Add((& $node $i $j))
+            if ($j -lt $C - 1) {
+                $a = if ($h.ContainsKey("$i,$j")) { Format-CdArrow $h["$i,$j"] } else { '' }
+                if ($null -eq $a) { return $null }
+                $cells.Add($a)
+            }
+        }
+        $lines.Add(($cells -join ' & '))
+        if ($i -lt $R - 1) {
+            $cells = [System.Collections.Generic.List[string]]::new()
+            for ($j = 0; $j -lt $C; $j++) {
+                $a = if ($v.ContainsKey("$i,$j")) { Format-VerticalArrow $v["$i,$j"] } else { '' }
+                if ($null -eq $a) { return $null }
+                $cells.Add($a)
+                if ($j -lt $C - 1) { $cells.Add('') }
+            }
+            $lines.Add(($cells -join ' & '))
+        }
+    }
+    return '\begin{array}{' + ('c' * (2 * $C - 1)) + "}`n" + ($lines -join " \\`n") + "`n\end{array}"
+}
+function Convert-XyDiagramBody {
+    param([string]$Inner)   # \xymatrix{...} body -> $Rows for Format-DiagramGrid, or $null
+    # split into rows on depth-0 '\\' and cells on depth-0 '&'
+    $rows = [System.Collections.Generic.List[object]]::new()
+    $cells = [System.Collections.Generic.List[string]]::new()
+    $sb = [System.Text.StringBuilder]::new(); $depth = 0
+    for ($k = 0; $k -lt $Inner.Length; $k++) {
+        $c = $Inner[$k]
+        if ($c -eq '\') {
+            if ($k + 1 -lt $Inner.Length -and $Inner[$k + 1] -eq '\' -and $depth -eq 0) {
+                $cells.Add($sb.ToString()); [void]$sb.Clear()
+                $rows.Add($cells); $cells = [System.Collections.Generic.List[string]]::new()
+                $k++; continue
+            }
+            [void]$sb.Append($c)
+            if ($k + 1 -lt $Inner.Length) { $k++; [void]$sb.Append($Inner[$k]) }   # escaped char rides along (incl. braced-label internals)
+            continue
+        }
+        if ($c -eq '{') { $depth++ } elseif ($c -eq '}') { $depth-- }
+        if ($c -eq '&' -and $depth -eq 0) { $cells.Add($sb.ToString()); [void]$sb.Clear(); continue }
+        [void]$sb.Append($c)
+    }
+    $cells.Add($sb.ToString())
+    if ($cells.Count -gt 1 -or $cells[0].Trim() -ne '') { $rows.Add($cells) }   # drop a trailing empty row from a final \\
+
+    $parsed = [System.Collections.Generic.List[object]]::new()
+    foreach ($rowCells in $rows) {
+        $prow = [System.Collections.Generic.List[object]]::new()
+        foreach ($cell in $rowCells) {
+            $arrows = [System.Collections.Generic.List[object]]::new()
+            $node = [System.Text.StringBuilder]::new()
+            for ($k = 0; $k -lt $cell.Length; $k++) {
+                if ($cell[$k] -eq '\' -and $k + 2 -lt $cell.Length -and $cell.Substring($k, 3) -ceq '\ar') {
+                    $j = $k + 3
+                    while ($j -lt $cell.Length -and $cell[$j] -eq ' ') { $j++ }
+                    if ($j -ge $cell.Length -or $cell[$j] -ne '[') { return $null }   # \ar@(..) loops, \ar@/^/ curves, or a different control word — bail
+                    $cb = $cell.IndexOf(']', $j); if ($cb -lt 0) { return $null }
+                    $spec = $cell.Substring($j + 1, $cb - $j - 1)
+                    if ($spec -cnotmatch '^[rlud]$') { return $null }                 # diagonal/multi-step targets — beyond the orthogonal rung
+                    $j = $cb + 1
+                    $over = $null; $under = $null
+                    while ($j -lt $cell.Length) {                                     # ^over / _under morphism labels (either, both, or none)
+                        while ($j -lt $cell.Length -and $cell[$j] -eq ' ') { $j++ }
+                        if ($j -lt $cell.Length -and ($cell[$j] -eq '^' -or $cell[$j] -eq '_')) {
+                            $side = $cell[$j]; $j++
+                            while ($j -lt $cell.Length -and $cell[$j] -eq ' ') { $j++ }
+                            if ($j -ge $cell.Length) { return $null }
+                            if ($cell[$j] -eq '{') { $lbl = Get-LatexBracedArg $cell $j; if ($null -eq $lbl) { return $null }; $j = Get-BraceGroupEnd $cell $j }
+                            elseif ($cell[$j] -eq '\') { $e2 = $j + 1; while ($e2 -lt $cell.Length -and [char]::IsLetter($cell[$e2])) { $e2++ }; $lbl = $cell.Substring($j, $e2 - $j); $j = $e2 }
+                            else { $lbl = [string]$cell[$j]; $j++ }
+                            if ($side -eq '^') { $over = $lbl } else { $under = $lbl }
+                        } else { break }
+                    }
+                    $arrows.Add(@{ dir = $spec; style = 'plain'; over = $over; under = $under })
+                    $k = $j - 1
+                    continue
+                }
+                [void]$node.Append($cell[$k])
+            }
+            $prow.Add(@{ node = $node.ToString().Trim(); arrows = $arrows })
+        }
+        $parsed.Add($prow)
+    }
+    return , $parsed   # unary comma: stop the pipeline from unrolling the row list
+}
+function Convert-XyDiagramSpan {
+    param([string]$T)   # whole math-span content; EVERY \xymatrix inside must transpile or the span fails ($null)
+    while ($true) {
+        $m = [regex]::Match($T, '\\xymatrix')
+        if (-not $m.Success) { return $T }
+        $i = $m.Index + $m.Length
+        while ($i -lt $T.Length -and [char]::IsWhiteSpace($T[$i])) { $i++ }
+        # spacing options (@C=2em/@R…/@M/@W/@H/@L/@1/@!…) don't change semantics — skip; a direction
+        # option (@dr etc.) ROTATES the diagram — semantic, bail rather than mis-encode
+        while ($i -lt $T.Length -and $T[$i] -eq '@') {
+            $i++
+            if ($i -ge $T.Length -or 'CRMWHL1!='.IndexOf($T[$i]) -lt 0) { return $null }
+            while ($i -lt $T.Length -and $T[$i] -ne '@' -and $T[$i] -ne '{') { $i++ }
+        }
+        if ($i -ge $T.Length -or $T[$i] -ne '{') { return $null }
+        $end = Get-BraceGroupEnd $T $i
+        if ($end -lt 0) { return $null }
+        $rows = Convert-XyDiagramBody ($T.Substring($i + 1, $end - $i - 2))
+        if ($null -eq $rows) { return $null }
+        $chain = Format-DiagramGrid $rows
+        if ($null -eq $chain) { return $null }
+        $T = $T.Substring(0, $m.Index) + $chain + $T.Substring($end)
+    }
+}
+
+# --- tikzcd linear-chain transpiler (ENCODE-FIRST, sibling of Convert-XyLinearSpan) -------------------
+# Same doctrine, second dialect: a SINGLE-ROW \begin{tikzcd} whose arrows are all plain \arrow[r]/\arrow[l]
+# (alias \ar) is a 1-D sequence — transpile to inline arrows. tikzcd's label syntax is quoted ("f", with '
+# or swap flipping it below); the ONLY style options accepted are the ones with exact KaTeX equivalents
+# (hook -> \(x)hookrightarrow, two heads -> \(x)twoheadrightarrow, maps to -> \(x)mapsto, dashed ->
+# \dashrightarrow unlabeled) — all verified against the vendored KaTeX. Anything else (u/d/diagonal
+# targets, bends, shifts, Rightarrow, dotted, …) returns $null and falls to the render ladder + work-list.
+function Convert-TikzcdArrowSpec {
+    param([string]$Spec)   # the [...] option list of one \arrow — returns @{dir;style;over;under} or $null
+    $q = [char]34
+    # comma-split at depth 0, quote-aware (labels like "[0,1]" carry commas and brackets)
+    $toks = [System.Collections.Generic.List[string]]::new()
+    $sb = [System.Text.StringBuilder]::new(); $depth = 0; $inQ = $false
+    for ($k = 0; $k -lt $Spec.Length; $k++) {
+        $c = $Spec[$k]
+        if ($c -eq $q) { $inQ = -not $inQ }
+        elseif (-not $inQ) {
+            if ($c -eq '{') { $depth++ } elseif ($c -eq '}') { $depth-- }
+            elseif ($c -eq ',' -and $depth -eq 0) { $toks.Add($sb.ToString()); [void]$sb.Clear(); continue }
+        }
+        [void]$sb.Append($c)
+    }
+    $toks.Add($sb.ToString())
+    if ($toks.Count -lt 1) { return $null }
+    $dir = $toks[0].Trim()
+    if ($dir -cnotmatch '^[rlud]$') { return $null }   # single-step orthogonal only; diagonals/multi-step -> not this rung
+    $style = 'plain'; $over = $null; $under = $null; $swap = $false
+    for ($t = 1; $t -lt $toks.Count; $t++) {
+        $tok = $toks[$t].Trim()
+        if ($tok -eq '') { continue }
+        if ($tok[0] -eq $q) {
+            $close = $tok.IndexOf($q, 1); if ($close -lt 0) { return $null }
+            $lbl = $tok.Substring(1, $close - 1)
+            $rest = $tok.Substring($close + 1).Trim()
+            if ($rest -eq "'" -or $rest -eq 'swap') { if ($null -ne $under) { return $null }; $under = $lbl }
+            elseif ($rest -eq '' -or $rest -eq 'description' -or $rest -match '^near (start|end)$') { if ($null -ne $over) { return $null }; $over = $lbl }
+            else { return $null }
+            continue
+        }
+        switch -CaseSensitive ($tok) {
+            'swap'      { $swap = $true; continue }
+            'hook'      { $style = 'hook'; continue }
+            "hook'"     { $style = 'hook'; continue }
+            'two heads' { $style = 'twoheads'; continue }
+            'maps to'   { $style = 'mapsto'; continue }
+            'mapsto'    { $style = 'mapsto'; continue }
+            'dashed'    { $style = 'dashed'; continue }
+            default     { return $null }   # bends, shifts, u/d cells, Rightarrow, dotted, … — not this rung
+        }
+    }
+    if ($swap) { $tmp = $over; $over = $under; $under = $tmp }
+    return @{ dir = $dir; style = $style; over = $over; under = $under }
+}
+function Format-CdArrow {
+    param($G)   # gap record -> KaTeX arrow, or $null when no faithful form exists
+    $lab = ($null -ne $G.over -or $null -ne $G.under)
+    $u = if ($null -ne $G.under) { '[{' + $G.under + '}]' } else { '' }
+    $o = '{' + $(if ($null -ne $G.over) { $G.over } else { '' }) + '}'
+    switch ($G.style) {
+        'plain'    { if ($lab) { $(if ($G.dir -ceq 'r') { '\xrightarrow' } else { '\xleftarrow' }) + $u + $o } else { if ($G.dir -ceq 'r') { '\longrightarrow' } else { '\longleftarrow' } } }
+        'hook'     { if ($lab) { $(if ($G.dir -ceq 'r') { '\xhookrightarrow' } else { '\xhookleftarrow' }) + $u + $o } else { if ($G.dir -ceq 'r') { '\hookrightarrow' } else { '\hookleftarrow' } } }
+        'twoheads' { if ($lab) { $(if ($G.dir -ceq 'r') { '\xtwoheadrightarrow' } else { '\xtwoheadleftarrow' }) + $u + $o } else { if ($G.dir -ceq 'r') { '\twoheadrightarrow' } else { '\twoheadleftarrow' } } }
+        'mapsto'   { if ($G.dir -cne 'r') { $null } elseif ($lab) { '\xmapsto' + $u + $o } else { '\mapsto' } }   # no left mapsto in KaTeX
+        'dashed'   { if ($lab) { $null } elseif ($G.dir -ceq 'r') { '\dashrightarrow' } else { '\dashleftarrow' } }   # no labelled x-form
+        default    { $null }
+    }
+}
+function Convert-TikzcdDiagram {
+    param([string]$EnvSource)   # full \begin{tikzcd}...\end{tikzcd}; returns inline chain / \begin{array}, or $null
+    $m = [regex]::Match($EnvSource, '(?s)^\s*\\begin\{tikzcd\}\s*(?:\[([^\]]*)\])?(.*?)\\end\{tikzcd\}\s*$')
+    if (-not $m.Success) { return $null }
+    if ($m.Groups[1].Success) {
+        foreach ($opt in ($m.Groups[1].Value -split ',')) {   # spacing options only; arrows=…/ampersand replacement=… are semantic — bail
+            $o = $opt.Trim()
+            if ($o -eq '' -or $o -ceq 'cramped' -or $o -match '^(row sep|column sep|sep)\s*=') { continue }
+            return $null
+        }
+    }
+    $inner = $m.Groups[2].Value
+    # split into rows on depth-0 '\\' and cells on depth-0 '&'
+    $rows = [System.Collections.Generic.List[object]]::new()
+    $cells = [System.Collections.Generic.List[string]]::new()
+    $sb = [System.Text.StringBuilder]::new(); $depth = 0
+    for ($k = 0; $k -lt $inner.Length; $k++) {
+        $c = $inner[$k]
+        if ($c -eq '\') {
+            if ($k + 1 -lt $inner.Length -and $inner[$k + 1] -eq '\' -and $depth -eq 0) {
+                $cells.Add($sb.ToString()); [void]$sb.Clear()
+                $rows.Add($cells); $cells = [System.Collections.Generic.List[string]]::new()
+                $k++; continue
+            }
+            [void]$sb.Append($c)
+            if ($k + 1 -lt $inner.Length) { $k++; [void]$sb.Append($inner[$k]) }
+            continue
+        }
+        if ($c -eq '{') { $depth++ } elseif ($c -eq '}') { $depth-- }
+        if ($c -eq '&' -and $depth -eq 0) { $cells.Add($sb.ToString()); [void]$sb.Clear(); continue }
+        [void]$sb.Append($c)
+    }
+    $cells.Add($sb.ToString())
+    if ($cells.Count -gt 1 -or $cells[0].Trim() -ne '') { $rows.Add($cells) }   # drop a trailing empty row from a final \\
+
+    $q = [char]34
+    $parsed = [System.Collections.Generic.List[object]]::new()
+    foreach ($rowCells in $rows) {
+        $prow = [System.Collections.Generic.List[object]]::new()
+        foreach ($cell in $rowCells) {
+            $arrows = [System.Collections.Generic.List[object]]::new()
+            $node = [System.Text.StringBuilder]::new()
+            for ($k = 0; $k -lt $cell.Length; $k++) {
+                $isAr = $false; $cmdLen = 0
+                if ($cell[$k] -eq '\') {
+                    if ($k + 6 -lt $cell.Length -and $cell.Substring($k, 6) -ceq '\arrow' -and -not [char]::IsLetter($cell[$k + 6])) { $isAr = $true; $cmdLen = 6 }
+                    elseif ($k + 3 -lt $cell.Length -and $cell.Substring($k, 3) -ceq '\ar' -and -not [char]::IsLetter($cell[$k + 3])) { $isAr = $true; $cmdLen = 3 }
+                }
+                if ($isAr) {
+                    $j = $k + $cmdLen
+                    while ($j -lt $cell.Length -and $cell[$j] -eq ' ') { $j++ }
+                    if ($j -ge $cell.Length -or $cell[$j] -ne '[') { return $null }
+                    # find the matching ']' quote-aware (labels carry brackets: "[0,1]")
+                    $inQ = $false; $cb = -1
+                    for ($p = $j + 1; $p -lt $cell.Length; $p++) {
+                        if ($cell[$p] -eq $q) { $inQ = -not $inQ }
+                        elseif ($cell[$p] -eq ']' -and -not $inQ) { $cb = $p; break }
+                    }
+                    if ($cb -lt 0) { return $null }
+                    $g = Convert-TikzcdArrowSpec ($cell.Substring($j + 1, $cb - $j - 1))
+                    if ($null -eq $g) { return $null }
+                    $arrows.Add($g)
+                    $k = $cb
+                    continue
+                }
+                [void]$node.Append($cell[$k])
+            }
+            $prow.Add(@{ node = $node.ToString().Trim(); arrows = $arrows })
+        }
+        $parsed.Add($prow)
+    }
+    return (Format-DiagramGrid $parsed)
+}
+
+# --- diagram store (UNIFIED: TikZ + xy-pic) ---------------------------------------------------------
+# One numbered store for every drawn diagram env, whatever the package. TikZ/tikzcd are stashed from the
+# body BEFORE math protection (their node labels carry $..$); xy-pic \xymatrix spans are diverted from
+# WITHIN math protection (Store-Math hook) because they live in math mode. Each gets an addressable marker
+# in the flow; the render stage (Invoke-ArxivLatexToMarkdown) swaps markers for PNG links — tectonic
+# compiles the snippet to PDF and MuPDF rasterizes it (PNG is the terminal register, issues/latex-oracle-
+# images.md) — with tikzjax->SVG as the zero-dependency fallback for plain TikZ. A diagram that fails to
+# render (or has no compiler) keeps its FLAGGED marker: never a silent drop, never KaTeX-invalid source.
+$script:DiagramStore = [System.Collections.Generic.List[object]]::new()
+$script:diagCounter = 0
+$script:XyEncoded = 0     # xymatrix spans transpiled to semantic inline arrows (never reached the store)
+$script:CdEncoded = 0     # tikzcd envs transpiled likewise (the second dialect of the same rung)
+function Add-Diagram {
+    param([string]$Source, [string]$Kind, [bool]$Display = $true)
+    $script:diagCounter++
+    $script:DiagramStore.Add([pscustomobject]@{ n = $script:diagCounter; kind = $Kind; source = $Source; display = $Display })
+    return "`n`n$(Format-DiagramMarker $script:diagCounter $Kind)`n`n"
+}
+# the marker is the FALLBACK rendering AND the render stage's replacement key — built one way, matched
+# one way. Kind rides in the text as an honest flag (what kind of diagram is unrendered here).
+function Format-DiagramMarker { param([int]$N, [string]$Kind) "*[diagram $N — $Kind, not rendered]*" }
+
 # --- math protection (env-aware): alignment envs wrap in aligned/gathered so the &/\\ stay valid -------
 $script:LtxMathStore = @{}
 $script:LtxMathIdx = 0
 function Store-Math {
     param([string]$Content, [bool]$Display)
+    # xy-pic commutative diagrams (\xymatrix) live in math mode, but KaTeX cannot render xy-pic — left as
+    # $..$ they leak KaTeX-invalid source (the "silent drop" of issues/latex-oracle-images.md).
+    # ENCODE FIRST: a provably-linear chain transpiles to semantic inline arrows and stays REAL MATH in
+    # the markdown — the goal register, legible to a reasoning model where a PNG is not. Only when no
+    # faithful encoding exists does the whole span (delimiters included, so it compiles standalone)
+    # divert to the diagram store: render ladder -> PNG/marker + work-list for agent translation.
+    if ($Content -match '\\xymatrix') {
+        $enc = Convert-XyDiagramSpan $Content
+        if ($null -ne $enc) { $script:XyEncoded++; $Content = $enc }
+        else {
+            # $-delimited so the standalone snippet compiles: the `standalone` class does NOT honour
+            # \[..\] display delimiters (\mathbb -> "allowed only in math mode"), but $\displaystyle..$ does.
+            $span = if ($Display) { '$\displaystyle ' + $Content.Trim() + '$' } else { '$' + $Content.Trim() + '$' }
+            return (Add-Diagram $span 'xymatrix' $Display)
+        }
+    }
     # DISPLAY vs INLINE carry DISTINCT placeholder prefixes (LDISP/LMATH) so the prose-reflow pass can keep
     # a display block standalone (its own blank-separated line) while inline math flows as a token — a single
     # shared prefix would force reflow to treat every inline $x$ as a block, or glue $$..$$ into a paragraph.
@@ -696,12 +1049,17 @@ function ConvertFrom-Latex {
     # the regex parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
     $body = [regex]::Replace($body, '(?s)(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', '\[$1\]')
 
-    # TikZ pictures: STASH the source and drop a numbered marker in the flow. The source is the
-    # AUTHORITY for diagrams (PDF-side image extraction is unreliable) — Invoke-ArxivLatexToMarkdown
-    # renders each stashed env to SVG via node-tikzjax and swaps the marker for a live image link;
-    # where the renderer is absent or a diagram fails to compile, the addressable marker stays.
-    # Preamble hints (tikz libraries + tikz-adjacent packages) are captured for the renderer.
+    # Diagrams: STASH the source and drop a numbered marker in the flow. The source is the AUTHORITY for
+    # diagrams (PDF-side image extraction is unreliable) — Invoke-ArxivLatexToMarkdown renders each stashed
+    # env and swaps the marker for a live image link; where no renderer is present or a diagram fails to
+    # compile, the addressable flagged marker stays. Preamble hints (tikz libraries + tikz-adjacent
+    # packages) are captured for the tikzjax fallback; the FULL preamble is replayed by tectonic.
+    $script:DiagramStore = [System.Collections.Generic.List[object]]::new()
+    $script:diagCounter = 0
+    $script:XyEncoded = 0
+    $script:CdEncoded = 0
     $pre = $Tex.Substring(0, [Math]::Max(0, $Tex.IndexOf('\begin{document}')))
+    $script:TikzPreamble = $pre    # replayed verbatim by the tectonic snippet builder (author macros are the fidelity trap)
     # dedupe, and drop the externalization libraries: they are build-time caching (shell-escape),
     # absent from the wasm texmf tree, and one bad library in the shared list poisons EVERY job
     $script:TikzLibs = (@([regex]::Matches($pre, '\\usetikzlibrary\{([^{}]+)\}') |
@@ -716,12 +1074,22 @@ function ConvertFrom-Latex {
     # carry them into the renderer's preamble or every diagram using them fails to compile
     $script:TikzPre = (@([regex]::Matches($pre, '\\(?:definecolor|colorlet)\{[^{}]+\}(?:\{[^{}]+\})?\{[^{}]+\}') |
             ForEach-Object { $_.Value }) -join "`n")
-    $script:tikzCounter = 0
-    $script:TikzStore = [System.Collections.Generic.List[object]]::new()
+    # tikzpicture / tikzcd: text-mode float envs — stash the whole env before math protection (node labels
+    # carry their own $..$). xy-pic \begin{xy}..\end{xy} is likewise a text-mode env (the \xymatrix COMMAND
+    # is math-mode and is diverted from Store-Math instead). One unified store, numbered in document order.
+    # tikzcd goes ENCODE-FIRST: a provably-linear chain transpiles to inline arrows and is emitted as a
+    # display-math span (real math, the goal register) instead of ever reaching the store. Authors often
+    # wrap tikzcd in \[..\] themselves — strip that wrapper first so the emission never nests delimiters.
+    $body = [regex]::Replace($body, '(?s)\\\[\s*(\\begin\{tikzcd\}.*?\\end\{tikzcd\})\s*\\\]', '$1')
     $body = [regex]::Replace($body, '(?s)\\begin\{(tikzpicture|tikzcd)\}.*?\\end\{\1\}', {
-            param($m) $script:tikzCounter++
-            $script:TikzStore.Add([pscustomobject]@{ n = $script:tikzCounter; env = $m.Groups[1].Value; source = $m.Value })
-            "`n`n*[diagram $($script:tikzCounter) — TikZ source, not rendered]*`n`n" })
+            param($m)
+            if ($m.Groups[1].Value -eq 'tikzcd') {
+                $enc = Convert-TikzcdDiagram $m.Value
+                if ($null -ne $enc) { $script:CdEncoded++; return "`n`n\[`n$enc`n\]`n`n" }
+            }
+            Add-Diagram $m.Value $m.Groups[1].Value $true })
+    $body = [regex]::Replace($body, '(?s)\\begin\{xy\}.*?\\end\{xy\}', {
+            param($m) Add-Diagram $m.Value 'xy' $true })
 
     # figure-grid tabulars (cells are \includegraphics) are not renderable tables, and their inline-$ caption
     # cells can swallow the whole grid into a spurious math span — collapse them to a figure marker up front.
@@ -736,6 +1104,10 @@ function ConvertFrom-Latex {
 
     # KaTeX ships \xrightarrow / \xleftarrow but not the amsmath \xlong… variants
     $body = $body -replace '\\xlong(right|left)arrow', '\x$1arrow'
+    # amsmath's capitalized accent aliases (\Bar, \Hat, … — for nesting accents) are not in KaTeX; the
+    # lowercase accents are the same glyphs. Case-sensitive + word-bounded (\Vec must not touch \Vector).
+    $body = [regex]::Replace($body, '\\(Bar|Hat|Tilde|Vec|Dot|Ddot|Check|Breve|Acute|Grave)(?![a-zA-Z])',
+        { param($m) '\' + $m.Groups[1].Value.ToLowerInvariant() })
     $body = $body -replace '\\lefteqn\b', ''                                   # KaTeX-unsupported; drop, keep its {group}
     $body = $body -replace '\\(?:mbox|hbox)(?=\s*\{)', '\text'                 # KaTeX has no \mbox/\hbox — \text works in math AND is unwrapped in prose below; must precede Protect-LatexMath
     $body = Convert-BorderMatrix $body                                         # \bordermatrix -> ruled array
@@ -937,14 +1309,19 @@ function Resolve-LatexInputs {
 # Carry the figures the markdown references OUT of the (about-to-be-deleted) tarball workdir, so image
 # links resolve beside the deliverable instead of dying with the temp dir. Targets are probed against the
 # workdir tree by leaf name with extension fallback — \includegraphics routinely omits the extension and
-# \graphicspath redirects the dir; a recursive leaf search sidesteps both. Raster formats stay image
-# links (they render); vector-only source figures (pdf/eps/ps) become plain links — a markdown image tag
-# on a .pdf renders broken, and the honest form is still clickable and machine-findable for weaving.
+# \graphicspath redirects the dir; a recursive leaf search sidesteps both. PNG is the TERMINAL image
+# register (issues/latex-oracle-images.md): raster formats (png/jpg/…) pass straight through; PDF assets —
+# the DOMINANT \includegraphics format across the corpus — are rasterized to PNG via MuPDF (batched, one
+# node invocation); EPS/PS (no MuPDF handler) stay a FLAGGED marker until the tectonic wrap, never a
+# broken image tag. Missing/unconverted always flag — never a silently-dead link.
 function Copy-LatexFigures {
     param([string]$Markdown, [string]$WorkDir, [string]$OutDir, [string]$Slug)
-    $raster = @('.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp')
-    $state = @{ copied = 0; missing = 0 }
+    $rasterExt = @('.png', '.jpg', '.jpeg', '.gif', '.webp')   # pass straight through (already a terminal raster)
+    $preferExt = $rasterExt + '.svg'                            # glob-sibling preference: a raster/svg twin beats the .pdf
+    $state = @{ copied = 0; png = 0; missing = 0 }
     $destRoot = Join-Path $OutDir $Slug
+    $pdfJobs = [System.Collections.Generic.List[object]]::new()  # PDF assets -> PNG, batched into one raster call
+    $epsJobs = [System.Collections.Generic.List[object]]::new()  # EPS/PS assets -> PNG via tectonic wrap (no MuPDF handler)
     $Markdown = [regex]::Replace($Markdown, '!\[\]\(([^)\s]+)\)', {
             param($m)
             $target = $m.Groups[1].Value
@@ -956,17 +1333,76 @@ function Copy-LatexFigures {
             if (-not $hit) {
                 $pattern = if ([System.IO.Path]::GetExtension($leaf)) { $leaf } else { "$leaf.*" }
                 $hit = @(Get-ChildItem -Path $WorkDir -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue |
-                         Sort-Object { $raster.IndexOf($_.Extension.ToLowerInvariant()) -lt 0 }) | Select-Object -First 1   # prefer a raster sibling over the .pdf twin
+                         Sort-Object { $preferExt.IndexOf($_.Extension.ToLowerInvariant()) -lt 0 }) | Select-Object -First 1   # prefer a raster sibling over the .pdf twin
             }
             if (-not $hit) { $state.missing++; return "*[figure: $leaf — source file not found]*" }
             if (-not (Test-Path -LiteralPath $destRoot)) { New-Item -ItemType Directory -Force -Path $destRoot | Out-Null }
-            Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
-            $state.copied++
-            $rel = "$Slug/$($hit.Name)"
-            if ($raster -contains $hit.Extension.ToLowerInvariant()) { return "![]($rel)" }
-            return "[figure ($($hit.Extension.TrimStart('.'))): $($hit.Name)]($rel)"
+            $ext = $hit.Extension.ToLowerInvariant()
+            if ($rasterExt -contains $ext) {
+                Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
+                $state.copied++; $state.png++
+                return "![]($Slug/$($hit.Name))"
+            }
+            if ($ext -eq '.pdf') {
+                # PDF -> PNG: defer to a batched MuPDF call. Emit a placeholder now (unique per asset via the
+                # job count); resolved to the PNG link — or a flagged marker on failure — after the batch.
+                $png = [System.IO.Path]::GetFileNameWithoutExtension($hit.Name) + '.png'
+                $ph = "@@FIGSLOT$($pdfJobs.Count)@@"
+                $pdfJobs.Add([pscustomobject]@{ ph = $ph; pdf = $hit.FullName; out = (Join-Path $destRoot $png); rel = "$Slug/$png"; leaf = $hit.Name })
+                return $ph
+            }
+            if ($ext -eq '.svg') {
+                # vector, but this build has no SVG rasterizer — pass the SVG through as an image link (renders
+                # in most viewers). Not yet terminal PNG; rare as an \includegraphics asset. Flagged in counts.
+                Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
+                $state.copied++
+                return "![]($Slug/$($hit.Name))"
+            }
+            if ($ext -eq '.eps' -or $ext -eq '.ps') {
+                # EPS/PS: no MuPDF handler — defer to a tectonic \includegraphics wrap (-> PDF -> PNG). Emit a
+                # placeholder now; resolved to the PNG link or a flagged marker after the batch.
+                $png = [System.IO.Path]::GetFileNameWithoutExtension($hit.Name) + '.png'
+                $ph = "@@EPSSLOT$($epsJobs.Count)@@"
+                $epsJobs.Add([pscustomobject]@{ ph = $ph; src = $hit.FullName; out = (Join-Path $destRoot $png); rel = "$Slug/$png"; leaf = $hit.Name; ext = $ext.TrimStart('.') })
+                return $ph
+            }
+            # other non-raster sources: no conversion path — flag rather than emit a broken image tag.
+            $state.missing++
+            return "*[figure ($($ext.TrimStart('.'))): $leaf — vector source, PNG pending]*"
         })
-    return [pscustomobject]@{ markdown = $Markdown; copied = $state.copied; missing = $state.missing }
+
+    # batch-rasterize the PDF assets to PNG in ONE MuPDF invocation, then resolve their placeholders.
+    if ($pdfJobs.Count -gt 0) {
+        New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
+        $ok = @{}
+        if (Test-PdfRasterAvailable) {
+            try {
+                $res = Invoke-PdfRaster -Jobs @($pdfJobs | ForEach-Object { @{ pdf = $_.pdf; out = $_.out } }) -Dpi 200 -WorkDir $destRoot
+                foreach ($r in @($res)) { $ok[$r.out] = [bool]$r.ok }
+            } catch { Write-Verbose "pdf-raster failed: $($_.Exception.Message)" }
+        }
+        foreach ($j in $pdfJobs) {
+            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![]($($j.rel))") }
+            else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, "*[figure (pdf): $($j.leaf) — PNG conversion pending]*") }
+        }
+    }
+
+    # EPS/PS assets: wrap each in a graphicx standalone doc, compile with tectonic (-> PDF), rasterize to PNG.
+    if ($epsJobs.Count -gt 0) {
+        New-Item -ItemType Directory -Force -Path $destRoot | Out-Null
+        $ok = @{}
+        if (Test-TexRenderAvailable) {
+            try {
+                $res = Invoke-TexGraphicRender -Assets @($epsJobs | ForEach-Object { @{ src = $_.src; out = $_.out } }) -OutDir $destRoot -Dpi 200
+                foreach ($r in @($res)) { $ok[$r.out] = [bool]$r.ok }
+            } catch { Write-Verbose "tex-graphic failed: $($_.Exception.Message)" }
+        }
+        foreach ($j in $epsJobs) {
+            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![]($($j.rel))") }
+            else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, "*[figure ($($j.ext)): $($j.leaf) — PNG conversion pending]*") }
+        }
+    }
+    return [pscustomobject]@{ markdown = $Markdown; copied = $state.copied; png = $state.png; missing = $state.missing }
 }
 
 function Invoke-ArxivLatexToMarkdown {
@@ -1001,16 +1437,37 @@ function Invoke-ArxivLatexToMarkdown {
     $figs = Copy-LatexFigures -Markdown $md -WorkDir $work -OutDir $OutDir -Slug $Slug
     $md = $figs.markdown
 
-    # source-authoritative diagrams: render the stashed TikZ envs to SVG and swap their markers for
-    # live image links. Macro-expanded first (node labels use the paper's \newcommand vocabulary).
-    # Graceful degradation at every level: renderer absent -> all markers stay; one diagram failing
-    # to compile -> that marker stays; nothing throws the conversion.
-    $rendered = 0
-    if ($script:TikzStore.Count -gt 0 -and (Test-TikzRenderAvailable)) {
-        $texMacros = Get-LatexMacros $tex
-        $jobs = @(foreach ($t in $script:TikzStore) {
+    # source-authoritative diagrams (TikZ/tikzcd/xy-pic): render each to a PNG and swap its marker for a
+    # live image link. PNG is the terminal register (issues/latex-oracle-images.md). A rendering ladder,
+    # each rung a graceful fallback for the one above; nothing throws the conversion:
+    #   rung 1  tectonic: compile the snippet (author preamble replayed — macros are the fidelity trap) ->
+    #           PDF -> MuPDF -> PNG. One path for ALL packages, incl. xy-pic; the most faithful.
+    #   rung 2  tikzjax -> SVG: zero-dependency fallback for plain TikZ/tikzcd when tectonic is absent.
+    #           (xy-pic is beyond tikzjax; SVG is a non-terminal intermediate accepted only as degradation.)
+    #   rung 3  flagged marker stays: never a silent drop, never KaTeX-invalid source (the xy-pic bug fix).
+    $destDir  = Join-Path $OutDir $Slug
+    $texMacros = Get-LatexMacros $tex
+    $diag     = @{ png = 0; svg = 0 }
+    $doneN    = [System.Collections.Generic.HashSet[int]]::new()
+    $pngN     = [System.Collections.Generic.HashSet[int]]::new()   # which of doneN landed as PNG (vs SVG fallback)
+
+    if ($script:DiagramStore.Count -gt 0 -and (Test-TexRenderAvailable)) {
+        $texJobs = @($script:DiagramStore | ForEach-Object {
+                @{ id = "diagram-$($_.n)"; source = (Expand-LatexMacros $_.source $texMacros); kind = $_.kind; display = [bool]$_.display } })
+        try {
+            $rep = Invoke-TexDiagramRender -Jobs $texJobs -Preamble $script:TikzPreamble -TikzLibraries $script:TikzLibs -OutDir $destDir -Dpi 200
+            $ok = @{}; foreach ($r in @($rep.results)) { if ($r.ok) { $ok[[int]($r.id -replace '^diagram-', '')] = $true } }
+            foreach ($d in $script:DiagramStore) {
+                if ($ok[$d.n]) { $md = $md.Replace((Format-DiagramMarker $d.n $d.kind), "![]($Slug/diagram-$($d.n).png)"); [void]$doneN.Add($d.n); [void]$pngN.Add($d.n); $diag.png++ }
+            }
+        } catch { Write-Verbose "tex-render (tectonic) failed: $($_.Exception.Message)" }
+    }
+
+    $tikzTodo = @($script:DiagramStore | Where-Object { $_.kind -in 'tikzpicture', 'tikzcd' -and -not $doneN.Contains($_.n) })
+    if ($tikzTodo.Count -gt 0 -and (Test-TikzRenderAvailable)) {
+        $jobs = @(foreach ($t in $tikzTodo) {
                 $pkgs = @{} + $script:TikzPkgs
-                if ($t.env -eq 'tikzcd') { $pkgs['tikz-cd'] = '' }
+                if ($t.kind -eq 'tikzcd') { $pkgs['tikz-cd'] = '' }
                 $src = Expand-LatexMacros $t.source $texMacros
                 # the tikz stash happens BEFORE the body-wide NiceMatrix normalization — apply the same
                 # rewrite here (nicematrix is not in the renderer's texmf tree; stock matrices are)
@@ -1020,15 +1477,34 @@ function Invoke-ArxivLatexToMarkdown {
                     tikzLibraries = [string]$script:TikzLibs; texPackages = $pkgs; preamble = [string]$script:TikzPre }
             })
         try {
-            $rep = Invoke-TikzRender -Jobs $jobs -OutDir (Join-Path $OutDir $Slug)
+            $rep = Invoke-TikzRender -Jobs $jobs -OutDir $destDir
             foreach ($res in @($rep.results)) {
                 if (-not $res.ok) { continue }
                 $n = [int]($res.id -replace '^diagram-', '')
-                $md = $md.Replace("*[diagram $n — TikZ source, not rendered]*", "![]($Slug/$($res.id).svg)")
-                $rendered++
+                $kind = (@($script:DiagramStore | Where-Object { $_.n -eq $n })[0]).kind
+                $md = $md.Replace((Format-DiagramMarker $n $kind), "![]($Slug/diagram-$n.svg)")
+                [void]$doneN.Add($n); $diag.svg++
             }
         } catch { Write-Verbose "tikz-render failed: $($_.Exception.Message)" }
     }
+    $rendered = $diag.png + $diag.svg
+    $diagUnrendered = $script:DiagramStore.Count - $doneN.Count
+
+    # diagrams work-list — the reasoning-agent seam (encode-first doctrine, issues/latex-oracle-images.md):
+    # every diagram that did NOT land as semantic math is listed with its original source and disposition,
+    # so a downstream translation pass (MCP harness -> reasoning model) can attempt an inline-arrow /
+    # \begin{array} encoding and swap the image or marker out for real math. The image is a STOPGAP, not
+    # the deliverable register. UTF-8-no-BOM JSONL in the tex run dir beside the other sidecars.
+    $dsb = [System.Text.StringBuilder]::new()
+    foreach ($d in $script:DiagramStore) {
+        $status = if (-not $doneN.Contains($d.n)) { 'marker' } elseif ($pngN.Contains($d.n)) { 'png' } else { 'svg' }
+        [void]$dsb.AppendLine(([ordered]@{
+                    n = $d.n; kind = $d.kind; status = $status
+                    image = $(if ($status -ne 'marker') { "$Slug/diagram-$($d.n).$status" } else { $null })
+                    source = $d.source
+                } | ConvertTo-Json -Depth 3 -Compress))
+    }
+    [System.IO.File]::WriteAllText((Join-Path $work "$Slug.diagrams.jsonl"), $dsb.ToString(), $u8)
 
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
@@ -1049,9 +1525,15 @@ function Invoke-ArxivLatexToMarkdown {
         tables            = $oracleCounts.tables
         theorems          = $oracleCounts.theorems
         equations         = $oracleCounts.equations
-        figures_copied    = [int]$figs.copied             # \includegraphics images actually resolved on disk
+        figures_copied    = [int]$figs.copied             # \includegraphics assets resolved on disk (PDF→PNG converted, raster passthrough)
+        figures_png       = [int]$figs.png                 # of those, how many landed as PNG (converted or already raster) — the terminal register
         figures_missing   = [int]$figs.missing            # referenced-but-absent → oracle CONFIDENCE flag
-        diagrams_rendered = [int]$rendered                # TikZ markers swapped for source-rendered SVGs (xy-pic NOT rendered yet)
+        diagrams_found    = [int]$script:DiagramStore.Count # TikZ + tikzcd + xy-pic envs stashed (could NOT be encoded as math)
+        diagrams_encoded  = [int]($script:XyEncoded + $script:CdEncoded)   # xymatrix + tikzcd spans transpiled to semantic inline arrows — REAL MATH, the goal register
+        diagrams_rendered = [int]$rendered                 # markers swapped for images (PNG via tectonic + SVG via tikzjax fallback)
+        diagrams_png      = [int]$diag.png                 # rendered to PNG (tectonic → PDF → MuPDF) — the terminal register
+        diagrams_svg      = [int]$diag.svg                 # rendered to SVG (tikzjax fallback, non-terminal intermediate; present only when tectonic absent)
+        diagrams_marker   = [int]$diagUnrendered           # left as a FLAGGED marker (no compiler / compile failed) — never a silent drop
         main_tex          = (Split-Path -Leaf $main)
         run_utc           = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
     }
@@ -1064,9 +1546,11 @@ function Invoke-ArxivLatexToMarkdown {
         bytes = $md.Length; macros = (Get-LatexMacros $tex).Count
         sections = ([regex]::Matches($md, '(?m)^##\s')).Count
         references = if ($refs) { @($refs -split "`n").Count } else { 0 }
-        figures = $figs.copied; figures_missing = $figs.missing
+        figures = $figs.copied; figures_png = $figs.png; figures_missing = $figs.missing
         oracle_figures = $oracleCounts.oracle_figures  # \includegraphics placements + TikZ diagrams
-        diagrams = [int]$script:tikzCounter            # TikZ envs found in source
-        diagrams_rendered = $rendered                  # markers swapped for source-rendered SVGs
+        diagrams = [int]$script:DiagramStore.Count     # TikZ + tikzcd + xy-pic envs that could NOT be encoded as math
+        diagrams_encoded = [int]($script:XyEncoded + $script:CdEncoded)   # xymatrix + tikzcd transpiled to inline arrows (real math)
+        diagrams_rendered = $rendered                  # markers swapped for images
+        diagrams_png = $diag.png; diagrams_svg = $diag.svg; diagrams_marker = $diagUnrendered
     }
 }
