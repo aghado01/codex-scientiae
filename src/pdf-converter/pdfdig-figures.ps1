@@ -109,8 +109,11 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
 }
 
 # Reattach caption text to each kind=figure region. Geometry finds the CANDIDATES — Lane-3 text
-# blocks directly BELOW (figures) or, failing that, ABOVE (tables), horizontally overlapping the
-# figure by >= caption_min_overlap_frac and within caption_max_gap_em text-heights. The caption
+# blocks directly BELOW (figures) or, failing that, ABOVE (tables), horizontally overlapping by
+# >= caption_min_overlap_frac of the NARROWER of figure/block width, within caption_max_gap_em
+# text-heights (a short "Fig. N" caption fully under a wide figure must not be rejected because
+# the figure's width is the denominator — the dominant miss class in the 2026-07-05 diagnostic,
+# 2205 Figs 6/8/12/13 + 2111 Fig 3; see issues/clustering/tier2-handoff.md ledger). The caption
 # CUE (Figure/Fig/Table N in the block's first ~14 chars) SELECTS the caption among them, so an
 # adjacent section heading or body paragraph (no cue) is not attached, and a caption-less region
 # stays null rather than grabbing the wrong block. Prefix-scanned (not ^-anchored) so a leading
@@ -147,7 +150,12 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
             foreach ($blk in $pageBlocks) {
                 $bl = $blk.bx[0]; $bb = $blk.bx[1]; $br = $blk.bx[2]; $bt = $blk.bx[3]
                 $ovl = [math]::Min($figR, $br) - [math]::Max($figL, $bl)
-                if ($ovl / $figW -lt $minOvl) { continue }
+                # denominator = the NARROWER of the two widths: min() only changes behavior for blocks
+                # narrower than the figure (the short-caption miss class); wide blocks keep the old
+                # figure-width behavior, and the cue + gap gates still apply, so in-text references
+                # ("see Figure 3") don't start attaching.
+                $den = [math]::Min($figW, $br - $bl)
+                if ($den -le 0 -or ($ovl / $den) -lt $minOvl) { continue }
                 $gap = if ($pos -eq 'below') { $figB - $bt } else { $bb - $figT }
                 if ($gap -lt -2 -or $gap -gt $maxGap -or $gap -ge $bestGap) { continue }
                 $txt = if ($blk.text_preview) { [string]$blk.text_preview } else { '' }

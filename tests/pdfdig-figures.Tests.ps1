@@ -304,3 +304,34 @@ Describe 'pdfdig figure-region clustering — subfigure grouping' {
         $result.Summary.subfigure_groups  | Should -Be 0
     }
 }
+
+Describe 'pdfdig figure-region clustering — narrow-caption overlap denominator' {
+    BeforeAll {
+        $script:wn = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-capfix-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wn | Out-Null
+        # One WIDE figure (8 boxes in a row, union ~370pt wide) + a NARROW "Fig. 9" caption (19pt wide)
+        # fully inside its x-span, just below — the 2205 miss class: ovl/figW ≈ 0.05 (old gate rejects),
+        # ovl/min(figW, capW) = 1.0 (fixed gate attaches).
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($k in 0..7) {
+            $x = $k * 50
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},100,{2},110]}}' -f $id++, $x, ($x + 10)))
+        }
+        [IO.File]::WriteAllLines((Join-Path $script:wn 'n.paths.jsonl'), $paths)
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:wn 'n.letters.jsonl'), $letters)
+        [IO.File]::WriteAllLines((Join-Path $script:wn 'n.blocks.jsonl'),
+            @('{"id":1,"page":1,"bx":[150,80,169,90],"text_preview":"Fig. 9"}'))
+        $script:rn = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wn 'n.paths.jsonl') -PassThru
+    }
+    AfterAll { if ($script:wn -and (Test-Path $script:wn)) { Remove-Item -Recurse -Force $script:wn } }
+
+    It 'attaches a narrow caption fully under a wide figure' {
+        $fig = @($script:rn.Figures | Where-Object { $_.kind -eq 'figure' })[0]
+        $fig.caption      | Should -Not -BeNullOrEmpty
+        $fig.caption.text | Should -Match 'Fig\. 9'
+        $script:rn.Summary.captioned_figures | Should -Be 1
+    }
+}

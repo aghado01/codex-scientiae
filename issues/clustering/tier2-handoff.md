@@ -33,44 +33,77 @@ separate the two populations, pig's real-figure detection is already good and 22
 
 ---
 
-## Current scoreboard (ph-zigzag) — POST subfigure grouping (2026-07-05)
+## Current scoreboard (ph-zigzag) — POST subfigure grouping + caption-denominator fix (2026-07-05)
 
 ```
 paper            cap  fig  dFig  mechanism         uncap inline dInl  img
-2111.15058v3      3    4    -1   missed-figure      12     5     7     0
+2111.15058v3      4    4     0   exact              11     5     6     0
 2112.02352        4    4     0   exact              11    17    -6     0
 2204.11080v2      6    6     0   exact               8     1     7     5
-2205.11338v3      7   13    -6   raster-blindness   18     0    18    31
-2210.00916       12   16    -4   missed-figure*     50    23    27     1
+2205.11338v3     11   13    -2   block-inside(C)    14     0    14    31
+2210.00916       12   16    -4   D+B+C (see ledger) 50    23    27     1
 2302.12796v2      5    5     0   exact              13     6     7     0
-2307.07462v5      8   13    -5   missed-figure       4    10    -6     0   (figures_missing:5)
-2403.08110v4      5    6    -1   raster-blindness   19     3    16     3
-2501.00322v1     11   10    +1   over-detect        11    13    -2     0
-2603.03037v1      8    7    +1   over-detect         1     0     1     9
+2307.07462v5      8   13    -5   oracle-noise        4    10    -6     0   (figures_missing:5)
+2403.08110v4      5    6    -1   gap-adjacent(B)    19     3    16     3
+2501.00322v1     11   10    +1   table-cue seam?    11    13    -2     0
+2603.03037v1      9    7    +2   TABLE-CUE SEAM      0     0     0     9
 
-PRIMARY  captioned figures: 2 over / 5 under / 3 exact, mean |dFig| = 1.9   (was 3.7 pre-grouping)
-SECONDARY inline diagrams:  mean |dInl| = 9.7  ← the geometric fragmentation lives HERE (untouched)
+PRIMARY  captioned figures: 2 over / 4 under / 4 exact, mean |dFig| = 1.5   (3.7 → 1.9 → 1.5)
+SECONDARY inline diagrams:  mean |dInl| = 9.1  ← the geometric fragmentation lives HERE (untouched)
 ```
 `cap`=pig captioned regions, `fig`=captioned floats, `uncap`=pig uncaptioned regions,
 `inline`=tikz/xy diagrams outside floats, `img`=pig GetImages() bitmaps.
-`*` the gate's attribution heuristic (under ∧ img>0 → raster) mislabels 2210's −4 as raster (it has 1 img);
-the real cause is 4 missed CAPTIONS (see below) — the attribution needs refining now that over-count is gone.
 
-**Reading it (subfigure grouping LANDED — commit pending):**
-- **The over-count tail is ELIMINATED.** 2112 +5→0, 2204 +4→0, 2302 +3→0, 2501 +10→+1, 2403 +6→−1,
-  2603 +5→+1. PRIMARY mean |dFig| 3.7 → **1.9**. Merge rule: captioned figures sharing (page, caption
-  block_id) collapse to one (the shared float caption is the grouping signal). `flag=subfigure_merged`.
-- **Some previous "exact" scores were COINCIDENTAL cancellation.** 2210 was "16=16 exact" only because 12
-  real figures + 4 subfigure-duplicates ≈ 16 floats by luck. Grouping removed the 4 duplicates and exposed
-  that pig captions only 12 of 16 figures (missing Figures 1, 4, 7, 14 — their captions weren't attached).
-  The −4 is now HONEST under-detection, not a regression. Verified: all 4 merges are clean single-caption
-  figures (Figure 2/3/5/15), each a real multi-panel figure.
-- **The residual PRIMARY error is now almost purely UNDER-count** = missed/unattached captions (2210 −4;
-  Fig 1/4/7/14 likely sit in the SECONDARY uncaptioned pool → improving caption reattachment would move them
-  to PRIMARY, a two-birds fix) + raster (2205 −6). Bidirectional error is gone.
-- **The geometric fragmentation is the SECONDARY population** — 2210's 50 uncaptioned regions vs 23 inline
-  diagrams — untouched; next lever = stream-block union-find (below).
+**Reading it (both PRIMARY fixes LANDED: subfigure grouping `aa54303` + caption min-width denominator):**
+- **Over-count tail eliminated by grouping** (2112 +5→0, 2204 +4→0, 2302 +3→0, 2501 +10→+1, 2403 +6→−1);
+  **caption-recovery by the denominator fix** (2111 −1→0 exact; 2205 −6→−2, Figs 6/8/12/13 recovered).
+  The two-birds effect confirmed: SECONDARY also improved (9.7→9.1) as recovered captions left the
+  uncaptioned pool (2205 uncap 18→14, 2603 1→0).
+- **2210's "16=16 exact" was COINCIDENTAL cancellation** (12 real + 4 subfigure-duplicates ≈ 16 floats by
+  luck); grouping exposed 4 missed captions (Figures 1/4/7/14) — honest under-detection, not a regression.
+- **2603's +2 is a GATE seam, not detection error**: the two extra captioned regions are Table 2 + Table 3
+  (verified). Cue words rightly include Table, but PRIMARY scores ALL captioned regions vs FIGURE floats
+  only. Fix = cue-TYPE split (see ledger, instrument tier); 2603 is actually exact; 2501's +1 likely same.
 - **Do NOT chase** 2307 (`figures_missing:5`, oracle-side low confidence).
+
+---
+
+## Caption-attachment findings ledger (2026-07-05) — PRESERVE for the post-consensus circle-back
+
+Probe: `scratch/caption-diag.ps1 -Slug <slug>` (committed; replicates the lane's cue-match, classifies every
+cue-block CLAIMED/UNCLAIMED with a per-miss why). Items sorted by the criterion **"would this fix survive the
+consensus landing?"** → *instrument* (fix now — it judges the consensus) / *plausibly-subsumed* (do NOT
+micro-fix — consensus replaces region formation; re-diagnose after milestone-1) / *orthogonal* (queue
+independently; no clustering change can help).
+
+- **A. Overlap-denominator bug — ✅ FIXED (instrument).** `ovl/figW` rejected short "Fig. N" captions fully
+  under wide figures (2205 Figs 6/8/12/13; 2111 Fig 3). Now `ovl/min(figW, blockW)` — only narrower-than-figure
+  blocks change behavior; cue+gap gates still exclude in-text refs (verified: no false attachments corpus-wide).
+- **A2. Table-cue gate seam — OPEN (instrument, small).** The caption record stores `cue=$true` (boolean), not
+  WHICH cue word matched. Store the matched word class (figure|table|algorithm), then the gate scores
+  figure-cued regions vs figure floats (and table-cued vs oracle `tables`, already counted). Explains 2603 +2
+  (verified Table 2/3) and probably 2501 +1. Also refine the gate's `mechanism` attribution (currently
+  `under ∧ img>0 → raster` mislabels caption-miss papers).
+- **B. Gap-adjacent misses — plausibly SUBSUMED.** 2210 Fig 7 (gap 45 vs 43.6 limit), 2403 Fig 5 (43 vs 40).
+  The gap is measured from the REGION bbox — an under-merged figure's bbox sits farther from its caption;
+  consensus-merged regions may close these gaps by themselves. Do NOT bump `caption_max_gap_em` now: the
+  false-positive risk is in-text references (see guardrail), and tuning against regions about to be reshaped
+  is calibration-set overfit.
+- **C. Block-inside-figure — plausibly SUBSUMED.** 2210 Fig 14; 2205 Figs 7/10: the region bbox extends over
+  the caption (both gaps negative). Formation artifact — re-diagnose post-consensus; if it survives, the fix
+  is "accept a caption within the region's lower band".
+- **D. Lane-3 block-detection misses — ORTHOGONAL.** 2210 Figs 1/4: caption text never became a cue-prefixed
+  block at all. Text-lane (XYCut/blocks) work; queue independently.
+- **E. Kind-skip — SUBSUMED BY DESIGN.** 2403 Fig 3 (sparse), 2205 Fig 12 (degenerate): a real figure demoted
+  by the density/extent gates is skipped by captioning. Post-merge density rises (more ink per region), and
+  "a caption vouches for this region" is a VIEW VOTE — it belongs in the consensus as evidence, not as an
+  ad-hoc rescue rule now.
+- **Guardrail (why A was safe alone and B is not):** the cue regex matches IN-TEXT references ("Figure 2
+  illustrates…", "of Fig. 11. While…" — 4 across 2403/2205); today they fail on gap/kind. Any gap or overlap
+  relaxation must pair with a caption-SHAPE guard (cue-then-colon / short-block heuristic).
+- **Circle-back procedure:** after consensus milestone-1 lands → re-run `Compare-FigureCounts` (both
+  populations) → re-run `scratch/caption-diag.ps1` on 2210/2205/2403 → whatever B/C/E misses SURVIVED the
+  reshaped regions are real, and get targeted fixes then. A2 and D don't wait on consensus.
 
 ---
 
@@ -95,13 +128,13 @@ representation of a diagram. Structured 2-D transcription, if ever, is pdfdig's 
 
 ## Next experiments, in order, each measured against the gate
 
-1. **Subfigure grouping (PRIMARY over-count) — ✅ LANDED 2026-07-05 (commit pending).** Captioned figures
+1. **Subfigure grouping (PRIMARY over-count) — ✅ LANDED 2026-07-05 (`aa54303`).** Captioned figures
    sharing (page, caption block_id) merge into one region (target = float granularity). Config knob
    `subfigure_grouping_enabled`; `Group-SubfiguresByCaption` / `Merge-FigureGroup` in `pdfdig-figures.ps1`;
-   4 Pester tests. PRIMARY mean |dFig| 3.7 → 1.9; over-count tail eliminated. **Follow-on surfaced:** the
-   residual is now UNDER-count from missed/unattached captions (2210's Fig 1/4/7/14) — improve caption
-   reattachment next (likely moves them out of the SECONDARY uncaptioned pool too). Also refine the gate's
-   under-count attribution (currently mislabels missed-caption as raster).
+   4 Pester tests. PRIMARY mean |dFig| 3.7 → 1.9; over-count tail eliminated.
+   **1b. Caption overlap denominator — ✅ LANDED 2026-07-05.** `ovl/min(figW, blockW)`; PRIMARY 1.9 → 1.5,
+   4 exact. The remaining caption issues are deliberately NOT micro-fixed — see the findings ledger above
+   (B/C/E await the consensus re-diagnosis; A2 + D are queued instrument/text-lane work).
 
 2. **Inline-diagram de-fragmentation** (Option B). Reduce the SECONDARY dInl (2210: 50→~23) — the goal is
    clean WHOLE-diagram crops, so this is a MERGE problem (fewer regions). Levers, measured against the
