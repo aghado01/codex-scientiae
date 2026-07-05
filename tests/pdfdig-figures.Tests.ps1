@@ -32,6 +32,13 @@ BeforeAll {
     foreach ($lx in @(50, 62, 74, 86)) {
         $rows.Add(('{{"id":{0},"page":3,"bbox":[{1},100,{2},100.4]}}' -f $id++, $lx, ($lx + 10)))
     }
+    # Page 4: three small marks scattered across the column — <= min_pts so grouped as one region,
+    # but their union bbox spans the page while holding almost no ink: a SPARSE phantom the density
+    # gate must reject (kind=sparse, not figure). Rule tags are irrelevant — the gate is rule-
+    # agnostic (rules STAY in clustering; density decides), which is the ph-zigzag over-count fix.
+    $rows.Add(('{{"id":{0},"page":4,"bbox":[57,90,63,96]}}'    -f $id++))
+    $rows.Add(('{{"id":{0},"page":4,"bbox":[300,300,306,306]}}' -f $id++))
+    $rows.Add(('{{"id":{0},"page":4,"bbox":[547,538,553,544]}}' -f $id++))
     $pathsFile = Join-Path $work 'synth.paths.jsonl'
     [IO.File]::WriteAllLines($pathsFile, $rows)
 
@@ -79,6 +86,13 @@ Describe 'pdfdig figure-region clustering' {
         $p3 = @($result.Figures | Where-Object { $_.page -eq 3 })
         $p3.Count   | Should -Be 1
         $p3[0].kind | Should -Be 'degenerate'
+    }
+
+    It 'density-gates a large sparse region as kind=sparse (not figure)' {
+        $p4 = @($result.Figures | Where-Object { $_.page -eq 4 })
+        $p4.Count              | Should -Be 1
+        $p4[0].kind            | Should -Be 'sparse'
+        $result.Summary.sparse | Should -Be 1
     }
 
     It 'detects body font size and records text-normalized area on figures' {

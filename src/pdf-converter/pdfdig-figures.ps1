@@ -189,6 +189,7 @@ function ConvertTo-FigureRegions {
     $fragMin        = [int]$cfg.fragmentation_flag_min_clusters
     $defragEnabled  = [bool]$cfg.defrag_enabled
     $defragMinLogGap = [double]$cfg.defrag_min_elbow_log_gap
+    $minDensity     = [double]$cfg.min_region_density
     $captionEnabled = [bool]$cfg.caption_enabled
 
     if (-not $OutPath) {
@@ -205,40 +206,53 @@ function ConvertTo-FigureRegions {
     $figures = [System.Collections.Generic.List[object]]::new()
     $summary = [ordered]@{
         pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
-        noise_paths = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0
+        noise_paths = 0; sparse = 0; too_few_pages = 0; fragmentation_suspect_pages = 0; defragged_pages = 0
         captioned_figures = 0; body_font_pt = $bodyPt
     }
 
     # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
-    # kind is the tunable opinion (degenerate|mark|figure). Nothing is dropped. id = list count
-    # before append; $figures/$summary and the config scalars resolve through the enclosing scope.
+    # density = paths / area_em2 is the ink-coverage measurement. kind is the tunable opinion
+    # (degenerate|mark|sparse|figure): a big-but-SPARSE region (a few furniture/QED strokes whose
+    # union bbox spans a text column) is a phantom, NOT a figure — the density gate separates it
+    # from a big-DENSE diagram, which area alone cannot. Nothing is dropped. id = list count before
+    # append; $figures/$summary and the config scalars resolve through the enclosing scope.
     $addRegion = {
         param($page, $members, $flag)
         $bbox = Get-FigureUnionBbox $members
         if (-not $bbox) { return }
         $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
         $area = [math]::Round($w * $h, 1)
-        $areaEm = if ($bodyArea) { [math]::Round($area / $bodyArea, 3) } else { $null }
+        $pc = @($members).Count
+        $areaEm  = if ($bodyArea) { [math]::Round($area / $bodyArea, 3) } else { $null }
+        $density = if ($areaEm -and $areaEm -gt 0) { [math]::Round($pc / $areaEm, 4) } else { $null }
         $kind =
             if ($w -lt $degenEps -or $h -lt $degenEps) { 'degenerate' }
-            elseif ($null -ne $bodyArea) { if ($areaEm -lt $floorEm) { 'mark' } else { 'figure' } }
+            elseif ($null -ne $bodyArea) {
+                if     ($areaEm -lt $floorEm)                             { 'mark' }
+                elseif ($null -ne $density -and $density -lt $minDensity) { 'sparse' }
+                else                                                      { 'figure' }
+            }
             else { if ($area -lt $fallbackPt2) { 'mark' } else { 'figure' } }
         $figures.Add([ordered]@{
-            id = $figures.Count; page = $page; bbox = $bbox; area = $area; area_em2 = $areaEm
-            path_ids = @($members.id); path_count = @($members).Count
+            id = $figures.Count; page = $page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
+            path_ids = @($members.id); path_count = $pc
             kind = $kind; flag = $flag; caption = $null
         })
         $summary.regions++
         switch ($kind) {
             'figure'     { $summary.figures++ }
             'mark'       { $summary.marks++ }
+            'sparse'     { $summary.sparse++ }
             'degenerate' { $summary.degenerate++ }
         }
     }
 
-    # Load paths with a usable bbox (a genuine-null bbox path can't be placed).
-    $paths = Get-Content $PathsJsonl | Where-Object { $_.Trim() } |
-        ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.bbox }
+    # Load paths with a usable bbox (a genuine-null bbox path can't be placed). ALL paths cluster,
+    # rule-tagged strokes INCLUDED: in this corpus figures ARE largely axis-aligned rules (interval
+    # bars, diagram arrows/axes) — excluding them shatters real figures. Furniture-only regions are
+    # rejected downstream by the density gate, not by dropping their strokes here.
+    $paths = @(Get-Content $PathsJsonl | Where-Object { $_.Trim() } |
+        ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.bbox })
 
     $work = Join-Path ([IO.Path]::GetTempPath()) ("pdfdig-figures-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
     New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -325,8 +339,8 @@ function ConvertTo-FigureRegions {
     $lines = [string[]]@($figures | ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 6 })
     [System.IO.File]::WriteAllLines($OutPath, $lines, [System.Text.UTF8Encoding]::new($false))
 
-    Write-Verbose ("regions: {0} ({1} figure / {2} mark / {3} degenerate) over {4} page(s); {5} stray path(s), body {6}pt -> {7}" -f `
-        $summary.regions, $summary.figures, $summary.marks, $summary.degenerate, $summary.pages, $summary.noise_paths, $summary.body_font_pt, $OutPath)
+    Write-Verbose ("regions: {0} ({1} figure / {2} mark / {3} sparse / {4} degenerate) over {5} page(s); {6} stray path(s), body {7}pt -> {8}" -f `
+        $summary.regions, $summary.figures, $summary.marks, $summary.sparse, $summary.degenerate, $summary.pages, $summary.noise_paths, $summary.body_font_pt, $OutPath)
 
     if ($PassThru) {
         [pscustomobject]@{ OutPath = $OutPath; Figures = $figures; Summary = [pscustomobject]$summary }
