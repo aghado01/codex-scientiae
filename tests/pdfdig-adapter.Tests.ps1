@@ -102,8 +102,8 @@ Describe 'dual-lane source resolution' {
     }
     AfterAll { if (Test-Path $script:root) { Remove-Item $script:root -Recurse -Force -ErrorAction SilentlyContinue } }
 
-    It 'auto prefers opendataloader when both exist' {
-        (Resolve-PaperSource -Root $script:root -Paper 'bothpaper' -Lane 'auto') | Should -Match 'bothpaper\.json$'
+    It 'auto prefers pdfdig when both exist (pig is the forward path)' {
+        (Resolve-PaperSource -Root $script:root -Paper 'bothpaper' -Lane 'auto') | Should -Match 'bothpaper\.pdfdig\.json$'
     }
     It 'auto falls to pdfdig when opendataloader is absent' {
         (Resolve-PaperSource -Root $script:root -Paper 'pigpaper' -Lane 'auto') | Should -Match 'pigpaper\.pdfdig\.json$'
