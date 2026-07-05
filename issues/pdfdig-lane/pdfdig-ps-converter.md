@@ -63,13 +63,34 @@ is per-run, but the guard constants themselves want corpus-driven revision. `sum
 `fragmentation_suspect_pages` / `defragged_pages` and each region's `area` + `area_em2` so drift stays
 visible; treat every constant as falsifiable (beware calibration-set overfit).
 
+**Tier-1 density gate + run-layout rewiring + first oracle batch (2026-07-04).** Two engine changes
+landed. **(1)** The figure/mark decision moved from union-bbox AREA to ink DENSITY (`paths / area_em2`,
+knob `min_region_density`; new kind `sparse` for a big-but-under-inked phantom) — area cannot tell a big
+DENSE diagram from a big SPARSE phantom (a few furniture strokes whose union bbox spans a text column),
+density can (commit `7539829`). This SUPERSEDED a wrong lever first tried — excluding rule-tagged paths
+from clustering — because in this corpus figures ARE largely axis-aligned rules (2111.15058v3: 29% of
+Figure 2's ink is `hrule` interval bars), so excluding them shatters real figures; **rules stay in, the
+density gate rejects furniture instead.** **(2)** The converter now stages ALL IR under `.runs/{stamp}/pig/`
+via the committed orchestrator `Invoke-Pdfdig.ps1` (it was dumping regenerable lanes beside the source —
+~19MB `letters.jsonl`/paper leaking into git); membrane `Resolve-PaperSource`/discovery reads the newest
+pig run (commit `1bb408b`). **First fresh pig-vs-LaTeX-oracle batch** over the 10-paper ph-zigzag
+compendium (`Invoke-Pdfdig` + `compare.ps1` join against `latex_convert` figures+diagrams counts — now the
+STANDING benchmark) delivered the verdict: **the raw figure-region count is NOT trustworthy — mean |Δ|
+10.5 objects/paper, ratios 0.70–3.88×, BIDIRECTIONAL (6 over, 4 under, 0 exact)**; the density gate demoted
+23 phantoms → `sparse` corpus-wide (that part works). Mechanism-attributed via the envelope's per-page
+`GetImages()` count: **over-count = FRAGMENTATION** (gap-clustering shatters internally-gappy TikZ; 2210 =
+65 regions vs 27 objects), **under-count = RASTER-BLINDNESS** (figure detection reads `paths.jsonl` only,
+there is NO images lane, so `\includegraphics` bitmaps are invisible; 2205 = −8 with 31 bitmaps) + oracle
+noise (2307's 5 `figures_missing`). No `figure_regions` threshold-tune fixes a bidirectional error — over
+and under want opposite corrections. This grounds the revised Tier-2 plan (next-steps §4c).
+
 **v1 must-haves — status against §"v1 must-haves" below:**
 1. Column detection — ✅ (RecursiveXYCut, the vendored DLA solved "THE gap"; not built from scratch).
 2. All-pages + assembly — ✅. 3. Satellite reattachment — ⚠️ partial (DLA line-grouping; no explicit
 second pass yet). 4. Font-tier headings — ✅ (+ outline cross-derivation, beyond the plan).
 5. Display-math regions + `$…$` seams — ✅ (1-D + now 1.5-D nesting). 6. Symbol correction — ✅
 (store, math scope). 7. Ligatures/NFKC — ✅ (dehyphenation too). 8. Figures — region DETECTION ✅ (vector:
-per-page rectangle-gap clustering + em² mark floor + dendrogram de-fragmentation); caption reattachment ✅
+per-page rectangle-gap clustering + em² mark floor + dendrogram de-fragmentation) + density gate; region COUNT ⚠️ bidirectionally unreliable per the oracle batch (fragmentation + raster-blindness), Tier-2 fix §4c; caption reattachment ✅
 (geometry finds candidates, the Figure/Table cue selects); image extraction ✅ (MuPDF-WASM region render → PNG under .runs/{stamp}/pig/, tools/pdf-raster + pdfdig-images.ps1).
 
 **Open decisions — RESOLVED:** node shape = flat JSONL per lane w/ back-refs (✅). Conversions land
@@ -90,7 +111,7 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
 3. **A/B campaign vs opendataloader** (the acceptance criterion, `issues/conversion-metric/`). Same
    dual-availability papers, both lanes, scored against the LaTeX oracle — the replacement claim as a
    number per lane. Needs the conversion-metric aligner (also unblocks oracle-backed benchmark trials).
-4. **Figure lane — region DETECTION LANDED (above); two remainders.**
+4. **Figure lane — region DETECTION LANDED, but the oracle batch proved its COUNT unreliable; deliverables landed, reformulation planned (a/b done, c = the fix).**
    (a) **Caption reattachment — LANDED** (the "+ satellite text" of the original #4). Each `kind=figure`
    region gets its caption: geometry finds candidate Lane-3 blocks (adjacent below / above, overlapping ≥
    `caption_min_overlap_frac`, gap-gated by `caption_max_gap_em`); the caption cue (Figure/Fig/Table N,
@@ -111,6 +132,53 @@ interior-swap hatch unused so far (✅, and the encoding-invariants suite guards
    over-includes boxed callouts / framed display-equations (rendered faithfully but not real figures — the
    manifest's null `caption` flags low-confidence, so `publish` can select captioned figures). PdfPig `TryGetPng`
    remains a future NATIVE-resolution path for pure embedded bitmaps (higher fidelity than re-rasterizing).
+   (c) **Detection reformulation (Tier-2) — REVISED PLAN (2026-07-04), not yet built.** The oracle batch
+   (dashboard) proved the raw region count is bidirectionally unreliable and un-tunable by thresholds. The
+   fix is **feature engineering of the clustering INPUT, not a new engine** — HDBSCAN + `rectangle-gap`
+   stays; we shape better inputs to it. The guiding principle (the reasoning behind every accept/decline
+   below): **added dimensions improve separability only when they align with the clustered RELATION.** Here
+   the relation is spatial COHESION of deliberately HETEROGENEOUS parts (one frame + dozens of ticks + bars
+   + a curve), NOT similarity — co-members do not resemble each other, and identical furniture (every QED
+   square, both panels' tick marks) repeats across the page. So **adjacency/provenance** dimensions align
+   and help; **appearance** dimensions (area, aspect) anti-align — they pull identical furniture together
+   and split a figure's unlike parts, stratifying the very heterogeneity that defines a figure. Three
+   changes, each separately measurable against the standing ph-zigzag oracle benchmark (`compare.ps1`):
+   - **(i) Images lane (Lane 5), FIRST — cures raster-blindness.** Emit `{slug}.images.jsonl` = PdfPig
+     XObject image bboxes + transform matrices (the envelope already COUNTS them via `page.GetImages()`) as
+     a NEW lane — NOT injected into `paths.jsonl` (that lane's contract is vector paths; keep it pure).
+     `ConvertTo-FigureRegions` unions image bboxes into the per-page point cloud, so a figure that IS one
+     big bitmap becomes a first-class point instead of being deduced from its surrounding axes/labels.
+   - **(ii) em-calibrated ANISOTROPIC dilation — cures fragmentation; subsumes the "RLSA reformulation" as
+     a preprocessing STAGE, not an engine rewrite.** Dilate each bbox by `(Tx, Ty)` per side BEFORE
+     clustering, `Tx/Ty` calibrated in em from body font (vertical ≠ horizontal — line-leading ≪ column
+     gutters). Under `rectangle-gap`, boxes with gap `< T` then OVERLAP → distance 0 → HDBSCAN merges them
+     for free; regions are assembled from the UNDILATED boxes. Dilation+connectivity IS run-length
+     smoothing — so occupancy/RLSA becomes a stage, and it de-fangs the (Gemini-correctly-called-hacky)
+     epsilon de-frag loop: most intra-figure fragments never separate. The dilation radii ARE the
+     principled anisotropy knob (Rung 1 of the embedding ladder), calibrated not magic-guessed — and this
+     supersedes Gemini's global-y-stretch suggestion, which was BACKWARDS for our worst case (Figure 4's
+     vertically-STACKED panels: stretching y costs their gaps MORE).
+   - **(iii) content-stream order as a third box-axis — the co-membership prior.** PDF generators (TikZ)
+     draw a figure as a CONTIGUOUS run of ops, so the path `id` (emission order) is nearly a co-membership
+     oracle: a figure's strokes are a solid id-block, the footnote rule and QED squares sit elsewhere in
+     the stream. Pack a scaled stream index `s` as a degenerate interval → `[x0, y0, s, x1, y1, s]`; the
+     k-generic `RectangleGapMetric` (`k = len/2`) consumes it with NO new metric — a soft prior that
+     resolves spatially-ambiguous merges by "were these drawn together?". (This is backbone-conditioned
+     persistence in miniature: the content stream is the page's temporal backbone. `is_clipping`
+     clip-group membership is a second, already-in-IR provenance axis available the same way.)
+   **DECLINED (with rationale, so it isn't re-proposed):** a 5D/6D metric enriched with area/aspect —
+   breaks `RectangleGapMetric`'s box contract (it parses `[lo₀…lo_{k−1}, hi₀…hi_{k−1}]`, so appended
+   scalars misparse the box) AND, worse, size-attraction shatters heterogeneous figures (it would stratify
+   a figure by element size); the "two big boxes vs two glyphs at 5pt" asymmetry belongs downstream, where
+   the density/em² gates already live. `Vector512` intrinsics are premature — pages top out ~900 paths, the
+   O(N²) Prim MST is milliseconds. A graph-prior pre-collapse of INTERSECTING paths is only an N-reduction
+   (overlapping boxes are ALREADY distance 0 under `rectangle-gap`, so it cannot reach the gap-separated
+   fragments that actually shatter) — optional later, with eyes open that it re-scales `min_cluster_size`
+   semantics. The fully-general "engineer a space where Euclidean = co-membership" is Rung 3
+   (affinity graph → spectral embedding), still DEFERRED to the SPC/diffusion work; (i)–(iii) are Rung 2.5
+   — better inputs to the existing metric, no new engine. **Sequence:** images lane → dilation →
+   stream-axis, re-running the oracle batch after EACH so the table (not theory) says which dimension buys
+   separability; watch whether the `+38 / −8` tails collapse.
 5. **cmbright math-role disambiguation** — SF-family papers set math IN the SF fonts, so font-name
    role is ambiguous there (flagged, unsolved; registry: 2210.00916). Needs a geometry/adjacency cue.
 6. **Satellite reattachment second pass** (v1 must-have #3 remainder) if a specimen shows the
