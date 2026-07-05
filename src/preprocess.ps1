@@ -36,17 +36,19 @@ function Invoke-Preprocess {
     )
     if (-not (Test-Path -LiteralPath $JsonPath)) { return [pscustomobject]@{ ok = $false; reason = "source not found: $JsonPath" } }
     $slug     = [System.IO.Path]::GetFileNameWithoutExtension($JsonPath)
-    $paperDir = Split-Path -Parent $JsonPath
+    $srcDir   = Split-Path -Parent $JsonPath          # where the IR lanes sit: the paper dir (docling)
+    $paperDir = Get-PaperDirFromIr $JsonPath          # or {paper}/.runs/{stamp}/pig (pig) — climbed out here
 
     # IR lane by positional contract: {slug}.pdfdig.json = the pdfdig converter's envelope (its
-    # classified run-nodes sit beside it); {slug}.json = the opendataloader/docling-era raw.
+    # classified run-nodes sit beside it, in the pig run dir); {slug}.json = the opendataloader raw
+    # (beside the source). The membrane's OWN run layout keys off $paperDir, not the pig run dir.
     $lane = 'opendataloader'
     if ($slug.EndsWith('.pdfdig')) {
         $lane = 'pdfdig'
         $slug = $slug.Substring(0, $slug.Length - 7)
-        $pigNodes = Join-Path $paperDir "$slug.nodes.jsonl"
+        $pigNodes = Join-Path $srcDir "$slug.nodes.jsonl"
         if (-not (Test-Path -LiteralPath $pigNodes)) {
-            return [pscustomobject]@{ ok = $false; reason = "pdfdig lane: classified nodes missing beside the envelope ($slug.nodes.jsonl) — run pdfdig-classify first" }
+            return [pscustomobject]@{ ok = $false; reason = "pdfdig lane: classified nodes missing beside the envelope ($slug.nodes.jsonl in the pig run dir) — run the pig orchestrator (Invoke-Pdfdig) / pdfdig-classify first" }
         }
     }
 
@@ -90,7 +92,7 @@ function Invoke-Preprocess {
     $out = [ordered]@{ ok = $true; paper = $slug; run = (Get-RunName $chunks); chunks = $c.Count; tally = $tally; path = $chunks; prior_runs = $prior.Count; ir_lane = $lane }
     if ($lane -eq 'pdfdig') {
         # apprise the operating agent: what this lane already did, and what it means downstream
-        $out.lane_notes = 'pdfdig IR: headings arrive PRE-typed from born typography + PDF outline cross-derivation (heading recovery was skipped; tier/outline provenance in the {slug}.classify.json sidecar beside the PDF); inline math carries $-seams with geometric sub/superscripts; formula chunks are grouped display-math lines (2-D assembly pending — needs_2d_assembly flags mark stacked groups); page furniture was dropped at the adapter (orientation/margin evidence); ligatures + symbol-map corrections are already applied. Node flags[] are dispatchable uncertainty markers from the converter, not detected corruption.'
+        $out.lane_notes = 'pdfdig IR: headings arrive PRE-typed from born typography + PDF outline cross-derivation (heading recovery was skipped; tier/outline provenance in the {slug}.classify.json sidecar in the pig run dir, .runs/{stamp}/pig/); inline math carries $-seams with geometric sub/superscripts; formula chunks are grouped display-math lines (2-D assembly pending — needs_2d_assembly flags mark stacked groups); page furniture was dropped at the adapter (orientation/margin evidence); ligatures + symbol-map corrections are already applied. Node flags[] are dispatchable uncertainty markers from the converter, not detected corruption.'
     }
     if ($displaced) { $out.displaced = $displaced }
     [pscustomobject]$out

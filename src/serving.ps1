@@ -66,6 +66,8 @@ function Get-ChunkFiles([string]$Root) {
 # `lanes` field so the agent can see what intake dialects exist and pick one at preprocess.
 function Get-IngestionScan([string]$Root) {
     $papers = [ordered]@{}
+    # opendataloader/docling raws: {slug}/{slug}.json beside the source. (A retired beside-source
+    # {slug}.pdfdig.json still matches here and is picked up as the pdfdig lane.)
     foreach ($json in (Invoke-Crawl -Root $Root -Patterns '**/*.json' -Semantics Include)) {
         $base = [System.IO.Path]::GetFileNameWithoutExtension($json)
         $lane = 'opendataloader'; $slug = $base
@@ -78,6 +80,21 @@ function Get-IngestionScan([string]$Root) {
         }
         if (-not $papers[$key].lanes.Contains($lane)) { $papers[$key].lanes.Add($lane) }
         $papers[$key].src[$lane] = $json
+    }
+    # pig lane: the pdfdig envelope now lives under {slug}/.runs/{stamp}/pig/ (git-ignored), not
+    # beside the source. Detect a paper as pig-convertible from its newest such run, climbing out to
+    # the real paper dir so it aggregates into the same row as any beside-source docling raw.
+    foreach ($env in (Invoke-Crawl -Root $Root -Patterns '**/.runs/*/pig/*.pdfdig.json' -Semantics Include)) {
+        $slug = [System.IO.Path]::GetFileNameWithoutExtension($env)
+        $slug = $slug.Substring(0, $slug.Length - 7)   # strip trailing '.pdfdig' (GetFileNameWithoutExtension drops only '.json')
+        $paperDir = Get-PaperDirFromIr $env
+        if ((Split-Path -Leaf $paperDir) -ne $slug) { continue }   # only {slug}/.runs/*/pig/{slug}.pdfdig.json
+        $key = "$paperDir|$slug"
+        if (-not $papers.Contains($key)) {
+            $papers[$key] = @{ slug = $slug; dir = $paperDir; lanes = [System.Collections.Generic.List[string]]::new(); src = @{} }
+        }
+        if (-not $papers[$key].lanes.Contains('pdfdig')) { $papers[$key].lanes.Add('pdfdig') }
+        $papers[$key].src['pdfdig'] = (Get-PigEnvelope $paperDir $slug)   # newest run wins
     }
     foreach ($key in $papers.Keys) {
         $p = $papers[$key]

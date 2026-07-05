@@ -205,6 +205,70 @@ Describe 'run visibility — surveys and dispatch pointers NAME the run (the age
     }
 }
 
+Describe 'pig lane — IR resolves from the newest {paper}/.runs/{stamp}/pig, not beside source' {
+    BeforeAll {
+        # a paper dir with N pig runs; each is a .runs/{stamp}/pig/ holding a minimal envelope + the
+        # classified nodes.jsonl the classifier emits beside it. -WithDocling also drops a {slug}.json.
+        function New-PigPaper([string]$Root, [string]$RelDir, [string]$Slug, [string[]]$Stamps, [switch]$WithDocling) {
+            $paperDir = Join-Path $Root $RelDir $Slug
+            New-Item -ItemType Directory -Force -Path $paperDir | Out-Null
+            if ($WithDocling) {
+                [System.IO.File]::WriteAllText((Join-Path $paperDir "$Slug.json"), '{"type":"document","kids":[]}', [System.Text.UTF8Encoding]::new($false))
+            }
+            foreach ($s in $Stamps) {
+                $pig = Join-Path $paperDir '.runs' $s 'pig'
+                New-Item -ItemType Directory -Force -Path $pig | Out-Null
+                [System.IO.File]::WriteAllText((Join-Path $pig "$Slug.pdfdig.json"), "{`"schema`":`"pdfdig-ir/1`",`"stamp`":`"$s`"}", [System.Text.UTF8Encoding]::new($false))
+                # one faithful pdfdig run-node (the adapter's input dialect), enough to survive the pipeline
+                $node = '{"id":0,"type":"prose","page":1,"line_id":0,"block":0,"col":0,"baseline_y":700.0,"content":"Hello world, twice over.","font":"F1","font size":10.0,"bounding box":[72,690,300,702],"role":"prose","script":"normal","flags":[]}'
+                [System.IO.File]::WriteAllText((Join-Path $pig "$Slug.nodes.jsonl"), $node, [System.Text.UTF8Encoding]::new($false))
+            }
+            return $paperDir
+        }
+    }
+
+    It 'Get-PigEnvelope / Resolve-PaperSource pick the NEWEST pig run' {
+        $root = New-LayoutRoot
+        $pd = New-PigPaper $root 'compendia/t' 'g1' -Stamps '20260101_000000', '20260103_000000'
+        $env = Get-PigEnvelope $pd 'g1'
+        $env | Should -BeLike '*20260103_000000*pig*g1.pdfdig.json'
+        Resolve-PaperSource $root 'g1' -Lane pdfdig | Should -Be $env
+        Resolve-PaperSource $root 'g1'              | Should -Be $env   # auto prefers pdfdig
+    }
+
+    It 'Get-PaperDirFromIr climbs out of .runs/{stamp}/pig; leaves a beside-source raw alone' {
+        $root = New-LayoutRoot
+        $pd = New-PigPaper $root 'compendia/t' 'g2' -Stamps '20260101_000000'
+        Get-PaperDirFromIr (Join-Path $pd '.runs' '20260101_000000' 'pig' 'g2.pdfdig.json') | Should -Be $pd
+        Get-PaperDirFromIr (Join-Path $pd 'g2.json') | Should -Be $pd
+    }
+
+    It 'Resolve-PaperDir discovers a pig-ONLY paper (no docling raw beside source)' {
+        $root = New-LayoutRoot
+        $pd = New-PigPaper $root 'compendia/t' 'g3' -Stamps '20260101_000000'
+        Resolve-PaperDir $root 'g3' | Should -Be $pd
+    }
+
+    It 'Get-IngestionScan reports the pdfdig lane for a pig-run paper' {
+        $root = New-LayoutRoot
+        [void](New-PigPaper $root 'compendia/t' 'g4' -Stamps '20260101_000000' -WithDocling)
+        $row = @(Get-IngestionScan $root) | Where-Object paper -eq 'g4'
+        $row.lanes | Should -Contain 'pdfdig'
+        $row.lanes | Should -Contain 'opendataloader'
+    }
+
+    It 'preprocess lane=pdfdig lands the membrane run beside the SOURCE (sibling of the pig run), reading IR from the pig run' {
+        $root = New-LayoutRoot
+        $pd = New-PigPaper $root 'compendia/t' 'g5' -Stamps '20260101_000000'
+        $r = Invoke-Preprocess -JsonPath (Resolve-PaperSource $root 'g5' -Lane pdfdig)
+        $r.ok | Should -BeTrue
+        $r.ir_lane | Should -Be 'pdfdig'
+        # the membrane run is a sibling of the pig run under the PAPER's .runs/, NOT nested in pig/
+        Get-PaperDirFromChunks $r.path | Should -Be $pd
+        $r.path | Should -Not -BeLike '*pig*'
+    }
+}
+
 Describe 'paper addressing — @{run} pins a specific run' {
     It 'unpinned resolves latest; @stamp pins an older run; @.scratch pins the legacy dir' {
         $root = New-LayoutRoot

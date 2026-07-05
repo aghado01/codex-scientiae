@@ -244,3 +244,45 @@ Describe 'end-to-end (golden specimen 2508.11646, pages 1-2)' {
         $sawMathRole | Should -BeTrue
     }
 }
+
+Describe 'pig orchestrator (Invoke-Pdfdig) — all IR under .runs/{stamp}/pig, nothing beside source' {
+    BeforeAll {
+        . "$PSScriptRoot/../src/pdf-converter/Invoke-Pdfdig.ps1"
+        $script:orchSkip = -not (Test-Path $script:SpecimenPdf)
+        if (-not $script:orchSkip) {
+            # isolate: copy the specimen PDF into a fresh temp paper dir so the beside-source
+            # assertion runs against a clean tree (never the git-ignored corpus inbox).
+            $script:paperRoot = Join-Path ([System.IO.Path]::GetTempPath()) "pdfdig-orch-$([guid]::NewGuid())"
+            $script:paperDir  = Join-Path $script:paperRoot '2508.11646'
+            New-Item -ItemType Directory -Force -Path $script:paperDir | Out-Null
+            Copy-Item $script:SpecimenPdf (Join-Path $script:paperDir '2508.11646.pdf')
+            # -SkipImages: keep the IR-routing test hermetic (no node/MuPDF dependency); the image
+            # step already lands under the same pig dir (pdfdig-images.ps1) and is exercised manually.
+            $script:orch = Invoke-Pdfdig -PdfPath (Join-Path $script:paperDir '2508.11646.pdf') -Pages 1,2 -SkipImages -PassThru
+        }
+    }
+    AfterAll {
+        if ($script:paperRoot -and (Test-Path $script:paperRoot)) { Remove-Item $script:paperRoot -Recurse -Force }
+    }
+
+    It 'mints exactly one .runs/{stamp}/pig run dir' -Skip:$script:orchSkip {
+        $runs = @(Get-ChildItem (Join-Path $script:paperDir '.runs') -Directory)
+        $runs.Count | Should -Be 1
+        (Test-Path (Join-Path $runs[0].FullName 'pig')) | Should -BeTrue
+        $script:orch.PigDir | Should -BeLike '*.runs*pig*'
+    }
+
+    It 'writes every IR artifact under the pig run dir' -Skip:$script:orchSkip {
+        foreach ($f in '2508.11646.pdfdig.json','2508.11646.letters.jsonl','2508.11646.words.jsonl',
+                       '2508.11646.blocks.jsonl','2508.11646.paths.jsonl','2508.11646.nodes.jsonl',
+                       '2508.11646.classify.json','2508.11646.figures.jsonl','pig-run.json') {
+            Join-Path $script:orch.PigDir $f | Should -Exist
+        }
+    }
+
+    It 'leaks NOTHING beside the source (only the .pdf + .runs remain in the paper dir)' -Skip:$script:orchSkip {
+        $beside = @(Get-ChildItem $script:paperDir -File | ForEach-Object Name)
+        $beside.Count | Should -Be 1
+        $beside[0]    | Should -Be '2508.11646.pdf'
+    }
+}

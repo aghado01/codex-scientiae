@@ -4,9 +4,8 @@
 *.vscode
 *.ipynb_checkpoints
 **.scratch/**
-**scratch**git
+**scratch/**
 
-scratch/
 .legacy
 lib/
 
@@ -31,6 +30,22 @@ lib/
 # codex-arxiv acquisition inbox: staged PDFs + metadata sidecars, pre-ingestion working output.
 # Tracks the default staging_root in src/arxiv-staging.json — update if you re-point it.
 ingestion/_inbox/
+
+# pig / pdfdig IR-lane staging (belt-and-suspenders). The converter's regenerable IR belongs under
+# {slug}/.runs/{stamp}/pig/ (already ignored above via **/.runs/); these ingestion-scoped extension
+# patterns ensure even a stray beside-source converter run can't leak the ~19MB/paper IR into git.
+# Only the IR-specific extensions are listed — plain {slug}.json (docling raw) and *.md deliverables
+# (docling / {slug}-latex.md oracle / {slug}-membrane.md) are NOT matched and stay trackable.
+ingestion/**/*.pdfdig.json
+ingestion/**/*.nodes.jsonl
+ingestion/**/*.letters.jsonl
+ingestion/**/*.words.jsonl
+ingestion/**/*.blocks.jsonl
+ingestion/**/*.paths.jsonl
+ingestion/**/*.classify.json
+ingestion/**/*.figures.jsonl
+ingestion/**/*.jidx
+ingestion/**/*.sig
 
 
 bin/
