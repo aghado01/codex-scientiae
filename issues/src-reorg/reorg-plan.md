@@ -26,9 +26,14 @@ taxonomy; (B) make all of it a proper **PowerShell module**.
 
 - **`src/CodexScientiae.psd1`** — manifest. `ModuleVersion`, `GUID`, `Author`, `PowerShellVersion='7.0'`,
   `RootModule='CodexScientiae.psm1'`, `FunctionsToExport` = the server-facing surface (see below).
-  PdfPig assemblies: **keep lazy** (`Add-Type -Path` in the convert loader, as today) rather than eager
-  `RequiredAssemblies` — a single module is imported by all 3 servers, and the light arxiv/scholar
-  servers should not eager-load PdfPig. Document the DLL dependency in `PrivateData`/a comment.
+  PdfPig assemblies: **declared in `RequiredAssemblies`** (locked) — the manifest lists the vendored DLLs
+  (`UglyToad.PdfPig.dll` + `.Core`/`.Fonts`/`.DocumentLayoutAnalysis`) by module-base-relative path,
+  canonically `../lib/pdfpig/`. This is the neat declarative home. Accepted tradeoff: a single module
+  means every `Import-Module` eager-loads PdfPig, including the light arxiv/scholar servers (harmless —
+  a few DLLs into memory, just not lazy). This **replaces** the runtime probe + `Add-Type` in
+  `convert/pdfdig-ir.ps1` — drop the `$script:PdfPigLib` fallback logic; keep only a presence check that
+  errors clearly if the DLLs are missing. (Note: `RequiredAssemblies` loads .NET DLLs, not the shelled-out
+  `hdbscan.exe`, which stays a `Start-Process`/CLI call.)
 - **`src/CodexScientiae.psm1`** — root loader. Dot-sources **every** source file, in **dependency order**
   (`core → latex predicates → convert/cluster → membrane preprocess/repair/deliver/gates/server →
   acquire`), into ONE module scope. This is the single point of truth for file locations and load order.
@@ -109,7 +114,8 @@ source dir renames and the csproj SharedSource glob repoints.
 - `arxiv-server.ps1`: `arxiv-staging.json` → co-located; `arxiv-discovery.md` → `../../docs/arxiv-discovery.md`.
 - `scholar-server.ps1`: `scholar-config.json` → co-located; `scholar-discovery.md` → `../../docs/scholar-discovery.md`;
   `arxiv-staging.json` → `../arxiv/arxiv-staging.json`; `scihub-mirrors.json` → `../scihub/scihub-mirrors.json`.
-- `convert/pdfdig-ir.ps1`: PdfPig `../../lib/pdfpig` UNCHANGED (constant depth); `stores/*` co-located.
+- `convert/pdfdig-ir.ps1`: PdfPig loading moves OUT to the manifest `RequiredAssemblies` (drop the
+  `$script:PdfPigLib` probe + `Add-Type`; keep a presence check). `stores/*` co-located.
 - `convert/pdfdig-figures.ps1`: `../hdbscan/Invoke-Hdbscan → ../cluster/Invoke-Hdbscan` (constant depth otherwise).
 - `convert/pdfdig-images.ps1`: `../../tools/pdf-raster` UNCHANGED. `cluster/Invoke-Hdbscan.ps1`: RepoRoot `../..` UNCHANGED.
 
@@ -131,6 +137,51 @@ Each `tests/*.Tests.ps1` switches from `. "$PSScriptRoot/../src/<file>.ps1"` (in
 `Import-Module "$PSScriptRoot/../src/CodexScientiae.psd1" -Force` in `BeforeAll`, and wraps internal-function
 assertions in `InModuleScope CodexScientiae { … }`. Because the manifest path is stable, **tests do not
 change again when files move in later stages.** `tests/run.ps1` remains the green-gate.
+
+## Doc consolidation (detail for §6)
+
+Root docs split into three eras: **pre-membrane (obsolete)**, **membrane-era canonical**, and
+**repo/corpus-level**. Consolidation moves the MCP-operational docs into `src/docs/`, deletes the dead
+pipeline docs, and leaves the corpus/harness docs at root — reconciling the collisions on the way.
+
+| Doc | Lines | Disposition |
+|---|---|---|
+| `STANDARDS.md` | 47 | → `src/docs/` (canonical; newer than opuscula's 41-line copy) |
+| `WORKFLOW.md` | 38 | → `src/docs/` (membrane-era failure-mode taxonomy — the "what") |
+| `CHECKLIST.md` | 39 | → `src/docs/` **after** delimiter reconcile (C) |
+| `src/PROCEDURE.md` | 146 | → `src/docs/` (served prompt; read-path updated) |
+| `src/SETUP.md` | 94 | → `src/docs/` (refresh tool count 21→~32, server path) |
+| `MEMBRANE.md` | 96 | → `src/docs/ARCHITECTURE.md`, merging `src/README.md` (D); refresh |
+| `src/README.md` | 61 | folds into `ARCHITECTURE.md`; src entry becomes a thin pointer |
+| `SCHEMA.md` | 14 | fold into `STANDARDS.md` §6 (Contents template); reconcile acks stance (E) |
+| `src/{arxiv,scholar}-discovery.md` | 32/34 | → `src/docs/` (served prompts; read-paths updated) |
+| `AGENTS.md` | 33 | **rewrite** as `src/docs/` index ("operating the MCP"); current one is stale (B) |
+| `HOUSEKEEPING.md` | 72 | corpus-health register — DECISION: `src/docs/` vs stay-root vs `issues/` |
+| `WORKFLOW-2.md` | 178 | **DELETE / archive** — dead pre-membrane Python-script pipeline (A) |
+| `WORKFLOW-2B.md` | 89 | **DELETE / archive** — dead subagent-swarm pipeline (A) |
+| `CLAUDE.md` | 9 | STAYS root (harness contract); repoint its doc links into `src/docs/` |
+| `CONTENTS.md` | 4 | STAYS root (telescope root); add pointer to `src/docs/` |
+| `README.md` | 22 | STAYS root (repo landing); update doc links → `src/docs/` |
+| `CHANGELOG.md` | 5 | STAYS root (repo changelog) |
+
+**Collision / redundancy ledger:**
+- **A — three workflow docs, two eras.** `WORKFLOW.md` is the membrane-era rewrite (points at the membrane,
+  keeps the failure taxonomy, §5 explicitly deprecates swarms). `WORKFLOW-2.md`/`-2B.md` document the
+  pre-membrane Python `scripts/*.py` + manifest + page-slice + `invoke_subagent` swarm — the scripts are
+  **gone** (`scripts/` = `build-hdbscan.ps1` only) and the model is superseded. Delete or move to `.legacy/`.
+- **B — `AGENTS.md` is stale.** Routes to the three docs but describes the swarm model ("Closing
+  Ceremonies", "zombie subagents") and carries LLM citation artifacts (`[file:4/5/6]`). Rewrite as the
+  clean docs index (opuscula already has the cleaned "operating the MCP" form).
+- **C — STANDARDS ↔ CHECKLIST delimiter contradiction.** STANDARDS §1 mandates `$…$`/`$$` (what `finalize`
+  emits); CHECKLIST §3 still says `\(…\)`/`\[…\]`. Reconcile CHECKLIST to `$`-delimiters.
+- **D — `MEMBRANE.md` ↔ `src/README.md` overlap.** Both are architecture overviews carrying stale
+  "21 tools" tables. Merge into one `ARCHITECTURE.md` — single source of truth for the tool catalogue.
+- **E — `SCHEMA.md` ↔ STANDARDS §6 + faithful doctrine.** SCHEMA's Contents template overlaps STANDARDS §6;
+  its "Remove: Acknowledgments / affiliations / COI" conflicts with the faithful-transcription doctrine
+  (editorial filtering is the promotion phase's job). Fold the template into STANDARDS; drop/re-scope the
+  removal guidance to the promotion lane.
+- **F — tool-count drift.** "21"/"26"/"29+3" appear across SETUP/README/MEMBRANE/server. The merged
+  `ARCHITECTURE.md` becomes the one place the catalogue lives, ending the drift.
 
 ## Sequencing — modularize first, then move (each stage independently green)
 
@@ -162,8 +213,6 @@ until then. Restart is also needed to pick up the thin-server rewrite in Stage 0
 
 ## Open items (recommended defaults)
 
-- **PdfPig loading**: keep lazy `Add-Type` in convert (recommended) vs eager `RequiredAssemblies` in the
-  manifest. Lazy keeps the light servers from loading PdfPig; declare the dep in `PrivateData` for neatness.
 - **`corpus-audit.ps1` / `benchmark.ps1`**: left at `src/` root and `membrane/` root. A `src/ops/`
   (maintenance) or `membrane/lab/` (experimental) folder is trivial to add if wanted.
 - **`MEMBRANE.md`** (repo-root architecture doc): fold into `src/docs/` or leave at root — borderline.
