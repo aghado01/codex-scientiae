@@ -1,0 +1,32 @@
+{
+  "2501.00322v1.letters.jsonl": {
+    "stage": "pdfdig-ir/letters",
+    "records": 28653,
+    "source": "2501.00322v1.pdf",
+    "bytes": 8701020
+  },
+  "2501.00322v1.words.jsonl": {
+    "stage": "pdfdig-ir/words",
+    "records": 6374,
+    "source": "2501.00322v1.pdf",
+    "bytes": 1086152
+  },
+  "2501.00322v1.blocks.jsonl": {
+    "stage": "pdfdig-ir/blocks",
+    "records": 350,
+    "source": "2501.00322v1.pdf",
+    "bytes": 232422
+  },
+  "2501.00322v1.paths.jsonl": {
+    "stage": "pdfdig-ir/paths",
+    "records": 774,
+    "source": "2501.00322v1.pdf",
+    "bytes": 153354
+  },
+  "2501.00322v1.nodes.jsonl": {
+    "stage": "pdfdig-classify/nodes",
+    "records": 3337,
+    "source": "2501.00322v1.pdfdig.json",
+    "bytes": 810604
+  }
+}

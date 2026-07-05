@@ -318,7 +318,7 @@ function Expand-LatexMacros {
 # PDF render shows (the ground truth must match the rendered paper for a fair comparison). ---------------
 function Build-LabelMaps {
     param([string]$Body)
-    $thm = @{}; $eq = @{}; $tc = 0; $ec = 0   # theorem-family share one counter; numbered eq envs another
+    $thm = @{}; $eq = @{}; $fig = @{}; $tab = @{}; $tc = 0; $ec = 0; $fc = 0; $bc = 0   # theorem-family share one counter; numbered eq envs another; figures + tables count their own
     foreach ($m in ([regex]'\\begin\{(theorem|lemma|corollary|proposition|equation|align|gather|multline|eqnarray|alignat)(\*?)\}').Matches($Body)) {
         $env = $m.Groups[1].Value; $star = $m.Groups[2].Value -eq '*'
         $endIdx = $Body.IndexOf('\end{' + $env, $m.Index); $seg = if ($endIdx -ge 0) { $Body.Substring($m.Index, $endIdx - $m.Index) } else { '' }
@@ -326,7 +326,16 @@ function Build-LabelMaps {
         if ($env -in 'theorem', 'lemma', 'corollary', 'proposition') { $tc++; if ($lbl.Success) { $thm[$lbl.Groups[1].Value] = $tc } }
         elseif (-not $star) { $ec++; if ($lbl.Success) { $eq[$lbl.Groups[1].Value] = $ec } }
     }
-    return @{ thm = $thm; eq = $eq }
+    # figure/table floats: one counter each; the float's FIRST \label (conventionally right after \caption)
+    # maps to it, so \ref/\cref resolve to a number instead of leaking "Figure ?"/"Table ?" placeholders.
+    foreach ($m in ([regex]'\\begin\{(figure|table)(\*?)\}').Matches($Body)) {
+        $env = $m.Groups[1].Value
+        $endIdx = $Body.IndexOf('\end{' + $env, $m.Index); $seg = if ($endIdx -ge 0) { $Body.Substring($m.Index, $endIdx - $m.Index) } else { '' }
+        $lbl = [regex]::Match($seg, '\\label\{([^{}]+)\}')
+        if ($env -eq 'figure') { $fc++; if ($lbl.Success) { $fig[$lbl.Groups[1].Value] = $fc } }
+        else { $bc++; if ($lbl.Success) { $tab[$lbl.Groups[1].Value] = $bc } }
+    }
+    return @{ thm = $thm; eq = $eq; fig = $fig; tab = $tab }
 }
 function Build-CiteMap {
     param([string]$Bbl)   # \bibitem order = citation number (\bibliographystyle{plain} renders these)
@@ -339,7 +348,11 @@ function Resolve-Refs {
     # consume natbib optional pre/post-notes (\citep[see][p. 7]{key}) — else the [..] brackets leak and read as broken reference links
     $T = [regex]::Replace($T, '\\cite[a-z]*(?:\[[^\]]*\])?(?:\[[^\]]*\])?\s*\{([^{}]+)\}', { param($m) '[' + (($m.Groups[1].Value -split '\s*,\s*' | ForEach-Object { if ($CiteMap.ContainsKey($_)) { $CiteMap[$_] } else { '?' } }) -join ', ') + ']' })
     $T = [regex]::Replace($T, '\\eqref\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' } })
-    $T = [regex]::Replace($T, '\\(?:ref|autoref|cref)\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.thm.ContainsKey($k)) { "$($Maps.thm[$k])" } elseif ($Maps.eq.ContainsKey($k)) { "$($Maps.eq[$k])" } else { '?' } })
+    # \Cref/\vref/\labelcref included (cleveref) — else the capitalized forms leak verbatim; check every map
+    $T = [regex]::Replace($T, '\\(?:ref|autoref|cref|Cref|vref|labelcref)\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value
+            if ($Maps.thm.ContainsKey($k)) { "$($Maps.thm[$k])" } elseif ($Maps.eq.ContainsKey($k)) { "$($Maps.eq[$k])" }
+            elseif ($Maps.fig.ContainsKey($k)) { "$($Maps.fig[$k])" } elseif ($Maps.tab.ContainsKey($k)) { "$($Maps.tab[$k])" }
+            elseif ($Maps.sec -and $Maps.sec.ContainsKey($k)) { "$($Maps.sec[$k])" } else { '?' } })
     return $T
 }
 
@@ -348,7 +361,15 @@ $script:LtxMathStore = @{}
 $script:LtxMathIdx = 0
 function Store-Math {
     param([string]$Content, [bool]$Display)
-    $id = "@@LMATH$($script:LtxMathIdx)@@"; $script:LtxMathIdx++
+    # DISPLAY vs INLINE carry DISTINCT placeholder prefixes (LDISP/LMATH) so the prose-reflow pass can keep
+    # a display block standalone (its own blank-separated line) while inline math flows as a token — a single
+    # shared prefix would force reflow to treat every inline $x$ as a block, or glue $$..$$ into a paragraph.
+    $tag = if ($Display) { 'LDISP' } else { 'LMATH' }
+    $id = "@@$tag$($script:LtxMathIdx)@@"; $script:LtxMathIdx++
+    # a text BOX embedded in math (\parbox{6cm}{prose}, used to stack prose in a display) is KaTeX-invalid;
+    # map it to \text{prose} — which renders and keeps any nested $..$. (\mbox/\hbox already became \text
+    # pre-protection; this catches the two-arg \parbox, whose width group must be dropped, only inside math.)
+    $Content = [regex]::Replace($Content, '\\parbox\s*(?:\[[^\]]*\])?\s*\{[^{}]*\}', '\text')
     # display fenced on its own lines; inline collapses source line-breaks so a span never crosses a blank line
     $script:LtxMathStore[$id] = if ($Display) { "`n`$`$`n$($Content.Trim())`n`$`$`n" } else { '$' + (($Content -replace '\s*\r?\n\s*', ' ').Trim()) + '$' }
     return $id
@@ -373,8 +394,8 @@ function Restore-LatexMath {
     # iterate to a fixed point: a stored span can contain another placeholder (nested $..$ around a display
     # placeholder), and hashtable key order is arbitrary — a single ordered pass can re-introduce an already-
     # processed placeholder and leak it. Re-run until none remain (bounded by nesting depth).
-    for ($pass = 0; $pass -lt 8 -and ($Text -match '@@LMATH\d+@@'); $pass++) {
-        $Text = [regex]::Replace($Text, '@@LMATH\d+@@', { param($m) if ($script:LtxMathStore.Contains($m.Value)) { $script:LtxMathStore[$m.Value] } else { $m.Value } })
+    for ($pass = 0; $pass -lt 8 -and ($Text -match '@@L(?:MATH|DISP)\d+@@'); $pass++) {
+        $Text = [regex]::Replace($Text, '@@L(?:MATH|DISP)\d+@@', { param($m) if ($script:LtxMathStore.Contains($m.Value)) { $script:LtxMathStore[$m.Value] } else { $m.Value } })
     }
     return $Text
 }
@@ -399,22 +420,197 @@ function Apply-Accents {
     return $T
 }
 
+# Title hygiene: a \title{..} (or a manual \Large{..}) body may carry \thanks{funding}, \footnote{..}, a
+# \\ stacked subtitle, and font/format commands — none of which belong in the H1. Strip the footnote-family
+# notes brace-aware (their text holds braces), flatten \\, drop residual format commands + braces, collapse ws.
+function Clean-LatexTitle {
+    param([string]$T)
+    if ([string]::IsNullOrWhiteSpace($T)) { return $null }
+    $T = Replace-BracedCommand $T '\thanks' { '' }
+    $T = Replace-BracedCommand $T '\footnote' { '' }
+    $T = $T -replace '\\(?:thanks|footnotemark|footnote)\b', ''
+    $T = $T -replace '\\\\', ' '                                              # \\ stacked title/subtitle -> space
+    $T = $T -replace '\\(?:Large|LARGE|huge|Huge|large|Small|small|normalsize|textbf|textsc|textit|textsl|textrm|textnormal|emph|mathbf|mathrm|bf|it|sc|sl|em|rm|centering|newline|par|scshape|bfseries|itshape)\b', ''
+    $T = $T -replace '[{}]', ''
+    return ([regex]::Replace($T, '\s+', ' ')).Trim()
+}
+
+# old-style font TOGGLES: {\em ..}/{\it ..}/{\bf ..}/{\sc ..}/{\tt ..} — the switch form (vs \emph{..}). The
+# body transforms only catch the \cmd{..} argument form, so without this the switch form leaks verbatim as
+# literal "{\em word}". Brace-aware + iterated so nesting and long spans resolve; runs while math is protected.
+function Convert-BraceToggles {
+    param([string]$T)
+    $wrap = @{ em = '*'; it = '*'; sl = '*'; itshape = '*'; slshape = '*'; bf = '**'; bfseries = '**'; sc = '**'; scshape = '**'; tt = '`'; ttfamily = '`' }
+    for ($i = 0; $i -lt 500; $i++) {
+        $m = [regex]::Match($T, '\{\s*\\(em|itshape|it|slshape|sl|bfseries|bf|scshape|sc|ttfamily|tt|rmfamily|rm|sffamily|sf|normalfont)\b[ \t]*')
+        if (-not $m.Success) { break }
+        $end = Get-BraceGroupEnd $T $m.Index
+        if ($end -lt 0) { break }
+        $inner = $T.Substring($m.Index + $m.Length, $end - 1 - ($m.Index + $m.Length))
+        $w = if ($wrap.ContainsKey($m.Groups[1].Value)) { $wrap[$m.Groups[1].Value] } else { '' }
+        $repl = if ($w -and $inner.Trim()) { $w + $inner.Trim() + $w } else { $inner }
+        $T = $T.Substring(0, $m.Index) + $repl + $T.Substring($end)
+    }
+    return $T
+}
+# frame/box wrappers that carry NO markdown structure: keep the CONTENT arg, discard the frame and any
+# leading width/pos/colour args (\parbox{width}{..}, \fbox{..}, \centerline{..}). Brace-aware + iterated so
+# a nested \fbox{\parbox{\textwidth}{..}} collapses to just its body instead of leaking the wrapper braces.
+function Unwrap-Boxes {
+    param([string]$T)
+    $lead = @{ fbox = 0; framebox = 0; centerline = 0; makebox = 0; parbox = 1; colorbox = 1; fcolorbox = 2; raisebox = 1 }
+    $names = ($lead.Keys | Sort-Object { $_.Length } -Descending | ForEach-Object { [regex]::Escape($_) }) -join '|'
+    for ($iter = 0; $iter -lt 200; $iter++) {
+        $m = [regex]::Match($T, "\\($names)\b")
+        if (-not $m.Success) { break }
+        $name = $m.Groups[1].Value; $cur = $m.Index + $m.Length; $ok = $true
+        while ($cur -lt $T.Length -and $T[$cur] -eq ' ') { $cur++ }
+        while ($cur -lt $T.Length -and $T[$cur] -eq '[') { $cl = $T.IndexOf(']', $cur); if ($cl -lt 0) { $ok = $false; break }; $cur = $cl + 1; while ($cur -lt $T.Length -and $T[$cur] -eq ' ') { $cur++ } }
+        if (-not $ok) { break }
+        for ($k = 0; $k -lt $lead[$name]; $k++) {
+            while ($cur -lt $T.Length -and $T[$cur] -eq ' ') { $cur++ }
+            if ($cur -lt $T.Length -and $T[$cur] -eq '[') { $cl = $T.IndexOf(']', $cur); if ($cl -ge 0) { $cur = $cl + 1 } }
+            while ($cur -lt $T.Length -and $T[$cur] -eq ' ') { $cur++ }
+            if ($cur -lt $T.Length -and $T[$cur] -eq '{') { $e = Get-BraceGroupEnd $T $cur; if ($e -lt 0) { $ok = $false; break }; $cur = $e } else { $ok = $false; break }
+        }
+        if (-not $ok) { break }
+        while ($cur -lt $T.Length -and $T[$cur] -eq ' ') { $cur++ }
+        if ($cur -lt $T.Length -and $T[$cur] -eq '{') {
+            $e = Get-BraceGroupEnd $T $cur; if ($e -lt 0) { break }
+            $T = $T.Substring(0, $m.Index) + $T.Substring($cur + 1, $e - $cur - 2) + $T.Substring($e)
+        } else { $T = $T.Substring(0, $m.Index) + $T.Substring($m.Index + $m.Length) }   # no content group: drop the bare command token, make progress
+    }
+    return $T
+}
+
+# STANDARDS §4: remove hard wraps. LaTeX source wraps prose at ~80 cols; those breaks are semantically
+# meaningless and, kept verbatim, sever token sequences (and every stray whole-line comment left a blank
+# that split a paragraph). Reflow each blank-line-separated BLOCK: fold a wrapped continuation line into the
+# logical line above it, UNLESS the line opens a markdown block-construct (heading, list item, table row,
+# blockquote) or the block is a standalone display-math/algorithm/verbatim placeholder — those pass through
+# intact. Must run while math is protected: LDISP display tokens are forced onto their own blank-separated
+# line first, so a paragraph is never glued to a $$-block and inline $x$ (LMATH) rides along as plain text.
+function Join-WrappedProse {
+    param([string]$T)
+    $T = [regex]::Replace($T, '[ \t]*@@(LDISP|ALG|VERB)(\d+)@@[ \t]*', "`n`n@@`$1`$2@@`n`n")
+    $T = [regex]::Replace($T, '\n{3,}', "`n`n")
+    $blocks = [regex]::Split($T, '\n[ \t]*\n')
+    $out = [System.Collections.Generic.List[string]]::new()
+    foreach ($blk in $blocks) {
+        if ($blk.Trim() -eq '') { continue }
+        if ($blk -match '^\s*@@(?:LDISP|ALG|VERB)\d+@@\s*$') { $out.Add($blk.Trim()); continue }   # standalone placeholder block
+        $logical = [System.Collections.Generic.List[string]]::new()
+        foreach ($ln in ($blk -split '\n')) {
+            $s = $ln.Trim()
+            if ($s -eq '') { continue }
+            $starter = $s -match '^(#{1,6}\s|[-*+]\s|\d+[.)]\s|>\s|\|)'                              # heading / bullet / ordered / quote / table row
+            if ($logical.Count -eq 0 -or $starter -or ($logical[$logical.Count - 1] -match '^#{1,6}\s')) { $logical.Add($s) }
+            else { $logical[$logical.Count - 1] = $logical[$logical.Count - 1] + ' ' + $s }
+        }
+        $out.Add(($logical -join "`n"))
+    }
+    return ($out -join "`n`n")
+}
+
+# Parse \newtheorem declarations into a counter MODEL so theorem-like envs number EXACTLY as the rendered
+# paper does: env -> @{ disp; group (the counter it shares, resolved to the chain root); within (numbered +
+# reset per \section); star (unnumbered) }. \newtheorem{x}{D}=own counter; {x}[y]{D}=shares y's counter;
+# {x}{D}[section]=numbered within section; \newtheorem*{x}{D}=unnumbered. Declarations WIN; the standard names
+# get sensible defaults when the paper declares none (theorem family shares one flat counter; other thm-likes
+# surface UNNUMBERED — we never fabricate a scheme we can't read).
+function Get-TheoremModel {
+    param([string]$Tex)
+    $model = [ordered]@{}
+    foreach ($n in 'theorem', 'lemma', 'corollary', 'proposition') { $model[$n] = @{ star = $false; disp = (Get-Culture).TextInfo.ToTitleCase($n); group = 'theorem'; within = $false } }
+    foreach ($n in 'definition', 'defn', 'remark', 'example', 'note', 'claim', 'observation', 'notation', 'conjecture', 'assumption', 'fact', 'property', 'question', 'construction', 'convention', 'result', 'resultx') {
+        $disp = if ($n -in 'result', 'resultx') { 'Result' } elseif ($n -eq 'defn') { 'Definition' } else { (Get-Culture).TextInfo.ToTitleCase($n) }
+        $model[$n] = @{ star = $true; disp = $disp; group = $n; within = $false }
+    }
+    $decl = [ordered]@{}
+    foreach ($m in [regex]::Matches($Tex, '\\newtheorem(\*?)\s*\{([^{}]+)\}(?:\s*\[([^\]]+)\])?\s*\{([^{}]+)\}(?:\s*\[([^\]]+)\])?')) {
+        $name = $m.Groups[2].Value
+        if ($decl.Contains($name)) { continue }                                  # first declaration wins (papers redeclare in comments/appendix)
+        $decl[$name] = @{ star = ($m.Groups[1].Value -eq '*'); shared = $m.Groups[3].Value; disp = $m.Groups[4].Value; within = ($m.Groups[5].Value -ne '') }
+    }
+    foreach ($name in @($decl.Keys)) {
+        $d = $decl[$name]; $root = $name; $seen = @{}
+        while ($decl.Contains($root) -and $decl[$root].shared -and -not $seen.Contains($root)) { $seen[$root] = 1; $root = $decl[$root].shared }
+        $within = if ($decl.Contains($root)) { $decl[$root].within } else { $d.within }
+        $model[$name] = @{ star = $d.star; disp = $d.disp; group = $root; within = $within }
+    }
+    return $model
+}
+# Single ordered pass over \section-family markers, theorem-like envs, and \labels. Numbers each theorem-like
+# env per the counter model (shared groups; a within-section group resets each \section and prefixes the
+# section number), rewrites its \begin{env}[note] to a bold numbered label and drops \end{env}, and records
+# label->number for BOTH sections and theorem envs so \ref/\cref resolve to the paper's actual numbers instead
+# of "?". Section markers and everything else are emitted verbatim (the section-render pass handles them next).
+# Label association: a \section/\begin{thm} arms `pending`, consumed only by the IMMEDIATELY-following \label
+# (any other token clears it) — so an equation \label deeper inside a theorem is not mis-captured.
+function Convert-CrossRefEnvs {
+    param([string]$Body, $Model)
+    $thmMap = @{}; $secMap = @{}; $ctr = @{}; $within = @{}
+    $sec = 0; $sub = 0; $subsub = 0
+    $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
+    $rx = [regex]'\\(section|subsection|subsubsection)(\*?)\s*\{|\\begin\{([A-Za-z][A-Za-z0-9]*\*?)\}[ \t]*(?:\[([^\]]*)\])?|\\end\{([A-Za-z][A-Za-z0-9]*\*?)\}|\\label\{([^{}]+)\}'
+    foreach ($m in $rx.Matches($Body)) {
+        if ($m.Index -lt $pos) { continue }
+        [void]$sb.Append($Body.Substring($pos, $m.Index - $pos))
+        $emit = $m.Value
+        if ($m.Groups[1].Success) {                                              # \section family
+            if ($m.Groups[2].Value -ne '*') {
+                $num = switch ($m.Groups[1].Value) {
+                    'section' { $sec++; $sub = 0; $subsub = 0; foreach ($g in @($within.Keys)) { if ($within[$g]) { $ctr[$g] = 0 } }; "$sec" }
+                    'subsection' { $sub++; $subsub = 0; "$sec.$sub" }
+                    'subsubsection' { $subsub++; "$sec.$sub.$subsub" }
+                }
+                $pending = @{ kind = 'sec'; num = $num }
+            } else { $pending = $null }
+        }
+        elseif ($m.Groups[3].Success) {                                          # \begin{env}
+            $env = $m.Groups[3].Value; $note = if ($m.Groups[4].Success) { " ($($m.Groups[4].Value))" } else { '' }
+            if ($Model.Contains($env)) {
+                $e = $Model[$env]
+                if ($e.star) { $emit = "`n`n**$($e.disp)$note.** "; $pending = $null }
+                else {
+                    $g = $e.group; if (-not $ctr.Contains($g)) { $ctr[$g] = 0 }; $within[$g] = $e.within
+                    $ctr[$g]++; $num = if ($e.within) { "$sec.$($ctr[$g])" } else { "$($ctr[$g])" }
+                    $emit = "`n`n**$($e.disp) $num$note.** "; $pending = @{ kind = 'thm'; num = $num }
+                }
+            }
+            # a NON-model \begin (equation, enumerate, …) leaves `pending` intact, so a theorem's label placed
+            # AFTER its statement body (\begin{theorem} <stmt> \label{..}) is still captured (first-label-in-env).
+        }
+        elseif ($m.Groups[5].Success) { if ($Model.Contains($m.Groups[5].Value)) { $emit = ''; $pending = $null } }   # theorem env closed: disarm
+        elseif ($m.Groups[6].Success -and $pending) {                            # \label — FIRST label in the armed env/section wins
+            if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
+            $pending = $null
+        }
+        [void]$sb.Append($emit); $pos = $m.Index + $m.Length
+    }
+    [void]$sb.Append($Body.Substring($pos))
+    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap }
+}
+
 # --- the core transform: LaTeX -> markdown ----------------------------------------------------------
 function ConvertFrom-Latex {
     param([string]$Tex, [string]$Bbl)
     $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
-    $Tex = [regex]::Replace($Tex, '(?m)(?<!\\)%.*$', '')                       # strip comments
+    $Tex = [regex]::Replace($Tex, '(?m)^[ \t]*(?<!\\)%.*\r?\n', '')            # whole-line comments: drop the line so no spurious blank line (which splits a paragraph) survives
+    $Tex = [regex]::Replace($Tex, '(?<!\\)%.*$', '')                           # trailing comments: keep the code before %
     $macros = Get-LatexMacros $Tex
-    $title = Get-LatexCommandArg $Tex '\title'
+    $title = Clean-LatexTitle (Get-LatexCommandArg $Tex '\title')
     $bm = [regex]::Match($Tex, '\\begin\{document\}(.*)\\end\{document\}', [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $body = if ($bm.Success) { $bm.Groups[1].Value } else { $Tex }
 
-    # fallback for manually-typeset titles (no \title{}): first {\Large..}/{\LARGE..}/{\huge..} block in the frontmatter
+    # fallback for manually-typeset titles (no \title{}): first big-font block in the frontmatter, in EITHER
+    # idiom — {\Large ..} (brace-first) or \Large{..} (command-first, e.g. arXiv:2210.00916 "ONE DIAMOND..").
     if (-not $title) {
         $lm = [regex]::Match($body, '\{\s*\\(?:Large|LARGE|huge|Huge)\b')
-        if ($lm.Success) {
-            $g = Get-LatexBracedArg $body $lm.Index
-            if ($g) { $title = (($g -replace '\\(?:Large|LARGE|huge|Huge|large|Huge|textbf|textsc|textit|textsl|emph|bf|it|sc|em|mathbf|mathrm|textnormal|centering|newline)\b', '' -replace '\\\\', ' ' -replace '[{}]', '') -replace '\s+', ' ').Trim() }
+        if ($lm.Success) { $g = Get-LatexBracedArg $body $lm.Index; if ($g) { $title = Clean-LatexTitle $g } }
+        if (-not $title) {
+            $lm2 = [regex]::Match($body, '\\(?:Large|LARGE|huge|Huge)\s*\{')
+            if ($lm2.Success) { $g2 = Get-LatexBracedArg $body ($lm2.Index + $lm2.Length - 1); if ($g2) { $title = Clean-LatexTitle $g2 } }
         }
     }
 
@@ -422,6 +618,11 @@ function ConvertFrom-Latex {
     # `comment` environment (comment package) and \iffalse..\fi conditional blocks are dropped wholesale.
     $body = [regex]::Replace($body, '(?s)\\begin\{comment\}.*?\\end\{comment\}', '')
     $body = [regex]::Replace($body, '(?s)\\iffalse\b.*?\\fi\b', '')
+    $body = [regex]::Replace($body, '(?s)\\begin\{CCSXML\}.*?\\end\{CCSXML\}', '')          # ACM CCS concept XML: metadata, never renders
+    # inline \begin{thebibliography}..\end{thebibliography}: the References section is emitted separately from
+    # the .bbl (Get-LatexReferences, with an inline-thebibliography fallback), so drop it here rather than let
+    # its \bibitem bodies bleed into the prose as an unnumbered tail.
+    $body = [regex]::Replace($body, '(?s)\\begin\{thebibliography\}\s*(?:\{[^{}]*\})?.*?\\end\{thebibliography\}', '')
 
     # old-style $$display$$ -> \[..\] up front: display and inline math otherwise share the `$` delimiter, so
     # the regex parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
@@ -468,13 +669,19 @@ function ConvertFrom-Latex {
     # KaTeX ships \xrightarrow / \xleftarrow but not the amsmath \xlong… variants
     $body = $body -replace '\\xlong(right|left)arrow', '\x$1arrow'
     $body = $body -replace '\\lefteqn\b', ''                                   # KaTeX-unsupported; drop, keep its {group}
+    $body = $body -replace '\\(?:mbox|hbox)(?=\s*\{)', '\text'                 # KaTeX has no \mbox/\hbox — \text works in math AND is unwrapped in prose below; must precede Protect-LatexMath
     $body = Convert-BorderMatrix $body                                         # \bordermatrix -> ruled array
 
     $body = Expand-LatexMacros $body $macros                                   # macros (incl inside math)
     # accents/single-arg ops written without braces around a (now-expanded) macro arg break KaTeX
     # (e.g. source \underline\IK -> \underline \mathbb{K}); re-brace the argument.
     $body = $body -replace '\\(underline|overline|widehat|widetilde|widecheck|hat|bar|tilde|vec|check|breve|acute|grave|dot|ddot|mathring)\s+(\\[A-Za-z]+\{[^{}]*\})', '\$1{$2}'
-    $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl
+    # theorem/section cross-refs: number + render theorem-like envs here (ordered walk over the counter model),
+    # BEFORE math protection, so the same numbers feed both the inline labels and \ref resolution.
+    $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex)
+    $body = $xref.body
+    $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl               # equation/figure/table counters
+    $maps.thm = $xref.thm; $maps.sec = $xref.sec                              # theorem + section label->number from the walk
     $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
@@ -487,33 +694,11 @@ function ConvertFrom-Latex {
 
     $body = Convert-Algorithms $body                                          # algpseudocode -> fenced pseudocode
 
-    # theorem family (shared counter) + proof, numbered to match the rendered paper
-    $script:thmCounter = 0
-    $body = [regex]::Replace($body, '\\begin\{(theorem|lemma|corollary|proposition)\}(?:\s*\[([^\]]*)\])?', {
-            param($m) $script:thmCounter++; $lab = (Get-Culture).TextInfo.ToTitleCase($m.Groups[1].Value)
-            $note = if ($m.Groups[2].Success) { " ($($m.Groups[2].Value))" } else { '' }; "`n`n**$lab $script:thmCounter$note.** " })
-    $body = [regex]::Replace($body, '\\begin\{proof\}(?:\s*\[([^\]]*)\])?', { param($m) $t = if ($m.Groups[1].Success) { $m.Groups[1].Value } else { 'Proof' }; "`n`n*$t.* " })
-    $body = $body -replace '\\end\{(theorem|lemma|corollary|proposition|proof)\}', ''
-
-    # other theorem-like environments: surface as bold labels rather than leaking raw \begin{..}. Left
-    # UNNUMBERED on purpose — their counters aren't tracked in Build-LabelMaps, so fabricating a number
-    # would risk disagreeing with the rendered paper (worse than an honest unnumbered label).
-    $script:thmLike = 'definition|defn|remark|example|note|claim|observation|notation|conjecture|assumption|fact|property|question|construction|convention|resultx|result'
-    $body = [regex]::Replace($body, "\\begin\{($script:thmLike)\}(?:\s*\[([^\]]*)\])?", {
-            param($m) $raw = $m.Groups[1].Value
-            $lab = if ($raw -in 'resultx', 'result') { 'Result' } elseif ($raw -eq 'defn') { 'Definition' } else { (Get-Culture).TextInfo.ToTitleCase($raw) }
-            $note = if ($m.Groups[2].Success) { " ($($m.Groups[2].Value))" } else { '' }; "`n`n**$lab$note.** " })
-    $body = $body -replace "\\end\{($script:thmLike)\}", ''
-
-    # custom \newtheorem environments (short names like cor/prop) surfaced via their DECLARED display name;
-    # the fixed-name families above are already handled, this covers whatever the preamble additionally defines.
-    $thmMap = @{}
-    foreach ($nt in [regex]::Matches($Tex, '\\newtheorem\*?\s*\{([^{}]+)\}(?:\[[^\]]*\])?\s*\{([^{}]+)\}')) { $thmMap[$nt.Groups[1].Value] = $nt.Groups[2].Value }
-    if ($thmMap.Count) {
-        $ntNames = (($thmMap.Keys | Sort-Object { $_.Length } -Descending | ForEach-Object { [regex]::Escape($_) }) -join '|')
-        $body = [regex]::Replace($body, "\\begin\{($ntNames)\}(?:\s*\[([^\]]*)\])?", { param($m) $disp = $thmMap[$m.Groups[1].Value]; $note = if ($m.Groups[2].Success) { " ($($m.Groups[2].Value))" } else { '' }; "`n`n**$disp$note.** " })
-        $body = [regex]::Replace($body, "\\end\{($ntNames)\}", '')
-    }
+    # proof (unnumbered; \begin{proof}[Proof of X] -> an italic label). The theorem-like envs were already
+    # numbered + rendered by Convert-CrossRefEnvs (counter-model walk) above; only proof remains here — it is
+    # deliberately excluded from the model so it keeps its distinct *italic* form, not a bold numbered label.
+    $body = [regex]::Replace($body, '\\begin\{[Pp]roof\}(?:\s*\[([^\]]*)\])?', { param($m) $t = if ($m.Groups[1].Success) { $m.Groups[1].Value } else { 'Proof' }; "`n`n*$t.* " })
+    $body = $body -replace '\\end\{[Pp]roof\}', ''
 
     # tcolorbox callouts: surface the box title (title= key, usually last in the option list) as a bold
     # label and keep the body prose; drop the wrapper rather than leaking \begin{tcolorbox}[...] verbatim.
@@ -537,12 +722,19 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\paragraph\*?\s*\{([^{}]*)\}', '**$1** '
     $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"   # escape `$1: double-quoted, PS would else interpolate it away
     $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m) $c = $m.Groups[1].Value.Trim(); if ($c) { "`n`n*$c*`n" } else { '' } })   # trim: no space inside emphasis (MD037)
-    $body = $body -replace '\\(?:begin|end)\{(?:figure|table|center|wrapfigure)\*?\}(?:\[[^\]]*\])?', ''
-    $body = $body -replace '\\(?:begin|end)\{(?:flushleft|flushright|appendices|subequations|quote|quotation)\}', ''   # structural wrappers, keep content
+    # acknowledgements env: the journal class renders an "Acknowledgements" heading — surface it faithfully as
+    # a section (content KEPT). This is a FAITHFUL transcription: editorial drops (acks, ref sidecar split, …)
+    # are the PROMOTION phase's job, never the converter's.
+    $body = [regex]::Replace($body, '\\begin\{(?:acknowledge?ments?|acknowledgement|acks)\}(?:\[[^\]]*\])?', "`n`n## Acknowledgements`n`n")
+    $body = $body -replace '\\end\{(?:acknowledge?ments?|acknowledgement|acks)\}', "`n`n"
+    $body = $body -replace '\\(?:begin|end)\{(?:figure|table|center|wrapfigure|wraptable)\*?\}(?:\[[^\]]*\])?(?:\{[^{}]*\})*', ''   # wraptable/wrapfigure carry {placement}{width} args
+    $body = $body -replace '\\(?:begin|end)\{(?:flushleft|flushright|appendices|subequations|quote|quotation|framed|mdframed|titlepage|adjustwidth)\*?\}(?:\[[^\]]*\])?', ''   # structural wrappers, keep content
     $body = $body -replace '\\begin\{minipage\}(?:\[[^\]]*\])?\{[^}]*\}', '' -replace '\\end\{minipage\}', ''
     $body = $body -replace '\\begin\{subfigure\}(?:\[[^\]]*\])?(?:\{[^}]*\})?', '' -replace '\\end\{subfigure\}', ''   # keep panel content, drop wrapper
-    $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\}', "`n`n"   # blank lines around lists (MD032)
+    $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\*?\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\*?\}', "`n`n"   # blank lines around lists (MD032); *-variant star is INSIDE the braces
     $body = $body -replace '\\item\s*', "`n- "
+    $body = Convert-BraceToggles $body                                         # {\em ..}/{\bf ..} switch form -> * / ** (brace-aware)
+    $body = Unwrap-Boxes $body                                                 # \fbox/\parbox/\centerline -> content (drop frame + width/pos args)
     $body = $body -replace '\\(?:textbf|textsc)\{([^{}]*)\}', '**$1**'
     $body = $body -replace '\\(?:emph|textit|textsl)\{([^{}]*)\}', '*$1*'
     $body = $body -replace '\\texttt\{([^{}]*)\}', '`$1`'
@@ -556,14 +748,18 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\&', '&' -replace '\\%', '%' -replace '\\_', '_' -replace '\\#', '#' -replace '\\\$', '$'
     $body = $body -replace '~', ' ' -replace '\\,|\\;|\\:|\\!|\\ ', ' ' -replace '``|''''', '"'
 
-    $body = Restore-LatexMath $body
-    # \textsc has no KaTeX equivalent; prose occurrences already became **bold** above, so any survivor is
-    # math-mode small-caps (algorithm pseudocode) — map the control word to \text, preserving its brace group.
-    $body = $body -replace '\\textsc(?=\s*\{)', '\text'
+    # whitespace normalize while math/alg/verb are still opaque placeholders
     $body = $body -replace '\t', ' '                                          # hard tabs -> space (MD010)
     $body = [regex]::Replace($body, '[ \t]+\r?\n', "`n")
     $body = [regex]::Replace($body, '(?m)^[ \t]+', '')                        # dedent: source indentation is meaningless in md and reads as spurious indented-code blocks
     $body = [regex]::Replace($body, '\n{3,}', "`n`n")
+    # STANDARDS §4 — remove hard wraps: reflow source-wrapped prose into flowing paragraphs. Runs while math
+    # is @@LMATH/@@LDISP/@@ALG/@@VERB placeholders, so a join can never split a formula or shred pseudocode.
+    $body = Join-WrappedProse $body
+    $body = Restore-LatexMath $body
+    # \textsc has no KaTeX equivalent; prose occurrences already became **bold** above, so any survivor is
+    # math-mode small-caps (algorithm pseudocode) — map the control word to \text, preserving its brace group.
+    $body = $body -replace '\\textsc(?=\s*\{)', '\text'
     $body = Restore-Algorithms $body                                          # swap fenced pseudocode back in (keeps its own indentation)
 
     $h1 = if ($title) { '# ' + (Convert-LatexInline $title) } else { '# (untitled)' }
@@ -588,9 +784,51 @@ function Get-LatexReferences {
         $txt = $txt -replace '--', [char]0x2013 -replace '\\end\{thebibliography\}', ''
         $txt = (Restore-LatexMath $txt)
         $txt = [regex]::Replace($txt, '\s+', ' ').Trim()
-        if ($txt) { [pscustomobject]@{ n = [int]$num; line = "$num. $txt" } }
+        # a \bibitem whose key never appears in the cite map resolves to '?' — sort it to the END rather than
+        # crash on [int]'?' (a real hazard: uncited-but-listed entries, or a biber key-normalization mismatch).
+        if ($txt) { [pscustomobject]@{ n = $(if ($num -match '^\d+$') { [int]$num } else { [int]::MaxValue }); line = "$num. $txt" } }
     }
     return (($lines | Sort-Object n | ForEach-Object { $_.line }) -join "`n")
+}
+
+# --- biblatex/biber .bbl bridge: modern papers compile with biblatex, whose .bbl has NO \bibitem — entries
+# are \entry{key}{type}{opts}..\endentry with structured \name{}/\field{} data. Re-serialize each entry (in
+# .bbl order = citation number) into a synthetic \bibitem{key} <plain text> so the traditional \bibitem
+# pipeline (Build-CiteMap + Get-LatexReferences) works UNCHANGED, and no bibliography is silently lost. --
+function Get-BiblatexField {
+    param([string]$Body, [string]$Field)
+    $m = [regex]::Match($Body, '\\field\{' + [regex]::Escape($Field) + '\}\s*\{')
+    if (-not $m.Success) { return '' }
+    $v = Get-LatexBracedArg $Body ($m.Index + $m.Length - 1)
+    if ($null -eq $v) { return '' }
+    return ($v -replace '\\bib[a-zA-Z]+', ' ' -replace '\s+', ' ').Trim()
+}
+function ConvertFrom-BiblatexBbl {
+    param([string]$Bbl)
+    if (-not $Bbl -or $Bbl -notmatch '\\entry\{') { return $null }
+    $sb = [System.Text.StringBuilder]::new()
+    foreach ($e in [regex]::Matches($Bbl, '(?s)\\entry\{([^{}]+)\}\{[^{}]*\}\{[^{}]*\}(.*?)\\endentry')) {
+        $key = $e.Groups[1].Value; $body = $e.Groups[2].Value; $names = @()
+        $hdr = [regex]::Match($body, '\\name\{(?:author|editor)\}\{\d+\}\{[^{}]*\}\s*\{')   # \name{author}{N}{opts}{ ..name-block.. }
+        if ($hdr.Success) {
+            $blk = Get-LatexBracedArg $body ($hdr.Index + $hdr.Length - 1)                  # brace-aware: the block nests {{..}{family={X}..given={Y}..}}
+            if ($blk) {
+                foreach ($p in [regex]::Matches($blk, 'family=\{([^{}]*)\}[\s\S]*?given=\{([^{}]*)\}')) {
+                    $fam = ($p.Groups[1].Value -replace '\\bib[a-zA-Z]+', ' ' -replace '[{}]', '' -replace '\s+', ' ').Trim()
+                    $giv = ($p.Groups[2].Value -replace '\\bibinitperiod', '.' -replace '\\bib[a-zA-Z]+', ' ' -replace '[{}]', '' -replace '\s+', ' ').Trim()
+                    if ($fam) { $names += $(if ($giv) { "$fam, $giv" } else { $fam }) }
+                }
+            }
+        }
+        $auth = if ($names.Count -gt 6) { ($names[0..5] -join '; ') + ' et al.' } elseif ($names.Count) { $names -join '; ' } else { '' }
+        $title = Get-BiblatexField $body 'title'
+        $cont = Get-BiblatexField $body 'journaltitle'; if (-not $cont) { $cont = Get-BiblatexField $body 'booktitle' }
+        $year = Get-BiblatexField $body 'year'; if (-not $year) { $d = Get-BiblatexField $body 'date'; if ($d -match '(\d{4})') { $year = $matches[1] } }
+        $tail = (@($cont, $year) | Where-Object { $_ }) -join ', '
+        $line = ((@($auth, $title, $tail) | Where-Object { $_ }) -join '. ').Trim()
+        if ($line) { [void]$sb.AppendLine("\bibitem{$key} $line.") }
+    }
+    $s = $sb.ToString(); return $(if ($s.Trim()) { $s } else { $null })
 }
 
 # --- source unpack + main-file discovery ------------------------------------------------------------
@@ -673,6 +911,11 @@ function Invoke-ArxivLatexToMarkdown {
     $tex = Resolve-LatexInputs -MainPath $main
     $bbl = @(Get-ChildItem -Recurse -File -Filter *.bbl $work) | Select-Object -First 1
     $bblTxt = if ($bbl) { [System.IO.File]::ReadAllText($bbl.FullName, $u8) } else { '' }
+    # biblatex/biber .bbl (\entry{}, no \bibitem): re-serialize to synthetic \bibitem form so refs survive.
+    if ($bblTxt -match '\\entry\{') { $syn = ConvertFrom-BiblatexBbl $bblTxt; if ($syn) { $bblTxt = $syn } }
+    # still no \bibitem (no .bbl, or an unparseable one): recover an inline \begin{thebibliography} from source.
+    # Traditional \bibitem syntax is identical inline, so Get-LatexReferences parses the recovered block as-is.
+    if ($bblTxt -notmatch '\\bibitem') { $ib = [regex]::Match($tex, '(?s)\\begin\{thebibliography\}.*?\\end\{thebibliography\}'); if ($ib.Success) { $bblTxt = $ib.Value } }
 
     $md = ConvertFrom-Latex $tex $bblTxt
     $refs = Get-LatexReferences $bblTxt (Build-CiteMap $bblTxt)

@@ -241,3 +241,82 @@ Body text with no macros.
         }
     }
 }
+
+Describe 'faithful-transcription hardening — hard-wrap reflow, toggle/box de-leaking, title hygiene, biblatex refs' {
+    It 'reflows source hard-wraps into one flowing paragraph (STANDARDS §4)' {
+        $tex = @'
+\documentclass{article}
+\title{T}
+\begin{document}
+This sentence is
+wrapped across
+three source lines.
+
+A second paragraph stays separate.
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $out | Should -Match ([regex]::Escape('This sentence is wrapped across three source lines.'))
+        $out | Should -Match ([regex]::Escape('A second paragraph stays separate.'))   # blank-line paragraph break preserved
+    }
+    It 'converts old-style {\em ..}/{\bf ..} switch toggles (not just \emph{..})' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}We call this {\em unfolding} and {\bf that}.\end{document}' ''
+        $out | Should -Match ([regex]::Escape('*unfolding*'))
+        $out | Should -Match ([regex]::Escape('**that**'))
+        $out | Should -Not -Match ([regex]::Escape('{\em'))
+    }
+    It 'unwraps \fbox{\parbox{width}{..}} to its content (no frame/box leak)' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}\fbox{\parbox{\textwidth}{Framed content here.}}\end{document}' ''
+        $out | Should -Match ([regex]::Escape('Framed content here.'))
+        $out | Should -Not -Match ([regex]::Escape('\fbox'))
+        $out | Should -Not -Match ([regex]::Escape('\parbox'))
+    }
+    It 'strips \thanks{..} from the H1 title' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{Real Title\thanks{Funded by grant 123.}}\begin{document}Body.\end{document}' ''
+        $out | Should -Match '(?m)^# Real Title$'
+        $out | Should -Not -Match ([regex]::Escape('Funded by grant'))
+    }
+    It 'recovers a manually-typeset \Large{..} title (command-first idiom)' {
+        $out = ConvertFrom-Latex '\documentclass{article}\begin{document}\Large{ONE DIAMOND TO RULE THEM ALL\\}\normalsize Body text.\end{document}' ''
+        $out | Should -Match '(?m)^# ONE DIAMOND TO RULE THEM ALL$'
+        $out | Should -Not -Match ([regex]::Escape('# (untitled)'))
+    }
+    It 'bridges a biblatex/biber .bbl (\entry{}) into synthetic \bibitem references' {
+        $bbl = @'
+\entry{smith2020}{article}{}
+  \name{author}{1}{}{%
+    {{hash=x}{family={Smith},given={Jane}}}%
+  }
+  \field{title}{A Fine Result}
+  \field{journaltitle}{J. Testing}
+  \field{year}{2020}
+\endentry
+'@
+        $syn = ConvertFrom-BiblatexBbl $bbl
+        $syn | Should -Match ([regex]::Escape('\bibitem{smith2020}'))
+        $syn | Should -Match ([regex]::Escape('Smith, Jane'))
+        $syn | Should -Match ([regex]::Escape('A Fine Result'))
+    }
+    It 'numbers theorem-like envs per the \newtheorem counter model ([section] + shared + own counters) and resolves their \ref' {
+        $tex = @'
+\documentclass{article}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}{Lemma}
+\begin{document}
+\section{First}\label{sec:one}
+\begin{definition}\label{def:a} A widget. \end{definition}
+\begin{theorem} Widgets exist. \label{thm:b}\end{theorem}
+\begin{lemma}\label{lem:c} A helper. \end{lemma}
+\section{Second}
+By \cref{thm:b} and \cref{def:a} in \cref{sec:one}, plus \cref{lem:c}.
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $out | Should -Match ([regex]::Escape('**Definition 1.1.**'))   # shares theorem counter, within section
+        $out | Should -Match ([regex]::Escape('**Theorem 1.2.**'))      # same shared/within counter, next
+        $out | Should -Match ([regex]::Escape('**Lemma 1.**'))          # own counter, flat (no [section])
+        $out | Should -Match ([regex]::Escape('By 1.2 and 1.1 in 1, plus 1.'))   # \cref resolves (incl label AFTER the theorem statement)
+        $out | Should -Not -Match '\?'
+    }
+}
