@@ -267,7 +267,10 @@ function Protect-VerbatimBlocks {
 # expand them in the body to a fixed point (macros reference macros), yielding primitive LaTeX. ----------
 function Get-LatexMacros {
     param([string]$Tex)
-    $macros = [ordered]@{}
+    # ORDINAL keys: LaTeX command names are case-sensitive and papers really do define both \Vect and
+    # \vect — a PS [ordered]@{} is case-INSENSITIVE, so the second definition silently overwrites the
+    # first and only the stored spelling ever expands (found via 2111.15058v3: 22 \vect left literal).
+    $macros = [System.Collections.Specialized.OrderedDictionary]::new([System.StringComparer]::Ordinal)
     $rx = [regex]'\\(?:newcommand|renewcommand|providecommand)\s*\{?\s*\\([A-Za-z]+|.)\s*\}?\s*(?:\[(\d+)\])?\s*(?:\[([^\]]*)\])?\s*\{'
     foreach ($m in $rx.Matches($Tex)) {
         $name = $m.Groups[1].Value
@@ -320,7 +323,12 @@ function Expand-LatexMacros {
 # PDF render shows (the ground truth must match the rendered paper for a fair comparison). ---------------
 function Build-LabelMaps {
     param([string]$Body)
-    $thm = @{}; $eq = @{}; $fig = @{}; $tab = @{}; $tc = 0; $ec = 0; $fc = 0; $bc = 0   # theorem-family share one counter; numbered eq envs another; figures + tables count their own
+    # ordinal maps: \label keys are case-sensitive identifiers (eq:A vs eq:a must not collide)
+    $thm = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
+    $eq = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
+    $fig = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
+    $tab = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
+    $tc = 0; $ec = 0; $fc = 0; $bc = 0   # theorem-family share one counter; numbered eq envs another; figures + tables count their own
     foreach ($m in ([regex]'\\begin\{(theorem|lemma|corollary|proposition|equation|align|gather|multline|eqnarray|alignat)(\*?)\}').Matches($Body)) {
         $env = $m.Groups[1].Value; $star = $m.Groups[2].Value -eq '*'
         $endIdx = $Body.IndexOf('\end{' + $env, $m.Index); $seg = if ($endIdx -ge 0) { $Body.Substring($m.Index, $endIdx - $m.Index) } else { '' }
@@ -381,7 +389,8 @@ function Get-LatexOracleCounts {
 }
 function Build-CiteMap {
     param([string]$Bbl)   # \bibitem order = citation number (\bibliographystyle{plain} renders these)
-    $map = @{}; $i = 0
+    # ordinal: bib keys are case-sensitive (chen2019 vs Chen2019 are distinct entries)
+    $map = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal); $i = 0
     if ($Bbl) { foreach ($m in ([regex]'\\bibitem(?:\[[^\]]*\])?\s*\{([^{}]+)\}').Matches($Bbl)) { $i++; $map[$m.Groups[1].Value] = $i } }
     return $map
 }
@@ -763,6 +772,13 @@ function Store-Math {
     # map it to \text{prose} — which renders and keeps any nested $..$. (\mbox/\hbox already became \text
     # pre-protection; this catches the two-arg \parbox, whose width group must be dropped, only inside math.)
     $Content = [regex]::Replace($Content, '\\parbox\s*(?:\[[^\]]*\])?\s*\{[^{}]*\}', '\text')
+    # NESTING REGISTER: any $..$ still inside this span is text-bridged inner math (\text{... $x$ ...} —
+    # the delimiter-aware capture above guarantees it sits inside a brace group). Emitting bare inner $
+    # inside a $/$$-delimited markdown span breaks every scanner downstream (incl. render_check's
+    # extractor); KaTeX accepts \(..\) inside \text — so normalize: outer delimiters own $/$$, bridged
+    # inner math is ALWAYS \(..\). One unambiguous register for every consumer.
+    $Content = [regex]::Replace($Content, '(?<!\\)\$(.+?)(?<!\\)\$', '\($1\)',
+        [System.Text.RegularExpressions.RegexOptions]::Singleline)
     # display fenced on its own lines; inline collapses source line-breaks so a span never crosses a blank line
     $script:LtxMathStore[$id] = if ($Display) { "`n`$`$`n$($Content.Trim())`n`$`$`n" } else { '$' + (($Content -replace '\s*\r?\n\s*', ' ').Trim()) + '$' }
     return $id
@@ -779,8 +795,44 @@ function Protect-LatexMath {
     $Text = [regex]::Replace($Text, '\\\[(.*?)\\\]', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '\\\((.*?)\\\)', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
-    $Text = [regex]::Replace($Text, '(?<=(?:^|[^\\])(?:\\\\)*)\$(.+?)(?<!\\)\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
+    $Text = Protect-InlineDollarSpans $Text
     return $Text
+}
+
+# Inline $..$ pairing, NESTING-AWARE. A text-mode bridge inside inline math (\text{... $x$ ...}) is legal
+# LaTeX and legal KaTeX, but a non-greedy regex pairs the opener with the FIRST inner $ — shredding the
+# span (unbalanced braces in math, inner math leaked to the prose passes). Interval-algebra view (the
+# doccer/masks calculus): escaped characters and brace groups are masked intervals; a `$` DELIMITS only
+# in the unmasked layer. This scanner is that calculus in one O(n) pass — a $ opens a span, and only a $
+# at brace depth 0 (escapes skipped) closes it. Inner $s ride INSIDE the span content, where Store-Math
+# normalizes them to \(..\) (see there).
+function Protect-InlineDollarSpans {
+    param([string]$Text)
+    $sb = [System.Text.StringBuilder]::new($Text.Length + 64)
+    $i = 0; $n = $Text.Length
+    while ($i -lt $n) {
+        $c = $Text[$i]
+        if ($c -eq '\') {   # escaped char (incl. \$ \{ \}): copy both, never interpret
+            [void]$sb.Append($c); if ($i + 1 -lt $n) { [void]$sb.Append($Text[$i + 1]) }
+            $i += 2; continue
+        }
+        if ($c -ne '$') { [void]$sb.Append($c); $i++; continue }
+        $j = $i + 1; $depth = 0; $close = -1
+        while ($j -lt $n) {
+            $d = $Text[$j]
+            if ($d -eq '\') { $j += 2; continue }
+            if ($d -eq '{') { $depth++ }
+            elseif ($d -eq '}') { if ($depth -gt 0) { $depth-- } }   # stray } tolerated, never negative
+            elseif ($d -eq '$' -and $depth -eq 0) { $close = $j; break }
+            $j++
+        }
+        if ($close -lt 0 -or $close -eq $i + 1) {   # unpaired $, or an empty $$ remnant: copy verbatim
+            [void]$sb.Append($c); $i++; continue
+        }
+        [void]$sb.Append((Store-Math ($Text.Substring($i + 1, $close - $i - 1).Trim()) $false))
+        $i = $close + 1
+    }
+    return $sb.ToString()
 }
 function Restore-LatexMath {
     param([string]$Text)
@@ -970,7 +1022,10 @@ function Get-TheoremModel {
 # (any other token clears it) — so an equation \label deeper inside a theorem is not mis-captured.
 function Convert-CrossRefEnvs {
     param([string]$Body, $Model)
-    $thmMap = @{}; $secMap = @{}; $ctr = @{}; $within = @{}
+    # label->number maps ordinal (case-sensitive \label keys); $ctr/$within key on env names — same rule
+    $thmMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+    $secMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+    $ctr = @{}; $within = @{}
     $sec = 0; $sub = 0; $subsub = 0
     $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
     $rx = [regex]'\\(section|subsection|subsubsection)(\*?)\s*\{|\\begin\{([A-Za-z][A-Za-z0-9]*\*?)\}[ \t]*(?:\[([^\]]*)\])?|\\end\{([A-Za-z][A-Za-z0-9]*\*?)\}|\\label\{([^{}]+)\}'
