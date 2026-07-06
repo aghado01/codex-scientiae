@@ -194,8 +194,21 @@ by register or fuse (RRF) across both.
     sensible prose; referential flow preserved).
   - Math channel: prose → ⟨PROSE⟩ slots — preserves derivation RHYTHM (eq→⟨PROSE⟩→eq→eq: the
     arrangement of formulas and their connective tissue is signal that formula-extraction loses).
-  - Emergent: math-sparse sections yield weak math vectors — math-register queries won't rank them.
-    Not degradation; the register separation working.
+  - Emergent: math-sparse sections yield weak math vectors — in the MATH register. The registers are
+    DISSOCIABLE, not gated: see fusion semantics below.
+- **Fusion semantics (decided 2026-07-06): separation exists to make fusion principled.** Mixed
+  embeddings fuse ACCIDENTALLY inside one vector, weighted by token volume (prose drowns math and vice
+  versa). Separated channels rank per-register, then combine EXPLICITLY in rank space:
+  - Default `search` = ALL active channels, rank-fused (RRF-class — sidesteps cross-model score
+    incomparability; a strong math hit surfaces even when prose similarity is everywhere mediocre:
+    the formalization of "one register doesn't drown the other"). Register routing = optional
+    narrowing, never the default.
+  - Reconciliation is STRUCTURAL via the shared address space (symmetric masking's payoff): same unit
+    hit in both registers → concordant, boosted; math-only → the derivation w/o discussion; prose-only
+    → the discussion w/o formulas (the math-sparse paper competes fairly in its own register).
+  - Result envelope groups per unit: { slug, section, span, scores: {prose, math}, fused, breadcrumb }
+    — evidence provenance legible to the reading agent (a math-only hit invites a toc-neighbor fetch
+    for surrounding prose; a concordant hit is the strong lead).
 - **Math content itself:** the corpus advantage is the REGISTER DISCIPLINE — polished primitive KaTeX
   (macro expansion already canonicalized every paper's private vocabulary to a shared alphabet), never
   glyph soup. Semantic-vs-syntactic reality (ARQMath/Tangent-CFT lineage): strings lose math
