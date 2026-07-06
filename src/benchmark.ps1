@@ -115,7 +115,9 @@ function Export-BenchmarkTrial {
         [double] $DupThreshold = 0.8,
         [int]    $RedundancyCap = 2
     )
-    $hasOracle = Test-Path -LiteralPath (Join-Path $PaperDir "$Slug.latex.md")
+    # oracle probe spans both lane namings: legacy _inbox {slug}.latex.md and finalized {slug}-latex.md
+    $hasOracle = (Test-Path -LiteralPath (Join-Path $PaperDir "$Slug.latex.md")) -or
+                 (Test-Path -LiteralPath (Join-Path $PaperDir "$Slug-latex.md"))
     $difficulty = Get-TrialDifficulty $Chunk $hasOracle
     $sig = Get-ContentSignature ([string]$Chunk.content)
 
