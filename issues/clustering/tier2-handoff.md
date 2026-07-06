@@ -3,13 +3,23 @@
 **Status:** foundation LANDED 2026-07-05 (commits `30cd08c` harness, `ad4aa09` Lane 5, + a follow-up that
 re-framed the oracle into two populations — see below). This picks up where `foundation-scope.md` ends.
 **Consensus milestone-1 LANDED 2026-07-05 (`ea13156`); B-fix (caption gap 4.5em) LANDED (`70b2851`);
-V_caption interior split (m2-a) LANDED 2026-07-06 (`e0175a5`)** — scoreboard + ledger below are current:
-**PRIMARY mean |dFig| 0.9, 6/10 exact; SECONDARY 7.9.** Remaining queue, in rough value order:
-(1) A2 cue-TYPE split (pure gate accounting, would make 2603/2501 exact → PRIMARY ≈ 0.6);
-(2) V_caption (b) positive vote / kind promotion (E-items); (3) equation-furniture discrimination +
-letters-aware crop padding (SECONDARY quality); (4) D text-lane (2210 Figs 1/4); (5) Jaccard provenance
-view + SymmetrizationRule (m2 proper). Out-of-sample check when available: run the gate on
-compendia/mapper once that catalog has pig runs + oracle sidecars (all knobs were ph-zigzag-calibrated).
+V_caption interior split (m2-a) LANDED 2026-07-06 (`e0175a5`); A2 cue-TYPE split LANDED (`5499a16`)** —
+scoreboard + ledger below are current: **PRIMARY mean |dFig| 0.7, 7/10 exact, 0 over; SECONDARY 7.9.**
+NORTH STAR recorded in `issues/pdfdig-lane/pdfdig-ps-converter.md`: pdfdig converges on the oracle's
+finalize/pre-promotion standards (ideal: replicate an oracle run from a bare PDF). Remaining queue,
+in rough value order:
+(1) caption-diag on 2302 (the A2-exposed hidden miss — one of Figs 1/5 unclaimed);
+(2) **topological-prior T1** (cycle-rank equation-furniture discriminator — `topological-prior.md`;
+    lands the queued furniture item with a principled signal); (3) V_caption (b) positive vote / kind
+    promotion (E-items); (4) letters-aware crop padding (SECONDARY crop quality); (5) D text-lane
+    (2210 Figs 1/4); (6) T2 persistence-band selection; (7) Jaccard provenance view + SymmetrizationRule
+    (m2 proper — still gated on IR enrichment: clip-group-id/color/marked-content not yet emitted).
+Out-of-sample check when available: run the gate on compendia/mapper once that catalog has pig runs +
+oracle sidecars (every knob was ph-zigzag-calibrated).
+Mapper-catalog oracle coverage is 9/10 and will stay there: **2504.09042v1 is a PDF-only arXiv submission**
+(no LaTeX source exists; confirmed via codex-arxiv fetch 2026-07-06 — the e-print endpoint serves the PDF
+itself, which is how a byte-for-byte PDF copy got mis-staged as its `.tar.gz` on 2026-07-03; bogus tarball
+deleted). That paper is **pig/PDF-lane-only** — exclude it from oracle-sidecar expectations and the gate.
 
 **The big correction (2026-07-05):** the original "fragmentation over-count tail" was largely a **measurement
 artifact**. The oracle counted `\includegraphics + tikz` as one number, which (a) conflated captioned figures
@@ -60,6 +70,13 @@ PRIMARY  captioned figures: 2 over / 2 under / 6 EXACT, mean |dFig| = 0.9   (3.7
 SECONDARY inline diagrams:  mean |dInl| = 7.9   (9.7 → 9.1 → 8.3 → 8.1 → 7.9)
 Remaining PRIMARY misses fully attributed: A2 accounting seam (2501 +1 / 2603 +2 — table-cued regions vs
 FIGURE-float oracle), ledger D text-lane (2210 −2, Figs 1/4), oracle noise (2307 — not chased).
+
+**POST-A2 UPDATE (2026-07-06, `5499a16`, same runs re-scored — cue-TYPE split):** PRIMARY mean |dFig|
+= **0.7, 7/10 EXACT, 0 over**. 2603 +2 → 0 and 2501 +1 → 0 as predicted (their extras were table-cued);
+**2302 exposed as a hidden −1** — its old "exact 5=5" counted Table 1 against a missed figure caption
+(coincidental cancellation, the 2210-16=16 phenomenon again; Figures 2/3/4/6 captioned, one of Figs 1/5
+unclaimed → run `scratch/caption-diag.ps1 -Slug 2302.12796v2` as the next diagnostic). Table-cued regions
+now sit in the `tab` column, outside both populations.
 Splitter corpus verify: 5 splits, all genuine, 0 false — incl. 2307 pg17 (Figure 6 + Figure 7), a weld no
 prior diagnostic had surfaced.
 m1 ablations (scratch/consensus-ablation.ps1): consensus-off reproduces the pre-m1 table EXACTLY (9.1);
@@ -114,11 +131,12 @@ independently; no clustering change can help).
 - **A. Overlap-denominator bug — ✅ FIXED (instrument).** `ovl/figW` rejected short "Fig. N" captions fully
   under wide figures (2205 Figs 6/8/12/13; 2111 Fig 3). Now `ovl/min(figW, blockW)` — only narrower-than-figure
   blocks change behavior; cue+gap gates still exclude in-text refs (verified: no false attachments corpus-wide).
-- **A2. Table-cue gate seam — OPEN (instrument, small).** The caption record stores `cue=$true` (boolean), not
-  WHICH cue word matched. Store the matched word class (figure|table|algorithm), then the gate scores
-  figure-cued regions vs figure floats (and table-cued vs oracle `tables`, already counted). Explains 2603 +2
-  (verified Table 2/3) and probably 2501 +1. Also refine the gate's `mechanism` attribution (currently
-  `under ∧ img>0 → raster` mislabels caption-miss papers).
+- **A2. Table-cue gate seam — ✅ FIXED 2026-07-06 (`5499a16`).** Captions store `cue_word`; the gate
+  classifies (cue_word, text-prefix fallback for old runs) and scores figure-cued vs figure floats,
+  excluding table/algorithm-cued from BOTH populations. 2603 and 2501 exact as predicted; bonus: exposed
+  2302's hidden −1 (Table 1 had been masking a missed figure caption — new caption-diag target).
+  Still open from the original note: the `mechanism` attribution refinement (`under ∧ img>0 → raster`
+  mislabels caption-miss papers) — cosmetic, low priority.
 - **B. Gap-adjacent misses — ✅ FIXED 2026-07-05 (calibrated `caption_max_gap_em` 4.0 → 4.5em).**
   Full-geometry probe corrected the earlier read: 2210 Fig 7 was NEVER C-shaped — its two panels sit at
   gap 45.3pt = 4.16em of the 10.9pt body (the diag's below=−209 belonged to a different region on the
