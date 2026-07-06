@@ -158,10 +158,29 @@ versioned corpus re-embed (never mix model generations in one search). Reader ga
 **Scale:** brute-force cosine over a flat committed matrix is sufficient to ~50-75k section vectors
 (≈1,000 papers, milliseconds); int8 quantization = 4x headroom; ANN infra explicitly deferred.
 
-**Metric openness (research seam):** embedding = (coordinates, metric); the corpus has a backbone
-(structural tree, later citation graph). Keep RAW vectors committed and apply the metric at query
-time, so structure-conditioned refinements (diffusion distances over the corpus graph — the SPC
-coupling move applied to the library) stay possible without re-indexing.
+**Geometry channels (NOT settling on cosine — decided 2026-07-06):** grounded in the kisungyou corpus
+(2504.14164 "Semantics at an Angle: When Cosine Similarity Works Until It Doesn't": norms carry
+semantics, embedding spaces are anisotropic cones, magnitude-is-noise is broken) and the ThermoMapper
+geometry program. Cosine's failures are STRUCTURAL for this design: the corpus is a TREE (hyperbolic
+space embeds trees with arbitrarily low distortion; Euclidean/spherical provably cannot), and
+multiresolution retrieval is ASYMMETRIC containment (query→section is entailment-shaped; cosine is
+symmetric by construction; the hyperboloid radial coordinate gives generality/depth a representation —
+coarse-to-fine as geodesic descent, norm-carries-meaning embraced rather than normalized away).
+
+Embedding sidecars therefore declare a CHANNEL: { geometry: euclidean|sphere|hyperboloid(Lorentz)|
+product, curvature, dim, model_id, model_version, built_from, sha256 }. Channels coexist per catalog;
+`search(query, …, channel?)`; librarian `index_embed -Channel`; the retrieval EVAL harness — not
+aesthetics — picks winners.
+- **ch0 (baseline, explicitly not the commitment):** spherical cosine over static embeddings, WITH the
+  standard anisotropy debias (mean-centering/whitening) per the cosine critique. Exists to be beaten.
+- **ch1 hyperboloid (Lorentz model — numerically preferred; matches You's wrapped-normal work):**
+  corpus units re-embedded into H^n supervised by BOTH the semantic kNN graph AND the structural tree
+  edges — the backbone-conditioned move. Distance = arcosh(−⟨x,y⟩_L); the C# hyperboloid/poincaré
+  metrics in src/hdbscan/Evaluators.cs REUSE directly. Query side, phased: (a) Euclidean shortlist →
+  hyperbolic re-rank (no query lift needed), (b) learned query lift (exp-map at fitted base point).
+- **ch2 candidate: product manifolds** (S×H mixed curvature — clusters AND hierarchy; You's
+  geometric-medians-on-product-manifolds line is in the corpus).
+The library doubles as the ThermoMapper metric program's testbed: retrieval quality = the observable.
 
 ## Open questions
 
