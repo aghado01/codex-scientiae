@@ -277,11 +277,20 @@ function Get-LatexMacros {
         $nargs = if ($m.Groups[2].Success) { [int]$m.Groups[2].Value } else { 0 }
         $opt = if ($m.Groups[3].Success) { $m.Groups[3].Value } else { $null }
         $body = Get-LatexBracedArg $Tex ($m.Index + $m.Length - 1)
+        # bodies written with %-line-continuations carry the % into the expansion, where it comments out
+        # the REST OF THE MATH SPAN (swallowing closing braces). TeX eats %+newline — do the same.
+        if ($null -ne $body) { $body = [regex]::Replace($body, '(?<!\\)%[^\r\n]*\r?\n?', '') }
         if ($null -ne $body) { $macros[$name] = [pscustomobject]@{ nargs = $nargs; opt = $opt; body = $body } }
     }
     foreach ($m in ([regex]'\\DeclareMathOperator\*?\s*\{?\s*\\([A-Za-z]+)\s*\}?\s*\{').Matches($Tex)) {   # braces around the operator name are optional
         $name = $m.Groups[1].Value; $body = Get-LatexBracedArg $Tex ($m.Index + $m.Length - 1)
         if ($null -ne $body) { $macros[$name] = [pscustomobject]@{ nargs = 0; opt = $null; body = "\operatorname{$body}" } }
+    }
+    # \let\A\B (also \let\A=\B): a zero-arg alias — papers alias whole vocabularies this way
+    # (\let\union\cup, \let\rseqlrarr\xdashleftrightarrow). The alias body is the TARGET name; the
+    # expansion fixed-point resolves chains (\let\intsec\intersect -> \intersect -> \cap).
+    foreach ($m in ([regex]'\\let\s*\\([A-Za-z]+)\s*=?\s*\\([A-Za-z]+)').Matches($Tex)) {
+        $macros[$m.Groups[1].Value] = [pscustomobject]@{ nargs = 0; opt = $null; body = '\' + $m.Groups[2].Value }
     }
     return $macros
 }
@@ -309,8 +318,27 @@ function Expand-LatexMacros {
                     elseif ($cur -lt $Text.Length) { $args += [string]$Text[$cur]; $cur++ } else { $ok = $false; break }
                 }
                 if (-not $ok) { [void]$sb.Append($Text.Substring($m.Index, $m.Length)); $pos = $m.Index + $m.Length; continue }
-                $exp = $def.body; for ($k = $def.nargs; $k -ge 1; $k--) { $exp = $exp.Replace("#$k", [string]$args[$k - 1]) }
-                [void]$sb.Append($exp); $pos = $cur; $changed = $true
+                $exp = $def.body
+                for ($k = $def.nargs; $k -ge 1; $k--) {
+                    # glue guard INSIDE the body too: {\lbarrowspace#1} with arg 'c' must not fuse into
+                    # \lbarrowspacec — when #k directly follows a control word and the arg starts with a
+                    # letter, keep the token boundary with a space.
+                    $argv = [string]$args[$k - 1]
+                    $exp = [regex]::Replace($exp, '(\\[A-Za-z]+)?#' + $k, {
+                            param($mm)
+                            if ($mm.Groups[1].Success -and $argv.Length -gt 0 -and [char]::IsLetter($argv[0])) { $mm.Groups[1].Value + ' ' + $argv }
+                            else { $mm.Groups[1].Value + $argv } }.GetNewClosure())
+                }
+                # GLUE GUARDS: a control word and an adjacent letter must never fuse into a NEW control word.
+                # Head: \in followed by \chn expanding to 'c' would produce \inc (an undefined command born in
+                # the expander). Tail: a body ending in a control word followed by a source letter fuses too.
+                if ($exp.Length -gt 0 -and [char]::IsLetter($exp[0])) {
+                    $tail = if ($sb.Length -gt 40) { $sb.ToString($sb.Length - 40, 40) } else { $sb.ToString() }
+                    if ([regex]::IsMatch($tail, '\\[A-Za-z]+$')) { [void]$sb.Append(' ') }
+                }
+                [void]$sb.Append($exp)
+                if ($cur -lt $Text.Length -and [char]::IsLetter($Text[$cur]) -and [regex]::IsMatch($exp, '\\[A-Za-z]+$')) { [void]$sb.Append(' ') }
+                $pos = $cur; $changed = $true
             }
             [void]$sb.Append($Text.Substring($pos)); $Text = $sb.ToString()
         }
@@ -772,6 +800,19 @@ function Store-Math {
     # map it to \text{prose} — which renders and keeps any nested $..$. (\mbox/\hbox already became \text
     # pre-protection; this catches the two-arg \parbox, whose width group must be dropped, only inside math.)
     $Content = [regex]::Replace($Content, '\\parbox\s*(?:\[[^\]]*\])?\s*\{[^{}]*\}', '\text')
+    # \ensuremath in MATH position is a no-op wrapper BY DEFINITION — unwrap it, KEEPING the brace group
+    # ({ab}^c ≠ ab^c). The content never leaves the math register: this enclosing span already owns it.
+    # (The PROSE position is the opposite move — promotion to an inline span — handled post-protection.)
+    while ($true) {
+        $em = [regex]::Match($Content, '\\ensuremath\s*\{')
+        if (-not $em.Success) { break }
+        $open = $em.Index + $em.Length - 1; $end = Get-BraceGroupEnd $Content $open
+        if ($end -lt 0) { break }
+        $Content = $Content.Substring(0, $em.Index) + $Content.Substring($open, $end - $open) + $Content.Substring($end)
+    }
+    # math-mode small caps: KaTeX has no \textsc in math — \text keeps the content live (algorithm-name
+    # tokens like \textsc{ConvertFilt} inside pseudocode math reach here via the protected alg spans).
+    $Content = $Content -replace '\\textsc(?=\s*\{)', '\text'
     # NESTING REGISTER: any $..$ still inside this span is text-bridged inner math (\text{... $x$ ...} —
     # the delimiter-aware capture above guarantees it sits inside a brace group). Emitting bare inner $
     # inside a $/$$-delimited markdown span breaks every scanner downstream (incl. render_check's
@@ -787,16 +828,49 @@ function Protect-LatexMath {
     param([string]$Text)
     $script:LtxMathStore = @{}; $script:LtxMathIdx = 0
     $SL = [System.Text.RegularExpressions.RegexOptions]::Singleline
+    # $$-display handling is the TEX-FAITHFUL scanner, NOT a regex — a global '$$(.*?)$$' here re-corrupts
+    # adjacent inline delimiters ($($$x$…) that Convert-DisplayDollars deliberately left alone. Idempotent,
+    # so the body path (already converted) is unharmed and the refs path gets the same faithful treatment.
+    $Text = Convert-DisplayDollars $Text
     foreach ($e in 'align', 'alignat', 'flalign', 'eqnarray', 'split', 'multline') {
         $Text = [regex]::Replace($Text, "\\begin\{$e\*?\}(.*?)\\end\{$e\*?\}", { param($m) Store-Math ("\begin{aligned}`n" + $m.Groups[1].Value.Trim() + "`n\end{aligned}") $true }, $SL)
     }
     $Text = [regex]::Replace($Text, "\\begin\{gather\*?\}(.*?)\\end\{gather\*?\}", { param($m) Store-Math ("\begin{gathered}`n" + $m.Groups[1].Value.Trim() + "`n\end{gathered}") $true }, $SL)
     $Text = [regex]::Replace($Text, "\\begin\{(equation|displaymath|math)\*?\}(.*?)\\end\{\1\*?\}", { param($m) Store-Math ($m.Groups[2].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '\\\[(.*?)\\\]', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
-    $Text = [regex]::Replace($Text, '(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '\\\((.*?)\\\)', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
     $Text = Protect-InlineDollarSpans $Text
     return $Text
+}
+
+# Old-style $$..$$ -> \[..\], TEX-FAITHFULLY. TeX pairs `$` sequentially: `$$` opens a DISPLAY only when
+# the scanner reaches it OUTSIDE math. In `$($$\mathrm{..}$` the two adjacent $ are an inline span CLOSING
+# and the next OPENING — a regex that globally pairs `$$...$$` reads them as display fences and swallows
+# whole paragraphs of prose into math. Escapes skipped; an unpaired trailing $$ passes through untouched.
+function Convert-DisplayDollars {
+    param([string]$T)
+    $sb = [System.Text.StringBuilder]::new($T.Length + 16)
+    $i = 0; $n = $T.Length; $inInline = $false
+    while ($i -lt $n) {
+        $c = $T[$i]
+        if ($c -eq '\') { [void]$sb.Append($c); if ($i + 1 -lt $n) { [void]$sb.Append($T[$i + 1]) }; $i += 2; continue }
+        if ($c -ne '$') { [void]$sb.Append($c); $i++; continue }
+        if (-not $inInline -and $i + 1 -lt $n -and $T[$i + 1] -eq '$') {
+            $j = $i + 2; $close = -1
+            while ($j -lt $n - 1) {
+                if ($T[$j] -eq '\') { $j += 2; continue }
+                if ($T[$j] -eq '$' -and $T[$j + 1] -eq '$') { $close = $j; break }
+                $j++
+            }
+            if ($close -lt 0) { [void]$sb.Append('$$'); $i += 2; continue }
+            [void]$sb.Append('\[').Append($T.Substring($i + 2, $close - $i - 2)).Append('\]')
+            $i = $close + 2
+            continue
+        }
+        $inInline = -not $inInline
+        [void]$sb.Append($c); $i++
+    }
+    return $sb.ToString()
 }
 
 # Inline $..$ pairing, NESTING-AWARE. A text-mode bridge inside inline math (\text{... $x$ ...}) is legal
@@ -1075,6 +1149,10 @@ function ConvertFrom-Latex {
     $Tex = [regex]::Replace($Tex, '(?m)^[ \t]*(?<!\\)%.*\r?\n', '')            # whole-line comments: drop the line so no spurious blank line (which splits a paragraph) survives
     $Tex = [regex]::Replace($Tex, '(?<!\\)%.*$', '')                           # trailing comments: keep the code before %
     $macros = Get-LatexMacros $Tex
+    # papers that INLINE a dashed-arrows snippet define \xdash… themselves via \mathpalette/@-internals
+    # KaTeX can never render — drop those DEFS so the names stay unexpanded and the compat table below
+    # maps them to verified \overset forms instead of their bodies exploding into \da@ soup.
+    foreach ($n in 'xdashrightarrow', 'xdashleftarrow', 'xdashleftrightarrow') { if ($macros.Contains($n)) { $macros.Remove($n) } }
     $title = Clean-LatexTitle (Get-LatexCommandArg $Tex '\title')
     $bm = [regex]::Match($Tex, '\\begin\{document\}(.*)\\end\{document\}', [System.Text.RegularExpressions.RegexOptions]::Singleline)
     $body = if ($bm.Success) { $bm.Groups[1].Value } else { $Tex }
@@ -1101,8 +1179,10 @@ function ConvertFrom-Latex {
     $body = [regex]::Replace($body, '(?s)\\begin\{thebibliography\}\s*(?:\{[^{}]*\})?.*?\\end\{thebibliography\}', '')
 
     # old-style $$display$$ -> \[..\] up front: display and inline math otherwise share the `$` delimiter, so
-    # the regex parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
-    $body = [regex]::Replace($body, '(?s)(?<=(?:^|[^\\])(?:\\\\)*)\$\$(.*?)\$\$', '\[$1\]')
+    # the parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
+    # TEX-FAITHFUL scan, not a regex: `$$` only opens a DISPLAY when reached outside math — in `$($$x$…`
+    # (an inline span closing and the next immediately opening) the pair is two INLINE delimiters.
+    $body = Convert-DisplayDollars $body
 
     # Diagrams: STASH the source and drop a numbered marker in the flow. The source is the AUTHORITY for
     # diagrams (PDF-side image extraction is unreliable) — Invoke-ArxivLatexToMarkdown renders each stashed
@@ -1168,9 +1248,29 @@ function ConvertFrom-Latex {
     $body = Convert-BorderMatrix $body                                         # \bordermatrix -> ruled array
 
     $body = Expand-LatexMacros $body $macros                                   # macros (incl inside math)
+
+    # --- KaTeX-compat substitutions (post-expansion; every target render-check-verified) --------------
+    # Semantic upgrades first: the hand-rolled amalgamation (180°-rotated Π, literally named \Amalg in
+    # 2307) IS \amalg; the -45°-rotated arrows are the diagonal add/delete markers (\searrow/\nwarrow).
+    # Rotation of anything else is presentation — keep the content, drop the box. \xdash… arrows (amsmath
+    # dashed x-arrows, KaTeX-absent) keep BOTH their label and their dashedness via \overset over the
+    # KaTeX dashed arrows. \nonscript is a script-style spacing conditional — content-free, dropped.
+    $body = [regex]::Replace($body, '(?:\\mathbin\{\\text\{)?\\rotatebox\s*(?:\[[^\]]*\])?\s*\{180\}\s*\{\s*\$?\{?\\Pi\}?\$?\s*\}(?:\}\})?', '\amalg')
+    $body = [regex]::Replace($body, '\\rotatebox\s*(?:\[[^\]]*\])?\s*\{-45\}\s*\{\s*\$\{?\\rightarrow\}?\$\s*\}', '\searrow')
+    $body = [regex]::Replace($body, '\\rotatebox\s*(?:\[[^\]]*\])?\s*\{-45\}\s*\{\s*\$\{?\\leftarrow\}?\$\s*\}', '\nwarrow')
+    $body = [regex]::Replace($body, '\\rotatebox\s*(?:\[[^\]]*\])?\s*\{-45\}\s*\{\s*\$\{?\\leftrightarrow\}?\$\s*\}', '\mathrel{\nwarrow\mkern-11mu\searrow}')
+    $body = [regex]::Replace($body, '\\rotatebox\s*(?:\[[^\]]*\])?\s*\{[^{}]*\}\s*\{([^{}]*)\}', '$1')
+    $body = Replace-BracedCommand $body '\xdashleftrightarrow' { param($a) '\overset{' + $a + '}{\dashleftarrow\mkern-14mu\dashrightarrow}' }
+    $body = Replace-BracedCommand $body '\xdashrightarrow' { param($a) '\overset{' + $a + '}{\dashrightarrow}' }
+    $body = Replace-BracedCommand $body '\xdashleftarrow' { param($a) '\overset{' + $a + '}{\dashleftarrow}' }
+    $body = $body -replace '\\lbarrowspace(?![a-zA-Z])', '\,'
+    $body = $body -replace '\\nonscript(?![a-zA-Z])', ''
+    $body = $body -replace '\\(?:linebreak|nolinebreak)(?:\[[0-9]\])?(?![a-zA-Z])', ''   # break hints: presentation only, valid in math where KaTeX lacks them
+
     # accents/single-arg ops written without braces around a (now-expanded) macro arg break KaTeX
-    # (e.g. source \underline\IK -> \underline \mathbb{K}); re-brace the argument.
-    $body = $body -replace '\\(underline|overline|widehat|widetilde|widecheck|hat|bar|tilde|vec|check|breve|acute|grave|dot|ddot|mathring)\s+(\\[A-Za-z]+\{[^{}]*\})', '\$1{$2}'
+    # (e.g. source \underline\IK -> \underline \mathbb{K}); re-brace the argument. \s* not \s+: authors
+    # also write the form with NO space (\overline\mathbb{N}).
+    $body = $body -replace '\\(underline|overline|widehat|widetilde|widecheck|hat|bar|tilde|vec|check|breve|acute|grave|dot|ddot|mathring)\s*(\\[A-Za-z]+\{[^{}]*\})', '\$1{$2}'
     # theorem/section cross-refs: number + render theorem-like envs here (ordered walk over the counter model),
     # BEFORE math protection, so the same numbers feed both the inline labels and \ref resolution.
     $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex)
@@ -1186,6 +1286,11 @@ function ConvertFrom-Latex {
     # Flatten-AlgText then only ever sees scaffold prose (placeholders carry the math past it), never
     # math. One expression, one token stream, wherever it appears.
     $body = Protect-LatexMath $body
+
+    # \ensuremath surviving protection is in PROSE position, where it asserts "this content is math" —
+    # honor that by PROMOTING it to a protected inline span. Never strip it to bare tokens: the register
+    # objective is that math always tokenizes as math ($\varepsilon$-neighborhood, not ε-soup in prose).
+    $body = Replace-BracedCommand $body '\ensuremath' { param($a) Store-Math $a $false }
 
     $body = Convert-Algorithms $body                                          # algpseudocode -> fenced pseudocode
 
@@ -1560,6 +1665,13 @@ function Invoke-ArxivLatexToMarkdown {
                 } | ConvertTo-Json -Depth 3 -Compress))
     }
     [System.IO.File]::WriteAllText((Join-Path $work "$Slug.diagrams.jsonl"), $dsb.ToString(), $u8)
+
+    # REGISTER SAFETY: two ADJACENT inline spans emit `$a$$b$` — indistinguishable from a display fence
+    # to every markdown scanner (render_check's extractor included). Our true display fences sit ALONE on
+    # their own line, so any mid-line unescaped `$$` is span adjacency: restore the boundary with a space.
+    $md = (($md -split "`n") | ForEach-Object {
+            if ($_.Trim() -eq '$$') { $_ } else { [regex]::Replace($_, '(?<!\\)\$\$', '$ $') }
+        }) -join "`n"
 
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
