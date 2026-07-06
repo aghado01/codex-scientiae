@@ -129,6 +129,40 @@ re-publishes. Publish stops being a one-way copy.
    Retire `src/publish.ps1` (its chunk-finalize becomes just another upstream lane producing gated md).
 5. Rewrite STANDARDS §8 as the artifact schema + profiles (layout-as-data), §6 stays the human TOC.
 
+## Semantic tier (down-the-line, designed-for now)
+
+Multiresolution semantic search that MATES with the reader rather than paralleling it. The load-bearing
+decision: **embeddings ride the span substrate** — the units embedded are exactly the units the TOC
+index defines (paper-level: title+hook/abstract; section-level: the spans; v2: sub-units). A semantic
+hit is therefore a NAVIGABLE ADDRESS `(slug, section, span, score)` in the same coordinate system
+`toc`/`fetch` speak — never a floating chunk. Structure-augmented retrieval is preserved: land mid-paper
+with breadcrumb/parent/siblings one hash-guarded fetch away. Coarse-to-fine = the agent's own
+progressive-disclosure flow run in embedding space (paper shortlist → section hits → span).
+
+**Retrieval ladder** (each rung independently useful):
+1. structural — TOC navigation (v1)
+2. lexical — BM25/SimHash: hashish (SPCX) is a dependency-free C# lib that already implements this
+   tier; no model, no query-embedding, shippable right after the reader
+3. semantic — embeddings for open-ended queries; hybrid fusion (RRF) with the lexical tier
+
+**Model strategy:** tier-1 = STATIC embedding models (model2vec/potion class): tiny, CPU-instant
+(lookup+pool, no transformer inference), deterministic, vendorable — keeps the READER self-contained
+for query embedding (its contract: bare clone, no infra). Tier-2 (optional, later) = local gguf
+contextual model via llama.cpp as re-ranker over tier-1 candidates only (the local-worker substrate).
+
+**Lifecycle:** embeddings are derived data built by the librarian (`index_embed`), committed, guarded
+by {file sha256, model_id, model_version} in the sidecar header — mismatch fails loud; model upgrade =
+versioned corpus re-embed (never mix model generations in one search). Reader gains
+`search(query, catalog?, level?, k)` returning spans + scores + structural breadcrumbs.
+
+**Scale:** brute-force cosine over a flat committed matrix is sufficient to ~50-75k section vectors
+(≈1,000 papers, milliseconds); int8 quantization = 4x headroom; ANN infra explicitly deferred.
+
+**Metric openness (research seam):** embedding = (coordinates, metric); the corpus has a backbone
+(structural tree, later citation graph). Keep RAW vectors committed and apply the metric at query
+time, so structure-conditioned refinements (diffusion distances over the corpus graph — the SPC
+coupling move applied to the library) stay possible without re-indexing.
+
 ## Open questions
 
 - **Names for the two servers** (working: `codex-librarian` write / `codex-reader` read; with the
