@@ -26,10 +26,28 @@ Three levels, each a separate fetch an agent *chooses* to make:
 
 Agent flow: read catalog → reason → fetch TOCs of interesting papers → reason → fetch exact sections.
 
+## DECIDED (2026-07-06 review)
+
+- **New root: `bibliotheca/`** — the library system publishes into a fresh root, NOT into the legacy
+  `compendia/` tree. First catalogs: `mapper` + `ph-zigzag` (as its own vertical from day 1) from the
+  19 green LaTeX deliverables. Legacy `compendia/` stays live and untouched until migrated catalog by
+  catalog — which is when lane-priority replacement and the ph carve actually run.
+- **`BIBSCI` env var** — a system-path variable pointing at the bibliotheca root. The reader MCP
+  anchors on `$env:BIBSCI` (never cwd/repo-relative), so any OTHER project (SPCX, MarkPig, …) can
+  equip the reader and do knowledge-driven coding/reasoning against the library. Set at user level;
+  also add to the PDenv bootstrap (portable env may not inherit).
+- **TOC granularity v1 = markdown headers with levels** (what the deliverables already have) + the
+  References target. Sub-units (theorems/figures/display blocks) are v2.
+- **Indexes and all supporting data are committed** to git — clone-and-read, rebuildable derived data.
+- **fetch contract confirmed**: section-id sugar + raw byte spans; hash mismatch = loud error naming
+  `index_rebuild`; responses carry the sha for agent-side cache validation.
+- **`compendia/tmp`** is post-promotion work debris — pure noise apart from possibly reusable tools;
+  triage its contents for tool salvage during migration, then delete.
+
 ## Artifacts
 
 ```
-compendia/{topic}/
+bibliotheca/{catalog}/
   _catalog.json                 # THE manifest: catalog identity + membership + profile + provenance
   _CONTENTS.md                  # human catalog (lean: title + hook per paper); derived, rebuildable
   {slug}.md                     # body (H1 + ## Contents anchor-links + sections)
@@ -99,16 +117,26 @@ re-publishes. Publish stops being a one-way copy.
 
 ## Migration path
 
-1. Build librarian `publish` (lane-agnostic) + toc emitter; publish the 19 green LaTeX deliverables
-   into their two catalogs (first real content: `mapper`, `ph-zigzag` as its own vertical from day 1).
-2. Build reader (3 tools) against those artifacts; validate the agent flow end-to-end (catalog → toc
-   → fetch) on a real question.
-3. Catalog surgery ops + audit/refresh; retire `src/publish.ps1` docling path into the same
-   librarian entry (its chunk-finalize step becomes just another upstream lane producing gated md).
-4. Rewrite STANDARDS §8 as the artifact schema + profiles (layout-as-data), §6 stays the human TOC.
+1. Create `bibliotheca/` root + set `BIBSCI` (user-level env + PDenv bootstrap). Root index
+   (`_BIBLIOTHECA.md` / manifest) is what the reader's `catalogs()` serves.
+2. Build librarian `publish` (lane-agnostic) + toc emitter; publish the 19 green LaTeX deliverables
+   into `bibliotheca/mapper` + `bibliotheca/ph-zigzag`. Fresh root ⇒ zero collision with legacy.
+3. Build reader (BIBSCI-anchored, read-only) against those artifacts; validate the agent flow
+   end-to-end (catalog → toc → fetch) on a real question, ideally FROM another project via BIBSCI.
+4. Catalog surgery ops + audit/refresh. Then migrate legacy `compendia/` catalog-by-catalog INTO
+   bibliotheca — this is where lane-priority replacement (latex > membrane > docling) and the
+   ph → ph-zigzag carve execute; triage `compendia/tmp` for salvageable tools, delete the rest.
+   Retire `src/publish.ps1` (its chunk-finalize becomes just another upstream lane producing gated md).
+5. Rewrite STANDARDS §8 as the artifact schema + profiles (layout-as-data), §6 stays the human TOC.
 
-## Open questions (deliberately deferred)
+## Open questions
 
+- **Names for the two servers** (working: `codex-librarian` write / `codex-reader` read; with the
+  bibliotheca framing, `codex-lector` is a candidate for the reader).
+- Where exactly `bibliotheca/` sits: in-repo at the codex-scientiae root (committed ⇒ BIBSCI points
+  into the working copy) is the presumption — confirm.
+- Reader registration pattern for other projects: per-project .mcp.json pointing at the reader script
+  (which lives here) + BIBSCI, vs a user-level registration.
 - Sub-section addressing (theorem/figure/display units) — v2, converter already has the knowledge.
 - Single-file profile (refs inline) — supported by `profile`, not exercised by the first catalogs.
 - Whether librarian hosts inside the membrane server or standalone — same shared module either way
