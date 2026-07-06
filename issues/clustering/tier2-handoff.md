@@ -2,12 +2,14 @@
 
 **Status:** foundation LANDED 2026-07-05 (commits `30cd08c` harness, `ad4aa09` Lane 5, + a follow-up that
 re-framed the oracle into two populations — see below). This picks up where `foundation-scope.md` ends.
-**Consensus milestone-1 LANDED + measured + circled-back 2026-07-05 (`ea13156`)** — scoreboard and the
-re-diagnosed ledger below are current. **B-fix (caption gap 4.0→4.5em, calibrated) LANDED 2026-07-05**;
-the residual diagnosis (crop-verified, "Next experiments" §2) re-scoped C: the m2 consensus increment
-should lead with **V_caption interior split** (caption inside a region = float separator, negative
-evidence) + caption-as-positive-vote (E), then the Jaccard provenance view. Independent quick wins
-queued: equation-furniture discrimination; letters-aware crop padding; A2 cue-TYPE split; D text-lane.
+**Consensus milestone-1 LANDED 2026-07-05 (`ea13156`); B-fix (caption gap 4.5em) LANDED (`70b2851`);
+V_caption interior split (m2-a) LANDED 2026-07-06 (`e0175a5`)** — scoreboard + ledger below are current:
+**PRIMARY mean |dFig| 0.9, 6/10 exact; SECONDARY 7.9.** Remaining queue, in rough value order:
+(1) A2 cue-TYPE split (pure gate accounting, would make 2603/2501 exact → PRIMARY ≈ 0.6);
+(2) V_caption (b) positive vote / kind promotion (E-items); (3) equation-furniture discrimination +
+letters-aware crop padding (SECONDARY quality); (4) D text-lane (2210 Figs 1/4); (5) Jaccard provenance
+view + SymmetrizationRule (m2 proper). Out-of-sample check when available: run the gate on
+compendia/mapper once that catalog has pig runs + oracle sidecars (all knobs were ph-zigzag-calibrated).
 
 **The big correction (2026-07-05):** the original "fragmentation over-count tail" was largely a **measurement
 artifact**. The oracle counted `\includegraphics + tikz` as one number, which (a) conflated captioned figures
@@ -39,24 +41,28 @@ separate the two populations, pig's real-figure detection is already good and 22
 
 ---
 
-## Current scoreboard (ph-zigzag) — POST consensus milestone-1 (2026-07-05, runs 20260705_09xxxx)
+## Current scoreboard (ph-zigzag) — POST V_caption interior split (2026-07-06, runs 20260706_07xxxx)
 
 ```
 paper            cap  fig  dFig  mechanism         uncap inline dInl  img
-2111.15058v3      4    4     0   exact              13     5     8     0   (dInl 6→8: rescued fragments)
+2111.15058v3      4    4     0   exact              13     5     8     0
 2112.02352        4    4     0   exact              10    17    -7     0
 2204.11080v2      6    6     0   exact               6     1     5     5
-2205.11338v3     11   13    -2   block-inside(C)    15     0    15    31
-2210.00916       12   16    -4   D+B/C (ledger)     39    23    16     1   (dInl 27→16: the m1 target)
+2205.11338v3     13   13     0   EXACT (was -2)     14     0    14    31  ← both welds cut (Figs 7/8, Fig 10)
+2210.00916       14   16    -2   D only (ledger)    36    23    13     1  ← Fig 7 (B-fix) + Fig 14 (split) recovered
 2302.12796v2      5    5     0   exact              12     6     6     0
-2307.07462v5      8   13    -5   oracle-noise        5    10    -5     0   (figures_missing:5)
-2403.08110v4      5    6    -1   gap-adjacent(B)    21     3    18     3
+2307.07462v5      9   13    -4   oracle-noise        4    10    -6     0   (figures_missing:5; +1 from an UNLEDGERED weld)
+2403.08110v4      6    6     0   EXACT (was -1)     20     3    17     3  ← B-fix (gap 4.5em)
 2501.00322v1     11   10    +1   table-cue seam?    10    13    -3     0
 2603.03037v1      9    7    +2   TABLE-CUE SEAM      0     0     0     9
 
-PRIMARY  captioned figures: 2 over / 4 under / 4 exact, mean |dFig| = 1.5   (row-identical: consensus is PRIMARY-neutral)
-SECONDARY inline diagrams:  mean |dInl| = 8.3   (9.1 → 8.3)
-Ablations (scratch/consensus-ablation.ps1): consensus-off reproduces the pre-m1 table EXACTLY (9.1);
+PRIMARY  captioned figures: 2 over / 2 under / 6 EXACT, mean |dFig| = 0.9   (3.7 → 1.9 → 1.5 → 1.3 → 0.9)
+SECONDARY inline diagrams:  mean |dInl| = 7.9   (9.7 → 9.1 → 8.3 → 8.1 → 7.9)
+Remaining PRIMARY misses fully attributed: A2 accounting seam (2501 +1 / 2603 +2 — table-cued regions vs
+FIGURE-float oracle), ledger D text-lane (2210 −2, Figs 1/4), oracle noise (2307 — not chased).
+Splitter corpus verify: 5 splits, all genuine, 0 false — incl. 2307 pg17 (Figure 6 + Figure 7), a weld no
+prior diagnostic had surfaced.
+m1 ablations (scratch/consensus-ablation.ps1): consensus-off reproduces the pre-m1 table EXACTLY (9.1);
 defrag-off degrades to 9.3 (2111 +6 / 2205 +6 / 2307 +8) → the epsilon de-frag loop is NOT vestigial —
 elbow merges cover geometry fragmentation that stream evidence can't (different draw-runs, one figure). KEEP.
 ```
@@ -121,7 +127,11 @@ independently; no clustering change can help).
   margin. Corpus-wide
   attachment diff at 4.5-vs-4.0: EXACTLY the two intended captions appear, none lost, no in-text refs.
   Bonus: Fig 7's two panels share blk1178 → subfigure grouping merges them into one float.
-- **C. Block-inside-figure — RE-DIAGNOSED 2026-07-05: a REGION-FORMATION defect, not an attachment one.**
+- **C. Block-inside-figure — ✅ FIXED 2026-07-06 (`e0175a5`, V_caption interior split m2-a).**
+  `Split-CaptionInteriorRegions` (guards: shape + LEARNED per-document caption style + strict
+  interiority) cut all four ledger cases (2205 Figs 7/8 + Fig 10; 2210 Fig 14) **plus an unledgered
+  2307 pg17 weld (Figure 6 + Figure 7)** — 5 corpus splits, zero false positives; 2205 went EXACT.
+  Original re-diagnosis kept below for the record:
   The full geometry shows captions sitting MID-region because the region welded too much: 2205 pg8 is
   **two floats in one 399pt region** (Fig 7 + Fig 8; Fig 8's caption won the attachment, Fig 7's sits
   interior at 39% height); 2210 pg32 Fig 14's caption sits at 46% height of a 1283 em² near-page region;
@@ -203,14 +213,13 @@ representation of a diagram. Structured 2-D transcription, if ever, is pdfdig's 
      full TikZ source) — crop-vs-render pairing is now possible for a per-diagram quality gate.
    - **em-anisotropic dilation** — fallback/complement; dilate bboxes by `(Tx,Ty)` per side before clustering
      (also merges, but needs em-calibration and risks bridging distinct diagrams).
-   - **m2 consensus increment — REORDERED by the residual diagnosis: lead with V_caption.** The caption
-     view earns entry first because it is BOTH the biggest residual (welded caption-interior monsters)
-     and needs no new IR: (a) *interior split* — a caption-shaped cue block strictly inside a region is
-     NEGATIVE co-membership evidence (paths above vs below = different floats; fixes 2205 pg8 Fig 7+8,
-     2210 pg32 Fig 14); (b) *positive vote* — a caption adjacent to a mark/sparse/degenerate region
-     promotes kind (the E-items: 2403 Fig 3, 2205 Fig 12). Note the seam grows a NEGATIVE-evidence
-     strength (m1 strengths are {0,1} co-membership; a split is anti-membership — design the
-     `SymmetrizationRule`/cophenetic story with signed evidence in mind).
+   - **m2 V_caption: (a) interior split — ✅ LANDED 2026-07-06 (`e0175a5`).** `Split-CaptionInteriorRegions`
+     in `pdfdig-figures.ps1`, knobs `figure_regions.caption_split` (margin 1em, max block 3.5em, style
+     learned from the paper's own pass-1 claims). PRIMARY 1.3 → 0.9 (6/10 exact), SECONDARY 8.1 → 7.9.
+     **(b) positive vote — still queued**: a caption adjacent to a mark/sparse/degenerate region promotes
+     kind (the E-items: 2403 Fig 3, 2205 Fig 12). Note for the m2 combine design: the seam now has a
+     de-facto NEGATIVE-evidence pass (split) living downstream of the union-find — when the
+     `SymmetrizationRule`/cophenetic story arrives, fold it in as signed evidence rather than a post-pass.
    - **geometry ⊕ provenance consensus (m2, after V_caption)** — needs deeper IR first (clip-group-id /
      color / marked-content NOT emitted; `is_clipping` only boolean). Then union-find + Jaccard +
      SymmetrizationRule ported from ThermoMapper `hashish`/`graphs` INTO `src/hdbscan/` (read-only
