@@ -44,6 +44,13 @@ This should be enforced after OCR and prose repair because some OCR/Docling proc
 - **H3 `###` for every minor- or sub-section above** - E.g. `###` for Subsections of the above `##` sections , which reflects nesting relationships and flow of the document accurately
 - **H4 `####` for any nested sections contained by minor/sub sections above**
 
+**Lint config** (`tools/md-lint/codex.markdownlint.json`): markdownlint default rules, minus those that fight
+the corpus domain rather than serving it — **MD013** (line length: the codex removes hard wraps, §4), **MD060**
+(table cell pipe-padding: cosmetic, zero render impact), **MD036** (emphasis-as-heading: our algorithm/float
+labels are legitimately bold, not section headings). **MD024** runs with `siblings_only` — academic papers
+legitimately repeat subsection names ("Time complexity", "Proof") under different parents; true same-level
+duplicates are still caught.
+
 ### 6. CONTENTS sections
 
 After repairing and standardizing markdown header sections for a document, add a `## Contents` section immediately below the title/authors block (H2, consistent with §5 — H1 is reserved for the document title only). The section lists every major and minor heading as a hierarchical anchor-link list, with the References entry pointing to the sidecar file.

@@ -434,7 +434,8 @@ function Resolve-Refs {
     $T = [regex]::Replace($T, '\\(?:ref|autoref|cref|Cref|vref|labelcref)\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value
             if ($Maps.thm.ContainsKey($k)) { "$($Maps.thm[$k])" } elseif ($Maps.eq.ContainsKey($k)) { "$($Maps.eq[$k])" }
             elseif ($Maps.fig.ContainsKey($k)) { "$($Maps.fig[$k])" } elseif ($Maps.tab.ContainsKey($k)) { "$($Maps.tab[$k])" }
-            elseif ($Maps.sec -and $Maps.sec.ContainsKey($k)) { "$($Maps.sec[$k])" } else { '?' } })
+            elseif ($Maps.sec -and $Maps.sec.ContainsKey($k)) { "$($Maps.sec[$k])" }
+            elseif ($Maps.custom -and $Maps.custom.ContainsKey($k)) { "$($Maps.custom[$k])" } else { '?' } })
     return $T
 }
 
@@ -1093,6 +1094,83 @@ function Join-WrappedProse {
 # {x}{D}[section]=numbered within section; \newtheorem*{x}{D}=unnumbered. Declarations WIN; the standard names
 # get sensible defaults when the paper declares none (theorem family shares one flat counter; other thm-likes
 # surface UNNUMBERED — we never fabricate a scheme we can't read).
+# --- custom (author-declared) counters -------------------------------------------------------------
+# The standard counters (equation/theorem/figure/section) are handled by Build-LabelMaps + the theorem
+# walk. But papers \newcounter their own (e.g. \newcounter{desccounter} for lettered proof cases) and
+# reference them with \Alph{}/\ref{} — the standard walk knows nothing of these, so \Alph{desccounter}
+# leaks and \ref{...} resolves to "?". This is a SCOPED LaTeX counter state-machine: walk the resolved
+# body in document order, tracking each custom counter's value, so \Alph{c}/\arabic{c}/… render to their
+# letter/number and a \label bound to a \refstepcounter (or a plain enumerate \item) resolves faithfully.
+function ConvertTo-Roman {
+    param([int]$N)
+    if ($N -le 0) { return [string]$N }
+    $out = ''
+    foreach ($p in @(@(1000, 'M'), @(900, 'CM'), @(500, 'D'), @(400, 'CD'), @(100, 'C'), @(90, 'XC'), @(50, 'L'), @(40, 'XL'), @(10, 'X'), @(9, 'IX'), @(5, 'V'), @(4, 'IV'), @(1, 'I'))) {
+        while ($N -ge $p[0]) { $out += $p[1]; $N -= $p[0] }
+    }
+    return $out
+}
+function Format-Counter {
+    param([int]$N, [string]$Style)
+    # -CaseSensitive is LOAD-BEARING: PS switch is case-insensitive by default, so 'Alph' would also match
+    # the 'alph' arm (and 'Roman' the 'roman' arm), emitting BOTH values ("A a"). [[powershell-text-mutation-traps]]
+    switch -CaseSensitive ($Style) {
+        'Alph'  { if ($N -ge 1 -and $N -le 26) { [string][char](64 + $N) } else { [string]$N } }
+        'alph'  { if ($N -ge 1 -and $N -le 26) { [string][char](96 + $N) } else { [string]$N } }
+        'Roman' { ConvertTo-Roman $N }
+        'roman' { (ConvertTo-Roman $N).ToLowerInvariant() }
+        default { [string]$N }   # arabic
+    }
+}
+function Resolve-CustomCounters {
+    param([string]$Body, [string]$Tex)
+    # counters we may touch: those the SOURCE declares/drives (never the standard ones, which get no
+    # source-level \newcounter/\refstepcounter — so \arabic{page} etc. is left alone).
+    $tracked = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    foreach ($m in [regex]::Matches($Tex, '\\(?:newcounter|(?:step|refstep|set|addto)counter)\s*\{([A-Za-z@]+)\}')) { [void]$tracked.Add($m.Groups[1].Value) }
+    if ($tracked.Count -eq 0) { return @{ body = $Body; labels = @{} } }
+
+    $ci = [System.StringComparer]::Ordinal
+    $val = [System.Collections.Generic.Dictionary[string, int]]::new($ci)
+    $labels = [System.Collections.Generic.Dictionary[string, string]]::new($ci)
+    $enum = [System.Collections.Generic.Stack[int]]::new()   # nested enumerate item counters
+    # refTarget (the value the NEXT \label captures) lives in a hashtable: a bare string assigned inside the
+    # MatchEvaluator would write to a scriptblock-LOCAL, not persist across matches (PS value-type scoping).
+    $st = @{ rt = $null }
+    $styleOf = @{}; foreach ($c in $tracked) { $styleOf[$c] = Get-CounterStyle $Tex $c }
+
+    $rx = [regex]'\\newcounter\s*\{(?<nc>[A-Za-z@]+)\}(?:\[[A-Za-z@]+\])?|\\setcounter\s*\{(?<sc>[A-Za-z@]+)\}\s*\{(?<sv>-?\d+)\}|\\addtocounter\s*\{(?<ac>[A-Za-z@]+)\}\s*\{(?<av>-?\d+)\}|\\refstepcounter\s*\{(?<rc>[A-Za-z@]+)\}|\\stepcounter\s*\{(?<stc>[A-Za-z@]+)\}|\\(?<vs>Alph|alph|Roman|roman|arabic)\s*\{(?<vc>[A-Za-z@]+)\}|\\begin\s*\{enumerate\}|\\end\s*\{enumerate\}|\\item\s*(?<br>\[)?|\\label\s*\{(?<lb>[^{}]+)\}'
+    $body2 = $rx.Replace($Body, {
+            param($m)
+            if ($m.Groups['nc'].Success) { $val[$m.Groups['nc'].Value] = 0; return '' }
+            if ($m.Groups['sc'].Success) { $val[$m.Groups['sc'].Value] = [int]$m.Groups['sv'].Value; return '' }
+            if ($m.Groups['ac'].Success) { $c = $m.Groups['ac'].Value; $cur = if ($val.ContainsKey($c)) { $val[$c] } else { 0 }; $val[$c] = $cur + [int]$m.Groups['av'].Value; return '' }
+            if ($m.Groups['rc'].Success) { $c = $m.Groups['rc'].Value; $cur = if ($val.ContainsKey($c)) { $val[$c] } else { 0 }; $val[$c] = $cur + 1; $sty = if ($styleOf.ContainsKey($c)) { $styleOf[$c] } else { 'arabic' }; $st.rt = Format-Counter $val[$c] $sty; return '' }
+            if ($m.Groups['stc'].Success) { $c = $m.Groups['stc'].Value; $cur = if ($val.ContainsKey($c)) { $val[$c] } else { 0 }; $val[$c] = $cur + 1; return '' }
+            if ($m.Groups['vs'].Success) {
+                $c = $m.Groups['vc'].Value
+                if (-not $tracked.Contains($c) -or -not $val.ContainsKey($c)) { return $m.Value }   # untracked -> leave for the straggler strip
+                return (Format-Counter $val[$c] $m.Groups['vs'].Value)
+            }
+            if ($m.Value -match '^\\begin') { $enum.Push(0); return $m.Value }
+            if ($m.Value -match '^\\end') { if ($enum.Count) { [void]$enum.Pop() }; return $m.Value }
+            if ($m.Value -match '^\\item') {
+                if (-not $m.Groups['br'].Success -and $enum.Count) { $top = $enum.Pop() + 1; $enum.Push($top); $st.rt = [string]$top }   # a bracketed \item[x] does NOT step the list counter
+                return $m.Value
+            }
+            if ($m.Groups['lb'].Success) { if ($null -ne $st.rt) { $labels[$m.Groups['lb'].Value] = $st.rt }; return $m.Value }
+            return $m.Value
+        })
+    return @{ body = $body2; labels = $labels }
+}
+# a counter's DISPLAY style from \renewcommand{\the<c>}{\Alph{<c>}} (default arabic)
+function Get-CounterStyle {
+    param([string]$Tex, [string]$Counter)
+    $m = [regex]::Match($Tex, '\\(?:re)?newcommand\*?\s*\{?\s*\\the' + [regex]::Escape($Counter) + '\s*\}?\s*\{\s*\\(Alph|alph|Roman|roman|arabic)\b')
+    if ($m.Success) { return $m.Groups[1].Value }
+    return 'arabic'
+}
+
 function Get-TheoremModel {
     param([string]$Tex)
     $model = [ordered]@{}
@@ -1306,12 +1384,18 @@ function ConvertFrom-Latex {
     # (e.g. source \underline\IK -> \underline \mathbb{K}); re-brace the argument. \s* not \s+: authors
     # also write the form with NO space (\overline\mathbb{N}).
     $body = $body -replace '\\(underline|overline|widehat|widetilde|widecheck|hat|bar|tilde|vec|check|breve|acute|grave|dot|ddot|mathring)\s*(\\[A-Za-z]+\{[^{}]*\})', '\$1{$2}'
+    # custom author counters (\newcounter{desccounter} + \Alph{}/\ref{}): resolve BEFORE the theorem/section
+    # walk so \Alph{c} renders to its letter and \label-bound values feed \ref. Runs post-expansion so a
+    # \descitem-style macro is already expanded to its \refstepcounter+\item.
+    $cc = Resolve-CustomCounters $body $Tex
+    $body = $cc.body
     # theorem/section cross-refs: number + render theorem-like envs here (ordered walk over the counter model),
     # BEFORE math protection, so the same numbers feed both the inline labels and \ref resolution.
     $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex)
     $body = $xref.body
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl               # equation/figure/table counters
     $maps.thm = $xref.thm; $maps.sec = $xref.sec                              # theorem + section label->number from the walk
+    $maps.custom = $cc.labels                                                  # custom-counter label->value (lettered cases, enumerate items)
     $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
@@ -1373,7 +1457,7 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\*?\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\*?\}', "`n`n"   # blank lines around lists (MD032); *-variant star is INSIDE the braces
     # description-list \item[term]: surface the bracketed term as a bold lead-in (else it leaks as literal
     # "[term]:"); plain \item -> bullet. The [term] runs before the plain rule so it wins.
-    $body = [regex]::Replace($body, '\\item\s*\[([^\]]*)\]\s*', { param($m) "`n- **" + ($m.Groups[1].Value.Trim() -replace ':$', '') + ":** " })
+    $body = [regex]::Replace($body, '\\item\s*\[([^\]]*)\]\s*:?\s*', { param($m) "`n- **" + ($m.Groups[1].Value.Trim() -replace ':$', '') + ":** " })   # absorb a trailing source ':' so the term is not double-colonned
     $body = $body -replace '\\item\s*', "`n- "
     # LaTeX quotes -> straight quotes, BEFORE \texttt becomes backticks (a lone ` is a left-single-quote
     # here, not a code fence — leaving it turns `word' into a spurious code span). Doubles first.
