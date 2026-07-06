@@ -89,7 +89,7 @@ function Invoke-Pdfdig {
         steps    = [ordered]@{
             ir       = [ordered]@{ letters = $ir.Letters; words = $ir.Words; blocks = $ir.Blocks; paths = $ir.Paths; xobjects = $ir.Xobjects; origin = $ir.Origin }
             classify = [ordered]@{ nodes = $cls.Nodes; body_size = $cls.Calibration.body_size }
-            figures  = [ordered]@{ regions = $fig.Summary.regions; figures = $fig.Summary.figures; marks = $fig.Summary.marks; sparse = $fig.Summary.sparse; captioned = $fig.Summary.captioned_figures; xobjects = $fig.Summary.xobjects; xobject_regions = $fig.Summary.xobject_regions; stream_blocks = $fig.Summary.stream_blocks; consensus_unions = $fig.Summary.consensus_unions; consensus_changed_pages = $fig.Summary.consensus_changed_pages }
+            figures  = [ordered]@{ regions = $fig.Summary.regions; figures = $fig.Summary.figures; marks = $fig.Summary.marks; sparse = $fig.Summary.sparse; captioned = $fig.Summary.captioned_figures; xobjects = $fig.Summary.xobjects; xobject_regions = $fig.Summary.xobject_regions; stream_blocks = $fig.Summary.stream_blocks; consensus_unions = $fig.Summary.consensus_unions; consensus_changed_pages = $fig.Summary.consensus_changed_pages; caption_splits = $fig.Summary.caption_splits }
             images   = if ($img) { [ordered]@{ rendered = $img.Summary.rendered; failed = $img.Summary.failed } } else { 'skipped' }
         }
         run_utc  = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')

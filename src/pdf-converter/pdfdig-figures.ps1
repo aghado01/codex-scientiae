@@ -328,6 +328,45 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
     }
 }
 
+# Build ONE region record from raw members ({id, bbox, prov}) — the single record shape every
+# producer shares ($addRegion at assembly, Split-CaptionInteriorRegions). area is measured; area_em2
+# is the text-normalized measurement; density = members / area_em2 is the ink-coverage measurement.
+# kind is the tunable opinion (degenerate|mark|sparse|figure); a region carrying ANY xobject BYPASSES
+# the density gate (a placed bitmap is 1 point over a large area — vector-ink density is meaningless
+# for it) while the size floors still apply. $Gates carries the config scalars so callers stay
+# config-driven; id is left at -1 for the caller to assign (id = list index invariant).
+function New-FigureRegionRecord($Page, $Members, $Flag, $BodyArea, $Gates) {
+    $bbox = Get-FigureUnionBbox $Members
+    if (-not $bbox) { return $null }
+    $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
+    $area = [math]::Round($w * $h, 1)
+    $pc = @($Members).Count
+    $pathMembers = [System.Collections.Generic.List[object]]::new()
+    $xobjMembers = [System.Collections.Generic.List[object]]::new()
+    foreach ($m in $Members) { if ($m.prov -eq 'xobject') { $xobjMembers.Add($m) } else { $pathMembers.Add($m) } }
+    $hasXobj = $xobjMembers.Count -gt 0
+    $areaEm  = if ($BodyArea) { [math]::Round($area / $BodyArea, 3) } else { $null }
+    $density = if ($areaEm -and $areaEm -gt 0) { [math]::Round($pc / $areaEm, 4) } else { $null }
+    $kind =
+        if ($w -lt $Gates.degenEps -or $h -lt $Gates.degenEps) { 'degenerate' }
+        elseif ($null -ne $BodyArea) {
+            if     ($areaEm -lt $Gates.floorEm)                                 { 'mark' }
+            elseif ($hasXobj)                                                   { 'figure' }   # raster: density gate N/A
+            elseif ($null -ne $density -and $density -lt $Gates.minDensity)     { 'sparse' }
+            else                                                                { 'figure' }
+        }
+        else { if ($area -lt $Gates.fallbackPt2) { 'mark' } else { 'figure' } }
+    [ordered]@{
+        id = -1; page = $Page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
+        # explicit foreach (NOT @($list.id)) — member-access enumeration on an EMPTY List yields a lone
+        # $null, which would serialize as [null] on a pure-path or pure-xobject region; foreach gives []
+        path_ids = @(foreach ($m in $pathMembers) { $m.id }); path_count = $pathMembers.Count
+        xobject_ids = @(foreach ($m in $xobjMembers) { $m.id }); xobject_count = $xobjMembers.Count
+        provenance = if ($hasXobj -and $pathMembers.Count) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
+        kind = $kind; flag = $Flag; caption = $null
+    }
+}
+
 # Merge a set of subfigure regions (all sharing one float caption) into one figure region. Union bbox,
 # concatenated members, recomputed area/em^2/density; kind stays figure, caption kept from the first
 # member, flag records the merge. Emits the SAME record shape as $addRegion (key order matched) so the
@@ -394,6 +433,133 @@ function Group-SubfiguresByCaption([System.Collections.Generic.List[object]] $Fi
     return , $result
 }
 
+# V_caption m2 increment (a) — INTERIOR SPLIT (tier2-handoff.md ledger item C, re-diagnosed
+# 2026-07-05). A caption is definitionally a float BOUNDARY, so a caption-shaped cue block strictly
+# INSIDE a kind=figure region is NEGATIVE co-membership evidence: the region welded (at least) two
+# floats (2205 pg8 = Fig 7 + Fig 8 in one 399pt region; 2210 pg32 = Fig 14's caption at 46% height
+# of a 1283 em² region). Split the region's members at the caption band — members whose bbox center
+# sits above the block mid-line form the float that caption labels (captions sit BELOW their figure);
+# the remainder recurses for multi-caption monsters. The splitting caption attaches to its upper
+# sub-region when that part re-gates to kind=figure; the parent's ORIGINAL pass-1 caption (attached
+# below the parent's bottom edge) follows the BOTTOM-most remainder.
+# GUARDS — all must pass; the cue regex alone matches in-text references:
+#   shape — cue word at block start (≤2 leading glyphs) AND block height ≤ max_block_em;
+#   style — the block's (cue-word form, separator) must equal a style LEARNED from THIS paper's
+#           pass-1 claimed captions ("Fig. 7" = Fig+none vs "Figure 14:" = Figure+colon). A paper
+#           with no claimed captions is never split (no typography evidence → stay conservative).
+#           Verified discriminative on the known hazards: 2205's interior body line "Figure 12
+#           shows…" fails style (Figure+none vs learned Fig+none), 2403's "Figure 2 illustrates…"
+#           paragraph fails height (150pt).
+#   place — strictly interior (≥ margin_em inside BOTH top and bottom edges — a caption within the
+#           bottom band is overhang, not a weld) with caption_min_overlap_frac horizontal overlap.
+# Returns the rebuilt list (ids renumbered); counters: caption_splits + per-kind/caption surgery.
+function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] $Figures,
+    [string] $BlocksJsonl, $PathBbox, $XobjBbox, [double] $BodyPt, $BodyArea, $Cfg, $Gates, $Summary) {
+    if (-not (Test-Path $BlocksJsonl)) { return , $Figures }
+    $split      = $Cfg.caption_split
+    $bp         = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
+    $marginPt   = [double]$split.margin_em * $bp
+    $maxBlockPt = [double]$split.max_block_em * $bp
+    $minOvl     = [double]$Cfg.caption_min_overlap_frac
+    $styleRe    = '^[^\p{L}\d]{0,2}(Figure|Fig)\.?\s*\d+\s*([:.])?'
+
+    # learned caption style(s): (figure-family cue word, separator?) over this paper's claimed captions
+    $styles = @{}; $claimed = @{}
+    foreach ($fig in $Figures) {
+        if ($fig.caption) {
+            $claimed[[int]$fig.caption.block_id] = $true
+            $m = [regex]::Match([string]$fig.caption.text, $styleRe)
+            if ($m.Success) { $styles[$m.Groups[1].Value + '|' + [string]($m.Groups[2].Value -ne '')] = $true }
+        }
+    }
+    if ($styles.Count -eq 0) { return , $Figures }
+
+    # shape+style-guarded unclaimed cue blocks, per page
+    $byPage = @{}
+    foreach ($line in (Get-Content $BlocksJsonl | Where-Object { $_.Trim() })) {
+        $blk = $line | ConvertFrom-Json
+        if (-not $blk.bx -or $claimed.ContainsKey([int]$blk.id)) { continue }
+        if (($blk.bx[3] - $blk.bx[1]) -gt $maxBlockPt) { continue }
+        $m = [regex]::Match(($blk.text_preview ?? ''), $styleRe)
+        if (-not $m.Success) { continue }
+        if (-not $styles.ContainsKey($m.Groups[1].Value + '|' + [string]($m.Groups[2].Value -ne ''))) { continue }
+        $p = [int]$blk.page
+        if (-not $byPage.ContainsKey($p)) { $byPage[$p] = [System.Collections.Generic.List[object]]::new() }
+        $byPage[$p].Add($blk)
+    }
+    if ($byPage.Count -eq 0) { return , $Figures }
+
+    $result = [System.Collections.Generic.List[object]]::new()
+    foreach ($fig in $Figures) {
+        $cand = if ($fig.kind -eq 'figure') { $byPage[[int]$fig.page] } else { $null }
+        if (-not $cand) { $result.Add($fig); continue }
+        $figL = $fig.bbox[0]; $figB = $fig.bbox[1]; $figR = $fig.bbox[2]; $figT = $fig.bbox[3]
+        $interior = [System.Collections.Generic.List[object]]::new()
+        foreach ($blk in $cand) {
+            if ($blk.bx[3] -gt $figT - $marginPt -or $blk.bx[1] -lt $figB + $marginPt) { continue }
+            $ovl = [math]::Min($figR, [double]$blk.bx[2]) - [math]::Max($figL, [double]$blk.bx[0])
+            $den = [math]::Min($figR - $figL, [double]$blk.bx[2] - [double]$blk.bx[0])
+            if ($den -le 0 -or ($ovl / $den) -lt $minOvl) { continue }
+            $interior.Add($blk)
+        }
+        if ($interior.Count -eq 0) { $result.Add($fig); continue }
+
+        # raw members back from the id→bbox maps (path and xobject id sequences are separate)
+        $members = [System.Collections.Generic.List[object]]::new()
+        foreach ($pid0 in @($fig.path_ids))    { $members.Add(@{ id = [int]$pid0; bbox = $PathBbox[[int]$pid0]; prov = 'path' }) }
+        foreach ($xid0 in @($fig.xobject_ids)) { $members.Add(@{ id = [int]$xid0; bbox = $XobjBbox[[int]$xid0]; prov = 'xobject' }) }
+
+        # split at each interior caption, topmost first: the part above a caption is the float it labels
+        $subs = [System.Collections.Generic.List[object]]::new()
+        $remaining = $members
+        foreach ($blk in @($interior | Sort-Object { -[double]$_.bx[3] })) {
+            $mid = ([double]$blk.bx[1] + [double]$blk.bx[3]) / 2.0
+            $above = [System.Collections.Generic.List[object]]::new()
+            $below = [System.Collections.Generic.List[object]]::new()
+            foreach ($mm in $remaining) {
+                if ((($mm.bbox[1] + $mm.bbox[3]) / 2.0) -gt $mid) { $above.Add($mm) } else { $below.Add($mm) }
+            }
+            if ($above.Count -eq 0 -or $below.Count -eq 0) { continue }   # degenerate cut — this block splits nothing
+            $rec = New-FigureRegionRecord $fig.page $above 'caption_split' $BodyArea $Gates
+            if (-not $rec) { continue }
+            if ($rec.kind -eq 'figure') {
+                $rec.caption = [ordered]@{
+                    block_id = $blk.id; bbox = $blk.bx; text = [string]($blk.text_preview ?? '')
+                    cue = $true; position = 'below'; gap = [math]::Round($rec.bbox[1] - [double]$blk.bx[3], 1)
+                }
+                $Summary.captioned_figures++
+            }
+            $subs.Add($rec)
+            $remaining = $below
+        }
+        if ($subs.Count -eq 0) { $result.Add($fig); continue }   # every candidate cut was degenerate
+
+        $tail = New-FigureRegionRecord $fig.page $remaining 'caption_split' $BodyArea $Gates
+        if ($tail) {
+            if ($fig.caption -and $tail.kind -eq 'figure') { $tail.caption = $fig.caption }
+            elseif ($fig.caption) { $Summary.captioned_figures-- }   # parent caption lost to a non-figure tail
+            $subs.Add($tail)
+        }
+        elseif ($fig.caption) { $Summary.captioned_figures-- }
+
+        # counter surgery: parent (kind=figure by candidacy) leaves, sub-kinds enter
+        $Summary.caption_splits++
+        $Summary.regions += $subs.Count - 1
+        $Summary.figures--
+        if ($fig.xobject_count -gt 0) { $Summary.xobject_regions-- }
+        foreach ($r in $subs) {
+            switch ($r.kind) {
+                'figure' { $Summary.figures++ } 'mark' { $Summary.marks++ }
+                'sparse' { $Summary.sparse++ } 'degenerate' { $Summary.degenerate++ }
+            }
+            if ($r.xobject_count -gt 0) { $Summary.xobject_regions++ }
+            $result.Add($r)
+        }
+    }
+    for ($i = 0; $i -lt $result.Count; $i++) { $result[$i].id = $i }   # keep id = index
+    return , $result
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -425,6 +591,9 @@ function ConvertTo-FigureRegions {
     if ($consensusEnabled -and [string]$cons.rule -ne 'inclusive') {
         throw "figure_regions.consensus.rule '$($cons.rule)' not supported at m1 (only 'inclusive')"
     }
+    # V_caption interior split (m2 increment a; absent block = disabled)
+    $capSplit = $cfg.caption_split
+    $capSplitEnabled = ($null -ne $capSplit -and [bool]$capSplit.enabled)
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -445,53 +614,23 @@ function ConvertTo-FigureRegions {
         xobjects = 0; xobject_regions = 0   # LANE 5: bitmap points loaded / regions carrying a bitmap
         subfigure_groups = 0; subfigures_merged = 0   # subfigure grouping: multi-caption groups / regions merged away
         stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0   # consensus m1 drift visibility
+        caption_splits = 0   # V_caption interior split: welded regions cut at an interior caption
     }
+    # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
+    $gates = @{ degenEps = $degenEps; floorEm = $floorEm; fallbackPt2 = $fallbackPt2; minDensity = $minDensity }
 
-    # Build + record one region. area is measured; area_em2 is the text-normalized measurement;
-    # density = paths / area_em2 is the ink-coverage measurement. kind is the tunable opinion
-    # (degenerate|mark|sparse|figure): a big-but-SPARSE region (a few furniture/QED strokes whose
-    # union bbox spans a text column) is a phantom, NOT a figure — the density gate separates it
-    # from a big-DENSE diagram, which area alone cannot. Nothing is dropped. id = list count before
-    # append; $figures/$summary and the config scalars resolve through the enclosing scope.
+    # Build + record one region (New-FigureRegionRecord carries the shared record shape + kind gates;
+    # see its doc). id = list count before append; $figures/$summary/$gates resolve through the
+    # enclosing scope.
     $addRegion = {
         param($page, $members, $flag)
-        $bbox = Get-FigureUnionBbox $members
-        if (-not $bbox) { return }
-        $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
-        $area = [math]::Round($w * $h, 1)
-        $pc = @($members).Count
-        # split members by provenance (Lane-4 vector vs Lane-5 raster). A region carrying ANY xobject is
-        # a placed bitmap → it BYPASSES the density gate: density = paths/area is a vector-INK-coverage
-        # proxy, meaningless for a raster whose entire "ink" is one placed object (a big bitmap is 1 point
-        # over a large area ⇒ near-zero density ⇒ would be wrongly demoted to 'sparse'). Size floors
-        # (degenerate/mark) still apply, so a tiny icon bitmap is still a mark.
-        $pathMembers = [System.Collections.Generic.List[object]]::new()
-        $xobjMembers = [System.Collections.Generic.List[object]]::new()
-        foreach ($m in $members) { if ($m.prov -eq 'xobject') { $xobjMembers.Add($m) } else { $pathMembers.Add($m) } }
-        $hasXobj = $xobjMembers.Count -gt 0
-        $areaEm  = if ($bodyArea) { [math]::Round($area / $bodyArea, 3) } else { $null }
-        $density = if ($areaEm -and $areaEm -gt 0) { [math]::Round($pc / $areaEm, 4) } else { $null }
-        $kind =
-            if ($w -lt $degenEps -or $h -lt $degenEps) { 'degenerate' }
-            elseif ($null -ne $bodyArea) {
-                if     ($areaEm -lt $floorEm)                             { 'mark' }
-                elseif ($hasXobj)                                         { 'figure' }   # raster: density gate N/A
-                elseif ($null -ne $density -and $density -lt $minDensity) { 'sparse' }
-                else                                                      { 'figure' }
-            }
-            else { if ($area -lt $fallbackPt2) { 'mark' } else { 'figure' } }
-        $figures.Add([ordered]@{
-            id = $figures.Count; page = $page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
-            # explicit foreach (NOT @($list.id)) — member-access enumeration on an EMPTY List yields a lone
-            # $null, which would serialize as [null] on a pure-path or pure-xobject region; foreach gives []
-            path_ids = @(foreach ($m in $pathMembers) { $m.id }); path_count = $pathMembers.Count
-            xobject_ids = @(foreach ($m in $xobjMembers) { $m.id }); xobject_count = $xobjMembers.Count
-            provenance = if ($hasXobj -and $pathMembers.Count) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
-            kind = $kind; flag = $flag; caption = $null
-        })
+        $rec = New-FigureRegionRecord $page $members $flag $bodyArea $gates
+        if (-not $rec) { return }
+        $rec.id = $figures.Count
+        $figures.Add($rec)
         $summary.regions++
-        if ($hasXobj) { $summary.xobject_regions++ }
-        switch ($kind) {
+        if ($rec.xobject_count -gt 0) { $summary.xobject_regions++ }
+        switch ($rec.kind) {
             'figure'     { $summary.figures++ }
             'mark'       { $summary.marks++ }
             'sparse'     { $summary.sparse++ }
@@ -521,6 +660,13 @@ function ConvertTo-FigureRegions {
     }
     $summary.xobjects = $xobjs.Count
     $items = @($paths) + @($xobjs)
+
+    # id → bbox maps (path and xobject id sequences are SEPARATE) — the caption splitter reconstitutes
+    # a region's raw members from its persisted id lists
+    $pathBbox = [System.Collections.Generic.Dictionary[int, object]]::new()
+    foreach ($p in $paths) { $pathBbox[[int]$p.id] = $p.bbox }
+    $xobjBbox = [System.Collections.Generic.Dictionary[int, object]]::new()
+    foreach ($x in $xobjs) { $xobjBbox[[int]$x.id] = $x.bbox }
 
     $work = Join-Path ([IO.Path]::GetTempPath()) ("pdfdig-figures-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
     New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -623,11 +769,17 @@ function ConvertTo-FigureRegions {
         Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue
     }
 
-    # Reattach captions from the Lane-3 blocks lane (if present beside the paths lane), then group
-    # subfigures: N regions reattached to one float caption collapse to one figure (the shared caption
-    # is the grouping signal). Grouping needs the caption links, so it runs after reattachment.
+    # Reattach captions from the Lane-3 blocks lane (if present beside the paths lane); then V_caption
+    # interior split (a style-matched caption INSIDE a region = welded floats — cut there; needs the
+    # pass-1 claims for the style census, so it runs after reattachment); then group subfigures: N
+    # regions reattached to one float caption collapse to one figure (the shared caption is the
+    # grouping signal). Split before grouping — a split's sub-regions carry distinct captions.
     if ($captionEnabled) {
-        Add-FigureCaptions $figures ($PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl') $bodyPt $cfg $summary
+        $blocksJsonl = $PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl'
+        Add-FigureCaptions $figures $blocksJsonl $bodyPt $cfg $summary
+        if ($capSplitEnabled) {
+            $figures = Split-CaptionInteriorRegions $figures $blocksJsonl $pathBbox $xobjBbox $bodyPt $bodyArea $cfg $gates $summary
+        }
         if ($subfigGrouping) {
             $figures = Group-SubfiguresByCaption $figures $bodyArea $summary
         }

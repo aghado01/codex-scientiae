@@ -464,6 +464,170 @@ Describe 'pdfdig figure-region clustering — consensus m1 (integration)' {
     }
 }
 
+Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:wv = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-vcap-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wv | Out-Null
+
+        $script:gatesV = @{ degenEps = 1.0; floorEm = 2.0; fallbackPt2 = 200; minDensity = 0.01 }
+        $script:cfgV = [pscustomobject]@{
+            caption_min_overlap_frac = 0.25
+            caption_split = [pscustomobject]@{ enabled = $true; margin_em = 1.0; max_block_em = 3.5 }
+        }
+        # path id→bbox map: ids 0..8 = TOP 3x3 grid (y 118..144), ids 9..17 = BOTTOM 3x3 grid (y 60..86)
+        $script:pbV = [System.Collections.Generic.Dictionary[int, object]]::new()
+        $id = 0
+        foreach ($y0 in 138, 128, 118) { foreach ($x0 in 100, 110, 120) { $script:pbV[$id] = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); $id++ } }
+        foreach ($y0 in 80, 70, 60)    { foreach ($x0 in 100, 110, 120) { $script:pbV[$id] = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); $id++ } }
+        $script:xbV = [System.Collections.Generic.Dictionary[int, object]]::new()
+
+        # a welded parent (both grids, one region) + a page-2 anchor whose claimed caption teaches the
+        # style 'Figure N:' — records carry the lane's shape
+        $script:NewParent = {
+            param($withCaption)
+            $figs = [System.Collections.Generic.List[object]]::new()
+            $figs.Add([ordered]@{
+                id = 0; page = 1; bbox = @(100.0, 60.0, 126.0, 144.0); area = 2184.0; area_em2 = 21.84; density = 0.82
+                path_ids = @(0..17); path_count = 18; xobject_ids = @(); xobject_count = 0
+                provenance = 'path'; kind = 'figure'; flag = $null
+                caption = if ($withCaption) { [ordered]@{ block_id = 99; bbox = @(100, 40, 180, 48); text = 'Figure 4: parent'; cue = $true; position = 'below'; gap = 12.0 } } else { $null }
+            })
+            $figs.Add([ordered]@{
+                id = 1; page = 2; bbox = @(100.0, 300.0, 126.0, 326.0); area = 676.0; area_em2 = 6.76; density = 1.33
+                path_ids = @(); path_count = 0; xobject_ids = @(); xobject_count = 0
+                provenance = 'path'; kind = 'figure'; flag = $null
+                caption = [ordered]@{ block_id = 50; bbox = @(100, 288, 180, 296); text = 'Figure 9: anchor'; cue = $true; position = 'below'; gap = 4.0 }
+            })
+            , $figs
+        }
+        $script:NewSummaryV = { [ordered]@{ regions = 2; figures = 2; marks = 0; sparse = 0; degenerate = 0; captioned_figures = 1; xobject_regions = 0; caption_splits = 0 } }
+        $script:WriteBlocks = {
+            param($lines, $name)
+            $f = Join-Path $script:wv $name
+            [IO.File]::WriteAllLines($f, [string[]]$lines)
+            $f
+        }
+    }
+    AfterAll { if ($script:wv -and (Test-Path $script:wv)) { Remove-Item -Recurse -Force $script:wv } }
+
+    It 'splits a welded region at a style-matched interior caption' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3: interior caption"}') 'b1.jsonl'
+        $s = & $NewSummaryV
+        $out = Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s
+        $p1 = @($out | Where-Object { $_.page -eq 1 })
+        $p1.Count | Should -Be 2
+        $upper = $p1 | Where-Object { $_.bbox[1] -gt 100 }
+        $lower = $p1 | Where-Object { $_.bbox[3] -lt 100 }
+        $upper.caption.text | Should -Be 'Figure 3: interior caption'
+        $upper.kind         | Should -Be 'figure'
+        $upper.flag         | Should -Be 'caption_split'
+        $lower.caption      | Should -BeNullOrEmpty
+        $lower.path_count   | Should -Be 9
+        $s.caption_splits   | Should -Be 1
+        $s.figures          | Should -Be 3
+        $s.captioned_figures | Should -Be 2
+        @($out | ForEach-Object { $_.id }) | Should -Be (0..($out.Count - 1))
+    }
+
+    It 'hands the parent pass-1 caption to the bottom remainder' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3: interior caption"}') 'b2.jsonl'
+        $s = & $NewSummaryV; $s.captioned_figures = 2
+        $out = Split-CaptionInteriorRegions (& $NewParent $true) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s
+        $lower = @($out | Where-Object { $_.page -eq 1 -and $_.bbox[3] -lt 100 })[0]
+        $lower.caption.text  | Should -Be 'Figure 4: parent'
+        $s.captioned_figures | Should -Be 3
+    }
+
+    It 'rejects a style-mismatched interior cue block (Fig. vs learned Figure:)' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Fig. 3 something"}') 'b3.jsonl'
+        $s = & $NewSummaryV
+        $out = Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s
+        @($out).Count     | Should -Be 2
+        $s.caption_splits | Should -Be 0
+    }
+
+    It 'rejects a tall interior block (in-text paragraph shape)' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,90,180,130],"text_preview":"Figure 3: but forty points tall"}') 'b4.jsonl'
+        $s = & $NewSummaryV
+        (Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s).Count | Should -Be 2
+        $s.caption_splits | Should -Be 0
+    }
+
+    It 'rejects a bottom-band block (overhang, not a weld)' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,62,180,68],"text_preview":"Figure 3: at the bottom edge"}') 'b5.jsonl'
+        $s = & $NewSummaryV
+        (Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s).Count | Should -Be 2
+        $s.caption_splits | Should -Be 0
+    }
+
+    It 'never splits a paper with no claimed captions (no style evidence)' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3: interior caption"}') 'b6.jsonl'
+        $figs = & $NewParent $false
+        $figs[1].caption = $null                      # remove the anchor claim
+        $s = & $NewSummaryV; $s.captioned_figures = 0
+        (Split-CaptionInteriorRegions $figs $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s).Count | Should -Be 2
+        $s.caption_splits | Should -Be 0
+    }
+}
+
+Describe 'pdfdig figure-region clustering — V_caption interior split (integration)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:wi = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-vcapint-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wi | Out-Null
+
+        # Page 1 reproduces the 2205-pg8 failure shape: TWO stacked 3x3 grids drawn as one run whose
+        # nearest corners sit ~35pt apart — V_geom separates them, the m1 stream chain WELDS them across
+        # the interior caption — plus a page-2 anchor figure whose caption teaches the 'Figure N:' style.
+        # Boxes are emitted y-DESCENDING so the run's chain step between grids is the near corner.
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($y0 in 138, 128, 118) { foreach ($x0 in 100, 110, 120) {
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x0, $y0, ($x0 + 6), ($y0 + 6))) } }
+        foreach ($y0 in 80, 70, 60)    { foreach ($x0 in 100, 110, 120) {
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x0, $y0, ($x0 + 6), ($y0 + 6))) } }
+        foreach ($y0 in 300, 310, 320) { foreach ($x0 in 100, 110, 120) {
+            $paths.Add(('{{"id":{0},"page":2,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x0, $y0, ($x0 + 6), ($y0 + 6))) } }
+        [IO.File]::WriteAllLines((Join-Path $script:wi 'v.paths.jsonl'), $paths)
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:wi 'v.letters.jsonl'), $letters)
+        [IO.File]::WriteAllLines((Join-Path $script:wi 'v.blocks.jsonl'), @(
+            '{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3: interior caption"}'
+            '{"id":50,"page":2,"bx":[100,288,180,296],"text_preview":"Figure 9: anchor"}'
+        ))
+
+        $script:ri = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wi 'v.paths.jsonl') `
+                       -OutPath (Join-Path $script:wi 'on.figures.jsonl') -PassThru
+
+        $cfgObj = Get-Content (Join-Path $repo 'src/pdf-converter/stores/classify-config.json') -Raw | ConvertFrom-Json
+        $cfgObj.figure_regions.caption_split.enabled = $false
+        $off = Join-Path $script:wi 'cfg-off.json'
+        [IO.File]::WriteAllText($off, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+        $script:riOff = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wi 'v.paths.jsonl') `
+                          -OutPath (Join-Path $script:wi 'off.figures.jsonl') -ConfigPath $off -PassThru
+    }
+    AfterAll { if ($script:wi -and (Test-Path $script:wi)) { Remove-Item -Recurse -Force $script:wi } }
+
+    It 'cuts a stream-welded two-float region at the interior caption end-to-end' {
+        $p1 = @($script:ri.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
+        $p1.Count | Should -Be 2
+        $upper = $p1 | Where-Object { $_.bbox[1] -gt 100 }
+        $upper.caption.text | Should -Match 'Figure 3'
+        $upper.flag         | Should -Be 'caption_split'
+        $script:ri.Summary.caption_splits | Should -Be 1
+    }
+
+    It 'leaves the weld intact when the splitter is disabled' {
+        $p1 = @($script:riOff.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
+        $p1.Count | Should -Be 1
+        $script:riOff.Summary.caption_splits | Should -Be 0
+    }
+}
+
 Describe 'pdfdig figure-region clustering — narrow-caption overlap denominator' {
     BeforeAll {
         $script:wn = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-capfix-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
