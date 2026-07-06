@@ -3,8 +3,11 @@
 **Status:** foundation LANDED 2026-07-05 (commits `30cd08c` harness, `ad4aa09` Lane 5, + a follow-up that
 re-framed the oracle into two populations — see below). This picks up where `foundation-scope.md` ends.
 **Consensus milestone-1 LANDED + measured + circled-back 2026-07-05 (`ea13156`)** — scoreboard and the
-re-diagnosed ledger below are current; next highest-yield step = the C-fix (caption in the region's
-lower band, WITH shape guard), then the 2210-residual diagnosis under "Next experiments" §2.
+re-diagnosed ledger below are current. **B-fix (caption gap 4.0→4.5em, calibrated) LANDED 2026-07-05**;
+the residual diagnosis (crop-verified, "Next experiments" §2) re-scoped C: the m2 consensus increment
+should lead with **V_caption interior split** (caption inside a region = float separator, negative
+evidence) + caption-as-positive-vote (E), then the Jaccard provenance view. Independent quick wins
+queued: equation-furniture discrimination; letters-aware crop padding; A2 cue-TYPE split; D text-lane.
 
 **The big correction (2026-07-05):** the original "fragmentation over-count tail" was largely a **measurement
 artifact**. The oracle counted `\includegraphics + tikz` as one number, which (a) conflated captioned figures
@@ -110,15 +113,23 @@ independently; no clustering change can help).
   figure-cued regions vs figure floats (and table-cued vs oracle `tables`, already counted). Explains 2603 +2
   (verified Table 2/3) and probably 2501 +1. Also refine the gate's `mechanism` attribution (currently
   `under ∧ img>0 → raster` mislabels caption-miss papers).
-- **B. Gap-adjacent misses — SURVIVED the circle-back (real, 2026-07-05).** 2403 Fig 5 unchanged (gap 43
-  vs 40 limit). 2210 Fig 7 MUTATED into C-shape: the consensus-merged region now extends past its caption
-  (below=−209) with the next region 60 above — so B's live population is just 2403 Fig 5. The fix is still
-  NOT a bare `caption_max_gap_em` bump (guardrail below); pair any relaxation with a caption-SHAPE guard.
-- **C. Block-inside-figure — SURVIVED the circle-back (real, the DOMINANT miss class).** 2210 Figs 7/14;
-  2205 Figs 7/10: region bbox extends over the caption. The fix is "accept a caption within the region's
-  lower band" — BUT with a shape guard: the in-text ref "of Fig. 11. While…" (2205 pg11) sits at
-  above=−377, i.e. DEEP inside a region — a naive lower-band acceptance would false-attach it. Lower-band
-  = within ~2em of the region's bottom edge, plus cue-then-separator/short-block shape.
+- **B. Gap-adjacent misses — ✅ FIXED 2026-07-05 (calibrated `caption_max_gap_em` 4.0 → 4.5em).**
+  Full-geometry probe corrected the earlier read: 2210 Fig 7 was NEVER C-shaped — its two panels sit at
+  gap 45.3pt = 4.16em of the 10.9pt body (the diag's below=−209 belonged to a different region on the
+  page); 2403 Fig 5 sits at 43.2pt = 4.32em of a 10pt body. Real captions at 4.16–4.32em vs the nearest
+  in-text ref at 5.06em (2205 "of Fig. 11", itself BELOW an already-claimed region) → 4.5 splits the
+  margin. Corpus-wide
+  attachment diff at 4.5-vs-4.0: EXACTLY the two intended captions appear, none lost, no in-text refs.
+  Bonus: Fig 7's two panels share blk1178 → subfigure grouping merges them into one float.
+- **C. Block-inside-figure — RE-DIAGNOSED 2026-07-05: a REGION-FORMATION defect, not an attachment one.**
+  The full geometry shows captions sitting MID-region because the region welded too much: 2205 pg8 is
+  **two floats in one 399pt region** (Fig 7 + Fig 8; Fig 8's caption won the attachment, Fig 7's sits
+  interior at 39% height); 2210 pg32 Fig 14's caption sits at 46% height of a 1283 em² near-page region;
+  2205 Fig 10's caption sits 8em above its region's bottom. "Lower-band acceptance" cannot fix these —
+  attaching to a two-float region yields a two-float crop. The principled fix is **V_caption interior
+  SPLIT**: a caption-shaped cue block strictly inside a region is NEGATIVE co-membership evidence — paths
+  above vs below it belong to different floats. Third view for the consensus seam (m2), alongside the
+  E-item's caption-as-positive-vote.
 - **D. Lane-3 block-detection misses — ORTHOGONAL (unchanged).** 2210 Figs 1/4: caption text never became
   a cue-prefixed block at all (still absent from the cue-block census post-consensus). Text-lane work.
 - **E. Kind-skip — SURVIVED; the "post-merge density rescues it" half was FALSIFIED.** 2403 Fig 3 still
@@ -174,18 +185,37 @@ representation of a diagram. Structured 2-D transcription, if ever, is pdfdig's 
      SECONDARY 9.1 → 8.3; 2210 dInl 27 → 16 (50 → 39 uncaptioned regions). PRIMARY untouched (1.5,
      row-identical). Defrag proved NOT vestigial (ablation: 9.3 without it) — both stay on.
      Full results: `consensus-milestone1-design.md` §"As landed + measured".
-   - **NEXT DIAGNOSIS before the next lever:** what are 2210's remaining 16 extra uncaptioned regions
-     (and 2111's +2 rescued fragments)? Candidates: fragments split at >6em pen steps (raster-return
-     jumps sever blocks — the m1 mechanism can't heal across blocks), rescued furniture, or genuinely
-     separate sub-diagrams the oracle counts as one. Per-region eyeball vs the `-latex.md` diagrams —
-     the answer picks between the two levers below.
+   - **RESIDUAL DIAGNOSIS DONE 2026-07-05 (crop-verified, 2210's 39 uncaptioned vs oracle 23).** Four
+     classes, from eyeballing the pig run's own region crops (`images/imageFileN.png`) + the census:
+     1. *Real small inline diagrams, correctly detected* — pg13's five ~25 em² regions are five clean
+        whole chain-diagram crops (verified: complete `□ ↔ □` diagrams). NOT errors; part of the "+16"
+        is the oracle-vs-pig granularity agreeing better than the raw delta suggests.
+     2. *Welded caption-interior monsters* — pg32 id46 (1283 em², Fig 14 caption at 46% height); same
+        class as 2205 pg8's two-float weld. Fix = the C-item's V_caption interior split (m2).
+     3. *Equation furniture leaking into kind=figure* — id29 is a 355×12px strip (overline/underbrace
+        rule cluster beside display math). Needs a discrimination signal (aspect + adjacency to a
+        formula-block from the classify lane), NOT a size floor (real diagrams are as small).
+     4. *Crop bbox misses text nodes* — pg17 ids 26–28 (three same-size diagram skeletons): arrows are
+        paths, node labels are LETTERS — the union bbox excludes them, so crops amputate the nodes.
+        Crop-quality fix: pad region bboxes with overlapping/adjacent letters-lane glyphs at render
+        time (Export-PdfFigureImages), independent of counting.
+     The oracle side now renders diagrams (`{slug}.diagrams.jsonl` work-list, 27 records for 2210 with
+     full TikZ source) — crop-vs-render pairing is now possible for a per-diagram quality gate.
    - **em-anisotropic dilation** — fallback/complement; dilate bboxes by `(Tx,Ty)` per side before clustering
      (also merges, but needs em-calibration and risks bridging distinct diagrams).
-   - **geometry ⊕ provenance consensus (m2)** — needs deeper IR first (clip-group-id / color / marked-content
-     NOT emitted; `is_clipping` only boolean). Then union-find + Jaccard + SymmetrizationRule ported from
-     ThermoMapper `hashish`/`graphs` INTO `src/hdbscan/` (read-only w.r.t. ThermoMapper). See
-     `pdfdig-ps-converter.md` "Ensemble / consensus spine". The seam is already in place (`Join-FigureViews`
-     + `consensus.rule` config-as-data). E-fix (caption as a kind-promoting VIEW VOTE) rides in here.
+   - **m2 consensus increment — REORDERED by the residual diagnosis: lead with V_caption.** The caption
+     view earns entry first because it is BOTH the biggest residual (welded caption-interior monsters)
+     and needs no new IR: (a) *interior split* — a caption-shaped cue block strictly inside a region is
+     NEGATIVE co-membership evidence (paths above vs below = different floats; fixes 2205 pg8 Fig 7+8,
+     2210 pg32 Fig 14); (b) *positive vote* — a caption adjacent to a mark/sparse/degenerate region
+     promotes kind (the E-items: 2403 Fig 3, 2205 Fig 12). Note the seam grows a NEGATIVE-evidence
+     strength (m1 strengths are {0,1} co-membership; a split is anti-membership — design the
+     `SymmetrizationRule`/cophenetic story with signed evidence in mind).
+   - **geometry ⊕ provenance consensus (m2, after V_caption)** — needs deeper IR first (clip-group-id /
+     color / marked-content NOT emitted; `is_clipping` only boolean). Then union-find + Jaccard +
+     SymmetrizationRule ported from ThermoMapper `hashish`/`graphs` INTO `src/hdbscan/` (read-only
+     w.r.t. ThermoMapper). See `pdfdig-ps-converter.md` "Ensemble / consensus spine". The seam is already
+     in place (`Join-FigureViews` + `consensus.rule` config-as-data).
 
 3. **`IClusterLineage` / cophenetic abstraction** — milestone-2, unchanged (`opus-clustering-next-steps.md`).
 
