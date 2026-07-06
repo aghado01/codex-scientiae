@@ -182,6 +182,28 @@ aesthetics — picks winners.
   geometric-medians-on-product-manifolds line is in the corpus).
 The library doubles as the ThermoMapper metric program's testbed: retrieval quality = the observable.
 
+**Dual-register embeddings (decided 2026-07-06):** prose and math are embedded SEPARATELY, potentially
+by different models — mixing KaTeX into prose vectors muddies both registers. REGISTER is an axis of
+the channel schema alongside geometry: { register: prose|math, geometry, model_id, … }. Queries route
+by register or fuse (RRF) across both.
+- **Prose channel:** math spans PLACEHOLDERED, not stripped (⟨MATH⟩ slots keep referential flow —
+  "combining ⟨MATH⟩ with the triangle inequality" must stay sensible prose).
+- **Math channel:** the corpus advantage is the REGISTER DISCIPLINE — we embed polished primitive
+  KaTeX (macro expansion already canonicalized every paper's private vocabulary to a shared alphabet),
+  never glyph soup. Semantic-vs-syntactic reality (ARQMath/Tangent-CFT lineage): strings lose math
+  semantics; STRUCTURE wins — the mature route is canonicalize-then-embed, and the canonicalizer is
+  mathdig (AST → α-normalized, argument-ordered linearization → embed). Math-register embeddings are
+  thereby mathdig's SECOND consumer — strictly downstream, nothing depends on it existing; the
+  primitive-KaTeX string channel is the honest interim.
+- **Fine-tune seam (self-supplied):** contrastive pairs mined from the corpus itself — the same
+  standard theorems/definitions restated across papers (interleaving stability, quiver reps …),
+  registry = the oracle math bank. Small, well-posed; not a moonshot.
+
+**Net-new compute (Lorentz fits, embedding tooling): NEW C# projects** under the existing build
+convention, SEPARATE from hdbscan; BORROW/lift from ThermoMapper rather than import it (SPCX is a
+scientific-computing stack with its own integration concerns; applications here are strictly more
+focused). Lessons feed back to ThermoMapper later.
+
 ## Open questions
 
 - **Names for the two servers** (working: `codex-librarian` write / `codex-reader` read; with the
