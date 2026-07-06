@@ -24,7 +24,17 @@ $script:ArxivMinIntervalMs = 3000
 # This library's own path, captured at dot-source time, so the server can hand the worker runspace the exact
 # file to dot-source into itself (a fresh runspace shares no functions with the main one).
 $script:ArxivLibPath       = Join-Path $PSScriptRoot 'arxiv.ps1'
-$script:ArxivUserAgent     = 'codex-arxiv-mcp/0.1 (+https://github.com/blazickjp/arxiv-mcp-server; research tool, in-house port)'
+$script:ArxivUserAgents = @(
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'codex-arxiv-mcp/0.1 (+https://github.com/blazickjp/arxiv-mcp-server; research tool, in-house port)'
+)
+function Get-ArxivUserAgent {
+    return $script:ArxivUserAgents | Get-Random
+}
 $script:ArxivApiUrl        = 'https://export.arxiv.org/api/query'
 $script:ArxivNs            = @{ atom = 'http://www.w3.org/2005/Atom'; arxiv = 'http://arxiv.org/schemas/atom' }
 
@@ -275,7 +285,7 @@ function Invoke-ArxivApi {
     param([hashtable]$Query, [int]$MaxAttempts = 3)
     $pairs = foreach ($k in $Query.Keys) { "$k=$($Query[$k])" }
     $url   = $script:ArxivApiUrl + '?' + ($pairs -join '&')
-    $headers = @{ 'User-Agent' = $script:ArxivUserAgent }
+    $headers = @{ 'User-Agent' = (Get-ArxivUserAgent) }
     for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
         Wait-ArxivRateLimit
         try {
@@ -478,7 +488,7 @@ function Invoke-ArxivFetch {
     if ($meta -is [array]) { $meta = $meta[0] }
     $target = Resolve-ArxivStageTarget -Meta $meta -Config $Config -StagingRoot $StagingRoot
     New-Item -ItemType Directory -Force -Path $target.Dir | Out-Null
-    $headers = @{ 'User-Agent' = $script:ArxivUserAgent }
+    $headers = @{ 'User-Agent' = (Get-ArxivUserAgent) }
 
     # Per-artifact fetch: a failure on one (404 / not-a-PDF / PDF-only-no-source) is reported as
     # unavailable and does NOT abort the others. Each result is { staged | available:false + reason }.
