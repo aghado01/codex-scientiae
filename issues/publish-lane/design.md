@@ -186,15 +186,23 @@ The library doubles as the ThermoMapper metric program's testbed: retrieval qual
 by different models — mixing KaTeX into prose vectors muddies both registers. REGISTER is an axis of
 the channel schema alongside geometry: { register: prose|math, geometry, model_id, … }. Queries route
 by register or fuse (RRF) across both.
-- **Prose channel:** math spans PLACEHOLDERED, not stripped (⟨MATH⟩ slots keep referential flow —
-  "combining ⟨MATH⟩ with the triangle inequality" must stay sensible prose).
-- **Math channel:** the corpus advantage is the REGISTER DISCIPLINE — we embed polished primitive
-  KaTeX (macro expansion already canonicalized every paper's private vocabulary to a shared alphabet),
-  never glyph soup. Semantic-vs-syntactic reality (ARQMath/Tangent-CFT lineage): strings lose math
+- **SYMMETRIC MASKING (decided):** both channels are register-complementary masked views of the SAME
+  span unit — `Mask-Register(section, keep=prose)` ↔ `Mask-Register(section, keep=math)`. One
+  transform, two registers, one address space (a hit in either register resolves to the same
+  (slug, section, span); no sub-unit bookkeeping until v2 formula-level addressing).
+  - Prose channel: math → ⟨MATH⟩ slots ("combining ⟨MATH⟩ with the triangle inequality" stays
+    sensible prose; referential flow preserved).
+  - Math channel: prose → ⟨PROSE⟩ slots — preserves derivation RHYTHM (eq→⟨PROSE⟩→eq→eq: the
+    arrangement of formulas and their connective tissue is signal that formula-extraction loses).
+  - Emergent: math-sparse sections yield weak math vectors — math-register queries won't rank them.
+    Not degradation; the register separation working.
+- **Math content itself:** the corpus advantage is the REGISTER DISCIPLINE — polished primitive KaTeX
+  (macro expansion already canonicalized every paper's private vocabulary to a shared alphabet), never
+  glyph soup. Semantic-vs-syntactic reality (ARQMath/Tangent-CFT lineage): strings lose math
   semantics; STRUCTURE wins — the mature route is canonicalize-then-embed, and the canonicalizer is
   mathdig (AST → α-normalized, argument-ordered linearization → embed). Math-register embeddings are
   thereby mathdig's SECOND consumer — strictly downstream, nothing depends on it existing; the
-  primitive-KaTeX string channel is the honest interim.
+  primitive-KaTeX masked-view channel is the honest interim.
 - **Fine-tune seam (self-supplied):** contrastive pairs mined from the corpus itself — the same
   standard theorems/definitions restated across papers (interleaving stability, quiver reps …),
   registry = the oracle math bank. Small, well-posed; not a moonshot.
