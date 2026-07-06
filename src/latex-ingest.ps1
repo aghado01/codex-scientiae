@@ -79,7 +79,10 @@ function Convert-BorderMatrix {
 function Convert-Tabular {
     param([string]$Spec, [string]$Body)   # basic {tabular} -> GitHub markdown table (data tables; image grids are handled separately)
     $Body = $Body -replace '\\(?:hline|toprule|midrule|bottomrule)\b', '' -replace '\\cline\{[^}]*\}', ''
+    $Body = $Body -replace '\\cmidrule\s*(?:\([^)]*\))?\s*\{[^}]*\}', '' -replace '\\(?:morecmidrules|addlinespace)\b(?:\[[^\]]*\])?', ''   # booktabs rules
     $Body = [regex]::Replace($Body, '\\multicolumn\{\d+\}\{[^}]*\}\{([^{}]*)\}', '$1')
+    # a row break \\ may carry an optional spacing arg (\\[0.5ex]) — strip it so it does not leak as a cell
+    $Body = [regex]::Replace($Body, '\\\\\s*\[[^\]]*\]', '\\')
     $s = $Spec -replace '\|', '' -replace '[@<>]\{[^}]*\}', '' -replace '[pmb]\{[^}]*\}', 'X'
     $ncol = ($s -replace '[^clrX]', '').Length
     if ($ncol -lt 1) { $ncol = 1 }
@@ -843,6 +846,31 @@ function Protect-LatexMath {
     return $Text
 }
 
+# Strip macro-declaration STATEMENTS from body text (they are harvested separately; see call site).
+# Brace-aware: definition bodies nest braces freely. Families: \newcommand/\renewcommand/\providecommand
+# (optional arg-count/default groups), \DeclareMathOperator, paramful/paramless \def, \let aliases, and
+# whole \makeatletter…\makeatother spans (@-internal plumbing is never rendered content).
+function Remove-LatexDeclarations {
+    param([string]$T)
+    $T = [regex]::Replace($T, '(?s)\\makeatletter.*?\\makeatother', '')
+    $heads = @(
+        '\\(?:new|renew|provide)command\*?\s*\{?\s*\\[A-Za-z@]+\s*\}?\s*(?:\[\d+\])?\s*(?:\[[^\]]*\])?\s*\{',
+        '\\DeclareMathOperator\*?\s*\{?\s*\\[A-Za-z@]+\s*\}?\s*\{',
+        '\\def\s*\\[A-Za-z@]+[^{]*\{'
+    )
+    foreach ($h in $heads) {
+        while ($true) {
+            $m = [regex]::Match($T, $h)
+            if (-not $m.Success) { break }
+            $end = Get-BraceGroupEnd $T ($m.Index + $m.Length - 1)
+            if ($end -lt 0) { break }
+            $T = $T.Substring(0, $m.Index) + $T.Substring($end)
+        }
+    }
+    $T = [regex]::Replace($T, '\\let\s*\\[A-Za-z@]+\s*=?\s*\\[A-Za-z@]+', '')
+    return $T
+}
+
 # Old-style $$..$$ -> \[..\], TEX-FAITHFULLY. TeX pairs `$` sequentially: `$$` opens a DISPLAY only when
 # the scanner reaches it OUTSIDE math. In `$($$\mathrm{..}$` the two adjacent $ are an inline span CLOSING
 # and the next OPENING — a regex that globally pairs `$$...$$` reads them as display fences and swallows
@@ -924,7 +952,7 @@ function Convert-LatexInline {
     param([string]$T)
     $T = $T -replace '\\(?:textbf|textsc)\{([^{}]*)\}', '**$1**'
     $T = $T -replace '\\(?:emph|textit|textsl)\{([^{}]*)\}', '*$1*'
-    $T = $T -replace '\\texttt\{([^{}]*)\}', '`$1`'
+    $T = [regex]::Replace($T, '\\texttt\{([^{}]*)\}', { param($m) '`' + $m.Groups[1].Value.Trim() + '`' })   # trim: no space inside code spans (MD038)
     $T = $T -replace '\\(?:textrm|textnormal|mbox|text)\{([^{}]*)\}', '$1'
     $T = $T -replace '\\(?:newblock|noindent|maketitle|centering)\b', ''
     $T = $T -replace '\\&', '&' -replace '\\%', '%' -replace '\\_', '_' -replace '\\#', '#' -replace '\\\$', '$'
@@ -1178,6 +1206,13 @@ function ConvertFrom-Latex {
     # its \bibitem bodies bleed into the prose as an unnumbered tail.
     $body = [regex]::Replace($body, '(?s)\\begin\{thebibliography\}\s*(?:\{[^{}]*\})?.*?\\end\{thebibliography\}', '')
 
+    # body-position macro DECLARATIONS: already harvested by Get-LatexMacros (which scans the FULL source),
+    # so left in the body they are pure machinery — and worse, they SELF-MANGLE under expansion
+    # (\newcommand{\lefti}{\vartriangleleft}: the \lefti inside its own declaration expands, leaking
+    # "\newcommand{\vartriangleleft}{\vartriangleleft}" into the prose). Strip the statements, brace-aware.
+    # Verbatim listings are already placeholders here, so code samples showing \newcommand are untouched.
+    $body = Remove-LatexDeclarations $body
+
     # old-style $$display$$ -> \[..\] up front: display and inline math otherwise share the `$` delimiter, so
     # the parser conflates them and one mis-pair cascades through every downstream `$` (swallowing prose).
     # TEX-FAITHFUL scan, not a regex: `$$` only opens a DISPLAY when reached outside math — in `$($$x$…`
@@ -1313,15 +1348,19 @@ function ConvertFrom-Latex {
     # sn-jnl / article author metadata is not part of the corpus format (STANDARDS §8): strip it brace-aware
     # so \author*[1]{\fnm{}\sur{}}, \affil[..]{\orgdiv{}…}, \email, \equalcont, \orcid stop leaking into the
     # body. \title is already lifted to the H1 (Get-LatexCommandArg above); the raw command is dropped here.
-    foreach ($fm in '\title', '\author', '\affil', '\email', '\equalcont', '\orcid', '\orcidlink', '\thanks') {
+    # …including the amsart dialect: \address/\curraddr (institutional addresses), \subjclass[2020]{MSC},
+    # \dedicatory, \urladdr — same never-rendered-in-corpus front-matter class (STANDARDS §8).
+    foreach ($fm in '\title', '\author', '\affil', '\email', '\equalcont', '\orcid', '\orcidlink', '\thanks', '\address', '\curraddr', '\subjclass', '\dedicatory', '\urladdr') {
         $body = Replace-BracedCommand $body $fm { '' }
     }
 
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
     $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
-    $body = $body -replace '\\paragraph\*?\s*\{([^{}]*)\}', '**$1** '
+    $body = [regex]::Replace($body, '\\(?:sub)?paragraph\*?\s*\{([^{}]*)\}', { param($m) '**' + $m.Groups[1].Value.Trim() + '** ' })   # trim: no space inside emphasis (MD037)
     $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"   # escape `$1: double-quoted, PS would else interpolate it away
-    $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m) $c = $m.Groups[1].Value.Trim(); if ($c) { "`n`n*$c*`n" } else { '' } })   # trim: no space inside emphasis (MD037)
+    $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m) $c = $m.Groups[1].Value.Trim()
+            if ($c -and $c -notmatch '[.!?:]$') { $c += '.' }   # captions are sentences: terminal punctuation (also disarms MD036 emphasis-as-heading)
+            if ($c) { "`n`n*$c*`n" } else { '' } })   # trim: no space inside emphasis (MD037)
     # acknowledgements env: the journal class renders an "Acknowledgements" heading — surface it faithfully as
     # a section (content KEPT). This is a FAITHFUL transcription: editorial drops (acks, ref sidecar split, …)
     # are the PROMOTION phase's job, never the converter's.
@@ -1332,13 +1371,25 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\begin\{minipage\}(?:\[[^\]]*\])?\{[^}]*\}', '' -replace '\\end\{minipage\}', ''
     $body = $body -replace '\\begin\{subfigure\}(?:\[[^\]]*\])?(?:\{[^}]*\})?', '' -replace '\\end\{subfigure\}', ''   # keep panel content, drop wrapper
     $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\*?\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\*?\}', "`n`n"   # blank lines around lists (MD032); *-variant star is INSIDE the braces
+    # description-list \item[term]: surface the bracketed term as a bold lead-in (else it leaks as literal
+    # "[term]:"); plain \item -> bullet. The [term] runs before the plain rule so it wins.
+    $body = [regex]::Replace($body, '\\item\s*\[([^\]]*)\]\s*', { param($m) "`n- **" + ($m.Groups[1].Value.Trim() -replace ':$', '') + ":** " })
     $body = $body -replace '\\item\s*', "`n- "
+    # LaTeX quotes -> straight quotes, BEFORE \texttt becomes backticks (a lone ` is a left-single-quote
+    # here, not a code fence — leaving it turns `word' into a spurious code span). Doubles first.
+    $body = $body -replace '``', '"' -replace "''", '"'
+    $body = $body -replace '`', "'"
     $body = Convert-BraceToggles $body                                         # {\em ..}/{\bf ..} switch form -> * / ** (brace-aware)
     $body = Unwrap-Boxes $body                                                 # \fbox/\parbox/\centerline -> content (drop frame + width/pos args)
-    $body = $body -replace '\\(?:textbf|textsc)\{([^{}]*)\}', '**$1**'
-    $body = $body -replace '\\(?:emph|textit|textsl)\{([^{}]*)\}', '*$1*'
-    $body = $body -replace '\\texttt\{([^{}]*)\}', '`$1`'
-    $body = $body -replace '\\(?:textrm|textnormal|mbox|text|underline)\{([^{}]*)\}', '$1'
+    $body = [regex]::Replace($body, '\\(?:textbf|textsc)\{([^{}]*)\}', { param($m) '**' + $m.Groups[1].Value.Trim() + '**' })   # trim: no space inside emphasis (MD037)
+    $body = [regex]::Replace($body, '\\(?:emph|textit|textsl)\{([^{}]*)\}', { param($m) '*' + $m.Groups[1].Value.Trim() + '*' })
+    $body = [regex]::Replace($body, '\\texttt\{([^{}]*)\}', { param($m) '`' + $m.Groups[1].Value.Trim() + '`' })   # trim: no space inside code spans (MD038)
+    $body = $body -replace '\\(?:textrm|textnormal|textsf|textup|textmd|mbox|text|underline)\{([^{}]*)\}', '$1'
+    # counter machinery: side-effect commands (\stepcounter/\refstepcounter/\setcounter/…) produce NO
+    # output — drop them; value-producing \Alph/\arabic/… of a counter we cannot track (custom author
+    # counters) drop too rather than leak the command verbatim.
+    $body = $body -replace '\\(?:step|refstep|addto)?(?:set)?counter\*?\{[^{}]*\}(?:\{[^{}]*\})?', ''
+    $body = $body -replace '\\(?:arabic|Alph|alph|Roman|roman|fnsymbol|value)\{[^{}]*\}', ''
     $body = $body -replace '\\(?:textcolor|colorbox)\{[^{}]*\}\{([^{}]*)\}', '$1' -replace '\\color\{[^{}]*\}', ''   # drop colour styling, keep text
     $body = $body -replace '\\hyperlink\{(https?://[^{}]*)\}\{[^{}]*\}', '<$1>' -replace '\\(?:hyperlink|hypertarget)\{[^{}]*\}\{([^{}]*)\}', '$1'
     $body = $body -replace '\\href\{([^{}]*)\}\{([^{}]*)\}', '[$2]($1)' -replace '\\url\{([^{}]*)\}', '<$1>'   # links, angle-bracketed (MD034)
@@ -1501,7 +1552,7 @@ function Copy-LatexFigures {
             if ($rasterExt -contains $ext) {
                 Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
                 $state.copied++; $state.png++
-                return "![]($Slug/$($hit.Name))"
+                return "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($hit.Name))]($Slug/$($hit.Name))"
             }
             if ($ext -eq '.pdf') {
                 # PDF -> PNG: defer to a batched MuPDF call. Emit a placeholder now (unique per asset via the
@@ -1516,7 +1567,7 @@ function Copy-LatexFigures {
                 # in most viewers). Not yet terminal PNG; rare as an \includegraphics asset. Flagged in counts.
                 Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
                 $state.copied++
-                return "![]($Slug/$($hit.Name))"
+                return "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($hit.Name))]($Slug/$($hit.Name))"
             }
             if ($ext -eq '.eps' -or $ext -eq '.ps') {
                 # EPS/PS: no MuPDF handler — defer to a tectonic \includegraphics wrap (-> PDF -> PNG). Emit a
@@ -1542,7 +1593,7 @@ function Copy-LatexFigures {
             } catch { Write-Verbose "pdf-raster failed: $($_.Exception.Message)" }
         }
         foreach ($j in $pdfJobs) {
-            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![]($($j.rel))") }
+            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($j.leaf))]($($j.rel))") }
             else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, "*[figure (pdf): $($j.leaf) — PNG conversion pending]*") }
         }
     }
@@ -1558,7 +1609,7 @@ function Copy-LatexFigures {
             } catch { Write-Verbose "tex-graphic failed: $($_.Exception.Message)" }
         }
         foreach ($j in $epsJobs) {
-            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![]($($j.rel))") }
+            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($j.leaf))]($($j.rel))") }
             else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, "*[figure ($($j.ext)): $($j.leaf) — PNG conversion pending]*") }
         }
     }
@@ -1734,7 +1785,7 @@ function Invoke-ArxivLatexToMarkdown {
             $rep = Invoke-TexDiagramRender -Jobs $texJobs -Preamble $script:TikzPreamble -TikzLibraries $script:TikzLibs -OutDir $destDir -Dpi 200
             $ok = @{}; foreach ($r in @($rep.results)) { if ($r.ok) { $ok[[int]($r.id -replace '^diagram-', '')] = $true } }
             foreach ($d in $script:DiagramStore) {
-                if ($ok[$d.n]) { $md = $md.Replace((Format-DiagramMarker $d.n $d.kind), "![]($Slug/diagram-$($d.n).png)"); [void]$doneN.Add($d.n); [void]$pngN.Add($d.n); $diag.png++ }
+                if ($ok[$d.n]) { $md = $md.Replace((Format-DiagramMarker $d.n $d.kind), "![diagram $($d.n) ($($d.kind))]($Slug/diagram-$($d.n).png)"); [void]$doneN.Add($d.n); [void]$pngN.Add($d.n); $diag.png++ }
             }
         } catch { Write-Verbose "tex-render (tectonic) failed: $($_.Exception.Message)" }
     }
@@ -1758,7 +1809,7 @@ function Invoke-ArxivLatexToMarkdown {
                 if (-not $res.ok) { continue }
                 $n = [int]($res.id -replace '^diagram-', '')
                 $kind = (@($script:DiagramStore | Where-Object { $_.n -eq $n })[0]).kind
-                $md = $md.Replace((Format-DiagramMarker $n $kind), "![]($Slug/diagram-$n.svg)")
+                $md = $md.Replace((Format-DiagramMarker $n $kind), "![diagram $n ($kind)]($Slug/diagram-$n.svg)")
                 [void]$doneN.Add($n); $diag.svg++
             }
         } catch { Write-Verbose "tikz-render failed: $($_.Exception.Message)" }
@@ -1782,12 +1833,38 @@ function Invoke-ArxivLatexToMarkdown {
     }
     [System.IO.File]::WriteAllText((Join-Path $work "$Slug.diagrams.jsonl"), $dsb.ToString(), $u8)
 
-    # REGISTER SAFETY: two ADJACENT inline spans emit `$a$$b$` — indistinguishable from a display fence
-    # to every markdown scanner (render_check's extractor included). Our true display fences sit ALONE on
-    # their own line, so any mid-line unescaped `$$` is span adjacency: restore the boundary with a space.
-    $md = (($md -split "`n") | ForEach-Object {
-            if ($_.Trim() -eq '$$') { $_ } else { [regex]::Replace($_, '(?<!\\)\$\$', '$ $') }
-        }) -join "`n"
+    # FINAL HYGIENE (STANDARDS §4) + REGISTER SAFETY, one fence-aware line walk:
+    #  - inside ``` fences: byte-verbatim (code samples keep their own blanks/tabs/spacing)
+    #  - trailing whitespace stripped (MD009); blank runs collapsed to ONE blank line (MD012)
+    #  - bare URLs wrapped <…> (MD034), trailing sentence punctuation left outside the autolink
+    #  - two ADJACENT inline spans emit `$a$$b$` — indistinguishable from a display fence to every
+    #    markdown scanner (render_check's extractor included). True display fences sit ALONE on their
+    #    line, so any mid-line unescaped `$$` is span adjacency: restore the boundary with a space.
+    $lines = [System.Collections.Generic.List[string]]::new()
+    $inFence = $false; $blankRun = 0
+    foreach ($ln in ($md -split "`n")) {
+        if ($ln -match '^```') { $inFence = -not $inFence; $blankRun = 0; $lines.Add($ln); continue }
+        if ($inFence) { $lines.Add($ln); continue }
+        $ln = ($ln -replace '\t', ' ').TrimEnd()   # hard tabs -> space (MD010); a stray tab can ride out of a restored math/alg span
+        if ($ln -eq '') { $blankRun++; if ($blankRun -gt 1) { continue }; $lines.Add(''); continue }
+        $blankRun = 0
+        if ($ln -match '^(#{1,6})\s+(.*\S)\s*$') {
+            # headings: strip trailing sentence punctuation (MD026) — authors write \subsection{Acks.} etc.
+            $lines.Add($matches[1] + ' ' + ($matches[2] -replace '[.:;,]+$', ''))
+            continue
+        }
+        if ($ln -ne '$$') {
+            $ln = [regex]::Replace($ln, '(?<!\\)\$\$', '$ $')
+            $ln = [regex]::Replace($ln, '(?<![<(\[])(https?://[^\s<>()\[\]]+)', {
+                    param($m) $u = $m.Groups[1].Value; $p = ''
+                    while ($u.Length -gt 1 -and $u[-1] -in '.', ',', ';', ':') { $p = $u[-1] + $p; $u = $u.Substring(0, $u.Length - 1) }
+                    "<$u>$p" })
+            # bare e-mail -> autolink (MD034); skip if already inside <>/()/[] or a mailto:
+            $ln = [regex]::Replace($ln, '(?<![<(\[:/\w.])([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})', '<$1>')
+        }
+        $lines.Add($ln)
+    }
+    $md = (($lines -join "`n").TrimEnd()) + "`n"
 
     # OUTPUT-phase errata (converter-output quirks with no clean TeX-space handle) — last transform,
     # applied to the near-emission text so a human authors find-strings against what the deliverable shows.
