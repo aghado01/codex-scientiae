@@ -72,3 +72,14 @@ While a paper is staged under `ingestion/_inbox/{slug}/`, each converter lane wr
 - **Membrane** (`finalize`): the authoritative copy stays in the run dir (`.runs/{stamp}/{slug}.md`); a convenience mirror is copied up to `{slug}-membrane.md`.
 
 Promotion (§8) is the only step that writes a bare `{slug}.md`, and it does so at the *destination* (`compendia/{topic}/`). It shares the basename with the inbox docling drop but never the location — the two are not to be conflated.
+
+### 10. Per-Paper Curated Errata (the LaTeX-oracle patch lane)
+
+The LaTeX-oracle converter is **faithful, not filtered** (§8 of the doctrine): it transcribes what the author wrote and must *never* guess-fix an author defect — an undefined macro, a typo'd control sequence. But a faithful transcription of a *defective* source is itself defective (it won't render), and a one-off hand-edit to the deliverable is silently erased by the next `latex_convert`. The durable home for such a fix is a **per-paper patch file beside the source**, re-applied on every conversion:
+
+- **File**: `{slug}-latex.patch.jsonl` at the slug root (beside `{slug}-latex.md`), checked in, **human-authored**. One JSON object per line; `#`/`//`/blank lines allowed. No file → the converter is a pure no-op (100% faithful).
+- **Every patch carries `op` + `reason`** (an unjustified erratum is rejected). Optional: `class`, `source_ref`, `authored_by`, `authored_utc`.
+- **Three ops**: `define_macro {name, body, [expect_uses]}` supplies an omitted `\newcommand` in **source** space so the converter's own ordinal, control-word-boundary-safe expander resolves it exactly as a defined macro (the least-interventionist fix for the undefined-macro class — no output surgery, no `\foo`-vs-`\foobar` hazard); `source_replace {find, replace, [expect]}` is a guarded regex substitution on the resolved LaTeX; `output_replace {find, replace, [expect]}` is a guarded regex substitution on the emitted markdown.
+- **Guarded, fails loud**: a patch that matches nothing (upstream fixed the defect, or the converter's emission drifted) or whose occurrence count no longer holds throws — a stale erratum is a *signal to review*, never a silent no-op. Every applied patch is echoed in the `latex_convert` result (`patched[]`) and the run's oracle-counts sidecar (`patches_applied`), so the correction is always visible, never a hidden alteration.
+
+This keeps faithful transcription and editorial correction cleanly separated: the converter's default behavior is unchanged, and the patch is explicit, per-paper, justified data — a curated erratum, not the converter exercising judgement. Implemented in `src/latex-ingest.ps1` (`PER-PAPER PATCH LANE`); tests in `tests/latex-patch.Tests.ps1`.
