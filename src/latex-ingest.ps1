@@ -301,7 +301,7 @@ function Get-LatexMacros {
     }
     # \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil} (mathtools): a 1-arg macro wrapping in its fences.
     # KaTeX has no \DeclarePairedDelimiter, so realize it as a plain \newcommand-equivalent.
-    foreach ($m in ([regex]'\\DeclarePairedDelimiter\*?\s*\\([A-Za-z]+)\s*\{([^{}]*)\}\s*\{([^{}]*)\}').Matches($Tex)) {
+    foreach ($m in ([regex]'\\DeclarePairedDelimiter\*?\s*\{?\s*\\([A-Za-z]+)\s*\}?\s*\{([^{}]*)\}\s*\{([^{}]*)\}').Matches($Tex)) {   # name arg may be braced ({\ceil}) or bare (\ceil)
         $macros[$m.Groups[1].Value] = [pscustomobject]@{ nargs = 1; opt = $null; body = $m.Groups[2].Value + ' #1 ' + $m.Groups[3].Value }
     }
     return $macros

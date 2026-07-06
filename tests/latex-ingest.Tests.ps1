@@ -1,12 +1,16 @@
 #requires -Version 7.0
-# Tokenization consistency + fence-only-if-monospace through the LaTeX converter.
-#
-# One expression must produce ONE token stream wherever it appears: algorithmic pseudocode carries the
-# same $-delimited, macro-expanded KaTeX-primitive math as body prose. And a markdown code fence is
-# emitted ONLY for constructs the PDF really presents as monospace (verbatim/lstlisting/minted);
-# algorithmic renders in the PDF as indented lines with bold keywords and live math, so it becomes a
-# NESTED LIST (ordered iff the source asked for line numbers: \begin{algorithmic}[1]).
-# Inside stashed code, % is not a comment and $ is not math — content survives byte-verbatim.
+# The LaTeX oracle converter spec (src/latex-ingest.ps1) — the ground truth the pdf-converter lane is
+# measured against, so a silent break here corrupts the benchmark. Coverage, in order:
+#   - tokenization consistency + fence-only-if-monospace (algorithmic->nested list, verbatim->fence);
+#   - figures: carry-out, PNG-terminal register (raster passthrough w/ alt text, un-rasterizable->marker);
+#   - diagrams: unified DiagramStore, markers by kind;
+#   - ENCODE-FIRST transpilers (xy-pic + tikzcd -> inline arrows / \begin{array}; bail = never guessed);
+#   - MATH REGISTER: nesting-aware protection, positional \ensuremath/\raisebox, (?m) comment strip;
+#   - MACROS: ordinal \Vect/\vect, glue guards, \let / \DeclarePairedDelimiter / \newcommand* / internals;
+#   - custom counters (Case A/B + \ref resolution); KaTeX aliases (\mathds/\Bar);
+#   - emission hygiene (body-position decls, amsart front-matter, quotes, table furniture);
+#   - frontmatter/theorem-numbering/accents/biblatex (faithful-transcription hardening);
+#   - ORACLE SMOKE GATE: a kitchen-sink document must convert to render_check-clean markdown.
 
 BeforeAll {
     . "$PSScriptRoot/../src/latex-ingest.ps1"
@@ -94,12 +98,13 @@ Describe 'verbatim-family -> tagged fences, byte-verbatim (fence-only-if-monospa
     }
 }
 
-Describe 'figures — carried out of the tarball, links live; TikZ markers numbered' {
-    It 'numbers TikZ diagram markers so a weaving step can target them' {
+Describe 'figures — carried out of the tarball, links live; diagram markers numbered by kind' {
+    It 'numbers diagram markers by KIND so a weaving/render step can target them' {
+        # tikzpicture + a NON-encodable tikzcd (single cell, no arrows) both fall to the flagged marker
         $t = '\begin{document}A \begin{tikzpicture}\draw (0,0);\end{tikzpicture} B \begin{tikzcd}X\end{tikzcd} C\end{document}'
         $m = ConvertFrom-Latex $t ''
-        $m | Should -Match ([regex]::Escape(('*[diagram 1 ' + [char]0x2014 + ' TikZ source, not rendered]*')))
-        $m | Should -Match ([regex]::Escape(('*[diagram 2 ' + [char]0x2014 + ' TikZ source, not rendered]*')))
+        $m | Should -Match ([regex]::Escape(('*[diagram 1 ' + [char]0x2014 + ' tikzpicture, not rendered]*')))
+        $m | Should -Match ([regex]::Escape(('*[diagram 2 ' + [char]0x2014 + ' tikzcd, not rendered]*')))
     }
     Context 'Copy-LatexFigures (unit, fake workdir)' {
         BeforeEach {
@@ -111,15 +116,18 @@ Describe 'figures — carried out of the tarball, links live; TikZ markers numbe
             [System.IO.File]::WriteAllBytes((Join-Path $script:work 'figs/flow.pdf'), [byte[]](37, 80, 68, 70))
         }
         AfterEach { Remove-Item -LiteralPath $script:work -Recurse -Force -ErrorAction SilentlyContinue }
-        It 'resolves an extensionless target, prefers the raster twin, copies it, rewrites the link' {
+        It 'resolves an extensionless target, prefers the raster twin, copies it, rewrites the link with alt text' {
             $r = Copy-LatexFigures -Markdown 'see ![](figs/arch) here' -WorkDir $script:work -OutDir $script:out -Slug 'p1'
             $r.copied | Should -Be 1
-            $r.markdown | Should -Match ([regex]::Escape('![](p1/arch.png)'))
+            $r.png | Should -Be 1                                                # PNG is the terminal register
+            $r.markdown | Should -Match ([regex]::Escape('![figure: arch](p1/arch.png)'))   # alt text = leaf name (MD045)
             Test-Path (Join-Path $script:out 'p1/arch.png') | Should -BeTrue
         }
-        It 'a vector-only figure becomes a plain (clickable) link, not a broken image tag' {
+        It 'an un-rasterizable PDF (here a 4-byte fake) becomes a FLAGGED marker, never a broken image tag' {
+            # PNG is terminal: a real PDF -> PNG via MuPDF (covered end-to-end); a PDF that cannot rasterize
+            # flags rather than emitting ![](x.pdf) (renders broken) or a silent plain link.
             $r = Copy-LatexFigures -Markdown '![](figs/flow.pdf)' -WorkDir $script:work -OutDir $script:out -Slug 'p1'
-            $r.markdown | Should -Match ([regex]::Escape('[figure (pdf): flow.pdf](p1/flow.pdf)'))
+            $r.markdown | Should -Match ([regex]::Escape('*[figure (pdf): flow.pdf'))
             $r.markdown | Should -Not -Match ([regex]::Escape('![](p1/flow.pdf)'))
         }
         It 'a missing target degrades to an addressable marker and is counted' {
@@ -143,7 +151,7 @@ Describe 'figures — carried out of the tarball, links live; TikZ markers numbe
         $r = Invoke-ArxivLatexToMarkdown -TarGz (Join-Path $root 'p.tar.gz') -Slug 'p' -OutDir $out
         $r.figures | Should -Be 1
         # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
-        (Get-Content (Join-Path $out 'p-latex.md') -Raw) | Should -Match ([regex]::Escape('![](p/arch.png)'))
+        (Get-Content (Join-Path $out 'p-latex.md') -Raw) | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))
         Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
         # the unpacked tex is a PERSISTED run artifact beside the tarball ({dir}/.runs/{stamp}/tex),
         # not a deleted temp dir — downstream consumers (math bank, skeleton) re-read it
@@ -154,11 +162,13 @@ Describe 'figures — carried out of the tarball, links live; TikZ markers numbe
 }
 
 Describe 'TikZ — source-authoritative diagram rendering' {
-    It 'stashes each env with number + kind, and captures preamble hints (externalization filtered)' {
+    It 'stashes each non-encodable env into the UNIFIED DiagramStore with number + kind, captures preamble hints' {
+        # single-cell tikzcd (no arrows) is not encodable -> falls to the store alongside the tikzpicture
         $t = '\usetikzlibrary{calc,external}\usetikzlibrary{cd,calc}\usepackage{tikz-cd}\begin{document}\begin{tikzpicture}\draw (0,0);\end{tikzpicture}\begin{tikzcd}A\end{tikzcd}\end{document}'
         $null = ConvertFrom-Latex $t ''
-        $script:TikzStore.Count | Should -Be 2
-        $script:TikzStore[1].env | Should -Be 'tikzcd'
+        $script:DiagramStore.Count | Should -Be 2
+        $script:DiagramStore[0].kind | Should -Be 'tikzpicture'
+        $script:DiagramStore[1].kind | Should -Be 'tikzcd'
         $script:TikzLibs | Should -Be 'calc,cd'          # deduped; 'external' (shell-escape caching) dropped
         $script:TikzPkgs.ContainsKey('tikz-cd') | Should -BeTrue
     }
@@ -344,5 +354,221 @@ Work by M\'{e}moli and M\"{o}bius; also G\"odel and stra\ss e.
         $refs | Should -Match ([regex]::Escape('\text{p}'))
         $refs | Should -Not -Match ([regex]::Escape('\mbox'))
         $refs | Should -Not -Match ([regex]::Escape('{K}'))
+    }
+}
+
+# =====================================================================================================
+# ENCODE-FIRST doctrine (issues/latex-oracle-images.md): a diagram that CAN be semantic KaTeX math MUST
+# be — image is the last resort. Deterministic rungs transpile provably-linear/orthogonal xy-pic + tikzcd;
+# anything else BAILS to the diagram store (never a guessed encoding). These are the oracle's math spec.
+# =====================================================================================================
+Describe 'encode-first — xy-pic transpiler (Convert-XyDiagramSpan)' {
+    It '1-D chain -> inline arrows, labels kept, stays REAL MATH (no diagram marker)' {
+        Convert-XyDiagramSpan 'R = \xymatrix{ \bullet \ar[r] & \bullet \ar[r] & \bullet }' |
+            Should -Be 'R = \bullet \longrightarrow \bullet \longrightarrow \bullet'
+        Convert-XyDiagramSpan '\xymatrix{ 0 \ar[r]^f & K }' | Should -Be '0 \xrightarrow{f} K'
+        # a gap double-booked by arrows from both sides is NOT a clean chain -> bail
+        Convert-XyDiagramSpan '\xymatrix{ A \ar[r] & B \ar[l] }' | Should -BeNullOrEmpty
+    }
+    It '2-D orthogonal grid -> \begin{array}; vertical labels as SUPERSCRIPT (over) / subscript (under)' {
+        $g = Convert-XyDiagramSpan '\xymatrix{A \ar[r]^f \ar[d]_g & B \ar[d]^h \\ C \ar[r]_k & D}'
+        $g | Should -Match ([regex]::Escape('\begin{array}{ccc}'))
+        $g | Should -Match ([regex]::Escape('A & \xrightarrow{f} & B'))
+        $g | Should -Match ([regex]::Escape('\downarrow_{g}'))
+        $g | Should -Match ([regex]::Escape('\downarrow^{h}'))
+    }
+    It 'BAILS ($null) on loops, diagonals — never a guessed encoding' {
+        Convert-XyDiagramSpan '\xymatrix{\bullet \ar@(ur,ul)}' | Should -BeNullOrEmpty      # self-loop
+        Convert-XyDiagramSpan '\xymatrix{A \ar[rd] & B}' | Should -BeNullOrEmpty            # diagonal
+    }
+    It 'in the full pipeline: an encodable inline xymatrix leaves NO diagram marker' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}The quiver $Q = \xymatrix{\bullet \ar[r] & \bullet}$ shown.\end{document}' ''
+        $out | Should -Match ([regex]::Escape('$Q = \bullet \longrightarrow \bullet$'))
+        $out | Should -Not -Match 'not rendered'
+    }
+}
+Describe 'encode-first — tikzcd transpiler (Convert-TikzcdDiagram)' {
+    It '1-D chain with quoted labels + maps-to style -> \xmapsto' {
+        Convert-TikzcdDiagram '\begin{tikzcd} A \arrow[r, "f", maps to] & B \end{tikzcd}' |
+            Should -Be 'A \xmapsto{f} B'
+    }
+    It 'accepts ONLY styles with exact KaTeX forms (hook/two heads/dashed); a swap places the label under' {
+        Convert-TikzcdDiagram '\begin{tikzcd} A \arrow[r, hook] & B \end{tikzcd}' | Should -Be 'A \hookrightarrow B'
+        Convert-TikzcdDiagram '\begin{tikzcd} A \arrow[r, "f" swap] & B \end{tikzcd}' | Should -Be 'A \xrightarrow[{f}]{} B'
+    }
+    It 'BAILS on diagonals, bends, Rightarrow, ampersand-replacement' {
+        Convert-TikzcdDiagram '\begin{tikzcd} A \arrow[r, bend left] & B \end{tikzcd}' | Should -BeNullOrEmpty
+        Convert-TikzcdDiagram '\begin{tikzcd} A \arrow[r, Rightarrow] & B \end{tikzcd}' | Should -BeNullOrEmpty
+    }
+    It '2-D square with vertical labels -> array (the real 2210/mapper form)' {
+        $g = Convert-TikzcdDiagram '\begin{tikzcd} V_3 \arrow[r, "g"] & V_4 \\ V_1 \arrow[r, "f"] \arrow[u, "a"] & V_2 \arrow[u, "b"] \end{tikzcd}'
+        $g | Should -Match ([regex]::Escape('\begin{array}{ccc}'))
+        $g | Should -Match ([regex]::Escape('\uparrow^{a}'))
+    }
+}
+
+# =====================================================================================================
+# MATH REGISTER — nesting-aware protection, positional wrappers, and the (?m) comment strip. The register
+# discipline is the whole point of the oracle: math always tokenizes as math; prose never leaks into it.
+# =====================================================================================================
+Describe 'math register — nesting, positional wrappers, comment strip' {
+    It 'text-bridged inner math in an INLINE span survives; inner $x$ normalizes to \(x\)' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}Let $f = \text{if $x>0$ then}$ hold.\end{document}' ''
+        $out | Should -Match ([regex]::Escape('$f = \text{if \(x>0\) then}$'))
+    }
+    It '\ensuremath is POSITIONAL: unwrapped-keeping-group in math, PROMOTED to a span in prose' {
+        # math position: {ab}^c group kept
+        $inmath = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}Value $f(\ensuremath{ab}^c)$ here.\end{document}' ''
+        $inmath | Should -Match ([regex]::Escape('$f({ab}^c)$'))
+        # prose position: promoted to $..$ (never bare ASCII)
+        $prose = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}The \ensuremath{\varepsilon}-net.\end{document}' ''
+        $prose | Should -Match ([regex]::Escape('$\varepsilon$-net'))
+    }
+    It 'a text-mode box in math collapses its math payload back to the register (no stranded \( )' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}Op $\raisebox{2pt}{\(\nabla\)}_i$ acts.\end{document}' ''
+        $out | Should -Not -Match ([regex]::Escape('\raisebox'))
+        $out | Should -Not -Match ([regex]::Escape('\('))       # no text-mode delimiter stranded in math
+        $out | Should -Match ([regex]::Escape('\nabla'))
+    }
+    It 'a mid-document TRAILING COMMENT (even one containing $$) is stripped, not swallowing prose' {
+        # the mapper bug: without (?m) the commented $$ mispaired display math and ate the next paragraph
+        $tex = @'
+\documentclass{article}
+\title{T}
+\begin{document}
+$$e_{ij}=1$$ % note: \text{and} $$ was here
+The scheme has entry $A_{ij}$ following a distribution.
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $out | Should -Match ([regex]::Escape('The scheme has entry $A_{ij}$ following a distribution.'))
+        $out | Should -Not -Match ([regex]::Escape('note:'))    # comment gone
+        $out | Should -Not -Match '\\\('                        # prose NOT captured into a math span
+    }
+    It 'adjacent inline spans emit `$a$ $b$`, never an ambiguous mid-line $$' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}Both $a$ and $b$ here.\end{document}' ''
+        # a real display fence is alone on its line; a mid-line $$ would be a scanner ambiguity
+        ($out -split "`n" | Where-Object { $_ -match '\S\$\$\S' }).Count | Should -Be 0
+    }
+}
+
+# =====================================================================================================
+# MACRO EXPANSION + ENRICHMENT — ordinal maps, glue guards, \let / paired-delims / starred defs, KaTeX
+# aliases. These are where a silent break corrupts the math ground truth most quietly.
+# =====================================================================================================
+Describe 'macros — ordinal collisions, glue guards, enrichment forms' {
+    It 'expands BOTH \Vect and \vect (case-sensitive; ordinal map, not a PS hashtable collision)' {
+        $out = ConvertFrom-Latex '\documentclass{article}\newcommand{\Vect}{\mathbf{Vect}}\newcommand{\vect}{\mathbf{vec}}\title{T}\begin{document}$F:\Vect\to\vect$ done.\end{document}' ''
+        $out | Should -Match ([regex]::Escape('\mathbf{Vect}'))
+        $out | Should -Match ([regex]::Escape('\mathbf{vec}'))
+        $out | Should -Not -Match ([regex]::Escape('\Vect'))
+        $out | Should -Not -Match ([regex]::Escape('\vect'))
+    }
+    It 'GLUE GUARD: expansion never fuses a control word with an adjacent letter into a new command' {
+        # \in followed by \chn->c must NOT become \inc (an undefined command born in the expander)
+        $m = [ordered]@{}; $m['chn'] = [pscustomobject]@{ nargs = 0; opt = $null; body = 'c' }
+        Expand-LatexMacros '\sigma\in\chn_{i}' $m | Should -Be '\sigma\in c_{i}'
+    }
+    It 'parses \let aliases (chain-resolved) and \DeclarePairedDelimiter' {
+        $mac = Get-LatexMacros '\let\union\cup \let\intsec\intersect \let\intersect\cap \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}'
+        Expand-LatexMacros 'A\intsec B\union C' $mac | Should -Be 'A\cap B\cup C'
+        Expand-LatexMacros '\ceil{x}' $mac | Should -Match ([regex]::Escape('\lceil x \rceil'))
+    }
+    It 'parses the starred \newcommand* form' {
+        (Get-LatexMacros '\newcommand*{\R}{\mathbb{R}}').Contains('R') | Should -BeTrue
+    }
+    It 'SKIPS engine/drawing-internals bodies (pgf/@) so the NAME surfaces addressably, not soup' {
+        (Get-LatexMacros '\newcommand{\pg}{\pgfpicture\pgfpathrectangle\endpgfpicture}').Contains('pg') | Should -BeFalse
+    }
+    It 'KaTeX aliases: \mathds->\mathbb, \Bar->\bar' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}$\mathds{1}$ and $\Bar{R}$.\end{document}' ''
+        $out | Should -Match ([regex]::Escape('\mathbb{1}'))
+        $out | Should -Match ([regex]::Escape('\bar{R}'))
+        $out | Should -Not -Match ([regex]::Escape('\mathds'))
+    }
+}
+
+# =====================================================================================================
+# CUSTOM COUNTERS — \newcounter/\refstepcounter/\Alph + enumerate \item, resolved so lettered proof
+# cases render (Case A/B/C) and \ref to them resolves instead of leaking "?".
+# =====================================================================================================
+Describe 'custom counters — Resolve-CustomCounters' {
+    It 'Format-Counter is case-sensitive (Alph != alph): no "A a" double-emit' {
+        Format-Counter 1 'Alph' | Should -Be 'A'
+        Format-Counter 2 'alph' | Should -Be 'b'
+        Format-Counter 4 'Roman' | Should -Be 'IV'
+    }
+    It 'resolves \Alph{c} to its letter and a \label bound to \refstepcounter to that value' {
+        $tex = @'
+\documentclass{article}\title{T}
+\newcounter{dc}\renewcommand{\thedc}{\Alph{dc}}
+\begin{document}
+\refstepcounter{dc}Case \Alph{dc}\label{c:a} is first.
+\refstepcounter{dc}Case \Alph{dc}\label{c:b} is second.
+Then \ref{c:a} and \ref{c:b} hold.
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $out | Should -Match ([regex]::Escape('Case A'))
+        $out | Should -Match ([regex]::Escape('Case B'))
+        $out | Should -Match ([regex]::Escape('Then A and B hold.'))
+        $out | Should -Not -Match ([regex]::Escape('\Alph'))
+    }
+}
+
+# =====================================================================================================
+# EMISSION HYGIENE (Tier-1) — body-position declarations, amsart front-matter, quotes, table furniture.
+# Invisible to render_check (not math spans) — the class the eyeball audit surfaced.
+# =====================================================================================================
+Describe 'emission hygiene — declarations, front-matter, quotes, tables' {
+    It 'strips body-position \newcommand declarations (which else self-mangle under expansion)' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}Text. \newcommand{\lefti}{\vartriangleleft} More $\lefti$ text.\end{document}' ''
+        $out | Should -Not -Match ([regex]::Escape('\newcommand'))
+        $out | Should -Match ([regex]::Escape('\vartriangleleft'))   # the macro still expands at use sites
+    }
+    It 'strips amsart front-matter (\address / \makeatletter blocks)' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}\address{Dept, Uni}\makeatletter\@namedef{x}{y}\makeatother Body.\end{document}' ''
+        $out | Should -Not -Match ([regex]::Escape('\address'))
+        $out | Should -Not -Match ([regex]::Escape('\makeatletter'))
+        $out | Should -Match 'Body.'
+    }
+    It 'converts a LaTeX single-quote `word'' without leaking a backtick code span' {
+        $out = ConvertFrom-Latex "\documentclass{article}\title{T}\begin{document}We call it ``a `switch' operation.\end{document}" ''
+        $out | Should -Not -Match '`switch'
+    }
+    It 'tables: strips \cmidrule and the \\[Nex] row-spacing that used to break rows open' {
+        $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}\begin{tabular}{ll}\cmidrule{1-2} a & b \\[0.5ex] c & d \end{tabular}\end{document}' ''
+        $out | Should -Not -Match ([regex]::Escape('\cmidrule'))
+        $out | Should -Not -Match ([regex]::Escape('[0.5ex]'))
+    }
+}
+
+# =====================================================================================================
+# ORACLE SMOKE GATE — the strongest guard: a kitchen-sink document must convert to render_check-CLEAN
+# markdown. This is what protects the oracle for the pdf-converter comparison + batch stress testing.
+# =====================================================================================================
+Describe 'oracle smoke gate — a representative document renders KaTeX-clean' {
+    BeforeAll { . "$PSScriptRoot/../src/render-check.ps1" }
+    # discovery-safe skip guard (Test-Path/Get-Command are available at discovery; a dot-sourced function is not)
+    It 'converts encode-first diagrams + nested math + counters to 0 render_check failures' -Skip:(-not ((Get-Command node -CommandType Application -ErrorAction SilentlyContinue) -and (Test-Path "$PSScriptRoot/../tools/render-check/node_modules/katex"))) {
+        $tex = @'
+\documentclass{article}\title{Kitchen Sink}
+\newcommand{\I}{\mathbb{I}}
+\begin{document}
+\section{Diagrams}
+Linear: $\xymatrix{ 0 \ar[r] & K \ar[r]^{\text{id}} & 0 }$.
+A commutative square:
+\begin{tikzcd} A \arrow[r, "f"] & B \\ C \arrow[r, "g"] \arrow[u, "p"] & D \arrow[u, "q"] \end{tikzcd}
+Nested: define $S = \{x : \text{property $P(x)$ holds}\}$.
+Indicator $\mathds{1}_A$ and $\I(1,3)$.
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("smoke-" + [guid]::NewGuid().ToString('N') + '.md')
+        [System.IO.File]::WriteAllText($tmp, $out, [System.Text.UTF8Encoding]::new($false))
+        try {
+            $rc = Test-MathRenders -Path $tmp
+            $rc.failed | Should -Be 0
+        } finally { Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue }
     }
 }
