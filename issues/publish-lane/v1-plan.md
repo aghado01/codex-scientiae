@@ -40,6 +40,25 @@ rung, geometry-free; the semantic tier is designed-for but not built here.
 - Response discipline lifted from the jso guidelines verbatim: targeted probes over dumps, preview
   before expanding, counts/structure before content — the token-economy ethos as tool contract.
 
+## PRIOR ART IN-REPO (2026-07-06 correction — review before building anything)
+
+**`src/jsonl.ps1` IS the jso-jackson graduation, already done**: "lifted and corrected from the
+jso-jackson archaeology and owned fresh here." It carries: `JsonlIndex` + `.jidx` (JSOI format:
+magic+version+lineCount+int64 offsets, LE), **`.sig` provenance stamps (source sha256 + stage +
+count)** — the staleness-guard pattern the library design calls for, already in production — plus
+Write-JsonlStage / Read-JsonlRecord / Get-JsonlSchema / ledger functions, dot-sourced by 8+ modules.
+Encoding + determinism invariants are ENFORCED BY `tests/encoding-invariants.Tests.ps1` (UTF-8-no-BOM,
+SMP round-trip byte-exact, .jidx exact over multibyte, deterministic double-writes, PSObject-wrap
+poison). Build step 1 therefore SHRINKS to: (a) review pass over jsonl.ps1 + friends against the
+hardening ledger below (most items already honored — verify, don't assume), (b) net-new = the UTF-8
+markdown HEADING/SPAN scanner (the .jidx byte-scan retargeted from newlines to headings; extend the
+encoding-invariants tests to cover it), (c) canonical-JSON only if object-level hashing is actually
+needed (file-byte hashing may suffice; jsonl.ps1 already guarantees deterministic serialization).
+
+**Sequencing: the src reorg (issues/src-reorg/reorg-plan.md) runs BEFORE library construction** —
+the library machinery lands into the reorganized layout, and open question 4 (shared-layer home)
+is thereby RESOLVED: wherever the reorg puts the core substrate (core/), jsonl.ps1 included.
+
 ## jso-jackson lift assessment (C:\Users\azrie\.claude\tools\jso-jackson)
 
 **Concept lifts (strong):**
@@ -71,14 +90,15 @@ rung, geometry-free; the semantic tier is designed-for but not built here.
 1. Server names (working: codex-librarian / codex-reader; lector candidate).
 2. Confirm bibliotheca in-repo at codex-scientiae root.
 3. Reader registration pattern for other projects (per-project .mcp.json vs user-level).
-4. Where the shared low-level layer lives: `src/jso/` as jso-jackson v2 (hardened primitives graduate
-   into the repo), keeping the toolshed original intact as-is.
+4. ~~Shared-layer home~~ RESOLVED: decided by the src reorg (runs first); jsonl.ps1 + friends land in
+   the reorg's core substrate, library machinery builds on them there.
 
-## Build order
-1. Shared primitives (`src/jso/`?): canonical json, jsonl IO, UTF-8 span scanner — WITH Pester tests
-   (tests/ convention; the hardening ledger is the test spec).
+## Build order (post-reorg)
+0. **src reorg** (its own plan: issues/src-reorg/reorg-plan.md) — precondition, user-led.
+1. Review pass: jsonl.ps1 + json-touching modules vs the hardening ledger (verify, don't rebuild);
+   net-new = UTF-8 heading/span scanner + encoding-invariants test extension.
 2. Librarian `publish` + toc emitter → publish the 19 green papers → bibliotheca/{mapper, ph-zigzag}.
-3. `audit` + `index_rebuild` (lifecycle floor).
+3. `audit` + `index_rebuild` (lifecycle floor; .sig provenance pattern generalizes).
 4. Reader server (mount, catalogs/catalog/toc/fetch) → register in a second project → validate the
    full flow (catalog → toc → fetch) on a real question from SPCX.
 5. §8 rewrite from the shipped truth.
