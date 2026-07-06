@@ -298,7 +298,7 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
         $figW = $figR - $figL
         if ($figW -le 0) { continue }
 
-        $best = $null; $bestGap = [double]::MaxValue; $bestPos = $null; $bestTxt = ''
+        $best = $null; $bestGap = [double]::MaxValue; $bestPos = $null; $bestTxt = ''; $bestCue = $null
         foreach ($pos in @('below', 'above')) {   # prefer below (figures); only look above (tables) if nothing below
             foreach ($blk in $pageBlocks) {
                 $bl = $blk.bx[0]; $bb = $blk.bx[1]; $br = $blk.bx[2]; $bt = $blk.bx[3]
@@ -312,16 +312,21 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
                 $gap = if ($pos -eq 'below') { $figB - $bt } else { $bb - $figT }
                 if ($gap -lt -2 -or $gap -gt $maxGap -or $gap -ge $bestGap) { continue }
                 $txt = if ($blk.text_preview) { [string]$blk.text_preview } else { '' }
-                if ($txt.Substring(0, [math]::Min(14, $txt.Length)) -match $cueRe) {
+                $mCue = [regex]::Match($txt.Substring(0, [math]::Min(14, $txt.Length)), $cueRe)
+                if ($mCue.Success) {
                     $best = $blk; $bestGap = $gap; $bestPos = $pos; $bestTxt = $txt
+                    $bestCue = $mCue.Groups[1].Value
                 }
             }
             if ($best) { break }
         }
         if ($best) {
+            # cue_word = WHICH cue matched (Figure/Fig vs Table/Tab vs Algorithm/Listing) — the gate's
+            # cue-TYPE split scores figure-cued regions against figure floats and keeps table-cued
+            # regions out of both populations (ledger item A2).
             $fig['caption'] = [ordered]@{
                 block_id = $best.id; bbox = $best.bx; text = $bestTxt
-                cue = $true; position = $bestPos; gap = [math]::Round($bestGap, 1)
+                cue = $true; cue_word = $bestCue; position = $bestPos; gap = [math]::Round($bestGap, 1)
             }
             $Summary.captioned_figures++
         }
@@ -523,9 +528,11 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             $rec = New-FigureRegionRecord $fig.page $above 'caption_split' $BodyArea $Gates
             if (-not $rec) { continue }
             if ($rec.kind -eq 'figure') {
+                $txt0 = [string]($blk.text_preview ?? '')
                 $rec.caption = [ordered]@{
-                    block_id = $blk.id; bbox = $blk.bx; text = [string]($blk.text_preview ?? '')
-                    cue = $true; position = 'below'; gap = [math]::Round($rec.bbox[1] - [double]$blk.bx[3], 1)
+                    block_id = $blk.id; bbox = $blk.bx; text = $txt0
+                    cue = $true; cue_word = [regex]::Match($txt0, $styleRe).Groups[1].Value
+                    position = 'below'; gap = [math]::Round($rec.bbox[1] - [double]$blk.bx[3], 1)
                 }
                 $Summary.captioned_figures++
             }

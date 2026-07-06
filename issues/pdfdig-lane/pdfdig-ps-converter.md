@@ -17,6 +17,15 @@ validated (pdfdig recon + first dig).
 `issues/latex-math-oracle/` (the fidelity net over this lane), `issues/docling-failure-modes/`
 (the catalog of what this lane must not reproduce).
 
+**NORTH STAR (user, 2026-07-06, after working ph-zigzag + mapper end-to-end):** pdfdig converges on the
+SAME finalize / pre-promotion transpilation standards as the LaTeX oracle — the ideal being that
+**pdfdig can replicate an oracle run from a bare PDF**: same deliverable shape, same image register
+(PNG, `images/{slug}/`), same math/structure conventions, same gates (`render_check`+lint), so the
+oracle stops being a separate product and becomes the *reference implementation* pdfdig is measured
+against. The two-population figure gate, crop-vs-render parity, and the conversion-metric harness are
+all instruments OF this convergence. Sourceless PDFs are the reason the goal matters ([[mathdig-is-
+downstream-not-a-pdf-solver]]: no LaTeX lane exists there — pdfdig has to stand in for it).
+
 ---
 
 ## Progress dashboard (2026-07-03) — what's landed, what's next

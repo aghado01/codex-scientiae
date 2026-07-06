@@ -10,6 +10,10 @@
 
   Per paper:
     pig_figures       count of kind=='figure' records in the NEWEST {slug}/.runs/{stamp}/pig/{slug}.figures.jsonl
+                      — captioned regions split by cue TYPE (A2): figure-cued score PRIMARY; table/
+                      algorithm-cued regions are excluded from BOTH populations (they are tables, not
+                      figures and not inline diagrams); classification via caption.cue_word, text-prefix
+                      fallback for older runs
     pig_images        sum of the per-page `images` field (GetImages() count) in {slug}.pdfdig.json
     oracle_figures    LaTeX oracle figure floats + TikZ diagrams (sidecar → staged source → md, in that order)
     delta             pig_figures − oracle_figures
@@ -117,19 +121,35 @@ function Resolve-OracleCount([string] $PaperDir, [string] $Slug) {
     return @{ figures = $null; inline = $null; missing = $null; source = 'none'; run = $null }
 }
 
-# pig figure-region counts (kind=='figure') from a figures.jsonl lane — split by caption presence.
-# @{ all; captioned }. Captioned regions ↔ captioned floats (real figures); uncaptioned ↔ inline diagrams.
+# pig figure-region counts (kind=='figure') from a figures.jsonl lane — split by caption presence AND
+# cue TYPE (ledger item A2): the caption lane's cue words include Table/Algorithm, but the PRIMARY oracle
+# is FIGURE floats only, so a table-cued captioned region must score against neither population (it is a
+# table — real, captioned, just not a figure). Classifies via the record's cue_word when the lane stored
+# it, else from the caption text prefix (older runs); an unclassifiable caption stays in the figure count
+# (legacy behavior, never silently dropped).
+# @{ all; captioned (figure-cued); tables (table-cued); other (algorithm/listing-cued) }.
 function Get-PigFigureCounts([string] $FiguresJsonl) {
     if (-not (Test-Path -LiteralPath $FiguresJsonl)) { return $null }
-    $all = 0; $cap = 0
+    $all = 0; $cap = 0; $tab = 0; $oth = 0
+    $classRe = '^[^\p{L}\d]{0,2}(Figure|Fig|Table|Tab|Algorithm|Listing)\.?\s*\d'
     foreach ($line in [System.IO.File]::ReadLines($FiguresJsonl)) {
         if ([string]::IsNullOrWhiteSpace($line)) { continue }
         $o = $line | ConvertFrom-Json
         if ($o.kind -ne 'figure') { continue }
         $all++
-        if ($o.caption) { $cap++ }
+        if (-not $o.caption) { continue }
+        $w = $null
+        $cw = $o.caption.PSObject.Properties['cue_word']
+        if ($cw -and $cw.Value) { $w = [string]$cw.Value }
+        else {
+            $m = [regex]::Match([string]($o.caption.text ?? ''), $classRe)
+            if ($m.Success) { $w = $m.Groups[1].Value }
+        }
+        if     ($w -in 'Table', 'Tab')           { $tab++ }
+        elseif ($w -in 'Algorithm', 'Listing')   { $oth++ }
+        else                                     { $cap++ }   # Figure/Fig or unclassifiable → figure count
     }
-    return @{ all = $all; captioned = $cap }
+    return @{ all = $all; captioned = $cap; tables = $tab; other = $oth }
 }
 
 # per-page GetImages() count summed over the envelope's pages array (read the key back, don't assume nesting).
@@ -166,15 +186,17 @@ function Compare-FigureCounts {
         $slug = Split-Path -Leaf $paperDir
 
         $pigDirs = @(Get-PigRunDirs $paperDir $slug)
-        $pigCap = $null; $pigAll = $null; $pigImages = $null; $pigRun = $null
+        $pigCap = $null; $pigAll = $null; $pigImages = $null; $pigRun = $null; $pigTables = $null; $pigOther = $null
         if ($pigDirs.Count) {
             $pigDir    = $pigDirs[0]
             $pigRun    = Split-Path -Leaf (Split-Path -Parent (Split-Path -Parent $pigDir))
             $pc        = Get-PigFigureCounts (Join-Path $pigDir "$slug.figures.jsonl")
-            if ($pc) { $pigCap = $pc.captioned; $pigAll = $pc.all }
+            if ($pc) { $pigCap = $pc.captioned; $pigAll = $pc.all; $pigTables = $pc.tables; $pigOther = $pc.other }
             $pigImages = Get-PigImageCount (Join-Path $pigDir "$slug.pdfdig.json")
         }
-        $pigUncap = if ($null -ne $pigAll -and $null -ne $pigCap) { $pigAll - $pigCap } else { $null }
+        # SECONDARY pool = truly UNcaptioned regions: table/algorithm-cued regions leave the captioned
+        # figure count (A2) but must not fall into the inline-diagram pool either — they are neither.
+        $pigUncap = if ($null -ne $pigAll -and $null -ne $pigCap) { $pigAll - $pigCap - $pigTables - $pigOther } else { $null }
 
         $oracle  = Resolve-OracleCount $paperDir $slug
         $oFig    = $oracle.figures        # captioned floats (PRIMARY oracle)
@@ -209,6 +231,7 @@ function Compare-FigureCounts {
             pig_uncaptioned   = $pigUncap
             oracle_inline     = $oInline
             inline_delta      = $inlineDelta
+            pig_tables        = $pigTables
             pig_all           = $pigAll
             pig_images        = $pigImages
             oracle_confidence = $confidence
@@ -255,6 +278,7 @@ function Show-FigureCountReport($Report) {
         @{ h='uncap';   w=5;  a='r'; e={ $_.pig_uncaptioned } },
         @{ h='inline';  w=6;  a='r'; e={ $_.oracle_inline } },
         @{ h='dInl';    w=5;  a='r'; e={ $_.inline_delta } },
+        @{ h='tab';     w=4;  a='r'; e={ $_.pig_tables } },
         @{ h='img';     w=4;  a='r'; e={ $_.pig_images } },
         @{ h='conf';    w=17; a='l'; e={ $_.oracle_confidence } },
         @{ h='src';     w=6;  a='l'; e={ $_.oracle_src } }

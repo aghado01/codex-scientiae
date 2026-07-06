@@ -124,6 +124,24 @@ Describe 'pig lane readers' {
         $c = Get-PigFigureCounts $f
         $c.all       | Should -Be 4    # four kind==figure (the sparse is excluded)
         $c.captioned | Should -Be 2
+        $c.tables    | Should -Be 0
+    }
+
+    It 'classifies captioned regions by cue TYPE (A2): tables leave the figure count' {
+        $f = Join-Path $script:work 'r2.figures.jsonl'
+        [System.IO.File]::WriteAllLines($f, @(
+            '{"id":0,"kind":"figure","caption":{"text":"Figure 1: real","cue_word":"Figure"}}',
+            '{"id":1,"kind":"figure","caption":{"text":"Table 2: rates","cue_word":"Table"}}',
+            '{"id":2,"kind":"figure","caption":{"text":"Table 3: more"}}',
+            '{"id":3,"kind":"figure","caption":{"text":"Algorithm 1: pseudo","cue_word":"Algorithm"}}',
+            '{"id":4,"kind":"figure","caption":{"text":"mystery caption"}}',
+            '{"id":5,"kind":"figure","caption":null}'
+        ), [System.Text.UTF8Encoding]::new($false))
+        $c = Get-PigFigureCounts $f
+        $c.all       | Should -Be 6
+        $c.captioned | Should -Be 2    # Figure 1 + the unclassifiable caption (legacy: stays a figure)
+        $c.tables    | Should -Be 2    # cue_word Table + text-prefix "Table 3" fallback
+        $c.other     | Should -Be 1    # Algorithm
     }
     It 'sums per-page images from the envelope, reading the key back' {
         $e = Join-Path $script:work 'r.pdfdig.json'
