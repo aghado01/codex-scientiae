@@ -80,7 +80,7 @@ function Convert-Tabular {
     param([string]$Spec, [string]$Body)   # basic {tabular} -> GitHub markdown table (data tables; image grids are handled separately)
     $Body = $Body -replace '\\(?:hline|toprule|midrule|bottomrule)\b', '' -replace '\\cline\{[^}]*\}', ''
     $Body = $Body -replace '\\cmidrule\s*(?:\([^)]*\))?\s*\{[^}]*\}', '' -replace '\\(?:morecmidrules|addlinespace)\b(?:\[[^\]]*\])?', ''   # booktabs rules
-    $Body = [regex]::Replace($Body, '\\multicolumn\{\d+\}\{[^}]*\}\{([^{}]*)\}', '$1')
+    $Body = [regex]::Replace($Body, '\\multicolumn\{\d+\}\{[^}]*\}\{((?:[^{}]|\{[^{}]*\})*)\}', '$1')   # content may nest one brace level (\textbf{..}); spec braces can carry | — both tolerated
     # a row break \\ may carry an optional spacing arg (\\[0.5ex]) — strip it so it does not leak as a cell
     $Body = [regex]::Replace($Body, '\\\\\s*\[[^\]]*\]', '\\')
     $s = $Spec -replace '\|', '' -replace '[@<>]\{[^}]*\}', '' -replace '[pmb]\{[^}]*\}', 'X'
@@ -90,7 +90,7 @@ function Convert-Tabular {
     if (-not $rows.Count) { return '' }
     $out = New-Object System.Collections.Generic.List[string]
     for ($i = 0; $i -lt $rows.Count; $i++) {
-        $cells = @([regex]::Split($rows[$i], '(?<!\\)&') | ForEach-Object { $_.Trim() -replace '\\&', '&' })
+        $cells = @([regex]::Split($rows[$i], '(?<!\\)&') | ForEach-Object { ($_ -replace '\s+', ' ').Trim() -replace '\\&', '&' })   # md cells cannot contain newlines — an embedded blank line breaks the whole table row
         while ($cells.Count -lt $ncol) { $cells += '' }
         $out.Add('| ' + (($cells[0..($ncol - 1)]) -join ' | ') + ' |')
         if ($i -eq 0) { $out.Add('| ' + ((1..$ncol | ForEach-Object { '---' }) -join ' | ') + ' |') }
@@ -274,7 +274,7 @@ function Get-LatexMacros {
     # \vect — a PS [ordered]@{} is case-INSENSITIVE, so the second definition silently overwrites the
     # first and only the stored spelling ever expands (found via 2111.15058v3: 22 \vect left literal).
     $macros = [System.Collections.Specialized.OrderedDictionary]::new([System.StringComparer]::Ordinal)
-    $rx = [regex]'\\(?:newcommand|renewcommand|providecommand)\s*\{?\s*\\([A-Za-z]+|.)\s*\}?\s*(?:\[(\d+)\])?\s*(?:\[([^\]]*)\])?\s*\{'
+    $rx = [regex]'\\(?:newcommand|renewcommand|providecommand)\*?\s*\{?\s*\\([A-Za-z]+|.)\s*\}?\s*(?:\[(\d+)\])?\s*(?:\[([^\]]*)\])?\s*\{'   # \*? : the starred short-arg form is common
     foreach ($m in $rx.Matches($Tex)) {
         $name = $m.Groups[1].Value
         $nargs = if ($m.Groups[2].Success) { [int]$m.Groups[2].Value } else { 0 }
@@ -283,6 +283,10 @@ function Get-LatexMacros {
         # bodies written with %-line-continuations carry the % into the expansion, where it comments out
         # the REST OF THE MATH SPAN (swallowing closing braces). TeX eats %+newline — do the same.
         if ($null -ne $body) { $body = [regex]::Replace($body, '(?<!\\)%[^\r\n]*\r?\n?', '') }
+        # bodies built on TeX-engine/drawing internals (pgf pictures, \mathpalette, @-names) can never
+        # render in KaTeX — expanding them sprays internals into the output. SKIP the def: the macro NAME
+        # then surfaces intact — addressable by the compat table or a per-paper patch — instead of soup.
+        if ($null -ne $body -and $body -match '\\pgf[a-z]|\\mathpalette(?![A-Za-z])|\\[A-Za-z]+@[A-Za-z]') { continue }
         if ($null -ne $body) { $macros[$name] = [pscustomobject]@{ nargs = $nargs; opt = $opt; body = $body } }
     }
     foreach ($m in ([regex]'\\DeclareMathOperator\*?\s*\{?\s*\\([A-Za-z]+)\s*\}?\s*\{').Matches($Tex)) {   # braces around the operator name are optional
@@ -294,6 +298,11 @@ function Get-LatexMacros {
     # expansion fixed-point resolves chains (\let\intsec\intersect -> \intersect -> \cap).
     foreach ($m in ([regex]'\\let\s*\\([A-Za-z]+)\s*=?\s*\\([A-Za-z]+)').Matches($Tex)) {
         $macros[$m.Groups[1].Value] = [pscustomobject]@{ nargs = 0; opt = $null; body = '\' + $m.Groups[2].Value }
+    }
+    # \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil} (mathtools): a 1-arg macro wrapping in its fences.
+    # KaTeX has no \DeclarePairedDelimiter, so realize it as a plain \newcommand-equivalent.
+    foreach ($m in ([regex]'\\DeclarePairedDelimiter\*?\s*\\([A-Za-z]+)\s*\{([^{}]*)\}\s*\{([^{}]*)\}').Matches($Tex)) {
+        $macros[$m.Groups[1].Value] = [pscustomobject]@{ nargs = 1; opt = $null; body = $m.Groups[2].Value + ' #1 ' + $m.Groups[3].Value }
     }
     return $macros
 }
@@ -804,6 +813,33 @@ function Store-Math {
     # map it to \text{prose} — which renders and keeps any nested $..$. (\mbox/\hbox already became \text
     # pre-protection; this catches the two-arg \parbox, whose width group must be dropped, only inside math.)
     $Content = [regex]::Replace($Content, '\\parbox\s*(?:\[[^\]]*\])?\s*\{[^{}]*\}', '\text')
+    # \raisebox{len}[..][..]{X} / \scalebox{f}{X} in MATH position: box content is TEXT mode by TeX
+    # semantics. REGISTER RULE (positional, like \ensuremath — content never changes register silently):
+    # a payload that is itself \(y\) or $y$ was math all along — the box was pure presentation — so it
+    # collapses back to {y} in the enclosing math register; any other payload becomes \text{X}, the
+    # legal KaTeX bridge (whose nested $..$ the normalization below rewrites to \(..\)). Never drop the
+    # wrapper alone: that strands text-mode delimiters inside math.
+    while ($true) {
+        $bm = [regex]::Match($Content, '\\(?:raisebox|scalebox)\s*\{')
+        if (-not $bm.Success) { break }
+        $o1 = $bm.Index + $bm.Length - 1
+        $e1 = Get-BraceGroupEnd $Content $o1
+        if ($e1 -lt 0) { break }
+        $cur = $e1
+        while ($cur -lt $Content.Length -and $Content[$cur] -eq '[') { $cb = $Content.IndexOf(']', $cur); if ($cb -lt 0) { break }; $cur = $cb + 1 }
+        if ($cur -ge $Content.Length -or $Content[$cur] -ne '{') {
+            $Content = $Content.Substring(0, $bm.Index) + $Content.Substring($e1)   # bare wrapper, no payload group: drop it
+            continue
+        }
+        $e2 = Get-BraceGroupEnd $Content $cur
+        if ($e2 -lt 0) { break }
+        $inner = $Content.Substring($cur + 1, $e2 - $cur - 2).Trim()
+        $repl =
+            if ($inner -match '^\\\((.*)\\\)$') { '{' + $matches[1].Trim() + '}' }
+            elseif ($inner -match '^\$(.*)\$$') { '{' + $matches[1].Trim() + '}' }
+            else { '\text{' + $inner + '}' }
+        $Content = $Content.Substring(0, $bm.Index) + $repl + $Content.Substring($e2)
+    }
     # \ensuremath in MATH position is a no-op wrapper BY DEFINITION — unwrap it, KEEPING the brace group
     # ({ab}^c ≠ ab^c). The content never leaves the math register: this enclosing span already owns it.
     # (The PROSE position is the opposite move — promotion to an inline span — handled post-protection.)
@@ -842,7 +878,9 @@ function Protect-LatexMath {
     $Text = [regex]::Replace($Text, "\\begin\{gather\*?\}(.*?)\\end\{gather\*?\}", { param($m) Store-Math ("\begin{gathered}`n" + $m.Groups[1].Value.Trim() + "`n\end{gathered}") $true }, $SL)
     $Text = [regex]::Replace($Text, "\\begin\{(equation|displaymath|math)\*?\}(.*?)\\end\{\1\*?\}", { param($m) Store-Math ($m.Groups[2].Value.Trim()) $true }, $SL)
     $Text = [regex]::Replace($Text, '\\\[(.*?)\\\]', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $true }, $SL)
-    $Text = [regex]::Replace($Text, '\\\((.*?)\\\)', { param($m) Store-Math ($m.Groups[1].Value.Trim()) $false }, $SL)
+    # \(..\) is handled by the SAME sequential scanner as $..$ — a separate regex pass here would capture
+    # a \(y\) sitting INSIDE a not-yet-scanned $..$ span (e.g. a \raisebox payload) and placeholder it away
+    # before Store-Math can resolve its register positionally. One pass, TeX-faithful, in reading order.
     $Text = Protect-InlineDollarSpans $Text
     return $Text
 }
@@ -915,7 +953,21 @@ function Protect-InlineDollarSpans {
     $i = 0; $n = $Text.Length
     while ($i -lt $n) {
         $c = $Text[$i]
-        if ($c -eq '\') {   # escaped char (incl. \$ \{ \}): copy both, never interpret
+        if ($c -eq '\') {
+            # \( opens an inline span exactly like $ — handled HERE (reading order), not by a regex pass,
+            # so a \(y\) inside a $-span rides along as span content for Store-Math's positional rules.
+            if ($i + 1 -lt $n -and $Text[$i + 1] -eq '(') {
+                $j = $i + 2; $close = -1
+                while ($j -lt $n - 1) {
+                    if ($Text[$j] -eq '\') { if ($Text[$j + 1] -eq ')') { $close = $j; break }; $j += 2; continue }
+                    $j++
+                }
+                if ($close -lt 0) { [void]$sb.Append('\('); $i += 2; continue }   # unclosed: copy verbatim
+                [void]$sb.Append((Store-Math ($Text.Substring($i + 2, $close - $i - 2).Trim()) $false))
+                $i = $close + 2
+                continue
+            }
+            # any other escaped char (incl. \$ \{ \}): copy both, never interpret
             [void]$sb.Append($c); if ($i + 1 -lt $n) { [void]$sb.Append($Text[$i + 1]) }
             $i += 2; continue
         }
@@ -1253,7 +1305,7 @@ function ConvertFrom-Latex {
     param([string]$Tex, [string]$Bbl)
     $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
     $Tex = [regex]::Replace($Tex, '(?m)^[ \t]*(?<!\\)%.*\r?\n', '')            # whole-line comments: drop the line so no spurious blank line (which splits a paragraph) survives
-    $Tex = [regex]::Replace($Tex, '(?<!\\)%.*$', '')                           # trailing comments: keep the code before %
+    $Tex = [regex]::Replace($Tex, '(?m)(?<!\\)%.*$', '')                       # trailing comments: keep code before % — (?m) is LOAD-BEARING (without it, .*$ only strips the LAST line, leaking mid-doc comment text — e.g. a commented `$$` mispairs display math and swallows prose)
     $macros = Get-LatexMacros $Tex
     # papers that INLINE a dashed-arrows snippet define \xdash… themselves via \mathpalette/@-internals
     # KaTeX can never render — drop those DEFS so the names stay unexpanded and the compat table below
@@ -1329,7 +1381,9 @@ function ConvertFrom-Latex {
     # display-math span (real math, the goal register) instead of ever reaching the store. Authors often
     # wrap tikzcd in \[..\] themselves — strip that wrapper first so the emission never nests delimiters.
     $body = [regex]::Replace($body, '(?s)\\\[\s*(\\begin\{tikzcd\}.*?\\end\{tikzcd\})\s*\\\]', '$1')
-    $body = [regex]::Replace($body, '(?s)\\begin\{(tikzpicture|tikzcd)\}.*?\\end\{\1\}', {
+    # core-LaTeX `picture` envs (\put/\line vector overlays) are drawn figures like tikzpicture — same
+    # store, same tectonic ladder; leaked raw they spray \put coordinates through the prose.
+    $body = [regex]::Replace($body, '(?s)\\begin\{(tikzpicture|tikzcd|picture)\}.*?\\end\{\1\}', {
             param($m)
             if ($m.Groups[1].Value -eq 'tikzcd') {
                 $enc = Convert-TikzcdDiagram $m.Value
@@ -1379,6 +1433,14 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\lbarrowspace(?![a-zA-Z])', '\,'
     $body = $body -replace '\\nonscript(?![a-zA-Z])', ''
     $body = $body -replace '\\(?:linebreak|nolinebreak)(?:\[[0-9]\])?(?![a-zA-Z])', ''   # break hints: presentation only, valid in math where KaTeX lacks them
+    $body = $body -replace '\\mathds(?![a-zA-Z])', '\mathbb'                    # dsfont: \mathds{1} indicator -> \mathbb{1} (KaTeX has \mathbb, not \mathds)
+    $body = $body -replace '\\colim(?![a-zA-Z])', '\operatorname*{colim}'      # standard operator papers hand-roll via \mathpalette under-arrows (body dropped by the internals guard)
+    $body = $body -replace '\\begin\{(aligned|alignedat|gathered|cases)\}\s*\[[^\]]*\]', '\begin{$1}'   # KaTeX rejects the [t]/[b] position arg these amsmath envs allow
+    # \scaleobj{f}{x} (scalerel) is a MATH-MODE scaling wrapper: dropping the factor leaves {x} still in
+    # the math register — presentation gone, content untouched. (\raisebox/\scalebox are TEXT-mode boxes
+    # and are handled POSITIONALLY in Store-Math — a body-wide strip here would strand their \(..\)
+    # delimiters inside math, a register violation.)
+    $body = $body -replace '\\scaleobj\s*\{[^{}]*\}', ''
 
     # accents/single-arg ops written without braces around a (now-expanded) macro arg break KaTeX
     # (e.g. source \underline\IK -> \underline \mathbb{K}); re-brace the argument. \s* not \s+: authors
@@ -1425,6 +1487,15 @@ function ConvertFrom-Latex {
             param($m) $tm = [regex]::Match($m.Groups[1].Value, 'title\s*=\s*\{?(.+?)\}?\s*$')
             if ($tm.Success) { "`n`n**$($tm.Groups[1].Value.Trim())**`n`n" } else { "`n`n" } })
     $body = $body -replace '\\end\{tcolorbox\}', "`n`n"
+    # …and author-DECLARED tcolorbox envs (\newtcolorbox{mybox}…): same treatment per declared name —
+    # \begin{mybox}[opts]{Title} surfaces the title bold, the wrapper never leaks. (A tcb label= ref
+    # stays "?": the auto counter is section-scoped and we never fabricate a scheme we can't read.)
+    foreach ($tcb in [regex]::Matches($pre, '\\(?:newtcolorbox|DeclareTColorBox)\s*(?:\[[^\]]*\])?\s*\{([A-Za-z]+)\}')) {
+        $bn = $tcb.Groups[1].Value
+        $body = [regex]::Replace($body, '\\begin\{' + [regex]::Escape($bn) + '\}(?:\[[^\]]*\])?(?:\{([^{}]*)\})?', {
+                param($m) if ($m.Groups[1].Success -and $m.Groups[1].Value.Trim()) { "`n`n**$($m.Groups[1].Value.Trim()).**`n`n" } else { "`n`n" } })
+        $body = $body -replace ('\\end\{' + [regex]::Escape($bn) + '\}'), "`n`n"
+    }
 
     $body = Replace-BracedCommand $body '\abstract' { param($a) "`n## Abstract`n`n$a`n" }
     $body = Replace-BracedCommand $body '\footnote' { param($a) " ($($a.Trim()))" }
@@ -1457,7 +1528,11 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\begin\{(?:itemize|enumerate|description)\*?\}', "`n`n" -replace '\\end\{(?:itemize|enumerate|description)\*?\}', "`n`n"   # blank lines around lists (MD032); *-variant star is INSIDE the braces
     # description-list \item[term]: surface the bracketed term as a bold lead-in (else it leaks as literal
     # "[term]:"); plain \item -> bullet. The [term] runs before the plain rule so it wins.
-    $body = [regex]::Replace($body, '\\item\s*\[([^\]]*)\]\s*:?\s*', { param($m) "`n- **" + ($m.Groups[1].Value.Trim() -replace ':$', '') + ":** " })   # absorb a trailing source ':' so the term is not double-colonned
+    $body = [regex]::Replace($body, '\\item\s*\[([^\]]*)\]\s*:?\s*', { param($m)
+            $term = $m.Groups[1].Value.Trim() -replace ':$', ''
+            $bare = $term -replace '\\[A-Za-z]+', '' -replace '[{}*]', ''   # strip formatting to see the term's substance
+            if ($bare -match '^\d+[.)]?$') { "`n" + ($bare -replace '[.)]$', '') + '. ' }   # numeric term: a real ordered item, not a bold label
+            else { "`n- **" + $term + ':** ' } })   # absorb a trailing source ':' so the term is not double-colonned
     $body = $body -replace '\\item\s*', "`n- "
     # LaTeX quotes -> straight quotes, BEFORE \texttt becomes backticks (a lone ` is a left-single-quote
     # here, not a code fence — leaving it turns `word' into a spurious code span). Doubles first.
@@ -1465,8 +1540,8 @@ function ConvertFrom-Latex {
     $body = $body -replace '`', "'"
     $body = Convert-BraceToggles $body                                         # {\em ..}/{\bf ..} switch form -> * / ** (brace-aware)
     $body = Unwrap-Boxes $body                                                 # \fbox/\parbox/\centerline -> content (drop frame + width/pos args)
-    $body = [regex]::Replace($body, '\\(?:textbf|textsc)\{([^{}]*)\}', { param($m) '**' + $m.Groups[1].Value.Trim() + '**' })   # trim: no space inside emphasis (MD037)
-    $body = [regex]::Replace($body, '\\(?:emph|textit|textsl)\{([^{}]*)\}', { param($m) '*' + $m.Groups[1].Value.Trim() + '*' })
+    $body = [regex]::Replace($body, '\\(?:textbf|textsc)\{([^{}]*)\}', { param($m) '**' + ($m.Groups[1].Value.Trim() -replace '\*', '\*') + '**' })   # trim (MD037); escape literal * (author's \emph{Density* corruptions} must not unbalance md emphasis)
+    $body = [regex]::Replace($body, '\\(?:emph|textit|textsl)\{([^{}]*)\}', { param($m) '*' + ($m.Groups[1].Value.Trim() -replace '\*', '\*') + '*' })
     $body = [regex]::Replace($body, '\\texttt\{([^{}]*)\}', { param($m) '`' + $m.Groups[1].Value.Trim() + '`' })   # trim: no space inside code spans (MD038)
     $body = $body -replace '\\(?:textrm|textnormal|textsf|textup|textmd|mbox|text|underline)\{([^{}]*)\}', '$1'
     # counter machinery: side-effect commands (\stepcounter/\refstepcounter/\setcounter/…) produce NO
@@ -1925,7 +2000,8 @@ function Invoke-ArxivLatexToMarkdown {
     #    markdown scanner (render_check's extractor included). True display fences sit ALONE on their
     #    line, so any mid-line unescaped `$$` is span adjacency: restore the boundary with a space.
     $lines = [System.Collections.Generic.List[string]]::new()
-    $inFence = $false; $blankRun = 0
+    $inFence = $false; $blankRun = 0; $lastH = 0
+    $olN = 0; $bulletRun = [System.Collections.Generic.List[int]]::new()   # nested-list repair state (see the ol-resume branch)
     foreach ($ln in ($md -split "`n")) {
         if ($ln -match '^```') { $inFence = -not $inFence; $blankRun = 0; $lines.Add($ln); continue }
         if ($inFence) { $lines.Add($ln); continue }
@@ -1933,8 +2009,12 @@ function Invoke-ArxivLatexToMarkdown {
         if ($ln -eq '') { $blankRun++; if ($blankRun -gt 1) { continue }; $lines.Add(''); continue }
         $blankRun = 0
         if ($ln -match '^(#{1,6})\s+(.*\S)\s*$') {
-            # headings: strip trailing sentence punctuation (MD026) — authors write \subsection{Acks.} etc.
-            $lines.Add($matches[1] + ' ' + ($matches[2] -replace '[.:;,]+$', ''))
+            # headings: strip trailing sentence punctuation (MD026); CLAMP level jumps deeper than one tier
+            # (§5 — an author's \subsubsection* directly under a \section misstates nesting as ##→####).
+            $lvl = $matches[1].Length
+            if ($lastH -gt 0 -and $lvl -gt $lastH + 1) { $lvl = $lastH + 1 }
+            $lastH = $lvl
+            $lines.Add(('#' * $lvl) + ' ' + ($matches[2] -replace '[.:;,]+$', ''))
             continue
         }
         if ($ln -ne '$$') {
@@ -1945,6 +2025,31 @@ function Invoke-ArxivLatexToMarkdown {
                     "<$u>$p" })
             # bare e-mail -> autolink (MD034); skip if already inside <>/()/[] or a mailto:
             $ln = [regex]::Replace($ln, '(?<![<(\[:/\w.])([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})', '<$1>')
+            # a resolved \cref number landing at line start ("14.  Alternatively…") reads as an ordered-list
+            # marker to markdown. Real items follow a blank line or another item IN SEQUENCE (n+1, or 1 for
+            # all-ones style); mid-paragraph, or mid-list out of sequence, = accident — escape it to prose.
+            if ($ln -match '^(\d+)\. ' -and $lines.Count -gt 0) {
+                $curN = [int]$matches[1]
+                $prevLn = $lines[$lines.Count - 1]
+                $escape = $false
+                if ($prevLn -ne '' -and $prevLn -notmatch '^(\d+\. |- |\* )') { $escape = $true }                       # mid-paragraph
+                elseif ($prevLn -match '^(\d+)\. ' -and $curN -ne ([int]$matches[1] + 1) -and $curN -ne 1) { $escape = $true }   # mid-list, out of sequence
+                if ($escape) { $ln = $ln -replace '^(\d+)\. ', '$1\. ' }
+                else {
+                    # NESTED-LIST REPAIR: dedent/reflow flattens LaTeX nesting, so an itemize inside an
+                    # enumerate emits flat bullets that SPLIT the ordered list. When item N+1 resumes after
+                    # a bullet run, those bullets belong UNDER item N — retro-indent them (md continuation).
+                    if ($curN -eq $olN + 1 -and $bulletRun.Count -gt 0) {
+                        foreach ($bi in $bulletRun) { $lines[$bi] = '    ' + $lines[$bi] }
+                    }
+                    $olN = $curN; $bulletRun.Clear()
+                }
+            }
+            elseif ($ln -match '^- ' -and $olN -gt 0) { $bulletRun.Add($lines.Count) }   # candidate nested bullets (index of the line about to be added)
+            elseif ($ln -ne '' -and $ln -notmatch '^(\d+[.\\]|- |\* )' -and $olN -gt 0 -and $bulletRun.Count -eq 0) { $olN = 0 }   # prose after the list closes it (bullets pending stay: item text continuation)
+            # heading-level clamp (§5): a jump deeper than one level (## -> ####, author skipping a tier)
+            # misstates nesting — demote to parent+1. (Heading lines are handled in their own branch above,
+            # so track the last heading seen from there.)
         }
         $lines.Add($ln)
     }
