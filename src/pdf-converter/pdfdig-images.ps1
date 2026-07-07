@@ -5,8 +5,8 @@
 
 .DESCRIPTION
   A CONSUMER of {slug}.figures.jsonl: for every kind=figure region it renders the page region to a
-  PNG via the vendored MuPDF (WASM) tool (tools/pdf-raster/render.mjs) — one batched node call per
-  paper. This rasterizes whatever is drawn in the region, so it covers vector (TikZ) figures AND
+  PNG via the SHARED raster shim (src/pdf-raster.ps1 -> tools/pdf-raster/render.mjs, the same MuPDF
+  mechanism the LaTeX oracle lane uses) — one batched call per paper. This rasterizes whatever is drawn in the region, so it covers vector (TikZ) figures AND
   embedded bitmaps uniformly, and never emits a sub-PDF/SVG.
 
   Outputs follow the pig-lane run convention (mirrors .runs/{stamp}/tex/): everything lands under
@@ -18,6 +18,8 @@
   Every figure is accounted for in the manifest (status ok|failed with a reason) — nothing is
   silently dropped.
 #>
+
+. "$PSScriptRoot/../pdf-raster.ps1"   # the shared PDF->PNG shim (Invoke-PdfRaster / Test-PdfRasterAvailable)
 
 function Export-PdfFigureImages {
     [CmdletBinding()]
@@ -36,8 +38,7 @@ function Export-PdfFigureImages {
     if (-not (Test-Path $FiguresJsonl)) { throw "figures lane not found: $FiguresJsonl (run ConvertTo-FigureRegions first)" }
     if (-not $RunStamp) { $RunStamp = Get-Date -Format 'yyyyMMdd_HHmmss' }
 
-    $renderTool = Join-Path $PSScriptRoot '../../tools/pdf-raster/render.mjs'
-    if (-not (Test-Path $renderTool)) { throw "render tool not found: $renderTool" }
+    if (-not (Test-PdfRasterAvailable)) { throw 'pdf-raster unavailable (node + tools/pdf-raster/node_modules/mupdf required)' }
 
     $pigDir = Join-Path $paperDir ".runs/$RunStamp/pig"
     $imgDir = Join-Path $pigDir 'images'
@@ -60,7 +61,9 @@ function Export-PdfFigureImages {
         }
     }
 
-    # Render jobs: mupdf page is 0-based, figures.jsonl page is 1-based (PdfPig).
+    # Render jobs: mupdf page is 0-based, figures.jsonl page is 1-based (PdfPig). Rasterization rides
+    # the SHARED shim (src/pdf-raster.ps1, Invoke-PdfRaster) — the one MuPDF mechanism the LaTeX oracle
+    # lane also uses (PNG-terminal register, issues/latex-oracle-images.md).
     $jobs = [System.Collections.Generic.List[object]]::new()
     for ($i = 0; $i -lt $figs.Count; $i++) {
         $bb = [double[]]@($figs[$i].bbox)
@@ -75,22 +78,15 @@ function Export-PdfFigureImages {
                 if ($x[3] -gt $bb[3]) { $bb[3] = [double]$x[3] }
             }
         }
-        $jobs.Add([ordered]@{ page = [int]$figs[$i].page - 1; bbox = $bb; out = (Join-Path $imgDir "imageFile$i.png") })
+        $jobs.Add(@{ pdf = $PdfPath; page = [int]$figs[$i].page - 1; bbox = $bb; out = (Join-Path $imgDir "imageFile$i.png") })
     }
 
     $summary  = [ordered]@{ figures = $figs.Count; rendered = 0; failed = 0; dpi = $Dpi; run = $pigDir }
     $manifest = [System.Collections.Generic.List[object]]::new()
 
     if ($figs.Count -gt 0) {
-        $jobsFile = Join-Path $pigDir '_render-jobs.json'
-        [System.IO.File]::WriteAllText($jobsFile, ($jobs | ConvertTo-Json -Depth 5 -AsArray), [System.Text.UTF8Encoding]::new($false))
-        $errFile = [IO.Path]::GetTempFileName()
-        $resJson = & node $renderTool --pdf $PdfPath --jobs $jobsFile --dpi $Dpi 2>$errFile
-        Remove-Item $jobsFile -Force -ErrorAction SilentlyContinue
-        if (-not $resJson) { $e = (Get-Content $errFile -Raw); Remove-Item $errFile -Force -EA SilentlyContinue; throw "render tool produced no output: $e" }
-        Remove-Item $errFile -Force -ErrorAction SilentlyContinue
-
-        $byOut = @{}; foreach ($r in ($resJson | ConvertFrom-Json)) { $byOut[$r.out] = $r }
+        $res = Invoke-PdfRaster -Jobs $jobs.ToArray() -Dpi $Dpi -WorkDir $pigDir
+        $byOut = @{}; foreach ($r in @($res)) { $byOut[$r.out] = $r }
         for ($i = 0; $i -lt $figs.Count; $i++) {
             $f = $figs[$i]; $r = $byOut[$jobs[$i].out]
             $ok = [bool]($r -and $r.ok)

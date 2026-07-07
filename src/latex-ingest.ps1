@@ -22,6 +22,7 @@
 . "$PSScriptRoot/tikz-render.ps1"   # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/pdf-raster.ps1"    # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
+. "$PSScriptRoot/md-register.ps1"   # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -1513,9 +1514,9 @@ function ConvertFrom-Latex {
     $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
     $body = [regex]::Replace($body, '\\(?:sub)?paragraph\*?\s*\{([^{}]*)\}', { param($m) '**' + $m.Groups[1].Value.Trim() + '** ' })   # trim: no space inside emphasis (MD037)
     $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"   # escape `$1: double-quoted, PS would else interpolate it away
-    $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m) $c = $m.Groups[1].Value.Trim()
-            if ($c -and $c -notmatch '[.!?:]$') { $c += '.' }   # captions are sentences: terminal punctuation (also disarms MD036 emphasis-as-heading)
-            if ($c) { "`n`n*$c*`n" } else { '' } })   # trim: no space inside emphasis (MD037)
+    $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m)
+            $cap = Format-MdFigureCaption $m.Groups[1].Value   # shared register: italic sentence, terminal punctuation (MD036/MD037)
+            if ($cap) { "`n`n$cap`n" } else { '' } })
     # acknowledgements env: the journal class renders an "Acknowledgements" heading — surface it faithfully as
     # a section (content KEPT). This is a FAITHFUL transcription: editorial drops (acks, ref sidecar split, …)
     # are the PROMOTION phase's job, never the converter's.
@@ -1705,13 +1706,13 @@ function Copy-LatexFigures {
                 $hit = @(Get-ChildItem -Path $WorkDir -Recurse -File -Filter $pattern -ErrorAction SilentlyContinue |
                          Sort-Object { $preferExt.IndexOf($_.Extension.ToLowerInvariant()) -lt 0 }) | Select-Object -First 1   # prefer a raster sibling over the .pdf twin
             }
-            if (-not $hit) { $state.missing++; return "*[figure: $leaf — source file not found]*" }
+            if (-not $hit) { $state.missing++; return (Format-MdFigureMarker 'figure' $leaf 'source file not found') }
             if (-not (Test-Path -LiteralPath $destRoot)) { New-Item -ItemType Directory -Force -Path $destRoot | Out-Null }
             $ext = $hit.Extension.ToLowerInvariant()
             if ($rasterExt -contains $ext) {
                 Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
                 $state.copied++; $state.png++
-                return "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($hit.Name))]($Slug/$($hit.Name))"
+                return (Format-MdFigureImage 'figure' ([System.IO.Path]::GetFileNameWithoutExtension($hit.Name)) "$Slug/$($hit.Name)")
             }
             if ($ext -eq '.pdf') {
                 # PDF -> PNG: defer to a batched MuPDF call. Emit a placeholder now (unique per asset via the
@@ -1726,7 +1727,7 @@ function Copy-LatexFigures {
                 # in most viewers). Not yet terminal PNG; rare as an \includegraphics asset. Flagged in counts.
                 Copy-Item -LiteralPath $hit.FullName -Destination (Join-Path $destRoot $hit.Name) -Force
                 $state.copied++
-                return "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($hit.Name))]($Slug/$($hit.Name))"
+                return (Format-MdFigureImage 'figure' ([System.IO.Path]::GetFileNameWithoutExtension($hit.Name)) "$Slug/$($hit.Name)")
             }
             if ($ext -eq '.eps' -or $ext -eq '.ps') {
                 # EPS/PS: no MuPDF handler — defer to a tectonic \includegraphics wrap (-> PDF -> PNG). Emit a
@@ -1738,7 +1739,7 @@ function Copy-LatexFigures {
             }
             # other non-raster sources: no conversion path — flag rather than emit a broken image tag.
             $state.missing++
-            return "*[figure ($($ext.TrimStart('.'))): $leaf — vector source, PNG pending]*"
+            return (Format-MdFigureMarker "figure ($($ext.TrimStart('.')))" $leaf 'vector source, PNG pending')
         })
 
     # batch-rasterize the PDF assets to PNG in ONE MuPDF invocation, then resolve their placeholders.
@@ -1752,8 +1753,8 @@ function Copy-LatexFigures {
             } catch { Write-Verbose "pdf-raster failed: $($_.Exception.Message)" }
         }
         foreach ($j in $pdfJobs) {
-            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($j.leaf))]($($j.rel))") }
-            else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, "*[figure (pdf): $($j.leaf) — PNG conversion pending]*") }
+            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, (Format-MdFigureImage 'figure' ([System.IO.Path]::GetFileNameWithoutExtension($j.leaf)) $j.rel)) }
+            else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, (Format-MdFigureMarker 'figure (pdf)' $j.leaf 'PNG conversion pending')) }
         }
     }
 
@@ -1768,8 +1769,8 @@ function Copy-LatexFigures {
             } catch { Write-Verbose "tex-graphic failed: $($_.Exception.Message)" }
         }
         foreach ($j in $epsJobs) {
-            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, "![figure: $([System.IO.Path]::GetFileNameWithoutExtension($j.leaf))]($($j.rel))") }
-            else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, "*[figure ($($j.ext)): $($j.leaf) — PNG conversion pending]*") }
+            if ($ok[$j.out]) { $state.copied++; $state.png++; $Markdown = $Markdown.Replace($j.ph, (Format-MdFigureImage 'figure' ([System.IO.Path]::GetFileNameWithoutExtension($j.leaf)) $j.rel)) }
+            else { $state.missing++; $Markdown = $Markdown.Replace($j.ph, (Format-MdFigureMarker "figure ($($j.ext))" $j.leaf 'PNG conversion pending')) }
         }
     }
     return [pscustomobject]@{ markdown = $Markdown; copied = $state.copied; png = $state.png; missing = $state.missing }
