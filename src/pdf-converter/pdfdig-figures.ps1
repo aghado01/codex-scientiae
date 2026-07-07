@@ -604,6 +604,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
         # split at each interior caption, topmost first: the part above a caption is the float it labels.
         # V_letters membership follows the cut the same way (block center vs the cut line).
         $subs = [System.Collections.Generic.List[object]]::new()
+        $bottomCap = $null   # A2b: a below-empty (bottom-band) interior caption found before any weld cut
         $remaining = $members
         $remLetters = [System.Collections.Generic.List[int]]::new()
         foreach ($lb in @($fig.letter_block_ids)) { if ($null -ne $lb) { $remLetters.Add([int]$lb) } }
@@ -614,7 +615,17 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             foreach ($mm in $remaining) {
                 if ((($mm.bbox[1] + $mm.bbox[3]) / 2.0) -gt $mid) { $above.Add($mm) } else { $below.Add($mm) }
             }
-            if ($above.Count -eq 0 -or $below.Count -eq 0) { continue }   # degenerate cut — this block splits nothing
+            if ($above.Count -eq 0 -or $below.Count -eq 0) {
+                # BOTTOM-BAND CAPTION (A2b): below empty = every remaining member's CENTER sits above this
+                # caption, so it is not a weld to cut but a below-caption the region bbox merely OVERSHOOTS
+                # — the ink floors above the caption top while clip paths / an oversized xobject placement
+                # reach past it (1701 Fig 7: 100 plot members floor at 518 while 6 clip rects span to 399;
+                # Fig 15: one oversized bitmap). Remember the TOPMOST such caption found BEFORE any real cut
+                # (closest under the ink, whole-region) for the attach-plus-trim in the subs-empty fallback.
+                # 'above empty' (all ink below the caption) stays a plain skip — a mislabeled above-caption.
+                if ($below.Count -eq 0 -and $above.Count -gt 0 -and $subs.Count -eq 0 -and $null -eq $bottomCap) { $bottomCap = $blk }
+                continue   # degenerate cut — this block splits nothing
+            }
             $aboveLetters = [System.Collections.Generic.List[int]]::new()
             $belowLetters = [System.Collections.Generic.List[int]]::new()
             foreach ($lb in $remLetters) {
@@ -637,7 +648,39 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             $remaining = $below
             $remLetters = $belowLetters
         }
-        if ($subs.Count -eq 0) { $result.Add($fig); continue }   # every candidate cut was degenerate
+        if ($subs.Count -eq 0) {
+            # A2b BOTTOM-BAND ATTACH + TRIM: no weld cut, but a bottom-band below-caption was found — the
+            # region's ink is entirely above it and the bbox only overshoots into the caption band via clip
+            # paths / an oversized xobject placement. Attach it to the WHOLE region as its below-caption and
+            # pull the crop bbox bottom UP to the caption top, so the crop stops welding the caption (and,
+            # for Fig 15, a trailing body line) into the figure. Calibrated (scratch/bottom-band-calib.ps1):
+            # fires on EXACTLY 1701 Fig 7 + Fig 15 over both corpora, 0 false attachments, 0 trim hazards
+            # (every band member is a clip path or a single oversized xobject); ph-zigzag is byte-identical.
+            if ($bottomCap -and -not $fig.caption -and [bool]((($split.bottom_band_attach) ?? $true))) {
+                $capTop = [double]$bottomCap.bx[3]
+                $txt0 = [string]($bottomCap.text ?? $bottomCap.text_preview ?? '')
+                # trim first (only when it genuinely pulls the bottom up and stays below the top), then the
+                # caption gap is measured against the trimmed bottom (0 by construction — caption is adjacent)
+                if ($capTop -gt [double]$fig.bbox[1] -and $capTop -lt [double]$fig.bbox[3]) {
+                    $fig.bbox[1] = $capTop
+                    $w = [double]$fig.bbox[2] - [double]$fig.bbox[0]; $h = [double]$fig.bbox[3] - [double]$fig.bbox[1]
+                    $fig.area = [math]::Round($w * $h, 1)
+                    if ($BodyArea) {
+                        $fig.area_em2 = [math]::Round($fig.area / $BodyArea, 3)
+                        $pc = @($fig.path_ids).Count + @($fig.xobject_ids).Count
+                        if ($fig.area_em2 -gt 0) { $fig.density = [math]::Round($pc / $fig.area_em2, 4) }
+                    }
+                }
+                $fig.caption = [ordered]@{
+                    block_id = $bottomCap.id; bbox = $bottomCap.bx; text = $txt0
+                    cue = $true; cue_word = [regex]::Match($txt0, $styleRe).Groups[1].Value
+                    position = 'below'; gap = [math]::Round([double]$fig.bbox[1] - $capTop, 1); bottom_band = $true
+                }
+                $Summary.captioned_figures++
+                $Summary.caption_bottom_band++
+            }
+            $result.Add($fig); continue   # every candidate cut was degenerate
+        }
 
         $tail = New-FigureRegionRecord $fig.page $remaining 'caption_split' $BodyArea $Gates $remLetters
         if ($tail) {
@@ -847,6 +890,7 @@ function ConvertTo-FigureRegions {
         subfigure_groups = 0; subfigures_merged = 0   # subfigure grouping: multi-caption groups / regions merged away
         stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0   # consensus m1 drift visibility
         caption_splits = 0   # V_caption interior split: welded regions cut at an interior caption
+        caption_bottom_band = 0   # A2b: bottom-band below-captions attached + crop trimmed (region overshoots its caption)
         furniture = 0        # T1: uncaptioned stroke-only acyclic strips demoted figure→furniture
         letter_blocks = 0; letter_bridges = 0   # V_letters: blocks attached / cross-component welds
         inflow = 0           # T3-lite: uncaptioned regions inside the text-column flow (backbone veto)

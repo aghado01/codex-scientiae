@@ -504,7 +504,30 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
             })
             , $figs
         }
-        $script:NewSummaryV = { [ordered]@{ regions = 2; figures = 2; marks = 0; sparse = 0; degenerate = 0; captioned_figures = 1; xobject_regions = 0; caption_splits = 0 } }
+        $script:NewSummaryV = { [ordered]@{ regions = 2; figures = 2; marks = 0; sparse = 0; degenerate = 0; captioned_figures = 1; xobject_regions = 0; caption_splits = 0; caption_bottom_band = 0 } }
+        # a parent whose ink is ENTIRELY above an interior-by-margin caption: a spanning member (a clip
+        # path / oversized xobject placement in the field) drags the union bbox down PAST the caption, so
+        # the midline cut is degenerate (below empty) — the A2b bottom-band case (mirrors 1701 Fig 7/15).
+        $script:pbBand = [System.Collections.Generic.Dictionary[int, object]]::new()
+        $bi = 0
+        foreach ($y0 in 100, 110, 120) { foreach ($x0 in 100, 110, 120) {
+            $script:pbBand[$bi] = @{ id = $bi; bbox = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); prov = 'path' }; $bi++ } }
+        $script:pbBand[9] = @{ id = 9; bbox = [double[]]@(100, 40, 126, 140); prov = 'path' }   # overshoot member (center 90 > cap mid 54)
+        $script:NewBandParent = {
+            $figs = [System.Collections.Generic.List[object]]::new()
+            $figs.Add([ordered]@{
+                id = 0; page = 1; bbox = @(100.0, 40.0, 126.0, 140.0); area = 2600.0; area_em2 = 26.0; density = 0.385
+                path_ids = @(0..9); path_count = 10; xobject_ids = @(); xobject_count = 0
+                provenance = 'path'; kind = 'figure'; flag = $null; letter_block_ids = @(); caption = $null
+            })
+            $figs.Add([ordered]@{   # page-2 anchor teaches the style 'Figure N:'
+                id = 1; page = 2; bbox = @(100.0, 300.0, 126.0, 326.0); area = 676.0; area_em2 = 6.76; density = 1.33
+                path_ids = @(); path_count = 0; xobject_ids = @(); xobject_count = 0
+                provenance = 'path'; kind = 'figure'; flag = $null; letter_block_ids = @()
+                caption = [ordered]@{ block_id = 50; bbox = @(100, 288, 180, 296); text = 'Figure 9: anchor'; cue = $true; position = 'below'; gap = 4.0 }
+            })
+            , $figs
+        }
         $script:WriteBlocks = {
             param($lines, $name)
             $f = Join-Path $script:wv $name
@@ -562,6 +585,43 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
         $s = & $NewSummaryV
         (Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s).Count | Should -Be 2
         $s.caption_splits | Should -Be 0
+    }
+
+    It 'BOTTOM-BAND ATTACH+TRIM: attaches a below-caption the region overshoots and trims the crop (A2b, 2026-07-07)' {
+        # interior-by-margin caption (bottom 50 == figB 40 + margin 10) with EVERY member center above its
+        # midline (54): the degenerate below-empty cut is not a weld — attach to the whole region and pull
+        # the crop bottom UP to the caption top. NOT split; caption_splits stays 0.
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,50,180,58],"text_preview":"Figure 3: bottom-band caption"}') 'bband.jsonl'
+        $s = & $NewSummaryV
+        $out = Split-CaptionInteriorRegions (& $NewBandParent) $blocks $pbBand $xbV 10.0 100.0 $cfgV $gatesV $s
+        $p1 = @($out | Where-Object { $_.page -eq 1 })
+        $p1.Count                  | Should -Be 1          # attached to the WHOLE region, not split
+        $p1[0].caption.text        | Should -Be 'Figure 3: bottom-band caption'
+        $p1[0].caption.bottom_band | Should -BeTrue
+        $p1[0].caption.position    | Should -Be 'below'
+        $p1[0].bbox[1]             | Should -Be 58          # crop bottom trimmed up to the caption top (was 40)
+        $p1[0].bbox[3]             | Should -Be 140         # top untouched
+        $p1[0].kind                | Should -Be 'figure'
+        $s.caption_splits          | Should -Be 0
+        $s.caption_bottom_band     | Should -Be 1
+        $s.captioned_figures       | Should -Be 2           # was 1 (the page-2 anchor)
+        @($out | ForEach-Object { $_.id }) | Should -Be (0..($out.Count - 1))
+    }
+
+    It 'BOTTOM-BAND: knob off (bottom_band_attach=false) leaves the region uncaptioned (no attach, no trim)' {
+        $cfgOff = [pscustomobject]@{
+            caption_min_overlap_frac = 0.25
+            caption_split = [pscustomobject]@{ enabled = $true; margin_em = 1.0; max_block_em = 3.5; bottom_band_attach = $false }
+        }
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,50,180,58],"text_preview":"Figure 3: bottom-band caption"}') 'bbandoff.jsonl'
+        $s = & $NewSummaryV
+        $out = Split-CaptionInteriorRegions (& $NewBandParent) $blocks $pbBand $xbV 10.0 100.0 $cfgOff $gatesV $s
+        $p1 = @($out | Where-Object { $_.page -eq 1 })
+        $p1.Count              | Should -Be 1
+        $p1[0].caption         | Should -BeNullOrEmpty       # NOT attached
+        $p1[0].bbox[1]         | Should -Be 40               # NOT trimmed
+        $s.caption_bottom_band | Should -Be 0
+        $s.captioned_figures   | Should -Be 1
     }
 
     # NO-STYLE BOOTSTRAP (A2 attachment tail): a paper whose ONLY caption is the interior weld has 0

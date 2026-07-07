@@ -42,7 +42,7 @@ reliably and never assert it** — assertions come from caption/oracle evidence 
 | residual | rendered-doc symptom | root cause | thrust |
 |---|---|---|---|
 | **2210 −2, 2302 −1** (PRIMARY unders) | a figure is missing from the page under its own reference | RE-VERIFIED against the current run 2026-07-07: 2210 −2 is Fig 1 + Fig 4, **both A3 item-D** (caption never became a Lane-3 block). The old "(c) Fig 16 contention" **EVAPORATED** — Fig 16 (`1 Figure 16:`) now pairs correctly (region above caption, gap 23.6pt); the stale handoff ids were from a pre-refresh run. 2302 −1 is A3 too (its 5 unclaimed cue-blocks are all Algorithm/Table furniture). | **A3** |
-| **voroninski 1705 −1 → 0, 1701 −2** (PRIMARY unders) | a figure's plot renders WELDED with its caption mid-image, or missing | caption-interior WELD: the caption sits vertically INSIDE a kind=figure region (BLOCK-INSIDE), so it never attaches. 1705 Fig 1 = 0-claims chicken-and-egg (no style learnable). **1705 ✅ RECOVERED** (A2 no-style bootstrap); 1701 Figs 7/15 remain (style-path guards). | **A2** |
+| **voroninski 1705 −1 → 0, 1701 −2** (PRIMARY unders) | a figure's plot renders WELDED with its caption mid-image, or missing | caption-interior WELD: the caption sits vertically INSIDE a kind=figure region (BLOCK-INSIDE), so it never attaches. 1705 Fig 1 = 0-claims chicken-and-egg (no style learnable). **1705 ✅ RECOVERED** (A2a no-style bootstrap); **1701 Figs 7/15 ✅ RECOVERED** (A2b bottom-band attach+trim — degenerate below-empty, not a weld). Voroninski PRIMARY 0.35, 18/23 exact, 0 over. | **A2** |
 | voroninski SECONDARY 11.65 | over-cropped / welded diagram regions | 40–70% coverage band: text-WELDED formation + multi-panel plot fragments | **B, C** |
 | ph-zigzag 2112 −10 | tikz-cd diagrams absent from the crop set | arrows are FONT GLYPHS; the path lane is empty there — nothing to cluster | **D** |
 | Jaccard/symbolic m2 | (no direct symptom yet) | blocked on IR enrichment | **E** |
@@ -85,10 +85,26 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
     to fire on EXACTLY 1705 reg7 corpus-wide, 0 false; ph-zigzag has no 0-claim papers → byte-identical.
     **Voroninski PRIMARY 0.48 → 0.43 (17/23 exact, 0 over); ph-zigzag 0.7/5.4 invariant.** Crop eyeballed:
     clean whole plot + caption. Config knob `caption_split.bootstrap_no_style` (default on).
-  - **⏳ A2b style-path interior welds — NEXT.** 1701 Figs 7/15 (14-claim paper, styles exist, but the
-    split's style/overlap guards don't fire — Fig 15's caption is a low-overlap continuation fragment
-    "Figure 15: lower)."; Fig 7 is BLOCK-INSIDE). 2 more recoveries; needs the split's style-match /
-    overlap path examined, not the bootstrap.
+  - **✅ A2b bottom-band attach + crop-trim — LANDED 2026-07-07 (`Split-CaptionInteriorRegions`).** The
+    premise ("style/overlap guards don't fire") was FALSIFIED: for 1701 Figs 7/15 the style, height,
+    interiority AND overlap guards all PASS — the split fails because the midline cut is **degenerate with
+    BELOW empty** (every path/xobject member's center sits above the caption). These are not welds: the
+    caption is a bottom-band **below-caption** the region bbox merely OVERSHOOTS. Fig 7's plot ink floors
+    at y518 while **6 clip paths** (`is_clipping=true`, invisible) span down to y399 past the caption top
+    495; Fig 15 is one oversized xobject placement padding past its diagram. Add-FigureCaptions misses it
+    (overshoot → negative below-gap −96/−53) and the split finds nothing to cut, so the caption falls
+    through both passes. FIX: when a degenerate below-empty interior caption is the only candidate (no weld
+    cut made), attach it to the whole region as its below-caption AND pull the crop bbox bottom UP to the
+    caption top — the crop stops welding the caption (and, for Fig 15, a trailing body line) into the
+    figure; area/em²/density recomputed, kind stays figure. Calibrated (`scratch/bottom-band-calib.ps1`,
+    33 papers both corpora): fires on EXACTLY 1701 Fig 7 + Fig 15, **0 false attachments, 0 trim hazards**;
+    ph-zigzag has 0 firings → byte-identical. **Voroninski PRIMARY 0.43 → 0.35 (18/23 exact, 0 over),
+    1701 −2 → 0 (16/16); SECONDARY 11.65 → 11.57; ph-zigzag 0.7/5.4 invariant.** Crops eyeballed: Fig 7
+    clean 2×2 grid; Fig 15 body-line gone, diagram intact (a faint 1-line caption sliver remains — blk430
+    "Figure 15: lower)." is a Lane-3 mis-assembled fragment whose bbox undersizes the caption's first line;
+    trimming higher would risk the "Lower mirror" label — left as A3-class block-detection noise). Config
+    knob `caption_split.bottom_band_attach` (default on); unit tests + knob-off test in
+    `tests/pdfdig-figures.Tests.ps1`. The per-page bipartite ASSIGNMENT idea stays shelved (no contention).
   - Per-page bipartite ASSIGNMENT (the plan's original idea) stays **shelved** — no contention exists in
     either corpus to justify it; revisit only if a future run surfaces a genuine two-region caption fight.
 - **A3 — item-D block detection (the hard tail).** Captions that never became a "Figure N"-prefixed
