@@ -151,6 +151,16 @@ tarballs); 1805.08855v2 = 4 tikz diagrams fell to markers (unrendered — oracle
 tar fails; hand-staged for the gate; the fetcher family should sniff magic bytes (codex-arxiv lane).
 Follow-ups: caption-diag the 9 unders (1608/1701/1807/2006 first); the SECONDARY residual here is
 the concrete work-list for equation/plot-fragment discrimination (math-evidence lane adjacency).
+
+CIRCLE-BACK DONE (2026-07-07, `5ac704f` — splitter SEP-RELAXATION): caption-diag decomposed the 9
+unders → item-D text-lane failures (1608/2006: captions never became cue blocks) + oracle noise +
+interior captions the splitter guard-blocked (long survey captions 6.2–8.3em vs the 3.5em ph-zigzag
+cap; junk-prefixed "> 2 Figure 1:"). Fix: cue-then-SEPARATOR blocks earn max_block_sep_em 9.0 (prose
+never colons after a figure number — the no-separator hazards keep the tight cap); prefix widened to
+4 glyphs incl. digits. ph-zigzag splits BIT-IDENTICAL; voroninski split 7 papers / 15 recoveries.
+**Voroninski PRIMARY 0.7 → 0.48, 16/23 exact, 0 over. ph-zigzag unchanged (0.7 / 6.7).**
+Remaining voroninski unders, attributed: 1608 −3 (oracle-noise, 1430 bitmaps), 1701 −2 / 1807 −1 /
+2008 −1 / 1705 −1 / 2011 −1 (raster caption misses), 2006 −2 (item-D).
 ```
 
 ## Caption-attachment findings ledger (2026-07-05) — PRESERVE for the post-consensus circle-back
