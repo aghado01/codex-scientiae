@@ -161,6 +161,15 @@ never colons after a figure number — the no-separator hazards keep the tight c
 **Voroninski PRIMARY 0.7 → 0.48, 16/23 exact, 0 over. ph-zigzag unchanged (0.7 / 6.7).**
 Remaining voroninski unders, attributed: 1608 −3 (oracle-noise, 1430 bitmaps), 1701 −2 / 1807 −1 /
 2008 −1 / 1705 −1 / 2011 −1 (raster caption misses), 2006 −2 (item-D).
+
+ROUND 2 (2026-07-07, `72e6f0f` — T3-LITE IN-FLOW VETO, the equation/plot-fragment discrimination):
+wide Lane-3 blocks (≥20em) = the text backbone; uncaptioned regions covered ≥70% → kind=inflow, any
+provenance. Calibrated voroninski-target / ph-zigzag-control (scratch/inflow-calib.ps1; real diagrams
+cov ~0%, equation ink 70–100%; crop-verified both polarities). **ph-zigzag SECONDARY 6.7 → 5.4**
+(2205 dInl 14→1 — its uncaptioned pool was equation ink); **voroninski 19.5 → 11.65** (~180 demotions);
+PRIMARY row-identical both (0.7 / 0.48, 0 over). Accepted cost: 2112 −7→−10 (correct demotions on the
+under-detector). Voroninski SECONDARY residual (11.65) = the 40–70% coverage band: over-merged
+text-welded regions + plot fragments — formation-level work (T2 / full T3), not more veto thresholds.
 ```
 
 ## Caption-attachment findings ledger (2026-07-05) — PRESERVE for the post-consensus circle-back

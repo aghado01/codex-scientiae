@@ -70,6 +70,17 @@ why the idea felt load-bearing beyond this lane. Concretely it targets: two figu
 that currently need `t_far` guarding (backbone says "gutter between them → far"), and text-adjacent
 furniture (backbone says "inside a text band → not figure material").
 
+**T3-lite ✅ LANDED 2026-07-07 (`72e6f0f`) — the veto form.** `Set-InflowKind`: wide Lane-3 blocks
+(≥ 20em) are the backbone; an uncaptioned region covered ≥ 70% by backbone blocks is IN-FLOW ink
+(display math, equation clusters, inline embedded images), kind=inflow, out of both populations and
+the crops. Calibrated on the voroninski residual with ph-zigzag as negative control: real diagrams at
+cov ~0%, real floats ≤ 40%, equation ink 70–100%. **Gates: ph-zigzag SECONDARY 6.7 → 5.4 (2205's
+uncaptioned pool was equation ink all along, dInl 14 → 1); voroninski 19.5 → 11.65 (~180 demotions);
+PRIMARY row-identical on both.** Same lesson as T1, now twice-confirmed: on pages, structural priors
+say NOT-figure far more reliably than figure — the veto form is the working form. Full T3 (metric
+conditioning inside the filtration, gutter inflation) remains open; T3-lite is its coverage-threshold
+shadow and already carries most of the discriminative load.
+
 ## 4. Increment T4 — diffusion rung (embedding-ladder Rung 3, optional)
 
 Diffusion distances (e^{−tλ} on the page graph) expand bottlenecks and contract dense regions — the
