@@ -143,6 +143,20 @@ Describe 'pig lane readers' {
         $c.tables    | Should -Be 2    # cue_word Table + text-prefix "Table 3" fallback
         $c.other     | Should -Be 1    # Algorithm
     }
+    It 'A1: a LEADING-GLYPH table caption (no cue_word) classifies as a table, not a figure' {
+        # Regression for the A1 prefix alignment (2026-07-07). The old fallback [^\p{L}\d]{0,2} excluded
+        # digits, so "1 Table 5:" failed to match and fell through to the figure count (line 150). The
+        # canonical [^\p{L}]{0,4} form (Split-CaptionInteriorRegions parity) admits the leading digit.
+        $f = Join-Path $script:work 'r3.figures.jsonl'
+        [System.IO.File]::WriteAllLines($f, @(
+            '{"id":0,"kind":"figure","caption":{"text":"1 Table 5: leading digit"}}',
+            '{"id":1,"kind":"figure","caption":{"text":"~ Figure 10: leading glyph"}}',
+            '{"id":2,"kind":"figure","caption":{"text":"> 2 Figure 1: junk prefix"}}'
+        ), [System.Text.UTF8Encoding]::new($false))
+        $c = Get-PigFigureCounts $f
+        $c.tables    | Should -Be 1    # "1 Table 5:" — was mis-counted as a figure pre-A1
+        $c.captioned | Should -Be 2    # the two leading-glyph FIGURE captions
+    }
     It 'sums per-page images from the envelope, reading the key back' {
         $e = Join-Path $script:work 'r.pdfdig.json'
         [System.IO.File]::WriteAllText($e, '{"pages":[{"n":1,"images":3},{"n":2,"images":0},{"n":3,"images":28}]}', [System.Text.UTF8Encoding]::new($false))

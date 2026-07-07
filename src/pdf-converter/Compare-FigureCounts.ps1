@@ -131,7 +131,15 @@ function Resolve-OracleCount([string] $PaperDir, [string] $Slug) {
 function Get-PigFigureCounts([string] $FiguresJsonl) {
     if (-not (Test-Path -LiteralPath $FiguresJsonl)) { return $null }
     $all = 0; $cap = 0; $tab = 0; $oth = 0
-    $classRe = '^[^\p{L}\d]{0,2}(Figure|Fig|Table|Tab|Algorithm|Listing)\.?\s*\d'
+    # Canonical caption-SHAPE prefix — aligned with Split-CaptionInteriorRegions' $styleRe (A1,
+    # 2026-07-07): up to 4 non-letter junk glyphs INCLUDING digits ("1 Table 5:", "> 2 Figure 1:").
+    # FALLBACK ONLY: current runs carry cue_word (preferred below); this bites legacy runs, where the
+    # old [^\p{L}\d]{0,2} form mis-routed a leading-digit "1 Table 5:" into the FIGURE count. The A1
+    # "recoverable figure tail" is MEASURED EMPTY (scratch/prefix-tail-probe.ps1) — the attachment cue's
+    # lenient unanchored 14-char scan already claims every real leading-glyph caption. Do NOT anchor the
+    # ATTACHMENT cue to this form: 4 legit long-/letter-prefix captions rely on that scan; anchoring drops
+    # them (PRIMARY regression). This shape-test and that select-scan are intentionally different idioms.
+    $classRe = '^[^\p{L}]{0,4}(Figure|Fig|Table|Tab|Algorithm|Listing)\.?\s*\d'
     foreach ($line in [System.IO.File]::ReadLines($FiguresJsonl)) {
         if ([string]::IsNullOrWhiteSpace($line)) { continue }
         $o = $line | ConvertFrom-Json

@@ -53,11 +53,21 @@ reliably and never assert it** — assertions come from caption/oracle evidence 
 The old plan filed this under "blocks-lane quality work, defer." The render promotes it: a missing
 figure is the most visible defect in the document, and this session **diagnosed it to three precise
 sub-classes** (§1), which splits into three independently-shippable fixes:
-- **A1 — caption-shape prefix alignment (cheap, safe).** The attachment cue regex and the gate's
-  classifier forbid leading digits (`[^\p{L}\d]{0,2}`), but the V_caption splitter already proved
-  leading-glyph leniency safe (`> 2 Figure 1:`). Align the three consumers to one shared lenient prefix
-  so leading-glyph captions (`∼ Figure 10:`, `1 Figure 16:`) match everywhere. Recovers the "cue-matched
-  but rejected-by-prefix" tail.
+- **A1 — caption-shape prefix alignment — ✅ LANDED 2026-07-07, premise FALSIFIED (hygiene only).**
+  The plan assumed a "cue-matched but rejected-by-prefix" figure tail. **Measured empty on BOTH corpora**
+  (`scratch/prefix-tail-probe.ps1`): every real leading-glyph caption (`∼ Figure 10:`, `1 Figure 16:`,
+  the 7 ph-zigzag / 1 voroninski `≤4-junk` cases) is ALREADY claimed — the attachment cue's *unanchored
+  14-char scan* was always lenient. The only non-plain UNclaimed blocks (2205 "of Fig. 11. While…",
+  2403 "In Figure 3 (b)…") are IN-TEXT REFERENCES that must stay rejected — widening to grab them is a
+  false-attachment regression, not a recovery. **TRAP AVOIDED:** the "unify all three to one anchored
+  prefix" prose would REGRESS PRIMARY — 4 of ph-zigzag's 6 "far" captions have letter-y / >4-glyph
+  prefixes that only the unanchored scan catches; anchoring drops them. The select-scan (attachment,
+  `caption-diag`) and the shape-test (splitter `$styleRe`, gate `$classRe`) are *intentionally different
+  idioms* and must stay so. What landed: the dormant gate-fallback `$classRe` aligned `[^\p{L}\d]{0,2}`
+  → the splitter's canonical `[^\p{L}]{0,4}` (admits leading digits; legacy-run correctness only — current
+  runs carry `cue_word`), + a regression test (`1 Table 5:` now classifies as a table). Gate bit-stable
+  (0.7/5.4, 0.48/11.65). **2210 Fig 16's `1 Figure 16:` is NOT an A1 case — it's cue-matched already; its
+  block is orphaned by GEOMETRY (A2), not prefix.**
 - **A2 — multi-caption contention (attachment).** When two regions on a page contend for captions,
   attachment is greedy-nearest and can orphan a caption whose true region is just past the gap
   (2210 Fig 16). Make attachment a per-page ASSIGNMENT (each caption to its best unclaimed region,
