@@ -97,6 +97,24 @@ defrag-off degrades to 9.3 (2111 +6 / 2205 +6 / 2307 +8) → the epsilon de-frag
 elbow merges cover geometry fragmentation that stream evidence can't (different draw-runs, one figure). KEEP.
 ```
 
+**FULL-REFRESH RE-CONFIRM (2026-07-07, both corpora re-batched with the full-text + caption-pretyping
+lane): gates BIT-STABLE — ph-zigzag 0.7/5.4, voroninski 0.48/11.65** (caption text enriched, counts
+unmoved, as predicted). Mechanism labels now honest: 2210 raster→missed-figure, 2307/1705→oracle-noise.
+**Residual PRIMARY unders diagnosed to root cause — NONE are clustering/veto regressions (verified: every
+"missing" region is kind=figure; T1/T3-lite/V_letters demotions do not eat captioned figures):**
+- 2210 −2 is THREE distinct classes, not one: Fig 1 = caption text in NO block (genuine detection miss,
+  item-D); Fig 4 = only an in-text ref exists (item-D / uncaptioned); Fig 16 = multi-caption GEOMETRIC
+  CONTENTION (region id51 took a nearer caption; the true caption's other region id52 is 68pt away >4.5em
+  cap). Attachment tail + text-lane, both orthogonal to clustering.
+- 2302 −1: the A2-exposed miss is item-D (the figure's caption never became a cue-prefixed block); its 5
+  unclaimed cue-blocks are ALL Algorithm/Table furniture correctly kept out of the figure population — incl.
+  one `KIND-SKIP(inflow)` = the T3-lite veto correctly catching an Algorithm pseudocode box (working as
+  designed). NOTE: `scratch/caption-diag.ps1` and ad-hoc `^Figure`-anchored checks MISS leading-glyph
+  captions ("∼ Figure 10:"); use the gate's lenient `^[^\p{L}\d]{0,2}(Figure|Fig)` when counting by number.
+- **Bottom line: the clustering lane has NO remaining PRIMARY work on either corpus.** What's left is
+  text-lane (item-D block detection) + the caption-attachment contention tail — both long-standing,
+  both orthogonal to Tier-2/Tier-3 clustering.
+
 <details><summary>Pre-consensus scoreboard (subfigure grouping + caption denominator, superseded)</summary>
 
 ```
