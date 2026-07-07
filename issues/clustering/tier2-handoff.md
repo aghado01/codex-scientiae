@@ -133,6 +133,26 @@ SECONDARY inline diagrams:  mean |dInl| = 9.1  ← the geometric fragmentation l
 
 ---
 
+## OUT-OF-SAMPLE — corpora/voroninski (2026-07-06, 23 papers, first oracle+pig runs ever on it)
+
+```
+PRIMARY  mean |dFig| = 0.7 — IDENTICAL to ph-zigzag — 14/23 exact, 0 over, 9 under (all raster-
+         attributed; these are MATLAB-plot papers — 1608.02165v1 carries 1,430 placed bitmaps).
+         Every calibrated knob transported to a 2011–2020 matrix-analysis corpus unchanged.
+SECONDARY mean |dInl| = 19.57 — the stress finding. Oracle inline=0 on EVERY paper (phase retrieval
+         has no tikz/xy); pig emits 2–66 uncaptioned regions each (2008.10579v1: 66). On ph-zigzag
+         the uncaptioned pool was mostly real diagrams; HERE it is display-math clusters, plot
+         fragments, algorithm boxes — the population the queued FORMULA-BLOCK-ADJACENCY
+         discrimination exists for. T1 caught 11 regions corpus-wide (strict by design; correct but
+         insufficient coverage for this corpus type). V_letters bridges: 0 (no diagrams — correct).
+Oracle lane (22/23 first-contact conversions): figures_missing on 5 papers (graphics absent from
+tarballs); 1805.08855v2 = 4 tikz diagrams fell to markers (unrendered — oracle-ladder edge case);
+1404.3811v1 = INTAKE GAP: a gzip'd SINGLE-FILE submission named .tar.gz (magic 1F 8B, FNAME flag) —
+tar fails; hand-staged for the gate; the fetcher family should sniff magic bytes (codex-arxiv lane).
+Follow-ups: caption-diag the 9 unders (1608/1701/1807/2006 first); the SECONDARY residual here is
+the concrete work-list for equation/plot-fragment discrimination (math-evidence lane adjacency).
+```
+
 ## Caption-attachment findings ledger (2026-07-05) — PRESERVE for the post-consensus circle-back
 
 Probe: `scratch/caption-diag.ps1 -Slug <slug>` (committed; replicates the lane's cue-match, classifies every
