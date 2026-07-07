@@ -477,8 +477,8 @@ function ConvertTo-PdfDigIr {
                             })
                             $lnid++
                         }
-                        $preview = ($b.Text -replace '\s+',' ')
-                        if ($preview.Length -gt 100) { $preview = $preview.Substring(0,100) }
+                        $blockText = ($b.Text -replace '\s+',' ')
+                        $preview = if ($blockText.Length -gt 100) { $blockText.Substring(0,100) } else { $blockText }
                         $rec = [ordered]@{
                             id = $bid; page = $pn
                             bx = (ConvertTo-BxArray $b.BoundingBox)
@@ -486,6 +486,10 @@ function ConvertTo-PdfDigIr {
                             column_band = $null
                             lines = $lineRecs.ToArray()
                             text_preview = $preview
+                            # full block text (whitespace-normalized, UNtruncated) — captions and any consumer
+                            # that quotes a block verbatim need more than the 100-char preview (the truncated-
+                            # caption defect the finalize weave's render surfaced, 2026-07-07)
+                            text = $blockText
                         }
                         $blockRecs.Add($rec); $pageBlockRecs.Add($rec)
                         $bid++; $ro++

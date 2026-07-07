@@ -959,4 +959,24 @@ Describe 'pdfdig figure-region clustering — narrow-caption overlap denominator
         $fig.caption.text | Should -Match 'Fig\. 9'
         $script:rn.Summary.captioned_figures | Should -Be 1
     }
+
+    It 'prefers the full block text over the truncated preview for the caption record' {
+        $wt = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-fulltext-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $wt | Out-Null
+        try {
+            $paths = [System.Collections.Generic.List[string]]::new()
+            $id = 0
+            foreach ($k in 0..7) { $x = $k * 50; $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},100,{2},110]}}' -f $id++, $x, ($x + 10))) }
+            [IO.File]::WriteAllLines((Join-Path $wt 'f.paths.jsonl'), $paths)
+            $letters = [System.Collections.Generic.List[string]]::new()
+            1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+            [IO.File]::WriteAllLines((Join-Path $wt 'f.letters.jsonl'), $letters)
+            [IO.File]::WriteAllLines((Join-Path $wt 'f.blocks.jsonl'),
+                @('{"id":1,"page":1,"bx":[150,80,169,90],"text_preview":"Fig. 9: truncated pre","text":"Fig. 9: the complete untruncated caption text that overflows any preview cap"}'))
+            $r = ConvertTo-FigureRegions -PathsJsonl (Join-Path $wt 'f.paths.jsonl') -PassThru
+            $fig = @($r.Figures | Where-Object { $_.caption })[0]
+            $fig.caption.text | Should -Be 'Fig. 9: the complete untruncated caption text that overflows any preview cap'
+        }
+        finally { Remove-Item -Recurse -Force $wt -ErrorAction SilentlyContinue }
+    }
 }

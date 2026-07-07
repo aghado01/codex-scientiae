@@ -369,7 +369,8 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
                 if ($den -le 0 -or ($ovl / $den) -lt $minOvl) { continue }
                 $gap = if ($pos -eq 'below') { $figB - $bt } else { $bb - $figT }
                 if ($gap -lt -2 -or $gap -gt $maxGap -or $gap -ge $bestGap) { continue }
-                $txt = if ($blk.text_preview) { [string]$blk.text_preview } else { '' }
+                # full block text when the lane carries it (untruncated captions); preview on older runs
+                $txt = if ($blk.text) { [string]$blk.text } elseif ($blk.text_preview) { [string]$blk.text_preview } else { '' }
                 $mCue = [regex]::Match($txt.Substring(0, [math]::Min(14, $txt.Length)), $cueRe)
                 if ($mCue.Success) {
                     $best = $blk; $bestGap = $gap; $bestPos = $pos; $bestTxt = $txt
@@ -556,7 +557,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
         $blk = $line | ConvertFrom-Json
         if ($blk.bx) { $allBx[[int]$blk.id] = $blk.bx }
         if (-not $blk.bx -or $claimed.ContainsKey([int]$blk.id)) { continue }
-        $m = [regex]::Match(($blk.text_preview ?? ''), $styleRe)
+        $m = [regex]::Match(([string]($blk.text ?? $blk.text_preview ?? '')), $styleRe)
         if (-not $m.Success) { continue }
         $hPt = $blk.bx[3] - $blk.bx[1]
         if ($hPt -gt $(if ([string]$m.Groups[2].Value -ne '') { $maxBlockSepPt } else { $maxBlockPt })) { continue }
@@ -612,7 +613,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             $rec = New-FigureRegionRecord $fig.page $above 'caption_split' $BodyArea $Gates $aboveLetters
             if (-not $rec) { continue }
             if ($rec.kind -eq 'figure') {
-                $txt0 = [string]($blk.text_preview ?? '')
+                $txt0 = [string]($blk.text ?? $blk.text_preview ?? '')
                 $rec.caption = [ordered]@{
                     block_id = $blk.id; bbox = $blk.bx; text = $txt0
                     cue = $true; cue_word = [regex]::Match($txt0, $styleRe).Groups[1].Value
