@@ -659,7 +659,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
 # barcode/interval-bar figures (all-thin, β₁ = 0 — the 2111 class) are spared the same way (tall).
 # Captioned regions are never touched (PRIMARY invariant); xobject regions are rasters, not strokes.
 function Set-FurnitureKind([System.Collections.Generic.List[object]] $Figures, $PathRec,
-    [double] $BodyPt, $Cfg, $Summary) {
+    [double] $BodyPt, $Cfg, $Summary, $BlockBx = $null) {
     $fcfg      = $Cfg.furniture_demotion
     $bp        = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
     $rPt       = [double]$fcfg.cycle_radius_em * $bp
@@ -669,7 +669,23 @@ function Set-FurnitureKind([System.Collections.Generic.List[object]] $Figures, $
     $maxK      = [int]$fcfg.max_members
     foreach ($fig in $Figures) {
         if ($fig.kind -ne 'figure' -or $fig.caption -or $fig.xobject_count -gt 0) { continue }
-        $w = $fig.bbox[2] - $fig.bbox[0]; $h = $fig.bbox[3] - $fig.bbox[1]
+        # v2 SHAPE-WITH-LETTERS (letters-elevation.md): the strip test runs on the LETTERS-AUGMENTED
+        # bbox — a closed text-node diagram (thin arrows, letter corners) is not a strip once its
+        # labels count (squarish → spared by shape, no topology needed), while an accent strip plus
+        # its in-row glyphs is STILL a strip (2210 id29: aspect ~20 augmented). Letter boxes never
+        # enter the cycle graph (see below).
+        $ax0 = [double]$fig.bbox[0]; $ay0 = [double]$fig.bbox[1]; $ax1 = [double]$fig.bbox[2]; $ay1 = [double]$fig.bbox[3]
+        if ($null -ne $BlockBx) {
+            foreach ($lb in @($fig.letter_block_ids)) {
+                if ($null -eq $lb -or -not $BlockBx.ContainsKey([int]$lb)) { continue }
+                $lbx = $BlockBx[[int]$lb]
+                if ([double]$lbx[0] -lt $ax0) { $ax0 = [double]$lbx[0] }
+                if ([double]$lbx[1] -lt $ay0) { $ay0 = [double]$lbx[1] }
+                if ([double]$lbx[2] -gt $ax1) { $ax1 = [double]$lbx[2] }
+                if ([double]$lbx[3] -gt $ay1) { $ay1 = [double]$lbx[3] }
+            }
+        }
+        $w = $ax1 - $ax0; $h = $ay1 - $ay0
         if ([math]::Min($w, $h) -le 0) { continue }
         $aspect = [math]::Max($w, $h) / [math]::Min($w, $h)
         if ($aspect -lt $minAspect -and $h -gt $maxHPt) { continue }   # not strip-shaped
@@ -684,7 +700,10 @@ function Set-FurnitureKind([System.Collections.Generic.List[object]] $Figures, $
             if ([math]::Min($b[2] - $b[0], $b[3] - $b[1]) -gt $arealPt) { $hasAreal = $true; break }
         }
         if ($hasAreal) { continue }
-        # topology: first circuit-closing edge disqualifies (β₁ > 0 ⇒ diagram-like connectivity)
+        # topology: first circuit-closing edge disqualifies (β₁ > 0 ⇒ diagram-like connectivity).
+        # PATHS ONLY, deliberately: letter vertices in the cycle graph would spare accent strips too
+        # (an overbar row + its glyphs closes cycles exactly like a diamond does — mixed-graph β₁
+        # cannot tell 1-D from 2-D; measured on 2210 id29, 2026-07-06). Letters contribute SHAPE below.
         $parent = [int[]]::new($k); for ($i = 0; $i -lt $k; $i++) { $parent[$i] = $i }
         $hasCycle = $false
         for ($i = 0; $i -lt $k -and -not $hasCycle; $i++) {
@@ -827,6 +846,7 @@ function ConvertTo-FigureRegions {
     # Blocks with NO letter back-refs are never selected (missing lane data → stay conservative).
     # The ENTANGLEMENT half (nearest-path-gap ≤ t_bridge_em) is enforced at bridge time per page.
     $letterBlocksByPage = @{}
+    $selBlockBx = [System.Collections.Generic.Dictionary[int, object]]::new()   # selected block id → bx (T1 v2 vertices)
     if ($lettersEnabled) {
         $blocksPath  = $PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl'
         $lettersPath = $PathsJsonl -replace '\.paths\.jsonl$', '.letters.jsonl'
@@ -847,6 +867,7 @@ function ConvertTo-FigureRegions {
                 $pgk = [int]$bk.page
                 if (-not $letterBlocksByPage.ContainsKey($pgk)) { $letterBlocksByPage[$pgk] = [System.Collections.Generic.List[object]]::new() }
                 $letterBlocksByPage[$pgk].Add($bk)
+                $selBlockBx[[int]$bk.id] = $bk.bx
             }
         }
         else { $lettersEnabled = $false }
@@ -989,9 +1010,10 @@ function ConvertTo-FigureRegions {
     }
 
     # T1 furniture demotion — LAST (captions are final, so the PRIMARY population is invariant:
-    # only uncaptioned pure-path regions are candidates)
+    # only uncaptioned pure-path regions are candidates). v2: attached letter blocks join the cycle
+    # graph as vertices, so closed text-node diagrams spare themselves by topology, not just shape.
     if ($furnEnabled) {
-        Set-FurnitureKind $figures $pathRec $bodyPt $cfg $summary
+        Set-FurnitureKind $figures $pathRec $bodyPt $cfg $summary $selBlockBx
     }
 
     # [string[]]@(...) so an empty page-set writes an empty file instead of throwing on null.

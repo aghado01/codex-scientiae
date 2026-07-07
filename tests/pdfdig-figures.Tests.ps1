@@ -803,6 +803,43 @@ Describe 'pdfdig figure-region clustering — T1 furniture demotion (unit)' {
         $figs[0].kind | Should -Be 'figure'
     }
 
+    It 'v2: the strip test runs on the letters-AUGMENTED bbox (diagram labels de-strip it)' {
+        # two thin parallel arrows (h 1.1em: a strip, acyclic alone) with node labels ABOVE and BELOW:
+        # letters-augmented bbox is 3em tall / aspect 1.7 -> not a strip -> spared; without letters demoted
+        $rec = & $NewRec @(@(10, 10, 40, 11), @(10, 0, 40, 1))
+        $mkFig = {
+            param($letters)
+            $figs = & $NewFig @(0, 1) @(0.0, 0.0, 50.0, 11.0) $null
+            $figs[0].letter_block_ids = $letters
+            , $figs
+        }
+        $blockBx = [System.Collections.Generic.Dictionary[int, object]]::new()
+        $blockBx[70] = @(20.0, 14.0, 30.0, 20.0)    # label above
+        $blockBx[71] = @(20.0, -9.0, 30.0, -3.0)    # label below
+        $s1 = & $NewSummaryF
+        $f1 = & $mkFig @()
+        Set-FurnitureKind $f1 $rec 10.0 $cfgF $s1 $blockBx
+        $f1[0].kind | Should -Be 'furniture'        # no letters: acyclic 1.1em strip
+        $s2 = & $NewSummaryF
+        $f2 = & $mkFig @(70, 71)
+        Set-FurnitureKind $f2 $rec 10.0 $cfgF $s2 $blockBx
+        $f2[0].kind | Should -Be 'figure'           # augmented bbox 29pt tall, aspect 1.7: not a strip
+        $s2.furniture | Should -Be 0
+    }
+
+    It 'v2: an accent strip stays furniture — its in-row glyphs do not de-strip it' {
+        # overbar row + glyph blocks in the SAME band: augmented bbox is still wide/flat (aspect >= 6)
+        $rec = & $NewRec @(@(0, 10, 110, 11.5), @(120, 10, 230, 11.5), @(240, 10, 350, 11.5))
+        $figs = & $NewFig @(0, 1, 2) @(0.0, 10.0, 350.0, 11.5) $null
+        $figs[0].letter_block_ids = @(80, 81)
+        $blockBx = [System.Collections.Generic.Dictionary[int, object]]::new()
+        $blockBx[80] = @(20.0, 0.0, 90.0, 9.0)      # glyphs under the first overbar
+        $blockBx[81] = @(140.0, 0.0, 210.0, 9.0)
+        $s = & $NewSummaryF
+        Set-FurnitureKind $figs $rec 10.0 $cfgF $s $blockBx
+        $figs[0].kind | Should -Be 'furniture'      # augmented 350x11.5: aspect 30, still a strip
+    }
+
     It 'never touches a captioned region (PRIMARY invariant)' {
         $rec = & $NewRec @(@(0, 0, 110, 1.5), @(120, 4, 230, 5.5), @(240, 0, 350, 1.5))
         $cap = [ordered]@{ block_id = 9; text = 'Figure 1: bars'; cue = $true }
