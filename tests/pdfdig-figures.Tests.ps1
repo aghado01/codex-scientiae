@@ -564,6 +564,30 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
         $s.caption_splits | Should -Be 0
     }
 
+    It 'gives a separator-signed caption the taller height allowance (long survey captions)' {
+        # 60pt-tall block (6em > 3.5em tight cap) WITH the colon signature -> splits; the identical
+        # block without a separator keeps the tight cap -> no split
+        $cfgSep = [pscustomobject]@{
+            caption_min_overlap_frac = 0.25
+            caption_split = [pscustomobject]@{ enabled = $true; margin_em = 1.0; max_block_em = 3.5; max_block_sep_em = 9.0 }
+        }
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,72,180,132],"text_preview":"Figure 3: a very long multi-line caption"}') 'b7.jsonl'
+        $s = & $NewSummaryV
+        $out = Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgSep $gatesV $s
+        $s.caption_splits | Should -Be 1
+        $blocks2 = & $WriteBlocks @('{"id":8,"page":1,"bx":[100,72,180,132],"text_preview":"Figure 3 shows a lot of prose without a colon"}') 'b8.jsonl'
+        $s2 = & $NewSummaryV
+        (Split-CaptionInteriorRegions (& $NewParent $false) $blocks2 $pbV $xbV 10.0 100.0 $cfgSep $gatesV $s2).Count | Should -Be 2
+        $s2.caption_splits | Should -Be 0
+    }
+
+    It 'sees a caption through up to 4 junk prefix glyphs (stray superscripts)' {
+        $blocks = & $WriteBlocks @('{"id":9,"page":1,"bx":[100,100,180,108],"text_preview":"> 2 Figure 3: energy landscape"}') 'b9.jsonl'
+        $s = & $NewSummaryV
+        Split-CaptionInteriorRegions (& $NewParent $false) $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s | Out-Null
+        $s.caption_splits | Should -Be 1
+    }
+
     It 'never splits a paper with no claimed captions (no style evidence)' {
         $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3: interior caption"}') 'b6.jsonl'
         $figs = & $NewParent $false

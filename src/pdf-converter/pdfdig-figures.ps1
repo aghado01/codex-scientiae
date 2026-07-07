@@ -529,8 +529,15 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
     $bp         = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
     $marginPt   = [double]$split.margin_em * $bp
     $maxBlockPt = [double]$split.max_block_em * $bp
+    # a block carrying the cue-then-SEPARATOR signature ("Figure 7:") earns a taller height allowance:
+    # long multi-line captions are common (1701's survey captions run 6-8 lines) while in-text prose
+    # essentially never puts a separator after the figure number — the no-separator hazards keep the
+    # tight cap. Absent knob falls back to the tight cap (older configs unchanged).
+    $maxBlockSepPt = [double](($split.max_block_sep_em) ?? $split.max_block_em) * $bp
     $minOvl     = [double]$Cfg.caption_min_overlap_frac
-    $styleRe    = '^[^\p{L}\d]{0,2}(Figure|Fig)\.?\s*\d+\s*([:.])?'
+    # prefix allows up to 4 junk glyphs INCLUDING digits ("> 2 Figure 1:" — stray superscripts merged
+    # into the caption block by Lane-3); safety rides on the separator/style/interiority guards
+    $styleRe    = '^[^\p{L}]{0,4}(Figure|Fig)\.?\s*\d+\s*([:.])?'
 
     # learned caption style(s): (figure-family cue word, separator?) over this paper's claimed captions
     $styles = @{}; $claimed = @{}
@@ -549,9 +556,10 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
         $blk = $line | ConvertFrom-Json
         if ($blk.bx) { $allBx[[int]$blk.id] = $blk.bx }
         if (-not $blk.bx -or $claimed.ContainsKey([int]$blk.id)) { continue }
-        if (($blk.bx[3] - $blk.bx[1]) -gt $maxBlockPt) { continue }
         $m = [regex]::Match(($blk.text_preview ?? ''), $styleRe)
         if (-not $m.Success) { continue }
+        $hPt = $blk.bx[3] - $blk.bx[1]
+        if ($hPt -gt $(if ([string]$m.Groups[2].Value -ne '') { $maxBlockSepPt } else { $maxBlockPt })) { continue }
         if (-not $styles.ContainsKey($m.Groups[1].Value + '|' + [string]($m.Groups[2].Value -ne ''))) { continue }
         $p = [int]$blk.page
         if (-not $byPage.ContainsKey($p)) { $byPage[$p] = [System.Collections.Generic.List[object]]::new() }
