@@ -138,6 +138,14 @@ Assertion from display-position outside the flow (the T3 bands make it computabl
 `SymmetrizationRule` ports from ThermoMapper `graphs` (read-only, INTO `src/hdbscan/`), the V_caption
 splitter folds in as SIGNED evidence. m3 (cophenetic / `IClusterLineage`) rides the same seam. The
 ThermoMapper cross-pollination artery. Independent — interleaves anywhere.
+- **E-rider — crop-bbox de-inflation (A2b follow-up, scoped `issues/clustering/crop-bbox-inflation.md`).**
+  Invisible geometry inflates a region's crop rect past its visible ink. Split into (a) UNPAINTED-path
+  inflation — detectable NOW (`is_stroked ∨ is_filled`), a crop-only `visible_bbox` in the render lane,
+  PRIMARY-invariant, but only **1 region corpus-wide** (1701 id4, +1.3em) so it is a low-urgency rider,
+  not a thrust; and (b) white/background-FILL inflation (1701 Fig 7's id49 whole-region white fill) — the
+  severe case, needs this thrust's **color-bucket** to tell a background fill from a black panel, and is
+  already covered for the captioned case by A2b's color-agnostic caption-top trim. Once color lands, (b)
+  folds into `visible_bbox` and A2b's bbox trim could revert to attach-only. Probe: `scratch/clip-inflation-probe.ps1`.
 
 ### F. Thrust-5 remainder — widen the deliverable
 Docling-lane images (weave currently no-ops without a pig run); publish carrying `{slug}-membrane/`
