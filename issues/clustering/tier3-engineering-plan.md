@@ -70,8 +70,11 @@ from the oracle's `Copy-LatexFigures` and now called by BOTH lanes (latex suite 
 `Move-CaptionsToAnchors` always reserved), uncaptioned crops flush at page boundaries, failures are
 flagged markers, PNGs run-local under `{slug}-membrane/`. E2E voroninski 1109.0573v2: 6 captioned
 at their prose anchors + 5 page-flushed, 11 PNGs, 0 markers — the oracle register from a bare PDF.
-REMAINING in this thrust: publish carries `{slug}-membrane/` up (mirror links); docling-lane images;
-fetcher magic-byte sniffing; item-D blocks-lane diagnosis; `mechanism` attribution polish.
+REMAINING in this thrust: docling-lane images; item-D blocks-lane diagnosis.
+QUEUE-TAMING 2026-07-07 (`958dc34`): ✅ mirror carries `{slug}-membrane/` up (image links resolve at
+the paper root); ✅ fetcher magic-byte sniffing → the gzip-single-file intake (1404) is fixed in the
+oracle unpack (`Expand-ArxivSourceTarball` sniffs the ustar magic; voroninski now 23/23 oracle-covered);
+✅ `mechanism` attribution honest (oracle-noise first, raster only when bitmaps can be the missing floats).
 
 **Render-harvest (2026-07-07, the instrument's first catches):** (1) truncated captions — pig
 caption.text was the 100-char text_preview; FIXED at the source (`cae3b61`: blocks lane carries full
