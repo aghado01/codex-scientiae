@@ -285,10 +285,18 @@ function Invoke-Finalize {
 
     # lane mirror (STANDARDS §9): copy the finalized body up to the paper's slug root as
     # {slug}-membrane.md so the latex/membrane/docling lanes sit side-by-side for cross-examination.
-    # The run-dir copy above stays authoritative; only mirror when OutputDir is a real run dir.
-    $paperRoot = $OutputDir -replace '[\\/]\.(?:runs[\\/][^\\/]+|scratch)$', ''
+    # The run-dir copy above stays authoritative; only mirror when OutputDir is a real run dir. The
+    # woven figure crops ({slug}-membrane/*.png) ride UP with the mirror so its image links resolve at
+    # the paper root the same as at the run dir (both use the {slug}-membrane/ relative prefix — the
+    # lane-infixed dir never collides with the oracle's {slug}/).
     if ($paperRoot -ne $OutputDir) {
         [System.IO.File]::WriteAllText((Join-Path $paperRoot "$slug-membrane.md"), (($body -join "`n") + "`n"), $utf8)
+        $runImgDir = Join-Path $OutputDir "$slug-membrane"
+        if (Test-Path -LiteralPath $runImgDir) {
+            $mirrorImgDir = Join-Path $paperRoot "$slug-membrane"
+            if (-not (Test-Path -LiteralPath $mirrorImgDir)) { New-Item -ItemType Directory -Force -Path $mirrorImgDir | Out-Null }
+            Copy-Item -LiteralPath (Join-Path $runImgDir '*') -Destination $mirrorImgDir -Force
+        }
     }
 
     $sections = @($bodyC | Where-Object { [string]$_.type -eq 'heading' -and $_.section_level }).Count

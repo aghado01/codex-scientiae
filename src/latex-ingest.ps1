@@ -1648,11 +1648,48 @@ function ConvertFrom-BiblatexBbl {
 }
 
 # --- source unpack + main-file discovery ------------------------------------------------------------
+# arXiv "source" comes in TWO legal shapes and the .tar.gz name lies about which: a real gzipped tar,
+# OR a gzip'd SINGLE FILE (a self-contained .tex, no tar layer — the 1404.3811v1 intake gap). Try the
+# tar path first; on failure, sniff the gzip magic (1F 8B) and gunzip in-process, then decide by the
+# decompressed bytes — a tar carries the "ustar" magic at offset 257, otherwise it's the lone source,
+# written as main.tex (Find-LatexMain then discovers it like any other). Sniff bytes, never trust the
+# extension.
 function Expand-ArxivSourceTarball {
     param([string]$TarGz, [string]$WorkDir)
     New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
     & tar -xzf $TarGz -C $WorkDir 2>$null
-    if ($LASTEXITCODE -ne 0) { throw "tar failed to extract $TarGz" }
+    if ($LASTEXITCODE -eq 0) { return $WorkDir }
+
+    # tar rejected it — is it gzip at all?
+    $head = [byte[]]::new(2)
+    $fs = [System.IO.File]::OpenRead($TarGz)
+    try { $null = $fs.Read($head, 0, 2) } finally { $fs.Dispose() }
+    if ($head[0] -ne 0x1F -or $head[1] -ne 0x8B) { throw "source is neither a gzipped tar nor a gzip stream: $TarGz" }
+
+    # gunzip the whole stream into memory
+    $inFs = [System.IO.File]::OpenRead($TarGz)
+    $gz   = [System.IO.Compression.GzipStream]::new($inFs, [System.IO.Compression.CompressionMode]::Decompress)
+    $ms   = [System.IO.MemoryStream]::new()
+    try { $gz.CopyTo($ms) } finally { $gz.Dispose(); $inFs.Dispose() }
+    $bytes = $ms.ToArray(); $ms.Dispose()
+
+    # tar magic "ustar" sits at offset 257 (POSIX/GNU) — if present, it was a tar after all (a bare
+    # .tar mislabeled, or a gzip our tar couldn't chew); write it out and extract with tar -xf.
+    $isTar = ($bytes.Length -ge 262 -and
+              $bytes[257] -eq 0x75 -and $bytes[258] -eq 0x73 -and $bytes[259] -eq 0x74 -and
+              $bytes[260] -eq 0x61 -and $bytes[261] -eq 0x72)
+    if ($isTar) {
+        $tarTmp = Join-Path $WorkDir '_source.tar'
+        [System.IO.File]::WriteAllBytes($tarTmp, $bytes)
+        & tar -xf $tarTmp -C $WorkDir 2>$null
+        Remove-Item -LiteralPath $tarTmp -Force -ErrorAction SilentlyContinue
+        if ($LASTEXITCODE -ne 0) { throw "gunzipped tar failed to extract: $TarGz" }
+        return $WorkDir
+    }
+
+    # a lone gzip'd source file — land it as main.tex (UTF-8 bytes as-is; Find-LatexMain picks it up).
+    [System.IO.File]::WriteAllBytes((Join-Path $WorkDir 'main.tex'), $bytes)
+    $global:LASTEXITCODE = 0   # don't leak the failed `tar -xzf` exit code out of this success path
     return $WorkDir
 }
 function Find-LatexMain {

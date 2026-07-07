@@ -203,15 +203,23 @@ function Compare-FigureCounts {
         $oInline = $oracle.inline         # inline diagrams (2nd population)
 
         # PRIMARY metric: pig CAPTIONED regions vs captioned figure floats — "did we find the real figures".
+        # UNDER-attribution, in priority order (advisory, not a gate): oracle-noise (the source references
+        # more graphics than it ships — figures_missing accounts for the deficit, not our detection) FIRST,
+        # then raster-blindness ONLY when there are enough bitmaps to plausibly BE the missing floats
+        # (the old `any img>0` mislabeled a vector paper with a stray bitmap + a caption miss), else the
+        # honest missed-figure. Lane 5 unions bitmaps into regions, so true raster-blindness is now rare —
+        # the strict threshold reflects that.
         $delta = $null; $ratio = $null; $mechanism = 'no-data'
         if ($null -ne $pigCap -and $null -ne $oFig) {
             $delta = $pigCap - $oFig
             $ratio = if ($oFig -gt 0) { [math]::Round($pigCap / $oFig, 2) } else { $null }
+            $miss  = [int]($oracle.missing ?? 0)
             $mechanism =
-                if     ($delta -eq 0)     { 'exact' }
-                elseif ($delta -gt 0)     { 'over-detect' }       # subfigure / captioned-figure fragmentation
-                elseif ($pigImages -gt 0) { 'raster-blindness' }  # under + bitmaps present
-                else                      { 'missed-figure' }
+                if     ($delta -eq 0)                { 'exact' }
+                elseif ($delta -gt 0)                { 'over-detect' }       # subfigure / captioned-figure fragmentation
+                elseif ($miss -ge -$delta)           { 'oracle-noise' }      # source ships fewer graphics than it cites
+                elseif ($pigImages -ge -$delta)      { 'raster-blindness' }  # enough bitmaps to be the missing floats
+                else                                 { 'missed-figure' }     # regions genuinely short (vector)
         } elseif ($null -eq $pigCap) { $mechanism = 'no-pig-run' }
           elseif ($null -eq $oFig)   { $mechanism = 'no-oracle' }
 
