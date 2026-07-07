@@ -733,6 +733,43 @@ function Set-FurnitureKind([System.Collections.Generic.List[object]] $Figures, $
     }
 }
 
+# Topological-prior T3-lite — the IN-FLOW (backbone) VETO (issues/clustering/topological-prior.md §3,
+# first increment; calibrated 2026-07-07 on the voroninski out-of-sample residual). Floats live in
+# WHITESPACE the text flows around; display-math clusters, inline embedded images and equation ink live
+# INSIDE the text-column flow. The page's wide Lane-3 blocks (body/equation lines, width ≥ wide_block_em)
+# are the text BACKBONE: an UNCAPTIONED kind=figure region whose bbox is covered ≥ min_cover by backbone
+# blocks is in-flow ink, not a floating figure → kind=inflow. Applies to ANY provenance (older papers
+# embed equation ink as xobjects — 1506's entire false population is xobject-prov display math); the
+# calibration polarity was decisive: real diagrams/floats sit at cov 0–40% (ph-zigzag diagrams ≈ 0%,
+# a real uncaptioned plot at 0%), equation ink at 70–100%, and the one text-welded formation defect
+# (2112 id6 at 56%) stays untouched below the 0.7 cut. Captioned regions are never candidates (PRIMARY
+# invariant). summary.inflow counts demotions.
+function Set-InflowKind([System.Collections.Generic.List[object]] $Figures, $WideByPage, $Cfg, $Summary) {
+    $icfg = $Cfg.inflow_demotion
+    $minCover = [double]$icfg.min_cover
+    foreach ($fig in $Figures) {
+        if ($fig.kind -ne 'figure' -or $fig.caption) { continue }
+        $wide = $WideByPage[[int]$fig.page]
+        if ($null -eq $wide -or $wide.Count -eq 0) { continue }
+        $fx0 = [double]$fig.bbox[0]; $fy0 = [double]$fig.bbox[1]; $fx1 = [double]$fig.bbox[2]; $fy1 = [double]$fig.bbox[3]
+        $fArea = ($fx1 - $fx0) * ($fy1 - $fy0)
+        if ($fArea -le 0) { continue }
+        $cov = 0.0
+        foreach ($wb in $wide) {
+            $ix = [math]::Min($fx1, $wb[2]) - [math]::Max($fx0, $wb[0])
+            if ($ix -le 0) { continue }
+            $iy = [math]::Min($fy1, $wb[3]) - [math]::Max($fy0, $wb[1])
+            if ($iy -le 0) { continue }
+            $cov += $ix * $iy
+            if ($cov / $fArea -ge $minCover) { break }
+        }
+        if ($cov / $fArea -lt $minCover) { continue }
+        $fig.kind = 'inflow'
+        $Summary.figures--
+        $Summary.inflow++
+    }
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -773,6 +810,9 @@ function ConvertTo-FigureRegions {
     # V_letters evidence view (letters-elevation.md) — rides the consensus pass
     $lettersCfg = $cfg.letters
     $lettersEnabled = ($consensusEnabled -and $null -ne $lettersCfg -and [bool]$lettersCfg.enabled)
+    # T3-lite in-flow veto (absent block = disabled)
+    $inflowCfg = $cfg.inflow_demotion
+    $inflowEnabled = ($null -ne $inflowCfg -and [bool]$inflowCfg.enabled)
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -796,6 +836,7 @@ function ConvertTo-FigureRegions {
         caption_splits = 0   # V_caption interior split: welded regions cut at an interior caption
         furniture = 0        # T1: uncaptioned stroke-only acyclic strips demoted figure→furniture
         letter_blocks = 0; letter_bridges = 0   # V_letters: blocks attached / cross-component welds
+        inflow = 0           # T3-lite: uncaptioned regions inside the text-column flow (backbone veto)
     }
     # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
     $gates = @{ degenEps = $degenEps; floorEm = $floorEm; fallbackPt2 = $fallbackPt2; minDensity = $minDensity }
@@ -1017,11 +1058,29 @@ function ConvertTo-FigureRegions {
         }
     }
 
-    # T1 furniture demotion — LAST (captions are final, so the PRIMARY population is invariant:
-    # only uncaptioned pure-path regions are candidates). v2: attached letter blocks join the cycle
-    # graph as vertices, so closed text-node diagrams spare themselves by topology, not just shape.
+    # T1 furniture demotion — post-caption (captions are final, so the PRIMARY population is invariant:
+    # only uncaptioned pure-path regions are candidates). v2: attached letter blocks de-strip the shape
+    # test via the augmented bbox.
     if ($furnEnabled) {
         Set-FurnitureKind $figures $pathRec $bodyPt $cfg $summary $selBlockBx
+    }
+
+    # T3-lite in-flow veto — also post-caption: uncaptioned regions covered by the page's wide-block
+    # text backbone are in-flow ink (display math, inline embedded images), not floating figures.
+    if ($inflowEnabled -and $bodyPt) {
+        $widePt = [double]$inflowCfg.wide_block_em * $bodyPt
+        $wideByPage = @{}
+        $blocksPath2 = $PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl'
+        if (Test-Path $blocksPath2) {
+            foreach ($line in (Get-Content $blocksPath2 | Where-Object { $_.Trim() })) {
+                $bk = $line | ConvertFrom-Json
+                if (-not $bk.bx -or ($bk.bx[2] - $bk.bx[0]) -lt $widePt) { continue }
+                $pgk = [int]$bk.page
+                if (-not $wideByPage.ContainsKey($pgk)) { $wideByPage[$pgk] = [System.Collections.Generic.List[object]]::new() }
+                $wideByPage[$pgk].Add([double[]]@($bk.bx))
+            }
+            Set-InflowKind $figures $wideByPage $cfg $summary
+        }
     }
 
     # [string[]]@(...) so an empty page-set writes an empty file instead of throwing on null.

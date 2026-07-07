@@ -874,6 +874,62 @@ Describe 'pdfdig figure-region clustering — T1 furniture demotion (unit)' {
     }
 }
 
+Describe 'pdfdig figure-region clustering — T3-lite in-flow veto (unit)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:cfgI = [pscustomobject]@{ inflow_demotion = [pscustomobject]@{ enabled = $true; wide_block_em = 20.0; min_cover = 0.7 } }
+        $script:NewFigI = {
+            param($bbox, $caption)
+            $r = [ordered]@{
+                id = 0; page = 1; bbox = $bbox; area = 100.0; area_em2 = 10.0; density = 0.5
+                path_ids = @(0); path_count = 1; xobject_ids = @(); xobject_count = 0
+                letter_block_ids = @(); provenance = 'path'; kind = 'figure'; flag = $null; caption = $caption
+            }
+            $figs = [System.Collections.Generic.List[object]]::new(); $figs.Add($r); , $figs
+        }
+        $script:NewSummaryI = { [ordered]@{ figures = 1; inflow = 0 } }
+    }
+
+    It 'demotes a region fully covered by backbone lines (display-math ink)' {
+        $wide = @{ 1 = [System.Collections.Generic.List[object]]::new() }
+        $wide[1].Add([double[]]@(0, 0, 400, 30))     # one wide line band covering the region
+        $figs = & $NewFigI @(50.0, 5.0, 350.0, 25.0) $null
+        $s = & $NewSummaryI
+        Set-InflowKind $figs $wide $cfgI $s
+        $figs[0].kind | Should -Be 'inflow'
+        $s.inflow  | Should -Be 1
+        $s.figures | Should -Be 0
+    }
+
+    It 'spares a region in whitespace (low coverage)' {
+        $wide = @{ 1 = [System.Collections.Generic.List[object]]::new() }
+        $wide[1].Add([double[]]@(0, 0, 400, 10))     # backbone line clips only the region bottom
+        $figs = & $NewFigI @(50.0, 5.0, 350.0, 105.0) $null
+        $s = & $NewSummaryI
+        Set-InflowKind $figs $wide $cfgI $s
+        $figs[0].kind | Should -Be 'figure'
+        $s.inflow | Should -Be 0
+    }
+
+    It 'never touches a captioned region (PRIMARY invariant)' {
+        $wide = @{ 1 = [System.Collections.Generic.List[object]]::new() }
+        $wide[1].Add([double[]]@(0, 0, 400, 30))
+        $cap = [ordered]@{ block_id = 9; text = 'Figure 1: bars'; cue = $true }
+        $figs = & $NewFigI @(50.0, 5.0, 350.0, 25.0) $cap
+        $s = & $NewSummaryI
+        Set-InflowKind $figs $wide $cfgI $s
+        $figs[0].kind | Should -Be 'figure'
+    }
+
+    It 'ignores pages with no backbone blocks' {
+        $figs = & $NewFigI @(50.0, 5.0, 350.0, 25.0) $null
+        $s = & $NewSummaryI
+        Set-InflowKind $figs @{} $cfgI $s
+        $figs[0].kind | Should -Be 'figure'
+    }
+}
+
 Describe 'pdfdig figure-region clustering — narrow-caption overlap denominator' {
     BeforeAll {
         $script:wn = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-capfix-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
