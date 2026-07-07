@@ -65,6 +65,12 @@ Describe 'finalize figure weave' {
         Test-Path (Join-Path $script:runDir 'wpaper-membrane/imageFile0.png') | Should -BeTrue
         Test-Path (Join-Path $script:runDir 'wpaper-membrane/imageFile1.png') | Should -BeTrue
     }
+    It 'carries the image dir UP with the paper-root mirror (links resolve there too)' {
+        $paperRoot = Split-Path -Parent (Split-Path -Parent $script:runDir)   # {wf}/wpaper
+        Test-Path (Join-Path $paperRoot 'wpaper-membrane.md')                | Should -BeTrue
+        Test-Path (Join-Path $paperRoot 'wpaper-membrane/imageFile0.png')    | Should -BeTrue   # -Path glob, not -LiteralPath
+        Test-Path (Join-Path $paperRoot 'wpaper-membrane/imageFile1.png')    | Should -BeTrue
+    }
     It 'reports weave counters (woven / copied / markers)' {
         $res.weave.figures_woven | Should -Be 1
         $res.weave.images_copied | Should -Be 2

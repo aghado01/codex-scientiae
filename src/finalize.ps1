@@ -295,7 +295,8 @@ function Invoke-Finalize {
         if (Test-Path -LiteralPath $runImgDir) {
             $mirrorImgDir = Join-Path $paperRoot "$slug-membrane"
             if (-not (Test-Path -LiteralPath $mirrorImgDir)) { New-Item -ItemType Directory -Force -Path $mirrorImgDir | Out-Null }
-            Copy-Item -LiteralPath (Join-Path $runImgDir '*') -Destination $mirrorImgDir -Force
+            # -Path (not -LiteralPath): the trailing * must glob; -LiteralPath treats it as a literal filename
+            Copy-Item -Path (Join-Path $runImgDir '*') -Destination $mirrorImgDir -Force
         }
     }
 
