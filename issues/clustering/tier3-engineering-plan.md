@@ -60,12 +60,18 @@ V_caption splitter folds in as SIGNED evidence instead of a post-pass. m3 (cophe
 
 ## Thrust 5 — close the loop to the deliverable (the north star is the point)
 
-Detection is gate-validated; the product is not yet drinking it. Wire the figure lane into the
-finalize/publish path: pdfdig-adapter + membrane emit CAPTIONED figure crops into `{slug}.md` at the
-oracle register (PNG, `images/{slug}/`, caption text under the image) — the "replicate an oracle run"
-claim becomes inspectable per paper, starting with voroninski (a corpus the user actually reads).
-Small parallel items: fetcher magic-byte sniffing (the 1404 intake gap); item-D blocks-lane diagnosis;
-`mechanism` attribution polish.
+**v1 ✅ LANDED 2026-07-07 (`e8d1cf9`) — the finalize weave, scoped to the RUN-DIR render (publish
+deferred; the render IS the measurement instrument, indifferent to detection quality by design).**
+Shared primitives codified first, per the convergence doctrine: `src/md-register.ps1` = the ONE
+markdown figure register (image line / italic caption / flagged marker), extracted byte-identical
+from the oracle's `Copy-LatexFigures` and now called by BOTH lanes (latex suite 62/62 parity);
+`pdfdig-images.ps1` rides the shared `Invoke-PdfRaster` shim (one MuPDF mechanism project-wide).
+`finalize.ps1 Get-FigureWeave`: captioned crops ride their caption chunks (the placement token
+`Move-CaptionsToAnchors` always reserved), uncaptioned crops flush at page boundaries, failures are
+flagged markers, PNGs run-local under `{slug}-membrane/`. E2E voroninski 1109.0573v2: 6 captioned
+at their prose anchors + 5 page-flushed, 11 PNGs, 0 markers — the oracle register from a bare PDF.
+REMAINING in this thrust: publish carries `{slug}-membrane/` up (mirror links); docling-lane images;
+fetcher magic-byte sniffing; item-D blocks-lane diagnosis; `mechanism` attribution polish.
 
 ## Sequencing + measurement
 
