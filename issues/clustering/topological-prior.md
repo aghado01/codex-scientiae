@@ -24,24 +24,27 @@ The prior is the band, calibratable exactly the way `scratch/stream-calib.ps1` c
 (inside-caption vs across-caption distributions gave 7.24em min boundary vs 0.63em median internal step —
 those ARE birth/death statistics). One object replaces the accumulating threshold zoo, page-adaptively.
 
-## 1. Increment T1 — cycle-rank as the equation-furniture discriminator (cheap, lands a queued item)
+## 1. Increment T1 — cycle-rank as the equation-furniture discriminator — ✅ LANDED 2026-07-06 (`242fb92`)
 
-The residual-diagnosis class "equation-furniture strips" (355×12 overline clusters) needs a
-discrimination signal. Topology supplies the principled one ([[no-magic-string-structural-heuristics]]):
+`Set-FurnitureKind` in `pdfdig-figures.ps1`, knobs `figure_regions.furniture_demotion`; post-caption
+pass so PRIMARY is invariant by construction. **As landed the rule INVERTED the sketch above** — the
+calibration crops (scratch/furniture-calib.ps1) exposed that the most important diagram class,
+commutative diagrams with TEXT nodes, has β₁ = 0 in path space (arrows only; the circuit is completed
+by LETTERS, which are not in the path cloud). So topology cannot positively identify diagrams here —
+instead it positively identifies FURNITURE, with the circuit test as the VETO:
 
-- **Diagrams have circuits.** Commutative squares, boxed nodes, axes+frame closures — their
-  proximity/overlap graph has independent cycles. Furniture (overlines, underbraces, rules) is
-  topologically trivial: a path or a star, cycle rank 0, and near-1D (anisotropic bbox cloud).
-- **No PH engine needed at this rung**: cycle rank = |E| − |V| + |components| of the region's member
-  graph with edges = pairs within radius r (one union-find pass — the machinery `Join-FigureViews`
-  already has). Evaluate at 2–3 radii (e.g. 0.5/1/2 em) → a poor-man's β₁(t) curve per region.
-- Gate: `kind=figure` requires (β₁ > 0 at meso-scale) OR (isotropy above a floor) OR caption evidence —
-  exact rule to be calibrated on the crop-classified 2210/2111 residuals (known furniture vs known
-  small diagrams, both already eyeballed 2026-07-06).
+> furniture ⇐ uncaptioned ∧ pure-path ∧ NO areal member (min extent ≤ 4pt each — pure stroke ink)
+>            ∧ β₁ = 0 at 2em (any circuit disqualifies — even a box drawn as 4 strokes)
+>            ∧ strip-shaped (aspect ≥ 6 OR height ≤ 1.5em).
 
-This is the first *symbolic-free* separability enhancement: it separates by SHAPE OF CONNECTIVITY,
-not size/density (the small real chain-diagrams and the furniture strips overlap in area/density —
-that is why the size floor cannot do it).
+The shape clause is what spares the two β₁ = 0 danger classes: text-node diagrams (squarish/tall) and
+barcode/interval-bar figures (2111's class — all-thin, tall). Measured: **7 demotions corpus-wide,
+0 false** — 2210's overline strip, 2403's framed-paragraph border rules + interval-annotation strips,
+plus 2 catches OUTSIDE the calibration set (2302: radical-sign bars in body text — the rule
+generalized). 2403's one ambiguous interval annotation spared itself via a genuine 2em circuit.
+**Gate: SECONDARY |dInl| 7.9 → 7.2** (2302 6→4, 2403 17→13, 2210 13→12); PRIMARY row-identical.
+Lesson for T2–T4: on pages, path-space topology is evidence about NON-figures more than about figures;
+positive figure evidence needs the letters lane in the complex (that is T3's backbone in another guise).
 
 ## 2. Increment T2 — persistence-band region selection (H0 prior proper)
 

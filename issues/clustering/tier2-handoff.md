@@ -9,11 +9,12 @@ NORTH STAR recorded in `issues/pdfdig-lane/pdfdig-ps-converter.md`: pdfdig conve
 finalize/pre-promotion standards (ideal: replicate an oracle run from a bare PDF). Remaining queue,
 in rough value order:
 (1) caption-diag on 2302 (the A2-exposed hidden miss — one of Figs 1/5 unclaimed);
-(2) **topological-prior T1** (cycle-rank equation-furniture discriminator — `topological-prior.md`;
-    lands the queued furniture item with a principled signal); (3) V_caption (b) positive vote / kind
-    promotion (E-items); (4) letters-aware crop padding (SECONDARY crop quality); (5) D text-lane
-    (2210 Figs 1/4); (6) T2 persistence-band selection; (7) Jaccard provenance view + SymmetrizationRule
-    (m2 proper — still gated on IR enrichment: clip-group-id/color/marked-content not yet emitted).
+(2) ~~topological-prior T1~~ ✅ LANDED `242fb92` (SECONDARY 7.9 → 7.2; see POST-T1 update + brief §1);
+(3) V_caption (b) positive vote / kind promotion (E-items); (4) letters-aware crop padding (SECONDARY
+    crop quality — same letters-in-the-complex theme as T1's lesson); (5) D text-lane (2210 Figs 1/4);
+(6) T2 persistence-band selection; (7) Jaccard provenance view + SymmetrizationRule (m2 proper — still
+    gated on IR enrichment: clip-group-id/color/marked-content not yet emitted). SECONDARY residual
+    focus after T1: 2205 +14 / 2403 +13 / 2210 +12 over; 2112 −7 / 2307 −6 under.
 Out-of-sample check when available: run the gate on compendia/mapper once that catalog has pig runs +
 oracle sidecars (every knob was ph-zigzag-calibrated).
 Mapper-catalog oracle coverage is 9/10 and will stay there: **2504.09042v1 is a PDF-only arXiv submission**
@@ -77,6 +78,15 @@ FIGURE-float oracle), ledger D text-lane (2210 −2, Figs 1/4), oracle noise (23
 (coincidental cancellation, the 2210-16=16 phenomenon again; Figures 2/3/4/6 captioned, one of Figs 1/5
 unclaimed → run `scratch/caption-diag.ps1 -Slug 2302.12796v2` as the next diagnostic). Table-cued regions
 now sit in the `tab` column, outside both populations.
+
+**POST-T1 UPDATE (2026-07-06, `242fb92`, runs 20260706_21xxxx — cycle-rank furniture demotion):**
+**SECONDARY mean |dInl| = 7.2** (9.7 → 9.1 → 8.3 → 8.1 → 7.9 → 7.2); PRIMARY row-identical (0.7,
+7/10 exact — demotion is post-caption, PRIMARY-invariant by construction). 7 demotions corpus-wide,
+0 false (2210 overline strip; 2403 framed-box rules + annotation strips; 2302 radical-sign bars ×2 —
+generalized past the calibration set). Design inversion recorded in `topological-prior.md` §1: text-node
+commutative diagrams have β₁=0 in path space, so topology VETOES furniture rather than detecting
+diagrams. Remaining SECONDARY residual is now dominated by 2205 (+14, its 31 bitmaps' vector
+companions?), 2403 (+13), 2210 (+12 fragments) on the over side and 2112 (−7)/2307 (−6) under-detection.
 Splitter corpus verify: 5 splits, all genuine, 0 false — incl. 2307 pg17 (Figure 6 + Figure 7), a weld no
 prior diagnostic had surfaced.
 m1 ablations (scratch/consensus-ablation.ps1): consensus-off reproduces the pre-m1 table EXACTLY (9.1);
