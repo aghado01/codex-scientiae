@@ -118,3 +118,47 @@ Describe 'dual-lane source resolution' {
         { Resolve-PaperSource -Root $script:root -Paper 'odlpaper' -Lane 'pdfdig' } | Should -Throw '*pdfdig source not found*'
     }
 }
+
+Describe 'pdfdig adapter — caption pre-typing (the caption-weld fix)' {
+    BeforeAll {
+        . "$PSScriptRoot/../src/pdfdig-adapter.ps1"
+        $script:tc = Join-Path ([IO.Path]::GetTempPath()) ('adapter-cap-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:tc | Out-Null
+
+        # nodes: prose (block 3), TWO wrapped caption lines (block 7), prose (block 4)
+        $nodes = @(
+            '{"id":0,"type":"prose","page":1,"line_id":0,"block":3,"baseline_y":700,"content":"Body prose before.","font size":10.0,"bounding box":[72,695,300,705],"role":"prose","script":"normal","flags":[]}',
+            '{"id":1,"type":"prose","page":1,"line_id":1,"block":7,"baseline_y":680,"content":"Figure 2: Each algorithm average","font size":10.0,"bounding box":[72,675,300,685],"role":"prose","script":"normal","flags":[]}',
+            '{"id":2,"type":"prose","page":1,"line_id":2,"block":7,"baseline_y":668,"content":"reconstruction error, wrapped.","font size":10.0,"bounding box":[72,663,300,673],"role":"prose","script":"normal","flags":[]}',
+            '{"id":3,"type":"prose","page":1,"line_id":3,"block":4,"baseline_y":650,"content":"Body prose after.","font size":10.0,"bounding box":[72,645,300,655],"role":"prose","script":"normal","flags":[]}'
+        )
+        $script:npath = Join-Path $script:tc 'cap.nodes.jsonl'
+        [IO.File]::WriteAllLines($script:npath, $nodes)
+        [IO.File]::WriteAllLines((Join-Path $script:tc 'cap.figures.jsonl'),
+            @('{"id":0,"page":1,"kind":"figure","caption":{"block_id":7,"text":"Figure 2: ..."}}'))
+
+        $script:opath = Join-Path $script:tc 'cap.out.jsonl'
+        $script:cres = Invoke-ProjectPdfDigNodes -PdfDigNodesPath $script:npath -OutputPath $script:opath
+        $script:onodes = @(Get-Content $script:opath | ForEach-Object { $_ | ConvertFrom-Json })
+    }
+    AfterAll { if ($script:tc -and (Test-Path $script:tc)) { Remove-Item -Recurse -Force $script:tc } }
+
+    It 'emits the caption block as ONE standalone type=caption node (wrapped lines fused)' {
+        $caps = @($script:onodes | Where-Object { $_.type -eq 'caption' })
+        $caps.Count | Should -Be 1
+        $caps[0].content | Should -Be 'Figure 2: Each algorithm average reconstruction error, wrapped.'
+        @($caps[0].flags) | Should -Contain 'pig_caption'
+        $script:cres.Captions | Should -Be 1
+    }
+    It 'leaves surrounding prose as ordinary paragraphs' {
+        @($script:onodes | Where-Object { $_.type -eq 'paragraph' }).Count | Should -Be 2
+    }
+    It 'is unchanged when no figures lane sits beside the nodes' {
+        $n2 = Join-Path $script:tc 'plain.nodes.jsonl'
+        Copy-Item $script:npath $n2
+        $o2 = Join-Path $script:tc 'plain.out.jsonl'
+        $r2 = Invoke-ProjectPdfDigNodes -PdfDigNodesPath $n2 -OutputPath $o2
+        $r2.Captions | Should -Be 0
+        @(Get-Content $o2 | ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.type -eq 'caption' }).Count | Should -Be 0
+    }
+}

@@ -92,6 +92,23 @@ function Invoke-ProjectPdfDigNodes {
         if (-not [string]::IsNullOrWhiteSpace($l)) { $runs.Add((ConvertFrom-Json -InputObject $l -AsHashtable)) }
     }
 
+    # CAPTION PRE-TYPING (the caption-weld fix, tier3-engineering-plan.md render-harvest): the pig
+    # figure lane already KNOWS which Lane-3 blocks are captions (figures.jsonl caption.block_id — the
+    # attachment is geometric+cue evidence, not string matching). Spend that born signal here: lines
+    # belonging to a caption block emit as ONE standalone type='caption' node instead of paragraph
+    # shards, so collapse can never agglomerate a caption into the preceding prose ("…SSIM (bottom)
+    # overFigure 2: …", 2008.10579v1 chunk 342) and normalize/finalize see it as caption furniture
+    # born-typed. Same idiom as pre-typed headings. Absent figures lane ⇒ behavior unchanged.
+    $captionBlocks = @{}
+    $figJsonl = Join-Path (Split-Path $PdfDigNodesPath -Parent) ((Split-Path -Leaf $PdfDigNodesPath) -replace '\.nodes\.jsonl$', '.figures.jsonl')
+    if (Test-Path -LiteralPath $figJsonl) {
+        foreach ($l in [System.IO.File]::ReadLines($figJsonl)) {
+            if ([string]::IsNullOrWhiteSpace($l)) { continue }
+            $f = ConvertFrom-Json -InputObject $l
+            if ($f.caption -and $null -ne $f.caption.block_id) { $captionBlocks[[int]$f.caption.block_id] = $true }
+        }
+    }
+
     # group consecutive runs into LINES (line_id when present; orphans key on page+baseline)
     $lines = [System.Collections.Generic.List[object]]::new(8192)
     $cur = $null; $curKey = $null
@@ -119,7 +136,8 @@ function Invoke-ProjectPdfDigNodes {
     $out = [System.Collections.Generic.List[object]]::new(8192)
     $id = 0
     $markersDropped = 0; $flagged = 0; $formulaLines = 0
-    $counts = @{ paragraph = 0; heading = 0; formula = 0 }
+    $counts = @{ paragraph = 0; heading = 0; formula = 0; caption = 0 }
+    $captionOpen = $null   # @{ block; page; runs; contentLines; flags } — a caption block's wrapped lines merge
     $formulaOpen = $null   # @{ group; content(List); runs(List) } — consecutive same-group lines merge
     # @{ key; page; level; runs; contentLines; flags } — consecutive lines sharing a merge key
     # (same outline entry, or the tier-0 title) are physical wraps of ONE logical heading
@@ -134,6 +152,17 @@ function Invoke-ProjectPdfDigNodes {
                 flags = @($formulaOpen.flags)   # SortedSet: ordered, deduped, NO pipeline (wrap-free)
             })
             $counts.formula++
+        }
+    }
+    $closeCaption = {
+        if ($null -ne $captionOpen) {
+            $out.Add([ordered]@{
+                id = $id; type = 'caption'; page = $captionOpen.page
+                bbox = (Merge-RunBbox $captionOpen.runs.ToArray())
+                content = ($captionOpen.contentLines -join ' ')   # wrapped caption lines rejoin with a space
+                flags = @($captionOpen.flags)
+            })
+            $counts.caption++
         }
     }
     $closeHeading = {
@@ -163,6 +192,34 @@ function Invoke-ProjectPdfDigNodes {
         $lineFlags = [System.Collections.Generic.SortedSet[string]]::new([StringComparer]::Ordinal)   # sorted = deterministic emission
         foreach ($r in $ln) { foreach ($f in $r.flags) { [void]$lineFlags.Add([string]$f) } }
         if ($lineFlags.Count -gt 0) { $flagged++ }
+
+        # caption-block lines intercept FIRST (born signal beats line type): consecutive lines of one
+        # caption block fuse into a single standalone caption node
+        $blkId = if ($null -ne $first.block) { [int]$first.block } else { -1 }
+        if ($blkId -ge 0 -and $captionBlocks.ContainsKey($blkId)) {
+            & $closeFormula; if ($null -ne $formulaOpen) { $id++; $formulaOpen = $null }
+            & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
+            $seamed = ConvertTo-SeamedText $ln.ToArray() $false
+            if ($null -ne $captionOpen -and $captionOpen.block -eq $blkId) {
+                $captionOpen.runs.AddRange($ln)
+                $captionOpen.contentLines.Add($seamed)
+                foreach ($f in $lineFlags) { [void]$captionOpen.flags.Add($f) }
+                continue
+            }
+            & $closeCaption; if ($null -ne $captionOpen) { $id++ }
+            $captionOpen = @{
+                block = $blkId; page = $first.page
+                runs = [System.Collections.Generic.List[object]]::new()
+                contentLines = [System.Collections.Generic.List[string]]::new()
+                flags = [System.Collections.Generic.SortedSet[string]]::new([StringComparer]::Ordinal)
+            }
+            $captionOpen.runs.AddRange($ln)
+            $captionOpen.contentLines.Add($seamed)
+            foreach ($f in $lineFlags) { [void]$captionOpen.flags.Add($f) }
+            [void]$captionOpen.flags.Add('pig_caption')
+            continue
+        }
+        & $closeCaption; if ($null -ne $captionOpen) { $id++; $captionOpen = $null }
 
         if ($ltype -eq 'marker') {
             & $closeFormula; if ($null -ne $formulaOpen) { $id++; $formulaOpen = $null }
@@ -250,6 +307,7 @@ function Invoke-ProjectPdfDigNodes {
     }
     & $closeFormula; if ($null -ne $formulaOpen) { $id++; $formulaOpen = $null }
     & $closeHeading; if ($null -ne $headingOpen) { $id++; $headingOpen = $null }
+    & $closeCaption; if ($null -ne $captionOpen) { $id++; $captionOpen = $null }
 
     $null = Write-JsonlStage -Records $out.ToArray() -OutputPath $OutputPath -SourcePath $SourcePath -Stage 'pdfdig-adapter'
 
@@ -258,6 +316,7 @@ function Invoke-ProjectPdfDigNodes {
         Lines = $lines.Count
         Paragraphs = $counts.paragraph; Headings = $counts.heading
         Formulas = $counts.formula; FormulaLines = $formulaLines   # nodes group; lines are the input tally
+        Captions = $counts.caption   # born-typed from the pig figure lane's caption block ids
         MarkersDropped = $markersDropped
         FlaggedLines = $flagged
     }

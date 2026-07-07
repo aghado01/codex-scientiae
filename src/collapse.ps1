@@ -147,6 +147,14 @@ function Invoke-Collapse {
             # the dispatchable "isolation" signal for the membrane's gated math-repair loop
             if ($nd.flags -and @($nd.flags).Count -gt 0) { $chunk['flags'] = @($nd.flags) }
             if ($t -eq 'header' -or $t -eq 'footer') { $chunk['is_furniture'] = $true }
+            if ($t -eq 'caption') {
+                # pig-lane BORN-TYPED caption (pdfdig-adapter: figures.jsonl caption block ids) — land it
+                # exactly where normalize's shape classifier would: a prose chunk carrying caption
+                # furniture. Standing alone here is the point: agglomeration can never weld it into the
+                # neighboring paragraph, and finalize's caption relocation + figure weave anchor on it.
+                $chunk['type'] = 'prose'
+                $chunk['is_furniture'] = 'caption'
+            }
             $chunks.Add([pscustomobject]$chunk)
         }
     }
