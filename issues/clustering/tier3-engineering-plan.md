@@ -80,10 +80,12 @@ caption.text was the 100-char text_preview; FIXED at the source (`cae3b61`: bloc
 adapter/collapse agglomeration WELDS its lines into the preceding prose paragraph (chunk 342:
 "…SSIM (bottom) overFigure 2: Each algorithm's…" — no space at the weld), so normalize cannot
 classify it as caption furniture and the weave tail-places the crop. The item-D family with a precise
-trace. Candidate fix (next move): the adapter already reads the pig run — let it consume
-figures.jsonl caption block_ids/bboxes and emit those lines as SEPARATE caption-typed nodes at
-intake (born-signal wiring, not string matching); heading-recovery precedent says pre-typing at the
-adapter is the lane's idiom.
+trace. **FIXED (`be10408` — adapter caption PRE-TYPING):** the adapter consumes figures.jsonl caption
+block ids and emits those lines as standalone type=caption nodes at intake (born-signal wiring, the
+pre-typed-headings idiom); collapse lands them as caption-furniture prose chunks agglomeration cannot
+touch. E2E: the weld is gone, Figures 2 AND 3 anchor at their in-text references with full captions.
+The weave's anchor coverage now rides the pig lane's caption quality directly — the two lanes are
+coupled through born signals end to end.
 
 ## Sequencing + measurement
 
