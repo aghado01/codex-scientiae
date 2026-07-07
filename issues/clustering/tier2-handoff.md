@@ -10,8 +10,12 @@ finalize/pre-promotion standards (ideal: replicate an oracle run from a bare PDF
 in rough value order:
 (1) caption-diag on 2302 (the A2-exposed hidden miss — one of Figs 1/5 unclaimed);
 (2) ~~topological-prior T1~~ ✅ LANDED `242fb92` (SECONDARY 7.9 → 7.2; see POST-T1 update + brief §1);
-(3) V_caption (b) positive vote / kind promotion (E-items); (4) letters-aware crop padding (SECONDARY
-    crop quality — same letters-in-the-complex theme as T1's lesson); (5) D text-lane (2210 Figs 1/4);
+(3) **V_letters elevation — DESIGNED + CALIBRATED (`letters-elevation.md`), implementation next**:
+    evidence-tier consensus view (bridge unions via small path-entangled letter blocks: width ≤4em,
+    ≤10 letters, gap ≤0.5em, ≥2-components rule) + `letter_block_ids` membership + crop-bbox union —
+    SUBSUMES the letters-aware-crop-padding item, heals label-split fragments, and (v2) restores β₁
+    for text-node diagrams; also builds T3's backbone classifier for free;
+(4) V_caption (b) positive vote / kind promotion (E-items); (5) D text-lane (2210 Figs 1/4);
 (6) T2 persistence-band selection; (7) Jaccard provenance view + SymmetrizationRule (m2 proper — still
     gated on IR enrichment: clip-group-id/color/marked-content not yet emitted). SECONDARY residual
     focus after T1: 2205 +14 / 2403 +13 / 2210 +12 over; 2112 −7 / 2307 −6 under.
