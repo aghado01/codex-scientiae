@@ -1,99 +1,109 @@
-# Tier-3 engineering plan — pushing past the veto era
+# Tier-3 engineering plan — re-minted post-render (2026-07-07)
 
-**Status:** PLAN (2026-07-07), written at the close of the two-corpus round. The gates say the
-threshold/veto era is over: PRIMARY is attributed to the last region on both corpora (ph-zigzag 0.7,
-voroninski 0.48, zero over-detections anywhere), and every remaining SECONDARY point lives in defects
-no post-hoc gate can reach — regions formed wrong, or content the formation never sees. Twice-confirmed
-design law carried forward: **structural priors veto figure-hood reliably, and never assert it** —
-so Tier-3 pushes the *formation* machinery, keeping assertions for caption/oracle evidence only.
+**Status:** RE-MINTED after thrust-5 shipped. The plan below supersedes the pre-render draft (the
+landed work is summarized in §0; the forward thrusts in §2 are re-ordered by a new objective).
 
-## What the residuals demand (the evidence)
+## The reframe that forces the re-mint
 
-| residual | where it lives | what it needs |
-|---|---|---|
-| voroninski SECONDARY 11.65 | the 40–70% coverage band: regions text-WELDED at formation (2112 id6 class), multi-panel plot fragments | the metric must know the backbone (T3 full); selection must know persistence (T2) |
-| ph-zigzag 2112 dInl −10 | real tikz-cd diagrams pig cannot SEE: their arrows are FONT GLYPHS, not paths — the path lane has nothing to cluster | a new formation modality: glyph-cluster candidates |
-| 2210 +12 / 2403 +8 | genuinely fragmented small diagrams (block-severed at >6em pen steps) | T2 persistence-band; possibly conditioned metric |
-| PRIMARY unders (D-class) | captions that never became Lane-3 cue blocks | blocks-lane (XYCut/DLA) quality work |
-| Jaccard/symbolic m2 | blocked | IR enrichment (clip-group-id / color / marked-content) |
+The pre-render plan optimized **gate deltas**. Thrust 5 landed the finalize weave, so the deliverable
+is now a **rendered markdown document**, and that changes the objective function:
 
-## Thrust 1 — backbone-conditioned metric (full T3): the metric learns the page
+> The gate delta was always a *proxy*. The readable corpus is the *target*. A defect now ranks by
+> **what a reader sees on the page**, not by which population's count it moves.
 
-The C#-engine move. Today `rectangle-gap` is geometry-blind: ink 2em apart welds whether the gap is
-whitespace or a body-text band. T3-lite vetoes the damage post-hoc; full T3 prevents it: a
-**`rectangle-gap-conditioned`** metric variant in `src/hdbscan` that reads a per-page BANDS sidecar
-(the wide-block backbone T3-lite already computes) and INFLATES gap components that cross a band
-(multiplicative penalty, config-as-data). Engineering surface: one new `IDistanceMetric` in the C#
-engine + `--bands` input on the CLI + `Invoke-Hdbscan` plumbing + the lane writing the bands file.
-Sklearn-pinning discipline: the trust harness gains the variant with unit vectors ([[hdbscan-trust-
-harness]] pattern). Predicted: the text-welded class dies at formation; 2112 id6-type mixed regions
-stop existing; the in-flow veto's demotion counts DROP (it becomes the audit, not the fix) — that
-inversion is the acceptance signal.
+Two consequences invert the old priority order:
+1. **A missing captioned figure is a hole in the document** — the reader sees a paragraph say "Figure 4
+   reports…" with no figure. That is louder than any SECONDARY count. So the PRIMARY residual (text-lane
+   + attachment tail), long deferred as "orthogonal to clustering," is now the **top** deliverable defect.
+2. **The render is the instrument.** It already caught three defects no gate could (truncated caption,
+   caption weld, an empty-glob mirror bug). Every thrust is now measured by *reading the output*, with
+   the gate as one lens among several.
 
-## Thrust 2 — T2 persistence-band selection: one selection rule replaces three heuristics
+Twice-confirmed design law still holds and still governs: **structural priors veto figure-hood
+reliably and never assert it** — assertions come from caption/oracle evidence or off-backbone position.
 
+## §0 — What's landed (the record, compressed)
+
+- **Clustering PRIMARY is DONE on both corpora.** ph-zigzag **0.7** (7/10 exact), voroninski **0.48**
+  (16/23 exact), **0 over-detections anywhere**, gates bit-stable across a full refresh. Every residual
+  under is attributed to a non-clustering cause (below). The Tier-2 arc: 3.7 → 0.7 / 0.48.
+- **SECONDARY:** ph-zigzag **5.4**, voroninski **11.65** — driven down by T1 furniture veto, V_letters,
+  and the T3-lite in-flow veto; the remainder is formation-level (§2-B/C).
+- **The veto ladder** (all post-caption, PRIMARY-invariant): T1 cycle-rank furniture (`242fb92`),
+  V_letters evidence bridge + crop union (`a7e394e`/`23ae8eb`), T3-lite in-flow backbone veto (`72e6f0f`).
+- **Thrust 5 v1** (`e8d1cf9`): finalize weave through the shared `md-register.ps1`; render-harvest fixes
+  — full block `text` (`cae3b61`), adapter caption pre-typing (`be10408`), mirror image-dir carry-up
+  (`958dc34`/`76d244a`). Bare PDF → oracle-register deliverable, proven pixel-to-page.
+- **Queue tamed** (`958dc34`): gzip-single-file intake (voroninski 23/23 oracle-covered), honest
+  `mechanism` labels, mirror links resolve.
+
+## §1 — Where the residuals live NOW (re-measured, per rendered defect)
+
+| residual | rendered-doc symptom | root cause | thrust |
+|---|---|---|---|
+| **2210 −2, 2302 −1** (PRIMARY unders) | a figure is missing from the page under its own reference | THREE sub-classes, precisely diagnosed 2026-07-07: (a) caption in NO block (Fig 1 — detection miss); (b) only an in-text ref exists (Fig 4); (c) multi-caption geometric contention (Fig 16 — a nearer region took a different caption, the true one is >4.5em away) | **A** |
+| voroninski SECONDARY 11.65 | over-cropped / welded diagram regions | 40–70% coverage band: text-WELDED formation + multi-panel plot fragments | **B, C** |
+| ph-zigzag 2112 −10 | tikz-cd diagrams absent from the crop set | arrows are FONT GLYPHS; the path lane is empty there — nothing to cluster | **D** |
+| Jaccard/symbolic m2 | (no direct symptom yet) | blocked on IR enrichment | **E** |
+| docling-lane papers | weave no-ops (no pig run); docling images stay stripped | thrust-5 only wired the pig lane | **F** |
+
+## §2 — Thrusts, re-ordered by deliverable impact
+
+### A. Text-lane + attachment — the PRIMARY-visible residual (NEW top priority)
+The old plan filed this under "blocks-lane quality work, defer." The render promotes it: a missing
+figure is the most visible defect in the document, and this session **diagnosed it to three precise
+sub-classes** (§1), which splits into three independently-shippable fixes:
+- **A1 — caption-shape prefix alignment (cheap, safe).** The attachment cue regex and the gate's
+  classifier forbid leading digits (`[^\p{L}\d]{0,2}`), but the V_caption splitter already proved
+  leading-glyph leniency safe (`> 2 Figure 1:`). Align the three consumers to one shared lenient prefix
+  so leading-glyph captions (`∼ Figure 10:`, `1 Figure 16:`) match everywhere. Recovers the "cue-matched
+  but rejected-by-prefix" tail.
+- **A2 — multi-caption contention (attachment).** When two regions on a page contend for captions,
+  attachment is greedy-nearest and can orphan a caption whose true region is just past the gap
+  (2210 Fig 16). Make attachment a per-page ASSIGNMENT (each caption to its best unclaimed region,
+  each region its best caption) rather than independent nearest-picks. Bounded, no new IR.
+- **A3 — item-D block detection (the hard tail).** Captions that never became a "Figure N"-prefixed
+  Lane-3 block at all (2210 Fig 1). XYCut/DLA quality — the deepest, least certain; do it last and only
+  what the render proves is worth it.
+
+### B. Backbone-conditioned metric (full T3) — the deep SECONDARY move
+`rectangle-gap` is geometry-blind: 2em of whitespace and 2em of body-text band weld identically.
+T3-lite vetoes the damage post-hoc; full T3 prevents it — a `rectangle-gap-conditioned` `IDistanceMetric`
+in `src/hdbscan` reading a per-page BANDS sidecar (the backbone T3-lite already computes) and inflating
+gap components that cross a band. Surface: one C# metric + `--bands` CLI input + `Invoke-Hdbscan`
+plumbing + the lane writing bands; trust-harness unit vectors ([[hdbscan-trust-harness]]).
+**Acceptance signal (unchanged, and elegant): the in-flow veto's demotion count DROPS — it inverts from
+fix to audit.** In the render: fewer over-cropped welds.
+
+### C. T2 persistence-band selection — one rule replaces three heuristics
 From `hdbscan_dendrogram.json` (already emitted), select components persistent across a dilation band
-[a, b] em instead of EOM-stability + `fragmentation_flag_min_clusters` + defrag-elbow. PS-side first
-(policy in the lane, engine untouched). Multi-panel plots: panels merge at moderate t and persist →
-selected whole; shattered diagrams: fragments knit early → selected merged. Calibration exactly like
-stream-calib: birth/death stats of oracle-aligned regions on both corpora. Retires two knobs and the
-with/without-defrag ablation becomes the regression test.
+[a,b] em instead of EOM-stability + `fragmentation_flag_min_clusters` + defrag-elbow. PS-side first.
+Calibrate like `stream-calib` (birth/death stats of oracle-aligned regions). Retires two knobs;
+the defrag ablation becomes its regression test. In the render: multi-panel plots crop whole.
 
-## Thrust 3 — glyph-cluster candidates: the modality pig cannot currently see
+### D. Glyph-cluster candidates — the modality pig cannot see (2112)
+tikz-cd/xy-pic arrows are font glyphs; the path lane is empty, so no veto/merge helps. The elevation's
+second half, now safe because the backbone exists: **math-role letter clusters OFF the backbone**
+(the exact complement of the in-flow veto) become region CANDIDATES, `provenance='glyph'`, crop-rendered.
+Assertion from display-position outside the flow (the T3 bands make it computable). Needs B's bands.
 
-2112's diagrams are drawn in FONT GLYPHS (xy-pic/tikz-cd arrows are characters); the path lane is
-empty there — no veto or merge can fix an empty input. The move is the elevation's second half,
-now safe because the backbone exists: **math-role letter clusters OFF the backbone** (not covered by
-wide blocks — the exact complement of the in-flow veto) become region CANDIDATES, clustered with the
-same machinery, provenance='glyph', crop-rendered like everything else. Gated: candidates must be
-off-backbone AND math-role-dominant AND display-positioned — the assertion comes from position
-outside the flow, which the T3 bands make computable. Targets: 2112 (−10), xy-pic-heavy corpora
-generally; the oracle's diagram work-list gives per-paper ground truth.
+### E. Substrate — IR enrichment → m2 Jaccard/provenance
+`pdfdig-ir` emits clip-group-id / color-bucket / marked-content-id per path (today only a boolean
+`is_clipping`). Then the Jaccard/IDF provenance view enters `Join-FigureViews` as graded-strength,
+`SymmetrizationRule` ports from ThermoMapper `graphs` (read-only, INTO `src/hdbscan/`), the V_caption
+splitter folds in as SIGNED evidence. m3 (cophenetic / `IClusterLineage`) rides the same seam. The
+ThermoMapper cross-pollination artery. Independent — interleaves anywhere.
 
-## Thrust 4 — substrate for m2/m3: IR enrichment + the provenance view
+### F. Thrust-5 remainder — widen the deliverable
+Docling-lane images (weave currently no-ops without a pig run); publish carrying `{slug}-membrane/`
+into `compendia/`; `mechanism`-attribution polish is done. Lower urgency than A but high visibility.
 
-`pdfdig-ir` emits clip-group-id, color-bucket, and marked-content-id per path (today: only a boolean
-`is_clipping`). Then the Jaccard/IDF provenance view enters `Join-FigureViews` as a graded-strength
-view, `SymmetrizationRule` ports from ThermoMapper `graphs` (read-only, INTO `src/hdbscan/`), and the
-V_caption splitter folds in as SIGNED evidence instead of a post-pass. m3 (cophenetic strengths /
-`IClusterLineage`) rides the same seam. This is also the ThermoMapper cross-pollination artery.
+## §3 — Sequencing + measurement
 
-## Thrust 5 — close the loop to the deliverable (the north star is the point)
-
-**v1 ✅ LANDED 2026-07-07 (`e8d1cf9`) — the finalize weave, scoped to the RUN-DIR render (publish
-deferred; the render IS the measurement instrument, indifferent to detection quality by design).**
-Shared primitives codified first, per the convergence doctrine: `src/md-register.ps1` = the ONE
-markdown figure register (image line / italic caption / flagged marker), extracted byte-identical
-from the oracle's `Copy-LatexFigures` and now called by BOTH lanes (latex suite 62/62 parity);
-`pdfdig-images.ps1` rides the shared `Invoke-PdfRaster` shim (one MuPDF mechanism project-wide).
-`finalize.ps1 Get-FigureWeave`: captioned crops ride their caption chunks (the placement token
-`Move-CaptionsToAnchors` always reserved), uncaptioned crops flush at page boundaries, failures are
-flagged markers, PNGs run-local under `{slug}-membrane/`. E2E voroninski 1109.0573v2: 6 captioned
-at their prose anchors + 5 page-flushed, 11 PNGs, 0 markers — the oracle register from a bare PDF.
-REMAINING in this thrust: docling-lane images; item-D blocks-lane diagnosis.
-QUEUE-TAMING 2026-07-07 (`958dc34`): ✅ mirror carries `{slug}-membrane/` up (image links resolve at
-the paper root); ✅ fetcher magic-byte sniffing → the gzip-single-file intake (1404) is fixed in the
-oracle unpack (`Expand-ArxivSourceTarball` sniffs the ustar magic; voroninski now 23/23 oracle-covered);
-✅ `mechanism` attribution honest (oracle-noise first, raster only when bitmaps can be the missing floats).
-
-**Render-harvest (2026-07-07, the instrument's first catches):** (1) truncated captions — pig
-caption.text was the 100-char text_preview; FIXED at the source (`cae3b61`: blocks lane carries full
-`text`; verified through the served pipeline). (2) **caption-weld defect, mechanism traced**: 2008's
-"Figure 2" caption text exists as its own Lane-3 block (the pig crop carries it) but the
-adapter/collapse agglomeration WELDS its lines into the preceding prose paragraph (chunk 342:
-"…SSIM (bottom) overFigure 2: Each algorithm's…" — no space at the weld), so normalize cannot
-classify it as caption furniture and the weave tail-places the crop. The item-D family with a precise
-trace. **FIXED (`be10408` — adapter caption PRE-TYPING):** the adapter consumes figures.jsonl caption
-block ids and emits those lines as standalone type=caption nodes at intake (born-signal wiring, the
-pre-typed-headings idiom); collapse lands them as caption-furniture prose chunks agglomeration cannot
-touch. E2E: the weld is gone, Figures 2 AND 3 anchor at their in-text references with full captions.
-The weave's anchor coverage now rides the pig lane's caption quality directly — the two lanes are
-coupled through born signals end to end.
-
-## Sequencing + measurement
-
-1 → 2 share calibration work (both need band statistics); do 1 first (2's selection is cleaner on
-conditioned formation). 3 needs 1's bands. 4 is independent — can interleave. 5 can start NOW on
-current quality and pulls the whole stack toward the north star; it is the highest-visibility item.
-Every increment: gate on BOTH corpora + mapper when its sidecars exist; calibrate-before-implement;
-crops eyeballed; ablation probes committed under scratch/; PRIMARY invariance is non-negotiable.
+**A1 → A2 first** (cheapest, highest deliverable-visibility, no new IR — recovers real figures a reader
+misses). **B before C, D** (both need bands; C's selection is cleaner on conditioned formation, D needs
+the bands outright). **E interleaves** (independent substrate). **A3 and F** as the render proves them
+worth it. Every increment: **read the rendered output first**, then gate BOTH corpora (+ mapper when its
+sidecars exist), calibrate-before-implement, eyeball crops, commit ablation probes under `scratch/`,
+**PRIMARY invariance non-negotiable**. Cost note: a full-corpus pig refresh is ~34 min (raster tail) —
+refresh the two corpora on independent cadences, not always-both.

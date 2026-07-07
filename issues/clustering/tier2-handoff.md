@@ -6,18 +6,16 @@ re-framed the oracle into two populations — see below). This picks up where `f
 V_caption interior split (m2-a) LANDED 2026-07-06 (`e0175a5`); A2 cue-TYPE split LANDED (`5499a16`)** —
 scoreboard + ledger below are current: **PRIMARY mean |dFig| 0.7, 7/10 exact, 0 over; SECONDARY 7.9.**
 NORTH STAR recorded in `issues/pdfdig-lane/pdfdig-ps-converter.md`: pdfdig converges on the oracle's
-finalize/pre-promotion standards (ideal: replicate an oracle run from a bare PDF). Remaining queue,
-in rough value order:
-(1) caption-diag on 2302 (the A2-exposed hidden miss — one of Figs 1/5 unclaimed);
-(2) ~~topological-prior T1~~ ✅ LANDED `242fb92` (SECONDARY 7.9 → 7.2; see POST-T1 update + brief §1);
-(3) ~~V_letters elevation~~ **✅ v1 LANDED `a7e394e`** (SECONDARY 7.2 → 6.7; PRIMARY invariant;
-    pg17 diamond crops whole again; t_bridge re-calibrated 0.75em — corner labels sit at 0.51–0.55em;
-    see `letters-elevation.md` status). **v2 = β₁-with-letters** (letter blocks as vertices in T1's
-    proximity graph → positive circuit evidence for text-node diagrams) still queued;
-(4) V_caption (b) positive vote / kind promotion (E-items); (5) D text-lane (2210 Figs 1/4);
-(6) T2 persistence-band selection; (7) Jaccard provenance view + SymmetrizationRule (m2 proper — still
-    gated on IR enrichment: clip-group-id/color/marked-content not yet emitted). SECONDARY residual
-    focus after T1: 2205 +14 / 2403 +13 / 2210 +12 over; 2112 −7 / 2307 −6 under.
+finalize/pre-promotion standards (ideal: replicate an oracle run from a bare PDF).
+
+**This handoff is now the LEDGER (what landed + the diagnosed residuals below). The forward ROADMAP is
+`issues/clustering/tier3-engineering-plan.md` (re-minted 2026-07-07 post-render).** In brief: the
+clustering PRIMARY is done (0.7 / 0.48, 0 over, both corpora); the render is now the objective, which
+promotes the text-lane + attachment tail (A1 prefix-alignment → A2 caption-assignment → A3 item-D) to
+the top, ahead of the deep SECONDARY work (B conditioned metric, C persistence-band, D glyph candidates,
+E IR-enrichment/Jaccard, F docling-lane weave). The per-figure diagnosis feeding A is in the FULL-REFRESH
+section below. SECONDARY residual after the veto ladder: ph-zigzag 5.4, voroninski 11.65 (40–70% coverage
+band = formation work).
 Out-of-sample check when available: run the gate on compendia/mapper once that catalog has pig runs +
 oracle sidecars (every knob was ph-zigzag-calibrated).
 Mapper-catalog oracle coverage is 9/10 and will stay there: **2504.09042v1 is a PDF-only arXiv submission**
