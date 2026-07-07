@@ -476,11 +476,13 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
             caption_min_overlap_frac = 0.25
             caption_split = [pscustomobject]@{ enabled = $true; margin_em = 1.0; max_block_em = 3.5 }
         }
-        # path id→bbox map: ids 0..8 = TOP 3x3 grid (y 118..144), ids 9..17 = BOTTOM 3x3 grid (y 60..86)
+        # path id→record map: ids 0..8 = TOP 3x3 grid (y 118..144), ids 9..17 = BOTTOM 3x3 grid (y 60..86)
         $script:pbV = [System.Collections.Generic.Dictionary[int, object]]::new()
         $id = 0
-        foreach ($y0 in 138, 128, 118) { foreach ($x0 in 100, 110, 120) { $script:pbV[$id] = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); $id++ } }
-        foreach ($y0 in 80, 70, 60)    { foreach ($x0 in 100, 110, 120) { $script:pbV[$id] = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); $id++ } }
+        foreach ($y0 in 138, 128, 118) { foreach ($x0 in 100, 110, 120) {
+            $script:pbV[$id] = @{ id = $id; bbox = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); prov = 'path' }; $id++ } }
+        foreach ($y0 in 80, 70, 60)    { foreach ($x0 in 100, 110, 120) {
+            $script:pbV[$id] = @{ id = $id; bbox = [double[]]@($x0, $y0, ($x0 + 6), ($y0 + 6)); prov = 'path' }; $id++ } }
         $script:xbV = [System.Collections.Generic.Dictionary[int, object]]::new()
 
         # a welded parent (both grids, one region) + a page-2 anchor whose claimed caption teaches the
@@ -625,6 +627,90 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (integrat
         $p1 = @($script:riOff.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
         $p1.Count | Should -Be 1
         $script:riOff.Summary.caption_splits | Should -Be 0
+    }
+}
+
+Describe 'pdfdig figure-region clustering — T1 furniture demotion (unit)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:cfgF = [pscustomobject]@{
+            furniture_demotion = [pscustomobject]@{
+                enabled = $true; cycle_radius_em = 2.0; areal_min_extent_pt = 4.0
+                min_aspect = 6.0; max_height_em = 1.5; max_members = 200
+            }
+        }
+        # region factory: a kind=figure record over the given path ids
+        $script:NewFig = {
+            param($ids, $bbox, $caption)
+            $r = [ordered]@{
+                id = 0; page = 1; bbox = $bbox; area = 100.0; area_em2 = 10.0; density = 0.5
+                path_ids = @($ids); path_count = @($ids).Count; xobject_ids = @(); xobject_count = 0
+                provenance = 'path'; kind = 'figure'; flag = $null; caption = $caption
+            }
+            $figs = [System.Collections.Generic.List[object]]::new(); $figs.Add($r); , $figs
+        }
+        $script:NewSummaryF = { [ordered]@{ figures = 1; furniture = 0 } }
+        # path-record map builder from bbox arrays
+        $script:NewRec = {
+            param($bxs)
+            $m = [System.Collections.Generic.Dictionary[int, object]]::new()
+            for ($i = 0; $i -lt $bxs.Count; $i++) { $m[$i] = @{ id = $i; bbox = [double[]]$bxs[$i]; prov = 'path' } }
+            , $m
+        }
+    }
+
+    It 'demotes an acyclic all-thin high-aspect strip (the overline/underbrace class)' {
+        # three thin hrules in a row, region 350x8pt (aspect 44), no circuits
+        $rec = & $NewRec @(@(0, 0, 110, 1.5), @(120, 4, 230, 5.5), @(240, 0, 350, 1.5))
+        $figs = & $NewFig @(0, 1, 2) @(0.0, 0.0, 350.0, 8.0) $null
+        $s = & $NewSummaryF
+        Set-FurnitureKind $figs $rec 10.0 $cfgF $s
+        $figs[0].kind | Should -Be 'furniture'
+        $s.furniture  | Should -Be 1
+        $s.figures    | Should -Be 0
+    }
+
+    It 'spares a box drawn as four strokes (the circuit saves it)' {
+        # 40x40 square outline as 4 thin strokes touching at corners -> cycle rank 1; aspect ~1 but
+        # force the shape clause via height <= 1.5em? no — make it strip-EXEMPT-proof: wide flat box
+        $rec = & $NewRec @(
+            @(0, 0, 40, 1),      # bottom
+            @(0, 9, 40, 10),     # top
+            @(0, 0, 1, 10),      # left
+            @(39, 0, 40, 10)     # right — closes the circuit
+        )
+        $figs = & $NewFig @(0, 1, 2, 3) @(0.0, 0.0, 40.0, 10.0) $null   # h=10pt=1em <= 1.5em: strip-shaped
+        $s = & $NewSummaryF
+        Set-FurnitureKind $figs $rec 10.0 $cfgF $s
+        $figs[0].kind | Should -Be 'figure'
+        $s.furniture  | Should -Be 0
+    }
+
+    It 'spares a region containing any areal member (boxes/blobs disqualify)' {
+        $rec = & $NewRec @(@(0, 0, 110, 1.5), @(120, 0, 130, 10))   # rule + a 10x10 blob
+        $figs = & $NewFig @(0, 1) @(0.0, 0.0, 130.0, 10.0) $null
+        $s = & $NewSummaryF
+        Set-FurnitureKind $figs $rec 10.0 $cfgF $s
+        $figs[0].kind | Should -Be 'figure'
+    }
+
+    It 'spares squarish/tall thin regions (text-node diagrams, barcode figures)' {
+        # two thin arrows 30pt apart vertically: aspect < 6 and h > 1.5em -> not strip-shaped
+        $rec = & $NewRec @(@(0, 0, 60, 1.5), @(0, 40, 60, 41.5))
+        $figs = & $NewFig @(0, 1) @(0.0, 0.0, 60.0, 41.5) $null
+        $s = & $NewSummaryF
+        Set-FurnitureKind $figs $rec 10.0 $cfgF $s
+        $figs[0].kind | Should -Be 'figure'
+    }
+
+    It 'never touches a captioned region (PRIMARY invariant)' {
+        $rec = & $NewRec @(@(0, 0, 110, 1.5), @(120, 4, 230, 5.5), @(240, 0, 350, 1.5))
+        $cap = [ordered]@{ block_id = 9; text = 'Figure 1: bars'; cue = $true }
+        $figs = & $NewFig @(0, 1, 2) @(0.0, 0.0, 350.0, 8.0) $cap
+        $s = & $NewSummaryF
+        Set-FurnitureKind $figs $rec 10.0 $cfgF $s
+        $figs[0].kind | Should -Be 'figure'
     }
 }
 

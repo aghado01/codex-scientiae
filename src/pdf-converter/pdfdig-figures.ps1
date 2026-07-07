@@ -459,7 +459,7 @@ function Group-SubfiguresByCaption([System.Collections.Generic.List[object]] $Fi
 #           bottom band is overhang, not a weld) with caption_min_overlap_frac horizontal overlap.
 # Returns the rebuilt list (ids renumbered); counters: caption_splits + per-kind/caption surgery.
 function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] $Figures,
-    [string] $BlocksJsonl, $PathBbox, $XobjBbox, [double] $BodyPt, $BodyArea, $Cfg, $Gates, $Summary) {
+    [string] $BlocksJsonl, $PathRec, $XobjRec, [double] $BodyPt, $BodyArea, $Cfg, $Gates, $Summary) {
     if (-not (Test-Path $BlocksJsonl)) { return , $Figures }
     $split      = $Cfg.caption_split
     $bp         = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
@@ -509,10 +509,11 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
         }
         if ($interior.Count -eq 0) { $result.Add($fig); continue }
 
-        # raw members back from the id→bbox maps (path and xobject id sequences are separate)
+        # raw members back from the id→record maps (path and xobject id sequences are separate;
+        # records already carry id/bbox/prov)
         $members = [System.Collections.Generic.List[object]]::new()
-        foreach ($pid0 in @($fig.path_ids))    { $members.Add(@{ id = [int]$pid0; bbox = $PathBbox[[int]$pid0]; prov = 'path' }) }
-        foreach ($xid0 in @($fig.xobject_ids)) { $members.Add(@{ id = [int]$xid0; bbox = $XobjBbox[[int]$xid0]; prov = 'xobject' }) }
+        foreach ($pid0 in @($fig.path_ids))    { $members.Add($PathRec[[int]$pid0]) }
+        foreach ($xid0 in @($fig.xobject_ids)) { $members.Add($XobjRec[[int]$xid0]) }
 
         # split at each interior caption, topmost first: the part above a caption is the float it labels
         $subs = [System.Collections.Generic.List[object]]::new()
@@ -567,6 +568,68 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
     return , $result
 }
 
+# Topological-prior T1 (issues/clustering/topological-prior.md): positively identify EQUATION /
+# DECORATION FURNITURE among UNCAPTIONED pure-path figure regions and demote kind figure→furniture,
+# so overline/underbrace rule clusters, framed-paragraph borders, and interval-annotation strips stop
+# polluting the SECONDARY (inline-diagram) population and its crops. The discriminator is topological
+# + compositional, calibrated 2026-07-06 on crop-labeled residuals (scratch/furniture-calib.ps1):
+#   furniture ⇐ NO areal member (every member's min extent ≤ areal_min_extent_pt — furniture is pure
+#               stroke ink; boxes/blobs/filled arrowheads disqualify)
+#            AND cycle rank β₁ = 0 at cycle_radius_em (|E|−|V|+|C| of the member proximity graph —
+#               diagrams close circuits, even box-drawn-as-4-strokes; strips and braces never do)
+#            AND strip-shaped (bbox aspect ≥ min_aspect OR height ≤ max_height_em).
+# CONSERVATIVE by construction: commutative diagrams whose corner nodes are TEXT (letters, not paths)
+# have β₁ = 0 in path space — they are spared by the shape clause (they are squarish and tall), and
+# barcode/interval-bar figures (all-thin, β₁ = 0 — the 2111 class) are spared the same way (tall).
+# Captioned regions are never touched (PRIMARY invariant); xobject regions are rasters, not strokes.
+function Set-FurnitureKind([System.Collections.Generic.List[object]] $Figures, $PathRec,
+    [double] $BodyPt, $Cfg, $Summary) {
+    $fcfg      = $Cfg.furniture_demotion
+    $bp        = if ($BodyPt) { [double]$BodyPt } else { 10.0 }
+    $rPt       = [double]$fcfg.cycle_radius_em * $bp
+    $arealPt   = [double]$fcfg.areal_min_extent_pt
+    $minAspect = [double]$fcfg.min_aspect
+    $maxHPt    = [double]$fcfg.max_height_em * $bp
+    $maxK      = [int]$fcfg.max_members
+    foreach ($fig in $Figures) {
+        if ($fig.kind -ne 'figure' -or $fig.caption -or $fig.xobject_count -gt 0) { continue }
+        $w = $fig.bbox[2] - $fig.bbox[0]; $h = $fig.bbox[3] - $fig.bbox[1]
+        if ([math]::Min($w, $h) -le 0) { continue }
+        $aspect = [math]::Max($w, $h) / [math]::Min($w, $h)
+        if ($aspect -lt $minAspect -and $h -gt $maxHPt) { continue }   # not strip-shaped
+        $ids = @($fig.path_ids); $k = $ids.Count
+        if ($k -lt 1 -or $k -gt $maxK) { continue }
+        # composition: any 2-D (areal) member disqualifies
+        $bx = [object[]]::new($k)
+        $hasAreal = $false
+        for ($i = 0; $i -lt $k; $i++) {
+            $b = [double[]]@($PathRec[[int]$ids[$i]].bbox)
+            $bx[$i] = $b
+            if ([math]::Min($b[2] - $b[0], $b[3] - $b[1]) -gt $arealPt) { $hasAreal = $true; break }
+        }
+        if ($hasAreal) { continue }
+        # topology: first circuit-closing edge disqualifies (β₁ > 0 ⇒ diagram-like connectivity)
+        $parent = [int[]]::new($k); for ($i = 0; $i -lt $k; $i++) { $parent[$i] = $i }
+        $hasCycle = $false
+        for ($i = 0; $i -lt $k -and -not $hasCycle; $i++) {
+            for ($j = $i + 1; $j -lt $k; $j++) {
+                $a = $bx[$i]; $b = $bx[$j]
+                $gx = [math]::Max($b[0] - $a[2], $a[0] - $b[2]); if ($gx -lt 0) { $gx = 0.0 }
+                $gy = [math]::Max($b[1] - $a[3], $a[1] - $b[3]); if ($gy -lt 0) { $gy = 0.0 }
+                if ([math]::Sqrt($gx * $gx + $gy * $gy) -gt $rPt) { continue }
+                $ri = $i; while ($parent[$ri] -ne $ri) { $parent[$ri] = $parent[$parent[$ri]]; $ri = $parent[$ri] }
+                $rj = $j; while ($parent[$rj] -ne $rj) { $parent[$rj] = $parent[$parent[$rj]]; $rj = $parent[$rj] }
+                if ($ri -eq $rj) { $hasCycle = $true; break }   # edge within a component = a circuit
+                $parent[$rj] = $ri
+            }
+        }
+        if ($hasCycle) { continue }
+        $fig.kind = 'furniture'
+        $Summary.figures--
+        $Summary.furniture++
+    }
+}
+
 function ConvertTo-FigureRegions {
     [CmdletBinding()]
     param(
@@ -601,6 +664,9 @@ function ConvertTo-FigureRegions {
     # V_caption interior split (m2 increment a; absent block = disabled)
     $capSplit = $cfg.caption_split
     $capSplitEnabled = ($null -ne $capSplit -and [bool]$capSplit.enabled)
+    # T1 furniture demotion (topological-prior; absent block = disabled)
+    $furn = $cfg.furniture_demotion
+    $furnEnabled = ($null -ne $furn -and [bool]$furn.enabled)
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -622,6 +688,7 @@ function ConvertTo-FigureRegions {
         subfigure_groups = 0; subfigures_merged = 0   # subfigure grouping: multi-caption groups / regions merged away
         stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0   # consensus m1 drift visibility
         caption_splits = 0   # V_caption interior split: welded regions cut at an interior caption
+        furniture = 0        # T1: uncaptioned stroke-only acyclic strips demoted figure→furniture
     }
     # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
     $gates = @{ degenEps = $degenEps; floorEm = $floorEm; fallbackPt2 = $fallbackPt2; minDensity = $minDensity }
@@ -668,12 +735,12 @@ function ConvertTo-FigureRegions {
     $summary.xobjects = $xobjs.Count
     $items = @($paths) + @($xobjs)
 
-    # id → bbox maps (path and xobject id sequences are SEPARATE) — the caption splitter reconstitutes
-    # a region's raw members from its persisted id lists
-    $pathBbox = [System.Collections.Generic.Dictionary[int, object]]::new()
-    foreach ($p in $paths) { $pathBbox[[int]$p.id] = $p.bbox }
-    $xobjBbox = [System.Collections.Generic.Dictionary[int, object]]::new()
-    foreach ($x in $xobjs) { $xobjBbox[[int]$x.id] = $x.bbox }
+    # id → record maps (path and xobject id sequences are SEPARATE) — the caption splitter reconstitutes
+    # a region's raw members from its persisted id lists; the furniture pass reads member extents
+    $pathRec = [System.Collections.Generic.Dictionary[int, object]]::new()
+    foreach ($p in $paths) { $pathRec[[int]$p.id] = $p }
+    $xobjRec = [System.Collections.Generic.Dictionary[int, object]]::new()
+    foreach ($x in $xobjs) { $xobjRec[[int]$x.id] = $x }
 
     $work = Join-Path ([IO.Path]::GetTempPath()) ("pdfdig-figures-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
     New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -785,11 +852,17 @@ function ConvertTo-FigureRegions {
         $blocksJsonl = $PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl'
         Add-FigureCaptions $figures $blocksJsonl $bodyPt $cfg $summary
         if ($capSplitEnabled) {
-            $figures = Split-CaptionInteriorRegions $figures $blocksJsonl $pathBbox $xobjBbox $bodyPt $bodyArea $cfg $gates $summary
+            $figures = Split-CaptionInteriorRegions $figures $blocksJsonl $pathRec $xobjRec $bodyPt $bodyArea $cfg $gates $summary
         }
         if ($subfigGrouping) {
             $figures = Group-SubfiguresByCaption $figures $bodyArea $summary
         }
+    }
+
+    # T1 furniture demotion — LAST (captions are final, so the PRIMARY population is invariant:
+    # only uncaptioned pure-path regions are candidates)
+    if ($furnEnabled) {
+        Set-FurnitureKind $figures $pathRec $bodyPt $cfg $summary
     }
 
     # [string[]]@(...) so an empty page-set writes an empty file instead of throwing on null.
