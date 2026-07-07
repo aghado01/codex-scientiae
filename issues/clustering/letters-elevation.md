@@ -1,6 +1,12 @@
 # Elevating letters to the point cloud — V_letters (design, calibrated)
 
-**Status:** DESIGN + CALIBRATION DONE (2026-07-06), implementation queued. From the user question
+**Status:** v1 LANDED 2026-07-06 (`a7e394e`). Gate: SECONDARY |dInl| 7.2 → **6.7** (2403 13→8 via 21
+bridges, 2302 4→3), PRIMARY row-identical (0.7, 7/10 exact) — the invariant held. ACCEPTANCE: 2210
+pg17 diamond crops render all four 𝕏 corner nodes (previously amputated). ~1,500 blocks attached
+corpus-wide, 42 bridges. `t_bridge_em` re-calibrated 0.5 → **0.75** post-landing: commutative-diagram
+corner labels sit at 0.51–0.55em (arrows stop deliberately short of their text nodes — a geometry the
+in-region calibration below couldn't see), nearest non-participant at 1.89em. Known cost: 2501 dInl
+−3→−4 (one bridge welds two diagrams the oracle counts separately). v2 (β₁-with-letters) still open. From the user question
 "is it possible to elevate proverbial letters to said cloud" — the substrate change T1's landing
 lesson pointed at (`topological-prior.md` §1: text-node diagrams have β₁ = 0 in path space because
 their circuits are completed by LETTERS). Third elevation in the lane's history: paths (born),
