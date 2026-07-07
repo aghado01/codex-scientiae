@@ -142,7 +142,8 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
 # Counters: stream_blocks (multi-path blocks), consensus_unions (stream joins that merged distinct
 # components), consensus_changed_pages. V_geom-noise paths welded into a component by stream evidence
 # are RESCUED (no longer noise); a component of former-noise fragments is a real region by evidence.
-function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $BodyPt, $Cons, $Summary) {
+function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $BodyPt, $Cons, $Summary,
+    $LetterBlocks = $null, $LettersCfg = $null) {
     $n = $PageItems.Count
     $parent = [int[]]::new($n)
     for ($i = 0; $i -lt $n; $i++) { $parent[$i] = $i }
@@ -241,6 +242,53 @@ function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $Body
         }
     }
 
+    # V_letters evidence (issues/clustering/letters-elevation.md): a small, letter-light Lane-3 block
+    # sitting ON path ink is diagram-participant text — calibrated: in-figure blocks at nearest-path-gap
+    # p95 0.39em vs body-block median 33.6em. MEMBERSHIP: every path component within t_bridge of the
+    # block records the block (crop union downstream). BRIDGE: when ≥ 2 distinct components sit within
+    # reach of ONE block, that block is their shared node label / connector — union them. The ≥2 rule is
+    # what neutralizes the small-body-fragment residue (a lone radical-bar stroke beside body text has
+    # nothing to bridge). Blocks arrive pre-selected (size half of the selector); reach is the
+    # entanglement half.
+    $letterIdsOfRoot = @{}   # provisional root -> List[int] of block ids (re-rooted at label build)
+    if ($null -ne $LetterBlocks -and @($LetterBlocks).Count -gt 0 -and $null -ne $LettersCfg) {
+        $tBridgePt = [double]$LettersCfg.t_bridge_em * $bp
+        foreach ($blk in $LetterBlocks) {
+            $bbx = [double[]]@($blk.bx)
+            $rootSet = @{}
+            for ($i = 0; $i -lt $n; $i++) {
+                if ($PageItems[$i].prov -eq 'xobject') { continue }
+                $a = $PageItems[$i].bbox
+                $gx = [math]::Max($bbx[0] - [double]$a[2], [double]$a[0] - $bbx[2]); if ($gx -lt 0) { $gx = 0.0 }
+                $gy = [math]::Max($bbx[1] - [double]$a[3], [double]$a[1] - $bbx[3]); if ($gy -lt 0) { $gy = 0.0 }
+                if ([math]::Sqrt($gx * $gx + $gy * $gy) -gt $tBridgePt) { continue }
+                $r = & $find $i
+                $rootSet[$r] = $true
+            }
+            if ($rootSet.Count -eq 0) { continue }
+            $roots = @($rootSet.Keys)
+            $ra = & $find $roots[0]
+            if ($roots.Count -ge 2) {
+                for ($x = 1; $x -lt $roots.Count; $x++) {
+                    $rb = & $find $roots[$x]
+                    if ($ra -ne $rb) {
+                        $parent[$rb] = $ra; $touched[$ra] = $true
+                        $unions++; $Summary.letter_bridges++
+                        # letter lists of absorbed roots follow the survivor
+                        if ($letterIdsOfRoot.ContainsKey($rb)) {
+                            if (-not $letterIdsOfRoot.ContainsKey($ra)) { $letterIdsOfRoot[$ra] = [System.Collections.Generic.List[int]]::new() }
+                            foreach ($lb in $letterIdsOfRoot[$rb]) { $letterIdsOfRoot[$ra].Add($lb) }
+                            $letterIdsOfRoot.Remove($rb)
+                        }
+                    }
+                }
+            }
+            if (-not $letterIdsOfRoot.ContainsKey($ra)) { $letterIdsOfRoot[$ra] = [System.Collections.Generic.List[int]]::new() }
+            $letterIdsOfRoot[$ra].Add([int]$blk.id)
+            $Summary.letter_blocks++
+        }
+    }
+
     # dense component labels; singleton components stay noise (-1)
     $size = [int[]]::new($n); $rootArr = [int[]]::new($n)
     for ($i = 0; $i -lt $n; $i++) { $r = & $find $i; $rootArr[$i] = $r; $size[$r]++ }
@@ -256,9 +304,19 @@ function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $Body
         }
         $out[$i] = $labelOf[$r]
     }
+    # letter lists keyed by final component label (roots may have moved under later unions — re-find)
+    $letterIds = @{}
+    foreach ($kv in $letterIdsOfRoot.GetEnumerator()) {
+        $r = & $find $kv.Key
+        if ($labelOf.ContainsKey($r)) {
+            $lab = $labelOf[$r]
+            if (-not $letterIds.ContainsKey($lab)) { $letterIds[$lab] = [System.Collections.Generic.List[int]]::new() }
+            foreach ($lb in $kv.Value) { $letterIds[$lab].Add($lb) }
+        }
+    }
     $Summary.consensus_unions += $unions
     if ($unions -gt 0) { $Summary.consensus_changed_pages++ }
-    @{ Labels = $out; Changed = $changed }
+    @{ Labels = $out; Changed = $changed; LetterIds = $letterIds }
 }
 
 # Reattach caption text to each kind=figure region. Geometry finds the CANDIDATES — Lane-3 text
@@ -340,7 +398,7 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
 # the density gate (a placed bitmap is 1 point over a large area — vector-ink density is meaningless
 # for it) while the size floors still apply. $Gates carries the config scalars so callers stay
 # config-driven; id is left at -1 for the caller to assign (id = list index invariant).
-function New-FigureRegionRecord($Page, $Members, $Flag, $BodyArea, $Gates) {
+function New-FigureRegionRecord($Page, $Members, $Flag, $BodyArea, $Gates, $LetterIds = $null) {
     $bbox = Get-FigureUnionBbox $Members
     if (-not $bbox) { return $null }
     $w = $bbox[2] - $bbox[0]; $h = $bbox[3] - $bbox[1]
@@ -367,6 +425,9 @@ function New-FigureRegionRecord($Page, $Members, $Flag, $BodyArea, $Gates) {
         # $null, which would serialize as [null] on a pure-path or pure-xobject region; foreach gives []
         path_ids = @(foreach ($m in $pathMembers) { $m.id }); path_count = $pathMembers.Count
         xobject_ids = @(foreach ($m in $xobjMembers) { $m.id }); xobject_count = $xobjMembers.Count
+        # V_letters membership: Lane-3 block ids attached by the letters view (node labels, connectors);
+        # NOT ink members — kind/area/density formulas ignore them; the crop bbox unions their boxes
+        letter_block_ids = @(if ($null -ne $LetterIds) { foreach ($lb in $LetterIds) { $lb } })
         provenance = if ($hasXobj -and $pathMembers.Count) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
         kind = $kind; flag = $Flag; caption = $null
     }
@@ -382,10 +443,12 @@ function Merge-FigureGroup([System.Collections.Generic.List[object]] $Members, $
     $area = [math]::Round($w * $h, 1)
     $pathIds = [System.Collections.Generic.List[object]]::new()
     $xobjIds = [System.Collections.Generic.List[object]]::new()
+    $letterIds = [System.Collections.Generic.List[object]]::new()
     $pathCount = 0; $xobjCount = 0
     foreach ($m in $Members) {
         foreach ($pmid in @($m.path_ids)) { $pathIds.Add($pmid) }
         foreach ($xmid in @($m.xobject_ids)) { $xobjIds.Add($xmid) }
+        foreach ($lbid in @($m.letter_block_ids)) { if ($null -ne $lbid) { $letterIds.Add($lbid) } }
         $pathCount += [int]$m.path_count; $xobjCount += [int]$m.xobject_count
     }
     $hasXobj = $xobjCount -gt 0
@@ -396,6 +459,7 @@ function Merge-FigureGroup([System.Collections.Generic.List[object]] $Members, $
         id = $first.id; page = $first.page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
         path_ids = @(foreach ($p in $pathIds) { $p }); path_count = $pathCount
         xobject_ids = @(foreach ($x in $xobjIds) { $x }); xobject_count = $xobjCount
+        letter_block_ids = @(foreach ($lb in $letterIds) { $lb })
         provenance = if ($hasXobj -and $pathCount) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
         kind = 'figure'; flag = 'subfigure_merged'; caption = $first.caption
     }
@@ -479,10 +543,11 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
     }
     if ($styles.Count -eq 0) { return , $Figures }
 
-    # shape+style-guarded unclaimed cue blocks, per page
-    $byPage = @{}
+    # shape+style-guarded unclaimed cue blocks, per page (+ a full id→bx map for letter redistribution)
+    $byPage = @{}; $allBx = @{}
     foreach ($line in (Get-Content $BlocksJsonl | Where-Object { $_.Trim() })) {
         $blk = $line | ConvertFrom-Json
+        if ($blk.bx) { $allBx[[int]$blk.id] = $blk.bx }
         if (-not $blk.bx -or $claimed.ContainsKey([int]$blk.id)) { continue }
         if (($blk.bx[3] - $blk.bx[1]) -gt $maxBlockPt) { continue }
         $m = [regex]::Match(($blk.text_preview ?? ''), $styleRe)
@@ -515,9 +580,12 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
         foreach ($pid0 in @($fig.path_ids))    { $members.Add($PathRec[[int]$pid0]) }
         foreach ($xid0 in @($fig.xobject_ids)) { $members.Add($XobjRec[[int]$xid0]) }
 
-        # split at each interior caption, topmost first: the part above a caption is the float it labels
+        # split at each interior caption, topmost first: the part above a caption is the float it labels.
+        # V_letters membership follows the cut the same way (block center vs the cut line).
         $subs = [System.Collections.Generic.List[object]]::new()
         $remaining = $members
+        $remLetters = [System.Collections.Generic.List[int]]::new()
+        foreach ($lb in @($fig.letter_block_ids)) { if ($null -ne $lb) { $remLetters.Add([int]$lb) } }
         foreach ($blk in @($interior | Sort-Object { -[double]$_.bx[3] })) {
             $mid = ([double]$blk.bx[1] + [double]$blk.bx[3]) / 2.0
             $above = [System.Collections.Generic.List[object]]::new()
@@ -526,7 +594,14 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
                 if ((($mm.bbox[1] + $mm.bbox[3]) / 2.0) -gt $mid) { $above.Add($mm) } else { $below.Add($mm) }
             }
             if ($above.Count -eq 0 -or $below.Count -eq 0) { continue }   # degenerate cut — this block splits nothing
-            $rec = New-FigureRegionRecord $fig.page $above 'caption_split' $BodyArea $Gates
+            $aboveLetters = [System.Collections.Generic.List[int]]::new()
+            $belowLetters = [System.Collections.Generic.List[int]]::new()
+            foreach ($lb in $remLetters) {
+                $lbx = $allBx[$lb]
+                if ($null -ne $lbx -and ((([double]$lbx[1] + [double]$lbx[3]) / 2.0) -gt $mid)) { $aboveLetters.Add($lb) }
+                else { $belowLetters.Add($lb) }
+            }
+            $rec = New-FigureRegionRecord $fig.page $above 'caption_split' $BodyArea $Gates $aboveLetters
             if (-not $rec) { continue }
             if ($rec.kind -eq 'figure') {
                 $txt0 = [string]($blk.text_preview ?? '')
@@ -539,10 +614,11 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             }
             $subs.Add($rec)
             $remaining = $below
+            $remLetters = $belowLetters
         }
         if ($subs.Count -eq 0) { $result.Add($fig); continue }   # every candidate cut was degenerate
 
-        $tail = New-FigureRegionRecord $fig.page $remaining 'caption_split' $BodyArea $Gates
+        $tail = New-FigureRegionRecord $fig.page $remaining 'caption_split' $BodyArea $Gates $remLetters
         if ($tail) {
             if ($fig.caption -and $tail.kind -eq 'figure') { $tail.caption = $fig.caption }
             elseif ($fig.caption) { $Summary.captioned_figures-- }   # parent caption lost to a non-figure tail
@@ -667,6 +743,9 @@ function ConvertTo-FigureRegions {
     # T1 furniture demotion (topological-prior; absent block = disabled)
     $furn = $cfg.furniture_demotion
     $furnEnabled = ($null -ne $furn -and [bool]$furn.enabled)
+    # V_letters evidence view (letters-elevation.md) — rides the consensus pass
+    $lettersCfg = $cfg.letters
+    $lettersEnabled = ($consensusEnabled -and $null -ne $lettersCfg -and [bool]$lettersCfg.enabled)
 
     if (-not $OutPath) {
         $dir  = Split-Path $PathsJsonl -Parent
@@ -689,6 +768,7 @@ function ConvertTo-FigureRegions {
         stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0   # consensus m1 drift visibility
         caption_splits = 0   # V_caption interior split: welded regions cut at an interior caption
         furniture = 0        # T1: uncaptioned stroke-only acyclic strips demoted figure→furniture
+        letter_blocks = 0; letter_bridges = 0   # V_letters: blocks attached / cross-component welds
     }
     # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
     $gates = @{ degenEps = $degenEps; floorEm = $floorEm; fallbackPt2 = $fallbackPt2; minDensity = $minDensity }
@@ -697,8 +777,8 @@ function ConvertTo-FigureRegions {
     # see its doc). id = list count before append; $figures/$summary/$gates resolve through the
     # enclosing scope.
     $addRegion = {
-        param($page, $members, $flag)
-        $rec = New-FigureRegionRecord $page $members $flag $bodyArea $gates
+        param($page, $members, $flag, $letterIds)
+        $rec = New-FigureRegionRecord $page $members $flag $bodyArea $gates $letterIds
         if (-not $rec) { return }
         $rec.id = $figures.Count
         $figures.Add($rec)
@@ -741,6 +821,36 @@ function ConvertTo-FigureRegions {
     foreach ($p in $paths) { $pathRec[[int]$p.id] = $p }
     $xobjRec = [System.Collections.Generic.Dictionary[int, object]]::new()
     foreach ($x in $xobjs) { $xobjRec[[int]$x.id] = $x }
+
+    # V_letters selection — the SIZE half of the calibrated selector (letters-elevation.md): small,
+    # letter-light Lane-3 blocks per page (node labels are ~1.1em / 2-3 letters; body lines are 32em+).
+    # Blocks with NO letter back-refs are never selected (missing lane data → stay conservative).
+    # The ENTANGLEMENT half (nearest-path-gap ≤ t_bridge_em) is enforced at bridge time per page.
+    $letterBlocksByPage = @{}
+    if ($lettersEnabled) {
+        $blocksPath  = $PathsJsonl -replace '\.paths\.jsonl$', '.blocks.jsonl'
+        $lettersPath = $PathsJsonl -replace '\.paths\.jsonl$', '.letters.jsonl'
+        if ($bodyPt -and (Test-Path $blocksPath) -and (Test-Path $lettersPath)) {
+            $lettersOf = @{}
+            foreach ($line in [System.IO.File]::ReadLines($lettersPath)) {
+                $m = [regex]::Match($line, '"block":\s*(\d+)')
+                if ($m.Success) { $b = [int]$m.Groups[1].Value; $lettersOf[$b] = (($lettersOf[$b]) ?? 0) + 1 }
+            }
+            $maxWPt = [double]$lettersCfg.max_width_em * $bodyPt
+            $maxNL  = [int]$lettersCfg.max_letters
+            foreach ($line in (Get-Content $blocksPath | Where-Object { $_.Trim() })) {
+                $bk = $line | ConvertFrom-Json
+                if (-not $bk.bx) { continue }
+                if (($bk.bx[2] - $bk.bx[0]) -gt $maxWPt) { continue }
+                $nl = ($lettersOf[[int]$bk.id]) ?? 0
+                if ($nl -lt 1 -or $nl -gt $maxNL) { continue }
+                $pgk = [int]$bk.page
+                if (-not $letterBlocksByPage.ContainsKey($pgk)) { $letterBlocksByPage[$pgk] = [System.Collections.Generic.List[object]]::new() }
+                $letterBlocksByPage[$pgk].Add($bk)
+            }
+        }
+        else { $lettersEnabled = $false }
+    }
 
     $work = Join-Path ([IO.Path]::GetTempPath()) ("pdfdig-figures-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
     New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -810,11 +920,13 @@ function ConvertTo-FigureRegions {
             # (Join-FigureViews) — a distinct view-join step between clustering and region assembly.
             # The combined component labels replace the raw ones (-1 stays noise); components the stream
             # view reshaped are flagged consensus_merged on their regions for drift visibility.
-            $changedLabels = $null
+            $changedLabels = $null; $letterIdsMap = $null
             if ($consensusEnabled) {
-                $joined = Join-FigureViews $pageItems $labels $bodyPt $cons $summary
+                $pageLetterBlocks = if ($lettersEnabled) { $letterBlocksByPage[$page] } else { $null }
+                $joined = Join-FigureViews $pageItems $labels $bodyPt $cons $summary $pageLetterBlocks $lettersCfg
                 $labels = $joined.Labels
                 $changedLabels = $joined.Changed
+                $letterIdsMap = $joined.LetterIds
             }
 
             # Group members by cluster label; label -1 = noise. A noise VECTOR path is a stray stroke
@@ -834,7 +946,8 @@ function ConvertTo-FigureRegions {
             }
             foreach ($lab in ($byLabel.Keys | Sort-Object)) {
                 $regFlag = if ($null -ne $changedLabels -and $changedLabels.ContainsKey($lab)) { 'consensus_merged' } else { $null }
-                & $addRegion $page $byLabel[$lab] $regFlag
+                $regLetters = if ($null -ne $letterIdsMap -and $letterIdsMap.ContainsKey($lab)) { $letterIdsMap[$lab] } else { $null }
+                & $addRegion $page $byLabel[$lab] $regFlag $regLetters
             }
             foreach ($nx in $noiseXobjs) { & $addRegion $page @($nx) 'xobject_singleton' }
         }
@@ -856,6 +969,22 @@ function ConvertTo-FigureRegions {
         }
         if ($subfigGrouping) {
             $figures = Group-SubfiguresByCaption $figures $bodyArea $summary
+        }
+    }
+
+    # V_letters hygiene: a block CLAIMED as some region's caption is a caption, not diagram-interior
+    # text — strip it from every letter list (letters attach during formation, before captions exist)
+    if ($lettersEnabled) {
+        $claimedBlocks = @{}
+        foreach ($fig in $figures) { if ($fig.caption) { $claimedBlocks[[int]$fig.caption.block_id] = $true } }
+        if ($claimedBlocks.Count) {
+            foreach ($fig in $figures) {
+                $lbs = @($fig.letter_block_ids)
+                if ($lbs.Count) {
+                    $kept = @(foreach ($lb in $lbs) { if ($null -ne $lb -and -not $claimedBlocks.ContainsKey([int]$lb)) { $lb } })
+                    if ($kept.Count -ne $lbs.Count) { $fig.letter_block_ids = $kept }
+                }
+            }
         }
     }
 

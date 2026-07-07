@@ -46,10 +46,36 @@ function Export-PdfFigureImages {
     $figs = @(Get-Content $FiguresJsonl | Where-Object { $_.Trim() } |
         ForEach-Object { $_ | ConvertFrom-Json } | Where-Object { $_.kind -eq 'figure' })
 
+    # V_letters crop union (letters-elevation.md): a region's attached letter blocks (node labels,
+    # connectors — text the path-only bbox amputates) expand the CROP rect. The region record's own
+    # bbox stays geometric; only the render rect grows.
+    $blockBx = $null
+    $blocksJsonl = $FiguresJsonl -replace '\.figures\.jsonl$', '.blocks.jsonl'
+    if ((Test-Path $blocksJsonl) -and ($figs | Where-Object { @($_.letter_block_ids).Count -gt 0 } | Select-Object -First 1)) {
+        $blockBx = @{}
+        foreach ($line in [System.IO.File]::ReadLines($blocksJsonl)) {
+            if ([string]::IsNullOrWhiteSpace($line)) { continue }
+            $bk = $line | ConvertFrom-Json
+            if ($bk.bx) { $blockBx[[int]$bk.id] = $bk.bx }
+        }
+    }
+
     # Render jobs: mupdf page is 0-based, figures.jsonl page is 1-based (PdfPig).
     $jobs = [System.Collections.Generic.List[object]]::new()
     for ($i = 0; $i -lt $figs.Count; $i++) {
-        $jobs.Add([ordered]@{ page = [int]$figs[$i].page - 1; bbox = $figs[$i].bbox; out = (Join-Path $imgDir "imageFile$i.png") })
+        $bb = [double[]]@($figs[$i].bbox)
+        if ($blockBx) {
+            foreach ($lb in @($figs[$i].letter_block_ids)) {
+                if ($null -eq $lb) { continue }
+                $x = $blockBx[[int]$lb]
+                if (-not $x) { continue }
+                if ($x[0] -lt $bb[0]) { $bb[0] = [double]$x[0] }
+                if ($x[1] -lt $bb[1]) { $bb[1] = [double]$x[1] }
+                if ($x[2] -gt $bb[2]) { $bb[2] = [double]$x[2] }
+                if ($x[3] -gt $bb[3]) { $bb[3] = [double]$x[3] }
+            }
+        }
+        $jobs.Add([ordered]@{ page = [int]$figs[$i].page - 1; bbox = $bb; out = (Join-Path $imgDir "imageFile$i.png") })
     }
 
     $summary  = [ordered]@{ figures = $figs.Count; rendered = 0; failed = 0; dpi = $Dpi; run = $pigDir }
@@ -70,7 +96,7 @@ function Export-PdfFigureImages {
             $ok = [bool]($r -and $r.ok)
             if ($ok) { $summary.rendered++ } else { $summary.failed++ }
             $manifest.Add([ordered]@{
-                id = $i; figure_id = $f.id; page = $f.page; bbox = $f.bbox
+                id = $i; figure_id = $f.id; page = $f.page; bbox = $jobs[$i].bbox   # the RENDERED rect (letter-expanded)
                 png    = $(if ($ok) { "images/imageFile$i.png" } else { $null })
                 width  = $(if ($ok) { $r.w } else { $null })
                 height = $(if ($ok) { $r.h } else { $null })

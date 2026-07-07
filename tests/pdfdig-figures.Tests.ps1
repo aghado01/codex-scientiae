@@ -630,6 +630,105 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (integrat
     }
 }
 
+Describe 'pdfdig figure-region clustering — V_letters evidence view (unit)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:consL = [pscustomobject]@{ enabled = $true; rule = 'inclusive'; stream_jump_em = 6.0; t_far_em = 4.0 }
+        $script:lcfg  = [pscustomobject]@{ enabled = $true; max_width_em = 4.0; max_letters = 10; t_bridge_em = 0.5 }
+        $script:NewSummaryL = { [ordered]@{ stream_blocks = 0; consensus_unions = 0; consensus_changed_pages = 0; letter_blocks = 0; letter_bridges = 0 } }
+        $script:LClump = {
+            param($x, $y, $id0)
+            $o = [System.Collections.Generic.List[object]]::new()
+            foreach ($c in @(@(0, 0), @(4, 0), @(0, 4), @(4, 4))) {
+                $o.Add(@{ id = $id0; prov = 'path'; bbox = [double[]]@(($x + $c[0]), ($y + $c[1]), ($x + $c[0] + 3), ($y + $c[1] + 3)) })
+                $id0++
+            }
+            , $o
+        }
+    }
+
+    It 'bridges two components that share one node-label block (>=2 rule)' {
+        # A (x 0..7) and B (x 50..57) with an id-teleport anchor between (no stream weld);
+        # the label block spans x 10..46 — within 3pt of BOTH clumps (t_bridge 5pt at 10pt body)
+        $items = @((& $LClump 0 0 0) + (& $LClump 300 300 4) + (& $LClump 50 0 8))
+        $labels = [int[]]@(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2)
+        $blocks = @([pscustomobject]@{ id = 77; page = 1; bx = @(10.0, 1.0, 46.0, 7.0) })
+        $s = & $NewSummaryL
+        $j = Join-FigureViews $items $labels 10.0 $consL $s $blocks $lcfg
+        $j.Labels[0]  | Should -Be $j.Labels[8]        # A and B welded through the label
+        $j.Labels[4]  | Should -Not -Be $j.Labels[0]   # the far anchor stays its own component
+        $s.letter_bridges | Should -Be 1
+        $s.letter_blocks  | Should -Be 1
+        $j.LetterIds[[int]$j.Labels[0]] | Should -Contain 77
+    }
+
+    It 'attaches membership without union when only ONE component is in reach' {
+        $items = @((& $LClump 0 0 0) + (& $LClump 300 300 4))
+        $labels = [int[]]@(0, 0, 0, 0, 1, 1, 1, 1)
+        $blocks = @([pscustomobject]@{ id = 78; page = 1; bx = @(9.0, 1.0, 30.0, 7.0) })   # near A only
+        $s = & $NewSummaryL
+        $j = Join-FigureViews $items $labels 10.0 $consL $s $blocks $lcfg
+        (@($j.Labels | Select-Object -Unique)).Count | Should -Be 2
+        $s.letter_bridges | Should -Be 0
+        $s.letter_blocks  | Should -Be 1
+        $j.LetterIds[[int]$j.Labels[0]] | Should -Contain 78
+    }
+
+    It 'ignores a block out of bridge reach' {
+        $items = @((& $LClump 0 0 0))
+        $blocks = @([pscustomobject]@{ id = 79; page = 1; bx = @(50.0, 1.0, 80.0, 7.0) })   # 43pt away
+        $s = & $NewSummaryL
+        $j = Join-FigureViews $items ([int[]]@(0, 0, 0, 0)) 10.0 $consL $s $blocks $lcfg
+        $s.letter_blocks | Should -Be 0
+        $j.LetterIds.Count | Should -Be 0
+    }
+}
+
+Describe 'pdfdig figure-region clustering — V_letters (integration)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:wl = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-lett-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wl | Out-Null
+
+        # Page 1: clump A (ids 0..3, x 0..7), a FAR anchor grid (ids 4..12 at 300,300 — sits between
+        # A and B in DRAW ORDER so the stream teleports and never welds A-B), clump B (ids 13..16,
+        # x 50..57). The 3.6em label block id 5 spans the A-B gap: V_geom splits A/B, letters weld them.
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($c in @(@(0, 0), @(4, 0), @(0, 4), @(4, 4))) {
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $c[0], (100 + $c[1]), ($c[0] + 3), (100 + $c[1] + 3))) }
+        for ($gx = 0; $gx -lt 3; $gx++) { for ($gy = 0; $gy -lt 3; $gy++) {
+            $x = 300 + $gx * 10; $y = 300 + $gy * 10
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x, $y, ($x + 6), ($y + 6))) } }
+        foreach ($c in @(@(0, 0), @(4, 0), @(0, 4), @(4, 4))) {
+            $x = 50 + $c[0]
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $x, (100 + $c[1]), ($x + 3), (100 + $c[1] + 3))) }
+        [IO.File]::WriteAllLines((Join-Path $script:wl 'l.paths.jsonl'), $paths)
+
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        1..3  | ForEach-Object { $letters.Add('{"size":10.0,"block":5}') }   # the label block's 3 letters
+        [IO.File]::WriteAllLines((Join-Path $script:wl 'l.letters.jsonl'), $letters)
+        [IO.File]::WriteAllLines((Join-Path $script:wl 'l.blocks.jsonl'),
+            @('{"id":5,"page":1,"bx":[9,101,48,107],"text_preview":"X 0 1"}'))
+
+        $script:rl = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wl 'l.paths.jsonl') -PassThru
+    }
+    AfterAll { if ($script:wl -and (Test-Path $script:wl)) { Remove-Item -Recurse -Force $script:wl } }
+
+    It 'heals a label-split diagram end-to-end and records the letter membership' {
+        $figs = @($script:rl.Figures | Where-Object { $_.kind -eq 'figure' })
+        $figs.Count | Should -Be 2                     # welded A+B + the anchor grid
+        $welded = @($figs | Where-Object { $_.bbox[2] -lt 100 })[0]
+        $welded.path_count | Should -Be 8
+        @($welded.letter_block_ids) | Should -Contain 5
+        $script:rl.Summary.letter_bridges | Should -Be 1
+        $script:rl.Summary.letter_blocks  | Should -Be 1
+    }
+}
+
 Describe 'pdfdig figure-region clustering — T1 furniture demotion (unit)' {
     BeforeAll {
         $repo = Split-Path $PSScriptRoot -Parent
