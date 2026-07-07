@@ -73,6 +73,18 @@ at their prose anchors + 5 page-flushed, 11 PNGs, 0 markers — the oracle regis
 REMAINING in this thrust: publish carries `{slug}-membrane/` up (mirror links); docling-lane images;
 fetcher magic-byte sniffing; item-D blocks-lane diagnosis; `mechanism` attribution polish.
 
+**Render-harvest (2026-07-07, the instrument's first catches):** (1) truncated captions — pig
+caption.text was the 100-char text_preview; FIXED at the source (`cae3b61`: blocks lane carries full
+`text`; verified through the served pipeline). (2) **caption-weld defect, mechanism traced**: 2008's
+"Figure 2" caption text exists as its own Lane-3 block (the pig crop carries it) but the
+adapter/collapse agglomeration WELDS its lines into the preceding prose paragraph (chunk 342:
+"…SSIM (bottom) overFigure 2: Each algorithm's…" — no space at the weld), so normalize cannot
+classify it as caption furniture and the weave tail-places the crop. The item-D family with a precise
+trace. Candidate fix (next move): the adapter already reads the pig run — let it consume
+figures.jsonl caption block_ids/bboxes and emit those lines as SEPARATE caption-typed nodes at
+intake (born-signal wiring, not string matching); heading-recovery precedent says pre-typing at the
+adapter is the lane's idiom.
+
 ## Sequencing + measurement
 
 1 → 2 share calibration work (both need band statistics); do 1 first (2's selection is cleaner on
