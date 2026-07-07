@@ -41,7 +41,8 @@ reliably and never assert it** — assertions come from caption/oracle evidence 
 
 | residual | rendered-doc symptom | root cause | thrust |
 |---|---|---|---|
-| **2210 −2, 2302 −1** (PRIMARY unders) | a figure is missing from the page under its own reference | THREE sub-classes, precisely diagnosed 2026-07-07: (a) caption in NO block (Fig 1 — detection miss); (b) only an in-text ref exists (Fig 4); (c) multi-caption geometric contention (Fig 16 — a nearer region took a different caption, the true one is >4.5em away) | **A** |
+| **2210 −2, 2302 −1** (PRIMARY unders) | a figure is missing from the page under its own reference | RE-VERIFIED against the current run 2026-07-07: 2210 −2 is Fig 1 + Fig 4, **both A3 item-D** (caption never became a Lane-3 block). The old "(c) Fig 16 contention" **EVAPORATED** — Fig 16 (`1 Figure 16:`) now pairs correctly (region above caption, gap 23.6pt); the stale handoff ids were from a pre-refresh run. 2302 −1 is A3 too (its 5 unclaimed cue-blocks are all Algorithm/Table furniture). | **A3** |
+| **voroninski 1705 −1 → 0, 1701 −2** (PRIMARY unders) | a figure's plot renders WELDED with its caption mid-image, or missing | caption-interior WELD: the caption sits vertically INSIDE a kind=figure region (BLOCK-INSIDE), so it never attaches. 1705 Fig 1 = 0-claims chicken-and-egg (no style learnable). **1705 ✅ RECOVERED** (A2 no-style bootstrap); 1701 Figs 7/15 remain (style-path guards). | **A2** |
 | voroninski SECONDARY 11.65 | over-cropped / welded diagram regions | 40–70% coverage band: text-WELDED formation + multi-panel plot fragments | **B, C** |
 | ph-zigzag 2112 −10 | tikz-cd diagrams absent from the crop set | arrows are FONT GLYPHS; the path lane is empty there — nothing to cluster | **D** |
 | Jaccard/symbolic m2 | (no direct symptom yet) | blocked on IR enrichment | **E** |
@@ -68,10 +69,28 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
   runs carry `cue_word`), + a regression test (`1 Table 5:` now classifies as a table). Gate bit-stable
   (0.7/5.4, 0.48/11.65). **2210 Fig 16's `1 Figure 16:` is NOT an A1 case — it's cue-matched already; its
   block is orphaned by GEOMETRY (A2), not prefix.**
-- **A2 — multi-caption contention (attachment).** When two regions on a page contend for captions,
-  attachment is greedy-nearest and can orphan a caption whose true region is just past the gap
-  (2210 Fig 16). Make attachment a per-page ASSIGNMENT (each caption to its best unclaimed region,
-  each region its best caption) rather than independent nearest-picks. Bounded, no new IR.
+- **A2 — attachment tail — ⏳ PARTIAL 2026-07-07: literal premise EVAPORATED, real defect found + one recovered.**
+  The plan's "multi-caption contention → per-page assignment" targeted 2210 Fig 16 — but the current run
+  pairs Fig 16 correctly (verified: region above caption, gap 23.6pt; the handoff's `id51/id52` were stale
+  pre-refresh ids). **caption-diag across every under-paper found ZERO genuine contention** (each under is
+  either A3 undetected or Algorithm/Table furniture correctly excluded). The ACTUAL live attachment-tail
+  defect is a different class — **caption-interior WELD** (BLOCK-INSIDE): a "Figure N:" caption sits
+  vertically inside a kind=figure region, so it never attaches. This is the LANDED V_caption interior split
+  (§0), but two gaps blocked it:
+  - **✅ A2a no-style BOOTSTRAP — LANDED (`pdfdig-figures.ps1` `Split-CaptionInteriorRegions`).** A paper
+    whose ONLY caption IS the weld it needs has 0 pass-1 claims → no style learnable → the split bailed
+    (chicken-and-egg). **1705.07576v3 Figure 1** ("A plot of g(θ)": its 44 plot paths sit ABOVE the caption;
+    the region only dips below on 2 degenerate bitmap points). Fix: when styles empty, split ONLY from a
+    self-evident cue-then-SEPARATOR caption ("Figure 1:"). Calibrated (`scratch/caption-bootstrap-calib.ps1`)
+    to fire on EXACTLY 1705 reg7 corpus-wide, 0 false; ph-zigzag has no 0-claim papers → byte-identical.
+    **Voroninski PRIMARY 0.48 → 0.43 (17/23 exact, 0 over); ph-zigzag 0.7/5.4 invariant.** Crop eyeballed:
+    clean whole plot + caption. Config knob `caption_split.bootstrap_no_style` (default on).
+  - **⏳ A2b style-path interior welds — NEXT.** 1701 Figs 7/15 (14-claim paper, styles exist, but the
+    split's style/overlap guards don't fire — Fig 15's caption is a low-overlap continuation fragment
+    "Figure 15: lower)."; Fig 7 is BLOCK-INSIDE). 2 more recoveries; needs the split's style-match /
+    overlap path examined, not the bootstrap.
+  - Per-page bipartite ASSIGNMENT (the plan's original idea) stays **shelved** — no contention exists in
+    either corpus to justify it; revisit only if a future run surfaces a genuine two-region caption fight.
 - **A3 — item-D block detection (the hard tail).** Captions that never became a "Figure N"-prefixed
   Lane-3 block at all (2210 Fig 1). XYCut/DLA quality — the deepest, least certain; do it last and only
   what the render proves is worth it.

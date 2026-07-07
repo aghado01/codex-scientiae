@@ -564,6 +564,50 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
         $s.caption_splits | Should -Be 0
     }
 
+    # NO-STYLE BOOTSTRAP (A2 attachment tail): a paper whose ONLY caption is the interior weld has 0
+    # pass-1 claims -> styles empty. A lone welded parent, no captioned anchor anywhere, so nothing
+    # teaches a style. The 1705.07576v3 Figure 1 case in miniature.
+    $script:NewLoneParent = {
+        $figs = [System.Collections.Generic.List[object]]::new()
+        $figs.Add([ordered]@{
+            id = 0; page = 1; bbox = @(100.0, 60.0, 126.0, 144.0); area = 2184.0; area_em2 = 21.84; density = 0.82
+            path_ids = @(0..17); path_count = 18; xobject_ids = @(); xobject_count = 0
+            provenance = 'path'; kind = 'figure'; flag = $null; caption = $null
+        })
+        , $figs
+    }
+    $script:NewBootCfg = {
+        param($enabled)
+        [pscustomobject]@{ caption_min_overlap_frac = 0.25
+            caption_split = [pscustomobject]@{ enabled = $true; margin_em = 1.0; max_block_em = 3.5; max_block_sep_em = 9.0; bootstrap_no_style = $enabled } }
+    }
+    $script:NewBootSummary = { [ordered]@{ regions = 1; figures = 1; marks = 0; sparse = 0; degenerate = 0; captioned_figures = 0; xobject_regions = 0; caption_splits = 0 } }
+
+    It 'BOOTSTRAP: splits at an interior separator caption when NO style was learned (0 claims)' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 1: interior weld"}') 'bb1.jsonl'
+        $s = & $NewBootSummary
+        $out = Split-CaptionInteriorRegions (& $NewLoneParent) $blocks $pbV $xbV 10.0 100.0 (& $NewBootCfg $true) $gatesV $s
+        $p1 = @($out | Where-Object { $_.page -eq 1 })
+        $p1.Count | Should -Be 2
+        ($p1 | Where-Object { $_.bbox[1] -gt 100 }).caption.text | Should -Be 'Figure 1: interior weld'
+        $s.caption_splits    | Should -Be 1
+        $s.captioned_figures | Should -Be 1
+    }
+
+    It 'BOOTSTRAP: does NOT split a no-separator interior cue block (the in-text guard holds without a style)' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3 shows the weld"}') 'bb2.jsonl'
+        $s = & $NewBootSummary
+        (Split-CaptionInteriorRegions (& $NewLoneParent) $blocks $pbV $xbV 10.0 100.0 (& $NewBootCfg $true) $gatesV $s).Count | Should -Be 1
+        $s.caption_splits | Should -Be 0
+    }
+
+    It 'BOOTSTRAP: knob off (bootstrap_no_style=false) preserves the legacy bail when no style learned' {
+        $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 1: interior weld"}') 'bb3.jsonl'
+        $s = & $NewBootSummary
+        (Split-CaptionInteriorRegions (& $NewLoneParent) $blocks $pbV $xbV 10.0 100.0 (& $NewBootCfg $false) $gatesV $s).Count | Should -Be 1
+        $s.caption_splits | Should -Be 0
+    }
+
     It 'gives a separator-signed caption the taller height allowance (long survey captions)' {
         # 60pt-tall block (6em > 3.5em tight cap) WITH the colon signature -> splits; the identical
         # block without a separator keeps the tight cap -> no split
@@ -588,13 +632,18 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (unit)' {
         $s.caption_splits | Should -Be 1
     }
 
-    It 'never splits a paper with no claimed captions (no style evidence)' {
+    It 'BOOTSTRAP default-on: splits a no-claims paper at a separator interior caption (A2, 2026-07-07)' {
+        # Was "never splits ... (no style evidence)". The no-style BOOTSTRAP intentionally reverses that
+        # guarantee: a self-evident "Figure N:" interior caption now splits even with 0 pass-1 claims
+        # (the 1705.07576v3 Figure 1 recovery). Uses the DEFAULT $cfgV (no explicit knob) to prove the
+        # bootstrap is on by default; the knob-off legacy bail is covered by its own unit above.
         $blocks = & $WriteBlocks @('{"id":7,"page":1,"bx":[100,100,180,108],"text_preview":"Figure 3: interior caption"}') 'b6.jsonl'
         $figs = & $NewParent $false
-        $figs[1].caption = $null                      # remove the anchor claim
+        $figs[1].caption = $null                      # remove the anchor claim -> styles empty
         $s = & $NewSummaryV; $s.captioned_figures = 0
-        (Split-CaptionInteriorRegions $figs $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s).Count | Should -Be 2
-        $s.caption_splits | Should -Be 0
+        $out = Split-CaptionInteriorRegions $figs $blocks $pbV $xbV 10.0 100.0 $cfgV $gatesV $s
+        @($out | Where-Object { $_.page -eq 1 }).Count | Should -Be 2   # parent split into upper+lower
+        $s.caption_splits | Should -Be 1
     }
 }
 

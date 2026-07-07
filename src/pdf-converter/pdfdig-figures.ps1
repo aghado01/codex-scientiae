@@ -549,7 +549,16 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             if ($m.Success) { $styles[$m.Groups[1].Value + '|' + [string]($m.Groups[2].Value -ne '')] = $true }
         }
     }
-    if ($styles.Count -eq 0) { return , $Figures }
+    # NO-STYLE BOOTSTRAP (A2 attachment tail, 2026-07-07): a paper whose ONLY figure caption IS the
+    # interior weld it needs has 0 pass-1 claims, so no style is learnable and the split bails — the
+    # chicken-and-egg that leaves 1705.07576v3 Figure 1 uncaptioned (its plot's 44 paths sit ABOVE the
+    # caption; the region only dips below it on 2 degenerate bitmap points). When styles is empty, run in
+    # bootstrap mode: accept a split ONLY from a self-evident cue-then-SEPARATOR caption ("Figure 1:")
+    # strictly interior with full overlap — the separator is the discriminator in-text prose lacks (the
+    # sep-relaxation already trusts it). Calib scratch/caption-bootstrap-calib.ps1: fires on EXACTLY 1705
+    # reg7 corpus-wide (0 false); ph-zigzag has no 0-claim papers, so that corpus is byte-identical.
+    $bootstrap = ($styles.Count -eq 0)
+    if ($bootstrap -and -not [bool](($split.bootstrap_no_style) ?? $true)) { return , $Figures }
 
     # shape+style-guarded unclaimed cue blocks, per page (+ a full id→bx map for letter redistribution)
     $byPage = @{}; $allBx = @{}
@@ -561,7 +570,10 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
         if (-not $m.Success) { continue }
         $hPt = $blk.bx[3] - $blk.bx[1]
         if ($hPt -gt $(if ([string]$m.Groups[2].Value -ne '') { $maxBlockSepPt } else { $maxBlockPt })) { continue }
-        if (-not $styles.ContainsKey($m.Groups[1].Value + '|' + [string]($m.Groups[2].Value -ne ''))) { continue }
+        if ($bootstrap) {
+            if ([string]$m.Groups[2].Value -eq '') { continue }   # bootstrap: REQUIRE a separator (':' or '.') — no learned style to lean on
+        }
+        elseif (-not $styles.ContainsKey($m.Groups[1].Value + '|' + [string]($m.Groups[2].Value -ne ''))) { continue }
         $p = [int]$blk.page
         if (-not $byPage.ContainsKey($p)) { $byPage[$p] = [System.Collections.Generic.List[object]]::new() }
         $byPage[$p].Add($blk)
