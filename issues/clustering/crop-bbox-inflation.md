@@ -15,7 +15,7 @@ The naive fix — drop `is_clipping=true` members from the bbox — is **insuffi
 not clip status, is the true visibility signal*, and there are three kinds of bbox-inflating member:
 
 1. **Clip paths** (`is_clipping=true`, unpainted) — invisible masks. e.g. 1701 Fig 7's 6 clip rects, and
-   Fig 2's (id4) 5 clip rects that top the bbox 1.2em past the painted ink.
+   Fig 2's (id4) 5 clip rects (ids 4/13/15/17/19) that top the bbox 1.3em past the painted ink.
 2. **Unpainted non-clip paths** — constructed-but-not-painted geometry (rare).
 3. **Painted background FILLS** (`is_filled=true` but WHITE/page-colored) — visually invisible yet
    "painted". **1701 Fig 7's id49** is exactly this: a whole-region white fill (399→728) that reaches down
@@ -29,7 +29,8 @@ color/`rule` fill value; roadmap §E "today only a boolean is_clipping").
 ## Prevalence (measured, both corpora, newest runs)
 
 `scratch/clip-inflation-probe.ps1` over **492 figure regions**:
-- **28 regions carry ≥1 invisible (unpainted) member** (943 such members total); **0** all-invisible
+- **28 regions carry ≥1 invisible (unpainted) member** (945 such members total — 943 clip boundaries +
+  2 non-clip unpainted, confirming class 2 is vanishingly rare); **0** all-invisible
   regions (nothing ever collapses). Dropping unpainted members can never remove visible ink *by definition*
   (unpainted = `¬is_stroked ∧ ¬is_filled` = nothing rendered).
 - Class **(a)** — bbox inflated **>0.5em past PAINTED ink**: **exactly 1 region** corpus-wide — 1701 id4

@@ -90,8 +90,12 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
     interiority AND overlap guards all PASS — the split fails because the midline cut is **degenerate with
     BELOW empty** (every path/xobject member's center sits above the caption). These are not welds: the
     caption is a bottom-band **below-caption** the region bbox merely OVERSHOOTS. Fig 7's plot ink floors
-    at y518 while **6 clip paths** (`is_clipping=true`, invisible) span down to y399 past the caption top
-    495; Fig 15 is one oversized xobject placement padding past its diagram. Add-FigureCaptions misses it
+    at y518 while **6 clip paths** (ids 47/48/50/54/100/115, `is_clipping=true`, unpainted) span down to
+    y399 past the caption top 495 — and so does a whole-region **painted** fill (id49, `is_filled=true`,
+    y399→728). It is id49, not the clips, that pins that floor: being *filled* it survives any paint- or
+    clip-based member-drop, so the fix is a color-agnostic caption-top CLAMP (not member removal), and
+    de-inflating this class corpus-wide waits on IR color (§2-E-rider,
+    `issues/clustering/crop-bbox-inflation.md`). Fig 15 is one oversized xobject placement padding past its diagram. Add-FigureCaptions misses it
     (overshoot → negative below-gap −96/−53) and the split finds nothing to cut, so the caption falls
     through both passes. FIX: when a degenerate below-empty interior caption is the only candidate (no weld
     cut made), attach it to the whole region as its below-caption AND pull the crop bbox bottom UP to the

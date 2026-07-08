@@ -11,7 +11,7 @@ $root = 'D:\aghado01\codex-scientiae\ingestion'
 $groups = @('corpora/voroninski', 'compendia/ph-zigzag')
 $INFLATE_EM = 0.5   # report a region whose clip members extend the bbox by > this many text-heights on any edge
 
-$totFig=0; $withClip=0; $inflated=0; $inflatedCap=0; $weldHarm=0; $clipPainted=0; $soleClip=0
+$totFig=0; $withClip=0; $inflated=0; $inflatedCap=0; $weldHarm=0; $invisTot=0; $invisClip=0; $soleClip=0
 $rows = [System.Collections.Generic.List[object]]::new()
 foreach ($group in $groups) {
     foreach ($pd in (Get-ChildItem (Join-Path $root $group) -Directory -EA 0)) {
@@ -34,11 +34,13 @@ foreach ($group in $groups) {
         foreach ($f in $figs) {
             $totFig++
             # VISIBLE = painted ink (is_stroked OR is_filled) for paths, plus every xobject. INVISIBLE =
-            # unpainted paths — clip boundaries (is_clipping) AND bare unpainted paths (1701 Fig 7's id49,
-            # a non-clip unpainted spanning rect). Paint, not is_clipping, is the true visibility signal.
+            # unpainted paths — clip boundaries (is_clipping; e.g. 1701 Fig 7's 6 clip rects 47/48/50/54/
+            # 100/115) AND bare unpainted non-clip paths. Paint, not is_clipping, is the visibility signal
+            # here — but its LIMIT is a painted-yet-invisible background FILL (1701 Fig 7's id49: is_filled
+            # =true, spans down to y399); this test keeps that VISIBLE, and only IR COLOR (§E) can drop it.
             $invisMem=@(); $visMem=@()
             foreach ($pid0 in @($f.path_ids)) { if ($paths.ContainsKey([int]$pid0)) { $r=$paths[[int]$pid0]
-                if ($r.is_stroked -or $r.is_filled) { $visMem+=,$r } else { $invisMem+=,$r; if ($r.is_clipping){$clipPainted++} } } }
+                if ($r.is_stroked -or $r.is_filled) { $visMem+=,$r } else { $invisMem+=,$r; $invisTot++; if ($r.is_clipping){$invisClip++} } } }
             foreach ($xid0 in @($f.xobject_ids)) { if ($xr.ContainsKey([int]$xid0)) { $visMem+=,($xr[[int]$xid0]) } }
             if ($invisMem.Count -eq 0) { continue }
             $withClip++
@@ -68,7 +70,7 @@ foreach ($group in $groups) {
     }
 }
 Write-Host ("=== figure regions={0}  with-INVISIBLE-members={1}  bbox-inflated>{2}em past painted ink={3} (captioned={4}, weld-harm={5})" -f $totFig,$withClip,$INFLATE_EM,$inflated,$inflatedCap,$weldHarm)
-Write-Host ("=== EDGE CASES: total invisible (unpainted) members across regions={0}  all-invisible regions={1} (would collapse if dropped)" -f $clipPainted,$soleClip)
+Write-Host ("=== EDGE CASES: invisible (unpainted) members across regions={0} (is_clipping={1}, non-clip unpainted={2})  all-invisible regions={3} (would collapse if dropped)" -f $invisTot,$invisClip,($invisTot-$invisClip),$soleClip)
 Write-Host "`n--- inflated regions (bbox extends >$($INFLATE_EM)em past PAINTED ink) ---"
 foreach ($r in ($rows | Sort-Object maxInfEm -Descending)) {
     Write-Host ("  [{0}] {1} id{2} cap={3} harm={4} maxInf={5}em  edges: {6}" -f $r.grp,$r.slug,$r.id,$r.cap,$r.harm,$r.maxInfEm,$r.edges)
