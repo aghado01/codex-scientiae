@@ -59,6 +59,22 @@ disambiguate without a lexicon, so this is **best-effort + flag** — set `dehyp
 the enrichment tier verify. `on-axis`/`off-axis`/`1-layer` do NOT wrap in practice (they sit within a line,
 no line seam), so they're untouched; the guard only fires at an actual line boundary.
 
+## Environment prerequisites (read before running anything)
+
+- **Tests:** run via `pwsh -File tests/run.ps1 -Path tests/pdfdig-ir.Tests.ps1` — NOT `Invoke-Pester`
+  directly. These are Pester 5 (`BeforeAll`/`Describe`-`It`/`Should`); the box's default module path only
+  has the Windows-bundled **Pester 3.4.0**, which rejects `BeforeAll`. `run.ps1` imports the portable
+  **Pester 5** from `$env:PORTABLE_ROOT\PowerShell\Modules\Pester` — so `PORTABLE_ROOT` must be set (the
+  portable bootstrap can be down; dot-source the env helpers if it isn't — [[claude-code-store-install-broke-bootstrap]]),
+  or install Pester ≥5 on the normal path.
+- **Regen (acceptance step 2):** a full `Invoke-Pdfdig` needs a working **.NET runtime** (the clustering
+  step shells to the compiled C# engine `bin/hdbscan/hdbscan.exe`) AND **node + the vendored MuPDF** (the
+  image-raster step). A box missing the .NET runtime dies mid-regen and leaves a partial `.runs/{stamp}/pig`
+  to clean up. The TEXT fix itself needs none of this — it can be developed + unit-tested standalone; only
+  the end-to-end regen check does. If .NET/node aren't available, verify the fix by re-running just the
+  block-assembly helper (or `ConvertTo-FigureRegions` against an existing `paths.jsonl`) and eyeballing the
+  emitted `caption.text`, and defer the full `Invoke-Pdfdig` acceptance to a provisioned box.
+
 ## Tests (`tests/pdfdig-ir.Tests.ps1`)
 
 Feed synthetic `TextLines` (or the block-text assembler if refactored into a testable helper — preferred):
