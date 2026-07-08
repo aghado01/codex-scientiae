@@ -1,6 +1,6 @@
 # Crop-bbox inflation by invisible geometry — A2b follow-up scope (2026-07-07)
 
-**Status:** SCOPE (calibrate-first). Grew out of the A2b landing (`34346f2`): 6 of 7 members that dragged
+**Status:** LANDED 2026-07-08 (B1 implemented + gated — see [Landed (B1)](#landed-b1-2026-07-08)). Grew out of the A2b landing (`34346f2`): 6 of 7 members that dragged
 1701 Fig 7's region bbox down past its caption were **clipping paths**, which suggested a general rule —
 *invisible geometry should not inflate a figure's crop rect*. Probing that idea corpus-wide
 (`scratch/clip-inflation-probe.ps1`) **reframed it**, and the reframe is the main deliverable of this note.
@@ -43,6 +43,43 @@ color/`rule` fill value; roadmap §E "today only a boolean is_clipping").
 **Takeaway:** the general idea is real but small, and it is NOT one fix — (a) is a cheap color-agnostic
 polish; (b) is an instance of the **IR color-enrichment thrust (§E)**, not a standalone win.
 
+## Landed (B1, 2026-07-08)
+
+Implemented and gated. **Formation lane** (`pdfdig-figures.ps1`): `Get-FigureVisibleBbox` unions the
+PAINTED members (`prov=xobject ∨ is_stroked ∨ is_filled`); `New-FigureRegionRecord` and
+`Merge-FigureGroup` emit `visible_bbox` **only when it differs from `bbox`** (`Test-BboxEqual`) — so the
+field is absent on the 99%+ of regions with no boundary-inflating invisible member. **Crop lane**
+(`pdfdig-images.ps1`): `Get-FigureCropBbox` = **`visible_bbox ∩ bbox`**, then the existing letter-grow.
+
+**Why intersection, not `?? ` — the scope's one miss.** `visible_bbox` is computed at formation, BEFORE
+A2b trims `bbox` (`pdfdig-figures.ps1:698`, verified the *sole* post-formation bbox mutation). For 1701
+Fig 7 (id16) the class-(b) white FILL (id49) is *painted*, so `visible_bbox` includes it down to y398.78 —
+BELOW A2b's caption-top trim (y495.26). A naive `visible_bbox ?? bbox` crop would re-expand past A2b and
+re-weld the caption (a regression). The intersection clamps paint to the final (trimmed) region: A2b's
+crop is preserved **exactly** (id16 rendered delta `[0,0,0,0]`) while genuine class-(a) bands still
+tighten. This is the concrete form of the note below that "(b) folds into §E … A2b could revert to
+attach-only" — until color exists, A2b owns Fig 7 and B1 is a deliberate no-op there.
+
+**Gate — both corpora** (`scratch/verify-b1-corpus.ps1`, re-run formation vs committed figures.jsonl):
+**33 papers, 1480 regions, 0 non-`visible_bbox` field mismatches** → PRIMARY-invariant (bbox/area/density/
+kind/caption/ids all byte-identical). **4 regions gain `visible_bbox`** (all voroninski; ph-zigzag none):
+1506 id111 (left −1.8pt), 1701 id4/id16/id17. (Only 4, not the 28 invisible-member regions — most
+invisible members are interior and don't move the union boundary.)
+
+**Rendered-crop delta** (`scratch/verify-b1-crop-all.ps1`, after letter-grow @150dpi): max **3.8px** (1506
+id111 left edge); 1701 id4 ≤1px, id16 **0px** (A2b), id17 0.6px. The probe's lone >0.5em case (id4, +1.3em
+top) turned out to hold **node label "P"** (the pinhole point) in that band — a real figure label, not
+stray text; letter-grow re-adds it, so the net crop moves ~1px. **No painted ink or node label is clipped
+anywhere** — excluded members are unpainted by definition (painted ink ⊆ `visible_bbox`), and letter-grow
+re-adds any label that sat in a trimmed band.
+
+**Tests (76 green):** `tests/pdfdig-images.Tests.ps1` (6 — `Get-FigureCropBbox`: no-field passthrough,
+class-a tighten, the A2b clamp, per-edge intersection, degenerate-intersection fallback, fresh-array);
+`tests/pdfdig-figures.Tests.ps1` (+6 — clip contraction, class-2 bare-unpainted, xobject-kept, all-painted
+control, all-unpainted guard, `Merge-FigureGroup` visible union).
+
+Class **(b)** (color-blind white fills) is untouched by this landing and remains an §E consumer.
+
 ## Why A2b already covers the case that mattered
 
 A2b trims to the **caption top** — a color-agnostic boundary that sidesteps member classification entirely.
@@ -60,7 +97,8 @@ letter grow. Two placements:
 - **B1 (recommended): a formation-computed `visible_bbox`.** In `pdfdig-figures.ps1`, where members and
   their flags are already in hand, compute `visible_bbox` = union of PAINTED members (`is_stroked ∨
   is_filled`) ∪ xobjects, and store it on the record when it differs from `bbox`. `pdfdig-images.ps1` bases
-  the render rect on `visible_bbox ?? bbox`, then grows by letters as today. **PRIMARY-invariant by
+  the render rect on `visible_bbox ∩ bbox` (the intersection, **not** `?? ` — see Landed for why A2b forces
+  it), then grows by letters as today. **PRIMARY-invariant by
   construction** — `bbox`/area/density/caption untouched; only the render rect tightens. Member access stays
   in the lane that already has it; crop lane is a one-line base swap.
 - **B2: contract inside the crop lane.** `pdfdig-images.ps1` loads `paths.jsonl` and recomputes per figure.

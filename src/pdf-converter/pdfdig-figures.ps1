@@ -42,6 +42,27 @@ function Get-FigureUnionBbox($items) {
     @([math]::Round($minX, 2), [math]::Round($minY, 2), [math]::Round($maxX, 2), [math]::Round($maxY, 2))
 }
 
+# Smallest enclosing bbox over the PAINTED members only — xobjects (always visible) plus stroked/filled
+# paths — dropping UNPAINTED geometry (clip masks is_clipping, bare unpainted paths) that inflates the
+# geometric union past the ink it masks (1701 Fig 2: 5 clip rects top the union +1.3em past the plot,
+# pulling a caption line into the crop). Paint status, not clip status, is the visibility signal — the
+# ¬(is_stroked ∨ is_filled) test also catches non-clip unpainted paths, and is a SUPERSET of the ink by
+# definition so it can never drop rendered pixels. NOT the class-(b) white-FILL case (is_filled=true yet
+# page-colored) — that needs IR color (§E). prov is checked first so an xobject (no paint flags) short-
+# circuits. Returns $null if no painted member (caller falls back to the geometric bbox).
+# See issues/clustering/crop-bbox-inflation.md class (a).
+function Get-FigureVisibleBbox($items) {
+    $painted = foreach ($it in $items) { if ($it.prov -eq 'xobject' -or $it.is_stroked -or $it.is_filled) { $it } }
+    Get-FigureUnionBbox $painted
+}
+
+# True when two rounded [x0,y0,x1,y1] boxes coincide on every edge (both already Round(,2)).
+function Test-BboxEqual($a, $b) {
+    if ($null -eq $a -or $null -eq $b) { return $false }
+    for ($k = 0; $k -lt 4; $k++) { if ($a[$k] -ne $b[$k]) { return $false } }
+    $true
+}
+
 # Rectangle-gap between two [x0,y0,x1,y1] boxes: Euclidean norm over the per-axis white-space gaps,
 # sqrt(max(0,gx)^2 + max(0,gy)^2) — the same form as the engine's RectangleGapMetric, so the PS-side
 # consensus reasons in the SAME distance the geometry view clustered with. 0 when boxes touch/overlap.
@@ -420,7 +441,7 @@ function New-FigureRegionRecord($Page, $Members, $Flag, $BodyArea, $Gates, $Lett
             else                                                                { 'figure' }
         }
         else { if ($area -lt $Gates.fallbackPt2) { 'mark' } else { 'figure' } }
-    [ordered]@{
+    $rec = [ordered]@{
         id = -1; page = $Page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
         # explicit foreach (NOT @($list.id)) — member-access enumeration on an EMPTY List yields a lone
         # $null, which would serialize as [null] on a pure-path or pure-xobject region; foreach gives []
@@ -432,6 +453,12 @@ function New-FigureRegionRecord($Page, $Members, $Flag, $BodyArea, $Gates, $Lett
         provenance = if ($hasXobj -and $pathMembers.Count) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
         kind = $kind; flag = $Flag; caption = $null
     }
+    # Painted-ink crop rect: emitted ONLY when unpainted geometry inflated the geometric bbox. The gate
+    # bbox/area/density above stay geometric (kind gates + caption gap PRIMARY-invariant); the crop lane
+    # (pdfdig-images.ps1) bases its render rect on visible_bbox ?? bbox, so absent ⇒ crop is unchanged.
+    $visBbox = Get-FigureVisibleBbox $Members
+    if ($visBbox -and -not (Test-BboxEqual $visBbox $bbox)) { $rec['visible_bbox'] = $visBbox }
+    $rec
 }
 
 # Merge a set of subfigure regions (all sharing one float caption) into one figure region. Union bbox,
@@ -456,7 +483,7 @@ function Merge-FigureGroup([System.Collections.Generic.List[object]] $Members, $
     $areaEm  = if ($BodyArea) { [math]::Round($area / $BodyArea, 3) } else { $null }
     $density = if ($areaEm -and $areaEm -gt 0) { [math]::Round($pathCount / $areaEm, 4) } else { $null }
     $first = $Members[0]
-    [ordered]@{
+    $rec = [ordered]@{
         id = $first.id; page = $first.page; bbox = $bbox; area = $area; area_em2 = $areaEm; density = $density
         path_ids = @(foreach ($p in $pathIds) { $p }); path_count = $pathCount
         xobject_ids = @(foreach ($x in $xobjIds) { $x }); xobject_count = $xobjCount
@@ -464,6 +491,12 @@ function Merge-FigureGroup([System.Collections.Generic.List[object]] $Members, $
         provenance = if ($hasXobj -and $pathCount) { 'mixed' } elseif ($hasXobj) { 'xobject' } else { 'path' }
         kind = 'figure'; flag = 'subfigure_merged'; caption = $first.caption
     }
+    # Painted-ink crop rect over the merged children: union each child's visible extent (its own
+    # visible_bbox when it carried one, else its geometric bbox). Emitted only when it contracts the
+    # merged bbox — see New-FigureRegionRecord / issues/clustering/crop-bbox-inflation.md class (a).
+    $visBbox = Get-FigureUnionBbox @(foreach ($m in $Members) { @{ bbox = ($m.visible_bbox ?? $m.bbox) } })
+    if ($visBbox -and -not (Test-BboxEqual $visBbox $bbox)) { $rec['visible_bbox'] = $visBbox }
+    $rec
 }
 
 # Subfigure grouping: a \begin{figure} float with N subfigures currently yields N separate kind=figure

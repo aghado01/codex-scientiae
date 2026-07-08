@@ -21,6 +21,24 @@
 
 . "$PSScriptRoot/../pdf-raster.ps1"   # the shared PDF->PNG shim (Invoke-PdfRaster / Test-PdfRasterAvailable)
 
+# Crop-rect base for one figure region: the painted-ink extent (visible_bbox, emitted by the formation
+# lane when unpainted clip masks inflated the union — issues/clustering/crop-bbox-inflation.md class a)
+# INTERSECTED with the geometric bbox. Intersection is the key: visible_bbox TIGHTENS the crop to ink,
+# but must never RE-EXPAND past a deliberate bbox trim — A2b pulls 1701 Fig 7's bbox bottom up to its
+# caption top, while the class-(b) white FILL (id49, is_filled yet page-colored) reaches below it and
+# the paint signal cannot exclude it; clamping paint to the final bbox keeps A2b's trim. No visible_bbox
+# (or a degenerate/disjoint intersection) ⇒ the geometric bbox, unchanged. Returns a fresh [double[4]].
+function Get-FigureCropBbox($Bbox, $VisibleBbox) {
+    $geo = [double[]]@($Bbox)
+    if (-not $VisibleBbox) { return $geo }
+    $v = [double[]]@($VisibleBbox)
+    $bb = [double[]]@(
+        [math]::Max($geo[0], $v[0]), [math]::Max($geo[1], $v[1]),
+        [math]::Min($geo[2], $v[2]), [math]::Min($geo[3], $v[3]))
+    if ($bb[0] -ge $bb[2] -or $bb[1] -ge $bb[3]) { return $geo }   # degenerate/disjoint ⇒ geometric bbox
+    $bb
+}
+
 function Export-PdfFigureImages {
     [CmdletBinding()]
     param(
@@ -66,7 +84,8 @@ function Export-PdfFigureImages {
     # lane also uses (PNG-terminal register, issues/latex-oracle-images.md).
     $jobs = [System.Collections.Generic.List[object]]::new()
     for ($i = 0; $i -lt $figs.Count; $i++) {
-        $bb = [double[]]@($figs[$i].bbox)
+        # Painted-ink crop base (visible_bbox ∩ bbox), then grow by attached letter blocks as before.
+        $bb = Get-FigureCropBbox $figs[$i].bbox $figs[$i].visible_bbox
         if ($blockBx) {
             foreach ($lb in @($figs[$i].letter_block_ids)) {
                 if ($null -eq $lb) { continue }

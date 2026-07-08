@@ -1089,3 +1089,88 @@ Describe 'pdfdig figure-region clustering — narrow-caption overlap denominator
         finally { Remove-Item -Recurse -Force $wt -ErrorAction SilentlyContinue }
     }
 }
+
+Describe 'pdfdig visible_bbox — painted-ink crop rect (B1, crop-bbox-inflation.md class a)' {
+    # Direct unit tests of the formation-lane B1 logic (Get-FigureVisibleBbox / New-FigureRegionRecord /
+    # Merge-FigureGroup), bypassing clustering so the paint-vs-invisible contraction is deterministic.
+    # visible_bbox is a CROP-only signal: present ONLY when unpainted geometry inflated the geometric
+    # bbox; the gate bbox/area/density stay geometric (PRIMARY-invariant).
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:vGates = @{ degenEps = 2.0; floorEm = 2.0; minDensity = 0.05; fallbackPt2 = 100.0 }
+        $script:vBody  = 100.0   # 10pt body → 100 pt² / em²
+        # a member with explicit paint flags (a path) or a placed bitmap (an xobject, always visible).
+        $script:VMem = {
+            param($id, $bbox, $stroked = $false, $filled = $false, $clip = $false, $xobject = $false)
+            if ($xobject) { [pscustomobject]@{ id = $id; prov = 'xobject'; bbox = [double[]]$bbox } }
+            else { [pscustomobject]@{ id = $id; prov = 'path'; bbox = [double[]]$bbox; is_stroked = $stroked; is_filled = $filled; is_clipping = $clip } }
+        }
+    }
+
+    It 'contracts visible_bbox to painted ink when a clip rect inflates the geometric bbox' {
+        $members = @(
+            & $script:VMem 1 @(10, 10, 40, 40) -filled $true
+            & $script:VMem 2 @(10, 40, 40, 60) -filled $true
+            & $script:VMem 3 @(0, 0, 50, 200)  -clip $true       # invisible clip mask tops the union at y200
+        )
+        $rec = New-FigureRegionRecord 1 $members 'test' $script:vBody $script:vGates
+        ($rec.bbox -join ',')          | Should -Be '0,0,50,200'   # geometric bbox UNCHANGED (PRIMARY-invariant)
+        $rec.Contains('visible_bbox')  | Should -BeTrue            # [ordered] dict → test the KEY, not .PSObject
+        ($rec.visible_bbox -join ',')  | Should -Be '10,10,40,60'  # painted-only union — clip excluded
+        $rec.visible_bbox[3]           | Should -BeLessThan $rec.bbox[3]   # top contracted
+    }
+
+    It 'treats a bare unpainted (non-clip) path as invisible too — paint, not clip, is the signal' {
+        $members = @(
+            & $script:VMem 1 @(10, 10, 40, 60) -filled $true
+            & $script:VMem 2 @(0, 0, 50, 200)                    # unpainted AND is_clipping=false (class 2)
+        )
+        $rec = New-FigureRegionRecord 1 $members 'test' $script:vBody $script:vGates
+        ($rec.visible_bbox -join ',') | Should -Be '10,10,40,60'
+    }
+
+    It 'keeps xobjects (paint-flagless bitmaps) in the visible union while excluding a clip' {
+        $members = @(
+            & $script:VMem 1 @(10, 10, 40, 40)  -filled $true
+            & $script:VMem 2 @(0, 0, 50, 200)   -clip $true      # excluded
+            & $script:VMem 3 @(40, 10, 120, 40) -xobject $true   # kept (always visible)
+        )
+        $rec = New-FigureRegionRecord 1 $members 'test' $script:vBody $script:vGates
+        ($rec.visible_bbox -join ',') | Should -Be '10,10,120,40'
+    }
+
+    It 'omits visible_bbox when every member is painted (crop == geometric bbox)' {
+        $members = @(
+            & $script:VMem 1 @(10, 10, 40, 40) -filled $true
+            & $script:VMem 2 @(10, 40, 40, 60) -stroked $true
+        )
+        $rec = New-FigureRegionRecord 1 $members 'test' $script:vBody $script:vGates
+        $rec.Contains('visible_bbox') | Should -BeFalse
+    }
+
+    It 'omits visible_bbox for an all-unpainted region (guard: crop falls back to bbox)' {
+        $members = @(
+            & $script:VMem 1 @(0, 0, 50, 200) -clip $true
+            & $script:VMem 2 @(5, 5, 45, 190) -clip $true
+        )
+        Get-FigureVisibleBbox $members | Should -BeNullOrEmpty
+        $rec = New-FigureRegionRecord 1 $members 'test' $script:vBody $script:vGates
+        $rec.Contains('visible_bbox') | Should -BeFalse
+    }
+
+    It 'Merge-FigureGroup unions children by their visible extents (visible_bbox ?? bbox)' {
+        $a = New-FigureRegionRecord 1 @(
+                & $script:VMem 1 @(10, 10, 40, 60) -filled $true
+                & $script:VMem 2 @(0, 0, 50, 200)  -clip $true       # child A: clip inflates → visible_bbox
+             ) 'test' $script:vBody $script:vGates
+        $b = New-FigureRegionRecord 1 @(
+                & $script:VMem 3 @(60, 10, 90, 60) -filled $true     # child B: all painted → no visible_bbox
+             ) 'test' $script:vBody $script:vGates
+        $a.id = 0; $b.id = 1
+        $b.Contains('visible_bbox') | Should -BeFalse   # precondition for the ?? fallback
+        $merged = Merge-FigureGroup ([System.Collections.Generic.List[object]]@($a, $b)) $script:vBody
+        ($merged.bbox -join ',')         | Should -Be '0,0,90,200'    # geometric union (clip included)
+        ($merged.visible_bbox -join ',') | Should -Be '10,10,90,60'   # A.visible_bbox ∪ B.bbox
+    }
+}
