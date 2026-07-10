@@ -65,7 +65,7 @@ public static class HdbscanCli
             throw new UsageException($"--min-pts ({s.MinPts}) exceeds point count ({ds.N}).");
 
         var runner = new HdbscanRunner(ds.N);
-        return DispatchMetric(s.Metric, runner, ds.Data, ds.Dim, s.MinPts, s.MinClusterSize, s.AllowSingleCluster, s.ClusterSelectionEpsilon);
+        return DispatchMetric(s.Metric, s.BandsPath, runner, ds.Data, ds.Dim, s.MinPts, s.MinClusterSize, s.AllowSingleCluster, s.ClusterSelectionEpsilon);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public static class HdbscanCli
     /// rather than silently defaulting to Euclidean.
     /// </summary>
     private static HdbscanResult DispatchMetric(
-        string metricSpec, HdbscanRunner runner, ReadOnlySpan<double> data, int dim,
+        string metricSpec, string? bandsPath, HdbscanRunner runner, ReadOnlySpan<double> data, int dim,
         int minPts, int minClusterSize, bool allowSingle, double epsilon)
     {
         string spec = metricSpec.Trim().ToLowerInvariant();
@@ -83,6 +83,18 @@ public static class HdbscanCli
         {
             double p = ParseMinkowskiOrder(spec);
             return runner.Run(data, dim, minPts, new MinkowskiMetric(p), minClusterSize, allowSingle, epsilon);
+        }
+
+        if (spec.StartsWith("rectangle-gap-banded", StringComparison.Ordinal))
+        {
+            if (dim != 4)
+                throw new UsageException(
+                    $"--distance-metric rectangle-gap-banded needs 2-D box vectors [x0,y0,x1,y1]; got dim {dim}.");
+            if (bandsPath is null)
+                throw new UsageException("--distance-metric rectangle-gap-banded requires --bands <bands.jsonl>.");
+            double lambda = ParseBandLambda(spec);
+            double[] bands = LoadBands(bandsPath);
+            return runner.Run(data, dim, minPts, new BandedRectangleGapMetric(bands, lambda), minClusterSize, allowSingle, epsilon);
         }
 
         if (spec is "rectangle-gap" or "rect-gap" or "bbox-gap")
@@ -116,6 +128,47 @@ public static class HdbscanCli
         if (!double.TryParse(tail, NumberStyles.Float, CultureInfo.InvariantCulture, out double p))
             throw new UsageException($"could not parse Minkowski order from '{spec}' (expected e.g. minkowski:p=3).");
         return p;
+    }
+
+    private static double ParseBandLambda(string spec)
+    {
+        // Accept "rectangle-gap-banded", "rectangle-gap-banded:lambda=2", "rectangle-gap-banded:2".
+        int colon = spec.IndexOf(':');
+        if (colon < 0) return 2.0;
+        string tail = spec[(colon + 1)..].Trim();
+        if (tail.StartsWith("lambda=", StringComparison.Ordinal)) tail = tail[7..];
+        if (!double.TryParse(tail, NumberStyles.Float, CultureInfo.InvariantCulture, out double lambda) || lambda < 0.0)
+            throw new UsageException($"could not parse band lambda from '{spec}' (expected e.g. rectangle-gap-banded:lambda=2).");
+        return lambda;
+    }
+
+    /// <summary>
+    /// Loads backbone bands for <see cref="BandedRectangleGapMetric"/>: JSONL, one
+    /// <c>{"v":[x0,y0,x1,y1]}</c> quad per line (the points-file shape). An empty file is
+    /// valid — a page with no prose bands degrades exactly to plain rectangle-gap.
+    /// </summary>
+    private static double[] LoadBands(string path)
+    {
+        if (!File.Exists(path))
+            throw new UsageException($"--bands file not found: {path}");
+        string[] lines = File.ReadAllLines(path, Encoding.UTF8);
+        var flat = new List<double>();
+        for (int li = 0; li < lines.Length; li++)
+        {
+            string line = lines[li].Trim();
+            if (line.Length == 0) continue;
+            using JsonDocument doc = JsonDocument.Parse(line);
+            JsonElement root = doc.RootElement;
+            if (root.ValueKind != JsonValueKind.Object ||
+                !root.TryGetProperty("v", out JsonElement v) || v.ValueKind != JsonValueKind.Array)
+                throw new UsageException($"--bands line {li + 1}: expected {{\"v\":[x0,y0,x1,y1]}}.");
+            int before = flat.Count;
+            foreach (JsonElement e in v.EnumerateArray())
+                flat.Add(e.GetDouble());
+            if (flat.Count - before != 4)
+                throw new UsageException($"--bands line {li + 1}: expected exactly 4 coordinates, got {flat.Count - before}.");
+        }
+        return flat.ToArray();
     }
 
     // ── Output ──────────────────────────────────────────────────────────────────
@@ -308,6 +361,7 @@ public static class HdbscanCli
                 case "--min-cluster-size":         map["min-cluster-size"] = Next(args, ref i, a); break;
                 case "--distance-metric":
                 case "--metric":                   map["distance-metric"] = Next(args, ref i, a); break;
+                case "--bands":                    map["bands"] = Next(args, ref i, a); break;
                 case "--label-column":             map["label-column"] = Next(args, ref i, a); break;
                 case "--delimiter":                map["delimiter"] = Next(args, ref i, a); break;
                 case "--format":                   map["format"] = Next(args, ref i, a); break;
@@ -346,11 +400,17 @@ OPTIONS
   --allow-single-cluster       Let the root be selected (default ON).
   --no-allow-single-cluster    Datasets with no real split return all-noise (sklearn default).
   --distance-metric <spec>     euclidean(default)|manhattan|chebyshev|cosine|minkowski:p=N|
-                               hamming|poincare|hyperboloid|rectangle-gap.
+                               hamming|poincare|hyperboloid|rectangle-gap|
+                               rectangle-gap-banded[:lambda=N].
                                  hamming        discrete/categorical features (exact-equality)
                                  poincare       hyperbolic, points in the open unit ball
                                  hyperboloid    hyperbolic, Lorentz model (x0 = time component)
                                  rectangle-gap  min gap between axis-aligned boxes, v=[x0,y0,x1,y1]
+                                 rectangle-gap-banded  rectangle-gap with the vertical gap inflated
+                                                by lambda (default 2) x its overlap with backbone
+                                                bands; needs --bands; dim must be 4
+  --bands <path>               Backbone bands for rectangle-gap-banded: JSONL {""v"":[x0,y0,x1,y1]}
+                               per line (empty file = degrade to plain rectangle-gap).
   --label-column <name|idx>    CSV ground-truth column → true_label + reference_labels.
   --delimiter <char|tab>       CSV delimiter (default: ',', or tab for .tsv).
   --no-header                  CSV has no header row.
@@ -379,6 +439,7 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
         public int    MinClusterSize;
         public bool   AllowSingleCluster;
         public required string Metric;
+        public string? BandsPath;
         public string? LabelColumn;
         public char   Delimiter;
         public bool   HasHeader;
@@ -410,6 +471,7 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
 
             bool allowSingle = GetBool(merged, "allow-single-cluster", true);
             string metric = merged.TryGetValue("distance-metric", out var mv) ? mv : "euclidean";
+            merged.TryGetValue("bands", out var bandsPath);
             merged.TryGetValue("label-column", out var labelCol);
 
             bool hasHeader = !GetBool(merged, "no-header", false);
@@ -422,6 +484,7 @@ EXIT  0 ok · 1 I/O or runtime error · 2 usage error.  stdout stays clean; stat
                 In = @in, OutDir = outDir,
                 MinPts = minPts, MinClusterSize = minClusterSize,
                 AllowSingleCluster = allowSingle, Metric = metric,
+                BandsPath = (bandsPath is { Length: > 0 }) ? bandsPath : null,
                 LabelColumn = labelCol, Delimiter = delim,
                 HasHeader = hasHeader, Format = format,
                 ClusterSelectionEpsilon = epsilon,

@@ -109,6 +109,27 @@ Console.WriteLine("Metric unit tests:");
     Near("rect-gap horizontal", rg.Distance(new double[] { 0, 0, 10, 10 }, new double[] { 20, 0, 30, 10 }), 10.0);
     Near("rect-gap overlap=0",  rg.Distance(new double[] { 0, 0, 10, 10 }, new double[] { 5, 5, 15, 15 }), 0.0);
     Near("rect-gap diagonal",   rg.Distance(new double[] { 0, 0, 10, 10 }, new double[] { 13, 14, 20, 20 }), 5.0);
+
+    // Banded rectangle gap (backbone-conditioned, tier3 §2-B). Vertical pair: a below, b above,
+    // raw y-gap 10 over interval y∈[10,20]; band = a "prose line" quad [x0,y0,x1,y1].
+    double[] lower = { 0, 0, 10, 10 }, upper = { 0, 20, 10, 30 };
+    var noBands = new BandedRectangleGapMetric(Array.Empty<double>(), 2.0);
+    Near("banded: empty bands == plain (vertical)",   noBands.Distance(lower, upper), 10.0);
+    Near("banded: empty bands == plain (horizontal)", noBands.Distance(new double[] { 0, 0, 10, 10 }, new double[] { 20, 0, 30, 10 }), 10.0);
+
+    var inGap = new BandedRectangleGapMetric(new double[] { 0, 12, 30, 14 }, 2.0);   // 2pt band inside the gap
+    Near("banded: band in gap inflates (10 + 2*2)", inGap.Distance(lower, upper), 14.0);
+    Near("banded: symmetric",                        inGap.Distance(upper, lower), inGap.Distance(lower, upper));
+    Near("banded: overlap stays 0 despite band",     inGap.Distance(new double[] { 0, 0, 10, 13 }, new double[] { 5, 11, 15, 25 }), 0.0);
+
+    var outGap = new BandedRectangleGapMetric(new double[] { 0, 40, 30, 42 }, 2.0);  // band above both boxes
+    Near("banded: band outside gap is inert", outGap.Distance(lower, upper), 10.0);
+
+    var offCol = new BandedRectangleGapMetric(new double[] { 50, 12, 80, 14 }, 2.0); // other-column band
+    Near("banded: band must overlap BOTH boxes", offCol.Distance(lower, upper), 10.0);
+
+    var clip = new BandedRectangleGapMetric(new double[] { 0, 5, 30, 12 }, 1.0);     // band straddles gap bottom
+    Near("banded: cover clips to gap interval (10 + 1*2)", clip.Distance(lower, upper), 12.0);
 }
 
 // ── Layer 2b: rectangle-gap layout segmentation (figures cluster, strays → noise) ────

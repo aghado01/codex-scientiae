@@ -24,6 +24,7 @@ function Invoke-Hdbscan {
         [int]    $MinPts,
         [int]    $MinClusterSize,
         [string] $DistanceMetric,
+        [string] $Bands,
         [string] $LabelColumn,
         [string] $Delimiter,
         [ValidateSet('csv', 'jsonl')] [string] $Format,
@@ -38,6 +39,7 @@ function Invoke-Hdbscan {
     if ($PSBoundParameters.ContainsKey('MinPts'))         { $cliArgs += @('--min-pts', $MinPts) }
     if ($PSBoundParameters.ContainsKey('MinClusterSize')) { $cliArgs += @('--min-cluster-size', $MinClusterSize) }
     if ($DistanceMetric) { $cliArgs += @('--distance-metric', $DistanceMetric) }
+    if ($Bands)          { $cliArgs += @('--bands', $Bands) }
     if ($LabelColumn)    { $cliArgs += @('--label-column', $LabelColumn) }
     if ($Delimiter)      { $cliArgs += @('--delimiter', $Delimiter) }
     if ($Format)         { $cliArgs += @('--format', $Format) }

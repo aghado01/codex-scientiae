@@ -270,3 +270,84 @@ public readonly struct RectangleGapMetric : IDistanceMetric
         => Distance(MemoryMarshal.CreateReadOnlySpan(ref a, dim),
                     MemoryMarshal.CreateReadOnlySpan(ref b, dim));
 }
+
+/// <summary>
+/// Backbone-conditioned rectangle gap (full T3, tier3-engineering-plan §2-B): rectangle-gap for
+/// 2-D boxes <c>[x0, y0, x1, y1]</c> with the VERTICAL gap component inflated by the prose ink it
+/// crosses. Plain rectangle-gap is geometry-blind — 2em of whitespace and 2em of body-text band
+/// weld identically, so figure formations chain across the page's text flow (calibrated 2026-07-10:
+/// 189/492 corpus regions cross an interior prose line, `scratch/band-weld-calib.ps1`). Each band is
+/// a prose text line's box (same quad packing); for a pair of boxes with a positive vertical gap,
+/// every band that horizontally overlaps BOTH boxes (two-column safety: a line in the other column
+/// separates nothing) contributes its overlap with the gap interval, and the effective gap becomes
+/// <c>gap_y + lambda * cover</c>. The conditioning is CONTINUOUS — a ~1em interior subcaption row
+/// (legitimate inside multi-panel figures) inflates by ~lambda*1em and stays merged, while a welded
+/// paragraph inflates by ~lambda*10em and splits; the calibration measured that target/guard margin
+/// at ~10x. Empty bands degrade exactly to <see cref="RectangleGapMetric"/>. Overlapping boxes stay
+/// distance 0 (no gap interval → no inflation), d(A,A)=0, symmetric — all mutual reachability needs.
+/// Defined for dim 4 only; the CLI gate enforces it.
+/// </summary>
+public readonly struct BandedRectangleGapMetric : IDistanceMetric
+{
+    private readonly double[] _bands;   // flattened quads [x0,y0,x1,y1] × count
+    private readonly int      _count;
+    private readonly double   _lambda;
+
+    public BandedRectangleGapMetric(double[] bands, double lambda)
+    {
+        if (bands is null)
+            throw new ArgumentNullException(nameof(bands));
+        if (bands.Length % 4 != 0)
+            throw new ArgumentException("Bands must be flattened [x0,y0,x1,y1] quads.", nameof(bands));
+        if (!(lambda >= 0.0))
+            throw new ArgumentOutOfRangeException(nameof(lambda), "Band inflation lambda must be >= 0.");
+        _bands  = bands;
+        _count  = bands.Length / 4;
+        _lambda = lambda;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double Distance(ReadOnlySpan<double> a, ReadOnlySpan<double> b)
+    {
+        // Horizontal axis: plain interval gap.
+        double xGap  = b[0] - a[2];
+        double xOther = a[0] - b[2];
+        if (xOther > xGap) xGap = xOther;
+        if (xGap < 0.0) xGap = 0.0;
+
+        // Vertical axis: interval gap + lambda × prose cover of the gap interval.
+        double up   = b[1] - a[3];   // b entirely above a
+        double down = a[1] - b[3];   // a entirely above b
+        double yGap = up > down ? up : down;
+        if (yGap <= 0.0)
+        {
+            yGap = 0.0;              // overlap → no gap interval, no inflation
+        }
+        else if (_count > 0 && _lambda > 0.0)
+        {
+            double lo, hi;           // the vertical gap interval between the two boxes
+            if (up >= down) { lo = a[3]; hi = b[1]; }
+            else            { lo = b[3]; hi = a[1]; }
+
+            double cover = 0.0;
+            double[] bands = _bands;
+            for (int i = 0; i < bands.Length; i += 4)
+            {
+                // band must horizontally overlap BOTH boxes
+                if (bands[i] >= a[2] || bands[i + 2] <= a[0]) continue;
+                if (bands[i] >= b[2] || bands[i + 2] <= b[0]) continue;
+                double oLo = bands[i + 1] > lo ? bands[i + 1] : lo;
+                double oHi = bands[i + 3] < hi ? bands[i + 3] : hi;
+                if (oHi > oLo) cover += oHi - oLo;
+            }
+            yGap += _lambda * cover;
+        }
+
+        return Math.Sqrt(xGap * xGap + yGap * yGap);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double Distance(ref double a, ref double b, int dim)
+        => Distance(MemoryMarshal.CreateReadOnlySpan(ref a, dim),
+                    MemoryMarshal.CreateReadOnlySpan(ref b, dim));
+}

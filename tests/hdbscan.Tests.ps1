@@ -50,6 +50,22 @@ BeforeAll {
     $rects.Add('{"v":[400,0,410,6]}')
     $boxesJsonl = Join-Path $work 'boxes.jsonl'
     [IO.File]::WriteAllLines($boxesJsonl, $rects)
+
+    # Banded rectangle-gap fixture (thrust B): two 2x4-box panels whose 2pt inter-panel gap
+    # equals every intra-panel gap — plain rectangle-gap sees ONE uniform blob; a 1pt prose
+    # band in that gap makes the banded metric split it (2 + lambda*1 crossing cost).
+    $panels = [System.Collections.Generic.List[string]]::new()
+    foreach ($py in @(0, 6, 12, 18)) {
+        foreach ($px in @(0, 7, 14, 21)) {
+            $panels.Add(('{{"v":[{0},{1},{2},{3}]}}' -f $px, $py, ($px + 5), ($py + 4)))
+        }
+    }
+    $panelsJsonl = Join-Path $work 'panels.jsonl'
+    [IO.File]::WriteAllLines($panelsJsonl, $panels)
+    $bandsJsonl = Join-Path $work 'bands.jsonl'
+    [IO.File]::WriteAllLines($bandsJsonl, [string[]]@('{"v":[0,10.5,30,11.5]}'))
+    $emptyBandsJsonl = Join-Path $work 'bands-empty.jsonl'
+    [IO.File]::WriteAllLines($emptyBandsJsonl, [string[]]@())
 }
 
 AfterAll {
@@ -111,6 +127,34 @@ Describe 'hdbscan CLI end-to-end' {
         # (otherwise it would throw earlier on 'alpha' as a feature).
         $o = Join-Path $work 'out-bad'
         { Invoke-Hdbscan -In $labelledCsv -OutDir $o -LabelColumn species -DistanceMetric not-a-metric -MinPts 3 } |
+            Should -Throw
+    }
+
+    It 'banded rectangle-gap splits the panel weld its plain sibling cannot see' {
+        $plain = Join-Path $work 'out-panels-plain'
+        Invoke-Hdbscan -In $panelsJsonl -OutDir $plain -DistanceMetric rectangle-gap -MinPts 3 -MinClusterSize 3 | Out-Null
+        $sumP = Get-Content (Join-Path $plain 'summary.json') -Raw | ConvertFrom-Json
+        $sumP.result.cluster_count | Should -Be 1   # geometry-blind: welds across the prose band
+
+        $banded = Join-Path $work 'out-panels-banded'
+        Invoke-Hdbscan -In $panelsJsonl -OutDir $banded -DistanceMetric 'rectangle-gap-banded:lambda=4' -Bands $bandsJsonl -MinPts 3 -MinClusterSize 3 | Out-Null
+        $sumB = Get-Content (Join-Path $banded 'summary.json') -Raw | ConvertFrom-Json
+        $sumB.hdbscan.metric       | Should -Be 'rectangle-gap-banded:lambda=4'
+        $sumB.result.cluster_count | Should -Be 2   # the band conditions the formation apart
+        $sumB.result.noise_count   | Should -Be 0
+    }
+
+    It 'banded with an empty bands file degrades exactly to plain rectangle-gap' {
+        $o = Join-Path $work 'out-panels-degrade'
+        Invoke-Hdbscan -In $panelsJsonl -OutDir $o -DistanceMetric rectangle-gap-banded -Bands $emptyBandsJsonl -MinPts 3 -MinClusterSize 3 | Out-Null
+        $plain = Join-Path $work 'out-panels-plain'
+        (Get-Content (Join-Path $o 'hdbscan_partition.csv') | Select-Object -Skip 0 | ForEach-Object { ($_ -split ',')[4] }) |
+            Should -Be (Get-Content (Join-Path $plain 'hdbscan_partition.csv') | ForEach-Object { ($_ -split ',')[4] })
+    }
+
+    It 'banded without --bands fails loudly' {
+        $o = Join-Path $work 'out-panels-nobands'
+        { Invoke-Hdbscan -In $panelsJsonl -OutDir $o -DistanceMetric rectangle-gap-banded -MinPts 3 } |
             Should -Throw
     }
 }
