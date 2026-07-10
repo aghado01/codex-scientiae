@@ -142,6 +142,38 @@ Describe 'column-band labeling' {
     }
 }
 
+Describe 'block text line joining' {
+    It 'dehyphenates a lowercase PDF line-wrap seam' {
+        $r = Join-PdfDigTextLines @('illumina-', 'tions')
+        $r.text | Should -Be 'illuminations'
+        $r.dehyphenated | Should -BeTrue
+    }
+
+    It 'space-joins normal wrapped lines without touching inline compounds' {
+        $r = Join-PdfDigTextLines @('direct (on-axis) illumination and', 'the right')
+        $r.text | Should -Be 'direct (on-axis) illumination and the right'
+        $r.dehyphenated | Should -BeFalse
+    }
+
+    It 'keeps the hyphen on uppercase continuations and joins tightly' {
+        $r = Join-PdfDigTextLines @('X-', 'Ray imaging')
+        $r.text | Should -Be 'X-Ray imaging'
+        $r.dehyphenated | Should -BeFalse
+    }
+
+    It 'flags accepted false joins for downstream review' {
+        $r = Join-PdfDigTextLines @('delta-', 'homology')
+        $r.text | Should -Be 'deltahomology'
+        $r.dehyphenated | Should -BeTrue
+    }
+
+    It 'leaves single-line text unchanged and unflagged' {
+        $r = Join-PdfDigTextLines @('no wrap here')
+        $r.text | Should -Be 'no wrap here'
+        $r.dehyphenated | Should -BeFalse
+    }
+}
+
 Describe 'classifier helpers' {
     BeforeAll { Import-SymbolMap | Out-Null }
 

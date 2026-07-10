@@ -204,6 +204,36 @@ function Get-Modal($values) {
     return $best
 }
 
+function Join-PdfDigTextLines([string[]] $LineTexts) {
+    $sb = [System.Text.StringBuilder]::new()
+    $dehyphenated = $false
+    foreach ($lineText in $LineTexts) {
+        $t = (($lineText ?? '') -replace '\s+', ' ').Trim()
+        if ($t -eq '') { continue }
+        if ($sb.Length -eq 0) {
+            [void]$sb.Append($t)
+            continue
+        }
+        $cur = $sb.ToString()
+        if ($cur -cmatch '[a-z]-$' -and $t -cmatch '^[a-z]') {
+            $sb.Length = $sb.Length - 1
+            [void]$sb.Append($t)
+            $dehyphenated = $true
+        }
+        elseif ($cur.EndsWith('-')) {
+            [void]$sb.Append($t)
+        }
+        else {
+            [void]$sb.Append(' ')
+            [void]$sb.Append($t)
+        }
+    }
+    [pscustomobject]@{
+        text = $sb.ToString()
+        dehyphenated = $dehyphenated
+    }
+}
+
 <#
   Column bands — a per-page LABELING of the XYCut claim, not a decision (ir-schema LANE 3).
   Narrow blocks' left edges are clustered; >=2 clusters separated by >12% of text width = multi-band
@@ -449,6 +479,7 @@ function ConvertTo-PdfDigIr {
                     $ro = 0
                     foreach ($b in $ordered) {
                         $lineRecs = [System.Collections.Generic.List[object]]::new()
+                        $lineTexts = [System.Collections.Generic.List[string]]::new()
                         foreach ($tl in $b.TextLines) {
                             $lineWordIds = [System.Collections.Generic.List[int]]::new()
                             $lineFonts = [System.Collections.Generic.List[string]]::new()
@@ -475,9 +506,11 @@ function ConvertTo-PdfDigIr {
                                 modal_font = (Get-Modal $lineFonts)
                                 modal_size = [double](Get-Modal $lineSizes)
                             })
+                            $lineTexts.Add([string]$tl.Text)
                             $lnid++
                         }
-                        $blockText = ($b.Text -replace '\s+',' ')
+                        $blockJoin = Join-PdfDigTextLines -LineTexts $lineTexts.ToArray()
+                        $blockText = $blockJoin.text
                         $preview = if ($blockText.Length -gt 100) { $blockText.Substring(0,100) } else { $blockText }
                         $rec = [ordered]@{
                             id = $bid; page = $pn
@@ -491,6 +524,7 @@ function ConvertTo-PdfDigIr {
                             # caption defect the finalize weave's render surfaced, 2026-07-07)
                             text = $blockText
                         }
+                        if ($blockJoin.dehyphenated) { $rec['dehyphenated'] = $true }
                         $blockRecs.Add($rec); $pageBlockRecs.Add($rec)
                         $bid++; $ro++
                     }
