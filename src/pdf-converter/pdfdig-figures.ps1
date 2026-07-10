@@ -914,6 +914,36 @@ function ConvertTo-FigureRegions {
     $bodyPt   = Get-BodyFontSize ($PathsJsonl -replace '\.paths\.jsonl$', '.letters.jsonl')
     $bodyArea = if ($bodyPt) { [double]$bodyPt * [double]$bodyPt } else { $null }
 
+    # Full T3 — banded metric (tier3-plan §2-B; absent block = disabled). BANDS = wide prose /
+    # heading-candidate NODE bboxes (node level, not blocks — see banded_metric._doc); the per-page
+    # clustering then runs rectangle-gap-banded so formations stop chaining across body text. Needs
+    # bodyPt (the width floor is in em) and the nodes lane; either missing → quietly stays plain,
+    # mirroring the T3-lite blocks guard. PRIMARY invariance is empirical here — knob default OFF.
+    $bandedCfg = $cfg.banded_metric
+    $bandedEnabled = ($null -ne $bandedCfg -and [bool]$bandedCfg.enabled -and $bodyPt)
+    $bandsByPage = @{}
+    if ($bandedEnabled) {
+        if ($metric -ne 'rectangle-gap') {
+            throw "figure_regions.banded_metric requires metric=rectangle-gap (got '$metric')"
+        }
+        $nodesPath = $PathsJsonl -replace '\.paths\.jsonl$', '.nodes.jsonl'
+        if (Test-Path $nodesPath) {
+            $bandMinPt = [double]$bandedCfg.band_min_width_em * [double]$bodyPt
+            foreach ($line in [IO.File]::ReadLines($nodesPath)) {
+                # ordinal fast-path: only prose/heading lines are band candidates
+                if (-not ($line.Contains('"type":"prose"') -or $line.Contains('"type":"heading-candidate"'))) { continue }
+                $n = $line | ConvertFrom-Json
+                $bb = $n.'bounding box'
+                if (-not $bb -or @($bb).Count -ne 4) { continue }
+                if (([double]$bb[2] - [double]$bb[0]) -lt $bandMinPt) { continue }   # narrow line — not backbone
+                if (([double]$bb[3] - [double]$bb[1]) -le 0) { continue }            # degenerate height
+                $pgk = [int]$n.page
+                if (-not $bandsByPage.ContainsKey($pgk)) { $bandsByPage[$pgk] = [System.Collections.Generic.List[string]]::new() }
+                $bandsByPage[$pgk].Add(('{{"v":[{0},{1},{2},{3}]}}' -f $bb[0], $bb[1], $bb[2], $bb[3]))
+            }
+        } else { $bandedEnabled = $false }
+    }
+
     $figures = [System.Collections.Generic.List[object]]::new()
     $summary = [ordered]@{
         pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
@@ -927,6 +957,7 @@ function ConvertTo-FigureRegions {
         furniture = 0        # T1: uncaptioned stroke-only acyclic strips demoted figure→furniture
         letter_blocks = 0; letter_bridges = 0   # V_letters: blocks attached / cross-component welds
         inflow = 0           # T3-lite: uncaptioned regions inside the text-column flow (backbone veto)
+        banded_pages = 0     # full T3: pages clustered with the banded (backbone-conditioned) metric
     }
     # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
     $gates = @{ degenEps = $degenEps; floorEm = $floorEm; fallbackPt2 = $fallbackPt2; minDensity = $minDensity }
@@ -1048,6 +1079,16 @@ function ConvertTo-FigureRegions {
                 MinPts = $minPts; MinClusterSize = $minClusterSize
             }
             if (-not $allowSingle) { $hdbArgs.NoAllowSingleCluster = $true }
+            if ($bandedEnabled) {
+                # bands sidecar rides the points file; empty file = the metric degrades to plain
+                # rectangle-gap on band-less pages. The defrag re-run inherits both via the args copy.
+                $bandsFile = Join-Path $work "p$page.bands.jsonl"
+                $pageBands = $bandsByPage[$page]
+                [IO.File]::WriteAllLines($bandsFile, [string[]]@($(if ($pageBands) { $pageBands } else { @() })))
+                $hdbArgs.DistanceMetric = ('rectangle-gap-banded:lambda={0}' -f [double]$bandedCfg.lambda)
+                $hdbArgs.Bands = $bandsFile
+                $summary.banded_pages++
+            }
             Invoke-Hdbscan @hdbArgs | Out-Null
 
             $labels = Read-PartitionLabels (Join-Path $outDir 'hdbscan_partition.csv')

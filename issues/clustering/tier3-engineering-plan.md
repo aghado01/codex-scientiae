@@ -141,6 +141,18 @@ fix to audit.** In the render: fewer over-cropped welds.
   (intra-figure steps p50 0.63em, float-boundary teleports min 7.24em). Sidecar must filter degenerate
   zero-height nodes. **CAUTION: B is the FIRST change on the formation path itself — PRIMARY invariance is
   empirical, not structural → opt-in config knob, gate BOTH corpora before it defaults on.**
+- **B-1/2/3 — ✅ LANDED 2026-07-10: engine + CLI + lane wiring, knob default OFF (inert).**
+  `BandedRectangleGapMetric` (`src/hdbscan/Metric.cs`) + `--bands` / spec `rectangle-gap-banded[:lambda=N]`
+  (CLI, fails loud without bands or off dim-4) + `Invoke-Hdbscan -Bands` + lane (`pdfdig-figures.ps1`):
+  prose-node bands built pre-loop, `p{page}.bands.jsonl` sidecar, `figure_regions.banded_metric` knob
+  (enabled/lambda/band_min_width_em), `summary.banded_pages`, defrag re-run inherits bands via the args
+  copy. Verified: 8 C# unit vectors, 3 CLI e2e (the behavioral pair: same 16-box page welds plain /
+  splits banded), 2 lane integration tests (prose band splits, formula + narrow lines do NOT band);
+  figures suite 72/72, hdbscan 9/9. **B-4 remaining:** λ calibration on the real fire-set, regen + gate
+  BOTH corpora (blocked on a clean tree — pdfdig-ir de-hyphenation edits in flight), render read, crop
+  eyeball; acceptance = inflow demotions drop from 201, PRIMARY 0.35/0.7 no-regress, 0 over. **WATCH:
+  consensus V_stream can re-weld a banded split when the cross-band chain step is < `stream_jump_em`
+  (6em) — real paragraph welds mostly exceed it, but audit the gate diff for stream re-welds.**
 
 ### C. T2 persistence-band selection — one rule replaces three heuristics
 From `hdbscan_dendrogram.json` (already emitted), select components persistent across a dilation band

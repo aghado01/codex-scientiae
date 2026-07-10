@@ -763,6 +763,74 @@ Describe 'pdfdig figure-region clustering — V_caption interior split (integrat
     }
 }
 
+Describe 'pdfdig figure-region clustering — banded metric (full T3, integration)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:wb = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-banded-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wb | Out-Null
+
+        # Page 1: THREE stacked 2x4-box panels whose 2pt inter-panel gaps equal every intra-panel
+        # gap — plain rectangle-gap sees ONE uniform blob. The nodes lane puts a WIDE PROSE line in
+        # the A/B gap (bands → splits) and a FORMULA line plus a NARROW prose line in the B/C gap
+        # (neither bands → the weld persists), so one fixture proves banding fires on prose only.
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($py in @(0, 6, 12, 18, 24, 30)) {          # A: y 0..10, B: 12..22, C: 24..34
+            foreach ($px in @(0, 7, 14, 21)) {
+                $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $px, $py, ($px + 5), ($py + 4)))
+            }
+        }
+        [IO.File]::WriteAllLines((Join-Path $script:wb 'b.paths.jsonl'), $paths)
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }   # bodyPt 10 → band width floor 200pt
+        [IO.File]::WriteAllLines((Join-Path $script:wb 'b.letters.jsonl'), $letters)
+        [IO.File]::WriteAllLines((Join-Path $script:wb 'b.blocks.jsonl'), @(
+            '{"id":1,"page":9,"bx":[0,0,10,10],"text_preview":"far away"}'
+        ))
+        [IO.File]::WriteAllLines((Join-Path $script:wb 'b.nodes.jsonl'), @(
+            '{"id":0,"type":"prose","page":1,"bounding box":[0,10.5,210,11.5]}'          # A/B gap: bands
+            '{"id":1,"type":"prose","page":1,"bounding box":[0,11.0,210,11.0]}'          # degenerate height: filtered
+            '{"id":2,"type":"formula-block","page":1,"bounding box":[0,22.5,210,23.5]}'  # B/C gap: math never bands
+            '{"id":3,"type":"prose","page":1,"bounding box":[0,22.6,50,23.4]}'           # B/C gap: too narrow (50 < 200)
+        ))
+
+        # Both runs disable consensus so the test isolates the METRIC (V_stream chains the 2pt steps
+        # between consecutive-id panels and would OR the split back together on this dense fixture).
+        $cfgObj = Get-Content (Join-Path $repo 'src/pdf-converter/stores/classify-config.json') -Raw | ConvertFrom-Json
+        $cfgObj.figure_regions.consensus.enabled = $false
+        $offCfg = Join-Path $script:wb 'cfg-off.json'
+        [IO.File]::WriteAllText($offCfg, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+        $cfgObj.figure_regions.banded_metric.enabled = $true
+        $cfgObj.figure_regions.banded_metric.lambda = 4.0   # decisive margin on the tiny fixture
+        $onCfg = Join-Path $script:wb 'cfg-on.json'
+        [IO.File]::WriteAllText($onCfg, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+
+        $script:rbOff = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wb 'b.paths.jsonl') `
+                          -OutPath (Join-Path $script:wb 'off.figures.jsonl') -ConfigPath $offCfg -PassThru
+        $script:rbOn  = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wb 'b.paths.jsonl') `
+                          -OutPath (Join-Path $script:wb 'on.figures.jsonl') -ConfigPath $onCfg -PassThru
+    }
+    AfterAll { if ($script:wb -and (Test-Path $script:wb)) { Remove-Item -Recurse -Force $script:wb } }
+
+    It 'knob off: the uniform page welds into one region (geometry-blind baseline)' {
+        @($script:rbOff.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' }).Count | Should -Be 1
+        $script:rbOff.Summary.banded_pages | Should -Be 0
+    }
+
+    It 'knob on: splits at the prose band but NOT at the formula/narrow lines' {
+        $p1 = @($script:rbOn.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
+        $p1.Count | Should -Be 2                      # A | B+C — prose banded, math and narrow lines did not
+        $script:rbOn.Summary.banded_pages | Should -Be 1
+        # the split falls at the prose band (y≈11): one region entirely below, one entirely above
+        $below = @($p1 | Where-Object { $_.bbox[3] -lt 11 })
+        $above = @($p1 | Where-Object { $_.bbox[1] -gt 11 })
+        $below.Count | Should -Be 1
+        $above.Count | Should -Be 1
+        $above[0].bbox[1] | Should -BeGreaterThan 11.5   # B+C starts past the band
+    }
+}
+
 Describe 'pdfdig figure-region clustering — V_letters evidence view (unit)' {
     BeforeAll {
         $repo = Split-Path $PSScriptRoot -Parent
