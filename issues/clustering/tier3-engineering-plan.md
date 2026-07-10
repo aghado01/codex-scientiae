@@ -148,11 +148,26 @@ fix to audit.** In the render: fewer over-cropped welds.
   (enabled/lambda/band_min_width_em), `summary.banded_pages`, defrag re-run inherits bands via the args
   copy. Verified: 8 C# unit vectors, 3 CLI e2e (the behavioral pair: same 16-box page welds plain /
   splits banded), 2 lane integration tests (prose band splits, formula + narrow lines do NOT band);
-  figures suite 72/72, hdbscan 9/9. **B-4 remaining:** λ calibration on the real fire-set, regen + gate
-  BOTH corpora (blocked on a clean tree — pdfdig-ir de-hyphenation edits in flight), render read, crop
-  eyeball; acceptance = inflow demotions drop from 201, PRIMARY 0.35/0.7 no-regress, 0 over. **WATCH:
-  consensus V_stream can re-weld a banded split when the cross-band chain step is < `stream_jump_em`
-  (6em) — real paragraph welds mostly exceed it, but audit the gate diff for stream re-welds.**
+  figures suite 72/72, hdbscan 9/9. (WATCH from B-3, still standing: consensus V_stream can re-weld a
+  banded split when the cross-band chain step is < `stream_jump_em` 6em.)
+- **B-4 — ✅ MEASURED 2026-07-10 (`scratch/banded-ablation.ps1`, offline re-cluster both corpora): knob
+  STAYS OFF; the metric's payoff is gated on C.** Method: baseline variant reproduces the recorded gate
+  EXACTLY row-for-row (ph-zigzag 0.7/5.6, voroninski 0.35/11.74 — the plan's quoted 5.4/11.57 were stale
+  run-states; sentinel counts byte-stable), so banded-vs-baseline isolates the knob. At λ=2:
+  **PRIMARY INVARIANT on both corpora (0.7 7/10 + 0.35 18/23, 0 over — the non-negotiable holds)**;
+  guards hold (one mild wobble: 2008 p8 capH 480→510, eyeball on next full regen); but **SECONDARY
+  drifts adverse (5.6→5.8, 11.74→12.0 — splits create more uncaptioned survivors than the veto eats),
+  inflow RISES (21→26, 180→191)** — the acceptance prediction "inflow drops" was WRONG in direction: the
+  mechanism is **split-feeds-veto** (banding splits mixed welds so T3-lite catches the equation halves),
+  prevention and audit are teammates, not a handoff. **And the render-visible targets are IMMUNE: 1608
+  p8/p9 + 2112 id6 unmoved — proven structural by a single-page probe: at λ=20 (~1600pt inflation) 1608
+  p8 still yields 1 cluster / 0 noise with both strays (a path AND an xobject above y450) absorbed.**
+  ROOT CAUSE: `allow_single_cluster` EOM selects the ROOT on lone-blob pages and the root absorbs every
+  non-noise point regardless of distance — **the monster-weld class is a cluster-SELECTION defect, no
+  finite λ can eject the stray**. VERDICT: B lands as substrate (safe, tested, inert); its corpus payoff
+  arrives with **C (T2 persistence-band selection)** — a point attached only at extreme distance falls
+  outside the persistence band → noise — exactly the "C is cleaner on conditioned formation" dependency,
+  now with a measured defect class waiting for it. Re-evaluate the λ sweep AFTER C.
 
 ### C. T2 persistence-band selection — one rule replaces three heuristics
 From `hdbscan_dendrogram.json` (already emitted), select components persistent across a dilation band
