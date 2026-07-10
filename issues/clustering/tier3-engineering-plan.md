@@ -123,6 +123,24 @@ gap components that cross a band. Surface: one C# metric + `--bands` CLI input +
 plumbing + the lane writing bands; trust-harness unit vectors ([[hdbscan-trust-harness]]).
 **Acceptance signal (unchanged, and elegant): the in-flow veto's demotion count DROPS — it inverts from
 fix to audit.** In the render: fewer over-cropped welds.
+- **B-0 calibration — ✅ DONE 2026-07-10 (`scratch/band-weld-calib.ps1`): premise CONFIRMED, design locked.**
+  Fire-set: **189/492** figure regions cross ≥1 interior prose band (both corpora, newest runs), incl. two
+  CAPTIONED paragraph-welds — 1608.02165v1 p8 id7 / p9 id8 (a stray member welded across a full paragraph
+  into a real figure, 167/254 members below → a paragraph of body text rides the crop) — and the known
+  control 2112 id6 (56% cover, under T3-lite's 0.7 cut). Acceptance baseline: **201 inflow demotions**
+  corpus-wide. **BACKBONE LOCKED at NODE level, not T3-lite's blocks**: bands = individual wide
+  (≥ `wide_block_em`) PROSE/heading-candidate node bboxes. Block-level fails BOTH ways (measured, probe
+  header has the iteration record): excluding any formula-node owner loses 1608 p9 (a majority-prose
+  paragraph with one embedded display line); majority-by-node-count barely filters (consecutive formula
+  lines merge into ONE group node, undercounting math). Node bands need no composition threshold at all.
+  **METRIC FORM: `gap′ = gap_y + λ·(prose-cover of the vertical gap interval)`**, counting only bands that
+  horizontally overlap BOTH boxes (2-col safety) — continuous, so the GUARD population node bands surfaced
+  (captioned subfigure/consensus-merged regions with a ~1em interior subcaption row: 2204 p12 id14,
+  2501 p12 id16, 2008 p8 id5 / p12 id10, 2603 p8 id7 / p11 id10, 2006 p11 id7) stays merged at λ·1em while
+  1608's 11.5em paragraph splits at λ·10em — a ~10× target/guard margin; scale anchors from stream-calib
+  (intra-figure steps p50 0.63em, float-boundary teleports min 7.24em). Sidecar must filter degenerate
+  zero-height nodes. **CAUTION: B is the FIRST change on the formation path itself — PRIMARY invariance is
+  empirical, not structural → opt-in config knob, gate BOTH corpora before it defaults on.**
 
 ### C. T2 persistence-band selection — one rule replaces three heuristics
 From `hdbscan_dendrogram.json` (already emitted), select components persistent across a dilation band
