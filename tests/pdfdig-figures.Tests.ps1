@@ -831,6 +831,67 @@ Describe 'pdfdig figure-region clustering — banded metric (full T3, integratio
     }
 }
 
+Describe 'pdfdig figure-region clustering — C′ stray eject (integration)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:we = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-eject-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:we | Out-Null
+
+        # Page 1 = the B-4 defect in miniature: a dense 2x4 blob (gaps 2pt) + ONE remote stray 290pt
+        # away — allow_single EOM absorbs the stray at any distance (the 1608 monster shape).
+        # Page 2 = the chain guard: 6 AREAL boxes (5x8pt — extent > areal_min_extent so T1 furniture
+        # cannot demote the strip) at UNIFORM 25pt gaps — no decade gap, must never eject.
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($py in @(0, 6)) { foreach ($px in @(0, 7, 14, 21)) {
+            $paths.Add(('{{"id":{0},"page":1,"bbox":[{1},{2},{3},{4}]}}' -f $id++, $px, $py, ($px + 5), ($py + 4))) } }
+        $paths.Add(('{{"id":{0},"page":1,"bbox":[0,300,5,304]}}' -f $id++))   # the stray (id 8)
+        foreach ($cx in @(0, 30, 60, 90, 120, 150)) {
+            $paths.Add(('{{"id":{0},"page":2,"bbox":[{1},0,{2},8]}}' -f $id++, $cx, ($cx + 5))) }
+        [IO.File]::WriteAllLines((Join-Path $script:we 'e.paths.jsonl'), $paths)
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:we 'e.letters.jsonl'), $letters)
+        [IO.File]::WriteAllLines((Join-Path $script:we 'e.blocks.jsonl'), @(
+            '{"id":1,"page":9,"bx":[0,0,10,10],"text_preview":"far away"}'
+        ))
+
+        $script:reOff = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:we 'e.paths.jsonl') `
+                          -OutPath (Join-Path $script:we 'off.figures.jsonl') -PassThru
+        $cfgObj = Get-Content (Join-Path $repo 'src/pdf-converter/stores/classify-config.json') -Raw | ConvertFrom-Json
+        $cfgObj.figure_regions.stray_eject.enabled = $true
+        $onCfg = Join-Path $script:we 'cfg-on.json'
+        [IO.File]::WriteAllText($onCfg, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+        $script:reOn = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:we 'e.paths.jsonl') `
+                         -OutPath (Join-Path $script:we 'on.figures.jsonl') -ConfigPath $onCfg -PassThru
+    }
+    AfterAll { if ($script:we -and (Test-Path $script:we)) { Remove-Item -Recurse -Force $script:we } }
+
+    It 'knob off: allow_single absorbs the remote stray (the B-4 EOM defect reproduced)' {
+        $p1 = @($script:reOff.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
+        $p1.Count | Should -Be 1
+        $p1[0].path_count | Should -Be 9              # stray welded in — the crop spans to y304
+        $script:reOff.Summary.stray_ejects | Should -Be 0
+    }
+
+    It 'knob on: ejects exactly the stray; the crop stops spanning to it' {
+        $p1 = @($script:reOn.Figures | Where-Object { $_.page -eq 1 -and $_.kind -eq 'figure' })
+        $p1.Count | Should -Be 1
+        $p1[0].path_count | Should -Be 8
+        @($p1[0].path_ids) | Should -Not -Contain 8
+        $p1[0].bbox[3] | Should -BeLessThan 50        # bbox back to the blob, not the stray
+        $script:reOn.Summary.stray_ejects | Should -Be 1
+        $script:reOn.Summary.stray_eject_clusters | Should -Be 1
+    }
+
+    It 'knob on: a uniform chain never ejects (no decade gap — sparse diagrams are safe)' {
+        $p2 = @($script:reOn.Figures | Where-Object { $_.page -eq 2 -and $_.kind -eq 'figure' })
+        $p2.Count | Should -Be 1
+        $p2[0].path_count | Should -Be 6              # all six chain members retained
+    }
+}
+
 Describe 'pdfdig figure-region clustering — V_letters evidence view (unit)' {
     BeforeAll {
         $repo = Split-Path $PSScriptRoot -Parent

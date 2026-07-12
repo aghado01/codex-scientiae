@@ -140,6 +140,97 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
     $elbow
 }
 
+# C′ STRAY EJECT — the post-selection trim EOM cannot perform (tier3-plan §2-C rescope; statistic
+# LOCKED by scratch/stray-eject-calib.ps1 after three measured iterations — see the probe header and
+# figure_regions.stray_eject._doc). allow_single EOM selects the ROOT on lone-blob pages and absorbs
+# remote strays at ANY distance (B-4: 1608 p8 stays 1 cluster / 0 noise even at banded λ=20) — the
+# render then welds a paragraph of body text into the crop. Per selected cluster: walk the dendrogram
+# spine from the members' LCA down into the larger-member child; thin far sides (≤ TailMax members)
+# are ladder RUNGS (stray candidates); a FAT split marks the core top (multi-panel joins are never
+# thin → structurally unejectable); noise-only far sides contribute distance, nothing to eject.
+# CLAMP the spine distance sequence at contact scale (floor_em — sub-glyph distances are all
+# "touching"; micro-gaps between them are the v2 failure mode), find the largest ln-gap; if it is
+# ≥ min_log_gap (the defrag-elbow convention), flip every rung above the cut to noise (label −1).
+# Uniform chains (sparse real diagrams) never show a decade gap; a ~2.5× satellite sits under 1.0.
+# Mutates $Labels in place and returns it; $Summary gains stray_ejects / stray_eject_clusters.
+function Select-StrayEject([int[]] $Labels, [string] $DendrogramJson, [double] $BodyPt, $ECfg, [int] $TailMax, $Summary) {
+    if (-not (Test-Path $DendrogramJson)) { return $Labels }
+    $dendro = Get-Content $DendrogramJson -Raw | ConvertFrom-Json
+    $n = [int]$dendro.leaf_count
+    $merges = @($dendro.merges)
+    if (-not $merges.Count -or $n -ne $Labels.Count) { return $Labels }
+    $minLogGap = [double]$ECfg.min_log_gap
+    $floorPt = [double]$ECfg.floor_em * $BodyPt
+    $L = [int[]]::new($merges.Count); $R = [int[]]::new($merges.Count)
+    $distOf = [double[]]::new($n + $merges.Count)
+    for ($i = 0; $i -lt $merges.Count; $i++) {
+        $L[$i] = [int]$merges[$i].left_child; $R[$i] = [int]$merges[$i].right_child
+        $distOf[$n + $i] = [double]$merges[$i].distance
+    }
+    foreach ($lbl in (@($Labels | Where-Object { $_ -ge 0 } | Select-Object -Unique))) {
+        $cRows = [System.Collections.Generic.List[int]]::new()
+        for ($ri = 0; $ri -lt $n; $ri++) { if ($Labels[$ri] -eq $lbl) { $cRows.Add($ri) } }
+        if ($cRows.Count -le $TailMax + 1) { continue }   # too small to hold both a core and a rung
+        $cnt = [int[]]::new($n + $merges.Count)
+        foreach ($ri in $cRows) { $cnt[$ri] = 1 }
+        $lca = -1
+        for ($i = 0; $i -lt $merges.Count; $i++) {
+            $node = $n + $i
+            $cnt[$node] = $cnt[$L[$i]] + $cnt[$R[$i]]
+            if ($cnt[$node] -eq $cRows.Count) { $lca = $node; break }
+        }
+        if ($lca -lt $n) { continue }
+        # spine walk: collect thin rungs + the core-top distance
+        $rungs = [System.Collections.Generic.List[object]]::new()
+        $spine = [System.Collections.Generic.List[double]]::new()
+        $coreTop = 0.0
+        $node = $lca
+        while ($node -ge $n) {
+            $i = $node - $n
+            $cl = $cnt[$L[$i]]; $cr = $cnt[$R[$i]]
+            if ($cl -eq 0 -or $cr -eq 0) {   # noise-only far side: geometry, nothing to eject
+                $spine.Add($distOf[$node])
+                $node = if ($cl -eq 0) { $R[$i] } else { $L[$i] }
+                continue
+            }
+            $far  = if ($cl -le $cr) { $L[$i] } else { $R[$i] }
+            $near = if ($cl -le $cr) { $R[$i] } else { $L[$i] }
+            if ($cnt[$far] -gt $TailMax) { $coreTop = $distOf[$node]; break }   # FAT split = core top
+            $rungs.Add(@{ dist = $distOf[$node]; far = $far })
+            $spine.Add($distOf[$node])
+            $node = $near
+            if ($node -lt $n) { break }                                          # spine hit a leaf
+            if ($cnt[$node] -le $TailMax + 1) { $coreTop = $distOf[$node]; break } # chain bottom
+        }
+        if (-not $rungs.Count) { continue }
+        $seq = [System.Collections.Generic.List[double]]::new()
+        if ($coreTop -gt 0) { $seq.Add([math]::Max($coreTop, $floorPt)) }
+        foreach ($d in ($spine | Sort-Object)) { $seq.Add([math]::Max($d, $floorPt)) }
+        $best = 0.0; $cut = $null
+        for ($i = 1; $i -lt $seq.Count; $i++) {
+            $g = [math]::Log($seq[$i]) - [math]::Log($seq[$i - 1])
+            if ($g -gt $best) { $best = $g; $cut = [math]::Sqrt($seq[$i - 1] * $seq[$i]) }
+        }
+        if ($best -lt $minLogGap -or $null -eq $cut) { continue }
+        $ejected = 0
+        foreach ($rg in $rungs) {
+            if ($rg.dist -le $cut) { continue }
+            $stack = [System.Collections.Generic.Stack[int]]::new()
+            $stack.Push([int]$rg.far)
+            while ($stack.Count) {
+                $v = $stack.Pop()
+                if ($v -lt $n) {
+                    if ($Labels[$v] -eq $lbl) { $Labels[$v] = -1; $ejected++ }
+                    continue
+                }
+                $stack.Push($L[$v - $n]); $stack.Push($R[$v - $n])
+            }
+        }
+        if ($ejected -gt 0) { $Summary.stray_ejects += $ejected; $Summary.stray_eject_clusters++ }
+    }
+    $Labels
+}
+
 # CONSENSUS m1 (issues/clustering/consensus-milestone1-design.md): OR-combine two per-page
 # co-membership VIEWS over the clustering items in one union-find pass.
 #   V_geom   — the HDBSCAN partition (labels), taken as-is.
@@ -944,6 +1035,11 @@ function ConvertTo-FigureRegions {
         } else { $bandedEnabled = $false }
     }
 
+    # C′ stray eject (absent block = disabled) — post-selection trim; PRIMARY risk is empirical,
+    # knob default OFF until C′-3 gates both corpora. Needs bodyPt (contact floor is in em).
+    $ejectCfg = $cfg.stray_eject
+    $ejectEnabled = ($null -ne $ejectCfg -and [bool]$ejectCfg.enabled -and $bodyPt)
+
     $figures = [System.Collections.Generic.List[object]]::new()
     $summary = [ordered]@{
         pages = 0; regions = 0; figures = 0; marks = 0; degenerate = 0
@@ -958,6 +1054,7 @@ function ConvertTo-FigureRegions {
         letter_blocks = 0; letter_bridges = 0   # V_letters: blocks attached / cross-component welds
         inflow = 0           # T3-lite: uncaptioned regions inside the text-column flow (backbone veto)
         banded_pages = 0     # full T3: pages clustered with the banded (backbone-conditioned) metric
+        stray_ejects = 0; stray_eject_clusters = 0   # C′: remote members trimmed off selected clusters
     }
     # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
     $gates = @{ degenEps = $degenEps; floorEm = $floorEm; fallbackPt2 = $fallbackPt2; minDensity = $minDensity }
@@ -1115,6 +1212,13 @@ function ConvertTo-FigureRegions {
                         $summary.defragged_pages++
                     }
                 }
+            }
+
+            # C′ stray eject — on the FIRST run's dendrogram (the defrag epsilon re-run changes labels,
+            # never the tree) and BEFORE consensus (an ejected stray beyond stream_jump_em cannot be
+            # stream-re-welded; the gate audits the rest).
+            if ($ejectEnabled) {
+                $labels = Select-StrayEject $labels (Join-Path $outDir 'hdbscan_dendrogram.json') $bodyPt $ejectCfg ($minClusterSize - 1) $summary
             }
 
             # CONSENSUS m1: OR-combine the geometry partition with content-stream draw-run evidence
