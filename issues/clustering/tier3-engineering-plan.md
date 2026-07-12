@@ -174,6 +174,34 @@ From `hdbscan_dendrogram.json` (already emitted), select components persistent a
 [a,b] em instead of EOM-stability + `fragmentation_flag_min_clusters` + defrag-elbow. PS-side first.
 Calibrate like `stream-calib` (birth/death stats of oracle-aligned regions). Retires two knobs;
 the defrag ablation becomes its regression test. In the render: multi-panel plots crop whole.
+- **C-0 calibration — ✅ MEASURED 2026-07-10 (`scratch/persistence-band-calib.ps1`, 443 regions both
+  corpora, both metrics): the GLOBAL band is FALSIFIED — C is RESCOPED to C′ below.** Captioned
+  (oracle-aligned) regions: assembly p50 2.6 / p99 25.9 / max 29.5em vs death min **0.7** / p10 3.5em —
+  genuine (jacc≈1) figures assemble as late as ~17em (2205 p7 id13, 1506 p31 id109) while other genuine
+  figures DIE at 0.7–1.1em (2008 p11 id9; the 883-member 2603 p8 subfigure block) → a ≥ 17 ∧ b < 0.7 is
+  a > b: **no corpus-wide [a,b] exists; infeasible even within the subfig-merged guard class alone
+  (asm max 8.6 vs die min 0.8)**. Second falsification: **banding inflates the WRONG side** — banded λ=2
+  pushes captioned assembly p99 25.9→37.7 while min-death stays 0.7 (tight deaths are figure-to-FIGURE
+  adjacencies with no prose between; late assemblies are the cross-band welds whose internal gaps banding
+  inflates) — the "B widens C's band" composition story is dead at the global level. Root insight: pages
+  vary in scale ~10×, which is WHY selection is density-relative; a fixed absolute band re-introduces the
+  global-threshold species the knob history (elbow, t_far, stream-jump) evolved away from. Caveat noted:
+  the very top a-side rows are caption_split artifacts (jacc 0.25–0.5 — split products aren't dendrogram
+  nodes); the genuine 17em cases stand. The one true fixed anchor the probe DID surface: the B-4 monster
+  signature is a RELATIVE jump — 1608 p8 blob internal scale ~1em, stray attach 24.7em (banded 40.9);
+  p9 9.9em; 2112 25.3em — which motivates C′:
+- **C′ (rescope) — per-cluster relative STRAY EJECT (post-selection trim).** Walk each selected cluster's
+  dendrogram top (LCA of its members): while the current merge's far side holds ≤ tail_max cluster
+  members AND the merge distance ≥ gap_k × the larger child's own assembly (the within-cluster
+  defrag-elbow idiom: relative log-gap, a PROVEN statistic species), eject the far members to noise.
+  Veto-shaped (trims membership, never asserts — the design law); guards safe by construction
+  (multi-panel panels are never tiny → tail_max spares them); per-cluster scale-relative (transports
+  across pages); PS-side from the same dendrogram; does NOT retire the defrag/frag knobs (that dream
+  died with the band). λ re-sweep RE-AIMED, not dead: banding raises stray-attach distances (24.7→40.9)
+  → SHARPENS C′'s relative jump; measure C′ plain first, then C′×λ. Ladder: **C′-0** eject-statistic
+  calibration (fire-set must catch 1608 p8/p9; false-positive census = small legitimate satellites,
+  colorbars/legends, attaching late-and-small) → **C′-1** implement behind `figure_regions.stray_eject`
+  knob default OFF → **C′-2** unit + integration tests → **C′-3** ablation gate both corpora + λ sweep.
 
 ### D. Glyph-cluster candidates — the modality pig cannot see (2112)
 tikz-cd/xy-pic arrows are font glyphs; the path lane is empty, so no veto/merge helps. The elevation's
