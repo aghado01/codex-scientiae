@@ -202,6 +202,22 @@ the defrag ablation becomes its regression test. In the render: multi-panel plot
   calibration (fire-set must catch 1608 p8/p9; false-positive census = small legitimate satellites,
   colorbars/legends, attaching late-and-small) → **C′-1** implement behind `figure_regions.stray_eject`
   knob default OFF → **C′-2** unit + integration tests → **C′-3** ablation gate both corpora + λ sweep.
+- **C′-0 — ✅ STATISTIC LOCKED 2026-07-10 (`scratch/stray-eject-calib.ps1`, 522 figure-owning clusters,
+  three iterations — the full v1→v2→v3 record lives in the probe header).** v1 (near-child ratio)
+  FAILED: strays attach as a LADDER, so each step reads locally modest (1608 p8 ratio 2.2, no fire)
+  while trivial junk fired at 6–64×. v2 (raw spine ln-gap elbow) FAILED both ways: single-linkage
+  CHAINS dense blobs (1608 p8 = 166 thin rungs of 169 — a fat-split "core top" barely exists), and
+  ln-gaps between sub-glyph distances (0.001→0.01em) out-compete the real boundary — subfig clusters
+  "ejected" 62/38/24 members from cuts landing in contact-scale noise. **v3 (LOCKED): clamp the spine
+  distance sequence at contact scale (`floor_em` 1.0) before the ln-gap scan** — phantom cuts collapse
+  (clamped-flat sequences have no gaps), real boundaries survive. At `min_log_gap` 1.0 (the defrag
+  convention, ln): **1608 p8 ejects exactly 2 (the path+xobject stray pair, lnGap 2.43), p9 exactly 4
+  (2.07); 2112 stays by chain-uniformity (0); ZERO dissolutions; 71 clusters shed 173 members
+  corpus-wide.** FP census 11 captioned non-monster rows: 8 are caption_split RAW clusters (welds the
+  splitter cuts anyway — ejecting their 17–46em strays helps or is neutral; one IS 1701 p4 reg4, the
+  crop-bbox-inflation region, shedding its 46.6em strays), 3 are large figures shedding one far member
+  (colorbar-risk class → C′-3 crop eyeball). tail_max = min_cluster_size−1 structural; knobs =
+  min_log_gap 1.0 + floor_em 1.0 only.
 
 ### D. Glyph-cluster candidates — the modality pig cannot see (2112)
 tikz-cd/xy-pic arrows are font glyphs; the path lane is empty, so no veto/merge helps. The elevation's
