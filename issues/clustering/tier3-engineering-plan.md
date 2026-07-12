@@ -218,6 +218,20 @@ the defrag ablation becomes its regression test. In the render: multi-panel plot
   crop-bbox-inflation region, shedding its 46.6em strays), 3 are large figures shedding one far member
   (colorbar-risk class → C′-3 crop eyeball). tail_max = min_cluster_size−1 structural; knobs =
   min_log_gap 1.0 + floor_em 1.0 only.
+- **C′-1/2/3 — ✅ LANDED + GATED 2026-07-10, knob OFF pending crop eyeball only.** Implementation:
+  `Get-StrayEjectRows` (pure spine-elbow) + `Invoke-RegionStrayEject` behind `figure_regions.stray_eject`;
+  75/75 figures suite (the B-4 defect in miniature: knob-off absorbs a 29em stray, knob-on ejects exactly
+  it; a uniform areal chain never ejects). **PLACEMENT DISCOVERY (gate round 1): label-level ejection
+  regressed PRIMARY (0.35→0.43) — in caption_split welds the far "strays" can be a TINY REAL FIGURE
+  (≤ tail_max paths, too small to ever cluster alone) that the splitter rescues; geometry cannot tell it
+  from a stray, but pipeline ORDER can.** Round 2 (post-caption region trim, captioned keep caption+kind
+  per the A2b family, uncaptioned re-gate): **PRIMARY exactly restored both corpora (0.35 18/23 + 0.7
+  7/10, 0 over); 1608 p8 capH 398→151, p9 169→69 (the paragraph leaves the crop); all guards byte-stable;
+  SECONDARY improves BOTH corpora — voroninski 11.74→9.96, ph-zigzag 5.6→5.3 (better than label-level);
+  176 ejects / 76 clusters ≈ the calibration census.** λ RE-SWEEP CLOSED: banded λ=2 + eject measured
+  WORSE than eject alone (10.3/5.7 vs 9.96/5.3) — banding's extra ejects don't convert; **B stays parked
+  (knob off), C′ alone carries the monster-weld class.** Remaining before default-on: crop-eyeball the
+  1608 wins + the 11-row FP list (1506 p31/p32, 1509 p26 …) on a knob-on regen.
 
 ### D. Glyph-cluster candidates — the modality pig cannot see (2112)
 tikz-cd/xy-pic arrows are font glyphs; the path lane is empty, so no veto/merge helps. The elevation's

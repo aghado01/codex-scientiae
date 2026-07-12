@@ -24,7 +24,7 @@
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('banded-on', 'baseline')] [string] $Variant = 'banded-on',
+    [ValidateSet('banded-on', 'baseline', 'eject-on', 'banded-eject-on')] [string] $Variant = 'banded-on',
     [double] $Lambda = 2.0,
     [string[]] $Groups = @('corpora/voroninski', 'compendia/ph-zigzag')
 )
@@ -50,9 +50,12 @@ $sentinels = @(
 # variant config: clone the repo config, flip the ONE knob under test
 $cfgPath = Join-Path $repo 'src/pdf-converter/stores/classify-config.json'
 $cfg = Get-Content $cfgPath -Raw | ConvertFrom-Json
-if ($Variant -eq 'banded-on') {
+if ($Variant -in 'banded-on', 'banded-eject-on') {
     $cfg.figure_regions.banded_metric.enabled = $true
     $cfg.figure_regions.banded_metric.lambda = $Lambda
+}
+if ($Variant -in 'eject-on', 'banded-eject-on') {
+    $cfg.figure_regions.stray_eject.enabled = $true
 }
 $work = Join-Path ([IO.Path]::GetTempPath()) ("banded-ablation-" + [Guid]::NewGuid().ToString('N').Substring(0, 8))
 New-Item -ItemType Directory -Force -Path $work | Out-Null
@@ -77,7 +80,7 @@ function Get-PageStats([string] $FiguresJsonl, [int] $Page) {
 }
 
 $root = (Resolve-Path (Join-Path $repo 'ingestion')).Path
-$inflowVar = 0; $bandedPages = 0
+$inflowVar = 0; $bandedPages = 0; $ejects = 0; $ejectClusters = 0
 $gate = [ordered]@{}
 $sentinelRows = [System.Collections.Generic.List[object]]::new()
 try {
@@ -91,6 +94,8 @@ try {
             $res = ConvertTo-FigureRegions -PathsJsonl (Join-Path $pigDirs[0] "$slug.paths.jsonl") -OutPath $out -ConfigPath $varCfg -PassThru
             $inflowVar   += [int]$res.Summary.inflow
             $bandedPages += [int]$res.Summary.banded_pages
+            $ejects        += [int]($res.Summary.stray_ejects ?? 0)
+            $ejectClusters += [int]($res.Summary.stray_eject_clusters ?? 0)
             $pc = Get-PigFigureCounts $out
             $oracle = Resolve-OracleCount $paperDir.FullName $slug
             $rows.Add([ordered]@{
@@ -131,7 +136,7 @@ foreach ($group in $groups) {
     $mi = if ($is.Count) { [math]::Round((($is | ForEach-Object { [math]::Abs($_.dInl) } | Measure-Object -Sum).Sum / $is.Count), 2) } else { $null }
     Write-Host ("PRIMARY mean|dFig| = {0} ({1}/{2} exact, {3} over)   SECONDARY mean|dInl| = {4}" -f $mf, $exact, $fs.Count, $over, $mi)
 }
-Write-Host ("`ninflow demotions (variant) = {0}   banded pages = {1}" -f $inflowVar, $bandedPages)
+Write-Host ("`ninflow demotions (variant) = {0}   banded pages = {1}   stray ejects = {2} ({3} clusters)" -f $inflowVar, $bandedPages, $ejects, $ejectClusters)
 Write-Host "`n--- sentinels (baseline→variant: figure count / captioned / tallest captioned height pt) ---"
 foreach ($s in $sentinelRows) {
     Write-Host ("  {0,-14} p{1,-3} figs {2,-6} cap {3,-6} capH {4,-10} {5}" -f $s.slug, $s.page, $s.figs, $s.cap, $s.capH, $s.role)

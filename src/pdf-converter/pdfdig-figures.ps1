@@ -144,91 +144,124 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
 # LOCKED by scratch/stray-eject-calib.ps1 after three measured iterations — see the probe header and
 # figure_regions.stray_eject._doc). allow_single EOM selects the ROOT on lone-blob pages and absorbs
 # remote strays at ANY distance (B-4: 1608 p8 stays 1 cluster / 0 noise even at banded λ=20) — the
-# render then welds a paragraph of body text into the crop. Per selected cluster: walk the dendrogram
-# spine from the members' LCA down into the larger-member child; thin far sides (≤ TailMax members)
-# are ladder RUNGS (stray candidates); a FAT split marks the core top (multi-panel joins are never
-# thin → structurally unejectable); noise-only far sides contribute distance, nothing to eject.
-# CLAMP the spine distance sequence at contact scale (floor_em — sub-glyph distances are all
-# "touching"; micro-gaps between them are the v2 failure mode), find the largest ln-gap; if it is
-# ≥ min_log_gap (the defrag-elbow convention), flip every rung above the cut to noise (label −1).
-# Uniform chains (sparse real diagrams) never show a decade gap; a ~2.5× satellite sits under 1.0.
-# Mutates $Labels in place and returns it; $Summary gains stray_ejects / stray_eject_clusters.
-function Select-StrayEject([int[]] $Labels, [string] $DendrogramJson, [double] $BodyPt, $ECfg, [int] $TailMax, $Summary) {
-    if (-not (Test-Path $DendrogramJson)) { return $Labels }
-    $dendro = Get-Content $DendrogramJson -Raw | ConvertFrom-Json
-    $n = [int]$dendro.leaf_count
-    $merges = @($dendro.merges)
-    if (-not $merges.Count -or $n -ne $Labels.Count) { return $Labels }
+# render then welds a paragraph of body text into the crop.
+#
+# PLACEMENT (the C′-3 gate discovery): the eject runs on FORMED REGIONS post-caption, NOT on labels
+# pre-consensus. Label-level ejection measured a PRIMARY regression (voroninski 0.35→0.43): in a
+# caption_split weld the "strays" 17–46em from the bulk can be a TINY REAL FIGURE (≤ tail_max paths —
+# too small to ever form its own cluster) that the splitter later rescues into its own captioned
+# region; geometry alone cannot tell it from a stray, but pipeline ORDER can — post-split it owns its
+# own region and the ≤ tail_max+1 size guard skips it structurally. Captions are final here, so a
+# captioned region keeps its caption and kind (the A2b family invariant); only its members/bbox trim.
+#
+# Get-StrayEjectRows is the pure statistic: walk the members' dendrogram spine from their LCA down
+# the larger-member child; thin far sides (≤ TailMax members) are ladder RUNGS, a FAT split marks the
+# core top (multi-panel joins are never thin → structurally unejectable), non-member far sides
+# contribute distance only. CLAMP the spine sequence at contact scale (floor_em — sub-glyph distances
+# are all "touching"; micro-gaps between them are the v2 failure mode), find the largest ln-gap; if
+# ≥ min_log_gap (the defrag-elbow convention), the rungs above the cut are strays. Uniform chains
+# (sparse real diagrams) never show a decade gap; a ~2.5× satellite sits under 1.0.
+function Get-StrayEjectRows($Tree, [System.Collections.Generic.List[int]] $Rows, [double] $FloorPt, [double] $MinLogGap, [int] $TailMax) {
+    $n = [int]$Tree.N; $L = $Tree.L; $R = $Tree.R; $distOf = $Tree.D
+    $mergeCount = $L.Count
+    if (-not $mergeCount -or $Rows.Count -le $TailMax + 1) { return @() }
+    $cnt = [int[]]::new($n + $mergeCount)
+    foreach ($ri in $Rows) { $cnt[$ri] = 1 }
+    $lca = -1
+    for ($i = 0; $i -lt $mergeCount; $i++) {
+        $node = $n + $i
+        $cnt[$node] = $cnt[$L[$i]] + $cnt[$R[$i]]
+        if ($cnt[$node] -eq $Rows.Count) { $lca = $node; break }
+    }
+    if ($lca -lt $n) { return @() }
+    $rungs = [System.Collections.Generic.List[object]]::new()
+    $spine = [System.Collections.Generic.List[double]]::new()
+    $coreTop = 0.0
+    $node = $lca
+    while ($node -ge $n) {
+        $i = $node - $n
+        $cl = $cnt[$L[$i]]; $cr = $cnt[$R[$i]]
+        if ($cl -eq 0 -or $cr -eq 0) {   # non-member far side: geometry, nothing to eject
+            $spine.Add($distOf[$node])
+            $node = if ($cl -eq 0) { $R[$i] } else { $L[$i] }
+            continue
+        }
+        $far  = if ($cl -le $cr) { $L[$i] } else { $R[$i] }
+        $near = if ($cl -le $cr) { $R[$i] } else { $L[$i] }
+        if ($cnt[$far] -gt $TailMax) { $coreTop = $distOf[$node]; break }   # FAT split = core top
+        $rungs.Add(@{ dist = $distOf[$node]; far = $far })
+        $spine.Add($distOf[$node])
+        $node = $near
+        if ($node -lt $n) { break }                                          # spine hit a leaf
+        if ($cnt[$node] -le $TailMax + 1) { $coreTop = $distOf[$node]; break } # chain bottom
+    }
+    if (-not $rungs.Count) { return @() }
+    $seq = [System.Collections.Generic.List[double]]::new()
+    if ($coreTop -gt 0) { $seq.Add([math]::Max($coreTop, $FloorPt)) }
+    foreach ($d in ($spine | Sort-Object)) { $seq.Add([math]::Max($d, $FloorPt)) }
+    $best = 0.0; $cut = $null
+    for ($i = 1; $i -lt $seq.Count; $i++) {
+        if ($seq[$i - 1] -le 0) { continue }
+        $g = [math]::Log($seq[$i]) - [math]::Log($seq[$i - 1])
+        if ($g -gt $best) { $best = $g; $cut = [math]::Sqrt($seq[$i - 1] * $seq[$i]) }
+    }
+    if ($best -lt $MinLogGap -or $null -eq $cut) { return @() }
+    $out = [System.Collections.Generic.List[int]]::new()
+    foreach ($rg in $rungs) {
+        if ($rg.dist -le $cut) { continue }
+        $stack = [System.Collections.Generic.Stack[int]]::new()
+        $stack.Push([int]$rg.far)
+        while ($stack.Count) {
+            $v = $stack.Pop()
+            if ($v -lt $n) { if ($cnt[$v] -eq 1) { $out.Add($v) }; continue }
+            $stack.Push($L[$v - $n]); $stack.Push($R[$v - $n])
+        }
+    }
+    $out.ToArray()   # unrolled; callers re-collect with @() — a comma-wrap here double-nests
+}
+
+# Region-level wrapper: trims each kind=figure region's members by Get-StrayEjectRows, rebuilding the
+# record's geometry through New-FigureRegionRecord so the kind gates + visible_bbox stay canonical.
+# A captioned region keeps caption AND kind=figure (PRIMARY invariant by construction — captions are
+# already final); an uncaptioned region re-gates (a trimmed phantom may drop to mark/sparse — that is
+# the SECONDARY win). $EjectTrees: page → {N,L,R,D,Keys} captured in the clustering loop (the temp
+# out-dirs are gone by the time this runs).
+function Invoke-RegionStrayEject($Figures, $EjectTrees, $PathRec, $XobjRec, [double] $BodyPt, $ECfg, [int] $TailMax, $BodyArea, $Gates, $Summary) {
     $minLogGap = [double]$ECfg.min_log_gap
     $floorPt = [double]$ECfg.floor_em * $BodyPt
-    $L = [int[]]::new($merges.Count); $R = [int[]]::new($merges.Count)
-    $distOf = [double[]]::new($n + $merges.Count)
-    for ($i = 0; $i -lt $merges.Count; $i++) {
-        $L[$i] = [int]$merges[$i].left_child; $R[$i] = [int]$merges[$i].right_child
-        $distOf[$n + $i] = [double]$merges[$i].distance
+    foreach ($fig in $Figures) {
+        if ($fig.kind -ne 'figure') { continue }
+        $tree = $EjectTrees[[int]$fig.page]
+        if ($null -eq $tree) { continue }
+        # region members → dendrogram leaf rows (page-local order captured at clustering time)
+        $rowOf = $tree.RowOf
+        $rows = [System.Collections.Generic.List[int]]::new()
+        foreach ($mid in @($fig.path_ids))    { $k = 'p' + [int]$mid; if ($rowOf.ContainsKey($k)) { $rows.Add($rowOf[$k]) } }
+        foreach ($mid in @($fig.xobject_ids)) { $k = 'x' + [int]$mid; if ($rowOf.ContainsKey($k)) { $rows.Add($rowOf[$k]) } }
+        $ejectRows = @(Get-StrayEjectRows $tree $rows $floorPt $minLogGap $TailMax)
+        if (-not $ejectRows.Count -or $ejectRows.Count -ge $rows.Count) { continue }
+        $drop = @{}
+        foreach ($r in $ejectRows) { $drop[$tree.Keys[$r]] = $true }
+        $kept = [System.Collections.Generic.List[object]]::new()
+        foreach ($mid in @($fig.path_ids))    { if (-not $drop.ContainsKey('p' + [int]$mid) -and $PathRec.ContainsKey([int]$mid)) { $kept.Add($PathRec[[int]$mid]) } }
+        foreach ($mid in @($fig.xobject_ids)) { if (-not $drop.ContainsKey('x' + [int]$mid) -and $XobjRec.ContainsKey([int]$mid)) { $kept.Add($XobjRec[[int]$mid]) } }
+        if (-not $kept.Count) { continue }
+        $tmp = New-FigureRegionRecord $fig.page $kept $fig.flag $BodyArea $Gates @($fig.letter_block_ids)
+        if (-not $tmp) { continue }
+        $ejected = $ejectRows.Count
+        foreach ($p in 'bbox', 'area', 'area_em2', 'density', 'path_ids', 'path_count', 'xobject_ids', 'xobject_count') {
+            $fig.$p = $tmp.$p
+        }
+        if ($null -ne $tmp.PSObject.Properties['visible_bbox']) { $fig | Add-Member -NotePropertyName visible_bbox -NotePropertyValue $tmp.visible_bbox -Force }
+        elseif ($null -ne $fig.PSObject.Properties['visible_bbox']) { $fig.visible_bbox = $null }   # consumers ?? to bbox
+        if (-not $fig.caption -and $tmp.kind -ne $fig.kind) {   # captioned regions keep kind=figure (A2b family)
+            switch ($fig.kind) { 'figure' { $Summary.figures-- } }
+            switch ($tmp.kind) { 'figure' { $Summary.figures++ } 'mark' { $Summary.marks++ } 'sparse' { $Summary.sparse++ } 'degenerate' { $Summary.degenerate++ } }
+            $fig.kind = $tmp.kind
+        }
+        $Summary.stray_ejects += $ejected
+        $Summary.stray_eject_clusters++
     }
-    foreach ($lbl in (@($Labels | Where-Object { $_ -ge 0 } | Select-Object -Unique))) {
-        $cRows = [System.Collections.Generic.List[int]]::new()
-        for ($ri = 0; $ri -lt $n; $ri++) { if ($Labels[$ri] -eq $lbl) { $cRows.Add($ri) } }
-        if ($cRows.Count -le $TailMax + 1) { continue }   # too small to hold both a core and a rung
-        $cnt = [int[]]::new($n + $merges.Count)
-        foreach ($ri in $cRows) { $cnt[$ri] = 1 }
-        $lca = -1
-        for ($i = 0; $i -lt $merges.Count; $i++) {
-            $node = $n + $i
-            $cnt[$node] = $cnt[$L[$i]] + $cnt[$R[$i]]
-            if ($cnt[$node] -eq $cRows.Count) { $lca = $node; break }
-        }
-        if ($lca -lt $n) { continue }
-        # spine walk: collect thin rungs + the core-top distance
-        $rungs = [System.Collections.Generic.List[object]]::new()
-        $spine = [System.Collections.Generic.List[double]]::new()
-        $coreTop = 0.0
-        $node = $lca
-        while ($node -ge $n) {
-            $i = $node - $n
-            $cl = $cnt[$L[$i]]; $cr = $cnt[$R[$i]]
-            if ($cl -eq 0 -or $cr -eq 0) {   # noise-only far side: geometry, nothing to eject
-                $spine.Add($distOf[$node])
-                $node = if ($cl -eq 0) { $R[$i] } else { $L[$i] }
-                continue
-            }
-            $far  = if ($cl -le $cr) { $L[$i] } else { $R[$i] }
-            $near = if ($cl -le $cr) { $R[$i] } else { $L[$i] }
-            if ($cnt[$far] -gt $TailMax) { $coreTop = $distOf[$node]; break }   # FAT split = core top
-            $rungs.Add(@{ dist = $distOf[$node]; far = $far })
-            $spine.Add($distOf[$node])
-            $node = $near
-            if ($node -lt $n) { break }                                          # spine hit a leaf
-            if ($cnt[$node] -le $TailMax + 1) { $coreTop = $distOf[$node]; break } # chain bottom
-        }
-        if (-not $rungs.Count) { continue }
-        $seq = [System.Collections.Generic.List[double]]::new()
-        if ($coreTop -gt 0) { $seq.Add([math]::Max($coreTop, $floorPt)) }
-        foreach ($d in ($spine | Sort-Object)) { $seq.Add([math]::Max($d, $floorPt)) }
-        $best = 0.0; $cut = $null
-        for ($i = 1; $i -lt $seq.Count; $i++) {
-            $g = [math]::Log($seq[$i]) - [math]::Log($seq[$i - 1])
-            if ($g -gt $best) { $best = $g; $cut = [math]::Sqrt($seq[$i - 1] * $seq[$i]) }
-        }
-        if ($best -lt $minLogGap -or $null -eq $cut) { continue }
-        $ejected = 0
-        foreach ($rg in $rungs) {
-            if ($rg.dist -le $cut) { continue }
-            $stack = [System.Collections.Generic.Stack[int]]::new()
-            $stack.Push([int]$rg.far)
-            while ($stack.Count) {
-                $v = $stack.Pop()
-                if ($v -lt $n) {
-                    if ($Labels[$v] -eq $lbl) { $Labels[$v] = -1; $ejected++ }
-                    continue
-                }
-                $stack.Push($L[$v - $n]); $stack.Push($R[$v - $n])
-            }
-        }
-        if ($ejected -gt 0) { $Summary.stray_ejects += $ejected; $Summary.stray_eject_clusters++ }
-    }
-    $Labels
 }
 
 # CONSENSUS m1 (issues/clustering/consensus-milestone1-design.md): OR-combine two per-page
@@ -1035,10 +1068,13 @@ function ConvertTo-FigureRegions {
         } else { $bandedEnabled = $false }
     }
 
-    # C′ stray eject (absent block = disabled) — post-selection trim; PRIMARY risk is empirical,
-    # knob default OFF until C′-3 gates both corpora. Needs bodyPt (contact floor is in em).
+    # C′ stray eject (absent block = disabled) — post-CAPTION region trim (see Invoke-RegionStrayEject:
+    # label-level ejection regressed PRIMARY at the C′-3 gate). Needs bodyPt (contact floor is in em).
+    # The clustering loop captures each page's dendrogram tree here — the temp out-dirs are gone before
+    # the caption section runs.
     $ejectCfg = $cfg.stray_eject
     $ejectEnabled = ($null -ne $ejectCfg -and [bool]$ejectCfg.enabled -and $bodyPt)
+    $ejectTrees = @{}
 
     $figures = [System.Collections.Generic.List[object]]::new()
     $summary = [ordered]@{
@@ -1214,11 +1250,25 @@ function ConvertTo-FigureRegions {
                 }
             }
 
-            # C′ stray eject — on the FIRST run's dendrogram (the defrag epsilon re-run changes labels,
-            # never the tree) and BEFORE consensus (an ejected stray beyond stream_jump_em cannot be
-            # stream-re-welded; the gate audits the rest).
+            # C′ stray eject: capture this page's dendrogram tree + row map for the post-caption
+            # region trim (the FIRST run's tree — the defrag epsilon re-run changes labels, never
+            # the tree; the temp out-dirs are deleted before the caption section runs).
             if ($ejectEnabled) {
-                $labels = Select-StrayEject $labels (Join-Path $outDir 'hdbscan_dendrogram.json') $bodyPt $ejectCfg ($minClusterSize - 1) $summary
+                $dj = Get-Content (Join-Path $outDir 'hdbscan_dendrogram.json') -Raw | ConvertFrom-Json
+                $em = @($dj.merges)
+                $eL = [int[]]::new($em.Count); $eR = [int[]]::new($em.Count)
+                $eD = [double[]]::new([int]$dj.leaf_count + $em.Count)
+                for ($ei = 0; $ei -lt $em.Count; $ei++) {
+                    $eL[$ei] = [int]$em[$ei].left_child; $eR[$ei] = [int]$em[$ei].right_child
+                    $eD[[int]$dj.leaf_count + $ei] = [double]$em[$ei].distance
+                }
+                $eKeys = [string[]]::new($pageItems.Count)
+                $eRowOf = @{}
+                for ($ei = 0; $ei -lt $pageItems.Count; $ei++) {
+                    $k = $(if ($pageItems[$ei].prov -eq 'xobject') { 'x' } else { 'p' }) + [int]$pageItems[$ei].id
+                    $eKeys[$ei] = $k; $eRowOf[$k] = $ei
+                }
+                $ejectTrees[$page] = @{ N = [int]$dj.leaf_count; L = $eL; R = $eR; D = $eD; Keys = $eKeys; RowOf = $eRowOf }
             }
 
             # CONSENSUS m1: OR-combine the geometry partition with content-stream draw-run evidence
@@ -1275,6 +1325,13 @@ function ConvertTo-FigureRegions {
         if ($subfigGrouping) {
             $figures = Group-SubfiguresByCaption $figures $bodyArea $summary
         }
+    }
+
+    # C′ stray eject — post-caption region trim: captions and splits are final, so a tiny split-off
+    # figure owns its own region (the size guard skips it) and a captioned region keeps caption+kind
+    # while its members/bbox tighten. Before T1/T3-lite so the vetoes see trimmed geometry.
+    if ($ejectEnabled -and $ejectTrees.Count) {
+        Invoke-RegionStrayEject $figures $ejectTrees $pathRec $xobjRec $bodyPt $ejectCfg ($minClusterSize - 1) $bodyArea $gates $summary
     }
 
     # V_letters hygiene: a block CLAIMED as some region's caption is a caption, not diagram-interior
