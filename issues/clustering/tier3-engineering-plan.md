@@ -1,5 +1,9 @@
 # Tier-3 engineering plan — re-minted post-render (2026-07-07)
 
+> **FORWARD PLANNING HAS MOVED to the dated frontier-brief convention: see
+> [frontier-20260713.md](frontier-20260713.md) (latest).** This file remains the historical log of
+> the A/B/C thrusts — every increment's calibration, verdict, and commit record lives here and stays put.
+
 **Status:** RE-MINTED after thrust-5 shipped. The plan below supersedes the pre-render draft (the
 landed work is summarized in §0; the forward thrusts in §2 are re-ordered by a new objective).
 
