@@ -51,3 +51,5 @@ ingestion/**/*.sig
 bin/
 obj/
 __pycache__/
+
+testResults.xml
