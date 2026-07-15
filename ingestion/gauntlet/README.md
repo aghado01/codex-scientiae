@@ -16,12 +16,18 @@ Every converter dev push runs against the gauntlet — all three corpora, by rol
 | `gauntlet/ph-zigzag` | **calibration** (diagram-heavy, 10 papers) | every increment — the `Compare-FigureCounts` default group |
 | `gauntlet/voroninski` | **calibration** (plot/figure-heavy, 23 papers) | every increment — `Compare-FigureCounts -Group gauntlet/voroninski` |
 | `gauntlet/mapper` | **transport** (out-of-sample, 10 papers) | milestone runs, gate UNTOUCHED — no knob may ever be fitted here |
+| `gauntlet/kisungyou` | **transport** (out-of-sample, 23 papers, PDF + LaTeX source per paper) | milestone runs once gate-capable, gate UNTOUCHED |
+| `gauntlet/spc` | **transport, PDF-only stress** (8 papers, 1995–2020 journal PDFs) | oracle-FREE instruments only — the LaTeX-oracle gate is impossible by construction |
 
 `scratch/banded-ablation.ps1` (offline re-cluster + gate + sentinels) spans the two calibration
 corpora and is the harness for any knob decision. mapper is not yet gate-capable (0/10 pig runs;
 oracle sidecars pending, 9/10 possible — 2504.09042 is PDF-only): filling that gap is the
 battery's first standing task (frontier-20260715 §2.5 item 6), after which the transport run
-becomes part of every milestone.
+becomes part of every milestone. kisungyou and spc carry the same gate-capability debt (0 pig
+runs; kisungyou additionally 0/23 oracle sidecars). spc's oracle gap is TOTAL and permanent —
+PDF-only by construction — so its instruments are the oracle-free ones (`known_role_frac` and the
+IR health signals, the render/lint gates downstream); it exists to stress exactly the intake the
+LaTeX-oracle corpora can't: old typography, journal-house PDF producers, no ground truth.
 
 **The battery accumulates.** The gauntlet is the standing intake point for new testing and
 stressing corpora (user direction, 2026-07-15). A new corpus enters as **transport by default** —
@@ -51,6 +57,18 @@ A gauntlet corpus declares:
   point — a knob calibrated everywhere is validated nowhere.
 - **Sentinel pages**, where the corpus carries them (see the banded-ablation sentinel set:
   targets 1608 p8/p9, 2112 p8; guards 2006 p11, 2008 p8/p12, 2204 p12, 2501 p12, 2603 p8/p11).
+
+## Accession record (transport-by-default, per the accumulation rule)
+
+- **2026-07-15 — `kisungyou`** (23 papers): PDF + arXiv LaTeX source tarball staged per paper.
+  Intake sniff: all 23 tarballs verified genuine ustar tars via gzip-stream magic (no 1404-class
+  gzip-single-file cases). Corpus dir lowercased from `KisungYou` at intake for sibling parity.
+  Debts: pig runs + oracle sidecars, then milestone transport runs.
+- **2026-07-15 — `spc`** (8 papers): the SPC lineage (BWD1995/1996/1997, WBD1998, Domany1999,
+  Chaure2018, YG2019, PKWang2020) — the battery's **first PDF-only testbed**. `%PDF` headers
+  1.1–1.6 verified at intake; PDFs folded into per-slug dirs (`spc/{slug}/{slug}.pdf`) so pig
+  runs land in `{slug}/.runs/` beside their source. No LaTeX exists: oracle gap is documented as
+  corpus-total; instruments are oracle-free only.
 
 ## Migration record (all three corpora IN, 2026-07-15)
 
