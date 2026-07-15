@@ -72,6 +72,48 @@ function Get-RectangleGap([double[]] $A, [double[]] $B) {
     [math]::Sqrt($gx * $gx + $gy * $gy)
 }
 
+# MONSTER-PAGE PRE-AGGREGATION (figure_regions.preagg; calibrated scratch/monster-preagg-calib.ps1
+# 2026-07-15). hdbscan.exe rectangle-gap is O(n^2), so a monster path-cloud page (2106.06375v1 p5:
+# 536,517 paths, one per scatter marker, 79 min) is grid-binned before clustering: path bboxes bin
+# by bbox CENTER into CellPt-sized cells, the cell's clustering point is the UNION of its member
+# bboxes; xobjects stay singleton points (few, semantically distinct — never binned). The caller
+# clusters the cells and propagates each cell's label back to its members, so everything downstream
+# runs on the ORIGINAL items. Returns @{ Boxes = List[double[]] cell/singleton boxes (point order);
+# MemberAgg = int[] item index -> point index }.
+function New-FigurePreAggregation([object[]] $PageItems, [double] $CellPt) {
+    $n = $PageItems.Count
+    $cellOf = [System.Collections.Generic.Dictionary[long, int]]::new()
+    $boxes = [System.Collections.Generic.List[double[]]]::new()
+    $memberAgg = [int[]]::new($n)
+    for ($i = 0; $i -lt $n; $i++) {
+        $it = $PageItems[$i]
+        $b = $it.bbox
+        if ($it.prov -eq 'xobject') {
+            $memberAgg[$i] = $boxes.Count
+            $boxes.Add([double[]]@([double]$b[0], [double]$b[1], [double]$b[2], [double]$b[3]))
+            continue
+        }
+        $cx = [long][math]::Floor((([double]$b[0] + [double]$b[2]) / 2.0) / $CellPt)
+        $cy = [long][math]::Floor((([double]$b[1] + [double]$b[3]) / 2.0) / $CellPt)
+        $key = ($cx -shl 24) -bor ($cy -band 0xFFFFFF)
+        $ai = 0
+        if (-not $cellOf.TryGetValue($key, [ref]$ai)) {
+            $ai = $boxes.Count
+            $cellOf[$key] = $ai
+            $boxes.Add([double[]]@([double]$b[0], [double]$b[1], [double]$b[2], [double]$b[3]))
+        }
+        else {
+            $u = $boxes[$ai]
+            if ([double]$b[0] -lt $u[0]) { $u[0] = [double]$b[0] }
+            if ([double]$b[1] -lt $u[1]) { $u[1] = [double]$b[1] }
+            if ([double]$b[2] -gt $u[2]) { $u[2] = [double]$b[2] }
+            if ([double]$b[3] -gt $u[3]) { $u[3] = [double]$b[3] }
+        }
+        $memberAgg[$i] = $ai
+    }
+    @{ Boxes = $boxes; MemberAgg = $memberAgg }
+}
+
 # Reads the 'label' column (input-row order) out of hdbscan_partition.csv. The CLI preserves
 # input order, so row i maps to the i-th point we wrote — that index is the id back-reference.
 function Read-PartitionLabels([string] $Csv) {
@@ -233,22 +275,29 @@ function Invoke-RegionStrayEject($Figures, $EjectTrees, $PathRec, $XobjRec, [dou
         if ($fig.kind -ne 'figure') { continue }
         $tree = $EjectTrees[[int]$fig.page]
         if ($null -eq $tree) { continue }
-        # region members → dendrogram leaf rows (page-local order captured at clustering time)
+        # region members → dendrogram leaf rows (page-local order captured at clustering time).
+        # DEDUPED: on a pre-aggregated page one leaf row is a CELL shared by many members, so the
+        # tail/eject statistic reads in cell units there (a remote stray CELL is a thin rung exactly
+        # like a remote stray path); on a plain page rows are unique already and nothing changes.
         $rowOf = $tree.RowOf
         $rows = [System.Collections.Generic.List[int]]::new()
-        foreach ($mid in @($fig.path_ids))    { $k = 'p' + [int]$mid; if ($rowOf.ContainsKey($k)) { $rows.Add($rowOf[$k]) } }
-        foreach ($mid in @($fig.xobject_ids)) { $k = 'x' + [int]$mid; if ($rowOf.ContainsKey($k)) { $rows.Add($rowOf[$k]) } }
+        $rowSeen = @{}
+        foreach ($mid in @($fig.path_ids))    { $k = 'p' + [int]$mid; if ($rowOf.ContainsKey($k)) { $r = $rowOf[$k]; if (-not $rowSeen.ContainsKey($r)) { $rowSeen[$r] = $true; $rows.Add($r) } } }
+        foreach ($mid in @($fig.xobject_ids)) { $k = 'x' + [int]$mid; if ($rowOf.ContainsKey($k)) { $r = $rowOf[$k]; if (-not $rowSeen.ContainsKey($r)) { $rowSeen[$r] = $true; $rows.Add($r) } } }
         $ejectRows = @(Get-StrayEjectRows $tree $rows $floorPt $minLogGap $TailMax)
         if (-not $ejectRows.Count -or $ejectRows.Count -ge $rows.Count) { continue }
         $drop = @{}
-        foreach ($r in $ejectRows) { $drop[$tree.Keys[$r]] = $true }
+        # Keys[r]: one member key on a plain page; the cell's member-key LIST on a pre-aggregated
+        # page — @() wraps the scalar so both shapes drop uniformly.
+        foreach ($r in $ejectRows) { foreach ($k in @($tree.Keys[$r])) { $drop[$k] = $true } }
         $kept = [System.Collections.Generic.List[object]]::new()
-        foreach ($mid in @($fig.path_ids))    { if (-not $drop.ContainsKey('p' + [int]$mid) -and $PathRec.ContainsKey([int]$mid)) { $kept.Add($PathRec[[int]$mid]) } }
-        foreach ($mid in @($fig.xobject_ids)) { if (-not $drop.ContainsKey('x' + [int]$mid) -and $XobjRec.ContainsKey([int]$mid)) { $kept.Add($XobjRec[[int]$mid]) } }
-        if (-not $kept.Count) { continue }
+        $memTotal = 0
+        foreach ($mid in @($fig.path_ids))    { if (-not $PathRec.ContainsKey([int]$mid)) { continue }; $memTotal++; if (-not $drop.ContainsKey('p' + [int]$mid)) { $kept.Add($PathRec[[int]$mid]) } }
+        foreach ($mid in @($fig.xobject_ids)) { if (-not $XobjRec.ContainsKey([int]$mid)) { continue }; $memTotal++; if (-not $drop.ContainsKey('x' + [int]$mid)) { $kept.Add($XobjRec[[int]$mid]) } }
+        if (-not $kept.Count -or $kept.Count -eq $memTotal) { continue }
         $tmp = New-FigureRegionRecord $fig.page $kept $fig.flag $BodyArea $Gates @($fig.letter_block_ids)
         if (-not $tmp) { continue }
-        $ejected = $ejectRows.Count
+        $ejected = $memTotal - $kept.Count
         foreach ($p in 'bbox', 'area', 'area_em2', 'density', 'path_ids', 'path_count', 'xobject_ids', 'xobject_count') {
             $fig.$p = $tmp.$p
         }
@@ -1068,6 +1117,15 @@ function ConvertTo-FigureRegions {
         } else { $bandedEnabled = $false }
     }
 
+    # Monster-page pre-aggregation guard (figure_regions.preagg; absent block = disabled). Pages
+    # with more than max_points clustering points grid-bin into cell_em cells before hdbscan —
+    # O(n^2) protection (2106.06375v1 p5: 536,517 paths = 79 min unguarded). Cell size in em rides
+    # bodyPt like every other distance knob (10.0 fallback mirrors Join-FigureViews).
+    $preaggCfg = $cfg.preagg
+    $preaggEnabled = ($null -ne $preaggCfg -and [bool]$preaggCfg.enabled)
+    $preaggMax = if ($preaggEnabled) { [int]$preaggCfg.max_points } else { 0 }
+    $preaggCellPt = if ($preaggEnabled) { [double]$preaggCfg.cell_em * ($bodyPt ?? 10.0) } else { 0.0 }
+
     # C′ stray eject (absent block = disabled) — post-CAPTION region trim (see Invoke-RegionStrayEject:
     # label-level ejection regressed PRIMARY at the C′-3 gate). Needs bodyPt (contact floor is in em).
     # The clustering loop captures each page's dendrogram tree here — the temp out-dirs are gone before
@@ -1090,6 +1148,7 @@ function ConvertTo-FigureRegions {
         letter_blocks = 0; letter_bridges = 0   # V_letters: blocks attached / cross-component welds
         inflow = 0           # T3-lite: uncaptioned regions inside the text-column flow (backbone veto)
         banded_pages = 0     # full T3: pages clustered with the banded (backbone-conditioned) metric
+        preagg_pages = 0; preagg_cells = 0   # monster-page guard: pages grid-binned / points clustered instead of raw paths
         stray_ejects = 0; stray_eject_clusters = 0   # C′: remote members trimmed off selected clusters
     }
     # kind-gate scalars, bundled once for every record producer (New-FigureRegionRecord callers)
@@ -1197,11 +1256,40 @@ function ConvertTo-FigureRegions {
                 continue
             }
 
-            # Emit points (v = [x0,y0,x1,y1]); the write order is the id-index mapping.
+            # MONSTER-PAGE GUARD: above max_points, grid-bin into cell-union boxes and cluster the
+            # CELLS; labels propagate back to the items after defrag so everything downstream
+            # (consensus, captions, splits, vetoes) runs on the ORIGINAL items unchanged.
+            $agg = $null
+            if ($preaggEnabled -and $pageItems.Count -gt $preaggMax) {
+                $agg = New-FigurePreAggregation $pageItems $preaggCellPt
+                if ($agg.Boxes.Count -le $minPts) {
+                    # degenerate collapse (the whole cloud fits in <= min_pts cells) — same shape as
+                    # the too-few branch, tagged so the aggregation stays visible
+                    $summary.too_few_pages++
+                    $summary.preagg_pages++
+                    $pathItems = @($pageItems | Where-Object { $_.prov -ne 'xobject' })
+                    if ($pathItems.Count) { & $addRegion $page $pathItems 'too_few_to_cluster+preagg' }
+                    foreach ($x in @($pageItems | Where-Object { $_.prov -eq 'xobject' })) { & $addRegion $page @($x) 'xobject_singleton' }
+                    continue
+                }
+                $summary.preagg_pages++
+                $summary.preagg_cells += $agg.Boxes.Count
+            }
+
+            # Emit points (v = [x0,y0,x1,y1]); the write order is the id-index mapping (cell index
+            # on a pre-aggregated page).
             $pts = [System.Collections.Generic.List[string]]::new()
-            foreach ($p in $pageItems) {
-                $b = $p.bbox
-                $pts.Add(('{{"id":{0},"v":[{1},{2},{3},{4}]}}' -f $p.id, $b[0], $b[1], $b[2], $b[3]))
+            if ($agg) {
+                for ($a = 0; $a -lt $agg.Boxes.Count; $a++) {
+                    $u = $agg.Boxes[$a]
+                    $pts.Add(('{{"id":{0},"v":[{1},{2},{3},{4}]}}' -f $a, $u[0], $u[1], $u[2], $u[3]))
+                }
+            }
+            else {
+                foreach ($p in $pageItems) {
+                    $b = $p.bbox
+                    $pts.Add(('{{"id":{0},"v":[{1},{2},{3},{4}]}}' -f $p.id, $b[0], $b[1], $b[2], $b[3]))
+                }
             }
             $ptsFile = Join-Path $work "p$page.jsonl"
             [IO.File]::WriteAllLines($ptsFile, $pts)
@@ -1225,8 +1313,9 @@ function ConvertTo-FigureRegions {
             Invoke-Hdbscan @hdbArgs | Out-Null
 
             $labels = Read-PartitionLabels (Join-Path $outDir 'hdbscan_partition.csv')
-            if ($labels.Count -ne $pageItems.Count) {
-                throw "page ${page}: partition rows $($labels.Count) != points $($pageItems.Count)"
+            $expectRows = if ($agg) { $agg.Boxes.Count } else { $pageItems.Count }
+            if ($labels.Count -ne $expectRows) {
+                throw "page ${page}: partition rows $($labels.Count) != points $expectRows"
             }
 
             # De-fragmentation: an over-split page (a complex figure shattered into many density
@@ -1262,13 +1351,35 @@ function ConvertTo-FigureRegions {
                     $eL[$ei] = [int]$em[$ei].left_child; $eR[$ei] = [int]$em[$ei].right_child
                     $eD[[int]$dj.leaf_count + $ei] = [double]$em[$ei].distance
                 }
-                $eKeys = [string[]]::new($pageItems.Count)
-                $eRowOf = @{}
-                for ($ei = 0; $ei -lt $pageItems.Count; $ei++) {
-                    $k = $(if ($pageItems[$ei].prov -eq 'xobject') { 'x' } else { 'p' }) + [int]$pageItems[$ei].id
-                    $eKeys[$ei] = $k; $eRowOf[$k] = $ei
+                if ($agg) {
+                    # pre-aggregated page: leaves are CELLS — Keys[row] = the cell's member-key LIST,
+                    # RowOf maps every member key to its cell row (Invoke-RegionStrayEject dedups)
+                    $eKeys = [object[]]::new($agg.Boxes.Count)
+                    $eRowOf = @{}
+                    for ($ei = 0; $ei -lt $pageItems.Count; $ei++) {
+                        $row = $agg.MemberAgg[$ei]
+                        $k = $(if ($pageItems[$ei].prov -eq 'xobject') { 'x' } else { 'p' }) + [int]$pageItems[$ei].id
+                        if ($null -eq $eKeys[$row]) { $eKeys[$row] = [System.Collections.Generic.List[string]]::new() }
+                        $eKeys[$row].Add($k); $eRowOf[$k] = $row
+                    }
+                }
+                else {
+                    $eKeys = [string[]]::new($pageItems.Count)
+                    $eRowOf = @{}
+                    for ($ei = 0; $ei -lt $pageItems.Count; $ei++) {
+                        $k = $(if ($pageItems[$ei].prov -eq 'xobject') { 'x' } else { 'p' }) + [int]$pageItems[$ei].id
+                        $eKeys[$ei] = $k; $eRowOf[$k] = $ei
+                    }
                 }
                 $ejectTrees[$page] = @{ N = [int]$dj.leaf_count; L = $eL; R = $eR; D = $eD; Keys = $eKeys; RowOf = $eRowOf }
+            }
+
+            # Propagate cell labels back to the original items — from here on the pipeline sees the
+            # page exactly as if every path had been clustered individually (at cell granularity).
+            if ($agg) {
+                $itemLabels = [int[]]::new($pageItems.Count)
+                for ($i = 0; $i -lt $pageItems.Count; $i++) { $itemLabels[$i] = $labels[$agg.MemberAgg[$i]] }
+                $labels = $itemLabels
             }
 
             # CONSENSUS m1: OR-combine the geometry partition with content-stream draw-run evidence
@@ -1301,6 +1412,8 @@ function ConvertTo-FigureRegions {
             }
             foreach ($lab in ($byLabel.Keys | Sort-Object)) {
                 $regFlag = if ($null -ne $changedLabels -and $changedLabels.ContainsKey($lab)) { 'consensus_merged' } else { $null }
+                # aggregation note: the region's geometry partition came from cell-union boxes
+                if ($agg) { $regFlag = if ($regFlag) { $regFlag + '+preagg' } else { 'preagg' } }
                 $regLetters = if ($null -ne $letterIdsMap -and $letterIdsMap.ContainsKey($lab)) { $letterIdsMap[$lab] } else { $null }
                 & $addRegion $page $byLabel[$lab] $regFlag $regLetters
             }
