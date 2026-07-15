@@ -81,7 +81,14 @@ A gauntlet corpus declares:
   source pairs. **Debts RETIRED same day** (first grind: 46/46 jobs ok — 23 pig runs + 23 latex
   conversions with oracle sidecars; one instructive outlier: 2106.06375v1 p5 carries 536,517
   vector paths — a marker-by-marker scatter — and its pig job ground 79 min, naming the
-  monster-path-cloud stress class and motivating a per-job timeout). Transport-gate READY.
+  monster-path-cloud stress class and motivating a per-job timeout). **FIRST TRANSPORT GATE RUN
+  same day (knobs untouched): PRIMARY mean |dFig| 1.0 — 12/23 exact, 10 under, 1 over;
+  SECONDARY 7.13 (oracle inline = 0 corpus-wide — a stats corpus, no tikz-cd).** The under class
+  is dominated by raster-blindness attributions (8/10 — bitmap-heavy R-plot corpus, a different
+  figure population than the vector-heavy calibration corpora); the single over sits on
+  2106.06375v1 whose oracle is low-confidence (figures_missing: 8) — the zero-over invariant
+  holds on every confident-oracle paper. Transport verdict: the em-normalized knobs carried;
+  the residual is a mechanism class, not knob drift.
 - **2026-07-15 — `spc`** (8 papers): the SPC lineage (BWD1995/1996/1997, WBD1998, Domany1999,
   Chaure2018, YG2019, PKWang2020) — the battery's **first PDF-only testbed**. `%PDF` headers
   1.1–1.6 verified at intake; PDFs folded into per-slug dirs (`spc/{slug}/{slug}.pdf`) so pig
