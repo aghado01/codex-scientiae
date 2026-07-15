@@ -70,13 +70,13 @@ A gauntlet corpus declares:
 
 ## Accession record (transport-by-default, per the accumulation rule)
 
-- **2026-07-15 — `kisungyou`** (**ACCESSION OPEN** — download still in progress via the
-  acquisition lane; 23 papers as of the first intake commit, count will grow): PDF + arXiv LaTeX
-  source tarball staged per paper. Intake sniff on the first 23: all tarballs verified genuine
-  ustar tars via gzip-stream magic (no 1404-class gzip-single-file cases). Corpus dir lowercased
-  from `KisungYou` at intake for sibling parity. Top-up ritual for late arrivals: re-run the
-  intake sniff (ustar magic + `%PDF` header) on the new slugs, then a top-up commit updating this
-  count. Debts: pig runs + oracle sidecars, then milestone transport runs.
+- **2026-07-15 — `kisungyou`** (**download COMPLETE — final census 23 papers**): PDF + arXiv
+  LaTeX source tarball staged per paper, all 23 pairs sniff-verified (ustar magic via gzip
+  stream + `%PDF` headers; no 1404-class gzip-single-file cases). Corpus dir lowercased from
+  `KisungYou` at intake for sibling parity. Intake-hygiene note: a premature ingest ran against
+  the raw materials mid-download; its residue (nested `{slug}/{slug}/` conversion PNGs under 5
+  papers, zero `.runs`) was swept after PNG-only verification — the tree holds exactly the
+  source pairs. Debts: pig runs + oracle sidecars, then milestone transport runs.
 - **2026-07-15 — `spc`** (8 papers): the SPC lineage (BWD1995/1996/1997, WBD1998, Domany1999,
   Chaure2018, YG2019, PKWang2020) — the battery's **first PDF-only testbed**. `%PDF` headers
   1.1–1.6 verified at intake; PDFs folded into per-slug dirs (`spc/{slug}/{slug}.pdf`) so pig

@@ -21,9 +21,12 @@
   become skip-bad-src rows, never queue entries. Existing runs are respected (newest-wins
   convention: a paper with a pig run / tex run+deliverable is skip-has-run) unless -Force.
 
-  CAVEAT (latex): diagram rendering shells to tectonic, whose user-level bundle cache is shared
-  across processes — a COLD cache warmed by many parallel first-runs can race. Warm it with one
-  latex job (or -Workers 1 for the first batch) before going wide.
+  TOOLCHAIN WARMUP (latex): diagram rendering shells to tectonic, whose bundle/format cache is
+  shared across processes — a COLD cache warmed by many parallel first-runs can race. When latex
+  jobs are queued, Invoke-CorpusBatch runs Initialize-BatchToolchain ONCE before the pool deploys
+  (the colonel shape: initialization at compile time, not per worker): pin the cache location and
+  compile one tiny tikz/tikz-cd standalone so bundle + format + package caches are hot before any
+  worker races them. Non-fatal when tectonic is absent — the render ladder falls back per paper.
 
     . ./src/gauntlet-batch.ps1
     Get-CorpusBatchJobs -Groups gauntlet/spc -JobTypes pig | Format-Table       # the plan, no work
@@ -42,6 +45,39 @@ function Test-BatchSourceMagic([string] $Path, [string] $Kind) {
         }
     } catch { return $false }
     $false
+}
+
+# One-time pre-deployment toolchain warmup — runs BEFORE workers deploy, never inside them (the
+# colonel analogy: chain-executor loads into the ISS at compile time, once). Pins the tectonic
+# cache (Initialize-TectonicCache — the portable-env default location is unreliable; child
+# processes inherit the pinned env var) and compiles one minimal tikz/tikz-cd standalone so the
+# shared bundle/format/package caches are hot before parallel first-compiles can race them.
+# Returns $true when the cache is verifiably hot; $false is non-fatal (the per-paper render
+# ladder degrades gracefully — tikzjax/markers — and cold-cache compiles retry once anyway).
+function Initialize-BatchToolchain {
+    param([Parameter(Mandatory)] [string] $Repo)
+    . (Join-Path $Repo 'src/tex-render.ps1')
+    $tectonic = Get-TectonicPath
+    if (-not $tectonic) {
+        Write-Host '  warmup: tectonic absent — diagram renders fall back to the ladder (tikzjax/markers)'
+        return $false
+    }
+    Initialize-TectonicCache
+    $work = Join-Path ([System.IO.Path]::GetTempPath()) ('gauntlet-warmup-' + [guid]::NewGuid().ToString('N').Substring(0, 8))
+    New-Item -ItemType Directory -Force -Path $work | Out-Null
+    try {
+        $tex = Join-Path $work 'warmup.tex'
+        # the base package set the render ladder replays: standalone + tikz + tikz-cd
+        $doc = "\documentclass{standalone}`n\usepackage{tikz}`n\usepackage{tikz-cd}`n" +
+               "\begin{document}`n\begin{tikzcd}A \arrow[r] & B\end{tikzcd}`n\end{document}`n"
+        [System.IO.File]::WriteAllText($tex, $doc, [System.Text.UTF8Encoding]::new($false))
+        $sw = [System.Diagnostics.Stopwatch]::StartNew()
+        & $tectonic -X compile $tex --outdir $work *> (Join-Path $work 'warmup.log')
+        $ok = ($LASTEXITCODE -eq 0 -and (Test-Path (Join-Path $work 'warmup.pdf')))
+        Write-Host ("  warmup: tectonic cache {0} ({1}s)" -f $(if ($ok) { 'HOT — probe compile ok' } else { 'probe compile FAILED — workers still retry cold-cache races' }), [math]::Round($sw.Elapsed.TotalSeconds, 1))
+        return $ok
+    }
+    finally { Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue }
 }
 
 function Get-CorpusBatchJobs {
@@ -111,6 +147,8 @@ function Invoke-CorpusBatch {
     if (-not $LogDir) { $LogDir = Join-Path ([System.IO.Path]::GetTempPath()) ('gauntlet-batch-' + (Get-Date -Format 'yyyyMMdd_HHmmss')) }
     New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
     $worker = Join-Path $PSScriptRoot 'gauntlet-batch-worker.ps1'
+    # initialization phase: shared-toolchain warmup BEFORE the pool deploys (once, not per worker)
+    if (@($queued | Where-Object type -EQ 'latex').Count) { $null = Initialize-BatchToolchain -Repo $repo }
     Write-Host ("batch: {0} job(s) on {1} worker(s); per-job logs -> {2}" -f $queued.Count, $Workers, $LogDir)
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
 
