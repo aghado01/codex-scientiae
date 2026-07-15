@@ -19,7 +19,7 @@
     pwsh -File scratch/banded-ablation.ps1                    # banded-on, lambda from config default
     pwsh -File scratch/banded-ablation.ps1 -Lambda 3.0        # lambda sweep point
     pwsh -File scratch/banded-ablation.ps1 -Variant baseline  # self-check: COUNTS must equal the
-                                                              # recorded gate (0.7/5.4, 0.35/11.57);
+                                                              # recorded gate (0.7/5.6, 0.35/11.74);
                                                               # bytes may differ (de-hyphenated text)
 #>
 [CmdletBinding()]

@@ -1,3 +1,11 @@
+> **SUPERSEDED (historical).** This is the Opus-arc record of the provenance-first consensus design
+> (milestone-1 = flat-partition union-find + Jaccard, milestone-2 = lineage/cophenetic abstraction).
+> Its *ordering* — provenance consensus as the next milestone — was materially superseded by the
+> landed veto-ladder route (PRIMARY 0.7/0.35 with zero overs; see the dated frontier briefs,
+> latest [frontier-20260715.md](frontier-20260715.md)). The lineage/cophenetic abstraction itself
+> remains conceptually live (the m2 provenance view in the E-thrust unlocks; the ThermoMapper
+> feedback loop), but do not resurrect this file's provenance-first assumptions as a plan of record.
+
 That reframes the deliverable, and it's the right instinct — because the consensus you need here and the unification you've parked in ThermoMapper are _the same abstraction wearing two costumes_. Let me make the connection precise, because it tells us exactly what altitude to build at.
 
 **HDBSCAN's excess-of-mass and SPC's thermal stability are the same quantity.** HDBSCAN selects clusters by persistence along λ = 1/distance (a cluster's stability = the λ-interval it survives before splitting). SPC selects clusters by the _temperature_ interval a superparamagnetic cluster survives before the susceptibility peak dissolves it. Different filtration parameter (λ vs T), identical semantics: **cluster persistence along a monotone control parameter.** The common language that makes them interchangeable is the **merge-tree and its cophenetic distance** — the parameter level at which two points first fall in one cluster. Every hierarchical clusterer emits one; it's an ultrametric; and you're already half-way there in SPCX (there's a shared `Dendrogram`, plus `ThermalDendrogram`, `HierarchyEom`, and `LineagePersistence` all in the tree — the _structure_ is unified, it's the _semantics_ that aren't finished).
