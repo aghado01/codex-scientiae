@@ -4,7 +4,9 @@
 regression corpora. Every figure-lane knob, veto, and metric is calibrated and gated here BEFORE it
 touches the wider corpus — the name is the contract: a change survives the gauntlet or it doesn't
 land. The gate is `src/pdf-converter/Compare-FigureCounts.ps1` (two-population, pig vs LaTeX
-oracle); the offline harness is `scratch/banded-ablation.ps1`; forward plan lives in the dated
+oracle); the offline harness is `scratch/banded-ablation.ps1`; the batch grinder is
+`src/gauntlet-batch.ps1` (greedy parallel pool — one child pwsh per paper job, pig + latex job
+types, intake-guarded; proven 3.2x on 4 workers at first grind); forward plan lives in the dated
 frontier briefs (`issues/clustering/frontier-YYYYMMDD.md`).
 
 ## The standard battery
@@ -79,7 +81,11 @@ A gauntlet corpus declares:
   Chaure2018, YG2019, PKWang2020) — the battery's **first PDF-only testbed**. `%PDF` headers
   1.1–1.6 verified at intake; PDFs folded into per-slug dirs (`spc/{slug}/{slug}.pdf`) so pig
   runs land in `{slug}/.runs/` beside their source. No LaTeX exists: oracle gap is documented as
-  corpus-total; instruments are oracle-free only.
+  corpus-total; instruments are oracle-free only. **Pig-run debt RETIRED same day** (the batch
+  grinder's first grind: 8/8 ok, 2.9 min wall on 4 workers). First stress signals, unscored
+  (no oracle): BWD1997 60 regions / 7 captioned (fragmentation pressure on old typography);
+  YG2019 + WBD1998 0 captioned of 22 regions each (caption attachment finds nothing on old
+  layouts); C′ ejected live on 4/8 papers.
 
 ## Migration record (all three corpora IN, 2026-07-15)
 
