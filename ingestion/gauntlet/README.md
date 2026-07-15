@@ -29,17 +29,24 @@ A gauntlet corpus declares:
 - **Sentinel pages**, where the corpus carries them (see the banded-ablation sentinel set:
   targets 1608 p8/p9, 2112 p8; guards 2006 p11, 2008 p8/p12, 2204 p12, 2501 p12, 2603 p8/p11).
 
-## Migration plan (user-driven)
+## Migration record (all three corpora IN, 2026-07-15)
 
-1. `corpora/voroninski` → `gauntlet/voroninski` — 23 papers, **calibration** (PRIMARY 0.35,
+1. `gauntlet/voroninski` (from `corpora/voroninski`) — 23 papers, **calibration** (PRIMARY 0.35,
    18/23 exact, 0 over).
-2. `compendia/ph-zigzag` → `gauntlet/ph-zigzag` — 10 papers, **calibration**, diagram-heavy
+2. `gauntlet/ph-zigzag` (from `compendia/ph-zigzag`) — 10 papers, **calibration**, diagram-heavy
    (PRIMARY 0.7, 7/10 exact, 0 over).
-3. Then more. `compendia/mapper` is the declared first **transport** candidate (9/10
-   oracle-capable; 2504.09042 is PDF-only) — the out-of-sample test the em-normalized knob
-   philosophy predicts we pass.
+3. `gauntlet/mapper` (from `compendia/mapper`) — 10 papers, **transport** (out-of-sample; gate not
+   yet run — needs pig runs + oracle sidecars, 9/10 capable, 2504.09042 is PDF-only). The
+   out-of-sample test the em-normalized knob philosophy predicts we pass.
 
-## Migration blast radius (verified 2026-07-15; line refs will drift)
+Post-move verification: `Compare-FigureCounts` reproduced PRIMARY row-exact on both calibration
+corpora at the new paths (0.7 / 0.35, 0 over). Live-gate SECONDARY read 5.4/11.57 vs the recorded
+5.6/11.74 — NOT a migration artifact: the recorded baselines are the offline harness's re-cluster
+with current code, the live gate scores frozen on-disk runs that mostly predate recent landings;
+the two converge on full-corpus regen.
+
+## Migration blast radius (sweep APPLIED 2026-07-15 — 37 replacements across 23 script files;
+kept as the template for future migrations; line refs drift)
 
 Functional — update when migrating:
 - `src/pdf-converter/Compare-FigureCounts.ps1` — `$Group` defaults at :36 and :178

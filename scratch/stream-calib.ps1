@@ -21,7 +21,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string]   $Group = 'compendia/ph-zigzag',
+    [string]   $Group = 'gauntlet/ph-zigzag',
     [string[]] $Papers
 )
 

@@ -11,8 +11,8 @@
 $papers = @(
     @{ slug = 'WRD2025';    md = "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.md";    chunks = "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl" }
     @{ slug = 'DBK2023';    md = "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.md";    chunks = "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.chunks.jsonl" }
-    @{ slug = '1109.4499v1'; md = "$PSScriptRoot/../ingestion/corpora/voroninski/1109.4499v1/.scratch/1109.4499v1.md"; chunks = "$PSScriptRoot/../ingestion/corpora/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl" }
-    @{ slug = '2008.10579v1'; md = "$PSScriptRoot/../ingestion/corpora/voroninski/2008.10579v1/.scratch/2008.10579v1.md"; chunks = "$PSScriptRoot/../ingestion/corpora/voroninski/2008.10579v1/.scratch/2008.10579v1.chunks.jsonl" }
+    @{ slug = '1109.4499v1'; md = "$PSScriptRoot/../ingestion/gauntlet/voroninski/1109.4499v1/.scratch/1109.4499v1.md"; chunks = "$PSScriptRoot/../ingestion/gauntlet/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl" }
+    @{ slug = '2008.10579v1'; md = "$PSScriptRoot/../ingestion/gauntlet/voroninski/2008.10579v1/.scratch/2008.10579v1.md"; chunks = "$PSScriptRoot/../ingestion/gauntlet/voroninski/2008.10579v1/.scratch/2008.10579v1.chunks.jsonl" }
 ) | Where-Object { Test-Path -LiteralPath $_.chunks }
 
 $rxMath = [regex]'\$\$[\s\S]*?\$\$|\$[^$\n]+\$'

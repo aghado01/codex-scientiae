@@ -33,7 +33,7 @@ BeforeAll {
     $script:CorpusFiles = @(
         "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl"
         "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.chunks.jsonl"
-        "$PSScriptRoot/../ingestion/corpora/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
+        "$PSScriptRoot/../ingestion/gauntlet/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
     ) | Where-Object { Test-Path -LiteralPath $_ }
     $script:HasCorpus = $script:CorpusFiles.Count -gt 0
 }

@@ -8,7 +8,7 @@ $ErrorActionPreference = 'Stop'
 . 'D:\aghado01\codex-scientiae\src\pdf-converter\pdfdig-figures.ps1'
 
 $root = 'D:\aghado01\codex-scientiae\ingestion'
-$groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+$groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 $tmp = Join-Path ([IO.Path]::GetTempPath()) ('b1gate-' + [Guid]::NewGuid().ToString('N').Substring(0,8))
 New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 $strip = { param($r) $h=[ordered]@{}; foreach($p in $r.PSObject.Properties){ if($p.Name -ne 'visible_bbox'){ $h[$p.Name]=$p.Value } }; ($h | ConvertTo-Json -Depth 8 -Compress) }

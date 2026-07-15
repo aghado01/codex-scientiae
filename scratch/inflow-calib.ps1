@@ -24,8 +24,8 @@ param(
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot '../ingestion')).Path
 $sets = @(
-    @{ group = 'corpora/voroninski';  slugs = @('2008.10579v1', '1506.01437v2', '1309.7669v1', '1209.4785v1', '1602.04426v2') },
-    @{ group = 'compendia/ph-zigzag'; slugs = @('2210.00916', '2403.08110v4', '2112.02352') }
+    @{ group = 'gauntlet/voroninski';  slugs = @('2008.10579v1', '1506.01437v2', '1309.7669v1', '1209.4785v1', '1602.04426v2') },
+    @{ group = 'gauntlet/ph-zigzag'; slugs = @('2210.00916', '2403.08110v4', '2112.02352') }
 )
 
 foreach ($set in $sets) {

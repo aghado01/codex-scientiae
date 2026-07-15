@@ -16,7 +16,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string] $Group = 'compendia/ph-zigzag',
+    [string] $Group = 'gauntlet/ph-zigzag',
     [ValidateSet('consensus-off', 'defrag-off')] [string] $Variant = 'consensus-off'
 )
 

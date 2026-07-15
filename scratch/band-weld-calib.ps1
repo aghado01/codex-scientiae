@@ -29,7 +29,7 @@
 # figure — the render-visible tier). Read-only.
 $ErrorActionPreference = 'Stop'
 $root = 'D:\aghado01\codex-scientiae\ingestion'
-$groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+$groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 $cfg = Get-Content 'D:\aghado01\codex-scientiae\src\pdf-converter\stores\classify-config.json' -Raw | ConvertFrom-Json
 $wideEm = [double]$cfg.figure_regions.inflow_demotion.wide_block_em   # backbone def mirrors pdfdig-figures.ps1:1161
 $MARGIN_EM = 0.2    # a band must sit strictly interior to the region's y-extent by this margin (em)

@@ -45,12 +45,12 @@ BeforeAll {
         @(
             "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl"
             "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.chunks.jsonl"
-            "$PSScriptRoot/../ingestion/corpora/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
+            "$PSScriptRoot/../ingestion/gauntlet/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
         ) | Where-Object { Test-Path -LiteralPath $_ }
     )
     $currentFiles = @(
         @(
-            "$PSScriptRoot/../ingestion/corpora/voroninski/2008.10579v1/.scratch/2008.10579v1.chunks.jsonl"
+            "$PSScriptRoot/../ingestion/gauntlet/voroninski/2008.10579v1/.scratch/2008.10579v1.chunks.jsonl"
         ) | Where-Object { Test-Path -LiteralPath $_ }
     )
 

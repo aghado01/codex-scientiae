@@ -10,7 +10,7 @@
 #   far      — cue lands past a >4-glyph / non-conforming prefix (would need a wider window)
 # For each non-plain block report whether a figure region CLAIMED it (caption.block_id) — the recoverable
 # tail is non-plain AND unclaimed AND figure-cued.
-param([string[]]$Groups = @('compendia/ph-zigzag', 'corpora/voroninski'))
+param([string[]]$Groups = @('gauntlet/ph-zigzag', 'gauntlet/voroninski'))
 $ErrorActionPreference = 'Stop'
 $root = 'D:\aghado01\codex-scientiae\ingestion'
 

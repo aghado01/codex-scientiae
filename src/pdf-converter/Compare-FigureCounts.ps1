@@ -2,7 +2,7 @@
 <#
   src/pdf-converter/Compare-FigureCounts.ps1 — the STANDING figure-count oracle benchmark.
 
-  For a paper GROUP (default the 10-paper compendia/ph-zigzag compendium) emit a per-paper Δ table
+  For a paper GROUP (default the 10-paper gauntlet/ph-zigzag compendium) emit a per-paper Δ table
   comparing the pig figure-region count against the LaTeX-oracle figure(+diagram) count, with
   mechanism attribution and an oracle-confidence flag. This is the gate every subsequent Tier-2
   figure-clustering step re-runs: land a step, re-score the batch, watch the +over / −under tails
@@ -27,13 +27,13 @@
 
   Newest-run-wins mirrors the membrane's Resolve-PaperSource (runs.ps1 Get-PigRunDirs). UTF-8-no-BOM.
 
-    pwsh -File src/pdf-converter/Compare-FigureCounts.ps1 [-Group compendia/ph-zigzag] [-Json]
+    pwsh -File src/pdf-converter/Compare-FigureCounts.ps1 [-Group gauntlet/ph-zigzag] [-Json]
     . ./Compare-FigureCounts.ps1 ; Compare-FigureCounts -Root <ingestion> -Papers 2205.11338v3
 #>
 
 [CmdletBinding()]
 param(
-    [string]   $Group  = 'compendia/ph-zigzag',
+    [string]   $Group  = 'gauntlet/ph-zigzag',
     [string]   $Root,
     [string[]] $Papers,
     [switch]   $Json
@@ -175,7 +175,7 @@ function Get-PigImageCount([string] $EnvelopePath) {
 function Compare-FigureCounts {
     [CmdletBinding()]
     param(
-        [string]   $Group  = 'compendia/ph-zigzag',
+        [string]   $Group  = 'gauntlet/ph-zigzag',
         [string]   $Root,
         [string[]] $Papers
     )

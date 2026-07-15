@@ -6,7 +6,7 @@
 # failure (gap too big / overlap too low / block is ABOVE the figure).
 param(
     [Parameter(Mandatory)][string]$Slug,
-    [string]$Group = 'compendia/ph-zigzag',
+    [string]$Group = 'gauntlet/ph-zigzag',
     [double]$MaxGapEm = 4.0, [double]$MinOverlap = 0.25
 )
 $ErrorActionPreference = 'Stop'

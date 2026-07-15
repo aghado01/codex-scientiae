@@ -26,7 +26,7 @@
 param(
     [ValidateSet('banded-on', 'baseline', 'eject-on', 'banded-eject-on')] [string] $Variant = 'banded-on',
     [double] $Lambda = 2.0,
-    [string[]] $Groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+    [string[]] $Groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 )
 
 $repo = Split-Path $PSScriptRoot -Parent

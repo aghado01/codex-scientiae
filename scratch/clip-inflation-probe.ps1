@@ -8,7 +8,7 @@
 # bbox would move if recomputed from visible-only members). Read-only.
 $ErrorActionPreference = 'Stop'
 $root = 'D:\aghado01\codex-scientiae\ingestion'
-$groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+$groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 $INFLATE_EM = 0.5   # report a region whose clip members extend the bbox by > this many text-heights on any edge
 
 $totFig=0; $withClip=0; $inflated=0; $inflatedCap=0; $weldHarm=0; $invisTot=0; $invisClip=0; $soleClip=0

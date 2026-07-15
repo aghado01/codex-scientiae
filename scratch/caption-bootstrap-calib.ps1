@@ -24,7 +24,7 @@ $root = (Resolve-Path (Join-Path $PSScriptRoot '../ingestion')).Path
 # canonical caption-shape prefix + REQUIRED separator group ([:.]) for the bootstrap
 $styleRe = [regex]'^[^\p{L}]{0,4}(Figure|Fig)\.?\s*\d+\s*([:.])'
 
-foreach ($group in @('compendia/ph-zigzag', 'corpora/voroninski')) {
+foreach ($group in @('gauntlet/ph-zigzag', 'gauntlet/voroninski')) {
     Write-Host ("`n================ {0} ================" -f $group)
     $papers = Get-ChildItem (Join-Path $root $group) -Directory -EA 0 | Sort-Object Name
     foreach ($pd in $papers) {

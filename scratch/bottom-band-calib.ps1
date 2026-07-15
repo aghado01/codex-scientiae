@@ -13,7 +13,7 @@
 # Read-only; touches no engine state. Force-add: scratch/ is gitignored.
 $ErrorActionPreference = 'Stop'
 $root = 'D:\aghado01\codex-scientiae\ingestion'
-$groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+$groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 $styleRe = '^[^\p{L}]{0,4}(Figure|Fig)\.?\s*\d+\s*([:.])?'
 
 $fireCount = 0; $hazardCount = 0; $paperCount = 0

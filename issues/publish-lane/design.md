@@ -72,7 +72,7 @@ plus a header line `{ file, sha256, bytes_total, built_utc, builder }`.
 { "topic": "ph-zigzag", "title": "…", "description": "…",
   "profile": { "references": "sidecar|inline", "images": "nested" },
   "papers": [ { "slug": "2210.00916",
-                "source": "ingestion/compendia/ph-zigzag/2210.00916/2210.00916-latex.md",
+                "source": "ingestion/gauntlet/ph-zigzag/2210.00916/2210.00916-latex.md",
                 "source_sha256": "…", "published_utc": "…", "lane": "latex" } ] }
 ```
 Provenance (`source` + `source_sha256`) is what powers freshness auditing: a regenerated ingestion

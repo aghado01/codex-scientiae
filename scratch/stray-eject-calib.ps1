@@ -39,7 +39,7 @@
 param(
     [double[]] $MinLogGaps = @(0.7, 1.0, 1.5),
     [double] $FloorEm = 1.0,   # contact scale: distances below this are "touching" — clamped pre-scan (v3)
-    [string[]] $Groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+    [string[]] $Groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent

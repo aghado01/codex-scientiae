@@ -30,7 +30,7 @@
 [CmdletBinding()]
 param(
     [double] $Lambda = 2.0,
-    [string[]] $Groups = @('corpora/voroninski', 'compendia/ph-zigzag')
+    [string[]] $Groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent

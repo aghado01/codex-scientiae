@@ -7,7 +7,7 @@
 # whose ink is all above it" case (Fig 7). Read-only; touches no engine state.
 param(
     [Parameter(Mandatory)][string]$Slug,
-    [string]$Group = 'corpora/voroninski'
+    [string]$Group = 'gauntlet/voroninski'
 )
 $ErrorActionPreference = 'Stop'
 $root = 'D:\aghado01\codex-scientiae\ingestion'
