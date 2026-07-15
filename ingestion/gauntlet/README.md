@@ -7,6 +7,22 @@ land. The gate is `src/pdf-converter/Compare-FigureCounts.ps1` (two-population, 
 oracle); the offline harness is `scratch/banded-ablation.ps1`; forward plan lives in the dated
 frontier briefs (`issues/clustering/frontier-YYYYMMDD.md`).
 
+## The standard battery
+
+Every converter dev push runs against the gauntlet — all three corpora, by role:
+
+| corpus | role | in the loop |
+|---|---|---|
+| `gauntlet/ph-zigzag` | **calibration** (diagram-heavy, 10 papers) | every increment — the `Compare-FigureCounts` default group |
+| `gauntlet/voroninski` | **calibration** (plot/figure-heavy, 23 papers) | every increment — `Compare-FigureCounts -Group gauntlet/voroninski` |
+| `gauntlet/mapper` | **transport** (out-of-sample, 10 papers) | milestone runs, gate UNTOUCHED — no knob may ever be fitted here |
+
+`scratch/banded-ablation.ps1` (offline re-cluster + gate + sentinels) spans the two calibration
+corpora and is the harness for any knob decision. mapper is not yet gate-capable (0/10 pig runs;
+oracle sidecars pending, 9/10 possible — 2504.09042 is PDF-only): filling that gap is the
+battery's first standing task (frontier-20260715 §2.5 item 6), after which the transport run
+becomes part of every milestone.
+
 ## Layout and addressing
 
 `gauntlet/{corpus}/{slug}/` under the ingestion root — a sibling grouping to `corpora/` and
