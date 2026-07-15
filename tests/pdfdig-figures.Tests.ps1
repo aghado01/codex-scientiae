@@ -857,9 +857,14 @@ Describe 'pdfdig figure-region clustering — C′ stray eject (integration)' {
             '{"id":1,"page":9,"bx":[0,0,10,10],"text_preview":"far away"}'
         ))
 
-        $script:reOff = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:we 'e.paths.jsonl') `
-                          -OutPath (Join-Path $script:we 'off.figures.jsonl') -PassThru
+        # both variants pin the knob explicitly — the store default (ON since the C′ close-out) must
+        # never leak into either side of this off/on contrast
         $cfgObj = Get-Content (Join-Path $repo 'src/pdf-converter/stores/classify-config.json') -Raw | ConvertFrom-Json
+        $cfgObj.figure_regions.stray_eject.enabled = $false
+        $offCfg = Join-Path $script:we 'cfg-off.json'
+        [IO.File]::WriteAllText($offCfg, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+        $script:reOff = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:we 'e.paths.jsonl') `
+                          -OutPath (Join-Path $script:we 'off.figures.jsonl') -ConfigPath $offCfg -PassThru
         $cfgObj.figure_regions.stray_eject.enabled = $true
         $onCfg = Join-Path $script:we 'cfg-on.json'
         [IO.File]::WriteAllText($onCfg, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))

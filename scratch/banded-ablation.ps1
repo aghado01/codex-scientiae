@@ -47,9 +47,13 @@ $sentinels = @(
     @{ slug = '2006.07953v2'; page = 11; role = 'GUARD subfigure_merged' }
 )
 
-# variant config: clone the repo config, flip the ONE knob under test
+# variant config: clone the repo config, PIN both structural knobs OFF, then flip the ONE under
+# test — 'baseline' means knob-off regardless of the store defaults (stray_eject defaults ON since
+# the C′ close-out 2026-07-15; the recorded baseline numbers in the header are knob-off numbers)
 $cfgPath = Join-Path $repo 'src/pdf-converter/stores/classify-config.json'
 $cfg = Get-Content $cfgPath -Raw | ConvertFrom-Json
+$cfg.figure_regions.banded_metric.enabled = $false
+$cfg.figure_regions.stray_eject.enabled = $false
 if ($Variant -in 'banded-on', 'banded-eject-on') {
     $cfg.figure_regions.banded_metric.enabled = $true
     $cfg.figure_regions.banded_metric.lambda = $Lambda

@@ -236,6 +236,31 @@ the defrag ablation becomes its regression test. In the render: multi-panel plot
   WORSE than eject alone (10.3/5.7 vs 9.96/5.3) — banding's extra ejects don't convert; **B stays parked
   (knob off), C′ alone carries the monster-weld class.** Remaining before default-on: crop-eyeball the
   1608 wins + the 11-row FP list (1506 p31/p32, 1509 p26 …) on a knob-on regen.
+- **C′-4 — ✅ CLOSED, DEFAULT-ON 2026-07-15 (crop eyeball; the knob flip ships in this commit).**
+  Census re-run (`scratch/stray-eject-calib.ps1`, post-gauntlet-move paths) reproduced C′-0 exactly:
+  71 clusters / 173 members @ ln-gap 1.0, sentinels byte-identical (p8 ejects 2 @ lnGap 2.43, p9
+  ejects 4 @ 2.07, 2112 p8 stays @ 0, 1608 p7 stays @ 0.33), zero dissolutions. The complete 11-row
+  FP census: 1506.01437v2 p31 reg109 (e5) + p32 reg111 (e2), 1109.4499v1 p5 reg4 (e4), 1701.08493v2
+  p4 reg4 (e2) + p14 reg17 (e2), 1705.07576v3 p11 reg7 (e2), 1807.04261v1 p10 reg13 (e2), 2210.00916
+  p32 reg45 (e2), 1109.0573v2 p17 reg13 (e1), 1509.05064v1 p26 reg97 (e1), 1812.04176v1 p10 reg10
+  (e1). Knob-on `Invoke-Pdfdig` regen of all 10 manifest papers, stamps `20260715_062456`–`064034`.
+  **Verdicts 13/13 PASS, zero figure-ink loss.** Targets: p8 crop 399→152pt (running head, §3
+  heading, full paragraph and §3.1 heading all leave; 4 heatmap panels + colorbars + titles intact),
+  p9 171→71pt (5 welded body lines leave; both panels + legend markers intact). FP rows: **8/11
+  crops pixel-identical** — the region-level post-caption placement (the C′-3 discovery) voids those
+  cluster-level census rows, their far strays living in the other split product; **3/11 tighten with
+  nothing lost** (1506 p31 331→163pt tall, 1506 p32 369×215→264×174, 1509 p26 367×215→263×173): the
+  "colorbar-risk" class was bbox inflation over dead whitespace — no satellites existed to lose.
+  Live gate post-regen: PRIMARY row-exact both corpora (0.35 18/23 + 0.7 7/10, 0 over); SECONDARY
+  voroninski 10.52 live (converging on the offline 9.96 as knob-on runs replace pre-landing ones).
+  Hardening that rode the flip: the knob-off B-4 regression test and banded-ablation.ps1 now PIN
+  their knobs explicitly (a store-default flip must never change what 'baseline'/'off' means; suite
+  75/75), and `pig-run.json` carries `stray_ejects`/`stray_eject_clusters` provenance. **Named
+  observation (not a blocker): tight crops expose the pre-existing letters-lane clipping** — axis
+  titles/y-labels are wide letter blocks outside the path-ink union (V_letters attaches ≤4em only),
+  so 1608 p9 + the three tightened rows clip them at the new edges (they rode the stray-inflated
+  bbox before). Candidate: crop-bbox letter padding in the E1/`visible_bbox` family. C′ is COMPLETE;
+  B stays parked; the monster-weld class is carried.
 
 ### D. Glyph-cluster candidates — the modality pig cannot see (2112)
 tikz-cd/xy-pic arrows are font glyphs; the path lane is empty, so no veto/merge helps. The elevation's
