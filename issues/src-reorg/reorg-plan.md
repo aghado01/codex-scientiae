@@ -14,10 +14,14 @@ taxonomy; (B) make all of it a proper **PowerShell module**.
 4. `latex-ingest.ps1` (+ its dependency `tikz-render.ps1`) → **`convert/`** — it's a LaTeX→md converter.
 5. `oracle/` folder → **`latex/`**; the "oracle business" (`latex.ps1` math predicates) stays in the
    membrane lane. "Oracle" survives only in doc-strings / prose.
-6. `docs/` → **`src/docs/`** as the canonical MCP-user doc home; repo-root `STANDARDS`/`WORKFLOW`/
-   `CHECKLIST` + `SETUP` fold in. Served-prompt markdowns (`PROCEDURE`, `*-discovery`) move in too,
-   with the 3 servers' read-paths updated. **`CLAUDE.md` stays at repo root** (harness contract);
-   root `CONTENTS.md`/`README.md` stay as telescope-root/landing with pointers into `src/docs/`.
+6. **`docs/` → `src/docs/` = the MCP's operational documentation** — the agent's *role instructions*
+   (workflow, standards, procedure), treated as **part of the source code** and served by the MCP.
+   Everything workflow-specific folds in: `STANDARDS`/`WORKFLOW`/`CHECKLIST`/`SETUP` + served prompts
+   (`PROCEDURE`, `*-discovery`, read-paths updated) + a merged `ARCHITECTURE.md`. **Root docs stay
+   canonical & orientation-only** — *what the repo is and how to enter it*: `CLAUDE.md` (harness
+   contract), `README.md` (landing), `CONTENTS.md` (telescope root), and a **rewritten `AGENTS.md`**
+   (agent orientation that hands off to the MCP for the operational role). Root doc links repoint into
+   `src/docs/`.
 7. **Single module** `CodexScientiae` (one `.psd1` + one root `.psm1`), NOT per-lane modules.
 8. **Manifest + root loader; sources stay dot-sourced `.ps1`** (single module scope) — NOT nested
    `.psm1` per file (which would isolate the cross-file `$script:` state the code relies on).
@@ -144,6 +148,12 @@ Root docs split into three eras: **pre-membrane (obsolete)**, **membrane-era can
 **repo/corpus-level**. Consolidation moves the MCP-operational docs into `src/docs/`, deletes the dead
 pipeline docs, and leaves the corpus/harness docs at root — reconciling the collisions on the way.
 
+**Guiding split (per the user):** `src/docs/` holds the agent's *role instructions* (how the work is done
+— workflow, standards, procedure), treated as source the MCP serves; **root** holds *orientation* (what
+the repo is, how to enter). The pre-membrane root docs were hand-written work-instructions from before any
+MCP existed — that role now belongs to the MCP, so the workflow content migrates in and the dead manual
+pipelines retire.
+
 | Doc | Lines | Disposition |
 |---|---|---|
 | `STANDARDS.md` | 47 | → `src/docs/` (canonical; newer than opuscula's 41-line copy) |
@@ -153,9 +163,9 @@ pipeline docs, and leaves the corpus/harness docs at root — reconciling the co
 | `src/SETUP.md` | 94 | → `src/docs/` (refresh tool count 21→~32, server path) |
 | `MEMBRANE.md` | 96 | → `src/docs/ARCHITECTURE.md`, merging `src/README.md` (D); refresh |
 | `src/README.md` | 61 | folds into `ARCHITECTURE.md`; src entry becomes a thin pointer |
-| `SCHEMA.md` | 14 | fold into `STANDARDS.md` §6 (Contents template); reconcile acks stance (E) |
+| `SCHEMA.md` | 14 | split: Contents template → `STANDARDS.md` §6; removal guidance → promotion contract §8, contextualized (E) |
 | `src/{arxiv,scholar}-discovery.md` | 32/34 | → `src/docs/` (served prompts; read-paths updated) |
-| `AGENTS.md` | 33 | **rewrite** as `src/docs/` index ("operating the MCP"); current one is stale (B) |
+| `AGENTS.md` | 33 | **rewrite AT ROOT** as agent *orientation* (hands off to the MCP); current one is stale (B) |
 | `HOUSEKEEPING.md` | 72 | corpus-health register — DECISION: `src/docs/` vs stay-root vs `issues/` |
 | `WORKFLOW-2.md` | 178 | **DELETE / archive** — dead pre-membrane Python-script pipeline (A) |
 | `WORKFLOW-2B.md` | 89 | **DELETE / archive** — dead subagent-swarm pipeline (A) |
@@ -169,19 +179,31 @@ pipeline docs, and leaves the corpus/harness docs at root — reconciling the co
   keeps the failure taxonomy, §5 explicitly deprecates swarms). `WORKFLOW-2.md`/`-2B.md` document the
   pre-membrane Python `scripts/*.py` + manifest + page-slice + `invoke_subagent` swarm — the scripts are
   **gone** (`scripts/` = `build-hdbscan.ps1` only) and the model is superseded. Delete or move to `.legacy/`.
-- **B — `AGENTS.md` is stale.** Routes to the three docs but describes the swarm model ("Closing
-  Ceremonies", "zombie subagents") and carries LLM citation artifacts (`[file:4/5/6]`). Rewrite as the
-  clean docs index (opuscula already has the cleaned "operating the MCP" form).
+- **B — `AGENTS.md` is stale.** Routes to the three docs but describes the dead swarm model ("Closing
+  Ceremonies", "zombie subagents") and carries LLM citation artifacts (`[file:4/5/6]`). **Rewrite AT ROOT
+  as agent orientation**: what the repo is, the three collections, and that the operational role
+  (conversion / repair / acquisition) is delivered by the MCP servers + `src/docs/`. It stops being a
+  workflow router — the workflow lives in the MCP.
 - **C — STANDARDS ↔ CHECKLIST delimiter contradiction.** STANDARDS §1 mandates `$…$`/`$$` (what `finalize`
   emits); CHECKLIST §3 still says `\(…\)`/`\[…\]`. Reconcile CHECKLIST to `$`-delimiters.
 - **D — `MEMBRANE.md` ↔ `src/README.md` overlap.** Both are architecture overviews carrying stale
   "21 tools" tables. Merge into one `ARCHITECTURE.md` — single source of truth for the tool catalogue.
-- **E — `SCHEMA.md` ↔ STANDARDS §6 + faithful doctrine.** SCHEMA's Contents template overlaps STANDARDS §6;
-  its "Remove: Acknowledgments / affiliations / COI" conflicts with the faithful-transcription doctrine
-  (editorial filtering is the promotion phase's job). Fold the template into STANDARDS; drop/re-scope the
-  removal guidance to the promotion lane.
+- **E — `SCHEMA.md` splits two ways (resolved).** Its Contents template overlaps STANDARDS §6 → fold there.
+  Its "Remove: Acknowledgments / affiliations / COI" is **kept, relocated, and contextualized as a
+  PROMOTION-phase editorial trim** — token-economy "fat" cut from the reader-facing published corpus, and
+  explicitly NOT applied in the faithful dev loop or in dev/conversion benchmarking (oracle↔converter,
+  which needs the complete text; the separate future LLM-task benchmark is out of scope). Not a
+  contradiction with the faithful doctrine — phase-separated. Home: the publish/promotion contract
+  (STANDARDS §8) as an editorial-trim subsection. Consistent with the faithful-not-filtered doctrine.
 - **F — tool-count drift.** "21"/"26"/"29+3" appear across SETUP/README/MEMBRANE/server. The merged
   `ARCHITECTURE.md` becomes the one place the catalogue lives, ending the drift.
+
+**Design upgrade (optional, realizes the "MCP exposes them" intent):** since these are source the MCP
+serves, expose `src/docs/` *through* the MCP, not just as files on disk. The server already serves
+`PROCEDURE.md` / `*-discovery.md` as **prompts**; extend that to serve `STANDARDS` / `WORKFLOW` /
+`CHECKLIST` / `ARCHITECTURE` as MCP **resources** (`resources/list` + `resources/read`) so an agent
+consults the standard in-band instead of reading the tree. Ties into the capability lifecycle — a loaded
+capability can advertise its own doc resource.
 
 ## Sequencing — modularize first, then move (each stage independently green)
 
