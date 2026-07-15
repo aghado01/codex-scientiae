@@ -96,6 +96,15 @@ re-publishes. Publish stops being a one-way copy.
   catalog member against its ingestion source, every asset link against disk. CI-able; folds into the
   corpus-audit family.
 - Human thematic ordering of `_CONTENTS.md` remains a curation act — upsert-in-place, never re-sort.
+- `batch_ingest(targets[], job_types?, workers?, force?)` — the upstream batch throughput surface
+  (added 2026-07-15, user direction): a thin wrap of `src/ingest-batch.ps1`'s `Invoke-IngestBatch`,
+  which was built parameters-in/rows-out precisely for this exposure. Location-driven targets (any
+  pdf / source tarball / paper dir / group dir; explicit files imperative = the hot-example
+  iteration loop), greedy parallel child-process pool, intake guards (magic-byte sniff doubles as
+  the in-flight-download guard), one-time pre-deployment tectonic warmup. This is the librarian's
+  ingestion-maintenance workhorse — batch regen after converter landings, new-corpus first grinds,
+  oracle-sidecar refresh — and stays curator-plane (it spends compute and writes runs; readers
+  never see it).
 
 **Reader plane — access only (unprivileged; suggested name `codex-reader`):**
 - `catalogs()` → the verticals (title, description, paper count).

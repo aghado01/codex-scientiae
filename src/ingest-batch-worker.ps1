@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/gauntlet-batch-worker.ps1 — child-process executor for gauntlet-batch.ps1: ONE job per
+  src/ingest-batch-worker.ps1 — child-process executor for ingest-batch.ps1: ONE job per
   process (isolation is the point — $script:-scoped IR caches and PdfPig heap die with the job;
   a crash here is a FAIL row in the batch table, never a pool casualty). Dot-sources only what
   the job type needs; the final stdout line is a compact `BATCH-RESULT {json}` the dispatcher

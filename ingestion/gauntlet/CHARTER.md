@@ -5,9 +5,11 @@ regression corpora. Every figure-lane knob, veto, and metric is calibrated and g
 touches the wider corpus — the name is the contract: a change survives the gauntlet or it doesn't
 land. The gate is `src/pdf-converter/Compare-FigureCounts.ps1` (two-population, pig vs LaTeX
 oracle); the offline harness is `scratch/banded-ablation.ps1`; the batch grinder is
-`src/gauntlet-batch.ps1` (greedy parallel pool — one child pwsh per paper job, pig + latex job
-types, intake-guarded; proven 3.2x on 4 workers at first grind); forward plan lives in the dated
-frontier briefs (`issues/clustering/frontier-YYYYMMDD.md`).
+`src/ingest-batch.ps1` (a GENERAL ingestion utility, not a gauntlet fixture — location-driven
+targets: any pdf/tarball/paper-dir/group-dir, explicit files imperative for hot-example loops;
+greedy parallel pool, one child pwsh per job, intake-guarded, pre-deployment tectonic warmup;
+slated for librarian-MCP exposure); forward plan lives in the dated frontier briefs
+(`issues/clustering/frontier-YYYYMMDD.md`).
 
 ## The standard battery
 
@@ -76,7 +78,10 @@ A gauntlet corpus declares:
   `KisungYou` at intake for sibling parity. Intake-hygiene note: a premature ingest ran against
   the raw materials mid-download; its residue (nested `{slug}/{slug}/` conversion PNGs under 5
   papers, zero `.runs`) was swept after PNG-only verification — the tree holds exactly the
-  source pairs. Debts: pig runs + oracle sidecars, then milestone transport runs.
+  source pairs. **Debts RETIRED same day** (first grind: 46/46 jobs ok — 23 pig runs + 23 latex
+  conversions with oracle sidecars; one instructive outlier: 2106.06375v1 p5 carries 536,517
+  vector paths — a marker-by-marker scatter — and its pig job ground 79 min, naming the
+  monster-path-cloud stress class and motivating a per-job timeout). Transport-gate READY.
 - **2026-07-15 — `spc`** (8 papers): the SPC lineage (BWD1995/1996/1997, WBD1998, Domany1999,
   Chaure2018, YG2019, PKWang2020) — the battery's **first PDF-only testbed**. `%PDF` headers
   1.1–1.6 verified at intake; PDFs folded into per-slug dirs (`spc/{slug}/{slug}.pdf`) so pig
