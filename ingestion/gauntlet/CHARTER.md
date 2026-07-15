@@ -45,6 +45,14 @@ under the git-ignored `{slug}/.runs/{stamp}/` (the `**/.runs/` ignore is locatio
 Publish topics are decoupled from source groups, so a corpus living here can still publish to its
 usual vertical.
 
+**Dev substrate, not reader shelf (deliberately outside the CONTENTS telescope).** The gauntlet
+is ostensibly ingestion but is really the dev substrate for building the librarian's tools. Its
+consumers are dev agents, which see the tree directly (membrane MCP document discovery + the
+filesystem); telescoping CONTENTS.md navigation is a READER mechanism for drilling into published
+corpora for intel, and the gauntlet is not that — so it carries no telescope entry, and none
+should be added. The reader plane meets these papers only where publish sends them (their usual
+verticals), where the reader navigation picks them up like any other published document.
+
 ## Membership contract
 
 A gauntlet corpus declares:
