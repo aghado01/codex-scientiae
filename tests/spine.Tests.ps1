@@ -29,11 +29,13 @@ BeforeAll {
         return [pscustomobject]@{ root = $root; cp = $cp; paper = $Paper }
     }
 
-    # read-only corpus (same anchors the other suites use) — never dispatched against (no lease writes)
+    # read-only corpus anchor: the committed fixture streams (same files the other two suites use) — this
+    # suite is provenance-agnostic, so it reads both pools together. Never dispatched against (no lease
+    # writes). See tests/fixtures/README.md. (The .scratch anchors these replaced were retired 2026-07-01
+    # for git-ignored .runs/, which silently skipped this whole differential.)
     $script:CorpusFiles = @(
-        "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl"
-        "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.chunks.jsonl"
-        "$PSScriptRoot/../ingestion/gauntlet/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
+        "$PSScriptRoot/fixtures/chunks/legacy.chunks.jsonl"
+        "$PSScriptRoot/fixtures/chunks/current.chunks.jsonl"
     ) | Where-Object { Test-Path -LiteralPath $_ }
     $script:HasCorpus = $script:CorpusFiles.Count -gt 0
 }

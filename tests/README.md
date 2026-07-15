@@ -20,8 +20,11 @@ failure (CI-friendly).
 - One `*.Tests.ps1` file per concern; dot-source the module(s) under test in a top-level `BeforeAll`.
 - Reproduced bugs and calibration decisions are pinned as named `It` regressions, so they can't
   silently come back.
-- Corpus-backed tests (`corpus.Tests.ps1`) `Set-ItResult -Skipped` when no document is preprocessed to
-  the `.scratch/*.chunks.jsonl` stage, so the suite is green on a fresh checkout.
+- Corpus-backed tests (`spine` / `corpus` / `agreement`.Tests.ps1) anchor on the committed fixture
+  streams under `tests/fixtures/chunks/` (see that folder's README), so the differential **runs** on a
+  fresh checkout. Each keeps a `Set-ItResult -Skipped` guard only as a defensive fallback if a fixture
+  goes missing. (These anchors used to point at git-ignored `{paper}/.scratch/*.chunks.jsonl`, which the
+  2026-07-01 move to regenerable `.runs/` left dead — silently skipping the whole differential.)
 - Paths reach the repo root via `$PSScriptRoot/..`.
 
 | file | covers |

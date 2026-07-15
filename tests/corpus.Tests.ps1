@@ -4,14 +4,16 @@
 # document is preprocessed to the chunk stage; the synthetic hotspot test always runs.
 #
 # Two pools, because they answer different questions:
-#   LEGACY  — streams preprocessed by the PRE-refinement engine (WRD2025, DBK2023, 1109.4499v1). The
-#             old-vs-new detector differential and the "stored math_dirt == legacy residual" pin are
-#             defined against this baseline; a divergence here would be a real port regression.
-#   CURRENT — streams normalized by the CURRENT engine (2008.10579v1 and later). Old-vs-new divergence
-#             here is the new pipeline being *better* (the old detector false-positives on content the
-#             new one cleaned), and stored math_dirt is the REFINED value by construction — so the
-#             legacy-baseline pins do NOT apply. Only the engine-internal invariants (refined<=legacy,
-#             determinism, normalize fixed point) run over the whole corpus, where 2008 strengthens them.
+#   LEGACY  — tests/fixtures/chunks/legacy.chunks.jsonl: curated real chunks STAMPED with the
+#             pre-refinement residual (math_dirt == Legacy-MathDirt by construction). The old-vs-new
+#             detector differential and the "stored math_dirt == legacy residual" pin are defined
+#             against this baseline; a divergence here would be a real port regression.
+#   CURRENT — tests/fixtures/chunks/current.chunks.jsonl: curated real chunks as the CURRENT engine
+#             emits them. Old-vs-new divergence here is the new pipeline being *better* (the old detector
+#             false-positives on content the new one cleaned), and math_dirt is the REFINED value (in
+#             fact unstored) by construction — so the legacy-baseline pins do NOT apply. Only the
+#             engine-internal invariants (refined<=legacy, determinism, normalize fixed point) run over
+#             the whole corpus, where the current-engine stream strengthens them.
 
 BeforeAll {
     . "$PSScriptRoot/../src/serving.ps1"   # fidelity (new) + normalize + latex + masks + crawl
@@ -41,17 +43,15 @@ BeforeAll {
         return $list
     }
 
+    # Committed fixture anchors (see tests/fixtures/README.md). The .scratch streams these replaced were
+    # retired 2026-07-01 for git-ignored, regenerable .runs/ — so the old anchors went dead and this whole
+    # differential silently skipped. legacy.chunks.jsonl carries the pre-refinement residual stamped onto
+    # real chunks (math_dirt == Legacy-MathDirt); current.chunks.jsonl is current-engine output as-is.
     $legacyFiles = @(
-        @(
-            "$PSScriptRoot/../ingestion/compendia/ph/WRD2025/.scratch/WRD2025.chunks.jsonl"
-            "$PSScriptRoot/../ingestion/compendia/ph/DBK2023/.scratch/DBK2023.chunks.jsonl"
-            "$PSScriptRoot/../ingestion/gauntlet/voroninski/1109.4499v1/.scratch/1109.4499v1.chunks.jsonl"
-        ) | Where-Object { Test-Path -LiteralPath $_ }
+        @( "$PSScriptRoot/fixtures/chunks/legacy.chunks.jsonl" ) | Where-Object { Test-Path -LiteralPath $_ }
     )
     $currentFiles = @(
-        @(
-            "$PSScriptRoot/../ingestion/gauntlet/voroninski/2008.10579v1/.scratch/2008.10579v1.chunks.jsonl"
-        ) | Where-Object { Test-Path -LiteralPath $_ }
+        @( "$PSScriptRoot/fixtures/chunks/current.chunks.jsonl" ) | Where-Object { Test-Path -LiteralPath $_ }
     )
 
     $hasLegacy = $legacyFiles.Count -gt 0
