@@ -81,7 +81,10 @@ A gauntlet corpus declares:
   source pairs. **Debts RETIRED same day** (first grind: 46/46 jobs ok — 23 pig runs + 23 latex
   conversions with oracle sidecars; one instructive outlier: 2106.06375v1 p5 carries 536,517
   vector paths — a marker-by-marker scatter — and its pig job ground 79 min, naming the
-  monster-path-cloud stress class and motivating a per-job timeout). **FIRST TRANSPORT GATE RUN
+  monster-path-cloud stress class and motivating a per-job timeout. **Class closed at the lane
+  2026-07-15 by `figure_regions.preagg` `9a3efb5`** — >50k-point pages grid-bin to 0.5em
+  cell-union boxes before hdbscan, battery-gated byte-identical, 79 min → ~10 min whole-paper;
+  the grinder's per-job timeout remains the named defense-in-depth gap). **FIRST TRANSPORT GATE RUN
   same day (knobs untouched): PRIMARY mean |dFig| 1.0 — 12/23 exact, 10 under, 1 over;
   SECONDARY 7.13 (oracle inline = 0 corpus-wide — a stats corpus, no tikz-cd).** The under class
   is dominated by raster-blindness attributions (8/10 — bitmap-heavy R-plot corpus, a different
