@@ -23,6 +23,13 @@ oracle sidecars pending, 9/10 possible — 2504.09042 is PDF-only): filling that
 battery's first standing task (frontier-20260715 §2.5 item 6), after which the transport run
 becomes part of every milestone.
 
+**The battery accumulates.** The gauntlet is the standing intake point for new testing and
+stressing corpora (user direction, 2026-07-15). A new corpus enters as **transport by default** —
+it satisfies the membership contract below and runs at milestones with the gate untouched — and is
+promoted to calibration only by an explicit decision recorded in the current frontier brief.
+Promotion widens what knobs may be fitted against, so it is a deliberate act, never a drift; the
+contract's own words are the reason ("a knob calibrated everywhere is validated nowhere").
+
 ## Layout and addressing
 
 `gauntlet/{corpus}/{slug}/` under the ingestion root — a sibling grouping to `corpora/` and
