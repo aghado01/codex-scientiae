@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/caption-bootstrap-calib.ps1 — V_caption interior-split NO-STYLE BOOTSTRAP calibration.
+  probes/caption-bootstrap-calib.ps1 — V_caption interior-split NO-STYLE BOOTSTRAP calibration.
 
   Split-CaptionInteriorRegions bails when a paper has 0 pass-1 claimed captions (styles empty), so a
   figure whose ONLY caption is the interior weld it needs (1705.07576v3 Figure 1: the plot's 44 paths
@@ -14,7 +14,7 @@
     - eligible papers (0 pass-1 claimed captions)
     - FIRE rows: an interior separator-caption strictly inside a kind=figure region with overlap>=frac
 
-    pwsh -File scratch/caption-bootstrap-calib.ps1
+    pwsh -File probes/caption-bootstrap-calib.ps1
 #>
 [CmdletBinding()] param(
     [double]$MarginEm = 1.0, [double]$MinOverlap = 0.25, [double]$MaxBlockSepEm = 9.0

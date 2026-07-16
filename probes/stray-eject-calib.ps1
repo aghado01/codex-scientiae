@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/stray-eject-calib.ps1 — thrust C′ (per-cluster relative STRAY EJECT) C′-0 calibration
+  probes/stray-eject-calib.ps1 — thrust C′ (per-cluster relative STRAY EJECT) C′-0 calibration
   (tier3-engineering-plan §2-C rescope; calibrate-before-implement, seventh application).
 
   STATISTIC ITERATION RECORD (why the rule is a SPINE ELBOW, not a near-child ratio):

@@ -60,7 +60,7 @@ figure is the most visible defect in the document, and this session **diagnosed 
 sub-classes** (§1), which splits into three independently-shippable fixes:
 - **A1 — caption-shape prefix alignment — ✅ LANDED 2026-07-07, premise FALSIFIED (hygiene only).**
   The plan assumed a "cue-matched but rejected-by-prefix" figure tail. **Measured empty on BOTH corpora**
-  (`scratch/prefix-tail-probe.ps1`): every real leading-glyph caption (`∼ Figure 10:`, `1 Figure 16:`,
+  (`probes/prefix-tail-probe.ps1`): every real leading-glyph caption (`∼ Figure 10:`, `1 Figure 16:`,
   the 7 ph-zigzag / 1 voroninski `≤4-junk` cases) is ALREADY claimed — the attachment cue's *unanchored
   14-char scan* was always lenient. The only non-plain UNclaimed blocks (2205 "of Fig. 11. While…",
   2403 "In Figure 3 (b)…") are IN-TEXT REFERENCES that must stay rejected — widening to grab them is a
@@ -85,7 +85,7 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
     whose ONLY caption IS the weld it needs has 0 pass-1 claims → no style learnable → the split bailed
     (chicken-and-egg). **1705.07576v3 Figure 1** ("A plot of g(θ)": its 44 plot paths sit ABOVE the caption;
     the region only dips below on 2 degenerate bitmap points). Fix: when styles empty, split ONLY from a
-    self-evident cue-then-SEPARATOR caption ("Figure 1:"). Calibrated (`scratch/caption-bootstrap-calib.ps1`)
+    self-evident cue-then-SEPARATOR caption ("Figure 1:"). Calibrated (`probes/caption-bootstrap-calib.ps1`)
     to fire on EXACTLY 1705 reg7 corpus-wide, 0 false; ph-zigzag has no 0-claim papers → byte-identical.
     **Voroninski PRIMARY 0.48 → 0.43 (17/23 exact, 0 over); ph-zigzag 0.7/5.4 invariant.** Crop eyeballed:
     clean whole plot + caption. Config knob `caption_split.bootstrap_no_style` (default on).
@@ -104,7 +104,7 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
     through both passes. FIX: when a degenerate below-empty interior caption is the only candidate (no weld
     cut made), attach it to the whole region as its below-caption AND pull the crop bbox bottom UP to the
     caption top — the crop stops welding the caption (and, for Fig 15, a trailing body line) into the
-    figure; area/em²/density recomputed, kind stays figure. Calibrated (`scratch/bottom-band-calib.ps1`,
+    figure; area/em²/density recomputed, kind stays figure. Calibrated (`probes/bottom-band-calib.ps1`,
     33 papers both corpora): fires on EXACTLY 1701 Fig 7 + Fig 15, **0 false attachments, 0 trim hazards**;
     ph-zigzag has 0 firings → byte-identical. **Voroninski PRIMARY 0.43 → 0.35 (18/23 exact, 0 over),
     1701 −2 → 0 (16/16); SECONDARY 11.65 → 11.57; ph-zigzag 0.7/5.4 invariant.** Crops eyeballed: Fig 7
@@ -127,7 +127,7 @@ gap components that cross a band. Surface: one C# metric + `--bands` CLI input +
 plumbing + the lane writing bands; trust-harness unit vectors ([[hdbscan-trust-harness]]).
 **Acceptance signal (unchanged, and elegant): the in-flow veto's demotion count DROPS — it inverts from
 fix to audit.** In the render: fewer over-cropped welds.
-- **B-0 calibration — ✅ DONE 2026-07-10 (`scratch/band-weld-calib.ps1`): premise CONFIRMED, design locked.**
+- **B-0 calibration — ✅ DONE 2026-07-10 (`probes/band-weld-calib.ps1`): premise CONFIRMED, design locked.**
   Fire-set: **189/492** figure regions cross ≥1 interior prose band (both corpora, newest runs), incl. two
   CAPTIONED paragraph-welds — 1608.02165v1 p8 id7 / p9 id8 (a stray member welded across a full paragraph
   into a real figure, 167/254 members below → a paragraph of body text rides the crop) — and the known
@@ -154,7 +154,7 @@ fix to audit.** In the render: fewer over-cropped welds.
   splits banded), 2 lane integration tests (prose band splits, formula + narrow lines do NOT band);
   figures suite 72/72, hdbscan 9/9. (WATCH from B-3, still standing: consensus V_stream can re-weld a
   banded split when the cross-band chain step is < `stream_jump_em` 6em.)
-- **B-4 — ✅ MEASURED 2026-07-10 (`scratch/banded-ablation.ps1`, offline re-cluster both corpora): knob
+- **B-4 — ✅ MEASURED 2026-07-10 (`probes/banded-ablation.ps1`, offline re-cluster both corpora): knob
   STAYS OFF; the metric's payoff is gated on C.** Method: baseline variant reproduces the recorded gate
   EXACTLY row-for-row (ph-zigzag 0.7/5.6, voroninski 0.35/11.74 — the plan's quoted 5.4/11.57 were stale
   run-states; sentinel counts byte-stable), so banded-vs-baseline isolates the knob. At λ=2:
@@ -178,7 +178,7 @@ From `hdbscan_dendrogram.json` (already emitted), select components persistent a
 [a,b] em instead of EOM-stability + `fragmentation_flag_min_clusters` + defrag-elbow. PS-side first.
 Calibrate like `stream-calib` (birth/death stats of oracle-aligned regions). Retires two knobs;
 the defrag ablation becomes its regression test. In the render: multi-panel plots crop whole.
-- **C-0 calibration — ✅ MEASURED 2026-07-10 (`scratch/persistence-band-calib.ps1`, 443 regions both
+- **C-0 calibration — ✅ MEASURED 2026-07-10 (`probes/persistence-band-calib.ps1`, 443 regions both
   corpora, both metrics): the GLOBAL band is FALSIFIED — C is RESCOPED to C′ below.** Captioned
   (oracle-aligned) regions: assembly p50 2.6 / p99 25.9 / max 29.5em vs death min **0.7** / p10 3.5em —
   genuine (jacc≈1) figures assemble as late as ~17em (2205 p7 id13, 1506 p31 id109) while other genuine
@@ -206,7 +206,7 @@ the defrag ablation becomes its regression test. In the render: multi-panel plot
   calibration (fire-set must catch 1608 p8/p9; false-positive census = small legitimate satellites,
   colorbars/legends, attaching late-and-small) → **C′-1** implement behind `figure_regions.stray_eject`
   knob default OFF → **C′-2** unit + integration tests → **C′-3** ablation gate both corpora + λ sweep.
-- **C′-0 — ✅ STATISTIC LOCKED 2026-07-10 (`scratch/stray-eject-calib.ps1`, 522 figure-owning clusters,
+- **C′-0 — ✅ STATISTIC LOCKED 2026-07-10 (`probes/stray-eject-calib.ps1`, 522 figure-owning clusters,
   three iterations — the full v1→v2→v3 record lives in the probe header).** v1 (near-child ratio)
   FAILED: strays attach as a LADDER, so each step reads locally modest (1608 p8 ratio 2.2, no fire)
   while trivial junk fired at 6–64×. v2 (raw spine ln-gap elbow) FAILED both ways: single-linkage
@@ -237,7 +237,7 @@ the defrag ablation becomes its regression test. In the render: multi-panel plot
   (knob off), C′ alone carries the monster-weld class.** Remaining before default-on: crop-eyeball the
   1608 wins + the 11-row FP list (1506 p31/p32, 1509 p26 …) on a knob-on regen.
 - **C′-4 — ✅ CLOSED, DEFAULT-ON 2026-07-15 (crop eyeball; the knob flip ships in this commit).**
-  Census re-run (`scratch/stray-eject-calib.ps1`, post-gauntlet-move paths) reproduced C′-0 exactly:
+  Census re-run (`probes/stray-eject-calib.ps1`, post-gauntlet-move paths) reproduced C′-0 exactly:
   71 clusters / 173 members @ ln-gap 1.0, sentinels byte-identical (p8 ejects 2 @ lnGap 2.43, p9
   ejects 4 @ 2.07, 2112 p8 stays @ 0, 1608 p7 stays @ 0.33), zero dissolutions. The complete 11-row
   FP census: 1506.01437v2 p31 reg109 (e5) + p32 reg111 (e2), 1109.4499v1 p5 reg4 (e4), 1701.08493v2
@@ -281,7 +281,7 @@ ThermoMapper cross-pollination artery. Independent — interleaves anywhere.
   not a thrust; and (b) white/background-FILL inflation (1701 Fig 7's id49 whole-region white fill) — the
   severe case, needs this thrust's **color-bucket** to tell a background fill from a black panel, and is
   already covered for the captioned case by A2b's color-agnostic caption-top trim. Once color lands, (b)
-  folds into `visible_bbox` and A2b's bbox trim could revert to attach-only. Probe: `scratch/clip-inflation-probe.ps1`.
+  folds into `visible_bbox` and A2b's bbox trim could revert to attach-only. Probe: `probes/clip-inflation-probe.ps1`.
 
 ### F. Thrust-5 remainder — widen the deliverable
 Docling-lane images (weave currently no-ops without a pig run); publish carrying `{slug}-membrane/`

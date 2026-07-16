@@ -276,7 +276,7 @@ public readonly struct RectangleGapMetric : IDistanceMetric
 /// 2-D boxes <c>[x0, y0, x1, y1]</c> with the VERTICAL gap component inflated by the prose ink it
 /// crosses. Plain rectangle-gap is geometry-blind — 2em of whitespace and 2em of body-text band
 /// weld identically, so figure formations chain across the page's text flow (calibrated 2026-07-10:
-/// 189/492 corpus regions cross an interior prose line, `scratch/band-weld-calib.ps1`). Each band is
+/// 189/492 corpus regions cross an interior prose line, `probes/band-weld-calib.ps1`). Each band is
 /// a prose text line's box (same quad packing); for a pair of boxes with a positive vertical gap,
 /// every band that horizontally overlaps BOTH boxes (two-column safety: a line in the other column
 /// separates nothing) contributes its overlap with the gap interval, and the effective gap becomes

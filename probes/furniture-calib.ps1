@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/furniture-calib.ps1 — topological-prior T1 calibration probe (issues/clustering/topological-prior.md).
+  probes/furniture-calib.ps1 — topological-prior T1 calibration probe (issues/clustering/topological-prior.md).
 
   For every UNCAPTIONED kind=figure region in a paper's newest pig run, compute the candidate
   furniture-vs-diagram features and print them beside the region's crop path (for eyeball labeling):
@@ -14,7 +14,7 @@
     aspect     region bbox max/min extent ratio
     h_em       region bbox height in em
 
-    pwsh -File scratch/furniture-calib.ps1 -Papers 2210.00916,2403.08110v4   # (via -Command for arrays)
+    pwsh -File probes/furniture-calib.ps1 -Papers 2210.00916,2403.08110v4   # (via -Command for arrays)
 #>
 [CmdletBinding()]
 param(

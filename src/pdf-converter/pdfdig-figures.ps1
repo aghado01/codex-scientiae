@@ -72,7 +72,7 @@ function Get-RectangleGap([double[]] $A, [double[]] $B) {
     [math]::Sqrt($gx * $gx + $gy * $gy)
 }
 
-# MONSTER-PAGE PRE-AGGREGATION (figure_regions.preagg; calibrated scratch/monster-preagg-calib.ps1
+# MONSTER-PAGE PRE-AGGREGATION (figure_regions.preagg; calibrated probes/monster-preagg-calib.ps1
 # 2026-07-15). hdbscan.exe rectangle-gap is O(n^2), so a monster path-cloud page (2106.06375v1 p5:
 # 536,517 paths, one per scatter marker, 79 min) is grid-binned before clustering: path bboxes bin
 # by bbox CENTER into CellPt-sized cells, the cell's clustering point is the UNION of its member
@@ -183,7 +183,7 @@ function Find-FragmentElbow([string] $DendrogramJson, [int[]] $Labels, [double] 
 }
 
 # C′ STRAY EJECT — the post-selection trim EOM cannot perform (tier3-plan §2-C rescope; statistic
-# LOCKED by scratch/stray-eject-calib.ps1 after three measured iterations — see the probe header and
+# LOCKED by probes/stray-eject-calib.ps1 after three measured iterations — see the probe header and
 # figure_regions.stray_eject._doc). allow_single EOM selects the ROOT on lone-blob pages and absorbs
 # remote strays at ANY distance (B-4: 1608 p8 stays 1 cluster / 0 noise even at banded λ=20) — the
 # render then welds a paragraph of body text into the crop.
@@ -761,7 +761,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
     # caption; the region only dips below it on 2 degenerate bitmap points). When styles is empty, run in
     # bootstrap mode: accept a split ONLY from a self-evident cue-then-SEPARATOR caption ("Figure 1:")
     # strictly interior with full overlap — the separator is the discriminator in-text prose lacks (the
-    # sep-relaxation already trusts it). Calib scratch/caption-bootstrap-calib.ps1: fires on EXACTLY 1705
+    # sep-relaxation already trusts it). Calib probes/caption-bootstrap-calib.ps1: fires on EXACTLY 1705
     # reg7 corpus-wide (0 false); ph-zigzag has no 0-claim papers, so that corpus is byte-identical.
     $bootstrap = ($styles.Count -eq 0)
     if ($bootstrap -and -not [bool](($split.bootstrap_no_style) ?? $true)) { return , $Figures }
@@ -859,7 +859,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
             # region's ink is entirely above it and the bbox only overshoots into the caption band via clip
             # paths / an oversized xobject placement. Attach it to the WHOLE region as its below-caption and
             # pull the crop bbox bottom UP to the caption top, so the crop stops welding the caption (and,
-            # for Fig 15, a trailing body line) into the figure. Calibrated (scratch/bottom-band-calib.ps1):
+            # for Fig 15, a trailing body line) into the figure. Calibrated (probes/bottom-band-calib.ps1):
             # fires on EXACTLY 1701 Fig 7 + Fig 15 over both corpora, 0 false attachments, 0 trim hazards
             # (every band member is a clip path or a single oversized xobject); ph-zigzag is byte-identical.
             if ($bottomCap -and -not $fig.caption -and [bool]((($split.bottom_band_attach) ?? $true))) {
@@ -918,7 +918,7 @@ function Split-CaptionInteriorRegions([System.Collections.Generic.List[object]] 
 # DECORATION FURNITURE among UNCAPTIONED pure-path figure regions and demote kind figure→furniture,
 # so overline/underbrace rule clusters, framed-paragraph borders, and interval-annotation strips stop
 # polluting the SECONDARY (inline-diagram) population and its crops. The discriminator is topological
-# + compositional, calibrated 2026-07-06 on crop-labeled residuals (scratch/furniture-calib.ps1):
+# + compositional, calibrated 2026-07-06 on crop-labeled residuals (probes/furniture-calib.ps1):
 #   furniture ⇐ NO areal member (every member's min extent ≤ areal_min_extent_pt — furniture is pure
 #               stroke ink; boxes/blobs/filled arrowheads disqualify)
 #            AND cycle rank β₁ = 0 at cycle_radius_em (|E|−|V|+|C| of the member proximity graph —

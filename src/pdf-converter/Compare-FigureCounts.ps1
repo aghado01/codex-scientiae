@@ -135,7 +135,7 @@ function Get-PigFigureCounts([string] $FiguresJsonl) {
     # 2026-07-07): up to 4 non-letter junk glyphs INCLUDING digits ("1 Table 5:", "> 2 Figure 1:").
     # FALLBACK ONLY: current runs carry cue_word (preferred below); this bites legacy runs, where the
     # old [^\p{L}\d]{0,2} form mis-routed a leading-digit "1 Table 5:" into the FIGURE count. The A1
-    # "recoverable figure tail" is MEASURED EMPTY (scratch/prefix-tail-probe.ps1) — the attachment cue's
+    # "recoverable figure tail" is MEASURED EMPTY (probes/prefix-tail-probe.ps1) — the attachment cue's
     # lenient unanchored 14-char scan already claims every real leading-glyph caption. Do NOT anchor the
     # ATTACHMENT cue to this form: 4 legit long-/letter-prefix captions rely on that scan; anchoring drops
     # them (PRIMARY regression). This shape-test and that select-scan are intentionally different idioms.

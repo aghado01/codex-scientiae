@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/inflow-calib.ps1 — T3-lite "in-flow veto" calibration (round-2 SECONDARY work).
+  probes/inflow-calib.ps1 — T3-lite "in-flow veto" calibration (round-2 SECONDARY work).
 
   Conjecture: display-math clusters / equation ink live INSIDE the text-column flow (their bboxes are
   substantially covered by WIDE Lane-3 blocks — body/equation lines), while real floats and display
@@ -13,7 +13,7 @@
   Run on the target population (voroninski: oracle inline=0, so every uncaptioned region is a
   false positive) AND the negative control (ph-zigzag: real inline diagrams that must NOT trip).
 
-    pwsh -File scratch/inflow-calib.ps1
+    pwsh -File probes/inflow-calib.ps1
 #>
 [CmdletBinding()]
 param(

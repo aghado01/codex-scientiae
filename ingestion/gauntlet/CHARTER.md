@@ -4,7 +4,7 @@
 regression corpora. Every figure-lane knob, veto, and metric is calibrated and gated here BEFORE it
 touches the wider corpus — the name is the contract: a change survives the gauntlet or it doesn't
 land. The gate is `src/pdf-converter/Compare-FigureCounts.ps1` (two-population, pig vs LaTeX
-oracle); the offline harness is `scratch/banded-ablation.ps1`; the batch grinder is
+oracle); the offline harness is `probes/banded-ablation.ps1`; the batch grinder is
 `src/ingest-batch.ps1` (a GENERAL ingestion utility, not a gauntlet fixture — location-driven
 targets: any pdf/tarball/paper-dir/group-dir, explicit files imperative for hot-example loops;
 greedy parallel pool, one child pwsh per job, intake-guarded, pre-deployment tectonic warmup;
@@ -23,7 +23,7 @@ Every converter dev push runs against the gauntlet — all three corpora, by rol
 | `gauntlet/kisungyou` | **transport** (out-of-sample, 23 papers, PDF + LaTeX source per paper) | milestone runs once gate-capable, gate UNTOUCHED |
 | `gauntlet/spc` | **transport, PDF-only stress** (8 papers, 1995–2020 journal PDFs) | oracle-FREE instruments only — the LaTeX-oracle gate is impossible by construction |
 
-`scratch/banded-ablation.ps1` (offline re-cluster + gate + sentinels) spans the two calibration
+`probes/banded-ablation.ps1` (offline re-cluster + gate + sentinels) spans the two calibration
 corpora and is the harness for any knob decision. mapper is not yet gate-capable (0/10 pig runs;
 oracle sidecars pending, 9/10 possible — 2504.09042 is PDF-only): filling that gap is the
 battery's first standing task (frontier-20260715 §2.5 item 6), after which the transport run
@@ -124,7 +124,7 @@ kept as the template for future migrations; line refs drift)
 Functional — update when migrating:
 - `src/pdf-converter/Compare-FigureCounts.ps1` — `$Group` defaults at :36 and :178
   (`compendia/ph-zigzag`).
-- `scratch/banded-ablation.ps1` — `$Groups` default `@('corpora/voroninski', 'compendia/ph-zigzag')`.
+- `probes/banded-ablation.ps1` — `$Groups` default `@('corpora/voroninski', 'compendia/ph-zigzag')`.
 - The scratch calibration probes (~16 files, one group ref each — some functional defaults, some
   header doc): band-weld / bottom-band / caption-bootstrap / caption-diag / clip-inflation /
   consensus-ablation / furniture / inflow / interior-cut / letters / persistence-band / prefix-tail /

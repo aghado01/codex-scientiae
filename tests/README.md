@@ -1,7 +1,11 @@
 # tests/
 
-Pester 5 tests of the `src/` code. This is the home for anything that **asserts** behaviour;
-`scratch/` is for one-off run-and-eyeball probes (load a corpus file, dump JSON) that assert nothing.
+Pester 5 tests of the `src/` code. This is the home for anything that **asserts** behaviour.
+Two sibling folders carry what tests don't: `probes/` holds the standing run-and-eyeball
+instruments (calibration probes, ablation harnesses — human-read output, no assertions; their
+headers carry the iteration records the config `_doc`s cite), and `scratch/` is the ephemeral,
+git-ignored drawer for temp artifacts and one-off throwaway scripts — nothing in it is ever
+committed or referenced by durable docs.
 
 ## Running
 

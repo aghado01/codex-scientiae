@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/banded-ablation.ps1 — thrust-B (full T3) B-4 gate: banded-metric ablation scorer
+  probes/banded-ablation.ps1 — thrust-B (full T3) B-4 gate: banded-metric ablation scorer
   (tier3-engineering-plan §2-B; sibling of consensus-ablation.ps1, same offline method).
 
   Re-runs ConvertTo-FigureRegions OFFLINE on each paper's NEWEST pig run lanes (paths/letters/
@@ -9,16 +9,16 @@
   PLUS the B-specific acceptance surfaces:
     - summary.inflow total (baseline 201 — full T3 should DROP it: the veto inverts fix→audit)
     - summary.banded_pages (drift visibility: pages actually clustered banded)
-    - SENTINEL pages from the B-0 calibration (scratch/band-weld-calib.ps1):
+    - SENTINEL pages from the B-0 calibration (probes/band-weld-calib.ps1):
         targets — welds that SHOULD change:  1608 p8/p9 (captioned paragraph-welds), 2112 p8 (id6)
         guards  — correct regions that MUST NOT split: subfigure/consensus-merged rows with a ~1em
                   interior subcaption line (2204 p12, 2501 p12, 2008 p8/p12, 2603 p8/p11, 2006 p11)
       reported as per-page figure/captioned counts + tallest captioned-region height (a split
       target shows up as a height DROP even when the stray member falls to noise, not +1 count).
 
-    pwsh -File scratch/banded-ablation.ps1                    # banded-on, lambda from config default
-    pwsh -File scratch/banded-ablation.ps1 -Lambda 3.0        # lambda sweep point
-    pwsh -File scratch/banded-ablation.ps1 -Variant baseline  # self-check: COUNTS must equal the
+    pwsh -File probes/banded-ablation.ps1                    # banded-on, lambda from config default
+    pwsh -File probes/banded-ablation.ps1 -Lambda 3.0        # lambda sweep point
+    pwsh -File probes/banded-ablation.ps1 -Variant baseline  # self-check: COUNTS must equal the
                                                               # recorded gate (0.7/5.6, 0.35/11.74);
                                                               # bytes may differ (de-hyphenated text)
 #>

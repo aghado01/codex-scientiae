@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/consensus-ablation.ps1 — consensus-m1 ablation scorer (issues/clustering/consensus-milestone1-design.md).
+  probes/consensus-ablation.ps1 — consensus-m1 ablation scorer (issues/clustering/consensus-milestone1-design.md).
 
   Re-runs ConvertTo-FigureRegions OFFLINE on the NEWEST pig run's lanes (paths/letters/blocks/xobjects
   already on disk — no PdfPig, no image rendering) under a VARIANT config, writes figures.jsonl to a temp
@@ -11,8 +11,8 @@
     defrag-off      figure_regions.defrag_enabled    = false   (is the epsilon de-frag loop vestigial
                                                                  now that consensus merges draw-runs?)
 
-    pwsh -File scratch/consensus-ablation.ps1 -Variant consensus-off
-    pwsh -File scratch/consensus-ablation.ps1 -Variant defrag-off
+    pwsh -File probes/consensus-ablation.ps1 -Variant consensus-off
+    pwsh -File probes/consensus-ablation.ps1 -Variant defrag-off
 #>
 [CmdletBinding()]
 param(

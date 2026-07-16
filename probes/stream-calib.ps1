@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/stream-calib.ps1 — consensus-m1 calibration probe (issues/clustering/consensus-milestone1-design.md).
+  probes/stream-calib.ps1 — consensus-m1 calibration probe (issues/clustering/consensus-milestone1-design.md).
 
   Measures the SPATIAL JUMP between consecutive-id Lane-4 paths ("pen movement" in content-stream order),
   in em units (gap / body_font_pt), classified against the caption ground truth of the newest pig run:
@@ -16,8 +16,8 @@
   stream_jump_em FALSE-split vs what fraction of across-cap teleports it correctly splits), plus the
   page-spanning-path / is_clipping hazard census (does V_stream need a span guard?).
 
-    pwsh -File scratch/stream-calib.ps1                       # ph-zigzag corpus aggregate
-    pwsh -File scratch/stream-calib.ps1 -Papers 2210.00916    # one paper
+    pwsh -File probes/stream-calib.ps1                       # ph-zigzag corpus aggregate
+    pwsh -File probes/stream-calib.ps1 -Papers 2210.00916    # one paper
 #>
 [CmdletBinding()]
 param(

@@ -10,7 +10,7 @@
 # [region-bottom .. capTop], how many are clip paths (invisible) vs VISIBLE ink, and the kept-floor (the
 # lowest bottom of members entirely above capTop). A firing is TRIM-SAFE when the band holds only clip
 # paths / a single oversized xobject; a VISIBLE non-clip path with real ink in the band is a TRIM-HAZARD.
-# Read-only; touches no engine state. Force-add: scratch/ is gitignored.
+# Read-only; touches no engine state.
 $ErrorActionPreference = 'Stop'
 $root = 'D:\aghado01\codex-scientiae\ingestion'
 $groups = @('gauntlet/voroninski', 'gauntlet/ph-zigzag')

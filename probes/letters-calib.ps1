@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/letters-calib.ps1 — V_letters selector calibration (letters-elevation design).
+  probes/letters-calib.ps1 — V_letters selector calibration (letters-elevation design).
 
   Question: can "diagram-participant letter blocks" be separated from body-text blocks by SIZE +
   PATH-ENTANGLEMENT alone? For each Lane-3 block, measure width_em + letter count + distance to the
@@ -13,7 +13,7 @@
   Output: per-class distributions of width_em / letters / nearest-path-gap, plus the body-block
   false-pass rate for candidate size cuts (the bridge guard then rides on path proximity).
 
-    pwsh -File scratch/letters-calib.ps1
+    pwsh -File probes/letters-calib.ps1
 #>
 [CmdletBinding()]
 param(

@@ -1,6 +1,6 @@
 #requires -Version 7
 <#
-  scratch/persistence-band-calib.ps1 — thrust C (T2 persistence-band selection) C-0 calibration
+  probes/persistence-band-calib.ps1 — thrust C (T2 persistence-band selection) C-0 calibration
   (tier3-engineering-plan §2-C; calibrate-before-implement, sixth application).
 
   THE RULE UNDER CALIBRATION: replace EOM-stability + fragmentation_flag_min_clusters + defrag-elbow
