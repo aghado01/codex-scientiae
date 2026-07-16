@@ -1,5 +1,0 @@
-[Page 27]
-
-![The image is a line graph titled Kuramoto: probability of reaching topological stability within observation horizon. The graph is drawn with a blue line that starts at the bottom left and ends at the top right. The x-axis is labeled k and the y-axis is labeled t(K) s Tama. The graph shows a trend of increasing probability of reaching topological stability within observation horizon. The graph has a scale from 0.0 to 0.8 on the x-axis, labeled t(K) s Tama. The y-axis is labeled t(K) s Tama, and it ranges from 0.0 to 0.8. The graph shows a general upward trend, with the probability of reaching topological stability increasing from 0.0 to 0.8. There are two distinct lines on the graph: 1. **Blue Line:** This line starts at the bottom left and extends](<MR2026/imageFile5.png>)
-
-Figure 5: Probability $P(t^*(K) \leq T_{\max})$ of reaching topological stability within the observation horizon as a function of the coupling strength $K$. The horizontal dashed line denotes the confidence threshold $p_0$, while the vertical dashed line marks the estimated critical coupling $\hat{K}_c$.

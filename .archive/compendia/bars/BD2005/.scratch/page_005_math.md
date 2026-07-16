@@ -1,9 +1,0 @@
-[Page 5]
-
-A popular method for analyzing multivariate response data with spline bases is seemingly unrelated regression (SUR), in which each subject is allowed a unique set of basis functions, but the basis coeﬃcients are common to all subjects (Percy, 1992). We instead use one set of unknown basis functions, allowing the basis coeﬃcients to vary from subject to subject. To estimate the population regression function, we treat the subject-speciﬁc basis coeﬃcients as random, centered around the population mean basis coeﬃcients. The resulting model is extremely ﬂexible, and can be used to capture a wide variety of covariate eﬀects and heterogeneity structures.
-
-In section 2, we describe the model, prior structure and a reversible jump Markov chain Monte Carlo (RJMCMC) (Green, 1995) algorithm for posterior computation. In section 3, we illustrate the performance of the approach for a simulation example. Section 4 applies the method to progesterone data from the NC-EPS, and section 5 discusses the results.
-
-Typically, the number and locations of knots in a piecewise linear spline are unknown. By allowing for uncertainty in the knot locations and averaging across the resulting posterior, one can obtain smoothed regression functions. We follow previous authors (Green, 1995; Holmes and Mallick, 2001) in using the RJMCMC algorithm to move among candidate models of varying dimension. Our ﬁnal predictions are constructed from averages over all sampled models. We assume a priori that all models are equally probable, so our prior on the model space is uniform.
-
-Each piecewise linear model, M, is deﬁned by its basis functions ( µ 1,..., µ k ), where µ l is p × 1. Consider y ij, the j th PdG measurement for subject i.Under model M, the true relationship between y ij and its covariates x ￿ ij = (1,x ij 2,...,x ijp ) can be approxi-
