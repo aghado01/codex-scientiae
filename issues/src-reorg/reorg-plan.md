@@ -82,6 +82,8 @@ src/
     latex-ingest · tikz-render                        # moved here (LaTeX→md conversion)
     pdfdig-ir · pdfdig-classify · pdfdig-figures · pdfdig-images · math-assembler · math-evidence · specimens.jsonl · stores/
   cluster/        *.cs · Invoke-Hdbscan               # renamed hdbscan, constant depth
+  boost/          *.cs · Invoke-Xgboost               # PLACEHOLDER — dep-free C# XGBoost engine, sibling to cluster/
+  truffle/        emit-features · align-oracle · decode-viterbi   # PLACEHOLDER — semi-supervised role lane (issues/truffle/)
   corpus-audit.ps1
 ```
 
@@ -89,6 +91,13 @@ Preserved subtleties: `repair.ps1` is a **preprocess stage** (not the interactiv
 `masks.ps1` follows membrane into `preprocess/` (imported by `latex/latex.ps1`). C# identity is
 **unchanged** — `hdbscan.exe`, `projects/hdbscan/`, `CodexSci.Hdbscan`, `bin/hdbscan/` stay; only the
 source dir renames and the csproj SharedSource glob repoints.
+
+**Placeholders (`boost/`, `truffle/`) carry NO Stage-0 moves** — they reserve layout only; nothing
+exists to migrate. When they land (gated on the A3/D fork resolving + this reorg's module skeleton,
+per `issues/truffle/design-notes.md`): `boost/` follows the hdbscan C# pattern exactly
+(`projects/xgboost/` · `CodexSci.Xgboost` · `bin/xgboost/` · `scripts/build-xgboost.ps1`, source dir
+functional-named like `cluster/`); `truffle/` is pure PS and joins the loader after `convert/cluster`
+(it consumes both; oracle labels via `membrane/latex` predicates).
 
 ## Move map (git mv — preserve history)
 
@@ -153,6 +162,16 @@ pipeline docs, and leaves the corpus/harness docs at root — reconciling the co
 the repo is, how to enter). The pre-membrane root docs were hand-written work-instructions from before any
 MCP existed — that role now belongs to the MCP, so the workflow content migrates in and the dead manual
 pipelines retire.
+
+**Status (commit `db03ad3`, user).** Most root docs are already parked in **`.legacy/docs/`** as reference
+(`STANDARDS`, `WORKFLOW`, `CHECKLIST`, `SCHEMA`, `HOUSEKEEPING`, `WORKFLOW-2`, + a stray
+`tmp-math-issues.txt`). So the table below now describes a **re-integration FROM `.legacy/docs/` INTO
+`src/docs/`** (author fresh, applying the reconciliations; legacy is provenance), not a git-mv from root.
+Orientation set correctly retained at root (`AGENTS`, `README`, `CONTENTS`, `CLAUDE`, `CHANGELOG`). **Two
+loose ends at root:** `WORKFLOW-2B.md` (dead swarm doc — its sibling `WORKFLOW-2` is already in legacy;
+should join it) and `MEMBRANE.md` (architecture — decide: keep at root as system-orientation vs →
+`src/docs/ARCHITECTURE`; either way still needs the `src/README` merge, collision D). `src/{PROCEDURE,
+SETUP, *-discovery}.md` untouched, still to land in `src/docs/`.
 
 | Doc | Lines | Disposition |
 |---|---|---|

@@ -55,13 +55,90 @@ pig runs, hdbscan.exe euclidean over intrinsic line typography.
   classify — the supervised layer is necessary, as designed.
 - Thickness: drop from clustering, keep as downstream display-math signal.
 
-## Next (stage 1, not started)
+## Engine decision (locked 2026-07-17): dep-free C# XGBoost, sibling to hdbscan
 
-1. Cluster-relative feature emitter: per line — mode id, mode rank by size, mode
-   frequency, deviation-from-centroid, membership; plus gap/em to prev line, indent.
-2. Oracle alignment → role labels on latex-covered gauntlet papers ({slug}-latex.md
-   headings/math spans vs pig nodes).
-3. Train role trees (heading/body/caption/reference/display-math/figure-text); eval
-   two-population style vs pig `type` heuristics; feature importances answer whether
-   IsBold/thickness/gap actually carry signal.
-4. Transition-matrix count + Viterbi decode; measure heading-sequence legality lift.
+A from-scratch XGBoost-style GBDT engine as a **second C# project under the repo build
+convention** — the exact shape hdbscan proved out:
+
+- Source `src/xgboost/` (post-reorg: `src/boost/`, functional-named like `cluster/`),
+  thin csproj `projects/xgboost/`, `scripts/build-xgboost.ps1` → `bin/xgboost/xgboost.exe`,
+  namespace `CodexSci.Xgboost`, PS wrapper `Invoke-Xgboost.ps1`. Zero runtime deps —
+  no ML.NET, no native libs; System.Text.Json only (same posture as hdbscan.exe).
+- **One CLI, two verbs**: `train` (CSV/JSONL in → model.json + eval report) and `score`
+  (model.json + rows in → per-class posteriors + abstain margin). model.json = the full
+  dumped ensemble — versioned, diffable, auditable; committed alongside the calibration
+  that produced it and gated like any knob.
+- Algorithm scope v1: exact-greedy splits (corpus is small; histogram method deferred),
+  softmax multiclass, second-order objective, L1/L2 + min-child-weight regularization,
+  **monotone constraints** (the principled-priors bridge, e.g. P(heading) non-decreasing
+  in size-rank), per-instance **sample weights** (membership-probability discounting),
+  early stopping on a held-out corpus split.
+- **Trust harness mirrors hdbscan's**: unit harness `tests/xgboost/Program.cs` pinning
+  behavior against reference fixtures (agreement with the reference xgboost
+  implementation on canned tabular sets, same posture as the sklearn-pinned evaluators),
+  Pester e2e `tests/xgboost.Tests.ps1` driving the CLI; determinism test (same input →
+  byte-identical model.json).
+
+## Integration map
+
+One IR, two orthogonal cluster embeddings, one supervision hub, one backbone primitive:
+
+- **convert (pig IR)** — substrate and first customer. nodes.jsonl feeds the emitter;
+  role posteriors flow back as (a) the deferred heading-over-promotion ENGINE guard (the
+  IR-role signal that retires the post-hoc md-repair regex), (b) `known_role_frac`
+  upgraded from health signal to calibrated coverage, (c) eventually digit-role for the
+  C# Markpig.Pdf frontier (truffle prototypes PS-side here, distills across later).
+- **cluster (hdbscan.exe)** — unchanged engine, second embedding. Figure lane clusters
+  page-geometry; truffle clusters typography. Per-doc mode discovery = the
+  canonicalization stage (cluster-relative features are what the trees see; raw pt never
+  crosses documents). Future shared artifact: bagged-HDBSCAN co-association matrix =
+  soft affinity graph = the same object the SPCX diffusion-coupling refiner consumes.
+- **figure lane (gauntlet)** — mutual cross-feed, veto direction preserved. Stage-0's
+  tiny-sans modes (DejaVu/Helvetica/Arial 4–6.5pt) give a per-document figure-text
+  typography prior (vs letters-calib's absolute cuts) → candidate V_letters
+  strengthening AFTER the A3/D fork lands, never mid-probe. Reverse: settled figure
+  regions label lines as figure-text for training. Two views (geometry, typography)
+  co-train at lane granularity.
+- **membrane / latex oracle** — supervision hub. The aligner is the SECOND consumer of
+  D-0's text-anchor idiom (build once: D-0 aligns oracle→glyph-clusters for figure
+  truth; truffle aligns oracle→nodes for role truth). Oracle also prices the
+  active-learning budget (spend on boundary/disagreement, cores come free) and anchors
+  document-level novelty detection (mode geometry unlike training manifold → OOD,
+  abstain at paper granularity). Residue routing: genuinely semantic ambiguity (run-in
+  headings, XeLaTeX unicode-math with no CM font signal) → membrane tier, flagged not
+  guessed.
+- **gauntlet battery** — every model artifact is an increment: gates via the standard
+  two-population comparison, drift in a retrained model surfaces as battery regression.
+  Disagreement/abstain lines emit to work-list JSONL (promotion-candidates pattern;
+  machine never promotes).
+- **PH backbone** — reading order is a structural backbone; the Viterbi tier (tree
+  emissions × oracle-counted transition matrix) is backbone-conditioned persistence,
+  structural edition — first production instance of the flagship primitive, low-stakes
+  rehearsal for the neural-manifold work. The condensed tree's two-scale structure
+  (tuples ⊂ role modes) is itself the persistence object stage-0 verified.
+
+## Sequencing (locked 2026-07-17): wait for the fork, prep the layout
+
+Stage 1 GATES on: (1) the clustering frontier's A3/D fork resolving battery-green
+(predeclared rule stands — truffle does not preempt it), (2) the src-reorg module
+skeleton (truffle files land in their module home, not pre-move src/). Rationale +
+placeholder layout: reorg-plan.md target tree (`boost/`, `truffle/`). Expected wait is
+short (frontier estimates the fork at an afternoon + one bounded implementation).
+Meanwhile truffle costs nothing parked: stage-0 verdict locked in the probe header,
+oracle coverage verified (66 gauntlet `-latex.md` papers: 10/10 ph-zigzag, 22
+voroninski, 23 kisungyou, 9 mapper, 0 spc — spc is the transport/OOD corpus).
+
+## Stage 1 (on unblock)
+
+1. Cluster-relative feature emitter (`truffle/emit-features`): per line — mode id, mode
+   rank by size, mode frequency, deviation-from-centroid, membership; plus gap/em to
+   prev line, indent, page position; thickness re-enters HERE (display-math signal),
+   not in clustering.
+2. Oracle alignment (`truffle/align-oracle`, extends D-0 idiom) → role labels on the
+   latex-covered gauntlet papers ({slug}-latex.md headings/math spans vs pig nodes).
+3. `xgboost.exe` v1 + trust harness; train role trees
+   (heading/body/caption/reference/display-math/figure-text/furniture); eval
+   two-population vs pig `type` baseline; feature importances adjudicate
+   IsBold/thickness/gap empirically.
+4. Transition-matrix count + Viterbi decode (`truffle/decode-viterbi`); measure
+   heading-sequence legality lift on the battery.
