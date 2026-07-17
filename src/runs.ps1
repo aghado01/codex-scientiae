@@ -4,8 +4,8 @@
 
   Every workflow pass lands its intermediate artifacts in a runstamped dir —
   {paper}/.runs/{yyyyMMdd_HHmmss}/ — beside the source it derives from. Non-destructive iteration
-  by construction: a new run never touches a prior one; the legacy single .scratch/ dir reads as
-  the OLDEST run; resolution is newest-run-wins unless the address pins a run ({paper}@{run}).
+  by construction: a new run never touches a prior one; resolution is newest-run-wins unless the
+  address pins a run ({paper}@{run}).
 
   Split out of serving.ps1 so non-membrane lanes (the LaTeX converter's tarball unpacking) share
   the same layout without dragging the serving stack. Sources only the crawler.
@@ -13,7 +13,7 @@
 
 . "$PSScriptRoot/crawl.ps1"
 
-# newest-first chunk paths for one paper, across .runs/* (stamp-descending) then legacy .scratch
+# newest-first chunk paths for one paper, across .runs/* (stamp-descending)
 function Get-RunChunks([string]$PaperDir, [string]$Slug) {
     $out = [System.Collections.Generic.List[string]]::new()
     $runsRoot = Join-Path $PaperDir '.runs'
@@ -23,8 +23,6 @@ function Get-RunChunks([string]$PaperDir, [string]$Slug) {
             if ([System.IO.File]::Exists($c)) { $out.Add($c) }
         }
     }
-    $legacy = Join-Path $PaperDir '.scratch' "$Slug.chunks.jsonl"
-    if ([System.IO.File]::Exists($legacy)) { $out.Add($legacy) }
     return $out
 }
 
@@ -42,10 +40,9 @@ function New-RunDir([string]$PaperDir) {
     return $dir
 }
 
-# paper dir from a chunk path, whichever layout it sits in ({paper}/.runs/{stamp}/ or {paper}/.scratch/)
+# paper dir from a chunk path ({paper}/.runs/{stamp}/{slug}.chunks.jsonl)
 function Get-PaperDirFromChunks([string]$ChunksPath) {
     $d = Split-Path -Parent $ChunksPath
-    if ((Split-Path -Leaf $d) -eq '.scratch') { return (Split-Path -Parent $d) }
     $p = Split-Path -Parent $d
     if ((Split-Path -Leaf $p) -eq '.runs') { return (Split-Path -Parent $p) }
     return $p   # explicit/foreign layout: best effort
@@ -91,13 +88,13 @@ function Get-PigEnvelope([string]$PaperDir, [string]$Slug) {
     return $null
 }
 
-# a run's display name from its chunk path: the runstamp, or '.scratch' for the legacy dir
+# a run's display name from its chunk path: the runstamp
 function Get-RunName([string]$ChunksPath) {
     return (Split-Path -Leaf (Split-Path -Parent $ChunksPath))
 }
 
 # split a '{paper}@{run}' address → paper part + run pin ($null when unpinned). The pin names a
-# runstamp ('20260701_203601') or the legacy '.scratch'; '@' appears in neither slugs nor paths.
+# runstamp ('20260701_203601'); '@' appears in neither slugs nor paths.
 function Split-PaperAddress([string]$Paper) {
     $i = $Paper.LastIndexOf('@')
     if ($i -gt 0 -and $i -lt ($Paper.Length - 1)) { return @($Paper.Substring(0, $i), $Paper.Substring($i + 1)) }
@@ -135,15 +132,14 @@ function Resolve-PaperDir([string]$Root, [string]$Paper) {
     return $hits[0]
 }
 
-# chunks for a paper address: unpinned → the LATEST run; '{paper}@{run}' → exactly that run
-# (runstamp or the legacy '.scratch'). An unknown pin throws listing the runs that do exist.
+# chunks for a paper address: unpinned → the LATEST run; '{paper}@{run}' → exactly that run.
+# An unknown pin throws listing the runs that do exist.
 function Resolve-PaperChunks([string]$Root, [string]$Paper) {
     $addr = Split-PaperAddress $Paper
     $dir  = Resolve-PaperDir $Root $addr[0]
     $slug = Split-Path -Leaf $dir
     if ($addr[1]) {
-        $c = if ($addr[1] -eq '.scratch') { Join-Path $dir '.scratch' "$slug.chunks.jsonl" }
-             else                         { Join-Path $dir '.runs' $addr[1] "$slug.chunks.jsonl" }
+        $c = Join-Path $dir '.runs' $addr[1] "$slug.chunks.jsonl"
         if (-not [System.IO.File]::Exists($c)) {
             $have = @(Get-RunChunks $dir $slug | ForEach-Object { Get-RunName $_ })
             $hint = if ($have.Count) { "runs on disk: $($have -join ', ')" } else { 'no runs on disk' }

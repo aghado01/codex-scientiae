@@ -114,6 +114,6 @@ root means the membrane is live. To narrow it, pass `{ "scope": "compendia/ph" }
 - **stdout is sacred** — protocol frames only. If anything else reaches stdout the client will choke;
   that's what `-NoProfile` and the server's stderr-only logging protect.
 - The server is **stateless**; restart it freely. All document state lives in the per-paper run-dir
-  artifacts (`.runs/{stamp}/`, legacy `.scratch/`) under the ingestion root, so a fresh process
+  artifacts (`.runs/{stamp}/`) under the ingestion root, so a fresh process
   resumes exactly where the last left off — always on the paper's latest run.
-- `.runs/`, `.scratch/`, `.work/`, `__pycache__/` are gitignored — they're regenerable working output.
+- `.runs/`, `.work/`, `__pycache__/` are gitignored — they're regenerable working output.

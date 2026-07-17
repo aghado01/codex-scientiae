@@ -10,10 +10,10 @@ BeforeAll {
 
     $script:Roots = [System.Collections.Generic.List[string]]::new()
     function New-GateFixture([object[]]$Chunks, [string]$Paper = 'p') {
-        $root    = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-gate-" + [guid]::NewGuid().ToString('N'))
-        $scratch = Join-Path $root "$Paper/.scratch"
-        New-Item -ItemType Directory -Force -Path $scratch | Out-Null
-        $cp = Join-Path $scratch "$Paper.chunks.jsonl"
+        $root   = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-gate-" + [guid]::NewGuid().ToString('N'))
+        $runDir = Join-Path $root "$Paper/.runs/20260101_000000"
+        New-Item -ItemType Directory -Force -Path $runDir | Out-Null
+        $cp = Join-Path $runDir "$Paper.chunks.jsonl"
         [void](Write-JsonlStage -Records $Chunks -OutputPath $cp -Stage 'fidelity')
         $script:Roots.Add($root)
         return [pscustomobject]@{ root = $root; cp = $cp; paper = $Paper }

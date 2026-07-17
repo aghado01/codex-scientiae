@@ -125,13 +125,13 @@ Functional — update when migrating:
 - `src/pdf-converter/Compare-FigureCounts.ps1` — `$Group` defaults at :36 and :178
   (`compendia/ph-zigzag`).
 - `probes/banded-ablation.ps1` — `$Groups` default `@('corpora/voroninski', 'compendia/ph-zigzag')`.
-- The scratch calibration probes (~16 files, one group ref each — some functional defaults, some
+- The standing calibration probes (`probes/`, one group ref each — some functional defaults, some
   header doc): band-weld / bottom-band / caption-bootstrap / caption-diag / clip-inflation /
   consensus-ablation / furniture / inflow / interior-cut / letters / persistence-band / prefix-tail /
-  stray-eject / stream / verify-b1 / harvest-2403.
-- Test fixtures on the legacy `.scratch/` layout: `tests/agreement.Tests.ps1:45`,
-  `tests/corpus.Tests.ps1:48,53`, `tests/spine.Tests.ps1:36` (chunks.jsonl under
-  `corpora/voroninski/{slug}/.scratch/`).
+  stray-eject / stream / verify-b1.
+- ~~Test fixtures on the legacy pre-runs layout~~ — resolved: the corpus differentials anchor on
+  committed fixtures under `tests/fixtures/chunks/`, and the synthetic fixtures build real
+  `.runs/{stamp}/` layouts (the legacy layout was swept + its compat code stripped 2026-07-16).
 
 Cosmetic — fix opportunistically, never rewrite history:
 - `src/mcp-server.ps1` tool-description examples (5 refs, e.g. `compendia/ph-zigzag/2403.08110v4`);

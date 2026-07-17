@@ -11,7 +11,7 @@
 
   Deploy it to look for only the files that matter and pass over the noise:
 
-    Invoke-Crawl -Root <dir> -Patterns '**/.scratch/*.chunks.jsonl'              # Include (default)
+    Invoke-Crawl -Root <dir> -Patterns '**/.runs/*/*.chunks.jsonl'               # Include (default)
     Invoke-Crawl -Root <dir> -Patterns '**/*.json' -Semantics Include
     Invoke-Crawl -Root <dir> -Patterns '**/*.png'  -Semantics Exclude            # everything but images
 

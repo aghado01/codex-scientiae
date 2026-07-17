@@ -1,10 +1,10 @@
 #requires -Version 7.0
 # The runstamped-run layout + unambiguous paper addressing. Non-destructive iteration by
 # construction: EVERY preprocess pass lands in its own fresh {paper}/.runs/{stamp}/ (preprocess
-# starts a workflow; the read/repair tools continue one), a legacy .scratch/ reads as the OLDEST
-# run, and resolution is newest-run-wins unless the address pins a run ({paper}@{run}). Slug
-# addressing must be UNIQUE — an ambiguous slug throws listing candidates (the first-hit-wins
-# footgun this replaces silently resolved to whichever copy the crawl met first).
+# starts a workflow; the read/repair tools continue one), and resolution is newest-run-wins
+# unless the address pins a run ({paper}@{run}). Slug addressing must be UNIQUE — an ambiguous
+# slug throws listing candidates (the first-hit-wins footgun this replaces silently resolved to
+# whichever copy the crawl met first).
 
 BeforeAll {
     . "$PSScriptRoot/../src/preprocess.ps1"   # pulls serving.ps1 (run-layout helpers + resolution) and the stage files
@@ -16,8 +16,8 @@ BeforeAll {
         $script:Roots.Add((Split-Path -Parent $root))
         return $root
     }
-    # a paper dir with a raw {slug}.json and any mix of legacy/.runs chunk streams
-    function New-Paper([string]$Root, [string]$RelDir, [string]$Slug, [string[]]$RunStamps = @(), [switch]$Legacy) {
+    # a paper dir with a raw {slug}.json and any set of .runs chunk streams
+    function New-Paper([string]$Root, [string]$RelDir, [string]$Slug, [string[]]$RunStamps = @()) {
         $paperDir = Join-Path $Root $RelDir $Slug
         New-Item -ItemType Directory -Force -Path $paperDir | Out-Null
         # a minimal but pipeline-survivable raw IR (title + heading + prose), for the live preprocess tests
@@ -32,7 +32,6 @@ BeforeAll {
             [void](Write-JsonlStage -Records @([pscustomobject]@{ id = 0; type = 'prose'; content = 'x'; fidelity = 'faithful' }) `
                                     -OutputPath (Join-Path $dir "$Slug.chunks.jsonl") -Stage 'fidelity')
         }
-        if ($Legacy) { & $mk (Join-Path $paperDir '.scratch') }
         foreach ($s in $RunStamps) { & $mk (Join-Path $paperDir '.runs' $s) }
         return $paperDir
     }
@@ -43,19 +42,14 @@ AfterAll {
 }
 
 Describe 'run layout — Get-RunChunks / Get-LatestChunks' {
-    It 'orders newest stamp first and reads legacy .scratch as the oldest run' {
+    It 'orders newest stamp first' {
         $root = New-LayoutRoot
-        $pd = New-Paper $root 'compendia/t' 'p1' -RunStamps '20260101_000000', '20260102_000000' -Legacy
+        $pd = New-Paper $root 'compendia/t' 'p1' -RunStamps '20251231_000000', '20260101_000000', '20260102_000000'
         $runs = @(Get-RunChunks $pd 'p1')
         $runs.Count | Should -Be 3
         $runs[0] | Should -BeLike '*20260102_000000*'
-        $runs[-1] | Should -BeLike '*.scratch*'
+        $runs[-1] | Should -BeLike '*20251231_000000*'
         Get-LatestChunks $pd 'p1' | Should -Be $runs[0]
-    }
-    It 'falls back to legacy .scratch when no .runs exist' {
-        $root = New-LayoutRoot
-        $pd = New-Paper $root 'compendia/t' 'p2' -Legacy
-        Get-LatestChunks $pd 'p2' | Should -BeLike '*.scratch*'
     }
     It 'returns nothing for a virgin paper' {
         $root = New-LayoutRoot
@@ -83,11 +77,10 @@ Describe 'run layout — New-RunDir' {
 }
 
 Describe 'run layout — Get-PaperDirFromChunks' {
-    It 'recovers the paper dir from both layouts' {
+    It 'recovers the paper dir from a run chunk path' {
         $root = New-LayoutRoot
-        $pd = New-Paper $root 'compendia/t' 'p6' -RunStamps '20260101_000000' -Legacy
+        $pd = New-Paper $root 'compendia/t' 'p6' -RunStamps '20260101_000000'
         Get-PaperDirFromChunks (Join-Path $pd '.runs' '20260101_000000' 'p6.chunks.jsonl') | Should -Be $pd
-        Get-PaperDirFromChunks (Join-Path $pd '.scratch' 'p6.chunks.jsonl') | Should -Be $pd
     }
 }
 
@@ -100,7 +93,7 @@ Describe 'paper addressing — Resolve-PaperDir / Resolve-PaperChunks' {
     }
     It 'THROWS on an ambiguous slug, listing every candidate — never first-hit-wins' {
         $root = New-LayoutRoot
-        [void](New-Paper $root 'compendia/orig' 'dup' -Legacy)
+        [void](New-Paper $root 'compendia/orig' 'dup')
         [void](New-Paper $root 'compendia/testing' 'dup')
         $err = { Resolve-PaperDir $root 'dup' } | Should -Throw -PassThru
         $err.Exception.Message | Should -BeLike '*ambiguous*'
@@ -109,7 +102,7 @@ Describe 'paper addressing — Resolve-PaperDir / Resolve-PaperChunks' {
     }
     It 'a root-relative path disambiguates (and tolerates a leading ingestion/)' {
         $root = New-LayoutRoot   # leaf named 'ingestion'
-        [void](New-Paper $root 'compendia/orig' 'dup2' -Legacy)
+        [void](New-Paper $root 'compendia/orig' 'dup2')
         $pd = New-Paper $root 'compendia/testing' 'dup2' -RunStamps '20260101_000000'
         Resolve-PaperDir $root 'compendia/testing/dup2' | Should -Be $pd
         Resolve-PaperDir $root 'ingestion/compendia/testing/dup2' | Should -Be $pd
@@ -128,18 +121,18 @@ Describe 'paper addressing — Resolve-PaperDir / Resolve-PaperChunks' {
 }
 
 Describe 'discovery — Get-ChunkFiles / Get-IngestionScan give ONE current view per paper' {
-    It 'a paper with legacy + multiple runs surfaces exactly its newest run' {
+    It 'a paper with multiple runs surfaces exactly its newest run' {
         $root = New-LayoutRoot
-        [void](New-Paper $root 'compendia/t' 'm1' -RunStamps '20260101_000000', '20260103_000000' -Legacy)
-        [void](New-Paper $root 'compendia/t' 'm2' -Legacy)
+        [void](New-Paper $root 'compendia/t' 'm1' -RunStamps '20260101_000000', '20260103_000000')
+        [void](New-Paper $root 'compendia/t' 'm2' -RunStamps '20260102_000000')
         $files = @(Get-ChunkFiles $root)
         $files.Count | Should -Be 2
         @($files | Where-Object { $_ -like '*m1*' })[0] | Should -BeLike '*20260103_000000*'
-        @($files | Where-Object { $_ -like '*m2*' })[0] | Should -BeLike '*.scratch*'
+        @($files | Where-Object { $_ -like '*m2*' })[0] | Should -BeLike '*20260102_000000*'
     }
     It 'the scan reports prepped from the latest run and carries the run count' {
         $root = New-LayoutRoot
-        [void](New-Paper $root 'compendia/t' 's1' -RunStamps '20260101_000000' -Legacy)
+        [void](New-Paper $root 'compendia/t' 's1' -RunStamps '20260101_000000', '20260102_000000')
         [void](New-Paper $root 'compendia/t' 's2')
         $scan = @(Get-IngestionScan $root) | Sort-Object paper
         $scan.Count | Should -Be 2
@@ -270,12 +263,11 @@ Describe 'pig lane — IR resolves from the newest {paper}/.runs/{stamp}/pig, no
 }
 
 Describe 'paper addressing — @{run} pins a specific run' {
-    It 'unpinned resolves latest; @stamp pins an older run; @.scratch pins the legacy dir' {
+    It 'unpinned resolves latest; @stamp pins an older run' {
         $root = New-LayoutRoot
-        [void](New-Paper $root 'compendia/t' 'q1' -RunStamps '20260101_000000', '20260102_000000' -Legacy)
+        [void](New-Paper $root 'compendia/t' 'q1' -RunStamps '20260101_000000', '20260102_000000')
         Resolve-PaperChunks $root 'q1' | Should -BeLike '*20260102_000000*'
         Resolve-PaperChunks $root 'q1@20260101_000000' | Should -BeLike '*20260101_000000*'
-        Resolve-PaperChunks $root 'q1@.scratch' | Should -BeLike '*.scratch*'
         Resolve-PaperChunks $root 'compendia/t/q1@20260101_000000' | Should -BeLike '*20260101_000000*'   # composes with the path form
     }
     It 'an unknown pin throws listing the runs that DO exist' {

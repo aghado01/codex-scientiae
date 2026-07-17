@@ -30,8 +30,8 @@ held.
 
 ## Runs — know which one you are on
 
-A paper's working state lives in runstamped runs (`{paper}/.runs/{stamp}/`; a legacy
-`.scratch/` is the oldest run). `preprocess` always **starts a new run**; every other tool
+A paper's working state lives in runstamped runs (`{paper}/.runs/{stamp}/`).
+`preprocess` always **starts a new run**; every other tool
 **continues** one — the latest by default, or exactly the run you pin with
 `{paper}@{stamp}`. Three rules:
 
@@ -131,8 +131,8 @@ When `dispatch` is empty for a document (all units faithful/repaired), close it 
 **tools**, not console commands — never shell out to do this.
 
 1. **`finalize paper`** — serialize the repaired chunk stream into the deliverable
-   (`{slug}.md` + `references/{slug}.md`) in the document's current run dir (`.runs/{stamp}/`,
-   legacy `.scratch/`). `pending > 0` means chunks are still flagged: the deliverable is provisional.
+   (`{slug}.md` + `references/{slug}.md`) in the document's current run dir (`.runs/{stamp}/`).
+   `pending > 0` means chunks are still flagged: the deliverable is provisional.
 2. **`review_document paper`** — the one sanctioned holistic read, and the only pass that reads the
    assembled body for *sense*. It returns the full body + references sidecar plus the still-flagged
    chunks (id + reason). **`faithful` means the LaTeX is structurally valid — delimiters, environments

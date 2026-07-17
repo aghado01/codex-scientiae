@@ -40,7 +40,7 @@ The four rules:
 | rule | law | fires on | steers to |
 |---|---|---|---|
 | `no-shell-out` | navigate-not-scan | Bash/PowerShell touching `mcp-server.ps1` / `serving.ps1` / dot-sourced `src/*.ps1` | call the registered MCP tools |
-| `no-slurp` | slice-not-slurp | `Read` of `.scratch/**` / `*.chunks.jsonl` | `get_summary` → `get_slice` |
+| `no-slurp` | slice-not-slurp | `Read` of `.runs/**` / `*.chunks.jsonl` | `get_summary` → `get_slice` |
 | `no-regenerate` | edit-not-regenerate | `Write`/`Edit` of the chunk stream | `propose_edit` → `apply` |
 | `finish-clean` | finish-clean | `Stop` | confirm `finalize` + `review_document`, `pending == 0` |
 

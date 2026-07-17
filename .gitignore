@@ -3,7 +3,6 @@
 *.pyc
 *.vscode
 *.ipynb_checkpoints
-**.scratch/**
 **scratch/**
 
 .legacy
@@ -22,7 +21,6 @@ lib/
 # run artifacts (regenerable working output)
 **tmp/
 **/tmp/**
-**/.scratch/
 **/.runs/
 **/.work/
 **/__pycache__/

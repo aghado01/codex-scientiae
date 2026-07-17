@@ -18,12 +18,13 @@ BeforeAll {
     # write a synthetic per-paper chunk stream (+ .jidx) into a throwaway root via the real stage writer,
     # so get_slice's seek and apply's re-grade run against a genuine fixture. Each It uses its own root so
     # lease/proposal side-effects never bleed across tests. UTF-8-no-BOM is the house backbone.
+    # (fixture layout = the real .runs/{stamp}/, matching what the resolution layer discovers)
     $script:Roots = [System.Collections.Generic.List[string]]::new()
     function New-SpineFixture([object[]]$Chunks, [string]$Paper = 'p') {
-        $root    = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-spine-" + [guid]::NewGuid().ToString('N'))
-        $scratch = Join-Path $root "$Paper/.scratch"
-        New-Item -ItemType Directory -Force -Path $scratch | Out-Null
-        $cp = Join-Path $scratch "$Paper.chunks.jsonl"
+        $root   = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-spine-" + [guid]::NewGuid().ToString('N'))
+        $runDir = Join-Path $root "$Paper/.runs/20260101_000000"
+        New-Item -ItemType Directory -Force -Path $runDir | Out-Null
+        $cp = Join-Path $runDir "$Paper.chunks.jsonl"
         [void](Write-JsonlStage -Records $Chunks -OutputPath $cp -Stage 'fidelity')
         $script:Roots.Add($root)
         return [pscustomobject]@{ root = $root; cp = $cp; paper = $Paper }
@@ -31,7 +32,7 @@ BeforeAll {
 
     # read-only corpus anchor: the committed fixture streams (same files the other two suites use) — this
     # suite is provenance-agnostic, so it reads both pools together. Never dispatched against (no lease
-    # writes). See tests/fixtures/README.md. (The .scratch anchors these replaced were retired 2026-07-01
+    # writes). See tests/fixtures/README.md. (The pre-runs-layout anchors these replaced were retired 2026-07-01
     # for git-ignored .runs/, which silently skipped this whole differential.)
     $script:CorpusFiles = @(
         "$PSScriptRoot/fixtures/chunks/legacy.chunks.jsonl"

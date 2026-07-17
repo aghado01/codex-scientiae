@@ -27,7 +27,7 @@ failure (CI-friendly).
 - Corpus-backed tests (`spine` / `corpus` / `agreement`.Tests.ps1) anchor on the committed fixture
   streams under `tests/fixtures/chunks/` (see that folder's README), so the differential **runs** on a
   fresh checkout. Each keeps a `Set-ItResult -Skipped` guard only as a defensive fallback if a fixture
-  goes missing. (These anchors used to point at git-ignored `{paper}/.scratch/*.chunks.jsonl`, which the
+  goes missing. (These anchors used to point at the git-ignored pre-runs per-paper working dirs, which the
   2026-07-01 move to regenerable `.runs/` left dead — silently skipping the whole differential.)
 - Paths reach the repo root via `$PSScriptRoot/..`.
 

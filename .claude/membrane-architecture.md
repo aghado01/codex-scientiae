@@ -37,7 +37,7 @@ These recur at every layer; they are the design's actual through-lines:
   a rising deny-rate is a design smell. (Governance doctrine, but it governs L1–L3 too.)
 - **Errors are steering.** Every failure teaches the correct next call — a bad root, a malformed unit,
   a blocked shell-out all return a message that names the right move. Ergonomic errors kill retry loops.
-- **Stateless / artifacts are ground truth.** State lives in `.scratch/`, not the process. An amnesic
+- **Stateless / artifacts are ground truth.** State lives in the run dirs (`.runs/{stamp}/`), not the process. An amnesic
   agent re-grounds from `get_batch_summary`. This is what guarantees no infinite-await / no lost work —
   statefulness is *orthogonal* to the shell-fumbling problem and would cost this resilience.
 - **Generic core + thin shim** (the provider-agnostic fractal). Agnostic substrate (server protocol,
@@ -69,7 +69,7 @@ it (the existing stdio loop; a localhost `HttpListener` loop). One dispatch, two
   admin URL ACL), and **spec depth** (POST→JSON is minimal; full Streamable HTTP wants SSE + session
   ids for broad client acceptance).
 - **Keep transport connections serial** (or behind the explicit worker pool, below) to protect the
-  `.scratch/` artifacts from concurrent-write races.
+  run-dir artifacts from concurrent-write races.
 
 ## L4 — Governance: two planes (see governance doc)
 

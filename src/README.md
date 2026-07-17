@@ -24,8 +24,8 @@ The **preprocess** pipeline is deterministic and does everything it can without 
 enriched, graded chunk stream in a fresh runstamped directory (`.runs/{yyyyMMdd_HHmmss}/`) **beside
 the source** (source-tracked by position, fan-out friendly). Runs are append-only — **every
 preprocess pass creates a NEW run** and never touches a prior one (preprocess starts a workflow; the
-read/repair tools continue one). A legacy `.scratch/` dir reads as the oldest run; resolution is
-newest-run-wins, or pin any run explicitly as `{paper}@{runstamp}` (`@.scratch` for the legacy dir). The **membrane** is the MCP surface a seeing agent drives to resolve
+read/repair tools continue one). Resolution is newest-run-wins, or pin any run explicitly as
+`{paper}@{runstamp}`. The **membrane** is the MCP surface a seeing agent drives to resolve
 what's left; **finalize** assembles the corpus deliverable.
 
 ## The membrane's discipline

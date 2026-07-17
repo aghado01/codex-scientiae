@@ -1,7 +1,7 @@
 #requires -Version 7.0
 <#
-  src/publish.ps1 — promote a finalized deliverable from its run-dir staging (.runs/{stamp}/,
-  legacy .scratch/) into the live compendium tree (compendia/{topic}/). This is the post-`finalize` stage the membrane did not
+  src/publish.ps1 — promote a finalized deliverable from its run-dir staging (.runs/{stamp}/)
+  into the live compendium tree (compendia/{topic}/). This is the post-`finalize` stage the membrane did not
   previously expose as a tool, so agents hand-scripted it from the console (the source of the
   cp1252 / parser churn in the feedback briefs). It crosses the ingestion→compendia boundary
   deliberately: the server now anchors at the repo root so this lane can reach the published corpus.
@@ -17,7 +17,7 @@
   reposition by theme. We never re-sort the index — that ordering is a human curation act.
 
     . ./publish.ps1
-    Invoke-Publish -ChunksPath <.scratch/{slug}.chunks.jsonl> -CompendiaRoot <dir> -Topic <name> [-Force] [-DryRun]
+    Invoke-Publish -ChunksPath <.runs/{stamp}/{slug}.chunks.jsonl> -CompendiaRoot <dir> -Topic <name> [-Force] [-DryRun]
 #>
 
 . "$PSScriptRoot/finalize.ps1"
@@ -153,7 +153,7 @@ function Invoke-Publish {
         throw "deliverable is provisional: $($fin.pending) chunk(s) still flagged. Resolve them (or pass force=true to publish anyway)."
     }
 
-    # paper dir = nearest ancestor named {slug} (layout-agnostic: {slug}/.runs/{stamp}/ or legacy {slug}/.scratch/)
+    # paper dir = nearest ancestor named {slug} (layout-agnostic above {slug}/.runs/{stamp}/)
     $paperDir = Split-Path -Parent $ChunksPath
     while ($paperDir -and (Split-Path -Leaf $paperDir) -ne $slug) {
         $up = Split-Path -Parent $paperDir

@@ -3,8 +3,8 @@
   tests/fixtures/regenerate-chunks.ps1 — provenance record + regenerator for the committed corpus-anchor
   fixtures (legacy.chunks.jsonl / current.chunks.jsonl) that spine/corpus/agreement.Tests.ps1 read.
 
-  WHY THESE ARE COMMITTED. The corpus-anchored Its used to point at {paper}/.scratch/{slug}.chunks.jsonl.
-  The .scratch layout was retired 2026-07-01 for runstamped {paper}/.runs/{stamp}/ — which is git-ignored
+  WHY THESE ARE COMMITTED. The corpus-anchored Its used to point at the pre-runs per-paper working
+  dirs, retired 2026-07-01 for runstamped {paper}/.runs/{stamp}/ — which is git-ignored
   and regenerable, so pointing tests at it is flaky (the Test-Path guards just silently skipped the whole
   corpus differential). These two small committed streams are the durable on-disk anchor instead.
 

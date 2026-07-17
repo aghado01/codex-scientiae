@@ -10,7 +10,7 @@
     "beforeReadFile": [
       {
         "command": "C:\\Users\\azrie\\PDenv\\PowerShell\\PowerShell-7.6.2-win-x64-cursor-ide\\pwsh.exe -NoProfile -File .cursor/hooks/membrane-governance.ps1 -CursorEvent beforeReadFile",
-        "matcher": "\\.scratch/|\\.chunks\\.jsonl|\\.nodes\\.jsonl"
+        "matcher": "\\.runs/|\\.chunks\\.jsonl|\\.nodes\\.jsonl"
       }
     ],
     "preToolUse": [

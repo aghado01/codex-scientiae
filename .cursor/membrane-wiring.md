@@ -30,7 +30,7 @@ Implements the same four PROCEDURE.md laws as `.claude/governance/contract.json`
 | rule | Cursor event | effect |
 |------|--------------|--------|
 | no-shell-out | `beforeShellExecution` | nudge: use MCP tools, not `pwsh -File mcp-server.ps1` |
-| no-slurp | `beforeReadFile` | nudge: use `get_slice`, not raw `.scratch/` reads |
+| no-slurp | `beforeReadFile` | nudge: use `get_slice`, not raw `.runs/` reads |
 | no-regenerate | `preToolUse` (Write/StrReplace) | nudge: use `propose_edit` → `apply` |
 | finish-clean | `stop` | reminder: `finalize` + `review_document`, `pending == 0` |
 

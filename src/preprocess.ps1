@@ -5,9 +5,8 @@
   Takes a raw Docling / opendataloader IR JSON and runs project-ir -> headings -> collapse ->
   zones -> sections -> normalize -> fidelity -> repair, landing the enriched chunk stream + sidecars in a
   fresh runstamped directory BESIDE the source — `{paper}/.runs/{yyyyMMdd_HHmmss}/` (source-tracked by
-  position, fan-out-friendly — each paper's artifacts are self-contained; a legacy `.scratch/` dir reads
-  as the oldest run). Logs the 'preprocessed' milestone to the ledger, and every write self-registers in
-  the inventory via Write-JsonlStage.
+  position, fan-out-friendly — each paper's artifacts are self-contained). Logs the 'preprocessed'
+  milestone to the ledger, and every write self-registers in the inventory via Write-JsonlStage.
 
   EVERY invocation creates a NEW run — preprocess starts a workflow; the read/repair tools continue one
   (they resolve the latest run, or any pinned '{paper}@{run}'). Prior runs are never touched, but a new

@@ -27,7 +27,7 @@
 │ ARTIFACTS ON DISK = GROUND TRUTH (tools return projections, never the file) │
 │ │
 │ ingestion/{slug}/{slug}.json ......... raw IR (the export, body-blind survey unit)│
-│ ingestion/{slug}/.runs/{stamp}/ (legacy .scratch/ = oldest run; newest wins) │
+│ ingestion/{slug}/.runs/{stamp}/ (runstamped; newest wins) │
 │ {slug}.chunks.jsonl ............... enriched chunk stream ◄── the live object │
 │ {slug}.jidx ....................... seek index (get_slice by id) │
 │ + leases · staged proposals · .ledger.jsonl milestones · audit log │

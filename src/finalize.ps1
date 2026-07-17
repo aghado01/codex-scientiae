@@ -6,7 +6,7 @@
   STANDARDS.md: an H1 title, a `## Contents` block, body sections at H2/H3/H4 by depth, prose
   paragraphs, block math fenced in $$, and running-head furniture dropped. The back-matter
   (References) is split into a sidecar references/{slug}.md, linked from Contents. First pass
-  writes into the document's own run dir (.runs/{stamp}/, legacy .scratch/) — get the SHAPE right;
+  writes into the document's own run dir (.runs/{stamp}/) — get the SHAPE right;
   the move to compendia/{topic}/ is a later concern. Logs the 'finalized' milestone.
 
     . ./finalize.ps1

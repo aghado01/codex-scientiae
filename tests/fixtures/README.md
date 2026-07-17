@@ -7,8 +7,8 @@ depends on regenerable working output.
 
 `spine.Tests.ps1`, `corpus.Tests.ps1`, and `agreement.Tests.ps1` each carry a **corpus differential**:
 a read-only pass that replays the fidelity detectors over real preprocessed chunk-JSONL and asserts
-share-table / totality / determinism / non-gating invariants. Those Its used to anchor on
-`{paper}/.scratch/{slug}.chunks.jsonl`. The `.scratch` layout was retired 2026-07-01 for runstamped
+share-table / totality / determinism / non-gating invariants. Those Its used to anchor on the
+pre-runs per-paper working dirs, retired 2026-07-01 for runstamped
 `{paper}/.runs/{stamp}/` — which is **git-ignored and regenerable** — so the anchors went dead and the
 `Test-Path` guards silently skipped the entire differential (`HasCorpus = $false`). These two committed
 streams are the durable anchor instead.

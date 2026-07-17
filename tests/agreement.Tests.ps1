@@ -16,10 +16,10 @@ BeforeAll {
     # the house backbone). Each It uses its own root so the lease side-effect never bleeds across tests.
     $script:Roots = [System.Collections.Generic.List[string]]::new()
     function New-AgreementFixture([object[]]$Chunks) {
-        $root    = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-agree-" + [guid]::NewGuid().ToString('N'))
-        $scratch = Join-Path $root 'p1/.scratch'
-        New-Item -ItemType Directory -Force -Path $scratch | Out-Null
-        $cp = Join-Path $scratch 'p1.chunks.jsonl'
+        $root   = Join-Path ([System.IO.Path]::GetTempPath()) ("codex-agree-" + [guid]::NewGuid().ToString('N'))
+        $runDir = Join-Path $root 'p1/.runs/20260101_000000'
+        New-Item -ItemType Directory -Force -Path $runDir | Out-Null
+        $cp = Join-Path $runDir 'p1.chunks.jsonl'
         $sb = [System.Text.StringBuilder]::new()
         foreach ($c in $Chunks) { [void]$sb.AppendLine(($c | ConvertTo-Json -Compress -Depth 8)) }
         [System.IO.File]::WriteAllText($cp, $sb.ToString(), [System.Text.UTF8Encoding]::new($false))
@@ -40,8 +40,8 @@ BeforeAll {
 
     # read-only corpus anchor: the committed fixture streams (same files corpus.Tests.ps1 uses) — this
     # suite is provenance-agnostic, so it reads both pools together. Never dispatched against (no lease
-    # writes). See tests/fixtures/README.md. (The .scratch anchors these replaced were retired 2026-07-01
-    # for git-ignored .runs/, which silently skipped this whole differential.)
+    # writes). See tests/fixtures/README.md. (The per-paper working-dir anchors these replaced were
+    # retired 2026-07-01 for git-ignored .runs/, which silently skipped this whole differential.)
     $script:CorpusFiles = @(
         "$PSScriptRoot/fixtures/chunks/legacy.chunks.jsonl"
         "$PSScriptRoot/fixtures/chunks/current.chunks.jsonl"

@@ -57,7 +57,7 @@ $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 
 # --- tool catalogue: name -> description + JSON-Schema for arguments ---
 # paper addressing (shared): a unique slug, or an ingestion-root-relative path when the slug is ambiguous
-$PaperArg = @{ type = 'string'; description = 'a document slug (must be unique under the ingestion root — an ambiguous slug ERRORS listing the candidates) or an ingestion-root-relative paper-dir path to disambiguate, e.g. "compendia/membrane-testing/2508.11646v1". Resolves to the paper''s LATEST run; pin a specific run with @, e.g. "2508.11646v1@20260701_203601" (legacy dir: "@.scratch") — list_documents reports each paper''s latest_run.' }
+$PaperArg = @{ type = 'string'; description = 'a document slug (must be unique under the ingestion root — an ambiguous slug ERRORS listing the candidates) or an ingestion-root-relative paper-dir path to disambiguate, e.g. "compendia/membrane-testing/2508.11646v1". Resolves to the paper''s LATEST run; pin a specific run with @, e.g. "2508.11646v1@20260701_203601" — list_documents reports each paper''s latest_run.' }
 $Tools = @(
     @{ name = 'list_documents'
        description = 'Survey the ingestion root: every paper raw with whether it has been preprocessed and its current milestone stage. Each row carries `lanes` — which IR intake dialect(s) exist for the paper: "opendataloader" ({slug}.json beside the source, the docling-era converter) and/or "pdfdig" (the in-house deterministic PdfPig lane — its {slug}.pdfdig.json + {slug}.nodes.jsonl IR is staged under the newest {slug}/.runs/{stamp}/pig/, git-ignored, NOT beside the source). Body-blind. The "Go" starting point.'

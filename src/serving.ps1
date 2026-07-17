@@ -49,9 +49,9 @@ function Get-ChunkAgreement($Chunk) {
 # converter's tarball unpacking) — sourced below with the other layers.
 
 # --- discovery over the per-source run layout (crawler, not -Recurse) ---
-# ONE current view per paper: the newest run's chunks (legacy .scratch only if no .runs).
+# ONE current view per paper: the newest run's chunks.
 function Get-ChunkFiles([string]$Root) {
-    $all = @(Invoke-Crawl -Root $Root -Patterns '**/.scratch/*.chunks.jsonl', '**/.runs/*/*.chunks.jsonl' -Semantics Include)
+    $all = @(Invoke-Crawl -Root $Root -Patterns '**/.runs/*/*.chunks.jsonl' -Semantics Include)
     $seen = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
     foreach ($cp in $all) {
         $paperDir = Get-PaperDirFromChunks $cp

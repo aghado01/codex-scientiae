@@ -22,7 +22,7 @@
       "event": "PreToolUse",
       "match": {
         "tool": "Read",
-        "arg": "**/.scratch/**|**/*.chunks.jsonl|**/*.nodes.jsonl"
+        "arg": "**/.runs/**|**/*.chunks.jsonl|**/*.nodes.jsonl"
       },
       "type": "command",
       "outcome": "blockingError",
@@ -34,7 +34,7 @@
       "event": "PreToolUse",
       "match": {
         "tool": "Write|Edit",
-        "arg": "**/.scratch/**|**/*.chunks.jsonl"
+        "arg": "**/.runs/**|**/*.chunks.jsonl"
       },
       "type": "command",
       "outcome": "blockingError",

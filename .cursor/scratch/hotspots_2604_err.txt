@@ -1,3 +1,0 @@
-codex-membrane MCP server up (root=D:\aghado01\codex-scientiae\ingestion)
-discovery: 60 document(s), 12 preprocessed under D:\aghado01\codex-scientiae\ingestion
-

@@ -43,7 +43,7 @@ BeforeAll {
         return $list
     }
 
-    # Committed fixture anchors (see tests/fixtures/README.md). The .scratch streams these replaced were
+    # Committed fixture anchors (see tests/fixtures/README.md). The pre-runs-layout streams these replaced were
     # retired 2026-07-01 for git-ignored, regenerable .runs/ — so the old anchors went dead and this whole
     # differential silently skipped. legacy.chunks.jsonl carries the pre-refinement residual stamped onto
     # real chunks (math_dirt == Legacy-MathDirt); current.chunks.jsonl is current-engine output as-is.
