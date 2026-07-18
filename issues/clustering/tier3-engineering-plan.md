@@ -118,6 +118,23 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
 - **A3 — item-D block detection (the hard tail).** Captions that never became a "Figure N"-prefixed
   Lane-3 block at all (2210 Fig 1). XYCut/DLA quality — the deepest, least certain; do it last and only
   what the render proves is worth it.
+- **A3-0 — ✅ PROBED 2026-07-18 (chip `scratch/a3-probe.ps1`; full census in
+  [a3-0-probe-brief.md](a3-0-probe-brief.md) §Probe report): the "DLA surgery" fear was WRONG —
+  all 3/3 captions survive letters+words INTACT and die at ONE guard: the attachment cue test over
+  the block-head 14 chars.** Two Lane-3 shapes: 2210 = per-word block fragmentation (caption rows
+  shattered into 5/13 single-word blocks — `Figure` and `1:`/`4:` in SEPARATE blocks, so no block
+  carries cue+digit); 2302 Fig 5 = superscript pollution (mini-lines `i+1 i+1 ′` prepend in block
+  text order → cue at char 10, digit outside the window). All OTHER guards pass (gaps 3.1/2.6/0.6
+  em vs 4.5 ceiling; overlap; kind). Premise corrections: Fig 4 "in-text-ref-only" was stale-WRONG;
+  Fig 1 "no block" imprecise (five blocks); 2302's miss = Figure 5 (its "Figure 1" is an
+  empty-caption \parpic — correctly outside PRIMARY). Cue census: every in-text ref is mid-block →
+  block/line-start anchoring keeps them out; all 3 captions carry cue-then-SEPARATOR. **Predeclared
+  rule clause 1 FIRES → A3 = bounded caption rescue in Add-FigureCaptions candidate generation:
+  (a) per-LINE cue test (2302 class), (b) same-row cue stitch for digit-less cue blocks (2210
+  class), both under existing style/geometry/separator/in-text-ref guards. Acceptance: 2210 −2→0 +
+  2302 −1→0 target assertions, zero new claims, zero PRIMARY overs, both corpora.** Bonus
+  consistency: post-rescue 2302 regions 14+15 share the caption → subfigure-group into ONE float =
+  the oracle's Figure 5 exactly.
 
 ### B. Backbone-conditioned metric (full T3) — the deep SECONDARY move
 `rectangle-gap` is geometry-blind: 2em of whitespace and 2em of body-text band weld identically.
