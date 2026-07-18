@@ -77,7 +77,59 @@ convention** — the exact shape hdbscan proved out:
   behavior against reference fixtures (agreement with the reference xgboost
   implementation on canned tabular sets, same posture as the sklearn-pinned evaluators),
   Pester e2e `tests/xgboost.Tests.ps1` driving the CLI; determinism test (same input →
-  byte-identical model.json).
+  byte-identical model.json — train twice, hash both).
+
+### Implementation notes (adopted from gemini-notes.md, WITH corrections)
+
+External review ([gemini-notes.md](gemini-notes.md) — notes, not spec) proposed a skeleton;
+the following is the adopted subset with the four corrections that make it spec-grade:
+
+- **Tree = flat contiguous struct array, primitive-only traversal** (adopted verbatim —
+  matches the hdbscan house style: dense ids, index children, `-1` sentinel leaves).
+  Scorer walks `features[node.FeatureIndex] < node.SplitValue` with `<` semantics
+  IDENTICAL between trainer and scorer; split thresholds stored at full double precision
+  (a float midpoint `(a+b)/2` can collapse onto an operand and re-route boundary rows).
+- **Exact-greedy split search** (adopted; corpus is small) but NOT via per-node
+  `Array.Sort` with a lambda: .NET introsort is UNSTABLE, so tied feature values
+  enumerate nondeterministically → floating-point accumulation order shifts → near-tie
+  splits flip → byte-identical breaks at the TRAINING layer. Correct substrate:
+  column-major pre-sorted index lists built once (tiebreak by instance index —
+  mandatory, not a nicety), filtered per node.
+- **Accumulators are `double`, fixed scalar order** — gradient/hessian sums G/H/GL/HL
+  never float, never SIMD-reduced (or partitioned deterministically). Feature STORAGE
+  may stay float; sums and leaf weights may not.
+- **Monotone constraints via [lower, upper] bound propagation down the tree** — the
+  review's sibling-weight comparison at split time is insufficient (a constraint honored
+  at depth 2 can be violated at depth 5); propagate bounds, clamp/reject at every split.
+  ~10 lines, structural.
+- **Sample weights fold into the gradients** (adopted verbatim: multiply g_i/h_i by
+  weight before accumulation — the membership-probability discount costs nothing).
+- **Softmax multiclass = K trees per boosting round**, gradients from cross-entropy vs
+  the current ensemble's softmax (adopted verbatim).
+- **No missing-value default direction in v1** — truffle features are dense by
+  construction; sparsity-aware routing is scope creep until a feature needs it.
+
+### Determinism contract (model.json is an archival record, not a cache)
+
+Byte-identical = two stacked guarantees; training is the hard half, serialization the
+easy one:
+
+1. **Training determinism by construction**: stable sorts w/ index tiebreaks; fixed-order
+   double accumulation; no parallel float reductions; v1 OMITS row/column subsampling so
+   no RNG exists to seed (the Workflow no-`Date.now()` posture: nondeterminism excluded,
+   not patched).
+2. **Serialization determinism by discipline**: no reflection-defaults — `Utf8JsonWriter`
+   in explicit field order; arrays only (no dictionary enumeration order); doubles via
+   .NET shortest-round-trip (culture-invariant); no indentation variance; UTF-8 no BOM;
+   NO embedded timestamps — provenance is injected into a header block, never sampled.
+3. **Provenance header, house idiom**: content hash + engine version + train-set
+   signature — the `.sig`/sha256-fail-loud family the pig IR and toc design already use;
+   `score` verifies loud on mismatch. Principle: a trained model asserts "this exact
+   input produced this exact artifact," and gauntlet gating / drift detection / rollback
+   all depend on that being checkable. Same requirement the SPCX archivory/SPRED threads
+   are circling — convergence noted, implementations deliberately SEPARATE (house idiom
+   here; any unification is a future explicit SPCX import decision, not a dependency
+   drifting in through truffle).
 
 ## Integration map
 
