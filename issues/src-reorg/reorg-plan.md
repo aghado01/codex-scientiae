@@ -82,8 +82,8 @@ src/
     latex-ingest · tikz-render                        # moved here (LaTeX→md conversion)
     pdfdig-ir · pdfdig-classify · pdfdig-figures · pdfdig-images · math-assembler · math-evidence · specimens.jsonl · stores/
   cluster/        *.cs · Invoke-Hdbscan               # renamed hdbscan, constant depth
-  boost/          *.cs · Invoke-Xgboost               # PLACEHOLDER — dep-free C# XGBoost engine, sibling to cluster/
-  truffle/        emit-features · align-oracle · decode-viterbi   # PLACEHOLDER — semi-supervised role lane (issues/truffle/)
+  boost/          *.cs · Invoke-Xgboost               # PLACEHOLDER, DEFERRED INDEFINITELY (truffle rescope: instrument-tier at most)
+  truffle/        emit-features · align-oracle · role-rules · decode-grammar   # PLACEHOLDER — unsupervised-in-spirit role lane (issues/truffle/)
   corpus-audit.ps1
 ```
 

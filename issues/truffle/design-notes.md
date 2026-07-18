@@ -55,7 +55,13 @@ pig runs, hdbscan.exe euclidean over intrinsic line typography.
   classify — the supervised layer is necessary, as designed.
 - Thickness: drop from clustering, keep as downstream display-math signal.
 
-## Engine decision (locked 2026-07-17): dep-free C# XGBoost, sibling to hdbscan
+## Engine decision (2026-07-17): dep-free C# XGBoost, sibling to hdbscan
+
+> **SUPERSEDED in its RUNTIME role, same day — see §Rescope below.** The converter is
+> unsupervised-in-spirit; a persistent trained model conflicts. This section is retained
+> as the governing spec IF a runtime supervised tier is ever re-justified (the
+> §Rescope records the fallback trigger). Until then `xgboost.exe` is NOT built;
+> any offline adjudication uses reference tooling (never shipped).
 
 A from-scratch XGBoost-style GBDT engine as a **second C# project under the repo build
 convention** — the exact shape hdbscan proved out:
@@ -180,7 +186,7 @@ Meanwhile truffle costs nothing parked: stage-0 verdict locked in the probe head
 oracle coverage verified (66 gauntlet `-latex.md` papers: 10/10 ph-zigzag, 22
 voroninski, 23 kisungyou, 9 mapper, 0 spc — spc is the transport/OOD corpus).
 
-## Stage 1 (on unblock)
+## Stage 1 as originally scoped (superseded by §Rescope — kept for the record)
 
 1. Cluster-relative feature emitter (`truffle/emit-features`): per line — mode id, mode
    rank by size, mode frequency, deviation-from-centroid, membership; plus gap/em to
@@ -194,3 +200,89 @@ voroninski, 23 kisungyou, 9 mapper, 0 spc — spc is the transport/OOD corpus).
    IsBold/thickness/gap empirically.
 4. Transition-matrix count + Viterbi decode (`truffle/decode-viterbi`); measure
    heading-sequence legality lift on the battery.
+
+## The transfer question (2026-07-17, user-raised) — recorded as context for the rescope
+
+The SPC→GMM coupling in the user's spike-sorting work was TRANSIENT per run — correctly,
+because neuron identities are run-scoped (nothing exists for a persistent model to be a
+model OF) and no external supervision existed. Typographic ROLES do share identity
+across documents and the oracle does exist, so cross-document transfer is *possible*
+here — but possible ≠ wanted (see §Rescope). Stage-0 validated per-document crispness
+only; it says NOTHING about cross-document stability of the role→relative-signature
+map. Had the supervised tier proceeded, its predeclared falsifier would have been
+**leave-one-corpus-out** eval (pooled random splits leak class-file conventions), with a
+**mode-level classifier head as primary** (~15 mode signatures/doc, small transfer
+surface — structurally the SPC-GMM shape, persistent knowledge entering only at "which
+core is which role") and a line-level head as intra-mode contextual refinement. This
+design is the recorded FALLBACK if the unsupervised rescope plateaus below acceptance.
+
+## RESCOPE 2026-07-17: unsupervised-in-spirit — the converter carries no training history
+
+**Constraint (user, doctrine-level):** pdfdig is in spirit unsupervised — each document
+processed from its own evidence, no reliance on a history of previous runs. A persistent
+trained model introduces irreducible, distribution-dependent modeling uncertainty with
+illegible per-case errors; pdfdig exists as the deterministic geometry-primary INVERSE
+of VLM-primary tools, and a shipped learned model would re-import a smaller copy of what
+was inverted away. Rule: if a role cannot be established from THIS document's data plus
+universal typographic convention → **forgo** (abstain → membrane), don't model.
+
+**What survives untouched:** the typography angle itself (stage-0 is a fact about the
+DATA, not about any learner), per-document HDBSCAN canonicalization, the condensed
+tree's two-scale structure, cluster-relative features, work-list routing, gauntlet
+gating, the D-0-idiom aligner (now building VALIDATION labels — see below).
+
+**The per-document arboreal stack (all transient, deterministic, label-free):**
+
+1. **The condensed tree IS the tree method** — already built, already validated; the
+   unsupervised hierarchy over typographic space is the primary arboreal object.
+2. **Ordinal role priors** — role semantics from UNIVERSAL typographic convention
+   (typography's physics, not learned history), expressed over cluster-relative mode
+   statistics: body = dominant mode; heading = rarer ∧ (larger ∨ bolder) ∧ precedes-gap
+   ∧ sequence-legal; footnote = smaller ∧ page-bottom; caption = adjacent to figure
+   region; figure-text = tiny ∧ inside region; furniture = positionally periodic.
+   Deterministic constraint-ranking over ~15 modes/doc. These are principled signals in
+   the no-magic-strings sense — ordinal and relational, never absolute pt values.
+3. **Per-document distilled CART** — the tree-shaped SPC→GMM analog: fit a shallow tree
+   to THIS document's own cluster labels, use it to assign stragglers/noise lines to
+   modes, emit its rules as the per-document audit record, discard. Transient completer;
+   zero transfer; human-readable ("size ≥ 11.9 ∧ bold → mode 7").
+4. **Sequence grammar, hand-authored** — the legality automaton is universal document
+   grammar (H1→H3 without H2 is illegal STRUCTURE, not statistics); decode enforces
+   legality without learned transition weights.
+5. **Isolation forest (optional probe)** — per-document, unsupervised by construction:
+   continuous line-anomaly scores below/beside the mode structure → work-list routing.
+   Small, dep-free-able; candidate not commitment.
+6. **RF-proximity (upgrade path only)** — Breiman's unsupervised trick: forest
+   discriminates real lines vs marginal-permuted synthetic copy; proximity matrix =
+   per-document adaptive similarity, mixed continuous/categorical NATIVE (retires the
+   arbitrary FlagWeightPt=2.0 scaling), feeds HDBSCAN — or SPC, since a proximity
+   matrix is literally a coupling matrix. Reach for it ONLY if the hand-chosen feature
+   space demonstrably falls short (stage-0 says it does not yet).
+
+**Oracle demoted: trainer → VALIDATOR.** The 66 latex-covered papers become the offline
+test bench: measure ordinal-rule accuracy per role, per corpus (per-rule confusion +
+forgo-rate + membrane-routing rate). Supervision as *evaluation* keeps runtime
+unsupervised while quantifying exactly how often "forgo" happens and which rules earn
+trust. The aligner (D-0 idiom, second consumer) is UNCHANGED in priority — it now
+builds validation labels instead of training labels.
+
+**Fallback trigger (predeclared):** if the ordinal-rule stack plateaus below acceptance
+on the oracle bench for a role class where the mode-head transfer design (§above) shows
+clean leave-one-corpus-out separation, the supervised tier may be revisited — as an
+explicit doctrine decision, not a drift.
+
+**Consequences:** `boost/`/`xgboost.exe` deferred indefinitely (instrument-tier at
+most; offline adjudication uses reference tooling, nothing ships). Reorg placeholder
+comment updated to match.
+
+## Stage 1 REVISED (on unblock; gates unchanged: A3/D fork + reorg skeleton)
+
+1. Feature emitter (`truffle/emit-features`) — unchanged from original scoping.
+2. Oracle aligner (`truffle/align-oracle`, D-0 idiom) — unchanged mechanics; output is
+   the VALIDATION bench.
+3. Ordinal role rules (`truffle/role-rules`) + validation harness: rule-set accuracy vs
+   oracle labels across 66 papers; per-rule confusion, forgo-rate; two-population vs
+   pig `type` baseline.
+4. Distilled-CART completer probe + hand-authored grammar decode
+   (`truffle/decode-grammar`); heading-sequence legality lift on the battery.
+5. iForest work-list probe (optional, if residue warrants).
