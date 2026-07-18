@@ -1,9 +1,18 @@
-# truffle — semi-supervised typographic role classification (design notes)
+# truffle — document-local typographic role lane (design notes)
 
 *2026-07-17. Ideation thread + stage-0 falsifier. Working name: truffle (a pig using
 trees to root out buried structure).*
 
-## Concept
+> **⚠ READING ORDER (both-roads-live fix, 2026-07-17):** this document contains BOTH the
+> original supervised architecture (§Concept, next — **SUPERSEDED**, retained solely as the
+> predeclared fallback spec) and the current road (§RESCOPE 2026-07-17, further revised by
+> [the Sol closing-the-gap discussion](../pdfdig-lane/sol-closing-the-gap-discussion.md):
+> **Stage 1 = a role-boundary PROBE, not a classifier**; CART-on-mode-labels rejected;
+> per-document completer CART only from role anchors under resampling stability). Read
+> §RESCOPE first. Doctrine home for the typographic layer:
+> [../typography/typography-in-pdf-conversion.md](../typography/typography-in-pdf-conversion.md).
+
+## Concept — ORIGINAL SUPERVISED ARCHITECTURE (SUPERSEDED; fallback spec only)
 
 Gradient-boosted trees (XGBoost/LightGBM-class) over the pig IR's line-level typographic
 features, wrapped in a semi-supervised harness where the unsupervised layer supervises the
