@@ -513,6 +513,94 @@ function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $Body
     @{ Labels = $out; Changed = $changed; LetterIds = $letterIds }
 }
 
+# A3 rescue (a) — effective-head cue test. The standing cue test reads the BLOCK text's first 14
+# chars; superscript POLLUTION (2302 Fig 5: mini-lines `i+1 i+1 ′` prepend in block text order)
+# pushes the cue past the window while the caption line itself is intact. When the head test fails
+# and the block's LEADING lines are all sub-body mini-lines (modal_size < head_min_size_frac ×
+# body), the first body-sized line is the block's EFFECTIVE HEAD — test the cue there. A wrapped
+# in-text reference ("… see\nFigure 5. Since …") sits after FULL-SIZE prose lines, so it can never
+# reach the effective head: the slide skips decoration only, never prose. Returns $null or
+# @{ cue; text } where text starts at the effective head (clean caption text for downstream).
+function Get-CaptionCueMatch($Blk, [string] $CueRe, [double] $BodyPt, [double] $HeadFrac, [bool] $LineCue) {
+    $txt = if ($Blk.text) { [string]$Blk.text } elseif ($Blk.text_preview) { [string]$Blk.text_preview } else { '' }
+    $m = [regex]::Match($txt.Substring(0, [math]::Min(14, $txt.Length)), $CueRe)
+    if ($m.Success) { return @{ cue = $m.Groups[1].Value; text = $txt } }
+    if (-not $LineCue -or $null -eq $Blk.PSObject.Properties['lines'] -or -not $Blk.lines) { return $null }
+    $lines = @($Blk.lines)
+    for ($i = 1; $i -lt $lines.Count; $i++) {           # i=0 IS the head — already tested above
+        $prev = $lines[$i - 1]
+        if ([double]$prev.modal_size -ge $HeadFrac * $BodyPt) { return $null }   # full-size line precedes: not pollution
+        $lt = [string]$lines[$i].text
+        if ([double]$lines[$i].modal_size -lt $HeadFrac * $BodyPt) { continue }  # still in the mini-line prefix
+        $lm = [regex]::Match($lt.Substring(0, [math]::Min(14, $lt.Length)), $CueRe)
+        if ($lm.Success) {
+            $tail = [System.Collections.Generic.List[string]]::new()
+            for ($j = $i; $j -lt $lines.Count; $j++) { $tail.Add([string]$lines[$j].text) }
+            return @{ cue = $lm.Groups[1].Value; text = ($tail -join ' ') }
+        }
+        return $null                                     # first body-sized line has no cue: stop
+    }
+    $null
+}
+
+# A3 rescue (b) — same-row cue stitch. Per-word block FRAGMENTATION (2210 Figs 1/4: the caption
+# row shatters into single-word blocks — `Figure` and `1:` land in SEPARATE blocks) leaves no
+# block carrying cue word + digit, so the cue test cannot fire on any of them. A block whose
+# ENTIRE text is a bare cue word recruits its same-row right-neighbors (x-sorted, chained while
+# the inter-block gap stays within stitch_gap_em — ordinary word spacing, observed 0.33–0.44 em)
+# into ONE composite candidate; the first recruit must complete the cue-then-digit signature
+# ("Figure"+"1:") or the composite is discarded. The composite then faces the SAME geometry gates
+# as any block. Representative id = the cue block's (subfigure grouping keys on it); block_ids
+# carries every member for the V_letters caption strip.
+function Get-CaptionRowStitches($PageBlocks, [string] $CueRe, [string[]] $CueWords, [double] $StitchGapPt) {
+    $out = [System.Collections.Generic.List[object]]::new()
+    $bareRe = '^\s*(' + (($CueWords | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')\.?\s*$'
+    foreach ($blk in $PageBlocks) {
+        $txt = if ($blk.text) { [string]$blk.text } elseif ($blk.text_preview) { [string]$blk.text_preview } else { '' }
+        if (-not [regex]::IsMatch($txt, $bareRe)) { continue }
+        $bl = $blk.bx[0]; $bb = $blk.bx[1]; $br = $blk.bx[2]; $bt = $blk.bx[3]
+        $bh = $bt - $bb
+        # same-row candidates strictly rightward: vertical overlap >= half the shorter height
+        $row = [System.Collections.Generic.List[object]]::new()
+        foreach ($o in $PageBlocks) {
+            if ($o.id -eq $blk.id -or -not $o.bx) { continue }
+            if ($o.bx[0] -lt $br - 1) { continue }
+            $vo = [math]::Min($bt, $o.bx[3]) - [math]::Max($bb, $o.bx[1])
+            if ($vo -lt 0.5 * [math]::Min($bh, ($o.bx[3] - $o.bx[1]))) { continue }
+            $row.Add($o)
+        }
+        if (-not $row.Count) { continue }
+        # chain left-to-right at word-spacing gaps; first recruit must start with a digit
+        $chain = [System.Collections.Generic.List[object]]::new(); $chain.Add($blk)
+        $right = $br
+        foreach ($o in ($row | Sort-Object { [double]$_.bx[0] })) {
+            if (($o.bx[0] - $right) -gt $StitchGapPt) { break }
+            $chain.Add($o); $right = [math]::Max($right, [double]$o.bx[2])
+        }
+        if ($chain.Count -lt 2) { continue }
+        $t1 = if ($chain[1].text) { [string]$chain[1].text } else { [string]$chain[1].text_preview }
+        if (-not [regex]::IsMatch(($t1 ?? ''), '^\s*\d')) { continue }
+        $parts = [System.Collections.Generic.List[string]]::new()
+        $l = [double]::MaxValue; $b = [double]::MaxValue; $r = [double]::MinValue; $t = [double]::MinValue
+        $ids = [System.Collections.Generic.List[int]]::new()
+        foreach ($c in $chain) {
+            $parts.Add([string]$(if ($c.text) { $c.text } else { $c.text_preview }))
+            $ids.Add([int]$c.id)
+            $l = [math]::Min($l, [double]$c.bx[0]); $b = [math]::Min($b, [double]$c.bx[1])
+            $r = [math]::Max($r, [double]$c.bx[2]); $t = [math]::Max($t, [double]$c.bx[3])
+        }
+        $stitched = [pscustomobject]@{
+            id = $blk.id; page = $blk.page; bx = @($l, $b, $r, $t)
+            text = ($parts -join ' '); stitched_ids = $ids.ToArray()
+        }
+        # the stitched head must satisfy the standard cue test (cue word + digit within 14 chars)
+        if ([regex]::Match($stitched.text.Substring(0, [math]::Min(14, $stitched.text.Length)), $CueRe).Success) {
+            $out.Add($stitched)
+        }
+    }
+    $out
+}
+
 # Reattach caption text to each kind=figure region. Geometry finds the CANDIDATES — Lane-3 text
 # blocks directly BELOW (figures) or, failing that, ABOVE (tables), horizontally overlapping by
 # >= caption_min_overlap_frac of the NARROWER of figure/block width, within caption_max_gap_em
@@ -523,7 +611,12 @@ function Join-FigureViews([object[]] $PageItems, [int[]] $Labels, [double] $Body
 # adjacent section heading or body paragraph (no cue) is not attached, and a caption-less region
 # stays null rather than grabbing the wrong block. Prefix-scanned (not ^-anchored) so a leading
 # glyph ("δ Fig. 3") still matches; length-capped so a mid-sentence "see Figure 3" reference does
-# not. Cue words are config-as-data. Sets the caption field in place; returns nothing.
+# not. Cue words are config-as-data. A3 BOUNDED RESCUE (probe census in
+# issues/clustering/a3-0-probe-brief.md; knobs caption_line_cue / caption_row_stitch): the cue
+# VISIBILITY test gains two bounded relaxations — the effective-head slide past superscript
+# mini-lines and the same-row stitch over per-word fragmentation — while every OTHER guard
+# (overlap, gap, kind, cue-at-head, in-text-reference exclusions) is unchanged.
+# Sets the caption field in place; returns nothing.
 function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, [string] $BlocksJsonl,
     [double] $BodyPt, $Cfg, $Summary) {
     if (-not (Test-Path $BlocksJsonl)) { return }
@@ -541,6 +634,17 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
     $maxGap = [double]$Cfg.caption_max_gap_em * $bp
     $minOvl = [double]$Cfg.caption_min_overlap_frac
     $cueRe  = '(' + (($Cfg.caption_cue_words | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')\.?\s*\d'
+    # A3 rescue knobs (absent = on: they are part of the attachment idiom, not experiments)
+    $lineCue   = ($null -eq $Cfg.PSObject.Properties['caption_line_cue']) -or [bool]$Cfg.caption_line_cue
+    $rowStitch = ($null -eq $Cfg.PSObject.Properties['caption_row_stitch']) -or [bool]$Cfg.caption_row_stitch
+    $stitchGapPt = $(if ($Cfg.PSObject.Properties['caption_stitch_gap_em'] -and $Cfg.caption_stitch_gap_em) { [double]$Cfg.caption_stitch_gap_em } else { 0.75 }) * $bp
+    $headFrac    = if ($Cfg.PSObject.Properties['caption_head_min_size_frac'] -and $Cfg.caption_head_min_size_frac) { [double]$Cfg.caption_head_min_size_frac } else { 0.9 }
+    if ($rowStitch) {
+        $keys = @($byPage.Keys)
+        foreach ($p in $keys) {
+            foreach ($s in (Get-CaptionRowStitches $byPage[$p] $cueRe @($Cfg.caption_cue_words) $stitchGapPt)) { $byPage[$p].Add($s) }
+        }
+    }
 
     foreach ($fig in $Figures) {
         if ($fig.kind -ne 'figure') { continue }
@@ -563,12 +667,10 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
                 if ($den -le 0 -or ($ovl / $den) -lt $minOvl) { continue }
                 $gap = if ($pos -eq 'below') { $figB - $bt } else { $bb - $figT }
                 if ($gap -lt -2 -or $gap -gt $maxGap -or $gap -ge $bestGap) { continue }
-                # full block text when the lane carries it (untruncated captions); preview on older runs
-                $txt = if ($blk.text) { [string]$blk.text } elseif ($blk.text_preview) { [string]$blk.text_preview } else { '' }
-                $mCue = [regex]::Match($txt.Substring(0, [math]::Min(14, $txt.Length)), $cueRe)
-                if ($mCue.Success) {
-                    $best = $blk; $bestGap = $gap; $bestPos = $pos; $bestTxt = $txt
-                    $bestCue = $mCue.Groups[1].Value
+                $cm = Get-CaptionCueMatch $blk $cueRe $bp $headFrac $lineCue
+                if ($cm) {
+                    $best = $blk; $bestGap = $gap; $bestPos = $pos; $bestTxt = [string]$cm.text
+                    $bestCue = [string]$cm.cue
                 }
             }
             if ($best) { break }
@@ -581,6 +683,9 @@ function Add-FigureCaptions([System.Collections.Generic.List[object]] $Figures, 
                 block_id = $best.id; bbox = $best.bx; text = $bestTxt
                 cue = $true; cue_word = $bestCue; position = $bestPos; gap = [math]::Round($bestGap, 1)
             }
+            # stitched composite: representative id above (grouping keys on it); every member id
+            # recorded for the V_letters caption strip
+            if ($null -ne $best.PSObject.Properties['stitched_ids']) { $fig.caption['block_ids'] = @($best.stitched_ids) }
             $Summary.captioned_figures++
         }
     }
@@ -1451,7 +1556,13 @@ function ConvertTo-FigureRegions {
     # text — strip it from every letter list (letters attach during formation, before captions exist)
     if ($lettersEnabled) {
         $claimedBlocks = @{}
-        foreach ($fig in $figures) { if ($fig.caption) { $claimedBlocks[[int]$fig.caption.block_id] = $true } }
+        foreach ($fig in $figures) {
+            if ($fig.caption) {
+                $claimedBlocks[[int]$fig.caption.block_id] = $true
+                # a stitched caption (A3 row-stitch) claims every member block of its row
+                if ($null -ne $fig.caption['block_ids']) { foreach ($cb in @($fig.caption.block_ids)) { $claimedBlocks[[int]$cb] = $true } }
+            }
+        }
         if ($claimedBlocks.Count) {
             foreach ($fig in $figures) {
                 $lbs = @($fig.letter_block_ids)

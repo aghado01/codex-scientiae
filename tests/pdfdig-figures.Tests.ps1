@@ -897,6 +897,82 @@ Describe 'pdfdig figure-region clustering — C′ stray eject (integration)' {
     }
 }
 
+Describe 'pdfdig figure-region clustering — A3 bounded caption rescue (integration)' {
+    BeforeAll {
+        $repo = Split-Path $PSScriptRoot -Parent
+        . (Join-Path $repo 'src/pdf-converter/pdfdig-figures.ps1')
+        $script:wa = Join-Path ([IO.Path]::GetTempPath()) ('pdfdig-a3-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+        New-Item -ItemType Directory -Force -Path $script:wa | Out-Null
+
+        # four pages, one 8-path blob each (region bbox ≈ [0,40,26,50]); captions sit BELOW at 2-4pt
+        $paths = [System.Collections.Generic.List[string]]::new()
+        $id = 0
+        foreach ($pg in 1..4) { foreach ($py in @(40, 46)) { foreach ($px in @(0, 7, 14, 21)) {
+            $paths.Add(('{{"id":{0},"page":{1},"bbox":[{2},{3},{4},{5}]}}' -f $id++, $pg, $px, $py, ($px + 5), ($py + 4))) } } }
+        [IO.File]::WriteAllLines((Join-Path $script:wa 'a.paths.jsonl'), $paths)
+        $letters = [System.Collections.Generic.List[string]]::new()
+        1..40 | ForEach-Object { $letters.Add('{"size":10.0}') }
+        [IO.File]::WriteAllLines((Join-Path $script:wa 'a.letters.jsonl'), $letters)
+
+        # p1 = superscript head-pollution (2302 class); p2 = wrapped in-text ref guard (full-size
+        # first line: the effective head must NOT slide past prose); p3 = per-word fragmentation
+        # (2210 class: bare 'Figure' + '1:' + words at word-spacing); p4 = stitch gap guard
+        [IO.File]::WriteAllLines((Join-Path $script:wa 'a.blocks.jsonl'), @(
+            '{"id":50,"page":1,"bx":[0,28,20,38],"text":"i+1 i+1 x Figure 5: Parts of the sub-forests","lines":[{"id":0,"bx":[0,35,4,38],"text":"i+1 i+1","modal_size":5},{"id":1,"bx":[4.5,35,5.5,38],"text":"x","modal_size":5},{"id":2,"bx":[0,28,20,34],"text":"Figure 5: Parts of the sub-forests","modal_size":10}]}'
+            '{"id":60,"page":2,"bx":[0,28,20,38],"text":"some trailing prose here Figure 5. Since the claim","lines":[{"id":0,"bx":[0,34,20,38],"text":"some trailing prose here","modal_size":10},{"id":1,"bx":[0,28,20,33],"text":"Figure 5. Since the claim","modal_size":10}]}'
+            '{"id":70,"page":3,"bx":[0,28,6,36],"text":"Figure"}'
+            '{"id":71,"page":3,"bx":[7,28,9,36],"text":"1:"}'
+            '{"id":72,"page":3,"bx":[11,28,17,36],"text":"General"}'
+            '{"id":73,"page":3,"bx":[19,28,25,36],"text":"pipeline."}'
+            '{"id":80,"page":4,"bx":[0,28,6,36],"text":"Figure"}'
+            '{"id":81,"page":4,"bx":[15,28,17,36],"text":"1:"}'
+        ))
+
+        # knobs-ON = the store config as committed (line_cue + row_stitch default true)
+        $script:reA3 = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wa 'a.paths.jsonl') `
+                         -OutPath (Join-Path $script:wa 'on.figures.jsonl') -PassThru
+        # knobs-OFF contrast pinned explicitly (store defaults must not leak into the contrast)
+        $cfgObj = Get-Content (Join-Path $repo 'src/pdf-converter/stores/classify-config.json') -Raw | ConvertFrom-Json
+        $cfgObj.figure_regions.caption_line_cue = $false
+        $cfgObj.figure_regions.caption_row_stitch = $false
+        $offCfg = Join-Path $script:wa 'cfg-off.json'
+        [IO.File]::WriteAllText($offCfg, ($cfgObj | ConvertTo-Json -Depth 12), [System.Text.UTF8Encoding]::new($false))
+        $script:reA3Off = ConvertTo-FigureRegions -PathsJsonl (Join-Path $script:wa 'a.paths.jsonl') `
+                            -OutPath (Join-Path $script:wa 'off.figures.jsonl') -ConfigPath $offCfg -PassThru
+        $script:capOf = { param($re, $pg) @($re.Figures | Where-Object { $_.page -eq $pg -and $_.kind -eq 'figure' })[0].caption }
+    }
+    AfterAll { if ($script:wa -and (Test-Path $script:wa)) { Remove-Item -Recurse -Force $script:wa } }
+
+    It 'line_cue: superscript head-pollution attaches via the effective head (2302 class)' {
+        $cap = & $script:capOf $script:reA3 1
+        $cap | Should -Not -BeNullOrEmpty
+        $cap.block_id | Should -Be 50
+        $cap.text | Should -Be 'Figure 5: Parts of the sub-forests'   # clean text from the effective head
+        $cap.cue_word | Should -Be 'Figure'
+    }
+
+    It 'line_cue guard: a wrapped in-text reference after full-size prose never reaches the effective head' {
+        (& $script:capOf $script:reA3 2) | Should -BeNullOrEmpty
+    }
+
+    It 'row_stitch: per-word fragmentation stitches Figure + 1: + words into one caption (2210 class)' {
+        $cap = & $script:capOf $script:reA3 3
+        $cap | Should -Not -BeNullOrEmpty
+        $cap.block_id | Should -Be 70                                  # representative = the cue block
+        $cap.text | Should -Be 'Figure 1: General pipeline.'
+        @($cap.block_ids) | Should -Be @(70, 71, 72, 73)               # every row member claimed
+    }
+
+    It 'row_stitch guard: a digit block beyond word-spacing does not stitch' {
+        (& $script:capOf $script:reA3 4) | Should -BeNullOrEmpty
+    }
+
+    It 'knobs off: all four pages reproduce the pre-A3 behavior (no captions anywhere)' {
+        foreach ($pg in 1..4) { (& $script:capOf $script:reA3Off $pg) | Should -BeNullOrEmpty }
+        $script:reA3Off.Summary.captioned_figures | Should -Be 0
+    }
+}
+
 Describe 'pdfdig figure-region clustering — V_letters evidence view (unit)' {
     BeforeAll {
         $repo = Split-Path $PSScriptRoot -Parent

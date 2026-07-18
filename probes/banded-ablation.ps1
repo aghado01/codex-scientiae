@@ -54,6 +54,10 @@ $cfgPath = Join-Path $repo 'src/pdf-converter/stores/classify-config.json'
 $cfg = Get-Content $cfgPath -Raw | ConvertFrom-Json
 $cfg.figure_regions.banded_metric.enabled = $false
 $cfg.figure_regions.stray_eject.enabled = $false
+# A3 rescue knobs pinned OFF too: this harness's recorded baselines (5.6/11.74) predate the A3
+# landing — 'baseline' means the recorded instrument, not the store defaults of the day
+$cfg.figure_regions | Add-Member -NotePropertyName caption_line_cue -NotePropertyValue $false -Force
+$cfg.figure_regions | Add-Member -NotePropertyName caption_row_stitch -NotePropertyValue $false -Force
 if ($Variant -in 'banded-on', 'banded-eject-on') {
     $cfg.figure_regions.banded_metric.enabled = $true
     $cfg.figure_regions.banded_metric.lambda = $Lambda

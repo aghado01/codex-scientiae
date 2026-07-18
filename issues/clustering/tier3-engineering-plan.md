@@ -135,6 +135,21 @@ sub-classes** (§1), which splits into three independently-shippable fixes:
   2302 −1→0 target assertions, zero new claims, zero PRIMARY overs, both corpora.** Bonus
   consistency: post-rescue 2302 regions 14+15 share the caption → subfigure-group into ONE float =
   the oracle's Figure 5 exactly.
+- **A3-1 — ✅ LANDED + GATED 2026-07-18 (the bounded rescue; acceptance PASSED IN FULL).**
+  `Get-CaptionCueMatch` (effective-head cue: slides past LEADING sub-body mini-lines only — a
+  wrapped in-text ref after full-size prose is structurally unreachable) + `Get-CaptionRowStitches`
+  (bare-cue-word block recruits same-row neighbors at word-spacing gaps ≤ 0.75em into a composite
+  that must complete cue-then-digit, then faces the unchanged geometry gates; representative
+  block_id = cue block for subfigure grouping, block_ids = all members for the V_letters strip).
+  Knobs `caption_line_cue`/`caption_row_stitch` default ON (+ `caption_stitch_gap_em` 0.75,
+  `caption_head_min_size_frac` 0.9); banded-ablation pins them OFF (recorded baselines predate A3).
+  Suite 80/80 (5 new: both classes, both guards, knobs-off contrast byte-identical). Full 33-paper
+  calibration regen + gate: **2210 16/16 EXACT (−2→0), 2302 5/5 EXACT (−1→0), zero new claims,
+  zero PRIMARY overs; ph-zigzag PRIMARY 0.7→0.4 (9/10 exact — sole residual = 2307 oracle-noise),
+  voroninski 0.35 row-identical. SECONDARY improves both: 5.4→4.8, (live) 10.52→9.78** — the full
+  regen also landed C′+dehyph on every run, converging the live gate onto the offline instrument.
+  **The A-thrust is COMPLETE: every remaining PRIMARY under on the calibration battery is
+  attributed oracle-noise or raster-blindness — no caption-attachment class remains.**
 
 ### B. Backbone-conditioned metric (full T3) — the deep SECONDARY move
 `rectangle-gap` is geometry-blind: 2em of whitespace and 2em of body-text band weld identically.
