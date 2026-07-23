@@ -1,4 +1,4 @@
-**Yes. There is substantial headroom in the PdfPig substrate that you are not yet fully exploiting.**
+f**Yes. There is substantial headroom in the PdfPig substrate that you are not yet fully exploiting.**
 
 The current `letters.jsonl` already captures a good baseline, but PdfPig (and the content stream underneath it) exposes more geometric, metric, and graphics-state signal that can turn several classes of hard-coded rules into discovery or strong geometric evidence.
 
