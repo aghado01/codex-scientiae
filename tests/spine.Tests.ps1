@@ -6,7 +6,7 @@
 # skips cleanly when nothing is preprocessed; the synthetic tests always run.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/serving.ps1"   # composer + grouping + slice/dispatch; pulls fidelity + playbook + jsonl
+    . "$PSScriptRoot/../src/codex-membrane/serving.ps1"   # composer + grouping + slice/dispatch; pulls fidelity + playbook + jsonl
 
     $FB1 = [char]0xFB01   # ﬁ ligature (U+FB01)
     $FB2 = [char]0xFB02   # ﬂ ligature (U+FB02)

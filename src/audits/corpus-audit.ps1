@@ -1,8 +1,8 @@
 #requires -Version 7.0
 <#
-  src/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies under
+  src/audits/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies under
   compendia/ , codices/ , corpora/). This is the body-side complement to the membrane's chunk-stream
-  detectors (src/fidelity.ps1, exercised by tests/detectors.Tests.ps1): those grade the IR before
+  detectors (src/codex-membrane/fidelity.ps1, exercised by tests/detectors.Tests.ps1): those grade the IR before
   promotion; this walks what actually shipped and reports the defect classes a deliverable can still
   carry past `publish` (legacy/hand-promoted docs, or classes `publish` does not gate).
 
@@ -16,10 +16,10 @@
                degenerate single-column tables (a destroyed-table tell), and suspected `?`-mojibake.
 
   Usage:
-    pwsh -File src/corpus-audit.ps1                 # human report over the default roots
-    pwsh -File src/corpus-audit.ps1 -Json           # machine-readable findings
-    pwsh -File src/corpus-audit.ps1 -Roots compendia
-    . ./src/corpus-audit.ps1; Get-CorpusHealth      # dot-source for the data (what the Pester test does)
+    pwsh -File src/audits/corpus-audit.ps1                 # human report over the default roots
+    pwsh -File src/audits/corpus-audit.ps1 -Json           # machine-readable findings
+    pwsh -File src/audits/corpus-audit.ps1 -Roots compendia
+    . ./src/audits/corpus-audit.ps1; Get-CorpusHealth      # dot-source for the data (what the Pester test does)
 
   PowerShell codepoint discipline (see memory powershell-text-mutation-traps): all matching is ordinal
   via [regex]; String.Replace / -eq / -ne are culture-sensitive and silently fold ligatures, so they are
@@ -27,7 +27,7 @@
 #>
 param(
     [string[]]$Roots = @('compendia', 'codices', 'corpora'),
-    [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),
+    [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')),
     [switch]$Json,
     [switch]$Quiet
 )
@@ -108,7 +108,7 @@ function Get-FileHealth([string]$path, [string]$repoRoot) {
 function Get-CorpusHealth {
     [CmdletBinding()] param(
         [string[]]$Roots = @('compendia', 'codices', 'corpora'),
-        [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot)
+        [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
     )
     $classes = 'bom', 'fill_me_in', 'u_fffd', 'ligatures', 'url_mangled', 'broken_image_link', 'broken_md_link', 'single_col_table', 'mojibake_suspect'
     $totals = [ordered]@{}; foreach ($c in $classes) { $totals[$c] = 0 }

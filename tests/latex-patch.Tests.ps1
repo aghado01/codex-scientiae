@@ -7,7 +7,7 @@
 # undefined \vect (author uses it in Remark 8.1 but only ever defines \vecsp = \mathbf{vec}_{\mathbb{F}}).
 
 BeforeAll {
-    . "$PSScriptRoot/../src/latex-ingest.ps1"
+    . "$PSScriptRoot/../src/latex-ingest/latex-ingest.ps1"
 
     function New-PatchFile {
         param([string]$Slug, [string[]]$Lines)

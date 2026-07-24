@@ -6,8 +6,8 @@
 BeforeDiscovery {
     # -ForEach test cases are bound at DISCOVERY time, before BeforeAll runs — so the emittable-type
     # list that drives the per-type cases must be built here, or each case binds to $null.
-    . "$PSScriptRoot/../src/fidelity.ps1"
-    . "$PSScriptRoot/../src/playbook.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/fidelity.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/playbook.ps1"
     $AllEmittableTypes =
         @($script:CorruptionSignatures | ForEach-Object { $_.type }) +              # 14 corruption signatures (8 hard gate + 6 soft tells)
         @('heading_level_unknown', 'unwrapped_math', 'prose_seam_merge', 'needs_2d_assembly') + # needs_review kinds (last: pig-lane flattened 2-D, flag-based)
@@ -15,8 +15,8 @@ BeforeDiscovery {
 }
 
 BeforeAll {
-    . "$PSScriptRoot/../src/fidelity.ps1"    # loads the corruption signatures table + needs_review kinds
-    . "$PSScriptRoot/../src/playbook.ps1"    # loads the repair playbook data map
+    . "$PSScriptRoot/../src/codex-membrane/fidelity.ps1"    # loads the corruption signatures table + needs_review kinds
+    . "$PSScriptRoot/../src/codex-membrane/playbook.ps1"    # loads the repair playbook data map
 
     # The complete set of issue types the membrane can emit to a work-order:
     #   - the 14 corruption signatures in $script:CorruptionSignatures (8 hard gate + 6 soft tells)

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/project-ir.ps1 — project a Docling / opendataloader JSON IR into ordered node-JSONL.
+  src/codex-membrane/project-ir.ps1 — project a Docling / opendataloader JSON IR into ordered node-JSONL.
 
   Walks the nested struct tree, lifts every typed node into a flat record in
   document order, and emits node-JSONL + .jidx + .sig through the jsonl substrate.
@@ -13,7 +13,7 @@
     Invoke-ProjectIr -JsonPath <docling.json> -OutputPath <nodes.jsonl>
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
 
 # canonical field  <-  candidate source keys (first present wins)
 $script:CanonicalKeys = [ordered]@{

@@ -4,9 +4,9 @@
 # tail left a brace-balanced-but-open \begin{aligned} that slipped flagged=0 and broke the math parser.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/latex.ps1"
-    . "$PSScriptRoot/../src/fidelity.ps1"
-    . "$PSScriptRoot/../src/playbook.ps1"
+    . "$PSScriptRoot/../src/latex-ingest/latex.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/fidelity.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/playbook.ps1"
 }
 
 Describe 'Get-EnvironmentBalance — \begin/\end closure invariant' {
@@ -56,7 +56,7 @@ Describe 'unclosed_environment signature — brace-balanced yet environment-open
 }
 
 Describe 'repair excision env-guard (B) — excision must not orphan an environment' {
-    BeforeAll { . "$PSScriptRoot/../src/repair.ps1" }
+    BeforeAll { . "$PSScriptRoot/../src/codex-membrane/repair.ps1" }
 
     It 'would-excise head is detected open when the \end is in the \intertext tail' {
         # \end sits AFTER \intertext, i.e. inside the tail the old gate would have excised.

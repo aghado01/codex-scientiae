@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/md-cleanup.ps1 — post-hoc deterministic cleanup for existing markdown corpora.
+  src/audits/md-cleanup.ps1 — post-hoc deterministic cleanup for existing markdown corpora.
 
   Lifts the safe text transforms from the restoration pipeline and runs them straight on assembled
   markdown — no JSON needed. Quick fixes, not the full monty:
@@ -21,9 +21,9 @@
     Invoke-MarkdownCleanup -Path some/dir -Apply         # every *.md under dir
 #>
 
-. "$PSScriptRoot/normalize.ps1"
-. "$PSScriptRoot/crawl.ps1"
-. "$PSScriptRoot/latex.ps1"
+. "$PSScriptRoot/../codex-membrane/normalize.ps1"
+. "$PSScriptRoot/../crawl.ps1"
+. "$PSScriptRoot/../latex-ingest/latex.ps1"
 
 $script:Ligatures = @{
     "$([char]0xFB00)" = 'ff'; "$([char]0xFB01)" = 'fi'; "$([char]0xFB02)" = 'fl'

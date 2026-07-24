@@ -39,7 +39,7 @@
 )
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path "$PSScriptRoot/../..").Path
-. "$repo/src/serving.ps1"
+. "$repo/src/codex-membrane/serving.ps1"
 
 # ── legacy detectors, copied VERBATIM from tests/corpus.Tests.ps1 (keep in lockstep with that file) ──
 function Old-IsMath([string]$s) { $t = $s -replace '\\(?:text|operatorname|mathrm|mbox|textrm|textbf|textit)\s*\{[^{}]*\}', ' '; $t = $t -replace '\\[A-Za-z]+', ' '; return (([regex]::Matches($t, '[A-Za-z]{4,}')).Count -le 2) }

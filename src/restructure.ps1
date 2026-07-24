@@ -19,7 +19,7 @@
 #>
 
 . "$PSScriptRoot/jsonl.ps1"
-. "$PSScriptRoot/fidelity.ps1"
+. "$PSScriptRoot/codex-membrane/fidelity.ps1"
 
 # load the stream, refusing if content proposals are pending (id drift guard)
 function Read-StructChunks([string]$ChunksPath) {

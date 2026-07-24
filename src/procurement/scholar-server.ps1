@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/scholar-server.ps1 — a pure-PowerShell MCP server for cross-source scholarly DISCOVERY, sibling to
+  src/procurement/scholar-server.ps1 — a pure-PowerShell MCP server for cross-source scholarly DISCOVERY, sibling to
   codex-arxiv (acquisition) and codex-membrane (ingestion). Same protocol spine: newline-delimited
   JSON-RPC 2.0 on stdin/stdout, UTF-8 no-BOM, stdout = protocol frames only.
 
@@ -9,7 +9,7 @@
   model and deduping the same paper across graphs. Discovery only: it returns DOIs/arXiv-ids/metadata; it
   does NOT stage bytes (that is codex-arxiv / the future sci-hub fetcher).
 
-  Launch:  pwsh -NoProfile -File src/scholar-server.ps1 [-Mailto <email>] [-ConfigPath <scholar-config.json>]
+  Launch:  pwsh -NoProfile -File src/procurement/scholar-server.ps1 [-Mailto <email>] [-ConfigPath <scholar-config.json>]
   Secrets/contact come from ENV: CODEX_SCHOLAR_MAILTO (or -Mailto), SEMANTIC_SCHOLAR_API_KEY (optional).
 #>
 
@@ -41,7 +41,7 @@ if ($contact) { Set-ScholarContact $contact }
 $PerPage = if ($Config.per_page) { [int]$Config.per_page } else { 25 }
 
 # The acquisition hand-off reuses the codex-arxiv inbox + staging convention (shared inbox, one config).
-$RepoRoot = (Split-Path -Parent $PSScriptRoot)
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $ArxivConfig = Get-ArxivConfig -Path (Join-Path $PSScriptRoot 'arxiv-staging.json')
 $rawArxivRoot = [string]$ArxivConfig.staging_root
 $ArxivStagingRoot = if ([System.IO.Path]::IsPathRooted($rawArxivRoot)) { [System.IO.Path]::GetFullPath($rawArxivRoot) } else { [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawArxivRoot)) }

@@ -3,8 +3,8 @@
 # shapes), and captcha-gate detection. The network fetch (mirror rotation + download) is smoke-tested live.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/scholar-core.ps1"
-    . "$PSScriptRoot/../src/scihub-get.ps1"
+    . "$PSScriptRoot/../src/procurement/scholar-core.ps1"
+    . "$PSScriptRoot/../src/procurement/scihub-get.ps1"
 
     # The real sci-hub.ru shape from the recon: PDF as a protocol-relative storage URL, no iframe, latent
     # captcha JS that must NOT be read as a gate (a PDF is present).

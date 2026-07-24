@@ -6,7 +6,7 @@
 #>
 
 BeforeAll {
-    . "$PSScriptRoot/../src/serving.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/serving.ps1"
     $script:tmp = Join-Path ([System.IO.Path]::GetTempPath()) "refl-$([guid]::NewGuid())"
     New-Item -ItemType Directory -Path $script:tmp | Out-Null
     $script:chunks = Join-Path $script:tmp 'p.chunks.jsonl'

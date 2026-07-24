@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/tex-render.ps1 — unified diagram render: a LaTeX snippet -> PDF (tectonic) -> PNG (MuPDF).
+  src/latex-ingest/tex-render.ps1 — unified diagram render: a LaTeX snippet -> PDF (tectonic) -> PNG (MuPDF).
 
   The PNG-terminal unification of issues/latex-oracle-images.md: extract a diagram env, wrap it in a
   standalone snippet WITH the paper's own preamble replayed (author macros inside diagrams are the
@@ -14,9 +14,9 @@
     Invoke-TexDiagramRender -Jobs @(@{ id='diagram-1'; source='\begin{tikzcd}...' }) -Preamble $pre -OutDir <dir>
 #>
 
-. "$PSScriptRoot/pdf-raster.ps1"   # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
+. "$PSScriptRoot/../pdf-raster.ps1"   # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
 
-$script:TexVendorDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'tools/tex-render'
+$script:TexVendorDir = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'tools/tex-render'
 
 # tectonic on PATH, else a binary vendored under tools/tex-render (the single-binary, vendored-tools shape).
 function Get-TectonicPath {

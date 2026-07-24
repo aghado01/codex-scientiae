@@ -6,7 +6,7 @@
 # document is preprocessed; the synthetic tests always run. The score RANKS, it never gates.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/serving.ps1"   # fidelity (agreement) + restructure-free; pulls latex + masks + crawl
+    . "$PSScriptRoot/../src/codex-membrane/serving.ps1"   # fidelity (agreement) + restructure-free; pulls latex + masks + crawl
 
     $L = 10
     function New-FullMask([int]$n)  { New-Mask -Spans @([pscustomobject]@{ Start = 0; End = $n }) -Length $n }

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/zones.ps1 — zone segmentation + front-matter scaffolding.
+  src/codex-membrane/zones.ps1 — zone segmentation + front-matter scaffolding.
 
   Tags each chunk with a `zone` (frontmatter / body / backmatter) from reliable
   landmarks, isolating the messy, venue-specific front/back matter into bounded
@@ -14,7 +14,7 @@
     Invoke-Zones -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
 
 # venue-agnostic boilerplate patterns: name -> regex (first match wins)
 $script:BoilerplatePatterns = [ordered]@{

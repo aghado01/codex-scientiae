@@ -26,5 +26,5 @@ The three collections:
 
 Published documents are produced by the **codex-membrane** restoration pipeline, not by hand. Raw extracts
 land under `ingestion/` (`ingestion/{codices,compendia,corpora}/…`), are repaired chunk-by-chunk through the
-membrane (the MCP server in `src/`; workflow in `src/PROCEDURE.md`), then `publish`ed into the collections
+membrane (the MCP server and workflow in `src/codex-membrane/`), then `publish`ed into the collections
 above. See [WORKFLOW.md](WORKFLOW.md) (failure taxonomy) and [STANDARDS.md](STANDARDS.md) (output format).

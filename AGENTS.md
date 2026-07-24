@@ -9,7 +9,7 @@ To achieve this, agent workflows are governed by three core documents. You must 
 ---
 
 ## 1. Structural Requirements
-**Reference Document:** `STANDARDS.md`
+**Reference Document:** `.legacy/docs/STANDARDS.md`
 
 LLMs do not read visual pixels or HTML layouts; they read text tokens. All document structures must be optimized for semantic clarity and token efficiency. You must strictly adhere to the formatting rules defined in `STANDARDS.md` [file:5].
 
@@ -21,7 +21,7 @@ LLMs do not read visual pixels or HTML layouts; they read text tokens. All docum
 - **Hygiene:** Removing arbitrary OCR hard wraps to maintain the semantic flow of prose [file:5].
 
 ## 2. Adaptive Repair Strategies
-**Reference Document:** `WORKFLOW.md`
+**Reference Document:** `.legacy/docs/WORKFLOW.md`
 
 Extraction pipelines (like Docling) frequently fail on complex layouts. Agents must not rely on brute-force regex but rather semantic reconstruction. Detailed strategies for handling these failures are outlined in `WORKFLOW.md` [file:6].
 
@@ -32,7 +32,7 @@ Extraction pipelines (like Docling) frequently fail on complex layouts. Agents m
 - **Swarm Efficiency:** Ensuring lightweight agent configurations and executing "Closing Ceremonies" to prevent 429 rate limits and zombie subagents [file:6].
 
 ## 3. The Execution Protocol
-**Reference Document:** `CHECKLIST.md`
+**Reference Document:** `.legacy/docs/CHECKLIST.md`
 
 Before finalizing any document repair, subagents must systematically audit their output against the `CHECKLIST.md` protocol [file:4].
 

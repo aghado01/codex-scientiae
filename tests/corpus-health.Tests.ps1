@@ -1,13 +1,13 @@
 #requires -Version 7.0
 # Published-corpus health regressions. Unlike corpus.Tests.ps1 (which A/B-tests the chunk-stream
 # detectors), this asserts over the promoted .md BODIES under compendia/ codices/ corpora/ via the
-# read-only auditor in src/corpus-audit.ps1. The HARD tier mirrors publish.ps1's defect sentinels; the
+# read-only auditor in src/audits/corpus-audit.ps1. The HARD tier mirrors publish.ps1's defect sentinels; the
 # quality tier pins the 2026-06-23 normalization (ligatures, mangled URL separators) at zero so it
 # cannot silently come back. ADVISORY classes (broken image links, single-column tables) are tracked
 # debt in HOUSEKEEPING.md, NOT asserted here.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/corpus-audit.ps1"
+    . "$PSScriptRoot/../src/audits/corpus-audit.ps1"
     $script:health = Get-CorpusHealth -RepoRoot (Split-Path -Parent $PSScriptRoot)
     $script:t = $script:health.totals
 }

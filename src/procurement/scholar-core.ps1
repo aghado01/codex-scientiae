@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/scholar-core.ps1 — the source-agnostic core of the scholar discovery framework.
+  src/procurement/scholar-core.ps1 — the source-agnostic core of the scholar discovery framework.
   (Increment 1 of .discussion/scholar-discovery-framework.md.)
 
   It generalizes the arXiv server's HTTP / retry / per-host rate-limit, and adds the normalized **Work**

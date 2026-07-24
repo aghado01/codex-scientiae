@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/serving.ps1 — serving layer over the enriched chunk-JSONL.
+  src/codex-membrane/serving.ps1 — serving layer over the enriched chunk-JSONL.
 
   The membrane: orchestrator-facing tools read metadata only (body-blind, so a
   50-page doc costs a few hundred tokens), and the sub-agent-facing slice tool
@@ -24,14 +24,14 @@
     Invoke-RepairApply  -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
 . "$PSScriptRoot/fidelity.ps1"
 . "$PSScriptRoot/playbook.ps1"   # the repair recipes-as-data the work-order composer pools
-. "$PSScriptRoot/crawl.ps1"
-. "$PSScriptRoot/runs.ps1"       # run layout ({paper}/.runs/{stamp}) + {paper}@{run} addressing
+. "$PSScriptRoot/../crawl.ps1"
+. "$PSScriptRoot/../runs.ps1"       # run layout ({paper}/.runs/{stamp}) + {paper}@{run} addressing
 . "$PSScriptRoot/normalize.ps1"
-. "$PSScriptRoot/enrichment.ps1"
-. "$PSScriptRoot/pdf-converter/math-evidence.ps1"   # Get-ChunkMathEvidence: geometry -> slice payload for gated math repair
+. "$PSScriptRoot/../enrichment.ps1"
+. "$PSScriptRoot/../pdf-converter/math-evidence.ps1"   # Get-ChunkMathEvidence: geometry -> slice payload for gated math repair
 
 function Read-Chunks([string]$Path) {
     [System.IO.File]::ReadLines($Path) | Where-Object { $_ } | ForEach-Object { $_ | ConvertFrom-Json }

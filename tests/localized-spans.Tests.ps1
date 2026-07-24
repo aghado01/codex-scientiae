@@ -2,8 +2,8 @@
 # Localized spans — difference-localization on the issue inventory + work-order delivery.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/serving.ps1"
-    . "$PSScriptRoot/../src/normalize.ps1"   # Get-UnwrappedMathSpans + MathLatexRx for fixtures
+    . "$PSScriptRoot/../src/codex-membrane/serving.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/normalize.ps1"   # Get-UnwrappedMathSpans + MathLatexRx for fixtures
 
     $alpha = [char]0x03B1
 

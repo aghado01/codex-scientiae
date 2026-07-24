@@ -3,7 +3,7 @@
 # layout seam (template expansion + path confinement), Atom parsing from a fixture, and query building.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/arxiv.ps1"
+    . "$PSScriptRoot/../src/procurement/arxiv.ps1"
 
     # A minimal-but-faithful arXiv Atom feed: two entries, new- and old-style ids, primary_category,
     # a pdf link, a doi, and whitespace in the title/summary to prove collapsing + the external mark.

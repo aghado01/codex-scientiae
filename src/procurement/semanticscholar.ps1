@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/semanticscholar.ps1 — the Semantic Scholar source adapter for the scholar discovery framework
+  src/procurement/semanticscholar.ps1 — the Semantic Scholar source adapter for the scholar discovery framework
   (increment 2). Requires scholar-core.ps1 dot-sourced first.
 
   Semantic Scholar's Graph API is a cross-publisher scholarly graph with SPECTER-based recommendations,

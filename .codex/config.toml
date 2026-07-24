@@ -3,7 +3,7 @@ command = "C:/Users/azrie/PDenv/PowerShell/PowerShell-7.6.0-win-x64-claude/power
 args = [
     "-NoProfile",
     "-File",
-    "D:/aghado01/codex-scientiae/src/arxiv-server.ps1",
+    "D:/aghado01/codex-scientiae/src/procurement/arxiv-server.ps1",
 ]
 
 [mcp_servers.codex-membrane]
@@ -11,7 +11,7 @@ command = "C:/Users/azrie/PDenv/PowerShell/PowerShell-7.6.0-win-x64-claude/power
 args = [
     "-NoProfile",
     "-File",
-    "D:/aghado01/codex-scientiae/src/mcp-server.ps1",
+    "D:/aghado01/codex-scientiae/src/codex-membrane/mcp-server.ps1",
 ]
 
 [mcp_servers.codex-scholar]
@@ -19,5 +19,5 @@ command = "C:/Users/azrie/PDenv/PowerShell/PowerShell-7.6.0-win-x64-claude/power
 args = [
     "-NoProfile",
     "-File",
-    "D:/aghado01/codex-scientiae/src/scholar-server.ps1",
+    "D:/aghado01/codex-scientiae/src/procurement/scholar-server.ps1",
 ]

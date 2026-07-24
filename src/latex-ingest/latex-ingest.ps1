@@ -1,12 +1,12 @@
 #requires -Version 7.0
 <#
-  src/latex-ingest.ps1 — arXiv LaTeX source -> codex-scientiae markdown, end to end.
+  src/latex-ingest/latex-ingest.ps1 — arXiv LaTeX source -> codex-scientiae markdown, end to end.
 
   The tractable top rung of the transcription stack: for arXiv papers we stage the LaTeX `source` artifact,
   and LaTeX is already structured — so unlike the PDF geometry problem, this is a parse/transform, and the
   MATH PASSES THROUGH as primitive LaTeX ($...$ / $$...$$ ARE the codex standard), sidestepping the membrane's
   math-repair problem. Because LaTeX is the AUTHORITATIVE source, the output is a fidelity GROUND TRUTH for
-  measuring lossy PDF->IR conversions against (see src/conversion-metric.ps1).
+  measuring lossy PDF->IR conversions against.
 
   Architecture mirrors the membrane's principled approach:
     EXPAND macros (\newcommand reach inside math) -> RESOLVE numbering (\cite/\ref/\eqref, theorem/eq labels)
@@ -18,11 +18,11 @@
   Entry point: Invoke-ArxivLatexToMarkdown -TarGz <source.tar.gz> -Slug <name> -OutDir <dir>
 #>
 
-. "$PSScriptRoot/runs.ps1"          # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
+. "$PSScriptRoot/../runs.ps1"       # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
 . "$PSScriptRoot/tikz-render.ps1"   # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
-. "$PSScriptRoot/pdf-raster.ps1"    # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
+. "$PSScriptRoot/../pdf-raster.ps1" # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
-. "$PSScriptRoot/md-register.ps1"   # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
+. "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -1656,18 +1656,29 @@ function ConvertFrom-BiblatexBbl {
 # extension.
 function Expand-ArxivSourceTarball {
     param([string]$TarGz, [string]$WorkDir)
+    $archivePath = (Resolve-Path -LiteralPath $TarGz -ErrorAction Stop).Path
     New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
-    & tar -xzf $TarGz -C $WorkDir 2>$null
-    if ($LASTEXITCODE -eq 0) { return $WorkDir }
+    # GNU tar treats the colon in an absolute Windows path (C:\...) as a remote archive
+    # separator. Run from the extraction directory and pass a relative archive path so GNU tar
+    # and Windows bsdtar behave identically.
+    $archiveArg = [System.IO.Path]::GetRelativePath($WorkDir, $archivePath)
+    Push-Location $WorkDir
+    try {
+        & tar -xzf $archiveArg 2>$null
+        $tarExit = $LASTEXITCODE
+    } finally {
+        Pop-Location
+    }
+    if ($tarExit -eq 0) { return $WorkDir }
 
     # tar rejected it — is it gzip at all?
     $head = [byte[]]::new(2)
-    $fs = [System.IO.File]::OpenRead($TarGz)
+    $fs = [System.IO.File]::OpenRead($archivePath)
     try { $null = $fs.Read($head, 0, 2) } finally { $fs.Dispose() }
     if ($head[0] -ne 0x1F -or $head[1] -ne 0x8B) { throw "source is neither a gzipped tar nor a gzip stream: $TarGz" }
 
     # gunzip the whole stream into memory
-    $inFs = [System.IO.File]::OpenRead($TarGz)
+    $inFs = [System.IO.File]::OpenRead($archivePath)
     $gz   = [System.IO.Compression.GzipStream]::new($inFs, [System.IO.Compression.CompressionMode]::Decompress)
     $ms   = [System.IO.MemoryStream]::new()
     try { $gz.CopyTo($ms) } finally { $gz.Dispose(); $inFs.Dispose() }
@@ -1681,9 +1692,15 @@ function Expand-ArxivSourceTarball {
     if ($isTar) {
         $tarTmp = Join-Path $WorkDir '_source.tar'
         [System.IO.File]::WriteAllBytes($tarTmp, $bytes)
-        & tar -xf $tarTmp -C $WorkDir 2>$null
-        Remove-Item -LiteralPath $tarTmp -Force -ErrorAction SilentlyContinue
-        if ($LASTEXITCODE -ne 0) { throw "gunzipped tar failed to extract: $TarGz" }
+        Push-Location $WorkDir
+        try {
+            & tar -xf (Split-Path -Leaf $tarTmp) 2>$null
+            $tarExit = $LASTEXITCODE
+        } finally {
+            Pop-Location
+            Remove-Item -LiteralPath $tarTmp -Force -ErrorAction SilentlyContinue
+        }
+        if ($tarExit -ne 0) { throw "gunzipped tar failed to extract: $archivePath" }
         return $WorkDir
     }
 
@@ -1924,15 +1941,27 @@ function Invoke-LatexOutputPatches {
 }
 
 function Invoke-ArxivLatexToMarkdown {
-    param([string]$TarGz, [string]$Slug, [string]$OutDir)
+    param(
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$TarGz,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$Slug,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$OutDir
+    )
     $u8 = [System.Text.UTF8Encoding]::new($false)
     # the tex unpacks into a runstamped working dir BESIDE the tarball — an intermediate workflow
     # artifact like any other (gitignored, non-destructive across passes), not a throwaway temp dir.
     # It PERSISTS: downstream consumers (math bank, structure skeleton) re-read the source without
     # re-extraction, and a conversion is inspectable after the fact.
-    $run  = New-RunDir (Split-Path -Parent (Resolve-Path -LiteralPath $TarGz).Path)
+    try {
+        $archivePath = (Resolve-Path -LiteralPath $TarGz -ErrorAction Stop).Path
+    } catch {
+        throw "LaTeX source archive not found: '$TarGz'"
+    }
+    if (-not [System.IO.File]::Exists($archivePath)) {
+        throw "LaTeX source archive is not a file: '$archivePath'"
+    }
+    $run  = New-RunDir (Split-Path -Parent $archivePath)
     $work = Join-Path $run 'tex'
-    Expand-ArxivSourceTarball -TarGz $TarGz -WorkDir $work | Out-Null
+    Expand-ArxivSourceTarball -TarGz $archivePath -WorkDir $work | Out-Null
 
     $main = Find-LatexMain $work
     $tex = Resolve-LatexInputs -MainPath $main

@@ -7,7 +7,7 @@
   Does not apply edits — proposals flow through propose_edit → apply like repair.
 #>
 
-. "$PSScriptRoot/normalize.ps1"
+. "$PSScriptRoot/codex-membrane/normalize.ps1"
 
 $script:RxEnrichmentWrapped = [regex]'\$\$[\s\S]*?\$\$|\$[^$\n]+\$'
 $script:EnrichmentBreak      = '.;:'

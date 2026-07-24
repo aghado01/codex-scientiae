@@ -1,9 +1,9 @@
 #requires -Version 7.0
-# The markdown STRUCTURE gate (src/md-lint.ps1 over tools/md-lint, markdownlint). The non-math half of the
+# The markdown STRUCTURE gate (src/audits/md-lint.ps1 over tools/md-lint, markdownlint). The non-math half of the
 # standard (heading hierarchy §5, spacing §4). Skips cleanly when node/markdownlint aren't installed.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/md-lint.ps1"
+    . "$PSScriptRoot/../src/audits/md-lint.ps1"
     $script:avail = Test-MarkdownLintAvailable
 }
 

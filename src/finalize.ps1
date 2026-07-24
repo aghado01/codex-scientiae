@@ -13,9 +13,9 @@
     Invoke-Finalize -ChunksPath <chunks.jsonl> [-OutputDir <dir>]
 #>
 
-. "$PSScriptRoot/serving.ps1"
+. "$PSScriptRoot/codex-membrane/serving.ps1"
 . "$PSScriptRoot/runs.ps1"          # Get-PigRunDirs (newest-wins) — the figure weave reads the pig lane
-. "$PSScriptRoot/md-register.ps1"   # the ONE markdown figure register, shared with the LaTeX oracle lane
+. "$PSScriptRoot/audits/md-register.ps1"   # the ONE markdown figure register, shared with the LaTeX oracle lane
 
 function ConvertTo-Anchor([string]$h) {
     $a = (($h.ToLowerInvariant() -replace '[^\w\s-]', '') -replace '\s+', '-').Trim('-')

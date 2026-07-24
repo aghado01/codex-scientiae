@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/arxiv.ps1 — the convention-agnostic core of the codex-arxiv acquisition server.
+  src/procurement/arxiv.ps1 — the convention-agnostic core of the codex-arxiv acquisition server.
 
   Two contracts meet here. The OUTWARD one is stable: arXiv's public Atom API and the arXiv id,
   which is the single canonical key for a paper and never changes shape. The INWARD one is fluid —
@@ -822,8 +822,8 @@ function Clear-ArxivStaleJobs {
     }
 }
 
-# Graceful shutdown for tests/teardown: stop accepting work, let the worker exit its drain loop, dispose.
-# The live server doesn't call this (process exit reaps the worker); it exists so tests don't leak runspaces.
+# Graceful shutdown for tests/teardown and server EOF: stop accepting work, let the worker exit its drain
+# loop, and dispose every runspace object so the host process can terminate cleanly.
 function Stop-ArxivJobs {
     if ($script:ArxivQueue)    { try { $script:ArxivQueue.CompleteAdding() } catch {} }
     if ($script:ArxivWorkerPS) {

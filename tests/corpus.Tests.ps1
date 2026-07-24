@@ -16,7 +16,7 @@
 #             the whole corpus, where the current-engine stream strengthens them.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/serving.ps1"   # fidelity (new) + normalize + latex + masks + crawl
+    . "$PSScriptRoot/../src/codex-membrane/serving.ps1"   # fidelity (new) + normalize + latex + masks + crawl
 
     # OLD detectors, inlined verbatim from the pre-port latex.ps1 / fidelity.ps1
     function Old-IsMath([string]$s) { $t = $s -replace '\\(?:text|operatorname|mathrm|mbox|textrm|textbf|textit)\s*\{[^{}]*\}', ' '; $t = $t -replace '\\[A-Za-z]+', ' '; return (([regex]::Matches($t, '[A-Za-z]{4,}')).Count -le 2) }

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/arxiv-adapter.ps1 — the arXiv source adapter for the scholar discovery framework (increment 4).
+  src/procurement/arxiv-adapter.ps1 — the arXiv source adapter for the scholar discovery framework (increment 4).
   Requires scholar-core.ps1 AND arxiv.ps1 dot-sourced first.
 
   arXiv is a search + metadata source (a preprint repository), NOT a citation graph — so this adapter

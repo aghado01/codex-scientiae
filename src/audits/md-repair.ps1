@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/md-repair.ps1 — surgical, byte-offset-anchored post-hoc repair for promoted markdown.
+  src/audits/md-repair.ps1 — surgical, byte-offset-anchored post-hoc repair for promoted markdown.
 
   Mirrors the membrane's law of exposure for raw .md (no JSON / IR available post-promotion):
   DETECT problems, classify each into auto-fixable vs needs-manual, and expose a byte-offset

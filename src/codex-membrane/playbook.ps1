@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/playbook.ps1 — the repair playbook as DATA: { issue type → recipe fragment }.
+  src/codex-membrane/playbook.ps1 — the repair playbook as DATA: { issue type → recipe fragment }.
 
   The machine-readable sibling of PROCEDURE.md's prose playbook. The work-order composer pulls only the
   fragments for the issues a deliverable actually carries and orders them structural-before-content. This

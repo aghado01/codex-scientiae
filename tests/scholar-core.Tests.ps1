@@ -3,7 +3,7 @@
 # the Work model + DOI/key helpers, the paging envelope, and the per-host rate clock's bookkeeping.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/scholar-core.ps1"
+    . "$PSScriptRoot/../src/procurement/scholar-core.ps1"
 }
 
 Describe 'Get-ScholarTransience (retry policy)' {

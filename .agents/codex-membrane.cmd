@@ -1,6 +1,6 @@
 @echo off
 setlocal EnableExtensions
-set "SERVER=D:/aghado01/codex-scientiae/src/mcp-server.ps1"
+set "SERVER=D:/aghado01/codex-scientiae/src/codex-membrane/mcp-server.ps1"
 
 if defined AGY_MCP_PWSH if exist "%AGY_MCP_PWSH%" (
   "%AGY_MCP_PWSH%" -NoProfile -File "%SERVER%"

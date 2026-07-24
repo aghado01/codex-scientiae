@@ -3,8 +3,8 @@
 # as permanent regressions, and the gibberish calibration (genuine shatter vs wrapped/flattened math) too.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/latex.ps1"
-    . "$PSScriptRoot/../src/fidelity.ps1"
+    . "$PSScriptRoot/../src/latex-ingest/latex.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/fidelity.ps1"
 }
 
 Describe 'Test-IsMath — prose-in-formula by overlay+complement' {

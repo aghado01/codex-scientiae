@@ -72,7 +72,7 @@ function Test-BatchSourceMagic([string] $Path, [string] $Kind) {
 # once anyway).
 function Initialize-BatchToolchain {
     param([Parameter(Mandatory)] [string] $Repo)
-    . (Join-Path $Repo 'src/tex-render.ps1')
+    . (Join-Path $Repo 'src/latex-ingest/tex-render.ps1')
     $tectonic = Get-TectonicPath
     if (-not $tectonic) {
         Write-Host '  warmup: tectonic absent — diagram renders fall back to the ladder (tikzjax/markers)'

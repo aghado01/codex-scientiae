@@ -6,7 +6,7 @@
 # only bracketed [N] is an unambiguous reference; (N) and bare "N." must each carry a (year).
 
 BeforeAll {
-    . "$PSScriptRoot/../src/sections.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/sections.ps1"
 }
 
 Describe 'Test-IsCitationLine — bibliography line vs in-body (N) enumeration' {

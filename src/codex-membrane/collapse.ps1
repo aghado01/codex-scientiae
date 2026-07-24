@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/collapse.ps1 — collapse node-JSONL (fragmented IR shards) into chunk-JSONL.
+  src/codex-membrane/collapse.ps1 — collapse node-JSONL (fragmented IR shards) into chunk-JSONL.
 
   Walks the IR-ordered nodes and agglomerates consecutive prose shards into
   coherent chunks by bounding-box continuity, repairing inline as it goes. Figure
@@ -19,7 +19,7 @@
   Structural nodes (heading/formula/image/…) flush the open prose chunk and emit their own.
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
 
 $script:Ligatures = @{ 'ﬁ' = 'fi'; 'ﬂ' = 'fl'; 'ﬃ' = 'ffi'; 'ﬀ' = 'ff'; 'ﬄ' = 'ffl' }
 

@@ -7,7 +7,7 @@
 # whichever copy the crawl met first).
 
 BeforeAll {
-    . "$PSScriptRoot/../src/preprocess.ps1"   # pulls serving.ps1 (run-layout helpers + resolution) and the stage files
+    . "$PSScriptRoot/../src/codex-membrane/preprocess.ps1"   # pulls serving.ps1 (run-layout helpers + resolution) and the stage files
 
     $script:Roots = [System.Collections.Generic.List[string]]::new()
     function New-LayoutRoot([string]$Leaf = 'ingestion') {

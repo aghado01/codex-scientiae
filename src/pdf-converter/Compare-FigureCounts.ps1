@@ -41,7 +41,7 @@ param(
 
 # latex-ingest.ps1 transitively dot-sources runs.ps1 (Get-PigRunDirs / newest-wins) + crawl.ps1, and
 # exposes Get-LatexOracleCounts / Find-LatexMain / Resolve-LatexInputs — the ONE oracle counter model.
-. "$PSScriptRoot/../latex-ingest.ps1"
+. "$PSScriptRoot/../latex-ingest/latex-ingest.ps1"
 
 # Newest-first tex run dirs ({paper}/.runs/{stamp}/tex holding the unpacked source and, once the latex
 # lane has re-run, the {slug}.oracle-counts.json sidecar). Mirrors runs.ps1 Get-PigRunDirs for the tex lane.

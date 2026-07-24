@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/tikz-render.ps1 — TikZ -> SVG shim over tools/tikz-render/tikz-svg.js (node-tikzjax: wasm TeX).
+  src/latex-ingest/tikz-render.ps1 — TikZ -> SVG shim over tools/tikz-render/tikz-svg.js (node-tikzjax: wasm TeX).
 
   The LaTeX source is the AUTHORITY for diagrams when it exists — PDF-side image extraction is
   unreliable (opendataloader sometimes misses figures entirely), so TikZ environments render to SVG
@@ -12,7 +12,7 @@
     Invoke-TikzRender -Jobs @(@{ id = 'diagram-1'; source = '\begin{tikzpicture}...' }) -OutDir <dir>
 #>
 
-$script:TikzRenderDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'tools/tikz-render'
+$script:TikzRenderDir = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'tools/tikz-render'
 $script:TikzSvgJs = Join-Path $script:TikzRenderDir 'tikz-svg.js'
 
 function Get-TikzNodePath {

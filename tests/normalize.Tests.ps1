@@ -3,8 +3,8 @@
 # Optimize-MathContent and markdown-cleanup idempotency, plus the math_dirt mask-algebra value-identity.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/normalize.ps1"    # Optimize-MathContent, Convert-MathToLatex, $script:MathLatexRx
-    . "$PSScriptRoot/../src/md-cleanup.ps1"   # Invoke-MarkdownCleanup
+    . "$PSScriptRoot/../src/codex-membrane/normalize.ps1"    # Optimize-MathContent, Convert-MathToLatex, $script:MathLatexRx
+    . "$PSScriptRoot/../src/audits/md-cleanup.ps1"   # Invoke-MarkdownCleanup
     # legacy blank-and-count (pre prose-context refinement); refined count via Get-MathDirt
     function Legacy-MathDirt([string]$w) { return ($script:MathLatexRx.Matches([regex]::Replace($w, '\$[^$\n]+\$', ' ')).Count) }
     function Mask-MathDirt([string]$w) { return (Get-MaskDensity -Text $w -Within (Complement-Mask (New-Mask $w '\$[^$\n]+\$')) -Register $script:MathLatexRx) }

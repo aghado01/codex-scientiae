@@ -13,7 +13,7 @@
 ## The launch line
 
 ```
-pwsh -NoProfile -File <repo>/src/mcp-server.ps1
+pwsh -NoProfile -File <repo>/src/codex-membrane/mcp-server.ps1
 ```
 
 - `-NoProfile` keeps the user profile off stdout (stdout carries JSON-RPC frames **only**; all logs go
@@ -56,7 +56,7 @@ name across the whole root and need no `scope`.
       "command": "pwsh",
       "args": [
         "-NoProfile",
-        "-File", "src/mcp-server.ps1"
+        "-File", "src/codex-membrane/mcp-server.ps1"
       ]
     }
   }
@@ -71,7 +71,7 @@ from a different working directory, or if `pwsh` isn't on `PATH` (swap `"command
 
 ```
 claude mcp add codex-membrane --scope project -- \
-  pwsh -NoProfile -File src/mcp-server.ps1
+  pwsh -NoProfile -File src/codex-membrane/mcp-server.ps1
 ```
 
 ## Verify
@@ -79,7 +79,7 @@ claude mcp add codex-membrane --scope project -- \
 A clean wire-up answers `initialize`, lists **21 tools**, and logs one startup banner to stderr:
 
 ```powershell
-$server = '<repo>/src/mcp-server.ps1'
+$server = '<repo>/src/codex-membrane/mcp-server.ps1'
 @(
  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18"}}'
  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'

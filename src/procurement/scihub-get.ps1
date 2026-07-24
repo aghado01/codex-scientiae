@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/scihub-get.ps1 — the Sci-Hub DOI->PDF fetcher (the DOI fetcher the discovery framework's
+  src/procurement/scihub-get.ps1 — the Sci-Hub DOI->PDF fetcher (the DOI fetcher the discovery framework's
   acquire/route=doi seam feeds). Requires scholar-core.ps1 dot-sourced first (ConvertTo-NormalizedDoi /
   Wait-ScholarRate / Get-ScholarUserAgent).
 

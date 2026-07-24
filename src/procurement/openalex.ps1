@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/openalex.ps1 — the OpenAlex source adapter for the scholar discovery framework (increment 2).
+  src/procurement/openalex.ps1 — the OpenAlex source adapter for the scholar discovery framework (increment 2).
   Requires scholar-core.ps1 dot-sourced first (New-ScholarWork / New-ScholarPage / Get-ScholarJson / …).
 
   OpenAlex is a free, keyless cross-publisher scholarly graph. This adapter maps its JSON onto the shared

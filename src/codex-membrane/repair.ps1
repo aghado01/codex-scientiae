@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/repair.ps1 — deterministic suffix excision on flagged chunks.
+  src/codex-membrane/repair.ps1 — deterministic suffix excision on flagged chunks.
 
   A corpus field study (26 papers, 144 suspects -> src/.work/suspect-study.json) showed
   the loop corruptions are unholy SUFFIXES, not holes: every `intertext` suspect has a
@@ -27,8 +27,8 @@
     Invoke-Repair -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>] [-MinHeadFrac 0.4]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
-. "$PSScriptRoot/latex.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../latex-ingest/latex.ps1"
 
 # Locate the corruption onset: the first \intertext marker, else the first space-shattered
 # run (gibberish). -1 when neither is present (e.g. a plain unbalanced-braces formula).

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/headings.ps1 — typographic heading recovery on the node stream.
+  src/codex-membrane/headings.ps1 — typographic heading recovery on the node stream.
 
   Struct-tree exports routinely mis-type real headings as body text (and running
   heads as headings). Before collapse merges anything, this pass re-reads the nodes
@@ -18,7 +18,7 @@
     Invoke-HeadingRecovery -NodesPath <nodes.jsonl> [-Ratio 1.15] [-MaxLen 180]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
 
 # A heading face = a bold or small-caps font variant — the weights LaTeX/Word reserve
 # for headings — detected by common font-name markers (Computer Modern bx/csc plus the

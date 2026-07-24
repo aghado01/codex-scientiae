@@ -1,6 +1,7 @@
 #requires -Version 7.0
 <#
-  src/arxiv-server.ps1 — a pure-PowerShell MCP server for arXiv acquisition, sibling to mcp-server.ps1
+  src/procurement/arxiv-server.ps1 — a pure-PowerShell MCP server for arXiv acquisition, sibling to the
+  codex-membrane server
   (the codex-membrane). Same protocol spine: newline-delimited JSON-RPC 2.0 on stdin/stdout, one compact
   JSON object per line, stdout for protocol frames ONLY (all logging + stray writes go to stderr), the
   channel pinned to UTF-8 no-BOM so SMP glyphs in titles/abstracts round-trip.
@@ -10,9 +11,9 @@
   the inbox layout is a fluid early-growth convention held in an external template config, not in code.
 
   Launch from a client's MCP config (-NoProfile keeps the profile off stdout):
-    pwsh -NoProfile -File src/arxiv-server.ps1 [-StagingRoot <dir>] [-ConfigPath <arxiv-staging.json>]
+    pwsh -NoProfile -File src/procurement/arxiv-server.ps1 [-StagingRoot <dir>] [-ConfigPath <arxiv-staging.json>]
 
-  -ConfigPath defaults to src/arxiv-staging.json; -StagingRoot (if given) overrides the config's
+  -ConfigPath defaults to src/procurement/arxiv-staging.json; -StagingRoot (if given) overrides the config's
   staging_root. Everywhere a path is computed it is confined under the staging root (see arxiv.ps1).
 
   Tools (7): search, get_metadata, fetch (async), fetch_status, list_inbox, inspect, clear.
@@ -31,7 +32,7 @@ param(
 # with the protocol channel (belt-and-suspenders alongside the stream guard below).
 $ProgressPreference = 'SilentlyContinue'
 
-$RepoRoot = (Split-Path -Parent $PSScriptRoot)
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $ServerInfo = @{ name = 'codex-arxiv'; version = '0.4.0' }
 
 # Resolve config + the effective staging root once. Precedence: -StagingRoot param > config.staging_root.
@@ -171,6 +172,7 @@ $cfgNote = if (Test-Path -LiteralPath $ConfigPath -PathType Leaf) { "layout conf
 Write-Log "codex-arxiv MCP server up (staging=$EffectiveStagingRoot, $cfgNote)"
 
 # --- main loop: newline-delimited JSON-RPC from stdin until EOF ---
+try {
 while ($null -ne ($line = $script:In.ReadLine())) {
     if ([string]::IsNullOrWhiteSpace($line)) { continue }
     try { $req = $line | ConvertFrom-Json } catch { Write-RpcError $null -32700 'parse error'; continue }
@@ -223,4 +225,9 @@ while ($null -ne ($line = $script:In.ReadLine())) {
         if ($hasId) { Write-RpcError $id -32603 "internal error: $($_.Exception.Message)" }
         Write-Log "request error ($($req.method)): $($_.Exception.Message)"
     }
+}
+} finally {
+    # The worker runspace is process-owned, so an MCP client closing stdin must complete and dispose it;
+    # otherwise the host process remains alive after protocol EOF.
+    Stop-ArxivJobs
 }

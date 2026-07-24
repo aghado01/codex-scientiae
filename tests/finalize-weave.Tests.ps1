@@ -1,6 +1,6 @@
 #requires -Version 7
 # Figure weave (src/finalize.ps1 Get-FigureWeave + emission): the finalized markdown DRINKS the pig
-# figure lane through the shared md-register (src/md-register.ps1) — captioned crops ride their
+# figure lane through the shared md-register (src/audits/md-register.ps1) — captioned crops ride their
 # caption chunks, uncaptioned crops flush at page boundaries, failed crops emit flagged markers.
 # Synthetic paper: a membrane run (chunks.jsonl) + a pig run (figures.jsonl / images.jsonl / crop
 # PNG stubs) under one temp paper root — no corpus dependence.

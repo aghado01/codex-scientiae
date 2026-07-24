@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/sections.ps1 — section segmentation + role classification (the proto-TOC).
+  src/codex-membrane/sections.ps1 — section segmentation + role classification (the proto-TOC).
 
   Operates on the body + back-matter zones (front-matter is handled by zones.ps1).
   Each real section heading starts a section; every chunk gets its enclosing
@@ -18,7 +18,7 @@
     Invoke-Sections -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../jsonl.ps1"
 
 function Get-SectionRole([string]$heading) {
     $h = ($heading -replace '^\s*[\d.]+\s*', '').Trim()

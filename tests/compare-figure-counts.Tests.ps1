@@ -2,7 +2,7 @@
 <#
   tests/compare-figure-counts.Tests.ps1 — the standing figure-count oracle benchmark
   (src/pdf-converter/Compare-FigureCounts.ps1) + the shared TWO-POPULATION counter model it reuses from
-  src/latex-ingest.ps1 (Get-LatexOracleCounts).
+  src/latex-ingest/latex-ingest.ps1 (Get-LatexOracleCounts).
 
   The benchmark scores two distinct populations a geometry converter sees as "figure regions":
     PRIMARY   captioned pig regions vs \begin{figure} floats  ("did we find the real figures")

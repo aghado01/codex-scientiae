@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/mcp-server.ps1 — a pure-PowerShell MCP server over the restoration membrane.
+  src/codex-membrane/mcp-server.ps1 — a pure-PowerShell MCP server over the restoration membrane.
 
   MCP is a protocol, not a runtime: newline-delimited JSON-RPC 2.0 on stdin/stdout, one
   compact JSON object per line. stdout carries protocol frames ONLY — all logging goes to
@@ -10,7 +10,7 @@
   same server serves one document (depth-1) or a whole batch (depth-n) unchanged.
 
   Launch from a client's MCP config (-NoProfile keeps the profile off stdout):
-    pwsh -NoProfile -File src/mcp-server.ps1 [-Root <ingestion-subtree>]
+    pwsh -NoProfile -File src/codex-membrane/mcp-server.ps1 [-Root <ingestion-subtree>]
 
   -Root defaults to <repo>/ingestion (the raw-input boundary); which subtree to survey is a
   per-call concern, carried by the optional `scope` arg on list_documents/get_batch_summary/dispatch.
@@ -31,8 +31,8 @@
 
 [CmdletBinding()]
 param(
-    [string]$Root = (Join-Path (Split-Path -Parent $PSScriptRoot) 'ingestion'),
-    [string]$CompendiaRoot = (Join-Path (Split-Path -Parent $PSScriptRoot) 'compendia'),
+    [string]$Root = (Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'ingestion'),
+    [string]$CompendiaRoot = (Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'compendia'),
     [string]$ProtocolVersion = '2025-06-18',
     # OPT-IN experimental tools (reflect / surface_candidate / harvest). OFF by default so the
     # advertised surface stays lean — unused tools are cognitive clutter and a spurious-invocation
@@ -43,15 +43,15 @@ param(
 if (-not $Experimental -and $env:CODEX_MEMBRANE_EXPERIMENTAL -in '1','true','yes','on') { $Experimental = $true }
 
 . "$PSScriptRoot/serving.ps1"
-. "$PSScriptRoot/restructure.ps1"
+. "$PSScriptRoot/../restructure.ps1"
 . "$PSScriptRoot/preprocess.ps1"
-. "$PSScriptRoot/finalize.ps1"
-. "$PSScriptRoot/md-repair.ps1"
-. "$PSScriptRoot/publish.ps1"
-. "$PSScriptRoot/latex-ingest.ps1"   # the LaTeX oracle lane (latex_convert): arXiv source -> codex markdown
-. "$PSScriptRoot/render-check.ps1"   # math render-validity gate (render_check): does every span render in KaTeX
-. "$PSScriptRoot/md-lint.ps1"        # markdown structure lint (markdown_lint): the non-math half of the standard
-. "$PSScriptRoot/benchmark.ps1"      # EXPERIMENTAL: Export-BenchmarkTrial (harvest well-posed repair problems)
+. "$PSScriptRoot/../finalize.ps1"
+. "$PSScriptRoot/../audits/md-repair.ps1"
+. "$PSScriptRoot/../publish.ps1"
+. "$PSScriptRoot/../latex-ingest/latex-ingest.ps1" # the LaTeX oracle lane (latex_convert): arXiv source -> codex markdown
+. "$PSScriptRoot/../render-check.ps1"               # math render-validity gate (render_check): does every span render in KaTeX
+. "$PSScriptRoot/../audits/md-lint.ps1"             # markdown structure lint (markdown_lint): the non-math half of the standard
+. "$PSScriptRoot/../benchmark.ps1"                  # EXPERIMENTAL: Export-BenchmarkTrial (harvest well-posed repair problems)
 
 $ServerInfo = @{ name = 'codex-membrane'; version = '0.1.0' }
 
@@ -213,7 +213,7 @@ function Resolve-Scope([string]$scope) {
 # repo root (the server's purview) — no escaping via .. or a foreign drive. Must be an existing file.
 function Resolve-RepoPath([string]$path) {
     if ([string]::IsNullOrWhiteSpace($path)) { throw "path required" }
-    $repoFull  = [System.IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))
+$repoFull  = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
     $candidate = if ([System.IO.Path]::IsPathRooted($path)) { $path } else { Join-Path $repoFull $path }
     $full      = [System.IO.Path]::GetFullPath($candidate)
     $sep       = [System.IO.Path]::DirectorySeparatorChar
@@ -320,7 +320,7 @@ function Invoke-Tool([string]$name, $arguments) {
         }
         'surface_candidate'  {
             if (-not $Experimental) { throw 'surface_candidate is experimental; restart the server with -Experimental (or CODEX_MEMBRANE_EXPERIMENTAL=1)' }
-            $out = Add-PromotionCandidate -RepoRoot ([System.IO.Path]::GetFullPath((Split-Path -Parent $PSScriptRoot))) `
+                $out = Add-PromotionCandidate -RepoRoot ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) `
                 -Pattern ([string]$arguments.pattern) -Class ([string]$arguments.class) `
                 -Examples @($arguments.examples | ForEach-Object { [string]$_ }) `
                 -Expressibility ([string]$arguments.expressibility) -Recommendation ([string]$arguments.recommendation) `

@@ -1,5 +1,5 @@
 #requires -Version 7.0
-# The LaTeX oracle converter spec (src/latex-ingest.ps1) — the ground truth the pdf-converter lane is
+# The LaTeX oracle converter spec (src/latex-ingest/latex-ingest.ps1) — the ground truth the pdf-converter lane is
 # measured against, so a silent break here corrupts the benchmark. Coverage, in order:
 #   - tokenization consistency + fence-only-if-monospace (algorithmic->nested list, verbatim->fence);
 #   - figures: carry-out, PNG-terminal register (raster passthrough w/ alt text, un-rasterizable->marker);
@@ -13,7 +13,7 @@
 #   - ORACLE SMOKE GATE: a kitchen-sink document must convert to render_check-clean markdown.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/latex-ingest.ps1"
+    . "$PSScriptRoot/../src/latex-ingest/latex-ingest.ps1"
 
     $tex = @'
 \documentclass{article}
@@ -147,8 +147,16 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         New-Item -ItemType Directory -Force -Path (Join-Path $src 'figs'), $out | Out-Null
         [System.IO.File]::WriteAllBytes((Join-Path $src 'figs/arch.png'), [byte[]](137, 80, 78, 71))
         [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'), '\documentclass{article}\begin{document}Fig: \includegraphics{figs/arch}\end{document}', [System.Text.UTF8Encoding]::new($false))
-        Push-Location $src; tar -czf (Join-Path $root 'p.tar.gz') .; Pop-Location
-        $r = Invoke-ArxivLatexToMarkdown -TarGz (Join-Path $root 'p.tar.gz') -Slug 'p' -OutDir $out
+        $archive = Join-Path $root 'p.tar.gz'
+        $archiveArg = [System.IO.Path]::GetRelativePath($src, $archive)
+        Push-Location $src
+        try {
+            tar -czf $archiveArg .
+            if ($LASTEXITCODE -ne 0) { throw "test tar creation failed with exit code $LASTEXITCODE" }
+        } finally {
+            Pop-Location
+        }
+        $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out
         $r.figures | Should -Be 1
         # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
         (Get-Content (Join-Path $out 'p-latex.md') -Raw) | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))

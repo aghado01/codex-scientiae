@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/normalize.ps1 — deterministic content cleanup before grading.
+  src/codex-membrane/normalize.ps1 — deterministic content cleanup before grading.
 
   Three model-free passes the pipeline does on its own, so the agent only ever sees genuine
   judgment calls — never mechanical toil:
@@ -24,8 +24,8 @@
     Invoke-Normalize -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>] [-StripMacros mathbb,...]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
-. "$PSScriptRoot/latex.ps1"   # Test-AlignmentOutsideEnv (the predicate Repair-MathAlignment fixes against)
+. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../latex-ingest/latex.ps1"   # Test-AlignmentOutsideEnv (the predicate Repair-MathAlignment fixes against)
 
 # Compact a span of space-tokenized LaTeX: drop font-only macros, then tighten the delimiters the
 # tokenizer loosened. Conservative — only braces and sub/superscripts close up; spaces separating a

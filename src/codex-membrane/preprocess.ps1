@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/preprocess.ps1 — Invoke-Preprocess: the eight-stage on-ramp.
+  src/codex-membrane/preprocess.ps1 — Invoke-Preprocess: the eight-stage on-ramp.
 
   Takes a raw Docling / opendataloader IR JSON and runs project-ir -> headings -> collapse ->
   zones -> sections -> normalize -> fidelity -> repair, landing the enriched chunk stream + sidecars in a
@@ -19,7 +19,7 @@
 #>
 
 . "$PSScriptRoot/project-ir.ps1"
-. "$PSScriptRoot/pdfdig-adapter.ps1"
+. "$PSScriptRoot/../pdfdig-adapter.ps1"
 . "$PSScriptRoot/headings.ps1"
 . "$PSScriptRoot/collapse.ps1"
 . "$PSScriptRoot/zones.ps1"

@@ -8,7 +8,7 @@
 │ stdout = protocol frames ONLY; all logs → stderr.
 ▼
 ┌──────────────────────────────────────────────────────────────────────────────────┐
-│ src/mcp-server.ps1 (pure-PowerShell stdio server, ServerInfo codex-membrane) │
+│ src/codex-membrane/mcp-server.ps1 (PowerShell stdio, ServerInfo codex-membrane) │
 │ │
 │ main loop ──► initialize ──► discovery walk = the handshake (cached Readiness) │
 │ │ tools/list · prompts/list · prompts/get · ping │

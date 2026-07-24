@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/md-lint.ps1 — markdown STRUCTURE lint shim over tools/md-lint/md-lint.js (markdownlint).
+  src/audits/md-lint.ps1 — markdown STRUCTURE lint shim over tools/md-lint/md-lint.js (markdownlint).
 
   The non-math half of the codex standard: heading hierarchy (STANDARDS §5), spacing hygiene (§4), the
   Contents block (§6). Math render-validity is the SEPARATE gate (src/render-check.ps1). PowerShell
@@ -11,7 +11,7 @@
     Test-MarkdownLint -Path <file.md> [-Config <json>]
 #>
 
-$script:MdLintDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'tools/md-lint'
+$script:MdLintDir = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'tools/md-lint'
 $script:MdLintJs = Join-Path $script:MdLintDir 'md-lint.js'
 
 # node locator inlined (not a shared function) so this file never collides with render-check.ps1's Get-NodePath.

@@ -4,7 +4,7 @@
 
 BeforeAll {
     . "$PSScriptRoot/../src/restructure.ps1"
-    . "$PSScriptRoot/../src/serving.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/serving.ps1"
 
     $FB2 = [char]0xFB02   # ﬂ ligature (U+FB02)
 

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/fidelity.ps1 — corruption signatures -> per-chunk hotspot tags.
+  src/codex-membrane/fidelity.ps1 — corruption signatures -> per-chunk hotspot tags.
 
   Tags each chunk `fidelity` (faithful | suspect) and, when suspect, the
   `corruption_type` that fired. Faithful chunks pass untouched; the suspect set is
@@ -24,8 +24,8 @@
     Invoke-Fidelity -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
-. "$PSScriptRoot/latex.ps1"   # shared math predicates + (transitively) the mask algebra / SpanLevel
+. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../latex-ingest/latex.ps1"   # shared math predicates + (transitively) the mask algebra / SpanLevel
 
 $script:RxInlineMath = [regex]'\$\$[\s\S]*?\$\$|\$[^$\n]+\$'   # wrapped math is NOT shatter — mask it first
 

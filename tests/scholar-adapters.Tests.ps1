@@ -4,11 +4,11 @@
 # against hand-crafted fixtures matching the real (probed) response shapes.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/scholar-core.ps1"
-    . "$PSScriptRoot/../src/openalex.ps1"
-    . "$PSScriptRoot/../src/semanticscholar.ps1"
-    . "$PSScriptRoot/../src/arxiv.ps1"
-    . "$PSScriptRoot/../src/arxiv-adapter.ps1"
+    . "$PSScriptRoot/../src/procurement/scholar-core.ps1"
+    . "$PSScriptRoot/../src/procurement/openalex.ps1"
+    . "$PSScriptRoot/../src/procurement/semanticscholar.ps1"
+    . "$PSScriptRoot/../src/procurement/arxiv.ps1"
+    . "$PSScriptRoot/../src/procurement/arxiv-adapter.ps1"
 
     $script:ArxivPaper = [pscustomobject]@{
         id = '2008.10579'; idv = '2008.10579v1'; title = 'Compressive Phase Retrieval'

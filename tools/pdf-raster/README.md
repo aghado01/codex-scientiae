@@ -14,7 +14,7 @@ sub-PDF/SVG. `src/pdf-converter/pdfdig-images.ps1` drives it into the `.runs/{st
 The **LaTeX oracle lane** shares this engine (PNG is the terminal image register for both lanes): it
 converts `\includegraphics` PDF assets to PNG and rasterizes per-diagram compiled PDFs (tectonic →
 PDF → here). NOTE: this build has **no SVG or EPS document handler** — only PDF (+ raster images).
-`src/latex-ingest.ps1` (via `Invoke-PdfRaster`) drives it for the oracle.
+`src/latex-ingest/latex-ingest.ps1` (via `Invoke-PdfRaster`) drives it for the oracle.
 
 ## Usage
 
