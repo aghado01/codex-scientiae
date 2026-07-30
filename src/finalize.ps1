@@ -16,12 +16,7 @@
 . "$PSScriptRoot/codex-membrane/serving.ps1"
 . "$PSScriptRoot/runs.ps1"          # Get-PigRunDirs (newest-wins) — the figure weave reads the pig lane
 . "$PSScriptRoot/audits/md-register.ps1"   # the ONE markdown figure register, shared with the LaTeX oracle lane
-
-function ConvertTo-Anchor([string]$h) {
-    $a = (($h.ToLowerInvariant() -replace '[^\w\s-]', '') -replace '\s+', '-').Trim('-')
-    if ($a -eq '') { return "section-$($h.GetHashCode().ToString('x8'))" }
-    return $a
-}
+. "$PSScriptRoot/audits/md-toc.ps1"        # the ONE heading-slug engine + Contents-block builder (Get-MdAnchor)
 
 # caption furniture -> italic, heading -> #*(level+1), block formula -> $$ fence, else content as-is
 function Format-Chunk($c) {
@@ -212,7 +207,7 @@ function Invoke-Finalize {
         $bodyC.Add($c)
         if ($isHeading -and $c.section_level) {
             $indent = '  ' * ([Math]::Max(0, [int]$c.section_level - 1))
-            $toc.Add("$indent- [$([string]$c.content)](#$(ConvertTo-Anchor ([string]$c.content)))")
+            $toc.Add("$indent- [$([string]$c.content)](#$(Get-MdAnchor ([string]$c.content)))")
         }
     }
 

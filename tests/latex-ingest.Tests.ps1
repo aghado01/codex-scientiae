@@ -146,7 +146,7 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $src = Join-Path $root 'src'; $out = Join-Path $root 'out'
         New-Item -ItemType Directory -Force -Path (Join-Path $src 'figs'), $out | Out-Null
         [System.IO.File]::WriteAllBytes((Join-Path $src 'figs/arch.png'), [byte[]](137, 80, 78, 71))
-        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'), '\documentclass{article}\begin{document}Fig: \includegraphics{figs/arch}\end{document}', [System.Text.UTF8Encoding]::new($false))
+        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'), '\documentclass{article}\begin{document}\section{Setup}Fig: \includegraphics{figs/arch}\end{document}', [System.Text.UTF8Encoding]::new($false))
         $archive = Join-Path $root 'p.tar.gz'
         $archiveArg = [System.IO.Path]::GetRelativePath($src, $archive)
         Push-Location $src
@@ -159,7 +159,12 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out
         $r.figures | Should -Be 1
         # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
-        (Get-Content (Join-Path $out 'p-latex.md') -Raw) | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))
+        $mdOut = Get-Content (Join-Path $out 'p-latex.md') -Raw
+        $mdOut | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))
+        # born-complete deliverable: the in-doc `## Contents` block precedes the first body H2,
+        # linked through the shared slug engine — and the sections count never counts the TOC itself
+        $mdOut | Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
+        $r.sections | Should -Be 1
         Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
         # the unpacked tex is a PERSISTED run artifact beside the tarball ({dir}/.runs/{stamp}/tex),
         # not a deleted temp dir — downstream consumers (math bank, skeleton) re-read it

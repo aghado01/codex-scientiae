@@ -24,6 +24,7 @@
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 . "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
 . "$PSScriptRoot/../math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
+. "$PSScriptRoot/../audits/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -2134,6 +2135,12 @@ function Invoke-ArxivLatexToMarkdown {
     $md = $outPatch.markdown
     $patchesApplied = @($srcPatch.applied) + @($outPatch.applied)
 
+    # in-doc `## Contents` (shared md-toc primitive), AFTER output patches so the TOC reflects
+    # patched headings — the deliverable is complete on first pass, no post-hoc md-repair required.
+    # Section count is taken BEFORE insertion so the Contents heading never counts itself.
+    $sectionCount = ([regex]::Matches($md, '(?m)^##\s')).Count
+    $md = Set-MdContentsBlock -Markdown $md
+
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
@@ -2173,7 +2180,7 @@ function Invoke-ArxivLatexToMarkdown {
         slug = $Slug; out = $outPath; main_tex = (Split-Path -Leaf $main)
         run = (Split-Path -Leaf $run); tex = $work   # the persisted unpacked source (run artifact)
         bytes = $md.Length; macros = (Get-LatexMacros $tex).Count
-        sections = ([regex]::Matches($md, '(?m)^##\s')).Count
+        sections = $sectionCount   # body H2s, `## Contents` excluded (counted pre-insertion)
         references = if ($refs) { @($refs -split "`n").Count } else { 0 }
         figures = $figs.copied; figures_png = $figs.png; figures_missing = $figs.missing
         oracle_figures = $oracleCounts.oracle_figures  # \includegraphics placements + TikZ diagrams

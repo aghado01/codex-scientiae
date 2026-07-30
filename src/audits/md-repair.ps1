@@ -24,6 +24,8 @@
   All I/O is UTF-8 without BOM; offsets index on-disk bytes so SMP math / ligatures stay exact.
 #>
 
+. "$PSScriptRoot/md-toc.ps1"   # Get-MdAnchor — the shared slug engine (see Update-MdContents)
+
 $script:Utf8 = [System.Text.UTF8Encoding]::new($false)
 
 # Line index over raw file bytes: one record per line with its byte offset and content byte length
@@ -190,10 +192,8 @@ function Repair-MdHeadings {
     }
 }
 
-# GitHub-style heading slug — mirrors finalize.ps1 ConvertTo-Anchor so a regenerated TOC matches finalize.
-function Get-MdAnchor([string]$h) {
-    (($h.ToLowerInvariant() -replace '[^\w\s-]', '') -replace '\s+', '-')
-}
+# Heading slugs come from the shared engine (audits/md-toc.ps1, Get-MdAnchor) — the same anchors
+# finalize and latex-ingest write, so a regenerated TOC always matches the emitting lane.
 
 # Regenerate a document's "## Contents" block from its current KEEP headings (H2+), so the in-doc TOC and
 # the compendium index (which rebuild-ph-contents.ps1 reads from this block) stop listing demoted/escalated
