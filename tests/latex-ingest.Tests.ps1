@@ -156,8 +156,13 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         } finally {
             Pop-Location
         }
-        $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out
+        $shelf = Join-Path $root 'shelf'
+        $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out -DeliverableDir $shelf
         $r.figures | Should -Be 1
+        # -DeliverableDir bundles the standalone deliverable to the shelf, links verified there
+        $r.deliverable.clean | Should -BeTrue
+        Test-Path (Join-Path $shelf 'p-latex.md') | Should -BeTrue
+        Test-Path (Join-Path $shelf 'p/arch.png') | Should -BeTrue
         # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
         $mdOut = Get-Content (Join-Path $out 'p-latex.md') -Raw
         $mdOut | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))

@@ -25,6 +25,7 @@
 . "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
 . "$PSScriptRoot/../math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
 . "$PSScriptRoot/../audits/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
+. "$PSScriptRoot/../audits/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -1951,7 +1952,11 @@ function Invoke-ArxivLatexToMarkdown {
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$TarGz,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$Slug,
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$OutDir
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$OutDir,
+        # optional delivery shelf (the ingestion/_markdown pattern): when set, the finished
+        # {slug}-latex.md + its {slug}/ assets are BUNDLED there via Copy-MdDeliverable, links
+        # verified at the destination — the manual copy step, codified. Absent -> unchanged.
+        [string]$DeliverableDir
     )
     $u8 = [System.Text.UTF8Encoding]::new($false)
     # the tex unpacks into a runstamped working dir BESIDE the tarball — an intermediate workflow
@@ -2144,6 +2149,10 @@ function Invoke-ArxivLatexToMarkdown {
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
+    # optional delivery shelf: bundle the standalone deliverable (md + referenced assets) and
+    # verify it there. The audit rides the return object; a dirty bundle is REPORTED, never thrown.
+    $bundle = if ($DeliverableDir) { Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir } else { $null }
+
     # oracle-counts sidecar: persist the figure/table/diagram truth INTO the tex run dir ($work =
     # .runs/{stamp}/tex, git-ignored) so the standing figure-count harness (Compare-FigureCounts) reads
     # it back with newest-run-wins, instead of the deleted ad-hoc one-off. figures_missing is the
@@ -2189,5 +2198,6 @@ function Invoke-ArxivLatexToMarkdown {
         diagrams_rendered = $rendered                  # markers swapped for images
         diagrams_png = $diag.png; diagrams_svg = $diag.svg; diagrams_marker = $diagUnrendered
         patched = $patchesApplied                       # curated-errata audit trail (op/find/replace/hits/reason) — the human-visible record
+        deliverable = $bundle                           # Copy-MdDeliverable audit when -DeliverableDir was given, else $null
     }
 }
