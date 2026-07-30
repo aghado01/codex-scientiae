@@ -26,6 +26,7 @@
 . "$PSScriptRoot/../math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
 . "$PSScriptRoot/../audits/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
 . "$PSScriptRoot/../audits/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
+. "$PSScriptRoot/../audits/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -2071,68 +2072,11 @@ function Invoke-ArxivLatexToMarkdown {
     }
     [System.IO.File]::WriteAllText((Join-Path $work "$Slug.diagrams.jsonl"), $dsb.ToString(), $u8)
 
-    # FINAL HYGIENE (STANDARDS §4) + REGISTER SAFETY, one fence-aware line walk:
-    #  - inside ``` fences: byte-verbatim (code samples keep their own blanks/tabs/spacing)
-    #  - trailing whitespace stripped (MD009); blank runs collapsed to ONE blank line (MD012)
-    #  - bare URLs wrapped <…> (MD034), trailing sentence punctuation left outside the autolink
-    #  - two ADJACENT inline spans emit `$a$$b$` — indistinguishable from a display fence to every
-    #    markdown scanner (render_check's extractor included). True display fences sit ALONE on their
-    #    line, so any mid-line unescaped `$$` is span adjacency: restore the boundary with a space.
-    $lines = [System.Collections.Generic.List[string]]::new()
-    $inFence = $false; $blankRun = 0; $lastH = 0
-    $olN = 0; $bulletRun = [System.Collections.Generic.List[int]]::new()   # nested-list repair state (see the ol-resume branch)
-    foreach ($ln in ($md -split "`n")) {
-        if ($ln -match '^```') { $inFence = -not $inFence; $blankRun = 0; $lines.Add($ln); continue }
-        if ($inFence) { $lines.Add($ln); continue }
-        $ln = ($ln -replace '\t', ' ').TrimEnd()   # hard tabs -> space (MD010); a stray tab can ride out of a restored math/alg span
-        if ($ln -eq '') { $blankRun++; if ($blankRun -gt 1) { continue }; $lines.Add(''); continue }
-        $blankRun = 0
-        if ($ln -match '^(#{1,6})\s+(.*\S)\s*$') {
-            # headings: strip trailing sentence punctuation (MD026); CLAMP level jumps deeper than one tier
-            # (§5 — an author's \subsubsection* directly under a \section misstates nesting as ##→####).
-            $lvl = $matches[1].Length
-            if ($lastH -gt 0 -and $lvl -gt $lastH + 1) { $lvl = $lastH + 1 }
-            $lastH = $lvl
-            $lines.Add(('#' * $lvl) + ' ' + ($matches[2] -replace '[.:;,]+$', ''))
-            continue
-        }
-        if ($ln -ne '$$') {
-            $ln = [regex]::Replace($ln, '(?<!\\)\$\$', '$ $')
-            $ln = [regex]::Replace($ln, '(?<![<(\[])(https?://[^\s<>()\[\]]+)', {
-                    param($m) $u = $m.Groups[1].Value; $p = ''
-                    while ($u.Length -gt 1 -and $u[-1] -in '.', ',', ';', ':') { $p = $u[-1] + $p; $u = $u.Substring(0, $u.Length - 1) }
-                    "<$u>$p" })
-            # bare e-mail -> autolink (MD034); skip if already inside <>/()/[] or a mailto:
-            $ln = [regex]::Replace($ln, '(?<![<(\[:/\w.])([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})', '<$1>')
-            # a resolved \cref number landing at line start ("14.  Alternatively…") reads as an ordered-list
-            # marker to markdown. Real items follow a blank line or another item IN SEQUENCE (n+1, or 1 for
-            # all-ones style); mid-paragraph, or mid-list out of sequence, = accident — escape it to prose.
-            if ($ln -match '^(\d+)\. ' -and $lines.Count -gt 0) {
-                $curN = [int]$matches[1]
-                $prevLn = $lines[$lines.Count - 1]
-                $escape = $false
-                if ($prevLn -ne '' -and $prevLn -notmatch '^(\d+\. |- |\* )') { $escape = $true }                       # mid-paragraph
-                elseif ($prevLn -match '^(\d+)\. ' -and $curN -ne ([int]$matches[1] + 1) -and $curN -ne 1) { $escape = $true }   # mid-list, out of sequence
-                if ($escape) { $ln = $ln -replace '^(\d+)\. ', '$1\. ' }
-                else {
-                    # NESTED-LIST REPAIR: dedent/reflow flattens LaTeX nesting, so an itemize inside an
-                    # enumerate emits flat bullets that SPLIT the ordered list. When item N+1 resumes after
-                    # a bullet run, those bullets belong UNDER item N — retro-indent them (md continuation).
-                    if ($curN -eq $olN + 1 -and $bulletRun.Count -gt 0) {
-                        foreach ($bi in $bulletRun) { $lines[$bi] = '    ' + $lines[$bi] }
-                    }
-                    $olN = $curN; $bulletRun.Clear()
-                }
-            }
-            elseif ($ln -match '^- ' -and $olN -gt 0) { $bulletRun.Add($lines.Count) }   # candidate nested bullets (index of the line about to be added)
-            elseif ($ln -ne '' -and $ln -notmatch '^(\d+[.\\]|- |\* )' -and $olN -gt 0 -and $bulletRun.Count -eq 0) { $olN = 0 }   # prose after the list closes it (bullets pending stay: item text continuation)
-            # heading-level clamp (§5): a jump deeper than one level (## -> ####, author skipping a tier)
-            # misstates nesting — demote to parent+1. (Heading lines are handled in their own branch above,
-            # so track the last heading seen from there.)
-        }
-        $lines.Add($ln)
-    }
-    $md = (($lines -join "`n").TrimEnd()) + "`n"
+    # FINAL HYGIENE (STANDARDS §4) + REGISTER SAFETY — the shared emission walk (audits/md-hygiene.ps1):
+    # fence-verbatim; MD009/MD010/MD012 whitespace; MD026 heading punctuation + level clamp; MD034
+    # autolinks; `$a$$b$` span-adjacency repair; ordered-list accident/nesting repair. Extracted from
+    # the inline walk that lived here — the rules are target-register properties, not LaTeX ones.
+    $md = Format-MdHygiene -Markdown $md
 
     # OUTPUT-phase errata (converter-output quirks with no clean TeX-space handle) — last transform,
     # applied to the near-emission text so a human authors find-strings against what the deliverable shows.
