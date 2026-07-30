@@ -23,6 +23,7 @@
 . "$PSScriptRoot/../pdf-raster.ps1" # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 . "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
+. "$PSScriptRoot/../math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -861,6 +862,11 @@ function Store-Math {
     # inner math is ALWAYS \(..\). One unambiguous register for every consumer.
     $Content = [regex]::Replace($Content, '(?<!\\)\$(.+?)(?<!\\)\$', '\($1\)',
         [System.Text.RegularExpressions.RegexOptions]::Singleline)
+    # REGISTER CANONICALIZATION (math-register spec §4–§5), LAST, after every structural transform
+    # above, so the oracle deliverable is born canonical: \operatorname lowered to \mathrm, alias
+    # spellings collapsed (\ge -> \geq), §4.2 furniture dropped, raw glyphs spelled as control
+    # sequences. Diagram spans diverted above never reach this (their source must stay compilable).
+    $Content = ConvertTo-RegisterMath -Latex $Content -Inline:(-not $Display)
     # display fenced on its own lines; inline collapses source line-breaks so a span never crosses a blank line
     $script:LtxMathStore[$id] = if ($Display) { "`n`$`$`n$($Content.Trim())`n`$`$`n" } else { '$' + (($Content -replace '\s*\r?\n\s*', ' ').Trim()) + '$' }
     return $id

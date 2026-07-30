@@ -508,12 +508,13 @@ function Invoke-RepairApply {
         # staged (mid multi-step repair), not discarded.
         if (Get-CorruptionType ([pscustomobject]@{ type = $c.type; content = [string]$p.content })) { $held++; continue }
         # deterministic content-tier normalization of the agent's edit — the SAME pass the normalize
-        # stage runs on docling content. An agent repairing a formula naturally types \mathbb / loose
-        # spacing / bare-& alignment; tidy it on the way in so the chunk stream stays minimal and the
+        # stage runs on docling content. An agent repairing a formula naturally types loose spacing /
+        # bare-& alignment; tidy it on the way in so the chunk stream stays minimal and the
         # deliverable needs no separate md-cleanup pass (md-cleanup is then a verifier, not a fixer).
+        # Alphabet macros (\mathbb/\mathcal/\mathfrak) are notation and are KEPT (register spec §8.1).
         $newContent = [string]$p.content
         if ([string]$c.type -eq 'formula') {
-            $newContent = Repair-MathAlignment (Convert-MathToLatex (Optimize-MathContent $newContent @('mathbb')))
+            $newContent = Repair-MathAlignment (ConvertTo-RegisterMath (Convert-MathToLatex (Optimize-MathContent $newContent @())))
         }
         $audit.Add([pscustomobject][ordered]@{
             id = [int]$c.id; source = [string]$p.source

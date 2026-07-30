@@ -99,15 +99,14 @@ function Invoke-MarkdownCleanup {
     $work = $orig
     if (-not $LigaturesOnly) {
     $work = [regex]::Replace($work, '(?ms)^```.*?^```', $protect)        # fenced code
-    # \mathbb is styling we never want (minimalism) — strip it everywhere; code is already protected,
-    # and stripping globally catches the copies the $$-pairing misses in malformed structure.
-    $work = [regex]::Replace($work, '\\mathbb\s*\{\s*([^{}]*?)\s*\}', '$1')
-    $work = [regex]::Replace($work, '\\mathbb\s+([A-Za-z])', '$1')
-    # display math: minimalise (de-space, strip \mathbb, unicode->LaTeX), then protect from later passes.
-    # Balance is untouched, so a broken block stays broken and still surfaces in the closure scanner.
+    # (the old global \mathbb strip is GONE: alphabet macros are notation-bearing and retained
+    # unconditionally — math-register spec §4.1/§8.1 reverses the minimalism-era default.)
+    # display math: minimalise (de-space, unicode->LaTeX, register-canonicalize), then protect from
+    # later passes. Balance is untouched, so a broken block stays broken and still surfaces in the
+    # closure scanner.
     $work = [regex]::Replace($work, '(?s)\$\$(.+?)\$\$', {
         param($m)
-        $rebuilt = '$$' + "`n" + (Repair-MathAlignment (Convert-MathToLatex (Optimize-MathContent $m.Groups[1].Value @('mathbb')))) + "`n" + '$$'
+        $rebuilt = '$$' + "`n" + (Repair-MathAlignment (ConvertTo-RegisterMath (Convert-MathToLatex (Optimize-MathContent $m.Groups[1].Value @())))) + "`n" + '$$'
         if ($rebuilt -ne $m.Value) { $script:mdTight++ }
         $script:mdStore.Add($rebuilt); "$marker$($script:mdStore.Count - 1)$marker"
     })
@@ -118,7 +117,7 @@ function Invoke-MarkdownCleanup {
     $work = [regex]::Replace($work, '\$[^$\n]+\$', {
         param($m)
         $inner = $m.Value.Substring(1, $m.Value.Length - 2)
-        $clean = '$' + (Convert-MathToLatex (Optimize-MathContent $inner @('mathbb'))) + '$'
+        $clean = '$' + (ConvertTo-RegisterMath -Latex (Convert-MathToLatex (Optimize-MathContent $inner @())) -Inline) + '$'
         if ($clean -ne $m.Value) { $script:mdTight++ }
         $script:mdStore.Add($clean); "$marker$($script:mdStore.Count - 1)$marker"
     })

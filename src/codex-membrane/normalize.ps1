@@ -6,8 +6,10 @@
   judgment calls — never mechanical toil:
 
   * Math de-spacing — Docling space-tokenizes LaTeX (`\frac { d + 1 } { 2 }`); tighten braces
-    and sub/superscripts back to compact form, and strip blackboard-bold and other font-only
-    macros (`\mathbb { E }` -> `E`). The pre-image is kept in content_raw — every change reversible.
+    and sub/superscripts back to compact form, then canonicalize into the math register
+    (src/math-register.ps1). Alphabet macros (\mathbb/\mathcal/\mathfrak) are RETAINED — they are
+    notation, not styling (spec §4.1/§8.1; reverses the old default). The pre-image is kept in
+    content_raw — every change reversible.
 
   * Inline math — the extractor space-separates every math glyph (`π ( Z ) ≥ c 0`) while prose
     keeps words and punctuation glued (`(finite)`, `constant.`); a run of single-glyph tokens
@@ -26,6 +28,7 @@
 
 . "$PSScriptRoot/../jsonl.ps1"
 . "$PSScriptRoot/../latex-ingest/latex.ps1"   # Test-AlignmentOutsideEnv (the predicate Repair-MathAlignment fixes against)
+. "$PSScriptRoot/../math-register.ps1"        # ConvertTo-RegisterMath + the shared glyph table ($script:MathLatex/Rx, Convert-MathToLatex)
 
 # Compact a span of space-tokenized LaTeX: drop font-only macros, then tighten the delimiters the
 # tokenizer loosened. Conservative — only braces and sub/superscripts close up; spaces separating a
@@ -61,21 +64,9 @@ function Optimize-MathContent([string]$Latex, [string[]]$StripMacros) {
 
 $script:MathFunc = @('exp','log','ln','sin','cos','tan','sec','csc','cot','sinh','cosh','tanh','max','min','sup','inf','lim','det','tr','Pr','Vol','arg','dim','ker','rank','diag','sign','mod','gcd','lcm','vec','Var','Cov')
 
-# Unicode -> LaTeX, built BY CODEPOINT at runtime so source-file Unicode normalisation can't fold a
-# variant Greek glyph onto the wrong (or duplicate) key. A symbol absent from the table falls through
-# unchanged, so the worst case is a still-rendering unicode char, never a broken one.
-# Ordinal (case-sensitive) — a default @{} hashtable folds λ/Λ, π/ϖ, ε/ϵ onto one key.
-$script:MathLatex = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
-$gl = 'alpha','beta','gamma','delta','varepsilon','zeta','eta','theta','iota','kappa','lambda','mu','nu','xi','o','pi','rho','varsigma','sigma','tau','upsilon','phi','chi','psi','omega'
-for ($i = 0; $i -lt $gl.Count; $i++) { $script:MathLatex[([char](0x03B1 + $i)).ToString()] = $(if ($gl[$i] -eq 'o') { 'o' } else { '\' + $gl[$i] }) }
-$byCode = @{
-    0x0393='\Gamma'; 0x0394='\Delta'; 0x0398='\Theta'; 0x039B='\Lambda'; 0x039E='\Xi'; 0x03A0='\Pi'; 0x03A3='\Sigma'; 0x03A5='\Upsilon'; 0x03A6='\Phi'; 0x03A8='\Psi'; 0x03A9='\Omega'
-    0x03D1='\vartheta'; 0x03D5='\varphi'; 0x03D6='\varpi'; 0x03F0='\varkappa'; 0x03F1='\varrho'; 0x03F5='\epsilon'
-    0x2208='\in'; 0x2209='\notin'; 0x2282='\subset'; 0x2286='\subseteq'; 0x2283='\supset'; 0x2287='\supseteq'; 0x222A='\cup'; 0x2229='\cap'; 0x221E='\infty'; 0x00B1='\pm'; 0x2213='\mp'; 0x00D7='\times'; 0x00F7='\div'; 0x2264='\leq'; 0x2265='\geq'; 0x2260='\neq'; 0x2248='\approx'; 0x223C='\sim'; 0x2243='\simeq'; 0x2245='\cong'; 0x2261='\equiv'; 0x2192='\to'; 0x2190='\gets'; 0x21A6='\mapsto'; 0x21D2='\Rightarrow'; 0x21D4='\Leftrightarrow'; 0x2200='\forall'; 0x2203='\exists'; 0x2207='\nabla'; 0x2202='\partial'; 0x2211='\sum'; 0x220F='\prod'; 0x222B='\int'; 0x221A='\sqrt'; 0x221D='\propto'; 0x2295='\oplus'; 0x2297='\otimes'; 0x2216='\setminus'; 0x2205='\emptyset'; 0x2227='\wedge'; 0x2228='\vee'; 0x00AC='\neg'; 0x2218='\circ'; 0x27E8='\langle'; 0x27E9='\rangle'; 0x2225='\|'; 0x22C5='\cdot'; 0x00B7='\cdot'; 0x2026='\dots'; 0x225C='\triangleq'; 0x226A='\ll'; 0x226B='\gg'; 0x230A='\lfloor'; 0x230B='\rfloor'; 0x2308='\lceil'; 0x2309='\rceil'; 0x2212='-'; 0x2217='*'; 0x22C6='\star'; 0x2032="'"
-    0x2193='\downarrow'; 0x2191='\uparrow'; 0x2206='\Delta'; 0x224D='\asymp'; 0x2272='\lesssim'; 0x2273='\gtrsim'; 0x22A4='\top'; 0x22A5='\perp'; 0x2AB0='\succeq'; 0x2AAF='\preceq'; 0x2223='\mid'
-}
-foreach ($k in $byCode.Keys) { $script:MathLatex[([char]$k).ToString()] = $byCode[$k] }
-$script:MathLatexRx = [regex]('(' + (($script:MathLatex.Keys | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')')
+# The Unicode -> LaTeX codepoint table ($script:MathLatex / $script:MathLatexRx) and
+# Convert-MathToLatex moved to src/math-register.ps1 (dot-sourced above) — one glyph mapping
+# shared by both conversion lanes (spec §5). Everything below still reads them from script scope.
 
 # Prose-context overlay for math_dirt — subtract from the un-wrapped residual so biochemistry /
 # unit / disjunctive prose mentions do not inflate the density gate. Same mask feeds
@@ -103,18 +94,6 @@ function Get-MathDirtResidualMask([string]$Content) {
 function Get-MathDirt([string]$Content) {
     if (-not $Content) { return 0 }
     return (Get-MaskDensity -Text $Content -Within (Get-MathDirtResidualMask $Content) -Register $script:MathLatexRx)
-}
-
-# Convert the unicode in a wrapped run to LaTeX. Each mapped symbol gets a trailing space so a command
-# can't fuse with the next token (\Lambda x, never \Lambdax); runs of space then collapse.
-function Convert-MathToLatex([string]$s) {
-    $r = $script:MathLatexRx.Replace($s, {
-        param($m)
-        $v = $null
-        if ($script:MathLatex.TryGetValue($m.Value, [ref]$v)) { return $v + ' ' }
-        return $m.Value
-    })
-    return (($r -replace '\s{2,}', ' ').Trim())
 }
 
 # Alignment tabs (&) are a KaTeX/MathJax parse error OUTSIDE an alignment environment — docling
@@ -377,7 +356,9 @@ function Invoke-Normalize {
     param(
         [Parameter(Mandatory)] [string] $ChunksPath,
         [string] $NodesPath,
-        [string[]] $StripMacros = @('mathbb'),
+        # DEFAULT REVERSED (spec §8.1): alphabet macros are notation-bearing and are never stripped.
+        # The knob survives for callers with a stated reason; empty means faithful.
+        [string[]] $StripMacros = @(),
         # 'opendataloader' (docling) needs the flattened-inline-math RECONSTRUCTION (space-separated
         # glyph runs -> $...$, script reconstruction). The pig lane already emits $-wrapped inline math
         # with correct advance-metric spacing, so that pass only corrupts it (un-gluing "[1]"->"[ 1 ]").
@@ -412,7 +393,7 @@ function Invoke-Normalize {
             $orig  = [string]$c.content
             $clean = Get-UnbledFormula $chunks $i
             if ($clean -ne $orig) { $unbled++ }
-            $norm = Repair-MathAlignment (Convert-MathToLatex (Optimize-MathContent $clean $StripMacros))   # un-bled, de-spaced, unicode -> LaTeX, alignment-wrapped
+            $norm = Repair-MathAlignment (ConvertTo-RegisterMath (Convert-MathToLatex (Optimize-MathContent $clean $StripMacros)))   # un-bled, de-spaced, unicode -> LaTeX, register-canonical, alignment-wrapped
             if ($norm -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $norm; $mathFixed++ }
             $formulaContents.Add([string]$c.content)
             continue
@@ -430,9 +411,10 @@ function Invoke-Normalize {
             # pig lane: inline math is already $-wrapped by the converter (geometry) — do NOT
             # re-detect/re-tokenize (that spaces citations); only tighten the existing spans below.
             $wrapped = if ($reconstructInline) { Repair-InlineScripts (ConvertTo-InlineMath $orig) $vocab } else { $orig }
-            # tighten the inline spans the same way display math is tightened (de-space braces, strip
-            # \mathbb) — otherwise pre-wrapped set-builder notation keeps its OCR spacing, e.g. "{ X }".
-            $wrapped = [regex]::Replace($wrapped, '\$[^$\n]+\$', { param($m) '$' + (Optimize-MathContent ($m.Value.Substring(1, $m.Value.Length - 2)) @('mathbb')) + '$' })
+            # tighten the inline spans the same way display math is tightened (de-space braces, then
+            # register-canonicalize) — otherwise pre-wrapped set-builder notation keeps its OCR
+            # spacing, e.g. "{ X }". \mathbb et al. are retained (spec §8.1).
+            $wrapped = [regex]::Replace($wrapped, '\$[^$\n]+\$', { param($m) '$' + (ConvertTo-RegisterMath -Latex (Optimize-MathContent ($m.Value.Substring(1, $m.Value.Length - 2)) @()) -Inline) + '$' })
             if ($wrapped -ne $orig) { $c | Add-Member -NotePropertyName content_raw -NotePropertyValue $orig -Force; $c.content = $wrapped; $inlineFixed++ }
             # dirt signal: Density(MathLatexRx, Sub(Complement($…$), prose_context)) — the named
             # mask-algebra instance; prose-context subtracts α-helix / unit / disjunctive mentions.

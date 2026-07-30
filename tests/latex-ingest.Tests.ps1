@@ -65,7 +65,7 @@ Describe 'algorithmic -> nested list (never a fence): math live, keywords bold' 
         $md | Should -BeLike '*- $y_{i+1} \gets \mathbf{A} x_i^2$*'
     }
     It 'bolds scaffold keywords and nests by depth (2-space bullet indent)' {
-        $md | Should -BeLike '*- **if** $d(v) \ge \tau$ **then***'
+        $md | Should -BeLike '*- **if** $d(v) \geq \tau$ **then***'
         $md | Should -Match '(?m)^  - \*\*return\*\* \$x_i\$$'
         $md | Should -Match '(?m)^- \*\*end if\*\*$'
     }
@@ -209,7 +209,7 @@ Describe 'pipeline hygiene' {
     }
     It 'body math (inline + display) is unaffected' {
         $md | Should -BeLike '*$y_{i+1} = \mathbf{A} x_i^2$*'
-        $md | Should -Match '(?s)\$\$\s*\nd\(v\) \\ge \\tau\s*\n\$\$'
+        $md | Should -Match '(?s)\$\$\s*\nd\(v\) \\geq \\tau\s*\n\$\$'   # \ge alias-canonicalized to \geq (register §4.3)
     }
 }
 
