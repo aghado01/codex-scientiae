@@ -1,0 +1,21 @@
+{
+  "version": "0.1.0",
+  "description": "Layout seam for the codex-zenodo acquisition server. The Zenodo record ID or DOI is the primary key; layout is fluid and re-pointable without touching code. 'staging_root' is relative to the repo root unless absolute.",
+  "placeholders": {
+    "{id}": "Zenodo record ID, e.g. 1234567",
+    "{slug}": "the 'slug' template below, expanded then sanitized (e.g. zenodo_1234567)",
+    "{year}": "publication year, e.g. 2026"
+  },
+  "staging_root": "ingestion/_inbox",
+  "slug": "zenodo_{id}",
+  "layout": {
+    "dir": "{slug}",
+    "pdf": "{slug}/{slug}.pdf",
+    "source": "{slug}/{slug}.tar.gz",
+    "metadata": "{slug}/{slug}.zenodo.json"
+  },
+  "_notes": [
+    "Metadata is named '{slug}.zenodo.json' (NOT '{slug}.json') so staged files do not trip raw-IR discovery before conversion.",
+    "Files downloaded from Zenodo are verified against the record's native md5 checksum."
+  ]
+}

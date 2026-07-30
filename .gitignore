@@ -5,6 +5,8 @@
 *.ipynb_checkpoints
 **scratch/**
 
+LOCAL.md
+
 .legacy
 lib/
 

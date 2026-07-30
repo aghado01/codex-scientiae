@@ -173,7 +173,8 @@ function Get-ArxivConfig {
 # the template's own '/' are the only separators that survive expansion.
 function Get-ArxivPlaceholders {
     param([pscustomobject]$Meta)
-    $parts = Split-ArxivId $Meta.id
+    $targetId = if ($Meta.idv) { $Meta.idv } else { $Meta.id }
+    $parts = Split-ArxivId $targetId
     $year  = if ($Meta.published -match '^(\d{4})') { $Matches[1] } else { '' }
     return @{
         '{id}'                = ConvertTo-ArxivPathSlug $parts.Short

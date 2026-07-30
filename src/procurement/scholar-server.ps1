@@ -25,6 +25,8 @@ param(
 . "$PSScriptRoot/semanticscholar.ps1"
 . "$PSScriptRoot/arxiv.ps1"           # arXiv search/metadata + Invoke-ArxivFetch (acquisition hand-off)
 . "$PSScriptRoot/arxiv-adapter.ps1"   # arXiv -> Work adapter
+. "$PSScriptRoot/zenodo.ps1"          # Zenodo search/metadata
+. "$PSScriptRoot/zenodo-adapter.ps1"  # Zenodo -> Work adapter
 . "$PSScriptRoot/scihub-get.ps1"      # DOI -> PDF fetcher (acquire's route=doi)
 
 $ProgressPreference = 'SilentlyContinue'
@@ -47,9 +49,9 @@ $rawArxivRoot = [string]$ArxivConfig.staging_root
 $ArxivStagingRoot = if ([System.IO.Path]::IsPathRooted($rawArxivRoot)) { [System.IO.Path]::GetFullPath($rawArxivRoot) } else { [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawArxivRoot)) }
 $ScihubConfig = Get-ScihubConfig -Path (Join-Path $PSScriptRoot 'scihub-mirrors.json')   # DOI fetcher mirror list
 
-$SourceEnumAll  = @('openalex', 'semanticscholar', 'arxiv', 'all')   # discover_search (search sources + fan)
-$SourceEnumOne  = @('openalex', 'semanticscholar')                   # discover_related / resolve_doi (graph/DOI only)
-$SourceEnumWork = @('openalex', 'semanticscholar', 'arxiv')          # get_work
+$SourceEnumAll  = @('openalex', 'semanticscholar', 'arxiv', 'zenodo', 'all')   # discover_search (search sources + fan)
+$SourceEnumOne  = @('openalex', 'semanticscholar')                             # discover_related / resolve_doi (graph/DOI only)
+$SourceEnumWork = @('openalex', 'semanticscholar', 'arxiv', 'zenodo')          # get_work
 
 # --- tool catalogue ---
 $Tools = @(
@@ -118,12 +120,13 @@ function Invoke-Tool([string]$name, $arguments) {
                     # fan across all sources, dedup+merge; ANY single source failing (e.g. an S2 429 or a
                     # transient blip) is noted per-source, never sinks the whole search.
                     $perSource = @(); $all = @()
-                    foreach ($srcName in @('openalex', 'semanticscholar', 'arxiv')) {
+                    foreach ($srcName in @('openalex', 'semanticscholar', 'arxiv', 'zenodo')) {
                         try {
                             $pg = switch ($srcName) {
                                 'openalex'        { OpenAlex-Search -Query $q -Filters $filters -Start $start -PerPage $max }
                                 'semanticscholar' { SemanticScholar-Search -Query $q -Start $start -Limit $max }
                                 'arxiv'           { Arxiv-Search -Query $q -Start $start -Limit $max }
+                                'zenodo'          { Zenodo-Search -Query $q -Start $start -Limit $max }
                             }
                             $perSource += [pscustomobject]@{ source = $srcName; total_available = $pg.total_available; returned = $pg.returned }
                             $all += @($pg.works)
@@ -161,6 +164,7 @@ function Invoke-Tool([string]$name, $arguments) {
             $out = switch ($src) {
                 'semanticscholar' { SemanticScholar-GetWork $id }
                 'arxiv'           { Arxiv-GetWork $id }
+                'zenodo'          { Zenodo-GetWork $id }
                 default           { OpenAlex-GetWork $id }
             }
         }
