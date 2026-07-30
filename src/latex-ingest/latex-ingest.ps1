@@ -27,6 +27,7 @@
 . "$PSScriptRoot/../audits/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
 . "$PSScriptRoot/../audits/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
 . "$PSScriptRoot/../audits/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
+. "$PSScriptRoot/latex-math-store.ps1"     # store-driven math lowering + out-of-band evidence tracking
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -869,7 +870,8 @@ function Store-Math {
     # above, so the oracle deliverable is born canonical: \operatorname lowered to \mathrm, alias
     # spellings collapsed (\ge -> \geq), §4.2 furniture dropped, raw glyphs spelled as control
     # sequences. Diagram spans diverted above never reach this (their source must stay compilable).
-    $Content = ConvertTo-RegisterMath -Latex $Content -Inline:(-not $Display)
+    # Store-driven evidence lowering tracks source evidence out-of-band during conversion.
+    $Content = Invoke-LatexMathStoreLowering -Latex $Content -SpanId $id -EvidenceLedger $script:LtxEvidenceLedger -Inline:(-not $Display)
     # display fenced on its own lines; inline collapses source line-breaks so a span never crosses a blank line
     $script:LtxMathStore[$id] = if ($Display) { "`n`$`$`n$($Content.Trim())`n`$`$`n" } else { '$' + (($Content -replace '\s*\r?\n\s*', ' ').Trim()) + '$' }
     return $id
@@ -877,6 +879,7 @@ function Store-Math {
 function Protect-LatexMath {
     param([string]$Text)
     $script:LtxMathStore = @{}; $script:LtxMathIdx = 0
+    $script:LtxEvidenceLedger = New-LatexEvidenceLedger
     $SL = [System.Text.RegularExpressions.RegexOptions]::Singleline
     # $$-display handling is the TEX-FAITHFUL scanner, NOT a regex — a global '$$(.*?)$$' here re-corrupts
     # adjacent inline delimiters ($($$x$…) that Convert-DisplayDollars deliberately left alone. Idempotent,

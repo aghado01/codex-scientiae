@@ -2,7 +2,7 @@
 # The shared TOC primitives (src/audits/md-toc.ps1): the ONE slug engine (Get-MdAnchor), the
 # fence-aware heading scan, the hierarchical Contents-block builder, and in-text insert/refresh.
 # Coverage: slug edge cases, indentation-per-level, fence awareness, insert-before-first-H2,
-# in-place refresh of a stale block, no-op guarantees, and idempotency.
+# in-place refresh of a stale block, no-op guarantees, idempotency, and byte-spanned sidecars.
 
 BeforeAll {
     . "$PSScriptRoot/../src/audits/md-toc.ps1"
@@ -88,5 +88,41 @@ Describe 'Set-MdContentsBlock — insert or refresh in text' {
     It 'a fenced ## line is never an insertion point or an entry' {
         $fenced = "# T`n`n" + '```' + "`n## fake`n" + '```' + "`nProse.`n"
         Set-MdContentsBlock $fenced | Should -BeExactly $fenced
+    }
+}
+
+Describe 'Byte-Spanned TOC Sidecar (New-MdTocSidecar & Export-MdTocSidecar)' {
+    BeforeAll {
+        $script:tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) "md-toc-tests-$(Get-Random)"
+        New-Item -ItemType Directory -Force -Path $script:tmpDir | Out-Null
+        $script:sampleMd = Join-Path $script:tmpDir "sample-latex.md"
+        [System.IO.File]::WriteAllText($script:sampleMd, $script:doc, [System.Text.UTF8Encoding]::new($false))
+    }
+
+    AfterAll {
+        if (Test-Path -LiteralPath $script:tmpDir) { Remove-Item -Recurse -Force $script:tmpDir }
+    }
+
+    It 'calculates exact byte spans and builds Tree Manifest sidecar' {
+        $sidecar = New-MdTocSidecar -MarkdownPath $script:sampleMd -Title "A Paper" -Slug "sample"
+        $sidecar | Should -Match '---'
+        $sidecar | Should -Match 'title: "A Paper"'
+        $sidecar | Should -Match 'slug: "sample"'
+        $sidecar | Should -Match 'file_bytes:'
+        $sidecar | Should -Match '# Tree Manifest & TOC Entrypoint'
+        $sidecar | Should -Match '## Contents & Byte-Spanned Tree'
+        $sidecar | Should -Match '(?m)^- \[Introduction\]\(sample-latex\.md#introduction\) — \(bytes \d+\.\.\d+, \d+ bytes, ~\d+ tokens\)'
+        $sidecar | Should -Match '(?m)^  - \[Prior work\]\(sample-latex\.md#prior-work\) — \(bytes \d+\.\.\d+, \d+ bytes, ~\d+ tokens\)'
+    }
+
+    It 'exports {slug}-tree.md and {slug}.toc.jsonl sidecar files' {
+        $res = Export-MdTocSidecar -MarkdownPath $script:sampleMd -OutDir $script:tmpDir -Slug "sample"
+        Test-Path -LiteralPath $res.toc_md | Should -BeTrue
+        Test-Path -LiteralPath $res.toc_jsonl | Should -BeTrue
+        $res.entries | Should -Be 4
+
+        $jsonl = Get-Content -LiteralPath $res.toc_jsonl -Raw
+        $jsonl | Should -Match '"anchor":"introduction"'
+        $jsonl | Should -Match '"byte_start":'
     }
 }

@@ -11,6 +11,8 @@
   hand-edited markdown alike, because it reads only the document and its links.
 #>
 
+. "$PSScriptRoot/md-toc.ps1"   # Export-MdTocSidecar — standalone byte-spanned TOC sidecar primitive
+
 $script:BundleUtf8 = [System.Text.UTF8Encoding]::new($false)
 
 # Relative image-link targets in markdown TEXT, reading order, deduped. Web/data URIs, absolute
@@ -61,6 +63,9 @@ function Copy-MdDeliverable {
     if ($srcPath -ne [System.IO.Path]::GetFullPath($mdOut)) {
         Copy-Item -LiteralPath $srcPath -Destination $mdOut -Force
     }
+
+    # Emit standalone byte-spanned TOC sidecars ({slug}-toc.md and {slug}.toc.jsonl) on the shelf
+    $tocSidecar = Export-MdTocSidecar -MarkdownPath $mdOut -OutDir $destDirFull
 
     # post-copy verification at the DESTINATION — the shipped bundle is what gets checked
     $broken = [System.Collections.Generic.List[string]]::new()
