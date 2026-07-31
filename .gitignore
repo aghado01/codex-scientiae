@@ -4,6 +4,14 @@
 *.vscode
 *.ipynb_checkpoints
 **scratch/**
+artifacts/*
+
+.obsidian
+.copilot
+.gemini
+.claude
+.codex
+.antigravity
 
 LOCAL.md
 
