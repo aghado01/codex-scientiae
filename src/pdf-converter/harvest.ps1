@@ -22,8 +22,10 @@
     Export-BenchmarkTrial -Chunk <flagged chunk> -PaperDir <dir> -Slug <slug> -LibraryPath <trials.jsonl>
 #>
 
-. "$PSScriptRoot/pdf-converter/math-assembler.ps1"   # Measure-DelimiterBalance
-. "$PSScriptRoot/pdf-converter/math-evidence.ps1"    # Get-ChunkMathEvidence (the problem's geometry)
+# $PSScriptRoot IS src/pdf-converter since the reorg moved this file in — the old 'pdf-converter/' prefix
+# doubled the path and made every load of this module fail.
+. "$PSScriptRoot/math-assembler.ps1"   # Measure-DelimiterBalance
+. "$PSScriptRoot/math-evidence.ps1"    # Get-ChunkMathEvidence (the problem's geometry)
 
 # difficulty tags from what's cheaply on the chunk — content-only, no geometry load. Difficulty is a
 # HEURISTIC score (calibrate against solve-rates later); has_oracle is a supervision axis, not difficulty.

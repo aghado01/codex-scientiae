@@ -1,13 +1,13 @@
 #requires -Version 7.0
 <#
-  tests/benchmark.Tests.ps1 — opportunistic repair-problem harvest (src/benchmark.ps1):
+  tests/benchmark.Tests.ps1 — opportunistic repair-problem harvest (src/pdf-converter/harvest.ps1):
   difficulty tagging + the uniqueness gate (keep novel / keep under-cap / keep different-difficulty /
   skip redundant). The gate is NOT dedup — redundancy is allowed to a cap, and difficulty-diversity
   is kept even at high content similarity.
 #>
 
 BeforeAll {
-    . "$PSScriptRoot/../src/benchmark.ps1"
+    . "$PSScriptRoot/../src/pdf-converter/harvest.ps1"
     function Sig([string]$s) { Get-ContentSignature $s }
     function Existing([string]$id, [string]$tier, [string]$content) {
         [pscustomobject]@{ id = $id; tier = $tier; signature = (Sig $content) }
