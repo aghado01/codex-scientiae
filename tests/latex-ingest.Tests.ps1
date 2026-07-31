@@ -202,7 +202,7 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         Push-Location $src
         try { tar -czf ([System.IO.Path]::GetRelativePath($src, $archive)) . } finally { Pop-Location }
 
-        $r1 = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -RepoRoot $repo
+        $r1 = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -ArtifactsRoot (Join-Path $repo 'artifacts')
         $staged = Join-Path $root 'q-latex'
         Test-Path (Join-Path $staged 'main.tex') | Should -BeTrue          # unpacked beside the archive
 
@@ -217,7 +217,7 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         # which is exactly the iterate-on-staged-source affordance the switch exists for
         $sentinel = Join-Path $staged 'sentinel.txt'
         [System.IO.File]::WriteAllText($sentinel, 'kept', [System.Text.UTF8Encoding]::new($false))
-        $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -RepoRoot $repo -ReuseSource
+        $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -ArtifactsRoot (Join-Path $repo 'artifacts') -ReuseSource
         Test-Path $sentinel | Should -BeTrue
         @(Get-ChildItem $runs -Directory).Count | Should -BeGreaterThan 1   # still a NEW run each call
 

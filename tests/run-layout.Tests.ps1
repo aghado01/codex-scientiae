@@ -291,8 +291,8 @@ Describe 'run layout — artifacts/{module}/runs (the current convention)' {
         $repo = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Force -Path $repo | Out-Null
         try {
-            $a = New-ModuleRunDir -Module 'latex-ingest' -Slug 'demo' -RepoRoot $repo
-            $b = New-ModuleRunDir -Module 'latex-ingest' -Slug 'demo' -RepoRoot $repo
+            $a = New-ModuleRunDir -Module 'latex-ingest' -Slug 'demo' -ArtifactsRoot (Join-Path $repo 'artifacts')
+            $b = New-ModuleRunDir -Module 'latex-ingest' -Slug 'demo' -ArtifactsRoot (Join-Path $repo 'artifacts')
             $a | Should -Not -Be $b                      # same-second calls must not share a dir
             Test-Path $a | Should -BeTrue
             Test-Path $b | Should -BeTrue
@@ -311,11 +311,11 @@ Describe 'run layout — artifacts/{module}/runs (the current convention)' {
         }
         New-Item -ItemType Directory -Force -Path (Join-Path $runsRoot '20260401_000000' 'beta') | Out-Null
         try {
-            $got = @(Get-ModuleRunDirs -Module 'latex-ingest' -Slug 'alpha' -RepoRoot $repo)
+            $got = @(Get-ModuleRunDirs -Module 'latex-ingest' -Slug 'alpha' -ArtifactsRoot (Join-Path $repo 'artifacts'))
             $got.Count | Should -Be 3
             (Split-Path -Leaf (Split-Path -Parent $got[0])) | Should -Be '20260301_000000'   # newest wins
             (Split-Path -Leaf (Split-Path -Parent $got[-1])) | Should -Be '20260101_000000'
-            @(Get-ModuleRunDirs -Module 'latex-ingest' -Slug 'ghost' -RepoRoot $repo).Count | Should -Be 0
+            @(Get-ModuleRunDirs -Module 'latex-ingest' -Slug 'ghost' -ArtifactsRoot (Join-Path $repo 'artifacts')).Count | Should -Be 0
         }
         finally { Remove-Item -LiteralPath $repo -Recurse -Force -ErrorAction SilentlyContinue }
     }

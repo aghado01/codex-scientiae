@@ -2099,13 +2099,15 @@ function Invoke-ArxivLatexToMarkdown {
         #                    default: {archive-dir}/{slug}-latex  (beside the archive, so curated
         #                    groups keep their work in their own folder)
         #   -RunDir          where THIS run's regenerable artifacts land (oracle counts, …)
-        #                    default: {RepoRoot}/artifacts/latex-ingest/runs/{stamp}/{slug}
-        #   -RepoRoot        coarse base for the default -RunDir only; ignored when -RunDir is given
+        #                    default: {ArtifactsRoot}/latex-ingest/runs/{stamp}/{slug}
+        #   -ArtifactsRoot   the artifacts TIER — the dir runs live under, not its parent. Only shifts
+        #                    the DEFAULT -RunDir; ignored when -RunDir is given.
+        #                    default: {this repo}/artifacts
         #   -OutDir          lane deliverable ({slug}-latex.md + {slug}/ assets)   [above, mandatory]
         #   -DeliverableDir  bundle shelf                                          [above, optional]
         [string]$SourceWorkDir = '',
         [string]$RunDir = '',
-        [string]$RepoRoot = '',
+        [string]$ArtifactsRoot = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc
@@ -2134,7 +2136,7 @@ function Invoke-ArxivLatexToMarkdown {
         $d = [System.IO.Path]::GetFullPath($RunDir)
         New-Item -ItemType Directory -Force -Path $d | Out-Null
         $d
-    } else { New-ModuleRunDir -Module 'latex-ingest' -Slug $Slug -RepoRoot $RepoRoot }
+    } else { New-ModuleRunDir -Module 'latex-ingest' -Slug $Slug -ArtifactsRoot $ArtifactsRoot }
     $haveSource = (Test-Path -LiteralPath $work -PathType Container) -and
                   @(Get-ChildItem -LiteralPath $work -Recurse -File -Filter *.tex -ErrorAction SilentlyContinue).Count -gt 0
     if ($ReuseSource -and $haveSource) {

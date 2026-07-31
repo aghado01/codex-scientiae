@@ -43,17 +43,18 @@ function Get-LatestChunks([string]$PaperDir, [string]$Slug) {
 #
 # This breaks symmetry with the pig/gauntlet lanes, which still use {paper}/.runs. That is intentional
 # while pdf conversion is shelved; it gets rebuilt onto this layout when that work resumes.
-function Get-ArtifactsRoot([string]$RepoRoot = '') {
-    if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
-        $RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-    }
-    return (Join-Path $RepoRoot 'artifacts')
+# The artifacts TIER itself — the directory runs live under, never its parent. Callers name this
+# directly rather than naming a root that gets 'artifacts' appended: a parameter called "repo root"
+# reads like "write at the repo root", which is the opposite of the hygiene this layout exists for.
+function Get-ArtifactsRoot([string]$ArtifactsRoot = '') {
+    if (-not [string]::IsNullOrWhiteSpace($ArtifactsRoot)) { return [System.IO.Path]::GetFullPath($ArtifactsRoot) }
+    return (Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'artifacts')
 }
 
-# artifacts/{module}/runs/{stamp}/{slug}/ — created fresh; a same-second collision bumps a suffix.
-function New-ModuleRunDir([string]$Module, [string]$Slug, [string]$RepoRoot = '') {
+# {artifacts}/{module}/runs/{stamp}/{slug}/ — created fresh; a same-second collision bumps a suffix.
+function New-ModuleRunDir([string]$Module, [string]$Slug, [string]$ArtifactsRoot = '') {
     if ([string]::IsNullOrWhiteSpace($Module)) { throw 'module is required for a run dir' }
-    $runsRoot = Join-Path (Get-ArtifactsRoot $RepoRoot) $Module 'runs'
+    $runsRoot = Join-Path (Get-ArtifactsRoot $ArtifactsRoot) $Module 'runs'
     $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
     $leaf = if ([string]::IsNullOrWhiteSpace($Slug)) { '' } else { $Slug }
     $dir = if ($leaf) { Join-Path $runsRoot $stamp $leaf } else { Join-Path $runsRoot $stamp }
@@ -67,9 +68,9 @@ function New-ModuleRunDir([string]$Module, [string]$Slug, [string]$RepoRoot = ''
 }
 
 # newest-first run dirs for one slug under a module, stamp-descending. Harnesses read newest-run-wins.
-function Get-ModuleRunDirs([string]$Module, [string]$Slug, [string]$RepoRoot = '') {
+function Get-ModuleRunDirs([string]$Module, [string]$Slug, [string]$ArtifactsRoot = '') {
     $out = [System.Collections.Generic.List[string]]::new()
-    $runsRoot = Join-Path (Get-ArtifactsRoot $RepoRoot) $Module 'runs'
+    $runsRoot = Join-Path (Get-ArtifactsRoot $ArtifactsRoot) $Module 'runs'
     if ([System.IO.Directory]::Exists($runsRoot)) {
         foreach ($d in ([System.IO.Directory]::EnumerateDirectories($runsRoot) | Sort-Object -Descending)) {
             $slugDir = if ([string]::IsNullOrWhiteSpace($Slug)) { $d } else { Join-Path $d $Slug }
