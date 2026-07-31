@@ -30,6 +30,62 @@ function Get-LatestChunks([string]$PaperDir, [string]$Slug) {
     return @(Get-RunChunks $PaperDir $Slug) | Select-Object -First 1
 }
 
+# --- module run layout: artifacts/{module}/runs/{stamp}/{slug}/ -------------------------------------
+# The NEWER convention, and deliberately not the {paper}/.runs/{stamp} one below. Two reasons:
+#
+#   HYGIENE — regenerable working output does not belong interleaved with source. Under the old layout a
+#   paper dir accumulated .runs/ alongside the tarball it was derived from; here everything regenerable
+#   lands under artifacts/ (gitignored wholesale) and the source dir stays source.
+#
+#   DETERMINISM — the unpacked tarball is NOT a per-run artifact. It is a pure function of the archive,
+#   so it lives once beside its source ({slug}-latex/) and runs read it rather than each re-expanding a
+#   private copy. Only genuinely per-run output (oracle counts, render logs) gets a runstamp.
+#
+# This breaks symmetry with the pig/gauntlet lanes, which still use {paper}/.runs. That is intentional
+# while pdf conversion is shelved; it gets rebuilt onto this layout when that work resumes.
+function Get-ArtifactsRoot([string]$RepoRoot = '') {
+    if ([string]::IsNullOrWhiteSpace($RepoRoot)) {
+        $RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+    }
+    return (Join-Path $RepoRoot 'artifacts')
+}
+
+# artifacts/{module}/runs/{stamp}/{slug}/ — created fresh; a same-second collision bumps a suffix.
+function New-ModuleRunDir([string]$Module, [string]$Slug, [string]$RepoRoot = '') {
+    if ([string]::IsNullOrWhiteSpace($Module)) { throw 'module is required for a run dir' }
+    $runsRoot = Join-Path (Get-ArtifactsRoot $RepoRoot) $Module 'runs'
+    $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+    $leaf = if ([string]::IsNullOrWhiteSpace($Slug)) { '' } else { $Slug }
+    $dir = if ($leaf) { Join-Path $runsRoot $stamp $leaf } else { Join-Path $runsRoot $stamp }
+    $n = 1
+    while (Test-Path -LiteralPath $dir) {
+        $n++
+        $dir = if ($leaf) { Join-Path $runsRoot "$stamp-$n" $leaf } else { Join-Path $runsRoot "$stamp-$n" }
+    }
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    return $dir
+}
+
+# newest-first run dirs for one slug under a module, stamp-descending. Harnesses read newest-run-wins.
+function Get-ModuleRunDirs([string]$Module, [string]$Slug, [string]$RepoRoot = '') {
+    $out = [System.Collections.Generic.List[string]]::new()
+    $runsRoot = Join-Path (Get-ArtifactsRoot $RepoRoot) $Module 'runs'
+    if ([System.IO.Directory]::Exists($runsRoot)) {
+        foreach ($d in ([System.IO.Directory]::EnumerateDirectories($runsRoot) | Sort-Object -Descending)) {
+            $slugDir = if ([string]::IsNullOrWhiteSpace($Slug)) { $d } else { Join-Path $d $Slug }
+            if ([System.IO.Directory]::Exists($slugDir)) { $out.Add($slugDir) }
+        }
+    }
+    return $out
+}
+
+# The unpacked tarball's home: deterministic, beside the archive it came from, so a curated grouping
+# (gauntlet/ph-zigzag/{slug}/) keeps its work in its own folder instead of being staged into _inbox.
+function Get-SourceWorkDir([string]$ArchivePath, [string]$Slug) {
+    $dir = Split-Path -Parent $ArchivePath
+    return (Join-Path $dir "$Slug-latex")
+}
+
 # fresh run dir; a same-second collision bumps a numeric suffix (still sorts after its base stamp)
 function New-RunDir([string]$PaperDir) {
     $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'

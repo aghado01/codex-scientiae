@@ -18,7 +18,7 @@
   Entry point: Invoke-ArxivLatexToMarkdown -TarGz <source.tar.gz> -Slug <name> -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../shared/runs.ps1"       # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
+. "$PSScriptRoot/../shared/runs.ps1"       # the run layout: source unpacks ONCE to {tar-dir}/{slug}-latex/; per-run output -> artifacts/latex-ingest/runs/
 . "$PSScriptRoot/tikz-render.ps1"   # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/../pdf-raster.ps1" # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
@@ -2086,6 +2086,13 @@ function Invoke-ArxivLatexToMarkdown {
         # {slug}-latex.md + its {slug}/ assets are BUNDLED there via Copy-MdDeliverable, links
         # verified at the destination — the manual copy step, codified. Absent -> unchanged.
         [string]$DeliverableDir,
+        # Re-run against the already-unpacked source ({slug}-latex/) instead of re-expanding the tarball.
+        # The unpack is deterministic, so this only skips work — and it preserves any hand-edit made to
+        # the staged source while iterating on a conversion.
+        [switch]$ReuseSource,
+        # Base for artifacts/{module}/runs/. Empty = the repo. Tests redirect it so run dirs do not
+        # accumulate in the working tree; production never sets it.
+        [string]$RepoRoot = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc
@@ -2103,9 +2110,18 @@ function Invoke-ArxivLatexToMarkdown {
     if (-not [System.IO.File]::Exists($archivePath)) {
         throw "LaTeX source archive is not a file: '$archivePath'"
     }
-    $run  = New-RunDir (Split-Path -Parent $archivePath)
-    $work = Join-Path $run 'tex'
-    Expand-ArxivSourceTarball -TarGz $archivePath -WorkDir $work | Out-Null
+    # The unpacked tarball is a pure function of the archive, so it gets ONE deterministic home beside
+    # its source ({slug}-latex/) rather than a fresh copy per run. Per-run output goes to
+    # artifacts/latex-ingest/runs/{stamp}/{slug}/, which is regenerable and gitignored wholesale.
+    $work = Get-SourceWorkDir -ArchivePath $archivePath -Slug $Slug
+    $run = New-ModuleRunDir -Module 'latex-ingest' -Slug $Slug -RepoRoot $RepoRoot
+    $haveSource = (Test-Path -LiteralPath $work -PathType Container) -and
+                  @(Get-ChildItem -LiteralPath $work -Recurse -File -Filter *.tex -ErrorAction SilentlyContinue).Count -gt 0
+    if ($ReuseSource -and $haveSource) {
+        Write-Verbose "reusing unpacked source at $work"
+    } else {
+        Expand-ArxivSourceTarball -TarGz $archivePath -WorkDir $work | Out-Null
+    }
 
     $main = Find-LatexMain $work
     $tex = Resolve-LatexInputs -MainPath $main
@@ -2266,7 +2282,9 @@ function Invoke-ArxivLatexToMarkdown {
         main_tex          = (Split-Path -Leaf $main)
         run_utc           = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
     }
-    [System.IO.File]::WriteAllText((Join-Path $work "$Slug.oracle-counts.json"),
+    # into the RUN dir, not the source dir: the unpacked tarball is source and stays uncontaminated by
+    # generated output. Compare-FigureCounts resolves this through Get-ModuleRunDirs, newest-run-wins.
+    [System.IO.File]::WriteAllText((Join-Path $run "$Slug.oracle-counts.json"),
         ($oracleSidecar | ConvertTo-Json -Depth 4), $u8)
 
     return [pscustomobject]@{

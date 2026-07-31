@@ -183,10 +183,44 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out2 -EnableEmbeddedToc
         (Get-Content (Join-Path $out2 'p-latex.md') -Raw) | Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
         Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
-        # the unpacked tex is a PERSISTED run artifact beside the tarball ({dir}/.runs/{stamp}/tex),
-        # not a deleted temp dir — downstream consumers (math bank, skeleton) re-read it
-        $r.tex | Should -BeLike (Join-Path $root '.runs' '*' 'tex')
+        # The unpacked source has ONE deterministic home beside the tarball ({dir}/{slug}-latex/), not a
+        # per-run copy: it is a pure function of the archive, so a runstamp on it only duplicates bytes.
+        # Downstream consumers (math bank, skeleton) re-read it, and a re-run finds it already there.
+        $r.tex | Should -Be (Join-Path $root 'p-latex')
         Test-Path (Join-Path $r.tex 'main.tex') | Should -BeTrue
+        Test-Path (Join-Path $root '.runs') | Should -BeFalse   # the retired layout is not recreated
+        Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
+    }
+
+    It 'run layout: per-run output lands under artifacts/{module}/runs/{stamp}/{slug}, and -ReuseSource skips the unpack' -Skip:(-not (Get-Command tar -CommandType Application -ErrorAction SilentlyContinue)) {
+        $root = Join-Path ([System.IO.Path]::GetTempPath()) ("rl-" + [guid]::NewGuid().ToString('N'))
+        $src = Join-Path $root 'src'; $out = Join-Path $root 'out'; $repo = Join-Path $root 'repo'
+        New-Item -ItemType Directory -Force -Path $src, $out, $repo | Out-Null
+        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'),
+            '\documentclass{article}\begin{document}\section{S}Body.\end{document}', [System.Text.UTF8Encoding]::new($false))
+        $archive = Join-Path $root 'q.tar.gz'
+        Push-Location $src
+        try { tar -czf ([System.IO.Path]::GetRelativePath($src, $archive)) . } finally { Pop-Location }
+
+        $r1 = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -RepoRoot $repo
+        $staged = Join-Path $root 'q-latex'
+        Test-Path (Join-Path $staged 'main.tex') | Should -BeTrue          # unpacked beside the archive
+
+        # regenerable per-run output goes to artifacts/, NOT beside the source
+        $runs = Join-Path $repo 'artifacts/latex-ingest/runs'
+        Test-Path $runs | Should -BeTrue
+        @(Get-ChildItem $runs -Directory).Count | Should -Be 1
+        @(Get-ChildItem $runs -Recurse -Filter 'q.oracle-counts.json').Count | Should -Be 1
+        @(Get-ChildItem $staged -Filter '*.oracle-counts.json').Count | Should -Be 0   # source stays source
+
+        # a sentinel in the staged source survives -ReuseSource and is destroyed by a fresh unpack —
+        # which is exactly the iterate-on-staged-source affordance the switch exists for
+        $sentinel = Join-Path $staged 'sentinel.txt'
+        [System.IO.File]::WriteAllText($sentinel, 'kept', [System.Text.UTF8Encoding]::new($false))
+        $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -RepoRoot $repo -ReuseSource
+        Test-Path $sentinel | Should -BeTrue
+        @(Get-ChildItem $runs -Directory).Count | Should -BeGreaterThan 1   # still a NEW run each call
+
         Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
     }
 }

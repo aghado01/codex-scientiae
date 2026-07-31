@@ -26,7 +26,8 @@
 
   JOB TYPES (both per-paper share-nothing — every write lands under the paper's own dir):
     pig   — Invoke-Pdfdig on {slug}.pdf                 → {paper}/.runs/{stamp}/pig/  (IR + figures + crops)
-    latex — Invoke-ArxivLatexToMarkdown on {slug}.tar.gz → {paper}/.runs/{stamp}/tex/ + {slug}-latex.md
+    latex — Invoke-ArxivLatexToMarkdown on {slug}.tar.gz → {paper}/{slug}-latex/ (source, unpacked once)
+                                                          + artifacts/latex-ingest/runs/{stamp}/{slug}/ + {slug}-latex.md
             (persists the {slug}.oracle-counts.json sidecar the figure gate scores against)
   -JobTypes filters dir-derived jobs (default: both). An explicit file target whose type is
   filtered out becomes a skip-filtered row — never a silent drop.
@@ -186,7 +187,7 @@ function Get-IngestBatchJobs {
             @(Get-ChildItem (Join-Path $j.paper_dir ".runs/*/pig/$($j.slug).figures.jsonl") -ErrorAction SilentlyContinue).Count -gt 0
         } else {
             (Test-Path -LiteralPath (Join-Path $j.paper_dir "$($j.slug)-latex.md")) -or
-            @(Get-ChildItem (Join-Path $j.paper_dir '.runs/*/tex') -ErrorAction SilentlyContinue).Count -gt 0
+            @(Get-ChildItem (Join-Path $j.paper_dir "$($j.slug)-latex") -Filter *.tex -Recurse -ErrorAction SilentlyContinue).Count -gt 0
         }
         $j.status = if ($hasRun -and -not ($Force -or $j.imperative)) { 'skip-has-run' } else { 'queued' }
     }

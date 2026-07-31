@@ -283,3 +283,52 @@ Describe 'paper addressing — @{run} pins a specific run' {
         { Resolve-PaperSource $root 'q3@20260101_000000' } | Should -Throw -ExpectedMessage '*immutable*'
     }
 }
+
+Describe 'run layout — artifacts/{module}/runs (the current convention)' {
+    BeforeAll { . "$PSScriptRoot/../src/shared/runs.ps1" }
+
+    It 'New-ModuleRunDir lands under artifacts/{module}/runs/{stamp}/{slug} and never collides' {
+        $repo = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $repo | Out-Null
+        try {
+            $a = New-ModuleRunDir -Module 'latex-ingest' -Slug 'demo' -RepoRoot $repo
+            $b = New-ModuleRunDir -Module 'latex-ingest' -Slug 'demo' -RepoRoot $repo
+            $a | Should -Not -Be $b                      # same-second calls must not share a dir
+            Test-Path $a | Should -BeTrue
+            Test-Path $b | Should -BeTrue
+            $a | Should -BeLike (Join-Path $repo 'artifacts' 'latex-ingest' 'runs' '*' 'demo')
+            # regenerable output is segregated from source by construction — nothing lands outside artifacts/
+            @(Get-ChildItem $repo -Directory).Name | Should -Be @('artifacts')
+        }
+        finally { Remove-Item -LiteralPath $repo -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'Get-ModuleRunDirs returns runs newest-first, and only for the slug asked for' {
+        $repo = Join-Path ([System.IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString('N'))
+        $runsRoot = Join-Path $repo 'artifacts' 'latex-ingest' 'runs'
+        foreach ($s in '20260101_000000', '20260301_000000', '20260201_000000') {
+            New-Item -ItemType Directory -Force -Path (Join-Path $runsRoot $s 'alpha') | Out-Null
+        }
+        New-Item -ItemType Directory -Force -Path (Join-Path $runsRoot '20260401_000000' 'beta') | Out-Null
+        try {
+            $got = @(Get-ModuleRunDirs -Module 'latex-ingest' -Slug 'alpha' -RepoRoot $repo)
+            $got.Count | Should -Be 3
+            (Split-Path -Leaf (Split-Path -Parent $got[0])) | Should -Be '20260301_000000'   # newest wins
+            (Split-Path -Leaf (Split-Path -Parent $got[-1])) | Should -Be '20260101_000000'
+            @(Get-ModuleRunDirs -Module 'latex-ingest' -Slug 'ghost' -RepoRoot $repo).Count | Should -Be 0
+        }
+        finally { Remove-Item -LiteralPath $repo -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'Get-SourceWorkDir is deterministic and sits BESIDE the archive, honouring curated groups' {
+        # not staged into _inbox: a gauntlet paper keeps its unpacked source in its own group folder
+        Get-SourceWorkDir -ArchivePath 'D:/x/ingestion/_inbox/2408.16741v2/2408.16741v2.tar.gz' -Slug '2408.16741v2' |
+            Should -Be (Join-Path 'D:/x/ingestion/_inbox/2408.16741v2' '2408.16741v2-latex')
+        Get-SourceWorkDir -ArchivePath 'D:/x/ingestion/gauntlet/ph-zigzag/2403.08110v4/src.tar.gz' -Slug '2403.08110v4' |
+            Should -Be (Join-Path 'D:/x/ingestion/gauntlet/ph-zigzag/2403.08110v4' '2403.08110v4-latex')
+        # same inputs, same answer — that determinism is why the unpack needs no runstamp
+        $a = Get-SourceWorkDir -ArchivePath 'D:/x/p/a.tar.gz' -Slug 'a'
+        $b = Get-SourceWorkDir -ArchivePath 'D:/x/p/a.tar.gz' -Slug 'a'
+        $a | Should -Be $b
+    }
+}
