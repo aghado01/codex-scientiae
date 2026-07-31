@@ -155,6 +155,41 @@ Text for methods.
         }
     }
 
+    It 'subject index: numbered objects are inventoried from the MARKDOWN and attributed to their section' {
+        $md = @"
+# Paper
+
+## First Part
+
+**Theorem 1.1.** A statement.
+
+**Definition 1.2 (weighted).** A notion.
+
+## Second Part
+
+**Lemma 2.1.** A helper.
+
+Prose mentioning a **bold phrase** that is not an object.
+"@
+        $model = New-DeliverableTreeModel -MarkdownText $md -Slug 'paper'
+        $model.Index.Count | Should -Be 3
+        $model.Header.index_count | Should -Be 3
+
+        $model.Index[0].label | Should -Be 'Theorem 1.1'          # trailing period stripped
+        $model.Index[0].section | Should -Be 'First Part'
+        $model.Index[1].label | Should -Be 'Definition 1.2 (weighted)'   # parenthetical title kept
+        $model.Index[2].section | Should -Be 'Second Part'
+
+        # entries link into the MANUSCRIPT — a bare '#anchor' would resolve against the manifest itself
+        $model.Index[2].relative_link | Should -Be 'paper.md#second-part'
+        # every entry lands inside the span of the section it is attributed to
+        foreach ($e in $model.Index) {
+            $owner = @($model.Sections | Where-Object { $_.anchor -eq $e.anchor })[0]
+            $e.byte_start | Should -BeGreaterOrEqual $owner.byte_start
+            $e.byte_start | Should -BeLessThan $owner.byte_end
+        }
+    }
+
     It 'Export-MdTreeSidecar: respects -DisableTreeToc and -DisableJsonlToc switches' {
         $tmpDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Force -Path $tmpDir | Out-Null

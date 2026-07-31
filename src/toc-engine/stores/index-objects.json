@@ -1,0 +1,11 @@
+[
+  {
+    "id": "labeled_result_kinds",
+    "kinds": [
+      "Theorem", "Lemma", "Proposition", "Corollary", "Definition", "Claim", "Conjecture",
+      "Remark", "Example", "Result", "Observation", "Notation", "Assumption", "Problem",
+      "Question", "Exercise", "Algorithm", "Construction", "Convention", "Fact", "Property"
+    ],
+    "description": "Kinds of numbered, citable object a converted manuscript emits as a bold run-in header — '**Theorem 2.1.**'. These are the entries of the subject index: the things a paper states and then refers back to. Derived from the MARKDOWN rather than the LaTeX source, so the index is lane-agnostic and its offsets are computed on the final file; a source-derived index would be correct only for the LaTeX lane and would drift the moment the manuscript was repaired."
+  }
+]

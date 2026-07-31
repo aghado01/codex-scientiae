@@ -5,6 +5,7 @@ authors: "{{Header.authors}}"
 doi: "{{Header.doi}}"
 total_bytes: {{Header.total_bytes}}
 section_count: {{Header.section_count}}
+index_count: {{Header.index_count}}
 generated_at: "{{Header.generated_at}}"
 ---
 
@@ -35,4 +36,13 @@ generated_at: "{{Header.generated_at}}"
 
 {{#each Sections}}
 {{indent}}- [{{title}}]({{relative_link}})    {{level_tag}}    {{byte_start}}    {{byte_end}}    {{byte_width}}
+{{/each}}
+
+## Subject Index
+
+Numbered objects this document states, in document order, each with the section that contains it.
+This is inventory, not ranking — it says what is here, not what is worth reading.
+
+{{#each Index}}
+- **{{label}}** — [{{section}}]({{relative_link}})
 {{/each}}

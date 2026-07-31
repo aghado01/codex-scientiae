@@ -22,6 +22,25 @@ function Get-MdAnchor([string]$h) {
     return $a
 }
 
+# Which run-in bold headers name a numbered, citable object — rules-as-data, because the vocabulary
+# varies by field and by a paper's own \newtheorem declarations. Absent store degrades to NO index
+# rather than throwing: the index is an enrichment, and a manifest without one is still a valid manifest.
+$script:TocIndexKindsCache = $null
+function Get-TocIndexObjectKinds {
+    if ($null -ne $script:TocIndexKindsCache) { return $script:TocIndexKindsCache }
+    $storePath = Join-Path $PSScriptRoot 'stores/index-objects.json'
+    $kinds = @()
+    if (Test-Path -LiteralPath $storePath -PathType Leaf) {
+        try {
+            foreach ($r in ([System.IO.File]::ReadAllText($storePath, $script:TocEngineUtf8) | ConvertFrom-Json)) {
+                if ($r.id -eq 'labeled_result_kinds' -and $r.kinds) { $kinds = @($r.kinds) }
+            }
+        } catch { $kinds = @() }
+    }
+    $script:TocIndexKindsCache = $kinds
+    return $kinds
+}
+
 # Helper: Resolve property path over object scope
 function Resolve-TemplateValue($Scope, [string]$Path) {
     if ($null -eq $Scope -or [string]::IsNullOrWhiteSpace($Path)) { return $null }
@@ -196,6 +215,40 @@ function New-DeliverableTreeModel {
         })
     }
 
+    # --- subject index: the numbered objects the document STATES ------------------------------------
+    # A textbook's back-of-book index, for the things a paper refers back to. It rides in the manifest
+    # rather than a sidecar deliberately: the manifest is read up front, so the inventory is in context
+    # BEFORE the manuscript is, which is exactly what a cross-reference lookup table cannot give you —
+    # by the time you hit "by theorem 2.9", attention already has the document if you are reading it.
+    #
+    # Derived from the MARKDOWN, not the LaTeX source: that keeps it lane-agnostic and its section
+    # attribution correct on the file as shipped.
+    $index = [System.Collections.Generic.List[object]]::new()
+    $kinds = @((Get-TocIndexObjectKinds) | ForEach-Object { [regex]::Escape($_) })
+    if ($kinds.Count -gt 0) {
+        $objRx = [regex]::new('(?m)^\*\*(' + ($kinds -join '|') + ')\s*([0-9][0-9.]*)?\s*(\([^)]*\))?\s*\.?\s*\*\*')
+        foreach ($m in $objRx.Matches($MarkdownText)) {
+            $off = $script:TocEngineUtf8.GetByteCount($MarkdownText.Substring(0, $m.Index))
+            $owner = $null
+            foreach ($s in $sections) { if ($off -ge $s.byte_start -and $off -lt $s.byte_end) { $owner = $s; break } }
+            $num = $m.Groups[2].Value.TrimEnd('.')
+            $note = $m.Groups[3].Value
+            $label = (@($m.Groups[1].Value, $num, $note) | Where-Object { $_ }) -join ' '
+            $index.Add([pscustomobject]@{
+                    kind    = $m.Groups[1].Value
+                    number  = $num
+                    note    = $note
+                    label   = $label
+                    anchor  = if ($owner) { $owner.anchor } else { '' }
+                    section = if ($owner) { $owner.title } else { '' }
+                    # link into the MANUSCRIPT, not this manifest — a bare '#anchor' resolves against the
+                    # file it sits in, which for a sidecar is the wrong document entirely
+                    relative_link = if ($owner) { $owner.relative_link } else { "$Slug.md" }
+                    byte_start    = $off
+                })
+        }
+    }
+
     $header = [pscustomobject]@{
         slug          = $Slug
         title         = $title
@@ -203,6 +256,7 @@ function New-DeliverableTreeModel {
         doi           = $doi
         total_bytes   = $totalBytes
         section_count = $sections.Count
+        index_count   = $index.Count
         source_file   = "$Slug.md"
         # RELATIVE, always. The manifest ships inside the bundle beside the document it indexes, so an
         # absolute path is a dead link for every reader but the machine that generated it — and it leaks
@@ -214,6 +268,7 @@ function New-DeliverableTreeModel {
     return [pscustomobject]@{
         Header   = $header
         Sections = $sections
+        Index    = $index
     }
 }
 
