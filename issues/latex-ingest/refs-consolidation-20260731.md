@@ -73,16 +73,33 @@ label -> { kind (env), display (Theorem), number (2.1), class (assertion|constru
 **Derived, free:** the relevance probe (a fold over the reference sites, not a fresh scan); the
 edge list (already implied by the reference sites); the per-kind tallies the oracle wants.
 
-### 2.1 The ordering constraint that is real
+### 2.1 Order of operations
 
-A forward `\cref` cannot resolve during the walk that builds the numbering table. That is inherent,
-not sloppiness. The stage therefore has **two phases**, both internal to it:
+Resolution is a later stage than collection. Two stages, in order:
 
 1. **collect** — walk the source once, assigning numbers under the counter model, recording every
    label declaration and every reference site verbatim
 2. **resolve** — with the table complete, render every reference site's text
 
-Consumers only ever see the post-resolve model. The current code exposes phase-1 output to
+That is the whole of it. A forward `\cref` is not a difficulty the design has to accommodate; it is
+simply an operation whose inputs do not exist yet, so it is not attempted yet. Nothing about it needs
+special handling once the stages are ordered — the appearance of difficulty comes entirely from
+having attempted resolution inside collection and then repaired the result.
+
+**That inversion is this lane's recurring defect, not an incidental one.** Every item in §1.2 is the
+same shape:
+
+| attempted early | repaired after |
+|---|---|
+| numbering theorems in `Build-LabelMaps`, before the counter model runs | overwritten by the walk's table |
+| capturing an object's title mid-walk, before the table exists | re-resolved afterward (`a08656ce`) |
+| assembling the index without a resolved model | scraped back out of rendered markdown |
+
+None of these needed a workaround. Each needed to happen later. The consolidated stage is worth less
+for the code it deletes than for making the order explicit enough that the next addition cannot
+quietly attempt something before its inputs are ready.
+
+Consumers only ever see the post-resolve model. The current code exposes collection-phase output to
 downstream consumers, which is precisely why they have to patch around it.
 
 ### 2.2 What collapses
