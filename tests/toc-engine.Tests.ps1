@@ -155,34 +155,41 @@ Text for methods.
         }
     }
 
-    It 'subject index: numbered objects are inventoried from the MARKDOWN and attributed to their section' {
-        $md = @"
-# Paper
-
-## First Part
-
-**Theorem 1.1.** A statement.
-
-**Definition 1.2 (weighted).** A notion.
-
-## Second Part
-
-**Lemma 2.1.** A helper.
-
-Prose mentioning a **bold phrase** that is not an object.
-"@
+    It 'subject index: the engine DISCOVERS nothing — bold run-in headers alone produce no index' {
+        # what counts as a numbered object is domain knowledge. Pattern-matching '**Theorem 1.1.**' out of
+        # rendered markdown is a typographic guess: across the corpus a third of line-start bold is
+        # paragraph headings ('Step I.', 'Contributions.', 'Keywords:'), and a PDF lane may not emit the
+        # convention at all. The engine renders evidence; it does not invent it.
+        $md = "# Paper`n`n## First Part`n`n**Theorem 1.1.** A statement.`n`n**Step I.** Not an object.`n"
         $model = New-DeliverableTreeModel -MarkdownText $md -Slug 'paper'
-        $model.Index.Count | Should -Be 3
-        $model.Header.index_count | Should -Be 3
+        $model.Index.Count | Should -Be 0
+        $model.Header.index_count | Should -Be 0
+    }
 
-        $model.Index[0].label | Should -Be 'Theorem 1.1'          # trailing period stripped
+    It 'subject index: a SUPPLIED index is attributed to the section whose span contains it' {
+        $md = "# Paper`n`n## First Part`n`nAlpha text.`n`n## Second Part`n`nBeta text.`n"
+        $u8 = [System.Text.UTF8Encoding]::new($false)
+        $inFirst = $u8.GetByteCount("# Paper`n`n## First Part`n`n")
+        $inSecond = $u8.GetByteCount("# Paper`n`n## First Part`n`nAlpha text.`n`n## Second Part`n`n")
+
+        $supplied = @(
+            [pscustomobject]@{ kind = 'Theorem'; class = 'assertion'; number = '1.1'; label = 'Theorem 1.1'; identity = 'thm:a'; byte_start = $inFirst }
+            [pscustomobject]@{ kind = 'Remark'; class = 'commentary'; number = '2.1'; label = 'Remark 2.1'; identity = ''; byte_start = $inSecond }
+        )
+        $model = New-DeliverableTreeModel -MarkdownText $md -Slug 'paper' -Index $supplied
+
+        $model.Index.Count | Should -Be 2
+        $model.Header.index_count | Should -Be 2
+        # the lane's typing survives untouched — kind and class are fields, not words inside a label
+        $model.Index[0].kind | Should -Be 'Theorem'
+        $model.Index[0].class | Should -Be 'assertion'
+        $model.Index[0].identity | Should -Be 'thm:a'
+        $model.Index[1].class | Should -Be 'commentary'
+        # …and the engine adds exactly one thing: which section contains it
         $model.Index[0].section | Should -Be 'First Part'
-        $model.Index[1].label | Should -Be 'Definition 1.2 (weighted)'   # parenthetical title kept
-        $model.Index[2].section | Should -Be 'Second Part'
-
+        $model.Index[1].section | Should -Be 'Second Part'
         # entries link into the MANUSCRIPT — a bare '#anchor' would resolve against the manifest itself
-        $model.Index[2].relative_link | Should -Be 'paper.md#second-part'
-        # every entry lands inside the span of the section it is attributed to
+        $model.Index[1].relative_link | Should -Be 'paper.md#second-part'
         foreach ($e in $model.Index) {
             $owner = @($model.Sections | Where-Object { $_.anchor -eq $e.anchor })[0]
             $e.byte_start | Should -BeGreaterOrEqual $owner.byte_start

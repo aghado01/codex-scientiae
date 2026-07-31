@@ -87,6 +87,62 @@ function Get-LatexDocMetadata {
     return @{ authors = ($names -join '; '); doi = ([string]$doi).Trim() }
 }
 
+# --- subject index: the lane's object evidence, joined to the shipped markdown ----------------------
+# Convert-CrossRefEnvs records every numbered object it RENDERS. This joins that inventory to the final
+# manuscript so each entry carries a byte offset. The scan is a literal, ordered lookup for a string we
+# KNOW we wrote ("**Theorem 2.1"), advancing past each hit — not a pattern guess at what bold text might
+# mean. Same regex machinery as a heuristic, opposite epistemics: absence here is a converter bug worth
+# seeing, whereas a heuristic silently invents entries out of paragraph headings.
+$script:LtxResultClassCache = $null
+function Get-LatexResultClass([string]$Kind) {
+    if ($null -eq $script:LtxResultClassCache) {
+        $map = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+        $storePath = Join-Path $PSScriptRoot 'stores/docgraph.json'
+        if (Test-Path -LiteralPath $storePath -PathType Leaf) {
+            try {
+                foreach ($r in ([System.IO.File]::ReadAllText($storePath, [System.Text.UTF8Encoding]::new($false)) | ConvertFrom-Json)) {
+                    if ($r.id -ne 'result_classes' -or -not $r.classes) { continue }
+                    foreach ($cls in $r.classes.PSObject.Properties) {
+                        foreach ($k in @($cls.Value)) { $map[[string]$k] = $cls.Name }
+                    }
+                }
+            } catch { }
+        }
+        $script:LtxResultClassCache = $map
+    }
+    if ($script:LtxResultClassCache.ContainsKey($Kind)) { return $script:LtxResultClassCache[$Kind] }
+    return ''
+}
+
+function Get-LatexSubjectIndex {
+    param([string]$Markdown, $Objects)
+    $index = [System.Collections.Generic.List[object]]::new()
+    if ([string]::IsNullOrEmpty($Markdown) -or -not $Objects) { return , $index }
+    $u8 = [System.Text.UTF8Encoding]::new($false)
+    $cursor = 0
+    foreach ($o in @($Objects)) {
+        $needle = if ($o.number) { "**$($o.kind) $($o.number)" } else { "**$($o.kind)" }
+        $at = $Markdown.IndexOf($needle, $cursor, [System.StringComparison]::Ordinal)
+        if ($at -lt 0) { continue }          # emitted then rewritten downstream; skip rather than guess
+        $cursor = $at + $needle.Length
+        # Take the label from the RENDERED header, not from the captured parts. The optional-argument
+        # title is captured before Resolve-Refs runs, so a source-side label would ship raw
+        # "\cref{thm:weakfactor}" where the manuscript reads "2.1" — the index must say what the document says.
+        $close = $Markdown.IndexOf('**', $at + 2, [System.StringComparison]::Ordinal)
+        $label = if ($close -gt $at) { $Markdown.Substring($at + 2, $close - $at - 2).Trim().TrimEnd('.').Trim() }
+        else { (@($o.kind, $o.number) | Where-Object { $_ }) -join ' ' }
+        $index.Add([pscustomobject]@{
+                kind       = $o.kind
+                class      = (Get-LatexResultClass $o.kind)
+                number     = [string]$o.number
+                label      = $label
+                identity   = [string]$o.identity
+                byte_start = $u8.GetByteCount($Markdown.Substring(0, $at))
+            })
+    }
+    return , $index
+}
+
 function Replace-BracedCommand {
     param([string]$T, [string]$Cmd, [scriptblock]$Fmt)   # replace every \Cmd{...} with &Fmt($arg)
     while ($true) {
@@ -1304,6 +1360,11 @@ function Convert-CrossRefEnvs {
     # which left Resolve-Refs with no way to render \cref's type name. cleveref derives that name from
     # the TARGET's environment, so this map is the whole of the evidence it needs.
     $typeMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+    # Ordered inventory of every numbered object this walk RENDERS — the evidence behind the deliverable's
+    # subject index. Captured at emission because that is the only moment the display name, the number and
+    # the label are all in hand at once; recovering it later from the markdown would be pattern-matching
+    # typography, which is a guess dressed as a rule.
+    $objects = [System.Collections.Generic.List[object]]::new()
     $ctr = @{}; $within = @{}
     $sec = 0; $sub = 0; $subsub = 0
     $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
@@ -1327,11 +1388,16 @@ function Convert-CrossRefEnvs {
             $env = $m.Groups[3].Value; $note = if ($m.Groups[4].Success) { " ($($m.Groups[4].Value))" } else { '' }
             if ($Model.Contains($env)) {
                 $e = $Model[$env]
-                if ($e.star) { $emit = "`n`n**$($e.disp)$note.** "; $pending = $null }
+                if ($e.star) {
+                    $emit = "`n`n**$($e.disp)$note.** "; $pending = $null
+                    $objects.Add([pscustomobject]@{ kind = $e.disp; number = ''; note = $note.Trim(); identity = '' })
+                }
                 else {
                     $g = $e.group; if (-not $ctr.Contains($g)) { $ctr[$g] = 0 }; $within[$g] = $e.within
                     $ctr[$g]++; $num = if ($e.within) { "$sec.$($ctr[$g])" } else { "$($ctr[$g])" }
-                    $emit = "`n`n**$($e.disp) $num$note.** "; $pending = @{ kind = 'thm'; num = $num; disp = $e.disp }
+                    $emit = "`n`n**$($e.disp) $num$note.** "
+                    $objects.Add([pscustomobject]@{ kind = $e.disp; number = $num; note = $note.Trim(); identity = '' })
+                    $pending = @{ kind = 'thm'; num = $num; disp = $e.disp; obj = ($objects.Count - 1) }
                 }
             }
             # a NON-model \begin (equation, enumerate, …) leaves `pending` intact, so a theorem's label placed
@@ -1341,12 +1407,14 @@ function Convert-CrossRefEnvs {
         elseif ($m.Groups[6].Success -and $pending) {                            # \label — FIRST label in the armed env/section wins
             if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
             if ($pending.disp) { $typeMap[$m.Groups[6].Value] = [string]$pending.disp }
+            # bind the object to its \label, so an index entry carries the identity the paper cites it by
+            if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
             $pending = $null
         }
         [void]$sb.Append($emit); $pos = $m.Index + $m.Length
     }
     [void]$sb.Append($Body.Substring($pos))
-    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap }
+    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects }
 }
 
 function Remove-TexComments([string]$Tex) {
@@ -1519,6 +1587,7 @@ function ConvertFrom-Latex {
     # BEFORE math protection, so the same numbers feed both the inline labels and \ref resolution.
     $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex)
     $body = $xref.body
+    $script:LtxDocObjects = $xref.objects       # object evidence for the deliverable's subject index
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl               # equation/figure/table counters
     $maps.thm = $xref.thm; $maps.sec = $xref.sec                              # theorem + section label->number from the walk
     $maps.types = $xref.types                                                  # label->display type — the evidence \cref needs
@@ -2163,7 +2232,9 @@ function Invoke-ArxivLatexToMarkdown {
     $bundle = if ($DeliverableDir) {
         # bibliographic metadata rides to the manifest from the SOURCE, which is the only place it exists
         # (the body has already had \author stripped per STANDARDS §8)
-        Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir -Metadata (Get-LatexDocMetadata $tex) -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
+        Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir -Metadata (Get-LatexDocMetadata $tex) `
+            -Index (Get-LatexSubjectIndex -Markdown $md -Objects $script:LtxDocObjects) `
+            -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
     } else { $null }
 
     # oracle-counts sidecar: persist the figure/table/diagram truth INTO the tex run dir ($work =

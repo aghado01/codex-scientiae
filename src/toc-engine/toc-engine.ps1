@@ -22,23 +22,33 @@ function Get-MdAnchor([string]$h) {
     return $a
 }
 
-# Which run-in bold headers name a numbered, citable object — rules-as-data, because the vocabulary
-# varies by field and by a paper's own \newtheorem declarations. Absent store degrades to NO index
-# rather than throwing: the index is an enrichment, and a manifest without one is still a valid manifest.
-$script:TocIndexKindsCache = $null
-function Get-TocIndexObjectKinds {
-    if ($null -ne $script:TocIndexKindsCache) { return $script:TocIndexKindsCache }
-    $storePath = Join-Path $PSScriptRoot 'stores/index-objects.json'
-    $kinds = @()
-    if (Test-Path -LiteralPath $storePath -PathType Leaf) {
-        try {
-            foreach ($r in ([System.IO.File]::ReadAllText($storePath, $script:TocEngineUtf8) | ConvertFrom-Json)) {
-                if ($r.id -eq 'labeled_result_kinds' -and $r.kinds) { $kinds = @($r.kinds) }
-            }
-        } catch { $kinds = @() }
+# Attribute a supplied index object to the section whose span contains it. This is the ONLY thing the
+# engine does with an index: span containment is span arithmetic, which is the engine's whole business.
+# What counts as an indexable object — theorem, lemma, definition — is domain knowledge and stays with
+# the lane that produced the document.
+function Add-IndexSectionAttribution($Index, $Sections, [string]$Slug) {
+    $out = [System.Collections.Generic.List[object]]::new()
+    foreach ($e in @($Index)) {
+        if ($null -eq $e) { continue }
+        $off = if ($null -ne $e.byte_start) { [int]$e.byte_start } else { -1 }
+        $owner = $null
+        if ($off -ge 0) {
+            foreach ($s in $Sections) { if ($off -ge $s.byte_start -and $off -lt $s.byte_end) { $owner = $s; break } }
+        }
+        $out.Add([pscustomobject]@{
+                kind          = [string]$e.kind
+                class         = [string]$e.class
+                number        = [string]$e.number
+                label         = [string]$e.label
+                identity      = [string]$e.identity
+                byte_start    = $off
+                anchor        = if ($owner) { $owner.anchor } else { '' }
+                section       = if ($owner) { $owner.title } else { '' }
+                # link into the MANUSCRIPT — a bare '#anchor' in a sidecar resolves against the sidecar
+                relative_link = if ($owner) { $owner.relative_link } else { "$Slug.md" }
+            })
     }
-    $script:TocIndexKindsCache = $kinds
-    return $kinds
+    return , $out
 }
 
 # Helper: Resolve property path over object scope
@@ -134,7 +144,10 @@ function New-DeliverableTreeModel {
         [Parameter(Mandatory)][string]$MarkdownText,
         [Parameter(Mandatory)][string]$Slug,
         [hashtable]$Metadata = @{},
-        [string]$SourcePath = ''
+        [string]$SourcePath = '',
+        # Subject-index objects supplied by the producing lane: { kind; class; number; label; identity;
+        # byte_start }. Section attribution is added here; everything else is the lane's to decide.
+        [object[]]$Index = @()
     )
     $bytes = $script:TocEngineUtf8.GetBytes($MarkdownText)
     $totalBytes = $bytes.Length
@@ -215,39 +228,16 @@ function New-DeliverableTreeModel {
         })
     }
 
-    # --- subject index: the numbered objects the document STATES ------------------------------------
-    # A textbook's back-of-book index, for the things a paper refers back to. It rides in the manifest
-    # rather than a sidecar deliberately: the manifest is read up front, so the inventory is in context
-    # BEFORE the manuscript is, which is exactly what a cross-reference lookup table cannot give you —
-    # by the time you hit "by theorem 2.9", attention already has the document if you are reading it.
+    # --- subject index: SUPPLIED by the lane, attributed here ---------------------------------------
+    # The engine renders an index; it does not discover one. What counts as a numbered, citable object
+    # is domain knowledge — it arrives from the converter that knows it emitted a theorem, never from
+    # pattern-matching the rendered markdown. A lane with no object evidence supplies nothing and the
+    # manifest honestly carries no index, which keeps the capability gap visible.
     #
-    # Derived from the MARKDOWN, not the LaTeX source: that keeps it lane-agnostic and its section
-    # attribution correct on the file as shipped.
-    $index = [System.Collections.Generic.List[object]]::new()
-    $kinds = @((Get-TocIndexObjectKinds) | ForEach-Object { [regex]::Escape($_) })
-    if ($kinds.Count -gt 0) {
-        $objRx = [regex]::new('(?m)^\*\*(' + ($kinds -join '|') + ')\s*([0-9][0-9.]*)?\s*(\([^)]*\))?\s*\.?\s*\*\*')
-        foreach ($m in $objRx.Matches($MarkdownText)) {
-            $off = $script:TocEngineUtf8.GetByteCount($MarkdownText.Substring(0, $m.Index))
-            $owner = $null
-            foreach ($s in $sections) { if ($off -ge $s.byte_start -and $off -lt $s.byte_end) { $owner = $s; break } }
-            $num = $m.Groups[2].Value.TrimEnd('.')
-            $note = $m.Groups[3].Value
-            $label = (@($m.Groups[1].Value, $num, $note) | Where-Object { $_ }) -join ' '
-            $index.Add([pscustomobject]@{
-                    kind    = $m.Groups[1].Value
-                    number  = $num
-                    note    = $note
-                    label   = $label
-                    anchor  = if ($owner) { $owner.anchor } else { '' }
-                    section = if ($owner) { $owner.title } else { '' }
-                    # link into the MANUSCRIPT, not this manifest — a bare '#anchor' resolves against the
-                    # file it sits in, which for a sidecar is the wrong document entirely
-                    relative_link = if ($owner) { $owner.relative_link } else { "$Slug.md" }
-                    byte_start    = $off
-                })
-        }
-    }
+    # It rides in the MANIFEST rather than a sidecar deliberately: the manifest is read up front, so the
+    # inventory is in context BEFORE the manuscript is — the one thing a cross-reference lookup cannot
+    # give you, since by the time you hit "by theorem 2.9" attention already holds the document.
+    $index = Add-IndexSectionAttribution $Index $sections $Slug
 
     $header = [pscustomobject]@{
         slug          = $Slug
@@ -353,6 +343,7 @@ function Export-MdTreeSidecar {
         [string]$TemplatePath = (Join-Path $PSScriptRoot 'templates/single-doc-tree.template.md'),
         [string]$Slug = '',
         [hashtable]$Metadata = @{},
+        [object[]]$Index = @(),
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc
     )
@@ -366,7 +357,7 @@ function Export-MdTreeSidecar {
     }
 
     $text = [System.IO.File]::ReadAllText($srcPath, $script:TocEngineUtf8)
-    $model = New-DeliverableTreeModel -MarkdownText $text -Slug $Slug -Metadata $Metadata -SourcePath $srcPath
+    $model = New-DeliverableTreeModel -MarkdownText $text -Slug $Slug -Metadata $Metadata -SourcePath $srcPath -Index $Index
     $model | Add-Member -NotePropertyName Payload -NotePropertyValue (
         Get-MdPayloadInventory -OutDir $OutDir -Slug $Slug -NoTree:$DisableTreeToc -NoJsonl:$DisableJsonlToc) -Force
 
@@ -380,16 +371,34 @@ function Export-MdTreeSidecar {
 
     $tocJsonlPath = $null
     if (-not $DisableJsonlToc) {
-        $jsonlLines = foreach ($s in $model.Sections) {
-            [pscustomobject]@{
-                level         = $s.level
-                heading       = $s.title
-                anchor        = $s.anchor
-                byte_start    = $s.byte_start
-                byte_end      = $s.byte_end
-                byte_width    = $s.byte_width
-                relative_link = $s.relative_link
-            } | ConvertTo-Json -Compress
+        # Two record types in one sidecar, discriminated by `record`: the bundle surface stays small and a
+        # consumer streams one file. Section rows keep their shape; object rows carry the TYPED index —
+        # kind and class as fields rather than words inside a label, which is what makes them queryable.
+        $jsonlLines = [System.Collections.Generic.List[string]]::new()
+        foreach ($s in $model.Sections) {
+            $jsonlLines.Add(([pscustomobject]@{
+                        record        = 'section'
+                        level         = $s.level
+                        heading       = $s.title
+                        anchor        = $s.anchor
+                        byte_start    = $s.byte_start
+                        byte_end      = $s.byte_end
+                        byte_width    = $s.byte_width
+                        relative_link = $s.relative_link
+                    } | ConvertTo-Json -Compress))
+        }
+        foreach ($e in $model.Index) {
+            $jsonlLines.Add(([pscustomobject]@{
+                        record        = 'object'
+                        kind          = $e.kind
+                        class         = $e.class
+                        number        = $e.number
+                        label         = $e.label
+                        identity      = $e.identity
+                        anchor        = $e.anchor
+                        byte_start    = $e.byte_start
+                        relative_link = $e.relative_link
+                    } | ConvertTo-Json -Compress))
         }
         $tocJsonlPath = Join-Path $OutDir "$Slug.toc.jsonl"
         [System.IO.File]::WriteAllText($tocJsonlPath, ($jsonlLines -join "`n") + "`n", $script:TocEngineUtf8)

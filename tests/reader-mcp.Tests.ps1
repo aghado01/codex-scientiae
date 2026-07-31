@@ -25,7 +25,11 @@ Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
             @{ level = 2; heading = 'Abstract'; anchor = 'abstract'; byte_start = $offAbstract; byte_end = $offMethods; byte_width = ($offMethods - $offAbstract); relative_link = 'demo-01.md#abstract' }
             @{ level = 2; heading = 'Methods'; anchor = 'methods'; byte_start = $offMethods; byte_end = $bytes.Length; byte_width = ($bytes.Length - $offMethods); relative_link = 'demo-01.md#methods' }
         ) | ForEach-Object { $_ | ConvertTo-Json -Compress }
-        [System.IO.File]::WriteAllText((Join-Path $bundle 'demo-01.toc.jsonl'), (($rows -join "`n") + "`n"), $u8)
+        # the sidecar carries BOTH record types; a reader must not mistake an object row for a section
+        $objRows = @(
+            @{ record = 'object'; kind = 'Theorem'; class = 'assertion'; number = '1.1'; label = 'Theorem 1.1'; identity = 'thm:a'; anchor = 'abstract'; byte_start = $offAbstract; relative_link = 'demo-01.md#abstract' }
+        ) | ForEach-Object { $_ | ConvertTo-Json -Compress }
+        [System.IO.File]::WriteAllText((Join-Path $bundle 'demo-01.toc.jsonl'), ((@($rows) + @($objRows)) -join "`n") + "`n", $u8)
         [System.IO.File]::WriteAllText((Join-Path $bundle 'demo-01-tree.md'),
             "---`ntitle: `"Demo Paper`"`nauthors: `"Ada Lovelace`"`ndoi: `"10.1234/demo`"`ntotal_bytes: $($bytes.Length)`nsection_count: 2`n---`n`n# Document Tree Manifest: demo-01`n", $u8)
 
@@ -67,6 +71,15 @@ Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
         $m.sections[0].anchor | Should -Be 'abstract'
         $m.sections[1].byte_start | Should -Be $m.sections[0].byte_end   # contiguous: no unaddressable text
         $m.assets | Should -Contain 'images/fig.png'
+        # object rows must NOT be mistaken for sections — two records types, one sidecar
+        $m.section_count | Should -Be 2
+        $m.sections.heading | Should -Not -Contain 'Theorem 1.1'
+        # …and the typed subject index comes back as its own collection
+        $m.index_count | Should -Be 1
+        $m.index[0].kind | Should -Be 'Theorem'
+        $m.index[0].class | Should -Be 'assertion'
+        $m.index[0].identity | Should -Be 'thm:a'
+        $m.index[0].anchor | Should -Be 'abstract'
     }
 
     It 'read_section resolves an anchor to its span and returns a self-describing slice' {

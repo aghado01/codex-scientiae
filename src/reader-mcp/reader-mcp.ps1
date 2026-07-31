@@ -85,15 +85,23 @@ function Resolve-Bundle([string]$Slug) {
     throw "no bundle '$Slug' under $Root$(if ($known) { " — known: $known" })"
 }
 
-# Section index straight off the machine sidecar. One JSON object per line; unreadable lines are skipped
-# rather than fatal, so one corrupt row cannot make a whole document unreadable.
-function Get-Sections($Bundle) {
+# The machine sidecar carries two record types, discriminated by `record`: section rows (the byte-spanned
+# heading index) and object rows (the typed subject index — theorems, definitions, and the like). One
+# JSON object per line; unreadable lines are skipped rather than fatal, so one corrupt row cannot make a
+# whole document unreadable. A row with no `record` is a section, so pre-discriminator bundles still read.
+function Get-TocRows($Bundle) {
     $rows = [System.Collections.Generic.List[object]]::new()
     foreach ($line in [System.IO.File]::ReadLines($Bundle.toc, $script:Utf8)) {
         if ([string]::IsNullOrWhiteSpace($line)) { continue }
         try { $rows.Add(($line | ConvertFrom-Json)) } catch { Write-Log "skipping malformed toc row in $($Bundle.slug): $($_.Exception.Message)" }
     }
     return $rows
+}
+function Get-Sections($Bundle) {
+    return @(Get-TocRows $Bundle | Where-Object { [string]$_.record -ne 'object' })
+}
+function Get-Objects($Bundle) {
+    return @(Get-TocRows $Bundle | Where-Object { [string]$_.record -eq 'object' })
 }
 
 # Manifest frontmatter, when the tree sidecar is present. Deliberately a small hand-rolled reader: a
@@ -163,10 +171,19 @@ function Tool-GetManifest($a) {
         $assets = @([System.IO.Directory]::EnumerateFiles($imgDir, '*', [System.IO.SearchOption]::AllDirectories) |
             ForEach-Object { [System.IO.Path]::GetRelativePath($b.dir, $_).Replace('\', '/') } | Sort-Object)
     }
+    # The subject index: numbered objects this document STATES, typed by kind and class, each already
+    # attributed to a section. Present only when the producing lane had object evidence — an empty index
+    # means the lane could not supply one, not that the document states nothing.
+    $objects = @(Get-Objects $b | ForEach-Object {
+            [ordered]@{ kind = $_.kind; class = $_.class; number = $_.number; label = $_.label
+                identity = $_.identity; anchor = $_.anchor; byte_start = $_.byte_start
+            }
+        })
     return New-JsonResult @{
         slug = $b.slug; frontmatter = (Get-Frontmatter $b); section_count = $sections.Count
         sections = $sections; assets = $assets
-        usage = 'read_section with an anchor for a whole section; read_span for an arbitrary [byte_start, byte_end).'
+        index_count = $objects.Count; index = $objects
+        usage = 'read_section with an anchor for a whole section; read_span for an arbitrary [byte_start, byte_end). Index entries carry the anchor of the section containing them — read that section to see the object in context.'
     }
 }
 
