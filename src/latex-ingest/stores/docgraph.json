@@ -1,0 +1,30 @@
+[
+  {
+    "id": "math_environments",
+    "role": "equation",
+    "names": [
+      "equation", "align", "gather", "multline", "eqnarray", "displaymath", "alignat", "flalign"
+    ],
+    "description": "environments whose labels name a numbered EQUATION — the class \\eqref addresses, and the branch that renders '(3)' rather than a type word"
+  },
+  {
+    "id": "sectioning_commands",
+    "role": "section",
+    "names": [
+      "chapter", "section", "subsection", "subsubsection", "paragraph", "subparagraph"
+    ],
+    "description": "sectioning commands whose titles are brace-matched so a title containing macros (\\subsection{... \\cref{thm:x}}) is not truncated; a label inside the title or following it across whitespace NAMES that section"
+  },
+  {
+    "id": "transparent_environments",
+    "role": "transparent",
+    "names": [
+      "document", "abstract", "center", "centering", "minipage", "adjustbox", "scope",
+      "tabular", "tabularx", "array", "tabu",
+      "tikzpicture", "subfigure", "subcaptionblock",
+      "itemize", "enumerate", "description",
+      "small", "footnotesize", "scriptsize", "normalsize"
+    ],
+    "description": "environments that never NAME a labelled object — structural wrappers (\\begin{document} encloses the whole file and would otherwise win every innermost match) and presentation containers that sit INSIDE the thing being labelled (\\begin{figure}\\begin{tabular}...\\label{}). Resolution walks outward through these to the nearest environment that carries meaning; anything not listed keeps its own name, so a paper's custom result environment stays a node"
+  }
+]

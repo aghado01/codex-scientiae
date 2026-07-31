@@ -17,24 +17,40 @@
 #>
 
 $script:DocGraphUtf8 = [System.Text.UTF8Encoding]::new($false)
+$script:DocGraphStoreCache = $null
 
-# Environments whose labels name a numbered, citable object. Anything else is kept with its own name
-# rather than discarded — a paper's custom result environment (\begin{resultx}) is still a node.
-$script:DocGraphMathEnvs = @('equation', 'align', 'gather', 'multline', 'eqnarray', 'displaymath')
+<#
+  Which environments name an equation, which sectioning commands exist, and which environments are
+  transparent to label resolution are all CUES, not logic — they vary with the source's package set and
+  a paper's own conventions. They live in stores/docgraph.json (rules-as-data, same discipline as
+  latex-math-store.ps1) so widening coverage is a data edit, not a code edit.
 
-$script:DocGraphSectionCmds = @('chapter', 'section', 'subsection', 'subsubsection', 'paragraph', 'subparagraph')
+  A missing or malformed store THROWS: silently defaulting would classify every label under
+  \begin{document} and produce a graph that looks populated while being uniformly wrong.
+#>
+function Get-DocGraphStore {
+    if ($null -ne $script:DocGraphStoreCache) { return $script:DocGraphStoreCache }
+    $storePath = Join-Path $PSScriptRoot 'stores/docgraph.json'
+    if (-not (Test-Path -LiteralPath $storePath -PathType Leaf)) { throw "docgraph store not found: $storePath" }
+    $records = [System.IO.File]::ReadAllText($storePath, $script:DocGraphUtf8) | ConvertFrom-Json
 
-# Environments that never NAME a labelled object — either structural wrappers (\begin{document} encloses
-# the whole file and would otherwise win every innermost match) or presentation containers that sit
-# inside the thing actually being labelled (\begin{table}\begin{tabular}...\label{}). Resolution walks
-# outward through these to the nearest environment that carries meaning.
-$script:DocGraphTransparentEnvs = @(
-    'document', 'abstract', 'center', 'centering', 'minipage', 'adjustbox', 'scope',
-    'tabular', 'tabularx', 'array', 'tabu',
-    'tikzpicture', 'subfigure', 'subcaptionblock',
-    'itemize', 'enumerate', 'description',
-    'small', 'footnotesize', 'scriptsize', 'normalsize'
-)
+    $byId = @{}
+    foreach ($r in $records) {
+        if ([string]::IsNullOrWhiteSpace($r.id)) { throw "docgraph store: a record is missing its 'id' ($storePath)" }
+        if ($null -eq $r.names) { throw "docgraph store: record '$($r.id)' is missing 'names' ($storePath)" }
+        $byId[$r.id] = @($r.names)
+    }
+    foreach ($required in 'math_environments', 'sectioning_commands', 'transparent_environments') {
+        if (-not $byId.ContainsKey($required)) { throw "docgraph store: missing required record '$required' ($storePath)" }
+    }
+
+    $script:DocGraphStoreCache = [pscustomobject]@{
+        math_environments        = $byId['math_environments']
+        sectioning_commands      = $byId['sectioning_commands']
+        transparent_environments = $byId['transparent_environments']
+    }
+    return $script:DocGraphStoreCache
+}
 
 # Index of the '}' matching the '{' at $Open, or -1 when unbalanced. Brace-aware so nested arguments
 # (a \cref inside a \subsection title) do not truncate the scan the way [^}]* would.
@@ -83,7 +99,7 @@ function Get-TexEnvIntervals([string]$Text) {
 # Sectioning commands with brace-matched titles, so titles containing macros survive intact.
 function Get-TexSections([string]$Text) {
     $out = [System.Collections.Generic.List[object]]::new()
-    $pattern = '\\(' + ($script:DocGraphSectionCmds -join '|') + ')\*?\s*\{'
+    $pattern = '\\(' + ((Get-DocGraphStore).sectioning_commands -join '|') + ')\*?\s*\{'
     foreach ($m in [regex]::Matches($Text, $pattern)) {
         $open = $Text.IndexOf('{', $m.Index)
         $close = Get-TexBraceEnd $Text $open
@@ -101,9 +117,10 @@ function Get-TexSections([string]$Text) {
 # Innermost MEANINGFUL environment span containing $Offset, or $null. Transparent wrappers are skipped
 # so a label resolves to the object it names, not to the container that happens to bracket it tightest.
 function Get-TexInnermostEnv($Intervals, [int]$Offset) {
+    $transparent = (Get-DocGraphStore).transparent_environments
     $best = $null
     foreach ($iv in $Intervals) {
-        if ($script:DocGraphTransparentEnvs -contains $iv.name) { continue }
+        if ($transparent -contains $iv.name) { continue }
         if ($Offset -ge $iv.start -and $Offset -lt $iv.end) {
             if ($null -eq $best -or ($iv.end - $iv.start) -lt ($best.end - $best.start)) { $best = $iv }
         }
@@ -144,6 +161,7 @@ function Get-TexDocGraph {
     )
     if (-not (Test-Path -LiteralPath $TexDir -PathType Container)) { throw "tex dir not found: $TexDir" }
 
+    $mathEnvs = (Get-DocGraphStore).math_environments
     $nodes = [System.Collections.Generic.List[object]]::new()
     $edges = [System.Collections.Generic.List[object]]::new()
     $seenLabels = [System.Collections.Generic.HashSet[string]]::new()
@@ -166,7 +184,7 @@ function Get-TexDocGraph {
             $class = $null
             if ($null -ne $env) {
                 $type = $env.name
-                $class = if ($script:DocGraphMathEnvs -contains $env.name) { 'equation' } else { 'environment' }
+                $class = if ($mathEnvs -contains $env.name) { 'equation' } else { 'environment' }
             }
             elseif (Test-TexSectionLabel $text $sec $m.Index) {
                 $type = $sec.level
