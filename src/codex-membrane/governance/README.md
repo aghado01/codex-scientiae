@@ -1,5 +1,7 @@
 # Membrane Governance — contract + reference adapter
 
+USER NOTE: MOVED FROM PRIVATE `.claude` directory, which is NOT WHERE SOURCE CODE BELONGS
+
 > Status: **working prototype, advisory-first.** The L4 governance plane from
 > [`../membrane-governance-design.md`](../membrane-governance-design.md), made concrete. Built to dogfeed
 > the CyberneticCodePilot `governator/`: validate the contract shape against a real workload before any
@@ -26,23 +28,23 @@ logs/fires.jsonl       fire-rate telemetry (gitignored)
 
 ## The contract
 
-| field | meaning |
-|---|---|
-| `event` | `PreToolUse` \| `PostToolUse` \| `Stop` \| `SubagentStop` \| `TaskCompleted` |
+| field                      | meaning                                                                                                           |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `event`                    | `PreToolUse` \| `PostToolUse` \| `Stop` \| `SubagentStop` \| `TaskCompleted`                                      |
 | `match.tool` / `match.arg` | `\|`-alternated tool names / globs (or `*`). Arg = the command for Bash/PowerShell, the path for Read/Write/Edit. |
-| `type` | `command` (deterministic) \| `prompt` \| `agent` (semantic) \| `http` |
-| `mode` | `advisory` (log + nudge, never block) \| `enforce` (apply `outcome`) |
-| `outcome` | `blockingError` \| `preventContinuation` \| `stopReason` — used only when `mode=enforce` |
-| `message` | steering text injected back to the agent — names the correct next move |
+| `type`                     | `command` (deterministic) \| `prompt` \| `agent` (semantic) \| `http`                                             |
+| `mode`                     | `advisory` (log + nudge, never block) \| `enforce` (apply `outcome`)                                              |
+| `outcome`                  | `blockingError` \| `preventContinuation` \| `stopReason` — used only when `mode=enforce`                          |
+| `message`                  | steering text injected back to the agent — names the correct next move                                            |
 
 The four rules:
 
-| rule | law | fires on | steers to |
-|---|---|---|---|
-| `no-shell-out` | navigate-not-scan | Bash/PowerShell touching `mcp-server.ps1` / `serving.ps1` / dot-sourced `src/*.ps1` | call the registered MCP tools |
-| `no-slurp` | slice-not-slurp | `Read` of `.runs/**` / `*.chunks.jsonl` | `get_summary` → `get_slice` |
-| `no-regenerate` | edit-not-regenerate | `Write`/`Edit` of the chunk stream | `propose_edit` → `apply` |
-| `finish-clean` | finish-clean | `Stop` | confirm `finalize` + `review_document`, `pending == 0` |
+| rule            | law                 | fires on                                                                            | steers to                                              |
+| --------------- | ------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `no-shell-out`  | navigate-not-scan   | Bash/PowerShell touching `mcp-server.ps1` / `serving.ps1` / dot-sourced `src/*.ps1` | call the registered MCP tools                          |
+| `no-slurp`      | slice-not-slurp     | `Read` of `.runs/**` / `*.chunks.jsonl`                                             | `get_summary` → `get_slice`                            |
+| `no-regenerate` | edit-not-regenerate | `Write`/`Edit` of the chunk stream                                                  | `propose_edit` → `apply`                               |
+| `finish-clean`  | finish-clean        | `Stop`                                                                              | confirm `finalize` + `review_document`, `pending == 0` |
 
 ## Advisory-first (why the default is no teeth)
 
@@ -50,8 +52,8 @@ Every rule defaults to `mode: advisory`: the adapter **logs the fire and injects
 but does not block.** This reconciles two things —
 
 - **Paved-paths-before-teeth** (the design doctrine): make the tool path win on merit first; a deny is a
-  tail-risk backstop, and a rising fire-rate is a *paving* smell, not a reason to add denies.
-- **The self-test footgun**: a hard `no-shell-out` deny would block *you* running
+  tail-risk backstop, and a rising fire-rate is a _paving_ smell, not a reason to add denies.
+- **The self-test footgun**: a hard `no-shell-out` deny would block _you_ running
   `pwsh -File mcp-server.ps1` to test the server. Advisory mode keeps your own workflow clear.
 
 `logs/fires.jsonl` is the instrument: it accumulates the real fire-rate per rule. **Flip a single rule to
@@ -84,7 +86,7 @@ glob first. One field, one rule at a time.
 ## Caveats
 
 - **Hook output keys track a Claude Code version.** `permissionDecision` / `additionalContext` /
-  `systemMessage` are the current contract; if yours differs, the *one* place to adjust is the emission
+  `systemMessage` are the current contract; if yours differs, the _one_ place to adjust is the emission
   boundary at the bottom of `evaluate.ps1`. (For deny, the universal fallback is exit code 2 with the
   message on stderr.)
 - **Latency.** A `command` hook spawns `pwsh -NoProfile` on every matched call (~150–300 ms). Fine for

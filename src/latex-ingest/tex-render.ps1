@@ -16,10 +16,20 @@
 
 . "$PSScriptRoot/../pdf-raster.ps1"   # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
 
-$script:TexVendorDir = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'tools/tex-render'
+$script:TexRepoRoot   = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$script:TexPackageDir = Join-Path $script:TexRepoRoot 'packages/tectonic'   # the pinned external tier
+$script:TexVendorDir  = Join-Path $script:TexRepoRoot 'tools/tex-render'    # pre-tier vendored location
 
-# tectonic on PATH, else a binary vendored under tools/tex-render (the single-binary, vendored-tools shape).
+# Resolution ladder. The PINNED tier wins over PATH deliberately: a system tectonic is of unknown
+# version, and letting it silently outrank the pin defeats the point of pinning the external at all.
+#   rung 1  packages/tectonic — the pin
+#   rung 2  a system install on PATH
+#   rung 3  tools/tex-render — pre-tier vendored dir, kept so an older checkout still resolves
 function Get-TectonicPath {
+    foreach ($exe in 'tectonic.exe', 'tectonic') {
+        $p = Join-Path $script:TexPackageDir $exe
+        if (Test-Path -LiteralPath $p) { return $p }
+    }
     $c = Get-Command tectonic -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($c) { return $c.Source }
     foreach ($exe in 'tectonic.exe', 'tectonic') {

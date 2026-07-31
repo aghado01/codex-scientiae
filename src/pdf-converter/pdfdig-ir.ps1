@@ -22,10 +22,18 @@
 # callers pollutes their session (and trips the host's exit-code epilogue). Code below is strict-safe.
 . "$PSScriptRoot/../shared/jsonl.ps1"   # Write-JsonlStage: UTF-8-no-BOM, SMP-safe, .jidx + .sig
 
-$script:PdfPigLib = Join-Path $PSScriptRoot 'lib'   # vendored dlls; falls back to repo lib/pdfpig
-if (-not (Test-Path (Join-Path $script:PdfPigLib 'UglyToad.PdfPig.dll'))) {
-    $script:PdfPigLib = Join-Path $PSScriptRoot '../../lib/pdfpig'
+# PdfPig assemblies resolve through the PINNED external tier first (packages/pdfpig), then the two
+# pre-tier vendored locations so an older checkout still loads. Probed by presence of the core dll —
+# an empty or partial dir must not win the ladder and then fail deep inside Import-PdfPig.
+$script:PdfPigPackageDir = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../packages/pdfpig'))
+$script:PdfPigLib = $null
+foreach ($cand in @($script:PdfPigPackageDir,
+                    (Join-Path $PSScriptRoot 'lib'),
+                    (Join-Path $PSScriptRoot '../../lib/pdfpig'))) {
+    if (Test-Path (Join-Path $cand 'UglyToad.PdfPig.dll')) { $script:PdfPigLib = [System.IO.Path]::GetFullPath($cand); break }
 }
+# unresolved: point at the tier anyway, so Import-PdfPig's throw names where the dlls BELONG
+if (-not $script:PdfPigLib) { $script:PdfPigLib = $script:PdfPigPackageDir }
 
 # ── Interop: dependency-ordered load; nullable-struct + out-param traps live here once ──────────
 function Import-PdfPig {
