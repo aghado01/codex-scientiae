@@ -1,0 +1,106 @@
+[
+  {
+    "id": "cref",
+    "macro": "cref",
+    "style": "lower",
+    "arity": "single",
+    "typed": true,
+    "description": "cleveref: the type name is generated from the TARGET's environment, lowercase mid-sentence — 'lemma 2.9'"
+  },
+  {
+    "id": "Cref",
+    "macro": "Cref",
+    "style": "upper",
+    "arity": "single",
+    "typed": true,
+    "description": "cleveref, sentence-initial form — 'Lemma 2.9'"
+  },
+  {
+    "id": "vref",
+    "macro": "vref",
+    "style": "lower",
+    "arity": "single",
+    "typed": true,
+    "description": "cleveref + a page hint; the page has no referent once the document is markdown, so this renders exactly as \\cref"
+  },
+  {
+    "id": "Vref",
+    "macro": "Vref",
+    "style": "upper",
+    "arity": "single",
+    "typed": true,
+    "description": "capitalized \\vref — renders as \\Cref"
+  },
+  {
+    "id": "autoref",
+    "macro": "autoref",
+    "style": "upper",
+    "arity": "single",
+    "typed": true,
+    "description": "hyperref's own name table rather than cleveref's; always capitalized"
+  },
+  {
+    "id": "nameref",
+    "macro": "nameref",
+    "style": "upper",
+    "arity": "single",
+    "typed": true,
+    "description": "renders the target's TITLE text, which the numbering walk does not capture (it would need brace-matched section titles) — degrades to the \\Cref form rather than emitting nothing"
+  },
+  {
+    "id": "crefrange",
+    "macro": "crefrange",
+    "style": "lower",
+    "arity": "range",
+    "typed": true,
+    "description": "a SPAN of two labels, not a list — 'theorems 2.1 to 2.5'"
+  },
+  {
+    "id": "Crefrange",
+    "macro": "Crefrange",
+    "style": "upper",
+    "arity": "range",
+    "typed": true,
+    "description": "capitalized \\crefrange"
+  },
+  {
+    "id": "eqref",
+    "macro": "eqref",
+    "style": "bare",
+    "arity": "upstream",
+    "typed": false,
+    "description": "amsmath equation reference, rendered '(3)'. Resolved by its own pass BEFORE the generic dispatcher, so it is listed here only for usage reporting — never dispatched generically"
+  },
+  {
+    "id": "ref",
+    "macro": "ref",
+    "style": "bare",
+    "arity": "single",
+    "typed": false,
+    "description": "the plain cross-reference: number only. Papers that want a type word type it themselves ('Definition \\ref{def:x}'), which is why these sites already read correctly"
+  },
+  {
+    "id": "labelcref",
+    "macro": "labelcref",
+    "style": "bare",
+    "arity": "single",
+    "typed": false,
+    "description": "cleveref's DELIBERATE bare form — number only, no type name. Rendering a type here would contradict the author's explicit choice"
+  },
+  {
+    "id": "pageref",
+    "macro": "pageref",
+    "style": "bare",
+    "arity": "single",
+    "typed": false,
+    "description": "addresses a page markdown does not have; degrades to the target's number rather than emitting a fabricated page"
+  },
+  {
+    "id": "cpageref",
+    "macro": "cpageref",
+    "style": "bare",
+    "arity": "single",
+    "typed": false,
+    "description": "cleveref's page form — degrades as \\pageref"
+  }
+]
