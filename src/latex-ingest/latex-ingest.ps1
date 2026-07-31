@@ -124,12 +124,11 @@ function Get-LatexSubjectIndex {
         $at = $Markdown.IndexOf($needle, $cursor, [System.StringComparison]::Ordinal)
         if ($at -lt 0) { continue }          # emitted then rewritten downstream; skip rather than guess
         $cursor = $at + $needle.Length
-        # Take the label from the RENDERED header, not from the captured parts. The optional-argument
-        # title is captured before Resolve-Refs runs, so a source-side label would ship raw
-        # "\cref{thm:weakfactor}" where the manuscript reads "2.1" — the index must say what the document says.
-        $close = $Markdown.IndexOf('**', $at + 2, [System.StringComparison]::Ordinal)
-        $label = if ($close -gt $at) { $Markdown.Substring($at + 2, $close - $at - 2).Trim().TrimEnd('.').Trim() }
-        else { (@($o.kind, $o.number) | Where-Object { $_ }) -join ' ' }
+        # The label is BUILT from the record, never scraped back out of the rendered header. Its note was
+        # resolved in memory by ConvertFrom-Latex through the same maps the body used, so the parts are
+        # already what the document says. Only byte_start needs the markdown — an offset does not exist
+        # until the text is final, so that lookup is a real dependency rather than a recovery.
+        $label = (@($o.kind, $o.number, ([string]$o.note).Trim()) | Where-Object { $_ }) -join ' '
         $index.Add([pscustomobject]@{
                 kind       = $o.kind
                 class      = (Get-LatexResultClass $o.kind)
@@ -1596,6 +1595,16 @@ function ConvertFrom-Latex {
     $refSem = Get-RefSemantics $Tex
     $script:LtxRefSemantics = $refSem
     $body = Resolve-Refs $body $maps $citeMap $refSem                          # \cite/\eqref/\ref-family -> the sentence the paper reads
+    # The objects' optional-argument titles were captured DURING the cross-ref walk, before the maps
+    # existed — a forward \cref cannot resolve against a table that walk is still building. So they are
+    # resolved here, in memory, through the SAME function and the SAME maps the body just went through.
+    # Previously the index recovered these by re-reading the rendered markdown; a value the pipeline
+    # already holds should never be recovered from its own output.
+    if ($script:LtxDocObjects) {
+        foreach ($o in $script:LtxDocObjects) {
+            if ($o.note) { $o.note = Resolve-Refs ([string]$o.note) $maps $citeMap $refSem }
+        }
+    }
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
     # Protect math BEFORE the algorithm/theorem/text passes. Position is load-bearing for TOKENIZATION
