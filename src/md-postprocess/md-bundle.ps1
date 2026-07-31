@@ -38,6 +38,7 @@ function Copy-MdDeliverable {
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$MarkdownPath,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$DestDir,
+        [hashtable]$Metadata = @{},   # bibliographic fields for the manifest frontmatter (authors, doi)
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc
@@ -118,7 +119,7 @@ function Copy-MdDeliverable {
 
     # Emit standalone byte-spanned TOC sidecars ({slug}-tree.md and {slug}.toc.jsonl) via toc-engine
     $tocSidecar = if (Get-Command Export-MdTreeSidecar -ErrorAction SilentlyContinue) {
-        Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
+        Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug -Metadata $Metadata -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
     } else {
         Export-MdTocSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug
     }

@@ -51,6 +51,42 @@ function Get-LatexCommandArg {
     if (-not $m.Success) { return $null }
     return Get-LatexBracedArg $Text ($m.Index + $m.Length - 1)
 }
+# Document-level bibliographic metadata for the deliverable MANIFEST. This is deliberately NOT a
+# manuscript concern — STANDARDS §8 strips \author from the body — but a manifest whose whole job is to
+# describe the document had `authors: ""` hard-wired, because nothing ever supplied it.
+#
+# \author repeats across authors or carries them in one arg separated by \and; affiliation and contact
+# sub-commands are apparatus, not names. Returns '' when the source declares nothing: an empty field is
+# honest, a derived-but-unverified DOI would not be.
+function Get-LatexDocMetadata {
+    param([string]$Tex)
+    if ([string]::IsNullOrWhiteSpace($Tex)) { return @{ authors = ''; doi = '' } }
+    $t = Remove-TexComments $Tex
+    $names = [System.Collections.Generic.List[string]]::new()
+    foreach ($m in [regex]::Matches($t, '\\author\*?(?:\[[^\]]*\])?\s*\{')) {
+        $arg = Get-LatexBracedArg $t ($m.Index + $m.Length - 1)
+        if (-not $arg) { continue }
+        foreach ($piece in ($arg -split '\\and\b')) {
+            $p = $piece
+            foreach ($drop in 'thanks', 'footnote', 'inst', 'affil', 'affiliation', 'orcid', 'orcidlink', 'email', 'equalcont', 'address', 'curraddr') {
+                $p = Replace-BracedCommand $p ('\' + $drop) { param($a) '' }
+            }
+            $p = [regex]::Replace($p, '\\(?:fnm|sur|given|sn)\s*\{([^{}]*)\}', '$1')   # springer-nature name parts
+            $p = Clean-LatexTitle $p
+            $p = ([regex]::Replace($p, '\s+', ' ')).Trim(" ,;")
+            if ($p) { $names.Add($p) }
+        }
+    }
+    $doi = ''
+    $dm = [regex]::Match($t, '\\doi\s*\{')
+    if ($dm.Success) { $doi = [string](Get-LatexBracedArg $t ($dm.Index + $dm.Length - 1)) }
+    if ([string]::IsNullOrWhiteSpace($doi)) {
+        $dp = [regex]::Match($t, '\b(10\.\d{4,9}/[-._;()/:A-Za-z0-9]+)')
+        if ($dp.Success) { $doi = $dp.Groups[1].Value }
+    }
+    return @{ authors = ($names -join '; '); doi = ([string]$doi).Trim() }
+}
+
 function Replace-BracedCommand {
     param([string]$T, [string]$Cmd, [scriptblock]$Fmt)   # replace every \Cmd{...} with &Fmt($arg)
     while ($true) {
@@ -2125,7 +2161,9 @@ function Invoke-ArxivLatexToMarkdown {
     # optional delivery shelf: bundle the standalone deliverable (md + referenced assets) and
     # verify it there. The audit rides the return object; a dirty bundle is REPORTED, never thrown.
     $bundle = if ($DeliverableDir) {
-        Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
+        # bibliographic metadata rides to the manifest from the SOURCE, which is the only place it exists
+        # (the body has already had \author stripped per STANDARDS §8)
+        Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir -Metadata (Get-LatexDocMetadata $tex) -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
     } else { $null }
 
     # oracle-counts sidecar: persist the figure/table/diagram truth INTO the tex run dir ($work =
