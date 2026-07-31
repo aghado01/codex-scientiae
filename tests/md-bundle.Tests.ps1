@@ -13,7 +13,7 @@ BeforeAll {
     $script:shelf   = Join-Path $root 'shelf'
     New-Item -ItemType Directory -Force -Path (Join-Path $srcDir 'p') | Out-Null
     [System.IO.File]::WriteAllBytes((Join-Path $srcDir 'p/fig-1.png'), [byte[]](137, 80, 78, 71))
-    [System.IO.File]::WriteAllBytes((Join-Path $srcDir 'p/diagram-2.svg'), [byte[]](60, 115, 118, 103))
+    [System.IO.File]::WriteAllText((Join-Path $srcDir 'p/diagram-2.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10"/></svg>', $script:u8)
     $script:mdPath = Join-Path $srcDir 'p-latex.md'
     [System.IO.File]::WriteAllText($mdPath, @'
 # T
@@ -42,8 +42,8 @@ Describe 'Copy-MdDeliverable — bundle + verify' {
         Test-Path $r.bundle_dir | Should -BeTrue
         Test-Path $r.md | Should -BeTrue
         Test-Path $r.toc_md | Should -BeTrue
-        Test-Path (Join-Path $r.bundle_dir 'p/fig-1.png') | Should -BeTrue
-        Test-Path (Join-Path $r.bundle_dir 'p/diagram-2.svg') | Should -BeTrue
+        Test-Path (Join-Path $r.bundle_dir 'images/fig-1.png') | Should -BeTrue
+        Test-Path (Join-Path $r.bundle_dir 'images/diagram-2.png') | Should -BeTrue
         $r.links_total | Should -Be 3          # web link excluded
         $r.assets_copied | Should -Be 2
         @($r.assets_missing) | Should -Be @('p/never-made.png')

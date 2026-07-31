@@ -47,7 +47,30 @@ function Invoke-TikzRender {
     try {
         $raw = & $node $script:TikzSvgJs $jobsPath $OutDir 2>$null
         if ($LASTEXITCODE -ne 0 -or -not $raw) { throw "tikz-render: renderer failed (exit $LASTEXITCODE)" }
-        return ($raw -join '') | ConvertFrom-Json
+        $report = ($raw -join '') | ConvertFrom-Json
+
+        # Convert produced SVG diagrams to terminal PNG register
+        $pyExe = (Get-Command python -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
+        if ($pyExe -and $report.results) {
+            foreach ($r in $report.results) {
+                if (-not $r.ok) { continue }
+                $svgFile = Join-Path $OutDir "$($r.id).svg"
+                $pngFile = Join-Path $OutDir "$($r.id).png"
+                if (Test-Path -LiteralPath $svgFile -PathType Leaf) {
+                    try {
+                        $svgPy = $svgFile.Replace('\', '/')
+                        $pngPy = $pngFile.Replace('\', '/')
+                        $pyCmd = "import cairosvg; b=open('$svgPy', 'rb').read(); cairosvg.svg2png(bytestring=b, write_to='$pngPy')"
+                        & $pyExe -c $pyCmd 2>$null
+                        if ((Test-Path -LiteralPath $pngFile -PathType Leaf) -and (Get-Item -LiteralPath $pngFile).Length -gt 0) {
+                            $r | Add-Member -NotePropertyName png -NotePropertyValue "$($r.id).png" -Force
+                            Remove-Item -LiteralPath $svgFile -Force -ErrorAction SilentlyContinue
+                        }
+                    } catch {}
+                }
+            }
+        }
+        return $report
     } finally {
         Remove-Item -LiteralPath $jobsPath -Force -ErrorAction SilentlyContinue
     }

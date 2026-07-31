@@ -1980,7 +1980,10 @@ function Invoke-ArxivLatexToMarkdown {
         # optional delivery shelf (the ingestion/_markdown pattern): when set, the finished
         # {slug}-latex.md + its {slug}/ assets are BUNDLED there via Copy-MdDeliverable, links
         # verified at the destination — the manual copy step, codified. Absent -> unchanged.
-        [string]$DeliverableDir
+        [string]$DeliverableDir,
+        [switch]$EnableEmbeddedToc,
+        [switch]$DisableTreeToc,
+        [switch]$DisableJsonlToc
     )
     $u8 = [System.Text.UTF8Encoding]::new($false)
     # the tex unpacks into a runstamped working dir BESIDE the tarball — an intermediate workflow
@@ -2071,8 +2074,10 @@ function Invoke-ArxivLatexToMarkdown {
                 if (-not $res.ok) { continue }
                 $n = [int]($res.id -replace '^diagram-', '')
                 $kind = (@($script:DiagramStore | Where-Object { $_.n -eq $n })[0]).kind
-                $md = $md.Replace((Format-DiagramMarker $n $kind), "![diagram $n ($kind)]($Slug/diagram-$n.svg)")
-                [void]$doneN.Add($n); $diag.svg++
+                $ext = if ($res.png) { 'png' } else { 'svg' }
+                $md = $md.Replace((Format-DiagramMarker $n $kind), "![diagram $n ($kind)]($Slug/diagram-$n.$ext)")
+                [void]$doneN.Add($n)
+                if ($ext -eq 'png') { [void]$pngN.Add($n); $diag.png++ } else { $diag.svg++ }
             }
         } catch { Write-Verbose "tikz-render failed: $($_.Exception.Message)" }
     }
@@ -2107,18 +2112,21 @@ function Invoke-ArxivLatexToMarkdown {
     $md = $outPatch.markdown
     $patchesApplied = @($srcPatch.applied) + @($outPatch.applied)
 
-    # in-doc `## Contents` (shared md-toc primitive), AFTER output patches so the TOC reflects
-    # patched headings — the deliverable is complete on first pass, no post-hoc md-repair required.
-    # Section count is taken BEFORE insertion so the Contents heading never counts itself.
+    # In-doc `## Contents` block is DISABLED by default so manuscript stays a pristine transfer.
+    # Refresh/insert ONLY if explicitly requested via -EnableEmbeddedToc switch.
     $sectionCount = ([regex]::Matches($md, '(?m)^##\s')).Count
-    $md = Set-MdContentsBlock -Markdown $md
+    if ($EnableEmbeddedToc) {
+        $md = Set-MdContentsBlock -Markdown $md
+    }
 
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
     # optional delivery shelf: bundle the standalone deliverable (md + referenced assets) and
     # verify it there. The audit rides the return object; a dirty bundle is REPORTED, never thrown.
-    $bundle = if ($DeliverableDir) { Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir } else { $null }
+    $bundle = if ($DeliverableDir) {
+        Copy-MdDeliverable -MarkdownPath $outPath -DestDir $DeliverableDir -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
+    } else { $null }
 
     # oracle-counts sidecar: persist the figure/table/diagram truth INTO the tex run dir ($work =
     # .runs/{stamp}/tex, git-ignored) so the standing figure-count harness (Compare-FigureCounts) reads

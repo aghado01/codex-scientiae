@@ -37,7 +37,10 @@ function Copy-MdDeliverable {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$MarkdownPath,
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$DestDir
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$DestDir,
+        [switch]$EnableEmbeddedToc,
+        [switch]$DisableTreeToc,
+        [switch]$DisableJsonlToc
     )
     $srcPath = (Resolve-Path -LiteralPath $MarkdownPath -ErrorAction Stop).Path
     $srcDir  = Split-Path -Parent $srcPath
@@ -52,16 +55,52 @@ function Copy-MdDeliverable {
 
     $md = [System.IO.File]::ReadAllText($srcPath, $script:BundleUtf8)
 
+    # In-doc embedded TOC is DISABLED by default (manuscript is a pristine transfer); refresh ONLY if requested
+    if ($EnableEmbeddedToc -and (Get-Command Set-MdContentsBlock -ErrorAction SilentlyContinue)) {
+        $md = Set-MdContentsBlock -MarkdownText $md -Slug $slug
+    }
+
     $targets = Get-MdLocalImageLinks $md
     $copied = 0; $missing = [System.Collections.Generic.List[string]]::new()
     $imagesDir = Join-Path $bundleDirFull 'images'
 
     foreach ($t in $targets) {
-        $from = Join-Path $srcDir $t
+        $from = [System.IO.Path]::GetFullPath((Join-Path $srcDir $t))
         if (-not (Test-Path -LiteralPath $from -PathType Leaf)) { $missing.Add($t); continue }
 
         # Place images into images/ subdirectory
-        $imgLeaf = Split-Path -Leaf $t
+        $imgLeaf = [System.IO.Path]::GetFileName($t)
+        $isSvg = $imgLeaf -match '\.svg$'
+        if ($isSvg) {
+            $pngLeaf = $imgLeaf -replace '\.svg$', '.png'
+            $toPng = Join-Path $imagesDir $pngLeaf
+            $toDir = Split-Path -Parent $toPng
+            if ($toDir) { New-Item -ItemType Directory -Force -Path $toDir | Out-Null }
+            
+            # Convert SVG to PNG using cairosvg or python shim
+            $converted = $false
+            try {
+                $fromPy = $from.Replace('\', '/')
+                $toPngPy = $toPng.Replace('\', '/')
+                $pyCmd = "import cairosvg; b=open('$fromPy', 'rb').read(); cairosvg.svg2png(bytestring=b, write_to='$toPngPy')"
+                $pyExe = (Get-Command python -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
+                if ($pyExe) {
+                    & $pyExe -c $pyCmd 2>$null
+                    if ((Test-Path -LiteralPath $toPng -PathType Leaf) -and (Get-Item -LiteralPath $toPng).Length -gt 0) {
+                        $converted = $true
+                    }
+                }
+            } catch {}
+
+            if ($converted) {
+                # Update link in markdown to point to PNG in images/
+                $md = $md.Replace("($t)", "(images/$pngLeaf)")
+                $copied++
+                continue
+            }
+        }
+
+        # Non-SVG or SVG conversion fallback: copy directly to images/
         $to = Join-Path $imagesDir $imgLeaf
         $toDir = Split-Path -Parent $to
         if ($toDir) { New-Item -ItemType Directory -Force -Path $toDir | Out-Null }
@@ -69,33 +108,27 @@ function Copy-MdDeliverable {
             Copy-Item -LiteralPath $from -Destination $to -Force
         }
 
-        # Also support legacy relative path structure for backward compatibility
-        $toLegacy = Join-Path $bundleDirFull $t
-        $toLegacyDir = Split-Path -Parent $toLegacy
-        if ($toLegacyDir) { New-Item -ItemType Directory -Force -Path $toLegacyDir | Out-Null }
-        if ((Resolve-Path -LiteralPath $from).Path -ne ([System.IO.Path]::GetFullPath($toLegacy))) {
-            Copy-Item -LiteralPath $from -Destination $toLegacy -Force
-        }
+        # Update link in markdown to point to images/
+        $md = $md.Replace("($t)", "(images/$imgLeaf)")
         $copied++
     }
 
     $mdOut = Join-Path $bundleDirFull "$slug.md"
-    if ($srcPath -ne [System.IO.Path]::GetFullPath($mdOut)) {
-        Copy-Item -LiteralPath $srcPath -Destination $mdOut -Force
-    }
+    [System.IO.File]::WriteAllText($mdOut, $md, $script:BundleUtf8)
 
     # Emit standalone byte-spanned TOC sidecars ({slug}-tree.md and {slug}.toc.jsonl) via toc-engine
     $tocSidecar = if (Get-Command Export-MdTreeSidecar -ErrorAction SilentlyContinue) {
-        Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug
+        Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
     } else {
         Export-MdTocSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug
     }
 
     # post-copy verification at the DESTINATION — the shipped bundle is what gets checked
+    $destTargets = Get-MdLocalImageLinks $md
     $broken = [System.Collections.Generic.List[string]]::new()
-    foreach ($t in $targets) {
+    foreach ($t in $destTargets) {
         $check1 = Test-Path -LiteralPath (Join-Path $bundleDirFull $t) -PathType Leaf
-        $check2 = Test-Path -LiteralPath (Join-Path $imagesDir (Split-Path -Leaf $t)) -PathType Leaf
+        $check2 = Test-Path -LiteralPath (Join-Path $imagesDir ([System.IO.Path]::GetFileName($t))) -PathType Leaf
         if (-not ($check1 -or $check2)) { $broken.Add($t) }
     }
     $sentinels = [ordered]@{

@@ -1,0 +1,1 @@
+This code used to live in `.venv` even though it is first-party source code. Why it was ever deposited in .venv is confounding to the user and very disappointing. One does not put custom code in a venv. A venv is where python external dependencies are stored in a project-local, environmentally controlled fashion.

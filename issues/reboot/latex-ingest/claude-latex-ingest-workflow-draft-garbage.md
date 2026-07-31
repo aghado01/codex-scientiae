@@ -13,9 +13,10 @@ not a side effect of oracle duty for the pdf converter.
 
 **Non-goals (near-term).**
 
-- Generality over all LaTeX. The pipeline must be *correct on the pinned set* and
-  *adaptable by stores/patches* — not complete. Coverage grows paper-by-paper through the
+- Generality over all LaTeX. The pipeline must be _correct on the pinned set_ and
+  _adaptable by stores/patches_ — not complete. Coverage grows paper-by-paper through the
   adaptation loop, never by speculative branches.
+- Patterns that emerge from patches should be adapted into code if a reliable solution to a problem becomes evident
 - MarkPig/MathDig. The IR is the stop-gap serialization of the future manuscript DAG;
   every judgment made here (furniture vs notation, composite closure, reading order)
   is a conformance fixture for those parsers, not blocked on them.
@@ -37,7 +38,7 @@ questions the static rungs cannot decide, never as the conversion engine. The sa
 instrument posture as the Lean/R harnesses elsewhere: written once, invoked as needed.
 Math machinery currently duplicated between `latex.ps1` and membrane `normalize.ps1`
 resolves by promotion into the shared/math-register layer, not by cross-lane import.
-The membrane remains a *consumer* of this lane's output (oracle role), never a dependency.
+The membrane remains a _consumer_ of this lane's output (oracle role), never a dependency.
 
 ## Pipeline
 
@@ -56,7 +57,7 @@ into the run manifest.
 
 `Read-LatexPatchFile` → `Invoke-LatexSourcePatches` with `Assert-PatchHits`.
 Per-paper `{slug}-latex.patch.jsonl` curated errata, re-applied every convert,
-fails loud when stale. Patches apply to the *flattened* source so anchors are stable.
+fails loud when stale. Patches apply to the _flattened_ source so anchors are stable.
 
 ### 3. Macro harvest & expansion
 
@@ -72,7 +73,7 @@ context-dependent expansion) escalate to a **proper LaTeX parser/expander** — 
 evaluation-tier adapter. This is an admissible external dependency: TeX expansion is
 the definitional parse-requires-evaluation case, and static analysis alone cannot close it.
 
-- Scope of the dependency: the parser is an *expansion oracle* answering "what does this
+- Scope of the dependency: the parser is an _expansion oracle_ answering "what does this
   span expand to" — invoked at the weakest sufficient stage (expand, not compile), never
   handed ownership of segmentation, IR, lexicon, or emission.
 - Guard: what neither rung can expand is ledgered residual and carried unexpanded —
@@ -146,14 +147,14 @@ engine cannot yet express; each one is a standing TODO for a store or engine fix
 
 ### 10. Gates
 
-| Gate | Substrate | Severity |
-| --- | --- | --- |
-| render_check (KaTeX floor: every math span parses) | render harness | blocking |
-| encoding invariants (UTF-8 no BOM, SMP round-trip, no replacement chars) | encoding tests | blocking |
-| balance (delimiters, environments) | `Get-LatexBalance`, `Get-EnvironmentBalance` | blocking |
-| defect-span lint (glyph leaks, dangling operators, ligatures, degenerate structures, prose-in-formula, hallucinated subexprs) | `latex.ps1` span detectors | [REVIEW] split blocking vs advisory per detector |
-| patch staleness | `Assert-PatchHits` | blocking |
-| residual report (unmasked spans, unexpanded macros, unencoded figures) | ledger | advisory — reported, never silently empty |
+| Gate                                                                                                                          | Substrate                                    | Severity                                         |
+| ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------ |
+| render_check (KaTeX floor: every math span parses)                                                                            | render harness                               | blocking                                         |
+| encoding invariants (UTF-8 no BOM, SMP round-trip, no replacement chars)                                                      | encoding tests                               | blocking                                         |
+| balance (delimiters, environments)                                                                                            | `Get-LatexBalance`, `Get-EnvironmentBalance` | blocking                                         |
+| defect-span lint (glyph leaks, dangling operators, ligatures, degenerate structures, prose-in-formula, hallucinated subexprs) | `latex.ps1` span detectors                   | [REVIEW] split blocking vs advisory per detector |
+| patch staleness                                                                                                               | `Assert-PatchHits`                           | blocking                                         |
+| residual report (unmasked spans, unexpanded macros, unencoded figures)                                                        | ledger                                       | advisory — reported, never silently empty        |
 
 ### 11. Bundle & deliver
 

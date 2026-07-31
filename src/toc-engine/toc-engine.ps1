@@ -259,7 +259,9 @@ function Export-MdTreeSidecar {
         [Parameter(Mandatory)][string]$OutDir,
         [string]$TemplatePath = (Join-Path $PSScriptRoot 'templates/single-doc-tree.template.md'),
         [string]$Slug = '',
-        [hashtable]$Metadata = @{}
+        [hashtable]$Metadata = @{},
+        [switch]$DisableTreeToc,
+        [switch]$DisableJsonlToc
     )
     if (-not (Test-Path -LiteralPath $MarkdownPath -PathType Leaf)) { return $null }
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -273,27 +275,31 @@ function Export-MdTreeSidecar {
     $text = [System.IO.File]::ReadAllText($srcPath, $script:TocEngineUtf8)
     $model = New-DeliverableTreeModel -MarkdownText $text -Slug $Slug -Metadata $Metadata -SourcePath $srcPath
 
-    $templateText = [System.IO.File]::ReadAllText($TemplatePath, $script:TocEngineUtf8)
-    $sidecarText = Expand-MdTemplate -TemplateText $templateText -Model $model
-
-    $tocMdPath = Join-Path $OutDir "$Slug-tree.md"
-    [System.IO.File]::WriteAllText($tocMdPath, $sidecarText, $script:TocEngineUtf8)
-
-    # Machine JSONL sidecar ({slug}.toc.jsonl)
-    $jsonlLines = foreach ($s in $model.Sections) {
-        [pscustomobject]@{
-            level         = $s.level
-            heading       = $s.title
-            anchor        = $s.anchor
-            byte_start    = $s.byte_start
-            byte_end      = $s.byte_end
-            byte_width    = $s.byte_width
-            char_count    = $s.char_count
-            relative_link = $s.relative_link
-        } | ConvertTo-Json -Compress
+    $tocMdPath = $null
+    if (-not $DisableTreeToc) {
+        $templateText = [System.IO.File]::ReadAllText($TemplatePath, $script:TocEngineUtf8)
+        $sidecarText = Expand-MdTemplate -TemplateText $templateText -Model $model
+        $tocMdPath = Join-Path $OutDir "$Slug-tree.md"
+        [System.IO.File]::WriteAllText($tocMdPath, $sidecarText, $script:TocEngineUtf8)
     }
-    $tocJsonlPath = Join-Path $OutDir "$Slug.toc.jsonl"
-    [System.IO.File]::WriteAllText($tocJsonlPath, ($jsonlLines -join "`n") + "`n", $script:TocEngineUtf8)
+
+    $tocJsonlPath = $null
+    if (-not $DisableJsonlToc) {
+        $jsonlLines = foreach ($s in $model.Sections) {
+            [pscustomobject]@{
+                level         = $s.level
+                heading       = $s.title
+                anchor        = $s.anchor
+                byte_start    = $s.byte_start
+                byte_end      = $s.byte_end
+                byte_width    = $s.byte_width
+                char_count    = $s.char_count
+                relative_link = $s.relative_link
+            } | ConvertTo-Json -Compress
+        }
+        $tocJsonlPath = Join-Path $OutDir "$Slug.toc.jsonl"
+        [System.IO.File]::WriteAllText($tocJsonlPath, ($jsonlLines -join "`n") + "`n", $script:TocEngineUtf8)
+    }
 
     return [pscustomobject]@{
         toc_md    = $tocMdPath

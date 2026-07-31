@@ -122,4 +122,22 @@ Text for methods.
             Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
         }
     }
+
+    It 'Export-MdTreeSidecar: respects -DisableTreeToc and -DisableJsonlToc switches' {
+        $tmpDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $tmpDir | Out-Null
+        try {
+            $mdFile = Join-Path $tmpDir 'paper-02.md'
+            "# Title`n`n## Sec`n`nText`n" | Out-File -FilePath $mdFile -Encoding utf8
+
+            $res = Export-MdTreeSidecar -MarkdownPath $mdFile -OutDir $tmpDir -Slug 'paper-02' -DisableTreeToc -DisableJsonlToc
+            $res.toc_md | Should -BeNullOrEmpty
+            $res.toc_jsonl | Should -BeNullOrEmpty
+            Test-Path (Join-Path $tmpDir 'paper-02-tree.md') | Should -BeFalse
+            Test-Path (Join-Path $tmpDir 'paper-02.toc.jsonl') | Should -BeFalse
+        }
+        finally {
+            Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
 }
