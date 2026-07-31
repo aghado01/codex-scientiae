@@ -10,10 +10,18 @@ generated_at: "{{Header.generated_at}}"
 
 # Document Tree Manifest: {{Header.slug}}
 
-> **Agent Inspection Guidance:**
+> **Navigation:**
 > This manifest indexes the structural sections of [`{{Header.source_file}}`]({{Header.source_path}}).
-> Each section carries a closed byte span `[byte_start, byte_end)`. To inspect a specific section
-> without loading the whole document, use `view_file` with `ContentOffset = byte_start` and `Length = byte_width`.
+> Sections appear in reading order, each with a half-open byte span `[byte_start, byte_end)`.
+>
+> With the `codex-reader` MCP server mounted on this bundle: `read_section` takes an anchor and returns
+> that section, `read_span` takes an arbitrary `[byte_start, byte_end)`, and `search_headings` finds one.
+> Without it, the spans address `{{Header.source_file}}` directly and `{{Header.slug}}.toc.jsonl` carries
+> the same index as one JSON object per line.
+>
+> Spans are addresses — for re-entering the document at a known place, not for deciding whether to go
+> there. Extent says nothing about importance: a short section may carry the central result, and prose
+> sections carry the rationale that makes the formal content intelligible.
 
 ## Payload
 
