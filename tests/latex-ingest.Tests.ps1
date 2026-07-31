@@ -223,6 +223,37 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
 
         Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
     }
+
+    It 'run layout: source, run artifacts, lane output and shelf are four INDEPENDENT destinations' -Skip:(-not (Get-Command tar -CommandType Application -ErrorAction SilentlyContinue)) {
+        # the defaults are conventions, not constraints — a caller may scatter all four, and none of the
+        # overrides may be derived from another
+        $root = Join-Path ([System.IO.Path]::GetTempPath()) ("ov-" + [guid]::NewGuid().ToString('N'))
+        $src = Join-Path $root 'src'
+        $srcWork = Join-Path $root 'elsewhere/staged'
+        $runDir = Join-Path $root 'elsewhere/runs/custom'
+        $out = Join-Path $root 'elsewhere/lane'
+        $shelf = Join-Path $root 'elsewhere/shelf'
+        New-Item -ItemType Directory -Force -Path $src, $out, $shelf | Out-Null
+        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'),
+            '\documentclass{article}\begin{document}\section{S}Body.\end{document}', [System.Text.UTF8Encoding]::new($false))
+        $archive = Join-Path $root 'z.tar.gz'
+        Push-Location $src
+        try { tar -czf ([System.IO.Path]::GetRelativePath($src, $archive)) . } finally { Pop-Location }
+
+        $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'z' -OutDir $out -DeliverableDir $shelf `
+            -SourceWorkDir $srcWork -RunDir $runDir
+
+        $r.tex | Should -Be ([System.IO.Path]::GetFullPath($srcWork))
+        Test-Path (Join-Path $srcWork 'main.tex') | Should -BeTrue
+        Test-Path (Join-Path $runDir 'z.oracle-counts.json') | Should -BeTrue
+        Test-Path (Join-Path $out 'z-latex.md') | Should -BeTrue
+        Test-Path (Join-Path $shelf 'z/z.md') | Should -BeTrue
+        # nothing fell back to a default: no unpack beside the archive, no artifacts/ tree invented
+        Test-Path (Join-Path $root 'z-latex') | Should -BeFalse
+        Test-Path (Join-Path $root 'artifacts') | Should -BeFalse
+
+        Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
+    }
 }
 
 Describe 'TikZ — source-authoritative diagram rendering' {

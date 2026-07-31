@@ -2086,22 +2086,36 @@ function Invoke-ArxivLatexToMarkdown {
         # {slug}-latex.md + its {slug}/ assets are BUNDLED there via Copy-MdDeliverable, links
         # verified at the destination — the manual copy step, codified. Absent -> unchanged.
         [string]$DeliverableDir,
-        # Re-run against the already-unpacked source ({slug}-latex/) instead of re-expanding the tarball.
-        # The unpack is deterministic, so this only skips work — and it preserves any hand-edit made to
-        # the staged source while iterating on a conversion.
+        # Re-run against the already-unpacked source instead of re-expanding the tarball. The unpack is
+        # deterministic, so this only skips work — and it preserves any hand-edit made to the staged
+        # source while iterating on a conversion.
         [switch]$ReuseSource,
-        # Base for artifacts/{module}/runs/. Empty = the repo. Tests redirect it so run dirs do not
-        # accumulate in the working tree; production never sets it.
+        # --- destination overrides: four INDEPENDENT knobs, none derived from another ------------------
+        # Defaults are conventions, not constraints. Each of these addresses a different thing, so each
+        # is separately settable: a caller can stage source in one place, land run artifacts in another,
+        # write the lane deliverable in a third, and bundle to a fourth.
+        #
+        #   -SourceWorkDir   where the tarball unpacks / where staged source is read from
+        #                    default: {archive-dir}/{slug}-latex  (beside the archive, so curated
+        #                    groups keep their work in their own folder)
+        #   -RunDir          where THIS run's regenerable artifacts land (oracle counts, …)
+        #                    default: {RepoRoot}/artifacts/latex-ingest/runs/{stamp}/{slug}
+        #   -RepoRoot        coarse base for the default -RunDir only; ignored when -RunDir is given
+        #   -OutDir          lane deliverable ({slug}-latex.md + {slug}/ assets)   [above, mandatory]
+        #   -DeliverableDir  bundle shelf                                          [above, optional]
+        [string]$SourceWorkDir = '',
+        [string]$RunDir = '',
         [string]$RepoRoot = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc
     )
     $u8 = [System.Text.UTF8Encoding]::new($false)
-    # the tex unpacks into a runstamped working dir BESIDE the tarball — an intermediate workflow
-    # artifact like any other (gitignored, non-destructive across passes), not a throwaway temp dir.
-    # It PERSISTS: downstream consumers (math bank, structure skeleton) re-read the source without
-    # re-extraction, and a conversion is inspectable after the fact.
+    # the tex unpacks into a stable working dir beside the tarball — an intermediate workflow artifact
+    # (gitignored, non-destructive across passes), not a throwaway temp dir. It PERSISTS: downstream
+    # consumers (math bank, structure skeleton) re-read the source without re-extraction, and a
+    # conversion stays inspectable after the fact. NOT runstamped: the unpack is a pure function of the
+    # archive, so a stamp on it only duplicates bytes. Override with -SourceWorkDir.
     try {
         $archivePath = (Resolve-Path -LiteralPath $TarGz -ErrorAction Stop).Path
     } catch {
@@ -2110,11 +2124,17 @@ function Invoke-ArxivLatexToMarkdown {
     if (-not [System.IO.File]::Exists($archivePath)) {
         throw "LaTeX source archive is not a file: '$archivePath'"
     }
-    # The unpacked tarball is a pure function of the archive, so it gets ONE deterministic home beside
-    # its source ({slug}-latex/) rather than a fresh copy per run. Per-run output goes to
-    # artifacts/latex-ingest/runs/{stamp}/{slug}/, which is regenerable and gitignored wholesale.
-    $work = Get-SourceWorkDir -ArchivePath $archivePath -Slug $Slug
-    $run = New-ModuleRunDir -Module 'latex-ingest' -Slug $Slug -RepoRoot $RepoRoot
+    # The unpacked tarball is a pure function of the archive, so by default it gets ONE deterministic
+    # home beside its source ({slug}-latex/) rather than a fresh copy per run. Per-run output defaults
+    # under artifacts/, which is regenerable and gitignored wholesale. Both are DEFAULTS — an explicit
+    # -SourceWorkDir / -RunDir overrides either independently.
+    $work = if ($SourceWorkDir) { [System.IO.Path]::GetFullPath($SourceWorkDir) }
+            else { Get-SourceWorkDir -ArchivePath $archivePath -Slug $Slug }
+    $run = if ($RunDir) {
+        $d = [System.IO.Path]::GetFullPath($RunDir)
+        New-Item -ItemType Directory -Force -Path $d | Out-Null
+        $d
+    } else { New-ModuleRunDir -Module 'latex-ingest' -Slug $Slug -RepoRoot $RepoRoot }
     $haveSource = (Test-Path -LiteralPath $work -PathType Container) -and
                   @(Get-ChildItem -LiteralPath $work -Recurse -File -Filter *.tex -ErrorAction SilentlyContinue).Count -gt 0
     if ($ReuseSource -and $haveSource) {
