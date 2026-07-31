@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/publish.ps1 — promote a finalized deliverable from its run-dir staging (.runs/{stamp}/)
+  src/bibliotecha/publish.ps1 — promote a finalized deliverable from its run-dir staging (.runs/{stamp}/)
   into the live compendium tree (compendia/{topic}/). This is the post-`finalize` stage the membrane did not
   previously expose as a tool, so agents hand-scripted it from the console (the source of the
   cp1252 / parser churn in the feedback briefs). It crosses the ingestion→compendia boundary
@@ -20,8 +20,8 @@
     Invoke-Publish -ChunksPath <.runs/{stamp}/{slug}.chunks.jsonl> -CompendiaRoot <dir> -Topic <name> [-Force] [-DryRun]
 #>
 
-. "$PSScriptRoot/finalize.ps1"
-. "$PSScriptRoot/shared/md-sentinels.ps1"   # the ONE defect-sentinel catalogue (was a private 2-entry copy)
+. "$PSScriptRoot/../codex-membrane/finalize.ps1"
+. "$PSScriptRoot/../shared/md-sentinels.ps1"   # the ONE defect-sentinel catalogue (was a private 2-entry copy)
 
 $script:PubUtf8 = [System.Text.UTF8Encoding]::new($false)
 

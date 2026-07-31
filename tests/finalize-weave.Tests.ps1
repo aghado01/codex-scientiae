@@ -1,5 +1,5 @@
 #requires -Version 7
-# Figure weave (src/finalize.ps1 Get-FigureWeave + emission): the finalized markdown DRINKS the pig
+# Figure weave (src/codex-membrane/finalize.ps1 Get-FigureWeave + emission): the finalized markdown DRINKS the pig
 # figure lane through the shared md-register (src/audits/md-register.ps1) — captioned crops ride their
 # caption chunks, uncaptioned crops flush at page boundaries, failed crops emit flagged markers.
 # Synthetic paper: a membrane run (chunks.jsonl) + a pig run (figures.jsonl / images.jsonl / crop
@@ -7,7 +7,7 @@
 
 BeforeAll {
     $repo = Split-Path $PSScriptRoot -Parent
-    . (Join-Path $repo 'src/finalize.ps1')
+    . (Join-Path $repo 'src/codex-membrane/finalize.ps1')
 
     $script:wf = Join-Path ([IO.Path]::GetTempPath()) ('fin-weave-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
     $paper = Join-Path $script:wf 'wpaper'

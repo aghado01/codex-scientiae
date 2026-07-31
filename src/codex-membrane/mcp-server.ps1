@@ -45,9 +45,9 @@ if (-not $Experimental -and $env:CODEX_MEMBRANE_EXPERIMENTAL -in '1','true','yes
 . "$PSScriptRoot/serving.ps1"
 . "$PSScriptRoot/restructure.ps1"
 . "$PSScriptRoot/preprocess.ps1"
-. "$PSScriptRoot/../finalize.ps1"
+. "$PSScriptRoot/finalize.ps1"
 . "$PSScriptRoot/../audits/md-repair.ps1"
-. "$PSScriptRoot/../publish.ps1"
+. "$PSScriptRoot/../bibliotecha/publish.ps1"
 . "$PSScriptRoot/../latex-ingest/latex-ingest.ps1" # the LaTeX oracle lane (latex_convert): arXiv source -> codex markdown
 . "$PSScriptRoot/../render-check.ps1"               # math render-validity gate (render_check): does every span render in KaTeX
 . "$PSScriptRoot/../audits/md-lint.ps1"             # markdown structure lint (markdown_lint): the non-math half of the standard

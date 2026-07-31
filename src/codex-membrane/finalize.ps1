@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/finalize.ps1 — serialize the repaired chunk stream into the corpus deliverable.
+  src/codex-membrane/finalize.ps1 — serialize the repaired chunk stream into the corpus deliverable.
 
   Walks the enriched chunks in reading order and emits codex-scientiae markdown per
   STANDARDS.md: an H1 title, a `## Contents` block, body sections at H2/H3/H4 by depth, prose
@@ -13,10 +13,10 @@
     Invoke-Finalize -ChunksPath <chunks.jsonl> [-OutputDir <dir>]
 #>
 
-. "$PSScriptRoot/codex-membrane/serving.ps1"
-. "$PSScriptRoot/shared/runs.ps1"          # Get-PigRunDirs (newest-wins) — the figure weave reads the pig lane
-. "$PSScriptRoot/audits/md-register.ps1"   # the ONE markdown figure register, shared with the LaTeX oracle lane
-. "$PSScriptRoot/shared/md-anchor.ps1"            # the ONE heading-slug engine (Get-MdAnchor)
+. "$PSScriptRoot/serving.ps1"
+. "$PSScriptRoot/../shared/runs.ps1"          # Get-PigRunDirs (newest-wins) — the figure weave reads the pig lane
+. "$PSScriptRoot/../audits/md-register.ps1"   # the ONE markdown figure register, shared with the LaTeX oracle lane
+. "$PSScriptRoot/../shared/md-anchor.ps1"            # the ONE heading-slug engine (Get-MdAnchor)
 
 # caption furniture -> italic, heading -> #*(level+1), block formula -> $$ fence, else content as-is
 function Format-Chunk($c) {

@@ -7,7 +7,7 @@
   sentinels (U+FFFD, leaked @@…@@ placeholders, FILL_ME_IN) are counted, never silently shipped.
 
   This is delivery polish WITHOUT the publish formalities — no compendium index, no Contents-page
-  rewrite (that stays src/publish.ps1's job). Lane-agnostic: works on latex-ingest, membrane, or
+  rewrite (that stays src/bibliotecha/publish.ps1's job). Lane-agnostic: works on latex-ingest, membrane, or
   hand-edited markdown alike, because it reads only the document and its links.
 #>
 

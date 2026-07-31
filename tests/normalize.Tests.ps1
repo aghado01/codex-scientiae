@@ -138,7 +138,7 @@ Describe 'Move-CaptionsToAnchors — relocate a shattered caption to its in-text
     # stray "Fig. 1 ..." as is_furniture='caption' (above); finalize must then move it beside the paragraph
     # that first references Figure 1, instead of leaving it stranded mid-prose. Functions live in finalize.ps1.
     BeforeAll {
-        . "$PSScriptRoot/../src/finalize.ps1"   # Get-CaptionLabel, Test-FigureReference, Move-CaptionsToAnchors
+        . "$PSScriptRoot/../src/codex-membrane/finalize.ps1"   # Get-CaptionLabel, Test-FigureReference, Move-CaptionsToAnchors
         function New-BodyChunk($id, $content, $furn) { [pscustomobject]@{ id = $id; type = 'prose'; content = $content; is_furniture = $furn } }
         # the 2207.00510 specimen, trimmed to the local reading order around the leaked Fig. 1 caption
         function New-Specimen {
