@@ -24,7 +24,6 @@
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 . "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
 . "$PSScriptRoot/../math-register/math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
-. "$PSScriptRoot/../md-postprocess/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
 . "$PSScriptRoot/../md-postprocess/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
 . "$PSScriptRoot/../md-postprocess/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
 . "$PSScriptRoot/latex-math-store.ps1"     # store-driven math lowering + out-of-band evidence tracking

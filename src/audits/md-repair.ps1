@@ -24,7 +24,7 @@
   All I/O is UTF-8 without BOM; offsets index on-disk bytes so SMP math / ligatures stay exact.
 #>
 
-. "$PSScriptRoot/../md-postprocess/md-toc.ps1"   # Get-MdAnchor — the shared slug engine (see Update-MdContents)
+. "$PSScriptRoot/../shared/md-anchor.ps1"       # Get-MdAnchor — the ONE slug engine (see Update-MdContents)
 
 $script:Utf8 = [System.Text.UTF8Encoding]::new($false)
 
@@ -192,7 +192,7 @@ function Repair-MdHeadings {
     }
 }
 
-# Heading slugs come from the shared engine (audits/md-toc.ps1, Get-MdAnchor) — the same anchors
+# Heading slugs come from the shared engine (shared/md-anchor.ps1, Get-MdAnchor) — the same anchors
 # finalize and latex-ingest write, so a regenerated TOC always matches the emitting lane.
 
 # Regenerate a document's "## Contents" block from its current KEEP headings (H2+), so the in-doc TOC and

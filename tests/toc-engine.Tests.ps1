@@ -239,7 +239,7 @@ Text for methods.
         }
     }
 
-    It 'toc-engine stands alone: dot-sourced WITHOUT md-postprocess/md-toc.ps1 it still slugs and exports' {
+    It 'toc-engine stands alone: dot-sourced by itself it still slugs and exports' {
         # the engine used to borrow Get-MdAnchor from the module it supersedes, so load order decided
         # which of two same-named functions won. Run in a CHILD process so nothing this suite already
         # loaded can mask a missing dependency.
@@ -252,9 +252,7 @@ Text for methods.
 
             $script = @"
 . '$engine'
-if (Get-Command Set-MdContentsBlock -ErrorAction SilentlyContinue) {
-    if ((Get-Command Get-MdAnchor -ErrorAction SilentlyContinue).ScriptBlock.File -notlike '*toc-engine.ps1') { throw 'anchor came from elsewhere' }
-}
+if ((Get-Command Get-MdAnchor -ErrorAction SilentlyContinue).ScriptBlock.File -notlike '*md-anchor.ps1') { throw 'anchor did not come from the shared engine' }
 `$r = Export-MdTreeSidecar -MarkdownPath '$mdFile' -OutDir '$tmpDir' -Slug 'solo'
 Write-Output ([System.IO.File]::ReadAllText(`$r.toc_md))
 "@

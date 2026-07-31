@@ -11,7 +11,7 @@
   hand-edited markdown alike, because it reads only the document and its links.
 #>
 
-. "$PSScriptRoot/md-toc.ps1"   # Export-MdTocSidecar — standalone byte-spanned TOC sidecar primitive
+. "$PSScriptRoot/../shared/md-sentinels.ps1"   # the ONE defect-sentinel catalogue
 if (Test-Path -LiteralPath (Join-Path $PSScriptRoot '../toc-engine/toc-engine.ps1') -PathType Leaf) {
     . (Join-Path $PSScriptRoot '../toc-engine/toc-engine.ps1')
 }
@@ -118,12 +118,11 @@ function Copy-MdDeliverable {
     $mdOut = Join-Path $bundleDirFull "$slug.md"
     [System.IO.File]::WriteAllText($mdOut, $md, $script:BundleUtf8)
 
-    # Emit standalone byte-spanned TOC sidecars ({slug}-tree.md and {slug}.toc.jsonl) via toc-engine
-    $tocSidecar = if (Get-Command Export-MdTreeSidecar -ErrorAction SilentlyContinue) {
-        Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug -Metadata $Metadata -Index $Index -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
-    } else {
-        Export-MdTocSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug
-    }
+    # Emit standalone byte-spanned TOC sidecars ({slug}-tree.md and {slug}.toc.jsonl) via toc-engine.
+    # No fallback branch: toc-engine is dot-sourced above, so the legacy exporter it guarded against was
+    # unreachable — and a dead alternative that emits a DIFFERENT sidecar schema is worse than none.
+    $tocSidecar = Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug `
+        -Metadata $Metadata -Index $Index -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
 
     # post-copy verification at the DESTINATION — the shipped bundle is what gets checked
     $destTargets = Get-MdLocalImageLinks $md
@@ -133,10 +132,12 @@ function Copy-MdDeliverable {
         $check2 = Test-Path -LiteralPath (Join-Path $imagesDir ([System.IO.Path]::GetFileName($t))) -PathType Leaf
         if (-not ($check1 -or $check2)) { $broken.Add($t) }
     }
+    # counted through the shared catalogue (shared/md-sentinels.ps1) so a sentinel added there is caught
+    # by every gate at once; the reported field names are this report's contract and stay as they are
     $sentinels = [ordered]@{
-        replacement_char = ([regex]::Matches($md, [char]0xFFFD)).Count   # destroyed codepoints (membrane codepoint-safety doctrine)
-        placeholders     = ([regex]::Matches($md, '@@[A-Z]+\d+@@')).Count # leaked protection markers (LMATH/LDISP/ALG/VERB…)
-        fill_me_in       = ([regex]::Matches($md, 'FILL_ME_IN')).Count
+        replacement_char = Get-MdSentinelCount $md 'U+FFFD'        # destroyed codepoints (codepoint-safety doctrine)
+        placeholders     = Get-MdSentinelCount $md 'placeholder'   # leaked protection markers (LMATH/LDISP/ALG/VERB…)
+        fill_me_in       = Get-MdSentinelCount $md 'FILL_ME_IN'
     }
 
     return [pscustomobject]@{

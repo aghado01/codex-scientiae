@@ -21,6 +21,7 @@
 #>
 
 . "$PSScriptRoot/finalize.ps1"
+. "$PSScriptRoot/shared/md-sentinels.ps1"   # the ONE defect-sentinel catalogue (was a private 2-entry copy)
 
 $script:PubUtf8 = [System.Text.UTF8Encoding]::new($false)
 
@@ -28,19 +29,17 @@ $script:PubUtf8 = [System.Text.UTF8Encoding]::new($false)
 # block the extractor/agent gave up on and left a marker for) and the U+FFFD lossy-decode char. These are
 # holes a `pending` count cannot see — a chunk graded `faithful` can still carry one — so publish gates on
 # them in their own right, sourcing the recovery from the .archive raw (the loop that surfaced this).
-$script:PubDefectSentinels = @(
-    [pscustomobject]@{ Pattern = 'FILL_ME_IN';            Label = 'FILL_ME_IN' }
-    [pscustomobject]@{ Pattern = ([string][char]0xFFFD); Label = 'U+FFFD' }
-)
+
 
 # Count each defect sentinel surviving in the materialized body / references. Body-and-refs, since either
 # can carry a dropped table. Returns one record per sentinel that fired (label, body, references, total).
+# Thin adapter over the shared catalogue: publish reports per-FIELD counts (body vs references), so it
+# names its two texts and reshapes. The sentinel list itself is no longer publish's to know — it was a
+# private 2-entry copy that silently missed the leaked-placeholder pattern md-bundle already caught.
 function Get-PublishDefects([string]$body, [string]$refs) {
     $found = [System.Collections.Generic.List[object]]::new()
-    foreach ($s in $script:PubDefectSentinels) {
-        $nb = if ($body) { ([regex]::Matches($body, [regex]::Escape($s.Pattern))).Count } else { 0 }
-        $nr = if ($refs) { ([regex]::Matches($refs, [regex]::Escape($s.Pattern))).Count } else { 0 }
-        if (($nb + $nr) -gt 0) { $found.Add([pscustomobject]@{ label = $s.Label; body = $nb; references = $nr; total = $nb + $nr }) }
+    foreach ($d in (Get-MdDefectCounts -Texts ([ordered]@{ body = $body; references = $refs }))) {
+        $found.Add([pscustomobject]@{ label = $d.label; body = $d.counts['body']; references = $d.counts['references']; total = $d.total })
     }
     return $found
 }
