@@ -344,8 +344,48 @@ By \cref{thm:b} and \cref{def:a} in \cref{sec:one}, plus \cref{lem:c}.
         $out | Should -Match ([regex]::Escape('**Definition 1.1.**'))   # shares theorem counter, within section
         $out | Should -Match ([regex]::Escape('**Theorem 1.2.**'))      # same shared/within counter, next
         $out | Should -Match ([regex]::Escape('**Lemma 1.**'))          # own counter, flat (no [section])
-        $out | Should -Match ([regex]::Escape('By 1.2 and 1.1 in 1, plus 1.'))   # \cref resolves (incl label AFTER the theorem statement)
+        # \cref carries the TARGET's type name — the sentence the paper actually reads. A bare "By 1.2 and
+        # 1.1 in 1" was an assembly failure: cleveref generates the type at typeset time and it is content,
+        # not furniture. Label AFTER the theorem statement (thm:b) still resolves.
+        $out | Should -Match ([regex]::Escape('By theorem 1.2 and definition 1.1 in section 1, plus lemma 1.'))
         $out | Should -Not -Match '\?'
+    }
+    It 'ref-family contracts: \cref/\Cref type names, \ref/\labelcref bare, plural + conjunction, mixed types' {
+        $tex = @'
+\documentclass{article}
+\usepackage{cleveref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\begin{document}
+\section{Alpha}\label{sec:a}
+\begin{theorem}\label{thm:one} One. \end{theorem}
+\begin{theorem}\label{thm:two} Two. \end{theorem}
+\begin{corollary}\label{cor:one} Three. \end{corollary}
+\begin{corollary}\label{cor:two} Four. \end{corollary}
+lower \cref{thm:one} upper \Cref{thm:one} bare \ref{thm:one} explicit \labelcref{thm:one}
+list \cref{thm:one,thm:two} plural \cref{cor:one,cor:two} mixed \cref{thm:one,sec:a}
+\end{document}
+'@
+        $out = ConvertFrom-Latex $tex ''
+        $out | Should -Match ([regex]::Escape('lower theorem 1'))          # \cref  -> lowercase type
+        $out | Should -Match ([regex]::Escape('upper Theorem 1'))          # \Cref  -> capitalized
+        $out | Should -Match ([regex]::Escape('bare 1'))                   # \ref   -> number only
+        $out | Should -Match ([regex]::Escape('explicit 1'))               # \labelcref -> cleveref's DELIBERATE bare form
+        $out | Should -Match ([regex]::Escape('list theorems 1 and 2'))    # same type collapses to one plural word
+        $out | Should -Match ([regex]::Escape('plural corollaries 1 and 2'))  # y -> ies
+        $out | Should -Match ([regex]::Escape('mixed theorem 1 and section 1'))# mixed types stay per-target
+        $out | Should -Not -Match '\?'
+    }
+    It 'ref semantics probe: reports cleveref relevance so untyped sources are left alone' {
+        $plain = "\documentclass{article}`n\begin{document}`nSee \ref{x} and \eqref{y}.`n\end{document}"
+        $sem = Get-RefSemantics $plain
+        $sem.cleveref_loaded | Should -BeFalse
+        $sem.typed_sites | Should -Be 0
+        $sem.relevant | Should -BeFalse                                    # nothing to type -> stage must not invent names
+        $clever = "\documentclass{article}`n\usepackage{cleveref}`n\begin{document}`nSee \cref{x}.`n\end{document}"
+        $sem2 = Get-RefSemantics $clever
+        $sem2.cleveref_loaded | Should -BeTrue
+        $sem2.relevant | Should -BeTrue
     }
     It 'resolves text-mode accents + ligatures in body PROSE (M\''{e}moli -> Mémoli)' {
         $tex = @'

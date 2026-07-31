@@ -445,17 +445,143 @@ function Build-CiteMap {
     if ($Bbl) { foreach ($m in ([regex]'\\bibitem(?:\[[^\]]*\])?\s*\{([^{}]+)\}').Matches($Bbl)) { $i++; $map[$m.Groups[1].Value] = $i } }
     return $map
 }
+# --- reference semantics: ONE stage, one contract table ----------------------------------------------
+# The ref family is NOT interchangeable, and lumping it into a single regex can only ever emit the lowest
+# common denominator — which is why every \cref site used to lose its type name and read "immediate from
+# 2.9" where the paper reads "immediate from lemma 2.9". The contracts actually differ:
+#
+#   \ref        number only                    \cref        lowercase type + number  ("lemma 2.9")
+#   \labelcref  number only — cleveref's       \Cref        capitalized              ("Lemma 2.9")
+#               DELIBERATE bare form           \autoref     capitalized (hyperref's own name table)
+#   \pageref    a page markdown does not       \vref \Vref  cleveref + page hint -> as \cref/\Cref
+#   \cpageref   have -> degrade to the target  \crefrange   "theorems 2.1 to 2.5"
+#   \eqref      (number)                       \nameref     the target's TITLE (see limitation below)
+#
+# cleveref derives the type name from the TARGET's environment, never from the reference site, so the
+# label->type map recorded by the numbering walk is the whole of the evidence this stage needs.
+#
+# LIMITATION: \nameref renders the target's title text, which the numbering walk does not capture (it
+# would need brace-matched section titles). It degrades to the \Cref form rather than emitting nothing.
+
+# Upfront relevance probe: a paper that never loads cleveref and never uses a typed ref macro must not
+# have type names invented for it. Also reports per-macro usage so a lane can see what a source exercises.
+function Get-RefSemantics {
+    param([string]$Tex)
+    $usage = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
+    foreach ($m in [regex]::Matches($Tex, '(?<![A-Za-z@])\\(Crefrange|crefrange|labelcref|cpageref|pageref|autoref|nameref|eqref|Cref|cref|Vref|vref|ref)\s*\{')) {
+        $k = $m.Groups[1].Value
+        if ($usage.ContainsKey($k)) { $usage[$k]++ } else { $usage[$k] = 1 }
+    }
+    $loaded = [regex]::IsMatch($Tex, '\\usepackage(?:\[[^\]]*\])?\s*\{[^{}]*\bcleveref\b[^{}]*\}')
+    $typed = 0
+    foreach ($k in @('cref', 'Cref', 'crefrange', 'Crefrange', 'vref', 'Vref', 'autoref', 'nameref')) {
+        if ($usage.ContainsKey($k)) { $typed += $usage[$k] }
+    }
+    return @{ cleveref_loaded = $loaded; usage = $usage; typed_sites = $typed; relevant = ($loaded -or $typed -gt 0) }
+}
+
+function Get-RefPlural([string]$Word) {
+    if ([string]::IsNullOrEmpty($Word)) { return $Word }
+    if ($Word -match '(?i)[^aeiou]y$') { return $Word.Substring(0, $Word.Length - 1) + 'ies' }   # corollary -> corollaries
+    if ($Word -match '(?i)(s|x|z|ch|sh)$') { return $Word + 'es' }
+    return $Word + 's'
+}
+
+function Join-RefList($Items) {
+    $a = @($Items)
+    if ($a.Count -eq 0) { return '' }
+    if ($a.Count -eq 1) { return [string]$a[0] }
+    if ($a.Count -eq 2) { return "$($a[0]) and $($a[1])" }
+    return (($a[0..($a.Count - 2)]) -join ', ') + ' and ' + $a[-1]
+}
+
+# label -> { num; type } over every map the numbering stages produced. $Maps.types carries the display
+# type recorded by the theorem/section walk; equation/figure/table types are implied by which map hits.
+function Get-RefTarget($Maps, [string]$Key) {
+    if ($Maps.thm -and $Maps.thm.ContainsKey($Key)) {
+        $ty = if ($Maps.types -and $Maps.types.ContainsKey($Key)) { [string]$Maps.types[$Key] } else { '' }
+        return @{ num = "$($Maps.thm[$Key])"; type = $ty }
+    }
+    if ($Maps.eq  -and $Maps.eq.ContainsKey($Key))  { return @{ num = "$($Maps.eq[$Key])";  type = 'Equation' } }
+    if ($Maps.fig -and $Maps.fig.ContainsKey($Key)) { return @{ num = "$($Maps.fig[$Key])"; type = 'Figure' } }
+    if ($Maps.tab -and $Maps.tab.ContainsKey($Key)) { return @{ num = "$($Maps.tab[$Key])"; type = 'Table' } }
+    if ($Maps.sec -and $Maps.sec.ContainsKey($Key)) {
+        $ty = if ($Maps.types -and $Maps.types.ContainsKey($Key)) { [string]$Maps.types[$Key] } else { 'Section' }
+        return @{ num = "$($Maps.sec[$Key])"; type = $ty }
+    }
+    if ($Maps.custom -and $Maps.custom.ContainsKey($Key)) { return @{ num = "$($Maps.custom[$Key])"; type = '' } }
+    return $null
+}
+
+# Render one reference site per its macro's contract. $Style: 'bare' | 'lower' | 'upper'.
+# Runs of same-typed targets collapse to one plural type word ("theorems 2.1 and 2.18"), while a mixed
+# \cref{thm:a,fig:b} still reads "theorem 2.1 and figure 3" — both are cleveref's own behaviour.
+function Format-RefPhrase($Maps, [string[]]$Keys, [string]$Style) {
+    $items = [System.Collections.Generic.List[object]]::new()
+    foreach ($k in $Keys) {
+        $t = Get-RefTarget $Maps $k
+        if ($null -eq $t) { $items.Add(@{ num = '?'; type = '' }) } else { $items.Add($t) }
+    }
+    if ($Style -eq 'bare') {
+        $nums = [System.Collections.Generic.List[string]]::new()
+        foreach ($it in $items) { $nums.Add([string]$it.num) }
+        return (Join-RefList $nums)
+    }
+    $parts = [System.Collections.Generic.List[string]]::new()
+    $i = 0
+    while ($i -lt $items.Count) {
+        $type = [string]$items[$i].type
+        $run = [System.Collections.Generic.List[string]]::new()
+        while ($i -lt $items.Count -and [string]$items[$i].type -eq $type) { $run.Add([string]$items[$i].num); $i++ }
+        $word = $type
+        if ($word -and $run.Count -gt 1) { $word = Get-RefPlural $word }
+        if ($word) {
+            if ($Style -eq 'lower') { $word = $word.ToLowerInvariant() }
+            $parts.Add("$word $(Join-RefList $run)")
+        }
+        else { $parts.Add((Join-RefList $run)) }
+    }
+    return (Join-RefList $parts)
+}
+
 function Resolve-Refs {
-    param([string]$T, $Maps, $CiteMap)
+    param([string]$T, $Maps, $CiteMap, $Semantics)
     # consume natbib optional pre/post-notes (\citep[see][p. 7]{key}) — else the [..] brackets leak and read as broken reference links
     $T = [regex]::Replace($T, '\\cite[a-z]*(?:\[[^\]]*\])?(?:\[[^\]]*\])?\s*\{([^{}]+)\}', { param($m) '[' + (($m.Groups[1].Value -split '\s*,\s*' | ForEach-Object { if ($CiteMap.ContainsKey($_)) { $CiteMap[$_] } else { '?' } }) -join ', ') + ']' })
-    $T = [regex]::Replace($T, '\\eqref\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' } })
-    # \Cref/\vref/\labelcref included (cleveref) — else the capitalized forms leak verbatim; check every map
-    $T = [regex]::Replace($T, '\\(?:ref|autoref|cref|Cref|vref|labelcref)\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value
-            if ($Maps.thm.ContainsKey($k)) { "$($Maps.thm[$k])" } elseif ($Maps.eq.ContainsKey($k)) { "$($Maps.eq[$k])" }
-            elseif ($Maps.fig.ContainsKey($k)) { "$($Maps.fig[$k])" } elseif ($Maps.tab.ContainsKey($k)) { "$($Maps.tab[$k])" }
-            elseif ($Maps.sec -and $Maps.sec.ContainsKey($k)) { "$($Maps.sec[$k])" }
-            elseif ($Maps.custom -and $Maps.custom.ContainsKey($k)) { "$($Maps.custom[$k])" } else { '?' } })
+    $T = [regex]::Replace($T, '(?<![A-Za-z@])\\eqref\s*\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' } })
+
+    $typedRelevant = ($null -eq $Semantics) -or [bool]$Semantics.relevant
+
+    if ($typedRelevant) {
+        # \crefrange{a}{b} — a span, not a list: "theorems 2.1 to 2.5"
+        $T = [regex]::Replace($T, '(?<![A-Za-z@])\\(crefrange|Crefrange)\s*\{([^{}]+)\}\s*\{([^{}]+)\}', {
+                param($m)
+                $style = if ($m.Groups[1].Value -eq 'Crefrange') { 'upper' } else { 'lower' }
+                $a = Get-RefTarget $Maps $m.Groups[2].Value.Trim()
+                $b = Get-RefTarget $Maps $m.Groups[3].Value.Trim()
+                $numA = if ($a) { $a.num } else { '?' }
+                $numB = if ($b) { $b.num } else { '?' }
+                $word = if ($a -and $a.type) { Get-RefPlural $a.type } else { '' }
+                if ($word -and $style -eq 'lower') { $word = $word.ToLowerInvariant() }
+                if ($word) { "$word $numA to $numB" } else { "$numA to $numB" }
+            })
+    }
+
+    # the single-argument family, each by its own contract
+    $T = [regex]::Replace($T, '(?<![A-Za-z@])\\(labelcref|cpageref|pageref|autoref|nameref|Cref|cref|Vref|vref|ref)\s*\{([^{}]+)\}', {
+            param($m)
+            $macro = $m.Groups[1].Value
+            $keys = @($m.Groups[2].Value -split '\s*,\s*' | Where-Object { $_.Trim().Length -gt 0 } | ForEach-Object { $_.Trim() })
+            $style = switch -CaseSensitive ($macro) {
+                'cref'   { 'lower' }  'vref'  { 'lower' }
+                'Cref'   { 'upper' }  'Vref'  { 'upper' }
+                'autoref'{ 'upper' }  'nameref' { 'upper' }   # nameref: no title captured — degrade, never blank
+                default  { 'bare' }                            # ref, labelcref, pageref, cpageref
+            }
+            if (-not $typedRelevant) { $style = 'bare' }
+            $out = Format-RefPhrase $Maps $keys $style
+            if ([string]::IsNullOrWhiteSpace($out)) { '?' } else { $out }
+        })
     return $T
 }
 
@@ -1275,6 +1401,11 @@ function Convert-CrossRefEnvs {
     # label->number maps ordinal (case-sensitive \label keys); $ctr/$within key on env names — same rule
     $thmMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
     $secMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
+    # label -> DISPLAY TYPE ("Theorem", "Lemma", "Section"). The walk already knows this — it prints
+    # $e.disp into the body as **Theorem 2.1.** — but historically dropped it when recording the label,
+    # which left Resolve-Refs with no way to render \cref's type name. cleveref derives that name from
+    # the TARGET's environment, so this map is the whole of the evidence it needs.
+    $typeMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
     $ctr = @{}; $within = @{}
     $sec = 0; $sub = 0; $subsub = 0
     $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
@@ -1290,7 +1421,8 @@ function Convert-CrossRefEnvs {
                     'subsection' { $sub++; $subsub = 0; "$sec.$sub" }
                     'subsubsection' { $subsub++; "$sec.$sub.$subsub" }
                 }
-                $pending = @{ kind = 'sec'; num = $num }
+                $secDisp = switch ($m.Groups[1].Value) { 'section' { 'Section' } 'subsection' { 'Subsection' } default { 'Subsubsection' } }
+                $pending = @{ kind = 'sec'; num = $num; disp = $secDisp }
             } else { $pending = $null }
         }
         elseif ($m.Groups[3].Success) {                                          # \begin{env}
@@ -1301,7 +1433,7 @@ function Convert-CrossRefEnvs {
                 else {
                     $g = $e.group; if (-not $ctr.Contains($g)) { $ctr[$g] = 0 }; $within[$g] = $e.within
                     $ctr[$g]++; $num = if ($e.within) { "$sec.$($ctr[$g])" } else { "$($ctr[$g])" }
-                    $emit = "`n`n**$($e.disp) $num$note.** "; $pending = @{ kind = 'thm'; num = $num }
+                    $emit = "`n`n**$($e.disp) $num$note.** "; $pending = @{ kind = 'thm'; num = $num; disp = $e.disp }
                 }
             }
             # a NON-model \begin (equation, enumerate, …) leaves `pending` intact, so a theorem's label placed
@@ -1310,12 +1442,13 @@ function Convert-CrossRefEnvs {
         elseif ($m.Groups[5].Success) { if ($Model.Contains($m.Groups[5].Value)) { $emit = ''; $pending = $null } }   # theorem env closed: disarm
         elseif ($m.Groups[6].Success -and $pending) {                            # \label — FIRST label in the armed env/section wins
             if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
+            if ($pending.disp) { $typeMap[$m.Groups[6].Value] = [string]$pending.disp }
             $pending = $null
         }
         [void]$sb.Append($emit); $pos = $m.Index + $m.Length
     }
     [void]$sb.Append($Body.Substring($pos))
-    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap }
+    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap }
 }
 
 function Remove-TexComments([string]$Tex) {
@@ -1490,8 +1623,13 @@ function ConvertFrom-Latex {
     $body = $xref.body
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl               # equation/figure/table counters
     $maps.thm = $xref.thm; $maps.sec = $xref.sec                              # theorem + section label->number from the walk
+    $maps.types = $xref.types                                                  # label->display type — the evidence \cref needs
     $maps.custom = $cc.labels                                                  # custom-counter label->value (lettered cases, enumerate items)
-    $body = Resolve-Refs $body $maps $citeMap                                  # \cite/\eqref/\ref -> numbers
+    # probe the SOURCE (preamble intact) for whether the cleveref layer is in play at all, so a paper that
+    # never loads it and never uses a typed ref macro does not get type names invented for it
+    $refSem = Get-RefSemantics $Tex
+    $script:LtxRefSemantics = $refSem
+    $body = Resolve-Refs $body $maps $citeMap $refSem                          # \cite/\eqref/\ref-family -> the sentence the paper reads
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
     # Protect math BEFORE the algorithm/theorem/text passes. Position is load-bearing for TOKENIZATION
