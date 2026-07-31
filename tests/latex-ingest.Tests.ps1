@@ -161,15 +161,27 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $r.figures | Should -Be 1
         # -DeliverableDir bundles the standalone deliverable to the shelf, links verified there
         $r.deliverable.clean | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p-latex.md') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p/arch.png') | Should -BeTrue
+        # The shelf bundle is slug-ROOTED and destination-named: {shelf}/{slug}/{slug}.md — BARE, because
+        # the '-latex' infix marks LANE output, not a deliverable (see the $out assertions below, which
+        # still carry it). Assets move under images/; the byte-spanned TOC sidecars ship beside the md.
+        Test-Path (Join-Path $shelf 'p/p.md') | Should -BeTrue
+        Test-Path (Join-Path $shelf 'p/images/arch.png') | Should -BeTrue
+        Test-Path (Join-Path $shelf 'p/p-tree.md') | Should -BeTrue
+        Test-Path (Join-Path $shelf 'p/p.toc.jsonl') | Should -BeTrue
         # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
         $mdOut = Get-Content (Join-Path $out 'p-latex.md') -Raw
         $mdOut | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))
-        # born-complete deliverable: the in-doc `## Contents` block precedes the first body H2,
-        # linked through the shared slug engine — and the sections count never counts the TOC itself
-        $mdOut | Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
+        # the in-doc `## Contents` block is OPT-IN. Default is a pristine transfer: the byte-spanned
+        # sidecars ({slug}-tree.md + {slug}.toc.jsonl) already carry navigation, so embedding a third
+        # copy in the manuscript is redundant. The sections count never counts a TOC either way.
+        $mdOut | Should -Not -Match '(?m)^## Contents\s*$'
         $r.sections | Should -Be 1
+
+        # ...and -EnableEmbeddedToc still inserts it, linked through the shared slug engine
+        $out2 = Join-Path $root 'out2'
+        New-Item -ItemType Directory -Force -Path $out2 | Out-Null
+        $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out2 -EnableEmbeddedToc
+        (Get-Content (Join-Path $out2 'p-latex.md') -Raw) | Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
         Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
         # the unpacked tex is a PERSISTED run artifact beside the tarball ({dir}/.runs/{stamp}/tex),
         # not a deleted temp dir — downstream consumers (math bank, skeleton) re-read it
