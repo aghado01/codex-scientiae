@@ -27,7 +27,7 @@
     Invoke-Repair -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>] [-MinHeadFrac 0.4]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 . "$PSScriptRoot/../latex-ingest/latex.ps1"
 
 # Locate the corruption onset: the first \intertext marker, else the first space-shattered

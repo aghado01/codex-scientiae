@@ -1,0 +1,7 @@
+[
+  { "canonical": "\\geq", "members": ["\\ge", "\\geqslant"] },
+  { "canonical": "\\leq", "members": ["\\le", "\\leqslant"] },
+  { "canonical": "\\neq", "members": ["\\ne"] },
+  { "canonical": "\\to", "members": ["\\rightarrow"] },
+  { "canonical": "\\frac", "members": ["\\dfrac", "\\tfrac"] }
+]

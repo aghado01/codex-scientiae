@@ -14,7 +14,7 @@
   and the signed per-class residuals (brace/brack/paren/lr) for seam diagnostics.
 #>
 
-. "$PSScriptRoot/../masks.ps1"   # the mask algebra the math-vs-prose / alignment predicates are built from
+. "$PSScriptRoot/../shared/masks.ps1"   # the mask algebra the math-vs-prose / alignment predicates are built from
 
 function Get-LatexBalance([string]$s) {
     $brace = 0; $brack = 0; $paren = 0; $lr = 0; $neg = $false
@@ -141,6 +141,36 @@ function Get-EnvironmentSpans([string]$s) {
     while ($stack.Count -gt 0) { $spans.Add([pscustomobject]@{ Start = $stack.Pop(); End = $s.Length }) }
     return , $spans.ToArray()   # comma-wrap so an empty result stays an array, not $null
 }
+
+# ── Mask-Algebra helper masks for Verbatim Code, TeX Comments, and Prose Regions ──────────────────
+$script:RxVerbatimCode = [regex]'(?s)\\begin\{(?:verbatim|lstlisting|minted|alltt)\*?\}.*?\\end\{(?:verbatim|lstlisting|minted|alltt)\*?\}|\\verb\*?([^\w\s]).*?\1'
+function Get-VerbatimCodeMask([string]$s) { return (New-Mask $s $script:RxVerbatimCode) }
+
+# TeX comments (%...), excluding literal \% and excluding % inside verbatim code environments
+$script:RxRawComment = [regex]'(?m)(?<!\\)%.*$'
+function Get-TexCommentMask([string]$s) {
+    $raw = New-Mask $s $script:RxRawComment
+    $code = Get-VerbatimCodeMask $s
+    return (Sub-Mask $raw $code)
+}
+
+# The expandable region of a TeX manuscript: everything outside verbatim code and TeX comments (math IS expandable)
+function Get-TexExpandableMask([string]$s) {
+    $code = Get-VerbatimCodeMask $s
+    $comments = Get-TexCommentMask $s
+    $protected = Union-Mask $code $comments
+    return (Complement-Mask $protected $s.Length)
+}
+
+# The prose region of a TeX manuscript: everything outside math, verbatim code, and comments
+function Get-TexProseMask([string]$s) {
+    $math = Get-MathStructureMask $s
+    $code = Get-VerbatimCodeMask $s
+    $comments = Get-TexCommentMask $s
+    $protected = Union-Mask (Union-Mask $math $code) $comments
+    return (Complement-Mask $protected $s.Length)
+}
+
 
 # Environment CLOSURE balance — the \begin{...}/\end{...} invariant Get-LatexBalance cannot see. That
 # scanner counts braces/brackets/parens/\left\right; the {aligned} of \begin{aligned} is itself brace-

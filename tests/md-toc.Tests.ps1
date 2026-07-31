@@ -5,7 +5,7 @@
 # in-place refresh of a stale block, no-op guarantees, idempotency, and byte-spanned sidecars.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/audits/md-toc.ps1"
+    . "$PSScriptRoot/../src/md-postprocess/md-toc.ps1"
 
     $script:doc = @'
 # A Paper

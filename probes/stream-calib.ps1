@@ -25,7 +25,7 @@ param(
     [string[]] $Papers
 )
 
-. "$PSScriptRoot/../src/runs.ps1"
+. "$PSScriptRoot/../src/shared/runs.ps1"
 
 # modal letter size = body font (same estimator as pdfdig-figures.ps1 Get-BodyFontSize, inlined so this
 # probe stays standalone)

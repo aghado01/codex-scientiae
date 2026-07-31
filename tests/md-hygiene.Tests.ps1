@@ -6,7 +6,7 @@
 # nested-list retro-indent, and idempotency.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/audits/md-hygiene.ps1"
+    . "$PSScriptRoot/../src/md-postprocess/md-hygiene.ps1"
 }
 
 Describe 'whitespace lint (MD009/MD010/MD012) — fences byte-verbatim' {

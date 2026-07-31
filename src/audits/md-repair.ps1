@@ -24,7 +24,7 @@
   All I/O is UTF-8 without BOM; offsets index on-disk bytes so SMP math / ligatures stay exact.
 #>
 
-. "$PSScriptRoot/md-toc.ps1"   # Get-MdAnchor — the shared slug engine (see Update-MdContents)
+. "$PSScriptRoot/../md-postprocess/md-toc.ps1"   # Get-MdAnchor — the shared slug engine (see Update-MdContents)
 
 $script:Utf8 = [System.Text.UTF8Encoding]::new($false)
 

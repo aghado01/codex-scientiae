@@ -70,7 +70,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-. "$PSScriptRoot/../src/runs.ps1"
+. "$PSScriptRoot/../src/shared/runs.ps1"
 . "$PSScriptRoot/../src/hdbscan/Invoke-Hdbscan.ps1"
 
 $inv = [System.Globalization.CultureInfo]::InvariantCulture

@@ -18,7 +18,7 @@
     Invoke-HeadingRecovery -NodesPath <nodes.jsonl> [-Ratio 1.15] [-MaxLen 180]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 
 # A heading face = a bold or small-caps font variant — the weights LaTeX/Word reserve
 # for headings — detected by common font-name markers (Computer Modern bx/csc plus the

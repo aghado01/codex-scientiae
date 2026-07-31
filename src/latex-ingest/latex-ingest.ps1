@@ -18,15 +18,15 @@
   Entry point: Invoke-ArxivLatexToMarkdown -TarGz <source.tar.gz> -Slug <name> -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../runs.ps1"       # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
+. "$PSScriptRoot/../shared/runs.ps1"       # the run layout: tarballs unpack into {tar-dir}/.runs/{stamp}/tex like every other intermediate
 . "$PSScriptRoot/tikz-render.ps1"   # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/../pdf-raster.ps1" # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 . "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
-. "$PSScriptRoot/../math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
-. "$PSScriptRoot/../audits/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
-. "$PSScriptRoot/../audits/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
-. "$PSScriptRoot/../audits/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
+. "$PSScriptRoot/../math-register/math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
+. "$PSScriptRoot/../md-postprocess/md-toc.ps1"      # heading slugs + `## Contents` block — the deliverable is born WITH its TOC (end-to-end completeness)
+. "$PSScriptRoot/../md-postprocess/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
+. "$PSScriptRoot/../md-postprocess/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
 . "$PSScriptRoot/latex-math-store.ps1"     # store-driven math lowering + out-of-band evidence tracking
 
 # --- brace-aware primitives -------------------------------------------------------------------------
@@ -319,9 +319,14 @@ function Expand-LatexMacros {
         $changed = $false
         foreach ($name in @($Macros.Keys)) {
             $def = $Macros[$name]
+            $expandableKept = if (Get-Command Get-TexExpandableMask -ErrorAction SilentlyContinue) {
+                $em = Get-TexExpandableMask $Text
+                Get-MaskedText -Text $Text -Mask $em -Keep
+            } else { $Text }
             $pat = if ($name -match '^[A-Za-z]+$') { '\\' + [regex]::Escape($name) + '(?![A-Za-z])' } else { '\\' + [regex]::Escape($name) }
+            $rxPat = [System.Text.RegularExpressions.Regex]::new($pat, [System.Text.RegularExpressions.RegexOptions]::None)
             $sb = [System.Text.StringBuilder]::new(); $pos = 0
-            foreach ($m in ([regex]$pat).Matches($Text)) {
+            foreach ($m in $rxPat.Matches($expandableKept)) {
                 if ($m.Index -lt $pos) { continue }
                 [void]$sb.Append($Text.Substring($pos, $m.Index - $pos))
                 $cur = $m.Index + $m.Length; $args = @(); $ok = $true
@@ -1313,12 +1318,27 @@ function Convert-CrossRefEnvs {
     return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap }
 }
 
+function Remove-TexComments([string]$Tex) {
+    if (Get-Command Get-TexCommentMask -ErrorAction SilentlyContinue) {
+        $cm = Get-TexCommentMask $Tex
+        if (-not (Test-MaskEmpty $cm)) {
+            $spans = @($cm.Spans) | Sort-Object Start -Descending
+            foreach ($sp in $spans) {
+                $Tex = $Tex.Remove([int]$sp.Start, [int]$sp.End - [int]$sp.Start)
+            }
+        }
+        return $Tex
+    }
+    $Tex = [regex]::Replace($Tex, '(?m)^[ \t]*(?<!\\)%.*\r?\n', '')
+    $Tex = [regex]::Replace($Tex, '(?m)(?<!\\)%.*$', '')
+    return $Tex
+}
+
 # --- the core transform: LaTeX -> markdown ----------------------------------------------------------
 function ConvertFrom-Latex {
     param([string]$Tex, [string]$Bbl)
     $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
-    $Tex = [regex]::Replace($Tex, '(?m)^[ \t]*(?<!\\)%.*\r?\n', '')            # whole-line comments: drop the line so no spurious blank line (which splits a paragraph) survives
-    $Tex = [regex]::Replace($Tex, '(?m)(?<!\\)%.*$', '')                       # trailing comments: keep code before % — (?m) is LOAD-BEARING (without it, .*$ only strips the LAST line, leaking mid-doc comment text — e.g. a commented `$$` mispairs display math and swallows prose)
+    $Tex = Remove-TexComments $Tex
     $macros = Get-LatexMacros $Tex
     # papers that INLINE a dashed-arrows snippet define \xdash… themselves via \mathpalette/@-internals
     # KaTeX can never render — drop those DEFS so the names stay unexpanded and the compat table below

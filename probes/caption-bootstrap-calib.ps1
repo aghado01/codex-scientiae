@@ -19,7 +19,7 @@
 [CmdletBinding()] param(
     [double]$MarginEm = 1.0, [double]$MinOverlap = 0.25, [double]$MaxBlockSepEm = 9.0
 )
-. "$PSScriptRoot/../src/runs.ps1"
+. "$PSScriptRoot/../src/shared/runs.ps1"
 $root = (Resolve-Path (Join-Path $PSScriptRoot '../ingestion')).Path
 # canonical caption-shape prefix + REQUIRED separator group ([:.]) for the bootstrap
 $styleRe = [regex]'^[^\p{L}]{0,4}(Figure|Fig)\.?\s*\d+\s*([:.])'

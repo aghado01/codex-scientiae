@@ -14,9 +14,9 @@
 #>
 
 . "$PSScriptRoot/codex-membrane/serving.ps1"
-. "$PSScriptRoot/runs.ps1"          # Get-PigRunDirs (newest-wins) — the figure weave reads the pig lane
+. "$PSScriptRoot/shared/runs.ps1"          # Get-PigRunDirs (newest-wins) — the figure weave reads the pig lane
 . "$PSScriptRoot/audits/md-register.ps1"   # the ONE markdown figure register, shared with the LaTeX oracle lane
-. "$PSScriptRoot/audits/md-toc.ps1"        # the ONE heading-slug engine + Contents-block builder (Get-MdAnchor)
+. "$PSScriptRoot/md-postprocess/md-toc.ps1"        # the ONE heading-slug engine + Contents-block builder (Get-MdAnchor)
 
 # caption furniture -> italic, heading -> #*(level+1), block formula -> $$ fence, else content as-is
 function Format-Chunk($c) {

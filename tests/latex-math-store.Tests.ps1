@@ -1,6 +1,6 @@
 #requires -Version 7.0
 BeforeAll {
-    . "$PSScriptRoot/../src/math-register.ps1"
+    . "$PSScriptRoot/../src/math-register/math-register.ps1"
     . "$PSScriptRoot/../src/latex-ingest/latex-math-store.ps1"
 }
 

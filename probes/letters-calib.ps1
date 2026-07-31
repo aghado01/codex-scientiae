@@ -21,7 +21,7 @@ param(
     [string[]] $Papers = @('2210.00916', '2403.08110v4', '2111.15058v3')
 )
 
-. "$PSScriptRoot/../src/runs.ps1"
+. "$PSScriptRoot/../src/shared/runs.ps1"
 
 function Get-RectGap([double[]] $a, [double[]] $b) {
     $gx = [math]::Max($b[0] - $a[2], $a[0] - $b[2]); if ($gx -lt 0) { $gx = 0 }

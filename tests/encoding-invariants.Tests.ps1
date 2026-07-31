@@ -20,7 +20,7 @@
 #>
 
 BeforeAll {
-    . "$PSScriptRoot/../src/jsonl.ps1"
+    . "$PSScriptRoot/../src/shared/jsonl.ps1"
 
     # the gauntlet: every glyph class that has bitten or could bite
     $script:Gauntlet = @(

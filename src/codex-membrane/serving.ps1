@@ -24,11 +24,11 @@
     Invoke-RepairApply  -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 . "$PSScriptRoot/fidelity.ps1"
 . "$PSScriptRoot/playbook.ps1"   # the repair recipes-as-data the work-order composer pools
-. "$PSScriptRoot/../crawl.ps1"
-. "$PSScriptRoot/../runs.ps1"       # run layout ({paper}/.runs/{stamp}) + {paper}@{run} addressing
+. "$PSScriptRoot/../shared/crawl.ps1"
+. "$PSScriptRoot/../shared/runs.ps1"       # run layout ({paper}/.runs/{stamp}) + {paper}@{run} addressing
 . "$PSScriptRoot/normalize.ps1"
 . "$PSScriptRoot/../enrichment.ps1"
 . "$PSScriptRoot/../pdf-converter/math-evidence.ps1"   # Get-ChunkMathEvidence: geometry -> slice payload for gated math repair

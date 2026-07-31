@@ -43,7 +43,7 @@ param(
 if (-not $Experimental -and $env:CODEX_MEMBRANE_EXPERIMENTAL -in '1','true','yes','on') { $Experimental = $true }
 
 . "$PSScriptRoot/serving.ps1"
-. "$PSScriptRoot/../restructure.ps1"
+. "$PSScriptRoot/restructure.ps1"
 . "$PSScriptRoot/preprocess.ps1"
 . "$PSScriptRoot/../finalize.ps1"
 . "$PSScriptRoot/../audits/md-repair.ps1"

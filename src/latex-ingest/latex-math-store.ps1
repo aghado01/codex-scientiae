@@ -2,22 +2,39 @@
 <#
   src/latex-ingest/latex-math-store.ps1 — Store-driven LaTeX math register lowering & out-of-band evidence tracking.
 
-  Loads `src/latex-ingest/stores/latex-math-store.json`. Interprets TeX typesetting constructs as upstream
-  source evidence before lowering them into the canonical target math register. Out-of-band evidence is recorded
-  into an evidence ledger without cluttering the target Markdown manuscript.
+  Loads store files from `src/latex-ingest/stores/`:
+  - `evidence.json`: Source evidence rules for TeX input parsing (\operatorname, \parbox, etc.)
+  - `aliases.json`: TeX command alias surjection mappings
+  - `unicode-glyphs.json`: Unicode codepoint to LaTeX command mappings
+  - `furniture.json`: Presentation furniture stripping patterns
+
+  Interprets TeX typesetting constructs as upstream source evidence before lowering them into the canonical
+  target math register. Out-of-band evidence is recorded into an evidence ledger without cluttering the target manuscript.
 #>
 
 $script:LatexStoreUtf8 = [System.Text.UTF8Encoding]::new($false)
-$script:LatexMathStoreData = $null
+$script:LatexStoreDataCache = $null
 
 function Get-LatexMathStore {
-    param([string]$Path = (Join-Path $PSScriptRoot 'stores/latex-math-store.json'))
-    if ($null -ne $script:LatexMathStoreData) { return $script:LatexMathStoreData }
-    if (Test-Path -LiteralPath $Path -PathType Leaf) {
-        $json = [System.IO.File]::ReadAllText($Path, $script:LatexStoreUtf8)
-        $script:LatexMathStoreData = $json | ConvertFrom-Json
+    if ($null -ne $script:LatexStoreDataCache) { return $script:LatexStoreDataCache }
+    $storesDir = Join-Path $PSScriptRoot 'stores'
+    $evidenceFile  = Join-Path $storesDir 'evidence.json'
+    $aliasesFile   = Join-Path $storesDir 'aliases.json'
+    $glyphsFile    = Join-Path $storesDir 'unicode-glyphs.json'
+    $furnitureFile = Join-Path $storesDir 'furniture.json'
+
+    $evidence  = if (Test-Path -LiteralPath $evidenceFile -PathType Leaf)  { [System.IO.File]::ReadAllText($evidenceFile, $script:LatexStoreUtf8)  | ConvertFrom-Json } else { @() }
+    $aliases   = if (Test-Path -LiteralPath $aliasesFile -PathType Leaf)   { [System.IO.File]::ReadAllText($aliasesFile, $script:LatexStoreUtf8)   | ConvertFrom-Json } else { @() }
+    $glyphs    = if (Test-Path -LiteralPath $glyphsFile -PathType Leaf)    { [System.IO.File]::ReadAllText($glyphsFile, $script:LatexStoreUtf8)    | ConvertFrom-Json } else { @() }
+    $furniture = if (Test-Path -LiteralPath $furnitureFile -PathType Leaf) { [System.IO.File]::ReadAllText($furnitureFile, $script:LatexStoreUtf8) | ConvertFrom-Json } else { @() }
+
+    $script:LatexStoreDataCache = [pscustomobject]@{
+        source_evidence    = $evidence
+        aliases            = $aliases
+        unicode_glyphs     = $glyphs
+        furniture_patterns = $furniture
     }
-    return $script:LatexMathStoreData
+    return $script:LatexStoreDataCache
 }
 
 function New-LatexEvidenceLedger {
@@ -56,7 +73,7 @@ function Invoke-LatexMathStoreLowering {
     $store = Get-LatexMathStore
     $s = $Latex
 
-    # 1. Upstream Source Evidence Lowering (from store.source_evidence)
+    # 1. Upstream Source Evidence Lowering (from stores/evidence.json)
     if ($store -and $store.source_evidence) {
         foreach ($evRule in $store.source_evidence) {
             $rx = [regex]$evRule.pattern
@@ -73,7 +90,7 @@ function Invoke-LatexMathStoreLowering {
         }
     }
 
-    # 2. Furniture Removal (from store.furniture_patterns)
+    # 2. Furniture Removal (from stores/furniture.json)
     if ($store -and $store.furniture_patterns) {
         foreach ($fPattern in $store.furniture_patterns) {
             $s = [regex]::Replace($s, $fPattern.pattern, $fPattern.replacement)

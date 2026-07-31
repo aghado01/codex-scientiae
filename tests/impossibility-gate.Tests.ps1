@@ -3,7 +3,7 @@
 # balance-worsening guard (not full-balance), split orphan guard, partial-balance hotspot merge.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/restructure.ps1"
+    . "$PSScriptRoot/../src/codex-membrane/restructure.ps1"
     . "$PSScriptRoot/../src/codex-membrane/serving.ps1"
 
     $FB2 = [char]0xFB02   # ﬂ ligature (U+FB02)

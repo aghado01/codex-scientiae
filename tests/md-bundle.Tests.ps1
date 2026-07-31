@@ -5,7 +5,7 @@
 # counts, the clean verdict, and re-bundle idempotency.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/audits/md-bundle.ps1"
+    . "$PSScriptRoot/../src/md-postprocess/md-bundle.ps1"
     $script:u8 = [System.Text.UTF8Encoding]::new($false)
 
     $script:root = Join-Path ([System.IO.Path]::GetTempPath()) ("mdbundle-" + [guid]::NewGuid().ToString('N'))
@@ -37,11 +37,13 @@ Describe 'Get-MdLocalImageLinks — bundle candidates only' {
 }
 
 Describe 'Copy-MdDeliverable — bundle + verify' {
-    It 'lands md + assets on the shelf with subpaths preserved; missing asset reported, not fatal' {
+    It 'lands md + assets in a self-contained bundle directory with -tree.md sidecar; missing asset reported, not fatal' {
         $r = Copy-MdDeliverable -MarkdownPath $mdPath -DestDir $shelf
-        Test-Path (Join-Path $shelf 'p-latex.md') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p/fig-1.png') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p/diagram-2.svg') | Should -BeTrue
+        Test-Path $r.bundle_dir | Should -BeTrue
+        Test-Path $r.md | Should -BeTrue
+        Test-Path $r.toc_md | Should -BeTrue
+        Test-Path (Join-Path $r.bundle_dir 'p/fig-1.png') | Should -BeTrue
+        Test-Path (Join-Path $r.bundle_dir 'p/diagram-2.svg') | Should -BeTrue
         $r.links_total | Should -Be 3          # web link excluded
         $r.assets_copied | Should -Be 2
         @($r.assets_missing) | Should -Be @('p/never-made.png')

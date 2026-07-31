@@ -19,7 +19,7 @@
 #>
 
 . "$PSScriptRoot/project-ir.ps1"
-. "$PSScriptRoot/../pdfdig-adapter.ps1"
+. "$PSScriptRoot/../pdf-converter/pdfdig-adapter.ps1"
 . "$PSScriptRoot/headings.ps1"
 . "$PSScriptRoot/collapse.ps1"
 . "$PSScriptRoot/zones.ps1"

@@ -24,7 +24,7 @@
     Invoke-Fidelity -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 . "$PSScriptRoot/../latex-ingest/latex.ps1"   # shared math predicates + (transitively) the mask algebra / SpanLevel
 
 $script:RxInlineMath = [regex]'\$\$[\s\S]*?\$\$|\$[^$\n]+\$'   # wrapped math is NOT shatter — mask it first

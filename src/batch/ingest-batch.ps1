@@ -206,7 +206,7 @@ function Invoke-IngestBatch {
         [string] $LogDir,
         [string] $IngestionRoot
     )
-    $repo = Split-Path $PSScriptRoot -Parent
+    $repo = (Resolve-Path "$PSScriptRoot/../..").Path
     $gatherArgs = @{ Path = $Path; JobTypes = $JobTypes; Force = $Force }
     if ($IngestionRoot) { $gatherArgs.IngestionRoot = $IngestionRoot }
     $all = Get-IngestBatchJobs @gatherArgs

@@ -3,7 +3,7 @@
 # the math over ANY input), totality, codepoint safety, and the pincer level-lift coincidence. No corpus.
 
 BeforeAll {
-    . "$PSScriptRoot/../src/masks.ps1"
+    . "$PSScriptRoot/../src/shared/masks.ps1"
     function New-RandMask([int]$L) {
         $spans = [System.Collections.Generic.List[object]]::new()
         $k = Get-Random -Minimum 0 -Maximum 5

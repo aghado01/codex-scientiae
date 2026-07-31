@@ -7,8 +7,8 @@
 #>
 
 BeforeAll {
-    . "$PSScriptRoot/../src/pdfdig-adapter.ps1"
-    . "$PSScriptRoot/../src/runs.ps1"
+    . "$PSScriptRoot/../src/pdf-converter/pdfdig-adapter.ps1"
+    . "$PSScriptRoot/../src/shared/runs.ps1"
 
     # a synthetic pdfdig nodes lane: a heading, a prose line with inline math, a 2-line formula
     # group, and a marker — the four routing cases.
@@ -121,7 +121,7 @@ Describe 'dual-lane source resolution' {
 
 Describe 'pdfdig adapter — caption pre-typing (the caption-weld fix)' {
     BeforeAll {
-        . "$PSScriptRoot/../src/pdfdig-adapter.ps1"
+        . "$PSScriptRoot/../src/pdf-converter/pdfdig-adapter.ps1"
         $script:tc = Join-Path ([IO.Path]::GetTempPath()) ('adapter-cap-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
         New-Item -ItemType Directory -Force -Path $script:tc | Out-Null
 

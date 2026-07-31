@@ -19,7 +19,7 @@
   Structural nodes (heading/formula/image/…) flush the open prose chunk and emit their own.
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 
 $script:Ligatures = @{ 'ﬁ' = 'fi'; 'ﬂ' = 'fl'; 'ﬃ' = 'ffi'; 'ﬀ' = 'ff'; 'ﬄ' = 'ffl' }
 

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "operatorname",
+    "pattern": "\\\\operatorname\\s*\\*?\\s*\\{\\s*([^{}]*?)\\s*\\}",
+    "replacement": "\\mathrm{$1}",
+    "description": "Atom-class operator lowering to \\mathrm"
+  }
+]

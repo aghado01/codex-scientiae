@@ -5,7 +5,7 @@
 # (§4.1/§8.1 — alphabet macros NEVER touched), and idempotency (§C determinism).
 
 BeforeAll {
-    . "$PSScriptRoot/../src/math-register.ps1"
+    . "$PSScriptRoot/../src/math-register/math-register.ps1"
 }
 
 Describe 'alias surjection (§4.3) — one concept, one spelling' {

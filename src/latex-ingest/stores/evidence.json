@@ -1,0 +1,30 @@
+[
+  {
+    "id": "operatorname",
+    "pattern": "\\\\operatorname\\s*\\*?\\s*\\{\\s*([^{}]*?)\\s*\\}",
+    "replacement": "\\mathrm{$1}",
+    "evidence_kind": "operator_name",
+    "description": "operatorname is input evidence of an operator name; lowered to \\mathrm in target math register"
+  },
+  {
+    "id": "parbox_in_math",
+    "pattern": "\\\\parbox\\s*(?:\\[[^\\]]*\\])?\\s*\\{[^{}]*\\}",
+    "replacement": "\\text",
+    "evidence_kind": "prose_box_in_math",
+    "description": "parbox inside math is input evidence of embedded prose; lowered to \\text"
+  },
+  {
+    "id": "box_to_text",
+    "pattern": "\\\\(?:raisebox|scalebox)\\s*\\{[^{}]*\\}\\s*(?:\\[[^\\]]*\\])*\\s*\\{([^}]*)\\}",
+    "replacement": "\\text{$1}",
+    "evidence_kind": "presentation_box_in_math",
+    "description": "raisebox/scalebox inside math carries text-mode payload; lowered to \\text or unwrapped"
+  },
+  {
+    "id": "ensure_math_inline",
+    "pattern": "\\\\ensuremath\\s*\\{\\s*([^{}]*?)\\s*\\}",
+    "replacement": "{$1}",
+    "evidence_kind": "ensured_math_span",
+    "description": "ensuremath inside math mode is a no-op wrapper; unwrapped keeping group"
+  }
+]

@@ -22,7 +22,7 @@
 #>
 
 . "$PSScriptRoot/../codex-membrane/normalize.ps1"
-. "$PSScriptRoot/../crawl.ps1"
+. "$PSScriptRoot/../shared/crawl.ps1"
 . "$PSScriptRoot/../latex-ingest/latex.ps1"
 
 $script:Ligatures = @{

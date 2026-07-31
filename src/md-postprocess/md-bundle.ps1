@@ -12,6 +12,9 @@
 #>
 
 . "$PSScriptRoot/md-toc.ps1"   # Export-MdTocSidecar — standalone byte-spanned TOC sidecar primitive
+if (Test-Path -LiteralPath (Join-Path $PSScriptRoot '../toc-engine/toc-engine.ps1') -PathType Leaf) {
+    . (Join-Path $PSScriptRoot '../toc-engine/toc-engine.ps1')
+}
 
 $script:BundleUtf8 = [System.Text.UTF8Encoding]::new($false)
 
@@ -29,10 +32,7 @@ function Get-MdLocalImageLinks([string]$Markdown) {
     return ,$targets
 }
 
-# Copy {md + referenced local assets} -> $DestDir, preserving each asset's relative subpath so the
-# document's links keep resolving unchanged. Returns the audit record; missing sources and sentinel
-# hits are REPORTED, never fatal — the bundle lands as complete as the source allows, and the
-# record says exactly what is owed (the flagged-marker doctrine: no silent drops).
+# Copy {md + referenced local assets} -> $DestDir/$slug/, creating a self-contained bundle directory.
 function Copy-MdDeliverable {
     [CmdletBinding()]
     param(
@@ -41,36 +41,62 @@ function Copy-MdDeliverable {
     )
     $srcPath = (Resolve-Path -LiteralPath $MarkdownPath -ErrorAction Stop).Path
     $srcDir  = Split-Path -Parent $srcPath
-    New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
-    $destDirFull = (Resolve-Path -LiteralPath $DestDir).Path
+    $fileName = Split-Path -Leaf $srcPath
+    $slug = $fileName -replace '(-latex)?\.md$', ''
+
+    # Self-contained bundle directory: $DestDir/$slug/ (unless $DestDir already ends with $slug)
+    $destDirFull = [System.IO.Path]::GetFullPath($DestDir)
+    $bundleDir = if ((Split-Path -Leaf $destDirFull) -eq $slug) { $destDirFull } else { Join-Path $destDirFull $slug }
+    New-Item -ItemType Directory -Force -Path $bundleDir | Out-Null
+    $bundleDirFull = (Resolve-Path -LiteralPath $bundleDir).Path
+
     $md = [System.IO.File]::ReadAllText($srcPath, $script:BundleUtf8)
 
     $targets = Get-MdLocalImageLinks $md
     $copied = 0; $missing = [System.Collections.Generic.List[string]]::new()
+    $imagesDir = Join-Path $bundleDirFull 'images'
+
     foreach ($t in $targets) {
         $from = Join-Path $srcDir $t
         if (-not (Test-Path -LiteralPath $from -PathType Leaf)) { $missing.Add($t); continue }
-        $to = Join-Path $destDirFull $t
+
+        # Place images into images/ subdirectory
+        $imgLeaf = Split-Path -Leaf $t
+        $to = Join-Path $imagesDir $imgLeaf
         $toDir = Split-Path -Parent $to
         if ($toDir) { New-Item -ItemType Directory -Force -Path $toDir | Out-Null }
         if ((Resolve-Path -LiteralPath $from).Path -ne ([System.IO.Path]::GetFullPath($to))) {
             Copy-Item -LiteralPath $from -Destination $to -Force
         }
+
+        # Also support legacy relative path structure for backward compatibility
+        $toLegacy = Join-Path $bundleDirFull $t
+        $toLegacyDir = Split-Path -Parent $toLegacy
+        if ($toLegacyDir) { New-Item -ItemType Directory -Force -Path $toLegacyDir | Out-Null }
+        if ((Resolve-Path -LiteralPath $from).Path -ne ([System.IO.Path]::GetFullPath($toLegacy))) {
+            Copy-Item -LiteralPath $from -Destination $toLegacy -Force
+        }
         $copied++
     }
 
-    $mdOut = Join-Path $destDirFull (Split-Path -Leaf $srcPath)
+    $mdOut = Join-Path $bundleDirFull "$slug.md"
     if ($srcPath -ne [System.IO.Path]::GetFullPath($mdOut)) {
         Copy-Item -LiteralPath $srcPath -Destination $mdOut -Force
     }
 
-    # Emit standalone byte-spanned TOC sidecars ({slug}-toc.md and {slug}.toc.jsonl) on the shelf
-    $tocSidecar = Export-MdTocSidecar -MarkdownPath $mdOut -OutDir $destDirFull
+    # Emit standalone byte-spanned TOC sidecars ({slug}-tree.md and {slug}.toc.jsonl) via toc-engine
+    $tocSidecar = if (Get-Command Export-MdTreeSidecar -ErrorAction SilentlyContinue) {
+        Export-MdTreeSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug
+    } else {
+        Export-MdTocSidecar -MarkdownPath $mdOut -OutDir $bundleDirFull -Slug $slug
+    }
 
     # post-copy verification at the DESTINATION — the shipped bundle is what gets checked
     $broken = [System.Collections.Generic.List[string]]::new()
     foreach ($t in $targets) {
-        if (-not (Test-Path -LiteralPath (Join-Path $destDirFull $t) -PathType Leaf)) { $broken.Add($t) }
+        $check1 = Test-Path -LiteralPath (Join-Path $bundleDirFull $t) -PathType Leaf
+        $check2 = Test-Path -LiteralPath (Join-Path $imagesDir (Split-Path -Leaf $t)) -PathType Leaf
+        if (-not ($check1 -or $check2)) { $broken.Add($t) }
     }
     $sentinels = [ordered]@{
         replacement_char = ([regex]::Matches($md, [char]0xFFFD)).Count   # destroyed codepoints (membrane codepoint-safety doctrine)
@@ -79,7 +105,10 @@ function Copy-MdDeliverable {
     }
 
     return [pscustomobject]@{
+        bundle_dir    = $bundleDirFull
         md            = $mdOut
+        toc_md        = $tocSidecar.toc_md
+        toc_jsonl     = $tocSidecar.toc_jsonl
         links_total   = $targets.Count
         assets_copied = $copied
         assets_missing = @($missing)     # referenced, absent at the SOURCE — the conversion owes these

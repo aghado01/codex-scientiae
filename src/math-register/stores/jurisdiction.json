@@ -1,0 +1,7 @@
+[
+  {
+    "id": "text_body",
+    "pattern": "\\\\text\\s*\\{[^{}]*\\}",
+    "description": "Prose inside \\text{...} is outside math register jurisdiction"
+  }
+]

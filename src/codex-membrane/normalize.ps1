@@ -26,9 +26,9 @@
     Invoke-Normalize -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>] [-StripMacros mathbb,...]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 . "$PSScriptRoot/../latex-ingest/latex.ps1"   # Test-AlignmentOutsideEnv (the predicate Repair-MathAlignment fixes against)
-. "$PSScriptRoot/../math-register.ps1"        # ConvertTo-RegisterMath + the shared glyph table ($script:MathLatex/Rx, Convert-MathToLatex)
+. "$PSScriptRoot/../math-register/math-register.ps1"        # ConvertTo-RegisterMath + the shared glyph table ($script:MathLatex/Rx, Convert-MathToLatex)
 
 # Compact a span of space-tokenized LaTeX: drop font-only macros, then tighten the delimiters the
 # tokenizer loosened. Conservative — only braces and sub/superscripts close up; spaces separating a

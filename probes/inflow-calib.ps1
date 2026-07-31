@@ -20,7 +20,7 @@ param(
     [double] $WideEm = 20.0
 )
 
-. "$PSScriptRoot/../src/runs.ps1"
+. "$PSScriptRoot/../src/shared/runs.ps1"
 
 $root = (Resolve-Path (Join-Path $PSScriptRoot '../ingestion')).Path
 $sets = @(

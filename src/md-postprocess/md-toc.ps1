@@ -180,20 +180,20 @@ function New-MdTocSidecar {
     [void]$sb.AppendLine()
 
     # Title & Payload Header
-    [void]$sb.AppendLine("# Tree Manifest & TOC Entrypoint: `$Slug`")
+    [void]$sb.AppendLine("# Tree Manifest & TOC Entrypoint: ``$Slug``")
     [void]$sb.AppendLine()
-    [void]$sb.AppendLine("Document: `"$Title`" | Source: `$fileName` | Bytes: $totalBytes | Est. Tokens: ~$totalTokensEst")
+    [void]$sb.AppendLine("Document: `"$Title`" | Source: ``$fileName`` | Bytes: $totalBytes | Est. Tokens: ~$totalTokensEst")
     [void]$sb.AppendLine()
     [void]$sb.AppendLine("Payload Files:")
-    [void]$sb.AppendLine("- `./$fileName` ($totalBytes bytes)")
-    [void]$sb.AppendLine("- `./$Slug-tree.md`")
+    [void]$sb.AppendLine("- ``./$fileName`` ($totalBytes bytes)")
+    [void]$sb.AppendLine("- ``./$Slug-tree.md``")
     
     # Check for local assets folder
     $assetDir = Join-Path $srcDir $Slug
     if (Test-Path -LiteralPath $assetDir -PathType Container) {
         $assetFiles = Get-ChildItem -LiteralPath $assetDir -File
         foreach ($af in $assetFiles) {
-            [void]$sb.AppendLine("- `./$Slug/$($af.Name)` ($($af.Length) bytes)")
+            [void]$sb.AppendLine("- ``./$Slug/$($af.Name)`` ($($af.Length) bytes)")
         }
     }
     [void]$sb.AppendLine()
@@ -201,8 +201,8 @@ function New-MdTocSidecar {
     # Agent Navigation Instructions
     [void]$sb.AppendLine("## Instructions")
     [void]$sb.AppendLine()
-    [void]$sb.AppendLine("Treat this deliverable as a byte-addressable manuscript. You can selectively read specific sections using line/byte range lookups (`view_file`) to manage context overload.")
-    [void]$sb.AppendLine("Seek to `[byte_start, byte_end)` using relative links to inspect any section directly without scanning the entire file.")
+    [void]$sb.AppendLine("Treat this deliverable as a byte-addressable manuscript. You can selectively read specific sections using line/byte range lookups (``view_file``) to manage context overload.")
+    [void]$sb.AppendLine("Seek to ``[byte_start, byte_end)`` using relative links to inspect any section directly without scanning the entire file.")
     [void]$sb.AppendLine()
 
     # Contents & Byte-Spanned Tree

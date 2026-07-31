@@ -18,7 +18,7 @@
     Invoke-Sections -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 
 function Get-SectionRole([string]$heading) {
     $h = ($heading -replace '^\s*[\d.]+\s*', '').Trim()

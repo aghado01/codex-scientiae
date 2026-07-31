@@ -1,0 +1,52 @@
+[
+  {
+    "id": "textcolor",
+    "pattern": "\\\\textcolor\\s*(?:\\[[^\\]]*\\])?\\s*\\{[^{}]*\\}\\s*(?=\\{)",
+    "replacement": "",
+    "description": "Strip visual textcolor command keeping payload group"
+  },
+  {
+    "id": "color",
+    "pattern": "\\\\color\\s*(?:\\[[^\\]]*\\])?\\s*\\{[^{}]*\\}",
+    "replacement": "",
+    "description": "Strip visual color command"
+  },
+  {
+    "id": "spacing",
+    "pattern": "\\\\[vh]space\\*?\\s*\\{[^{}]*\\}",
+    "replacement": "",
+    "description": "Strip visual vspace/hspace"
+  },
+  {
+    "id": "breaks",
+    "pattern": "\\\\(?:smallskip|medskip|bigskip|noindent)(?![a-zA-Z])",
+    "replacement": "",
+    "description": "Strip visual paragraph/spacing breaks"
+  },
+  {
+    "id": "negative_kerning",
+    "pattern": "\\\\!",
+    "replacement": "",
+    "description": "Strip visual negative kerning"
+  },
+  {
+    "id": "inline_displaystyle",
+    "pattern": "\\\\displaystyle(?![a-zA-Z])\\s*",
+    "replacement": "",
+    "scope": "inline",
+    "description": "Strip displaystyle sizing injection in inline position"
+  },
+  {
+    "id": "nested_braces",
+    "pattern": "\\{\\s*\\{([^{}]*)\\}\\s*\\}",
+    "replacement": "{$1}",
+    "loop": true,
+    "description": "Unnest redundant double braces {{x}} -> {x}"
+  },
+  {
+    "id": "whitespace_seams",
+    "pattern": "[ \\t]{2,}",
+    "replacement": " ",
+    "description": "Collapse space seams left by syntax normalization"
+  }
+]

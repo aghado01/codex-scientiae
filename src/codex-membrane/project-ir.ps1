@@ -13,7 +13,7 @@
     Invoke-ProjectIr -JsonPath <docling.json> -OutputPath <nodes.jsonl>
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 
 # canonical field  <-  candidate source keys (first present wins)
 $script:CanonicalKeys = [ordered]@{

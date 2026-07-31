@@ -14,7 +14,7 @@
     Invoke-Zones -ChunksPath <chunks.jsonl> [-NodesPath <nodes.jsonl>]
 #>
 
-. "$PSScriptRoot/../jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 
 # venue-agnostic boilerplate patterns: name -> regex (first match wins)
 $script:BoilerplatePatterns = [ordered]@{

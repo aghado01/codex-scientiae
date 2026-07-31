@@ -20,7 +20,7 @@
 
 # NB: no session-scope Set-StrictMode — this is a dot-sourceable library; forcing strict mode on
 # callers pollutes their session (and trips the host's exit-code epilogue). Code below is strict-safe.
-. "$PSScriptRoot/../jsonl.ps1"   # Write-JsonlStage: UTF-8-no-BOM, SMP-safe, .jidx + .sig
+. "$PSScriptRoot/../shared/jsonl.ps1"   # Write-JsonlStage: UTF-8-no-BOM, SMP-safe, .jidx + .sig
 
 $script:PdfPigLib = Join-Path $PSScriptRoot 'lib'   # vendored dlls; falls back to repo lib/pdfpig
 if (-not (Test-Path (Join-Path $script:PdfPigLib 'UglyToad.PdfPig.dll'))) {

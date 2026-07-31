@@ -25,7 +25,7 @@
     Invoke-ProjectPdfDigNodes -PdfDigNodesPath <{slug}.nodes.jsonl> -OutputPath <run nodes.jsonl>
 #>
 
-. "$PSScriptRoot/jsonl.ps1"
+. "$PSScriptRoot/../shared/jsonl.ps1"
 
 # assemble one line's runs into membrane content: contiguous math runs -> $...$ seams, geometric
 # sub/super -> _{}/^{}; trailing run-internal spaces migrate OUTSIDE a closing seam
