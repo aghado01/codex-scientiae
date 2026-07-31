@@ -84,6 +84,10 @@ function Expand-MdTemplate {
         param($match)
         $propPath = $match.Groups[1].Value
         $body = $match.Groups[2].Value
+        # A standalone {{#each}} tag line contributes no output of its own, so the newline that ENDS
+        # that tag line is not part of the row body. Without this the body carries a leading newline
+        # into every iteration and the rendered list comes out loose — a blank line between each row.
+        $body = [regex]::Replace($body, '^\r?\n', '')
         $items = Resolve-TemplateValue $Model $propPath
         if (-not $items) { return '' }
         $sb = [System.Text.StringBuilder]::new()
@@ -222,7 +226,10 @@ function Set-MdContentsBlock {
     if ($model.Sections.Count -eq 0) { return $MarkdownText }
 
     $templateText = [System.IO.File]::ReadAllText($TemplatePath, $script:TocEngineUtf8)
-    $blockText = (Expand-MdTemplate -TemplateText $templateText -Model $model).TrimEnd() + "`n`n"
+    # ONE trailing newline, not two: the block is spliced in as LINES, so each trailing empty element
+    # becomes another newline when the document is rejoined. "`n`n" here yields a triple break before
+    # the first body heading.
+    $blockText = (Expand-MdTemplate -TemplateText $templateText -Model $model).TrimEnd() + "`n"
 
     # Replace existing ## Contents block or insert before first H2
     $lines = [System.Collections.Generic.List[string]]::new([string[]]($MarkdownText -split "`n"))

@@ -70,7 +70,7 @@ Intro text.
         $model.Sections[0].title | Should -Be '1. Intro'
     }
 
-    It 'Set-MdContentsBlock: inserts in-doc ## Contents block with static schema header' {
+    It 'Set-MdContentsBlock: inserts a plain-link in-doc ## Contents block, carrying NO byte spans' {
         $md = @"
 # Main Title
 
@@ -84,9 +84,18 @@ Second section text.
 "@
         $out = Set-MdContentsBlock -MarkdownText $md -Slug 'test-doc'
         $out | Should -Match '## Contents'
-        $out | Should -Match 'section row metadata: section_link \| level \| byte_start \| byte_end \| byte_width \(B\) \| char_count \(chars\)'
         $out | Should -Match '- \[Section 1\]\(#section-1\)'
         $out | Should -Match '- \[Section 2\]\(#section-2\)'
+        # Byte spans belong to the SIDECAR only. An in-doc block cannot carry correct offsets: the model
+        # is built before the block is spliced, so every span drifts by exactly the block's own length,
+        # and compensating is a fixpoint (widening a number changes the length that shifted it). The
+        # sidecar has no such problem — a separate file's bytes do not move the document it describes.
+        $out | Should -Not -Match 'byte_start'
+        $out | Should -Not -Match 'section row metadata'
+        # the block never lists ITSELF (toc-engine's self-referential heading exclusion)
+        ([regex]::Matches($out, '(?m)^\s*- \[')).Count | Should -Be 2
+        # tight list: no blank line between rows
+        $out | Should -Match '(?m)^- \[Section 1\]\(#section-1\)\r?\n- \[Section 2\]\(#section-2\)'
     }
 
     It 'Export-MdTreeSidecar: emits {slug}-tree.md and {slug}.toc.jsonl sidecars' {
