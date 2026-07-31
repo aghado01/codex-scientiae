@@ -21,7 +21,7 @@ Describe 'toc-engine — template expansion, model assembly, sidecar export' {
         $out | Should -Match '- Methods H2 \(200 chars\)'
     }
 
-    It 'New-DeliverableTreeModel: extracts headings, byte spans, and char counts' {
+    It 'New-DeliverableTreeModel: extracts headings, contiguous byte spans, and no char_count' {
         $md = @"
 # Main Document Title
 
@@ -50,7 +50,16 @@ Methodology explanation.
         $s1.level_tag | Should -Be 'H2'
         $s1.anchor | Should -Be '1-introduction'
         $s1.byte_width | Should -BeGreaterThan 0
-        $s1.char_count | Should -BeGreaterThan 0
+        # char_count is gone: post-register canonicalization drives math to ASCII, so it tracked
+        # byte_width to a fraction of a percent and decided nothing byte_width does not
+        $s1.PSObject.Properties.Name | Should -Not -Contain 'char_count'
+        # spans are contiguous and reach the end of the document — they are ADDRESSES, so a gap between
+        # two sections is text no reader can address
+        for ($i = 1; $i -lt $model.Sections.Count; $i++) {
+            $model.Sections[$i].byte_start | Should -Be $model.Sections[$i - 1].byte_end
+        }
+        $model.Sections[-1].byte_end | Should -Be $model.Header.total_bytes
+        $model.Sections[0].byte_width | Should -Be ($model.Sections[0].byte_end - $model.Sections[0].byte_start)
     }
 
     It 'New-DeliverableTreeModel: excludes self-referential Contents heading' {
@@ -121,11 +130,25 @@ Text for methods.
 
             $sidecarContent = [System.IO.File]::ReadAllText($res.toc_md)
             $sidecarContent | Should -Match 'Document Tree Manifest: paper-01'
-            $sidecarContent | Should -Match 'section row metadata: section_link \| level \| byte_start \| byte_end \| byte_width \(B\) \| char_count \(chars\)'
+            $sidecarContent | Should -Match 'section row metadata: section_link \| level \| byte_start \| byte_end \| byte_width \(B\)'
+            $sidecarContent | Should -Not -Match 'char_count'
             $sidecarContent | Should -Match '- \[1 Introduction\]\(paper-01\.md#1-introduction\)'
+
+            # the source link is RELATIVE — an absolute file:/// path is a dead link for every reader
+            # but the generating machine, and leaks its directory layout into a shipped artifact
+            $sidecarContent | Should -Not -Match 'file:///'
+            $sidecarContent | Should -Match '\[`paper-01\.md`\]\(paper-01\.md\)'
+
+            # payload inventory: the manifest names what it is an entrypoint TO, including the sidecars
+            # it is about to write beside itself
+            $sidecarContent | Should -Match '## Payload'
+            $sidecarContent | Should -Match '- `\./paper-01\.md \(\d+ B\)`'
+            $sidecarContent | Should -Match '- `\./paper-01-tree\.md`'
+            $sidecarContent | Should -Match '- `\./paper-01\.toc\.jsonl`'
 
             $jsonlContent = Get-Content -LiteralPath $res.toc_jsonl
             $jsonlContent.Count | Should -Be 2
+            ($jsonlContent[0] | ConvertFrom-Json).PSObject.Properties.Name | Should -Not -Contain 'char_count'
         }
         finally {
             Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
@@ -144,6 +167,58 @@ Text for methods.
             $res.toc_jsonl | Should -BeNullOrEmpty
             Test-Path (Join-Path $tmpDir 'paper-02-tree.md') | Should -BeFalse
             Test-Path (Join-Path $tmpDir 'paper-02.toc.jsonl') | Should -BeFalse
+        }
+        finally {
+            Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'Export-MdTreeSidecar: -Metadata reaches the manifest frontmatter (authors/doi are not dead fields)' {
+        $tmpDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $tmpDir | Out-Null
+        try {
+            $mdFile = Join-Path $tmpDir 'paper-03.md'
+            "# Title`n`n## Sec`n`nText`n" | Out-File -FilePath $mdFile -Encoding utf8
+
+            $res = Export-MdTreeSidecar -MarkdownPath $mdFile -OutDir $tmpDir -Slug 'paper-03' `
+                -Metadata @{ authors = 'Ada Lovelace; Alan Turing'; doi = '10.1234/abc.567' }
+            $content = [System.IO.File]::ReadAllText($res.toc_md)
+            $content | Should -Match 'authors: "Ada Lovelace; Alan Turing"'
+            $content | Should -Match 'doi: "10\.1234/abc\.567"'
+
+            # and absent metadata stays EMPTY rather than being invented
+            $res2 = Export-MdTreeSidecar -MarkdownPath $mdFile -OutDir $tmpDir -Slug 'paper-03'
+            $bare = [System.IO.File]::ReadAllText($res2.toc_md)
+            $bare | Should -Match 'authors: ""'
+            $bare | Should -Match 'doi: ""'
+        }
+        finally {
+            Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'toc-engine stands alone: dot-sourced WITHOUT md-postprocess/md-toc.ps1 it still slugs and exports' {
+        # the engine used to borrow Get-MdAnchor from the module it supersedes, so load order decided
+        # which of two same-named functions won. Run in a CHILD process so nothing this suite already
+        # loaded can mask a missing dependency.
+        $tmpDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Force -Path $tmpDir | Out-Null
+        try {
+            $mdFile = Join-Path $tmpDir 'solo.md'
+            "# T`n`n## A Section, Punctuated!`n`nText`n" | Out-File -FilePath $mdFile -Encoding utf8
+            $engine = (Resolve-Path "$PSScriptRoot/../src/toc-engine/toc-engine.ps1").Path
+
+            $script = @"
+. '$engine'
+if (Get-Command Set-MdContentsBlock -ErrorAction SilentlyContinue) {
+    if ((Get-Command Get-MdAnchor -ErrorAction SilentlyContinue).ScriptBlock.File -notlike '*toc-engine.ps1') { throw 'anchor came from elsewhere' }
+}
+`$r = Export-MdTreeSidecar -MarkdownPath '$mdFile' -OutDir '$tmpDir' -Slug 'solo'
+Write-Output ([System.IO.File]::ReadAllText(`$r.toc_md))
+"@
+            $out = & pwsh -NoProfile -NonInteractive -Command $script 2>&1 | Out-String
+            $LASTEXITCODE | Should -Be 0
+            $out | Should -Match '- \[A Section, Punctuated!\]\(solo\.md#a-section-punctuated\)'
         }
         finally {
             Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue
