@@ -1,4 +1,4 @@
-Your instinct is correct, and the existing design anchors already point the same way.
+# lets discuss offsetmap and unicode normalization, unicode normalization in particular sounds like something that should be optional since i don't necessarily want to discard that information silently by default
 
 ### What the legwork already says
 
@@ -113,3 +113,230 @@ The sweep document already says the right thing: the sweep operates on the activ
 This keeps the engine’s core invariant intact: **the master you analyze is exactly the text you intended to analyze; any change of form is an explicit, mappable, optional step.**
 
 Would you like to go deeper next on the concrete shape of the OffsetMap query surface (point vs span, ambiguity representation, composition), or on how normalization should interact with the atom tiling and surrogate handling?
+
+# lets investigate offsetmap ambiguity representation and unicode composition edge cases
+
+This is the right level to dig into. The hard part of `OffsetMap` is not the happy path of 1:1 stretches; it is the places where composition/decomposition makes a single source offset correspond to a _range_ (or to nothing) in the other master.
+
+Below is a concrete investigation of those cases, followed by candidate representations that stay honest about them.
+
+---
+
+### 1. Where ambiguity actually comes from
+
+Unicode normalization is not a uniform length-preserving rewrite. It is a sequence of:
+
+1. full decomposition (canonical or compatibility)
+2. canonical reordering by combining class
+3. (for NFC/NFKC) pairwise composition back to primary composites
+
+That process creates several distinct kinds of non-bijective regions.
+
+#### A. Precomposed ↔ base + combining mark(s)
+
+Classic example:
+
+| Form | Code points                 | UTF-16 length |
+| ---- | --------------------------- | ------------- |
+| NFC  | `U+00E9` (é)                | 1             |
+| NFD  | `U+0065 U+0301` (e + acute) | 2             |
+
+Offset picture (half-open):
+
+```
+NFC:  [0| 1]
+       é
+
+NFD:  [0| 1| 2]
+       e  ́
+```
+
+Canonical-equivalent _offsets_ (UAX #15 style):
+
+- `0_NFC ≈ 0_NFD`
+- `1_NFC ≈ 2_NFD`
+- `1_NFD` has **no** canonically equivalent offset in NFC
+
+Any claim that starts or ends at the interior of the NFD sequence cannot be mapped to a unique NFC offset. The same problem appears in reverse when you have a span that covers only part of a precomposed character (impossible in NFC, but possible if the claim was made on NFD and you try to project).
+
+#### B. Multiple combining marks + reordering
+
+```
+Source (already NFD order):  e + circumflex (230) + acute (230)
+```
+
+Both marks have the same combining class, so order is significant and they do **not** reorder past each other. But:
+
+```
+e + acute + circumflex   ≉   e + circumflex + acute
+```
+
+when the classes are equal and the marks interact. Composition may produce different primary composites or leave a residual mark:
+
+```
+U+1EBF (ế)  →  e + circumflex + acute
+U+00E9 + circumflex      →  remains two units after NFC attempt
+```
+
+Interior offsets inside a multi-mark sequence are almost never uniquely recoverable after composition.
+
+#### C. Hangul (algorithmic, not table-driven)
+
+```
+가  (U+AC00)  ↔  ᄀ + ᅡ     (L+V)
+각  (U+AC01)  ↔  ᄀ + ᅡ + ᆨ  (L+V+T)
+```
+
+Length 1 ↔ 2 or 3. The jamo boundaries have no counterpart inside the syllable. Hangul is a pure illustration of “one scalar on one side, several on the other,” with a completely regular algorithm.
+
+#### D. Compatibility decompositions (NFKC/NFKD) — information loss
+
+| Source                | NFKC result  | Notes                           |
+| --------------------- | ------------ | ------------------------------- |
+| `ﬁ` (U+FB01)          | `f i`        | ligature destroyed              |
+| `２` (fullwidth)      | `2`          | width distinction lost          |
+| `²` (superscript)     | `2`          | semantic distinction lost       |
+| `Å` (U+212B angstrom) | `Å` (U+00C5) | singleton → different character |
+
+These are not merely length changes; they are **lossy**. A reverse map can only say “this region came from _something_ that normalized to this,” not recover the original code point. That is why the earlier decision that normalization must be optional matters: once you apply NFKC you have permanently discarded information that Doccer’s claim model might have wanted to keep.
+
+#### E. Characters that disappear
+
+Under some forms (especially NFKC_Casefold or custom tables) Default_Ignorable characters map to the empty string. The source offset then has **no image** at all — a pure unmapped region.
+
+#### F. Interaction with Doccer’s current scalar tiling
+
+`TextTopology` currently emits one atom per Unicode _scalar_ (or unpaired surrogate). It does **not** emit grapheme clusters. That is deliberate and still correct for the substrate, but it means:
+
+- A claim can legally start or end between a base and its combining mark.
+- After NFC, that claim boundary may land _inside_ a single scalar.
+- The OffsetMap must therefore be able to say “this source offset has no exact target offset; the nearest safe boundaries are …”.
+
+If the engine later adds an optional grapheme-cluster view, that view would be a _derived_ tiling on top of the scalar atoms, not a replacement for them. The map still has to handle the scalar-level ambiguities.
+
+---
+
+### 2. What “ambiguity” must mean in the map
+
+Borrowing the useful distinction from systems that already solve this (ICU `Edits`, Android Compose `OffsetMappingCalculator`, UAX #15’s definition of canonically equivalent offsets):
+
+A point query should be able to return one of:
+
+| Status              | Meaning                                                                                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Exact**           | Unique corresponding offset; the prefix and suffix on both sides are equivalent.                                                                        |
+| **Boundary**        | The offset sits at the edge of a composition unit; mapping is exact for _span_ endpoints that align with the unit, but the interior is not addressable. |
+| **Ambiguous range** | The source offset corresponds to a non-empty interval of possible target offsets (typical for interiors of multi-code-point units).                     |
+| **Unmapped**        | No image exists (deleted / ignorable / pure insertion on the other side).                                                                               |
+
+Important consequence: **a single integer is not a sufficient return type**. Returning only an `int` forces you to invent a bias (always map to start, always map to end, etc.) and silently loses the fact that the mapping was not unique.
+
+Compose’s approach is instructive: when the mapping is not unique it returns a `TextRange` instead of a point. That is honest.
+
+---
+
+### 3. Candidate representation for OffsetMap
+
+Two complementary views are useful.
+
+#### A. Segment list (storage / composition)
+
+The map is a sequence of non-overlapping segments:
+
+```text
+Segment {
+  SourceStart, SourceEnd   // half-open on original master
+  TargetStart, TargetEnd   // half-open on normalized master
+  Kind: Identity | Expand | Contract | Delete | Insert
+}
+```
+
+- `Identity` — 1:1 run (most of the text)
+- `Expand` — one source unit → several target units (decomposition)
+- `Contract` — several source units → one target unit (composition)
+- `Delete` / `Insert` — pure loss or pure gain (compatibility, ignorables, edits)
+
+Adjacent identity segments can be coalesced. Change segments should keep full granularity if you want fine reverse mapping; they can be coarsened for bulk projection.
+
+This is essentially the ICU `Edits` model, specialized to two masters that Doccer already treats as immutable.
+
+#### B. Point / span query surface (API)
+
+```text
+MapResult =
+  | Exact(offset)
+  | Range(start, end)          // ambiguous or boundary-expanded
+  | Unmapped
+
+MapPoint(direction, offset) → MapResult
+
+ProjectSpan(span, policy) → ProjectedSpan | Residual
+```
+
+Projection policies (explicit, never defaulted silently):
+
+| Policy       | Behavior when a span partially overlaps an Expand/Contract/Delete region                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------ |
+| **Clip**     | Intersect with the mappable portion; drop the overhang.                                                      |
+| **Expand**   | Grow to the full composition unit on the target side.                                                        |
+| **Drop**     | Discard the whole span if any part is ambiguous/unmapped.                                                    |
+| **Residual** | Return the successfully mapped pieces _plus_ an explicit residual claim describing what could not be mapped. |
+| **Refuse**   | Error if the span is not wholly exact.                                                                       |
+
+For Doccer, **Residual** is the most consistent with the claims-first philosophy: you never pretend a partial projection was total, and the unmappable evidence stays visible.
+
+---
+
+### 4. Concrete edge-case table for design tests
+
+These should become acceptance tests the moment an OffsetMap implementation appears:
+
+| Source                                   | Target form | Source offset | Expected map result                                  | Why                            |
+| ---------------------------------------- | ----------- | ------------- | ---------------------------------------------------- | ------------------------------ |
+| `é` (NFC)                                | NFD         | 0             | Exact(0)                                             | start of unit                  |
+| `é`                                      | NFD         | 1             | Exact(2)                                             | end of unit                    |
+| `é` (NFD)                                | NFC         | 1             | Range(0,1) or Unmapped interior                      | interior of combining sequence |
+| `가`                                     | jamo        | 0             | Exact(0)                                             |                                |
+| `가`                                     | jamo        | 1             | Exact(2)                                             |                                |
+| `가`                                    | syllable    | 1             | Range or boundary                                    | interior of L+V                |
+| `ﬁ`                                      | NFKC        | 0             | Exact(0)                                             |                                |
+| `ﬁ`                                      | NFKC        | 1             | Exact(2)                                             |                                |
+| span `[0,1)` on NFD `é` projected to NFC | —           | —             | under Residual: residual + empty or unit-level claim | partial unit                   |
+
+Also test composition of maps: normalize then apply an edit plan; the merged map must still report the same statuses.
+
+---
+
+### 5. Interaction with the rest of Doccer
+
+- **TextMaster** stays pure. Normalization is always `original → (map, normalizedMaster)`.
+- **Claims** remain bound to one master. Projection is an explicit step that can produce residuals.
+- **Scalar tiling** continues to be the substrate. Grapheme-cluster or “normalization unit” views can be derived later; they do not replace the scalar atoms.
+- **Same-master rebase** (slice → parent) stays a separate, total, bijective operation. Do not overload OffsetMap for it; the failure modes are completely different.
+- **Default policy** for any automatic projection should be the most conservative one that still lets the caller see residuals (or Refuse). Never “pick a bias and hope.”
+
+---
+
+### 6. Design posture that stays consistent with the earlier decisions
+
+1. Normalization remains optional and explicit.
+2. OffsetMap is allowed to say “I don’t know a unique point” — that is a feature.
+3. Ambiguity is concentrated at composition-unit boundaries and interiors; identity runs dominate real text and stay cheap.
+4. Span projection always carries a policy; residual is the claims-compatible default.
+5. Compatibility forms (NFKC/NFKD) are treated as _lossy transforms_. The map records the loss; it does not pretend the original is recoverable.
+
+This gives you a map that can support:
+
+- optional NFC for consumers that want it
+- accurate round-tripping of claims that stay on exact regions
+- visible residuals for claims that crossed composition boundaries
+- later composition with edit plans without inventing a second ad-hoc mapping system
+
+---
+
+If you want to go one level deeper next, the two most useful follow-ups are:
+
+1. **Exact segment encoding** — how compactly to store the segment list (run-length of identity + change records) and whether to keep fine vs coarse change granularity by default.
+2. **Grapheme vs scalar** — whether an optional grapheme-cluster tiling should be introduced as a derived view that makes “exact unit” projection the common case for prose claims, while leaving the scalar tiling as the ground truth for the engine.
+
+Which of those do you want to pressure-test first?
