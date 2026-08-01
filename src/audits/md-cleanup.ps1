@@ -21,9 +21,10 @@
     Invoke-MarkdownCleanup -Path some/dir -Apply         # every *.md under dir
 #>
 
-. "$PSScriptRoot/../codex-membrane/normalize.ps1"
+. "$PSScriptRoot/../md-postprocess/md-math.ps1"        # Optimize-MathContent, Repair-MathAlignment, Test-MathGlyphToken, Test-StrongMath
+. "$PSScriptRoot/../math-register/math-register.ps1"   # Convert-MathToLatex + ConvertTo-RegisterMath (previously reached transitively)
 . "$PSScriptRoot/../shared/crawl.ps1"
-. "$PSScriptRoot/../latex-ingest/latex.ps1"
+. "$PSScriptRoot/../latex-ingest/latex.ps1"            # Get-LatexBalance, Test-IsMath, Test-AlignmentOutsideEnv
 
 $script:Ligatures = @{
     "$([char]0xFB00)" = 'ff'; "$([char]0xFB01)" = 'fi'; "$([char]0xFB02)" = 'fl'
