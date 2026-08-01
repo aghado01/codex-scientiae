@@ -1,39 +1,52 @@
 # tests/
 
-Pester 5 tests of the `src/` code. This is the home for anything that **asserts** behaviour.
-Two sibling folders carry what tests don't: `probes/` holds the standing run-and-eyeball
-instruments (calibration probes, ablation harnesses — human-read output, no assertions; their
-headers carry the iteration records the config `_doc`s cite), and `scratch/` is the ephemeral,
-git-ignored drawer for temp artifacts and one-off throwaway scripts — nothing in it is ever
-committed or referenced by durable docs.
+Pester tests are grouped by the source module or product shell they currently
+exercise. The grouping makes module boundaries and future evictions legible; it
+does not imply that every embedded capability ultimately belongs to its present
+module.
+
+Shared durable fixtures remain under `tests/fixtures/`. `run.ps1` stays at the
+test root and discovers `*.Tests.ps1` recursively.
 
 ## Running
 
 ```pwsh
-pwsh -File tests/run.ps1                          # whole suite
-pwsh -File tests/run.ps1 -Path tests/masks.Tests.ps1   # one file
+pwsh -File tests/run.ps1
+pwsh -File tests/run.ps1 -Path tests/latex-ingest
+pwsh -File tests/run.ps1 -Path tests/shared/masks.Tests.ps1
 ```
 
-`run.ps1` imports Pester (>=5) by explicit path anchored on `$env:PORTABLE_ROOT`
-(`$PORTABLE_ROOT/PowerShell/Modules/Pester`) — needed while the portable-env integration is degraded
-and the default module path only surfaces the ancient system Pester 3.4.0. It exits non-zero on any
-failure (CI-friendly).
+`run.ps1` imports Pester 5 or newer from the portable PowerShell module tree
+when available, falls back to the normal module path, exits non-zero on test
+failure, and refuses to report success when discovery finds no tests.
+
+## Module groups
+
+| Directory | Current ownership |
+|---|---|
+| `audits/` | Repository and deliverable audit capabilities |
+| `codex-membrane/` | The retiring membrane product shell and capabilities still embedded in it |
+| `hdbscan/` | HDBSCAN executable and evaluator contracts |
+| `infrastructure/` | Repository-wide topology and structural checks |
+| `latex-ingest/` | LaTeX ingestion, stores, patches, and rendering integration |
+| `math-register/` | Mathematical register normalization |
+| `md-postprocess/` | Markdown hygiene and bundle construction |
+| `pdf-converter/` | The eviction-bound PDF-converter model and its experiments |
+| `procurement/` | Scholarly discovery and acquisition adapters |
+| `reader-mcp/` | Portable deliverable reader MCP |
+| `render-check/` | KaTeX render validation capability |
+| `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
+| `toc-engine/` | Deliverable TOC and manifest rendering |
 
 ## Conventions
 
-- One `*.Tests.ps1` file per concern; dot-source the module(s) under test in a top-level `BeforeAll`.
-- Reproduced bugs and calibration decisions are pinned as named `It` regressions, so they can't
-  silently come back.
-- Corpus-backed tests (`spine` / `corpus` / `agreement`.Tests.ps1) anchor on the committed fixture
-  streams under `tests/fixtures/chunks/` (see that folder's README), so the differential **runs** on a
-  fresh checkout. Each keeps a `Set-ItResult -Skipped` guard only as a defensive fallback if a fixture
-  goes missing. (These anchors used to point at the git-ignored pre-runs per-paper working dirs, which the
-  2026-07-01 move to regenerable `.runs/` left dead — silently skipping the whole differential.)
-- Paths reach the repo root via `$PSScriptRoot/..`.
-
-| file | covers |
-|---|---|
-| `masks.Tests.ps1` | `src/masks.ps1` — algebraic laws (over random masks), totality, codepoint safety (SMP/surrogate), the pincer level-lift coincidence. |
-| `detectors.Tests.ps1` | `Test-IsMath` / `Test-AlignmentOutsideEnv` / `Test-IsGibberish` / `Get-CorruptionType` on fixed inputs — the reproduced bugs + gibberish calibration. |
-| `normalize.Tests.ps1` | `Optimize-MathContent` (idempotency, tag/balance preservation), `math_dirt` mask-algebra value-identity, `Invoke-MarkdownCleanup` idempotency. |
-| `corpus.Tests.ps1` | `Group-MathHotspots` (synthetic) + a differential A/B of the rebuilt detectors vs the pre-port versions over the corpus (merge-gate decision, frozen `math_dirt`, detector∘normalize fixed point). |
+- One `*.Tests.ps1` file per concern, inside the directory of its current owner.
+- Dot-source the module under test in a top-level `BeforeAll` when practical.
+- From a module test directory, the repository root is `../..` relative to
+  `$PSScriptRoot`; shared fixtures are under `../fixtures`.
+- Reproduced bugs and calibration decisions should be named regressions rather
+  than unexplained snapshots.
+- Tests that move with an evicted product shell are not automatically endorsed
+  as future contracts. Primitive assertions may be extracted later on merit.
+- Corpus-backed membrane tests use the committed streams under
+  `tests/fixtures/chunks/`; see that directory's README for provenance.

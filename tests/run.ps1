@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  tests/run.ps1 — import Pester (>=5) and run every *.Tests.ps1 in this folder. Runs on Pester 5.x AND
+  tests/run.ps1 — import Pester (>=5) and run every *.Tests.ps1 recursively under this tree. Runs on Pester 5.x AND
   6.x (the invocation is version-robust — see the container note below).
 
   Pester >=5 lives in the portable PowerShell module tree, not on the default module path while the
@@ -9,7 +9,8 @@
   a missing path, OR an empty run (zero discovered tests never reports green).
 
     pwsh -File tests/run.ps1
-    pwsh -File tests/run.ps1 -Path tests/masks.Tests.ps1     # one file
+    pwsh -File tests/run.ps1 -Path tests/latex-ingest       # one module
+    pwsh -File tests/run.ps1 -Path tests/shared/masks.Tests.ps1
 #>
 [CmdletBinding()] param([string]$Path = $PSScriptRoot)
 
@@ -34,7 +35,7 @@ if (-not (Test-Path -LiteralPath $Path)) { throw "run.ps1: test path not found: 
 # Resolve $Path through an explicit CONTAINER, not $cfg.Run.Path: Run.Path's single-file-vs-directory
 # discovery diverged across the Pester 5->6 major (a v6 install was observed finding ZERO tests from a
 # bare file path), whereas New-PesterContainer resolves a file OR a directory identically on 5.7.1 and
-# 6.0.0 (verified: one file -> 6, tests/ -> 686, same on both). Run.Path is cleared so only the container
+# 6.0.0 (verified for both file and recursive-directory discovery). Run.Path is cleared so only the container
 # runs and a stray *.Tests.ps1 in the caller's cwd can't sneak in.
 $cfg = New-PesterConfiguration
 $cfg.Run.Container    = New-PesterContainer -Path $Path

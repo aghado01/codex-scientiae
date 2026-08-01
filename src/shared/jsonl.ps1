@@ -14,7 +14,7 @@
 
   Dot-source to use:  . "$PSScriptRoot/jsonl.ps1"
 
-  ENCODING + DETERMINISM INVARIANTS (enforced by tests/encoding-invariants.Tests.ps1 — run it
+  ENCODING + DETERMINISM INVARIANTS (enforced by tests/shared/encoding-invariants.Tests.ps1 — run it
   after ANY change here): UTF-8-no-BOM everywhere; SMP/ligature/U+FFFD codepoints round-trip
   byte-exact; the Newtonsoft fast path and ConvertTo-Json produce IDENTICAL bytes (PS7's cmdlet
   = Newtonsoft + StringEscapeHandling.Default — NOT EscapeHtml); .jidx offsets are exact over
@@ -143,7 +143,7 @@ function Write-JsonlStage {
     # loud, attributed telemetry: a fallback means some record carried a PSObject-wrapped value
     # (classic source: `$hash.Keys | Sort-Object` — pipeline output is wrapped). The output is
     # still correct, but the emitting stage should unwrap at the source. Tested by
-    # tests/encoding-invariants.Tests.ps1.
+    # tests/shared/encoding-invariants.Tests.ps1.
     $fbDelta = $script:NsjFallbacks - $fbBefore
     if ($fbDelta -gt 0) {
         Write-Warning "Write-JsonlStage[$Stage -> $(Split-Path -Leaf $OutputPath)]: $fbDelta record(s) fell back from the Newtonsoft fast path (PSObject-wrapped value in a dictionary record; last error: $script:NsjLastError)"

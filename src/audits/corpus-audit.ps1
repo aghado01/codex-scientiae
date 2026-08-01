@@ -2,7 +2,7 @@
 <#
   src/audits/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies under
   compendia/ , codices/ , corpora/). This is the body-side complement to the membrane's chunk-stream
-  detectors (src/codex-membrane/fidelity.ps1, exercised by tests/detectors.Tests.ps1): those grade the IR before
+  detectors (src/codex-membrane/fidelity.ps1, exercised by tests/codex-membrane/detectors.Tests.ps1): those grade the IR before
   promotion; this walks what actually shipped and reports the defect classes a deliverable can still
   carry past `publish` (legacy/hand-promoted docs, or classes `publish` does not gate).
 
@@ -10,7 +10,7 @@
   hygiene classes surfaced by the 2026-06 housekeeping sweep. Two tiers:
 
     HARD     — holes that must never ship: FILL_ME_IN, U+FFFD, a UTF-8 BOM (STANDARDS §8 is no-BOM).
-               tests/corpus-health.Tests.ps1 pins these (and the now-clean ligature/URL classes) at zero.
+               tests/audits/corpus-health.Tests.ps1 pins these (and the now-clean ligature/URL classes) at zero.
     ADVISORY — quality/migration debt, heuristic, not a publish blocker: literal ligatures, mangled URL
                scheme separators, legacy flat image paths ({slug}/… vs images/{slug}/…, STANDARDS §8),
                degenerate single-column tables (a destroyed-table tell), and suspected `?`-mojibake.

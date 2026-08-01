@@ -41,7 +41,7 @@ $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path "$PSScriptRoot/../..").Path
 . "$repo/src/codex-membrane/serving.ps1"
 
-# ── legacy detectors, copied VERBATIM from tests/corpus.Tests.ps1 (keep in lockstep with that file) ──
+# ── legacy detectors, copied VERBATIM from tests/codex-membrane/corpus.Tests.ps1 (keep in lockstep with that file) ──
 function Old-IsMath([string]$s) { $t = $s -replace '\\(?:text|operatorname|mathrm|mbox|textrm|textbf|textit)\s*\{[^{}]*\}', ' '; $t = $t -replace '\\[A-Za-z]+', ' '; return (([regex]::Matches($t, '[A-Za-z]{4,}')).Count -le 2) }
 function Old-AlignOutside([string]$m) { return ($m -match '(?<!\\)&' -and $m -notmatch '\\begin\s*\{') }
 function Old-Gibberish([string]$c) { return ($c -match '(?:\b\w\s+){6,}\b\w\b') }

@@ -1,0 +1,17 @@
+{
+  "name": "@codex-scientiae/node-dependencies",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Canonical npm recipe for the reusable Node dependency payload materialized under packages/node/node_modules.",
+  "packageManager": "npm@11.13.0",
+  "engines": {
+    "node": ">=22",
+    "npm": ">=11"
+  },
+  "dependencies": {
+    "katex": "0.18.1",
+    "markdownlint": "0.41.1",
+    "mupdf": "1.28.0",
+    "node-tikzjax": "1.0.5"
+  }
+}

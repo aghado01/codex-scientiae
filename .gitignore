@@ -6,6 +6,12 @@
 **scratch/**
 artifacts/*
 
+# Materialized Node dependency shelf. The canonical npm project and lock live in
+# brewery/node; its restore recipe stages generated copies here before `npm ci`.
+packages/node/package.json
+packages/node/package-lock.json
+packages/node/node_modules/
+
 .obsidian
 .copilot
 .gemini
