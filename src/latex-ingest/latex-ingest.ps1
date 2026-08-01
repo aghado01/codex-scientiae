@@ -122,7 +122,15 @@ function Get-LatexSubjectIndex {
     foreach ($o in @($Objects)) {
         $needle = if ($o.number) { "**$($o.kind) $($o.number)" } else { "**$($o.kind)" }
         $at = $Markdown.IndexOf($needle, $cursor, [System.StringComparison]::Ordinal)
-        if ($at -lt 0) { continue }          # emitted then rewritten downstream; skip rather than guess
+        if ($at -lt 0) {
+            # A header this walk EMITTED cannot be found in the text it emitted into. Something between
+            # Convert-CrossRefEnvs and here rewrote it — which is a converter defect, not a condition to
+            # absorb. Silently skipping drops an index entry and leaves the guard unfalsifiable: it can
+            # neither be trusted nor removed, because nothing records whether it ever fires.
+            # Loud for now so the corpus answers the question; promote to a hard failure once it has.
+            Write-Warning "subject index: emitted '$needle' not found in the finished markdown — a downstream pass rewrote it"
+            continue
+        }
         $cursor = $at + $needle.Length
         # The label is BUILT from the record, never scraped back out of the rendered header. Its note was
         # resolved in memory by ConvertFrom-Latex through the same maps the body used, so the parts are
