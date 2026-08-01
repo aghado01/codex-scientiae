@@ -12,7 +12,8 @@ named maturation trigger. Nothing here reopens the engine-before-car posture; it
 cited, never amended. New design decisions are recorded here in `issues/doccer/`; this brief and
 its successors are the canon. Rev 2 also restates the governing doctrine (§2) after the original
 phrasing proved ambiguous, and incorporates D11 and the F1 contract shape from
-[grok-offsetmap-unicode.md](grok-offsetmap-unicode.md).
+[grok-offsetmap-unicode.md](grok-offsetmap-unicode.md). Rev 3 adds D12: the engine is a library
+of composable primitives, never a pipeline that must run end-to-end for simple jobs.
 
 ---
 
@@ -185,6 +186,41 @@ form is explicit, mappable, and optional.
 **Source:** [grok-offsetmap-unicode.md](grok-offsetmap-unicode.md); legwork UNIFIED-SWEEP/SCHEMA
 concur (historical evidence); code conforms.
 
+### D12 — À la carte primitives, not a pipeline
+The engine's ambition is the full realization; its *engineering* must expose well-posed
+primitives that compose into that realization and are usable individually. "Full doccer" —
+sweep → collect → validate → laminarize → tiered acceptance — is one composition, never the
+entry price. The dependency ladder:
+
+```text
+TextSpan / Allen relations        pure, zero dependencies
+SpanSet                           + master identity
+SpanBatch + scoped collectors     + typed claims
+LaminarView / joins               + structure derivation
+Validation tiers / inventories    + cross-examination
+```
+
+**Decision:**
+1. Every rung is usable without the rungs above it — set algebra without claims, claims without
+   laminar views, collection without validation tiers.
+2. Construction cost scales with what is touched. `TextMaster.Create` becomes cheap: fingerprint
+   and topology are computed on first use and cached; future atom enrichment (D4), inventory
+   loading, and tier machinery must never move work into constructors or gate the algebra.
+3. The master-identity floor is **not** negotiable down — every span-carrying object stays bound
+   to its master (the masks.ps1 length-only-universe accident is the failure this prevents).
+   Identity is cheap once the fingerprint is lazy and same-instance comparison short-circuits by
+   reference.
+4. Evidence and cross-examination (multi-collector disagreement, Tier-2/3 scoring) attach to
+   compositions that ask for them, never to primitive use.
+
+**Witness:** LaTeX macro expansion — comment claims − verbatim claims = expandable region;
+scoped collect; edit at spans. Rungs 1–3, nothing above; an offset map only if the job wants
+coordinates carried across the rewrite.
+**Consequence (immediate):** the current `TextMaster` constructor eagerly computes SHA-256 and
+the full scalar tiling — a monolith tax charged at the door for small jobs. Make both lazy.
+**Source:** user directive 2026-08-01; sol-discussion layering (interval set / coordinate space /
+text spans / region layers / edit plans) concurs.
+
 ## 4. Deferred — with named triggers
 
 ### F1 — OffsetMap (general form) — contract shape drafted
@@ -262,17 +298,21 @@ surface), and keep the ledger current as new questions resolve. Cheapest tranche
 leverage: it unblocks every implementation tranche and closes the tensions sol §3 identified
 (atom taxonomy, run key, suppression, priority, loader rules, LUT framing).
 
-**Tranche 2 — Phase-1 substrate completion (specified work, no new questions).** Full `SpanBatch`
-columns with interned type/language/pass IDs; atoms enriched per D4 (facts + derived-run views);
-suppression queries per D3 with idempotence laws; inventory loader per revised D6 spec; Tier-1
-invariants (reconstruction, registers, line consistency, suppression, resolution).
+**Tranche 2 — Phase-1 substrate completion (specified work, no new questions).** Lazy substrate
+per D12 (fingerprint and topology on first use; reference fast-path in compatibility checks);
+full `SpanBatch` columns with interned type/language/pass IDs; atoms enriched per D4 (facts +
+derived-run views); suppression queries per D3 with idempotence laws; inventory loader per
+revised D6 spec; Tier-1 invariants (reconstruction, registers, line consistency, suppression,
+resolution). All guarded by D12: enrichment lands as lazy computation or derived views, never
+constructor work.
 
 **Tranche 3 — safe subset of the deferred families.** `TextSlice` + Rebase (D7.4–5, the bijective
 special case); Group/Project per D7 with basis stamping; gap-cadence as the first named measure
 (D8); priority-aware sorted lookup ordering (still reference-speed).
 
 **Tranche 4 — first cars, validation by use.** Reborn masks.ps1 as a typed PS convenience layer
-over the DLL (per sol §5: no interval algorithms in PowerShell; every set operation delegates);
+over the DLL — the canonical à la carte surface: thin cmdlets over rungs 1–3 of the D12 ladder
+(per sol §5: no interval algorithms in PowerShell; every set operation delegates);
 re-express the old mask tests against the DLL; migrate LaTeX consumers with behavioral
 equivalence as witness, never as spec authority. This tranche generates the honest OffsetMap
 requirements (F1) as a byproduct.
@@ -301,6 +341,7 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 | Q15 | agreement-score vocabulary | deferred | F5 — first independent producer pair |
 | Q16 | what supplants mdnav, and when | deferred, shaped | F6 — Phase-2 exit + markdown inventory; oracle harness defined |
 | Q17 | normalization: silent vs explicit | **resolved** | D11 — engine never normalizes; explicit new-master + map; identity default |
+| Q18 | monolith risk — must simple jobs pay the full treatment? | **resolved** | D12 — à la carte primitives; lazy substrate; identity floor stays |
 
 ---
 
