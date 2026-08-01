@@ -1,6 +1,7 @@
 Not in any particular order:
 
 - codify repository conventions for defining and managing dependencies that span several distinct languages and development paradigms including C#, nodejs, and powershell, loosely inspired by tools like homebrew
+- redistribute `tools` across brewery, packages, src for first-party code; disentangle node_modules dependencies and external npm packages from project-specific "tools"
 - `codex-scientiae/artifacts` is git-ignored and contains intermediate build artifacts for various things including ingestion workflow runs, compiler build artifacts for C# and npm, and other things
 - `codex-scientiae/brewery` not git-ignored, intended to contain recipes for specifying, rehydrating and replicating project dependencies such as specifications for dotnet and npm builds, code relating to the compiler build executions, fetching scripts, package management specs, dependency versions, lock files, etc.
 - `codex-scientiae/packages` contains dependency payloads libraries and binaries built from first (e.g. hdbscan) or third-party (e.g. pdfpig) vendors. includes node_modules for each npm dependency, maintained separately.
@@ -21,7 +22,14 @@ Not in any particular order:
 
 procurement MCPs should make per-item manifests when new materials are are deposited to \_inbox or similar staging area, so that contents can be indexed and queried for inventory
 
+need to fix client MCP server setup and project-local mcp configs
+
+eventually need to sweep docstrings
+
+convention updates:
+
+- create source sentinel files with individual metadata sentinels with title/author/doi etc; this should be standard issue with the procurement workflow when new items are deposited
+- need to settle stages and conventions for source material/runtime/artifacts/latex-ingest workflow etc as well as the ps parameter names
+
 rename `ingestion` to `procurement`
 add staging directory
-
-need to fix client MCP server setup and project-local mcp configs

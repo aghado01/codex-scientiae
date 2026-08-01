@@ -4,6 +4,10 @@ After a great deal of hasty development, many initiatives hit a wall and the pro
 
 This document is intentionally vague in order not to overspecify or otherwise block flexible problem-solving and fresh perspective on earlier work and development practices.
 
+## Notices
+
+1. With the entire project currently under heavy renovation and flux, it will not be uncommon to find code unexpectedly broken and items missing due to breaking changes and moving things. Just because a test or import fails, or something isn't where you expect it to be, doesn't mean it doesn't exist anymore. More likely, it has been moved without having the appropriate pointers updated. If confused, ask the user for clarification or guidance if you encounter an issue like this.
+
 ## Codex-Scientiae MCPs
 
 This project develops several distinct MCP concepts relating to procurement, document ingestion, asset management and reader/consumer of codex-scientiae materials, and continue to evolve.
