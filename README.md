@@ -4,27 +4,18 @@ This repository contains structured corpora of long-form reference material.
 Each collection should be entered from its local `CONTENTS.md` file when one exists.
 This README is only the top-level map; deeper chapter and section navigation lives inside each collection.
 
-## How To Use This Repository
+## Core concepts
 
-- Start at the directory that matches the material you want.
-- Open that directory's `CONTENTS.md` first.
-- If a collection does not yet have a `CONTENTS.md`, use its primary source document until an index is added.
-- Keep this README at directory level only; do not expand chapter, section, or subsection trees here.
+### The target audience
 
-## Resource Map
+The goal of codex-scientiae is to bind knowledge reproducibly and reliably in a format and encoding that is optimised in various ways for LLM consumption, to enable effective, token efficient, high-capacity reasoning over mathematically and scientifically dense subject matter in order to drive accurate implementation and synthesis in other projects. In particular, adapting cutting-edge work that will often be published after training cut-offs of models.
 
-Navigation is telescoping — the single source of truth is [CONTENTS.md](CONTENTS.md), which points to the
-per-collection roots ([codices](codices/CODICES.md), [compendia](compendia/COMPENDIA.md),
-[corpora](corpora/CORPORA.md)); each of those points further down. Don't duplicate the tree here — it drifts.
+### The Math Channel
 
-The three collections:
-- **codices/** — long-form textbooks (Bishop2006, Grimmett2006, McLachlan2000).
-- **compendia/** — curated, theme-ordered paper collections (ph, ph-applied, mapper, statistics, …).
-- **corpora/** — author/topic paper sets (KisungYou, VladVoroninski).
+Also known as the "math register" — the currently under-specified notion of a lexically invariant, renderable (Katex), standard that is targeted and which all ingestion workflows converge on for capturing math semantics in markdown deliverables that would be consistent across document sources. The purpose of this canonicalization is to enable highly consistent tokenization of mathematical detail for any given model across documents by mapping variable source encodings to a single convergent standard, including mapping glyphs to katex control sequences and standardizing katex control sequences and syntax.
 
-## Pipeline (how documents get here)
+Its an evolving target spec that is being developed iteratively in the living document `issues/math-register/math-register-spec.md`. Preferred nomenclature is currently fluid, but the concept, goal and purpose is what is important.
 
-Published documents are produced by the **codex-membrane** restoration pipeline, not by hand. Raw extracts
-land under `ingestion/` (`ingestion/{codices,compendia,corpora}/…`), are repaired chunk-by-chunk through the
-membrane (the MCP server and workflow in `src/codex-membrane/`), then `publish`ed into the collections
-above. See [WORKFLOW.md](WORKFLOW.md) (failure taxonomy) and [STANDARDS.md](STANDARDS.md) (output format).
+### The Latent Manuscript
+
+A core thesis of codex-Scientiae and its document ingestion workflows is that variable research publication source materials (across publishers, standards, formats) can be surjectively mapped to a canonical universal latent manuscript archetype. The latent manuscript can be viewed abstractly as a graph, with projections as a tree, with the reading order of the document determining a specific sequential traversal of the graph. The concept is still under development, but with an emerging spec that informs current and future development in this project.

@@ -1,47 +1,35 @@
-# Agent Operations Hub: codex-scientiae
+## State of the project
 
-Welcome to the agent operations hub for the `codex-scientiae` corpus. The primary goal of this repository is to build a robust, structurally rigorous knowledge corpus optimized for LLM ingestion. 
+After a great deal of hasty development, many initiatives hit a wall and the project is now under drastic renovations on many levels including reorganizing, refactoring and disentangling concerns in source code, establishing repository layout and hygiene standards/conventions, codifying replication workflows for internal and external dependencies, and re-writing project-level documentation. It's therefore important to help the user identify systemic issues, repair bad patterns that have emerged, and remain open to fluid changes in workflow conventions, terminology and development goals.
 
-When converting, auditing, or repairing academic texts—especially those rich in advanced mathematics—document ingestion is a fundamentally fuzzy problem. Agents must be aware of common extraction failure modes and adopt an adaptive, context-aware approach to structural repair. 
+This document is intentionally vague in order not to overspecify or otherwise block flexible problem-solving and fresh perspective on earlier work and development practices.
 
-To achieve this, agent workflows are governed by three core documents. You must adhere to the standards and workflows defined in these linked files.
+## Codex-Scientiae MCPs
 
----
+This project develops several distinct MCP concepts relating to procurement, document ingestion, asset management and reader/consumer of codex-scientiae materials, and continue to evolve.
 
-## 1. Structural Requirements
-**Reference Document:** `.legacy/docs/STANDARDS.md`
+### Procurement and the "Scholar"
 
-LLMs do not read visual pixels or HTML layouts; they read text tokens. All document structures must be optimized for semantic clarity and token efficiency. You must strictly adhere to the formatting rules defined in `STANDARDS.md` [file:5].
+An umbrella for identifying, discovering and acquiring source materials for codex-scientiae ingestion that includes functionality for things like fetching source material assets from Arvix, Zenodo, Sci-Hub, DOI based search, semantic scholar queries, among other things.
 
-**Key directives include:**
-- **Strict LaTeX Encapsulation:** Using `$ ... $` for inline math and `$$ ... $$` for block math to prevent parsing collisions [file:5]. 
-- **Pure Syntax:** Avoiding web-renderer specific macros (e.g., `\color`, `\vspace`) in favor of pure semantic LaTeX [file:5].
-- **Integration:** Incorporating floating equation numbers directly into math blocks using `\tag{}` [file:5].
-- **Data Structuring:** Converting raw tabular data into standard Markdown pipe `|` tables with correctly encapsulated math [file:5].
-- **Hygiene:** Removing arbitrary OCR hard wraps to maintain the semantic flow of prose [file:5].
+### latex-ingest MCP
 
-## 2. Adaptive Repair Strategies
-**Reference Document:** `.legacy/docs/WORKFLOW.md`
+A planned MCP for running latex-to-markdown e2e pipeline and help with managing asset delivery and housekeeping matters. May eventually be subsumed by the planned Librarian MCP concept.
 
-Extraction pipelines (like Docling) frequently fail on complex layouts. Agents must not rely on brute-force regex but rather semantic reconstruction. Detailed strategies for handling these failures are outlined in `WORKFLOW.md` [file:6].
+### Reader MCP
 
-**Key directives include:**
-- **Active Enrichment:** Using contextual cue words to identify and wrap raw Unicode variables that OCR failed to encapsulate [file:6].
-- **Holistic Reconstruction:** Rebuilding shattered math blocks (like piecewise functions) entirely from scratch using surrounding prose as a guide [file:6].
-- **Multi-Channel Consensus:** Cross-referencing different extraction pipelines (e.g., using pure Java extraction for prose and Docling for math) to build the most accurate final document [file:6].
-- **Swarm Efficiency:** Ensuring lightweight agent configurations and executing "Closing Ceremonies" to prevent 429 rate limits and zombie subagents [file:6].
+Currently under development, it implements basic capabilities for an agent to navigate and "read" codex-scientiae assets based on the projects TOC sidecar semantics and features.
 
-## 3. The Execution Protocol
-**Reference Document:** `.legacy/docs/CHECKLIST.md`
+### Librarian MCP
 
-Before finalizing any document repair, subagents must systematically audit their output against the `CHECKLIST.md` protocol [file:4].
+A planned MCP implementation that will equip an agent with tools and guidance for performing maintenance on collected codex-scientiae knowledge assets such as the `bibliotecha' collections including codices, compendia and corpora pillars.
 
-**Key validation steps include:**
-- Confirming heading hierarchy and spacing [file:4].
-- Validating the encapsulation of all inline and block math [file:4].
-- Removing duplicated prose common in OCR extraction [file:4].
-- Cleaning up typographic ligatures and reattaching orphaned sub/superscripts [file:4].
-- Executing a final linter pass to catch structural anomalies [file:4].
+### Codex-Membrane
 
----
-*Note: The correct strategy will always be corpus and document-dependent. Remain adaptive, prioritize semantic accuracy over visual formatting, and strictly follow the formatting rules outlined in the linked standards.*
+A now-retired MCP that was dedicated to opendataloader-pdf markdown repair but which pioneered the role of a reasoning agent and sub-agent swarms in adjudicating and resolving ambiguity and quality control in agentic PDF conversion workflows, themes that will return in the successor to the codex-membrane and pdf-converter pilot projects.
+
+## Connection to other projects
+
+Since this project exists to inspire and guide development on other projects, user may ask to commit analysis, digests and briefs to other projects particularly [ThermoMapper](D:\aghado01\ThermoMapper)
+
+User may also create snapshots for ease of inspection under `C:\Users\azrie\PDenv\UserGithub\project-snapshots` , in particular the SPCX (running codename for ps.core.pwshspc) snapshot folder there .
