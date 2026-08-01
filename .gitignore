@@ -3,15 +3,17 @@
 *.pyc
 *.vscode
 *.ipynb_checkpoints
-**scratch/**
-artifacts/*
 
-# Materialized Node dependency shelf. The canonical npm project and lock live in
-# brewery/node; its restore recipe stages generated copies here before `npm ci`.
+# directories
+**scratch/**
+artifacts/**
+packages/**
 packages/node/package.json
 packages/node/package-lock.json
 **/node_modules/
 
+
+# Dot directories
 .obsidian
 .copilot
 .gemini
