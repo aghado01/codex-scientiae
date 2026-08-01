@@ -1,6 +1,6 @@
 # Condensed concepts
 
-Heterogeneous sources are abduced via surjective canonicalizationon to a latent manuscript envelope containing orthogonal math and prose registers/streams/channels/modes (preferred nomenclature TBD), interleaved in the reading-order sequence, and from which one may "demux" for dual-sector embedding and cross-link for RAG
+Heterogeneous sources are abduced via surjective canonicalization to a latent manuscript envelope containing orthogonal math and prose registers/streams/channels/modes (preferred nomenclature TBD), interleaved in the reading-order sequence, and from which one may "demux" for dual-sector embedding and cross-link for RAG
 
 The envelope instance is a typed DAG. Classic ASTs are spanning-tree projections of that DAG for hierarchical visitation; reading order is a further linear projection. Sub-addresses
 emerge from the combination of positional and kind information over the spine of the graph, not on the tree-as-ontology.

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // md-lint.js — markdown STRUCTURE lint for codex deliverables (the non-math half of the standard: heading
-// hierarchy §5, spacing hygiene §4, Contents §6). Math validity is a separate gate (tools/render-check).
+// hierarchy §5, spacing hygiene §4, Contents §6). Math validity is a separate audit (src/audits/math-render).
 // PowerShell (src/audits/md-lint.ps1) orchestrates; markdownlint does the linting.
 //
 //   node md-lint.js --file <md> [--config <json>]

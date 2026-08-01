@@ -24,7 +24,7 @@ failure, and refuses to report success when discovery finds no tests.
 
 | Directory | Current ownership |
 |---|---|
-| `audits/` | Repository and deliverable audit capabilities |
+| `audits/` | Repository and deliverable audits, including mathematical rendering |
 | `codex-membrane/` | The retiring membrane product shell and capabilities still embedded in it |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |
@@ -34,7 +34,6 @@ failure, and refuses to report success when discovery finds no tests.
 | `pdf-converter/` | The eviction-bound PDF-converter model and its experiments |
 | `procurement/` | Scholarly discovery and acquisition adapters |
 | `reader-mcp/` | Portable deliverable reader MCP |
-| `render-check/` | KaTeX render validation capability |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
 | `toc-engine/` | Deliverable TOC and manifest rendering |
 

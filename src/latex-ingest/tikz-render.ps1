@@ -5,7 +5,7 @@
   The LaTeX source is the AUTHORITY for diagrams when it exists — PDF-side image extraction is
   unreliable (opendataloader sometimes misses figures entirely), so TikZ environments render to SVG
   from source rather than waiting on extracted pixels. PowerShell orchestrates; node renders — the
-  same harness pattern as render-check. Batch-oriented: one node invocation (one wasm init) renders
+  same harness pattern as the math-render audit. Batch-oriented: one node invocation (one wasm init) renders
   a whole paper's diagrams, with per-job fault isolation.
 
     . ./tikz-render.ps1

@@ -6,7 +6,7 @@
   already rasterizes figure regions to PNG through this same engine, and the LaTeX oracle lane joins it
   here — \includegraphics PDF assets and per-diagram compiled PDFs (tectonic -> PDF) both land as PNG via
   one raster mechanism. PowerShell orchestrates; node renders — the same harness pattern as tikz-render /
-  render-check. Batch-oriented: one node invocation (one wasm init) rasterizes a whole paper's PDFs, each
+  math-render audit. Batch-oriented: one node invocation (one wasm init) rasterizes a whole paper's PDFs, each
   job carrying its own source path (render.mjs caches opened docs by path), with per-job fault isolation.
 
   CAVEAT: this MuPDF build has NO SVG or EPS/PostScript document handler — PDF (+ raster images) only.

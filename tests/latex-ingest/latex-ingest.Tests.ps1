@@ -10,7 +10,7 @@
 #   - custom counters (Case A/B + \ref resolution); KaTeX aliases (\mathds/\Bar);
 #   - emission hygiene (body-position decls, amsart front-matter, quotes, table furniture);
 #   - frontmatter/theorem-numbering/accents/biblatex (faithful-transcription hardening);
-#   - ORACLE SMOKE GATE: a kitchen-sink document must convert to render_check-clean markdown.
+#   - MATH-RENDER AUDIT: a kitchen-sink document must convert to engine-clean markdown.
 
 BeforeAll {
     . "$PSScriptRoot/../../src/latex-ingest/latex-ingest.ps1"
@@ -159,6 +159,9 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $shelf = Join-Path $root 'shelf'
         $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out -DeliverableDir $shelf
         $r.figures | Should -Be 1
+        $r.audits.math_render.schema | Should -Be 'math-render-audit/1'
+        $r.audits.math_render.clean | Should -BeTrue
+        Test-Path -LiteralPath $r.audits.math_render.report_path | Should -BeTrue
         # -DeliverableDir bundles the standalone deliverable to the shelf, links verified there
         $r.deliverable.clean | Should -BeTrue
         # The shelf bundle is slug-ROOTED and destination-named: {shelf}/{slug}/{slug}.md — BARE, because
@@ -211,6 +214,10 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         Test-Path $runs | Should -BeTrue
         @(Get-ChildItem $runs -Directory).Count | Should -Be 1
         @(Get-ChildItem $runs -Recurse -Filter 'q.oracle-counts.json').Count | Should -Be 1
+        $mathAudits = @(Get-ChildItem $runs -Recurse -Filter 'math-render.json')
+        $mathAudits.Count | Should -Be 1
+        (Get-Content $mathAudits[0].FullName -Raw | ConvertFrom-Json).status | Should -Be 'pass'
+        $r1.audits.math_render.report_path | Should -Be $mathAudits[0].FullName
         @(Get-ChildItem $staged -Filter '*.oracle-counts.json').Count | Should -Be 0   # source stays source
 
         # a sentinel in the staged source survives -ReuseSource and is destroyed by a fresh unpack —
@@ -246,6 +253,7 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $r.tex | Should -Be ([System.IO.Path]::GetFullPath($srcWork))
         Test-Path (Join-Path $srcWork 'main.tex') | Should -BeTrue
         Test-Path (Join-Path $runDir 'z.oracle-counts.json') | Should -BeTrue
+        Test-Path (Join-Path $runDir 'audits/math-render.json') | Should -BeTrue
         Test-Path (Join-Path $out 'z-latex.md') | Should -BeTrue
         Test-Path (Join-Path $shelf 'z/z.md') | Should -BeTrue
         # nothing fell back to a default: no unpack beside the archive, no artifacts/ tree invented
@@ -653,7 +661,7 @@ Then \ref{c:a} and \ref{c:b} hold.
 
 # =====================================================================================================
 # EMISSION HYGIENE (Tier-1) — body-position declarations, amsart front-matter, quotes, table furniture.
-# Invisible to render_check (not math spans) — the class the eyeball audit surfaced.
+# Invisible to the math-render extractor (not math spans) — the class the eyeball audit surfaced.
 # =====================================================================================================
 Describe 'emission hygiene — declarations, front-matter, quotes, tables' {
     It 'strips body-position \newcommand declarations (which else self-mangle under expansion)' {
@@ -679,13 +687,13 @@ Describe 'emission hygiene — declarations, front-matter, quotes, tables' {
 }
 
 # =====================================================================================================
-# ORACLE SMOKE GATE — the strongest guard: a kitchen-sink document must convert to render_check-CLEAN
+# ORACLE SMOKE GATE — the strongest guard: a kitchen-sink document must pass the reusable math-render audit
 # markdown. This is what protects the oracle for the pdf-converter comparison + batch stress testing.
 # =====================================================================================================
 Describe 'oracle smoke gate — a representative document renders KaTeX-clean' {
-    BeforeAll { . "$PSScriptRoot/../../src/render-check.ps1" }
+    BeforeAll { . "$PSScriptRoot/../../src/audits/math-render/math-render.ps1" }
     # discovery-safe skip guard (Test-Path/Get-Command are available at discovery; a dot-sourced function is not)
-    It 'converts encode-first diagrams + nested math + counters to 0 render_check failures' -Skip:(-not ((Get-Command node -CommandType Application -ErrorAction SilentlyContinue) -and (Test-Path "$PSScriptRoot/../../tools/render-check/node_modules/katex"))) {
+    It 'converts encode-first diagrams + nested math + counters to 0 math-render failures' -Skip:(-not ((Get-Command node -CommandType Application -ErrorAction SilentlyContinue) -and (Test-Path "$PSScriptRoot/../../packages/node/node_modules/katex"))) {
         $tex = @'
 \documentclass{article}\title{Kitchen Sink}
 \newcommand{\I}{\mathbb{I}}
@@ -699,10 +707,11 @@ Indicator $\mathds{1}_A$ and $\I(1,3)$.
 \end{document}
 '@
         $out = ConvertFrom-Latex $tex ''
-        $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("smoke-" + [guid]::NewGuid().ToString('N') + '.md')
+        $tmp = Join-Path "$PSScriptRoot/../../artifacts/tests/latex-ingest" ("smoke-" + [guid]::NewGuid().ToString('N') + '.md')
+        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $tmp) | Out-Null
         [System.IO.File]::WriteAllText($tmp, $out, [System.Text.UTF8Encoding]::new($false))
         try {
-            $rc = Test-MathRenders -Path $tmp
+            $rc = Invoke-MathRenderAudit -Path $tmp
             $rc.failed | Should -Be 0
         } finally { Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue }
     }

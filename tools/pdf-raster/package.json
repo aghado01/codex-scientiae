@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "codex-scientiae pig-lane raster tool: render a PDF page or clip-region to PNG via MuPDF (WASM). Sibling to tools/render-check (katex) and tools/tikz-render; vendored node_modules per the tools convention.",
+  "description": "Legacy project manifest for the first-party PDF raster harness; MuPDF is now declared by the centralized Node dependency recipe.",
   "main": "render.mjs",
   "dependencies": {
     "mupdf": "^1.28.0"

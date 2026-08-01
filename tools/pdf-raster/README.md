@@ -1,7 +1,9 @@
 # pdf-raster
 
-Pig-lane raster tool: render a PDF page or clip-region to **PNG** via MuPDF (WASM). Sibling to
-`tools/render-check` (katex) and `tools/tikz-render` (node-tikzjax); same vendored-`node_modules` shape.
+Pig-lane raster tool: render a PDF page or clip-region to **PNG** via MuPDF (WASM).
+The external MuPDF payload is now declared with the reusable Node dependencies under `brewery/node`
+and materialized under `packages/node`; the first-party raster harness will move under `src`
+independently of that payload.
 
 ## Why
 
@@ -37,5 +39,5 @@ node render.mjs --pdf in.pdf --jobs jobs.json --dpi 150
 
 ## Dependency
 
-`mupdf` — the WASM MuPDF build (Artifex). Pure WASM, no per-platform native binaries. The `.wasm` is
-~10 MB (vendored under `node_modules/` per the tools convention).
+`mupdf` — the WASM MuPDF build (Artifex). Pure WASM, no per-platform native binaries. Restore it with
+`brewery/node/restore-node.ps1`; it is not owned or versioned by this first-party harness.

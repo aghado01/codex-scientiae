@@ -28,8 +28,8 @@ switch ($Type) {
     'latex' {
         . (Join-Path $Repo 'src/latex-ingest/latex-ingest.ps1')   # self-sources runs.ps1 (New-RunDir)
         $r = Invoke-ArxivLatexToMarkdown -TarGz $Src -Slug $Slug -OutDir $PaperDir
-        $note = 'md={0}kb oracle_figs={1} diagrams={2} missing={3}' -f `
-            [math]::Round($r.bytes / 1kb), $r.oracle_figures, $r.diagrams, $r.figures_missing
+        $note = 'md={0}kb oracle_figs={1} diagrams={2} missing={3} math_fail={4}' -f `
+            [math]::Round($r.bytes / 1kb), $r.oracle_figures, $r.diagrams, $r.figures_missing, $r.audits.math_render.failed
         'BATCH-RESULT ' + ([pscustomobject]@{ run = $r.run; note = $note } | ConvertTo-Json -Compress)
     }
 }

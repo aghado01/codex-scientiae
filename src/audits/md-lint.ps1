@@ -3,7 +3,7 @@
   src/audits/md-lint.ps1 — markdown STRUCTURE lint shim over tools/md-lint/md-lint.js (markdownlint).
 
   The non-math half of the codex standard: heading hierarchy (STANDARDS §5), spacing hygiene (§4), the
-  Contents block (§6). Math render-validity is the SEPARATE gate (src/render-check.ps1). PowerShell
+  Contents block (§6). Mathematical rendering is the SEPARATE audit (src/audits/math-render). PowerShell
   orchestrates; markdownlint (Node) does the linting, against the codex-aligned config
   (tools/md-lint/codex.markdownlint.json — line-length off, since the codex removes hard wraps).
 
@@ -14,7 +14,7 @@
 $script:MdLintDir = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'tools/md-lint'
 $script:MdLintJs = Join-Path $script:MdLintDir 'md-lint.js'
 
-# node locator inlined (not a shared function) so this file never collides with render-check.ps1's Get-NodePath.
+# The node locator stays local to this capability; audit modules must not create shared global helpers.
 function Test-MarkdownLintAvailable {
     $node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
     return [bool]($node -and (Test-Path (Join-Path $script:MdLintDir 'node_modules/markdownlint')) -and (Test-Path $script:MdLintJs))

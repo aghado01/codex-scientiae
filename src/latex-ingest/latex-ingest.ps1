@@ -23,6 +23,7 @@
 . "$PSScriptRoot/../pdf-raster.ps1" # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 . "$PSScriptRoot/../audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
+. "$PSScriptRoot/../audits/math-render/math-render.ps1" # reusable emitted-math audit; this workflow consumes it but does not own it
 . "$PSScriptRoot/../math-register/math-register.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
 . "$PSScriptRoot/../md-postprocess/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
 . "$PSScriptRoot/../md-postprocess/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
@@ -2114,7 +2115,7 @@ function Invoke-ArxivLatexToMarkdown {
         #   -SourceWorkDir   where the tarball unpacks / where staged source is read from
         #                    default: {archive-dir}/{slug}-latex  (beside the archive, so curated
         #                    groups keep their work in their own folder)
-        #   -RunDir          where THIS run's regenerable artifacts land (oracle counts, …)
+        #   -RunDir          where THIS run's regenerable artifacts land (oracle counts, audits, …)
         #                    default: {ArtifactsRoot}/latex-ingest/runs/{stamp}/{slug}
         #   -ArtifactsRoot   the artifacts TIER — the dir runs live under, not its parent. Only shifts
         #                    the DEFAULT -RunDir; ignored when -RunDir is given.
@@ -2148,6 +2149,9 @@ function Invoke-ArxivLatexToMarkdown {
     # -SourceWorkDir / -RunDir overrides either independently.
     $work = if ($SourceWorkDir) { [System.IO.Path]::GetFullPath($SourceWorkDir) }
             else { Get-SourceWorkDir -ArchivePath $archivePath -Slug $Slug }
+    if (-not (Test-MathRenderAvailable)) {
+        throw 'latex-ingest: required math-render audit is unavailable; restore packages/node with brewery/node/restore-node.ps1'
+    }
     $run = if ($RunDir) {
         $d = [System.IO.Path]::GetFullPath($RunDir)
         New-Item -ItemType Directory -Force -Path $d | Out-Null
@@ -2281,6 +2285,12 @@ function Invoke-ArxivLatexToMarkdown {
     $outPath = Join-Path $OutDir "$Slug-latex.md"   # lane-tagged at slug root (STANDARDS §9); docling keeps the bare {slug}.md
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
+    # Operational audit of the emitted mathematical register. The capability is shared under
+    # src/audits/math-render; latex-ingest owns only this report address inside its run. A render defect
+    # is returned and persisted for an agentic repair pass rather than throwing away the conversion.
+    $mathRenderPath = Join-Path $run 'audits/math-render.json'
+    $mathRenderAudit = Invoke-MathRenderAudit -Path $outPath -Strict -OutputPath $mathRenderPath
+
     # optional delivery shelf: bundle the standalone deliverable (md + referenced assets) and
     # verify it there. The audit rides the return object; a dirty bundle is REPORTED, never thrown.
     $bundle = if ($DeliverableDir) {
@@ -2338,6 +2348,7 @@ function Invoke-ArxivLatexToMarkdown {
         diagrams_rendered = $rendered                  # markers swapped for images
         diagrams_png = $diag.png; diagrams_svg = $diag.svg; diagrams_marker = $diagUnrendered
         patched = $patchesApplied                       # curated-errata audit trail (op/find/replace/hits/reason) — the human-visible record
+        audits = [pscustomobject]@{ math_render = $mathRenderAudit } # reusable capability report; persisted under this run's audits/
         deliverable = $bundle                           # Copy-MdDeliverable audit when -DeliverableDir was given, else $null
     }
 }
