@@ -56,7 +56,7 @@ function Export-PdfFigureImages {
     if (-not (Test-Path $FiguresJsonl)) { throw "figures lane not found: $FiguresJsonl (run ConvertTo-FigureRegions first)" }
     if (-not $RunStamp) { $RunStamp = Get-Date -Format 'yyyyMMdd_HHmmss' }
 
-    if (-not (Test-PdfRasterAvailable)) { throw 'pdf-raster unavailable (node + tools/pdf-raster/node_modules/mupdf required)' }
+    if (-not (Test-PdfRasterAvailable)) { throw 'pdf-raster unavailable; restore the shared Node payload with brewery/node/restore-node.ps1' }
 
     $pigDir = Join-Path $paperDir ".runs/$RunStamp/pig"
     $imgDir = Join-Path $pigDir 'images'

@@ -12,8 +12,15 @@
     Invoke-TikzRender -Jobs @(@{ id = 'diagram-1'; source = '\begin{tikzpicture}...' }) -OutDir <dir>
 #>
 
-$script:TikzRenderDir = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'tools/tikz-render'
+$script:TikzRenderRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$script:TikzRenderDir = Join-Path $script:TikzRenderRepoRoot 'tools/tikz-render'
 $script:TikzSvgJs = Join-Path $script:TikzRenderDir 'tikz-svg.js'
+$script:TikzRenderNodeModules = Join-Path $script:TikzRenderRepoRoot 'packages/node/node_modules'
+
+function Resolve-TikzRenderNodeModules([string]$NodeModulesPath = '') {
+    if ([string]::IsNullOrWhiteSpace($NodeModulesPath)) { return $script:TikzRenderNodeModules }
+    return [System.IO.Path]::GetFullPath($NodeModulesPath)
+}
 
 function Get-TikzNodePath {
     $n = Get-Command node -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -23,7 +30,11 @@ function Get-TikzNodePath {
 
 # True when node + node-tikzjax + the shim are all present (callers degrade to markers otherwise).
 function Test-TikzRenderAvailable {
-    return [bool]((Get-TikzNodePath) -and (Test-Path (Join-Path $script:TikzRenderDir 'node_modules/node-tikzjax')) -and (Test-Path $script:TikzSvgJs))
+    [CmdletBinding()] param([string]$NodeModulesPath = '')
+    $modules = Resolve-TikzRenderNodeModules $NodeModulesPath
+    return [bool]((Get-TikzNodePath) -and
+        [System.IO.File]::Exists((Join-Path $modules 'node-tikzjax/package.json')) -and
+        [System.IO.File]::Exists($script:TikzSvgJs))
 }
 
 # Render a batch of TikZ jobs to SVG files in $OutDir. Each job: id (output name, no extension),
@@ -33,19 +44,23 @@ function Test-TikzRenderAvailable {
 function Invoke-TikzRender {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][object[]]$Jobs,
-        [Parameter(Mandatory)][string]$OutDir
+        [Parameter(Mandatory)][string]$OutDir,
+        [string]$NodeModulesPath = ''
     )
     $node = Get-TikzNodePath
-    if (-not $node) { throw 'tikz-render: node not found on PATH' }
-    if (-not (Test-Path (Join-Path $script:TikzRenderDir 'node_modules/node-tikzjax'))) {
-        throw 'tikz-render: node-tikzjax not installed; run `npm install` in tools/tikz-render'
+    $modules = Resolve-TikzRenderNodeModules $NodeModulesPath
+    $tikzjaxDir = Join-Path $modules 'node-tikzjax'
+    if (-not $node) { throw 'tikz-render: node not found on PATH; restore the shared Node payload with brewery/node/restore-node.ps1' }
+    if (-not [System.IO.File]::Exists((Join-Path $tikzjaxDir 'package.json'))) {
+        throw "tikz-render: node-tikzjax not found under '$modules'; restore the shared Node payload with brewery/node/restore-node.ps1"
     }
+    if (-not [System.IO.File]::Exists($script:TikzSvgJs)) { throw "tikz-render: render harness not found: '$script:TikzSvgJs'" }
     $u8 = [System.Text.UTF8Encoding]::new($false)
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
     $jobsPath = Join-Path $OutDir '.tikz-jobs.json'
     [System.IO.File]::WriteAllText($jobsPath, (@{ jobs = $Jobs } | ConvertTo-Json -Depth 6), $u8)
     try {
-        $raw = & $node $script:TikzSvgJs $jobsPath $OutDir 2>$null
+        $raw = & $node $script:TikzSvgJs $jobsPath $OutDir --tikzjax $tikzjaxDir 2>$null
         if ($LASTEXITCODE -ne 0 -or -not $raw) { throw "tikz-render: renderer failed (exit $LASTEXITCODE)" }
         # SVG is this rung's TERMINAL output, and it stays that way. The deliverable wants PNG, but the
         # SVG->PNG conversion belongs to BUNDLING (Copy-MdBundle in md-postprocess/md-bundle.ps1, which

@@ -22,11 +22,14 @@ PDF → here). NOTE: this build has **no SVG or EPS document handler** — only 
 
 ```
 # single region
-node render.mjs --pdf in.pdf --out fig.png --page 2 --bbox 115,515,234,623 --dpi 150
+node render.mjs --mupdf ../../packages/node/node_modules/mupdf --pdf in.pdf --out fig.png --page 2 --bbox 115,515,234,623 --dpi 150
 
 # batch — one WASM load + one doc open for all a paper's figures (the fast path)
-node render.mjs --pdf in.pdf --jobs jobs.json --dpi 150
+node render.mjs --mupdf ../../packages/node/node_modules/mupdf --pdf in.pdf --jobs jobs.json --dpi 150
 ```
+
+Normal PowerShell callers should use `Invoke-PdfRaster`; the direct JavaScript form above exposes the
+worker contract and therefore requires the dependency package directory explicitly.
 
 - `--page` is **0-based** (PdfPig pages are 1-based — subtract 1).
 - `--bbox` is PDF points, y-up, PdfPig `[left, bottom, right, top]`; omit to render the whole page.

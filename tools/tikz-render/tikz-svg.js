@@ -3,7 +3,7 @@
 // One node invocation renders a whole paper's diagrams (wasm init is the expensive part).
 // stdin/argv contract, mirroring katex-check.js's role as the PS-orchestrated worker:
 //
-//   node tikz-svg.js <jobs.json> <outdir>
+//   node tikz-svg.js <jobs.json> <outdir> --tikzjax <package-dir>
 //
 // jobs.json: { "jobs": [ { "id": "diagram-1", "source": "\\begin{tikzpicture}...\\end{tikzpicture}",
 //                          "tikzLibraries": "cd,arrows.meta", "texPackages": {"tikz-cd": ""},
@@ -16,12 +16,18 @@ const fs = require('fs');
 const path = require('path');
 
 async function main() {
-  const [jobsPath, outDir] = process.argv.slice(2);
-  if (!jobsPath || !outDir) {
-    console.error('usage: node tikz-svg.js <jobs.json> <outdir>');
+  const args = process.argv.slice(2);
+  const [jobsPath, outDir] = args;
+  const ti = args.indexOf('--tikzjax');
+  const tikzjaxDir = ti >= 0 ? args[ti + 1] : undefined;
+  if (!jobsPath || !outDir || !tikzjaxDir) {
+    console.error('usage: node tikz-svg.js <jobs.json> <outdir> --tikzjax <package-dir>');
     process.exit(2);
   }
-  const mod = require('node-tikzjax');
+  const packageRoot = path.resolve(tikzjaxDir);
+  const manifest = JSON.parse(fs.readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
+  if (!manifest.main) throw new Error('node-tikzjax package has no main entry');
+  const mod = require(path.join(packageRoot, manifest.main));
   const tex2svg = mod.default || mod;
   const { jobs } = JSON.parse(fs.readFileSync(jobsPath, 'utf8'));
   fs.mkdirSync(outDir, { recursive: true });

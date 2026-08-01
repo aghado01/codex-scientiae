@@ -1,6 +1,6 @@
 #requires -Version 7.0
 # The markdown STRUCTURE gate (src/audits/md-lint.ps1 over tools/md-lint, markdownlint). The non-math half of the
-# standard (heading hierarchy §5, spacing §4). Skips cleanly when node/markdownlint aren't installed.
+# standard (heading hierarchy §5, spacing §4). The engine comes only from the centralized Node payload.
 
 BeforeAll {
     . "$PSScriptRoot/../../src/audits/md-lint.ps1"
@@ -8,9 +8,8 @@ BeforeAll {
 }
 
 Describe 'md-lint — markdown structure gate' {
-    It 'is available (node + markdownlint in tools/md-lint)' {
-        if (-not $script:avail) { Set-ItResult -Skipped -Because 'node/markdownlint not installed (npm install in tools/md-lint)'; return }
-        $script:avail | Should -BeTrue
+    It 'is available from the centralized Node payload' {
+        $script:avail | Should -BeTrue -Because 'brewery/node/restore-node.ps1 must materialize the test payload under packages/node'
     }
 
     It 'passes a clean codex-style document' {

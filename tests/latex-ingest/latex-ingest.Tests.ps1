@@ -275,7 +275,7 @@ Describe 'TikZ — source-authoritative diagram rendering' {
         $script:TikzLibs | Should -Be 'calc,cd'          # deduped; 'external' (shell-escape caching) dropped
         $script:TikzPkgs.ContainsKey('tikz-cd') | Should -BeTrue
     }
-    It 'renders a tikzpicture and a tikzcd to real SVGs' -Skip:(-not (Test-Path "$PSScriptRoot/../../tools/tikz-render/node_modules/node-tikzjax")) {
+    It 'renders a tikzpicture and a tikzcd to real SVGs from the centralized payload' -Skip:(-not (Test-Path "$PSScriptRoot/../../packages/node/node_modules/node-tikzjax")) {
         $out = Join-Path ([System.IO.Path]::GetTempPath()) ("tikz-" + [guid]::NewGuid().ToString('N'))
         $rep = Invoke-TikzRender -OutDir $out -Jobs @(
             @{ id = 'a'; source = '\begin{tikzpicture}\draw[->] (0,0) -- (1,1) node[right] {$x_i$};\end{tikzpicture}' }
@@ -284,7 +284,7 @@ Describe 'TikZ — source-authoritative diagram rendering' {
         (Get-Content (Join-Path $out 'a.svg') -Raw) | Should -BeLike '<svg*'
         Remove-Item -LiteralPath $out -Recurse -Force -ErrorAction SilentlyContinue
     }
-    It 'a diagram that fails to compile is a per-job result, never a batch failure' -Skip:(-not (Test-Path "$PSScriptRoot/../../tools/tikz-render/node_modules/node-tikzjax")) {
+    It 'a diagram that fails to compile is a per-job result, never a batch failure' -Skip:(-not (Test-Path "$PSScriptRoot/../../packages/node/node_modules/node-tikzjax")) {
         $out = Join-Path ([System.IO.Path]::GetTempPath()) ("tikz-" + [guid]::NewGuid().ToString('N'))
         $rep = Invoke-TikzRender -OutDir $out -Jobs @(
             @{ id = 'bad'; source = '\begin{tikzpicture}\undefinedcmd\end{tikzpicture}' }

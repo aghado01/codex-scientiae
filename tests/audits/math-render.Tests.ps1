@@ -16,11 +16,7 @@ AfterAll {
 
 Describe 'math-render — engine-backed mathematical Markdown audit' {
     It 'is available from the centralized Node payload' {
-        if (-not $script:Available) {
-            Set-ItResult -Skipped -Because 'restore packages/node with brewery/node/restore-node.ps1'
-            return
-        }
-        $script:Available | Should -BeTrue
+        $script:Available | Should -BeTrue -Because 'brewery/node/restore-node.ps1 must materialize the test payload under packages/node'
     }
 
     It 'accepts well-formed display and inline math' {

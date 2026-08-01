@@ -10,6 +10,23 @@ BeforeAll {
     . (Join-Path $repo 'src/pdf-converter/pdfdig-images.ps1')
 }
 
+Describe 'pdf-raster — centralized MuPDF payload' {
+    It 'is available from the centralized Node payload' {
+        Test-PdfRasterAvailable | Should -BeTrue -Because 'brewery/node/restore-node.ps1 must materialize the test payload under packages/node'
+    }
+
+    It 'loads MuPDF and reports an invalid PDF as a per-job failure' {
+        $fakePdf = Join-Path $TestDrive 'not-a-pdf.json'
+        '{}' | Set-Content -LiteralPath $fakePdf -Encoding utf8
+        $out = Join-Path $TestDrive 'not-a-pdf.png'
+        $result = @(Invoke-PdfRaster -Jobs @(@{ pdf = $fakePdf; out = $out }) -WorkDir $TestDrive)
+        $result.Count | Should -Be 1
+        $result[0].ok | Should -BeFalse
+        $result[0].error | Should -Not -Match 'module|package|mupdf dependency'
+        Test-Path -LiteralPath $out | Should -BeFalse
+    }
+}
+
 Describe 'pdfdig image crop base — Get-FigureCropBbox (B1 painted-ink crop)' {
     It 'returns the geometric bbox unchanged when no visible_bbox is present' {
         $bb = Get-FigureCropBbox @(100, 200, 300, 400) $null

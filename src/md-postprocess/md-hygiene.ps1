@@ -14,7 +14,7 @@
      CLAMPED to parent+1 (a \subsubsection* under a \section misstates nesting as ##->####)
    - bare URLs / e-mails wrapped <…> (MD034), trailing sentence punctuation left outside
    - REGISTER SAFETY: two adjacent inline spans emit `$a$$b$` — indistinguishable from a display
-     fence to every markdown scanner (render_check's extractor included). True display fences sit
+     fence to every markdown scanner (math-render's extractor included). True display fences sit
      ALONE on their line, so any mid-line unescaped `$$` is span adjacency: restore the boundary.
    - ordered-list accidents: a resolved cross-ref number at line start ("14. Alternatively…")
      reads as a list marker — escaped to prose unless it is genuinely in sequence; flat bullets

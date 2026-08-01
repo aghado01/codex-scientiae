@@ -1,7 +1,7 @@
 // pig-lane raster tool — render PDF page(s) or clip-region(s) to PNG via MuPDF (WASM).
 //
-//   single:  node render.mjs --pdf <in.pdf> --out <out.png> [--page N] [--bbox x0,y0,x1,y1] [--dpi D]
-//   batch:   node render.mjs --pdf <in.pdf> --jobs <jobs.json> [--dpi D]
+//   single:  node render.mjs --mupdf <package-dir> --pdf <in.pdf> --out <out.png> [--page N] [--bbox x0,y0,x1,y1] [--dpi D]
+//   batch:   node render.mjs --mupdf <package-dir> --pdf <in.pdf> --jobs <jobs.json> [--dpi D]
 //
 // A batch --jobs file is a JSON array of { "pdf": "<path>"?, "page": N, "bbox": [x0,y0,x1,y1]|null,
 // "out": "<path>" }; batch opens the WASM once and renders every job (the fast path for a paper's
@@ -12,12 +12,31 @@
 // whole page. Rasterizes whatever is drawn in the region — vector TikZ AND embedded bitmaps alike.
 // Prints one JSON results array to stdout: [{out, ok, bytes, w, h} | {out, ok:false, error}].
 // Exit 0 (results printed, even if some jobs failed), 2 usage.
-import * as mupdf from "mupdf"
 import fs from "node:fs"
+import path from "node:path"
+import { pathToFileURL } from "node:url"
 
 function argOf(name, def) {
     const i = process.argv.indexOf("--" + name)
     return (i >= 0 && i + 1 < process.argv.length) ? process.argv[i + 1] : def
+}
+
+const mupdfDir = argOf("mupdf", null)
+if (!mupdfDir) {
+    process.stderr.write("usage: --mupdf <package-dir> --pdf <p> (--jobs <json> | --out <png>) [--dpi D]\n")
+    process.exit(2)
+}
+let mupdf
+try {
+    const packageRoot = path.resolve(mupdfDir)
+    const manifest = JSON.parse(fs.readFileSync(path.join(packageRoot, "package.json"), "utf8"))
+    const exported = manifest.exports?.["."]
+    const entry = typeof exported === "string" ? exported : exported?.default
+    if (!entry) throw new Error("package does not export a default entry")
+    mupdf = await import(pathToFileURL(path.join(packageRoot, entry)).href)
+} catch (e) {
+    process.stderr.write("mupdf dependency error: " + String(e?.message ?? e) + "\n")
+    process.exit(2)
 }
 
 const pdfPath  = argOf("pdf", null)
@@ -30,7 +49,7 @@ if (jobsPath) {
     jobs = JSON.parse(fs.readFileSync(jobsPath, "utf8"))
 } else {
     const out = argOf("out")
-    if (!pdfPath || !out) { process.stderr.write("usage: --pdf <p> (--jobs <json> | --out <png> [--page N] [--bbox x0,y0,x1,y1]) [--dpi D]\n"); process.exit(2) }
+    if (!pdfPath || !out) { process.stderr.write("usage: --mupdf <package-dir> --pdf <p> (--jobs <json> | --out <png> [--page N] [--bbox x0,y0,x1,y1]) [--dpi D]\n"); process.exit(2) }
     const bbox = argOf("bbox", null)
     jobs = [{ page: parseInt(argOf("page", "0"), 10), bbox: bbox ? bbox.split(",").map(Number) : null, out }]
 }

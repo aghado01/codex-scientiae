@@ -953,7 +953,7 @@ function Store-Math {
     $Content = $Content -replace '\\textsc(?=\s*\{)', '\text'
     # NESTING REGISTER: any $..$ still inside this span is text-bridged inner math (\text{... $x$ ...} —
     # the delimiter-aware capture above guarantees it sits inside a brace group). Emitting bare inner $
-    # inside a $/$$-delimited markdown span breaks every scanner downstream (incl. render_check's
+    # inside a $/$$-delimited markdown span breaks every scanner downstream (incl. math-render's
     # extractor); KaTeX accepts \(..\) inside \text — so normalize: outer delimiters own $/$$, bridged
     # inner math is ALWAYS \(..\). One unambiguous register for every consumer.
     $Content = [regex]::Replace($Content, '(?<!\\)\$(.+?)(?<!\\)\$', '\($1\)',
@@ -1555,7 +1555,7 @@ function ConvertFrom-Latex {
 
     $body = Expand-LatexMacros $body $macros                                   # macros (incl inside math)
 
-    # --- KaTeX-compat substitutions (post-expansion; every target render-check-verified) --------------
+    # --- KaTeX-compat substitutions (post-expansion; every target math-render-verified) ----------------
     # Semantic upgrades first: the hand-rolled amalgamation (180°-rotated Π, literally named \Amalg in
     # 2307) IS \amalg; the -45°-rotated arrows are the diagonal add/delete markers (\searrow/\nwarrow).
     # Rotation of anything else is presentation — keep the content, drop the box. \xdash… arrows (amsmath

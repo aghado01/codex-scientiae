@@ -16,8 +16,15 @@
     Invoke-PdfRaster -Jobs @(@{ pdf = 'a.pdf'; out = 'a.png' }, @{ pdf = 'b.pdf'; page = 0; out = 'b.png' })
 #>
 
-$script:PdfRasterDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'tools/pdf-raster'
+$script:PdfRasterRepoRoot = Split-Path $PSScriptRoot -Parent
+$script:PdfRasterDir = Join-Path $script:PdfRasterRepoRoot 'tools/pdf-raster'
 $script:PdfRasterMjs = Join-Path $script:PdfRasterDir 'render.mjs'
+$script:PdfRasterNodeModules = Join-Path $script:PdfRasterRepoRoot 'packages/node/node_modules'
+
+function Resolve-PdfRasterNodeModules([string]$NodeModulesPath = '') {
+    if ([string]::IsNullOrWhiteSpace($NodeModulesPath)) { return $script:PdfRasterNodeModules }
+    return [System.IO.Path]::GetFullPath($NodeModulesPath)
+}
 
 function Get-RasterNodePath {
     $n = Get-Command node -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -27,7 +34,11 @@ function Get-RasterNodePath {
 
 # True when node + mupdf + the shim are all present (callers degrade to plain links / markers otherwise).
 function Test-PdfRasterAvailable {
-    return [bool]((Get-RasterNodePath) -and (Test-Path (Join-Path $script:PdfRasterDir 'node_modules/mupdf')) -and (Test-Path $script:PdfRasterMjs))
+    [CmdletBinding()] param([string]$NodeModulesPath = '')
+    $modules = Resolve-PdfRasterNodeModules $NodeModulesPath
+    return [bool]((Get-RasterNodePath) -and
+        [System.IO.File]::Exists((Join-Path $modules 'mupdf/package.json')) -and
+        [System.IO.File]::Exists($script:PdfRasterMjs))
 }
 
 # Rasterize a batch of PDF jobs to PNG. Each job: pdf (source path), out (png path), optionally page
@@ -38,13 +49,17 @@ function Invoke-PdfRaster {
     [CmdletBinding()] param(
         [Parameter(Mandatory)][object[]]$Jobs,
         [int]$Dpi = 200,
-        [string]$WorkDir
+        [string]$WorkDir,
+        [string]$NodeModulesPath = ''
     )
     $node = Get-RasterNodePath
-    if (-not $node) { throw 'pdf-raster: node not found on PATH' }
-    if (-not (Test-Path (Join-Path $script:PdfRasterDir 'node_modules/mupdf'))) {
-        throw 'pdf-raster: mupdf not installed; run `npm install` in tools/pdf-raster'
+    $modules = Resolve-PdfRasterNodeModules $NodeModulesPath
+    $mupdfDir = Join-Path $modules 'mupdf'
+    if (-not $node) { throw 'pdf-raster: node not found on PATH; restore the shared Node payload with brewery/node/restore-node.ps1' }
+    if (-not [System.IO.File]::Exists((Join-Path $mupdfDir 'package.json'))) {
+        throw "pdf-raster: mupdf not found under '$modules'; restore the shared Node payload with brewery/node/restore-node.ps1"
     }
+    if (-not [System.IO.File]::Exists($script:PdfRasterMjs)) { throw "pdf-raster: render harness not found: '$script:PdfRasterMjs'" }
     $u8 = [System.Text.UTF8Encoding]::new($false)
     if (-not $WorkDir) { $WorkDir = [System.IO.Path]::GetTempPath() }
     New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
@@ -53,7 +68,7 @@ function Invoke-PdfRaster {
     # [[{...}]] and hands render.mjs an array where a job belongs) — one flat array of job objects.
     [System.IO.File]::WriteAllText($jobsPath, ($Jobs | ConvertTo-Json -Depth 6 -AsArray), $u8)
     try {
-        $raw = & $node $script:PdfRasterMjs --jobs $jobsPath --dpi $Dpi 2>$null
+        $raw = & $node $script:PdfRasterMjs --mupdf $mupdfDir --jobs $jobsPath --dpi $Dpi 2>$null
         if (-not $raw) { throw "pdf-raster: renderer produced no output (exit $LASTEXITCODE)" }
         return ($raw -join '') | ConvertFrom-Json
     } finally {
