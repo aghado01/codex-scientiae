@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Reusable engine assembly. Source remains first-party code under src/doccer;
+       this brewery project is only its reproducible compilation recipe. -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>CodexSci.Doccer</AssemblyName>
+    <RootNamespace>CodexSci.Doccer</RootNamespace>
+    <SharedSource>doccer</SharedSource>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+</Project>

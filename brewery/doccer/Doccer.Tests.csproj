@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Dependency-free trust harness for the engine contracts. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>doccer.tests</AssemblyName>
+    <RootNamespace>CodexSci.Doccer.Tests</RootNamespace>
+    <EnableSharedSourceRouting>false</EnableSharedSourceRouting>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Doccer.csproj" />
+    <Compile Include="$(RepositoryRoot)tests\doccer\**\*.cs" />
+  </ItemGroup>
+
+</Project>
