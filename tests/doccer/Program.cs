@@ -20,6 +20,7 @@ internal static class Program
             AllenRelationsAreCompleteAndInvertible();
             LaminarizationRetainsCrossingResidue();
             ScopedRegexCollectionCannotBridgeGaps();
+            DefectiveRuleFailsAtLoadTimeWithoutSideEffects();
             DeclarativeValidationRunsWithoutDomainCode();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
@@ -46,6 +47,13 @@ internal static class Program
         var malformed = new TextMaster("malformed", 0, "x\uD800y");
         True(!malformed.Topology.Atoms[1].IsValidScalar, "unpaired surrogate retained and marked");
         Equal(malformed.Length, malformed.Topology.Atoms.Sum(atom => atom.Span.Length), "malformed coverage");
+
+        var loneHigh = new TextMaster("surrogate-identity", 0, "x\uD800y");
+        var loneLow = new TextMaster("surrogate-identity", 0, "x\uDC00y");
+        True(
+            !StringComparer.Ordinal.Equals(loneHigh.Fingerprint, loneLow.Fingerprint),
+            "lone-surrogate fingerprints differ");
+        True(!loneHigh.IsCompatibleWith(loneLow), "lone-surrogate masters incompatible");
     }
 
     private static void FrozenBatchPreservesClaims()
@@ -182,6 +190,33 @@ internal static class Program
         Equal(2, batch.Count, "two region-local words");
         True(batch.All(record => record.Kind == "word"), "no match bridged excluded gap");
         Equal(new TextSpan(11, 14), batch[1].Span, "local match lifted to master");
+    }
+
+    private static void DefectiveRuleFailsAtLoadTimeWithoutSideEffects()
+    {
+        var master = new TextMaster("defective-rule", 0, "foo bar foo");
+        var builder = new SpanBatchBuilder(master);
+        var rules = new[]
+        {
+            new PatternRule("word", @"\w+", "word", "test"),
+            new PatternRule("poison", "foo|", "poison", "test"),
+        };
+
+        var thrown = (ArgumentException?)null;
+        try
+        {
+            RegexCollector.CollectInto(builder, rules);
+        }
+        catch (ArgumentException exception)
+        {
+            thrown = exception;
+        }
+
+        True(thrown is not null, "empty-capable rule rejected at load time");
+        True(
+            thrown!.Message.Contains("'poison'", StringComparison.Ordinal),
+            "rejection names the rule id");
+        Equal(0, builder.Count, "no claims added before load-time rejection");
     }
 
     private static void DeclarativeValidationRunsWithoutDomainCode()

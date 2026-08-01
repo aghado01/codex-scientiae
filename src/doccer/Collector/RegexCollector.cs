@@ -88,7 +88,11 @@ public static class RegexCollector
             builder.Master.EnsureCompatibleWith(scope.Master);
         }
 
+        // Materialize and validate every rule before any matching begins, so a defective rule
+        // (e.g. "foo|") fails the batch atomically instead of throwing after earlier rules have
+        // already added claims to the builder.
         var seenIds = new HashSet<string>(StringComparer.Ordinal);
+        var materialized = new List<(PatternRule Rule, Regex Regex)>();
         foreach (var rule in rules)
         {
             if (!seenIds.Add(rule.Id))
@@ -97,6 +101,24 @@ public static class RegexCollector
             }
 
             var regex = new Regex(rule.Pattern, rule.Options, rule.Timeout);
+
+            // Probe for empty-match capability. This catches the common defect class (an empty
+            // alternative or all-optional pattern) at load time; patterns that only match empty
+            // under specific context (e.g. lookarounds) still hit the mid-sweep backstop in
+            // AddMatches.
+            if (regex.Match(string.Empty).Success)
+            {
+                throw new ArgumentException(
+                    $"Pattern rule '{rule.Id}' can match the empty string and would emit empty " +
+                    "structural claims.",
+                    nameof(rules));
+            }
+
+            materialized.Add((rule, regex));
+        }
+
+        foreach (var (rule, regex) in materialized)
+        {
             if (scope is null)
             {
                 AddMatches(builder, regex, rule, builder.Master.Text, 0);

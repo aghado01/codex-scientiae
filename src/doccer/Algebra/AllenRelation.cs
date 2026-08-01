@@ -100,6 +100,8 @@ public static class IntervalJoins
     /// <summary>
     /// Reference relation join. The deliberately simple O(L*R) implementation fixes semantics first;
     /// indexed join strategies can replace it without changing the result contract.
+    /// This method carries no performance contract: time and allocation characteristics may change
+    /// freely between versions, and consumers must not rely on them.
     /// </summary>
     public static IReadOnlyList<SpanJoin> Join(
         SpanBatch left,

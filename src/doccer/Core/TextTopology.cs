@@ -133,6 +133,13 @@ public sealed class TextTopology
         return new TextSpan(start, end);
     }
 
+    /// <summary>
+    /// Projects a character span onto the half-open range of lines it intersects.
+    /// Empty-span convention (deliberate, part of the contract): an empty span projects to the
+    /// one-line range containing its position, never to an empty range. A position always lies on
+    /// exactly one line, and callers projecting insertion points need that line identified; an
+    /// empty answer would discard the only information the position carries.
+    /// </summary>
     public LineRange Project(TextSpan span)
     {
         if (span.End > TextLength)

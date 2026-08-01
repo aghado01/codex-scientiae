@@ -249,3 +249,30 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 | Q14 | indexed join strategy | deferred | F4 — after Tier-2 freezes semantics |
 | Q15 | agreement-score vocabulary | deferred | F5 — first independent producer pair |
 | Q16 | what supplants mdnav, and when | deferred, shaped | F6 — Phase-2 exit + markdown inventory; oracle harness defined |
+
+---
+
+## Tranche 0 report
+
+**2026-08-01 · Fable (chip).** All three items landed; harness green at 959 checks (954 prior +
+5 new).
+
+- **D1** — `TextMaster.Fingerprint` now hashes the raw UTF-16 code units via
+  `SHA256.HashData(MemoryMarshal.AsBytes(text.AsSpan()))`; the `Encoding.Unicode` encode (whose
+  replacement fallback collapsed every lone surrogate to U+FFFD) is gone. The host-endianness
+  caveat is recorded in a comment at the hash site. New checks: lone-high vs lone-low surrogate
+  masters with identical id/revision/length get distinct fingerprints and fail
+  `IsCompatibleWith` (2 checks).
+- **D9, load-time validation** — `RegexCollector.CollectInto` now materializes and validates
+  every rule before any matching begins: the duplicate-id check plus an empty-match probe
+  (`regex.Match(string.Empty).Success`) that throws `ArgumentException` naming the rule id. A
+  defective rule (`foo|`) therefore fails the batch atomically instead of throwing mid-sweep
+  after earlier rules already added claims. Context-dependent empty matches (e.g. bare
+  lookarounds) can evade the probe; the retained mid-sweep guard in `AddMatches` remains the
+  backstop for those. New checks: `foo|` rejected at load time, the exception names the rule id,
+  and the builder is left with zero claims (3 checks).
+- **D9, contract notes** — `TextTopology.Project` now carries an XML doc stating the empty-span
+  convention (project to the one-line range containing the position, never an empty range) as
+  deliberate contract with its rationale; `IntervalJoins.Join`'s XML doc states explicitly that
+  the method carries no performance contract and consumers must not rely on its time or
+  allocation characteristics.

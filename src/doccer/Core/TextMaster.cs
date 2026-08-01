@@ -1,6 +1,6 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace CodexSci.Doccer;
 
@@ -24,7 +24,12 @@ public sealed class TextMaster
         DocumentId = documentId;
         Revision = revision;
         Text = text;
-        Fingerprint = Convert.ToHexString(SHA256.HashData(Encoding.Unicode.GetBytes(text)));
+        // Hash the raw UTF-16 code units. An encoder would route lone surrogates through its
+        // replacement fallback (every unpaired surrogate becomes U+FFFD), collapsing masters the
+        // topology distinguishes as first-class atoms. Identity must distinguish everything the
+        // topology distinguishes. The bytes are host-endian; if fingerprints ever persist
+        // cross-platform, endianness must be fixed explicitly.
+        Fingerprint = Convert.ToHexString(SHA256.HashData(MemoryMarshal.AsBytes(text.AsSpan())));
         Topology = TextTopology.Build(text);
     }
 
