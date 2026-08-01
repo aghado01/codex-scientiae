@@ -1,3 +1,0 @@
-[Page 244]
-
-- 4.26 ( ) In this exercise, we prove the relation (4.152) for the convolution of a probit function with a Gaussian distribution. To do this, show that the derivative of the lefthand side with respect to µ is equal to the derivative of the right-hand side, and then integrate both sides with respect to µ and then show that the constant of integration vanishes. Note that before differentiating the left-hand side, it is convenient ﬁrst to introduce a change of variable given by a = µ + σz so that the integral over a is replaced by an integral over z. When we differentiate the left-hand side of the relation (4.152), we will then obtain a Gaussian integral over z that can be evaluated analytically.

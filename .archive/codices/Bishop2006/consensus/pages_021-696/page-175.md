@@ -1,5 +1,0 @@
-[Page 175]
-
-![The image is a graphical representation of a data set, which appears to be a scatter plot. The plot is titled previously/posterior and is labeled as such. The x-axis is labeled data space and the y-axis is labeled data. The plot is divided into two main sections: previously/posterior and data space. The previously/posterior section is represented by a blue line that is colored red. This line is located at the top of the plot and extends upwards. The data space section is represented by a blue line that is colored red. This line is located at the bottom of the plot and extends downwards. The plot is divided into two main sections: previously/posterior and data space. The previously/posterior section is represented by a red line that is colored blue. This line is located at the top of the plot and extends upwards](../images/imageFile17.png)
-
-Figure 3.7 Illustration of sequential Bayesian learning for a simple linear model of the form $y(x, \mathbf{w}) = w_0 + w_1x$. A detailed description of this figure is given in the text.
