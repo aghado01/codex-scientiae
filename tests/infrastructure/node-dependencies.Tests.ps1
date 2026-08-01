@@ -11,13 +11,17 @@ Describe 'centralized Node dependency topology' {
         $tracked.Count | Should -Be 0 -Because ($tracked -join [Environment]::NewLine)
     }
 
-    It 'keeps the sole dependency declarations under brewery/node' {
+    It 'keeps the sole dependency declarations under brewery/node and no tools namespace' {
         Test-Path -LiteralPath (Join-Path $script:RepoRoot 'brewery/node/package.json') | Should -BeTrue
         Test-Path -LiteralPath (Join-Path $script:RepoRoot 'brewery/node/package-lock.json') | Should -BeTrue
-        foreach ($legacy in 'tools/md-lint/package.json', 'tools/md-lint/package-lock.json',
-                            'tools/pdf-raster/package.json', 'tools/pdf-raster/package-lock.json',
-                            'tools/tikz-render/package.json', 'tools/tikz-render/package-lock.json') {
-            Test-Path -LiteralPath (Join-Path $script:RepoRoot $legacy) | Should -BeFalse -Because "$legacy would create a second dependency authority"
+        Test-Path -LiteralPath (Join-Path $script:RepoRoot 'tools') | Should -BeFalse -Because 'operation code and dependency payloads have explicit owners elsewhere'
+    }
+
+    It 'keeps Node workers colocated with their owning operations' {
+        foreach ($worker in 'src/audits/md-lint/md-lint.js',
+                            'src/pdf-raster/render.mjs',
+                            'src/tikz-render/tikz-svg.js') {
+            Test-Path -LiteralPath (Join-Path $script:RepoRoot $worker) | Should -BeTrue -Because "$worker is part of its operation, not a freestanding tool"
         }
     }
 }

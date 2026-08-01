@@ -1,6 +1,7 @@
 #requires -Version 7.0
 <#
-  src/pdf-raster.ps1 — PDF -> PNG shim over tools/pdf-raster/render.mjs (MuPDF WASM).
+  src/pdf-raster/pdf-raster.ps1 — PDF -> PNG operation backed by the colocated render.mjs
+  worker (MuPDF WASM).
 
   PNG is the TERMINAL image register for the whole project (issues/latex-oracle-images.md): the pig lane
   already rasterizes figure regions to PNG through this same engine, and the LaTeX oracle lane joins it
@@ -12,12 +13,12 @@
   CAVEAT: this MuPDF build has NO SVG or EPS/PostScript document handler — PDF (+ raster images) only.
   SVG intermediates and EPS assets must reach PDF first (tectonic) before they can be rasterized here.
 
-    . ./pdf-raster.ps1
+    . ./src/pdf-raster/pdf-raster.ps1
     Invoke-PdfRaster -Jobs @(@{ pdf = 'a.pdf'; out = 'a.png' }, @{ pdf = 'b.pdf'; page = 0; out = 'b.png' })
 #>
 
-$script:PdfRasterRepoRoot = Split-Path $PSScriptRoot -Parent
-$script:PdfRasterDir = Join-Path $script:PdfRasterRepoRoot 'tools/pdf-raster'
+$script:PdfRasterRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$script:PdfRasterDir = $PSScriptRoot
 $script:PdfRasterMjs = Join-Path $script:PdfRasterDir 'render.mjs'
 $script:PdfRasterNodeModules = Join-Path $script:PdfRasterRepoRoot 'packages/node/node_modules'
 

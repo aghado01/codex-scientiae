@@ -48,8 +48,8 @@ BeforeAll {
                                   (Join-Path $script:RepoRoot '.legacy/docs/STANDARDS.md'),
                                   (Join-Path $script:RepoRoot '.legacy/docs/WORKFLOW.md'),
                                   (Join-Path $script:RepoRoot '.legacy/docs/CHECKLIST.md'),
-                                  (Join-Path $script:RepoRoot 'tools/md-lint/md-lint.js'),
-                                  (Join-Path $script:RepoRoot 'tools/pdf-raster/README.md')
+                                  (Join-Path $script:RepoRoot 'src/audits/md-lint/md-lint.js'),
+                                  (Join-Path $script:RepoRoot 'src/pdf-raster/README.md')
         )
         foreach ($file in $activeFiles) {
             $lineNumber = 0

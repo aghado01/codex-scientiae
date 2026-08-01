@@ -5,8 +5,8 @@
   The PNG-terminal unification of issues/latex-oracle-images.md: extract a diagram env, wrap it in a
   standalone snippet WITH the paper's own preamble replayed (author macros inside diagrams are the
   fidelity trap), compile to a tightly-cropped PDF with tectonic (one self-contained binary that
-  auto-fetches packages), then rasterize that PDF to PNG through the already-vendored MuPDF engine
-  (tools/pdf-raster). ONE mechanism for every diagram package — tikz, tikz-cd, AND xy-pic — where
+  auto-fetches packages), then rasterize that PDF to PNG through the shared pdf-raster operation.
+  ONE mechanism for every diagram package — tikz, tikz-cd, AND xy-pic — where
   node-tikzjax (TikZ-only WASM) and KaTeX both fail. Per-job fault isolation: a diagram that fails to
   compile is a per-job ok:false result, never an exception, and its caller keeps a flagged marker.
 
@@ -14,17 +14,15 @@
     Invoke-TexDiagramRender -Jobs @(@{ id='diagram-1'; source='\begin{tikzcd}...' }) -Preamble $pre -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../pdf-raster.ps1"   # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
+. "$PSScriptRoot/../pdf-raster/pdf-raster.ps1" # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
 
 $script:TexRepoRoot   = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $script:TexPackageDir = Join-Path $script:TexRepoRoot 'packages/tectonic'   # the pinned external tier
-$script:TexVendorDir  = Join-Path $script:TexRepoRoot 'tools/tex-render'    # pre-tier vendored location
 
 # Resolution ladder. The PINNED tier wins over PATH deliberately: a system tectonic is of unknown
 # version, and letting it silently outrank the pin defeats the point of pinning the external at all.
 #   rung 1  packages/tectonic — the pin
 #   rung 2  a system install on PATH
-#   rung 3  tools/tex-render — pre-tier vendored dir, kept so an older checkout still resolves
 function Get-TectonicPath {
     foreach ($exe in 'tectonic.exe', 'tectonic') {
         $p = Join-Path $script:TexPackageDir $exe
@@ -32,10 +30,6 @@ function Get-TectonicPath {
     }
     $c = Get-Command tectonic -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($c) { return $c.Source }
-    foreach ($exe in 'tectonic.exe', 'tectonic') {
-        $p = Join-Path $script:TexVendorDir $exe
-        if (Test-Path -LiteralPath $p) { return $p }
-    }
     return $null
 }
 
@@ -114,7 +108,7 @@ function Invoke-TexDiagramRender {
         [int]$Dpi = 200
     )
     $tectonic = Get-TectonicPath
-    if (-not $tectonic) { throw 'tex-render: tectonic not found (PATH or tools/tex-render)' }
+    if (-not $tectonic) { throw 'tex-render: tectonic not found (packages/tectonic or PATH)' }
     Initialize-TectonicCache
     $u8 = [System.Text.UTF8Encoding]::new($false)
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -177,7 +171,7 @@ function Invoke-TexGraphicRender {
         [int]$Dpi = 200
     )
     $tectonic = Get-TectonicPath
-    if (-not $tectonic) { throw 'tex-render: tectonic not found (PATH or tools/tex-render)' }
+    if (-not $tectonic) { throw 'tex-render: tectonic not found (packages/tectonic or PATH)' }
     Initialize-TectonicCache
     $u8 = [System.Text.UTF8Encoding]::new($false)
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null

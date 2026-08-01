@@ -1,18 +1,19 @@
 #requires -Version 7.0
 <#
-  src/audits/md-lint.ps1 — markdown STRUCTURE lint shim over tools/md-lint/md-lint.js (markdownlint).
+  src/audits/md-lint/md-lint.ps1 — markdown STRUCTURE audit backed by the colocated
+  md-lint.js worker (markdownlint).
 
   The non-math half of the codex standard: heading hierarchy (STANDARDS §5), spacing hygiene (§4), the
   Contents block (§6). Mathematical rendering is the SEPARATE audit (src/audits/math-render). PowerShell
   orchestrates; markdownlint (Node) does the linting, against the codex-aligned config
-  (tools/md-lint/codex.markdownlint.json — line-length off, since the codex removes hard wraps).
+  (codex.markdownlint.json — line-length off, since the codex removes hard wraps).
 
-    . ./md-lint.ps1
+    . ./src/audits/md-lint/md-lint.ps1
     Test-MarkdownLint -Path <file.md> [-Config <json>]
 #>
 
-$script:MdLintRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-$script:MdLintDir = Join-Path $script:MdLintRepoRoot 'tools/md-lint'
+$script:MdLintRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
+$script:MdLintDir = $PSScriptRoot
 $script:MdLintJs = Join-Path $script:MdLintDir 'md-lint.js'
 $script:MdLintNodeModules = Join-Path $script:MdLintRepoRoot 'packages/node/node_modules'
 
