@@ -7,6 +7,13 @@ conceptual comparison against mdnav (`D:\aghado01\utils\skills-dev\doc-dive\mdna
 marked **D#** are adoptable now with a stated principle; items marked **F#** are deferred with a
 named maturation trigger. Nothing here reopens the engine-before-car posture; it sequences it.
 
+**Canon and locality (rev 2, 2026-08-01):** the MarkPig legwork documents
+(`D:\aghado01\MarkBrain\MarkPig\doccer\legwork\`) are **historical evidence** — consulted and
+cited, never amended. New design decisions are recorded here in `issues/doccer/`; this brief and
+its successors are the canon. Rev 2 also restates the governing doctrine (§2) after the original
+phrasing proved ambiguous, and incorporates D11 and the F1 contract shape from
+[grok-offsetmap-unicode.md](grok-offsetmap-unicode.md).
+
 ---
 
 ## 1. Framing: what mdnav is to doccer
@@ -49,17 +56,33 @@ What transfers **conceptually** from mdnav, independent of any code path:
 
 ## 2. Governing doctrine
 
-Nearly every open question falls to one principle, already implicit in the code:
+Nearly every open question falls to one principle, already implicit in the code. Restated in
+rev 2: the original "claims carry evidence; queries carry policy" read as if policy *lives* in
+the query layer, which would smuggle domain judgment into the engine. Corrected:
 
-> **Claims carry evidence; queries carry policy.** The engine may compute any fact about the
-> material as an object. Every choice among competing claims — suppression, resolution order,
-> admission, classification into coarser types — is made by an explicitly named policy at query
-> time, never baked into the representation.
+> **Claims carry evidence. Queries execute named policies and return results. Orchestration
+> selects policies and interprets results.** The representation never pre-resolves. The engine
+> implements every resolution mechanism — suppression scoping, admission ordering,
+> intra-geometry resolution, coarser typing — as an explicit, deterministic, parameterized
+> operation, and executes whichever policy the caller names; it never selects one. All judgment
+> — which query, which policy, what the result means, what happens next — belongs to
+> orchestration (rule tables, consumers, the reasoning agent).
+
+One distinction keeps this from collapsing into "policy = post-hoc filtering of results": policy
+has two moments, and orchestration owns the *choice* at both. Some policies must flow **into** a
+query as arguments, because they change what is computed rather than how results are filtered —
+scoped collection alters match semantics (a match that would bridge an excluded gap never exists
+in any result set to be filtered afterward), and laminar admission is order-dependent over the
+whole claim set (no filter over a full join reproduces it). If the engine did not host those
+mechanisms, every consumer would reimplement geometry to express its policy — the Frankenstein
+failure again. Other policy operates **on** results, in orchestration, where it always did.
+Documented defaults (e.g. max-priority admission, D2) are conventions in the query contract for
+callers that don't care; relying on one is still the caller's act.
 
 masks.ps1 failed by resolving at representation time (normalization = policy fused into data).
 mdnav succeeded at instrument scale by measuring and deferring judgment to the reader. The
 current `SpanBatch`/`SpanSet`/`Laminarizer` split already conforms; this brief elevates it from
-habit to contract. D2, D3, D4, and D5 below are instances, not separate rulings.
+habit to contract. D2, D3, D4, D5, and D11 below are instances, not separate rulings.
 
 ## 3. Resolved now — decision records
 
@@ -147,15 +170,39 @@ mechanical work; does it preserve literal source material; does it avoid decidin
 material means?* A feature failing the last belongs in an adapter or the consumer. An
 enumeration lists instances; this is the rule that generates them.
 
+### D11 — Unicode normalization posture
+**Decision:** the engine never normalizes. `TextMaster` and the topology builder accept text
+exactly as given (current behavior); the default form is identity. Normalization —
+NFC/NFD/NFKC/NFKD — is an explicit producer step, `original → (map, normalizedMaster)`, chosen
+by orchestration; compatibility forms are documented as **lossy transforms** whose loss the map
+records rather than hides (ﬁ→fi, fullwidth→halfwidth, U+212B→U+00C5 are not recoverable). The
+old Markdig ASCII transliterator is a higher-level anchors/search tool and stays out of the
+substrate entirely. A grapheme-cluster tiling, if ever wanted, is a derived view over the scalar
+atoms (per D4), never a replacement — claims may legally begin between a base and its combining
+mark, and the map must be able to say so.
+**Principle:** the master you analyze is exactly the text you intended to analyze; any change of
+form is explicit, mappable, and optional.
+**Source:** [grok-offsetmap-unicode.md](grok-offsetmap-unicode.md); legwork UNIFIED-SWEEP/SCHEMA
+concur (historical evidence); code conforms.
+
 ## 4. Deferred — with named triggers
 
-### F1 — OffsetMap (general form)
-The requirements sketch stands (mapped/unmapped/ambiguous point answers; span-projection under an
-explicit policy — clip/drop/residual/error; exactness laws only on preserved coordinates;
-same-master rebase distinguished from cross-master transform). Do **not** implement a naïve map
-first. `TextSlice` (D7.4) does not wait for this.
-**Trigger:** the first edit-plan consumer — the masks.ps1 rebirth and LaTeX macro-expansion
-migration force the honest requirements.
+### F1 — OffsetMap (general form) — contract shape drafted
+[grok-offsetmap-unicode.md](grok-offsetmap-unicode.md) upgrades the requirements sketch to a
+candidate contract. Point queries return a sum type — `Exact(offset) | Range(start,end) |
+Unmapped` — because a bare `int` forces an invented bias and silently discards non-uniqueness.
+Storage is an ICU-Edits-style segment list (`Identity | Expand | Contract | Delete | Insert`,
+identity runs coalesced). Span projection always names a policy (`Clip | Expand | Drop |
+Residual | Refuse`), with **Residual** the claims-compatible default posture: mapped pieces plus
+an explicit residual claim, never a pretended-total projection. Exactness laws hold only on
+preserved coordinates; maps must compose (normalize ∘ edit-plan) without changing reported
+statuses; same-master rebase stays a separate total bijective operation (D7.4 unaffected). The
+edge-case table in that document (é NFC/NFD interiors, Hangul jamo, ﬁ ligature, partial-unit
+residuals) becomes acceptance tests the moment an implementation appears. Unicode normalization
+(D11) joins edit plans as a primary motivating consumer. Do **not** implement a naïve map first.
+**Trigger unchanged:** the first real consumer — the masks.ps1 rebirth / LaTeX macro-expansion
+migration, or an explicit normalization request — forces implementation; the shape above is what
+it implements against.
 
 ### F2 — Persisted batch format
 Freezes master identity, UCD version, interned tables, metadata typing, schema evolution — after
@@ -170,7 +217,9 @@ bytes or a decode map, reconciled with OffsetMap rather than bolted onto `TextMa
 succession (F6): mdnav guarantees "read = literal source bytes"; whether the successor inherits
 that guarantee or redefines read as re-encoded decoded text (recording BOM/encoding anomalies at
 index time) is itself the question that activates this item — it is a successor-design decision,
-not an engine prerequisite.
+not an engine prerequisite. Note per grok-offsetmap-unicode: the encoding map (bytes ↔ code
+units) and the Unicode-form map (F1/D11) are distinct objects with different failure modes; keep
+their contracts separate.
 
 ### F4 — Indexed joins and priority-aware lookup
 Pure acceleration; semantics are the contract.
@@ -206,10 +255,12 @@ deferred contract pulled by a real consumer rather than pushed by completeness.
 **Tranche 0 — correctness (hours).** D1 fingerprint fix + regression check; D9 load-time rule
 validation and contract notes.
 
-**Tranche 1 — decision records (days).** Write D2–D8 + D10 into the legwork/README as
-amendments. Cheapest tranche, highest leverage: it unblocks every implementation tranche and
-closes the legwork tensions sol §3 identified (atom taxonomy, run key, suppression, priority,
-loader rules, LUT framing).
+**Tranche 1 — decision canon (days).** The decision records D2–D8, D10–D11 live **here**, in
+`issues/doccer/`; the MarkPig legwork is historical evidence — cited, never amended. Remaining
+Tranche-1 work: reflect the decisions into `src/doccer/README.md` (the in-repo contract
+surface), and keep the ledger current as new questions resolve. Cheapest tranche, highest
+leverage: it unblocks every implementation tranche and closes the tensions sol §3 identified
+(atom taxonomy, run key, suppression, priority, loader rules, LUT framing).
 
 **Tranche 2 — Phase-1 substrate completion (specified work, no new questions).** Full `SpanBatch`
 columns with interned type/language/pass IDs; atoms enriched per D4 (facts + derived-run views);
@@ -243,12 +294,13 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 | Q8 | 64 KB LUT status | **resolved** | D4 — implementation strategy, out of contract |
 | Q9 | coverage invariant strength | **resolved** (already) | cursor-based check in code beats sum-of-lengths |
 | Q10 | fingerprint vs lone surrogates | **resolved** (defect) | D1 — hash raw code units |
-| Q11 | OffsetMap honest form | requirements sketched | F1 — first edit-plan consumer forces it |
+| Q11 | OffsetMap honest form | contract shape drafted | F1 — sum-type points, segment storage, Residual-default projection; first consumer implements |
 | Q12 | persisted batch format | deferred | F2 — first cross-process consumer; mdnav sidecar as donor |
 | Q13 | byte addressing | deferred | F3 — byte-exact reproduction consumer; a successor-design decision |
 | Q14 | indexed join strategy | deferred | F4 — after Tier-2 freezes semantics |
 | Q15 | agreement-score vocabulary | deferred | F5 — first independent producer pair |
 | Q16 | what supplants mdnav, and when | deferred, shaped | F6 — Phase-2 exit + markdown inventory; oracle harness defined |
+| Q17 | normalization: silent vs explicit | **resolved** | D11 — engine never normalizes; explicit new-master + map; identity default |
 
 ---
 
