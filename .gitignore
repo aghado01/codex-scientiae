@@ -9,8 +9,6 @@
 artifacts/**
 !artifacts/README.md
 packages/
-packages/node/package.json
-packages/node/package-lock.json
 **/node_modules/
 
 

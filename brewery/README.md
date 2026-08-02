@@ -21,3 +21,22 @@ Release payloads — the binaries other parts of the repo consume — are **rele
 hand-off: harness first, then publish into `artifacts/{module}/publish/`, verify the expected
 payload is present, and only then move it into `packages/{module}/`. `build-doccer.ps1` refuses
 staging and package targets outside those two roots.
+
+`packages/` is ignored in its entirety: it holds only regenerated or re-fetched payloads, and a
+clean clone starts without it. Every shelf there must therefore be reproducible from a recipe in
+this directory.
+
+## Recipes not yet written
+
+Two shelves predate that rule. Both were built outside this repository and vendored as finished
+binaries, so neither has a recipe yet and neither survives a clean clone. Both are re-obtainable
+from upstream at the versions that were in use, recorded here so the pin is not lost with the
+binary:
+
+| Shelf | Vendored version | Upstream |
+|---|---|---|
+| `packages/tectonic` | `0.16.9+20260504` | tectonic-typesetting GitHub releases |
+| `packages/pdfpig` | `0.1.14` | NuGet `UglyToad.PdfPig` (+ `.Core`, `.Fonts`, `.Tokenization`, `.Tokens`, `.DocumentLayoutAnalysis`) |
+
+Until `restore-tectonic.ps1` and `restore-pdfpig.ps1` exist, treat the working-tree copies as the
+only ones and do not delete them.
