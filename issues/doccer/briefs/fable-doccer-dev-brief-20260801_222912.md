@@ -1,5 +1,12 @@
 # Doccer development brief — resolutions and sequencing
 
+> **Containment correction (2026-08-01):** this founding-run brief accreted the decision canon,
+> ledger, and roadmap — the wrong containment. Those now live as living documents under
+> [../planning/](../planning/) ([decisions.md](../planning/decisions.md),
+> [roadmap.md](../planning/roadmap.md)), corrected in place as current truth. This file remains
+> the **run record** of the session that minted D1–D15. Briefs henceforth are small: one per
+> chip iteration — the guidance, plus that chip's report appended on completion.
+
 **2026-08-01 · Fable.** Synthesizes [sol-doccer-next-steps.md](../discussions/sol-doccer-next-steps.md) (gap
 taxonomy), [grok-doccer-review-20260802.md](../discussions/grok-doccer-review-20260802.md) (open-question
 analysis), a full code review of `src/doccer` (contract harness passing, 954 checks), and a
