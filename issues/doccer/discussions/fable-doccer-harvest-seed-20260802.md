@@ -324,3 +324,31 @@ exclusions-recorded-as-evidence is the entrained mask surfacing in measure resul
 the mask as scope with the master intact. Lexicon consequence: the axes stay conceptually
 orthogonal, but the channel axis **rides on** the Boolean/suppression layer until assembly
 completes — unbraid names a mask composition + its entrained scope regime.
+
+### Addendum 4c — register shift: communications / signal processing (marinating)
+
+User direction: **less textiles, more comms/signal-processing** — and the deep justification
+is consonance, not taste: *Allen's original algebra was about time, not tokens*; the document
+axis is time-like (reading order = time), so comms vocabulary is the same mathematics
+re-instantiated, literal rather than figurative. The manuscript stream = **time-division
+multiplexing** (channels sharing one medium under a schedule).
+
+Recognition: the house dialect was already comms — **channel** (math channel), **register**
+(math register), **mask/gating** (masks.ps1; DSP time-gating = admission/suppression),
+**detector** (masks.ps1's own header; latex.ps1 soft detectors), **signal** (principled
+signals doctrine), **preamble** (mdnav's synthetic first unit), **payload**, **sentinel**.
+The textile pair was a graft onto an existing dialect.
+
+Candidate re-mappings (catalog, still marinating):
+
+| textile candidate | comms candidate | note |
+|---|---|---|
+| braid | **mux** / interleave | channels → one stream (TDM) |
+| unbraid | **demux** / deinterleave | fiber extraction = channel recovery |
+| weave (D19 ToParentInto) | **reassemble** | IP fragmentation/reassembly — native pair |
+| slice / "fragment" (sort) | **fragment** (verb + noun) | the unclear sort arrives with 50 years of precise usage; slice⇄weave may retire whole |
+| — | **gate / gating** | suppression admission as time-gating |
+| — | **framing** | the spine partition as frames of the multiplex |
+
+Fiber keeps its math/PH grounding (and incidentally survives in comms — fiber optics).
+Nothing minted; the register direction is recorded for the chew.
