@@ -212,10 +212,19 @@ Validation tiers / inventories    + cross-examination
    reference.
 4. Evidence and cross-examination (multi-collector disagreement, Tier-2/3 scoring) attach to
    compositions that ask for them, never to primitive use.
+5. **Masters scale down with the job.** A `TextMaster` is a coordinate space, not "the
+   document": minting one over an isolated math span or a macro-expansion site is first-class
+   and (post lazy substrate) near-free, and the same primitives apply unchanged at any extent.
+   The floor governs *mixing*, not *extent* — spans on a fragment-local master refuse to
+   validate against the parent, so the forgotten-base-offset bug class becomes a loud
+   incompatibility error instead of silent corruption. Lineage back to a parent is opt-in
+   (D7.4/D7.5 slice map + rebase), needed only when results must return to parent coordinates;
+   an unlinked local master is honest by construction.
 
 **Witness:** LaTeX macro expansion — comment claims − verbatim claims = expandable region;
 scoped collect; edit at spans. Rungs 1–3, nothing above; an offset map only if the job wants
-coordinates carried across the rewrite.
+coordinates carried across the rewrite. Runnable either on the parent master with scoped
+collection or on a fragment-local master with identical rungs — the consumer's choice.
 **Consequence (immediate):** the current `TextMaster` constructor eagerly computes SHA-256 and
 the full scalar tiling — a monolith tax charged at the door for small jobs. Make both lazy.
 **Source:** user directive 2026-08-01; sol-discussion layering (interval set / coordinate space /
