@@ -28,6 +28,96 @@ public readonly record struct LineRange(int Start, int End)
 }
 
 /// <summary>
+/// The seven UCD major category classes (L, M, N, P, S, Z, C). A mechanical fold over
+/// <see cref="UnicodeCategory"/> — no data table and no version stamp of its own, unlike the block
+/// and script properties, which would ship as versioned UCD data.
+/// </summary>
+public enum UnicodeCategoryClass
+{
+    Letter,
+    Mark,
+    Number,
+    Punctuation,
+    Symbol,
+    Separator,
+    Other,
+}
+
+/// <summary>
+/// A maximal consecutive atom range whose atoms all yield one break-key value. A run carries its
+/// span, the key it broke on, and how many atoms it covers — nothing else. There is deliberately no
+/// intrinsic "run category": a run keyed on something other than category has no single category,
+/// which is exactly why the key travels with the run instead of a fixed type field.
+/// </summary>
+public readonly record struct AtomRun<TKey>(TextSpan Span, TKey Key, int AtomCount);
+
+/// <summary>
+/// Break-key selectors over the facts an atom actually carries. Each is a plain
+/// <c>TextAtom -> key</c> function, so <see cref="TextTopology.EmitRuns"/> accepts these and any
+/// caller-supplied selector on the same footing. Compose facts by returning a tuple —
+/// <c>atom =&gt; (atom.LineIndex, AtomFacts.CategoryClass(atom))</c> breaks on both, and the run
+/// reports both values.
+/// </summary>
+public static class AtomFacts
+{
+    /// <summary>Breaks on the exact Unicode general category (Lu and Ll are different keys).</summary>
+    public static Func<TextAtom, UnicodeCategory> Category { get; } = static atom => atom.Category;
+
+    /// <summary>Breaks on the UCD major class (Lu and Ll are both <c>Letter</c>).</summary>
+    public static Func<TextAtom, UnicodeCategoryClass> CategoryClass { get; } =
+        static atom => Classify(atom.Category);
+
+    /// <summary>Breaks between well-formed scalars and preserved unpaired surrogates.</summary>
+    public static Func<TextAtom, bool> IsValidScalar { get; } = static atom => atom.IsValidScalar;
+
+    /// <summary>Breaks at line boundaries; the resulting runs are the line extents.</summary>
+    public static Func<TextAtom, int> LineIndex { get; } = static atom => atom.LineIndex;
+
+    /// <summary>Folds a general category onto its UCD major class.</summary>
+    public static UnicodeCategoryClass Classify(UnicodeCategory category) => category switch
+    {
+        UnicodeCategory.UppercaseLetter or
+        UnicodeCategory.LowercaseLetter or
+        UnicodeCategory.TitlecaseLetter or
+        UnicodeCategory.ModifierLetter or
+        UnicodeCategory.OtherLetter => UnicodeCategoryClass.Letter,
+
+        UnicodeCategory.NonSpacingMark or
+        UnicodeCategory.SpacingCombiningMark or
+        UnicodeCategory.EnclosingMark => UnicodeCategoryClass.Mark,
+
+        UnicodeCategory.DecimalDigitNumber or
+        UnicodeCategory.LetterNumber or
+        UnicodeCategory.OtherNumber => UnicodeCategoryClass.Number,
+
+        UnicodeCategory.ConnectorPunctuation or
+        UnicodeCategory.DashPunctuation or
+        UnicodeCategory.OpenPunctuation or
+        UnicodeCategory.ClosePunctuation or
+        UnicodeCategory.InitialQuotePunctuation or
+        UnicodeCategory.FinalQuotePunctuation or
+        UnicodeCategory.OtherPunctuation => UnicodeCategoryClass.Punctuation,
+
+        UnicodeCategory.MathSymbol or
+        UnicodeCategory.CurrencySymbol or
+        UnicodeCategory.ModifierSymbol or
+        UnicodeCategory.OtherSymbol => UnicodeCategoryClass.Symbol,
+
+        UnicodeCategory.SpaceSeparator or
+        UnicodeCategory.LineSeparator or
+        UnicodeCategory.ParagraphSeparator => UnicodeCategoryClass.Separator,
+
+        UnicodeCategory.Control or
+        UnicodeCategory.Format or
+        UnicodeCategory.Surrogate or
+        UnicodeCategory.PrivateUse or
+        UnicodeCategory.OtherNotAssigned => UnicodeCategoryClass.Other,
+
+        _ => throw new ArgumentOutOfRangeException(nameof(category)),
+    };
+}
+
+/// <summary>
 /// Complete Unicode-scalar tiling and line topology produced by a single pass over a master string.
 /// </summary>
 public sealed class TextTopology
@@ -131,6 +221,57 @@ public sealed class TextTopology
         var start = _lineStarts[lineIndex];
         var end = lineIndex + 1 < _lineStarts.Length ? _lineStarts[lineIndex + 1] : TextLength;
         return new TextSpan(start, end);
+    }
+
+    /// <summary>
+    /// Emits the maximal atom runs agreeing on an explicit break-key. The key is the whole of the
+    /// caller's typing decision: the tiling itself carries facts only, and any coarser grouping —
+    /// word-like versus space-like, letters versus everything else, per line — is this view, chosen
+    /// per call rather than baked into the atoms. <see cref="AtomFacts"/> holds the built-in
+    /// selectors; a tuple-returning selector breaks on several facts at once.
+    /// </summary>
+    /// <remarks>
+    /// Computed on demand, never cached and never constructor work: a job that wants no runs pays
+    /// for none. The result tiles the master exactly — run spans are contiguous from 0 to
+    /// <see cref="TextLength"/>, and the atom counts sum to <see cref="AtomCount"/>.
+    /// </remarks>
+    public IReadOnlyList<AtomRun<TKey>> EmitRuns<TKey>(
+        Func<TextAtom, TKey> breakKey,
+        IEqualityComparer<TKey>? comparer = null)
+    {
+        ArgumentNullException.ThrowIfNull(breakKey);
+        if (_atoms.Length == 0)
+        {
+            return Array.Empty<AtomRun<TKey>>();
+        }
+
+        var equality = comparer ?? EqualityComparer<TKey>.Default;
+        var runs = new List<AtomRun<TKey>>();
+        var currentKey = breakKey(_atoms[0]);
+        var start = _atoms[0].Span.Start;
+        var end = _atoms[0].Span.End;
+        var count = 1;
+        for (var i = 1; i < _atoms.Length; i++)
+        {
+            // One key evaluation per atom: the selector is caller code and may be arbitrarily
+            // expensive, so a boundary must not re-evaluate the atom that ended the previous run.
+            var key = breakKey(_atoms[i]);
+            if (equality.Equals(key, currentKey))
+            {
+                end = _atoms[i].Span.End;
+                count++;
+                continue;
+            }
+
+            runs.Add(new AtomRun<TKey>(new TextSpan(start, end), currentKey, count));
+            currentKey = key;
+            start = _atoms[i].Span.Start;
+            end = _atoms[i].Span.End;
+            count = 1;
+        }
+
+        runs.Add(new AtomRun<TKey>(new TextSpan(start, end), currentKey, count));
+        return runs.AsReadOnly();
     }
 
     /// <summary>

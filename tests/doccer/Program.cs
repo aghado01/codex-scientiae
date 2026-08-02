@@ -14,6 +14,7 @@ internal static class Program
         try
         {
             MasterTopologyIsTotal();
+            RunViewsTileTheMasterUnderEveryBreakKey();
             LazySubstrateDefersUntouchedWork();
             FrozenBatchPreservesClaims();
             InternedColumnsRoundTripClaimStrings();
@@ -56,6 +57,108 @@ internal static class Program
             !StringComparer.Ordinal.Equals(loneHigh.Fingerprint, loneLow.Fingerprint),
             "lone-surrogate fingerprints differ");
         True(!loneHigh.IsCompatibleWith(loneLow), "lone-surrogate masters incompatible");
+    }
+
+    private static void RunViewsTileTheMasterUnderEveryBreakKey()
+    {
+        var master = new TextMaster("runs", 0, "Hello, world!\r\n123 x\uD800y 😀\n\tend");
+        var topology = master.Topology;
+
+        AssertRunsTile(master, topology.EmitRuns(AtomFacts.Category), "category");
+        AssertRunsTile(master, topology.EmitRuns(AtomFacts.CategoryClass), "category class");
+        AssertRunsTile(master, topology.EmitRuns(AtomFacts.IsValidScalar), "scalar validity");
+        AssertRunsTile(master, topology.EmitRuns(AtomFacts.LineIndex), "line index");
+        AssertRunsTile(
+            master,
+            topology.EmitRuns(atom => (atom.LineIndex, AtomFacts.CategoryClass(atom))),
+            "composite line and class");
+        AssertRunsTile(master, topology.EmitRuns(static _ => 0), "constant key");
+
+        // One key evaluation per atom, regardless of how many runs the key produces.
+        var evaluations = 0;
+        var counted = topology.EmitRuns(atom =>
+        {
+            evaluations++;
+            return atom.Category;
+        });
+        Equal(topology.AtomCount, evaluations, "break-key evaluated once per atom");
+        True(counted.Count > 1, "category key produced several runs");
+
+        // The Lu/Ll case D4 dissolved: one tiling, two legitimate run views, neither intrinsic.
+        var mixedCase = new TextMaster("run-keys", 0, "aB");
+        Equal(2, mixedCase.Topology.EmitRuns(AtomFacts.Category).Count, "exact category splits Ll from Lu");
+        Equal(1, mixedCase.Topology.EmitRuns(AtomFacts.CategoryClass).Count, "major class joins Ll and Lu");
+
+        var mixed = new TextMaster("run-classes", 0, "ab, 12");
+        var classes = mixed.Topology.EmitRuns(AtomFacts.CategoryClass);
+        Equal(4, classes.Count, "class run count");
+        Equal(new TextSpan(0, 2), classes[0].Span, "letter run extent");
+        Equal(UnicodeCategoryClass.Letter, classes[0].Key, "letter run key");
+        Equal(2, classes[0].AtomCount, "letter run atom count");
+        Equal(UnicodeCategoryClass.Punctuation, classes[1].Key, "punctuation run key");
+        Equal(UnicodeCategoryClass.Separator, classes[2].Key, "separator run key");
+        Equal(UnicodeCategoryClass.Number, classes[3].Key, "number run key");
+
+        var malformed = new TextMaster("run-validity", 0, "x\uD800y");
+        var validity = malformed.Topology.EmitRuns(AtomFacts.IsValidScalar);
+        Equal(3, validity.Count, "validity run count");
+        Equal(false, validity[1].Key, "unpaired surrogate breaks its own run");
+
+        // Line-keyed runs are the line extents, but only for lines that contain atoms: a trailing
+        // line break opens a final empty line, and an empty line has no atoms to run over.
+        var twoLines = new TextMaster("run-lines", 0, "ab\ncd");
+        var lineRuns = twoLines.Topology.EmitRuns(AtomFacts.LineIndex);
+        Equal(twoLines.Topology.LineCount, lineRuns.Count, "line runs match line count");
+        for (var i = 0; i < lineRuns.Count; i++)
+        {
+            Equal(twoLines.Topology.GetLineExtent(i), lineRuns[i].Span, $"line run {i} equals line extent");
+            Equal(i, lineRuns[i].Key, $"line run {i} key");
+        }
+
+        var trailing = new TextMaster("run-trailing", 0, "ab\n");
+        Equal(2, trailing.Topology.LineCount, "trailing break opens an empty final line");
+        Equal(1, trailing.Topology.EmitRuns(AtomFacts.LineIndex).Count, "the empty final line has no run");
+
+        var empty = new TextMaster("run-empty", 0, string.Empty);
+        Equal(0, empty.Topology.EmitRuns(AtomFacts.Category).Count, "empty master emits no runs");
+
+        Throws<ArgumentNullException>(
+            () => topology.EmitRuns((Func<TextAtom, int>)null!),
+            "null break-key rejected");
+    }
+
+    private static void AssertRunsTile<TKey>(
+        TextMaster master,
+        IReadOnlyList<AtomRun<TKey>> runs,
+        string name)
+    {
+        var cursor = 0;
+        var atoms = 0;
+        var contiguous = true;
+        var maximal = true;
+        var reconstructed = new System.Text.StringBuilder();
+        for (var i = 0; i < runs.Count; i++)
+        {
+            if (runs[i].Span.Start != cursor)
+            {
+                contiguous = false;
+            }
+
+            if (i > 0 && EqualityComparer<TKey>.Default.Equals(runs[i].Key, runs[i - 1].Key))
+            {
+                maximal = false;
+            }
+
+            cursor = runs[i].Span.End;
+            atoms += runs[i].AtomCount;
+            reconstructed.Append(master.Slice(runs[i].Span));
+        }
+
+        True(contiguous, $"{name} runs are contiguous");
+        Equal(master.Length, cursor, $"{name} runs reach the master end");
+        Equal(master.Topology.AtomCount, atoms, $"{name} run atom counts sum to the tiling");
+        True(maximal, $"{name} adjacent runs carry different keys");
+        Equal(master.Text, reconstructed.ToString(), $"{name} runs reconstruct the master text");
     }
 
     private static void LazySubstrateDefersUntouchedWork()
