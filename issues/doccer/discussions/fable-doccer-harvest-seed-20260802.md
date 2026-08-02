@@ -250,3 +250,41 @@ stores across latex-math-store (aliases, unicode-glyphs, furniture, evidence) an
 math-register (jurisdiction, operators, surjections, hygiene, lexicon). Mechanical-sweep
 bound recorded in the guards brief: 51 source-directed vs 0 output-directed body mutations;
 `Build-LabelMaps` overwrite invisible to that sweep.
+
+## Addendum 4 (same day) — the operational lexicon (candidates, uncommitted)
+
+Session-accumulated candidate vocabulary for the doccer surface — **catalog, not mint**: names
+are the user's to ratify; type signatures are the part the engine already enforces (the C#
+types are the deep grammar; naming chooses the surface lexicon).
+
+**Sorts:** text (any string) · **master** (the coordinate-system overlay over a text —
+general, not TeX-specific; scales down to a macro body or a single math span, D12) ·
+claim/batch (master-bound) · set (Boolean layer, master-bound) · fragment (master with
+lineage, D19) · view (basis-stamped derivation, D21) · pack (domain rules as data) · policy
+(named parameter) · measure (stamped facts, D8/D23).
+
+**Verb candidates and their arrows:**
+
+| verb | signature | status |
+|---|---|---|
+| `master` | text → master | exists (TextMaster) |
+| `collect` | master × pack × scope → batch | exists (RegexCollector, D16) |
+| `union · intersect · subtract · complement` | set × set → set | exists (SpanSet, D17) |
+| `slice` | master × span → fragment | exists (TextSlice, D19) |
+| `weave` | fragment batches → parent batch | exists (ToParentInto, D19) |
+| `pair` | open claims × close claims × policy → regions + fault residue | missing mechanism (~7 witnesses) |
+| `braid` | channel streams → interleaved stream (seq order, identity retained) | conceptual — channel axis |
+| `unbraid` | stream × kind → strand (projection, interleaving intact) | conceptual — channel axis |
+
+**Axis discipline (candidate):** slice ⇄ weave live on the *coordinate/lineage* axis
+(fragments of one text); braid ⇄ unbraid live on the *channel* axis (strands of one stream).
+Keep the pairs level-pure — `unweave` rejected as a name since weave's inverse is slice, and
+cross-level overloading would blur the axis distinction. Channel verbs connect to the
+latent-manuscript channel refinement (every view is a query; the interleaved stream is
+literally a braid: strands individually traceable through one seq order).
+
+**One grammar, three surfaces:** C# types = the deep grammar (compositions type-checked);
+PS veneer = the interactive syntax (its function names ARE the lexicon — why veneer naming
+deserves care); CLI expression language = the boundary syntax (same compositions,
+serialized). One algebra, three registers of expression; minted vocabulary propagates
+through all three.
