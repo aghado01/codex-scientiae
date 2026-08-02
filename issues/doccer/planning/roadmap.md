@@ -35,13 +35,13 @@ report appended on completion; `discussions/` = captured evidence.
    living canon: shipped names and semantics hold steady (D8 discipline at the CLI surface);
    the namespace stays open.
 2. **First CLI verbs (D13):** `doccer collect` (inventory + scope in, claims JSONL out) and a
-   span-algebra verb — the macro-expansion witness as a working demo. Verbs are
-   **domain-agnostic reusable endpoints**, never domain tasks: what to capture lives in
+   span-algebra verb — the macro-expansion witness as a working demo. Verbs are named
+   **domain-agnostic capabilities**, never domain tasks: what to capture lives in
    **per-domain pattern stores** (the harvested latex `Rx*` registers and mdnav
-   construct/noise tables are the first two packs), so codex adapters become endpoint calls +
+   construct/noise tables are the first two packs), so codex adapters become capability calls +
    store entries + genuinely-domain policy — the D13 rewrite test. The pairing lift graduates
-   to a `pair` endpoint once its engine contract lands; its open/close token rules are store
-   entries, never endpoint knowledge. user-repl anatomy:
+   to a `pair` verb once its engine contract lands; its open/close token rules are store
+   entries, never the verb's knowledge. user-repl anatomy:
    hand-rolled router, per-verb files with no hot path, wire format extending the loader's JSON
    context with span/claim payloads, run manifests where verbs produce artifacts. The current
    `inspect`/`relate` commands are **disposable developer diagnostics** predating D13 (`relate`
