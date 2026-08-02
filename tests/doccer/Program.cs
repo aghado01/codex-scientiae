@@ -34,6 +34,13 @@ internal static class Program
             ExecutionScopeComposesWithTheCallerRegionSet();
             JsonlInventoryLoadsAndFailsWithProvenance();
             DeclarativeValidationRunsWithoutDomainCode();
+            CollectionCommitsAtomically();
+            UnknownCaptureGroupFailsAtValidation();
+            UndefinedEnumValuesAreRejected();
+            EmptySpansHaveSetSemantics();
+            ReferenceJoinRelatesEveryPair();
+            ProjectMapsSpansOntoLineRanges();
+            EmitRunsHonorsACustomComparer();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -943,6 +950,237 @@ internal static class Program
         var issues = DoccerValidation.ValidateRelations(batch, requirements, impossibilities);
         Equal(1, issues.Count, "one impossibility detected");
         Equal("container-must-not-cross-forbidden", issues[0].Rule, "impossibility rule identity");
+    }
+
+    /// <summary>
+    /// Collection is transactional: a failure the load-time probe cannot see — here a
+    /// context-dependent zero-width lookaround, which matches nothing on empty input but emits an
+    /// empty claim mid-sweep — must leave the caller's builder exactly as it found it, even when
+    /// a valid rule ahead of it already recognized claims.
+    /// </summary>
+    private static void CollectionCommitsAtomically()
+    {
+        var master = new TextMaster("atomic", 0, "a b a");
+        var builder = new SpanBatchBuilder(master);
+        var rules = new[]
+        {
+            new PatternRule("word", @"\w+", "word", "test"),
+            new PatternRule("peek", "(?=a)", "peek", "test"),
+        };
+
+        True(
+            !RegexCollector.CompileAndProbe(rules[1]).Match(string.Empty).Success,
+            "the context-dependent zero-width pattern passes the empty-input probe");
+
+        var thrown = (InvalidOperationException?)null;
+        try
+        {
+            RegexCollector.CollectInto(builder, rules);
+        }
+        catch (InvalidOperationException exception)
+        {
+            thrown = exception;
+        }
+
+        True(thrown is not null, "the zero-width match still fails mid-sweep");
+        True(thrown!.Message.Contains("'peek'", StringComparison.Ordinal), "the failure names the rule");
+        Equal(0, builder.Count, "no claim from the earlier valid rule was committed");
+
+        // The same builder remains usable, and a clean sweep commits everything it staged.
+        RegexCollector.CollectInto(builder, new[] { rules[0] });
+        Equal(3, builder.Count, "a clean sweep over the surviving rule commits all claims");
+
+        // A pre-populated builder is extended, never rebuilt, and a frozen one is refused before
+        // any matching starts.
+        var seeded = new SpanBatchBuilder(master);
+        seeded.Add(new SpanClaim(new TextSpan(0, 1), "seed", SpanLevel.Character, "test"));
+        RegexCollector.CollectInto(seeded, new[] { rules[0] });
+        Equal(4, seeded.Count, "collection appends to a pre-populated builder");
+
+        seeded.Freeze();
+        Throws<InvalidOperationException>(
+            () => RegexCollector.CollectInto(seeded, new[] { rules[0] }),
+            "a frozen builder is rejected up front");
+    }
+
+    private static void UnknownCaptureGroupFailsAtValidation()
+    {
+        var master = new TextMaster("capture", 0, "x abc");
+        var misspelled = new PatternRule(
+            "title", @"(?<title>\w+)", "title", "test", captureGroup: "titel");
+
+        var builder = new SpanBatchBuilder(master);
+        var thrown = (ArgumentException?)null;
+        try
+        {
+            RegexCollector.CollectInto(builder, new[] { misspelled });
+        }
+        catch (ArgumentException exception)
+        {
+            thrown = exception;
+        }
+
+        True(thrown is not null, "an undefined capture group is rejected at validation");
+        True(thrown!.Message.Contains("'titel'", StringComparison.Ordinal), "the rejection names the group");
+        True(thrown.Message.Contains("'title'", StringComparison.Ordinal), "the rejection names the rule");
+        Equal(0, builder.Count, "capture-group rejection adds nothing");
+
+        // Numeric groups resolve by their string name: "1" exists, "2" does not.
+        var numeric = RegexCollector.Collect(
+            master,
+            new[] { new PatternRule("num", @"x (\w+)", "num", "test", captureGroup: "1") });
+        Equal(1, numeric.Count, "a defined numeric group collects");
+        Equal(new TextSpan(2, 5), numeric[0].Span, "the numeric group's extent is claimed");
+        Throws<ArgumentException>(
+            () => RegexCollector.Collect(
+                master,
+                new[] { new PatternRule("num", @"x (\w+)", "num", "test", captureGroup: "2") }),
+            "an undefined numeric group is rejected");
+
+        // The loader wraps the same probe with file-and-line provenance.
+        var loadFailure = (PatternRuleLoadException?)null;
+        try
+        {
+            PatternRuleLoader.Load(
+                new[] { """{"id":"t","pattern":"(?<title>\\w+)","kind":"k","source":"s","captureGroup":"titel"}""" },
+                "capture.jsonl");
+        }
+        catch (PatternRuleLoadException exception)
+        {
+            loadFailure = exception;
+        }
+
+        True(loadFailure is not null, "the loader rejects the misspelled group");
+        Equal(1, loadFailure!.LineNumber, "the loader failure carries the line");
+        True(
+            loadFailure.Message.Contains("'titel'", StringComparison.Ordinal),
+            "the loader failure names the group");
+    }
+
+    private static void UndefinedEnumValuesAreRejected()
+    {
+        Throws<ArgumentOutOfRangeException>(
+            () => new PatternRule("x", "a", "k", "s", (SpanLevel)99),
+            "an undefined SpanLevel cast is rejected by the rule constructor");
+        Throws<ArgumentOutOfRangeException>(
+            () => new PatternRule("x", "a", "k", "s", SpanLevel.Character, (ExecutionScope)7),
+            "an undefined ExecutionScope cast is rejected by the rule constructor");
+
+        var builder = new SpanBatchBuilder(new TextMaster("enums", 0, "abc"));
+        Throws<ArgumentException>(
+            () => builder.Add(new SpanClaim(new TextSpan(0, 1), "k", (SpanLevel)99, "s")),
+            "an undefined SpanLevel on a direct claim is rejected by the builder");
+        Equal(0, builder.Count, "the rejected claim was not added");
+    }
+
+    private static void EmptySpansHaveSetSemantics()
+    {
+        var contained = new TextSpan(5, 5);
+        var container = new TextSpan(0, 10);
+        True(!contained.Intersects(container), "an empty span intersects nothing");
+        True(!container.Intersects(contained), "nothing intersects an empty span");
+        True(!contained.Intersects(contained), "an empty span does not intersect itself");
+        True(!new TextSpan(0, 5).Intersects(new TextSpan(5, 9)), "meeting spans do not intersect");
+        True(new TextSpan(0, 6).Intersects(new TextSpan(5, 9)), "overlapping spans intersect");
+        True(container.Contains(contained), "the subset relation keeps empty-set semantics");
+        True(container.Contains(5), "the point query is the named operation");
+
+        var master = new TextMaster("point-query", 0, "0123456789");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(0, 10), "outer", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(4, 6), "inner", SpanLevel.Character, "test"));
+        var batch = builder.Freeze();
+
+        Equal(0, batch.Sorted.FindIntersecting(new TextSpan(5, 5)).Count, "an empty query finds nothing");
+        Equal(2, batch.Sorted.FindContaining(5).Count, "the point query finds the covering claims");
+        Equal("outer", batch.Sorted.FindContaining(5)[0].Kind, "point results keep the stable start order");
+        Equal(1, batch.Sorted.FindContaining(2).Count, "a point outside the inner claim finds only the outer");
+        Equal(0, batch.Sorted.FindContaining(master.Length).Count, "the end-of-master position is covered by nothing");
+        Throws<ArgumentOutOfRangeException>(
+            () => batch.Sorted.FindContaining(master.Length + 1),
+            "a position beyond the master is rejected");
+    }
+
+    private static void ReferenceJoinRelatesEveryPair()
+    {
+        var master = new TextMaster("joins", 0, "01234567890123456789");
+        var leftBuilder = new SpanBatchBuilder(master);
+        leftBuilder.Add(new SpanClaim(new TextSpan(0, 5), "a", SpanLevel.Character, "test"));
+        leftBuilder.Add(new SpanClaim(new TextSpan(10, 20), "b", SpanLevel.Character, "test"));
+        var left = leftBuilder.Freeze();
+
+        var rightBuilder = new SpanBatchBuilder(master);
+        rightBuilder.Add(new SpanClaim(new TextSpan(5, 10), "c", SpanLevel.Character, "test"));
+        rightBuilder.Add(new SpanClaim(new TextSpan(12, 18), "d", SpanLevel.Character, "test"));
+        rightBuilder.Add(new SpanClaim(new TextSpan(0, 5), "e", SpanLevel.Character, "test"));
+        var right = rightBuilder.Freeze();
+
+        var joined = IntervalJoins.Join(left, right);
+        Equal(left.Count * right.Count, joined.Count, "the unfiltered join relates every pair");
+        Equal(AllenRelation.Meets, joined[0].Relation, "[0,5) meets [5,10)");
+        Equal(AllenRelation.Equal, joined[2].Relation, "[0,5) equals [0,5)");
+        Equal(AllenRelation.MetBy, joined[3].Relation, "[10,20) is met by [5,10)");
+        Equal(AllenRelation.Contains, joined[4].Relation, "[10,20) contains [12,18)");
+        Equal(0, joined[0].Left.Ordinal, "join rows carry the left record");
+        Equal(0, joined[0].Right.Ordinal, "join rows carry the right record");
+
+        var contains = IntervalJoins.Join(
+            left, right, new HashSet<AllenRelation> { AllenRelation.Contains });
+        Equal(1, contains.Count, "the filtered join keeps only the requested relations");
+        Equal("b", contains[0].Left.Kind, "the filtered row's left claim");
+        Equal("d", contains[0].Right.Kind, "the filtered row's right claim");
+
+        var foreignBuilder = new SpanBatchBuilder(new TextMaster("join-foreign", 0, master.Text));
+        foreignBuilder.Add(new SpanClaim(new TextSpan(0, 5), "f", SpanLevel.Character, "test"));
+        Throws<InvalidOperationException>(
+            () => IntervalJoins.Join(left, foreignBuilder.Freeze()),
+            "a cross-master join is rejected");
+    }
+
+    private static void ProjectMapsSpansOntoLineRanges()
+    {
+        var master = new TextMaster("project", 0, "ab\ncd\nef");
+        var topology = master.Topology;
+
+        Equal(new LineRange(0, 1), topology.Project(new TextSpan(0, 2)), "a one-line span projects to its line");
+        Equal(new LineRange(0, 1), topology.Project(new TextSpan(2, 3)), "the terminator belongs to its line");
+        Equal(new LineRange(0, 2), topology.Project(new TextSpan(0, 5)), "a bridging span projects to both lines");
+        Equal(new LineRange(1, 3), topology.Project(new TextSpan(4, 8)), "a mid-start span projects to its line range");
+        Equal(new LineRange(0, 3), topology.Project(master.Extent), "the whole extent projects to every line");
+
+        // The documented insertion-point convention: an empty span projects to the one-line range
+        // containing its position, never to an empty range.
+        Equal(new LineRange(1, 2), topology.Project(new TextSpan(3, 3)), "a line-start insertion point names its line");
+        Equal(new LineRange(0, 1), topology.Project(new TextSpan(2, 2)), "a pre-terminator insertion point stays on its line");
+        Equal(new LineRange(2, 3), topology.Project(new TextSpan(8, 8)), "the end-of-text insertion point names the last line");
+
+        var trailing = new TextMaster("project-trailing", 0, "ab\n");
+        Equal(
+            new LineRange(1, 2),
+            trailing.Topology.Project(new TextSpan(3, 3)),
+            "the empty final line is a real projection target");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => topology.Project(new TextSpan(0, 9)),
+            "a span beyond the text is rejected");
+    }
+
+    private static void EmitRunsHonorsACustomComparer()
+    {
+        var master = new TextMaster("custom-comparer", 0, "aA bB");
+        var slice = (Func<TextAtom, string>)(atom => master.Slice(atom.Span));
+
+        var exact = master.Topology.EmitRuns(slice);
+        Equal(5, exact.Count, "the default comparer breaks on exact ordinal keys");
+
+        var folded = master.Topology.EmitRuns(slice, StringComparer.OrdinalIgnoreCase);
+        AssertRunsTile(master, folded, "case-folded");
+        Equal(3, folded.Count, "a case-insensitive comparer joins the case-variant runs");
+        Equal(new TextSpan(0, 2), folded[0].Span, "the folded letter run spans both cases");
+        Equal("a", folded[0].Key, "a run carries the first key it broke on");
+        Equal(2, folded[0].AtomCount, "the folded run counts both atoms");
+        Equal(" ", folded[1].Key, "the separator run key");
+        Equal("b", folded[2].Key, "the second folded run key");
     }
 
     private static void True(bool condition, string name)

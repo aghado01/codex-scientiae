@@ -64,6 +64,16 @@ public sealed record PatternRule
             throw new ArgumentException("A claim source is required.", nameof(source));
         }
 
+        if (!Enum.IsDefined(level))
+        {
+            throw new ArgumentOutOfRangeException(nameof(level), level, "Undefined SpanLevel value.");
+        }
+
+        if (!Enum.IsDefined(scope))
+        {
+            throw new ArgumentOutOfRangeException(nameof(scope), scope, "Undefined ExecutionScope value.");
+        }
+
         Id = id;
         Pattern = pattern;
         Kind = kind;
@@ -119,6 +129,11 @@ public static class RegexCollector
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(rules);
+        if (builder.IsFrozen)
+        {
+            throw new InvalidOperationException("The span batch has already been frozen.");
+        }
+
         if (scope is not null)
         {
             builder.Master.EnsureCompatibleWith(scope.Master);
@@ -139,13 +154,19 @@ public static class RegexCollector
             materialized.Add((rule, CompileAndProbe(rule)));
         }
 
+        // Load-time validation cannot catch every mid-sweep failure: a context-dependent
+        // zero-width pattern passes the empty-input probe, a match can time out, and a match can
+        // land on a non-scalar boundary. Staging every claim and committing only after the whole
+        // sweep succeeds keeps the promise above unconditional — the caller's builder is either
+        // extended by the complete collection or left untouched.
+        var staged = new List<SpanClaim>();
         foreach (var (rule, regex) in materialized)
         {
             if (rule.Scope == ExecutionScope.WholeMaster && scope is null)
             {
                 // The only case with no region decomposition, and the one worth keeping free of a
                 // whole-document string copy.
-                AddMatches(builder, regex, rule, builder.Master.Text, 0);
+                StageMatches(staged, builder.Master, regex, rule, builder.Master.Text, 0);
                 continue;
             }
 
@@ -153,8 +174,13 @@ public static class RegexCollector
             {
                 // Matching each region independently prevents a match from bridging an excluded gap
                 // or a line break. Region-local anchor semantics are consequently explicit.
-                AddMatches(builder, regex, rule, builder.Master.Slice(region), region.Start);
+                StageMatches(staged, builder.Master, regex, rule, builder.Master.Slice(region), region.Start);
             }
+        }
+
+        foreach (var claim in staged)
+        {
+            builder.Add(claim);
         }
     }
 
@@ -166,7 +192,8 @@ public static class RegexCollector
     /// <remarks>
     /// The probe catches the common class — an empty alternative or an all-optional pattern.
     /// Patterns that match empty only under specific context (a bare lookaround, say) still reach
-    /// the mid-sweep backstop in <c>AddMatches</c>.
+    /// the mid-sweep backstop in <c>StageMatches</c>; because collection stages and commits, even
+    /// that late failure leaves the caller's builder untouched.
     /// </remarks>
     internal static Regex CompileAndProbe(PatternRule rule)
     {
@@ -176,6 +203,17 @@ public static class RegexCollector
             throw new ArgumentException(
                 $"Pattern rule '{rule.Id}' can match the empty string and would emit empty " +
                 "structural claims.");
+        }
+
+        // A capture group the compiled pattern does not define is indistinguishable at match time
+        // from a legitimate nonparticipating group, so an inventory typo would silently emit no
+        // claims. Resolving the name (or number-as-string) here turns that into a loud failure
+        // that the JSONL loader wraps with file-and-line provenance.
+        if (rule.CaptureGroup is not null && regex.GroupNumberFromName(rule.CaptureGroup) < 0)
+        {
+            throw new ArgumentException(
+                $"Pattern rule '{rule.Id}' names capture group '{rule.CaptureGroup}', which the " +
+                $"pattern does not define; it defines {string.Join(", ", regex.GetGroupNames())}.");
         }
 
         return regex;
@@ -247,8 +285,9 @@ public static class RegexCollector
         }
     }
 
-    private static void AddMatches(
-        SpanBatchBuilder builder,
+    private static void StageMatches(
+        List<SpanClaim> staged,
+        TextMaster master,
         Regex regex,
         PatternRule rule,
         string input,
@@ -268,8 +307,12 @@ public static class RegexCollector
                     $"Pattern rule '{rule.Id}' emitted an empty structural claim.");
             }
 
-            builder.Add(new SpanClaim(
-                TextSpan.FromStartLength(checked(baseOffset + group.Index), group.Length),
+            var span = TextSpan.FromStartLength(checked(baseOffset + group.Index), group.Length);
+            // Validate now, while staging: a claim the builder would reject at commit time (a
+            // match landing inside a surrogate pair, say) must fail before anything commits.
+            master.ValidateSpan(span, allowEmpty: false);
+            staged.Add(new SpanClaim(
+                span,
                 rule.Kind,
                 rule.Level,
                 rule.Source,

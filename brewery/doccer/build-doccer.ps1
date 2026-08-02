@@ -38,9 +38,13 @@ if (-not [IO.Path]::GetFullPath($stagingDir).StartsWith($artifactsRoot + [IO.Pat
     throw "Refusing unsafe staging target: $stagingDir"
 }
 
+$harnessChecks = $null
 if (-not $SkipTests) {
-    & dotnet run --project $testsProject -c $Configuration
+    $harnessOutput = & dotnet run --project $testsProject -c $Configuration
     if ($LASTEXITCODE -ne 0) { throw "Doccer contract harness failed ($LASTEXITCODE)." }
+    $harnessOutput | Write-Host
+    $harnessMatch = [regex]::Match(($harnessOutput -join "`n"), 'harness: (\d+) checks passed')
+    if ($harnessMatch.Success) { $harnessChecks = [int]$harnessMatch.Groups[1].Value }
 }
 
 if (Test-Path -LiteralPath $stagingDir) {
@@ -71,4 +75,78 @@ if (Test-Path -LiteralPath $packageDir) {
 }
 Move-Item -LiteralPath $stagingDir -Destination $packageDir
 
+# Smoke-test the DELIVERED payload, not the build output: load the packaged assembly, assert the
+# public surface consumers bind against, and run the packaged CLI once. Runs in a child process
+# so the loaded DLL is never locked by this session. The manifest is written only after this
+# passes — a package without doccer.manifest.json is an unverified package.
+$smokeScript = @'
+param([string] $PackageDir)
+$ErrorActionPreference = 'Stop'
+$assembly = [System.Reflection.Assembly]::LoadFrom((Join-Path $PackageDir 'CodexSci.Doccer.dll'))
+$expectedTypes = @(
+    'CodexSci.Doccer.TextMaster'
+    'CodexSci.Doccer.TextSpan'
+    'CodexSci.Doccer.TextTopology'
+    'CodexSci.Doccer.SpanBatch'
+    'CodexSci.Doccer.SpanBatchBuilder'
+    'CodexSci.Doccer.SortedSpanLookup'
+    'CodexSci.Doccer.SpanSet'
+    'CodexSci.Doccer.RegexCollector'
+    'CodexSci.Doccer.PatternRule'
+    'CodexSci.Doccer.ExecutionScope'
+    'CodexSci.Doccer.PatternRuleLoader'
+    'CodexSci.Doccer.AllenAlgebra'
+    'CodexSci.Doccer.IntervalJoins'
+    'CodexSci.Doccer.Laminarizer'
+    'CodexSci.Doccer.Suppression'
+    'CodexSci.Doccer.DoccerValidation'
+)
+foreach ($typeName in $expectedTypes) {
+    if ($null -eq $assembly.GetType($typeName, $false)) {
+        throw "Packaged assembly is missing expected public type $typeName."
+    }
+}
+$lookup = $assembly.GetType('CodexSci.Doccer.SortedSpanLookup', $true)
+if ($null -eq $lookup.GetMethod('FindContaining')) {
+    throw 'Packaged SortedSpanLookup is missing FindContaining.'
+}
+$relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
+if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {
+    throw "Packaged CLI failed its smoke run (exit $LASTEXITCODE, output '$relation')."
+}
+'@
+$smokePath = Join-Path ([IO.Path]::GetTempPath()) "doccer-smoke-$([guid]::NewGuid().ToString('N')).ps1"
+Set-Content -LiteralPath $smokePath -Value $smokeScript -Encoding utf8
+try {
+    & pwsh -NoProfile -File $smokePath -PackageDir $packageDir
+    if ($LASTEXITCODE -ne 0) { throw "Doccer package smoke test failed ($LASTEXITCODE)." }
+}
+finally {
+    Remove-Item -LiteralPath $smokePath -Force -ErrorAction SilentlyContinue
+}
+
+# The manifest answers "what source revision does this payload represent?" — the question a
+# selectively refreshed package otherwise cannot answer.
+$sourceCommit = (& git -C $repo rev-parse HEAD).Trim()
+$sourceDirty = [bool](& git -C $repo status --porcelain -- src/doccer brewery/doccer tests/doccer)
+$targetFramework = [regex]::Match(
+    (Get-Content -LiteralPath (Join-Path $repo 'Directory.Build.props') -Raw),
+    '<TargetFramework>([^<]+)</TargetFramework>').Groups[1].Value
+$manifest = [ordered]@{
+    name             = 'doccer'
+    schemaVersion    = 1
+    sourceCommit     = $sourceCommit
+    sourceDirty      = $sourceDirty
+    buildTimestampUtc = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+    configuration    = $Configuration
+    runtime          = $Runtime
+    targetFramework  = $targetFramework
+    selfContained    = [bool]$SelfContained
+    harnessChecks    = $harnessChecks
+    assemblySha256   = (Get-FileHash -LiteralPath (Join-Path $packageDir 'CodexSci.Doccer.dll') -Algorithm SHA256).Hash
+}
+$manifestPath = Join-Path $packageDir 'doccer.manifest.json'
+[IO.File]::WriteAllText($manifestPath, ($manifest | ConvertTo-Json), [Text.UTF8Encoding]::new($false))
+
 Write-Host "Doccer payload refreshed at $packageDir" -ForegroundColor Green
+Write-Host "  commit $sourceCommit$(if ($sourceDirty) { ' (dirty)' }); harness checks: $($harnessChecks ?? 'skipped')" -ForegroundColor Green

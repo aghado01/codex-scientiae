@@ -46,7 +46,15 @@ public readonly record struct TextSpan
     public bool ProperlyContains(TextSpan other) =>
         Contains(other) && (Start != other.Start || End != other.End);
 
-    public bool Intersects(TextSpan other) => Start < other.End && other.Start < End;
+    /// <summary>
+    /// Set-theoretic intersection test: true when the two half-open intervals share at least one
+    /// position, so an empty span intersects nothing — not even a range that surrounds it. Point
+    /// queries are separate named operations (<see cref="Contains(int)"/>,
+    /// <c>SortedSpanLookup.FindContaining</c>); <c>TextTopology.Project</c> keeps its documented
+    /// insertion-point convention as the deliberate exception.
+    /// </summary>
+    public bool Intersects(TextSpan other) =>
+        !IsEmpty && !other.IsEmpty && Start < other.End && other.Start < End;
 
     public bool Crosses(TextSpan other) =>
         (Start < other.Start && other.Start < End && End < other.End) ||

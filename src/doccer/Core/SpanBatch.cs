@@ -158,6 +158,11 @@ public sealed class SpanBatchBuilder
         }
 
         Master.ValidateSpan(claim.Span, allowEmpty: false);
+        if (!Enum.IsDefined(claim.Level))
+        {
+            throw new ArgumentException($"Undefined SpanLevel value {(int)claim.Level}.", nameof(claim));
+        }
+
         if (string.IsNullOrWhiteSpace(claim.Kind))
         {
             throw new ArgumentException("A claim kind is required.", nameof(claim));
@@ -297,6 +302,11 @@ public sealed class SortedSpanLookup
         return comparison != 0 ? comparison : left.CompareTo(right);
     }
 
+    /// <summary>
+    /// Claims whose spans set-theoretically intersect the query: an empty query span finds
+    /// nothing. To ask which claims cover a position — an insertion point, say — use
+    /// <see cref="FindContaining"/>.
+    /// </summary>
     public IReadOnlyList<SpanRecord> FindIntersecting(TextSpan query)
     {
         _batch.Master.ValidateSpan(query);
@@ -310,6 +320,39 @@ public sealed class SortedSpanLookup
             }
 
             if (candidate.Span.Intersects(query))
+            {
+                found.Add(candidate);
+            }
+        }
+
+        return found.AsReadOnly();
+    }
+
+    /// <summary>
+    /// The point-location query: claims whose spans contain the UTF-16 code-unit offset
+    /// (<c>Start &lt;= position &lt; End</c>), in the lookup's stable start order. This is the
+    /// named form of the question an empty span used to smuggle through
+    /// <see cref="FindIntersecting"/>. The position addresses a code unit, not a claim boundary,
+    /// so it may legitimately sit inside a surrogate pair a claim covers; <c>position ==
+    /// master.Length</c> is a valid question whose answer is always empty.
+    /// </summary>
+    public IReadOnlyList<SpanRecord> FindContaining(int position)
+    {
+        if ((uint)position > (uint)_batch.Master.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(position));
+        }
+
+        var found = new List<SpanRecord>();
+        foreach (var index in _order)
+        {
+            var candidate = _batch[index];
+            if (candidate.Span.Start > position)
+            {
+                break;
+            }
+
+            if (candidate.Span.Contains(position))
             {
                 found.Add(candidate);
             }

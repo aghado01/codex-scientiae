@@ -69,12 +69,20 @@ travels in the C# surface.
   so the same claim suppresses under one question and is the target of the next;
 - all thirteen Allen interval relations and a reference relation join (semantics only — no
   performance contract);
+- set-theoretic interval semantics: an empty span intersects nothing, and point location is its
+  own named query (`TextSpan.Contains(int)`, `SortedSpanLookup.FindContaining`) rather than an
+  empty-span special case — `TextTopology.Project`'s insertion-point convention is the one
+  documented exception;
 - deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
   residue (max-priority admission is a documented default, not a judgment; a future
   `ResolutionPolicy` is a query parameter, not a data-model change);
-- declarative regex collection with load-time rule validation, an explicit execution scope
-  (whole-master or per-line) that composes with the caller's region set by intersection, and
-  region-scoped matching that cannot bridge exclusions;
+- declarative regex collection with load-time rule validation (uncompilable and empty-capable
+  patterns, capture groups checked against the compiled pattern's identity, undefined enum values
+  rejected in the constructors), an explicit execution scope (whole-master or per-line) that
+  composes with the caller's region set by intersection, and region-scoped matching that cannot
+  bridge exclusions; collection is transactional — a sweep stages what it recognizes and commits
+  only when every rule and region succeeds, so a mid-sweep failure leaves the caller's builder
+  untouched;
 - a JSONL pattern-inventory loader with per-line provenance on every failure, whose wire records
   are the loader's own and are declared once through a source-generated JSON context;
 - intrinsic and declarative relation/impossibility validation, plus Tier-1 invariants —
@@ -117,10 +125,14 @@ adapters or declarative inventories.
 - `brewery/doccer/Doccer.csproj`: reusable `CodexSci.Doccer.dll` recipe.
 - `brewery/doccer/Doccer.Cli.csproj`: thin executable referencing that assembly.
 - `brewery/doccer/Doccer.Tests.csproj`: dependency-free contract harness.
-- `brewery/doccer/build-doccer.ps1`: verified refresh into `packages/doccer`.
+- `brewery/doccer/build-doccer.ps1`: verified refresh into `packages/doccer` — contract harness,
+  publish, a smoke test that loads the *delivered* assembly and runs the delivered CLI, then a
+  `doccer.manifest.json` recording source commit, build timestamp, target framework/runtime, and
+  the harness result. A package without its manifest is an unverified package.
 - `artifacts/doccer`: compilation and test intermediates for all three projects, module-scoped by
   `Directory.Build.props` so nothing lands in a shared top-level `bin`/`obj`. Fully regenerable.
-- `packages/doccer`: selectively refreshed reusable payload.
+- `packages/doccer`: selectively refreshed reusable payload; its `doccer.manifest.json` states
+  which source revision the payload represents.
 
 Run the contract harness with:
 
