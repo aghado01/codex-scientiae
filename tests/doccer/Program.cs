@@ -23,6 +23,7 @@ internal static class Program
             AllenRelationsAreCompleteAndInvertible();
             LaminarizationRetainsCrossingResidue();
             ScopedRegexCollectionCannotBridgeGaps();
+            SuppressionIsAQueryWithIdempotenceAndDuality();
             DefectiveRuleFailsAtLoadTimeWithoutSideEffects();
             DeclarativeValidationRunsWithoutDomainCode();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
@@ -368,6 +369,88 @@ internal static class Program
         Equal(2, batch.Count, "two region-local words");
         True(batch.All(record => record.Kind == "word"), "no match bridged excluded gap");
         Equal(new TextSpan(11, 14), batch[1].Span, "local match lifted to master");
+    }
+
+    private static void SuppressionIsAQueryWithIdempotenceAndDuality()
+    {
+        var master = new TextMaster("suppression", 0, "aaa BBB ccc BBB ddd");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(4, 7), "mask", SpanLevel.Character, "scanner"));
+        builder.Add(new SpanClaim(new TextSpan(12, 15), "mask", SpanLevel.Character, "scanner"));
+        builder.Add(new SpanClaim(new TextSpan(0, 3), "note", SpanLevel.Character, "human"));
+        var batch = builder.Freeze();
+
+        static bool IsMask(SpanRecord record) => record.Kind == "mask";
+
+        var excluded = Suppression.Excluded(batch, IsMask);
+        var admitted = Suppression.Admitted(batch, IsMask);
+
+        Equal(2, excluded.Count, "suppressed region count");
+        Equal(new TextSpan(4, 7), excluded[0], "first suppressed extent");
+        Equal(3, admitted.Count, "admitted region count");
+        Equal(new TextSpan(0, 4), admitted[0], "first admitted extent");
+
+        // Duality: the two queries partition the master extent.
+        True(admitted.Union(excluded).Equals(SpanSet.Whole(master)), "admitted and excluded cover the master");
+        Equal(0, admitted.Intersect(excluded).Count, "admitted and excluded are disjoint");
+        True(admitted.Equals(excluded.Complement()), "admitted is the complement of excluded");
+        True(excluded.Equals(admitted.Complement()), "excluded is the complement of admitted");
+        Equal(master.Length, admitted.Coverage + excluded.Coverage, "coverage sums to the master length");
+
+        // Idempotence: suppressing again inside an already-admitted region changes nothing.
+        True(admitted.Subtract(excluded).Equals(admitted), "re-suppressing an admitted set is a no-op");
+        True(admitted.Intersect(admitted).Equals(admitted), "re-admitting an admitted set is a no-op");
+        True(excluded.Union(excluded).Equals(excluded), "re-excluding an excluded set is a no-op");
+        True(
+            Suppression.Admitted(batch, IsMask).Equals(admitted),
+            "the query is deterministic over one batch");
+
+        // The policy is the caller's, not the claim's: the same batch answers differently under a
+        // different predicate, which is precisely what an is_mask flag would have foreclosed.
+        var notesExcluded = Suppression.Excluded(batch, record => record.Kind == "note");
+        True(!notesExcluded.Equals(excluded), "a different predicate suppresses a different region");
+        True(
+            Suppression.Admitted(batch, static _ => false).Equals(SpanSet.Whole(master)),
+            "suppressing nothing admits the whole master");
+        True(
+            Suppression.Excluded(batch, static _ => true).Equals(SpanSet.FromClaims(batch)),
+            "suppressing every claim excludes exactly the claim coverage");
+        var nothingClaimed = Suppression.Admitted(batch, static _ => true);
+        foreach (var record in batch)
+        {
+            var claimRegion = SpanSet.Create(master, new[] { record.Span });
+            Equal(
+                0,
+                nothingClaimed.Intersect(claimRegion).Count,
+                $"claim {record.Span} lies outside the all-suppressed admission");
+        }
+
+        // Integration with scoped collection: recognition inside the admitted region never reaches
+        // the suppressors, and no match bridges a suppressed gap.
+        var rules = new[] { new PatternRule("word", @"\w+", "word", "test") };
+        var scoped = RegexCollector.Collect(master, rules, admitted);
+        Equal(3, scoped.Count, "three words survive suppression");
+        Equal(5, RegexCollector.Collect(master, rules).Count, "unscoped collection sees the suppressed words");
+        foreach (var collected in scoped)
+        {
+            foreach (var suppressor in batch)
+            {
+                if (IsMask(suppressor))
+                {
+                    True(
+                        !collected.Span.Intersects(suppressor.Span),
+                        $"collected {collected.Span} avoids suppressor {suppressor.Span}");
+                }
+            }
+        }
+
+        Equal("aaa", master.Slice(scoped[0].Span), "first surviving word");
+        Equal("ccc", master.Slice(scoped[1].Span), "second surviving word");
+        Equal("ddd", master.Slice(scoped[2].Span), "third surviving word");
+
+        Throws<ArgumentNullException>(
+            () => Suppression.Admitted(batch, null!),
+            "suppression requires a named predicate");
     }
 
     private static void DefectiveRuleFailsAtLoadTimeWithoutSideEffects()
