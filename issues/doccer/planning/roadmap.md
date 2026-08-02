@@ -7,8 +7,17 @@ evidence in [../discussions/](../discussions/).
 ## Where the work stands (2026-08-02)
 
 Engine at `src/doccer` (`CodexSci.Doccer`), delivered via `brewery/doccer` recipes into
-`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1340 checks
+`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1407 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`).
+
+**Tranche 3a landed** (2026-08-02, in-session per
+[fable-doccer-t3a-brief-20260802_005408](../briefs/fable-doccer-t3a-brief-20260802_005408.md);
+contract = **D19**, riders closed: T2-1 = **D20**, T2-5 documented in the `PatternRule` remarks
+and README): `TextSlice` with deterministic derived child identity; total bijective
+child→parent rebase over offsets/spans/sets/batches plus `ToParentInto` weaving; partial, loud
+parent→child; no downward batch projection (residual policy = F1). Law surface includes the
+collection-commutes-with-rebase witness — it holds for whole-master *and* per-line scopes,
+since both routes match identical sliced region strings.
 
 T2-2 closed as **D18** (2026-08-02, user-confirmed with the boundary refinement): regex options
 union `CultureInvariant` in the `PatternRule` constructor itself, so inventory rules and direct
@@ -67,10 +76,7 @@ one chip (its pieces have different law surfaces and failure modes), and the har
 precede the first durable CLI contract — the survey feeds the verb list, so building wire
 records first risked freezing the wrong task grain.
 
-1. **Tranche 3, split into four chips** (sequence within: a → b, c/d independent):
-   - **3a — slice/rebase:** `TextSlice` + rebase (total bijective case, no OffsetMap
-     dependency). Parked riders: positional-order compat note (T2-5), columnar visibility
-     (T2-1).
+1. **Tranche 3 remainder** (3a landed — see above; 3b next, then 3c/3d independent):
    - **3b — group + project:** `Group` and `Project` with basis stamping (D7). Parked rider:
      selector-shape note (T2-4).
    - **3c — gap cadence:** the first named density measure (D8, mdnav template) — declares
@@ -103,7 +109,7 @@ fixtures; exceed mdnav precisely at its collapse points; conserve its instrument
 ## Open questions in play
 
 - Full open list with context: see [decisions.md § Open](decisions.md). (T2-2 closed as D18;
-  T2-1/T2-4/T2-5 ride the Tranche-3 chips.)
+  T2-1 closed as D20; T2-5 documented; T2-4 rides chip 3b.)
 
 ## Standing context for future sessions
 
