@@ -14,8 +14,11 @@ public enum ExecutionScope
     WholeMaster = 0,
 
     /// <summary>
-    /// Match independently within each line extent, so no match can span a line break and anchors
-    /// are line-local. The extent is the topology's, line break included.
+    /// Match independently within each line's content extent — the terminator is excluded (D15:
+    /// a line break is a boundary, not content), so no match can span, capture, or vary with the
+    /// line break, and anchors are line-local. The same content under LF and CRLF conventions
+    /// yields identical claim text. A rule that needs the terminator itself uses
+    /// <see cref="WholeMaster"/>; the terminator codepoints remain first-class atoms either way.
     /// </summary>
     PerLine = 1,
 }
@@ -209,10 +212,11 @@ public static class RegexCollector
         }
 
         // Per-line execution is the one composition that asks the master for its line topology.
+        // The proposed region is the line's content extent, terminator excluded (D15).
         var topology = master.Topology;
         for (var line = 0; line < topology.LineCount; line++)
         {
-            var extent = topology.GetLineExtent(line);
+            var extent = master.GetLineSpan(line, includeLineBreak: false);
             if (extent.IsEmpty)
             {
                 continue;

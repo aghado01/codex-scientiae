@@ -727,6 +727,28 @@ internal static class Program
         var lineAware = TextMaster.Create("alpha beta");
         _ = RegexCollector.Collect(lineAware, words);
         True(lineAware.TopologyIsCreated, "per-line collection asks for the line topology");
+
+        // D15: the per-line region is the content extent, terminator excluded. `.` matches '\r'
+        // but not '\n', so with the terminator inside the region the same content would claim a
+        // trailing '\r' under CRLF and not under LF.
+        var greedy = new[]
+        {
+            new PatternRule("head", "#.*$", "head", "test", SpanLevel.Character, ExecutionScope.PerLine),
+        };
+        var lf = RegexCollector.Collect(new TextMaster("d15-lf", 0, "# T\nx"), greedy);
+        var crlf = RegexCollector.Collect(new TextMaster("d15-crlf", 0, "# T\r\nx"), greedy);
+        Equal(1, lf.Count, "greedy line rule fires once under LF");
+        Equal(1, crlf.Count, "greedy line rule fires once under CRLF");
+        Equal("# T", lf.Master.Slice(lf[0].Span), "LF claim text is the content");
+        Equal("# T", crlf.Master.Slice(crlf[0].Span), "CRLF claim text matches LF — no captured '\\r'");
+
+        // D15: the terminator is unreachable under PerLine and remains reachable as content only
+        // by choosing WholeMaster; either way its codepoints stay first-class atoms.
+        var breakPattern = new PatternRule("brk", "\\n", "brk", "test");
+        var breakPerLine = new PatternRule("brk", "\\n", "brk", "test", SpanLevel.Character, ExecutionScope.PerLine);
+        var terminated = new TextMaster("d15-terminator", 0, "a\nb\n");
+        Equal(2, RegexCollector.Collect(terminated, new[] { breakPattern }).Count, "whole-master reaches the terminators");
+        Equal(0, RegexCollector.Collect(terminated, new[] { breakPerLine }).Count, "per-line never sees a terminator");
     }
 
     private static void JsonlInventoryLoadsAndFailsWithProvenance()

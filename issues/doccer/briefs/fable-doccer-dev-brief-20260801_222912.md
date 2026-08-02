@@ -338,6 +338,27 @@ lazily per D12) closes the contract, after which the capability lands as coheren
 **Source:** user directive 2026-08-01 — "anticipate-the-consumer"; waiting for *contracts* is
 good practice, waiting for *consumers* is not the doctrine.
 
+### D15 — PerLine excludes the terminator; terminator identity stays evidence *(appended)*
+**Decision:** `ExecutionScope.PerLine` matches within each line's **content extent**
+(`GetLineSpan(includeLineBreak: false)`), not the full line extent. A line break is a boundary,
+not content. The decisive argument is determinism (D10): `.` matches `\r` but not `\n`, so with
+the terminator inside the region a pattern like `#.*$` claims a trailing `\r` under CRLF and not
+under LF — the same content under two newline conventions would yield different claim text.
+grep/sed line semantics and mdnav's content slicing are precedent. A rule that needs the
+terminator uses `WholeMaster` (or an explicit include option if one ever passes the admission
+test).
+**Terminator identity is not erased — it is substrate evidence.** Terminator codepoints are
+first-class atoms; a line's terminator span is exactly its extent minus its content extent.
+Excluding it from PerLine is a matching-*scope* choice, not information loss. The bookkeeping
+the user gestured at — per-line awareness of *which* terminator (LF / CRLF / CR / NEL / LS / PS
+/ unterminated-EOF) — is a derived line fact in the D4 mold, schedulable any time under D14 with
+zero new state; mdnav's document-level `CRLF/LF/mixed` flag is the precedent, per-line is the
+doccer-native refinement. Deliberately not implemented now.
+**Implemented with this record:** collector region change, XML docs, and harness pins — CRLF/LF
+claim-text equality, terminator unreachable under PerLine, reachable under WholeMaster (harness
+1263).
+**Source:** Tranche 2 flagged question 3; user confirmation 2026-08-01.
+
 ## 4. Deferred — with named triggers
 
 ### F1 — OffsetMap (general form) — contract shape drafted
@@ -475,6 +496,7 @@ first: engine and native surface, then adapters.
 | Q19 | where do à la carte tools surface — PS helpers or doccer-native? | **resolved** | D13 — CLI (task grain, inventories as data) + DLL (operation grain); PS = site-local veneer; graduation test |
 | Q20 | does engine work wait for consumers? | **resolved** | D14 — contracts gate, consumers witness; F-triggers are prioritization defaults, not permission |
 | Q21 | when do codex-scientiae adapters land? | **resolved** | Sequencing amendment — CLI + primitives first (harvested, anticipate-the-consumer); adapters last as thin consumers; scriba abort noted |
+| Q22 | PerLine region: terminator in or out? | **resolved** | D15 — content extent only (CRLF/LF determinism); terminator = substrate evidence; per-line terminator-kind view = future derived fact |
 
 ---
 

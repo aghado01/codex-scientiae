@@ -99,7 +99,7 @@ public sealed partial class DoccerJsonContext : JsonSerializerContext
 /// <para>
 /// Patterns carry no syntactic requirements. A rule intended to run per line does not have to
 /// anchor itself with <c>^...$</c> — it sets <c>scope</c> to <c>PerLine</c> instead, and the
-/// collector runs it within each line extent.
+/// collector runs it within each line's content extent, terminator excluded (D15).
 /// </para>
 /// </remarks>
 public static class PatternRuleLoader
