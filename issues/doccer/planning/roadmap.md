@@ -87,7 +87,12 @@ Process discipline for the census, three rules:
 
 1. **Catalog before naming.** Capture the candidate, its contract shape, and its integration
    points first; promotion — a verb name, an implementation — is always a later, separate act
-   of evaluation over the catalog, never simultaneous with capture.
+   of evaluation over the catalog, never simultaneous with capture. The catalog is a
+   **research device, not code** — tabulated field observations, the way a naturalist pins
+   specimens long before declaring taxonomy, and most specimens never become species. Its
+   form is the site-record line already in use (where · what it improvises · suspected bin ·
+   family tag), living in the discussion docs; it gets no schema, no tooling, and no home in
+   the engine.
 2. **Composition before extension.** Before any find is declared a missing mechanism, attempt
    to compose it from existing primitives plus a named policy. Success means it was a missing
    *example*, not a missing mechanism — the deliverable is a recipe (documentation or a store
