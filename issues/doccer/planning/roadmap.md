@@ -72,6 +72,17 @@ the first verbs. The graveyard repair farm (`codex-scientiae-graveyard/legacy_co
 `repair_*` ×~30) is an evidence pool consulted when its family comes up — F1 edit plans — not
 a gate on anything.
 
+The object of the search, stated once: the engine's **latent path-space** — every capability
+reachable by composing the primitives (D12 keeps that space open; verbs signpost dense routes
+through it, never wall it off). A verb **names** a latent call path, making it a reachable
+capability at task grain; the **capability surface** — the doccer public API — is the named
+subset, carved from the path-space by witnessed demand. Census abduction therefore yields
+finds of exactly two kinds: an **unnamed latent path** (the engine already composes it — a
+verb candidate; `collect` and the span algebra are this kind, `SpanSet` being already
+complete) or a **missing path** (no composition reaches it — an engine-contract candidate;
+the pairing lift is this kind). The rewrite test's "refusal to collapse" is what
+distinguishes the second kind from permanent adapter policy.
+
 ## Open questions in play
 
 - See [decisions.md § Open](decisions.md): register/value/metadata columns (entangled with the
