@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using CodexSci.Doccer;
 
 namespace CodexSci.Doccer.Tests;
@@ -25,6 +29,8 @@ internal static class Program
             ScopedRegexCollectionCannotBridgeGaps();
             SuppressionIsAQueryWithIdempotenceAndDuality();
             DefectiveRuleFailsAtLoadTimeWithoutSideEffects();
+            ExecutionScopeComposesWithTheCallerRegionSet();
+            JsonlInventoryLoadsAndFailsWithProvenance();
             DeclarativeValidationRunsWithoutDomainCode();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
@@ -478,6 +484,239 @@ internal static class Program
             thrown!.Message.Contains("'poison'", StringComparison.Ordinal),
             "rejection names the rule id");
         Equal(0, builder.Count, "no claims added before load-time rejection");
+    }
+
+    private static void ExecutionScopeComposesWithTheCallerRegionSet()
+    {
+        var master = new TextMaster("execution-scope", 0, "foo\nbar\nfoo bar");
+        var bridging = @"foo\s+bar";
+
+        var wholeMaster = RegexCollector.Collect(
+            master,
+            new[] { new PatternRule("pair", bridging, "pair", "test") });
+        Equal(2, wholeMaster.Count, "whole-master matching crosses line breaks");
+        Equal(new TextSpan(0, 7), wholeMaster[0].Span, "whole-master match spans the break");
+
+        var perLine = RegexCollector.Collect(
+            master,
+            new[]
+            {
+                new PatternRule("pair", bridging, "pair", "test", SpanLevel.Character, ExecutionScope.PerLine),
+            });
+        Equal(1, perLine.Count, "per-line matching cannot cross a line break");
+        Equal(new TextSpan(8, 15), perLine[0].Span, "surviving per-line match");
+
+        // Level is claim metadata and scope is execution: a Line-level rule may still run over the
+        // whole master, and a Character-level rule may still run per line.
+        var levelIndependent = RegexCollector.Collect(
+            master,
+            new[] { new PatternRule("pair", bridging, "pair", "test", SpanLevel.Line) });
+        Equal(2, levelIndependent.Count, "SpanLevel.Line does not imply per-line execution");
+        Equal(SpanLevel.Line, levelIndependent[0].Level, "level rides through as claim metadata");
+        Equal(ExecutionScope.WholeMaster, new PatternRule("d", "a", "k", "s").Scope, "default scope");
+
+        // The two scopes compose by intersecting admitted regions, and each resulting piece is
+        // matched on its own.
+        var composed = new TextMaster("scope-composition", 0, "aa bb\ncc dd");
+        var callerScope = SpanSet.Create(composed, new[] { new TextSpan(0, 2), new TextSpan(3, 11) });
+        var words = new[]
+        {
+            new PatternRule("word", @"\w+", "word", "test", SpanLevel.Character, ExecutionScope.PerLine),
+        };
+        var pieces = RegexCollector.Collect(composed, words, callerScope);
+        Equal(4, pieces.Count, "per-line rule within a caller scope");
+        Equal(new TextSpan(0, 2), pieces[0].Span, "first intersected piece");
+        Equal(new TextSpan(3, 5), pieces[1].Span, "line one, second admitted piece");
+        Equal(new TextSpan(6, 8), pieces[2].Span, "line two, first word");
+        Equal(new TextSpan(9, 11), pieces[3].Span, "line two, second word");
+
+        var joined = new[] { new PatternRule("adjacent", @"\w+\s+\w+", "adjacent", "test") };
+        var joinedPerLine = new[]
+        {
+            new PatternRule(
+                "adjacent",
+                @"\w+\s+\w+",
+                "adjacent",
+                "test",
+                SpanLevel.Character,
+                ExecutionScope.PerLine),
+        };
+        var acrossBreak = RegexCollector.Collect(composed, joined, callerScope);
+        var withinLine = RegexCollector.Collect(composed, joinedPerLine, callerScope);
+        Equal(1, acrossBreak.Count, "whole-master rule matches across the break inside one region");
+        Equal(new TextSpan(3, 8), acrossBreak[0].Span, "the bridged extent");
+        Equal(1, withinLine.Count, "per-line rule matches only within a line");
+        Equal(new TextSpan(6, 11), withinLine[0].Span, "the line-local extent");
+
+        // D12: only the composition that needs lines asks for the topology.
+        var untouched = TextMaster.Create("alpha beta");
+        _ = RegexCollector.Collect(untouched, new[] { new PatternRule("word", @"\w+", "word", "test") });
+        True(!untouched.TopologyIsCreated, "whole-master collection leaves the topology unbuilt");
+
+        var lineAware = TextMaster.Create("alpha beta");
+        _ = RegexCollector.Collect(lineAware, words);
+        True(lineAware.TopologyIsCreated, "per-line collection asks for the line topology");
+    }
+
+    private static void JsonlInventoryLoadsAndFailsWithProvenance()
+    {
+        var inventory = new[]
+        {
+            """{"id":"heading","pattern":"^#+ .*$","kind":"heading","source":"markdown","level":"Line","scope":"PerLine","priority":10}""",
+            string.Empty,
+            """{"id":"word","pattern":"\\w+","kind":"word","source":"markdown","options":["IgnoreCase","CultureInvariant"],"captureGroup":"0","timeoutMilliseconds":250}""",
+        };
+
+        var rules = PatternRuleLoader.Load(inventory, "inventory.jsonl");
+        Equal(2, rules.Count, "blank lines are not rules");
+
+        Equal("heading", rules[0].Id, "rule id");
+        Equal("^#+ .*$", rules[0].Pattern, "rule pattern is taken verbatim");
+        Equal("heading", rules[0].Kind, "rule kind");
+        Equal("markdown", rules[0].Source, "rule source");
+        Equal(SpanLevel.Line, rules[0].Level, "rule level");
+        Equal(ExecutionScope.PerLine, rules[0].Scope, "rule execution scope");
+        Equal(10, rules[0].Priority, "rule priority");
+        Equal(RegexOptions.CultureInvariant, rules[0].Options, "absent options fall back to the engine default");
+        Equal(TimeSpan.FromSeconds(1), rules[0].Timeout, "absent timeout falls back to the engine default");
+        Equal(null, rules[0].CaptureGroup, "absent capture group");
+
+        Equal(SpanLevel.Character, rules[1].Level, "absent level falls back to Character");
+        Equal(ExecutionScope.WholeMaster, rules[1].Scope, "absent scope falls back to WholeMaster");
+        Equal(0, rules[1].Priority, "absent priority falls back to zero");
+        Equal(RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, rules[1].Options, "listed options");
+        Equal("0", rules[1].CaptureGroup, "capture group");
+        Equal(TimeSpan.FromMilliseconds(250), rules[1].Timeout, "timeout");
+
+        // A loaded inventory drives collection with no domain code in the engine.
+        var master = new TextMaster("inventory", 0, "# Title\nbody text\n");
+        var batch = RegexCollector.Collect(master, rules);
+        var headings = batch.Where(record => record.Kind == "heading").ToArray();
+        Equal(1, headings.Length, "the per-line heading rule fired once");
+        Equal(new TextSpan(0, 7), headings[0].Span, "the heading claim stops at the line break");
+        Equal(3, batch.Count(record => record.Kind == "word"), "the whole-master word rule swept the master");
+        Equal("heading", batch.RuleIds[0], "the rule id rides onto the claim");
+
+        // A line-level pattern need not anchor itself: D6 dropped the syntactic loader rules.
+        var unanchored = PatternRuleLoader.Load(
+            new[] { """{"id":"bare","pattern":"item","kind":"item","source":"t","scope":"PerLine"}""" },
+            "unanchored.jsonl");
+        Equal(1, unanchored.Count, "an unanchored per-line pattern loads");
+
+        var missingField = LoadFails(
+            """{"pattern":"a","kind":"k","source":"s"}""",
+            "missing id rejected");
+        Equal("inventory.jsonl", missingField.Origin, "error carries the origin");
+        Equal(2, missingField.LineNumber, "blank lines count toward the reported line");
+        True(
+            missingField.Message.StartsWith("inventory.jsonl:2: ", StringComparison.Ordinal),
+            "error message leads with file and line");
+        True(missingField.Message.Contains("'id'", StringComparison.Ordinal), "error names the missing field");
+
+        var unknownProperty = LoadFails(
+            """{"id":"a","pattern":"a","kind":"k","source":"s","levl":"Line"}""",
+            "unknown property rejected");
+        True(unknownProperty.InnerException is JsonException, "schema violation wraps the parse error");
+
+        var badLevel = LoadFails(
+            """{"id":"a","pattern":"a","kind":"k","source":"s","level":"Lines"}""",
+            "unknown level rejected");
+        True(badLevel.Message.Contains("MultiLine", StringComparison.Ordinal), "the error lists the valid levels");
+
+        var badScope = LoadFails(
+            """{"id":"a","pattern":"a","kind":"k","source":"s","scope":"PerFile"}""",
+            "unknown scope rejected");
+        True(badScope.Message.Contains("PerLine", StringComparison.Ordinal), "the error lists the valid scopes");
+
+        var badOption = LoadFails(
+            """{"id":"a","pattern":"a","kind":"k","source":"s","options":["Fast"]}""",
+            "unknown regex option rejected");
+        True(badOption.Message.Contains("'Fast'", StringComparison.Ordinal), "the error names the unknown option");
+
+        var badPattern = LoadFails(
+            """{"id":"a","pattern":"(","kind":"k","source":"s"}""",
+            "uncompilable pattern rejected");
+        True(badPattern.InnerException is ArgumentException, "compile failure is wrapped, not raw");
+
+        var emptyCapable = LoadFails(
+            """{"id":"poison","pattern":"foo|","kind":"k","source":"s"}""",
+            "empty-capable pattern rejected at load");
+        True(
+            emptyCapable.Message.Contains("'poison'", StringComparison.Ordinal),
+            "the empty-match probe names the rule id");
+
+        var malformed = LoadFails("{not json", "malformed JSON rejected");
+        True(malformed.InnerException is JsonException, "malformed JSON wraps the parse error");
+
+        var notAnObject = LoadFails("null", "a null line rejected");
+        Equal(2, notAnObject.LineNumber, "null line provenance");
+
+        var duplicate = (PatternRuleLoadException?)null;
+        try
+        {
+            PatternRuleLoader.Load(
+                new[]
+                {
+                    """{"id":"same","pattern":"a","kind":"k","source":"s"}""",
+                    """{"id":"same","pattern":"b","kind":"k","source":"s"}""",
+                },
+                "dup.jsonl");
+        }
+        catch (PatternRuleLoadException exception)
+        {
+            duplicate = exception;
+        }
+
+        True(duplicate is not null, "duplicate rule id rejected");
+        Equal(2, duplicate!.LineNumber, "duplicate reported at its own line");
+        True(
+            duplicate.Message.Contains("already defined on line 1", StringComparison.Ordinal),
+            "duplicate error names the first definition");
+
+        var path = Path.Combine(Path.GetTempPath(), $"doccer-inventory-{Guid.NewGuid():N}.jsonl");
+        try
+        {
+            File.WriteAllLines(path, inventory, new UTF8Encoding(false));
+            var fromFile = PatternRuleLoader.LoadFile(path);
+            Equal(2, fromFile.Count, "rules load from a UTF-8 JSONL file");
+            Equal("heading", fromFile[0].Id, "file-loaded rule identity");
+
+            File.WriteAllLines(path, new[] { """{"id":"a","kind":"k","source":"s"}""" }, new UTF8Encoding(false));
+            var fileFailure = (PatternRuleLoadException?)null;
+            try
+            {
+                PatternRuleLoader.LoadFile(path);
+            }
+            catch (PatternRuleLoadException exception)
+            {
+                fileFailure = exception;
+            }
+
+            True(fileFailure is not null, "a defective file fails loudly");
+            Equal(path, fileFailure!.Origin, "file failure carries the path");
+            Equal(1, fileFailure.LineNumber, "file failure carries the line");
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
+
+    private static PatternRuleLoadException LoadFails(string line, string name)
+    {
+        _checks++;
+        try
+        {
+            // The leading blank line makes every reported provenance line 2, which also proves
+            // blank lines are skipped without being uncounted.
+            PatternRuleLoader.Load(new[] { string.Empty, line }, "inventory.jsonl");
+        }
+        catch (PatternRuleLoadException exception)
+        {
+            return exception;
+        }
+
+        throw new InvalidOperationException($"Check failed: {name}; expected PatternRuleLoadException.");
     }
 
     private static void DeclarativeValidationRunsWithoutDomainCode()
