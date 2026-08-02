@@ -92,15 +92,23 @@ linearization* of it. Three structural claims:
    document (the caption-relocation lane is the existing post-hoc instance; under the
    inversion it becomes a traversal policy). The walk separates typesetting/painting from the
    semantic narrative and hierarchical structure inherent to the reading.
-3. **Two artifacts already converge on the representation from opposite ends.**
-   `tex-docgraph.ps1` forward-captures the typed reference graph *upstream of surjection*
-   (its own header's words) — node/edge JSONL, cues-as-data in `stores/docgraph.json`, loud
-   on a missing store: the pioneer pass, doing for labeled objects what the reshape does for
-   every node. `bibliotecha/corpora/KisungYou/2605.20681v1.chunks.jsonl` reverse-engineers
-   the spine from an (imperfect) markdown output — 58 nodes with dual addressing (`seq` spine
-   order · `addr` kind-local · `parent` hierarchy edge) plus provenance spans and anchors;
-   math/prose/figure content nodes deliberately not yet teased out. The latent manuscript =
-   spine ∪ reference edges ∪ content nodes.
+3. **Levels — do not conflate (user correction, same day).** The **manuscript graph** is the
+   *canonical schema*: the primitive manuscript-node kinds and relationship types that
+   documents are surjected **onto**. A **document** is a *realization* of those primitives
+   and their relationships. The **docgraph** (`tex-docgraph.ps1`) is neither: it is the
+   source-encoded relational overlay — pointer sites and their targets (prose→theorem,
+   citation→bib entry) as this particular source encodes them, captured upstream because
+   that is where the binding is knowable. It is a *conceptual parallel* to the manuscript
+   graph (a graph-shaped capture under the same discipline: cues-as-data, loud-fail, JSONL)
+   and *part and parcel of the process* — evidence the surjection consumes when realizing
+   canonical relationships — but *not the manuscript graph itself*. The surjection is
+   therefore **two-sorted**: source bytes → canonical node instances; source-encoded pointer
+   machinery → canonical relationship instances — kernel classified in both sorts
+   (docgraph's own header: "cross-reference machinery is typesetting furniture"; the binding
+   is what survives). `bibliotecha/corpora/KisungYou/2605.20681v1.chunks.jsonl`
+   reverse-engineers one realization's spine from an (imperfect) markdown output — 58 nodes,
+   `seq`/`addr`/`parent` triple addressing, provenance spans, anchors; math/prose/figure
+   content nodes deliberately not yet teased out.
 
 Doccer resonances, precise: the founding kernel already implements **reference join** beside
 the thirteen Allen relations — edges are join-shaped over claims; the spine constructor is
