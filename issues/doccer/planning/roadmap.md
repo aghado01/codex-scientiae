@@ -7,8 +7,17 @@ evidence in [../discussions/](../discussions/).
 ## Where the work stands (2026-08-02)
 
 Engine at `src/doccer` (`CodexSci.Doccer`), delivered via `brewery/doccer` recipes into
-`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1407 checks
+`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1456 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`).
+
+**Tranche 3b landed** (2026-08-02, in-session per
+[fable-doccer-t3b-brief-20260802_011103](../briefs/fable-doccer-t3b-brief-20260802_011103.md);
+contract = **D21**, rider T2-4 closed as **D22**): `Grouping.ByKey` (deterministic keyed
+partition, `ClaimFacts` vocabulary), `Projection.Project` (claim-major line ranges) and
+`Grouping.ByLine` (line-major transpose, total over the grain, named `LineMembership` policy) —
+all basis-stamped views that answer "over what was I computed". The boundary-policy-as-declared
+discipline that 3c's gap cadence needs is now established. D7's lift vocabulary is complete
+except materialize.
 
 **Tranche 3a landed** (2026-08-02, in-session per
 [fable-doccer-t3a-brief-20260802_005408](../briefs/fable-doccer-t3a-brief-20260802_005408.md);
@@ -76,11 +85,10 @@ one chip (its pieces have different law surfaces and failure modes), and the har
 precede the first durable CLI contract — the survey feeds the verb list, so building wire
 records first risked freezing the wrong task grain.
 
-1. **Tranche 3 remainder** (3a landed — see above; 3b next, then 3c/3d independent):
-   - **3b — group + project:** `Group` and `Project` with basis stamping (D7). Parked rider:
-     selector-shape note (T2-4).
+1. **Tranche 3 remainder** (3a and 3b landed — see above; 3c/3d independent):
    - **3c — gap cadence:** the first named density measure (D8, mdnav template) — declares
-     numerator, denominator, window basis, boundary policy, exclusions.
+     numerator, denominator, window basis, boundary policy, exclusions; consumes D21's
+     basis-stamp and membership-policy vocabulary.
    - **3d — priority-aware lookup:** priority-aware sorted lookup over the frozen batch.
 2. **Harvest survey** (before any durable CLI contract): sweep codex-scientiae and other sources
    — masks.ps1 operations, latex.ps1 span producers, membrane density/mask calculus, md-repair
@@ -108,8 +116,8 @@ fixtures; exceed mdnav precisely at its collapse points; conserve its instrument
 
 ## Open questions in play
 
-- Full open list with context: see [decisions.md § Open](decisions.md). (T2-2 closed as D18;
-  T2-1 closed as D20; T2-5 documented; T2-4 rides chip 3b.)
+- Full open list with context: see [decisions.md § Open](decisions.md). (All Tranche-2
+  stragglers closed: T2-2 = D18, T2-1 = D20, T2-4 = D22, T2-5 documented.)
 
 ## Standing context for future sessions
 
