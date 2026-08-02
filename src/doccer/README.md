@@ -117,7 +117,8 @@ adapters or declarative inventories.
 - `brewery/doccer/Doccer.Cli.csproj`: thin executable referencing that assembly.
 - `brewery/doccer/Doccer.Tests.csproj`: dependency-free contract harness.
 - `brewery/doccer/build-doccer.ps1`: verified refresh into `packages/doccer`.
-- `artifacts`: compilation and test intermediates.
+- `artifacts/doccer`: compilation and test intermediates for all three projects, module-scoped by
+  `Directory.Build.props` so nothing lands in a shared top-level `bin`/`obj`. Fully regenerable.
 - `packages/doccer`: selectively refreshed reusable payload.
 
 Run the contract harness with:

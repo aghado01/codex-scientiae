@@ -12,8 +12,19 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
     <DefineConstants Condition="'$(ExtraDefineConstants)' != ''">$(DefineConstants);$(ExtraDefineConstants)</DefineConstants>
 
-    <BaseOutputPath>$(ArtifactsRoot)bin\$(MSBuildProjectName)\</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(ArtifactsRoot)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <!-- Artifacts are scoped by module first: artifacts\{module}\{bin,obj}\{project}\. Nothing
+         writes a bare artifacts\bin or artifacts\obj, because artifacts\ is shared with every
+         other process that emits regenerable output (test runs, publish staging, npm caches,
+         tectonic, latex-ingest) and an unscoped top-level bin\ collides with all of them.
+         The module is the project's own directory name, which under the brewery\{module}\**
+         layout is exactly the module it belongs to — so the three doccer projects land together
+         under artifacts\doccer with no per-project boilerplate. Override with
+         /p:ArtifactsModule=... on the command line: that arrives as a global property before
+         evaluation, whereas setting it in the csproj body would be too late, since the two paths
+         below expand where they are written. -->
+    <ArtifactsModule Condition="'$(ArtifactsModule)' == ''">$([System.IO.Path]::GetFileName('$(MSBuildProjectDirectory)'))</ArtifactsModule>
+    <BaseOutputPath>$(ArtifactsRoot)$(ArtifactsModule)\bin\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(ArtifactsRoot)$(ArtifactsModule)\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <!-- Shared-source routing (repo convention). A codex C# tool keeps its code under
