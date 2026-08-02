@@ -204,3 +204,49 @@ witnesses, one self-annotated at the site). F1's case upgrades to "the lane's ar
 the workaround." The store layer gains a two-tier taxonomy (domain pack · document-local
 store) with an existing precedent. No change to the pending mint; grok's highest-value list is
 promotion-priority input, held in the drawer per catalog discipline.
+
+## Addendum 3 (same day) — the latex-ingest reshape concepts join the census
+
+Sources: [operations-oriented-extraction](../../latex-ingest/discussions/operations-oriented-extraction.md),
+[claude-working-backwards](../../latex-ingest/discussions/claude-working-backwards.md),
+[workflow outline 20260730](../../latex-ingest/discussions/latex-ingest-workflow-20260730.md);
+guards brief `issues/latex-ingest/guards-and-placeholders-20260731.md` (cited, not re-read).
+
+**The reshape docs supply the axis the census lacked: time.** The census diagnoses *layer*
+(capability / store / adapter / policy). The working-backwards method diagnoses *when*: the
+knowability binary — **detected when knowable vs detected later than knowable** — with fault
+origin irrelevant (user: malformed author input is a property of the source, knowable at the
+source). Every site now takes a two-coordinate diagnosis: (layer, knowability). "A guard is
+evidence about its upstream" is the census's abduction pointed at invariants instead of
+mechanisms — guards are specimens.
+
+**The placeholder direction error is a claims-vs-strings error.** All five families (ALG,
+VERB, LMATH/LDISP, FIGSLOT, EPSSLOT) restore store-driven ("every stored item written out")
+when the invariant is text-driven ("no placeholder remains") — one direction error ×5, with
+the only text-driven check (md-bundle sentinel) at the last possible moment. Under claims,
+the text-driven invariant is a *query* (placeholder-kind claims = ∅ at emission), checkable at
+every boundary where it is knowable; `Restore-LatexMath` discarding its own exit condition is
+the residuals-visible rule violated in the small.
+
+**Layer alignment.** The extraction rule — "a capability is worth recapturing when its
+contract can be stated independently of the product that first needed it" — is the
+domain-agnostic/graduation test independently rederived. The five layers (operation /
+workflow adapter / policy-store / engine-payload / product shell) extend D13's four with one
+nuance: external engines (KaTeX, MuPDF, Tectonic — and doccer itself, from latex-ingest's
+seat) sit *beneath* operations as payloads. "Preserve the operation's idea, not its
+implementation" = the harvest's rebuild-clean disposition.
+
+**Unification.** The workflow outline read under knowability shows one repeated shape:
+stages communicate through *strings*, so each stage re-derives what the previous stage knew
+(toc-engine re-scans emitted headings; subject index IndexOfs its own emissions; the sentinel
+counts damage the restore loop already measured). **Strings-as-currency forces re-derivation;
+claims-as-currency preserves knowability** — the reshape direction and the D13 wire are the
+same direction, arrived at from opposite ends.
+
+**New drawer rows.** Guards inventory = a sibling catalog already under latex-ingest issues
+(knowability-binned). `md-cleanup.ps1` is dead (zero callers — drop from future census
+reads). The store tier's in-lane precedent is far larger than docgraph.json: nine live JSON
+stores across latex-math-store (aliases, unicode-glyphs, furniture, evidence) and
+math-register (jurisdiction, operators, surjections, hygiene, lexicon). Mechanical-sweep
+bound recorded in the guards brief: 51 source-directed vs 0 output-directed body mutations;
+`Build-LabelMaps` overwrite invisible to that sweep.
