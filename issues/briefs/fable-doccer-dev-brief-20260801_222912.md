@@ -649,3 +649,67 @@ open contract, not an absent consumer, and closing them is schedulable design wo
 | Q6 | "lift" conflation | project and run-within **implemented**; group, rebase, materialize open (Tranche 3) |
 | Q12 | persisted batch format | still open, but interned columns and the declared-once JSON context are now the groundwork F2 builds on rather than duplicates |
 | Q20 | does engine work wait for consumers? | applied — every Tranche-2 skip above is contract-gated, none consumer-gated |
+
+## Tranche 2 reconciliation — D14 conformance pass
+
+**2026-08-01 · Fable.** A follow-up pass to check that Tranche 2's output conforms to D14, which
+was committed (`b0664ea3`) while Tranche 2 was in flight. Harness re-run green at **1257 checks**,
+matching the count the Tranche 2 report states. No behaviour, API or test logic changed in this
+pass.
+
+**Brief integrity — intact, nothing repaired.** Exactly one copy each of D14 (§3), the sequencing
+amendment (§5), ledger rows Q20 and Q21 (§6), and the `## Tranche 2 report` section. The second
+`| Q20 |` row a naive count finds is the Tranche 2 report's own *Ledger delta* table, which is a
+deliberate per-tranche delta, not a duplicated canonical row. The pass's premise of a worktree
+merge did not apply: Tranche 2 was done directly on `main`, so `b0664ea3` and `414570e8` (D14, the
+amendment, Q20/Q21) interleaved as ordinary commits rather than merging. Verified that none of the
+five Tranche 2 commits swept up those concurrent edits — each touched only its own engine, harness
+or documentation files.
+
+**No `### Tranche 2 report — D14 correction note` was appended, because the report does not need
+one.** The condition for that block was the report justifying an exclusion by consumer absence; it
+does not. Grep over the report finds three uses of "consumer", all sound: one descriptive
+("columnar consumers can group or persist by ID"), and two already stating the D14 position —
+"the gate on each of these is an open contract, not an absent consumer, and closing them is
+schedulable design work", plus the Q20 delta row. The honest reason is timing rather than
+foresight: the brief changed on disk mid-tranche, D14 was read before the report was written, and
+the skip rationale was rewritten from the chip's original "no closed contract and no consumer
+(D10 admission test)" phrasing to contract-gating before the report was ever committed. The
+original consumer-gated wording therefore never entered the canon. Recorded here so a later reader
+does not go looking for a correction that has no target.
+
+**Code sweep — two fixes, all in `src/doccer/README.md`.** The engine and harness sources carry no
+consumer-gated rationale; the two "consumer" mentions there are descriptive, not gating
+(`AllenRelation.Join`'s "consumers must not rely on" its performance characteristics, and
+`InternedColumn`'s note that interning serves columnar consumers). The contract surface did carry
+it, in text predating Tranche 2:
+
+- the *Deliberately absent* preamble said those families have "drafted shapes waiting on their
+  first real consumer" — now states that contract closure is the only gate, that a consumer
+  prioritizes and validates but never authorizes, and that a named "first consumer" trigger reads
+  as a prioritization default any item may be pulled ahead of;
+- the `OffsetMap` bullet said "implementation waits for its first consumer" — now says its
+  remaining open questions are the ones a real edit-plan or normalization job would settle best,
+  making that job the prioritization default rather than a permission condition.
+
+Scope note: those two lines were not introduced by the Tranche 2 diff, but they sit in the file it
+touched, they are the in-repo contract surface, and they stated the doctrine D14 corrects. Fixed
+in place under the rev-5 judgment note (framing prose, not a traceable decision).
+
+**Flagged questions.** The five open questions Tranche 2 raised are already in this canon, stated
+in full under *Flagged questions* in the Tranche 2 report immediately above. They are deliberately
+**not** restated verbatim here: repeating them would put them in the canon twice, which is what
+"surface once" exists to prevent. What this pass adds instead is which of them D14 makes
+immediately actionable — under D14 none of the five is blocked on a consumer, so all five are
+schedulable design work whenever they are picked up:
+
+| # | question | shortest path to closure |
+|---|---|---|
+| 1 | columnar surface visibility (interned public, numeric internal) | pure design decision; D14 removes F2 as a precondition |
+| 2 | inventory regex options taken literally vs forcing `CultureInvariant` | decide against D10's determinism criterion; no consumer input needed |
+| 3 | whether a `PerLine` region includes the line break | decide between `GetLineExtent` and `GetLineSpan(false)`; record either way |
+| 4 | built-in fact selectors as typed delegates rather than an enum | shape choice already made; promote to a record only if it should bind future selectors |
+| 5 | `PatternRule` positional parameter order shifted (`scope` before `priority`) | no in-repo breakage; decide whether pre-graduation callers warrant a compatibility note |
+
+Question 3 is the one worth taking first: it changes what a per-line rule *sees*, so every
+inventory written before it is settled encodes an assumption about it.

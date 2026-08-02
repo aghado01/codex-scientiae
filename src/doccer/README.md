@@ -82,12 +82,17 @@ travels in the C# surface.
 
 ## Deliberately absent
 
-These families remain absent until their contracts are closed; the brief carries each one's
-trigger, and several already have drafted shapes waiting on their first real consumer:
+These families are absent because their contracts are not closed — that is the only gate on
+engine work here. A consumer's arrival prioritizes and validates; it never authorizes, and its
+absence is never by itself a reason to leave a gap. Where the brief names a "first consumer"
+trigger, read it as a prioritization default for a contract whose remaining questions a real
+consumer's shapes would answer best; any item may be pulled forward the moment its contract
+closes honestly without one:
 
 - `OffsetMap` — contract shape drafted (sum-type point results `Exact | Range | Unmapped`,
-  segment-list storage, span projection under a named policy with explicit residuals);
-  implementation waits for its first consumer (edit plans or an explicit normalization request);
+  segment-list storage, span projection under a named policy with explicit residuals); the
+  remaining open questions are the ones a first real edit-plan or normalization job would settle,
+  so that job is the prioritization default rather than a permission condition;
 - the rest of the lift algebra — project and run-within have landed; group (with basis stamping),
   rebase, and materialize have not. Slice/rebase is the total bijective case and may land ahead
   of `OffsetMap`;
