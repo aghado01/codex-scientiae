@@ -18,6 +18,8 @@ internal static class Program
         try
         {
             MasterTopologyIsTotal();
+            TilingReconstructsAndAgreesWithLines();
+            ResolutionIsDeterministic();
             RunViewsTileTheMasterUnderEveryBreakKey();
             LazySubstrateDefersUntouchedWork();
             FrozenBatchPreservesClaims();
@@ -64,6 +66,175 @@ internal static class Program
             !StringComparer.Ordinal.Equals(loneHigh.Fingerprint, loneLow.Fingerprint),
             "lone-surrogate fingerprints differ");
         True(!loneHigh.IsCompatibleWith(loneLow), "lone-surrogate masters incompatible");
+    }
+
+    /// <summary>
+    /// Tier-1 reconstruction and line consistency over texts chosen for their boundary behaviour:
+    /// every line-terminator form, CRLF as one break, SMP scalars, both lone surrogates, a
+    /// combining sequence, and the empty and trailing-break degenerate cases.
+    /// </summary>
+    private static readonly string[] Tier1Fixtures =
+    {
+        string.Empty,
+        "a",
+        "\n",
+        "\r\n",
+        "\r",
+        "a\r\nb\nc\rd\u0085e\u2028f\u2029g",
+        "Hello, world!",
+        "x\uD800y\uDC00z",
+        "e\u0301 versus \u00e9",
+        "\U0001F600\r\n\U0001F600",
+        "line one\nline two\n",
+        "  \t \u00a0 ",
+    };
+
+    private static void TilingReconstructsAndAgreesWithLines()
+    {
+        for (var fixture = 0; fixture < Tier1Fixtures.Length; fixture++)
+        {
+            var text = Tier1Fixtures[fixture];
+            var master = new TextMaster($"tier1-{fixture}", 0, text);
+            var topology = master.Topology;
+
+            // (a) Reconstruction: the atom tiling is total, gapless, and concatenates to the master.
+            var reconstructed = new StringBuilder();
+            var cursor = 0;
+            var contiguous = true;
+            foreach (var atom in topology.Atoms)
+            {
+                if (atom.Span.Start != cursor)
+                {
+                    contiguous = false;
+                }
+
+                cursor = atom.Span.End;
+                reconstructed.Append(master.Slice(atom.Span));
+            }
+
+            True(contiguous, $"fixture {fixture}: atoms tile without gap or overlap");
+            Equal(master.Length, cursor, $"fixture {fixture}: atoms tile to the master end");
+            Equal(text, reconstructed.ToString(), $"fixture {fixture}: atoms reconstruct the master text");
+
+            // (b) Line consistency: each atom's recorded line is the line its start resolves to.
+            var agrees = true;
+            foreach (var atom in topology.Atoms)
+            {
+                if (topology.GetLineIndex(atom.Span.Start) != atom.LineIndex)
+                {
+                    agrees = false;
+                }
+            }
+
+            True(agrees, $"fixture {fixture}: every atom's line index matches its start offset");
+
+            // Line extents partition [0, length): contiguous, from zero, reaching the end.
+            var lineCursor = 0;
+            var partitions = true;
+            for (var line = 0; line < topology.LineCount; line++)
+            {
+                var extent = topology.GetLineExtent(line);
+                if (extent.Start != lineCursor)
+                {
+                    partitions = false;
+                }
+
+                lineCursor = extent.End;
+            }
+
+            True(partitions, $"fixture {fixture}: line extents are contiguous from zero");
+            Equal(master.Length, lineCursor, $"fixture {fixture}: line extents reach the master end");
+
+            // And every offset resolves into the extent of the line it reports.
+            var consistent = true;
+            for (var offset = 0; offset < master.Length; offset++)
+            {
+                if (!topology.GetLineExtent(topology.GetLineIndex(offset)).Contains(offset))
+                {
+                    consistent = false;
+                }
+            }
+
+            True(consistent, $"fixture {fixture}: every offset lies in its own line's extent");
+        }
+    }
+
+    private static void ResolutionIsDeterministic()
+    {
+        var master = new TextMaster("determinism", 0, new string('x', 64));
+        var random = new Random(20260801);
+        var builder = new SpanBatchBuilder(master);
+        for (var i = 0; i < 60; i++)
+        {
+            var start = random.Next(0, master.Length - 1);
+            var end = random.Next(start + 1, master.Length + 1);
+            builder.Add(new SpanClaim(
+                new TextSpan(start, end),
+                $"kind-{random.Next(0, 4)}",
+                SpanLevel.MultiLine,
+                $"source-{random.Next(0, 3)}",
+                random.Next(0, 4)));
+        }
+
+        var batch = builder.Freeze();
+        var first = Laminarizer.Extract(batch);
+        var second = Laminarizer.Extract(batch);
+
+        Equal(Ordinals(first.Accepted), Ordinals(second.Accepted), "accepted ordering is reproducible");
+        Equal(Ordinals(first.CrossingResidue), Ordinals(second.CrossingResidue), "residue ordering is reproducible");
+        Equal(DescribeTree(first.Roots), DescribeTree(second.Roots), "tree shape and ordering are reproducible");
+        True(first.Accepted.Count > 0 && first.CrossingResidue.Count > 0, "the fixture exercises both outcomes");
+
+        // Accepted and residue partition the claim set, whichever run produced them.
+        Equal(
+            batch.Count,
+            first.Accepted.Count + first.CrossingResidue.Count,
+            "every claim is either accepted or residue");
+
+        // The same claims in the same order over a fresh batch resolve identically: determinism is
+        // a property of the ordering rules, not of one object's identity.
+        var replayBuilder = new SpanBatchBuilder(master);
+        foreach (var record in batch)
+        {
+            replayBuilder.Add(record.ToClaim());
+        }
+
+        var replay = Laminarizer.Extract(replayBuilder.Freeze());
+        Equal(Ordinals(first.Accepted), Ordinals(replay.Accepted), "replayed batch accepts the same claims");
+        Equal(DescribeTree(first.Roots), DescribeTree(replay.Roots), "replayed batch builds the same tree");
+
+        // A filtered extraction is equally reproducible.
+        var filteredFirst = Laminarizer.Extract(batch, record => record.Priority >= 2);
+        var filteredSecond = Laminarizer.Extract(batch, record => record.Priority >= 2);
+        Equal(
+            DescribeTree(filteredFirst.Roots),
+            DescribeTree(filteredSecond.Roots),
+            "filtered extraction is reproducible");
+    }
+
+    private static string Ordinals(IReadOnlyList<SpanRecord> records) =>
+        string.Join(",", records.Select(record => record.Ordinal));
+
+    private static string DescribeTree(IReadOnlyList<LaminarNode> roots)
+    {
+        var description = new StringBuilder();
+        AppendNodes(description, roots, 0);
+        return description.ToString();
+    }
+
+    private static void AppendNodes(StringBuilder description, IReadOnlyList<LaminarNode> nodes, int depth)
+    {
+        foreach (var node in nodes)
+        {
+            description.Append(depth).Append(':').Append(node.Span);
+            foreach (var claim in node.Claims)
+            {
+                description.Append('/').Append(claim.Ordinal);
+            }
+
+            description.Append(';');
+            AppendNodes(description, node.Children, depth + 1);
+        }
     }
 
     private static void RunViewsTileTheMasterUnderEveryBreakKey()
