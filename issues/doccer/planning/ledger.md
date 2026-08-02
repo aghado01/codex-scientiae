@@ -19,6 +19,7 @@ in [../discussions/](../discussions/).
 | Tranche 3b — basis-stamped group/project views, `ClaimFacts` (harness →1456) | 2026-08-02 | D21; D22 (T2-4) | [3b brief + report](../briefs/fable-doccer-t3b-brief-20260802_011103.md) |
 | Tranche 3c+3d — gap cadence (first D8 measure) + named lookup orders (harness →1500; **Tranche 3 closed**) | 2026-08-02 | D23, D24; D8 status advanced | [3c+3d brief + report](../briefs/fable-doccer-t3cd-brief-20260802_012056.md) |
 | Delivery/provenance lane — `build-doccer.ps1` gates on harness, smoke-tests the delivered DLL/CLI, writes `doccer.manifest.json` | 2026-08-02 | — | script + manifest in `packages/doccer` |
+| Harvest seed read + census establishment — four genealogy files deep-read into site records + capability view; grok latex-ingest dive verified (pairing → ~7 witnesses, one refuted bug claim, F1 upgraded architectural); reshape concepts joined (knowability axis, claims-as-currency); census = standing abductive practice with process rules and four find-bins; candidate operational lexicon cataloged (uncommitted); verb mint **deliberately deferred to usage** — provisional DLL-reach adapters chosen over premature CLI commitment | 2026-08-02 | D13 sharpened (capabilities, pattern stores, rewrite test); census doctrine + latent-manuscript doctrine scribed; no engine mints | [harvest doc + addenda 1–4b](../discussions/fable-doccer-harvest-seed-20260802.md); [latent-manuscript doctrine](../../latex-ingest/discussions/latent-manuscript-doctrine-20260802.md) |
 
 ## Notes worth keeping beside the table
 
@@ -35,4 +36,4 @@ in [../discussions/](../discussions/).
   hashes will not resolve.
 - **Sequencing corrections** (sol review, folded into the queue at the time): Tranche 3 was
   split into per-law-surface chips, and the harvest survey was moved ahead of the first durable
-  CLI contract so the survey freezes the verb grain.
+  CLI contract so the survey grounds the verb grain.

@@ -26,31 +26,32 @@ report appended on completion; `discussions/` = captured evidence.
 
 ## Queue
 
-1. **Harvest seed read** (before any durable CLI contract): deep-read the four genealogy
-   sources — masks.ps1 operations, latex.ps1 span producers, md-repair byte offsets, mdnav
-   constructs (the density/mask calculus as it survives in the living lanes rides along) — and
-   synthesize site records: where, what each operation improvises, which primitive it
-   rediscovered or which verb it implies. Dense witnessed demand mints the **first verb set**
-   and its task grain; single witnesses land in the consumer registry. The verb list is a
-   living canon: shipped names and semantics hold steady (D8 discipline at the CLI surface);
-   the namespace stays open.
-2. **First CLI verbs (D13):** `doccer collect` (inventory + scope in, claims JSONL out) and a
-   span-algebra verb — the macro-expansion witness as a working demo. Verbs are named
-   **domain-agnostic capabilities**, never domain tasks: what to capture lives in
-   **per-domain pattern stores** (the harvested latex `Rx*` registers and mdnav
-   construct/noise tables are the first two packs), so codex adapters become capability calls +
-   store entries + genuinely-domain policy — the D13 rewrite test. The pairing lift graduates
-   to a `pair` verb once its engine contract lands; its open/close token rules are store
-   entries, never the verb's knowledge. user-repl anatomy:
-   hand-rolled router, per-verb files with no hot path, wire format extending the loader's JSON
-   context with span/claim payloads, run manifests where verbs produce artifacts. The current
-   `inspect`/`relate` commands are **disposable developer diagnostics** predating D13 (`relate`
-   is operation-grain; `inspect` serializes an anonymous object outside the source-generated
-   wire context) — reconcile or delete them when `collect` lands; they are not contracts.
-3. **Adapters (last):** masks.ps1 reborn as a thin PS veneer over the DLL; LaTeX consumers
-   migrated as thin consumers, old behavior as witness. This work generates F1's honest
-   edit-plan requirements as a byproduct.
-4. **Proactive contract closures, at discretion (D14):** F-UCD data-provenance record →
+1. **Provisional DLL-reach adapters (active next):** during the latex-ingest rewrite, write
+   provisional adapters that reach directly into the doccer DLL (`packages/doccer` payload)
+   from PowerShell — **research instruments, deliberately site-local and disposable**. Their
+   job is to clarify the working vocabulary and surface constructs for engine promotion
+   through real usage; the abductive census runs live throughout (specimens → drawer). The
+   sequencing doctrine holds because nothing durable is built against an unsettled surface —
+   these instruments inform the durable veneer (item 4) but are not it.
+2. **Pairing contract (candidate, at the user's call):** the one missing mechanism — ~7
+   witnesses, composition-refusal argued (harvest addendum 2), fault residue as evidence
+   built into the shape. Drafting proceeds when called; a `pair` capability follows the
+   landed contract; open/close token rules are store entries, never the verb's knowledge.
+3. **First CLI verbs (D13) — deferred pending surface design:** the operational terminology
+   is marinating (candidate lexicon = harvest addenda 4/4a/4b — catalog, uncommitted; fiber
+   vs textile metaphor registers unresolved), and the wire format deliberately waits on the
+   latent-manuscript node-stream schema so it is not frozen prematurely. Verbs are named
+   **domain-agnostic capabilities**, never domain tasks; what to capture lives in
+   **per-domain pattern stores**; the algebra surfaces as an expression evaluator (drawer
+   design). user-repl anatomy stands: hand-rolled router, per-verb files with no hot path,
+   run manifests where verbs produce artifacts. The current `inspect`/`relate` commands are
+   **disposable developer diagnostics** predating D13 — reconcile or delete when real verbs
+   land; they are not contracts.
+4. **Durable adapters (last):** masks.ps1 reborn as a thin PS veneer over the DLL; LaTeX
+   consumers migrated as thin consumers, old behavior as witness; the provisional
+   instruments of item 1 inform this veneer without becoming it. This work generates F1's
+   honest edit-plan requirements as a byproduct.
+5. **Proactive contract closures, at discretion (D14):** F-UCD data-provenance record →
    block/script facts; OffsetMap pressure-test (segment granularity, ambiguity encoding) if
    judged ripe; register columns only once the math-register design stabilizes; materialize (the
    last lift operation); a callable runtime Tier-1 runner exposing the harness-law checks, if a
