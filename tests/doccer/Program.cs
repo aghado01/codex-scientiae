@@ -48,6 +48,9 @@ internal static class Program
             RebaseCarriesSetsAndBatches();
             CollectionCommutesWithRebase();
             SlicesCompose();
+            GroupingByKeyIsADeterministicPartition();
+            ProjectionAndLineGroupsAreStampedTransposes();
+            LineMembershipIsADeclaredPolicy();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -1550,6 +1553,272 @@ internal static class Program
             new TextSpan(0, 4),
             inner.ToChild(outer.ToChild(new TextSpan(3, 7))),
             "the descent inverts the chained lift");
+    }
+
+    /// <summary>
+    /// D21/D22: keyed grouping is a deterministic partition — groups in first-appearance order,
+    /// ordinals ascending, the key carried on the group, caller comparers honored, null a
+    /// legitimate key — and key-only grouping never forces the line topology.
+    /// </summary>
+    private static void GroupingByKeyIsADeterministicPartition()
+    {
+        var master = new TextMaster("group-key", 0, "0123456789");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(0, 2), "heading", SpanLevel.Line, "scanner", 3, "atx"));
+        builder.Add(new SpanClaim(new TextSpan(2, 4), "word", SpanLevel.Character, "scanner", 1));
+        builder.Add(new SpanClaim(new TextSpan(4, 6), "heading", SpanLevel.Line, "human", 3, "setext"));
+        builder.Add(new SpanClaim(new TextSpan(6, 8), "note", SpanLevel.Character, "human", 1));
+        var batch = builder.Freeze();
+
+        var byKind = Grouping.ByKey(batch, ClaimFacts.Kind);
+        Equal(3, byKind.Count, "distinct kinds group once each");
+        Equal("heading", byKind[0].Key, "groups appear in first-appearance order");
+        Equal("word", byKind[1].Key, "second-appearing kind is second");
+        Equal("note", byKind[2].Key, "third-appearing kind is third");
+        Equal("0,2", string.Join(",", byKind[0].Ordinals), "ordinals ascend within a group");
+        Equal("1", string.Join(",", byKind[1].Ordinals), "singleton group membership");
+
+        // Partition: every ordinal lands in exactly one group.
+        var seen = new HashSet<int>();
+        var partition = true;
+        foreach (var group in byKind)
+        {
+            foreach (var ordinal in group.Ordinals)
+            {
+                if (!seen.Add(ordinal))
+                {
+                    partition = false;
+                }
+            }
+        }
+
+        True(partition && seen.Count == batch.Count, "keyed grouping partitions the batch");
+
+        var byPriority = Grouping.ByKey(batch, ClaimFacts.Priority);
+        Equal(2, byPriority.Count, "an int-keyed fact groups");
+        Equal(3, byPriority[0].Key, "the int group carries its key");
+
+        var byRule = Grouping.ByKey(batch, ClaimFacts.RuleId);
+        Equal(3, byRule.Count, "rule ids group with null as a legitimate key");
+        Equal(null, byRule[1].Key, "the null group carries the null key");
+        Equal("1,3", string.Join(",", byRule[1].Ordinals), "rule-less claims share the null group");
+
+        // A caller comparer changes the grouping, exactly as with EmitRuns (D22: one selector
+        // shape, plain delegates, comparers on the same footing).
+        var caseBuilder = new SpanBatchBuilder(master);
+        caseBuilder.Add(new SpanClaim(new TextSpan(0, 1), "Heading", SpanLevel.Line, "test"));
+        caseBuilder.Add(new SpanClaim(new TextSpan(1, 2), "heading", SpanLevel.Line, "test"));
+        var caseBatch = caseBuilder.Freeze();
+        Equal(2, Grouping.ByKey(caseBatch, ClaimFacts.Kind).Count, "ordinal keys split case variants");
+        Equal(
+            1,
+            Grouping.ByKey(caseBatch, ClaimFacts.Kind, StringComparer.OrdinalIgnoreCase).Count,
+            "a case-insensitive comparer joins them");
+
+        // Composite keys via tuples, mirroring the AtomFacts idiom.
+        Equal(
+            4,
+            Grouping.ByKey(batch, record => (record.Kind, record.Source)).Count,
+            "a tuple selector groups on both facts");
+
+        // Determinism on repeat.
+        var replay = Grouping.ByKey(batch, ClaimFacts.Kind);
+        var stable = replay.Count == byKind.Count;
+        for (var i = 0; stable && i < replay.Count; i++)
+        {
+            if (!StringComparer.Ordinal.Equals(replay[i].Key, byKind[i].Key) ||
+                string.Join(",", replay[i].Ordinals) != string.Join(",", byKind[i].Ordinals))
+            {
+                stable = false;
+            }
+        }
+
+        True(stable, "repeated grouping reproduces the same groups");
+
+        Equal(0, Grouping.ByKey(new SpanBatchBuilder(master).Freeze(), ClaimFacts.Kind).Count, "an empty batch has no groups");
+
+        // D12: grouping by claim facts is columnar work; the line topology stays unbuilt.
+        var lazy = TextMaster.Create("lazy grouping text");
+        var lazyBuilder = new SpanBatchBuilder(lazy);
+        lazyBuilder.Add(new SpanClaim(new TextSpan(0, 4), "k", SpanLevel.Character, "s"));
+        _ = Grouping.ByKey(lazyBuilder.Freeze(), ClaimFacts.Kind);
+        True(!lazy.TopologyIsCreated, "key-only grouping leaves the topology unbuilt");
+
+        Throws<ArgumentNullException>(
+            () => Grouping.ByKey(batch, (Func<SpanRecord, string>)null!),
+            "a null selector is rejected");
+    }
+
+    /// <summary>
+    /// D21: the claim-major projection and the line-major grouping are basis-stamped transposes
+    /// of one another — the view answers "over what was I computed" with typed references, and
+    /// under EveryLineTouched, ordinal o touches line i exactly when line i lists ordinal o.
+    /// </summary>
+    private static void ProjectionAndLineGroupsAreStampedTransposes()
+    {
+        var master = new TextMaster("group-lines", 0, "ab\ncd\nef");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(0, 2), "one-line", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(1, 4), "crosser", SpanLevel.MultiLine, "test"));
+        builder.Add(new SpanClaim(new TextSpan(3, 8), "tail", SpanLevel.MultiLine, "test"));
+        builder.Add(new SpanClaim(new TextSpan(6, 8), "last", SpanLevel.Character, "test"));
+        var batch = builder.Freeze();
+
+        var projection = Projection.Project(batch);
+        Equal(batch.Count, projection.Ranges.Count, "one range per claim, ordinal-aligned");
+        True(ReferenceEquals(projection.Source, batch), "the projection is stamped with its source batch");
+        True(ReferenceEquals(projection.Master, master), "the projection is stamped with its master");
+        Equal(new LineRange(0, 1), projection.Ranges[0], "a one-line claim projects to its line");
+        Equal(new LineRange(0, 2), projection.Ranges[1], "a crossing claim projects to both lines");
+        Equal(new LineRange(1, 3), projection.Ranges[2], "the tail claim projects to its range");
+
+        var agrees = true;
+        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        {
+            if (projection.Ranges[ordinal] != master.Topology.Project(batch[ordinal].Span))
+            {
+                agrees = false;
+            }
+        }
+
+        True(agrees, "the batch projection agrees with the span-level Project");
+
+        var view = Grouping.ByLine(batch);
+        Equal(LineMembership.EveryLineTouched, view.Membership, "the membership policy is stamped");
+        True(ReferenceEquals(view.Source, batch), "the view is stamped with its source batch");
+        True(ReferenceEquals(view.Master, master), "the view is stamped with its master");
+        Equal(master.Topology.LineCount, view.Lines.Count, "the view is total over the line grain");
+
+        var extentsMatch = true;
+        var indexed = true;
+        for (var line = 0; line < view.Lines.Count; line++)
+        {
+            if (view.Lines[line].Extent != master.Topology.GetLineExtent(line))
+            {
+                extentsMatch = false;
+            }
+
+            if (view.Lines[line].LineIndex != line)
+            {
+                indexed = false;
+            }
+        }
+
+        True(extentsMatch, "each line carries its full partition extent");
+        True(indexed, "line groups are index-aligned with the topology");
+
+        Equal("0,1", string.Join(",", view.Lines[0].Ordinals), "line 0 holds its claims in ascending order");
+        Equal("1,2", string.Join(",", view.Lines[1].Ordinals), "the crossing claim appears on every touched line");
+        Equal("2,3", string.Join(",", view.Lines[2].Ordinals), "the last line holds the tail and the local claim");
+
+        // The transpose law, both directions.
+        var transpose = true;
+        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        {
+            for (var line = 0; line < view.Lines.Count; line++)
+            {
+                var projected = projection.Ranges[ordinal].Start <= line && line < projection.Ranges[ordinal].End;
+                var listed = view.Lines[line].Ordinals.Contains(ordinal);
+                if (projected != listed)
+                {
+                    transpose = false;
+                }
+            }
+        }
+
+        True(transpose, "projection and line grouping are transposes under EveryLineTouched");
+
+        // Totality includes claimless lines and the empty final line.
+        var sparse = new TextMaster("group-sparse", 0, "ab\n\ncd\n");
+        var sparseBuilder = new SpanBatchBuilder(sparse);
+        sparseBuilder.Add(new SpanClaim(new TextSpan(0, 2), "k", SpanLevel.Character, "test"));
+        var sparseView = Grouping.ByLine(sparseBuilder.Freeze());
+        Equal(4, sparseView.Lines.Count, "empty and final lines are present in the partition");
+        Equal(0, sparseView.Lines[1].Ordinals.Count, "a claimless empty line carries an empty group");
+        Equal(0, sparseView.Lines[3].Ordinals.Count, "the empty final line carries an empty group");
+        Equal(new TextSpan(7, 7), sparseView.Lines[3].Extent, "the empty final line still states its extent");
+    }
+
+    /// <summary>
+    /// D21: line membership is a declared policy. StartLineOnly attributes each claim exactly
+    /// once, at its start line; the two policies differ exactly on multi-line claims; undefined
+    /// policy values are refused.
+    /// </summary>
+    private static void LineMembershipIsADeclaredPolicy()
+    {
+        var master = new TextMaster("membership", 0, "ab\ncd\nef");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(0, 2), "one-line", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(1, 4), "crosser", SpanLevel.MultiLine, "test"));
+        builder.Add(new SpanClaim(new TextSpan(3, 8), "tail", SpanLevel.MultiLine, "test"));
+        builder.Add(new SpanClaim(new TextSpan(6, 8), "last", SpanLevel.Character, "test"));
+        var batch = builder.Freeze();
+
+        var touched = Grouping.ByLine(batch, LineMembership.EveryLineTouched);
+        var attributed = Grouping.ByLine(batch, LineMembership.StartLineOnly);
+        Equal(LineMembership.StartLineOnly, attributed.Membership, "the attribution policy is stamped");
+
+        Equal("0,1", string.Join(",", attributed.Lines[0].Ordinals), "start-line attribution for line 0");
+        Equal("2", string.Join(",", attributed.Lines[1].Ordinals), "the crosser is not re-attributed to line 1");
+        Equal("3", string.Join(",", attributed.Lines[2].Ordinals), "the tail is not re-attributed to line 2");
+
+        // Attribution is a partition: each claim exactly once, at its start line.
+        var counts = new int[batch.Count];
+        var startLines = true;
+        foreach (var line in attributed.Lines)
+        {
+            foreach (var ordinal in line.Ordinals)
+            {
+                counts[ordinal]++;
+                if (master.Topology.GetLineIndex(batch[ordinal].Span.Start) != line.LineIndex)
+                {
+                    startLines = false;
+                }
+            }
+        }
+
+        True(Array.TrueForAll(counts, count => count == 1), "attribution assigns each claim exactly once");
+        True(startLines, "attribution lands each claim on its start line");
+
+        // The policies differ exactly on multi-line claims.
+        var policiesAgreeOnSingles = true;
+        var policiesDifferOnCrossers = true;
+        var projection = Projection.Project(batch);
+        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        {
+            var touchedCount = 0;
+            var attributedCount = 0;
+            for (var line = 0; line < touched.Lines.Count; line++)
+            {
+                if (touched.Lines[line].Ordinals.Contains(ordinal))
+                {
+                    touchedCount++;
+                }
+
+                if (attributed.Lines[line].Ordinals.Contains(ordinal))
+                {
+                    attributedCount++;
+                }
+            }
+
+            var lineSpan = projection.Ranges[ordinal].Count;
+            if (lineSpan == 1 && (touchedCount != 1 || attributedCount != 1))
+            {
+                policiesAgreeOnSingles = false;
+            }
+
+            if (lineSpan > 1 && (touchedCount != lineSpan || attributedCount != 1))
+            {
+                policiesDifferOnCrossers = false;
+            }
+        }
+
+        True(policiesAgreeOnSingles, "single-line claims are identical under both policies");
+        True(policiesDifferOnCrossers, "multi-line claims occupy every touched line yet attribute once");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => Grouping.ByLine(batch, (LineMembership)9),
+            "an undefined membership policy is refused");
     }
 
     private static void True(bool condition, string name)

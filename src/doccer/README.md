@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon and roadmap live as current-truth
 documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D20, deferrals, question
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D22, deferrals, question
 ledger — and [roadmap.md](../../issues/doccer/planning/roadmap.md)); per-iteration chip briefs
 with their reports sit in [issues/doccer/briefs/](../../issues/doccer/briefs/), and topic
 evidence in [issues/doccer/discussions/](../../issues/doccer/discussions/). The MarkPig legwork
@@ -83,6 +83,14 @@ travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-
   needs a residual policy, which is `OffsetMap`'s business); claims rebase with coordinates
   changed and everything else untouched, and collection commutes with rebase — collecting on the
   fragment then rebasing equals collecting on the parent scoped to the window;
+- basis-stamped group and project views: `Grouping.ByKey` groups claims under an explicit
+  selector (`ClaimFacts` mirrors `AtomFacts`; plain delegates, tuple composition, caller
+  comparers, null a legitimate key) with a deterministic contract — first-appearance group
+  order, ascending ordinals, the key carried on the group; `Projection.Project` gives claim-major
+  line ranges and `Grouping.ByLine` the line-major transpose, total over the line grain
+  (claimless lines present) under a named `LineMembership` policy — `EveryLineTouched` occupancy
+  vs `StartLineOnly` attribution; every view stamps its basis (source batch, master, policy) so
+  it answers "over what was I computed", and views hold ordinals, never claim copies;
 - deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
   residue (max-priority admission is a documented default, not a judgment; a future
   `ResolutionPolicy` is a query parameter, not a data-model change);
@@ -117,8 +125,8 @@ closes honestly without one:
   segment-list storage, span projection under a named policy with explicit residuals); the
   remaining open questions are the ones a first real edit-plan or normalization job would settle,
   so that job is the prioritization default rather than a permission condition;
-- the rest of the lift algebra — project, run-within, and slice/rebase (the total bijective
-  case, landed without `OffsetMap`) are in; group (with basis stamping) and materialize are not;
+- the rest of the lift algebra — project, group, run-within, and slice/rebase are in;
+  materialize is not;
 - named density measures (never a generic `Density` verb — each measure declares numerator,
   denominator, window basis, boundary policy, exclusions);
 - suppression bitmaps (an acceleration of the suppression query, never a claim property);
