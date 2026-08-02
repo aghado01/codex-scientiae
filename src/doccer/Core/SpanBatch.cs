@@ -272,6 +272,23 @@ public sealed class SpanBatch : IReadOnlyList<SpanRecord>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
+/// <summary>
+/// Named result orderings for lookup queries. Resolution order is query policy (D5): priority
+/// stays default evidence on the claim, and a caller names the order a query answers in
+/// (contract D24). Pure per-query ordering — acceleration structures are F4's business.
+/// </summary>
+public enum ClaimOrder
+{
+    /// <summary>The stable start order: start ascending, end descending, then ordinal.</summary>
+    Geometry = 0,
+
+    /// <summary>
+    /// Priority descending — the D2 max-priority posture — then the geometry order, then
+    /// ordinal. A total order, so determinism needs no stability argument.
+    /// </summary>
+    PriorityThenGeometry = 1,
+}
+
 /// <summary>Stable start-ordered query view over a frozen batch.</summary>
 public sealed class SortedSpanLookup
 {
@@ -307,8 +324,9 @@ public sealed class SortedSpanLookup
     /// nothing. To ask which claims cover a position — an insertion point, say — use
     /// <see cref="FindContaining"/>.
     /// </summary>
-    public IReadOnlyList<SpanRecord> FindIntersecting(TextSpan query)
+    public IReadOnlyList<SpanRecord> FindIntersecting(TextSpan query, ClaimOrder order = ClaimOrder.Geometry)
     {
+        ValidateOrder(order);
         _batch.Master.ValidateSpan(query);
         var found = new List<SpanRecord>();
         foreach (var index in _order)
@@ -325,7 +343,7 @@ public sealed class SortedSpanLookup
             }
         }
 
-        return found.AsReadOnly();
+        return Ordered(found, order);
     }
 
     /// <summary>
@@ -336,8 +354,9 @@ public sealed class SortedSpanLookup
     /// so it may legitimately sit inside a surrogate pair a claim covers; <c>position ==
     /// master.Length</c> is a valid question whose answer is always empty.
     /// </summary>
-    public IReadOnlyList<SpanRecord> FindContaining(int position)
+    public IReadOnlyList<SpanRecord> FindContaining(int position, ClaimOrder order = ClaimOrder.Geometry)
     {
+        ValidateOrder(order);
         if ((uint)position > (uint)_batch.Master.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(position));
@@ -356,6 +375,42 @@ public sealed class SortedSpanLookup
             {
                 found.Add(candidate);
             }
+        }
+
+        return Ordered(found, order);
+    }
+
+    private static void ValidateOrder(ClaimOrder order)
+    {
+        if (!Enum.IsDefined(order))
+        {
+            throw new ArgumentOutOfRangeException(nameof(order), order, "Undefined ClaimOrder value.");
+        }
+    }
+
+    private static IReadOnlyList<SpanRecord> Ordered(List<SpanRecord> found, ClaimOrder order)
+    {
+        if (order == ClaimOrder.PriorityThenGeometry)
+        {
+            // The comparison ends at the ordinal, making it a total order: equal-priority,
+            // equal-geometry claims keep their batch order deterministically.
+            found.Sort(static (left, right) =>
+            {
+                var comparison = right.Priority.CompareTo(left.Priority);
+                if (comparison != 0)
+                {
+                    return comparison;
+                }
+
+                comparison = left.Span.Start.CompareTo(right.Span.Start);
+                if (comparison != 0)
+                {
+                    return comparison;
+                }
+
+                comparison = right.Span.End.CompareTo(left.Span.End);
+                return comparison != 0 ? comparison : left.Ordinal.CompareTo(right.Ordinal);
+            });
         }
 
         return found.AsReadOnly();

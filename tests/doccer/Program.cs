@@ -51,6 +51,9 @@ internal static class Program
             GroupingByKeyIsADeterministicPartition();
             ProjectionAndLineGroupsAreStampedTransposes();
             LineMembershipIsADeclaredPolicy();
+            GapCadenceMeasuresTheTemplateFacts();
+            GapCadenceDeclaresItsBasis();
+            LookupOrderIsAQueryPolicy();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -1819,6 +1822,179 @@ internal static class Program
         Throws<ArgumentOutOfRangeException>(
             () => Grouping.ByLine(batch, (LineMembership)9),
             "an undefined membership policy is refused");
+    }
+
+    /// <summary>
+    /// D23: gap cadence reports the mdnav template's facts — median gap (upper-median
+    /// convention), cv (0 for even spacing, large for bursts), span fraction — computed
+    /// whenever defined, with no meaning thresholds in the engine.
+    /// </summary>
+    private static void GapCadenceMeasuresTheTemplateFacts()
+    {
+        var master = new TextMaster("cadence-facts", 0, new string('x', 100));
+        var builder = new SpanBatchBuilder(master);
+        foreach (var start in new[] { 10, 30, 50, 70, 90 })
+        {
+            builder.Add(new SpanClaim(new TextSpan(start, start + 5), "h", SpanLevel.Line, "test"));
+        }
+
+        builder.Add(new SpanClaim(new TextSpan(3, 9), "w", SpanLevel.Character, "test"));
+        var batch = builder.Freeze();
+
+        var even = GapCadence.Measure(batch, record => record.Kind == "h");
+        Equal(5, even.Ordinals.Count, "the predicate selects the population");
+        Equal(4, even.GapCount, "five occurrences give four gaps");
+        Equal(20, even.MedianGap, "even spacing has its spacing as the median gap");
+        Equal(20.0, even.MeanGap, "even spacing has its spacing as the mean gap");
+        Equal(0.0, even.GapCv, "even spacing has zero cv");
+        Equal(0.8, even.SpanFraction, "the population stretches (90-10)/100 of the window");
+
+        var noisy = GapCadence.Measure(batch);
+        Equal(6, noisy.Ordinals.Count, "without a predicate every start in the window counts");
+        True(noisy.GapCv > 0, "the noise claim breaks the even cadence");
+
+        var burstyBuilder = new SpanBatchBuilder(master);
+        foreach (var start in new[] { 0, 1, 2, 50 })
+        {
+            burstyBuilder.Add(new SpanClaim(new TextSpan(start, start + 1), "b", SpanLevel.Character, "test"));
+        }
+
+        var bursty = GapCadence.Measure(burstyBuilder.Freeze());
+        Equal(1, bursty.MedianGap, "a bursty population has a small median gap");
+        True(bursty.GapCv > 1, "a bursty population has cv above one");
+
+        // The template's upper-median convention on an even gap count.
+        var pairBuilder = new SpanBatchBuilder(master);
+        foreach (var start in new[] { 0, 1, 4 })
+        {
+            pairBuilder.Add(new SpanClaim(new TextSpan(start, start + 1), "m", SpanLevel.Character, "test"));
+        }
+
+        Equal(3, GapCadence.Measure(pairBuilder.Freeze()).MedianGap, "an even gap count takes the upper median");
+
+        // Insertion order does not matter: the population is measured in start order.
+        var shuffledBuilder = new SpanBatchBuilder(master);
+        foreach (var start in new[] { 90, 10, 50, 70, 30 })
+        {
+            shuffledBuilder.Add(new SpanClaim(new TextSpan(start, start + 5), "h", SpanLevel.Line, "test"));
+        }
+
+        var shuffled = GapCadence.Measure(shuffledBuilder.Freeze());
+        Equal(20, shuffled.MedianGap, "insertion order does not change the gaps");
+        Equal(0.0, shuffled.GapCv, "insertion order does not change the cv");
+        Equal("1,4,2,3,0", string.Join(",", shuffled.Ordinals), "ordinals report the start-order population");
+
+        var replay = GapCadence.Measure(batch, record => record.Kind == "h");
+        True(
+            replay.MedianGap == even.MedianGap &&
+            replay.GapCv == even.GapCv &&
+            string.Join(",", replay.Ordinals) == string.Join(",", even.Ordinals),
+            "the measure is deterministic on repeat");
+    }
+
+    /// <summary>
+    /// D23: every D8 component is declared and stamped — the window admits by claim start, its
+    /// length is the span-fraction denominator, exclusions are recorded as the measured
+    /// ordinals, and degenerate populations report absent statistics rather than judgments.
+    /// </summary>
+    private static void GapCadenceDeclaresItsBasis()
+    {
+        var master = new TextMaster("cadence-basis", 0, new string('x', 100));
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(10, 15), "k", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(30, 50), "straddler", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(40, 45), "k", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(60, 65), "k", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(95, 100), "k", SpanLevel.Character, "test"));
+        var batch = builder.Freeze();
+
+        var window = new TextSpan(35, 90);
+        var measure = GapCadence.Measure(batch, null, window);
+        True(ReferenceEquals(measure.Source, batch), "the measure is stamped with its source batch");
+        True(ReferenceEquals(measure.Master, master), "the measure is stamped with its master");
+        Equal(window, measure.Window, "the measure is stamped with its window basis");
+        Equal(AddressUnit.Utf16CodeUnit, measure.Unit, "the measure declares its unit");
+
+        Equal("2,3", string.Join(",", measure.Ordinals), "the window admits by claim start");
+        True(
+            !((IReadOnlyList<int>)measure.Ordinals).Contains(1),
+            "a straddler starting before the window is excluded, not clamped in");
+        Equal(1, measure.GapCount, "two admitted claims give one gap");
+        Equal(20, measure.MedianGap, "the single gap is the median");
+        Equal(0.0, measure.GapCv, "a single gap has zero cv");
+        Equal(20 / 55.0, measure.SpanFraction, "the span fraction divides by the window length");
+
+        // Degenerate populations: facts are absent, never judged.
+        var empty = GapCadence.Measure(new SpanBatchBuilder(master).Freeze());
+        Equal(0, empty.Ordinals.Count, "an empty batch measures an empty population");
+        Equal(0, empty.GapCount, "no population, no gaps");
+        Equal(null, empty.MedianGap, "no gaps, no median");
+        Equal(null, empty.SpanFraction, "no population, no span fraction");
+
+        var single = GapCadence.Measure(batch, record => record.Kind == "straddler");
+        Equal(1, single.Ordinals.Count, "a singleton population is measured");
+        Equal(null, single.GapCv, "a singleton has no gaps and no cv");
+
+        var emptyWindow = GapCadence.Measure(batch, null, new TextSpan(35, 35));
+        Equal(0, emptyWindow.Ordinals.Count, "an empty window admits nothing");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => GapCadence.Measure(batch, null, new TextSpan(0, master.Length + 1)),
+            "an out-of-bounds window is rejected");
+        Throws<ArgumentNullException>(
+            () => GapCadence.Measure(null!),
+            "a null batch is rejected");
+    }
+
+    /// <summary>
+    /// D24: resolution order is query policy — the lookup answers in a named order. Geometry
+    /// stays the default; PriorityThenGeometry is priority descending with geometry then
+    /// ordinal completing a total order.
+    /// </summary>
+    private static void LookupOrderIsAQueryPolicy()
+    {
+        var master = new TextMaster("claim-order", 0, "01234567890123456789");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(0, 10), "a", SpanLevel.Character, "test", 1));
+        builder.Add(new SpanClaim(new TextSpan(2, 8), "b", SpanLevel.Character, "test", 5));
+        builder.Add(new SpanClaim(new TextSpan(2, 8), "c", SpanLevel.Character, "test", 5));
+        builder.Add(new SpanClaim(new TextSpan(4, 6), "d", SpanLevel.Character, "test", 3));
+        builder.Add(new SpanClaim(new TextSpan(12, 15), "e", SpanLevel.Character, "test", 9));
+        var batch = builder.Freeze();
+
+        var query = new TextSpan(3, 7);
+        var geometry = batch.Sorted.FindIntersecting(query);
+        Equal("0,1,2,3", Ordinals(geometry), "the default answer is the stable geometry order");
+        Equal(
+            Ordinals(batch.Sorted.FindIntersecting(query, ClaimOrder.Geometry)),
+            Ordinals(geometry),
+            "naming the default changes nothing");
+
+        var byPriority = batch.Sorted.FindIntersecting(query, ClaimOrder.PriorityThenGeometry);
+        Equal("1,2,3,0", Ordinals(byPriority), "priority descends, geometry then ordinal break ties");
+        Equal(5, byPriority[0].Priority, "the max-priority claim answers first");
+        True(byPriority[0].Ordinal < byPriority[1].Ordinal, "equal priority and geometry fall to ordinal order");
+
+        Equal(
+            "1,2,3,0",
+            Ordinals(batch.Sorted.FindContaining(5, ClaimOrder.PriorityThenGeometry)),
+            "the point query honors the same policy");
+        Equal(
+            "0,1,2,3",
+            Ordinals(batch.Sorted.FindContaining(5)),
+            "the point query default is unchanged");
+
+        Equal(
+            Ordinals(batch.Sorted.FindIntersecting(query, ClaimOrder.PriorityThenGeometry)),
+            Ordinals(byPriority),
+            "the ordered query is deterministic on repeat");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => batch.Sorted.FindIntersecting(query, (ClaimOrder)7),
+            "an undefined order is refused");
+        Throws<ArgumentOutOfRangeException>(
+            () => batch.Sorted.FindContaining(5, (ClaimOrder)7),
+            "the point query refuses an undefined order too");
     }
 
     private static void True(bool condition, string name)

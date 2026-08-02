@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon and roadmap live as current-truth
 documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D22, deferrals, question
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D24, deferrals, question
 ledger — and [roadmap.md](../../issues/doccer/planning/roadmap.md)); per-iteration chip briefs
 with their reports sit in [issues/doccer/briefs/](../../issues/doccer/briefs/), and topic
 evidence in [issues/doccer/discussions/](../../issues/doccer/discussions/). The MarkPig legwork
@@ -91,6 +91,14 @@ travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-
   (claimless lines present) under a named `LineMembership` policy — `EveryLineTouched` occupancy
   vs `StartLineOnly` attribution; every view stamps its basis (source batch, master, policy) so
   it answers "over what was I computed", and views hold ordinals, never claim copies;
+- gap cadence, the first individually named density measure (transcribed from the mdnav
+  profiler): start-to-start gap statistics — count, median (upper-median convention), mean, cv,
+  span fraction — over a declared window basis that admits claims by start position, with
+  exclusions arriving as a caller predicate and recorded as the measured ordinals; statistics
+  are present whenever defined, and meaning thresholds stay in the consumer;
+- named lookup orders: `FindIntersecting`/`FindContaining` answer in `ClaimOrder.Geometry` (the
+  unchanged default) or `ClaimOrder.PriorityThenGeometry` (priority descending, then geometry,
+  then ordinal — a total order) — resolution order is query policy, never a data-model change;
 - deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
   residue (max-priority admission is a documented default, not a judgment; a future
   `ResolutionPolicy` is a query parameter, not a data-model change);
@@ -127,8 +135,9 @@ closes honestly without one:
   so that job is the prioritization default rather than a permission condition;
 - the rest of the lift algebra — project, group, run-within, and slice/rebase are in;
   materialize is not;
-- named density measures (never a generic `Density` verb — each measure declares numerator,
-  denominator, window basis, boundary policy, exclusions);
+- further density measures beyond gap cadence (never a generic `Density` verb — each future
+  measure arrives individually named, declaring numerator, denominator, window basis, boundary
+  policy, exclusions);
 - suppression bitmaps (an acceleration of the suppression query, never a claim property);
 - Unicode block and script properties as break-key facts: unlike the major-class fold, they would
   ship as versioned UCD data and need a data-provenance decision first;
