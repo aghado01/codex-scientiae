@@ -31,7 +31,10 @@ public enum ExecutionScope
 /// deliberately independent of <see cref="Scope"/>, which is execution.
 /// <see cref="Options"/> always includes <see cref="RegexOptions.CultureInvariant"/>: the
 /// constructor unions it into whatever the caller passes, so the same rule recognizes the same
-/// claims on every machine regardless of ambient culture (D18).
+/// claims on every machine regardless of ambient culture (D18). Supplied options augment that
+/// baseline, never replace it — <see cref="RegexOptions.ECMAScript"/> is rejected because it is
+/// a different matching profile, not an augmentation. The guarantee is independence from
+/// ambient culture, not from runtime/Unicode-version changes to the case tables.
 /// </remarks>
 public sealed record PatternRule
 {
@@ -77,6 +80,19 @@ public sealed record PatternRule
             throw new ArgumentOutOfRangeException(nameof(scope), scope, "Undefined ExecutionScope value.");
         }
 
+        if ((options & RegexOptions.ECMAScript) != 0)
+        {
+            // Not a runtime constraint (net10 permits ECMAScript|CultureInvariant) but a contract
+            // choice: ECMAScript selects a different matching profile — ASCII-leaning \d/\w/\s,
+            // its own case-folding special cases — and options augment the engine baseline, they
+            // never replace the execution policy (D18).
+            throw new ArgumentException(
+                "RegexOptions.ECMAScript is not supported: doccer matching is culture-invariant " +
+                "canonical .NET matching, and ECMAScript selects a different matching profile " +
+                "rather than augmenting that baseline.",
+                nameof(options));
+        }
+
         Id = id;
         Pattern = pattern;
         Kind = kind;
@@ -87,7 +103,8 @@ public sealed record PatternRule
         // The union happens here, at the engine boundary, not in the JSONL loader: an inventory
         // rule and a directly constructed rule must be the same collector contract, and matching
         // must never inherit the ambient culture. Culture-sensitive matching is simply not
-        // offered at this boundary (D18).
+        // offered at this boundary (D18). The guarantee is independence from ambient culture —
+        // not from runtime or Unicode-version changes to the case tables themselves.
         Options = options | RegexOptions.CultureInvariant;
         CaptureGroup = captureGroup;
         Timeout = timeout ?? TimeSpan.FromSeconds(1);

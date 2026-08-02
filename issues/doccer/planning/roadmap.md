@@ -7,13 +7,16 @@ evidence in [../discussions/](../discussions/).
 ## Where the work stands (2026-08-02)
 
 Engine at `src/doccer` (`CodexSci.Doccer`), delivered via `brewery/doccer` recipes into
-`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1336 checks
+`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1340 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`).
 
 T2-2 closed as **D18** (2026-08-02, user-confirmed with the boundary refinement): regex options
 union `CultureInvariant` in the `PatternRule` constructor itself, so inventory rules and direct
 DLL callers are one collector contract and matching never inherits ambient culture (Turkish-I
-witness in the harness). `packages/` is untracked as of `50988b03`, so payload refreshes are
+witness in the harness). Options augment that baseline, never replace execution policy —
+`ECMAScript` is rejected as a different matching profile (a contract choice: net10 itself
+permits the combination), and the guarantee is ambient-culture independence, not immunity to
+runtime/Unicode case-table changes. `packages/` is untracked as of `50988b03`, so payload refreshes are
 local-only: run `build-doccer.ps1` after engine changes and let `doccer.manifest.json` state
 what revision the on-disk payload represents.
 

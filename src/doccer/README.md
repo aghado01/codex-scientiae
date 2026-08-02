@@ -79,8 +79,11 @@ travels in the C# surface.
 - declarative regex collection with load-time rule validation (uncompilable and empty-capable
   patterns, capture groups checked against the compiled pattern's identity, undefined enum values
   rejected in the constructors), rule options that always union `CultureInvariant` at the
-  `PatternRule` boundary — inventory rules and direct DLL callers are one collector contract and
-  matching never inherits ambient culture — an explicit execution scope (whole-master or per-line) that
+  `PatternRule` boundary — inventory rules and direct DLL callers are one collector contract,
+  matching never inherits ambient culture, and options augment that baseline rather than replace
+  it (`ECMAScript` is rejected as a different matching profile; the invariance is with respect
+  to ambient culture, not runtime/Unicode-version case-table changes) — an explicit execution
+  scope (whole-master or per-line) that
   composes with the caller's region set by intersection, and region-scoped matching that cannot
   bridge exclusions; collection is transactional — a sweep stages what it recognizes and commits
   only when every rule and region succeeds, so a mid-sweep failure leaves the caller's builder

@@ -1213,6 +1213,24 @@ internal static class Program
             loaded[0].Options,
             "an inventory's option list is unioned at the same boundary");
 
+        // Options augment the baseline, never replace the execution policy: ECMAScript is a
+        // different matching profile, so it is rejected even though net10 itself would accept
+        // ECMAScript|CultureInvariant.
+        Throws<ArgumentException>(
+            () => new PatternRule("d", "a", "k", "s", options: RegexOptions.ECMAScript),
+            "ECMAScript is rejected at the engine boundary");
+        Throws<ArgumentException>(
+            () => new PatternRule(
+                "d", "a", "k", "s",
+                options: RegexOptions.ECMAScript | RegexOptions.IgnoreCase),
+            "ECMAScript is rejected in combination too");
+        var ecma = LoadFails(
+            """{"id":"e","pattern":"a","kind":"k","source":"s","options":["ECMAScript"]}""",
+            "an ECMAScript inventory fails at load");
+        True(
+            ecma.Message.Contains("ECMAScript", StringComparison.Ordinal),
+            "the load failure names the rejected option");
+
         // The Turkish-I witness: under tr-TR, culture-sensitive IgnoreCase folds 'I' onto the
         // dotless 'ı'; the invariant fold does not. Collection must give the invariant answer
         // even while the ambient culture would have said otherwise.

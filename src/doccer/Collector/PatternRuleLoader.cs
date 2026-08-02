@@ -68,7 +68,8 @@ public sealed record PatternRuleDocument
     /// <summary>
     /// Names of <see cref="RegexOptions"/> members. Parsed exactly as listed; the engine then
     /// unions <c>CultureInvariant</c> in at the <see cref="PatternRule"/> boundary (D18), as it
-    /// does for every caller.
+    /// does for every caller. <c>ECMAScript</c> is rejected there — options augment the engine's
+    /// culture-invariant baseline, they never select a different matching profile.
     /// </summary>
     public string[]? Options { get; init; }
 
