@@ -378,3 +378,28 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
   deliberate contract with its rationale; `IntervalJoins.Join`'s XML doc states explicitly that
   the method carries no performance contract and consumers must not rely on its time or
   allocation characteristics.
+
+## D12 lazy-substrate report
+
+**2026-08-01 · Fable.** The D12 immediate consequence landed; harness green at 967 checks
+(959 prior + 8 new).
+
+- **Lazy fingerprint and topology** — `TextMaster`'s constructor no longer computes anything
+  beyond argument validation and field assignment. `Fingerprint` and `Topology` are each backed
+  by a `Lazy<T>` (thread-safe default mode), computed on first access and cached. The D1 hash is
+  unchanged — SHA-256 over `MemoryMarshal.AsBytes(text.AsSpan())`, host-endianness caveat kept at
+  the hash site.
+- **Reference fast-path** — `IsCompatibleWith` returns true via `ReferenceEquals` before touching
+  any field, so same-instance algebra (every `SpanSet` op between sets bound to one master) never
+  forces the fingerprint. Distinct instances still take the full field-by-field comparison,
+  fingerprint included; validation semantics are unchanged.
+- **Primitive path audited** — `ValidateSpan`/`IsScalarBoundary` read `Text` directly (unchanged);
+  the only engine reads of the lazy values are `Validation` atom sweeps (a composition that asks
+  for topology) and `SpanSet.GetHashCode` (forces the fingerprint only when a set is actually
+  hashed — accepted, left as is).
+- **Observability** — the projects are split (the tests csproj references `Doccer.csproj` rather
+  than compiling engine sources), so internal `FingerprintIsCreated`/`TopologyIsCreated` flags
+  (`Lazy<T>.IsValueCreated`) are exposed to the harness via `InternalsVisibleTo("doccer.tests")`
+  in the engine csproj. New checks: same-master algebra creates neither value, `GetLineSpan`
+  forces topology only, and a same-id distinct-instance comparison forces fingerprint only
+  (8 checks).

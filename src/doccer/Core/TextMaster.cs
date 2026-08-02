@@ -7,6 +7,10 @@ namespace CodexSci.Doccer;
 /// <summary>An immutable text snapshot and the identity of its coordinate space.</summary>
 public sealed class TextMaster
 {
+    private readonly Lazy<string> _fingerprint;
+
+    private readonly Lazy<TextTopology> _topology;
+
     public TextMaster(string documentId, long revision, string text)
     {
         if (string.IsNullOrWhiteSpace(documentId))
@@ -24,13 +28,16 @@ public sealed class TextMaster
         DocumentId = documentId;
         Revision = revision;
         Text = text;
+        // Both computed on first use: construction cost must scale with what a job touches,
+        // so interval algebra over a master never pays for hashing or the scalar tiling.
         // Hash the raw UTF-16 code units. An encoder would route lone surrogates through its
         // replacement fallback (every unpaired surrogate becomes U+FFFD), collapsing masters the
         // topology distinguishes as first-class atoms. Identity must distinguish everything the
         // topology distinguishes. The bytes are host-endian; if fingerprints ever persist
         // cross-platform, endianness must be fixed explicitly.
-        Fingerprint = Convert.ToHexString(SHA256.HashData(MemoryMarshal.AsBytes(text.AsSpan())));
-        Topology = TextTopology.Build(text);
+        _fingerprint = new Lazy<string>(
+            () => Convert.ToHexString(SHA256.HashData(MemoryMarshal.AsBytes(text.AsSpan()))));
+        _topology = new Lazy<TextTopology>(() => TextTopology.Build(text));
     }
 
     public string DocumentId { get; }
@@ -39,7 +46,7 @@ public sealed class TextMaster
 
     public string Text { get; }
 
-    public string Fingerprint { get; }
+    public string Fingerprint => _fingerprint.Value;
 
     public AddressUnit AddressUnit => AddressUnit.Utf16CodeUnit;
 
@@ -47,18 +54,25 @@ public sealed class TextMaster
 
     public TextSpan Extent => new(0, Length);
 
-    public TextTopology Topology { get; }
+    public TextTopology Topology => _topology.Value;
+
+    internal bool FingerprintIsCreated => _fingerprint.IsValueCreated;
+
+    internal bool TopologyIsCreated => _topology.IsValueCreated;
 
     public static TextMaster Create(string text, string? documentId = null, long revision = 0) =>
         new(documentId ?? Guid.NewGuid().ToString("N"), revision, text);
 
     public bool IsCompatibleWith(TextMaster? other) =>
-        other is not null &&
+        // Same instance is trivially the same coordinate space; short-circuiting here keeps
+        // same-master span algebra from ever forcing the fingerprint.
+        ReferenceEquals(this, other) ||
+        (other is not null &&
         Revision == other.Revision &&
         AddressUnit == other.AddressUnit &&
         Length == other.Length &&
         StringComparer.Ordinal.Equals(DocumentId, other.DocumentId) &&
-        StringComparer.Ordinal.Equals(Fingerprint, other.Fingerprint);
+        StringComparer.Ordinal.Equals(Fingerprint, other.Fingerprint));
 
     public void EnsureCompatibleWith(TextMaster other)
     {

@@ -10,4 +10,9 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- The trust harness observes laziness (IsValueCreated flags) without widening the API. -->
+    <InternalsVisibleTo Include="doccer.tests" />
+  </ItemGroup>
+
 </Project>

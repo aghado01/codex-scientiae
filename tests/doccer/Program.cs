@@ -14,6 +14,7 @@ internal static class Program
         try
         {
             MasterTopologyIsTotal();
+            LazySubstrateDefersUntouchedWork();
             FrozenBatchPreservesClaims();
             SpanSetObeysBooleanLawsAndMasterIdentity();
             SpanSetRandomizedLawsHold();
@@ -54,6 +55,30 @@ internal static class Program
             !StringComparer.Ordinal.Equals(loneHigh.Fingerprint, loneLow.Fingerprint),
             "lone-surrogate fingerprints differ");
         True(!loneHigh.IsCompatibleWith(loneLow), "lone-surrogate masters incompatible");
+    }
+
+    private static void LazySubstrateDefersUntouchedWork()
+    {
+        var master = TextMaster.Create("0123456789");
+        var a = SpanSet.Create(master, new[] { new TextSpan(1, 5), new TextSpan(6, 8) });
+        var b = SpanSet.Create(master, new[] { new TextSpan(3, 7) });
+        _ = a.Union(b);
+        _ = a.Intersect(b);
+        _ = a.Subtract(b);
+        _ = a.Complement();
+        True(master.IsCompatibleWith(master), "same-instance compatibility fast-path");
+        True(!master.TopologyIsCreated, "primitive span algebra leaves topology unbuilt");
+        True(!master.FingerprintIsCreated, "same-master algebra leaves fingerprint uncomputed");
+
+        _ = master.GetLineSpan(0);
+        True(master.TopologyIsCreated, "line query forces topology");
+        True(!master.FingerprintIsCreated, "topology access does not force fingerprint");
+
+        var twin = new TextMaster("lazy-twin", 0, master.Text);
+        var twinPeer = new TextMaster("lazy-twin", 0, master.Text);
+        True(twin.IsCompatibleWith(twinPeer), "distinct-instance compatibility still full");
+        True(twin.FingerprintIsCreated, "cross-instance comparison forces fingerprint");
+        True(!twin.TopologyIsCreated, "cross-instance comparison does not force topology");
     }
 
     private static void FrozenBatchPreservesClaims()
