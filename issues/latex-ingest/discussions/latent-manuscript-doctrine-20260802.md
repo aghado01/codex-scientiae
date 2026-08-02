@@ -130,8 +130,20 @@ The property this locks in: **every view is a query over one flat stream.** Sect
 group-by parent; reading order = sort by seq; math bank = filter by kind; prose-only skeleton
 = its complement; channels (prose, math, later figure/caption) = interleaved projections of
 one representation. No view is a separate artifact. This is D12 (tree-as-query) and D21
-(basis-stamped views) at manuscript grain. Corollaries: `Store-Math`/`@@LMATH@@` was always
-node capture forced to encode itself as string placeholders; the oracle lane's "one tap, two
+(basis-stamped views) at manuscript grain. Corollaries: the oracle lane's "one tap, two
 consumers — math bank + structure skeleton" was the channel decomposition avant la lettre,
 reunified here as filters over the stream; serialization degenerates to *walk seq, render
 each kind* — the markdown formality is a foreach.
+
+**Correction (user, same day) — no retrospective dignity for `@@LMATH@@`.** Do not read the
+placeholder machinery as proto-node-capture; that teleology reeks of the original sin. The
+placeholder families are **witnesses of the disease, not prototypes of the cure** (their
+F1-demand reading in the harvest stands; an ancestry reading does not). From the assembly
+standpoint, **math segmentation is essentially free at parse time** — identifying and
+expanding a macro, walking the source past `$…$` / `\[…\]` / environments, already yields the
+boundaries as a byproduct of work the parser is doing anyway. Math nodes are **born during
+forward assembly, never extracted afterward** — not by regex over markdown, and **not by
+doccer interval algebra over markdown either**: doccer's place is the assembly side
+(fragment masters, scoped collection over source), not a sharper mining rig for output. The
+toy specimen's markdown processing is a schema-design research device — reverse-engineering
+the target shape — never the production path.
