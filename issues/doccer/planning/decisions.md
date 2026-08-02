@@ -2,11 +2,12 @@
 
 Living document — states what is decided **now**, corrected in place as decisions evolve (the
 judgment rule: amendments preserve decisions; this file need not preserve every sentence). The
-full arguments live in the minting run's brief
-([fable-doccer-dev-brief-20260801_222912](../briefs/fable-doccer-dev-brief-20260801_222912.md))
-and the evidence in [../discussions/](../discussions/). The MarkPig legwork is historical
-evidence — cited, never amended. `src/doccer/README.md` is the in-repo contract surface and must
-agree with this file.
+full arguments live in the runstamped briefs under [../briefs/](../briefs/) — the
+[founding run](../briefs/fable-doccer-dev-brief-20260801_222912.md) minted D1–D14, the per-chip
+briefs carry the later contracts with their reports — and the evidence in
+[../discussions/](../discussions/). Completed roadmap items are recorded in
+[ledger.md](ledger.md). The MarkPig legwork is historical evidence — cited, never amended.
+`src/doccer/README.md` is the in-repo contract surface and must agree with this file.
 
 ## Doctrine
 

@@ -4,10 +4,11 @@ This directory contains the domain-neutral C# engine (`CodexSci.Doccer`). It is 
 separate from Markdown, LaTeX, PDF, MCP, and workflow code: those systems may emit claims or
 consume views, but none owns the interval substrate.
 
-This README is the contract surface. The decision canon and roadmap live as current-truth
-documents in [issues/doccer/planning/](../../issues/doccer/planning/)
+This README is the contract surface. The decision canon, roadmap, and completed-item ledger
+live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
 ([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D24, deferrals, question
-ledger — and [roadmap.md](../../issues/doccer/planning/roadmap.md)); per-iteration chip briefs
+ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
+[ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
 with their reports sit in [issues/doccer/briefs/](../../issues/doccer/briefs/), and topic
 evidence in [issues/doccer/discussions/](../../issues/doccer/discussions/). The MarkPig legwork
 documents are historical evidence — consulted and cited, never amended.
