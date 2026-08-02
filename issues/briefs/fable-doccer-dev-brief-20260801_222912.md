@@ -34,6 +34,14 @@ reads in order across topics and agents. Topic evidence and discussion docs stay
 relatively. Rev 5 also discharges the open Tranche-1 item: the decision canon is now reflected
 into `src/doccer/README.md`, the in-repo contract surface.
 
+**Judgment note (rev 5, 2026-08-01):** append-only is for *decisions and reports*, not an
+absolutism over every sentence. Where accretion would obscure current understanding — framing
+prose, stale caveats — correcting in place is legitimate, because the runstamped-run mechanism
+and git are the history. The test: does the old text record a decision someone may need to
+trace, or a state of understanding now known false? Trace-worthy → amend with the change
+declared; false → correct. (Memory files sit outside these rules entirely: memories state
+current truth and are rewritten in place.)
+
 ---
 
 ## 1. Framing: what mdnav is to doccer
