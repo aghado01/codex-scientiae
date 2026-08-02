@@ -83,7 +83,8 @@ complete) or a **missing path** (no composition reaches it — an engine-contrac
 the pairing lift is this kind). The rewrite test's "refusal to collapse" is what
 distinguishes the second kind from permanent adapter policy.
 
-Process discipline for the census, three rules:
+Process discipline for the census — three rules, all guarding one failure mode: **conflating
+fact-finding research with conclusions**:
 
 1. **Catalog before naming.** Capture the candidate, its contract shape, and its integration
    points first; promotion — a verb name, an implementation — is always a later, separate act
