@@ -46,6 +46,12 @@ form); normalization, when wanted, is an explicit producer step yielding a new m
 offset map, and compatibility forms (NFKC/NFKD) are treated as lossy transforms whose loss the
 map records.
 
+The domain-agnostic surface is the DLL (operation granularity, in-process composition) and the
+CLI (task granularity — one-shot à la carte jobs, with domain knowledge arriving as data
+inventories, never as flags or verbs). PowerShell helpers are site-local ergonomics and domain
+adapters, deliberately thin: anything a graduated, cross-project doccer would have to carry
+travels in the C# surface.
+
 ## Implemented contracts
 
 - immutable, identified UTF-16 text masters; fingerprints hash the raw code units, so identity

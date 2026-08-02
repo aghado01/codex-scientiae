@@ -249,6 +249,39 @@ the full scalar tiling — a monolith tax charged at the door for small jobs. Ma
 **Source:** user directive 2026-08-01; sol-discussion layering (interval set / coordinate space /
 text spans / region layers / edit plans) concurs.
 
+### D13 — The doccer-native surface: CLI and DLL own the à la carte tools *(appended rev 5)*
+**Context:** doccer is expected to graduate — into its own project, or a cross-project utility
+consumed by other projects for their own reasons (the HDBSCAN payload precedent). The
+C#/PowerShell boundary is therefore a **portability boundary**, not a convenience split.
+**Decision:**
+1. Atomic tools that can be stated domain-agnostically in doccer's own vocabulary surface on the
+   **doccer-native surface**: the DLL at *operation* granularity (rich in-process composition),
+   the CLI at *task* granularity — verbs that complete a small à la carte job in one invocation
+   (derive a region set from claims, collect with an inventory within a scope, evaluate a small
+   span-algebra expression, validate spans). The masks.ps1-descended operations are the first
+   candidates.
+2. The CLI stays domain-agnostic by taking domain knowledge as **data** — rule inventories and
+   scope files (`doccer collect --rules latex-rules.jsonl --scope prose.json`) — never as flags
+   or verbs (no `--latex`, ever).
+3. The PowerShell layer is **site-local ergonomics and domain adapters only**: thin wrappers,
+   inventory assembly, workflow glue. Boundary test: **if it would be lost when doccer
+   graduates, it was in the wrong layer.** A capability other projects would need to reimplement
+   must not live in PS.
+4. This does not reopen the sol-discussion warning against CLI-per-algebra-primitive
+   chattiness — that warning stands. DLL = operation grain; CLI = task grain; the D12 lazy
+   substrate keeps per-invocation cost proportional to the job.
+5. **Consequence:** CLI atomic tools need a minimal span/claim **wire format** (JSONL over
+   stdio) — deliberately smaller than, and prior to, F2's archival batch format; F2 later
+   subsumes it rather than duplicating it.
+**Supersedes in part:** the Tranche-4 phrasing (rev 3) naming the reborn masks.ps1 "the
+canonical à la carte surface." Current reading: the canonical à la carte surface is the
+doccer-native CLI/DLL; the masks.ps1 rebirth is a thin site-local veneer over it. The Tranche-4
+text stands unedited above, per the rev-4 lineage rule.
+**Witness:** agents are first-class CLI consumers — mdnav demonstrates the zero-ceremony CLI
+instrument form for agent workflows; doccer's atomic verbs serve the same reach-for-a-tool
+pattern, and F6's instrument car later builds on this same surface rather than a parallel one.
+**Source:** user directive 2026-08-01.
+
 ## 4. Deferred — with named triggers
 
 ### F1 — OffsetMap (general form) — contract shape drafted
@@ -370,6 +403,7 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 | Q16 | what supplants mdnav, and when | deferred, shaped | F6 — Phase-2 exit + markdown inventory; oracle harness defined |
 | Q17 | normalization: silent vs explicit | **resolved** | D11 — engine never normalizes; explicit new-master + map; identity default |
 | Q18 | monolith risk — must simple jobs pay the full treatment? | **resolved** | D12 — à la carte primitives; lazy substrate; identity floor stays |
+| Q19 | where do à la carte tools surface — PS helpers or doccer-native? | **resolved** | D13 — CLI (task grain, inventories as data) + DLL (operation grain); PS = site-local veneer; graduation test |
 
 ---
 
