@@ -5,9 +5,10 @@
 
 .DESCRIPTION
   First-party engine source lives under src/doccer. This brewery recipe places all
-  compilation intermediates under artifacts through Directory.Build.props, runs the
-  dependency-free contract harness, and publishes the reusable assembly plus thin CLI
-  into packages/doccer.
+  compilation intermediates and publish staging under artifacts/doccer (bin and obj via
+  Directory.Build.props, publish below), runs the dependency-free contract harness, and
+  releases the reusable assembly plus thin CLI to packages/doccer. artifacts/ is working
+  output only — the delivered payload lives in packages/.
 #>
 [CmdletBinding()]
 param(
@@ -23,7 +24,10 @@ $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $testsProject = Join-Path $PSScriptRoot 'Doccer.Tests.csproj'
 $cliProject = Join-Path $PSScriptRoot 'Doccer.Cli.csproj'
 $packageDir = Join-Path $repo 'packages/doccer'
-$stagingDir = Join-Path $repo 'artifacts/publish/doccer'
+# Publish staging is a stage of doccer's own build, so it lives with doccer's other build
+# output under artifacts/doccer — never a top-level artifacts/publish bucket. Nothing is
+# delivered from artifacts: the payload is released to packages/doccer below.
+$stagingDir = Join-Path $repo 'artifacts/doccer/publish'
 $packagesRoot = [IO.Path]::GetFullPath((Join-Path $repo 'packages'))
 $artifactsRoot = [IO.Path]::GetFullPath((Join-Path $repo 'artifacts'))
 
