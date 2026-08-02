@@ -71,3 +71,39 @@ The vocabulary closes its own loop: doccer's CLI names **latent call paths** thr
 engine; the reshaped pipeline captures the **latent manuscript** inside the source. Both
 programs are the same move — make latent structure explicit as first-class, addressable
 pieces, and let everything downstream become a query or a serialization.
+
+## The graph refinement (same day)
+
+**The latent manuscript is a graph, not a sequence.** It carries internal references — labels
+and their referents, citations, figure–caption bonds, theorem–proof bonds — so it is not
+fundamentally a serial procession of objects; its original rendering is merely *one
+linearization* of it. Three structural claims:
+
+1. **Transfer = surjection onto the canonical spine.** The latex-to-markdown process
+   surjectively maps variable document-source serial bytes onto canonical manuscript nodes:
+   total on source, many-to-one onto the spine, with the map's kernel — typesetting and
+   painting — **classified, never lost** (faithful-not-filtered, formalized). The
+   surjectivity audit is a coverage query: every source byte lands in a node's provenance or
+   in an explicitly classified typesetting span. "Not comprehensive about everything in
+   between" becomes impossible to repeat silently.
+2. **Presentation = traversal.** After the graph is constructed during the pipeline, the
+   markdown is a walk of it in reading order. Placement decisions — figures, captions,
+   relative to first reference — are **named policies of the walk**, not properties of the
+   document (the caption-relocation lane is the existing post-hoc instance; under the
+   inversion it becomes a traversal policy). The walk separates typesetting/painting from the
+   semantic narrative and hierarchical structure inherent to the reading.
+3. **Two artifacts already converge on the representation from opposite ends.**
+   `tex-docgraph.ps1` forward-captures the typed reference graph *upstream of surjection*
+   (its own header's words) — node/edge JSONL, cues-as-data in `stores/docgraph.json`, loud
+   on a missing store: the pioneer pass, doing for labeled objects what the reshape does for
+   every node. `bibliotecha/corpora/KisungYou/2605.20681v1.chunks.jsonl` reverse-engineers
+   the spine from an (imperfect) markdown output — 58 nodes with dual addressing (`seq` spine
+   order · `addr` kind-local · `parent` hierarchy edge) plus provenance spans and anchors;
+   math/prose/figure content nodes deliberately not yet teased out. The latent manuscript =
+   spine ∪ reference edges ∪ content nodes.
+
+Doccer resonances, precise: the founding kernel already implements **reference join** beside
+the thirteen Allen relations — edges are join-shaped over claims; the spine constructor is
+the total-partition specimen in the census drawer (mdnav's totality geometry); nodes are
+coarse-grain claims whose `seq`/`addr`/`parent` are basis-stamped views of one claim set;
+forward provenance spans point into *source* (byte grain → F3-relevant), not markdown.
