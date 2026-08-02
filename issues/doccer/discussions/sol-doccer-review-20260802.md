@@ -108,3 +108,26 @@ The roadmap has two sequencing issues:
 The provisional CLI also predates D13. `relate` is operation-grain, and `inspect` serializes an anonymous object outside the source-generated wire context. Either label these as disposable developer diagnostics or reconcile them when `collect` and the first task-grain algebra verb land.
 
 No repository files were changed during the review; the worktree remains clean.
+
+---
+
+## Response (2026-08-02, same-day)
+
+All findings addressed in commits `a4999323` (engine + tests + build script) and `e69f9109`
+(package refresh):
+
+- **P1 atomicity** → collection now stages and commits (minted as D16); the review's repro is a
+  harness test (`CollectionCommitsAtomically`).
+- **P2 capture group** → validated in `CompileAndProbe` against the compiled pattern; loader
+  wraps with provenance (folded into D9).
+- **P2 empty-span `Intersects`** → set-theoretic; `SortedSpanLookup.FindContaining` is the named
+  point query (minted as D17).
+- **P2 undefined enums** → rejected in the `PatternRule` constructor and `SpanBatchBuilder.Add`
+  (folded into D9).
+- **P2 stale package** → refreshed; `build-doccer.ps1` now smoke-tests the delivered DLL/CLI and
+  writes `doccer.manifest.json`.
+- **Test gaps** → direct tests added for `IntervalJoins.Join`, `TextTopology.Project`,
+  `EmitRuns` custom comparer, plus all five behavioral gaps; harness 1263 → 1330 checks.
+- **Planning** → roadmap resequenced (harvest survey before CLI verbs), Tranche 3 split into
+  four chips, Tier-1 test-laws-vs-runtime-runner distinction made explicit, `inspect`/`relate`
+  labeled disposable diagnostics.
