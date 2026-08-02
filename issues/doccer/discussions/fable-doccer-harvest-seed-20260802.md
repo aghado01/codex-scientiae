@@ -308,3 +308,19 @@ address *in* a master (owns no text) vs fragment = coordinate space *over* the t
 part-by-position (window). Candidate simplification: let **slice** serve as verb and result
 noun (`slice : master × span → slice`, per canon's TextSlice), retiring "fragment" as a
 separate sort name.
+
+### Addendum 4b — unbraiding rides the mask layer (user observation)
+
+Operationally, **unbraiding involves a masking mechanism and entrains masking mechanics along
+the way.** Two faces by regime: on the *assembled stream*, unbraid degenerates to projection
+(filter by kind — bookkeeping). On *unassembled text* — where forward assembly lives —
+**unbraid IS masking**: extracting the prose fiber = ¬(math ∪ code ∪ comments); the latex.ps1
+overlay compositions were fiber extraction executed as mask algebra all along. The
+**entrainment mechanism is D6 scope intersection**: the fiber's mask becomes the caller scope,
+every operation within the fiber runs rule-scope ∩ fiber-scope, the collector cannot bridge
+exclusions (cross-fiber fusion impossible by construction), and D23's
+exclusions-recorded-as-evidence is the entrained mask surfacing in measure results.
+`Get-MaskedText` blank-to-space = the materialized poor-man's entrainment; the engine threads
+the mask as scope with the master intact. Lexicon consequence: the axes stay conceptually
+orthogonal, but the channel axis **rides on** the Boolean/suppression layer until assembly
+completes — unbraid names a mask composition + its entrained scope regime.
