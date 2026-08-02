@@ -15,6 +15,18 @@ phrasing proved ambiguous, and incorporates D11 and the F1 contract shape from
 [grok-offsetmap-unicode.md](grok-offsetmap-unicode.md). Rev 3 adds D12: the engine is a library
 of composable primitives, never a pipeline that must run end-to-end for simple jobs.
 
+**Runstamp and lineage (rev 4, 2026-08-01):** this brief is run `20260801_222912` (UTC of its
+first commit), and briefs carry runstamps in their filenames from here on. Within a run the
+brief **accumulates** — new decision records, ledger rows, and chip reports are appended;
+existing records are not rewritten. A substantive re-decision **closes the run**: it mints a new
+runstamped brief that declares `supersedes: <prior file>`, restates what changed and why, and
+leaves the prior brief untouched as history. Newest stamp = current canon; each run's ledger
+says where every question stood at that stamp. Same discipline as the membrane's
+`.runs/{stamp}` and mdnav's stamped runs — nothing is overwritten, earlier runs survive for
+comparison. (Honest note: revs 2–3 of this run rewrote §2 and Tranche 1 in place before this
+rule existed; those prior states live in git at `09642901` and `f78ff2f3`. The append-only rule
+binds from rev 4 onward.)
+
 ---
 
 ## 1. Framing: what mdnav is to doccer
