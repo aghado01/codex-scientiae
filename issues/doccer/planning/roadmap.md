@@ -26,11 +26,14 @@ report appended on completion; `discussions/` = captured evidence.
 
 ## Queue
 
-1. **Harvest survey** (before any durable CLI contract): sweep codex-scientiae and other sources
-   — masks.ps1 operations, latex.ps1 span producers, membrane density/mask calculus, md-repair
-   byte offsets, mdnav constructs — mapping each to the doccer primitive or verb it implies.
-   Anticipate-the-consumer: capabilities resurface as domain-agnostic utilities first. The
-   survey's output freezes the verb list and task grain the CLI then commits to.
+1. **Harvest seed read** (before any durable CLI contract): deep-read the four genealogy
+   sources — masks.ps1 operations, latex.ps1 span producers, md-repair byte offsets, mdnav
+   constructs (the density/mask calculus as it survives in the living lanes rides along) — and
+   synthesize site records: where, what each operation improvises, which primitive it
+   rediscovered or which verb it implies. Dense witnessed demand mints the **first verb set**
+   and its task grain; single witnesses land in the consumer registry. The verb list is a
+   living canon: shipped names and semantics hold steady (D8 discipline at the CLI surface);
+   the namespace stays open.
 2. **First CLI verbs (D13):** `doccer collect` (inventory + scope in, claims JSONL out) and a
    span-algebra verb — the macro-expansion witness as a working demo. user-repl anatomy:
    hand-rolled router, per-verb files with no hot path, wire format extending the loader's JSON
@@ -50,6 +53,18 @@ report appended on completion; `discussions/` = captured evidence.
 Maturity-gated beyond that: F2 persisted batches → F4 indexed joins → F5 Tier-2/3 agreement
 scoring → F6 markdown adapter and the mdnav succession (oracle harness on the doc-dive
 fixtures; exceed mdnav precisely at its collapse points; conserve its instrument virtues).
+
+## Standing practice — the abductive census
+
+The demand census is **standing and abductive, never a read-everything sweep**. As doccer
+integrates into live workflows (the latex-ingest end-to-end pass is the first named occasion),
+every bespoke resolution encountered raises the question *"should this be reading doccer
+instead?"* — hits become site records in the **future-consumer registry** (named witnesses
+tagged to their F-families, replacing abstract triggers with counts), and helper utilities /
+public-surface exposure grow opportunistically through the same evidence discipline that minted
+the first verbs. The graveyard repair farm (`codex-scientiae-graveyard/legacy_code/tools`,
+`repair_*` ×~30) is an evidence pool consulted when its family comes up — F1 edit plans — not
+a gate on anything.
 
 ## Open questions in play
 
