@@ -16,6 +16,7 @@ internal static class Program
             MasterTopologyIsTotal();
             LazySubstrateDefersUntouchedWork();
             FrozenBatchPreservesClaims();
+            InternedColumnsRoundTripClaimStrings();
             SpanSetObeysBooleanLawsAndMasterIdentity();
             SpanSetRandomizedLawsHold();
             AllenRelationsAreCompleteAndInvertible();
@@ -98,6 +99,55 @@ internal static class Program
             () => builder.Add(new SpanClaim(new TextSpan(0, 1), "late", SpanLevel.Character, "test")),
             "frozen builder rejected mutation");
         Equal(0, DoccerValidation.ValidateIntrinsic(batch).Count, "intrinsic validation");
+    }
+
+    private static void InternedColumnsRoundTripClaimStrings()
+    {
+        var master = new TextMaster("interning", 0, "0123456789");
+        var claims = new[]
+        {
+            new SpanClaim(new TextSpan(0, 2), "heading", SpanLevel.Line, "scanner", 1, "atx"),
+            new SpanClaim(new TextSpan(2, 4), "heading", SpanLevel.Line, "scanner", 1, "setext"),
+            new SpanClaim(new TextSpan(4, 6), "fence", SpanLevel.MultiLine, "scanner", 2, "atx"),
+            new SpanClaim(new TextSpan(6, 8), "heading", SpanLevel.Line, "human", 3),
+            new SpanClaim(new TextSpan(8, 10), "fence", SpanLevel.MultiLine, "human", 0),
+        };
+
+        var builder = new SpanBatchBuilder(master);
+        foreach (var claim in claims)
+        {
+            builder.Add(claim);
+        }
+
+        var batch = builder.Freeze();
+
+        for (var i = 0; i < claims.Length; i++)
+        {
+            Equal(claims[i].Kind, batch[i].Kind, $"kind round-trips #{i}");
+            Equal(claims[i].Source, batch[i].Source, $"source round-trips #{i}");
+            Equal(claims[i].RuleId, batch[i].RuleId, $"rule id round-trips #{i}");
+            Equal(claims[i].Span, batch[i].Span, $"span preserved #{i}");
+            Equal(claims[i].ToString(), batch[i].ToClaim().ToString(), $"whole claim round-trips #{i}");
+        }
+
+        Equal(2, batch.Kinds.Table.Count, "distinct kinds interned once");
+        Equal(2, batch.Sources.Table.Count, "distinct sources interned once");
+        Equal(2, batch.RuleIds.Table.Count, "distinct rule ids interned once");
+        Equal("heading", batch.Kinds.Table[0], "kind table keeps first-appearance order");
+        Equal("fence", batch.Kinds.Table[1], "kind table second entry");
+
+        Equal(batch.Kinds.Ids[0], batch.Kinds.Ids[1], "equal kinds share one id");
+        True(batch.Kinds.Ids[0] != batch.Kinds.Ids[2], "distinct kinds get distinct ids");
+        Equal(batch.RuleIds.Ids[0], batch.RuleIds.Ids[2], "equal rule ids share one id across kinds");
+        Equal(InternedColumn.NullId, batch.RuleIds.Ids[3], "absent rule id records the null id");
+        Equal(null, batch.RuleIds[3], "null id reads back as null");
+        Equal(claims.Length, batch.Kinds.Count, "column length matches batch length");
+
+        for (var i = 0; i < batch.Count; i++)
+        {
+            Equal(batch[i].Kind, batch.Kinds.Table[batch.Kinds.Ids[i]], $"id indexes the kind table #{i}");
+            Equal(batch[i].Source, batch.Sources[i], $"column indexer agrees with record #{i}");
+        }
     }
 
     private static void SpanSetObeysBooleanLawsAndMasterIdentity()

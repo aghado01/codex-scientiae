@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CodexSci.Doccer;
 
@@ -19,6 +20,76 @@ public readonly record struct SpanClaim(
     string Source,
     int Priority = 0,
     string? RuleId = null);
+
+/// <summary>
+/// An interned string column of a frozen batch: one integer ID per row plus the table of distinct
+/// values in first-appearance order. Built at freeze so equal column values share one table entry
+/// and one ID, giving columnar consumers (and, later, persisted formats) integer equality and a
+/// compact vocabulary. Interning is value-preserving: the string read back for any row is equal to
+/// the string the claim was added with. IDs are batch-local — they carry no meaning across batches.
+/// </summary>
+public sealed class InternedColumn
+{
+    /// <summary>The ID recorded for rows whose value is null (nullable columns only).</summary>
+    public const int NullId = -1;
+
+    private readonly int[] _ids;
+    private readonly string[] _table;
+    private readonly ReadOnlyCollection<int> _idsView;
+    private readonly ReadOnlyCollection<string> _tableView;
+
+    private InternedColumn(int[] ids, string[] table)
+    {
+        _ids = ids;
+        _table = table;
+        _idsView = Array.AsReadOnly(_ids);
+        _tableView = Array.AsReadOnly(_table);
+    }
+
+    public int Count => _ids.Length;
+
+    /// <summary>Per-row table IDs, ordinal-aligned with the batch; <see cref="NullId"/> marks null.</summary>
+    public IReadOnlyList<int> Ids => _idsView;
+
+    /// <summary>Distinct non-null values in first-appearance order; index = ID.</summary>
+    public IReadOnlyList<string> Table => _tableView;
+
+    public string? this[int ordinal]
+    {
+        get
+        {
+            var id = _ids[ordinal];
+            return id == NullId ? null : _table[id];
+        }
+    }
+
+    internal static InternedColumn Intern(IReadOnlyList<string?> values)
+    {
+        var ids = new int[values.Count];
+        var table = new List<string>();
+        var lookup = new Dictionary<string, int>(StringComparer.Ordinal);
+        for (var i = 0; i < values.Count; i++)
+        {
+            var value = values[i];
+            if (value is null)
+            {
+                ids[i] = NullId;
+                continue;
+            }
+
+            if (!lookup.TryGetValue(value, out var id))
+            {
+                id = table.Count;
+                table.Add(value);
+                lookup.Add(value, id);
+            }
+
+            ids[i] = id;
+        }
+
+        return new InternedColumn(ids, table.ToArray());
+    }
+}
 
 /// <summary>AoS view of one row in a columnar <see cref="SpanBatch"/>.</summary>
 public readonly struct SpanRecord
@@ -39,11 +110,13 @@ public readonly struct SpanRecord
 
     public TextSpan Span => new(Batch.Starts[Ordinal], Batch.Ends[Ordinal]);
 
-    public string Kind => Batch.Kinds[Ordinal];
+    // Kind and Source are non-null by builder validation, so the interned lookup cannot return
+    // null for them; RuleId is genuinely nullable and passes the column's null ID through.
+    public string Kind => Batch.Kinds[Ordinal]!;
 
     public SpanLevel Level => Batch.Levels[Ordinal];
 
-    public string Source => Batch.Sources[Ordinal];
+    public string Source => Batch.Sources[Ordinal]!;
 
     public int Priority => Batch.Priorities[Ordinal];
 
@@ -108,15 +181,17 @@ public sealed class SpanBatchBuilder
 
     public SpanBatch Freeze()
     {
+        // The string columns are interned here, at the one point where the claim set stops
+        // growing: distinct values become a table and every row keeps an integer ID into it.
         _frozen ??= new SpanBatch(
             Master,
             _starts.ToArray(),
             _ends.ToArray(),
-            _kinds.ToArray(),
+            InternedColumn.Intern(_kinds),
             _levels.ToArray(),
-            _sources.ToArray(),
+            InternedColumn.Intern(_sources),
             _priorities.ToArray(),
-            _ruleIds.ToArray());
+            InternedColumn.Intern(_ruleIds));
         return _frozen;
     }
 }
@@ -128,11 +203,11 @@ public sealed class SpanBatch : IReadOnlyList<SpanRecord>
         TextMaster master,
         int[] starts,
         int[] ends,
-        string[] kinds,
+        InternedColumn kinds,
         SpanLevel[] levels,
-        string[] sources,
+        InternedColumn sources,
         int[] priorities,
-        string?[] ruleIds)
+        InternedColumn ruleIds)
     {
         Master = master;
         Starts = starts;
@@ -147,11 +222,20 @@ public sealed class SpanBatch : IReadOnlyList<SpanRecord>
 
     internal int[] Starts { get; }
     internal int[] Ends { get; }
-    internal string[] Kinds { get; }
     internal SpanLevel[] Levels { get; }
-    internal string[] Sources { get; }
     internal int[] Priorities { get; }
-    internal string?[] RuleIds { get; }
+
+    /// <summary>The interned claim-kind column: per-row IDs plus the distinct-kind table.</summary>
+    public InternedColumn Kinds { get; }
+
+    /// <summary>The interned claim-source column: per-row IDs plus the distinct-source table.</summary>
+    public InternedColumn Sources { get; }
+
+    /// <summary>
+    /// The interned rule-id column. Rows from producers that record no rule carry
+    /// <see cref="InternedColumn.NullId"/>.
+    /// </summary>
+    public InternedColumn RuleIds { get; }
 
     public TextMaster Master { get; }
 
