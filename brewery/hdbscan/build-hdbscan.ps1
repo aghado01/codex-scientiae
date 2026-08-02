@@ -1,12 +1,15 @@
 #requires -Version 7
 <#
 .SYNOPSIS
-  Publish the hdbscan clustering tool to bin/hdbscan/ as an invocable exe.
+  Verify and publish the hdbscan clustering tool to packages/hdbscan.
 
 .DESCRIPTION
-  Repo build-release convention (one build-<tool>.ps1 per C# tool under scripts/). Dev
-  builds land in artifacts/ (via Directory.Build.props); RELEASE binaries — the exes the
-  PowerShell lanes shell out to — land in bin/<project>/, which is already git-ignored.
+  First-party engine source lives under src/hdbscan. This brewery recipe places all
+  compilation intermediates and publish staging under artifacts/hdbscan (bin and obj via
+  Directory.Build.props, publish below), runs the C# smoke harness, and releases the
+  invocable exe to packages/hdbscan. artifacts/ is working output only — the delivered
+  payload lives in packages/.
+
   Default is a framework-dependent single-file exe: the portable PDenv carries the .NET 10
   runtime, so this stays lean. Pass -SelfContained when the exe must run outside PDenv
   (bundles the runtime; larger, no runtime dependency).
@@ -15,51 +18,74 @@
   wanted, add a JsonSerializerContext source-gen first, then -p:PublishTrimmed=true.
 
 .EXAMPLE
-  ./scripts/build-hdbscan.ps1                    # framework-dependent hdbscan.exe → bin/hdbscan/
+  ./brewery/hdbscan/build-hdbscan.ps1                 # framework-dependent → packages/hdbscan
 .EXAMPLE
-  ./scripts/build-hdbscan.ps1 -SelfContained     # self-contained (travels outside PDenv)
-.EXAMPLE
-  ./scripts/build-hdbscan.ps1 -Rid win-x64
+  ./brewery/hdbscan/build-hdbscan.ps1 -SelfContained  # self-contained (travels outside PDenv)
 #>
 [CmdletBinding()]
 param(
-    [string] $Project = 'hdbscan',
+    [ValidateSet('Debug', 'Release')]
     [string] $Configuration = 'Release',
-    [string] $Rid = 'win-x64',
+    [string] $Runtime = 'win-x64',
     [switch] $SelfContained,
-    [string] $OutDir
+    [switch] $SkipTests
 )
 
 $ErrorActionPreference = 'Stop'
-$root = Split-Path $PSScriptRoot -Parent   # scripts/ → repo root
+$repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+# Both csprojs sit in this recipe directory, so name the one to publish explicitly — a
+# first-match glob would be a coin toss between the CLI and its test project.
+$cliProject = Join-Path $PSScriptRoot 'Hdbscan.csproj'
+$testsProject = Join-Path $PSScriptRoot 'hdbscan.tests.csproj'
+$packageDir = Join-Path $repo 'packages/hdbscan'
+# Publish staging is a stage of hdbscan's own build, so it lives with hdbscan's other build
+# output under artifacts/hdbscan — never a top-level artifacts/publish bucket. Nothing is
+# delivered from artifacts: the payload is released to packages/hdbscan below.
+$stagingDir = Join-Path $repo 'artifacts/hdbscan/publish'
+$packagesRoot = [IO.Path]::GetFullPath((Join-Path $repo 'packages'))
+$artifactsRoot = [IO.Path]::GetFullPath((Join-Path $repo 'artifacts'))
 
-$projDir = Join-Path $root "projects/$Project"
-if (-not (Test-Path $projDir)) { throw "no project dir: projects/$Project" }
-$csproj = Get-ChildItem -Path $projDir -Filter '*.csproj' -File | Select-Object -First 1
-if (-not $csproj) { throw "no .csproj under projects/$Project" }
+if ([IO.Path]::GetDirectoryName([IO.Path]::GetFullPath($packageDir)) -ne $packagesRoot) {
+    throw "Refusing unsafe package target: $packageDir"
+}
+if (-not [IO.Path]::GetFullPath($stagingDir).StartsWith($artifactsRoot + [IO.Path]::DirectorySeparatorChar)) {
+    throw "Refusing unsafe staging target: $stagingDir"
+}
 
-if (-not $OutDir) { $OutDir = Join-Path $root "bin/$Project" }
+if (-not $SkipTests) {
+    & dotnet run --project $testsProject -c $Configuration
+    if ($LASTEXITCODE -ne 0) { throw "hdbscan smoke harness failed ($LASTEXITCODE)." }
+}
 
-$dotnetArgs = @(
-    'publish', $csproj.FullName
+if (Test-Path -LiteralPath $stagingDir) {
+    Remove-Item -LiteralPath $stagingDir -Recurse -Force
+}
+New-Item -ItemType Directory -Force -Path $stagingDir | Out-Null
+
+$publishArgs = @(
+    'publish', $cliProject
     '-c', $Configuration
-    '-r', $Rid
+    '-r', $Runtime
     ($SelfContained ? '--self-contained' : '--no-self-contained')   # bare switches; the space form '--self-contained false' misparses to true
     '-p:PublishSingleFile=true'
-    '-o', $OutDir
+    '-o', $stagingDir
 )
 if ($SelfContained) {
-    $dotnetArgs += '-p:IncludeNativeLibrariesForSelfExtract=true'
-    $dotnetArgs += '-p:EnableCompressionInSingleFile=true'
+    $publishArgs += '-p:IncludeNativeLibrariesForSelfExtract=true'
+    $publishArgs += '-p:EnableCompressionInSingleFile=true'
 }
 
-Write-Host "publishing $($csproj.Name) ($($SelfContained ? 'self-contained' : 'framework-dependent'), $Rid) → $OutDir" -ForegroundColor Cyan
-& dotnet @dotnetArgs
-if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed ($LASTEXITCODE)" }
+& dotnet @publishArgs
+if ($LASTEXITCODE -ne 0) { throw "hdbscan publish failed ($LASTEXITCODE)." }
 
-$exe = Join-Path $OutDir "$Project.exe"
-if (Test-Path $exe) {
-    Write-Host "ok → $exe" -ForegroundColor Green
-} else {
-    Write-Warning "publish reported success but $exe was not found — check AssemblyName."
+$executable = Join-Path $stagingDir 'hdbscan.exe'
+if (-not (Test-Path -LiteralPath $executable)) {
+    throw 'Publish succeeded but hdbscan.exe was not found in staging — check AssemblyName.'
 }
+
+if (Test-Path -LiteralPath $packageDir) {
+    Remove-Item -LiteralPath $packageDir -Recurse -Force
+}
+Move-Item -LiteralPath $stagingDir -Destination $packageDir
+
+Write-Host "hdbscan payload refreshed at $packageDir" -ForegroundColor Green

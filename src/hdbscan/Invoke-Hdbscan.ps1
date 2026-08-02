@@ -5,8 +5,9 @@
 
 .DESCRIPTION
   The clustering engine stays a black-box CLI; no clustering logic lives in PowerShell.
-  Resolves the published exe at bin/hdbscan/hdbscan.exe (built by ../../scripts/build-hdbscan.ps1) and
-  falls back to `dotnet run --project projects/hdbscan` for an unpublished dev tree.
+  Resolves the released exe at packages/hdbscan/hdbscan.exe (built by
+  ../../brewery/hdbscan/build-hdbscan.ps1) and falls back to `dotnet run` on the recipe's
+  Hdbscan.csproj for an unpublished dev tree.
   Emits a PSCustomObject with the three output paths so a lane can read partition.csv back.
 
   First consumer: the pig figure lane writes Lane-4 bbox centroids to a temp points.jsonl,
@@ -48,12 +49,12 @@ function Invoke-Hdbscan {
     if ($PSBoundParameters.ContainsKey('ClusterSelectionEpsilon')) { $cliArgs += @('--cluster-selection-epsilon', $ClusterSelectionEpsilon) }
     if ($ConfigPath)     { $cliArgs += @('--config', $ConfigPath) }
 
-    $exe = Join-Path $RepoRoot 'bin/hdbscan/hdbscan.exe'
+    $exe = Join-Path $RepoRoot 'packages/hdbscan/hdbscan.exe'
     if (Test-Path $exe) {
         & $exe @cliArgs
     } else {
-        Write-Verbose "published exe not found at $exe — falling back to dotnet run"
-        $proj = Join-Path $RepoRoot 'projects/hdbscan'
+        Write-Verbose "released exe not found at $exe — falling back to dotnet run"
+        $proj = Join-Path $RepoRoot 'brewery/hdbscan/Hdbscan.csproj'
         & dotnet run --project $proj -- @cliArgs
     }
     if ($LASTEXITCODE -ne 0) { throw "hdbscan exited $LASTEXITCODE" }

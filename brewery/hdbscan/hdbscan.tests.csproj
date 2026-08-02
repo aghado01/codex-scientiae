@@ -4,12 +4,17 @@
        src\hdbscan (SharedSource override — the project name is 'hdbscan.tests', so the
        default route would look for a non-existent src\hdbscan.tests) plus the standalone
        test Program at tests\hdbscan. The library sources carry no entry point, so the
-       test's top-level Program is the only Main. Run it from projects\tests via dotnet run. -->
+       test's top-level Program is the only Main — but only with the default compile glob
+       off: this project shares its directory with the CLI recipe, whose Program.cs would
+       otherwise be swept in as a second top-level compilation unit (CS8802). Both source
+       sets arrive as explicit Compile items, so nothing is lost. Run it with dotnet run
+       on this project file; build-hdbscan.ps1 does so as its harness step. -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <AssemblyName>hdbscan.tests</AssemblyName>
     <RootNamespace>CodexSci.Hdbscan</RootNamespace>
     <SharedSource>hdbscan</SharedSource>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
