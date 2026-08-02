@@ -121,3 +121,30 @@ inventories as data. The pairing lift goes to contract drafting as the next deci
 Total-partition views and the named-measure growth (composition, coverage, partition-size
 stats) enter the future-consumer registry, which for now lives as the tables above; graduation
 follows the standing abductive census.
+
+## Addendum (same day) — the capability view
+
+Re-examination under the finalized framework (verbs name latent call paths; catalog ≠
+conclusions): the axis pivoted from specimen (file) to capability. Every hand-rolled
+interval-algebra solution in the four files decomposes as latent-capability + store-data +
+residual-policy; one mechanism hole (pairing), one family where desire outruns the engine
+(byte/edit plane).
+
+| latent capability (exists) | public utility desired | domain adapter residue |
+|---|---|---|
+| scoped collection under suppression (D3/D6/D16) — twins: blank-to-space, fence toggles, noise line-scan | `collect` (rule pack + scope → claims/counts) | LaTeX + markdown rule packs; thresholds stay policy |
+| span-set algebra (SpanSet complete) — twins: masks op table, TeX compositions, mergeSpans | span-algebra verb | composition recipes as store entries (missing-example bin) |
+| slice/rebase (D19) — twins: Move/Limit-Mask pincer | scope/rebase options on the above; macro-expansion demo | window choice = domain |
+| line grain (D15/D21) — twins: Split-AtLevel (CR bug), line tables | output mode, not a verb | byte variant = F3, not latent |
+| runs + measures (D4/D23) — twins: constructRuns, cadence, coverage, compositionOf | named measures later (composition/coverage/partition stats) — catalog | meaning thresholds stay consumer |
+| containment lookup (D24) — twins: anchorAt, containing() | annotate option on verbs | basis choice |
+| — missing mechanism: pairing (refusal argued) | `pair` after engine contract | token rules = store; remedies = orchestration |
+| — missing family: F3 + F1 (live twins: Get-MdLineIndex, Set-MdSpan, byteLength conversions) | edit-apply capability eventually | fix content = domain; safe application = engine family |
+
+Rewrite futures: masks.ps1 → thin veneer (~100% mechanical twin); latex.ps1 → rule pack + ~10
+recipe lines + small policy table; md-repair.ps1 → collect + verdict cascade (stays PS by
+design) + splice gated on F1/F3; mdnav → no rewrite, F6 succession with fixtures as oracle.
+
+Distilled: adapter residue is thin (data + thresholds + verdict/fix tables) — the D10 boundary
+was drawn correctly before the engine existed. The two pending verbs give every latent row its
+reach-for; the last two rows are contract work, not verb work.
