@@ -306,6 +306,28 @@ path** — verified in the code, and the transferable facts for doccer's CLI:
 Naming note (user): "userrepl" is a misnomer — it is a CLI facade, not a REPL. Doccer's surface
 should be named for what it is.
 
+### D14 — Gating doctrine: contracts gate; consumers witness *(appended rev 5)*
+**Context:** Tranche-2 scoping and the F-item triggers had drifted toward "wait for a consumer"
+as if consumer arrival *authorizes* engine work. That misreads engines-first: the SHAPE-era spec
+witnesses were **anticipated** consumers, not awaited ones.
+**Decision:**
+1. The only gate on implementing engine capability is **contract closure**. A contract closable
+   from first principles is closed by design — anticipate the consumer, don't wait for one.
+2. Consumers **validate and prioritize**; they never authorize and never scope-cut. An F-item's
+   "trigger: first consumer" is a prioritization default for contracts whose remaining open
+   questions are best answered by a real consumer's shapes — not a permission condition. Any
+   F-item may be pulled forward the moment its contract closes honestly without one.
+3. What stays absolutely gated is implementing *against an open contract* (D10: extend
+   contracts first). "No consumer yet" is never by itself a reason to leave a fundamental
+   architectural gap; "contract not closed" always is.
+**Consequences:** register/value/metadata columns remain outside Tranche 2 because their
+contracts are open — closing them is schedulable design work, not an indefinite wait. Unicode
+block/script classification is **decision-gated, not consumer-gated**: a UCD data-provenance
+record (pinned version, tables shipped as versioned data with their own stamp, facts computed
+lazily per D12) closes the contract, after which the capability lands as coherent engine work.
+**Source:** user directive 2026-08-01 — "anticipate-the-consumer"; waiting for *contracts* is
+good practice, waiting for *consumers* is not the doctrine.
+
 ## 4. Deferred — with named triggers
 
 ### F1 — OffsetMap (general form) — contract shape drafted
@@ -428,6 +450,7 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 | Q17 | normalization: silent vs explicit | **resolved** | D11 — engine never normalizes; explicit new-master + map; identity default |
 | Q18 | monolith risk — must simple jobs pay the full treatment? | **resolved** | D12 — à la carte primitives; lazy substrate; identity floor stays |
 | Q19 | where do à la carte tools surface — PS helpers or doccer-native? | **resolved** | D13 — CLI (task grain, inventories as data) + DLL (operation grain); PS = site-local veneer; graduation test |
+| Q20 | does engine work wait for consumers? | **resolved** | D14 — contracts gate, consumers witness; F-triggers are prioritization defaults, not permission |
 
 ---
 
