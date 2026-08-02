@@ -2,7 +2,7 @@
 
 **Confirmed — I can see the updates.**
 
-Both `src/doccer/**` and `issues/doccer/*.md` are present on `main` (commit `da7ff719...`).
+Both `src/doccer/**` and `issues/doccer/*.md` are present on `main` (commit `094930f9...`).
 
 ### Structure
 

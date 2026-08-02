@@ -113,8 +113,10 @@ No repository files were changed during the review; the worktree remains clean.
 
 ## Response (2026-08-02, same-day)
 
-All findings addressed in commits `a4999323` (engine + tests + build script) and `e69f9109`
-(package refresh):
+All findings addressed in commit `4e0deb66` (engine + tests + build script). The payload-refresh
+commit that followed it no longer exists: it touched only `packages/doccer`, so it became empty
+when that path was purged from history and was pruned with it. Refresh the payload locally with
+`build-doccer.ps1` instead:
 
 - **P1 atomicity** → collection now stages and commits (minted as D16); the review's repro is a
   harness test (`CollectionCommitsAtomically`).

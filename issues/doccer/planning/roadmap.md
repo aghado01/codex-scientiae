@@ -16,9 +16,12 @@ DLL callers are one collector contract and matching never inherits ambient cultu
 witness in the harness). Options augment that baseline, never replace execution policy —
 `ECMAScript` is rejected as a different matching profile (a contract choice: net10 itself
 permits the combination), and the guarantee is ambient-culture independence, not immunity to
-runtime/Unicode case-table changes. `packages/` is untracked as of `50988b03`, so payload refreshes are
+runtime/Unicode case-table changes. `packages/` is untracked as of `6e9fe2a0`, so payload refreshes are
 local-only: run `build-doccer.ps1` after engine changes and let `doccer.manifest.json` state
-what revision the on-disk payload represents.
+what revision the on-disk payload represents. `packages/` and `node_modules/` were subsequently
+purged from all history, so every commit hash predating that rewrite changed — hashes cited in
+this directory were remapped to their rewritten equivalents, and any older clone's hashes will
+not resolve here.
 
 The sol review
 ([sol-doccer-review-20260802](../discussions/sol-doccer-review-20260802.md)) was answered the

@@ -31,7 +31,7 @@ leaves the prior brief untouched as history. Newest stamp = current canon; each 
 says where every question stood at that stamp. Same discipline as the membrane's
 `.runs/{stamp}` and mdnav's stamped runs — nothing is overwritten, earlier runs survive for
 comparison. (Honest note: revs 2–3 of this run rewrote §2 and Tranche 1 in place before this
-rule existed; those prior states live in git at `09642901` and `f78ff2f3`. The append-only rule
+rule existed; those prior states live in git at `e7810e55` and `4ad2716e`. The append-only rule
 binds from rev 4 onward.)
 
 **Layout (rev 5, 2026-08-01; corrected in place same day):** each issue topic owns its briefs —
@@ -684,7 +684,7 @@ open contract, not an absent consumer, and closing them is schedulable design wo
 ## Tranche 2 reconciliation — D14 conformance pass
 
 **2026-08-01 · Fable.** A follow-up pass to check that Tranche 2's output conforms to D14, which
-was committed (`b0664ea3`) while Tranche 2 was in flight. Harness re-run green at **1257 checks**,
+was committed (`d0627a41`) while Tranche 2 was in flight. Harness re-run green at **1257 checks**,
 matching the count the Tranche 2 report states. No behaviour, API or test logic changed in this
 pass.
 
@@ -692,7 +692,7 @@ pass.
 amendment (§5), ledger rows Q20 and Q21 (§6), and the `## Tranche 2 report` section. The second
 `| Q20 |` row a naive count finds is the Tranche 2 report's own *Ledger delta* table, which is a
 deliberate per-tranche delta, not a duplicated canonical row. The pass's premise of a worktree
-merge did not apply: Tranche 2 was done directly on `main`, so `b0664ea3` and `414570e8` (D14, the
+merge did not apply: Tranche 2 was done directly on `main`, so `d0627a41` and `82960217` (D14, the
 amendment, Q20/Q21) interleaved as ordinary commits rather than merging. Verified that none of the
 five Tranche 2 commits swept up those concurrent edits — each touched only its own engine, harness
 or documentation files.
