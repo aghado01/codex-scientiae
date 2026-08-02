@@ -115,3 +115,23 @@ the thirteen Allen relations — edges are join-shaped over claims; the spine co
 the total-partition specimen in the census drawer (mdnav's totality geometry); nodes are
 coarse-grain claims whose `seq`/`addr`/`parent` are basis-stamped views of one claim set;
 forward provenance spans point into *source* (byte grain → F3-relevant), not markdown.
+
+## The channel refinement (same day)
+
+The toy specimen is a prototype of the **prose spine** — sections/subsections with bodies,
+references at the end — with the math channel still *embedded* in the prose bodies. The
+refinement: extract math blocks as **first-class nodes interleaved with prose blocks**, with
+hierarchical structure and reading order preserved in the addressing — a math block
+interleaved under a section carries the *same* section/subsection addressing as its prose
+neighbors (structural identity retained on every row), while `seq` preserves the interleaved
+reading order and `kind`/`kind_index` make the math nodes first-class.
+
+The property this locks in: **every view is a query over one flat stream.** Section tree =
+group-by parent; reading order = sort by seq; math bank = filter by kind; prose-only skeleton
+= its complement; channels (prose, math, later figure/caption) = interleaved projections of
+one representation. No view is a separate artifact. This is D12 (tree-as-query) and D21
+(basis-stamped views) at manuscript grain. Corollaries: `Store-Math`/`@@LMATH@@` was always
+node capture forced to encode itself as string placeholders; the oracle lane's "one tap, two
+consumers — math bank + structure skeleton" was the channel decomposition avant la lettre,
+reunified here as filters over the stream; serialization degenerates to *walk seq, render
+each kind* — the markdown formality is a foreach.
