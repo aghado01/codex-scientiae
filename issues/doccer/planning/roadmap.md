@@ -83,6 +83,26 @@ complete) or a **missing path** (no composition reaches it — an engine-contrac
 the pairing lift is this kind). The rewrite test's "refusal to collapse" is what
 distinguishes the second kind from permanent adapter policy.
 
+Process discipline for the census, three rules:
+
+1. **Catalog before naming.** Capture the candidate, its contract shape, and its integration
+   points first; promotion — a verb name, an implementation — is always a later, separate act
+   of evaluation over the catalog, never simultaneous with capture.
+2. **Composition before extension.** Before any find is declared a missing mechanism, attempt
+   to compose it from existing primitives plus a named policy. Success means it was a missing
+   *example*, not a missing mechanism — the deliverable is a recipe (documentation or a store
+   entry), never engine work. Every mechanism claim carries the failed-composition argument as
+   a proof obligation. (The pairing lift passes: stack-discipline matching is not expressible
+   as a composition of the current operations.)
+3. **Residuals stay visible.** When a site needs a judgment — which claim wins, what "near"
+   means, whether to rewrite — that judgment is orchestration. The engine exposes the evidence
+   and the policy hooks, never the judgment. (The pairing fault residue is the template: the
+   engine emits `unclosed`/`dangling`/`mismatched` as evidence; remedies belong to consumers.)
+
+Census finds therefore land in four bins: **unnamed latent path** (verb candidate) · **missing
+example** (recipe / store entry — cheap, no engine work) · **missing mechanism**
+(engine-contract candidate, composition-refusal argued) · **permanent adapter policy**.
+
 ## Open questions in play
 
 - See [decisions.md § Open](decisions.md): register/value/metadata columns (entangled with the
