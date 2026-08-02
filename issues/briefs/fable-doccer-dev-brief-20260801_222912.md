@@ -517,3 +517,127 @@ first: engine and native surface, then adapters.
   in the engine csproj. New checks: same-master algebra creates neither value, `GetLineSpan`
   forces topology only, and a same-id distinct-instance comparison forces fingerprint only
   (8 checks).
+
+## Tranche 2 report
+
+**2026-08-01 · Fable.** The remainder of Tranche 2 landed in five commits; harness green at
+**1257 checks** (967 at the start of this tranche, +290). The lazy-substrate item was already
+discharged in the D12 report above, so this covers the other five. Every commit was green before
+it was made.
+
+### What landed
+
+**1. Interned batch columns (`SpanBatch`).** `Kinds`, `Sources` and `RuleIds` are now
+`InternedColumn`: per-row integer IDs into a first-appearance-ordered table of distinct values,
+built at `Freeze` — the one point where the claim set stops growing. Equal values share one table
+entry and one ID; a nullable column records `InternedColumn.NullId` for absent values. The public
+`SpanRecord` surface is unchanged (`Kind`, `Source`, `RuleId` still read as strings, now through
+the column indexer), and the interned columns are public so columnar consumers can group or
+persist by ID. IDs are batch-local and carry no cross-batch meaning — F2 will have to say what, if
+anything, makes them portable.
+
+**2. Derived run views (D4).** `TextTopology.EmitRuns(breakKey, comparer?)` emits the maximal atom
+runs agreeing on an explicit key. A run is exactly `(Span, Key, AtomCount)` — no "run category"
+field, which is the point: a run keyed on something other than category has no single category,
+and naming the key on the run is what dissolves the Lu→Ll contradiction. `AtomFacts` holds the
+built-in selectors — `Category`, `CategoryClass`, `IsValidScalar`, `LineIndex` — and a
+tuple-returning selector breaks on several facts at once. `CategoryClass` is the seven UCD major
+classes (L/M/N/P/S/Z/C), a mechanical fold over `UnicodeCategory` needing no data table. Emission
+is a method, never cached and never constructor work; the selector is evaluated once per atom.
+
+**3. Suppression queries (D3).** `Suppression.Excluded(batch, suppressor)` derives the region the
+nominated claims cover; `Suppression.Admitted` is its dual, the master extent minus that region,
+and is the set to hand a scoped collector. Both are compositions over `SpanSet.FromClaims` plus the
+complement — no new mechanism — so further composition stays in the same algebra (several
+suppressors union their excluded regions; narrowing to a prior region is an intersection). The XML
+docs carry the rule that suppression is a query policy and never a claim property, and that the
+legwork's suppression bitmap would be an acceleration of this query.
+
+**4. Execution scope and the JSONL inventory loader (D6/D7, D13).** `ExecutionScope` lands on
+`PatternRule` as the run-within operation: `WholeMaster` (default) or `PerLine`. `SpanLevel` stays
+claim metadata and is independent of it — a `Line`-level rule may still sweep the whole master, and
+the harness pins that. The rule-level scope and the caller's `SpanSet` **compose by intersecting
+admitted regions**: the rule proposes regions, the caller admits regions, and each surviving piece
+is matched on its own, so line extents stay separated through the intersection.
+`PatternRuleLoader.LoadFile(path)` and `Load(lines, origin)` read a JSONL inventory with loud
+per-line failure — schema violation, unknown enum value or regex option, uncompilable pattern,
+empty-capable pattern, duplicate id — each throwing `PatternRuleLoadException` carrying origin and
+1-based line, message formatted `origin:line: detail`. Blank lines are tolerated and still counted,
+so provenance matches an editor. Patterns carry no syntactic obligations (D6 dropped `^...$`): a
+per-line rule says so with its scope. The empty-match probe is now one implementation
+(`RegexCollector.CompileAndProbe`) shared by in-code collection and the loader. Per the D13
+addendum the schema is declared once: `PatternRuleDocument` is a loader-owned record, camelCase on
+the wire, unknown members disallowed, serialized through the source-generated `DoccerJsonContext`
+that a CLI surface will extend with span and claim payloads rather than duplicate.
+
+**5. Tier-1 invariants.** Twelve fixtures chosen for boundary behaviour — every line-terminator
+form (LF, CRLF as one break, lone CR, NEL, LS, PS), SMP scalars, both lone surrogates, a combining
+sequence against its precomposed twin, NBSP, and the empty and trailing-break degenerate cases —
+each assert gapless tiling, exact concatenation back to the source text, every atom's `LineIndex`
+equalling `GetLineIndex` of its start, line extents partitioning `[0, length)`, and every offset
+lying in its own line's extent. Run views tile exactly under every break-key exercised, including
+a composite and a constant key. Resolution determinism: `Laminarizer.Extract` over a 60-claim
+randomized batch with repeated geometries and tied priorities yields identical accepted/residue
+ordinals and an identical flattened tree twice over, a filtered extraction is equally
+reproducible, and replaying the same claims into a fresh batch resolves identically — determinism
+belongs to the ordering rules, not to one object's identity. Suppression laws (idempotence,
+complement duality, policy-not-property, and non-intersection with scoped collection) and
+interning round-trip complete the set.
+
+Also reflected into `src/doccer/README.md`, the in-repo contract surface.
+
+### What was skipped, and why
+
+Framed per D14, which landed in this run just before this report: the gate on each of these is an
+open contract, not an absent consumer, and closing them is schedulable design work.
+
+- **Register, language, value and metadata columns** — their contracts are open, so implementing
+  them would be implementing against an open contract (D10). Nothing was invented for them. The
+  interning mechanism itself is column-agnostic, so closing those contracts later is an addition,
+  not a rework.
+- **Unicode block and script tables** as break-key facts — decision-gated, exactly as D14 states:
+  a UCD data-provenance record (pinned version, tables as versioned data with their own stamp,
+  facts computed lazily per D12) closes the contract, after which they land as ordinary
+  `AtomFacts` selectors. `EmitRuns` needs no change to accept them — a break-key is a function of
+  an atom, and a block or script selector is one more such function. Recorded in the README's
+  absent list.
+- **"Registers" in sol's Tier-1 list** — no register machinery exists in this engine, so there was
+  nothing to write an invariant against. Not invented; noted here instead. Whether "register" in
+  that list meant a claim-kind register, a math-register notion carried over from the corpus
+  lanes, or something else is itself unresolved.
+
+### Flagged questions — contracts to extend before the next tranche assumes an answer
+
+1. **Columnar surface visibility.** The interned columns are public; `Starts`, `Ends`, `Levels`
+   and `Priorities` remain internal as they were. Whether the whole columnar surface is public
+   contract, or only the interned part, is undecided. Per D14 this is closable by design now —
+   F2 is the prioritization default, not the permission.
+2. **Regex options and determinism.** An explicit `options` list in an inventory is applied
+   **literally**; `CultureInvariant` is the fallback only when the field is absent (matching the
+   existing `PatternRule` default). Taking the list literally avoids fusing policy into data, but
+   it also lets an inventory write `["IgnoreCase"]` and get culture-sensitive matching, which sits
+   badly against D10's determinism criterion. Forcing `CultureInvariant` is the alternative;
+   neither is chosen here.
+3. **What a per-line region is.** `PerLine` uses `TextTopology.GetLineExtent`, so the line break is
+   *inside* the region and visible to the pattern. This follows D6's wording ("within each line
+   extent") and keeps one definition of a line, but `GetLineSpan(includeLineBreak: false)` is the
+   live alternative and deserves an explicit record either way.
+4. **Built-in fact selectors are typed delegates, not an enum.** An enum would force every built-in
+   to a common key type — boxed, or lossy `int`, or a union — which would put the run's key back in
+   the "meaning depends on something the run doesn't carry" position D4 removed. Typed selectors
+   keep each key at the fact's own type. Recorded as a shape choice, not a decision record.
+5. **`PatternRule`'s positional parameter list changed** — `scope` is inserted after `level`, before
+   `priority`. All in-repo call sites passed four positional arguments, so nothing broke, but any
+   out-of-repo caller passing `priority` positionally would silently rebind. Worth a note if the
+   engine is consumed before it graduates.
+
+### Ledger delta
+
+| # | question | status after Tranche 2 |
+|---|---|---|
+| Q2 | atom taxonomy / run key | **implemented** — `EmitRuns` + `AtomFacts`; block/script deferred on data provenance |
+| Q3 | `is_mask` intrinsic vs query | **implemented** — `Suppression.Admitted`/`Excluded`, laws in the harness |
+| Q5 | loader syntactic rules | **implemented** — `ExecutionScope` on the rule; no pattern syntax obligations |
+| Q6 | "lift" conflation | project and run-within **implemented**; group, rebase, materialize open (Tranche 3) |
+| Q12 | persisted batch format | still open, but interned columns and the declared-once JSON context are now the groundwork F2 builds on rather than duplicates |
+| Q20 | does engine work wait for consumers? | applied — every Tranche-2 skip above is contract-gated, none consumer-gated |

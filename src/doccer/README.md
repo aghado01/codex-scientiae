@@ -58,16 +58,27 @@ travels in the C# surface.
   distinguishes everything the topology distinguishes (including which lone surrogate a text
   contains); fingerprint and topology are lazy and cached;
 - a total Unicode-scalar tiling and line topology, including explicit malformed-surrogate atoms;
-- append-only collection followed by a frozen, columnar, overlap-preserving `SpanBatch`;
+- derived run views over that tiling, emitted on demand under an explicit break-key: the atoms
+  carry facts only, and any coarser grouping is a per-call view whose runs carry the key they
+  broke on rather than a fixed type field;
+- append-only collection followed by a frozen, columnar, overlap-preserving `SpanBatch` whose
+  string columns are interned at freeze into per-row IDs plus a distinct-value table;
 - normalized Boolean `SpanSet` projections bound to their originating master;
+- suppression as named `Admitted`/`Excluded` queries over that algebra — never a claim property,
+  so the same claim suppresses under one question and is the target of the next;
 - all thirteen Allen interval relations and a reference relation join (semantics only — no
   performance contract);
 - deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
   residue (max-priority admission is a documented default, not a judgment; a future
   `ResolutionPolicy` is a query parameter, not a data-model change);
-- declarative regex collection with load-time rule validation, including region-scoped matching
-  that cannot bridge exclusions;
-- intrinsic and declarative relation/impossibility validation.
+- declarative regex collection with load-time rule validation, an explicit execution scope
+  (whole-master or per-line) that composes with the caller's region set by intersection, and
+  region-scoped matching that cannot bridge exclusions;
+- a JSONL pattern-inventory loader with per-line provenance on every failure, whose wire records
+  are the loader's own and are declared once through a source-generated JSON context;
+- intrinsic and declarative relation/impossibility validation, plus Tier-1 invariants —
+  reconstruction, run-view tiling, line consistency, suppression laws, resolution determinism,
+  and interning round-trip — in the contract harness.
 
 ## Deliberately absent
 
@@ -77,14 +88,16 @@ trigger, and several already have drafted shapes waiting on their first real con
 - `OffsetMap` — contract shape drafted (sum-type point results `Exact | Range | Unmapped`,
   segment-list storage, span projection under a named policy with explicit residuals);
   implementation waits for its first consumer (edit plans or an explicit normalization request);
-- the full character/line/multiline lift algebra — five operations, named separately: project,
-  group, run-within (a collector execution scope), rebase, materialize; slice/rebase is the
-  total bijective case and may land ahead of `OffsetMap`;
+- the rest of the lift algebra — project and run-within have landed; group (with basis stamping),
+  rebase, and materialize have not. Slice/rebase is the total bijective case and may land ahead
+  of `OffsetMap`;
 - named density measures (never a generic `Density` verb — each measure declares numerator,
   denominator, window basis, boundary policy, exclusions);
-- suppression bitmaps (an acceleration of a query policy, never a claim property);
-- persisted batch formats; declarative inventory loading; indexed join strategies;
-- the complete randomized law and Tier-1/2/3 acceptance suites.
+- suppression bitmaps (an acceleration of the suppression query, never a claim property);
+- Unicode block and script properties as break-key facts: unlike the major-class fold, they would
+  ship as versioned UCD data and need a data-provenance decision first;
+- persisted batch formats; indexed join strategies;
+- Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source
