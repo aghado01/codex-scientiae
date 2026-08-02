@@ -65,7 +65,11 @@ public sealed record PatternRuleDocument
     /// <summary>Default resolution evidence recorded on the claim; order remains query policy.</summary>
     public int? Priority { get; init; }
 
-    /// <summary>Names of <see cref="RegexOptions"/> members, applied exactly as listed.</summary>
+    /// <summary>
+    /// Names of <see cref="RegexOptions"/> members. Parsed exactly as listed; the engine then
+    /// unions <c>CultureInvariant</c> in at the <see cref="PatternRule"/> boundary (D18), as it
+    /// does for every caller.
+    /// </summary>
     public string[]? Options { get; init; }
 
     /// <summary>Named capture group to claim instead of the whole match.</summary>
@@ -253,8 +257,9 @@ public static class PatternRuleLoader
     {
         if (names is null)
         {
-            // Matches the PatternRule default. An explicit list is taken literally instead —
-            // nothing is silently added to what an inventory wrote.
+            // Matches the PatternRule default. An explicit list is passed through as written;
+            // the PatternRule constructor is the one place that unions CultureInvariant in
+            // (D18), so inventory rules and direct DLL callers share one collector contract.
             return RegexOptions.CultureInvariant;
         }
 

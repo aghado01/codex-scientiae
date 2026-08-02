@@ -29,6 +29,9 @@ public enum ExecutionScope
 /// <c>^...$</c>, because where a rule runs is <see cref="Scope"/>'s job, not the pattern's.
 /// <see cref="Level"/> is claim metadata — what the resulting claim says about itself — and is
 /// deliberately independent of <see cref="Scope"/>, which is execution.
+/// <see cref="Options"/> always includes <see cref="RegexOptions.CultureInvariant"/>: the
+/// constructor unions it into whatever the caller passes, so the same rule recognizes the same
+/// claims on every machine regardless of ambient culture (D18).
 /// </remarks>
 public sealed record PatternRule
 {
@@ -81,7 +84,11 @@ public sealed record PatternRule
         Level = level;
         Scope = scope;
         Priority = priority;
-        Options = options;
+        // The union happens here, at the engine boundary, not in the JSONL loader: an inventory
+        // rule and a directly constructed rule must be the same collector contract, and matching
+        // must never inherit the ambient culture. Culture-sensitive matching is simply not
+        // offered at this boundary (D18).
+        Options = options | RegexOptions.CultureInvariant;
         CaptureGroup = captureGroup;
         Timeout = timeout ?? TimeSpan.FromSeconds(1);
         if (Timeout <= TimeSpan.Zero)

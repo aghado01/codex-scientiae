@@ -44,6 +44,7 @@ agree with this file.
 | D15 | `PerLine` matches the line's **content extent** — terminator excluded (CRLF/LF claim-text determinism; `.` matches `\r`); terminator codepoints remain first-class atoms (exclusion is scope, not erasure); per-line terminator-kind view = named future derived fact | implemented |
 | D16 | Collection is **transactional**: `CollectInto` stages every recognized claim and commits only after the whole sweep succeeds, so failures load-time validation cannot see (context-dependent zero-width match, timeout, non-scalar-boundary match) leave the caller's builder untouched | implemented |
 | D17 | Interval semantics are **set-theoretic**: an empty span intersects nothing; point location is its own named query (`TextSpan.Contains(int)`, `SortedSpanLookup.FindContaining`), never an empty-span special case; `Project`'s insertion-point convention (D9) is the one documented exception | implemented |
+| D18 | Regex options union `CultureInvariant` at the **engine boundary** (`PatternRule` constructor), not merely in the JSONL loader — inventory rules and direct DLL callers share one reproducible collector contract, and matching never inherits ambient culture; culture-sensitive matching is not offered at this boundary (closes T2-2; boundary refinement is the user's) | implemented |
 
 ## Deferred families (F) — trigger = prioritization default, per D14
 
@@ -83,12 +84,10 @@ agree with this file.
 | Q20 | does engine work wait for consumers | D14 |
 | Q21 | when codex-scientiae adapters land | roadmap — CLI + primitives first, adapters last |
 | Q22 | PerLine terminator in or out | D15 |
+| Q23 | regex options vs ambient culture (T2-2) | D18 |
 
 ## Open (no decision record yet)
 
-- **T2-2 — inventory regex options:** applied literally today; proposed resolution = union with
-  `CultureInvariant` always (culture-sensitivity never silently opted into). **Pending user
-  confirmation.**
 - **T2-1 — columnar surface visibility:** interned columns public; numeric columns internal.
   Pure design decision, closable any time.
 - **T2-4 — fact selectors as typed delegates, not an enum:** shape choice made; promote to a

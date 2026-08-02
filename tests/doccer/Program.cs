@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,7 @@ internal static class Program
             ReferenceJoinRelatesEveryPair();
             ProjectMapsSpansOntoLineRanges();
             EmitRunsHonorsACustomComparer();
+            RegexOptionsUnionCultureInvariantAtTheEngineBoundary();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -1181,6 +1183,57 @@ internal static class Program
         Equal(2, folded[0].AtomCount, "the folded run counts both atoms");
         Equal(" ", folded[1].Key, "the separator run key");
         Equal("b", folded[2].Key, "the second folded run key");
+    }
+
+    /// <summary>
+    /// D18: the CultureInvariant union happens in the PatternRule constructor — the engine
+    /// boundary — not in the JSONL loader, so an inventory rule and a directly constructed rule
+    /// are one collector contract and neither ever inherits the ambient culture.
+    /// </summary>
+    private static void RegexOptionsUnionCultureInvariantAtTheEngineBoundary()
+    {
+        Equal(
+            RegexOptions.CultureInvariant,
+            new PatternRule("d", "a", "k", "s").Options,
+            "the default option set is culture-invariant");
+        Equal(
+            RegexOptions.CultureInvariant,
+            new PatternRule("d", "a", "k", "s", options: RegexOptions.None).Options,
+            "an explicit None still unions the invariant");
+        Equal(
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant,
+            new PatternRule("d", "a", "k", "s", options: RegexOptions.IgnoreCase).Options,
+            "a direct DLL caller's options are unioned, not replaced");
+
+        var loaded = PatternRuleLoader.Load(
+            new[] { """{"id":"i","pattern":"I","kind":"k","source":"s","options":["IgnoreCase"]}""" },
+            "options.jsonl");
+        Equal(
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant,
+            loaded[0].Options,
+            "an inventory's option list is unioned at the same boundary");
+
+        // The Turkish-I witness: under tr-TR, culture-sensitive IgnoreCase folds 'I' onto the
+        // dotless 'ı'; the invariant fold does not. Collection must give the invariant answer
+        // even while the ambient culture would have said otherwise.
+        var original = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+            True(
+                new Regex("I", RegexOptions.IgnoreCase).IsMatch("ı"),
+                "the ambient tr-TR culture would have matched the dotless ı");
+
+            var master = new TextMaster("turkish-i", 0, "ı");
+            var collected = RegexCollector.Collect(
+                master,
+                new[] { new PatternRule("i", "I", "k", "s", options: RegexOptions.IgnoreCase) });
+            Equal(0, collected.Count, "collection never inherits the ambient culture");
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = original;
+        }
     }
 
     private static void True(bool condition, string name)

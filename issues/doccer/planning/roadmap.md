@@ -7,8 +7,15 @@ evidence in [../discussions/](../discussions/).
 ## Where the work stands (2026-08-02)
 
 Engine at `src/doccer` (`CodexSci.Doccer`), delivered via `brewery/doccer` recipes into
-`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1330 checks
+`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1336 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`).
+
+T2-2 closed as **D18** (2026-08-02, user-confirmed with the boundary refinement): regex options
+union `CultureInvariant` in the `PatternRule` constructor itself, so inventory rules and direct
+DLL callers are one collector contract and matching never inherits ambient culture (Turkish-I
+witness in the harness). `packages/` is untracked as of `50988b03`, so payload refreshes are
+local-only: run `build-doccer.ps1` after engine changes and let `doccer.manifest.json` state
+what revision the on-disk payload represents.
 
 The sol review
 ([sol-doccer-review-20260802](../discussions/sol-doccer-review-20260802.md)) was answered the
@@ -89,9 +96,8 @@ fixtures; exceed mdnav precisely at its collapse points; conserve its instrument
 
 ## Open questions in play
 
-- **Regex options union with `CultureInvariant` (T2-2)** — proposed, awaiting user confirmation;
-  one-line change + record when confirmed.
-- Full open list with context: see [decisions.md § Open](decisions.md).
+- Full open list with context: see [decisions.md § Open](decisions.md). (T2-2 closed as D18;
+  T2-1/T2-4/T2-5 ride the Tranche-3 chips.)
 
 ## Standing context for future sessions
 

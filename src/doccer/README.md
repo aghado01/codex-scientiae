@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon and roadmap live as current-truth
 documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D17, deferrals, question
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D18, deferrals, question
 ledger — and [roadmap.md](../../issues/doccer/planning/roadmap.md)); per-iteration chip briefs
 with their reports sit in [issues/doccer/briefs/](../../issues/doccer/briefs/), and topic
 evidence in [issues/doccer/discussions/](../../issues/doccer/discussions/). The MarkPig legwork
@@ -78,7 +78,9 @@ travels in the C# surface.
   `ResolutionPolicy` is a query parameter, not a data-model change);
 - declarative regex collection with load-time rule validation (uncompilable and empty-capable
   patterns, capture groups checked against the compiled pattern's identity, undefined enum values
-  rejected in the constructors), an explicit execution scope (whole-master or per-line) that
+  rejected in the constructors), rule options that always union `CultureInvariant` at the
+  `PatternRule` boundary — inventory rules and direct DLL callers are one collector contract and
+  matching never inherits ambient culture — an explicit execution scope (whole-master or per-line) that
   composes with the caller's region set by intersection, and region-scoped matching that cannot
   bridge exclusions; collection is transactional — a sweep stages what it recognizes and commits
   only when every rule and region succeeds, so a mid-sweep failure leaves the caller's builder
