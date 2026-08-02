@@ -28,13 +28,16 @@
   </PropertyGroup>
 
   <!-- Shared-source routing (repo convention). A codex C# tool keeps its code under
-       src\{tool} and a thin .csproj under projects\{tool}; the project compiles the
-       sources at src\$(SharedSource). SharedSource defaults to the project name, so
-       projects\foo\foo.csproj auto-picks-up src\foo with no boilerplate. Override it
-       to point elsewhere (a test project compiling the library it exercises sets
-       <SharedSource>foo</SharedSource>), or set EnableSharedSourceRouting=false to
-       opt a project out entirely. Items resolve after all properties, so the per-csproj
-       override wins even though this block lives in the imported props. -->
+       src\{tool} and a thin .csproj in its brewery recipe at brewery\{module}\; the
+       project compiles the sources at src\$(SharedSource). SharedSource defaults to the
+       project name, so brewery\foo\foo.csproj auto-picks-up src\foo with no boilerplate.
+       Override it to point elsewhere (a test project compiling the library it exercises
+       sets <SharedSource>foo</SharedSource>), or set EnableSharedSourceRouting=false to
+       opt a project out entirely. Sibling projects of one module share a directory, so a
+       project routed this way that also carries its own entry point should disable the
+       default compile glob — see brewery\hdbscan\hdbscan.tests.csproj. Items resolve
+       after all properties, so the per-csproj override wins even though this block lives
+       in the imported props. -->
   <PropertyGroup>
     <SharedSource Condition="'$(SharedSource)' == '' AND '$(EnableSharedSourceRouting)' != 'false'">$(MSBuildProjectName)</SharedSource>
   </PropertyGroup>

@@ -4,7 +4,8 @@ using CodexSci.Hdbscan;
 
 // Trust harness for the HDBSCAN engine + external evaluators. Dependency-free (no test
 // framework): each Check prints PASS/FAIL and the process exits non-zero if any assertion
-// fails, so `dotnet run --project projects/tests` is a CI-able correctness + regression gate.
+// fails, so `dotnet run` on brewery/hdbscan/hdbscan.tests.csproj is a CI-able correctness +
+// regression gate. build-hdbscan.ps1 runs it as the harness step before publishing.
 //
 // Three layers:
 //   1. Evaluator unit correctness — hand-derived / sklearn-verified values on tiny inputs,

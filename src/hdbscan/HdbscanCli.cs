@@ -11,8 +11,8 @@ namespace CodexSci.Hdbscan;
 /// <summary>
 /// Domain-agnostic command-line surface over <see cref="HdbscanRunner"/>: points in
 /// (CSV or JSONL), labels + membership + dendrogram out. No domain assumptions — the
-/// pdf-converter figure lane is the first consumer, not the owner. The entry-point
-/// <c>Main</c> lives in the CLI project (projects/hdbscan); this class exposes only
+/// pdf-converter figure lane was the first consumer, never the owner. The entry-point
+/// <c>Main</c> lives in the CLI project (brewery/hdbscan); this class exposes only
 /// <see cref="Run"/> so the same sources also compile into the smoke-test assembly
 /// without a second entry point.
 ///
