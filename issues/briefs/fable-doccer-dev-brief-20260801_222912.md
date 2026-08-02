@@ -427,6 +427,19 @@ requirements (F1) as a byproduct.
 **Tranche 5 — maturity-gated.** F1 general OffsetMap → F2 persisted batches → F4 indexed joins →
 F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 
+**Sequencing amendment (appended rev 5, 2026-08-01):** two changes to the Tranche 4/5 reading.
+(1) The scriba-scientiae spin-out was **aborted**; codex-scientiae is being renovated from the
+inside, at least for the time being. The converter/LaTeX lanes here are the living lanes again,
+and the earlier caveat about migrating a possibly-superseded lane is moot. (2) User directive —
+**codex-scientiae adapters come last.** The operative order after Tranche 3: (a) doccer-native
+CLI verbs and primitives, harvested from what work in codex-scientiae *and other sources*
+implies belongs in doccer as domain-agnostic utilities (D13 surface, D14 anticipate-the-consumer);
+then (b) only once that surface exists, the codex-scientiae adapters — the masks.ps1 veneer and
+LaTeX-consumer adaptations — as thin consumers of it. Tranche 4's adapter items are deferred
+accordingly; its CLI/wire-format items move ahead of them. F1's forcing consumer is now expected
+to arise from the in-place renovation, whenever an edit-plan need first appears. First things
+first: engine and native surface, then adapters.
+
 ## 6. Question ledger
 
 | # | question | status | resolution / what answers it later |
@@ -451,6 +464,7 @@ F5 Tier-2/3 with agreement scoring → F6 markdown adapter and mdnav succession.
 | Q18 | monolith risk — must simple jobs pay the full treatment? | **resolved** | D12 — à la carte primitives; lazy substrate; identity floor stays |
 | Q19 | where do à la carte tools surface — PS helpers or doccer-native? | **resolved** | D13 — CLI (task grain, inventories as data) + DLL (operation grain); PS = site-local veneer; graduation test |
 | Q20 | does engine work wait for consumers? | **resolved** | D14 — contracts gate, consumers witness; F-triggers are prioritization defaults, not permission |
+| Q21 | when do codex-scientiae adapters land? | **resolved** | Sequencing amendment — CLI + primitives first (harvested, anticipate-the-consumer); adapters last as thin consumers; scriba abort noted |
 
 ---
 
