@@ -282,6 +282,30 @@ instrument form for agent workflows; doccer's atomic verbs serve the same reach-
 pattern, and F6's instrument car later builds on this same surface rather than a parallel one.
 **Source:** user directive 2026-08-01.
 
+**D13 addendum — engineering precedent: ThermoMapper `user-repl`** *(appended rev 5)*.
+Snapshot: `D:\aghado01\project-snapshots\ThermoMapper\src_20260701_122622_tree.md` (shards
+s059–s065). An accessibility surface over a declarative engine backend, implementing **no hot
+path** — verified in the code, and the transferable facts for doccer's CLI:
+1. `SubcommandRouter` — ~40 lines of hand-rolled verb dispatch, root help, exit codes; zero
+   framework dependencies. Doccer's CLI wants exactly this shape, not a command framework.
+2. Per-verb command files (`GraphHealthCommand` et al.) contain only: flag parsing (explicit
+   loop), input materialization, engine calls (`GraphHealth.Evaluate`,
+   `SpcGraphBuilder.BuildResult` — all in engine namespaces), typed persistence, human summary
+   to stdout, errors to stderr. The command's judgment is *which inputs, where to write, what to
+   print* — never *how to compute*.
+3. `UserReplJsonContext` — the wire format declared once: a source-generated JSON context
+   enumerating every payload the CLI reads/writes, with payload shapes as **CLI-owned records**,
+   not leaked engine types. This is the D13.5 wire-format consequence, field-tested; doccer's
+   span/claim JSONL context takes the same form.
+4. Presets (`SpcPreset`, `HdbscanPreset`) and `RunManifest` — domain knowledge and run
+   provenance as data; the `extract`/`graph-health` verbs **rehydrate from a manifest** without
+   recomputing, CLI flags as explicit overrides. Doccer analog: inventories + scope files in,
+   claims out, with run manifests when verbs produce artifacts.
+5. The session objects (`SpcUserSession`) are the in-process convenience twin over the same
+   engine — the DLL-grain surface; their fluent style is incidental, the division is the point.
+Naming note (user): "userrepl" is a misnomer — it is a CLI facade, not a REPL. Doccer's surface
+should be named for what it is.
+
 ## 4. Deferred — with named triggers
 
 ### F1 — OffsetMap (general form) — contract shape drafted
