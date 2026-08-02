@@ -35,6 +35,9 @@ public enum ExecutionScope
 /// baseline, never replace it — <see cref="RegexOptions.ECMAScript"/> is rejected because it is
 /// a different matching profile, not an augmentation. The guarantee is independence from
 /// ambient culture, not from runtime/Unicode-version changes to the case tables.
+/// Positional-parameter compat note (T2-5): the constructor places <c>scope</c> before
+/// <c>priority</c>; consumers binding positionally ahead of doccer's cross-project graduation
+/// should prefer named arguments for both.
 /// </remarks>
 public sealed record PatternRule
 {

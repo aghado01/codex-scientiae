@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon and roadmap live as current-truth
 documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D18, deferrals, question
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D20, deferrals, question
 ledger — and [roadmap.md](../../issues/doccer/planning/roadmap.md)); per-iteration chip briefs
 with their reports sit in [issues/doccer/briefs/](../../issues/doccer/briefs/), and topic
 evidence in [issues/doccer/discussions/](../../issues/doccer/discussions/). The MarkPig legwork
@@ -51,7 +51,8 @@ The domain-agnostic surface is the DLL (operation granularity, in-process compos
 CLI (task granularity — one-shot à la carte jobs, with domain knowledge arriving as data
 inventories, never as flags or verbs). PowerShell helpers are site-local ergonomics and domain
 adapters, deliberately thin: anything a graduated, cross-project doccer would have to carry
-travels in the C# surface.
+travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-5):
+`PatternRule`'s positional parameter order places `scope` before `priority` — bind both by name.
 
 ## Implemented contracts
 
@@ -73,6 +74,15 @@ travels in the C# surface.
   own named query (`TextSpan.Contains(int)`, `SortedSpanLookup.FindContaining`) rather than an
   empty-span special case — `TextTopology.Project`'s insertion-point convention is the one
   documented exception;
+- opt-in slice lineage: `TextSlice` mints a deterministic fragment-local child master over a
+  parent window (`{parent}#{start}-{end}` at the parent's revision, so recreated slices are
+  compatible coordinate spaces) and rebases geometry back — child→parent is total and bijective
+  (offsets, spans, sets, batches, plus weaving several fragments' batches into one parent-bound
+  builder), parent→child is partial and loud (out-of-window geometry is refused, never clamped;
+  scope sets by intersecting with the window first; no batch projection down — clipping claims
+  needs a residual policy, which is `OffsetMap`'s business); claims rebase with coordinates
+  changed and everything else untouched, and collection commutes with rebase — collecting on the
+  fragment then rebasing equals collecting on the parent scoped to the window;
 - deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
   residue (max-priority admission is a documented default, not a judgment; a future
   `ResolutionPolicy` is a query parameter, not a data-model change);
@@ -107,9 +117,8 @@ closes honestly without one:
   segment-list storage, span projection under a named policy with explicit residuals); the
   remaining open questions are the ones a first real edit-plan or normalization job would settle,
   so that job is the prioritization default rather than a permission condition;
-- the rest of the lift algebra — project and run-within have landed; group (with basis stamping),
-  rebase, and materialize have not. Slice/rebase is the total bijective case and may land ahead
-  of `OffsetMap`;
+- the rest of the lift algebra — project, run-within, and slice/rebase (the total bijective
+  case, landed without `OffsetMap`) are in; group (with basis stamping) and materialize are not;
 - named density measures (never a generic `Density` verb — each measure declares numerator,
   denominator, window basis, boundary policy, exclusions);
 - suppression bitmaps (an acceleration of the suppression query, never a claim property);

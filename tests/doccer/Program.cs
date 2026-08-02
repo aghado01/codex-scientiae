@@ -43,6 +43,11 @@ internal static class Program
             ProjectMapsSpansOntoLineRanges();
             EmitRunsHonorsACustomComparer();
             RegexOptionsUnionCultureInvariantAtTheEngineBoundary();
+            SliceMintsAFragmentLocalChild();
+            RebaseIsATotalBijection();
+            RebaseCarriesSetsAndBatches();
+            CollectionCommutesWithRebase();
+            SlicesCompose();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -1252,6 +1257,299 @@ internal static class Program
         {
             CultureInfo.CurrentCulture = original;
         }
+    }
+
+    /// <summary>
+    /// D19: a slice mints a fragment-local child master with derived, deterministic identity.
+    /// The slice object carries the lineage; the identity floor still keeps child and parent
+    /// unmixable, and slicing forces neither topology nor fingerprint on either side.
+    /// </summary>
+    private static void SliceMintsAFragmentLocalChild()
+    {
+        var parent = new TextMaster("doc", 3, "abc \U0001F600 def\nghi");
+        var slice = TextSlice.Create(parent, new TextSpan(4, 10));
+
+        Equal("\U0001F600 def", slice.Child.Text, "the child is the window's text");
+        Equal("doc#4-10", slice.Child.DocumentId, "child identity is derived and deterministic");
+        Equal(3L, slice.Child.Revision, "the child carries the parent's revision");
+        Equal(new TextSpan(4, 10), slice.Window, "the window is recorded in parent coordinates");
+        True(ReferenceEquals(slice.Parent, parent), "the lineage names its parent");
+        True(!slice.Child.IsCompatibleWith(parent), "child and parent are distinct coordinate spaces");
+
+        // Deterministic identity makes recreated slices interoperable coordinate spaces.
+        var again = TextSlice.Create(parent, new TextSpan(4, 10));
+        True(slice.Child.IsCompatibleWith(again.Child), "recreating the slice mints a compatible child");
+
+        // Even a whole-extent child is its own coordinate space: lineage is explicit, not
+        // structural, and mixing stays loud.
+        var whole = TextSlice.Create(parent, parent.Extent);
+        Equal(parent.Text, whole.Child.Text, "a whole-extent child carries the whole text");
+        True(!whole.Child.IsCompatibleWith(parent), "a whole-extent child still refuses the parent");
+
+        var empty = TextSlice.Create(parent, new TextSpan(7, 7));
+        Equal(0, empty.Child.Length, "an empty window mints an empty child");
+        Equal("doc#7-7", empty.Child.DocumentId, "the empty child's identity still names its window");
+
+        Throws<ArgumentNullException>(
+            () => TextSlice.Create(null!, new TextSpan(0, 1)),
+            "a null parent is rejected");
+        Throws<ArgumentOutOfRangeException>(
+            () => TextSlice.Create(parent, new TextSpan(0, parent.Length + 1)),
+            "an out-of-bounds window is rejected");
+        Throws<ArgumentException>(
+            () => TextSlice.Create(parent, new TextSpan(0, 5)),
+            "a surrogate-splitting window is rejected");
+
+        // D12: slicing is substring work; neither master pays for topology or fingerprint.
+        var lazyParent = new TextMaster("lazy-slice", 0, "alpha beta gamma");
+        var lazySlice = TextSlice.Create(lazyParent, new TextSpan(6, 10));
+        True(!lazyParent.TopologyIsCreated, "slicing leaves the parent topology unbuilt");
+        True(!lazyParent.FingerprintIsCreated, "slicing leaves the parent fingerprint uncomputed");
+        True(!lazySlice.Child.TopologyIsCreated, "the child topology is not built by minting");
+    }
+
+    /// <summary>
+    /// D19: child → parent rebase is a total bijection on the child's domain — offsets and
+    /// spans round-trip, lengths are preserved, Allen relations are invariant — and
+    /// parent → child refuses out-of-window geometry loudly rather than clamping.
+    /// </summary>
+    private static void RebaseIsATotalBijection()
+    {
+        var parent = new TextMaster("bijection", 0, "xx\U0001F600yy\nzz\U0001F600ww");
+        var slice = TextSlice.Create(parent, new TextSpan(2, 11));
+        Equal("\U0001F600yy\nzz\U0001F600", slice.Child.Text, "fixture window");
+
+        var offsetsRoundTrip = true;
+        for (var offset = 0; offset <= slice.Child.Length; offset++)
+        {
+            if (slice.ToChild(slice.ToParent(offset)) != offset)
+            {
+                offsetsRoundTrip = false;
+            }
+        }
+
+        True(offsetsRoundTrip, "offset rebase round-trips over the whole child domain");
+
+        var windowRoundTrips = true;
+        for (var offset = slice.Window.Start; offset <= slice.Window.End; offset++)
+        {
+            if (slice.ToParent(slice.ToChild(offset)) != offset)
+            {
+                windowRoundTrips = false;
+            }
+        }
+
+        True(windowRoundTrips, "offset rebase round-trips over the whole window domain");
+        Equal(slice.Window.End, slice.ToParent(slice.Child.Length), "the child end maps to the window end");
+        Equal(slice.Window, slice.ToParent(slice.Child.Extent), "the child extent maps to the window");
+        Equal(slice.Child.Extent, slice.ToChild(slice.Window), "the window maps to the child extent");
+
+        // Every valid child span: length preserved, round-trip identity, parent-valid image.
+        var validSpans = new List<TextSpan>();
+        for (var start = 0; start <= slice.Child.Length; start++)
+        {
+            for (var end = start; end <= slice.Child.Length; end++)
+            {
+                if (slice.Child.IsScalarBoundary(start) && slice.Child.IsScalarBoundary(end))
+                {
+                    validSpans.Add(new TextSpan(start, end));
+                }
+            }
+        }
+
+        var spansPreserved = true;
+        foreach (var span in validSpans)
+        {
+            var image = slice.ToParent(span);
+            if (image.Length != span.Length || slice.ToChild(image) != span)
+            {
+                spansPreserved = false;
+            }
+        }
+
+        True(spansPreserved, "span rebase preserves length and round-trips for every valid span");
+
+        var allenInvariant = true;
+        foreach (var left in validSpans)
+        {
+            if (left.IsEmpty)
+            {
+                continue;
+            }
+
+            foreach (var right in validSpans)
+            {
+                if (right.IsEmpty)
+                {
+                    continue;
+                }
+
+                if (AllenAlgebra.Relate(left, right) !=
+                    AllenAlgebra.Relate(slice.ToParent(left), slice.ToParent(right)))
+                {
+                    allenInvariant = false;
+                }
+            }
+        }
+
+        True(allenInvariant, "Allen relations are invariant under rebase");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => slice.ToParent(slice.Child.Length + 1),
+            "a beyond-child offset is refused going up");
+        Throws<ArgumentOutOfRangeException>(
+            () => slice.ToChild(slice.Window.Start - 1),
+            "a pre-window offset is refused going down");
+        Throws<ArgumentOutOfRangeException>(
+            () => slice.ToChild(slice.Window.End + 1),
+            "a post-window offset is refused going down");
+        Throws<ArgumentException>(
+            () => slice.ToParent(new TextSpan(0, 1)),
+            "a surrogate-splitting child span is refused going up");
+        Throws<ArgumentException>(
+            () => slice.ToChild(new TextSpan(0, 4)),
+            "a window-crossing parent span is refused, never clamped");
+        Throws<ArgumentException>(
+            () => slice.ToChild(new TextSpan(11, 13)),
+            "an outside parent span is refused going down");
+    }
+
+    /// <summary>
+    /// D19: sets and batches rebase as plain coordinate arithmetic — claims keep their kind,
+    /// level, source, priority and rule identity — and the weaving form composes several
+    /// fragments' collections into one parent batch. Parent → child set rebase demands
+    /// containment; the recipe is to intersect with the window first.
+    /// </summary>
+    private static void RebaseCarriesSetsAndBatches()
+    {
+        var parent = new TextMaster("carry", 0, "foo bar baz qux");
+        var slice = TextSlice.Create(parent, new TextSpan(4, 11));
+        Equal("bar baz", slice.Child.Text, "fixture window");
+
+        var childSet = SpanSet.Create(slice.Child, new[] { new TextSpan(0, 3), new TextSpan(4, 7) });
+        var lifted = slice.ToParent(childSet);
+        True(ReferenceEquals(lifted.Master, parent), "the lifted set is parent-bound");
+        Equal(2, lifted.Count, "the lifted set keeps its regions");
+        Equal(new TextSpan(4, 7), lifted[0], "the first region is re-addressed");
+        Equal(new TextSpan(8, 11), lifted[1], "the second region is re-addressed");
+        Equal(childSet.Coverage, lifted.Coverage, "coverage is preserved");
+        True(slice.ToChild(lifted).Equals(childSet), "set rebase round-trips");
+
+        var mixed = SpanSet.Create(parent, new[] { new TextSpan(0, 3), new TextSpan(8, 11) });
+        Throws<ArgumentException>(
+            () => slice.ToChild(mixed),
+            "an out-of-window region is refused going down");
+        var scoped = mixed.Intersect(SpanSet.Create(parent, new[] { slice.Window }));
+        True(
+            slice.ToChild(scoped).Equals(SpanSet.Create(slice.Child, new[] { new TextSpan(4, 7) })),
+            "intersect-with-window then rebase is the scoping recipe");
+
+        var rules = new[] { new PatternRule("word", @"\w+", "word", "test", priority: 2) };
+        var childBatch = RegexCollector.Collect(slice.Child, rules);
+        Equal(2, childBatch.Count, "the child collection sees its two words");
+
+        var rebased = slice.ToParent(childBatch);
+        True(ReferenceEquals(rebased.Master, parent), "the rebased batch is parent-bound");
+        Equal(2, rebased.Count, "every claim is carried");
+        Equal("bar", parent.Slice(rebased[0].Span), "the first claim re-addresses to its text");
+        Equal("baz", parent.Slice(rebased[1].Span), "the second claim re-addresses to its text");
+        Equal("word", rebased[0].Kind, "kind rides through untouched");
+        Equal("test", rebased[0].Source, "source rides through untouched");
+        Equal(2, rebased[0].Priority, "priority rides through untouched");
+        Equal("word", rebased[0].RuleId, "rule identity rides through untouched");
+        Equal(SpanLevel.Character, rebased[0].Level, "level rides through untouched");
+
+        // The weaving form: collect on several fragments, rebase each into one parent batch.
+        var tail = TextSlice.Create(parent, new TextSpan(12, 15));
+        var weave = new SpanBatchBuilder(parent);
+        slice.ToParentInto(weave, childBatch);
+        tail.ToParentInto(weave, RegexCollector.Collect(tail.Child, rules));
+        var woven = weave.Freeze();
+        Equal(3, woven.Count, "two fragments weave into one parent batch");
+        Equal("qux", parent.Slice(woven[2].Span), "the second fragment's claim lands after the first's");
+
+        // Deterministic identity pays off: a recreated slice rebases another lineage's batch.
+        var again = TextSlice.Create(parent, new TextSpan(4, 11));
+        Equal(2, again.ToParent(childBatch).Count, "a recreated slice rebases the original child's batch");
+
+        Throws<InvalidOperationException>(
+            () => slice.ToParentInto(weave, childBatch),
+            "a frozen weaving builder is refused up front");
+        Throws<InvalidOperationException>(
+            () => slice.ToParentInto(new SpanBatchBuilder(slice.Child), childBatch),
+            "a child-bound builder is refused — weaving targets the parent");
+        Throws<InvalidOperationException>(
+            () => slice.ToParent(SpanSet.Whole(parent)),
+            "a parent-bound set is refused going up");
+        Throws<InvalidOperationException>(
+            () => tail.ToParent(childBatch),
+            "another slice's child batch is refused");
+    }
+
+    /// <summary>
+    /// The D12 witness: collecting on the fragment and rebasing equals collecting on the parent
+    /// scoped to the window — for whole-master and per-line rules alike, because both match the
+    /// same sliced region strings; the child's line topology is the parent's, clipped at the
+    /// window edges exactly as the scoped intersection clips.
+    /// </summary>
+    private static void CollectionCommutesWithRebase()
+    {
+        var parent = new TextMaster("witness", 0, "alpha beta\ngamma delta\nepsilon");
+        var window = new TextSpan(6, 22);
+        var slice = TextSlice.Create(parent, window);
+        Equal("beta\ngamma delta", slice.Child.Text, "the window cuts mid-line at both edges");
+
+        var rules = new[]
+        {
+            new PatternRule("word", @"\w+", "word", "test"),
+            new PatternRule("line-word", @"\w+", "line-word", "test", SpanLevel.Character, ExecutionScope.PerLine),
+        };
+
+        var viaChild = slice.ToParent(RegexCollector.Collect(slice.Child, rules));
+        var viaParent = RegexCollector.Collect(parent, rules, SpanSet.Create(parent, new[] { window }));
+
+        Equal(viaParent.Count, viaChild.Count, "both routes see the same number of claims");
+        var agreement = new StringBuilder();
+        var expectation = new StringBuilder();
+        for (var i = 0; i < viaParent.Count; i++)
+        {
+            expectation.Append(viaParent[i].Kind).Append('@').Append(viaParent[i].Span).Append(';');
+            agreement.Append(viaChild[i].Kind).Append('@').Append(viaChild[i].Span).Append(';');
+        }
+
+        Equal(expectation.ToString(), agreement.ToString(), "collection commutes with rebase, claim for claim");
+        True(viaParent.Count(record => record.Kind == "line-word") == 3, "the per-line route exercises clipped lines");
+    }
+
+    /// <summary>D19: slices compose by chaining rebases; nested identity encodes the chain.</summary>
+    private static void SlicesCompose()
+    {
+        var parent = new TextMaster("compose", 0, "0123456789");
+        var outer = TextSlice.Create(parent, new TextSpan(2, 9));
+        var inner = TextSlice.Create(outer.Child, new TextSpan(1, 5));
+
+        Equal("2345678", outer.Child.Text, "outer window text");
+        Equal("3456", inner.Child.Text, "inner window text");
+        Equal("compose#2-9#1-5", inner.Child.DocumentId, "nested identity encodes the chain");
+
+        var chained = true;
+        for (var offset = 0; offset <= inner.Child.Length; offset++)
+        {
+            if (outer.ToParent(inner.ToParent(offset)) != 3 + offset)
+            {
+                chained = false;
+            }
+        }
+
+        True(chained, "chained rebase is offset addition");
+        Equal(
+            new TextSpan(3, 7),
+            outer.ToParent(inner.ToParent(new TextSpan(0, 4))),
+            "a nested span lifts through both lineages");
+        Equal(
+            new TextSpan(0, 4),
+            inner.ToChild(outer.ToChild(new TextSpan(3, 7))),
+            "the descent inverts the chained lift");
     }
 
     private static void True(bool condition, string name)
