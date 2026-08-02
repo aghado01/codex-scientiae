@@ -288,3 +288,23 @@ PS veneer = the interactive syntax (its function names ARE the lexicon — why v
 deserves care); CLI expression language = the boundary syntax (same compositions,
 serialized). One algebra, three registers of expression; minted vocabulary propagates
 through all three.
+
+### Addendum 4a — lexicon corrections (user shaping)
+
+**Fiber preferred over strand** (user): a channel is literally a fiber of the kind-projection
+π over the stream — `unbraid(stream, k)` = π⁻¹(k). The stream carries several projections
+(kind → channels; structural parent → section contents; class → e.g. all theorems), and
+"every view is a query" sharpens to **every projection has fibers**. "Strand" survives only
+where crossing imagery works (the braid itself): you braid strands, you extract fibers.
+
+**Fragment clarified — a text with a birth certificate:** a full master over a window of a
+parent text (offsets restart at 0; every verb works), which additionally *remembers* parent +
+window + revision via derived deterministic identity (D19) — the lineage that authorizes
+rebase (child→parent total, parent→child partial+loud) and `weave`. Lineage is opt-in (D12);
+recreated fragments are compatible (derived identity = interop). Contrasts: **span** = an
+address *in* a master (owns no text) vs fragment = coordinate space *over* the text;
+**node** = persistent semantic unit of the stream vs fragment = ephemeral workbench
+(discarded after weave); **fiber** = part-by-property (projection) vs fragment =
+part-by-position (window). Candidate simplification: let **slice** serve as verb and result
+noun (`slice : master × span → slice`, per canon's TextSlice), retiring "fragment" as a
+separate sort name.
