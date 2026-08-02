@@ -148,3 +148,59 @@ design) + splice gated on F1/F3; mdnav → no rewrite, F6 succession with fixtur
 Distilled: adapter residue is thin (data + thresholds + verdict/fix tables) — the D10 boundary
 was drawn correctly before the engine existed. The two pending verbs give every latent row its
 reach-for; the last two rows are contract work, not verb work.
+
+## Addendum 2 (same day) — grok's latex-ingest deep-dive, verified
+
+Source: [grok-latex-ingest-deep-dive-20260802.md](grok-latex-ingest-deep-dive-20260802.md),
+claims verified against `latex-ingest.ps1` at the same basis (`d870f8a`; file unchanged since).
+Six of seven clusters confirmed at source; one claim refuted.
+
+**Refuted.** Cluster 4's suspected coordinate-mixing bug in `Expand-LatexMacros`: no bug.
+`Get-MaskedText -Keep` is length-preserving *by construction* (blank-to-space), so match
+indices on the kept string are valid against the original; the arg walk stays in one
+coordinate space. The specimen stands as improvised scoped collection — the true costs are the
+per-macro-per-pass mask recomputation and fragility-by-convention, not incorrectness.
+
+**Convergent — witness counts updated.**
+
+- **Pairing lift: +4 → ~7 witnesses.** New: `Convert-DisplayDollars` (`$$…$$`),
+  `Protect-InlineDollarSpans` (`$…$` nesting-aware — pairing *under a depth-0 suppression
+  condition*), the `Get-LatexBracedArg`/`Get-BraceGroupEnd`/`Replace-BracedCommand`
+  brace-group family, and `Build-LabelMaps`' `IndexOf('\end{env')` segmenting — which is
+  **nesting-blind**, the missing mechanism in defect-potential form. Star specimen:
+  `Protect-InlineDollarSpans` (≈line 1048) **self-annotates the latent capability** —
+  "Interval-algebra view (the doccer/masks calculus)… This scanner is that calculus in one
+  O(n) pass."
+- **F3: +1 → 4 witnesses** (`Get-LatexSubjectIndex` `byte_start` via `GetByteCount` over the
+  prefix — also O(n²) across entries).
+- **F1: upgraded from live-witness to architectural** — see specimen 1.
+
+**New specimens.**
+
+1. **Protect/restore placeholder registry** (`@@VERBn@@`, `@@LMATHn@@`/`@@LDISPn@@`,
+   `@@ALGn@@`; `Restore-LatexMath` fixed-point ≤8 passes over nested, order-arbitrary
+   placeholders): an improvised claims-over-a-mutating-master system. String literals survive
+   rewrites where offsets would not — the pipeline's core architecture **is** an F1/OffsetMap
+   workaround. Claims + `Suppression.Admitted` replace "don't touch `@@…@@`" tribal knowledge.
+   Suspected bin: F1 witness (architectural) + latent suppression path.
+2. **Escape-discipline drift**: the brace walkers are escape-naive while `Get-LatexBalance` is
+   escape-aware — two independent derivations of brace structure that can disagree. The
+   one-pairing-mechanism argument in Tier-2-agreement form.
+3. **Emission-time claims**: `Get-LatexSubjectIndex` recovers *position* from emitted markdown;
+   its own comments already argue the label must be built, never scraped. Position parity
+   needs claims recorded at write time — which needs offsets maintained through later passes
+   (F1). Bin: wire/F2 + F1.
+4. **Document-local stores**: the `Get-LatexMacros` table and label maps are store-shaped data
+   mined *per document* — a second store tier beside domain-wide rule packs. Live in-lane
+   precedent: `src/latex-ingest/stores/docgraph.json` already exists (result classes).
+5. **Depth-0 splitting** (xy/tikz grids): segmentation at separators visible at brace depth 0 =
+   pairing-complement scope. Domain-heavy; minor row.
+6. **Soft-detector scoping** (grok cluster 7): detectors currently run on whatever string was
+   passed in; with claims they run inside math claims document-wide. Refines existing adapter
+   rows; no new mechanism.
+
+**Effect on the capability view.** Pairing is now the overwhelming mechanism hole (~7
+witnesses, one self-annotated at the site). F1's case upgrades to "the lane's architecture is
+the workaround." The store layer gains a two-tier taxonomy (domain pack · document-local
+store) with an existing precedent. No change to the pending mint; grok's highest-value list is
+promotion-priority input, held in the drawer per catalog discipline.
