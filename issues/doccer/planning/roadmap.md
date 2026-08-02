@@ -7,26 +7,29 @@ evidence in [../discussions/](../discussions/).
 ## Where the work stands (2026-08-02)
 
 Engine at `src/doccer` (`CodexSci.Doccer`), delivered via `brewery/doccer` recipes into
-`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1456 checks
+`packages/doccer` (HDBSCAN pattern). Contract harness: `tests/doccer/Program.cs`, **1500 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`).
 
-**Tranche 3b landed** (2026-08-02, in-session per
-[fable-doccer-t3b-brief-20260802_011103](../briefs/fable-doccer-t3b-brief-20260802_011103.md);
-contract = **D21**, rider T2-4 closed as **D22**): `Grouping.ByKey` (deterministic keyed
-partition, `ClaimFacts` vocabulary), `Projection.Project` (claim-major line ranges) and
-`Grouping.ByLine` (line-major transpose, total over the grain, named `LineMembership` policy) —
-all basis-stamped views that answer "over what was I computed". The boundary-policy-as-declared
-discipline that 3c's gap cadence needs is now established. D7's lift vocabulary is complete
-except materialize.
+**Tranche 3 is complete** (2026-08-02, three in-session chips; contracts **D19–D24**; briefs
+with reports: [3a](../briefs/fable-doccer-t3a-brief-20260802_005408.md),
+[3b](../briefs/fable-doccer-t3b-brief-20260802_011103.md),
+[3c+3d](../briefs/fable-doccer-t3cd-brief-20260802_012056.md)):
 
-**Tranche 3a landed** (2026-08-02, in-session per
-[fable-doccer-t3a-brief-20260802_005408](../briefs/fable-doccer-t3a-brief-20260802_005408.md);
-contract = **D19**, riders closed: T2-1 = **D20**, T2-5 documented in the `PatternRule` remarks
-and README): `TextSlice` with deterministic derived child identity; total bijective
-child→parent rebase over offsets/spans/sets/batches plus `ToParentInto` weaving; partial, loud
-parent→child; no downward batch projection (residual policy = F1). Law surface includes the
-collection-commutes-with-rebase witness — it holds for whole-master *and* per-line scopes,
-since both routes match identical sliced region strings.
+- **3a slice/rebase (D19, D20)** — `TextSlice` with deterministic derived child identity; total
+  bijective child→parent rebase (offsets/spans/sets/batches + `ToParentInto` weaving); partial,
+  loud parent→child; collection commutes with rebase for both execution scopes.
+- **3b group/project (D21, D22)** — `Grouping.ByKey` (deterministic keyed partition,
+  `ClaimFacts` vocabulary), `Projection.Project` and `Grouping.ByLine` (transposes; total over
+  the line grain; named `LineMembership` policy) — all basis-stamped views.
+- **3c gap cadence (D23)** — the first D8 named measure, transcribed from the mdnav profiler:
+  start-to-start gap facts (median/cv/span fraction) over a declared window basis, exclusions
+  recorded as measured ordinals, meaning thresholds left to consumers.
+- **3d lookup order (D24)** — `ClaimOrder.Geometry` (default, unchanged) vs
+  `PriorityThenGeometry` on `FindIntersecting`/`FindContaining`; resolution order = query
+  policy.
+
+All Tranche-2 stragglers are closed (T2-2 = D18, T2-1 = D20, T2-4 = D22, T2-5 documented).
+D7's lift vocabulary is complete except materialize.
 
 T2-2 closed as **D18** (2026-08-02, user-confirmed with the boundary refinement): regex options
 union `CultureInvariant` in the `PatternRule` constructor itself, so inventory rules and direct
@@ -66,8 +69,9 @@ determinism, and interning round-trip are protected as harness **test laws**, no
 runtime checks. Exposing them through a runtime Tier-1 runner is a named candidate contract,
 unscheduled.
 
-Tranches 0 (correctness), 1 (decision canon + README), 2 (substrate completion) are **done**.
-D15 landed post-Tranche-2. The founding run's brief carries the full history.
+Tranches 0 (correctness), 1 (decision canon + README), 2 (substrate completion), and 3 (lift
+algebra + first measure + lookup order) are **done**. D15 landed post-Tranche-2; D16–D18
+answered the sol review and closed T2-2. The founding run's brief carries the full history.
 
 ## Sequencing doctrine
 
@@ -85,12 +89,7 @@ one chip (its pieces have different law surfaces and failure modes), and the har
 precede the first durable CLI contract — the survey feeds the verb list, so building wire
 records first risked freezing the wrong task grain.
 
-1. **Tranche 3 remainder** (3a and 3b landed — see above; 3c/3d independent):
-   - **3c — gap cadence:** the first named density measure (D8, mdnav template) — declares
-     numerator, denominator, window basis, boundary policy, exclusions; consumes D21's
-     basis-stamp and membership-policy vocabulary.
-   - **3d — priority-aware lookup:** priority-aware sorted lookup over the frozen batch.
-2. **Harvest survey** (before any durable CLI contract): sweep codex-scientiae and other sources
+1. **Harvest survey** (before any durable CLI contract): sweep codex-scientiae and other sources
    — masks.ps1 operations, latex.ps1 span producers, membrane density/mask calculus, md-repair
    byte offsets, mdnav constructs — mapping each to the doccer primitive or verb it implies.
    Anticipate-the-consumer: capabilities resurface as domain-agnostic utilities first. The
