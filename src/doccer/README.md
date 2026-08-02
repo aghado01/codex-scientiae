@@ -1,34 +1,90 @@
-# Doccer engine sketch
+# Doccer engine
 
-This directory contains the domain-neutral C# engine. It is intentionally separate from
-Markdown, LaTeX, PDF, MCP, and workflow code: those systems may emit claims or consume views,
-but none owns the interval substrate.
+This directory contains the domain-neutral C# engine (`CodexSci.Doccer`). It is intentionally
+separate from Markdown, LaTeX, PDF, MCP, and workflow code: those systems may emit claims or
+consume views, but none owns the interval substrate.
 
-The implementation currently establishes these contracts:
+This README is the contract surface. The arguments behind it live in runstamped decision briefs
+under [issues/briefs/](../../issues/briefs/) (currently
+[fable-doccer-dev-brief-20260801_222912.md](../../issues/briefs/fable-doccer-dev-brief-20260801_222912.md),
+decision records D1–D12 and deferrals F1–F6); topic evidence sits in
+[issues/doccer/](../../issues/doccer/). The MarkPig legwork documents are historical evidence —
+consulted and cited, never amended.
 
-- immutable, identified UTF-16 text masters with fingerprints and revisions;
+## Governing doctrine
+
+Claims carry evidence. Queries execute named policies and return results. Orchestration selects
+policies and interprets results. The representation never pre-resolves: the engine implements
+resolution mechanisms — suppression scoping, admission ordering, intra-geometry resolution,
+coarser typing — as explicit, deterministic, parameterized operations, and executes whichever
+policy the caller names; it never selects one. All judgment — which query, which policy, what
+the result means, what happens next — belongs to orchestration.
+
+## A library of primitives, not a pipeline
+
+Every rung is usable without the rungs above it, and construction cost scales with what a job
+touches. "Full doccer" — sweep → collect → validate → laminarize → tiered acceptance — is one
+composition of these primitives, never the entry price:
+
+```text
+TextSpan / Allen relations        pure, zero dependencies
+SpanSet                           + master identity
+SpanBatch + scoped collectors     + typed claims
+LaminarView / joins               + structure derivation
+Validation tiers / inventories    + cross-examination
+```
+
+`TextMaster` computes its fingerprint and topology on first use; a small interval-algebra job
+pays for the string and the spans it touches, nothing else. Masters scale down with the job: a
+master is a coordinate space, not "the document" — minting one over an isolated math span or a
+macro-expansion site is first-class. The identity floor governs mixing, not extent: spans bound
+to one master refuse to validate against another, so coordinate-space confusion fails loudly
+instead of corrupting silently. Lineage back to a parent (slice map + rebase) is opt-in.
+
+The engine never normalizes Unicode. Text is analyzed exactly as given (identity is the default
+form); normalization, when wanted, is an explicit producer step yielding a new master plus an
+offset map, and compatibility forms (NFKC/NFKD) are treated as lossy transforms whose loss the
+map records.
+
+## Implemented contracts
+
+- immutable, identified UTF-16 text masters; fingerprints hash the raw code units, so identity
+  distinguishes everything the topology distinguishes (including which lone surrogate a text
+  contains); fingerprint and topology are lazy and cached;
 - a total Unicode-scalar tiling and line topology, including explicit malformed-surrogate atoms;
 - append-only collection followed by a frozen, columnar, overlap-preserving `SpanBatch`;
 - normalized Boolean `SpanSet` projections bound to their originating master;
-- all thirteen Allen interval relations and a reference relation join;
-- deterministic priority-based laminar extraction, equal-geometry grouping, and crossing residue;
-- declarative regex collection, including region-scoped matching that cannot bridge exclusions;
+- all thirteen Allen interval relations and a reference relation join (semantics only — no
+  performance contract);
+- deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
+  residue (max-priority admission is a documented default, not a judgment; a future
+  `ResolutionPolicy` is a query parameter, not a data-model change);
+- declarative regex collection with load-time rule validation, including region-scoped matching
+  that cannot bridge exclusions;
 - intrinsic and declarative relation/impossibility validation.
 
-This is an architectural sketch, not a claim that the Doccer specification is closed. Important
-families deliberately remain absent until their contracts are specified completely:
+## Deliberately absent
 
-- normalized-master/original-source `OffsetMap`, composition, and inversion;
-- full character/line/multiline lift, group, and projection algebra;
-- coalesced-run and windowed-density operations beyond `SpanSet` normalization;
-- suppression bitmap and persisted batch formats;
-- declarative inventory loading and validation schemas;
-- indexed implementations for relational joins;
+These families remain absent until their contracts are closed; the brief carries each one's
+trigger, and several already have drafted shapes waiting on their first real consumer:
+
+- `OffsetMap` — contract shape drafted (sum-type point results `Exact | Range | Unmapped`,
+  segment-list storage, span projection under a named policy with explicit residuals);
+  implementation waits for its first consumer (edit plans or an explicit normalization request);
+- the full character/line/multiline lift algebra — five operations, named separately: project,
+  group, run-within (a collector execution scope), rebase, materialize; slice/rebase is the
+  total bijective case and may land ahead of `OffsetMap`;
+- named density measures (never a generic `Density` verb — each measure declares numerator,
+  denominator, window basis, boundary policy, exclusions);
+- suppression bitmaps (an acceleration of a query policy, never a claim property);
+- persisted batch formats; declarative inventory loading; indexed join strategies;
 - the complete randomized law and Tier-1/2/3 acceptance suites.
 
-Do not fill these gaps with consumer-specific shortcuts inside the engine. Extend the contracts and
-laws first, then implement them here. Mask helpers belong above `SpanSet`; syntax recognition belongs
-in external adapters or declarative inventories.
+This is a growing kernel, not a closed specification. Additions to the engine must pass the
+admission test: deterministic; eliminates repeated mechanical work; preserves literal source
+material; decides nothing about meaning. A feature failing the last test belongs in an adapter
+or the consumer. Mask helpers belong above `SpanSet`; syntax recognition belongs in external
+adapters or declarative inventories.
 
 ## Build boundaries
 
