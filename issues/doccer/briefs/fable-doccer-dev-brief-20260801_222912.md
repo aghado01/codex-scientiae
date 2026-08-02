@@ -1,7 +1,7 @@
 # Doccer development brief — resolutions and sequencing
 
-**2026-08-01 · Fable.** Synthesizes [sol-doccer-next-steps.md](../doccer/sol-doccer-next-steps.md) (gap
-taxonomy), [grok-doccer-review-20260802.md](../doccer/grok-doccer-review-20260802.md) (open-question
+**2026-08-01 · Fable.** Synthesizes [sol-doccer-next-steps.md](../discussions/sol-doccer-next-steps.md) (gap
+taxonomy), [grok-doccer-review-20260802.md](../discussions/grok-doccer-review-20260802.md) (open-question
 analysis), a full code review of `src/doccer` (contract harness passing, 954 checks), and a
 conceptual comparison against mdnav (`D:\aghado01\utils\skills-dev\doc-dive\mdnav`). Decisions
 marked **D#** are adoptable now with a stated principle; items marked **F#** are deferred with a
@@ -12,7 +12,7 @@ named maturation trigger. Nothing here reopens the engine-before-car posture; it
 cited, never amended. New design decisions are recorded here in `issues/doccer/`; this brief and
 its successors are the canon. Rev 2 also restates the governing doctrine (§2) after the original
 phrasing proved ambiguous, and incorporates D11 and the F1 contract shape from
-[grok-offsetmap-unicode.md](../doccer/grok-offsetmap-unicode.md). Rev 3 adds D12: the engine is a library
+[grok-offsetmap-unicode.md](../discussions/grok-offsetmap-unicode.md). Rev 3 adds D12: the engine is a library
 of composable primitives, never a pipeline that must run end-to-end for simple jobs.
 
 **Runstamp and lineage (rev 4, 2026-08-01):** this brief is run `20260801_222912` (UTC of its
@@ -27,12 +27,14 @@ comparison. (Honest note: revs 2–3 of this run rewrote §2 and Tranche 1 in pl
 rule existed; those prior states live in git at `09642901` and `f78ff2f3`. The append-only rule
 binds from rev 4 onward.)
 
-**Layout (rev 5, 2026-08-01):** briefs live **flat** in `issues/briefs/` — no per-run
-subdirectories. Chronology is carried by the filename's runstamp suffix, so a directory listing
-reads in order across topics and agents. Topic evidence and discussion docs stay in
-`issues/<topic>/` (this run's sources remain in `issues/doccer/`); briefs link to them
-relatively. Rev 5 also discharges the open Tranche-1 item: the decision canon is now reflected
-into `src/doccer/README.md`, the in-repo contract surface.
+**Layout (rev 5, 2026-08-01; corrected in place same day):** each issue topic owns its briefs —
+they live **flat** in `issues/<topic>/briefs/`, no per-run subdirectories, chronology carried by
+the filename's runstamp suffix so a directory listing reads in order. Topic evidence and
+discussion docs live in `issues/<topic>/discussions/` (this run: `issues/doccer/briefs/` and
+`issues/doccer/discussions/`); briefs link to them relatively. (Trace: initially a repo-global
+`issues/briefs/`; the user moved to per-topic scoping for locality.) Rev 5 also discharges the
+open Tranche-1 item: the decision canon is now reflected into `src/doccer/README.md`, the
+in-repo contract surface.
 
 **Judgment note (rev 5, 2026-08-01):** append-only is for *decisions and reports*, not an
 absolutism over every sentence. Where accretion would obscure current understanding — framing
@@ -210,7 +212,7 @@ atoms (per D4), never a replacement — claims may legally begin between a base 
 mark, and the map must be able to say so.
 **Principle:** the master you analyze is exactly the text you intended to analyze; any change of
 form is explicit, mappable, and optional.
-**Source:** [grok-offsetmap-unicode.md](../doccer/grok-offsetmap-unicode.md); legwork UNIFIED-SWEEP/SCHEMA
+**Source:** [grok-offsetmap-unicode.md](../discussions/grok-offsetmap-unicode.md); legwork UNIFIED-SWEEP/SCHEMA
 concur (historical evidence); code conforms.
 
 ### D12 — À la carte primitives, not a pipeline
@@ -339,7 +341,7 @@ good practice, waiting for *consumers* is not the doctrine.
 ## 4. Deferred — with named triggers
 
 ### F1 — OffsetMap (general form) — contract shape drafted
-[grok-offsetmap-unicode.md](../doccer/grok-offsetmap-unicode.md) upgrades the requirements sketch to a
+[grok-offsetmap-unicode.md](../discussions/grok-offsetmap-unicode.md) upgrades the requirements sketch to a
 candidate contract. Point queries return a sum type — `Exact(offset) | Range(start,end) |
 Unmapped` — because a bare `int` forces an invented bias and silently discards non-uniqueness.
 Storage is an ICU-Edits-style segment list (`Identity | Expand | Contract | Delete | Insert`,
