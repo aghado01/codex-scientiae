@@ -1,6 +1,6 @@
 # Prose-channel probe — field notes
 
-**Status:** probe complete (two passes, one specimen), findings recorded
+**Status:** probe complete (three passes, one specimen; residue driven to 0), findings recorded
 **Date:** 2026-08-02
 **Touches:** `src/latex-ingest/latex-ingest.ps1` (`-ChannelProbe` seam, gated/inert in production),
 `scratch/probe-prose-channel.ps1` (driver, gitignored one-off),
@@ -60,13 +60,22 @@ assemble-toward-the-uncertain-spec mechanism doing its job: residue → classify
 gains a kind, an evidence row, or a defect ticket.
 
 - `\FloatBarrier` → **placement evidence**, now captured (§4).
-- `\appendix` → **unmodeled structural signal**: the heading after it emits fine, but appendix
-  mode (letter renumbering, spine-level attribute) is nowhere in the model. A protograph admission
-  question, found by residue.
-- `\cite` → **defect specimen**: `**Theorem 3.5 ({\cite[Theorem 3.1).** {pers_lap}}]` — the
-  author put `\cite[Theorem 3.1]{pers_lap}` inside a theorem's optional-argument title, and the
-  `Convert-CrossRefEnvs` title capture is not bracket-aware, so the nested `]` shreds the head.
-  Fix candidate: brace/bracket-aware optional-arg capture. Independent of the reshape.
+- `\appendix` → **ADMITTED to the protograph taxonomy** (user, same day): the appendix is a
+  section of the paper — not always present, but part of the superset. Captured as an
+  `@@APPENDIX@@` structural row in pass 3. The KisungYou silhouette confirms the kind from the
+  output side (§6): a thin `appendix:0` boundary node followed by lettered ordinary sections.
+  Letter renumbering of what follows remains a realization detail for the spine model.
+- `\cite` → **defect specimen, FIXED in pass 3**: the author put `\cite[Theorem 3.1]{pers_lap}`
+  inside a theorem's optional-argument title, and the `Convert-CrossRefEnvs` title capture was
+  not bracket-aware — the nested `]` shredded the head. Fix: `Get-BracketGroupEnd` (`]` closes
+  only at brace depth 0, escapes skipped) + bracket-aware rescan with true-end consumption, and
+  a whole-arg `{…}` wrapper unwrapped as TeX grouping. The head now emits the citation intact
+  and the body's `Resolve-Refs` pass renders it: `**Theorem 3.5 ([15]).**` on the specimen.
+  Nuance logged: the citation's optional qualifier ("Theorem 3.1") is dropped by cite
+  resolution — a separate, pre-existing ref-semantics gap.
+
+**Residue after pass 3: 0.** Every TeX command in 61k chars of prose is transformed, slotted, or
+admitted — the first fully-classified specimen, reached in three ledger-driven steps.
 - Also observed (invisible to the command scan): a **stray brace-group class** — author `{...}`
   around phrases leaks literal braces into prose ("{and the supports ...}").
 
@@ -114,14 +123,50 @@ surface:
    only iterated away (the bounded 8-pass restore). Under emission it becomes parent/child
    structure for free.
 
-## 6. Open items
+## 6. KisungYou silhouette census (pass 3)
 
+Computed over `bibliotecha/corpora/KisungYou/2605.20681v1.chunks.jsonl` (58 rows, schema
+`manuscript-objects.v0`, seq contiguous 0..57):
+
+- **Kind census:** metadata 1, title 1, authors 1, toc 1, abstract 1, section 11, subsection 38,
+  assumption 1, appendix 1, backmatter 1, references 1. Fields: `addr, seq, kind, kind_index,
+  level, title, anchor, parent, source{path,line_start,line_end}, content, char_count` (+
+  occasional `notes`).
+- **The appendix kind is realized on the output side exactly as admitted on the source side:**
+  a thin `appendix:0` boundary node (12 chars), then `A Proofs` / `B …` / `C …` as *ordinary*
+  `section` rows with letter numbering carried in the title text, subsections A.1–A.15 under
+  them. Forward capture (`@@APPENDIX@@` row) and reverse sketch agree — the first protograph
+  kind confirmed from both directions.
+- **Tiling is imperfect in the reverse direction:** the content model claims exclusive
+  ownership, but the realized spans carry **2 gaps and 3 overlaps** across 56 spanned rows.
+  The probe's forward capture on its specimen: 0 leaked / 0 orphaned. One number per direction —
+  reverse-engineering the spine from output cannot quite close; forward assembly closes by
+  construction.
+- **The embedded math channel is visible and large:** 132 `$$` display blocks (~15.7k chars)
+  riding inside prose bodies, per the silhouette's deliberate scope. The probe holds the
+  complement: math extracted (1429 spans on its specimen), prose monolithic.
+- **A known defect class is fossilized as a kind:** `assumption:0` exists because the original
+  converter promoted "(A1) Moments and eigengap." to a heading (the heading over-promotion
+  class) — the silhouette modeled the accident rather than repairing it. Schema lesson:
+  theorem-like objects (assumptions included) want to be spine-addressable nodes born from
+  source environments, not accidents of heading promotion.
+
+**Convergence target, stated by the union:** the silhouette has the spine (addr/parent/level,
+anchors, front/backmatter kinds) and no channels; the probe has the channels (math, figures,
+diagrams, algs, placement evidence, closure discipline) and no spine — its prose is one
+undifferentiated stream. The next probe pass adds **spine rows**: section/subsection nodes from
+the ordered walk `Convert-CrossRefEnvs` already performs (the capture point exists in
+production), with prose blocks and slots addressed under them — the full interleaved stream both
+artifacts are converging on.
+
+## 7. Open items
+
+- **Spine rows** (next probe pass): capture section/subsection/theorem-object nodes during the
+  `Convert-CrossRefEnvs` walk and address prose blocks + slots under them (§6 convergence
+  target).
 - Run the probe across the remaining staged tarballs (~30 in `ingestion/_inbox` + compendia) —
   grow the residue ledger and the spec census across authors.
-- Pressure-test the row shape against the KisungYou silhouette
-  (`bibliotecha/corpora/KisungYou/2605.20681v1.chunks.jsonl`): forward-captured rows vs the
-  reverse-engineered sketch — the "compare against the silhouette" step of the protograph loop.
-- `\appendix` → protograph admission question (user's call).
-- Theorem-title bracket-aware capture → small production fix, worth doing regardless of reshape.
+- Cite resolution drops the optional qualifier (`\cite[Theorem 3.1]{key}` → `[15]`, qualifier
+  lost) — small ref-semantics fidelity gap, surfaced by the pass-3 fix.
 - Production path also leaks `\FloatBarrier` (never stripped, survives into deliverables as
   residue) — decide whether production strips it as furniture or carries it as evidence.

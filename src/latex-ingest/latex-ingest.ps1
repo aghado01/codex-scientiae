@@ -45,6 +45,21 @@ function Get-BraceGroupEnd {
     $d = 0; for ($j = $Open; $j -lt $T.Length; $j++) { if ($T[$j] -eq '{') { $d++ } elseif ($T[$j] -eq '}') { $d--; if ($d -eq 0) { return $j + 1 } } }
     return -1
 }
+function Get-BracketGroupEnd {
+    # index just past the ] that closes the [ at $Open, or -1. TeX semantics: a ] inside a brace
+    # group is content, not a delimiter (\begin{theorem}[{\cite[Thm 3.1]{x}}]) — so ] closes only
+    # at brace depth 0, escapes skipped.
+    param([string]$T, [int]$Open)
+    $d = 0
+    for ($j = $Open + 1; $j -lt $T.Length; $j++) {
+        $c = $T[$j]
+        if ($c -eq '\') { $j++; continue }
+        if ($c -eq '{') { $d++ }
+        elseif ($c -eq '}') { if ($d -gt 0) { $d-- } }
+        elseif ($c -eq ']' -and $d -eq 0) { return $j + 1 }
+    }
+    return -1
+}
 function Get-LatexCommandArg {
     param([string]$Text, [string]$Command)   # e.g. '\title'
     $m = [regex]::Match($Text, [regex]::Escape($Command) + '\s*(?:\[[^\]]*\])?\s*\{')   # skip an optional [..] arg, e.g. \title[short]{long}
@@ -1380,6 +1395,7 @@ function Convert-CrossRefEnvs {
         if ($m.Index -lt $pos) { continue }
         [void]$sb.Append($Body.Substring($pos, $m.Index - $pos))
         $emit = $m.Value
+        $consumeTo = $m.Index + $m.Length
         if ($m.Groups[1].Success) {                                              # \section family
             if ($m.Groups[2].Value -ne '*') {
                 $num = switch ($m.Groups[1].Value) {
@@ -1392,7 +1408,24 @@ function Convert-CrossRefEnvs {
             } else { $pending = $null }
         }
         elseif ($m.Groups[3].Success) {                                          # \begin{env}
-            $env = $m.Groups[3].Value; $note = if ($m.Groups[4].Success) { " ($($m.Groups[4].Value))" } else { '' }
+            $env = $m.Groups[3].Value
+            $noteVal = $null
+            if ($m.Groups[4].Success) {
+                # the walk regex stops the optional arg at the FIRST ] — but titles may nest brackets
+                # inside brace groups (\begin{theorem}[{\cite[Thm 3.1]{x}}]). Rescan bracket-aware and
+                # consume to the true end; a whole-arg {…} wrapper is TeX grouping, not content — unwrap
+                # one layer so the emitted head reads (\cite…), resolved by the body's Resolve-Refs pass.
+                $ob = $m.Groups[4].Index - 1
+                $be = Get-BracketGroupEnd $Body $ob
+                if ($be -gt 0) {
+                    $noteVal = $Body.Substring($ob + 1, $be - $ob - 2)
+                    if ($be -gt $consumeTo) { $consumeTo = $be }
+                } else { $noteVal = $m.Groups[4].Value }
+                if ($noteVal.Length -ge 2 -and $noteVal[0] -eq '{' -and (Get-BraceGroupEnd $noteVal 0) -eq $noteVal.Length) {
+                    $noteVal = $noteVal.Substring(1, $noteVal.Length - 2)
+                }
+            }
+            $note = if ($null -ne $noteVal) { " ($noteVal)" } else { '' }
             if ($Model.Contains($env)) {
                 $e = $Model[$env]
                 if ($e.star) {
@@ -1418,7 +1451,7 @@ function Convert-CrossRefEnvs {
             if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
             $pending = $null
         }
-        [void]$sb.Append($emit); $pos = $m.Index + $m.Length
+        [void]$sb.Append($emit); $pos = $consumeTo
     }
     [void]$sb.Append($Body.Substring($pos))
     return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects }
@@ -1639,6 +1672,15 @@ function ConvertFrom-Latex {
                 $n = $script:BarrierStore.Count
                 $script:BarrierStore.Add([pscustomobject]@{ n = $n; via = $m.Groups[1].Value })
                 "`n`n@@BARRIER$n@@`n`n" })
+        # \appendix — ADMITTED spine signal (user, 2026-08-02): sectioning switches to appendix mode
+        # (letter numbering). Not always present, but part of the protograph taxonomy — captured as a
+        # structural row rather than left as residue.
+        $script:AppendixStore = [System.Collections.Generic.List[object]]::new()
+        $body = [regex]::Replace($body, '\\appendix(?![a-zA-Z])', {
+                param($m)
+                $n = $script:AppendixStore.Count
+                $script:AppendixStore.Add([pscustomobject]@{ n = $n })
+                "`n`n@@APPENDIX$n@@`n`n" })
     }
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
@@ -1762,6 +1804,7 @@ function ConvertFrom-Latex {
             figures  = $script:FigEnvStore
             diagrams = $script:DiagramStore
             barriers = $script:BarrierStore
+            appendix = $script:AppendixStore
             facts    = @{
                 # implicit-barrier mode: placeins [section] makes every \section a barrier — a
                 # document-level fact knowable from one preamble line, recorded rather than synthesized
