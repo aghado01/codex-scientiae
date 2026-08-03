@@ -1747,6 +1747,18 @@ function ConvertFrom-Latex {
     }
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
+    # sn-jnl / article author metadata is not part of the corpus format (STANDARDS §8): strip it brace-aware
+    # so \author*[1]{\fnm{}\sur{}}, \affil[..]{\orgdiv{}…}, \email, \equalcont, \orcid stop leaking into the
+    # body. \title is already lifted to the H1 (Get-LatexCommandArg above); the raw command is dropped here.
+    # …including the amsart dialect: \address/\curraddr (institutional addresses), \subjclass[2020]{MSC},
+    # \dedicatory, \urladdr — same never-rendered-in-corpus front-matter class (STANDARDS §8).
+    # POSITION is load-bearing: this drop must run BEFORE Protect-LatexMath — math inside a dropped arg
+    # (an affiliation $^*$) must never reach the store. Capture-then-discard leaves orphaned store
+    # entries; discard-then-capture keeps "every stored span is reachable" a hard invariant.
+    foreach ($fm in '\title', '\author', '\affil', '\email', '\equalcont', '\orcid', '\orcidlink', '\thanks', '\address', '\curraddr', '\subjclass', '\dedicatory', '\urladdr') {
+        $body = Replace-BracedCommand $body $fm { '' }
+    }
+
     # Protect math BEFORE the algorithm/theorem/text passes. Position is load-bearing for TOKENIZATION
     # CONSISTENCY: algorithm-internal math ($x_i$, \mathbf, \gets) must reach the store INTACT so the
     # pseudocode fences carry the same $-delimited, macro-expanded KaTeX-primitive tokens as body math —
@@ -1786,15 +1798,6 @@ function ConvertFrom-Latex {
     $body = Replace-BracedCommand $body '\abstract' { param($a) "`n## Abstract`n`n$a`n" }
     $body = Replace-BracedCommand $body '\footnote' { param($a) " ($($a.Trim()))" }
     $body = Replace-BracedCommand $body '\keywords' { param($a) "`n**Keywords:** " + (($a -replace '\s+', ' ').Trim()) + "`n" }
-    # sn-jnl / article author metadata is not part of the corpus format (STANDARDS §8): strip it brace-aware
-    # so \author*[1]{\fnm{}\sur{}}, \affil[..]{\orgdiv{}…}, \email, \equalcont, \orcid stop leaking into the
-    # body. \title is already lifted to the H1 (Get-LatexCommandArg above); the raw command is dropped here.
-    # …including the amsart dialect: \address/\curraddr (institutional addresses), \subjclass[2020]{MSC},
-    # \dedicatory, \urladdr — same never-rendered-in-corpus front-matter class (STANDARDS §8).
-    foreach ($fm in '\title', '\author', '\affil', '\email', '\equalcont', '\orcid', '\orcidlink', '\thanks', '\address', '\curraddr', '\subjclass', '\dedicatory', '\urladdr') {
-        $body = Replace-BracedCommand $body $fm { '' }
-    }
-
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
     # headings/paragraphs BRACE-AWARE (sweep ledger: nested-brace titles leaked raw across 7+ papers
     # — \subsection{..{\em x}..}, \texorpdfstring in titles). Innermost-first; blank lines (MD022).
