@@ -1,0 +1,353 @@
+{"row":"label","label":"result:lap_arithm","class":"object","type":"Result","normalized":"2","faithful":"2"}
+{"row":"label","label":"rem:full-laplacian","class":"object","type":"Remark","normalized":"1.1","faithful":"1.1"}
+{"row":"label","label":"result:filt","class":"object","type":"Result","normalized":"3","faithful":"3"}
+{"row":"label","label":"thm:weakfactor","class":"object","type":"Theorem","normalized":"2.1","faithful":"2.1"}
+{"row":"label","label":"def:orit_mtrx","class":"object","type":"Definition","normalized":"2.3","faithful":"2.3"}
+{"row":"label","label":"def:reg_mtrx","class":"object","type":"Definition","normalized":"2.5","faithful":"2.5"}
+{"row":"label","label":"lemma:grph_cmpnt","class":"object","type":"Lemma","normalized":"2.7","faithful":"2.7"}
+{"row":"label","label":"lem:simpleprod","class":"object","type":"Lemma","normalized":"2.9","faithful":"2.9"}
+{"row":"label","label":"lem:Ul","class":"object","type":"Lemma","normalized":"2.10","faithful":"2.10"}
+{"row":"label","label":"ex:LemmaU","class":"object","type":"Example","normalized":"2.11","faithful":"2.11"}
+{"row":"label","label":"prop:regular","class":"object","type":"Proposition","normalized":"2.12","faithful":"2.12"}
+{"row":"label","label":"lemma:no_ort_cmpt","class":"object","type":"Lemma","normalized":"2.13","faithful":"2.13"}
+{"row":"label","label":"lemma:sig_cmpt","class":"object","type":"Lemma","normalized":"2.15","faithful":"2.15"}
+{"row":"label","label":"thm:main_thm","class":"object","type":"Theorem","normalized":"2.17","faithful":"2.17"}
+{"row":"label","label":"prop:alg_weak_red","class":"object","type":"Proposition","normalized":"2.18","faithful":"2.18"}
+{"row":"label","label":"total:lap","class":"object","type":"Definition","normalized":"3.3","faithful":"3.3"}
+{"row":"label","label":"def:perslap","class":"object","type":"Definition","normalized":"3.4","faithful":"3.4"}
+{"row":"label","label":"thm_memoli","class":"object","type":"Theorem","normalized":"3.5","faithful":"3.5"}
+{"row":"label","label":"lemma:pers_lap_memoli","class":"object","type":"Lemma","normalized":"3.6","faithful":"3.6"}
+{"row":"label","label":"prop:pers_lap","class":"object","type":"Proposition","normalized":"3.7","faithful":"3.7"}
+{"row":"label","label":"thm:fastcomputation","class":"object","type":"Theorem","normalized":"3.8","faithful":"3.8"}
+{"row":"label","label":"ex_2","class":"object","type":"Example","normalized":"3.9","faithful":"3.9"}
+{"row":"label","label":"prop:alg_lap","class":"object","type":"Proposition","normalized":"3.10","faithful":"3.10"}
+{"row":"label","label":"rmk:cmpt_time","class":"object","type":"Remark","normalized":"3.11","faithful":"3.11"}
+{"row":"label","label":"lemma:D_filtration","class":"object","type":"Lemma","normalized":"3.12","faithful":"3.12"}
+{"row":"label","label":"rmk:filt_weak_red","class":"object","type":"Remark","normalized":"3.13","faithful":"3.13"}
+{"row":"label","label":"prop:time_filtration","class":"object","type":"Proposition","normalized":"3.14","faithful":"3.14"}
+{"row":"label","label":"ex:dense","class":"object","type":"Example","normalized":"3.15","faithful":"3.15"}
+{"row":"label","label":"cor:filt","class":"object","type":"Corollary","normalized":"3.16","faithful":"3.16"}
+{"row":"label","label":"prop:cheeger","class":"object","type":"Proposition","normalized":"4.2","faithful":"4.2"}
+{"row":"label","label":"lemma:same_eig_val","class":"object","type":"Lemma","normalized":"4.4","faithful":"4.4"}
+{"row":"label","label":"thm:gersgorin","class":"object","type":"Theorem","normalized":"4.5","faithful":"4.5"}
+{"row":"label","label":"prop:realcheeger1","class":"object","type":"Proposition","normalized":"4.6","faithful":"4.6"}
+{"row":"label","label":"lemma:full_col_rnk","class":"object","type":"Lemma","normalized":"4.7","faithful":"4.7"}
+{"row":"label","label":"prop:realcheeger2","class":"object","type":"Proposition","normalized":"4.8","faithful":"4.8"}
+{"row":"label","label":"prop:realcheeger","class":"object","type":"Theorem","normalized":"4.10","faithful":"4.10"}
+{"row":"label","label":"prop:gkl","class":"object","type":"Proposition","normalized":"5.1","faithful":"5.1"}
+{"row":"label","label":"cor:filt_complexity","class":"object","type":"Corollary","normalized":"5.2","faithful":"5.2"}
+{"row":"label","label":"rem:hodge-efficient","class":"object","type":"Remark","normalized":"5.3","faithful":"5.3"}
+{"row":"label","label":"ex_cub_1","class":"object","type":"Example","normalized":"6.1","faithful":"6.1"}
+{"row":"label","label":"def:incd_mtx_undir","class":"object","type":"Definition","normalized":"8.3","faithful":"A.3"}
+{"row":"label","label":"def:laphyper","class":"object","type":"Definition","normalized":"10.7","faithful":"C.7"}
+{"row":"label","label":"def_dual_hg","class":"object","type":"Definition","normalized":"10.9","faithful":"C.9"}
+{"row":"label","label":"prop:GKL_speed","class":"object","type":"Proposition","normalized":"12.1","faithful":"E.1"}
+{"row":"label","label":"prop:GKL_speed_2","class":"object","type":"Proposition","normalized":"12.2","faithful":"E.2"}
+{"row":"label","label":"sec:non_brch_mtx","class":"section","type":"Section","normalized":"2","faithful":"2"}
+{"row":"label","label":"subsec:non_branching_def","class":"section","type":"Subsection","normalized":"2.1","faithful":"2.1"}
+{"row":"label","label":"subsec:reg_mtx","class":"section","type":"Subsection","normalized":"2.2","faithful":"2.2"}
+{"row":"label","label":"subsec:irreg_mtx","class":"section","type":"Subsection","normalized":"2.3","faithful":"2.3"}
+{"row":"label","label":"subsec:singular_mtx","class":"section","type":"Subsection","normalized":"2.4","faithful":"2.4"}
+{"row":"label","label":"subsec:non_branching_mtx","class":"section","type":"Subsection","normalized":"2.5","faithful":"2.5"}
+{"row":"label","label":"sec:up_pers_lap","class":"section","type":"Section","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:sp_cmplx","class":"section","type":"Subsection","normalized":"3.1","faithful":"3.1"}
+{"row":"label","label":"subsec:regular_form","class":"section","type":"Subsection","normalized":"3.2","faithful":"3.2"}
+{"row":"label","label":"sec:filtration","class":"section","type":"Subsection","normalized":"3.3","faithful":"3.3"}
+{"row":"label","label":"subsec:kron_red","class":"section","type":"Section","normalized":"4","faithful":"4"}
+{"row":"label","label":"sec:kron","class":"section","type":"Subsection","normalized":"4.1","faithful":"4.1"}
+{"row":"label","label":"sec:cheeger","class":"section","type":"Subsection","normalized":"4.2","faithful":"4.2"}
+{"row":"label","label":"ex_1","class":"section","type":"Subsection","normalized":"4.3","faithful":"4.3"}
+{"row":"label","label":"sec:eigenvalues","class":"section","type":"Section","normalized":"5","faithful":"5"}
+{"row":"label","label":"subsec:cubical","class":"section","type":"Section","normalized":"6","faithful":"6"}
+{"row":"label","label":"fig_cubical_cmplexes","class":"section","type":"Subsection","normalized":"6.1","faithful":"6.1"}
+{"row":"label","label":"fig:image_x_ray","class":"section","type":"Subsection","normalized":"6.2","faithful":"6.2"}
+{"row":"label","label":"subsec:compute_speed","class":"section","type":"Subsubsection","normalized":"6.2.1","faithful":"6.2.1"}
+{"row":"label","label":"sec:discussion","class":"section","type":"Section","normalized":"7","faithful":"7"}
+{"row":"label","label":"appdx_codes","class":"section","type":"Section","normalized":"9","faithful":"B"}
+{"row":"label","label":"appdx_hg","class":"section","type":"Section","normalized":"10","faithful":"C"}
+{"row":"label","label":"appdx_cub_cplx","class":"section","type":"Section","normalized":"11","faithful":"D"}
+{"row":"label","label":"appdx_GKL","class":"section","type":"Section","normalized":"12","faithful":"E"}
+{"row":"label","label":"ex:numeric","class":"section","type":"Section","normalized":"13","faithful":"F"}
+{"row":"label","label":"eqn:per_lap","class":"equation","type":"Equation","normalized":"1","faithful":"1"}
+{"row":"label","label":"eq:decomp","class":"equation","type":"Equation","normalized":"2","faithful":"2"}
+{"row":"label","label":"eq:uplap_1","class":"equation","type":"Equation","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_example","class":"figure","type":"Figure","normalized":"1","faithful":"1"}
+{"row":"label","label":"fig_dig_per_lap","class":"figure","type":"Figure","normalized":"2","faithful":"2"}
+{"row":"label","label":"fig_mobius","class":"figure","type":"Figure","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig:dense_example","class":"figure","type":"Figure","normalized":"4","faithful":"4"}
+{"row":"label","label":"fig_simplicial_cmplexes","class":"figure","type":"Figure","normalized":"5","faithful":"5"}
+{"row":"label","label":"fig_hg_ex_1","class":"figure","type":"Figure","normalized":"6","faithful":"6"}
+{"row":"label","label":"fig_cubical_cmplexes","class":"figure","type":"Figure","normalized":"7","faithful":"7"}
+{"row":"label","label":"fig_hyp_grph_1","class":"figure","type":"Figure","normalized":"8","faithful":"8"}
+{"row":"label","label":"fig:image_x_ray","class":"figure","type":"Figure","normalized":"9","faithful":"9"}
+{"row":"label","label":"fig:image_plots","class":"figure","type":"Figure","normalized":"10","faithful":"10"}
+{"row":"label","label":"fig:image_eig_sing","class":"figure","type":"Figure","normalized":"11","faithful":"11"}
+{"row":"label","label":"fig_2_cube","class":"figure","type":"Figure","normalized":"12","faithful":"12"}
+{"row":"label","label":"subsec:reg_mtx","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:grph_cmpnt","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lem:simpleprod","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lem:Ul","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"ex:LemmaU","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_example","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:regular","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:irreg_mtx","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:no_ort_cmpt","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:singular_mtx","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:sig_cmpt","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:non_branching_mtx","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"thm:main_thm","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:alg_weak_red","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:reort","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:weak_red","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"sec:up_pers_lap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:sp_cmplx","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"total:lap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"def:perslap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_dig_per_lap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"thm_memoli","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"eqn:per_lap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:pers_lap_memoli","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:regular_form","class":"custom","type":"","normalized":"2","faithful":"2"}
+{"row":"label","label":"eq:decomp","class":"custom","type":"","normalized":"2","faithful":"2"}
+{"row":"label","label":"prop:pers_lap","class":"custom","type":"","normalized":"2","faithful":"2"}
+{"row":"label","label":"thm:fastcomputation","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"eq:uplap_1","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"ex_2","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_mobius","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:alg_lap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:pers_lap","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"rmk:cmpt_time","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"sec:filtration","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:D_filtration","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"rmk:filt_weak_red","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:time_filtration","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"ex:dense","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig:dense_example","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"cor:filt","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:kron_red","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"sec:kron","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:cheeger","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:same_eig_val","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"sec:cheeger","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"thm:gersgorin","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:realcheeger1","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"lemma:full_col_rnk","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:realcheeger2","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:realcheeger","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"ex_1","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_simplicial_cmplexes","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_hg_ex_1","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"sec:eigenvalues","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:gkl","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"cor:filt_complexity","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"rem:hodge-efficient","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:cubical","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_cubical_cmplexes","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"ex_cub_1","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_hyp_grph_1","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig:image_x_ray","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"subsec:compute_speed","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig:image_plots","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig:image_eig_sing","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"sec:discussion","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"def:incd_mtx_undir","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"appdx_codes","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:dsu","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:union","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:find","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"appdx_hg","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"def:laphyper","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"def_dual_hg","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"appdx_cub_cplx","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"fig_2_cube","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"appdx_GKL","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:GKL","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:GKL_speed","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"prop:GKL_speed_2","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"label","label":"ex:numeric","class":"custom","type":"","normalized":"3","faithful":"3"}
+{"row":"site","seq":0,"macro":"cite","targets":["von2007tutorial","lim2020hodge"],"rendered":"[20, 13]"}
+{"row":"site","seq":1,"macro":"cite","targets":["MR4164275","pers_lap","gen_pers_lap"],"rendered":"[22, 15, 7]"}
+{"row":"site","seq":2,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
+{"row":"site","seq":3,"macro":"cite","targets":["davies23c","wei2023"],"rendered":"[5, 23]"}
+{"row":"site","seq":4,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
+{"row":"site","seq":5,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Algorithm 3.1, Algorithm 4.1]"}
+{"row":"site","seq":6,"macro":"cite","targets":["wei2023"],"rendered":"[23]"}
+{"row":"site","seq":7,"macro":"cite","targets":["twononzero"],"rendered":"[17]"}
+{"row":"site","seq":8,"macro":"cite","targets":["twononzero"],"rendered":"[17]"}
+{"row":"site","seq":9,"macro":"cite","targets":["pers_lap"],"rendered":"[15, SM1]"}
+{"row":"site","seq":10,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section 4.3]"}
+{"row":"site","seq":11,"macro":"cite","targets":["MR3017573"],"rendered":"[4]"}
+{"row":"site","seq":12,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Remark 4.12]"}
+{"row":"site","seq":13,"macro":"cite","targets":["edelsbrunner2010computational"],"rendered":"[6, Ch.~VII.1]"}
+{"row":"site","seq":14,"macro":"cite","targets":["MR1829620"],"rendered":"[8, Theorem 8.3.1]"}
+{"row":"site","seq":15,"macro":"cite","targets":["cormen2022introduction"],"rendered":"[3]"}
+{"row":"site","seq":16,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
+{"row":"site","seq":17,"macro":"cite","targets":["MR575168"],"rendered":"[18]"}
+{"row":"site","seq":18,"macro":"cite","targets":["MR3025945"],"rendered":"[21]"}
+{"row":"site","seq":19,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
+{"row":"site","seq":20,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Theorem 3.1]"}
+{"row":"site","seq":21,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Lemma 3.4]"}
+{"row":"site","seq":22,"macro":"cite","targets":["jost2023cheeger"],"rendered":"[12]"}
+{"row":"site","seq":23,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
+{"row":"site","seq":24,"macro":"cite","targets":["wei2023"],"rendered":"[23]"}
+{"row":"site","seq":25,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section SM5]"}
+{"row":"site","seq":26,"macro":"cite","targets":["MR2978290","MR2093409"],"rendered":"[11, 19]"}
+{"row":"site","seq":27,"macro":"cite","targets":["MR3024913","MR1792141"],"rendered":"[9, 1]"}
+{"row":"site","seq":28,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.2]"}
+{"row":"site","seq":29,"macro":"cite","targets":["horak2013spectra"],"rendered":"[10, Section 2]"}
+{"row":"site","seq":30,"macro":"cite","targets":["wei2023"],"rendered":"[23, Figure 5]"}
+{"row":"site","seq":31,"macro":"cite","targets":["davies23c"],"rendered":"[5]"}
+{"row":"site","seq":32,"macro":"cite","targets":["MR3025945"],"rendered":"[21]"}
+{"row":"site","seq":33,"macro":"cite","targets":["medmnistv1","medmnistv2"],"rendered":"[24, 25]"}
+{"row":"site","seq":34,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section 5]"}
+{"row":"site","seq":35,"macro":"cite","targets":["davies23c"],"rendered":"[5]"}
+{"row":"site","seq":36,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":37,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":38,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":39,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":40,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":41,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":42,"macro":"cite","targets":["MR1421568"],"rendered":"[2]"}
+{"row":"site","seq":43,"macro":"cite","targets":["MR4433789"],"rendered":"[14, Section 1.4]"}
+{"row":"site","seq":44,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
+{"row":"site","seq":45,"macro":"cite","targets":["MR3025945"],"rendered":"[21]"}
+{"row":"site","seq":46,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.3.3]"}
+{"row":"site","seq":47,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.2]"}
+{"row":"site","seq":48,"macro":"eqref","targets":["eqn:per_lap"],"rendered":"(1)"}
+{"row":"site","seq":49,"macro":"eqref","targets":["eqn:per_lap"],"rendered":"(1)"}
+{"row":"site","seq":50,"macro":"cref","targets":["subsec:cubical"],"rendered":"section 6"}
+{"row":"site","seq":51,"macro":"cref","targets":["sec:non_brch_mtx"],"rendered":"section 2"}
+{"row":"site","seq":52,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":53,"macro":"cref","targets":["prop:alg_weak_red"],"rendered":"proposition 2.18"}
+{"row":"site","seq":54,"macro":"ref","targets":["def:reg_mtrx"],"rendered":"2.5"}
+{"row":"site","seq":55,"macro":"cref","targets":["sec:up_pers_lap"],"rendered":"section 3"}
+{"row":"site","seq":56,"macro":"cref","targets":["prop:alg_lap"],"rendered":"proposition 3.10"}
+{"row":"site","seq":57,"macro":"cref","targets":["subsec:sp_cmplx"],"rendered":"subsection 3.1"}
+{"row":"site","seq":58,"macro":"cref","targets":["sec:eigenvalues"],"rendered":"section 5"}
+{"row":"site","seq":59,"macro":"cref","targets":["prop:time_filtration"],"rendered":"proposition 3.14"}
+{"row":"site","seq":60,"macro":"cref","targets":["result:filt"],"rendered":"result 3"}
+{"row":"site","seq":61,"macro":"cref","targets":["sec:eigenvalues"],"rendered":"section 5"}
+{"row":"site","seq":62,"macro":"cref","targets":["cor:filt"],"rendered":"corollary 3.16"}
+{"row":"site","seq":63,"macro":"cref","targets":["subsec:kron_red"],"rendered":"section 4"}
+{"row":"site","seq":64,"macro":"cref","targets":["subsec:kron_red"],"rendered":"section 4"}
+{"row":"site","seq":65,"macro":"cref","targets":["prop:realcheeger"],"rendered":"theorem 4.10"}
+{"row":"site","seq":66,"macro":"cref","targets":["sec:eigenvalues"],"rendered":"section 5"}
+{"row":"site","seq":67,"macro":"cref","targets":["subsec:cubical"],"rendered":"section 6"}
+{"row":"site","seq":68,"macro":"cref","targets":["sec:discussion"],"rendered":"section 7"}
+{"row":"site","seq":69,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":70,"macro":"cref","targets":["def:reg_mtrx"],"rendered":"definition 2.5"}
+{"row":"site","seq":71,"macro":"cref","targets":["lem:simpleprod"],"rendered":"lemma 2.9"}
+{"row":"site","seq":72,"macro":"cref","targets":["lemma:grph_cmpnt"],"rendered":"lemma 2.7"}
+{"row":"site","seq":73,"macro":"cref","targets":["fig_example"],"rendered":"figure 1"}
+{"row":"site","seq":74,"macro":"cref","targets":["lem:Ul"],"rendered":"lemma 2.10"}
+{"row":"site","seq":75,"macro":"cref","targets":["ex:LemmaU"],"rendered":"example 2.11"}
+{"row":"site","seq":76,"macro":"cref","targets":["def:reg_mtrx"],"rendered":"definition 2.5"}
+{"row":"site","seq":77,"macro":"cref","targets":["def:incd_mtx_undir"],"rendered":"definition 8.3"}
+{"row":"site","seq":78,"macro":"cref","targets":["lemma:no_ort_cmpt"],"rendered":"lemma 2.13"}
+{"row":"site","seq":79,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":80,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":81,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":82,"macro":"cref","targets":["lemma:no_ort_cmpt"],"rendered":"lemma 2.13"}
+{"row":"site","seq":83,"macro":"cref","targets":["lemma:sig_cmpt"],"rendered":"lemma 2.15"}
+{"row":"site","seq":84,"macro":"cref","targets":["lemma:sig_cmpt"],"rendered":"lemma 2.15"}
+{"row":"site","seq":85,"macro":"cref","targets":["sec:filtration"],"rendered":"subsection 3.3"}
+{"row":"site","seq":86,"macro":"cref","targets":["alg:dsu"],"rendered":"3"}
+{"row":"site","seq":87,"macro":"cref","targets":["appdx_codes"],"rendered":"section 9"}
+{"row":"site","seq":88,"macro":"cref","targets":["alg:union"],"rendered":"3"}
+{"row":"site","seq":89,"macro":"cref","targets":["appdx_codes"],"rendered":"section 9"}
+{"row":"site","seq":90,"macro":"cref","targets":["alg:find"],"rendered":"3"}
+{"row":"site","seq":91,"macro":"cref","targets":["appdx_codes"],"rendered":"section 9"}
+{"row":"site","seq":92,"macro":"cref","targets":["alg:reort"],"rendered":"3"}
+{"row":"site","seq":93,"macro":"cref","targets":["alg:weak_red"],"rendered":"3"}
+{"row":"site","seq":94,"macro":"cref","targets":["prop:alg_weak_red"],"rendered":"proposition 2.18"}
+{"row":"site","seq":95,"macro":"cref","targets":["sec:non_brch_mtx"],"rendered":"section 2"}
+{"row":"site","seq":96,"macro":"cref","targets":["subsec:regular_form"],"rendered":"subsection 3.2"}
+{"row":"site","seq":97,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":98,"macro":"cref","targets":["fig_dig_per_lap"],"rendered":"figure 2"}
+{"row":"site","seq":99,"macro":"cref","targets":["rem:full-laplacian"],"rendered":"remark 1.1"}
+{"row":"site","seq":100,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":101,"macro":"cref","targets":["subsec:non_branching_mtx"],"rendered":"subsection 2.5"}
+{"row":"site","seq":102,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":103,"macro":"cref","targets":["thm:main_thm"],"rendered":"theorem 2.17"}
+{"row":"site","seq":104,"macro":"cref","targets":["lemma:pers_lap_memoli"],"rendered":"lemma 3.6"}
+{"row":"site","seq":105,"macro":"cref","targets":["lemma:pers_lap_memoli"],"rendered":"lemma 3.6"}
+{"row":"site","seq":106,"macro":"cref","targets":["lemma:pers_lap_memoli"],"rendered":"lemma 3.6"}
+{"row":"site","seq":107,"macro":"cref","targets":["thm:main_thm"],"rendered":"theorem 2.17"}
+{"row":"site","seq":108,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":109,"macro":"cref","targets":["fig_mobius"],"rendered":"figure 3"}
+{"row":"site","seq":110,"macro":"ref","targets":["ex_2"],"rendered":"3.9"}
+{"row":"site","seq":111,"macro":"cref","targets":["def:reg_mtrx"],"rendered":"definition 2.5"}
+{"row":"site","seq":112,"macro":"cref","targets":["alg:pers_lap"],"rendered":"3"}
+{"row":"site","seq":113,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
+{"row":"site","seq":114,"macro":"cref","targets":["prop:alg_weak_red"],"rendered":"proposition 2.18"}
+{"row":"site","seq":115,"macro":"cref","targets":["prop:alg_lap"],"rendered":"proposition 3.10"}
+{"row":"site","seq":116,"macro":"cref","targets":["prop:alg_weak_red"],"rendered":"proposition 2.18"}
+{"row":"site","seq":117,"macro":"cref","targets":["thm:weakfactor"],"rendered":"theorem 2.1"}
+{"row":"site","seq":118,"macro":"cref","targets":["subsec:non_branching_mtx"],"rendered":"subsection 2.5"}
+{"row":"site","seq":119,"macro":"cref","targets":["lemma:D_filtration"],"rendered":"lemma 3.12"}
+{"row":"site","seq":120,"macro":"cref","targets":["prop:alg_lap"],"rendered":"proposition 3.10"}
+{"row":"site","seq":121,"macro":"cref","targets":["rmk:filt_weak_red"],"rendered":"remark 3.13"}
+{"row":"site","seq":122,"macro":"cref","targets":["lemma:D_filtration"],"rendered":"lemma 3.12"}
+{"row":"site","seq":123,"macro":"cref","targets":["prop:time_filtration"],"rendered":"proposition 3.14"}
+{"row":"site","seq":124,"macro":"cref","targets":["fig:dense_example"],"rendered":"figure 4"}
+{"row":"site","seq":125,"macro":"cref","targets":["sec:eigenvalues"],"rendered":"section 5"}
+{"row":"site","seq":126,"macro":"cref","targets":["sec:kron"],"rendered":"subsection 4.1"}
+{"row":"site","seq":127,"macro":"cref","targets":["appdx_hg"],"rendered":"section 10"}
+{"row":"site","seq":128,"macro":"cref","targets":["sec:cheeger"],"rendered":"subsection 4.2"}
+{"row":"site","seq":129,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":130,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
+{"row":"site","seq":131,"macro":"cref","targets":["def:laphyper"],"rendered":"definition 10.7"}
+{"row":"site","seq":132,"macro":"cref","targets":["def_dual_hg"],"rendered":"definition 10.9"}
+{"row":"site","seq":133,"macro":"cref","targets":["thm:gersgorin"],"rendered":"theorem 4.5"}
+{"row":"site","seq":134,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":135,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":136,"macro":"cref","targets":["lemma:full_col_rnk"],"rendered":"lemma 4.7"}
+{"row":"site","seq":137,"macro":"cref","targets":["lemma:same_eig_val"],"rendered":"lemma 4.4"}
+{"row":"site","seq":138,"macro":"cref","targets":["prop:realcheeger2"],"rendered":"proposition 4.8"}
+{"row":"site","seq":139,"macro":"cref","targets":["prop:realcheeger1"],"rendered":"proposition 4.6"}
+{"row":"site","seq":140,"macro":"cref","targets":["prop:realcheeger2"],"rendered":"proposition 4.8"}
+{"row":"site","seq":141,"macro":"cref","targets":["prop:realcheeger"],"rendered":"theorem 4.10"}
+{"row":"site","seq":142,"macro":"cref","targets":["fig_simplicial_cmplexes"],"rendered":"figure 5"}
+{"row":"site","seq":143,"macro":"ref","targets":["ex_1"],"rendered":"4.3"}
+{"row":"site","seq":144,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":145,"macro":"cref","targets":["prop:cheeger"],"rendered":"proposition 4.2"}
+{"row":"site","seq":146,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
+{"row":"site","seq":147,"macro":"cref","targets":["fig_hg_ex_1"],"rendered":"figure 6"}
+{"row":"site","seq":148,"macro":"ref","targets":["fig_simplicial_cmplexes"],"rendered":"5"}
+{"row":"site","seq":149,"macro":"cref","targets":["subsec:kron_red"],"rendered":"section 4"}
+{"row":"site","seq":150,"macro":"cref","targets":["prop:alg_lap"],"rendered":"proposition 3.10"}
+{"row":"site","seq":151,"macro":"cref","targets":["ex:numeric"],"rendered":"section 13"}
+{"row":"site","seq":152,"macro":"cref","targets":["appdx_GKL"],"rendered":"section 12"}
+{"row":"site","seq":153,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
+{"row":"site","seq":154,"macro":"cref","targets":["prop:alg_lap"],"rendered":"proposition 3.10"}
+{"row":"site","seq":155,"macro":"cref","targets":["prop:GKL_speed"],"rendered":"proposition 12.1"}
+{"row":"site","seq":156,"macro":"cref","targets":["cor:filt"],"rendered":"corollary 3.16"}
+{"row":"site","seq":157,"macro":"cref","targets":["prop:gkl"],"rendered":"proposition 5.1"}
+{"row":"site","seq":158,"macro":"cref","targets":["cor:filt"],"rendered":"corollary 3.16"}
+{"row":"site","seq":159,"macro":"cref","targets":["prop:gkl"],"rendered":"proposition 5.1"}
+{"row":"site","seq":160,"macro":"cref","targets":["fig:image_eig_sing"],"rendered":"figure 11"}
+{"row":"site","seq":161,"macro":"cref","targets":["ex_cub_1"],"rendered":"example 6.1"}
+{"row":"site","seq":162,"macro":"cref","targets":["appdx_cub_cplx"],"rendered":"section 11"}
+{"row":"site","seq":163,"macro":"ref","targets":["ex_cub_1"],"rendered":"6.1"}
+{"row":"site","seq":164,"macro":"cref","targets":["fig_cubical_cmplexes"],"rendered":"figure 7"}
+{"row":"site","seq":165,"macro":"cref","targets":["prop:pers_lap"],"rendered":"proposition 3.7"}
+{"row":"site","seq":166,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
+{"row":"site","seq":167,"macro":"cref","targets":["prop:cheeger"],"rendered":"proposition 4.2"}
+{"row":"site","seq":168,"macro":"cref","targets":["fig_hyp_grph_1"],"rendered":"figure 8"}
+{"row":"site","seq":169,"macro":"cref","targets":["fig:image_x_ray"],"rendered":"figure 9"}
+{"row":"site","seq":170,"macro":"cref","targets":["fig:image_x_ray"],"rendered":"figure 9"}
+{"row":"site","seq":171,"macro":"cref","targets":["fig:image_x_ray"],"rendered":"figure 9"}
+{"row":"site","seq":172,"macro":"cref","targets":["sec:filtration"],"rendered":"subsection 3.3"}
+{"row":"site","seq":173,"macro":"cref","targets":["fig:image_plots"],"rendered":"figure 10"}
+{"row":"site","seq":174,"macro":"cref","targets":["subsec:compute_speed"],"rendered":"subsubsection 6.2.1"}
+{"row":"site","seq":175,"macro":"cref","targets":["sec:eigenvalues"],"rendered":"section 5"}
+{"row":"site","seq":176,"macro":"cref","targets":["fig:image_eig_sing"],"rendered":"figure 11"}
+{"row":"site","seq":177,"macro":"cref","targets":["rem:hodge-efficient"],"rendered":"remark 5.3"}
+{"row":"site","seq":178,"macro":"cref","targets":["subsec:singular_mtx"],"rendered":"subsection 2.4"}
+{"row":"site","seq":179,"macro":"cref","targets":["def:incd_mtx_undir"],"rendered":"definition 8.3"}
+{"row":"site","seq":180,"macro":"cref","targets":["def:laphyper"],"rendered":"definition 10.7"}
+{"row":"site","seq":181,"macro":"cref","targets":["def_dual_hg"],"rendered":"definition 10.9"}
+{"row":"site","seq":182,"macro":"cref","targets":["fig_2_cube"],"rendered":"figure 12"}
+{"row":"site","seq":183,"macro":"cref","targets":["alg:GKL"],"rendered":"3"}
+{"row":"site","seq":184,"macro":"cref","targets":["alg:GKL"],"rendered":"3"}
+{"row":"site","seq":185,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
