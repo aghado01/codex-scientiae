@@ -339,14 +339,44 @@ question answered); the queued items discussed and landed (commits `74336a8`, `b
   converts and is a math-saturated stress specimen: 2,792 inline spans, residue 2,716/81
   distinct including inline `\verb` and bare math commands in prose.
 
-## 12. Open items
+## 12. The channel batch (2026-08-03c): verb, algorithm2e, tables, golden pin
 
-- **Table channel**: ADMITTED; the extraction design (table envs → slot rows with structure,
-  the caption/label bundle like figures) is the next channel to build.
-- algorithm2e adapter for Convert-Algorithms; inline `\verb` capture at the raw-source stage.
-- Macro-harvest gap: two specimens now — 2410.01294v3 (442/85) and 2405.12350v1 (2716/81).
-- Resolution consumers: repoint subject index / oracle counts at the ref model; golden pinning
-  before the producer swap (refs-consolidation steps 1, 4).
+Commits `9be693e` + `fc64724`:
+
+- **Inline `\verb`** stashed at the raw-source stage (after the env captures — inside it `%` is
+  not a comment and `$` is not math), emitting inline code spans through the VERB store. The
+  family now carries two grains, and the driver routes by content: fences interleave as rows,
+  spans ride inside their paragraph like inline math. 2207.00510: residue 4 distinct → 1
+  (only the `\lq` quote-macro class remains).
+- **algorithm2e adapter**: `Format-Algorithm2e` mechanically lowers the braced-argument dialect
+  (`\For{cond}{body}` → `for cond: … end`, `\KwIn`/`\KwOut` → `Input:`/`Output:`, `\tcp` →
+  `//`, `\eIf` three-arg, `\;` line ends, apparatus dropped) into a fenced pseudocode block —
+  same ALG channel, different vocabulary, hooked where the algorithmic-env attempt misses.
+  2404.05484: residue 50 → 13 (`\and`, `\qed` remain — other classes).
+- **Table channel** (the admitted kind): table-family floats stashed whole as `@@TABENV@@` —
+  caption + `\label` + grid as one bundle with the spec field, mirroring figures. Noted
+  honestly: the inner tabular is already markdown at stash time (Convert-Tabular runs
+  upstream), so the bundle is captured mid-realization — the forward-assembly version will
+  capture it raw. Specimens: 2207 ×6, 2404 ×1; closure 0/0 everywhere.
+- **Golden pinning landed** (refs-consolidation step 1): `tests/latex-ingest.refs.Tests.ps1`
+  pins all 167 labels (class, type, *both* projections) and all 186 reference sites (macro,
+  targets, rendered, in order) against a committed fixture; 5/5 passing; skips where the
+  source isn't staged. **Consumer repoint resolved by verification, not churn**: the subject
+  index is already model-fed (labels built from the objects records; markdown consulted only
+  for `byte_start`, a genuine final-text fact) — the a08656ce note-resolution loop *is* the
+  resolve phase, correctly ordered, so refs-consolidation step 4's "delete the bridge" is
+  reclassified: there is no bridge, there is a resolve stage. Oracle counts verified after the
+  flat-thm-map deletion.
+- PS trap for the ledger: a dictionary field named `keys` is shadowed by `.Keys` — the site
+  rows silently exploded cite keys into row fields at serialization. Renamed `targets`.
+
+## 13. Open items
+
+- `\lq`/`\rq` quote-macro class (2207 ×45); `\and`/`\qed` classes.
+- Macro-harvest gap: specimens 2410.01294v3 (442/85) and 2405.12350v1 (2716/81).
+- Refs ladder remainder: tex-docgraph reduced to a projection of the model (step 5); gauntlet
+  before/after compare (step 6) once full runs resume.
+- Corpus re-sweep with the three new channels (quantifies the ledger drop).
 - Normalization as a real serialization flag at production realization, refs rendered through
   the same projection (belongs with the refs-stage work).
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
