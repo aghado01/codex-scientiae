@@ -1442,7 +1442,7 @@ function Remove-TexComments([string]$Tex) {
 
 # --- the core transform: LaTeX -> markdown ----------------------------------------------------------
 function ConvertFrom-Latex {
-    param([string]$Tex, [string]$Bbl)
+    param([string]$Tex, [string]$Bbl, [switch]$ChannelProbe)
     $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
     $Tex = Remove-TexComments $Tex
     $macros = Get-LatexMacros $Tex
@@ -1614,6 +1614,18 @@ function ConvertFrom-Latex {
             if ($o.note) { $o.note = Resolve-Refs ([string]$o.note) $maps $citeMap $refSem }
         }
     }
+    # CHANNEL PROBE — stash figure-family floats WHOLE (graphics + caption + label as one unit), the
+    # same move as the tikz stash above: after ref resolution (so captions already read as prose) but
+    # BEFORE the label strip and math protection — each stashed figure keeps its \label identity and
+    # its caption math raw. Slot id in the flow; the probe driver owns emission. Production: inert.
+    if ($ChannelProbe) {
+        $script:FigEnvStore = [System.Collections.Generic.List[object]]::new()
+        $body = [regex]::Replace($body, '(?s)\\begin\{(figure\*?|wrapfigure)\}(.*?)\\end\{\1\}', {
+                param($m)
+                $n = $script:FigEnvStore.Count
+                $script:FigEnvStore.Add([pscustomobject]@{ n = $n; env = $m.Groups[1].Value; source = $m.Value })
+                "`n`n@@FIGENV$n@@`n`n" })
+    }
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
     # Protect math BEFORE the algorithm/theorem/text passes. Position is load-bearing for TOKENIZATION
@@ -1722,6 +1734,21 @@ function ConvertFrom-Latex {
     # STANDARDS §4 — remove hard wraps: reflow source-wrapped prose into flowing paragraphs. Runs while math
     # is @@LMATH/@@LDISP/@@ALG/@@VERB placeholders, so a join can never split a formula or shred pseudocode.
     $body = Join-WrappedProse $body
+    # CHANNEL PROBE — stop at the pipeline's own mid-state: the prose channel fully assembled, every
+    # fragile region an opaque slot (@@LMATH/@@LDISP/@@ALG/@@VERB/@@FIGENV@@ + diagram markers). Hand
+    # the assembly and its stores to the caller instead of collapsing them back into one string; no
+    # restore runs on this path. Driver: scratch/probe-prose-channel.ps1.
+    if ($ChannelProbe) {
+        $h1p = if ($title) { '# ' + (Convert-LatexInline $title) } else { '# (untitled)' }
+        return @{
+            body     = ($h1p + "`n`n" + $body.Trim() + "`n")
+            math     = $script:LtxMathStore
+            algs     = $script:AlgStore
+            verbs    = $script:VerbStore
+            figures  = $script:FigEnvStore
+            diagrams = $script:DiagramStore
+        }
+    }
     $body = Restore-LatexMath $body
     # \textsc has no KaTeX equivalent; prose occurrences already became **bold** above, so any survivor is
     # math-mode small-caps (algorithm pseudocode) — map the control word to \text, preserving its brace group.
