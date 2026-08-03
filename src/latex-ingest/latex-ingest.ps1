@@ -1394,10 +1394,14 @@ function Convert-CrossRefEnvs {
     # -ChannelProbe.
     $spineList = [System.Collections.Generic.List[object]]::new()
     $thmOpen = [System.Collections.Generic.Stack[int]]::new()
+    # numbering reframe (probe): display numbers are PROJECTIONS of (mode, ordinal, regime) —
+    # \appendix IS \setcounter{section}{0} + \thesection->\Alph, i.e. a recount + re-alphabet.
+    # These are probe-local; the production counters below are deliberately untouched.
+    $apx = $false; $apxSec = 0
     $ctr = @{}; $within = @{}
     $sec = 0; $sub = 0; $subsub = 0
     $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
-    $rx = [regex]'\\(section|subsection|subsubsection)(\*?)\s*\{|\\begin\{([A-Za-z][A-Za-z0-9]*\*?)\}[ \t]*(?:\[([^\]]*)\])?|\\end\{([A-Za-z][A-Za-z0-9]*\*?)\}|\\label\{([^{}]+)\}'
+    $rx = [regex]'\\(section|subsection|subsubsection)(\*?)\s*\{|\\begin\{([A-Za-z][A-Za-z0-9]*\*?)\}[ \t]*(?:\[([^\]]*)\])?|\\end\{([A-Za-z][A-Za-z0-9]*\*?)\}|\\label\{([^{}]+)\}|\\appendix(?![a-zA-Z])'
     foreach ($m in $rx.Matches($Body)) {
         if ($m.Index -lt $pos) { continue }
         [void]$sb.Append($Body.Substring($pos, $m.Index - $pos))
@@ -1415,9 +1419,19 @@ function Convert-CrossRefEnvs {
             } else { $pending = $null; $num = '' }
             if ($ChannelProbe) {
                 $sn = $spineList.Count
+                $isStar = ($m.Groups[2].Value -eq '*')
+                $ord = $null; $reg = 'arabic'
+                if (-not $isStar) {
+                    switch ($m.Groups[1].Value) {
+                        'section' { if ($apx) { $apxSec++; $ord = $apxSec; $reg = 'Alph' } else { $ord = $sec } }
+                        'subsection' { $ord = $sub }
+                        'subsubsection' { $ord = $subsub }
+                    }
+                }
                 $spineList.Add([pscustomobject]@{
-                        n = $sn; kind = $m.Groups[1].Value; star = ($m.Groups[2].Value -eq '*')
-                        number = $num; title = (Get-LatexBracedArg $Body ($m.Index + $m.Length - 1)); label = $null })
+                        n = $sn; kind = $m.Groups[1].Value; star = $isStar
+                        number = $num; mode = $(if ($apx) { 'appendix' } else { 'main' }); ordinal = $ord; regime = $reg
+                        title = (Get-LatexBracedArg $Body ($m.Index + $m.Length - 1)); label = $null })
                 $emit = "`n`n@@SPINE$sn@@`n`n" + $emit
                 if ($pending) { $pending.spine = $sn }
             }
@@ -1460,6 +1474,8 @@ function Convert-CrossRefEnvs {
                     $sn = $spineList.Count
                     $spineList.Add([pscustomobject]@{
                             n = $sn; kind = $e.disp; star = [bool]$e.star; number = $thmNum
+                            mode = $(if ($apx) { 'appendix' } else { 'main' })
+                            ordinal = $(if ($e.star) { $null } else { $ctr[$e.group] }); regime = 'arabic'
                             title = $(if ($null -ne $noteVal) { $noteVal } else { '' }); label = $null })
                     $emit = "`n`n@@SPINE$sn@@" + $emit
                     $thmOpen.Push($sn)
@@ -1482,6 +1498,9 @@ function Convert-CrossRefEnvs {
             if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
             if ($null -ne $pending.spine) { $spineList[[int]$pending.spine].label = $m.Groups[6].Value }
             $pending = $null
+        }
+        elseif ($ChannelProbe -and $m.Value -ceq '\appendix') {                  # recount + re-alphabet (probe-local)
+            $apx = $true; $apxSec = 0
         }
         [void]$sb.Append($emit); $pos = $consumeTo
     }

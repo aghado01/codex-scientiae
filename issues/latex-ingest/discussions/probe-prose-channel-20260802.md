@@ -193,18 +193,45 @@ Grain note: prose rows are inter-boundary segments and can span multiple paragra
 fan-out block carries 63 inline spans). Paragraph-grain splitting is a trivial refinement of
 `Flush-Prose` when wanted.
 
-## 8. Open items
+## 8. Pass 5 — (mode, ordinal, regime) on the spine; normalization as a serialization flag
 
-- Appendix numbering, REFRAMED (user, same day): not a mode-switch feature but an **internal
-  alignment and recounting problem**. Letters and numbers are both *symbols indexed from 1*;
-  the spine row's invariant is a **mode-local ordinal + regime** (symbol alphabet), and the
-  displayed number is a derived projection — source-faithful, since `\appendix` is literally
-  `\setcounter{section}{0}` + `\thesection→\Alph` (recount + re-alphabet). The §7 specimen's
-  8–13 is a *basis confusion* (global arabic ordinals where regime=Alph, ordinal 1–6 belongs).
-  Reference correspondences are unique within a regime scope, so the letter↔ordinal projection
-  is checkable against the oracle's own `\ref` renderings (alignment precedes measurement).
-  Projection mechanics already in-lane: `Format-Counter` / `ConvertTo-Roman`. Refs-model
-  consequence: label → (regime, ordinal-path), display rendered at resolve.
+The numbering reframe (user, same day), implemented and measured. Not a mode-switch feature but
+an **internal alignment and recounting problem**: letters and numbers are both *symbols indexed
+from 1*; the spine row's invariant is a **mode-local ordinal + regime** (symbol alphabet), and
+every displayed number is a derived projection. Source-faithful, since `\appendix` is literally
+`\setcounter{section}{0}` + `\thesection→\Alph` — a recount and a re-alphabet.
+
+Mechanics: the walk's regex gains a `\appendix` alternative (captureless — production behavior
+identical, the token passes through verbatim as before); in probe mode it flips probe-local
+`(apx, apxSec)` state, and spine entries carry `mode` / `ordinal` / `regime` alongside the baked
+`number`. The driver projects both ways from the same invariant — `faithful` (regime symbols)
+and `normalized` (the baked arabic continuation) — so the pass-4 "8–13" output is retroactively
+explained as a *basis confusion*, not wrong numbers.
+
+Measured on the specimen:
+
+- alignment table: ordinals 1–6 → faithful **A–F** ↔ normalized **8–13**, labels bound
+  (`appdx_codes → B`, …); compounds project through the parent chain (`8.1 → A.1`,
+  `10.1 → C.1`).
+- **`normalized_injective_across_document: true`** — the unambiguity guard for normalization,
+  passed: global arabic continuation yields 1–13 with no collisions.
+- **`restart_unqualified_collisions: 6`** — per-mode restart without a qualifier would collide
+  six ways; the guard quantifies why continuation (or qualified restart) is the safe form.
+
+**Normalization decision (user):** an *optional normalization* of these stylistic indexing
+choices — rebase to arabic 1-counting across the board in deliverables, guarded by the
+injectivity check per document. The target audience (reasoning readers) likely prefers it; the
+faithful `(mode, ordinal, regime)` stays in the model regardless, so faithful and normalized are
+both one serialization flag away. Notably, production's baked numerics already *accidentally*
+implement the normalized projection — formalizing it is a policy declaration, not new machinery.
+Reference rendering must apply the same projection consistently (`\ref{appdx_codes}` → "B" or
+"9", never a mix); the refs-model consequence stands: label → (regime, ordinal-path), display
+rendered at resolve. Projection mechanics already in-lane: `Format-Counter` / `ConvertTo-Roman`.
+
+## 9. Open items
+
+- Normalization as a real serialization flag at production realization, refs rendered through
+  the same projection (blocked on nothing; belongs with the refs-stage work).
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
 - Proof envs are handled outside the model walk (italic run-in at emission) and are not yet
   spine rows — the theorem–proof bond wants them captured.
