@@ -370,13 +370,31 @@ Commits `9be693e` + `fc64724`:
 - PS trap for the ledger: a dictionary field named `keys` is shadowed by `.Keys` — the site
   rows silently exploded cite keys into row fields at serialization. Renamed `targets`.
 
-## 13. Open items
+## 13. Closing census (2026-08-03, post channel batch)
 
-- `\lq`/`\rq` quote-macro class (2207 ×45); `\and`/`\qed` classes.
-- Macro-harvest gap: specimens 2410.01294v3 (442/85) and 2405.12350v1 (2716/81).
+**43/43 papers convert, zero failures.** The ledger collapse confirms the table channel's reach:
+`\small` fell 301 → 20 hits and the entire table-apparatus block (`\setlength`, `\tabcolsep`,
+`\multirow`, `\resizebox`, booktabs rules) left the top of the ledger — stashing table floats
+whole took their interior furniture with them. The new top is `\begin`/`\end` (31 each,
+unhandled envs), then front-matter and symbol singletons. Specimen deltas: 2405.12350v1
+residue **2716 → 25** (the `\verb`/table content that dominated it is now channel-captured);
+2404.05484 → 13; 2207.00510 → 45 all-`\lq`; 2410.01294v3 unchanged at 442/85 (pure
+macro-harvest, as predicted).
+
+One new find, the store-driven check earning its keep again: **2605.01664v1 has 5 orphaned
+VERB entries** — inline `\verb` sites inside table floats, stashed at raw source, whose markers
+are then destroyed during tabular realization (Convert-Tabular). Same silent-content-loss class
+as the diagram trace, fresh seam, specimen in hand.
+
+## 14. Open items
+
+- **Verb-in-table loss trace**: 2605.01664v1 ×5 — where Convert-Tabular drops cell content
+  carrying markers; move to loud-fail or preserve.
+- `\lq`/`\rq` quote-macro class (2207 ×45); `\and`/`\qed`/`\hline`-outside-floats classes.
+- Macro-harvest gap: 2410.01294v3 (442/85) the last big residue holdout; 2405.12350v1 largely
+  resolved by the channels.
 - Refs ladder remainder: tex-docgraph reduced to a projection of the model (step 5); gauntlet
   before/after compare (step 6) once full runs resume.
-- Corpus re-sweep with the three new channels (quantifies the ledger drop).
 - Normalization as a real serialization flag at production realization, refs rendered through
   the same projection (belongs with the refs-stage work).
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
