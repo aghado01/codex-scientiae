@@ -277,17 +277,45 @@ floats — the walk policy has real evidence to consume.
 `normalized_injective_across_document` is **true on every one** — the user's optional
 arabic-1-counting normalization is unambiguous across the entire staged corpus.
 
-## 10. Open items
+## 10. The tackle (2026-08-03): three production fixes, closure now a hard invariant
 
-- **Diagram-orphan trace** (production defect, specimens above): find which pass destroys
-  stashed diagram markers (candidates: figure-grid tabular collapse consuming markers;
-  register lowering rewriting the em-dash inside math-embedded markers) and move the loss to
-  loud-fail.
-- **Brace-nesting render fix** (production): brace-aware argument capture for
-  `\textbf`/`\caption`/heading renders — the pass-3 fix generalized; the ledger quantifies it.
-- **Table channel**: the largest admission question the census raises.
+Both lead items resolved, and the trace found a bigger fish than either:
+
+1. **The orphan trace found corpus-wide math corruption, not diagram loss** (commit `538bde6`).
+   Orphaned diagram markers were sitting *mangled* inside math store contents — and the
+   mangling (`not` → `no t`, `\coloneqq` → `\co lo neqq`) was present even in orphan-free
+   papers. Root cause: **four lexicon store entries had lost their glyphs to ASCII text**
+   (`glyph "o"→"o"`, `rfloor`, `lceil`, `rceil` — a codepoint-mangling incident in the store),
+   so in any span containing a non-ASCII char (the glyph pass gate — the em-dash of the
+   diagram marker, among others) the matcher rewrote every bare `o`-before-letter and doubled
+   backslashes on `\rfloor`/`\lceil`/`\rceil`. Fixes: glyphs repaired (ο, ⌋, ⌈, ⌉); the pass
+   now **refuses pure-ASCII lexicon keys loudly at load**; the token separator applies only
+   after control-word replacements. Plus a Store-Math divert: a span whose content IS a
+   stashed diagram marker (± the aligned/gathered shell) returns to the flow as text — stored,
+   it shipped inside `$$..$$` as KaTeX-invalid text; mixed spans warn loudly.
+2. **Brace-aware renders** (commit `3e4d288`): headings, paragraph family, `\caption` (now
+   also accepting `[short]{long}`), textbf/textsc, emph family, texttt, and the textrm unwrap
+   family all converted to the brace-aware `Replace-BracedCommand` primitive — ledger class 2
+   eliminated.
+3. **Discard-then-capture** (commit `0a0d3b8`): the last orphan in the corpus (an affiliation
+   `$^*$` protected into the store, then destroyed with its `\author` arg) was an ordering
+   defect — the §8 front-matter drop now runs *before* `Protect-LatexMath`, so math inside
+   dropped args never reaches the store.
+
+**Re-sweep (42 converted, incl. 8 fresh `ingestion/inventory/` papers): leaked 0 AND orphaned
+0 on every paper** — both directions of the placeholder check are now corpus-wide hard
+invariants. The residue ledger reorganized as predicted: the brace classes vanished; resolving
+outer wrappers surfaced inner residue (e.g. `\arrayrulecolor` from converted captions); tables
+dominate harder than ever at corpus scale (`\small` 18 papers/301 hits, `\multirow` 8/66).
+New failure specimen: **2405.12350v1** staging yields an empty resolved source ("Cannot bind
+argument to parameter 'Latex'") — the corpus's first real staging failure, untraced.
+
+## 11. Open items
+
+- **Table channel**: the largest admission question the census raises — now clearly dominant.
+- 2405.12350v1: empty-resolve staging failure (Find-LatexMain/Resolve-LatexInputs trace).
 - algorithm2e adapter for Convert-Algorithms; inline `\verb`; macro-harvest gap
-  (2410.01294v3 specimen).
+  (2410.01294v3 specimen: 442 hits / 85 distinct, near-channel-empty stream).
 - Normalization as a real serialization flag at production realization, refs rendered through
   the same projection (belongs with the refs-stage work).
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
