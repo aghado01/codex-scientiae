@@ -1796,12 +1796,19 @@ function ConvertFrom-Latex {
     }
 
     $body = $body -replace '(?s)\\begin\{abstract\}(.*?)\\end\{abstract\}', "`n## Abstract`n`n`$1`n"
-    $body = $body -replace '\\(?:sub){0,2}section\*?\s*\{([^{}]*)\}', { $h = '#' * (2 + ([regex]::Matches($_.Value, 'sub')).Count); "`n`n$h $($_.Groups[1].Value)`n`n" }   # blank lines around headings (MD022)
-    $body = [regex]::Replace($body, '\\(?:sub)?paragraph\*?\s*\{([^{}]*)\}', { param($m) '**' + $m.Groups[1].Value.Trim() + '** ' })   # trim: no space inside emphasis (MD037)
+    # headings/paragraphs BRACE-AWARE (sweep ledger: nested-brace titles leaked raw across 7+ papers
+    # — \subsection{..{\em x}..}, \texorpdfstring in titles). Innermost-first; blank lines (MD022).
+    $body = Replace-BracedCommand $body '\subsubsection' { param($a) "`n`n#### $a`n`n" }
+    $body = Replace-BracedCommand $body '\subsection' { param($a) "`n`n### $a`n`n" }
+    $body = Replace-BracedCommand $body '\section' { param($a) "`n`n## $a`n`n" }
+    $body = Replace-BracedCommand $body '\subparagraph' { param($a) '**' + $a.Trim() + '** ' }   # trim: no space inside emphasis (MD037)
+    $body = Replace-BracedCommand $body '\paragraph' { param($a) '**' + $a.Trim() + '** ' }
     $body = $body -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"   # escape `$1: double-quoted, PS would else interpolate it away
-    $body = [regex]::Replace($body, '\\caption\{([^{}]*)\}', { param($m)
-            $cap = Format-MdFigureCaption $m.Groups[1].Value   # shared register: italic sentence, terminal punctuation (MD036/MD037)
-            if ($cap) { "`n`n$cap`n" } else { '' } })
+    # brace-aware + tolerates \caption[short]{long} (short list-of-figures arg dropped, long kept) —
+    # both forms leaked raw before (sweep ledger: 30 hits / 9 papers)
+    $body = Replace-BracedCommand $body '\caption' { param($a)
+        $cap = Format-MdFigureCaption $a   # shared register: italic sentence, terminal punctuation (MD036/MD037)
+        if ($cap) { "`n`n$cap`n" } else { '' } }
     # acknowledgements env: the journal class renders an "Acknowledgements" heading — surface it faithfully as
     # a section (content KEPT). This is a FAITHFUL transcription: editorial drops (acks, ref sidecar split, …)
     # are the PROMOTION phase's job, never the converter's.
@@ -1826,10 +1833,19 @@ function ConvertFrom-Latex {
     $body = $body -replace '`', "'"
     $body = Convert-BraceToggles $body                                         # {\em ..}/{\bf ..} switch form -> * / ** (brace-aware)
     $body = Unwrap-Boxes $body                                                 # \fbox/\parbox/\centerline -> content (drop frame + width/pos args)
-    $body = [regex]::Replace($body, '\\(?:textbf|textsc)\{([^{}]*)\}', { param($m) '**' + ($m.Groups[1].Value.Trim() -replace '\*', '\*') + '**' })   # trim (MD037); escape literal * (author's \emph{Density* corruptions} must not unbalance md emphasis)
-    $body = [regex]::Replace($body, '\\(?:emph|textit|textsl)\{([^{}]*)\}', { param($m) '*' + ($m.Groups[1].Value.Trim() -replace '\*', '\*') + '*' })
-    $body = [regex]::Replace($body, '\\texttt\{([^{}]*)\}', { param($m) '`' + $m.Groups[1].Value.Trim() + '`' })   # trim: no space inside code spans (MD038)
-    $body = $body -replace '\\(?:textrm|textnormal|textsf|textup|textmd|mbox|text|underline)\{([^{}]*)\}', '$1'
+    # text-format commands BRACE-AWARE — the sweep ledger's second-largest class (\textbf 104 hits /
+    # 9 papers) was nested-brace args leaking raw; the head-anchored brace scan converts them. Inner
+    # commands convert on their own later passes (body-wide), so nesting composes.
+    foreach ($cmd in '\textbf', '\textsc') {
+        $body = Replace-BracedCommand $body $cmd { param($a) '**' + ($a.Trim() -replace '\*', '\*') + '**' }   # trim (MD037); escape literal * (author's \emph{Density* corruptions} must not unbalance md emphasis)
+    }
+    foreach ($cmd in '\emph', '\textit', '\textsl') {
+        $body = Replace-BracedCommand $body $cmd { param($a) '*' + ($a.Trim() -replace '\*', '\*') + '*' }
+    }
+    $body = Replace-BracedCommand $body '\texttt' { param($a) '`' + $a.Trim() + '`' }   # trim: no space inside code spans (MD038)
+    foreach ($cmd in '\textrm', '\textnormal', '\textsf', '\textup', '\textmd', '\mbox', '\text', '\underline') {
+        $body = Replace-BracedCommand $body $cmd { param($a) $a }
+    }
     # counter machinery: side-effect commands (\stepcounter/\refstepcounter/\setcounter/…) produce NO
     # output — drop them; value-producing \Alph/\arabic/… of a counter we cannot track (custom author
     # counters) drop too rather than leak the command verbatim.
