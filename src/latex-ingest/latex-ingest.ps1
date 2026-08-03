@@ -901,6 +901,18 @@ $script:LtxMathStore = @{}
 $script:LtxMathIdx = 0
 function Store-Math {
     param([string]$Content, [bool]$Display)
+    # A span whose content IS a stashed diagram marker (± punctuation; ± the aligned/gathered shell
+    # Protect-LatexMath wraps env captures in) is a diagram the author set in math delimiters — the
+    # delimiters are typesetting, the marker is TEXT. Divert it back to the flow: stored as math it
+    # ships inside $$..$$ as KaTeX-invalid text (and the register lowering used to corrupt it).
+    # Mixed spans (marker + real math) stay math, flagged loudly — the marker rides inside.
+    if ($Content -match '\*\[diagram \d+ — [^\]]+, not rendered\]\*') {
+        $bare = [regex]::Replace($Content.Trim(), '(?s)^\\begin\{(aligned|gathered)\}\s*(.*?)\s*\\end\{\1\}$', '$2')
+        if ($bare -match '^(?:\*\[diagram \d+ — [^\]]+, not rendered\]\*[\s.,;]*|\\text\{and\}[\s]*)+$') {
+            return "`n`n" + $bare + "`n`n"
+        }
+        Write-Warning "latex-ingest: diagram marker embedded in a larger math span; marker rides inside math"
+    }
     # xy-pic commutative diagrams (\xymatrix) live in math mode, but KaTeX cannot render xy-pic — left as
     # $..$ they leak KaTeX-invalid source (the "silent drop" of issues/latex-oracle-images.md).
     # ENCODE FIRST: a provably-linear chain transpiles to semantic inline arrows and stays REAL MATH in

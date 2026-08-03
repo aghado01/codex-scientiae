@@ -68,7 +68,16 @@ if ($storeData -and $storeData.unicode_glyphs) {
     }
 }
 $script:MathLatexRx = if ($script:MathLatex.Count -gt 0) {
-    [regex]('(' + (($script:MathLatex.Keys | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')')
+    # the glyph pass exists to spell NON-ASCII glyphs as control sequences. A pure-ASCII key is
+    # store corruption — it would rewrite ordinary letters/words body-wide (the 'o'-splitting
+    # incident: glyph "o" mapped to "o" injected a space after every o in any non-ASCII span).
+    # Refuse such keys loudly and build the matcher from the sound ones only.
+    $badKeys = @($script:MathLatex.Keys | Where-Object { $_ -notmatch '[^\x00-\x7F]' })
+    if ($badKeys.Count -gt 0) { Write-Warning "math-register lexicon: refusing $($badKeys.Count) pure-ASCII glyph key(s): $($badKeys -join ' ')" }
+    $soundKeys = @($script:MathLatex.Keys | Where-Object { $_ -match '[^\x00-\x7F]' })
+    if ($soundKeys.Count -gt 0) {
+        [regex]('(' + (($soundKeys | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')')
+    } else { $null }
 } else { $null }
 
 # Convert the unicode in a wrapped run to LaTeX.
@@ -137,7 +146,10 @@ function ConvertTo-RegisterMath {
             $v = $null
             if (-not $script:MathLatex.TryGetValue($m.Value, [ref]$v)) { return $m.Value }
             $j = $m.Index + $m.Length
-            if ($v -match '[A-Za-z]$' -and $j -lt $src.Length -and [char]::IsLetter($src[$j])) { return $v + ' ' }
+            # the separator exists to terminate a CONTROL WORD before a following letter (\mux vs
+            # \mu x); a replacement ending in a bare letter never needs it — juxtaposed letters are
+            # separate math tokens.
+            if ($v -match '\\[A-Za-z]+$' -and $j -lt $src.Length -and [char]::IsLetter($src[$j])) { return $v + ' ' }
             return $v
         })
     }
