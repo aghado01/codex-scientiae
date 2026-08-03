@@ -107,16 +107,21 @@ function Join-RefList($Items) {
 # label -> { num; type } over every map the numbering stages produced. $Maps.types carries the display
 # type recorded by the theorem/section walk; equation/figure/table types are implied by which map hits.
 function Get-RefTarget($Maps, [string]$Key) {
+    # $Maps.use_faithful selects the display projection ((mode, ordinal, regime) reframe): faithful
+    # renders the paper's own symbols (Appendix A); normalized (default) renders arabic 1-counting —
+    # the deliverable policy. A label absent from the faith map falls back to normalized.
     if ($Maps.thm -and $Maps.thm.ContainsKey($Key)) {
         $ty = if ($Maps.types -and $Maps.types.ContainsKey($Key)) { [string]$Maps.types[$Key] } else { '' }
-        return @{ num = "$($Maps.thm[$Key])"; type = $ty }
+        $n = if ($Maps.use_faithful -and $Maps.faith -and $Maps.faith.ContainsKey($Key)) { "$($Maps.faith[$Key])" } else { "$($Maps.thm[$Key])" }
+        return @{ num = $n; type = $ty }
     }
     if ($Maps.eq  -and $Maps.eq.ContainsKey($Key))  { return @{ num = "$($Maps.eq[$Key])";  type = 'Equation' } }
     if ($Maps.fig -and $Maps.fig.ContainsKey($Key)) { return @{ num = "$($Maps.fig[$Key])"; type = 'Figure' } }
     if ($Maps.tab -and $Maps.tab.ContainsKey($Key)) { return @{ num = "$($Maps.tab[$Key])"; type = 'Table' } }
     if ($Maps.sec -and $Maps.sec.ContainsKey($Key)) {
         $ty = if ($Maps.types -and $Maps.types.ContainsKey($Key)) { [string]$Maps.types[$Key] } else { 'Section' }
-        return @{ num = "$($Maps.sec[$Key])"; type = $ty }
+        $n = if ($Maps.use_faithful -and $Maps.faith -and $Maps.faith.ContainsKey($Key)) { "$($Maps.faith[$Key])" } else { "$($Maps.sec[$Key])" }
+        return @{ num = $n; type = $ty }
     }
     if ($Maps.custom -and $Maps.custom.ContainsKey($Key)) { return @{ num = "$($Maps.custom[$Key])"; type = '' } }
     return $null
@@ -154,10 +159,31 @@ function Format-RefPhrase($Maps, [string[]]$Keys, [string]$Style) {
 }
 
 function Resolve-Refs {
-    param([string]$T, $Maps, $CiteMap, $Semantics)
-    # consume natbib optional pre/post-notes (\citep[see][p. 7]{key}) — else the [..] brackets leak and read as broken reference links
-    $T = [regex]::Replace($T, '\\cite[a-z]*(?:\[[^\]]*\])?(?:\[[^\]]*\])?\s*\{([^{}]+)\}', { param($m) '[' + (($m.Groups[1].Value -split '\s*,\s*' | ForEach-Object { if ($CiteMap.ContainsKey($_)) { $CiteMap[$_] } else { '?' } }) -join ', ') + ']' })
-    $T = [regex]::Replace($T, '(?<![A-Za-z@])\\eqref\s*\{([^{}]+)\}', { param($m) $k = $m.Groups[1].Value; if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' } })
+    param([string]$T, $Maps, $CiteMap, $Semantics, [switch]$RecordSites)
+    # site recording (ref model, collect side): the body pass records every reference site it renders
+    # into $script:LtxRefSites — macro, keys, rendered text. The note-resolution second pass does NOT
+    # record (it re-renders values already recorded from the body).
+    $rec = $RecordSites -and ($null -ne $script:LtxRefSites)
+    # optional cite notes render, not vanish: \cite[Theorem 3.1]{key} is the author POINTING AT A
+    # SPECIFIC RESULT inside the citation — one optional arg is a postnote ("[15, Theorem 3.1]"),
+    # two are natbib prenote+postnote ("[see 15, p. 7]"). Dropping them read as a bare "[15]" and
+    # lost the qualifier (sweep pass-3 finding).
+    $T = [regex]::Replace($T, '\\cite[a-z]*\*?\s*(?:\[([^\]]*)\])?(?:\[([^\]]*)\])?\s*\{([^{}]+)\}', { param($m)
+            $nums = (($m.Groups[3].Value -split '\s*,\s*' | ForEach-Object { if ($CiteMap.ContainsKey($_)) { $CiteMap[$_] } else { '?' } }) -join ', ')
+            $pre = ''; $post = ''
+            if ($m.Groups[2].Success) { $pre = $m.Groups[1].Value.Trim(); $post = $m.Groups[2].Value.Trim() }
+            elseif ($m.Groups[1].Success) { $post = $m.Groups[1].Value.Trim() }
+            $inner = $nums
+            if ($pre) { $inner = "$pre $inner" }
+            if ($post) { $inner = "$inner, $post" }
+            $out = '[' + $inner + ']'
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'cite'; keys = @($m.Groups[3].Value -split '\s*,\s*'); rendered = $out }) }
+            $out })
+    $T = [regex]::Replace($T, '(?<![A-Za-z@])\\eqref\s*\{([^{}]+)\}', { param($m)
+            $k = $m.Groups[1].Value
+            $out = if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' }
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'eqref'; keys = @($k); rendered = $out }) }
+            $out })
 
     $store = Get-RefMacroStore
     $typedRelevant = ($null -eq $Semantics) -or [bool]$Semantics.relevant
@@ -174,7 +200,9 @@ function Resolve-Refs {
                 $numB = if ($b) { $b.num } else { '?' }
                 $word = if ($a -and $a.type) { Get-RefPlural $a.type } else { '' }
                 if ($word -and $style -eq 'lower') { $word = $word.ToLowerInvariant() }
-                if ($word) { "$word $numA to $numB" } else { "$numA to $numB" }
+                $out = if ($word) { "$word $numA to $numB" } else { "$numA to $numB" }
+                if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = $m.Groups[1].Value; keys = @($m.Groups[2].Value.Trim(), $m.Groups[3].Value.Trim()); rendered = $out }) }
+                $out
             })
     }
 
@@ -186,7 +214,9 @@ function Resolve-Refs {
             $style = [string]$store.by_macro[$m.Groups[1].Value].style
             if (-not $typedRelevant) { $style = 'bare' }   # nothing typed in play: never invent a name
             $out = Format-RefPhrase $Maps $keys $style
-            if ([string]::IsNullOrWhiteSpace($out)) { '?' } else { $out }
+            if ([string]::IsNullOrWhiteSpace($out)) { $out = '?' }
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = $m.Groups[1].Value; keys = $keys; rendered = $out }) }
+            $out
         })
     return $T
 }

@@ -490,7 +490,6 @@ function Expand-LatexMacros {
 function Build-LabelMaps {
     param([string]$Body)
     # ordinal maps: \label keys are case-sensitive identifiers (eq:A vs eq:a must not collide)
-    $thm = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
     $eq = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
     $fig = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
     $tab = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
@@ -499,7 +498,10 @@ function Build-LabelMaps {
         $env = $m.Groups[1].Value; $star = $m.Groups[2].Value -eq '*'
         $endIdx = $Body.IndexOf('\end{' + $env, $m.Index); $seg = if ($endIdx -ge 0) { $Body.Substring($m.Index, $endIdx - $m.Index) } else { '' }
         $lbl = [regex]::Match($seg, '\\label\{([^{}]+)\}')
-        if ($env -in 'theorem', 'lemma', 'corollary', 'proposition') { $tc++; if ($lbl.Success) { $thm[$lbl.Groups[1].Value] = $tc } }
+        # theorem-family: COUNT only (the oracle's counts.theorems) — the label->number map died here
+        # (refs-consolidation step 2): it ran a flat counter, no [section] scoping, no \newtheorem
+        # model, and its result was overwritten by the walk's correct table one line after every call.
+        if ($env -in 'theorem', 'lemma', 'corollary', 'proposition') { $tc++ }
         elseif (-not $star) { $ec++; if ($lbl.Success) { $eq[$lbl.Groups[1].Value] = $ec } }
     }
     # figure/table floats: one counter each; the float's FIRST \label (conventionally right after \caption)
@@ -514,7 +516,7 @@ function Build-LabelMaps {
     # counts ride alongside the label→number maps: the maps only hold LABELLED floats/envs, but the raw
     # counters saw every one — so counts.figures ($fc) is the true float count, ≥ maps.fig.Count. The
     # oracle-batch harness reads these back (persisted via Get-LatexOracleCounts) as the figure-count truth.
-    return @{ thm = $thm; eq = $eq; fig = $fig; tab = $tab
+    return @{ eq = $eq; fig = $fig; tab = $tab
               counts = @{ figures = $fc; tables = $bc; theorems = $tc; equations = $ec } }
 }
 
@@ -901,6 +903,9 @@ $script:LtxMathStore = @{}
 $script:LtxMathIdx = 0
 function Store-Math {
     param([string]$Content, [bool]$Display)
+    # an EMPTY math span ($$ $$, \(\)) is author furniture — it renders as nothing in the PDF, and
+    # stored it would emit an empty $$..$$ block. Drop it rather than mint a slot for nothing.
+    if ([string]::IsNullOrWhiteSpace($Content)) { return '' }
     # A span whose content IS a stashed diagram marker (± punctuation; ± the aligned/gathered shell
     # Protect-LatexMath wraps env captures in) is a diagram the author set in math delimiters — the
     # delimiters are typesetting, the marker is TEXT. Divert it back to the flow: stored as math it
@@ -1385,7 +1390,7 @@ function Get-TheoremModel {
 # Label association: a \section/\begin{thm} arms `pending`, consumed only by the IMMEDIATELY-following \label
 # (any other token clears it) — so an equation \label deeper inside a theorem is not mis-captured.
 function Convert-CrossRefEnvs {
-    param([string]$Body, $Model, [switch]$ChannelProbe)
+    param([string]$Body, $Model, [switch]$ChannelProbe, [switch]$Faithful)
     # label->number maps ordinal (case-sensitive \label keys); $ctr/$within key on env names — same rule
     $thmMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
     $secMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
@@ -1409,7 +1414,10 @@ function Convert-CrossRefEnvs {
     # numbering reframe (probe): display numbers are PROJECTIONS of (mode, ordinal, regime) —
     # \appendix IS \setcounter{section}{0} + \thesection->\Alph, i.e. a recount + re-alphabet.
     # These are probe-local; the production counters below are deliberately untouched.
-    $apx = $false; $apxSec = 0
+    $apx = $false; $apxSec = 0; $curSecFaith = ''
+    # label -> faithful display (regime projection) — populated beside thmMap/secMap so refs can
+    # render either projection; a label with no faithful entry falls back to the normalized number
+    $faithMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
     $ctr = @{}; $within = @{}
     $sec = 0; $sub = 0; $subsub = 0
     $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
@@ -1426,8 +1434,20 @@ function Convert-CrossRefEnvs {
                     'subsection' { $sub++; $subsub = 0; "$sec.$sub" }
                     'subsubsection' { $subsub++; "$sec.$sub.$subsub" }
                 }
+                # FAITHFUL projection ((mode, ordinal, regime) reframe): \appendix recounts the section
+                # ordinal and re-alphabets its regime; sub-levels keep arabic under the parent symbol.
+                # Both projections always computed — the -Faithful render flag picks one.
+                if ($m.Groups[1].Value -eq 'section') {
+                    if ($apx) { $apxSec++; $curSecFaith = if ($apxSec -le 26) { [string][char](64 + $apxSec) } else { "$apxSec" } }
+                    else { $curSecFaith = "$sec" }
+                }
+                $faith = switch ($m.Groups[1].Value) {
+                    'section' { $curSecFaith }
+                    'subsection' { "$curSecFaith.$sub" }
+                    'subsubsection' { "$curSecFaith.$sub.$subsub" }
+                }
                 $secDisp = switch ($m.Groups[1].Value) { 'section' { 'Section' } 'subsection' { 'Subsection' } default { 'Subsubsection' } }
-                $pending = @{ kind = 'sec'; num = $num; disp = $secDisp }
+                $pending = @{ kind = 'sec'; num = $num; disp = $secDisp; faith = $faith }
             } else { $pending = $null; $num = '' }
             if ($ChannelProbe) {
                 $sn = $spineList.Count
@@ -1435,7 +1455,7 @@ function Convert-CrossRefEnvs {
                 $ord = $null; $reg = 'arabic'
                 if (-not $isStar) {
                     switch ($m.Groups[1].Value) {
-                        'section' { if ($apx) { $apxSec++; $ord = $apxSec; $reg = 'Alph' } else { $ord = $sec } }
+                        'section' { if ($apx) { $ord = $apxSec; $reg = 'Alph' } else { $ord = $sec } }
                         'subsection' { $ord = $sub }
                         'subsubsection' { $ord = $subsub }
                     }
@@ -1477,9 +1497,11 @@ function Convert-CrossRefEnvs {
                 else {
                     $g = $e.group; if (-not $ctr.Contains($g)) { $ctr[$g] = 0 }; $within[$g] = $e.within
                     $ctr[$g]++; $num = if ($e.within) { "$sec.$($ctr[$g])" } else { "$($ctr[$g])" }
-                    $emit = "`n`n**$($e.disp) $num$note.** "
-                    $objects.Add([pscustomobject]@{ kind = $e.disp; number = $num; note = $note.Trim(); identity = '' })
-                    $pending = @{ kind = 'thm'; num = $num; disp = $e.disp; obj = ($objects.Count - 1) }
+                    $thmFaith = if ($e.within) { "$curSecFaith.$($ctr[$g])" } else { "$($ctr[$g])" }
+                    $emitNum = if ($Faithful) { $thmFaith } else { $num }
+                    $emit = "`n`n**$($e.disp) $emitNum$note.** "
+                    $objects.Add([pscustomobject]@{ kind = $e.disp; number = $emitNum; note = $note.Trim(); identity = '' })
+                    $pending = @{ kind = 'thm'; num = $num; disp = $e.disp; obj = ($objects.Count - 1); faith = $thmFaith }
                     $thmNum = $num
                 }
                 if ($ChannelProbe) {
@@ -1494,6 +1516,18 @@ function Convert-CrossRefEnvs {
                     if ($pending) { $pending.spine = $sn }
                 }
             }
+            elseif ($ChannelProbe -and $env -in 'proof', 'Proof') {
+                # proof into the spine (probe): the walk only TAGS the node and its extent — emission
+                # stays with the later italic run-in conversion, so the raw env text is kept. The
+                # [Proof of X] title arrives bracket-aware via the same rescan as theorem notes.
+                $sn = $spineList.Count
+                $spineList.Add([pscustomobject]@{
+                        n = $sn; kind = 'Proof'; star = $true; number = ''
+                        mode = $(if ($apx) { 'appendix' } else { 'main' }); ordinal = $null; regime = 'arabic'
+                        title = $(if ($null -ne $noteVal) { $noteVal } else { '' }); label = $null })
+                $emit = "`n`n@@SPINE$sn@@`n`n" + $emit
+                $thmOpen.Push($sn)
+            }
             # a NON-model \begin (equation, enumerate, …) leaves `pending` intact, so a theorem's label placed
             # AFTER its statement body (\begin{theorem} <stmt> \label{..}) is still captured (first-label-in-env).
         }
@@ -1502,6 +1536,9 @@ function Convert-CrossRefEnvs {
                 $emit = ''; $pending = $null
                 if ($ChannelProbe -and $thmOpen.Count -gt 0) { $emit = "`n`n@@SPINEEND$($thmOpen.Pop())@@`n`n" }
             }
+            elseif ($ChannelProbe -and $m.Groups[5].Value -in 'proof', 'Proof' -and $thmOpen.Count -gt 0) {
+                $emit = "`n`n@@SPINEEND$($thmOpen.Pop())@@`n`n" + $emit   # extent closes; raw \end{proof} kept for the conversion regex
+            }
         }
         elseif ($m.Groups[6].Success -and $pending) {                            # \label — FIRST label in the armed env/section wins
             if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
@@ -1509,15 +1546,16 @@ function Convert-CrossRefEnvs {
             # bind the object to its \label, so an index entry carries the identity the paper cites it by
             if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
             if ($null -ne $pending.spine) { $spineList[[int]$pending.spine].label = $m.Groups[6].Value }
+            if ($null -ne $pending.faith -and '' -ne $pending.faith) { $faithMap[$m.Groups[6].Value] = [string]$pending.faith }
             $pending = $null
         }
-        elseif ($ChannelProbe -and $m.Value -ceq '\appendix') {                  # recount + re-alphabet (probe-local)
-            $apx = $true; $apxSec = 0
+        elseif ($m.Value -ceq '\appendix') {                                     # recount + re-alphabet
+            $apx = $true; $apxSec = 0                                            # production needs this too: the faithful projection reads it
         }
         [void]$sb.Append($emit); $pos = $consumeTo
     }
     [void]$sb.Append($Body.Substring($pos))
-    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects; spine = $spineList }
+    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects; spine = $spineList; faith = $faithMap }
 }
 
 function Remove-TexComments([string]$Tex) {
@@ -1538,7 +1576,7 @@ function Remove-TexComments([string]$Tex) {
 
 # --- the core transform: LaTeX -> markdown ----------------------------------------------------------
 function ConvertFrom-Latex {
-    param([string]$Tex, [string]$Bbl, [switch]$ChannelProbe)
+    param([string]$Tex, [string]$Bbl, [switch]$ChannelProbe, [switch]$FaithfulNumbering)
     $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
     $Tex = Remove-TexComments $Tex
     $macros = Get-LatexMacros $Tex
@@ -1688,18 +1726,21 @@ function ConvertFrom-Latex {
     $body = $cc.body
     # theorem/section cross-refs: number + render theorem-like envs here (ordered walk over the counter model),
     # BEFORE math protection, so the same numbers feed both the inline labels and \ref resolution.
-    $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex) -ChannelProbe:$ChannelProbe
+    $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex) -ChannelProbe:$ChannelProbe -Faithful:$FaithfulNumbering
     $body = $xref.body
     $script:LtxDocObjects = $xref.objects       # object evidence for the deliverable's subject index
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl               # equation/figure/table counters
     $maps.thm = $xref.thm; $maps.sec = $xref.sec                              # theorem + section label->number from the walk
     $maps.types = $xref.types                                                  # label->display type — the evidence \cref needs
+    $maps.faith = $xref.faith                                                  # label->faithful display (regime projection)
+    $maps.use_faithful = [bool]$FaithfulNumbering                              # which projection reference RENDERING uses — the normalization flag
     $maps.custom = $cc.labels                                                  # custom-counter label->value (lettered cases, enumerate items)
     # probe the SOURCE (preamble intact) for whether the cleveref layer is in play at all, so a paper that
     # never loads it and never uses a typed ref macro does not get type names invented for it
     $refSem = Get-RefSemantics $Tex
     $script:LtxRefSemantics = $refSem
-    $body = Resolve-Refs $body $maps $citeMap $refSem                          # \cite/\eqref/\ref-family -> the sentence the paper reads
+    $script:LtxRefSites = [System.Collections.Generic.List[object]]::new()
+    $body = Resolve-Refs $body $maps $citeMap $refSem -RecordSites             # \cite/\eqref/\ref-family -> the sentence the paper reads; sites recorded for the ref model
     # The objects' optional-argument titles were captured DURING the cross-ref walk, before the maps
     # existed — a forward \cref cannot resolve against a table that walk is still building. So they are
     # resolved here, in memory, through the SAME function and the SAME maps the body just went through.
@@ -1710,6 +1751,27 @@ function ConvertFrom-Latex {
             if ($o.note) { $o.note = Resolve-Refs ([string]$o.note) $maps $citeMap $refSem }
         }
     }
+    # REF MODEL (refs-consolidation, collect side — all source-knowable): every declared label with
+    # BOTH display projections, plus every reference site the body pass rendered. Stashed for the
+    # caller: production writes {slug}.refs.jsonl beside the other sidecars; the probe emits it too.
+    $refLabels = [System.Collections.Generic.List[object]]::new()
+    foreach ($k in $maps.thm.Keys) {
+        $refLabels.Add([ordered]@{ label = $k; class = 'object'
+                type = $(if ($maps.types.ContainsKey($k)) { [string]$maps.types[$k] } else { '' })
+                normalized = [string]$maps.thm[$k]
+                faithful = $(if ($maps.faith.ContainsKey($k)) { [string]$maps.faith[$k] } else { [string]$maps.thm[$k] }) })
+    }
+    foreach ($k in $maps.sec.Keys) {
+        $refLabels.Add([ordered]@{ label = $k; class = 'section'
+                type = $(if ($maps.types.ContainsKey($k)) { [string]$maps.types[$k] } else { 'Section' })
+                normalized = [string]$maps.sec[$k]
+                faithful = $(if ($maps.faith.ContainsKey($k)) { [string]$maps.faith[$k] } else { [string]$maps.sec[$k] }) })
+    }
+    foreach ($k in $maps.eq.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'equation'; type = 'Equation'; normalized = [string]$maps.eq[$k]; faithful = [string]$maps.eq[$k] }) }
+    foreach ($k in $maps.fig.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'figure'; type = 'Figure'; normalized = [string]$maps.fig[$k]; faithful = [string]$maps.fig[$k] }) }
+    foreach ($k in $maps.tab.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'table'; type = 'Table'; normalized = [string]$maps.tab[$k]; faithful = [string]$maps.tab[$k] }) }
+    foreach ($k in $maps.custom.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'custom'; type = ''; normalized = [string]$maps.custom[$k]; faithful = [string]$maps.custom[$k] }) }
+    $script:LtxRefModel = @{ labels = $refLabels; sites = $script:LtxRefSites; faithful_render = [bool]$FaithfulNumbering }
     # CHANNEL PROBE — stash figure-family floats WHOLE (graphics + caption + label as one unit), the
     # same move as the tikz stash above: after ref resolution (so captions already read as prose) but
     # BEFORE the label strip and math protection — each stashed figure keeps its \label identity and
@@ -1888,6 +1950,7 @@ function ConvertFrom-Latex {
             barriers = $script:BarrierStore
             appendix = $script:AppendixStore
             spine    = $xref.spine
+            refmodel = $script:LtxRefModel
             facts    = @{
                 # implicit-barrier mode: placeins [section] makes every \section a barrier — a
                 # document-level fact knowable from one preamble line, recorded rather than synthesized
@@ -2301,7 +2364,11 @@ function Invoke-ArxivLatexToMarkdown {
         [string]$ArtifactsRoot = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
-        [switch]$DisableJsonlToc
+        [switch]$DisableJsonlToc,
+        # numbering projection at render: default = NORMALIZED (arabic 1-counting continuation, the
+        # deliverable policy — injectivity-guarded corpus-wide); -FaithfulNumbering renders the
+        # paper's own symbols (appendix A, A.1) in run-in heads and resolved references instead.
+        [switch]$FaithfulNumbering
     )
     $u8 = [System.Text.UTF8Encoding]::new($false)
     # the tex unpacks into a stable working dir beside the tarball — an intermediate workflow artifact
@@ -2358,9 +2425,26 @@ function Invoke-ArxivLatexToMarkdown {
     # Traditional \bibitem syntax is identical inline, so Get-LatexReferences parses the recovered block as-is.
     if ($bblTxt -notmatch '\\bibitem') { $ib = [regex]::Match($tex, '(?s)\\begin\{thebibliography\}.*?\\end\{thebibliography\}'); if ($ib.Success) { $bblTxt = $ib.Value } }
 
-    $md = ConvertFrom-Latex $tex $bblTxt
+    $md = ConvertFrom-Latex $tex $bblTxt -FaithfulNumbering:$FaithfulNumbering
     $refs = Get-LatexReferences $bblTxt (Build-CiteMap $bblTxt)
     if ($refs) { $md += "`n## References`n`n$refs`n" }
+
+    # ref-model sidecar (refs-consolidation, collect side): every declared label with BOTH display
+    # projections + every reference site rendered, JSONL beside the other sidecars in the work dir.
+    if ($script:LtxRefModel) {
+        $rfb = [System.Text.StringBuilder]::new()
+        foreach ($l in $script:LtxRefModel.labels) {
+            $o = [ordered]@{ row = 'label' }; foreach ($p in $l.Keys) { $o[$p] = $l[$p] }
+            [void]$rfb.AppendLine((ConvertTo-Json -InputObject $o -Depth 4 -Compress))
+        }
+        $si = 0
+        foreach ($s2 in $script:LtxRefModel.sites) {
+            $o = [ordered]@{ row = 'site'; seq = $si }; $si++
+            foreach ($p in $s2.Keys) { $o[$p] = $s2[$p] }
+            [void]$rfb.AppendLine((ConvertTo-Json -InputObject $o -Depth 4 -Compress))
+        }
+        [System.IO.File]::WriteAllText((Join-Path $work "$Slug.refs.jsonl"), $rfb.ToString(), $u8)
+    }
 
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
     $figs = Copy-LatexFigures -Markdown $md -WorkDir $work -OutDir $OutDir -Slug $Slug
