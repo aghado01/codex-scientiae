@@ -177,12 +177,12 @@ function Resolve-Refs {
             if ($pre) { $inner = "$pre $inner" }
             if ($post) { $inner = "$inner, $post" }
             $out = '[' + $inner + ']'
-            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'cite'; keys = @($m.Groups[3].Value -split '\s*,\s*'); rendered = $out }) }
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'cite'; targets = @($m.Groups[3].Value -split '\s*,\s*'); rendered = $out }) }
             $out })
     $T = [regex]::Replace($T, '(?<![A-Za-z@])\\eqref\s*\{([^{}]+)\}', { param($m)
             $k = $m.Groups[1].Value
             $out = if ($Maps.eq.ContainsKey($k)) { "($($Maps.eq[$k]))" } else { '(?)' }
-            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'eqref'; keys = @($k); rendered = $out }) }
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'eqref'; targets = @($k); rendered = $out }) }
             $out })
 
     $store = Get-RefMacroStore
@@ -201,7 +201,7 @@ function Resolve-Refs {
                 $word = if ($a -and $a.type) { Get-RefPlural $a.type } else { '' }
                 if ($word -and $style -eq 'lower') { $word = $word.ToLowerInvariant() }
                 $out = if ($word) { "$word $numA to $numB" } else { "$numA to $numB" }
-                if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = $m.Groups[1].Value; keys = @($m.Groups[2].Value.Trim(), $m.Groups[3].Value.Trim()); rendered = $out }) }
+                if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = $m.Groups[1].Value; targets = @($m.Groups[2].Value.Trim(), $m.Groups[3].Value.Trim()); rendered = $out }) }
                 $out
             })
     }
@@ -215,7 +215,7 @@ function Resolve-Refs {
             if (-not $typedRelevant) { $style = 'bare' }   # nothing typed in play: never invent a name
             $out = Format-RefPhrase $Maps $keys $style
             if ([string]::IsNullOrWhiteSpace($out)) { $out = '?' }
-            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = $m.Groups[1].Value; keys = $keys; rendered = $out }) }
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = $m.Groups[1].Value; targets = $keys; rendered = $out }) }
             $out
         })
     return $T

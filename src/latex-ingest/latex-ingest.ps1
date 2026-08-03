@@ -310,6 +310,64 @@ function Format-Algorithmic {
 }
 $script:AlgStore = @{}
 $script:AlgStoreIdx = 0
+# --- algorithm2e dialect: mechanical lowering to readable pseudocode. Unlike algorithmic's
+# \For..\EndFor pairs, this package's control commands take BRACED args (\For{cond}{body}) and \;
+# ends a line. Math inside is already @@LMATH@@ placeholders (Convert-Algorithms runs
+# post-protection), so the fenced output carries the same $-delimited tokens once restored. -------
+function Format-Algorithm2e {
+    param([string]$T)
+    $T = $T -replace '\\;', "`n"
+    # apparatus: keyword/prog declarations (braced) and argless layout switches — never content
+    foreach ($d in '\SetKwInOut', '\SetKwFunction', '\SetKwProg', '\SetKwData', '\SetKw') { $T = Replace-BracedCommand $T $d { '' } }
+    $T = $T -replace '\\(?:SetAlgoLined|SetAlgoNoLine|DontPrintSemicolon|PrintSemicolon|LinesNumbered|LinesNotNumbered|SetNoFillComment|BlankLine|Indp|Indm|KwSty|AlgoDisplayBlockMarkers|SetAlgoBlockMarkers)\b', ''
+    foreach ($p in @(@('\KwIn', 'Input'), @('\KwOut', 'Output'), @('\KwData', 'Data'), @('\KwResult', 'Result'))) {
+        $cmd = $p[0]; $word = $p[1]
+        $T = Replace-BracedCommand $T $cmd { param($a) "`n${word}: $a`n" }
+    }
+    $T = Replace-BracedCommand $T '\KwRet' { param($a) "`nreturn $a`n" }
+    $T = $T -replace '\\Return\b\s*', "`nreturn " -replace '\\KwTo\b', 'to'
+    # comments before control flow, so a \tcp inside a loop body lowers before the body is spliced
+    $T = Replace-BracedCommand $T '\tcp' { param($a) "  // $a`n" }
+    $T = Replace-BracedCommand $T '\tcc' { param($a) "  // $a`n" }
+    # \eIf{cond}{then}{else}: the one three-arg form
+    while ($true) {
+        $m = [regex]::Match($T, '\\eIf\s*(?:\([^)]*\))?\s*\{')
+        if (-not $m.Success) { break }
+        $o1 = $m.Index + $m.Length - 1; $e1 = Get-BraceGroupEnd $T $o1; if ($e1 -lt 0) { break }
+        $cur = $e1; while ($cur -lt $T.Length -and [char]::IsWhiteSpace($T[$cur])) { $cur++ }
+        if ($cur -ge $T.Length -or $T[$cur] -ne '{') { break }
+        $e2 = Get-BraceGroupEnd $T $cur; if ($e2 -lt 0) { break }
+        $cur2 = $e2; while ($cur2 -lt $T.Length -and [char]::IsWhiteSpace($T[$cur2])) { $cur2++ }
+        if ($cur2 -ge $T.Length -or $T[$cur2] -ne '{') { break }
+        $e3 = Get-BraceGroupEnd $T $cur2; if ($e3 -lt 0) { break }
+        $cond = $T.Substring($o1 + 1, $e1 - $o1 - 2)
+        $aTxt = $T.Substring($cur + 1, $e2 - $cur - 2); $bTxt = $T.Substring($cur2 + 1, $e3 - $cur2 - 2)
+        $T = $T.Substring(0, $m.Index) + "`nif $cond`:`n" + $aTxt + "`nelse:`n" + $bTxt + "`nend`n" + $T.Substring($e3)
+    }
+    # two-arg control forms: {cond}{body} -> "keyword cond:" + body + "end"; a single-group site
+    # (keyword + cond only) degrades to the header line
+    foreach ($ctrl in 'ForEach', 'ForAll', 'For', 'While', 'uIf', 'If', 'Repeat', 'Fn') {
+        while ($true) {
+            $m = [regex]::Match($T, "\\$ctrl\s*(?:\([^)]*\))?\s*\{")
+            if (-not $m.Success) { break }
+            $o1 = $m.Index + $m.Length - 1; $e1 = Get-BraceGroupEnd $T $o1; if ($e1 -lt 0) { break }
+            $cond = $T.Substring($o1 + 1, $e1 - $o1 - 2)
+            $kw = $ctrl.ToLowerInvariant() -replace '^uif$', 'if' -replace '^fn$', 'function'
+            $cur = $e1; while ($cur -lt $T.Length -and [char]::IsWhiteSpace($T[$cur])) { $cur++ }
+            if ($cur -ge $T.Length -or $T[$cur] -ne '{') {
+                $T = $T.Substring(0, $m.Index) + "`n$kw $cond`:`n" + $T.Substring($e1); continue
+            }
+            $e2 = Get-BraceGroupEnd $T $cur; if ($e2 -lt 0) { break }
+            $bodyTxt = $T.Substring($cur + 1, $e2 - $cur - 2)
+            $T = $T.Substring(0, $m.Index) + "`n$kw $cond`:`n" + $bodyTxt + "`nend`n" + $T.Substring($e2)
+        }
+    }
+    $T = $T -replace '\\(?:Begin|End|Else)\b', ''
+    $T = [regex]::Replace($T, '(?m)^[ \t]+$', '')
+    $T = [regex]::Replace($T, '\n{3,}', "`n`n")
+    return '```text' + "`n" + $T.Trim() + "`n" + '```'
+}
+
 function Convert-Algorithms {
     param([string]$T)
     # stash each rendered algorithm as a placeholder and restore AFTER all text passes — the dedent
@@ -330,6 +388,12 @@ function Convert-Algorithms {
             if ($bm.Success) {
                 $list = Format-Algorithmic $bm.Groups[2].Value ($bm.Groups[1].Success -and $bm.Groups[1].Value.Trim() -ne '')
                 $inner = $inner.Remove($bm.Index, $bm.Length)
+            }
+            elseif ($inner -match '\\(?:KwIn|KwOut|KwData|KwResult|KwRet|tcp|tcc|eIf|uIf|SetKw|ForEach)\b|\\;') {
+                # algorithm2e dialect: same channel, different vocabulary — the body is bare braced
+                # commands, not an algorithmic env. Lower it and consume the inner wholesale.
+                $list = Format-Algorithm2e $inner
+                $inner = ''
             }
             $title = if ($cap) { "**Algorithm $($script:algCounter): $cap**" } else { "**Algorithm $($script:algCounter)**" }
             $id = "@@ALG$($script:AlgStoreIdx)@@"; $script:AlgStoreIdx++
@@ -383,6 +447,16 @@ function Protect-VerbatimBlocks {
             param($m) Add-VerbBlock $m.Groups[1].Value $m.Groups[2].Value }, $SL)
     $Text = [regex]::Replace($Text, '\\begin\{(verbatim|Verbatim|alltt)\*?\}(?:\[[^\]]*\])?(.*?)\\end\{\1\*?\}', {
             param($m) Add-VerbBlock 'text' $m.Groups[2].Value }, $SL)
+    # inline \verb<delim>…<delim> (any non-letter, non-space delimiter; the * visible-space variant
+    # tolerated): the INLINE verbatim form — inside it % is not a comment and $ is not math, so it
+    # must be stashed from the raw source exactly like the block forms. Runs AFTER the env captures
+    # so a \verb inside a stashed listing is untouched. Emits an inline code SPAN (not a fence);
+    # content never crosses a line (TeX errors there), so no Singleline.
+    $Text = [regex]::Replace($Text, '\\verb\*?([^A-Za-z\s])(.*?)\1', {
+            param($m)
+            $id = "@@VERB$($script:VerbStoreIdx)@@"; $script:VerbStoreIdx++
+            $script:VerbStore[$id] = '`' + $m.Groups[2].Value + '`'
+            $id })
     return $Text
 }
 
@@ -1787,6 +1861,18 @@ function ConvertFrom-Latex {
                 $spec = if ($sm.Success) { $sm.Groups[1].Value } else { $null }
                 $script:FigEnvStore.Add([pscustomobject]@{ n = $n; env = $m.Groups[1].Value; spec = $spec; source = $m.Value })
                 "`n`n@@FIGENV$n@@`n`n" })
+        # TABLE channel (ADMITTED protograph kind, 2026-08-03): table-family floats stashed WHOLE,
+        # the same bundle discipline as figures — caption + \label + grid as one unit. NB the inner
+        # tabular is already a markdown table at this point (Convert-Tabular ran upstream), while
+        # the caption/label are still raw TeX: the stash captures the bundle mid-realization.
+        $script:TabEnvStore = [System.Collections.Generic.List[object]]::new()
+        $body = [regex]::Replace($body, '(?s)\\begin\{(table\*?|wraptable)\}(.*?)\\end\{\1\}', {
+                param($m)
+                $n = $script:TabEnvStore.Count
+                $sm = [regex]::Match($m.Value, '^\\begin\{[^{}]+\}\s*\[([^\]]*)\]')
+                $spec = if ($sm.Success) { $sm.Groups[1].Value } else { $null }
+                $script:TabEnvStore.Add([pscustomobject]@{ n = $n; env = $m.Groups[1].Value; spec = $spec; source = $m.Value })
+                "`n`n@@TABENV$n@@`n`n" })
         # placement evidence, document grain: \FloatBarrier dams the deferred-float queue ("no float
         # declared above lands below"); \clearpage/\cleardoublepage carry the same flush as a rider on
         # their page-speak (the page part dies in the surjection, the ORDER part survives). Captured as
@@ -1946,6 +2032,7 @@ function ConvertFrom-Latex {
             algs     = $script:AlgStore
             verbs    = $script:VerbStore
             figures  = $script:FigEnvStore
+            tables   = $script:TabEnvStore
             diagrams = $script:DiagramStore
             barriers = $script:BarrierStore
             appendix = $script:AppendixStore
