@@ -310,12 +310,43 @@ dominate harder than ever at corpus scale (`\small` 18 papers/301 hits, `\multir
 New failure specimen: **2405.12350v1** staging yields an empty resolved source ("Cannot bind
 argument to parameter 'Latex'") — the corpus's first real staging failure, untraced.
 
-## 11. Open items
+## 11. The batch (2026-08-03b): refs model, normalization flag, proof spine, grain
 
-- **Table channel**: the largest admission question the census raises — now clearly dominant.
-- 2405.12350v1: empty-resolve staging failure (Find-LatexMain/Resolve-LatexInputs trace).
-- algorithm2e adapter for Convert-Algorithms; inline `\verb`; macro-harvest gap
-  (2410.01294v3 specimen: 442 hits / 85 distinct, near-channel-empty stream).
+User decisions folded in: **tables ADMITTED to the protograph** as a new object kind (the census
+question answered); the queued items discussed and landed (commits `74336a8`, `bac5bd9`):
+
+- **Ref model / refgraph seed**: `ConvertFrom-Latex` assembles every declared label with *both*
+  display projections (normalized + faithful) and every reference site `Resolve-Refs` renders
+  (macro, keys, rendered). Production writes `{slug}.refs.jsonl` beside the other sidecars; the
+  probe emits it too (2408: 167 labels, 186 sites). This is refs-consolidation's collect side —
+  all source-knowable — with the docgraph's capture role folded in as designed.
+- **Normalization as a real flag**: `-FaithfulNumbering` on the production driver. Default =
+  normalized (the user's deliverable policy, injectivity-guarded); faithful renders the paper's
+  own symbols end-to-end — verified `Definition A.1` / "section B" vs `8.1` / "section 9" on the
+  specimen. The faithful map is computed in the walk ((mode, ordinal, regime) recount at
+  `\appendix`, now production state).
+- **Cite qualifiers render**: `\cite[Theorem 3.1]{key}` → `[15, Theorem 3.1]`; natbib
+  prenote+postnote → `[see 15, p. 7]`. The pass-3 gap closed.
+- **Proof envs into the spine** (probe): tagged with extent, `[Proof of X]` titles
+  bracket-aware; 20 proof rows on the specimen — the theorem–proof bond is now addressable.
+- **Paragraph-grain prose** (probe): blank-line split, inline math attaches to its containing
+  paragraph; 2408 rises to 276 prose blocks, closure untouched.
+- **Build-LabelMaps flat theorem map DELETED** (refs-consolidation step 2, the
+  wrong-model-adjacent-to-live-code hazard removed); the oracle's theorem *count* kept.
+- **2405.12350v1 resolved**: not a staging failure — an author *empty math span* (`$$ $$`)
+  crashed the conversion at the lowering binder (`Mandatory` rejects `''` before the
+  empty-guard). Fixed (`AllowEmptyString` + whitespace-span drop in Store-Math). The paper
+  converts and is a math-saturated stress specimen: 2,792 inline spans, residue 2,716/81
+  distinct including inline `\verb` and bare math commands in prose.
+
+## 12. Open items
+
+- **Table channel**: ADMITTED; the extraction design (table envs → slot rows with structure,
+  the caption/label bundle like figures) is the next channel to build.
+- algorithm2e adapter for Convert-Algorithms; inline `\verb` capture at the raw-source stage.
+- Macro-harvest gap: two specimens now — 2410.01294v3 (442/85) and 2405.12350v1 (2716/81).
+- Resolution consumers: repoint subject index / oracle counts at the ref model; golden pinning
+  before the producer swap (refs-consolidation steps 1, 4).
 - Normalization as a real serialization flag at production realization, refs rendered through
   the same projection (belongs with the refs-stage work).
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
