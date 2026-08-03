@@ -195,8 +195,16 @@ fan-out block carries 63 inline spans). Paragraph-grain splitting is a trivial r
 
 ## 8. Open items
 
-- Appendix numbering realization: switch the section counter to letter mode at the `appendix`
-  signal (spec'd by the §7 specimen: sections 8–13 should realize as A–F).
+- Appendix numbering, REFRAMED (user, same day): not a mode-switch feature but an **internal
+  alignment and recounting problem**. Letters and numbers are both *symbols indexed from 1*;
+  the spine row's invariant is a **mode-local ordinal + regime** (symbol alphabet), and the
+  displayed number is a derived projection — source-faithful, since `\appendix` is literally
+  `\setcounter{section}{0}` + `\thesection→\Alph` (recount + re-alphabet). The §7 specimen's
+  8–13 is a *basis confusion* (global arabic ordinals where regime=Alph, ordinal 1–6 belongs).
+  Reference correspondences are unique within a regime scope, so the letter↔ordinal projection
+  is checkable against the oracle's own `\ref` renderings (alignment precedes measurement).
+  Projection mechanics already in-lane: `Format-Counter` / `ConvertTo-Roman`. Refs-model
+  consequence: label → (regime, ordinal-path), display rendered at resolve.
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
 - Proof envs are handled outside the model walk (italic run-in at emission) and are not yet
   spine rows — the theorem–proof bond wants them captured.
