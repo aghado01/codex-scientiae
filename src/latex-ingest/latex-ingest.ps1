@@ -1373,7 +1373,7 @@ function Get-TheoremModel {
 # Label association: a \section/\begin{thm} arms `pending`, consumed only by the IMMEDIATELY-following \label
 # (any other token clears it) — so an equation \label deeper inside a theorem is not mis-captured.
 function Convert-CrossRefEnvs {
-    param([string]$Body, $Model)
+    param([string]$Body, $Model, [switch]$ChannelProbe)
     # label->number maps ordinal (case-sensitive \label keys); $ctr/$within key on env names — same rule
     $thmMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
     $secMap = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
@@ -1387,6 +1387,13 @@ function Convert-CrossRefEnvs {
     # the label are all in hand at once; recovering it later from the markdown would be pattern-matching
     # typography, which is a guess dressed as a rule.
     $objects = [System.Collections.Generic.List[object]]::new()
+    # CHANNEL PROBE — spine capture: this walk is the one ordered pass that already sees every
+    # section marker, theorem-like env, and label with the counter model in hand, so it is the
+    # knowable moment for SPINE nodes. @@SPINEn@@ tags a node's start in the flow (the heading /
+    # run-in itself still renders); @@SPINEENDn@@ closes a theorem-like env's extent. Inert unless
+    # -ChannelProbe.
+    $spineList = [System.Collections.Generic.List[object]]::new()
+    $thmOpen = [System.Collections.Generic.Stack[int]]::new()
     $ctr = @{}; $within = @{}
     $sec = 0; $sub = 0; $subsub = 0
     $sb = [System.Text.StringBuilder]::new(); $pos = 0; $pending = $null
@@ -1405,7 +1412,15 @@ function Convert-CrossRefEnvs {
                 }
                 $secDisp = switch ($m.Groups[1].Value) { 'section' { 'Section' } 'subsection' { 'Subsection' } default { 'Subsubsection' } }
                 $pending = @{ kind = 'sec'; num = $num; disp = $secDisp }
-            } else { $pending = $null }
+            } else { $pending = $null; $num = '' }
+            if ($ChannelProbe) {
+                $sn = $spineList.Count
+                $spineList.Add([pscustomobject]@{
+                        n = $sn; kind = $m.Groups[1].Value; star = ($m.Groups[2].Value -eq '*')
+                        number = $num; title = (Get-LatexBracedArg $Body ($m.Index + $m.Length - 1)); label = $null })
+                $emit = "`n`n@@SPINE$sn@@`n`n" + $emit
+                if ($pending) { $pending.spine = $sn }
+            }
         }
         elseif ($m.Groups[3].Success) {                                          # \begin{env}
             $env = $m.Groups[3].Value
@@ -1431,6 +1446,7 @@ function Convert-CrossRefEnvs {
                 if ($e.star) {
                     $emit = "`n`n**$($e.disp)$note.** "; $pending = $null
                     $objects.Add([pscustomobject]@{ kind = $e.disp; number = ''; note = $note.Trim(); identity = '' })
+                    $thmNum = ''
                 }
                 else {
                     $g = $e.group; if (-not $ctr.Contains($g)) { $ctr[$g] = 0 }; $within[$g] = $e.within
@@ -1438,23 +1454,39 @@ function Convert-CrossRefEnvs {
                     $emit = "`n`n**$($e.disp) $num$note.** "
                     $objects.Add([pscustomobject]@{ kind = $e.disp; number = $num; note = $note.Trim(); identity = '' })
                     $pending = @{ kind = 'thm'; num = $num; disp = $e.disp; obj = ($objects.Count - 1) }
+                    $thmNum = $num
+                }
+                if ($ChannelProbe) {
+                    $sn = $spineList.Count
+                    $spineList.Add([pscustomobject]@{
+                            n = $sn; kind = $e.disp; star = [bool]$e.star; number = $thmNum
+                            title = $(if ($null -ne $noteVal) { $noteVal } else { '' }); label = $null })
+                    $emit = "`n`n@@SPINE$sn@@" + $emit
+                    $thmOpen.Push($sn)
+                    if ($pending) { $pending.spine = $sn }
                 }
             }
             # a NON-model \begin (equation, enumerate, …) leaves `pending` intact, so a theorem's label placed
             # AFTER its statement body (\begin{theorem} <stmt> \label{..}) is still captured (first-label-in-env).
         }
-        elseif ($m.Groups[5].Success) { if ($Model.Contains($m.Groups[5].Value)) { $emit = ''; $pending = $null } }   # theorem env closed: disarm
+        elseif ($m.Groups[5].Success) {                                          # theorem env closed: disarm
+            if ($Model.Contains($m.Groups[5].Value)) {
+                $emit = ''; $pending = $null
+                if ($ChannelProbe -and $thmOpen.Count -gt 0) { $emit = "`n`n@@SPINEEND$($thmOpen.Pop())@@`n`n" }
+            }
+        }
         elseif ($m.Groups[6].Success -and $pending) {                            # \label — FIRST label in the armed env/section wins
             if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
             if ($pending.disp) { $typeMap[$m.Groups[6].Value] = [string]$pending.disp }
             # bind the object to its \label, so an index entry carries the identity the paper cites it by
             if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
+            if ($null -ne $pending.spine) { $spineList[[int]$pending.spine].label = $m.Groups[6].Value }
             $pending = $null
         }
         [void]$sb.Append($emit); $pos = $consumeTo
     }
     [void]$sb.Append($Body.Substring($pos))
-    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects }
+    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects; spine = $spineList }
 }
 
 function Remove-TexComments([string]$Tex) {
@@ -1625,7 +1657,7 @@ function ConvertFrom-Latex {
     $body = $cc.body
     # theorem/section cross-refs: number + render theorem-like envs here (ordered walk over the counter model),
     # BEFORE math protection, so the same numbers feed both the inline labels and \ref resolution.
-    $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex)
+    $xref = Convert-CrossRefEnvs $body (Get-TheoremModel $Tex) -ChannelProbe:$ChannelProbe
     $body = $xref.body
     $script:LtxDocObjects = $xref.objects       # object evidence for the deliverable's subject index
     $maps = Build-LabelMaps $body; $citeMap = Build-CiteMap $Bbl               # equation/figure/table counters
@@ -1805,6 +1837,7 @@ function ConvertFrom-Latex {
             diagrams = $script:DiagramStore
             barriers = $script:BarrierStore
             appendix = $script:AppendixStore
+            spine    = $xref.spine
             facts    = @{
                 # implicit-barrier mode: placeins [section] makes every \section a barrier — a
                 # document-level fact knowable from one preamble line, recorded rather than synthesized

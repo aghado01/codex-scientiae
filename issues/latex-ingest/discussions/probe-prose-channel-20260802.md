@@ -1,6 +1,6 @@
 # Prose-channel probe — field notes
 
-**Status:** probe complete (three passes, one specimen; residue driven to 0), findings recorded
+**Status:** probe complete (four passes, one specimen; residue 0; full interleaved stream), findings recorded
 **Date:** 2026-08-02
 **Touches:** `src/latex-ingest/latex-ingest.ps1` (`-ChannelProbe` seam, gated/inert in production),
 `scratch/probe-prose-channel.ps1` (driver, gitignored one-off),
@@ -159,11 +159,47 @@ the ordered walk `Convert-CrossRefEnvs` already performs (the capture point exis
 production), with prose blocks and slots addressed under them — the full interleaved stream both
 artifacts are converging on.
 
-## 7. Open items
+## 7. Pass 4 — spine rows: the interleaved stream
 
-- **Spine rows** (next probe pass): capture section/subsection/theorem-object nodes during the
-  `Convert-CrossRefEnvs` walk and address prose blocks + slots under them (§6 convergence
-  target).
+The §6 convergence target, landed. `Convert-CrossRefEnvs` — the one ordered walk that already
+sees every section marker, theorem env, and label with the counter model in hand — gains
+probe-gated spine capture: `@@SPINEn@@` tags each node's start in the flow (the heading / run-in
+still renders), `@@SPINEENDn@@` closes a theorem-like env's extent, and labels bind to spine
+entries through the same `pending` mechanism that feeds the maps. The driver becomes a
+structural walk over one merged grammar, emitting the full stream:
+
+| rows | 1631 total |
+|---|---|
+| spine | title 1 + section 13 + subsection 15 + subsubsection 1 + **78 theorem-like** across 8 kinds (definition 22, remark 16, proposition 12, lemma 9, theorem 6, example 6, result 4, corollary 3) + appendix 1 |
+| prose | 220 blocks, 74.4k chars — inline math rides inside content as markers |
+| channels | LMATH 1206 (rows follow their containing prose block, parent = its addr) + LDISP 76 + FIGENV 12 + ALG 7 + BARRIER 1 |
+| closure | still **0 leaked / 0 orphaned**, all 107 spine markers reachable; spine store 107 = 29 section-family + 78 objects, exactly the spine rows emitted |
+
+Quality evidence from the stream itself: section rows own their heading line and carry
+source labels (`section:1 → sec:non_brch_mtx`); theorem rows carry number + label + stamped
+`end_offset` extents; prose inside a theorem parents to the theorem
+(`prose → result:0`, the Result 1 statement with 11 inline math children); addressing is
+silhouette-parity (`addr = kind:kind_index`, `parent`, `level`, `seq`). Every view is a query:
+section tree = group-by parent, math bank = filter kind, reading order = sort seq. `prose.md`
+serializes with spine markers stripped — zero structural residue in the readable channel.
+
+**The appendix realization gap is now measurable, not conjectural:** post-appendix sections
+emit numeric numbers 8–13 where the paper letters them A–F. The `appendix` row marks exactly
+where the numbering mode should switch; the counter model doesn't yet switch it. Numbering
+realization is a per-mode policy of the spine — a protograph design item with a concrete
+specimen.
+
+Grain note: prose rows are inter-boundary segments and can span multiple paragraphs (the top
+fan-out block carries 63 inline spans). Paragraph-grain splitting is a trivial refinement of
+`Flush-Prose` when wanted.
+
+## 8. Open items
+
+- Appendix numbering realization: switch the section counter to letter mode at the `appendix`
+  signal (spec'd by the §7 specimen: sections 8–13 should realize as A–F).
+- Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
+- Proof envs are handled outside the model walk (italic run-in at emission) and are not yet
+  spine rows — the theorem–proof bond wants them captured.
 - Run the probe across the remaining staged tarballs (~30 in `ingestion/_inbox` + compendia) —
   grow the residue ledger and the spec census across authors.
 - Cite resolution drops the optional qualifier (`\cite[Theorem 3.1]{key}` → `[15]`, qualifier
