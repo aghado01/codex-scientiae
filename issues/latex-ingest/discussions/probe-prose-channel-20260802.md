@@ -228,15 +228,71 @@ Reference rendering must apply the same projection consistently (`\ref{appdx_cod
 "9", never a mix); the refs-model consequence stands: label → (regime, ordinal-path), display
 rendered at resolve. Projection mechanics already in-lane: `Format-Counter` / `ConvertTo-Roman`.
 
-## 9. Open items
+## 9. Pass 6 — the tarball sweep (corpus census)
 
+`scratch/probe-sweep.ps1`: every tarball under `ingestion/` (34 staged, ≈32 unique — two papers
+are double-staged under versioned/unversioned slugs), dedeuped inbox-first, unpacked into
+gitignored staging, probed with failure isolation. **All 34 convert end to end** (~14 min; the
+one recorded "failure" was the sweep harness itself — `ConvertFrom-Json` refusing
+case-colliding residue keys `\these`/`\These`; fixed with `-AsHashtable`, and that paper's
+driver artifacts were fine all along). Aggregates: `artifacts/latex-ingest/probe/_sweep-summary.md`
++ `_sweep-results.json`.
+
+**Closure, corpus-wide:** leaked = **0 on every paper** — the text-driven invariant holds
+everywhere. Orphans are NOT zero everywhere: **~67 orphaned store entries across 9 papers, and
+every sampled one is a diagram marker** (tikzcd/tikzpicture stored, marker unreachable at
+emission). This is a production defect class made visible by the store-driven direction of the
+check: those diagrams silently vanish from production deliverables (the render swap no-ops on a
+marker that no longer exists). Smallest specimens for the trace: 2205.11338v3 (×1),
+2403.08110v4 (×2), 2112.10906v4 (×4); largest: 2403.08308 (×28), 2501.00322v1 (×12).
+
+**Residue ledger (~150 distinct commands), classified:**
+
+1. **Tables are the largest unclassified channel by far** — `\small`/`\setlength`/`\tabcolsep`/
+   `\multirow`/`\resizebox`/booktabs rules/`\multicolumn`/`\makecell`/`\rowcolor`… the table
+   apparatus dominates the top of the ledger. The protograph wants a table channel.
+2. **The brace-nesting render class** — commands the pipeline handles fine on flat arguments
+   leak raw when the argument nests braces: `\textbf` (104 hits/9 papers), `\caption` (30/9),
+   `\subsection` (10/7), `\section`, `\paragraph`. Same defect family as the pass-3
+   theorem-title fix (`[^{}]*` regexes vs brace-aware capture) — one systematic production fix.
+3. Font/size kernel furniture (`\small` 283, `\tt` 154, `\large` 71, `\footnotesize`…) —
+   inert, classify-and-drop.
+4. Front/backmatter apparatus (`\date`/`\and`/`\affiliation`/`\institute`/`\city`/`\country`/
+   `\received`/`\pacs`/`\ccsdesc`/`\bmhead`…) — the §8-strip families, incompletely covered.
+5. **algorithm2e is an unhandled pseudocode package** (`\tcp`/`\KwIn`/`\KwOut`/`\For`/`\Fn`…)
+   — Convert-Algorithms covers algorithmic/algpseudocode only.
+6. Inline `\verb` + `\lstinputlisting` (external listing files) — verbatim channel gaps.
+7. biblatex tail (`\printbibliography`/`\autocite`/`\textcite`/`\nocite`), TeX conditionals
+   leaking (`\ifx`/`\else`/`\fi`), proof markers (`\qed`/`\qedhere`), minitoc apparatus,
+   symbol singletons (`\S`/`\ding`/`\checkmark`/`\ldots`).
+8. **Unexpanded author macros** — the residue outlier 2410.01294v3 (442 hits, 85 distinct,
+   `\these`/`\These`-style case-colliding semantic macros) is a macro-harvest gap specimen.
+
+**Placement-evidence census:** 272 figure envs — 86 unspecified, `h` 38, `t` 38, `htbp` 29,
+`H` 27 (hard pins ≈10%), bang-variants 39. Ten papers carry explicit barriers (27 rows;
+2511.04703v1 and 2603.03375 with 7 each). Author placement intent is present on ~two-thirds of
+floats — the walk policy has real evidence to consume.
+
+**Normalization guard, corpus-green:** 20 papers have appendices, and
+`normalized_injective_across_document` is **true on every one** — the user's optional
+arabic-1-counting normalization is unambiguous across the entire staged corpus.
+
+## 10. Open items
+
+- **Diagram-orphan trace** (production defect, specimens above): find which pass destroys
+  stashed diagram markers (candidates: figure-grid tabular collapse consuming markers;
+  register lowering rewriting the em-dash inside math-embedded markers) and move the loss to
+  loud-fail.
+- **Brace-nesting render fix** (production): brace-aware argument capture for
+  `\textbf`/`\caption`/heading renders — the pass-3 fix generalized; the ledger quantifies it.
+- **Table channel**: the largest admission question the census raises.
+- algorithm2e adapter for Convert-Algorithms; inline `\verb`; macro-harvest gap
+  (2410.01294v3 specimen).
 - Normalization as a real serialization flag at production realization, refs rendered through
-  the same projection (blocked on nothing; belongs with the refs-stage work).
+  the same projection (belongs with the refs-stage work).
 - Paragraph-grain prose rows (split segments on blank lines) — cheap, when the schema wants it.
 - Proof envs are handled outside the model walk (italic run-in at emission) and are not yet
   spine rows — the theorem–proof bond wants them captured.
-- Run the probe across the remaining staged tarballs (~30 in `ingestion/_inbox` + compendia) —
-  grow the residue ledger and the spec census across authors.
 - Cite resolution drops the optional qualifier (`\cite[Theorem 3.1]{key}` → `[15]`, qualifier
   lost) — small ref-semantics fidelity gap, surfaced by the pass-3 fix.
 - Production path also leaks `\FloatBarrier` (never stripped, survives into deliverables as
