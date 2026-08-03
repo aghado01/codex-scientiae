@@ -1623,8 +1623,22 @@ function ConvertFrom-Latex {
         $body = [regex]::Replace($body, '(?s)\\begin\{(figure\*?|wrapfigure)\}(.*?)\\end\{\1\}', {
                 param($m)
                 $n = $script:FigEnvStore.Count
-                $script:FigEnvStore.Add([pscustomobject]@{ n = $n; env = $m.Groups[1].Value; source = $m.Value })
+                # the float specifier ([H]/[htbp]/…) is PLACEMENT EVIDENCE, per-float grain — the
+                # author's pin/preference for where this float may land. Surfaced as its own field.
+                $sm = [regex]::Match($m.Value, '^\\begin\{[^{}]+\}\s*\[([^\]]*)\]')
+                $spec = if ($sm.Success) { $sm.Groups[1].Value } else { $null }
+                $script:FigEnvStore.Add([pscustomobject]@{ n = $n; env = $m.Groups[1].Value; spec = $spec; source = $m.Value })
                 "`n`n@@FIGENV$n@@`n`n" })
+        # placement evidence, document grain: \FloatBarrier dams the deferred-float queue ("no float
+        # declared above lands below"); \clearpage/\cleardoublepage carry the same flush as a rider on
+        # their page-speak (the page part dies in the surjection, the ORDER part survives). Captured as
+        # content-free evidence rows BEFORE the furniture strip below would discard them.
+        $script:BarrierStore = [System.Collections.Generic.List[object]]::new()
+        $body = [regex]::Replace($body, '\\(FloatBarrier|cleardoublepage|clearpage)(?![a-zA-Z])', {
+                param($m)
+                $n = $script:BarrierStore.Count
+                $script:BarrierStore.Add([pscustomobject]@{ n = $n; via = $m.Groups[1].Value })
+                "`n`n@@BARRIER$n@@`n`n" })
     }
     $body = $body -replace '\\label\{[^{}]*\}', ''                            # strip labels (text + soon-math)
 
@@ -1747,6 +1761,13 @@ function ConvertFrom-Latex {
             verbs    = $script:VerbStore
             figures  = $script:FigEnvStore
             diagrams = $script:DiagramStore
+            barriers = $script:BarrierStore
+            facts    = @{
+                # implicit-barrier mode: placeins [section] makes every \section a barrier — a
+                # document-level fact knowable from one preamble line, recorded rather than synthesized
+                placeins         = [regex]::IsMatch($Tex, '\\usepackage(?:\[[^\]]*\])?\{[^{}]*placeins[^{}]*\}')
+                placeins_section = [regex]::IsMatch($Tex, '\\usepackage\[[^\]]*\bsection\b[^\]]*\]\{[^{}]*placeins[^{}]*\}')
+            }
         }
     }
     $body = Restore-LatexMath $body
