@@ -64,7 +64,10 @@ function Add-LatexEvidence {
 
 function Invoke-LatexMathStoreLowering {
     param(
-        [Parameter(Mandatory)] [string]$Latex,
+        # AllowEmptyString: Mandatory alone REJECTS '' at bind time, before the body's own
+        # empty-guard can run — an author's empty math span ($$ $$) crashed the whole conversion
+        # (2405.12350v1). Empty in, empty out is this function's declared behavior.
+        [Parameter(Mandatory)] [AllowEmptyString()] [string]$Latex,
         [string]$SpanId = 'span-0',
         $EvidenceLedger = $null,
         [switch]$Inline
