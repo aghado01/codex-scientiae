@@ -48,3 +48,12 @@ work: [ledger.md](ledger.md). Ahead: [roadmap.md](roadmap.md).
 - **D11 — Per-conversion artifacts** (work dir, UTF-8 no BOM): `{slug}.refs.jsonl`,
   `{slug}.docstream.jsonl`, `{slug}.refgraph.json`, `{slug}.docgraph.json`,
   `{slug}.diagrams.jsonl`; oracle counts in the run dir.
+- **D12 — One IR, two producers (HARD constraint, 2026-08-04).** pdfdig and latex-ingest build
+  the SAME target pre-markdown JSONL IR — the docstream realization of the protograph — aligned
+  as far as the substrates allow. The gauntlet dev harness compares at the IR: discrete
+  canonical chunks of latent manuscript derived from each source (spine vs spine, chunk vs
+  chunk, edge sets), never markdown diffs. Lane differences live INSIDE the shared schema —
+  epistemic status (observed vs proposed vs hole), total vs partial spine order, lane-shaped
+  provenance (char offsets vs execution paths) — never as schema forks. Markdown remains a
+  downstream projection both lanes share. Convergence evidence:
+  [sol-pdfpig-ideation-20260804.md](../../pdfdig/discussions/sol-pdfpig-ideation-20260804.md).

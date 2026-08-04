@@ -19,8 +19,11 @@ Exit criterion: corpus residue ≈ 0 outside declared kernel classes; closure in
 - tex-docgraph physical retirement (refs-consolidation step 5; the name already re-scoped by D7).
 - Consumer migration onto docstream/docgraph: subject index and TOC as queries over the stream.
 - Sweep cadence as the standing regression harness (probe + sweep after each production change).
-- Gauntlet before/after compare (refs-consolidation step 6) when the battery resumes with the
-  inventory papers.
+- Gauntlet re-scoped per D12: the two-lane IR comparator — scoring canonical latent-manuscript
+  chunks from each source lane — with the refs-consolidation before/after (step 6) as its first
+  latex-side use when the battery resumes with the inventory papers.
+- D12 conformance pass on the docstream schema: epistemic field, partial-order tolerance,
+  lane-shaped provenance slot (small, additive; do alongside the next schema touch).
 
 ## Far
 
