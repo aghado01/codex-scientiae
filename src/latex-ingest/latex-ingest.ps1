@@ -29,6 +29,7 @@
 . "$PSScriptRoot/../md-postprocess/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
 . "$PSScriptRoot/latex-math-store.ps1"     # store-driven math lowering + out-of-band evidence tracking
 . "$PSScriptRoot/ref-semantics.ps1"        # the \ref-family resolution stage: relevance probe + per-macro contracts
+. "$PSScriptRoot/docstream.ps1"            # docstream (nodes) + latex refgraph (reference machinery) + doc graph (their composition)
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -567,8 +568,9 @@ function Build-LabelMaps {
     $eq = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
     $fig = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
     $tab = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
-    $tc = 0; $ec = 0; $fc = 0; $bc = 0   # theorem-family share one counter; numbered eq envs another; figures + tables count their own
-    foreach ($m in ([regex]'\\begin\{(theorem|lemma|corollary|proposition|equation|align|gather|multline|eqnarray|alignat)(\*?)\}').Matches($Body)) {
+    $alg = [System.Collections.Generic.Dictionary[string, int]]::new([System.StringComparer]::Ordinal)
+    $tc = 0; $ec = 0; $fc = 0; $bc = 0; $ac = 0   # theorem-family share one counter; numbered eq envs another; figures/tables/algorithms count their own
+    foreach ($m in ([regex]'\\begin\{(theorem|lemma|corollary|proposition|algorithm|equation|align|gather|multline|eqnarray|alignat)(\*?)\}').Matches($Body)) {
         $env = $m.Groups[1].Value; $star = $m.Groups[2].Value -eq '*'
         $endIdx = $Body.IndexOf('\end{' + $env, $m.Index); $seg = if ($endIdx -ge 0) { $Body.Substring($m.Index, $endIdx - $m.Index) } else { '' }
         $lbl = [regex]::Match($seg, '\\label\{([^{}]+)\}')
@@ -576,6 +578,7 @@ function Build-LabelMaps {
         # (refs-consolidation step 2): it ran a flat counter, no [section] scoping, no \newtheorem
         # model, and its result was overwritten by the walk's correct table one line after every call.
         if ($env -in 'theorem', 'lemma', 'corollary', 'proposition') { $tc++ }
+        elseif ($env -eq 'algorithm') { $ac++; if ($lbl.Success) { $alg[$lbl.Groups[1].Value] = $ac } }   # the refgraph's first cleaned dangler class: \ref{alg:x} rendered "?" because no map claimed algorithm labels
         elseif (-not $star) { $ec++; if ($lbl.Success) { $eq[$lbl.Groups[1].Value] = $ec } }
     }
     # figure/table floats: one counter each; the float's FIRST \label (conventionally right after \caption)
@@ -590,8 +593,8 @@ function Build-LabelMaps {
     # counts ride alongside the label→number maps: the maps only hold LABELLED floats/envs, but the raw
     # counters saw every one — so counts.figures ($fc) is the true float count, ≥ maps.fig.Count. The
     # oracle-batch harness reads these back (persisted via Get-LatexOracleCounts) as the figure-count truth.
-    return @{ eq = $eq; fig = $fig; tab = $tab
-              counts = @{ figures = $fc; tables = $bc; theorems = $tc; equations = $ec } }
+    return @{ eq = $eq; fig = $fig; tab = $tab; alg = $alg
+              counts = @{ figures = $fc; tables = $bc; theorems = $tc; equations = $ec; algorithms = $ac } }
 }
 
 # Oracle count model — TWO populations (the ONE source of truth, reused by the persist path in
@@ -1075,9 +1078,13 @@ function Store-Math {
     return $id
 }
 function Protect-LatexMath {
-    param([string]$Text)
-    $script:LtxMathStore = @{}; $script:LtxMathIdx = 0
-    $script:LtxEvidenceLedger = New-LatexEvidenceLedger
+    param([string]$Text, [switch]$KeepStore)
+    # -KeepStore: protect ADDITIONAL text (a float bundle rendered at the tail) into the SAME store
+    # so the one Restore-LatexMath pass restores everything — the reset is entry-point semantics only
+    if (-not $KeepStore) {
+        $script:LtxMathStore = @{}; $script:LtxMathIdx = 0
+        $script:LtxEvidenceLedger = New-LatexEvidenceLedger
+    }
     $SL = [System.Text.RegularExpressions.RegexOptions]::Singleline
     # $$-display handling is the TEX-FAITHFUL scanner, NOT a regex — a global '$$(.*?)$$' here re-corrupts
     # adjacent inline delimiters ($($$x$…) that Convert-DisplayDollars deliberately left alone. Idempotent,
@@ -1485,6 +1492,9 @@ function Convert-CrossRefEnvs {
     # -ChannelProbe.
     $spineList = [System.Collections.Generic.List[object]]::new()
     $thmOpen = [System.Collections.Generic.Stack[int]]::new()
+    # EVERY \label declaration, armed or not — the refgraph's declared-set, which separates
+    # "declared but no map claims it" (converter gap) from "never declared" (author error)
+    $allLabels = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
     # numbering reframe (probe): display numbers are PROJECTIONS of (mode, ordinal, regime) —
     # \appendix IS \setcounter{section}{0} + \thesection->\Alph, i.e. a recount + re-alphabet.
     # These are probe-local; the production counters below are deliberately untouched.
@@ -1523,7 +1533,7 @@ function Convert-CrossRefEnvs {
                 $secDisp = switch ($m.Groups[1].Value) { 'section' { 'Section' } 'subsection' { 'Subsection' } default { 'Subsubsection' } }
                 $pending = @{ kind = 'sec'; num = $num; disp = $secDisp; faith = $faith }
             } else { $pending = $null; $num = '' }
-            if ($ChannelProbe) {
+            if ($true) {   # spine capture is UNCONDITIONAL: the docstream is a production artifact (markers strip/consume at the tail)
                 $sn = $spineList.Count
                 $isStar = ($m.Groups[2].Value -eq '*')
                 $ord = $null; $reg = 'arabic'
@@ -1578,7 +1588,7 @@ function Convert-CrossRefEnvs {
                     $pending = @{ kind = 'thm'; num = $num; disp = $e.disp; obj = ($objects.Count - 1); faith = $thmFaith }
                     $thmNum = $num
                 }
-                if ($ChannelProbe) {
+                if ($true) {   # unconditional spine capture (docstream)
                     $sn = $spineList.Count
                     $spineList.Add([pscustomobject]@{
                             n = $sn; kind = $e.disp; star = [bool]$e.star; number = $thmNum
@@ -1590,8 +1600,8 @@ function Convert-CrossRefEnvs {
                     if ($pending) { $pending.spine = $sn }
                 }
             }
-            elseif ($ChannelProbe -and $env -in 'proof', 'Proof') {
-                # proof into the spine (probe): the walk only TAGS the node and its extent — emission
+            elseif ($env -in 'proof', 'Proof') {
+                # proof into the spine: the walk only TAGS the node and its extent — emission
                 # stays with the later italic run-in conversion, so the raw env text is kept. The
                 # [Proof of X] title arrives bracket-aware via the same rescan as theorem notes.
                 $sn = $spineList.Count
@@ -1608,20 +1618,23 @@ function Convert-CrossRefEnvs {
         elseif ($m.Groups[5].Success) {                                          # theorem env closed: disarm
             if ($Model.Contains($m.Groups[5].Value)) {
                 $emit = ''; $pending = $null
-                if ($ChannelProbe -and $thmOpen.Count -gt 0) { $emit = "`n`n@@SPINEEND$($thmOpen.Pop())@@`n`n" }
+                if ($thmOpen.Count -gt 0) { $emit = "`n`n@@SPINEEND$($thmOpen.Pop())@@`n`n" }
             }
-            elseif ($ChannelProbe -and $m.Groups[5].Value -in 'proof', 'Proof' -and $thmOpen.Count -gt 0) {
+            elseif ($m.Groups[5].Value -in 'proof', 'Proof' -and $thmOpen.Count -gt 0) {
                 $emit = "`n`n@@SPINEEND$($thmOpen.Pop())@@`n`n" + $emit   # extent closes; raw \end{proof} kept for the conversion regex
             }
         }
-        elseif ($m.Groups[6].Success -and $pending) {                            # \label — FIRST label in the armed env/section wins
-            if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
-            if ($pending.disp) { $typeMap[$m.Groups[6].Value] = [string]$pending.disp }
-            # bind the object to its \label, so an index entry carries the identity the paper cites it by
-            if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
-            if ($null -ne $pending.spine) { $spineList[[int]$pending.spine].label = $m.Groups[6].Value }
-            if ($null -ne $pending.faith -and '' -ne $pending.faith) { $faithMap[$m.Groups[6].Value] = [string]$pending.faith }
-            $pending = $null
+        elseif ($m.Groups[6].Success) {                                          # \label — FIRST label in the armed env/section wins
+            [void]$allLabels.Add($m.Groups[6].Value)                             # declared-set entry regardless of arming
+            if ($pending) {
+                if ($pending.kind -eq 'sec') { $secMap[$m.Groups[6].Value] = $pending.num } else { $thmMap[$m.Groups[6].Value] = $pending.num }
+                if ($pending.disp) { $typeMap[$m.Groups[6].Value] = [string]$pending.disp }
+                # bind the object to its \label, so an index entry carries the identity the paper cites it by
+                if ($null -ne $pending.obj) { $objects[[int]$pending.obj].identity = $m.Groups[6].Value }
+                if ($null -ne $pending.spine) { $spineList[[int]$pending.spine].label = $m.Groups[6].Value }
+                if ($null -ne $pending.faith -and '' -ne $pending.faith) { $faithMap[$m.Groups[6].Value] = [string]$pending.faith }
+                $pending = $null
+            }
         }
         elseif ($m.Value -ceq '\appendix') {                                     # recount + re-alphabet
             $apx = $true; $apxSec = 0                                            # production needs this too: the faithful projection reads it
@@ -1629,7 +1642,7 @@ function Convert-CrossRefEnvs {
         [void]$sb.Append($emit); $pos = $consumeTo
     }
     [void]$sb.Append($Body.Substring($pos))
-    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects; spine = $spineList; faith = $faithMap }
+    return @{ body = $sb.ToString(); thm = $thmMap; sec = $secMap; types = $typeMap; objects = $objects; spine = $spineList; faith = $faithMap; all_labels = $allLabels }
 }
 
 function Remove-TexComments([string]$Tex) {
@@ -1649,6 +1662,51 @@ function Remove-TexComments([string]$Tex) {
 }
 
 # --- the core transform: LaTeX -> markdown ----------------------------------------------------------
+# brace-aware inline text-format realization — one contract, two call sites (the body-wide pass in
+# ConvertFrom-Latex, and Render-FloatBundle for stashed float content). Inner commands convert on
+# their own later applications, so nesting composes.
+function Convert-InlineTextFormats {
+    param([string]$T)
+    foreach ($cmd in '\textbf', '\textsc') {
+        $T = Replace-BracedCommand $T $cmd { param($a) '**' + ($a.Trim() -replace '\*', '\*') + '**' }   # trim (MD037); escape literal * (author's \emph{Density* corruptions} must not unbalance md emphasis)
+    }
+    foreach ($cmd in '\emph', '\textit', '\textsl') {
+        $T = Replace-BracedCommand $T $cmd { param($a) '*' + ($a.Trim() -replace '\*', '\*') + '*' }
+    }
+    $T = Replace-BracedCommand $T '\texttt' { param($a) '`' + $a.Trim() + '`' }   # trim: no space inside code spans (MD038)
+    foreach ($cmd in '\textrm', '\textnormal', '\textsf', '\textup', '\textmd', '\mbox', '\text', '\underline') {
+        $T = Replace-BracedCommand $T $cmd { param($a) $a }
+    }
+    return $T
+}
+
+# --- float-bundle realization: render a stashed figure/table bundle into markdown at the tail. The
+# capture keeps bundles RAW for the docstream; production markdown still needs them realized in
+# place. Math inside protects into the SAME store (-KeepStore) so the one Restore-LatexMath pass
+# restores it lowered, exactly as body math. ---------------------------------------------------------
+function Render-FloatBundle {
+    param([string]$Src)
+    $t = Protect-LatexMath $Src -KeepStore
+    $t = Replace-BracedCommand $t '\caption' { param($a)
+        $cap = Format-MdFigureCaption $a
+        if ($cap) { "`n`n$cap`n" } else { '' } }
+    $t = $t -replace '\\includegraphics(?:\[[^\]]*\])?\{([^{}]+)\}', "`n![](`$1)`n"
+    $t = Convert-InlineTextFormats $t
+    $t = $t -replace '\\(?:begin|end)\{(?:figure|table|center|wrapfigure|wraptable)\*?\}(?:\[[^\]]*\])?(?:\{[^{}]*\})*', ''
+    $t = $t -replace '\\begin\{subfigure\}(?:\[[^\]]*\])?(?:\{[^}]*\})?', '' -replace '\\end\{subfigure\}', ''
+    $t = $t -replace '\\begin\{minipage\}(?:\[[^\]]*\])?\{[^}]*\}', '' -replace '\\end\{minipage\}', ''
+    $t = $t -replace '\\label\{[^{}]*\}', ''
+    $t = $t -replace '\\(?:centering|hfill|vfill|small|footnotesize|scriptsize|arraybackslash)\b', ''
+    $t = $t -replace '\\setlength\s*\{[^{}]*\}\s*(?:\{[^{}]*\})?', '' -replace '\\tabcolsep\b', ''
+    $t = $t -replace '\\(?:quad|qquad)\b', ' '
+    $t = [regex]::Replace($t, '(?m)^[ \t]+$', '')
+    $t = [regex]::Replace($t, '\n{3,}', "`n`n")
+    # bundles bypass the body-wide reflow (they splice in after Join-WrappedProse ran) — join their
+    # hard-wrapped caption/prose lines here so captions read as sentences, exactly as body prose does
+    $t = Join-WrappedProse $t
+    return "`n`n" + $t.Trim() + "`n`n"
+}
+
 function ConvertFrom-Latex {
     param([string]$Tex, [string]$Bbl, [switch]$ChannelProbe, [switch]$FaithfulNumbering)
     $Tex = Protect-VerbatimBlocks $Tex                                         # code is code: stash before % -stripping and $ -protection
@@ -1844,13 +1902,16 @@ function ConvertFrom-Latex {
     foreach ($k in $maps.eq.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'equation'; type = 'Equation'; normalized = [string]$maps.eq[$k]; faithful = [string]$maps.eq[$k] }) }
     foreach ($k in $maps.fig.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'figure'; type = 'Figure'; normalized = [string]$maps.fig[$k]; faithful = [string]$maps.fig[$k] }) }
     foreach ($k in $maps.tab.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'table'; type = 'Table'; normalized = [string]$maps.tab[$k]; faithful = [string]$maps.tab[$k] }) }
+    foreach ($k in $maps.alg.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'algorithm'; type = 'Algorithm'; normalized = [string]$maps.alg[$k]; faithful = [string]$maps.alg[$k] }) }
     foreach ($k in $maps.custom.Keys) { $refLabels.Add([ordered]@{ label = $k; class = 'custom'; type = ''; normalized = [string]$maps.custom[$k]; faithful = [string]$maps.custom[$k] }) }
     $script:LtxRefModel = @{ labels = $refLabels; sites = $script:LtxRefSites; faithful_render = [bool]$FaithfulNumbering }
-    # CHANNEL PROBE — stash figure-family floats WHOLE (graphics + caption + label as one unit), the
-    # same move as the tikz stash above: after ref resolution (so captions already read as prose) but
-    # BEFORE the label strip and math protection — each stashed figure keeps its \label identity and
-    # its caption math raw. Slot id in the flow; the probe driver owns emission. Production: inert.
-    if ($ChannelProbe) {
+    # CHANNEL CAPTURE (unconditional — the docstream is a production artifact): stash float bundles
+    # WHOLE (graphics + caption + label as one unit), the same move as the tikz stash above: after
+    # ref resolution (so captions already read as prose) but BEFORE the label strip and math
+    # protection — each stashed float keeps its \label identity and its caption math raw. The
+    # docstream reads the bundles as rows; the production tail renders them back into the markdown
+    # via Render-FloatBundle (probe mode returns before that and keeps the markers).
+    if ($true) {
         $script:FigEnvStore = [System.Collections.Generic.List[object]]::new()
         $body = [regex]::Replace($body, '(?s)\\begin\{(figure\*?|wrapfigure)\}(.*?)\\end\{\1\}', {
                 param($m)
@@ -1985,18 +2046,9 @@ function ConvertFrom-Latex {
     $body = Convert-BraceToggles $body                                         # {\em ..}/{\bf ..} switch form -> * / ** (brace-aware)
     $body = Unwrap-Boxes $body                                                 # \fbox/\parbox/\centerline -> content (drop frame + width/pos args)
     # text-format commands BRACE-AWARE — the sweep ledger's second-largest class (\textbf 104 hits /
-    # 9 papers) was nested-brace args leaking raw; the head-anchored brace scan converts them. Inner
-    # commands convert on their own later passes (body-wide), so nesting composes.
-    foreach ($cmd in '\textbf', '\textsc') {
-        $body = Replace-BracedCommand $body $cmd { param($a) '**' + ($a.Trim() -replace '\*', '\*') + '**' }   # trim (MD037); escape literal * (author's \emph{Density* corruptions} must not unbalance md emphasis)
-    }
-    foreach ($cmd in '\emph', '\textit', '\textsl') {
-        $body = Replace-BracedCommand $body $cmd { param($a) '*' + ($a.Trim() -replace '\*', '\*') + '*' }
-    }
-    $body = Replace-BracedCommand $body '\texttt' { param($a) '`' + $a.Trim() + '`' }   # trim: no space inside code spans (MD038)
-    foreach ($cmd in '\textrm', '\textnormal', '\textsf', '\textup', '\textmd', '\mbox', '\text', '\underline') {
-        $body = Replace-BracedCommand $body $cmd { param($a) $a }
-    }
+    # 9 papers) was nested-brace args leaking raw. Shared with Render-FloatBundle, which realizes
+    # the same commands inside stashed float bundles at the tail.
+    $body = Convert-InlineTextFormats $body
     # counter machinery: side-effect commands (\stepcounter/\refstepcounter/\setcounter/…) produce NO
     # output — drop them; value-producing \Alph/\arabic/… of a counter we cannot track (custom author
     # counters) drop too rather than leak the command verbatim.
@@ -2020,14 +2072,25 @@ function ConvertFrom-Latex {
     # STANDARDS §4 — remove hard wraps: reflow source-wrapped prose into flowing paragraphs. Runs while math
     # is @@LMATH/@@LDISP/@@ALG/@@VERB placeholders, so a join can never split a formula or shred pseudocode.
     $body = Join-WrappedProse $body
-    # CHANNEL PROBE — stop at the pipeline's own mid-state: the prose channel fully assembled, every
-    # fragile region an opaque slot (@@LMATH/@@LDISP/@@ALG/@@VERB/@@FIGENV@@ + diagram markers). Hand
-    # the assembly and its stores to the caller instead of collapsing them back into one string; no
-    # restore runs on this path. Driver: scratch/probe-prose-channel.ps1.
+    # ── the DOCSTREAM and its graphs (stream + refgraph -> doc graph), built at the pipeline's own
+    # mid-state: every fragile region an opaque slot, the spine markers still standing ──────────────
+    $h1p = if ($title) { '# ' + (Convert-LatexInline $title) } else { '# (untitled)' }
+    $storeBag = @{
+        math = $script:LtxMathStore; algs = $script:AlgStore; verbs = $script:VerbStore
+        figures = $script:FigEnvStore; tables = $script:TabEnvStore; diagrams = $script:DiagramStore
+        barriers = $script:BarrierStore; appendix = $script:AppendixStore; spine = $xref.spine
+    }
+    $dsRows = Build-LatexDocstream -Body ($h1p + "`n`n" + $body.Trim() + "`n") -S $storeBag
+    $script:LtxDocstream = $dsRows
+    $script:LtxRefGraph = Build-LatexRefGraph -RefModel $script:LtxRefModel -CiteMap $citeMap -AllLabels $xref.all_labels
+    $script:LtxDocGraph = Build-LatexDocGraph -Rows $dsRows -RefGraph $script:LtxRefGraph -CiteMap $citeMap
     if ($ChannelProbe) {
-        $h1p = if ($title) { '# ' + (Convert-LatexInline $title) } else { '# (untitled)' }
+        # probe mode hands the mid-state to the driver; no restore, no realization
         return @{
             body     = ($h1p + "`n`n" + $body.Trim() + "`n")
+            rows     = $dsRows
+            refgraph = $script:LtxRefGraph
+            docgraph = $script:LtxDocGraph
             math     = $script:LtxMathStore
             algs     = $script:AlgStore
             verbs    = $script:VerbStore
@@ -2046,14 +2109,31 @@ function ConvertFrom-Latex {
             }
         }
     }
+    # production: realize float bundles back into the flow (BOTH check directions: store-driven —
+    # a stored bundle whose marker vanished is content silently lost, warn; text-driven — a marker
+    # with no realization is a converter bug, throw), then strip the structural punctuation the
+    # docstream consumed (spine/barrier/appendix markers; \FloatBarrier and \appendix used to LEAK
+    # into deliverables as residue — captured + stripped closes that).
+    for ($i = 0; $i -lt $script:FigEnvStore.Count; $i++) {
+        $mk = "@@FIGENV$i@@"
+        if (-not $body.Contains($mk)) { Write-Warning "latex-ingest: figure bundle $i unreachable (stored then lost)"; continue }
+        $body = $body.Replace($mk, (Render-FloatBundle $script:FigEnvStore[$i].source))
+    }
+    for ($i = 0; $i -lt $script:TabEnvStore.Count; $i++) {
+        $mk = "@@TABENV$i@@"
+        if (-not $body.Contains($mk)) { Write-Warning "latex-ingest: table bundle $i unreachable (stored then lost)"; continue }
+        $body = $body.Replace($mk, (Render-FloatBundle $script:TabEnvStore[$i].source))
+    }
+    if ($body -match '@@(?:FIGENV|TABENV)\d+@@') { throw 'latex-ingest: a float-bundle marker survived realization' }
+    $body = [regex]::Replace($body, '@@(?:SPINE(?:END)?|BARRIER|APPENDIX)\d+@@', '')
+    $body = [regex]::Replace($body, '\n{3,}', "`n`n")
     $body = Restore-LatexMath $body
     # \textsc has no KaTeX equivalent; prose occurrences already became **bold** above, so any survivor is
     # math-mode small-caps (algorithm pseudocode) — map the control word to \text, preserving its brace group.
     $body = $body -replace '\\textsc(?=\s*\{)', '\text'
     $body = Restore-Algorithms $body                                          # swap fenced pseudocode back in (keeps its own indentation)
 
-    $h1 = if ($title) { '# ' + (Convert-LatexInline $title) } else { '# (untitled)' }
-    return ($h1 + "`n`n" + $body.Trim() + "`n")
+    return ($h1p + "`n`n" + $body.Trim() + "`n")
 }
 
 # --- references from the .bbl (numbered to match \cite resolution) ----------------------------------
@@ -2532,6 +2612,15 @@ function Invoke-ArxivLatexToMarkdown {
         }
         [System.IO.File]::WriteAllText((Join-Path $work "$Slug.refs.jsonl"), $rfb.ToString(), $u8)
     }
+    # the docstream (nodes), the latex refgraph (reference machinery + danglers), and the doc
+    # graph (their composition) — stream + refgraph -> doc graph
+    if ($script:LtxDocstream) {
+        $dsb2 = [System.Text.StringBuilder]::new()
+        foreach ($row in $script:LtxDocstream) { [void]$dsb2.AppendLine((ConvertTo-Json -InputObject $row -Depth 5 -Compress)) }
+        [System.IO.File]::WriteAllText((Join-Path $work "$Slug.docstream.jsonl"), $dsb2.ToString(), $u8)
+    }
+    if ($script:LtxRefGraph) { [System.IO.File]::WriteAllText((Join-Path $work "$Slug.refgraph.json"), (ConvertTo-Json -InputObject $script:LtxRefGraph -Depth 8), $u8) }
+    if ($script:LtxDocGraph) { [System.IO.File]::WriteAllText((Join-Path $work "$Slug.docgraph.json"), (ConvertTo-Json -InputObject $script:LtxDocGraph -Depth 8), $u8) }
 
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
     $figs = Copy-LatexFigures -Markdown $md -WorkDir $work -OutDir $OutDir -Slug $Slug

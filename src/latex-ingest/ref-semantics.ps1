@@ -118,6 +118,7 @@ function Get-RefTarget($Maps, [string]$Key) {
     if ($Maps.eq  -and $Maps.eq.ContainsKey($Key))  { return @{ num = "$($Maps.eq[$Key])";  type = 'Equation' } }
     if ($Maps.fig -and $Maps.fig.ContainsKey($Key)) { return @{ num = "$($Maps.fig[$Key])"; type = 'Figure' } }
     if ($Maps.tab -and $Maps.tab.ContainsKey($Key)) { return @{ num = "$($Maps.tab[$Key])"; type = 'Table' } }
+    if ($Maps.alg -and $Maps.alg.ContainsKey($Key)) { return @{ num = "$($Maps.alg[$Key])"; type = 'Algorithm' } }
     if ($Maps.sec -and $Maps.sec.ContainsKey($Key)) {
         $ty = if ($Maps.types -and $Maps.types.ContainsKey($Key)) { [string]$Maps.types[$Key] } else { 'Section' }
         $n = if ($Maps.use_faithful -and $Maps.faith -and $Maps.faith.ContainsKey($Key)) { "$($Maps.faith[$Key])" } else { "$($Maps.sec[$Key])" }
@@ -177,7 +178,7 @@ function Resolve-Refs {
             if ($pre) { $inner = "$pre $inner" }
             if ($post) { $inner = "$inner, $post" }
             $out = '[' + $inner + ']'
-            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'cite'; targets = @($m.Groups[3].Value -split '\s*,\s*'); rendered = $out }) }
+            if ($rec) { $script:LtxRefSites.Add([ordered]@{ macro = 'cite'; targets = @($m.Groups[3].Value -split '\s*,\s*'); rendered = $out; prenote = $pre; postnote = $post }) }
             $out })
     $T = [regex]::Replace($T, '(?<![A-Za-z@])\\eqref\s*\{([^{}]+)\}', { param($m)
             $k = $m.Groups[1].Value
