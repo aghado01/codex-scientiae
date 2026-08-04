@@ -6,9 +6,8 @@ messages; this is the index of what landed.
 
 ## 2026-08-03
 
-- **docstream + latex refgraph + doc graph as production artifacts** (D7 layers; commit
-  "latex-ingest: docstream + latex refgraph + doc graph as production artifacts" + golden
-  regen). Walk graduated to `src/latex-ingest/docstream.ps1`; capture unconditional; float
+- **docstream + latex refgraph + doc graph as production artifacts** (D7 layers; `0f07c3d` +
+  golden regen `e9bd8cc`). Walk graduated to `src/latex-ingest/docstream.ps1`; capture unconditional; float
   bundles realized at the tail (`Render-FloatBundle`, both check directions); `\FloatBarrier` +
   `\appendix` deliverable leaks closed; algorithm label map added — exposed silently-WRONG alg
   refs (custom-counter shadow), now typed and correct.
@@ -25,6 +24,13 @@ messages; this is the index of what landed.
   leaked 0 AND orphaned 0 corpus-wide.
 - **Sweep census ×3** (`c4c3004` field notes): 34 → 42 → 43/43 papers; residue taxonomy;
   placement-evidence census; normalization guard corpus-green.
+
+## 2026-08-04
+
+- **Closing sweep with the graph layers**: 43/43 convert; corpus refgraph = 7,301 edges,
+  1,494 dangling → classified **bib-missing 1,226** (staging fact: sources without `.bbl`),
+  **declared-unmapped 121** (the remaining converter class — next fixes live here),
+  **undeclared 147** (author errors, rendered honestly). Closure invariants hold corpus-wide.
 
 ## 2026-08-02
 
