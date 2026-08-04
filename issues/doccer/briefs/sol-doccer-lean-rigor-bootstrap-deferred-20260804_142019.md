@@ -1,0 +1,387 @@
+# Doccer Lean rigor bootstrap brief — deferred, burden-triggered theory lane
+
+Runstamp 20260804_142019. **Status: deferred.** This brief preserves the proposed Lean rigor
+harness, audits the first version of the pattern in ThermoMapper, and states the condition under
+which Doccer should revive it. It is guidance for a future chip, not authorization to scaffold a
+Lean project now.
+
+Inputs:
+
+- [architectural expansion workplan](../planning/architecture-expansion-workplan.md);
+- [formalization audit and proof-obligation inventory](../discussions/sol-doccer-formalization-audit-and-lean-obligations-20260803.md);
+- [ICDT 2025 ET close read](../discussions/fable-et-framework-close-read-20260803.md);
+- [ThermoMapper rigor-harness README](../../../../ThermoMapper/lean/README.md),
+  [enthymeme sources](../../../../ThermoMapper/lean/enthymemes/), and
+  [meta-CI gate](../../../../ThermoMapper/lean/scripts/meta-ci.ps1).
+
+## 1. Disposition
+
+Doccer does not presently need a Lean project in order to implement the next kernel tranches.
+The law registry remains useful, but it must choose the least expensive honest assurance medium
+for each claim:
+
+~~~text
+executable counterexample
+finite exhaustive certificate
+independent reference implementation
+C# property / differential test
+external theorem with explicit hypotheses
+Lean theorem
+deterministic policy contract (not a theorem at all)
+~~~
+
+Lean is selected only when its burden meaningfully changes or protects implementation. It is not
+the default badge of rigor, and a theorem being small or attractive is not by itself an activation
+reason.
+
+Consequences now:
+
+- no Lean scaffold is on the active Doccer critical path;
+- no C# contract waits merely for a formal restatement of standard algebra;
+- K0 records claims, carriers, and their assurance medium without requiring a theorem file;
+- the C# reference implementation and independent finite oracles remain the first line of defense;
+- this brief is the restart packet if a later tranche crosses the activation threshold in §5.
+
+## 2. What the ThermoMapper experiment got right
+
+The core idea is worth preserving.
+
+### 2.1 Retrospective formalization is the right orientation
+
+ThermoMapper works backward from implemented engineering to the mathematical contracts on which
+it relies. Calling the result a sibling of `tests/`—a theory-level unit-test harness—keeps the
+formalization subordinate to the product rather than making the product a demonstration vehicle
+for a proof assistant.
+
+That is also the right posture for Doccer. Its proof subjects should be named public laws such as
+"this rebase preserves composition" or "this compressed origin representation denotes ordinary
+relation composition," not an attempt to formalize documents, parsers, or all of QSTR.
+
+### 2.2 Epistemic promotion is better than pretending sketches are proofs
+
+The three ThermoMapper stages separate:
+
+1. informal candidate statements;
+2. statements Lean actually elaborates while proofs may still use `sorry`;
+3. declarations whose proof obligations are discharged.
+
+That separation is honest and useful. Requiring an enthymeme to compile is especially valuable:
+many apparent mathematical insights fail first because their quantifiers, carrier, or hypotheses
+cannot be stated coherently. Stable declaration names also make proof completion a change in
+confidence rather than a redefinition of the claim.
+
+### 2.3 Formalization paid for itself when statement pressure changed the design
+
+The highest-value ThermoMapper findings happened before or beside proof completion:
+
+- The proposed Potts monotonicity argument named Griffiths inequalities too loosely. Restating
+  the obligation exposed the actual route through the Edwards–Sokal/random-cluster representation,
+  FKG positive association, and the load-bearing condition `q ≥ 1`.
+- The theorem concerned the ideal equilibrium expectation, while the implementation consumed a
+  noisy finite-sample estimate. That distinction exposed a real invalid-filtration hazard and a
+  need for explicit monotonization or a stability certificate.
+- Separating monotone reparameterization from the choice of slice distinguished an invariant
+  change of speed from a lossy change of path. This was an architectural distinction, not proof
+  ornament.
+- The proved PKWang threshold lemma collapsed stochastic-looking apparatus to the deterministic
+  condition `Hcum > T * log 2`, making an implementation reduction explicit.
+
+These are the exemplars for Doccer. Proof work earns priority when theorem-statement pressure
+finds a missing hypothesis, invalid equivalence, wrong carrier, or removable mechanism.
+
+### 2.4 Quarantine deep inputs; prove the local plumbing
+
+ThermoMapper's confidence-pushforward work demonstrates a sound factoring pattern: state a deep
+external stability result at a narrow boundary, then prove the small event-inclusion and measure
+monotonicity argument locally. This avoids both extremes—reformalizing an entire field and hiding
+all local reasoning behind a citation.
+
+For Doccer, the analogue is to cite established interval or relation-algebra results while proving
+only the adapter between those results and Doccer's unusual carrier, identity, or origin choices.
+
+### 2.5 Small, operationally named lemmas are the right grain
+
+The successful PKWang theorem is a better model than an unfinished umbrella theorem. A future
+Doccer obligation should normally identify one public consequence and one counterexample boundary.
+If its statement needs a miniature general-purpose library before it can mention the behavior being
+protected, the obligation has probably been pitched too high.
+
+## 3. What the first harness iteration taught by failing
+
+This is an audit of the harness mechanics, not a proposal to renovate ThermoMapper in this Doccer
+chip. No ThermoMapper files were changed.
+
+### 3.1 The taxonomy drifted across prose, paths, and module names
+
+The README names `proto-lemmas`, while several source comments and the meta-CI synopsis say
+`prelemmas`; only `proto-lemmas/` exists. The physical source directory is `enthymemes/`, while
+Lean imports and the gate use `Enthymemes/`. Windows resolves that casing today, but the repository
+shape is not portable to a case-sensitive checkout.
+
+Lesson: one spelling and case must be canonical, mechanically checked, and used in prose links as
+well as module imports.
+
+### 3.2 The advertised gate currently fails before it can audit the ledger
+
+On 2026-08-04, running `meta-ci.ps1 -NoBuild` stopped because it unconditionally enumerates a
+`lean/Lemmas/` directory that does not exist. The root `Lemmas.lean` file exists, but the script
+expects both. A gate that assumes its own optional directories cannot report the state it was
+created to police.
+
+Lesson: bootstrap validation must work in the empty state. It should create nothing implicitly,
+treat absent optional tiers coherently, and give one complete audit rather than fail on its first
+filesystem assumption.
+
+### 3.3 The default aggregate does not cover every source
+
+`Enthymemes.lean` imports six modules but omits `Stability.lean`. Because the Lake default target
+builds the aggregate, a green default build does not establish that every checked-in theorem file
+elaborates. Hand-maintained aggregate imports need an orphan check.
+
+Lesson: compare registered modules, aggregate imports, and actual `*.lean` files in both
+directions. A source may not exist outside the build graph silently.
+
+### 3.4 Tier membership became stale
+
+`PKWangA.lean` contains declarations with zero `sorry`s and is explicitly marked
+promotion-ready, but remains under `enthymemes/`. Conversely, `Ascent.lean`, `Bifiltration.lean`,
+and `PottsGriffiths.lean` contain no declarations and are proto-lemma placeholders wearing the
+compiled-tier location.
+
+The distinction is conceptually sound; file movement is a weak state machine when the strict gate
+is not continuously enforced.
+
+Lesson: promotion status should be explicit data checked against source facts, not inferred only
+from a directory move that humans must remember to perform.
+
+### 3.5 A sorried definition is more dangerous than an unfinished theorem
+
+`PKWangB.lean` gives `localHCum` and `globalHCum` bodies of `sorry` and correctly declines to state
+the downstream theorem. Such a definition can make later theorems compile about a fictional
+function while hiding the missing construction under an apparently usable constant.
+
+Lesson: the compiled-obligation tier may apologize for proofs, not for public definitions.
+Definitions belong in the trusted model layer; otherwise quantify over the missing object and make
+its required properties hypotheses, or leave the item in the proto ledger.
+
+### 3.6 Zero `sorry` does not mean assumption-free
+
+`Stability.lean` intentionally declares opaque stand-ins and an axiom for an external stability
+theorem. Its local plumbing theorems are genuinely proved, but their trust boundary includes that
+axiom. A source scan that reports only `sorry` counts cannot distinguish:
+
+- a theorem proved from definitions;
+- a theorem proved from accepted Lean foundations;
+- a theorem proved conditionally from a named external result;
+- a theorem that depends transitively on an accidental project axiom.
+
+Lesson: promotion needs an assumption report—normally `#print axioms` or an equivalent environment
+inspection—and an allowlist. Named external hypotheses are legitimate, but they must remain visible
+in the obligation record and theorem API.
+
+### 3.7 Text scanning is useful but not a semantic ledger
+
+The gate counts the token `sorry` in source text, including comments, and recognizes only a selected
+set of declaration forms. It cannot attribute an apology to a theorem, identify transitive axioms,
+or prove that a compiled module is in an aggregate.
+
+Lesson: text checks are suitable for cheap hygiene. The compiler and environment must supply the
+semantic facts; the obligation ledger supplies intent.
+
+### 3.8 Nested CI that never runs is documentation, not enforcement
+
+ThermoMapper's README accurately notes that workflows below the repository root are inert. Strict
+validation is optional (`-Validate`) and no enclosing workflow is identified as invoking it. This
+explains why promotion-ready, unstated, orphaned, and missing-directory states can coexist.
+
+Lesson: when the future Doccer harness is activated, its strict audit must be called from the actual
+repository gate. Until then, do not build elaborate local CI machinery whose enforcement status is
+ambiguous.
+
+### 3.9 Moving modules made references decay
+
+The intended invariant was that declaration names remain stable on promotion. Module paths do not:
+moving a file from `Enthymemes` to `Lemmas` changes imports, aggregate membership, and prose links.
+Current comments already refer to a `Lemmas.PKWang` destination that has not landed.
+
+Lesson: use stable module paths and promote a ledger status, or make the move completely mechanical
+and validate every reference. Doccer should prefer the former.
+
+### 3.10 Broad imports make a speculative lane expensive
+
+Several files import all of Mathlib, and the README records an approximately eight-minute cold
+elaboration cost. That may be justified for analysis-heavy ThermoMapper results; Doccer's first
+finite-order and relation proofs should require much narrower imports.
+
+Lesson: pin the toolchain only when the first obligation is selected, use the smallest imports that
+support it, and keep cache/bootstrap cost out of ordinary C# work.
+
+## 4. Enhanced Doccer harness design, when activated
+
+### 4.1 Keep proof status in a ledger, not in a file move
+
+A small future layout is enough:
+
+~~~text
+lean/
+  README.md
+  lean-toolchain
+  lakefile.toml
+  obligations.md                 human-readable canon
+  Doccer/
+    Model/                       definitions; no sorry, no project axioms
+    Obligations/                 stable theorem modules
+    Oracles/                     executable finite models
+  DoccerAll.lean                 every registered module
+  DoccerChecked.lean             only obligations accepted as proved/certified
+  scripts/check.ps1
+~~~
+
+An obligation module stays at one path. Promotion updates its proof and ledger status; it does not
+move the module. `DoccerAll` proves that every registered source elaborates. `DoccerChecked` is the
+consumer-safe aggregate. The checker refuses unregistered files, missing registered files, and a
+checked theorem with unapproved assumptions.
+
+Do not create this layout until one obligation passes the activation gate.
+
+### 4.2 Give every obligation an operational identity
+
+The initial ledger may remain Markdown. Each record should contain:
+
+| Field | Meaning |
+| --- | --- |
+| ID | Stable name such as `DOC-ORIGIN-003` |
+| Claim | Quantified mathematical statement in prose |
+| Carrier | Exact Doccer sort and basis assumptions |
+| Implementation consequence | API, invariant, optimization, or refusal affected |
+| Status | proposed · compiling · proved · finite-certified · external · withdrawn |
+| Assurance | Lean · exhaustive oracle · C# property · counterexample · citation · policy |
+| Assumptions | Standard, external, classical, decidability, finiteness, injectivity, etc. |
+| Artifact | Lean declaration, generator, test, or cited theorem |
+| C# correspondence | Public member and contract-harness law |
+| Reactivation trigger | Concrete implementation event that makes stronger evidence necessary |
+
+This is the law registry promised by K0. Most rows need never acquire a Lean artifact.
+
+### 4.3 Separate model definitions, external hypotheses, and proofs
+
+- `Model/` contains the smallest mathematical representation of the C# carrier, independently
+  written rather than transliterated from implementation control flow.
+- Missing constructions never receive sorried definitions.
+- Deep cited results appear as theorem parameters where practical. If a project axiom is necessary,
+  it lives under an unmistakable `Doccer.External` namespace with a citation and ledger entry.
+- Every checked declaration receives an assumption report. Ordinary Lean foundations and approved
+  external inputs are distinguished.
+- No generated C# and no runtime dependency on Lean belongs in the bootstrap.
+
+### 4.4 Make the first gate boring and total
+
+The future checker should, in one run:
+
+1. validate directory and filename casing;
+2. compare the ledger, disk files, `DoccerAll`, and `DoccerChecked`;
+3. compile all registered modules;
+4. reject `sorry` in model or checked modules;
+5. report apologies per declaration in compiling modules;
+6. report axioms for checked declarations against an allowlist;
+7. validate obligation-to-C# links;
+8. run from the repository's real CI entry point.
+
+The empty harness must pass. A compiling but unfinished obligation may make `DoccerAll` green while
+remaining absent from `DoccerChecked`.
+
+## 5. Burden-of-proof activation gate
+
+Lean work begins only when a named obligation meets at least one of these conditions:
+
+1. **Signature pressure:** whether the claim is true changes a public carrier, operator, result
+   type, direction, identity, or compatibility check.
+2. **Optimization pressure:** an index, packed representation, incremental algorithm, compression,
+   stage fusion, or compiled backend relies on semantic equivalence with the reference model.
+3. **Boundary pressure:** exact equality versus one-way inclusion, functional versus
+   relation-valued behavior, or canonical versus merely deterministic output remains genuinely
+   uncertain after a counterexample search.
+4. **Global guarantee pressure:** Doccer is about to promise completeness, confluence,
+   associativity of evidence-bearing structures, order independence, or a universal bound that
+   finite testing cannot establish.
+5. **Novelty pressure:** the multi-source origin/support construction has no sufficiently close
+   external theorem and its law is load-bearing for materialization.
+
+Lean does **not** activate merely because:
+
+- a finite table can be regenerated exhaustively;
+- the claim is standard relation or finite-set algebra;
+- an executable counterexample already fixes the contract boundary;
+- the operation is a caller-selected policy rather than algebra;
+- formalization would be intellectually tidy but would not change implementation or assurance.
+
+Before starting, the chip brief must say which activation condition applies and what decision the
+proof can change. If the answer is "none," retain the obligation in the ledger.
+
+## 6. Current Doccer triage
+
+| Obligation family | Best evidence now | Lean trigger later |
+| --- | --- | --- |
+| Allen classifier JEPD, converse, argument reversal | exhaustive finite C# classifier checks plus predicate review | only if a more general interval carrier is introduced |
+| Canonical Allen weak-composition table | independent `D6` generator plus the published formalization | if Doccer attempts a generic qualitative-calculus proof API |
+| Adjacent-gap failure of finite exact composition | smallest executable counterexample | none presently; the counterexample already fixes the contract |
+| Exact claim-pair identity and associativity | reference relation implementation and property tests | if a packed witness representation inherits the same claim |
+| Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
+| Located `Seq` identity, associativity, and finite consuming closure | simple matrix/reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it |
+| Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
+| Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
+| Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
+| Functional origins embed into relation-valued origins | reference relation tests | before origin compression, stage fusion, or functional fast paths |
+| Multi-source origin composition | ordinary relational reference implementation first | leading future Lean candidate if K6/K7 semantics or optimization remain disputed |
+| Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
+| Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
+
+This triage leaves no present theorem whose completion should block `AllenRelationSet`,
+`ClaimSelection`, `ClaimPairView`, or the reference pairing and candidate-graph work.
+
+## 7. Restart recipe
+
+When an activation trigger fires:
+
+1. Write one obligation record and a chip brief naming the implementation decision at stake.
+2. Search for the smallest counterexample and the closest external theorem first.
+3. Freeze the mathematical carrier independently of the C# representation.
+4. Compile one statement with all hypotheses explicit; do not scaffold the whole inventory.
+5. Add its C# reference law or differential fixture in the same chip.
+6. Prove, weaken, or withdraw the claim.
+7. Record the implementation consequence; promotion without a consequence is incomplete.
+8. Expand the harness only when the second obligation demonstrates repeated infrastructure.
+
+Likely first candidates, depending on which tranche supplies the trigger:
+
+- K3 generalized maps: direct-image composition, lax generally and exact under injectivity;
+- K5 packed support: the exact equivalence relation required for bracket-independent witnesses;
+- K6/K7 optimized origins: functional embedding and multi-stage relational composition.
+
+The Allen classifier is intentionally not the default first proof. Its finite executable oracle is
+cheaper, independent, and already sufficient to protect the initial implementation.
+
+## 8. Done criteria for the eventual bootstrap chip
+
+- Exactly one load-bearing obligation names the implementation decision it can change.
+- The model contains no sorried definitions.
+- The statement elaborates under a pinned toolchain and narrow imports.
+- `DoccerAll` covers every registered source; `DoccerChecked` exposes only accepted results.
+- The assumption report is explicit and approved.
+- The corresponding C# reference law, oracle, or differential fixture is linked.
+- The real repository gate runs the checker, including its empty and failure fixtures.
+- No code generation, generic QSTR framework, or universal parser formalization is introduced.
+- The roadmap records either the implementation change produced by the proof or the fact that the
+  original contract survived it.
+
+## 9. Deferred conclusion
+
+ThermoMapper validates the *method*—formalization as a pressure test on load-bearing engineering—but
+also shows that a proof harness has its own lifecycle cost and can accumulate misleading green
+states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
+crosses the burden gate.
+
+The practical next step is therefore the K0/K1 reference kernel work, not Lean. The first future
+proof most likely to repay its cost is not a reproof of Allen's table; it is an equivalence needed
+to compress, fuse, or otherwise optimize Doccer's origin/support machinery without changing its
+meaning.

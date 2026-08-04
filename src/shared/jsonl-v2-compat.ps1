@@ -121,7 +121,11 @@ function Read-JsonlRecord {
     try {
         $line = $sr.ReadLine()
         if ([string]::IsNullOrWhiteSpace($line)) { throw "Blank JSONL record at index $At in $full" }
-        $record = if ($AsHashtable) { $line | ConvertFrom-Json -AsHashtable } else { $line | ConvertFrom-Json }
+        $record = if ($AsHashtable) {
+            ConvertFrom-JsonlLine -Line $line -AsHashtable
+        } else {
+            ConvertFrom-JsonlLine -Line $line
+        }
         if ($record -is [System.Array]) { Write-Output -NoEnumerate $record }
         else { Write-Output $record }
     } finally {

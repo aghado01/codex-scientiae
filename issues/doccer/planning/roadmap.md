@@ -5,7 +5,7 @@ Decisions and the question ledger live in [decisions.md](decisions.md); complete
 move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 [../briefs/](../briefs/); evidence in [../discussions/](../discussions/).
 
-## Current state (2026-08-02)
+## Current state (2026-08-04)
 
 Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D24**, contract harness **1500 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
@@ -13,7 +13,10 @@ green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capabil
 [ledger](ledger.md). Tranches 0–3 are done: the substrate is complete, the lift vocabulary
 lacks only materialize, the first D8 measure is landed. Delivery: `build-doccer.ps1` →
 `packages/doccer` with `doccer.manifest.json` as provenance (`packages/` is untracked; refreshes
-are local-only).
+are local-only). The post-Allen literature review, factory analysis, and formalization audit are
+now synthesized in the [architectural expansion workplan](architecture-expansion-workplan.md).
+That document orders the proposed many-sorted kernel expansion; it does not itself add contracts
+beyond D24.
 
 ## Sequencing doctrine
 
@@ -26,36 +29,59 @@ report appended on completion; `discussions/` = captured evidence.
 
 ## Queue
 
-1. **Provisional DLL-reach adapters (active next):** during the latex-ingest rewrite, write
-   provisional adapters that reach directly into the doccer DLL (`packages/doccer` payload)
-   from PowerShell — **research instruments, deliberately site-local and disposable**. Their
-   job is to clarify the working vocabulary and surface constructs for engine promotion
-   through real usage; the abductive census runs live throughout (specimens → drawer). The
-   sequencing doctrine holds because nothing durable is built against an unsettled surface —
-   these instruments inform the durable veneer (item 4) but are not it.
-2. **Pairing contract (candidate, at the user's call):** the one missing mechanism — ~7
-   witnesses, composition-refusal argued (harvest addendum 2), fault residue as evidence
-   built into the shape. Drafting proceeds when called; a `pair` capability follows the
-   landed contract; open/close token rules are store entries, never the verb's knowledge.
-3. **First CLI verbs (D13) — deferred pending surface design:** the operational terminology
-   is marinating (candidate lexicon = harvest addenda 4/4a/4b — catalog, uncommitted; fiber
-   vs textile metaphor registers unresolved), and the wire format deliberately waits on the
-   latent-manuscript node-stream schema so it is not frozen prematurely. Verbs are named
-   **domain-agnostic capabilities**, never domain tasks; what to capture lives in
-   **per-domain pattern stores**; the algebra surfaces as an expression evaluator (drawer
-   design). user-repl anatomy stands: hand-rolled router, per-verb files with no hot path,
-   run manifests where verbs produce artifacts. The current `inspect`/`relate` commands are
-   **disposable developer diagnostics** predating D13 — reconcile or delete when real verbs
-   land; they are not contracts.
-4. **Durable adapters (last):** masks.ps1 reborn as a thin PS veneer over the DLL; LaTeX
-   consumers migrated as thin consumers, old behavior as witness; the provisional
-   instruments of item 1 inform this veneer without becoming it. This work generates F1's
-   honest edit-plan requirements as a byproduct.
-5. **Proactive contract closures, at discretion (D14):** F-UCD data-provenance record →
-   block/script facts; OffsetMap pressure-test (segment granularity, ambiguity encoding) if
-   judged ripe; register columns only once the math-register design stabilizes; materialize (the
-   last lift operation); a callable runtime Tier-1 runner exposing the harness-law checks, if a
-   consumer wants them at run time.
+The detailed dependencies, tranche gates, and non-goals live in the
+[architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
+order is:
+
+1. **Carrier registry and Allen value closure (K0-K1, active next):** record the many-sorted
+   carrier/law registry, including the chosen assurance medium for each law; then land the immutable
+   13-bit `AllenRelationSet` and independently verified composition table. Exhaustive finite checks
+   and published formalization evidence are sufficient for this reference layer.
+2. **Claim query closure (K2):** add basis-stamped `ClaimSelection` and exact `ClaimPairView`.
+   Exact outer-pair composition and witness-bearing composition remain distinct contracts.
+3. **Pairing as the first structural consumer (K2c):** return identity-bearing match edges,
+   optional paired geometry, and named fault residue. Open/close role and compatibility rules are
+   caller policy; matching, containment, and parenthood remain separate relations.
+4. **Located and flat structural algebra (K3-K4):** add diagonal-bearing located relations and
+   shared-boundary `Seq`, then a concrete candidate-region graph, reachability, partitions, and
+   explicit selection results. The graph is the packed alternative set; path and chunk policy is
+   supplied by adapters. Packing, cover, laminar hierarchy, and resolution views follow the flat
+   reference semantics rather than preceding them.
+5. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
+   occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
+   identity question does not block K0-K4.
+6. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
+   closing D7's final lift with ordered output pieces, a new immutable master, residuals, and
+   composed stage origins. `OffsetMap` becomes a restricted monotone single-source view, not the
+   universal transform carrier.
+7. **Bounded factory witnesses (K8):** demonstrate pairing, ambiguous token paths, budgeted flat
+   chunks, fixed bounded macro substitution with composed origins, and explicitly bounded dynamic
+   expansion. These are contract witnesses, not universal parser/transducer promises.
+8. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
+   adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
+   networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
+   path.
+
+**Parallel witness/census lane:** provisional PowerShell adapters may continue to reach directly
+into the packaged DLL during the latex-ingest rewrite. They remain site-local, disposable research
+instruments whose specimens test the vocabulary and expose missing compositions. They do not
+freeze the public surface or postpone the ordered kernel work above.
+
+**Lean rigor is deferred and burden-triggered.** The
+[bootstrap brief](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md) records the
+ThermoMapper retrospective, corrected harness design, obligation triage, and restart procedure.
+Activate it only when proof pressure can change a public signature, license an optimization or
+stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
+
+**First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
+still a catalog, not a contract, and the wire format waits for stable carrier identities and the
+latent-manuscript node-stream schema. The current `inspect`/`relate` commands remain disposable
+developer diagnostics. Durable adapters remain last: PowerShell veneers and LaTeX consumers become
+thin clients only after the relevant Doccer surface stabilizes.
+
+Other independent closures remain available under D14: the F-UCD data-provenance record, a callable
+runtime Tier-1 law runner if demanded, and early `OffsetMap` pressure tests that do not pre-empt the
+K6 origin contract.
 
 Maturity-gated beyond that: F2 persisted batches → F4 indexed joins → F5 Tier-2/3 agreement
 scoring → F6 markdown adapter and the mdnav succession (oracle harness on the doc-dive

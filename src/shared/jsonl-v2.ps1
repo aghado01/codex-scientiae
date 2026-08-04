@@ -11,10 +11,11 @@
   Primitive JSONL file mechanics only:
     - explicit create / replace / append behavior;
     - UTF-8 without BOM and LF-only records;
-    - strict-by-default streaming reads and validation;
-    - head, tail, count, and indexed random access;
+    - one strict codec for all streaming reads and validation;
+    - cooperating-writer leases and stable-reader views;
+    - head, tail, count, ranges, JSON Pointer projection, and indexed random access;
     - canonical `{stem}.jidx` indexes; and
-    - stable snapshots of actively appended JSONL files.
+    - store inspection/finalization and stable snapshots of actively appended JSONL files.
 
   Deliberately absent: run layout, stages, provenance stamps, inventories, ledgers, logging policy,
   application naming conventions, and automatic legacy sidecar discovery.
@@ -65,42 +66,268 @@ function Resolve-JsonlIndexPath {
     return [System.IO.Path]::ChangeExtension([System.IO.Path]::GetFullPath($Path), '.jidx')
 }
 
-function script:Assert-JsonlNoBom {
-    param([Parameter(Mandatory)][string]$Path)
+function script:Assert-JsonlStreamNoBom {
+    param([Parameter(Mandatory)][System.IO.FileStream]$Stream, [Parameter(Mandatory)][string]$Path)
 
-    $fs = [System.IO.FileStream]::new(
-        $Path,
-        [System.IO.FileMode]::Open,
-        [System.IO.FileAccess]::Read,
-        ([System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete)
-    )
+    $position = $Stream.Position
     try {
-        if ($fs.Length -lt 3) { return }
-        $b0 = $fs.ReadByte(); $b1 = $fs.ReadByte(); $b2 = $fs.ReadByte()
+        $Stream.Position = 0
+        if ($Stream.Length -lt 3) { return }
+        $b0 = $Stream.ReadByte(); $b1 = $Stream.ReadByte(); $b2 = $Stream.ReadByte()
         if ($b0 -eq 0xEF -and $b1 -eq 0xBB -and $b2 -eq 0xBF) {
             throw "JSONL must be UTF-8 without BOM: $Path"
         }
-    } finally { $fs.Dispose() }
+    } finally { $Stream.Position = $position }
 }
 
-function script:ConvertTo-JsonlLine {
+function script:Get-JsonlIOException {
+    param([Parameter(Mandatory)][System.Exception]$Exception)
+
+    $current = $Exception
+    while ($current) {
+        if ($current -is [System.IO.IOException]) { return $current }
+        $current = $current.InnerException
+    }
+    return $null
+}
+
+function script:Test-JsonlContentionError {
+    param([Parameter(Mandatory)][System.Exception]$Exception)
+
+    $io = script:Get-JsonlIOException $Exception
+    if (-not $io) { return $false }
+    $nativeCode = $io.HResult -band 0xFFFF
+    return $nativeCode -in 32, 33
+}
+
+function script:Enter-JsonlPathMutex {
+    <# Cross-process coordination for cooperating mutations that must outlive a replaceable file handle. #>
     param(
-        [Parameter(Mandatory)][AllowNull()][object]$Record,
-        [Parameter(Mandatory)][ValidateRange(1, 100)][int]$Depth
+        [Parameter(Mandatory)][string]$Path,
+        [ValidateSet('Fail', 'Wait')][string]$ContentionAction = 'Fail',
+        [ValidateRange(1, 60000)][int]$ContentionTimeoutMilliseconds = 2000
     )
 
-    return ConvertTo-Json -InputObject $Record -Compress -Depth $Depth -WarningAction Stop
+    $identity = [System.IO.Path]::GetFullPath($Path)
+    if ($IsWindows) { $identity = $identity.ToUpperInvariant() }
+    $digest = [System.Security.Cryptography.SHA256]::HashData($script:JsonlUtf8.GetBytes($identity))
+    $name = 'CodexScientiae.Jsonl.' + [Convert]::ToHexString($digest)
+    $mutex = [System.Threading.Mutex]::new($false, $name)
+    $timeout = if ($ContentionAction -eq 'Fail') { 0 } else { $ContentionTimeoutMilliseconds }
+    try {
+        try { $acquired = $mutex.WaitOne($timeout) }
+        catch [System.Threading.AbandonedMutexException] { $acquired = $true }
+        if (-not $acquired) {
+            if ($ContentionAction -eq 'Fail') { throw "JSONL mutation contention at ${Path}: another operation holds the store" }
+            throw "Timed out after $ContentionTimeoutMilliseconds ms waiting for the JSONL mutation lease: $Path"
+        }
+        return $mutex
+    } catch {
+        $mutex.Dispose()
+        throw
+    }
 }
 
-function script:Test-JsonlLine {
+function script:Exit-JsonlPathMutex {
+    param([AllowNull()][System.Threading.Mutex]$Mutex)
+
+    if ($null -eq $Mutex) { return }
+    try { $Mutex.ReleaseMutex() } finally { $Mutex.Dispose() }
+}
+
+function script:Open-JsonlWriterLease {
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][ValidateSet('Fail', 'Wait')][string]$ContentionAction,
+        [Parameter(Mandatory)][int]$ContentionTimeoutMilliseconds,
+        [Parameter(Mandatory)][int]$RetryIntervalMilliseconds
+    )
+
+    $timer = [System.Diagnostics.Stopwatch]::StartNew()
+    while ($true) {
+        try {
+            return [System.IO.FileStream]::new(
+                $Path,
+                [System.IO.FileMode]::Open,
+                [System.IO.FileAccess]::ReadWrite,
+                [System.IO.FileShare]::Read
+            )
+        } catch {
+            if (-not (script:Test-JsonlContentionError $_.Exception)) { throw }
+            if ($ContentionAction -eq 'Fail') {
+                throw "JSONL writer contention at ${Path}: another writer holds the store"
+            }
+            if ($timer.ElapsedMilliseconds -ge $ContentionTimeoutMilliseconds) {
+                throw "Timed out after $ContentionTimeoutMilliseconds ms waiting for the JSONL writer lease: $Path"
+            }
+            Start-Sleep -Milliseconds ([math]::Min($RetryIntervalMilliseconds, [math]::Max(1, $ContentionTimeoutMilliseconds - $timer.ElapsedMilliseconds)))
+        }
+    }
+}
+
+function script:Open-JsonlStableReadStream {
+    param([Parameter(Mandatory)][string]$Path)
+
+    try {
+        return [System.IO.FileStream]::new(
+            $Path,
+            [System.IO.FileMode]::Open,
+            [System.IO.FileAccess]::Read,
+            [System.IO.FileShare]::Read
+        )
+    } catch {
+        if (script:Test-JsonlContentionError $_.Exception) {
+            throw "Cannot obtain a stable JSONL view while a writer holds the store: $Path"
+        }
+        throw
+    }
+}
+
+function script:Read-JsonlPhysicalRecords {
+    <# Yield LF-terminated byte records only. Decoding and JSON validation deliberately happen above this layer. #>
+    param(
+        [Parameter(Mandatory)][System.IO.FileStream]$Stream,
+        [Parameter(Mandatory)][long]$SourceLength,
+        [long]$StartingRecordIndex = 0,
+        [long]$MaximumRecords = [long]::MaxValue
+    )
+
+    $lineBytes = [System.IO.MemoryStream]::new()
+    $recordIndex = $StartingRecordIndex
+    $recordOffset = $Stream.Position
+    $emitted = 0L
+    try {
+        $buffer = [byte[]]::new(65536)
+        while ($Stream.Position -lt $SourceLength -and $emitted -lt $MaximumRecords) {
+            $bufferStart = $Stream.Position
+            $want = [int][math]::Min($buffer.Length, $SourceLength - $bufferStart)
+            $read = $Stream.Read($buffer, 0, $want)
+            if ($read -le 0) { break }
+            $segmentStart = 0
+            for ($i = 0; $i -lt $read; $i++) {
+                if ($buffer[$i] -ne 0x0A) { continue }
+                $segmentLength = $i - $segmentStart
+                if ($segmentLength -gt 0) { $lineBytes.Write($buffer, $segmentStart, $segmentLength) }
+                [pscustomobject]@{
+                    RecordIndex = $recordIndex
+                    ByteOffset  = $recordOffset
+                    Bytes       = $lineBytes.ToArray()
+                }
+                $emitted++
+                $recordIndex++
+                $lineBytes.SetLength(0)
+                $recordOffset = $bufferStart + $i + 1
+                $segmentStart = $i + 1
+                if ($emitted -ge $MaximumRecords) { return }
+            }
+            if ($segmentStart -lt $read) { $lineBytes.Write($buffer, $segmentStart, $read - $segmentStart) }
+        }
+    } finally { $lineBytes.Dispose() }
+}
+
+function script:Assert-JsonlIndexMatchesStream {
+    param(
+        [Parameter(Mandatory)][JsonlIndex]$Index,
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][System.IO.FileStream]$Stream
+    )
+
+    $item = [System.IO.FileInfo]::new($Path)
+    if ($Index.SourceLength -ne $Stream.Length -or
+        $Index.SourceLastWriteUtcTicks -ne $item.LastWriteTimeUtc.Ticks) {
+        throw "Stale JSONL index: $($Index.IndexPath) does not describe $Path"
+    }
+}
+
+function ConvertTo-JsonlLine {
+    <# Serialize exactly one JSONL record and prove that its text is strict UTF-8 encodable. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][AllowNull()][object]$Record,
+        [ValidateRange(1, 100)][int]$Depth = 32
+    )
+
+    $line = ConvertTo-Json -InputObject $Record -Compress -Depth $Depth -WarningAction Stop
+    [void]$script:JsonlUtf8.GetByteCount($line)
+    return $line
+}
+
+function script:Assert-JsonlElementCodepoints {
+    param([Parameter(Mandatory)][System.Text.Json.JsonElement]$Element)
+
+    switch ($Element.ValueKind) {
+        ([System.Text.Json.JsonValueKind]::Object) {
+            foreach ($property in $Element.EnumerateObject()) {
+                # JsonProperty.Name returns $null for an escaped lone surrogate instead of throwing.
+                $name = $property.Name
+                if ($null -eq $name) { throw 'Invalid Unicode scalar sequence in JSON property name' }
+                [void]$script:JsonlUtf8.GetByteCount($name)
+                script:Assert-JsonlElementCodepoints $property.Value
+            }
+        }
+        ([System.Text.Json.JsonValueKind]::Array) {
+            foreach ($item in $Element.EnumerateArray()) {
+                script:Assert-JsonlElementCodepoints $item
+            }
+        }
+        ([System.Text.Json.JsonValueKind]::String) { [void]$Element.GetString() }
+    }
+}
+
+function ConvertFrom-JsonlLine {
+    <#
+    Parse one JSONL record through the shared Unicode-scalar gate. JsonDocument.Parse alone accepts
+    escaped lone surrogates lazily, while ConvertFrom-Json replaces them with U+FFFD; materializing every
+    string here prevents that split-brain behavior before any PowerShell conversion occurs.
+    #>
+    [CmdletBinding(DefaultParameterSetName = 'Object')]
+    param(
+        [Parameter(Mandatory, Position = 0)][AllowEmptyString()][string]$Line,
+        [Parameter(ParameterSetName = 'Hashtable')][switch]$AsHashtable,
+        [Parameter(ParameterSetName = 'JsonElement')][switch]$AsJsonElement,
+        [Parameter(ParameterSetName = 'RawText')][switch]$AsRawText
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Line)) { throw 'Blank JSONL record' }
+    $document = [System.Text.Json.JsonDocument]::Parse($Line)
+    $isJsonNull = $false
+    try {
+        script:Assert-JsonlElementCodepoints $document.RootElement
+        $isJsonNull = $document.RootElement.ValueKind -eq [System.Text.Json.JsonValueKind]::Null
+        if ($AsJsonElement) { return $document.RootElement.Clone() }
+    } finally {
+        $document.Dispose()
+    }
+
+    if ($AsRawText) { return $Line }
+    if ($isJsonNull) {
+        throw 'Top-level JSON null has no lossless PowerShell pipeline representation; use -AsJsonElement or -AsRawText'
+    }
+    $record = if ($AsHashtable) {
+        ConvertFrom-Json -InputObject $Line -AsHashtable
+    } else {
+        ConvertFrom-Json -InputObject $Line
+    }
+    if ($record -is [System.Array]) { Write-Output -NoEnumerate $record }
+    else { Write-Output $record }
+}
+
+function Test-JsonlLine {
+    [CmdletBinding()]
     param([AllowNull()][string]$Line)
 
     if ([string]::IsNullOrWhiteSpace($Line)) { return $false }
     try {
-        $doc = [System.Text.Json.JsonDocument]::Parse($Line)
-        $doc.Dispose()
+        $null = ConvertFrom-JsonlLine -Line $Line -AsJsonElement
         return $true
     } catch { return $false }
+}
+
+function script:ConvertFrom-JsonlBytes {
+    param([Parameter(Mandatory)][byte[]]$Bytes)
+
+    try { return $script:JsonlUtf8.GetString($Bytes) }
+    catch { throw "Invalid UTF-8 JSONL record: $($_.Exception.Message)" }
 }
 
 function script:New-JsonlTempPath {
@@ -118,14 +345,14 @@ function script:Publish-JsonlTempFile {
         [Parameter(Mandatory)][ValidateSet('Fail', 'Replace')][string]$ExistingFile
     )
 
+    $mutex = $null
     try {
+        $mutex = script:Enter-JsonlPathMutex -Path $TargetPath
         [System.IO.File]::Move($TempPath, $TargetPath, ($ExistingFile -eq 'Replace'))
     } catch {
-        if ([System.IO.File]::Exists($TempPath)) {
-            [System.IO.File]::Delete($TempPath)
-        }
+        if ([System.IO.File]::Exists($TempPath)) { [System.IO.File]::Delete($TempPath) }
         throw
-    }
+    } finally { script:Exit-JsonlPathMutex $mutex }
 }
 
 function Write-Jsonl {
@@ -138,7 +365,7 @@ function Write-Jsonl {
     #>
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Records,
+        [Parameter(Mandatory)][AllowNull()][AllowEmptyCollection()][object[]]$Records,
         [Parameter(Mandatory)][string]$Path,
         [ValidateSet('Fail', 'Replace')][string]$ExistingFile = 'Fail',
         [ValidateRange(1, 100)][int]$Depth = 32
@@ -151,6 +378,8 @@ function Write-Jsonl {
         throw "JSONL destination already exists: $full"
     }
 
+    $recordList = [object[]]::new(1)
+    if (-not [object]::ReferenceEquals($null, $Records)) { $recordList = $Records }
     $temp = script:New-JsonlTempPath $full
     $fs = [System.IO.FileStream]::new(
         $temp,
@@ -161,8 +390,8 @@ function Write-Jsonl {
     $sw = [System.IO.StreamWriter]::new($fs, $script:JsonlUtf8)
     $sw.NewLine = "`n"
     try {
-        foreach ($record in $Records) {
-            $sw.WriteLine((script:ConvertTo-JsonlLine -Record $record -Depth $Depth))
+        foreach ($record in $recordList) {
+            $sw.WriteLine((ConvertTo-JsonlLine -Record $record -Depth $Depth))
         }
     } catch {
         $sw.Dispose()
@@ -173,7 +402,50 @@ function Write-Jsonl {
     }
 
     script:Publish-JsonlTempFile -TempPath $temp -TargetPath $full -ExistingFile $ExistingFile
-    return [pscustomobject]@{ Path = $full; Records = $Records.Count; Bytes = ([System.IO.FileInfo]::new($full)).Length }
+    return [pscustomobject]@{ Path = $full; Records = $recordList.Count; Bytes = ([System.IO.FileInfo]::new($full)).Length }
+}
+
+function Write-JsonlLines {
+    <# Atomically publish already-serialized records after validating every line through the shared codec. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][AllowEmptyCollection()][string[]]$Lines,
+        [Parameter(Mandatory)][string]$Path,
+        [ValidateSet('Fail', 'Replace')][string]$ExistingFile = 'Fail',
+        [switch]$FlushToDisk
+    )
+
+    $full = [System.IO.Path]::GetFullPath($Path)
+    [void][System.IO.Directory]::CreateDirectory([System.IO.Path]::GetDirectoryName($full))
+    if ($ExistingFile -eq 'Fail' -and [System.IO.File]::Exists($full)) {
+        throw "JSONL destination already exists: $full"
+    }
+
+    $temp = script:New-JsonlTempPath $full
+    $fs = [System.IO.FileStream]::new($temp, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+    $sw = [System.IO.StreamWriter]::new($fs, $script:JsonlUtf8)
+    $sw.NewLine = "`n"
+    $count = 0
+    try {
+        foreach ($line in $Lines) {
+            if ($null -eq $line) { throw 'A serialized JSONL record cannot be null text' }
+            if ($line.Contains("`n") -or $line.Contains("`r")) { throw 'A serialized JSONL record cannot contain a literal CR or LF' }
+            $null = ConvertFrom-JsonlLine -Line $line -AsJsonElement
+            $sw.WriteLine($line)
+            $count++
+        }
+        if ($FlushToDisk) {
+            $sw.Flush()
+            $fs.Flush($true)
+        }
+    } catch {
+        $sw.Dispose()
+        if ([System.IO.File]::Exists($temp)) { [System.IO.File]::Delete($temp) }
+        throw
+    } finally { $sw.Dispose() }
+
+    script:Publish-JsonlTempFile -TempPath $temp -TargetPath $full -ExistingFile $ExistingFile
+    return [pscustomobject]@{ Path = $full; Records = $count; Bytes = ([System.IO.FileInfo]::new($full)).Length }
 }
 
 function Initialize-Jsonl {
@@ -187,13 +459,17 @@ function Initialize-Jsonl {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$Path,
-        [ValidateSet('Fail', 'Append', 'Truncate')][string]$ExistingFile = 'Fail'
+        [ValidateSet('Fail', 'Append', 'Truncate')][string]$ExistingFile = 'Fail',
+        [ValidateSet('Fail', 'Wait')][string]$ContentionAction = 'Fail',
+        [ValidateRange(1, 60000)][int]$ContentionTimeoutMilliseconds = 2000,
+        [ValidateRange(1, 1000)][int]$RetryIntervalMilliseconds = 25
     )
 
     $full = [System.IO.Path]::GetFullPath($Path)
     [void][System.IO.Directory]::CreateDirectory([System.IO.Path]::GetDirectoryName($full))
-
-    switch ($ExistingFile) {
+    $mutex = script:Enter-JsonlPathMutex -Path $full -ContentionAction $ContentionAction `
+        -ContentionTimeoutMilliseconds $ContentionTimeoutMilliseconds
+    try { switch ($ExistingFile) {
         'Fail' {
             $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::Read)
             $fs.Dispose()
@@ -204,14 +480,11 @@ function Initialize-Jsonl {
         }
         'Append' {
             if ([System.IO.File]::Exists($full)) {
-                script:Assert-JsonlNoBom $full
-                $fs = [System.IO.FileStream]::new(
-                    $full,
-                    [System.IO.FileMode]::Open,
-                    [System.IO.FileAccess]::Read,
-                    ([System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete)
-                )
+                $fs = script:Open-JsonlWriterLease -Path $full -ContentionAction $ContentionAction `
+                    -ContentionTimeoutMilliseconds $ContentionTimeoutMilliseconds `
+                    -RetryIntervalMilliseconds $RetryIntervalMilliseconds
                 try {
+                    script:Assert-JsonlStreamNoBom -Stream $fs -Path $full
                     if ($fs.Length -gt 0) {
                         $fs.Position = $fs.Length - 1
                         if ($fs.ReadByte() -ne 0x0A) {
@@ -224,8 +497,60 @@ function Initialize-Jsonl {
                 $fs.Dispose()
             }
         }
-    }
+    } } finally { script:Exit-JsonlPathMutex $mutex }
     return $full
+}
+
+function Add-JsonlRecords {
+    <# Serialize a batch before acquiring one exclusive writer lease, then append it at an LF boundary. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(Mandatory)][AllowNull()][AllowEmptyCollection()][object[]]$Records,
+        [ValidateRange(1, 100)][int]$Depth = 32,
+        [ValidateSet('Fail', 'Wait')][string]$ContentionAction = 'Fail',
+        [ValidateRange(1, 60000)][int]$ContentionTimeoutMilliseconds = 2000,
+        [ValidateRange(1, 1000)][int]$RetryIntervalMilliseconds = 25,
+        [switch]$FlushToDisk
+    )
+
+    $full = [System.IO.Path]::GetFullPath($Path)
+    if (-not [System.IO.File]::Exists($full)) { throw "JSONL append target does not exist: $full" }
+
+    # Nothing is mutated unless every record first serializes and encodes successfully.
+    $recordList = [object[]]::new(1)
+    if (-not [object]::ReferenceEquals($null, $Records)) { $recordList = $Records }
+    $encoded = [System.Collections.Generic.List[byte[]]]::new()
+    $totalBytes = 0L
+    foreach ($record in $recordList) {
+        $bytes = $script:JsonlUtf8.GetBytes((ConvertTo-JsonlLine -Record $record -Depth $Depth) + "`n")
+        $encoded.Add($bytes)
+        $totalBytes += $bytes.Length
+    }
+    if ($encoded.Count -eq 0) {
+        return [pscustomobject]@{ Path = $full; RecordsAppended = 0; BytesAppended = 0L }
+    }
+
+    $mutex = script:Enter-JsonlPathMutex -Path $full -ContentionAction $ContentionAction `
+        -ContentionTimeoutMilliseconds $ContentionTimeoutMilliseconds
+    $fs = $null
+    try {
+        $fs = script:Open-JsonlWriterLease -Path $full -ContentionAction $ContentionAction `
+            -ContentionTimeoutMilliseconds $ContentionTimeoutMilliseconds -RetryIntervalMilliseconds $RetryIntervalMilliseconds
+        if ($fs.Length -gt 0) {
+            $fs.Position = $fs.Length - 1
+            if ($fs.ReadByte() -ne 0x0A) {
+                throw "Cannot append: existing JSONL does not end at an LF record boundary: $full"
+            }
+        }
+        $fs.Position = $fs.Length
+        foreach ($bytes in $encoded) { $fs.Write($bytes, 0, $bytes.Length) }
+        if ($FlushToDisk) { $fs.Flush($true) }
+    } finally {
+        if ($fs) { $fs.Dispose() }
+        script:Exit-JsonlPathMutex $mutex
+    }
+    return [pscustomobject]@{ Path = $full; RecordsAppended = $encoded.Count; BytesAppended = $totalBytes }
 }
 
 function Add-JsonlRecord {
@@ -234,75 +559,104 @@ function Add-JsonlRecord {
     param(
         [Parameter(Mandatory)][string]$Path,
         [Parameter(Mandatory)][AllowNull()][object]$Record,
-        [ValidateRange(1, 100)][int]$Depth = 32
+        [ValidateRange(1, 100)][int]$Depth = 32,
+        [ValidateSet('Fail', 'Wait')][string]$ContentionAction = 'Fail',
+        [ValidateRange(1, 60000)][int]$ContentionTimeoutMilliseconds = 2000,
+        [ValidateRange(1, 1000)][int]$RetryIntervalMilliseconds = 25,
+        [switch]$FlushToDisk
     )
 
-    $full = [System.IO.Path]::GetFullPath($Path)
-    if (-not [System.IO.File]::Exists($full)) { throw "JSONL append target does not exist: $full" }
-    $line = script:ConvertTo-JsonlLine -Record $Record -Depth $Depth
-    $bytes = $script:JsonlUtf8.GetBytes($line + "`n")
-    $fs = [System.IO.FileStream]::new(
-        $full,
-        [System.IO.FileMode]::Open,
-        [System.IO.FileAccess]::ReadWrite,
-        [System.IO.FileShare]::Read
-    )
-    try {
-        if ($fs.Length -gt 0) {
-            $fs.Position = $fs.Length - 1
-            if ($fs.ReadByte() -ne 0x0A) {
-                throw "Cannot append: existing JSONL does not end at an LF record boundary: $full"
-            }
-        }
-        $fs.Position = $fs.Length
-        $fs.Write($bytes, 0, $bytes.Length)
-    } finally {
-        $fs.Dispose()
-    }
+    Add-JsonlRecords -Path $Path -Records (, $Record) -Depth $Depth -ContentionAction $ContentionAction `
+        -ContentionTimeoutMilliseconds $ContentionTimeoutMilliseconds -RetryIntervalMilliseconds $RetryIntervalMilliseconds `
+        -FlushToDisk:$FlushToDisk | Out-Null
 }
 
 function Read-Jsonl {
-    <#
-    .SYNOPSIS
-        Stream JSONL records. Malformed or blank lines stop by default; Skip is explicit and visible.
-    #>
-    [CmdletBinding()]
+    <# Stream a stable physical-record slice through the shared strict codec. #>
+    [CmdletBinding(DefaultParameterSetName = 'Object')]
     param(
         [Parameter(Mandatory, Position = 0)][string]$Path,
         [ValidateSet('Stop', 'Skip')][string]$MalformedAction = 'Stop',
-        [switch]$AsHashtable
+        [ValidateSet('Stop', 'Skip')][string]$TailAction = 'Stop',
+        [ValidateRange(0, [int]::MaxValue)][int]$Start = 0,
+        [ValidateRange(0, [int]::MaxValue)][int]$Count = [int]::MaxValue,
+        [string]$IndexPath,
+        [Parameter(ParameterSetName = 'Hashtable')][switch]$AsHashtable,
+        [Parameter(ParameterSetName = 'JsonElement')][switch]$AsJsonElement,
+        [Parameter(ParameterSetName = 'RawText')][switch]$AsRawText,
+        [switch]$IncludeMetadata
     )
 
     $full = [System.IO.Path]::GetFullPath($Path)
     if (-not [System.IO.File]::Exists($full)) { throw "JSONL file not found: $full" }
-    script:Assert-JsonlNoBom $full
+    if (-not $IndexPath) { $IndexPath = Resolve-JsonlIndexPath $full }
 
-    $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
-    $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
-    $sr = [System.IO.StreamReader]::new($fs, $script:JsonlUtf8, $false)
-    $lineNumber = 0
+    # FileShare.Read makes this a stable view. Use New-JsonlSnapshot for an active append target.
+    $fs = script:Open-JsonlStableReadStream $full
     try {
-        while ($null -ne ($line = $sr.ReadLine())) {
-            $lineNumber++
+        script:Assert-JsonlStreamNoBom -Stream $fs -Path $full
+        $sourceLength = $fs.Length
+        $hasIncompleteTail = $false
+        if ($sourceLength -gt 0) {
+            $fs.Position = $sourceLength - 1
+            $hasIncompleteTail = $fs.ReadByte() -ne 0x0A
+        }
+        if ($hasIncompleteTail) {
+            $message = "Incomplete final JSONL record (missing LF terminator): $full"
+            if ($TailAction -eq 'Stop') { throw $message }
+            Write-Warning $message
+        }
+        if ($Count -eq 0) { return }
+
+        $startingRecordIndex = 0L
+        $fs.Position = 0
+        if ($Start -gt 0 -and [System.IO.File]::Exists($IndexPath)) {
+            $index = Read-JsonlIndex -IndexPath $IndexPath
+            script:Assert-JsonlIndexMatchesStream -Index $index -Path $full -Stream $fs
+            if ($Start -ge $index.LineCount) { return }
+            $startingRecordIndex = $Start
+            $fs.Position = $index.GetOffset($Start)
+        }
+        $maximumPhysical = if ($startingRecordIndex -eq $Start) {
+            [long]$Count
+        } else {
+            [math]::Min([long]::MaxValue, ([long]$Start + [long]$Count))
+        }
+
+        foreach ($physical in script:Read-JsonlPhysicalRecords -Stream $fs -SourceLength $sourceLength `
+            -StartingRecordIndex $startingRecordIndex -MaximumRecords $maximumPhysical) {
+            if ($physical.RecordIndex -lt $Start) { continue }
             try {
-                if ([string]::IsNullOrWhiteSpace($line)) { throw 'blank line' }
-                $record = if ($AsHashtable) { $line | ConvertFrom-Json -AsHashtable } else { $line | ConvertFrom-Json }
-                if ($record -is [System.Array]) { Write-Output -NoEnumerate $record }
-                else { Write-Output $record }
+                if ($physical.Bytes.Length -gt 0 -and $physical.Bytes[$physical.Bytes.Length - 1] -eq 0x0D) {
+                    throw 'CRLF record terminator is not permitted; JSONL records must use LF only'
+                }
+                $line = script:ConvertFrom-JsonlBytes $physical.Bytes
+                $convert = @{ Line = $line }
+                if ($AsHashtable) { $convert.AsHashtable = $true }
+                elseif ($AsJsonElement) { $convert.AsJsonElement = $true }
+                elseif ($AsRawText) { $convert.AsRawText = $true }
+                $record = ConvertFrom-JsonlLine @convert
+                if ($IncludeMetadata) {
+                    [pscustomobject]@{ RecordIndex = $physical.RecordIndex; ByteOffset = $physical.ByteOffset; Value = $record }
+                } elseif ($record -is [System.Array]) {
+                    Write-Output -NoEnumerate $record
+                } else {
+                    Write-Output $record
+                }
             } catch {
+                $lineNumber = $physical.RecordIndex + 1
                 $message = "Malformed JSONL at $full line $lineNumber`: $($_.Exception.Message)"
                 if ($MalformedAction -eq 'Stop') { throw $message }
                 Write-Warning $message
             }
         }
     } finally {
-        $sr.Dispose()
         $fs.Dispose()
     }
 }
 
 function Test-Jsonl {
-    <# Emit one diagnostic row per invalid physical line; emit valid rows only with -IncludeValid. #>
+    <# Validate the stable store through the shared UTF-8, line-ending, and JSON scalar codec. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)][string]$Path,
@@ -312,38 +666,51 @@ function Test-Jsonl {
     $full = [System.IO.Path]::GetFullPath($Path)
     if (-not [System.IO.File]::Exists($full)) { throw "JSONL file not found: $full" }
 
-    try { script:Assert-JsonlNoBom $full }
-    catch {
-        return [pscustomobject]@{ Line = 0; RecordIndex = $null; IsValid = $false; Error = $_.Exception.Message }
-    }
-
-    $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
-    $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
-    $sr = [System.IO.StreamReader]::new($fs, $script:JsonlUtf8, $false)
-    $lineNumber = 0
+    $fs = script:Open-JsonlStableReadStream $full
     try {
-        while ($null -ne ($line = $sr.ReadLine())) {
-            $lineNumber++
-            $valid = script:Test-JsonlLine $line
+        try { script:Assert-JsonlStreamNoBom -Stream $fs -Path $full }
+        catch {
+            return [pscustomobject]@{ Line = 0; RecordIndex = $null; ByteOffset = 0L; IsValid = $false; Error = $_.Exception.Message }
+        }
+        $sourceLength = $fs.Length
+        $fs.Position = 0
+        $completeCount = 0L
+        foreach ($physical in script:Read-JsonlPhysicalRecords -Stream $fs -SourceLength $sourceLength) {
+            $completeCount++
+            $errorText = $null
+            try {
+                if ($physical.Bytes.Length -gt 0 -and $physical.Bytes[$physical.Bytes.Length - 1] -eq 0x0D) {
+                    throw 'CRLF record terminator is not permitted; JSONL records must use LF only'
+                }
+                $line = script:ConvertFrom-JsonlBytes $physical.Bytes
+                $null = ConvertFrom-JsonlLine -Line $line -AsJsonElement
+            } catch { $errorText = $_.Exception.Message }
+            $valid = $null -eq $errorText
             if ($valid) {
                 if ($IncludeValid) {
-                    [pscustomobject]@{ Line = $lineNumber; RecordIndex = $lineNumber - 1; IsValid = $true; Error = $null }
+                    [pscustomobject]@{ Line = $physical.RecordIndex + 1; RecordIndex = $physical.RecordIndex; ByteOffset = $physical.ByteOffset; IsValid = $true; Error = $null }
                 }
             } else {
-                $errorText = if ([string]::IsNullOrWhiteSpace($line)) { 'Blank line' } else {
-                    try { $null = $line | ConvertFrom-Json; 'Invalid JSON' } catch { $_.Exception.Message }
+                [pscustomobject]@{ Line = $physical.RecordIndex + 1; RecordIndex = $physical.RecordIndex; ByteOffset = $physical.ByteOffset; IsValid = $false; Error = $errorText }
+            }
+        }
+
+        if ($sourceLength -gt 0) {
+            $fs.Position = $sourceLength - 1
+            if ($fs.ReadByte() -ne 0x0A) {
+                [pscustomobject]@{
+                    Line = $completeCount + 1; RecordIndex = $completeCount; ByteOffset = $null
+                    IsValid = $false; Error = 'Incomplete final JSONL record (missing LF terminator)'
                 }
-                [pscustomobject]@{ Line = $lineNumber; RecordIndex = $lineNumber - 1; IsValid = $false; Error = $errorText }
             }
         }
     } finally {
-        $sr.Dispose()
         $fs.Dispose()
     }
 }
 
 function New-JsonlIndex {
-    <# Build a bounded-memory JSOI v2 seek index. The source must remain unchanged during the scan. #>
+    <# Index LF-terminated physical row starts only; decoding and JSON validation are intentionally out of scope. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)][string]$Path,
@@ -360,17 +727,17 @@ function New-JsonlIndex {
         throw "JSONL index destination already exists: $indexFull"
     }
 
-    $before = [System.IO.FileInfo]::new($full)
-    $sourceLength = $before.Length
-    $sourceTicks = $before.LastWriteTimeUtc.Ticks
-    $offsets = [System.Collections.Generic.List[long]]::new()
-    if ($sourceLength -gt 0) { $offsets.Add(0L) }
-
-    $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
-    $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
+    $sourceMutex = script:Enter-JsonlPathMutex -Path $full
     try {
+    $offsets = [System.Collections.Generic.List[long]]::new()
+    # This share mode refuses an active writer and keeps the captured source stable for the full scan.
+    $fs = script:Open-JsonlStableReadStream $full
+    try {
+        $sourceLength = $fs.Length
+        $sourceTicks = ([System.IO.FileInfo]::new($full)).LastWriteTimeUtc.Ticks
         $buffer = [byte[]]::new(65536)
         $position = 0L
+        $rowStart = 0L
         while ($position -lt $sourceLength) {
             $want = [int][math]::Min($buffer.Length, $sourceLength - $position)
             $read = $fs.Read($buffer, 0, $want)
@@ -379,18 +746,14 @@ function New-JsonlIndex {
             while ($search -lt $read) {
                 $hit = [Array]::IndexOf($buffer, [byte]0x0A, $search, $read - $search)
                 if ($hit -lt 0) { break }
-                $next = $position + $hit + 1
-                if ($next -lt $sourceLength) { $offsets.Add($next) }
+                $offsets.Add($rowStart)
+                $rowStart = $position + $hit + 1
                 $search = $hit + 1
             }
             $position += $read
         }
+        if ($offsets.Count -gt [int]::MaxValue) { throw 'JSONL index exceeds the JSOI v2 record-count limit' }
     } finally { $fs.Dispose() }
-
-    $after = [System.IO.FileInfo]::new($full)
-    if ($after.Length -ne $sourceLength -or $after.LastWriteTimeUtc.Ticks -ne $sourceTicks) {
-        throw "Cannot index JSONL that changed during the scan: $full"
-    }
 
     $temp = script:New-JsonlTempPath $indexFull
     $idxFs = [System.IO.FileStream]::new($temp, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
@@ -410,6 +773,7 @@ function New-JsonlIndex {
 
     script:Publish-JsonlTempFile -TempPath $temp -TargetPath $indexFull -ExistingFile $ExistingFile
     return Read-JsonlIndex -IndexPath $indexFull -Path $full
+    } finally { script:Exit-JsonlPathMutex $sourceMutex }
 }
 
 function Read-JsonlIndex {
@@ -469,7 +833,7 @@ function Read-JsonlIndex {
 }
 
 function Get-JsonlRecordCount {
-    <# O(1) with a current canonical index; streaming physical-line count otherwise. #>
+    <# O(1) with a current canonical index; otherwise count complete LF-terminated physical records. #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)][string]$Path,
@@ -480,58 +844,50 @@ function Get-JsonlRecordCount {
     $full = [System.IO.Path]::GetFullPath($Path)
     if (-not [System.IO.File]::Exists($full)) { throw "JSONL file not found: $full" }
     if (-not $IndexPath) { $IndexPath = Resolve-JsonlIndexPath $full }
-    if (-not $IgnoreIndex -and [System.IO.File]::Exists($IndexPath)) {
-        return (Read-JsonlIndex -IndexPath $IndexPath -Path $full).LineCount
-    }
+    $fs = script:Open-JsonlStableReadStream $full
+    try {
+        if (-not $IgnoreIndex -and [System.IO.File]::Exists($IndexPath)) {
+            $index = Read-JsonlIndex -IndexPath $IndexPath
+            script:Assert-JsonlIndexMatchesStream -Index $index -Path $full -Stream $fs
+            return $index.LineCount
+        }
 
-    $count = 0
-    $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
-    $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
-    $sr = [System.IO.StreamReader]::new($fs, $script:JsonlUtf8, $false)
-    try { while ($null -ne $sr.ReadLine()) { $count++ } }
-    finally { $sr.Dispose(); $fs.Dispose() }
-    return $count
+        $count = 0L
+        $buffer = [byte[]]::new(65536)
+        while (($read = $fs.Read($buffer, 0, $buffer.Length)) -gt 0) {
+            for ($i = 0; $i -lt $read; $i++) { if ($buffer[$i] -eq 0x0A) { $count++ } }
+        }
+        return $count
+    } finally { $fs.Dispose() }
 }
 
 function Get-JsonlRecord {
-    <# Read one 0-based physical record, using the canonical index when present. #>
-    [CmdletBinding()]
+    <# Read one 0-based physical record through Read-Jsonl's stable, centralized codec. #>
+    [CmdletBinding(DefaultParameterSetName = 'Object')]
     param(
         [Parameter(Mandatory, Position = 0)][string]$Path,
         [Parameter(Mandatory)][ValidateRange(0, [int]::MaxValue)][int]$At,
         [string]$IndexPath,
-        [switch]$AsHashtable
+        [Parameter(ParameterSetName = 'Hashtable')][switch]$AsHashtable,
+        [Parameter(ParameterSetName = 'JsonElement')][switch]$AsJsonElement,
+        [Parameter(ParameterSetName = 'RawText')][switch]$AsRawText
     )
 
     $full = [System.IO.Path]::GetFullPath($Path)
     if (-not [System.IO.File]::Exists($full)) { throw "JSONL file not found: $full" }
-    script:Assert-JsonlNoBom $full
     if (-not $IndexPath) { $IndexPath = Resolve-JsonlIndexPath $full }
-    $index = if ([System.IO.File]::Exists($IndexPath)) { Read-JsonlIndex -IndexPath $IndexPath -Path $full } else { $null }
-
-    $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
-    $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
-    if ($index) {
-        if ($At -ge $index.LineCount) { $fs.Dispose(); throw "Record index $At out of range; file has $($index.LineCount) records" }
-        $fs.Position = $index.GetOffset($At)
+    $read = @{ Path = $full; Start = $At; Count = 1; IndexPath = $IndexPath; IncludeMetadata = $true }
+    if ($AsHashtable) { $read.AsHashtable = $true }
+    elseif ($AsJsonElement) { $read.AsJsonElement = $true }
+    elseif ($AsRawText) { $read.AsRawText = $true }
+    $result = @(Read-Jsonl @read)
+    if ($result.Count -eq 0) {
+        $total = Get-JsonlRecordCount -Path $full -IndexPath $IndexPath
+        throw "Record index $At out of range; file has $total records"
     }
-    $sr = [System.IO.StreamReader]::new($fs, $script:JsonlUtf8, $false)
-    try {
-        if ($index) { $line = $sr.ReadLine() }
-        else {
-            $i = 0
-            $line = $null
-            while ($null -ne ($candidate = $sr.ReadLine())) {
-                if ($i -eq $At) { $line = $candidate; break }
-                $i++
-            }
-            if ($null -eq $line) { throw "Record index $At out of range; file has $i records" }
-        }
-        if ([string]::IsNullOrWhiteSpace($line)) { throw "Blank JSONL record at index $At in $full" }
-        $record = if ($AsHashtable) { $line | ConvertFrom-Json -AsHashtable } else { $line | ConvertFrom-Json }
-        if ($record -is [System.Array]) { Write-Output -NoEnumerate $record }
-        else { Write-Output $record }
-    } finally { $sr.Dispose(); $fs.Dispose() }
+    $record = $result[0].Value
+    if ($record -is [System.Array]) { Write-Output -NoEnumerate $record }
+    else { Write-Output $record }
 }
 
 function Get-JsonlHead {
@@ -563,6 +919,341 @@ function Get-JsonlTail {
     }
 }
 
+function Get-JsonlStoreInfo {
+    <# Inspect physical store state without decoding UTF-8 or parsing JSON; safe against an active append boundary. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory, Position = 0)][string]$Path,
+        [string]$IndexPath
+    )
+
+    $full = [System.IO.Path]::GetFullPath($Path)
+    if (-not [System.IO.File]::Exists($full)) { throw "JSONL file not found: $full" }
+    if (-not $IndexPath) { $IndexPath = Resolve-JsonlIndexPath $full }
+    $indexFull = [System.IO.Path]::GetFullPath($IndexPath)
+
+    $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
+    $fs = [System.IO.FileStream]::new($full, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
+    try {
+        $sourceLength = $fs.Length
+        $sourceItem = [System.IO.FileInfo]::new($full)
+        $sourceTicks = $sourceItem.LastWriteTimeUtc.Ticks
+        $completeRecords = 0L
+        $hasCarriageReturn = $false
+        $prefix = [byte[]]::new(3)
+        $prefixCount = 0
+        $lastByte = -1
+        $position = 0L
+        $buffer = [byte[]]::new(65536)
+        while ($position -lt $sourceLength) {
+            $want = [int][math]::Min($buffer.Length, $sourceLength - $position)
+            $read = $fs.Read($buffer, 0, $want)
+            if ($read -le 0) { break }
+            for ($i = 0; $i -lt $read; $i++) {
+                $value = $buffer[$i]
+                if ($prefixCount -lt 3) { $prefix[$prefixCount] = $value; $prefixCount++ }
+                if ($value -eq 0x0A) { $completeRecords++ }
+                elseif ($value -eq 0x0D) { $hasCarriageReturn = $true }
+                $lastByte = $value
+            }
+            $position += $read
+        }
+        $hasBom = $prefixCount -eq 3 -and $prefix[0] -eq 0xEF -and $prefix[1] -eq 0xBB -and $prefix[2] -eq 0xBF
+        $hasIncompleteTail = $sourceLength -gt 0 -and $lastByte -ne 0x0A
+    } finally { $fs.Dispose() }
+
+    $indexStatus = 'Missing'
+    $indexError = $null
+    if ([System.IO.File]::Exists($indexFull)) {
+        try {
+            $index = Read-JsonlIndex -IndexPath $indexFull
+            $indexStatus = if ($index.SourceLength -eq $sourceLength -and
+                $index.SourceLastWriteUtcTicks -eq $sourceTicks) { 'Current' } else { 'Stale' }
+        } catch {
+            $indexStatus = 'Invalid'
+            $indexError = $_.Exception.Message
+        }
+    }
+
+    $state = if ($sourceLength -eq 0) { 'Empty' } elseif ($hasIncompleteTail) { 'IncompleteTail' } else { 'Complete' }
+    return [pscustomobject]@{
+        Path                 = $full
+        State                = $state
+        Bytes                = $sourceLength
+        CompleteRecordCount  = $completeRecords
+        HasIncompleteTail    = $hasIncompleteTail
+        HasUtf8Bom           = $hasBom
+        HasCarriageReturn    = $hasCarriageReturn
+        LastWriteTimeUtc     = [datetime]::new($sourceTicks, [System.DateTimeKind]::Utc)
+        IndexPath            = $indexFull
+        IndexStatus          = $indexStatus
+        IndexError           = $indexError
+    }
+}
+
+function Complete-JsonlStore {
+    <# Validate a quiescent store and optionally publish its canonical seek index; the source is never changed. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory, Position = 0)][string]$Path,
+        [switch]$BuildIndex,
+        [string]$IndexPath,
+        [ValidateSet('Fail', 'Replace')][string]$ExistingIndex = 'Fail'
+    )
+
+    $full = [System.IO.Path]::GetFullPath($Path)
+    # Hold a read lease across validation, optional indexing, and final inspection so no writer can enter between phases.
+    $lease = script:Open-JsonlStableReadStream $full
+    try {
+        $diagnostics = @(Test-Jsonl -Path $full)
+        if ($diagnostics.Count -gt 0) {
+            $first = $diagnostics[0]
+            throw "Cannot complete JSONL store; validation failed at line $($first.Line): $($first.Error)"
+        }
+        if (-not $IndexPath) { $IndexPath = Resolve-JsonlIndexPath $full }
+        $index = if ($BuildIndex) {
+            New-JsonlIndex -Path $full -IndexPath $IndexPath -ExistingFile $ExistingIndex
+        } else { $null }
+        $info = Get-JsonlStoreInfo -Path $full -IndexPath $IndexPath
+        return [pscustomobject]@{
+            Path          = $info.Path
+            IsValid       = $true
+            RecordCount   = $info.CompleteRecordCount
+            Bytes         = $info.Bytes
+            IndexPath     = if ($index) { $index.IndexPath } else { $info.IndexPath }
+            IndexStatus   = $info.IndexStatus
+        }
+    } finally { $lease.Dispose() }
+}
+
+function Get-JsonlRange {
+    <# Discoverable range wrapper over Read-Jsonl's 0-based physical slicing. #>
+    [CmdletBinding(DefaultParameterSetName = 'Object')]
+    param(
+        [Parameter(Mandatory, Position = 0)][string]$Path,
+        [Parameter(Mandatory)][ValidateRange(0, [int]::MaxValue)][int]$Start,
+        [Parameter(Mandatory)][ValidateRange(0, [int]::MaxValue)][int]$Count,
+        [string]$IndexPath,
+        [ValidateSet('Stop', 'Skip')][string]$MalformedAction = 'Stop',
+        [ValidateSet('Stop', 'Skip')][string]$TailAction = 'Stop',
+        [Parameter(ParameterSetName = 'Hashtable')][switch]$AsHashtable,
+        [Parameter(ParameterSetName = 'JsonElement')][switch]$AsJsonElement,
+        [Parameter(ParameterSetName = 'RawText')][switch]$AsRawText,
+        [switch]$IncludeMetadata
+    )
+
+    $read = @{
+        Path = $Path; Start = $Start; Count = $Count; IndexPath = $IndexPath
+        MalformedAction = $MalformedAction; TailAction = $TailAction; IncludeMetadata = $IncludeMetadata
+    }
+    if ($AsHashtable) { $read.AsHashtable = $true }
+    elseif ($AsJsonElement) { $read.AsJsonElement = $true }
+    elseif ($AsRawText) { $read.AsRawText = $true }
+    Read-Jsonl @read
+}
+
+function script:Resolve-JsonlPointerElement {
+    param(
+        [Parameter(Mandatory)][System.Text.Json.JsonElement]$Element,
+        [Parameter(Mandatory)][AllowEmptyString()][string]$Pointer
+    )
+
+    if ($Pointer.Length -eq 0) { return [pscustomobject]@{ Found = $true; Element = $Element } }
+    if (-not $Pointer.StartsWith('/')) { throw "JSON Pointer must be empty or begin with '/': $Pointer" }
+    $current = $Element
+    foreach ($encodedSegment in $Pointer.Substring(1).Split('/')) {
+        if ($encodedSegment -match '~(?![01])') { throw "Invalid JSON Pointer escape in segment '$encodedSegment'" }
+        $segment = $encodedSegment.Replace('~1', '/').Replace('~0', '~')
+        if ($current.ValueKind -eq [System.Text.Json.JsonValueKind]::Object) {
+            $found = $false
+            foreach ($property in $current.EnumerateObject()) {
+                if ($property.NameEquals($segment)) {
+                    $current = $property.Value
+                    $found = $true
+                    break
+                }
+            }
+            if (-not $found) { return [pscustomobject]@{ Found = $false; Element = $null } }
+        } elseif ($current.ValueKind -eq [System.Text.Json.JsonValueKind]::Array) {
+            if ($segment -notmatch '^(0|[1-9][0-9]*)$') { return [pscustomobject]@{ Found = $false; Element = $null } }
+            $arrayIndex = 0
+            if (-not [int]::TryParse($segment, [ref]$arrayIndex) -or $arrayIndex -ge $current.GetArrayLength()) {
+                return [pscustomobject]@{ Found = $false; Element = $null }
+            }
+            $cursor = 0
+            foreach ($item in $current.EnumerateArray()) {
+                if ($cursor -eq $arrayIndex) { $current = $item; break }
+                $cursor++
+            }
+        } else {
+            return [pscustomobject]@{ Found = $false; Element = $null }
+        }
+    }
+    return [pscustomobject]@{ Found = $true; Element = $current }
+}
+
+function script:New-JsonlConditionPlan {
+    param([Parameter(Mandatory)][hashtable[]]$Condition)
+
+    $plan = [System.Collections.Generic.List[object]]::new()
+    foreach ($item in $Condition) {
+        if (-not $item.ContainsKey('Pointer') -or [string]::IsNullOrWhiteSpace([string]$item.Pointer)) {
+            throw 'Each JSONL condition requires an RFC 6901 Pointer'
+        }
+        $operators = @(@('Exists', 'Equals', 'In', 'Matches') | Where-Object { $item.ContainsKey($_) })
+        if ($operators.Count -ne 1) {
+            throw "Condition '$($item.Pointer)' requires exactly one of Exists, Equals, In, or Matches"
+        }
+        $operation = $operators[0]
+        $entry = [ordered]@{ Pointer = [string]$item.Pointer; Operation = $operation }
+        switch ($operation) {
+            'Exists' { $entry.Expected = [bool]$item.Exists }
+            'Matches' { $entry.Pattern = [regex]::new([string]$item.Matches) }
+            'Equals' {
+                $entry.Expected = ConvertFrom-JsonlLine -Line (ConvertTo-JsonlLine -Record $item.Equals) -AsJsonElement
+            }
+            'In' {
+                $values = [object[]]::new(1)
+                if (-not [object]::ReferenceEquals($null, $item.In)) { $values = $item.In }
+                $expected = [System.Collections.Generic.List[System.Text.Json.JsonElement]]::new()
+                foreach ($value in $values) {
+                    $expected.Add((ConvertFrom-JsonlLine -Line (ConvertTo-JsonlLine -Record $value) -AsJsonElement))
+                }
+                $entry.Expected = $expected
+            }
+        }
+        $plan.Add([pscustomobject]$entry)
+    }
+    return $plan
+}
+
+function script:Test-JsonlConditionPlan {
+    param(
+        [Parameter(Mandatory)][System.Text.Json.JsonElement]$Element,
+        [Parameter(Mandatory)][object[]]$Plan,
+        [ValidateSet('All', 'Any')][string]$Mode = 'All'
+    )
+
+    $matched = 0
+    foreach ($condition in $Plan) {
+        $selection = script:Resolve-JsonlPointerElement -Element $Element -Pointer $condition.Pointer
+        $hit = switch ($condition.Operation) {
+            'Exists' { $selection.Found -eq $condition.Expected; break }
+            'Equals' {
+                $selection.Found -and [System.Text.Json.JsonElement]::DeepEquals($selection.Element, $condition.Expected)
+                break
+            }
+            'In' {
+                $inSet = $false
+                if ($selection.Found) {
+                    foreach ($expected in $condition.Expected) {
+                        if ([System.Text.Json.JsonElement]::DeepEquals($selection.Element, $expected)) { $inSet = $true; break }
+                    }
+                }
+                $inSet
+                break
+            }
+            'Matches' {
+                $selection.Found -and
+                    $selection.Element.ValueKind -eq [System.Text.Json.JsonValueKind]::String -and
+                    $condition.Pattern.IsMatch($selection.Element.GetString())
+                break
+            }
+        }
+        if ($hit) { $matched++ }
+        if ($Mode -eq 'Any' -and $hit) { return $true }
+        if ($Mode -eq 'All' -and -not $hit) { return $false }
+    }
+    if ($Mode -eq 'Any') { return $matched -gt 0 }
+    return $matched -eq $Plan.Count
+}
+
+function Find-JsonlRecord {
+    <# Exact streaming lookup API. It scans today and can adopt secondary indexes without changing callers. #>
+    [CmdletBinding(DefaultParameterSetName = 'Condition')]
+    param(
+        [Parameter(Mandatory, Position = 0)][string]$Path,
+        [Parameter(Mandatory, ParameterSetName = 'Condition')][hashtable[]]$Condition,
+        [Parameter(Mandatory, ParameterSetName = 'Equals')]
+        [Parameter(Mandatory, ParameterSetName = 'In')][string]$Pointer,
+        [Parameter(Mandatory, ParameterSetName = 'Equals')][AllowNull()][object]$Equals,
+        [Parameter(Mandatory, ParameterSetName = 'In')][AllowNull()][object[]]$In,
+        [ValidateSet('All', 'Any')][string]$Mode = 'All',
+        [ValidateRange(1, [int]::MaxValue)][int]$First = [int]::MaxValue,
+        [switch]$AsHashtable,
+        [switch]$AsJsonElement,
+        [switch]$AsRawText,
+        [switch]$IncludeMetadata
+    )
+
+    $outputModeCount = [int][bool]$AsHashtable + [int][bool]$AsJsonElement + [int][bool]$AsRawText
+    if ($outputModeCount -gt 1) {
+        throw 'Choose at most one of -AsHashtable, -AsJsonElement, or -AsRawText'
+    }
+    if ($PSCmdlet.ParameterSetName -eq 'Equals') {
+        $Condition = @(@{ Pointer = $Pointer; Equals = $Equals })
+    } elseif ($PSCmdlet.ParameterSetName -eq 'In') {
+        $values = [object[]]::new(1)
+        if (-not [object]::ReferenceEquals($null, $In)) { $values = $In }
+        $Condition = @(@{ Pointer = $Pointer; In = $values })
+    }
+    $plan = @(script:New-JsonlConditionPlan -Condition $Condition)
+    $found = 0
+    foreach ($row in Read-Jsonl -Path $Path -AsJsonElement -IncludeMetadata) {
+        if (-not (script:Test-JsonlConditionPlan -Element $row.Value -Plan $plan -Mode $Mode)) { continue }
+        $raw = $row.Value.GetRawText()
+        $value = if ($AsJsonElement) { $row.Value.Clone() }
+            elseif ($AsRawText) { $raw }
+            elseif ($AsHashtable) { ConvertFrom-JsonlLine -Line $raw -AsHashtable }
+            else { ConvertFrom-JsonlLine -Line $raw }
+        if ($IncludeMetadata) {
+            [pscustomobject]@{ RecordIndex = $row.RecordIndex; ByteOffset = $row.ByteOffset; Value = $value }
+        } elseif ($value -is [System.Array]) {
+            Write-Output -NoEnumerate $value
+        } else { Write-Output $value }
+        $found++
+        if ($found -ge $First) { return }
+    }
+}
+
+function Select-JsonlPath {
+    <# Stream one RFC 6901 JSON Pointer projection per physical record, with source identity retained. #>
+    [CmdletBinding(DefaultParameterSetName = 'Object')]
+    param(
+        [Parameter(Mandatory, Position = 0)][string]$Path,
+        [Parameter(Mandatory, Position = 1)][AllowEmptyString()][string]$Pointer,
+        [ValidateRange(0, [int]::MaxValue)][int]$Start = 0,
+        [ValidateRange(0, [int]::MaxValue)][int]$Count = [int]::MaxValue,
+        [string]$IndexPath,
+        [switch]$IncludeMissing,
+        [Parameter(ParameterSetName = 'Hashtable')][switch]$AsHashtable,
+        [Parameter(ParameterSetName = 'JsonElement')][switch]$AsJsonElement,
+        [Parameter(ParameterSetName = 'RawJson')][switch]$AsRawJson
+    )
+
+    foreach ($row in Read-Jsonl -Path $Path -Start $Start -Count $Count -IndexPath $IndexPath -AsJsonElement -IncludeMetadata) {
+        $selection = script:Resolve-JsonlPointerElement -Element $row.Value -Pointer $Pointer
+        if (-not $selection.Found -and -not $IncludeMissing) { continue }
+        $value = $null
+        if ($selection.Found) {
+            if ($AsJsonElement) { $value = $selection.Element.Clone() }
+            elseif ($AsRawJson) { $value = $selection.Element.GetRawText() }
+            else {
+                $convert = @{ Line = $selection.Element.GetRawText() }
+                if ($AsHashtable) { $convert.AsHashtable = $true }
+                $value = ConvertFrom-JsonlLine @convert
+            }
+        }
+        [pscustomobject]@{
+            RecordIndex = $row.RecordIndex
+            ByteOffset  = $row.ByteOffset
+            Pointer     = $Pointer
+            Found       = $selection.Found
+            Value       = $value
+        }
+    }
+}
+
 function New-JsonlSnapshot {
     <#
     .SYNOPSIS
@@ -584,7 +1275,6 @@ function New-JsonlSnapshot {
     $destFull = [System.IO.Path]::GetFullPath($DestinationPath)
     if (-not [System.IO.File]::Exists($sourceFull)) { throw "JSONL source not found: $sourceFull" }
     if ($sourceFull.Equals($destFull, [System.StringComparison]::OrdinalIgnoreCase)) { throw 'Snapshot source and destination must differ' }
-    script:Assert-JsonlNoBom $sourceFull
     [void][System.IO.Directory]::CreateDirectory([System.IO.Path]::GetDirectoryName($destFull))
     if ($ExistingFile -eq 'Fail' -and [System.IO.File]::Exists($destFull)) { throw "Snapshot destination already exists: $destFull" }
     $canonicalIndex = Resolve-JsonlIndexPath $destFull
@@ -595,6 +1285,8 @@ function New-JsonlSnapshot {
     $temp = script:New-JsonlTempPath $destFull
     $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
     $srcFs = [System.IO.FileStream]::new($sourceFull, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
+    try { script:Assert-JsonlStreamNoBom -Stream $srcFs -Path $sourceFull }
+    catch { $srcFs.Dispose(); throw }
     $sourceLength = $srcFs.Length
     $dstFs = [System.IO.FileStream]::new($temp, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
     $sw = [System.IO.StreamWriter]::new($dstFs, $script:JsonlUtf8)
@@ -622,8 +1314,10 @@ function New-JsonlSnapshot {
                 $recordBytes = $lineBytes.ToArray()
                 $recordLength = $recordBytes.Length
                 if ($recordLength -gt 0 -and $recordBytes[$recordLength - 1] -eq 0x0D) { $recordLength-- }
-                $line = $script:JsonlUtf8.GetString($recordBytes, 0, $recordLength)
-                if (-not (script:Test-JsonlLine $line)) { throw "Malformed JSONL at $sourceFull line $lineNumber" }
+                try { $line = $script:JsonlUtf8.GetString($recordBytes, 0, $recordLength) }
+                catch { throw "Invalid UTF-8 JSONL record at $sourceFull line ${lineNumber}: $($_.Exception.Message)" }
+                try { $null = ConvertFrom-JsonlLine -Line $line -AsJsonElement }
+                catch { throw "Malformed JSONL at $sourceFull line $lineNumber`: $($_.Exception.Message)" }
                 $sw.WriteLine($line)
                 $records++
                 $lineBytes.SetLength(0)

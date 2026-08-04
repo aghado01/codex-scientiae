@@ -70,6 +70,31 @@ Describe 'jsonl-v2 primitive substrate' {
 
             { Add-JsonlRecord -Path $path -Record @{ n = 2 } } | Should -Throw '*LF record boundary*'
         }
+
+        It 'serializes a batch before mutation and holds one visible writer lease' {
+            $path = Join-Path $TestDrive 'batch.jsonl'
+            Initialize-Jsonl -Path $path | Out-Null
+            $result = Add-JsonlRecords -Path $path -Records @(@{ n = 1 }, @{ n = 2 })
+            $result.RecordsAppended | Should -Be 2
+            $before = ([System.IO.FileInfo]::new($path)).Length
+
+            $loneHigh = [string]::new([char[]]@([char]0xD800))
+            { Add-JsonlRecords -Path $path -Records @(@{ n = 3 }, @{ text = $loneHigh }) } | Should -Throw
+            ([System.IO.FileInfo]::new($path)).Length | Should -Be $before
+
+            $lease = [System.IO.FileStream]::new(
+                $path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::ReadWrite, [System.IO.FileShare]::Read
+            )
+            try {
+                { Add-JsonlRecord -Path $path -Record @{ n = 4 } } | Should -Throw '*writer contention*'
+                { Add-JsonlRecord -Path $path -Record @{ n = 4 } -ContentionAction Wait `
+                    -ContentionTimeoutMilliseconds 20 -RetryIntervalMilliseconds 5 } | Should -Throw '*Timed out*'
+                { @(Read-Jsonl $path) } | Should -Throw '*stable JSONL view*'
+                { New-JsonlIndex -Path $path } | Should -Throw '*stable JSONL view*'
+            } finally { $lease.Dispose() }
+
+            @((Read-Jsonl $path) | ForEach-Object n) | Should -Be @(1, 2)
+        }
     }
 
     Describe 'read and validation policy' {
@@ -97,6 +122,41 @@ Describe 'jsonl-v2 primitive substrate' {
             $diagnostics = @(Test-Jsonl $path)
             $diagnostics.Count | Should -Be 1
             $diagnostics[0].Line | Should -Be 0
+        }
+
+        It 'round-trips valid scalar sequences and rejects escaped lone surrogates centrally' {
+            $path = Join-Path $TestDrive 'codepoints.jsonl'
+            $text = "astral 𝔽; emoji 👩‍🔬; combining e$([char]0x0301); separators $([char]0x2028)$([char]0x2029);`r`nembedded"
+            Write-Jsonl -Records @([ordered]@{ text = $text }) -Path $path | Out-Null
+            [string]::Equals((Get-JsonlRecord -Path $path -At 0).text, $text, [StringComparison]::Ordinal) | Should -BeTrue
+
+            (ConvertFrom-JsonlLine -Line '{"text":"\uD835\uDD3D"}').text | Should -Be '𝔽'
+            { ConvertFrom-JsonlLine -Line '{"text":"\uD800"}' } | Should -Throw
+            { ConvertFrom-JsonlLine -Line '{"text":"\uDC00"}' } | Should -Throw
+            { ConvertFrom-JsonlLine -Line '{"\uD800":1}' } | Should -Throw
+
+            $bad = Join-Path $TestDrive 'escaped-surrogate.jsonl'
+            [System.IO.File]::WriteAllText($bad, "{`"text`":`"\uD800`"}`n", $script:Utf8)
+            { @(Read-Jsonl $bad) } | Should -Throw '*line 1*'
+            @(Test-Jsonl $bad).Count | Should -Be 1
+        }
+
+        It 'rejects invalid UTF-8 through the same read and validation boundary' {
+            $path = Join-Path $TestDrive 'invalid-utf8.jsonl'
+            [System.IO.File]::WriteAllBytes($path, [byte[]]@(0x7B, 0x22, 0x78, 0x22, 0x3A, 0x22, 0xFF, 0x22, 0x7D, 0x0A))
+            { @(Read-Jsonl $path) } | Should -Throw '*line 1*'
+            $diagnostics = @(Test-Jsonl $path)
+            $diagnostics.Count | Should -Be 1
+            $diagnostics[0].Error | Should -Match 'UTF-8'
+        }
+
+        It 'does not silently drop a top-level JSON null from the PowerShell pipeline' {
+            $path = Join-Path $TestDrive 'null.jsonl'
+            Write-Jsonl -Records (, $null) -Path $path | Out-Null
+            { @(Read-Jsonl $path) } | Should -Throw '*no lossless PowerShell pipeline representation*'
+            $rows = @(Read-Jsonl $path -AsJsonElement -IncludeMetadata)
+            $rows.Count | Should -Be 1
+            $rows[0].Value.ValueKind | Should -Be ([System.Text.Json.JsonValueKind]::Null)
         }
     }
 
@@ -131,6 +191,85 @@ Describe 'jsonl-v2 primitive substrate' {
 
             { Get-JsonlRecordCount -Path $path } | Should -Throw '*Stale JSONL index*'
             Get-JsonlRecordCount -Path $path -IgnoreIndex | Should -Be 2
+        }
+
+        It 'indexes complete physical rows without taking on JSON or UTF-8 validation' {
+            $path = Join-Path $TestDrive 'structural-only.jsonl'
+            $bytes = [System.Collections.Generic.List[byte]]::new()
+            $bytes.AddRange([System.Text.Encoding]::ASCII.GetBytes("not-json`n"))
+            $bytes.Add(0xFF); $bytes.Add(0x0A)
+            $bytes.AddRange([System.Text.Encoding]::ASCII.GetBytes('{"unfinished":'))
+            [System.IO.File]::WriteAllBytes($path, $bytes.ToArray())
+
+            $index = New-JsonlIndex -Path $path
+            $index.LineCount | Should -Be 2
+            $index.Offsets | Should -Be @(0L, 9L)
+            Get-JsonlRecordCount -Path $path | Should -Be 2
+            (Get-JsonlStoreInfo -Path $path).HasIncompleteTail | Should -BeTrue
+            @(Test-Jsonl $path).Count | Should -Be 3
+        }
+    }
+
+    Describe 'store lifecycle and streaming queries' {
+        It 'inspects, validates, finalizes, and reports index lifecycle independently' {
+            $path = Join-Path $TestDrive 'store.jsonl'
+            Initialize-Jsonl -Path $path | Out-Null
+            Add-JsonlRecords -Path $path -Records @(@{ id = 0 }, @{ id = 1 }) | Out-Null
+
+            $before = Get-JsonlStoreInfo -Path $path
+            $before.State | Should -Be 'Complete'
+            $before.CompleteRecordCount | Should -Be 2
+            $before.IndexStatus | Should -Be 'Missing'
+
+            $completed = Complete-JsonlStore -Path $path -BuildIndex
+            $completed.IsValid | Should -BeTrue
+            $completed.RecordCount | Should -Be 2
+            $completed.IndexStatus | Should -Be 'Current'
+
+            Add-JsonlRecord -Path $path -Record @{ id = 2 }
+            (Get-JsonlStoreInfo -Path $path).IndexStatus | Should -Be 'Stale'
+        }
+
+        It 'supports indexed ranges and source-addressed JSON Pointer projections' {
+            $path = Join-Path $TestDrive 'query.jsonl'
+            Write-Jsonl -Path $path -Records @(
+                [ordered]@{ id = 0; payload = @{ items = @(@{ name = 'a' }, @{ name = '𝔽' }) } },
+                [ordered]@{ id = 1; payload = @{ items = @(@{ name = 'b' }, @{ name = 'c' }) } },
+                [ordered]@{ id = 2; payload = @{} }
+            ) | Out-Null
+            New-JsonlIndex -Path $path | Out-Null
+
+            @((Get-JsonlRange -Path $path -Start 1 -Count 2) | ForEach-Object id) | Should -Be @(1, 2)
+            $selected = @(Select-JsonlPath -Path $path -Pointer '/payload/items/1/name' -IncludeMissing)
+            $selected.Count | Should -Be 3
+            $selected[0].Value | Should -Be '𝔽'
+            $selected[1].Value | Should -Be 'c'
+            $selected[2].Found | Should -BeFalse
+            $selected[0].RecordIndex | Should -Be 0
+            $selected[1].ByteOffset | Should -BeGreaterThan $selected[0].ByteOffset
+        }
+
+        It 'supports exact key sets and compound conditions without substring false positives' {
+            $path = Join-Path $TestDrive 'lookup.jsonl'
+            Write-Jsonl -Path $path -Records @(
+                [ordered]@{ id = 'paper-1'; kind = 'paper'; title = 'Alpha' },
+                [ordered]@{ id = 'paper-10'; kind = 'paper'; title = 'Beta' },
+                [ordered]@{ id = 'book-1'; kind = 'book'; title = 'Gamma' }
+            ) | Out-Null
+
+            $exact = @(Find-JsonlRecord -Path $path -Pointer '/id' -Equals 'paper-1' -IncludeMetadata)
+            $exact.Count | Should -Be 1
+            $exact[0].RecordIndex | Should -Be 0
+            $exact[0].Value.id | Should -Be 'paper-1'
+
+            @((Find-JsonlRecord -Path $path -Pointer '/id' -In @('paper-10', 'book-1')) | ForEach-Object id) |
+                Should -Be @('paper-10', 'book-1')
+            $compound = @(Find-JsonlRecord -Path $path -Condition @(
+                @{ Pointer = '/kind'; Equals = 'paper' },
+                @{ Pointer = '/title'; Matches = '^B' }
+            ))
+            $compound.Count | Should -Be 1
+            $compound[0].id | Should -Be 'paper-10'
         }
     }
 
