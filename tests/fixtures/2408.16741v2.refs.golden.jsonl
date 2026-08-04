@@ -83,6 +83,13 @@
 {"row":"label","label":"fig:image_plots","class":"figure","type":"Figure","normalized":"10","faithful":"10"}
 {"row":"label","label":"fig:image_eig_sing","class":"figure","type":"Figure","normalized":"11","faithful":"11"}
 {"row":"label","label":"fig_2_cube","class":"figure","type":"Figure","normalized":"12","faithful":"12"}
+{"row":"label","label":"alg:reort","class":"algorithm","type":"Algorithm","normalized":"1","faithful":"1"}
+{"row":"label","label":"alg:weak_red","class":"algorithm","type":"Algorithm","normalized":"2","faithful":"2"}
+{"row":"label","label":"alg:pers_lap","class":"algorithm","type":"Algorithm","normalized":"3","faithful":"3"}
+{"row":"label","label":"alg:dsu","class":"algorithm","type":"Algorithm","normalized":"4","faithful":"4"}
+{"row":"label","label":"alg:union","class":"algorithm","type":"Algorithm","normalized":"5","faithful":"5"}
+{"row":"label","label":"alg:find","class":"algorithm","type":"Algorithm","normalized":"6","faithful":"6"}
+{"row":"label","label":"alg:GKL","class":"algorithm","type":"Algorithm","normalized":"7","faithful":"7"}
 {"row":"label","label":"subsec:reg_mtx","class":"custom","type":"","normalized":"3","faithful":"3"}
 {"row":"label","label":"lemma:grph_cmpnt","class":"custom","type":"","normalized":"3","faithful":"3"}
 {"row":"label","label":"lem:simpleprod","class":"custom","type":"","normalized":"3","faithful":"3"}
@@ -165,54 +172,54 @@
 {"row":"label","label":"prop:GKL_speed","class":"custom","type":"","normalized":"3","faithful":"3"}
 {"row":"label","label":"prop:GKL_speed_2","class":"custom","type":"","normalized":"3","faithful":"3"}
 {"row":"label","label":"ex:numeric","class":"custom","type":"","normalized":"3","faithful":"3"}
-{"row":"site","seq":0,"macro":"cite","targets":["von2007tutorial","lim2020hodge"],"rendered":"[20, 13]"}
-{"row":"site","seq":1,"macro":"cite","targets":["MR4164275","pers_lap","gen_pers_lap"],"rendered":"[22, 15, 7]"}
-{"row":"site","seq":2,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
-{"row":"site","seq":3,"macro":"cite","targets":["davies23c","wei2023"],"rendered":"[5, 23]"}
-{"row":"site","seq":4,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
-{"row":"site","seq":5,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Algorithm 3.1, Algorithm 4.1]"}
-{"row":"site","seq":6,"macro":"cite","targets":["wei2023"],"rendered":"[23]"}
-{"row":"site","seq":7,"macro":"cite","targets":["twononzero"],"rendered":"[17]"}
-{"row":"site","seq":8,"macro":"cite","targets":["twononzero"],"rendered":"[17]"}
-{"row":"site","seq":9,"macro":"cite","targets":["pers_lap"],"rendered":"[15, SM1]"}
-{"row":"site","seq":10,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section 4.3]"}
-{"row":"site","seq":11,"macro":"cite","targets":["MR3017573"],"rendered":"[4]"}
-{"row":"site","seq":12,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Remark 4.12]"}
-{"row":"site","seq":13,"macro":"cite","targets":["edelsbrunner2010computational"],"rendered":"[6, Ch.~VII.1]"}
-{"row":"site","seq":14,"macro":"cite","targets":["MR1829620"],"rendered":"[8, Theorem 8.3.1]"}
-{"row":"site","seq":15,"macro":"cite","targets":["cormen2022introduction"],"rendered":"[3]"}
-{"row":"site","seq":16,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
-{"row":"site","seq":17,"macro":"cite","targets":["MR575168"],"rendered":"[18]"}
-{"row":"site","seq":18,"macro":"cite","targets":["MR3025945"],"rendered":"[21]"}
-{"row":"site","seq":19,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
-{"row":"site","seq":20,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Theorem 3.1]"}
-{"row":"site","seq":21,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Lemma 3.4]"}
-{"row":"site","seq":22,"macro":"cite","targets":["jost2023cheeger"],"rendered":"[12]"}
-{"row":"site","seq":23,"macro":"cite","targets":["pers_lap"],"rendered":"[15]"}
-{"row":"site","seq":24,"macro":"cite","targets":["wei2023"],"rendered":"[23]"}
-{"row":"site","seq":25,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section SM5]"}
-{"row":"site","seq":26,"macro":"cite","targets":["MR2978290","MR2093409"],"rendered":"[11, 19]"}
-{"row":"site","seq":27,"macro":"cite","targets":["MR3024913","MR1792141"],"rendered":"[9, 1]"}
-{"row":"site","seq":28,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.2]"}
-{"row":"site","seq":29,"macro":"cite","targets":["horak2013spectra"],"rendered":"[10, Section 2]"}
-{"row":"site","seq":30,"macro":"cite","targets":["wei2023"],"rendered":"[23, Figure 5]"}
-{"row":"site","seq":31,"macro":"cite","targets":["davies23c"],"rendered":"[5]"}
-{"row":"site","seq":32,"macro":"cite","targets":["MR3025945"],"rendered":"[21]"}
-{"row":"site","seq":33,"macro":"cite","targets":["medmnistv1","medmnistv2"],"rendered":"[24, 25]"}
-{"row":"site","seq":34,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section 5]"}
-{"row":"site","seq":35,"macro":"cite","targets":["davies23c"],"rendered":"[5]"}
-{"row":"site","seq":36,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":37,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":38,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":39,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":40,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":41,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":42,"macro":"cite","targets":["MR1421568"],"rendered":"[2]"}
-{"row":"site","seq":43,"macro":"cite","targets":["MR4433789"],"rendered":"[14, Section 1.4]"}
-{"row":"site","seq":44,"macro":"cite","targets":["MR4236395"],"rendered":"[16]"}
-{"row":"site","seq":45,"macro":"cite","targets":["MR3025945"],"rendered":"[21]"}
-{"row":"site","seq":46,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.3.3]"}
-{"row":"site","seq":47,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.2]"}
+{"row":"site","seq":0,"macro":"cite","targets":["von2007tutorial","lim2020hodge"],"rendered":"[20, 13]","prenote":"","postnote":""}
+{"row":"site","seq":1,"macro":"cite","targets":["MR4164275","pers_lap","gen_pers_lap"],"rendered":"[22, 15, 7]","prenote":"","postnote":""}
+{"row":"site","seq":2,"macro":"cite","targets":["pers_lap"],"rendered":"[15]","prenote":"","postnote":""}
+{"row":"site","seq":3,"macro":"cite","targets":["davies23c","wei2023"],"rendered":"[5, 23]","prenote":"","postnote":""}
+{"row":"site","seq":4,"macro":"cite","targets":["pers_lap"],"rendered":"[15]","prenote":"","postnote":""}
+{"row":"site","seq":5,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Algorithm 3.1, Algorithm 4.1]","prenote":"","postnote":"Algorithm 3.1, Algorithm 4.1"}
+{"row":"site","seq":6,"macro":"cite","targets":["wei2023"],"rendered":"[23]","prenote":"","postnote":""}
+{"row":"site","seq":7,"macro":"cite","targets":["twononzero"],"rendered":"[17]","prenote":"","postnote":""}
+{"row":"site","seq":8,"macro":"cite","targets":["twononzero"],"rendered":"[17]","prenote":"","postnote":""}
+{"row":"site","seq":9,"macro":"cite","targets":["pers_lap"],"rendered":"[15, SM1]","prenote":"","postnote":"SM1"}
+{"row":"site","seq":10,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section 4.3]","prenote":"","postnote":"Section 4.3"}
+{"row":"site","seq":11,"macro":"cite","targets":["MR3017573"],"rendered":"[4]","prenote":"","postnote":""}
+{"row":"site","seq":12,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Remark 4.12]","prenote":"","postnote":"Remark 4.12"}
+{"row":"site","seq":13,"macro":"cite","targets":["edelsbrunner2010computational"],"rendered":"[6, Ch.~VII.1]","prenote":"","postnote":"Ch.~VII.1"}
+{"row":"site","seq":14,"macro":"cite","targets":["MR1829620"],"rendered":"[8, Theorem 8.3.1]","prenote":"","postnote":"Theorem 8.3.1"}
+{"row":"site","seq":15,"macro":"cite","targets":["cormen2022introduction"],"rendered":"[3]","prenote":"","postnote":""}
+{"row":"site","seq":16,"macro":"cite","targets":["pers_lap"],"rendered":"[15]","prenote":"","postnote":""}
+{"row":"site","seq":17,"macro":"cite","targets":["MR575168"],"rendered":"[18]","prenote":"","postnote":""}
+{"row":"site","seq":18,"macro":"cite","targets":["MR3025945"],"rendered":"[21]","prenote":"","postnote":""}
+{"row":"site","seq":19,"macro":"cite","targets":["pers_lap"],"rendered":"[15]","prenote":"","postnote":""}
+{"row":"site","seq":20,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Theorem 3.1]","prenote":"","postnote":"Theorem 3.1"}
+{"row":"site","seq":21,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Lemma 3.4]","prenote":"","postnote":"Lemma 3.4"}
+{"row":"site","seq":22,"macro":"cite","targets":["jost2023cheeger"],"rendered":"[12]","prenote":"","postnote":""}
+{"row":"site","seq":23,"macro":"cite","targets":["pers_lap"],"rendered":"[15]","prenote":"","postnote":""}
+{"row":"site","seq":24,"macro":"cite","targets":["wei2023"],"rendered":"[23]","prenote":"","postnote":""}
+{"row":"site","seq":25,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section SM5]","prenote":"","postnote":"Section SM5"}
+{"row":"site","seq":26,"macro":"cite","targets":["MR2978290","MR2093409"],"rendered":"[11, 19]","prenote":"","postnote":""}
+{"row":"site","seq":27,"macro":"cite","targets":["MR3024913","MR1792141"],"rendered":"[9, 1]","prenote":"","postnote":""}
+{"row":"site","seq":28,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.2]","prenote":"","postnote":"Section 6.2"}
+{"row":"site","seq":29,"macro":"cite","targets":["horak2013spectra"],"rendered":"[10, Section 2]","prenote":"","postnote":"Section 2"}
+{"row":"site","seq":30,"macro":"cite","targets":["wei2023"],"rendered":"[23, Figure 5]","prenote":"","postnote":"Figure 5"}
+{"row":"site","seq":31,"macro":"cite","targets":["davies23c"],"rendered":"[5]","prenote":"","postnote":""}
+{"row":"site","seq":32,"macro":"cite","targets":["MR3025945"],"rendered":"[21]","prenote":"","postnote":""}
+{"row":"site","seq":33,"macro":"cite","targets":["medmnistv1","medmnistv2"],"rendered":"[24, 25]","prenote":"","postnote":""}
+{"row":"site","seq":34,"macro":"cite","targets":["pers_lap"],"rendered":"[15, Section 5]","prenote":"","postnote":"Section 5"}
+{"row":"site","seq":35,"macro":"cite","targets":["davies23c"],"rendered":"[5]","prenote":"","postnote":""}
+{"row":"site","seq":36,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":37,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":38,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":39,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":40,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":41,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":42,"macro":"cite","targets":["MR1421568"],"rendered":"[2]","prenote":"","postnote":""}
+{"row":"site","seq":43,"macro":"cite","targets":["MR4433789"],"rendered":"[14, Section 1.4]","prenote":"","postnote":"Section 1.4"}
+{"row":"site","seq":44,"macro":"cite","targets":["MR4236395"],"rendered":"[16]","prenote":"","postnote":""}
+{"row":"site","seq":45,"macro":"cite","targets":["MR3025945"],"rendered":"[21]","prenote":"","postnote":""}
+{"row":"site","seq":46,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.3.3]","prenote":"","postnote":"Section 6.3.3"}
+{"row":"site","seq":47,"macro":"cite","targets":["MR1792141"],"rendered":"[1, Section 6.2]","prenote":"","postnote":"Section 6.2"}
 {"row":"site","seq":48,"macro":"eqref","targets":["eqn:per_lap"],"rendered":"(1)"}
 {"row":"site","seq":49,"macro":"eqref","targets":["eqn:per_lap"],"rendered":"(1)"}
 {"row":"site","seq":50,"macro":"cref","targets":["subsec:cubical"],"rendered":"section 6"}
@@ -251,14 +258,14 @@
 {"row":"site","seq":83,"macro":"cref","targets":["lemma:sig_cmpt"],"rendered":"lemma 2.15"}
 {"row":"site","seq":84,"macro":"cref","targets":["lemma:sig_cmpt"],"rendered":"lemma 2.15"}
 {"row":"site","seq":85,"macro":"cref","targets":["sec:filtration"],"rendered":"subsection 3.3"}
-{"row":"site","seq":86,"macro":"cref","targets":["alg:dsu"],"rendered":"3"}
+{"row":"site","seq":86,"macro":"cref","targets":["alg:dsu"],"rendered":"algorithm 4"}
 {"row":"site","seq":87,"macro":"cref","targets":["appdx_codes"],"rendered":"section 9"}
-{"row":"site","seq":88,"macro":"cref","targets":["alg:union"],"rendered":"3"}
+{"row":"site","seq":88,"macro":"cref","targets":["alg:union"],"rendered":"algorithm 5"}
 {"row":"site","seq":89,"macro":"cref","targets":["appdx_codes"],"rendered":"section 9"}
-{"row":"site","seq":90,"macro":"cref","targets":["alg:find"],"rendered":"3"}
+{"row":"site","seq":90,"macro":"cref","targets":["alg:find"],"rendered":"algorithm 6"}
 {"row":"site","seq":91,"macro":"cref","targets":["appdx_codes"],"rendered":"section 9"}
-{"row":"site","seq":92,"macro":"cref","targets":["alg:reort"],"rendered":"3"}
-{"row":"site","seq":93,"macro":"cref","targets":["alg:weak_red"],"rendered":"3"}
+{"row":"site","seq":92,"macro":"cref","targets":["alg:reort"],"rendered":"algorithm 1"}
+{"row":"site","seq":93,"macro":"cref","targets":["alg:weak_red"],"rendered":"algorithm 2"}
 {"row":"site","seq":94,"macro":"cref","targets":["prop:alg_weak_red"],"rendered":"proposition 2.18"}
 {"row":"site","seq":95,"macro":"cref","targets":["sec:non_brch_mtx"],"rendered":"section 2"}
 {"row":"site","seq":96,"macro":"cref","targets":["subsec:regular_form"],"rendered":"subsection 3.2"}
@@ -277,7 +284,7 @@
 {"row":"site","seq":109,"macro":"cref","targets":["fig_mobius"],"rendered":"figure 3"}
 {"row":"site","seq":110,"macro":"ref","targets":["ex_2"],"rendered":"3.9"}
 {"row":"site","seq":111,"macro":"cref","targets":["def:reg_mtrx"],"rendered":"definition 2.5"}
-{"row":"site","seq":112,"macro":"cref","targets":["alg:pers_lap"],"rendered":"3"}
+{"row":"site","seq":112,"macro":"cref","targets":["alg:pers_lap"],"rendered":"algorithm 3"}
 {"row":"site","seq":113,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
 {"row":"site","seq":114,"macro":"cref","targets":["prop:alg_weak_red"],"rendered":"proposition 2.18"}
 {"row":"site","seq":115,"macro":"cref","targets":["prop:alg_lap"],"rendered":"proposition 3.10"}
@@ -348,6 +355,6 @@
 {"row":"site","seq":180,"macro":"cref","targets":["def:laphyper"],"rendered":"definition 10.7"}
 {"row":"site","seq":181,"macro":"cref","targets":["def_dual_hg"],"rendered":"definition 10.9"}
 {"row":"site","seq":182,"macro":"cref","targets":["fig_2_cube"],"rendered":"figure 12"}
-{"row":"site","seq":183,"macro":"cref","targets":["alg:GKL"],"rendered":"3"}
-{"row":"site","seq":184,"macro":"cref","targets":["alg:GKL"],"rendered":"3"}
+{"row":"site","seq":183,"macro":"cref","targets":["alg:GKL"],"rendered":"algorithm 7"}
+{"row":"site","seq":184,"macro":"cref","targets":["alg:GKL"],"rendered":"algorithm 7"}
 {"row":"site","seq":185,"macro":"cref","targets":["thm:fastcomputation"],"rendered":"theorem 3.8"}
