@@ -144,9 +144,10 @@ flowchart TD
     K2A["K2a: ClaimSelection"]
     K2B["K2b: ClaimPairView"]
     K2C["K2c: PairingResult"]
-    K3["K3: LocatedRelation"]
-    K4A["K4a: structural views"]
-    K4B["K4b: explicit selection"]
+    K3["K3: located algebra"]
+    K4A["K4a: flat graph + results"]
+    K4B["K4b: flat path selection"]
+    K4C["K4c: structural families"]
     K5["K5: facts + support + saturation"]
     K6["K6: origin algebra"]
     K7["K7: rewrite plan + Materialize"]
@@ -161,9 +162,9 @@ flowchart TD
     K2A --> K2B
     K2B --> K2C
     K2A --> K3
-    K2B --> K3
     K3 --> K4A
     K4A --> K4B
+    K4B --> K4C
     K2B --> K5
     K2C --> K5
     K4A --> K5
@@ -173,6 +174,7 @@ flowchart TD
     K2C --> W
     K4A --> W
     K4B --> W
+    K4C --> W
     K5 --> W
     K7 --> W
     K1B --> Q
@@ -182,12 +184,17 @@ flowchart TD
 The DAG records type and design dependencies, not completion priority. D27 keeps K1b ahead of K2 in
 the execution queue because finishing the small Allen algebra is cheaper than carrying it half
 closed; K2b nevertheless depends only on K1a's relation-set filter, not on the composition table.
-K3 and K4a retain an arrow because the graph projects to located geometry, but they are co-designed
-as one tranche so reachability and carrier identity are settled once. Likewise, origin relations
+Likewise, D33 removes the former K2b-to-K3 type arrow: located geometry uses a master/window and the
+candidate graph uses K2a's `ClaimSelection`; completing all of K2 first was execution order, not a
+`ClaimPairView` dependency.
+K3 and K4a retain an arrow because the graph projects to located geometry, but D33 makes their first
+source chip a joint core so the projection lands with the algebra. The later K4a result chip shares
+K3's Boolean geometry closure while retaining graph-ordinal path evidence. Likewise, origin relations
 are mathematically definable before selection or facts, but designing them against real selected
 output pieces and the support/origin distinction prevents a formally neat but operationally empty
 API. The full adjudication is in the
-[K1b–K4 sequencing brief](../briefs/sol-doccer-k1b-k4-resequencing-20260804_184200.md).
+[K1b–K4 sequencing brief](../briefs/sol-doccer-k1b-k4-resequencing-20260804_184200.md) and the
+[joint K3/K4a contract](../briefs/sol-doccer-k3-k4a-joint-contract-20260805_105443.md).
 
 ## 5. Cross-cutting tranche gate
 
@@ -458,16 +465,22 @@ vocabulary, or Lean activation.
 
 ### K3 — located-relation algebra
 
-K3 and K4a are one design tranche, even if they land in separate commits. Add a basis-stamped,
-geometry-only <code>LocatedRelation</code> over \(L_M\), including diagonal identity extents. It is a
-set of located geometry: duplicate extents collapse, and it carries no claim labels or occurrence
-references.
+K3 and K4a are one design tranche. D33 requires the first source chip to land the located algebra,
+the minimal candidate graph, and their projection together; the K4a result layer remains a second
+reviewable chip. Add a basis-stamped, geometry-only <code>LocatedRelation</code> over \(L_M\), including
+diagonal identity extents. It is a set of located geometry: duplicate extents collapse, and it
+carries no claim labels or occurrence references.
+
+Its concrete basis is a compatible <code>TextMaster</code> identity plus one exact validated window.
+The window is algebraic state, not metadata: binary operations require equal windows, and the
+boundary carrier is every scalar-valid master boundary inside that window. Do not add a generic
+<code>BoundaryBasis</code> while this concrete finite chain suffices.
 
 Core:
 
 - empty relation and declared-window diagonal identity;
 - union and shared-boundary <code>Seq</code>;
-- reachability and consuming closure;
+- the consuming projection and reflexive-transitive geometry reachability;
 - injective rebase.
 
 Exit gate:
@@ -478,13 +491,15 @@ Exit gate:
 - consuming star is a bounded finite union of powers;
 - zero-length identity edges are algebraic objects, not token claims;
 - equal geometry has one located edge regardless of how many claims project to it;
-- <code>TextSlice</code> rebase commutes exactly with <code>Seq</code>;
-- collapsing or range-valued maps receive only the lax inclusion law.
+- <code>TextSlice</code> rebase maps both edges and the declared window and commutes exactly with
+  <code>Seq</code> and reachability;
+- no generalized map API lands; the deferred contract gives collapsing or range-valued maps only
+  the lax inclusion law.
 
 Do not call this a full Boolean relation algebra: ordinary converse leaves the upper-triangular
 carrier.
 
-### K4 — structural views before optimizers
+### K4 — flat results, then family-specific selection and structure
 
 #### K4a: flat candidate graph and partition results
 
@@ -494,7 +509,7 @@ Co-designed with K3, start with the smallest identity-bearing sequential core:
 - <code>ReachabilityView</code>;
 - <code>PartitionView</code>;
 - <code>SegmentationResult</code>;
-- <code>SelectionResidual</code>.
+- <code>SegmentationResidual</code>.
 
 The graph uses one concrete <code>TextMaster</code>, one validated window, and a
 <code>ClaimSelection</code> of nonempty candidate claim ordinals as parallel edges from
@@ -502,10 +517,17 @@ The graph uses one concrete <code>TextMaster</code>, one validated window, and a
 to geometry-only <code>LocatedRelation</code>. Do not introduce a generic address/boundary hierarchy
 while this concrete basis suffices.
 
-The graph is already the packed representation of all alternative paths. The reference tranche
-provides reachability and one explicitly named deterministic path result; it does not enumerate
-every complete path. Geometry reachability has one reference meaning shared with K3 rather than a
-second graph-specific implementation.
+The graph is already the packed representation of all alternative paths. Geometry reachability is
+implemented once: the graph projects to <code>LocatedRelation</code>, K3 computes the Boolean closure,
+and the graph-stamped <code>ReachabilityView</code> delegates to it. Identity-bearing path construction
+is a different result operation: it traverses claim ordinals while consulting that closure. Parallel
+claims therefore remain distinct even though their geometry projects to one reachable edge.
+
+The reference tranche provides one explicitly named deterministic
+<code>FirstOrdinalCompletePath</code> result; it does not enumerate every complete path and does not
+spend the policy-bearing <code>Select</code> vocabulary reserved for K4b. At each boundary it chooses
+the lowest candidate ordinal whose end can still reach the window end. The result promises one
+complete witness when one exists, never maximal munch, minimum cost, or semantic preference.
 
 Each result declares its source graph/window and validates its own invariant.
 
@@ -520,35 +542,43 @@ forgets claim identity.
 
 An empty window has the coherent zero-edge identity partition. Distinguish a coverage gap from a
 connectivity dead end: both block a complete path, but they are different residual evidence.
-The tranche closes with both an ambiguous token graph and a budgeted flat chunk graph, so the
-located algebra and result residues are pressure-tested before K4b adds optimizers.
+The tranche closes with both an ambiguous token graph and a **budget-admissible** flat chunk graph,
+plus separate gap, dead-end, and empty-window cases. The chunk witness proves only that an external
+budget rule can admit candidate edges; costs and preferred-path claims wait for K4b.
 
-#### K4b: named selection execution
+#### K4b: named flat-path selection execution
 
-Only after result invariants exist, add:
+Only after flat result invariants exist, add a candidate-graph-specific selection contract:
 
 ~~~text
-SelectionProblem
-  candidate basis
-  hard admissibility predicates
-  externally supplied objective
+PathSelectionProblem
+  exact source graph and admissible edge basis
+  declared compositional objective
+  complete or explicitly partial path contract
   deterministic tie policy
 
-SelectionResult
+PathSelectionResult
   selected IDs
   rejected alternatives
   residuals / conflicts
-  score and policy stamp
+  score, unit, and policy stamp
 ~~~
 
-The engine executes but never invents the objective. Inclusion-maximal, maximum-cardinality,
-maximum-weight, and lexicographic priority remain different contracts. The current Laminarizer
-stays D2's deterministic greedy policy.
+The engine executes but never invents the objective. An arbitrary callback over whole selections is
+not an optimizer contract: the first executor must declare the objective form that makes its path
+algorithm valid. Deterministic feasible path, additive optimum, and lexicographic path remain
+different guarantees. Inclusion-maximal, maximum-cardinality, maximum-weight, and lexicographic
+priority likewise remain different contracts.
 
 Flat tokenizer and chunker witnesses come from the same candidate graph:
 
 - tokenizer: complete path with lexical edge labels and explicit trivia/recovery policy;
 - chunker: complete or partial path with adapter-supplied budget and breakpoint costs.
+
+Do not publish a universal <code>SelectionProblem</code>/<code>SelectionResult</code> merely because
+several families choose claims. A common abstraction is extracted only after at least two result
+families demonstrate the same basis, feasibility, objective, and result shape; it is acceptable if
+they do not.
 
 #### K4c: additional structural families, hierarchy, and resolution
 
@@ -556,7 +586,8 @@ After flat views are stable:
 
 - add <code>PackingView</code> for disjoint selections with gaps;
 - add <code>CoverView</code> for declared overlap;
-- adapt current <code>LaminarView</code> to claim selections;
+- split current <code>Laminarizer</code> into a named greedy admission policy and a selection-backed
+  laminar-family validator/view;
 - derive a nearest-container parent only under an explicit policy inside a laminar family;
 - permit explicit multiple-parent hierarchy DAGs;
 - keep basis, resolution, kind, and budget unit separate;
@@ -564,7 +595,8 @@ After flat views are stable:
   cross-master origin.
 
 Do not promote document-oriented <code>SpanLevel</code> into the universal grain or resolution
-type.
+type. Family-specific selection executors may reuse K4b's policy/result obligations where they
+actually fit; they are not forced through its path algorithm.
 
 ### K5 — occurrences, canonical facts, support, and saturation
 
@@ -724,7 +756,8 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K2 | exact relation identity/associativity; witness soundness/completeness; Allen-image composition inclusion and its non-converse |
 | K2c | forward, one-to-one, noncrossing matching; match-or-residue partition |
 | K3 | located semiring laws, strict-chain path bound, nilpotence, finite star |
-| K4 | cut-set/partition equivalence, path/partition preservation, greedy maximal-not-maximum |
+| K4a | geometric cut-set/partition equivalence under its fixed-basis hypotheses; identity-bearing path/partition preservation; gap/dead-end distinction |
+| K4b-K4c | each named policy's exact feasibility/optimality claim; current greedy laminar admission remains maximal-not-maximum |
 | K5 | finite monotone fixed-point termination and rule-order independence |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
 
@@ -801,17 +834,19 @@ The expansion will not:
 - hide intermediate masters by default;
 - publish a generic qualitative-calculus framework before a second calculus exists;
 - publish a generic measurement-unit hierarchy before concrete costed selection requires one;
+- publish a universal selection solver before two structural families demonstrate one contract;
 - enumerate every path when the candidate graph already preserves the alternatives compactly.
 
 ## 11. Immediate next move
 
 K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
-contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, and K2c strict
-stack pairing closure as D32. K2 is closed. The next artifact is the joint K3/K4a contract/design:
-settle geometry-only `LocatedRelation` and the identity-bearing `CandidateRegionGraph` together,
-including their one reference reachability meaning and explicit graph-to-geometry projection,
-before either source chip lands.
+contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, K2c strict
+stack pairing closure as D32, and the joint K3/K4a contract as D33. K2 is closed. The next source
+chip is the joint K3/K4a core: geometry-only `LocatedRelation`, the minimal identity-bearing
+`CandidateRegionGraph`, and their explicit identity-forgetting projection. The K4a result chip then
+adds the shared reachability view, identity-bearing partition/reference-path results, residuals, and
+bounded witnesses.
 
-The D29 bridge did not activate Lean. Apply the deferred gate only if implementation pressure
-changes its direction, basis hypotheses, public abstraction, or assurance burden as described in
-the K2 contract brief.
+D33 does not activate Lean. Reapply the deferred gate if K3 adopts a compressed or incremental
+closure backend, a generalized map reopens the exact-versus-lax boundary, or K4b proposes a public
+global-optimality/equivalence guarantee.

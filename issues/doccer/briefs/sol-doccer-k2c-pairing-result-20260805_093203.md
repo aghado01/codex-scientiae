@@ -136,4 +136,9 @@ input partitions, compatibility, forwardness, partial one-to-one, and noncrossin
 
 No delimiter vocabulary, repair, recovery search, containment, parenthood, fact minting,
 persistence, wire format, optimizer, or Lean dependency landed. D32 closes K2 at 1,779 checks. The
-joint K3/K4a located-relation/candidate-graph contract design is active next.
+joint K3/K4a located-relation/candidate-graph contract design became active next.
+
+Follow-on: the [joint K3/K4a contract](sol-doccer-k3-k4a-joint-contract-20260805_105443.md) closed
+as D33 after reading ahead through K4c. It freezes one joint algebra/graph-projection core chip, a
+separate ordinal-bearing result layer over shared geometry closure, and flat-path specialization
+before any common selection abstraction. The joint core is active next; harness remains 1779.

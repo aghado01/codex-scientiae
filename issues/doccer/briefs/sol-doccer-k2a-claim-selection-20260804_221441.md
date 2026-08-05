@@ -121,3 +121,8 @@ Follow-on: [K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) subsequently 
 `ClaimSelection` values for open/close roles and every unary fault population. Match projections
 plus open/close residue are disjoint complete input partitions across all 5,461 bounded two-key
 words. Harness 1733→1779; D32 closes K2 and activates the joint K3/K4a design next.
+
+Follow-on: the [joint K3/K4a contract](sol-doccer-k3-k4a-joint-contract-20260805_105443.md) then
+closed as D33. `CandidateRegionGraph` retains an exact `ClaimSelection` as its parallel edge basis,
+while only its explicit projection collapses geometry. The joint algebra/graph core is active next;
+harness remains 1779.

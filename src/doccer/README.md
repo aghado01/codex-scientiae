@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D32, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D33, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -207,8 +207,11 @@ closes honestly without one:
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
 - geometry-only `LocatedRelation` and the identity-bearing `CandidateRegionGraph`. K2 is closed:
   K2a/D30 landed `ClaimSelection`, K2b/D31 landed exact pair composition, and K2c/D32 landed
-  policy-stamped strict stack pairing with complete match/fault evidence. K3 and K4a are co-designed
-  next so geometry reachability and claim-identity graph semantics are settled once.
+  policy-stamped strict stack pairing with complete match/fault evidence. D33 freezes K3/K4a:
+  one joint core chip lands the concrete-window located algebra, minimal graph, and explicit
+  projection; a second result chip reuses the one geometry closure while retaining ordinal-bearing
+  partitions, paths, and segmentation residue. K4b specializes in flat-path selection before any
+  common selection abstraction is considered.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

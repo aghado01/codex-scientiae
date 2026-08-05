@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-05)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D32**, contract harness **1779 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D33**, contract harness **1779 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Tranches 0–3 are done: the substrate is complete, the lift vocabulary
@@ -35,7 +35,11 @@ terminal-join transition are implemented. K2c is closed by D32 and its
 [implementation report](../briefs/sol-doccer-k2c-pairing-result-20260805_093203.md): exact
 role selections, named compatibility policy, strict top-only stack matching, complete
 identity-bearing match/fault residue, and explicit paired-region projection are implemented.
-K2 is closed. The active next work is the joint K3/K4a located-relation/candidate-graph design.
+K2 is closed. D33 and its
+[joint K3/K4a contract](../briefs/sol-doccer-k3-k4a-joint-contract-20260805_105443.md) freeze the
+concrete located basis, graph projection, shared geometry-reachability boundary, identity-bearing
+path results, and specialize-before-generalizing selection course. The active next source work is
+the joint K3/K4a core.
 
 ## Sequencing doctrine
 
@@ -52,25 +56,34 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Joint located/flat-graph tranche (K3+K4a):** co-design geometry-only `LocatedRelation` and the
-   identity-bearing `CandidateRegionGraph`; the graph owns parallel claim-ordinal edges and projects
-   explicitly to located geometry. Land one reference reachability semantics, partitions, gaps,
-   dead ends, and bounded ambiguous-token/budgeted-chunk witnesses before any optimizer.
-2. **Explicit selection, then structural expansion (K4b→K4c):** execute named caller objectives
-   only after result invariants exist. Packing, cover, laminar hierarchy, multiple-parent views,
-   and resolution follow the flat reference semantics rather than preceding them.
-3. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
+1. **Joint located/graph core (K3+K4a-core):** land geometry-only `LocatedRelation`, the minimal
+   identity-bearing `CandidateRegionGraph`, and the graph's explicit identity-forgetting projection
+   in one source chip. The concrete algebraic basis is `(TextMaster, exact window)`; generic boundary
+   and mapping hierarchies remain deferred.
+2. **Flat result layer (K4a-results):** reuse K3's Boolean geometry closure inside a graph-stamped
+   reachability view while keeping ordinal-bearing path evidence graph-side. Land partition,
+   segmentation residual, empty-window, gap/dead-end, ambiguous-token, and budget-admissible chunk
+   witnesses. Do not enumerate all paths or attach costs/objectives to the graph.
+3. **Named flat-path selection (K4b):** execute only objectives whose compositional form and exact
+   path guarantee are declared, with deterministic ties and visible rejected/residual evidence. Do
+   not publish a universal selection solver before another structural family demonstrates the same
+   contract; reapply the Lean gate before a load-bearing global-optimality/equivalence promise.
+4. **Additional structural families (K4c):** packing, cover, selection-backed laminar validation,
+   explicit nearest-container projection, multiple-parent hierarchy, and resolution incidence
+   follow the flat semantics. Keep family-specific executors separate unless real repetition
+   licenses a common selection abstraction.
+5. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
    occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
    identity question does not block K0-K4.
-4. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
+6. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
    closing D7's final lift with ordered output pieces, a new immutable master, residuals, and
    composed stage origins. `OffsetMap` becomes a restricted monotone single-source view, not the
    universal transform carrier.
-5. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+7. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-6. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
+8. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
    adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
    networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
    path.
@@ -87,7 +100,9 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing.
+universal no-false-negative equivalence load-bearing. D33 likewise leaves K3/K4a on direct finite
+reference semantics; K4b must reapply the gate before promising a public global optimum or
+optimized/reference equivalence.
 
 **First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
 still a catalog, not a contract, and the wire format waits for stable carrier identities and the

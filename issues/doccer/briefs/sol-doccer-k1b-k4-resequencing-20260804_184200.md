@@ -64,10 +64,11 @@ The formal located carrier is a set over \(L_M\). It therefore collapses duplica
 carries no candidate labels. The candidate graph is a different carrier: it owns a
 `ClaimSelection` basis and preserves parallel claim-ordinal edges over equal geometry.
 
-K3 and K4a are consequently one design tranche even if they land in separate commits.
-`CandidateRegionGraph` explicitly projects to geometry-only `LocatedRelation`; reachability is
-implemented once; and the ambiguous-token and budgeted-chunk witnesses prevent the pure algebra
-from becoming operationally empty.
+K3 and K4a are consequently one design tranche. `CandidateRegionGraph` explicitly projects to
+geometry-only `LocatedRelation`; Boolean geometry reachability is implemented once, while graph
+paths separately retain claim ordinals; and the ambiguous-token and budget-admissible-chunk
+witnesses prevent the pure algebra from becoming operationally empty. D33 subsequently makes the
+algebra plus minimal graph projection one core source chip and the result layer a second chip.
 
 ## 3. Revised tranche gates
 
@@ -77,15 +78,15 @@ from becoming operationally empty.
 | K2a | pure basis-stamped selection; ascending-ordinal enumeration; explicit ordered projections; coverage; stable population integrations | persisted IDs; order as set identity; indiscriminate lookup signature rewrites |
 | K2b | exact pair carrier; ordinal diagonal identity; projection, semijoin, converse, `ComposePairs`; one terminal-join semantic path | packed-support algebra; Allen weak composition as a substitute for exact joins |
 | K2c | pairing match edges, policy stamp, and complete identity-bearing residue over at least two delimiter families | repair; inferred parenthood; domain delimiter semantics |
-| K3/K4a | geometry-only located relation; identity-bearing candidate graph; one reachability implementation; partition/gap/dead-end results; token and chunk witnesses | labels on `LocatedRelation`; generic boundary hierarchy; optimizer or path enumeration |
-| K4b/K4c | explicit objectives and tie policy after result invariants; later structural families after flat views | implied optimality; hierarchy inferred from containment alone |
+| K3/K4a | geometry-only located relation; identity-bearing candidate graph; one geometry-reachability implementation; ordinal-bearing partition/path and gap/dead-end results; token and budget-admissible chunk witnesses | labels on `LocatedRelation`; generic boundary hierarchy/map; optimizer or path enumeration |
+| K4b/K4c | objective-structured flat-path policies after result invariants; later family-specific structural views/policies; common selection types only after demonstrated repetition | arbitrary-objective universal solver; implied optimality; hierarchy inferred from containment alone |
 
 ## 4. Witness placement
 
 The cross-cutting witness gate applies when each carrier lands:
 
 - K2c witnesses K2 with pairing and residue;
-- K3/K4a witnesses flat structure with ambiguous token and budgeted chunk graphs;
+- K3/K4a witnesses flat structure with ambiguous token and budget-admissible chunk graphs;
 - K6/K7 witnesses origins/materialization with bounded macro substitution.
 
 K8 becomes a final integration suite across those already-witnessed carriers. It does not defer
@@ -129,3 +130,10 @@ D32: exact selections stamp roles, a named policy stamps compatibility, and stri
 execution returns pair-carrier matches plus complete selection/pair residue. Two delimiter
 families and all 5,461 bounded two-key words are green; harness 1733→1779. K2 is closed and the
 joint K3/K4a design is active next, preserving the resequenced boundary.
+
+The required [joint K3/K4a contract](sol-doccer-k3-k4a-joint-contract-20260805_105443.md)
+subsequently closed as D33 after reading ahead through K4c. It retained this brief's macro-order but
+corrected two underspecified phrases before source work: “one reachability implementation” now
+means one identity-forgetting geometry closure plus a distinct ordinal-bearing path result, and
+“explicit selection” begins with objective-structured flat paths rather than a universal solver
+over structural families not yet defined. The joint core is active next; harness remains 1779.

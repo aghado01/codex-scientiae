@@ -289,4 +289,10 @@ stack pairing as D32. Exact role selections and the exact named policy object st
 input partitions, with mismatches retaining pair correlation. Environment and fence witnesses,
 one combined adversarial residue case, and all 5,461 two-key words through length six satisfy the
 independent oracle and result invariants; harness 1733→1779. K2 is closed, no repair or hierarchy
-landed, and the joint K3/K4a design is active next.
+landed, and the joint K3/K4a design became active next.
+
+Follow-on: the [joint K3/K4a contract](sol-doccer-k3-k4a-joint-contract-20260805_105443.md)
+subsequently closed as D33. It freezes the concrete located window basis, minimal graph projection,
+shared geometry closure versus ordinal-bearing path boundary, result-specific residue, and the
+specialize-before-generalizing selection sequence. The joint K3/K4a core is active next; no engine
+or harness change accompanied the planning decision.

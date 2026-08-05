@@ -143,3 +143,8 @@ carrier as `PairingResult.MatchEdges` and correlated mismatch evidence, while K2
 the exact role inputs and unary residue. Strict top-only stack execution, two delimiter-family
 witnesses, combined adversarial residue, and all 5,461 bounded two-key words are green; harness
 1733→1779. D32 closes K2 without changing pair composition or exposing `AllenImage`.
+
+Follow-on: the [joint K3/K4a contract](sol-doccer-k3-k4a-joint-contract-20260805_105443.md) then
+closed as D33. Located shared-boundary composition remains geometry-only and distinct from
+`ComposePairs`; the minimal graph projection lands beside it in the next joint core chip. Harness
+remains 1779.

@@ -101,4 +101,9 @@ six-boundary middle paths. Harness 1651→1733; K2c pairing is active next.
 Follow-on: [K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) subsequently closed K2 as D32
 with strict stack matches and complete identity-bearing residue over the K2a/K2b carriers. Its
 finite reference laws require no change to the qualitative Allen layer; harness 1733→1779. The
-joint K3/K4a design is active next.
+joint K3/K4a design became active next.
+
+Follow-on: the [joint K3/K4a contract](sol-doccer-k3-k4a-joint-contract-20260805_105443.md)
+subsequently closed as D33. It keeps located composition separate from Allen composition and
+freezes the concrete-window geometry/identity-bearing graph boundary before the joint core source
+chip. Harness remains 1779.

@@ -367,6 +367,24 @@ optimized, parallel, incremental, or recovery-bearing backend claims equivalence
 reference policy; formalizing the lone implementation now would not choose or license a different
 design.
 
+### 5.2 D33 gate application — located closure and flat paths
+
+D33 freezes the exact-window basis, the graph-to-geometry projection, and the distinction between
+Boolean boundary reachability and identity-bearing graph paths. None activates Lean for the joint
+K3/K4a reference chips:
+
+- direct finite set/matrix semantics define `Seq` and consuming reachability;
+- standard relation laws have an independent bounded C# oracle;
+- `TextSlice` is the already-witnessed injective translation, and no generalized map API lands;
+- parallel-edge collapse is an explicit projection counterexample, not an unresolved equivalence;
+- `FirstOrdinalCompletePath` promises a deterministic complete witness when one exists, not an
+  optimum.
+
+Reapply **optimization/global-guarantee pressure** during K4b before a public best-cost,
+maximum-weight, or optimized/reference-equivalence claim lands. Reapply **boundary pressure** if a
+generalized map or objective algebra makes exact equality reusable. The policy's domain meaning and
+tie preference remain outside theorem work.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -378,7 +396,8 @@ design.
 | Exact-pair Allen-image composition inclusion | D28 atomic-triad certificate plus D31 direct `ComposePairs`, 3,375 per-witness checks, union law, and two executable non-converses | before qualitative summaries drive optimized pruning with a universal no-false-negative claim, or if equality/generalized public abstraction is proposed |
 | Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
 | Strict stack match/residue partition and noncrossing | D32 direct scan, two concrete delimiter families, combined adversarial residue, and a 5,461-word independent bounded oracle | before an optimized/parallel/incremental implementation or a recovery policy claims equivalence |
-| Located `Seq` identity, associativity, and finite consuming closure | simple matrix/reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it |
+| Located `Seq` identity, associativity, finite consuming closure, and exact slice rebase | D33 concrete compatible-master/exact-window basis; simple set/matrix reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it or a generalized map reopens the exact-versus-lax boundary |
+| Flat graph reachability and identity-bearing reference path | D33 explicit identity-forgetting projection, bounded independent path oracle, parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent backend claims equivalence or K4b adds a public global optimum |
 | Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
 | Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
@@ -387,8 +406,9 @@ design.
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
-This triage leaves no present theorem whose completion should block the joint K3/K4a design;
-`AllenRelationSet`, `ClaimSelection`, `ClaimPairView`, and strict pairing are already landed.
+This triage leaves no present theorem whose completion should block the joint K3/K4a core or result
+chips; D33 has frozen their contract, and `AllenRelationSet`, `ClaimSelection`, `ClaimPairView`, and
+strict pairing are already landed.
 
 ## 7. Restart recipe
 
@@ -434,8 +454,9 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step is therefore the K2 reference query carriers, not Lean. The first future
-proof most likely to repay its cost is not a reproof of Allen's table or the unoptimized pair join;
-it is a law that licenses compression, pruning, fusion, or another independent backend without
-changing reference meaning. D29 now names the pair-abstraction candidate precisely if K2 supplies
-that pressure; origin/support machinery remains the other leading source.
+The practical next step is therefore the D33 joint K3/K4a core, not Lean. The first future proof
+most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, or the
+direct located closure; it is a law that licenses compression, pruning, global optimization,
+fusion, or another independent backend without changing reference meaning. D29 names the
+pair-abstraction candidate, D33 names the K3 closure/K4b optimality candidates, and origin/support
+machinery remains the other leading source.
