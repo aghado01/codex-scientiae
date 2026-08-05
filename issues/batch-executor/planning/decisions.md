@@ -178,8 +178,11 @@ independent competing booleans.
 Each prepared item retains the original caller input solely for result identity. Direct dispatch data is
 either the shared reference or its prepared CLIXML copy. A process item retains only its resolved process
 specification and prepared payload XML for dispatch; it never carries direct dispatch graphs.
-`Resolve-BatchExecutorPreparation` implements this write-once half of the contract; lifecycle ownership is
-realized incrementally by the remaining Phase 3 items.
+`Resolve-BatchExecutorPreparation` implements the write-once half of the contract. BEX-303 binds dispatch
+to the lifecycle owner: the pool is published immediately after construction, a pending-pipeline slot
+covers construction through `BeginInvoke`, each successful submission is then registered as a typed
+invocation, and an item-local launch failure is materialized directly in the owned result array. Await,
+collection, and teardown are migrated incrementally by the remaining Phase 3 items.
 
 ### D18 — Phase 3 freezes the public execution projection — accepted
 

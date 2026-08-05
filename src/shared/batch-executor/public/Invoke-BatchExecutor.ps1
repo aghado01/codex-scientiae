@@ -43,7 +43,6 @@ function Invoke-BatchExecutor {
         -WindowStyle $WindowStyle -LoadProfile:$LoadProfile -PriorityClass $PriorityClass
 
     $count = $preparation.ItemCount
-    $preparedItems = $preparation.Items
     $hasProcessJobs = $preparation.HasProcessItems
     $budget = $preparation.Budget
     $policy = $preparation.Policy
@@ -57,85 +56,27 @@ function Invoke-BatchExecutor {
         }
     }
 
-    $iss = $preparation.InitialSessionState
-    $pool = $null
-    $invocations = [System.Collections.Generic.List[hashtable]]::new($count)
-    $ordered = [object[]]::new($count)
-    $infrastructureErrors = [System.Collections.Generic.List[string]]::new()
-    $processRegistry = [System.Collections.Concurrent.ConcurrentDictionary[string, System.Diagnostics.Process]]::new(
-        [System.StringComparer]::OrdinalIgnoreCase)
-    $timing = @{}
-    $completedNormally = $false
+    $lifecycle = New-BatchExecutorLifecycleState -Preparation $preparation
+    # These are borrowed references for the still-inline phases. LifecycleState remains their sole owner.
+    $invocations = $lifecycle.Invocations
+    $ordered = $lifecycle.Results
+    $infrastructureErrors = $lifecycle.InfrastructureErrors
+    $processRegistry = $lifecycle.ChildProcessRegistry
+    $timing = $lifecycle.Timing
 
     try {
-        $swPool = [System.Diagnostics.Stopwatch]::StartNew()
-        $pool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool($iss)
-        [void] $pool.SetMinRunspaces(1)
-        [void] $pool.SetMaxRunspaces($budget.Threads)
-        $pool.ThreadOptions = [System.Management.Automation.Runspaces.PSThreadOptions]::UseNewThread
-        $pool.ApartmentState = [System.Threading.ApartmentState]::MTA
-        $pool.Open()
-        $timing.PoolOpenMs = $swPool.ElapsedMilliseconds
-
-        $swDispatch = [System.Diagnostics.Stopwatch]::StartNew()
-        for ($i = 0; $i -lt $count; $i++) {
-            $preparedItem = $preparedItems[$i]
-            $ps = [System.Management.Automation.PowerShell]::Create()
-            $ps.RunspacePool = $pool
-            if ($preparedItem.Mode -eq 'Runspace') {
-                $command = $ps.AddCommand('Invoke-BatchDirectDispatcher')
-                [void] $command.AddArgument($preparedItem.DispatchItem)
-                [void] $command.AddArgument($preparedItem.DispatchContext)
-                [void] $command.AddArgument($preparation.CancellationToken)
-            }
-            else {
-                $processSpec = $preparedItem.ProcessSpec
-                $command = $ps.AddCommand('Invoke-BatchProcessDispatcher')
-                [void] $command.AddArgument($preparedItem.Id)
-                [void] $command.AddArgument($preparedItem.ProcessPayloadXml)
-                [void] $command.AddArgument($processSpec.PowerShellPath)
-                [void] $command.AddArgument($processSpec.WorkingDirectory)
-                [void] $command.AddArgument($preparation.EncodedChildCommand)
-                [void] $command.AddArgument($processSpec.TimeoutSeconds)
-                [void] $command.AddArgument($processSpec.CreateNoWindow)
-                [void] $command.AddArgument($processSpec.WindowStyle)
-                [void] $command.AddArgument($processSpec.LoadProfile)
-                [void] $command.AddArgument($processSpec.Environment)
-                [void] $command.AddArgument($processSpec.PriorityClass)
-                [void] $command.AddArgument($processRegistry)
-                [void] $command.AddArgument($preparation.CancellationToken)
-            }
-
-            try {
-                $async = $ps.BeginInvoke()
-                $invocations.Add(@{
-                    Index = $i; Id = $preparedItem.Id; Item = $preparedItem.Input; PS = $ps; Async = $async
-                    Mode = $preparedItem.Mode
-                    QueuedUtc = [datetime]::UtcNow; TimedOut = $false; Cancelled = $false
-                })
-            }
-            catch {
-                $ps.Dispose()
-                $ordered[$i] = [pscustomobject]@{
-                    Id = $preparedItem.Id; Index = $i; Input = $preparedItem.Input; State = 'Failed'; Output = @()
-                    Errors = @($_.ToString()); Warnings = @(); Information = @(); QueuedUtc = [datetime]::UtcNow
-                    StartedUtc = $null; EndedUtc = [datetime]::UtcNow; DurationMs = 0
-                    RunspaceId = $null; ThreadId = $null; ProcessId = $null; ExitCode = $null
-                    StdOut = @(); StdErr = @()
-                }
-            }
-        }
-        $timing.DispatchMs = $swDispatch.ElapsedMilliseconds
+        Start-BatchExecutorInvocations -Lifecycle $lifecycle
+        Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaiting
 
         $swWait = [System.Diagnostics.Stopwatch]::StartNew()
         $cancellationObserved = $CancellationToken.IsCancellationRequested
         $timeoutObserved = $false
         if (-not $cancellationObserved) { foreach ($invocation in $invocations) {
-            if ($invocation.Async.IsCompleted) { continue }
+            if ($invocation.AsyncResult.IsCompleted) { continue }
             # Never park the hosting PowerShell pipeline in an indefinite CLR wait. Short slices give
             # Ctrl+C / PowerShell.Stop() regular interpreter checkpoints so the outer finally block can
             # kill registered process trees immediately instead of waiting for child completion.
-            while (-not $invocation.Async.IsCompleted) {
+            while (-not $invocation.AsyncResult.IsCompleted) {
                 if ($CancellationToken.IsCancellationRequested) {
                     $cancellationObserved = $true
                     break
@@ -155,22 +96,23 @@ function Invoke-BatchExecutor {
 
                 if ($CancellationToken.CanBeCanceled) {
                     $handles = [System.Threading.WaitHandle[]]@(
-                        $invocation.Async.AsyncWaitHandle,
+                        $invocation.AsyncResult.AsyncWaitHandle,
                         $CancellationToken.WaitHandle)
                     $waitResult = [System.Threading.WaitHandle]::WaitAny($handles, $waitSlice)
                     if ($waitResult -eq 0) { break }
                     if ($waitResult -eq 1) { $cancellationObserved = $true; break }
                 }
-                elseif ($invocation.Async.AsyncWaitHandle.WaitOne($waitSlice)) { break }
+                elseif ($invocation.AsyncResult.AsyncWaitHandle.WaitOne($waitSlice)) { break }
             }
             if ($cancellationObserved -or $timeoutObserved) { break }
         } }
 
         if ($cancellationObserved -or $timeoutObserved) {
             foreach ($invocation in $invocations) {
-                if (-not $invocation.Async.IsCompleted) {
-                    if ($cancellationObserved) { $invocation.Cancelled = $true }
-                    else { $invocation.TimedOut = $true }
+                if (-not $invocation.AsyncResult.IsCompleted) {
+                    $terminalOverride = if ($cancellationObserved) { 'Cancelled' } else { 'TimedOut' }
+                    Set-BatchExecutorInvocationTerminalOverride -Invocation $invocation `
+                        -State $terminalOverride
                 }
             }
 
@@ -182,17 +124,19 @@ function Invoke-BatchExecutor {
             # Stop them immediately; process supervisors get a short opportunity to publish the
             # child envelope produced after their registered process tree was terminated.
             Stop-BatchExecutorPipelines -Invocations @(
-                $invocations | Where-Object Mode -EQ 'Runspace'
+                $invocations | Where-Object { $_.PreparedItem.Mode -eq 'Runspace' }
             )
             if ($hasProcessJobs) {
                 # Killed children and token-aware queued dispatchers normally unwind with useful
                 # envelopes. Give the outer runspaces one bounded grace period to publish them.
                 $drain = [System.Diagnostics.Stopwatch]::StartNew()
                 foreach ($invocation in $invocations) {
-                    if ($invocation.Mode -ne 'Process' -or $invocation.Async.IsCompleted) { continue }
-                    $remainingDrain = [math]::Max(0, 5000 - $drain.ElapsedMilliseconds)
+                    if ($invocation.PreparedItem.Mode -ne 'Process' -or
+                            $invocation.AsyncResult.IsCompleted) { continue }
+                    $remainingDrain = [math]::Max(
+                        0, $preparation.ProcessDrainMilliseconds - $drain.ElapsedMilliseconds)
                     if ($remainingDrain -gt 0) {
-                        [void]$invocation.Async.AsyncWaitHandle.WaitOne([int]$remainingDrain)
+                        [void]$invocation.AsyncResult.AsyncWaitHandle.WaitOne([int]$remainingDrain)
                     }
                 }
             }
@@ -200,22 +144,32 @@ function Invoke-BatchExecutor {
             Stop-BatchExecutorPipelines -Invocations $invocations
         }
         $timing.WaitMs = $swWait.ElapsedMilliseconds
+        $lifecycle.WaitOutcome = if ($cancellationObserved) {
+            New-BatchExecutorWaitOutcome -Kind CallerCancellation
+        }
+        elseif ($timeoutObserved) { New-BatchExecutorWaitOutcome -Kind BatchTimeout }
+        else { New-BatchExecutorWaitOutcome -Kind Completed }
+        Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaited
 
+        Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Collecting
         $swCollect = [System.Diagnostics.Stopwatch]::StartNew()
         foreach ($invocation in $invocations) {
-            $ps = $invocation.PS
+            $preparedItem = $invocation.PreparedItem
+            $ps = $invocation.Pipeline
             $pipelineOutput = @()
             try {
-                if ($invocation.TimedOut -and -not $invocation.Async.IsCompleted) {
+                if ($invocation.TerminalOverride -eq 'TimedOut' -and
+                        -not $invocation.AsyncResult.IsCompleted) {
                     try { $ps.Stop() } catch {}
                 }
-                if ($invocation.Async.IsCompleted) {
-                    $pipelineOutput = @($ps.EndInvoke($invocation.Async))
+                if ($invocation.AsyncResult.IsCompleted) {
+                    $pipelineOutput = @($ps.EndInvoke($invocation.AsyncResult))
                 }
             }
             catch {
-                if (-not ($invocation.TimedOut -or $invocation.Cancelled)) {
-                    $infrastructureErrors.Add("item '$($invocation.Id)' collection failed: $($_.Exception.Message)")
+                if ($null -eq $invocation.TerminalOverride) {
+                    $infrastructureErrors.Add(
+                        "item '$($preparedItem.Id)' collection failed: $($_.Exception.Message)")
                 }
             }
 
@@ -236,13 +190,14 @@ function Invoke-BatchExecutor {
             if ($envelope -and $envelope.PSObject.Properties['Warnings']) {
                 foreach ($record in @($envelope.Warnings)) { if ($record) { $warnings.Add([string]$record) } }
             }
-            if ($invocation.TimedOut) {
+            if ($invocation.TerminalOverride -eq 'TimedOut') {
                 $errors.Add("batch wait exceeded the total timeout of $WaitTimeoutSeconds second(s)")
             }
-            if ($invocation.Cancelled) { $warnings.Add('caller cancellation requested') }
+            if ($invocation.TerminalOverride -eq 'Cancelled') {
+                $warnings.Add('caller cancellation requested')
+            }
 
-            $state = if ($invocation.Cancelled) { 'Cancelled' }
-                     elseif ($invocation.TimedOut) { 'TimedOut' }
+            $state = if ($invocation.TerminalOverride) { $invocation.TerminalOverride }
                      elseif ($envelope -and $envelope.PSObject.Properties['State']) { [string]$envelope.State }
                      elseif ($null -eq $envelope -or $errors.Count -gt 0) { 'Failed' }
                      else { 'Succeeded' }
@@ -265,8 +220,8 @@ function Invoke-BatchExecutor {
                 $jobStdErr = [string[]]@($envelope.StdErr)
             }
 
-            $ordered[$invocation.Index] = [pscustomobject]@{
-                Id = $invocation.Id; Index = $invocation.Index; Input = $invocation.Item; State = $state
+            $ordered[$preparedItem.Index] = [pscustomobject]@{
+                Id = $preparedItem.Id; Index = $preparedItem.Index; Input = $preparedItem.Input; State = $state
                 Output = $jobOutput
                 Errors = $errors.ToArray(); Warnings = $warnings.ToArray(); Information = $information.ToArray()
                 QueuedUtc = $invocation.QueuedUtc; StartedUtc = $startedUtc; EndedUtc = $endedUtc; DurationMs = $durationMs
@@ -280,24 +235,45 @@ function Invoke-BatchExecutor {
             $ps.Dispose()
         }
         $timing.CollectMs = $swCollect.ElapsedMilliseconds
-        $completedNormally = $true
+        Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Collected
+        $lifecycle.CompletedNormally = $true
     }
     finally {
         # This path also runs when Ctrl+C or an infrastructure exception unwinds the function.
         # Kill children first, then stop their supervising pipelines; no child is left orphaned.
-        Stop-BatchExecutorChildProcesses -Registry $processRegistry `
-            -Reason $(if ($completedNormally) { 'final registry cleanup' } else { 'exceptional batch teardown' }) `
-            -Diagnostics $infrastructureErrors
-        Stop-BatchExecutorPipelines -Invocations $invocations
-        foreach ($invocation in $invocations) {
-            if ($null -ne $invocation.PS) {
-                try { $invocation.PS.Dispose() } catch {}
+        try {
+            if ($lifecycle.Phase -notin @('TearingDown', 'Closed')) {
+                Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase TearingDown
             }
         }
-        if ($null -ne $pool) {
-            try { $pool.Close() } catch {}
-            try { $pool.Dispose() } catch {}
+        catch { $infrastructureErrors.Add("could not enter teardown phase: $($_.Exception.Message)") }
+        Stop-BatchExecutorChildProcesses -Registry $processRegistry `
+            -Reason $(if ($lifecycle.CompletedNormally) { 'final registry cleanup' } else { 'exceptional batch teardown' }) `
+            -Diagnostics $infrastructureErrors
+        Stop-BatchExecutorPipelines -Invocations $invocations
+        $pendingPipeline = $lifecycle.PendingPipeline
+        Stop-BatchExecutorPendingPipeline -Pipeline $pendingPipeline
+        foreach ($invocation in $invocations) {
+            if ($null -ne $invocation.Pipeline -and
+                    -not [object]::ReferenceEquals($invocation.Pipeline, $pendingPipeline)) {
+                try { $invocation.Pipeline.Dispose() } catch {}
+            }
         }
+        if ($null -ne $pendingPipeline) {
+            try { $pendingPipeline.Dispose() } catch {}
+            $lifecycle.PendingPipeline = $null
+        }
+        if ($null -ne $lifecycle.Pool) {
+            try { $lifecycle.Pool.Close() } catch {}
+            try { $lifecycle.Pool.Dispose() } catch {}
+        }
+        $lifecycle.TeardownCompleted = $true
+        try {
+            if ($lifecycle.Phase -eq 'TearingDown') {
+                Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Closed
+            }
+        }
+        catch { $infrastructureErrors.Add("could not close teardown phase: $($_.Exception.Message)") }
     }
 
     $swTotal.Stop()

@@ -105,10 +105,11 @@ Describe 'batch-executor private phase-state contracts' {
             $lifecycle.PSObject.TypeNames[0] | Should -Be `
                 'CodexScientiae.BatchExecutor.Internal.LifecycleState'
             $lifecycle.PSObject.Properties.Name | Should -Be @(
-                'Preparation', 'Phase', 'Pool', 'Invocations', 'Results', 'ChildProcessRegistry',
-                'InfrastructureErrors', 'Timing', 'WaitOutcome', 'CompletedNormally',
+                'Preparation', 'Phase', 'Pool', 'PendingPipeline', 'Invocations', 'Results',
+                'ChildProcessRegistry', 'InfrastructureErrors', 'Timing', 'WaitOutcome', 'CompletedNormally',
                 'TeardownCompleted')
             $lifecycle.Phase | Should -Be 'Prepared'
+            $lifecycle.PendingPipeline | Should -BeNullOrEmpty
             $lifecycle.Invocations.GetType().GetGenericTypeDefinition() | Should -Be `
                 ([System.Collections.Generic.List``1])
             $lifecycle.Results.Count | Should -Be 1

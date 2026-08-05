@@ -14,6 +14,13 @@ function Stop-BatchExecutorChildProcesses {
             if (-not $entry.Value.HasExited) { $entry.Value.Kill($true) }
         }
         catch {
+            [System.Diagnostics.Process] $currentProcess = $null
+            $sameOwner = $Registry.TryGetValue($entry.Key, [ref]$currentProcess) -and
+                [object]::ReferenceEquals($currentProcess, $entry.Value)
+            # The dispatcher removes its registry entry before disposing the Process object. A
+            # snapshot reader can therefore observe ObjectDisposedException after successful
+            # dispatcher cleanup; only diagnose failures for records that are still registry-owned.
+            if (-not $sameOwner) { continue }
             if ($null -ne $Diagnostics) {
                 $Diagnostics.Add("could not terminate child for item '$($entry.Key)' during ${Reason}: $($_.Exception.Message)")
             }
@@ -32,19 +39,37 @@ function Stop-BatchExecutorPipelines {
 
     $stopRequests = [System.Collections.Generic.List[object]]::new()
     foreach ($invocation in $Invocations) {
-        if ($null -eq $invocation -or $null -eq $invocation.PS -or $null -eq $invocation.Async) {
+        if ($null -eq $invocation -or $null -eq $invocation.Pipeline -or
+                $null -eq $invocation.AsyncResult) {
             continue
         }
-        if ($invocation.Async.IsCompleted) { continue }
+        if ($invocation.AsyncResult.IsCompleted) { continue }
 
         try {
-            $stopAsync = $invocation.PS.BeginStop($null, $null)
-            $stopRequests.Add([pscustomobject]@{ PS = $invocation.PS; Async = $stopAsync })
+            $stopAsync = $invocation.Pipeline.BeginStop($null, $null)
+            $stopRequests.Add([pscustomobject]@{
+                    Pipeline = $invocation.Pipeline
+                    AsyncResult = $stopAsync
+                })
         }
         catch {}
     }
 
     foreach ($request in $stopRequests) {
-        try { $request.PS.EndStop($request.Async) } catch {}
+        try { $request.Pipeline.EndStop($request.AsyncResult) } catch {}
     }
+}
+
+function Stop-BatchExecutorPendingPipeline {
+    [CmdletBinding()]
+    param(
+        [AllowNull()] [object] $Pipeline
+    )
+
+    if ($null -eq $Pipeline) { return }
+    try {
+        $stopAsync = $Pipeline.BeginStop($null, $null)
+        $Pipeline.EndStop($stopAsync)
+    }
+    catch {}
 }

@@ -62,7 +62,11 @@ Describe 'batch-executor module surface' {
             'New-BatchExecutorSessionState'
             'ConvertTo-BatchExecutorCliXml'
             'Resolve-BatchExecutorPreparation'
+            'New-BatchExecutorRunspacePool'
+            'New-BatchExecutorPipeline'
+            'Start-BatchExecutorInvocations'
             'Stop-BatchExecutorChildProcesses'
+            'Stop-BatchExecutorPendingPipeline'
             'Resolve-BatchPlanPath'
             'Resolve-BatchPlanModuleReference'
         )) {

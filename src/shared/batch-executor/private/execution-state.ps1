@@ -172,6 +172,7 @@ function New-BatchExecutorLifecycleState {
         Preparation = $Preparation
         Phase = 'Prepared'
         Pool = $null
+        PendingPipeline = $null
         Invocations = [System.Collections.Generic.List[object]]::new($Preparation.ItemCount)
         Results = [object[]]::new($Preparation.ItemCount)
         ChildProcessRegistry = `
