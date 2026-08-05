@@ -12,6 +12,27 @@ workflows and is therefore evidence; a draft with no production callers is a hyp
 documents named in the [contract-closure brief](next-session-contract-closure-20260804.md) should be
 written from the former and used to judge the latter.
 
+## Standing context — corrected after the first draft of this report
+
+`jsonl-v2.ps1` and `jsonl-store-v2.ps1` are **not** finished candidates awaiting judgment. They are
+being written iteratively as the data is combed; the writing is part of the combing. The airgap from
+production is deliberate and load-bearing, because infrastructure elements are entangled with each
+other and with the separate [batch-executor](../../batch-executor/) issue — itself critical
+infrastructure that will both consume mature infrastructure from this umbrella and inform its design.
+
+Two consequences for how this report should be read:
+
+- **The register below is supply to an assembly in progress, not an audit of a deliverable.** A row
+  marked "dropped" means *this invariant was earned and has not been picked up yet* — a candidate for
+  the workbench — not *this is a regression to fix*.
+- **The measured throw counts are weak evidence about the draft's intended error model.** Failing
+  loudly everywhere is the honest placeholder while the vocabulary is undecided, and LOGJ-103 is
+  exactly the item that decides it. The finding that survives is about the *legacy*: it already
+  implemented D5's posture, so that posture is available as a design input now.
+
+Conformance testing of the draft is therefore premature; it belongs after the draft settles, which is
+gated on batch-executor reporting what it needs. See the sequencing note at the end.
+
 ## Method
 
 Read `jsonl.ps1` in full (265 lines, 6 functions plus the `JsonlIndex` class), then
@@ -123,10 +144,12 @@ Status legend: **kept** — draft preserves it; **dropped** — draft does not i
 
 ## Recommendations
 
-1. **Run `encoding-invariants.Tests.ps1` against the draft** before freezing any contract. Tests that
-   do not apply (serializer parity, fallback telemetry) mark exactly where the draft made a trade; tests
-   that fail mark regressions. This is a few hours of work and it produces the conformance table the
-   contract needs.
+1. **Point `encoding-invariants.Tests.ps1` at the draft when the draft settles** — not before. While
+   assembly is in progress the harness would be measuring scaffolding. What it is good for *now* is as
+   a reading list for the workbench: its three tiers are the earned properties in executable form, and
+   the assembly can consult them without being graded by them. When v2 does settle, tests that do not
+   apply (serializer parity, fallback telemetry) mark where trades were made, and tests that fail mark
+   regressions.
 2. **Lift I1, I7, I8, I9, I10, I14 into `jsonl-contract.md` as contract text**, each carrying its
    evidence. They are earned, and several are invisible from the draft alone.
 3. **Settle LOGJ-103 with I4 on the table.** The question is not "what should the error model be" in the
@@ -135,12 +158,36 @@ Status legend: **kept** — draft preserves it; **dropped** — draft does not i
 4. **Record the four trades in §Conformance as decisions**, not as silent differences: fast path
    removed, index derivation separated, provenance stamp dropped, inventory self-registration moved to
    the application layer. Each is defensible; none is currently written down.
-5. **Add a decision assigning forward drafts an evidential status.** D20 grants legacy code the status
-   *evidence, not automatic boundaries*. D18 quarantines the draft's filename and forbids importing both
-   generations; D19 isolates compatibility. Nothing states what authority a `-v2` draft carries over a
-   contract. With no rule, 90KB of concrete working code sits beside three unwritten documents and wins
-   by default. Proposed shape: legacy supplies invariants, external mature tools supply capabilities,
-   forward drafts supply feasibility evidence and are judged against the frozen contract.
+5. **Add a decision naming the airgapped draft's status as a workbench.** D20 grants legacy code the
+   status *evidence, not automatic boundaries*. D18 quarantines the draft's filename and forbids
+   importing both generations; D19 isolates compatibility. None of them say what an in-assembly `-v2`
+   file *is*. Naming it buys two protections at once: a workbench holds no authority over the contract,
+   and a workbench is not audited as though it were a deliverable. Proposed shape: legacy supplies
+   invariants, external mature tools supply capabilities, and an airgapped draft is a synthesis vehicle
+   whose airgap is a design decision with a stated lifting condition — not neglect, and not a backlog
+   item.
+
+## Sequencing note — batch-executor is an input, not only a consumer
+
+The canon records the relationship in one direction. [README:9](../README.md) says batch execution
+"contribute[s] requirements," but D35's operative phrasing is that separate issues "may depend on
+infrastructure," the scope boundary excludes batch scheduling semantics, and neither the six roadmap
+phases nor the [contract-closure brief](next-session-contract-closure-20260804.md) exit gate treats
+batch-executor as an informant that must report before contracts freeze.
+
+It is the most demanding concurrency witness available, and its requirements land directly on the three
+contracts Phase 1 wants to close:
+
+| batch-executor mechanic | infrastructure contract it constrains |
+|---|---|
+| `CODEX_BATCH_JOB_ID` injection, inherited `CODEX_RUNLOG_*` | run-context child correlation (Q1) |
+| many child processes writing one logical run log | D4 one-log-per-scope, D10 lease-versus-partition |
+| index-stable per-item results across a greedy pool | store ordering, physical versus semantic (Q2) |
+| process-tree kill, timeout, cancellation mid-write | torn writes and incomplete tails (Q4, D15) |
+
+Freezing run-context or the logger before those are known is the premature freeze the airgap exists to
+prevent. Worth stating explicitly in the roadmap so the sequencing is a recorded decision rather than
+an implicit one.
 
 ## Disposition map contribution (LOGJ-101)
 
