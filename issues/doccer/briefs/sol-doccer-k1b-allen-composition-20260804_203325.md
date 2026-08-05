@@ -97,3 +97,8 @@ Follow-on: [K2b](sol-doccer-k2b-claim-pair-view-20260805_022512.md) subsequently
 transition as D31. `IntervalJoins.Join` now projects the exact pair carrier, direct pair composition
 never uses `AllenCompose` to create edges, and the one-way bridge is executable across all 3,375
 six-boundary middle paths. Harness 1651→1733; K2c pairing is active next.
+
+Follow-on: [K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) subsequently closed K2 as D32
+with strict stack matches and complete identity-bearing residue over the K2a/K2b carriers. Its
+finite reference laws require no change to the qualitative Allen layer; harness 1733→1779. The
+joint K3/K4a design is active next.

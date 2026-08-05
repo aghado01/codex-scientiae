@@ -123,3 +123,9 @@ leaving K2b as the one join transition. Harness 1577→1651.
 the exact pair carrier, direct composition, complete middle witnesses, executable Allen bridge,
 and compatibility join projection landed together without packed support or a qualitative edge
 generator. Harness 1651→1733; K2c remains consecutive and active next.
+
+[K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) then closed the consecutive tranche as
+D32: exact selections stamp roles, a named policy stamps compatibility, and strict top-only stack
+execution returns pair-carrier matches plus complete selection/pair residue. Two delimiter
+families and all 5,461 bounded two-key words are green; harness 1733→1779. K2 is closed and the
+joint K3/K4a design is active next, preserving the resequenced boundary.

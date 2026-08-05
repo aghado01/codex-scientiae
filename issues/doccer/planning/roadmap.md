@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-05)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D31**, contract harness **1733 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D32**, contract harness **1779 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Tranches 0–3 are done: the substrate is complete, the lift vocabulary
@@ -31,7 +31,11 @@ exact-batch selection algebra, explicit ordered/coverage projections, and select
 grouping/cadence/suppression are implemented. K2b is closed by D31 and its
 [implementation report](../briefs/sol-doccer-k2b-claim-pair-view-20260805_022512.md): the exact
 pair carrier, direct composition, complete middle witnesses, executable Allen bridge, and the one
-terminal-join transition are implemented. The active next implementation is K2c pairing.
+terminal-join transition are implemented. K2c is closed by D32 and its
+[implementation report](../briefs/sol-doccer-k2c-pairing-result-20260805_093203.md): exact
+role selections, named compatibility policy, strict top-only stack matching, complete
+identity-bearing match/fault residue, and explicit paired-region projection are implemented.
+K2 is closed. The active next work is the joint K3/K4a located-relation/candidate-graph design.
 
 ## Sequencing doctrine
 
@@ -48,32 +52,25 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Joint claim-query tranche (K2a–K2c, contract frozen by D29; K2a closed by D30; K2b closed by
-   D31; K2c active next in the consecutive sequence):** K2a's pure basis-stamped `ClaimSelection`, ascending-ordinal
-   membership, explicit `ClaimOrder`/coverage projections, and stable population integrations are
-   implemented. K2b's exact `ClaimPairView`, direct reference `ComposePairs`, one-way Allen-image
-   inclusion, complete transparent middle witnesses, and terminal raw-list join projection are
-   implemented without a packed-support claim. K2c lands pairing with match edges and
-   identity-bearing fault residue as the tranche witness.
-2. **Joint located/flat-graph tranche (K3+K4a):** co-design geometry-only `LocatedRelation` and the
+1. **Joint located/flat-graph tranche (K3+K4a):** co-design geometry-only `LocatedRelation` and the
    identity-bearing `CandidateRegionGraph`; the graph owns parallel claim-ordinal edges and projects
    explicitly to located geometry. Land one reference reachability semantics, partitions, gaps,
    dead ends, and bounded ambiguous-token/budgeted-chunk witnesses before any optimizer.
-3. **Explicit selection, then structural expansion (K4b→K4c):** execute named caller objectives
+2. **Explicit selection, then structural expansion (K4b→K4c):** execute named caller objectives
    only after result invariants exist. Packing, cover, laminar hierarchy, multiple-parent views,
    and resolution follow the flat reference semantics rather than preceding them.
-4. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
+3. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
    occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
    identity question does not block K0-K4.
-5. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
+4. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
    closing D7's final lift with ordered output pieces, a new immutable master, residuals, and
    composed stage origins. `OffsetMap` becomes a restricted monotone single-source view, not the
    universal transform carrier.
-6. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+5. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-7. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
+6. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
    adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
    networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
    path.

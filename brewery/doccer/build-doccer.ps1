@@ -92,6 +92,10 @@ $expectedTypes = @(
     'CodexSci.Doccer.ClaimSelection'
     'CodexSci.Doccer.ClaimPairView'
     'CodexSci.Doccer.ClaimPairWitnessView'
+    'CodexSci.Doccer.PairingPolicy'
+    'CodexSci.Doccer.PairingResult'
+    'CodexSci.Doccer.PairingFaults'
+    'CodexSci.Doccer.Pairing'
     'CodexSci.Doccer.SortedSpanLookup'
     'CodexSci.Doccer.SpanSet'
     'CodexSci.Doccer.RegexCollector'
@@ -117,6 +121,12 @@ $pairView = $assembly.GetType('CodexSci.Doccer.ClaimPairView', $true)
 if ($null -eq $pairView.GetMethod('ComposePairs') -or
     $null -eq $pairView.GetMethod('GroupMiddleWitnesses')) {
     throw 'Packaged ClaimPairView is missing its exact composition surface.'
+}
+$pairing = $assembly.GetType('CodexSci.Doccer.Pairing', $true)
+$pairingResult = $assembly.GetType('CodexSci.Doccer.PairingResult', $true)
+if ($null -eq $pairing.GetMethod('Pair') -or
+    $null -eq $pairingResult.GetMethod('PairedRegions')) {
+    throw 'Packaged pairing surface is incomplete.'
 }
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {

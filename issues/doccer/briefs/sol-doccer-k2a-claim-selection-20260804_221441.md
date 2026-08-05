@@ -116,3 +116,8 @@ pair/join boundary as D31. It composes only through actual middle ordinals, reta
 basis-stamped witness groups, executes the one-way Allen bridge and both non-converse mechanisms,
 and makes `IntervalJoins.Join` a `ClaimPairView` projection. Harness 1651→1733; K2c pairing is now
 active next.
+
+Follow-on: [K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) subsequently uses exact
+`ClaimSelection` values for open/close roles and every unary fault population. Match projections
+plus open/close residue are disjoint complete input partitions across all 5,461 bounded two-key
+words. Harness 1733→1779; D32 closes K2 and activates the joint K3/K4a design next.

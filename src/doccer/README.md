@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D31, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D32, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -34,6 +34,7 @@ TextSpan / Allen relations        pure, zero dependencies
 SpanSet                           + master identity
 SpanBatch + ClaimSelection        + typed occurrence queries
 ClaimPairView                     + exact occurrence relations
+PairingResult                     + policy-stamped structural evidence
 Scoped collectors                 + declarative recognition
 LaminarView / joins               + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -76,8 +77,10 @@ approximation), `ConcreteCompose` (exact composition on one carrier), located `S
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
 `AllenCompose` and the occurrence-level `ComposePairs` are implemented, while the other
-later-tranche names remain reservations rather than implementation claims. The canonical assurance
-owners and Lean reactivation triggers live in the D25 registry in
+later-tranche names remain reservations rather than implementation claims. `Pairing.Pair` is the
+implemented strict-stack query over exact occurrence selections; it neither spends the reserved
+`Select` name nor introduces an unqualified composition verb. The canonical assurance owners and
+Lean reactivation triggers live in the D25 registry in
 [decisions.md](../../issues/doccer/planning/decisions.md).
 
 ## Implemented contracts
@@ -105,6 +108,13 @@ owners and Lean reactivation triggers live in the D25 registry in
   `ComposePairs` is a direct shared-middle ordinal join and `GroupMiddleWitnesses` separately
   returns complete, ascending, basis-stamped evidence for one composition; the observed Allen
   image is deliberately test/contract notation rather than a public qualitative API;
+- strict stack `Pairing.Pair` over exact open/close selections and a named caller compatibility
+  policy: combined token geometry must form one non-overlapping stream; compatible top pairs
+  become `ClaimPairView` match edges, while unclosed opens, dangling closes, and correlated
+  mismatched pairs remain complete `ClaimSelection`/`ClaimPairView` residue on their exact bases;
+  `PairingResult` retains both input selections and the exact policy object, and
+  `PairedRegions()` explicitly forgets identity by normalizing full delimiter envelopes; no repair,
+  recovery search, containment, or parenthood is inferred;
 - normalized Boolean `SpanSet` projections bound to their originating master;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
@@ -195,10 +205,10 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- pairing policy, `PairingResult`, and complete identity-bearing match/fault residue. K2a/D30
-  landed `ClaimSelection`; K2b/D31 landed exact `ClaimPairView`, direct `ComposePairs`, transparent
-  middle witnesses, the one-way Allen bridge, and the terminal `IntervalJoins.Join` projection.
-  K2c remains the first structural consumer and adds no repair or inferred hierarchy.
+- geometry-only `LocatedRelation` and the identity-bearing `CandidateRegionGraph`. K2 is closed:
+  K2a/D30 landed `ClaimSelection`, K2b/D31 landed exact pair composition, and K2c/D32 landed
+  policy-stamped strict stack pairing with complete match/fault evidence. K3 and K4a are co-designed
+  next so geometry reachability and claim-identity graph semantics are settled once.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

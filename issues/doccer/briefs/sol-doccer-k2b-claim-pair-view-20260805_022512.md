@@ -137,3 +137,9 @@ to equality/converse.
 No qualitative table cell generates an occurrence edge, `AllenImage` remains nonpublic, and no
 K2c placeholder or packed-support promise landed. D31 closes K2b at 1,733 checks; K2c pairing and
 complete identity-bearing residue are the active next implementation.
+
+Follow-on: [K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) subsequently exercised this
+carrier as `PairingResult.MatchEdges` and correlated mismatch evidence, while K2a selections carry
+the exact role inputs and unary residue. Strict top-only stack execution, two delimiter-family
+witnesses, combined adversarial residue, and all 5,461 bounded two-key words are green; harness
+1733→1779. D32 closes K2 without changing pair composition or exposing `AllenImage`.

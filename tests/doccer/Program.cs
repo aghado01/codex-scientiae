@@ -70,6 +70,10 @@ internal static class Program
             ClaimPairCompositionMatchesItsIndependentOracleAndWitnesses();
             ClaimPairCompositionLawsHoldOnBoundedRelations();
             ClaimPairAllenAbstractionBridgeIsOneWay();
+            PairingWitnessesTwoDelimiterFamilies();
+            PairingFaultResidueIsCompleteAndTopOnly();
+            PairingRefusesAmbiguousInputsAndRetainsItsStamps();
+            PairingMatchesAnIndependentBoundedStackOracle();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -3188,6 +3192,301 @@ internal static class Program
             "qualitative images forget the middle-identity correlation they overapproximate");
     }
 
+    /// <summary>
+    /// K2c: nested environments and sequential fences exercise two independent caller key
+    /// policies. Results retain their exact input and policy stamps, while paired-region
+    /// projection advertises and exhibits its identity-forgetting normalization.
+    /// </summary>
+    private static void PairingWitnessesTwoDelimiterFamilies()
+    {
+        var environmentMaster = new TextMaster(
+            "pairing-environments",
+            0,
+            new string('x', 40));
+        var environments = PairingBatch(
+            environmentMaster,
+            (new TextSpan(30, 31), "close", "outer"),
+            (new TextSpan(10, 11), "open", "inner"),
+            (new TextSpan(20, 21), "close", "inner"),
+            (new TextSpan(0, 1), "open", "outer"));
+        var environmentOpens = ClaimSelection.FromPredicate(
+            environments,
+            static record => record.Kind == "open");
+        var environmentCloses = ClaimSelection.FromPredicate(
+            environments,
+            static record => record.Kind == "close");
+        var environmentPolicy = PairingPolicy.ByKey<string?>(
+            "environment-name",
+            static record => record.RuleId);
+
+        var nested = Pairing.Pair(
+            environmentOpens,
+            environmentCloses,
+            environmentPolicy);
+        True(ReferenceEquals(nested.OpenInput, environmentOpens),
+            "pairing retains the exact open input selection");
+        True(ReferenceEquals(nested.CloseInput, environmentCloses),
+            "pairing retains the exact close input selection");
+        True(ReferenceEquals(nested.Policy, environmentPolicy),
+            "pairing retains the exact policy object");
+        True(ReferenceEquals(nested.MatchEdges.LeftBasis, environments) &&
+            ReferenceEquals(nested.MatchEdges.RightBasis, environments),
+            "environment match edges retain both exact role bases");
+        Equal("1:2,3:0", PairKeys(nested.MatchEdges),
+            "geometric stack order is independent of batch insertion order");
+        True(nested.Faults.IsEmpty, "properly nested environments have no fault residue");
+        Equal(2, nested.MatchEdges.Count, "both nested environment families match");
+
+        var nestedRegions = nested.PairedRegions();
+        True(ReferenceEquals(nestedRegions.Master, environmentMaster),
+            "paired regions retain the input coordinate space");
+        Equal(1, nestedRegions.Count,
+            "normalizing nested match envelopes deliberately forgets the inner occurrence");
+        Equal(new TextSpan(0, 31), nestedRegions[0],
+            "environment envelope includes both delimiter tokens");
+
+        var openMaster = new TextMaster("pairing-fences", 0, new string('x', 40));
+        var closeMaster = new TextMaster("pairing-fences", 0, new string('x', 40));
+        var fenceOpensBasis = PairingBatch(
+            openMaster,
+            (new TextSpan(20, 23), "open", "TILDE"),
+            (new TextSpan(0, 3), "open", "BACKTICK"));
+        var fenceClosesBasis = PairingBatch(
+            closeMaster,
+            (new TextSpan(30, 33), "close", "tilde"),
+            (new TextSpan(10, 13), "close", "backtick"));
+        var fencePolicy = PairingPolicy.ByKey(
+            "fence-character-and-length",
+            static (SpanRecord record) => record.RuleId!,
+            StringComparer.OrdinalIgnoreCase);
+        var fences = Pairing.Pair(
+            ClaimSelection.All(fenceOpensBasis),
+            ClaimSelection.All(fenceClosesBasis),
+            fencePolicy);
+
+        Equal("0:0,1:1", PairKeys(fences.MatchEdges),
+            "sequential fence families match across distinct compatible bases");
+        True(fences.Faults.IsEmpty, "compatible fence pairs leave no residue");
+        Equal(2, fences.PairedRegions().Count,
+            "sequential paired envelopes remain two geometry regions");
+        True(ReferenceEquals(fences.PairedRegions().Master, openMaster),
+            "compatible cross-master projection chooses the open coordinate-space object");
+        True(openMaster.FingerprintIsCreated && closeMaster.FingerprintIsCreated,
+            "distinct-master pairing performs the required coordinate fingerprint check");
+        True(!openMaster.TopologyIsCreated && !closeMaster.TopologyIsCreated,
+            "distinct-master pairing still forces no text topology");
+    }
+
+    /// <summary>
+    /// K2c: a mismatched closer consumes exactly the stack top into correlated pair evidence; it
+    /// never searches below for a compatible opener. Match and named residue remain disjoint,
+    /// complete partitions of both exact role populations.
+    /// </summary>
+    private static void PairingFaultResidueIsCompleteAndTopOnly()
+    {
+        var master = new TextMaster("pairing-faults", 0, new string('x', 12));
+        var batch = PairingBatch(
+            master,
+            (new TextSpan(0, 1), "close", "A"),
+            (new TextSpan(2, 3), "open", "A"),
+            (new TextSpan(4, 5), "open", "B"),
+            (new TextSpan(6, 7), "close", "A"),
+            (new TextSpan(8, 9), "close", "A"),
+            (new TextSpan(10, 11), "open", "C"));
+        var opens = ClaimSelection.Create(batch, new[] { 1, 2, 5 });
+        var closes = ClaimSelection.Create(batch, new[] { 0, 3, 4 });
+        var comparisons = 0;
+        var policy = new PairingPolicy(
+            "fault-key",
+            (opener, closer) =>
+            {
+                comparisons++;
+                return StringComparer.Ordinal.Equals(opener.RuleId, closer.RuleId);
+            });
+
+        var result = Pairing.Pair(opens, closes, policy);
+        Equal(2, comparisons,
+            "compatibility runs once for each closer that encounters a stack top");
+        Equal("1:4", PairKeys(result.MatchEdges),
+            "a later closer still matches the outer opener left below the mismatch");
+        Equal("2:3", PairKeys(result.Faults.MismatchedPairs),
+            "the incompatible closer records only the current top opener");
+        True(result.Faults.UnclosedOpens.SequenceEqual(new[] { 5 }),
+            "the final stack population becomes exact unclosed residue");
+        True(result.Faults.DanglingCloses.SequenceEqual(new[] { 0 }),
+            "a closer on the empty stack becomes exact dangling residue");
+        True(result.Faults.MismatchedOpens.SequenceEqual(new[] { 2 }) &&
+            result.Faults.MismatchedCloses.SequenceEqual(new[] { 3 }),
+            "mismatch pair projections retain both exact endpoint identities");
+        True(result.Faults.OpenResidue.SequenceEqual(new[] { 2, 5 }),
+            "open residue combines disjoint mismatched and unclosed categories");
+        True(result.Faults.CloseResidue.SequenceEqual(new[] { 0, 3 }),
+            "close residue combines disjoint dangling and mismatched categories");
+        True(!result.Faults.IsEmpty, "adversarial pairing advertises nonempty faults");
+
+        var matchedOpens = result.MatchEdges.ProjectLeft();
+        var matchedCloses = result.MatchEdges.ProjectRight();
+        True(matchedOpens.Intersect(result.Faults.OpenResidue).IsEmpty &&
+            matchedOpens.Union(result.Faults.OpenResidue).Equals(opens),
+            "match and open residue form a disjoint complete input partition");
+        True(matchedCloses.Intersect(result.Faults.CloseResidue).IsEmpty &&
+            matchedCloses.Union(result.Faults.CloseResidue).Equals(closes),
+            "match and close residue form a disjoint complete input partition");
+        True(result.Faults.UnclosedOpens.Intersect(result.Faults.MismatchedOpens).IsEmpty &&
+            result.Faults.UnclosedOpens.Union(result.Faults.MismatchedOpens)
+                .Equals(result.Faults.OpenResidue),
+            "open fault categories partition open residue");
+        True(result.Faults.DanglingCloses.Intersect(result.Faults.MismatchedCloses).IsEmpty &&
+            result.Faults.DanglingCloses.Union(result.Faults.MismatchedCloses)
+                .Equals(result.Faults.CloseResidue),
+            "close fault categories partition close residue");
+        Equal(new TextSpan(2, 9), result.PairedRegions().Single(),
+            "paired region projection includes the accepted delimiter envelope only");
+    }
+
+    /// <summary>
+    /// K2c boundaries: roles and geometric word order must be unambiguous, coordinate spaces must
+    /// be compatible, null keys remain legitimate policy values, and empty execution still
+    /// returns a fully stamped result without forcing topology.
+    /// </summary>
+    private static void PairingRefusesAmbiguousInputsAndRetainsItsStamps()
+    {
+        var master = new TextMaster("pairing-boundaries", 0, new string('x', 8));
+        var batch = PairingBatch(
+            master,
+            (new TextSpan(0, 1), "open", null),
+            (new TextSpan(2, 3), "close", null),
+            (new TextSpan(4, 5), "other", "unused"));
+        var nullKeyPolicy = PairingPolicy.ByKey<string?>(
+            "nullable-key",
+            static record => record.RuleId);
+        var nullKeyResult = Pairing.Pair(
+            ClaimSelection.Create(batch, new[] { 0 }),
+            ClaimSelection.Create(batch, new[] { 1 }),
+            nullKeyPolicy);
+        Equal("0:1", PairKeys(nullKeyResult.MatchEdges),
+            "two null keys are a legitimate compatible policy value");
+
+        var noOpens = ClaimSelection.None(batch);
+        var noCloses = ClaimSelection.None(batch);
+        var empty = Pairing.Pair(noOpens, noCloses, nullKeyPolicy);
+        True(ReferenceEquals(empty.OpenInput, noOpens) &&
+            ReferenceEquals(empty.CloseInput, noCloses) &&
+            ReferenceEquals(empty.Policy, nullKeyPolicy),
+            "empty pairing retains exact input and policy stamps");
+        True(empty.MatchEdges.IsEmpty && empty.Faults.IsEmpty && empty.PairedRegions().Count == 0,
+            "empty pairing is total and produces empty matches, faults, and geometry");
+        True(!master.FingerprintIsCreated && !master.TopologyIsCreated,
+            "same-master pairing touches neither fingerprint nor topology");
+
+        var sharedRole = ClaimSelection.Create(batch, new[] { 0 });
+        Throws<ArgumentException>(
+            () => Pairing.Pair(sharedRole, sharedRole, nullKeyPolicy),
+            "one occurrence cannot carry both pairing roles");
+
+        var overlapBatch = PairingBatch(
+            master,
+            (new TextSpan(0, 3), "open", "A"),
+            (new TextSpan(2, 4), "close", "A"));
+        Throws<InvalidOperationException>(
+            () => Pairing.Pair(
+                ClaimSelection.Create(overlapBatch, new[] { 0 }),
+                ClaimSelection.Create(overlapBatch, new[] { 1 }),
+                nullKeyPolicy),
+            "overlapping token claims cannot acquire an arbitrary reading order");
+
+        var foreignMaster = new TextMaster("pairing-foreign", 0, master.Text);
+        var foreign = PairingBatch(
+            foreignMaster,
+            (new TextSpan(6, 7), "close", null));
+        Throws<InvalidOperationException>(
+            () => Pairing.Pair(
+                ClaimSelection.Create(batch, new[] { 0 }),
+                ClaimSelection.All(foreign),
+                nullKeyPolicy),
+            "pairing refuses incompatible coordinate spaces");
+
+        Throws<ArgumentException>(
+            () => new PairingPolicy(" ", static (_, _) => true),
+            "pairing policy requires a diagnostic name");
+        Throws<ArgumentNullException>(
+            () => new PairingPolicy("null-rule", null!),
+            "pairing policy requires a compatibility rule");
+        Throws<ArgumentNullException>(
+            () => PairingPolicy.ByKey<string>("null-key", null!),
+            "key pairing policy requires a selector");
+        Throws<ArgumentNullException>(
+            () => Pairing.Pair(null!, noCloses, nullKeyPolicy),
+            "pairing requires an open selection");
+        Throws<ArgumentNullException>(
+            () => Pairing.Pair(noOpens, null!, nullKeyPolicy),
+            "pairing requires a close selection");
+        Throws<ArgumentNullException>(
+            () => Pairing.Pair(noOpens, noCloses, null!),
+            "pairing requires a policy stamp");
+    }
+
+    /// <summary>
+    /// K2c gate: all 5,461 words of length zero through six over open-A, open-B, close-A,
+    /// and close-B are checked against an independently written abstract stack oracle. Every
+    /// result also satisfies exact partition, compatibility, forwardness, one-to-one, and
+    /// noncrossing laws.
+    /// </summary>
+    private static void PairingMatchesAnIndependentBoundedStackOracle()
+    {
+        var policy = PairingPolicy.ByKey<string?>(
+            "bounded-key",
+            static record => record.RuleId);
+        var oracleAgreement = true;
+        var resultLawsHold = true;
+        var wordCount = 0;
+
+        for (var length = 0; length <= 6 && oracleAgreement && resultLawsHold; length++)
+        {
+            var possibilities = 1 << (length * 2);
+            for (var encoded = 0; encoded < possibilities; encoded++)
+            {
+                wordCount++;
+                var master = new TextMaster(
+                    $"pairing-word-{length}-{encoded}",
+                    0,
+                    new string('x', length * 2));
+                var tokenClaims = new (TextSpan Span, string Role, string? Key)[length];
+                var oracleTokens = new PairingOracleToken[length];
+                for (var position = 0; position < length; position++)
+                {
+                    var symbol = (encoded >> (position * 2)) & 3;
+                    var isOpen = symbol < 2;
+                    var key = (symbol & 1) == 0 ? "A" : "B";
+                    tokenClaims[position] = (
+                        new TextSpan(position * 2, (position * 2) + 1),
+                        isOpen ? "open" : "close",
+                        key);
+                    oracleTokens[position] = new PairingOracleToken(isOpen, key);
+                }
+
+                var batch = PairingBatch(master, tokenClaims);
+                var opens = ClaimSelection.FromPredicate(
+                    batch,
+                    static record => record.Kind == "open");
+                var closes = ClaimSelection.FromPredicate(
+                    batch,
+                    static record => record.Kind == "close");
+                var actual = Pairing.Pair(opens, closes, policy);
+                var expected = PairingOracle(oracleTokens);
+                oracleAgreement &= PairingResultMatchesOracle(actual, expected);
+                resultLawsHold &= PairingResultObeysLaws(actual, opens, closes, policy);
+            }
+        }
+
+        Equal(5461, wordCount,
+            "bounded pairing oracle covers every two-key word through length six");
+        True(oracleAgreement,
+            "every bounded pairing result agrees with the independent abstract stack oracle");
+        True(resultLawsHold,
+            "every bounded pairing result satisfies stamps, partitions, and match invariants");
+    }
+
     private static SpanBatch PairBatch(TextMaster master, params TextSpan[] spans)
     {
         var builder = new SpanBatchBuilder(master);
@@ -3202,6 +3501,170 @@ internal static class Program
 
         return builder.Freeze();
     }
+
+    private static SpanBatch PairingBatch(
+        TextMaster master,
+        params (TextSpan Span, string Role, string? Key)[] tokens)
+    {
+        var builder = new SpanBatchBuilder(master);
+        foreach (var token in tokens)
+        {
+            builder.Add(new SpanClaim(
+                token.Span,
+                token.Role,
+                SpanLevel.Character,
+                "pairing-test",
+                RuleId: token.Key));
+        }
+
+        return builder.Freeze();
+    }
+
+    private static PairingOracleResult PairingOracle(
+        IReadOnlyList<PairingOracleToken> tokens)
+    {
+        var stack = new Stack<(int Ordinal, string Key)>();
+        var matches = new SortedSet<(int LeftOrdinal, int RightOrdinal)>();
+        var mismatches = new SortedSet<(int LeftOrdinal, int RightOrdinal)>();
+        var dangling = new SortedSet<int>();
+
+        for (var ordinal = 0; ordinal < tokens.Count; ordinal++)
+        {
+            var token = tokens[ordinal];
+            if (token.IsOpen)
+            {
+                stack.Push((ordinal, token.Key));
+            }
+            else if (stack.Count == 0)
+            {
+                dangling.Add(ordinal);
+            }
+            else
+            {
+                var opener = stack.Pop();
+                if (StringComparer.Ordinal.Equals(opener.Key, token.Key))
+                {
+                    matches.Add((opener.Ordinal, ordinal));
+                }
+                else
+                {
+                    mismatches.Add((opener.Ordinal, ordinal));
+                }
+            }
+        }
+
+        var unclosed = new SortedSet<int>();
+        while (stack.Count > 0)
+        {
+            unclosed.Add(stack.Pop().Ordinal);
+        }
+
+        return new PairingOracleResult(matches, mismatches, unclosed, dangling);
+    }
+
+    private static bool PairingResultMatchesOracle(
+        PairingResult actual,
+        PairingOracleResult expected) =>
+        PairViewMatchesKeys(actual.MatchEdges, expected.Matches) &&
+        PairViewMatchesKeys(actual.Faults.MismatchedPairs, expected.Mismatches) &&
+        actual.Faults.UnclosedOpens.SequenceEqual(expected.UnclosedOpens) &&
+        actual.Faults.DanglingCloses.SequenceEqual(expected.DanglingCloses);
+
+    private static bool PairingResultObeysLaws(
+        PairingResult result,
+        ClaimSelection opens,
+        ClaimSelection closes,
+        PairingPolicy policy)
+    {
+        if (!ReferenceEquals(result.OpenInput, opens) ||
+            !ReferenceEquals(result.CloseInput, closes) ||
+            !ReferenceEquals(result.Policy, policy) ||
+            !ReferenceEquals(result.MatchEdges.LeftBasis, opens.Basis) ||
+            !ReferenceEquals(result.MatchEdges.RightBasis, closes.Basis) ||
+            !ReferenceEquals(result.Faults.MismatchedPairs.LeftBasis, opens.Basis) ||
+            !ReferenceEquals(result.Faults.MismatchedPairs.RightBasis, closes.Basis))
+        {
+            return false;
+        }
+
+        var matchedOpens = result.MatchEdges.ProjectLeft();
+        var matchedCloses = result.MatchEdges.ProjectRight();
+        if (!matchedOpens.Intersect(result.Faults.OpenResidue).IsEmpty ||
+            !matchedCloses.Intersect(result.Faults.CloseResidue).IsEmpty ||
+            !matchedOpens.Union(result.Faults.OpenResidue).Equals(opens) ||
+            !matchedCloses.Union(result.Faults.CloseResidue).Equals(closes) ||
+            !result.Faults.UnclosedOpens.Intersect(result.Faults.MismatchedOpens).IsEmpty ||
+            !result.Faults.DanglingCloses.Intersect(result.Faults.MismatchedCloses).IsEmpty ||
+            !result.Faults.UnclosedOpens.Union(result.Faults.MismatchedOpens)
+                .Equals(result.Faults.OpenResidue) ||
+            !result.Faults.DanglingCloses.Union(result.Faults.MismatchedCloses)
+                .Equals(result.Faults.CloseResidue) ||
+            !result.Faults.MismatchedOpens.Equals(
+                result.Faults.MismatchedPairs.ProjectLeft()) ||
+            !result.Faults.MismatchedCloses.Equals(
+                result.Faults.MismatchedPairs.ProjectRight()) ||
+            result.Faults.IsEmpty !=
+                (result.Faults.OpenResidue.IsEmpty && result.Faults.CloseResidue.IsEmpty))
+        {
+            return false;
+        }
+
+        var leftEndpoints = new HashSet<int>();
+        var rightEndpoints = new HashSet<int>();
+        var edges = result.MatchEdges.ToArray();
+        foreach (var edge in edges)
+        {
+            var opener = opens.Basis[edge.LeftOrdinal];
+            var closer = closes.Basis[edge.RightOrdinal];
+            if (!leftEndpoints.Add(edge.LeftOrdinal) ||
+                !rightEndpoints.Add(edge.RightOrdinal) ||
+                opener.Span.End > closer.Span.Start ||
+                !policy.IsCompatible(opener, closer))
+            {
+                return false;
+            }
+        }
+
+        foreach (var mismatch in result.Faults.MismatchedPairs)
+        {
+            if (policy.IsCompatible(
+                opens.Basis[mismatch.LeftOrdinal],
+                closes.Basis[mismatch.RightOrdinal]))
+            {
+                return false;
+            }
+        }
+
+        for (var first = 0; first < edges.Length; first++)
+        {
+            var firstOpen = opens.Basis[edges[first].LeftOrdinal].Span.Start;
+            var firstClose = closes.Basis[edges[first].RightOrdinal].Span.Start;
+            for (var second = first + 1; second < edges.Length; second++)
+            {
+                var secondOpen = opens.Basis[edges[second].LeftOrdinal].Span.Start;
+                var secondClose = closes.Basis[edges[second].RightOrdinal].Span.Start;
+                if ((firstOpen < secondOpen &&
+                        secondOpen < firstClose &&
+                        firstClose < secondClose) ||
+                    (secondOpen < firstOpen &&
+                        firstOpen < secondClose &&
+                        secondClose < firstClose))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private readonly record struct PairingOracleToken(bool IsOpen, string Key);
+
+    private sealed record PairingOracleResult(
+        IReadOnlyCollection<(int LeftOrdinal, int RightOrdinal)> Matches,
+        IReadOnlyCollection<(int LeftOrdinal, int RightOrdinal)> Mismatches,
+        IReadOnlyCollection<int> UnclosedOpens,
+        IReadOnlyCollection<int> DanglingCloses);
 
     private static ClaimPairView PairViewFromMask(
         SpanBatch leftBasis,

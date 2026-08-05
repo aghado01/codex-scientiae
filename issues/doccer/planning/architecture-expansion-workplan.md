@@ -416,9 +416,9 @@ The bounded harness covers all 16 two-by-two relations, 256 oracle-differential 
 D29 inclusion, actual-image distinction, middle-correlation loss, and adjacent-gap non-converse
 are executable. Harness 1651→1733; K2b is closed and `AllenImage` remains nonpublic.
 
-#### K2c: pairing as the first structural consumer
+#### K2c: pairing as the first structural consumer — closed by D32
 
-Pairing remains the strongest witnessed missing mechanism, but it lands after the small
+Pairing was the strongest witnessed missing mechanism; D32 lands it after the small
 identity-bearing query carriers so it does not create another terminal bespoke result.
 
 ~~~text
@@ -438,6 +438,23 @@ Exit gate:
 - the accepted/fault populations witness the K2 carrier and projection contracts;
 - no repair action is performed;
 - matching, containment, and parenthood remain separate relations.
+
+D32 implements this surface as `Pairing.Pair` over exact `OpenInput` and `CloseInput` selections
+plus a named `PairingPolicy` compatibility object. The combined selected spans must form one
+non-overlapping geometric token stream; ambiguous dual roles or overlapping token positions are
+refused. Each closer consumes only the stack top: compatible endpoints become `MatchEdges`,
+incompatible endpoints become correlated `MismatchedPairs`, empty-stack closers become dangling,
+and final stack members become unclosed. Match projections plus exact unary residue are disjoint
+complete input partitions. `PairedRegions()` is a separately requested, identity-forgetting
+`SpanSet` projection of full delimiter envelopes.
+
+Nested environment and sequential fence witnesses exercise two caller-owned key families,
+distinct compatible bases, and normalized geometry. One adversarial run retains dangling,
+mismatched, later-matched, and unclosed outcomes simultaneously. An independent abstract stack
+oracle agrees on all 5,461 words through length six over two opener and two closer keys; every
+result also satisfies exact stamp, category-partition, forward, compatibility, partial one-to-one,
+and noncrossing laws. Harness 1733→1779; K2 is closed without repair, hierarchy, a delimiter
+vocabulary, or Lean activation.
 
 ### K3 — located-relation algebra
 
@@ -789,10 +806,11 @@ The expansion will not:
 ## 11. Immediate next move
 
 K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
-contract freeze as D29, K2a selection closure as D30, and K2b exact-pair closure as D31. The next
-implementation chip is K2c: land policy-stamped pairing with `ClaimPairView` match edges and
-complete identity-bearing selection/pair residue. Do not insert an unrelated tranche before this
-K2 witness closes.
+contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, and K2c strict
+stack pairing closure as D32. K2 is closed. The next artifact is the joint K3/K4a contract/design:
+settle geometry-only `LocatedRelation` and the identity-bearing `CandidateRegionGraph` together,
+including their one reference reachability meaning and explicit graph-to-geometry projection,
+before either source chip lands.
 
 The D29 bridge did not activate Lean. Apply the deferred gate only if implementation pressure
 changes its direction, basis hypotheses, public abstraction, or assurance burden as described in

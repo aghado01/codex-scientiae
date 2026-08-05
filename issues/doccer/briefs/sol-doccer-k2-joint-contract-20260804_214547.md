@@ -200,6 +200,12 @@ faults retain occurrence identity and evidence.
 Pairing performs no repair and infers neither containment nor parenthood. `MatchEdges` exercises
 the K2b carrier; fault populations exercise K2a; mismatch pair evidence remains identity-bearing.
 
+D32 resolves the reference execution details without adding domain meaning. Exact open and close
+selections assign roles; a named policy object owns compatibility. Their combined spans must form
+one non-overlapping geometric token stream. Each closer consumes only the stack top into either a
+match or a correlated mismatch; empty-stack closers dangle and final openers remain unclosed.
+Searching below a mismatch would be recovery and is deliberately absent.
+
 ## 8. Chip gates and landing order
 
 ### K2a gate
@@ -242,8 +248,8 @@ equivalence with the reference model. The gate also reopens if equality replaces
 middle-basis condition changes, or `AllenImage` becomes part of a generalized public
 qualitative-calculus abstraction.
 
-The reference `ClaimSelection` and `ComposePairs` implementations are now landed; the first
-pairing witness remains unblocked.
+The reference `ClaimSelection`, `ComposePairs`, and strict pairing implementations are now landed;
+no present K2 proof obligation blocks the joint K3/K4a design.
 
 ## 10. Non-goals
 
@@ -276,3 +282,11 @@ bridge, and sole terminal-join path as D31. The bounded suite covers all 256 two
 compositions, all 4,096 relation triples, and all 3,375 six-boundary middle paths; harness
 1651→1733. `AllenImage` remains nonpublic, Lean remains deferred under the same gate, and K2c is
 the active next chip.
+
+Follow-on: [K2c](sol-doccer-k2c-pairing-result-20260805_093203.md) subsequently landed strict
+stack pairing as D32. Exact role selections and the exact named policy object stamp the result;
+`ClaimPairView` matches and selection-backed unclosed/dangling/mismatched residue form complete
+input partitions, with mismatches retaining pair correlation. Environment and fence witnesses,
+one combined adversarial residue case, and all 5,461 two-key words through length six satisfy the
+independent oracle and result invariants; harness 1733→1779. K2 is closed, no repair or hierarchy
+landed, and the joint K3/K4a design is active next.

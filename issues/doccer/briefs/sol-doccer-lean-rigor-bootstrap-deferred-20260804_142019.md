@@ -359,6 +359,14 @@ adjacent-gap carrier independently refute the converse. This evidence closes K2b
 the gate: Lean remains deferred until a different backend or stronger public claim makes the
 theorem load-bearing.
 
+D32 introduces no new Lean activation. Strict stack pairing is one finite deterministic scan, its
+top-only mismatch behavior is frozen by the source witness, and an independent abstract oracle
+agrees on all 5,461 two-key words through length six while direct checks cover the complete
+match/residue partition and forward one-to-one noncrossing invariants. Reassess only before an
+optimized, parallel, incremental, or recovery-bearing backend claims equivalence with this
+reference policy; formalizing the lone implementation now would not choose or license a different
+design.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -369,6 +377,7 @@ theorem load-bearing.
 | Exact claim-pair identity and associativity | D31 direct relation implementation, nested differential oracle, and all 4,096 bounded relation triples | if a packed witness representation inherits the same claim |
 | Exact-pair Allen-image composition inclusion | D28 atomic-triad certificate plus D31 direct `ComposePairs`, 3,375 per-witness checks, union law, and two executable non-converses | before qualitative summaries drive optimized pruning with a universal no-false-negative claim, or if equality/generalized public abstraction is proposed |
 | Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
+| Strict stack match/residue partition and noncrossing | D32 direct scan, two concrete delimiter families, combined adversarial residue, and a 5,461-word independent bounded oracle | before an optimized/parallel/incremental implementation or a recovery policy claims equivalence |
 | Located `Seq` identity, associativity, and finite consuming closure | simple matrix/reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it |
 | Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
 | Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
@@ -378,8 +387,8 @@ theorem load-bearing.
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
-This triage leaves no present theorem whose completion should block K2c pairing or the reference
-candidate-graph work; `AllenRelationSet`, `ClaimSelection`, and `ClaimPairView` are already landed.
+This triage leaves no present theorem whose completion should block the joint K3/K4a design;
+`AllenRelationSet`, `ClaimSelection`, `ClaimPairView`, and strict pairing are already landed.
 
 ## 7. Restart recipe
 

@@ -59,6 +59,43 @@ briefs carry the later contracts with their reports — and the evidence in
 | D29 | Joint K2 contract and Allen abstraction bridge: K2a/K2b/K2c share exact frozen-batch occurrence bases and land consecutively; reference `ComposePairs` is ordinary extensional relation composition over an identical middle batch and never derives exact edges from `AllenCompose`; the Allen image of exact composition is contained in the canonical composition of the input images, with the adjacent-gap witness refuting the converse; reference C# relation/property oracles own the initial proof burden, while Lean remains deferred until an optimized or generalized backend makes universal no-false-negative equivalence load-bearing | recorded; joint K2 contract frozen, Lean not activated |
 | D30 | Occurrence selection closure (K2a): `ClaimSelection` is an immutable set of ordinals on one exact frozen `SpanBatch`; `None`/`All`/validated `Create` and `FromPredicate` construction, count/emptiness/membership, union/intersection/subtraction/relative complement, value equality/hash, and ascending-ordinal enumeration preserve occurrence identity; `Records(ClaimOrder)` is the explicit ordered projection and `Coverage()` the explicit identity-forgetting projection; grouping, gap cadence, suppression, and legacy predicate conveniences share the selection-backed reference path; D25's policy-bearing `Select` name remains reserved for K4; no durable ID, pair carrier, or join transition lands in K2a | implemented; K2a closed |
 | D31 | Exact occurrence-pair closure (K2b): `ClaimPairView` is an immutable exact finite relation over an ordered pair of frozen-batch references, with validated creation/geometry relation, derived Allen labels, ordinal-diagonal identity, lexicographic enumeration, value equality/hash, converse, projections, and exact-basis semijoins; `ComposePairs` is direct middle-ordinal relational composition and `ClaimPairWitnessView` is separate basis-stamped evidence for one composition; the D29 Allen-image inclusion and both non-converse mechanisms are executable while `AllenImage` remains nonpublic; `IntervalJoins.Join` now accepts `AllenRelationSet?` and only projects `ClaimPairView.Relate`, removing its independent join meaning | implemented; K2b closed |
+| D32 | Strict stack pairing closure (K2c): exact `ClaimSelection` inputs assign open/close roles and an exact named `PairingPolicy` object owns compatibility; the combined selected geometry must be one non-overlapping token stream; each closer consumes only the stack top into either a `ClaimPairView` match or correlated mismatch evidence, with empty-stack closes dangling and final opens unclosed; `PairingResult` retains exact input/policy stamps, match edges, complete selection-backed unary residue, mismatch pairs, and an explicit identity-forgetting `PairedRegions()` envelope projection; environment and fence witnesses plus all 5,461 two-key words through length six satisfy an independent oracle and partition/forward/one-to-one/noncrossing laws; no repair, recovery search, containment, parenthood, delimiter vocabulary, or Lean activation lands | implemented; K2 closed |
+
+## Strict stack pairing closure (D32)
+
+`Pairing.Pair` closes K2 with the first structural consumer of both exact occurrence carriers:
+
+- `OpenInput` and `CloseInput` are retained exact selections, possibly on distinct frozen batches
+  over compatible masters. They assign roles; Doccer does not universalize delimiter kind names;
+- `PairingPolicy` retains a required diagnostic name and either a direct opener/closer rule or a
+  `ByKey` selector/comparer. `PairingResult` retains the exact policy object that ran;
+- the combined selected spans must form one pairwise non-overlapping geometric token stream. An
+  occurrence in both roles or equal/overlapping token geometry is refused rather than ordered by
+  insertion, ordinal, or an engine-chosen role tie;
+- execution is strict stack discipline. A closer on an empty stack is dangling; otherwise it pops
+  the top opener. Compatible endpoints become `MatchEdges`, while incompatible endpoints become
+  `MismatchedPairs` and are both consumed into fault residue. The engine never searches below the
+  top for a replacement;
+- final stack members become `UnclosedOpens`. Match projections plus `OpenResidue` and
+  `CloseResidue` are disjoint complete partitions of the two input populations; mismatch
+  projections preserve their correlated pair evidence;
+- `PairedRegions()` projects each accepted edge to `[open.Start, close.End)` and normalizes through
+  `SpanSet`. Its possible collapse of nested or adjacent envelopes is the advertised
+  identity-forgetting boundary, not a second pairing truth.
+
+The environment witness covers nested keys and envelope collapse; the fence witness covers a
+second key family, custom comparison, sequential matches, and distinct compatible bases. One
+adversarial execution simultaneously retains dangling, mismatched, matched, and unclosed outcomes
+and confirms that mismatch is top-only. An independent abstract stack oracle agrees on all 5,461
+words of length zero through six over open-A, open-B, close-A, and close-B; every result is also
+checked for exact stamps, complete category partitions, forward compatible partial one-to-one
+edges, and noncrossing.
+
+This finite deterministic reference operation creates no present Lean burden: its result laws are
+checked directly and no alternative backend or recovery-equivalence claim exists. Reassess only if
+an optimized/parallel implementation or a new recovery policy claims equivalence. Harness
+1733→1779; K2 is closed, and the joint K3/K4a located-relation/candidate-graph design is active
+next.
 
 ## Exact occurrence-pair closure (D31)
 
@@ -89,7 +126,7 @@ identities and the complete adjacent four-boundary carrier separately refute the
 This closes the initial reference proof burden at 1,733 harness checks without exposing
 `AllenImage` or activating Lean. The D29 reactivation gate remains attached to a later backend that
 uses qualitative summaries to omit exact work or changes the inclusion, basis, or public
-abstraction contract. K2c pairing is the active next chip.
+abstraction contract. D32 subsequently closes K2c and the full K2 tranche.
 
 ## Occurrence selection closure (D30)
 
@@ -280,6 +317,7 @@ their result semantics interchangeable.
 | K2-SELECTION | `ClaimSelection` is exact-batch occurrence membership; Boolean algebra is basis-closed, canonical enumeration is ascending ordinal, and ordered/coverage projections do not change identity — **implemented in K2a (D30)** | bounded exhaustive C# mask oracle plus adversarial basis/projection/integration witnesses | all 64 subsets and all 4,096 ordered pairs on a six-claim basis; a 70-claim word-boundary case; cross-batch refusal; order/coverage separation; grouping/cadence/suppression parity | a compressed, persisted, incremental, or independent backend changes batch identity or claims extensional equivalence without differential coverage |
 | K2-CONCRETE-PAIRS | the `ConcreteCompose` family is exact basis-checked finite relation composition; `ClaimPairView` realizes it as `ComposePairs`, with claim identity the ordinal diagonal on one exact frozen batch — **implemented in K2b (D31)** | direct middle-ordinal reference implementation, independent nested relation oracle, and C# property tests | all 16 bounded relation values, 256 differential compositions, 4,096 associative triples, exact-basis refusal, identity, converse, projections, semijoins, complete middle witnesses, and one semantic `IntervalJoins.Join` path | a compressed/indexed backend claims equivalence without differential coverage, or a packed witness representation is asked to inherit extensional identity, associativity, or bracket-independent support |
 | K2-ALLEN-ABSTRACTION | the Allen image of exact `ComposePairs(R,S)` is contained in `AllenImage(R).AllenCompose(AllenImage(S))`; equality and qualitative edge generation are refused — **implemented as a K2b assurance law (D31); `AllenImage` remains nonpublic** | D28 atomic-triad certificate plus pointwise C# witness law and adjacent-gap/correlation counterexamples | actual edge images rather than requested filters; all 3,375 six-boundary middle paths satisfy atomic containment; union-level inclusion; executable non-converse | before an optimized backend uses qualitative summaries to omit exact work and claims universal no-false-negative equivalence, or if equality/generalized public abstraction is proposed |
+| K2-PAIRING | strict stack pairing over exact role selections produces forward compatible partial one-to-one noncrossing matches and disjoint complete named residue; mismatch consumes and records only the stack top — **implemented in K2c (D32)** | direct reference implementation, two concrete delimiter-family witnesses, independent bounded abstract-stack oracle, and result-law checks | environment/fence cases, combined dangling/mismatch/match/unclosed adversary, and all 5,461 two-key words through length six; exact stamps and ambiguity refusals retained | before an optimized, parallel, incremental, or recovery-bearing implementation claims equivalence with the strict reference policy |
 | K3-LOCATED-SEQ | geometry-only located `Seq` uses a shared boundary, has the declared-window diagonal identity, is associative, and distributes over union — **reserved for joint K3/K4a design** | simple C# matrix/reference semantics and bounded exhaustive tests | identity, associativity, distributivity, finite consuming closure, rebase laws, and explicit graph-to-geometry projection before landing | a compressed or incremental closure algorithm replaces the reference semantics, or an exact-versus-lax map boundary remains disputed |
 | K4-SELECT | `Select` executes a named caller policy and promises only that policy's result invariants, never an implied optimum — **reserved for K4** | deterministic policy contract plus adversarial C# result validation | policy stamp, tie rule, rejected alternatives, conflicts, and residuals remain visible | only if a replacement optimizer claims equivalence or a new global optimality guarantee; policy choice itself is not a theorem |
 | K5-SATURATE | positive finite `Saturate` is monotone and inflationary and reaches one least fixed point independent of fair rule order — **reserved for K5** | reference worklist, order-permutation C# tests, and standard external theorem | canonical fact identity must close first; repeated derivations add support rather than duplicate facts | before parallel or incremental saturation claims semantic equivalence |
