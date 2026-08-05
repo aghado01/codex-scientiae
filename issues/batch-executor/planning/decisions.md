@@ -101,7 +101,8 @@ dependencies and per-job process specifications.
 `SharedReadOnly` is the direct-runspace default: caller items, context, and nested values must not be
 mutated concurrently. `PerItemCopy` uses CLIXML snapshots when isolation is more important than type
 fidelity and serialization cost. Process jobs always cross a CLIXML boundary. Parent-side normalization
-and serialization occur before concurrent workers traverse caller-owned object graphs.
+and serialization complete before the pool opens and before the first `BeginInvoke`; dispatch never
+traverses caller-owned object graphs.
 
 ### D11 — Collision freedom is declared and checked, not inferred from arbitrary code — implemented
 
@@ -163,6 +164,8 @@ This preserves warning-free `Import-Module -Force` behavior while making shapes 
 session configuration, cancellation/wait inputs, and dispatch-ready direct data or process payloads. It
 owns no runspace pool, `PowerShell` pipeline, async handle, live `Process`, process registry, result array,
 or infrastructure-error collection. Preparation records are write-once by convention after construction.
+Preparation is all-or-nothing: any validation, normalization, or serialization failure occurs before pool
+creation, so no earlier item starts from a partially prepared batch.
 
 One mutable `LifecycleState`, created by `Invoke-BatchExecutor` before the outer execution `try`, is the
 only owner of the pool, invocation records, ordered result array, child-process registry, infrastructure
@@ -175,6 +178,8 @@ independent competing booleans.
 Each prepared item retains the original caller input solely for result identity. Direct dispatch data is
 either the shared reference or its prepared CLIXML copy. A process item retains only its resolved process
 specification and prepared payload XML for dispatch; it never carries direct dispatch graphs.
+`Resolve-BatchExecutorPreparation` implements this write-once half of the contract; lifecycle ownership is
+realized incrementally by the remaining Phase 3 items.
 
 ### D18 — Phase 3 freezes the public execution projection — accepted
 
@@ -182,7 +187,8 @@ Lifecycle decomposition does not add or rename public result, execution, policy,
 fields. In particular, `Input` remains the original caller object and the existing `WaitMs` timing name is
 preserved. Preparation and lifecycle records, pool/pipeline/async handles, registry entries, and internal
 phase names never escape. Any new public timing such as preparation or teardown duration requires a
-separate contract decision.
+separate contract decision. After BEX-302, `DispatchMs` is explicitly submission-only: preparation and
+serialization remain included in `TotalMs` but do not receive a new public timing field during Phase 3.
 
 ## Deliberate non-goals of the module-extraction tranche
 

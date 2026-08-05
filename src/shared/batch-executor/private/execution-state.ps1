@@ -14,7 +14,9 @@ function New-BatchExecutorResolvedProcessSpec {
     $environmentSnapshot = @{}
     if ($null -ne $Environment) {
         foreach ($key in @($Environment.Keys)) {
-            $environmentSnapshot[[string]$key] = $Environment[$key]
+            $value = $Environment[$key]
+            $environmentSnapshot[[string]$key] = if ($null -eq $value) { $null }
+                else { [string]$value }
         }
     }
 

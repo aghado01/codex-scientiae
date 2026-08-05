@@ -60,6 +60,8 @@ Describe 'batch-executor module surface' {
             'Set-BatchExecutorInvocationTerminalOverride'
             'New-BatchExecutorWaitOutcome'
             'New-BatchExecutorSessionState'
+            'ConvertTo-BatchExecutorCliXml'
+            'Resolve-BatchExecutorPreparation'
             'Stop-BatchExecutorChildProcesses'
             'Resolve-BatchPlanPath'
             'Resolve-BatchPlanModuleReference'

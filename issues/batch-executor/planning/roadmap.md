@@ -11,10 +11,11 @@ module validates and reads four runtime payloads as source data, loads named hos
 order, and leaks no private helpers. The former flat implementation is now a compatibility facade that
 imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
-The behavioral and teardown gates remain closed: 21 executor, 7 private state-contract, 8 job/plan, and 8
-module-surface tests pass, and the complete shared suite is 137 passing tests. The queued multi-item
-host-stop witness closes the start/registration race and prevents queued supervisors from unwinding in
-serial waves. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
+The behavioral and teardown gates remain closed: 21 executor, 7 private state-contract, 5 preparation, 8
+job/plan, and 8 module-surface tests pass, and the complete shared suite is 142 passing tests. The queued
+multi-item host-stop witness closes the start/registration race and prevents queued supervisors from
+unwinding in serial waves. Preparation now completes all caller-graph traversal and serialization before
+the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
 residue and rebuilt the check around required current inputs. Phase 2 is closed; Phase 3 is active with the
 package boundary, public execution projection, and compatibility facade held stable.
 
@@ -29,11 +30,6 @@ package boundary, public execution projection, and compatibility facade held sta
 
 ## Phase 3 — Internal lifecycle decomposition
 
-- **BEX-302 — Extract pre-dispatch, execution-resource-free preparation.** Isolate worker/initializer
-  validation, ID and mode normalization, process-spec resolution, context/item snapshots, worker-budget
-  selection, policy reporting, session configuration, and all process payload serialization. Produce every
-  dispatch-ready item before the first `BeginInvoke`; do not absorb plan compilation or dependency-DAG
-  semantics.
 - **BEX-303 — Bind one lifecycle owner and extract dispatch.** Construct mutable lifecycle state before the
   exported owner's outer `try`; assign partial pool and invocation handles incrementally so exceptional
   teardown always sees them. Preserve one pool, queue, budget, and registry across execution modes.

@@ -29,142 +29,24 @@ function Invoke-BatchExecutor {
     )
 
     $swTotal = [System.Diagnostics.Stopwatch]::StartNew()
-    $workerDefinition = Get-BatchExecutorScriptDefinition -Path $ScriptPath -Role worker `
-        -RejectRequires:($ExecutionMode -ne 'Process')
-    $initializerDefinition = if ($InitializationScriptPath) {
-        Get-BatchExecutorScriptDefinition -Path $InitializationScriptPath -Role initializer `
-            -RejectRequires:($ExecutionMode -ne 'Process')
-    }
-    else { $null }
+    $preparation = Resolve-BatchExecutorPreparation -InputObject $InputObject `
+        -ScriptPath $ScriptPath -ExecutionMode $ExecutionMode `
+        -ExecutionModeProperty $ExecutionModeProperty -ProcessSpecProperty $ProcessSpecProperty `
+        -Context $Context -InitializationScriptPath $InitializationScriptPath `
+        -ModulePath $ModulePath -IssPreset $IssPreset -MaxWorkers $MaxWorkers `
+        -ReservedCores $ReservedCores -MinItemsPerWorker $MinItemsPerWorker `
+        -IdProperty $IdProperty -SerializationDepth $SerializationDepth `
+        -ProcessTimeoutSeconds $ProcessTimeoutSeconds -WaitTimeoutSeconds $WaitTimeoutSeconds `
+        -CancellationToken $CancellationToken -RunspaceDataPolicy $RunspaceDataPolicy `
+        -PowerShellPath $PowerShellPath -WorkingDirectory $WorkingDirectory `
+        -ProcessEnvironment $ProcessEnvironment -CreateNoWindow $CreateNoWindow `
+        -WindowStyle $WindowStyle -LoadProfile:$LoadProfile -PriorityClass $PriorityClass
 
-    $count = $InputObject.Count
-    $itemModes = [string[]]::new($count)
-    $hasProcessJobs = $false
-    $hasRunspaceJobs = $false
-    for ($i = 0; $i -lt $count; $i++) {
-        $mode = if ($ExecutionMode -eq 'Mixed') {
-            [string](Get-BatchExecutorPropertyValue -Object $InputObject[$i] -Name $ExecutionModeProperty)
-        }
-        else { $ExecutionMode }
-        if ($mode -notin @('Runspace', 'Process')) {
-            throw "batch executor item [$i] has invalid execution mode '$mode' (expected Runspace or Process)"
-        }
-        $itemModes[$i] = $mode
-        if ($mode -eq 'Process') { $hasProcessJobs = $true } else { $hasRunspaceJobs = $true }
-    }
-
-    if (-not (Test-Path -LiteralPath $WorkingDirectory -PathType Container)) {
-        throw "batch executor working directory not found: '$WorkingDirectory'"
-    }
-    $resolvedWorkingDirectory = (Resolve-Path -LiteralPath $WorkingDirectory).Path
-
-    # Freeze launch environment before any runspace reads it. Multiple concurrent reads are safe;
-    # caller mutations after Invoke-BatchExecutor begins cannot race ProcessStartInfo construction.
-    $processEnvironmentSnapshot = @{}
-    if ($null -ne $ProcessEnvironment) { foreach ($key in @($ProcessEnvironment.Keys)) {
-        $processEnvironmentSnapshot[[string]$key] = $ProcessEnvironment[$key]
-    } }
-
-    if ($hasProcessJobs) {
-        if (-not $PowerShellPath) {
-            $candidate = Join-Path $PSHOME $(if ($IsWindows) { 'pwsh.exe' } else { 'pwsh' })
-            $PowerShellPath = if (Test-Path -LiteralPath $candidate -PathType Leaf) {
-                (Resolve-Path -LiteralPath $candidate).Path
-            }
-            else {
-                (Get-Command pwsh -ErrorAction Stop).Source
-            }
-        }
-        if (-not (Test-Path -LiteralPath $PowerShellPath -PathType Leaf)) {
-            throw "batch executor child PowerShell not found: '$PowerShellPath'"
-        }
-        $PowerShellPath = (Resolve-Path -LiteralPath $PowerShellPath).Path
-    }
-
-    # Resolve every child launch specification on the parent thread. This both validates policy
-    # before work begins and prevents worker runspaces from walking caller-owned job objects.
-    $effectiveProcessSpecs = [object[]]::new($count)
-    if ($hasProcessJobs) {
-        for ($i = 0; $i -lt $count; $i++) {
-            if ($itemModes[$i] -ne 'Process') { continue }
-
-            $rawSpec = Get-BatchExecutorPropertyValue -Object $InputObject[$i] -Name $ProcessSpecProperty
-            $itemPowerShellPath = [string](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'PowerShellPath' -Default $PowerShellPath)
-            $itemWorkingDirectory = [string](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'WorkingDirectory' -Default $resolvedWorkingDirectory)
-            $itemTimeout = [int](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'TimeoutSeconds' -Default $ProcessTimeoutSeconds)
-            $itemCreateNoWindow = [bool](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'CreateNoWindow' -Default $CreateNoWindow)
-            $itemWindowStyle = [string](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'WindowStyle' -Default $WindowStyle)
-            $itemLoadProfile = [bool](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'LoadProfile' -Default ([bool]$LoadProfile))
-            $itemPriorityClass = [string](Get-BatchExecutorPropertyValue -Object $rawSpec `
-                -Name 'PriorityClass' -Default $PriorityClass)
-
-            if (-not (Test-Path -LiteralPath $itemPowerShellPath -PathType Leaf)) {
-                throw "batch executor item [$i] child PowerShell not found: '$itemPowerShellPath'"
-            }
-            if (-not (Test-Path -LiteralPath $itemWorkingDirectory -PathType Container)) {
-                throw "batch executor item [$i] working directory not found: '$itemWorkingDirectory'"
-            }
-            if ($itemTimeout -lt 0) { throw "batch executor item [$i] timeout must not be negative" }
-            if ($itemWindowStyle -notin @('Hidden', 'Normal', 'Minimized', 'Maximized')) {
-                throw "batch executor item [$i] has invalid window style '$itemWindowStyle'"
-            }
-            if ($itemPriorityClass -notin @('Idle', 'BelowNormal', 'Normal', 'AboveNormal', 'High')) {
-                throw "batch executor item [$i] has invalid priority class '$itemPriorityClass'"
-            }
-
-            $itemEnvironment = @{}
-            foreach ($key in @($processEnvironmentSnapshot.Keys)) {
-                $itemEnvironment[[string]$key] = $processEnvironmentSnapshot[$key]
-            }
-            $environmentOverride = Get-BatchExecutorPropertyValue -Object $rawSpec -Name 'Environment'
-            if ($null -ne $environmentOverride) {
-                if ($environmentOverride -isnot [System.Collections.IDictionary]) {
-                    throw "batch executor item [$i] process environment must be a dictionary"
-                }
-                foreach ($key in @($environmentOverride.Keys)) {
-                    $itemEnvironment[[string]$key] = $environmentOverride[$key]
-                }
-            }
-
-            $effectiveProcessSpecs[$i] = [pscustomobject]@{
-                PowerShellPath = (Resolve-Path -LiteralPath $itemPowerShellPath).Path
-                WorkingDirectory = (Resolve-Path -LiteralPath $itemWorkingDirectory).Path
-                TimeoutSeconds = $itemTimeout
-                CreateNoWindow = $itemCreateNoWindow
-                WindowStyle = $itemWindowStyle
-                LoadProfile = $itemLoadProfile
-                Environment = $itemEnvironment
-                PriorityClass = $itemPriorityClass
-            }
-        }
-    }
-
-    $policy = [pscustomobject]@{
-        FailureAction = 'Continue'
-        ExecutionMode = $ExecutionMode
-        RunspaceData = if (-not $hasRunspaceJobs) { 'SerializedCopy' }
-            elseif ($hasProcessJobs) { "$RunspaceDataPolicy (Runspace); SerializedCopy (Process)" }
-            else { $RunspaceDataPolicy }
-        Cancellation = 'CallerTokenAndTimeout'
-        ChildProcess = if ($hasProcessJobs) {
-            [pscustomobject]@{
-                PowerShellPath = $PowerShellPath; WorkingDirectory = $resolvedWorkingDirectory
-                CreateNoWindow = $CreateNoWindow; WindowStyle = $WindowStyle; LoadProfile = [bool]$LoadProfile
-                PriorityClass = $PriorityClass; TimeoutSeconds = $ProcessTimeoutSeconds
-                EnvironmentKeys = [string[]]@($processEnvironmentSnapshot.Keys | Sort-Object)
-            }
-        }
-        else { $null }
-    }
-
-    $budget = Resolve-BatchWorkerBudget -ItemCount $count -MaxWorkers $MaxWorkers `
-        -ReservedCores $ReservedCores -MinItemsPerWorker $MinItemsPerWorker
+    $count = $preparation.ItemCount
+    $preparedItems = $preparation.Items
+    $hasProcessJobs = $preparation.HasProcessItems
+    $budget = $preparation.Budget
+    $policy = $preparation.Policy
 
     if ($count -eq 0) {
         return [pscustomobject]@{
@@ -175,29 +57,7 @@ function Invoke-BatchExecutor {
         }
     }
 
-    # Resolve correlation ids before opening the pool. Duplicate caller ids are a planning error,
-    # because logs and domain artifacts commonly key off them even though the executor does not.
-    $ids = [string[]]::new($count)
-    $seenIds = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-    for ($i = 0; $i -lt $count; $i++) {
-        $item = $InputObject[$i]
-        $id = $null
-        if ($null -ne $item -and $item -is [System.Collections.IDictionary] -and $item.Contains($IdProperty)) {
-            $id = [string]$item[$IdProperty]
-        }
-        elseif ($null -ne $item) {
-            $property = $item.PSObject.Properties[$IdProperty]
-            if ($null -ne $property) { $id = [string]$property.Value }
-        }
-        if ([string]::IsNullOrWhiteSpace($id)) { $id = 'batch-{0:d4}' -f $i }
-        if (-not $seenIds.Add($id)) { throw "batch executor duplicate item id: '$id'" }
-        $ids[$i] = $id
-    }
-
-    $iss = New-BatchExecutorSessionState -ExecutionMode $ExecutionMode -IssPreset $IssPreset `
-        -ModulePath $ModulePath -WorkerBody $workerDefinition.Body `
-        -InitializerBody $(if ($initializerDefinition) { $initializerDefinition.Body } else { $null })
-
+    $iss = $preparation.InitialSessionState
     $pool = $null
     $invocations = [System.Collections.Generic.List[hashtable]]::new($count)
     $ordered = [object[]]::new($count)
@@ -206,10 +66,6 @@ function Invoke-BatchExecutor {
         [System.StringComparer]::OrdinalIgnoreCase)
     $timing = @{}
     $completedNormally = $false
-    $serializedContext = if ($hasRunspaceJobs -and $RunspaceDataPolicy -eq 'PerItemCopy') {
-        [System.Management.Automation.PSSerializer]::Serialize($Context, $SerializationDepth)
-    }
-    else { $null }
 
     try {
         $swPool = [System.Diagnostics.Stopwatch]::StartNew()
@@ -221,49 +77,25 @@ function Invoke-BatchExecutor {
         $pool.Open()
         $timing.PoolOpenMs = $swPool.ElapsedMilliseconds
 
-        $childCommandBytes = [System.Text.Encoding]::Unicode.GetBytes($script:BatchExecutorChildCommand)
-        $encodedChildCommand = [System.Convert]::ToBase64String($childCommandBytes)
-
         $swDispatch = [System.Diagnostics.Stopwatch]::StartNew()
         for ($i = 0; $i -lt $count; $i++) {
+            $preparedItem = $preparedItems[$i]
             $ps = [System.Management.Automation.PowerShell]::Create()
             $ps.RunspacePool = $pool
-            if ($itemModes[$i] -eq 'Runspace') {
-                $dispatchItem = $InputObject[$i]
-                $dispatchContext = $Context
-                if ($RunspaceDataPolicy -eq 'PerItemCopy') {
-                    $itemXml = [System.Management.Automation.PSSerializer]::Serialize($InputObject[$i], $SerializationDepth)
-                    $dispatchItem = [System.Management.Automation.PSSerializer]::Deserialize($itemXml)
-                    $dispatchContext = [System.Management.Automation.PSSerializer]::Deserialize($serializedContext)
-                }
+            if ($preparedItem.Mode -eq 'Runspace') {
                 $command = $ps.AddCommand('Invoke-BatchDirectDispatcher')
-                [void] $command.AddArgument($dispatchItem)
-                [void] $command.AddArgument($dispatchContext)
-                [void] $command.AddArgument($CancellationToken)
+                [void] $command.AddArgument($preparedItem.DispatchItem)
+                [void] $command.AddArgument($preparedItem.DispatchContext)
+                [void] $command.AddArgument($preparation.CancellationToken)
             }
             else {
-                $processSpec = $effectiveProcessSpecs[$i]
-                # Serialize on the parent thread. Worker runspaces never traverse caller-owned object
-                # graphs concurrently; the child receives an immutable snapshot of this submission.
-                $payload = [pscustomobject]@{
-                    ScriptPath = $workerDefinition.Path
-                    InitializationScriptPath = if ($ExecutionMode -eq 'Process' -and $initializerDefinition) {
-                        $initializerDefinition.Path
-                    }
-                    else { $null }
-                    ModulePath = if ($ExecutionMode -eq 'Process') { [string[]]@($ModulePath) }
-                        else { [string[]]@() }
-                    Item = $InputObject[$i]
-                    Context = $Context
-                    SerializationDepth = $SerializationDepth
-                }
-                $payloadXml = [System.Management.Automation.PSSerializer]::Serialize($payload, $SerializationDepth)
+                $processSpec = $preparedItem.ProcessSpec
                 $command = $ps.AddCommand('Invoke-BatchProcessDispatcher')
-                [void] $command.AddArgument($ids[$i])
-                [void] $command.AddArgument($payloadXml)
+                [void] $command.AddArgument($preparedItem.Id)
+                [void] $command.AddArgument($preparedItem.ProcessPayloadXml)
                 [void] $command.AddArgument($processSpec.PowerShellPath)
                 [void] $command.AddArgument($processSpec.WorkingDirectory)
-                [void] $command.AddArgument($encodedChildCommand)
+                [void] $command.AddArgument($preparation.EncodedChildCommand)
                 [void] $command.AddArgument($processSpec.TimeoutSeconds)
                 [void] $command.AddArgument($processSpec.CreateNoWindow)
                 [void] $command.AddArgument($processSpec.WindowStyle)
@@ -271,21 +103,21 @@ function Invoke-BatchExecutor {
                 [void] $command.AddArgument($processSpec.Environment)
                 [void] $command.AddArgument($processSpec.PriorityClass)
                 [void] $command.AddArgument($processRegistry)
-                [void] $command.AddArgument($CancellationToken)
+                [void] $command.AddArgument($preparation.CancellationToken)
             }
 
             try {
                 $async = $ps.BeginInvoke()
                 $invocations.Add(@{
-                    Index = $i; Id = $ids[$i]; Item = $InputObject[$i]; PS = $ps; Async = $async
-                    Mode = $itemModes[$i]
+                    Index = $i; Id = $preparedItem.Id; Item = $preparedItem.Input; PS = $ps; Async = $async
+                    Mode = $preparedItem.Mode
                     QueuedUtc = [datetime]::UtcNow; TimedOut = $false; Cancelled = $false
                 })
             }
             catch {
                 $ps.Dispose()
                 $ordered[$i] = [pscustomobject]@{
-                    Id = $ids[$i]; Index = $i; Input = $InputObject[$i]; State = 'Failed'; Output = @()
+                    Id = $preparedItem.Id; Index = $i; Input = $preparedItem.Input; State = 'Failed'; Output = @()
                     Errors = @($_.ToString()); Warnings = @(); Information = @(); QueuedUtc = [datetime]::UtcNow
                     StartedUtc = $null; EndedUtc = [datetime]::UtcNow; DurationMs = 0
                     RunspaceId = $null; ThreadId = $null; ProcessId = $null; ExitCode = $null

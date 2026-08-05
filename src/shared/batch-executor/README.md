@@ -82,7 +82,9 @@ captured child stdout/stderr. Terminal states are:
 | `Cancelled` | Caller cancellation or hosting-pipeline unwind stopped the item. |
 
 The execution record also contains batch `Errors`, budget warnings, resolved `Budget`, effective
-`Policy`, phase `Timing`, and a state-count `Summary`.
+`Policy`, phase `Timing`, and a state-count `Summary`. `Timing.DispatchMs` measures pipeline construction
+and submission only. Pre-dispatch validation and serialization remain included in `Timing.TotalMs`; Phase
+3 does not add a separate preparation timing field.
 
 ## Internal lifecycle boundary
 
@@ -114,8 +116,9 @@ Direct jobs in one pool share one `InitialSessionState`. `SharedReadOnly` passes
 reference and requires callers not to mutate item, context, or nested values concurrently.
 `PerItemCopy` creates CLIXML snapshots of item and context before dispatch, trading type fidelity
 and serialization cost for isolation. Process jobs always cross a CLIXML boundary. Parent-side
-normalization, environment copying, and process-spec resolution happen before concurrent workers
-traverse the submitted records.
+normalization, environment copying, process-spec resolution, direct-copy materialization, and process
+payload serialization all finish before the pool opens and before the first `BeginInvoke`. Dispatch does
+not traverse caller-owned object graphs.
 
 ## Child-process and logging policy
 

@@ -61,6 +61,7 @@ $hostFiles = @(
     'private/property-access.ps1'
     'private/execution-state.ps1'
     'private/session-state.ps1'
+    'private/executor-preparation.ps1'
     'private/process-lifecycle.ps1'
     'private/plan-resolution.ps1'
     'public/New-BatchJob.ps1'
