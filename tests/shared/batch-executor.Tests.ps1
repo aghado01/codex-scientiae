@@ -476,4 +476,54 @@ Invoke-BatchExecutor -InputObject @($Item) -ScriptPath $WorkerPath -ExecutionMod
         (Test-ProcessExited -ProcessId $childPid) | Should -BeTrue
         (Test-ProcessExited -ProcessId $grandchildPid) | Should -BeTrue
     }
+
+    It 'kills every started tree when host stop intersects a queued process batch' {
+        $worker = Write-ProcessTreeWorker (Join-Path $TestDrive 'queued-pipeline-stop-tree-worker.ps1')
+        $items = 1..8 | ForEach-Object {
+            [pscustomobject]@{
+                Id = "queued-pipeline-stop-$_"
+                ChildPidPath = Join-Path $TestDrive "queued-pipeline-stop-$_.pid"
+                GrandchildPidPath = Join-Path $TestDrive "queued-pipeline-stop-grandchild-$_.pid"
+            }
+        }
+        $manifestPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1')).Path
+        $hostingPowerShell = [System.Management.Automation.PowerShell]::Create()
+        $command = $hostingPowerShell.AddScript(@'
+param($ManifestPath, $WorkerPath, $Items)
+Import-Module $ManifestPath -Force
+Invoke-BatchExecutor -InputObject @($Items) -ScriptPath $WorkerPath -ExecutionMode Process `
+    -ProcessTimeoutSeconds 30 -MaxWorkers 2 | Out-Null
+'@)
+        [void]$command.AddArgument($manifestPath)
+        [void]$command.AddArgument($worker)
+        [void]$command.AddArgument($items)
+        $async = $hostingPowerShell.BeginInvoke()
+        $started = $false
+        $stopwatch = [System.Diagnostics.Stopwatch]::new()
+        try {
+            # MaxWorkers is intentionally smaller than the batch. Reaching the first full-start
+            # marker while the remaining items are queued gives host stop a registration boundary
+            # to intersect without relying on sleeps as the synchronization witness.
+            $started = Wait-TestFile -Path $items[0].ChildPidPath
+            $stopwatch.Start()
+        }
+        finally {
+            try { $hostingPowerShell.Stop() } catch {}
+            $stopwatch.Stop()
+            if ($async.IsCompleted) { try { [void]$hostingPowerShell.EndInvoke($async) } catch {} }
+            $hostingPowerShell.Dispose()
+        }
+
+        $started | Should -BeTrue
+        $stopwatch.Elapsed.TotalSeconds | Should -BeLessThan 8
+        $startedItems = @($items | Where-Object { Test-Path -LiteralPath $_.ChildPidPath })
+        $startedItems.Count | Should -BeGreaterOrEqual 1
+        foreach ($item in $startedItems) {
+            $item.GrandchildPidPath | Should -Exist
+            $childPid = [int](Get-Content -LiteralPath $item.ChildPidPath -Raw)
+            $grandchildPid = [int](Get-Content -LiteralPath $item.GrandchildPidPath -Raw)
+            (Test-ProcessExited -ProcessId $childPid) | Should -BeTrue
+            (Test-ProcessExited -ProcessId $grandchildPid) | Should -BeTrue
+        }
+    }
 }

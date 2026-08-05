@@ -60,11 +60,11 @@ else { try {
     $process.StartInfo = $startInfo
     if (-not $process.Start()) { throw "failed to start child PowerShell: $PowerShellPath" }
     $childProcessId = $process.Id
-    if (-not $ProcessRegistry.TryAdd($JobId, $process)) {
+    $registered = $ProcessRegistry.TryAdd($JobId, $process)
+    if (-not $registered) {
         try { $process.Kill($true) } catch {}
         throw "live child registry already contains job id '$JobId'"
     }
-    $registered = $true
 
     if ($PriorityClass -ne 'Normal') {
         try {
@@ -85,13 +85,22 @@ else { try {
     $process.StandardInput.Write($payloadXml)
     $process.StandardInput.Close()
 
-    $completed = if ($ProcessTimeoutSeconds -gt 0) {
-        $waitMs = [math]::Min([int64]::MaxValue, [int64]$ProcessTimeoutSeconds * 1000)
-        $process.WaitForExit([int][math]::Min([int]::MaxValue, $waitMs))
-    }
-    else {
-        $process.WaitForExit()
-        $true
+    # Keep PowerShell stop/unwind interruptible. A single long CLR WaitForExit call can hide a child
+    # that registers after the parent's final registry sweep until the child exits naturally.
+    $processWait = [System.Diagnostics.Stopwatch]::StartNew()
+    $completed = $process.HasExited
+    while (-not $completed -and -not $CancellationToken.IsCancellationRequested) {
+        $remaining = if ($ProcessTimeoutSeconds -gt 0) {
+            ([int64]$ProcessTimeoutSeconds * 1000) - $processWait.ElapsedMilliseconds
+        }
+        else { [int64]-1 }
+        if ($ProcessTimeoutSeconds -gt 0 -and $remaining -le 0) { break }
+
+        $waitSlice = if ($remaining -ge 0) {
+            [int][math]::Min(200, [math]::Max(1, $remaining))
+        }
+        else { 200 }
+        $completed = $process.WaitForExit($waitSlice)
     }
 
     if ($CancellationToken.IsCancellationRequested) {
@@ -158,6 +167,18 @@ catch {
     else { $failure = $_.ToString(); $state = 'Failed' }
 }
 finally {
+    # The dispatcher is the final owner of any process it started. Parent teardown can race the
+    # Start/TryAdd handoff or sweep the registry just before a late registration, so unwind must
+    # terminate the tree before the dispatcher removes and disposes its process record.
+    if ($null -ne $process) {
+        try {
+            if (-not $process.HasExited) {
+                try { $process.Kill($true) } catch { try { $process.Kill() } catch {} }
+                try { [void] $process.WaitForExit(5000) } catch {}
+            }
+        }
+        catch {}
+    }
     if ($registered) {
         [System.Diagnostics.Process] $removedProcess = $null
         [void] $ProcessRegistry.TryRemove($JobId, [ref]$removedProcess)

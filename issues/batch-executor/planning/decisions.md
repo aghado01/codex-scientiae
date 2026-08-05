@@ -59,7 +59,13 @@ Live child processes are registered in a parent-owned concurrent registry immedi
 cancellation, total-batch timeout, per-child timeout, hosting-pipeline unwind, and exceptional teardown
 terminate the child process tree rather than terminating the parent and waiting for descendants to time
 out. Dispatchers remove and dispose their own process records; parent teardown kills registered trees
-before supervising pipelines and the pool are stopped.
+before supervising pipelines and the pool are stopped. Each dispatcher is also the final owner of any
+process it started: its `finally` block kills a still-live tree before removing and disposing the process
+record. This closes both sides of the start/registration race when parent teardown cannot observe the
+child or has already swept the registry. Child waits use short interpreter checkpoints so a supervising
+pipeline stop can reach dispatcher-owned `finally` teardown promptly. Parent teardown submits stop
+requests to all unfinished supervising pipelines before awaiting any one stop, so queued work cannot run
+in serial waves during unwind.
 
 Direct runspace cancellation is cooperative until the parent stops the pipeline. Process cancellation is
 preemptive at the process-tree boundary: the actual child currently receives no operative cross-process
@@ -67,7 +73,7 @@ cancellation token. A short diagnostic-drain allowance applies only to process s
 child trees have been killed. Cooperative child cancellation and parent-liveness mechanics are deferred in
 the [cancellation brief](../briefs/sol-batch-executor-cancellation-parent-liveness-deferred-20260805.md).
 
-### D7 — Teardown behavior is an architectural gate, not incidental cleanup — accepted
+### D7 — Teardown behavior is an architectural gate, not incidental cleanup — implemented
 
 Before lifecycle code moves between files, adversarial tests must prove zero surviving child or grandchild
 processes after token cancellation, total-batch timeout, per-child timeout, and hosting-pipeline stop/unwind.

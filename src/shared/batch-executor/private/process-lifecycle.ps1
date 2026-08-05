@@ -20,3 +20,31 @@ function Stop-BatchExecutorChildProcesses {
         }
     }
 }
+
+function Stop-BatchExecutorPipelines {
+    <# Submit every stop request before waiting for any one pipeline. A sequential PowerShell.Stop()
+       loop can let queued pool work run in waves while the first stop call blocks. #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [System.Collections.IEnumerable] $Invocations
+    )
+
+    $stopRequests = [System.Collections.Generic.List[object]]::new()
+    foreach ($invocation in $Invocations) {
+        if ($null -eq $invocation -or $null -eq $invocation.PS -or $null -eq $invocation.Async) {
+            continue
+        }
+        if ($invocation.Async.IsCompleted) { continue }
+
+        try {
+            $stopAsync = $invocation.PS.BeginStop($null, $null)
+            $stopRequests.Add([pscustomobject]@{ PS = $invocation.PS; Async = $stopAsync })
+        }
+        catch {}
+    }
+
+    foreach ($request in $stopRequests) {
+        try { $request.PS.EndStop($request.Async) } catch {}
+    }
+}

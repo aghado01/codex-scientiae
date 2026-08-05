@@ -349,11 +349,9 @@ function Invoke-BatchExecutor {
             # Direct pipelines have no diagnostic transport to drain once cancellation is observed.
             # Stop them immediately; process supervisors get a short opportunity to publish the
             # child envelope produced after their registered process tree was terminated.
-            foreach ($invocation in $invocations) {
-                if ($invocation.Mode -eq 'Runspace' -and -not $invocation.Async.IsCompleted) {
-                    try { $invocation.PS.Stop() } catch {}
-                }
-            }
+            Stop-BatchExecutorPipelines -Invocations @(
+                $invocations | Where-Object Mode -EQ 'Runspace'
+            )
             if ($hasProcessJobs) {
                 # Killed children and token-aware queued dispatchers normally unwind with useful
                 # envelopes. Give the outer runspaces one bounded grace period to publish them.
@@ -367,9 +365,7 @@ function Invoke-BatchExecutor {
                 }
             }
 
-            foreach ($invocation in $invocations) {
-                if (-not $invocation.Async.IsCompleted) { try { $invocation.PS.Stop() } catch {} }
-            }
+            Stop-BatchExecutorPipelines -Invocations $invocations
         }
         $timing.WaitMs = $swWait.ElapsedMilliseconds
 
@@ -460,11 +456,9 @@ function Invoke-BatchExecutor {
         Stop-BatchExecutorChildProcesses -Registry $processRegistry `
             -Reason $(if ($completedNormally) { 'final registry cleanup' } else { 'exceptional batch teardown' }) `
             -Diagnostics $infrastructureErrors
+        Stop-BatchExecutorPipelines -Invocations $invocations
         foreach ($invocation in $invocations) {
             if ($null -ne $invocation.PS) {
-                if ($invocation.Async -and -not $invocation.Async.IsCompleted) {
-                    try { $invocation.PS.Stop() } catch {}
-                }
                 try { $invocation.PS.Dispose() } catch {}
             }
         }
