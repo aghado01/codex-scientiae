@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D29, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D30, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -32,7 +32,8 @@ composition of these primitives, never the entry price:
 ```text
 TextSpan / Allen relations        pure, zero dependencies
 SpanSet                           + master identity
-SpanBatch + scoped collectors     + typed claims
+SpanBatch + ClaimSelection        + typed occurrence queries
+Scoped collectors                 + declarative recognition
 LaminarView / joins               + structure derivation
 Validation tiers / inventories    + cross-examination
 ```
@@ -88,8 +89,16 @@ D25 registry in [decisions.md](../../issues/doccer/planning/decisions.md).
   broke on rather than a fixed type field;
 - append-only collection followed by a frozen, columnar, overlap-preserving `SpanBatch` whose
   string columns are interned at freeze into per-row IDs plus a distinct-value table;
+- immutable exact-batch `ClaimSelection`, the occurrence set over one frozen batch's ordinal
+  universe: `None`/`All`/validated `Create` and `FromPredicate` construction, membership, count,
+  emptiness, union/intersection/subtraction/relative complement, value equality/hash, and
+  ascending-ordinal enumeration; compatible masters or equal rows do not make separate batches
+  interchangeable; `Records(ClaimOrder)` is the explicit ordered record projection, while
+  `Coverage()` explicitly forgets occurrence identity and normalizes selected geometry into a
+  `SpanSet`; `FromPredicate` leaves D25's policy-bearing `Select` name reserved for K4;
 - normalized Boolean `SpanSet` projections bound to their originating master;
-- suppression as named `Admitted`/`Excluded` queries over that algebra — never a claim property,
+- suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
+  suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
 - all thirteen Allen interval relations and a reference relation join (semantics only — no
   performance contract);
@@ -117,16 +126,18 @@ D25 registry in [decisions.md](../../issues/doccer/planning/decisions.md).
 - basis-stamped group and project views: `Grouping.ByKey` groups claims under an explicit
   selector (`ClaimFacts` mirrors `AtomFacts`; plain delegates, tuple composition, caller
   comparers, null a legitimate key) with a deterministic contract — first-appearance group
-  order, ascending ordinals, the key carried on the group; `Projection.Project` gives claim-major
-  line ranges and `Grouping.ByLine` the line-major transpose, total over the line grain
+  order, ascending ordinals, the key carried on the group; keyed and line grouping both accept a
+  `ClaimSelection`, while batch conveniences delegate through `All`; `Projection.Project` gives
+  claim-major line ranges and `Grouping.ByLine` the line-major transpose, total over the line grain
   (claimless lines present) under a named `LineMembership` policy — `EveryLineTouched` occupancy
   vs `StartLineOnly` attribution; every view stamps its basis (source batch, master, policy) so
   it answers "over what was I computed", and views hold ordinals, never claim copies;
 - gap cadence, the first individually named density measure (transcribed from the mdnav
   profiler): start-to-start gap statistics — count, median (upper-median convention), mean, cv,
   span fraction — over a declared window basis that admits claims by start position, with
-  exclusions arriving as a caller predicate and recorded as the measured ordinals; statistics
-  are present whenever defined, and meaning thresholds stay in the consumer;
+  an exact input selection and the window-admitted `Population` retained beside its ordered
+  ordinals; predicate/batch conveniences delegate through that selection path; statistics are
+  present whenever defined, and meaning thresholds stay in the consumer;
 - named lookup orders: `FindIntersecting`/`FindContaining` answer in `ClaimOrder.Geometry` (the
   unchanged default) or `ClaimOrder.PriorityThenGeometry` (priority descending, then geometry,
   then ordinal — a total order) — resolution order is query policy, never a data-model change;
@@ -175,8 +186,8 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- basis-stamped `ClaimSelection`, exact `ClaimPairView`, `ComposePairs`, and pairing residue.
-  D29 freezes their contract: reference pair composition requires actual middle ordinals, and its
+- exact `ClaimPairView`, `ComposePairs`, and pairing residue. `ClaimSelection` landed in K2a/D30;
+  D29 freezes the remaining joint contract: reference pair composition requires actual middle ordinals, and its
   observed Allen image is contained in canonical `AllenCompose` without a converse/equality
   promise. D27 leaves the terminal raw-list `IntervalJoins.Join` unchanged until K2b replaces its
   semantics through `ClaimPairView`, rather than introducing a transitional filter-only overload.

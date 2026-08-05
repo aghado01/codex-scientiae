@@ -57,6 +57,36 @@ briefs carry the later contracts with their reports — and the evidence in
 | D27 | K1b–K4 sequencing boundary: K1b closes the qualitative Allen semantics and migrates durable validation filters but does not retrofit the terminal `IntervalJoins.Join`; K2a/K2b/K2c are jointly specified and landed as consecutive buildable chips, with pure selection membership distinct from ordered query views, `ClaimPairView` becoming the semantic replacement for the terminal join, and pairing witnessing the tranche; K3/K4a are co-designed, with geometry-only `LocatedRelation` separate from the identity-bearing candidate graph; every tranche carries a bounded witness and K8 is final integration | recorded; workplan resequenced |
 | D28 | Canonical Allen composition (K1b): `AllenRelationSet.AllenCompose` is the additive lift of a literal 169-cell table in frozen atom order; a separately encoded endpoint-predicate oracle exhausts all 3,375 triples of the 15 nonempty \(D_6\) intervals and recovers all 169 cells/409 atomic triads; JEPD, identity, annihilation, distributivity, converse reversal, and associativity are executable laws; canonical composition is an upper approximation rather than exact fixed-master composition, retained by the adjacent-gap counterexample; durable validation filters now carry `AllenRelationSet`, while `IntervalJoins.Join` remains unchanged for K2b | implemented; K1 closed |
 | D29 | Joint K2 contract and Allen abstraction bridge: K2a/K2b/K2c share exact frozen-batch occurrence bases and land consecutively; reference `ComposePairs` is ordinary extensional relation composition over an identical middle batch and never derives exact edges from `AllenCompose`; the Allen image of exact composition is contained in the canonical composition of the input images, with the adjacent-gap witness refuting the converse; reference C# relation/property oracles own the initial proof burden, while Lean remains deferred until an optimized or generalized backend makes universal no-false-negative equivalence load-bearing | recorded; joint K2 contract frozen, Lean not activated |
+| D30 | Occurrence selection closure (K2a): `ClaimSelection` is an immutable set of ordinals on one exact frozen `SpanBatch`; `None`/`All`/validated `Create` and `FromPredicate` construction, count/emptiness/membership, union/intersection/subtraction/relative complement, value equality/hash, and ascending-ordinal enumeration preserve occurrence identity; `Records(ClaimOrder)` is the explicit ordered projection and `Coverage()` the explicit identity-forgetting projection; grouping, gap cadence, suppression, and legacy predicate conveniences share the selection-backed reference path; D25's policy-bearing `Select` name remains reserved for K4; no durable ID, pair carrier, or join transition lands in K2a | implemented; K2a closed |
+
+## Occurrence selection closure (D30)
+
+`ClaimSelection` closes the unary occurrence-query algebra without turning result order or geometry
+into identity:
+
+- its universe is the ordinal range of one exact frozen `SpanBatch` reference; a second batch is a
+  different basis even when it uses the same `TextMaster` and contains claim-for-claim equal rows;
+- `None`, `All`, `Create`, and `FromPredicate` copy membership into an immutable value; duplicate input
+  ordinals coalesce, undefined ordinals fail, and binary operations refuse different basis
+  references before combining membership;
+- `FromPredicate` deliberately names ordinary predicate filtering without spending D25's reserved
+  policy-bearing `Select` verb; K4 still owns that nonmonotone decision surface;
+- canonical enumeration is ascending ordinal. `Records(ClaimOrder)` applies the same internal
+  geometry/priority total orders as `SortedSpanLookup` but does not alter set equality or canonical
+  enumeration;
+- `Coverage()` deliberately forgets occurrences and normalizes their spans as a `SpanSet`, so equal,
+  overlapping, or adjacent geometry may collapse;
+- `Grouping.ByKey`, `Grouping.ByLine`, `GapCadence.Measure`, and `Suppression.Admitted`/`Excluded`
+  accept selections. Their batch/predicate conveniences construct `All` or predicate selections and
+  delegate; `GapCadenceMeasure.Population` retains the exact window-admitted occurrence set beside
+  its start-ordered ordinal evidence.
+
+The bounded assurance sweeps all 64 subsets of a six-claim basis and all 4,096 ordered subset
+pairs against an integer-mask oracle, with complement, difference, De Morgan, commutativity, and
+distributivity checks. A 70-claim witness crosses the private bitset word boundary. Adversarial
+tests retain equal-membership cross-batch refusal, undefined ordinals, coverage collapse, explicit
+orders, consumer parity, and lazy-topology behavior. This closes K2a at 1,651 harness checks without
+changing `IntervalJoins.Join` or activating Lean; K2b is the active next chip.
 
 ## K2 exact-to-qualitative bridge and proof gate (D29)
 
@@ -214,6 +244,7 @@ their result semantics interchangeable.
 | K1-ALLEN-CONVERSE | converse is involutive and agrees with argument reversal — **implemented in K1a (D26)** | finite exhaustive C# oracle | all 8192 relation-set values plus every nonempty interval pair on the six-boundary model | only if a generalized relation carrier changes converse semantics |
 | K1-ALLEN-COMPOSE | `AllenCompose` is the canonical weak-composition upper approximation, not fixed-master exact composition — **implemented in K1b (D28)** | independently encoded table, exhaustive \(D_6\) certificate, and external cited formalization | literal shipped table and independent endpoint oracle agree on all 169 cells/409 atomic triads; algebra laws are executable | a generic qualitative-calculus proof API or non-finite carrier is proposed |
 | K1-ALLEN-FINITE-GAP | canonical `Before AllenCompose Before` may contain `Before` even when a fixed finite master has no middle witness — **implemented in K1b (D28)** | smallest executable counterexample | \([0,1)\), \([2,3)\), and the four-boundary carrier retain no intervening nonempty interval | none presently; the counterexample fixes the contract boundary |
+| K2-SELECTION | `ClaimSelection` is exact-batch occurrence membership; Boolean algebra is basis-closed, canonical enumeration is ascending ordinal, and ordered/coverage projections do not change identity — **implemented in K2a (D30)** | bounded exhaustive C# mask oracle plus adversarial basis/projection/integration witnesses | all 64 subsets and all 4,096 ordered pairs on a six-claim basis; a 70-claim word-boundary case; cross-batch refusal; order/coverage separation; grouping/cadence/suppression parity | a compressed, persisted, incremental, or independent backend changes batch identity or claims extensional equivalence without differential coverage |
 | K2-CONCRETE-PAIRS | the `ConcreteCompose` family is exact basis-checked finite relation composition; `ClaimPairView` realizes it as `ComposePairs`, with claim identity the ordinal diagonal on one exact frozen batch — **contract frozen by D29; due K2b** | direct middle-ordinal reference implementation, independent nested relation oracle, and C# property tests | exact-basis refusal, extensional equality, identity, associativity, converse, projections, semijoins, complete middle witnesses, and one semantic replacement for `IntervalJoins.Join` before landing | a compressed/indexed backend claims equivalence without differential coverage, or a packed witness representation is asked to inherit extensional identity, associativity, or bracket-independent support |
 | K2-ALLEN-ABSTRACTION | the Allen image of exact `ComposePairs(R,S)` is contained in `AllenImage(R).AllenCompose(AllenImage(S))`; equality and qualitative edge generation are refused — **contract frozen by D29; due K2b** | D28 atomic-triad certificate plus pointwise C# witness law and adjacent-gap counterexample | actual edge images rather than requested filters; per-witness atomic containment; union-level inclusion; executable non-converse | before an optimized backend uses qualitative summaries to omit exact work and claims universal no-false-negative equivalence, or if equality/generalized public abstraction is proposed |
 | K3-LOCATED-SEQ | geometry-only located `Seq` uses a shared boundary, has the declared-window diagonal identity, is associative, and distributes over union — **reserved for joint K3/K4a design** | simple C# matrix/reference semantics and bounded exhaustive tests | identity, associativity, distributivity, finite consuming closure, rebase laws, and explicit graph-to-geometry projection before landing | a compressed or incremental closure algorithm replaces the reference semantics, or an exact-versus-lax map boundary remains disputed |

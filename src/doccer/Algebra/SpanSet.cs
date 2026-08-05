@@ -57,16 +57,10 @@ public sealed class SpanSet : IReadOnlyList<TextSpan>, IEquatable<SpanSet>
     public static SpanSet FromClaims(SpanBatch batch, Func<SpanRecord, bool>? predicate = null)
     {
         ArgumentNullException.ThrowIfNull(batch);
-        var spans = new List<TextSpan>();
-        foreach (var record in batch)
-        {
-            if (predicate is null || predicate(record))
-            {
-                spans.Add(record.Span);
-            }
-        }
-
-        return Create(batch.Master, spans);
+        var selection = predicate is null
+            ? ClaimSelection.All(batch)
+            : ClaimSelection.FromPredicate(batch, predicate);
+        return selection.Coverage();
     }
 
     public SpanSet Union(SpanSet other)

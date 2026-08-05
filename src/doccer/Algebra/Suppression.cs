@@ -16,9 +16,9 @@ namespace CodexSci.Doccer;
 /// names, through the predicate, and never selects one.
 /// </para>
 /// <para>
-/// These are compositions over primitives that already exist: <see cref="SpanSet.FromClaims"/> to
-/// derive the suppressed region and <see cref="SpanSet"/> algebra to take its complement. Nothing
-/// here is new mechanism, and callers may compose further in the same algebra — several
+/// These are compositions over primitives that already exist: <see cref="ClaimSelection.Coverage"/>
+/// to derive the suppressed region and <see cref="SpanSet"/> algebra to take its complement.
+/// Nothing here is new mechanism, and callers may compose further in the same algebra — several
 /// suppressors union their excluded regions, and narrowing to an existing region is an intersection
 /// with it. A precomputed "suppression bitmap", as sketched in the legwork, would be an
 /// acceleration of exactly this query: same results, different representation, still never a
@@ -36,16 +36,27 @@ public static class Suppression
     {
         ArgumentNullException.ThrowIfNull(batch);
         ArgumentNullException.ThrowIfNull(suppressor);
-        return SpanSet.FromClaims(batch, suppressor);
+        return Excluded(ClaimSelection.FromPredicate(batch, suppressor));
+    }
+
+    /// <summary>The normalized region covered by an exact suppressor occurrence selection.</summary>
+    public static SpanSet Excluded(ClaimSelection suppressors)
+    {
+        ArgumentNullException.ThrowIfNull(suppressors);
+        return suppressors.Coverage();
     }
 
     /// <summary>
     /// The region left open by the nominated suppressors: the master extent minus
-    /// <see cref="Excluded"/>. This is the set to hand a scoped collector so that recognition runs
+    /// <c>Excluded</c>. This is the set to hand a scoped collector so that recognition runs
     /// only where the suppressors permit and no match can bridge a suppressed gap.
     /// </summary>
     /// <param name="batch">The claim set to select suppressors from.</param>
     /// <param name="suppressor">Names which claims suppress. This is the caller's policy.</param>
     public static SpanSet Admitted(SpanBatch batch, Func<SpanRecord, bool> suppressor) =>
         Excluded(batch, suppressor).Complement();
+
+    /// <summary>The master extent left open by an exact suppressor occurrence selection.</summary>
+    public static SpanSet Admitted(ClaimSelection suppressors) =>
+        Excluded(suppressors).Complement();
 }

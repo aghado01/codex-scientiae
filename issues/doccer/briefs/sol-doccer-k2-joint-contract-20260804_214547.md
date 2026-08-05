@@ -261,3 +261,9 @@ the contract harness baseline remains 1577 checks green.
 The next implementation chip is K2a. K2b remains responsible for the reference exact pair carrier,
 the terminal-join transition, the executable bridge law, and differential protection for every
 later optimized backend.
+
+Follow-on: [K2a](sol-doccer-k2a-claim-selection-20260804_221441.md) subsequently landed the exact
+selection algebra and population integrations as D30. Its bounded oracle closes all 64 selections
+and 4,096 ordered pairs on a six-claim basis, with a separate 70-claim word-boundary witness;
+harness 1577→1651. K2b is now the active next chip and retains every pair/bridge/join obligation
+specified here.

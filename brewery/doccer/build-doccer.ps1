@@ -89,6 +89,7 @@ $expectedTypes = @(
     'CodexSci.Doccer.TextTopology'
     'CodexSci.Doccer.SpanBatch'
     'CodexSci.Doccer.SpanBatchBuilder'
+    'CodexSci.Doccer.ClaimSelection'
     'CodexSci.Doccer.SortedSpanLookup'
     'CodexSci.Doccer.SpanSet'
     'CodexSci.Doccer.RegexCollector'

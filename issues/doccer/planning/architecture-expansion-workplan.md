@@ -298,10 +298,10 @@ Ghourabi's proof-grouping unions as privileged runtime values.
 
 D27 treats K2a, K2b, and K2c as one vertically specified tranche that lands in consecutive,
 reviewable chips. D29 closes their common basis, identity, projection, ordering, residue,
-reference-composition, and exact-to-qualitative abstraction contracts before K2a implementation
-begins; joint specification does not mean one monolithic commit.
+reference-composition, and exact-to-qualitative abstraction contracts; D30 lands K2a against that
+contract. Joint specification does not mean one monolithic commit.
 
-#### K2a: <code>ClaimSelection</code>
+#### K2a: <code>ClaimSelection</code> — closed by D30
 
 A basis-stamped set of ordinals into one frozen <code>SpanBatch</code>. Earlier research used the
 working name <code>ClaimSet</code>; <code>ClaimSelection</code> better distinguishes an
@@ -328,6 +328,14 @@ operations land against it: grouping, cadence, and suppression accept selections
 and predicate conveniences may delegate to the same reference path. Existing ordered lookups are
 not mechanically changed to return an unordered selection; an ordered record projection remains
 explicit query policy.
+
+D30 implements this surface. `ClaimSelection` uses exact frozen-batch reference identity,
+validated ordinal/predicate construction, basis-closed Boolean algebra, value equality/hash, and
+ascending enumeration. `Records(ClaimOrder)` shares the lookup order implementation;
+`Coverage()` explicitly forgets occurrences; grouping, cadence, suppression, and legacy
+claim-to-region conveniences delegate through selections. The bounded oracle exhausts all 64
+subsets and 4,096 ordered pairs on six claims, with a separate 70-claim word-boundary witness.
+Harness 1577→1651; K2a is closed.
 
 #### K2b: <code>ClaimPairView</code>
 
@@ -768,12 +776,11 @@ The expansion will not:
 
 ## 11. Immediate next move
 
-K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, and the joint K2
-contract freeze as D29. The next implementation chip is K2a: land `ClaimSelection`,
-`Coverage()`, explicit ordered projections, and the stable grouping/cadence/suppression
-integrations. K2b then lands the exact pair carrier, reference `ComposePairs`, the Allen-image
-bridge, and the one terminal-join transition; K2c follows with pairing and complete residue. Do not
-insert an unrelated tranche between these chips.
+K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
+contract freeze as D29, and K2a selection closure as D30. The next implementation chip is K2b:
+land the exact pair carrier, direct reference `ComposePairs`, executable Allen-image bridge, and
+the one terminal-join transition. K2c follows with pairing and complete residue. Do not insert an
+unrelated tranche between these chips.
 
 The D29 bridge did not activate Lean. Apply the deferred gate only if implementation pressure
 changes its direction, basis hypotheses, public abstraction, or assurance burden as described in

@@ -289,6 +289,60 @@ public enum ClaimOrder
     PriorityThenGeometry = 1,
 }
 
+/// <summary>One implementation of the named claim orders shared by every ordered query.</summary>
+internal static class ClaimOrdering
+{
+    public static void Validate(ClaimOrder order)
+    {
+        if (!Enum.IsDefined(order))
+        {
+            throw new ArgumentOutOfRangeException(nameof(order), order, "Undefined ClaimOrder value.");
+        }
+    }
+
+    public static int Compare(SpanBatch batch, int left, int right, ClaimOrder order)
+    {
+        if (order == ClaimOrder.PriorityThenGeometry)
+        {
+            var priority = batch.Priorities[right].CompareTo(batch.Priorities[left]);
+            if (priority != 0)
+            {
+                return priority;
+            }
+        }
+
+        var comparison = batch.Starts[left].CompareTo(batch.Starts[right]);
+        if (comparison != 0)
+        {
+            return comparison;
+        }
+
+        comparison = batch.Ends[right].CompareTo(batch.Ends[left]);
+        return comparison != 0 ? comparison : left.CompareTo(right);
+    }
+
+    public static int Compare(SpanRecord left, SpanRecord right, ClaimOrder order)
+    {
+        if (order == ClaimOrder.PriorityThenGeometry)
+        {
+            var priority = right.Priority.CompareTo(left.Priority);
+            if (priority != 0)
+            {
+                return priority;
+            }
+        }
+
+        var comparison = left.Span.Start.CompareTo(right.Span.Start);
+        if (comparison != 0)
+        {
+            return comparison;
+        }
+
+        comparison = right.Span.End.CompareTo(left.Span.End);
+        return comparison != 0 ? comparison : left.Ordinal.CompareTo(right.Ordinal);
+    }
+}
+
 /// <summary>Stable start-ordered query view over a frozen batch.</summary>
 public sealed class SortedSpanLookup
 {
@@ -304,19 +358,7 @@ public sealed class SortedSpanLookup
             _order[i] = i;
         }
 
-        Array.Sort(_order, Compare);
-    }
-
-    private int Compare(int left, int right)
-    {
-        var comparison = _batch.Starts[left].CompareTo(_batch.Starts[right]);
-        if (comparison != 0)
-        {
-            return comparison;
-        }
-
-        comparison = _batch.Ends[right].CompareTo(_batch.Ends[left]);
-        return comparison != 0 ? comparison : left.CompareTo(right);
+        Array.Sort(_order, (left, right) => ClaimOrdering.Compare(_batch, left, right, ClaimOrder.Geometry));
     }
 
     /// <summary>
@@ -382,10 +424,7 @@ public sealed class SortedSpanLookup
 
     private static void ValidateOrder(ClaimOrder order)
     {
-        if (!Enum.IsDefined(order))
-        {
-            throw new ArgumentOutOfRangeException(nameof(order), order, "Undefined ClaimOrder value.");
-        }
+        ClaimOrdering.Validate(order);
     }
 
     private static IReadOnlyList<SpanRecord> Ordered(List<SpanRecord> found, ClaimOrder order)
@@ -395,22 +434,7 @@ public sealed class SortedSpanLookup
             // The comparison ends at the ordinal, making it a total order: equal-priority,
             // equal-geometry claims keep their batch order deterministically.
             found.Sort(static (left, right) =>
-            {
-                var comparison = right.Priority.CompareTo(left.Priority);
-                if (comparison != 0)
-                {
-                    return comparison;
-                }
-
-                comparison = left.Span.Start.CompareTo(right.Span.Start);
-                if (comparison != 0)
-                {
-                    return comparison;
-                }
-
-                comparison = right.Span.End.CompareTo(left.Span.End);
-                return comparison != 0 ? comparison : left.Ordinal.CompareTo(right.Ordinal);
-            });
+                ClaimOrdering.Compare(left, right, ClaimOrder.PriorityThenGeometry));
         }
 
         return found.AsReadOnly();

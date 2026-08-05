@@ -61,6 +61,10 @@ internal static class Program
             GapCadenceMeasuresTheTemplateFacts();
             GapCadenceDeclaresItsBasis();
             LookupOrderIsAQueryPolicy();
+            ClaimSelectionIsAnExactBatchValue();
+            ClaimSelectionBooleanLawsHoldExhaustively();
+            ClaimSelectionSeparatesMembershipFromOrderedProjection();
+            SelectionPopulationIntegrationsShareOnePath();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -2373,7 +2377,7 @@ internal static class Program
             () => GapCadence.Measure(batch, null, new TextSpan(0, master.Length + 1)),
             "an out-of-bounds window is rejected");
         Throws<ArgumentNullException>(
-            () => GapCadence.Measure(null!),
+            () => GapCadence.Measure((SpanBatch)null!),
             "a null batch is rejected");
     }
 
@@ -2426,6 +2430,320 @@ internal static class Program
         Throws<ArgumentOutOfRangeException>(
             () => batch.Sorted.FindContaining(5, (ClaimOrder)7),
             "the point query refuses an undefined order too");
+    }
+
+    /// <summary>
+    /// K2a: a selection is an immutable value over one exact frozen-batch basis. Construction
+    /// coalesces repeated ordinals, canonical enumeration ascends across bitset words, and neither
+    /// master compatibility nor equal membership permits cross-batch algebra.
+    /// </summary>
+    private static void ClaimSelectionIsAnExactBatchValue()
+    {
+        var master = new TextMaster("selection-value", 0, new string('x', 80));
+        var builder = new SpanBatchBuilder(master);
+        for (var ordinal = 0; ordinal < 70; ordinal++)
+        {
+            builder.Add(new SpanClaim(
+                new TextSpan(ordinal, ordinal + 1),
+                ordinal % 2 == 0 ? "even" : "odd",
+                SpanLevel.Character,
+                "test"));
+        }
+
+        var batch = builder.Freeze();
+        True(!master.FingerprintIsCreated && !master.TopologyIsCreated, "selection setup leaves lazy master work untouched");
+
+        var none = ClaimSelection.None(batch);
+        var all = ClaimSelection.All(batch);
+        True(none.IsEmpty, "None is empty");
+        Equal(0, none.Count, "None count");
+        Equal(batch.Count, all.Count, "All covers the complete ordinal universe");
+        True(all.Contains(69), "All retains the final ordinal beyond the first bitset word");
+
+        var created = ClaimSelection.Create(batch, new[] { 69, 0, 64, 69 });
+        Equal(3, created.Count, "repeated construction ordinals coalesce");
+        Equal("0,64,69", string.Join(",", created), "canonical enumeration crosses word boundaries in ascending order");
+        True(ReferenceEquals(created.Basis, batch), "the exact batch basis is retained");
+        True(ReferenceEquals(created.Master, master), "the master is reached through the exact basis");
+
+        var evaluations = 0;
+        var evens = ClaimSelection.FromPredicate(batch, record =>
+        {
+            evaluations++;
+            return record.Kind == "even";
+        });
+        Equal(batch.Count, evaluations, "predicate selection evaluates once per basis ordinal");
+        Equal(35, evens.Count, "predicate selection retains the named occurrences");
+        True(evens.Contains(0) && evens.Contains(68) && !evens.Contains(69), "predicate membership is exact");
+
+        var replay = ClaimSelection.Create(batch, new[] { 0, 64, 69 });
+        True(created.Equals(replay), "equal basis and membership give value equality");
+        Equal(created.GetHashCode(), replay.GetHashCode(), "equal selection values hash equally");
+        True(created.Complement().Complement().Equals(created), "relative complement stays on the same universe");
+
+        var foreignBuilder = new SpanBatchBuilder(master);
+        for (var ordinal = 0; ordinal < 70; ordinal++)
+        {
+            foreignBuilder.Add(new SpanClaim(
+                new TextSpan(ordinal, ordinal + 1),
+                ordinal % 2 == 0 ? "even" : "odd",
+                SpanLevel.Character,
+                "test"));
+        }
+
+        var foreign = ClaimSelection.Create(foreignBuilder.Freeze(), new[] { 0, 64, 69 });
+        True(!created.Equals(foreign), "equal ordinals over a different frozen batch are not equal");
+        Throws<InvalidOperationException>(() => created.Union(foreign), "cross-basis union is refused");
+        Throws<InvalidOperationException>(() => created.Intersect(foreign), "cross-basis intersection is refused");
+        Throws<InvalidOperationException>(() => created.Subtract(foreign), "cross-basis difference is refused");
+
+        Throws<ArgumentOutOfRangeException>(() => created.Contains(-1), "negative membership is undefined");
+        Throws<ArgumentOutOfRangeException>(() => created.Contains(batch.Count), "membership beyond the basis is undefined");
+        Throws<ArgumentOutOfRangeException>(
+            () => ClaimSelection.Create(batch, new[] { 0, batch.Count }),
+            "construction refuses an undefined ordinal anywhere in the input");
+        Throws<ArgumentNullException>(() => ClaimSelection.None(null!), "None requires a frozen basis");
+        Throws<ArgumentNullException>(() => ClaimSelection.Create(batch, null!), "construction requires ordinals");
+        Throws<ArgumentNullException>(() => ClaimSelection.FromPredicate(batch, null!), "predicate selection requires a predicate");
+        Throws<ArgumentNullException>(() => created.Union(null!), "binary algebra requires another selection");
+
+        var emptyBatch = new SpanBatchBuilder(new TextMaster("selection-empty", 0, string.Empty)).Freeze();
+        True(ClaimSelection.All(emptyBatch).Equals(ClaimSelection.None(emptyBatch)), "All and None coincide on an empty basis");
+        True(!master.FingerprintIsCreated && !master.TopologyIsCreated, "selection value algebra forces no fingerprint or topology");
+    }
+
+    /// <summary>
+    /// K2a gate: every subset of a six-claim basis and every ordered pair of those subsets is
+    /// checked against an independent integer-mask oracle, including relative complement,
+    /// difference, De Morgan, commutativity, and a deterministic distributive third operand.
+    /// </summary>
+    private static void ClaimSelectionBooleanLawsHoldExhaustively()
+    {
+        const int ordinalCount = 6;
+        const int valueCount = 1 << ordinalCount;
+        const int allMask = valueCount - 1;
+
+        var master = new TextMaster("selection-laws", 0, new string('x', ordinalCount));
+        var builder = new SpanBatchBuilder(master);
+        for (var ordinal = 0; ordinal < ordinalCount; ordinal++)
+        {
+            builder.Add(new SpanClaim(
+                new TextSpan(ordinal, ordinal + 1),
+                "claim",
+                SpanLevel.Character,
+                "test"));
+        }
+
+        var batch = builder.Freeze();
+        var values = new ClaimSelection[valueCount];
+        for (var mask = 0; mask < valueCount; mask++)
+        {
+            values[mask] = SelectionFromMask(batch, mask);
+        }
+
+        var lawsHold = true;
+        for (var leftMask = 0; leftMask < valueCount && lawsHold; leftMask++)
+        {
+            var left = values[leftMask];
+            var complementMask = allMask ^ leftMask;
+            lawsHold =
+                SelectionMatchesMask(left, leftMask) &&
+                left.Count == CountSetBits(leftMask) &&
+                left.Union(values[0]).Equals(left) &&
+                left.Intersect(values[allMask]).Equals(left) &&
+                left.Union(values[complementMask]).Equals(values[allMask]) &&
+                left.Intersect(values[complementMask]).Equals(values[0]) &&
+                left.Complement().Equals(values[complementMask]) &&
+                left.Complement().Complement().Equals(left) &&
+                left.Subtract(left).Equals(values[0]);
+
+            for (var rightMask = 0; rightMask < valueCount && lawsHold; rightMask++)
+            {
+                var right = values[rightMask];
+                var thirdMask = ((leftMask * 17) + (rightMask * 29) + 11) & allMask;
+                var third = values[thirdMask];
+                lawsHold =
+                    left.Union(right).Equals(values[leftMask | rightMask]) &&
+                    left.Intersect(right).Equals(values[leftMask & rightMask]) &&
+                    left.Subtract(right).Equals(values[leftMask & (allMask ^ rightMask)]) &&
+                    left.Union(right).Equals(right.Union(left)) &&
+                    left.Intersect(right).Equals(right.Intersect(left)) &&
+                    left.Union(right).Complement().Equals(left.Complement().Intersect(right.Complement())) &&
+                    left.Intersect(right.Union(third)).Equals(
+                        left.Intersect(right).Union(left.Intersect(third)));
+            }
+        }
+
+        True(lawsHold, "all subsets and binary operations on the bounded claim basis satisfy the selection laws");
+    }
+
+    /// <summary>
+    /// K2a/D27: canonical set enumeration is ordinal order, while record order is an explicit
+    /// ClaimOrder projection. Coverage is separately explicit because it collapses occurrence
+    /// identity into normalized geometry.
+    /// </summary>
+    private static void ClaimSelectionSeparatesMembershipFromOrderedProjection()
+    {
+        var master = new TextMaster("selection-order", 0, new string('x', 20));
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(10, 12), "tail", SpanLevel.Character, "test", 3));
+        builder.Add(new SpanClaim(new TextSpan(0, 8), "outer", SpanLevel.Character, "test", 1));
+        builder.Add(new SpanClaim(new TextSpan(4, 6), "inner-a", SpanLevel.Character, "test", 9));
+        builder.Add(new SpanClaim(new TextSpan(0, 4), "excluded", SpanLevel.Character, "test", 20));
+        builder.Add(new SpanClaim(new TextSpan(4, 6), "inner-b", SpanLevel.Character, "test", 2));
+        var batch = builder.Freeze();
+
+        var selection = ClaimSelection.Create(batch, new[] { 4, 0, 2, 1 });
+        Equal("0,1,2,4", string.Join(",", selection), "selection identity enumerates ascending ordinals");
+        Equal("1,2,4,0", Ordinals(selection.Records()), "geometry projection follows the shared named order");
+        Equal(
+            "2,0,4,1",
+            Ordinals(selection.Records(ClaimOrder.PriorityThenGeometry)),
+            "priority projection is explicit and total");
+        Equal("0,1,2,4", string.Join(",", selection), "ordered projections do not mutate canonical enumeration");
+        True(
+            selection.Equals(ClaimSelection.Create(batch, new[] { 1, 2, 0, 4 })),
+            "construction and projection order are absent from set equality");
+
+        var coverage = selection.Coverage();
+        True(ReferenceEquals(coverage.Master, master), "coverage remains in the basis coordinate space");
+        Equal(2, coverage.Count, "equal and contained selected geometry collapses during coverage");
+        Equal(new TextSpan(0, 8), coverage[0], "coverage normalizes the overlapping population");
+        Equal(new TextSpan(10, 12), coverage[1], "coverage retains the disjoint tail");
+        Equal(0, ClaimSelection.None(batch).Coverage().Count, "empty selection has empty coverage");
+        Equal(0, ClaimSelection.None(batch).Records().Count, "empty selection has no ordered records");
+        Throws<ArgumentOutOfRangeException>(
+            () => selection.Records((ClaimOrder)99),
+            "ordered projection refuses an undefined order");
+    }
+
+    /// <summary>
+    /// K2a: grouping, gap cadence, suppression, and the legacy predicate conveniences all converge
+    /// on selection semantics. Key grouping stays lazy; line grouping alone touches topology.
+    /// </summary>
+    private static void SelectionPopulationIntegrationsShareOnePath()
+    {
+        var master = new TextMaster("selection-integrations", 0, "0123456789\n0123456789\n0123456789");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(1, 3), "mask", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(5, 7), "keep", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(12, 14), "mask", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(9, 24), "bridge", SpanLevel.MultiLine, "test"));
+        builder.Add(new SpanClaim(new TextSpan(25, 27), "mask", SpanLevel.Character, "test"));
+        builder.Add(new SpanClaim(new TextSpan(15, 17), "keep", SpanLevel.Character, "test"));
+        var batch = builder.Freeze();
+
+        var selected = ClaimSelection.Create(batch, new[] { 0, 3, 4 });
+        var keyEvaluations = 0;
+        var groups = Grouping.ByKey(selected, record =>
+        {
+            keyEvaluations++;
+            return record.Kind;
+        });
+        Equal(selected.Count, keyEvaluations, "key grouping evaluates only selected occurrences");
+        Equal(2, groups.Count, "selected key grouping excludes every unselected group");
+        Equal("mask", groups[0].Key, "selected group order follows first selected ordinal");
+        Equal("0,4", string.Join(",", groups[0].Ordinals), "selected group membership retains basis ordinals");
+        Equal("3", string.Join(",", groups[1].Ordinals), "the crossing selection remains a separate group");
+        True(!master.TopologyIsCreated, "selection and key grouping do not force line topology");
+
+        var batchGroups = Grouping.ByKey(batch, ClaimFacts.Kind);
+        var allGroups = Grouping.ByKey(ClaimSelection.All(batch), ClaimFacts.Kind);
+        Equal(batchGroups.Count, allGroups.Count, "batch grouping delegates to the all-selection path");
+        Equal(
+            string.Join(";", batchGroups.Select(group => $"{group.Key}:{string.Join(',', group.Ordinals)}")),
+            string.Join(";", allGroups.Select(group => $"{group.Key}:{string.Join(',', group.Ordinals)}")),
+            "batch and all-selection keyed groupings agree extensionally");
+
+        var touched = Grouping.ByLine(selected, LineMembership.EveryLineTouched);
+        Equal(3, touched.Lines.Count, "selection line grouping stays total over the line grain");
+        Equal("0,3", string.Join(",", touched.Lines[0].Ordinals), "selected line zero membership");
+        Equal("3", string.Join(",", touched.Lines[1].Ordinals), "only the selected bridge occupies line one");
+        Equal("3,4", string.Join(",", touched.Lines[2].Ordinals), "selected line two membership");
+        True(ReferenceEquals(touched.Source, batch), "selection line groups retain the exact source basis");
+        True(master.TopologyIsCreated, "line grouping is the integration that touches topology");
+
+        var attributed = Grouping.ByLine(selected, LineMembership.StartLineOnly);
+        Equal("0,3", string.Join(",", attributed.Lines[0].Ordinals), "selected start-line attribution on line zero");
+        Equal(0, attributed.Lines[1].Ordinals.Count, "unselected line one claims do not leak into attribution");
+        Equal("4", string.Join(",", attributed.Lines[2].Ordinals), "selected start-line attribution on line two");
+
+        var suppressors = ClaimSelection.FromPredicate(batch, record => record.Kind == "mask");
+        var cadence = GapCadence.Measure(suppressors);
+        var predicateCadence = GapCadence.Measure(batch, record => record.Kind == "mask");
+        True(cadence.Population.Equals(suppressors), "cadence retains its exact measured selection");
+        True(ReferenceEquals(cadence.Source, batch), "selection cadence retains the exact source batch");
+        Equal("0,2,4", string.Join(",", cadence.Ordinals), "selection cadence reports start order");
+        Equal(13, cadence.MedianGap, "selection cadence measures the selected start gaps");
+        Equal(cadence.MedianGap, predicateCadence.MedianGap, "predicate cadence delegates to selection cadence");
+        Equal(
+            string.Join(",", cadence.Ordinals),
+            string.Join(",", predicateCadence.Ordinals),
+            "predicate and selection cadence retain the same population");
+
+        var windowed = GapCadence.Measure(suppressors, new TextSpan(10, 30));
+        True(
+            windowed.Population.Equals(ClaimSelection.Create(batch, new[] { 2, 4 })),
+            "window admission narrows and records the exact selected population");
+        Equal("2,4", string.Join(",", windowed.Ordinals), "windowed selection cadence retains query order separately");
+
+        var excluded = Suppression.Excluded(suppressors);
+        var predicateExcluded = Suppression.Excluded(batch, record => record.Kind == "mask");
+        True(excluded.Equals(suppressors.Coverage()), "selection suppression projects exactly through coverage");
+        True(excluded.Equals(predicateExcluded), "predicate suppression delegates to selection suppression");
+        True(
+            Suppression.Admitted(suppressors).Equals(Suppression.Admitted(batch, record => record.Kind == "mask")),
+            "admitted suppression has one selection-backed meaning");
+        True(
+            SpanSet.FromClaims(batch, record => record.Kind == "mask").Equals(suppressors.Coverage()),
+            "the legacy claim-to-region convenience shares selection coverage");
+
+        Throws<ArgumentNullException>(
+            () => Grouping.ByKey((ClaimSelection)null!, ClaimFacts.Kind),
+            "selected key grouping requires a selection");
+        Throws<ArgumentNullException>(
+            () => Grouping.ByLine((ClaimSelection)null!),
+            "selected line grouping requires a selection");
+        Throws<ArgumentNullException>(
+            () => GapCadence.Measure((ClaimSelection)null!),
+            "selected cadence requires a selection");
+        Throws<ArgumentNullException>(
+            () => Suppression.Excluded((ClaimSelection)null!),
+            "selected suppression requires a selection");
+    }
+
+    private static ClaimSelection SelectionFromMask(SpanBatch batch, int mask) =>
+        ClaimSelection.Create(
+            batch,
+            Enumerable.Range(0, batch.Count).Where(ordinal => (mask & (1 << ordinal)) != 0));
+
+    private static bool SelectionMatchesMask(ClaimSelection selection, int mask)
+    {
+        var expectedOrdinal = 0;
+        foreach (var ordinal in selection)
+        {
+            while (expectedOrdinal < selection.Basis.Count && (mask & (1 << expectedOrdinal)) == 0)
+            {
+                expectedOrdinal++;
+            }
+
+            if (ordinal != expectedOrdinal)
+            {
+                return false;
+            }
+
+            expectedOrdinal++;
+        }
+
+        for (var ordinal = 0; ordinal < selection.Basis.Count; ordinal++)
+        {
+            if (selection.Contains(ordinal) != ((mask & (1 << ordinal)) != 0))
+            {
+                return false;
+            }
+        }
+
+        return selection.Count == CountSetBits(mask);
     }
 
     private static void True(bool condition, string name)

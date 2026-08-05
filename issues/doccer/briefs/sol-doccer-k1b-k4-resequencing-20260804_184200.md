@@ -114,3 +114,7 @@ The required [joint K2 contract](sol-doccer-k2-joint-contract-20260804_214547.md
 closed as D29. It freezes reference `ComposePairs`, the one-way Allen-image bridge, the
 terminal-join transition, and pairing residue without activating Lean or merging the three K2
 implementation chips.
+
+[K2a](sol-doccer-k2a-claim-selection-20260804_221441.md) then landed the exact-batch selection
+value and stable population integrations as D30, preserving the consecutive-chip boundary and
+leaving K2b as the one join transition. Harness 1577→1651.

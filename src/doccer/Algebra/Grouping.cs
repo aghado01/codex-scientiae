@@ -20,7 +20,7 @@ public enum LineMembership
 
 /// <summary>
 /// Claim-fact selectors over what a claim actually carries, mirroring <see cref="AtomFacts"/>:
-/// each is a plain <c>SpanRecord -> key</c> function, so <see cref="Grouping.ByKey"/> accepts
+/// each is a plain <c>SpanRecord -> key</c> function, so <c>Grouping.ByKey</c> accepts
 /// these and any caller-supplied selector on the same footing (D22). Compose facts by returning
 /// a tuple — <c>record =&gt; (record.Kind, record.Source)</c> groups on both.
 /// </summary>
@@ -134,11 +134,23 @@ public static class Grouping
     public static IReadOnlyList<ClaimGroup<TKey>> ByKey<TKey>(
         SpanBatch batch,
         Func<SpanRecord, TKey> key,
+        IEqualityComparer<TKey>? comparer = null) =>
+        ByKey(ClaimSelection.All(batch), key, comparer);
+
+    /// <summary>
+    /// Groups exactly the selected occurrence ordinals. First appearance and ascending membership
+    /// are measured in the selection's canonical ordinal order; unselected claims are never passed
+    /// to the key selector.
+    /// </summary>
+    public static IReadOnlyList<ClaimGroup<TKey>> ByKey<TKey>(
+        ClaimSelection selection,
+        Func<SpanRecord, TKey> key,
         IEqualityComparer<TKey>? comparer = null)
     {
-        ArgumentNullException.ThrowIfNull(batch);
+        ArgumentNullException.ThrowIfNull(selection);
         ArgumentNullException.ThrowIfNull(key);
 
+        var batch = selection.Basis;
         var equality = comparer ?? EqualityComparer<TKey>.Default;
         var groups = new List<(TKey Key, List<int> Ordinals)>();
         // A dictionary cannot hold a null key, but null is a legitimate fact value (an absent
@@ -148,7 +160,7 @@ public static class Grouping
         var lookup = new Dictionary<TKey, int>(equality);
 #pragma warning restore CS8714
         var nullIndex = -1;
-        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        foreach (var ordinal in selection)
         {
             // One key evaluation per claim: the selector is caller code and may be arbitrarily
             // expensive.
@@ -191,14 +203,24 @@ public static class Grouping
     /// </summary>
     public static LineGroupView ByLine(
         SpanBatch batch,
+        LineMembership membership = LineMembership.EveryLineTouched) =>
+        ByLine(ClaimSelection.All(batch), membership);
+
+    /// <summary>
+    /// Groups exactly the selected occurrence ordinals onto the master's total line grain. Empty
+    /// lines remain present, and every reported ordinal still resolves against the selection basis.
+    /// </summary>
+    public static LineGroupView ByLine(
+        ClaimSelection selection,
         LineMembership membership = LineMembership.EveryLineTouched)
     {
-        ArgumentNullException.ThrowIfNull(batch);
+        ArgumentNullException.ThrowIfNull(selection);
         if (!Enum.IsDefined(membership))
         {
             throw new ArgumentOutOfRangeException(nameof(membership), membership, "Undefined LineMembership value.");
         }
 
+        var batch = selection.Basis;
         var topology = batch.Master.Topology;
         var members = new List<int>[topology.LineCount];
         for (var line = 0; line < members.Length; line++)
@@ -206,7 +228,7 @@ public static class Grouping
             members[line] = new List<int>();
         }
 
-        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        foreach (var ordinal in selection)
         {
             if (membership == LineMembership.StartLineOnly)
             {

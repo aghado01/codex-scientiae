@@ -88,3 +88,7 @@ next artifact is the joint K2a–K2c contract brief required by D27, followed by
 Follow-on: the [joint K2 contract](sol-doccer-k2-joint-contract-20260804_214547.md) records the
 exact-to-qualitative inclusion and reference `ComposePairs` responsibilities as D29. The law
 remains one-way, and its reference/property assurance does not activate the deferred Lean harness.
+
+Follow-on: [K2a](sol-doccer-k2a-claim-selection-20260804_221441.md) subsequently closed the unary
+occurrence-selection algebra and population integrations as D30. It did not change the terminal
+join; K2b retains that transition and the executable Allen-image bridge.

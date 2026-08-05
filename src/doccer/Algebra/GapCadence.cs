@@ -14,7 +14,7 @@ namespace CodexSci.Doccer;
 public sealed class GapCadenceMeasure
 {
     internal GapCadenceMeasure(
-        SpanBatch source,
+        ClaimSelection population,
         TextSpan window,
         ReadOnlyCollection<int> ordinals,
         int? medianGap,
@@ -22,7 +22,7 @@ public sealed class GapCadenceMeasure
         double? gapCv,
         double? spanFraction)
     {
-        Source = source;
+        Population = population;
         Window = window;
         Ordinals = ordinals;
         MedianGap = medianGap;
@@ -31,7 +31,10 @@ public sealed class GapCadenceMeasure
         SpanFraction = spanFraction;
     }
 
-    public SpanBatch Source { get; }
+    /// <summary>The exact measured occurrence population, before query-order projection.</summary>
+    public ClaimSelection Population { get; }
+
+    public SpanBatch Source => Population.Basis;
 
     public TextMaster Master => Source.Master;
 
@@ -88,9 +91,9 @@ public static class GapCadence
     /// declared: the numerator facts are the gap statistics; the denominator basis is
     /// <paramref name="window"/> (default: the master extent), whose length divides the span
     /// fraction; the boundary policy is start-anchoring — the window admits a claim iff its
-    /// span starts within the window; exclusions arrive as the caller's
-    /// <paramref name="include"/> predicate (selection is query policy, D3) and are recorded on
-    /// the result as the measured ordinals.
+    /// span starts within the window; exclusions may arrive through the caller's
+    /// <paramref name="include"/> predicate convenience, which is converted to an exact selection
+    /// and recorded on the result as both its population and ordered ordinals.
     /// </summary>
     public static GapCadenceMeasure Measure(
         SpanBatch batch,
@@ -98,11 +101,28 @@ public static class GapCadence
         TextSpan? window = null)
     {
         ArgumentNullException.ThrowIfNull(batch);
+        var selection = include is null
+            ? ClaimSelection.All(batch)
+            : ClaimSelection.FromPredicate(batch, include);
+        return Measure(selection, window);
+    }
+
+    /// <summary>
+    /// Measures one exact occurrence selection. Window admission may narrow the input selection;
+    /// the exact admitted set is retained as <see cref="GapCadenceMeasure.Population"/> and its
+    /// start-ordered projection is retained as <see cref="GapCadenceMeasure.Ordinals"/>.
+    /// </summary>
+    public static GapCadenceMeasure Measure(
+        ClaimSelection selection,
+        TextSpan? window = null)
+    {
+        ArgumentNullException.ThrowIfNull(selection);
+        var batch = selection.Basis;
         var extent = window ?? batch.Master.Extent;
         batch.Master.ValidateSpan(extent);
 
         var admitted = new List<int>();
-        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        foreach (var ordinal in selection)
         {
             var record = batch[ordinal];
             if (record.Span.Start < extent.Start || record.Span.Start >= extent.End)
@@ -110,27 +130,14 @@ public static class GapCadence
                 continue;
             }
 
-            if (include is not null && !include(record))
-            {
-                continue;
-            }
-
             admitted.Add(ordinal);
         }
 
+        var population = ClaimSelection.Create(batch, admitted);
+
         // Deterministic start order regardless of insertion order: start ascending, end
         // descending, then ordinal — the same total order the sorted lookup uses.
-        admitted.Sort((left, right) =>
-        {
-            var comparison = batch.Starts[left].CompareTo(batch.Starts[right]);
-            if (comparison != 0)
-            {
-                return comparison;
-            }
-
-            comparison = batch.Ends[right].CompareTo(batch.Ends[left]);
-            return comparison != 0 ? comparison : left.CompareTo(right);
-        });
+        admitted.Sort((left, right) => ClaimOrdering.Compare(batch, left, right, ClaimOrder.Geometry));
 
         int? medianGap = null;
         double? meanGap = null;
@@ -170,7 +177,7 @@ public static class GapCadence
         }
 
         return new GapCadenceMeasure(
-            batch,
+            population,
             extent,
             admitted.AsReadOnly(),
             medianGap,
