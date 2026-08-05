@@ -81,6 +81,9 @@ is stable and the smaller functions materially improve reviewability without obs
 These are not implied by the module refactor and require separate decisions:
 
 - retry and backoff policy;
+- cooperative process-child cancellation, cleanup grace, parent-liveness lease, and hard-parent-death
+  containment, scoped by the
+  [deferred cancellation brief](../briefs/sol-batch-executor-cancellation-parent-liveness-deferred-20260805.md);
 - detached or durable background execution;
 - typed runtime-profile and process-spec constructors;
 - dependency DAG or phase-barrier scheduling;

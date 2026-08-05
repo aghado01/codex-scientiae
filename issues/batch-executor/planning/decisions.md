@@ -62,8 +62,10 @@ out. Dispatchers remove and dispose their own process records; parent teardown k
 before supervising pipelines and the pool are stopped.
 
 Direct runspace cancellation is cooperative until the parent stops the pipeline. Process cancellation is
-preemptive at the process-tree boundary. A short diagnostic-drain allowance applies only to process
-supervisors after their child trees have been killed.
+preemptive at the process-tree boundary: the actual child currently receives no operative cross-process
+cancellation token. A short diagnostic-drain allowance applies only to process supervisors after their
+child trees have been killed. Cooperative child cancellation and parent-liveness mechanics are deferred in
+the [cancellation brief](../briefs/sol-batch-executor-cancellation-parent-liveness-deferred-20260805.md).
 
 ### D7 — Teardown behavior is an architectural gate, not incidental cleanup — accepted
 
