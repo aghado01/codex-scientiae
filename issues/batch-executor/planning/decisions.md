@@ -155,6 +155,35 @@ The module README records capabilities, state/result vocabulary, job and plan co
 thread-safety rules, subprocess ownership, public commands, and non-goals. Examples may witness contracts,
 but procedural how-to material does not replace architecture statements.
 
+### D17 — Preparation is write-once; one lifecycle record owns execution resources — accepted
+
+Phase boundaries exchange private, type-tagged `PSCustomObject` records rather than PowerShell classes.
+This preserves warning-free `Import-Module -Force` behavior while making shapes testable. An
+`ExecutionPreparation` contains ordered `PreparedItem` records, normalized policy and budget, worker and
+session configuration, cancellation/wait inputs, and dispatch-ready direct data or process payloads. It
+owns no runspace pool, `PowerShell` pipeline, async handle, live `Process`, process registry, result array,
+or infrastructure-error collection. Preparation records are write-once by convention after construction.
+
+One mutable `LifecycleState`, created by `Invoke-BatchExecutor` before the outer execution `try`, is the
+only owner of the pool, invocation records, ordered result array, child-process registry, infrastructure
+diagnostics, timing, wait outcome, and completion flags. Its legal phase path is `Prepared -> Dispatching
+-> Dispatched -> Awaiting -> Awaited -> Collecting -> Collected -> TearingDown -> Closed`; exceptional
+unwind may enter `TearingDown` from any earlier phase. Runtime payloads may borrow only the child registry,
+never the lifecycle record. An invocation has one terminal override (`Cancelled` or `TimedOut`), not
+independent competing booleans.
+
+Each prepared item retains the original caller input solely for result identity. Direct dispatch data is
+either the shared reference or its prepared CLIXML copy. A process item retains only its resolved process
+specification and prepared payload XML for dispatch; it never carries direct dispatch graphs.
+
+### D18 — Phase 3 freezes the public execution projection — accepted
+
+Lifecycle decomposition does not add or rename public result, execution, policy, summary, or timing
+fields. In particular, `Input` remains the original caller object and the existing `WaitMs` timing name is
+preserved. Preparation and lifecycle records, pool/pipeline/async handles, registry entries, and internal
+phase names never escape. Any new public timing such as preparation or teardown duration requires a
+separate contract decision.
+
 ## Deliberate non-goals of the module-extraction tranche
 
 The module extraction does not add domain adapters, retry policy, detached execution, durable queues,

@@ -84,6 +84,18 @@ captured child stdout/stderr. Terminal states are:
 The execution record also contains batch `Errors`, budget warnings, resolved `Budget`, effective
 `Policy`, phase `Timing`, and a state-count `Summary`.
 
+## Internal lifecycle boundary
+
+Lifecycle decomposition is private and does not change that public projection. Preparation produces
+ordered, dispatch-ready item records and contains no pool, pipeline, async handle, live process, process
+registry, result array, or infrastructure-error collection. One mutable lifecycle record owns all such
+execution resources under the exported function's single outer `try/finally`.
+
+The internal phase path is prepare, dispatch, await/cancel, collect, and teardown. Execution mode remains
+item data inside those phases; it does not create another queue or resource owner. Runtime payloads borrow
+only the child-process registry. Private records and handles never appear in the returned execution
+record, and Phase 3 preserves existing public names including `Input` and `Timing.WaitMs`.
+
 ## Cancellation and ownership
 
 The caller may provide a `CancellationToken`; `WaitTimeoutSeconds` bounds the whole join and

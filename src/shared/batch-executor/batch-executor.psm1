@@ -59,6 +59,7 @@ $hostFiles = @(
     'private/script-definition.ps1'
     'private/worker-budget.ps1'
     'private/property-access.ps1'
+    'private/execution-state.ps1'
     'private/session-state.ps1'
     'private/process-lifecycle.ps1'
     'private/plan-resolution.ps1'

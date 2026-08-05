@@ -11,10 +11,12 @@ module validates and reads four runtime payloads as source data, loads named hos
 order, and leaks no private helpers. The former flat implementation is now a compatibility facade that
 imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
-The behavioral and teardown gates remain closed: 20 executor, 8 job/plan, and 8 module-surface tests pass,
-and the complete shared suite is 129 passing tests. The repository-wide path-topology suite is also green
-after BEX-207 removed post-eviction residue and rebuilt the check around required current inputs. Phase 2
-is closed; Phase 3 may begin with the package boundary and compatibility facade held stable.
+The behavioral and teardown gates remain closed: 21 executor, 7 private state-contract, 8 job/plan, and 8
+module-surface tests pass, and the complete shared suite is 137 passing tests. The queued multi-item
+host-stop witness closes the start/registration race and prevents queued supervisors from unwinding in
+serial waves. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
+residue and rebuilt the check around required current inputs. Phase 2 is closed; Phase 3 is active with the
+package boundary, public execution projection, and compatibility facade held stable.
 
 ## Sequencing rules
 
@@ -27,19 +29,28 @@ is closed; Phase 3 may begin with the package boundary and compatibility facade 
 
 ## Phase 3 — Internal lifecycle decomposition
 
-- **BEX-301 — Freeze phase-state contracts.** Define the private data passed between prepare/validate,
-  dispatch, await/cancel, collect, and teardown without exposing mutable process ownership to callers.
-- **BEX-302 — Extract pure preparation first.** Isolate ID/mode/spec normalization, dependency resolution,
-  context snapshots, worker-budget selection, and policy reporting. Preserve parent-thread traversal of
-  caller-owned objects.
-- **BEX-303 — Extract dispatch and collection around one owner.** Keep the parent registry, runspace pool,
-  and teardown ordering under one lifecycle owner. Do not create mode-specific schedulers.
-- **BEX-304 — Re-run adversarial teardown and stress gates after every phase move.** A phase extraction is
-  incomplete if process-tree, failure-containment, stable-order, or concurrency-pressure witnesses regress.
+- **BEX-302 — Extract pre-dispatch, execution-resource-free preparation.** Isolate worker/initializer
+  validation, ID and mode normalization, process-spec resolution, context/item snapshots, worker-budget
+  selection, policy reporting, session configuration, and all process payload serialization. Produce every
+  dispatch-ready item before the first `BeginInvoke`; do not absorb plan compilation or dependency-DAG
+  semantics.
+- **BEX-303 — Bind one lifecycle owner and extract dispatch.** Construct mutable lifecycle state before the
+  exported owner's outer `try`; assign partial pool and invocation handles incrementally so exceptional
+  teardown always sees them. Preserve one pool, queue, budget, and registry across execution modes.
+- **BEX-304 — Extract interruptible await/cancel as one unit.** Preserve 200 ms host-interruption
+  checkpoints and the ordering of child-tree kill, immediate direct stop, bounded process-supervisor drain,
+  and final batched pipeline stop.
+- **BEX-305 — Extract result collection.** Preserve item-local failure containment, diagnostic-stream
+  merging, the original caller `Input`, stable index ordering, and the exact public state/result fields.
+- **BEX-306 — Extract teardown and final execution-record assembly.** Keep one lexical outer `try/finally` in
+  `Invoke-BatchExecutor`; dispatchers dispose their own process records, the parent tears down children and
+  supervising pipelines before the pool, and no private state or handle escapes.
+- **BEX-307 — Close Phase 3.** Re-run process-tree, queued host-stop, failure-containment, stable-order,
+  mixed-mode, and concurrency-pressure gates; reconcile the README, decisions, ledger, and ahead-only queue.
 
-This phase is now authorized by the closed Phase 2 gate. Keep the package boundary stable, and accept each
-internal extraction only when the smaller functions materially improve reviewability without obscuring
-lifecycle order.
+Accept each internal extraction only when its focused and adversarial gates pass. Keep the package boundary
+and public execution projection stable, and require smaller functions to improve reviewability without
+obscuring lifecycle order.
 
 ## Phase 4 — Domain adapters
 
