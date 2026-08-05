@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    . (Join-Path $PSScriptRoot '../../src/shared/batch-executor.ps1')
+    Import-Module (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1') -Force
 
     function Write-TestWorker {
         param([string] $Path, [string] $Body)
@@ -65,20 +65,26 @@ finally {
 
 Describe 'Resolve-BatchWorkerBudget' {
     It 'returns no workers for an empty batch' {
-        $budget = Resolve-BatchWorkerBudget -ItemCount 0
-        $budget.Threads | Should -Be 0
+        InModuleScope 'batch-executor' {
+            $budget = Resolve-BatchWorkerBudget -ItemCount 0
+            $budget.Threads | Should -Be 0
+        }
     }
 
     It 'honors an explicit I/O-oriented worker count without CPU clamping' {
-        $requested = [Environment]::ProcessorCount + 3
-        $budget = Resolve-BatchWorkerBudget -ItemCount ($requested + 2) -MaxWorkers $requested
-        $budget.Threads | Should -Be $requested
-        $budget.Warnings.Count | Should -Be 1
+        InModuleScope 'batch-executor' {
+            $requested = [Environment]::ProcessorCount + 3
+            $budget = Resolve-BatchWorkerBudget -ItemCount ($requested + 2) -MaxWorkers $requested
+            $budget.Threads | Should -Be $requested
+            $budget.Warnings.Count | Should -Be 1
+        }
     }
 
     It 'grades worker count by minimum items per worker' {
-        $budget = Resolve-BatchWorkerBudget -ItemCount 9 -MaxWorkers 8 -MinItemsPerWorker 4
-        $budget.Threads | Should -Be 3
+        InModuleScope 'batch-executor' {
+            $budget = Resolve-BatchWorkerBudget -ItemCount 9 -MaxWorkers 8 -MinItemsPerWorker 4
+            $budget.Threads | Should -Be 3
+        }
     }
 }
 
@@ -437,15 +443,15 @@ finally { $null = Stop-RunLog }
             ChildPidPath = Join-Path $TestDrive 'pipeline-stop.pid'
             GrandchildPidPath = Join-Path $TestDrive 'pipeline-stop-grandchild.pid'
         }
-        $executorPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/shared/batch-executor.ps1')).Path
+        $manifestPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1')).Path
         $hostingPowerShell = [System.Management.Automation.PowerShell]::Create()
         $command = $hostingPowerShell.AddScript(@'
-param($ExecutorPath, $WorkerPath, $Item)
-. $ExecutorPath
+param($ManifestPath, $WorkerPath, $Item)
+Import-Module $ManifestPath -Force
 Invoke-BatchExecutor -InputObject @($Item) -ScriptPath $WorkerPath -ExecutionMode Process `
     -ProcessTimeoutSeconds 30 -MaxWorkers 1 | Out-Null
 '@)
-        [void]$command.AddArgument($executorPath)
+        [void]$command.AddArgument($manifestPath)
         [void]$command.AddArgument($worker)
         [void]$command.AddArgument($item)
         $async = $hostingPowerShell.BeginInvoke()

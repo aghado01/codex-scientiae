@@ -4,19 +4,18 @@ Living plan for batch-executor work not yet complete. The current architecture c
 [decisions.md](decisions.md); completed work moves to [ledger.md](ledger.md); arguments and review evidence
 live under [../discussions/](../discussions/). Do not leave completed work in this file.
 
-## Current baseline — 2026-08-04
+## Current baseline — 2026-08-05
 
-Commit `080bac6` introduced `src/shared/batch-executor.ps1`, `batch-job-worker.ps1`, and their two Pester
-suites as part of a larger blanket commit. The implementation provides one greedy runspace pool with
-per-job direct/process mode, structured failure containment, parent-owned child-process cancellation,
-plan compilation, cost-biased dispatch, original-order results, dependency and process-policy validation,
-and declared write-set collision checks.
+The executor is packaged under `src/shared/batch-executor/`. Its manifest exposes four commands; its root
+module validates and reads four runtime payloads as source data, loads named host files in deterministic
+order, and leaks no private helpers. The former flat implementation is now a compatibility facade that
+imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
-The teardown safety gate is closed: the current focused baseline is 28 passing batch tests (20 executor
-and 8 job/plan), and the shared suite baseline is 121 passing tests. Tests now exercise child and
-descendant termination under token cancellation, per-child timeout, total-batch timeout, and hosting
-pipeline stop. No production source consumer imports the executor yet; only the two batch test files
-dot-source it. This is the low-risk window for packaging and public-surface correction.
+The behavioral and teardown gates remain closed: 20 executor, 8 job/plan, and 8 module-surface tests pass,
+and the complete shared suite is 129 passing tests. The repository-wide path-topology suite is red on
+pre-existing eviction/renovation debt outside batch-executor (retired codex-membrane paths and absent
+legacy configuration/documentation files); none of its failures names the extracted module. BEX-207 keeps
+that final Phase 2 gate explicit rather than silently weakening it.
 
 ## Sequencing rules
 
@@ -27,30 +26,16 @@ dot-source it. This is the low-risk window for packaging and public-surface corr
 5. Keep compatibility explicit and temporary; new callers bind to the manifest.
 6. Keep domain adapters out until the shared contract and module surface are stable.
 
-## Phase 2 — Mechanical module extraction
+## Phase 2 — Exit closeout
 
-- **BEX-201 — Create the deterministic module package.** Add `src/shared/batch-executor/` with manifest,
-  root module, explicit ordered host-file loading, and module-scoped root/payload paths. Do not use wildcard
-  dot-sourcing.
-- **BEX-202 — Extract runtime payloads as source data.** Move direct dispatcher, process dispatcher, child
-  bootstrap, and generic job worker under `payloads/`. Parse and read payloads as text; never execute them
-  in host module scope. Missing or malformed payloads fail at import or plan construction with a precise
-  path diagnostic.
-- **BEX-203 — Separate public and private host functions mechanically.** Move function bodies without
-  changing lifecycle sequencing. Keep `Invoke-BatchExecutor` intact during this phase.
-- **BEX-204 — Correct and lock the public surface.** Export `New-BatchJob`, `New-BatchPlan`,
-  `Invoke-BatchPlan`, and `Invoke-BatchExecutor`. Keep worker-budget resolution private and move its unit
-  coverage into `InModuleScope`.
-- **BEX-205 — Install the compatibility facade.** Replace the flat implementation with a manifest import
-  and transitional `Compile-BatchPlan -> New-BatchPlan` alias. Add canonical-import, private-visibility,
-  approved-verb, repeat-import, and facade compatibility tests.
-- **BEX-206 — Publish the capability contract.** Add the module README covering job/plan schemas,
-  execution modes, lifecycle states, cancellation, data isolation, result ordering, subprocess policy,
-  logging correlation, and non-goals.
+- **BEX-207 — Clear or explicitly re-scope the repository topology gate.** Repair the active references
+  broken by the codex-membrane eviction and subsequent source moves, or establish a reviewed batch-owned
+  topology gate if the repository-wide suite is no longer the intended boundary. Do not make the suite
+  green by ignoring missing active inputs. Re-run the module-surface and complete shared suites after any
+  topology repair.
 
-Exit gate: focused batch, module-surface, teardown, path-topology, and complete shared suites pass; importing
-the manifest emits no unapproved-verb warning; no private helper leaks into caller scope; the compatibility
-facade remains behaviorally equivalent.
+Exit gate: the repository topology decision is resolved and its resulting suite passes. Canonical import,
+module surface, teardown, facade compatibility, and the complete shared suite are already green.
 
 ## Phase 3 — Internal lifecycle decomposition
 
@@ -64,8 +49,9 @@ facade remains behaviorally equivalent.
 - **BEX-304 — Re-run adversarial teardown and stress gates after every phase move.** A phase extraction is
   incomplete if process-tree, failure-containment, stable-order, or concurrency-pressure witnesses regress.
 
-This phase is not authorized merely by completing module extraction. Begin only when the package boundary
-is stable and the smaller functions materially improve reviewability without obscuring lifecycle order.
+This phase is not authorized merely by completing module extraction. Begin only after BEX-207 closes, the
+package boundary remains stable, and the smaller functions materially improve reviewability without
+obscuring lifecycle order.
 
 ## Phase 4 — Domain adapters
 

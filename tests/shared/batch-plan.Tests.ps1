@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    . (Join-Path $PSScriptRoot '../../src/shared/batch-executor.ps1')
+    Import-Module (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1') -Force
 
     function Write-PlanTestScript {
         param([string] $Path, [string] $Body)
@@ -34,12 +34,12 @@ Describe 'Batch job and plan model' {
                 -Writes (Join-Path $outputRoot 'child.md')
         )
 
-        $compiled = Compile-BatchPlan -Job $jobs
+        $compiled = New-BatchPlan -Job $jobs
 
         $compiled.Plan | Should -BeNullOrEmpty
         ($compiled.Errors -join "`n") | Should -Match 'duplicate job id'
         $jobs[1].Id = 'other'
-        $collision = Compile-BatchPlan -Job $jobs
+        $collision = New-BatchPlan -Job $jobs
         ($collision.Errors -join "`n") | Should -Match 'write-set collision'
     }
 
@@ -53,7 +53,7 @@ Describe 'Batch job and plan model' {
                 -ProcessSpec @{ Environment = 'not-a-dictionary'; TimeoutSeconds = -1; WindowStyle = 'Invisible' }
         )
 
-        $compiled = Compile-BatchPlan -Job $jobs
+        $compiled = New-BatchPlan -Job $jobs
 
         $compiled.Plan | Should -BeNullOrEmpty
         ($compiled.Errors -join "`n") | Should -Match 'entrypoint not found'
@@ -70,7 +70,7 @@ Describe 'Batch job and plan model' {
             New-BatchJob -Id full-job -Kind RunspaceScript -EntryPoint $entry -RuntimeProfile full
         )
 
-        $compiled = Compile-BatchPlan -Job $jobs -RunspaceProfile @{ Name = 'core'; IssPreset = 'Core' }
+        $compiled = New-BatchPlan -Job $jobs -RunspaceProfile @{ Name = 'core'; IssPreset = 'Core' }
 
         $compiled.Plan | Should -BeNullOrEmpty
         ($compiled.Errors -join "`n") | Should -Match 'cannot host multiple direct runtime profiles'
@@ -88,7 +88,7 @@ $Name
             New-BatchJob -Id high -Kind RunspaceScript -EntryPoint $entry `
                 -ArgumentList @('high') -EstimatedCost 100
         )
-        $compiled = Compile-BatchPlan -Job $jobs
+        $compiled = New-BatchPlan -Job $jobs
 
         $run = Invoke-BatchPlan -Plan $compiled -MaxWorkers 1
 
@@ -117,7 +117,7 @@ param([string] $Name)
                 -ProcessSpec @{ Environment = @{ BATCH_PLAN_TEST = 'isolated' }; WorkingDirectory = $TestDrive }
             New-BatchJob -Id broken -Kind RunspaceScript -EntryPoint $failing
         )
-        $compiled = Compile-BatchPlan -Job $jobs
+        $compiled = New-BatchPlan -Job $jobs
 
         $run = Invoke-BatchPlan -Plan $compiled -MaxWorkers 3
 
@@ -145,7 +145,7 @@ Export-ModuleMember -Function Get-PlanDependencyValue
             New-BatchJob -Id direct-dependency -Kind RunspaceScript -EntryPoint $entry
             New-BatchJob -Id process-dependency -Kind PowerShellProcess -EntryPoint $entry -ModulePath $module
         )
-        $compiled = Compile-BatchPlan -Job $jobs `
+        $compiled = New-BatchPlan -Job $jobs `
             -RunspaceProfile @{ Name = 'default'; IssPreset = 'Core'; ModulePath = @($module) }
 
         $run = Invoke-BatchPlan -Plan $compiled -MaxWorkers 2
@@ -165,7 +165,7 @@ Start-Sleep -Seconds 10
             New-BatchJob -Id direct-slow -Kind RunspaceScript -EntryPoint $slow
             New-BatchJob -Id process-slow -Kind PowerShellProcess -EntryPoint $slow
         )
-        $compiled = Compile-BatchPlan -Job $jobs
+        $compiled = New-BatchPlan -Job $jobs
         $cts = [System.Threading.CancellationTokenSource]::new()
         try {
             $cts.CancelAfter(700)

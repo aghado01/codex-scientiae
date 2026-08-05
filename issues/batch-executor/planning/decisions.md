@@ -8,7 +8,7 @@ The originating design evidence is the
 [independent module proposal](../discussions/opus-batch-executor-independent-proposal-20260804.md) and the
 [module proposal with review](../discussions/sol-batch-executor-module-proposal-20260804.md). Work still
 ahead lives in [roadmap.md](roadmap.md); completed roadmap-grain work moves to
-[ledger.md](ledger.md). The eventual `src/shared/batch-executor/README.md` is the runtime capability and
+[ledger.md](ledger.md). The `src/shared/batch-executor/README.md` is the runtime capability and
 contract surface and must agree with this canon.
 
 Status vocabulary: **implemented** describes the current tested substrate; **accepted** is a binding
@@ -105,14 +105,14 @@ adapters remain responsible for complete write declarations and collision-free d
 
 ## Module and source organization
 
-### D12 — One module contains plan and execution as internal layers — accepted
+### D12 — One module contains plan and execution as internal layers — implemented
 
 The executor becomes one `batch-executor` module, not separate plan, runspace, and process modules. The
 module boundary hides implementation helpers while preserving the single scheduler and shared policy
 vocabulary. The first extraction is mechanical; the safety-sensitive `Invoke-BatchExecutor` lifecycle is
 not decomposed in the same change.
 
-### D13 — Runtime payload source is data and lives outside dot-sourced code — accepted
+### D13 — Runtime payload source is data and lives outside dot-sourced code — implemented
 
 Direct dispatcher, process dispatcher, child bootstrap, and generic job-worker source live under a
 dedicated `payloads/` directory. The module reads dispatcher/bootstrap files as text and never dot-sources
@@ -122,7 +122,7 @@ files. Directory placement carries this invariant; wildcard loading is forbidden
 The module root is captured once by `batch-executor.psm1` in module scope. Worker and payload paths derive
 from that captured root, never from `$PSScriptRoot` inside a file under `public/` or `private/`.
 
-### D14 — The canonical public surface contains four commands — accepted
+### D14 — The canonical public surface contains four commands — implemented
 
 The module exports:
 
@@ -137,13 +137,13 @@ policy through executor parameters and inspect the resolved budget in the return
 unit tests run inside module scope. If a real caller later needs preflight sizing, promote a separately
 reviewed command with an approved verb.
 
-### D15 — The flat script becomes a transitional compatibility loader — accepted
+### D15 — The flat script becomes a transitional compatibility loader — implemented
 
 `src/shared/batch-executor.ps1` imports the canonical manifest and supplies only explicitly approved legacy
 aliases. New callers import the manifest. Compatibility removal requires a caller inventory and an
 explicit roadmap item; the facade does not become a second implementation or a wildcard dot-source hub.
 
-### D16 — The source README is a contract surface, not a tutorial — accepted
+### D16 — The source README is a contract surface, not a tutorial — implemented
 
 The module README records capabilities, state/result vocabulary, job and plan contracts, cancellation and
 thread-safety rules, subprocess ownership, public commands, and non-goals. Examples may witness contracts,
