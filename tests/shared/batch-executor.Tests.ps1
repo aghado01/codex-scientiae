@@ -8,6 +8,59 @@ BeforeAll {
         Set-Content -LiteralPath $Path -Value $Body -Encoding utf8
         return $Path
     }
+
+    function Write-ProcessTreeWorker {
+        param([string] $Path)
+        Write-TestWorker -Path $Path -Body @'
+param($Item, $Context, $RunspaceState)
+$startInfo = [System.Diagnostics.ProcessStartInfo]::new()
+$startInfo.FileName = Join-Path $PSHOME $(if ($IsWindows) { 'pwsh.exe' } else { 'pwsh' })
+$startInfo.UseShellExecute = $false
+$startInfo.CreateNoWindow = $true
+[void]$startInfo.ArgumentList.Add('-NoProfile')
+[void]$startInfo.ArgumentList.Add('-NonInteractive')
+[void]$startInfo.ArgumentList.Add('-Command')
+[void]$startInfo.ArgumentList.Add('Start-Sleep -Seconds 30')
+$grandchild = [System.Diagnostics.Process]::Start($startInfo)
+try {
+    [System.IO.File]::WriteAllText([string]$Item.GrandchildPidPath, [string]$grandchild.Id)
+    # This is the full-start marker. Its presence guarantees that the descendant PID was published first.
+    [System.IO.File]::WriteAllText([string]$Item.ChildPidPath, [string]$PID)
+    Start-Sleep -Seconds 30
+}
+finally {
+    try { if (-not $grandchild.HasExited) { $grandchild.Kill($true) } } catch {}
+    $grandchild.Dispose()
+}
+'@
+    }
+
+    function Wait-TestFile {
+        param([string] $Path, [int] $TimeoutMilliseconds = 8000)
+        $watch = [System.Diagnostics.Stopwatch]::StartNew()
+        while ($watch.ElapsedMilliseconds -lt $TimeoutMilliseconds) {
+            if (Test-Path -LiteralPath $Path -PathType Leaf) { return $true }
+            Start-Sleep -Milliseconds 50
+        }
+        return $false
+    }
+
+    function Test-ProcessExited {
+        param([int] $ProcessId, [int] $TimeoutMilliseconds = 4000)
+        $watch = [System.Diagnostics.Stopwatch]::StartNew()
+        while ($watch.ElapsedMilliseconds -lt $TimeoutMilliseconds) {
+            if ($null -eq (Get-Process -Id $ProcessId -ErrorAction SilentlyContinue)) { return $true }
+            Start-Sleep -Milliseconds 50
+        }
+
+        # A failing teardown test must not leave its witness running on the workstation.
+        $survivor = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
+        if ($null -ne $survivor) {
+            try { $survivor.Kill($true) } catch { try { $survivor.Kill() } catch {} }
+            try { $survivor.WaitForExit(2000) } catch {}
+        }
+        return $false
+    }
 }
 
 Describe 'Resolve-BatchWorkerBudget' {
@@ -298,20 +351,19 @@ finally { $null = Stop-RunLog }
         (Get-Content -LiteralPath $badLog -Raw) | Should -Match 'planned failure'
     }
 
-    It 'kills registered children and prevents queued children from starting on cancellation' {
-        $worker = Write-TestWorker (Join-Path $TestDrive 'cancelled-process-worker.ps1') @'
-param($Item, $Context, $RunspaceState)
-[System.IO.File]::WriteAllText($Item.PidPath, [string]$PID)
-Start-Sleep -Seconds 30
-'done'
-'@
+    It 'kills registered process trees and prevents queued children from starting on cancellation' {
+        $worker = Write-ProcessTreeWorker (Join-Path $TestDrive 'cancelled-process-tree-worker.ps1')
         $items = 1..4 | ForEach-Object {
-            [pscustomobject]@{ Id = "cancel-child-$_"; PidPath = (Join-Path $TestDrive "cancelled-child-$_.pid") }
+            [pscustomobject]@{
+                Id = "cancel-child-$_"
+                ChildPidPath = Join-Path $TestDrive "cancelled-child-$_.pid"
+                GrandchildPidPath = Join-Path $TestDrive "cancelled-grandchild-$_.pid"
+            }
         }
         $cts = [System.Threading.CancellationTokenSource]::new()
         $clock = [System.Diagnostics.Stopwatch]::StartNew()
         try {
-            $cts.CancelAfter(1600)
+            $cts.CancelAfter(2500)
             $run = Invoke-BatchExecutor -InputObject $items -ScriptPath $worker -ExecutionMode Process `
                 -CancellationToken $cts.Token -ProcessTimeoutSeconds 30 -MaxWorkers 2
         }
@@ -322,28 +374,100 @@ Start-Sleep -Seconds 30
         $run.Summary.Failed | Should -Be 0
         $run.Errors.Count | Should -Be 0
         $clock.Elapsed.TotalSeconds | Should -BeLessThan 8
-        $startedPidFiles = @($items.PidPath | Where-Object { Test-Path -LiteralPath $_ })
+        $startedPidFiles = @($items.ChildPidPath | Where-Object { Test-Path -LiteralPath $_ })
         $startedPidFiles.Count | Should -BeGreaterOrEqual 1
         $startedPidFiles.Count | Should -BeLessOrEqual 2
-        foreach ($pidPath in $startedPidFiles) {
-            $childPid = [int](Get-Content -LiteralPath $pidPath -Raw)
-            Get-Process -Id $childPid -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
+        foreach ($item in @($items | Where-Object { Test-Path -LiteralPath $_.ChildPidPath })) {
+            $item.GrandchildPidPath | Should -Exist
+            $childPid = [int](Get-Content -LiteralPath $item.ChildPidPath -Raw)
+            $grandchildPid = [int](Get-Content -LiteralPath $item.GrandchildPidPath -Raw)
+            (Test-ProcessExited -ProcessId $childPid) | Should -BeTrue
+            (Test-ProcessExited -ProcessId $grandchildPid) | Should -BeTrue
         }
     }
 
-    It 'kills a timed-out child process and reports the item timeout' {
-        $worker = Write-TestWorker (Join-Path $TestDrive 'timeout-worker.ps1') @'
-param($Item, $Context, $RunspaceState)
-Start-Sleep -Seconds 10
-'done'
-'@
-        $item = [pscustomobject]@{ Id = 'timeout' }
+    It 'kills a timed-out child process tree and reports the item timeout' {
+        $worker = Write-ProcessTreeWorker (Join-Path $TestDrive 'child-timeout-tree-worker.ps1')
+        $item = [pscustomobject]@{
+            Id = 'child-timeout'
+            ChildPidPath = Join-Path $TestDrive 'child-timeout.pid'
+            GrandchildPidPath = Join-Path $TestDrive 'child-timeout-grandchild.pid'
+        }
 
         $run = Invoke-BatchExecutor -InputObject @($item) -ScriptPath $worker -ExecutionMode Process `
-            -ProcessTimeoutSeconds 1 -MaxWorkers 1
+            -ProcessTimeoutSeconds 2 -MaxWorkers 1
 
         $run.Results[0].State | Should -Be 'TimedOut'
         $run.Results[0].Errors[0] | Should -Match 'exceeded timeout'
         $run.Summary.TimedOut | Should -Be 1
+        $item.ChildPidPath | Should -Exist
+        $item.GrandchildPidPath | Should -Exist
+        $childPid = [int](Get-Content -LiteralPath $item.ChildPidPath -Raw)
+        $grandchildPid = [int](Get-Content -LiteralPath $item.GrandchildPidPath -Raw)
+        (Test-ProcessExited -ProcessId $childPid) | Should -BeTrue
+        (Test-ProcessExited -ProcessId $grandchildPid) | Should -BeTrue
+    }
+
+    It 'kills a process tree at the total batch wait timeout' {
+        $worker = Write-ProcessTreeWorker (Join-Path $TestDrive 'batch-timeout-tree-worker.ps1')
+        $item = [pscustomobject]@{
+            Id = 'batch-timeout'
+            ChildPidPath = Join-Path $TestDrive 'batch-timeout.pid'
+            GrandchildPidPath = Join-Path $TestDrive 'batch-timeout-grandchild.pid'
+        }
+
+        $run = Invoke-BatchExecutor -InputObject @($item) -ScriptPath $worker -ExecutionMode Process `
+            -WaitTimeoutSeconds 3 -ProcessTimeoutSeconds 30 -MaxWorkers 1
+
+        $run.Results[0].State | Should -Be 'TimedOut'
+        $run.Results[0].Errors -join "`n" | Should -Match 'batch wait exceeded'
+        $run.Summary.TimedOut | Should -Be 1
+        $item.ChildPidPath | Should -Exist
+        $item.GrandchildPidPath | Should -Exist
+        $childPid = [int](Get-Content -LiteralPath $item.ChildPidPath -Raw)
+        $grandchildPid = [int](Get-Content -LiteralPath $item.GrandchildPidPath -Raw)
+        (Test-ProcessExited -ProcessId $childPid) | Should -BeTrue
+        (Test-ProcessExited -ProcessId $grandchildPid) | Should -BeTrue
+    }
+
+    It 'kills a process tree when the hosting PowerShell pipeline is stopped' {
+        $worker = Write-ProcessTreeWorker (Join-Path $TestDrive 'pipeline-stop-tree-worker.ps1')
+        $item = [pscustomobject]@{
+            Id = 'pipeline-stop'
+            ChildPidPath = Join-Path $TestDrive 'pipeline-stop.pid'
+            GrandchildPidPath = Join-Path $TestDrive 'pipeline-stop-grandchild.pid'
+        }
+        $executorPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/shared/batch-executor.ps1')).Path
+        $hostingPowerShell = [System.Management.Automation.PowerShell]::Create()
+        $command = $hostingPowerShell.AddScript(@'
+param($ExecutorPath, $WorkerPath, $Item)
+. $ExecutorPath
+Invoke-BatchExecutor -InputObject @($Item) -ScriptPath $WorkerPath -ExecutionMode Process `
+    -ProcessTimeoutSeconds 30 -MaxWorkers 1 | Out-Null
+'@)
+        [void]$command.AddArgument($executorPath)
+        [void]$command.AddArgument($worker)
+        [void]$command.AddArgument($item)
+        $async = $hostingPowerShell.BeginInvoke()
+        $started = $false
+        $stopwatch = [System.Diagnostics.Stopwatch]::new()
+        try {
+            $started = Wait-TestFile -Path $item.ChildPidPath
+            $stopwatch.Start()
+        }
+        finally {
+            try { $hostingPowerShell.Stop() } catch {}
+            $stopwatch.Stop()
+            if ($async.IsCompleted) { try { [void]$hostingPowerShell.EndInvoke($async) } catch {} }
+            $hostingPowerShell.Dispose()
+        }
+
+        $started | Should -BeTrue
+        $stopwatch.Elapsed.TotalSeconds | Should -BeLessThan 8
+        $item.GrandchildPidPath | Should -Exist
+        $childPid = [int](Get-Content -LiteralPath $item.ChildPidPath -Raw)
+        $grandchildPid = [int](Get-Content -LiteralPath $item.GrandchildPidPath -Raw)
+        (Test-ProcessExited -ProcessId $childPid) | Should -BeTrue
+        (Test-ProcessExited -ProcessId $grandchildPid) | Should -BeTrue
     }
 }

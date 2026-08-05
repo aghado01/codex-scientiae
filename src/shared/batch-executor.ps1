@@ -820,32 +820,38 @@ function Invoke-BatchExecutor {
         $timeoutObserved = $false
         if (-not $cancellationObserved) { foreach ($invocation in $invocations) {
             if ($invocation.Async.IsCompleted) { continue }
-            $remaining = if ($WaitTimeoutSeconds -gt 0) {
-                [math]::Max(0, ([int64]$WaitTimeoutSeconds * 1000) - $swWait.ElapsedMilliseconds)
-            }
-            else { [int64]-1 }
-
-            if ($CancellationToken.CanBeCanceled) {
-                $handles = [System.Threading.WaitHandle[]]@(
-                    $invocation.Async.AsyncWaitHandle,
-                    $CancellationToken.WaitHandle)
-                $waitResult = if ($remaining -ge 0) {
-                    [System.Threading.WaitHandle]::WaitAny(
-                        $handles, [int][math]::Min([int]::MaxValue, $remaining))
+            # Never park the hosting PowerShell pipeline in an indefinite CLR wait. Short slices give
+            # Ctrl+C / PowerShell.Stop() regular interpreter checkpoints so the outer finally block can
+            # kill registered process trees immediately instead of waiting for child completion.
+            while (-not $invocation.Async.IsCompleted) {
+                if ($CancellationToken.IsCancellationRequested) {
+                    $cancellationObserved = $true
+                    break
                 }
-                else { [System.Threading.WaitHandle]::WaitAny($handles) }
-
-                if ($waitResult -eq 1) { $cancellationObserved = $true; break }
-                if ($waitResult -eq [System.Threading.WaitHandle]::WaitTimeout) { $timeoutObserved = $true; break }
-            }
-            else {
-                $completed = if ($remaining -ge 0) {
-                    $invocation.Async.AsyncWaitHandle.WaitOne(
-                        [int][math]::Min([int]::MaxValue, $remaining))
+                $remaining = if ($WaitTimeoutSeconds -gt 0) {
+                    ([int64]$WaitTimeoutSeconds * 1000) - $swWait.ElapsedMilliseconds
                 }
-                else { $invocation.Async.AsyncWaitHandle.WaitOne() }
-                if (-not $completed) { $timeoutObserved = $true; break }
+                else { [int64]-1 }
+                if ($WaitTimeoutSeconds -gt 0 -and $remaining -le 0) {
+                    $timeoutObserved = $true
+                    break
+                }
+                $waitSlice = if ($remaining -ge 0) {
+                    [int][math]::Min(200, [math]::Max(1, $remaining))
+                }
+                else { 200 }
+
+                if ($CancellationToken.CanBeCanceled) {
+                    $handles = [System.Threading.WaitHandle[]]@(
+                        $invocation.Async.AsyncWaitHandle,
+                        $CancellationToken.WaitHandle)
+                    $waitResult = [System.Threading.WaitHandle]::WaitAny($handles, $waitSlice)
+                    if ($waitResult -eq 0) { break }
+                    if ($waitResult -eq 1) { $cancellationObserved = $true; break }
+                }
+                elseif ($invocation.Async.AsyncWaitHandle.WaitOne($waitSlice)) { break }
             }
+            if ($cancellationObserved -or $timeoutObserved) { break }
         } }
 
         if ($cancellationObserved -or $timeoutObserved) {

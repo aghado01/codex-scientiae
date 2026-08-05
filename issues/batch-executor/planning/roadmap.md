@@ -12,38 +12,20 @@ per-job direct/process mode, structured failure containment, parent-owned child-
 plan compilation, cost-biased dispatch, original-order results, dependency and process-policy validation,
 and declared write-set collision checks.
 
-The current focused baseline is 26 passing batch tests: 18 executor tests and 8 job/plan tests. The shared
-suite baseline is 119 passing tests. No production source consumer imports the executor yet; only the two
-batch test files dot-source it. This is the low-risk window for packaging and public-surface correction.
+The teardown safety gate is closed: the current focused baseline is 28 passing batch tests (20 executor
+and 8 job/plan), and the shared suite baseline is 121 passing tests. Tests now exercise child and
+descendant termination under token cancellation, per-child timeout, total-batch timeout, and hosting
+pipeline stop. No production source consumer imports the executor yet; only the two batch test files
+dot-source it. This is the low-risk window for packaging and public-surface correction.
 
 ## Sequencing rules
 
-1. Lock down teardown before moving lifecycle code.
+1. Preserve the closed teardown gate before and after every lifecycle move.
 2. Preserve one scheduler and one budget; never split implementation by execution mode.
 3. Separate host implementation from runtime payload source by directory and loading mechanism.
 4. Extract the module mechanically before decomposing lifecycle phases.
 5. Keep compatibility explicit and temporary; new callers bind to the manifest.
 6. Keep domain adapters out until the shared contract and module surface are stable.
-
-## Phase 1 — Teardown safety gate
-
-- **BEX-101 — Establish a process-tree fixture.** Add a worker that records its child PowerShell PID,
-  launches a long-lived grandchild, records the descendant PID, and remains alive long enough for the
-  parent teardown path to act. Assertions must poll boundedly and verify both processes are gone.
-- **BEX-102 — Prove token cancellation kills trees and suppresses queued launches.** Extend the existing
-  cancellation witness from child-only checks to child-plus-descendant checks while preserving its bound
-  that no more than `MaxWorkers` children start.
-- **BEX-103 — Prove total-batch timeout kills trees.** Exercise `WaitTimeoutSeconds` with a longer child
-  timeout, verify the item state and diagnostics, and assert zero surviving descendants.
-- **BEX-104 — Prove per-child timeout kills trees.** Strengthen the existing `ProcessTimeoutSeconds` test
-  to record and verify child and descendant termination.
-- **BEX-105 — Prove hosting-pipeline stop runs exceptional teardown.** Invoke the executor in a separate
-  PowerShell pipeline, wait until its child tree is live, stop the hosting pipeline, and verify the
-  executor's `finally` leaves no descendants. Record literal console Ctrl+C as a manual Windows smoke,
-  not a nondeterministic automated gate.
-
-Exit gate: all lifecycle tests pass repeatedly, every created PID is absent after bounded teardown, no test
-relies on natural child timeout, and the original 26 focused tests remain green.
 
 ## Phase 2 — Mechanical module extraction
 
