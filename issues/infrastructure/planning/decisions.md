@@ -146,10 +146,12 @@ artifacts have migrated.
 
 ### D20 — Existing operational units are evidence, not automatic boundaries — accepted
 
-`jsonl-stage.ps1`, `run-ledger.ps1`, and `runs.ps1` participate in overlapping operational flows and must be
-audited together. Reusable primitives and organization should be extracted; defunct membrane use-case logic
-and application-specific logistics should not be reproduced in the shared substrate merely because they
-currently coexist in a file.
+Staging, ledger, inventory, and serializer concerns all currently live inside `src/shared/jsonl.ps1`, and
+`src/shared/runs.ps1` carries the current run convention beside retired paper-local discovery. These
+overlapping operational flows must be audited together. Reusable primitives and organization should be
+extracted; defunct membrane use-case logic and application-specific logistics should not be reproduced in the
+shared substrate merely because they currently coexist in a file. A file boundary is not a contract boundary,
+and the absence of one is not evidence that two concerns are the same.
 
 ## Managed stores and inventory
 
@@ -221,60 +223,20 @@ lifecycle. The engine supplies schema-agnostic codec, lifecycle, mutation, query
 primitives. Applications optionally bind policy; the toolbelt can compare evolving variants without turning
 an observed development snapshot into compatibility canon.
 
-### D30 — `metadata.json` is the local document manifest; raw package metadata stays raw — accepted
+### D30–D34 — LaTeX source-deposit and manifest semantics — relocated 2026-08-04
 
-Each document deposit uses `{slug}/metadata.json` as its single bounded local metadata object and as the
-source for rows materialized into localized parent `inventory.jsonl` stores. A provider archive's
-`00README.json`, when present, remains byte-for-byte under the stable `{slug}-tex/` extraction; automation may
-record it as a preserved package member but does not base the manifest on it, rename it, or mistake it for
-the complete document manifest. The archive and extraction are stable source material, while subsequent
-conversion output belongs to runstamped artifacts.
+These five decisions recorded latex-ingest application semantics — the local document manifest and raw
+package metadata (D30), evidence-composed manifests (D31), the `source-ready` transactional sentinel (D32),
+scoped source-deposit addressing (D33), and the manifest-only production entrypoint with its
+`latex-ingest-compat.ps1` import boundary (D34). Under D35 they belong to the application, not to this
+umbrella, and this canon's own scope boundary disclaims document-manifest fields.
 
-### D31 — Document manifests are evidence-composed, not single-file extracts — accepted
+They now live in [`issues/latex-ingest/planning/decisions.md`](../../latex-ingest/planning/decisions.md) as
+**D13–D17**, in that order, with their content carried over unchanged. Their implementation witness remains
+commit `05419f3`. This canon still treats source deposits and hierarchical inventories as design witnesses
+(see [architecture.md](architecture.md)); it does not own their schemas.
 
-`metadata.json` merges explicitly attributed facts from provider/acquisition records, deposited-file
-inspection, optional document-embedded declarations, and curated corrections. For LaTeX, automation discovers
-the actual entrypoint and resolves inputs; it does not assume `main.tex`, and source declarations supplement
-rather than silently override provider identity. Local presence, paths, formats, sizes, and checksums are
-measured from deposited files. Conflicts remain visible and refreshes preserve curated data.
-
-### D32 — `source-ready` is a standalone transactional sentinel — accepted
-
-Source-deposit initialization is prerequisite housekeeping and does not start or become an implicit phase of
-a latex-ingest conversion run. It expands a selected archive into a private sibling, rejects unsafe archive
-members and invalid or ambiguous LaTeX source, normalizes the archive name, and publishes the stable
-`{slug}-tex/` tree before atomically creating `metadata.json` last. The sentinel means source validation and
-publication completed; it does not mean bibliography is complete or conversion succeeded.
-
-A missing sentinel after source-tree publication is recoverable only by independently re-extracting the
-archive and comparing tree fingerprints. A mismatch is a conflict, never an overwrite. Existing sentinels are
-validated and returned without rewrite. Provider metadata is optional, and short-lived locking/private paths
-must be cleaned rather than becoming persistent per-document sidecars. The current implementation and schema
-remain provisional until corpus vetting and converter migration are complete.
-
-### D33 — Source-deposit paths are scoped addresses, not machine identity — accepted
-
-The initializer has no compiled-in drive, checkout, profile, temp, or artifacts root. The caller supplies or
-relatively addresses the document directory; subordinate archive/provider paths resolve against that stable
-scope, and LaTeX entrypoints resolve against the source tree. Imports resolve from the importing script.
-Persisted paths use forward slashes relative to the document directory. Absolute paths are ephemeral resolved
-addresses used for confinement and I/O and never enter `metadata.json`.
-
-Filesystem equality and containment follow the host's case semantics, while archive/tree inventory rejects
-case-colliding portable names deliberately. Deterministic tree fingerprints sort normalized relative paths
-ordinally so checkout location, current directory, locale, and enumeration order cannot change the digest.
-
-### D34 — Production latex-ingest is manifest-only; legacy inference is an import boundary — accepted
-
-`Invoke-ArxivLatexToMarkdown` consumes a validated `metadata.json`/document directory and does not unpack,
-initialize, infer archive/slug layout, recognize `{slug}-latex/`, or accept source-work overrides. Conversion
-operates over a resolved-source engine and writes all generated ref/doc/diagram/oracle evidence to the run
-directory so the source fingerprint remains stable.
-
-The old archive/slug entrypoint, retired helper names, reuse semantics, and arbitrary source-work paths live
-only in `latex-ingest-compat.ps1`. Its conventional path standardizes through
-`Initialize-LatexSourceDeposit`; an explicit bypass is warned and labeled `compat-*`, never represented as a
-compliant deposit. New callers must not import the compatibility surface.
+The numbers are retained rather than reused so existing references resolve.
 
 ### D35 — The infrastructure canon preserves application boundaries — accepted
 

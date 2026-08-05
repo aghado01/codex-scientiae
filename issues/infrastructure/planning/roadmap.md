@@ -46,10 +46,16 @@ production module should import a `-v2` draft until the audit and integration ga
 
 ## Phase 1 — Operational audit and contract closure
 
-- **LOGJ-101 — Audit the four related operational units.** Trace `jsonl-stage.ps1`, `run-ledger.ps1`,
-  `runs.ps1`, and `log.ps1` as one flow: callers, state ownership, artifact paths, append/rewrite behavior,
-  duplicated parsing, hidden compatibility assumptions, and recovery behavior. Produce a disposition map:
-  primitive to extract, domain policy to retain, compatibility shim, or dead use-case logic to retire.
+- **LOGJ-101 — Audit the related operational surfaces as one flow.** These concerns are co-located in
+  three files rather than separated into their own units, so trace them together: `src/shared/jsonl.ps1`
+  (serializer `Read-JsonlRecord`/`Get-JsonlSchema`, stage publisher `Write-JsonlStage`, ledger
+  `Add-LedgerEntry`/`Get-LedgerStage`, and inventory `Get-Inventory` in one file), `src/shared/runs.ps1`
+  (the current `artifacts/{module}/runs/{runstamp}/{slug}` convention beside retired paper-local `.runs`
+  discovery and addressing), and `src/shared/log.ps1`. For each responsibility record callers, state
+  ownership, artifact paths, append/rewrite behavior, duplicated parsing, hidden compatibility assumptions,
+  and recovery behavior. Record live callers rather than inferring use from file location — at least
+  `src/bibliotecha/publish.ps1` still consumes the ledger helper. Produce a disposition map: primitive to
+  extract, domain policy to retain, compatibility shim, or dead use-case logic to retire.
 - **LOGJ-102 — Diff against current jso-jackson and its export children.** Inventory reusable read, write,
   seek, slice, query, repair, and diagnostic capabilities in `D:/aghado01/utils/jso-jackson`,
   `claude-export`, and `codex-export`. That tree is the implementation authority; do not spend audit effort
