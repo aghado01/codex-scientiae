@@ -679,3 +679,64 @@ Lean is most valuable here as a theory-level unit-test harness for the places wh
 obvious transfer can fail: finite versus dense composition, geometry versus claim identity,
 injective slice rebasing versus collapsing edit maps, relative versus whole-master complement, and
 maximal versus maximum laminar selection.
+
+## 9. Addendum 2026-08-04 — K2 exact-pair abstraction burden
+
+The [D29 joint K2 contract](../briefs/sol-doccer-k2-joint-contract-20260804_214547.md) adds one
+cross-carrier obligation that was implicit in the original inventory. For exact occurrence
+relations \(R\subseteq A\times B\) and \(S\subseteq B\times C\), with the identical frozen middle
+basis, define \(\alpha(R)\) as the set of Allen atoms realized by the actual edges of \(R\). Then:
+
+\[
+\alpha(R;S)\subseteq
+\alpha(R)\mathbin{\operatorname{AllenCompose}}\alpha(S).
+\]
+
+This is a lax abstraction law, not an equality. It is also distinct from the earlier
+`relMap_comp_subset` theorem: that theorem concerns mapping one relation through a carrier map;
+this theorem forgets occurrence identity and retains only qualitative relation labels.
+
+The proof factors cleanly:
+
+1. \((a,c)\in R;S\) supplies an actual middle \(b\).
+2. The three exact edges determine atoms
+   \(r=\operatorname{Relate}(a,b)\),
+   \(s=\operatorname{Relate}(b,c)\), and
+   \(t=\operatorname{Relate}(a,c)\).
+3. D28's atomic-triad soundness gives \(t\in r\mathbin{\operatorname{AllenCompose}}s\).
+4. Unioning over exact edges yields the image inclusion.
+
+The converse fails at two layers. \(\alpha\) forgets which middle occurrence realizes each atom,
+so it can qualitatively combine observations with no shared exact witness; the adjacent-gap case
+also shows that canonical qualitative membership does not supply an intermediate interval on one
+finite carrier. A future Lean statement should therefore preserve the inclusion direction and the
+exact middle-basis hypothesis rather than quantify over a generic unbased relation.
+
+The initial assurance remains outside Lean:
+
+- direct middle-ordinal reference `ComposePairs`;
+- independent nested relation oracle;
+- pointwise atomic and union-level C# property laws;
+- executable adjacent-gap non-converse;
+- differential tests for any later implementation.
+
+This obligation does not by itself pass the burden gate because its statement no longer exerts
+signature or boundary pressure and the reference implementation needs no theorem to proceed. It
+becomes a strong small-lemma candidate before an indexed, compressed, incremental, or independent
+backend uses qualitative summaries to omit exact work and claims universal no-false-negative
+equivalence. Equality, a weakened middle-basis condition, or a generalized public `AllenImage`
+abstraction would also reactivate statement pressure.
+
+Schematic future theorem:
+
+~~~lean
+theorem allenImage_relComp_subset
+    (hTriad : AllenTriadSound relate allenCompose)
+    (R : Rel A B) (S : Rel B C) :
+    allenImage relate (R ⨟ S) ⊆
+      allenComposeSet (allenImage relate R) (allenImage relate S)
+~~~
+
+The mathematical carrier should remain ordinary typed relations; C# ordinals, bitsets, and table
+layout belong only in the correspondence fixture. `AllenImage` is notation for the obligation
+and test oracle unless K2b independently witnesses a useful public projection.

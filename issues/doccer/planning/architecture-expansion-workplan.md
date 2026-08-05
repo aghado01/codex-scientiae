@@ -297,8 +297,9 @@ Ghourabi's proof-grouping unions as privileged runtime values.
 ### K2 — close the claim query algebra
 
 D27 treats K2a, K2b, and K2c as one vertically specified tranche that lands in consecutive,
-reviewable chips. Their common basis, identity, projection, ordering, and residue contracts close
-before K2a implementation begins; joint specification does not mean one monolithic commit.
+reviewable chips. D29 closes their common basis, identity, projection, ordering, residue,
+reference-composition, and exact-to-qualitative abstraction contracts before K2a implementation
+begins; joint specification does not mean one monolithic commit.
 
 #### K2a: <code>ClaimSelection</code>
 
@@ -338,7 +339,9 @@ Required operations:
 - explicit ordinal-diagonal identity on one exact frozen batch, distinct from the geometric
   <code>Equal</code> filter;
 - converse, projection, and semijoin;
-- exact outer-pair composition when the middle basis matches;
+- exact outer-pair composition when the middle basis is the identical frozen batch;
+- a direct middle-ordinal reference `ComposePairs` implementation and an independently written
+  nested relation oracle;
 - transparent grouping of middle witnesses for one composition;
 - projection of left/right <code>ClaimSelection</code>s.
 
@@ -359,6 +362,39 @@ GroupMiddleWitnesses
 The extensional outer relation is associative. The middle-witness query is not a normalized support
 carrier and receives no associativity or bracket-independence claim. A packed witness
 representation waits until K5 defines support identity and normalization.
+
+Reference `ComposePairs` is ordinary finite relation composition:
+
+\[
+R;S=\{(a,c)\mid\exists b.\ (a,b)\in R\land(b,c)\in S\}.
+\]
+
+It deduplicates outer ordinal pairs and never calls `AllenCompose` to generate exact edges. For
+the contract and harness, let \(\alpha(R)\) be the Allen-relation image of the actual edges in
+\(R\), not the relation filter originally requested at construction. D29 adds the cross-carrier
+law:
+
+\[
+\alpha(R;S)\subseteq
+\alpha(R)\mathbin{\mathrm{AllenCompose}}\alpha(S).
+\]
+
+This is a one-way abstraction. Every exact outer edge still requires an actual middle ordinal.
+The abstraction forgets correlation between relation atoms and middle identities; the adjacent-gap
+counterexample also exposes the finite carrier's missing-intermediate boundary. Together they
+refute the converse and forbid using qualitative table membership as evidence that an exact edge
+exists. `AllenImage` is contract notation and a test oracle; it becomes public surface only if the
+K2b implementation brief identifies a concrete diagnostic or consumer.
+
+K2b exit gate:
+
+- exact middle-basis acceptance and cross-basis refusals;
+- extensional equality with the independent nested relation oracle;
+- ordinal-diagonal identity, associativity, converse, projection, and semijoin laws;
+- duplicate outer-pair collapse plus complete, ascending middle witnesses;
+- per-witness atomic containment and union-level Allen-image inclusion;
+- the adjacent-gap non-converse remains executable;
+- `IntervalJoins.Join` has one semantic implementation path through `ClaimPairView`.
 
 #### K2c: pairing as the first structural consumer
 
@@ -617,6 +653,13 @@ lessons from ThermoMapper are preserved in the
 Until a named obligation crosses that brief's burden-of-proof gate, the law registry uses the
 cheapest independent evidence that honestly supports the contract.
 
+D29 identifies the K2 exact-to-qualitative inclusion as a genuine obligation but not a present
+Lean activation. The reference proof is a direct middle-witness chase, D28 already certifies the
+atomic Allen triads, and K2b can expose the Doccer-specific carrier plumbing through reference and
+property tests. Reassess the gate before an indexed, compressed, incremental, or independent pair
+backend relies on qualitative summaries for a universal no-false-negative claim, or if the public
+contract changes the inclusion to equality.
+
 ### L0 — bootstrap only after an activation trigger
 
 - select exactly one load-bearing obligation and name the implementation decision it can change;
@@ -641,7 +684,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | C# tranche | Lean/theory obligation |
 | --- | --- |
 | K1 | \(D_6\) oracle, weak-composition soundness, six-endpoint normal form |
-| K2 | exact relation identity/associativity; witness soundness and completeness |
+| K2 | exact relation identity/associativity; witness soundness/completeness; Allen-image composition inclusion and its non-converse |
 | K2c | forward, one-to-one, noncrossing matching; match-or-residue partition |
 | K3 | located semiring laws, strict-chain path bound, nilpotence, finite star |
 | K4 | cut-set/partition equivalence, path/partition preservation, greedy maximal-not-maximum |
@@ -725,14 +768,13 @@ The expansion will not:
 
 ## 11. Immediate next move
 
-K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, and K1b as D28; K1 is closed.
-The next move is the joint K2a–K2c contract brief required by D27. Freeze the exact batch bases,
-ordinal identities, pure-membership versus ordered-projection boundary, pair-view projections and
-semijoins, extensional `ComposePairs`, transparent middle-witness query, and pairing residue shape
-together before implementation. Then land K2a, K2b, and K2c as consecutive reviewable chips,
-without inserting an unrelated tranche between them.
+K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, and the joint K2
+contract freeze as D29. The next implementation chip is K2a: land `ClaimSelection`,
+`Coverage()`, explicit ordered projections, and the stable grouping/cadence/suppression
+integrations. K2b then lands the exact pair carrier, reference `ComposePairs`, the Allen-image
+bridge, and the one terminal-join transition; K2c follows with pairing and complete residue. Do not
+insert an unrelated tranche between these chips.
 
-If that specification exposes a disputed carrier, exactness claim, or public signature, pause
-only that obligation and apply the deferred formalization brief's activation gate. Otherwise K2a
-lands first with `ClaimSelection`, `Coverage()`, and the stable population integrations named in
-D27.
+The D29 bridge did not activate Lean. Apply the deferred gate only if implementation pressure
+changes its direction, basis hypotheses, public abstraction, or assurance burden as described in
+the K2 contract brief.

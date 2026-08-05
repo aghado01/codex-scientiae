@@ -109,3 +109,8 @@ payload changed; the contract harness baseline remains 1561 checks green.
 Follow-on: [K1b](sol-doccer-k1b-allen-composition-20260804_203325.md) subsequently closed as D28
 with the narrowed boundary intact: durable validation filters migrated, while
 `IntervalJoins.Join` remained unchanged for K2b. K1 is closed at 1577 harness checks.
+
+The required [joint K2 contract](sol-doccer-k2-joint-contract-20260804_214547.md) subsequently
+closed as D29. It freezes reference `ComposePairs`, the one-way Allen-image bridge, the
+terminal-join transition, and pairing residue without activating Lean or merging the three K2
+implementation chips.

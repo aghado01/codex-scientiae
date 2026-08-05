@@ -84,3 +84,7 @@ The adjacent-gap case remains executable evidence that a canonical cell records 
 relations across the interval model, not guaranteed middle witnesses for every pair on one finite
 text master. That distinction leaves K2b's exact pair relation well-posed. K1 is now closed; the
 next artifact is the joint K2a–K2c contract brief required by D27, followed by K2a.
+
+Follow-on: the [joint K2 contract](sol-doccer-k2-joint-contract-20260804_214547.md) records the
+exact-to-qualitative inclusion and reference `ComposePairs` responsibilities as D29. The law
+remains one-way, and its reference/property assurance does not activate the deferred Lean harness.

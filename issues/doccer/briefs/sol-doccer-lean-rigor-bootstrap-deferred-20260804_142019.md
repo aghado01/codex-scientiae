@@ -9,6 +9,7 @@ Inputs:
 
 - [architectural expansion workplan](../planning/architecture-expansion-workplan.md);
 - [formalization audit and proof-obligation inventory](../discussions/sol-doccer-formalization-audit-and-lean-obligations-20260803.md);
+- [D29 joint K2 contract](sol-doccer-k2-joint-contract-20260804_214547.md);
 - [ICDT 2025 ET close read](../discussions/fable-et-framework-close-read-20260803.md);
 - [ThermoMapper rigor-harness README](../../../../ThermoMapper/lean/README.md),
   [enthymeme sources](../../../../ThermoMapper/lean/enthymemes/), and
@@ -318,6 +319,38 @@ Lean does **not** activate merely because:
 Before starting, the chip brief must say which activation condition applies and what decision the
 proof can change. If the answer is "none," retain the obligation in the ledger.
 
+### 5.1 D29 gate application — exact pairs to qualitative Allen composition
+
+D29 identifies a genuine cross-carrier obligation:
+
+\[
+\alpha(\operatorname{ComposePairs}(R,S))
+\subseteq
+\alpha(R)\mathbin{\operatorname{AllenCompose}}\alpha(S),
+\]
+
+where \(R\) and \(S\) are exact pair relations over an identical middle batch and \(\alpha\)
+collects the Allen relations realized by actual edges. This is not equality and does not license
+qualitative table cells to create exact pair edges.
+
+The obligation does **not** activate Lean for the reference K2b chip:
+
+- signature pressure is absent: the direction and exact middle-basis hypothesis are now frozen;
+- boundary pressure is resolved: loss of middle-identity correlation and the adjacent-gap
+  counterexample both refute the converse;
+- the proof is a direct witness chase over standard finite relation composition;
+- D28 already supplies independent atomic-triad assurance;
+- a direct reference `ComposePairs`, independent nested relation oracle, and C# property tests can
+  expose mistakes in Doccer's basis and occurrence plumbing.
+
+Record it as an executable/refinement obligation now. Reapply **optimization pressure** before a
+compressed, indexed, incremental, or independently implemented pair backend uses qualitative
+summaries to omit exact work and claims universal no-false-negative equivalence. Reapply
+**signature or boundary pressure** if equality replaces inclusion, the exact middle-basis
+hypothesis changes, or `AllenImage` becomes a generalized public abstraction. At either event,
+the small Lean theorem can license an implementation decision rather than merely restate the
+reference behavior.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -326,6 +359,7 @@ proof can change. If the answer is "none," retain the obligation in the ledger.
 | Canonical Allen weak-composition table | independent `D6` generator plus the published formalization | if Doccer attempts a generic qualitative-calculus proof API |
 | Adjacent-gap failure of finite exact composition | smallest executable counterexample | none presently; the counterexample already fixes the contract |
 | Exact claim-pair identity and associativity | reference relation implementation and property tests | if a packed witness representation inherits the same claim |
+| Exact-pair Allen-image composition inclusion | D28 atomic-triad certificate plus direct reference `ComposePairs`, per-witness/union C# laws, and adjacent-gap non-converse | before qualitative summaries drive optimized pruning with a universal no-false-negative claim, or if equality/generalized public abstraction is proposed |
 | Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
 | Located `Seq` identity, associativity, and finite consuming closure | simple matrix/reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it |
 | Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
@@ -354,6 +388,8 @@ When an activation trigger fires:
 
 Likely first candidates, depending on which tranche supplies the trigger:
 
+- K2 optimized pairs: exact-to-qualitative inclusion, if qualitative summaries become
+  load-bearing for pruning or compression;
 - K3 generalized maps: direct-image composition, lax generally and exact under injectivity;
 - K5 packed support: the exact equivalence relation required for bracket-independent witnesses;
 - K6/K7 optimized origins: functional embedding and multi-stage relational composition.
@@ -381,7 +417,8 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step is therefore the K0/K1 reference kernel work, not Lean. The first future
-proof most likely to repay its cost is not a reproof of Allen's table; it is an equivalence needed
-to compress, fuse, or otherwise optimize Doccer's origin/support machinery without changing its
-meaning.
+The practical next step is therefore the K2 reference query carriers, not Lean. The first future
+proof most likely to repay its cost is not a reproof of Allen's table or the unoptimized pair join;
+it is a law that licenses compression, pruning, fusion, or another independent backend without
+changing reference meaning. D29 now names the pair-abstraction candidate precisely if K2 supplies
+that pressure; origin/support machinery remains the other leading source.

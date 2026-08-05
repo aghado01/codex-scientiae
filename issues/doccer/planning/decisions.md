@@ -56,6 +56,48 @@ briefs carry the later contracts with their reports — and the evidence in
 | D26 | `AllenRelationSet` (K1a) is the immutable Boolean value over exactly thirteen Allen atoms: private 13-bit representation; explicit stable enum ordinals; `None`/`All`/`Equal`/singleton and sequence construction; count, emptiness, membership, subset, union, intersection, complement, converse, value equality/hash, and deterministic enum-order enumeration; duplicate atoms collapse and undefined casts fail loudly; no raw mask, wire form, or composition contract | implemented; K1a closed |
 | D27 | K1b–K4 sequencing boundary: K1b closes the qualitative Allen semantics and migrates durable validation filters but does not retrofit the terminal `IntervalJoins.Join`; K2a/K2b/K2c are jointly specified and landed as consecutive buildable chips, with pure selection membership distinct from ordered query views, `ClaimPairView` becoming the semantic replacement for the terminal join, and pairing witnessing the tranche; K3/K4a are co-designed, with geometry-only `LocatedRelation` separate from the identity-bearing candidate graph; every tranche carries a bounded witness and K8 is final integration | recorded; workplan resequenced |
 | D28 | Canonical Allen composition (K1b): `AllenRelationSet.AllenCompose` is the additive lift of a literal 169-cell table in frozen atom order; a separately encoded endpoint-predicate oracle exhausts all 3,375 triples of the 15 nonempty \(D_6\) intervals and recovers all 169 cells/409 atomic triads; JEPD, identity, annihilation, distributivity, converse reversal, and associativity are executable laws; canonical composition is an upper approximation rather than exact fixed-master composition, retained by the adjacent-gap counterexample; durable validation filters now carry `AllenRelationSet`, while `IntervalJoins.Join` remains unchanged for K2b | implemented; K1 closed |
+| D29 | Joint K2 contract and Allen abstraction bridge: K2a/K2b/K2c share exact frozen-batch occurrence bases and land consecutively; reference `ComposePairs` is ordinary extensional relation composition over an identical middle batch and never derives exact edges from `AllenCompose`; the Allen image of exact composition is contained in the canonical composition of the input images, with the adjacent-gap witness refuting the converse; reference C# relation/property oracles own the initial proof burden, while Lean remains deferred until an optimized or generalized backend makes universal no-false-negative equivalence load-bearing | recorded; joint K2 contract frozen, Lean not activated |
+
+## K2 exact-to-qualitative bridge and proof gate (D29)
+
+Let \(R\subseteq A\times B\) and \(S\subseteq B\times C\) be exact `ClaimPairView` relations whose
+middle basis is the identical frozen batch. Reference `ComposePairs` is ordinary finite relation
+composition:
+
+\[
+R;S=\{(a,c)\mid\exists b.\ (a,b)\in R\land(b,c)\in S\}.
+\]
+
+For a pair relation \(R\), let \(\alpha(R)\) be the `AllenRelationSet` image of the actual edges
+under `AllenAlgebra.Relate`. This is contract notation and a harness oracle, not automatically a
+new public method and not the originally requested construction filter. The cross-carrier law is:
+
+\[
+\alpha(R;S)\subseteq\alpha(R)\mathbin{\mathrm{AllenCompose}}\alpha(S).
+\]
+
+The proof burden is real but presently executable: every output pair has an exact middle witness;
+its three spans form an Allen atomic triad; D28's independently certified table contains the outer
+atom. The inclusion is deliberately not equality. \(\alpha\) forgets which middle identity
+realized each input atom, and the adjacent-gap counterexample separately shows that a qualitatively
+permitted outer relation need not have an exact middle interval on one finite carrier.
+
+Consequently, K2b must:
+
+- implement one direct exact middle-ordinal reference composition without calling
+  `AllenCompose`;
+- check extensional output against an independently written nested relation oracle;
+- check the Allen-image inclusion, its per-witness atomic form, and the adjacent-gap non-converse;
+- require every exact output edge to have an actual middle ordinal;
+- make any retained `IntervalJoins.Join` a projection from `ClaimPairView`, not a second join
+  implementation.
+
+This statement does not activate Lean. Its direction is settled, its proof is a witness chase over
+standard finite relation algebra, and the Doccer-specific plumbing is visible to reference and
+property tests. Reactivate the Lean gate before a compressed, indexed, incremental, or independent
+pair backend uses qualitative summaries to omit exact work and claims universal no-false-negative
+equivalence; also reactivate if equality replaces inclusion, the middle-basis rule changes, or the
+abstraction becomes a generalized public qualitative-calculus contract.
 
 ## Qualitative Allen closure (D28)
 
@@ -93,9 +135,10 @@ The resulting boundaries are:
    encoded table, the separate \(D_6\) oracle, JEPD/classifier closure, the adjacent-gap
    counterexample, and migration of durable validation filters. `IntervalJoins.Join` is not given a
    one-chip relation-set retrofit when K2b will replace its terminal result shape.
-2. **K2 is specified vertically before its chips land.** K2a, K2b, and K2c remain separate,
-   buildable implementation chips, but their shared bases, projections, residues, and identities
-   are frozen together and they land without an unrelated tranche between them.
+2. **K2 is specified vertically before its chips land.** D29 freezes the shared bases,
+   projections, residues, identities, reference pair semantics, and Allen abstraction law. K2a,
+   K2b, and K2c remain separate buildable implementation chips and land without an unrelated
+   tranche between them.
 3. **Selection membership is not result order.** `ClaimSelection` is a pure set over ordinals on
    one exact frozen batch and canonically enumerates ascending ordinals. Geometry- or
    priority-ordered records are explicit query projections under `ClaimOrder`; order is not part
@@ -171,7 +214,8 @@ their result semantics interchangeable.
 | K1-ALLEN-CONVERSE | converse is involutive and agrees with argument reversal — **implemented in K1a (D26)** | finite exhaustive C# oracle | all 8192 relation-set values plus every nonempty interval pair on the six-boundary model | only if a generalized relation carrier changes converse semantics |
 | K1-ALLEN-COMPOSE | `AllenCompose` is the canonical weak-composition upper approximation, not fixed-master exact composition — **implemented in K1b (D28)** | independently encoded table, exhaustive \(D_6\) certificate, and external cited formalization | literal shipped table and independent endpoint oracle agree on all 169 cells/409 atomic triads; algebra laws are executable | a generic qualitative-calculus proof API or non-finite carrier is proposed |
 | K1-ALLEN-FINITE-GAP | canonical `Before AllenCompose Before` may contain `Before` even when a fixed finite master has no middle witness — **implemented in K1b (D28)** | smallest executable counterexample | \([0,1)\), \([2,3)\), and the four-boundary carrier retain no intervening nonempty interval | none presently; the counterexample fixes the contract boundary |
-| K2-CONCRETE-PAIRS | `ConcreteCompose`/`ComposePairs` are exact basis-checked relations; claim identity is the ordinal diagonal on one exact frozen batch — **reserved for joint K2 design** | reference C# relation oracle and property tests | exact-basis refusal, extensional identity and associativity, projections, semijoins, and one semantic replacement for `IntervalJoins.Join` before landing | a packed witness representation is asked to inherit identity, associativity, or bracket-independent support |
+| K2-CONCRETE-PAIRS | the `ConcreteCompose` family is exact basis-checked finite relation composition; `ClaimPairView` realizes it as `ComposePairs`, with claim identity the ordinal diagonal on one exact frozen batch — **contract frozen by D29; due K2b** | direct middle-ordinal reference implementation, independent nested relation oracle, and C# property tests | exact-basis refusal, extensional equality, identity, associativity, converse, projections, semijoins, complete middle witnesses, and one semantic replacement for `IntervalJoins.Join` before landing | a compressed/indexed backend claims equivalence without differential coverage, or a packed witness representation is asked to inherit extensional identity, associativity, or bracket-independent support |
+| K2-ALLEN-ABSTRACTION | the Allen image of exact `ComposePairs(R,S)` is contained in `AllenImage(R).AllenCompose(AllenImage(S))`; equality and qualitative edge generation are refused — **contract frozen by D29; due K2b** | D28 atomic-triad certificate plus pointwise C# witness law and adjacent-gap counterexample | actual edge images rather than requested filters; per-witness atomic containment; union-level inclusion; executable non-converse | before an optimized backend uses qualitative summaries to omit exact work and claims universal no-false-negative equivalence, or if equality/generalized public abstraction is proposed |
 | K3-LOCATED-SEQ | geometry-only located `Seq` uses a shared boundary, has the declared-window diagonal identity, is associative, and distributes over union — **reserved for joint K3/K4a design** | simple C# matrix/reference semantics and bounded exhaustive tests | identity, associativity, distributivity, finite consuming closure, rebase laws, and explicit graph-to-geometry projection before landing | a compressed or incremental closure algorithm replaces the reference semantics, or an exact-versus-lax map boundary remains disputed |
 | K4-SELECT | `Select` executes a named caller policy and promises only that policy's result invariants, never an implied optimum — **reserved for K4** | deterministic policy contract plus adversarial C# result validation | policy stamp, tie rule, rejected alternatives, conflicts, and residuals remain visible | only if a replacement optimizer claims equivalence or a new global optimality guarantee; policy choice itself is not a theorem |
 | K5-SATURATE | positive finite `Saturate` is monotone and inflationary and reaches one least fixed point independent of fair rule order — **reserved for K5** | reference worklist, order-permutation C# tests, and standard external theorem | canonical fact identity must close first; repeated derivations add support rather than duplicate facts | before parallel or incremental saturation claims semantic equivalence |

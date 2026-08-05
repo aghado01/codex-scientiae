@@ -255,3 +255,29 @@ Next-tier candidates are the cut-set/segmentation bijection, finite nilpotence o
 I did not create a Doccer Lean project yet. The write-up proposes mirroring ThermoMapper’s proto-lemma → enthymeme → proved-lemma promotion structure and identifies the first three files as `FiniteIntervals`, `LocatedRebase`, and `Laminar`.
 
 One unrelated harness-hygiene note from the inspection: ThermoMapper’s umbrella currently omits `Stability`, some imports rely on Windows-only path casing, and its meta-CI assumes a `Lemmas/` directory that does not yet exist. I left those untouched.
+
+## Follow-up 2026-08-04 — the K2 bridge does not yet activate Lean
+
+Peer review exposed a missing connection between exact `ComposePairs` and canonical
+`AllenCompose`. D29 now states it as:
+
+$$
+\alpha(\operatorname{ComposePairs}(R,S))
+\subseteq
+\alpha(R)\mathbin{\operatorname{AllenCompose}}\alpha(S),
+$$
+
+where \(\alpha\) collects the Allen atoms realized by actual pair edges and the middle occurrence
+basis is identical. This is a genuine proof obligation and a useful future small lemma, but the
+burden gate remains closed for the reference K2b chip.
+
+The direction is settled by middle-identity correlation loss and the adjacent-gap non-converse;
+the proof is an exact-middle witness chase whose atomic step is already owned by D28; and a direct
+relation implementation plus independent C# oracle can test the Doccer-specific basis plumbing.
+Lean should be reconsidered before qualitative summaries become load-bearing pruning/compression
+evidence for a second pair backend, or if the contract asks for equality, changes the middle-basis
+hypothesis, or promotes the abstraction into a generalized public API.
+
+Canonical table membership may therefore exclude impossible qualitative outcomes, but it never
+creates an exact outer edge. Reference `ComposePairs` continues to require an actual middle
+ordinal.

@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D28, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D29, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -175,9 +175,11 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- basis-stamped `ClaimSelection`, exact `ClaimPairView`, `ComposePairs`, and pairing residue. D27
-  leaves the terminal raw-list `IntervalJoins.Join` unchanged until K2b replaces its semantics
-  through `ClaimPairView`, rather than introducing a transitional filter-only overload.
+- basis-stamped `ClaimSelection`, exact `ClaimPairView`, `ComposePairs`, and pairing residue.
+  D29 freezes their contract: reference pair composition requires actual middle ordinals, and its
+  observed Allen image is contained in canonical `AllenCompose` without a converse/equality
+  promise. D27 leaves the terminal raw-list `IntervalJoins.Join` unchanged until K2b replaces its
+  semantics through `ClaimPairView`, rather than introducing a transitional filter-only overload.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

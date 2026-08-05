@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-04)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D28**, contract harness **1577 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D29**, contract harness **1577 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Tranches 0–3 are done: the substrate is complete, the lift vocabulary
@@ -22,7 +22,10 @@ implemented and exhaustively checked. The expansion workplan orders the remainin
 D27 and its
 [sequencing brief](../briefs/sol-doccer-k1b-k4-resequencing-20260804_184200.md) reconcile the K1b–K4
 chip boundaries so temporary consumer APIs are not introduced merely to be replaced by the next
-carrier. The active next move is the joint K2a–K2c contract brief, followed by K2a.
+carrier. D29 and the
+[joint K2 contract](../briefs/sol-doccer-k2-joint-contract-20260804_214547.md) freeze the exact
+occurrence bases, reference `ComposePairs`, one-way Allen-image abstraction, pairing residue, and
+Lean-gate disposition. The active next implementation is K2a.
 
 ## Sequencing doctrine
 
@@ -39,14 +42,14 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Joint claim-query tranche (K2a–K2c, active next; specified together and landed
-   consecutively):** first freeze the shared basis, identity, projection, ordering, and residue
-   contract in one brief. K2a then adds
+1. **Joint claim-query tranche (K2a–K2c, contract frozen by D29; K2a active next; landed
+   consecutively):** K2a adds
    pure basis-stamped `ClaimSelection`, with ascending-ordinal membership enumeration separate from
    ordered `ClaimOrder` projections, and integrates stable set-valued population operations. K2b
-   adds exact `ClaimPairView`, extensional `ComposePairs`, and replaces the terminal raw-list join;
-   transparent middle witnesses do not claim packed-support associativity. K2c lands pairing with
-   match edges and identity-bearing fault residue as the tranche witness.
+   adds exact `ClaimPairView`, direct reference `ComposePairs`, the one-way Allen-image inclusion,
+   and replaces the terminal raw-list join; transparent middle witnesses do not claim
+   packed-support associativity. K2c lands pairing with match edges and identity-bearing fault
+   residue as the tranche witness.
 2. **Joint located/flat-graph tranche (K3+K4a):** co-design geometry-only `LocatedRelation` and the
    identity-bearing `CandidateRegionGraph`; the graph owns parallel claim-ordinal edges and projects
    explicitly to located geometry. Land one reference reachability semantics, partitions, gaps,
@@ -80,6 +83,9 @@ freeze the public surface or postpone the ordered kernel work above.
 ThermoMapper retrospective, corrected harness design, obligation triage, and restart procedure.
 Activate it only when proof pressure can change a public signature, license an optimization or
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
+D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
+composition and C# witness/property tests own it until an optimized or generalized backend makes
+universal no-false-negative equivalence load-bearing.
 
 **First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
 still a catalog, not a contract, and the wire format waits for stable carrier identities and the
