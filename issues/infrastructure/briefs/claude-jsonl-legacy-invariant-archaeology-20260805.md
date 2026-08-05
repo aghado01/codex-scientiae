@@ -186,8 +186,11 @@ contracts Phase 1 wants to close:
 | process-tree kill, timeout, cancellation mid-write | torn writes and incomplete tails (Q4, D15) |
 
 Freezing run-context or the logger before those are known is the premature freeze the airgap exists to
-prevent. Worth stating explicitly in the roadmap so the sequencing is a recorded decision rather than
-an implicit one.
+prevent. The sequencing is already settled in practice — infrastructure does not move until the
+batch-executor work completes, so that it can serve as both a worked exhibit and the first integration
+target for the contracts this umbrella will freeze. The canon reads as one-directional because this
+planning is still being written, not because the dependency was missed. It wants a decision row when
+the planning reaches it.
 
 ## Disposition map contribution (LOGJ-101)
 
