@@ -6,19 +6,19 @@ namespace CodexSci.Doccer;
 /// <summary>The thirteen mutually exclusive relations of Allen's interval algebra.</summary>
 public enum AllenRelation
 {
-    Before,
-    Meets,
-    Overlaps,
-    FinishedBy,
-    Contains,
-    Starts,
-    Equal,
-    StartedBy,
-    During,
-    Finishes,
-    OverlappedBy,
-    MetBy,
-    After,
+    Before = 0,
+    Meets = 1,
+    Overlaps = 2,
+    FinishedBy = 3,
+    Contains = 4,
+    Starts = 5,
+    Equal = 6,
+    StartedBy = 7,
+    During = 8,
+    Finishes = 9,
+    OverlappedBy = 10,
+    MetBy = 11,
+    After = 12,
 }
 
 public static class AllenAlgebra

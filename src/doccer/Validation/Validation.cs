@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +25,7 @@ public sealed record RelationRequirement
         string name,
         string leftKind,
         string rightKind,
-        IEnumerable<AllenRelation> acceptedRelations,
+        AllenRelationSet acceptedRelations,
         int minimumMatches = 1,
         int? maximumMatches = null,
         ValidationSeverity severity = ValidationSeverity.Error)
@@ -41,7 +40,6 @@ public sealed record RelationRequirement
             throw new ArgumentException("Both claim kinds are required.");
         }
 
-        ArgumentNullException.ThrowIfNull(acceptedRelations);
         if (minimumMatches < 0 || maximumMatches < minimumMatches)
         {
             throw new ArgumentOutOfRangeException(nameof(minimumMatches));
@@ -50,8 +48,8 @@ public sealed record RelationRequirement
         Name = name;
         LeftKind = leftKind;
         RightKind = rightKind;
-        AcceptedRelations = acceptedRelations.ToFrozenSet();
-        if (AcceptedRelations.Count == 0)
+        AcceptedRelations = acceptedRelations;
+        if (AcceptedRelations.IsEmpty)
         {
             throw new ArgumentException("At least one accepted relation is required.", nameof(acceptedRelations));
         }
@@ -64,7 +62,7 @@ public sealed record RelationRequirement
     public string Name { get; }
     public string LeftKind { get; }
     public string RightKind { get; }
-    public IReadOnlySet<AllenRelation> AcceptedRelations { get; }
+    public AllenRelationSet AcceptedRelations { get; }
     public int MinimumMatches { get; }
     public int? MaximumMatches { get; }
     public ValidationSeverity Severity { get; }
@@ -77,7 +75,7 @@ public sealed record ForbiddenRelation
         string name,
         string leftKind,
         string rightKind,
-        IEnumerable<AllenRelation> forbiddenRelations,
+        AllenRelationSet forbiddenRelations,
         ValidationSeverity severity = ValidationSeverity.Error)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -90,12 +88,11 @@ public sealed record ForbiddenRelation
             throw new ArgumentException("Both claim kinds are required.");
         }
 
-        ArgumentNullException.ThrowIfNull(forbiddenRelations);
         Name = name;
         LeftKind = leftKind;
         RightKind = rightKind;
-        ForbiddenRelations = forbiddenRelations.ToFrozenSet();
-        if (ForbiddenRelations.Count == 0)
+        ForbiddenRelations = forbiddenRelations;
+        if (ForbiddenRelations.IsEmpty)
         {
             throw new ArgumentException("At least one forbidden relation is required.", nameof(forbiddenRelations));
         }
@@ -106,7 +103,7 @@ public sealed record ForbiddenRelation
     public string Name { get; }
     public string LeftKind { get; }
     public string RightKind { get; }
-    public IReadOnlySet<AllenRelation> ForbiddenRelations { get; }
+    public AllenRelationSet ForbiddenRelations { get; }
     public ValidationSeverity Severity { get; }
 }
 

@@ -6,7 +6,8 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D24, deferrals, question
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D28, the carrier/law
+registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
 with their reports sit in [issues/doccer/briefs/](../../issues/doccer/briefs/), and topic
@@ -55,6 +56,27 @@ adapters, deliberately thin: anything a graduated, cross-project doccer would ha
 travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-5):
 `PatternRule`'s positional parameter order places `scope` before `priority` — bind both by name.
 
+## Carrier boundary and algebra names
+
+Doccer's expansion is many-sorted. The public vocabulary distinguishes valid master boundaries
+(`P`), located extents including diagonal empties (`L`), nonempty Allen intervals (`I`),
+identity-bearing claim occurrences (`C`), later canonical semantic facts (`F`), and later
+output-to-source origin relations (`O`). These are not interchangeable views of one universal
+span carrier:
+
+- diagonal empty extents belong to located `L`, not to Allen `I`;
+- Allen `Equal` is geometric identity on `I`, never occurrence identity on `C`;
+- claim-pair identity is the ordinal diagonal on one exact frozen `SpanBatch`;
+- origin identity will be the atom diagonal between compatible master bases.
+
+The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
+approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
+`ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
+no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
+`AllenCompose` is implemented, while the later-tranche names remain reservations rather than
+implementation claims. The canonical assurance owners and Lean reactivation triggers live in the
+D25 registry in [decisions.md](../../issues/doccer/planning/decisions.md).
+
 ## Implemented contracts
 
 - immutable, identified UTF-16 text masters; fingerprints hash the raw code units, so identity
@@ -71,6 +93,14 @@ travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-
   so the same claim suppresses under one question and is the target of the next;
 - all thirteen Allen interval relations and a reference relation join (semantics only — no
   performance contract);
+- immutable `AllenRelationSet`, the qualitative Boolean value over exactly those thirteen atoms:
+  `None`/`All`/`Equal`/singletons, validated sequence construction, membership and subset, union,
+  intersection, complement, pointwise converse, value equality/hash, and deterministic enum-order
+  enumeration, plus explicitly named canonical `AllenCompose`; its 13-bit representation and
+  literal 169-cell table are private and create no persistence or wire contract; the table is
+  checked against an independently encoded endpoint-predicate oracle over all 3,375 triples of the
+  fifteen nonempty six-boundary intervals (169 cells, 409 atomic triads), while the adjacent-gap
+  witness prevents canonical composition from being mistaken for exact fixed-master composition;
 - set-theoretic interval semantics: an empty span intersects nothing, and point location is its
   own named query (`TextSpan.Contains(int)`, `SortedSpanLookup.FindContaining`) rather than an
   empty-span special case — `TextTopology.Project`'s insertion-point convention is the one
@@ -117,7 +147,8 @@ travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-
   untouched;
 - a JSONL pattern-inventory loader with per-line provenance on every failure, whose wire records
   are the loader's own and are declared once through a source-generated JSON context;
-- intrinsic and declarative relation/impossibility validation, plus Tier-1 invariants —
+- intrinsic and declarative relation/impossibility validation whose durable relation filters carry
+  `AllenRelationSet`, plus Tier-1 invariants —
   reconstruction, run-view tiling, line consistency, suppression laws, resolution determinism,
   and interning round-trip — in the contract harness.
 
@@ -143,7 +174,10 @@ closes honestly without one:
 - Unicode block and script properties as break-key facts: unlike the major-class fold, they would
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
-- Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores.
+- Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
+- basis-stamped `ClaimSelection`, exact `ClaimPairView`, `ComposePairs`, and pairing residue. D27
+  leaves the terminal raw-list `IntervalJoins.Join` unchanged until K2b replaces its semantics
+  through `ClaimPairView`, rather than introducing a transitional filter-only overload.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

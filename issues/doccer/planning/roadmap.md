@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-04)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D24**, contract harness **1500 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D28**, contract harness **1577 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Tranches 0–3 are done: the substrate is complete, the lift vocabulary
@@ -15,8 +15,14 @@ lacks only materialize, the first D8 measure is landed. Delivery: `build-doccer.
 `packages/doccer` with `doccer.manifest.json` as provenance (`packages/` is untracked; refreshes
 are local-only). The post-Allen literature review, factory analysis, and formalization audit are
 now synthesized in the [architectural expansion workplan](architecture-expansion-workplan.md).
-That document orders the proposed many-sorted kernel expansion; it does not itself add contracts
-beyond D24.
+K0 is closed as D25. K1 is closed by D26 and D28: the immutable private-13-bit
+`AllenRelationSet`, Boolean/converse surface, canonical `AllenCompose`, literal table, independent
+\(D_6\) oracle, JEPD closure, finite-gap boundary, and durable validation-filter migration are
+implemented and exhaustively checked. The expansion workplan orders the remaining implementation.
+D27 and its
+[sequencing brief](../briefs/sol-doccer-k1b-k4-resequencing-20260804_184200.md) reconcile the K1b–K4
+chip boundaries so temporary consumer APIs are not introduced merely to be replaced by the next
+carrier. The active next move is the joint K2a–K2c contract brief, followed by K2a.
 
 ## Sequencing doctrine
 
@@ -33,31 +39,33 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Carrier registry and Allen value closure (K0-K1, active next):** record the many-sorted
-   carrier/law registry, including the chosen assurance medium for each law; then land the immutable
-   13-bit `AllenRelationSet` and independently verified composition table. Exhaustive finite checks
-   and published formalization evidence are sufficient for this reference layer.
-2. **Claim query closure (K2):** add basis-stamped `ClaimSelection` and exact `ClaimPairView`.
-   Exact outer-pair composition and witness-bearing composition remain distinct contracts.
-3. **Pairing as the first structural consumer (K2c):** return identity-bearing match edges,
-   optional paired geometry, and named fault residue. Open/close role and compatibility rules are
-   caller policy; matching, containment, and parenthood remain separate relations.
-4. **Located and flat structural algebra (K3-K4):** add diagonal-bearing located relations and
-   shared-boundary `Seq`, then a concrete candidate-region graph, reachability, partitions, and
-   explicit selection results. The graph is the packed alternative set; path and chunk policy is
-   supplied by adapters. Packing, cover, laminar hierarchy, and resolution views follow the flat
-   reference semantics rather than preceding them.
-5. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
+1. **Joint claim-query tranche (K2a–K2c, active next; specified together and landed
+   consecutively):** first freeze the shared basis, identity, projection, ordering, and residue
+   contract in one brief. K2a then adds
+   pure basis-stamped `ClaimSelection`, with ascending-ordinal membership enumeration separate from
+   ordered `ClaimOrder` projections, and integrates stable set-valued population operations. K2b
+   adds exact `ClaimPairView`, extensional `ComposePairs`, and replaces the terminal raw-list join;
+   transparent middle witnesses do not claim packed-support associativity. K2c lands pairing with
+   match edges and identity-bearing fault residue as the tranche witness.
+2. **Joint located/flat-graph tranche (K3+K4a):** co-design geometry-only `LocatedRelation` and the
+   identity-bearing `CandidateRegionGraph`; the graph owns parallel claim-ordinal edges and projects
+   explicitly to located geometry. Land one reference reachability semantics, partitions, gaps,
+   dead ends, and bounded ambiguous-token/budgeted-chunk witnesses before any optimizer.
+3. **Explicit selection, then structural expansion (K4b→K4c):** execute named caller objectives
+   only after result invariants exist. Packing, cover, laminar hierarchy, multiple-parent views,
+   and resolution follow the flat reference semantics rather than preceding them.
+4. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
    occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
    identity question does not block K0-K4.
-6. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
+5. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
    closing D7's final lift with ordered output pieces, a new immutable master, residuals, and
    composed stage origins. `OffsetMap` becomes a restricted monotone single-source view, not the
    universal transform carrier.
-7. **Bounded factory witnesses (K8):** demonstrate pairing, ambiguous token paths, budgeted flat
-   chunks, fixed bounded macro substitution with composed origins, and explicitly bounded dynamic
-   expansion. These are contract witnesses, not universal parser/transducer promises.
-8. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
+6. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+   budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
+   bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
+   with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
+7. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
    adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
    networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
    path.

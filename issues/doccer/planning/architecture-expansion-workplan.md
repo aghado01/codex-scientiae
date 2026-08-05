@@ -139,7 +139,8 @@ carrier is independently usable.
 ~~~mermaid
 flowchart TD
     K0["K0: carrier and law registry"]
-    K1["K1: AllenRelationSet"]
+    K1A["K1a: AllenRelationSet"]
+    K1B["K1b: AllenCompose + oracle"]
     K2A["K2a: ClaimSelection"]
     K2B["K2b: ClaimPairView"]
     K2C["K2c: PairingResult"]
@@ -149,13 +150,14 @@ flowchart TD
     K5["K5: facts + support + saturation"]
     K6["K6: origin algebra"]
     K7["K7: rewrite plan + Materialize"]
-    W["Factory witnesses"]
+    W["K8: cross-carrier integration"]
     Q["Optional QSTR networks"]
     ET["Optional LinearET backend"]
 
-    K0 --> K1
+    K0 --> K1A
+    K1A --> K1B
     K0 --> K2A
-    K1 --> K2B
+    K1A --> K2B
     K2A --> K2B
     K2B --> K2C
     K2A --> K3
@@ -168,17 +170,24 @@ flowchart TD
     K4B --> K6
     K5 --> K6
     K6 --> K7
-    K7 --> W
+    K2C --> W
+    K4A --> W
     K4B --> W
     K5 --> W
-    K1 --> Q
+    K7 --> W
+    K1B --> Q
     K7 --> ET
 ~~~
 
-Some arrows are design dependencies rather than compilation dependencies. For example, origin
-relations are mathematically definable before selection or facts, but designing them against real
-selected output pieces and the support/origin distinction prevents a formally neat but
-operationally empty API.
+The DAG records type and design dependencies, not completion priority. D27 keeps K1b ahead of K2 in
+the execution queue because finishing the small Allen algebra is cheaper than carrying it half
+closed; K2b nevertheless depends only on K1a's relation-set filter, not on the composition table.
+K3 and K4a retain an arrow because the graph projects to located geometry, but they are co-designed
+as one tranche so reachability and carrier identity are settled once. Likewise, origin relations
+are mathematically definable before selection or facts, but designing them against real selected
+output pieces and the support/origin distinction prevents a formally neat but operationally empty
+API. The full adjudication is in the
+[K1b–K4 sequencing brief](../briefs/sol-doccer-k1b-k4-resequencing-20260804_184200.md).
 
 ## 5. Cross-cutting tranche gate
 
@@ -208,9 +217,11 @@ external cited theorem
 
 ## 6. Kernel tranches
 
-### K0 — carrier and law registry
+### K0 — carrier and law registry (closed 2026-08-04)
 
-This is the immediate contract-definition chip.
+Closed as D25 in the decision canon. The registry freezes the carrier distinctions and operation
+names below, assigns an assurance owner to each load-bearing law, and records a concrete Lean
+reactivation trigger wherever proof is deferred. No engine type was added by this definition chip.
 
 Freeze the carrier distinctions:
 
@@ -252,8 +263,13 @@ Exit gate:
 
 Land as two small chips:
 
-1. immutable thirteen-bit <code>AllenRelationSet</code>;
-2. independently verified canonical composition table.
+1. immutable thirteen-bit <code>AllenRelationSet</code> — **closed as D26 on 2026-08-04**;
+2. independently verified canonical composition table — **closed as D28 on 2026-08-04**.
+
+D27 made the second chip a semantic closure rather than a transitional consumer rewrite. D28
+lands <code>AllenCompose</code>, the table/oracle boundary, classifier closure, counterexample, and
+durable validation filters. K2b still owns the one semantic transition from the terminal raw-list
+join to an exact composable pair carrier.
 
 Surface:
 
@@ -263,7 +279,7 @@ Surface:
 - converse;
 - explicitly named <code>AllenCompose</code>.
 
-Exit gate:
+Exit gate — **closed by D28**:
 
 - all thirteen predicates are JEPD over nonempty intervals;
 - converse is involutive and agrees with argument reversal;
@@ -271,12 +287,18 @@ Exit gate:
 - canonical table laws are checked;
 - a separately encoded table equals exhaustive \(D_6\) triad enumeration;
 - the finite adjacent-gap counterexample is retained;
-- validation and joins stop accepting ad hoc hash sets where the value type belongs.
+- durable validation filters use <code>AllenRelationSet</code> rather than ad hoc hash sets;
+- K1b adds no filter-only overload to <code>IntervalJoins.Join</code>; K2b retires it or makes it a
+  projection backed by <code>ClaimPairView</code>.
 
 Not included: empty spans, claim identity, path consistency, generic QSTR descriptors, or
 Ghourabi's proof-grouping unions as privileged runtime values.
 
 ### K2 — close the claim query algebra
+
+D27 treats K2a, K2b, and K2c as one vertically specified tranche that lands in consecutive,
+reviewable chips. Their common basis, identity, projection, ordering, and residue contracts close
+before K2a implementation begins; joint specification does not mean one monolithic commit.
 
 #### K2a: <code>ClaimSelection</code>
 
@@ -288,7 +310,9 @@ Required operations:
 
 - all, none, predicate selection, membership;
 - union, intersection, difference, and relative complement;
-- deterministic enumeration;
+- canonical ascending-ordinal enumeration;
+- explicit geometry/priority-ordered record projection under <code>ClaimOrder</code>, without making
+  order part of set equality;
 - explicit identity-forgetting <code>Coverage()</code> projection to <code>SpanSet</code>;
 - basis compatibility checks.
 
@@ -298,6 +322,12 @@ two batches over compatible masters still have different ordinal universes.
 Persistence is not part of this contract. Ordinals are in-memory occurrence identities; F2 later
 decides durable identity.
 
+K2a is not complete as a bare bitset. Predicate selection and the stable set-valued population
+operations land against it: grouping, cadence, and suppression accept selections where applicable,
+and predicate conveniences may delegate to the same reference path. Existing ordered lookups are
+not mechanically changed to return an unordered selection; an ordered record projection remains
+explicit query policy.
+
 #### K2b: <code>ClaimPairView</code>
 
 An exact relation between explicit left and right claim bases.
@@ -305,10 +335,16 @@ An exact relation between explicit left and right claim bases.
 Required operations:
 
 - construction from exact geometry and an <code>AllenRelationSet</code> filter;
+- explicit ordinal-diagonal identity on one exact frozen batch, distinct from the geometric
+  <code>Equal</code> filter;
 - converse, projection, and semijoin;
 - exact outer-pair composition when the middle basis matches;
-- optional grouping of middle witnesses;
+- transparent grouping of middle witnesses for one composition;
 - projection of left/right <code>ClaimSelection</code>s.
+
+This is the semantic replacement for <code>IntervalJoins.Join</code>. If the old method is retained
+for compatibility, it projects from <code>ClaimPairView</code> and contains no independent join
+implementation.
 
 Keep two contracts distinct:
 
@@ -316,12 +352,13 @@ Keep two contracts distinct:
 ComposePairs
     canonical extensional set of outer ordinal pairs
 
-ComposeWithWitnesses
-    outer pairs plus middle ordinals/support
+GroupMiddleWitnesses
+    transparent outer-pair -> middle-ordinal query for one composition
 ~~~
 
-The extensional outer relation is associative. A packed witness representation receives no
-associativity claim until support normalization is defined independently of bracketing.
+The extensional outer relation is associative. The middle-witness query is not a normalized support
+carrier and receives no associativity or bracket-independence claim. A packed witness
+representation waits until K5 defines support identity and normalization.
 
 #### K2c: pairing as the first structural consumer
 
@@ -331,9 +368,9 @@ identity-bearing query carriers so it does not create another terminal bespoke r
 ~~~text
 PairingResult
   Basis / policy stamp
-  MatchEdges          open ordinal x close ordinal
+  MatchEdges          ClaimPairView(open basis, close basis)
   PairedRegions       optional geometry projection
-  Faults              unclosed | dangling | mismatched
+  Faults              selection-backed unary residue + mismatch pair evidence
 ~~~
 
 Exit gate:
@@ -342,19 +379,22 @@ Exit gate:
 - caller-supplied role/key compatibility owns delimiter meaning;
 - every considered input occurrence is matched or appears in named residue;
 - faults retain occurrence IDs and evidence;
+- the accepted/fault populations witness the K2 carrier and projection contracts;
 - no repair action is performed;
 - matching, containment, and parenthood remain separate relations.
 
 ### K3 — located-relation algebra
 
-Add a basis-stamped <code>LocatedRelation</code> over \(L_M\), including diagonal identity extents.
+K3 and K4a are one design tranche, even if they land in separate commits. Add a basis-stamped,
+geometry-only <code>LocatedRelation</code> over \(L_M\), including diagonal identity extents. It is a
+set of located geometry: duplicate extents collapse, and it carries no claim labels or occurrence
+references.
 
 Core:
 
 - empty relation and declared-window diagonal identity;
 - union and shared-boundary <code>Seq</code>;
 - reachability and consuming closure;
-- optional labels/references back to candidate claim occurrences;
 - injective rebase.
 
 Exit gate:
@@ -364,6 +404,7 @@ Exit gate:
 - strict consuming edges are acyclic/nilpotent on a finite chain;
 - consuming star is a bounded finite union of powers;
 - zero-length identity edges are algebraic objects, not token claims;
+- equal geometry has one located edge regardless of how many claims project to it;
 - <code>TextSlice</code> rebase commutes exactly with <code>Seq</code>;
 - collapsing or range-valued maps receive only the lax inclusion law.
 
@@ -374,7 +415,7 @@ carrier.
 
 #### K4a: flat candidate graph and partition results
 
-Start with the smallest sequential core:
+Co-designed with K3, start with the smallest identity-bearing sequential core:
 
 - <code>CandidateRegionGraph</code>;
 - <code>ReachabilityView</code>;
@@ -382,13 +423,16 @@ Start with the smallest sequential core:
 - <code>SegmentationResult</code>;
 - <code>SelectionResidual</code>.
 
-The graph uses one concrete <code>TextMaster</code>, one validated window, and nonempty candidate
-claim ordinals as parallel edges from <code>Start</code> to <code>End</code>. Do not introduce a
-generic address/boundary hierarchy while this concrete basis suffices.
+The graph uses one concrete <code>TextMaster</code>, one validated window, and a
+<code>ClaimSelection</code> of nonempty candidate claim ordinals as parallel edges from
+<code>Start</code> to <code>End</code>. It owns occurrence identity and exposes an explicit projection
+to geometry-only <code>LocatedRelation</code>. Do not introduce a generic address/boundary hierarchy
+while this concrete basis suffices.
 
 The graph is already the packed representation of all alternative paths. The reference tranche
 provides reachability and one explicitly named deterministic path result; it does not enumerate
-every complete path.
+every complete path. Geometry reachability has one reference meaning shared with K3 rather than a
+second graph-specific implementation.
 
 Each result declares its source graph/window and validates its own invariant.
 
@@ -403,6 +447,8 @@ forgets claim identity.
 
 An empty window has the coherent zero-edge identity partition. Distinguish a coverage gap from a
 connectivity dead end: both block a complete path, but they are different residual evidence.
+The tranche closes with both an ambiguous token graph and a budgeted flat chunk graph, so the
+located algebra and result residues are pressure-tested before K4b adds optimizers.
 
 #### K4b: named selection execution
 
@@ -547,9 +593,11 @@ Exit gate:
 alignment. Its <code>Exact | Range | Unmapped</code> point queries do not define general origins.
 Byte addressing remains a separate coordinate map.
 
-### K8 — bounded factory demonstrations
+### K8 — cross-carrier integration demonstrations
 
-The expansion is complete only when the carriers compose into bounded, non-domain-owning examples:
+Each carrier already lands with the bounded witness required by the cross-cutting tranche gate.
+The expansion is complete only when those witnesses are reassembled into bounded,
+non-domain-owning cross-carrier examples:
 
 1. pairing over at least two delimiter families with residue;
 2. ambiguous candidate token graph with two complete paths and an explicit selection policy;
@@ -558,7 +606,8 @@ The expansion is complete only when the carriers compose into bounded, non-domai
 5. one recursive/document-supplied expansion orchestrated with an explicit depth/resource limit,
    demonstrating that the policy remains outside the kernel.
 
-These are contract witnesses, not durable codex-scientiae adapters unless separately promoted.
+These are integration demonstrations, not the first validation of their component contracts and
+not durable codex-scientiae adapters unless separately promoted.
 
 ## 7. Deferred Lean rigor lane
 
@@ -676,11 +725,14 @@ The expansion will not:
 
 ## 11. Immediate next move
 
-The next implementation series is K0/K1: record the carrier/law registry, then land the immutable
-<code>AllenRelationSet</code> and an independently encoded composition-table oracle. K1 need not wait
-for Lean; exhaustive finite checks, adversarial counterexamples, and the published formalization
-provide the appropriate assurance at this stage.
+K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, and K1b as D28; K1 is closed.
+The next move is the joint K2a–K2c contract brief required by D27. Freeze the exact batch bases,
+ordinal identities, pure-membership versus ordered-projection boundary, pair-view projections and
+semijoins, extensional `ComposePairs`, transparent middle-witness query, and pairing residue shape
+together before implementation. Then land K2a, K2b, and K2c as consecutive reviewable chips,
+without inserting an unrelated tranche between them.
 
-If statement pressure during that work exposes a disputed carrier, exactness claim, or public
-signature, pause only that obligation and apply the deferred brief's activation gate. Otherwise
-continue into K2's identity-bearing claim query carriers.
+If that specification exposes a disputed carrier, exactness claim, or public signature, pause
+only that obligation and apply the deferred formalization brief's activation gate. Otherwise K2a
+lands first with `ClaimSelection`, `Coverage()`, and the stable population integrations named in
+D27.

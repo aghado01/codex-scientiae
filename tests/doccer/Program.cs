@@ -28,6 +28,13 @@ internal static class Program
             SpanSetObeysBooleanLawsAndMasterIdentity();
             SpanSetRandomizedLawsHold();
             AllenRelationsAreCompleteAndInvertible();
+            AllenRelationSetHasAClosedValueSurface();
+            AllenRelationSetBooleanLawsHoldExhaustively();
+            AllenRelationSetConverseAgreesWithTheClassifier();
+            AllenClassifierIsJepdOnSixBoundaries();
+            AllenCompositionMatchesIndependentD6Oracle();
+            AllenCompositionLawsHold();
+            AllenCanonicalCompositionIsNotFiniteMasterComposition();
             LaminarizationRetainsCrossingResidue();
             ScopedRegexCollectionCannotBridgeGaps();
             SuppressionIsAQueryWithIdempotenceAndDuality();
@@ -499,6 +506,416 @@ internal static class Program
         }
     }
 
+    /// <summary>
+    /// K1a: the value is exactly a deterministic set over the thirteen defined atoms. Its bit
+    /// representation is private, duplicate atoms collapse, and undefined enum casts are refused.
+    /// </summary>
+    private static void AllenRelationSetHasAClosedValueSurface()
+    {
+        var atoms = Enum.GetValues<AllenRelation>();
+        Equal(13, atoms.Length, "Allen has exactly thirteen public atoms");
+        True(
+            atoms.Select(static relation => (int)relation).SequenceEqual(Enumerable.Range(0, 13)),
+            "Allen enum ordinals form the frozen thirteen-bit index");
+
+        Equal(0, AllenRelationSet.None.Count, "None has no atoms");
+        True(AllenRelationSet.None.IsEmpty, "None is empty");
+        Equal(13, AllenRelationSet.All.Count, "All has every atom");
+        Equal(1, AllenRelationSet.Equal.Count, "Equal is a singleton");
+        True(AllenRelationSet.Equal.Contains(AllenRelation.Equal), "Equal contains geometric equality");
+
+        foreach (var atom in atoms)
+        {
+            var singleton = AllenRelationSet.Singleton(atom);
+            Equal(1, singleton.Count, $"{atom} singleton count");
+            True(singleton.Contains(atom), $"{atom} singleton membership");
+            True(singleton.IsSubsetOf(AllenRelationSet.All), $"{atom} singleton is a subset of All");
+        }
+
+        var sample = AllenRelationSet.Create(new[]
+        {
+            AllenRelation.After,
+            AllenRelation.Before,
+            AllenRelation.Equal,
+            AllenRelation.Before,
+        });
+        Equal(3, sample.Count, "duplicate atoms collapse during construction");
+        Equal("Before,Equal,After", string.Join(",", sample), "enumeration follows Allen ordinal order");
+        True(AllenRelationSet.Equal.IsSubsetOf(sample), "singleton subset membership is recognized");
+        True(!sample.IsSubsetOf(AllenRelationSet.Equal), "subset direction is preserved");
+        True(sample == AllenRelationSet.Create(sample), "equal values compare equal");
+        True(sample != AllenRelationSet.All, "different values compare unequal");
+        Equal(sample.GetHashCode(), AllenRelationSet.Create(sample).GetHashCode(), "equal values hash equally");
+
+        Throws<ArgumentNullException>(
+            () => AllenRelationSet.Create(null!),
+            "null relation input is refused");
+        Throws<ArgumentOutOfRangeException>(
+            () => AllenRelationSet.Singleton((AllenRelation)(-1)),
+            "a negative relation cast is refused");
+        Throws<ArgumentOutOfRangeException>(
+            () => AllenRelationSet.Singleton((AllenRelation)13),
+            "a relation cast above the thirteen atoms is refused");
+        Throws<ArgumentOutOfRangeException>(
+            () => AllenRelationSet.Create(new[] { AllenRelation.Before, (AllenRelation)99 }),
+            "construction refuses an undefined relation anywhere in the input");
+        Throws<ArgumentOutOfRangeException>(
+            () => sample.Contains((AllenRelation)99),
+            "membership refuses an undefined relation");
+    }
+
+    /// <summary>
+    /// K1a: all 2^13 values are checked against an independent element-wise mask oracle. Unary
+    /// Boolean laws are exhaustive; binary laws use a deterministic permutation covering every
+    /// value in both operand positions.
+    /// </summary>
+    private static void AllenRelationSetBooleanLawsHoldExhaustively()
+    {
+        const int valueCount = 1 << 13;
+        const int allMask = valueCount - 1;
+        var lawsHold = true;
+
+        for (var mask = 0; mask < valueCount && lawsHold; mask++)
+        {
+            var value = AllenSetFromMask(mask);
+            var complementMask = allMask ^ mask;
+            var complement = value.Complement();
+            var otherMask = ((mask * 4051) + 7919) & allMask;
+            var thirdMask = ((mask * 2081) + 1237) & allMask;
+            var other = AllenSetFromMask(otherMask);
+            var third = AllenSetFromMask(thirdMask);
+
+            lawsHold =
+                AllenSetMatchesMask(value, mask) &&
+                value.Count == CountSetBits(mask) &&
+                value.Union(AllenRelationSet.None) == value &&
+                value.Intersect(AllenRelationSet.All) == value &&
+                value.Union(complement) == AllenRelationSet.All &&
+                value.Intersect(complement) == AllenRelationSet.None &&
+                complement.Complement() == value &&
+                AllenRelationSet.None.IsSubsetOf(value) &&
+                value.IsSubsetOf(AllenRelationSet.All) &&
+                value.IsSubsetOf(value) &&
+                AllenSetMatchesMask(value.Union(other), mask | otherMask) &&
+                AllenSetMatchesMask(value.Intersect(other), mask & otherMask) &&
+                value.Union(other) == other.Union(value) &&
+                value.Intersect(other) == other.Intersect(value) &&
+                value.Intersect(other.Union(third)) ==
+                    value.Intersect(other).Union(value.Intersect(third)) &&
+                value.IsSubsetOf(other) == ((mask & otherMask) == mask);
+        }
+
+        True(lawsHold, "all 8192 Allen relation-set values satisfy the Boolean value laws");
+    }
+
+    /// <summary>
+    /// K1a: converse is checked on all 2^13 values, and the atom mapping is independently bridged
+    /// to argument reversal for every nonempty interval pair on the six-boundary finite model.
+    /// </summary>
+    private static void AllenRelationSetConverseAgreesWithTheClassifier()
+    {
+        const int valueCount = 1 << 13;
+        var converseLawsHold = true;
+        for (var mask = 0; mask < valueCount && converseLawsHold; mask++)
+        {
+            var value = AllenSetFromMask(mask);
+            var converse = value.Converse();
+            var other = AllenSetFromMask(((mask * 4051) + 7919) & (valueCount - 1));
+            converseLawsHold =
+                converse.Converse() == value &&
+                converse.Count == value.Count &&
+                value.Complement().Converse() == converse.Complement() &&
+                value.Union(other).Converse() == converse.Union(other.Converse());
+        }
+
+        True(converseLawsHold, "converse laws hold on all 8192 Allen relation-set values");
+
+        var intervals = new List<TextSpan>();
+        for (var start = 0; start < 6; start++)
+        {
+            for (var end = start + 1; end < 6; end++)
+            {
+                intervals.Add(new TextSpan(start, end));
+            }
+        }
+
+        var classifierBridgeHolds = true;
+        foreach (var left in intervals)
+        {
+            foreach (var right in intervals)
+            {
+                var relation = AllenAlgebra.Relate(left, right);
+                var reversed = AllenAlgebra.Relate(right, left);
+                var singleton = AllenRelationSet.Singleton(relation);
+                classifierBridgeHolds &=
+                    singleton.Contains(relation) &&
+                    singleton.Converse() == AllenRelationSet.Singleton(reversed) &&
+                    AllenAlgebra.Inverse(relation) == reversed &&
+                    AllenAlgebra.Inverse(reversed) == relation;
+            }
+        }
+
+        True(
+            classifierBridgeHolds,
+            "set converse agrees with classifier argument reversal on every six-boundary interval pair");
+    }
+
+    /// <summary>
+    /// K1b: an endpoint-predicate oracle, written independently of Relate's decision tree, assigns
+    /// exactly one atom to every ordered pair of nonempty D6 intervals. Relate agrees everywhere
+    /// and all thirteen atoms are witnessed.
+    /// </summary>
+    private static void AllenClassifierIsJepdOnSixBoundaries()
+    {
+        var atoms = Enum.GetValues<AllenRelation>();
+        var intervals = CreateNonEmptyAllenIntervals(6);
+        var seen = AllenRelationSet.None;
+        var jointlyExhaustiveAndPairwiseDisjoint = true;
+
+        foreach (var left in intervals)
+        {
+            foreach (var right in intervals)
+            {
+                var matching = atoms.Where(relation => AllenPredicateHolds(relation, left, right)).ToArray();
+                if (matching.Length != 1)
+                {
+                    jointlyExhaustiveAndPairwiseDisjoint = false;
+                    continue;
+                }
+
+                var relation = matching[0];
+                jointlyExhaustiveAndPairwiseDisjoint &= AllenAlgebra.Relate(left, right) == relation;
+                seen = seen.Union(AllenRelationSet.Singleton(relation));
+            }
+        }
+
+        True(
+            jointlyExhaustiveAndPairwiseDisjoint,
+            "the thirteen endpoint predicates are JEPD and Relate satisfies them on D6");
+        Equal(AllenRelationSet.All, seen, "the D6 classifier witness realizes all thirteen atoms");
+        Throws<ArgumentException>(
+            () => AllenAlgebra.Relate(new TextSpan(0, 0), new TextSpan(0, 1)),
+            "Allen classification keeps empty extents outside its carrier");
+    }
+
+    /// <summary>
+    /// K1b: derive the complete 13x13 oracle from 3,375 triples of the fifteen nonempty intervals
+    /// over six boundaries. The production table is literal mask data; this oracle knows only the
+    /// independent endpoint predicates below.
+    /// </summary>
+    private static void AllenCompositionMatchesIndependentD6Oracle()
+    {
+        var intervals = CreateNonEmptyAllenIntervals(6);
+        var expected = new AllenRelationSet[13, 13];
+        var evaluatedTriples = 0;
+
+        foreach (var left in intervals)
+        {
+            foreach (var middle in intervals)
+            {
+                foreach (var right in intervals)
+                {
+                    var first = ClassifyAllenByPredicates(left, middle);
+                    var second = ClassifyAllenByPredicates(middle, right);
+                    var outer = ClassifyAllenByPredicates(left, right);
+                    expected[(int)first, (int)second] = expected[(int)first, (int)second]
+                        .Union(AllenRelationSet.Singleton(outer));
+                    evaluatedTriples++;
+                }
+            }
+        }
+
+        var tableMatches = true;
+        var atomicTriads = 0;
+        foreach (var first in Enum.GetValues<AllenRelation>())
+        {
+            foreach (var second in Enum.GetValues<AllenRelation>())
+            {
+                var oracleCell = expected[(int)first, (int)second];
+                var tableCell = AllenRelationSet.Singleton(first)
+                    .AllenCompose(AllenRelationSet.Singleton(second));
+                tableMatches &= tableCell == oracleCell;
+                atomicTriads += oracleCell.Count;
+            }
+        }
+
+        Equal(15, intervals.Count, "D6 has fifteen nonempty intervals");
+        Equal(3375, evaluatedTriples, "the D6 oracle evaluates every interval triple");
+        True(tableMatches, "all 169 literal composition cells equal the independent D6 oracle");
+        Equal(409, atomicTriads, "the canonical table contains 409 atomic triads");
+    }
+
+    /// <summary>
+    /// K1b: composition is the additive lift of the canonical atomic table. Lifted identity,
+    /// annihilation, distributivity, and converse laws are swept across all 2^13 values; the
+    /// associativity kernel is checked on every ordered triple of atoms.
+    /// </summary>
+    private static void AllenCompositionLawsHold()
+    {
+        const int valueCount = 1 << 13;
+        const int allMask = valueCount - 1;
+        var liftedLawsHold = true;
+
+        for (var mask = 0; mask < valueCount && liftedLawsHold; mask++)
+        {
+            var value = AllenSetFromMask(mask);
+            var other = AllenSetFromMask(((mask * 4051) + 7919) & allMask);
+            var third = AllenSetFromMask(((mask * 2081) + 1237) & allMask);
+
+            liftedLawsHold =
+                value.AllenCompose(AllenRelationSet.None) == AllenRelationSet.None &&
+                AllenRelationSet.None.AllenCompose(value) == AllenRelationSet.None &&
+                value.AllenCompose(AllenRelationSet.Equal) == value &&
+                AllenRelationSet.Equal.AllenCompose(value) == value &&
+                value.AllenCompose(other.Union(third)) ==
+                    value.AllenCompose(other).Union(value.AllenCompose(third)) &&
+                value.Union(other).AllenCompose(third) ==
+                    value.AllenCompose(third).Union(other.AllenCompose(third)) &&
+                value.AllenCompose(other).Converse() ==
+                    other.Converse().AllenCompose(value.Converse());
+        }
+
+        True(liftedLawsHold, "Allen composition lift laws hold across all 8192 relation sets");
+
+        var atomicAssociativityHolds = true;
+        foreach (var first in Enum.GetValues<AllenRelation>())
+        {
+            foreach (var second in Enum.GetValues<AllenRelation>())
+            {
+                foreach (var third in Enum.GetValues<AllenRelation>())
+                {
+                    var firstSet = AllenRelationSet.Singleton(first);
+                    var secondSet = AllenRelationSet.Singleton(second);
+                    var thirdSet = AllenRelationSet.Singleton(third);
+                    atomicAssociativityHolds &=
+                        firstSet.AllenCompose(secondSet).AllenCompose(thirdSet) ==
+                        firstSet.AllenCompose(secondSet.AllenCompose(thirdSet));
+                }
+            }
+        }
+
+        True(atomicAssociativityHolds, "all 2197 atomic composition triples are associative");
+    }
+
+    /// <summary>
+    /// K1b: canonical qualitative composition is not exact composition inside one finite master.
+    /// With adjacent integer boundaries, [0,1) is Before [2,3), but there is no nonempty interval
+    /// strictly between them even though canonical Before o Before contains Before.
+    /// </summary>
+    private static void AllenCanonicalCompositionIsNotFiniteMasterComposition()
+    {
+        var before = AllenRelationSet.Singleton(AllenRelation.Before);
+        Equal(before, before.AllenCompose(before), "canonical Before composed with Before is Before");
+
+        var left = new TextSpan(0, 1);
+        var right = new TextSpan(2, 3);
+        var finiteIntervals = CreateNonEmptyAllenIntervals(4);
+        var hasMiddle = finiteIntervals.Any(middle =>
+            AllenAlgebra.Relate(left, middle) == AllenRelation.Before &&
+            AllenAlgebra.Relate(middle, right) == AllenRelation.Before);
+
+        Equal(AllenRelation.Before, AllenAlgebra.Relate(left, right), "the adjacent-gap endpoints are Before");
+        True(!hasMiddle, "the four-boundary finite carrier has no Before-Before middle witness");
+    }
+
+    private static List<TextSpan> CreateNonEmptyAllenIntervals(int boundaryCount)
+    {
+        var intervals = new List<TextSpan>();
+        for (var start = 0; start < boundaryCount; start++)
+        {
+            for (var end = start + 1; end < boundaryCount; end++)
+            {
+                intervals.Add(new TextSpan(start, end));
+            }
+        }
+
+        return intervals;
+    }
+
+    private static AllenRelation ClassifyAllenByPredicates(TextSpan left, TextSpan right)
+    {
+        var found = false;
+        var classified = default(AllenRelation);
+        foreach (var relation in Enum.GetValues<AllenRelation>())
+        {
+            if (!AllenPredicateHolds(relation, left, right))
+            {
+                continue;
+            }
+
+            if (found)
+            {
+                throw new InvalidOperationException($"Independent Allen predicates overlap for {left} and {right}.");
+            }
+
+            found = true;
+            classified = relation;
+        }
+
+        return found
+            ? classified
+            : throw new InvalidOperationException($"Independent Allen predicates leave {left} and {right} unclassified.");
+    }
+
+    private static bool AllenPredicateHolds(AllenRelation relation, TextSpan left, TextSpan right) => relation switch
+    {
+        AllenRelation.Before => left.End < right.Start,
+        AllenRelation.Meets => left.End == right.Start,
+        AllenRelation.Overlaps =>
+            left.Start < right.Start && right.Start < left.End && left.End < right.End,
+        AllenRelation.FinishedBy => left.Start < right.Start && left.End == right.End,
+        AllenRelation.Contains => left.Start < right.Start && right.End < left.End,
+        AllenRelation.Starts => left.Start == right.Start && left.End < right.End,
+        AllenRelation.Equal => left.Start == right.Start && left.End == right.End,
+        AllenRelation.StartedBy => left.Start == right.Start && right.End < left.End,
+        AllenRelation.During => right.Start < left.Start && left.End < right.End,
+        AllenRelation.Finishes => right.Start < left.Start && left.End == right.End,
+        AllenRelation.OverlappedBy =>
+            right.Start < left.Start && left.Start < right.End && right.End < left.End,
+        AllenRelation.MetBy => left.Start == right.End,
+        AllenRelation.After => right.End < left.Start,
+        _ => throw new ArgumentOutOfRangeException(nameof(relation)),
+    };
+
+    private static AllenRelationSet AllenSetFromMask(int mask)
+    {
+        var atoms = new List<AllenRelation>(13);
+        for (var index = 0; index < 13; index++)
+        {
+            if ((mask & (1 << index)) != 0)
+            {
+                atoms.Add((AllenRelation)index);
+            }
+        }
+
+        return AllenRelationSet.Create(atoms);
+    }
+
+    private static bool AllenSetMatchesMask(AllenRelationSet value, int mask)
+    {
+        for (var index = 0; index < 13; index++)
+        {
+            if (value.Contains((AllenRelation)index) != ((mask & (1 << index)) != 0))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static int CountSetBits(int value)
+    {
+        var count = 0;
+        while (value != 0)
+        {
+            value &= value - 1;
+            count++;
+        }
+
+        return count;
+    }
+
     private static void SpanSetRandomizedLawsHold()
     {
         var master = new TextMaster("random-sets", 0, new string('x', 96));
@@ -947,7 +1364,7 @@ internal static class Program
                 "member-has-container",
                 "member",
                 "container",
-                new[] { AllenRelation.During },
+                AllenRelationSet.Singleton(AllenRelation.During),
                 minimumMatches: 1,
                 maximumMatches: 1),
         };
@@ -957,12 +1374,26 @@ internal static class Program
                 "container-must-not-cross-forbidden",
                 "container",
                 "forbidden",
-                new[] { AllenRelation.Overlaps }),
+                AllenRelationSet.Singleton(AllenRelation.Overlaps)),
         };
 
         var issues = DoccerValidation.ValidateRelations(batch, requirements, impossibilities);
         Equal(1, issues.Count, "one impossibility detected");
         Equal("container-must-not-cross-forbidden", issues[0].Rule, "impossibility rule identity");
+        Equal(
+            AllenRelationSet.Singleton(AllenRelation.During),
+            requirements[0].AcceptedRelations,
+            "relation requirements retain the closed Allen relation-set value");
+        Equal(
+            AllenRelationSet.Singleton(AllenRelation.Overlaps),
+            impossibilities[0].ForbiddenRelations,
+            "forbidden relations retain the closed Allen relation-set value");
+        Throws<ArgumentException>(
+            () => new RelationRequirement("empty", "left", "right", AllenRelationSet.None),
+            "a validation requirement refuses the empty relation union");
+        Throws<ArgumentException>(
+            () => new ForbiddenRelation("empty", "left", "right", AllenRelationSet.None),
+            "a forbidden-relation rule refuses the empty relation union");
     }
 
     /// <summary>

@@ -52,6 +52,131 @@ briefs carry the later contracts with their reports — and the evidence in
 | D22 | Fact selectors stay **plain typed delegates** (T2-4): `Func<SpanRecord, TKey>` beside `Func<TextAtom, TKey>`, each with a discoverable static vocabulary (`ClaimFacts` mirroring `AtomFacts`, tuple selectors for composition); no promotion to a binding record — two parallel vocabularies sharing one shape settle the question by precedent | implemented |
 | D23 | Gap cadence (Tranche 3c) — the first D8 measure, transcribed from the mdnav profiler: gaps between successive claim **starts** (the name pins the semantics — an end-to-start interstice measure would be a separate named measure, never a parameter); facts = gap count, median gap (upper-median template convention, integer domain), mean gap, cv (0 when mean 0), span fraction; **window basis** declared (default master extent; admits a claim iff its start lies within; length divides the span fraction; `AddressUnit` rides the stamp); **exclusions** = caller predicate, recorded as measured ordinals in deterministic start order — evidence on the result, not a lost delegate; statistics present whenever defined (≥2 members), absent otherwise; meaning thresholds (mdnav's ≥4 occurrences, cv<0.6) stay in consumers (D10) | implemented |
 | D24 | Lookup order is **query policy** (D2/D5 at the query surface): `ClaimOrder` names the answer order — `Geometry` (stable start order, the default, unchanged) or `PriorityThenGeometry` (priority descending per the D2 max-priority posture, then geometry, then ordinal — a total order, so determinism needs no stability argument); optional parameter on `FindIntersecting`/`FindContaining`; undefined casts refused; pure per-query ordering, acceleration = F4 | implemented |
+| D25 | Many-sorted carrier boundary and assurance registry (K0): valid boundaries, located extents, nonempty Allen intervals, claim occurrences, later canonical facts, and later cross-master origins remain distinct carriers; the public operation vocabulary names each composition by its sort; every load-bearing law names its assurance owner and a concrete Lean reactivation trigger where proof is deferred | recorded; K0 closed |
+| D26 | `AllenRelationSet` (K1a) is the immutable Boolean value over exactly thirteen Allen atoms: private 13-bit representation; explicit stable enum ordinals; `None`/`All`/`Equal`/singleton and sequence construction; count, emptiness, membership, subset, union, intersection, complement, converse, value equality/hash, and deterministic enum-order enumeration; duplicate atoms collapse and undefined casts fail loudly; no raw mask, wire form, or composition contract | implemented; K1a closed |
+| D27 | K1b–K4 sequencing boundary: K1b closes the qualitative Allen semantics and migrates durable validation filters but does not retrofit the terminal `IntervalJoins.Join`; K2a/K2b/K2c are jointly specified and landed as consecutive buildable chips, with pure selection membership distinct from ordered query views, `ClaimPairView` becoming the semantic replacement for the terminal join, and pairing witnessing the tranche; K3/K4a are co-designed, with geometry-only `LocatedRelation` separate from the identity-bearing candidate graph; every tranche carries a bounded witness and K8 is final integration | recorded; workplan resequenced |
+| D28 | Canonical Allen composition (K1b): `AllenRelationSet.AllenCompose` is the additive lift of a literal 169-cell table in frozen atom order; a separately encoded endpoint-predicate oracle exhausts all 3,375 triples of the 15 nonempty \(D_6\) intervals and recovers all 169 cells/409 atomic triads; JEPD, identity, annihilation, distributivity, converse reversal, and associativity are executable laws; canonical composition is an upper approximation rather than exact fixed-master composition, retained by the adjacent-gap counterexample; durable validation filters now carry `AllenRelationSet`, while `IntervalJoins.Join` remains unchanged for K2b | implemented; K1 closed |
+
+## Qualitative Allen closure (D28)
+
+K1 closes with one public composition name and one deliberately asymmetric assurance boundary:
+
+- `AllenCompose` is canonical qualitative composition over unions of the thirteen Allen atoms. Its
+  13×13 atomic table is literal row-major mask data, indexed by the explicit D26 enum ordinals;
+  no runtime table generation, raw-mask API, persistence shape, or generic-calculus descriptor is
+  introduced.
+- The harness does not reuse that representation. It defines the thirteen endpoint predicates
+  independently, proves them jointly exhaustive and pairwise disjoint over all ordered pairs of
+  the fifteen nonempty intervals on six boundaries, and checks `Relate` against the unique result.
+  Exhausting all \(15^3=3375\) interval triples reconstructs the 169 cells and 409 atomic triads.
+- Composition has `Equal` as two-sided identity and `None` as two-sided annihilator, distributes
+  over unions, reverses under converse, and is associative. The lifted laws sweep all 8192 relation
+  unions under deterministic operand permutations; the associativity kernel checks all
+  \(13^3=2197\) atomic triples.
+- Canonical composition does not promise an intermediary inside one finite master. Although
+  `Before AllenCompose Before` is `Before`, no nonempty integer interval lies strictly between
+  \([0,1)\) and \([2,3)\). Exact claim-pair composition remains K2b work.
+- `RelationRequirement.AcceptedRelations` and `ForbiddenRelation.ForbiddenRelations` now carry the
+  closed `AllenRelationSet` value and refuse `None`. D27's no-half-measure boundary holds:
+  `IntervalJoins.Join` receives no filter-only transition before `ClaimPairView` replaces its
+  terminal semantics.
+
+## Sequencing boundary (D27)
+
+D27 distinguishes **completion priority** from **type dependency**. K1b was the first completion
+priority and is now closed by D28. K2 does not depend on the canonical composition table: it
+depends on K1's closed `AllenRelationSet` as an exact-join filter.
+
+The resulting boundaries are:
+
+1. **K1b closes semantics, not a transitional join API.** It owns `AllenCompose`, the independently
+   encoded table, the separate \(D_6\) oracle, JEPD/classifier closure, the adjacent-gap
+   counterexample, and migration of durable validation filters. `IntervalJoins.Join` is not given a
+   one-chip relation-set retrofit when K2b will replace its terminal result shape.
+2. **K2 is specified vertically before its chips land.** K2a, K2b, and K2c remain separate,
+   buildable implementation chips, but their shared bases, projections, residues, and identities
+   are frozen together and they land without an unrelated tranche between them.
+3. **Selection membership is not result order.** `ClaimSelection` is a pure set over ordinals on
+   one exact frozen batch and canonically enumerates ascending ordinals. Geometry- or
+   priority-ordered records are explicit query projections under `ClaimOrder`; order is not part
+   of selection equality. Existing ordered lookups are not mechanically changed to return an
+   unordered set.
+4. **K2a includes the stable population integrations.** Predicate selection, `Coverage()`,
+   grouping, cadence, and suppression accept or produce `ClaimSelection` where their semantics are
+   set-valued. Predicate conveniences may delegate to that carrier rather than remain independent
+   implementations.
+5. **K2b owns the join transition.** `ClaimPairView` supplies exact basis-stamped relation rows,
+   projections, semijoins, converse, and `ComposePairs`. `IntervalJoins.Join` is retired or retained
+   only as a compatibility projection backed by this carrier, never as a parallel semantic path.
+   Middle-witness grouping remains transparent; packed or bracket-independent support waits for
+   K5's support identity.
+6. **Pairing witnesses K2.** `PairingResult.MatchEdges` uses `ClaimPairView`; unary fault
+   populations use `ClaimSelection`, while mismatches retain explicit pair evidence. Pairing does
+   not invent repair, containment, or parenthood.
+7. **K3 and K4a are co-designed.** `LocatedRelation` is the pure geometry set over \(L_M\): it
+   carries no claim labels and collapses duplicate geometry. `CandidateRegionGraph` owns claim
+   ordinals and parallel identity-bearing edges and exposes an explicit identity-forgetting
+   projection to located geometry. They may land in separate commits, but one tranche must prevent
+   duplicated reachability semantics or a hybrid carrier.
+8. **Witnesses move left.** Pairing witnesses K2; ambiguous token and budgeted chunk graphs witness
+   K3/K4; bounded materialization witnesses K6/K7. K8 remains the final cross-carrier integration
+   demonstration rather than the first time earlier contracts meet a consumer shape.
+
+## Carrier and law registry (D25)
+
+This section is the canonical K0 registry. A row may reserve a contract before its implementation
+tranche, but its status and assurance gate must make that distinction explicit.
+
+### Carriers
+
+For one immutable master `M`, and an output master `N` where applicable:
+
+| Symbol | Carrier | Identity and empty posture |
+|---|---|---|
+| \(P_M\) | valid boundaries recognized by `M` | points only; not interval or claim identities |
+| \(L_M\) | located extents \((i,j)\) over \(P_M\), with \(i\le j\) | includes the diagonal empty extents used by located `Seq` |
+| \(I_M\) | nonempty Allen intervals \((i,j)\), with \(i<j\) | `AllenRelation.Equal` is the geometric diagonal |
+| \(C_M\) | identity-bearing claim occurrences | in-process identity is an ordinal on one exact frozen `SpanBatch`; equal geometry does not imply equal claims |
+| \(F_M\) | later canonical semantic facts | distinct from occurrences; value identity remains open for K5 |
+| \(O_{N,M}\) | later output-to-source atom-origin relations | cross-master and basis-checked; distinct from support or causal derivation |
+
+Consequently, diagonal empties belong to \(L_M\), not to Allen's \(I_M\). Claim-pair identity is
+the ordinal diagonal on one exact frozen batch. Origin identity is the atom diagonal between
+compatible master bases. None of these identities may be borrowed by another carrier merely
+because its projected geometry is equal.
+
+### Reserved operation vocabulary
+
+| Operation | Sort and meaning |
+|---|---|
+| `AllenCompose` | canonical qualitative atom-set upper approximation |
+| `ConcreteCompose` | exact relation composition on one declared carrier |
+| `Seq` | shared-boundary located composition on \(L_M\) |
+| `ComposePairs` | exact composition of claim-identity relations |
+| `Saturate` | positive fixed-point fact inference |
+| `Select` | explicit nonmonotone policy execution |
+| `ComposeOrigins` | basis-checked cross-master relational composition |
+| `Materialize` | realization of a supplied output-piece plan as a new master |
+
+There is no unqualified public `Compose`: sharing algebraic notation does not make the carriers or
+their result semantics interchangeable.
+
+### Assurance registry
+
+| ID | Public claim and status | Assurance owner | Evidence or landing gate | Lean reactivation trigger |
+|---|---|---|---|---|
+| K0-CARRIER | \(P_M\), \(L_M\), \(I_M\), \(C_M\), \(F_M\), and \(O_{N,M}\) are distinct; empties occur only in \(L_M\) among the interval carriers — **frozen** | deterministic contract plus adversarial C# boundary cases | existing empty-span refusal in `AllenAlgebra.Relate`; K3 must add the located diagonal positively | a generalized public interval carrier would change empty participation or an operator signature |
+| K0-IDENTITY-GEOMETRY | Allen `Equal` is identity on \(I_M\), never claim identity — **frozen** | C# oracle/counterexample | classifier cases plus equal-geometry distinct claims in the batch/laminar harness | only if a generic qualitative-calculus or quotient API is proposed |
+| K1-ALLEN-JEPD | the thirteen Allen atoms are jointly exhaustive and pairwise disjoint on \(I_M\) — **implemented in K1b (D28)** | finite exhaustive C# certificate | independent endpoint predicates are unique and agree with `Relate` on all 225 ordered \(D_6\) interval pairs; all thirteen atoms occur | only if Doccer generalizes beyond the finite linear interval carrier |
+| K1-ALLEN-CONVERSE | converse is involutive and agrees with argument reversal — **implemented in K1a (D26)** | finite exhaustive C# oracle | all 8192 relation-set values plus every nonempty interval pair on the six-boundary model | only if a generalized relation carrier changes converse semantics |
+| K1-ALLEN-COMPOSE | `AllenCompose` is the canonical weak-composition upper approximation, not fixed-master exact composition — **implemented in K1b (D28)** | independently encoded table, exhaustive \(D_6\) certificate, and external cited formalization | literal shipped table and independent endpoint oracle agree on all 169 cells/409 atomic triads; algebra laws are executable | a generic qualitative-calculus proof API or non-finite carrier is proposed |
+| K1-ALLEN-FINITE-GAP | canonical `Before AllenCompose Before` may contain `Before` even when a fixed finite master has no middle witness — **implemented in K1b (D28)** | smallest executable counterexample | \([0,1)\), \([2,3)\), and the four-boundary carrier retain no intervening nonempty interval | none presently; the counterexample fixes the contract boundary |
+| K2-CONCRETE-PAIRS | `ConcreteCompose`/`ComposePairs` are exact basis-checked relations; claim identity is the ordinal diagonal on one exact frozen batch — **reserved for joint K2 design** | reference C# relation oracle and property tests | exact-basis refusal, extensional identity and associativity, projections, semijoins, and one semantic replacement for `IntervalJoins.Join` before landing | a packed witness representation is asked to inherit identity, associativity, or bracket-independent support |
+| K3-LOCATED-SEQ | geometry-only located `Seq` uses a shared boundary, has the declared-window diagonal identity, is associative, and distributes over union — **reserved for joint K3/K4a design** | simple C# matrix/reference semantics and bounded exhaustive tests | identity, associativity, distributivity, finite consuming closure, rebase laws, and explicit graph-to-geometry projection before landing | a compressed or incremental closure algorithm replaces the reference semantics, or an exact-versus-lax map boundary remains disputed |
+| K4-SELECT | `Select` executes a named caller policy and promises only that policy's result invariants, never an implied optimum — **reserved for K4** | deterministic policy contract plus adversarial C# result validation | policy stamp, tie rule, rejected alternatives, conflicts, and residuals remain visible | only if a replacement optimizer claims equivalence or a new global optimality guarantee; policy choice itself is not a theorem |
+| K5-SATURATE | positive finite `Saturate` is monotone and inflationary and reaches one least fixed point independent of fair rule order — **reserved for K5** | reference worklist, order-permutation C# tests, and standard external theorem | canonical fact identity must close first; repeated derivations add support rather than duplicate facts | before parallel or incremental saturation claims semantic equivalence |
+| K6-COMPOSE-ORIGINS | `ComposeOrigins` is ordinary basis-checked relation composition; identity is the atom diagonal between compatible master bases — **reserved for K6** | reference C# relation oracle and property tests | tagged middle-basis refusal, identity, associativity, and functional-embedding laws before landing | compression, stage fusion, or a functional fast path relies on semantic equivalence |
+| K7-MATERIALIZE | `Materialize` realizes a supplied ordered piece plan whose pieces partition and exactly reconstruct a new master with declared origin or synthetic explanation — **reserved for K7** | construction-time validation and adversarial C# tests | gaps, overlaps, unmapped output, unused pieces, and origin/support conflation are refused or retained as named residue | before stage fusion, intermediate-master elision, or a nontrivial global reconstruction guarantee |
 
 ## Deferred families (F) — trigger = prioritization default, per D14
 
