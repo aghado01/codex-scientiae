@@ -189,6 +189,10 @@ typed wait outcome before entering `Awaited`; cancellation retains child-tree ki
 bounded process-supervisor drain, then final batched stop ordering. The process drain shares the same 200 ms
 host-interruption checkpoints while retaining one batch-wide drain deadline.
 
+BEX-305 binds result collection to the lifecycle owner and enforces complete result materialization before
+entering `Collected`. Collection retains original caller input identity and exact public fields, contains
+per-invocation collection failures, and leaves pipeline disposal to teardown.
+
 ### D18 — Phase 3 freezes the public execution projection — accepted
 
 Lifecycle decomposition does not add or rename public result, execution, policy, summary, or timing

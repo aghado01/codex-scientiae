@@ -106,6 +106,10 @@ and process-drain allowance. Both the main wait and batch-wide process drain use
 The phase records one typed wait outcome before collection begins and retains the parent-owned child-tree
 and batched pipeline-stop order.
 
+Collection materializes invocation envelopes into the original index slots, merges pipeline and worker
+diagnostics, preserves the caller's original `Input` reference, and verifies that every result slot is
+filled before entering `Collected`. It does not dispose execution resources; teardown remains the owner.
+
 ## Cancellation and ownership
 
 The caller may provide a `CancellationToken`; `WaitTimeoutSeconds` bounds the whole join and

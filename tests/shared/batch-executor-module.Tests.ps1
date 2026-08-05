@@ -68,6 +68,7 @@ Describe 'batch-executor module surface' {
             'Stop-BatchExecutorChildProcesses'
             'Stop-BatchExecutorPendingPipeline'
             'Wait-BatchExecutorInvocations'
+            'Receive-BatchExecutorResults'
             'Resolve-BatchPlanPath'
             'Resolve-BatchPlanModuleReference'
         )) {
