@@ -193,6 +193,13 @@ BEX-305 binds result collection to the lifecycle owner and enforces complete res
 entering `Collected`. Collection retains original caller input identity and exact public fields, contains
 per-invocation collection failures, and leaves pipeline disposal to teardown.
 
+BEX-306 gives teardown one private operation beneath the exported function's lexical `try/finally`.
+Teardown kills children, stops supervisors, disposes and clears pipelines, then closes and clears the pool
+before `Closed`. Final execution-record assembly requires that closed state and is the only nonempty-
+execution lifecycle-to-public projection boundary. Legal phase transitions now also enforce their required
+owner artifacts. A handle is cleared only after disposal returns successfully; failed release is diagnosed,
+retained, and cannot claim `Closed`.
+
 ### D18 — Phase 3 freezes the public execution projection — accepted
 
 Lifecycle decomposition does not add or rename public result, execution, policy, summary, or timing

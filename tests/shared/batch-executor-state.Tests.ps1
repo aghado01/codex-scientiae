@@ -147,13 +147,54 @@ Describe 'batch-executor private phase-state contracts' {
             { Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaiting } |
                 Should -Throw '*Prepared -> Awaiting*'
             foreach ($phase in @(
-                    'Dispatching', 'Dispatched', 'Awaiting', 'Awaited', 'Collecting', 'Collected',
-                    'TearingDown', 'Closed')) {
+                    'Dispatching', 'Dispatched', 'Awaiting')) {
                 Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase $phase
                 $lifecycle.Phase | Should -Be $phase
             }
+            $lifecycle.WaitOutcome = New-BatchExecutorWaitOutcome -Kind Completed
+            foreach ($phase in @('Awaited', 'Collecting', 'Collected', 'TearingDown')) {
+                Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase $phase
+                $lifecycle.Phase | Should -Be $phase
+            }
+            $lifecycle.TeardownCompleted = $true
+            Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Closed
+            $lifecycle.Phase | Should -Be 'Closed'
             { Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase TearingDown } |
                 Should -Throw '*Closed -> TearingDown*'
+        }
+    }
+
+    It 'rejects phase exits whose required lifecycle artifacts are missing' {
+        InModuleScope 'batch-executor' {
+            $item = New-BatchExecutorPreparedItem -Index 0 -Id direct -Mode Runspace `
+                -OriginalInput 1 -DispatchItem 1 -DispatchContext $null
+            $preparation = New-BatchExecutorPreparation -Item @($item) -ExecutionMode Runspace `
+                -WorkerDefinition ([pscustomobject]@{ Path = 'worker'; Body = 'body' }) -IssPreset Core `
+                -Budget ([pscustomobject]@{ Threads = 1 }) `
+                -Policy ([pscustomobject]@{ FailureAction = 'Continue' }) `
+                -InitialSessionState ([System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault2())
+            $lifecycle = New-BatchExecutorLifecycleState -Preparation $preparation
+
+            Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Dispatching
+            { Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Dispatched } |
+                Should -Throw '*unaccounted prepared items*'
+
+            $lifecycle.Results[0] = [pscustomobject]@{ State = 'Failed' }
+            Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Dispatched
+            Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaiting
+            { Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaited } |
+                Should -Throw '*typed wait outcome*'
+
+            $closedPreparation = New-BatchExecutorPreparation -Item @() -ExecutionMode Runspace `
+                -WorkerDefinition ([pscustomobject]@{ Path = 'worker'; Body = 'body' }) -IssPreset Core `
+                -Budget ([pscustomobject]@{ Threads = 0 }) `
+                -Policy ([pscustomobject]@{ FailureAction = 'Continue' })
+            $closedLifecycle = New-BatchExecutorLifecycleState -Preparation $closedPreparation
+            $closedLifecycle.Phase = 'TearingDown'
+            $closedLifecycle.TeardownCompleted = $true
+            $closedLifecycle.Pool = [pscustomobject]@{ Name = 'retained-pool' }
+            { Set-BatchExecutorLifecyclePhase -Lifecycle $closedLifecycle -Phase Closed } |
+                Should -Throw '*retains the runspace pool*'
         }
     }
 

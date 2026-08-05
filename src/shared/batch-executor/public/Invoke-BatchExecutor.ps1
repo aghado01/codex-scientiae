@@ -56,72 +56,16 @@ function Invoke-BatchExecutor {
     }
 
     $lifecycle = New-BatchExecutorLifecycleState -Preparation $preparation
-    # These are borrowed references for the still-inline phases. LifecycleState remains their sole owner.
-    $invocations = $lifecycle.Invocations
-    $ordered = $lifecycle.Results
-    $infrastructureErrors = $lifecycle.InfrastructureErrors
-    $processRegistry = $lifecycle.ChildProcessRegistry
-    $timing = $lifecycle.Timing
-
     try {
         Start-BatchExecutorInvocations -Lifecycle $lifecycle
         Wait-BatchExecutorInvocations -Lifecycle $lifecycle
         Receive-BatchExecutorResults -Lifecycle $lifecycle
     }
     finally {
-        # This path also runs when Ctrl+C or an infrastructure exception unwinds the function.
-        # Kill children first, then stop their supervising pipelines; no child is left orphaned.
-        try {
-            if ($lifecycle.Phase -notin @('TearingDown', 'Closed')) {
-                Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase TearingDown
-            }
-        }
-        catch { $infrastructureErrors.Add("could not enter teardown phase: $($_.Exception.Message)") }
-        Stop-BatchExecutorChildProcesses -Registry $processRegistry `
-            -Reason $(if ($lifecycle.CompletedNormally) { 'final registry cleanup' } else { 'exceptional batch teardown' }) `
-            -Diagnostics $infrastructureErrors
-        Stop-BatchExecutorPipelines -Invocations $invocations
-        $pendingPipeline = $lifecycle.PendingPipeline
-        Stop-BatchExecutorPendingPipeline -Pipeline $pendingPipeline
-        foreach ($invocation in $invocations) {
-            if ($null -ne $invocation.Pipeline -and
-                    -not [object]::ReferenceEquals($invocation.Pipeline, $pendingPipeline)) {
-                try { $invocation.Pipeline.Dispose() } catch {}
-            }
-        }
-        if ($null -ne $pendingPipeline) {
-            try { $pendingPipeline.Dispose() } catch {}
-            $lifecycle.PendingPipeline = $null
-        }
-        if ($null -ne $lifecycle.Pool) {
-            try { $lifecycle.Pool.Close() } catch {}
-            try { $lifecycle.Pool.Dispose() } catch {}
-        }
-        $lifecycle.TeardownCompleted = $true
-        try {
-            if ($lifecycle.Phase -eq 'TearingDown') {
-                Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Closed
-            }
-        }
-        catch { $infrastructureErrors.Add("could not close teardown phase: $($_.Exception.Message)") }
+        Stop-BatchExecutorLifecycle -Lifecycle $lifecycle
     }
 
     $swTotal.Stop()
-    $timing.TotalMs = $swTotal.ElapsedMilliseconds
-    $succeeded = @($ordered | Where-Object State -EQ 'Succeeded').Count
-    $failed = @($ordered | Where-Object State -EQ 'Failed').Count
-    $timedOut = @($ordered | Where-Object State -EQ 'TimedOut').Count
-    $cancelled = @($ordered | Where-Object State -EQ 'Cancelled').Count
-
-    [pscustomobject]@{
-        Results = $ordered
-        Errors = $infrastructureErrors.ToArray()
-        Warnings = @($budget.Warnings)
-        Budget = $budget
-        Policy = $policy
-        Timing = [pscustomobject]$timing
-        Summary = [pscustomobject]@{
-            Total = $count; Succeeded = $succeeded; Failed = $failed; TimedOut = $timedOut; Cancelled = $cancelled
-        }
-    }
+    $lifecycle.Timing['TotalMs'] = $swTotal.ElapsedMilliseconds
+    New-BatchExecutorExecutionRecord -Lifecycle $lifecycle
 }

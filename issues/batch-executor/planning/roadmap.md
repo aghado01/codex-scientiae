@@ -11,10 +11,10 @@ module validates and reads four runtime payloads as source data, loads named hos
 order, and leaks no private helpers. The former flat implementation is now a compatibility facade that
 imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
-The behavioral and teardown gates remain closed: 21 executor, 7 private state-contract, 5 preparation, 4
-lifecycle-owner/dispatch, 2 await/cancel, 3 collection, 8 job/plan, and 8 module-surface tests pass, and the
-complete shared suite is 151 passing tests. The queued multi-item host-stop witness closes the
-start/registration race and prevents queued supervisors from
+The behavioral and teardown gates remain closed: 21 executor, 8 private state-contract, 5 preparation, 4
+lifecycle-owner/dispatch, 2 await/cancel, 3 collection, 3 teardown/assembly, 8 job/plan, and 8
+module-surface tests pass, and the complete shared suite is 155 passing tests. The queued multi-item
+host-stop witness closes the start/registration race and prevents queued supervisors from
 unwinding in serial waves. Preparation now completes all caller-graph traversal and serialization before
 the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
 residue and rebuilt the check around required current inputs. Phase 2 is closed; Phase 3 is active with the
@@ -31,9 +31,6 @@ package boundary, public execution projection, and compatibility facade held sta
 
 ## Phase 3 — Internal lifecycle decomposition
 
-- **BEX-306 — Extract teardown and final execution-record assembly.** Keep one lexical outer `try/finally` in
-  `Invoke-BatchExecutor`; dispatchers dispose their own process records, the parent tears down children and
-  supervising pipelines before the pool, and no private state or handle escapes.
 - **BEX-307 — Close Phase 3.** Re-run process-tree, queued host-stop, failure-containment, stable-order,
   mixed-mode, and concurrency-pressure gates; reconcile the README, decisions, ledger, and ahead-only queue.
 

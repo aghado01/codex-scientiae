@@ -110,6 +110,13 @@ Collection materializes invocation envelopes into the original index slots, merg
 diagnostics, preserves the caller's original `Input` reference, and verifies that every result slot is
 filled before entering `Collected`. It does not dispose execution resources; teardown remains the owner.
 
+The exported function retains the sole lexical `try/finally`. Its teardown operation kills child trees,
+stops supervisors, clears disposed pipeline handles, then closes and clears the shared pool before entering
+`Closed`. Only a closed nonempty lifecycle can be projected into the public execution record; the empty
+preparation fast path remains execution-resource-free.
+Failed handle disposal is recorded and the handle remains owner-visible; such a lifecycle cannot claim
+`Closed` or be projected as a successful execution record.
+
 ## Cancellation and ownership
 
 The caller may provide a `CancellationToken`; `WaitTimeoutSeconds` bounds the whole join and

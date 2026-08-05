@@ -219,6 +219,63 @@ function Set-BatchExecutorLifecyclePhase {
     if ($Phase -notin @($legalTransitions[$current])) {
         throw "illegal batch executor lifecycle transition: $current -> $Phase"
     }
+
+    switch ($Phase) {
+        'Dispatched' {
+            if ($null -ne $Lifecycle.PendingPipeline) {
+                throw 'batch executor cannot enter Dispatched with an unpublished pending pipeline'
+            }
+            $accountedIndexes = [System.Collections.Generic.HashSet[int]]::new()
+            foreach ($invocation in $Lifecycle.Invocations) {
+                $index = [int]$invocation.PreparedItem.Index
+                if (-not $accountedIndexes.Add($index)) {
+                    throw "batch executor dispatch accounted for item index $index more than once"
+                }
+            }
+            for ($index = 0; $index -lt $Lifecycle.Results.Count; $index++) {
+                if ($null -ne $Lifecycle.Results[$index] -and
+                        -not $accountedIndexes.Add($index)) {
+                    throw "batch executor dispatch accounted for item index $index more than once"
+                }
+            }
+            if ($accountedIndexes.Count -ne $Lifecycle.Preparation.ItemCount) {
+                throw 'batch executor cannot enter Dispatched with unaccounted prepared items'
+            }
+        }
+        'Awaited' {
+            if ($null -eq $Lifecycle.WaitOutcome -or
+                    $Lifecycle.WaitOutcome.PSObject.TypeNames -notcontains `
+                        'CodexScientiae.BatchExecutor.Internal.WaitOutcome') {
+                throw 'batch executor cannot enter Awaited without a typed wait outcome'
+            }
+        }
+        'Collected' {
+            for ($index = 0; $index -lt $Lifecycle.Results.Count; $index++) {
+                if ($null -eq $Lifecycle.Results[$index]) {
+                    throw 'batch executor cannot enter Collected with unmaterialized results'
+                }
+            }
+        }
+        'Closed' {
+            if (-not $Lifecycle.TeardownCompleted) {
+                throw 'batch executor cannot enter Closed before teardown completes'
+            }
+            if ($null -ne $Lifecycle.Pool) {
+                throw 'batch executor cannot enter Closed while it retains the runspace pool'
+            }
+            if ($null -ne $Lifecycle.PendingPipeline) {
+                throw 'batch executor cannot enter Closed while it retains a pending pipeline'
+            }
+            foreach ($invocation in $Lifecycle.Invocations) {
+                if ($null -ne $invocation.Pipeline -or $null -ne $invocation.AsyncResult) {
+                    throw 'batch executor cannot enter Closed while it retains invocation handles'
+                }
+            }
+            if ($Lifecycle.ChildProcessRegistry.Count -gt 0) {
+                throw 'batch executor cannot enter Closed while it retains child process records'
+            }
+        }
+    }
     $Lifecycle.Phase = $Phase
 }
 
