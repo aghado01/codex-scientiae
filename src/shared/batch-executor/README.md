@@ -96,10 +96,11 @@ execution resources under the exported function's single outer `try/finally`.
 The internal phase path is prepare, dispatch, await/cancel, collect, and teardown. Execution mode remains
 item data inside those phases; it does not create another queue or resource owner. Runtime payloads borrow
 only the child-process registry. Private records and handles never appear in the returned execution
-record, and Phase 3 preserves existing public names including `Input` and `Timing.WaitMs`. Dispatch
-publishes a newly constructed pool before configuration/open, keeps the pipeline currently being bound or
-submitted in an owner-visible pending slot, and registers each successful `BeginInvoke` immediately. Thus
-exceptional unwind can always reach every acquired handle.
+record, and the completed decomposition preserves public names including `Input` and `Timing.WaitMs`. Dispatch
+publishes a newly constructed pool from inside its construction helper before configuration/open, keeps the
+pipeline currently being bound or submitted in an owner-visible pending slot, and registers each successful
+`BeginInvoke` immediately. A failed dispatch-side disposal retains the pending slot and blocks `Dispatched`,
+so exceptional unwind can always reach every acquired handle.
 
 Await/cancel consumes only the preparation's frozen token, total timeout, 200 ms host-interruption slice,
 and process-drain allowance. Both the main wait and batch-wide process drain use the interruption slice.

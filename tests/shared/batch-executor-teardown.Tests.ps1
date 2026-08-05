@@ -14,6 +14,34 @@ $Item.Value
 }
 
 Describe 'batch-executor teardown and final assembly' {
+    It 'keeps the exported owner as one lexical try/finally phase orchestrator' {
+        $publicPath = Join-Path $PSScriptRoot `
+            '../../src/shared/batch-executor/public/Invoke-BatchExecutor.ps1'
+        $tokens = $null
+        $parseErrors = $null
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path -LiteralPath $publicPath).Path, [ref]$tokens, [ref]$parseErrors)
+        $parseErrors.Count | Should -Be 0
+        $functionAst = $ast.Find({
+                param($node)
+                $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+                    $node.Name -eq 'Invoke-BatchExecutor'
+            }, $true)
+        $tryStatements = @($functionAst.Body.FindAll({
+                    param($node)
+                    $node -is [System.Management.Automation.Language.TryStatementAst]
+                }, $true))
+
+        $tryStatements.Count | Should -Be 1
+        $tryStatements[0].Finally | Should -Not -BeNullOrEmpty
+        $body = $functionAst.Body.Extent.Text
+        $body | Should -Match 'Start-BatchExecutorInvocations'
+        $body | Should -Match 'Wait-BatchExecutorInvocations'
+        $body | Should -Match 'Receive-BatchExecutorResults'
+        $body | Should -Match 'Stop-BatchExecutorLifecycle'
+        $body | Should -Not -Match '\b(?:BeginInvoke|EndInvoke|WaitAny|CreateRunspacePool)\b'
+    }
+
     It 'releases and clears execution handles before entering Closed' {
         $worker = Write-TeardownTestWorker (Join-Path $TestDrive 'teardown-worker.ps1')
 

@@ -11,32 +11,23 @@ module validates and reads four runtime payloads as source data, loads named hos
 order, and leaks no private helpers. The former flat implementation is now a compatibility facade that
 imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
-The behavioral and teardown gates remain closed: 21 executor, 8 private state-contract, 5 preparation, 4
-lifecycle-owner/dispatch, 2 await/cancel, 3 collection, 3 teardown/assembly, 8 job/plan, and 8
-module-surface tests pass, and the complete shared suite is 155 passing tests. The queued multi-item
+The behavioral and teardown gates remain closed: 21 executor, 8 private state-contract, 5 preparation, 6
+lifecycle-owner/dispatch, 2 await/cancel, 3 collection, 4 teardown/assembly, 8 job/plan, and 8
+module-surface tests pass, and the complete shared suite is 158 passing tests. The queued multi-item
 host-stop witness closes the start/registration race and prevents queued supervisors from
 unwinding in serial waves. Preparation now completes all caller-graph traversal and serialization before
 the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
-residue and rebuilt the check around required current inputs. Phase 2 is closed; Phase 3 is active with the
-package boundary, public execution projection, and compatibility facade held stable.
+residue and rebuilt the check around required current inputs. Phases 2 and 3 are closed; the package
+boundary, public execution projection, and compatibility facade remained stable through lifecycle
+decomposition. Phase 4 is now the ahead queue.
 
 ## Sequencing rules
 
-1. Preserve the closed teardown gate before and after every lifecycle move.
+1. Preserve the closed teardown gate through every adapter change.
 2. Preserve one scheduler and one budget; never split implementation by execution mode.
-3. Separate host implementation from runtime payload source by directory and loading mechanism.
-4. Extract the module mechanically before decomposing lifecycle phases.
-5. Keep compatibility explicit and temporary; new callers bind to the manifest.
-6. Keep domain adapters out until the shared contract and module surface are stable.
-
-## Phase 3 — Internal lifecycle decomposition
-
-- **BEX-307 — Close Phase 3.** Re-run process-tree, queued host-stop, failure-containment, stable-order,
-  mixed-mode, and concurrency-pressure gates; reconcile the README, decisions, ledger, and ahead-only queue.
-
-Accept each internal extraction only when its focused and adversarial gates pass. Keep the package boundary
-and public execution projection stable, and require smaller functions to improve reviewability without
-obscuring lifecycle order.
+3. Keep adapters thin: discovery and domain interpretation may emit jobs but never own executor resources.
+4. Keep compatibility explicit and temporary; new callers bind to the manifest.
+5. Require a separate decision before changing the frozen public execution projection or deferred semantics.
 
 ## Phase 4 — Domain adapters
 

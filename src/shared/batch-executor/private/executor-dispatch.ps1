@@ -1,12 +1,19 @@
 function New-BatchExecutorRunspacePool {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)] [ValidateNotNull()]
-        [System.Management.Automation.Runspaces.InitialSessionState] $InitialSessionState
+        [Parameter(Mandatory)] [ValidateNotNull()] [object] $Lifecycle
     )
 
-    return [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(
-        $InitialSessionState)
+    if ($Lifecycle.PSObject.TypeNames -notcontains `
+            'CodexScientiae.BatchExecutor.Internal.LifecycleState') {
+        throw 'batch executor pool construction requires a lifecycle state record'
+    }
+
+    # Publish ownership inside the construction expression. A host stop after the factory returns
+    # but before this helper returns must still leave the pool reachable from the outer finally.
+    $Lifecycle.Pool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(
+        $Lifecycle.Preparation.InitialSessionState)
+    return $Lifecycle.Pool
 }
 
 function New-BatchExecutorPipeline {
@@ -41,11 +48,7 @@ function Start-BatchExecutorInvocations {
     $preparation = $Lifecycle.Preparation
 
     $swPool = [System.Diagnostics.Stopwatch]::StartNew()
-    # Publish the pool to the lifecycle owner immediately. Any later configuration/open failure must
-    # leave the partially created handle visible to the exported function's outer finally block.
-    $Lifecycle.Pool = New-BatchExecutorRunspacePool `
-        -InitialSessionState $preparation.InitialSessionState
-    $pool = $Lifecycle.Pool
+    $pool = New-BatchExecutorRunspacePool -Lifecycle $Lifecycle
     [void]$pool.SetMinRunspaces(1)
     [void]$pool.SetMaxRunspaces($preparation.Budget.Threads)
     $pool.ThreadOptions = [System.Management.Automation.Runspaces.PSThreadOptions]::UseNewThread
@@ -106,14 +109,19 @@ function Start-BatchExecutorInvocations {
                 }
                 catch {}
             }
+            $pipelineDisposed = $false
             if ($null -ne $pipeline) {
-                try { $pipeline.Dispose() }
+                try {
+                    [void]$pipeline.Dispose()
+                    $pipelineDisposed = $true
+                }
                 catch {
                     $Lifecycle.InfrastructureErrors.Add(
                         "item '$($preparedItem.Id)' pipeline disposal failed: $($_.Exception.Message)")
                 }
             }
-            if ([object]::ReferenceEquals($Lifecycle.PendingPipeline, $pipeline)) {
+            if ($pipelineDisposed -and
+                    [object]::ReferenceEquals($Lifecycle.PendingPipeline, $pipeline)) {
                 $Lifecycle.PendingPipeline = $null
             }
             $Lifecycle.Results[$preparedItem.Index] = [pscustomobject]@{

@@ -25,7 +25,7 @@ process scheduler. One finite queue is submitted to one runspace pool, and each 
 runspace supervises the next queued job. File boundaries must never recreate mode-specific schedulers or
 duplicate worker-budget policy.
 
-### D2 — Scheduling cuts follow lifecycle phase, not execution mode — accepted
+### D2 — Scheduling cuts follow lifecycle phase, not execution mode — implemented
 
 Internal decomposition follows prepare/validate, dispatch, await/cancel, collect, and teardown. Execution
 mode remains data consumed by those phases. Runspace-specific and process-specific launch mechanics may
@@ -116,8 +116,8 @@ adapters remain responsible for complete write declarations and collision-free d
 
 The executor becomes one `batch-executor` module, not separate plan, runspace, and process modules. The
 module boundary hides implementation helpers while preserving the single scheduler and shared policy
-vocabulary. The first extraction is mechanical; the safety-sensitive `Invoke-BatchExecutor` lifecycle is
-not decomposed in the same change.
+vocabulary. The initial package extraction was mechanical and deliberately preceded the separately gated
+`Invoke-BatchExecutor` lifecycle decomposition.
 
 ### D13 — Runtime payload source is data and lives outside dot-sourced code — implemented
 
@@ -156,7 +156,7 @@ The module README records capabilities, state/result vocabulary, job and plan co
 thread-safety rules, subprocess ownership, public commands, and non-goals. Examples may witness contracts,
 but procedural how-to material does not replace architecture statements.
 
-### D17 — Preparation is write-once; one lifecycle record owns execution resources — accepted
+### D17 — Preparation is write-once; one lifecycle record owns execution resources — implemented
 
 Phase boundaries exchange private, type-tagged `PSCustomObject` records rather than PowerShell classes.
 This preserves warning-free `Import-Module -Force` behavior while making shapes testable. An
@@ -178,40 +178,33 @@ independent competing booleans.
 Each prepared item retains the original caller input solely for result identity. Direct dispatch data is
 either the shared reference or its prepared CLIXML copy. A process item retains only its resolved process
 specification and prepared payload XML for dispatch; it never carries direct dispatch graphs.
-`Resolve-BatchExecutorPreparation` implements the write-once half of the contract. BEX-303 binds dispatch
-to the lifecycle owner: the pool is published immediately after construction, a pending-pipeline slot
-covers construction through `BeginInvoke`, each successful submission is then registered as a typed
-invocation, and an item-local launch failure is materialized directly in the owned result array. Await,
-collection, and teardown are migrated incrementally by the remaining Phase 3 items.
+`Resolve-BatchExecutorPreparation` realizes the write-once half of the contract. Dispatch publishes the
+pool from inside its construction helper and uses an owner-visible pending-pipeline slot through
+`BeginInvoke`; successful submissions become typed invocation records and launch failures become owned
+item results. A failed dispatch-side disposal retains its pending slot and prevents entry to `Dispatched`.
+Await/cancel consumes only frozen preparation policy, records one typed wait outcome, and applies the same
+200 ms host-interruption checkpoints to the main wait and one batch-wide process drain. Collection fills
+the original result indexes, preserves caller input identity, contains normalization failures, and leaves
+disposal to teardown.
 
-BEX-304 binds await/cancel exclusively to the frozen preparation policy. The lifecycle owner records one
-typed wait outcome before entering `Awaited`; cancellation retains child-tree kill, direct-pipeline stop,
-bounded process-supervisor drain, then final batched stop ordering. The process drain shares the same 200 ms
-host-interruption checkpoints while retaining one batch-wide drain deadline.
+The exported function retains one lexical `try/finally`. Teardown kills children, stops supervisors,
+disposes and clears pipelines, then closes and clears the pool before `Closed`. Final execution-record
+assembly requires that closed state and is the only nonempty-execution lifecycle-to-public projection
+boundary. Legal transitions enforce their required owner artifacts. A handle is cleared only after
+disposal returns successfully; failed release is diagnosed, retained, and cannot claim `Closed`.
 
-BEX-305 binds result collection to the lifecycle owner and enforces complete result materialization before
-entering `Collected`. Collection retains original caller input identity and exact public fields, contains
-per-invocation collection failures, and leaves pipeline disposal to teardown.
+### D18 — Lifecycle decomposition preserves the public execution projection — implemented
 
-BEX-306 gives teardown one private operation beneath the exported function's lexical `try/finally`.
-Teardown kills children, stops supervisors, disposes and clears pipelines, then closes and clears the pool
-before `Closed`. Final execution-record assembly requires that closed state and is the only nonempty-
-execution lifecycle-to-public projection boundary. Legal phase transitions now also enforce their required
-owner artifacts. A handle is cleared only after disposal returns successfully; failed release is diagnosed,
-retained, and cannot claim `Closed`.
-
-### D18 — Phase 3 freezes the public execution projection — accepted
-
-Lifecycle decomposition does not add or rename public result, execution, policy, summary, or timing
+The completed decomposition does not add or rename public result, execution, policy, summary, or timing
 fields. In particular, `Input` remains the original caller object and the existing `WaitMs` timing name is
 preserved. Preparation and lifecycle records, pool/pipeline/async handles, registry entries, and internal
 phase names never escape. Any new public timing such as preparation or teardown duration requires a
-separate contract decision. After BEX-302, `DispatchMs` is explicitly submission-only: preparation and
-serialization remain included in `TotalMs` but do not receive a new public timing field during Phase 3.
+separate contract decision. `DispatchMs` is explicitly submission-only: preparation and serialization
+remain included in `TotalMs` but do not receive separate public timing fields.
 
-## Deliberate non-goals of the module-extraction tranche
+## Deliberate non-goals of the current executor
 
-The module extraction does not add domain adapters, retry policy, detached execution, durable queues,
-typed process-spec constructors, dependency DAG scheduling, or a second async engine. It also does not
-port the plan model to C# or extract the internal prepare/dispatch/await/collect phases. Those are separate
-roadmap decisions requiring their own evidence and tests.
+The current executor does not add retry policy, detached execution, durable queues, typed process-spec
+constructors, dependency DAG scheduling, or a second async engine, and it does not port the plan model to
+C#. Domain adapters remain the next separately gated tranche; none of the completed lifecycle
+decomposition authorizes these deferred semantics.
