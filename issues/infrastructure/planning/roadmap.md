@@ -1,4 +1,4 @@
-# Shared logging and JSONL — roadmap (ahead only)
+# Shared infrastructure — roadmap (ahead only)
 
 Living plan for work not yet complete. The current architecture contract is
 [decisions.md](decisions.md); evidence and design history live under
@@ -6,11 +6,29 @@ Living plan for work not yet complete. The current architecture contract is
 completed item there with its closure date, decisions affected, tests, migration evidence, and links. Do not
 leave completed work in this file.
 
+The `LOGJ-*` identifiers predate the rename from `loggers` to `infrastructure`. They remain stable references
+for this body of work; renaming them would create churn without changing scope. New workstreams may introduce
+their own stable prefix when they are added to this canon.
+
 ## Current baseline — 2026-08-04
 
 The initial Fable logger exists at `src/shared/log.ps1`. Unintegrated replacement drafts exist at
 `src/shared/jsonl-v2.ps1`, `src/shared/jsonl-v2-compat.ps1`, and `src/shared/jsonl-store-v2.ps1`; their
 public commands are intentionally unversioned. The complete shared Pester suite currently passes 106 tests.
+
+The [latex-ingest artifact survey](../discussions/latex-ingest-artifact-store-survey-20260804.md) provides a
+real workflow witness spanning experimental document JSONL stores, JSON graph/report materializations,
+corpus rollups, runstamped audit evidence, coexisting development iterations, upstream package-control files,
+and reusable staging trees. These are non-binding workload specimens for the engine. The survey also
+finds a concrete migration defect: all 129 retained artifact-shelf JSONL files and the one retained
+production `diagrams.jsonl` use CRLF because their writers use platform-dependent `AppendLine`, although
+their UTF-8/codepoint content is otherwise valid. The production converter also splits one conversion across
+stable source work, runstamped evidence, output, and optional delivery addresses without a generation record
+joining them.
+
+Commit `05419f3` established a standalone, manifest-backed LaTeX source-deposit transaction and made the
+production converter manifest-only. It is a concrete consumer and migration witness, not evidence that its
+provisional `document-metadata/0.1` schema or LaTeX-specific lifecycle belongs in the generic shared layer.
 
 This is a vetting baseline, not a production-integration claim. Existing callers still use the old shared
 JSONL implementation or local logic, and the logger still reflects parts of its prototype behavior. No
@@ -66,10 +84,15 @@ requires production callers to know which generation owns a primitive.
   when streaming merge or external sort becomes required.
 - **LOGJ-204 — Complete lifecycle inspection and repair APIs.** Specify non-mutating validation versus
   explicit repair/rebuild operations for incomplete tails, stale/invalid indexes, canonical ordering,
-  duplicate keys, and schema failures. Repair never hides discarded or rewritten data.
+  duplicate keys, schema failures, and legacy CRLF normalization. Repair never hides discarded or rewritten
+  data.
 - **LOGJ-205 — Decide secondary-index scope.** Preserve the current exact-query semantics. Add secondary key
   indexes, record-hash vectors, or Bloom filters only for witnessed workloads, with explicit source identity,
   freshness, and rebuild rules; avoid a sidecar per casual query.
+- **LOGJ-206 — Add bounded comparative inspection.** Over the core codec, support textual and semantic
+  store comparison, index- or caller-key alignment, schema/discriminator census, changed-field summaries,
+  and bounded previews. Use the evolving latex-ingest stores as fixtures without embedding their filenames
+  or row schemas. Reuse compatible current jso-jackson toolbelt behavior rather than duplicating it.
 
 Exit gate: stress/fault tests and benchmarks support the concurrency and durability claims in decisions;
 the core/store drafts have stable help and failure contracts.
@@ -116,32 +139,60 @@ clean, and no caller needs to reconstruct generic path or level policy.
   canonically sorted, and strictly after the current final key.
 - **LOGJ-406 — Generalize policy beyond materialized catalogs.** Pressure-test the policy contract against
   four different kinds: best-effort run log, operational run ledger, federated append-only agent exchange
-  ledger, and canonically sorted inventory catalog. Decide how policy declares mutation model, physical versus
-  semantic order, replacement legality, failure posture, and derived compact/current-state projections.
+  ledger, and canonically sorted inventory catalog. Use the latex-ingest experiments as non-binding workload
+  specimens: rebuilt ordered IR, heterogeneous source-evidence rows, materialized graph/report snapshots,
+  and a corpus rollup. Decide how
+  policy declares scope, authority, mutation model, physical versus semantic order, replacement legality,
+  failure posture, and derived compact/current-state projections.
+- **LOGJ-407 — Define the cross-file artifact-set boundary.** Specify generation identity, dependency DAG,
+  validation, publication, committed/partial failure reporting, and recovery for application bundles such as
+  `docstream + refgraph -> docgraph`, including bundles split across source-work, run, output, and delivery
+  addresses. Keep this orchestration outside the generic file-local JSONL transaction and prefer one existing
+  report or run manifest over metadata sidecar proliferation. Decide whether stable current materializations
+  live beside, point to, or are rebuilt from immutable run generations.
 
 Exit gate: a store kind can bind a real schema and policy across create, inspect, add, remove, sort, complete,
 and repair, with every derivative current or explicitly reported stale.
 
 ## Phase 5 — Source manifests and hierarchical inventory catalogs
 
-- **LOGJ-501 — Specify the authoritative leaf source manifest.** Set filename, schema version, logical
-  document identity, title/provider identifiers, acquisition history, and artifact entries for PDF, archive,
-  extracted source tree, supplements, checksums, timestamps, origin, and derivation.
+- **LOGJ-501 — Specify the authoritative `metadata.json` leaf manifest.** Pin schema version, logical document
+  identity, title/provider identifiers, acquisition history, and artifact entries for PDF, archive, extracted
+  source tree, supplements, checksums, timestamps, origin, derivation, field-level provenance, and conflict
+  representation. Define the evidence precedence across provider/acquisition records, deposited-file
+  inspection, document-embedded declarations, and curated corrections. Conform to the WIP
+  [`ingestion/inventory` convention](../../../ingestion/inventory/CONVENTION.md).
 - **LOGJ-502 — Reconcile provider sidecars.** Define how existing `*.arxiv.json` acquisition data migrates or
-  contributes to the source manifest. Malformed prior data must surface as a repair item rather than being
-  silently ignored.
+  contributes to `metadata.json`. Preserve upstream archive-member `00README.json` files inside raw
+  extractions but do not use them as document-metadata inputs; a future build-diagnostics consumer may read
+  their compiler/package facts separately. Preserve attribution and raw source; malformed prior acquisition
+  data must surface as a repair item rather than being silently ignored.
 - **LOGJ-503 — Specify the inventory catalog row.** Freeze the scoped-parent key field, logical-versus-location
   identity, manifest reference/snapshot fields, recursive scope/depth representation, and canonical order in
   a JSON Schema.
 - **LOGJ-504 — Build a reviewable manifest bootstrapper.** Discover likely existing document leaves, separate
   primary assets from figures/extracted/converter outputs, and emit a plan or diagnostics before writing any
-  manifest. Ambiguity requires review.
+  `metadata.json`. Ambiguity requires review.
 - **LOGJ-505 — Build deterministic catalog materialization.** Generate stores for declared directory scopes
   bottom-up or top-down, with the same inputs yielding byte-identical rows and indexes. Incremental updates
   must add, replace, remove, and resort through managed-store transactions.
 - **LOGJ-506 — Add reconciliation and move handling.** Detect missing manifests/assets, checksum changes,
   moved parent paths, duplicate logical identities, case collisions, and stale higher-level catalogs without
   silently rewriting identity history.
+- **LOGJ-507 — Extract supplemental LaTeX declarations durably.** Discover the real document entrypoint,
+  resolve included source, and parse embedded title/author/DOI declarations through a LaTeX-aware layer rather
+  than assuming `main.tex` or relying on a single regex/file. Record provenance and surface disagreement with
+  provider metadata instead of silently choosing a winner.
+- **LOGJ-508 — Vet the standalone source-deposit transaction.** Exercise the provisional
+  `Initialize-LatexSourceDeposit` and `document-metadata/0.1` schema over representative tar, single-gzip,
+  multi-entrypoint, legacy-encoding, provider-backed, and manual deposits. Pin archive limits, encoding policy,
+  recovery behavior, lock diagnostics, scoped-path/cross-platform behavior, supplemental-declaration fidelity, and the boundary between
+  source-ready validation and an actual TeX build. Do not silently replace a conflicting archive, tree, or
+  manifest.
+- **LOGJ-509 — Vet and sunset the latex-ingest compatibility boundary.** The production entrypoint now reads
+  validated `metadata.json`/`{slug}-tex/` without initialization, and retired archive/layout behavior is
+  isolated in `latex-ingest-compat.ps1`. Census remaining imports, migrate callers segment by segment, require
+  generated evidence to stay in run directories, and remove the shim after its last recorded consumer exits.
 
 Exit gate: a representative ingestion subtree has valid leaf manifests and deterministic catalogs at more
 than one hierarchy level; top-down and bottom-up builds converge.
@@ -149,8 +200,10 @@ than one hierarchy level; top-down and bottom-up builds converge.
 ## Phase 6 — Integrate, migrate, and sunset
 
 - **LOGJ-601 — Build the compatibility census.** Enumerate production imports, commands, legacy index names,
-  and stored artifacts that require `jsonl-v2-compat.ps1`. Every shim gets an owner, migration path, and
-  removal condition.
+  CRLF stores, and other retained artifacts needing migration. Do not classify coexisting experimental files
+  such as `slots.jsonl` as compatibility obligations without an actual caller. Decide which artifacts can be
+  explicitly normalized or retired and which temporarily require `jsonl-v2-compat.ps1`. Every shim gets an
+  owner, migration path, and removal condition.
 - **LOGJ-602 — Migrate operational consumers in bounded tranches.** Move logger/run plumbing, run ledger,
   staging, and store/catalog consumers separately, with a focused rollback point and tests for each tranche.
 - **LOGJ-603 — Replace the shared implementation.** Once the public surface and migrations are vetted, retire

@@ -1,15 +1,22 @@
-# Shared logging and JSONL — architecture decisions
+# Shared infrastructure — architecture decisions
 
-Living architecture canon for the shared logger, JSONL substrate, managed JSONL stores, and the
-application boundaries around them. Correct this document when the current design changes; preserve a
-superseded decision by naming its replacement rather than leaving two apparently active rules.
+Living architecture canon for shared run/artifact conventions, the logger, JSONL substrate, managed JSONL
+stores, and the application boundaries pressure-testing them. The `infrastructure` umbrella is a planning
+scope, not a claim that every referenced application policy belongs in `src/shared`. Correct this document
+when the current design changes; preserve a superseded decision by naming its replacement rather than
+leaving two apparently active rules.
 
 The originating evidence is the
 [Fable logger implementation discussion](../discussions/fable-logger-initial-implementation-20260803.md).
 The [rector-codicis conceptual witness](../discussions/rector-codicis-jsonl-conceptual-witness-20260804.md)
 pressure-tests the shared design with a federal, multi-writer primary/para-agent exchange ledger; the current
 implementation authority remains `D:\aghado01\utils\jso-jackson`. Work still ahead lives in
-[roadmap.md](roadmap.md). A completion ledger will be added when roadmap items begin closing.
+[roadmap.md](roadmap.md); unsettled choices and engineering residue live in
+[open-questions.md](open-questions.md). A completion ledger will be added when roadmap items begin closing.
+
+The [latex-ingest artifact survey](../discussions/latex-ingest-artifact-store-survey-20260804.md) adds a
+non-binding family of ordered-row experiments, heterogeneous evidence rows, derived graphs, validation
+snapshots, corpus rollups, run evidence, projections, upstream package-control files, and staging workspaces.
 
 Status vocabulary: **accepted** is the working contract; **provisional** is implemented or strongly shaped
 but remains subject to vetting before production integration.
@@ -190,15 +197,93 @@ is normally append-only and best-effort with visible degradation; an operational
 agent exchange journal may be authoritative and preserve append history; an inventory catalog is a
 canonically sorted materialized view that permits validated rewrite. Application policy names the difference.
 
-## Open architecture questions
+### D27 — Scope, authority, mutation model, and representation are orthogonal — accepted
 
-- Final logger record schema, run-correlation fields, and cross-process ordering expectations.
-- Exact application fallback ladders and the returned status/diagnostic contract for degraded logging.
-- JSON Schema dialect and PowerShell/.NET validation runtime.
-- Inventory key field name and the split between location identity and stable logical-document identity.
-- Leaf source-manifest schema, filename, provenance, artifact, checksum, and derivation representation.
-- Direct versus recursive catalog scope/depth semantics and byte-for-byte top-down/bottom-up convergence.
-- Store-level derived counts/digests and how they join the same maintenance transaction.
-- Whether mutation model becomes an explicit store-policy field (`AppendOnly`, `Materialized`, `Snapshot`,
-  or append history plus derived current-state projection), and how physical versus causal order is exposed.
-- Scaling thresholds for streaming merge, external sort, and secondary indexes.
+Every managed store or artifact kind declares these properties separately. A runstamp supplies run scope and
+overwrite avoidance but does not imply append history. JSONL supplies a row representation but does not imply
+append-only mutation. A stable per-document address may hold a whole-generation replacement, while a JSON
+object at a runstamped address may be immutable audit evidence. Policy and orchestration must not infer one
+axis from another.
+
+### D28 — Cross-file artifact coherence is an application transaction — accepted
+
+The generic JSONL transaction owns one content file and its declared index. When an application defines a
+dependency such as `docstream + refgraph -> docgraph`, it owns generation identity, dependency validation,
+multi-artifact publication, recovery, and reflexive rebuild of derived outputs. Prefer one existing report or
+run manifest for artifact membership and freshness over a metadata sidecar for every file; the generic JSONL
+layer must not claim atomicity across unrelated files.
+
+### D29 — Workload specimens do not become engine taxonomy — accepted
+
+Experimental stores such as latex-ingest `slots`, `docstream`, `refs`, and `diagrams` pressure-test the
+substrate but do not commit the application or shared engine to their filenames, schemas, identity rules, or
+lifecycle. The engine supplies schema-agnostic codec, lifecycle, mutation, query, slice, index, and comparison
+primitives. Applications optionally bind policy; the toolbelt can compare evolving variants without turning
+an observed development snapshot into compatibility canon.
+
+### D30 — `metadata.json` is the local document manifest; raw package metadata stays raw — accepted
+
+Each document deposit uses `{slug}/metadata.json` as its single bounded local metadata object and as the
+source for rows materialized into localized parent `inventory.jsonl` stores. A provider archive's
+`00README.json`, when present, remains byte-for-byte under the stable `{slug}-tex/` extraction; automation may
+record it as a preserved package member but does not base the manifest on it, rename it, or mistake it for
+the complete document manifest. The archive and extraction are stable source material, while subsequent
+conversion output belongs to runstamped artifacts.
+
+### D31 — Document manifests are evidence-composed, not single-file extracts — accepted
+
+`metadata.json` merges explicitly attributed facts from provider/acquisition records, deposited-file
+inspection, optional document-embedded declarations, and curated corrections. For LaTeX, automation discovers
+the actual entrypoint and resolves inputs; it does not assume `main.tex`, and source declarations supplement
+rather than silently override provider identity. Local presence, paths, formats, sizes, and checksums are
+measured from deposited files. Conflicts remain visible and refreshes preserve curated data.
+
+### D32 — `source-ready` is a standalone transactional sentinel — accepted
+
+Source-deposit initialization is prerequisite housekeeping and does not start or become an implicit phase of
+a latex-ingest conversion run. It expands a selected archive into a private sibling, rejects unsafe archive
+members and invalid or ambiguous LaTeX source, normalizes the archive name, and publishes the stable
+`{slug}-tex/` tree before atomically creating `metadata.json` last. The sentinel means source validation and
+publication completed; it does not mean bibliography is complete or conversion succeeded.
+
+A missing sentinel after source-tree publication is recoverable only by independently re-extracting the
+archive and comparing tree fingerprints. A mismatch is a conflict, never an overwrite. Existing sentinels are
+validated and returned without rewrite. Provider metadata is optional, and short-lived locking/private paths
+must be cleaned rather than becoming persistent per-document sidecars. The current implementation and schema
+remain provisional until corpus vetting and converter migration are complete.
+
+### D33 — Source-deposit paths are scoped addresses, not machine identity — accepted
+
+The initializer has no compiled-in drive, checkout, profile, temp, or artifacts root. The caller supplies or
+relatively addresses the document directory; subordinate archive/provider paths resolve against that stable
+scope, and LaTeX entrypoints resolve against the source tree. Imports resolve from the importing script.
+Persisted paths use forward slashes relative to the document directory. Absolute paths are ephemeral resolved
+addresses used for confinement and I/O and never enter `metadata.json`.
+
+Filesystem equality and containment follow the host's case semantics, while archive/tree inventory rejects
+case-colliding portable names deliberately. Deterministic tree fingerprints sort normalized relative paths
+ordinally so checkout location, current directory, locale, and enumeration order cannot change the digest.
+
+### D34 — Production latex-ingest is manifest-only; legacy inference is an import boundary — accepted
+
+`Invoke-ArxivLatexToMarkdown` consumes a validated `metadata.json`/document directory and does not unpack,
+initialize, infer archive/slug layout, recognize `{slug}-latex/`, or accept source-work overrides. Conversion
+operates over a resolved-source engine and writes all generated ref/doc/diagram/oracle evidence to the run
+directory so the source fingerprint remains stable.
+
+The old archive/slug entrypoint, retired helper names, reuse semantics, and arbitrary source-work paths live
+only in `latex-ingest-compat.ps1`. Its conventional path standardizes through
+`Initialize-LatexSourceDeposit`; an explicit bypass is warned and labeled `compat-*`, never represented as a
+compliant deposit. New callers must not import the compatibility surface.
+
+### D35 — The infrastructure canon preserves application boundaries — accepted
+
+`issues/infrastructure` owns cross-cutting contracts, implementation maps, compatibility strategy, and design
+witnesses for facilities used by more than one workflow. A witness does not become shared policy merely by
+appearing here. LaTeX conversion semantics, document-manifest fields, inventory row schemas, agent protocol
+records, and other domain rules remain with their applications unless a deliberately generalized contract is
+accepted. Separate focused issues, such as batch execution, may depend on infrastructure without being
+absorbed into this umbrella.
+
+Unsettled design choices are tracked in [open-questions.md](open-questions.md), not mixed into the accepted
+decision sequence.
