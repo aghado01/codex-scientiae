@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/document-metadata/0.1",
+  "title": "Codex Scientiae document metadata (provisional source-deposit shape)",
+  "type": "object",
+  "required": [
+    "schema",
+    "state",
+    "slug",
+    "initialized_utc",
+    "document",
+    "evidence",
+    "source_forms",
+    "validation"
+  ],
+  "properties": {
+    "schema": { "const": "codex-scientiae/document-metadata/0.1" },
+    "state": { "const": "source-ready" },
+    "slug": { "type": "string", "minLength": 1 },
+    "initialized_utc": { "type": "string", "format": "date-time" },
+    "document": {
+      "type": "object",
+      "required": ["title", "authors", "abstract", "identifiers", "categories"],
+      "properties": {
+        "title": { "type": ["string", "null"] },
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "abstract": { "type": ["string", "null"] },
+        "identifiers": {
+          "type": "object",
+          "required": ["arxiv", "arxiv_versioned", "doi"],
+          "properties": {
+            "arxiv": { "type": ["string", "null"] },
+            "arxiv_versioned": { "type": ["string", "null"] },
+            "doi": { "type": ["string", "null"] }
+          },
+          "additionalProperties": true
+        },
+        "categories": { "type": "array", "items": { "type": "string" } },
+        "primary_category": { "type": ["string", "null"] },
+        "published": { "type": ["string", "null"] },
+        "updated": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["provider_metadata", "latex_source", "package_control_files"],
+      "properties": {
+        "provider_metadata": { "type": "array", "items": { "$ref": "#/$defs/fileRecord" } },
+        "latex_source": {
+          "type": "object",
+          "required": ["entrypoint", "selection", "declarations"],
+          "properties": {
+            "entrypoint": { "$ref": "#/$defs/relativePath" },
+            "selection": { "type": "string", "minLength": 1 },
+            "declarations": {
+              "type": "object",
+              "required": ["title_tex", "authors_tex", "doi"],
+              "properties": {
+                "title_tex": { "type": ["string", "null"] },
+                "authors_tex": { "type": "array", "items": { "type": "string" } },
+                "doi": { "type": ["string", "null"] }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": true
+        },
+        "package_control_files": { "type": "array", "items": { "$ref": "#/$defs/fingerprintRecord" } }
+      },
+      "additionalProperties": true
+    },
+    "source_forms": {
+      "type": "array",
+      "minItems": 2,
+      "contains": {
+        "type": "object",
+        "required": ["role", "path", "sha256"],
+        "properties": { "role": { "const": "latex-source-archive" } }
+      },
+      "items": {
+        "allOf": [
+          { "$ref": "#/$defs/fileRecord" },
+          {
+            "if": { "properties": { "role": { "const": "latex-source-tree" } }, "required": ["role"] },
+            "then": {
+              "required": ["derived_from", "entrypoint", "files", "tex_files"],
+              "properties": {
+                "derived_from": { "$ref": "#/$defs/relativePath" },
+                "entrypoint": { "$ref": "#/$defs/relativePath" },
+                "files": { "type": "integer", "minimum": 1 },
+                "tex_files": { "type": "integer", "minimum": 1 }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["status", "validated_utc", "publication", "checks"],
+      "properties": {
+        "status": { "const": "valid" },
+        "validated_utc": { "type": "string", "format": "date-time" },
+        "publication": { "enum": ["published-new-tree", "recovered-existing-tree"] },
+        "checks": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fingerprintRecord": {
+      "type": "object",
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relativePath" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "fileRecord": {
+      "type": "object",
+      "required": ["role", "path", "format"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "path": { "$ref": "#/$defs/relativePath" },
+        "format": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

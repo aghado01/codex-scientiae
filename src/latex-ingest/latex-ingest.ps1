@@ -15,10 +15,11 @@
   In-house (no pandoc/latexml dependency). Known rough edges: tables, deeply-nested optional-arg macros,
   multi-file submissions beyond one \input level, non-UTF8 sources.
 
-  Entry point: Invoke-ArxivLatexToMarkdown -TarGz <source.tar.gz> -Slug <name> -OutDir <dir>
+  Entry point: Invoke-ArxivLatexToMarkdown -MetadataPath <metadata.json-or-document-dir> -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../shared/runs.ps1"       # the run layout: source unpacks ONCE to {tar-dir}/{slug}-latex/; per-run output -> artifacts/latex-ingest/runs/
+. "$PSScriptRoot/../shared/runs.ps1"       # run addresses only; source-deposit addressing comes from metadata.json
+. "$PSScriptRoot/source-deposit.ps1"       # source-only .NET extraction + validated metadata.json addressing; never initializes implicitly
 . "$PSScriptRoot/../tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/../pdf-raster/pdf-raster.ps1"   # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
@@ -2205,87 +2206,47 @@ function ConvertFrom-BiblatexBbl {
     $s = $sb.ToString(); return $(if ($s.Trim()) { $s } else { $null })
 }
 
-# --- source unpack + main-file discovery ------------------------------------------------------------
-# arXiv "source" comes in TWO legal shapes and the .tar.gz name lies about which: a real gzipped tar,
-# OR a gzip'd SINGLE FILE (a self-contained .tex, no tar layer — the 1404.3811v1 intake gap). Try the
-# tar path first; on failure, sniff the gzip magic (1F 8B) and gunzip in-process, then decide by the
-# decompressed bytes — a tar carries the "ustar" magic at offset 257, otherwise it's the lone source,
-# written as main.tex (Find-LatexMain then discovers it like any other). Sniff bytes, never trust the
-# extension.
-function Expand-ArxivSourceTarball {
-    param([string]$TarGz, [string]$WorkDir)
-    $archivePath = (Resolve-Path -LiteralPath $TarGz -ErrorAction Stop).Path
-    New-Item -ItemType Directory -Force -Path $WorkDir | Out-Null
-    # GNU tar treats the colon in an absolute Windows path (C:\...) as a remote archive
-    # separator. Run from the extraction directory and pass a relative archive path so GNU tar
-    # and Windows bsdtar behave identically.
-    $archiveArg = [System.IO.Path]::GetRelativePath($WorkDir, $archivePath)
-    Push-Location $WorkDir
+function Resolve-LatexIngestManifestSource {
+    param([Parameter(Mandatory)] [string]$MetadataPath)
+    $requested = [System.IO.Path]::GetFullPath($MetadataPath)
+    $manifestPath = if ([System.IO.Directory]::Exists($requested)) {
+        Join-Path $requested 'metadata.json'
+    } else {
+        $requested
+    }
     try {
-        & tar -xzf $archiveArg 2>$null
-        $tarExit = $LASTEXITCODE
-    } finally {
-        Pop-Location
+        $manifestPath = (Resolve-Path -LiteralPath $manifestPath -ErrorAction Stop).Path
+    } catch {
+        throw "latex-ingest metadata.json not found: '$manifestPath'"
     }
-    if ($tarExit -eq 0) { return $WorkDir }
-
-    # tar rejected it — is it gzip at all?
-    $head = [byte[]]::new(2)
-    $fs = [System.IO.File]::OpenRead($archivePath)
-    try { $null = $fs.Read($head, 0, 2) } finally { $fs.Dispose() }
-    if ($head[0] -ne 0x1F -or $head[1] -ne 0x8B) { throw "source is neither a gzipped tar nor a gzip stream: $TarGz" }
-
-    # gunzip the whole stream into memory
-    $inFs = [System.IO.File]::OpenRead($archivePath)
-    $gz   = [System.IO.Compression.GzipStream]::new($inFs, [System.IO.Compression.CompressionMode]::Decompress)
-    $ms   = [System.IO.MemoryStream]::new()
-    try { $gz.CopyTo($ms) } finally { $gz.Dispose(); $inFs.Dispose() }
-    $bytes = $ms.ToArray(); $ms.Dispose()
-
-    # tar magic "ustar" sits at offset 257 (POSIX/GNU) — if present, it was a tar after all (a bare
-    # .tar mislabeled, or a gzip our tar couldn't chew); write it out and extract with tar -xf.
-    $isTar = ($bytes.Length -ge 262 -and
-              $bytes[257] -eq 0x75 -and $bytes[258] -eq 0x73 -and $bytes[259] -eq 0x74 -and
-              $bytes[260] -eq 0x61 -and $bytes[261] -eq 0x72)
-    if ($isTar) {
-        $tarTmp = Join-Path $WorkDir '_source.tar'
-        [System.IO.File]::WriteAllBytes($tarTmp, $bytes)
-        Push-Location $WorkDir
-        try {
-            & tar -xf (Split-Path -Leaf $tarTmp) 2>$null
-            $tarExit = $LASTEXITCODE
-        } finally {
-            Pop-Location
-            Remove-Item -LiteralPath $tarTmp -Force -ErrorAction SilentlyContinue
-        }
-        if ($tarExit -ne 0) { throw "gunzipped tar failed to extract: $archivePath" }
-        return $WorkDir
+    if (-not [System.IO.File]::Exists($manifestPath)) {
+        throw "latex-ingest metadata path is not a file: '$manifestPath'"
     }
 
-    # a lone gzip'd source file — land it as main.tex (UTF-8 bytes as-is; Find-LatexMain picks it up).
-    [System.IO.File]::WriteAllBytes((Join-Path $WorkDir 'main.tex'), $bytes)
-    $global:LASTEXITCODE = 0   # don't leak the failed `tar -xzf` exit code out of this success path
-    return $WorkDir
-}
-function Find-LatexMain {
-    param([string]$Dir)
-    $tex = @(Get-ChildItem -Recurse -File -Filter *.tex $Dir)
-    foreach ($f in $tex) { if (Select-String -LiteralPath $f.FullName -Pattern 'documentclass' -Quiet) { return $f.FullName } }
-    if ($tex.Count) { return $tex[0].FullName }
-    throw "no .tex found under $Dir"
-}
-function Resolve-LatexInputs {
-    param([string]$MainPath, [int]$Depth = 0)
-    $u8 = [System.Text.UTF8Encoding]::new($false)
-    $tex = [System.IO.File]::ReadAllText($MainPath, $u8)
-    if ($Depth -ge 4) { return $tex }
-    $dir = Split-Path -Parent $MainPath
-    return [regex]::Replace($tex, '\\(?:input|include)\{([^{}]+)\}', {
-            param($m)
-            $name = $m.Groups[1].Value
-            $cand = @("$name", "$name.tex") | ForEach-Object { Join-Path $dir $_ } | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
-            if ($cand) { Resolve-LatexInputs -MainPath $cand -Depth ($Depth + 1) } else { '' }
-        })
+    $documentDir = Split-Path -Parent $manifestPath
+    $manifest = Read-SourceDepositJson -Path $manifestPath
+    $slug = [string]$manifest.slug
+    if ([string]::IsNullOrWhiteSpace($slug)) { throw "metadata.json has no slug: '$manifestPath'" }
+    $state = Test-ExistingSourceDeposit -Manifest $manifest -ManifestPath $manifestPath `
+        -DocumentDir $documentDir -Slug $slug
+    $treeForm = @($manifest.source_forms | Where-Object { $_.role -eq 'latex-source-tree' })
+    if ($treeForm.Count -ne 1 -or [string]::IsNullOrWhiteSpace([string]$treeForm[0].entrypoint)) {
+        throw "metadata.json does not declare exactly one LaTeX source-tree entrypoint: '$manifestPath'"
+    }
+    $main = [System.IO.Path]::GetFullPath((Join-Path $state.source_path ([string]$treeForm[0].entrypoint)))
+    if (-not (Test-LatexPathWithinRoot -Path $main -Root $state.source_path) -or
+        -not [System.IO.File]::Exists($main)) {
+        throw "metadata.json entrypoint is missing or outside its source tree: '$main'"
+    }
+    return [pscustomobject]@{
+        slug          = $slug
+        metadata_path = $manifestPath
+        archive_path  = $state.archive_path
+        source_path   = $state.source_path
+        main_path     = $main
+        manifest      = $manifest
+        mode          = 'manifest'
+    }
 }
 
 # --- orchestrator -----------------------------------------------------------------------------------
@@ -2498,27 +2459,21 @@ function Invoke-LatexOutputPatches {
     return @{ markdown = $Markdown; applied = $applied.ToArray() }
 }
 
-function Invoke-ArxivLatexToMarkdown {
+function Invoke-LatexIngestResolvedSource {
+    [CmdletBinding()]
     param(
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$TarGz,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$Slug,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$SourcePath,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$MainPath,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$OutDir,
+        [ValidateSet('Stop', 'Keep', 'Drop')] [string]$UnresolvedInputAction = 'Stop',
+        [string]$SourceMode = 'resolved',
+        [string]$MetadataPath = '',
         # optional delivery shelf (the ingestion/_markdown pattern): when set, the finished
         # {slug}-latex.md + its {slug}/ assets are BUNDLED there via Copy-MdDeliverable, links
         # verified at the destination — the manual copy step, codified. Absent -> unchanged.
         [string]$DeliverableDir,
-        # Re-run against the already-unpacked source instead of re-expanding the tarball. The unpack is
-        # deterministic, so this only skips work — and it preserves any hand-edit made to the staged
-        # source while iterating on a conversion.
-        [switch]$ReuseSource,
-        # --- destination overrides: four INDEPENDENT knobs, none derived from another ------------------
-        # Defaults are conventions, not constraints. Each of these addresses a different thing, so each
-        # is separately settable: a caller can stage source in one place, land run artifacts in another,
-        # write the lane deliverable in a third, and bundle to a fourth.
-        #
-        #   -SourceWorkDir   where the tarball unpacks / where staged source is read from
-        #                    default: {archive-dir}/{slug}-latex  (beside the archive, so curated
-        #                    groups keep their work in their own folder)
+        # --- destination overrides: three INDEPENDENT knobs, none derived from another ----------------
         #   -RunDir          where THIS run's regenerable artifacts land (oracle counts, audits, …)
         #                    default: {ArtifactsRoot}/latex-ingest/runs/{stamp}/{slug}
         #   -ArtifactsRoot   the artifacts TIER — the dir runs live under, not its parent. Only shifts
@@ -2526,7 +2481,6 @@ function Invoke-ArxivLatexToMarkdown {
         #                    default: {this repo}/artifacts
         #   -OutDir          lane deliverable ({slug}-latex.md + {slug}/ assets)   [above, mandatory]
         #   -DeliverableDir  bundle shelf                                          [above, optional]
-        [string]$SourceWorkDir = '',
         [string]$RunDir = '',
         [string]$ArtifactsRoot = '',
         [switch]$EnableEmbeddedToc,
@@ -2538,25 +2492,12 @@ function Invoke-ArxivLatexToMarkdown {
         [switch]$FaithfulNumbering
     )
     $u8 = [System.Text.UTF8Encoding]::new($false)
-    # the tex unpacks into a stable working dir beside the tarball — an intermediate workflow artifact
-    # (gitignored, non-destructive across passes), not a throwaway temp dir. It PERSISTS: downstream
-    # consumers (math bank, structure skeleton) re-read the source without re-extraction, and a
-    # conversion stays inspectable after the fact. NOT runstamped: the unpack is a pure function of the
-    # archive, so a stamp on it only duplicates bytes. Override with -SourceWorkDir.
-    try {
-        $archivePath = (Resolve-Path -LiteralPath $TarGz -ErrorAction Stop).Path
-    } catch {
-        throw "LaTeX source archive not found: '$TarGz'"
+    $work = (Resolve-Path -LiteralPath $SourcePath -ErrorAction Stop).Path
+    if (-not [System.IO.Directory]::Exists($work)) { throw "LaTeX source path is not a directory: '$work'" }
+    $main = (Resolve-Path -LiteralPath $MainPath -ErrorAction Stop).Path
+    if (-not (Test-LatexPathWithinRoot -Path $main -Root $work) -or -not [System.IO.File]::Exists($main)) {
+        throw "LaTeX entrypoint is missing or outside its source tree: '$main'"
     }
-    if (-not [System.IO.File]::Exists($archivePath)) {
-        throw "LaTeX source archive is not a file: '$archivePath'"
-    }
-    # The unpacked tarball is a pure function of the archive, so by default it gets ONE deterministic
-    # home beside its source ({slug}-latex/) rather than a fresh copy per run. Per-run output defaults
-    # under artifacts/, which is regenerable and gitignored wholesale. Both are DEFAULTS — an explicit
-    # -SourceWorkDir / -RunDir overrides either independently.
-    $work = if ($SourceWorkDir) { [System.IO.Path]::GetFullPath($SourceWorkDir) }
-            else { Get-SourceWorkDir -ArchivePath $archivePath -Slug $Slug }
     if (-not (Test-MathRenderAvailable)) {
         throw 'latex-ingest: required math-render audit is unavailable; restore packages/node with brewery/node/restore-node.ps1'
     }
@@ -2565,16 +2506,8 @@ function Invoke-ArxivLatexToMarkdown {
         New-Item -ItemType Directory -Force -Path $d | Out-Null
         $d
     } else { New-ModuleRunDir -Module 'latex-ingest' -Slug $Slug -ArtifactsRoot $ArtifactsRoot }
-    $haveSource = (Test-Path -LiteralPath $work -PathType Container) -and
-                  @(Get-ChildItem -LiteralPath $work -Recurse -File -Filter *.tex -ErrorAction SilentlyContinue).Count -gt 0
-    if ($ReuseSource -and $haveSource) {
-        Write-Verbose "reusing unpacked source at $work"
-    } else {
-        Expand-ArxivSourceTarball -TarGz $archivePath -WorkDir $work | Out-Null
-    }
-
-    $main = Find-LatexMain $work
-    $tex = Resolve-LatexInputs -MainPath $main
+    $tex = Resolve-LatexSourceInputs -MainPath $main -RootPath $work `
+        -UnresolvedInputAction $UnresolvedInputAction
     # per-paper curated errata (the faithful-not-filtered escape hatch): supply omitted macro defs /
     # correct author defects in SOURCE space BEFORE anything downstream reads $tex, so oracle counts,
     # macro collection, and conversion all see one patched source of truth. No patch file → pure no-op.
@@ -2596,8 +2529,8 @@ function Invoke-ArxivLatexToMarkdown {
     $refs = Get-LatexReferences $bblTxt (Build-CiteMap $bblTxt)
     if ($refs) { $md += "`n## References`n`n$refs`n" }
 
-    # ref-model sidecar (refs-consolidation, collect side): every declared label with BOTH display
-    # projections + every reference site rendered, JSONL beside the other sidecars in the work dir.
+    # Ref/doc graph evidence is generated by this conversion and belongs to this run, never in the
+    # immutable source tree described by metadata.json.
     if ($script:LtxRefModel) {
         $rfb = [System.Text.StringBuilder]::new()
         foreach ($l in $script:LtxRefModel.labels) {
@@ -2610,17 +2543,17 @@ function Invoke-ArxivLatexToMarkdown {
             foreach ($p in $s2.Keys) { $o[$p] = $s2[$p] }
             [void]$rfb.AppendLine((ConvertTo-Json -InputObject $o -Depth 4 -Compress))
         }
-        [System.IO.File]::WriteAllText((Join-Path $work "$Slug.refs.jsonl"), $rfb.ToString(), $u8)
+        [System.IO.File]::WriteAllText((Join-Path $run "$Slug.refs.jsonl"), $rfb.ToString(), $u8)
     }
     # the docstream (nodes), the latex refgraph (reference machinery + danglers), and the doc
     # graph (their composition) — stream + refgraph -> doc graph
     if ($script:LtxDocstream) {
         $dsb2 = [System.Text.StringBuilder]::new()
         foreach ($row in $script:LtxDocstream) { [void]$dsb2.AppendLine((ConvertTo-Json -InputObject $row -Depth 5 -Compress)) }
-        [System.IO.File]::WriteAllText((Join-Path $work "$Slug.docstream.jsonl"), $dsb2.ToString(), $u8)
+        [System.IO.File]::WriteAllText((Join-Path $run "$Slug.docstream.jsonl"), $dsb2.ToString(), $u8)
     }
-    if ($script:LtxRefGraph) { [System.IO.File]::WriteAllText((Join-Path $work "$Slug.refgraph.json"), (ConvertTo-Json -InputObject $script:LtxRefGraph -Depth 8), $u8) }
-    if ($script:LtxDocGraph) { [System.IO.File]::WriteAllText((Join-Path $work "$Slug.docgraph.json"), (ConvertTo-Json -InputObject $script:LtxDocGraph -Depth 8), $u8) }
+    if ($script:LtxRefGraph) { [System.IO.File]::WriteAllText((Join-Path $run "$Slug.refgraph.json"), (ConvertTo-Json -InputObject $script:LtxRefGraph -Depth 8), $u8) }
+    if ($script:LtxDocGraph) { [System.IO.File]::WriteAllText((Join-Path $run "$Slug.docgraph.json"), (ConvertTo-Json -InputObject $script:LtxDocGraph -Depth 8), $u8) }
 
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
     $figs = Copy-LatexFigures -Markdown $md -WorkDir $work -OutDir $OutDir -Slug $Slug
@@ -2685,7 +2618,7 @@ function Invoke-ArxivLatexToMarkdown {
     # every diagram that did NOT land as semantic math is listed with its original source and disposition,
     # so a downstream translation pass (MCP harness -> reasoning model) can attempt an inline-arrow /
     # \begin{array} encoding and swap the image or marker out for real math. The image is a STOPGAP, not
-    # the deliverable register. UTF-8-no-BOM JSONL in the tex run dir beside the other sidecars.
+    # the deliverable register. UTF-8-no-BOM JSONL beside the other run evidence.
     $dsb = [System.Text.StringBuilder]::new()
     foreach ($d in $script:DiagramStore) {
         $status = if (-not $doneN.Contains($d.n)) { 'marker' } elseif ($pngN.Contains($d.n)) { 'png' } else { 'svg' }
@@ -2695,7 +2628,7 @@ function Invoke-ArxivLatexToMarkdown {
                     source = $d.source
                 } | ConvertTo-Json -Depth 3 -Compress))
     }
-    [System.IO.File]::WriteAllText((Join-Path $work "$Slug.diagrams.jsonl"), $dsb.ToString(), $u8)
+    [System.IO.File]::WriteAllText((Join-Path $run "$Slug.diagrams.jsonl"), $dsb.ToString(), $u8)
 
     # FINAL HYGIENE (STANDARDS §4) + REGISTER SAFETY — the shared emission walk (audits/md-hygiene.ps1):
     # fence-verbatim; MD009/MD010/MD012 whitespace; MD026 heading punctuation + level clamp; MD034
@@ -2735,8 +2668,7 @@ function Invoke-ArxivLatexToMarkdown {
             -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc -DisableJsonlToc:$DisableJsonlToc
     } else { $null }
 
-    # oracle-counts sidecar: persist the figure/table/diagram truth INTO the tex run dir ($work =
-    # .runs/{stamp}/tex, git-ignored) so the standing figure-count harness (Compare-FigureCounts) reads
+    # Oracle counts are generated evidence and persist in this run so the standing figure-count harness reads
     # it back with newest-run-wins, instead of the deleted ad-hoc one-off. figures_missing is the
     # oracle-CONFIDENCE flag (referenced images the source never provided → the count is low-confidence,
     # to be ANNOTATED not chased). UTF-8-no-BOM like every content artifact.
@@ -2771,7 +2703,8 @@ function Invoke-ArxivLatexToMarkdown {
 
     return [pscustomobject]@{
         slug = $Slug; out = $outPath; main_tex = (Split-Path -Leaf $main)
-        run = (Split-Path -Leaf $run); tex = $work   # the persisted unpacked source (run artifact)
+        run = (Split-Path -Leaf $run); tex = $work
+        source_mode = $SourceMode; metadata = $(if ($MetadataPath) { $MetadataPath } else { $null })
         bytes = $md.Length; macros = (Get-LatexMacros $tex).Count
         sections = $sectionCount   # body H2s, `## Contents` excluded (counted pre-insertion)
         references = if ($refs) { @($refs -split "`n").Count } else { 0 }
@@ -2785,4 +2718,37 @@ function Invoke-ArxivLatexToMarkdown {
         audits = [pscustomobject]@{ math_render = $mathRenderAudit } # reusable capability report; persisted under this run's audits/
         deliverable = $bundle                           # Copy-MdDeliverable audit when -DeliverableDir was given, else $null
     }
+}
+
+# Production entrypoint: consume one already-initialized, validated document deposit. This function does not
+# discover archives, infer legacy directory names, unpack source, or create metadata.json. Those migration
+# behaviors are isolated in latex-ingest-compat.ps1.
+function Invoke-ArxivLatexToMarkdown {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] [Alias('DocumentDir')] [ValidateNotNullOrEmpty()] [string]$MetadataPath,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$OutDir,
+        [string]$DeliverableDir,
+        [string]$RunDir = '',
+        [string]$ArtifactsRoot = '',
+        [switch]$EnableEmbeddedToc,
+        [switch]$DisableTreeToc,
+        [switch]$DisableJsonlToc,
+        [switch]$FaithfulNumbering
+    )
+    $source = Resolve-LatexIngestManifestSource -MetadataPath $MetadataPath
+    return Invoke-LatexIngestResolvedSource `
+        -Slug $source.slug `
+        -SourcePath $source.source_path `
+        -MainPath $source.main_path `
+        -SourceMode $source.mode `
+        -MetadataPath $source.metadata_path `
+        -OutDir $OutDir `
+        -DeliverableDir $DeliverableDir `
+        -RunDir $RunDir `
+        -ArtifactsRoot $ArtifactsRoot `
+        -EnableEmbeddedToc:$EnableEmbeddedToc `
+        -DisableTreeToc:$DisableTreeToc `
+        -DisableJsonlToc:$DisableJsonlToc `
+        -FaithfulNumbering:$FaithfulNumbering
 }

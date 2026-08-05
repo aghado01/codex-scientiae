@@ -32,7 +32,8 @@ Describe 'latex-ingest ref model — golden (2408.16741v2)' -Skip:(-not $script:
             (Join-Path $PSScriptRoot '..\ingestion\_inbox\2408.16741v2\2408.16741v2-latex'),
             (Join-Path $PSScriptRoot '..\artifacts\latex-ingest\probe\_staging\2408.16741v2-latex')
         ) | Where-Object { Test-Path -LiteralPath $_ -PathType Container } | Select-Object -First 1
-        $tex = Resolve-LatexInputs -MainPath (Find-LatexMain $src)
+        $entrypoint = Get-LatexSourceEntrypoint -RootPath $src -Slug '2408.16741v2'
+        $tex = Resolve-LatexSourceInputs -MainPath $entrypoint.path -RootPath $src -UnresolvedInputAction Keep
         # the production driver's bbl ladder, replicated so cite sites resolve identically
         $bbl = @(Get-ChildItem -LiteralPath $src -Recurse -File -Filter *.bbl) | Select-Object -First 1
         $bblTxt = if ($bbl) { [System.IO.File]::ReadAllText($bbl.FullName, $u8) } else { '' }

@@ -15,6 +15,32 @@
 BeforeAll {
     . "$PSScriptRoot/../../src/latex-ingest/latex-ingest.ps1"
 
+    function New-LatexIngestTestArchive {
+        param(
+            [Parameter(Mandatory)] [string]$Path,
+            [Parameter(Mandatory)] [System.Collections.IDictionary]$Files
+        )
+        $fileStream = [System.IO.File]::Create($Path)
+        $gzip = [System.IO.Compression.GzipStream]::new(
+            $fileStream, [System.IO.Compression.CompressionLevel]::Optimal, $true)
+        $writer = [System.Formats.Tar.TarWriter]::new(
+            $gzip, [System.Formats.Tar.TarEntryFormat]::Pax, $true)
+        try {
+            foreach ($pair in $Files.GetEnumerator()) {
+                $bytes = if ($pair.Value -is [byte[]]) { $pair.Value } else {
+                    [System.Text.UTF8Encoding]::new($false).GetBytes([string]$pair.Value)
+                }
+                $entry = [System.Formats.Tar.PaxTarEntry]::new(
+                    [System.Formats.Tar.TarEntryType]::RegularFile, [string]$pair.Key)
+                $data = [System.IO.MemoryStream]::new($bytes)
+                try { $entry.DataStream = $data; $writer.WriteEntry($entry) }
+                finally { $data.Dispose() }
+            }
+        } finally {
+            $writer.Dispose(); $gzip.Dispose(); $fileStream.Dispose()
+        }
+    }
+
     $tex = @'
 \documentclass{article}
 \title{Tokens}
@@ -141,23 +167,19 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
             $r.copied | Should -Be 0
         }
     }
-    It 'end-to-end: figures survive the tarball workdir cleanup' -Skip:(-not (Get-Command tar -CommandType Application -ErrorAction SilentlyContinue)) {
+    It 'end-to-end: a metadata-backed source tree is consumed without mutation and figures survive' {
         $root = Join-Path ([System.IO.Path]::GetTempPath()) ("e2e-" + [guid]::NewGuid().ToString('N'))
-        $src = Join-Path $root 'src'; $out = Join-Path $root 'out'
-        New-Item -ItemType Directory -Force -Path (Join-Path $src 'figs'), $out | Out-Null
-        [System.IO.File]::WriteAllBytes((Join-Path $src 'figs/arch.png'), [byte[]](137, 80, 78, 71))
-        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'), '\documentclass{article}\begin{document}\section{Setup}Fig: \includegraphics{figs/arch}\end{document}', [System.Text.UTF8Encoding]::new($false))
+        $out = Join-Path $root 'out'
+        New-Item -ItemType Directory -Force -Path $root, $out | Out-Null
         $archive = Join-Path $root 'p.tar.gz'
-        $archiveArg = [System.IO.Path]::GetRelativePath($src, $archive)
-        Push-Location $src
-        try {
-            tar -czf $archiveArg .
-            if ($LASTEXITCODE -ne 0) { throw "test tar creation failed with exit code $LASTEXITCODE" }
-        } finally {
-            Pop-Location
-        }
+        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
+                'main.tex' = '\documentclass{article}\begin{document}\section{Setup}Fig: \includegraphics{figs/arch}\end{document}'
+                'figs/arch.png' = [byte[]](137, 80, 78, 71)
+            })
+        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'p'
+        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $initialized.source_path).sha256
         $shelf = Join-Path $root 'shelf'
-        $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out -DeliverableDir $shelf
+        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out -DeliverableDir $shelf
         $r.figures | Should -Be 1
         $r.audits.math_render.schema | Should -Be 'math-render-audit/1'
         $r.audits.math_render.clean | Should -BeTrue
@@ -183,31 +205,34 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         # ...and -EnableEmbeddedToc still inserts it, linked through the shared slug engine
         $out2 = Join-Path $root 'out2'
         New-Item -ItemType Directory -Force -Path $out2 | Out-Null
-        $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'p' -OutDir $out2 -EnableEmbeddedToc
+        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out2 -EnableEmbeddedToc
         (Get-Content (Join-Path $out2 'p-latex.md') -Raw) | Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
         Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
-        # The unpacked source has ONE deterministic home beside the tarball ({dir}/{slug}-latex/), not a
-        # per-run copy: it is a pure function of the archive, so a runstamp on it only duplicates bytes.
-        # Downstream consumers (math bank, skeleton) re-read it, and a re-run finds it already there.
-        $r.tex | Should -Be (Join-Path $root 'p-latex')
+        # Source stays at its initialized address and remains byte-identical across conversion runs.
+        $r.tex | Should -Be (Join-Path $root 'p-tex')
         Test-Path (Join-Path $r.tex 'main.tex') | Should -BeTrue
+        (Get-LatexSourceTreeFingerprint -RootPath $r.tex).sha256 | Should -Be $sourceHash
+        $r.source_mode | Should -Be 'manifest'
         Test-Path (Join-Path $root '.runs') | Should -BeFalse   # the retired layout is not recreated
         Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    It 'run layout: per-run output lands under artifacts/{module}/runs/{stamp}/{slug}, and -ReuseSource skips the unpack' -Skip:(-not (Get-Command tar -CommandType Application -ErrorAction SilentlyContinue)) {
+    It 'run layout: each conversion gets a run while metadata-backed source and sentinel remain unchanged' {
         $root = Join-Path ([System.IO.Path]::GetTempPath()) ("rl-" + [guid]::NewGuid().ToString('N'))
-        $src = Join-Path $root 'src'; $out = Join-Path $root 'out'; $repo = Join-Path $root 'repo'
-        New-Item -ItemType Directory -Force -Path $src, $out, $repo | Out-Null
-        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'),
-            '\documentclass{article}\begin{document}\section{S}Body.\end{document}', [System.Text.UTF8Encoding]::new($false))
+        $out = Join-Path $root 'out'; $repo = Join-Path $root 'repo'
+        New-Item -ItemType Directory -Force -Path $root, $out, $repo | Out-Null
         $archive = Join-Path $root 'q.tar.gz'
-        Push-Location $src
-        try { tar -czf ([System.IO.Path]::GetRelativePath($src, $archive)) . } finally { Pop-Location }
+        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
+                'main.tex' = '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
+            })
+        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'q'
+        $manifestHash = (Get-FileHash $initialized.metadata_path -Algorithm SHA256).Hash
+        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $initialized.source_path).sha256
 
-        $r1 = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -ArtifactsRoot (Join-Path $repo 'artifacts')
-        $staged = Join-Path $root 'q-latex'
-        Test-Path (Join-Path $staged 'main.tex') | Should -BeTrue          # unpacked beside the archive
+        $r1 = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
+            -ArtifactsRoot (Join-Path $repo 'artifacts')
+        $staged = Join-Path $root 'q-tex'
+        Test-Path (Join-Path $staged 'main.tex') | Should -BeTrue
 
         # regenerable per-run output goes to artifacts/, NOT beside the source
         $runs = Join-Path $repo 'artifacts/latex-ingest/runs'
@@ -220,44 +245,39 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
         $r1.audits.math_render.report_path | Should -Be $mathAudits[0].FullName
         @(Get-ChildItem $staged -Filter '*.oracle-counts.json').Count | Should -Be 0   # source stays source
 
-        # a sentinel in the staged source survives -ReuseSource and is destroyed by a fresh unpack —
-        # which is exactly the iterate-on-staged-source affordance the switch exists for
-        $sentinel = Join-Path $staged 'sentinel.txt'
-        [System.IO.File]::WriteAllText($sentinel, 'kept', [System.Text.UTF8Encoding]::new($false))
-        $null = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'q' -OutDir $out -ArtifactsRoot (Join-Path $repo 'artifacts') -ReuseSource
-        Test-Path $sentinel | Should -BeTrue
+        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
+            -ArtifactsRoot (Join-Path $repo 'artifacts')
         @(Get-ChildItem $runs -Directory).Count | Should -BeGreaterThan 1   # still a NEW run each call
+        (Get-FileHash $initialized.metadata_path -Algorithm SHA256).Hash | Should -Be $manifestHash
+        (Get-LatexSourceTreeFingerprint -RootPath $staged).sha256 | Should -Be $sourceHash
+        @(Get-ChildItem $staged -File | Where-Object { $_.Extension -in '.json', '.jsonl' }).Count | Should -Be 0
+        @(Get-ChildItem $runs -Recurse -Filter 'q.docstream.jsonl').Count | Should -BeGreaterThan 0
 
         Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
     }
 
-    It 'run layout: source, run artifacts, lane output and shelf are four INDEPENDENT destinations' -Skip:(-not (Get-Command tar -CommandType Application -ErrorAction SilentlyContinue)) {
-        # the defaults are conventions, not constraints — a caller may scatter all four, and none of the
-        # overrides may be derived from another
+    It 'run layout: initialized source, run artifacts, lane output and shelf remain independent destinations' {
         $root = Join-Path ([System.IO.Path]::GetTempPath()) ("ov-" + [guid]::NewGuid().ToString('N'))
-        $src = Join-Path $root 'src'
-        $srcWork = Join-Path $root 'elsewhere/staged'
         $runDir = Join-Path $root 'elsewhere/runs/custom'
         $out = Join-Path $root 'elsewhere/lane'
         $shelf = Join-Path $root 'elsewhere/shelf'
-        New-Item -ItemType Directory -Force -Path $src, $out, $shelf | Out-Null
-        [System.IO.File]::WriteAllText((Join-Path $src 'main.tex'),
-            '\documentclass{article}\begin{document}\section{S}Body.\end{document}', [System.Text.UTF8Encoding]::new($false))
+        New-Item -ItemType Directory -Force -Path $root, $out, $shelf | Out-Null
         $archive = Join-Path $root 'z.tar.gz'
-        Push-Location $src
-        try { tar -czf ([System.IO.Path]::GetRelativePath($src, $archive)) . } finally { Pop-Location }
+        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
+                'main.tex' = '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
+            })
+        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'z'
 
-        $r = Invoke-ArxivLatexToMarkdown -TarGz $archive -Slug 'z' -OutDir $out -DeliverableDir $shelf `
-            -SourceWorkDir $srcWork -RunDir $runDir
+        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path `
+            -OutDir $out -DeliverableDir $shelf -RunDir $runDir
 
-        $r.tex | Should -Be ([System.IO.Path]::GetFullPath($srcWork))
-        Test-Path (Join-Path $srcWork 'main.tex') | Should -BeTrue
+        $r.tex | Should -Be ([System.IO.Path]::GetFullPath($initialized.source_path))
+        Test-Path (Join-Path $initialized.source_path 'main.tex') | Should -BeTrue
         Test-Path (Join-Path $runDir 'z.oracle-counts.json') | Should -BeTrue
         Test-Path (Join-Path $runDir 'audits/math-render.json') | Should -BeTrue
         Test-Path (Join-Path $out 'z-latex.md') | Should -BeTrue
         Test-Path (Join-Path $shelf 'z/z.md') | Should -BeTrue
-        # nothing fell back to a default: no unpack beside the archive, no artifacts/ tree invented
-        Test-Path (Join-Path $root 'z-latex') | Should -BeFalse
+        # explicit run/output/shelf destinations do not invent a default artifacts tree
         Test-Path (Join-Path $root 'artifacts') | Should -BeFalse
 
         Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue

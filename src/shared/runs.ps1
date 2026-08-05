@@ -38,7 +38,7 @@ function Get-LatestChunks([string]$PaperDir, [string]$Slug) {
 #   lands under artifacts/ (gitignored wholesale) and the source dir stays source.
 #
 #   DETERMINISM — the unpacked tarball is NOT a per-run artifact. It is a pure function of the archive,
-#   so it lives once beside its source ({slug}-latex/) and runs read it rather than each re-expanding a
+#   so it lives once beside its source ({slug}-tex/) and runs read it rather than each re-expanding a
 #   private copy. Only genuinely per-run output (oracle counts, render logs) gets a runstamp.
 #
 # This breaks symmetry with the pig/gauntlet lanes, which still use {paper}/.runs. That is intentional
@@ -80,11 +80,11 @@ function Get-ModuleRunDirs([string]$Module, [string]$Slug, [string]$ArtifactsRoo
     return $out
 }
 
-# The unpacked tarball's home: deterministic, beside the archive it came from, so a curated grouping
-# (gauntlet/ph-zigzag/{slug}/) keeps its work in its own folder instead of being staged into _inbox.
+# The normalized source tree's home: deterministic and beside its archive. The `-tex` suffix is the current
+# deposit convention; retired layout inference belongs to the latex-ingest compatibility shim.
 function Get-SourceWorkDir([string]$ArchivePath, [string]$Slug) {
     $dir = Split-Path -Parent $ArchivePath
-    return (Join-Path $dir "$Slug-latex")
+    return (Join-Path $dir "$Slug-tex")
 }
 
 # fresh run dir; a same-second collision bumps a numeric suffix (still sorts after its base stamp)
