@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/runs.ps1 — the run layout + paper addressing, as a standalone layer.
+  src/shared/runs.ps1 — the run layout + paper addressing, as a standalone layer.
 
   Every workflow pass lands its intermediate artifacts in a runstamped dir —
   {paper}/.runs/{yyyyMMdd_HHmmss}/ — beside the source it derives from. Non-destructive iteration
@@ -159,7 +159,7 @@ function Split-PaperAddress([string]$Paper) {
 }
 
 # --- paper addressing: a bare slug (must be UNIQUE under $Root — ambiguity is an error, never
-#     first-hit-wins) or a root-relative paper-dir path ('compendia/membrane-testing/2508.11646v1';
+#     first-hit-wins) or a root-relative paper-dir path ('bibliotecha/compendia/membrane-testing/2508.11646v1';
 #     a leading 'ingestion/' is tolerated). Path form is confined to $Root.
 function Resolve-PaperDir([string]$Root, [string]$Paper) {
     if ([string]::IsNullOrWhiteSpace($Paper)) { throw "invalid paper name: '$Paper'" }

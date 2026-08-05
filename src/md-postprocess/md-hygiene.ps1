@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/audits/md-hygiene.ps1 — emission-grade markdown hygiene, as a format-agnostic primitive
+  src/md-postprocess/md-hygiene.ps1 — emission-grade markdown hygiene, as a format-agnostic primitive
   (pure text in/text out). Extracted verbatim from latex-ingest's inline emission walk, where it
   had accreted as mixed concerns — nothing in it is LaTeX-specific; the rules are properties of
   the TARGET register (STANDARDS §4/§5 hygiene + math-span safety), so any lane emitting corpus

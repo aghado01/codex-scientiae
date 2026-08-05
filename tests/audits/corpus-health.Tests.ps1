@@ -1,8 +1,8 @@
 #requires -Version 7.0
 # Published-corpus health regressions. Unlike corpus.Tests.ps1 (which A/B-tests the chunk-stream
-# detectors), this asserts over the promoted .md BODIES under compendia/ codices/ corpora/ via the
-# read-only auditor in src/audits/corpus-audit.ps1. The HARD tier mirrors publish.ps1's defect sentinels; the
-# quality tier pins the 2026-06-23 normalization (ligatures, mangled URL separators) at zero so it
+# detectors), this asserts over the promoted .md BODIES under bibliotecha/{compendia,codices,corpora}/ via the
+# read-only auditor in src/audits/corpus-audit.ps1. The HARD tier preserves the retired publication
+# gate's defect sentinels; the quality tier pins the 2026-06-23 normalization at zero so it
 # cannot silently come back. ADVISORY classes (broken image links, single-column tables) are tracked
 # debt in HOUSEKEEPING.md, NOT asserted here.
 

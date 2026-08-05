@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/masks.ps1 — the closed mask-algebra primitive set (precision by construction).
+  src/shared/masks.ps1 — the closed mask-algebra primitive set (precision by construction).
 
   A detector earns precision the way the rest of the membrane earns its guarantees: by
   construction, not by supervision. Instead of writing the precise pattern (a brittle strip-list

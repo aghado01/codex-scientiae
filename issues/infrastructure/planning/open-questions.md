@@ -96,7 +96,7 @@ it.
 | Module run allocation uses check-then-create and can race | `New-ModuleRunDir`/`New-RunDir` | LOGJ-101, LOGJ-302 |
 | `runs.ps1` mixes current artifact-tier allocation with retired paper-local discovery and compatibility | `src/shared/runs.ps1` | LOGJ-101, LOGJ-601 |
 | Legacy JSONL combines stage publication, indexing, ledger, inventory, and workflow assumptions | `src/shared/jsonl.ps1` | LOGJ-101, LOGJ-102 |
-| At least one production caller still consumes the legacy ledger helper | `src/bibliotecha/publish.ps1` | LOGJ-601, LOGJ-602 |
+| Legacy ledger and inventory helpers have no production consumers after publisher retirement | current caller census | LOGJ-601, LOGJ-602 |
 | The `-v2` drafts have no production consumers and their public contract is not frozen | caller census and focused tests | LOGJ-103, LOGJ-104 |
 | Named-mutex concurrency and index refresh need multi-process/fault testing | provisional D10, D15 | LOGJ-201, LOGJ-202 |
 | Retained LaTeX JSONL artifacts use CRLF and production emission still bypasses the strict codec | artifact survey | LOGJ-204, LOGJ-601 |

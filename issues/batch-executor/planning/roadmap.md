@@ -12,10 +12,9 @@ order, and leaks no private helpers. The former flat implementation is now a com
 imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
 The behavioral and teardown gates remain closed: 20 executor, 8 job/plan, and 8 module-surface tests pass,
-and the complete shared suite is 129 passing tests. The repository-wide path-topology suite is red on
-pre-existing eviction/renovation debt outside batch-executor (retired codex-membrane paths and absent
-legacy configuration/documentation files); none of its failures names the extracted module. BEX-207 keeps
-that final Phase 2 gate explicit rather than silently weakening it.
+and the complete shared suite is 129 passing tests. The repository-wide path-topology suite is also green
+after BEX-207 removed post-eviction residue and rebuilt the check around required current inputs. Phase 2
+is closed; Phase 3 may begin with the package boundary and compatibility facade held stable.
 
 ## Sequencing rules
 
@@ -25,17 +24,6 @@ that final Phase 2 gate explicit rather than silently weakening it.
 4. Extract the module mechanically before decomposing lifecycle phases.
 5. Keep compatibility explicit and temporary; new callers bind to the manifest.
 6. Keep domain adapters out until the shared contract and module surface are stable.
-
-## Phase 2 — Exit closeout
-
-- **BEX-207 — Clear or explicitly re-scope the repository topology gate.** Repair the active references
-  broken by the codex-membrane eviction and subsequent source moves, or establish a reviewed batch-owned
-  topology gate if the repository-wide suite is no longer the intended boundary. Do not make the suite
-  green by ignoring missing active inputs. Re-run the module-surface and complete shared suites after any
-  topology repair.
-
-Exit gate: the repository topology decision is resolved and its resulting suite passes. Canonical import,
-module surface, teardown, facade compatibility, and the complete shared suite are already green.
 
 ## Phase 3 — Internal lifecycle decomposition
 
@@ -49,9 +37,9 @@ module surface, teardown, facade compatibility, and the complete shared suite ar
 - **BEX-304 — Re-run adversarial teardown and stress gates after every phase move.** A phase extraction is
   incomplete if process-tree, failure-containment, stable-order, or concurrency-pressure witnesses regress.
 
-This phase is not authorized merely by completing module extraction. Begin only after BEX-207 closes, the
-package boundary remains stable, and the smaller functions materially improve reviewability without
-obscuring lifecycle order.
+This phase is now authorized by the closed Phase 2 gate. Keep the package boundary stable, and accept each
+internal extraction only when the smaller functions materially improve reviewability without obscuring
+lifecycle order.
 
 ## Phase 4 — Domain adapters
 

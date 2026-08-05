@@ -53,9 +53,10 @@ production module should import a `-v2` draft until the audit and integration ga
   (the current `artifacts/{module}/runs/{runstamp}/{slug}` convention beside retired paper-local `.runs`
   discovery and addressing), and `src/shared/log.ps1`. For each responsibility record callers, state
   ownership, artifact paths, append/rewrite behavior, duplicated parsing, hidden compatibility assumptions,
-  and recovery behavior. Record live callers rather than inferring use from file location — at least
-  `src/bibliotecha/publish.ps1` still consumes the ledger helper. Produce a disposition map: primitive to
-  extract, domain policy to retain, compatibility shim, or dead use-case logic to retire.
+  and recovery behavior. Record live callers rather than inferring use from file location. The former
+  publication caller has been removed, so zero production consumers for the ledger/inventory helpers
+  is now part of the audit evidence. Produce a disposition map: primitive to extract, domain policy to
+  retain, compatibility shim, or dead use-case logic to retire.
 - **LOGJ-102 — Diff against current jso-jackson and its export children.** Inventory reusable read, write,
   seek, slice, query, repair, and diagnostic capabilities in `D:/aghado01/utils/jso-jackson`,
   `claude-export`, and `codex-export`. That tree is the implementation authority; do not spend audit effort

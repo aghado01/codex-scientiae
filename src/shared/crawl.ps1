@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/crawl.ps1 — targeted filesystem crawler.
+  src/shared/crawl.ps1 — targeted filesystem crawler.
 
   Two lifts, no more: the .NET enumeration primitive from reposnapshot's FileSystemCrawler
   ([IO.Directory]::EnumerateFileSystemEntries — lazy, no per-entry FileInfo, far cheaper than

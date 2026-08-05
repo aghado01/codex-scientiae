@@ -1,14 +1,13 @@
 #requires -Version 7.0
 <#
-  src/procurement/arxiv-server.ps1 — a pure-PowerShell MCP server for arXiv acquisition, sibling to the
-  codex-membrane server
-  (the codex-membrane). Same protocol spine: newline-delimited JSON-RPC 2.0 on stdin/stdout, one compact
+  src/procurement/arxiv-server.ps1 — a pure-PowerShell MCP server for arXiv acquisition. Protocol:
+  newline-delimited JSON-RPC 2.0 on stdin/stdout, one compact
   JSON object per line, stdout for protocol frames ONLY (all logging + stray writes go to stderr), the
   channel pinned to UTF-8 no-BOM so SMP glyphs in titles/abstracts round-trip.
 
-  Division of labour with the membrane: this server ACQUIRES (search arXiv, stage PDFs + metadata into an
-  inbox); the membrane INGESTS (PDF/IR -> chunks -> repair -> publish). The two are decoupled by design —
-  the inbox layout is a fluid early-growth convention held in an external template config, not in code.
+  This server ACQUIRES (search arXiv, stage PDFs + metadata into an inbox); downstream ingestion and
+  curation remain separate concerns. The boundary is decoupled by design — the inbox layout is a fluid
+  early-growth convention held in an external template config, not in code.
 
   Launch from a client's MCP config (-NoProfile keeps the profile off stdout):
     pwsh -NoProfile -File src/procurement/arxiv-server.ps1 [-StagingRoot <dir>] [-ConfigPath <arxiv-staging.json>]

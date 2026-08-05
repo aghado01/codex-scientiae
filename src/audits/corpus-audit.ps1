@@ -1,13 +1,12 @@
 #requires -Version 7.0
 <#
-  src/audits/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies under
-  compendia/ , codices/ , corpora/). This is the body-side complement to the membrane's chunk-stream
-  detectors (src/codex-membrane/fidelity.ps1, exercised by tests/codex-membrane/detectors.Tests.ps1): those grade the IR before
-  promotion; this walks what actually shipped and reports the defect classes a deliverable can still
-  carry past `publish` (legacy/hand-promoted docs, or classes `publish` does not gate).
+  src/audits/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies
+  under bibliotecha/{compendia,codices,corpora}/). This walks what actually shipped and reports defect
+  classes that legacy, hand-promoted, or otherwise imperfect deliverables can still carry.
 
-  It NEVER writes. It mirrors publish.ps1's hard sentinels (FILL_ME_IN, U+FFFD) and adds the corpus-wide
-  hygiene classes surfaced by the 2026-06 housekeeping sweep. Two tiers:
+  It NEVER writes. Its hard tier preserves the defect sentinels used by the retired publication gate
+  (FILL_ME_IN, U+FFFD) and adds the corpus-wide hygiene classes surfaced by the 2026-06 housekeeping
+  sweep. Two tiers:
 
     HARD     — holes that must never ship: FILL_ME_IN, U+FFFD, a UTF-8 BOM (STANDARDS §8 is no-BOM).
                tests/audits/corpus-health.Tests.ps1 pins these (and the now-clean ligature/URL classes) at zero.
@@ -18,7 +17,7 @@
   Usage:
     pwsh -File src/audits/corpus-audit.ps1                 # human report over the default roots
     pwsh -File src/audits/corpus-audit.ps1 -Json           # machine-readable findings
-    pwsh -File src/audits/corpus-audit.ps1 -Roots compendia
+    pwsh -File src/audits/corpus-audit.ps1 -Roots bibliotecha/compendia
     . ./src/audits/corpus-audit.ps1; Get-CorpusHealth      # dot-source for the data (what the Pester test does)
 
   PowerShell codepoint discipline (see memory powershell-text-mutation-traps): all matching is ordinal
@@ -26,7 +25,7 @@
   NOT used here. I/O is UTF-8-no-BOM with BOM detection done on the raw bytes.
 #>
 param(
-    [string[]]$Roots = @('compendia', 'codices', 'corpora'),
+    [string[]]$Roots = @('bibliotecha/compendia', 'bibliotecha/codices', 'bibliotecha/corpora'),
     [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')),
     [switch]$Json,
     [switch]$Quiet
@@ -107,7 +106,7 @@ function Get-FileHealth([string]$path, [string]$repoRoot) {
 # totals (per-class sums), counts (files scanned), hard_ok (bool) }.
 function Get-CorpusHealth {
     [CmdletBinding()] param(
-        [string[]]$Roots = @('compendia', 'codices', 'corpora'),
+        [string[]]$Roots = @('bibliotecha/compendia', 'bibliotecha/codices', 'bibliotecha/corpora'),
         [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
     )
     $classes = 'bom', 'fill_me_in', 'u_fffd', 'ligatures', 'url_mangled', 'broken_image_link', 'broken_md_link', 'single_col_table', 'mojibake_suspect'

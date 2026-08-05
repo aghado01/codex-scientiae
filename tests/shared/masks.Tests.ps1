@@ -1,5 +1,5 @@
 #requires -Version 7.0
-# src/masks.ps1 — the closed mask-algebra primitive set. Intrinsic validation: algebraic laws (hold by
+# src/shared/masks.ps1 — the closed mask-algebra primitive set. Intrinsic validation: algebraic laws (hold by
 # the math over ANY input), totality, codepoint safety, and the pincer level-lift coincidence. No corpus.
 
 BeforeAll {

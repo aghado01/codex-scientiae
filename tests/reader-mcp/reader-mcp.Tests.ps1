@@ -1,11 +1,11 @@
 #requires -Version 7.0
-# Tests for src/reader-mcp/reader-mcp.ps1 — the consumer-side read-only MCP server.
+# Tests for src/mcp/reader-mcp/reader-mcp.ps1 — the consumer-side read-only MCP server.
 # Driven as a CHILD PROCESS over real JSON-RPC frames: the protocol surface is what consumers see, and
 # dot-sourcing the script would both start its stdin loop and hide the self-containment guarantee.
 
 Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
     BeforeAll {
-        $script:Server = (Resolve-Path "$PSScriptRoot/../../src/reader-mcp/reader-mcp.ps1").Path
+        $script:Server = (Resolve-Path "$PSScriptRoot/../../src/mcp/reader-mcp/reader-mcp.ps1").Path
         $script:Fixture = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
         $u8 = [System.Text.UTF8Encoding]::new($false)
 
@@ -134,8 +134,8 @@ Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
     }
 
     It 'is READ-ONLY: the server carries no write path at all' {
-        # the consumer plane must not be able to mutate the corpus even by accident — codex-membrane is
-        # the only writer. Guarding the source directly, because a missing write is invisible in behaviour.
+        # The consumer plane must not be able to mutate the corpus even by accident. Guard the source
+        # directly, because the absence of a write path is otherwise invisible in behavior.
         $src = [System.IO.File]::ReadAllText($script:Server, [System.Text.UTF8Encoding]::new($false))
         foreach ($writer in 'Set-Content', 'Out-File', 'Add-Content', 'New-Item', 'Remove-Item', 'Move-Item', 'Copy-Item', 'WriteAllText', 'WriteAllBytes', 'WriteAllLines') {
             $src | Should -Not -Match ([regex]::Escape($writer))

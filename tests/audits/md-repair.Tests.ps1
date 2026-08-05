@@ -1,7 +1,7 @@
 #requires -Version 7.0
 # md-repair.ps1 — byte-offset surgical repair for promoted markdown. Pins offset correctness (incl.
 # multi-byte / SMP glyphs), the Set-MdSpan splice + stale-anchor guard, the heading classifier across
-# every corruption category surveyed in compendia/ph, and the back-to-front auto-fix + escalation.
+# every corruption category surveyed in bibliotecha/compendia/ph, and the back-to-front auto-fix + escalation.
 
 BeforeAll {
     . "$PSScriptRoot/../../src/audits/md-repair.ps1"

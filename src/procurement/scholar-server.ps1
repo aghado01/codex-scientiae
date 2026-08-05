@@ -1,8 +1,8 @@
 #requires -Version 7.0
 <#
-  src/procurement/scholar-server.ps1 — a pure-PowerShell MCP server for cross-source scholarly DISCOVERY, sibling to
-  codex-arxiv (acquisition) and codex-membrane (ingestion). Same protocol spine: newline-delimited
-  JSON-RPC 2.0 on stdin/stdout, UTF-8 no-BOM, stdout = protocol frames only.
+  src/procurement/scholar-server.ps1 — a pure-PowerShell MCP server for cross-source scholarly DISCOVERY,
+  sibling to codex-arxiv (acquisition). Protocol: newline-delimited JSON-RPC 2.0 on stdin/stdout,
+  UTF-8 no-BOM, stdout = protocol frames only.
 
   It fronts the shared discovery core (scholar-core.ps1) + source adapters (OpenAlex, Semantic Scholar)
   behind one surface — search / related / resolve_doi / get_work — normalizing every source to the Work

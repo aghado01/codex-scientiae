@@ -1,5 +1,5 @@
 #requires -Version 7.0
-# Copy-MdDeliverable (src/audits/md-bundle.ps1) — standalone-deliverable bundling to a shelf with
+# Copy-MdDeliverable (src/md-postprocess/md-bundle.ps1) — standalone-deliverable bundling to a shelf with
 # destination-side link verification and defect-sentinel counting. Coverage: link scan filtering,
 # asset copy with relative subpaths preserved, missing-asset reporting (never fatal), sentinel
 # counts, the clean verdict, and re-bundle idempotency.

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/jsonl.ps1 — JSONL stage substrate for the IR workflow.
+  src/shared/jsonl.ps1 — JSONL stage substrate for the IR workflow.
 
   Lifted and corrected from the jso-jackson archaeology and owned fresh here —
   nothing under .legacy is on the import path. Each pipeline stage emits three

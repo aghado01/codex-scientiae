@@ -3,11 +3,11 @@
   src/shared/md-sentinels.ps1 — defect sentinels: the marks that say a document was DAMAGED in
   conversion, counted the same way everywhere.
 
-  Two implementations existed and each had half the answer. publish.ps1 was table-driven and scanned
-  several texts (body AND references — either can carry a dropped table), but knew only two sentinels
-  and matched them literally. md-bundle.ps1 knew three, including the leaked-placeholder pattern that
-  has to be a REGEX, but hardcoded them inline against a single text. Merged here: the union of the
-  sentinels, the table-driven shape, and per-text counts.
+  Two implementations existed and each had half the answer. The retired publisher was table-driven and
+  scanned several texts (body AND references — either can carry a dropped table), but knew only two
+  sentinels and matched them literally. md-bundle.ps1 knew three, including the leaked-placeholder
+  pattern that has to be a REGEX, but hardcoded them inline against a single text. Merged here: the
+  union of the sentinels, the table-driven shape, and per-text counts.
 
   These are hard failures, not style. A U+FFFD means a codepoint was destroyed; a leaked @@LMATH0@@ means
   a protection marker outlived the pass that placed it; FILL_ME_IN means a human placeholder shipped.

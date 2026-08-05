@@ -8,10 +8,10 @@
   model, resolution contracts, or the walk that shifts one number or one rendered phrase fails
   here first; corpus-wide wrongness caught on one paper.
 
-  Regenerate the golden DELIBERATELY (never to silence a failure you don't understand):
-    run scratch/probe-prose-channel.ps1, then copy
-    artifacts/latex-ingest/probe/2408.16741v2/2408.16741v2.refs.jsonl
-    -> tests/fixtures/2408.16741v2.refs.golden.jsonl
+  Regenerate the golden DELIBERATELY (never to silence a failure you don't understand): run the same
+  production reference-model setup below against the staged paper, serialize the `label` and `site`
+  rows, compare them with the committed fixture, and then replace it intentionally. There is no
+  automatic refresh command.
 
   Skips when the fixture source is not staged locally (paper sources are corpus material,
   untracked; the golden fixture itself is ours and committed).

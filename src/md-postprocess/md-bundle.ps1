@@ -1,13 +1,13 @@
 #requires -Version 7.0
 <#
-  src/audits/md-bundle.ps1 — standalone-deliverable bundling, as a format-agnostic markdown
+  src/md-postprocess/md-bundle.ps1 — standalone-deliverable bundling, as a format-agnostic markdown
   primitive: copy a finished .md plus every LOCAL asset it references to a destination shelf
   (the ingestion/_markdown pattern — {slug}-latex.md beside its {slug}/ asset folder), then
   VERIFY the result: every relative image link must resolve at the destination, and known defect
   sentinels (U+FFFD, leaked @@…@@ placeholders, FILL_ME_IN) are counted, never silently shipped.
 
   This is delivery polish WITHOUT the publish formalities — no compendium index, no Contents-page
-  rewrite (that stays src/bibliotecha/publish.ps1's job). Lane-agnostic: works on latex-ingest, membrane, or
+  rewrite (that belongs to a future publication adapter). Lane-agnostic: works on latex-ingest or
   hand-edited markdown alike, because it reads only the document and its links.
 #>
 

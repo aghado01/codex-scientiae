@@ -2,7 +2,7 @@
 <#
   src/latex-ingest/tex-render.ps1 — unified diagram render: a LaTeX snippet -> PDF (tectonic) -> PNG (MuPDF).
 
-  The PNG-terminal unification of issues/latex-oracle-images.md: extract a diagram env, wrap it in a
+  The PNG-terminal unification of issues/archive/latex-math-oracle/latex-images.md: extract a diagram env, wrap it in a
   standalone snippet WITH the paper's own preamble replayed (author macros inside diagrams are the
   fidelity trap), compile to a tightly-cropped PDF with tectonic (one self-contained binary that
   auto-fetches packages), then rasterize that PDF to PNG through the shared pdf-raster operation.

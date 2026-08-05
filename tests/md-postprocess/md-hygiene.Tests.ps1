@@ -1,5 +1,5 @@
 #requires -Version 7.0
-# Format-MdHygiene (src/audits/md-hygiene.ps1) — the shared emission walk, tested DIRECTLY as a
+# Format-MdHygiene (src/md-postprocess/md-hygiene.ps1) — the shared emission walk, tested DIRECTLY as a
 # primitive (previously only exercised through full latex-ingest conversions). Coverage: fence
 # verbatim, MD009/MD010/MD012 whitespace, MD026 + heading-level clamp, MD034 autolinks with
 # punctuation left outside, `$a$$b$` span-adjacency repair, ordered-list accident escapes and

@@ -2,9 +2,9 @@
 # src/shared/md-sentinels.ps1 — the ONE defect-sentinel catalogue.
 #
 # These marks say a document was DAMAGED in conversion: a destroyed codepoint, a protection marker that
-# outlived its pass, a human placeholder that shipped. publish.ps1 and md-bundle.ps1 each carried a
-# partial private copy — publish missed the leaked-placeholder pattern entirely — so the union lives here
-# and every gate counts the same things.
+# outlived its pass, a human placeholder that shipped. The retired publisher and md-bundle.ps1 each
+# carried a partial private copy — the publisher missed the leaked-placeholder pattern entirely — so
+# the union lives here and every gate counts the same things.
 
 Describe 'md-sentinels — shared defect catalogue' {
     BeforeAll { . "$PSScriptRoot/../../src/shared/md-sentinels.ps1" }

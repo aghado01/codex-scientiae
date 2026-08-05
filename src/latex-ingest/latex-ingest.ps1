@@ -642,7 +642,7 @@ function Build-CiteMap {
 }
 
 # --- diagram transpilers (ENCODE-FIRST): xy-pic + tikzcd -> semantic KaTeX ---------------------------
-# Doctrine (issues/latex-oracle-images.md, 2026-07-05): a diagram that CAN be expressed as semantic,
+# Doctrine (issues/archive/latex-math-oracle/latex-images.md, 2026-07-05): a diagram that CAN be expressed as semantic,
 # KaTeX-renderable math MUST be — an image is the LAST resort. The corpus is consumed by reasoning
 # models: $0 \longrightarrow K$ is legible content; a PNG (or a \begin{CD} wrapper) is not. Two
 # deterministic rungs share one grid model (rows of { node; arrows }, each arrow { dir; style;
@@ -997,7 +997,7 @@ function Store-Math {
         Write-Warning "latex-ingest: diagram marker embedded in a larger math span; marker rides inside math"
     }
     # xy-pic commutative diagrams (\xymatrix) live in math mode, but KaTeX cannot render xy-pic — left as
-    # $..$ they leak KaTeX-invalid source (the "silent drop" of issues/latex-oracle-images.md).
+    # $..$ they leak KaTeX-invalid source (the "silent drop" of issues/archive/latex-math-oracle/latex-images.md).
     # ENCODE FIRST: a provably-linear chain transpiles to semantic inline arrows and stays REAL MATH in
     # the markdown — the goal register, legible to a reasoning model where a PNG is not. Only when no
     # faithful encoding exists does the whole span (delimiters included, so it compiles standalone)
@@ -2254,7 +2254,7 @@ function Resolve-LatexIngestManifestSource {
 # links resolve beside the deliverable instead of dying with the temp dir. Targets are probed against the
 # workdir tree by leaf name with extension fallback — \includegraphics routinely omits the extension and
 # \graphicspath redirects the dir; a recursive leaf search sidesteps both. PNG is the TERMINAL image
-# register (issues/latex-oracle-images.md): raster formats (png/jpg/…) pass straight through; PDF assets —
+# register (issues/archive/latex-math-oracle/latex-images.md): raster formats (png/jpg/…) pass straight through; PDF assets —
 # the DOMINANT \includegraphics format across the corpus — are rasterized to PNG via MuPDF (batched, one
 # node invocation); EPS/PS (no MuPDF handler) stay a FLAGGED marker until the tectonic wrap, never a
 # broken image tag. Missing/unconverted always flag — never a silently-dead link.
@@ -2560,7 +2560,7 @@ function Invoke-LatexIngestResolvedSource {
     $md = $figs.markdown
 
     # source-authoritative diagrams (TikZ/tikzcd/xy-pic): render each to a PNG and swap its marker for a
-    # live image link. PNG is the terminal register (issues/latex-oracle-images.md). A rendering ladder,
+    # live image link. PNG is the terminal register (issues/archive/latex-math-oracle/latex-images.md). A rendering ladder,
     # each rung a graceful fallback for the one above; nothing throws the conversion:
     #   rung 1  tectonic: compile the snippet (author preamble replayed — macros are the fidelity trap) ->
     #           PDF -> MuPDF -> PNG. One path for ALL packages, incl. xy-pic; the most faithful.
@@ -2614,7 +2614,7 @@ function Invoke-LatexIngestResolvedSource {
     $rendered = $diag.png + $diag.svg
     $diagUnrendered = $script:DiagramStore.Count - $doneN.Count
 
-    # diagrams work-list — the reasoning-agent seam (encode-first doctrine, issues/latex-oracle-images.md):
+    # diagrams work-list — the reasoning-agent seam (encode-first doctrine, issues/archive/latex-math-oracle/latex-images.md):
     # every diagram that did NOT land as semantic math is listed with its original source and disposition,
     # so a downstream translation pass (MCP harness -> reasoning model) can attempt an inline-arrow /
     # \begin{array} encoding and swap the image or marker out for real math. The image is a STOPGAP, not

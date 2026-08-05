@@ -1,5 +1,5 @@
 #requires -Version 7.0
-# ConvertTo-RegisterMath (src/math-register.ps1) — the span-level canonicalizer both lanes serialize
+# ConvertTo-RegisterMath (src/math-register/math-register.ps1) — the span-level canonicalizer both lanes serialize
 # through (math-register spec §4–§5). Coverage: \operatorname lowering (P4), alias surjection with
 # boundary safety, §4.2 furniture, \text masking, glyph -> control sequence, retention guarantees
 # (§4.1/§8.1 — alphabet macros NEVER touched), and idempotency (§C determinism).

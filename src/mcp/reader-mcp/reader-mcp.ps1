@@ -1,10 +1,10 @@
 #requires -Version 7.0
 <#
-  src/reader-mcp/reader-mcp.ps1 — the CONSUMER-side MCP server over codex-scientiae deliverable bundles.
+  src/mcp/reader-mcp/reader-mcp.ps1 — the CONSUMER-side MCP server over codex-scientiae deliverable bundles.
 
-  Two planes, two audiences. codex-membrane is the librarian's instrument: it ingests, audits, repairs and
-  publishes. This is the reader's: it opens finished bundles and slices them, and it can do nothing else —
-  there is no write path anywhere in this file.
+  Curation and consumption are separate planes. A future librarian plane may ingest, audit, repair, and
+  promote bundles. This is the reader plane: it opens finished bundles and slices them, and it can do
+  nothing else — there is no write path anywhere in this file.
 
   SELF-CONTAINED BY DESIGN. It encodes codex-scientiae's bundle conventions (that is the whole point) but
   dot-sources nothing from src/, so it can be installed globally and pointed at any directory holding

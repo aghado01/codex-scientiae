@@ -3,12 +3,11 @@
   src/pdf-raster/pdf-raster.ps1 — PDF -> PNG operation backed by the colocated render.mjs
   worker (MuPDF WASM).
 
-  PNG is the TERMINAL image register for the whole project (issues/latex-oracle-images.md): the pig lane
-  already rasterizes figure regions to PNG through this same engine, and the LaTeX oracle lane joins it
-  here — \includegraphics PDF assets and per-diagram compiled PDFs (tectonic -> PDF) both land as PNG via
-  one raster mechanism. PowerShell orchestrates; node renders — the same harness pattern as tikz-render /
-  math-render audit. Batch-oriented: one node invocation (one wasm init) rasterizes a whole paper's PDFs, each
-  job carrying its own source path (render.mjs caches opened docs by path), with per-job fault isolation.
+  The LaTeX ingestion lane uses PNG as its terminal image register: \includegraphics PDF assets and
+  per-diagram compiled PDFs (tectonic -> PDF) both land as PNG through this source-agnostic mechanism.
+  PowerShell orchestrates; node renders. Batch-oriented: one node invocation (one wasm init) rasterizes
+  a whole paper's PDFs, each job carrying its own source path (render.mjs caches opened docs by path),
+  with per-job fault isolation.
 
   CAVEAT: this MuPDF build has NO SVG or EPS/PostScript document handler — PDF (+ raster images) only.
   SVG intermediates and EPS assets must reach PDF first (tectonic) before they can be rasterized here.

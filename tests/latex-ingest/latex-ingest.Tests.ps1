@@ -521,7 +521,7 @@ Work by M\'{e}moli and M\"{o}bius; also G\"odel and stra\ss e.
 }
 
 # =====================================================================================================
-# ENCODE-FIRST doctrine (issues/latex-oracle-images.md): a diagram that CAN be semantic KaTeX math MUST
+# ENCODE-FIRST doctrine (issues/archive/latex-math-oracle/latex-images.md): a diagram that CAN be semantic KaTeX math MUST
 # be — image is the last resort. Deterministic rungs transpile provably-linear/orthogonal xy-pic + tikzcd;
 # anything else BAILS to the diagram store (never a guessed encoding). These are the oracle's math spec.
 # =====================================================================================================

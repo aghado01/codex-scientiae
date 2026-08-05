@@ -32,13 +32,11 @@ failure, and refuses to report success when discovery finds no tests.
 | Directory | Current ownership |
 |---|---|
 | `audits/` | Repository and deliverable audits, including mathematical rendering |
-| `codex-membrane/` | The retiring membrane product shell and capabilities still embedded in it |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |
 | `latex-ingest/` | LaTeX ingestion, stores, patches, and rendering integration |
 | `math-register/` | Mathematical register normalization |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
-| `pdf-converter/` | The eviction-bound PDF-converter model and its experiments |
 | `procurement/` | Scholarly discovery and acquisition adapters |
 | `reader-mcp/` | Portable deliverable reader MCP |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
@@ -54,5 +52,3 @@ failure, and refuses to report success when discovery finds no tests.
   than unexplained snapshots.
 - Tests that move with an evicted product shell are not automatically endorsed
   as future contracts. Primitive assertions may be extracted later on merit.
-- Corpus-backed membrane tests use the committed streams under
-  `tests/fixtures/chunks/`; see that directory's README for provenance.

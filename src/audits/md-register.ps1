@@ -2,8 +2,7 @@
 <#
   src/audits/md-register.ps1 — the ONE markdown figure/image register, shared across emission lanes.
 
-  Both converters end at the same corpus register (the pdfdig north star: pdfdig replicates an oracle
-  run — issues/pdfdig-lane/pdfdig-ps-converter.md), so the register strings live in exactly one place:
+  Conversion lanes end at the same corpus register, so the register strings live in exactly one place:
 
     image     ![{kind}: {name}]({rel})                 kind ∈ figure | diagram
     caption   *{Text.}*                                italic paragraph, terminal punctuation enforced
@@ -11,8 +10,7 @@
     marker    *[{kind}: {leaf} — {why}]*               the no-silent-failure channel: a figure that
                                                        could not be rendered/found is FLAGGED in place
 
-  Extracted from the LaTeX oracle's Copy-LatexFigures emissions (byte-identical); the membrane finalize
-  weave (pig lane) emits through the same three. Pure string builders — no I/O, no state.
+  Pure string builders — no I/O, no state — shared by any lane that materializes corpus Markdown.
 
     . ./md-register.ps1
 #>

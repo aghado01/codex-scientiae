@@ -61,7 +61,8 @@ generalized and its application assumptions are removed.
 - `src/shared/jsonl-v2.ps1`, `jsonl-store-v2.ps1`, and `jsonl-v2-compat.ps1` are unintegrated replacement
   drafts with unversioned public symbols. Production still uses older or local machinery.
 - `src/shared/jsonl.ps1` combines reusable JSONL operations with staging, ledger, inventory, and retired
-  workflow assumptions. At least `src/bibliotecha/publish.ps1` still consumes its ledger helper.
+  workflow assumptions. Its former publication caller has been removed; the stage writer now has only
+  test consumers, and the ledger/inventory helpers have no production consumers.
 - `src/shared/runs.ps1` contains the current `artifacts/{module}/runs/{runstamp}/{slug}` convention beside
   older paper-local `.runs` discovery and addressing machinery. It is a migration surface, not a finished
   run-context abstraction.
