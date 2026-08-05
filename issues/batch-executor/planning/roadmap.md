@@ -12,9 +12,9 @@ order, and leaks no private helpers. The former flat implementation is now a com
 imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
 
 The behavioral and teardown gates remain closed: 21 executor, 7 private state-contract, 5 preparation, 4
-lifecycle-owner/dispatch, 8 job/plan, and 8 module-surface tests pass, and the complete shared suite is 146
-passing tests. The queued
-multi-item host-stop witness closes the start/registration race and prevents queued supervisors from
+lifecycle-owner/dispatch, 2 await/cancel, 8 job/plan, and 8 module-surface tests pass, and the complete
+shared suite is 148 passing tests. The queued multi-item host-stop witness closes the start/registration
+race and prevents queued supervisors from
 unwinding in serial waves. Preparation now completes all caller-graph traversal and serialization before
 the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
 residue and rebuilt the check around required current inputs. Phase 2 is closed; Phase 3 is active with the
@@ -31,9 +31,6 @@ package boundary, public execution projection, and compatibility facade held sta
 
 ## Phase 3 — Internal lifecycle decomposition
 
-- **BEX-304 — Extract interruptible await/cancel as one unit.** Preserve 200 ms host-interruption
-  checkpoints and the ordering of child-tree kill, immediate direct stop, bounded process-supervisor drain,
-  and final batched pipeline stop.
 - **BEX-305 — Extract result collection.** Preserve item-local failure containment, diagnostic-stream
   merging, the original caller `Input`, stable index ordering, and the exact public state/result fields.
 - **BEX-306 — Extract teardown and final execution-record assembly.** Keep one lexical outer `try/finally` in

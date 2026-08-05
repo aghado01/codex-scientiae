@@ -64,6 +64,7 @@ $hostFiles = @(
     'private/executor-preparation.ps1'
     'private/executor-dispatch.ps1'
     'private/process-lifecycle.ps1'
+    'private/executor-await.ps1'
     'private/plan-resolution.ps1'
     'public/New-BatchJob.ps1'
     'public/New-BatchPlan.ps1'

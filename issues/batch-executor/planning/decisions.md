@@ -184,6 +184,11 @@ covers construction through `BeginInvoke`, each successful submission is then re
 invocation, and an item-local launch failure is materialized directly in the owned result array. Await,
 collection, and teardown are migrated incrementally by the remaining Phase 3 items.
 
+BEX-304 binds await/cancel exclusively to the frozen preparation policy. The lifecycle owner records one
+typed wait outcome before entering `Awaited`; cancellation retains child-tree kill, direct-pipeline stop,
+bounded process-supervisor drain, then final batched stop ordering. The process drain shares the same 200 ms
+host-interruption checkpoints while retaining one batch-wide drain deadline.
+
 ### D18 — Phase 3 freezes the public execution projection — accepted
 
 Lifecycle decomposition does not add or rename public result, execution, policy, summary, or timing

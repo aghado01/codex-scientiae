@@ -101,6 +101,11 @@ publishes a newly constructed pool before configuration/open, keeps the pipeline
 submitted in an owner-visible pending slot, and registers each successful `BeginInvoke` immediately. Thus
 exceptional unwind can always reach every acquired handle.
 
+Await/cancel consumes only the preparation's frozen token, total timeout, 200 ms host-interruption slice,
+and process-drain allowance. Both the main wait and batch-wide process drain use the interruption slice.
+The phase records one typed wait outcome before collection begins and retains the parent-owned child-tree
+and batched pipeline-stop order.
+
 ## Cancellation and ownership
 
 The caller may provide a `CancellationToken`; `WaitTimeoutSeconds` bounds the whole join and

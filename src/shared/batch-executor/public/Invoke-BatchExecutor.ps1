@@ -43,7 +43,6 @@ function Invoke-BatchExecutor {
         -WindowStyle $WindowStyle -LoadProfile:$LoadProfile -PriorityClass $PriorityClass
 
     $count = $preparation.ItemCount
-    $hasProcessJobs = $preparation.HasProcessItems
     $budget = $preparation.Budget
     $policy = $preparation.Policy
 
@@ -66,90 +65,7 @@ function Invoke-BatchExecutor {
 
     try {
         Start-BatchExecutorInvocations -Lifecycle $lifecycle
-        Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaiting
-
-        $swWait = [System.Diagnostics.Stopwatch]::StartNew()
-        $cancellationObserved = $CancellationToken.IsCancellationRequested
-        $timeoutObserved = $false
-        if (-not $cancellationObserved) { foreach ($invocation in $invocations) {
-            if ($invocation.AsyncResult.IsCompleted) { continue }
-            # Never park the hosting PowerShell pipeline in an indefinite CLR wait. Short slices give
-            # Ctrl+C / PowerShell.Stop() regular interpreter checkpoints so the outer finally block can
-            # kill registered process trees immediately instead of waiting for child completion.
-            while (-not $invocation.AsyncResult.IsCompleted) {
-                if ($CancellationToken.IsCancellationRequested) {
-                    $cancellationObserved = $true
-                    break
-                }
-                $remaining = if ($WaitTimeoutSeconds -gt 0) {
-                    ([int64]$WaitTimeoutSeconds * 1000) - $swWait.ElapsedMilliseconds
-                }
-                else { [int64]-1 }
-                if ($WaitTimeoutSeconds -gt 0 -and $remaining -le 0) {
-                    $timeoutObserved = $true
-                    break
-                }
-                $waitSlice = if ($remaining -ge 0) {
-                    [int][math]::Min(200, [math]::Max(1, $remaining))
-                }
-                else { 200 }
-
-                if ($CancellationToken.CanBeCanceled) {
-                    $handles = [System.Threading.WaitHandle[]]@(
-                        $invocation.AsyncResult.AsyncWaitHandle,
-                        $CancellationToken.WaitHandle)
-                    $waitResult = [System.Threading.WaitHandle]::WaitAny($handles, $waitSlice)
-                    if ($waitResult -eq 0) { break }
-                    if ($waitResult -eq 1) { $cancellationObserved = $true; break }
-                }
-                elseif ($invocation.AsyncResult.AsyncWaitHandle.WaitOne($waitSlice)) { break }
-            }
-            if ($cancellationObserved -or $timeoutObserved) { break }
-        } }
-
-        if ($cancellationObserved -or $timeoutObserved) {
-            foreach ($invocation in $invocations) {
-                if (-not $invocation.AsyncResult.IsCompleted) {
-                    $terminalOverride = if ($cancellationObserved) { 'Cancelled' } else { 'TimedOut' }
-                    Set-BatchExecutorInvocationTerminalOverride -Invocation $invocation `
-                        -State $terminalOverride
-                }
-            }
-
-            $reason = if ($cancellationObserved) { 'caller cancellation' } else { 'batch wait timeout' }
-            Stop-BatchExecutorChildProcesses -Registry $processRegistry -Reason $reason `
-                -Diagnostics $infrastructureErrors
-
-            # Direct pipelines have no diagnostic transport to drain once cancellation is observed.
-            # Stop them immediately; process supervisors get a short opportunity to publish the
-            # child envelope produced after their registered process tree was terminated.
-            Stop-BatchExecutorPipelines -Invocations @(
-                $invocations | Where-Object { $_.PreparedItem.Mode -eq 'Runspace' }
-            )
-            if ($hasProcessJobs) {
-                # Killed children and token-aware queued dispatchers normally unwind with useful
-                # envelopes. Give the outer runspaces one bounded grace period to publish them.
-                $drain = [System.Diagnostics.Stopwatch]::StartNew()
-                foreach ($invocation in $invocations) {
-                    if ($invocation.PreparedItem.Mode -ne 'Process' -or
-                            $invocation.AsyncResult.IsCompleted) { continue }
-                    $remainingDrain = [math]::Max(
-                        0, $preparation.ProcessDrainMilliseconds - $drain.ElapsedMilliseconds)
-                    if ($remainingDrain -gt 0) {
-                        [void]$invocation.AsyncResult.AsyncWaitHandle.WaitOne([int]$remainingDrain)
-                    }
-                }
-            }
-
-            Stop-BatchExecutorPipelines -Invocations $invocations
-        }
-        $timing.WaitMs = $swWait.ElapsedMilliseconds
-        $lifecycle.WaitOutcome = if ($cancellationObserved) {
-            New-BatchExecutorWaitOutcome -Kind CallerCancellation
-        }
-        elseif ($timeoutObserved) { New-BatchExecutorWaitOutcome -Kind BatchTimeout }
-        else { New-BatchExecutorWaitOutcome -Kind Completed }
-        Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Awaited
+        Wait-BatchExecutorInvocations -Lifecycle $lifecycle
 
         Set-BatchExecutorLifecyclePhase -Lifecycle $lifecycle -Phase Collecting
         $swCollect = [System.Diagnostics.Stopwatch]::StartNew()
