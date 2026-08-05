@@ -109,4 +109,10 @@ The exhaustive bounded suite checks all 64 selection values and all 4,096 ordere
 with a separate 70-claim word-boundary witness and adversarial cross-batch cases. No pair carrier,
 join change, durable identity, or K2b placeholder leaked into the chip. D30 closes K2a at 1,651
 checks; [K2b](../planning/architecture-expansion-workplan.md#k2b-claimpairview) is the active next
-implementation.
+implementation at this chip boundary.
+
+Follow-on: [K2b](sol-doccer-k2b-claim-pair-view-20260805_022512.md) subsequently closed the exact
+pair/join boundary as D31. It composes only through actual middle ordinals, retains complete
+basis-stamped witness groups, executes the one-way Allen bridge and both non-converse mechanisms,
+and makes `IntervalJoins.Join` a `ClaimPairView` projection. Harness 1651→1733; K2c pairing is now
+active next.

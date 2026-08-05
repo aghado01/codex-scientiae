@@ -268,8 +268,8 @@ Land as two small chips:
 
 D27 made the second chip a semantic closure rather than a transitional consumer rewrite. D28
 lands <code>AllenCompose</code>, the table/oracle boundary, classifier closure, counterexample, and
-durable validation filters. K2b still owns the one semantic transition from the terminal raw-list
-join to an exact composable pair carrier.
+durable validation filters. D31 subsequently performs K2b's one semantic transition from the
+terminal raw-list join to an exact composable pair carrier.
 
 Surface:
 
@@ -288,8 +288,8 @@ Exit gate — **closed by D28**:
 - a separately encoded table equals exhaustive \(D_6\) triad enumeration;
 - the finite adjacent-gap counterexample is retained;
 - durable validation filters use <code>AllenRelationSet</code> rather than ad hoc hash sets;
-- K1b adds no filter-only overload to <code>IntervalJoins.Join</code>; K2b retires it or makes it a
-  projection backed by <code>ClaimPairView</code>.
+- K1b adds no filter-only overload to <code>IntervalJoins.Join</code>; D31 makes it a projection
+  backed by <code>ClaimPairView</code> and removes the transient general-set filter.
 
 Not included: empty spans, claim identity, path consistency, generic QSTR descriptors, or
 Ghourabi's proof-grouping unions as privileged runtime values.
@@ -298,8 +298,8 @@ Ghourabi's proof-grouping unions as privileged runtime values.
 
 D27 treats K2a, K2b, and K2c as one vertically specified tranche that lands in consecutive,
 reviewable chips. D29 closes their common basis, identity, projection, ordering, residue,
-reference-composition, and exact-to-qualitative abstraction contracts; D30 lands K2a against that
-contract. Joint specification does not mean one monolithic commit.
+reference-composition, and exact-to-qualitative abstraction contracts; D30 lands K2a and D31 lands
+K2b against that contract. Joint specification does not mean one monolithic commit.
 
 #### K2a: <code>ClaimSelection</code> — closed by D30
 
@@ -337,7 +337,7 @@ claim-to-region conveniences delegate through selections. The bounded oracle exh
 subsets and 4,096 ordered pairs on six claims, with a separate 70-claim word-boundary witness.
 Harness 1577→1651; K2a is closed.
 
-#### K2b: <code>ClaimPairView</code>
+#### K2b: <code>ClaimPairView</code> — closed by D31
 
 An exact relation between explicit left and right claim bases.
 
@@ -391,8 +391,8 @@ This is a one-way abstraction. Every exact outer edge still requires an actual m
 The abstraction forgets correlation between relation atoms and middle identities; the adjacent-gap
 counterexample also exposes the finite carrier's missing-intermediate boundary. Together they
 refute the converse and forbid using qualitative table membership as evidence that an exact edge
-exists. `AllenImage` is contract notation and a test oracle; it becomes public surface only if the
-K2b implementation brief identifies a concrete diagnostic or consumer.
+exists. `AllenImage` remains contract notation and a test oracle: the K2b implementation found no
+concrete diagnostic or consumer that justified a public surface.
 
 K2b exit gate:
 
@@ -403,6 +403,18 @@ K2b exit gate:
 - per-witness atomic containment and union-level Allen-image inclusion;
 - the adjacent-gap non-converse remains executable;
 - `IntervalJoins.Join` has one semantic implementation path through `ClaimPairView`.
+
+D31 implements this surface. `ClaimPairView` derives Allen-labeled edges over exact ordered batch
+bases; validates arbitrary ordinal construction; supplies the ordinal diagonal, converse,
+selection projections, and exact-basis semijoins; and composes by a direct shared-middle ordinal
+join. `ClaimPairWitnessView` separately stamps left/middle/right bases and reports complete
+ascending middles without support-algebra identity. `IntervalJoins.Join` now accepts
+`AllenRelationSet?` and projects `ClaimPairView.Relate`; its independent nested loop is gone.
+
+The bounded harness covers all 16 two-by-two relations, 256 oracle-differential compositions,
+4,096 associative triples, and all 3,375 exact middle paths on the six-boundary Allen carrier. The
+D29 inclusion, actual-image distinction, middle-correlation loss, and adjacent-gap non-converse
+are executable. Harness 1651→1733; K2b is closed and `AllenImage` remains nonpublic.
 
 #### K2c: pairing as the first structural consumer
 
@@ -662,11 +674,11 @@ Until a named obligation crosses that brief's burden-of-proof gate, the law regi
 cheapest independent evidence that honestly supports the contract.
 
 D29 identifies the K2 exact-to-qualitative inclusion as a genuine obligation but not a present
-Lean activation. The reference proof is a direct middle-witness chase, D28 already certifies the
-atomic Allen triads, and K2b can expose the Doccer-specific carrier plumbing through reference and
-property tests. Reassess the gate before an indexed, compressed, incremental, or independent pair
-backend relies on qualitative summaries for a universal no-false-negative claim, or if the public
-contract changes the inclusion to equality.
+Lean activation. D31 now exposes the Doccer-specific carrier plumbing through direct composition,
+an independent nested oracle, 3,375 per-witness atomic checks, and bounded property laws; D28
+already certifies the atomic Allen triads. Reassess the gate before an indexed, compressed,
+incremental, or independent pair backend relies on qualitative summaries for a universal
+no-false-negative claim, or if the public contract changes the inclusion to equality.
 
 ### L0 — bootstrap only after an activation trigger
 
@@ -777,10 +789,10 @@ The expansion will not:
 ## 11. Immediate next move
 
 K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
-contract freeze as D29, and K2a selection closure as D30. The next implementation chip is K2b:
-land the exact pair carrier, direct reference `ComposePairs`, executable Allen-image bridge, and
-the one terminal-join transition. K2c follows with pairing and complete residue. Do not insert an
-unrelated tranche between these chips.
+contract freeze as D29, K2a selection closure as D30, and K2b exact-pair closure as D31. The next
+implementation chip is K2c: land policy-stamped pairing with `ClaimPairView` match edges and
+complete identity-bearing selection/pair residue. Do not insert an unrelated tranche before this
+K2 witness closes.
 
 The D29 bridge did not activate Lean. Apply the deferred gate only if implementation pressure
 changes its direction, basis hypotheses, public abstraction, or assurance burden as described in

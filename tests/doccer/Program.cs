@@ -65,6 +65,11 @@ internal static class Program
             ClaimSelectionBooleanLawsHoldExhaustively();
             ClaimSelectionSeparatesMembershipFromOrderedProjection();
             SelectionPopulationIntegrationsShareOnePath();
+            ClaimPairViewIsAnExactBasisStampedRelation();
+            ClaimPairViewProjectsSemijoinsAndConverse();
+            ClaimPairCompositionMatchesItsIndependentOracleAndWitnesses();
+            ClaimPairCompositionLawsHoldOnBoundedRelations();
+            ClaimPairAllenAbstractionBridgeIsOneWay();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -1564,7 +1569,9 @@ internal static class Program
         var right = rightBuilder.Freeze();
 
         var joined = IntervalJoins.Join(left, right);
+        var pairView = ClaimPairView.Relate(left, right, AllenRelationSet.All);
         Equal(left.Count * right.Count, joined.Count, "the unfiltered join relates every pair");
+        Equal(pairView.Count, joined.Count, "the compatibility join projects the exact pair view");
         Equal(AllenRelation.Meets, joined[0].Relation, "[0,5) meets [5,10)");
         Equal(AllenRelation.Equal, joined[2].Relation, "[0,5) equals [0,5)");
         Equal(AllenRelation.MetBy, joined[3].Relation, "[10,20) is met by [5,10)");
@@ -1572,11 +1579,27 @@ internal static class Program
         Equal(0, joined[0].Left.Ordinal, "join rows carry the left record");
         Equal(0, joined[0].Right.Ordinal, "join rows carry the right record");
 
+        var projectedExactly = true;
+        var pairRows = pairView.ToArray();
+        for (var i = 0; i < pairRows.Length; i++)
+        {
+            projectedExactly &=
+                joined[i].Left.Ordinal == pairRows[i].LeftOrdinal &&
+                joined[i].Right.Ordinal == pairRows[i].RightOrdinal &&
+                joined[i].Relation == pairRows[i].Relation;
+        }
+
+        True(projectedExactly, "every terminal join row is the corresponding pair-view edge");
+
         var contains = IntervalJoins.Join(
-            left, right, new HashSet<AllenRelation> { AllenRelation.Contains });
+            left, right, AllenRelationSet.Singleton(AllenRelation.Contains));
+        var containsView = ClaimPairView.Relate(
+            left, right, AllenRelationSet.Singleton(AllenRelation.Contains));
         Equal(1, contains.Count, "the filtered join keeps only the requested relations");
+        Equal(containsView.Count, contains.Count, "the filtered compatibility projection shares pair semantics");
         Equal("b", contains[0].Left.Kind, "the filtered row's left claim");
         Equal("d", contains[0].Right.Kind, "the filtered row's right claim");
+        Equal(0, IntervalJoins.Join(left, right, AllenRelationSet.None).Count, "the closed empty filter joins nothing");
 
         var foreignBuilder = new SpanBatchBuilder(new TextMaster("join-foreign", 0, master.Text));
         foreignBuilder.Add(new SpanClaim(new TextSpan(0, 5), "f", SpanLevel.Character, "test"));
@@ -2710,6 +2733,628 @@ internal static class Program
         Throws<ArgumentNullException>(
             () => Suppression.Excluded((ClaimSelection)null!),
             "selected suppression requires a selection");
+    }
+
+    /// <summary>
+    /// K2b: exact pair identity is two frozen-batch references plus extensional ordinal-pair
+    /// membership. Geometry labels are derived, canonical enumeration is lexicographic, and the
+    /// ordinal diagonal remains narrower than geometric equality over duplicate spans.
+    /// </summary>
+    private static void ClaimPairViewIsAnExactBasisStampedRelation()
+    {
+        var master = new TextMaster("pair-value", 0, new string('x', 20));
+        var left = PairBatch(
+            master,
+            new TextSpan(0, 5),
+            new TextSpan(0, 5),
+            new TextSpan(10, 15));
+        var right = PairBatch(
+            master,
+            new TextSpan(0, 5),
+            new TextSpan(5, 10),
+            new TextSpan(12, 14));
+
+        var all = ClaimPairView.Relate(left, right, AllenRelationSet.All);
+        True(ReferenceEquals(all.LeftBasis, left), "pair view retains the exact left basis");
+        True(ReferenceEquals(all.RightBasis, right), "pair view retains the exact right basis");
+        Equal(left.Count * right.Count, all.Count, "All relates every occurrence pair");
+        Equal(
+            "0:0,0:1,0:2,1:0,1:1,1:2,2:0,2:1,2:2",
+            PairKeys(all),
+            "pair enumeration is lexicographic by exact ordinals");
+        True(all.Contains(0, 0) && all.Contains(2, 2), "exact membership finds retained edges");
+
+        var labelsAreDerived = all.All(pair =>
+            pair.Relation == AllenAlgebra.Relate(
+                left[pair.LeftOrdinal].Span,
+                right[pair.RightOrdinal].Span));
+        True(labelsAreDerived, "every edge label is derived from its retained occurrence bases");
+
+        var equal = ClaimPairView.Relate(left, right, AllenRelationSet.Equal);
+        Equal(2, equal.Count, "equal geometry preserves two distinct left occurrences");
+        Equal("0:0,1:0", PairKeys(equal), "equal geometry does not merge occurrence identities");
+        Equal(0, ClaimPairView.Relate(left, right, AllenRelationSet.None).Count, "None retains no edges");
+
+        var created = ClaimPairView.Create(
+            left,
+            right,
+            new[] { (2, 2), (0, 1), (0, 1) });
+        Equal(2, created.Count, "duplicate input edges coalesce");
+        Equal("0:1,2:2", PairKeys(created), "arbitrary construction canonicalizes input order");
+        Equal(AllenRelation.Meets, created.First().Relation, "constructed edge relation is derived, not supplied");
+
+        var replay = ClaimPairView.Create(left, right, new[] { (0, 1), (2, 2) });
+        True(created.Equals(replay), "equal bases and edge membership give value equality");
+        Equal(created.GetHashCode(), replay.GetHashCode(), "equal pair relations hash equally");
+        True(ClaimPairView.None(left, right).Equals(ClaimPairView.Relate(left, right, AllenRelationSet.None)),
+            "empty construction paths agree on one exact pair basis");
+
+        var foreignLeft = PairBatch(
+            master,
+            new TextSpan(0, 5),
+            new TextSpan(0, 5),
+            new TextSpan(10, 15));
+        var foreign = ClaimPairView.Create(foreignLeft, right, new[] { (0, 1), (2, 2) });
+        True(!created.Equals(foreign), "equal rows and edges on a separately frozen batch are not equal");
+
+        var identity = ClaimPairView.Identity(left);
+        Equal(3, identity.Count, "occurrence identity is the complete ordinal diagonal");
+        Equal("0:0,1:1,2:2", PairKeys(identity), "identity contains diagonal ordinals only");
+        var geometricEqual = ClaimPairView.Relate(left, left, AllenRelationSet.Equal);
+        Equal(5, geometricEqual.Count, "geometric equality includes duplicate-span cross-ordinals");
+        True(geometricEqual.Contains(0, 1) && !identity.Contains(0, 1),
+            "Allen Equal is distinct from claim occurrence identity");
+
+        True(!master.FingerprintIsCreated && !master.TopologyIsCreated,
+            "same-master pair algebra forces no fingerprint or topology");
+
+        var compatibleMaster = new TextMaster(master.DocumentId, master.Revision, master.Text);
+        var compatibleRight = PairBatch(compatibleMaster, new TextSpan(0, 5));
+        Equal(left.Count, ClaimPairView.Relate(left, compatibleRight, AllenRelationSet.All).Count,
+            "different but compatible masters may be related on explicit exact bases");
+
+        Throws<ArgumentOutOfRangeException>(() => all.Contains(-1, 0), "negative left membership is undefined");
+        Throws<ArgumentOutOfRangeException>(() => all.Contains(0, right.Count), "right membership beyond the basis is undefined");
+        Throws<ArgumentOutOfRangeException>(
+            () => ClaimPairView.Create(left, right, new[] { (0, 0), (left.Count, 0) }),
+            "construction refuses an undefined ordinal anywhere in the input");
+        Throws<ArgumentNullException>(
+            () => ClaimPairView.Create(left, right, null!),
+            "pair construction requires an edge population");
+        Throws<ArgumentNullException>(
+            () => ClaimPairView.Relate(null!, right, AllenRelationSet.All),
+            "pair relation requires a left basis");
+
+        var incompatible = PairBatch(
+            new TextMaster("pair-incompatible", 0, master.Text),
+            new TextSpan(0, 5));
+        Throws<InvalidOperationException>(
+            () => ClaimPairView.Relate(left, incompatible, AllenRelationSet.All),
+            "pair geometry refuses incompatible coordinate spaces");
+    }
+
+    /// <summary>
+    /// K2b: projections and semijoins retain exact occurrence bases, while converse swaps those
+    /// bases, ordinals, and Allen labels without changing extensional edge identity.
+    /// </summary>
+    private static void ClaimPairViewProjectsSemijoinsAndConverse()
+    {
+        var master = new TextMaster("pair-relational", 0, new string('x', 20));
+        var left = PairBatch(master, new TextSpan(0, 3), new TextSpan(4, 7), new TextSpan(8, 12));
+        var right = PairBatch(master, new TextSpan(1, 2), new TextSpan(5, 9), new TextSpan(12, 15));
+        var relation = ClaimPairView.Create(
+            left,
+            right,
+            new[] { (0, 1), (0, 2), (2, 0), (2, 2) });
+
+        var leftProjection = relation.ProjectLeft();
+        var rightProjection = relation.ProjectRight();
+        True(leftProjection.Equals(ClaimSelection.Create(left, new[] { 0, 2 })),
+            "left projection deduplicates exact left occurrences");
+        True(rightProjection.Equals(ClaimSelection.All(right)),
+            "right projection retains every reached right occurrence");
+
+        var selectedLeft = ClaimSelection.Create(left, new[] { 2 });
+        var selectedRight = ClaimSelection.Create(right, new[] { 2 });
+        var leftSemi = relation.SemiJoinLeft(selectedLeft);
+        var rightSemi = relation.SemiJoinRight(selectedRight);
+        Equal("2:0,2:2", PairKeys(leftSemi), "left semijoin filters only the left endpoint");
+        Equal("0:2,2:2", PairKeys(rightSemi), "right semijoin filters only the right endpoint");
+        True(leftSemi.ProjectLeft().Equals(leftProjection.Intersect(selectedLeft)),
+            "left projection-semijoin law holds");
+        True(rightSemi.ProjectRight().Equals(rightProjection.Intersect(selectedRight)),
+            "right projection-semijoin law holds");
+        True(relation.SemiJoinLeft(ClaimSelection.All(left)).Equals(relation),
+            "left semijoin by All is identity");
+        True(relation.SemiJoinRight(ClaimSelection.None(right)).IsEmpty,
+            "right semijoin by None annihilates the relation");
+
+        var converse = relation.Converse();
+        True(ReferenceEquals(converse.LeftBasis, right) && ReferenceEquals(converse.RightBasis, left),
+            "converse swaps exact bases");
+        Equal("0:2,1:0,2:0,2:2", PairKeys(converse), "converse re-canonicalizes swapped ordinals");
+        True(converse.Converse().Equals(relation), "converse is involutive on exact pair relations");
+        True(
+            relation.SemiJoinLeft(selectedLeft).Converse().Equals(
+                relation.Converse().SemiJoinRight(selectedLeft)),
+            "converse exchanges left and right semijoins");
+
+        var converseLabels = true;
+        foreach (var pair in relation)
+        {
+            var reverse = converse.Single(candidate =>
+                candidate.LeftOrdinal == pair.RightOrdinal &&
+                candidate.RightOrdinal == pair.LeftOrdinal);
+            converseLabels &= reverse.Relation == AllenAlgebra.Inverse(pair.Relation);
+        }
+
+        True(converseLabels, "converse maps every exact Allen label pointwise");
+
+        var foreignLeft = PairBatch(master, new TextSpan(0, 3), new TextSpan(4, 7), new TextSpan(8, 12));
+        Throws<InvalidOperationException>(
+            () => relation.SemiJoinLeft(ClaimSelection.All(foreignLeft)),
+            "left semijoin refuses a selection on an equal but different batch");
+        Throws<InvalidOperationException>(
+            () => relation.SemiJoinRight(ClaimSelection.All(left)),
+            "right semijoin refuses the wrong exact side basis");
+        Throws<ArgumentNullException>(
+            () => relation.SemiJoinLeft(null!),
+            "semijoin requires a selection");
+    }
+
+    /// <summary>
+    /// K2b: reference composition is a direct exact middle-ordinal join. An independently written
+    /// nested oracle agrees extensionally, duplicate outer pairs collapse, and the separate witness
+    /// query is sound, complete, ascending, and basis-stamped for this composition only.
+    /// </summary>
+    private static void ClaimPairCompositionMatchesItsIndependentOracleAndWitnesses()
+    {
+        var master = new TextMaster("pair-compose", 0, new string('x', 12));
+        var a = PairBatch(master, new TextSpan(0, 2), new TextSpan(8, 10));
+        var b = PairBatch(master, new TextSpan(2, 4), new TextSpan(4, 6), new TextSpan(6, 8));
+        var c = PairBatch(master, new TextSpan(0, 5), new TextSpan(5, 10));
+
+        var left = ClaimPairView.Create(
+            a,
+            b,
+            new[] { (0, 0), (0, 1), (1, 1), (1, 2) });
+        var right = ClaimPairView.Create(
+            b,
+            c,
+            new[] { (0, 0), (1, 0), (1, 1), (2, 1) });
+
+        var composed = left.ComposePairs(right);
+        var oracle = ComposePairOracle(left, right);
+        True(PairViewMatchesKeys(composed, oracle),
+            "direct composition agrees with the independent nested relation oracle");
+        Equal("0:0,0:1,1:0,1:1", PairKeys(composed),
+            "composition deduplicates outer pairs in lexicographic order");
+        Equal(4, composed.Count, "six exact paths collapse to four extensional outer edges");
+
+        var witnesses = left.GroupMiddleWitnesses(right);
+        True(ReferenceEquals(witnesses.LeftBasis, a), "witness query retains the outer left basis");
+        True(ReferenceEquals(witnesses.MiddleBasis, b), "witness query retains the exact middle basis");
+        True(ReferenceEquals(witnesses.RightBasis, c), "witness query retains the outer right basis");
+        Equal(4, witnesses.Count, "one witness group is reported per composed outer edge");
+        Equal("0,1", string.Join(",", witnesses[0].MiddleOrdinals),
+            "multiple middle witnesses are complete and ascending");
+        Equal("1,2", string.Join(",", witnesses[3].MiddleOrdinals),
+            "the last outer edge retains both of its middle occurrences");
+        True(WitnessViewMatchesOracle(witnesses, left, right),
+            "middle witness groups are sound and complete for the independent oracle");
+
+        True(ClaimPairView.Identity(a).ComposePairs(left).Equals(left),
+            "ordinal identity is a left identity for exact composition");
+        True(left.ComposePairs(ClaimPairView.Identity(b)).Equals(left),
+            "ordinal identity is a right identity for exact composition");
+        True(left.ComposePairs(ClaimPairView.None(b, c)).Equals(ClaimPairView.None(a, c)),
+            "empty right relation annihilates exact composition");
+        Equal(0, left.GroupMiddleWitnesses(ClaimPairView.None(b, c)).Count,
+            "empty composition has no witness groups");
+
+        var bClone = PairBatch(master, new TextSpan(2, 4), new TextSpan(4, 6), new TextSpan(6, 8));
+        var foreignRight = ClaimPairView.Create(
+            bClone,
+            c,
+            new[] { (0, 0), (1, 0), (1, 1), (2, 1) });
+        Throws<InvalidOperationException>(
+            () => left.ComposePairs(foreignRight),
+            "composition refuses an equal but nonidentical middle batch");
+        Throws<InvalidOperationException>(
+            () => left.GroupMiddleWitnesses(foreignRight),
+            "witness grouping enforces the same exact middle basis");
+        Throws<ArgumentNullException>(
+            () => left.ComposePairs(null!),
+            "composition requires a right relation");
+    }
+
+    /// <summary>
+    /// K2b gate: all sixteen relations between two two-claim bases are exercised as values. Every
+    /// ordered composition pair is checked against an independent oracle; projection, semijoin,
+    /// identity, converse reversal, and all 4096 relation triples satisfy their extensional laws.
+    /// </summary>
+    private static void ClaimPairCompositionLawsHoldOnBoundedRelations()
+    {
+        var master = new TextMaster("pair-laws", 0, new string('x', 12));
+        var a = PairBatch(master, new TextSpan(0, 2), new TextSpan(8, 10));
+        var b = PairBatch(master, new TextSpan(1, 3), new TextSpan(7, 9));
+        var c = PairBatch(master, new TextSpan(2, 4), new TextSpan(6, 8));
+        var d = PairBatch(master, new TextSpan(3, 5), new TextSpan(5, 7));
+
+        const int relationCount = 1 << 4;
+        var ab = new ClaimPairView[relationCount];
+        var bc = new ClaimPairView[relationCount];
+        var cd = new ClaimPairView[relationCount];
+        for (var mask = 0; mask < relationCount; mask++)
+        {
+            ab[mask] = PairViewFromMask(a, b, mask);
+            bc[mask] = PairViewFromMask(b, c, mask);
+            cd[mask] = PairViewFromMask(c, d, mask);
+        }
+
+        var valueLawsHold = true;
+        for (var mask = 0; mask < relationCount && valueLawsHold; mask++)
+        {
+            var relation = ab[mask];
+            var leftProjectionMask = 0;
+            var rightProjectionMask = 0;
+            foreach (var pair in relation)
+            {
+                leftProjectionMask |= 1 << pair.LeftOrdinal;
+                rightProjectionMask |= 1 << pair.RightOrdinal;
+            }
+
+            valueLawsHold =
+                relation.Converse().Converse().Equals(relation) &&
+                ClaimPairView.Identity(a).ComposePairs(relation).Equals(relation) &&
+                relation.ComposePairs(ClaimPairView.Identity(b)).Equals(relation) &&
+                SelectionMatchesMask(relation.ProjectLeft(), leftProjectionMask) &&
+                SelectionMatchesMask(relation.ProjectRight(), rightProjectionMask);
+
+            for (var selectionMask = 0; selectionMask < 4 && valueLawsHold; selectionMask++)
+            {
+                var leftSelection = SelectionFromMask(a, selectionMask);
+                var rightSelection = SelectionFromMask(b, selectionMask);
+                valueLawsHold =
+                    PairViewMatchesKeys(
+                        relation.SemiJoinLeft(leftSelection),
+                        relation
+                            .Where(pair => (selectionMask & (1 << pair.LeftOrdinal)) != 0)
+                            .Select(pair => (pair.LeftOrdinal, pair.RightOrdinal))) &&
+                    PairViewMatchesKeys(
+                        relation.SemiJoinRight(rightSelection),
+                        relation
+                            .Where(pair => (selectionMask & (1 << pair.RightOrdinal)) != 0)
+                            .Select(pair => (pair.LeftOrdinal, pair.RightOrdinal)));
+            }
+        }
+
+        True(valueLawsHold,
+            "all sixteen bounded pair relations satisfy identity, converse, projection, and semijoin laws");
+
+        var binaryLawsHold = true;
+        for (var leftMask = 0; leftMask < relationCount && binaryLawsHold; leftMask++)
+        {
+            for (var rightMask = 0; rightMask < relationCount && binaryLawsHold; rightMask++)
+            {
+                var left = ab[leftMask];
+                var right = bc[rightMask];
+                binaryLawsHold =
+                    PairViewMatchesKeys(left.ComposePairs(right), ComposePairOracle(left, right)) &&
+                    left.ComposePairs(right).Converse().Equals(
+                        right.Converse().ComposePairs(left.Converse()));
+            }
+        }
+
+        True(binaryLawsHold,
+            "all 256 bounded composition pairs match the oracle and reverse under converse");
+
+        var associativityHolds = true;
+        for (var firstMask = 0; firstMask < relationCount && associativityHolds; firstMask++)
+        {
+            for (var secondMask = 0; secondMask < relationCount && associativityHolds; secondMask++)
+            {
+                for (var thirdMask = 0; thirdMask < relationCount && associativityHolds; thirdMask++)
+                {
+                    associativityHolds =
+                        ab[firstMask]
+                            .ComposePairs(bc[secondMask])
+                            .ComposePairs(cd[thirdMask])
+                            .Equals(
+                                ab[firstMask].ComposePairs(
+                                    bc[secondMask].ComposePairs(cd[thirdMask])));
+                }
+            }
+        }
+
+        True(associativityHolds, "all 4096 bounded exact-relation triples compose associatively");
+    }
+
+    /// <summary>
+    /// K2b/D29: every exact composition edge has a middle witness whose atomic Allen triad lies in
+    /// canonical composition. Unioning gives the one-way image inclusion. Separate correlation and
+    /// adjacent finite-gap witnesses refute the converse without ever generating an exact edge from
+    /// a qualitative table cell.
+    /// </summary>
+    private static void ClaimPairAllenAbstractionBridgeIsOneWay()
+    {
+        var master = new TextMaster("pair-allen-bridge", 0, new string('x', 5));
+        var intervals = PairBatch(master, CreateNonEmptyAllenIntervals(6).ToArray());
+        var all = ClaimPairView.Relate(intervals, intervals, AllenRelationSet.All);
+        var composed = all.ComposePairs(all);
+        Equal(225, all.Count, "the six-boundary carrier exposes every ordered interval pair");
+        Equal(225, composed.Count, "the full exact relation composes to every outer pair");
+
+        var perWitnessHolds = true;
+        var witnessCount = 0;
+        foreach (var leftPair in all)
+        {
+            foreach (var rightPair in all)
+            {
+                if (leftPair.RightOrdinal != rightPair.LeftOrdinal)
+                {
+                    continue;
+                }
+
+                witnessCount++;
+                var first = AllenAlgebra.Relate(
+                    intervals[leftPair.LeftOrdinal].Span,
+                    intervals[leftPair.RightOrdinal].Span);
+                var second = AllenAlgebra.Relate(
+                    intervals[rightPair.LeftOrdinal].Span,
+                    intervals[rightPair.RightOrdinal].Span);
+                var outer = AllenAlgebra.Relate(
+                    intervals[leftPair.LeftOrdinal].Span,
+                    intervals[rightPair.RightOrdinal].Span);
+                perWitnessHolds &= AllenRelationSet
+                    .Singleton(first)
+                    .AllenCompose(AllenRelationSet.Singleton(second))
+                    .Contains(outer);
+            }
+        }
+
+        Equal(3375, witnessCount, "every ordered interval triple is checked as an exact middle witness");
+        True(perWitnessHolds, "every exact middle witness satisfies the atomic Allen bridge");
+        True(
+            AllenImageOracle(composed).IsSubsetOf(
+                AllenImageOracle(all).AllenCompose(AllenImageOracle(all))),
+            "the exact composition image is contained in canonical composition of actual edge images");
+
+        var filteredLeft = ClaimPairView.Relate(
+            intervals,
+            intervals,
+            AllenRelationSet.Create(new[]
+            {
+                AllenRelation.Before,
+                AllenRelation.Meets,
+                AllenRelation.Overlaps,
+            }));
+        var filteredRight = ClaimPairView.Relate(
+            intervals,
+            intervals,
+            AllenRelationSet.Create(new[]
+            {
+                AllenRelation.During,
+                AllenRelation.Finishes,
+                AllenRelation.After,
+            }));
+        True(
+            AllenImageOracle(filteredLeft.ComposePairs(filteredRight)).IsSubsetOf(
+                AllenImageOracle(filteredLeft).AllenCompose(AllenImageOracle(filteredRight))),
+            "the union-level bridge holds for filtered actual relations too");
+
+        var sparseMaster = new TextMaster("pair-image", 0, "xxx");
+        var sparseLeft = PairBatch(sparseMaster, new TextSpan(0, 1));
+        var sparseRight = PairBatch(sparseMaster, new TextSpan(2, 3));
+        var requestedAll = ClaimPairView.Relate(sparseLeft, sparseRight, AllenRelationSet.All);
+        Equal(
+            AllenRelationSet.Singleton(AllenRelation.Before),
+            AllenImageOracle(requestedAll),
+            "Allen image records actual edges rather than the requested construction filter");
+        True(AllenImageOracle(requestedAll) != AllenRelationSet.All,
+            "an unrealized requested atom is absent from the actual image");
+
+        var finiteMiddle = PairBatch(sparseMaster, CreateNonEmptyAllenIntervals(4).ToArray());
+        var before = AllenRelationSet.Singleton(AllenRelation.Before);
+        var leftBefore = ClaimPairView.Relate(sparseLeft, finiteMiddle, before);
+        var rightBefore = ClaimPairView.Relate(finiteMiddle, sparseRight, before);
+        var finiteComposition = leftBefore.ComposePairs(rightBefore);
+        Equal(1, leftBefore.Count, "the adjacent carrier realizes an input Before edge on the left");
+        Equal(1, rightBefore.Count, "the adjacent carrier realizes an input Before edge on the right");
+        True(finiteComposition.IsEmpty,
+            "no one finite middle interval realizes both Before edges across the adjacent gap");
+        True(
+            AllenImageOracle(leftBefore)
+                .AllenCompose(AllenImageOracle(rightBefore))
+                .Contains(AllenRelation.Before) &&
+            !finiteComposition.Contains(0, 0),
+            "canonical permission does not create the missing exact adjacent-gap edge");
+
+        var correlationMaster = new TextMaster("pair-correlation", 0, new string('x', 12));
+        var correlationLeft = PairBatch(correlationMaster, new TextSpan(0, 1));
+        var correlationMiddle = PairBatch(
+            correlationMaster,
+            new TextSpan(2, 3),
+            new TextSpan(5, 6));
+        var correlationRight = PairBatch(correlationMaster, new TextSpan(10, 11));
+        var firstOnly = ClaimPairView.Create(correlationLeft, correlationMiddle, new[] { (0, 1) });
+        var secondOnly = ClaimPairView.Create(correlationMiddle, correlationRight, new[] { (0, 0) });
+        True(firstOnly.ComposePairs(secondOnly).IsEmpty,
+            "different middle identities cannot be combined into an exact path");
+        True(
+            AllenImageOracle(firstOnly)
+                .AllenCompose(AllenImageOracle(secondOnly))
+                .Contains(AllenRelation.Before),
+            "qualitative images forget the middle-identity correlation they overapproximate");
+    }
+
+    private static SpanBatch PairBatch(TextMaster master, params TextSpan[] spans)
+    {
+        var builder = new SpanBatchBuilder(master);
+        for (var ordinal = 0; ordinal < spans.Length; ordinal++)
+        {
+            builder.Add(new SpanClaim(
+                spans[ordinal],
+                $"pair-{ordinal}",
+                SpanLevel.Character,
+                "pair-test"));
+        }
+
+        return builder.Freeze();
+    }
+
+    private static ClaimPairView PairViewFromMask(
+        SpanBatch leftBasis,
+        SpanBatch rightBasis,
+        int mask)
+    {
+        var pairs = new List<(int LeftOrdinal, int RightOrdinal)>();
+        for (var left = 0; left < leftBasis.Count; left++)
+        {
+            for (var right = 0; right < rightBasis.Count; right++)
+            {
+                var bit = (left * rightBasis.Count) + right;
+                if ((mask & (1 << bit)) != 0)
+                {
+                    pairs.Add((left, right));
+                }
+            }
+        }
+
+        return ClaimPairView.Create(leftBasis, rightBasis, pairs);
+    }
+
+    private static string PairKeys(IEnumerable<ClaimPair> pairs) =>
+        string.Join(",", pairs.Select(pair => $"{pair.LeftOrdinal}:{pair.RightOrdinal}"));
+
+    private static bool PairViewMatchesKeys(
+        ClaimPairView view,
+        IEnumerable<(int LeftOrdinal, int RightOrdinal)> expected)
+    {
+        var remaining = new HashSet<(int LeftOrdinal, int RightOrdinal)>(expected);
+        if (remaining.Count != view.Count)
+        {
+            return false;
+        }
+
+        var hasPrevious = false;
+        var previousLeft = 0;
+        var previousRight = 0;
+        foreach (var pair in view)
+        {
+            if (!remaining.Remove((pair.LeftOrdinal, pair.RightOrdinal)))
+            {
+                return false;
+            }
+
+            if (hasPrevious &&
+                (pair.LeftOrdinal < previousLeft ||
+                 (pair.LeftOrdinal == previousLeft && pair.RightOrdinal <= previousRight)))
+            {
+                return false;
+            }
+
+            if (pair.Relation != AllenAlgebra.Relate(
+                    view.LeftBasis[pair.LeftOrdinal].Span,
+                    view.RightBasis[pair.RightOrdinal].Span))
+            {
+                return false;
+            }
+
+            hasPrevious = true;
+            previousLeft = pair.LeftOrdinal;
+            previousRight = pair.RightOrdinal;
+        }
+
+        return remaining.Count == 0;
+    }
+
+    private static HashSet<(int LeftOrdinal, int RightOrdinal)> ComposePairOracle(
+        ClaimPairView left,
+        ClaimPairView right)
+    {
+        var result = new HashSet<(int LeftOrdinal, int RightOrdinal)>();
+        foreach (var leftPair in left)
+        {
+            foreach (var rightPair in right)
+            {
+                if (leftPair.RightOrdinal == rightPair.LeftOrdinal)
+                {
+                    result.Add((leftPair.LeftOrdinal, rightPair.RightOrdinal));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static bool WitnessViewMatchesOracle(
+        ClaimPairWitnessView witnesses,
+        ClaimPairView left,
+        ClaimPairView right)
+    {
+        if (!ReferenceEquals(witnesses.LeftBasis, left.LeftBasis) ||
+            !ReferenceEquals(witnesses.MiddleBasis, left.RightBasis) ||
+            !ReferenceEquals(witnesses.MiddleBasis, right.LeftBasis) ||
+            !ReferenceEquals(witnesses.RightBasis, right.RightBasis))
+        {
+            return false;
+        }
+
+        var expected = new SortedDictionary<
+            (int LeftOrdinal, int RightOrdinal),
+            SortedSet<int>>();
+        foreach (var leftPair in left)
+        {
+            foreach (var rightPair in right)
+            {
+                if (leftPair.RightOrdinal != rightPair.LeftOrdinal)
+                {
+                    continue;
+                }
+
+                var key = (leftPair.LeftOrdinal, rightPair.RightOrdinal);
+                if (!expected.TryGetValue(key, out var middles))
+                {
+                    middles = new SortedSet<int>();
+                    expected.Add(key, middles);
+                }
+
+                middles.Add(leftPair.RightOrdinal);
+            }
+        }
+
+        if (expected.Count != witnesses.Count)
+        {
+            return false;
+        }
+
+        var index = 0;
+        foreach (var entry in expected)
+        {
+            var actual = witnesses[index++];
+            if (actual.LeftOrdinal != entry.Key.LeftOrdinal ||
+                actual.RightOrdinal != entry.Key.RightOrdinal ||
+                !actual.MiddleOrdinals.SequenceEqual(entry.Value))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static AllenRelationSet AllenImageOracle(ClaimPairView view)
+    {
+        var relations = new List<AllenRelation>();
+        foreach (var pair in view)
+        {
+            relations.Add(AllenAlgebra.Relate(
+                view.LeftBasis[pair.LeftOrdinal].Span,
+                view.RightBasis[pair.RightOrdinal].Span));
+        }
+
+        return AllenRelationSet.Create(relations);
     }
 
     private static ClaimSelection SelectionFromMask(SpanBatch batch, int mask) =>

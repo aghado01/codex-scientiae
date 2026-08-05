@@ -118,3 +118,8 @@ implementation chips.
 [K2a](sol-doccer-k2a-claim-selection-20260804_221441.md) then landed the exact-batch selection
 value and stable population integrations as D30, preserving the consecutive-chip boundary and
 leaving K2b as the one join transition. Harness 1577→1651.
+
+[K2b](sol-doccer-k2b-claim-pair-view-20260805_022512.md) then performed that transition as D31:
+the exact pair carrier, direct composition, complete middle witnesses, executable Allen bridge,
+and compatibility join projection landed together without packed support or a qualitative edge
+generator. Harness 1651→1733; K2c remains consecutive and active next.

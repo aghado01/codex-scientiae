@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D30, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D31, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -33,6 +33,7 @@ composition of these primitives, never the entry price:
 TextSpan / Allen relations        pure, zero dependencies
 SpanSet                           + master identity
 SpanBatch + ClaimSelection        + typed occurrence queries
+ClaimPairView                     + exact occurrence relations
 Scoped collectors                 + declarative recognition
 LaminarView / joins               + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -74,9 +75,10 @@ The operation names therefore state their sort: `AllenCompose` (canonical qualit
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
-`AllenCompose` is implemented, while the later-tranche names remain reservations rather than
-implementation claims. The canonical assurance owners and Lean reactivation triggers live in the
-D25 registry in [decisions.md](../../issues/doccer/planning/decisions.md).
+`AllenCompose` and the occurrence-level `ComposePairs` are implemented, while the other
+later-tranche names remain reservations rather than implementation claims. The canonical assurance
+owners and Lean reactivation triggers live in the D25 registry in
+[decisions.md](../../issues/doccer/planning/decisions.md).
 
 ## Implemented contracts
 
@@ -96,12 +98,19 @@ D25 registry in [decisions.md](../../issues/doccer/planning/decisions.md).
   interchangeable; `Records(ClaimOrder)` is the explicit ordered record projection, while
   `Coverage()` explicitly forgets occurrence identity and normalizes selected geometry into a
   `SpanSet`; `FromPredicate` leaves D25's policy-bearing `Select` name reserved for K4;
+- immutable exact-basis `ClaimPairView`, the finite occurrence relation over an ordered pair of
+  frozen batches: validated ordinal construction and geometry filtering derive every edge's Allen
+  label; membership, equality/hash, lexicographic enumeration, ordinal-diagonal identity,
+  converse, selection projections, and exact-basis semijoins preserve occurrence identity;
+  `ComposePairs` is a direct shared-middle ordinal join and `GroupMiddleWitnesses` separately
+  returns complete, ascending, basis-stamped evidence for one composition; the observed Allen
+  image is deliberately test/contract notation rather than a public qualitative API;
 - normalized Boolean `SpanSet` projections bound to their originating master;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
-- all thirteen Allen interval relations and a reference relation join (semantics only — no
-  performance contract);
+- all thirteen Allen interval relations and a compatibility join projection backed by
+  `ClaimPairView.Relate` (semantics only — no performance contract or independent join path);
 - immutable `AllenRelationSet`, the qualitative Boolean value over exactly those thirteen atoms:
   `None`/`All`/`Equal`/singletons, validated sequence construction, membership and subset, union,
   intersection, complement, pointwise converse, value equality/hash, and deterministic enum-order
@@ -186,11 +195,10 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- exact `ClaimPairView`, `ComposePairs`, and pairing residue. `ClaimSelection` landed in K2a/D30;
-  D29 freezes the remaining joint contract: reference pair composition requires actual middle ordinals, and its
-  observed Allen image is contained in canonical `AllenCompose` without a converse/equality
-  promise. D27 leaves the terminal raw-list `IntervalJoins.Join` unchanged until K2b replaces its
-  semantics through `ClaimPairView`, rather than introducing a transitional filter-only overload.
+- pairing policy, `PairingResult`, and complete identity-bearing match/fault residue. K2a/D30
+  landed `ClaimSelection`; K2b/D31 landed exact `ClaimPairView`, direct `ComposePairs`, transparent
+  middle witnesses, the one-way Allen bridge, and the terminal `IntervalJoins.Join` projection.
+  K2c remains the first structural consumer and adds no repair or inferred hierarchy.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

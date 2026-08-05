@@ -90,6 +90,8 @@ $expectedTypes = @(
     'CodexSci.Doccer.SpanBatch'
     'CodexSci.Doccer.SpanBatchBuilder'
     'CodexSci.Doccer.ClaimSelection'
+    'CodexSci.Doccer.ClaimPairView'
+    'CodexSci.Doccer.ClaimPairWitnessView'
     'CodexSci.Doccer.SortedSpanLookup'
     'CodexSci.Doccer.SpanSet'
     'CodexSci.Doccer.RegexCollector'
@@ -110,6 +112,11 @@ foreach ($typeName in $expectedTypes) {
 $lookup = $assembly.GetType('CodexSci.Doccer.SortedSpanLookup', $true)
 if ($null -eq $lookup.GetMethod('FindContaining')) {
     throw 'Packaged SortedSpanLookup is missing FindContaining.'
+}
+$pairView = $assembly.GetType('CodexSci.Doccer.ClaimPairView', $true)
+if ($null -eq $pairView.GetMethod('ComposePairs') -or
+    $null -eq $pairView.GetMethod('GroupMiddleWitnesses')) {
+    throw 'Packaged ClaimPairView is missing its exact composition surface.'
 }
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {

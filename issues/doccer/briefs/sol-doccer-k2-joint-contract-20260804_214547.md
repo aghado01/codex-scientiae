@@ -174,9 +174,10 @@ The dependency-free reference suite must cover:
 - one semantic replacement path for `IntervalJoins.Join`.
 
 Any retained `IntervalJoins.Join` becomes a compatibility projection from `ClaimPairView`; it may
-not retain an independent nested-loop meaning. Until K2b lands, the old
-`IReadOnlySet<AllenRelation>` parameter is the single accepted transient relation-filter type.
-Provisional census adapters should avoid taking a durable dependency on that terminal method.
+not retain an independent nested-loop meaning. D31 completes that transition: the filter is now
+`AllenRelationSet?` (`null` means `All`), and the old `IReadOnlySet<AllenRelation>` surface and
+independent geometry loop are gone. Provisional census adapters should still avoid taking a
+durable dependency on that terminal compatibility method.
 
 ## 7. K2c — pairing witness
 
@@ -241,7 +242,8 @@ equivalence with the reference model. The gate also reopens if equality replaces
 middle-basis condition changes, or `AllenImage` becomes part of a generalized public
 qualitative-calculus abstraction.
 
-Reference `ComposePairs`, `ClaimSelection`, and the first pairing witness remain unblocked.
+The reference `ClaimSelection` and `ComposePairs` implementations are now landed; the first
+pairing witness remains unblocked.
 
 ## 10. Non-goals
 
@@ -265,5 +267,12 @@ later optimized backend.
 Follow-on: [K2a](sol-doccer-k2a-claim-selection-20260804_221441.md) subsequently landed the exact
 selection algebra and population integrations as D30. Its bounded oracle closes all 64 selections
 and 4,096 ordered pairs on a six-claim basis, with a separate 70-claim word-boundary witness;
-harness 1577→1651. K2b is now the active next chip and retains every pair/bridge/join obligation
-specified here.
+harness 1577→1651. At that boundary K2b became the active next chip and retained every
+pair/bridge/join obligation specified here.
+
+Follow-on: [K2b](sol-doccer-k2b-claim-pair-view-20260805_022512.md) subsequently landed the exact
+pair carrier, direct reference composition, complete middle witnesses, executable one-way Allen
+bridge, and sole terminal-join path as D31. The bounded suite covers all 256 two-by-two relation
+compositions, all 4,096 relation triples, and all 3,375 six-boundary middle paths; harness
+1651→1733. `AllenImage` remains nonpublic, Lean remains deferred under the same gate, and K2c is
+the active next chip.

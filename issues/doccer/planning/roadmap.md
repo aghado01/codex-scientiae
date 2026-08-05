@@ -5,9 +5,9 @@ Decisions and the question ledger live in [decisions.md](decisions.md); complete
 move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 [../briefs/](../briefs/); evidence in [../discussions/](../discussions/).
 
-## Current state (2026-08-04)
+## Current state (2026-08-05)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D30**, contract harness **1651 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D31**, contract harness **1733 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Tranches 0–3 are done: the substrate is complete, the lift vocabulary
@@ -28,7 +28,10 @@ occurrence bases, reference `ComposePairs`, one-way Allen-image abstraction, pai
 Lean-gate disposition. K2a is closed by D30 and its
 [implementation report](../briefs/sol-doccer-k2a-claim-selection-20260804_221441.md): immutable
 exact-batch selection algebra, explicit ordered/coverage projections, and selection-backed
-grouping/cadence/suppression are implemented. The active next implementation is K2b.
+grouping/cadence/suppression are implemented. K2b is closed by D31 and its
+[implementation report](../briefs/sol-doccer-k2b-claim-pair-view-20260805_022512.md): the exact
+pair carrier, direct composition, complete middle witnesses, executable Allen bridge, and the one
+terminal-join transition are implemented. The active next implementation is K2c pairing.
 
 ## Sequencing doctrine
 
@@ -45,13 +48,13 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Joint claim-query tranche (K2a–K2c, contract frozen by D29; K2a closed by D30; K2b active
-   next; landed consecutively):** K2a's pure basis-stamped `ClaimSelection`, ascending-ordinal
+1. **Joint claim-query tranche (K2a–K2c, contract frozen by D29; K2a closed by D30; K2b closed by
+   D31; K2c active next in the consecutive sequence):** K2a's pure basis-stamped `ClaimSelection`, ascending-ordinal
    membership, explicit `ClaimOrder`/coverage projections, and stable population integrations are
-   implemented. K2b adds exact `ClaimPairView`, direct reference `ComposePairs`, the one-way
-   Allen-image inclusion, and replaces the terminal raw-list join; transparent middle witnesses do
-   not claim packed-support associativity. K2c lands pairing with match edges and identity-bearing
-   fault residue as the tranche witness.
+   implemented. K2b's exact `ClaimPairView`, direct reference `ComposePairs`, one-way Allen-image
+   inclusion, complete transparent middle witnesses, and terminal raw-list join projection are
+   implemented without a packed-support claim. K2c lands pairing with match edges and
+   identity-bearing fault residue as the tranche witness.
 2. **Joint located/flat-graph tranche (K3+K4a):** co-design geometry-only `LocatedRelation` and the
    identity-bearing `CandidateRegionGraph`; the graph owns parallel claim-ordinal edges and projects
    explicitly to located geometry. Land one reference reachability semantics, partitions, gaps,

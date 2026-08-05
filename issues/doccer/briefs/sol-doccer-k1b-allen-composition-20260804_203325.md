@@ -92,3 +92,8 @@ remains one-way, and its reference/property assurance does not activate the defe
 Follow-on: [K2a](sol-doccer-k2a-claim-selection-20260804_221441.md) subsequently closed the unary
 occurrence-selection algebra and population integrations as D30. It did not change the terminal
 join; K2b retains that transition and the executable Allen-image bridge.
+
+Follow-on: [K2b](sol-doccer-k2b-claim-pair-view-20260805_022512.md) subsequently completed that
+transition as D31. `IntervalJoins.Join` now projects the exact pair carrier, direct pair composition
+never uses `AllenCompose` to create edges, and the one-way bridge is executable across all 3,375
+six-boundary middle paths. Harness 1651→1733; K2c pairing is active next.

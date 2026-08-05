@@ -351,6 +351,14 @@ hypothesis changes, or `AllenImage` becomes a generalized public abstraction. At
 the small Lean theorem can license an implementation decision rather than merely restate the
 reference behavior.
 
+D31 has now discharged the reference-side burden exactly as planned. The implementation is a
+direct middle-ordinal join, differential-checked across all 256 bounded relation compositions and
+4,096 associative triples; all 3,375 six-boundary middle paths satisfy the atomic bridge before
+the union-level inclusion is checked. Middle-correlation loss and the complete four-boundary
+adjacent-gap carrier independently refute the converse. This evidence closes K2b without changing
+the gate: Lean remains deferred until a different backend or stronger public claim makes the
+theorem load-bearing.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -358,8 +366,8 @@ reference behavior.
 | Allen classifier JEPD, converse, argument reversal | exhaustive finite C# classifier checks plus predicate review | only if a more general interval carrier is introduced |
 | Canonical Allen weak-composition table | independent `D6` generator plus the published formalization | if Doccer attempts a generic qualitative-calculus proof API |
 | Adjacent-gap failure of finite exact composition | smallest executable counterexample | none presently; the counterexample already fixes the contract |
-| Exact claim-pair identity and associativity | reference relation implementation and property tests | if a packed witness representation inherits the same claim |
-| Exact-pair Allen-image composition inclusion | D28 atomic-triad certificate plus direct reference `ComposePairs`, per-witness/union C# laws, and adjacent-gap non-converse | before qualitative summaries drive optimized pruning with a universal no-false-negative claim, or if equality/generalized public abstraction is proposed |
+| Exact claim-pair identity and associativity | D31 direct relation implementation, nested differential oracle, and all 4,096 bounded relation triples | if a packed witness representation inherits the same claim |
+| Exact-pair Allen-image composition inclusion | D28 atomic-triad certificate plus D31 direct `ComposePairs`, 3,375 per-witness checks, union law, and two executable non-converses | before qualitative summaries drive optimized pruning with a universal no-false-negative claim, or if equality/generalized public abstraction is proposed |
 | Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
 | Located `Seq` identity, associativity, and finite consuming closure | simple matrix/reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it |
 | Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
@@ -370,8 +378,8 @@ reference behavior.
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
-This triage leaves no present theorem whose completion should block `AllenRelationSet`,
-`ClaimSelection`, `ClaimPairView`, or the reference pairing and candidate-graph work.
+This triage leaves no present theorem whose completion should block K2c pairing or the reference
+candidate-graph work; `AllenRelationSet`, `ClaimSelection`, and `ClaimPairView` are already landed.
 
 ## 7. Restart recipe
 

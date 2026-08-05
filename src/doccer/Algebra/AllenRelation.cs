@@ -98,33 +98,28 @@ public readonly record struct SpanJoin(SpanRecord Left, SpanRecord Right, AllenR
 public static class IntervalJoins
 {
     /// <summary>
-    /// Reference relation join. The deliberately simple O(L*R) implementation fixes semantics first;
-    /// indexed join strategies can replace it without changing the result contract.
+    /// Compatibility projection of the exact <see cref="ClaimPairView"/> geometry relation.
+    /// <see cref="ClaimPairView.Relate"/> is the one semantic implementation path; this method
+    /// resolves its occurrence edges back into the terminal record rows older callers expect.
     /// This method carries no performance contract: time and allocation characteristics may change
     /// freely between versions, and consumers must not rely on them.
     /// </summary>
     public static IReadOnlyList<SpanJoin> Join(
         SpanBatch left,
         SpanBatch right,
-        IReadOnlySet<AllenRelation>? relations = null)
+        AllenRelationSet? relations = null)
     {
-        ArgumentNullException.ThrowIfNull(left);
-        ArgumentNullException.ThrowIfNull(right);
-        left.Master.EnsureCompatibleWith(right.Master);
-
-        var results = new List<SpanJoin>();
-        foreach (var leftRecord in left)
+        var pairs = ClaimPairView.Relate(left, right, relations ?? AllenRelationSet.All);
+        var results = new SpanJoin[pairs.Count];
+        var index = 0;
+        foreach (var pair in pairs)
         {
-            foreach (var rightRecord in right)
-            {
-                var relation = AllenAlgebra.Relate(leftRecord.Span, rightRecord.Span);
-                if (relations is null || relations.Contains(relation))
-                {
-                    results.Add(new SpanJoin(leftRecord, rightRecord, relation));
-                }
-            }
+            results[index++] = new SpanJoin(
+                pairs.LeftBasis[pair.LeftOrdinal],
+                pairs.RightBasis[pair.RightOrdinal],
+                pair.Relation);
         }
 
-        return results.AsReadOnly();
+        return Array.AsReadOnly(results);
     }
 }
