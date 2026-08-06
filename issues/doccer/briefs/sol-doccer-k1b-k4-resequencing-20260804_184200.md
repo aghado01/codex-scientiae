@@ -148,4 +148,6 @@ ordinal stability scope, separate core/result gates, Laminarizer hygiene, and so
 empty-admitting `CanSeq` condition explicit. Follow-on
 [D35](sol-doccer-k3-k4a-core-20260805_182229.md) then closed the immediate joint core with the
 located algebra, exact-selection graph, explicit projection, and bounded assurance; harness
-1779→1834. The separate K4a result layer is active next.
+1779→1834. [D36](sol-doccer-k4a-results-20260805_184359.md) subsequently closed the separate K4a
+result layer with exact-graph values and bounded path-oracle agreement; harness 1834→1874. K4b and
+K4c are active sibling continuations.

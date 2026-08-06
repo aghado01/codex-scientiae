@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D35, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D36, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -35,6 +35,8 @@ SpanSet                           + master identity
 SpanBatch + ClaimSelection        + typed occurrence queries
 ClaimPairView                     + exact occurrence relations
 PairingResult                     + policy-stamped structural evidence
+LocatedRelation                   + compatible-window geometry reachability
+CandidateRegionGraph + results    + exact ordinal partition evidence
 Scoped collectors                 + declarative recognition
 LaminarView / joins               + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -77,9 +79,11 @@ approximation), `ConcreteCompose` (exact composition on one carrier), located `S
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
 `AllenCompose`, located `Seq`, and the occurrence-level `ComposePairs` are implemented, while the
-other later-tranche names remain reservations rather than implementation claims. `Pairing.Pair` is
-the implemented strict-stack query over exact occurrence selections; it neither spends the
-reserved `Select` name nor introduces an unqualified composition verb. The canonical assurance
+other later-tranche names remain reservations rather than implementation claims.
+`Segmentation.FirstOrdinalCompletePath` is the implemented narrow K4a witness operation; it does
+not spend the reserved policy-execution name `Select`. `Pairing.Pair` is the implemented
+strict-stack query over exact occurrence selections; it likewise introduces no unqualified
+composition verb. The canonical assurance
 owners and Lean reactivation triggers live in the D25 registry in
 [decisions.md](../../issues/doccer/planning/decisions.md).
 
@@ -127,6 +131,16 @@ owners and Lean reactivation triggers live in the D25 registry in
   claim-ordinal edges wholly contained in an exact window; occurrence identity remains strict to
   that frozen batch, while `ToLocatedRelation()` is the explicit identity-forgetting projection
   where equal geometry collapses and compatible-value equality begins;
+- exact-graph K4a result values: `ReachabilityView` obtains the one Boolean geometry closure only
+  through that projection and derives ordered forward/backward boundaries plus exact dead-branch
+  ordinals; `PartitionView` copies an ordered, distinct candidate-ordinal path and validates shared
+  endpoints, disjointness, and exact window coverage, with a zero-edge identity only for an empty
+  window; `Segmentation.FirstOrdinalCompletePath` chooses the lowest viable ordinal at each
+  boundary and returns a `SegmentationResult` stamped by the exact graph and
+  `SegmentationPolicy.FirstOrdinalCompletePath`, containing either the partition or a
+  `SegmentationResidual` whose normalized coverage gaps and connectivity evidence stay distinct;
+  determinism is exact-basis only, and the 128 subsets of a seven-edge graph agree with independent
+  path-enumeration, DFS, gap, and dead-branch oracles;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -217,14 +231,12 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- the K4a flat result layer. D35 closes K3 and the joint graph/projection core: the concrete-window
-  located algebra, exact-batch candidate graph, explicit projection, exhaustive bounded laws, and
-  exact `TextSlice` rebase are implemented. Still absent are graph-stamped `ReachabilityView`,
-  `PartitionView`, `SegmentationResult`/`SegmentationResidual`, the named first-ordinal complete
-  path, independent path oracle, and token/chunk/gap/dead-end/empty witnesses. After that result
-  gate closes, K4b flat-path selection and K4c structural-family cleanup are sibling lanes; K4b is
-  the default execution priority, not a prerequisite. Common selection types wait for demonstrated
-  repetition across both.
+- K4b flat-path objective execution and K4c structural-family cleanup. D35–D36 close K3/K4a:
+  concrete-window located algebra, exact-batch candidate graph, graph-stamped reachability and
+  partition/segmentation results, the first-ordinal reference path, distinct gap/dead-end evidence,
+  and bounded token/chunk/empty/oracle witnesses are implemented. K4b and K4c are now sibling
+  lanes; K4b is the default execution priority, not a prerequisite. Common selection types wait
+  for demonstrated repetition across both.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

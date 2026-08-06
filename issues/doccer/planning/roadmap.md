@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-05)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D35**, contract harness **1834 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D36**, contract harness **1874 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the substrate is complete, the
@@ -47,7 +47,11 @@ predicate explicit. D35 and its
 [joint-core report](../briefs/sol-doccer-k3-k4a-core-20260805_182229.md) implement the
 compatible-master/exact-window located algebra, exact-selection candidate graph, explicit
 identity-forgetting projection, and bounded algebra/rebase/projection assurance. K3 and the K4a
-core are closed. The active next source work is the separate K4a result layer.
+core are closed. D36 and its
+[K4a result report](../briefs/sol-doccer-k4a-results-20260805_184359.md) add exact-graph-stamped
+reachability diagnostics, validated ordinal partitions, the named first-ordinal result, distinct
+gap/dead-end residuals, and the independent bounded path oracle. K4a is closed. K4b and K4c are
+active sibling continuations; K4b remains the default execution priority.
 
 ## Sequencing doctrine
 
@@ -64,12 +68,7 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Flat result layer (K4a-results):** reuse K3's landed Boolean geometry closure inside a
-   graph-stamped reachability view while keeping ordinal-bearing path evidence graph-side. Land partition,
-   segmentation residual, empty-window, gap/dead-end, ambiguous-token, and budget-admissible chunk
-   witnesses. First-ordinal determinism is exact-graph only. Do not enumerate all paths or attach
-   costs/objectives to the graph.
-2. **Sibling K4 continuations after K4a-results:** neither lane depends on the other.
+1. **Sibling K4 continuations after K4a:** neither lane depends on the other.
    **K4b is the default execution priority** for the active tokenizer/chunker trajectory: execute
    only flat-path objectives whose compositional form and exact guarantee are declared, with
    deterministic ties and visible rejected/residual evidence. **K4c is independently available:**
@@ -78,18 +77,18 @@ order is:
    family-specific executors separate; consider a common selection abstraction only after both
    lanes demonstrate the same contract. Reapply the Lean gate before any load-bearing global
    optimum or optimized/reference equivalence.
-3. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
+2. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
    occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
    identity question does not block K0-K4.
-4. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
+3. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
    closing D7's final lift with ordered output pieces, a new immutable master, residuals, and
    composed stage origins. `OffsetMap` becomes a restricted monotone single-source view, not the
    universal transform carrier.
-5. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+4. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-6. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
+5. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
    adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
    networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
    path.
@@ -106,7 +105,7 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D35 likewise leave K3/K4a on direct
+universal no-false-negative equivalence load-bearing. D33–D36 likewise leave K3/K4a on direct
 finite reference semantics; exact-batch ordinal determinism and endpoint-equality adjacency add no
 theorem burden. K4b or K4c must reapply the gate before promising a public global optimum or
 optimized/reference equivalence.

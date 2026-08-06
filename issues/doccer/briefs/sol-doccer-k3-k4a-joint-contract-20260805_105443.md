@@ -365,4 +365,7 @@ remained 1779 checks green. Follow-on
 [D35](sol-doccer-k3-k4a-core-20260805_182229.md) subsequently implemented the joint core:
 `LocatedRelation`, the exact-selection `CandidateRegionGraph`, exact `TextSlice` rebase, explicit
 identity-forgetting projection, and bounded algebra/projection assurance. Harness 1779→1834. The
-separate K4a result chip is active next.
+separate K4a result chip was subsequently closed by
+[D36](sol-doccer-k4a-results-20260805_184359.md): exact-graph reachability and partition/result
+values, first-ordinal traversal, distinct gap/dead-end evidence, and the independent bounded path
+oracle. Harness 1834→1874; K4a is closed and K4b/K4c are active siblings.

@@ -210,4 +210,7 @@ remained 1779 checks green. Follow-on
 [D35](sol-doccer-k3-k4a-core-20260805_182229.md) subsequently closed the first independent gate with
 `LocatedRelation`, exact `TextSlice` rebase, the exact-selection `CandidateRegionGraph`, explicit
 identity-forgetting projection, and bounded algebra/projection assurance. Harness 1779→1834. The
-separate K4a result gate is active next.
+separate K4a result gate was subsequently closed by
+[D36](sol-doccer-k4a-results-20260805_184359.md) with exact-graph result stamps, validated ordinal
+partitions, first-ordinal traversal, gap/dead-end evidence, and an independent bounded path oracle.
+Harness 1834→1874; K4a is closed and K4b/K4c are active siblings.

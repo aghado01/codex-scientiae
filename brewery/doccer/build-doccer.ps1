@@ -98,6 +98,14 @@ $expectedTypes = @(
     'CodexSci.Doccer.Pairing'
     'CodexSci.Doccer.SortedSpanLookup'
     'CodexSci.Doccer.SpanSet'
+    'CodexSci.Doccer.LocatedRelation'
+    'CodexSci.Doccer.CandidateRegionGraph'
+    'CodexSci.Doccer.ReachabilityView'
+    'CodexSci.Doccer.PartitionView'
+    'CodexSci.Doccer.SegmentationPolicy'
+    'CodexSci.Doccer.SegmentationResult'
+    'CodexSci.Doccer.SegmentationResidual'
+    'CodexSci.Doccer.Segmentation'
     'CodexSci.Doccer.RegexCollector'
     'CodexSci.Doccer.PatternRule'
     'CodexSci.Doccer.ExecutionScope'
@@ -127,6 +135,14 @@ $pairingResult = $assembly.GetType('CodexSci.Doccer.PairingResult', $true)
 if ($null -eq $pairing.GetMethod('Pair') -or
     $null -eq $pairingResult.GetMethod('PairedRegions')) {
     throw 'Packaged pairing surface is incomplete.'
+}
+$segmentation = $assembly.GetType('CodexSci.Doccer.Segmentation', $true)
+$reachability = $assembly.GetType('CodexSci.Doccer.ReachabilityView', $true)
+$partition = $assembly.GetType('CodexSci.Doccer.PartitionView', $true)
+if ($null -eq $segmentation.GetMethod('FirstOrdinalCompletePath') -or
+    $null -eq $reachability.GetMethod('Create') -or
+    $null -eq $partition.GetMethod('Create')) {
+    throw 'Packaged K4a segmentation surface is incomplete.'
 }
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {

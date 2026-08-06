@@ -78,6 +78,10 @@ internal static class Program
             LocatedRelationMatchesBoundedExhaustiveOracles();
             LocatedRelationRebasesExactlyThroughSlices();
             CandidateRegionGraphPreservesOccurrenceIdentityUntilProjection();
+            ReachabilityViewKeepsGraphStampAndDiagnostics();
+            PartitionViewValidatesExactIdentityBearingPaths();
+            FirstOrdinalSegmentationWitnessesRequiredCases();
+            FirstOrdinalSegmentationMatchesBoundedPathOracle();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -3913,6 +3917,396 @@ internal static class Program
             "candidate graph validates its window even when no edges are selected");
     }
 
+    /// <summary>
+    /// K4a reachability gate: the view retains one exact graph, delegates every path fact to the
+    /// K3 geometry closure, and reports a dead alternative branch without turning a successful
+    /// graph into a failed segmentation.
+    /// </summary>
+    private static void ReachabilityViewKeepsGraphStampAndDiagnostics()
+    {
+        var master = new TextMaster("reachability-view", 0, "abcd");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 4),
+            new TextSpan(0, 2),
+            new TextSpan(1, 4));
+        var graph = CandidateRegionGraph.Create(ClaimSelection.All(batch), master.Extent);
+        var view = ReachabilityView.Create(graph);
+
+        True(ReferenceEquals(view.Graph, graph) &&
+             ReferenceEquals(view.Source, batch) &&
+             ReferenceEquals(view.Master, master) &&
+             view.Window == master.Extent,
+            "reachability view retains its exact graph, batch, master, and window stamps");
+        True(view.Closure.Equals(graph.ToLocatedRelation().Reachability()) &&
+             view.HasCompletePath &&
+             view.CanReach(0, 4),
+            "reachability view delegates complete-path facts to the projected K3 closure");
+        True(view.ForwardReachableBoundaries.SequenceEqual(new[] { 0, 2, 4 }) &&
+             view.BackwardReachableBoundaries.SequenceEqual(new[] { 0, 1, 4 }),
+            "reachability view derives ordered forward and backward boundary diagnostics");
+        True(view.DeadEndCandidates.SequenceEqual(new[] { 1 }) &&
+             view.DeadEndBoundaries.SequenceEqual(new[] { 2 }),
+            "a reachable alternative branch that cannot complete remains exact ordinal evidence");
+        True(view.IsReachableFromWindowStart(2) &&
+             !view.IsReachableFromWindowStart(1) &&
+             view.CanReachWindowEnd(1) &&
+             !view.CanReachWindowEnd(2),
+            "boundary query conveniences agree with the retained closure");
+
+        var result = Segmentation.FirstOrdinalCompletePath(graph);
+        True(result.IsComplete && result.Residual is null &&
+             result.Partition is not null && result.Partition.SequenceEqual(new[] { 0 }),
+            "dead alternative diagnostics coexist with a successful complete partition");
+        True(ReferenceEquals(result.Graph, graph) &&
+             ReferenceEquals(result.Reachability.Graph, graph) &&
+             result.Policy == SegmentationPolicy.FirstOrdinalCompletePath,
+            "a successful segmentation retains its exact graph and named reference policy");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => view.CanReach(-1, 0),
+            "reachability queries refuse extents outside the graph window");
+        Throws<ArgumentOutOfRangeException>(
+            () => view.IsReachableFromWindowStart(5),
+            "forward boundary queries refuse positions outside the graph window");
+        Throws<ArgumentNullException>(
+            () => ReachabilityView.Create(null!),
+            "reachability construction requires a graph");
+    }
+
+    /// <summary>
+    /// K4a partition gate: an ordinal path is immutable and exact-graph stamped, and construction
+    /// refuses every way a candidate list can fail to be a disjoint gap-free total window cover.
+    /// </summary>
+    private static void PartitionViewValidatesExactIdentityBearingPaths()
+    {
+        var master = new TextMaster("partition-view", 0, "abc");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(1, 3),
+            new TextSpan(0, 2),
+            new TextSpan(2, 3),
+            new TextSpan(1, 2));
+        var graph = CandidateRegionGraph.Create(
+            ClaimSelection.Create(batch, new[] { 0, 1, 2, 3 }),
+            master.Extent);
+        var input = new[] { 0, 1 };
+        var partition = PartitionView.Create(graph, input);
+        input[0] = 2;
+
+        True(ReferenceEquals(partition.Graph, graph) &&
+             ReferenceEquals(partition.Source, batch) &&
+             partition.Window == master.Extent,
+            "partition retains its exact graph, batch, and window stamps");
+        True(partition.SequenceEqual(new[] { 0, 1 }) &&
+             partition.Ordinals.SequenceEqual(new[] { 0, 1 }) &&
+             partition.Selection.SequenceEqual(new[] { 0, 1 }),
+            "partition copies and preserves its ordered identity-bearing path");
+        True(partition.Equals(PartitionView.Create(graph, new[] { 0, 1 })) &&
+             partition.GetHashCode() == PartitionView.Create(graph, new[] { 0, 1 }).GetHashCode(),
+            "partition value equality combines graph-reference identity with ordinal order");
+
+        var equalGraphObject = CandidateRegionGraph.Create(
+            ClaimSelection.Create(batch, new[] { 0, 1, 2, 3 }),
+            master.Extent);
+        True(graph.Equals(equalGraphObject) &&
+             !partition.Equals(PartitionView.Create(equalGraphObject, new[] { 0, 1 })),
+            "partition equality does not replace the retained graph object with graph value equality");
+
+        var alternative = PartitionView.Create(graph, new[] { 2, 3 });
+        True(alternative.SequenceEqual(new[] { 2, 3 }) &&
+             !partition.Equals(alternative),
+            "parallel complete partitions retain their distinct ordinal paths");
+
+        var emptyGraph = CandidateRegionGraph.Create(
+            ClaimSelection.None(batch),
+            new TextSpan(2, 2));
+        var empty = PartitionView.Create(emptyGraph, Array.Empty<int>());
+        True(empty.IsEmpty && empty.Count == 0 &&
+             ReferenceEquals(empty.Graph, emptyGraph),
+            "an empty window has the coherent exact-graph-stamped zero-edge partition");
+
+        Throws<ArgumentNullException>(
+            () => PartitionView.Create(null!, Array.Empty<int>()),
+            "partition construction requires a graph");
+        Throws<ArgumentNullException>(
+            () => PartitionView.Create(graph, null!),
+            "partition construction requires an ordinal path");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, Array.Empty<int>()),
+            "a nonempty window refuses an empty partition");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, new[] { 4 }),
+            "partition construction refuses an unselected source-batch ordinal");
+        Throws<ArgumentOutOfRangeException>(
+            () => PartitionView.Create(graph, new[] { 99 }),
+            "partition construction refuses an ordinal outside the source batch");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, new[] { 0, 0, 1 }),
+            "partition construction refuses repeated ordinal identity");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, new[] { 1 }),
+            "partition construction refuses a path starting after the graph window");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, new[] { 0, 3 }),
+            "partition construction refuses nonmeeting adjacent edges");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, new[] { 2, 1 }),
+            "partition construction refuses overlapping adjacent edges");
+        Throws<ArgumentException>(
+            () => PartitionView.Create(graph, new[] { 0 }),
+            "partition construction refuses a path ending before the graph window");
+    }
+
+    /// <summary>
+    /// K4a fixture gate: ambiguous token and parallel occurrence paths retain identity; an
+    /// external budget may admit chunk candidates without becoming graph state; gap, full-cover
+    /// dead-end, and empty-window outcomes remain distinct.
+    /// </summary>
+    private static void FirstOrdinalSegmentationWitnessesRequiredCases()
+    {
+        var tokenMaster = new TextMaster("ambiguous-token", 0, "abc");
+        var tokenBatch = PairBatch(
+            tokenMaster,
+            new TextSpan(0, 1),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(2, 3));
+        var tokenGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(tokenBatch),
+            tokenMaster.Extent);
+        var tokenResult = Segmentation.FirstOrdinalCompletePath(tokenGraph);
+        True(tokenResult.IsComplete && tokenResult.Partition is not null &&
+             tokenResult.Partition.SequenceEqual(new[] { 0, 2 }),
+            "ambiguous token graph chooses the first viable ordinal at each boundary");
+
+        var reorderedBatch = PairBatch(
+            tokenMaster,
+            new TextSpan(0, 2),
+            new TextSpan(0, 1),
+            new TextSpan(2, 3),
+            new TextSpan(1, 3));
+        var reorderedGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(reorderedBatch),
+            tokenMaster.Extent);
+        var reorderedResult = Segmentation.FirstOrdinalCompletePath(reorderedGraph);
+        True(reorderedResult.Partition is not null &&
+             reorderedResult.Partition.SequenceEqual(new[] { 0, 2 }) &&
+             tokenBatch[tokenResult.Partition![0]].Span !=
+                 reorderedBatch[reorderedResult.Partition[0]].Span,
+            "first-ordinal determinism is exact-basis reproducibility, not recollection invariance");
+
+        var parallelMaster = new TextMaster("parallel-path", 0, "ab");
+        var parallelBatch = PairBatch(
+            parallelMaster,
+            new TextSpan(0, 1),
+            new TextSpan(0, 1),
+            new TextSpan(1, 2));
+        var parallelResult = Segmentation.FirstOrdinalCompletePath(
+            CandidateRegionGraph.Create(ClaimSelection.All(parallelBatch), parallelMaster.Extent));
+        True(parallelResult.Partition is not null &&
+             parallelResult.Partition.SequenceEqual(new[] { 0, 2 }) &&
+             parallelResult.Reachability.Closure.Count == 6,
+            "parallel equal-geometry alternatives remain ordinals while closure collapses geometry");
+
+        const int budget = 3;
+        var chunkMaster = new TextMaster("budget-chunks", 0, "abcde");
+        var chunkBatch = PairBatch(
+            chunkMaster,
+            new TextSpan(0, 2),
+            new TextSpan(0, 3),
+            new TextSpan(2, 5),
+            new TextSpan(3, 5),
+            new TextSpan(0, 5));
+        var admittedChunks = ClaimSelection.FromPredicate(
+            chunkBatch,
+            record => record.Span.Length <= budget);
+        var chunkGraph = CandidateRegionGraph.Create(admittedChunks, chunkMaster.Extent);
+        var chunkResult = Segmentation.FirstOrdinalCompletePath(chunkGraph);
+        True(admittedChunks.SequenceEqual(new[] { 0, 1, 2, 3 }) &&
+             chunkResult.Partition is not null &&
+             chunkResult.Partition.SequenceEqual(new[] { 0, 2 }),
+            "externally budget-admissible chunk candidates produce a path without costed graph state");
+
+        var failureMaster = new TextMaster("segmentation-failures", 0, "abcd");
+        var gapBatch = PairBatch(
+            failureMaster,
+            new TextSpan(0, 1),
+            new TextSpan(2, 4));
+        var gapGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(gapBatch),
+            failureMaster.Extent);
+        var gapResult = Segmentation.FirstOrdinalCompletePath(gapGraph);
+        True(!gapResult.IsComplete && gapResult.Partition is null &&
+             gapResult.Residual is not null &&
+             gapResult.Residual.CoverageGaps.SequenceEqual(new[] { new TextSpan(1, 2) }) &&
+             gapResult.Residual.HasCoverageGaps,
+            "coverage-gap failure retains the exact normalized missing material");
+        True(ReferenceEquals(gapResult.Graph, gapGraph) &&
+             ReferenceEquals(gapResult.Residual!.Graph, gapGraph) &&
+             ReferenceEquals(gapResult.Residual.Reachability, gapResult.Reachability) &&
+             gapResult.Policy == SegmentationPolicy.FirstOrdinalCompletePath,
+            "failed segmentation retains one exact graph, reachability view, and policy stamp");
+
+        var deadBatch = PairBatch(
+            failureMaster,
+            new TextSpan(0, 2),
+            new TextSpan(1, 4));
+        var deadGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(deadBatch),
+            failureMaster.Extent);
+        var deadResult = Segmentation.FirstOrdinalCompletePath(deadGraph);
+        True(!deadResult.IsComplete && deadResult.Residual is not null &&
+             !deadResult.Residual.HasCoverageGaps &&
+             deadResult.Residual.HasConnectivityDeadEnds &&
+             deadResult.Residual.DeadEndCandidates.SequenceEqual(new[] { 0 }) &&
+             deadResult.Residual.DeadEndBoundaries.SequenceEqual(new[] { 2 }),
+            "full material coverage does not hide an endpoint-connectivity dead end");
+
+        var emptyGraph = CandidateRegionGraph.Create(
+            ClaimSelection.None(gapBatch),
+            new TextSpan(2, 2));
+        var emptyResult = Segmentation.FirstOrdinalCompletePath(emptyGraph);
+        True(emptyResult.IsComplete && emptyResult.Partition is not null &&
+             emptyResult.Partition.IsEmpty && emptyResult.Residual is null &&
+             emptyResult.Reachability.Closure.SequenceEqual(new[] { new TextSpan(2, 2) }),
+            "empty graph window returns a zero-edge partition and one-point geometry identity");
+
+        Throws<ArgumentNullException>(
+            () => Segmentation.FirstOrdinalCompletePath(null!),
+            "reference segmentation requires a graph");
+    }
+
+    /// <summary>
+    /// K4a assurance: every one of 128 candidate subsets on a seven-edge basis agrees with an
+    /// independently enumerated complete-path oracle, independent DFS reachability, material-gap
+    /// scan, and exact dead-branch projection.
+    /// </summary>
+    private static void FirstOrdinalSegmentationMatchesBoundedPathOracle()
+    {
+        var master = new TextMaster("segmentation-bounded", 0, "abc");
+        var window = master.Extent;
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(0, 1),
+            new TextSpan(1, 2),
+            new TextSpan(2, 3),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(0, 3));
+        var boundaries = new[] { 0, 1, 2, 3 };
+        var valueCount = 1 << batch.Count;
+        var pathAgreement = true;
+        var reachabilityAgreement = true;
+        var diagnosticsAgreement = true;
+        var resultLawsHold = true;
+
+        for (var mask = 0; mask < valueCount; mask++)
+        {
+            var graph = CandidateRegionGraph.Create(SelectionFromMask(batch, mask), window);
+            var result = Segmentation.FirstOrdinalCompletePath(graph);
+            var paths = SegmentationPathOracle(batch, mask, window);
+            var expectedPath = paths.Count == 0 ? null : paths[0];
+
+            pathAgreement &= result.IsComplete == (expectedPath is not null);
+            if (expectedPath is not null)
+            {
+                pathAgreement &= result.Partition is not null &&
+                                 result.Partition.SequenceEqual(expectedPath);
+            }
+
+            var expectedForward = new List<int>();
+            var expectedBackward = new List<int>();
+            foreach (var boundary in boundaries)
+            {
+                if (SegmentationCanReachOracle(batch, mask, window.Start, boundary))
+                {
+                    expectedForward.Add(boundary);
+                }
+
+                if (SegmentationCanReachOracle(batch, mask, boundary, window.End))
+                {
+                    expectedBackward.Add(boundary);
+                }
+            }
+
+            reachabilityAgreement &=
+                result.Reachability.ForwardReachableBoundaries.SequenceEqual(expectedForward) &&
+                result.Reachability.BackwardReachableBoundaries.SequenceEqual(expectedBackward);
+            for (var start = 0; start < boundaries.Length; start++)
+            {
+                for (var end = start; end < boundaries.Length; end++)
+                {
+                    reachabilityAgreement &= result.Reachability.CanReach(
+                        boundaries[start],
+                        boundaries[end]) == SegmentationCanReachOracle(
+                            batch,
+                            mask,
+                            boundaries[start],
+                            boundaries[end]);
+                }
+            }
+
+            var expectedDeadOrdinals = new List<int>();
+            var expectedDeadBoundaries = new SortedSet<int>();
+            for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+            {
+                if ((mask & (1 << ordinal)) == 0)
+                {
+                    continue;
+                }
+
+                var edge = batch[ordinal].Span;
+                if (SegmentationCanReachOracle(batch, mask, window.Start, edge.Start) &&
+                    !SegmentationCanReachOracle(batch, mask, edge.End, window.End))
+                {
+                    expectedDeadOrdinals.Add(ordinal);
+                    expectedDeadBoundaries.Add(edge.End);
+                }
+            }
+
+            diagnosticsAgreement &=
+                result.Reachability.DeadEndCandidates.SequenceEqual(expectedDeadOrdinals) &&
+                result.Reachability.DeadEndBoundaries.SequenceEqual(expectedDeadBoundaries);
+
+            resultLawsHold &= ReferenceEquals(result.Graph, graph) &&
+                              ReferenceEquals(result.Reachability.Graph, graph) &&
+                              result.Policy == SegmentationPolicy.FirstOrdinalCompletePath &&
+                              ((result.Partition is not null) != (result.Residual is not null));
+            if (result.Partition is not null)
+            {
+                resultLawsHold &= ReferenceEquals(result.Partition.Graph, graph) &&
+                                  SegmentationPathIsCompleteOracle(
+                                      batch,
+                                      mask,
+                                      window,
+                                      result.Partition);
+            }
+            else
+            {
+                var residual = result.Residual!;
+                resultLawsHold &= ReferenceEquals(residual.Graph, graph) &&
+                                  ReferenceEquals(residual.Reachability, result.Reachability) &&
+                                  !residual.IsEmpty;
+                diagnosticsAgreement &= residual.CoverageGaps.SequenceEqual(
+                    SegmentationGapOracle(batch, mask, window));
+            }
+        }
+
+        Equal(128, valueCount,
+            "bounded segmentation oracle covers every subset of the seven-edge basis");
+        True(pathAgreement,
+            "first-ordinal traversal agrees with independently enumerated complete paths");
+        True(reachabilityAgreement,
+            "graph-stamped closure agrees with independent DFS on every bounded endpoint pair");
+        True(diagnosticsAgreement,
+            "bounded gap and dead-branch diagnostics agree with independent projections");
+        True(resultLawsHold,
+            "every bounded segmentation result satisfies exact stamps and exclusive outcome laws");
+    }
+
     private static LocatedRelation LocatedFromMask(
         TextMaster master,
         TextSpan window,
@@ -4100,6 +4494,187 @@ internal static class Program
         }
 
         return result;
+    }
+
+    private static List<int[]> SegmentationPathOracle(
+        SpanBatch batch,
+        int mask,
+        TextSpan window)
+    {
+        var paths = new List<int[]>();
+        var path = new List<int>();
+        if (window.IsEmpty)
+        {
+            paths.Add(Array.Empty<int>());
+            return paths;
+        }
+
+        void EnumerateFrom(int boundary)
+        {
+            for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+            {
+                if ((mask & (1 << ordinal)) == 0)
+                {
+                    continue;
+                }
+
+                var edge = batch[ordinal].Span;
+                if (edge.Start != boundary)
+                {
+                    continue;
+                }
+
+                path.Add(ordinal);
+                if (edge.End == window.End)
+                {
+                    paths.Add(path.ToArray());
+                }
+                else if (edge.End < window.End)
+                {
+                    EnumerateFrom(edge.End);
+                }
+
+                path.RemoveAt(path.Count - 1);
+            }
+        }
+
+        EnumerateFrom(window.Start);
+        paths.Sort(static (left, right) =>
+        {
+            var shared = Math.Min(left.Length, right.Length);
+            for (var index = 0; index < shared; index++)
+            {
+                var comparison = left[index].CompareTo(right[index]);
+                if (comparison != 0)
+                {
+                    return comparison;
+                }
+            }
+
+            return left.Length.CompareTo(right.Length);
+        });
+        return paths;
+    }
+
+    private static bool SegmentationCanReachOracle(
+        SpanBatch batch,
+        int mask,
+        int start,
+        int end)
+    {
+        if (start == end)
+        {
+            return true;
+        }
+
+        var visited = new HashSet<int> { start };
+        var pending = new Stack<int>();
+        pending.Push(start);
+        while (pending.Count > 0)
+        {
+            var boundary = pending.Pop();
+            for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+            {
+                if ((mask & (1 << ordinal)) == 0)
+                {
+                    continue;
+                }
+
+                var edge = batch[ordinal].Span;
+                if (edge.Start != boundary)
+                {
+                    continue;
+                }
+
+                if (edge.End == end)
+                {
+                    return true;
+                }
+
+                if (edge.End < end && visited.Add(edge.End))
+                {
+                    pending.Push(edge.End);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static bool SegmentationPathIsCompleteOracle(
+        SpanBatch batch,
+        int mask,
+        TextSpan window,
+        IReadOnlyList<int> path)
+    {
+        if (window.IsEmpty)
+        {
+            return path.Count == 0;
+        }
+
+        var cursor = window.Start;
+        var seen = new HashSet<int>();
+        foreach (var ordinal in path)
+        {
+            if ((uint)ordinal >= (uint)batch.Count ||
+                (mask & (1 << ordinal)) == 0 ||
+                !seen.Add(ordinal))
+            {
+                return false;
+            }
+
+            var edge = batch[ordinal].Span;
+            if (edge.Start != cursor)
+            {
+                return false;
+            }
+
+            cursor = edge.End;
+        }
+
+        return cursor == window.End;
+    }
+
+    private static IReadOnlyList<TextSpan> SegmentationGapOracle(
+        SpanBatch batch,
+        int mask,
+        TextSpan window)
+    {
+        var covered = new bool[window.Length];
+        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        {
+            if ((mask & (1 << ordinal)) == 0)
+            {
+                continue;
+            }
+
+            var edge = batch[ordinal].Span;
+            for (var offset = edge.Start; offset < edge.End; offset++)
+            {
+                covered[offset - window.Start] = true;
+            }
+        }
+
+        var gaps = new List<TextSpan>();
+        var index = 0;
+        while (index < covered.Length)
+        {
+            if (covered[index])
+            {
+                index++;
+                continue;
+            }
+
+            var start = index;
+            while (index < covered.Length && !covered[index])
+            {
+                index++;
+            }
+
+            gaps.Add(new TextSpan(window.Start + start, window.Start + index));
+        }
+
+        return gaps;
     }
 
     private static SpanBatch PairBatch(TextMaster master, params TextSpan[] spans)

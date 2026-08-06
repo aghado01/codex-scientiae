@@ -188,8 +188,9 @@ Likewise, D33 removes the former K2b-to-K3 type arrow: located geometry uses a m
 candidate graph uses K2a's `ClaimSelection`; completing all of K2 first was execution order, not a
 `ClaimPairView` dependency.
 K3 and K4a retain an arrow because the graph projects to located geometry, but D33 makes their first
-source chip a joint core so the projection lands with the algebra. The later K4a result chip shares
-K3's Boolean geometry closure while retaining graph-ordinal path evidence. D34 removes the former
+source chip a joint core so the projection lands with the algebra. D35 lands that core, and D36's
+K4a result chip shares K3's Boolean geometry closure while retaining graph-ordinal path evidence.
+D34 removes the former
 K4b-to-K4c arrow for the same reason: both are consumers of K4a, and K4c neither consumes a K4b type
 nor waits for a universal selection carrier. K4b remains the default execution priority for the
 tokenizer/chunker trajectory, while K4c is an independently available sibling after K4a. Likewise,
@@ -470,8 +471,9 @@ vocabulary, or Lean activation.
 ### K3 — located-relation algebra (core closed by D35)
 
 K3 and K4a are one design tranche. D33 requires the first source chip to land the located algebra,
-the minimal candidate graph, and their projection together; the K4a result layer remains a second
-reviewable chip. D35 lands that first chip: a basis-stamped, geometry-only
+the minimal candidate graph, and their projection together, then the K4a result layer as a second
+reviewable chip. D35 lands the first chip and D36 the second. The core is a basis-stamped,
+geometry-only
 <code>LocatedRelation</code> over \(L_M\), including diagonal identity extents, plus the minimal graph
 projection below. It is a set of located geometry: duplicate extents collapse, and it carries no
 claim labels or occurrence references.
@@ -517,24 +519,24 @@ Candidate-graph half closed by D35:
 
 The D35 harness exhausts all 64 relation values, 4,096 compositions, and 262,144 triples on the
 three-boundary carrier against independent composition/closure oracles, then adds rebase, refusal,
-empty-window, exact-batch, and parallel-projection witnesses. Partitions, path policies,
-segmentation residuals, and token/chunk fixtures remain in the separate K4a-result gate.
+empty-window, exact-batch, and parallel-projection witnesses. D36 closes the formerly separate
+partition, reference-path, segmentation-residual, and token/chunk result gate.
 
 Do not call this a full Boolean relation algebra: ordinary converse leaves the upper-triangular
 carrier.
 
 ### K4 — flat results, then sibling selection and structure lanes
 
-#### K4a: flat candidate graph (core closed) and partition results (active)
+#### K4a: flat candidate graph and partition results (closed by D35–D36)
 
-Co-designed with K3, the smallest identity-bearing sequential core is split by landed state:
+Co-designed with K3, the smallest identity-bearing sequential core landed across two gates:
 
 - <code>CandidateRegionGraph</code> — implemented by D35 with explicit
   <code>ToLocatedRelation()</code> projection;
-- <code>ReachabilityView</code> — active next;
-- <code>PartitionView</code> — active next;
-- <code>SegmentationResult</code> — active next;
-- <code>SegmentationResidual</code> — active next.
+- <code>ReachabilityView</code> — implemented by D36 over the D35 closure;
+- <code>PartitionView</code> — implemented by D36 with exact graph and ordinal-path identity;
+- <code>SegmentationResult</code> — implemented by D36 as an exclusive success/failure value;
+- <code>SegmentationResidual</code> — implemented by D36 with gap and dead-branch evidence.
 
 The graph uses one concrete <code>TextMaster</code>, one validated window, and a
 <code>ClaimSelection</code> of nonempty candidate claim ordinals as parallel edges from
@@ -565,7 +567,7 @@ retains the exact graph and named policy stamp; it does not claim cross-batch pa
 
 Each result declares its source graph/window and validates its own invariant.
 
-The K4a-result chip closes separately when it supplies:
+The separately gated D36 K4a-result chip closes with:
 
 - graph-stamped reachability, partition, segmentation result, and segmentation residual values;
 - partition adjacency using the same empty-admitting <code>CanSeq</code> endpoint equality as
@@ -573,6 +575,10 @@ The K4a-result chip closes separately when it supplies:
 - the named first-ordinal operation and an independent bounded path oracle;
 - parallel alternatives, empty window, gap, dead-end, ambiguous-token, and budget-admissible chunk
   witnesses.
+
+Its assurance suite enumerates complete paths independently for all 128 subsets of a seven-edge
+basis and separately checks DFS reachability, material gaps, dead branches, exact stamps, and
+exclusive result laws. Harness 1834→1874.
 
 <code>CanSeq</code> is not Allen <code>Meets</code>: the located carrier admits diagonal empties while
 Allen classification refuses empty intervals. Do not add an unqualified <code>TextSpan.Meets</code>
@@ -595,7 +601,8 @@ budget rule can admit candidate edges; costs and preferred-path claims wait for 
 
 #### K4b: named flat-path selection execution
 
-Only after flat result invariants exist, add a candidate-graph-specific selection contract:
+With flat result invariants closed by D36, the default next lane adds a
+candidate-graph-specific selection contract:
 
 ~~~text
 PathSelectionProblem
@@ -629,8 +636,8 @@ they do not.
 
 #### K4c: additional structural families, hierarchy, and resolution
 
-K4c is a sibling of K4b after K4a, not its dependent. It may begin once the flat basis/result
-semantics are stable regardless of whether the path-selection executor has landed. K4b remains the
+K4c is a sibling of K4b after K4a, not its dependent. The flat basis/result semantics are stable by
+D36, so it may begin regardless of whether the path-selection executor has landed. K4b remains the
 default execution priority only because tokenizer/chunker objectives are the active trajectory.
 
 The current <code>Laminarizer</code> predates D2 policy stamps, D21 basis stamps, and D30
@@ -898,12 +905,11 @@ The expansion will not:
 K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
 contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, K2c strict
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
-and the joint located/graph core as D35. K2, K3, and the K4a graph/projection core are closed. The
-next source chip is the separate K4a result layer: graph-stamped reachability over the landed K3
-closure, identity-bearing partition/reference-path results, segmentation residuals, and bounded
-ambiguous-token, budget-admissible-chunk, gap, dead-end, and empty-window witnesses.
+the joint located/graph core as D35, and the flat result closure as D36. K2, K3, and K4a are closed.
+K4b flat-path objective execution and K4c structural-family hygiene are active siblings. K4b is the
+default next source lane for the tokenizer/chunker trajectory; K4c is independently available.
 
-D33–D35 do not activate Lean. Reapply the deferred gate if K3 adopts a compressed or incremental
+D33–D36 do not activate Lean. Reapply the deferred gate if K3 adopts a compressed or incremental
 closure backend, a generalized map reopens the exact-versus-lax boundary, or K4b proposes a public
 global-optimality/equivalence guarantee. After K4a, K4b and K4c are sibling lanes; K4b is the
 default execution priority rather than a prerequisite for K4c.

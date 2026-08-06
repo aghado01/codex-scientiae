@@ -51,7 +51,7 @@ public sealed class LocatedRelation : IReadOnlyList<TextSpan>, IEquatable<Locate
     public static LocatedRelation Identity(TextMaster master, TextSpan window)
     {
         ValidateBasis(master, window);
-        var boundaries = ValidBoundaries(master, window);
+        var boundaries = LocatedSemantics.ValidBoundaries(master, window);
         var diagonal = new TextSpan[boundaries.Count];
         for (var i = 0; i < boundaries.Count; i++)
         {
@@ -153,7 +153,7 @@ public sealed class LocatedRelation : IReadOnlyList<TextSpan>, IEquatable<Locate
         {
             foreach (var right in other._edges)
             {
-                if (left.End == right.Start)
+                if (LocatedSemantics.CanSeq(left, right))
                 {
                     composed.Add(new TextSpan(left.Start, right.End));
                 }
@@ -202,7 +202,7 @@ public sealed class LocatedRelation : IReadOnlyList<TextSpan>, IEquatable<Locate
         }
 
         var reachable = new List<TextSpan>();
-        foreach (var start in ValidBoundaries(Master, Window))
+        foreach (var start in LocatedSemantics.ValidBoundaries(Master, Window))
         {
             reachable.Add(new TextSpan(start, start));
             var visited = new HashSet<int> { start };
@@ -282,25 +282,6 @@ public sealed class LocatedRelation : IReadOnlyList<TextSpan>, IEquatable<Locate
     {
         ArgumentNullException.ThrowIfNull(master);
         master.ValidateSpan(window);
-    }
-
-    private static List<int> ValidBoundaries(TextMaster master, TextSpan window)
-    {
-        var boundaries = new List<int>();
-        for (var offset = window.Start; ; offset++)
-        {
-            if (master.IsScalarBoundary(offset))
-            {
-                boundaries.Add(offset);
-            }
-
-            if (offset == window.End)
-            {
-                break;
-            }
-        }
-
-        return boundaries;
     }
 
     private static int Compare(TextSpan left, TextSpan right)
