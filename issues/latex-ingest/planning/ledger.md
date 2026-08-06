@@ -4,6 +4,19 @@ Newest first. Detail lives in the field notes
 ([probe-prose-channel-20260802.md](../discussions/probe-prose-channel-20260802.md)) and commit
 messages; this is the index of what landed.
 
+## 2026-08-06
+
+- **Localized inventory 0.1 + latex-batch development entrypoint** (D18). Added a schema-bound,
+  deterministic direct-child `inventory.jsonl` materializer/reader over source-ready sentinels and a
+  `src/latex-ingest/latex-batch.ps1` shell that selects catalog rows, allocates or joins one caller run, and
+  composes the existing adapter and executor without implicit initialization. Focused coverage proves
+  byte-identical rebuilds, invalid-sentinel atomicity, stale detection, ownership structure, selection,
+  automatic `artifacts/latex-batch/runs` allocation, sibling failure containment, and child cleanup. The
+  retained 11-paper development inventory materializes and rereads 11 rows; a real selected-paper wrapper
+  run completed in 9.811 s with a clean math audit and no surviving child. Complete LaTeX-ingest and adapter
+  gates are 108/108 and 23/23, and the four-worker repository gate completed all 46 containers with 490
+  selected tests and no failed job.
+
 ## 2026-08-03
 
 - **docstream + latex refgraph + doc graph as production artifacts** (D7 layers; `0f07c3d` +

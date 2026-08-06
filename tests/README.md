@@ -64,10 +64,11 @@ successful or the executor reports an infrastructure error, it emits the record 
 direct `pwsh -File tests/parallel.ps1 ...` invocation therefore exits nonzero without discarding successful
 sibling results, native XML, or container artifacts.
 
-BEX-507 admits the complete audited repository through this ordinary path selection: 45 physical files are
-classified as 35 `Batchable` and 10 `CapabilityGated`, with no `NeedsRefactor` or `SerialOnly` residue. The
-authoritative inventory records 471 textual `It` blocks and 484 observed tests; no per-file sidecar,
-workload profile, serial exclusion list, or testing-specific scheduler mode is required.
+BEX-507 admitted its complete 45-file closure snapshot through this ordinary path selection. The subsequent
+localized-inventory/latex-batch development container is also `Batchable`, bringing the current repository
+to 46 physical files: 36 `Batchable`, 10 `CapabilityGated`, no `NeedsRefactor` or `SerialOnly` residue, 477
+textual `It` blocks, and 490 observed tests. No per-file sidecar, workload profile, serial exclusion list, or
+testing-specific scheduler mode is required.
 
 ## Batchable Pester-container contract
 

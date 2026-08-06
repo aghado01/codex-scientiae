@@ -226,6 +226,31 @@ Final inventory after BEX-507:
 | `SerialOnly` | 0 |
 | **Total** | **45 files / 484 observed tests / 471 textual `It` blocks** |
 
+### Post-BEX-507 additions
+
+`tests/latex-ingest/inventory-batch-dev.Tests.ps1` adds one `Batchable` container with 6 observed/textual
+tests. Its exact-path fresh-process run passed 6/6 in 3.930 s. Fixtures, catalogs, run roots, fake converter,
+and child outputs are `$TestDrive`-local; child PowerShell uses the current absolute host and every process is
+collected. The container proves deterministic/atomic catalog behavior plus the application shell's selected
+success and sibling-failure paths without a fixed port, external dependency, repository-global write, or
+capability skip.
+
+The resulting four-worker repository gate admitted all 46 physical files in 100.255 s. All 46 jobs
+succeeded; the native reports selected 490 tests (488 passed, 2 existing dependency-gated skips), with no
+failure, timeout, cancellation, or infrastructure error. The caller run retained 46 `pester.xml` files and
+144 total files, all beneath the declared `pester-jobs/<container>/{pester.xml,artifacts/...}` shape, with no
+surviving process.
+
+Current inventory after that addition:
+
+| Class | Files |
+|---|---:|
+| `Batchable` | 36 |
+| `CapabilityGated` | 10 |
+| `NeedsRefactor` | 0 |
+| `SerialOnly` | 0 |
+| **Total** | **46 files / 490 observed tests / 477 textual `It` blocks** |
+
 ## BEX-501 exit gate
 
 - All 43 BEX-501 physical files have an exact-path isolation result, observed count, approximate wall time,

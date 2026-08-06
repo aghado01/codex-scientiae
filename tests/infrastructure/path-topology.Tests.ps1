@@ -94,7 +94,7 @@ BeforeAll {
         return $failures.ToArray()
     }
 
-    function Get-PesterBatchTopologyFailures {
+    function Get-BatchTopologyFailures {
         $failures = [System.Collections.Generic.List[string]]::new()
         $adapterRoot = Join-Path $script:RepoRoot 'src/adapters'
         $expectedManifest = Join-Path $adapterRoot 'adapters.psd1'
@@ -164,6 +164,7 @@ BeforeAll {
                     $runnerOwners.Add("$relative::$name")
                 }
                 if ($scriptFile.Name -notlike '*.Tests.ps1' -and $name -in @(
+                        'adapters\Get-LatexBatchJob'
                         'adapters\Get-PesterBatchJob'
                         'batch-executor\New-BatchPlan'
                         'batch-executor\Invoke-BatchPlan'
@@ -183,6 +184,9 @@ BeforeAll {
         }
         $actualCompositionOwners = @($compositionOwners | Sort-Object)
         $expectedCompositionOwners = @(
+            'src/latex-ingest/latex-batch.ps1::adapters\Get-LatexBatchJob'
+            'src/latex-ingest/latex-batch.ps1::batch-executor\Invoke-BatchPlan'
+            'src/latex-ingest/latex-batch.ps1::batch-executor\New-BatchPlan'
             'tests/parallel.ps1::adapters\Get-PesterBatchJob'
             'tests/parallel.ps1::batch-executor\Invoke-BatchPlan'
             'tests/parallel.ps1::batch-executor\New-BatchPlan'
@@ -190,7 +194,7 @@ BeforeAll {
         if (($actualCompositionOwners -join "`n") -ne
             ($expectedCompositionOwners -join "`n")) {
             $failures.Add(
-                "repository Pester composition ownership drifted: $($actualCompositionOwners -join ', ')")
+                "repository batch composition ownership drifted: $($actualCompositionOwners -join ', ')")
         }
 
         return $failures.ToArray()
@@ -207,7 +211,7 @@ Describe 'source path topology' {
         $failures = @(Get-LiteralSourcePathFailures)
         $failures.Count | Should -Be 0 -Because ($failures -join [Environment]::NewLine)
 
-        $batchFailures = @(Get-PesterBatchTopologyFailures)
+        $batchFailures = @(Get-BatchTopologyFailures)
         $batchFailures.Count | Should -Be 0 -Because ($batchFailures -join [Environment]::NewLine)
     }
 

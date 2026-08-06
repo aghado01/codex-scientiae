@@ -65,6 +65,13 @@ does not mask a LaTeX collision: its nine assertions were already green, but dir
 expected nonzero CLI status polluted the worker protocol. Its local captured-process helper now owns those
 streams/status, resets `$LASTEXITCODE`, and keeps retained work under the assigned container artifact root.
 
+Post-closure additions remain subject to the same contract. The 2026-08-06 localized-inventory/latex-batch
+development container passed 6/6 by exact path and is `Batchable`, moving the current inventory to 46 files,
+490 observed tests, and 477 textual `It` blocks without reopening Phase 5. Its classification and evidence
+are recorded in the semantic inventory. The current four-worker gate completed all 46 jobs in 100.255 s
+with 488 passes, 2 existing skips, 46 native results, no failed/timed-out/cancelled job or infrastructure
+error, all 144 retained files in the declared container shape, and no surviving process.
+
 ## Dependency order
 
 ~~~text

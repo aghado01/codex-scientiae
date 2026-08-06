@@ -52,6 +52,12 @@ One private resolver owns all paths beneath `RunDirectory/latex-jobs/`: applicat
 and an optional deliverable root. The job declares every such root in `Writes`, and planning creates none.
 The private worker invokes only latex-ingest's manifest-backed production entrypoint.
 
+`src/latex-ingest/latex-batch.ps1` is the repository development shell over this planner. It reads a
+validated localized `inventory.jsonl`, optionally selects exact slugs, allocates or joins a caller run, then
+performs the public `Get-LatexBatchJob` -> `New-BatchPlan` -> `Invoke-BatchPlan` composition. It lives outside
+the adapters module because run allocation, selection workflow, console summary, and failure-to-process-exit
+projection are application-shell responsibilities rather than planner behavior.
+
 ## Ownership boundary
 
 Both commands only interpret domain input and emit `BatchJob` records. Callers compile and invoke those jobs

@@ -34,6 +34,13 @@ This is a vetting baseline, not a production-integration claim. Existing callers
 JSONL implementation or local logic, and the logger still reflects parts of its prototype behavior. No
 production module should import a `-v2` draft until the audit and integration gates below close.
 
+The 2026-08-06 latex-ingest development pilot pulls forward a bounded application witness for LOGJ-503 and
+LOGJ-505 without closing either item: `document-inventory-row/0.1` and its direct-child materializer establish
+one scoped key, row projection, deterministic order, and stale-manifest check. It uses a private atomic
+whole-file codec and does not import the `-v2` drafts. Recursive scope/depth, hierarchical reconciliation,
+incremental managed-store mutation, indexes, concurrency, finalized manifest identity, and shared-substrate
+integration remain in the phases below.
+
 ## Sequencing rules
 
 1. Freeze semantics before optimizing them.

@@ -111,3 +111,13 @@ application semantics, not shared contracts. Implementation witness: commit `054
   source-work paths live only in `latex-ingest-compat.ps1`. Its conventional path standardizes
   through `Initialize-LatexSourceDeposit`; an explicit bypass is warned and labeled `compat-*`,
   never represented as a compliant deposit. New callers must not import the compatibility surface.
+- **D18 — Localized inventory 0.1 is an immediate-scope deterministic materialized view** (2026-08-06).
+  A parent `inventory.jsonl` indexes only direct child deposits with authoritative, schema-valid
+  `metadata.json` sentinels. `document_parent` is the preserved forward-slash scoped key, unique under
+  ordinal-ignore-case comparison and physically sorted ordinally; `metadata_path` is exactly its sentinel
+  address. Rows carry the sentinel SHA-256 and a bounded document projection but no materialization time, so
+  identical inputs produce identical UTF-8-no-BOM/LF bytes and changed manifests are explicitly stale.
+  Missing sentinels are not documents; present invalid sentinels fail the entire build. Publication is an
+  explicit atomic whole-file create or replace and performs no source initialization, repair, or recursive
+  asset inference. Indexes, incremental/multi-writer mutation, recursive rollups, move history, and
+  top-down/bottom-up reconciliation remain deferred with the shared managed-store work.

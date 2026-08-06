@@ -101,7 +101,7 @@ it.
 | Named-mutex concurrency and index refresh need multi-process/fault testing | provisional D10, D15 | LOGJ-201, LOGJ-202 |
 | Retained LaTeX JSONL artifacts use CRLF and production emission still bypasses the strict codec | artifact survey | LOGJ-204, LOGJ-601 |
 | Multi-file artifact generations lack one coherence record/state machine | latex-ingest survey | LOGJ-407 |
-| Source manifest/schema and hierarchical catalog contracts remain provisional | `document-metadata/0.1` and convention | LOGJ-501–LOGJ-509 |
+| Source manifest/schema and hierarchical catalog contracts remain provisional; the immediate-child `document-inventory-row/0.1` pilot is only a bounded application witness | `document-metadata/0.1`, `document-inventory-row/0.1`, and convention | LOGJ-501–LOGJ-509 |
 
 ## Compatibility questions
 
