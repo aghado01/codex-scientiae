@@ -52,6 +52,8 @@ The useful architectural direction is therefore:
   residual evidence proportional to the guarantee requested;
 - shape the span algebra so it consumes any admitted finite ordered material basis while text-
   specific capabilities declare the bases they can actually read; and
+- treat pointwise XOR, parity, prefix parity, and transition extraction as public numerical
+  primitives while keeping quote/escape/comment meanings in named higher producers; and
 - expose admitted low-level values and operations in the core and through a composable CLI
   surface, while keeping unsafe backend layouts private unless their layout itself is contracted.
 
@@ -381,6 +383,306 @@ Fidelity remains paramount as an honesty rule: Doccer must not silently discard 
 then report exact-source semantics. It need not force every caller to pay the storage and mapping
 cost of guarantees the caller explicitly declines.
 
+## XOR and prefix parity deserve explicit primitive treatment
+
+The [Grok thread](grok-doccer-expansion-round2-ideation-20260804.md)'s XOR discussion was not merely
+a simdjson implementation anecdote. D41 retained the idea in one line—Boolean operations and prefix
+parity with explicit chunk carry are already reserved in the
+[round-two brief](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md) and
+[architecture workplan](../planning/architecture-expansion-workplan.md)—but that line compresses
+several distinct operations and leaves their general value underexplained.
+
+The reusable concept is a small algebra over an ordered Boolean vector. Quote recognition is one
+producer of toggle events; it is not part of the algebra's meaning.
+
+### The related operations are not interchangeable
+
+| Operation | Result | General role |
+|---|---|---|
+| Pointwise XOR | vector \(A \oplus B\) | Boolean addition; set symmetric difference; disagreement/change mask |
+| Parity reduction | one bit \(\bigoplus_i A_i\) | whether the population contains an odd number of set bits; the carry summary of a chunk |
+| Prefix parity | vector of cumulative XOR states plus carry-out | converts sparse toggle events into a dense binary state over an ordered carrier |
+| Adjacent-transition XOR | vector of changes between consecutive state bits | inverse of prefix parity when the initial state is supplied; recovers toggle events from a state vector |
+| Odd-run/escape analysis | event mask plus run carry | a higher combinator that may use XOR, shifts, and addition but is not reducible to pointwise XOR alone |
+
+The first four are plausible raw bit-vector primitives. The fifth belongs above them as a named
+run/classification capability. Treating all five as “XOR” would recreate the same conflation the
+material-profile inquiry is trying to avoid.
+
+### Prefix parity contract
+
+Let input bits \(x_0,\ldots,x_{n-1}\) be ordered forward, from increasing carrier ordinal zero to
+\(n-1\), and let \(c\) be the state entering the vector. A canonical forward inclusive
+prefix-parity operation is:
+
+\[
+y_i = c \oplus \bigoplus_{j=0}^{i} x_j
+\]
+
+with
+
+\[
+c_{out} = c \oplus \bigoplus_{j=0}^{n-1} x_j.
+\]
+
+For an empty vector, the result is empty and \(c_{out}=c\). The carry-out is the final state, not
+automatically an error. A quote-oriented consumer may interpret a true final state as an unmatched
+opening quote; another streaming consumer may simply pass it to the next chunk.
+
+An exclusive scan is also useful, but the primitive should choose and name one convention rather
+than let every classifier guess. The other form is cheaply derived and has the same carry-out.
+Its output alone loses the final input bit; the exclusive output plus carry-out is invertible.
+Likewise, neither scan should decide whether delimiter positions themselves belong to an “inside”
+region. That decision is a separate shift/mask or a named region-construction helper.
+
+### The inverse is a first-difference operation over GF(2)
+
+Given the inclusive state vector \(y\) and initial state \(c\), the original event vector is:
+
+\[
+x_0 = c \oplus y_0, \qquad x_i = y_{i-1} \oplus y_i \quad (i>0).
+\]
+
+This adjacent XOR is the Boolean analogue of a discrete derivative. Prefix parity is its integral.
+If \(P_c\) is inclusive prefix parity and \(D_c\) is this transition operation, then:
+
+\[
+D_c(P_c(x)) = x, \qquad P_c(D_c(y)) = y.
+\]
+
+Two more laws expose useful implementation and test structure:
+
+\[
+P_1(x) = P_0(x) \oplus All(n)
+\]
+
+and, for equal-length vectors,
+
+\[
+P_0(a \oplus b) = P_0(a) \oplus P_0(b).
+\]
+
+The first says that a true entering state complements every valid output bit. The second says that
+zero-carry prefix parity is linear over GF(2). Neither law permits physical padding bits to
+participate: tail bits beyond logical length are canonical zero or ignored, and carry-out comes
+from the logical last bit.
+
+That pair is more generally useful than a quote-specific `InsideStrings` operation:
+
+- delimiter or boundary events → active/inactive regions;
+- active/inactive states → transition points;
+- two classifier outputs → an exact disagreement mask;
+- normalized disjoint range boundary events → region membership; and
+- streaming binary state machines whose only transition is toggle.
+
+The interval case needs an explicit boundary lattice. For \(n\) addressed units, half-open range
+events live at \(n+1\) boundaries. A range \([s,n)\) has its closing event at boundary \(n\), which
+does not fit in an \(n\)-bit unit-event vector. Scanning the boundary events yields membership for
+the following unit intervals plus a terminal state that can validate closure. For already
+normalized disjoint ranges this reconstructs region membership. For overlapping arbitrary
+intervals it computes odd-coverage parity, not union coverage. Prefix parity must therefore not be
+presented as a replacement for `SpanSet` normalization.
+
+### Chunk composition is part of the semantic contract
+
+For vectors \(a\) and \(b\):
+
+\[
+Prefix(c, a \mathbin{+\!+} b)
+= Prefix(c,a) \mathbin{+\!+}
+  Prefix(c \oplus Parity(a), b).
+\]
+
+This concatenation law is what makes the primitive usable for streams, arbitrary chunk sizes,
+parallel block scans, and architecture-specific vector widths. A correct carrier/result must make
+the following visible or fixed:
+
+- logical left-to-right bit order;
+- inclusive versus exclusive convention;
+- carry-in and carry-out;
+- logical length and masked tail bits;
+- empty-vector behavior; and
+- how a window-local bit index maps to its material address.
+
+Chunk carry is therefore not backend metadata. Word size, SIMD width, and whether carry-less
+multiplication is used are backend metadata. A Boolean is sufficient for a raw in-process scan.
+A serialized or independently resumed semantic scan should instead carry a typed continuity state:
+operation and scan convention, basis, processed end/expected next start, and carry bit. This keeps
+a mathematically valid carry from being resumed on the wrong material window.
+
+### Incomplete classification changes the result shape
+
+A pure prefix operation over a complete Boolean vector needs no residual. A classifier may instead
+produce a toggle mask plus a residual mask \(r\) whose set bits mean that toggle membership is
+unknown. One unknown event can make every later state unknown until stronger evidence
+resynchronizes it. A pointwise residual copied unchanged to the output would be unsound.
+
+If \(u\) says that entering carry is unknown, conservative output uncertainty is:
+
+\[
+R_i^{inclusive} = u \lor \bigvee_{j=0}^{i} r_j,
+\qquad
+R_i^{exclusive} = u \lor \bigvee_{j=0}^{i-1} r_j,
+\]
+
+with an empty exclusive prefix contributing false, and:
+
+\[
+u_{out} = u \lor Any(r).
+\]
+
+Pointwise XOR conservatively unions the two operand residuals. Adjacent transitions depend on the
+current and preceding state, so their residual likewise expands to both positions, with the first
+position depending on carry evidence. More precise correlated residuals are possible, but a plain
+residual mask cannot express that two unknown toggles are known to cancel. The lifted scan may
+therefore need a three-state carry (<code>false</code>, <code>true</code>,
+<code>unknown</code>) or a segmented/reset form that can deliberately resynchronize.
+
+These formulas apply only if residual means “the event bit is unknown.” If a classifier uses
+residual to mean “this unit was unsupported, although its event membership is still known,”
+forward taint would be needlessly pessimistic. That meaning must be frozen before a lifted public
+operation is admitted. This is a reason to keep two layers:
+
+1. complete raw `PrefixParity` with Boolean carry; and
+2. a classifier/result-level scan that returns state, propagated uncertainty, and carry evidence.
+
+This directly extends Doccer's existing residual doctrine instead of treating a fast mask path as
+silently complete.
+
+### Where each operation belongs
+
+| Layer | Appropriate XOR-family surface |
+|---|---|
+| Raw numerical bit vector | pointwise XOR, parity reduction, inclusive prefix parity, adjacent transitions, shifts, destination-writing forms |
+| Basis-stamped text-unit vector | symmetric difference and prefix/transition operations after equal-basis/equal-window validation; typed continuity state retains basis, window, direction, convention, and carry |
+| `ClaimSelection` | symmetric difference is natural set algebra on one exact batch; prefix parity over claim ordinals is mathematically possible but has no general claim semantics and should not be added by representation accident |
+| `SpanSet` | symmetric difference is legitimate region algebra; prefix parity belongs only on an explicit ordered boundary-event representation, not directly on normalized spans |
+| Classifier result | unescaped delimiter/toggle production, completeness, propagated uncertainty, and any specialized odd-run state |
+| Higher capability | “inside quotes,” comment regions, or another structural interpretation under a named producer/policy |
+
+This layering gives the user the low-level operation directly while preventing a JSON-specific
+meaning from entering the raw vector. The operations should remain many-sorted rather than hiding
+behind one untyped XOR:
+
+- a raw bit vector has pointwise XOR;
+- a basis-stamped unit mask has basis-checked symmetric difference;
+- a `SpanSet` has geometric symmetric difference; and
+- a `ClaimSelection` has occurrence-set symmetric difference on one exact batch.
+
+These are related laws, not interchangeable values. In particular,
+\(Coverage(A \mathbin{\triangle} B)\) does not generally equal
+\(Coverage(A) \mathbin{\triangle} Coverage(B)\): two distinct selected occurrences can cover the
+same or overlapping geometry. Conversion from claims to coverage and symmetric difference do not
+commute.
+
+### Sequencing consequence
+
+This does not require reopening K3 or K4. The reusable work belongs in the already independent
+D41 vector lane, with one planning correction before its public signature freezes:
+
+1. **V0 contract:** separate a basisless numerical Boolean vector from the basis-stamped unit-mask
+   wrapper; freeze pointwise XOR, parity, forward inclusive prefix parity, transitions, logical
+   tail behavior, typed semantic continuity, and residual lifting.
+2. **V1 reference:** land the direct per-bit oracle and portable word implementation before any
+   JSON-specific adapter. Exercise the UTF-16 reference wrapper and at least one byte-backed
+   prototype wrapper so a generic name does not accidentally mean UTF-16.
+3. **Independent carrier additions:** consider named symmetric difference for
+   `ClaimSelection` and `SpanSet` under their existing bases. These are small
+   carrier-local capabilities, not prerequisites for prefix parity and not reasons to couple the
+   vector lane to K5.
+4. **Named structural consumer:** add odd-backslash-run/valid-quote production and in-string
+   construction only as a consumer of the raw scan contract. It can validate the primitive
+   without dictating it.
+5. **V2 acceleration:** measure the word cascade, carry-less multiply, SIMD, and parallel-block
+   variants against the reference. Promote only backends that win named workloads.
+
+The only time-sensitive change is V0's type boundary. The implementation and optimization remain
+independently schedulable beside the K arc, as D41 already intended.
+
+### What stays specific to simdjson-like consumers
+
+Prefix parity assumes the input already contains the correct toggle events. In JSON scanning,
+the stages are more specifically:
+
+1. classify raw quote and backslash positions;
+2. determine which quotes are escaped from the parity of contiguous backslash runs, with its own
+   run carry across chunks;
+3. remove escaped quotes to obtain the valid quote-toggle mask; and
+4. prefix-scan those toggles to obtain the in-string state.
+
+A typical inclusive result includes an opening quote position and excludes a closing quote
+position; a content mask then removes delimiter positions. That convention is adapter semantics,
+not part of generic prefix parity. The primitive also cannot by itself:
+
+- validate that delimiters are legal or paired;
+- represent nested bracket depth, which needs an integer prefix sum or stack rather than one bit;
+- choose among overlapping start/end token families;
+- distinguish a delimiter from the same code unit used under another syntax; or
+- decide that an inside region should suppress, tokenize, or otherwise mean something.
+
+The general transfer is therefore `classify → derive valid toggle events → prefix parity → direct
+consume or harvest`, with each arrow independently usable. It is not `prefix XOR = parser`.
+
+### Reference and accelerated implementations
+
+A portable reference can scan bits directly. A word reference can use the standard low-bit-first
+doubling cascade on each logical 64-bit word:
+
+    x ^= x << 1
+    x ^= x << 2
+    x ^= x << 4
+    x ^= x << 8
+    x ^= x << 16
+    x ^= x << 32
+
+A true carry-in complements the valid output bits for that word, and carry-out is carry-in XOR the
+word's parity. Word-to-word carry remains necessary. Tail masking remains mandatory. Carry-less
+multiplication by an all-ones polynomial can accelerate the same per-word or per-block transform
+where supported, but `PCLMULQDQ`/`PMULL` is a backend, not the public contract and not one
+whole-vector instruction. Parallel processing can scan blocks locally, prefix-scan their parity
+summaries, then apply the resulting carry to each block.
+
+The assurance package is compact and strong:
+
+- XOR identity, self-cancellation, commutativity, and associativity;
+- parity agreement with population count modulo two;
+- inclusive and exclusive prefix/transition round trips under both carry values, including the
+  exclusive carry-out needed for inversion;
+- carry-complement and zero-carry linearity laws;
+- the chunk-concatenation law at every split point;
+- empty, all-zero, all-one, alternating, first/last-bit, 1/63/64/65/127/128/129-bit, and
+  partial-tail cases;
+- poisoned physical tail bits proving that logical tails do not affect results or carry;
+- declared exact-overlap, in-place, and partial-overlap behavior for destination-writing forms;
+- exhaustive short vectors plus randomized multiword/chunk partitions;
+- differential agreement among per-bit, word-cascade, carry-less-multiply, and SIMD backends; and
+- explicit refusal for incompatible semantic bases/windows and discontinuous streamed carry.
+
+Because prefix parity is a linear transform over GF(2), it is also unusually suitable for a small
+formal specification if an accelerated backend makes the equivalence load-bearing. That is a
+better potential proof target than formalizing a whole quote recognizer.
+
+### Public CLI implications
+
+A low-level CLI should keep the sorts visible: for example, <code>vector xor</code>,
+<code>vector parity</code>, <code>vector prefix-parity</code>, and
+<code>vector transitions</code> for numerical values, but
+<code>mask symmetric-difference</code>, <code>spans symmetric-difference</code>, and
+<code>claims symmetric-difference</code> for semantic values. One untyped <code>xor</code> command
+would invite invalid cross-sort composition.
+
+A raw packed-vector artifact must stamp logical length, bit order, word order, and tail convention.
+A unit-mask artifact additionally stamps material basis, exact window, and address unit. A
+serialized prefix result or resumable carry additionally stamps operation/direction, inclusive or
+exclusive convention, carry-in/out, processed end, and expected next start. A classifier-level
+result also serializes the residual meaning and propagated uncertainty. Recipes or sessions can
+then compose classification, scan, masking, and harvest without requiring claim materialization
+between every step.
+
+XOR must not be reused as a fingerprint or equality proof merely because it is fast. Cancellation
+makes an XOR fold a poor identity commitment. Its proper roles here are Boolean/set algebra,
+parity, transition detection, and scan state.
+
 ## Public composability is the other half of the issue
 
 The MATLAB/scikit-learn analogy is about portfolio architecture:
@@ -533,8 +835,8 @@ This report does not make the amendments below. It identifies where a later deci
 | D13 | Treat material profile as execution/material policy rather than domain knowledge; make low-level artifacts stackable through the CLI. |
 | D20 | Revisit consumer-gated numeric-column visibility. The capability-stack posture may itself justify a stable read-only column surface without exposing mutable arrays. |
 | D25/K0 | Register material bases/address units and their compatibility separately from the existing span/occurrence/fact/origin sorts. |
-| D33–D39 | Preserve their geometry laws over a basis-bearing master; avoid rewriting the algebras unless a hidden UTF-16 assumption is found. |
-| D41 V0–V2 | Do not let the first UTF-16 unit vector take the generic name if basis plurality is intended. Either make UTF-16 one explicit family member or prove a basis-stamped common carrier first. |
+| D33–D39 | Preserve their geometry laws over a basis-bearing master; avoid rewriting the algebras unless a hidden UTF-16 assumption is found. If geometric symmetric difference is admitted, specify it directly and do not assume it commutes with claim-to-coverage projection. |
+| D41 V0–V2 | Do not let the first UTF-16 unit vector take the generic name if basis plurality is intended. Separate the basisless Boolean-vector algebra from basis-stamped unit masks, freeze prefix direction/carry/residual contracts before acceleration, and make UTF-16 one explicit family member unless a basis-stamped common carrier is first proved. |
 | F2/F3 | Persistence and coordinate maps must stamp basis. Byte addressing is not merely an adapter concern if a byte-addressed master becomes first-class. |
 | K6/K7/F7 | Transcoding, normalization, and materialization produce different mapping/origin guarantees but should compose through the same explicit evidence discipline. |
 | F8/F9 | Hashes, measures, feature projections, and fitted artifacts must name their input basis and preprocessing profile; no default UTF-16 identity may leak into an ostensibly general artifact. |
@@ -566,6 +868,9 @@ still be implemented as an explicitly named reference member without foreclosing
    cannot actually stack.
 10. **Forcing provenance storage on every fast path.** Honest opt-out is compatible with Doccer;
     false or silent provenance is not.
+11. **One untyped XOR surface.** Pointwise vectors, unit-mask symmetric difference, occurrence-set
+    symmetric difference, geometric symmetric difference, and prefix parity obey related algebra
+    but have different compatibility and continuity requirements.
 
 ## Small probes that would answer the open design questions
 
@@ -592,6 +897,10 @@ No production refactor is needed to learn the important facts.
 7. **CLI round trip.** Serialize a small basis-stamped mask, compose it in a second process, and
    harvest it. If the artifact cannot state its identity and tail conventions unambiguously, the
    public carrier contract is not closed.
+8. **XOR scan spike.** Implement a per-bit oracle and word-cascade backend for pointwise XOR,
+   parity, forward inclusive prefix parity, and inverse transitions. Check every chunk split,
+   both carry values, boundary lengths, poisoned tails, and basis refusal; then exercise a
+   residual-bearing wrapper and a JSON quote adapter as two separate consumers.
 
 ## Open questions
 
@@ -611,6 +920,10 @@ No production refactor is needed to learn the important facts.
 - Which public zero-copy views can remain stable if internal column packing changes?
 - Should CLI stacking use explicit subcommands, a small algebra expression, a declarative recipe,
   a long-lived handle/session protocol, or a hybrid over one set of typed contracts?
+- Should the raw vector expose forward inclusive prefix parity as the one canonical scan and derive
+  exclusive form, or should both conventions be independently named public operations?
+- Which classifier residuals mean “event membership unknown” and therefore require suffix
+  propagation through prefix parity, versus “unsupported material but event membership known”?
 - Once a coherent primitive closes its own contract and assurance gates, is public exposure the
   default while application witnesses affect priority, or is there a separate public-stability
   gate still to define?
@@ -643,3 +956,9 @@ products of the engine in their own right. Higher-level collectors and analyzers
 them, not own access to them. The core can expose stable semantic primitives and carefully scoped
 performance views without exposing every backend decision, and the CLI can make those primitives
 stackable through basis-stamped artifacts rather than by imitating another library's API.
+
+Within that substrate, XOR is not a simdjson souvenir. Pointwise XOR/symmetric difference, parity
+reduction, prefix parity with explicit carry, and adjacent-transition extraction form a small,
+reversible Boolean scan algebra. Escape-run recognition and “inside string” interpretation remain
+separate consumers. That separation gives Doccer both the general primitive and the specialized
+performance path without confusing one for the other.
