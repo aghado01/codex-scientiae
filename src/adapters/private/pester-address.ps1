@@ -1,6 +1,6 @@
-# Test adapter addressing helpers.
+# Pester adapter addressing helpers.
 
-function Get-TestBatchStableHash {
+function Get-PesterBatchStableHash {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [AllowEmptyString()] [string] $Value,
@@ -16,7 +16,7 @@ function Get-TestBatchStableHash {
     finally { $sha.Dispose() }
 }
 
-function ConvertTo-TestBatchAddressLeaf {
+function ConvertTo-PesterBatchAddressLeaf {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $TestPath,
@@ -33,18 +33,19 @@ function ConvertTo-TestBatchAddressLeaf {
     return "$stem-$Digest"
 }
 
-function Resolve-TestBatchJobAddress {
+function Resolve-PesterBatchJobAddress {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $AddressLeaf
     )
 
-    # D19 chokepoint: these are the only adapter-owned run-relative path compositions.
-    $jobDirectory = [System.IO.Path]::Combine($RunDirectory, 'test-jobs', $AddressLeaf)
+    # D19/D23 chokepoint: these are the only adapter-owned run-relative path compositions.
+    $jobDirectory = [System.IO.Path]::Combine($RunDirectory, 'pester-jobs', $AddressLeaf)
     $resultPath = [System.IO.Path]::Combine($jobDirectory, 'pester.xml')
     return [pscustomobject]@{
         JobDirectory = $jobDirectory
         ResultPath = $resultPath
+        ArtifactRoot = [System.IO.Path]::Combine($jobDirectory, 'artifacts')
     }
 }

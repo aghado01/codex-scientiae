@@ -169,7 +169,7 @@ Describe 'adapters module surface for latex-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-LatexBatchJob', 'Get-TestBatchJob')
+            'Get-LatexBatchJob', 'Get-PesterBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         foreach ($helper in @(
                 'Resolve-LatexBatchJobAddress'

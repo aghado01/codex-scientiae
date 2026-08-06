@@ -5,7 +5,7 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: active; BEX-501 through BEX-504 closed on 2026-08-06 and BEX-505 is next.** Tickets are strictly
+**Status: active; BEX-501 through BEX-505 closed on 2026-08-06 and BEX-506 is next.** Tickets are strictly
 sequenced; no later ticket starts before its predecessor closes.
 
 ## Current evidence and baseline
@@ -36,10 +36,12 @@ One-worker/file-parallel parity is 57/57 and 66/66 with native-result, declared-
 and process-survivor equality. The current authoritative repository gate remains 479 selected: 477 passed,
 2 dependency-gated skips, and none failed.
 
-The current adapter already chooses the conservative physical-file boundary. Its naming and surrounding
-contract are provisional: `Get-TestBatchJob`, `test-batch`, and `test-jobs` are too generic for a
-Pester-specific adapter. The BEX-403 closure baseline is 474 passed plus 2 dependency-gated skips (476
-total); focused baselines are 17 adapter, 6 infrastructure, and 158 shared passing tests.
+The current `Get-PesterBatchJob` adapter chooses the conservative physical-file boundary. BEX-505 completed
+its Pester-specific `pester-batch` identity and `pester-jobs` address contract without adding an alias or
+unitary module. One resolver owns each container's sibling `pester.xml` and `artifacts/` paths, both are
+declared writes, and `ProcessSpec.Environment` carries the latter as `CODEX_TEST_ARTIFACT_ROOT`. Planning
+creates neither path. The earlier BEX-403 closure baseline was 474 passed plus 2 dependency-gated skips (476
+total); its focused baselines were 17 adapter, 6 infrastructure, and 158 shared passing tests.
 
 ## Dependency order
 
@@ -59,10 +61,10 @@ BEX-503 runner audit [closed 2026-08-06]
 BEX-504 pilot restructuring [closed 2026-08-06]
           |
           v
-BEX-505 Pester adapter correction [next]
+BEX-505 Pester adapter correction [closed 2026-08-06]
           |
           v
-BEX-506 thin parallel shell
+BEX-506 thin parallel shell [next]
           |
           v
 BEX-507 repository migration and closure
@@ -72,8 +74,8 @@ BEX-403 proved both current adapters retain one D19 address owner, complete decl
 and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
 not Phase 5 implementation.
 
-BEX-505 is the sole next ticket. Its physical-file planning boundary and container artifact transport now
-have both contract and pilot evidence.
+BEX-506 is the sole next ticket. Its adapter composition boundary now has contract, pilot, address,
+transport, and structural evidence.
 
 ## Cross-cutting invariants
 
@@ -188,10 +190,15 @@ race; timing evidence supports the selected file topology or records a bounded f
 
 ## BEX-505 — Correct and harden the Pester adapter
 
+**Status: closed 2026-08-06.** The shared module exports `Get-PesterBatchJob` with `pester-batch` identity,
+stable `pester:<repository-relative-path>#<digest>` IDs, and no compatibility alias. One resolver owns the
+native-result and artifact addresses, both are declared writes, child transport is explicit, and planning
+remains pure.
+
 ### Scope
 
-- Atomically rename `Get-TestBatchJob` to `Get-PesterBatchJob` throughout its public file, manifest, root
-  module, private helpers, tests, README, metadata, job IDs, and diagnostics.
+- Atomically rename the then-current `Get-TestBatchJob` to `Get-PesterBatchJob` throughout its public file,
+  manifest, root module, private helpers, tests, README, metadata, job IDs, and diagnostics.
 - Rename adapter identity/addressing to `pester-batch` and `pester-jobs`.
 - Keep the command in the single shared `adapters` module; add no compatibility alias or unitary submodule.
 - Emit exactly one `PowerShellProcess` job per selected physical file and pin the runner, Pester manifest,
@@ -204,11 +211,13 @@ race; timing evidence supports the selected file topology or records a bounded f
 
 ### Exit gate
 
-No stale `Get-TestBatchJob`, `test-batch`, or `test-jobs` reference remains in live code or current-contract
-documentation; historical records describe the transition accurately. File-level behavior and the current
-public executor surface remain unchanged; focused adapter and shared gates are green.
+The former generic names remain only in explicit transition history, not live code or current-contract
+documentation. File-level behavior and the public executor surface remain unchanged; focused adapter and
+shared gates are green.
 
 ## BEX-506 — Compose a thin repository parallel-test shell
+
+**Status: next.**
 
 ### Scope
 

@@ -1,6 +1,6 @@
-# Test adapter dependency helpers.
+# Pester adapter dependency helpers.
 
-function Get-TestBatchPesterManifestRecord {
+function Get-PesterBatchManifestRecord {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Path
@@ -19,7 +19,7 @@ function Get-TestBatchPesterManifestRecord {
     catch { return $null }
 }
 
-function Resolve-TestBatchPesterDependency {
+function Resolve-PesterBatchDependency {
     [CmdletBinding()]
     param(
         [string] $PesterManifest,
@@ -31,9 +31,9 @@ function Resolve-TestBatchPesterDependency {
             [System.IO.Path]::GetFullPath($PesterManifest)
         }
         else { [System.IO.Path]::GetFullPath($PesterManifest, $RepositoryRoot) }
-        $record = Get-TestBatchPesterManifestRecord -Path $candidate
+        $record = Get-PesterBatchManifestRecord -Path $candidate
         if ($null -eq $record) {
-            throw "test-batch Pester manifest must identify Pester 5 or newer: '$PesterManifest'"
+            throw "pester-batch Pester manifest must identify Pester 5 or newer: '$PesterManifest'"
         }
         return $record
     }
@@ -45,7 +45,7 @@ function Resolve-TestBatchPesterDependency {
         if ([System.IO.Directory]::Exists($portablePesterRoot)) {
             foreach ($versionDirectory in [System.IO.Directory]::EnumerateDirectories(
                     $portablePesterRoot)) {
-                $record = Get-TestBatchPesterManifestRecord -Path (
+                $record = Get-PesterBatchManifestRecord -Path (
                     [System.IO.Path]::Combine($versionDirectory, 'Pester.psd1'))
                 if ($null -ne $record) { $records.Add($record) }
             }
@@ -60,7 +60,7 @@ function Resolve-TestBatchPesterDependency {
     foreach ($module in @(Get-Module -ListAvailable -Name Pester | Where-Object {
                 $_.Version -ge [version]'5.0'
             })) {
-        $record = Get-TestBatchPesterManifestRecord -Path $module.Path
+        $record = Get-PesterBatchManifestRecord -Path $module.Path
         if ($null -ne $record) { $records.Add($record) }
     }
 
@@ -68,12 +68,12 @@ function Resolve-TestBatchPesterDependency {
         @{ Expression = 'Version'; Descending = $true },
         @{ Expression = 'Path'; Ascending = $true } | Select-Object -First 1
     if ($null -eq $selected) {
-        throw 'test-batch could not locate a Pester 5 or newer manifest'
+        throw 'pester-batch could not locate a Pester 5 or newer manifest'
     }
     return $selected
 }
 
-function Resolve-TestBatchPowerShellPath {
+function Resolve-PesterBatchPowerShellPath {
     [CmdletBinding()]
     param([string] $PowerShellPath)
 
@@ -88,7 +88,7 @@ function Resolve-TestBatchPowerShellPath {
     }
     $candidate = [System.IO.Path]::GetFullPath($PowerShellPath)
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
-        throw "test-batch child PowerShell not found: '$PowerShellPath'"
+        throw "pester-batch child PowerShell not found: '$PowerShellPath'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }

@@ -1,4 +1,4 @@
-function Get-TestBatchJob {
+function Get-PesterBatchJob {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)] [Alias('TestPath')]
@@ -16,20 +16,20 @@ function Get-TestBatchJob {
         [string] $OutputVerbosity = 'Detailed'
     )
 
-    $repository = Resolve-TestBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
-    $run = Resolve-TestBatchRunDirectory -RunDirectory $RunDirectory
+    $repository = Resolve-PesterBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
+    $run = Resolve-PesterBatchRunDirectory -RunDirectory $RunDirectory
     $runner = [System.IO.Path]::Combine($repository, 'tests', 'run.ps1')
     if (-not (Test-Path -LiteralPath $runner -PathType Leaf)) {
-        throw "test-batch runner not found: '$runner'"
+        throw "pester-batch runner not found: '$runner'"
     }
     $runner = (Resolve-Path -LiteralPath $runner).Path
-    $pester = Resolve-TestBatchPesterDependency -PesterManifest $PesterManifest `
+    $pester = Resolve-PesterBatchDependency -PesterManifest $PesterManifest `
         -RepositoryRoot $repository
-    $childPowerShell = Resolve-TestBatchPowerShellPath -PowerShellPath $PowerShellPath
-    $fullName = ConvertTo-TestBatchFilter -Value $FullNameFilter -Role FullName
-    $includeTag = ConvertTo-TestBatchFilter -Value $Tag -Role Tag
-    $exclude = ConvertTo-TestBatchFilter -Value $ExcludeTag -Role ExcludeTag
-    $files = @(Find-TestBatchFile -Path $Path -RepositoryRoot $repository)
+    $childPowerShell = Resolve-PesterBatchPowerShellPath -PowerShellPath $PowerShellPath
+    $fullName = ConvertTo-PesterBatchFilter -Value $FullNameFilter -Role FullName
+    $includeTag = ConvertTo-PesterBatchFilter -Value $Tag -Role Tag
+    $exclude = ConvertTo-PesterBatchFilter -Value $ExcludeTag -Role ExcludeTag
+    $files = @(Find-PesterBatchFile -Path $Path -RepositoryRoot $repository)
 
     foreach ($file in $files) {
         $relativePath = [System.IO.Path]::GetRelativePath($repository, $file) -replace '\\', '/'
@@ -39,10 +39,10 @@ function Get-TestBatchJob {
             "tag=$($includeTag -join [char]0)"
             "exclude=$($exclude -join [char]0)"
         ) -join "`n"
-        $digest = Get-TestBatchStableHash -Value $identityMaterial
-        $id = "test:$relativePath#$digest"
-        $addressLeaf = ConvertTo-TestBatchAddressLeaf -TestPath $file -Digest $digest
-        $address = Resolve-TestBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
+        $digest = Get-PesterBatchStableHash -Value $identityMaterial
+        $id = "pester:$relativePath#$digest"
+        $addressLeaf = ConvertTo-PesterBatchAddressLeaf -TestPath $file -Digest $digest
+        $address = Resolve-PesterBatchJobAddress -RunDirectory $run -AddressLeaf $addressLeaf
 
         $parameters = @{
             Path = $file
@@ -57,15 +57,18 @@ function Get-TestBatchJob {
 
         $fileInfo = [System.IO.FileInfo]::new($file)
         $metadata = @{
-            Domain = 'test'
-            Adapter = 'test-batch'
+            Domain = 'pester'
+            Adapter = 'pester-batch'
             AddressingContract = 'D19/RunDirectory'
+            ArtifactContract = 'D23/ContainerRoot'
             ResultPersistence = 'PesterNative'
             RepositoryRelativePath = $relativePath
             SourcePath = $file
             RunDirectory = $run
             JobDirectory = $address.JobDirectory
             ResultPath = $address.ResultPath
+            ArtifactRoot = $address.ArtifactRoot
+            ArtifactEnvironment = 'CODEX_TEST_ARTIFACT_ROOT'
             ResultFormat = $ResultFormat
             PesterManifest = $pester.Path
             PesterVersion = $pester.Version.ToString()
@@ -76,9 +79,13 @@ function Get-TestBatchJob {
 
         batch-executor\New-BatchJob -Id $id -Kind PowerShellProcess -EntryPoint $runner `
             -Parameters $parameters -RuntimeProfile 'pester-process' `
-            -ProcessSpec @{ PowerShellPath = $childPowerShell; WorkingDirectory = $repository } `
+            -ProcessSpec @{
+                PowerShellPath = $childPowerShell
+                WorkingDirectory = $repository
+                Environment = @{ CODEX_TEST_ARTIFACT_ROOT = $address.ArtifactRoot }
+            } `
             -EstimatedCost ([math]::Max(1, [double]$fileInfo.Length)) `
-            -Writes $address.ResultPath -ModulePath $pester.Path `
+            -Writes @($address.ResultPath, $address.ArtifactRoot) -ModulePath $pester.Path `
             -WorkingDirectory $repository -Metadata $metadata
     }
 }

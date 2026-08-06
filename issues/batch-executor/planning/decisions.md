@@ -247,20 +247,22 @@ This handoff is based on the
 [roadmap](../../infrastructure/planning/roadmap.md). Batch Phase 4 does not wait for the entire infrastructure
 roadmap, but it must not preempt those unresolved contracts.
 
-### D20 — The test adapter maps one Pester file to one isolated process job — implemented
+### D20 — The Pester adapter maps one physical file to one isolated process job — implemented
 
-The repository test adapter is `Get-TestBatchJob`, exported by the shared `adapters` module alongside
-`Get-LatexBatchJob`; neither command expands the batch executor's four-command surface. Directories are
-discovered recursively as `*.Tests.ps1` files without loading Pester or suite code in the planning process.
-Each unique file becomes
-one `PowerShellProcess` job because Pester configuration, module loading, script state, location, and runner
-termination behavior are process-wide concerns. Caller full-name and tag filters select cases inside each
-file rather than creating a shared discovery host or one process per case.
+The repository Pester adapter is `Get-PesterBatchJob`, exported by the shared `adapters` module alongside
+`Get-LatexBatchJob`; neither command expands the batch executor's four-command surface. There is no legacy
+alias or one-command submodule. Directories are discovered recursively as `*.Tests.ps1` files without
+loading Pester or suite code in the planning process. Each unique file becomes one `PowerShellProcess` job
+because Pester configuration, module loading, script state, location, and runner termination behavior are
+process-wide concerns. Caller full-name and tag filters select cases inside each file rather than creating a
+shared discovery host or one process per case.
 
-Planning pins the exact Pester 5-or-newer manifest, child PowerShell, repository working directory, and
-runner entrypoint. Stable job identity derives from the repository-relative file plus normalized filters; a
-file-size hint affects dispatch order only. One D19 resolver assigns a unique Pester-native XML result path,
-which is the adapter's sole declared write. Planning creates no run artifacts. The caller separately compiles
+Planning pins the exact Pester 5-or-newer manifest, child PowerShell, repository working directory, runner
+entrypoint, and filters. Stable identity is `pester:<repository-relative-path>#<digest>`, with normalized
+filters contributing to the digest; a file-size hint affects dispatch order only. One D19 resolver owns the
+complete container address beneath `RunDirectory/pester-jobs/<container>`: `pester.xml` and its sibling
+`artifacts/` root. Both are declared in `Writes`, and `ProcessSpec.Environment` transports the absolute
+artifact root as `CODEX_TEST_ARTIFACT_ROOT`. Planning creates neither address. The caller separately compiles
 and invokes the emitted jobs through the shared module, and generic results remain in the in-memory execution
 record.
 
@@ -271,7 +273,9 @@ location. The selected count is the sum of outcomes because Pester 5's `TotalCou
 excluded by a full-name filter while Pester 6 and the native result do not. The observation is emitted before
 the runner throws on an empty or failed run, so it survives direct and nested child failure without becoming
 a generic result store. A failed test file remains one failed item and does not suppress sibling suites;
-native Pester XML remains the runner's only durable artifact.
+native Pester XML remains the runner's only durable runner-owned output, while selected test code may retain
+evidence
+below its declared container artifact root.
 
 ### D21 — The LaTeX adapter maps one source-ready manifest to one isolated process job — implemented
 
@@ -309,9 +313,9 @@ load surface, `New-BatchPlan` is the only plan constructor, and a module-surface
 legacy path and command to remain absent. This changes no canonical export, plan/execution contract, adapter,
 or runtime behavior.
 
-### D23 — One physical Pester container owns one run-scoped artifact root — accepted
+### D23 — One physical Pester container owns one run-scoped artifact root — implemented
 
-BEX-502 freezes the repository's batchable-container authoring contract in
+BEX-502 froze the repository's batchable-container authoring contract in
 [`tests/README.md`](../../../tests/README.md). One repository-relative `*.Tests.ps1` file remains the atomic
 job and runs by exact path in one fresh child PowerShell process. Pester full names, tags, Describes,
 parameter rows, and discovery metadata select content inside that job; they neither prove independence nor
@@ -319,12 +323,13 @@ create smaller schedulable units. A selected test cannot require another file or
 its fixture.
 
 Ephemeral scratch belongs in `$TestDrive`. Every retained test/application write belongs to the caller's run
-and exact container invocation. The corrected Pester adapter will derive
-`RunDirectory/pester-jobs/<container-address>/artifacts`, declare that root alongside the native
-`pester.xml` write, and transport its absolute path as `CODEX_TEST_ARTIFACT_ROOT`. Planning creates neither
-path. Tests may choose meaningful fixture, capability, audit, output, or evidence structure below the
-container root; no infrastructure layer allocates directories per `It`, row, or tag. A repository-global
-artifact root, timestamp allocator, fixed build output, or user-machine path is not an admissible fallback.
+and exact container invocation. `Get-PesterBatchJob` derives
+`RunDirectory/pester-jobs/<container-address>/artifacts`, declares that root alongside the native
+`pester.xml` write, and transports its absolute path through `ProcessSpec.Environment` as
+`CODEX_TEST_ARTIFACT_ROOT`. One resolver owns both sibling addresses, and planning creates neither. Tests
+may choose meaningful fixture, capability, audit, output, or evidence structure below the container root;
+no infrastructure layer allocates directories per `It`, row, or tag. A repository-global artifact root,
+timestamp allocator, fixed build output, or user-machine path is not an admissible fallback.
 
 Capabilities are explicit immutable fixtures or toolchains. Their absence becomes a deterministic Pester
 skip with a reason; a test does not restore, build, or download an undeclared fallback into shared state.
@@ -335,15 +340,17 @@ continuation remains executor-owned.
 Files are reviewed semantically as `Batchable`, `CapabilityGated`, `NeedsRefactor`, or temporary
 `SerialOnly`. Serial exceptions require a centralized owner, reason, removal condition, and exclusion from
 the normal batch set; Phase 5 adds no locks, phase barriers, AST classifier, per-file sidecars, or executor
-mode. The current `Get-TestBatchJob` still implements D20's provisional XML-only address until BEX-505; D23
-freezes the target author/adapter boundary without changing current runtime behavior.
+mode. BEX-505 implements the author/adapter boundary frozen by BEX-502 without changing the physical-file
+job or executor contracts.
 
 BEX-504 validates the author side of this boundary. The LaTeX pilot uses one external-integration container
 with six meaningful case roots below `CODEX_TEST_ARTIFACT_ROOT`, falls back only to `$TestDrive` for direct
 ephemeral runs, and rejects a relative environment value. Its Node/KaTeX and node-tikzjax capabilities skip
 with explicit reasons, and a container teardown invariant proves no call used the repository-global LaTeX
-run allocator. Sequential and two-worker executions have identical outcomes and native results. The current
-adapter still transports no artifact root; implementing and declaring that transport remains BEX-505.
+run allocator. Sequential and two-worker executions have identical outcomes and native results. The Pester
+adapter now supplies the same contract to every planned container: the result and artifact addresses share
+one resolver, both are declared writes, and the child receives the artifact root without planner-side
+allocation.
 
 ## Deliberate non-goals of the current executor
 

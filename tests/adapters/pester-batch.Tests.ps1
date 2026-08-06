@@ -10,7 +10,7 @@ BeforeAll {
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
     $script:LivePesterManifest = Join-Path $livePester.ModuleBase 'Pester.psd1'
 
-    function New-TestBatchFixtureRepository {
+    function New-PesterBatchFixtureRepository {
         param(
             [Parameter(Mandatory)] [string] $Root,
             [version] $PesterVersion = [version]'5.7.1',
@@ -51,7 +51,7 @@ BeforeAll {
         }
     }
 
-    function Write-TestBatchFixture {
+    function Write-PesterBatchFixture {
         param(
             [Parameter(Mandatory)] [string] $Path,
             [string] $Content = "Describe 'fixture' { It 'passes' { `$true | Should -BeTrue } }"
@@ -146,7 +146,7 @@ AfterAll {
     Remove-Module batch-executor -Force -ErrorAction SilentlyContinue
 }
 
-Describe 'adapters module surface for test-batch' {
+Describe 'adapters module surface for pester-batch' {
     It 'exports the approved adapter commands and keeps its helpers private' {
         $warnings = @()
         Import-Module $script:AdaptersManifest -Force -WarningVariable +warnings
@@ -154,13 +154,22 @@ Describe 'adapters module surface for test-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-LatexBatchJob', 'Get-TestBatchJob')
+            'Get-LatexBatchJob', 'Get-PesterBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
+        Get-Command Get-TestBatchJob -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
+        foreach ($oldPath in @(
+                (Join-Path $script:AdaptersModuleRoot ('private/test-' + 'address.ps1'))
+                (Join-Path $script:AdaptersModuleRoot ('private/test-' + 'discovery.ps1'))
+                (Join-Path $script:AdaptersModuleRoot ('public/Get-' + 'TestBatchJob.ps1'))
+                (Join-Path $script:RepositoryRoot ('tests/adapters/test-' + 'batch.Tests.ps1'))
+            )) {
+            Test-Path -LiteralPath $oldPath | Should -BeFalse
+        }
         foreach ($helper in @(
-                'Resolve-TestBatchJobAddress'
-                'Find-TestBatchFile'
-                'Resolve-TestBatchPesterDependency'
-                'Get-TestBatchStableHash'
+                'Resolve-PesterBatchJobAddress'
+                'Find-PesterBatchFile'
+                'Resolve-PesterBatchDependency'
+                'Get-PesterBatchStableHash'
             )) {
             Get-Command $helper -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         }
@@ -185,7 +194,7 @@ Describe 'adapters module surface for test-batch' {
             foreach ($literal in @($ast.FindAll({
                             param($node)
                             $node -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
-                                $node.Value -in @('test-jobs', 'pester.xml')
+                                $node.Value -in @('pester-jobs', 'pester.xml', 'artifacts')
                         }, $true))) {
                 $owner = $literal.Parent
                 while ($null -ne $owner -and $owner -isnot `
@@ -197,7 +206,7 @@ Describe 'adapters module surface for test-batch' {
             foreach ($command in @($ast.FindAll({
                             param($node)
                             $node -is [System.Management.Automation.Language.CommandAst] -and
-                                $node.GetCommandName() -eq 'Resolve-TestBatchJobAddress'
+                                $node.GetCommandName() -eq 'Resolve-PesterBatchJobAddress'
                         }, $true))) {
                 $owner = $command.Parent
                 while ($null -ne $owner -and $owner -isnot `
@@ -209,17 +218,22 @@ Describe 'adapters module surface for test-batch' {
         }
 
         @($addressLiteralOwners) | Should -Be @(
-            'Resolve-TestBatchJobAddress', 'Resolve-TestBatchJobAddress')
-        @($resolverCalls) | Should -Be @('Get-TestBatchJob')
+            'Resolve-PesterBatchJobAddress'
+            'Resolve-PesterBatchJobAddress'
+            'Resolve-PesterBatchJobAddress'
+        )
+        @($resolverCalls) | Should -Be @('Get-PesterBatchJob')
         $sourceText.ToString() | Should -Not -Match '\bNew-Item\b|CreateDirectory\s*\('
+        $sourceText.ToString() | Should -Not -Match `
+            'Get-TestBatchJob|\bTestBatch\b|test-batch|test-jobs'
     }
 }
 
-Describe 'Get-TestBatchJob planning' {
+Describe 'Get-PesterBatchJob planning' {
     It 'discovers one stable isolated process job per unique test file without creating run artifacts' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'discovery')
-        $alpha = Write-TestBatchFixture (Join-Path $fixture.Tests 'alpha.Tests.ps1')
-        $beta = Write-TestBatchFixture (Join-Path $fixture.Tests 'group/beta.Tests.ps1') `
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'discovery')
+        $alpha = Write-PesterBatchFixture (Join-Path $fixture.Tests 'alpha.Tests.ps1')
+        $beta = Write-PesterBatchFixture (Join-Path $fixture.Tests 'group/beta.Tests.ps1') `
             -Content (('x' * 200) + "`nDescribe 'beta' { It 'passes' { `$true | Should -BeTrue } }")
 
         $invoke = @{
@@ -228,8 +242,8 @@ Describe 'Get-TestBatchJob planning' {
             RepositoryRoot = $fixture.Root
             PesterManifest = $fixture.PesterManifest
         }
-        $jobs = @(Get-TestBatchJob @invoke)
-        $again = @(Get-TestBatchJob @invoke)
+        $jobs = @(Get-PesterBatchJob @invoke)
+        $again = @(Get-PesterBatchJob @invoke)
 
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
         $jobs.Count | Should -Be 2
@@ -243,16 +257,23 @@ Describe 'Get-TestBatchJob planning' {
             $job.EntryPoint | Should -Be $fixture.Runner
             $job.WorkingDirectory | Should -Be $fixture.Root
             $job.ModulePath | Should -Be @($fixture.PesterManifest)
-            $job.Writes | Should -Be @($job.Metadata.ResultPath)
+            $job.Id | Should -Match '^pester:'
+            $job.Writes | Should -Be @($job.Metadata.ResultPath, $job.Metadata.ArtifactRoot)
             $job.Parameters.ResultPath | Should -Be $job.Metadata.ResultPath
-            $relativeWrite = [System.IO.Path]::GetRelativePath(
-                $fixture.RunDirectory, $job.Metadata.ResultPath)
-            $relativeWrite | Should -Not -Be '..'
-            $relativeWrite | Should -Not -Match '^\.\.[\\/]'
+            $job.ProcessSpec.Environment.CODEX_TEST_ARTIFACT_ROOT |
+                Should -Be $job.Metadata.ArtifactRoot
+            foreach ($write in @($job.Metadata.ResultPath, $job.Metadata.ArtifactRoot)) {
+                $relativeWrite = [System.IO.Path]::GetRelativePath($fixture.RunDirectory, $write)
+                $relativeWrite | Should -Not -Be '..'
+                $relativeWrite | Should -Not -Match '^\.\.[\\/]'
+            }
             $job.Metadata.AddressingContract | Should -Be 'D19/RunDirectory'
+            $job.Metadata.ArtifactContract | Should -Be 'D23/ContainerRoot'
+            $job.Metadata.ArtifactEnvironment | Should -Be 'CODEX_TEST_ARTIFACT_ROOT'
             $job.Metadata.ResultPersistence | Should -Be 'PesterNative'
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.ResultPath | Should -BeFalse
+            Test-Path -LiteralPath $job.Metadata.ArtifactRoot | Should -BeFalse
         }
         $jobs[1].EstimatedCost | Should -BeGreaterThan $jobs[0].EstimatedCost
 
@@ -267,20 +288,21 @@ Describe 'Get-TestBatchJob planning' {
     }
 
     It 'normalizes case and tag filters into test identity and runner parameters' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'filters')
-        $testFile = Write-TestBatchFixture (Join-Path $fixture.Tests 'filter.Tests.ps1')
-        $base = @(Get-TestBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'filters')
+        $testFile = Write-PesterBatchFixture (Join-Path $fixture.Tests 'filter.Tests.ps1')
+        $base = @(Get-PesterBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest)[0]
-        $filtered = @(Get-TestBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
+        $filtered = @(Get-PesterBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest `
                 -FullNameFilter zeta,alpha,alpha -Tag slow,fast -ExcludeTag windows)[0]
-        $reordered = @(Get-TestBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
+        $reordered = @(Get-PesterBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest `
                 -FullNameFilter alpha,zeta -Tag fast,slow -ExcludeTag windows)[0]
 
         $filtered.Id | Should -Not -Be $base.Id
         $filtered.Id | Should -Be $reordered.Id
         $filtered.Metadata.ResultPath | Should -Be $reordered.Metadata.ResultPath
+        $filtered.Metadata.ArtifactRoot | Should -Be $reordered.Metadata.ArtifactRoot
         @($filtered.Parameters.FullNameFilter) | Should -Be @('alpha', 'zeta')
         @($filtered.Parameters.Tag) | Should -Be @('fast', 'slow')
         @($filtered.Parameters.ExcludeTag) | Should -Be @('windows')
@@ -288,35 +310,35 @@ Describe 'Get-TestBatchJob planning' {
     }
 
     It 'rejects ambiguous ownership inputs before producing jobs or paths' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'invalid')
-        $testFile = Write-TestBatchFixture (Join-Path $fixture.Tests 'valid.Tests.ps1')
-        $outside = Write-TestBatchFixture (Join-Path $TestDrive 'outside.Tests.ps1')
-        $ordinary = Write-TestBatchFixture (Join-Path $fixture.Tests 'ordinary.ps1')
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'invalid')
+        $testFile = Write-PesterBatchFixture (Join-Path $fixture.Tests 'valid.Tests.ps1')
+        $outside = Write-PesterBatchFixture (Join-Path $TestDrive 'outside.Tests.ps1')
+        $ordinary = Write-PesterBatchFixture (Join-Path $fixture.Tests 'ordinary.ps1')
         $emptyDirectory = Join-Path $fixture.Root 'empty-tests'
         [void][System.IO.Directory]::CreateDirectory($emptyDirectory)
         $missingRun = Join-Path $fixture.Root 'missing-run'
 
-        { Get-TestBatchJob -Path $testFile -RunDirectory 'relative-run' `
+        { Get-PesterBatchJob -Path $testFile -RunDirectory 'relative-run' `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
             Should -Throw '*RunDirectory must be an existing absolute path*'
-        { Get-TestBatchJob -Path $testFile -RunDirectory $missingRun `
+        { Get-PesterBatchJob -Path $testFile -RunDirectory $missingRun `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
             Should -Throw '*RunDirectory must be an existing absolute path*'
         Test-Path -LiteralPath $missingRun | Should -BeFalse
-        { Get-TestBatchJob -Path $outside -RunDirectory $fixture.RunDirectory `
+        { Get-PesterBatchJob -Path $outside -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
             Should -Throw '*selection escapes RepositoryRoot*'
-        { Get-TestBatchJob -Path $ordinary -RunDirectory $fixture.RunDirectory `
+        { Get-PesterBatchJob -Path $ordinary -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
             Should -Throw '*is not a *.Tests.ps1 file*'
-        { Get-TestBatchJob -Path $emptyDirectory -RunDirectory $fixture.RunDirectory `
+        { Get-PesterBatchJob -Path $emptyDirectory -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $fixture.PesterManifest } |
             Should -Throw '*discovered no *.Tests.ps1 files*'
     }
 
     It 'prefers the highest portable Pester dependency without importing it during planning' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'portable')
-        $testFile = Write-TestBatchFixture (Join-Path $fixture.Tests 'portable.Tests.ps1')
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'portable')
+        $testFile = Write-PesterBatchFixture (Join-Path $fixture.Tests 'portable.Tests.ps1')
         $portableRoot = Join-Path $TestDrive 'portable-root'
         $pesterRoot = Join-Path $portableRoot 'PowerShell/Modules/Pester'
         foreach ($version in @('5.7.1', '6.0.0')) {
@@ -331,7 +353,7 @@ Describe 'Get-TestBatchJob planning' {
         $savedPortableRoot = $env:PORTABLE_ROOT
         try {
             $env:PORTABLE_ROOT = $portableRoot
-            $job = @(Get-TestBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
+            $job = @(Get-PesterBatchJob -Path $testFile -RunDirectory $fixture.RunDirectory `
                     -RepositoryRoot $fixture.Root)[0]
             $job.Metadata.PesterVersion | Should -Be '6.0.0'
             $job.Metadata.PesterManifest | Should -Be `
@@ -381,16 +403,16 @@ Describe 'repository Pester runner contract' {
     }
 
     It 'preserves exact-path selection and its audit observation across Pester 5 and 6' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-exact') `
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-exact') `
             -UseRepositoryRunner
         $hostPath = Write-TestRunnerHost (Join-Path $TestDrive 'runner-exact-host.ps1')
-        $selected = Write-TestBatchFixture (Join-Path $fixture.Tests 'selected.Tests.ps1') -Content @'
+        $selected = Write-PesterBatchFixture (Join-Path $fixture.Tests 'selected.Tests.ps1') -Content @'
 Describe 'selected container' {
     It 'selected pass' { $true | Should -BeTrue }
     It 'unselected failure' { throw 'full-name filter failed' }
 }
 '@
-        $null = Write-TestBatchFixture (Join-Path $fixture.Tests 'sibling.Tests.ps1') -Content @'
+        $null = Write-PesterBatchFixture (Join-Path $fixture.Tests 'sibling.Tests.ps1') -Content @'
 Describe 'sibling container' {
     It 'must not run' { throw 'exact path expanded to a sibling' }
 }
@@ -421,10 +443,10 @@ Describe 'sibling container' {
     }
 
     It 'preserves native failure, skip, empty-run, and exit-status semantics across Pester 5 and 6' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-outcomes') `
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-outcomes') `
             -UseRepositoryRunner
         $hostPath = Write-TestRunnerHost (Join-Path $TestDrive 'runner-outcome-host.ps1')
-        $mixed = Write-TestBatchFixture (Join-Path $fixture.Tests 'mixed.Tests.ps1') -Content @'
+        $mixed = Write-PesterBatchFixture (Join-Path $fixture.Tests 'mixed.Tests.ps1') -Content @'
 Describe 'mixed outcomes' {
     It 'passes' { $true | Should -BeTrue }
     It 'skips' -Skip { throw 'skip body ran' }
@@ -464,31 +486,39 @@ Describe 'mixed outcomes' {
     }
 }
 
-Describe 'test-batch execution integration' {
+Describe 'pester-batch execution integration' {
     It 'runs filtered and failing files in isolated children with stable in-memory results and native XML' {
-        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'execution') `
+        $fixture = New-PesterBatchFixtureRepository -Root (Join-Path $TestDrive 'execution') `
             -UseRepositoryRunner
-        $passPath = Write-TestBatchFixture (Join-Path $fixture.Tests 'pass.Tests.ps1') -Content @'
+        $passPath = Write-PesterBatchFixture (Join-Path $fixture.Tests 'pass.Tests.ps1') -Content @'
 Describe 'filtered integration fixture' {
     It 'selected pass' {
-        $env:CODEX_BATCH_JOB_ID | Should -Match '^test:'
+        $env:CODEX_BATCH_JOB_ID | Should -Match '^pester:'
+        [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'selected-pass'
+        [void][System.IO.Directory]::CreateDirectory($caseRoot)
+        Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'pass artifact'
     }
     It 'unselected failure' {
         throw 'this case must remain filtered out'
     }
 }
 '@
-        $failPath = Write-TestBatchFixture (Join-Path $fixture.Tests 'fail.Tests.ps1') -Content @'
+        $failPath = Write-PesterBatchFixture (Join-Path $fixture.Tests 'fail.Tests.ps1') -Content @'
 Describe 'failing integration fixture' {
     It 'fails locally' {
+        [System.IO.Path]::IsPathFullyQualified($env:CODEX_TEST_ARTIFACT_ROOT) | Should -BeTrue
+        $caseRoot = Join-Path $env:CODEX_TEST_ARTIFACT_ROOT 'fails-locally'
+        [void][System.IO.Directory]::CreateDirectory($caseRoot)
+        Set-Content -LiteralPath (Join-Path $caseRoot 'witness.txt') -Value 'failure artifact'
         throw 'planned isolated failure'
     }
 }
 '@
-        $passJob = @(Get-TestBatchJob -Path $passPath -RunDirectory $fixture.RunDirectory `
+        $passJob = @(Get-PesterBatchJob -Path $passPath -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $script:LivePesterManifest `
                 -FullNameFilter '*selected pass*' -OutputVerbosity None)[0]
-        $failJob = @(Get-TestBatchJob -Path $failPath -RunDirectory $fixture.RunDirectory `
+        $failJob = @(Get-PesterBatchJob -Path $failPath -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $script:LivePesterManifest `
                 -OutputVerbosity None)[0]
         $compiled = InModuleScope adapters -Parameters @{
@@ -508,6 +538,10 @@ Describe 'failing integration fixture' {
         $execution.Summary.Failed | Should -Be 1
         Test-Path -LiteralPath $passJob.Metadata.ResultPath -PathType Leaf | Should -BeTrue
         Test-Path -LiteralPath $failJob.Metadata.ResultPath -PathType Leaf | Should -BeTrue
+        Test-Path -LiteralPath (Join-Path $passJob.Metadata.ArtifactRoot `
+                'selected-pass/witness.txt') -PathType Leaf | Should -BeTrue
+        Test-Path -LiteralPath (Join-Path $failJob.Metadata.ArtifactRoot `
+                'fails-locally/witness.txt') -PathType Leaf | Should -BeTrue
         $passXml = [xml](Get-Content -LiteralPath $passJob.Metadata.ResultPath -Raw)
         $failXml = [xml](Get-Content -LiteralPath $failJob.Metadata.ResultPath -Raw)
         [int]$passXml.'test-results'.total | Should -Be 1
@@ -526,8 +560,22 @@ Describe 'failing integration fixture' {
         $failObservation.result_path | Should -Be $failJob.Metadata.ResultPath
         $declaredWrites = @($passJob.Writes) + @($failJob.Writes)
         $producedFiles = @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File)
-        @($producedFiles.FullName | Sort-Object) | Should -Be `
-            @($declaredWrites | Sort-Object)
+        foreach ($producedFile in $producedFiles) {
+            $covered = $false
+            foreach ($declaredWrite in $declaredWrites) {
+                $relative = [System.IO.Path]::GetRelativePath($declaredWrite, $producedFile.FullName)
+                if ($producedFile.FullName -eq $declaredWrite -or
+                    (-not [System.IO.Path]::IsPathFullyQualified($relative) -and
+                        $relative -ne '..' -and -not $relative.StartsWith(
+                            ('..' + [System.IO.Path]::DirectorySeparatorChar),
+                            [System.StringComparison]::Ordinal))) {
+                    $covered = $true
+                    break
+                }
+            }
+            $covered | Should -BeTrue -Because `
+                "produced file '$($producedFile.FullName)' must be covered by a declared write"
+        }
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File |
                 Where-Object Extension -In @('.json', '.jsonl')).Count | Should -Be 0
     }

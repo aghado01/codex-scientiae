@@ -1,9 +1,9 @@
 # Pester batch testing overhaul brief
 
-Runstamp 20260805. **Status: active; BEX-501 through BEX-504 implemented.** This brief defines the
+Runstamp 20260805. **Status: active; BEX-501 through BEX-505 implemented.** This brief defines the
 test-authoring and execution changes required before repository testing can use the shared batch executor
-as a normal parallel path. BEX-505 is the next strictly sequenced ticket; the current adapter remains
-provisional until BEX-505.
+as a normal parallel path. BEX-506 is the next strictly sequenced ticket; the corrected Pester adapter is
+now the stable composition boundary for that shell.
 
 Inputs:
 
@@ -11,7 +11,7 @@ Inputs:
 - [batch-executor roadmap](../planning/roadmap.md);
 - [testing-overhaul workplan](../planning/testing-overhaul-workplan.md);
 - [repository Pester runner](../../../tests/run.ps1);
-- [current Pester adapter](../../../src/adapters/public/Get-TestBatchJob.ps1);
+- [current Pester adapter](../../../src/adapters/public/Get-PesterBatchJob.ps1);
 - ThermoMapper precedents: [host](../../../../ThermoMapper/src/test-harness/Program.cs),
   [discovery](../../../../ThermoMapper/src/test-harness/TestDiscovery.cs), and
   [fact runner](../../../../ThermoMapper/src/test-harness/FactRunner.cs).
@@ -42,11 +42,10 @@ New-BatchPlan / Invoke-BatchPlan -- one queue, budget, and lifecycle owner
 tests/parallel.ps1 -- thin repository-facing shell
 ~~~
 
-The existing `Get-TestBatchJob` remains the conservative file-level planner while this work is underway.
-When its contract is corrected, the command, filenames, helpers, metadata, address root, tests, and
-documentation should change atomically to `Get-PesterBatchJob`, `pester-batch`, and `pester-jobs`. There
-should be no compatibility alias and no one-command submodule: it remains part of the shared `adapters`
-module.
+BEX-505 atomically renamed the then-current `Get-TestBatchJob` file-level planner, its helpers, metadata,
+job IDs, diagnostics, tests, and documentation to the Pester-specific `Get-PesterBatchJob`, `pester-batch`,
+and `pester-jobs` contract. There is no compatibility alias or one-command submodule: the command remains
+part of the shared `adapters` module.
 
 ## 2. Why suite topology moves first
 
@@ -95,10 +94,11 @@ Those concerns either already belong to batch-executor/infrastructure or remain 
 
 ## 4. Batchable Pester-container contract
 
-BEX-502 freezes the operational authoring and semantic review checklist in
-[`tests/README.md`](../../../tests/README.md). The adapter-side target address is
+BEX-502 froze the operational authoring and semantic review checklist in
+[`tests/README.md`](../../../tests/README.md). BEX-505 implements its adapter-side address:
 `RunDirectory/pester-jobs/<container-address>/artifacts`, transported to the child as the absolute
-`CODEX_TEST_ARTIFACT_ROOT` and declared as a job write. This brief retains the ownership rationale.
+`CODEX_TEST_ARTIFACT_ROOT` and declared as a job write beside `pester.xml`. This brief retains the ownership
+rationale.
 
 A file may be classified `Batchable` only when all of the following hold:
 
@@ -148,9 +148,11 @@ empty/failure propagation and does not replace or persist the native result.
 
 The corrected `Get-PesterBatchJob` discovers caller-selected physical test files and emits one
 `PowerShellProcess` job per file. It consumes an existing absolute `RunDirectory`, uses one pure D19
-resolver beneath `pester-jobs`, declares its Pester XML and D23 container-artifact writes, transports the
-artifact root as `CODEX_TEST_ARTIFACT_ROOT`, pins the runner/Pester/child PowerShell, and creates nothing
-while planning.
+resolver to derive sibling `pester.xml` and `artifacts/` addresses beneath one
+`RunDirectory/pester-jobs/<container>` root, and declares both as writes. Its
+`ProcessSpec.Environment` transports the absolute artifact root as `CODEX_TEST_ARTIFACT_ROOT`; planning
+pins the runner, Pester manifest, child PowerShell, repository root, and filters while creating nothing.
+Stable identity is `pester:<repository-relative-path>#<digest>`.
 
 It does not interpret arbitrary Pester ASTs, own executor resources, merge generic execution results, or
 turn `It` names into jobs.
@@ -222,6 +224,8 @@ exact-container runner boundary across Pester 5.7.1 and 6.0.0, including native 
 status, and child-safe observations, without acquiring batch ownership. BEX-504 then preserved exact
 sequential/parallel semantics for both controls, left the eight-file batch-executor topology intact, and
 split the LaTeX control once to isolate capability-gated external processes and container-owned writes.
-Phase 5 now resumes at BEX-505 adapter correction, followed in strict sequence by thin-shell composition and
-repository migration as specified in the
+Finally, BEX-505 replaced the provisional generic test-adapter naming and XML-only address with the
+Pester-specific command, stable identity, single resolver, paired native-result/artifact writes, and child
+artifact-root transport. Phase 5 now resumes at BEX-506 thin-shell composition, followed by repository
+migration as specified in the
 [workplan](../planning/testing-overhaul-workplan.md).

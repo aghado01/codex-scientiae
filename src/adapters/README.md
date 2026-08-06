@@ -1,36 +1,40 @@
 # Batch adapters
 
 `adapters` contains the domain planners for the shared finite-batch executor. It exports two commands while
-leaving the executor's four-command public surface unchanged: `Get-TestBatchJob` for repository Pester work
-and `Get-LatexBatchJob` for manifest-backed latex-ingest work. These are public files in one module, not one
-PowerShell module per adapter.
+leaving the executor's four-command public surface unchanged: `Get-PesterBatchJob` for repository Pester
+work and `Get-LatexBatchJob` for manifest-backed latex-ingest work. These are public files in one module,
+not one PowerShell module per adapter; the Pester command has no compatibility alias.
 
-## Test adapter
+## Pester adapter
 
-`Get-TestBatchJob` accepts caller-selected `*.Tests.ps1` files or directories and an existing absolute
+`Get-PesterBatchJob` accepts caller-selected `*.Tests.ps1` files or directories and an existing absolute
 `RunDirectory`. Directories expand recursively to one `PowerShellProcess` job per test file. Optional Pester
 full-name and tag filters select cases inside each file without loading Pester or suite code in the planning
 process.
 
 Planning resolves and freezes:
 
-- a stable job ID from repository-relative test identity plus normalized filters;
+- a stable `pester:<repository-relative-path>#<digest>` job ID from repository-relative test identity plus
+  normalized filters;
 - the exact Pester 5-or-newer manifest imported by the child;
 - the PowerShell executable, repository working directory, and runner entrypoint;
 - a file-size cost hint; and
-- one Pester-native XML result path beneath `RunDirectory/test-jobs/`.
+- one container address beneath `RunDirectory/pester-jobs/`, with a Pester-native `pester.xml` result and
+  sibling `artifacts/` root.
 
 One private pure resolver owns all run-relative address composition. Planning creates no directories or
-files. The worker may create the unique result directory, and the job declares its XML result path in
-`Writes`. Pester's XML is an explicit runner-native artifact; the generic batch execution result remains the
-in-memory return from `Invoke-BatchPlan`.
+files. The job declares both the XML path and container artifact root in `Writes`, and its
+`ProcessSpec.Environment` transports the absolute artifact root to the child as
+`CODEX_TEST_ARTIFACT_ROOT`. Pester's XML is an explicit runner-native artifact; retained suite evidence
+stays below the container artifact root; and the generic batch execution result remains the in-memory
+return from `Invoke-BatchPlan`.
 
-`Get-TestBatchJob` only plans work. The caller imports the batch-executor module separately, passes the
+`Get-PesterBatchJob` only plans work. The caller imports the batch-executor module separately, passes the
 emitted jobs to `New-BatchPlan`, and invokes a valid plan through `Invoke-BatchPlan`. This keeps adapters
 composable: test and LaTeX jobs can share one queue without another scheduler or convenience
 wrapper taking ownership of execution policy.
 
-The test adapter never allocates or joins a run, selects logger sink topology, serializes the generic
+The Pester adapter never allocates or joins a run, selects logger sink topology, serializes the generic
 execution record, or owns pools, cancellation, retries, and result ordering. Process jobs receive the
 executor's `CODEX_BATCH_JOB_ID`; any caller-supplied logging or correlation environment continues through ordinary
 process policy.

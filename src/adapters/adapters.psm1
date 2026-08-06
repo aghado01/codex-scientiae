@@ -16,14 +16,14 @@ foreach ($dependency in @($script:AdaptersExecutorManifest, $script:LatexBatchWo
 Import-Module $script:AdaptersExecutorManifest -Scope Local -ErrorAction Stop
 
 $hostFiles = @(
-    'private/test-address.ps1'
-    'private/test-discovery.ps1'
+    'private/pester-address.ps1'
+    'private/pester-discovery.ps1'
     'private/pester-dependency.ps1'
     'private/latex-address.ps1'
     'private/latex-inventory-row.ps1'
     'private/latex-dependency.ps1'
     'public/Get-LatexBatchJob.ps1'
-    'public/Get-TestBatchJob.ps1'
+    'public/Get-PesterBatchJob.ps1'
 )
 foreach ($relativePath in $hostFiles) {
     $path = Join-Path $script:AdaptersModuleRoot $relativePath
@@ -33,4 +33,4 @@ foreach ($relativePath in $hostFiles) {
     . $path
 }
 
-Export-ModuleMember -Function 'Get-LatexBatchJob', 'Get-TestBatchJob'
+Export-ModuleMember -Function 'Get-LatexBatchJob', 'Get-PesterBatchJob'

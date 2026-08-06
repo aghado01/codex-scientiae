@@ -18,7 +18,8 @@ that individual `It` blocks are independently schedulable.
 - The 43 isolated wall measurements total 320.387 s (mean 7.451 s, median 5.656 s, p90 10.889 s, p95
   18.276 s). The enclosing serialized harness took approximately 321.5 s.
 - `Obs/It` means observed Pester tests versus textual `It` lines. Parameter rows expand `md-repair`; embedded
-  fixture source inflates the textual count in `test-batch`.
+  fixture source inflates the textual count in the then-named `test-batch` container (renamed
+  `pester-batch` by BEX-505).
 
 Classification applies to the current physical file as a whole:
 
@@ -41,7 +42,7 @@ fresh-process-local; the file has no dependency on another test file running fir
 |---|---:|---|---|---:|---|---|
 | `tests/adapters/adapter-thinness.Tests.ps1` | 2/2 | BA builds a script-local AST cache; no process or mutable host state. | Read-only adapter source; no skip. | 4.742 s | `Batchable` | Repeatable exact-path structural gate; retain the container-local cache. |
 | `tests/adapters/latex-batch.Tests.ps1` | 8/8 | BA/AA manage modules; synthetic planner cases plus child PowerShell and one live LaTeX/Node/KaTeX integration. | TD-only fixtures/results; live toolchain is not gated. | 10.889 s | `NeedsRefactor` | Split the live integration at its capability/cost seam and gate it; the synthetic planner portion is otherwise batchable. |
-| `tests/adapters/test-batch.Tests.ps1` | 7/10 | BA/AA manage modules; nested child PowerShell/Pester; saved `PORTABLE_ROOT` is restored in `finally`. | Generated repositories, manifests, tests, and XML are TD-only; no skip. | 10.133 s | `Batchable` | Exact fixture paths and child results are isolated. The planning/integration boundary is an optional cost split. |
+| `tests/adapters/test-batch.Tests.ps1` (then named; now `pester-batch.Tests.ps1`) | 7/10 | BA/AA manage modules; nested child PowerShell/Pester; saved `PORTABLE_ROOT` is restored in `finally`. | Generated repositories, manifests, tests, and XML are TD-only; no skip. | 10.133 s | `Batchable` | Exact fixture paths and child results are isolated. The planning/integration boundary is an optional cost split. |
 | `tests/infrastructure/node-dependencies.Tests.ps1` | 3/3 | BA fixes repository root; invokes ambient Git and changes only process-local `$LASTEXITCODE`. | Read-only working tree and Git index; missing Git is an ungated failure. | 3.828 s | `NeedsRefactor` | Split the Git-index assertion from filesystem checks or add an explicit Git capability outcome. |
 | `tests/infrastructure/path-topology.Tests.ps1` | 3/3 | BA builds scan helpers; `Get-Command` probes host-local MCP commands. | Read-only repository/config scan; missing configured commands fail without a gate. | 4.112 s | `NeedsRefactor` | Split portable source topology from a deterministically capability-gated host-command check. |
 | `tests/shared/batch-executor-await.Tests.ps1` | 2/2 | BA imports module; local cancellation/runspace resources are stopped and disposed. | TD-only scripts/PID markers; selected process case launches no child; no skip. | 4.682 s | `Batchable` | Resource ownership and cleanup are container-local. |
@@ -113,7 +114,7 @@ Measured files at or above 10 s are:
 | `tests/latex-ingest/latex-ingest.Tests.ps1` | 18.276 s | `NeedsRefactor`; restructuring pilot and shared-write collision. |
 | `tests/audits/corpus-health.Tests.ps1` | 12.118 s | `Batchable`; corpus-wide read scan. |
 | `tests/adapters/latex-batch.Tests.ps1` | 10.889 s | `NeedsRefactor`; live Node/KaTeX seam. |
-| `tests/adapters/test-batch.Tests.ps1` | 10.133 s | `Batchable`; nested process/Pester setup. |
+| `tests/adapters/test-batch.Tests.ps1` (then named; now `pester-batch.Tests.ps1`) | 10.133 s | `Batchable`; nested process/Pester setup. |
 | `tests/shared/masks.Tests.ps1` | 10.019 s | `Batchable`; randomized property workload. |
 
 The write-isolation findings are bounded and visible:
@@ -132,8 +133,9 @@ carry forward.
 ## Post-baseline deltas
 
 BEX-503 did not add a physical container or change any classification. It added three outer runner-contract
-tests and six embedded fixture `It` lines to `tests/adapters/test-batch.Tests.ps1`, moving the current
-mechanical count from 453 to 462 textual lines and the current observed repository count from 476 to 479.
+tests and six embedded fixture `It` lines to the then-named `tests/adapters/test-batch.Tests.ps1`, moving the
+current mechanical count from 453 to 462 textual lines and the current observed repository count from 476
+to 479.
 That container now selects 10 tests and took 29.710 s in its focused closure run; its original 7/10.133 s row
 above remains the BEX-501 measurement. The added cost is the deliberate Pester 5.7.1/6.0.0 and nested-child
 parity battery, not a newly discovered isolation defect, so its `Batchable` classification remains valid.
@@ -157,7 +159,14 @@ semantic and timing evidence without a new scheduler, lock, workload manifest, o
 benchmark test. Post-refactor closure selected 479 repository tests in 93.244 s: 477 passed, 2 skipped, and
 none failed.
 
-Current inventory after BEX-504:
+BEX-505 renamed that adapter container to `tests/adapters/pester-batch.Tests.ps1` without changing its
+classification, the physical-file job boundary, or the inventory totals. Its current contract now witnesses
+stable `pester:<repository-relative-path>#<digest>` identity, one `pester-jobs` address resolver, sibling
+`pester.xml` and `artifacts/` declared writes, `CODEX_TEST_ARTIFACT_ROOT` child transport, and planning that
+creates neither address. The former generic adapter names remain above only as explicit BEX-501/BEX-503
+measurement provenance.
+
+Current inventory after BEX-505 (unchanged by the adapter rename):
 
 | Class | Files |
 |---|---:|
@@ -174,5 +183,6 @@ Current inventory after BEX-504:
 - High-cost files, the LaTeX shared-write exposure, and the conditional HDBSCAN build-path hazard are explicit.
 - Admission decisions use hooks, state, writes, external resources, capability behavior, and failure
   containment; no file was admitted from discovery names alone.
-- BEX-501 is closed. BEX-502 froze D23, BEX-503 hardened the runner, and BEX-504 validated and reclassified
-  both pilots from this evidence; BEX-505 is the next and only unblocked ticket.
+- BEX-501 is closed. BEX-502 froze D23, BEX-503 hardened the runner, BEX-504 validated and reclassified both
+  pilots from this evidence, and BEX-505 implemented the Pester adapter transport; BEX-506 is the next and
+  only unblocked ticket.

@@ -1,6 +1,6 @@
-# Test adapter discovery helpers.
+# Pester adapter discovery helpers.
 
-function Resolve-TestBatchRepositoryRoot {
+function Resolve-PesterBatchRepositoryRoot {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
@@ -11,28 +11,28 @@ function Resolve-TestBatchRepositoryRoot {
     }
     else { [System.IO.Path]::GetFullPath($RepositoryRoot, (Get-Location).Path) }
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "test-batch repository root not found: '$RepositoryRoot'"
+        throw "pester-batch repository root not found: '$RepositoryRoot'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Resolve-TestBatchRunDirectory {
+function Resolve-PesterBatchRunDirectory {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory
     )
 
     if (-not [System.IO.Path]::IsPathFullyQualified($RunDirectory)) {
-        throw "test-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
+        throw "pester-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
     }
     $candidate = [System.IO.Path]::GetFullPath($RunDirectory)
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "test-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
+        throw "pester-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Test-TestBatchPathWithinRoot {
+function Test-PesterBatchPathWithinRoot {
     param(
         [Parameter(Mandatory)] [string] $Path,
         [Parameter(Mandatory)] [string] $RepositoryRoot
@@ -44,7 +44,7 @@ function Test-TestBatchPathWithinRoot {
     return -not $relative.StartsWith($parentPrefix, [System.StringComparison]::Ordinal)
 }
 
-function Find-TestBatchFile {
+function Find-PesterBatchFile {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string[]] $Path,
@@ -59,23 +59,23 @@ function Find-TestBatchFile {
 
     foreach ($selection in $Path) {
         if ([string]::IsNullOrWhiteSpace($selection)) {
-            throw 'test-batch selection path must not be empty'
+            throw 'pester-batch selection path must not be empty'
         }
         $candidate = if ([System.IO.Path]::IsPathFullyQualified($selection)) {
             [System.IO.Path]::GetFullPath($selection)
         }
         else { [System.IO.Path]::GetFullPath($selection, $RepositoryRoot) }
         if (-not (Test-Path -LiteralPath $candidate)) {
-            throw "test-batch selection path not found: '$selection'"
+            throw "pester-batch selection path not found: '$selection'"
         }
         $resolved = (Resolve-Path -LiteralPath $candidate).Path
-        if (-not (Test-TestBatchPathWithinRoot -Path $resolved -RepositoryRoot $RepositoryRoot)) {
-            throw "test-batch selection escapes RepositoryRoot: '$selection'"
+        if (-not (Test-PesterBatchPathWithinRoot -Path $resolved -RepositoryRoot $RepositoryRoot)) {
+            throw "pester-batch selection escapes RepositoryRoot: '$selection'"
         }
 
         if (Test-Path -LiteralPath $resolved -PathType Leaf) {
             if (-not $resolved.EndsWith('.Tests.ps1', [System.StringComparison]::OrdinalIgnoreCase)) {
-                throw "test-batch selected file is not a *.Tests.ps1 file: '$selection'"
+                throw "pester-batch selected file is not a *.Tests.ps1 file: '$selection'"
             }
             [void]$seen.Add($resolved)
             continue
@@ -84,21 +84,21 @@ function Find-TestBatchFile {
         foreach ($file in [System.IO.Directory]::EnumerateFiles(
                 $resolved, '*.Tests.ps1', [System.IO.SearchOption]::AllDirectories)) {
             $resolvedFile = [System.IO.Path]::GetFullPath($file)
-            if (Test-TestBatchPathWithinRoot -Path $resolvedFile -RepositoryRoot $RepositoryRoot) {
+            if (Test-PesterBatchPathWithinRoot -Path $resolvedFile -RepositoryRoot $RepositoryRoot) {
                 [void]$seen.Add($resolvedFile)
             }
         }
     }
 
     if ($seen.Count -eq 0) {
-        throw 'test-batch selection discovered no *.Tests.ps1 files'
+        throw 'pester-batch selection discovered no *.Tests.ps1 files'
     }
     $files = [string[]]@($seen)
     [System.Array]::Sort($files, $comparison)
     return $files
 }
 
-function ConvertTo-TestBatchFilter {
+function ConvertTo-PesterBatchFilter {
     [CmdletBinding()]
     param(
         [AllowEmptyCollection()] [string[]] $Value = @(),
@@ -109,7 +109,7 @@ function ConvertTo-TestBatchFilter {
         [System.StringComparer]::Ordinal)
     foreach ($entry in @($Value)) {
         if ([string]::IsNullOrWhiteSpace($entry)) {
-            throw "test-batch $Role filter must not contain an empty value"
+            throw "pester-batch $Role filter must not contain an empty value"
         }
         [void]$seen.Add($entry)
     }
