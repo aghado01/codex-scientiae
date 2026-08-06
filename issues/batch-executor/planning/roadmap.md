@@ -21,6 +21,13 @@ residue and rebuilt the check around required current inputs. Phases 2 and 3 are
 boundary, public execution projection, and compatibility facade remained stable through lifecycle
 decomposition. Phase 4 is now the ahead queue.
 
+BEX-401 is closed. The separate `test-batch` module emits one exact-Pester, isolated process job per selected
+test file, derives its native XML result through the D19 address chokepoint, creates nothing during planning,
+and leaves compilation and execution to the shared module. Its 7 focused structural/planning/integration
+tests include case filtering, one local failure beside a successful sibling, and zero generic result-store
+artifacts. At closure, the complete shared suite is 158/158 and the complete repository suite is 466/466.
+Phase 4 now continues with ingestion.
+
 ## Sequencing rules
 
 1. Preserve the closed teardown gate through every adapter change.
@@ -33,12 +40,6 @@ decomposition. Phase 4 is now the ahead queue.
 
 ## Phase 4 — Domain adapters
 
-- **BEX-401 — Test adapter.** Accept caller-selected test cases or test files and an existing absolute
-  `RunDirectory`; emit batch jobs with stable IDs, runtime dependencies, cost hints, and working directories.
-  Derive every collision-free per-job runner-artifact address through one private pure resolver, declare
-  every intended application write in `Writes`, and keep generic executor results in memory. Preserve
-  caller-supplied logging and correlation inputs without selecting a logger sink topology. Do not allocate a
-  run or invent a durable result schema. Add a structural witness that rejects competing path composition.
 - **BEX-402 — Ingestion adapter.** Convert document inventory rows plus a caller-resolved `RunDirectory` into
   process or direct jobs with complete declared write sets, latex-ingest dependencies, child policy, and
   preserved caller correlation inputs. Reuse the D19 addressing handoff; do not implement logger lifecycle,

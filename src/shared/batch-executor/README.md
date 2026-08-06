@@ -20,6 +20,12 @@ the `Compile-BatchPlan` alias for `New-BatchPlan`.
 All other functions are private. `Resolve-BatchWorkerBudget` is intentionally not a preview API;
 the resolved budget is present in every execution record.
 
+## Companion adapters
+
+The separate [`test-batch`](../../test-batch/README.md) module exports `Get-TestBatchJob`. It discovers
+repository Pester files and emits isolated process jobs without changing this module's public surface or
+owning execution. Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
+
 ## Job contract
 
 `New-BatchJob` returns a `CodexScientiae.BatchJob` record with these fields:

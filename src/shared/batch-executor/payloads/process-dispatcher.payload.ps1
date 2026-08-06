@@ -145,7 +145,7 @@ else { try {
         $state = if ([bool]$wire.Succeeded -and $exitCode -eq 0) { 'Succeeded' } else { 'Failed' }
     }
     elseif ($state -notin @('Cancelled', 'TimedOut')) {
-        # A worker may intentionally call exit (Pester runners commonly do). In that case the
+        # A worker may intentionally call exit (command-line runners commonly do). In that case the
         # wrapper cannot emit its structured marker, so the native exit code remains authoritative.
         $output = $stdoutLines
         $state = if ($exitCode -eq 0) { 'Succeeded' } else { 'Failed' }

@@ -247,6 +247,26 @@ This handoff is based on the
 [roadmap](../../infrastructure/planning/roadmap.md). Batch Phase 4 does not wait for the entire infrastructure
 roadmap, but it must not preempt those unresolved contracts.
 
+### D20 — The test adapter maps one Pester file to one isolated process job — implemented
+
+The repository test adapter is the separate `test-batch` module and exports only `Get-TestBatchJob`; it does
+not expand the batch executor's four-command surface. Directories are discovered recursively as
+`*.Tests.ps1` files without loading Pester or suite code in the planning process. Each unique file becomes
+one `PowerShellProcess` job because Pester configuration, module loading, script state, location, and runner
+termination behavior are process-wide concerns. Caller full-name and tag filters select cases inside each
+file rather than creating a shared discovery host or one process per case.
+
+Planning pins the exact Pester 5-or-newer manifest, child PowerShell, repository working directory, and
+runner entrypoint. Stable job identity derives from the repository-relative file plus normalized filters; a
+file-size hint affects dispatch order only. One D19 resolver assigns a unique Pester-native XML result path,
+which is the adapter's sole declared write. Planning creates no run artifacts. The caller separately compiles
+and invokes the emitted jobs through the shared module, and generic results remain in the in-memory execution
+record.
+
+The repository runner accepts the frozen filters and native result address. It throws when discovery is
+empty or tests fail, which preserves a nonzero direct-process exit while also propagating failure through the
+generic nested job worker. A failed test file remains one failed item and does not suppress sibling suites.
+
 ## Deliberate non-goals of the current executor
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec

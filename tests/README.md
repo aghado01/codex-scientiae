@@ -27,6 +27,11 @@ pwsh -File tests/run.ps1 -Path tests/shared/masks.Tests.ps1
 when available, falls back to the normal module path, exits non-zero on test
 failure, and refuses to report success when discovery finds no tests.
 
+For isolated batch jobs, `-ResultPath` enables a Pester-native XML report and creates only its parent
+directory. `-ResultFormat`, `-TestSuiteName`, `-OutputVerbosity`, `-FullNameFilter`, `-Tag`, and `-ExcludeTag`
+freeze the corresponding Pester configuration. Failed or empty runs throw so both direct CLI processes and
+nested batch workers observe failure.
+
 ## Module groups
 
 | Directory | Current ownership |
@@ -40,6 +45,7 @@ failure, and refuses to report success when discovery finds no tests.
 | `procurement/` | Scholarly discovery and acquisition adapters |
 | `reader-mcp/` | Portable deliverable reader MCP |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
+| `test-batch/` | Repository Pester discovery adapter, addressing, and isolated execution |
 | `toc-engine/` | Deliverable TOC and manifest rendering |
 
 ## Conventions
