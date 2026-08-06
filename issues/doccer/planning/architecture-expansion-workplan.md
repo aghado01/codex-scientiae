@@ -193,7 +193,8 @@ K4a result chip shares K3's Boolean geometry closure while retaining graph-ordin
 D34 removes the former
 K4b-to-K4c arrow for the same reason: both are consumers of K4a, and K4c neither consumes a K4b type
 nor waits for a universal selection carrier. K4b remains the default execution priority for the
-tokenizer/chunker trajectory, while K4c is an independently available sibling after K4a. Likewise,
+tokenizer/chunker trajectory and is closed by D37, while K4c is the independently available next
+sibling. Likewise,
 origin relations are mathematically definable before selection or facts, but designing them against
 real selected output pieces and the support/origin distinction prevents a formally neat but
 operationally empty API. The full adjudication is in the
@@ -598,47 +599,63 @@ connectivity dead end: both block a complete path, but they are different residu
 The tranche closes with both an ambiguous token graph and a **budget-admissible** flat chunk graph,
 plus separate gap, dead-end, and empty-window cases. The chunk witness proves only that an external
 budget rule can admit candidate edges; costs and preferred-path claims wait for K4b.
+D37 subsequently supplies one named additive minimum-cost complete-path contract without changing
+the cost-free K4a graph or baseline result.
 
-#### K4b: named flat-path selection execution
+#### K4b: named flat-path selection execution (closed by D37)
 
-With flat result invariants closed by D36, the default next lane adds a
-candidate-graph-specific selection contract:
+With flat result invariants closed by D36, D37 adds one candidate-graph-specific selection
+contract:
 
 ~~~text
 PathSelectionProblem
   exact source graph and admissible edge basis
-  declared compositional objective
-  complete or explicitly partial path contract
-  deterministic tie policy
+  AdditivePathPolicy: named nonnegative Int64 edge costs + unit
+  CompletePath feasibility
+  LexicographicOrdinal tie policy
 
 PathSelectionResult
-  selected IDs
-  rejected alternatives
-  residuals / conflicts
-  score, unit, and policy stamp
+  source-graph PartitionView or PathSelectionResidual
+  selected / rejected-admissible / hard-excluded ordinals
+  score, unit, guarantee, tie, and exact policy stamp
 ~~~
 
-The engine executes but never invents the objective. An arbitrary callback over whole selections is
-not an optimizer contract: the first executor must declare the objective form that makes its path
-algorithm valid. Deterministic feasible path, additive optimum, and lexicographic path remain
-different guarantees. Inclusion-maximal, maximum-cardinality, maximum-weight, and lexicographic
-priority likewise remain different contracts.
+`AdditivePathPolicy` evaluates caller code exactly once per source-graph candidate and retains the
+cost table. Nonnegative costs plus a construction-time Int64 sum bound make every possible path
+score representable. `PathSelectionProblem` retains the exact admissible selection and derives an
+exact admissible graph for K4a feasibility evidence; exclusions remain distinct from objective
+rejections.
+
+`PathSelection.Select` uses the direct descending-boundary DAG recurrence for the globally minimum
+sum among complete admissible paths. Equal sums compare full ordinal sequences lexicographically.
+The result's score is rechecked against retained edge costs, selected plus rejected equals
+admissible, and admissible plus excluded equals the source graph. Failure wraps K4a gap/dead-end
+evidence computed on the exact admissible graph.
 
 Flat tokenizer and chunker witnesses come from the same candidate graph:
 
-- tokenizer: complete path with lexical edge labels and explicit trivia/recovery policy;
-- chunker: complete or partial path with adapter-supplied budget and breakpoint costs.
+- tokenizer: explicitly labeled token, token-with-trivia, trivia, and recovery candidates where
+  hard admissibility excludes recovery and supplied penalties choose different geometry from
+  K4a's first-ordinal baseline;
+- chunker: a hard external size budget forms admissibility while separate breakpoint penalties
+  choose the minimum-cost complete chunk path.
+
+The independent oracle enumerates every complete path for all 128 admissibility masks crossed with
+all 128 binary cost tables on a seven-edge basis (16,384 problems). Direct cases cover exact stamp
+refusals, one-shot cost evaluation, negative/overflow refusal, hard exclusions, parallel ties,
+gap/dead-end failure, and the empty zero-cost path. Harness 1874→1914.
 
 Do not publish a universal <code>SelectionProblem</code>/<code>SelectionResult</code> merely because
 several families choose claims. A common abstraction is extracted only after at least two result
 families demonstrate the same basis, feasibility, objective, and result shape; it is acceptable if
-they do not.
+they do not. Partial paths, signed/vector objectives, maximum weight, fewest edges, and other tie
+rules remain separately named future contracts rather than silent extensions of D37.
 
 #### K4c: additional structural families, hierarchy, and resolution
 
-K4c is a sibling of K4b after K4a, not its dependent. The flat basis/result semantics are stable by
-D36, so it may begin regardless of whether the path-selection executor has landed. K4b remains the
-default execution priority only because tokenizer/chunker objectives are the active trajectory.
+K4c is a sibling of K4b after K4a, not its dependent. D37 has now closed the default K4b executor,
+so K4c structural-family hygiene is the active next lane without acquiring a type dependency on
+the path-selection algorithm.
 
 The current <code>Laminarizer</code> predates D2 policy stamps, D21 basis stamps, and D30
 selection-backing. K4c must repair that hygiene rather than promote the helper unchanged:
@@ -819,7 +836,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K2c | forward, one-to-one, noncrossing matching; match-or-residue partition |
 | K3 | located semiring laws, strict-chain path bound, nilpotence, finite star |
 | K4a | geometric cut-set/partition equivalence under its fixed-basis hypotheses; identity-bearing path/partition preservation; gap/dead-end distinction |
-| K4b | each named flat-path policy's exact feasibility/optimality claim and reference/optimized equivalence, if any |
+| K4b | D37's nonnegative additive complete-path minimum is covered by a direct DAG recurrence and 16,384-problem enumeration oracle; reactivate before another backend/generalized objective/partial guarantee |
 | K4c | each structural family's declared validation/admission claim; current greedy laminar admission remains maximal-not-maximum |
 | K5 | finite monotone fixed-point termination and rule-order independence |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
@@ -905,11 +922,11 @@ The expansion will not:
 K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
 contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, K2c strict
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
-the joint located/graph core as D35, and the flat result closure as D36. K2, K3, and K4a are closed.
-K4b flat-path objective execution and K4c structural-family hygiene are active siblings. K4b is the
-default next source lane for the tokenizer/chunker trajectory; K4c is independently available.
+the joint located/graph core as D35, the flat result closure as D36, and additive complete-path
+selection as D37. K2, K3, K4a, and K4b are closed. K4c structural-family hygiene is active next.
 
-D33–D36 do not activate Lean. Reapply the deferred gate if K3 adopts a compressed or incremental
-closure backend, a generalized map reopens the exact-versus-lax boundary, or K4b proposes a public
-global-optimality/equivalence guarantee. After K4a, K4b and K4c are sibling lanes; K4b is the
-default execution priority rather than a prerequisite for K4c.
+D37 reapplies the global-optimality Lean trigger and keeps Lean deferred under one closed finite-DAG
+recurrence plus exhaustive differential evidence. Reapply if K3 adopts a compressed or incremental
+closure backend, a generalized map reopens the exact-versus-lax boundary, another path backend
+claims equivalence, signed/generalized objectives become shared infrastructure, partial paths gain
+a nontrivial guarantee, or K4c proposes a global optimum. K4b and K4c remain sibling lanes.

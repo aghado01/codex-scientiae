@@ -151,3 +151,6 @@ located algebra, exact-selection graph, explicit projection, and bounded assuran
 1779→1834. [D36](sol-doccer-k4a-results-20260805_184359.md) subsequently closed the separate K4a
 result layer with exact-graph values and bounded path-oracle agreement; harness 1834→1874. K4b and
 K4c are active sibling continuations.
+[D37](sol-doccer-k4b-additive-path-selection-20260805_191324.md) subsequently closed the default
+K4b lane with exact additive complete-path selection while preserving K4c's independence; harness
+1874→1914. K4c is active next.

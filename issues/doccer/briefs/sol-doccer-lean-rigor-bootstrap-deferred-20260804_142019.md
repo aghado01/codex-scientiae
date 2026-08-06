@@ -406,6 +406,25 @@ stamps and a maximal-not-maximum counterexample, not a formal optimality proof. 
 gate only if either sibling later publishes a global optimum, generalized objective algebra, or
 optimized/reference equivalence.
 
+### 5.4 D37 gate reapplication — one additive path optimum remains reference-owned
+
+D37 fires the named K4b trigger by promising the global minimum nonnegative additive cost among
+complete admissible paths. The gate is therefore reapplied rather than waved through as ordinary
+policy choice. It still does not activate Lean:
+
+- the carrier is the already finite, strictly consuming candidate DAG;
+- the objective is one closed `Int64` sum with construction-time nonnegativity and total-sum
+  bounds, not a generalized algebra or opaque whole-path callback;
+- production is the direct descending-boundary Bellman recurrence and no second public backend
+  claims equivalence; and
+- an independent oracle enumerates complete paths for all 128 admissibility masks crossed with all
+  128 binary cost tables (16,384 problems), checking both score and lexicographic tie outcome.
+
+The public guarantee is consequently reference-owned by a transparent recurrence plus differential
+evidence. Reactivate before another/optimized backend claims equivalence, signed or generalized
+objectives become shared infrastructure, partial paths acquire a nontrivial guarantee, or K4c
+attempts to reuse the recurrence as a cross-family theorem.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -418,7 +437,8 @@ optimized/reference equivalence.
 | Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
 | Strict stack match/residue partition and noncrossing | D32 direct scan, two concrete delimiter families, combined adversarial residue, and a 5,461-word independent bounded oracle | before an optimized/parallel/incremental implementation or a recovery policy claims equivalence |
 | Located `Seq` identity, associativity, finite consuming closure, and exact slice rebase | D35 direct compatible-master/exact-window implementation; all 64 values, 4,096 compositions, and 262,144 triples on three boundaries; independent nested-pair/Floyd-Warshall oracles; exact rebase and test-only non-injective counterexample | before a compressed/incremental closure algorithm replaces it or a generalized map reopens the exact-versus-lax boundary |
-| Flat graph reachability and identity-bearing reference path | D35 closes exact-batch graph validation and compatible-geometry projection; the active K4a result chip owns exact-basis ordinal determinism, bounded independent path oracle, and parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent backend claims equivalence, cross-batch invariance is proposed, or K4b adds a public global optimum |
+| Flat graph reachability and identity-bearing reference path | D35–D36 close exact-batch graph/projection/result semantics, exact-basis ordinal determinism, a bounded independent path oracle, and parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent reachability backend claims equivalence, cross-batch invariance is proposed, or path preservation is generalized |
+| Additive minimum-cost complete path | D37 direct descending-boundary DAG recurrence; nonnegative bounded `Int64` score domain; exact feasibility/objective/tie stamps; all 16,384 admissibility × binary-cost problems agree with independent complete-path enumeration | before another/optimized backend claims equivalence, signed/generalized objectives or nontrivial partial-path guarantees land, or cross-family reuse makes the recurrence load-bearing |
 | Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
 | Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
@@ -427,8 +447,8 @@ optimized/reference equivalence.
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
-This triage leaves no present theorem whose completion should block the K4a result chip. D35 has
-landed the joint K3/K4a core under finite reference assurance; `AllenRelationSet`,
+This triage leaves no present theorem whose completion should block K4c. D35–D36 close K3/K4a and
+D37 closes the first K4b executor under finite reference assurance; `AllenRelationSet`,
 `ClaimSelection`, `ClaimPairView`, and strict pairing were already landed.
 
 ## 7. Restart recipe
@@ -449,6 +469,7 @@ Likely first candidates, depending on which tranche supplies the trigger:
 - K2 optimized pairs: exact-to-qualitative inclusion, if qualitative summaries become
   load-bearing for pruning or compression;
 - K3 generalized maps: direct-image composition, lax generally and exact under injectivity;
+- K4b alternate backends/objectives: recurrence equivalence or a generalized score algebra;
 - K5 packed support: the exact equivalence relation required for bracket-independent witnesses;
 - K6/K7 optimized origins: functional embedding and multi-stage relational composition.
 
@@ -475,9 +496,9 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step is therefore the D33–D35 K4a result layer, not Lean. The first future proof
-most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, or D35's
-direct located closure; it is a law that licenses compression, pruning, global optimization,
-fusion, or another independent backend without changing reference meaning. D29 names the
-pair-abstraction candidate, D33/D34 name the sibling K4 policy candidates, and origin/support
-machinery remains the other leading source.
+The practical next step after D35–D37 is K4c structural-family hygiene, not Lean. The first future
+proof most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join,
+D35's direct located closure, or D37's sole additive recurrence; it is a law that licenses
+compression, pruning, generalized optimization, fusion, or another independent backend without
+changing reference meaning. D29 names the pair-abstraction candidate, D37 records the path trigger
+outcome, and origin/support machinery remains the other leading source.

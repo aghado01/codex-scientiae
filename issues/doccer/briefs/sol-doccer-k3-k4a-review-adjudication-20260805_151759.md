@@ -214,3 +214,6 @@ separate K4a result gate was subsequently closed by
 [D36](sol-doccer-k4a-results-20260805_184359.md) with exact-graph result stamps, validated ordinal
 partitions, first-ordinal traversal, gap/dead-end evidence, and an independent bounded path oracle.
 Harness 1834→1874; K4a is closed and K4b/K4c are active siblings.
+Follow-on [D37](sol-doccer-k4b-additive-path-selection-20260805_191324.md) subsequently closed K4b
+without changing the sibling dependency: one exact additive complete-path executor, full decision
+evidence, and independent optimizer agreement. Harness 1874→1914; K4c is active next.

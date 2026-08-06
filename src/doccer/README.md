@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D36, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D37, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -37,6 +37,7 @@ ClaimPairView                     + exact occurrence relations
 PairingResult                     + policy-stamped structural evidence
 LocatedRelation                   + compatible-window geometry reachability
 CandidateRegionGraph + results    + exact ordinal partition evidence
+PathSelection                     + exact objective execution and decision evidence
 Scoped collectors                 + declarative recognition
 LaminarView / joins               + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -78,8 +79,10 @@ The operation names therefore state their sort: `AllenCompose` (canonical qualit
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
-`AllenCompose`, located `Seq`, and the occurrence-level `ComposePairs` are implemented, while the
-other later-tranche names remain reservations rather than implementation claims.
+`AllenCompose`, located `Seq`, the occurrence-level `ComposePairs`, and flat-path
+`PathSelection.Select` are implemented, while the other later-tranche names remain reservations
+rather than implementation claims. The latter is one exact nonnegative-additive complete-path
+executor, not a universal selection carrier.
 `Segmentation.FirstOrdinalCompletePath` is the implemented narrow K4a witness operation; it does
 not spend the reserved policy-execution name `Select`. `Pairing.Pair` is the implemented
 strict-stack query over exact occurrence selections; it likewise introduces no unqualified
@@ -141,6 +144,15 @@ owners and Lean reactivation triggers live in the D25 registry in
   `SegmentationResidual` whose normalized coverage gaps and connectivity evidence stay distinct;
   determinism is exact-basis only, and the 128 subsets of a seven-edge graph agree with independent
   path-enumeration, DFS, gap, and dead-branch oracles;
+- exact-graph K4b additive selection: `AdditivePathPolicy` snapshots one nonnegative `Int64` cost
+  per candidate under required caller name/unit plus explicit minimum-additive and
+  lexicographic-ordinal stamps; `PathSelectionProblem` retains exact admissible and hard-excluded
+  populations and derives the exact admissible feasibility graph; `PathSelection.Select` uses a
+  descending-boundary DAG recurrence to return the global minimum-cost complete source-graph
+  `PartitionView` or a `PathSelectionResidual` wrapping K4a evidence; result populations account
+  disjointly for selected, rejected-admissible, and excluded candidates, and the retained score is
+  rechecked from policy costs; tokenizer and budget-plus-breakpoint chunk cases plus all 16,384
+  admissibility-mask/binary-cost problems agree with independent complete-path enumeration;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -231,12 +243,13 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K4b flat-path objective execution and K4c structural-family cleanup. D35–D36 close K3/K4a:
-  concrete-window located algebra, exact-batch candidate graph, graph-stamped reachability and
-  partition/segmentation results, the first-ordinal reference path, distinct gap/dead-end evidence,
-  and bounded token/chunk/empty/oracle witnesses are implemented. K4b and K4c are now sibling
-  lanes; K4b is the default execution priority, not a prerequisite. Common selection types wait
-  for demonstrated repetition across both.
+- K4c structural-family cleanup. D35–D37 close K3/K4a/K4b: the located algebra, exact candidate
+  graph, segmentation results, and one exact additive minimum-cost complete-path executor are
+  implemented. Packing, cover, selection-backed laminar validation, explicit hierarchy, and
+  resolution views remain absent. K4c remains independent of the K4b path algorithm; common
+  selection types wait for actual comparison evidence from that lane. Further path objectives—
+  partial paths, signed/vector scores, maximum weight, fewest edges, or other ties—also require
+  separately named contracts rather than widening D37 silently.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

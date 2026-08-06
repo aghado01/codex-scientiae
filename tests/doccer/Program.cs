@@ -82,6 +82,10 @@ internal static class Program
             PartitionViewValidatesExactIdentityBearingPaths();
             FirstOrdinalSegmentationWitnessesRequiredCases();
             FirstOrdinalSegmentationMatchesBoundedPathOracle();
+            AdditivePathPolicySnapshotsAnExactObjective();
+            PathSelectionProblemValidatesExactAdmissibility();
+            AdditivePathSelectionRetainsDecisionsAndResiduals();
+            AdditivePathSelectionMatchesBoundedOptimizerOracle();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -4307,6 +4311,471 @@ internal static class Program
             "every bounded segmentation result satisfies exact stamps and exclusive outcome laws");
     }
 
+    /// <summary>
+    /// K4b policy gate: caller costs are evaluated once and frozen on one exact graph with an
+    /// explicit additive-minimum guarantee, lexicographic tie rule, and opaque unit stamp.
+    /// </summary>
+    private static void AdditivePathPolicySnapshotsAnExactObjective()
+    {
+        var master = new TextMaster("path-policy", 0, "abc");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(2, 3),
+            new TextSpan(1, 2));
+        var graph = CandidateRegionGraph.Create(
+            ClaimSelection.Create(batch, new[] { 0, 1, 2, 3 }),
+            master.Extent);
+        var costs = new long[] { 5, 1, 5, 1, 99 };
+        var evaluations = 0;
+        var policy = AdditivePathPolicy.Create(
+            graph,
+            "token-penalty",
+            "penalty-points",
+            record =>
+            {
+                evaluations++;
+                return costs[record.Ordinal];
+            });
+
+        Equal(graph.Count, evaluations,
+            "additive policy evaluates caller cost exactly once per graph candidate");
+        True(ReferenceEquals(policy.Graph, graph) &&
+             policy.Name == "token-penalty" &&
+             policy.Unit == "penalty-points" &&
+             policy.Guarantee == PathSelectionGuarantee.MinimumAdditiveCost &&
+             policy.TieBreak == PathTieBreak.LexicographicOrdinal,
+            "additive policy retains exact graph, name, unit, guarantee, and tie stamps");
+        True(graph.All(ordinal => policy.CostOf(ordinal) == costs[ordinal]),
+            "additive policy exposes the frozen exact-ordinal cost table");
+        Equal(graph.Count, evaluations,
+            "reading retained costs never re-enters caller code");
+
+        Throws<ArgumentNullException>(
+            () => AdditivePathPolicy.Create(null!, "x", "u", static _ => 0),
+            "additive policy requires a graph");
+        Throws<ArgumentException>(
+            () => AdditivePathPolicy.Create(graph, " ", "u", static _ => 0),
+            "additive policy requires a diagnostic name");
+        Throws<ArgumentException>(
+            () => AdditivePathPolicy.Create(graph, "x", " ", static _ => 0),
+            "additive policy requires a score unit");
+        Throws<ArgumentNullException>(
+            () => AdditivePathPolicy.Create(graph, "x", "u", null!),
+            "additive policy requires an edge-cost function");
+        Throws<ArgumentOutOfRangeException>(
+            () => AdditivePathPolicy.Create(
+                graph,
+                "negative",
+                "u",
+                record => record.Ordinal == 2 ? -1 : 0),
+            "additive policy refuses a negative candidate cost");
+        Throws<ArgumentException>(
+            () => AdditivePathPolicy.Create(
+                graph,
+                "overflow",
+                "u",
+                record => record.Ordinal == 0 ? long.MaxValue : 1),
+            "additive policy refuses a candidate-cost table whose total cannot fit Int64");
+        Throws<ArgumentException>(
+            () => policy.CostOf(4),
+            "additive policy refuses an in-batch ordinal outside its graph candidates");
+        Throws<ArgumentOutOfRangeException>(
+            () => policy.CostOf(99),
+            "additive policy refuses an ordinal outside its source batch");
+    }
+
+    /// <summary>
+    /// K4b problem gate: hard constraints are one retained exact-batch subset, while policy,
+    /// source graph, and derived admissible graph remain separately inspectable exact stamps.
+    /// </summary>
+    private static void PathSelectionProblemValidatesExactAdmissibility()
+    {
+        var master = new TextMaster("path-problem", 0, "abc");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(2, 3),
+            new TextSpan(1, 2));
+        var graph = CandidateRegionGraph.Create(
+            ClaimSelection.Create(batch, new[] { 0, 1, 2, 3 }),
+            master.Extent);
+        var policy = AdditivePathPolicy.Create(
+            graph,
+            "problem-policy",
+            "points",
+            static record => record.Ordinal + 1);
+        var admissible = ClaimSelection.Create(batch, new[] { 0, 2 });
+        var problem = PathSelectionProblem.Create(graph, admissible, policy);
+
+        True(ReferenceEquals(problem.Graph, graph) &&
+             ReferenceEquals(problem.Source, batch) &&
+             ReferenceEquals(problem.AdmissibleCandidates, admissible) &&
+             ReferenceEquals(problem.Policy, policy),
+            "path problem retains exact source graph, batch, admissible selection, and policy");
+        True(ReferenceEquals(problem.AdmissibleGraph.Candidates, admissible) &&
+             ReferenceEquals(problem.AdmissibleGraph.Source, batch) &&
+             problem.AdmissibleGraph.Window == graph.Window,
+            "path problem derives an exact admissible graph on the retained source window");
+        True(problem.ExcludedCandidates.SequenceEqual(new[] { 1, 3 }) &&
+             problem.Feasibility == PathFeasibility.CompletePath,
+            "path problem exposes hard exclusions and the explicit complete-path contract");
+
+        Throws<ArgumentNullException>(
+            () => PathSelectionProblem.Create(null!, admissible, policy),
+            "path problem requires a graph");
+        Throws<ArgumentNullException>(
+            () => PathSelectionProblem.Create(graph, null!, policy),
+            "path problem requires an admissible selection");
+        Throws<ArgumentNullException>(
+            () => PathSelectionProblem.Create(graph, admissible, null!),
+            "path problem requires a policy");
+        Throws<ArgumentException>(
+            () => PathSelectionProblem.Create(
+                graph,
+                ClaimSelection.Create(batch, new[] { 0, 4 }),
+                policy),
+            "path problem refuses an admissible ordinal outside the source graph");
+
+        var equalGraphObject = CandidateRegionGraph.Create(
+            ClaimSelection.Create(batch, new[] { 0, 1, 2, 3 }),
+            master.Extent);
+        var equalGraphPolicy = AdditivePathPolicy.Create(
+            equalGraphObject,
+            "equal-graph-object",
+            "points",
+            static _ => 0);
+        Throws<InvalidOperationException>(
+            () => PathSelectionProblem.Create(graph, admissible, equalGraphPolicy),
+            "path problem refuses a policy stamped by another equal graph object");
+
+        var compatibleMaster = new TextMaster(master.DocumentId, master.Revision, master.Text);
+        var foreignBatch = PairBatch(
+            compatibleMaster,
+            new TextSpan(0, 1),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(2, 3),
+            new TextSpan(1, 2));
+        Throws<InvalidOperationException>(
+            () => PathSelectionProblem.Create(
+                graph,
+                ClaimSelection.Create(foreignBatch, new[] { 0, 2 }),
+                policy),
+            "path problem refuses a compatible but different frozen-batch basis");
+    }
+
+    /// <summary>
+    /// K4b result gate: an additive objective can defeat the K4a baseline, ties retain ordinal
+    /// identity, hard exclusions remain distinct from rejected alternatives, and infeasibility
+    /// reuses K4a evidence on the exact admissible graph.
+    /// </summary>
+    private static void AdditivePathSelectionRetainsDecisionsAndResiduals()
+    {
+        var master = new TextMaster("path-selection", 0, "abc");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(2, 3));
+        var graph = CandidateRegionGraph.Create(ClaimSelection.All(batch), master.Extent);
+        var costs = new long[] { 5, 1, 5, 1 };
+        var policy = AdditivePathPolicy.Create(
+            graph,
+            "minimum-token-penalty",
+            "penalty-points",
+            record => costs[record.Ordinal]);
+        var problem = PathSelectionProblem.Create(graph, graph.Candidates, policy);
+        var result = PathSelection.Select(problem);
+        var baseline = Segmentation.FirstOrdinalCompletePath(graph);
+
+        True(result.IsComplete && result.Partition is not null &&
+             result.Partition.SequenceEqual(new[] { 1, 3 }) &&
+             baseline.Partition is not null && baseline.Partition.SequenceEqual(new[] { 0, 2 }),
+            "minimum additive selection may intentionally differ from the first-ordinal baseline");
+        True(ReferenceEquals(result.Problem, problem) &&
+             ReferenceEquals(result.Graph, graph) &&
+             ReferenceEquals(result.Partition!.Graph, graph) &&
+             ReferenceEquals(result.Policy, policy),
+            "successful path selection retains exact problem, graph, partition, and policy stamps");
+        True(result.Score == 2 && result.ScoreUnit == "penalty-points" &&
+             result.Guarantee == PathSelectionGuarantee.MinimumAdditiveCost &&
+             result.TieBreak == PathTieBreak.LexicographicOrdinal &&
+             result.Feasibility == PathFeasibility.CompletePath,
+            "successful path selection exposes its mechanically checkable score and contract stamps");
+        True(result.SelectedCandidates.SequenceEqual(new[] { 1, 3 }) &&
+             result.RejectedCandidates.SequenceEqual(new[] { 0, 2 }) &&
+             result.ExcludedCandidates.IsEmpty && result.Residual is null,
+            "successful path selection retains selected and rejected admissible alternatives");
+
+        var lexicalMaster = new TextMaster("path-tokenizer", 0, "a b");
+        var lexicalBuilder = new SpanBatchBuilder(lexicalMaster);
+        lexicalBuilder.Add(new SpanClaim(
+            new TextSpan(0, 1), "token", SpanLevel.Character, "tokenizer"));
+        lexicalBuilder.Add(new SpanClaim(
+            new TextSpan(0, 2), "token-with-trivia", SpanLevel.Character, "tokenizer"));
+        lexicalBuilder.Add(new SpanClaim(
+            new TextSpan(1, 2), "trivia", SpanLevel.Character, "tokenizer"));
+        lexicalBuilder.Add(new SpanClaim(
+            new TextSpan(1, 3), "recovery", SpanLevel.Character, "tokenizer"));
+        lexicalBuilder.Add(new SpanClaim(
+            new TextSpan(2, 3), "token", SpanLevel.Character, "tokenizer"));
+        lexicalBuilder.Add(new SpanClaim(
+            new TextSpan(0, 3), "recovery", SpanLevel.Character, "tokenizer"));
+        var lexicalBatch = lexicalBuilder.Freeze();
+        var lexicalGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(lexicalBatch),
+            lexicalMaster.Extent);
+        var lexicalAdmissible = ClaimSelection.FromPredicate(
+            lexicalBatch,
+            static record => record.Kind != "recovery");
+        var lexicalPolicy = AdditivePathPolicy.Create(
+            lexicalGraph,
+            "explicit-trivia-no-recovery",
+            "token-penalty",
+            static record => record.Kind switch
+            {
+                "trivia" => 0,
+                "token" => 1,
+                "token-with-trivia" => 5,
+                _ => 50,
+            });
+        var lexical = PathSelection.Select(PathSelectionProblem.Create(
+            lexicalGraph,
+            lexicalAdmissible,
+            lexicalPolicy));
+        True(lexical.Partition is not null &&
+             lexical.Partition.SequenceEqual(new[] { 0, 2, 4 }) && lexical.Score == 2 &&
+             lexical.RejectedCandidates.SequenceEqual(new[] { 1 }) &&
+             lexical.ExcludedCandidates.SequenceEqual(new[] { 3, 5 }),
+            "labeled token selection makes trivia admission and recovery exclusion explicit");
+
+        var tiedPolicy = AdditivePathPolicy.Create(
+            graph,
+            "tied-token-penalty",
+            "penalty-points",
+            static _ => 1);
+        var tied = PathSelection.Select(
+            PathSelectionProblem.Create(graph, graph.Candidates, tiedPolicy));
+        True(tied.Score == 2 && tied.Partition is not null &&
+             tied.Partition.SequenceEqual(new[] { 0, 2 }),
+            "equal additive scores choose the lexicographically smallest full ordinal path");
+
+        var forcedAdmissible = ClaimSelection.Create(batch, new[] { 0, 2 });
+        var forcedProblem = PathSelectionProblem.Create(graph, forcedAdmissible, policy);
+        var forced = PathSelection.Select(forcedProblem);
+        True(forced.Partition is not null && forced.Partition.SequenceEqual(new[] { 0, 2 }) &&
+             forced.Score == 10 && forced.RejectedCandidates.IsEmpty &&
+             forced.ExcludedCandidates.SequenceEqual(new[] { 1, 3 }),
+            "hard exclusion remains distinct from objective rejection and can force another path");
+
+        var gapAdmissible = ClaimSelection.Create(batch, new[] { 0, 3 });
+        var gapProblem = PathSelectionProblem.Create(graph, gapAdmissible, policy);
+        var gap = PathSelection.Select(gapProblem);
+        True(!gap.IsComplete && gap.Partition is null && gap.Score is null &&
+             gap.SelectedCandidates.IsEmpty &&
+             gap.RejectedCandidates.SequenceEqual(new[] { 0, 3 }) &&
+             gap.ExcludedCandidates.SequenceEqual(new[] { 1, 2 }),
+            "failed path selection retains a total selected/rejected/excluded population account");
+        True(gap.Residual is not null &&
+             ReferenceEquals(gap.Residual.Problem, gapProblem) &&
+             ReferenceEquals(gap.Residual.Graph, graph) &&
+             ReferenceEquals(gap.Residual.AdmissibleGraph, gapProblem.AdmissibleGraph) &&
+             ReferenceEquals(gap.Residual.Feasibility.Graph, gapProblem.AdmissibleGraph) &&
+             gap.Residual.CoverageGaps.SequenceEqual(new[] { new TextSpan(1, 2) }),
+            "selection failure wraps K4a feasibility evidence on the exact admissible graph");
+
+        var deadAdmissible = ClaimSelection.Create(batch, new[] { 1, 2 });
+        var deadProblem = PathSelectionProblem.Create(graph, deadAdmissible, policy);
+        var dead = PathSelection.Select(deadProblem);
+        True(dead.Residual is not null && dead.Residual.CoverageGaps.Count == 0 &&
+             dead.Residual.DeadEndCandidates.SequenceEqual(new[] { 1 }) &&
+             dead.Residual.DeadEndBoundaries.SequenceEqual(new[] { 2 }),
+            "full-coverage selection failure retains connectivity-dead-end evidence separately");
+
+        var parallelMaster = new TextMaster("path-parallel", 0, "ab");
+        var parallelBatch = PairBatch(
+            parallelMaster,
+            new TextSpan(0, 1),
+            new TextSpan(0, 1),
+            new TextSpan(1, 2));
+        var parallelGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(parallelBatch),
+            parallelMaster.Extent);
+        var parallelPolicy = AdditivePathPolicy.Create(
+            parallelGraph,
+            "parallel-tie",
+            "points",
+            static _ => 0);
+        var parallel = PathSelection.Select(PathSelectionProblem.Create(
+            parallelGraph,
+            parallelGraph.Candidates,
+            parallelPolicy));
+        True(parallel.Partition is not null && parallel.Partition.SequenceEqual(new[] { 0, 2 }),
+            "equal-geometry parallel candidates remain distinct and tie by exact ordinal");
+
+        const int chunkBudget = 4;
+        var chunkMaster = new TextMaster("path-chunks", 0, "abcdef");
+        var chunkBatch = PairBatch(
+            chunkMaster,
+            new TextSpan(0, 2),
+            new TextSpan(0, 3),
+            new TextSpan(2, 6),
+            new TextSpan(3, 6),
+            new TextSpan(0, 6));
+        var chunkGraph = CandidateRegionGraph.Create(
+            ClaimSelection.All(chunkBatch),
+            chunkMaster.Extent);
+        var chunkAdmissible = ClaimSelection.FromPredicate(
+            chunkBatch,
+            record => record.Span.Length <= chunkBudget);
+        var chunkCosts = new long[] { 5, 1, 5, 1, 0 };
+        var chunkPolicy = AdditivePathPolicy.Create(
+            chunkGraph,
+            "minimum-breakpoint-penalty",
+            "breakpoint-points",
+            record => chunkCosts[record.Ordinal]);
+        var chunks = PathSelection.Select(PathSelectionProblem.Create(
+            chunkGraph,
+            chunkAdmissible,
+            chunkPolicy));
+        True(chunks.Partition is not null && chunks.Partition.SequenceEqual(new[] { 1, 3 }) &&
+             chunks.Score == 2 && chunks.ScoreUnit == "breakpoint-points" &&
+             chunks.RejectedCandidates.SequenceEqual(new[] { 0, 2 }) &&
+             chunks.ExcludedCandidates.SequenceEqual(new[] { 4 }),
+            "chunk selection separates a hard size budget from additive breakpoint costs");
+
+        var emptyGraph = CandidateRegionGraph.Create(
+            ClaimSelection.None(batch),
+            new TextSpan(2, 2));
+        var emptyPolicy = AdditivePathPolicy.Create(
+            emptyGraph,
+            "empty-path",
+            "points",
+            static _ => throw new InvalidOperationException("No candidate should be evaluated."));
+        var empty = PathSelection.Select(PathSelectionProblem.Create(
+            emptyGraph,
+            emptyGraph.Candidates,
+            emptyPolicy));
+        True(empty.IsComplete && empty.Partition is not null && empty.Partition.IsEmpty &&
+             empty.Score == 0 && empty.SelectedCandidates.IsEmpty &&
+             empty.RejectedCandidates.IsEmpty && empty.ExcludedCandidates.IsEmpty,
+            "empty-window selection returns the complete zero-edge path with zero score");
+
+        Throws<ArgumentNullException>(
+            () => PathSelection.Select(null!),
+            "path selection requires a problem");
+    }
+
+    /// <summary>
+    /// K4b assurance: all 16,384 combinations of an admissible-edge subset and binary cost table
+    /// agree with independent complete-path enumeration, additive scoring, and lexicographic
+    /// minimization on the seven-edge K4a basis.
+    /// </summary>
+    private static void AdditivePathSelectionMatchesBoundedOptimizerOracle()
+    {
+        var master = new TextMaster("path-selection-bounded", 0, "abc");
+        var window = master.Extent;
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(0, 1),
+            new TextSpan(1, 2),
+            new TextSpan(2, 3),
+            new TextSpan(0, 2),
+            new TextSpan(1, 3),
+            new TextSpan(0, 3));
+        var graph = CandidateRegionGraph.Create(ClaimSelection.All(batch), window);
+        var valueCount = 1 << batch.Count;
+        var optimizationAgreement = true;
+        var populationLawsHold = true;
+        var stampsHold = true;
+        var costSnapshotHolds = true;
+        var problemCount = 0;
+
+        for (var costMask = 0; costMask < valueCount; costMask++)
+        {
+            var evaluations = 0;
+            var capturedCostMask = costMask;
+            var policy = AdditivePathPolicy.Create(
+                graph,
+                $"bounded-binary-{costMask}",
+                "binary-points",
+                record =>
+                {
+                    evaluations++;
+                    return (capturedCostMask >> record.Ordinal) & 1;
+                });
+
+            for (var admissibleMask = 0; admissibleMask < valueCount; admissibleMask++)
+            {
+                problemCount++;
+                var admissible = SelectionFromMask(batch, admissibleMask);
+                var problem = PathSelectionProblem.Create(graph, admissible, policy);
+                var actual = PathSelection.Select(problem);
+                var expected = MinimumCostPathOracle(
+                    SegmentationPathOracle(batch, admissibleMask, window),
+                    costMask);
+
+                optimizationAgreement &= actual.IsComplete == (expected is not null);
+                if (expected is not null)
+                {
+                    optimizationAgreement &= actual.Partition is not null &&
+                                             actual.Partition.SequenceEqual(expected.Path) &&
+                                             actual.Score == expected.Score;
+                }
+                else
+                {
+                    optimizationAgreement &= actual.Partition is null &&
+                                             actual.Score is null &&
+                                             actual.Residual is not null;
+                }
+
+                populationLawsHold &=
+                    actual.SelectedCandidates.Intersect(actual.RejectedCandidates).IsEmpty &&
+                    actual.SelectedCandidates.Union(actual.RejectedCandidates).Equals(admissible) &&
+                    admissible.Intersect(actual.ExcludedCandidates).IsEmpty &&
+                    admissible.Union(actual.ExcludedCandidates).Equals(graph.Candidates);
+
+                stampsHold &= ReferenceEquals(actual.Problem, problem) &&
+                              ReferenceEquals(actual.Graph, graph) &&
+                              ReferenceEquals(actual.Policy, policy) &&
+                              actual.Guarantee == PathSelectionGuarantee.MinimumAdditiveCost &&
+                              actual.TieBreak == PathTieBreak.LexicographicOrdinal &&
+                              actual.Feasibility == PathFeasibility.CompletePath &&
+                              ((actual.Partition is not null) != (actual.Residual is not null));
+                if (actual.Partition is not null)
+                {
+                    stampsHold &= ReferenceEquals(actual.Partition.Graph, graph);
+                }
+                else
+                {
+                    stampsHold &= ReferenceEquals(
+                        actual.Residual!.Feasibility.Graph,
+                        problem.AdmissibleGraph);
+                }
+            }
+
+            costSnapshotHolds &= evaluations == graph.Count;
+        }
+
+        Equal(16384, problemCount,
+            "bounded optimizer oracle crosses every admissible subset with every binary cost table");
+        True(optimizationAgreement,
+            "additive path selection agrees with independent all-path minimum and tie resolution");
+        True(populationLawsHold,
+            "every bounded result partitions source candidates into selected, rejected, and excluded");
+        True(stampsHold,
+            "every bounded result retains exact problem, graph, policy, feasibility, and outcome stamps");
+        True(costSnapshotHolds,
+            "bounded selection never re-enters a caller cost function after policy construction");
+    }
+
     private static LocatedRelation LocatedFromMask(
         TextMaster master,
         TextSpan window,
@@ -4554,6 +5023,47 @@ internal static class Program
             return left.Length.CompareTo(right.Length);
         });
         return paths;
+    }
+
+    private static PathCostOracleResult? MinimumCostPathOracle(
+        IEnumerable<int[]> paths,
+        int binaryCostMask)
+    {
+        PathCostOracleResult? best = null;
+        foreach (var path in paths)
+        {
+            long score = 0;
+            foreach (var ordinal in path)
+            {
+                score += (binaryCostMask >> ordinal) & 1;
+            }
+
+            if (best is null ||
+                score < best.Score ||
+                (score == best.Score && CompareOrdinalPaths(path, best.Path) < 0))
+            {
+                best = new PathCostOracleResult(path, score);
+            }
+        }
+
+        return best;
+    }
+
+    private static int CompareOrdinalPaths(
+        IReadOnlyList<int> left,
+        IReadOnlyList<int> right)
+    {
+        var shared = Math.Min(left.Count, right.Count);
+        for (var index = 0; index < shared; index++)
+        {
+            var comparison = left[index].CompareTo(right[index]);
+            if (comparison != 0)
+            {
+                return comparison;
+            }
+        }
+
+        return left.Count.CompareTo(right.Count);
     }
 
     private static bool SegmentationCanReachOracle(
@@ -4849,6 +5359,8 @@ internal static class Program
     }
 
     private readonly record struct PairingOracleToken(bool IsOpen, string Key);
+
+    private sealed record PathCostOracleResult(int[] Path, long Score);
 
     private sealed record PairingOracleResult(
         IReadOnlyCollection<(int LeftOrdinal, int RightOrdinal)> Matches,

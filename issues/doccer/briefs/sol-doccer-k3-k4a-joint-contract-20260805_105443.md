@@ -369,3 +369,6 @@ separate K4a result chip was subsequently closed by
 [D36](sol-doccer-k4a-results-20260805_184359.md): exact-graph reachability and partition/result
 values, first-ordinal traversal, distinct gap/dead-end evidence, and the independent bounded path
 oracle. Harness 1834→1874; K4a is closed and K4b/K4c are active siblings.
+Follow-on [D37](sol-doccer-k4b-additive-path-selection-20260805_191324.md) subsequently closed K4b
+with the first objective-shaped path executor and no universal selection carrier. Harness
+1874→1914; K4c is active next.

@@ -106,6 +106,14 @@ $expectedTypes = @(
     'CodexSci.Doccer.SegmentationResult'
     'CodexSci.Doccer.SegmentationResidual'
     'CodexSci.Doccer.Segmentation'
+    'CodexSci.Doccer.PathSelectionGuarantee'
+    'CodexSci.Doccer.PathTieBreak'
+    'CodexSci.Doccer.PathFeasibility'
+    'CodexSci.Doccer.AdditivePathPolicy'
+    'CodexSci.Doccer.PathSelectionProblem'
+    'CodexSci.Doccer.PathSelectionResidual'
+    'CodexSci.Doccer.PathSelectionResult'
+    'CodexSci.Doccer.PathSelection'
     'CodexSci.Doccer.RegexCollector'
     'CodexSci.Doccer.PatternRule'
     'CodexSci.Doccer.ExecutionScope'
@@ -143,6 +151,14 @@ if ($null -eq $segmentation.GetMethod('FirstOrdinalCompletePath') -or
     $null -eq $reachability.GetMethod('Create') -or
     $null -eq $partition.GetMethod('Create')) {
     throw 'Packaged K4a segmentation surface is incomplete.'
+}
+$pathPolicy = $assembly.GetType('CodexSci.Doccer.AdditivePathPolicy', $true)
+$pathProblem = $assembly.GetType('CodexSci.Doccer.PathSelectionProblem', $true)
+$pathSelection = $assembly.GetType('CodexSci.Doccer.PathSelection', $true)
+if ($null -eq $pathPolicy.GetMethod('Create') -or
+    $null -eq $pathProblem.GetMethod('Create') -or
+    $null -eq $pathSelection.GetMethod('Select')) {
+    throw 'Packaged K4b path-selection surface is incomplete.'
 }
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {

@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-05)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D36**, contract harness **1874 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D37**, contract harness **1914 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the substrate is complete, the
@@ -50,8 +50,12 @@ identity-forgetting projection, and bounded algebra/rebase/projection assurance.
 core are closed. D36 and its
 [K4a result report](../briefs/sol-doccer-k4a-results-20260805_184359.md) add exact-graph-stamped
 reachability diagnostics, validated ordinal partitions, the named first-ordinal result, distinct
-gap/dead-end residuals, and the independent bounded path oracle. K4a is closed. K4b and K4c are
-active sibling continuations; K4b remains the default execution priority.
+gap/dead-end residuals, and the independent bounded path oracle. K4a is closed. D37 and its
+[K4b report](../briefs/sol-doccer-k4b-additive-path-selection-20260805_191324.md) close the default
+flat-path lane with exact admissibility, snapshotted nonnegative additive costs, global minimum
+complete-path selection, lexicographic ordinal ties, complete decision/residual evidence, and an
+independent 16,384-problem optimizer oracle. K4b is closed. K4c structural-family hygiene is active
+next.
 
 ## Sequencing doctrine
 
@@ -68,15 +72,13 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Sibling K4 continuations after K4a:** neither lane depends on the other.
-   **K4b is the default execution priority** for the active tokenizer/chunker trajectory: execute
-   only flat-path objectives whose compositional form and exact guarantee are declared, with
-   deterministic ties and visible rejected/residual evidence. **K4c is independently available:**
-   add packing, cover, selection-backed and basis/policy-stamped laminar validation, explicit
-   nearest-container projection, multiple-parent hierarchy, and resolution incidence. Keep their
-   family-specific executors separate; consider a common selection abstraction only after both
-   lanes demonstrate the same contract. Reapply the Lean gate before any load-bearing global
-   optimum or optimized/reference equivalence.
+1. **K4c structural-family hygiene:** K4b's first exact flat-path executor is closed by D37; it
+   creates no dependency from K4c. Add packing, cover, selection-backed and basis/policy-stamped
+   laminar validation, explicit nearest-container projection, multiple-parent hierarchy, and
+   resolution incidence. Keep family-specific executors separate; consider a common selection
+   abstraction only after K4c supplies actual comparison evidence. Further flat-path objectives
+   such as partial paths or signed/vector scores remain separately named future chips, not hidden
+   extensions of D37.
 2. **Facts and support (K5):** once register/value/metadata identity closes, separate observed
    occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
    identity question does not block K0-K4.
@@ -105,10 +107,11 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D36 likewise leave K3/K4a on direct
-finite reference semantics; exact-batch ordinal determinism and endpoint-equality adjacency add no
-theorem burden. K4b or K4c must reapply the gate before promising a public global optimum or
-optimized/reference equivalence.
+universal no-false-negative equivalence load-bearing. D33–D37 leave K3/K4a and the first K4b
+executor on direct finite reference semantics. D37 reapplies the global-optimum trigger and keeps
+Lean deferred under one closed finite-DAG additive recurrence plus exhaustive differential
+evidence. Reapply again before a second/optimized path backend, generalized objective algebra,
+nontrivial partial-path guarantee, or K4c global optimum/equivalence claim.
 
 **First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
 still a catalog, not a contract, and the wire format waits for stable carrier identities and the

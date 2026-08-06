@@ -123,3 +123,7 @@ residual diagnostics. Harness 1834→1874 with no warnings.
 K4a is closed. K4b flat-path objective execution and K4c structural-family hygiene are active
 sibling continuations; K4b remains the default execution priority. No K4b objective/cost/selection
 surface, K4c carrier migration, production all-path API, or Lean code landed in this chip.
+
+Follow-on [D37](sol-doccer-k4b-additive-path-selection-20260805_191324.md) subsequently closed K4b
+with one exact nonnegative-additive complete-path executor, decision/residual evidence, and a
+16,384-problem independent optimizer oracle. Harness 1874→1914; K4c is active next.
