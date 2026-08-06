@@ -748,8 +748,10 @@ inventory written before it is settled encodes an assumption about it.
 ## 2026-08-05 D40 archaeological correction
 
 The old MarkPig `SCHEMA.md`, `UNIFIED-SWEEP.md`, and `VALIDATION-MATRIX.md` resolve the ambiguity
-left at lines 633–646 above. Their *register* means Unicode Block, Script, and GeneralCategory
-classification; Tier-1 “register exclusivity” means exactly one value on each axis per character.
-It is unrelated to the later application-level math-register. D40 retires the ambiguous term from
-living Doccer prose, keeps those classifications in F-UCD `AtomFacts`, and moves canonical values
-and metadata to the K5 fact/support design rather than adding a universal `Register` column.
+left at lines 633–646 above. Their *register* is natively a named span of codepoint addresses, or a
+named family of such spans; Block, Script, and GeneralCategory are the classifications produced by
+membership. Tier-1 “register exclusivity” means exactly one value from each family per character.
+It is unrelated to the later canonical mathematical language, whose preferred term is **math
+channel** (`math-register` remains a legacy repository name). D40 reserves register for the
+codepoint-address meaning, leaves its representation in F-UCD, and moves canonical semantic values
+and metadata to the K5 fact/support design rather than adding a universal claim column.

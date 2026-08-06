@@ -67,17 +67,22 @@ briefs carry the later contracts with their reports — and the evidence in
 | D37 | K4b additive complete-path selection closure: `AdditivePathPolicy` snapshots one nonnegative Int64 cost per exact source-graph candidate under required name/unit, minimum-additive guarantee, and lexicographic-ordinal tie stamps; `PathSelectionProblem` retains an exact admissible subset and derived feasibility graph; `PathSelection.Select` uses direct finite-DAG dynamic programming to return the global minimum-cost complete `PartitionView` or `PathSelectionResidual`; results retain selected, rejected-admissible, and hard-excluded populations plus score/unit/policy evidence; tokenizer and budget-plus-breakpoint chunk witnesses, exact refusals, gap/dead-end/parallel/empty cases, and all 16,384 admissible-mask × binary-cost-table problems agree with independent all-path enumeration; the global-optimum Lean trigger is reapplied but remains deferred because no alternate backend or generalized objective algebra lands | implemented; K4b closed; sibling K4c later closed by D39 |
 | D38 | K4c contract freeze: structural validators, greedy laminar admission, explicit/nearest hierarchy, and resolution incidence are four separate gates; `PackingView` means disjoint-with-gaps, `CoverView` means total declared-window coverage with overlap allowed, `LaminarView` validates without selecting or inferring parenthood, hierarchy edges are explicit DAG data except for one named nearest-container projection, and resolution maps distinguish incidence, functional aggregation, and exact material aggregation; no K4b dependency or common selector lands | recorded; implemented by D39 |
 | D39 | K4c structural-family closure: exact selection/window/policy-stamped packing, cover, and laminar validators; `Laminarizer.Admit` with grouped maximum priority and deterministic inclusion-maximal—not maximum—guarantee; explicit multiple-parent `HierarchyView` plus policy-gated immediate nearest-container projection; named `ResolutionView` layers and compatible-master explicit `ResolutionMap` incidence/functional/exact-aggregation contracts; the unstamped `Extract`/implicit-tree path is removed; all 1,024 structural masks, 4,096 greedy problems, every valid bounded nearest-parent family, all 4,096 four-node directed graphs, and 2,048 resolution endpoint problems agree with independent oracles (harness 1914→1976) | implemented; K4c closed; next lanes resequenced by D40; Lean gate reapplied and deferred |
-| D40 | Post-K4 coherence and K5–K7 sequencing correction: MarkPig's historical `doccer/legwork` “register” is Unicode Block/Script/GeneralCategory classification, not a native Doccer carrier and not math-register; the combined register/value/metadata blocker is decomposed into F-UCD atom facts, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a derivation-reference seam into K7; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; K5a/K5b/K6/K7 surfaces remain pending |
+| D40 | Post-K4 coherence and K5–K7 sequencing correction: Doccer's historical “register” is natively a named codepoint-address span or family of spans; Block/Script/GeneralCategory assignments are Unicode classifications derived from register membership; the canonical mathematical language is the unrelated **math channel** (legacy repository name `math-register`); the combined register/value/metadata blocker is decomposed into F-UCD register/classification work, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a derivation-reference seam into K7; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; terminology amended after owner clarification; K5a/K5b/K6/K7 surfaces remain pending |
 
 ## Post-K4 coherence and K5–K7 sequencing correction (D40)
 
-D40 resolves a namespace collision inherited from the MarkPig legwork. Its “Unicode register” and
-Tier-1 “register exclusivity” referred only to the UCD Block, Script, and GeneralCategory axes on
-character atoms. The unrelated math-register is an application-level canonical notation contract;
-it creates no Doccer column, carrier, fact ontology, or K5 dependency. Living Doccer prose uses
-**Unicode classification** instead. Block/script data remain F-UCD work, canonical semantic values
-belong at K5 fact grain, and metadata remains occurrence/support evidence unless a named fact
-schema promotes it deliberately.
+D40 resolves a namespace collision inherited from the MarkPig legwork. Doccer's native historical
+meaning of **register** is a named span of codepoint addresses, or a named family of such spans.
+Tier-1 “register exclusivity” required each character atom to receive one Block, Script, and
+GeneralCategory classification through membership in those registers. The register is the
+address-space object; the classification is the resulting atom fact.
+
+The unrelated canonical mathematical language uses the preferred term **math channel** because it
+is one language channel interleaved with prose, not a codepoint register. Existing `math-register`
+repository paths retain their legacy name until a separate migration. The channel creates no
+Doccer register column, fact ontology, or K5 dependency. Codepoint-register representation and
+Block/script data remain F-UCD work, canonical semantic values belong at K5 fact grain, and
+metadata remains occurrence/support evidence unless a named fact schema promotes it deliberately.
 
 `CandidateRegionGraph.Equals` compares one exact source-batch reference, window, and candidate
 ordinal set. That value is now the graph-basis compatibility relation used by partitions,
@@ -338,8 +343,9 @@ or incremental closure, a generalized exact-versus-lax map surface, or a K4b pub
 or optimized/reference-equivalence guarantee. D35 closes the joint core at 1834 checks and D36
 closes the separate K4a result gate at 1874 checks. D37 then closes K4b's first exact additive
 complete-path executor at 1914 checks after reapplying the Lean gate. D38–D39 close K4c's structural
-families at 1976 checks. D40 then closes graph-equality coherence, removes the Unicode
-classification/math-register collision, and makes K5a/K5b and K6 sibling continuations toward K7.
+families at 1976 checks. D40 then closes graph-equality coherence, removes the
+codepoint-register/math-channel collision, and makes K5a/K5b and K6 sibling continuations toward
+K7.
 
 ## Strict stack pairing closure (D32)
 
@@ -653,5 +659,6 @@ their result semantics interchangeable.
 ## Open (no decision record yet)
 
 - **K5a canonical value representation and derivation-reference identity:** active contract work;
-  Unicode classification is F-UCD and math-register is unrelated adapter/application design (D40).
+  codepoint registers and their Unicode classifications are F-UCD, while the math channel (legacy
+  repository name `math-register`) is unrelated adapter/application design (D40).
 - **Per-line terminator-kind view** (D15): named, unscheduled.

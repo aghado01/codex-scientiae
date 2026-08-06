@@ -57,11 +57,13 @@ form); normalization, when wanted, is an explicit producer step yielding a new m
 offset map, and compatibility forms (NFKC/NFKD) are treated as lossy transforms whose loss the
 map records.
 
-MarkPig's historical `doccer/legwork` material used “Unicode register” for the UCD Block, Script,
-and GeneralCategory axes. Doccer never adopted that as a native carrier or namespace; living
-contracts call them **Unicode classifications**. They are atom facts in the F-UCD lane, not
-`SpanBatch` register columns. The unrelated application-level math-register is neither a Doccer
-carrier nor a dependency of canonical facts or saturation (D40).
+Doccer's historical **register** is a named span of Unicode codepoint addresses, or a named family
+of such spans. Membership produces Block, Script, and GeneralCategory **Unicode classifications**
+on character atoms. Their current representation remains F-UCD work; D40 neither adds a universal
+`SpanBatch` register column nor rules on the eventual register carrier. The unrelated canonical
+mathematical language is the **math channel**, not a register, and is neither a Doccer fact ontology
+nor a dependency of canonical facts or saturation. Existing `math-register` repository paths use
+the legacy term pending a separate migration (D40).
 
 The domain-agnostic surface is the DLL (operation granularity, in-process composition) and the
 CLI (task granularity — one-shot à la carte jobs, with domain knowledge arriving as data

@@ -1,15 +1,15 @@
-# Doccer D40 correction — Unicode classification, graph equality, and K5–K7 sibling lanes
+# Doccer D40 correction — codepoint registers, graph equality, and K5–K7 sibling lanes
 
 Status before correction: D39 closes K4c with 1976 contract checks green. The post-K4 review in
 [opus-doccer-k3k4-review-k5k7-notes](../discussions/opus-doccer-k3k4-review-k5k7-notes.md)
 finds no algorithmic defect in K3/K4, but exposes one equality inconsistency and several stale or
 conflated premises in the K5–K7 plan. This brief corrects those premises before K5 source work.
 
-## 1. The two meanings of “register” never belonged to one contract
+## 1. Register is codepoint-address terminology; mathematics is a channel
 
-MarkPig's historical `doccer/legwork` material used **Unicode register** for three independent UCD
-classification axes on character atoms. This was archaeological input to Doccer planning, never a
-native Doccer carrier or namespace:
+MarkPig's historical `doccer/legwork` material used **Unicode register** natively for a named span
+of codepoint addresses, or a named family of such spans. Its unified sweep classified character
+atoms by locating their scalar values in registers under three UCD families:
 
 ~~~text
 Block
@@ -18,32 +18,35 @@ GeneralCategory
 ~~~
 
 Its Tier-1 “register exclusivity” invariant meant that each character position receives exactly
-one value on each axis. The old `SpanBatch` sketch consequently showed optional `BlockIds`,
-`ScriptIds`, and `CategoryCodes`. It did not mean a linguistic register, a canonical math
-language, or a semantic-value namespace.
+one register value from each family. The old `SpanBatch` sketch consequently showed optional
+`BlockIds`, `ScriptIds`, and `CategoryCodes`. A register is the codepoint-address object;
+classification is the atom fact produced by membership in it. Neither meant a linguistic
+register, a canonical math language, or a semantic-value namespace.
 
 The archaeological trail is explicit: MarkPig's `VALIDATION-MATRIX.md` defines exclusivity as one
-Block, Script, and Category per character; `SCHEMA.md` names `unicode_register` and those three
-optional columns; and `UNIFIED-SWEEP.md` calls block/script/category the Unicode register tags.
-The later math-register specification instead defines a canonical mathematical manuscript
-language, including delimiter and spelling rules. Its §3 does not interpret the MarkPig invariant.
+Block, Script, and Category per character; `SCHEMA.md` names `unicode_register` with a
+`{ kind, name, range? }` record and those three optional result columns; and `UNIFIED-SWEEP.md`
+calls block/script/category the Unicode register tags.
 
-The later **math-register** is an application-level canonical language and store for mathematical
-notation. It can consume Doccer primitives through an adapter, but it is not a Doccer carrier,
-column, fact ontology, or prerequisite. The same English word caused the living Doccer planning
-canon to speculate that the two designs were entangled. They are not.
+The application design currently stored under the legacy **math-register** name instead defines a
+canonical mathematical manuscript language, including delimiter and spelling rules. Its preferred
+canonical term is **math channel**: mathematics is one language channel interleaved with prose,
+not a codepoint-address register. Existing repository paths retain the legacy name until that
+separate migration lands. A math-channel adapter can consume Doccer primitives, but the channel is
+not a Doccer register, fact ontology, or prerequisite.
 
-D40 therefore retires *register* from living Doccer terminology except when quoting historical
-evidence:
+D40 therefore reserves *register* in Doccer for codepoint-address semantics and uses *math channel*
+for the canonical mathematical language:
 
-- UCD Block/Script/GeneralCategory are **Unicode classifications**, remain ordinary `AtomFacts`,
-  and stay in the independent F-UCD lane pending a pinned data-provenance record;
-- an adapter's language or canonical notation contract remains adapter data and policy;
+- codepoint registers and the Unicode classifications derived from them stay in the independent
+  F-UCD lane pending a pinned data-provenance and representation record;
+- a channel's language or canonical-notation contract remains adapter data and policy;
 - canonical semantic values belong at K5 fact grain; and
 - occurrence metadata and derivation evidence do not silently enter canonical fact identity.
 
 The old combined “register/value/metadata columns” question is split rather than answered with one
-new `SpanBatch` column. Math-register creates no K5 dependency.
+new `SpanBatch` column. The math channel creates no K5 dependency, and D40 does not pre-decide the
+eventual F-UCD register carrier or serialization.
 
 ## 2. Candidate graphs are values on one exact occurrence basis
 
@@ -83,7 +86,7 @@ K5b  finite positive saturation over the K5a carriers
 ~~~
 
 K5a must freeze the representation of an adapter-defined canonical value key, but it does not wait
-for Unicode classification data or math-register. The governing separation remains:
+for F-UCD codepoint-register data or the math channel. The governing separation remains:
 
 ~~~text
 occurrence row       what evidence was observed, where, and by which producer
@@ -159,8 +162,8 @@ equivalence.
 
 ## 7. D40 landing gate
 
-- remove the math-register dependency and resolve historical Tier-1 “register” as Unicode
-  classification;
+- remove the legacy math-register dependency, restore historical Tier-1 “register” to its
+  codepoint-address meaning, and adopt math channel for the canonical mathematical language;
 - migrate graph-basis compatibility and partition equality to `CandidateRegionGraph.Equals`
   without weakening exact `SpanBatch` identity;
 - split K5a identity/support from K5b saturation and name the diamond witness;
@@ -170,16 +173,18 @@ equivalence.
 - align decisions, roadmap, workplan, ledger, README, prior affected briefs, source tests, and the
   delivered package.
 
-No K5, K6, K7, F-UCD, persistence, adapter, or math-register source surface lands in D40.
+No K5, K6, K7, F-UCD, persistence, adapter, math-channel source surface, or legacy-path rename
+lands in D40.
 
 ## 8. Implementation report
 
-Completed 2026-08-05 as D40. The living canon now says **Unicode classification** for the former
-Block/Script/GeneralCategory “register” vocabulary and records math-register as unrelated
-application design. The stale combined blocker is removed; K5a/K5b, the hierarchy-diamond witness,
-the K5/K6 sibling split, the optional K5a→K7 seam, exact tagged origin basis, nonempty output
-material, and Lean reapplication posture are aligned across decisions, roadmap, workplan, ledger,
-README, and the affected historical briefs.
+Completed 2026-08-05 as D40. The living canon now reserves **register** for Doccer's historical
+codepoint-address meaning, calls the resulting atom assignments **Unicode classifications**, and
+uses **math channel** for the unrelated canonical mathematical language. Existing `math-register`
+repository paths are legacy naming pending a separate migration. The stale combined blocker is
+removed; K5a/K5b, the hierarchy-diamond witness, the K5/K6 sibling split, the optional K5a→K7 seam,
+exact tagged origin basis, nonempty output material, and Lean reapplication posture are aligned
+across decisions, roadmap, workplan, ledger, README, and the affected historical briefs.
 
 The bounded K4 correction updates `PartitionView` equality/hash and segmentation/path graph checks
 to use `CandidateRegionGraph.Equals`. Direct tests now accept partitions and policies built over an
@@ -190,3 +195,11 @@ removed.
 The Doccer build completes with zero warnings and the contract harness remains **1976 checks
 passed**. D40 closes the correction; K5a contract work is the default next chip and K6 contract
 work is an independently available sibling.
+
+## 9. Terminology amendment
+
+D40 initially overcorrected the namespace collision by describing register as non-native to
+Doccer. The project owner clarified immediately after landing that a register was originally a
+native codepoint-address concept: distinct spans in the codepoint space. This amendment restores
+that meaning and adopts math channel as the preferred term for the mathematical language. D40's
+K4 equality correction and K5–K7 dependency decisions are unchanged.

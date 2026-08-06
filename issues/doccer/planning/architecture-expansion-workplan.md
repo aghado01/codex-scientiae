@@ -712,10 +712,11 @@ The active contract is fact identity:
 FactKey = geometry + fact kind/domain + adapter-defined canonical value key
 ~~~
 
-MarkPig's historical `doccer/legwork` “register” meant Unicode Block/Script/GeneralCategory
-classification; it was never a native Doccer carrier. Those classifications are F-UCD `AtomFacts`;
-the application-level math-register is unrelated. Neither blocks K5. Do not add a universal
-`Register` column or freeze a span-only fact key. K5a must instead separate:
+Doccer's historical “register” meant a named span of codepoint addresses, or a named family of such
+spans. Block/Script/GeneralCategory assignments are classifications derived from membership in
+those registers. Their representation remains F-UCD work. The application-level **math channel**
+(legacy repository name `math-register`) is unrelated. Neither blocks K5. D40 adds no universal
+`Register` column and does not pre-decide F-UCD's carrier; K5a must instead separate:
 
 - observed occurrence rows and producer metadata;
 - canonical fact identity and an adapter-defined stable value key;
@@ -947,10 +948,11 @@ Known concrete geometry continues to use exact joins and validators.
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
 | F-UCD | independent fact-data lane; unchanged |
 
-D40 resolves the historical “register” item as Unicode classification and decomposes the stale
-combined column question. F-UCD owns Block/Script/GeneralCategory atom data; K5a owns canonical
-fact-value identity; occurrence/support metadata remains evidence. Math-register is unrelated
-adapter/application design and creates no Doccer dependency.
+D40 restores historical **register** to its native codepoint-address meaning and decomposes the
+stale combined column question. F-UCD owns the registers and Block/Script/GeneralCategory atom
+classifications; K5a owns canonical fact-value identity; occurrence/support metadata remains
+evidence. The **math channel** is unrelated adapter/application design and creates no Doccer
+dependency; `math-register` remains only its legacy repository name pending migration.
 
 ## 10. Explicit non-goals
 

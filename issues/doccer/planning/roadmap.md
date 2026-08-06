@@ -61,10 +61,11 @@ admission, parenthood, and resolution before source work. D39 and its
 packing/cover/laminar views, inclusion-maximal admission, explicit and nearest-container hierarchy,
 and resolution incidence/aggregation under independent bounded oracles. K4c is closed. D40 and its
 [correction brief](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md)
-then remove the accidental Unicode-classification/math-register dependency, make exact-basis graph
+then remove the accidental codepoint-register/math-channel dependency, make exact-basis graph
 value equality coherent across K4, split K5a identity/support from K5b saturation, and make K5 and
-K6 sibling lanes toward K7. K5a contract work has default execution priority; K6 contract work is
-independently available.
+K6 sibling lanes toward K7. Existing `math-register` paths retain that legacy name pending the
+separate terminology migration. K5a contract work has default execution priority; K6 contract
+work is independently available.
 
 ## Sequencing doctrine
 
@@ -83,8 +84,8 @@ order is:
 
 1. **Fact and support identity (K5a; default next):** separate observed occurrences, canonical
    facts, support hyperedges, and a narrow derivation reference. Canonical value identity is a
-   fact-grain contract; Unicode Block/Script/GeneralCategory data remain F-UCD, and math-register
-   is unrelated adapter/application design.
+   fact-grain contract; codepoint registers and their Unicode classifications remain F-UCD, and
+   the math channel is unrelated adapter/application design.
 2. **Sibling execution lanes (K5b and K6):** K5b adds finite positive saturation over the K5a
    carriers and proves its first contract with the bounded K4c diamond witness. Independently, K6
    adds output-to-tagged-source origin relations over one exact origin basis. K5b does not block
@@ -193,9 +194,9 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 
 - See [decisions.md § Open](decisions.md): K5a's canonical value representation and narrow
   derivation-reference identity are active contract work; the per-line terminator-kind view remains
-  unscheduled. D40 resolves MarkPig's historical `doccer/legwork` “register” as Unicode
-  classification and removes the unrelated math-register dependency. All Tranche-2 stragglers are
-  closed — see the
+  unscheduled. D40 restores Doccer's historical register to its codepoint-address meaning and
+  removes the unrelated math-channel dependency; `math-register` remains only the legacy
+  repository name pending migration. All Tranche-2 stragglers are closed — see the
   [ledger](ledger.md).
 
 ## Standing context for future sessions
