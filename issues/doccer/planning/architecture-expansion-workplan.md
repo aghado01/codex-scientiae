@@ -11,6 +11,8 @@ The evidence base is:
 - [the chunker-factory expansion](../discussions/grok-doccer-chunking-expansion-20260802.md);
 - [the formalization audit and Lean inventory](../discussions/sol-doccer-formalization-audit-and-lean-obligations-20260803.md);
 - [the ICDT 2025 ET close read](../discussions/fable-et-framework-close-read-20260803.md);
+- [the post-K4 review](../discussions/opus-doccer-k3k4-review-k5k7-notes.md) and
+  [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md);
 - the implemented contracts in [the engine README](../../../src/doccer/README.md).
 
 ## 1. Executive result
@@ -39,9 +41,9 @@ Therefore the kernel critical path remains:
 close value and query carriers
     -> explicit pairing and located composition
     -> structural views and policy-driven selection
-    -> canonical facts and support
-    -> origin algebra
-    -> rewrite plan and materialize
+       +-> canonical fact/support identity -> positive saturation
+       '--> exact-basis origin algebra ------> rewrite plan and materialize
+                         optional derivation reference joins only at materialization
 ~~~
 
 Lean is a deferred, burden-triggered rigor lane. The law registry chooses among counterexamples,
@@ -148,7 +150,8 @@ flowchart TD
     K4A["K4a: flat graph + results"]
     K4B["K4b: flat path selection"]
     K4C["K4c: structural families"]
-    K5["K5: facts + support + saturation"]
+    K5A["K5a: fact + support identity"]
+    K5B["K5b: positive saturation"]
     K6["K6: origin algebra"]
     K7["K7: rewrite plan + Materialize"]
     W["K8: cross-carrier integration"]
@@ -165,17 +168,18 @@ flowchart TD
     K3 --> K4A
     K4A --> K4B
     K4A --> K4C
-    K2B --> K5
-    K2C --> K5
-    K4A --> K5
+    K2B --> K5A
+    K2C --> K5A
+    K4A --> K5A
+    K5A --> K5B
     K4B --> K6
-    K5 --> K6
     K6 --> K7
+    K5A -.->|optional derivation reference| K7
     K2C --> W
     K4A --> W
     K4B --> W
     K4C --> W
-    K5 --> W
+    K5B --> W
     K7 --> W
     K1B --> Q
     K7 --> ET
@@ -194,13 +198,15 @@ D34 removes the former
 K4b-to-K4c arrow for the same reason: both are consumers of K4a, and K4c neither consumes a K4b type
 nor waits for a universal selection carrier. K4b remains the default execution priority for the
 tokenizer/chunker trajectory and is closed by D37; independent K4c later closes through D38–D39
-without acquiring that dependency. Likewise,
-origin relations are mathematically definable before selection or facts, but designing them against
-real selected output pieces and the support/origin distinction prevents a formally neat but
-operationally empty API. The full adjudication is in the
+without acquiring that dependency. D40 applies the same correction to the former K5-to-K6 arrow:
+K5 support and K6 origins remain distinct sorts, while K4b already supplies the selected output
+evidence needed to design origins honestly. K5a freezes only the narrow optional derivation
+reference that K7 may retain; K5b saturation is not a K6 or K7 dependency. The full adjudication
+is in the
 [K1b–K4 sequencing brief](../briefs/sol-doccer-k1b-k4-resequencing-20260804_184200.md) and the
 [joint K3/K4a contract](../briefs/sol-doccer-k3-k4a-joint-contract-20260805_105443.md), as amended
-by the [D34 review adjudication](../briefs/sol-doccer-k3-k4a-review-adjudication-20260805_151759.md).
+by the [D34 review adjudication](../briefs/sol-doccer-k3-k4a-review-adjudication-20260805_151759.md)
+and [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md).
 
 ## 5. Cross-cutting tranche gate
 
@@ -689,7 +695,7 @@ contract and report: [D38](../briefs/sol-doccer-k4c-structural-contract-20260805
 
 ### K5 — occurrences, canonical facts, support, and saturation
 
-This lane can proceed beside K4 after K2 stabilizes.
+D40 splits this lane so identity/support can close before saturation without serializing K6.
 
 ~~~text
 ClaimOccurrenceTable   observed evidence rows
@@ -698,16 +704,31 @@ SupportHypergraph      rule application + ordered premise IDs
 SemiringView           optional quotient/evaluation
 ~~~
 
-The blocking contract is fact identity:
+#### K5a: canonical fact and support identity
+
+The active contract is fact identity:
 
 ~~~text
-FactKey = geometry + kind + adapter-defined value identity
+FactKey = geometry + fact kind/domain + adapter-defined canonical value key
 ~~~
 
-The open register/value/metadata design blocks this general fact store, but it does not block
-K1-K4. Do not freeze a span-only fact key that macro expansion immediately outgrows.
+MarkPig's historical `doccer/legwork` “register” meant Unicode Block/Script/GeneralCategory
+classification; it was never a native Doccer carrier. Those classifications are F-UCD `AtomFacts`;
+the application-level math-register is unrelated. Neither blocks K5. Do not add a universal
+`Register` column or freeze a span-only fact key. K5a must instead separate:
 
-After identity closes, add finite positive worklist saturation.
+- observed occurrence rows and producer metadata;
+- canonical fact identity and an adapter-defined stable value key;
+- support edges retaining rule ID, ordered premise fact IDs, parameters, and occurrence evidence;
+  and
+- a narrow derivation reference K7 may retain without requiring a support graph at materialization.
+
+#### K5b: finite positive saturation
+
+After K5a closes, add finite positive worklist saturation. Rules must be positive and monotone by
+construction: they match named present premises and propose additions. An arbitrary whole-store
+callback that can inspect absence, delete, select winners, or observe stage order does not satisfy
+this contract.
 
 Exit gate:
 
@@ -719,10 +740,16 @@ Exit gate:
 - semiring provenance is derived and may quotient proof structure;
 - negation, winner selection, and stage ordering remain explicit orchestration boundaries.
 
-Start with host-language rule combinators. A serializable grammar/rule IR waits for at least two
-adapters demonstrating repeated structure.
+The bounded witness is a four-node K4c hierarchy diamond. Positive parent/ancestor rules derive one
+canonical outer ancestor by two paths, retaining two support edges without duplicating the fact;
+seed and rule permutations must reach the same fact set. Start with restricted host-language rule
+combinators. A serializable grammar/rule IR waits for at least two adapters demonstrating repeated
+structure.
 
 ### K6 — origin algebra before materialization
+
+K6 is a sibling of K5a/K5b after K4b. It does not consume canonical facts or saturation; support
+and origin remain different types.
 
 Origin is a basis-stamped relation, not a generalized <code>OffsetMap</code>:
 
@@ -741,12 +768,16 @@ Required semantics:
 - deletion is plan/change residue or explicit absence, not a fictitious reverse origin;
 - copy origin, transformation origin, causal derivation, and claim support are different types.
 
+The identity-bearing basis is an exact ordered collection of tagged source slots. Two slots may
+hold value-compatible text while remaining distinct provenance identities. Master compatibility
+validates coordinates and explicit geometry projections; it never substitutes a source slot.
+
 Exit gate:
 
-- compatible relational identity and associativity;
+- relational identity and associativity on one exact tagged origin basis;
 - functional origins embed in relation-valued origins;
 - the embedding preserves identity and composition;
-- composition requires the identical tagged middle master/basis;
+- composition requires the exact tagged middle origin basis/stage identity;
 - <code>TextSlice</code> supplies the injective functional special case;
 - birth-event instrumentation from a future NSST backend is only one origin producer.
 
@@ -759,7 +790,7 @@ OutputPiece
   supplied literal or source-copy instruction
   output extent after assembly
   declared source origins
-  optional support/derivation reference
+  optional narrow K5a derivation reference
 
 MaterializationResult
   immutable output master
@@ -774,6 +805,7 @@ The engine validates and realizes a supplied plan; it does not decide what the r
 Exit gate:
 
 - pieces form an ordered, gap-free partition of the output master;
+- every material-bearing piece has positive extent; an empty output has zero pieces;
 - output equals their exact concatenation;
 - copied content remains literal source material;
 - transformed or synthetic content is explicitly supplied;
@@ -782,6 +814,10 @@ Exit gate:
 - the source remains immutable;
 - derivation answers why; origin answers where;
 - repeated materializations compose origins through retained intermediate masters.
+
+Insertion and synthesis create positive output material. Deletion is absence or named plan/change
+residue, never a zero-width output piece or `SpanBatch` claim. K6/K7 do not reopen K4's inherited
+nonempty-claim law.
 
 <code>OffsetMap</code> then becomes a restricted compressed interface for a single-source monotone
 alignment. Its <code>Exact | Range | Unmapped</code> point queries do not define general origins.
@@ -819,6 +855,13 @@ already certifies the atomic Allen triads. Reassess the gate before an indexed, 
 incremental, or independent pair backend relies on qualitative summaries for a universal
 no-false-negative claim, or if the public contract changes the inclusion to equality.
 
+D40 reapplies K5's signature-pressure trigger and retains deferral. The first finite positive
+saturation surface uses a direct worklist, order-permutation tests, and the standard monotone
+least-fixed-point theorem under explicit hypotheses. K5a must make those hypotheses structural in
+the rule carrier before K5b promises order independence. Reapply when the K5a signature freezes;
+activate if a proof can choose between rule-carrier designs or before a parallel/incremental
+backend claims equivalence.
+
 ### L0 — bootstrap only after an activation trigger
 
 - select exactly one load-bearing obligation and name the implementation decision it can change;
@@ -849,7 +892,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K4a | geometric cut-set/partition equivalence under its fixed-basis hypotheses; identity-bearing path/partition preservation; gap/dead-end distinction |
 | K4b | D37's nonnegative additive complete-path minimum is covered by a direct DAG recurrence and 16,384-problem enumeration oracle; reactivate before another backend/generalized objective/partial guarantee |
 | K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
-| K5 | finite monotone fixed-point termination and rule-order independence |
+| K5a–K5b | positive-rule monotonicity, finite fixed-point termination, rule-order independence, and alternative-support preservation |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
 
 Standard library facts should be reused rather than renamed as Doccer theorems unless the wrapper
@@ -904,9 +947,10 @@ Known concrete geometry continues to use exact joins and validators.
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
 | F-UCD | independent fact-data lane; unchanged |
 
-The open register/value/metadata question blocks K5's general fact identity. It does **not** block
-Allen relation sets, claim selections, exact pair relations, pairing, located composition, or flat
-structural views.
+D40 resolves the historical “register” item as Unicode classification and decomposes the stale
+combined column question. F-UCD owns Block/Script/GeneralCategory atom data; K5a owns canonical
+fact-value identity; occurrence/support metadata remains evidence. Math-register is unrelated
+adapter/application design and creates no Doccer dependency.
 
 ## 10. Explicit non-goals
 
@@ -934,8 +978,10 @@ K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28,
 contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, K2c strict
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
 the joint located/graph core as D35, the flat result closure as D36, additive complete-path
-selection as D37, the K4c contract as D38, and structural-family closure as D39. K2, K3, and all
-K4 lanes are closed. K5 fact identity and finite positive saturation are active next.
+selection as D37, the K4c contract as D38, structural-family closure as D39, and the post-K4
+coherence/K5–K7 sequencing correction as D40. K2, K3, and all K4 lanes are closed. K5a canonical
+fact/support identity is the default active next chip; K6 origin-contract work is an independently
+available sibling. K5b saturation follows K5a and does not block K6 or K7.
 
 D37 reapplies the global-optimality Lean trigger and keeps Lean deferred under one closed finite-DAG
 recurrence plus exhaustive differential evidence. D39 separately reapplies the K4c structural gate
@@ -943,4 +989,6 @@ and keeps Lean deferred under direct finite validators, explicit relations, a no
 reference policy, and bounded differential evidence. Reapply if K3 adopts a compressed/incremental
 closure backend, another K4 backend claims equivalence, generalized objectives/carriers land,
 partial paths gain a nontrivial guarantee, structural selection promises an optimum, or hierarchy
-closure/reduction or resolution-map composition becomes load-bearing.
+closure/reduction or resolution-map composition becomes load-bearing. D40 separately reapplies the
+K5 signature trigger and defers Lean until K5a freezes a positive-rule carrier; activate if proof
+pressure changes that signature or later licenses parallel/incremental saturation.

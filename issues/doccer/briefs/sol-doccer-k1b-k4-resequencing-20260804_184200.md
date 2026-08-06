@@ -158,3 +158,8 @@ K4b lane with exact additive complete-path selection while preserving K4c's inde
 [D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed the independent
 K4c lane with exact structural validators, named laminar admission, explicit/nearest hierarchy, and
 resolution incidence/aggregation. Harness 1914→1976; K5 is active next.
+
+[D40](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) subsequently applies the
+sibling-lane doctrine again: K5a/K5b facts and support do not precede K6 origins, while K7 has only
+a narrow optional K5a derivation-reference seam. It also makes equal graph definitions on one exact
+batch compatible K4 stamps. Harness remains 1976.

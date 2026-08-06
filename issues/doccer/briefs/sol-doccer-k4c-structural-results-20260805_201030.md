@@ -102,5 +102,10 @@ proposed.
 
 D39 closes all four D38 gates and therefore K4c. Packing, cover, laminar validation/admission,
 nearest-container projection, explicit multiple-parent DAGs, and resolution incidence/aggregation
-are now exact-basis, policy-stamped public surfaces. K5 fact identity and finite positive saturation
-are active next; their existing register/value/metadata identity question remains the gate.
+are now exact-basis, policy-stamped public surfaces.
+
+Follow-on [D40](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) removes the
+stale combined register/value/metadata blocker: MarkPig's historical `doccer/legwork` “register” is
+Unicode classification in F-UCD, not a native Doccer carrier and not math-register. K5a
+fact/support identity and K5b saturation now form one lane with the K4c hierarchy diamond as its
+bounded witness; K6 origin work is an independent sibling toward K7. Harness remains 1976.

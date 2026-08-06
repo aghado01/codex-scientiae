@@ -83,6 +83,11 @@ public sealed class CandidateRegionGraph : IReadOnlyCollection<int>, IEquatable<
         return LocatedRelation.Create(Master, Window, geometry);
     }
 
+    /// <summary>
+    /// Compares graph definitions on one exact occurrence basis. Equal graphs retain the same
+    /// frozen-batch reference, window, and candidate ordinal set; compatible-but-distinct batches
+    /// remain unequal.
+    /// </summary>
     public bool Equals(CandidateRegionGraph? other)
     {
         if (ReferenceEquals(this, other))

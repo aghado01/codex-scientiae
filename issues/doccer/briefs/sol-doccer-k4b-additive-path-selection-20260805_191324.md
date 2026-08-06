@@ -163,3 +163,9 @@ tie contracts remain separately gated additions rather than implied features of 
 Follow-on [D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed the
 independent structural sibling with family-specific validators and policies, explicit/nearest
 hierarchy, and resolution incidence/aggregation. Harness 1914→1976; K5 is active next.
+
+Follow-on [D40](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) makes the
+graph stamp coherent with `CandidateRegionGraph.Equals`: a policy snapshotted on an equal graph
+definition over the same exact batch can form a problem, while the supplied policy and problem
+objects remain exact evidence stamps and compatible-but-distinct batches remain refused. Harness
+remains 1976.

@@ -192,3 +192,8 @@ Follow-on [D39](sol-doccer-k4c-structural-results-20260805_201030.md) closes all
 separate validators, named inclusion-maximal admission, explicit/nearest hierarchy surfaces, and
 resolution incidence/aggregation maps specified above. Independent bounded oracles and direct
 adversaries raise the harness from 1914 to 1976 checks. K4c is closed; K5 is active next.
+
+Follow-on [D40](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) uses K4c's
+explicit multiple-parent diamond as K5b's bounded saturation witness: two ancestor paths must yield
+one canonical fact with two support edges under rule-order permutations. K5a/K5b and K6 are sibling
+lanes toward K7. Harness remains 1976.

@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 
 namespace CodexSci.Doccer;
 
 /// <summary>
-/// An immutable exact-graph-stamped path whose claim ordinals form an ordered, disjoint,
+/// An immutable graph-value-stamped path whose claim ordinals form an ordered, disjoint,
 /// gap-free, total cover of the graph window.
 /// </summary>
 public sealed class PartitionView : IReadOnlyList<int>, IEquatable<PartitionView>
@@ -23,7 +22,7 @@ public sealed class PartitionView : IReadOnlyList<int>, IEquatable<PartitionView
         Selection = ClaimSelection.Create(graph.Source, ordinals);
     }
 
-    /// <summary>The exact candidate graph whose ordinal edges form this partition.</summary>
+    /// <summary>The retained candidate graph whose ordinal edges form this partition.</summary>
     public CandidateRegionGraph Graph { get; }
 
     public SpanBatch Source => Graph.Source;
@@ -131,7 +130,7 @@ public sealed class PartitionView : IReadOnlyList<int>, IEquatable<PartitionView
         }
 
         return other is not null &&
-               ReferenceEquals(Graph, other.Graph) &&
+               Graph.Equals(other.Graph) &&
                _ordinals.AsSpan().SequenceEqual(other._ordinals);
     }
 
@@ -140,7 +139,7 @@ public sealed class PartitionView : IReadOnlyList<int>, IEquatable<PartitionView
     public override int GetHashCode()
     {
         var hash = new HashCode();
-        hash.Add(RuntimeHelpers.GetHashCode(Graph));
+        hash.Add(Graph);
         foreach (var ordinal in _ordinals)
         {
             hash.Add(ordinal);

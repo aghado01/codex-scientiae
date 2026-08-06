@@ -526,3 +526,16 @@ is a law that licenses compression, pruning, generalized optimization, closure/c
 or another independent backend without changing reference meaning. D29 names the pair-abstraction
 candidate, D37 records the path trigger outcome, D39 records the structural outcome, and
 origin/support machinery remains the other leading source.
+
+## 2026-08-05 D40 gate reapplication
+
+D40 splits K5a fact/support identity from K5b positive saturation and reapplies signature pressure
+without activating Lean. The first implementation remains owned by a direct worklist,
+order-permutation tests on the K4c diamond witness, and the standard finite monotone
+least-fixed-point theorem under explicit hypotheses. K5a must make those hypotheses structural:
+rules match present positive premises and propose additions, with no absence, deletion, winner, or
+stage-order observation through arbitrary whole-store callbacks.
+
+Reapply when the K5a public rule signature freezes. Activate if a proof can change that carrier or
+later license parallel/incremental saturation; otherwise formalizing the sole direct worklist would
+still add lifecycle cost without an implementation consequence.

@@ -15,10 +15,10 @@ public sealed class SegmentationResidual
 {
     internal SegmentationResidual(CandidateRegionGraph graph, ReachabilityView reachability)
     {
-        if (!ReferenceEquals(graph, reachability.Graph))
+        if (!graph.Equals(reachability.Graph))
         {
             throw new InvalidOperationException(
-                "A segmentation residual and its reachability view must stamp the same exact graph.");
+                "A segmentation residual and its reachability view must stamp equal graph definitions on one exact batch.");
         }
 
         Graph = graph;
@@ -98,10 +98,10 @@ public sealed class SegmentationResult
         SegmentationPolicy policy,
         PartitionView partition)
     {
-        if (!ReferenceEquals(graph, reachability.Graph) || !ReferenceEquals(graph, partition.Graph))
+        if (!graph.Equals(reachability.Graph) || !graph.Equals(partition.Graph))
         {
             throw new InvalidOperationException(
-                "A segmentation result, reachability view, and partition must stamp the same exact graph.");
+                "A segmentation result, reachability view, and partition must stamp equal graph definitions on one exact batch.");
         }
 
         return new SegmentationResult(graph, reachability, policy, partition, null);
@@ -113,10 +113,10 @@ public sealed class SegmentationResult
         SegmentationPolicy policy,
         SegmentationResidual residual)
     {
-        if (!ReferenceEquals(graph, reachability.Graph) || !ReferenceEquals(graph, residual.Graph))
+        if (!graph.Equals(reachability.Graph) || !graph.Equals(residual.Graph))
         {
             throw new InvalidOperationException(
-                "A segmentation result, reachability view, and residual must stamp the same exact graph.");
+                "A segmentation result, reachability view, and residual must stamp equal graph definitions on one exact batch.");
         }
 
         return new SegmentationResult(graph, reachability, policy, null, residual);

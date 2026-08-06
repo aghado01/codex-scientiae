@@ -376,3 +376,8 @@ with the first objective-shaped path executor and no universal selection carrier
 Follow-on [D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed K4c
 without introducing that carrier: exact family validators, inclusion-maximal laminar admission,
 explicit/nearest hierarchy, and resolution incidence/aggregation. Harness 1914→1976; K5 is next.
+
+Follow-on [D40](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) clarifies that
+the exact occurrence basis is the `SpanBatch`, not an additional graph-wrapper reference identity.
+Equal candidate graph definitions on that exact basis are compatible stamps; compatible but
+distinct batches are not. Harness remains 1976.

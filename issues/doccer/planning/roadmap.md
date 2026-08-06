@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-05)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D39**, contract harness **1976 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D40**, contract harness **1976 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the substrate is complete, the
@@ -59,8 +59,12 @@ independent 16,384-problem optimizer oracle. K4b is closed. D38 and its
 admission, parenthood, and resolution before source work. D39 and its
 [K4c results](../briefs/sol-doccer-k4c-structural-results-20260805_201030.md) implement exact
 packing/cover/laminar views, inclusion-maximal admission, explicit and nearest-container hierarchy,
-and resolution incidence/aggregation under independent bounded oracles. K4c is closed. K5 fact
-identity and finite positive saturation are active next.
+and resolution incidence/aggregation under independent bounded oracles. K4c is closed. D40 and its
+[correction brief](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md)
+then remove the accidental Unicode-classification/math-register dependency, make exact-basis graph
+value equality coherent across K4, split K5a identity/support from K5b saturation, and make K5 and
+K6 sibling lanes toward K7. K5a contract work has default execution priority; K6 contract work is
+independently available.
 
 ## Sequencing doctrine
 
@@ -77,20 +81,23 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Facts and support (K5):** K4c is closed without a common K4 selector; its repeated policy-name
-   and exact-selection stamps are evidence, but its feasibility/result shapes remain genuinely
-   family-specific. Once register/value/metadata identity closes, separate observed
-   occurrences, canonical facts, support hyperedges, and finite positive saturation. This open
-   identity question does not block K0-K4.
-2. **Origins and materialization (K6-K7):** define typed output-to-source origin relations before
-   closing D7's final lift with ordered output pieces, a new immutable master, residuals, and
-   composed stage origins. `OffsetMap` becomes a restricted monotone single-source view, not the
-   universal transform carrier.
-3. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+1. **Fact and support identity (K5a; default next):** separate observed occurrences, canonical
+   facts, support hyperedges, and a narrow derivation reference. Canonical value identity is a
+   fact-grain contract; Unicode Block/Script/GeneralCategory data remain F-UCD, and math-register
+   is unrelated adapter/application design.
+2. **Sibling execution lanes (K5b and K6):** K5b adds finite positive saturation over the K5a
+   carriers and proves its first contract with the bounded K4c diamond witness. Independently, K6
+   adds output-to-tagged-source origin relations over one exact origin basis. K5b does not block
+   K6.
+3. **Materialization (K7):** after K6, close D7's final lift with positive-material ordered output
+   pieces, a new immutable master, residuals, and composed stage origins. K7 has only an optional
+   K5a derivation-reference seam; it does not require saturation. `OffsetMap` becomes a restricted
+   monotone single-source view, not the universal transform carrier.
+4. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-4. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
+5. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
    adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
    networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
    path.
@@ -107,12 +114,15 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D39 leave K3/K4a and the first K4b/K4c
+universal no-false-negative equivalence load-bearing. D33–D40 leave K3/K4a and the first K4b/K4c
 executor on direct finite reference semantics. D37 reapplies the global-optimum trigger and keeps
 Lean deferred under one closed finite-DAG additive recurrence plus exhaustive differential
 evidence. D39 reapplies the structural gate and keeps Lean deferred under direct validators,
 explicit relations, a non-optimal greedy reference policy, and bounded differential oracles.
-Reapply before a second/optimized path or structural backend, generalized objective/carrier,
+D40 reapplies K5's signature trigger and keeps Lean deferred: K5a must first make positive,
+monotone rule construction true rather than exposing arbitrary whole-store callbacks. Reapply at
+the K5a contract freeze and before a parallel/incremental saturation backend. Also reapply before a
+second/optimized path or structural backend, generalized objective/carrier,
 nontrivial partial-path guarantee, global structural optimum, hierarchy closure/reduction law, or
 resolution-map composition/equivalence claim.
 
@@ -181,9 +191,11 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 
 ## Open questions in play
 
-- See [decisions.md § Open](decisions.md): register/value/metadata columns (entangled with the
-  math-register design), the meaning of "register" in sol's Tier-1 list, and the named
-  per-line terminator-kind view (unscheduled). All Tranche-2 stragglers are closed — see the
+- See [decisions.md § Open](decisions.md): K5a's canonical value representation and narrow
+  derivation-reference identity are active contract work; the per-line terminator-kind view remains
+  unscheduled. D40 resolves MarkPig's historical `doccer/legwork` “register” as Unicode
+  classification and removes the unrelated math-register dependency. All Tranche-2 stragglers are
+  closed — see the
   [ledger](ledger.md).
 
 ## Standing context for future sessions

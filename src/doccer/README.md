@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D39, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D40, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -57,6 +57,12 @@ form); normalization, when wanted, is an explicit producer step yielding a new m
 offset map, and compatibility forms (NFKC/NFKD) are treated as lossy transforms whose loss the
 map records.
 
+MarkPig's historical `doccer/legwork` material used “Unicode register” for the UCD Block, Script,
+and GeneralCategory axes. Doccer never adopted that as a native carrier or namespace; living
+contracts call them **Unicode classifications**. They are atom facts in the F-UCD lane, not
+`SpanBatch` register columns. The unrelated application-level math-register is neither a Doccer
+carrier nor a dependency of canonical facts or saturation (D40).
+
 The domain-agnostic surface is the DLL (operation granularity, in-process composition) and the
 CLI (task granularity — one-shot à la carte jobs, with domain knowledge arriving as data
 inventories, never as flags or verbs). PowerShell helpers are site-local ergonomics and domain
@@ -75,7 +81,8 @@ span carrier:
 - diagonal empty extents belong to located `L`, not to Allen `I`;
 - Allen `Equal` is geometric identity on `I`, never occurrence identity on `C`;
 - claim-pair identity is the ordinal diagonal on one exact frozen `SpanBatch`;
-- origin identity will be the atom diagonal between compatible master bases.
+- origin identity will be the atom diagonal on one exact ordered tagged origin basis; compatible
+  masters validate or project geometry but do not substitute source-slot identity.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
@@ -136,19 +143,21 @@ owners and Lean reactivation triggers live in the D25 registry in
   satisfy associativity and both distributive laws;
 - immutable exact-batch `CandidateRegionGraph`: one retained `ClaimSelection` supplies parallel
   claim-ordinal edges wholly contained in an exact window; occurrence identity remains strict to
-  that frozen batch, while `ToLocatedRelation()` is the explicit identity-forgetting projection
-  where equal geometry collapses and compatible-value equality begins;
-- exact-graph K4a result values: `ReachabilityView` obtains the one Boolean geometry closure only
+  that frozen batch; graph equality is source-batch reference + exact window + candidate ordinals
+  and is the graph-basis compatibility relation, while `ToLocatedRelation()` is the explicit
+  identity-forgetting projection where equal geometry collapses and compatible-value equality
+  begins;
+- exact-basis graph-value K4a result values: `ReachabilityView` obtains the one Boolean geometry closure only
   through that projection and derives ordered forward/backward boundaries plus exact dead-branch
   ordinals; `PartitionView` copies an ordered, distinct candidate-ordinal path and validates shared
   endpoints, disjointness, and exact window coverage, with a zero-edge identity only for an empty
   window; `Segmentation.FirstOrdinalCompletePath` chooses the lowest viable ordinal at each
-  boundary and returns a `SegmentationResult` stamped by the exact graph and
+  boundary and returns a `SegmentationResult` stamped by the exact-basis graph value and
   `SegmentationPolicy.FirstOrdinalCompletePath`, containing either the partition or a
   `SegmentationResidual` whose normalized coverage gaps and connectivity evidence stay distinct;
   determinism is exact-basis only, and the 128 subsets of a seven-edge graph agree with independent
   path-enumeration, DFS, gap, and dead-branch oracles;
-- exact-graph K4b additive selection: `AdditivePathPolicy` snapshots one nonnegative `Int64` cost
+- exact-basis graph-value K4b additive selection: `AdditivePathPolicy` snapshots one nonnegative `Int64` cost
   per candidate under required caller name/unit plus explicit minimum-additive and
   lexicographic-ordinal stamps; `PathSelectionProblem` retains exact admissible and hard-excluded
   populations and derives the exact admissible feasibility graph; `PathSelection.Select` uses a
@@ -261,7 +270,9 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K5 canonical-fact/support identity and finite positive saturation. D35–D39 close K3 and all K4
+- K5a canonical-fact/support identity and narrow derivation references; K5b finite positive
+  saturation with the K4c hierarchy-diamond witness; and the sibling K6 exact-tagged-basis origin
+  algebra leading to K7 materialization. K5b does not block K6 or K7. D35–D40 close K3 and all K4
   lanes without a common selector: the repeated exact-selection and named-policy stamps are real,
   but path, packing, cover, laminar, hierarchy, and resolution feasibility/results remain distinct.
   Further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or

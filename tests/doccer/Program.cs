@@ -4125,14 +4125,16 @@ internal static class Program
             "partition copies and preserves its ordered identity-bearing path");
         True(partition.Equals(PartitionView.Create(graph, new[] { 0, 1 })) &&
              partition.GetHashCode() == PartitionView.Create(graph, new[] { 0, 1 }).GetHashCode(),
-            "partition value equality combines graph-reference identity with ordinal order");
+            "partition value equality combines exact-basis graph value with ordinal order");
 
         var equalGraphObject = CandidateRegionGraph.Create(
             ClaimSelection.Create(batch, new[] { 0, 1, 2, 3 }),
             master.Extent);
+        var equalGraphPartition = PartitionView.Create(equalGraphObject, new[] { 0, 1 });
         True(graph.Equals(equalGraphObject) &&
-             !partition.Equals(PartitionView.Create(equalGraphObject, new[] { 0, 1 })),
-            "partition equality does not replace the retained graph object with graph value equality");
+             partition.Equals(equalGraphPartition) &&
+             partition.GetHashCode() == equalGraphPartition.GetHashCode(),
+            "partition equality uses graph value equality without weakening the exact batch basis");
 
         var alternative = PartitionView.Create(graph, new[] { 2, 3 });
         True(alternative.SequenceEqual(new[] { 2, 3 }) &&
@@ -4565,9 +4567,11 @@ internal static class Program
             "equal-graph-object",
             "points",
             static _ => 0);
-        Throws<InvalidOperationException>(
-            () => PathSelectionProblem.Create(graph, admissible, equalGraphPolicy),
-            "path problem refuses a policy stamped by another equal graph object");
+        var equalGraphProblem = PathSelectionProblem.Create(graph, admissible, equalGraphPolicy);
+        True(ReferenceEquals(equalGraphProblem.Graph, graph) &&
+             ReferenceEquals(equalGraphProblem.Policy, equalGraphPolicy) &&
+             equalGraphProblem.Policy.Graph.Equals(graph),
+            "path problem accepts an equal graph definition while retaining its supplied graph and policy objects");
 
         var compatibleMaster = new TextMaster(master.DocumentId, master.Revision, master.Text);
         var foreignBatch = PairBatch(

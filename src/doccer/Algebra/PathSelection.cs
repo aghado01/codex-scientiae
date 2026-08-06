@@ -25,7 +25,7 @@ public enum PathFeasibility
 }
 
 /// <summary>
-/// An exact-graph policy that snapshots one nonnegative Int64 cost per candidate and promises
+/// A graph-value-stamped policy that snapshots one nonnegative Int64 cost per candidate and promises
 /// minimum additive cost with lexicographic ordinal ties. The caller owns the costs' meaning;
 /// Doccer retains only their required diagnostic name and unit.
 /// </summary>
@@ -45,7 +45,7 @@ public sealed class AdditivePathPolicy
         _costs = costs;
     }
 
-    /// <summary>The exact source graph whose candidate ordinals index this policy.</summary>
+    /// <summary>The retained source graph whose candidate ordinals index this policy.</summary>
     public CandidateRegionGraph Graph { get; }
 
     /// <summary>The caller's stable diagnostic name for this objective.</summary>
@@ -127,7 +127,7 @@ public sealed class AdditivePathPolicy
 }
 
 /// <summary>
-/// One exact candidate-graph problem for minimum-additive-cost complete-path selection. Hard
+/// One exact-basis candidate-graph problem for minimum-additive-cost complete-path selection. Hard
 /// constraints are already evaluated into <see cref="AdmissibleCandidates"/>; no opaque
 /// whole-selection feasibility callback is retained.
 /// </summary>
@@ -147,7 +147,7 @@ public sealed class PathSelectionProblem
         ExcludedCandidates = excludedCandidates;
     }
 
-    /// <summary>The exact source graph containing every candidate considered by the caller.</summary>
+    /// <summary>The retained source graph containing every candidate considered by the caller.</summary>
     public CandidateRegionGraph Graph { get; }
 
     public SpanBatch Source => Graph.Source;
@@ -184,10 +184,10 @@ public sealed class PathSelectionProblem
                 "Admissible candidates must use the source graph's exact frozen-batch basis.");
         }
 
-        if (!ReferenceEquals(policy.Graph, graph))
+        if (!policy.Graph.Equals(graph))
         {
             throw new InvalidOperationException(
-                "A path-selection problem and policy must stamp the same exact graph object.");
+                "A path-selection problem and policy must stamp equal graph definitions on one exact batch.");
         }
 
         foreach (var ordinal in admissibleCandidates)
@@ -219,10 +219,10 @@ public sealed class PathSelectionResidual
         PathSelectionProblem problem,
         SegmentationResidual feasibility)
     {
-        if (!ReferenceEquals(problem.AdmissibleGraph, feasibility.Graph))
+        if (!problem.AdmissibleGraph.Equals(feasibility.Graph))
         {
             throw new InvalidOperationException(
-                "A path-selection residual must use its problem's exact admissible graph.");
+                "A path-selection residual must use an equal definition of its problem's exact-basis admissible graph.");
         }
 
         Problem = problem;
@@ -307,10 +307,10 @@ public sealed class PathSelectionResult
         PartitionView partition,
         long score)
     {
-        if (!ReferenceEquals(problem.Graph, partition.Graph))
+        if (!problem.Graph.Equals(partition.Graph))
         {
             throw new InvalidOperationException(
-                "A selected partition must stamp the problem's exact source graph.");
+                "A selected partition must stamp an equal definition of the problem's exact-basis source graph.");
         }
 
         var inadmissible = partition.Selection.Subtract(problem.AdmissibleCandidates);

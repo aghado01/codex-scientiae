@@ -744,3 +744,12 @@ schedulable design work whenever they are picked up:
 
 Question 3 is the one worth taking first: it changes what a per-line rule *sees*, so every
 inventory written before it is settled encodes an assumption about it.
+
+## 2026-08-05 D40 archaeological correction
+
+The old MarkPig `SCHEMA.md`, `UNIFIED-SWEEP.md`, and `VALIDATION-MATRIX.md` resolve the ambiguity
+left at lines 633–646 above. Their *register* means Unicode Block, Script, and GeneralCategory
+classification; Tier-1 “register exclusivity” means exactly one value on each axis per character.
+It is unrelated to the later application-level math-register. D40 retires the ambiguous term from
+living Doccer prose, keeps those classifications in F-UCD `AtomFacts`, and moves canonical values
+and metadata to the K5 fact/support design rather than adding a universal `Register` column.

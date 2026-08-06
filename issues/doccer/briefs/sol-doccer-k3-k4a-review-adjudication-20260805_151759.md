@@ -221,3 +221,8 @@ evidence, and independent optimizer agreement. Harness 1874→1914; K4c is activ
 Follow-on [D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed K4c
 without changing that independence: exact family validators, named maximal-not-maximum admission,
 explicit/nearest hierarchy, and resolution incidence/aggregation. Harness 1914→1976; K5 is next.
+
+Follow-on [D40](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) preserves the
+exact `SpanBatch` boundary but removes an unintended extra graph-wrapper identity: equal graph
+definitions on one exact batch are now compatible stamps for K4 views and policies. A distinct or
+merely compatible batch remains foreign. Harness remains 1976.
