@@ -125,15 +125,40 @@ same manifest through an explicit, validated operation. It does not create a com
 
 ## Localized inventory stores
 
-A selected parent directory may have one `inventory.jsonl` materialized from the `metadata.json` manifests
-within its declared scope/depth. Each row represents one document manifest and carries the scoped relative
-path to that document's parent directory as its location key.
+A selected parent directory may own one `inventory.jsonl` materialized from authoritative child
+`metadata.json` manifests. The provisional `codex-scientiae/document-inventory-row/0.1` shape is specified
+by [`inventory-row.schema.json`](inventory-row.schema.json). Each row carries:
 
-Automation may rebuild or incrementally update a localized store during acquisition/ingestion, on demand,
-or through CI. Store creation and maintenance use the shared JSONL substrate for validation, explicit
-replacement/addition/subtraction, canonical sorting, querying, slicing, and optional indexing.
+- `document_parent`, the direct-child path relative to the catalog root and the catalog's portable,
+  case-insensitively unique identity key;
+- `metadata_path`, exactly `{document_parent}/metadata.json`;
+- `metadata_sha256`, which makes a changed sentinel visibly stale rather than silently following it;
+- the manifest schema/state and slug; and
+- the manifest's bounded `document` projection for inexpensive inventory inspection.
 
-The exact manifest-to-row projection, JSON Schema, hierarchy/depth rules, and top-down versus bottom-up
-reconciliation contract remain to be specified. Automation must read declared manifests rather than infer
-documents by recursively treating arbitrary archives, PDFs, extracted figures, or converter outputs as
-document deposits.
+Version 0.1 deliberately materializes one directory level only. A directory without `metadata.json` is not
+inferred to be a document and is ignored. A present but malformed, schema-invalid, wrongly located, or
+slug-disagreeing sentinel aborts the complete build. Rows sort by preserved `document_parent` spelling using
+ordinal comparison, while case-insensitive uniqueness exposes portable path collisions. There is no build
+timestamp, so identical sentinels produce byte-identical UTF-8-no-BOM, LF-only catalog bytes.
+
+The application-local materializer is explicit and whole-file transactional:
+
+```pwsh
+. ./src/latex-ingest/inventory-catalog.ps1
+
+# First publication refuses an existing inventory.jsonl.
+Write-LatexInventoryCatalog -InventoryRoot ./ingestion/inventory
+
+# Deliberate rebuild atomically replaces it.
+Write-LatexInventoryCatalog -InventoryRoot ./ingestion/inventory -ExistingFile Replace
+
+# Read validates row shape/order, paths, current sentinel hashes, and manifest identity.
+$rows = @(Read-LatexInventoryCatalog ./ingestion/inventory/inventory.jsonl)
+```
+
+Materialization never initializes, repairs, or recursively infers a source deposit. It does not yet create an
+index or provide incremental mutation, multi-writer coordination, recursive rollups, move/alias history, or
+top-down/bottom-up reconciliation. Those remain in the managed-store and hierarchical-catalog roadmap; the
+current private whole-file codec is replaced by the canonical shared substrate when that substrate is
+integrated.

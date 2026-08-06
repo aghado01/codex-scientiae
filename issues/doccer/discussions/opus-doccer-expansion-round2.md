@@ -242,3 +242,52 @@ Does doccer own alignment, or only the exact primitives beneath it?
 I lean toward in — an alignment is deterministic mechanism with a visible residual, which is exactly the profile of everything else that passed the K-arc gates.
 
 If alignment is in, items 4 and 5 are engine work and K6 gains a second producer type — which is a real expansion of what "origin" means, from _declared_ to _computed_.
+
+You're right on both counts, and the terminology one is the bigger error. Let me finish the module first — this completes all 22 files.
+
+Both land. Taking them in order.
+
+## The terminology error
+
+"Document" in IR is not a file, a paper, or a master — it's **the unit of the collection**, an arbitrary granularity choice. I imported the word, silently bound it to `TextMaster`, and concluded doccer has no collection to compute over.
+
+Doccer's own README says the opposite in as many words: _"master is a coordinate space, not 'the document' — minting one over an isolated math span or a macro-expansion site is first-class."_ And doccer is full of collections: a `SpanBatch` is a population of claims, so are `ClaimSelection`, `PerLine` runs, `LaminarGroup`s, `PartitionView` cells, `ResolutionView` layers, graph candidates. **IDF over the claims of one batch is a within-master statistic.** No corpus, nothing external, fully document-local in doccer's sense.
+
+## The method error, and the guard that already exists
+
+You caught this twice now — first judging minhash/TLSH/Jaccard by their implementations, then judging the IR cluster by a structural argument while praising its code. Same conflation, opposite sign.
+
+The discipline that prevents it is already in doccer's canon and I read it three turns ago: census process rule #1, **catalog before naming** — "promotion is always a later, separate act of evaluation over the catalog, never simultaneous with capture." I was evaluating at capture time. The naturalist pins the specimen before deciding whether it's a species; I kept deciding while pinning.
+
+## The concepts, properly
+
+**IDF — surprisal.** `log(N/df)` is an information weight: a feature present in every member of a population discriminates nothing, a rare one discriminates a lot. Doccer's D8 density family measures _counts_; IDF is the information-weighted refinement of a count. "How many claims of kind K in this region" versus "how surprising is K here." That is directly the question behind the figure-hood veto, role-boundary detection in the truffle lane, and the census's own "is this pattern real or coincidence."
+
+**BM25 — two separable ideas, both general.**
+
+- _Saturation._ `(k₁+1)·tf / (K + tf)` — the 20th occurrence adds far less than the 2nd. Diminishing returns on repeated evidence. `AdditivePathPolicy` is strictly linear, and D37 explicitly reserved room for "signed/vector objectives, maximum weight, and other tie rules... as separately named future contracts." A saturating objective is exactly such a contract, and a chunker that shouldn't pay linearly for its tenth breakpoint is the concrete want.
+- _Length normalization._ `b·(len/avgLen)` — comparing objects of different size fairly. This is a real gap: doccer compares spans of wildly varying extent constantly, and any unnormalized per-span score is biased toward long spans.
+
+**Contextual entropy — the strongest concept in the module, and I nearly skipped its file.**
+
+`CooccurrenceStats.ContextualEntropy` computes the entropy of a token's context distribution, normalized by `log₂(V)`. The question it answers is **how predictable is this thing's neighborhood** — low entropy means stereotyped contexts (delimiters, furniture, boilerplate), high entropy means it appears anywhere (content).
+
+That is a principled, domain-free, document-local answer to "is this structural or content-bearing" — which is the question underneath heading over-promotion, figure-hood, and role boundaries. And it satisfies the no-magic-string-heuristics doctrine exactly: the signal comes from the document's own structure, with no string constants anywhere.
+
+**PMI/PPMI — association above chance.** Raw co-occurrence is confounded by marginal frequency; PMI corrects for it. The doccer connection is strong: **`ClaimPairView` is already a co-occurrence structure.** It computes Allen-labeled occurrence edges between claims. Indexing counts by `(kindA, kindB, AllenRelation)` gives not "A and B co-occur" but "A `during` B occurred 40 times, six times chance" — turning the Allen layer from qualitative to measured, composed entirely from landed primitives. Census bin: **unnamed latent path**, not a missing mechanism.
+
+**TF-IDF vector space.** Object → weighted sparse vector over a vocabulary, similarity → dot product. This is the _embedding_ concept in your own framing — an (coordinates, metric) pair. A claim population projected to a vector over kinds or materials is the natural join between doccer's carriers and the SPC/Mapper/HDBSCAN ladder. Not doccer engine work, but it's the seam.
+
+## Two patterns that keep recurring
+
+Worth naming because they cut across everything, not just this module:
+
+**Self-calibration.** BM25's `avgDocLength` and TLSH's quartiles are the same idea — grade against the population's _own_ distribution, never a global constant. That's the document-local doctrine expressed as a statistical technique, and it appears independently in two unrelated algorithms.
+
+**Asymmetry.** Containment, conditional probability, coverage-versus-fidelity, origin direction — the doccer-relevant measures keep turning out to be directional. Symmetric similarity is the special case; _which way_ is usually the actual question.
+
+## One implementation note, kept separate
+
+`tfidf_search.TopK` is the correct bounded heap — parallel `int[]`/`double[]` arrays, no comparison delegate, in-place sift, drained in reverse. It's the fix for `BoundedMinHeap.GetSorted()`'s `Array.Sort` lambda that I flagged four turns ago, sitting in the same module. Filed under patterns, not concepts.
+
+All 22 files are now read.

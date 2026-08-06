@@ -97,6 +97,32 @@ fingerprints, reads the manifest-owned entrypoint, and writes generated ref/doc/
 the run directory. It never initializes, infers an archive, recognizes `{slug}-latex/`, or writes into the
 source tree.
 
+## Materialize and batch a standardized segment
+
+Once selected child deposits have source-ready sentinels, materialize the segment-local catalog explicitly:
+
+```pwsh
+. ./src/latex-ingest/inventory-catalog.ps1
+Write-LatexInventoryCatalog ./ingestion/inventory -ExistingFile Replace
+```
+
+The current catalog covers direct child deposits only. It ignores children without `metadata.json` and
+aborts rather than omitting a present invalid sentinel. `Read-LatexInventoryCatalog` also rejects stale
+manifest hashes, noncanonical row order, portable path collisions, and paths outside the catalog root.
+
+The latex-ingest development shell consumes that catalog, allocates a run under
+`artifacts/latex-batch/runs/`, and composes the public adapter and executor:
+
+```pwsh
+pwsh -File ./src/latex-ingest/latex-batch.ps1
+pwsh -File ./src/latex-ingest/latex-batch.ps1 -Slug 2405.12350v1 -MaxWorkers 1
+```
+
+`-InventoryPath`, `-RunDirectory`, and `-ArtifactsRoot` override the defaults. An explicit run directory must
+already exist; otherwise the shell allocates one. The shell does not initialize source deposits. It returns
+the executor record and throws after emitting it when any job or executor infrastructure fails, preserving
+successful sibling evidence.
+
 ## Legacy compatibility is a bounded migration tool
 
 Old archive/slug callers must explicitly import the compatibility surface:
@@ -147,5 +173,5 @@ exceptions, and migration state. Do not encode one segment's nesting assumptions
 - [ ] A production conversion succeeds through `-MetadataPath` without changing the source-tree fingerprint.
 - [ ] Generated evidence is found under the run directory, not `{slug}-tex/`.
 - [ ] Legacy `{slug}-latex/` or compatibility-only exceptions are recorded for later removal.
-- [ ] Parent `inventory.jsonl` materialization waits for the localized store schema/automation; it is not
-      reconstructed by ad hoc recursive inference.
+- [ ] A segment-local `inventory.jsonl` is deliberately materialized from direct child sentinels; no
+      recursive asset inference substitutes for missing manifests.
