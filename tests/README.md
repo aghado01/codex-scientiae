@@ -8,6 +8,49 @@ module.
 Shared durable fixtures remain under `tests/fixtures/`. `run.ps1` stays at the
 test root and discovers `*.Tests.ps1` recursively.
 
+## Adding a test: quick contract
+
+```text
+tests/
+  <module-or-product>/
+    <behavior>.Tests.ps1
+  fixtures/                 # durable shared inputs only
+  run.ps1                   # sequential and exact-path runner
+  parallel.ps1              # file-level batch shell
+```
+
+One physical `*.Tests.ps1` file is one batch job and runs in one fresh child PowerShell. `Describe`,
+`Context`, `It`, parameters, and tags remain inside that job; they are not separately scheduled. Group a
+file under its current source-module or product-shell owner, and split files only at a real fixture,
+capability, resource, or cost seam.
+
+For every new or changed test file:
+
+- Make each `It` independent of earlier `It` blocks. Create shared read-only inputs in `BeforeAll`; reset
+  mutable inputs in `BeforeEach` or within the test.
+- Put ephemeral writes in `$TestDrive`. Put retained evidence only below
+  `$env:CODEX_TEST_ARTIFACT_ROOT`; never use a repository-global artifact path, fixed temporary directory,
+  fixed port, or common build output.
+- Restore environment variables, location, modules, globals, console state, locks, runspaces, and child
+  processes on every path, normally with `try`/`finally` or Pester cleanup hooks.
+- Preflight optional external capabilities deterministically and skip with a reason when absent. Do not
+  download, restore, or build missing dependencies during a test.
+- Capture native stdout, stderr, and exit status locally. After asserting an expected nonzero native exit,
+  reset `$LASTEXITCODE` so it cannot contaminate the runner result.
+- Do not add per-file manifests, sidecars, workload profiles, scheduler locks, or custom batch logic.
+
+At minimum, verify the file through both public entry points (the batch run directory must already exist):
+
+```pwsh
+pwsh -File tests/run.ps1 -Path tests/<owner>/<behavior>.Tests.ps1
+pwsh -File tests/parallel.ps1 -Path tests/<owner>/<behavior>.Tests.ps1 `
+  -RunDirectory D:/runs/codex-scientiae-tests/new-test -MaxWorkers 1
+```
+
+A compliant file selects the expected tests by exact path, reports real failures as nonzero, cleans its
+owned state and children, and writes only inside its assigned temporary or artifact boundary. The detailed
+contract and review checklist below are authoritative when a case is ambiguous.
+
 ## Running
 
 Restore the locked shared Node payload before running the suite; Node-backed integration tests resolve
