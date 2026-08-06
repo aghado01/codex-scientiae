@@ -34,6 +34,10 @@ A now-retired MCP that was dedicated to opendataloader-pdf markdown repair but w
 
 ## Connection to other projects
 
-Since this project exists to inspire and guide development on other projects, user may ask to commit analysis, digests and briefs to other projects particularly [ThermoMapper](D:\aghado01\ThermoMapper)
+Since this project exists to inspire and guide development on other projects, user may ask to commit analysis, digests and briefs to other projects particularly [ThermoMapper](..\ThermoMapper)
 
-User may also create snapshots for ease of inspection under `C:\Users\azrie\PDenv\UserGithub\project-snapshots` , in particular the SPCX (running codename for ps.core.pwshspc) snapshot folder there .
+User may also create snapshots for ease of inspection under `..\project-snapshots` , in particular the SPCX (running codename for ps.core.pwshspc) snapshot folder there .
+
+## Graveyard
+
+[graveyard/codex-scientiae](..\graveyard\codex-scientiae) is the archive repository for refuse and retired code moved out of codex-scientiae, and a source for archaeological excavation for future development
