@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D33, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D35, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -76,11 +76,11 @@ The operation names therefore state their sort: `AllenCompose` (canonical qualit
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
-`AllenCompose` and the occurrence-level `ComposePairs` are implemented, while the other
-later-tranche names remain reservations rather than implementation claims. `Pairing.Pair` is the
-implemented strict-stack query over exact occurrence selections; it neither spends the reserved
-`Select` name nor introduces an unqualified composition verb. The canonical assurance owners and
-Lean reactivation triggers live in the D25 registry in
+`AllenCompose`, located `Seq`, and the occurrence-level `ComposePairs` are implemented, while the
+other later-tranche names remain reservations rather than implementation claims. `Pairing.Pair` is
+the implemented strict-stack query over exact occurrence selections; it neither spends the
+reserved `Select` name nor introduces an unqualified composition verb. The canonical assurance
+owners and Lean reactivation triggers live in the D25 registry in
 [decisions.md](../../issues/doccer/planning/decisions.md).
 
 ## Implemented contracts
@@ -116,6 +116,17 @@ Lean reactivation triggers live in the D25 registry in
   `PairedRegions()` explicitly forgets identity by normalizing full delimiter envelopes; no repair,
   recovery search, containment, or parenthood is inferred;
 - normalized Boolean `SpanSet` projections bound to their originating master;
+- immutable geometry-only `LocatedRelation` over a compatible master value and exact validated
+  window: canonical duplicate-collapsing extents admit diagonal empties; `Empty`, the complete
+  scalar-boundary `Identity`, `Union`, endpoint-equality `Seq`, `Consuming`, and direct finite
+  `Reachability` form the K3 reference algebra; equality/hash use compatible master identity, while
+  unequal windows and incompatible masters are refused; all 64 values and 4,096 compositions on
+  the complete three-boundary carrier agree with independent oracles, and all 262,144 triples
+  satisfy associativity and both distributive laws;
+- immutable exact-batch `CandidateRegionGraph`: one retained `ClaimSelection` supplies parallel
+  claim-ordinal edges wholly contained in an exact window; occurrence identity remains strict to
+  that frozen batch, while `ToLocatedRelation()` is the explicit identity-forgetting projection
+  where equal geometry collapses and compatible-value equality begins;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -136,8 +147,9 @@ Lean reactivation triggers live in the D25 registry in
 - opt-in slice lineage: `TextSlice` mints a deterministic fragment-local child master over a
   parent window (`{parent}#{start}-{end}` at the parent's revision, so recreated slices are
   compatible coordinate spaces) and rebases geometry back — child→parent is total and bijective
-  (offsets, spans, sets, batches, plus weaving several fragments' batches into one parent-bound
-  builder), parent→child is partial and loud (out-of-window geometry is refused, never clamped;
+  (offsets, spans, sets, located relations with their exact windows, batches, plus weaving several
+  fragments' batches into one parent-bound builder), parent→child is partial and loud
+  (out-of-window geometry is refused, never clamped;
   scope sets by intersecting with the window first; no batch projection down — clipping claims
   needs a residual policy, which is `OffsetMap`'s business); claims rebase with coordinates
   changed and everything else untouched, and collection commutes with rebase — collecting on the
@@ -205,13 +217,14 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- geometry-only `LocatedRelation` and the identity-bearing `CandidateRegionGraph`. K2 is closed:
-  K2a/D30 landed `ClaimSelection`, K2b/D31 landed exact pair composition, and K2c/D32 landed
-  policy-stamped strict stack pairing with complete match/fault evidence. D33 freezes K3/K4a:
-  one joint core chip lands the concrete-window located algebra, minimal graph, and explicit
-  projection; a second result chip reuses the one geometry closure while retaining ordinal-bearing
-  partitions, paths, and segmentation residue. K4b specializes in flat-path selection before any
-  common selection abstraction is considered.
+- the K4a flat result layer. D35 closes K3 and the joint graph/projection core: the concrete-window
+  located algebra, exact-batch candidate graph, explicit projection, exhaustive bounded laws, and
+  exact `TextSlice` rebase are implemented. Still absent are graph-stamped `ReachabilityView`,
+  `PartitionView`, `SegmentationResult`/`SegmentationResidual`, the named first-ordinal complete
+  path, independent path oracle, and token/chunk/gap/dead-end/empty witnesses. After that result
+  gate closes, K4b flat-path selection and K4c structural-family cleanup are sibling lanes; K4b is
+  the default execution priority, not a prerequisite. Common selection types wait for demonstrated
+  repetition across both.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

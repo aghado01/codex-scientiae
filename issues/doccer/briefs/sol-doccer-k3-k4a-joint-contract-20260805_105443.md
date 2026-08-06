@@ -29,11 +29,14 @@ D33  joint contract freeze
   -> K4a-results
        shared geometry reachability + identity-bearing partition/path results
        + gap/dead-end evidence + bounded witnesses
-  -> K4b-flat
-       named flat-path selection problems and executors
-  -> K4c
-       packing, cover, laminar-family, hierarchy, and resolution views
-       + their family-specific policies
+       |\
+       | -> K4b-flat
+       |    named flat-path selection problems and executors
+       |    (default execution priority)
+       |
+       -> K4c
+            packing, cover, laminar-family, hierarchy, and resolution views
+            + their family-specific policies
   -> common selection abstraction only if repeated contracts justify one
 ~~~
 
@@ -48,8 +51,10 @@ master/window and the graph on K2a's `ClaimSelection`; K2b was completed first b
 not because `LocatedRelation` or the candidate graph consumes `ClaimPairView`.
 
 This is a refinement rather than a reversal. Flat path invariants still precede policy-bearing
-selection, and flat structure still precedes packing, cover, and hierarchy. What changes is the
-meaning of shared reachability and the amount of genericity permitted in K4b.
+flat selection, and K4a's basis/result semantics precede both later lanes. D34 corrects the former
+K4b-to-K4c dependency: K4b remains the default execution priority for the active tokenizer/chunker
+trajectory, but K4c is an independently available sibling once K4a closes. What changes in D33 is
+the meaning of shared reachability and the amount of genericity permitted in K4b.
 
 ## 2. Located basis and value identity
 
@@ -69,6 +74,12 @@ Binary operations require compatible masters and exactly equal windows. They nev
 the intersection, union, or hull of two bases. Canonical enumeration is geometry order and duplicate
 extents collapse. There is no claim label, occurrence ordinal, producer, cost, or path identity on
 this carrier.
+
+“Compatible” is value compatibility in the `TextMaster.IsCompatibleWith` sense, not object
+reference identity. This is deliberately weaker than the graph side: occurrence-bearing graph and
+result operations retain one exact frozen `SpanBatch` through `ClaimSelection`. The explicit
+graph-to-located projection is the one licensed hop from exact occurrence identity to compatible
+geometry identity.
 
 No generic `BoundaryBasis` type is introduced. `(TextMaster, Window)` supplies the concrete finite
 chain needed by the first implementation. A reusable address hierarchy waits for a second real
@@ -104,6 +115,12 @@ A\mathbin{\mathrm{Seq}}B
 =
 \{(i,k)\mid\exists j.\ (i,j)\in A\land(j,k)\in B\}.
 \]
+
+The shared-boundary predicate is the located-family condition
+`CanSeq(left,right) := left.End == right.Start`. `LocatedRelation.Seq` and the later
+`PartitionView` reuse it. It admits diagonal empty located extents and therefore is not the Allen
+`Meets` atom, which is defined only for nonempty intervals; no unqualified `TextSpan.Meets` API is
+implied.
 
 `Seq` is associative, distributes over union, and has the declared-window diagonal identity.
 Strictly consuming edges are acyclic on the finite boundary chain; their closure is a bounded union
@@ -142,6 +159,12 @@ different edges. An empty window admits only the empty candidate selection.
 The graph exposes one explicit identity-forgetting projection to `LocatedRelation` on the same
 master/window. Equal geometries collapse at exactly that call. Projection is not graph equality and
 cannot recover path alternatives.
+
+Graph construction and graph/result operations remain reference-strict on the exact source batch;
+two graphs built from different batch objects are different bases even if their records and masters
+are value-compatible. Their located projections may nevertheless compare equal when master values,
+windows, and projected geometry agree. Projection makes that weakening explicit rather than
+allowing compatible-batch substitution inside an occurrence-bearing operation.
 
 For example, claims `#0:[0,1)`, `#1:[0,1)`, and `#2:[1,2)` give two identity-bearing graph paths,
 `#0,#2` and `#1,#2`. Their located projection has only the edges `(0,1)` and `(1,2)`, and its
@@ -191,6 +214,12 @@ exists. It promises neither maximal munch, minimum cost, maximum confidence, nor
 preference. K4b may retain this operation as its baseline; it must not silently reinterpret it as an
 optimizer.
 
+Ordinals are assigned in batch insertion order. Determinism therefore means reproducibility on the
+one exact frozen graph/batch basis named by the result, consistent with ordinal's existing role as
+the final total tie-break. Recollecting equal geometry in another order creates a different
+occurrence basis and may select another complete path; neither K4a nor K8 promises invariance across
+that change.
+
 An empty window has the coherent zero-edge partition. Its located reachability contains the one
 window-point identity extent, while its graph path contains no claim edge. These are compatible
 identities on different carriers.
@@ -211,15 +240,28 @@ diagnostics.
 is a partition: `SpanSet` merges meeting spans and forgets claim ordinals, while `PartitionView`
 retains the ordered identity-bearing cuts.
 
-## 7. Bounded witnesses and K4a exit
+## 7. Separate chip gates and bounded witnesses
 
-The joint tranche closes with:
+### 7.1 Joint K3/K4a-core exit
 
-- a bounded matrix/reference oracle for located identity, associativity, distributivity, consuming
-  closure, and compatible-basis refusal;
-- exact `TextSlice` rebase laws and a retained non-injective counterexample for the deferred lax
-  boundary;
-- an explicit graph projection case where parallel claim edges collapse geometrically;
+The first source chip closes with:
+
+- the compatible-master/exact-window located basis, identity, union, `CanSeq`-based `Seq`,
+  consuming closure, compatible/equal-window refusal, and exact `TextSlice` rebase;
+- a bounded matrix/reference oracle for located identity, associativity, distributivity,
+  consuming closure, and rebase laws, retaining the non-injective counterexample for the deferred
+  lax boundary;
+- the exact-batch candidate graph, contained nonempty candidate validation, explicit located
+  projection, and a case where parallel claim edges collapse geometrically.
+
+Partition/path results and their fixtures are not part of this chip's acceptance gate.
+
+### 7.2 K4a-result exit
+
+The second source chip closes with:
+
+- graph-stamped `ReachabilityView`, `PartitionView`, `SegmentationResult`, and
+  `SegmentationResidual`, with partition adjacency reusing `CanSeq`;
 - an ambiguous token graph with at least two complete identity-bearing paths;
 - a **budget-admissible** flat chunk candidate graph whose edges were admitted by an external
   budget rule, without costs or an objective entering the graph;
@@ -251,26 +293,31 @@ Tokenizer and chunker policies may share the graph while using different objecti
 “Inclusion-maximal,” “maximum-cardinality,” “maximum-weight,” and “lexicographic priority” remain
 different promises.
 
-No universal `SelectionProblem`/`SelectionResult` carrier is promised yet. K4c can reuse the policy
-and result obligations where they fit, while adding family-specific executors for packing or
-laminar admission. A common abstraction is extracted only after at least two families demonstrate
-the same basis, feasibility, objective, and result shape; it is acceptable if they never do.
+No universal `SelectionProblem`/`SelectionResult` carrier is promised yet. K4c is not downstream of
+this path contract; it may reuse policy and result obligations only where its independent structural
+implementation demonstrates the same shape. A common abstraction is extracted only after at least
+two families demonstrate the same basis, feasibility, objective, and result shape; it is acceptable
+if they never do.
 
-## 9. K4c consequences
+## 9. K4c sibling consequences
 
-K4c remains after flat reference results and flat selection. It adds validators and views for
-packing, cover, laminar families, explicit hierarchy, and resolution incidence.
+K4c depends on the flat K4a basis/result semantics but not on K4b's path-selection types or
+executor. It is an independently available sibling after K4a; K4b is merely the default execution
+priority. K4c adds validators and views for packing, cover, laminar families, explicit hierarchy,
+and resolution incidence.
 
-The current `Laminarizer` is not itself that view contract: it combines greedy admission,
-laminarity, equal-geometry grouping, and nearest-container parent construction. Migration separates:
+The current `Laminarizer` is not itself that view contract: it predates D2 policy stamps, D21 basis
+stamps, and D30 selection backing, and it combines greedy admission, laminarity, equal-geometry
+grouping, and nearest-container parent construction. Migration separates:
 
 1. a named deterministic greedy admission policy;
 2. a selection-backed laminar-family validator/view;
 3. an explicitly requested nearest-proper-container parent projection;
 4. a separate explicit multiple-parent hierarchy DAG.
 
-This separation is why K4c should not move ahead of flat result semantics, but it is also why K4b
-must not pretend its first path executor is already the universal selection engine.
+This separation is why K4c should not move ahead of flat K4a result semantics. It is also why K4c
+does not need to wait for K4b and why K4b must not pretend its first path executor is already the
+universal selection engine.
 
 ## 10. Assurance and Lean disposition
 
@@ -283,11 +330,11 @@ K3/K4a do not activate Lean:
 - graph projection and path identity are separated by construction rather than an unproved
   equivalence claim;
 - the reference path promises determinism and completeness when geometry reachability exists, not
-  optimality.
+  optimality or invariance under reconstruction of a different occurrence basis.
 
-Reapply the burden gate during the K4b contract. A public global optimum, equivalence between a
-reference and optimized executor, or a generalized objective algebra is a named global/optimization
-pressure candidate. Policy choice by itself remains outside theorem work.
+Reapply the burden gate during either sibling's contract if K4b or K4c proposes a public global
+optimum, equivalence between a reference and optimized executor, or a generalized objective
+algebra. Policy choice by itself remains outside theorem work.
 
 ## 11. Non-goals
 
@@ -306,6 +353,16 @@ path identity, and selection generality follows demonstrated result families rat
 them. The architecture workplan, roadmap, decision/assurance canon, ledger, D27 brief, deferred Lean
 notes, and engine README now point to the same joint-core then result-layer sequence.
 
-No engine source or package payload changed; the contract harness baseline remains 1779 checks
-green. The next implementation chip is the joint K3/K4a core: `LocatedRelation`, the minimal
-`CandidateRegionGraph`, and its explicit identity-forgetting projection.
+Amended 2026-08-05 by
+[D34](sol-doccer-k3-k4a-review-adjudication-20260805_151759.md) after peer review. K4b and K4c are
+sibling continuations after K4a, with K4b retained only as the default execution priority. D34 also
+makes the exact-batch/compatible-geometry seam and ordinal stability scope explicit, splits the
+core/result gates above, records K4c's policy/basis/selection hygiene debt, and distinguishes
+empty-admitting `CanSeq` from Allen `Meets`.
+
+At D33/D34 close, no engine source or package payload had changed and the contract harness baseline
+remained 1779 checks green. Follow-on
+[D35](sol-doccer-k3-k4a-core-20260805_182229.md) subsequently implemented the joint core:
+`LocatedRelation`, the exact-selection `CandidateRegionGraph`, exact `TextSlice` rebase, explicit
+identity-forgetting projection, and bounded algebra/projection assurance. Harness 1779→1834. The
+separate K4a result chip is active next.

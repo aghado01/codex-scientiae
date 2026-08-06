@@ -60,7 +60,79 @@ briefs carry the later contracts with their reports — and the evidence in
 | D30 | Occurrence selection closure (K2a): `ClaimSelection` is an immutable set of ordinals on one exact frozen `SpanBatch`; `None`/`All`/validated `Create` and `FromPredicate` construction, count/emptiness/membership, union/intersection/subtraction/relative complement, value equality/hash, and ascending-ordinal enumeration preserve occurrence identity; `Records(ClaimOrder)` is the explicit ordered projection and `Coverage()` the explicit identity-forgetting projection; grouping, gap cadence, suppression, and legacy predicate conveniences share the selection-backed reference path; D25's policy-bearing `Select` name remains reserved for K4; no durable ID, pair carrier, or join transition lands in K2a | implemented; K2a closed |
 | D31 | Exact occurrence-pair closure (K2b): `ClaimPairView` is an immutable exact finite relation over an ordered pair of frozen-batch references, with validated creation/geometry relation, derived Allen labels, ordinal-diagonal identity, lexicographic enumeration, value equality/hash, converse, projections, and exact-basis semijoins; `ComposePairs` is direct middle-ordinal relational composition and `ClaimPairWitnessView` is separate basis-stamped evidence for one composition; the D29 Allen-image inclusion and both non-converse mechanisms are executable while `AllenImage` remains nonpublic; `IntervalJoins.Join` now accepts `AllenRelationSet?` and only projects `ClaimPairView.Relate`, removing its independent join meaning | implemented; K2b closed |
 | D32 | Strict stack pairing closure (K2c): exact `ClaimSelection` inputs assign open/close roles and an exact named `PairingPolicy` object owns compatibility; the combined selected geometry must be one non-overlapping token stream; each closer consumes only the stack top into either a `ClaimPairView` match or correlated mismatch evidence, with empty-stack closes dangling and final opens unclosed; `PairingResult` retains exact input/policy stamps, match edges, complete selection-backed unary residue, mismatch pairs, and an explicit identity-forgetting `PairedRegions()` envelope projection; environment and fence witnesses plus all 5,461 two-key words through length six satisfy an independent oracle and partition/forward/one-to-one/noncrossing laws; no repair, recovery search, containment, parenthood, delimiter vocabulary, or Lean activation lands | implemented; K2 closed |
-| D33 | Joint K3/K4a located/flat-path contract: `LocatedRelation` uses the concrete `(compatible TextMaster, exact window)` basis, collapses equal geometry, owns the declared-window diagonal and one Boolean geometry-reachability implementation, and rebases exactly through `TextSlice`; `CandidateRegionGraph` preserves parallel claim ordinals and projects explicitly to that geometry; graph reachability and identity-bearing path results remain different sorts; K4a reserves path-specific segmentation residue and a named first-ordinal reference path, while budget-admissible candidates remain cost-free; K4b starts with objective-structured flat-path selection rather than a universal solver, K4c keeps family-specific structural policies, and common selection types wait for demonstrated repetition | recorded; joint contract frozen, implementation pending, Lean not activated |
+| D33 | Joint K3/K4a located/flat-path contract: `LocatedRelation` uses the concrete `(compatible TextMaster, exact window)` basis, collapses equal geometry, owns the declared-window diagonal and one Boolean geometry-reachability implementation, and rebases exactly through `TextSlice`; `CandidateRegionGraph` preserves parallel claim ordinals and projects explicitly to that geometry; graph reachability and identity-bearing path results remain different sorts; K4a reserves path-specific segmentation residue and a named first-ordinal reference path, while budget-admissible candidates remain cost-free; K4b starts with objective-structured flat-path selection rather than a universal solver, K4c keeps family-specific structural policies, and common selection types wait for demonstrated repetition | recorded; joint contract frozen; core implemented by D35, K4a results pending; Lean not activated |
+| D34 | K3/K4a peer-review correction: K4b flat-path selection and K4c structural families are sibling continuations after K4a, with K4b retained only as the default execution priority; graph/results remain strict to one exact frozen `SpanBatch` while located operations use compatible-master/equal-window geometry, and projection is the identity-forgetting seam; first-ordinal determinism is exact-basis only; joint-core and K4a-result gates are separate; K4c must repair `Laminarizer` under D2/D21/D30; located `CanSeq` is endpoint equality admitting diagonal empties and is not Allen `Meets` | recorded; D33 amended; core implemented by D35, K4a results pending; Lean not activated |
+| D35 | Joint K3/K4a core closure: immutable `LocatedRelation` implements the compatible-master/exact-window geometry value with canonical duplicate-collapsing extents, full scalar-boundary diagonal, union, endpoint-equality `Seq`, consuming projection, direct finite reachability, value equality/hash, and exact `TextSlice` rebase; exact-batch `CandidateRegionGraph` retains a validated nonempty contained `ClaimSelection` as parallel ordinal edges and exposes `ToLocatedRelation()` as the sole identity-forgetting projection; all 64 values and 4,096 compositions on the three-boundary carrier agree with independent oracles, 262,144 triples satisfy associativity/distributivity, bounded closure/rebase/refusal/projection witnesses are green, and the non-injective lax counterexample remains test-only; no result/path/policy surface or Lean activation lands | implemented; K3 and K4a core closed, K4a results active next |
+
+## Joint located/graph core closure (D35)
+
+D35 implements the first of D34's two independent source gates. `LocatedRelation` is an immutable
+geometry value over one compatible `TextMaster` identity and exact validated window. It admits empty
+extents, materializes the full scalar-valid declared-window diagonal as `Identity`, canonicalizes
+duplicate geometry, and supplies `Union`, endpoint-equality `Seq`, `Consuming`, and direct finite
+`Reachability`. Its equality/hash follow the existing compatible-value `SpanSet` precedent. New
+`TextSlice.ToParent`/`ToChild` overloads translate the relation window and edges together; the
+injective map commutes exactly with union, `Seq`, and reachability, while a test-only collapsing-map
+counterexample retains the deferred lax boundary without publishing a generalized map API.
+
+`CandidateRegionGraph` remains occurrence-strict. It retains the exact input `ClaimSelection`,
+derives its exact frozen `SpanBatch` source from that stamp, validates its exact window, and refuses
+selected claims outside it. Parallel equal-geometry ordinals remain distinct graph edges.
+`ToLocatedRelation()` is the explicit identity-forgetting hop: different exact occurrence graphs
+may project to one equal compatible geometry value, and equal geometry collapses only there.
+
+The contract harness checks every relation value and composition on the complete three-boundary
+carrier against independent nested-pair and Floyd-Warshall oracles, then exhausts all 262,144
+relation triples for associativity and both distributive laws. Separate cases cover scalar
+boundaries, diagonal-empty adjacency, consuming nilpotence/finite star, compatible/equal-window
+refusal, exact slice rebase, empty windows, graph containment, exact-batch identity, and parallel
+projection collapse. Harness 1779→1834. No `ReachabilityView`, `PartitionView`, segmentation value,
+reference path, token/chunk fixture, selection objective, or structural-family migration lands;
+those remain in the separate K4a-result and sibling K4b/K4c gates. Full report:
+[D35 core brief](../briefs/sol-doccer-k3-k4a-core-20260805_182229.md).
+
+## K3/K4a review correction (D34)
+
+Peer review accepts D33's carrier split and immediate source chip but corrects its dependency
+notation. The workplan DAG records type/design dependencies, so K4c cannot be downstream of K4b
+when D33 deliberately refuses to invent a shared K4b carrier. Both lanes consume K4a:
+
+1. joint K3/K4a core — located algebra, exact-batch graph, explicit projection;
+2. K4a results — reachability, partition/path results, residuals, and bounded witnesses;
+3. sibling continuations:
+   - K4b flat-path selection is the default execution priority for tokenizer/chunker work;
+   - K4c packing, cover, laminar, hierarchy, and resolution work is independently available;
+4. common selection types only after both lanes demonstrate genuine repeated structure.
+
+The basis seam is now explicit. `CandidateRegionGraph` and every graph-stamped result retain the
+exact frozen batch reference inherited through `ClaimSelection`. `LocatedRelation` is a geometry
+value: its operations require `TextMaster.IsCompatibleWith` and an exactly equal window. The graph
+projection is the single licensed transition that forgets occurrence identity; different graph
+bases may project to one equal located value.
+
+`FirstOrdinalCompletePath` keeps its visibly arbitrary baseline policy. Since batch ordinals are
+assigned in insertion order, it is reproducible only for the exact graph/batch named by the result.
+Recollection or insertion reordering creates a different occurrence basis and may choose another
+complete path. K8 must retain the graph and policy stamp rather than claim cross-batch invariance.
+
+The first source chip is accepted on located identity/union/`Seq`/closure/rebase laws, exact graph
+basis validation, explicit projection, and parallel-edge collapse. The second chip separately owns
+reachability and partition/result values, the reference path, gap/dead-end/empty cases,
+token/chunk witnesses, and independent path-oracle agreement.
+
+K4c carries a hygiene migration independent of K4b. The current `Laminarizer` predates D2's named
+policy stamp, D21's basis stamp, and D30's selection backing. K4c separates greedy admission,
+laminar-family validation, explicit nearest-parent projection, and an explicit multiple-parent DAG.
+Its greedy contract remains deterministic and inclusion-maximal, not maximum.
+
+Finally, the located-family adjacency condition is
+`CanSeq(left,right) := left.End == right.Start`, shared by `LocatedRelation.Seq` and
+`PartitionView`. It admits diagonal empties, so it is not Allen `Meets`; no unqualified
+`TextSpan.Meets` API or change to D17 intersection semantics is authorized.
+
+These corrections add no proof burden. Direct finite reference semantics and the separate bounded
+oracles remain sufficient; the D33 Lean triggers are unchanged. Full reasoning is in the
+[D34 review adjudication](../briefs/sol-doccer-k3-k4a-review-adjudication-20260805_151759.md).
 
 ## Located geometry and flat-path contract (D33)
 
@@ -80,26 +152,29 @@ feasibility, tie rule, and exact deterministic/optimality guarantee. K4c may reu
 where they fit, but a common selection carrier is extracted only after at least two families
 demonstrate the same shape.
 
-The frozen implementation order is:
+The implementation order as amended by D34 is:
 
 1. one joint K3/K4a core chip: geometry-only `LocatedRelation`, minimal
    `CandidateRegionGraph`, and explicit projection;
 2. one K4a result chip: graph-stamped reachability over K3 closure, `PartitionView`, the named
    `FirstOrdinalCompletePath`, path-specific `SegmentationResult`/`SegmentationResidual`, and bounded
    token/chunk/gap/dead-end/empty witnesses;
-3. K4b flat-path selection with declared objective structure;
-4. K4c packing, cover, laminar-family, hierarchy, and resolution views plus family-specific
-   policies;
-5. a shared selection abstraction only if repeated contracts license it.
+3. sibling continuations after K4a:
+   - K4b flat-path selection with declared objective structure, the default execution priority;
+   - K4c packing, cover, laminar-family, hierarchy, and resolution views plus family-specific
+     policies, independently available;
+4. a shared selection abstraction only if repeated contracts from both lanes license it.
 
 The dependency DAG removes the former K2b-to-K3 arrow. The located carrier uses a master/window and
 the graph uses `ClaimSelection`; finishing K2b before this tranche was completion priority, not a
 `ClaimPairView` type dependency.
 
 The located basis is compatible master identity plus an exact validated window. Binary operators
-require equal windows. The identity is every scalar-valid diagonal boundary inside the window,
-whether represented explicitly or implicitly. `TextSlice` rebase translates the window as well as
-the edges; expanding it to the parent extent would break exact identity and `Seq` preservation. No
+require compatible master values and equal windows. Graph/result operations are stricter on one
+exact frozen batch; projection is the deliberate transition from occurrence identity to geometry
+value. The located identity is every scalar-valid diagonal boundary inside the window, whether
+represented explicitly or implicitly. `TextSlice` rebase translates the window as well as the
+edges; expanding it to the parent extent would break exact identity and `Seq` preservation. No
 generic boundary hierarchy or generalized map lands. The non-injective direct-image law remains a
 deferred lax inclusion obligation.
 
@@ -113,12 +188,14 @@ K4a uses segmentation/path terminology.
 The K4a chunk witness is now called **budget-admissible**: an external rule has already admitted its
 candidate edges, but the graph carries no objective or cost. “Best budgeted chunking” remains K4b.
 The first reference path is explicitly first-ordinal among edges whose suffix remains reachable; it
-is a deterministic completeness witness, not an optimizer.
+is a deterministic completeness witness on one exact frozen graph, not an optimizer or a promise
+of invariance after batch reconstruction/reordering.
 
 Direct finite relation/matrix semantics, an independent bounded oracle, projection adversaries, and
 path fixtures own K3/K4a assurance. This does not activate Lean. Reapply the gate before compressed
 or incremental closure, a generalized exact-versus-lax map surface, or a K4b public global-optimum
-or optimized/reference-equivalence guarantee. Harness remains 1779; the joint core is active next.
+or optimized/reference-equivalence guarantee. D35 closes the joint core at 1834 checks; the
+separate K4a result gate is active next.
 
 ## Strict stack pairing closure (D32)
 
@@ -321,7 +398,10 @@ The resulting boundaries are:
    projection to located geometry. D33 makes the algebra plus minimal graph projection one core
    source chip; the result layer follows separately. One geometry closure serves both, while graph
    paths retain occurrence identity in their own result sort.
-8. **Witnesses move left.** Pairing witnesses K2; ambiguous token and budget-admissible chunk graphs witness
+8. **K4 continuations are siblings.** D34 corrects the workplan dependency: K4b flat-path selection
+   and K4c structural families both follow K4a. K4b stays first only as the default execution
+   priority; neither lane may manufacture a shared carrier as a prerequisite for the other.
+9. **Witnesses move left.** Pairing witnesses K2; ambiguous token and budget-admissible chunk graphs witness
    K3/K4; bounded materialization witnesses K6/K7. K8 remains the final cross-carrier integration
    demonstration rather than the first time earlier contracts meet a consumer shape.
 
@@ -378,9 +458,10 @@ their result semantics interchangeable.
 | K2-CONCRETE-PAIRS | the `ConcreteCompose` family is exact basis-checked finite relation composition; `ClaimPairView` realizes it as `ComposePairs`, with claim identity the ordinal diagonal on one exact frozen batch — **implemented in K2b (D31)** | direct middle-ordinal reference implementation, independent nested relation oracle, and C# property tests | all 16 bounded relation values, 256 differential compositions, 4,096 associative triples, exact-basis refusal, identity, converse, projections, semijoins, complete middle witnesses, and one semantic `IntervalJoins.Join` path | a compressed/indexed backend claims equivalence without differential coverage, or a packed witness representation is asked to inherit extensional identity, associativity, or bracket-independent support |
 | K2-ALLEN-ABSTRACTION | the Allen image of exact `ComposePairs(R,S)` is contained in `AllenImage(R).AllenCompose(AllenImage(S))`; equality and qualitative edge generation are refused — **implemented as a K2b assurance law (D31); `AllenImage` remains nonpublic** | D28 atomic-triad certificate plus pointwise C# witness law and adjacent-gap/correlation counterexamples | actual edge images rather than requested filters; all 3,375 six-boundary middle paths satisfy atomic containment; union-level inclusion; executable non-converse | before an optimized backend uses qualitative summaries to omit exact work and claims universal no-false-negative equivalence, or if equality/generalized public abstraction is proposed |
 | K2-PAIRING | strict stack pairing over exact role selections produces forward compatible partial one-to-one noncrossing matches and disjoint complete named residue; mismatch consumes and records only the stack top — **implemented in K2c (D32)** | direct reference implementation, two concrete delimiter-family witnesses, independent bounded abstract-stack oracle, and result-law checks | environment/fence cases, combined dangling/mismatch/match/unclosed adversary, and all 5,461 two-key words through length six; exact stamps and ambiguity refusals retained | before an optimized, parallel, incremental, or recovery-bearing implementation claims equivalence with the strict reference policy |
-| K3-LOCATED-SEQ | geometry-only located `Seq` uses a shared boundary on the concrete compatible-master/exact-window basis, has the declared-window diagonal identity, is associative, distributes over union, and supplies the sole Boolean geometry reachability used by K4a — **contract frozen by D33; implementation pending** | simple C# set/matrix reference semantics and bounded exhaustive tests | identity, associativity, distributivity, finite consuming closure, exact window-preserving rebase, compatible/equal-window refusal, and graph-to-geometry projection in the joint core chip | a compressed or incremental closure algorithm replaces the reference semantics, or a generalized map reopens the exact-versus-lax boundary |
-| K4-FLAT-PATH | `CandidateRegionGraph` preserves parallel claim ordinals while projecting to located geometry; a partition retains an ordered meeting path and exactly covers its window; gaps and connectivity dead ends remain distinct — **contract frozen by D33; implementation pending** | K3 closure plus graph-specific reference traversal, independent bounded path oracle, and construction-time result validation | equal-geometry parallel-edge collapse only at projection; ambiguous paths; first-ordinal complete path; empty window; independent gap and dead-end cases; budget-admissible chunk candidates without cost | an alternative/packed reachability backend claims equivalence, all-path enumeration gains a complexity guarantee, or path/partition preservation is generalized beyond the frozen hypotheses |
-| K4-SELECT | each family-specific `Select` executor runs a named caller policy and promises only its declared feasibility/objective/tie invariants, never an implied optimum; no universal selection carrier is yet promised — **reserved for K4b/K4c** | deterministic policy contract plus family-specific reference semantics and adversarial C# result validation | exact basis, objective form, policy stamp, tie rule, selected/rejected alternatives, conflicts, residuals, and score/unit remain visible | before a public global-optimality guarantee, an optimized/reference equivalence claim, or a generalized objective algebra becomes load-bearing; policy choice itself is not a theorem |
+| K3-LOCATED-SEQ | geometry-only located `Seq` uses `CanSeq(left,right) := left.End == right.Start` on the compatible-master/exact-window basis, admits the declared-window diagonal, is associative, distributes over union, and supplies the sole Boolean geometry reachability used by K4a — **implemented by D35** | direct finite C# reference semantics, independent nested-pair/Floyd-Warshall oracles, and bounded exhaustive laws | all 64 values, 4,096 compositions, and 262,144 triples on three boundaries; identity, associativity, distributivity, consuming finite star/nilpotence, exact window-preserving rebase, compatible/equal-window refusal, diagonal-empty adjacency, and the test-only non-injective counterexample | a compressed or incremental closure algorithm replaces the reference semantics, or a generalized map reopens the exact-versus-lax boundary |
+| K4-FLAT-PATH | exact-batch `CandidateRegionGraph` preserves parallel claim ordinals while projecting to compatible located geometry; a partition retains an ordered `CanSeq` path and exactly covers its window; gaps and connectivity dead ends remain distinct; first-ordinal determinism is exact-basis only — **graph/projection core implemented by D35; result layer pending** | K3 closure plus graph-specific reference traversal, independent bounded path oracle, and construction-time result validation | D35 closes exact selection/window validation, exact-batch graph identity, compatible-geometry projection, and parallel-edge collapse; the separate result chip owns ambiguous paths, stamped first-ordinal complete path, empty partition, independent gap/dead-end cases, and budget-admissible chunk candidates without cost | an alternative/packed reachability backend claims equivalence, all-path enumeration gains a complexity guarantee, cross-batch invariance is proposed, or path/partition preservation is generalized beyond the frozen hypotheses |
+| K4-SELECT | each family-specific `Select` executor runs a named caller policy and promises only its declared feasibility/objective/tie invariants, never an implied optimum; K4b and K4c are sibling lanes and no universal selection carrier is yet promised — **reserved after K4a by D34** | deterministic policy contract plus family-specific reference semantics and adversarial C# result validation | exact basis, objective form, policy stamp, tie rule, selected/rejected alternatives, conflicts, residuals, and score/unit remain visible; reuse occurs only after demonstrated repetition | before a public global-optimality guarantee, an optimized/reference equivalence claim, or a generalized objective algebra becomes load-bearing; policy choice itself is not a theorem |
+| K4-STRUCTURE | packing, cover, laminar-family, and hierarchy views retain their exact basis and named policy; greedy admission, family validation, nearest-parent projection, and multiple-parent DAG construction remain distinct — **reserved for sibling K4c by D34** | construction-time validation, independent policy oracle, and adversarial C# result checks | D2 policy stamp, D21 basis stamp including empty results, D30 selection backing, explicit maximal-not-maximum greedy counterexample, and refusal to infer unique parenthood without policy | before a structural executor promises a global optimum or an optimized/reference equivalence; deterministic validation and policy choice alone are not theorem work |
 | K5-SATURATE | positive finite `Saturate` is monotone and inflationary and reaches one least fixed point independent of fair rule order — **reserved for K5** | reference worklist, order-permutation C# tests, and standard external theorem | canonical fact identity must close first; repeated derivations add support rather than duplicate facts | before parallel or incremental saturation claims semantic equivalence |
 | K6-COMPOSE-ORIGINS | `ComposeOrigins` is ordinary basis-checked relation composition; identity is the atom diagonal between compatible master bases — **reserved for K6** | reference C# relation oracle and property tests | tagged middle-basis refusal, identity, associativity, and functional-embedding laws before landing | compression, stage fusion, or a functional fast path relies on semantic equivalence |
 | K7-MATERIALIZE | `Materialize` realizes a supplied ordered piece plan whose pieces partition and exactly reconstruct a new master with declared origin or synthetic explanation — **reserved for K7** | construction-time validation and adversarial C# tests | gaps, overlaps, unmapped output, unused pieces, and origin/support conflation are refused or retained as named residue | before stage fusion, intermediate-master elision, or a nontrivial global reconstruction guarantee |

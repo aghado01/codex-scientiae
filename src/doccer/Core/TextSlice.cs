@@ -154,6 +154,42 @@ public sealed class TextSlice
         return SpanSet.Create(Child, mapped);
     }
 
+    /// <summary>
+    /// Rebases a child-bound located relation into parent coordinates. Both its edges and exact
+    /// declared window move together, preserving the concrete relation basis.
+    /// </summary>
+    public LocatedRelation ToParent(LocatedRelation childRelation)
+    {
+        ArgumentNullException.ThrowIfNull(childRelation);
+        Child.EnsureCompatibleWith(childRelation.Master);
+        var mapped = new TextSpan[childRelation.Count];
+        for (var i = 0; i < childRelation.Count; i++)
+        {
+            mapped[i] = ToParent(childRelation[i]);
+        }
+
+        return LocatedRelation.Create(Parent, ToParent(childRelation.Window), mapped);
+    }
+
+    /// <summary>
+    /// Rebases a parent-bound located relation into child coordinates. Partial and loud: the
+    /// relation's whole declared window must lie inside this slice, so neither basis nor edges are
+    /// clipped during the projection.
+    /// </summary>
+    public LocatedRelation ToChild(LocatedRelation parentRelation)
+    {
+        ArgumentNullException.ThrowIfNull(parentRelation);
+        Parent.EnsureCompatibleWith(parentRelation.Master);
+        var childWindow = ToChild(parentRelation.Window);
+        var mapped = new TextSpan[parentRelation.Count];
+        for (var i = 0; i < parentRelation.Count; i++)
+        {
+            mapped[i] = ToChild(parentRelation[i]);
+        }
+
+        return LocatedRelation.Create(Child, childWindow, mapped);
+    }
+
     /// <summary>Rebases a child-bound batch into a new frozen parent-bound batch.</summary>
     public SpanBatch ToParent(SpanBatch childBatch)
     {

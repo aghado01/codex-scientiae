@@ -17,8 +17,9 @@ K1b semantic Allen closure
     -> K2b exact pair view + terminal-join transition
     -> K2c pairing witness
     -> joint K3/K4a located relation + candidate graph
-    -> K4b explicit selection
-    -> K4c hierarchy, packing, cover, and resolution
+         |-> K4b explicit flat-path selection (default priority)
+         `-> K4c hierarchy, packing, cover, and resolution
+    -> shared selection abstraction only after both lanes supply evidence
 ~~~
 
 K1b remains next as a completion priority. Its table is not a type dependency of K2: K2b needs
@@ -79,7 +80,8 @@ algebra plus minimal graph projection one core source chip and the result layer 
 | K2b | exact pair carrier; ordinal diagonal identity; projection, semijoin, converse, `ComposePairs`; one terminal-join semantic path | packed-support algebra; Allen weak composition as a substitute for exact joins |
 | K2c | pairing match edges, policy stamp, and complete identity-bearing residue over at least two delimiter families | repair; inferred parenthood; domain delimiter semantics |
 | K3/K4a | geometry-only located relation; identity-bearing candidate graph; one geometry-reachability implementation; ordinal-bearing partition/path and gap/dead-end results; token and budget-admissible chunk witnesses | labels on `LocatedRelation`; generic boundary hierarchy/map; optimizer or path enumeration |
-| K4b/K4c | objective-structured flat-path policies after result invariants; later family-specific structural views/policies; common selection types only after demonstrated repetition | arbitrary-objective universal solver; implied optimality; hierarchy inferred from containment alone |
+| K4b | objective-structured flat-path policies after result invariants; exact basis/objective/tie/result stamps | arbitrary-objective universal solver; implied optimality; cross-batch path invariance |
+| K4c | sibling structural-family lane after K4a; selection/basis/policy-stamped packing, cover, laminar, hierarchy, and resolution views; common types only after demonstrated repetition with K4b | dependency on a K4b path executor; unstamped legacy `Laminarizer`; hierarchy inferred from containment alone |
 
 ## 4. Witness placement
 
@@ -137,3 +139,13 @@ corrected two underspecified phrases before source work: “one reachability imp
 means one identity-forgetting geometry closure plus a distinct ordinal-bearing path result, and
 “explicit selection” begins with objective-structured flat paths rather than a universal solver
 over structural families not yet defined. The joint core is active next; harness remains 1779.
+
+[D34 peer-review adjudication](sol-doccer-k3-k4a-review-adjudication-20260805_151759.md) then
+corrected the remaining arrow-category error: K4b and K4c are sibling continuations after K4a,
+because K4c consumes no K4b type or executor. K4b remains the default execution priority only for
+the active tokenizer/chunker trajectory. D34 also makes the exact-batch/compatible-geometry seam,
+ordinal stability scope, separate core/result gates, Laminarizer hygiene, and sort-specific
+empty-admitting `CanSeq` condition explicit. Follow-on
+[D35](sol-doccer-k3-k4a-core-20260805_182229.md) then closed the immediate joint core with the
+located algebra, exact-selection graph, explicit projection, and bounded assurance; harness
+1779→1834. The separate K4a result layer is active next.

@@ -385,6 +385,27 @@ maximum-weight, or optimized/reference-equivalence claim lands. Reapply **bounda
 generalized map or objective algebra makes exact equality reusable. The policy's domain meaning and
 tie preference remain outside theorem work.
 
+### 5.3 D34 gate application — review corrections do not add theorem claims
+
+D34 narrows identities, stability, and chip gates rather than strengthening a mathematical
+guarantee:
+
+- `CandidateRegionGraph` and its results use one exact frozen batch reference, while
+  `LocatedRelation` uses compatible-master/equal-window geometry values; the explicit projection
+  forgets identity by construction;
+- first-ordinal path determinism is promised only on that exact occurrence basis, not under batch
+  reconstruction or insertion reordering;
+- located `CanSeq` is direct endpoint equality and deliberately admits diagonal empties, unlike
+  Allen `Meets`;
+- the joint-core and K4a-result chips have separate finite reference/oracle gates; and
+- K4b and K4c are sibling lanes, so execution priority creates no proof obligation or abstraction
+  theorem between them.
+
+None crosses the burden gate. K4c's `Laminarizer` migration needs executable policy/basis/selection
+stamps and a maximal-not-maximum counterexample, not a formal optimality proof. Reapply the existing
+gate only if either sibling later publishes a global optimum, generalized objective algebra, or
+optimized/reference equivalence.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -396,8 +417,8 @@ tie preference remain outside theorem work.
 | Exact-pair Allen-image composition inclusion | D28 atomic-triad certificate plus D31 direct `ComposePairs`, 3,375 per-witness checks, union law, and two executable non-converses | before qualitative summaries drive optimized pruning with a universal no-false-negative claim, or if equality/generalized public abstraction is proposed |
 | Witness-bearing composition | make no associativity promise yet | before normalization or bracket-independent evidence is promised |
 | Strict stack match/residue partition and noncrossing | D32 direct scan, two concrete delimiter families, combined adversarial residue, and a 5,461-word independent bounded oracle | before an optimized/parallel/incremental implementation or a recovery policy claims equivalence |
-| Located `Seq` identity, associativity, finite consuming closure, and exact slice rebase | D33 concrete compatible-master/exact-window basis; simple set/matrix reference semantics and bounded exhaustive tests | before a compressed/incremental closure algorithm replaces it or a generalized map reopens the exact-versus-lax boundary |
-| Flat graph reachability and identity-bearing reference path | D33 explicit identity-forgetting projection, bounded independent path oracle, parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent backend claims equivalence or K4b adds a public global optimum |
+| Located `Seq` identity, associativity, finite consuming closure, and exact slice rebase | D35 direct compatible-master/exact-window implementation; all 64 values, 4,096 compositions, and 262,144 triples on three boundaries; independent nested-pair/Floyd-Warshall oracles; exact rebase and test-only non-injective counterexample | before a compressed/incremental closure algorithm replaces it or a generalized map reopens the exact-versus-lax boundary |
+| Flat graph reachability and identity-bearing reference path | D35 closes exact-batch graph validation and compatible-geometry projection; the active K4a result chip owns exact-basis ordinal determinism, bounded independent path oracle, and parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent backend claims equivalence, cross-batch invariance is proposed, or K4b adds a public global optimum |
 | Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
 | Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
@@ -406,9 +427,9 @@ tie preference remain outside theorem work.
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
-This triage leaves no present theorem whose completion should block the joint K3/K4a core or result
-chips; D33 has frozen their contract, and `AllenRelationSet`, `ClaimSelection`, `ClaimPairView`, and
-strict pairing are already landed.
+This triage leaves no present theorem whose completion should block the K4a result chip. D35 has
+landed the joint K3/K4a core under finite reference assurance; `AllenRelationSet`,
+`ClaimSelection`, `ClaimPairView`, and strict pairing were already landed.
 
 ## 7. Restart recipe
 
@@ -454,9 +475,9 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step is therefore the D33 joint K3/K4a core, not Lean. The first future proof
-most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, or the
+The practical next step is therefore the D33–D35 K4a result layer, not Lean. The first future proof
+most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, or D35's
 direct located closure; it is a law that licenses compression, pruning, global optimization,
 fusion, or another independent backend without changing reference meaning. D29 names the
-pair-abstraction candidate, D33 names the K3 closure/K4b optimality candidates, and origin/support
+pair-abstraction candidate, D33/D34 name the sibling K4 policy candidates, and origin/support
 machinery remains the other leading source.

@@ -74,6 +74,10 @@ internal static class Program
             PairingFaultResidueIsCompleteAndTopOnly();
             PairingRefusesAmbiguousInputsAndRetainsItsStamps();
             PairingMatchesAnIndependentBoundedStackOracle();
+            LocatedRelationHasAConcreteBasisAndReferenceAlgebra();
+            LocatedRelationMatchesBoundedExhaustiveOracles();
+            LocatedRelationRebasesExactlyThroughSlices();
+            CandidateRegionGraphPreservesOccurrenceIdentityUntilProjection();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -3485,6 +3489,617 @@ internal static class Program
             "every bounded pairing result agrees with the independent abstract stack oracle");
         True(resultLawsHold,
             "every bounded pairing result satisfies stamps, partitions, and match invariants");
+    }
+
+    /// <summary>
+    /// Joint K3/K4a-core gate: the located carrier admits diagonal empties, uses the exact window
+    /// as algebraic state, composes by endpoint equality, and weakens master identity only to
+    /// explicit value compatibility.
+    /// </summary>
+    private static void LocatedRelationHasAConcreteBasisAndReferenceAlgebra()
+    {
+        var master = new TextMaster("located-reference", 2, "a😀b");
+        var window = master.Extent;
+        var relation = LocatedRelation.Create(
+            master,
+            window,
+            new[]
+            {
+                new TextSpan(4, 4),
+                new TextSpan(1, 3),
+                new TextSpan(0, 1),
+                new TextSpan(1, 3),
+            });
+
+        Equal(3, relation.Count,
+            "located construction collapses duplicate geometry and canonicalizes enumeration");
+        True(relation.SequenceEqual(new[]
+            {
+                new TextSpan(0, 1),
+                new TextSpan(1, 3),
+                new TextSpan(4, 4),
+            }),
+            "located geometry enumerates by start then end");
+        True(ReferenceEquals(relation.Master, master) && relation.Window == window,
+            "located relation retains its representative master and exact window");
+        True(relation.Contains(new TextSpan(1, 3)) &&
+             !relation.Contains(new TextSpan(3, 4)),
+            "located membership is extensional geometry on the retained basis");
+
+        var identity = LocatedRelation.Identity(master, window);
+        True(identity.SequenceEqual(new[]
+            {
+                new TextSpan(0, 0),
+                new TextSpan(1, 1),
+                new TextSpan(3, 3),
+                new TextSpan(4, 4),
+            }),
+            "located identity contains every scalar-valid declared-window boundary");
+        True(identity.Seq(relation).Equals(relation) &&
+             relation.Seq(identity).Equals(relation),
+            "diagonal empties are two-sided Seq identity edges");
+
+        var chain = LocatedRelation.Create(
+            master,
+            window,
+            new[]
+            {
+                new TextSpan(0, 1),
+                new TextSpan(1, 1),
+                new TextSpan(1, 3),
+                new TextSpan(3, 4),
+            });
+        var reachability = chain.Reachability();
+        Equal(10, reachability.Count,
+            "three consuming links reach every ordered pair of four scalar boundaries");
+        True(reachability.Contains(new TextSpan(0, 4)) &&
+             chain.Consuming().Reachability().Equals(reachability),
+            "reachability is the consuming closure plus the complete diagonal");
+        True(LocatedRelation.Empty(master, window).Reachability().Equals(identity),
+            "empty relation reachability is the declared-window identity");
+
+        var compatible = new TextMaster(master.DocumentId, master.Revision, master.Text);
+        var compatibleRelation = LocatedRelation.Create(
+            compatible,
+            window,
+            new[] { new TextSpan(0, 1), new TextSpan(1, 3), new TextSpan(4, 4) });
+        True(relation.Equals(compatibleRelation) &&
+             relation.GetHashCode() == compatibleRelation.GetHashCode(),
+            "located value equality follows compatible master identity");
+        True(relation.Union(compatibleRelation).Equals(relation),
+            "located binary operations admit compatible master representatives");
+
+        var emptyWindow = new TextSpan(1, 1);
+        var emptyIdentity = LocatedRelation.Identity(master, emptyWindow);
+        Equal(1, emptyIdentity.Count,
+            "an empty declared window has one diagonal identity extent");
+        True(LocatedRelation.Empty(master, emptyWindow).Reachability().Equals(emptyIdentity),
+            "empty-window reachability preserves the one-point identity");
+
+        Throws<ArgumentNullException>(
+            () => LocatedRelation.Empty(null!, window),
+            "located basis requires a master");
+        Throws<ArgumentNullException>(
+            () => LocatedRelation.Create(master, window, null!),
+            "located construction requires an edge population");
+        Throws<ArgumentException>(
+            () => LocatedRelation.Create(
+                master,
+                new TextSpan(1, 3),
+                new[] { new TextSpan(0, 1) }),
+            "located construction refuses out-of-window geometry");
+        Throws<ArgumentException>(
+            () => LocatedRelation.Empty(master, new TextSpan(0, 2)),
+            "located windows cannot split a surrogate pair");
+        Throws<InvalidOperationException>(
+            () => relation.Seq(LocatedRelation.Empty(master, new TextSpan(0, 1))),
+            "located composition refuses unequal windows");
+        Throws<InvalidOperationException>(
+            () => relation.Union(LocatedRelation.Empty(
+                new TextMaster("located-foreign", 2, master.Text),
+                window)),
+            "located operations refuse incompatible coordinate spaces");
+        Throws<ArgumentNullException>(
+            () => relation.Seq(null!),
+            "located composition requires another relation");
+    }
+
+    /// <summary>
+    /// K3 assurance: all 64 relation values on the three-boundary chain agree with an independent
+    /// pair-composition and Floyd-Warshall oracle. Cached production results then certify identity,
+    /// associativity, both distributive laws, consuming projection, and the finite path bound over
+    /// all 262,144 triples.
+    /// </summary>
+    private static void LocatedRelationMatchesBoundedExhaustiveOracles()
+    {
+        var master = new TextMaster("located-bounded", 0, "ab");
+        var window = master.Extent;
+        var boundaries = new[] { 0, 1, 2 };
+        var extents = new[]
+        {
+            new TextSpan(0, 0),
+            new TextSpan(0, 1),
+            new TextSpan(0, 2),
+            new TextSpan(1, 1),
+            new TextSpan(1, 2),
+            new TextSpan(2, 2),
+        };
+        var valueCount = 1 << extents.Length;
+        var values = new LocatedRelation[valueCount];
+        for (var mask = 0; mask < valueCount; mask++)
+        {
+            values[mask] = LocatedFromMask(master, window, extents, mask);
+        }
+
+        var seqMasks = new int[valueCount, valueCount];
+        var seqOracleAgreement = true;
+        for (var left = 0; left < valueCount; left++)
+        {
+            for (var right = 0; right < valueCount; right++)
+            {
+                var actual = LocatedMask(values[left].Seq(values[right]), extents);
+                seqMasks[left, right] = actual;
+                seqOracleAgreement &= actual == LocatedSeqOracleMask(left, right, extents);
+            }
+        }
+
+        True(seqOracleAgreement,
+            "all bounded located Seq values agree with the independent nested-pair oracle");
+
+        var identityMask = LocatedMask(LocatedRelation.Identity(master, window), extents);
+        var identityHolds = true;
+        var closureOracleAgreement = true;
+        var consumingProjectionHolds = true;
+        var finiteStarHolds = true;
+        for (var relation = 0; relation < valueCount; relation++)
+        {
+            identityHolds &= seqMasks[identityMask, relation] == relation &&
+                             seqMasks[relation, identityMask] == relation;
+
+            var consumingMask = relation & ~identityMask;
+            consumingProjectionHolds &=
+                LocatedMask(values[relation].Consuming(), extents) == consumingMask;
+
+            var expectedClosure = LocatedReachabilityOracleMask(
+                relation,
+                boundaries,
+                extents);
+            closureOracleAgreement &=
+                LocatedMask(values[relation].Reachability(), extents) == expectedClosure;
+
+            var boundedStar = identityMask;
+            var power = consumingMask;
+            for (var length = 1; length < boundaries.Length; length++)
+            {
+                boundedStar |= power;
+                power = seqMasks[power, consumingMask];
+            }
+
+            finiteStarHolds &= boundedStar == expectedClosure && power == 0;
+        }
+
+        True(identityHolds,
+            "the complete diagonal is identity for every bounded located relation");
+        True(consumingProjectionHolds,
+            "consuming projection removes exactly the bounded diagonal edges");
+        True(closureOracleAgreement,
+            "all bounded reachability values agree with independent Floyd-Warshall closure");
+        True(finiteStarHolds,
+            "consuming star closes within boundary-count minus one and is then nilpotent");
+
+        var associativityHolds = true;
+        var leftDistributivityHolds = true;
+        var rightDistributivityHolds = true;
+        var tripleCount = 0;
+        for (var left = 0; left < valueCount; left++)
+        {
+            for (var middle = 0; middle < valueCount; middle++)
+            {
+                for (var right = 0; right < valueCount; right++)
+                {
+                    tripleCount++;
+                    associativityHolds &=
+                        seqMasks[seqMasks[left, middle], right] ==
+                        seqMasks[left, seqMasks[middle, right]];
+                    leftDistributivityHolds &=
+                        seqMasks[left, middle | right] ==
+                        (seqMasks[left, middle] | seqMasks[left, right]);
+                    rightDistributivityHolds &=
+                        seqMasks[left | middle, right] ==
+                        (seqMasks[left, right] | seqMasks[middle, right]);
+                }
+            }
+        }
+
+        Equal(262144, tripleCount,
+            "bounded located laws cover every relation triple on three boundaries");
+        True(associativityHolds, "located Seq is associative on every bounded relation triple");
+        True(leftDistributivityHolds,
+            "located Seq distributes over union in its right argument");
+        True(rightDistributivityHolds,
+            "located Seq distributes over union in its left argument");
+    }
+
+    /// <summary>
+    /// K3 rebase gate: an injective TextSlice map moves the declared window and edges together and
+    /// commutes exactly with union, Seq, and reachability. A local collapsing-map counterexample
+    /// retains the reason no generalized exact map surface lands with this chip.
+    /// </summary>
+    private static void LocatedRelationRebasesExactlyThroughSlices()
+    {
+        var parent = new TextMaster("located-rebase", 4, "xxa😀byy");
+        var slice = TextSlice.Create(parent, new TextSpan(2, 6));
+        var childWindow = slice.Child.Extent;
+        var left = LocatedRelation.Create(
+            slice.Child,
+            childWindow,
+            new[]
+            {
+                new TextSpan(0, 1),
+                new TextSpan(1, 1),
+                new TextSpan(1, 3),
+            });
+        var right = LocatedRelation.Create(
+            slice.Child,
+            childWindow,
+            new[]
+            {
+                new TextSpan(1, 3),
+                new TextSpan(3, 4),
+            });
+
+        var parentLeft = slice.ToParent(left);
+        True(ReferenceEquals(parentLeft.Master, parent) &&
+             parentLeft.Window == new TextSpan(2, 6) &&
+             parentLeft.SequenceEqual(new[]
+             {
+                 new TextSpan(2, 3),
+                 new TextSpan(3, 3),
+                 new TextSpan(3, 5),
+             }),
+            "child-to-parent located rebase maps the exact window and every edge");
+        True(slice.ToChild(parentLeft).Equals(left),
+            "located relation rebase round-trips through one slice");
+        True(slice.ToParent(left.Union(right)).Equals(
+                slice.ToParent(left).Union(slice.ToParent(right))),
+            "injective located rebase commutes with union");
+        True(slice.ToParent(left.Seq(right)).Equals(
+                slice.ToParent(left).Seq(slice.ToParent(right))),
+            "injective located rebase commutes with Seq");
+        True(slice.ToParent(left.Reachability()).Equals(
+                slice.ToParent(left).Reachability()),
+            "injective located rebase commutes with reachability");
+        True(slice.ToParent(LocatedRelation.Identity(slice.Child, childWindow)).Equals(
+                LocatedRelation.Identity(parent, slice.Window)),
+            "located rebase maps the complete declared-window diagonal exactly");
+
+        var compatibleChild = new TextMaster(
+            slice.Child.DocumentId,
+            slice.Child.Revision,
+            slice.Child.Text);
+        var compatibleRelation = LocatedRelation.Create(
+            compatibleChild,
+            childWindow,
+            new[] { new TextSpan(0, 1) });
+        True(slice.ToParent(compatibleRelation).Equals(LocatedRelation.Create(
+                parent,
+                slice.Window,
+                new[] { new TextSpan(2, 3) })),
+            "TextSlice accepts a compatible located master representative");
+
+        var nestedParent = LocatedRelation.Create(
+            parent,
+            new TextSpan(3, 6),
+            new[] { new TextSpan(3, 5), new TextSpan(5, 6) });
+        True(slice.ToChild(nestedParent).Window == new TextSpan(1, 4),
+            "parent-to-child located rebase preserves a nested exact window");
+        Throws<ArgumentException>(
+            () => slice.ToChild(LocatedRelation.Empty(parent, new TextSpan(0, 3))),
+            "parent-to-child located rebase refuses a window crossing the slice boundary");
+        Throws<InvalidOperationException>(
+            () => slice.ToParent(LocatedRelation.Empty(
+                new TextMaster("located-unrelated", 0, slice.Child.Text),
+                childWindow)),
+            "located rebase refuses an unrelated coordinate space");
+        Throws<ArgumentNullException>(
+            () => slice.ToParent((LocatedRelation)null!),
+            "located rebase requires a relation");
+
+        var pointImage = new[] { 0, 1, 1, 2 };
+        var sourceLeft = new HashSet<(int Start, int End)> { (0, 1) };
+        var sourceRight = new HashSet<(int Start, int End)> { (2, 3) };
+        var imageOfComposition = ImagePointRelation(
+            ComposePointRelations(sourceLeft, sourceRight),
+            pointImage);
+        var compositionOfImages = ComposePointRelations(
+            ImagePointRelation(sourceLeft, pointImage),
+            ImagePointRelation(sourceRight, pointImage));
+        True(imageOfComposition.IsSubsetOf(compositionOfImages) &&
+             !imageOfComposition.SetEquals(compositionOfImages) &&
+             compositionOfImages.Contains((0, 2)),
+            "non-injective point image preserves only lax Seq inclusion");
+    }
+
+    /// <summary>
+    /// Joint K3/K4a-core graph gate: candidate identity is an exact selection on one frozen batch,
+    /// while the explicit located projection collapses parallel equal-geometry ordinals and admits
+    /// compatible value equality only after that boundary.
+    /// </summary>
+    private static void CandidateRegionGraphPreservesOccurrenceIdentityUntilProjection()
+    {
+        var master = new TextMaster("candidate-graph", 1, "abcd");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(0, 1),
+            new TextSpan(1, 2),
+            new TextSpan(0, 2),
+            new TextSpan(2, 4));
+        var candidates = ClaimSelection.Create(batch, new[] { 0, 1, 2 });
+        var graph = CandidateRegionGraph.Create(candidates, new TextSpan(0, 2));
+
+        True(ReferenceEquals(graph.Source, batch) &&
+             ReferenceEquals(graph.Candidates, candidates) &&
+             ReferenceEquals(graph.Master, master),
+            "candidate graph retains the exact batch and selection objects");
+        True(graph.SequenceEqual(new[] { 0, 1, 2 }) && graph.Count == 3,
+            "candidate graph enumerates distinct edge ordinals canonically");
+        True(graph.Contains(0) && graph.Contains(1) && !graph.Contains(3),
+            "parallel equal-geometry claim ordinals remain distinct graph edges");
+
+        var projection = graph.ToLocatedRelation();
+        True(projection.SequenceEqual(new[]
+            {
+                new TextSpan(0, 1),
+                new TextSpan(1, 2),
+            }),
+            "parallel claim edges collapse only at explicit located projection");
+        True(projection.Reachability().Contains(new TextSpan(0, 2)),
+            "projected candidate geometry feeds the one located reachability implementation");
+
+        var equalGraph = CandidateRegionGraph.Create(
+            ClaimSelection.Create(batch, new[] { 2, 1, 0, 1 }),
+            graph.Window);
+        True(graph.Equals(equalGraph) && graph.GetHashCode() == equalGraph.GetHashCode(),
+            "candidate graph equality is extensional only inside one exact batch basis");
+        True(!graph.Equals(CandidateRegionGraph.Create(
+                ClaimSelection.Create(batch, new[] { 0, 2 }),
+                graph.Window)),
+            "candidate graph equality retains ordinal membership");
+
+        var compatibleMaster = new TextMaster(master.DocumentId, master.Revision, master.Text);
+        var compatibleBatch = PairBatch(
+            compatibleMaster,
+            new TextSpan(0, 1),
+            new TextSpan(0, 1),
+            new TextSpan(1, 2),
+            new TextSpan(0, 2),
+            new TextSpan(2, 4));
+        var compatibleGraph = CandidateRegionGraph.Create(
+            ClaimSelection.Create(compatibleBatch, new[] { 0, 1, 2 }),
+            graph.Window);
+        True(!graph.Equals(compatibleGraph),
+            "compatible equal-row batches remain different occurrence graph bases");
+        True(graph.ToLocatedRelation().Equals(compatibleGraph.ToLocatedRelation()),
+            "different occurrence graphs may project to one compatible located value");
+
+        var empty = CandidateRegionGraph.Create(
+            ClaimSelection.None(batch),
+            new TextSpan(2, 2));
+        True(empty.IsEmpty && empty.ToLocatedRelation().IsEmpty &&
+             empty.Window == new TextSpan(2, 2),
+            "empty-window graph coherently retains an empty candidate selection");
+
+        Throws<ArgumentException>(
+            () => CandidateRegionGraph.Create(
+                ClaimSelection.Create(batch, new[] { 4 }),
+                new TextSpan(0, 2)),
+            "candidate graph refuses out-of-window selected claims");
+        Throws<ArgumentException>(
+            () => CandidateRegionGraph.Create(
+                ClaimSelection.Create(batch, new[] { 0 }),
+                new TextSpan(2, 2)),
+            "empty graph windows admit only an empty candidate selection");
+        Throws<ArgumentNullException>(
+            () => CandidateRegionGraph.Create(null!, master.Extent),
+            "candidate graph requires an exact selection basis");
+
+        var unicodeMaster = new TextMaster("candidate-unicode", 0, "😀");
+        var unicodeBatch = PairBatch(unicodeMaster, unicodeMaster.Extent);
+        Throws<ArgumentException>(
+            () => CandidateRegionGraph.Create(
+                ClaimSelection.None(unicodeBatch),
+                new TextSpan(0, 1)),
+            "candidate graph validates its window even when no edges are selected");
+    }
+
+    private static LocatedRelation LocatedFromMask(
+        TextMaster master,
+        TextSpan window,
+        IReadOnlyList<TextSpan> extents,
+        int mask)
+    {
+        var selected = new List<TextSpan>();
+        for (var index = 0; index < extents.Count; index++)
+        {
+            if ((mask & (1 << index)) != 0)
+            {
+                selected.Add(extents[index]);
+            }
+        }
+
+        return LocatedRelation.Create(master, window, selected);
+    }
+
+    private static int LocatedMask(
+        LocatedRelation relation,
+        IReadOnlyList<TextSpan> extents)
+    {
+        var mask = 0;
+        foreach (var edge in relation)
+        {
+            var index = -1;
+            for (var candidate = 0; candidate < extents.Count; candidate++)
+            {
+                if (extents[candidate] == edge)
+                {
+                    index = candidate;
+                    break;
+                }
+            }
+
+            if (index < 0)
+            {
+                throw new InvalidOperationException($"Oracle extent inventory omitted {edge}.");
+            }
+
+            mask |= 1 << index;
+        }
+
+        return mask;
+    }
+
+    private static int LocatedSeqOracleMask(
+        int leftMask,
+        int rightMask,
+        IReadOnlyList<TextSpan> extents)
+    {
+        var result = 0;
+        for (var left = 0; left < extents.Count; left++)
+        {
+            if ((leftMask & (1 << left)) == 0)
+            {
+                continue;
+            }
+
+            for (var right = 0; right < extents.Count; right++)
+            {
+                if ((rightMask & (1 << right)) == 0 ||
+                    extents[left].End != extents[right].Start)
+                {
+                    continue;
+                }
+
+                var composed = new TextSpan(extents[left].Start, extents[right].End);
+                for (var output = 0; output < extents.Count; output++)
+                {
+                    if (extents[output] == composed)
+                    {
+                        result |= 1 << output;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static int LocatedReachabilityOracleMask(
+        int relationMask,
+        IReadOnlyList<int> boundaries,
+        IReadOnlyList<TextSpan> extents)
+    {
+        var reachable = new bool[boundaries.Count, boundaries.Count];
+        for (var edge = 0; edge < extents.Count; edge++)
+        {
+            if ((relationMask & (1 << edge)) == 0 || extents[edge].IsEmpty)
+            {
+                continue;
+            }
+
+            var start = -1;
+            var end = -1;
+            for (var boundary = 0; boundary < boundaries.Count; boundary++)
+            {
+                if (boundaries[boundary] == extents[edge].Start)
+                {
+                    start = boundary;
+                }
+
+                if (boundaries[boundary] == extents[edge].End)
+                {
+                    end = boundary;
+                }
+            }
+
+            reachable[start, end] = true;
+        }
+
+        for (var boundary = 0; boundary < boundaries.Count; boundary++)
+        {
+            reachable[boundary, boundary] = true;
+        }
+
+        for (var middle = 0; middle < boundaries.Count; middle++)
+        {
+            for (var start = 0; start < boundaries.Count; start++)
+            {
+                for (var end = 0; end < boundaries.Count; end++)
+                {
+                    reachable[start, end] |=
+                        reachable[start, middle] && reachable[middle, end];
+                }
+            }
+        }
+
+        var result = 0;
+        for (var edge = 0; edge < extents.Count; edge++)
+        {
+            var start = -1;
+            var end = -1;
+            for (var boundary = 0; boundary < boundaries.Count; boundary++)
+            {
+                if (boundaries[boundary] == extents[edge].Start)
+                {
+                    start = boundary;
+                }
+
+                if (boundaries[boundary] == extents[edge].End)
+                {
+                    end = boundary;
+                }
+            }
+
+            if (reachable[start, end])
+            {
+                result |= 1 << edge;
+            }
+        }
+
+        return result;
+    }
+
+    private static HashSet<(int Start, int End)> ComposePointRelations(
+        IEnumerable<(int Start, int End)> left,
+        IEnumerable<(int Start, int End)> right)
+    {
+        var result = new HashSet<(int Start, int End)>();
+        foreach (var leftEdge in left)
+        {
+            foreach (var rightEdge in right)
+            {
+                if (leftEdge.End == rightEdge.Start)
+                {
+                    result.Add((leftEdge.Start, rightEdge.End));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static HashSet<(int Start, int End)> ImagePointRelation(
+        IEnumerable<(int Start, int End)> relation,
+        IReadOnlyList<int> pointImage)
+    {
+        var result = new HashSet<(int Start, int End)>();
+        foreach (var edge in relation)
+        {
+            result.Add((pointImage[edge.Start], pointImage[edge.End]));
+        }
+
+        return result;
     }
 
     private static SpanBatch PairBatch(TextMaster master, params TextSpan[] spans)
