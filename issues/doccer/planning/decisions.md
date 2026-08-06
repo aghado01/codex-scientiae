@@ -68,6 +68,44 @@ briefs carry the later contracts with their reports — and the evidence in
 | D38 | K4c contract freeze: structural validators, greedy laminar admission, explicit/nearest hierarchy, and resolution incidence are four separate gates; `PackingView` means disjoint-with-gaps, `CoverView` means total declared-window coverage with overlap allowed, `LaminarView` validates without selecting or inferring parenthood, hierarchy edges are explicit DAG data except for one named nearest-container projection, and resolution maps distinguish incidence, functional aggregation, and exact material aggregation; no K4b dependency or common selector lands | recorded; implemented by D39 |
 | D39 | K4c structural-family closure: exact selection/window/policy-stamped packing, cover, and laminar validators; `Laminarizer.Admit` with grouped maximum priority and deterministic inclusion-maximal—not maximum—guarantee; explicit multiple-parent `HierarchyView` plus policy-gated immediate nearest-container projection; named `ResolutionView` layers and compatible-master explicit `ResolutionMap` incidence/functional/exact-aggregation contracts; the unstamped `Extract`/implicit-tree path is removed; all 1,024 structural masks, 4,096 greedy problems, every valid bounded nearest-parent family, all 4,096 four-node directed graphs, and 2,048 resolution endpoint problems agree with independent oracles (harness 1914→1976) | implemented; K4c closed; next lanes resequenced by D40; Lean gate reapplied and deferred |
 | D40 | Post-K4 coherence and K5–K7 sequencing correction: Doccer's historical “register” is natively a named codepoint-address span or family of spans; Block/Script/GeneralCategory assignments are Unicode classifications derived from register membership; the canonical mathematical language is the unrelated **math channel** (legacy repository name `math-register`); the combined register/value/metadata blocker is decomposed into F-UCD register/classification work, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a derivation-reference seam into K7; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; terminology amended after owner clarification; K5a/K5b/K6/K7 surfaces remain pending |
+| D41 | Round-2 expansion adjudication: the K5a/K5b and K6→K7→K8 critical paths remain unchanged; V0 independently reserves a compatible-master/exact-window UTF-16 code-unit Boolean-vector carrier with distinct direct and harvest exits, unit-basis residual, scalar reference semantics, and evidence-gated alternate backends; A0–A2 independently baseline and then target exact set-bit walking and flat-path reconstruction without reopening D20 or policy identity; normalization performed by a producer may emit origins, while post-hoc alignment remains stamped correspondence evidence unless explicitly promoted; identity commitments, verified material prefilters, similarity signatures, and aggregate sketches remain separate hash jobs; F2 gains a persisted fingerprint algorithm/version/byte-order gate and F7–F9 retain derived producers/alignment, hash/signature/sketch, and statistical-view families | recorded; planning/registry amendment only; no source surface or K dependency changed |
+
+## Expansion round-two adjudication (D41)
+
+D41 separates the three research threads in the
+[round-2 transcript](../discussions/opus-doccer-expansion-round2.md) and its
+[source adjudication](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md).
+The current K sequence is not reopened. K5a remains the default next chip, K5b and K6 remain
+sibling lanes, K7 follows K6, and K8 remains their integration close.
+
+V0 is an independently available registry/contract lane. It reserves a Boolean value over the
+UTF-16 code-unit ordinals of an exact window on a compatible `TextMaster` value. Direct numerical
+consumption and explicit candidate/claim harvest are separate exits. A classifier's incomplete
+unit population remains vector-basis residue; a harvest result may connect that evidence to
+emitted candidates without equating code-unit and occurrence bases. F3 byte addressing remains a
+separate coordinate map. V1 defaults after K8 for portable reference semantics and both exits;
+V2 adds word/SWAR/SIMD paths only after a named workload and differential evidence. Reapply Lean
+at the public V0 contract and before an alternate backend claims equivalence; bit packing alone
+does not activate the harness.
+
+A0–A2 are independently available performance work: record representative time/allocation
+baselines, then consider a word-skipping `ClaimSelection` set-bit walker and a `PathSelection`
+recurrence that retains one best successor per boundary and reconstructs once. Both stay under
+the frozen D30/D37 results and oracles. D20 numeric-column visibility remains contractual, and
+named policy objects remain retained evidence stamps. Ambient `RegexOptions.NonBacktracking`,
+public column exposure, `MemoryMarshal.Cast<char, ulong>` as a semantic design, and generic struct
+policy rewrites are not adopted.
+
+A producer that performs normalization or another transformation may emit actual K6 origins. A
+post-hoc aligner instead emits correspondence under a named edit model, cost/tie rule, resource
+limit, ambiguity, and unmatched residue; it becomes provenance only through an explicit promotion
+that retains those assumptions. K6 therefore stays the small declared origin algebra, while F7
+holds later derived producers and alignment. F8 distinguishes the D1 identity commitment from
+verified material prefilters, lossy similarity signatures, and aggregate sketches. A fast hash
+may reject equality cheaply but never establishes it without comparing the material. F9 retains
+IDF/surprisal, saturating frequency, length normalization, contextual entropy, PMI/PPMI, and
+embedding concepts as individually named, basis-stamped analytics candidates under D8/D10 rather
+than one generic score.
 
 ## Post-K4 coherence and K5–K7 sequencing correction (D40)
 
@@ -557,7 +595,8 @@ The resulting boundaries are:
 
 ## Carrier and law registry (D25)
 
-This section is the canonical K0 registry. A row may reserve a contract before its implementation
+This section is the canonical K0 registry, with D41's V0 carrier/assurance addendum recorded
+without reopening the closed K0 chip. A row may reserve a contract before its implementation
 tranche, but its status and assurance gate must make that distinction explicit.
 
 ### Carriers
@@ -572,8 +611,10 @@ For one immutable master `M`, and an output master `N` where applicable:
 | \(C_M\) | identity-bearing claim occurrences | in-process identity is an ordinal on one exact frozen `SpanBatch`; equal geometry does not imply equal claims |
 | \(F_M\) | later canonical semantic facts | distinct from occurrences; canonical value representation is active K5a contract work |
 | \(O_{N,M}\) | later output-to-source atom-origin relations | cross-master and basis-checked; distinct from support or causal derivation |
+| \(V_{M,W}\) | later Boolean vectors over UTF-16 code-unit ordinals in exact window \(W\) | compatible-master/equal-window value basis; zero/all values are ordinary vectors, not intervals or occurrences; reserved by D41 for V0 |
 
-Consequently, diagonal empties belong to \(L_M\), not to Allen's \(I_M\). Claim-pair identity is
+Consequently, diagonal empties belong to \(L_M\), not to Allen's \(I_M\). An all-zero
+\(V_{M,W}\) is a Boolean value and says nothing about interval emptiness. Claim-pair identity is
 the ordinal diagonal on one exact frozen batch. Origin identity is the atom diagonal between
 compatible master bases. None of these identities may be borrowed by another carrier merely
 because its projected geometry is equal.
@@ -600,6 +641,7 @@ their result semantics interchangeable.
 |---|---|---|---|---|
 | K0-CARRIER | \(P_M\), \(L_M\), \(I_M\), \(C_M\), \(F_M\), and \(O_{N,M}\) are distinct; empties occur only in \(L_M\) among the interval carriers — **frozen** | deterministic contract plus adversarial C# boundary cases | existing empty-span refusal in `AllenAlgebra.Relate`; K3 must add the located diagonal positively | a generalized public interval carrier would change empty participation or an operator signature |
 | K0-IDENTITY-GEOMETRY | Allen `Equal` is identity on \(I_M\), never claim identity — **frozen** | C# oracle/counterexample | classifier cases plus equal-geometry distinct claims in the batch/laminar harness | only if a generic qualitative-calculus or quotient API is proposed |
+| V0-CODE-UNIT-VECTOR | \(V_{M,W}\) is a compatible-master/equal-window Boolean code-unit value distinct from extents, occurrences, and origins; direct use and explicit harvest are separate exits; incomplete classification and invalid harvest positions remain vector/harvest residue — **reserved by D41; V0 contract available** | scalar reference semantics, bounded exhaustive and randomized C# oracles, chunk/carry adversaries, then differential backend evidence | freeze equality/empties, Boolean/shift/prefix operations, carry-in/out, classifier and residual stamps, scalar-boundary harvest, both exits, and a portable reference before acceleration | reapply at the public V0 signature and before a word/SWAR/SIMD or fused/chunked backend claims universal equivalence; activate only if proof can change the signature or executable differential evidence is insufficient |
 | K1-ALLEN-JEPD | the thirteen Allen atoms are jointly exhaustive and pairwise disjoint on \(I_M\) — **implemented in K1b (D28)** | finite exhaustive C# certificate | independent endpoint predicates are unique and agree with `Relate` on all 225 ordered \(D_6\) interval pairs; all thirteen atoms occur | only if Doccer generalizes beyond the finite linear interval carrier |
 | K1-ALLEN-CONVERSE | converse is involutive and agrees with argument reversal — **implemented in K1a (D26)** | finite exhaustive C# oracle | all 8192 relation-set values plus every nonempty interval pair on the six-boundary model | only if a generalized relation carrier changes converse semantics |
 | K1-ALLEN-COMPOSE | `AllenCompose` is the canonical weak-composition upper approximation, not fixed-master exact composition — **implemented in K1b (D28)** | independently encoded table, exhaustive \(D_6\) certificate, and external cited formalization | literal shipped table and independent endpoint oracle agree on all 169 cells/409 atomic triads; algebra laws are executable | a generic qualitative-calculus proof API or non-finite carrier is proposed |
@@ -621,11 +663,14 @@ their result semantics interchangeable.
 | # | family | state | default trigger |
 |---|---|---|---|
 | F1 | `OffsetMap` | contract shape **drafted**: point results `Exact \| Range \| Unmapped`; ICU-Edits-style segment list (`Identity/Expand/Contract/Delete/Insert`); span projection under a named policy (`Clip/Expand/Drop/Residual/Refuse`, **Residual** default posture); exactness laws on preserved coordinates; maps compose; acceptance edge-cases in [grok-offsetmap-unicode](../discussions/grok-offsetmap-unicode.md) | first edit-plan or normalization job |
-| F2 | Persisted batch format | interning tables landed as groundwork; mdnav sidecar = identity/staleness design donor; subsumes the CLI wire format, not duplicates it | first cross-process consumer |
+| F2 | Persisted batch format | interning tables landed as groundwork; mdnav sidecar = identity/staleness design donor; subsumes the CLI wire format, not duplicates it; before any `TextMaster` fingerprint crosses platforms, freeze the commitment algorithm/version and canonical UTF-16 byte order rather than persisting the current host-endian byte view | first cross-process consumer |
 | F3 | Byte addressing | encoding map (bytes↔code units) is a distinct object from the Unicode-form map; reconcile with OffsetMap, never bolt onto `TextMaster` | byte-exact reproduction/provenance need; a successor-design decision |
 | F4 | Indexed joins / lookup acceleration | semantics are the contract; pure acceleration | Tier-2 tests freeze semantics |
 | F5 | Tier-2/3 acceptance, agreement scoring | needs an honest pair of independent producers (ATX vs setext natural) | markdown inventory exists |
 | F6 | Markdown adapter + mdnav succession | oracle harness vs mdnav on doc-dive fixtures; exceed at the collapse points (quote-nested fences, setext/ATX disagreement, multi-line HTML, H1×breaks join); conserve instrument virtues; doc-dive skill retargets unchanged | Phase-2 exit + markdown inventory |
+| F7 | Derived origin and alignment producers | normalization or another performed transform may emit actual K6 origins plus loss; post-hoc alignment first emits basis/policy-stamped correspondence, ambiguity, unmatched residue, and resource evidence, and becomes provenance only through explicit promotion | after K6/K7 core by default; first normalization/version-alignment witness may prioritize |
+| F8 | Material prefilters, rolling hashes, similarity signatures, and aggregate sketches | distinct from D1 identity; positive hash matches are verified before exact equality; every persisted/indexed value names algorithm, version, seed/domain, byte/code-unit basis, and portability; content-defined boundaries and LSH remain named producer/index contracts | after K8 by default; repeated equality, chunking, novelty, or similarity-index workload |
+| F9 | Statistical feature and weighting views | retain IDF/surprisal, saturating frequency, length normalization, contextual entropy, PMI/PPMI, and embeddings as separately named basis-stamped specimens; each declares population, feature projection, grain/window, smoothing, direction, and normalization; placement remains kernel vs adjacent analytics under D8/D10 | after K8 by default; repeated cross-domain population/feature witness |
 | F-UCD | Unicode block/script facts | decision-gated: needs a UCD data-provenance record (pinned version, tables as versioned data, lazily computed); then lands as ordinary `AtomFacts` selectors | schedulable any time (D14) |
 
 ## Question ledger
@@ -655,10 +700,16 @@ their result semantics interchangeable.
 | Q21 | when codex-scientiae adapters land | roadmap — CLI + primitives first, adapters last |
 | Q22 | PerLine terminator in or out | D15 |
 | Q23 | regex options vs ambient culture (T2-2) | D18 |
+| Q24 | bitmap/vector substrate placement and residual basis | D41 — V0 peer carrier; direct and harvest exits; unit residual remains distinct |
+| Q25 | performed transform origin vs post-hoc alignment | D41 — actual origins from the producer; correspondence evidence needs explicit promotion |
+| Q26 | one hash utility vs distinct jobs | D41 — identity, verified material prefilter, signature, and sketch remain separate contracts |
 
 ## Open (no decision record yet)
 
 - **K5a canonical value representation and derivation-reference identity:** active contract work;
   codepoint registers and their Unicode classifications are F-UCD, while the math channel (legacy
   repository name `math-register`) is unrelated adapter/application design (D40).
+- **V0 code-unit-vector contract:** exact public basis/equality, classifier/residual result shape,
+  chunk carry, and the two direct/harvest exits are independently available contract work (D41);
+  no source type or backend is yet implied.
 - **Per-line terminator-kind view** (D15): named, unscheduled.

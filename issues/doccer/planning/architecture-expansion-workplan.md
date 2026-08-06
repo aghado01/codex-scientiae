@@ -13,6 +13,9 @@ The evidence base is:
 - [the ICDT 2025 ET close read](../discussions/fable-et-framework-close-read-20260803.md);
 - [the post-K4 review](../discussions/opus-doccer-k3k4-review-k5k7-notes.md) and
   [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md);
+- [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
+  [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
+  [D41 source adjudication](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
 - the implemented contracts in [the engine README](../../../src/doccer/README.md).
 
 ## 1. Executive result
@@ -155,6 +158,12 @@ flowchart TD
     K6["K6: origin algebra"]
     K7["K7: rewrite plan + Materialize"]
     W["K8: cross-carrier integration"]
+    V0["V0: code-unit-vector contract"]
+    V1["V1: portable vector + two exits"]
+    V2["V2: accelerated vector backends"]
+    A0["A0: benchmark/allocation baseline"]
+    A1["A1: selection set-bit walker"]
+    A2["A2: flat-path recurrence"]
     Q["Optional QSTR networks"]
     ET["Optional LinearET backend"]
 
@@ -181,6 +190,13 @@ flowchart TD
     K4C --> W
     K5B --> W
     K7 --> W
+    K0 -.->|D41 registry addendum| V0
+    V0 --> V1
+    V1 --> V2
+    A0 --> A1
+    A0 --> A2
+    K2A -.->|frozen D30 semantics| A1
+    K4B -.->|frozen D37 semantics| A2
     K1B --> Q
     K7 --> ET
 ~~~
@@ -208,6 +224,13 @@ is in the
 by the [D34 review adjudication](../briefs/sol-doccer-k3-k4a-review-adjudication-20260805_151759.md)
 and [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md).
 
+D41 adds V and A as independent branches without inserting either into the K critical path. V0
+may close its carrier contract now; V1 has default execution priority after K8, and V2 follows only
+measured reference semantics. A0–A2 may proceed beside K5–K8 because D30 and D37 already freeze
+their observable behavior. The dotted D30/D37 arrows are semantic constraints, not invitations to
+change the public carriers. Full adjudication:
+[D41 round-2 expansion](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md).
+
 ## 5. Cross-cutting tranche gate
 
 Every public tranche closes only when all applicable rows are satisfied.
@@ -219,6 +242,8 @@ Every public tranche closes only when all applicable rows are satisfied.
 | Residual | Unused, rejected, ambiguous, or unmappable input remains visible where meaningful. |
 | Policy | Kernel mechanism and caller-supplied judgment are separated. |
 | Reference semantics | A simple implementation exists before acceleration. |
+| Representation | Public semantics are independent of a private scalar, word, vector, column, or index layout; any exposed layout is itself an intentional contract. |
+| Acceleration, when claimed | A named workload and time/allocation baseline justify the path; every runtime backend preserves the carrier, policy, result, and residual stamps and agrees differentially with the reference. |
 | C# contract harness | Positive, boundary, adversarial, and law-oracle cases are green. |
 | Lean/theory | A theorem, finite decision certificate, or explicit reason that this is policy rather than algebra is recorded. |
 | Witness | At least one bounded adapter recipe demonstrates the operation without donating domain meaning to the kernel. |
@@ -782,6 +807,15 @@ Exit gate:
 - <code>TextSlice</code> supplies the injective functional special case;
 - birth-event instrumentation from a future NSST backend is only one origin producer.
 
+D41 keeps producer epistemics explicit. A stage that performs a transformation, including an
+explicit normalization producer, may emit actual origins because it observes the births and
+losses. A post-hoc aligner over independently supplied masters instead emits correspondence under
+a named edit model, cost/tie policy, resource bound, ambiguity, and unmatched residue. That result
+does not become historical provenance merely because its trace has the same pair shape; an
+explicit promotion must retain the assumption and policy stamp. K6 closes the declared relation
+carrier first. Normalization and computed alignment are later K6-compatible producers under F7,
+not K6 prerequisites and not a parallel origin type built before the carrier.
+
 ### K7 — rewrite plans and <code>Materialize</code>
 
 Close D7's final lift only with origins and residue present.
@@ -841,6 +875,67 @@ non-domain-owning cross-carrier examples:
 These are integration demonstrations, not the first validation of their component contracts and
 not durable codex-scientiae adapters unless separately promoted.
 
+## 6A. Independent and post-K expansion lanes (D41)
+
+### V0–V2 — code-unit vectors
+
+V0 is contract work available beside the K arc. Reserve an immutable Boolean vector over the
+UTF-16 code-unit ordinals of exact window <code>W</code> on a compatible
+<code>TextMaster</code> value. Zero/all values are vector values rather than interval empties;
+F3 byte addressing is a separate coordinate map. Freeze:
+
+- compatible-master/equal-window basis and value equality;
+- Boolean operations, bounded shifts, set-bit/population operations, and prefix parity with
+  explicit chunk carry-in/carry-out;
+- classifier identity/completeness and a code-unit-basis residual;
+- scalar-boundary validation during offset/span harvest; and
+- two distinct exits: direct peer-value/index consumption and explicit candidate/claim harvest
+  with producer evidence.
+
+A harvest result connects unit evidence to emitted candidates; it does not equate a vector
+residual with an occurrence selection or K4 result residual. V1 defaults after K8 and lands a
+portable reference plus both exits before optimization. V2 may add word/SWAR,
+<code>Vector&lt;T&gt;</code>, or architecture-specific backends only for measured operations and
+must agree differentially with V1 across remainder units, chunk boundaries, surrogate edges,
+residual zones, and runtime fallback paths. A layout technique such as
+<code>MemoryMarshal.Cast</code> supplies no semantic or portability shortcut.
+
+### A0–A2 — measured backend work
+
+A0 records named dense/sparse selection, graph, and path workloads with elapsed-time and allocated
+byte baselines. No source rewrite is called a hot-path optimization before that evidence exists.
+
+- **A1:** walk <code>ClaimSelection</code> words using trailing-zero count and clear-lowest-bit,
+  preserving ascending ordinals and the existing interface contract. A normal struct/pattern
+  walker is sufficient; ThermoMapper's <code>ref struct</code> is a donor pattern, not a required
+  type choice.
+- **A2:** group admissible path edges by start boundary, retain score plus one best successor, and
+  reconstruct the ordinal path once. At one boundary equal-score alternatives have distinct first
+  ordinals, so the D37 full-path lexicographic order reduces to that first ordinal locally.
+
+D30's mask/word-boundary oracle and D37's 16,384-problem optimizer oracle remain the semantic
+gates. D20's public column boundary and the retained identity of named policy objects do not move.
+CSR/sweep layouts, pooled scratch, or column-vector kernels wait for a remaining measured cost and
+fall under F4 or another separately closed contract.
+
+### F7–F9 — post-K/adjacent families
+
+- **F7 derived producers and alignment:** performed transforms may emit origins plus loss;
+  post-hoc alignment emits correspondence/ambiguity/unmatched evidence and requires explicit
+  provenance promotion.
+- **F8 hashing/signatures/sketches:** D1 identity commitment, verified material prefilter,
+  similarity signature, and aggregate sketch are four jobs. Prefix/rolling hashes and LSH name
+  their algorithm, version, seed/domain, unit/byte basis, and portability; a positive fast-hash
+  match never proves exact equality without material verification.
+- **F9 statistical feature views:** IDF/surprisal, saturating frequency, length normalization,
+  contextual entropy, PMI/PPMI, and embeddings remain separately named specimens. Each declares
+  its population, feature projection, grain/window, smoothing, direction, and normalization;
+  D8/D10 decide kernel versus adjacent analytics placement.
+
+V1/V2 and F7–F9 default after K8 to keep the present execution queue intelligible. That is a
+scheduling preference, not a type dependency; a closed, independently witnessed contract may be
+pulled forward under D14.
+
 ## 7. Deferred Lean rigor lane
 
 The harness is not on the active implementation path. Its restart conditions, enhanced design, and
@@ -862,6 +957,12 @@ least-fixed-point theorem under explicit hypotheses. K5a must make those hypothe
 the rule carrier before K5b promises order independence. Reapply when the K5a signature freezes;
 activate if a proof can choose between rule-carrier designs or before a parallel/incremental
 backend claims equivalence.
+
+D41 reapplies the gate twice for the V lane without declaring an activation. At V0, ask whether a
+proof can change the public basis, carry, residual, or harvest signature. Before V2, ask whether a
+word/SWAR/SIMD, fused, or chunked backend makes a universal equivalence claim that bounded and
+property-based differential evidence cannot honestly own. The presence of a second implementation
+is pressure to reassess, not a theorem-project switch by itself.
 
 ### L0 — bootstrap only after an activation trigger
 
@@ -895,6 +996,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
 | K5a–K5b | positive-rule monotonicity, finite fixed-point termination, rule-order independence, and alternative-support preservation |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
+| V0–V2 | compatible-window Boolean algebra, chunked prefix/carry agreement, scalar-boundary harvest soundness, and optimized-backend equivalence |
 
 Standard library facts should be reused rather than renamed as Doccer theorems unless the wrapper
 itself is a public contract.
@@ -926,8 +1028,11 @@ Known concrete geometry continues to use exact joins and validators.
 ### O3 — operational acceleration and persistence
 
 - F4 indexing begins only after K2/K3 semantics freeze.
+- D41's A0 baseline precedes claims that A1/A2 or a later index is faster; A1/A2 preserve D30/D37
+  and do not expose D20's numeric columns or rewrite evidence-bearing policies.
 - F2 persistence waits for an explicit decision about which occurrence, fact, support, plan, and
-  origin identities cross process boundaries.
+  origin identities cross process boundaries, and fixes the fingerprint algorithm/version and
+  canonical UTF-16 byte order before persisting the current host-endian in-process commitment.
 - CLI verbs wait for stable carrier wire forms; provisional DLL-reach adapters continue as
   disposable census instruments.
 - ECSA-style packed enumeration is considered only after K5 has a real support/result structure.
@@ -946,6 +1051,11 @@ Known concrete geometry continues to use exact joins and validators.
 | F4 indexed joins | acceleration after K2/K3 reference semantics |
 | F5 agreement scoring | after K4 selection/result shape |
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
+| V0–V2 code-unit vectors | V0 contract independently available; V1 portable reference and two exits after K8 by default; V2 only after measured differential evidence |
+| A0–A2 measured backend work | independently available under frozen D30/D37 semantics; benchmark/allocation baseline first |
+| F7 derived producers/alignment | after K6/K7 by default; computed correspondence is not automatically provenance |
+| F8 hash/signature/sketch work | after K8 by default; separate from D1 identity and F4 indexing semantics |
+| F9 statistical feature views | post-K or adjacent analytics; one named population/basis/measure at a time under D8/D10 |
 | F-UCD | independent fact-data lane; unchanged |
 
 D40 restores historical **register** to its native codepoint-address meaning and decomposes the
@@ -980,10 +1090,13 @@ K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28,
 contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, K2c strict
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
 the joint located/graph core as D35, the flat result closure as D36, additive complete-path
-selection as D37, the K4c contract as D38, structural-family closure as D39, and the post-K4
-coherence/K5–K7 sequencing correction as D40. K2, K3, and all K4 lanes are closed. K5a canonical
+selection as D37, the K4c contract as D38, structural-family closure as D39, the post-K4
+coherence/K5–K7 sequencing correction as D40, and the round-2 expansion adjudication as D41. K2,
+K3, and all K4 lanes are closed. K5a canonical
 fact/support identity is the default active next chip; K6 origin-contract work is an independently
-available sibling. K5b saturation follows K5a and does not block K6 or K7.
+available sibling. K5b saturation follows K5a and does not block K6 or K7. D41 records the
+round-2 expansion adjudication without changing those edges: V0 carrier-contract work and A0–A2
+measured backend work are independently available; V1/V2 and F7–F9 default after K8.
 
 D37 reapplies the global-optimality Lean trigger and keeps Lean deferred under one closed finite-DAG
 recurrence plus exhaustive differential evidence. D39 separately reapplies the K4c structural gate
@@ -993,4 +1106,6 @@ closure backend, another K4 backend claims equivalence, generalized objectives/c
 partial paths gain a nontrivial guarantee, structural selection promises an optimum, or hierarchy
 closure/reduction or resolution-map composition becomes load-bearing. D40 separately reapplies the
 K5 signature trigger and defers Lean until K5a freezes a positive-rule carrier; activate if proof
-pressure changes that signature or later licenses parallel/incremental saturation.
+pressure changes that signature or later licenses parallel/incremental saturation. D41 reapplies
+the V-lane gate at the public contract and alternate-backend boundaries; activate only if proof
+can change the signature or executable differential evidence cannot own the claimed equivalence.

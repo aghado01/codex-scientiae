@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D40, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D41, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -86,6 +86,14 @@ span carrier:
 - origin identity will be the atom diagonal on one exact ordered tagged origin basis; compatible
   masters validate or project geometry but do not substitute source-slot identity.
 
+D41 additionally reserves a future Boolean-vector carrier over UTF-16 code-unit ordinals in an
+exact window on a compatible master value. Its zero vector is not an interval empty; direct
+numerical consumption and explicit candidate/claim harvest are separate exits, and incomplete
+classification remains unit-basis residual rather than occurrence residue. V0 contract work is
+independently available, but no vector type, classifier surface, harvest API, or accelerated
+backend is implemented yet. Any byte-addressed vector requires F3's separate coordinate map rather
+than aliasing the UTF-16 basis.
+
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
@@ -107,7 +115,9 @@ owners and Lean reactivation triggers live in the D25 registry in
 
 - immutable, identified UTF-16 text masters; fingerprints hash the raw code units, so identity
   distinguishes everything the topology distinguishes (including which lone surrogate a text
-  contains); fingerprint and topology are lazy and cached;
+  contains); fingerprint and topology are lazy and cached; the current byte view is host-endian
+  and remains in-process—F2 must freeze the commitment algorithm/version and canonical UTF-16 byte
+  order before fingerprints persist across platforms;
 - a total Unicode-scalar tiling and line topology, including explicit malformed-surrogate atoms;
 - derived run views over that tiling, emitted on demand under an explicit break-key: the atoms
   carry facts only, and any coarser grouping is a per-call view whose runs carry the key they
@@ -267,7 +277,11 @@ closes honestly without one:
 - further density measures beyond gap cadence (never a generic `Density` verb — each future
   measure arrives individually named, declaring numerator, denominator, window basis, boundary
   policy, exclusions);
-- suppression bitmaps (an acceleration of the suppression query, never a claim property);
+- the D41 code-unit-vector substrate: V0 must first freeze compatible-window equality, Boolean and
+  chunk-carry operations, classifier/residual stamps, scalar-boundary harvest, and its separate
+  direct/harvest exits; V1 portable reference semantics precede V2 word/SWAR/SIMD backends;
+- suppression bitmaps as one later vector consumer/acceleration of the suppression query, never a
+  claim property or second source of truth;
 - Unicode block and script properties as break-key facts: unlike the major-class fold, they would
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
@@ -280,13 +294,19 @@ closes honestly without one:
   Further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
   other ties—require separately named contracts rather than widening D37 silently. Structural
   optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
-  contracts, not implications of D39.
+  contracts, not implications of D39;
+- F7 derived origin/alignment producers, F8 material-prefilter/hash/signature/sketch contracts, and
+  F9 statistical feature views. A performed transform may emit actual origins; post-hoc alignment
+  is correspondence evidence unless explicitly promoted. Fast hashes must verify positive matches
+  before exact equality, while IDF/entropy/PMI/BM25-style ideas each require a named population,
+  feature basis, direction, and policy before kernel or adjacent-analytics placement.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source
 material; decides nothing about meaning. A feature failing the last test belongs in an adapter
-or the consumer. Mask helpers belong above `SpanSet`; syntax recognition belongs in external
-adapters or declarative inventories.
+or the consumer. D41 permits a low-level code-unit-vector peer carrier once V0 closes; it does not
+embed what a vector means. Syntax recognition remains in external adapters or declarative
+inventories unless a separately admitted domain-neutral mechanism is demonstrated.
 
 ## Build boundaries
 

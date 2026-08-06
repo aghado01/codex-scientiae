@@ -5,13 +5,13 @@ Decisions and the question ledger live in [decisions.md](decisions.md); complete
 move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 [../briefs/](../briefs/); evidence in [../discussions/](../discussions/).
 
-## Current state (2026-08-05)
+## Current state (2026-08-06)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D40**, contract harness **1976 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D41**, contract harness **1976 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
-[ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the substrate is complete, the
-lift vocabulary lacks only materialize, and the first D8 measure is landed. Delivery:
+[ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the initial text/claim substrate
+is complete; the lift vocabulary lacks only materialize, and the first D8 measure is landed. Delivery:
 `build-doccer.ps1` →
 `packages/doccer` with `doccer.manifest.json` as provenance (`packages/` is untracked; refreshes
 are local-only). The post-Allen literature review, factory analysis, and formalization audit are
@@ -65,11 +65,16 @@ then remove the accidental codepoint-register/math-channel dependency, make exac
 value equality coherent across K4, split K5a identity/support from K5b saturation, and make K5 and
 K6 sibling lanes toward K7. Existing `math-register` paths retain that legacy name pending the
 separate terminology migration. K5a contract work has default execution priority; K6 contract
-work is independently available.
+work is independently available. D41 and its
+[round-2 source adjudication](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md)
+leave that K sequence unchanged while adding an independent V0 code-unit-vector contract lane,
+an A0–A2 benchmark/set-bit/path-backend lane, the F2 fingerprint-portability gate, and post-K
+F7–F9 derived-producer/alignment, hash/signature/sketch, and statistical-view families. No source
+surface or harness count changed in D41.
 
 ## Sequencing doctrine
 
-Engines first; **codex-scientiae adapters last**. scriba-scientiae was aborted — codex is
+Engines first; **codex-scientiae adapters last**. scriba-scientiae was aborted — codex-scientiae is
 renovated from the inside, so its converter/LaTeX lanes are the living lanes, and they become
 thin consumers of doccer only after the doccer-native surface exists. Contracts gate work;
 consumers witness (D14). Per-topic containment: `planning/` = living truth (decisions, roadmap,
@@ -99,9 +104,17 @@ order is:
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
 5. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
-   adapters, persistence, and indexes. A fixed linear-ET compiler may follow K7; uncertain QSTR
-   networks branch from K1 only when a real consumer appears. Neither is on the kernel critical
-   path.
+   adapters, persistence, and indexes. F7 derived producers/alignment, F8 hash/signature/sketch
+   work, and F9 statistical feature views default after K8 or to an adjacent analytics/index
+   package under D8/D10. A fixed linear-ET compiler may follow K7; uncertain QSTR networks branch
+   from K1 only when a real consumer appears. None is on the kernel critical path.
+
+**Independent V/A lanes:** V0 may now close the compatible-master/exact-window UTF-16 code-unit
+Boolean-vector contract, unit residual, chunk carry, and direct/harvest exits. Its portable V1
+implementation defaults after K8 and precedes any V2 accelerated backend. A0 may establish named
+dense/sparse time and allocation baselines now; A1's word-skipping `ClaimSelection` walker and
+A2's reconstruct-once `PathSelection` recurrence may then land independently under the frozen
+D30/D37 oracles. These lanes do not change K5a's default priority or expose D20 numeric columns.
 
 **Parallel witness/census lane:** provisional PowerShell adapters may continue to reach directly
 into the packaged DLL during the latex-ingest rewrite. They remain site-local, disposable research
@@ -115,7 +128,7 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D40 leave K3/K4a and the first K4b/K4c
+universal no-false-negative equivalence load-bearing. D33–D41 leave K3/K4a and the first K4b/K4c
 executor on direct finite reference semantics. D37 reapplies the global-optimum trigger and keeps
 Lean deferred under one closed finite-DAG additive recurrence plus exhaustive differential
 evidence. D39 reapplies the structural gate and keeps Lean deferred under direct validators,
@@ -125,7 +138,11 @@ monotone rule construction true rather than exposing arbitrary whole-store callb
 the K5a contract freeze and before a parallel/incremental saturation backend. Also reapply before a
 second/optimized path or structural backend, generalized objective/carrier,
 nontrivial partial-path guarantee, global structural optimum, hierarchy closure/reduction law, or
-resolution-map composition/equivalence claim.
+resolution-map composition/equivalence claim. D41 separately reapplies the V-lane gate at V0's
+public basis/carry/residual/harvest signature and before V2 claims alternate-backend equivalence.
+Activate only if proof can change that signature or executable differential evidence cannot
+honestly own the universal claim; bit packing or a second implementation is not automatic
+activation.
 
 **First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
 still a catalog, not a contract, and the wire format waits for stable carrier identities and the
@@ -133,13 +150,16 @@ latent-manuscript node-stream schema. The current `inspect`/`relate` commands re
 developer diagnostics. Durable adapters remain last: PowerShell veneers and LaTeX consumers become
 thin clients only after the relevant Doccer surface stabilizes.
 
-Other independent closures remain available under D14: the F-UCD data-provenance record, a callable
-runtime Tier-1 law runner if demanded, and early `OffsetMap` pressure tests that do not pre-empt the
-K6 origin contract.
+Other independent closures remain available under D14: V0, the A0–A2 measured backend lane, the
+F-UCD data-provenance record, a callable runtime Tier-1 law runner if demanded, and early
+`OffsetMap` pressure tests that do not pre-empt the K6 origin contract.
 
-Maturity-gated beyond that: F2 persisted batches → F4 indexed joins → F5 Tier-2/3 agreement
-scoring → F6 markdown adapter and the mdnav succession (oracle harness on the doc-dive
-fixtures; exceed mdnav precisely at its collapse points; conserve its instrument virtues).
+Maturity-gated beyond that: F2 persisted batches (after fingerprint algorithm/version/canonical
+byte order) → F4 indexed joins → F5 Tier-2/3 agreement scoring → F6 markdown adapter and the mdnav
+succession (oracle harness on the doc-dive fixtures; exceed mdnav precisely at its collapse
+points; conserve its instrument virtues). F7 derived producers/alignment, F8
+hash/signature/sketch work, and F9 statistical feature views default after K8 but remain
+independent of that completion as types; D14 permits pulling forward a closed witnessed contract.
 
 ## Standing practice — the abductive census
 
@@ -193,10 +213,12 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 ## Open questions in play
 
 - See [decisions.md § Open](decisions.md): K5a's canonical value representation and narrow
-  derivation-reference identity are active contract work; the per-line terminator-kind view remains
+  derivation-reference identity are active contract work; V0's exact public vector/classifier/
+  harvest shape is independently active contract work; the per-line terminator-kind view remains
   unscheduled. D40 restores Doccer's historical register to its codepoint-address meaning and
   removes the unrelated math-channel dependency; `math-register` remains only the legacy
-  repository name pending migration. All Tranche-2 stragglers are closed — see the
+  repository name pending migration. D41 keeps post-hoc alignment evidence distinct from actual
+  producer origins. All Tranche-2 stragglers are closed — see the
   [ledger](ledger.md).
 
 ## Standing context for future sessions
