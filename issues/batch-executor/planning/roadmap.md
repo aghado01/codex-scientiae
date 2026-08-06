@@ -26,17 +26,27 @@ decomposition. Phase 4 is now the ahead queue.
 1. Preserve the closed teardown gate through every adapter change.
 2. Preserve one scheduler and one budget; never split implementation by execution mode.
 3. Keep adapters thin: discovery and domain interpretation may emit jobs but never own executor resources.
-4. Keep compatibility explicit and temporary; new callers bind to the manifest.
-5. Require a separate decision before changing the frozen public execution projection or deferred semantics.
+4. Consume a caller-allocated `RunDirectory`; never allocate run identity or define a durable executor-result
+   store inside an adapter.
+5. Keep compatibility explicit and temporary; new callers bind to the manifest.
+6. Require a separate decision before changing the frozen public execution projection or deferred semantics.
 
 ## Phase 4 — Domain adapters
 
-- **BEX-401 — Test adapter.** Discover caller-selected test cases or test files and emit batch jobs with
-  stable IDs, runtime dependencies, cost hints, working directories, and isolated result/log locations.
-- **BEX-402 — Ingestion adapter.** Convert document inventory rows into process or direct jobs with complete
-  declared write sets, latex-ingest dependencies, child policy, and run-log correlation.
-- **BEX-403 — Validate adapter thinness.** Adapters may discover and interpret domain work but may not own
-  pools, child registries, cancellation, retries, or competing result-order rules.
+- **BEX-401 — Test adapter.** Accept caller-selected test cases or test files and an existing absolute
+  `RunDirectory`; emit batch jobs with stable IDs, runtime dependencies, cost hints, and working directories.
+  Derive every collision-free per-job runner-artifact address through one private pure resolver, declare
+  every intended application write in `Writes`, and keep generic executor results in memory. Preserve
+  caller-supplied logging and correlation inputs without selecting a logger sink topology. Do not allocate a
+  run or invent a durable result schema. Add a structural witness that rejects competing path composition.
+- **BEX-402 — Ingestion adapter.** Convert document inventory rows plus a caller-resolved `RunDirectory` into
+  process or direct jobs with complete declared write sets, latex-ingest dependencies, child policy, and
+  preserved caller correlation inputs. Reuse the D19 addressing handoff; do not implement logger lifecycle,
+  run allocation, or generic result persistence.
+- **BEX-403 — Validate adapter thinness.** Prove adapters may discover and interpret domain work but do not
+  own pools, child registries, cancellation, retries, competing result-order rules, run allocation, logger
+  lifecycle, or durable executor-result stores. Prove per-job path composition has one resolver and every
+  intended application write is declared.
 
 ## Deferred semantic candidates
 

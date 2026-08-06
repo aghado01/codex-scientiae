@@ -202,6 +202,51 @@ phase names never escape. Any new public timing such as preparation or teardown 
 separate contract decision. `DispatchMs` is explicitly submission-only: preparation and serialization
 remain included in `TotalMs` but do not receive separate public timing fields.
 
+## Adapter and infrastructure handoff
+
+### D19 — Adapters consume caller-resolved run addressing without owning run infrastructure — accepted
+
+Domain adapters accept an existing, caller-allocated absolute `RunDirectory`. They do not mint a runstamp,
+choose a top-level artifact root, join or allocate a run, or infer a run identity from a path. This preserves
+infrastructure D3 while its canonical run-context shape remains open in infrastructure Q1. Phase 4 therefore
+does not freeze a provisional `{ Id, Root }` object. A future run-context wrapper may supply its resolved run
+directory without changing adapter planning semantics.
+
+All adapter-owned per-job artifact addressing passes through one private, pure resolver. Planning derives
+collision-free descendants beneath `RunDirectory` but does not create them; workers may create only the
+adapter-owned destinations declared by their job. Every intended application write is represented in
+`Writes`, and a structural witness rejects competing path-composition sites in the adapter.
+
+`BatchJob.Id` is the adapter's stable job-correlation identity. Process execution injects
+`CODEX_BATCH_JOB_ID` and `CODEX_BATCH_EXECUTION_MODE=Process` and otherwise preserves caller-supplied
+environment values unless explicitly overridden. That is process transport, not a completed logger or
+cross-workflow correlation schema. Direct jobs correlate through their job record and context. Adapters must
+not invent another run, task, event, or log-correlation vocabulary while infrastructure Q1 and LOGJ-305 are
+open.
+
+The executor's returned execution record remains the result boundary. An adapter does not serialize it or
+define a generic durable job/result store. A runner-native or application-native report or log may be an
+explicit job artifact when its schema, location, and complete write set belong to that application contract.
+Any provisional handoff label belongs in plan/job metadata and planning documentation, never in an invented
+marker file.
+
+The Phase 4 coordination contract is:
+
+| concern | batch-adapter contract | infrastructure handoff |
+|---|---|---|
+| Run allocation | Caller supplies an existing resolved `RunDirectory`; adapter never allocates or stamps it. | Infrastructure D3; Q1 and LOGJ-302 define the eventual shared run context and allocation/join API. |
+| Per-job addressing | One pure resolver derives unique descendants; jobs declare every intended application write; planning creates none. | A future run context may replace only the resolver's input binding, not adapter path policy. |
+| Job correlation | Use `BatchJob.Id`; preserve caller correlation inputs; treat process environment variables as transport only. | Q1 and LOGJ-305 define cross-workflow run/task/event correlation. |
+| Logging | Pass caller-resolved addresses and policy inputs; do not implement logger lifecycle or sink semantics. | LOGJ-301–LOGJ-304 own wrappers, run joining, shared append mechanics, and degradation. |
+| Durable executor results | None; return the in-memory execution record. Explicit application-native artifacts remain declared application writes. | Infrastructure D23 and LOGJ-401–LOGJ-407 govern any future store kind; persistent batch result stores remain deferred. |
+
+This handoff is based on the
+[K3/K4 coordination review](../discussions/opus-k3k4-comments-20260804.md) and the infrastructure
+[decisions](../../infrastructure/planning/decisions.md),
+[open questions](../../infrastructure/planning/open-questions.md), and
+[roadmap](../../infrastructure/planning/roadmap.md). Batch Phase 4 does not wait for the entire infrastructure
+roadmap, but it must not preempt those unresolved contracts.
+
 ## Deliberate non-goals of the current executor
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec
