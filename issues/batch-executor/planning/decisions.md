@@ -352,6 +352,32 @@ adapter now supplies the same contract to every planned container: the result an
 one resolver, both are declared writes, and the child receives the artifact root without planner-side
 allocation.
 
+### D24 — The repository parallel-test shell owns composition and failure projection only — implemented
+
+`tests/parallel.ps1` is the product-facing batch entrypoint for repository Pester work. It imports the
+canonical `adapters.psd1` and `batch-executor.psd1` manifests and invokes the module-qualified
+`Get-PesterBatchJob`, `New-BatchPlan`, and `Invoke-BatchPlan` commands exactly once each. This fixes one
+visible composition path without adding a command to either module or creating another scheduler layer.
+
+The caller supplies selected `Path` values, which default to the repository `tests/` directory, and a
+mandatory existing absolute `RunDirectory`. File/directory selection is sufficient for the current suite;
+there is no workload-profile name, workload manifest, automatic run allocation, or timestamp convention.
+Repository root, Pester manifest, child PowerShell, full-name/tag/result inputs, and bounded executor
+worker/process policy remain pass-through inputs to their existing public owners.
+
+After successful plan compilation and execution, the shell writes exactly one concise Information-stream
+summary and emits the unmodified in-memory execution record. If any job state is non-successful or the
+executor returns infrastructure errors, the shell throws only after emitting that record. This preserves
+all sibling results, native XML, and container artifacts for pipeline callers while making direct
+`pwsh -File` invocation nonzero. Plan validation errors throw before execution because no execution record
+exists.
+
+The shell owns no queue, worker pool, process registry, cancellation protocol, retry loop, process launch,
+run allocation, logger lifecycle, durable or merged result store, result ordering, or Pester address
+composition. Structural witnesses reject those owners; two-file success and sibling-failure runtime
+witnesses cover exact record output, native and suite artifacts, process cleanup, retained failure evidence,
+and real CLI exit status.
+
 ## Deliberate non-goals of the current executor
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec

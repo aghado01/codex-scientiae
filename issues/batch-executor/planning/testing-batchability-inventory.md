@@ -166,15 +166,23 @@ stable `pester:<repository-relative-path>#<digest>` identity, one `pester-jobs` 
 creates neither address. The former generic adapter names remain above only as explicit BEX-501/BEX-503
 measurement provenance.
 
-Current inventory after BEX-505 (unchanged by the adapter rename):
+BEX-506 adds one `Batchable` physical container, `tests/adapters/parallel.Tests.ps1`. Its three outer tests
+pass by exact path; four additional textual `It` lines are fixture source executed only in nested child
+repositories, so the mechanical count increases from 462 to 469 without creating seven repository tests.
+The container's structural witness rejects duplicated scheduler/lifecycle/run/log/store/address ownership;
+its two runtime witnesses prove two-file success and sibling failure/real-CLI behavior with native XML,
+container artifacts, complete execution-record evidence, and no surviving child. The complete sequential
+repository gate selected 482 tests: 480 passed, 2 were dependency-gated skips, and none failed.
+
+Current inventory after BEX-506:
 
 | Class | Files |
 |---|---:|
-| `Batchable` | 32 |
+| `Batchable` | 33 |
 | `CapabilityGated` | 4 |
 | `NeedsRefactor` | 8 |
 | `SerialOnly` | 0 |
-| **Total** | **44 files / 479 observed tests / 462 textual `It` lines** |
+| **Total** | **45 files / 482 observed tests / 469 textual `It` lines** |
 
 ## BEX-501 exit gate
 
@@ -184,5 +192,5 @@ Current inventory after BEX-505 (unchanged by the adapter rename):
 - Admission decisions use hooks, state, writes, external resources, capability behavior, and failure
   containment; no file was admitted from discovery names alone.
 - BEX-501 is closed. BEX-502 froze D23, BEX-503 hardened the runner, BEX-504 validated and reclassified both
-  pilots from this evidence, and BEX-505 implemented the Pester adapter transport; BEX-506 is the next and
-  only unblocked ticket.
+  pilots, BEX-505 implemented Pester artifact transport, and BEX-506 added the thin product shell; BEX-507
+  is the next and only unblocked ticket.

@@ -5,7 +5,7 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: active; BEX-501 through BEX-505 closed on 2026-08-06 and BEX-506 is next.** Tickets are strictly
+**Status: active; BEX-501 through BEX-506 closed on 2026-08-06 and BEX-507 is next.** Tickets are strictly
 sequenced; no later ticket starts before its predecessor closes.
 
 ## Current evidence and baseline
@@ -17,7 +17,7 @@ none failed. Its [semantic inventory](testing-batchability-inventory.md) classif
 measurements total 320.387 seconds; the inventory records individual cost, state, capability, write, and
 collision evidence rather than treating structural counts as independence proof.
 
-BEX-502 freezes the author-facing contract in [`tests/README.md`](../../../tests/README.md) and architecture
+BEX-502 froze the author-facing contract in [`tests/README.md`](../../../tests/README.md) and architecture
 decision D23. One exact physical file remains the fresh-process job; retained writes receive one declared,
 caller-run-scoped container artifact root through `CODEX_TEST_ARTIFACT_ROOT`; topology below that root is
 suite-owned; and semantic review—not Pester AST inference—assigns the four inventory classes.
@@ -30,11 +30,12 @@ observation parity; the complete adapter and infrastructure gates are 20 and 6 p
 
 BEX-504 retains all 57 positive-control tests across their eight existing containers and splits the 66-test
 LaTeX restructuring control once: 60 pure/converter tests remain in `latex-ingest.Tests.ps1`; 6 external
-process and run-artifact tests move to `latex-ingest-integration.Tests.ps1`. The current inventory is 44
-files and 462 textual `It` lines: 32 `Batchable`, 4 `CapabilityGated`, 8 `NeedsRefactor`, and no `SerialOnly`.
-One-worker/file-parallel parity is 57/57 and 66/66 with native-result, declared-write, repository-residue,
-and process-survivor equality. The current authoritative repository gate remains 479 selected: 477 passed,
-2 dependency-gated skips, and none failed.
+process and run-artifact tests move to `latex-ingest-integration.Tests.ps1`. The post-pilot inventory was
+44 files and 462 textual `It` lines: 32 `Batchable`, 4 `CapabilityGated`, 8 `NeedsRefactor`, and no
+`SerialOnly`. One-worker/file-parallel parity is 57/57 and 66/66 with native-result, declared-write,
+repository-residue,
+and process-survivor equality. The authoritative repository gate before BEX-506 selected 479 tests: 477
+passed, 2 were dependency-gated skips, and none failed.
 
 The current `Get-PesterBatchJob` adapter chooses the conservative physical-file boundary. BEX-505 completed
 its Pester-specific `pester-batch` identity and `pester-jobs` address contract without adding an alias or
@@ -42,6 +43,15 @@ unitary module. One resolver owns each container's sibling `pester.xml` and `art
 declared writes, and `ProcessSpec.Environment` carries the latter as `CODEX_TEST_ARTIFACT_ROOT`. Planning
 creates neither path. The earlier BEX-403 closure baseline was 474 passed plus 2 dependency-gated skips (476
 total); its focused baselines were 17 adapter, 6 infrastructure, and 158 shared passing tests.
+
+BEX-506 added `tests/parallel.ps1` as a replaceable product shell over the canonical module manifests. It
+accepts paths plus a mandatory existing caller run, uses no workload profile, invokes the module-qualified
+adapter -> plan -> executor chain once, emits one Information summary and the exact in-memory execution
+record, then throws after output on any non-success or infrastructure error. Its focused structural,
+two-file success, and sibling-failure/CLI witnesses are 3/3. Its new test container is `Batchable`, bringing
+the current inventory to 45 files and 469 textual `It` lines. Complete validation is 23/23 adapter, 6/6
+infrastructure, and 158/158 shared tests; the authoritative sequential repository gate selected 482 tests,
+with 480 passed, 2 dependency-gated skips, and none failed.
 
 ## Dependency order
 
@@ -64,18 +74,18 @@ BEX-504 pilot restructuring [closed 2026-08-06]
 BEX-505 Pester adapter correction [closed 2026-08-06]
           |
           v
-BEX-506 thin parallel shell [next]
+BEX-506 thin parallel shell [closed 2026-08-06]
           |
           v
-BEX-507 repository migration and closure
+BEX-507 repository migration and closure [next]
 ~~~
 
 BEX-403 proved both current adapters retain one D19 address owner, complete declared writes, planning purity,
 and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
 not Phase 5 implementation.
 
-BEX-506 is the sole next ticket. Its adapter composition boundary now has contract, pilot, address,
-transport, and structural evidence.
+BEX-507 is the sole next ticket. Its repository migration now has an audited file boundary, runner,
+adapter, and product-shell composition path.
 
 ## Cross-cutting invariants
 
@@ -96,6 +106,8 @@ Every ticket preserves these conditions:
     valid for ephemeral fixtures. A repository-global `artifacts/<container>` path alone is not run-safe.
 12. topology below the container artifact root remains suite-owned unless pilot evidence justifies a common
     fixture/capability/evidence layer; Phase 5 does not allocate an automatic directory per `It` block.
+13. `tests/parallel.ps1` composes public module contracts once and owns only summary/failure projection; it
+    does not duplicate discovery, addressing, scheduling, lifecycle, run, logging, or storage policy.
 
 ## BEX-501 — Build the semantic batchability inventory
 
@@ -217,25 +229,35 @@ shared gates are green.
 
 ## BEX-506 — Compose a thin repository parallel-test shell
 
-**Status: next.**
+**Status: closed 2026-08-06.** `tests/parallel.ps1` is a thin product shell over canonical adapter and
+executor manifests. Its 3/3 focused structural/runtime, 23/23 complete adapter, 6/6 infrastructure, and
+158/158 shared witnesses pass; the complete sequential repository gate is 480 passed plus 2
+dependency-gated skips from 482 selected.
 
 ### Scope
 
 - Add `tests/parallel.ps1` as a product-facing composition shell.
-- Accept caller-selected paths or a small centralized workload profile only if BEX-504 proves path
-  selection insufficient, plus an existing absolute `RunDirectory` and executor budget/policy inputs.
-- Call `Get-PesterBatchJob`, `New-BatchPlan`, and `Invoke-BatchPlan`; present a concise summary and exit
-  nonzero when any job fails.
-- Preserve individual native Pester result paths and the executor's in-memory result record.
+- Accept caller-selected paths (default `tests/`) plus a mandatory existing absolute `RunDirectory`;
+  BEX-504 showed path selection is sufficient, so add no workload profile.
+- Pass through repository root, Pester manifest/child PowerShell, Pester filters/results, and bounded public
+  executor budget/process policy inputs.
+- Import canonical manifests and call module-qualified `Get-PesterBatchJob`, `New-BatchPlan`, and
+  `Invoke-BatchPlan` exactly once each.
+- Print one concise Information summary, emit the exact in-memory execution record, and throw after output
+  when any job is non-successful or infrastructure errors exist so `pwsh -File` is nonzero.
+- Preserve individual native Pester result paths, container artifacts, sibling evidence, and process cleanup.
 - Add structural tests that reject a private pool/scheduler, process registry, cancellation protocol, retry
   loop, run allocator, timestamp convention, logger owner, result-order implementation, or durable store.
 
 ### Exit gate
 
 The shell is replaceable composition over public module contracts: removing it would not remove any
-scheduler, lifecycle, or domain-planning capability.
+scheduler, lifecycle, or domain-planning capability. Structural witnesses reject duplicate owners, and
+runtime witnesses prove two-file success plus failed-batch evidence and real CLI nonzero behavior.
 
 ## BEX-507 — Migrate the repository and close the overhaul
+
+**Status: next.**
 
 ### Scope
 

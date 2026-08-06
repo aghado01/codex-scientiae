@@ -59,7 +59,7 @@ is now an absence witness, and the manifest-backed four-command module remains b
 Revalidation is 8/8 module-surface, 8/8 batch-plan, 17/17 adapter, 6/6 infrastructure, and 158/158 shared;
 the full repository run passed 474 tests with 2 dependency-gated skips (476 total).
 
-Testing-overhaul scoping and BEX-501 through BEX-505 are complete. The
+Testing-overhaul scoping and BEX-501 through BEX-506 are complete. The
 [semantic inventory](testing-batchability-inventory.md) covers all 43 physical Pester files and 453 textual
 `It` lines. Exact-path fresh-process runs selected 476 tests: 474 passed, 2 were explicitly skipped, and none
 failed. Semantic review classifies 31 files as `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`,
@@ -72,11 +72,11 @@ The runner audit leaves the 43-file topology and classifications unchanged, reso
 explicit container, and emits a transient audit observation before failure propagation. Pester 5.7.1 and
 6.0.0 witnesses establish equivalent selected outcomes, native XML, empty/failure status, and nested-child
 diagnostics without adding scheduling, run, log, retry, or store ownership. The three new contract tests and
-six embedded fixture lines bring the current mechanical count to 462 textual `It` lines; the authoritative
-repository gate is now 477 passed plus 2 dependency-gated skips (479 total), with 20/20 adapter and 6/6
-infrastructure gates. Automatic `It`-level fan-out remains outside Phase 5. The
+six embedded fixture lines bring the post-BEX-503 mechanical count to 462 textual `It` lines; that
+authoritative repository gate was 477 passed plus 2 dependency-gated skips (479 total), with 20/20 adapter
+and 6/6 infrastructure gates. Automatic `It`-level fan-out remains outside Phase 5. The
 [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines ownership; the
-[workplan](testing-overhaul-workplan.md) now proceeds with BEX-506 as the sole next ticket.
+[workplan](testing-overhaul-workplan.md) now proceeds with BEX-507 as the sole next ticket.
 
 BEX-504 left the eight-file/57-test batch-executor positive control intact: one worker and four workers
 produced identical observations and eight native results with no undeclared files or surviving runners;
@@ -86,17 +86,30 @@ bounded critical path. The 66-test LaTeX control now has one real physical seam:
 `latex-ingest-integration.Tests.ps1`. One worker and two workers preserved 66/66 outcomes and two native
 results with no repository-run residue, undeclared files, or surviving descendants; wall time changed from
 19.545 s to 10.275 s (1.902x). The integration container accepts an absolute
-`CODEX_TEST_ARTIFACT_ROOT` and owns six domain case roots below it; direct runs use `$TestDrive`. Current
-topology/classification is 44 files: 32 `Batchable`, 4 `CapabilityGated`, 8 `NeedsRefactor`, and no
-`SerialOnly`; the textual and observed totals remain 462 and 479.
+`CODEX_TEST_ARTIFACT_ROOT` and owns six domain case roots below it; direct runs use `$TestDrive`. The
+post-BEX-504 topology/classification was 44 files: 32 `Batchable`, 4 `CapabilityGated`, 8 `NeedsRefactor`,
+and no `SerialOnly`; the textual and observed totals remain 462 and 479.
 
 BEX-505 is closed. `Get-PesterBatchJob` is the sole Pester planner export from the shared `adapters` module;
 there is no compatibility alias or unitary submodule. It emits one job per selected physical file with
 stable `pester:<repository-relative-path>#<digest>` identity. One resolver owns
 `RunDirectory/pester-jobs/<container>/pester.xml` and its sibling `artifacts/` root; both addresses are
 declared in `Writes`, and `ProcessSpec.Environment` transports the absolute artifact root as
-`CODEX_TEST_ARTIFACT_ROOT`. Planning creates neither address. BEX-506 can therefore remain a thin
-composition shell over the adapter, plan, and executor contracts.
+`CODEX_TEST_ARTIFACT_ROOT`. Planning creates neither address. BEX-506 composes that boundary without
+acquiring adapter or executor ownership.
+
+BEX-506 is closed. `tests/parallel.ps1` imports the canonical adapter and executor manifests, accepts
+caller-selected paths plus a mandatory existing `RunDirectory`, and calls module-qualified
+`Get-PesterBatchJob` -> `New-BatchPlan` -> `Invoke-BatchPlan` exactly once. Path selection proved sufficient,
+so it adds no workload profile. The shell emits one concise Information summary and the exact in-memory
+execution record, then throws after output when a job is non-successful or infrastructure errors exist;
+direct `pwsh -File` use is therefore nonzero without losing sibling evidence. Its 3/3 focused witnesses
+cover ownership structure, two-file success with native/container artifacts, sibling failure, real CLI
+status, and process cleanup. D24 rejects scheduler, lifecycle, run, logger, retry, store, ordering, and
+address ownership in the shell. Its `Batchable` test container brings the current inventory to 45 files and
+469 textual `It` lines. Closure validation is 3/3 focused shell, 23/23 complete adapter, 6/6 infrastructure,
+and 158/158 shared tests. The complete sequential repository gate selected 482 tests: 480 passed, 2 were
+dependency-gated skips, and none failed.
 
 ## Sequencing rules
 
@@ -114,8 +127,6 @@ composition shell over the adapter, plan, and executor contracts.
 Detailed scope, dependencies, and exit gates are in the
 [testing-overhaul workplan](testing-overhaul-workplan.md).
 
-- **BEX-506 — Add a thin repository parallel-test shell.** Compose adapter, plan, and executor behind
-  `tests/parallel.ps1` while rejecting duplicate scheduling, lifecycle, run, log, retry, and store ownership.
 - **BEX-507 — Migrate and close.** Admit audited suites, keep owned serial exceptions explicit, add structural
   checks, prove sequential/parallel outcome parity, and reconcile architecture and user documentation.
 

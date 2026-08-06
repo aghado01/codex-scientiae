@@ -36,8 +36,33 @@ Every invocation also writes one transient child-stdout line prefixed `PesterCon
 JSON value contains the resolved `container_path`, `selected`, `passed`, `failed`, `skipped`, `duration_ms`,
 and resolved `result_path` (or `null`). The line is emitted before failure propagation so a nested worker can
 audit a failed container; it is not a log or generic result store, and the native Pester report remains the
-runner's only durable artifact. `selected` is the sum of pass/fail/skip outcomes because Pester 5's
-`TotalCount` can include cases excluded by a full-name filter, unlike Pester 6 and the native result.
+runner's only durable runner-owned artifact. `selected` is the sum of pass/fail/skip outcomes because Pester
+5's `TotalCount` can include cases excluded by a full-name filter, unlike Pester 6 and the native result.
+
+### Parallel batch execution
+
+`parallel.ps1` is the repository-facing parallel shell. Its mandatory `RunDirectory` must already exist and
+belong to the caller; the shell never allocates or timestamps a run. `Path` defaults to the repository
+`tests/` directory and may instead name selected files or directories, so there is no separate workload
+profile. Architecture decision [D24](../issues/batch-executor/planning/decisions.md) freezes this ownership
+boundary.
+
+```pwsh
+pwsh -File tests/parallel.ps1 -RunDirectory D:/runs/codex-scientiae-tests/run-001
+pwsh -File tests/parallel.ps1 -Path tests/shared -RunDirectory D:/runs/codex-scientiae-tests/run-002 -MaxWorkers 4
+```
+
+The shell imports the canonical `adapters` and `batch-executor` manifests, then performs one
+module-qualified `Get-PesterBatchJob` -> `New-BatchPlan` -> `Invoke-BatchPlan` composition. It accepts the
+repository/Pester manifest and child-PowerShell overrides, Pester selection/result inputs, and bounded
+executor worker/process policy inputs exposed by those public contracts.
+
+One concise Information-stream line reports total, succeeded, failed, timed-out, cancelled,
+infrastructure-error, and duration values. The shell writes the exact in-memory executor record to the
+success output stream. If plan validation fails, it throws before execution; if any executed job is not
+successful or the executor reports an infrastructure error, it emits the record first and then throws. A
+direct `pwsh -File tests/parallel.ps1 ...` invocation therefore exits nonzero without discarding successful
+sibling results, native XML, or container artifacts.
 
 ## Batchable Pester-container contract
 
@@ -88,7 +113,7 @@ The frozen batch address is conceptually:
         <suite-owned layout>
 ~~~
 
-The adapter will provide the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT` and
+The adapter provides the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT` and
 declare that root as a job write. Planning creates nothing; execution may create the assigned root. A suite
 that retains evidence validates this value as an absolute path and writes only beneath it. It does not fall
 back to repository-global `artifacts/`, a timestamp allocator, its source tree, the current directory, or a
@@ -170,7 +195,7 @@ per-test scheduler.
 
 | Directory | Current ownership |
 |---|---|
-| `adapters/` | Test and LaTeX batch planning, addressing, and isolated execution |
+| `adapters/` | Pester and LaTeX batch planning, addressing, and isolated execution |
 | `audits/` | Repository and deliverable audits, including mathematical rendering |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |

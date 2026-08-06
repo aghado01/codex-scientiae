@@ -1,9 +1,9 @@
 # Pester batch testing overhaul brief
 
-Runstamp 20260805. **Status: active; BEX-501 through BEX-505 implemented.** This brief defines the
+Runstamp 20260805. **Status: active; BEX-501 through BEX-506 implemented.** This brief defines the
 test-authoring and execution changes required before repository testing can use the shared batch executor
-as a normal parallel path. BEX-506 is the next strictly sequenced ticket; the corrected Pester adapter is
-now the stable composition boundary for that shell.
+as a normal parallel path. BEX-507 is the next strictly sequenced ticket; the Pester adapter and thin
+repository shell now provide the stable composition path for migration.
 
 Inputs:
 
@@ -11,6 +11,7 @@ Inputs:
 - [batch-executor roadmap](../planning/roadmap.md);
 - [testing-overhaul workplan](../planning/testing-overhaul-workplan.md);
 - [repository Pester runner](../../../tests/run.ps1);
+- [repository parallel shell](../../../tests/parallel.ps1);
 - [current Pester adapter](../../../src/adapters/public/Get-PesterBatchJob.ps1);
 - ThermoMapper precedents: [host](../../../../ThermoMapper/src/test-harness/Program.cs),
   [discovery](../../../../ThermoMapper/src/test-harness/TestDiscovery.cs), and
@@ -27,19 +28,16 @@ fresh child process. Oversized or coupled files should be split along real fixtu
 or cost seams before they are parallelized.
 
 ~~~text
-test authors and suite topology
+caller paths + existing RunDirectory
               |
               v
-tests/run.ps1 -- one exact Pester container
+tests/parallel.ps1 -- composition and failure projection only
               |
               v
-Get-PesterBatchJob -- domain planning only
-              |
-              v
-New-BatchPlan / Invoke-BatchPlan -- one queue, budget, and lifecycle owner
-              |
-              v
-tests/parallel.ps1 -- thin repository-facing shell
+Get-PesterBatchJob -> New-BatchPlan -> Invoke-BatchPlan
+                                            |
+                                            v
+tests/run.ps1 -- one exact Pester container per process job
 ~~~
 
 BEX-505 atomically renamed the then-current `Get-TestBatchJob` file-level planner, its helpers, metadata,
@@ -165,10 +163,17 @@ execution mode.
 
 ### Thin repository shell
 
-A later `tests/parallel.ps1` may accept selected paths or a small workload profile plus a caller-allocated
-absolute `RunDirectory`, invoke the adapter and executor, present the execution summary, and exit nonzero
-when any job fails. It must not allocate runs or own a pool, process registry, retry loop, cancellation
-protocol, result ordering, logger lifecycle, or durable run store.
+`tests/parallel.ps1` accepts caller-selected paths (defaulting to `tests/`) and a mandatory existing absolute
+`RunDirectory`; path selection proved sufficient, so there is no workload-profile abstraction. It also
+passes through repository/Pester/filter/result inputs and bounded public executor policy. The shell imports
+the canonical adapter and executor manifests, then calls module-qualified `Get-PesterBatchJob`,
+`New-BatchPlan`, and `Invoke-BatchPlan` exactly once each.
+
+It writes one concise Information summary and emits the exact in-memory executor record. A non-successful
+job or infrastructure error causes a throw only after that record is emitted, preserving sibling evidence
+while making direct `pwsh -File` use nonzero. The shell owns no scheduler, pool, process registry,
+cancellation protocol, retry loop, run allocation or timestamp convention, logger lifecycle, durable store,
+result ordering, or Pester address composition.
 
 ## 7. Pilot strategy
 
@@ -226,6 +231,9 @@ sequential/parallel semantics for both controls, left the eight-file batch-execu
 split the LaTeX control once to isolate capability-gated external processes and container-owned writes.
 Finally, BEX-505 replaced the provisional generic test-adapter naming and XML-only address with the
 Pester-specific command, stable identity, single resolver, paired native-result/artifact writes, and child
-artifact-root transport. Phase 5 now resumes at BEX-506 thin-shell composition, followed by repository
-migration as specified in the
-[workplan](../planning/testing-overhaul-workplan.md).
+artifact-root transport. BEX-506 then added the thin `tests/parallel.ps1` product shell over the three
+module-qualified public calls, with caller-owned path/run selection, exact execution-record output, and
+post-output nonzero failure projection. Closure validation is 3/3 focused shell, 23/23 complete adapter,
+6/6 infrastructure, and 158/158 shared tests; the complete sequential repository gate selected 482 tests,
+with 480 passed, 2 dependency-gated skips, and no failures. Phase 5 now resumes at BEX-507 repository
+migration as specified in the [workplan](../planning/testing-overhaul-workplan.md).
