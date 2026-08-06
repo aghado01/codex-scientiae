@@ -1,10 +1,11 @@
 # Batch executor — roadmap (ahead only)
 
 Living plan for batch-executor work not yet complete. The current architecture contract is
-[decisions.md](decisions.md); completed work moves to [ledger.md](ledger.md); arguments and review evidence
-live under [../discussions/](../discussions/). Do not leave completed work in this file.
+[decisions.md](decisions.md); completed work moves to [ledger.md](ledger.md); the testing tranche has a
+[detailed workplan](testing-overhaul-workplan.md); arguments, briefs, and review evidence live under
+[../discussions/](../discussions/) and [../briefs/](../briefs/). Do not leave completed work in this file.
 
-## Current baseline — 2026-08-05
+## Current baseline — 2026-08-06
 
 The executor is packaged under `src/shared/batch-executor/`. Its manifest exposes four commands; its root
 module validates and reads four runtime payloads as source data, loads named host files in deterministic
@@ -17,15 +18,15 @@ module-surface tests pass, and the complete shared suite is 158 passing tests. T
 host-stop witness closes the start/registration race and prevents queued supervisors from
 unwinding in serial waves. Preparation now completes all caller-graph traversal and serialization before
 the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
-residue and rebuilt the check around required current inputs. Phases 2 and 3 are closed; the package
+residue and rebuilt the check around required current inputs. Phases 2 through 4 are closed; the package
 boundary, public execution projection, and compatibility facade remained stable through lifecycle
-decomposition. Phase 4 is now the ahead queue.
+decomposition and adapter validation. Phase 5 is now the ahead queue.
 
 BEX-401 is closed. `Get-TestBatchJob` in the shared `adapters` module emits one exact-Pester, isolated process
 job per selected test file, derives its native XML result through the D19 address chokepoint, creates nothing
 during planning, and leaves compilation and execution to the shared module. Its 7 focused
-structural/planning/integration
-tests include case filtering, one local failure beside a successful sibling, and zero generic result-store
+structural/planning/integration tests include case filtering, one local failure beside a successful sibling,
+and zero generic result-store
 artifacts. At closure, the complete shared suite is 158/158 and the complete repository suite is 466/466.
 That established the first adapter boundary.
 
@@ -35,14 +36,29 @@ child policy, preserves caller environment transport, assigns all run evidence, 
 bundle output through the D19 resolver, and declares those application roots without creating them during
 planning. Its 8 focused tests include invalid ownership/source inputs, deterministic cost planning, sibling
 failure containment, and a live source-deposit-to-latex-ingest child run. At closure, the complete shared
-suite is 158/158 and the complete repository suite is 474/474. Phase 4 now continues with the cross-adapter
-thinness gate.
+suite is 158/158 and the complete repository suite is 474/474. That left cross-adapter thinness as the final
+Phase 4 gate.
 
 The two planners are public files under `src/adapters/`, backed by grouped private helpers and one manifest;
 there is no PowerShell module per planner. The LaTeX planner, helper symbols, metadata, job IDs, address root,
-and test filename consistently use `latex-batch` naming. Consolidation revalidation is 15/15 focused adapter,
-6/6 infrastructure, and 158/158 shared tests; the full repository run passed 472 tests with 2 dependency-gated
-skips (474 total).
+and test filename consistently use `latex-batch` naming.
+
+BEX-403 is closed. A cross-adapter AST gate proves production adapters call the executor only through
+`New-BatchJob`; expose no execution-owner inputs; own no scheduler, private PowerShell host, process
+lifecycle, cancellation, or parallel pipeline; and keep run allocation, retry, logger lifecycle, and durable
+result machinery out of planner hosts. The existing single-resolver witnesses and strengthened runtime tests
+also prove planning leaves the complete caller run untouched, every worker destination maps to a declared
+write beneath that run, every produced file is covered by those writes, and generic execution results remain
+in memory. Closure revalidation is 17/17 focused adapter, 6/6 infrastructure, and 158/158 shared tests; the
+full repository run passed 474 tests with 2 dependency-gated skips (476 total). Phase 4 is closed.
+
+Testing-overhaul scoping is complete. The repository currently has 43 physical Pester files and about 453
+textual `It` blocks, with pervasive container setup and material state/resource signals. The planned default
+job boundary is therefore one physical Pester file/container in one fresh child process; automatic `It`-level
+fan-out is not part of Phase 5. The [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines
+the authoring and ownership contract, and the [workplan](testing-overhaul-workplan.md) sequences BEX-501
+through BEX-507. The BEX-403 entry gate is closed, BEX-501 is next, and no Phase 5 implementation is yet
+closed.
 
 ## Sequencing rules
 
@@ -54,12 +70,28 @@ skips (474 total).
 5. Keep compatibility explicit and temporary; new callers bind to the manifest.
 6. Require a separate decision before changing the frozen public execution projection or deferred semantics.
 
-## Phase 4 — Domain adapters
+## Phase 5 — Batch-ready Pester testing
 
-- **BEX-403 — Validate adapter thinness.** Prove adapters may discover and interpret domain work but do not
-  own pools, child registries, cancellation, retries, competing result-order rules, run allocation, logger
-  lifecycle, or durable executor-result stores. Prove per-job path composition has one resolver and every
-  intended application write is declared.
+Detailed scope, dependencies, and exit gates are in the
+[testing-overhaul workplan](testing-overhaul-workplan.md).
+
+- **BEX-501 — Inventory semantic batchability and timing.** Audit every physical Pester file, classify it as
+  `Batchable`, `CapabilityGated`, `NeedsRefactor`, or temporarily `SerialOnly`, and baseline the two pilots.
+- **BEX-502 — Freeze the batchable-container contract.** Codify exact-path, fresh-process, state/resource,
+  capability, write-isolation, and failure-containment requirements for test authors.
+- **BEX-503 — Harden the authoritative runner boundary.** Prove exact-container Pester 5/6 parity, native
+  results, empty-run rejection, and nonzero failure propagation without adding scheduling or run ownership.
+- **BEX-504 — Refactor and benchmark representative suites.** Validate the batch-executor files as a positive
+  control and split the LaTeX-ingest suite only at real fixture, resource, capability, or cost seams.
+- **BEX-505 — Correct the Pester adapter contract.** Atomically rename the planner to `Get-PesterBatchJob`,
+  adopt `pester-batch`/`pester-jobs` naming, and retain one shared `adapters` module with no compatibility alias.
+- **BEX-506 — Add a thin repository parallel-test shell.** Compose adapter, plan, and executor behind
+  `tests/parallel.ps1` while rejecting duplicate scheduling, lifecycle, run, log, retry, and store ownership.
+- **BEX-507 — Migrate and close.** Admit audited suites, keep owned serial exceptions explicit, add structural
+  checks, prove sequential/parallel outcome parity, and reconcile architecture and user documentation.
+
+Automatic `It`-block or parameter-row partitioning remains outside Phase 5 and requires separate evidence
+and a new decision.
 
 ## Deferred semantic candidates
 

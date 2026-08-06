@@ -154,6 +154,7 @@ Describe 'Get-TestBatchJob planning' {
         $jobs = @(Get-TestBatchJob @invoke)
         $again = @(Get-TestBatchJob @invoke)
 
+        @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
         $jobs.Count | Should -Be 2
         @($jobs.Id) | Should -Be @($again.Id)
         $expectedRelativePaths = @($alpha, $beta) | ForEach-Object {
@@ -167,6 +168,10 @@ Describe 'Get-TestBatchJob planning' {
             $job.ModulePath | Should -Be @($fixture.PesterManifest)
             $job.Writes | Should -Be @($job.Metadata.ResultPath)
             $job.Parameters.ResultPath | Should -Be $job.Metadata.ResultPath
+            $relativeWrite = [System.IO.Path]::GetRelativePath(
+                $fixture.RunDirectory, $job.Metadata.ResultPath)
+            $relativeWrite | Should -Not -Be '..'
+            $relativeWrite | Should -Not -Match '^\.\.[\\/]'
             $job.Metadata.AddressingContract | Should -Be 'D19/RunDirectory'
             $job.Metadata.ResultPersistence | Should -Be 'PesterNative'
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
@@ -311,6 +316,10 @@ Describe 'failing integration fixture' {
         [int]$passXml.'test-results'.failures | Should -Be 0
         [int]$failXml.'test-results'.total | Should -Be 1
         [int]$failXml.'test-results'.failures | Should -Be 1
+        $declaredWrites = @($passJob.Writes) + @($failJob.Writes)
+        $producedFiles = @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File)
+        @($producedFiles.FullName | Sort-Object) | Should -Be `
+            @($declaredWrites | Sort-Object)
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File |
                 Where-Object Extension -In @('.json', '.jsonl')).Count | Should -Be 0
     }

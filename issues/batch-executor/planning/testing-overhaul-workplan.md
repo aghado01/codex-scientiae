@@ -1,0 +1,209 @@
+# Batch executor — Pester testing-overhaul workplan
+
+This is the ticket-level execution plan for making repository Pester tests safely batchable. The design
+boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md);
+the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
+[decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
+
+**Status: planned; no Phase 5 implementation is complete.** BEX-403 closed on 2026-08-06; BEX-501 is next.
+
+## Current evidence and baseline
+
+The repository currently has 43 physical `*.Tests.ps1` files and approximately 453 textual `It` blocks.
+All files use `BeforeAll`; material subsets use environment state, external processes/toolchains, write
+primitives, `$TestDrive`, `InModuleScope`, and skip mechanics. Those counts route review but do not prove
+independence.
+
+The current adapter already chooses the conservative physical-file boundary. Its naming and surrounding
+contract are provisional: `Get-TestBatchJob`, `test-batch`, and `test-jobs` are too generic for a
+Pester-specific adapter. The BEX-403 closure baseline is 474 passed plus 2 dependency-gated skips (476
+total); focused baselines are 17 adapter, 6 infrastructure, and 158 shared passing tests.
+
+## Dependency order
+
+~~~text
+BEX-403 adapter thinness [closed 2026-08-06]
+          |
+          v
+BEX-501 semantic inventory and timing baseline
+          |
+          v
+BEX-502 batchable-container contract
+          |
+          +-------------------+
+          v                   v
+BEX-503 runner audit    BEX-504 pilot restructuring
+          |                   |
+          +---------+---------+
+                    v
+          BEX-505 Pester adapter correction
+                    |
+                    v
+          BEX-506 thin parallel shell
+                    |
+                    v
+          BEX-507 repository migration and closure
+~~~
+
+BEX-403 proved both current adapters retain one D19 address owner, complete declared writes, planning purity,
+and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
+not Phase 5 implementation.
+
+BEX-503 and BEX-504 may overlap after BEX-502 freezes their common contract. BEX-505 waits for evidence
+from both so its public inputs do not anticipate unsupported test granularity.
+
+## Cross-cutting invariants
+
+Every ticket preserves these conditions:
+
+1. one physical Pester file/container is the default atomic job;
+2. exact test names, tags, and parameter rows select content but do not create automatic jobs;
+3. one batch-executor queue and one worker budget own all admitted work;
+4. every Pester job executes in a fresh child PowerShell process;
+5. `tests/run.ps1` remains the authoritative Pester invocation boundary;
+6. adapters only discover, interpret, address, and emit domain-neutral jobs;
+7. callers allocate `RunDirectory`; adapters and test shells never allocate run identity;
+8. every intended application write is declared and derived through one pure address resolver;
+9. generic executor results stay in memory unless separate infrastructure later owns persistence;
+10. serial exceptions are temporary, explicit, owned, and excluded from the normal batch set.
+
+## BEX-501 — Build the semantic batchability inventory
+
+### Scope
+
+- Inventory every `*.Tests.ps1` file by repository-relative path, test count, dominant fixture/capability,
+  setup/cleanup hooks, mutable environment or location use, process/toolchain use, writes, fixed external
+  resources, skip behavior, and approximate sequential duration.
+- Classify each file as `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly` using the brief.
+- Record an owner, reason, and removal condition for each `SerialOnly` exception.
+- Measure the two pilots first:
+  `tests/shared/batch-executor*.Tests.ps1` and `tests/latex-ingest/latex-ingest.Tests.ps1`.
+- Treat the existing mechanical census as a review queue, not as a semantic result.
+
+### Exit gate
+
+Every current test file has an evidence-backed classification; high-cost and high-collision-risk files are
+visible; no file is admitted merely because discovery produced test names.
+
+## BEX-502 — Freeze the batchable Pester-container contract
+
+### Scope
+
+- Convert the brief's identity, setup/state, writes/resources, capability/cost, and failure-containment
+  rules into repository test-authoring guidance and review checks.
+- Define exact-path execution, fresh-process isolation, native result, and exit-status parity.
+- Define when a physical file must be split and what qualifies as a real seam: fixture, resource,
+  capability, or cost.
+- Define `CapabilityGated` and temporary `SerialOnly` behavior without introducing scheduler locks.
+- State that discovery metadata and full names are not an independence contract.
+
+### Exit gate
+
+The authoring contract is precise enough to classify a new file without scheduler knowledge, and it does
+not require Pester-internal AST interpretation or a new executor semantic.
+
+## BEX-503 — Harden the runner and add an observational audit boundary
+
+### Scope
+
+- Verify `tests/run.ps1` accepts one exact physical container without discovering unintended siblings.
+- Preserve the pinned Pester 5/6 compatibility path and current cross-version path behavior.
+- Preserve native XML output, empty-run rejection, nonzero failure propagation, and child-process-safe
+  diagnostics.
+- Add only the observations needed to audit a container: resolved path, selected/pass/fail/skip counts,
+  duration, and native result location.
+- Prove the runner owns no scheduling, run allocation, retry, generic result persistence, or log lifecycle.
+
+### Exit gate
+
+The same exact-container invocation is authoritative in sequential and batch modes, with equivalent
+selection/outcome semantics and no expansion of runner ownership.
+
+## BEX-504 — Refactor and benchmark representative suites
+
+### Scope
+
+- Run the batch-executor shared files as the positive control and document fresh-process independence.
+- Use the LaTeX-ingest suite as the restructuring control; split it only where fixture, external capability,
+  mutable resource, or cost boundaries warrant physical containers.
+- Remove cross-file ordering assumptions, shared write collisions, leaked environment/location changes,
+  and unbounded process cleanup in the pilots.
+- Compare sequential and file-parallel outcomes, native results, wall time, setup cost, evidence paths, and
+  process survivors.
+- Feed any newly discovered contract gap back into BEX-502 before expanding migration.
+
+### Exit gate
+
+Both pilots satisfy semantic parity and failure containment; the parallel result has no write or resource
+race; timing evidence supports the selected file topology or records a bounded follow-up split.
+
+## BEX-505 — Correct and harden the Pester adapter
+
+### Scope
+
+- Atomically rename `Get-TestBatchJob` to `Get-PesterBatchJob` throughout its public file, manifest, root
+  module, private helpers, tests, README, metadata, job IDs, and diagnostics.
+- Rename adapter identity/addressing to `pester-batch` and `pester-jobs`.
+- Keep the command in the single shared `adapters` module; add no compatibility alias or unitary submodule.
+- Emit exactly one `PowerShellProcess` job per selected physical file and pin the runner, Pester manifest,
+  child PowerShell, repository root, filters, and native result path.
+- Preserve D19 planning purity, complete write declarations, stable IDs, collision rejection, and
+  failure-containment tests.
+- Add structural witnesses rejecting competing Pester address composition and executor-resource ownership.
+
+### Exit gate
+
+No stale `Get-TestBatchJob`, `test-batch`, or `test-jobs` reference remains in live code or current-contract
+documentation; historical records describe the transition accurately. File-level behavior and the current
+public executor surface remain unchanged; focused adapter and shared gates are green.
+
+## BEX-506 — Compose a thin repository parallel-test shell
+
+### Scope
+
+- Add `tests/parallel.ps1` as a product-facing composition shell.
+- Accept caller-selected paths or a small centralized workload profile only if BEX-504 proves path
+  selection insufficient, plus an existing absolute `RunDirectory` and executor budget/policy inputs.
+- Call `Get-PesterBatchJob`, `New-BatchPlan`, and `Invoke-BatchPlan`; present a concise summary and exit
+  nonzero when any job fails.
+- Preserve individual native Pester result paths and the executor's in-memory result record.
+- Add structural tests that reject a private pool/scheduler, process registry, cancellation protocol, retry
+  loop, run allocator, timestamp convention, logger owner, result-order implementation, or durable store.
+
+### Exit gate
+
+The shell is replaceable composition over public module contracts: removing it would not remove any
+scheduler, lifecycle, or domain-planning capability.
+
+## BEX-507 — Migrate the repository and close the overhaul
+
+### Scope
+
+- Refactor remaining `NeedsRefactor` suites in risk/cost order and reclassify them.
+- Admit all `Batchable` and available `CapabilityGated` files to the normal batch workload.
+- Keep any justified `SerialOnly` residue explicit with owner/removal condition and run it through the
+  authoritative runner outside the batch set.
+- Add structural/topology checks for one adapters module, canonical Pester naming, no sidecar sprawl, one
+  runner boundary, one executor composition path, and no hidden scheduler/store.
+- Re-run focused adapter/executor, infrastructure, complete shared, authoritative sequential repository,
+  and complete parallel repository gates.
+- Reconcile decisions, adapter/test documentation, roadmap, and ledger only after implementation evidence
+  exists.
+
+### Exit gate
+
+Sequential and parallel selections/outcomes agree; local failures retain sibling evidence; there are no
+collisions, leaked state, or surviving children; the full testing workload is either admitted or explicitly
+accounted for; Phase 5 implementation moves from the roadmap to the ledger.
+
+## Deferred questions
+
+The overhaul deliberately leaves these for separate evidence and decisions:
+
+- automatic `It`-block or parameter-row slicing;
+- persistence of exact test identities across Pester versions;
+- resource locks, exclusive groups, dependency DAGs, and phase barriers;
+- historical timing stores and adaptive scheduling;
+- a cross-framework test hierarchy or C# adapter port;
+- direct integration with ThermoMapper's .NET/xUnit workload;
+- durable merged reports, run manifests, resume, and shared run allocation.

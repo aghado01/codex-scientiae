@@ -297,5 +297,5 @@ remain in memory, and one failed document cannot suppress a sibling.
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec
 constructors, dependency DAG scheduling, or a second async engine, and it does not port the plan model to
-C#. Domain adapters remain the next separately gated tranche; none of the completed lifecycle
-decomposition authorizes these deferred semantics.
+C#. The initial domain-adapter tranche closed separately through BEX-401–BEX-403; neither its closure nor
+the completed lifecycle decomposition authorizes these deferred semantics.

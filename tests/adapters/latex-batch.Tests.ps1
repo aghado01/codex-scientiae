@@ -21,6 +21,25 @@ BeforeAll {
         }
     }
 
+    function Test-LatexBatchPathCoveredByWrite {
+        param(
+            [Parameter(Mandatory)] [string] $Path,
+            [Parameter(Mandatory)] [string[]] $Write
+        )
+
+        $target = [System.IO.Path]::GetFullPath($Path)
+        foreach ($declaredRoot in $Write) {
+            $relative = [System.IO.Path]::GetRelativePath(
+                [System.IO.Path]::GetFullPath($declaredRoot), $target)
+            if ($relative -eq '.' -or (
+                    -not [System.IO.Path]::IsPathFullyQualified($relative) -and
+                    $relative -notmatch '^\.\.(?:[\\/]|$)')) {
+                return $true
+            }
+        }
+        return $false
+    }
+
     function Write-LatexBatchManifest {
         param(
             [Parameter(Mandatory)] [string] $InventoryRoot,
@@ -243,6 +262,7 @@ Describe 'Get-LatexBatchJob planning' {
         $jobs = @(Get-LatexBatchJob @invoke)
         $again = @(Get-LatexBatchJob @invoke)
 
+        @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
         $jobs.Count | Should -Be 2
         @($jobs.Id) | Should -Be @($again.Id)
         @($jobs.Metadata.Slug) | Should -Be @('alpha', 'beta')
@@ -260,6 +280,9 @@ Describe 'Get-LatexBatchJob planning' {
             $job.ProcessSpec.LoadProfile | Should -BeFalse
             $job.ProcessSpec.Environment.CALLER_CORRELATION | Should -Be 'parent-value'
             $job.Parameters.LatexIngestPath | Should -Be $dependency
+            $job.Parameters.RunDir | Should -Be $job.Metadata.ApplicationRunDirectory
+            $job.Parameters.OutDir | Should -Be $job.Metadata.OutputDirectory
+            $job.Parameters.ContainsKey('DeliverableDir') | Should -BeFalse
             $job.Metadata.AddressingContract | Should -Be 'D19/RunDirectory'
             $job.Metadata.Adapter | Should -Be 'latex-batch'
             $job.Metadata.Domain | Should -Be 'latex-ingest'
@@ -268,6 +291,12 @@ Describe 'Get-LatexBatchJob planning' {
             @($job.Writes).Count | Should -Be 2
             @($job.Writes) | Should -Be @(
                 $job.Metadata.ApplicationRunDirectory, $job.Metadata.OutputDirectory)
+            foreach ($write in $job.Writes) {
+                $relativeWrite = [System.IO.Path]::GetRelativePath(
+                    $fixture.RunDirectory, $write)
+                $relativeWrite | Should -Not -Be '..'
+                $relativeWrite | Should -Not -Match '^\.\.[\\/]'
+            }
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
         }
         $jobs[1].EstimatedCost | Should -BeGreaterThan $jobs[0].EstimatedCost
@@ -303,6 +332,9 @@ Describe 'Get-LatexBatchJob planning' {
         $configured.Metadata.MetadataPathProperty | Should -Be 'manifest_ref'
         [object]::ReferenceEquals($configured.Metadata.InventoryRow, $row) |
             Should -BeTrue
+        $configured.Parameters.RunDir | Should -Be `
+            $configured.Metadata.ApplicationRunDirectory
+        $configured.Parameters.OutDir | Should -Be $configured.Metadata.OutputDirectory
         $configured.Parameters.DeliverableDir | Should -Be `
             $configured.Metadata.DeliverableDirectory
         $configured.Parameters.EnableEmbeddedToc | Should -BeTrue
@@ -439,6 +471,12 @@ Describe 'latex-batch execution integration' {
                 $jobs[0].Metadata.OutputDirectory 'good/asset.txt') | Should -BeTrue
         Test-Path -LiteralPath (Join-Path `
                 $jobs[0].Metadata.DeliverableDirectory 'good/good.md') | Should -BeTrue
+        $declaredWrites = @(foreach ($job in $jobs) { $job.Writes })
+        foreach ($producedFile in @(
+                Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File)) {
+            Test-LatexBatchPathCoveredByWrite -Path $producedFile.FullName `
+                -Write $declaredWrites | Should -BeTrue
+        }
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File |
                 Where-Object Name -Match '^batch-(?:job-)?results?\.(?:json|jsonl)$').Count |
             Should -Be 0
@@ -478,5 +516,11 @@ Describe 'latex-batch execution integration' {
             Should -BeTrue
         Test-Path -LiteralPath (Join-Path `
                 $job.Metadata.ApplicationRunDirectory 'audits/math-render.json') | Should -BeTrue
+        $declaredWrites = @($job.Writes)
+        foreach ($producedFile in @(
+                Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File)) {
+            Test-LatexBatchPathCoveredByWrite -Path $producedFile.FullName `
+                -Write $declaredWrites | Should -BeTrue
+        }
     }
 }
