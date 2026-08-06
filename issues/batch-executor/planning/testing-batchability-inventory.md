@@ -98,11 +98,11 @@ fresh-process-local; the file has no dependency on another test file running fir
 The positive control selected 57 tests across eight `batch-executor*.Tests.ps1` containers. All 57 passed,
 none skipped, and their isolated wall measurements totalled 59.128 s. Every file is `Batchable`; the main
 process/lifecycle container is the only material cost outlier at 22.360 s. This closes the BEX-501
-independence baseline only—sequential/parallel parity remains BEX-504 work.
+independence baseline; BEX-504 parity evidence is recorded below.
 
 The restructuring control selected and passed all 66 tests in 18.276 s. It is `NeedsRefactor`: shared
 default artifact addressing, mixed fixtures, and inconsistent external-tool gates make current concurrent
-admission unsafe. BEX-504 owns the pilot split and benchmark evidence.
+admission unsafe. This is the pre-BEX-504 topology and timing baseline.
 
 Measured files at or above 10 s are:
 
@@ -118,18 +118,18 @@ Measured files at or above 10 s are:
 
 The write-isolation findings are bounded and visible:
 
-- `latex-ingest.Tests.ps1` demonstrably uses shared default repository artifact roots in two end-to-end
-  calls; BEX-504 must give them the container's run-scoped artifact root;
+- the pre-BEX-504 `latex-ingest.Tests.ps1` used shared default repository artifact roots in two end-to-end
+  calls; BEX-504 repaired that exposure as recorded below;
 - `hdbscan.Tests.ps1` was collision-free with the provisioned packaged executable, but its missing-package
   `dotnet run` fallback can target shared `artifacts/hdbscan/{bin,obj}` paths and therefore needs an explicit
   capability or isolated build path before admission.
 
 The remaining `NeedsRefactor` files have capability or fixture-topology defects rather than demonstrated
-concurrent write collisions. BEX-504 owns the LaTeX restructuring control. BEX-507 owns migration of the
-other eight files after BEX-502 freezes the authoring contract and BEX-503 audits the runner. There are no
-`SerialOnly` records and therefore no temporary exception debt to carry forward.
+concurrent write collisions. BEX-504 closes the LaTeX restructuring control below. BEX-507 owns migration
+of the other eight files. There are no `SerialOnly` records and therefore no temporary exception debt to
+carry forward.
 
-## Post-baseline delta
+## Post-baseline deltas
 
 BEX-503 did not add a physical container or change any classification. It added three outer runner-contract
 tests and six embedded fixture `It` lines to `tests/adapters/test-batch.Tests.ps1`, moving the current
@@ -140,12 +140,39 @@ parity battery, not a newly discovered isolation defect, so its `Batchable` clas
 The authoritative post-change repository run passed 477 tests, skipped 2 dependency-gated tests, and failed
 none in 122.241 s.
 
+BEX-504 adds one physical file but no `It`: `latex-ingest.Tests.ps1` retains 60 pure/converter tests and is
+now `Batchable`; `latex-ingest-integration.Tests.ps1` owns the 6 external-process/run-artifact tests and is
+`CapabilityGated`. Direct exact-path measurements were 7.190 s and 9.701 s respectively. The integration
+container uses explicit reasoned Node/KaTeX and node-tikzjax skips, writes beneath `$TestDrive` or six
+suite-owned case roots below an absolute `CODEX_TEST_ARTIFACT_ROOT`, and compares repository LaTeX-run state
+at teardown. A supplied-root probe passed all 6 tests and placed 62 files below those six roots.
+The same integration container passed 6/6 by exact path under Pester 5.7.1.
+
+The positive control required no split. Its 8 containers/57 tests produced identical observations and 8
+native XML files at one and four workers, with no missing/undeclared file or surviving runner; wall time was
+46.724 s versus 21.394 s (2.184x). The LaTeX control produced identical 66/66 outcomes and 2 native XML files
+at one and two workers, with no missing/undeclared file, repository-run residue, or surviving descendant;
+wall time was 19.545 s versus 10.275 s (1.902x). The selected topology is therefore supported by both
+semantic and timing evidence without a new scheduler, lock, workload manifest, or permanent nested
+benchmark test. Post-refactor closure selected 479 repository tests in 93.244 s: 477 passed, 2 skipped, and
+none failed.
+
+Current inventory after BEX-504:
+
+| Class | Files |
+|---|---:|
+| `Batchable` | 32 |
+| `CapabilityGated` | 4 |
+| `NeedsRefactor` | 8 |
+| `SerialOnly` | 0 |
+| **Total** | **44 files / 479 observed tests / 462 textual `It` lines** |
+
 ## BEX-501 exit gate
 
-- All 43 current physical files have an exact-path isolation result, observed count, approximate wall time,
+- All 43 BEX-501 physical files have an exact-path isolation result, observed count, approximate wall time,
   semantic resource/state audit, and one of the four required classifications.
 - High-cost files, the LaTeX shared-write exposure, and the conditional HDBSCAN build-path hazard are explicit.
 - Admission decisions use hooks, state, writes, external resources, capability behavior, and failure
   containment; no file was admitted from discovery names alone.
-- BEX-501 is closed. BEX-502 froze D23 and BEX-503 hardened the runner from this evidence without changing
-  the classifications; BEX-504 is the next and only unblocked ticket.
+- BEX-501 is closed. BEX-502 froze D23, BEX-503 hardened the runner, and BEX-504 validated and reclassified
+  both pilots from this evidence; BEX-505 is the next and only unblocked ticket.

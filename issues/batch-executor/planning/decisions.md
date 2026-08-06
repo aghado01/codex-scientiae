@@ -338,6 +338,13 @@ the normal batch set; Phase 5 adds no locks, phase barriers, AST classifier, per
 mode. The current `Get-TestBatchJob` still implements D20's provisional XML-only address until BEX-505; D23
 freezes the target author/adapter boundary without changing current runtime behavior.
 
+BEX-504 validates the author side of this boundary. The LaTeX pilot uses one external-integration container
+with six meaningful case roots below `CODEX_TEST_ARTIFACT_ROOT`, falls back only to `$TestDrive` for direct
+ephemeral runs, and rejects a relative environment value. Its Node/KaTeX and node-tikzjax capabilities skip
+with explicit reasons, and a container teardown invariant proves no call used the repository-global LaTeX
+run allocator. Sequential and two-worker executions have identical outcomes and native results. The current
+adapter still transports no artifact root; implementing and declaring that transport remains BEX-505.
+
 ## Deliberate non-goals of the current executor
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec

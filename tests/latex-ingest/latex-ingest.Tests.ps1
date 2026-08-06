@@ -10,36 +10,11 @@
 #   - custom counters (Case A/B + \ref resolution); KaTeX aliases (\mathds/\Bar);
 #   - emission hygiene (body-position decls, amsart front-matter, quotes, table furniture);
 #   - frontmatter/theorem-numbering/accents/biblatex (faithful-transcription hardening);
-#   - MATH-RENDER AUDIT: a kitchen-sink document must convert to engine-clean markdown.
+# External-process, run-addressing, and engine-backed audit contracts live in
+# latex-ingest-integration.Tests.ps1 so this container remains the pure/converter seam.
 
 BeforeAll {
     . "$PSScriptRoot/../../src/latex-ingest/latex-ingest.ps1"
-
-    function New-LatexIngestTestArchive {
-        param(
-            [Parameter(Mandatory)] [string]$Path,
-            [Parameter(Mandatory)] [System.Collections.IDictionary]$Files
-        )
-        $fileStream = [System.IO.File]::Create($Path)
-        $gzip = [System.IO.Compression.GzipStream]::new(
-            $fileStream, [System.IO.Compression.CompressionLevel]::Optimal, $true)
-        $writer = [System.Formats.Tar.TarWriter]::new(
-            $gzip, [System.Formats.Tar.TarEntryFormat]::Pax, $true)
-        try {
-            foreach ($pair in $Files.GetEnumerator()) {
-                $bytes = if ($pair.Value -is [byte[]]) { $pair.Value } else {
-                    [System.Text.UTF8Encoding]::new($false).GetBytes([string]$pair.Value)
-                }
-                $entry = [System.Formats.Tar.PaxTarEntry]::new(
-                    [System.Formats.Tar.TarEntryType]::RegularFile, [string]$pair.Key)
-                $data = [System.IO.MemoryStream]::new($bytes)
-                try { $entry.DataStream = $data; $writer.WriteEntry($entry) }
-                finally { $data.Dispose() }
-            }
-        } finally {
-            $writer.Dispose(); $gzip.Dispose(); $fileStream.Dispose()
-        }
-    }
 
     $tex = @'
 \documentclass{article}
@@ -167,124 +142,9 @@ Describe 'figures — carried out of the tarball, links live; diagram markers nu
             $r.copied | Should -Be 0
         }
     }
-    It 'end-to-end: a metadata-backed source tree is consumed without mutation and figures survive' {
-        $root = Join-Path ([System.IO.Path]::GetTempPath()) ("e2e-" + [guid]::NewGuid().ToString('N'))
-        $out = Join-Path $root 'out'
-        New-Item -ItemType Directory -Force -Path $root, $out | Out-Null
-        $archive = Join-Path $root 'p.tar.gz'
-        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
-                'main.tex' = '\documentclass{article}\begin{document}\section{Setup}Fig: \includegraphics{figs/arch}\end{document}'
-                'figs/arch.png' = [byte[]](137, 80, 78, 71)
-            })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'p'
-        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $initialized.source_path).sha256
-        $shelf = Join-Path $root 'shelf'
-        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out -DeliverableDir $shelf
-        $r.figures | Should -Be 1
-        $r.audits.math_render.schema | Should -Be 'math-render-audit/1'
-        $r.audits.math_render.clean | Should -BeTrue
-        Test-Path -LiteralPath $r.audits.math_render.report_path | Should -BeTrue
-        # -DeliverableDir bundles the standalone deliverable to the shelf, links verified there
-        $r.deliverable.clean | Should -BeTrue
-        # The shelf bundle is slug-ROOTED and destination-named: {shelf}/{slug}/{slug}.md — BARE, because
-        # the '-latex' infix marks LANE output, not a deliverable (see the $out assertions below, which
-        # still carry it). Assets move under images/; the byte-spanned TOC sidecars ship beside the md.
-        Test-Path (Join-Path $shelf 'p/p.md') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p/images/arch.png') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p/p-tree.md') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'p/p.toc.jsonl') | Should -BeTrue
-        # lane-tagged output at the slug root (STANDARDS §9): {slug}-latex.md, images under {slug}/
-        $mdOut = Get-Content (Join-Path $out 'p-latex.md') -Raw
-        $mdOut | Should -Match ([regex]::Escape('![figure: arch](p/arch.png)'))
-        # the in-doc `## Contents` block is OPT-IN. Default is a pristine transfer: the byte-spanned
-        # sidecars ({slug}-tree.md + {slug}.toc.jsonl) already carry navigation, so embedding a third
-        # copy in the manuscript is redundant. The sections count never counts a TOC either way.
-        $mdOut | Should -Not -Match '(?m)^## Contents\s*$'
-        $r.sections | Should -Be 1
-
-        # ...and -EnableEmbeddedToc still inserts it, linked through the shared slug engine
-        $out2 = Join-Path $root 'out2'
-        New-Item -ItemType Directory -Force -Path $out2 | Out-Null
-        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out2 -EnableEmbeddedToc
-        (Get-Content (Join-Path $out2 'p-latex.md') -Raw) | Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
-        Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
-        # Source stays at its initialized address and remains byte-identical across conversion runs.
-        $r.tex | Should -Be (Join-Path $root 'p-tex')
-        Test-Path (Join-Path $r.tex 'main.tex') | Should -BeTrue
-        (Get-LatexSourceTreeFingerprint -RootPath $r.tex).sha256 | Should -Be $sourceHash
-        $r.source_mode | Should -Be 'manifest'
-        Test-Path (Join-Path $root '.runs') | Should -BeFalse   # the retired layout is not recreated
-        Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
-    }
-
-    It 'run layout: each conversion gets a run while metadata-backed source and sentinel remain unchanged' {
-        $root = Join-Path ([System.IO.Path]::GetTempPath()) ("rl-" + [guid]::NewGuid().ToString('N'))
-        $out = Join-Path $root 'out'; $repo = Join-Path $root 'repo'
-        New-Item -ItemType Directory -Force -Path $root, $out, $repo | Out-Null
-        $archive = Join-Path $root 'q.tar.gz'
-        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
-                'main.tex' = '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
-            })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'q'
-        $manifestHash = (Get-FileHash $initialized.metadata_path -Algorithm SHA256).Hash
-        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $initialized.source_path).sha256
-
-        $r1 = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
-            -ArtifactsRoot (Join-Path $repo 'artifacts')
-        $staged = Join-Path $root 'q-tex'
-        Test-Path (Join-Path $staged 'main.tex') | Should -BeTrue
-
-        # regenerable per-run output goes to artifacts/, NOT beside the source
-        $runs = Join-Path $repo 'artifacts/latex-ingest/runs'
-        Test-Path $runs | Should -BeTrue
-        @(Get-ChildItem $runs -Directory).Count | Should -Be 1
-        @(Get-ChildItem $runs -Recurse -Filter 'q.oracle-counts.json').Count | Should -Be 1
-        $mathAudits = @(Get-ChildItem $runs -Recurse -Filter 'math-render.json')
-        $mathAudits.Count | Should -Be 1
-        (Get-Content $mathAudits[0].FullName -Raw | ConvertFrom-Json).status | Should -Be 'pass'
-        $r1.audits.math_render.report_path | Should -Be $mathAudits[0].FullName
-        @(Get-ChildItem $staged -Filter '*.oracle-counts.json').Count | Should -Be 0   # source stays source
-
-        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
-            -ArtifactsRoot (Join-Path $repo 'artifacts')
-        @(Get-ChildItem $runs -Directory).Count | Should -BeGreaterThan 1   # still a NEW run each call
-        (Get-FileHash $initialized.metadata_path -Algorithm SHA256).Hash | Should -Be $manifestHash
-        (Get-LatexSourceTreeFingerprint -RootPath $staged).sha256 | Should -Be $sourceHash
-        @(Get-ChildItem $staged -File | Where-Object { $_.Extension -in '.json', '.jsonl' }).Count | Should -Be 0
-        @(Get-ChildItem $runs -Recurse -Filter 'q.docstream.jsonl').Count | Should -BeGreaterThan 0
-
-        Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
-    }
-
-    It 'run layout: initialized source, run artifacts, lane output and shelf remain independent destinations' {
-        $root = Join-Path ([System.IO.Path]::GetTempPath()) ("ov-" + [guid]::NewGuid().ToString('N'))
-        $runDir = Join-Path $root 'elsewhere/runs/custom'
-        $out = Join-Path $root 'elsewhere/lane'
-        $shelf = Join-Path $root 'elsewhere/shelf'
-        New-Item -ItemType Directory -Force -Path $root, $out, $shelf | Out-Null
-        $archive = Join-Path $root 'z.tar.gz'
-        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
-                'main.tex' = '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
-            })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'z'
-
-        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path `
-            -OutDir $out -DeliverableDir $shelf -RunDir $runDir
-
-        $r.tex | Should -Be ([System.IO.Path]::GetFullPath($initialized.source_path))
-        Test-Path (Join-Path $initialized.source_path 'main.tex') | Should -BeTrue
-        Test-Path (Join-Path $runDir 'z.oracle-counts.json') | Should -BeTrue
-        Test-Path (Join-Path $runDir 'audits/math-render.json') | Should -BeTrue
-        Test-Path (Join-Path $out 'z-latex.md') | Should -BeTrue
-        Test-Path (Join-Path $shelf 'z/z.md') | Should -BeTrue
-        # explicit run/output/shelf destinations do not invent a default artifacts tree
-        Test-Path (Join-Path $root 'artifacts') | Should -BeFalse
-
-        Remove-Item -LiteralPath $root -Recurse -Force -ErrorAction SilentlyContinue
-    }
 }
 
-Describe 'TikZ — source-authoritative diagram rendering' {
+Describe 'TikZ — source-authoritative diagram capture' {
     It 'stashes each non-encodable env into the UNIFIED DiagramStore with number + kind, captures preamble hints' {
         # single-cell tikzcd (no arrows) is not encodable -> falls to the store alongside the tikzpicture
         $t = '\usetikzlibrary{calc,external}\usetikzlibrary{cd,calc}\usepackage{tikz-cd}\begin{document}\begin{tikzpicture}\draw (0,0);\end{tikzpicture}\begin{tikzcd}A\end{tikzcd}\end{document}'
@@ -294,25 +154,6 @@ Describe 'TikZ — source-authoritative diagram rendering' {
         $script:DiagramStore[1].kind | Should -Be 'tikzcd'
         $script:TikzLibs | Should -Be 'calc,cd'          # deduped; 'external' (shell-escape caching) dropped
         $script:TikzPkgs.ContainsKey('tikz-cd') | Should -BeTrue
-    }
-    It 'renders a tikzpicture and a tikzcd to real SVGs from the centralized payload' -Skip:(-not (Test-Path "$PSScriptRoot/../../packages/node/node_modules/node-tikzjax")) {
-        $out = Join-Path ([System.IO.Path]::GetTempPath()) ("tikz-" + [guid]::NewGuid().ToString('N'))
-        $rep = Invoke-TikzRender -OutDir $out -Jobs @(
-            @{ id = 'a'; source = '\begin{tikzpicture}\draw[->] (0,0) -- (1,1) node[right] {$x_i$};\end{tikzpicture}' }
-            @{ id = 'b'; source = '\begin{tikzcd}A \arrow[r] & B\end{tikzcd}'; texPackages = @{ 'tikz-cd' = '' } })
-        $rep.ok | Should -Be 2
-        (Get-Content (Join-Path $out 'a.svg') -Raw) | Should -BeLike '<svg*'
-        Remove-Item -LiteralPath $out -Recurse -Force -ErrorAction SilentlyContinue
-    }
-    It 'a diagram that fails to compile is a per-job result, never a batch failure' -Skip:(-not (Test-Path "$PSScriptRoot/../../packages/node/node_modules/node-tikzjax")) {
-        $out = Join-Path ([System.IO.Path]::GetTempPath()) ("tikz-" + [guid]::NewGuid().ToString('N'))
-        $rep = Invoke-TikzRender -OutDir $out -Jobs @(
-            @{ id = 'bad'; source = '\begin{tikzpicture}\undefinedcmd\end{tikzpicture}' }
-            @{ id = 'good'; source = '\begin{tikzpicture}\draw (0,0) -- (1,0);\end{tikzpicture}' })
-        $rep.ok | Should -Be 1
-        @($rep.results | Where-Object id -eq 'bad')[0].ok | Should -BeFalse
-        Test-Path (Join-Path $out 'good.svg') | Should -BeTrue
-        Remove-Item -LiteralPath $out -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
 
@@ -703,36 +544,5 @@ Describe 'emission hygiene — declarations, front-matter, quotes, tables' {
         $out = ConvertFrom-Latex '\documentclass{article}\title{T}\begin{document}\begin{tabular}{ll}\cmidrule{1-2} a & b \\[0.5ex] c & d \end{tabular}\end{document}' ''
         $out | Should -Not -Match ([regex]::Escape('\cmidrule'))
         $out | Should -Not -Match ([regex]::Escape('[0.5ex]'))
-    }
-}
-
-# =====================================================================================================
-# ORACLE SMOKE GATE — the strongest guard: a kitchen-sink document must pass the reusable math-render audit
-# markdown. This is what protects the oracle for the pdf-converter comparison + batch stress testing.
-# =====================================================================================================
-Describe 'oracle smoke gate — a representative document renders KaTeX-clean' {
-    BeforeAll { . "$PSScriptRoot/../../src/audits/math-render/math-render.ps1" }
-    # discovery-safe skip guard (Test-Path/Get-Command are available at discovery; a dot-sourced function is not)
-    It 'converts encode-first diagrams + nested math + counters to 0 math-render failures' -Skip:(-not ((Get-Command node -CommandType Application -ErrorAction SilentlyContinue) -and (Test-Path "$PSScriptRoot/../../packages/node/node_modules/katex"))) {
-        $tex = @'
-\documentclass{article}\title{Kitchen Sink}
-\newcommand{\I}{\mathbb{I}}
-\begin{document}
-\section{Diagrams}
-Linear: $\xymatrix{ 0 \ar[r] & K \ar[r]^{\text{id}} & 0 }$.
-A commutative square:
-\begin{tikzcd} A \arrow[r, "f"] & B \\ C \arrow[r, "g"] \arrow[u, "p"] & D \arrow[u, "q"] \end{tikzcd}
-Nested: define $S = \{x : \text{property $P(x)$ holds}\}$.
-Indicator $\mathds{1}_A$ and $\I(1,3)$.
-\end{document}
-'@
-        $out = ConvertFrom-Latex $tex ''
-        $tmp = Join-Path "$PSScriptRoot/../../artifacts/tests/latex-ingest" ("smoke-" + [guid]::NewGuid().ToString('N') + '.md')
-        New-Item -ItemType Directory -Force -Path (Split-Path -Parent $tmp) | Out-Null
-        [System.IO.File]::WriteAllText($tmp, $out, [System.Text.UTF8Encoding]::new($false))
-        try {
-            $rc = Invoke-MathRenderAudit -Path $tmp
-            $rc.failed | Should -Be 0
-        } finally { Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue }
     }
 }

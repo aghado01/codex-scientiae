@@ -5,7 +5,7 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: active; BEX-501 through BEX-503 closed on 2026-08-06 and BEX-504 is next.** Tickets are strictly
+**Status: active; BEX-501 through BEX-504 closed on 2026-08-06 and BEX-505 is next.** Tickets are strictly
 sequenced; no later ticket starts before its predecessor closes.
 
 ## Current evidence and baseline
@@ -28,6 +28,14 @@ lines. The authoritative repository run now selects 479 tests: 477 pass, 2 are d
 none fail. Exact-path Pester 5.7.1/6.0.0 witnesses freeze selection, native-result, exit-status, and transient
 observation parity; the complete adapter and infrastructure gates are 20 and 6 passing tests respectively.
 
+BEX-504 retains all 57 positive-control tests across their eight existing containers and splits the 66-test
+LaTeX restructuring control once: 60 pure/converter tests remain in `latex-ingest.Tests.ps1`; 6 external
+process and run-artifact tests move to `latex-ingest-integration.Tests.ps1`. The current inventory is 44
+files and 462 textual `It` lines: 32 `Batchable`, 4 `CapabilityGated`, 8 `NeedsRefactor`, and no `SerialOnly`.
+One-worker/file-parallel parity is 57/57 and 66/66 with native-result, declared-write, repository-residue,
+and process-survivor equality. The current authoritative repository gate remains 479 selected: 477 passed,
+2 dependency-gated skips, and none failed.
+
 The current adapter already chooses the conservative physical-file boundary. Its naming and surrounding
 contract are provisional: `Get-TestBatchJob`, `test-batch`, and `test-jobs` are too generic for a
 Pester-specific adapter. The BEX-403 closure baseline is 474 passed plus 2 dependency-gated skips (476
@@ -48,10 +56,10 @@ BEX-502 batchable-container contract [closed 2026-08-06]
 BEX-503 runner audit [closed 2026-08-06]
           |
           v
-BEX-504 pilot restructuring [next]
+BEX-504 pilot restructuring [closed 2026-08-06]
           |
           v
-BEX-505 Pester adapter correction
+BEX-505 Pester adapter correction [next]
           |
           v
 BEX-506 thin parallel shell
@@ -64,8 +72,8 @@ BEX-403 proved both current adapters retain one D19 address owner, complete decl
 and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
 not Phase 5 implementation.
 
-BEX-504 is the sole next ticket. BEX-505 waits for its pilot evidence so the corrected adapter's public
-inputs do not anticipate unsupported test granularity.
+BEX-505 is the sole next ticket. Its physical-file planning boundary and container artifact transport now
+have both contract and pilot evidence.
 
 ## Cross-cutting invariants
 
@@ -154,6 +162,11 @@ The same exact-container invocation is authoritative in sequential and batch mod
 selection/outcome semantics and no expansion of runner ownership.
 
 ## BEX-504 — Refactor and benchmark representative suites
+
+**Status: closed 2026-08-06.** The positive control required no source split. The restructuring control now
+has one external-integration seam, explicit capability skips with reasons, no default repository-run write,
+and one suite-owned artifact layout. Sequential and parallel executions produced identical observations and
+native XML with no missing/undeclared evidence, shared residue, or surviving descendant.
 
 ### Scope
 

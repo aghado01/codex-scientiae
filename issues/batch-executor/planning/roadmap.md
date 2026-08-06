@@ -58,7 +58,7 @@ is now an absence witness, and the manifest-backed four-command module remains b
 Revalidation is 8/8 module-surface, 8/8 batch-plan, 17/17 adapter, 6/6 infrastructure, and 158/158 shared;
 the full repository run passed 474 tests with 2 dependency-gated skips (476 total).
 
-Testing-overhaul scoping and BEX-501 through BEX-503 are complete. The
+Testing-overhaul scoping and BEX-501 through BEX-504 are complete. The
 [semantic inventory](testing-batchability-inventory.md) covers all 43 physical Pester files and 453 textual
 `It` lines. Exact-path fresh-process runs selected 476 tests: 474 passed, 2 were explicitly skipped, and none
 failed. Semantic review classifies 31 files as `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`,
@@ -75,7 +75,19 @@ six embedded fixture lines bring the current mechanical count to 462 textual `It
 repository gate is now 477 passed plus 2 dependency-gated skips (479 total), with 20/20 adapter and 6/6
 infrastructure gates. Automatic `It`-level fan-out remains outside Phase 5. The
 [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines ownership; the
-[workplan](testing-overhaul-workplan.md) now proceeds with BEX-504 as the sole next ticket.
+[workplan](testing-overhaul-workplan.md) now proceeds with BEX-505 as the sole next ticket.
+
+BEX-504 left the eight-file/57-test batch-executor positive control intact: one worker and four workers
+produced identical observations and eight native results with no undeclared files or surviving runners;
+wall time changed from 46.724 s to 21.394 s (2.184x), with the 21-test process/lifecycle file remaining the
+bounded critical path. The 66-test LaTeX control now has one real physical seam: 60 pure/converter tests in
+`latex-ingest.Tests.ps1` and 6 capability-gated external-process/run-artifact tests in
+`latex-ingest-integration.Tests.ps1`. One worker and two workers preserved 66/66 outcomes and two native
+results with no repository-run residue, undeclared files, or surviving descendants; wall time changed from
+19.545 s to 10.275 s (1.902x). The integration container accepts an absolute
+`CODEX_TEST_ARTIFACT_ROOT` and owns six domain case roots below it; direct runs use `$TestDrive`. Current
+topology/classification is 44 files: 32 `Batchable`, 4 `CapabilityGated`, 8 `NeedsRefactor`, and no
+`SerialOnly`; the textual and observed totals remain 462 and 479.
 
 ## Sequencing rules
 
@@ -93,8 +105,6 @@ infrastructure gates. Automatic `It`-level fan-out remains outside Phase 5. The
 Detailed scope, dependencies, and exit gates are in the
 [testing-overhaul workplan](testing-overhaul-workplan.md).
 
-- **BEX-504 — Refactor and benchmark representative suites.** Validate the batch-executor files as a positive
-  control and split the LaTeX-ingest suite only at real fixture, resource, capability, or cost seams.
 - **BEX-505 — Correct the Pester adapter contract.** Atomically rename the planner to `Get-PesterBatchJob`,
   adopt `pester-batch`/`pester-jobs` naming, transport the declared D23 container artifact root, and retain
   one shared `adapters` module with no compatibility alias.

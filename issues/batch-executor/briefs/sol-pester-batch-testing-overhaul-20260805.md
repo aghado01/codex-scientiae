@@ -1,8 +1,8 @@
 # Pester batch testing overhaul brief
 
-Runstamp 20260805. **Status: active; BEX-501 through BEX-503 implemented.** This brief defines the
+Runstamp 20260805. **Status: active; BEX-501 through BEX-504 implemented.** This brief defines the
 test-authoring and execution changes required before repository testing can use the shared batch executor
-as a normal parallel path. BEX-504 is the next strictly sequenced ticket; the current adapter remains
+as a normal parallel path. BEX-505 is the next strictly sequenced ticket; the current adapter remains
 provisional until BEX-505.
 
 Inputs:
@@ -174,8 +174,10 @@ Use two deliberately different pilots:
 
 - **Positive control:** `tests/shared/batch-executor*.Tests.ps1`, which already has several physical files
   around a cohesive package and exercises process/lifecycle behavior.
-- **Restructuring control:** `tests/latex-ingest/latex-ingest.Tests.ps1`, which should expose whether a large
-  suite needs real fixture or capability seams before batching.
+- **Restructuring control:** the former 66-test `tests/latex-ingest/latex-ingest.Tests.ps1`. BEX-504 retained
+  60 pure/converter tests there and moved 6 external-process/run-artifact tests to
+  `tests/latex-ingest/latex-ingest-integration.Tests.ps1`, the one fixture/capability/cost seam supported by
+  the evidence.
 
 For each pilot, compare authoritative sequential execution with file-parallel execution: selected tests,
 pass/fail/skip outcomes, exit status, native XML, wall time, per-container setup cost, output paths, and
@@ -217,7 +219,9 @@ writes. BEX-501 subsequently closed the 43-file
 [semantic inventory and timing baseline](../planning/testing-batchability-inventory.md). BEX-502 then froze
 the canonical [authoring and review contract](../../../tests/README.md) and D23. BEX-503 then hardened the
 exact-container runner boundary across Pester 5.7.1 and 6.0.0, including native results, empty/failure
-status, and child-safe observations, without acquiring batch ownership. Phase 5 now resumes at BEX-504
-pilot restructuring, followed in strict sequence by adapter correction, thin-shell composition, and
+status, and child-safe observations, without acquiring batch ownership. BEX-504 then preserved exact
+sequential/parallel semantics for both controls, left the eight-file batch-executor topology intact, and
+split the LaTeX control once to isolate capability-gated external processes and container-owned writes.
+Phase 5 now resumes at BEX-505 adapter correction, followed in strict sequence by thin-shell composition and
 repository migration as specified in the
 [workplan](../planning/testing-overhaul-workplan.md).

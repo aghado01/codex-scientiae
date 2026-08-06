@@ -100,6 +100,11 @@ fixture, capability, output, audit, or evidence subdirectories may be introduced
 domain structure. Phase 5 does not manufacture a directory per `It`, parameter row, or tag. A suite is
 responsible for preventing collisions among its own writes below the container root.
 
+The BEX-504 LaTeX integration pilot is the first concrete realization: it uses `$TestDrive` when the
+environment value is absent and six meaningful case roots directly below an absolute
+`CODEX_TEST_ARTIFACT_ROOT` when supplied. That case layout belongs to the suite and is evidence for this
+pilot, not a required repository-wide hierarchy.
+
 Read-only shared inputs are allowed when they are immutable for the duration of the run. Fixed mutable
 services, ports, build outputs, package caches, source trees, and repository artifact roots are not safe
 write boundaries. A test specifically exercising a build must redirect all build/intermediate output below
