@@ -4,9 +4,9 @@
 budget and one queue; each item executes either directly in a pooled runspace or in a child
 PowerShell supervised by a pooled runspace. Execution mode does not create a second scheduler.
 
-Import the canonical module through `batch-executor.psd1`. The sibling
-`../batch-executor.ps1` file is a transitional dot-source facade for legacy callers and adds only
-the `Compile-BatchPlan` alias for `New-BatchPlan`.
+Import the canonical module through `batch-executor.psd1`. It is the only supported load surface. The former
+flat `../batch-executor.ps1` compatibility facade and its `Compile-BatchPlan` alias were removed after a
+zero-caller inventory; callers use `New-BatchPlan` directly.
 
 ## Public commands
 

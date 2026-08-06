@@ -138,17 +138,17 @@ The module exports:
 - `Invoke-BatchPlan`
 - `Invoke-BatchExecutor`
 
-`New-BatchPlan` replaces the unapproved `Compile-BatchPlan` verb. The transitional compatibility loader
-provides `Compile-BatchPlan` as an alias. `Resolve-BatchWorkerBudget` remains private: callers state worker
-policy through executor parameters and inspect the resolved budget in the returned execution record. Its
-unit tests run inside module scope. If a real caller later needs preflight sizing, promote a separately
+`New-BatchPlan` replaces the unapproved `Compile-BatchPlan` verb. D22 retired the transitional loader and
+its legacy alias after a zero-caller inventory. `Resolve-BatchWorkerBudget` remains private: callers state
+worker policy through executor parameters and inspect the resolved budget in the returned execution record.
+Its unit tests run inside module scope. If a real caller later needs preflight sizing, promote a separately
 reviewed command with an approved verb.
 
-### D15 — The flat script becomes a transitional compatibility loader — implemented
+### D15 — The flat script becomes a transitional compatibility loader — superseded by D22
 
-`src/shared/batch-executor.ps1` imports the canonical manifest and supplies only explicitly approved legacy
-aliases. New callers import the manifest. Compatibility removal requires a caller inventory and an
-explicit roadmap item; the facade does not become a second implementation or a wildcard dot-source hub.
+BEX-201–BEX-206 temporarily made `src/shared/batch-executor.ps1` import the canonical manifest and supply
+only the `Compile-BatchPlan` alias. It never became a second implementation or wildcard dot-source hub.
+D22 records the required caller inventory, explicit removal, and permanent canonical load boundary.
 
 ### D16 — The source README is a contract surface, not a tutorial — implemented
 
@@ -292,6 +292,17 @@ for application run evidence, lane output, and an optional deliverable bundle. T
 declared write set, and planning creates none of them. The adapter copies caller environment values without
 choosing logger topology; executor-injected job correlation remains authoritative. Generic execution results
 remain in memory, and one failed document cannot suppress a sibling.
+
+### D22 — The canonical manifest is the sole load path — implemented
+
+A 2026-08-06 inventory found no production consumer of `src/shared/batch-executor.ps1` or
+`Compile-BatchPlan` in the tracked repository or active sibling-project code. The only executable consumer
+was the facade's own equivalence test; historical discussions and ledger witnesses are not callers.
+
+BEX-208 therefore deletes the flat script and legacy alias. The manifest-backed module is the only supported
+load surface, `New-BatchPlan` is the only plan constructor, and a module-surface witness requires both the
+legacy path and command to remain absent. This changes no canonical export, plan/execution contract, adapter,
+or runtime behavior.
 
 ## Deliberate non-goals of the current executor
 

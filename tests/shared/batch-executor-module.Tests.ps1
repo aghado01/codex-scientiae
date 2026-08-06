@@ -4,8 +4,8 @@ BeforeAll {
     $script:BatchExecutorModuleRoot = (Resolve-Path `
         (Join-Path $PSScriptRoot '../../src/shared/batch-executor')).Path
     $script:BatchExecutorManifest = Join-Path $script:BatchExecutorModuleRoot 'batch-executor.psd1'
-    $script:BatchExecutorFacade = (Resolve-Path `
-        (Join-Path $PSScriptRoot '../../src/shared/batch-executor.ps1')).Path
+    $script:RetiredBatchExecutorFacade = Join-Path `
+        (Split-Path -Parent $script:BatchExecutorModuleRoot) 'batch-executor.ps1'
 
     function Copy-TestBatchExecutorModule {
         param([Parameter(Mandatory)] [string] $Destination)
@@ -17,14 +17,12 @@ BeforeAll {
 Describe 'batch-executor module surface' {
     BeforeEach {
         Remove-Module batch-executor -Force -ErrorAction SilentlyContinue
-        Remove-Item Alias:Compile-BatchPlan -Force -ErrorAction SilentlyContinue
         Remove-Variable BatchExecutorPayloadImportSentinel -Scope Global `
             -Force -ErrorAction SilentlyContinue
     }
 
     AfterEach {
         Remove-Module batch-executor -Force -ErrorAction SilentlyContinue
-        Remove-Item Alias:Compile-BatchPlan -Force -ErrorAction SilentlyContinue
         Remove-Variable BatchExecutorPayloadImportSentinel -Scope Global `
             -Force -ErrorAction SilentlyContinue
     }
@@ -132,21 +130,13 @@ Describe 'batch-executor module surface' {
             Should -Throw "*process dispatcher payload does not parse at '$malformed'*"
     }
 
-    It 'keeps the facade behaviorally equivalent while making New-BatchPlan canonical' {
-        . $script:BatchExecutorFacade
-        $entry = Join-Path $TestDrive 'facade-entry.ps1'
-        [System.IO.File]::WriteAllText($entry, 'param() ''ok''')
-        $job = New-BatchJob -Id facade -Kind RunspaceScript -EntryPoint $entry
+    It 'has no flat compatibility loader or legacy plan alias' {
+        Test-Path -LiteralPath $script:RetiredBatchExecutorFacade | Should -BeFalse
 
-        $canonical = New-BatchPlan -Job $job
-        $compatibility = Compile-BatchPlan -Job $job
+        Import-Module $script:BatchExecutorManifest -Force
 
-        (Get-Alias Compile-BatchPlan).Definition | Should -Be 'New-BatchPlan'
-        Get-Variable manifestPath -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
-        $compatibility.Errors | Should -Be $canonical.Errors
-        $compatibility.Plan.Jobs.Id | Should -Be $canonical.Plan.Jobs.Id
-        $compatibility.Plan.WorkerScriptPath | Should -Be $canonical.Plan.WorkerScriptPath
-        $compatibility.Plan.WorkerScriptPath | Should -Be `
-            (Join-Path $script:BatchExecutorModuleRoot 'payloads/batch-job-worker.ps1')
+        (Get-Module batch-executor).Path | Should -Be `
+            (Join-Path $script:BatchExecutorModuleRoot 'batch-executor.psm1')
+        Get-Command Compile-BatchPlan -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
     }
 }

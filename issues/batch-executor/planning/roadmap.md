@@ -9,8 +9,8 @@ Living plan for batch-executor work not yet complete. The current architecture c
 
 The executor is packaged under `src/shared/batch-executor/`. Its manifest exposes four commands; its root
 module validates and reads four runtime payloads as source data, loads named host files in deterministic
-order, and leaks no private helpers. The former flat implementation is now a compatibility facade that
-imports the manifest and supplies only `Compile-BatchPlan -> New-BatchPlan`.
+order, and leaks no private helpers. The manifest is the sole supported load path; BEX-208 removed the
+zero-caller flat compatibility facade and `Compile-BatchPlan` alias.
 
 The behavioral and teardown gates remain closed: 21 executor, 8 private state-contract, 5 preparation, 6
 lifecycle-owner/dispatch, 2 await/cancel, 3 collection, 4 teardown/assembly, 8 job/plan, and 8
@@ -19,8 +19,8 @@ host-stop witness closes the start/registration race and prevents queued supervi
 unwinding in serial waves. Preparation now completes all caller-graph traversal and serialization before
 the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
 residue and rebuilt the check around required current inputs. Phases 2 through 4 are closed; the package
-boundary, public execution projection, and compatibility facade remained stable through lifecycle
-decomposition and adapter validation. Phase 5 is now the ahead queue.
+boundary and public execution projection remained stable through lifecycle decomposition, adapter
+validation, and compatibility removal. Phase 5 is now the ahead queue.
 
 BEX-401 is closed. `Get-TestBatchJob` in the shared `adapters` module emits one exact-Pester, isolated process
 job per selected test file, derives its native XML result through the D19 address chokepoint, creates nothing
@@ -52,6 +52,12 @@ write beneath that run, every produced file is covered by those writes, and gene
 in memory. Closure revalidation is 17/17 focused adapter, 6/6 infrastructure, and 158/158 shared tests; the
 full repository run passed 474 tests with 2 dependency-gated skips (476 total). Phase 4 is closed.
 
+BEX-208 is closed. Repository and active sibling-project code inventory found no live facade caller; only
+the compatibility test consumed the legacy path or alias. The flat script is deleted, the equivalence test
+is now an absence witness, and the manifest-backed four-command module remains behaviorally unchanged.
+Revalidation is 8/8 module-surface, 8/8 batch-plan, 17/17 adapter, 6/6 infrastructure, and 158/158 shared;
+the full repository run passed 474 tests with 2 dependency-gated skips (476 total).
+
 Testing-overhaul scoping is complete. The repository currently has 43 physical Pester files and about 453
 textual `It` blocks, with pervasive container setup and material state/resource signals. The planned default
 job boundary is therefore one physical Pester file/container in one fresh child process; automatic `It`-level
@@ -67,8 +73,7 @@ closed.
 3. Keep adapters thin: discovery and domain interpretation may emit jobs but never own executor resources.
 4. Consume a caller-allocated `RunDirectory`; never allocate run identity or define a durable executor-result
    store inside an adapter.
-5. Keep compatibility explicit and temporary; new callers bind to the manifest.
-6. Require a separate decision before changing the frozen public execution projection or deferred semantics.
+5. Require a separate decision before changing the frozen public execution projection or deferred semantics.
 
 ## Phase 5 — Batch-ready Pester testing
 
@@ -108,5 +113,4 @@ These are not implied by the module refactor and require separate decisions:
 - persistent job/result stores and resume semantics;
 - native non-PowerShell process entrypoints;
 - a C# plan-model port;
-- a public worker-budget preview command;
-- compatibility-facade removal.
+- a public worker-budget preview command.
