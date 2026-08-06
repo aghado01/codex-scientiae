@@ -69,6 +69,43 @@ briefs carry the later contracts with their reports — and the evidence in
 | D39 | K4c structural-family closure: exact selection/window/policy-stamped packing, cover, and laminar validators; `Laminarizer.Admit` with grouped maximum priority and deterministic inclusion-maximal—not maximum—guarantee; explicit multiple-parent `HierarchyView` plus policy-gated immediate nearest-container projection; named `ResolutionView` layers and compatible-master explicit `ResolutionMap` incidence/functional/exact-aggregation contracts; the unstamped `Extract`/implicit-tree path is removed; all 1,024 structural masks, 4,096 greedy problems, every valid bounded nearest-parent family, all 4,096 four-node directed graphs, and 2,048 resolution endpoint problems agree with independent oracles (harness 1914→1976) | implemented; K4c closed; next lanes resequenced by D40; Lean gate reapplied and deferred |
 | D40 | Post-K4 coherence and K5–K7 sequencing correction: Doccer's historical “register” is natively a named codepoint-address span or family of spans; Block/Script/GeneralCategory assignments are Unicode classifications derived from register membership; the canonical mathematical language is the unrelated **math channel** (legacy repository name `math-register`); the combined register/value/metadata blocker is decomposed into F-UCD register/classification work, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a derivation-reference seam into K7; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; terminology amended after owner clarification; K5a/K5b/K6/K7 surfaces remain pending |
 | D41 | Round-2 capability excavation: the K5a/K5b and K6→K7→K8 critical paths remain unchanged; ThermoMapper contributes transferable concepts/patterns/prototype capabilities but no Doccer policy or gate; donor defects become lift acceptance requirements while donor-facing maintenance guidance stays in ThermoMapper; V0/V1 independently define and realize a compatible-master/exact-window UTF-16 code-unit Boolean-vector carrier with distinct direct/harvest exits and unit-basis residual; A0–A2 retain Doccer-measured set-bit/path candidates alongside a separate per-capability HPC repertoire; F7 splits independent distance/correspondence from K6/K7 transform-origin/promotion integration; F8 splits direct measures/hash substrate, rolling/content-defined producers, signatures/candidate indexes, and streaming sketches; F9 splits counted/online views, immutable fitted feature artifacts, and ranked queries; each subchip schedules by its actual carrier inputs rather than a blanket K8 dependency; F2 retains persisted algorithm/version/byte-order identity | recorded; amended after owner clarification; planning/registry only; no source surface or K edge changed |
+| D42 | V-lane formal-assurance split: D41's combined vector obligation is decomposed into the V0 carrier contract, prefix-scan refinement, the vector-to-offset/span/claim harvest bridge, future packed `SpanSet` equivalence, and future D3 suppression-bitmap equivalence; V0 performs statement/signature review, V1 remains portable-reference-owned, and V2 reapplies the gate per accelerated or fused backend; merely minting a peer vector does not activate Lean, while a packed region or suppression backend advertised as interchangeable over arbitrary inputs is a presumptive optimization-pressure activation unless a smaller complete certificate owns the universal equality | recorded; law registry and deferred restart packet amended; Lean remains deferred; no K edge or source surface changed |
+
+## V-lane formal-assurance split (D42)
+
+D42 retains the strongest useful warning from the
+[round-two source](../discussions/opus-doccer-expansion-round2.md) without conflating a new peer
+carrier with an alternate implementation of an existing semantic value. Its detailed reasoning is
+in the [material-basis/XOR inquiry](../discussions/sol-doccer-material-basis-and-public-composability-20260806_105530.md),
+and its activation procedure is appended to the
+[deferred Lean brief](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md).
+
+The former V0 registry row mixed five claims with different carriers and proof pressure. D42
+separates them:
+
+1. vector basis/equality/residual and the existence of direct and harvest exits;
+2. prefix-parity/transition/chunk/backend refinement within the vector sort;
+3. sound and complete harvest into ordered offsets, spans, or claims with explicit boundary and
+   residual behavior;
+4. extensional equality between a future packed `SpanSet` backend and the interval-list
+   reference; and
+5. exact `SpanSet` equality between a future D3 suppression bitmap and
+   `Coverage(Q)`/complement for the same exact suppressor `ClaimSelection` \(Q\).
+
+V0 must state the mathematical contracts before freezing the signature, but the peer carrier's
+existence is not an equivalence claim. V1 may land its portable reference and executable laws
+without a Lean project. V2 reapplies the burden gate to each concrete word/SWAR/SIMD,
+carry-less-multiply, chunked, or fused backend. A complete fixed-width linearity certificate may
+own a scan kernel more cheaply than Lean; ordinary bounded/random differential evidence cannot by
+itself prove arbitrary-input interchangeability.
+
+A packed `SpanSet` or suppression bitmap crosses a stronger boundary. Once proposed as the
+same existing value/query rather than a different result sort, optimization pressure is present
+and the smallest corresponding obligation chip should be presumed to activate. The chip may still
+avoid the harness by finding a smaller complete certificate or by weakening the claim, but it must
+not inherit semantic equality from “bitmap” or from bounded examples. Packed-region
+representation equality and occurrence-selected suppression-to-region query equality remain
+separate obligations.
 
 ## Expansion round-two adjudication (D41)
 
@@ -91,9 +128,10 @@ consumption and explicit candidate/claim harvest are separate exits. A classifie
 unit population remains vector-basis residue; a harvest result may connect that evidence to
 emitted candidates without equating code-unit and occurrence bases. F3 byte addressing remains a
 separate coordinate map. V1 is independently available after V0 for portable reference semantics
-and both exits; V2 adds word/SWAR/SIMD paths only after a named Doccer workload and differential evidence. Reapply Lean
-at the public V0 contract and before an alternate backend claims equivalence; bit packing alone
-does not activate the harness.
+and both exits; V2 adds word/SWAR/SIMD paths only after a named Doccer workload and differential
+evidence. D42 splits the former combined Lean reapplication into carrier, prefix-scan, harvest,
+packed-region, and suppression-query obligations; bit packing or a peer carrier alone does not
+activate the harness.
 
 A0–A2 are independently available performance work: record representative time/allocation
 baselines, then consider a word-skipping `ClaimSelection` set-bit walker and a `PathSelection`
@@ -611,9 +649,10 @@ The resulting boundaries are:
 
 ## Carrier and law registry (D25)
 
-This section is the canonical K0 registry, with D41's V0 carrier/assurance addendum recorded
-without reopening the closed K0 chip. A row may reserve a contract before its implementation
-tranche, but its status and assurance gate must make that distinction explicit.
+This section is the canonical K0 registry, with D41's V0 carrier reservation and D42's split
+formal-assurance addendum recorded without reopening the closed K0 chip. A row may reserve a
+contract before its implementation tranche, but its status and assurance gate must make that
+distinction explicit.
 
 ### Carriers
 
@@ -657,7 +696,11 @@ their result semantics interchangeable.
 |---|---|---|---|---|
 | K0-CARRIER | \(P_M\), \(L_M\), \(I_M\), \(C_M\), \(F_M\), and \(O_{N,M}\) are distinct; empties occur only in \(L_M\) among the interval carriers — **frozen** | deterministic contract plus adversarial C# boundary cases | existing empty-span refusal in `AllenAlgebra.Relate`; K3 must add the located diagonal positively | a generalized public interval carrier would change empty participation or an operator signature |
 | K0-IDENTITY-GEOMETRY | Allen `Equal` is identity on \(I_M\), never claim identity — **frozen** | C# oracle/counterexample | classifier cases plus equal-geometry distinct claims in the batch/laminar harness | only if a generic qualitative-calculus or quotient API is proposed |
-| V0-CODE-UNIT-VECTOR | \(V_{M,W}\) is a compatible-master/equal-window Boolean code-unit value distinct from extents, occurrences, and origins; direct use and explicit harvest are separate exits; incomplete classification and invalid harvest positions remain vector/harvest residue — **reserved by D41; V0 contract available** | scalar reference semantics, bounded exhaustive and randomized C# oracles, chunk/carry adversaries, then differential backend evidence | freeze equality/empties, Boolean/shift/prefix operations, carry-in/out, classifier and residual stamps, scalar-boundary harvest, both exits, and a portable reference before acceleration | reapply at the public V0 signature and before a word/SWAR/SIMD or fused/chunked backend claims universal equivalence; activate only if proof can change the signature or executable differential evidence is insufficient |
+| V0-CODE-UNIT-VECTOR | \(V_{M,W}\) is a compatible-master/equal-window Boolean code-unit value distinct from extents, occurrences, and origins; zero/all values are ordinary vectors; classifier residual remains unit-based; direct consumption and a separately registered harvest bridge are distinct exits — **reserved by D41; split by D42; V0 contract available** | constructor/value laws, basis-refusal adversaries, and scalar reference values | freeze basis/window/length identity, equality/empties, classifier and residual stamps, logical bit/tail order, and the two-exit boundary before implementation | reapply signature pressure if a proof can change basis, equality, residual sort, or exit/result shape; minting the carrier alone does not activate Lean |
+| V-PREFIX-SCAN | pointwise XOR/parity, forward inclusive prefix parity, adjacent transitions, carry-in/out, logical tails, and chunk concatenation have one representation-independent vector meaning — **reserved by D42 for V0/V1** | direct per-bit reference, exhaustive short laws, randomized multiword/chunk partitions, poisoned tails, and complete fixed-width linearity certificates where applicable | freeze direction/inclusivity, empty behavior, carry continuity, overlap/alias policy, inverse/chunk laws, and the portable V1 reference before any accelerated path | reapply at the public scan signature and for each V2/fused backend; activate if proof can change the signature or executable certificates plus differential evidence cannot honestly own universal refinement |
+| V-HARVEST-BRIDGE | ordered offsets/spans/claims correspond exactly to admitted vector bits while scalar-boundary failures and classifier uncertainty remain explicit vector/harvest residue; claim emission additionally requires producer/source/rule evidence — **reserved by D41; separated by D42** | direct reference harvest, reconstruction/property checks, scalar-boundary adversaries, and evidence-stamp validation | freeze soundness/completeness, ordering, empty behavior, unit/boundary address convention, residual projection, and direct-versus-claim result sorts before V1 integration | reapply if proof can change the result/residual signature or before a fused scan/harvest backend claims universal soundness and completeness |
+| SPANSET-PACKED-EQUIV | a future packed/bitmap `SpanSet` backend is interchangeable with the normalized interval-list reference only if point membership, normalization, equality, and every advertised Boolean operation agree extensionally over the same admitted master — **future; no backend exists** | current `SpanSet` reference plus representation reconstruction and differential laws; smallest complete theorem/certificate when proposed | name the exact operation set, master/boundary hypotheses, encode/decode relation, and tail convention before claiming interchangeability | presumptive optimization-pressure activation when an arbitrary-master packed backend is proposed; a smaller complete certificate or weakened claim may discharge the gate, bounded examples alone may not |
+| D3-SUPPRESSION-BITMAP | a future suppression bitmap is only an acceleration of D3 when `Excluded` equals `Coverage(Q)` and `Admitted` equals its complement as `SpanSet` values for the same exact suppressor `ClaimSelection` \(Q\) — **future; no bitmap backend exists** | existing selection-backed suppression query plus exact-input/region differential laws; smallest complete theorem/certificate when proposed | retain the exact suppressor-selection basis, query choice, output master extent, empty cases, and predicate-to-selection delegation; the result deliberately forgets occurrence identity through coverage | presumptive optimization-pressure activation when the bitmap becomes a second suppression implementation; a smaller complete certificate or weakened claim may discharge the gate, bounded examples alone may not |
 | K1-ALLEN-JEPD | the thirteen Allen atoms are jointly exhaustive and pairwise disjoint on \(I_M\) — **implemented in K1b (D28)** | finite exhaustive C# certificate | independent endpoint predicates are unique and agree with `Relate` on all 225 ordered \(D_6\) interval pairs; all thirteen atoms occur | only if Doccer generalizes beyond the finite linear interval carrier |
 | K1-ALLEN-CONVERSE | converse is involutive and agrees with argument reversal — **implemented in K1a (D26)** | finite exhaustive C# oracle | all 8192 relation-set values plus every nonempty interval pair on the six-boundary model | only if a generalized relation carrier changes converse semantics |
 | K1-ALLEN-COMPOSE | `AllenCompose` is the canonical weak-composition upper approximation, not fixed-master exact composition — **implemented in K1b (D28)** | independently encoded table, exhaustive \(D_6\) certificate, and external cited formalization | literal shipped table and independent endpoint oracle agree on all 169 cells/409 atomic triads; algebra laws are executable | a generic qualitative-calculus proof API or non-finite carrier is proposed |
@@ -719,6 +762,7 @@ their result semantics interchangeable.
 | Q24 | bitmap/vector substrate placement and residual basis | D41 — V0/V1 independent peer-carrier lane; direct and harvest exits; unit residual remains distinct |
 | Q25 | performed transform origin vs post-hoc alignment | D41 — actual origins from the producer; correspondence evidence needs explicit promotion |
 | Q26 | one hash utility vs distinct jobs | D41 — identity, direct comparison/hash substrate, verified rolling/material prefilter, signature/candidate index, and streaming sketch remain separate contracts |
+| Q27 | when vector/bitmap work activates Lean | D42 — carrier, scan, harvest, packed-region, and suppression-query obligations are separate; peer vectors do not activate the harness, while interchangeable arbitrary-input packed semantic backends presumptively meet optimization pressure |
 
 ## Open (no decision record yet)
 
@@ -727,5 +771,6 @@ their result semantics interchangeable.
   repository name `math-register`) is unrelated adapter/application design (D40).
 - **V0/V1 code-unit-vector lane:** exact public basis/equality, classifier/residual result shape,
   chunk carry, the two direct/harvest exits, and a portable reference are independently available
-  work (D41); an accelerated backend still follows the reference and measured differential evidence.
+  work (D41); D42 separates carrier, prefix-scan, and harvest assurance, reapplies the gate per V2
+  backend, and reserves distinct future packed-region and suppression-equivalence obligations.
 - **Per-line terminator-kind view** (D15): named, unscheduled.

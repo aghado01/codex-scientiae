@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D41, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D42, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -94,6 +94,14 @@ the following V1 portable reference/two-exit implementation are independent of K
 vector type, classifier surface, harvest API, or accelerated backend is implemented yet. V2 still
 requires a named Doccer workload and differential evidence. Any byte-addressed vector requires
 F3's separate coordinate map rather than aliasing the UTF-16 basis.
+
+D42 splits formal assurance for that lane into the carrier signature, prefix-scan refinement, and
+the vector-to-offset/span/claim harvest bridge. Future packed `SpanSet` equivalence and D3
+suppression-bitmap equivalence are separate obligations because geometry values and occurrence
+selections are different sorts. The split does not activate Lean or block V0/V1. V2 reapplies the
+gate per backend; a packed region or suppression backend advertised as interchangeable over
+arbitrary inputs is a presumptive optimization-pressure activation unless a smaller complete
+certificate or weaker claim closes it.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
@@ -281,14 +289,17 @@ closes honestly without one:
 - the D41 code-unit-vector substrate: V0 must first freeze compatible-window equality, Boolean and
   chunk-carry operations, classifier/residual stamps, scalar-boundary harvest, and its separate
   direct/harvest exits; independent V1 portable reference semantics precede V2 word/SWAR/SIMD
-  backends;
+  backends; D42 registers carrier, prefix-scan refinement, and harvest separately and reapplies
+  formal-assurance pressure per V2 backend;
 - D41 measured implementation work: A0–A2 cover Doccer-owned workload/allocation evidence, a
   sparse set-bit walker, and reconstruct-once flat-path recurrence. A separate per-capability HPC
   repertoire applies to each admitted capability—span destinations, count-prefix-fill, flat/SoA layouts, operation/worker
   scratch, bounded heaps, online reductions, deterministic parallel state, and reference/fast
   backend pairing—not a generic HPC framework or imported ThermoMapper policy;
 - suppression bitmaps as one later vector consumer/acceleration of the suppression query, never a
-  claim property or second source of truth;
+  claim property or second source of truth; D42 requires exact equality to the reference
+  `Coverage(Q)`/`Complement` `SpanSet` result for the same exact suppressor
+  `ClaimSelection` \(Q\);
 - Unicode block and script properties as break-key facts: unlike the major-class fold, they would
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
@@ -320,7 +331,9 @@ This is a growing kernel, not a closed specification. Additions to the engine mu
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source
 material; decides nothing about meaning. A feature failing the last test belongs in an adapter
 or the consumer. D41 permits a low-level code-unit-vector peer carrier once V0 closes; it does not
-embed what a vector means. ThermoMapper is evidence for transferable patterns and capabilities,
+embed what a vector means. D42 separates that carrier from same-semantics packed region and
+suppression backends and records their stronger proof gates. ThermoMapper is evidence for
+transferable patterns and capabilities,
 not authority over Doccer sequencing or gates; donor shortcomings become acceptance requirements
 of a lift. Syntax recognition remains in external adapters or declarative inventories unless a
 separately admitted domain-neutral mechanism is demonstrated.

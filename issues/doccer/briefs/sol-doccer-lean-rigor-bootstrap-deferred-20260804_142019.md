@@ -539,3 +539,83 @@ stage-order observation through arbitrary whole-store callbacks.
 Reapply when the K5a public rule signature freezes. Activate if a proof can change that carrier or
 later license parallel/incremental saturation; otherwise formalizing the sole direct worklist would
 still add lifecycle cost without an implementation consequence.
+
+## 2026-08-06 D42 V-lane and semantic-bitmap gate split
+
+The round-two expansion adds a stronger future trigger to this restart packet. The
+[source synthesis](../discussions/opus-doccer-expansion-round2.md) correctly notices that a
+bitmap-backed `SpanSet` or D3 suppression query would promise equivalence between a packed
+backend and an existing semantic reference over arbitrarily sized carriers. The
+[D41 adjudication](sol-doccer-expansion-round2-adjudication-20260806_093159.md) correctly rejects
+automatic activation merely because a bit carrier or second implementation exists. The
+[material-basis/XOR inquiry](../discussions/sol-doccer-material-basis-and-public-composability-20260806_105530.md)
+now supplies the missing reconciliation: separate the peer-carrier laws from the cross-carrier and
+same-query equivalence laws.
+
+The former single V0–V2 registry entry is split into five obligation families:
+
+| Obligation | Reference claim | Present owner | Lean disposition |
+|---|---|---|---|
+| V0 vector carrier | basis/window/length identity, empties, compatibility, residual sort, and distinct direct/harvest exits | constructor laws, basis-refusal cases, and scalar reference values | statement/signature review at V0; no activation merely for minting the carrier |
+| Prefix-scan refinement | pointwise XOR/parity, forward inclusive prefix parity, transitions, carry, logical tails, overlap rules, and chunk concatenation agree across implementations | per-bit V1 reference, exhaustive short laws, randomized chunk tests, and where applicable a complete linearity certificate | reapply at the public scan signature and for each V2/fused backend; activate if these executable methods cannot honestly own a universal claim |
+| Harvest bridge | emitted offsets/spans/claims correspond to admitted set bits; scalar-boundary and classifier uncertainty become the declared residual rather than disappearing | direct reference harvest, reconstruction checks, boundary adversaries, and source-evidence validation | reapply if proof changes the result/residual signature or a fused path claims universal soundness/completeness |
+| Packed `SpanSet` representation | point membership, normalization, and advertised Boolean operations are extensionally equal to the interval-list reference | existing `SpanSet` plus differential representation laws | presumptive optimization-pressure activation when an interchangeable arbitrary-master packed backend is proposed |
+| D3 suppression bitmap | `Excluded` equals `Coverage(Q)` and `Admitted` equals its complement as `SpanSet` values for the same exact suppressor `ClaimSelection` \(Q\) | existing selection-backed suppression query plus differential region-equality laws | presumptive optimization-pressure activation when the bitmap becomes a second suppression implementation |
+
+“Presumptive” does not bypass §5's decision procedure. The chip brief must still search for a
+counterexample, a close external theorem, and a cheaper complete certificate. It means the
+optimization-pressure condition is genuinely met once arbitrary-input interchangeability is
+claimed; bounded examples alone cannot silently discharge it. If a fixed-width implementation is
+linear, equality on zero and every basis vector may be a complete finite certificate and should be
+compared with Lean before scaffolding. Ordinary random differential tests are corroboration, not
+that certificate.
+
+### Candidate theorem kernel
+
+The mathematical model should be smaller than any runtime layout:
+
+- a finite ordered Boolean sequence with logical length;
+- forward inclusive scan with explicit carry-in/carry-out;
+- adjacent transition/difference;
+- a boundary-event lattice with \(n+1\) boundaries for \(n\) units;
+- normalized finite regions and their point-membership predicate; and
+- partial event information interpreted as the set of all Boolean completions.
+
+The first useful statements are:
+
+1. prefix/transition inversion;
+2. scan concatenation and final-carry agreement;
+3. word/backend refinement to the reference scan, including logical-tail independence;
+4. residual soundness: every completion agrees with the reported result outside the propagated
+   uncertainty;
+5. boundary-event scan/harvest reconstruction for normalized regions;
+6. packed-region extensional equality; and
+7. suppression-bitmap equality to `Coverage(Q)`/complement for one exact suppressor
+   selection.
+
+The last two should not be forced into one theorem. Packed `SpanSet` equality is a
+representation theorem within the geometry carrier. Suppression is a query-refinement theorem
+from an exact occurrence selection to `Coverage()` or its complement. Its result is
+geometry, but the claim-to-coverage projection still does not commute generally with symmetric
+difference or restore occurrence identity.
+
+Lean proves the algorithmic/model refinement, not the processor, JIT, or dispatch mechanism. The
+activation chip must therefore link the theorem to C# fixtures that exercise actual intrinsics,
+fallback selection, remainder units, aliasing, poisoned tails, and unsupported hardware.
+
+### Updated activation result
+
+- V0 still does not activate the harness automatically. It must perform a statement pass because
+  direction, carry, residual meaning, and harvest shape can change the public signature.
+- V1 remains independently implementable as the portable reference with executable assurance.
+- V2 reapplies the gate per backend rather than once for “SIMD” in the abstract.
+- A future packed `SpanSet` or suppression bitmap advertised as semantically
+  interchangeable is now a leading first-proof candidate and should normally activate the
+  smallest corresponding obligation chip.
+- A peer vector consumed directly, or harvested through an explicitly different result sort,
+  makes no same-carrier equivalence claim merely by existing.
+
+The overall harness status remains **deferred**. No V backend, packed `SpanSet`, or
+suppression bitmap has landed, so no present implementation decision requires the toolchain.
+D42 updates the trigger inventory and registry before that pressure arrives; it does not insert
+Lean into the K5/K6 queue.

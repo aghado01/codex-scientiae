@@ -16,6 +16,8 @@ The evidence base is:
 - [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
   [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
   [D41 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
+- [the material-basis/XOR inquiry](../discussions/sol-doccer-material-basis-and-public-composability-20260806_105530.md)
+  and [D42 Lean-gate addendum](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md);
 - the implemented contracts in [the engine README](../../../src/doccer/README.md).
 
 ## 1. Executive result
@@ -201,7 +203,7 @@ flowchart TD
     K4C --> W
     K5B --> W
     K7 --> W
-    K0 -.->|D41 registry addendum| V0
+    K0 -.->|D41/D42 registry addenda| V0
     V0 --> V1
     V1 --> V2
     A0 --> A1
@@ -903,7 +905,7 @@ non-domain-owning cross-carrier examples:
 These are integration demonstrations, not the first validation of their component contracts and
 not durable codex-scientiae adapters unless separately promoted.
 
-## 6A. Dependency-split expansion lanes (D41, amended)
+## 6A. Dependency-split expansion lanes (D41, amended by D42)
 
 ThermoMapper is mined here for transferable numerical/HPC patterns and useful capabilities, not
 for policy. Donor-local implementation gates do not constrain Doccer. Where a donor implementation
@@ -918,16 +920,21 @@ UTF-16 code-unit ordinals of exact window <code>W</code> on a compatible
 F3 byte addressing is a separate coordinate map. Freeze:
 
 - compatible-master/equal-window basis and value equality;
-- Boolean operations, bounded shifts, set-bit/population operations, and prefix parity with
-  explicit chunk carry-in/carry-out;
+- Boolean operations, bounded shifts, set-bit/population operations, pointwise XOR/parity,
+  forward inclusive prefix parity, adjacent transitions, and explicit chunk carry-in/carry-out;
 - classifier identity/completeness and a code-unit-basis residual;
 - scalar-boundary validation during offset/span harvest; and
 - two distinct exits: direct peer-value/index consumption and explicit candidate/claim harvest
   with producer evidence.
 
 A harvest result connects unit evidence to emitted candidates; it does not equate a vector
-residual with an occurrence selection or K4 result residual. V1 is independently available after
-V0 and lands a portable reference plus both exits before optimization. V2 may add word/SWAR,
+residual with an occurrence selection or K4 result residual. D42 registers the carrier, prefix-scan
+refinement, and harvest bridge separately. It also keeps future packed `SpanSet`
+equivalence and D3 suppression-bitmap equivalence in their own rows; neither is inherited merely
+because all can use bits.
+
+V1 is independently available after V0 and lands a portable reference plus both exits before
+optimization. V2 may add word/SWAR,
 <code>Vector&lt;T&gt;</code>, or architecture-specific backends only for measured operations and
 must agree differentially with V1 across remainder units, chunk boundaries, surrogate edges,
 residual zones, and runtime fallback paths. A layout technique such as
@@ -1021,11 +1028,24 @@ the rule carrier before K5b promises order independence. Reapply when the K5a si
 activate if a proof can choose between rule-carrier designs or before a parallel/incremental
 backend claims equivalence.
 
-D41 reapplies the gate twice for the V lane without declaring an activation. At V0, ask whether a
-proof can change the public basis, carry, residual, or harvest signature. Before V2, ask whether a
-word/SWAR/SIMD, fused, or chunked backend makes a universal equivalence claim that bounded and
-property-based differential evidence cannot honestly own. The presence of a second implementation
-is pressure to reassess, not a theorem-project switch by itself.
+D42 splits D41's V-lane gate without declaring a present activation:
+
+- **V0 carrier signature:** ask whether proof pressure can change basis, window/length identity,
+  residual sort, or the direct/harvest result boundary.
+- **Prefix-scan refinement:** V1 remains reference-owned; reapply for each V2 word/SWAR/SIMD,
+  carry-less-multiply, chunked, or fused backend. A complete fixed-width linearity certificate may
+  own a kernel more cheaply than Lean; random/bounded tests alone do not prove universal equality.
+- **Harvest bridge:** reapply if proof can change boundary/residual shape or a fused implementation
+  claims universal soundness and completeness.
+- **Packed `SpanSet`:** when a bitmap is proposed as interchangeable with the interval-list
+  reference over arbitrary admitted masters, presume optimization-pressure activation unless a
+  smaller complete certificate or weakened claim closes the gate.
+- **D3 suppression bitmap:** when it becomes a second implementation of `Admitted`/
+  `Excluded`, presume optimization-pressure activation of the claim that its region result
+  equals `Coverage(Q)`/complement for the same exact suppressor selection \(Q\).
+
+A peer vector or bit packing alone still does not activate Lean. The strong trigger appears when
+an alternate representation or query backend claims the same existing semantics.
 
 ### L0 — bootstrap only after an activation trigger
 
@@ -1037,11 +1057,15 @@ is pressure to reassess, not a theorem-project switch by itself.
 - report assumptions as well as apologies;
 - connect the theorem to an independent C# reference law or differential fixture.
 
-Candidate first theorem family, if generalized mapping or origin work supplies the trigger:
+The first theorem family follows the implementation pressure that actually activates L0. Current
+leading candidates are:
 
 - direct-image relation composition is lax generally and exact under injectivity;
 - functional origins embed into relation-valued origins and preserve composition;
-- evidence-bearing composition respects a separately defined support normalization.
+- evidence-bearing composition respects a separately defined support normalization;
+- a concrete V2 scan backend refines the logical prefix/carry specification;
+- a packed `SpanSet` representation is extensionally equal to the interval-list reference; or
+- D3 bitmap suppression equals `Coverage(Q)`/complement for one exact suppressor selection.
 
 Allen classification and the canonical table deliberately default to exhaustive executable oracles
 and published formalization evidence. They do not justify a Lean bootstrap by themselves.
@@ -1059,7 +1083,11 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
 | K5a–K5b | positive-rule monotonicity, finite fixed-point termination, rule-order independence, and alternative-support preservation |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
-| V0–V2 | compatible-window Boolean algebra, chunked prefix/carry agreement, scalar-boundary harvest soundness, and optimized-backend equivalence |
+| V0 carrier | compatible-window identity/equality, ordinary vector empties, residual sort, and distinct direct/harvest exits |
+| V prefix scan | pointwise XOR/parity, prefix/transition inversion, chunk/carry agreement, logical-tail independence, residual refinement, and V2 backend equivalence |
+| V harvest bridge | set-bit to ordered offset/span/claim soundness and completeness, scalar-boundary residue, and producer-evidence preservation |
+| packed `SpanSet` | encode/decode and point-membership extensionality, normalization, and advertised Boolean-operation equivalence to the interval-list reference |
+| D3 suppression bitmap | equality of `Excluded` with `Coverage(Q)` and `Admitted` with its complement as `SpanSet` values for the same exact suppressor selection |
 
 Standard library facts should be reused rather than renamed as Doccer theorems unless the wrapper
 itself is a public contract.
@@ -1114,7 +1142,7 @@ Known concrete geometry continues to use exact joins and validators.
 | F4 indexed joins | acceleration after K2/K3 reference semantics |
 | F5 agreement scoring | after K4 selection/result shape |
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
-| V0–V2 code-unit vectors | V0 contract and V1 portable reference/two exits independently available; V2 only after Doccer-measured differential evidence |
+| V0–V2 code-unit vectors | V0 carrier/scan/harvest contracts and V1 portable reference/two exits independently available; V2 only after Doccer-measured evidence and its per-backend D42 gate; packed `SpanSet` and suppression equivalence remain separate future obligations |
 | A0–A2 measured backend work | independently available under frozen D30/D37 semantics; HPC patterns apply per capability rather than through a common framework |
 | F7 correspondence/derived origins | F7a distance/correspondence independent; F7b requires K6; F7c promotion/materialization integration requires its named K6/K7 carriers |
 | F8 direct measures/hash/rolling/signature/index/sketch work | F8a/F8b independent; current populations can witness in-memory F8c/F8d; persisted artifacts after F2; always separate from D1 identity |
@@ -1154,7 +1182,8 @@ contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as 
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
 the joint located/graph core as D35, the flat result closure as D36, additive complete-path
 selection as D37, the K4c contract as D38, structural-family closure as D39, the post-K4
-coherence/K5–K7 sequencing correction as D40, and the round-2 expansion adjudication as D41. K2,
+coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, and the
+V-lane formal-assurance split as D42. K2,
 K3, and all K4 lanes are closed. K5a canonical
 fact/support identity is the default active next chip; K6 origin-contract work is an independently
 available sibling. K5b saturation follows K5a and does not block K6 or K7. D41 records the
@@ -1172,6 +1201,8 @@ closure backend, another K4 backend claims equivalence, generalized objectives/c
 partial paths gain a nontrivial guarantee, structural selection promises an optimum, or hierarchy
 closure/reduction or resolution-map composition becomes load-bearing. D40 separately reapplies the
 K5 signature trigger and defers Lean until K5a freezes a positive-rule carrier; activate if proof
-pressure changes that signature or later licenses parallel/incremental saturation. D41 reapplies
-the V-lane gate at the public contract and alternate-backend boundaries; activate only if proof
-can change the signature or executable differential evidence cannot own the claimed equivalence.
+pressure changes that signature or later licenses parallel/incremental saturation. D42 splits
+D41's V-lane gate into carrier signature, prefix-scan refinement, harvest, packed `SpanSet`,
+and suppression-query obligations. V0/V1 remain unblocked. Reapply per V2 backend; presume
+activation when a packed region or suppression backend claims arbitrary-input interchangeability,
+unless a smaller complete certificate or weaker contract honestly closes the gate.

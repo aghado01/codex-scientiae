@@ -54,6 +54,9 @@ The useful architectural direction is therefore:
   specific capabilities declare the bases they can actually read; and
 - treat pointwise XOR, parity, prefix parity, and transition extraction as public numerical
   primitives while keeping quote/escape/comment meanings in named higher producers; and
+- split formal-assurance obligations at the carrier boundaries: carrier signature, raw scan
+  refinement, vector harvest, packed-region equivalence, and suppression-query equivalence are
+  not one theorem; and
 - expose admitted low-level values and operations in the core and through a composable CLI
   surface, while keeping unsafe backend layouts private unless their layout itself is contracted.
 
@@ -662,6 +665,76 @@ Because prefix parity is a linear transform over GF(2), it is also unusually sui
 formal specification if an accelerated backend makes the equivalence load-bearing. That is a
 better potential proof target than formalizing a whole quote recognizer.
 
+### The Lean gate splits at the semantic boundaries
+
+The round-two source called a bitmap-backed `SpanSet` or suppression query the strongest
+Lean activation candidate in the plan. That warning is valuable, but only after distinguishing
+five different claims. A new peer vector carrier does not assert that it is another representation
+of an existing carrier. An acceleration advertised as returning the same existing value does.
+
+D42 therefore replaces the overloaded “V0–V2 equivalence” obligation in the
+[deferred Lean brief](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md)
+with:
+
+| Obligation | Claim that would be protected | Gate disposition |
+|---|---|---|
+| Vector carrier contract | basis, window, length, equality, empties, residual sort, and direct-versus-harvest exits are coherent | statement/signature review at V0; the carrier's existence does not activate Lean |
+| Prefix-scan refinement | scalar, word-cascade, carry-less-multiply, SIMD, chunked, and fused implementations return the same logical state vector and carry under the declared tail/overlap rules | V1 remains reference-owned; reapply before V2 and activate if a finite linear certificate plus differential tests cannot honestly own the universal claim |
+| Harvest bridge | ordered offsets/spans/claims correspond exactly to admitted set bits, while unsafe boundaries and incomplete classification land in the declared residual | reapply if the theorem can change the V0 result/residual signature or a fused scan/harvest path claims universal soundness and completeness |
+| Packed `SpanSet` representation | point membership, normalization, and each advertised Boolean operation agree extensionally with the interval-list reference over arbitrary admitted masters | presumptive optimization-pressure activation when such a backend is proposed as interchangeable; no trigger while it remains only an idea |
+| D3 suppression bitmap | `Excluded` equals `Coverage(Q)` and `Admitted` equals its complement as `SpanSet` values for the same exact suppressor `ClaimSelection` \(Q\) | presumptive optimization-pressure activation when the bitmap becomes a second implementation of the D3 query |
+
+The two last rows are the “fresh gate” from the source material. They are stronger than proving
+ordinary XOR identities because they cross from a packed representation into existing Doccer
+semantics. They also must remain separate: the packed-region row is a representation theorem
+inside `SpanSet`; the suppression row refines a query from an exact occurrence selection to
+region geometry through `Coverage()` and complement. Suppression deliberately forgets
+occurrence identity in its result, but its input still cannot be mistaken for a region value.
+
+The useful small theorem kernel is correspondingly layered:
+
+\[
+Scan_{fast}(c,x) = Scan_{reference}(c,x),
+\qquad
+Transitions(c,Prefix(c,x)) = x,
+\]
+
+\[
+Decode(Encode(S)) = S
+\]
+
+for a normalized region value under an explicit boundary lattice, and:
+
+\[
+Excluded_{bitmap}(Q) = Coverage(Q),
+\qquad
+Admitted_{bitmap}(Q) = Complement(Coverage(Q))
+\]
+
+for one exact suppressor selection \(Q\). A residual-bearing
+classifier adds a refinement statement: every completion of its unknown event bits must agree
+with the reported state outside the propagated residual. That is a better specification than
+merely proving the chosen three-valued implementation internally consistent.
+
+Lean would prove the mathematical refinement, not the correctness of a CPU instruction, JIT, or
+runtime dispatch. C# differential fixtures still exercise actual intrinsics, fallback paths,
+remainder handling, aliasing, and hardware availability. For a linear fixed-width kernel, a
+zero-plus-basis-vector certificate may be a cheaper complete argument than a Lean activation; the
+chip brief must compare that option honestly before starting the harness.
+
+The sequencing rule is:
+
+1. V0 performs the statement/signature review and records the split obligations.
+2. V1 lands the portable reference and executable laws without waiting for a proof project unless
+   statement pressure actually changes the public carrier or residual.
+3. V2 reapplies scan-refinement pressure at the specific accelerated backend.
+4. A packed `SpanSet` or suppression bitmap advertised as an interchangeable backend gets
+   its own obligation chip and should be presumed to cross the gate unless a smaller complete
+   certificate closes the universal equality.
+
+This preserves the value of the fresh gate without turning every bit operation into a mandatory
+theorem-prover dependency.
+
 ### Public CLI implications
 
 A low-level CLI should keep the sorts visible: for example, <code>vector xor</code>,
@@ -824,7 +897,8 @@ semantics even when a UTF-8 path wins a workload.
 
 ## Consequences for existing planning, if this direction is later adopted
 
-This report does not make the amendments below. It identifies where a later decision would land.
+This report does not make the material-basis amendments below. D42 has separately adopted only the
+formal-assurance split above; the remaining rows identify where a later decision would land.
 
 | Existing item | Consequence to examine |
 |---|---|
@@ -837,6 +911,7 @@ This report does not make the amendments below. It identifies where a later deci
 | D25/K0 | Register material bases/address units and their compatibility separately from the existing span/occurrence/fact/origin sorts. |
 | D33–D39 | Preserve their geometry laws over a basis-bearing master; avoid rewriting the algebras unless a hidden UTF-16 assumption is found. If geometric symmetric difference is admitted, specify it directly and do not assume it commutes with claim-to-coverage projection. |
 | D41 V0–V2 | Do not let the first UTF-16 unit vector take the generic name if basis plurality is intended. Separate the basisless Boolean-vector algebra from basis-stamped unit masks, freeze prefix direction/carry/residual contracts before acceleration, and make UTF-16 one explicit family member unless a basis-stamped common carrier is first proved. |
+| D42 | Adopted from this inquiry: carrier signature, prefix-scan refinement, harvest, packed `SpanSet`, and suppression-query equivalence now have separate law-registry rows and Lean triggers; this does not decide the material-basis options. |
 | F2/F3 | Persistence and coordinate maps must stamp basis. Byte addressing is not merely an adapter concern if a byte-addressed master becomes first-class. |
 | K6/K7/F7 | Transcoding, normalization, and materialization produce different mapping/origin guarantees but should compose through the same explicit evidence discipline. |
 | F8/F9 | Hashes, measures, feature projections, and fitted artifacts must name their input basis and preprocessing profile; no default UTF-16 identity may leak into an ostensibly general artifact. |
@@ -962,3 +1037,8 @@ reduction, prefix parity with explicit carry, and adjacent-transition extraction
 reversible Boolean scan algebra. Escape-run recognition and “inside string” interpretation remain
 separate consumers. That separation gives Doccer both the general primitive and the specialized
 performance path without confusing one for the other.
+
+D42 applies the same separation to assurance. A peer vector, its scan backend, its harvest bridge,
+a packed region representation, and a suppression-query accelerator no longer share one vague
+Lean trigger. V0/V1 remain available; a backend that claims the same existing semantics over
+arbitrary inputs must carry the stronger, carrier-specific equivalence obligation.

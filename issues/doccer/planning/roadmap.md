@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-06)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D41**, contract harness **1976 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D42**, contract harness **1976 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the initial text/claim substrate
@@ -71,9 +71,18 @@ leave that K sequence unchanged. The owner-amended decision treats ThermoMapper 
 transferable concepts/patterns/capabilities rather than Doccer policy, adds independent V0/V1 and
 A0–A2 lanes plus a per-capability HPC repertoire, retains the F2 fingerprint-portability gate,
 and splits F7–F9 by their actual carrier dependencies: correspondence versus origin production,
-exact/rolling hash versus candidate index/
-sketch, and counted/online versus fitted/ranked feature views. No source surface or harness count
+exact/rolling hash versus candidate index/sketch, and counted/online versus fitted/ranked feature
+views. No source surface or harness count
 changed in D41; ThermoMapper-facing repair guidance lives in the ThermoMapper repository.
+
+D42 then splits D41's overloaded V-lane assurance row into the vector carrier, prefix-scan
+refinement, harvest bridge, future packed `SpanSet` equivalence, and future D3
+suppression-bitmap equivalence. V0/V1 remain independently available and Lean remains deferred.
+A packed region or suppression backend advertised as interchangeable over arbitrary inputs is now
+a presumptive optimization-pressure activation; the exact obligation and cheaper-certificate
+check are recorded in the
+[deferred Lean addendum](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md)
+and [design inquiry](../discussions/sol-doccer-material-basis-and-public-composability-20260806_105530.md).
 
 ## Sequencing doctrine
 
@@ -116,8 +125,11 @@ order is:
 
 **Independent V/A lanes:** V0 may now close the compatible-master/exact-window UTF-16 code-unit
 Boolean-vector contract, unit residual, chunk carry, and direct/harvest exits. Its portable V1
-implementation follows independently and precedes any V2 accelerated backend. A0 may establish
-named dense/sparse time and allocation baselines now; A1's word-skipping `ClaimSelection` walker
+implementation follows independently and precedes any V2 accelerated backend. D42 requires V0 to
+state carrier, scan, and harvest obligations separately; V2 reapplies scan refinement per backend,
+while packed `SpanSet` and suppression-query equivalence remain separate future gates. A0
+may establish named dense/sparse time and allocation baselines now; A1's word-skipping
+`ClaimSelection` walker
 and A2's reconstruct-once `PathSelection` recurrence may then land under the frozen D30/D37
 oracles. The per-capability HPC repertoire records span destinations, exact allocation, flat
 layouts, operation/worker scratch, bounded heaps, online reductions, deterministic parallel state, and
@@ -136,7 +148,7 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D41 leave K3/K4a and the first K4b/K4c
+universal no-false-negative equivalence load-bearing. D33–D42 leave K3/K4a and the first K4b/K4c
 executor on direct finite reference semantics. D37 reapplies the global-optimum trigger and keeps
 Lean deferred under one closed finite-DAG additive recurrence plus exhaustive differential
 evidence. D39 reapplies the structural gate and keeps Lean deferred under direct validators,
@@ -146,11 +158,12 @@ monotone rule construction true rather than exposing arbitrary whole-store callb
 the K5a contract freeze and before a parallel/incremental saturation backend. Also reapply before a
 second/optimized path or structural backend, generalized objective/carrier,
 nontrivial partial-path guarantee, global structural optimum, hierarchy closure/reduction law, or
-resolution-map composition/equivalence claim. D41 separately reapplies the V-lane gate at V0's
-public basis/carry/residual/harvest signature and before V2 claims alternate-backend equivalence.
-Activate only if proof can change that signature or executable differential evidence cannot
-honestly own the universal claim; bit packing or a second implementation is not automatic
-activation.
+resolution-map composition/equivalence claim. D42 splits D41's V-lane gate: carrier signature,
+prefix-scan refinement, and harvest soundness/completeness are distinct obligations, and V2
+reapplies refinement per backend. Bit packing or a peer carrier is not automatic activation.
+A future packed `SpanSet` or D3 suppression bitmap advertised as interchangeable over
+arbitrary inputs presumptively meets optimization pressure; its chip must activate the smallest
+obligation unless a cheaper complete certificate or a weaker claim honestly closes the gate.
 
 **First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
 still a catalog, not a contract, and the wire format waits for stable carrier identities and the
@@ -228,7 +241,8 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
   unscheduled. D40 restores Doccer's historical register to its codepoint-address meaning and
   removes the unrelated math-channel dependency; `math-register` remains only the legacy
   repository name pending migration. D41 keeps post-hoc alignment evidence distinct from actual
-  producer origins. All Tranche-2 stragglers are closed — see the
+  producer origins. D42 splits the V-lane formal obligations without activating Lean or changing
+  the K queue. All Tranche-2 stragglers are closed — see the
   [ledger](ledger.md).
 
 ## Standing context for future sessions

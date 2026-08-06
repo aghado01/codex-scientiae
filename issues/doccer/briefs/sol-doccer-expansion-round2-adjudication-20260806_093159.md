@@ -346,3 +346,18 @@ replaces blanket post-K dependencies with subfamily-specific edges, and moves Th
 maintenance guidance into its own repository. No Doccer source, public API, package, or harness
 count changes in this planning chip. Verification and final commit identifiers are reported in the
 task handoff.
+
+## 2026-08-06 D42 formal-assurance amendment
+
+D42 refines, rather than reverses, D41's Lean disposition. The combined V0–V2 assurance entry is
+split into the vector carrier, prefix-scan refinement, and harvest bridge. A future packed
+`SpanSet` representation and a future D3 suppression bitmap receive separate registry rows
+because packed-region representation equality and an occurrence-selected
+suppression-to-`SpanSet` query are different claims.
+
+V0/V1 remain independently available and the Lean harness remains deferred. V2 reapplies the
+burden gate per concrete backend. A peer vector or bit packing alone does not activate Lean; an
+arbitrary-input packed `SpanSet` or suppression backend advertised as interchangeable with
+the existing reference presumptively meets optimization pressure unless a smaller complete
+certificate or weaker contract closes the gate. The full restart procedure and theorem split are
+in the dated D42 addendum to the deferred Lean brief.
