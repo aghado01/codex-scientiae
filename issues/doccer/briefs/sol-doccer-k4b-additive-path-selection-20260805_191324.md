@@ -159,3 +159,7 @@ The global-optimum burden trigger was reapplied and did not activate Lean under 
 reference posture in section 5. K4b is closed. K4c structural-family hygiene is active next and
 retains no dependency on the path executor. Future partial, signed/vector, maximizing, or alternate
 tie contracts remain separately gated additions rather than implied features of D37.
+
+Follow-on [D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed the
+independent structural sibling with family-specific validators and policies, explicit/nearest
+hierarchy, and resolution incidence/aggregation. Harness 1914→1976; K5 is active next.

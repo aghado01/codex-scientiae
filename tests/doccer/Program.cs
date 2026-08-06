@@ -20,7 +20,7 @@ internal static class Program
         {
             MasterTopologyIsTotal();
             TilingReconstructsAndAgreesWithLines();
-            ResolutionIsDeterministic();
+            LaminarAdmissionIsDeterministicAndStamped();
             RunViewsTileTheMasterUnderEveryBreakKey();
             LazySubstrateDefersUntouchedWork();
             FrozenBatchPreservesClaims();
@@ -35,7 +35,7 @@ internal static class Program
             AllenCompositionMatchesIndependentD6Oracle();
             AllenCompositionLawsHold();
             AllenCanonicalCompositionIsNotFiniteMasterComposition();
-            LaminarizationRetainsCrossingResidue();
+            StructuralValidatorsKeepTheirDistinctInvariants();
             ScopedRegexCollectionCannotBridgeGaps();
             SuppressionIsAQueryWithIdempotenceAndDuality();
             DefectiveRuleFailsAtLoadTimeWithoutSideEffects();
@@ -86,6 +86,13 @@ internal static class Program
             PathSelectionProblemValidatesExactAdmissibility();
             AdditivePathSelectionRetainsDecisionsAndResiduals();
             AdditivePathSelectionMatchesBoundedOptimizerOracle();
+            StructuralValidatorsMatchBoundedOracles();
+            LaminarAdmissionMatchesBoundedOracle();
+            NearestContainerProjectionIsExplicit();
+            HierarchyViewRetainsExplicitDag();
+            HierarchyViewMatchesBoundedDagOracle();
+            ResolutionMapsSeparateIncidenceFromAggregation();
+            ResolutionIncidenceMatchesBoundedEndpointOracle();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -211,7 +218,7 @@ internal static class Program
         }
     }
 
-    private static void ResolutionIsDeterministic()
+    private static void LaminarAdmissionIsDeterministicAndStamped()
     {
         var master = new TextMaster("determinism", 0, new string('x', 64));
         var random = new Random(20260801);
@@ -229,19 +236,33 @@ internal static class Program
         }
 
         var batch = builder.Freeze();
-        var first = Laminarizer.Extract(batch);
-        var second = Laminarizer.Extract(batch);
+        var familyPolicy = new LaminarFamilyPolicy("no-proper-crossing");
+        var admissionPolicy = LaminarAdmissionPolicy.PriorityThenGeometry(
+            "priority-then-geometry",
+            familyPolicy);
+        var candidates = ClaimSelection.All(batch);
+        var first = Laminarizer.Admit(candidates, master.Extent, admissionPolicy);
+        var second = Laminarizer.Admit(candidates, master.Extent, admissionPolicy);
 
-        Equal(Ordinals(first.Accepted), Ordinals(second.Accepted), "accepted ordering is reproducible");
-        Equal(Ordinals(first.CrossingResidue), Ordinals(second.CrossingResidue), "residue ordering is reproducible");
-        Equal(DescribeTree(first.Roots), DescribeTree(second.Roots), "tree shape and ordering are reproducible");
-        True(first.Accepted.Count > 0 && first.CrossingResidue.Count > 0, "the fixture exercises both outcomes");
-
-        // Accepted and residue partition the claim set, whichever run produced them.
         Equal(
-            batch.Count,
-            first.Accepted.Count + first.CrossingResidue.Count,
-            "every claim is either accepted or residue");
+            Ordinals(first.AcceptedCandidates),
+            Ordinals(second.AcceptedCandidates),
+            "accepted membership is reproducible");
+        Equal(Ordinals(first.CrossingResidue), Ordinals(second.CrossingResidue), "residue ordering is reproducible");
+        True(first.Accepted.Count > 0 && first.CrossingResidue.Count > 0,
+            "the fixture exercises both admission outcomes");
+        True(ReferenceEquals(first.Candidates, candidates) &&
+             ReferenceEquals(first.Basis, batch) &&
+             ReferenceEquals(first.Policy, admissionPolicy) &&
+             ReferenceEquals(first.Accepted.Policy, familyPolicy) &&
+             first.Window == master.Extent &&
+             first.Guarantee == LaminarAdmissionGuarantee.InclusionMaximal &&
+             first.Order == LaminarAdmissionOrder.PriorityThenGeometry,
+            "laminar admission retains exact population, basis, window, and policy stamps");
+
+        True(first.AcceptedCandidates.Intersect(first.CrossingResidue).IsEmpty &&
+             first.AcceptedCandidates.Union(first.CrossingResidue).Equals(candidates),
+            "accepted claims and crossing residue partition the candidate selection");
 
         // The same claims in the same order over a fresh batch resolve identically: determinism is
         // a property of the ordering rules, not of one object's identity.
@@ -251,43 +272,44 @@ internal static class Program
             replayBuilder.Add(record.ToClaim());
         }
 
-        var replay = Laminarizer.Extract(replayBuilder.Freeze());
-        Equal(Ordinals(first.Accepted), Ordinals(replay.Accepted), "replayed batch accepts the same claims");
-        Equal(DescribeTree(first.Roots), DescribeTree(replay.Roots), "replayed batch builds the same tree");
+        var replayBatch = replayBuilder.Freeze();
+        var replay = Laminarizer.Admit(
+            ClaimSelection.All(replayBatch),
+            replayBatch.Master.Extent,
+            admissionPolicy);
+        Equal(Ordinals(first.AcceptedCandidates), Ordinals(replay.AcceptedCandidates),
+            "replayed batch accepts the same ordinal population");
 
-        // A filtered extraction is equally reproducible.
-        var filteredFirst = Laminarizer.Extract(batch, record => record.Priority >= 2);
-        var filteredSecond = Laminarizer.Extract(batch, record => record.Priority >= 2);
+        var filtered = ClaimSelection.FromPredicate(batch, record => record.Priority >= 2);
+        var filteredFirst = Laminarizer.Admit(filtered, master.Extent, admissionPolicy);
+        var filteredSecond = Laminarizer.Admit(filtered, master.Extent, admissionPolicy);
         Equal(
-            DescribeTree(filteredFirst.Roots),
-            DescribeTree(filteredSecond.Roots),
-            "filtered extraction is reproducible");
+            Ordinals(filteredFirst.AcceptedCandidates),
+            Ordinals(filteredSecond.AcceptedCandidates),
+            "selection-backed filtered admission is reproducible");
+
+        var empty = ClaimSelection.None(batch);
+        var emptyResult = Laminarizer.Admit(empty, new TextSpan(8, 8), admissionPolicy);
+        True(emptyResult.Accepted.IsEmpty && emptyResult.CrossingResidue.IsEmpty &&
+             ReferenceEquals(emptyResult.Basis, batch) &&
+             ReferenceEquals(emptyResult.Policy, admissionPolicy),
+            "empty laminar admission retains exact basis and policy stamps");
+
+        Throws<ArgumentException>(
+            () => new LaminarFamilyPolicy(" "),
+            "laminar validation policy requires a name");
+        Throws<ArgumentException>(
+            () => LaminarAdmissionPolicy.PriorityThenGeometry(" ", familyPolicy),
+            "laminar admission policy requires a name");
+        Throws<ArgumentNullException>(
+            () => LaminarAdmissionPolicy.PriorityThenGeometry("x", null!),
+            "laminar admission policy requires a family policy");
     }
 
     private static string Ordinals(IReadOnlyList<SpanRecord> records) =>
         string.Join(",", records.Select(record => record.Ordinal));
 
-    private static string DescribeTree(IReadOnlyList<LaminarNode> roots)
-    {
-        var description = new StringBuilder();
-        AppendNodes(description, roots, 0);
-        return description.ToString();
-    }
-
-    private static void AppendNodes(StringBuilder description, IReadOnlyList<LaminarNode> nodes, int depth)
-    {
-        foreach (var node in nodes)
-        {
-            description.Append(depth).Append(':').Append(node.Span);
-            foreach (var claim in node.Claims)
-            {
-                description.Append('/').Append(claim.Ordinal);
-            }
-
-            description.Append(';');
-            AppendNodes(description, node.Children, depth + 1);
-        }
-    }
+    private static string Ordinals(IEnumerable<int> ordinals) => string.Join(",", ordinals);
 
     private static void RunViewsTileTheMasterUnderEveryBreakKey()
     {
@@ -975,7 +997,7 @@ internal static class Program
         return SpanSet.Create(master, spans);
     }
 
-    private static void LaminarizationRetainsCrossingResidue()
+    private static void StructuralValidatorsKeepTheirDistinctInvariants()
     {
         var master = new TextMaster("laminar", 0, "01234567890123456789");
         var builder = new SpanBatchBuilder(master);
@@ -985,13 +1007,107 @@ internal static class Program
         builder.Add(new SpanClaim(new TextSpan(3, 6), "nested", SpanLevel.Character, "scanner", 1));
         builder.Add(new SpanClaim(new TextSpan(2, 12), "left-confirmation", SpanLevel.MultiLine, "human", 2));
 
-        var view = Laminarizer.Extract(builder.Freeze());
-        Equal(4, view.Accepted.Count, "accepted claim count preserves equal claims");
-        Equal(1, view.CrossingResidue.Count, "crossing residue count");
-        Equal("crossing", view.CrossingResidue[0].Kind, "crossing identity");
-        Equal(1, view.Roots.Count, "forest root count");
-        Equal(1, view.Roots[0].Children.Count, "root child geometry count");
-        Equal(2, view.Roots[0].Children[0].Claims.Count, "equal-geometry claims grouped");
+        var batch = builder.Freeze();
+        var familyPolicy = new LaminarFamilyPolicy("validated-no-crossing");
+        var laminarSelection = ClaimSelection.Create(batch, new[] { 0, 1, 3, 4 });
+        var family = LaminarView.Create(laminarSelection, master.Extent, familyPolicy);
+
+        True(ReferenceEquals(family.Selection, laminarSelection) &&
+             ReferenceEquals(family.Basis, batch) &&
+             ReferenceEquals(family.Policy, familyPolicy) &&
+             family.Window == master.Extent,
+            "laminar validation retains exact selection, basis, window, and policy stamps");
+        Equal(4, family.Count, "laminar validation preserves every selected occurrence");
+        Equal(3, family.GroupCount, "equal laminar geometry is grouped without losing occurrences");
+        True(family.Groups[1].Span == new TextSpan(2, 12) &&
+             family.Groups[1].Members.SequenceEqual(new[] { 1, 4 }),
+            "laminar equal-geometry group retains exact source ordinals");
+        Throws<ArgumentException>(
+            () => LaminarView.Create(ClaimSelection.All(batch), master.Extent, familyPolicy),
+            "laminar validation refuses a crossing instead of silently selecting a subset");
+
+        var admissionPolicy = LaminarAdmissionPolicy.PriorityThenGeometry(
+            "default-priority-admission",
+            familyPolicy);
+        var admission = Laminarizer.Admit(ClaimSelection.All(batch), master.Extent, admissionPolicy);
+        True(admission.AcceptedCandidates.SequenceEqual(new[] { 0, 1, 3, 4 }) &&
+             admission.CrossingResidue.SequenceEqual(new[] { 2 }),
+            "greedy laminar admission keeps equal geometry and retains exact crossing residue");
+
+        var structuralBuilder = new SpanBatchBuilder(master);
+        structuralBuilder.Add(new SpanClaim(new TextSpan(0, 3), "pack-left", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(3, 5), "pack-right", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(7, 9), "pack-tail", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(2, 5), "packing-overlap", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(0, 3), "parallel", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(0, 4), "cover-left", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(3, 8), "cover-right", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(0, 2), "hole-left", SpanLevel.Character, "test"));
+        structuralBuilder.Add(new SpanClaim(new TextSpan(4, 8), "hole-right", SpanLevel.Character, "test"));
+        var structuralBatch = structuralBuilder.Freeze();
+        var packingPolicy = new PackingPolicy("disjoint-with-gaps");
+        var packingSelection = ClaimSelection.Create(structuralBatch, new[] { 0, 1, 2 });
+        var packing = PackingView.Create(
+            packingSelection,
+            new TextSpan(0, 9),
+            packingPolicy);
+        True(ReferenceEquals(packing.Selection, packingSelection) &&
+             ReferenceEquals(packing.Policy, packingPolicy) &&
+             packing.Coverage.SequenceEqual(new[] { new TextSpan(0, 5), new TextSpan(7, 9) }) &&
+             packing.Gaps.SequenceEqual(new[] { new TextSpan(5, 7) }),
+            "packing accepts meeting spans and gaps while retaining exact stamps");
+        Throws<ArgumentException>(
+            () => PackingView.Create(
+                ClaimSelection.Create(structuralBatch, new[] { 0, 3 }),
+                new TextSpan(0, 9),
+                packingPolicy),
+            "packing refuses material overlap");
+        Throws<ArgumentException>(
+            () => PackingView.Create(
+                ClaimSelection.Create(structuralBatch, new[] { 0, 4 }),
+                new TextSpan(0, 9),
+                packingPolicy),
+            "packing refuses parallel equal-geometry occurrences");
+
+        var coverPolicy = new CoverPolicy("overlap-allowed-total-cover");
+        var coverSelection = ClaimSelection.Create(structuralBatch, new[] { 5, 6 });
+        var cover = CoverView.Create(coverSelection, new TextSpan(0, 8), coverPolicy);
+        True(ReferenceEquals(cover.Selection, coverSelection) &&
+             ReferenceEquals(cover.Policy, coverPolicy) &&
+             cover.Coverage.SequenceEqual(new[] { new TextSpan(0, 8) }),
+            "cover accepts declared overlap and retains exact total-window evidence");
+        var parallelCover = CoverView.Create(
+            ClaimSelection.Create(structuralBatch, new[] { 0, 4, 6 }),
+            new TextSpan(0, 8),
+            coverPolicy);
+        True(parallelCover.Selection.Count == 3 &&
+             parallelCover.Coverage.SequenceEqual(new[] { new TextSpan(0, 8) }),
+            "cover retains parallel equal-geometry occurrences while normalizing coverage");
+        Throws<ArgumentException>(
+            () => CoverView.Create(
+                ClaimSelection.Create(structuralBatch, new[] { 7, 8 }),
+                new TextSpan(0, 8),
+                coverPolicy),
+            "cover refuses a material hole even when its selected spans have substantial length");
+        Throws<ArgumentException>(
+            () => CoverView.Create(
+                ClaimSelection.Create(structuralBatch, new[] { 2 }),
+                new TextSpan(0, 8),
+                coverPolicy),
+            "cover refuses a selected occurrence outside its declared window");
+
+        var empty = ClaimSelection.None(structuralBatch);
+        var emptyPacking = PackingView.Create(empty, new TextSpan(6, 6), packingPolicy);
+        var emptyCover = CoverView.Create(empty, new TextSpan(6, 6), coverPolicy);
+        var emptyFamily = LaminarView.Create(empty, new TextSpan(6, 6), familyPolicy);
+        True(emptyPacking.Selection.IsEmpty && emptyCover.Selection.IsEmpty && emptyFamily.IsEmpty &&
+             ReferenceEquals(emptyPacking.Basis, structuralBatch) &&
+             ReferenceEquals(emptyCover.Basis, structuralBatch) &&
+             ReferenceEquals(emptyFamily.Basis, structuralBatch),
+            "empty structural validators retain their exact frozen-batch basis");
+
+        Throws<ArgumentException>(() => new PackingPolicy(" "), "packing policy requires a name");
+        Throws<ArgumentException>(() => new CoverPolicy(" "), "cover policy requires a name");
     }
 
     private static void ScopedRegexCollectionCannotBridgeGaps()
@@ -4774,6 +4890,1018 @@ internal static class Program
             "every bounded result retains exact problem, graph, policy, feasibility, and outcome stamps");
         True(costSnapshotHolds,
             "bounded selection never re-enters a caller cost function after policy construction");
+    }
+
+    /// <summary>
+    /// K4c validator assurance: packing, total cover, and laminar-family construction agree with
+    /// independent pairwise and unit-cell predicates on every subset of the ten nonempty
+    /// intervals over five boundaries.
+    /// </summary>
+    private static void StructuralValidatorsMatchBoundedOracles()
+    {
+        var master = new TextMaster("structural-validator-bounded", 0, "abcd");
+        var intervals = NonemptyIntervals(4);
+        var batch = PairBatch(master, intervals);
+        var window = master.Extent;
+        var packingPolicy = new PackingPolicy("bounded-packing");
+        var coverPolicy = new CoverPolicy("bounded-cover");
+        var laminarPolicy = new LaminarFamilyPolicy("bounded-laminar");
+        var valueCount = 1 << batch.Count;
+        var packingAgreement = true;
+        var coverAgreement = true;
+        var laminarAgreement = true;
+        var validViewsRetainStamps = true;
+
+        for (var mask = 0; mask < valueCount; mask++)
+        {
+            var selection = SelectionFromMask(batch, mask);
+            PackingView? packing = null;
+            CoverView? cover = null;
+            LaminarView? laminar = null;
+            var packingAccepted = ValidationAccepts(() =>
+                packing = PackingView.Create(selection, window, packingPolicy));
+            var coverAccepted = ValidationAccepts(() =>
+                cover = CoverView.Create(selection, window, coverPolicy));
+            var laminarAccepted = ValidationAccepts(() =>
+                laminar = LaminarView.Create(selection, window, laminarPolicy));
+
+            packingAgreement &= packingAccepted == PackingMaskOracle(batch, mask);
+            coverAgreement &= coverAccepted == CoverMaskOracle(batch, mask, window);
+            laminarAgreement &= laminarAccepted == LaminarMaskOracle(batch, mask);
+            if (packing is not null)
+            {
+                validViewsRetainStamps &= ReferenceEquals(packing.Selection, selection) &&
+                                         ReferenceEquals(packing.Policy, packingPolicy);
+            }
+
+            if (cover is not null)
+            {
+                validViewsRetainStamps &= ReferenceEquals(cover.Selection, selection) &&
+                                         ReferenceEquals(cover.Policy, coverPolicy);
+            }
+
+            if (laminar is not null)
+            {
+                validViewsRetainStamps &= ReferenceEquals(laminar.Selection, selection) &&
+                                         ReferenceEquals(laminar.Policy, laminarPolicy);
+            }
+        }
+
+        Equal(1024, valueCount,
+            "bounded structural validator carrier contains every five-boundary interval subset");
+        True(packingAgreement,
+            "packing validation agrees with an independent pairwise-disjointness oracle");
+        True(coverAgreement,
+            "cover validation agrees with an independent unit-cell total-coverage oracle");
+        True(laminarAgreement,
+            "laminar validation agrees with an independent alternating-endpoint oracle");
+        True(validViewsRetainStamps,
+            "every accepted bounded structural view retains its exact selection and policy objects");
+    }
+
+    /// <summary>
+    /// K4c admission assurance: all 4,096 candidate-mask × binary-priority problems agree with an
+    /// independent greedy policy oracle, while a direct witness proves maximal does not mean maximum.
+    /// </summary>
+    private static void LaminarAdmissionMatchesBoundedOracle()
+    {
+        var master = new TextMaster("laminar-admission-bounded", 0, "abc");
+        var intervals = NonemptyIntervals(3);
+        var familyPolicy = new LaminarFamilyPolicy("bounded-admission-family");
+        var admissionPolicy = LaminarAdmissionPolicy.PriorityThenGeometry(
+            "bounded-priority-admission",
+            familyPolicy);
+        var problemCount = 0;
+        var oracleAgreement = true;
+        var populationLawsHold = true;
+        var maximalityHolds = true;
+
+        for (var priorityMask = 0; priorityMask < (1 << intervals.Length); priorityMask++)
+        {
+            var builder = new SpanBatchBuilder(master);
+            for (var ordinal = 0; ordinal < intervals.Length; ordinal++)
+            {
+                builder.Add(new SpanClaim(
+                    intervals[ordinal],
+                    $"candidate-{ordinal}",
+                    SpanLevel.Character,
+                    "bounded",
+                    (priorityMask >> ordinal) & 1));
+            }
+
+            var batch = builder.Freeze();
+            for (var candidateMask = 0; candidateMask < (1 << intervals.Length); candidateMask++)
+            {
+                problemCount++;
+                var candidates = SelectionFromMask(batch, candidateMask);
+                var actual = Laminarizer.Admit(candidates, master.Extent, admissionPolicy);
+                var expectedMask = LaminarAdmissionMaskOracle(batch, candidateMask);
+                oracleAgreement &= SelectionMatchesMask(actual.AcceptedCandidates, expectedMask);
+                populationLawsHold &=
+                    actual.AcceptedCandidates.Intersect(actual.CrossingResidue).IsEmpty &&
+                    actual.AcceptedCandidates.Union(actual.CrossingResidue).Equals(candidates) &&
+                    ReferenceEquals(actual.Candidates, candidates) &&
+                    ReferenceEquals(actual.Policy, admissionPolicy) &&
+                    ReferenceEquals(actual.Accepted.Policy, familyPolicy);
+                maximalityHolds &= LaminarMaskOracle(batch, expectedMask) &&
+                                   LaminarAdmissionIsMaximalOracle(
+                                       batch,
+                                       expectedMask,
+                                       candidateMask & ~expectedMask);
+            }
+        }
+
+        Equal(4096, problemCount,
+            "bounded laminar oracle crosses every candidate subset with every binary priority table");
+        True(oracleAgreement,
+            "laminar admission agrees with the independent grouped priority-greedy oracle");
+        True(populationLawsHold,
+            "every bounded admission retains exact stamps and a complete accepted/residue partition");
+        True(maximalityHolds,
+            "every bounded greedy result is laminar and inclusion-maximal inside its candidates");
+
+        var counterexampleMaster = new TextMaster("laminar-not-maximum", 0, "0123456789");
+        var counterexampleBuilder = new SpanBatchBuilder(counterexampleMaster);
+        counterexampleBuilder.Add(new SpanClaim(
+            new TextSpan(2, 8), "high-middle", SpanLevel.Character, "test", 10));
+        counterexampleBuilder.Add(new SpanClaim(
+            new TextSpan(0, 4), "left", SpanLevel.Character, "test", 1));
+        counterexampleBuilder.Add(new SpanClaim(
+            new TextSpan(6, 10), "right", SpanLevel.Character, "test", 1));
+        var counterexampleBatch = counterexampleBuilder.Freeze();
+        var greedy = Laminarizer.Admit(
+            ClaimSelection.All(counterexampleBatch),
+            counterexampleMaster.Extent,
+            admissionPolicy);
+        var largerFamily = LaminarView.Create(
+            ClaimSelection.Create(counterexampleBatch, new[] { 1, 2 }),
+            counterexampleMaster.Extent,
+            familyPolicy);
+        True(greedy.AcceptedCandidates.SequenceEqual(new[] { 0 }) &&
+             largerFamily.Count == 2 &&
+             greedy.Guarantee == LaminarAdmissionGuarantee.InclusionMaximal,
+            "greedy laminar admission is explicitly maximal but not maximum-cardinality");
+    }
+
+    /// <summary>
+    /// K4c parenthood gate: containment produces parents only through the named nearest-container
+    /// projection, including a lowest-ordinal tie for equal parent geometry.
+    /// </summary>
+    private static void NearestContainerProjectionIsExplicit()
+    {
+        var master = new TextMaster("nearest-containers", 0, "0123456789012345");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 12),
+            new TextSpan(0, 12),
+            new TextSpan(0, 10),
+            new TextSpan(2, 10),
+            new TextSpan(3, 5),
+            new TextSpan(3, 5),
+            new TextSpan(6, 8),
+            new TextSpan(12, 16));
+        var familyPolicy = new LaminarFamilyPolicy("nearest-source-family");
+        var family = LaminarView.Create(
+            ClaimSelection.All(batch),
+            master.Extent,
+            familyPolicy);
+        var nearestPolicy = HierarchyPolicy.NearestContainer("nearest-strict-container");
+        var hierarchy = LaminarHierarchy.NearestContainers(family, nearestPolicy);
+        var expected = new[]
+        {
+            new HierarchyEdge(2, 0, nearestPolicy.Name),
+            new HierarchyEdge(3, 2, nearestPolicy.Name),
+            new HierarchyEdge(4, 3, nearestPolicy.Name),
+            new HierarchyEdge(5, 3, nearestPolicy.Name),
+            new HierarchyEdge(6, 3, nearestPolicy.Name),
+        };
+
+        True(hierarchy.SequenceEqual(expected) &&
+             ReferenceEquals(hierarchy.Nodes, family.Selection) &&
+             ReferenceEquals(hierarchy.Policy, nearestPolicy) &&
+             ReferenceEquals(hierarchy.SourceLaminarFamily, family),
+            "nearest-container projection retains immediate edges and exact source/policy stamps");
+        True(hierarchy.Roots.SequenceEqual(new[] { 0, 1, 7 }) &&
+             hierarchy.ParentsOf(4).SequenceEqual(new[] { 3 }) &&
+             hierarchy.ChildrenOf(3).SequenceEqual(new[] { 4, 5, 6 }),
+            "nearest-container projection exposes roots and direct parent/child incidence");
+        True(hierarchy.Policy.Construction == HierarchyConstruction.NearestStrictContainer &&
+             hierarchy.Policy.TieBreak == HierarchyTieBreak.LowestOrdinal,
+            "nearest-container policy makes construction and equal-geometry tie semantics explicit");
+
+        var explicitPolicy = HierarchyPolicy.Explicit("no-inference");
+        var explicitEmpty = HierarchyView.Create(
+            family.Selection,
+            family.Window,
+            explicitPolicy,
+            Array.Empty<HierarchyEdge>());
+        True(explicitEmpty.Count == 0 && explicitEmpty.Roots.Equals(family.Selection),
+            "general hierarchy construction infers no edges from nested geometry");
+        Throws<ArgumentException>(
+            () => LaminarHierarchy.NearestContainers(family, explicitPolicy),
+            "nearest-container projection requires its explicit derivation policy");
+
+        var boundedMaster = new TextMaster("nearest-bounded", 0, "abcd");
+        var boundedBatch = PairBatch(boundedMaster, NonemptyIntervals(4));
+        var boundedPolicy = new LaminarFamilyPolicy("nearest-bounded-family");
+        var boundedNearestPolicy = HierarchyPolicy.NearestContainer("nearest-bounded-policy");
+        var validFamilyCount = 0;
+        var oracleAgreement = true;
+        for (var mask = 0; mask < (1 << boundedBatch.Count); mask++)
+        {
+            if (!LaminarMaskOracle(boundedBatch, mask))
+            {
+                continue;
+            }
+
+            validFamilyCount++;
+            var boundedFamily = LaminarView.Create(
+                SelectionFromMask(boundedBatch, mask),
+                boundedMaster.Extent,
+                boundedPolicy);
+            var actual = LaminarHierarchy.NearestContainers(boundedFamily, boundedNearestPolicy);
+            var expectedEdges = NearestContainerOracle(
+                boundedBatch,
+                mask,
+                boundedNearestPolicy.Name);
+            oracleAgreement &= actual.SequenceEqual(expectedEdges);
+        }
+
+        True(validFamilyCount > 0,
+            "nearest-container bounded assurance exercises nonempty valid laminar families");
+        True(oracleAgreement,
+            "nearest-container projection agrees on every bounded valid laminar family");
+    }
+
+    /// <summary>
+    /// K4c hierarchy gate: explicit DAGs retain multiple parents, disconnected nodes, and supplied
+    /// transitive edges while refusing malformed edge evidence.
+    /// </summary>
+    private static void HierarchyViewRetainsExplicitDag()
+    {
+        var master = new TextMaster("hierarchy", 0, "0123456789");
+        var batch = PairBatch(
+            master,
+            new TextSpan(4, 6),
+            new TextSpan(2, 8),
+            new TextSpan(0, 7),
+            new TextSpan(0, 10));
+        var nodes = ClaimSelection.All(batch);
+        var policy = HierarchyPolicy.Explicit("caller-parent-edges");
+        var diamond = HierarchyView.Create(
+            nodes,
+            master.Extent,
+            policy,
+            new[]
+            {
+                new HierarchyEdge(0, 1, "left-parent"),
+                new HierarchyEdge(0, 2, "right-parent"),
+                new HierarchyEdge(1, 3, "root"),
+                new HierarchyEdge(2, 3, "root"),
+            });
+
+        True(ReferenceEquals(diamond.Nodes, nodes) &&
+             ReferenceEquals(diamond.Basis, batch) &&
+             ReferenceEquals(diamond.Policy, policy) &&
+             diamond.Policy.Construction == HierarchyConstruction.ExplicitEdges &&
+             diamond.Policy.TieBreak == HierarchyTieBreak.None &&
+             diamond.SourceLaminarFamily is null,
+            "explicit hierarchy retains exact node, basis, window, and policy stamps");
+        True(diamond.ParentsOf(0).SequenceEqual(new[] { 1, 2 }) &&
+             diamond.ChildrenOf(3).SequenceEqual(new[] { 1, 2 }) &&
+             diamond.Roots.SequenceEqual(new[] { 3 }) &&
+             diamond.Leaves.SequenceEqual(new[] { 0 }),
+            "explicit hierarchy permits a multiple-parent diamond across crossing parent geometry");
+
+        var withTransitive = HierarchyView.Create(
+            nodes,
+            master.Extent,
+            policy,
+            diamond.Concat(new[] { new HierarchyEdge(0, 3, "explicit-transitive") }));
+        True(withTransitive.Count == 5 && withTransitive.ContainsEdge(0, 3),
+            "explicit hierarchy retains a supplied transitive edge without closure or reduction");
+
+        var disconnected = HierarchyView.Create(
+            nodes,
+            master.Extent,
+            policy,
+            Array.Empty<HierarchyEdge>());
+        True(disconnected.Roots.Equals(nodes) && disconnected.Leaves.Equals(nodes),
+            "explicit hierarchy retains disconnected selected nodes");
+
+        Throws<ArgumentException>(
+            () => HierarchyView.Create(
+                nodes,
+                master.Extent,
+                policy,
+                new[] { new HierarchyEdge(0, 0, "self") }),
+            "explicit hierarchy refuses self edges");
+        Throws<ArgumentException>(
+            () => HierarchyView.Create(
+                nodes,
+                master.Extent,
+                policy,
+                new[]
+                {
+                    new HierarchyEdge(0, 1, "a"),
+                    new HierarchyEdge(0, 1, "b"),
+                }),
+            "explicit hierarchy refuses duplicate child/parent pairs");
+        Throws<ArgumentException>(
+            () => HierarchyView.Create(
+                nodes,
+                master.Extent,
+                policy,
+                new[] { new HierarchyEdge(0, 1, " ") }),
+            "explicit hierarchy requires edge derivation labels");
+        Throws<ArgumentException>(
+            () => HierarchyView.Create(
+                ClaimSelection.Create(batch, new[] { 0, 1 }),
+                master.Extent,
+                policy,
+                new[] { new HierarchyEdge(0, 2, "outside-selection") }),
+            "explicit hierarchy refuses an endpoint outside its exact node selection");
+        Throws<ArgumentException>(
+            () => HierarchyView.Create(
+                nodes,
+                master.Extent,
+                policy,
+                new[]
+                {
+                    new HierarchyEdge(0, 1, "cycle-a"),
+                    new HierarchyEdge(1, 0, "cycle-b"),
+                }),
+            "explicit hierarchy refuses directed cycles");
+        Throws<ArgumentException>(
+            () => HierarchyView.Create(
+                nodes,
+                master.Extent,
+                HierarchyPolicy.NearestContainer("wrong-construction"),
+                Array.Empty<HierarchyEdge>()),
+            "explicit hierarchy construction refuses a nearest-container policy");
+        Throws<ArgumentException>(
+            () => HierarchyPolicy.Explicit(" "),
+            "hierarchy policy requires a name");
+    }
+
+    /// <summary>K4c hierarchy assurance: every directed non-self graph on four nodes matches an independent DAG oracle.</summary>
+    private static void HierarchyViewMatchesBoundedDagOracle()
+    {
+        var master = new TextMaster("hierarchy-bounded", 0, "abcd");
+        var batch = PairBatch(
+            master,
+            new TextSpan(0, 1),
+            new TextSpan(1, 2),
+            new TextSpan(2, 3),
+            new TextSpan(3, 4));
+        var nodes = ClaimSelection.All(batch);
+        var policy = HierarchyPolicy.Explicit("bounded-explicit-dag");
+        var possibleEdges = new List<(int Child, int Parent)>();
+        for (var child = 0; child < 4; child++)
+        {
+            for (var parent = 0; parent < 4; parent++)
+            {
+                if (child != parent)
+                {
+                    possibleEdges.Add((child, parent));
+                }
+            }
+        }
+
+        var graphCount = 1 << possibleEdges.Count;
+        var agreement = true;
+        var stampsHold = true;
+        for (var mask = 0; mask < graphCount; mask++)
+        {
+            var edges = new List<HierarchyEdge>();
+            for (var edgeIndex = 0; edgeIndex < possibleEdges.Count; edgeIndex++)
+            {
+                if ((mask & (1 << edgeIndex)) != 0)
+                {
+                    var edge = possibleEdges[edgeIndex];
+                    edges.Add(new HierarchyEdge(edge.Child, edge.Parent, "bounded"));
+                }
+            }
+
+            HierarchyView? actual = null;
+            var accepted = ValidationAccepts(() =>
+                actual = HierarchyView.Create(nodes, master.Extent, policy, edges));
+            agreement &= accepted == DirectedAcyclicOracle(4, possibleEdges, mask);
+            if (actual is not null)
+            {
+                stampsHold &= ReferenceEquals(actual.Nodes, nodes) &&
+                              ReferenceEquals(actual.Policy, policy) &&
+                              actual.SequenceEqual(edges.OrderBy(edge => edge.ChildOrdinal)
+                                  .ThenBy(edge => edge.ParentOrdinal));
+            }
+        }
+
+        Equal(4096, graphCount,
+            "bounded hierarchy oracle covers every directed non-self edge subset on four nodes");
+        True(agreement,
+            "explicit hierarchy DAG validation agrees with the independent topological oracle");
+        True(stampsHold,
+            "every accepted bounded hierarchy retains exact stamps and canonical explicit edges");
+    }
+
+    /// <summary>
+    /// K4c resolution gate: many-to-many incidence, functional aggregation, and exact material
+    /// aggregation are distinct same-master contracts with exact layer stamps.
+    /// </summary>
+    private static void ResolutionMapsSeparateIncidenceFromAggregation()
+    {
+        var fineMaster = new TextMaster("resolution", 0, "abcdef");
+        var fineBuilder = new SpanBatchBuilder(fineMaster);
+        fineBuilder.Add(new SpanClaim(new TextSpan(0, 2), "token", SpanLevel.Character, "lexer"));
+        fineBuilder.Add(new SpanClaim(new TextSpan(2, 4), "sentence", SpanLevel.Line, "parser"));
+        fineBuilder.Add(new SpanClaim(new TextSpan(4, 6), "token", SpanLevel.MultiLine, "lexer"));
+        var fineBatch = fineBuilder.Freeze();
+        var coarseMaster = new TextMaster("resolution", 0, "abcdef");
+        var coarseBatch = PairBatch(
+            coarseMaster,
+            new TextSpan(0, 4),
+            new TextSpan(2, 6),
+            new TextSpan(0, 6));
+        var finePolicy = new ResolutionLayerPolicy("fine-v1");
+        var coarsePolicy = new ResolutionLayerPolicy("coarse-v1");
+        var fine = ResolutionView.Create(
+            ClaimSelection.All(fineBatch),
+            fineMaster.Extent,
+            finePolicy);
+        var coarse = ResolutionView.Create(
+            ClaimSelection.Create(coarseBatch, new[] { 0, 1 }),
+            coarseMaster.Extent,
+            coarsePolicy);
+        var incidencePolicy = ResolutionMapPolicy.Incidence("overlapping-membership");
+        var incidence = ResolutionMap.Create(
+            fine,
+            coarse,
+            incidencePolicy,
+            new[]
+            {
+                new ResolutionEdge(0, 0),
+                new ResolutionEdge(1, 0),
+                new ResolutionEdge(1, 1),
+                new ResolutionEdge(2, 1),
+            });
+
+        True(ReferenceEquals(incidence.Fine, fine) &&
+             ReferenceEquals(incidence.Coarse, coarse) &&
+             ReferenceEquals(incidence.Policy, incidencePolicy) &&
+             incidence.Contract == ResolutionMapContract.Incidence,
+            "resolution incidence retains exact compatible layer and policy objects");
+        True(incidence.CoarseTargets(1).SequenceEqual(new[] { 0, 1 }) &&
+             incidence.FineMembers(0).SequenceEqual(new[] { 0, 1 }) &&
+             incidence.ProjectFine().Equals(fine.Selection) &&
+             incidence.ProjectCoarse().Equals(coarse.Selection),
+            "resolution incidence retains explicit many-to-many occurrence relationships");
+        True(fine.Name == "fine-v1" &&
+             fine.Basis[0].Kind == fine.Basis[2].Kind &&
+             fine.Basis[0].Level != fine.Basis[2].Level,
+            "resolution name remains separate from claim kind and SpanLevel metadata");
+
+        var noInference = ResolutionMap.Create(
+            fine,
+            coarse,
+            incidencePolicy,
+            Array.Empty<ResolutionEdge>());
+        True(noInference.IsEmpty && noInference.ProjectFine().IsEmpty && noInference.ProjectCoarse().IsEmpty,
+            "resolution incidence infers no edge from containment geometry");
+
+        var functionalPolicy = ResolutionMapPolicy.FunctionalAggregation("functional-membership");
+        var functional = ResolutionMap.Create(
+            fine,
+            coarse,
+            functionalPolicy,
+            new[]
+            {
+                new ResolutionEdge(0, 0),
+                new ResolutionEdge(1, 0),
+                new ResolutionEdge(2, 1),
+            });
+        True(functional.Contract == ResolutionMapContract.FunctionalAggregation &&
+             functional.Count == 3,
+            "functional aggregation requires one coarse target per fine member and uses every coarse member");
+        Throws<ArgumentException>(
+            () => ResolutionMap.Create(
+                fine,
+                coarse,
+                functionalPolicy,
+                new[]
+                {
+                    new ResolutionEdge(0, 0),
+                    new ResolutionEdge(1, 0),
+                    new ResolutionEdge(1, 1),
+                    new ResolutionEdge(2, 1),
+                }),
+            "functional aggregation refuses multiple coarse targets for one fine member");
+
+        var exactCoarseBatch = PairBatch(
+            coarseMaster,
+            new TextSpan(0, 4),
+            new TextSpan(4, 6));
+        var exactCoarse = ResolutionView.Create(
+            ClaimSelection.All(exactCoarseBatch),
+            coarseMaster.Extent,
+            new ResolutionLayerPolicy("exact-coarse"));
+        var exactPolicy = ResolutionMapPolicy.ExactAggregation("exact-material");
+        var exact = ResolutionMap.Create(
+            fine,
+            exactCoarse,
+            exactPolicy,
+            new[]
+            {
+                new ResolutionEdge(0, 0),
+                new ResolutionEdge(1, 0),
+                new ResolutionEdge(2, 1),
+            });
+        True(exact.Contract == ResolutionMapContract.ExactAggregation && exact.Count == 3,
+            "exact aggregation validates normalized fine material for each coarse occurrence");
+
+        var holeFine = PairBatch(
+            fineMaster,
+            new TextSpan(0, 2),
+            new TextSpan(3, 5));
+        var holeCoarse = PairBatch(coarseMaster, new TextSpan(0, 5));
+        var holeFineView = ResolutionView.Create(
+            ClaimSelection.All(holeFine),
+            new TextSpan(0, 5),
+            new ResolutionLayerPolicy("hole-fine"));
+        var holeCoarseView = ResolutionView.Create(
+            ClaimSelection.All(holeCoarse),
+            new TextSpan(0, 5),
+            new ResolutionLayerPolicy("hole-coarse"));
+        Throws<ArgumentException>(
+            () => ResolutionMap.Create(
+                holeFineView,
+                holeCoarseView,
+                exactPolicy,
+                new[] { new ResolutionEdge(0, 0), new ResolutionEdge(1, 0) }),
+            "exact aggregation rejects an envelope that hides a material hole");
+
+        Throws<ArgumentException>(
+            () => ResolutionMap.Create(
+                fine,
+                coarse,
+                incidencePolicy,
+                new[] { new ResolutionEdge(0, 0), new ResolutionEdge(0, 0) }),
+            "resolution map refuses duplicate explicit edges");
+        Throws<ArgumentException>(
+            () => ResolutionMap.Create(
+                fine,
+                coarse,
+                incidencePolicy,
+                new[] { new ResolutionEdge(0, 1) }),
+            "resolution map refuses an explicit edge whose coarse span does not contain its fine span");
+
+        var shorterCoarse = ResolutionView.Create(
+            ClaimSelection.Create(coarseBatch, new[] { 0 }),
+            new TextSpan(0, 4),
+            coarsePolicy);
+        Throws<InvalidOperationException>(
+            () => ResolutionMap.Create(
+                fine,
+                shorterCoarse,
+                incidencePolicy,
+                Array.Empty<ResolutionEdge>()),
+            "resolution map refuses unequal declared layer windows");
+
+        var incompatibleMaster = new TextMaster("other-resolution", 0, "abcdef");
+        var incompatibleBatch = PairBatch(incompatibleMaster, new TextSpan(0, 6));
+        var incompatibleLayer = ResolutionView.Create(
+            ClaimSelection.All(incompatibleBatch),
+            incompatibleMaster.Extent,
+            new ResolutionLayerPolicy("incompatible"));
+        Throws<InvalidOperationException>(
+            () => ResolutionMap.Create(
+                fine,
+                incompatibleLayer,
+                incidencePolicy,
+                Array.Empty<ResolutionEdge>()),
+            "resolution map refuses incompatible same-coordinate-looking masters");
+
+        var emptyFine = ResolutionView.Create(
+            ClaimSelection.None(fineBatch),
+            new TextSpan(3, 3),
+            finePolicy);
+        var emptyCoarse = ResolutionView.Create(
+            ClaimSelection.None(coarseBatch),
+            new TextSpan(3, 3),
+            coarsePolicy);
+        var emptyMap = ResolutionMap.Create(
+            emptyFine,
+            emptyCoarse,
+            ResolutionMapPolicy.ExactAggregation("empty-exact"),
+            Array.Empty<ResolutionEdge>());
+        True(emptyMap.IsEmpty && ReferenceEquals(emptyMap.Fine, emptyFine) &&
+             ReferenceEquals(emptyMap.Coarse, emptyCoarse),
+            "empty exact aggregation retains both exact layer objects");
+
+        Throws<ArgumentException>(() => new ResolutionLayerPolicy(" "),
+            "resolution layer policy requires a name");
+        Throws<ArgumentOutOfRangeException>(
+            () => new ResolutionMapPolicy("bad", (ResolutionMapContract)99),
+            "resolution map policy refuses an undefined contract");
+    }
+
+    /// <summary>
+    /// K4c resolution assurance: bounded exact-layer selection and six-edge masks agree with an
+    /// endpoint-membership oracle while compatible-but-distinct master objects remain supported.
+    /// </summary>
+    private static void ResolutionIncidenceMatchesBoundedEndpointOracle()
+    {
+        var fineMaster = new TextMaster("resolution-bounded", 0, "abcd");
+        var coarseMaster = new TextMaster("resolution-bounded", 0, "abcd");
+        var fineBatch = PairBatch(
+            fineMaster,
+            new TextSpan(1, 2),
+            new TextSpan(1, 2),
+            new TextSpan(1, 2));
+        var coarseBatch = PairBatch(
+            coarseMaster,
+            new TextSpan(0, 3),
+            new TextSpan(0, 3));
+        var finePolicy = new ResolutionLayerPolicy("bounded-fine");
+        var coarsePolicy = new ResolutionLayerPolicy("bounded-coarse");
+        var mapPolicy = ResolutionMapPolicy.Incidence("bounded-incidence");
+        var problemCount = 0;
+        var agreement = true;
+        var stampsHold = true;
+
+        for (var fineMask = 0; fineMask < 8; fineMask++)
+        {
+            var fine = ResolutionView.Create(
+                SelectionFromMask(fineBatch, fineMask),
+                new TextSpan(0, 3),
+                finePolicy);
+            for (var coarseMask = 0; coarseMask < 4; coarseMask++)
+            {
+                var coarse = ResolutionView.Create(
+                    SelectionFromMask(coarseBatch, coarseMask),
+                    new TextSpan(0, 3),
+                    coarsePolicy);
+                for (var edgeMask = 0; edgeMask < 64; edgeMask++)
+                {
+                    problemCount++;
+                    var edges = ResolutionEdgesFromMask(edgeMask);
+                    ResolutionMap? actual = null;
+                    var accepted = ValidationAccepts(() =>
+                        actual = ResolutionMap.Create(fine, coarse, mapPolicy, edges));
+                    var expected = ResolutionEndpointMaskOracle(fineMask, coarseMask, edgeMask);
+                    agreement &= accepted == expected;
+                    if (actual is not null)
+                    {
+                        stampsHold &= ReferenceEquals(actual.Fine, fine) &&
+                                      ReferenceEquals(actual.Coarse, coarse) &&
+                                      ReferenceEquals(actual.Policy, mapPolicy) &&
+                                      actual.SequenceEqual(edges);
+                    }
+                }
+            }
+        }
+
+        Equal(2048, problemCount,
+            "bounded resolution oracle covers every fine/coarse selection and incidence-edge mask");
+        True(agreement,
+            "resolution incidence validation agrees with exact endpoint-membership oracle");
+        True(stampsHold,
+            "every accepted bounded resolution map retains its exact layer and policy objects");
+    }
+
+    private static TextSpan[] NonemptyIntervals(int maximumBoundary)
+    {
+        var intervals = new List<TextSpan>();
+        for (var start = 0; start < maximumBoundary; start++)
+        {
+            for (var end = start + 1; end <= maximumBoundary; end++)
+            {
+                intervals.Add(new TextSpan(start, end));
+            }
+        }
+
+        return intervals.ToArray();
+    }
+
+    private static bool ValidationAccepts(Action validation)
+    {
+        try
+        {
+            validation();
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+    }
+
+    private static bool PackingMaskOracle(SpanBatch batch, int mask)
+    {
+        for (var left = 0; left < batch.Count; left++)
+        {
+            if ((mask & (1 << left)) == 0)
+            {
+                continue;
+            }
+
+            var a = batch[left].Span;
+            for (var right = left + 1; right < batch.Count; right++)
+            {
+                if ((mask & (1 << right)) == 0)
+                {
+                    continue;
+                }
+
+                var b = batch[right].Span;
+                if (!(a.End <= b.Start || b.End <= a.Start))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static bool CoverMaskOracle(SpanBatch batch, int mask, TextSpan window)
+    {
+        for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+        {
+            if ((mask & (1 << ordinal)) != 0 && !window.Contains(batch[ordinal].Span))
+            {
+                return false;
+            }
+        }
+
+        for (var position = window.Start; position < window.End; position++)
+        {
+            var covered = false;
+            for (var ordinal = 0; ordinal < batch.Count; ordinal++)
+            {
+                var span = batch[ordinal].Span;
+                if ((mask & (1 << ordinal)) != 0 &&
+                    span.Start <= position && position < span.End)
+                {
+                    covered = true;
+                    break;
+                }
+            }
+
+            if (!covered)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool LaminarMaskOracle(SpanBatch batch, int mask)
+    {
+        for (var left = 0; left < batch.Count; left++)
+        {
+            if ((mask & (1 << left)) == 0)
+            {
+                continue;
+            }
+
+            var a = batch[left].Span;
+            for (var right = left + 1; right < batch.Count; right++)
+            {
+                if ((mask & (1 << right)) == 0)
+                {
+                    continue;
+                }
+
+                var b = batch[right].Span;
+                var alternating =
+                    (a.Start < b.Start && b.Start < a.End && a.End < b.End) ||
+                    (b.Start < a.Start && a.Start < b.End && b.End < a.End);
+                if (alternating)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static int LaminarAdmissionMaskOracle(SpanBatch batch, int candidateMask)
+    {
+        var groups = Enumerable.Range(0, batch.Count)
+            .Where(ordinal => (candidateMask & (1 << ordinal)) != 0)
+            .GroupBy(ordinal => batch[ordinal].Span)
+            .Select(group => new
+            {
+                Span = group.Key,
+                Ordinals = group.OrderBy(ordinal => ordinal).ToArray(),
+                Priority = group.Max(ordinal => batch[ordinal].Priority),
+            })
+            .OrderByDescending(group => group.Priority)
+            .ThenBy(group => group.Span.Start)
+            .ThenByDescending(group => group.Span.End)
+            .ThenBy(group => group.Ordinals[0])
+            .ToArray();
+        var acceptedSpans = new List<TextSpan>();
+        var acceptedMask = 0;
+        foreach (var group in groups)
+        {
+            var crosses = false;
+            foreach (var accepted in acceptedSpans)
+            {
+                var alternating =
+                    (group.Span.Start < accepted.Start &&
+                     accepted.Start < group.Span.End &&
+                     group.Span.End < accepted.End) ||
+                    (accepted.Start < group.Span.Start &&
+                     group.Span.Start < accepted.End &&
+                     accepted.End < group.Span.End);
+                crosses |= alternating;
+            }
+
+            if (crosses)
+            {
+                continue;
+            }
+
+            acceptedSpans.Add(group.Span);
+            foreach (var ordinal in group.Ordinals)
+            {
+                acceptedMask |= 1 << ordinal;
+            }
+        }
+
+        return acceptedMask;
+    }
+
+    private static bool LaminarAdmissionIsMaximalOracle(
+        SpanBatch batch,
+        int acceptedMask,
+        int rejectedMask)
+    {
+        for (var rejected = 0; rejected < batch.Count; rejected++)
+        {
+            if ((rejectedMask & (1 << rejected)) == 0)
+            {
+                continue;
+            }
+
+            var blocked = false;
+            var rejectedSpan = batch[rejected].Span;
+            for (var accepted = 0; accepted < batch.Count; accepted++)
+            {
+                if ((acceptedMask & (1 << accepted)) == 0)
+                {
+                    continue;
+                }
+
+                var acceptedSpan = batch[accepted].Span;
+                blocked |=
+                    (rejectedSpan.Start < acceptedSpan.Start &&
+                     acceptedSpan.Start < rejectedSpan.End &&
+                     rejectedSpan.End < acceptedSpan.End) ||
+                    (acceptedSpan.Start < rejectedSpan.Start &&
+                     rejectedSpan.Start < acceptedSpan.End &&
+                     acceptedSpan.End < rejectedSpan.End);
+            }
+
+            if (!blocked)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static IReadOnlyList<HierarchyEdge> NearestContainerOracle(
+        SpanBatch batch,
+        int mask,
+        string derivation)
+    {
+        var groups = Enumerable.Range(0, batch.Count)
+            .Where(ordinal => (mask & (1 << ordinal)) != 0)
+            .GroupBy(ordinal => batch[ordinal].Span)
+            .Select(group => new
+            {
+                Span = group.Key,
+                Ordinals = group.OrderBy(ordinal => ordinal).ToArray(),
+            })
+            .ToArray();
+        var edges = new List<HierarchyEdge>();
+        foreach (var child in groups)
+        {
+            var parent = groups
+                .Where(candidate => candidate.Span.Contains(child.Span) &&
+                                    candidate.Span != child.Span)
+                .OrderBy(candidate => candidate.Span.Length)
+                .ThenBy(candidate => candidate.Span.Start)
+                .ThenBy(candidate => candidate.Ordinals[0])
+                .FirstOrDefault();
+            if (parent is null)
+            {
+                continue;
+            }
+
+            foreach (var childOrdinal in child.Ordinals)
+            {
+                edges.Add(new HierarchyEdge(
+                    childOrdinal,
+                    parent.Ordinals[0],
+                    derivation));
+            }
+        }
+
+        return edges
+            .OrderBy(edge => edge.ChildOrdinal)
+            .ThenBy(edge => edge.ParentOrdinal)
+            .ToArray();
+    }
+
+    private static bool DirectedAcyclicOracle(
+        int nodeCount,
+        IReadOnlyList<(int Child, int Parent)> possibleEdges,
+        int mask)
+    {
+        var reachable = new bool[nodeCount, nodeCount];
+        for (var edgeIndex = 0; edgeIndex < possibleEdges.Count; edgeIndex++)
+        {
+            if ((mask & (1 << edgeIndex)) != 0)
+            {
+                var edge = possibleEdges[edgeIndex];
+                reachable[edge.Child, edge.Parent] = true;
+            }
+        }
+
+        for (var middle = 0; middle < nodeCount; middle++)
+        {
+            for (var start = 0; start < nodeCount; start++)
+            {
+                for (var end = 0; end < nodeCount; end++)
+                {
+                    reachable[start, end] |= reachable[start, middle] && reachable[middle, end];
+                }
+            }
+        }
+
+        for (var node = 0; node < nodeCount; node++)
+        {
+            if (reachable[node, node])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static IReadOnlyList<ResolutionEdge> ResolutionEdgesFromMask(int mask)
+    {
+        var edges = new List<ResolutionEdge>();
+        for (var fine = 0; fine < 3; fine++)
+        {
+            for (var coarse = 0; coarse < 2; coarse++)
+            {
+                var edgeIndex = (fine * 2) + coarse;
+                if ((mask & (1 << edgeIndex)) != 0)
+                {
+                    edges.Add(new ResolutionEdge(fine, coarse));
+                }
+            }
+        }
+
+        return edges;
+    }
+
+    private static bool ResolutionEndpointMaskOracle(
+        int fineSelectionMask,
+        int coarseSelectionMask,
+        int edgeMask)
+    {
+        for (var fine = 0; fine < 3; fine++)
+        {
+            for (var coarse = 0; coarse < 2; coarse++)
+            {
+                var edgeIndex = (fine * 2) + coarse;
+                if ((edgeMask & (1 << edgeIndex)) == 0)
+                {
+                    continue;
+                }
+
+                if ((fineSelectionMask & (1 << fine)) == 0 ||
+                    (coarseSelectionMask & (1 << coarse)) == 0)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private static LocatedRelation LocatedFromMask(

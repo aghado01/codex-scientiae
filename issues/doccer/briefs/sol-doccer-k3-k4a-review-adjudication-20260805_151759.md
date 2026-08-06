@@ -217,3 +217,7 @@ Harness 1834→1874; K4a is closed and K4b/K4c are active siblings.
 Follow-on [D37](sol-doccer-k4b-additive-path-selection-20260805_191324.md) subsequently closed K4b
 without changing the sibling dependency: one exact additive complete-path executor, full decision
 evidence, and independent optimizer agreement. Harness 1874→1914; K4c is active next.
+
+Follow-on [D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed K4c
+without changing that independence: exact family validators, named maximal-not-maximum admission,
+explicit/nearest hierarchy, and resolution incidence/aggregation. Harness 1914→1976; K5 is next.

@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D37, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D39, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -38,8 +38,10 @@ PairingResult                     + policy-stamped structural evidence
 LocatedRelation                   + compatible-window geometry reachability
 CandidateRegionGraph + results    + exact ordinal partition evidence
 PathSelection                     + exact objective execution and decision evidence
+Packing / Cover / LaminarView     + exact structural-family validation
+HierarchyView / ResolutionMap     + explicit parent and layer incidence evidence
 Scoped collectors                 + declarative recognition
-LaminarView / joins               + structure derivation
+Interval joins                    + structure derivation
 Validation tiers / inventories    + cross-examination
 ```
 
@@ -82,7 +84,9 @@ no unqualified public `Compose`. Names in this paragraph reserve the public cont
 `AllenCompose`, located `Seq`, the occurrence-level `ComposePairs`, and flat-path
 `PathSelection.Select` are implemented, while the other later-tranche names remain reservations
 rather than implementation claims. The latter is one exact nonnegative-additive complete-path
-executor, not a universal selection carrier.
+executor, not a universal selection carrier. K4c additionally implements the separately named
+`Laminarizer.Admit` and `LaminarHierarchy.NearestContainers`; neither is routed through the path
+selector or an unqualified common `Select`.
 `Segmentation.FirstOrdinalCompletePath` is the implemented narrow K4a witness operation; it does
 not spend the reserved policy-execution name `Select`. `Pairing.Pair` is the implemented
 strict-stack query over exact occurrence selections; it likewise introduces no unqualified
@@ -153,6 +157,18 @@ owners and Lean reactivation triggers live in the D25 registry in
   disjointly for selected, rejected-admissible, and excluded candidates, and the retained score is
   rechecked from policy costs; tokenizer and budget-plus-breakpoint chunk cases plus all 16,384
   admissibility-mask/binary-cost problems agree with independent complete-path enumeration;
+- exact K4c structural families: `PackingView` validates disjoint selections while exposing gaps;
+  `CoverView` validates total declared-window material while retaining overlap; `LaminarView`
+  validates an exact no-proper-crossing selection and groups equal geometry without inferring
+  parenthood; `Laminarizer.Admit` separately returns accepted and crossing-residue selections under
+  a named grouped-priority `InclusionMaximal` policy, with an explicit maximal-not-maximum witness;
+  `HierarchyView` retains explicit acyclic evidence-labeled edges including multiple parents, while
+  `LaminarHierarchy.NearestContainers` is the policy-gated immediate-container projection;
+  `ResolutionView` names an exact layer independently of kind/`SpanLevel`/budget, and
+  `ResolutionMap` retains explicit compatible-master incidence, functional aggregation, or exact
+  material aggregation. Independent bounded suites cover 1,024 structural masks, 4,096 greedy
+  problems, every valid bounded nearest-parent family, 4,096 directed graphs, and 2,048 incidence
+  endpoint problems;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -198,9 +214,11 @@ owners and Lean reactivation triggers live in the D25 registry in
 - named lookup orders: `FindIntersecting`/`FindContaining` answer in `ClaimOrder.Geometry` (the
   unchanged default) or `ClaimOrder.PriorityThenGeometry` (priority descending, then geometry,
   then ordinal — a total order) — resolution order is query policy, never a data-model change;
-- deterministic priority-based laminar extraction, equal-geometry grouping, and crossing
-  residue (max-priority admission is a documented default, not a judgment; a future
-  `ResolutionPolicy` is a query parameter, not a data-model change);
+- selection-backed laminar validation and named admission: the exact candidate basis, declared
+  window, validation policy, accepted family, and crossing residue remain visible; maximum member
+  priority is the documented `LaminarAdmissionPolicy.PriorityThenGeometry` default and promises
+  deterministic inclusion-maximality only. `ResolutionLayerPolicy` is a different concept that
+  names multiresolution layers and never resolves claim conflicts;
 - declarative regex collection with load-time rule validation (uncompilable and empty-capable
   patterns, capture groups checked against the compiled pattern's identity, undefined enum values
   rejected in the constructors), rule options that always union `CultureInvariant` at the
@@ -243,13 +261,13 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K4c structural-family cleanup. D35–D37 close K3/K4a/K4b: the located algebra, exact candidate
-  graph, segmentation results, and one exact additive minimum-cost complete-path executor are
-  implemented. Packing, cover, selection-backed laminar validation, explicit hierarchy, and
-  resolution views remain absent. K4c remains independent of the K4b path algorithm; common
-  selection types wait for actual comparison evidence from that lane. Further path objectives—
-  partial paths, signed/vector scores, maximum weight, fewest edges, or other ties—also require
-  separately named contracts rather than widening D37 silently.
+- K5 canonical-fact/support identity and finite positive saturation. D35–D39 close K3 and all K4
+  lanes without a common selector: the repeated exact-selection and named-policy stamps are real,
+  but path, packing, cover, laminar, hierarchy, and resolution feasibility/results remain distinct.
+  Further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
+  other ties—require separately named contracts rather than widening D37 silently. Structural
+  optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
+  contracts, not implications of D39.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source

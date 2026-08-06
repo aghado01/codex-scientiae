@@ -401,9 +401,9 @@ guarantee:
 - K4b and K4c are sibling lanes, so execution priority creates no proof obligation or abstraction
   theorem between them.
 
-None crosses the burden gate. K4c's `Laminarizer` migration needs executable policy/basis/selection
-stamps and a maximal-not-maximum counterexample, not a formal optimality proof. Reapply the existing
-gate only if either sibling later publishes a global optimum, generalized objective algebra, or
+None crosses the burden gate. D39 later supplies K4c's executable policy/basis/selection stamps and
+maximal-not-maximum counterexample without a formal optimality proof. Reapply the existing gate if
+either sibling publishes another global optimum, generalized objective/carrier, or
 optimized/reference equivalence.
 
 ### 5.4 D37 gate reapplication — one additive path optimum remains reference-owned
@@ -425,6 +425,27 @@ evidence. Reactivate before another/optimized backend claims equivalence, signed
 objectives become shared infrastructure, partial paths acquire a nontrivial guarantee, or K4c
 attempts to reuse the recurrence as a cross-family theorem.
 
+### 5.5 D39 gate reapplication — direct structural definitions remain executable
+
+D39 reapplies the K4c gate across packing, total cover, laminar validation/admission, explicit and
+nearest-container hierarchy, and resolution incidence/aggregation. It does not activate Lean:
+
+- packing, cover, and laminarity are direct finite validators checked against independent pairwise,
+  unit-cell, and alternating-endpoint predicates on all 1,024 bounded interval subsets;
+- greedy laminar admission promises deterministic inclusion-maximality only, agrees with an
+  independent oracle on 4,096 mask/priority problems, and carries an executable counterexample to
+  maximum cardinality;
+- hierarchy and resolution edges are explicit retained data, with 4,096 directed-graph and 2,048
+  endpoint-mask checks rather than a closure, reduction, composition, or inferred-edge theorem;
+  and
+- nearest-container projection is one direct reference implementation over nonempty laminar
+  occurrence groups with an explicit equal-geometry tie rule.
+
+Reactivate before a global structural optimum, optimized/incremental validator, hierarchy
+closure/reduction equivalence, resolution-map composition or coverage-preservation law, generalized
+structural carrier, or cross-family selector makes one of these definitions load-bearing beyond its
+direct implementation.
+
 ## 6. Current Doccer triage
 
 | Obligation family | Best evidence now | Lean trigger later |
@@ -439,7 +460,7 @@ attempts to reuse the recurrence as a cross-family theorem.
 | Located `Seq` identity, associativity, finite consuming closure, and exact slice rebase | D35 direct compatible-master/exact-window implementation; all 64 values, 4,096 compositions, and 262,144 triples on three boundaries; independent nested-pair/Floyd-Warshall oracles; exact rebase and test-only non-injective counterexample | before a compressed/incremental closure algorithm replaces it or a generalized map reopens the exact-versus-lax boundary |
 | Flat graph reachability and identity-bearing reference path | D35–D36 close exact-batch graph/projection/result semantics, exact-basis ordinal determinism, a bounded independent path oracle, and parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent reachability backend claims equivalence, cross-batch invariance is proposed, or path preservation is generalized |
 | Additive minimum-cost complete path | D37 direct descending-boundary DAG recurrence; nonnegative bounded `Int64` score domain; exact feasibility/objective/tie stamps; all 16,384 admissibility × binary-cost problems agree with independent complete-path enumeration | before another/optimized backend claims equivalence, signed/generalized objectives or nontrivial partial-path guarantees land, or cross-family reuse makes the recurrence load-bearing |
-| Greedy laminar admission is maximal, not maximum | explicit counterexample and contract test | none; selection policy is not improved by mechanizing it |
+| K4c structural validation, explicit hierarchy/incidence, and greedy admission | D39 direct validators/relations; all 1,024 structural masks, 4,096 priority problems, valid bounded nearest-parent families, 4,096 directed graphs, and 2,048 resolution endpoint problems; explicit maximal-not-maximum and envelope-hole counterexamples | before a global optimum, optimized/incremental backend, hierarchy closure/reduction equivalence, resolution-map composition/coverage theorem, or generalized carrier |
 | Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
 | Functional origins embed into relation-valued origins | reference relation tests | before origin compression, stage fusion, or functional fast paths |
@@ -447,9 +468,9 @@ attempts to reuse the recurrence as a cross-family theorem.
 | Output-piece partition and reconstruction | construction-time validation and adversarial tests | before fusing materialization stages or eliding intermediate masters |
 | Linear-ET compilation | external equivalence theorem plus differential backend tests | before claiming evidence/origin-preserving fusion beyond the cited result |
 
-This triage leaves no present theorem whose completion should block K4c. D35–D36 close K3/K4a and
-D37 closes the first K4b executor under finite reference assurance; `AllenRelationSet`,
-`ClaimSelection`, `ClaimPairView`, and strict pairing were already landed.
+This triage leaves no present theorem whose completion should block K5. D35–D36 close K3/K4a,
+D37 closes the first K4b executor, and D39 closes K4c under finite reference assurance;
+`AllenRelationSet`, `ClaimSelection`, `ClaimPairView`, and strict pairing were already landed.
 
 ## 7. Restart recipe
 
@@ -470,6 +491,8 @@ Likely first candidates, depending on which tranche supplies the trigger:
   load-bearing for pruning or compression;
 - K3 generalized maps: direct-image composition, lax generally and exact under injectivity;
 - K4b alternate backends/objectives: recurrence equivalence or a generalized score algebra;
+- K4c alternate backends/relations: structural optimum, hierarchy closure/reduction, or resolution
+  composition and coverage preservation;
 - K5 packed support: the exact equivalence relation required for bracket-independent witnesses;
 - K6/K7 optimized origins: functional embedding and multi-stage relational composition.
 
@@ -496,9 +519,10 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step after D35–D37 is K4c structural-family hygiene, not Lean. The first future
-proof most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join,
-D35's direct located closure, or D37's sole additive recurrence; it is a law that licenses
-compression, pruning, generalized optimization, fusion, or another independent backend without
-changing reference meaning. D29 names the pair-abstraction candidate, D37 records the path trigger
-outcome, and origin/support machinery remains the other leading source.
+The practical next step after D35–D39 is K5 fact/support identity, not Lean. The first future proof
+most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, D35's
+direct located closure, D37's sole additive recurrence, or D39's direct structural validators; it
+is a law that licenses compression, pruning, generalized optimization, closure/composition, fusion,
+or another independent backend without changing reference meaning. D29 names the pair-abstraction
+candidate, D37 records the path trigger outcome, D39 records the structural outcome, and
+origin/support machinery remains the other leading source.

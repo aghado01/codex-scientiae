@@ -193,8 +193,8 @@ K4a result chip shares K3's Boolean geometry closure while retaining graph-ordin
 D34 removes the former
 K4b-to-K4c arrow for the same reason: both are consumers of K4a, and K4c neither consumes a K4b type
 nor waits for a universal selection carrier. K4b remains the default execution priority for the
-tokenizer/chunker trajectory and is closed by D37, while K4c is the independently available next
-sibling. Likewise,
+tokenizer/chunker trajectory and is closed by D37; independent K4c later closes through D38–D39
+without acquiring that dependency. Likewise,
 origin relations are mathematically definable before selection or facts, but designing them against
 real selected output pieces and the support/origin distinction prevents a formally neat but
 operationally empty API. The full adjudication is in the
@@ -651,30 +651,41 @@ families demonstrate the same basis, feasibility, objective, and result shape; i
 they do not. Partial paths, signed/vector objectives, maximum weight, fewest edges, and other tie
 rules remain separately named future contracts rather than silent extensions of D37.
 
-#### K4c: additional structural families, hierarchy, and resolution
+#### K4c: additional structural families, hierarchy, and resolution — closed by D38–D39
 
-K4c is a sibling of K4b after K4a, not its dependent. D37 has now closed the default K4b executor,
-so K4c structural-family hygiene is the active next lane without acquiring a type dependency on
-the path-selection algorithm.
+K4c is a sibling of K4b after K4a, not its dependent. D38 freezes four separate gates and D39
+implements them without a type dependency on the path-selection algorithm:
 
-The current <code>Laminarizer</code> predates D2 policy stamps, D21 basis stamps, and D30
-selection-backing. K4c must repair that hygiene rather than promote the helper unchanged:
+- <code>PackingView</code> validates exact pairwise-disjoint selections inside a declared window;
+  meeting and gaps are valid, and exact gaps remain visible;
+- <code>CoverView</code> validates exact total-window material while allowing overlap, nesting,
+  meeting, and parallel equal geometry;
+- <code>LaminarView</code> validates an exact no-proper-crossing selection without filtering or
+  parent inference, and equal geometry remains an exact ordinal-backed group;
+- <code>Laminarizer.Admit</code> separately runs the named grouped-max-priority greedy policy and
+  returns exact accepted/crossing-residue populations under an <code>InclusionMaximal</code>, not
+  maximum, guarantee;
+- <code>HierarchyView</code> validates explicit evidence-labeled DAG edges, including disconnected
+  nodes, multiple parents, and explicit transitive edges, while
+  <code>LaminarHierarchy.NearestContainers</code> is the sole containment-derived immediate-parent
+  projection and names its lowest-ordinal equal-geometry tie;
+- <code>ResolutionView</code> retains a named exact layer independently of claim kind,
+  <code>SpanLevel</code>, and budget units; <code>ResolutionMap</code> retains explicit compatible-
+  master incidence, functional aggregation, or normalized exact-material aggregation without
+  inferring geometry edges or calling same-master membership origin.
 
-- add <code>PackingView</code> for disjoint selections with gaps;
-- add <code>CoverView</code> for declared overlap;
-- split greedy admission under a named retained policy from a selection-backed, basis-stamped
-  laminar-family validator/view;
-- derive a nearest-container parent only under an explicit policy inside a laminar family;
-- permit explicit multiple-parent hierarchy DAGs;
-- keep basis, resolution, kind, and budget unit separate;
-- introduce resolution incidence/aggregation maps without calling same-master membership
-  cross-master origin.
+The pre-D39 <code>Laminarizer.Extract</code>/<code>LaminarNode</code> path is removed rather than
+preserved as an unstamped second implementation. All structural views retain exact selections,
+windows, and family-specific policy objects, including empty results. The bounded assurance suite
+covers 1,024 structural masks, 4,096 greedy admission problems, every valid bounded nearest-parent
+family, 4,096 directed four-node edge sets, and 2,048 resolution endpoint problems. The explicit
+middle-versus-two-outers witness proves greedy maximal-not-maximum behavior.
 
 Do not promote document-oriented <code>SpanLevel</code> into the universal grain or resolution
-type. Family-specific selection executors may reuse K4b's policy/result obligations where they
-actually fit; they are not forced through its path algorithm and their validators do not type-depend
-on K4b. Consider a common selection abstraction only after both lanes demonstrate repeated basis,
-feasibility, objective, policy, and result structure.
+type. K4b and K4c demonstrate repeated stamping vocabulary but not one repeated feasibility,
+objective, result, or algorithm shape, so no common selection abstraction is licensed. Full
+contract and report: [D38](../briefs/sol-doccer-k4c-structural-contract-20260805_194514.md) and
+[D39](../briefs/sol-doccer-k4c-structural-results-20260805_201030.md).
 
 ### K5 — occurrences, canonical facts, support, and saturation
 
@@ -837,7 +848,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K3 | located semiring laws, strict-chain path bound, nilpotence, finite star |
 | K4a | geometric cut-set/partition equivalence under its fixed-basis hypotheses; identity-bearing path/partition preservation; gap/dead-end distinction |
 | K4b | D37's nonnegative additive complete-path minimum is covered by a direct DAG recurrence and 16,384-problem enumeration oracle; reactivate before another backend/generalized objective/partial guarantee |
-| K4c | each structural family's declared validation/admission claim; current greedy laminar admission remains maximal-not-maximum |
+| K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
 | K5 | finite monotone fixed-point termination and rule-order independence |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
 
@@ -922,11 +933,14 @@ The expansion will not:
 K0 is recorded as D25, K1a as D26, the resequencing boundary as D27, K1b as D28, the joint K2
 contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as D31, K2c strict
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
-the joint located/graph core as D35, the flat result closure as D36, and additive complete-path
-selection as D37. K2, K3, K4a, and K4b are closed. K4c structural-family hygiene is active next.
+the joint located/graph core as D35, the flat result closure as D36, additive complete-path
+selection as D37, the K4c contract as D38, and structural-family closure as D39. K2, K3, and all
+K4 lanes are closed. K5 fact identity and finite positive saturation are active next.
 
 D37 reapplies the global-optimality Lean trigger and keeps Lean deferred under one closed finite-DAG
-recurrence plus exhaustive differential evidence. Reapply if K3 adopts a compressed or incremental
-closure backend, a generalized map reopens the exact-versus-lax boundary, another path backend
-claims equivalence, signed/generalized objectives become shared infrastructure, partial paths gain
-a nontrivial guarantee, or K4c proposes a global optimum. K4b and K4c remain sibling lanes.
+recurrence plus exhaustive differential evidence. D39 separately reapplies the K4c structural gate
+and keeps Lean deferred under direct finite validators, explicit relations, a non-optimal greedy
+reference policy, and bounded differential evidence. Reapply if K3 adopts a compressed/incremental
+closure backend, another K4 backend claims equivalence, generalized objectives/carriers land,
+partial paths gain a nontrivial guarantee, structural selection promises an optimum, or hierarchy
+closure/reduction or resolution-map composition becomes load-bearing.

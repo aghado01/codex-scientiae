@@ -114,13 +114,37 @@ $expectedTypes = @(
     'CodexSci.Doccer.PathSelectionResidual'
     'CodexSci.Doccer.PathSelectionResult'
     'CodexSci.Doccer.PathSelection'
+    'CodexSci.Doccer.PackingPolicy'
+    'CodexSci.Doccer.PackingView'
+    'CodexSci.Doccer.CoverPolicy'
+    'CodexSci.Doccer.CoverView'
+    'CodexSci.Doccer.LaminarCrossingRule'
+    'CodexSci.Doccer.LaminarFamilyPolicy'
+    'CodexSci.Doccer.LaminarGroup'
+    'CodexSci.Doccer.LaminarView'
+    'CodexSci.Doccer.LaminarAdmissionOrder'
+    'CodexSci.Doccer.LaminarAdmissionGuarantee'
+    'CodexSci.Doccer.LaminarAdmissionPolicy'
+    'CodexSci.Doccer.LaminarAdmissionResult'
+    'CodexSci.Doccer.Laminarizer'
+    'CodexSci.Doccer.HierarchyConstruction'
+    'CodexSci.Doccer.HierarchyTieBreak'
+    'CodexSci.Doccer.HierarchyPolicy'
+    'CodexSci.Doccer.HierarchyEdge'
+    'CodexSci.Doccer.HierarchyView'
+    'CodexSci.Doccer.LaminarHierarchy'
+    'CodexSci.Doccer.ResolutionLayerPolicy'
+    'CodexSci.Doccer.ResolutionView'
+    'CodexSci.Doccer.ResolutionMapContract'
+    'CodexSci.Doccer.ResolutionMapPolicy'
+    'CodexSci.Doccer.ResolutionEdge'
+    'CodexSci.Doccer.ResolutionMap'
     'CodexSci.Doccer.RegexCollector'
     'CodexSci.Doccer.PatternRule'
     'CodexSci.Doccer.ExecutionScope'
     'CodexSci.Doccer.PatternRuleLoader'
     'CodexSci.Doccer.AllenAlgebra'
     'CodexSci.Doccer.IntervalJoins'
-    'CodexSci.Doccer.Laminarizer'
     'CodexSci.Doccer.Suppression'
     'CodexSci.Doccer.DoccerValidation'
 )
@@ -159,6 +183,24 @@ if ($null -eq $pathPolicy.GetMethod('Create') -or
     $null -eq $pathProblem.GetMethod('Create') -or
     $null -eq $pathSelection.GetMethod('Select')) {
     throw 'Packaged K4b path-selection surface is incomplete.'
+}
+$packing = $assembly.GetType('CodexSci.Doccer.PackingView', $true)
+$cover = $assembly.GetType('CodexSci.Doccer.CoverView', $true)
+$laminar = $assembly.GetType('CodexSci.Doccer.LaminarView', $true)
+$laminarizer = $assembly.GetType('CodexSci.Doccer.Laminarizer', $true)
+$hierarchy = $assembly.GetType('CodexSci.Doccer.HierarchyView', $true)
+$laminarHierarchy = $assembly.GetType('CodexSci.Doccer.LaminarHierarchy', $true)
+$resolution = $assembly.GetType('CodexSci.Doccer.ResolutionView', $true)
+$resolutionMap = $assembly.GetType('CodexSci.Doccer.ResolutionMap', $true)
+if ($null -eq $packing.GetMethod('Create') -or
+    $null -eq $cover.GetMethod('Create') -or
+    $null -eq $laminar.GetMethod('Create') -or
+    $null -eq $laminarizer.GetMethod('Admit') -or
+    $null -eq $hierarchy.GetMethod('Create') -or
+    $null -eq $laminarHierarchy.GetMethod('NearestContainers') -or
+    $null -eq $resolution.GetMethod('Create') -or
+    $null -eq $resolutionMap.GetMethod('Create')) {
+    throw 'Packaged K4c structural-family surface is incomplete.'
 }
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {

@@ -154,3 +154,7 @@ K4c are active sibling continuations.
 [D37](sol-doccer-k4b-additive-path-selection-20260805_191324.md) subsequently closed the default
 K4b lane with exact additive complete-path selection while preserving K4c's independence; harness
 1874→1914. K4c is active next.
+
+[D38–D39](sol-doccer-k4c-structural-results-20260805_201030.md) subsequently closed the independent
+K4c lane with exact structural validators, named laminar admission, explicit/nearest hierarchy, and
+resolution incidence/aggregation. Harness 1914→1976; K5 is active next.
