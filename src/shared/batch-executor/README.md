@@ -26,6 +26,10 @@ The separate [`test-batch`](../../test-batch/README.md) module exports `Get-Test
 repository Pester files and emits isolated process jobs without changing this module's public surface or
 owning execution. Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
 
+The separate [`ingest-batch`](../../ingest-batch/README.md) module exports `Get-IngestBatchJob`. It maps
+source-ready document manifests to isolated latex-ingest process jobs with caller-owned run addressing and
+complete application write declarations. It likewise plans work but never compiles or executes it.
+
 ## Job contract
 
 `New-BatchJob` returns a `CodexScientiae.BatchJob` record with these fields:

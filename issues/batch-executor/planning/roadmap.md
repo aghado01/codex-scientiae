@@ -26,7 +26,16 @@ test file, derives its native XML result through the D19 address chokepoint, cre
 and leaves compilation and execution to the shared module. Its 7 focused structural/planning/integration
 tests include case filtering, one local failure beside a successful sibling, and zero generic result-store
 artifacts. At closure, the complete shared suite is 158/158 and the complete repository suite is 466/466.
-Phase 4 now continues with ingestion.
+That established the first adapter boundary.
+
+BEX-402 is closed. The separate `ingest-batch` module maps a caller-selected manifest projection to one
+manifest-only latex-ingest process job per source-ready document. It pins the live dependency and explicit
+child policy, preserves caller environment transport, assigns all run evidence, lane output, and optional
+bundle output through the D19 resolver, and declares those application roots without creating them during
+planning. Its 8 focused tests include invalid ownership/source inputs, deterministic cost planning, sibling
+failure containment, and a live source-deposit-to-latex-ingest child run. At closure, the complete shared
+suite is 158/158 and the complete repository suite is 474/474. Phase 4 now continues with the cross-adapter
+thinness gate.
 
 ## Sequencing rules
 
@@ -40,10 +49,6 @@ Phase 4 now continues with ingestion.
 
 ## Phase 4 — Domain adapters
 
-- **BEX-402 — Ingestion adapter.** Convert document inventory rows plus a caller-resolved `RunDirectory` into
-  process or direct jobs with complete declared write sets, latex-ingest dependencies, child policy, and
-  preserved caller correlation inputs. Reuse the D19 addressing handoff; do not implement logger lifecycle,
-  run allocation, or generic result persistence.
 - **BEX-403 — Validate adapter thinness.** Prove adapters may discover and interpret domain work but do not
   own pools, child registries, cancellation, retries, competing result-order rules, run allocation, logger
   lifecycle, or durable executor-result stores. Prove per-job path composition has one resolver and every

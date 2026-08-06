@@ -267,6 +267,30 @@ The repository runner accepts the frozen filters and native result address. It t
 empty or tests fail, which preserves a nonzero direct-process exit while also propagating failure through the
 generic nested job worker. A failed test file remains one failed item and does not suppress sibling suites.
 
+### D21 — The ingestion adapter maps one source-ready manifest to one isolated process job — implemented
+
+The repository ingestion adapter is the separate `ingest-batch` module and exports only
+`Get-IngestBatchJob`. It accepts document-inventory rows plus an existing absolute `RunDirectory`. Because
+the parent inventory-row schema remains provisional under infrastructure Q8, the caller names the property
+containing the manifest address; `metadata_path` is only the default projection for today's source-deposit
+records. Relative manifest addresses are scoped to an explicit `InventoryRoot`, and absolute addresses must
+remain inside it. This does not freeze a catalog identity, hierarchy, or materialization schema.
+
+Planning requires a source-ready `codex-scientiae/document-metadata/0.1` manifest with one safe slug and one
+identified LaTeX archive/source-tree pair. It derives cost from the archive size and stable job identity from
+the scoped manifest address, source-tree fingerprint, and output-affecting switches. The exact
+latex-ingest script and its SHA-256, adapter worker, child PowerShell, repository working directory, process
+environment, timeout, hidden/profile-free process policy, and priority are fixed before plan compilation.
+The worker invokes only the manifest-backed production entrypoint; it never imports the compatibility layer
+or initializes a source deposit.
+
+One process owns one document because latex-ingest uses script-scoped conversion state and document-local
+rendering toolchains. One D19 resolver assigns collision-free descendants beneath the caller's run directory
+for application run evidence, lane output, and an optional deliverable bundle. Those roots are the complete
+declared write set, and planning creates none of them. The adapter copies caller environment values without
+choosing logger topology; executor-injected job correlation remains authoritative. Generic execution results
+remain in memory, and one failed document cannot suppress a sibling.
+
 ## Deliberate non-goals of the current executor
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec
