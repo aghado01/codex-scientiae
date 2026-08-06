@@ -129,6 +129,17 @@ concurrent write collisions. BEX-504 owns the LaTeX restructuring control. BEX-5
 other eight files after BEX-502 freezes the authoring contract and BEX-503 audits the runner. There are no
 `SerialOnly` records and therefore no temporary exception debt to carry forward.
 
+## Post-baseline delta
+
+BEX-503 did not add a physical container or change any classification. It added three outer runner-contract
+tests and six embedded fixture `It` lines to `tests/adapters/test-batch.Tests.ps1`, moving the current
+mechanical count from 453 to 462 textual lines and the current observed repository count from 476 to 479.
+That container now selects 10 tests and took 29.710 s in its focused closure run; its original 7/10.133 s row
+above remains the BEX-501 measurement. The added cost is the deliberate Pester 5.7.1/6.0.0 and nested-child
+parity battery, not a newly discovered isolation defect, so its `Batchable` classification remains valid.
+The authoritative post-change repository run passed 477 tests, skipped 2 dependency-gated tests, and failed
+none in 122.241 s.
+
 ## BEX-501 exit gate
 
 - All 43 current physical files have an exact-path isolation result, observed count, approximate wall time,
@@ -136,5 +147,5 @@ other eight files after BEX-502 freezes the authoring contract and BEX-503 audit
 - High-cost files, the LaTeX shared-write exposure, and the conditional HDBSCAN build-path hazard are explicit.
 - Admission decisions use hooks, state, writes, external resources, capability behavior, and failure
   containment; no file was admitted from discovery names alone.
-- BEX-501 is closed. BEX-502 subsequently froze D23 from this evidence without changing the classifications;
-  BEX-503 is the next and only unblocked ticket.
+- BEX-501 is closed. BEX-502 froze D23 and BEX-503 hardened the runner from this evidence without changing
+  the classifications; BEX-504 is the next and only unblocked ticket.

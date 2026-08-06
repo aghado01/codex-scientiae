@@ -58,7 +58,7 @@ is now an absence witness, and the manifest-backed four-command module remains b
 Revalidation is 8/8 module-surface, 8/8 batch-plan, 17/17 adapter, 6/6 infrastructure, and 158/158 shared;
 the full repository run passed 474 tests with 2 dependency-gated skips (476 total).
 
-Testing-overhaul scoping, BEX-501, and BEX-502 are complete. The
+Testing-overhaul scoping and BEX-501 through BEX-503 are complete. The
 [semantic inventory](testing-batchability-inventory.md) covers all 43 physical Pester files and 453 textual
 `It` lines. Exact-path fresh-process runs selected 476 tests: 474 passed, 2 were explicitly skipped, and none
 failed. Semantic review classifies 31 files as `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`,
@@ -67,9 +67,15 @@ conditional HDBSCAN fallback-build hazard. One physical file/container in one fr
 the default job boundary. The canonical [`tests/README.md`](../../../tests/README.md) authoring contract and
 D23 now require exact-path independence, bounded state/resource cleanup, explicit capability outcomes, and
 one declared caller-run-scoped artifact root per container while leaving topology below that root suite-owned.
-Automatic `It`-level fan-out remains outside Phase 5. The
+The runner audit leaves the 43-file topology and classifications unchanged, resolves one exact path into one
+explicit container, and emits a transient audit observation before failure propagation. Pester 5.7.1 and
+6.0.0 witnesses establish equivalent selected outcomes, native XML, empty/failure status, and nested-child
+diagnostics without adding scheduling, run, log, retry, or store ownership. The three new contract tests and
+six embedded fixture lines bring the current mechanical count to 462 textual `It` lines; the authoritative
+repository gate is now 477 passed plus 2 dependency-gated skips (479 total), with 20/20 adapter and 6/6
+infrastructure gates. Automatic `It`-level fan-out remains outside Phase 5. The
 [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines ownership; the
-[workplan](testing-overhaul-workplan.md) now proceeds with BEX-503 as the sole next ticket.
+[workplan](testing-overhaul-workplan.md) now proceeds with BEX-504 as the sole next ticket.
 
 ## Sequencing rules
 
@@ -87,8 +93,6 @@ Automatic `It`-level fan-out remains outside Phase 5. The
 Detailed scope, dependencies, and exit gates are in the
 [testing-overhaul workplan](testing-overhaul-workplan.md).
 
-- **BEX-503 — Harden the authoritative runner boundary.** Prove exact-container Pester 5/6 parity, native
-  results, empty-run rejection, and nonzero failure propagation without adding scheduling or run ownership.
 - **BEX-504 — Refactor and benchmark representative suites.** Validate the batch-executor files as a positive
   control and split the LaTeX-ingest suite only at real fixture, resource, capability, or cost seams.
 - **BEX-505 — Correct the Pester adapter contract.** Atomically rename the planner to `Get-PesterBatchJob`,

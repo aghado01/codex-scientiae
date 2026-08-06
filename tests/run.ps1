@@ -43,6 +43,7 @@ if (-not (Get-Module Pester | Where-Object { $_.Version -ge [version]'5.0' })) {
 "Pester $((Get-Module Pester).Version)"
 
 if (-not (Test-Path -LiteralPath $Path)) { throw "run.ps1: test path not found: '$Path'" }
+$resolvedTestPath = (Resolve-Path -LiteralPath $Path).Path
 
 # Resolve $Path through an explicit CONTAINER, not $cfg.Run.Path: Run.Path's single-file-vs-directory
 # discovery diverged across the Pester 5->6 major (a v6 install was observed finding ZERO tests from a
@@ -50,13 +51,14 @@ if (-not (Test-Path -LiteralPath $Path)) { throw "run.ps1: test path not found: 
 # 6.0.0 (verified for both file and recursive-directory discovery). Run.Path is cleared so only the container
 # runs and a stray *.Tests.ps1 in the caller's cwd can't sneak in.
 $cfg = New-PesterConfiguration
-$cfg.Run.Container    = New-PesterContainer -Path $Path
+$cfg.Run.Container    = New-PesterContainer -Path $resolvedTestPath
 $cfg.Run.Path         = @()
 $cfg.Run.PassThru     = $true
 $cfg.Output.Verbosity = $OutputVerbosity
 if ($FullNameFilter.Count -gt 0) { $cfg.Filter.FullName = [string[]]@($FullNameFilter) }
 if ($Tag.Count -gt 0) { $cfg.Filter.Tag = [string[]]@($Tag) }
 if ($ExcludeTag.Count -gt 0) { $cfg.Filter.ExcludeTag = [string[]]@($ExcludeTag) }
+$resolvedResultPath = $null
 if (-not [string]::IsNullOrWhiteSpace($ResultPath)) {
     $resolvedResultPath = if ([System.IO.Path]::IsPathFullyQualified($ResultPath)) {
         [System.IO.Path]::GetFullPath($ResultPath)
@@ -72,16 +74,37 @@ if (-not [string]::IsNullOrWhiteSpace($ResultPath)) {
     $cfg.TestResult.OutputEncoding = 'UTF8'
     $cfg.TestResult.TestSuiteName = $TestSuiteName
 }
-$result = Invoke-Pester -Configuration $cfg
+$timer = [System.Diagnostics.Stopwatch]::StartNew()
+try { $result = Invoke-Pester -Configuration $cfg }
+finally { $timer.Stop() }
+
+# One child-process-safe audit line. This is transient stdout, not a runner-owned result store or logger.
+# Pester's native result remains the only durable runner artifact.
+$passed = if ($result) { [int]$result.PassedCount } else { 0 }
+$failed = if ($result) { [int]$result.FailedCount } else { 0 }
+$skipped = if ($result) { [int]$result.SkippedCount } else { 0 }
+$observation = [ordered]@{
+    container_path = $resolvedTestPath
+    # Pester 5 TotalCount includes cases excluded by FullName; outcome counts match the native selected set
+    # on both Pester 5 and 6 and therefore own the runner's cross-version empty-run decision.
+    selected = $passed + $failed + $skipped
+    passed = $passed
+    failed = $failed
+    skipped = $skipped
+    duration_ms = [int64][math]::Round($timer.Elapsed.TotalMilliseconds)
+    result_path = $resolvedResultPath
+}
+# Write directly to child stdout so this transient diagnostic survives a later
+# terminating failure without becoming part of the executor's generic output.
+[Console]::Out.WriteLine('PesterContainerObservation ' + ($observation | ConvertTo-Json -Compress))
 
 # Zero discovered tests is a discovery/resolution fault (bad path, wrong or corrupt Pester), never a pass.
 # Fail LOUD so a "no tests found" can never masquerade as green — the hole the old $cfg.Run.Exit left open
 # (it exits non-zero on failures but 0 on an empty run). NB: TotalCount is $null, not 0, when nothing runs.
-$total = if ($result) { [int]$result.TotalCount } else { 0 }
+$total = $observation.selected
 if ($total -eq 0) {
     throw "run.ps1: no tests discovered under '$Path' (Pester $((Get-Module Pester).Version)) — refusing to report success"
 }
-$failed = [int]$result.FailedCount
 if ($failed -gt 0) {
     throw "run.ps1: $failed of $total test(s) failed"
 }

@@ -32,6 +32,13 @@ directory. `-ResultFormat`, `-TestSuiteName`, `-OutputVerbosity`, `-FullNameFilt
 freeze the corresponding Pester configuration. Failed or empty runs throw so both direct CLI processes and
 nested batch workers observe failure.
 
+Every invocation also writes one transient child-stdout line prefixed `PesterContainerObservation`. Its
+JSON value contains the resolved `container_path`, `selected`, `passed`, `failed`, `skipped`, `duration_ms`,
+and resolved `result_path` (or `null`). The line is emitted before failure propagation so a nested worker can
+audit a failed container; it is not a log or generic result store, and the native Pester report remains the
+runner's only durable artifact. `selected` is the sum of pass/fail/skip outcomes because Pester 5's
+`TotalCount` can include cases excluded by a full-name filter, unlike Pester 6 and the native result.
+
 ## Batchable Pester-container contract
 
 This is the canonical BEX-502 authoring and review contract. The supporting

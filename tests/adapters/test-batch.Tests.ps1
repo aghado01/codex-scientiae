@@ -61,6 +61,83 @@ BeforeAll {
         return $Path
     }
 
+    function Write-TestRunnerHost {
+        param([Parameter(Mandatory)] [string] $Path)
+
+        Set-Content -LiteralPath $Path -Encoding utf8 -Value @'
+#requires -Version 7.0
+param(
+    [Parameter(Mandatory)] [string] $PesterManifest,
+    [Parameter(Mandatory)] [string] $Runner,
+    [Parameter(Mandatory)] [string] $TestPath,
+    [Parameter(Mandatory)] [string] $ResultPath,
+    [Parameter(Mandatory)] [string] $TestSuiteName,
+    [string] $FullNameFilter = ''
+)
+Import-Module -Name $PesterManifest -Force
+$invoke = @{
+    Path = $TestPath
+    ResultPath = $ResultPath
+    ResultFormat = 'NUnitXml'
+    TestSuiteName = $TestSuiteName
+    OutputVerbosity = 'None'
+}
+if (-not [string]::IsNullOrWhiteSpace($FullNameFilter)) {
+    $invoke.FullNameFilter = @($FullNameFilter)
+}
+& $Runner @invoke
+'@
+        return $Path
+    }
+
+    function Invoke-TestRunnerChild {
+        param(
+            [Parameter(Mandatory)] [string] $HostPath,
+            [Parameter(Mandatory)] [string] $PesterManifest,
+            [Parameter(Mandatory)] [string] $Runner,
+            [Parameter(Mandatory)] [string] $TestPath,
+            [Parameter(Mandatory)] [string] $ResultPath,
+            [Parameter(Mandatory)] [string] $TestSuiteName,
+            [string] $FullNameFilter = ''
+        )
+
+        $arguments = @(
+            '-NoProfile', '-File', $HostPath,
+            '-PesterManifest', $PesterManifest,
+            '-Runner', $Runner,
+            '-TestPath', $TestPath,
+            '-ResultPath', $ResultPath,
+            '-TestSuiteName', $TestSuiteName
+        )
+        if (-not [string]::IsNullOrWhiteSpace($FullNameFilter)) {
+            $arguments += @('-FullNameFilter', $FullNameFilter)
+        }
+        $output = @(& ([System.Environment]::ProcessPath) @arguments 2>&1)
+        return [pscustomobject]@{
+            ExitCode = $LASTEXITCODE
+            Output = @($output | ForEach-Object { $_.ToString() })
+        }
+    }
+
+    function Get-TestRunnerObservation {
+        param([Parameter(Mandatory)] [string[]] $Output)
+
+        $matches = @($Output | ForEach-Object {
+                if ($_ -match 'PesterContainerObservation\s+(\{.+\})') { $Matches[1] }
+            })
+        $matches.Count | Should -Be 1
+        return ($matches[0] | ConvertFrom-Json)
+    }
+
+    function Get-TestRunnerParityManifest {
+        $pesterRoot = Join-Path $env:PORTABLE_ROOT 'PowerShell/Modules/Pester'
+        foreach ($version in @('5.7.1', '6.0.0')) {
+            $manifest = Join-Path $pesterRoot "$version/Pester.psd1"
+            Test-Path -LiteralPath $manifest -PathType Leaf | Should -BeTrue
+            [pscustomobject]@{ Version = $version; Manifest = $manifest }
+        }
+    }
+
     Import-Module $script:AdaptersManifest -Force
 }
 
@@ -266,6 +343,127 @@ Describe 'Get-TestBatchJob planning' {
     }
 }
 
+Describe 'repository Pester runner contract' {
+    It 'keeps one exact-container invocation boundary and owns no batch infrastructure' {
+        $tokens = $null
+        $parseErrors = $null
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+            $script:RepositoryRunner, [ref]$tokens, [ref]$parseErrors)
+        $parseErrors.Count | Should -Be 0
+
+        @($ast.ParamBlock.Parameters.Name.VariablePath.UserPath) | Should -Be @(
+            'Path'
+            'ResultPath'
+            'ResultFormat'
+            'TestSuiteName'
+            'OutputVerbosity'
+            'FullNameFilter'
+            'Tag'
+            'ExcludeTag'
+        )
+        $commands = @($ast.FindAll({
+                    param($node)
+                    $node -is [System.Management.Automation.Language.CommandAst]
+                }, $true) | ForEach-Object GetCommandName)
+        @($commands | Where-Object { $_ -eq 'New-PesterContainer' }).Count | Should -Be 1
+        @($commands | Where-Object { $_ -eq 'Invoke-Pester' }).Count | Should -Be 1
+        @($commands | Where-Object { $_ -in @(
+                    'New-BatchJob', 'New-BatchPlan', 'Invoke-BatchPlan', 'Invoke-BatchExecutor',
+                    'Start-Job', 'Start-ThreadJob', 'Start-Process',
+                    'Start-RunLog', 'Write-RunLog', 'Stop-RunLog',
+                    'New-ModuleRunDir', 'Start-Sleep',
+                    'Set-Content', 'Add-Content', 'Out-File', 'Export-Clixml'
+                ) }).Count | Should -Be 0
+
+        $source = $ast.Extent.Text
+        $source | Should -Not -Match '\bRunDirectory\b|\bMaxWorkers\b|\bRetry\b|CODEX_RUNLOG|RunspacePool'
+        @([regex]::Matches($source, 'PesterContainerObservation')).Count | Should -Be 1
+    }
+
+    It 'preserves exact-path selection and its audit observation across Pester 5 and 6' {
+        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-exact') `
+            -UseRepositoryRunner
+        $hostPath = Write-TestRunnerHost (Join-Path $TestDrive 'runner-exact-host.ps1')
+        $selected = Write-TestBatchFixture (Join-Path $fixture.Tests 'selected.Tests.ps1') -Content @'
+Describe 'selected container' {
+    It 'selected pass' { $true | Should -BeTrue }
+    It 'unselected failure' { throw 'full-name filter failed' }
+}
+'@
+        $null = Write-TestBatchFixture (Join-Path $fixture.Tests 'sibling.Tests.ps1') -Content @'
+Describe 'sibling container' {
+    It 'must not run' { throw 'exact path expanded to a sibling' }
+}
+'@
+
+        foreach ($pester in @(Get-TestRunnerParityManifest)) {
+            $resultPath = Join-Path $fixture.RunDirectory "exact-$($pester.Version).xml"
+            $run = Invoke-TestRunnerChild -HostPath $hostPath -PesterManifest $pester.Manifest `
+                -Runner $fixture.Runner -TestPath $selected -ResultPath $resultPath `
+                -TestSuiteName "exact-$($pester.Version)" -FullNameFilter '*selected pass*'
+
+            $run.ExitCode | Should -Be 0 -Because "Pester $($pester.Version) must preserve exact selection"
+            Test-Path -LiteralPath $resultPath -PathType Leaf | Should -BeTrue
+            $xml = [xml](Get-Content -LiteralPath $resultPath -Raw)
+            [int]$xml.'test-results'.total | Should -Be 1
+            [int]$xml.'test-results'.failures | Should -Be 0
+            $observation = Get-TestRunnerObservation -Output $run.Output
+            @($observation.psobject.Properties.Name) | Should -Be @(
+                'container_path', 'selected', 'passed', 'failed', 'skipped', 'duration_ms', 'result_path')
+            $observation.container_path | Should -Be ([System.IO.Path]::GetFullPath($selected))
+            $observation.selected | Should -Be 1
+            $observation.passed | Should -Be 1
+            $observation.failed | Should -Be 0
+            $observation.skipped | Should -Be 0
+            $observation.duration_ms | Should -BeGreaterOrEqual 0
+            $observation.result_path | Should -Be ([System.IO.Path]::GetFullPath($resultPath))
+        }
+    }
+
+    It 'preserves native failure, skip, empty-run, and exit-status semantics across Pester 5 and 6' {
+        $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'runner-outcomes') `
+            -UseRepositoryRunner
+        $hostPath = Write-TestRunnerHost (Join-Path $TestDrive 'runner-outcome-host.ps1')
+        $mixed = Write-TestBatchFixture (Join-Path $fixture.Tests 'mixed.Tests.ps1') -Content @'
+Describe 'mixed outcomes' {
+    It 'passes' { $true | Should -BeTrue }
+    It 'skips' -Skip { throw 'skip body ran' }
+    It 'fails' { throw 'planned runner failure' }
+}
+'@
+
+        foreach ($pester in @(Get-TestRunnerParityManifest)) {
+            $failureResult = Join-Path $fixture.RunDirectory "failure-$($pester.Version).xml"
+            $failedRun = Invoke-TestRunnerChild -HostPath $hostPath -PesterManifest $pester.Manifest `
+                -Runner $fixture.Runner -TestPath $mixed -ResultPath $failureResult `
+                -TestSuiteName "failure-$($pester.Version)"
+            $failedRun.ExitCode | Should -Not -Be 0
+            Test-Path -LiteralPath $failureResult -PathType Leaf | Should -BeTrue
+            $failureXml = [xml](Get-Content -LiteralPath $failureResult -Raw)
+            [int]$failureXml.'test-results'.total | Should -Be 3
+            [int]$failureXml.'test-results'.failures | Should -Be 1
+            [int]$failureXml.'test-results'.skipped | Should -Be 1
+            $failureObservation = Get-TestRunnerObservation -Output $failedRun.Output
+            @($failureObservation.selected, $failureObservation.passed,
+                $failureObservation.failed, $failureObservation.skipped) | Should -Be @(3, 1, 1, 1)
+            $failureObservation.result_path | Should -Be ([System.IO.Path]::GetFullPath($failureResult))
+
+            $emptyResult = Join-Path $fixture.RunDirectory "empty-$($pester.Version).xml"
+            $emptyRun = Invoke-TestRunnerChild -HostPath $hostPath -PesterManifest $pester.Manifest `
+                -Runner $fixture.Runner -TestPath $mixed -ResultPath $emptyResult `
+                -TestSuiteName "empty-$($pester.Version)" -FullNameFilter '*does not exist*'
+            $emptyRun.ExitCode | Should -Not -Be 0
+            Test-Path -LiteralPath $emptyResult -PathType Leaf | Should -BeTrue
+            $emptyXml = [xml](Get-Content -LiteralPath $emptyResult -Raw)
+            [int]$emptyXml.'test-results'.total | Should -Be 0
+            $emptyObservation = Get-TestRunnerObservation -Output $emptyRun.Output
+            @($emptyObservation.selected, $emptyObservation.passed,
+                $emptyObservation.failed, $emptyObservation.skipped) | Should -Be @(0, 0, 0, 0)
+            $emptyObservation.result_path | Should -Be ([System.IO.Path]::GetFullPath($emptyResult))
+        }
+    }
+}
+
 Describe 'test-batch execution integration' {
     It 'runs filtered and failing files in isolated children with stable in-memory results and native XML' {
         $fixture = New-TestBatchFixtureRepository -Root (Join-Path $TestDrive 'execution') `
@@ -316,6 +514,16 @@ Describe 'failing integration fixture' {
         [int]$passXml.'test-results'.failures | Should -Be 0
         [int]$failXml.'test-results'.total | Should -Be 1
         [int]$failXml.'test-results'.failures | Should -Be 1
+        $passObservation = Get-TestRunnerObservation -Output @(
+            $execution.Results[0].StdOut | ForEach-Object { $_.ToString() })
+        @($passObservation.selected, $passObservation.passed,
+            $passObservation.failed, $passObservation.skipped) | Should -Be @(1, 1, 0, 0)
+        $passObservation.result_path | Should -Be $passJob.Metadata.ResultPath
+        $failObservation = Get-TestRunnerObservation -Output @(
+            $execution.Results[1].StdOut | ForEach-Object { $_.ToString() })
+        @($failObservation.selected, $failObservation.passed,
+            $failObservation.failed, $failObservation.skipped) | Should -Be @(1, 0, 1, 0)
+        $failObservation.result_path | Should -Be $failJob.Metadata.ResultPath
         $declaredWrites = @($passJob.Writes) + @($failJob.Writes)
         $producedFiles = @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File)
         @($producedFiles.FullName | Sort-Object) | Should -Be `

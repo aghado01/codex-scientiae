@@ -1,8 +1,9 @@
 # Pester batch testing overhaul brief
 
-Runstamp 20260805. **Status: scoped; not implemented.** This brief defines the test-authoring and
-execution changes required before repository testing can use the shared batch executor as a normal
-parallel path. It does not close any Phase 5 ticket or change the current test adapter.
+Runstamp 20260805. **Status: active; BEX-501 through BEX-503 implemented.** This brief defines the
+test-authoring and execution changes required before repository testing can use the shared batch executor
+as a normal parallel path. BEX-504 is the next strictly sequenced ticket; the current adapter remains
+provisional until BEX-505.
 
 Inputs:
 
@@ -139,7 +140,9 @@ needed sets. Do not create per-file sidecars, manifests, or modules.
 `tests/run.ps1` remains the authoritative Pester invocation boundary. It must continue to support the
 repository's pinned Pester 5/6 behavior, accept an exact container path, emit native result XML when asked,
 and return failure through process exit status. It owns no scheduler, pool, retry policy, run allocation,
-or durable result store.
+or durable result store. BEX-503 additionally freezes one transient child-stdout audit line containing the
+resolved path, selected/pass/fail/skip outcomes, duration, and native result location. It is emitted before
+empty/failure propagation and does not replace or persist the native result.
 
 ### Pester adapter
 
@@ -212,7 +215,9 @@ BEX-403 closed on 2026-08-06: the existing adapters are thin, D19 addressing has
 planning leaves the caller run untouched, and produced application artifacts are covered by declared
 writes. BEX-501 subsequently closed the 43-file
 [semantic inventory and timing baseline](../planning/testing-batchability-inventory.md). BEX-502 then froze
-the canonical [authoring and review contract](../../../tests/README.md) and D23 without changing runtime
-code. Phase 5 now resumes at the BEX-503 runner audit, followed in strict sequence by source restructuring,
-adapter correction, thin-shell composition, and repository migration as specified in the
+the canonical [authoring and review contract](../../../tests/README.md) and D23. BEX-503 then hardened the
+exact-container runner boundary across Pester 5.7.1 and 6.0.0, including native results, empty/failure
+status, and child-safe observations, without acquiring batch ownership. Phase 5 now resumes at BEX-504
+pilot restructuring, followed in strict sequence by adapter correction, thin-shell composition, and
+repository migration as specified in the
 [workplan](../planning/testing-overhaul-workplan.md).

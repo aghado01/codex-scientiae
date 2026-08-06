@@ -5,14 +5,14 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: active; BEX-501 and BEX-502 closed on 2026-08-06 and BEX-503 is next.** Tickets are strictly
+**Status: active; BEX-501 through BEX-503 closed on 2026-08-06 and BEX-504 is next.** Tickets are strictly
 sequenced; no later ticket starts before its predecessor closes.
 
 ## Current evidence and baseline
 
-The repository currently has 43 physical `*.Tests.ps1` files and exactly 453 textual `It` lines. BEX-501
-ran every file by exact path in a fresh child process: 476 tests were selected, 474 passed, 2 were skipped,
-and none failed. Its [semantic inventory](testing-batchability-inventory.md) classifies 31 files as
+The BEX-501 baseline covered 43 physical `*.Tests.ps1` files and exactly 453 textual `It` lines. It ran
+every file by exact path in a fresh child process: 476 tests were selected, 474 passed, 2 were skipped, and
+none failed. Its [semantic inventory](testing-batchability-inventory.md) classifies 31 files as
 `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`, and none as `SerialOnly`. The isolated wall
 measurements total 320.387 seconds; the inventory records individual cost, state, capability, write, and
 collision evidence rather than treating structural counts as independence proof.
@@ -21,6 +21,12 @@ BEX-502 freezes the author-facing contract in [`tests/README.md`](../../../tests
 decision D23. One exact physical file remains the fresh-process job; retained writes receive one declared,
 caller-run-scoped container artifact root through `CODEX_TEST_ARTIFACT_ROOT`; topology below that root is
 suite-owned; and semantic review—not Pester AST inference—assigns the four inventory classes.
+
+BEX-503 leaves the physical topology and classifications unchanged while adding three runner-contract
+tests and six embedded fixture `It` lines, so the current mechanical count is 43 files and 462 textual `It`
+lines. The authoritative repository run now selects 479 tests: 477 pass, 2 are dependency-gated skips, and
+none fail. Exact-path Pester 5.7.1/6.0.0 witnesses freeze selection, native-result, exit-status, and transient
+observation parity; the complete adapter and infrastructure gates are 20 and 6 passing tests respectively.
 
 The current adapter already chooses the conservative physical-file boundary. Its naming and surrounding
 contract are provisional: `Get-TestBatchJob`, `test-batch`, and `test-jobs` are too generic for a
@@ -39,10 +45,10 @@ BEX-501 semantic inventory and timing baseline [closed 2026-08-06]
 BEX-502 batchable-container contract [closed 2026-08-06]
           |
           v
-BEX-503 runner audit [next]
+BEX-503 runner audit [closed 2026-08-06]
           |
           v
-BEX-504 pilot restructuring
+BEX-504 pilot restructuring [next]
           |
           v
 BEX-505 Pester adapter correction
@@ -58,7 +64,7 @@ BEX-403 proved both current adapters retain one D19 address owner, complete decl
 and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
 not Phase 5 implementation.
 
-BEX-504 waits for the BEX-503 runner audit, and BEX-505 waits for both bodies of evidence so its public
+BEX-504 is the sole next ticket. BEX-505 waits for its pilot evidence so the corrected adapter's public
 inputs do not anticipate unsupported test granularity.
 
 ## Cross-cutting invariants
@@ -126,6 +132,11 @@ The authoring contract is precise enough to classify a new file without schedule
 not require Pester-internal AST interpretation or a new executor semantic.
 
 ## BEX-503 — Harden the runner and add an observational audit boundary
+
+**Status: closed 2026-08-06.** The authoritative runner now resolves one exact path into one explicit
+Pester container and emits one transient, child-stdout observation before propagating an empty or failed
+run. Focused witnesses cover Pester 5.7.1 and 6.0.0 plus the live nested batch path; native XML remains the
+only durable runner artifact and the runner owns no batch infrastructure.
 
 ### Scope
 

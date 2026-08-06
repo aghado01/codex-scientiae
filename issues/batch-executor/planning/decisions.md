@@ -264,9 +264,14 @@ which is the adapter's sole declared write. Planning creates no run artifacts. T
 and invokes the emitted jobs through the shared module, and generic results remain in the in-memory execution
 record.
 
-The repository runner accepts the frozen filters and native result address. It throws when discovery is
-empty or tests fail, which preserves a nonzero direct-process exit while also propagating failure through the
-generic nested job worker. A failed test file remains one failed item and does not suppress sibling suites.
+The repository runner resolves the caller path and supplies it only through one explicit Pester container.
+It accepts the frozen filters and native result address, then emits one prefixed transient child-stdout JSON
+observation containing the resolved path, selected/pass/fail/skip outcomes, duration, and native result
+location. The selected count is the sum of outcomes because Pester 5's `TotalCount` can include cases
+excluded by a full-name filter while Pester 6 and the native result do not. The observation is emitted before
+the runner throws on an empty or failed run, so it survives direct and nested child failure without becoming
+a generic result store. A failed test file remains one failed item and does not suppress sibling suites;
+native Pester XML remains the runner's only durable artifact.
 
 ### D21 — The LaTeX adapter maps one source-ready manifest to one isolated process job — implemented
 
