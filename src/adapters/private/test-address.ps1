@@ -1,4 +1,6 @@
-function Get-IngestBatchStableHash {
+# Test adapter addressing helpers.
+
+function Get-TestBatchStableHash {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [AllowEmptyString()] [string] $Value,
@@ -14,36 +16,35 @@ function Get-IngestBatchStableHash {
     finally { $sha.Dispose() }
 }
 
-function ConvertTo-IngestBatchAddressLeaf {
+function ConvertTo-TestBatchAddressLeaf {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Slug,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $TestPath,
         [Parameter(Mandatory)] [ValidatePattern('^[0-9a-f]+$')] [string] $Digest
     )
 
-    $stem = [regex]::Replace($Slug.ToLowerInvariant(), '[^a-z0-9._-]+', '-').Trim('-', '.')
-    if ([string]::IsNullOrWhiteSpace($stem)) { $stem = 'document' }
+    $stem = [System.IO.Path]::GetFileNameWithoutExtension($TestPath)
+    if ($stem.EndsWith('.Tests', [System.StringComparison]::OrdinalIgnoreCase)) {
+        $stem = $stem.Substring(0, $stem.Length - 6)
+    }
+    $stem = [regex]::Replace($stem.ToLowerInvariant(), '[^a-z0-9._-]+', '-').Trim('-', '.')
+    if ([string]::IsNullOrWhiteSpace($stem)) { $stem = 'test' }
     if ($stem.Length -gt 48) { $stem = $stem.Substring(0, 48).TrimEnd('-', '.') }
     return "$stem-$Digest"
 }
 
-function Resolve-IngestBatchJobAddress {
+function Resolve-TestBatchJobAddress {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $AddressLeaf
     )
 
-    if ($AddressLeaf -in @('.', '..') -or [System.IO.Path]::GetFileName($AddressLeaf) -ne $AddressLeaf) {
-        throw "ingest-batch address leaf is not one safe path segment: '$AddressLeaf'"
-    }
-
     # D19 chokepoint: these are the only adapter-owned run-relative path compositions.
-    $jobDirectory = [System.IO.Path]::Combine($RunDirectory, 'ingest-jobs', $AddressLeaf)
+    $jobDirectory = [System.IO.Path]::Combine($RunDirectory, 'test-jobs', $AddressLeaf)
+    $resultPath = [System.IO.Path]::Combine($jobDirectory, 'pester.xml')
     return [pscustomobject]@{
         JobDirectory = $jobDirectory
-        ApplicationRunDirectory = [System.IO.Path]::Combine($jobDirectory, 'run-artifacts')
-        OutputDirectory = [System.IO.Path]::Combine($jobDirectory, 'lane-output')
-        DeliverableDirectory = [System.IO.Path]::Combine($jobDirectory, 'deliverable')
+        ResultPath = $resultPath
     }
 }

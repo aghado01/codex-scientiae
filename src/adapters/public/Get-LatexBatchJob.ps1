@@ -1,10 +1,10 @@
-function Get-IngestBatchJob {
+function Get-LatexBatchJob {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory, Position = 0)] [Alias('InputObject')]
         [ValidateNotNullOrEmpty()] [object[]] $InventoryRow,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
-        [ValidateNotNullOrEmpty()] [string] $RepositoryRoot = $script:IngestBatchDefaultRepositoryRoot,
+        [ValidateNotNullOrEmpty()] [string] $RepositoryRoot = $script:AdaptersDefaultRepositoryRoot,
         [string] $InventoryRoot,
         [ValidateNotNullOrEmpty()] [string] $MetadataPathProperty = 'metadata_path',
         [string] $LatexIngestPath,
@@ -20,27 +20,27 @@ function Get-IngestBatchJob {
         [switch] $FaithfulNumbering
     )
 
-    $repository = Resolve-IngestBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
-    $inventory = Resolve-IngestBatchInventoryRoot -InventoryRoot $InventoryRoot `
+    $repository = Resolve-LatexBatchRepositoryRoot -RepositoryRoot $RepositoryRoot
+    $inventory = Resolve-LatexBatchInventoryRoot -InventoryRoot $InventoryRoot `
         -RepositoryRoot $repository
-    $batchRun = Resolve-IngestBatchRunDirectory -RunDirectory $RunDirectory
-    $latexIngest = Resolve-IngestBatchLatexDependency -LatexIngestPath $LatexIngestPath `
+    $batchRun = Resolve-LatexBatchRunDirectory -RunDirectory $RunDirectory
+    $latexIngest = Resolve-LatexBatchDependency -LatexIngestPath $LatexIngestPath `
         -RepositoryRoot $repository
-    $childPowerShell = Resolve-IngestBatchPowerShellPath -PowerShellPath $PowerShellPath
+    $childPowerShell = Resolve-LatexBatchPowerShellPath -PowerShellPath $PowerShellPath
 
     $environment = @{}
     if ($null -ne $ProcessEnvironment) {
         foreach ($key in @($ProcessEnvironment.Keys)) {
             if ([string]::IsNullOrWhiteSpace([string]$key)) {
-                throw 'ingest-batch process environment contains an empty name'
+                throw 'latex-batch process environment contains an empty name'
             }
             $environment[[string]$key] = $ProcessEnvironment[$key]
         }
     }
 
     foreach ($row in $InventoryRow) {
-        if ($null -eq $row) { throw 'ingest-batch inventory row must not be null' }
-        $document = Read-IngestBatchManifestRecord -InventoryRow $row `
+        if ($null -eq $row) { throw 'latex-batch inventory row must not be null' }
+        $document = Read-LatexBatchManifestRecord -InventoryRow $row `
             -MetadataPathProperty $MetadataPathProperty -InventoryRoot $inventory
         $identityMaterial = @(
             "manifest=$($document.RelativeManifestPath)"
@@ -51,10 +51,10 @@ function Get-IngestBatchJob {
             "jsonl-toc-disabled=$([bool]$DisableJsonlToc)"
             "faithful-numbering=$([bool]$FaithfulNumbering)"
         ) -join "`n"
-        $digest = Get-IngestBatchStableHash -Value $identityMaterial
-        $id = "ingest:$($document.Slug)#$digest"
-        $addressLeaf = ConvertTo-IngestBatchAddressLeaf -Slug $document.Slug -Digest $digest
-        $address = Resolve-IngestBatchJobAddress -RunDirectory $batchRun -AddressLeaf $addressLeaf
+        $digest = Get-LatexBatchStableHash -Value $identityMaterial
+        $id = "latex:$($document.Slug)#$digest"
+        $addressLeaf = ConvertTo-LatexBatchAddressLeaf -Slug $document.Slug -Digest $digest
+        $address = Resolve-LatexBatchJobAddress -RunDirectory $batchRun -AddressLeaf $addressLeaf
 
         $parameters = @{
             LatexIngestPath = $latexIngest.Path
@@ -74,8 +74,8 @@ function Get-IngestBatchJob {
         if ($BundleDeliverable) { $writes.Add($address.DeliverableDirectory) }
 
         $metadata = @{
-            Domain = 'ingestion'
-            Adapter = 'ingest-batch'
+            Domain = 'latex-ingest'
+            Adapter = 'latex-batch'
             AddressingContract = 'D19/RunDirectory'
             ResultPersistence = 'InMemory'
             InventoryRow = $row
@@ -119,7 +119,7 @@ function Get-IngestBatchJob {
         }
 
         batch-executor\New-BatchJob -Id $id -Kind PowerShellProcess `
-            -EntryPoint $script:IngestBatchWorkerPath -Parameters $parameters `
+            -EntryPoint $script:LatexBatchWorkerPath -Parameters $parameters `
             -RuntimeProfile 'latex-ingest-process' -ProcessSpec $processSpec `
             -EstimatedCost $document.EstimatedCost -Writes $writes.ToArray() `
             -WorkingDirectory $repository -Metadata $metadata

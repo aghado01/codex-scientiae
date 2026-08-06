@@ -1,3 +1,5 @@
+# Test adapter dependency helpers.
+
 function Get-TestBatchPesterManifestRecord {
     [CmdletBinding()]
     param(

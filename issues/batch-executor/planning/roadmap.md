@@ -21,14 +21,15 @@ residue and rebuilt the check around required current inputs. Phases 2 and 3 are
 boundary, public execution projection, and compatibility facade remained stable through lifecycle
 decomposition. Phase 4 is now the ahead queue.
 
-BEX-401 is closed. The separate `test-batch` module emits one exact-Pester, isolated process job per selected
-test file, derives its native XML result through the D19 address chokepoint, creates nothing during planning,
-and leaves compilation and execution to the shared module. Its 7 focused structural/planning/integration
+BEX-401 is closed. `Get-TestBatchJob` in the shared `adapters` module emits one exact-Pester, isolated process
+job per selected test file, derives its native XML result through the D19 address chokepoint, creates nothing
+during planning, and leaves compilation and execution to the shared module. Its 7 focused
+structural/planning/integration
 tests include case filtering, one local failure beside a successful sibling, and zero generic result-store
 artifacts. At closure, the complete shared suite is 158/158 and the complete repository suite is 466/466.
 That established the first adapter boundary.
 
-BEX-402 is closed. The separate `ingest-batch` module maps a caller-selected manifest projection to one
+BEX-402 is closed. `Get-LatexBatchJob` in that same module maps a caller-selected manifest projection to one
 manifest-only latex-ingest process job per source-ready document. It pins the live dependency and explicit
 child policy, preserves caller environment transport, assigns all run evidence, lane output, and optional
 bundle output through the D19 resolver, and declares those application roots without creating them during
@@ -36,6 +37,12 @@ planning. Its 8 focused tests include invalid ownership/source inputs, determini
 failure containment, and a live source-deposit-to-latex-ingest child run. At closure, the complete shared
 suite is 158/158 and the complete repository suite is 474/474. Phase 4 now continues with the cross-adapter
 thinness gate.
+
+The two planners are public files under `src/adapters/`, backed by grouped private helpers and one manifest;
+there is no PowerShell module per planner. The LaTeX planner, helper symbols, metadata, job IDs, address root,
+and test filename consistently use `latex-batch` naming. Consolidation revalidation is 15/15 focused adapter,
+6/6 infrastructure, and 158/158 shared tests; the full repository run passed 472 tests with 2 dependency-gated
+skips (474 total).
 
 ## Sequencing rules
 

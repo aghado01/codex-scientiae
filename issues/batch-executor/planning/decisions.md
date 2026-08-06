@@ -249,9 +249,10 @@ roadmap, but it must not preempt those unresolved contracts.
 
 ### D20 — The test adapter maps one Pester file to one isolated process job — implemented
 
-The repository test adapter is the separate `test-batch` module and exports only `Get-TestBatchJob`; it does
-not expand the batch executor's four-command surface. Directories are discovered recursively as
-`*.Tests.ps1` files without loading Pester or suite code in the planning process. Each unique file becomes
+The repository test adapter is `Get-TestBatchJob`, exported by the shared `adapters` module alongside
+`Get-LatexBatchJob`; neither command expands the batch executor's four-command surface. Directories are
+discovered recursively as `*.Tests.ps1` files without loading Pester or suite code in the planning process.
+Each unique file becomes
 one `PowerShellProcess` job because Pester configuration, module loading, script state, location, and runner
 termination behavior are process-wide concerns. Caller full-name and tag filters select cases inside each
 file rather than creating a shared discovery host or one process per case.
@@ -267,10 +268,11 @@ The repository runner accepts the frozen filters and native result address. It t
 empty or tests fail, which preserves a nonzero direct-process exit while also propagating failure through the
 generic nested job worker. A failed test file remains one failed item and does not suppress sibling suites.
 
-### D21 — The ingestion adapter maps one source-ready manifest to one isolated process job — implemented
+### D21 — The LaTeX adapter maps one source-ready manifest to one isolated process job — implemented
 
-The repository ingestion adapter is the separate `ingest-batch` module and exports only
-`Get-IngestBatchJob`. It accepts document-inventory rows plus an existing absolute `RunDirectory`. Because
+The repository LaTeX adapter is `Get-LatexBatchJob`, also exported by the shared `adapters` module. Its
+`latex-batch` name identifies it as latex-ingest's batch planner without giving every planner a unitary
+PowerShell module. It accepts document-inventory rows plus an existing absolute `RunDirectory`. Because
 the parent inventory-row schema remains provisional under infrastructure Q8, the caller names the property
 containing the manifest address; `metadata_path` is only the default projection for today's source-deposit
 records. Relative manifest addresses are scoped to an explicit `InventoryRoot`, and absolute addresses must

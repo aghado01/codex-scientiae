@@ -1,4 +1,4 @@
-function Get-IngestBatchScriptSha256 {
+function Get-LatexBatchScriptSha256 {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Path
@@ -10,7 +10,7 @@ function Get-IngestBatchScriptSha256 {
     finally { $sha.Dispose(); $stream.Dispose() }
 }
 
-function Resolve-IngestBatchLatexDependency {
+function Resolve-LatexBatchDependency {
     [CmdletBinding()]
     param(
         [string] $LatexIngestPath,
@@ -26,7 +26,7 @@ function Resolve-IngestBatchLatexDependency {
     }
     else { [System.IO.Path]::GetFullPath($LatexIngestPath, $RepositoryRoot) }
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
-        throw "ingest-batch latex-ingest dependency not found: '$LatexIngestPath'"
+        throw "latex-batch latex-ingest dependency not found: '$LatexIngestPath'"
     }
     $candidate = (Resolve-Path -LiteralPath $candidate).Path
 
@@ -35,7 +35,7 @@ function Resolve-IngestBatchLatexDependency {
     $ast = [System.Management.Automation.Language.Parser]::ParseFile(
         $candidate, [ref]$tokens, [ref]$parseErrors)
     if ($parseErrors.Count -gt 0) {
-        throw "ingest-batch latex-ingest dependency does not parse: $($parseErrors[0].Message)"
+        throw "latex-batch latex-ingest dependency does not parse: $($parseErrors[0].Message)"
     }
     $entrypoint = @($ast.FindAll({
                 param($node)
@@ -43,16 +43,16 @@ function Resolve-IngestBatchLatexDependency {
                     $node.Name -ieq 'Invoke-ArxivLatexToMarkdown'
             }, $true))
     if ($entrypoint.Count -ne 1) {
-        throw "ingest-batch dependency must define Invoke-ArxivLatexToMarkdown exactly once: '$candidate'"
+        throw "latex-batch dependency must define Invoke-ArxivLatexToMarkdown exactly once: '$candidate'"
     }
 
     return [pscustomobject]@{
         Path = $candidate
-        Sha256 = Get-IngestBatchScriptSha256 -Path $candidate
+        Sha256 = Get-LatexBatchScriptSha256 -Path $candidate
     }
 }
 
-function Resolve-IngestBatchPowerShellPath {
+function Resolve-LatexBatchPowerShellPath {
     [CmdletBinding()]
     param([string] $PowerShellPath)
 
@@ -65,7 +65,7 @@ function Resolve-IngestBatchPowerShellPath {
     }
     $candidate = [System.IO.Path]::GetFullPath($PowerShellPath)
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
-        throw "ingest-batch child PowerShell not found: '$PowerShellPath'"
+        throw "latex-batch child PowerShell not found: '$PowerShellPath'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }

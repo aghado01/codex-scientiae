@@ -2,8 +2,8 @@
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-    $script:TestBatchModuleRoot = Join-Path $script:RepositoryRoot 'src/test-batch'
-    $script:TestBatchManifest = Join-Path $script:TestBatchModuleRoot 'test-batch.psd1'
+    $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/adapters'
+    $script:AdaptersManifest = Join-Path $script:AdaptersModuleRoot 'adapters.psd1'
     $script:BatchExecutorManifest = Join-Path $script:RepositoryRoot `
         'src/shared/batch-executor/batch-executor.psd1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
@@ -61,23 +61,24 @@ BeforeAll {
         return $Path
     }
 
-    Import-Module $script:TestBatchManifest -Force
+    Import-Module $script:AdaptersManifest -Force
 }
 
 AfterAll {
-    Remove-Module test-batch -Force -ErrorAction SilentlyContinue
+    Remove-Module adapters -Force -ErrorAction SilentlyContinue
     Remove-Module batch-executor -Force -ErrorAction SilentlyContinue
 }
 
-Describe 'test-batch module surface' {
-    It 'exports only the approved adapter command and keeps its helpers private' {
+Describe 'adapters module surface for test-batch' {
+    It 'exports the approved adapter commands and keeps its helpers private' {
         $warnings = @()
-        Import-Module $script:TestBatchManifest -Force -WarningVariable +warnings
-        Import-Module $script:TestBatchManifest -Force -WarningVariable +warnings
+        Import-Module $script:AdaptersManifest -Force -WarningVariable +warnings
+        Import-Module $script:AdaptersManifest -Force -WarningVariable +warnings
 
         $warnings.Count | Should -Be 0
-        @((Get-Module test-batch).ExportedFunctions.Keys) | Should -Be @('Get-TestBatchJob')
-        (Get-Module test-batch).ExportedAliases.Count | Should -Be 0
+        @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
+            'Get-LatexBatchJob', 'Get-TestBatchJob')
+        (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         foreach ($helper in @(
                 'Resolve-TestBatchJobAddress'
                 'Find-TestBatchFile'
@@ -90,7 +91,7 @@ Describe 'test-batch module surface' {
 
     It 'keeps all run-relative path composition in one pure private resolver' {
         $sourceFiles = @(
-            Get-ChildItem -LiteralPath $script:TestBatchModuleRoot -Recurse -File |
+            Get-ChildItem -LiteralPath $script:AdaptersModuleRoot -Recurse -File |
                 Where-Object Extension -In @('.ps1', '.psm1')
         )
         $addressLiteralOwners = [System.Collections.Generic.List[string]]::new()
@@ -173,7 +174,7 @@ Describe 'Get-TestBatchJob planning' {
         }
         $jobs[1].EstimatedCost | Should -BeGreaterThan $jobs[0].EstimatedCost
 
-        $compiled = InModuleScope test-batch -Parameters @{
+        $compiled = InModuleScope adapters -Parameters @{
             Jobs = $jobs; BasePath = $fixture.Root
         } {
             New-BatchPlan -Job $Jobs -BasePath $BasePath
@@ -287,14 +288,14 @@ Describe 'failing integration fixture' {
         $failJob = @(Get-TestBatchJob -Path $failPath -RunDirectory $fixture.RunDirectory `
                 -RepositoryRoot $fixture.Root -PesterManifest $script:LivePesterManifest `
                 -OutputVerbosity None)[0]
-        $compiled = InModuleScope test-batch -Parameters @{
+        $compiled = InModuleScope adapters -Parameters @{
             Jobs = @($passJob, $failJob); BasePath = $fixture.Root
         } {
             New-BatchPlan -Job $Jobs -BasePath $BasePath
         }
         $compiled.Errors.Count | Should -Be 0
 
-        $execution = InModuleScope test-batch -Parameters @{ Compiled = $compiled } {
+        $execution = InModuleScope adapters -Parameters @{ Compiled = $compiled } {
             Invoke-BatchPlan -Plan $Compiled -MaxWorkers 2
         }
 

@@ -1,4 +1,4 @@
-function Get-IngestBatchPropertyValue {
+function Get-LatexBatchPropertyValue {
     param(
         [Parameter(Mandatory)] [object] $InputObject,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $Name
@@ -16,7 +16,7 @@ function Get-IngestBatchPropertyValue {
     return $null
 }
 
-function Resolve-IngestBatchRepositoryRoot {
+function Resolve-LatexBatchRepositoryRoot {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RepositoryRoot
@@ -27,12 +27,12 @@ function Resolve-IngestBatchRepositoryRoot {
     }
     else { [System.IO.Path]::GetFullPath($RepositoryRoot, (Get-Location).Path) }
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "ingest-batch repository root not found: '$RepositoryRoot'"
+        throw "latex-batch repository root not found: '$RepositoryRoot'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Resolve-IngestBatchInventoryRoot {
+function Resolve-LatexBatchInventoryRoot {
     [CmdletBinding()]
     param(
         [string] $InventoryRoot,
@@ -47,28 +47,28 @@ function Resolve-IngestBatchInventoryRoot {
     }
     else { [System.IO.Path]::GetFullPath($InventoryRoot, $RepositoryRoot) }
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "ingest-batch inventory root not found: '$InventoryRoot'"
+        throw "latex-batch inventory root not found: '$InventoryRoot'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Resolve-IngestBatchRunDirectory {
+function Resolve-LatexBatchRunDirectory {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory
     )
 
     if (-not [System.IO.Path]::IsPathFullyQualified($RunDirectory)) {
-        throw "ingest-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
+        throw "latex-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
     }
     $candidate = [System.IO.Path]::GetFullPath($RunDirectory)
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
-        throw "ingest-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
+        throw "latex-batch RunDirectory must be an existing absolute path: '$RunDirectory'"
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }
 
-function Test-IngestBatchPathWithinRoot {
+function Test-LatexBatchPathWithinRoot {
     param(
         [Parameter(Mandatory)] [string] $Path,
         [Parameter(Mandatory)] [string] $Root
@@ -84,7 +84,7 @@ function Test-IngestBatchPathWithinRoot {
     return $true
 }
 
-function Resolve-IngestBatchManifestPath {
+function Resolve-LatexBatchManifestPath {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [object] $InventoryRow,
@@ -95,9 +95,9 @@ function Resolve-IngestBatchManifestPath {
     $value = if ($InventoryRow -is [string]) {
         $InventoryRow
     }
-    else { Get-IngestBatchPropertyValue -InputObject $InventoryRow -Name $MetadataPathProperty }
+    else { Get-LatexBatchPropertyValue -InputObject $InventoryRow -Name $MetadataPathProperty }
     if ([string]::IsNullOrWhiteSpace([string]$value)) {
-        throw "ingest-batch inventory row has no '$MetadataPathProperty' metadata address"
+        throw "latex-batch inventory row has no '$MetadataPathProperty' metadata address"
     }
 
     $candidate = if ([System.IO.Path]::IsPathFullyQualified([string]$value)) {
@@ -108,16 +108,16 @@ function Resolve-IngestBatchManifestPath {
         $candidate = [System.IO.Path]::Combine($candidate, 'metadata.json')
     }
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
-        throw "ingest-batch metadata.json not found: '$value'"
+        throw "latex-batch metadata.json not found: '$value'"
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
-    if (-not (Test-IngestBatchPathWithinRoot -Path $resolved -Root $InventoryRoot)) {
-        throw "ingest-batch metadata address escapes InventoryRoot: '$value'"
+    if (-not (Test-LatexBatchPathWithinRoot -Path $resolved -Root $InventoryRoot)) {
+        throw "latex-batch metadata address escapes InventoryRoot: '$value'"
     }
     return $resolved
 }
 
-function Read-IngestBatchManifestRecord {
+function Read-LatexBatchManifestRecord {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [object] $InventoryRow,
@@ -125,18 +125,18 @@ function Read-IngestBatchManifestRecord {
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $InventoryRoot
     )
 
-    $manifestPath = Resolve-IngestBatchManifestPath -InventoryRow $InventoryRow `
+    $manifestPath = Resolve-LatexBatchManifestPath -InventoryRow $InventoryRow `
         -MetadataPathProperty $MetadataPathProperty -InventoryRoot $InventoryRoot
     try {
         $utf8 = [System.Text.UTF8Encoding]::new($false, $true)
         $manifest = [System.IO.File]::ReadAllText($manifestPath, $utf8) |
             ConvertFrom-Json -AsHashtable -Depth 100 -ErrorAction Stop
     }
-    catch { throw "ingest-batch metadata.json is invalid: '$manifestPath': $($_.Exception.Message)" }
+    catch { throw "latex-batch metadata.json is invalid: '$manifestPath': $($_.Exception.Message)" }
     if ($manifest -isnot [System.Collections.IDictionary] -or
         [string]$manifest['schema'] -ne 'codex-scientiae/document-metadata/0.1' -or
         [string]$manifest['state'] -ne 'source-ready') {
-        throw "ingest-batch requires a source-ready document-metadata/0.1 manifest: '$manifestPath'"
+        throw "latex-batch requires a source-ready document-metadata/0.1 manifest: '$manifestPath'"
     }
 
     $slug = [string]$manifest['slug']
@@ -144,33 +144,33 @@ function Read-IngestBatchManifestRecord {
         $slug.Contains('/') -or $slug.Contains('\') -or
         (Split-Path -Leaf $slug) -ne $slug -or
         $slug.IndexOfAny([System.IO.Path]::GetInvalidFileNameChars()) -ge 0) {
-        throw "ingest-batch manifest slug must be one safe path leaf: '$slug'"
+        throw "latex-batch manifest slug must be one safe path leaf: '$slug'"
     }
 
     $sourceForms = @($manifest['source_forms'])
     $archiveForms = @($sourceForms | Where-Object { [string]$_['role'] -eq 'latex-source-archive' })
     $treeForms = @($sourceForms | Where-Object { [string]$_['role'] -eq 'latex-source-tree' })
     if ($archiveForms.Count -ne 1 -or $treeForms.Count -ne 1) {
-        throw "ingest-batch manifest must declare exactly one LaTeX archive and source tree: '$manifestPath'"
+        throw "latex-batch manifest must declare exactly one LaTeX archive and source tree: '$manifestPath'"
     }
     $treeHash = [string]$treeForms[0]['sha256']
     $archiveHash = [string]$archiveForms[0]['sha256']
     if ($treeHash -notmatch '^[0-9a-f]{64}$' -or $archiveHash -notmatch '^[0-9a-f]{64}$' -or
         [string]::IsNullOrWhiteSpace([string]$treeForms[0]['entrypoint'])) {
-        throw "ingest-batch manifest has an invalid LaTeX source identity: '$manifestPath'"
+        throw "latex-batch manifest has an invalid LaTeX source identity: '$manifestPath'"
     }
 
     $cost = [double](Get-Item -LiteralPath $manifestPath).Length
     if ($archiveForms[0].Contains('bytes')) {
         try { $cost = [double]$archiveForms[0]['bytes'] }
-        catch { throw "ingest-batch manifest archive byte count is invalid: '$manifestPath'" }
+        catch { throw "latex-batch manifest archive byte count is invalid: '$manifestPath'" }
     }
     elseif ($treeForms[0].Contains('files')) {
         try { $cost = [double]$treeForms[0]['files'] }
-        catch { throw "ingest-batch manifest source file count is invalid: '$manifestPath'" }
+        catch { throw "latex-batch manifest source file count is invalid: '$manifestPath'" }
     }
     if ([double]::IsNaN($cost) -or [double]::IsInfinity($cost) -or $cost -lt 0) {
-        throw "ingest-batch manifest cost hint is invalid: '$manifestPath'"
+        throw "latex-batch manifest cost hint is invalid: '$manifestPath'"
     }
 
     return [pscustomobject]@{

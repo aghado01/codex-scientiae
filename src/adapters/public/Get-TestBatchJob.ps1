@@ -4,7 +4,7 @@ function Get-TestBatchJob {
         [Parameter(Mandatory, Position = 0)] [Alias('TestPath')]
         [ValidateNotNullOrEmpty()] [string[]] $Path,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
-        [ValidateNotNullOrEmpty()] [string] $RepositoryRoot = $script:TestBatchDefaultRepositoryRoot,
+        [ValidateNotNullOrEmpty()] [string] $RepositoryRoot = $script:AdaptersDefaultRepositoryRoot,
         [string] $PesterManifest,
         [string] $PowerShellPath,
         [AllowEmptyCollection()] [string[]] $FullNameFilter = @(),

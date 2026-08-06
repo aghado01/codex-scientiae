@@ -14,12 +14,12 @@ param(
 
 $dependency = [System.IO.Path]::GetFullPath($LatexIngestPath)
 if (-not (Test-Path -LiteralPath $dependency -PathType Leaf)) {
-    throw "ingest-batch worker dependency not found: '$dependency'"
+    throw "latex-batch worker dependency not found: '$dependency'"
 }
 . $dependency
 if ($null -eq (Get-Command Invoke-ArxivLatexToMarkdown -CommandType Function `
         -ErrorAction SilentlyContinue)) {
-    throw "ingest-batch worker dependency did not define Invoke-ArxivLatexToMarkdown: '$dependency'"
+    throw "latex-batch worker dependency did not define Invoke-ArxivLatexToMarkdown: '$dependency'"
 }
 
 $invoke = @{

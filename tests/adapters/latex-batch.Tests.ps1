@@ -2,11 +2,11 @@
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-    $script:IngestBatchModuleRoot = Join-Path $script:RepositoryRoot 'src/ingest-batch'
-    $script:IngestBatchManifest = Join-Path $script:IngestBatchModuleRoot 'ingest-batch.psd1'
+    $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/adapters'
+    $script:AdaptersManifest = Join-Path $script:AdaptersModuleRoot 'adapters.psd1'
     $script:LiveLatexIngest = Join-Path $script:RepositoryRoot 'src/latex-ingest/latex-ingest.ps1'
 
-    function New-IngestBatchFixture {
+    function New-LatexBatchFixture {
         param([Parameter(Mandatory)] [string] $Root)
 
         $inventory = Join-Path $Root 'inventory'
@@ -21,7 +21,7 @@ BeforeAll {
         }
     }
 
-    function Write-IngestBatchManifest {
+    function Write-LatexBatchManifest {
         param(
             [Parameter(Mandatory)] [string] $InventoryRoot,
             [Parameter(Mandatory)] [string] $Slug,
@@ -66,7 +66,7 @@ BeforeAll {
         return $path
     }
 
-    function Write-IngestBatchFixtureDependency {
+    function Write-LatexBatchFixtureDependency {
         param([Parameter(Mandatory)] [string] $Path)
 
         Set-Content -LiteralPath $Path -Encoding utf8 -Value @'
@@ -109,7 +109,7 @@ function Invoke-ArxivLatexToMarkdown {
         return $Path
     }
 
-    function New-IngestBatchTestArchive {
+    function New-LatexBatchTestArchive {
         param(
             [Parameter(Mandatory)] [string] $Path,
             [Parameter(Mandatory)] [System.Collections.IDictionary] $Files
@@ -134,35 +134,36 @@ function Invoke-ArxivLatexToMarkdown {
     }
 
     . (Join-Path $script:RepositoryRoot 'src/latex-ingest/source-deposit.ps1')
-    Import-Module $script:IngestBatchManifest -Force
+    Import-Module $script:AdaptersManifest -Force
 }
 
 AfterAll {
-    Remove-Module ingest-batch -Force -ErrorAction SilentlyContinue
+    Remove-Module adapters -Force -ErrorAction SilentlyContinue
     Remove-Module batch-executor -Force -ErrorAction SilentlyContinue
 }
 
-Describe 'ingest-batch module surface' {
-    It 'exports only the approved inventory adapter command and keeps helpers private' {
+Describe 'adapters module surface for latex-batch' {
+    It 'exports the approved adapter commands and keeps helpers private' {
         $warnings = @()
-        Import-Module $script:IngestBatchManifest -Force -WarningVariable +warnings
-        Import-Module $script:IngestBatchManifest -Force -WarningVariable +warnings
+        Import-Module $script:AdaptersManifest -Force -WarningVariable +warnings
+        Import-Module $script:AdaptersManifest -Force -WarningVariable +warnings
 
         $warnings.Count | Should -Be 0
-        @((Get-Module ingest-batch).ExportedFunctions.Keys) | Should -Be @('Get-IngestBatchJob')
-        (Get-Module ingest-batch).ExportedAliases.Count | Should -Be 0
+        @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
+            'Get-LatexBatchJob', 'Get-TestBatchJob')
+        (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         foreach ($helper in @(
-                'Resolve-IngestBatchJobAddress'
-                'Read-IngestBatchManifestRecord'
-                'Resolve-IngestBatchLatexDependency'
-                'Get-IngestBatchStableHash'
+                'Resolve-LatexBatchJobAddress'
+                'Read-LatexBatchManifestRecord'
+                'Resolve-LatexBatchDependency'
+                'Get-LatexBatchStableHash'
             )) {
             Get-Command $helper -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         }
     }
 
     It 'keeps every run-relative address in one pure private resolver' {
-        $sourceFiles = @(Get-ChildItem -LiteralPath $script:IngestBatchModuleRoot -Recurse -File |
+        $sourceFiles = @(Get-ChildItem -LiteralPath $script:AdaptersModuleRoot -Recurse -File |
                 Where-Object Extension -In @('.ps1', '.psm1'))
         $addressLiteralOwners = [System.Collections.Generic.List[string]]::new()
         $resolverCalls = [System.Collections.Generic.List[string]]::new()
@@ -179,7 +180,7 @@ Describe 'ingest-batch module surface' {
                             param($node)
                             $node -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
                                 $node.Value -in @(
-                                    'ingest-jobs', 'run-artifacts', 'lane-output', 'deliverable')
+                                    'latex-jobs', 'run-artifacts', 'lane-output', 'deliverable')
                         }, $true))) {
                 $owner = $literal.Parent
                 while ($null -ne $owner -and $owner -isnot `
@@ -191,7 +192,7 @@ Describe 'ingest-batch module surface' {
             foreach ($command in @($ast.FindAll({
                             param($node)
                             $node -is [System.Management.Automation.Language.CommandAst] -and
-                                $node.GetCommandName() -eq 'Resolve-IngestBatchJobAddress'
+                                $node.GetCommandName() -eq 'Resolve-LatexBatchJobAddress'
                         }, $true))) {
                 $owner = $command.Parent
                 while ($null -ne $owner -and $owner -isnot `
@@ -203,24 +204,24 @@ Describe 'ingest-batch module surface' {
         }
 
         @($addressLiteralOwners) | Should -Be @(
-            'Resolve-IngestBatchJobAddress'
-            'Resolve-IngestBatchJobAddress'
-            'Resolve-IngestBatchJobAddress'
-            'Resolve-IngestBatchJobAddress'
+            'Resolve-LatexBatchJobAddress'
+            'Resolve-LatexBatchJobAddress'
+            'Resolve-LatexBatchJobAddress'
+            'Resolve-LatexBatchJobAddress'
         )
-        @($resolverCalls) | Should -Be @('Get-IngestBatchJob')
+        @($resolverCalls) | Should -Be @('Get-LatexBatchJob')
         $sourceText.ToString() | Should -Not -Match `
             '\bNew-ModuleRunDir\b|\bNew-RunDir\b|\bNew-Item\b|CreateDirectory\s*\('
     }
 }
 
-Describe 'Get-IngestBatchJob planning' {
+Describe 'Get-LatexBatchJob planning' {
     It 'maps rows to stable isolated process jobs without creating run artifacts' {
-        $fixture = New-IngestBatchFixture -Root (Join-Path $TestDrive 'planning')
-        $dependency = Write-IngestBatchFixtureDependency (Join-Path $fixture.Root 'fixture-ingest.ps1')
-        $alpha = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'planning')
+        $dependency = Write-LatexBatchFixtureDependency (Join-Path $fixture.Root 'fixture-ingest.ps1')
+        $alpha = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -Slug alpha -ArchiveBytes 100 -TreeHash ('a' * 64)
-        $beta = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $beta = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -Slug beta -ArchiveBytes 900 -TreeHash ('c' * 64)
         $rows = @(
             [pscustomobject]@{
@@ -239,8 +240,8 @@ Describe 'Get-IngestBatchJob planning' {
             LatexIngestPath = $dependency
             ProcessEnvironment = @{ CALLER_CORRELATION = 'parent-value' }
         }
-        $jobs = @(Get-IngestBatchJob @invoke)
-        $again = @(Get-IngestBatchJob @invoke)
+        $jobs = @(Get-LatexBatchJob @invoke)
+        $again = @(Get-LatexBatchJob @invoke)
 
         $jobs.Count | Should -Be 2
         @($jobs.Id) | Should -Be @($again.Id)
@@ -248,6 +249,7 @@ Describe 'Get-IngestBatchJob planning' {
         [object]::ReferenceEquals($jobs[0].Metadata.InventoryRow, $rows[0]) |
             Should -BeTrue
         foreach ($job in $jobs) {
+            $job.Id | Should -Match '^latex:'
             $job.Kind | Should -Be 'PowerShellProcess'
             $job.RuntimeProfile | Should -Be 'latex-ingest-process'
             $job.WorkingDirectory | Should -Be $script:RepositoryRoot
@@ -259,6 +261,8 @@ Describe 'Get-IngestBatchJob planning' {
             $job.ProcessSpec.Environment.CALLER_CORRELATION | Should -Be 'parent-value'
             $job.Parameters.LatexIngestPath | Should -Be $dependency
             $job.Metadata.AddressingContract | Should -Be 'D19/RunDirectory'
+            $job.Metadata.Adapter | Should -Be 'latex-batch'
+            $job.Metadata.Domain | Should -Be 'latex-ingest'
             $job.Metadata.ResultPersistence | Should -Be 'InMemory'
             $job.Metadata.LatexIngestSha256 | Should -Match '^[0-9a-f]{64}$'
             @($job.Writes).Count | Should -Be 2
@@ -271,7 +275,7 @@ Describe 'Get-IngestBatchJob planning' {
             $jobs[0].ProcessSpec.Environment, $jobs[1].ProcessSpec.Environment) |
             Should -BeFalse
 
-        $compiled = InModuleScope ingest-batch -Parameters @{
+        $compiled = InModuleScope adapters -Parameters @{
             Jobs = $jobs; BasePath = $script:RepositoryRoot
         } {
             New-BatchPlan -Job $Jobs -BasePath $BasePath
@@ -282,14 +286,14 @@ Describe 'Get-IngestBatchJob planning' {
     }
 
     It 'supports a caller-selected row projection and freezes output options and child policy' {
-        $fixture = New-IngestBatchFixture -Root (Join-Path $TestDrive 'projection')
-        $dependency = Write-IngestBatchFixtureDependency (Join-Path $fixture.Root 'projection-ingest.ps1')
-        $manifest = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot -Slug projected
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'projection')
+        $dependency = Write-LatexBatchFixtureDependency (Join-Path $fixture.Root 'projection-ingest.ps1')
+        $manifest = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot -Slug projected
         $row = [pscustomobject]@{ manifest_ref = $manifest; external_correlation = 'caller-owned' }
-        $base = @(Get-IngestBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
+        $base = @(Get-LatexBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
                 -InventoryRoot $fixture.InventoryRoot -MetadataPathProperty manifest_ref `
                 -LatexIngestPath $dependency)[0]
-        $configured = @(Get-IngestBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
+        $configured = @(Get-LatexBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
                 -InventoryRoot $fixture.InventoryRoot -MetadataPathProperty manifest_ref `
                 -LatexIngestPath $dependency -BundleDeliverable -EnableEmbeddedToc `
                 -DisableTreeToc -DisableJsonlToc -FaithfulNumbering -TimeoutSeconds 90 `
@@ -320,94 +324,94 @@ Describe 'Get-IngestBatchJob planning' {
     }
 
     It 'pins a parseable latex-ingest dependency and rejects an impostor before emitting jobs' {
-        $fixture = New-IngestBatchFixture -Root (Join-Path $TestDrive 'dependency')
-        $manifest = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot -Slug dependency
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'dependency')
+        $manifest = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot -Slug dependency
         $row = [pscustomobject]@{ metadata_path = $manifest }
 
-        $job = @(Get-IngestBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
+        $job = @(Get-LatexBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
                 -InventoryRoot $fixture.InventoryRoot)[0]
         $job.Metadata.LatexIngestPath | Should -Be $script:LiveLatexIngest
         $job.Metadata.LatexIngestSha256 | Should -Match '^[0-9a-f]{64}$'
 
         $impostor = Join-Path $fixture.Root 'impostor.ps1'
         Set-Content -LiteralPath $impostor -Encoding utf8 -Value 'function Invoke-SomethingElse { }'
-        { Get-IngestBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
+        { Get-LatexBatchJob -InventoryRow $row -RunDirectory $fixture.RunDirectory `
                 -InventoryRoot $fixture.InventoryRoot -LatexIngestPath $impostor } |
             Should -Throw '*must define Invoke-ArxivLatexToMarkdown exactly once*'
     }
 
     It 'rejects ambiguous ownership and invalid source-ready inputs before addressing work' {
-        $fixture = New-IngestBatchFixture -Root (Join-Path $TestDrive 'invalid')
-        $dependency = Write-IngestBatchFixtureDependency (Join-Path $fixture.Root 'invalid-ingest.ps1')
-        $valid = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot -Slug valid
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'invalid')
+        $dependency = Write-LatexBatchFixtureDependency (Join-Path $fixture.Root 'invalid-ingest.ps1')
+        $valid = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot -Slug valid
         $row = [pscustomobject]@{ metadata_path = $valid }
         $missingRun = Join-Path $fixture.Root 'missing-run'
-        { Get-IngestBatchJob -InventoryRow $row -RunDirectory 'relative-run' `
+        { Get-LatexBatchJob -InventoryRow $row -RunDirectory 'relative-run' `
                 -InventoryRoot $fixture.InventoryRoot -LatexIngestPath $dependency } |
             Should -Throw '*RunDirectory must be an existing absolute path*'
-        { Get-IngestBatchJob -InventoryRow $row -RunDirectory $missingRun `
+        { Get-LatexBatchJob -InventoryRow $row -RunDirectory $missingRun `
                 -InventoryRoot $fixture.InventoryRoot -LatexIngestPath $dependency } |
             Should -Throw '*RunDirectory must be an existing absolute path*'
         Test-Path -LiteralPath $missingRun | Should -BeFalse
 
-        { Get-IngestBatchJob -InventoryRow ([pscustomobject]@{ wrong = $valid }) `
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ wrong = $valid }) `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw "*has no 'metadata_path' metadata address*"
-        $outside = Write-IngestBatchManifest -InventoryRoot $fixture.Root `
+        $outside = Write-LatexBatchManifest -InventoryRoot $fixture.Root `
             -DirectoryName outside -Slug outside
-        { Get-IngestBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $outside }) `
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $outside }) `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw '*escapes InventoryRoot*'
-        $notReady = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $notReady = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -DirectoryName not-ready -Slug not-ready -State initializing
-        { Get-IngestBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $notReady }) `
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $notReady }) `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw '*requires a source-ready*'
-        $unsafe = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $unsafe = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -DirectoryName unsafe -Slug '../unsafe'
-        { Get-IngestBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $unsafe }) `
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $unsafe }) `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw '*slug must be one safe path leaf*'
-        $noTree = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $noTree = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -DirectoryName no-tree -Slug no-tree -OmitTree
-        { Get-IngestBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $noTree }) `
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $noTree }) `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw '*exactly one LaTeX archive and source tree*'
     }
 }
 
-Describe 'ingest-batch execution integration' {
+Describe 'latex-batch execution integration' {
     It 'contains one document failure while preserving child correlation and declared application writes' {
-        $fixture = New-IngestBatchFixture -Root (Join-Path $TestDrive 'execution')
-        $dependency = Write-IngestBatchFixtureDependency (Join-Path $fixture.Root 'execution-ingest.ps1')
-        $good = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'execution')
+        $dependency = Write-LatexBatchFixtureDependency (Join-Path $fixture.Root 'execution-ingest.ps1')
+        $good = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -Slug good -ArchiveBytes 100
-        $broken = Write-IngestBatchManifest -InventoryRoot $fixture.InventoryRoot `
+        $broken = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -Slug broken -ArchiveBytes 500 -TreeHash ('d' * 64)
         $rows = @(
             [pscustomobject]@{ metadata_path = $good; caller = 'good-row' }
             [pscustomobject]@{ metadata_path = $broken; caller = 'broken-row' }
         )
-        $jobs = @(Get-IngestBatchJob -InventoryRow $rows -RunDirectory $fixture.RunDirectory `
+        $jobs = @(Get-LatexBatchJob -InventoryRow $rows -RunDirectory $fixture.RunDirectory `
                 -InventoryRoot $fixture.InventoryRoot -LatexIngestPath $dependency `
                 -BundleDeliverable -EnableEmbeddedToc -FaithfulNumbering `
                 -ProcessEnvironment @{ CALLER_CORRELATION = 'caller-trace' } -TimeoutSeconds 30)
         foreach ($job in $jobs) {
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
         }
-        $compiled = InModuleScope ingest-batch -Parameters @{
+        $compiled = InModuleScope adapters -Parameters @{
             Jobs = $jobs; BasePath = $script:RepositoryRoot
         } {
             New-BatchPlan -Job $Jobs -BasePath $BasePath
         }
         $compiled.Errors.Count | Should -Be 0
 
-        $execution = InModuleScope ingest-batch -Parameters @{ Compiled = $compiled } {
+        $execution = InModuleScope adapters -Parameters @{ Compiled = $compiled } {
             Invoke-BatchPlan -Plan $Compiled -MaxWorkers 2
         }
 
@@ -441,27 +445,27 @@ Describe 'ingest-batch execution integration' {
     }
 
     It 'runs the live manifest-only latex-ingest entrypoint at its declared addresses' {
-        $fixture = New-IngestBatchFixture -Root (Join-Path $TestDrive 'live-execution')
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'live-execution')
         $documentDirectory = Join-Path $fixture.InventoryRoot 'live-document'
         [void][System.IO.Directory]::CreateDirectory($documentDirectory)
         $archive = Join-Path $documentDirectory 'live-document.tar.gz'
-        New-IngestBatchTestArchive -Path $archive -Files ([ordered]@{
+        New-LatexBatchTestArchive -Path $archive -Files ([ordered]@{
                 'main.tex' = '\documentclass{article}\begin{document}\section{Live}Adapter body.\end{document}'
             })
         $initialized = Initialize-LatexSourceDeposit -DocumentDir $documentDirectory `
             -Slug live-document
         $row = [pscustomobject]@{ metadata_path = $initialized.metadata_path }
-        $job = @(Get-IngestBatchJob -InventoryRow $row `
+        $job = @(Get-LatexBatchJob -InventoryRow $row `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -TimeoutSeconds 60)[0]
-        $compiled = InModuleScope ingest-batch -Parameters @{
+        $compiled = InModuleScope adapters -Parameters @{
             Job = $job; BasePath = $script:RepositoryRoot
         } {
             New-BatchPlan -Job @($Job) -BasePath $BasePath
         }
         $compiled.Errors.Count | Should -Be 0
 
-        $execution = InModuleScope ingest-batch -Parameters @{ Compiled = $compiled } {
+        $execution = InModuleScope adapters -Parameters @{ Compiled = $compiled } {
             Invoke-BatchPlan -Plan $Compiled -MaxWorkers 1
         }
 

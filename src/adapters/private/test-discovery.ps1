@@ -1,3 +1,5 @@
+# Test adapter discovery helpers.
+
 function Resolve-TestBatchRepositoryRoot {
     [CmdletBinding()]
     param(

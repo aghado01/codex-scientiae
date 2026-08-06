@@ -22,13 +22,11 @@ the resolved budget is present in every execution record.
 
 ## Companion adapters
 
-The separate [`test-batch`](../../test-batch/README.md) module exports `Get-TestBatchJob`. It discovers
-repository Pester files and emits isolated process jobs without changing this module's public surface or
-owning execution. Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
-
-The separate [`ingest-batch`](../../ingest-batch/README.md) module exports `Get-IngestBatchJob`. It maps
-source-ready document manifests to isolated latex-ingest process jobs with caller-owned run addressing and
-complete application write declarations. It likewise plans work but never compiles or executes it.
+The [`adapters`](../../adapters/README.md) module exports `Get-TestBatchJob` and `Get-LatexBatchJob` as public
+files in one package. The first discovers repository Pester files; the second maps source-ready document
+manifests to isolated latex-ingest process jobs with caller-owned run addressing and complete application
+write declarations. Both emit jobs without changing this module's public surface or owning execution.
+Callers compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
 
 ## Job contract
 

@@ -36,17 +36,16 @@ nested batch workers observe failure.
 
 | Directory | Current ownership |
 |---|---|
+| `adapters/` | Test and LaTeX batch planning, addressing, and isolated execution |
 | `audits/` | Repository and deliverable audits, including mathematical rendering |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |
-| `ingest-batch/` | Document-inventory projection, latex-ingest job addressing, and isolated execution |
 | `latex-ingest/` | LaTeX ingestion, stores, patches, and rendering integration |
 | `math-register/` | Mathematical register normalization |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
 | `procurement/` | Scholarly discovery and acquisition adapters |
 | `reader-mcp/` | Portable deliverable reader MCP |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
-| `test-batch/` | Repository Pester discovery adapter, addressing, and isolated execution |
 | `toc-engine/` | Deliverable TOC and manifest rendering |
 
 ## Conventions
