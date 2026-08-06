@@ -66,11 +66,14 @@ value equality coherent across K4, split K5a identity/support from K5b saturatio
 K6 sibling lanes toward K7. Existing `math-register` paths retain that legacy name pending the
 separate terminology migration. K5a contract work has default execution priority; K6 contract
 work is independently available. D41 and its
-[round-2 source adjudication](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md)
-leave that K sequence unchanged while adding an independent V0 code-unit-vector contract lane,
-an A0–A2 benchmark/set-bit/path-backend lane, the F2 fingerprint-portability gate, and post-K
-F7–F9 derived-producer/alignment, hash/signature/sketch, and statistical-view families. No source
-surface or harness count changed in D41.
+[round-2 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md)
+leave that K sequence unchanged. The owner-amended decision treats ThermoMapper as a source of
+transferable concepts/patterns/capabilities rather than Doccer policy, adds independent V0/V1 and
+A0–A2 lanes plus a per-capability HPC repertoire, retains the F2 fingerprint-portability gate,
+and splits F7–F9 by their actual carrier dependencies: correspondence versus origin production,
+exact/rolling hash versus candidate index/
+sketch, and counted/online versus fitted/ranked feature views. No source surface or harness count
+changed in D41; ThermoMapper-facing repair guidance lives in the ThermoMapper repository.
 
 ## Sequencing doctrine
 
@@ -104,17 +107,22 @@ order is:
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
 5. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
-   adapters, persistence, and indexes. F7 derived producers/alignment, F8 hash/signature/sketch
-   work, and F9 statistical feature views default after K8 or to an adjacent analytics/index
-   package under D8/D10. A fixed linear-ET compiler may follow K7; uncertain QSTR networks branch
-   from K1 only when a real consumer appears. None is on the kernel critical path.
+   adapters, persistence, and indexes. Most substantial F8/F9 implementations retain a post-K
+   execution default, but no family has a blanket K8 type dependency: F7a correspondence,
+   F8a/F8b low-level contracts, and F9a views over current populations are independent; F7b/F7c
+   and fact/origin feature recipes wait only for the carriers they name. D8/D10 decide kernel
+   versus adjacent placement one named capability at a time. A fixed linear-ET compiler may follow
+   K7; uncertain QSTR networks branch from K1 only when a real consumer appears.
 
 **Independent V/A lanes:** V0 may now close the compatible-master/exact-window UTF-16 code-unit
 Boolean-vector contract, unit residual, chunk carry, and direct/harvest exits. Its portable V1
-implementation defaults after K8 and precedes any V2 accelerated backend. A0 may establish named
-dense/sparse time and allocation baselines now; A1's word-skipping `ClaimSelection` walker and
-A2's reconstruct-once `PathSelection` recurrence may then land independently under the frozen
-D30/D37 oracles. These lanes do not change K5a's default priority or expose D20 numeric columns.
+implementation follows independently and precedes any V2 accelerated backend. A0 may establish
+named dense/sparse time and allocation baselines now; A1's word-skipping `ClaimSelection` walker
+and A2's reconstruct-once `PathSelection` recurrence may then land under the frozen D30/D37
+oracles. The per-capability HPC repertoire records span destinations, exact allocation, flat
+layouts, operation/worker scratch, bounded heaps, online reductions, deterministic parallel state, and
+reference/fast pairing—not a common framework. These lanes do not change K5a's default priority
+or expose D20 numeric columns. Their evidence policy is Doccer's, not ThermoMapper's.
 
 **Parallel witness/census lane:** provisional PowerShell adapters may continue to reach directly
 into the packaged DLL during the latex-ingest rewrite. They remain site-local, disposable research
@@ -150,16 +158,18 @@ latent-manuscript node-stream schema. The current `inspect`/`relate` commands re
 developer diagnostics. Durable adapters remain last: PowerShell veneers and LaTeX consumers become
 thin clients only after the relevant Doccer surface stabilizes.
 
-Other independent closures remain available under D14: V0, the A0–A2 measured backend lane, the
-F-UCD data-provenance record, a callable runtime Tier-1 law runner if demanded, and early
-`OffsetMap` pressure tests that do not pre-empt the K6 origin contract.
+Other independent closures remain available under D14: V0/V1, the A0–A2 measured backend lane,
+F7a correspondence, F8a/F8b low-level contract or current-carrier witnesses, F9a counted/online
+views over current populations, the F-UCD data-provenance record, a callable runtime Tier-1 law
+runner if demanded, and early `OffsetMap` pressure tests that do not pre-empt K6 origins.
 
 Maturity-gated beyond that: F2 persisted batches (after fingerprint algorithm/version/canonical
 byte order) → F4 indexed joins → F5 Tier-2/3 agreement scoring → F6 markdown adapter and the mdnav
 succession (oracle harness on the doc-dive fixtures; exceed mdnav precisely at its collapse
-points; conserve its instrument virtues). F7 derived producers/alignment, F8
-hash/signature/sketch work, and F9 statistical feature views default after K8 but remain
-independent of that completion as types; D14 permits pulling forward a closed witnessed contract.
+points; conserve its instrument virtues). Broader F8 signature/index/sketch and F9 fitted/search
+implementations retain post-K priority; F7 transform-origin/promotion and fact/origin feature
+recipes are scheduled by K6/K7/K5 carrier dependencies rather than K8 as a blanket. D14 permits
+pulling forward any independently closed, witnessed capability.
 
 ## Standing practice — the abductive census
 

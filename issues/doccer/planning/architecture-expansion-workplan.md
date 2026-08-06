@@ -15,7 +15,7 @@ The evidence base is:
   [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md);
 - [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
   [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
-  [D41 source adjudication](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
+  [D41 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
 - the implemented contracts in [the engine README](../../../src/doccer/README.md).
 
 ## 1. Executive result
@@ -164,6 +164,17 @@ flowchart TD
     A0["A0: benchmark/allocation baseline"]
     A1["A1: selection set-bit walker"]
     A2["A2: flat-path recurrence"]
+    AP["Per-capability HPC repertoire"]
+    F7A["F7a: distance/correspondence"]
+    F7B["F7b: transform-origin producers"]
+    F7C["F7c: promotion/materialization integration"]
+    F8A["F8a: direct measures/hash substrate"]
+    F8B["F8b: rolling/content-defined producers"]
+    F8C["F8c: signatures/candidate indexes"]
+    F8D["F8d: streaming sketches"]
+    F9A["F9a: counted/online views"]
+    F9B["F9b: fitted feature artifacts"]
+    F9C["F9c: ranked queries"]
     Q["Optional QSTR networks"]
     ET["Optional LinearET backend"]
 
@@ -195,8 +206,19 @@ flowchart TD
     V1 --> V2
     A0 --> A1
     A0 --> A2
+    A0 -.-> AP
     K2A -.->|frozen D30 semantics| A1
     K4B -.->|frozen D37 semantics| A2
+    F7A --> F7C
+    K6 --> F7B
+    F7B --> F7C
+    K7 --> F7C
+    F8A --> F8B
+    F8A --> F8C
+    F8A --> F8D
+    F9A --> F9B
+    F9B --> F9C
+    K2A -.->|current population witness| F9A
     K1B --> Q
     K7 --> ET
 ~~~
@@ -224,11 +246,15 @@ is in the
 by the [D34 review adjudication](../briefs/sol-doccer-k3-k4a-review-adjudication-20260805_151759.md)
 and [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md).
 
-D41 adds V and A as independent branches without inserting either into the K critical path. V0
-may close its carrier contract now; V1 has default execution priority after K8, and V2 follows only
-measured reference semantics. A0–A2 may proceed beside K5–K8 because D30 and D37 already freeze
-their observable behavior. The dotted D30/D37 arrows are semantic constraints, not invitations to
-change the public carriers. Full adjudication:
+D41 adds V, A, and dependency-split F branches without inserting any into the K critical path. V0
+may close its carrier contract now; V1 follows independently, and V2 follows only measured
+reference semantics. A0–A2 may proceed beside K5–K8 because D30 and D37 already freeze their
+observable behavior; the per-capability HPC repertoire applies inside later capabilities, not one
+utility framework. F7a is independent while F7b/F7c use K6/K7. F8a/F8b low-level work and F9a current-
+population work are independent; fitted/indexed/persisted or fact/origin-specific forms wait only
+for their own artifact and carrier inputs. The dotted arrows are semantic constraints or current
+witnesses, not invitations to change public carriers. ThermoMapper contributes patterns and
+capabilities but no Doccer gating policy. Full adjudication:
 [D41 round-2 expansion](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md).
 
 ## 5. Cross-cutting tranche gate
@@ -813,8 +839,10 @@ losses. A post-hoc aligner over independently supplied masters instead emits cor
 a named edit model, cost/tie policy, resource bound, ambiguity, and unmatched residue. That result
 does not become historical provenance merely because its trace has the same pair shape; an
 explicit promotion must retain the assumption and policy stamp. K6 closes the declared relation
-carrier first. Normalization and computed alignment are later K6-compatible producers under F7,
-not K6 prerequisites and not a parallel origin type built before the carrier.
+carrier first. F7a distance/edit-script/correspondence is independently useful and does not build
+an origin type; F7b normalization/performed-transform origin production waits for K6; F7c explicit
+promotion/materialization integration waits for the K6/K7 carriers it names. None is a K6
+prerequisite.
 
 ### K7 — rewrite plans and <code>Materialize</code>
 
@@ -875,7 +903,12 @@ non-domain-owning cross-carrier examples:
 These are integration demonstrations, not the first validation of their component contracts and
 not durable codex-scientiae adapters unless separately promoted.
 
-## 6A. Independent and post-K expansion lanes (D41)
+## 6A. Dependency-split expansion lanes (D41, amended)
+
+ThermoMapper is mined here for transferable numerical/HPC patterns and useful capabilities, not
+for policy. Donor-local implementation gates do not constrain Doccer. Where a donor implementation
+is incomplete, the Doccer lane states the stronger contract the lift must satisfy; repair guidance
+for ThermoMapper itself lives in that repository's auxiliary review.
 
 ### V0–V2 — code-unit vectors
 
@@ -893,17 +926,18 @@ F3 byte addressing is a separate coordinate map. Freeze:
   with producer evidence.
 
 A harvest result connects unit evidence to emitted candidates; it does not equate a vector
-residual with an occurrence selection or K4 result residual. V1 defaults after K8 and lands a
-portable reference plus both exits before optimization. V2 may add word/SWAR,
+residual with an occurrence selection or K4 result residual. V1 is independently available after
+V0 and lands a portable reference plus both exits before optimization. V2 may add word/SWAR,
 <code>Vector&lt;T&gt;</code>, or architecture-specific backends only for measured operations and
 must agree differentially with V1 across remainder units, chunk boundaries, surrogate edges,
 residual zones, and runtime fallback paths. A layout technique such as
 <code>MemoryMarshal.Cast</code> supplies no semantic or portability shortcut.
 
-### A0–A2 — measured backend work
+### A0–A2 — measured backend work and transfer repertoire
 
 A0 records named dense/sparse selection, graph, and path workloads with elapsed-time and allocated
-byte baselines. No source rewrite is called a hot-path optimization before that evidence exists.
+byte baselines. This is Doccer's evidence rule for its own alternate-backend claims, not a gate
+borrowed from ThermoMapper.
 
 - **A1:** walk <code>ClaimSelection</code> words using trailing-zero count and clear-lowest-bit,
   preserving ascending ordinals and the existing interface contract. A normal struct/pattern
@@ -915,26 +949,55 @@ byte baselines. No source rewrite is called a hot-path optimization before that 
 
 D30's mask/word-boundary oracle and D37's 16,384-problem optimizer oracle remain the semantic
 gates. D20's public column boundary and the retained identity of named policy objects do not move.
-CSR/sweep layouts, pooled scratch, or column-vector kernels wait for a remaining measured cost and
-fall under F4 or another separately closed contract.
+The per-capability HPC repertoire includes span-first destination kernels,
+count-prefix-fill exact allocation, flat/SoA layouts, operation- or worker-owned scratch,
+set/edge-once iteration, bounded top-K heaps, stable/mergeable online reductions, structural RNG
+fan-out, and a reference backend paired with differential accelerated or incremental paths. It is
+not one generic HPC library. Extract a shared primitive only after two admitted consumers agree on
+lifetime, layout, semantics, and evidence.
 
-### F7–F9 — post-K/adjacent families
+### F7 — correspondence and derived origins
 
-- **F7 derived producers and alignment:** performed transforms may emit origins plus loss;
-  post-hoc alignment emits correspondence/ambiguity/unmatched evidence and requires explicit
-  provenance promotion.
-- **F8 hashing/signatures/sketches:** D1 identity commitment, verified material prefilter,
-  similarity signature, and aggregate sketch are four jobs. Prefix/rolling hashes and LSH name
-  their algorithm, version, seed/domain, unit/byte basis, and portability; a positive fast-hash
-  match never proves exact equality without material verification.
-- **F9 statistical feature views:** IDF/surprisal, saturating frequency, length normalization,
-  contextual entropy, PMI/PPMI, and embeddings remain separately named specimens. Each declares
-  its population, feature projection, grain/window, smoothing, direction, and normalization;
-  D8/D10 decide kernel versus adjacent analytics placement.
+- **F7a distance/correspondence, independent:** exact and thresholded edit distance, edit scripts
+  or another correspondence carrier, ambiguity/unmatched residue, and named cost/tie/resource
+  policy. This evidence is useful without claiming provenance.
+- **F7b performed transforms, after K6:** normalization or another performed transform may emit
+  actual K6 origins plus loss/unmapped residue.
+- **F7c promotion/integration, after named carriers:** computed correspondence becomes assumed
+  origin only through explicit promotion retaining its assumptions; K7 materialization consumes
+  promoted or performed-origin evidence.
 
-V1/V2 and F7–F9 default after K8 to keep the present execution queue intelligible. That is a
-scheduling preference, not a type dependency; a closed, independently witnessed contract may be
-pulled forward under D14.
+### F8 — direct comparison, hashes, indexes, and sketches
+
+- **F8a direct comparison/hash substrate, independent:** code-unit/byte hash kernels, Hamming,
+  Jaccard/Dice, cosine, edit distance, and normalized-compression-style measures each say whether
+  they are exact or heuristic and name their domain, empty/zero convention, direction,
+  normalization, bounds, and verification role.
+- **F8b rolling/content-defined producers, independent:** prefix/rolling window fingerprints,
+  repeated-material prefilters, and boundary collectors name recurrence/window, algorithm/version,
+  seed/trigger, byte/code-unit basis, canonical serialization, and exact boundary verification.
+- **F8c signatures/candidate indexes:** MinHash, SimHash, locality digests, LSH, and bounded top-K
+  stamp feature preprocessing and parameters; they generate candidates, never proof.
+- **F8d streaming sketches:** Bloom, Count-Min, and HyperLogLog-like state declares key projection,
+  population, error, saturation, and merge semantics; it never masquerades as exact selection.
+
+D1 identity remains separate. F8a/F8b need no K type; current batches/selections can witness F8c/
+F8d in memory, later facts can supply another population, and persisted forms wait for F2.
+
+### F9 — statistical features and ranked views
+
+- **F9a counted/online views, independent:** exact histograms/frequencies and Welford-style
+  accumulators over a named current population, key projection, grain, smoothing, overflow, and
+  merge rule.
+- **F9b fitted feature artifacts:** IDF/surprisal, saturation, length normalization,
+  co-occurrence/PMI/PPMI/entropy, and dense/sparse embeddings freeze vocabulary/column identity,
+  population, window, smoothing, direction, normalization, and OOV/residual policy.
+- **F9c ranked queries:** candidate population, exact/approximate score, deterministic tie rule,
+  top-K completeness, and any candidate-index verification are explicit.
+
+D8/D10 decide kernel versus adjacent placement one named capability at a time. Most substantial
+F8/F9 implementations remain after the current K queue by priority, not type dependency. F9a and
+small F8a/F8b contract/current-carrier witnesses may proceed independently under D14.
 
 ## 7. Deferred Lean rigor lane
 
@@ -1051,11 +1114,11 @@ Known concrete geometry continues to use exact joins and validators.
 | F4 indexed joins | acceleration after K2/K3 reference semantics |
 | F5 agreement scoring | after K4 selection/result shape |
 | F6 Markdown succession | bounded witness during K4/K5, durable adapter after the kernel surface stabilizes |
-| V0–V2 code-unit vectors | V0 contract independently available; V1 portable reference and two exits after K8 by default; V2 only after measured differential evidence |
-| A0–A2 measured backend work | independently available under frozen D30/D37 semantics; benchmark/allocation baseline first |
-| F7 derived producers/alignment | after K6/K7 by default; computed correspondence is not automatically provenance |
-| F8 hash/signature/sketch work | after K8 by default; separate from D1 identity and F4 indexing semantics |
-| F9 statistical feature views | post-K or adjacent analytics; one named population/basis/measure at a time under D8/D10 |
+| V0–V2 code-unit vectors | V0 contract and V1 portable reference/two exits independently available; V2 only after Doccer-measured differential evidence |
+| A0–A2 measured backend work | independently available under frozen D30/D37 semantics; HPC patterns apply per capability rather than through a common framework |
+| F7 correspondence/derived origins | F7a distance/correspondence independent; F7b requires K6; F7c promotion/materialization integration requires its named K6/K7 carriers |
+| F8 direct measures/hash/rolling/signature/index/sketch work | F8a/F8b independent; current populations can witness in-memory F8c/F8d; persisted artifacts after F2; always separate from D1 identity |
+| F9 statistical feature/ranked views | F9a independent over current populations; fitted/search work post-K by priority; fact/origin recipes wait only for named carriers; D8/D10 decide engine versus adjacent placement |
 | F-UCD | independent fact-data lane; unchanged |
 
 D40 restores historical **register** to its native codepoint-address meaning and decomposes the
@@ -1095,8 +1158,11 @@ coherence/K5–K7 sequencing correction as D40, and the round-2 expansion adjudi
 K3, and all K4 lanes are closed. K5a canonical
 fact/support identity is the default active next chip; K6 origin-contract work is an independently
 available sibling. K5b saturation follows K5a and does not block K6 or K7. D41 records the
-round-2 expansion adjudication without changing those edges: V0 carrier-contract work and A0–A2
-measured backend work are independently available; V1/V2 and F7–F9 default after K8.
+round-2 capability excavation without changing those edges: V0/V1, A0–A2, F7a, F8a/F8b contract
+work, and F9a current-population work are independently available. V2 follows reference semantics
+and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes wait only for
+their named carriers. Most broader F8/F9 implementation remains post-K execution priority rather
+than a K8 type dependency.
 
 D37 reapplies the global-optimality Lean trigger and keeps Lean deferred under one closed finite-DAG
 recurrence plus exhaustive differential evidence. D39 separately reapplies the K4c structural gate

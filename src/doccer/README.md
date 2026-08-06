@@ -89,10 +89,11 @@ span carrier:
 D41 additionally reserves a future Boolean-vector carrier over UTF-16 code-unit ordinals in an
 exact window on a compatible master value. Its zero vector is not an interval empty; direct
 numerical consumption and explicit candidate/claim harvest are separate exits, and incomplete
-classification remains unit-basis residual rather than occurrence residue. V0 contract work is
-independently available, but no vector type, classifier surface, harvest API, or accelerated
-backend is implemented yet. Any byte-addressed vector requires F3's separate coordinate map rather
-than aliasing the UTF-16 basis.
+classification remains unit-basis residual rather than occurrence residue. V0 contract work and
+the following V1 portable reference/two-exit implementation are independent of K5–K8, but no
+vector type, classifier surface, harvest API, or accelerated backend is implemented yet. V2 still
+requires a named Doccer workload and differential evidence. Any byte-addressed vector requires
+F3's separate coordinate map rather than aliasing the UTF-16 basis.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
@@ -279,7 +280,13 @@ closes honestly without one:
   policy, exclusions);
 - the D41 code-unit-vector substrate: V0 must first freeze compatible-window equality, Boolean and
   chunk-carry operations, classifier/residual stamps, scalar-boundary harvest, and its separate
-  direct/harvest exits; V1 portable reference semantics precede V2 word/SWAR/SIMD backends;
+  direct/harvest exits; independent V1 portable reference semantics precede V2 word/SWAR/SIMD
+  backends;
+- D41 measured implementation work: A0–A2 cover Doccer-owned workload/allocation evidence, a
+  sparse set-bit walker, and reconstruct-once flat-path recurrence. A separate per-capability HPC
+  repertoire applies to each admitted capability—span destinations, count-prefix-fill, flat/SoA layouts, operation/worker
+  scratch, bounded heaps, online reductions, deterministic parallel state, and reference/fast
+  backend pairing—not a generic HPC framework or imported ThermoMapper policy;
 - suppression bitmaps as one later vector consumer/acceleration of the suppression query, never a
   claim property or second source of truth;
 - Unicode block and script properties as break-key facts: unlike the major-class fold, they would
@@ -295,18 +302,28 @@ closes honestly without one:
   other ties—require separately named contracts rather than widening D37 silently. Structural
   optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
   contracts, not implications of D39;
-- F7 derived origin/alignment producers, F8 material-prefilter/hash/signature/sketch contracts, and
-  F9 statistical feature views. A performed transform may emit actual origins; post-hoc alignment
-  is correspondence evidence unless explicitly promoted. Fast hashes must verify positive matches
-  before exact equality, while IDF/entropy/PMI/BM25-style ideas each require a named population,
-  feature basis, direction, and policy before kernel or adjacent-analytics placement.
+- F7a exact/thresholded distance and correspondence independently; F7b performed-transform origin
+  production after K6; and F7c explicit correspondence-to-origin promotion/materialization
+  integration after its K6/K7 carriers. A performed transform may emit actual origins; post-hoc
+  alignment is correspondence evidence unless explicitly promoted;
+- F8a direct comparison/hash substrate, F8b rolling/content-defined producers, F8c similarity
+  signatures/candidate indexes, and F8d streaming sketches. Fast prefilters verify positive matches
+  before exact equality; approximate candidates/statistics retain their own basis, parameters,
+  error, and merge contracts;
+- F9a counted/online views, F9b immutable fitted dense/sparse feature artifacts, and F9c ranked
+  queries. IDF/entropy/PMI/BM25-style ideas each require a named population, feature/vocabulary
+  basis, window, smoothing, direction, normalization, residual/OOV behavior, score, and tie policy
+  as applicable before kernel or adjacent-package placement. Current batches/selections can witness
+  F8/F9; fact/origin recipes wait only for the carriers they name.
 
 This is a growing kernel, not a closed specification. Additions to the engine must pass the
 admission test: deterministic; eliminates repeated mechanical work; preserves literal source
 material; decides nothing about meaning. A feature failing the last test belongs in an adapter
 or the consumer. D41 permits a low-level code-unit-vector peer carrier once V0 closes; it does not
-embed what a vector means. Syntax recognition remains in external adapters or declarative
-inventories unless a separately admitted domain-neutral mechanism is demonstrated.
+embed what a vector means. ThermoMapper is evidence for transferable patterns and capabilities,
+not authority over Doccer sequencing or gates; donor shortcomings become acceptance requirements
+of a lift. Syntax recognition remains in external adapters or declarative inventories unless a
+separately admitted domain-neutral mechanism is demonstrated.
 
 ## Build boundaries
 

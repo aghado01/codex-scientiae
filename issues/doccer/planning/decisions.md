@@ -68,23 +68,30 @@ briefs carry the later contracts with their reports — and the evidence in
 | D38 | K4c contract freeze: structural validators, greedy laminar admission, explicit/nearest hierarchy, and resolution incidence are four separate gates; `PackingView` means disjoint-with-gaps, `CoverView` means total declared-window coverage with overlap allowed, `LaminarView` validates without selecting or inferring parenthood, hierarchy edges are explicit DAG data except for one named nearest-container projection, and resolution maps distinguish incidence, functional aggregation, and exact material aggregation; no K4b dependency or common selector lands | recorded; implemented by D39 |
 | D39 | K4c structural-family closure: exact selection/window/policy-stamped packing, cover, and laminar validators; `Laminarizer.Admit` with grouped maximum priority and deterministic inclusion-maximal—not maximum—guarantee; explicit multiple-parent `HierarchyView` plus policy-gated immediate nearest-container projection; named `ResolutionView` layers and compatible-master explicit `ResolutionMap` incidence/functional/exact-aggregation contracts; the unstamped `Extract`/implicit-tree path is removed; all 1,024 structural masks, 4,096 greedy problems, every valid bounded nearest-parent family, all 4,096 four-node directed graphs, and 2,048 resolution endpoint problems agree with independent oracles (harness 1914→1976) | implemented; K4c closed; next lanes resequenced by D40; Lean gate reapplied and deferred |
 | D40 | Post-K4 coherence and K5–K7 sequencing correction: Doccer's historical “register” is natively a named codepoint-address span or family of spans; Block/Script/GeneralCategory assignments are Unicode classifications derived from register membership; the canonical mathematical language is the unrelated **math channel** (legacy repository name `math-register`); the combined register/value/metadata blocker is decomposed into F-UCD register/classification work, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a derivation-reference seam into K7; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; terminology amended after owner clarification; K5a/K5b/K6/K7 surfaces remain pending |
-| D41 | Round-2 expansion adjudication: the K5a/K5b and K6→K7→K8 critical paths remain unchanged; V0 independently reserves a compatible-master/exact-window UTF-16 code-unit Boolean-vector carrier with distinct direct and harvest exits, unit-basis residual, scalar reference semantics, and evidence-gated alternate backends; A0–A2 independently baseline and then target exact set-bit walking and flat-path reconstruction without reopening D20 or policy identity; normalization performed by a producer may emit origins, while post-hoc alignment remains stamped correspondence evidence unless explicitly promoted; identity commitments, verified material prefilters, similarity signatures, and aggregate sketches remain separate hash jobs; F2 gains a persisted fingerprint algorithm/version/byte-order gate and F7–F9 retain derived producers/alignment, hash/signature/sketch, and statistical-view families | recorded; planning/registry amendment only; no source surface or K dependency changed |
+| D41 | Round-2 capability excavation: the K5a/K5b and K6→K7→K8 critical paths remain unchanged; ThermoMapper contributes transferable concepts/patterns/prototype capabilities but no Doccer policy or gate; donor defects become lift acceptance requirements while donor-facing maintenance guidance stays in ThermoMapper; V0/V1 independently define and realize a compatible-master/exact-window UTF-16 code-unit Boolean-vector carrier with distinct direct/harvest exits and unit-basis residual; A0–A2 retain Doccer-measured set-bit/path candidates alongside a separate per-capability HPC repertoire; F7 splits independent distance/correspondence from K6/K7 transform-origin/promotion integration; F8 splits direct measures/hash substrate, rolling/content-defined producers, signatures/candidate indexes, and streaming sketches; F9 splits counted/online views, immutable fitted feature artifacts, and ranked queries; each subchip schedules by its actual carrier inputs rather than a blanket K8 dependency; F2 retains persisted algorithm/version/byte-order identity | recorded; amended after owner clarification; planning/registry only; no source surface or K edge changed |
 
 ## Expansion round-two adjudication (D41)
 
-D41 separates the three research threads in the
+D41 separates the research threads in the
 [round-2 transcript](../discussions/opus-doccer-expansion-round2.md) and its
-[source adjudication](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md).
+[capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md).
 The current K sequence is not reopened. K5a remains the default next chip, K5b and K6 remain
 sibling lanes, K7 follows K6, and K8 remains their integration close.
+
+The source rule is explicit after owner clarification: excavate transferable HPC concepts and
+capabilities rather than asking whether a ThermoMapper file can be ported verbatim. Donor defects
+define what a sound Doccer lift must fix; ThermoMapper's local adoption cautions, benchmark gates,
+placement decisions, and proof policy have no authority over Doccer. ThermoMapper-facing repair
+guidance is retained in `D:\aghado01\ThermoMapper\issues\doccer-excavation-hpc-hashish-review-20260806.md`,
+not in this canon.
 
 V0 is an independently available registry/contract lane. It reserves a Boolean value over the
 UTF-16 code-unit ordinals of an exact window on a compatible `TextMaster` value. Direct numerical
 consumption and explicit candidate/claim harvest are separate exits. A classifier's incomplete
 unit population remains vector-basis residue; a harvest result may connect that evidence to
 emitted candidates without equating code-unit and occurrence bases. F3 byte addressing remains a
-separate coordinate map. V1 defaults after K8 for portable reference semantics and both exits;
-V2 adds word/SWAR/SIMD paths only after a named workload and differential evidence. Reapply Lean
+separate coordinate map. V1 is independently available after V0 for portable reference semantics
+and both exits; V2 adds word/SWAR/SIMD paths only after a named Doccer workload and differential evidence. Reapply Lean
 at the public V0 contract and before an alternate backend claims equivalence; bit packing alone
 does not activate the harness.
 
@@ -94,18 +101,27 @@ recurrence that retains one best successor per boundary and reconstructs once. B
 the frozen D30/D37 results and oracles. D20 numeric-column visibility remains contractual, and
 named policy objects remain retained evidence stamps. Ambient `RegexOptions.NonBacktracking`,
 public column exposure, `MemoryMarshal.Cast<char, ulong>` as a semantic design, and generic struct
-policy rewrites are not adopted.
+policy rewrites are not adopted. The per-capability HPC repertoire is not one framework:
+span-first destinations, count-prefix-fill, flat layouts, operation/worker scratch, bounded heaps, online reductions,
+deterministic parallel state, and reference/fast pairing apply inside each admitted capability.
+The measurement rule is Doccer's own evidence standard, not inherited donor policy.
 
 A producer that performs normalization or another transformation may emit actual K6 origins. A
 post-hoc aligner instead emits correspondence under a named edit model, cost/tie rule, resource
 limit, ambiguity, and unmatched residue; it becomes provenance only through an explicit promotion
-that retains those assumptions. K6 therefore stays the small declared origin algebra, while F7
-holds later derived producers and alignment. F8 distinguishes the D1 identity commitment from
-verified material prefilters, lossy similarity signatures, and aggregate sketches. A fast hash
-may reject equality cheaply but never establishes it without comparing the material. F9 retains
-IDF/surprisal, saturating frequency, length normalization, contextual entropy, PMI/PPMI, and
-embedding concepts as individually named, basis-stamped analytics candidates under D8/D10 rather
-than one generic score.
+that retains those assumptions. K6 therefore stays the small declared origin algebra. F7a
+distance/edit-script/correspondence is independent; F7b performed-transform origins require K6;
+F7c promotion/materialization integration requires the K6/K7 carriers it names.
+
+F8 distinguishes the D1 identity commitment from direct comparison/hash substrate,
+rolling/content-defined producers, lossy signatures/candidate indexes, and streaming sketches. A
+fast hash may reject equality cheaply but never establishes it without comparing material. These
+low-level contracts do not depend on K8; persistence still depends on F2 identity. F9 retains
+counted/online views, IDF/surprisal, saturating frequency, length normalization, contextual
+entropy, PMI/PPMI, immutable dense/sparse fitted feature artifacts, and deterministic ranked
+queries. Existing batches/selections can witness F8/F9 now; fact/origin recipes wait only for K5/K6.
+D8/D10 decide engine versus adjacent placement one named capability at a time, not by the donor's
+application domain.
 
 ## Post-K4 coherence and K5–K7 sequencing correction (D40)
 
@@ -668,9 +684,9 @@ their result semantics interchangeable.
 | F4 | Indexed joins / lookup acceleration | semantics are the contract; pure acceleration | Tier-2 tests freeze semantics |
 | F5 | Tier-2/3 acceptance, agreement scoring | needs an honest pair of independent producers (ATX vs setext natural) | markdown inventory exists |
 | F6 | Markdown adapter + mdnav succession | oracle harness vs mdnav on doc-dive fixtures; exceed at the collapse points (quote-nested fences, setext/ATX disagreement, multi-line HTML, H1×breaks join); conserve instrument virtues; doc-dive skill retargets unchanged | Phase-2 exit + markdown inventory |
-| F7 | Derived origin and alignment producers | normalization or another performed transform may emit actual K6 origins plus loss; post-hoc alignment first emits basis/policy-stamped correspondence, ambiguity, unmatched residue, and resource evidence, and becomes provenance only through explicit promotion | after K6/K7 core by default; first normalization/version-alignment witness may prioritize |
-| F8 | Material prefilters, rolling hashes, similarity signatures, and aggregate sketches | distinct from D1 identity; positive hash matches are verified before exact equality; every persisted/indexed value names algorithm, version, seed/domain, byte/code-unit basis, and portability; content-defined boundaries and LSH remain named producer/index contracts | after K8 by default; repeated equality, chunking, novelty, or similarity-index workload |
-| F9 | Statistical feature and weighting views | retain IDF/surprisal, saturating frequency, length normalization, contextual entropy, PMI/PPMI, and embeddings as separately named basis-stamped specimens; each declares population, feature projection, grain/window, smoothing, direction, and normalization; placement remains kernel vs adjacent analytics under D8/D10 | after K8 by default; repeated cross-domain population/feature witness |
+| F7 | Distance/correspondence and derived-origin producers | F7a exact/thresholded distance plus edit-script/correspondence evidence is independent and never historical provenance by itself; F7b performed transforms may emit actual K6 origins plus loss; F7c explicit promotion/materialization integration retains policy, ambiguity, unmatched, and resource evidence | F7a independently schedulable; F7b after K6; F7c after the K6/K7 carriers it consumes |
+| F8 | Direct comparison/hash substrate, rolling/content-defined producers, signatures/candidate indexes, and streaming sketches | distinct from D1 identity; each measure says exact or heuristic; positive prefilter matches are verified before exact equality; approximate indexes never become proof; every artifact names algorithm/version, seed/domain, byte/code-unit/feature basis, preprocessing, parameters, portability, and error/merge semantics as applicable | F8a/F8b contract or current-carrier witness independently schedulable; broader implementation after current K by priority, not dependency; persisted forms after F2 |
+| F9 | Counted/online views, fitted feature artifacts, and ranked queries | retain exact counts/histograms, Welford-style aggregates, IDF/surprisal, saturation, length normalization, contextual entropy, PMI/PPMI, dense/sparse embeddings, and bounded top-K as separately named basis-stamped capabilities; each declares population, feature/vocabulary identity, grain/window, smoothing, direction, normalization, residual/OOV, merge/error, score, and tie policy as applicable | F9a over current batches/selections independently schedulable; fitted/search work defaults after current K; fact/origin recipes wait only for their named carriers; D8/D10 decide engine vs adjacent placement |
 | F-UCD | Unicode block/script facts | decision-gated: needs a UCD data-provenance record (pinned version, tables as versioned data, lazily computed); then lands as ordinary `AtomFacts` selectors | schedulable any time (D14) |
 
 ## Question ledger
@@ -700,16 +716,16 @@ their result semantics interchangeable.
 | Q21 | when codex-scientiae adapters land | roadmap — CLI + primitives first, adapters last |
 | Q22 | PerLine terminator in or out | D15 |
 | Q23 | regex options vs ambient culture (T2-2) | D18 |
-| Q24 | bitmap/vector substrate placement and residual basis | D41 — V0 peer carrier; direct and harvest exits; unit residual remains distinct |
+| Q24 | bitmap/vector substrate placement and residual basis | D41 — V0/V1 independent peer-carrier lane; direct and harvest exits; unit residual remains distinct |
 | Q25 | performed transform origin vs post-hoc alignment | D41 — actual origins from the producer; correspondence evidence needs explicit promotion |
-| Q26 | one hash utility vs distinct jobs | D41 — identity, verified material prefilter, signature, and sketch remain separate contracts |
+| Q26 | one hash utility vs distinct jobs | D41 — identity, direct comparison/hash substrate, verified rolling/material prefilter, signature/candidate index, and streaming sketch remain separate contracts |
 
 ## Open (no decision record yet)
 
 - **K5a canonical value representation and derivation-reference identity:** active contract work;
   codepoint registers and their Unicode classifications are F-UCD, while the math channel (legacy
   repository name `math-register`) is unrelated adapter/application design (D40).
-- **V0 code-unit-vector contract:** exact public basis/equality, classifier/residual result shape,
-  chunk carry, and the two direct/harvest exits are independently available contract work (D41);
-  no source type or backend is yet implied.
+- **V0/V1 code-unit-vector lane:** exact public basis/equality, classifier/residual result shape,
+  chunk carry, the two direct/harvest exits, and a portable reference are independently available
+  work (D41); an accelerated backend still follows the reference and measured differential evidence.
 - **Per-line terminator-kind view** (D15): named, unscheduled.
