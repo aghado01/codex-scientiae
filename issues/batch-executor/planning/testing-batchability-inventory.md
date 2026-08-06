@@ -184,6 +184,48 @@ Current inventory after BEX-506:
 | `SerialOnly` | 0 |
 | **Total** | **45 files / 482 observed tests / 469 textual `It` lines** |
 
+### BEX-507 final migration
+
+BEX-507 preserves all historical measurements and re-audits the eight remaining `NeedsRefactor` files:
+
+| File | Final class | Migration evidence |
+|---|---|---|
+| `tests/adapters/latex-batch.Tests.ps1` | `CapabilityGated` | The live Node/KaTeX assertion has an exact preflight and reasoned skip; the child receives only the pinned capability path. |
+| `tests/infrastructure/node-dependencies.Tests.ps1` | `CapabilityGated` | Filesystem checks remain portable; only the Git-index assertion is gated by an exact Git probe and reasoned skip. |
+| `tests/infrastructure/path-topology.Tests.ps1` | `CapabilityGated` | Portable repository topology is separate from the explicitly gated host-MCP executable check; the same container now freezes the one-adapters-module/one-runner/one-parallel-composition/no-sidecar topology. |
+| `tests/latex-ingest/latex-ingest-compat.Tests.ps1` | `CapabilityGated` | Namespace isolation remains portable; the three legacy conversions use explicit rendering-capability gates and `$TestDrive` scratch. |
+| `tests/md-postprocess/md-bundle.Tests.ps1` | `CapabilityGated` | Portable bundling is independent of a separately gated exact Python/CairoSVG rasterization assertion; all scratch uses `$TestDrive`. |
+| `tests/hdbscan/hdbscan.Tests.ps1` | `CapabilityGated` | The packaged executable is preflighted and no ambient `dotnet` build fallback remains; every case builds its own fixture and all retained CLI work uses the assigned container artifact root. |
+| `tests/procurement/zenodo.Tests.ps1` | `Batchable` | Repository config is derived from `$PSScriptRoot` and asserted present; staging is `$TestDrive`-local. |
+| `tests/reader-mcp/reader-mcp.Tests.ps1` | `Batchable` | JSON-RPC children use the absolute current PowerShell host, bounded redirected UTF-8 I/O, timeout, tree kill, and `finally` disposal. |
+
+The HDBSCAN batch symptom did not reveal a LaTeX/HDBSCAN shared-path collision. All nine Pester assertions
+passed, but native stderr was written directly and the last deliberately nonzero CLI probe left exit status
+1, contaminating the worker protocol after Pester completed. A local captured-process helper now owns
+stdout, stderr, and status; resets `$LASTEXITCODE`; and confines retained work to
+`pester-jobs/<container>/artifacts/hdbscan-cli`. The repaired file is 9/9 by exact-path sequential execution,
+and its singleton executor job succeeds with exit status zero, no executor error, and 36 artifacts below
+that root. No LaTeX/HDBSCAN shared-path collision remains.
+
+The final repaired-tree Pester 6 sequential gate selected 484 tests in 111.988 seconds: 482 passed, none
+failed, and 2 were explicitly skipped. Its only warnings were the two existing unresolved/out-of-root LaTeX
+inputs. The complete four-worker repository gate then admitted every physical file through ordinary path
+selection. All 45 jobs succeeded in 108.007 seconds with the same observed outcomes. The run retained 45
+`pester.xml` reports and 143 produced files, with zero file outside declared `Writes`, zero missing result,
+and zero surviving worker; repository status was stable. The one additional
+topology assertion and one separate SVG-rasterization assertion move the current mechanical count from 469
+to 471 textual `It` blocks and the observed count from 482 to 484.
+
+Final inventory after BEX-507:
+
+| Class | Files |
+|---|---:|
+| `Batchable` | 35 |
+| `CapabilityGated` | 10 |
+| `NeedsRefactor` | 0 |
+| `SerialOnly` | 0 |
+| **Total** | **45 files / 484 observed tests / 471 textual `It` blocks** |
+
 ## BEX-501 exit gate
 
 - All 43 BEX-501 physical files have an exact-path isolation result, observed count, approximate wall time,
@@ -192,5 +234,5 @@ Current inventory after BEX-506:
 - Admission decisions use hooks, state, writes, external resources, capability behavior, and failure
   containment; no file was admitted from discovery names alone.
 - BEX-501 is closed. BEX-502 froze D23, BEX-503 hardened the runner, BEX-504 validated and reclassified both
-  pilots, BEX-505 implemented Pester artifact transport, and BEX-506 added the thin product shell; BEX-507
-  is the next and only unblocked ticket.
+  pilots, BEX-505 implemented Pester artifact transport, BEX-506 added the thin product shell, and BEX-507
+  migrated the full repository and closed Phase 5 with no refactor or serial residue.

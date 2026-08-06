@@ -93,6 +93,108 @@ BeforeAll {
         }
         return $failures.ToArray()
     }
+
+    function Get-PesterBatchTopologyFailures {
+        $failures = [System.Collections.Generic.List[string]]::new()
+        $adapterRoot = Join-Path $script:RepoRoot 'src/adapters'
+        $expectedManifest = Join-Path $adapterRoot 'adapters.psd1'
+        $expectedModule = Join-Path $adapterRoot 'adapters.psm1'
+
+        $adapterManifests = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -Filter *.psd1 -File)
+        if ($adapterManifests.Count -ne 1 -or
+            $adapterManifests[0].FullName -ne $expectedManifest) {
+            $failures.Add('Pester and LaTeX planners must share only src/adapters/adapters.psd1')
+        }
+        $adapterModules = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -Filter *.psm1 -File)
+        if ($adapterModules.Count -ne 1 -or $adapterModules[0].FullName -ne $expectedModule) {
+            $failures.Add('Pester and LaTeX planners must share only src/adapters/adapters.psm1')
+        }
+
+        $oldPaths = @(
+            (Join-Path $adapterRoot ('public/Get-' + 'TestBatchJob.ps1'))
+            (Join-Path $adapterRoot ('private/test-' + 'address.ps1'))
+            (Join-Path $adapterRoot ('private/test-' + 'discovery.ps1'))
+            (Join-Path $script:RepoRoot ('tests/adapters/test-' + 'batch.Tests.ps1'))
+        )
+        foreach ($oldPath in $oldPaths) {
+            if ([System.IO.File]::Exists($oldPath)) {
+                $failures.Add("retired generic Pester adapter path returned: '$oldPath'")
+            }
+        }
+        $adapterSource = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -File | Where-Object {
+                $_.Extension -in @('.ps1', '.psm1', '.psd1', '.md')
+            } | ForEach-Object { [System.IO.File]::ReadAllText($_.FullName) }) -join "`n"
+        if ($adapterSource -match 'Get-TestBatchJob|\bTestBatch|test-batch|test-jobs') {
+            $failures.Add('live adapter source contains a retired generic Pester adapter name')
+        }
+
+        $testSidecars = @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'tests') `
+                -Recurse -File | Where-Object {
+                $_.Name -match '(?i)\.Tests\.(?:json|psd1|ya?ml)$' -or
+                $_.Name -match '(?i)\.(?:batch|resources|workload)\.(?:json|psd1|ya?ml)$'
+            })
+        foreach ($sidecar in $testSidecars) {
+            $relative = [System.IO.Path]::GetRelativePath($script:RepoRoot, $sidecar.FullName)
+            $failures.Add("per-container batch sidecar is not allowed: '$relative'")
+        }
+
+        $runnerOwners = [System.Collections.Generic.List[string]]::new()
+        $compositionOwners = [System.Collections.Generic.List[string]]::new()
+        $scriptFiles = @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'src'),
+                (Join-Path $script:RepoRoot 'tests') -Recurse -File | Where-Object {
+                $_.Extension -in @('.ps1', '.psm1')
+            })
+        foreach ($scriptFile in $scriptFiles) {
+            $tokens = $null
+            $parseErrors = $null
+            $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+                $scriptFile.FullName, [ref]$tokens, [ref]$parseErrors)
+            $relative = [System.IO.Path]::GetRelativePath(
+                $script:RepoRoot, $scriptFile.FullName) -replace '\\', '/'
+            if ($parseErrors.Count -gt 0) {
+                $failures.Add("batch topology could not parse '$relative'")
+                continue
+            }
+            foreach ($command in @($ast.FindAll({
+                            param($node)
+                            $node -is [System.Management.Automation.Language.CommandAst]
+                        }, $true))) {
+                $name = $command.GetCommandName()
+                if ($name -in @('New-PesterContainer', 'Invoke-Pester')) {
+                    $runnerOwners.Add("$relative::$name")
+                }
+                if ($scriptFile.Name -notlike '*.Tests.ps1' -and $name -in @(
+                        'adapters\Get-PesterBatchJob'
+                        'batch-executor\New-BatchPlan'
+                        'batch-executor\Invoke-BatchPlan'
+                    )) {
+                    $compositionOwners.Add("$relative::$name")
+                }
+            }
+        }
+
+        $actualRunnerOwners = @($runnerOwners | Sort-Object)
+        $expectedRunnerOwners = @(
+            'tests/run.ps1::Invoke-Pester'
+            'tests/run.ps1::New-PesterContainer'
+        )
+        if (($actualRunnerOwners -join "`n") -ne ($expectedRunnerOwners -join "`n")) {
+            $failures.Add("repository Pester runner ownership drifted: $($actualRunnerOwners -join ', ')")
+        }
+        $actualCompositionOwners = @($compositionOwners | Sort-Object)
+        $expectedCompositionOwners = @(
+            'tests/parallel.ps1::adapters\Get-PesterBatchJob'
+            'tests/parallel.ps1::batch-executor\Invoke-BatchPlan'
+            'tests/parallel.ps1::batch-executor\New-BatchPlan'
+        )
+        if (($actualCompositionOwners -join "`n") -ne
+            ($expectedCompositionOwners -join "`n")) {
+            $failures.Add(
+                "repository Pester composition ownership drifted: $($actualCompositionOwners -join ', ')")
+        }
+
+        return $failures.ToArray()
+    }
 }
 
 Describe 'source path topology' {
@@ -104,9 +206,12 @@ Describe 'source path topology' {
     It 'keeps active literal source-code references pointed at existing files' {
         $failures = @(Get-LiteralSourcePathFailures)
         $failures.Count | Should -Be 0 -Because ($failures -join [Environment]::NewLine)
+
+        $batchFailures = @(Get-PesterBatchTopologyFailures)
+        $batchFailures.Count | Should -Be 0 -Because ($batchFailures -join [Environment]::NewLine)
     }
 
-    It 'keeps configured Codex MCP commands and script arguments resolvable' {
+    It 'keeps configured Codex MCP declarations and script arguments portable' {
         $failures = [System.Collections.Generic.List[string]]::new()
         $configPath = Join-Path $script:RepoRoot '.codex/config.toml'
         if (-not [System.IO.File]::Exists($configPath)) {
@@ -133,15 +238,14 @@ Describe 'source path topology' {
                 }
                 else {
                     $command = $commands[0].Groups['value'].Value
-                    $candidate = if ([System.IO.Path]::IsPathRooted($command)) {
-                        $command
-                    }
-                    else {
-                        Join-Path $script:RepoRoot $command
-                    }
-                    if (-not [System.IO.File]::Exists($candidate) -and
-                        -not (Get-Command $command -ErrorAction SilentlyContinue)) {
-                        $failures.Add(".codex/config.toml:$name command -> $command")
+                    # Repository-relative command paths are source topology. Absolute paths and bare
+                    # executable names belong to the host-capability assertion below.
+                    if (-not [System.IO.Path]::IsPathRooted($command) -and
+                        $command -match '[\\/]') {
+                        $candidate = Join-Path $script:RepoRoot $command
+                        if (-not [System.IO.File]::Exists($candidate)) {
+                            $failures.Add(".codex/config.toml:$name command -> $command")
+                        }
                     }
                 }
 
@@ -173,5 +277,51 @@ Describe 'source path topology' {
         }
 
         $failures.Count | Should -Be 0 -Because ($failures -join [Environment]::NewLine)
+    }
+
+    It 'resolves configured host-local Codex MCP executables when available' {
+        $configPath = Join-Path $script:RepoRoot '.codex/config.toml'
+        Test-Path -LiteralPath $configPath -PathType Leaf | Should -BeTrue `
+            -Because 'the portable topology assertion requires the repository MCP registry'
+
+        $toml = [System.IO.File]::ReadAllText($configPath)
+        $sectionRx = [regex]'(?ms)^\s*\[mcp_servers\.(?<name>[^\]\r\n]+)\]\s*(?<body>.*?)(?=^\s*\[|\z)'
+        $sections = @($sectionRx.Matches($toml))
+        $sections.Count | Should -BeGreaterThan 0
+
+        $hostCommands = @(foreach ($section in $sections) {
+                $name = $section.Groups['name'].Value
+                $commands = @([regex]::Matches(
+                        $section.Groups['body'].Value,
+                        '(?m)^\s*command\s*=\s*"(?<value>[^"\r\n]+)"\s*$'))
+                $commands.Count | Should -Be 1 `
+                    -Because ".codex/config.toml:$name must declare one command"
+                $command = $commands[0].Groups['value'].Value
+                if ([System.IO.Path]::IsPathRooted($command) -or $command -notmatch '[\\/]') {
+                    [pscustomobject]@{ Name = $name; Command = $command }
+                }
+            })
+        $probes = @(foreach ($record in $hostCommands) {
+                $available = if ([System.IO.Path]::IsPathRooted($record.Command)) {
+                    [System.IO.File]::Exists($record.Command)
+                }
+                else {
+                    $null -ne (Get-Command $record.Command -CommandType Application `
+                            -ErrorAction SilentlyContinue | Select-Object -First 1)
+                }
+                [pscustomobject]@{
+                    Name = $record.Name
+                    Command = $record.Command
+                    Available = $available
+                }
+            })
+        $missing = @($probes | Where-Object { -not $_.Available })
+        if ($missing.Count -gt 0) {
+            $reason = @($missing | ForEach-Object { "$($_.Name) -> $($_.Command)" }) -join '; '
+            Set-ItResult -Skipped -Because "configured MCP host executable unavailable: $reason"
+            return
+        }
+
+        $missing.Count | Should -Be 0
     }
 }

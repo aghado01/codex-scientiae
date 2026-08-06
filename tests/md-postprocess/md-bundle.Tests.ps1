@@ -8,7 +8,35 @@ BeforeAll {
     . "$PSScriptRoot/../../src/md-postprocess/md-bundle.ps1"
     $script:u8 = [System.Text.UTF8Encoding]::new($false)
 
-    $script:root = Join-Path ([System.IO.Path]::GetTempPath()) ("mdbundle-" + [guid]::NewGuid().ToString('N'))
+    function Get-MdBundleCairoSvgCapability {
+        $python = Get-Command python -CommandType Application -ErrorAction SilentlyContinue |
+            Select-Object -First 1
+        if (-not $python) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = 'Python required for SVG-to-PNG rendering is absent from PATH'
+                PythonPath = $null
+            }
+        }
+        $probeOutput = @(& $python.Source -c 'import cairosvg' 2>&1)
+        $probeExitCode = $LASTEXITCODE
+        $global:LASTEXITCODE = 0
+        if ($probeExitCode -ne 0) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = "Python at '$($python.Source)' cannot import CairoSVG"
+                PythonPath = $python.Source
+            }
+        }
+        return [pscustomobject]@{
+            Available = $true
+            Reason = $null
+            PythonPath = [System.IO.Path]::GetFullPath($python.Source)
+        }
+    }
+
+    $script:CairoSvgCapability = Get-MdBundleCairoSvgCapability
+    $script:root = Join-Path $TestDrive 'md-bundle'
     $script:srcDir  = Join-Path $root 'paper'
     $script:shelf   = Join-Path $root 'shelf'
     New-Item -ItemType Directory -Force -Path (Join-Path $srcDir 'p') | Out-Null
@@ -19,7 +47,6 @@ BeforeAll {
 # T
 
 ![figure 1](p/fig-1.png)
-![diagram](p/diagram-2.svg)
 ![web image](https://x.test/a.png)
 ![gone](p/never-made.png)
 '@, $u8)
@@ -43,12 +70,26 @@ Describe 'Copy-MdDeliverable — bundle + verify' {
         Test-Path $r.md | Should -BeTrue
         Test-Path $r.toc_md | Should -BeTrue
         Test-Path (Join-Path $r.bundle_dir 'images/fig-1.png') | Should -BeTrue
-        Test-Path (Join-Path $r.bundle_dir 'images/diagram-2.png') | Should -BeTrue
-        $r.links_total | Should -Be 3          # web link excluded
-        $r.assets_copied | Should -Be 2
+        $r.links_total | Should -Be 2          # web link excluded
+        $r.assets_copied | Should -Be 1
         @($r.assets_missing) | Should -Be @('p/never-made.png')
         @($r.links_broken) | Should -Be @('p/never-made.png')
         $r.clean | Should -BeFalse             # a broken link is never a clean bundle
+    }
+    It 'renders an SVG asset to PNG and rewrites the shipped link when CairoSVG is available' {
+        if (-not $script:CairoSvgCapability.Available) {
+            Set-ItResult -Skipped -Because $script:CairoSvgCapability.Reason
+            return
+        }
+        $svgMarkdown = Join-Path $srcDir 'svg-latex.md'
+        [System.IO.File]::WriteAllText(
+            $svgMarkdown, "# T`n`n![diagram](p/diagram-2.svg)`n", $u8)
+        $r = Copy-MdDeliverable -MarkdownPath $svgMarkdown -DestDir (Join-Path $root 'svg-shelf')
+        Test-Path (Join-Path $r.bundle_dir 'images/diagram-2.png') | Should -BeTrue
+        [System.IO.File]::ReadAllText($r.md, $u8) | Should -Match `
+            ([regex]::Escape('![diagram](images/diagram-2.png)'))
+        $r.assets_copied | Should -Be 1
+        $r.clean | Should -BeTrue
     }
     It 're-bundling is idempotent and a fully-resolved document verdicts clean' {
         $ok = Join-Path $srcDir 'ok-latex.md'

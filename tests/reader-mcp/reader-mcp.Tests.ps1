@@ -6,6 +6,13 @@
 Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
     BeforeAll {
         $script:Server = (Resolve-Path "$PSScriptRoot/../../src/mcp/reader-mcp/reader-mcp.ps1").Path
+        $script:ReaderPowerShell = [System.Environment]::ProcessPath
+        if ([string]::IsNullOrWhiteSpace($script:ReaderPowerShell) -or
+            -not [System.IO.Path]::IsPathFullyQualified($script:ReaderPowerShell) -or
+            -not (Test-Path -LiteralPath $script:ReaderPowerShell -PathType Leaf)) {
+            throw 'reader-mcp tests could not resolve the current absolute PowerShell host'
+        }
+        $script:ReaderPowerShell = (Resolve-Path -LiteralPath $script:ReaderPowerShell).Path
         $script:Fixture = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.Guid]::NewGuid().ToString('N'))
         $u8 = [System.Text.UTF8Encoding]::new($false)
 
@@ -42,15 +49,70 @@ Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
 
         function script:Invoke-Reader([string[]]$Calls) {
             $frames = @('{"jsonrpc":"2.0","id":0,"method":"initialize","params":{}}') + $Calls
-            $out = ($frames -join "`n") | pwsh -NoProfile -File $script:Server -Root $script:Fixture 2>$null
+            $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
+            $startInfo.FileName = $script:ReaderPowerShell
+            $startInfo.UseShellExecute = $false
+            $startInfo.CreateNoWindow = $true
+            $startInfo.RedirectStandardInput = $true
+            $startInfo.RedirectStandardOutput = $true
+            $startInfo.RedirectStandardError = $true
+            $startInfo.WorkingDirectory = $script:Fixture
+            $startInfo.StandardInputEncoding = [System.Text.UTF8Encoding]::new($false)
+            $startInfo.StandardOutputEncoding = [System.Text.UTF8Encoding]::new($false)
+            $startInfo.StandardErrorEncoding = [System.Text.UTF8Encoding]::new($false)
+            foreach ($argument in @(
+                    '-NoProfile', '-NonInteractive', '-File', $script:Server,
+                    '-Root', $script:Fixture)) {
+                [void]$startInfo.ArgumentList.Add($argument)
+            }
+
+            $process = [System.Diagnostics.Process]::new()
+            $process.StartInfo = $startInfo
+            $started = $false
+            try {
+                $started = $process.Start()
+                if (-not $started) { throw 'reader-mcp child PowerShell did not start' }
+                $stdoutTask = $process.StandardOutput.ReadToEndAsync()
+                $stderrTask = $process.StandardError.ReadToEndAsync()
+                foreach ($frame in $frames) { $process.StandardInput.WriteLine($frame) }
+                $process.StandardInput.Close()
+
+                if (-not $process.WaitForExit(15000)) {
+                    throw 'reader-mcp child PowerShell exceeded the 15 second test timeout'
+                }
+                $out = $stdoutTask.GetAwaiter().GetResult()
+                $stderr = $stderrTask.GetAwaiter().GetResult()
+                if ($process.ExitCode -ne 0) {
+                    throw "reader-mcp child PowerShell exited $($process.ExitCode): $stderr"
+                }
+            }
+            finally {
+                if ($started) {
+                    try {
+                        if (-not $process.HasExited) { $process.Kill($true) }
+                    }
+                    catch {}
+                    try {
+                        if (-not $process.HasExited) { [void]$process.WaitForExit(2000) }
+                    }
+                    catch {}
+                }
+                $process.Dispose()
+            }
+
             $parsed = @()
-            foreach ($l in @($out)) { if ($l -is [string] -and $l.StartsWith('{')) { $parsed += ($l | ConvertFrom-Json) } }
+            foreach ($l in @($out -split '\r?\n')) {
+                if ($l -is [string] -and $l.StartsWith('{')) { $parsed += ($l | ConvertFrom-Json) }
+            }
             return $parsed
         }
         function script:Payload($frame) { return ($frame.result.content[0].text | ConvertFrom-Json) }
     }
     AfterAll {
-        Remove-Item -LiteralPath $script:Fixture -Recurse -Force -ErrorAction SilentlyContinue
+        if (-not [string]::IsNullOrWhiteSpace($script:Fixture) -and
+            (Test-Path -LiteralPath $script:Fixture)) {
+            Remove-Item -LiteralPath $script:Fixture -Recurse -Force -ErrorAction SilentlyContinue
+        }
     }
 
     It 'discovers bundles by their .toc.jsonl and ignores directories that only hold markdown' {

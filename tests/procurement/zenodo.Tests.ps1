@@ -65,10 +65,18 @@ Describe 'Zenodo ID validation & parsing' {
 
 Describe 'Zenodo layout target resolution' {
     It 'expands templates into stage target object' {
-        $cfg = Get-ZenodoConfig 'D:\aghado01\codex-scientiae\src\procurement\zenodo-staging.json'
-        $target = Resolve-ZenodoStageTarget -Meta $script:ZenodoFixture -Config $cfg -StagingRoot 'D:\aghado01\codex-scientiae\ingestion\_inbox'
+        $configPath = [System.IO.Path]::GetFullPath(
+            (Join-Path $PSScriptRoot '../../src/procurement/zenodo-staging.json'))
+        Test-Path -LiteralPath $configPath -PathType Leaf | Should -BeTrue `
+            -Because 'this test exercises the repository Zenodo staging contract, not fallback defaults'
+        $stagingRoot = [System.IO.Path]::GetFullPath((Join-Path $TestDrive 'zenodo-stage'))
+        $cfg = Get-ZenodoConfig $configPath
+        $target = Resolve-ZenodoStageTarget -Meta $script:ZenodoFixture -Config $cfg `
+            -StagingRoot $stagingRoot
+
         $target.Slug | Should -Be 'zenodo_1234567'
-        $target.Artifacts['pdf'] | Should -Match 'ingestion[/\\]_inbox[/\\]zenodo_1234567[/\\]zenodo_1234567\.pdf'
+        $target.Artifacts['pdf'] | Should -Be ([System.IO.Path]::GetFullPath(
+                (Join-Path $stagingRoot 'zenodo_1234567/zenodo_1234567.pdf')))
     }
 }
 

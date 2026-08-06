@@ -5,8 +5,8 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: active; BEX-501 through BEX-506 closed on 2026-08-06 and BEX-507 is next.** Tickets are strictly
-sequenced; no later ticket starts before its predecessor closes.
+**Status: complete; BEX-501 through BEX-507 and Phase 5 closed on 2026-08-06.** The tickets were executed
+strictly in sequence.
 
 ## Current evidence and baseline
 
@@ -49,9 +49,21 @@ accepts paths plus a mandatory existing caller run, uses no workload profile, in
 adapter -> plan -> executor chain once, emits one Information summary and the exact in-memory execution
 record, then throws after output on any non-success or infrastructure error. Its focused structural,
 two-file success, and sibling-failure/CLI witnesses are 3/3. Its new test container is `Batchable`, bringing
-the current inventory to 45 files and 469 textual `It` lines. Complete validation is 23/23 adapter, 6/6
+the post-BEX-506 inventory to 45 files and 469 textual `It` lines. Complete validation is 23/23 adapter, 6/6
 infrastructure, and 158/158 shared tests; the authoritative sequential repository gate selected 482 tests,
 with 480 passed, 2 dependency-gated skips, and none failed.
+
+BEX-507 reclassified the eight remaining `NeedsRefactor` files after isolating capabilities, scratch state,
+native-process streams/status, and retained artifacts. The closed inventory is 45 physical files, 471
+textual `It` blocks, and 484 observed tests: 35 `Batchable`, 10 `CapabilityGated`, no `NeedsRefactor`, and no
+`SerialOnly`. The final Pester 6 sequential gate ran in 111.988 seconds with 484 selected, 482 passed, no
+failure, and 2 explicit skips; its only warnings were the two existing unresolved/out-of-root LaTeX inputs.
+The complete four-worker gate ran all 45 jobs in 108.007 seconds with 484 selected, 482
+passed, 2 explicit skips, no failure/timeout/cancellation/infrastructure error, 45 native XML reports, 143
+produced files all beneath declared writes, no missing result, and no surviving worker. The HDBSCAN repair
+does not mask a LaTeX collision: its nine assertions were already green, but direct native stderr and an
+expected nonzero CLI status polluted the worker protocol. Its local captured-process helper now owns those
+streams/status, resets `$LASTEXITCODE`, and keeps retained work under the assigned container artifact root.
 
 ## Dependency order
 
@@ -77,15 +89,15 @@ BEX-505 Pester adapter correction [closed 2026-08-06]
 BEX-506 thin parallel shell [closed 2026-08-06]
           |
           v
-BEX-507 repository migration and closure [next]
+BEX-507 repository migration and closure [closed 2026-08-06]
 ~~~
 
 BEX-403 proved both current adapters retain one D19 address owner, complete declared writes, planning purity,
 and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
 not Phase 5 implementation.
 
-BEX-507 is the sole next ticket. Its repository migration now has an audited file boundary, runner,
-adapter, and product-shell composition path.
+BEX-507 completed the audited repository migration over the established file boundary, runner, adapter,
+and product-shell composition path. Phase 5 has no outstanding ticket.
 
 ## Cross-cutting invariants
 
@@ -257,7 +269,8 @@ runtime witnesses prove two-file success plus failed-batch evidence and real CLI
 
 ## BEX-507 — Migrate the repository and close the overhaul
 
-**Status: next.**
+**Status: closed 2026-08-06.** All 45 audited files are admitted through ordinary path selection; no serial
+exception, sidecar, workload profile, scheduler mode, or shared-path collision remains.
 
 ### Scope
 
@@ -276,7 +289,16 @@ runtime witnesses prove two-file success plus failed-batch evidence and real CLI
 
 Sequential and parallel selections/outcomes agree; local failures retain sibling evidence; there are no
 collisions, leaked state, or surviving children; the full testing workload is either admitted or explicitly
-accounted for; Phase 5 implementation moves from the roadmap to the ledger.
+accounted for; Phase 5 implementation has moved from the roadmap to the ledger.
+
+Closure evidence begins with the final Pester 6 sequential gate: 484 selected / 482 passed / 0 failed / 2
+skipped in 111.988 seconds. Parallel evidence is 45/45 successful four-worker jobs with the same outcomes,
+45 native results, 143 produced files with zero outside declared `Writes`, zero missing results, and zero
+surviving workers. The final inventory is 35 `Batchable`, 10 `CapabilityGated`, 0 `NeedsRefactor`, and 0
+`SerialOnly`. A focused HDBSCAN exact-path run is 9/9; its singleton executor job succeeds with exit status
+zero, no executor error, and 36 retained artifacts beneath
+`pester-jobs/<container>/artifacts/hdbscan-cli`. That witness distinguishes the repaired child-stream/status
+protocol from the already-disproved LaTeX/HDBSCAN path-collision hypothesis.
 
 ## Deferred questions
 

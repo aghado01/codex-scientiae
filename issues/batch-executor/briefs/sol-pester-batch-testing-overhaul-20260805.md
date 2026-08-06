@@ -1,9 +1,9 @@
 # Pester batch testing overhaul brief
 
-Runstamp 20260805. **Status: active; BEX-501 through BEX-506 implemented.** This brief defines the
-test-authoring and execution changes required before repository testing can use the shared batch executor
-as a normal parallel path. BEX-507 is the next strictly sequenced ticket; the Pester adapter and thin
-repository shell now provide the stable composition path for migration.
+Runstamp 20260805. **Status: complete; BEX-501 through BEX-507 implemented and Phase 5 closed on
+2026-08-06.** This brief defines the test-authoring and execution changes that made repository testing a
+normal shared-batch-executor workload. The Pester adapter, thin repository shell, and audited physical-file
+topology are now the stable composition path.
 
 Inputs:
 
@@ -131,6 +131,11 @@ This classification may start in the workplan inventory. A centralized workload 
 introduced only if the pilots prove that source topology and caller path selection cannot express the
 needed sets. Do not create per-file sidecars, manifests, or modules.
 
+BEX-507 closes migration with 45 audited physical files: 35 `Batchable`, 10 `CapabilityGated`, no
+`NeedsRefactor`, and no `SerialOnly` residue. The repository contains 471 textual `It` blocks and Pester
+observes 484 tests. Ordinary path discovery therefore admits the complete suite; no workload manifest or
+serial exclusion layer was required.
+
 ## 6. Runner, adapter, executor, and harness boundaries
 
 ### Repository runner
@@ -235,5 +240,19 @@ artifact-root transport. BEX-506 then added the thin `tests/parallel.ps1` produc
 module-qualified public calls, with caller-owned path/run selection, exact execution-record output, and
 post-output nonzero failure projection. Closure validation is 3/3 focused shell, 23/23 complete adapter,
 6/6 infrastructure, and 158/158 shared tests; the complete sequential repository gate selected 482 tests,
-with 480 passed, 2 dependency-gated skips, and no failures. Phase 5 now resumes at BEX-507 repository
-migration as specified in the [workplan](../planning/testing-overhaul-workplan.md).
+with 480 passed, 2 dependency-gated skips, and no failures.
+
+BEX-507 then repaired and reclassified all eight remaining suites, added the cross-tree topology witness,
+and admitted all 45 files. The final Pester 6 sequential gate completed in 111.988 seconds with 484
+selected, 482 passed, no failure, and 2 explicit skips; its only warnings were the two existing
+unresolved/out-of-root LaTeX inputs. The four-worker repository gate completed 45/45 jobs in 108.007 seconds
+with 484 selected, 482 passed, 2 explicit skips, no failed/timed-out/cancelled job or infrastructure error,
+45 native `pester.xml` reports, 143 produced files all covered by declared `Writes`, no missing result, and
+no surviving worker. The apparent HDBSCAN batch failure was not a LaTeX/HDBSCAN shared-path collision: all nine
+Pester assertions passed, but direct native stderr and an intentionally nonzero final CLI probe leaked into
+the worker protocol. A container-local captured-process helper now owns those streams and statuses, resets
+`$LASTEXITCODE`, and retains batch evidence only below
+`pester-jobs/<container>/artifacts/hdbscan-cli`; its sequential 9/9 and singleton-executor witnesses pass,
+with the latter retaining 36 artifacts. No LaTeX/HDBSCAN shared-path collision remains. The
+[workplan](../planning/testing-overhaul-workplan.md), inventory, decisions, roadmap, and ledger record the
+closed Phase 5 state.

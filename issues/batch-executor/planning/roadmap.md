@@ -20,7 +20,8 @@ unwinding in serial waves. Preparation now completes all caller-graph traversal 
 the pool opens. The repository-wide path-topology suite is also green after BEX-207 removed post-eviction
 residue and rebuilt the check around required current inputs. Phases 2 through 4 are closed; the package
 boundary and public execution projection remained stable through lifecycle decomposition, adapter
-validation, and compatibility removal. Phase 5 is now the ahead queue.
+validation, compatibility removal, and the Pester testing overhaul. Phases 2 through 5 are closed; this
+ahead-only file now contains only deferred semantic candidates.
 
 BEX-401 is closed. The planner introduced there under the then-current `Get-TestBatchJob` name (renamed
 `Get-PesterBatchJob` by BEX-505) emits one exact-Pester, isolated process job per selected test file, derives
@@ -59,7 +60,7 @@ is now an absence witness, and the manifest-backed four-command module remains b
 Revalidation is 8/8 module-surface, 8/8 batch-plan, 17/17 adapter, 6/6 infrastructure, and 158/158 shared;
 the full repository run passed 474 tests with 2 dependency-gated skips (476 total).
 
-Testing-overhaul scoping and BEX-501 through BEX-506 are complete. The
+Testing-overhaul scoping and BEX-501 through BEX-507 are complete. The
 [semantic inventory](testing-batchability-inventory.md) covers all 43 physical Pester files and 453 textual
 `It` lines. Exact-path fresh-process runs selected 476 tests: 474 passed, 2 were explicitly skipped, and none
 failed. Semantic review classifies 31 files as `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`,
@@ -74,9 +75,9 @@ explicit container, and emits a transient audit observation before failure propa
 diagnostics without adding scheduling, run, log, retry, or store ownership. The three new contract tests and
 six embedded fixture lines bring the post-BEX-503 mechanical count to 462 textual `It` lines; that
 authoritative repository gate was 477 passed plus 2 dependency-gated skips (479 total), with 20/20 adapter
-and 6/6 infrastructure gates. Automatic `It`-level fan-out remains outside Phase 5. The
+and 6/6 infrastructure gates. Automatic `It`-level fan-out remains outside the implemented tranche. The
 [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines ownership; the
-[workplan](testing-overhaul-workplan.md) now proceeds with BEX-507 as the sole next ticket.
+[workplan](testing-overhaul-workplan.md) records the completed sequence.
 
 BEX-504 left the eight-file/57-test batch-executor positive control intact: one worker and four workers
 produced identical observations and eight native results with no undeclared files or surviving runners;
@@ -106,10 +107,23 @@ execution record, then throws after output when a job is non-successful or infra
 direct `pwsh -File` use is therefore nonzero without losing sibling evidence. Its 3/3 focused witnesses
 cover ownership structure, two-file success with native/container artifacts, sibling failure, real CLI
 status, and process cleanup. D24 rejects scheduler, lifecycle, run, logger, retry, store, ordering, and
-address ownership in the shell. Its `Batchable` test container brings the current inventory to 45 files and
-469 textual `It` lines. Closure validation is 3/3 focused shell, 23/23 complete adapter, 6/6 infrastructure,
-and 158/158 shared tests. The complete sequential repository gate selected 482 tests: 480 passed, 2 were
-dependency-gated skips, and none failed.
+address ownership in the shell. Its `Batchable` test container brings the post-BEX-506 inventory to 45 files
+and 469 textual `It` lines. Closure validation is 3/3 focused shell, 23/23 complete adapter, 6/6
+infrastructure, and 158/158 shared tests. The complete sequential repository gate selected 482 tests: 480
+passed, 2 were dependency-gated skips, and none failed.
+
+BEX-507 and Phase 5 are closed. The eight remaining suites now isolate external capabilities, fixture
+state, native-process status/streams, and retained writes. The final inventory is 45 physical files and 471
+textual `It` blocks: 35 `Batchable`, 10 `CapabilityGated`, 0 `NeedsRefactor`, and 0 `SerialOnly`, with 484
+observed tests. The final Pester 6 sequential run completed in 111.988 seconds with 482 passes, 2 explicit
+skips, and no failure. A four-worker full-repository run completed all 45 jobs in 108.007 seconds with 482
+passes, 2 explicit skips, no failed/timed-out/cancelled job or infrastructure error, 45 native results, 143
+produced files all covered by declared writes, no missing result, and no surviving worker. The HDBSCAN symptom
+was native stderr plus a deliberately nonzero final CLI status leaking past nine passing assertions, not a
+LaTeX/HDBSCAN shared-path collision; local capture/status ownership and the assigned
+`artifacts/hdbscan-cli` subtree repair that boundary. Completed Phase 5 implementation and evidence live in
+the [ledger](ledger.md), [inventory](testing-batchability-inventory.md), and workplan, leaving no active
+testing-overhaul item in this ahead-only roadmap.
 
 ## Sequencing rules
 
@@ -119,24 +133,14 @@ dependency-gated skips, and none failed.
 4. Consume a caller-allocated `RunDirectory`; never allocate run identity or define a durable executor-result
    store inside an adapter.
 5. Require a separate decision before changing the frozen public execution projection or deferred semantics.
-6. Execute Phase 5 tickets strictly in numeric order; do not begin a later ticket before its predecessor
-   closes.
-
-## Phase 5 — Batch-ready Pester testing
-
-Detailed scope, dependencies, and exit gates are in the
-[testing-overhaul workplan](testing-overhaul-workplan.md).
-
-- **BEX-507 — Migrate and close.** Admit audited suites, keep owned serial exceptions explicit, add structural
-  checks, prove sequential/parallel outcome parity, and reconcile architecture and user documentation.
-
-Automatic `It`-block or parameter-row partitioning remains outside Phase 5 and requires separate evidence
-and a new decision.
+6. Preserve the complete exact-file admission gate; any future finer-grained scheduling requires separate
+   evidence and a new decision.
 
 ## Deferred semantic candidates
 
 These are not implied by the module refactor and require separate decisions:
 
+- automatic `It`-block or parameter-row partitioning;
 - retry and backoff policy;
 - cooperative process-child cancellation, cleanup grace, parent-liveness lease, and hard-parent-death
   containment, scoped by the

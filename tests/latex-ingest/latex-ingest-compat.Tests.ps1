@@ -3,6 +3,33 @@
 BeforeAll {
     . "$PSScriptRoot/../../src/latex-ingest/latex-ingest-compat.ps1"
 
+    function Get-LatexCompatMathRenderCapability {
+        $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+        $node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue |
+            Select-Object -First 1
+        $auditEngine = Join-Path $repositoryRoot 'src/audits/math-render/katex-check.js'
+        $katexPackage = Join-Path $repositoryRoot 'packages/node/node_modules/katex/package.json'
+        if (-not $node) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = 'Node required by the shared KaTeX math-render audit is absent from PATH'
+            }
+        }
+        if (-not [System.IO.File]::Exists($auditEngine)) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = "the shared math-render audit engine is absent: '$auditEngine'"
+            }
+        }
+        if (-not [System.IO.File]::Exists($katexPackage)) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = "the shared KaTeX payload is absent: '$katexPackage'"
+            }
+        }
+        return [pscustomobject]@{ Available = $true; Reason = $null }
+    }
+
     function New-CompatSingleGzip {
         param([Parameter(Mandatory)] [string]$Path, [Parameter(Mandatory)] [string]$Tex)
         $bytes = [System.Text.UTF8Encoding]::new($false).GetBytes($Tex)
@@ -12,11 +39,13 @@ BeforeAll {
         try { $gzip.Write($bytes, 0, $bytes.Length) }
         finally { $gzip.Dispose(); $fileStream.Dispose() }
     }
+
+    $script:MathRenderCapability = Get-LatexCompatMathRenderCapability
 }
 
 Describe 'latex-ingest compatibility shim isolation and migration' {
     BeforeEach {
-        $script:root = Join-Path ([System.IO.Path]::GetTempPath()) ("latex-compat-" + [guid]::NewGuid().ToString('N'))
+        $script:root = Join-Path $TestDrive ("latex-compat-" + [guid]::NewGuid().ToString('N'))
         $script:out = Join-Path $script:root 'out'
         $script:run = Join-Path $script:root 'run'
         New-Item -ItemType Directory -Path $script:root, $script:out | Out-Null
@@ -36,6 +65,10 @@ Describe 'latex-ingest compatibility shim isolation and migration' {
     }
 
     It 'standardizes a compatible archive-backed legacy call before invoking production conversion' {
+        if (-not $script:MathRenderCapability.Available) {
+            Set-ItResult -Skipped -Because $script:MathRenderCapability.Reason
+            return
+        }
         $archive = Join-Path $script:root 'p.tar.gz'
         New-CompatSingleGzip -Path $archive -Tex '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
 
@@ -51,6 +84,10 @@ Describe 'latex-ingest compatibility shim isolation and migration' {
     }
 
     It 'can explicitly reuse a legacy source tree without teaching the production entrypoint that layout' {
+        if (-not $script:MathRenderCapability.Available) {
+            Set-ItResult -Skipped -Because $script:MathRenderCapability.Reason
+            return
+        }
         $legacy = Join-Path $script:root 'q-latex'
         New-Item -ItemType Directory -Path $legacy | Out-Null
         [System.IO.File]::WriteAllText(
@@ -68,6 +105,10 @@ Describe 'latex-ingest compatibility shim isolation and migration' {
     }
 
     It 'uses the .NET extractor for an explicit legacy source-work override' {
+        if (-not $script:MathRenderCapability.Available) {
+            Set-ItResult -Skipped -Because $script:MathRenderCapability.Reason
+            return
+        }
         $archive = Join-Path $script:root 'r.tar.gz'
         $customSource = Join-Path $script:root 'custom/source'
         New-CompatSingleGzip -Path $archive -Tex '\documentclass{article}\begin{document}\section{Custom}Body.\end{document}'

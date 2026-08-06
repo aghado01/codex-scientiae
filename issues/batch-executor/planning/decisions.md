@@ -352,6 +352,15 @@ adapter now supplies the same contract to every planned container: the result an
 one resolver, both are declared writes, and the child receives the artifact root without planner-side
 allocation.
 
+BEX-507 validates this boundary across the complete repository. All 45 physical containers are admitted by
+ordinary path selection as 35 `Batchable` and 10 `CapabilityGated` files, with no refactor or serial residue,
+per-file sidecar, workload profile, or additional scheduler mode. External CLI suites own redirected native
+streams and expected nonzero statuses locally so they cannot alter the runner/worker protocol; in
+particular, HDBSCAN resets `$LASTEXITCODE` after each captured invocation and retains its batch work beneath
+the assigned `artifacts/hdbscan-cli` subtree. This is separate from LaTeX's suite-owned artifact layout; the
+complete four-worker gate proves there is no shared-path collision, undeclared produced file, missing native
+result, or surviving worker.
+
 ### D24 — The repository parallel-test shell owns composition and failure projection only — implemented
 
 `tests/parallel.ps1` is the product-facing batch entrypoint for repository Pester work. It imports the

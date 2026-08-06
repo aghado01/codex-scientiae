@@ -6,6 +6,39 @@ BeforeAll {
     $script:AdaptersManifest = Join-Path $script:AdaptersModuleRoot 'adapters.psd1'
     $script:LiveLatexIngest = Join-Path $script:RepositoryRoot 'src/latex-ingest/latex-ingest.ps1'
 
+    function Get-LatexBatchMathRenderCapability {
+        $node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue |
+            Select-Object -First 1
+        $auditEngine = Join-Path $script:RepositoryRoot 'src/audits/math-render/katex-check.js'
+        $katexPackage = Join-Path $script:RepositoryRoot 'packages/node/node_modules/katex/package.json'
+        if (-not $node) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = 'Node required by the shared KaTeX math-render audit is absent from PATH'
+                NodePath = $null
+            }
+        }
+        if (-not [System.IO.File]::Exists($auditEngine)) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = "the shared math-render audit engine is absent: '$auditEngine'"
+                NodePath = $node.Source
+            }
+        }
+        if (-not [System.IO.File]::Exists($katexPackage)) {
+            return [pscustomobject]@{
+                Available = $false
+                Reason = "the shared KaTeX payload is absent: '$katexPackage'"
+                NodePath = $node.Source
+            }
+        }
+        return [pscustomobject]@{
+            Available = $true
+            Reason = $null
+            NodePath = [System.IO.Path]::GetFullPath($node.Source)
+        }
+    }
+
     function New-LatexBatchFixture {
         param([Parameter(Mandatory)] [string] $Root)
 
@@ -154,6 +187,7 @@ function Invoke-ArxivLatexToMarkdown {
 
     . (Join-Path $script:RepositoryRoot 'src/latex-ingest/source-deposit.ps1')
     Import-Module $script:AdaptersManifest -Force
+    $script:MathRenderCapability = Get-LatexBatchMathRenderCapability
 }
 
 AfterAll {
@@ -483,6 +517,10 @@ Describe 'latex-batch execution integration' {
     }
 
     It 'runs the live manifest-only latex-ingest entrypoint at its declared addresses' {
+        if (-not $script:MathRenderCapability.Available) {
+            Set-ItResult -Skipped -Because $script:MathRenderCapability.Reason
+            return
+        }
         $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'live-execution')
         $documentDirectory = Join-Path $fixture.InventoryRoot 'live-document'
         [void][System.IO.Directory]::CreateDirectory($documentDirectory)
@@ -493,9 +531,11 @@ Describe 'latex-batch execution integration' {
         $initialized = Initialize-LatexSourceDeposit -DocumentDir $documentDirectory `
             -Slug live-document
         $row = [pscustomobject]@{ metadata_path = $initialized.metadata_path }
+        $nodeDirectory = Split-Path -Parent $script:MathRenderCapability.NodePath
+        $childPath = "$nodeDirectory$([System.IO.Path]::PathSeparator)$env:PATH"
         $job = @(Get-LatexBatchJob -InventoryRow $row `
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
-                -TimeoutSeconds 60)[0]
+                -ProcessEnvironment @{ PATH = $childPath } -TimeoutSeconds 60)[0]
         $compiled = InModuleScope adapters -Parameters @{
             Job = $job; BasePath = $script:RepositoryRoot
         } {

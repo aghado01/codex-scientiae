@@ -64,6 +64,11 @@ successful or the executor reports an infrastructure error, it emits the record 
 direct `pwsh -File tests/parallel.ps1 ...` invocation therefore exits nonzero without discarding successful
 sibling results, native XML, or container artifacts.
 
+BEX-507 admits the complete audited repository through this ordinary path selection: 45 physical files are
+classified as 35 `Batchable` and 10 `CapabilityGated`, with no `NeedsRefactor` or `SerialOnly` residue. The
+authoritative inventory records 471 textual `It` blocks and 484 observed tests; no per-file sidecar,
+workload profile, serial exclusion list, or testing-specific scheduler mode is required.
+
 ## Batchable Pester-container contract
 
 This is the canonical BEX-502 authoring and review contract. The supporting
@@ -114,7 +119,7 @@ The frozen batch address is conceptually:
 ~~~
 
 The adapter provides the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT` and
-declare that root as a job write. Planning creates nothing; execution may create the assigned root. A suite
+declares that root as a job write. Planning creates nothing; execution may create the assigned root. A suite
 that retains evidence validates this value as an absolute path and writes only beneath it. It does not fall
 back to repository-global `artifacts/`, a timestamp allocator, its source tree, the current directory, or a
 fixed user-machine path. Direct callers that want retained evidence set the same environment value before
@@ -129,6 +134,10 @@ The BEX-504 LaTeX integration pilot is the first concrete realization: it uses `
 environment value is absent and six meaningful case roots directly below an absolute
 `CODEX_TEST_ARTIFACT_ROOT` when supplied. That case layout belongs to the suite and is evidence for this
 pilot, not a required repository-wide hierarchy.
+
+The HDBSCAN CLI suite is a second concrete layout: retained input/output and process evidence stay below
+`CODEX_TEST_ARTIFACT_ROOT/hdbscan-cli`. It does not share a retained path with LaTeX; both layouts remain
+owned by their independently addressed Pester containers.
 
 Read-only shared inputs are allowed when they are immutable for the duration of the run. Fixed mutable
 services, ports, build outputs, package caches, source trees, and repository artifact roots are not safe
@@ -155,6 +164,9 @@ its container root or remain outside the batchable set.
   selected tests is an error.
 - The suite does not call `exit` to reinterpret Pester status, suppress native result creation, or turn a
   failed assertion into success.
+- A helper that invokes a native program captures stdout, stderr, and status locally. When nonzero status is
+  an expected assertion input, it resets `$LASTEXITCODE` after capture so native diagnostics or the last
+  probed status cannot contaminate the runner/worker protocol.
 - Failure and cleanup are local to the container. The batch executor, not the suite, continues siblings and
   retains their independently addressed native results.
 

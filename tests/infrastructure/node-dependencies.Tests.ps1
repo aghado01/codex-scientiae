@@ -2,11 +2,20 @@
 
 BeforeAll {
     $script:RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+    $gitCommand = Get-Command git -CommandType Application -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+    $script:GitPath = if ($null -ne $gitCommand) { $gitCommand.Source } else { $null }
 }
 
 Describe 'centralized Node dependency topology' {
     It 'tracks no materialized dependency payloads' {
-        $tracked = @(& git -C $script:RepoRoot ls-files -- '*node_modules*')
+        if ([string]::IsNullOrWhiteSpace($script:GitPath)) {
+            Set-ItResult -Skipped -Because `
+                'Git is required only to inspect tracked Node dependency payloads'
+            return
+        }
+
+        $tracked = @(& $script:GitPath -C $script:RepoRoot ls-files -- '*node_modules*')
         $LASTEXITCODE | Should -Be 0
         $tracked.Count | Should -Be 0 -Because ($tracked -join [Environment]::NewLine)
     }
