@@ -94,6 +94,11 @@ Those concerns either already belong to batch-executor/infrastructure or remain 
 
 ## 4. Batchable Pester-container contract
 
+BEX-502 freezes the operational authoring and semantic review checklist in
+[`tests/README.md`](../../../tests/README.md). The adapter-side target address is
+`RunDirectory/pester-jobs/<container-address>/artifacts`, transported to the child as the absolute
+`CODEX_TEST_ARTIFACT_ROOT` and declared as a job write. This brief retains the ownership rationale.
+
 A file may be classified `Batchable` only when all of the following hold:
 
 - **Identity and selection:** its physical repository-relative path identifies the atomic container; an
@@ -140,8 +145,9 @@ or durable result store.
 
 The corrected `Get-PesterBatchJob` discovers caller-selected physical test files and emits one
 `PowerShellProcess` job per file. It consumes an existing absolute `RunDirectory`, uses one pure D19
-resolver beneath `pester-jobs`, declares its Pester XML write, pins the runner/Pester/child PowerShell, and
-creates nothing while planning.
+resolver beneath `pester-jobs`, declares its Pester XML and D23 container-artifact writes, transports the
+artifact root as `CODEX_TEST_ARTIFACT_ROOT`, pins the runner/Pester/child PowerShell, and creates nothing
+while planning.
 
 It does not interpret arbitrary Pester ASTs, own executor resources, merge generic execution results, or
 turn `It` names into jobs.
@@ -205,7 +211,8 @@ This tranche does not include:
 BEX-403 closed on 2026-08-06: the existing adapters are thin, D19 addressing has one owner per adapter,
 planning leaves the caller run untouched, and produced application artifacts are covered by declared
 writes. BEX-501 subsequently closed the 43-file
-[semantic inventory and timing baseline](../planning/testing-batchability-inventory.md). Phase 5 now resumes
-at the contract freeze, followed by runner audit, source restructuring, adapter correction, thin-shell
-composition, and repository migration as specified in the
+[semantic inventory and timing baseline](../planning/testing-batchability-inventory.md). BEX-502 then froze
+the canonical [authoring and review contract](../../../tests/README.md) and D23 without changing runtime
+code. Phase 5 now resumes at the BEX-503 runner audit, followed in strict sequence by source restructuring,
+adapter correction, thin-shell composition, and repository migration as specified in the
 [workplan](../planning/testing-overhaul-workplan.md).

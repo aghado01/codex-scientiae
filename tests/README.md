@@ -32,6 +32,128 @@ directory. `-ResultFormat`, `-TestSuiteName`, `-OutputVerbosity`, `-FullNameFilt
 freeze the corresponding Pester configuration. Failed or empty runs throw so both direct CLI processes and
 nested batch workers observe failure.
 
+## Batchable Pester-container contract
+
+This is the canonical BEX-502 authoring and review contract. The supporting
+[design brief](../issues/batch-executor/briefs/sol-pester-batch-testing-overhaul-20260805.md) explains the
+ownership boundary, and the current per-file classifications remain in the
+[semantic inventory](../issues/batch-executor/planning/testing-batchability-inventory.md).
+
+The atomic schedulable unit is one physical repository-relative `*.Tests.ps1` file, invoked by exact path
+through `tests/run.ps1` in one fresh child PowerShell process. `Describe`, `Context`, `It`, `-TestCases`,
+full-name filters, and tags select content inside that container; they do not create independent jobs or
+prove that selected content is independently schedulable. One file may contain several Describes when they
+share a legitimate fixture, but it must satisfy the whole contract below.
+
+### Identity and selection
+
+- The physical file runs successfully by exact path without another test file running first or modifying a
+  prerequisite for it.
+- Discovery does not silently expand to sibling files. `BeforeDiscovery` may inspect immutable capability
+  inputs but does not write, restore dependencies, launch workers, or mutate shared state.
+- An `It` selected by full name or tag does not consume output produced only by an earlier `It`. Shared
+  immutable setup belongs in a hook or helper, not in an assertion that happens to run first.
+- Parameter rows remain rows inside the same job. A large expanded count alone is not a reason to shard the
+  file.
+
+### Setup, mutable state, and cleanup
+
+- Top-level code, `BeforeAll`, `BeforeEach`, and discovery are repeatable in a fresh process. They do not
+  assume state left by a prior container invocation.
+- Environment variables, current location, module/global state, console replacement, runspace resources,
+  locks, and other mutable host state are restored with `finally`, `AfterEach`, or `AfterAll` as appropriate.
+- Every child process and descendant has bounded cleanup on success, assertion failure, setup failure, and
+  host interruption. No process survives its container.
+- Cleanup does not depend on assertions completing. Material temporary roots use hooks or `finally`, rather
+  than a trailing removal statement that a failed assertion can bypass.
+
+### Writes and container artifacts
+
+`$TestDrive` is the default for ephemeral fixtures and scratch data that need not survive Pester. A retained
+native report or application artifact belongs to the caller's run and the exact container invocation.
+
+The frozen batch address is conceptually:
+
+~~~text
+<RunDirectory>/pester-jobs/<container-address>/
+    pester.xml
+    artifacts/
+        <suite-owned layout>
+~~~
+
+The adapter will provide the absolute `artifacts/` path to the child as `CODEX_TEST_ARTIFACT_ROOT` and
+declare that root as a job write. Planning creates nothing; execution may create the assigned root. A suite
+that retains evidence validates this value as an absolute path and writes only beneath it. It does not fall
+back to repository-global `artifacts/`, a timestamp allocator, its source tree, the current directory, or a
+fixed user-machine path. Direct callers that want retained evidence set the same environment value before
+calling `tests/run.ps1`; otherwise the suite keeps scratch work in `$TestDrive`.
+
+The container is the minimum isolation boundary. Topology below its artifact root remains suite-owned:
+fixture, capability, output, audit, or evidence subdirectories may be introduced when they express real
+domain structure. Phase 5 does not manufacture a directory per `It`, parameter row, or tag. A suite is
+responsible for preventing collisions among its own writes below the container root.
+
+Read-only shared inputs are allowed when they are immutable for the duration of the run. Fixed mutable
+services, ports, build outputs, package caches, source trees, and repository artifact roots are not safe
+write boundaries. A test specifically exercising a build must redirect all build/intermediate output below
+its container root or remain outside the batchable set.
+
+### Capabilities and cost
+
+- A capability is a named immutable fixture or external executable/toolchain required by the container.
+  Probe it before dependent setup or assertions run.
+- Absence produces a deterministic Pester skip with a useful reason, not `CommandNotFound`, an opportunistic
+  restore/build/download, or an unrelated assertion failure. Available capability execution must still obey
+  the container write boundary.
+- If only part of a file needs the capability, split at that capability seam when gating the whole file would
+  hide otherwise portable tests. Pure contract checks should not disappear with an integration toolchain.
+- Expensive setup, repeated child launches, large immutable scans, and process pressure are recorded during
+  review. Split only when fixture, resource, capability, or cost evidence identifies a real seam; do not
+  split mechanically by `It` count or file size.
+
+### Outcomes and failure containment
+
+- Sequential and batch invocation use the same exact path, filters, Pester manifest behavior, and native
+  result format. Skips remain skips; failed assertions or setup produce a nonzero process/job result; zero
+  selected tests is an error.
+- The suite does not call `exit` to reinterpret Pester status, suppress native result creation, or turn a
+  failed assertion into success.
+- Failure and cleanup are local to the container. The batch executor, not the suite, continues siblings and
+  retains their independently addressed native results.
+
+### Classification and review checklist
+
+Review a new or changed physical file without scheduler knowledge and record the result in the centralized
+inventory or migration record. Do not create per-file manifests or sidecars.
+
+| Review question | Required evidence |
+|---|---|
+| Does exact-path execution select only this file and require no earlier container? | One fresh-process exact-path run plus source review. |
+| Can any selected `It` depend on a prior `It`? | No assertion-produced fixture or ordering edge. |
+| Are discovery and setup repeatable and side-effect bounded? | Hooks/top-level code inspected; mutable state restored. |
+| Are all processes, runspaces, locks, locations, modules, globals, and environment changes cleaned on every path? | `finally`/hook ownership is visible and bounded. |
+| Are ephemeral writes confined to `$TestDrive` or another unique temporary root? | Every scratch address has one container-local owner. |
+| Are retained writes confined to `CODEX_TEST_ARTIFACT_ROOT`? | No repository-global/default/fixed destination; intended roots are declared by the job. |
+| Are shared inputs read-only and fixed resources absent or isolated? | No mutable service, fixed port, common build output, or package restore race. |
+| Are missing capabilities explicit and deterministic? | Named preflight and skip reason; no implicit fallback acquisition. |
+| Is unusual setup/runtime/process cost visible? | Inventory evidence and a justified physical-file seam or decision to retain it. |
+| Does a local failure remain nonzero while native evidence and sibling jobs survive? | Authoritative runner and executor containment witnesses. |
+
+Classify the file from that evidence:
+
+- `Batchable`: every check passes with no optional external capability.
+- `CapabilityGated`: every isolation check passes and a named capability has deterministic availability/skip
+  behavior.
+- `NeedsRefactor`: setup, ordering, state, writes, capability behavior, failure handling, or file topology
+  violates the contract.
+- `SerialOnly`: a temporary exceptional file needs unavoidable ordering or a fixed mutable resource and is
+  not yet worth refactoring. Record its owner, reason, removal condition, and exclusion from normal batch
+  discovery; run it by exact path through `tests/run.ps1`, without adding scheduler locks.
+
+Static discovery names, substring searches, and Pester ASTs may route review but cannot establish any of
+these classifications. No classification requires a new executor mode, dependency graph, resource lock, or
+per-test scheduler.
+
 ## Module groups
 
 | Directory | Current ownership |

@@ -5,8 +5,8 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: active; BEX-501 closed on 2026-08-06 and BEX-502 is next.** Tickets remain strictly sequenced
-except for the already-declared BEX-503/BEX-504 overlap after BEX-502 freezes their common contract.
+**Status: active; BEX-501 and BEX-502 closed on 2026-08-06 and BEX-503 is next.** Tickets are strictly
+sequenced; no later ticket starts before its predecessor closes.
 
 ## Current evidence and baseline
 
@@ -16,6 +16,11 @@ and none failed. Its [semantic inventory](testing-batchability-inventory.md) cla
 `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`, and none as `SerialOnly`. The isolated wall
 measurements total 320.387 seconds; the inventory records individual cost, state, capability, write, and
 collision evidence rather than treating structural counts as independence proof.
+
+BEX-502 freezes the author-facing contract in [`tests/README.md`](../../../tests/README.md) and architecture
+decision D23. One exact physical file remains the fresh-process job; retained writes receive one declared,
+caller-run-scoped container artifact root through `CODEX_TEST_ARTIFACT_ROOT`; topology below that root is
+suite-owned; and semantic review—not Pester AST inference—assigns the four inventory classes.
 
 The current adapter already chooses the conservative physical-file boundary. Its naming and surrounding
 contract are provisional: `Get-TestBatchJob`, `test-batch`, and `test-jobs` are too generic for a
@@ -31,29 +36,30 @@ BEX-403 adapter thinness [closed 2026-08-06]
 BEX-501 semantic inventory and timing baseline [closed 2026-08-06]
           |
           v
-BEX-502 batchable-container contract [next]
+BEX-502 batchable-container contract [closed 2026-08-06]
           |
-          +-------------------+
-          v                   v
-BEX-503 runner audit    BEX-504 pilot restructuring
-          |                   |
-          +---------+---------+
-                    v
-          BEX-505 Pester adapter correction
-                    |
-                    v
-          BEX-506 thin parallel shell
-                    |
-                    v
-          BEX-507 repository migration and closure
+          v
+BEX-503 runner audit [next]
+          |
+          v
+BEX-504 pilot restructuring
+          |
+          v
+BEX-505 Pester adapter correction
+          |
+          v
+BEX-506 thin parallel shell
+          |
+          v
+BEX-507 repository migration and closure
 ~~~
 
 BEX-403 proved both current adapters retain one D19 address owner, complete declared writes, planning purity,
 and no scheduler, lifecycle, run, retry, logger, or durable-result ownership. That evidence is an entry gate,
 not Phase 5 implementation.
 
-BEX-503 and BEX-504 may overlap after BEX-502 freezes their common contract. BEX-505 waits for evidence
-from both so its public inputs do not anticipate unsupported test granularity.
+BEX-504 waits for the BEX-503 runner audit, and BEX-505 waits for both bodies of evidence so its public
+inputs do not anticipate unsupported test granularity.
 
 ## Cross-cutting invariants
 
@@ -97,6 +103,9 @@ Every current test file has an evidence-backed classification; high-cost and hig
 visible; no file is admitted merely because discovery produced test names.
 
 ## BEX-502 — Freeze the batchable Pester-container contract
+
+**Status: closed 2026-08-06.** The canonical authoring/review surface is
+[`tests/README.md`](../../../tests/README.md); [D23](decisions.md) records the architecture boundary.
 
 ### Scope
 
@@ -162,7 +171,9 @@ race; timing evidence supports the selected file topology or records a bounded f
 - Rename adapter identity/addressing to `pester-batch` and `pester-jobs`.
 - Keep the command in the single shared `adapters` module; add no compatibility alias or unitary submodule.
 - Emit exactly one `PowerShellProcess` job per selected physical file and pin the runner, Pester manifest,
-  child PowerShell, repository root, filters, and native result path.
+  child PowerShell, repository root, filters, native result path, and D23 container artifact root.
+- Derive both paths through the one `pester-jobs` address resolver, declare them as writes, and transport the
+  artifact root to the child as `CODEX_TEST_ARTIFACT_ROOT` without creating it during planning.
 - Preserve D19 planning purity, complete write declarations, stable IDs, collision rejection, and
   failure-containment tests.
 - Add structural witnesses rejecting competing Pester address composition and executor-resource ownership.

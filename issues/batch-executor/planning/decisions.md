@@ -304,6 +304,35 @@ load surface, `New-BatchPlan` is the only plan constructor, and a module-surface
 legacy path and command to remain absent. This changes no canonical export, plan/execution contract, adapter,
 or runtime behavior.
 
+### D23 — One physical Pester container owns one run-scoped artifact root — accepted
+
+BEX-502 freezes the repository's batchable-container authoring contract in
+[`tests/README.md`](../../../tests/README.md). One repository-relative `*.Tests.ps1` file remains the atomic
+job and runs by exact path in one fresh child PowerShell process. Pester full names, tags, Describes,
+parameter rows, and discovery metadata select content inside that job; they neither prove independence nor
+create smaller schedulable units. A selected test cannot require another file or an earlier `It` to produce
+its fixture.
+
+Ephemeral scratch belongs in `$TestDrive`. Every retained test/application write belongs to the caller's run
+and exact container invocation. The corrected Pester adapter will derive
+`RunDirectory/pester-jobs/<container-address>/artifacts`, declare that root alongside the native
+`pester.xml` write, and transport its absolute path as `CODEX_TEST_ARTIFACT_ROOT`. Planning creates neither
+path. Tests may choose meaningful fixture, capability, audit, output, or evidence structure below the
+container root; no infrastructure layer allocates directories per `It`, row, or tag. A repository-global
+artifact root, timestamp allocator, fixed build output, or user-machine path is not an admissible fallback.
+
+Capabilities are explicit immutable fixtures or toolchains. Their absence becomes a deterministic Pester
+skip with a reason; a test does not restore, build, or download an undeclared fallback into shared state.
+Mutable host state and child resources are restored on every path. Exact-path sequential and batch
+invocations retain the same selection, skip/fail status, native result, and nonzero failure behavior; sibling
+continuation remains executor-owned.
+
+Files are reviewed semantically as `Batchable`, `CapabilityGated`, `NeedsRefactor`, or temporary
+`SerialOnly`. Serial exceptions require a centralized owner, reason, removal condition, and exclusion from
+the normal batch set; Phase 5 adds no locks, phase barriers, AST classifier, per-file sidecars, or executor
+mode. The current `Get-TestBatchJob` still implements D20's provisional XML-only address until BEX-505; D23
+freezes the target author/adapter boundary without changing current runtime behavior.
+
 ## Deliberate non-goals of the current executor
 
 The current executor does not add retry policy, detached execution, durable queues, typed process-spec

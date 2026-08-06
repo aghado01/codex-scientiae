@@ -136,5 +136,5 @@ other eight files after BEX-502 freezes the authoring contract and BEX-503 audit
 - High-cost files, the LaTeX shared-write exposure, and the conditional HDBSCAN build-path hazard are explicit.
 - Admission decisions use hooks, state, writes, external resources, capability behavior, and failure
   containment; no file was admitted from discovery names alone.
-- BEX-501 is closed. BEX-502 is the next and only unblocked ticket; this inventory does not pre-empt its
-  authoring-contract decisions.
+- BEX-501 is closed. BEX-502 subsequently froze D23 from this evidence without changing the classifications;
+  BEX-503 is the next and only unblocked ticket.
