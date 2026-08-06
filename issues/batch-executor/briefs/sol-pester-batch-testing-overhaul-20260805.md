@@ -100,9 +100,12 @@ A file may be classified `Batchable` only when all of the following hold:
   exact-path run neither depends on another test container running first nor silently expands to siblings.
 - **Setup and state:** discovery, top-level code, `BeforeAll`, `BeforeEach`, and cleanup are repeatable in a
   fresh process; mutable state is container-local or restored.
-- **Writes and external resources:** writes are isolated by `$TestDrive`, unique caller-owned locations, or
-  another collision-free boundary; the file does not depend on shared mutable services, fixed ports, or
-  global configuration without isolation.
+- **Writes and external resources:** ephemeral fixtures may use `$TestDrive`; every retained test or
+  application write uses a container artifact root beneath the caller's run and the container address. A
+  repository-global `artifacts/<container>` path is not sufficient because concurrent runs would still
+  share it. The file does not depend on shared mutable services, fixed ports, or global configuration
+  without isolation. Layout below the container root remains suite-owned unless pilot evidence supports a
+  common seam; no directory is allocated automatically per `It` block.
 - **Capability and cost:** missing dependencies become explicit skip/capability outcomes, not accidental
   worker failures; unusually expensive setup is visible during inventory and scheduling review.
 - **Failure containment:** a local assertion or setup failure produces a nonzero job result while unrelated
@@ -201,6 +204,8 @@ This tranche does not include:
 
 BEX-403 closed on 2026-08-06: the existing adapters are thin, D19 addressing has one owner per adapter,
 planning leaves the caller run untouched, and produced application artifacts are covered by declared
-writes. Phase 5 now proceeds through inventory, contract freeze, runner audit, source restructuring, adapter
-correction, thin-shell composition, and repository migration as specified in the
+writes. BEX-501 subsequently closed the 43-file
+[semantic inventory and timing baseline](../planning/testing-batchability-inventory.md). Phase 5 now resumes
+at the contract freeze, followed by runner audit, source restructuring, adapter correction, thin-shell
+composition, and repository migration as specified in the
 [workplan](../planning/testing-overhaul-workplan.md).

@@ -58,13 +58,15 @@ is now an absence witness, and the manifest-backed four-command module remains b
 Revalidation is 8/8 module-surface, 8/8 batch-plan, 17/17 adapter, 6/6 infrastructure, and 158/158 shared;
 the full repository run passed 474 tests with 2 dependency-gated skips (476 total).
 
-Testing-overhaul scoping is complete. The repository currently has 43 physical Pester files and about 453
-textual `It` blocks, with pervasive container setup and material state/resource signals. The planned default
-job boundary is therefore one physical Pester file/container in one fresh child process; automatic `It`-level
-fan-out is not part of Phase 5. The [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines
-the authoring and ownership contract, and the [workplan](testing-overhaul-workplan.md) sequences BEX-501
-through BEX-507. The BEX-403 entry gate is closed, BEX-501 is next, and no Phase 5 implementation is yet
-closed.
+Testing-overhaul scoping and BEX-501 are complete. The
+[semantic inventory](testing-batchability-inventory.md) covers all 43 physical Pester files and 453 textual
+`It` lines. Exact-path fresh-process runs selected 476 tests: 474 passed, 2 were explicitly skipped, and none
+failed. Semantic review classifies 31 files as `Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`,
+and none as `SerialOnly`; it also records per-file timing, one direct LaTeX shared-write exposure, and one
+conditional HDBSCAN fallback-build hazard. One physical
+file/container in one fresh child process remains the default job boundary, and automatic `It`-level fan-out
+is outside Phase 5. The [brief](../briefs/sol-pester-batch-testing-overhaul-20260805.md) defines ownership;
+the [workplan](testing-overhaul-workplan.md) now proceeds with BEX-502 as the sole next ticket.
 
 ## Sequencing rules
 
@@ -80,10 +82,9 @@ closed.
 Detailed scope, dependencies, and exit gates are in the
 [testing-overhaul workplan](testing-overhaul-workplan.md).
 
-- **BEX-501 — Inventory semantic batchability and timing.** Audit every physical Pester file, classify it as
-  `Batchable`, `CapabilityGated`, `NeedsRefactor`, or temporarily `SerialOnly`, and baseline the two pilots.
 - **BEX-502 — Freeze the batchable-container contract.** Codify exact-path, fresh-process, state/resource,
-  capability, write-isolation, and failure-containment requirements for test authors.
+  capability, failure-containment, and a caller-run-scoped artifact root per container without imposing
+  automatic `It`-level subdirectories.
 - **BEX-503 — Harden the authoritative runner boundary.** Prove exact-container Pester 5/6 parity, native
   results, empty-run rejection, and nonzero failure propagation without adding scheduling or run ownership.
 - **BEX-504 — Refactor and benchmark representative suites.** Validate the batch-executor files as a positive

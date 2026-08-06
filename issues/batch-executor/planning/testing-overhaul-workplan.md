@@ -5,14 +5,17 @@ boundary is defined in the [testing-overhaul brief](../briefs/sol-pester-batch-t
 the ahead-only queue remains [roadmap.md](roadmap.md), implemented architecture remains
 [decisions.md](decisions.md), and closed work remains [ledger.md](ledger.md).
 
-**Status: planned; no Phase 5 implementation is complete.** BEX-403 closed on 2026-08-06; BEX-501 is next.
+**Status: active; BEX-501 closed on 2026-08-06 and BEX-502 is next.** Tickets remain strictly sequenced
+except for the already-declared BEX-503/BEX-504 overlap after BEX-502 freezes their common contract.
 
 ## Current evidence and baseline
 
-The repository currently has 43 physical `*.Tests.ps1` files and approximately 453 textual `It` blocks.
-All files use `BeforeAll`; material subsets use environment state, external processes/toolchains, write
-primitives, `$TestDrive`, `InModuleScope`, and skip mechanics. Those counts route review but do not prove
-independence.
+The repository currently has 43 physical `*.Tests.ps1` files and exactly 453 textual `It` lines. BEX-501
+ran every file by exact path in a fresh child process: 476 tests were selected, 474 passed, 2 were skipped,
+and none failed. Its [semantic inventory](testing-batchability-inventory.md) classifies 31 files as
+`Batchable`, 3 as `CapabilityGated`, 9 as `NeedsRefactor`, and none as `SerialOnly`. The isolated wall
+measurements total 320.387 seconds; the inventory records individual cost, state, capability, write, and
+collision evidence rather than treating structural counts as independence proof.
 
 The current adapter already chooses the conservative physical-file boundary. Its naming and surrounding
 contract are provisional: `Get-TestBatchJob`, `test-batch`, and `test-jobs` are too generic for a
@@ -25,10 +28,10 @@ total); focused baselines are 17 adapter, 6 infrastructure, and 158 shared passi
 BEX-403 adapter thinness [closed 2026-08-06]
           |
           v
-BEX-501 semantic inventory and timing baseline
+BEX-501 semantic inventory and timing baseline [closed 2026-08-06]
           |
           v
-BEX-502 batchable-container contract
+BEX-502 batchable-container contract [next]
           |
           +-------------------+
           v                   v
@@ -66,8 +69,16 @@ Every ticket preserves these conditions:
 8. every intended application write is declared and derived through one pure address resolver;
 9. generic executor results stay in memory unless separate infrastructure later owns persistence;
 10. serial exceptions are temporary, explicit, owned, and excluded from the normal batch set.
+11. every admitted container receives one writable artifact root beneath the caller's `RunDirectory` and
+    its container address; retained test/application writes stay below that root, while `$TestDrive` remains
+    valid for ephemeral fixtures. A repository-global `artifacts/<container>` path alone is not run-safe.
+12. topology below the container artifact root remains suite-owned unless pilot evidence justifies a common
+    fixture/capability/evidence layer; Phase 5 does not allocate an automatic directory per `It` block.
 
 ## BEX-501 — Build the semantic batchability inventory
+
+**Status: closed 2026-08-06.** The durable evidence and classification register is
+[testing-batchability-inventory.md](testing-batchability-inventory.md).
 
 ### Scope
 
@@ -92,6 +103,9 @@ visible; no file is admitted merely because discovery produced test names.
 - Convert the brief's identity, setup/state, writes/resources, capability/cost, and failure-containment
   rules into repository test-authoring guidance and review checks.
 - Define exact-path execution, fresh-process isolation, native result, and exit-status parity.
+- Define the minimum write boundary as caller run -> Pester container address -> container artifact root;
+  distinguish ephemeral `$TestDrive` fixtures from retained evidence without prematurely standardizing the
+  hierarchy beneath that root.
 - Define when a physical file must be split and what qualifies as a real seam: fixture, resource,
   capability, or cost.
 - Define `CapabilityGated` and temporary `SerialOnly` behavior without introducing scheduler locks.
@@ -128,6 +142,8 @@ selection/outcome semantics and no expansion of runner ownership.
   mutable resource, or cost boundaries warrant physical containers.
 - Remove cross-file ordering assumptions, shared write collisions, leaked environment/location changes,
   and unbounded process cleanup in the pilots.
+- Give every retained pilot write an explicit container artifact root; in particular, stop direct LaTeX
+  tests from falling back to repository-global run allocation and prove they leave no shared run residue.
 - Compare sequential and file-parallel outcomes, native results, wall time, setup cost, evidence paths, and
   process survivors.
 - Feed any newly discovered contract gap back into BEX-502 before expanding migration.
