@@ -36,7 +36,7 @@ if (-not [System.IO.Directory]::Exists($repository)) {
 $repository = (Resolve-Path -LiteralPath $repository).Path
 
 . (Join-Path $PSScriptRoot 'inventory-catalog.ps1')
-. (Join-Path $PSScriptRoot '../shared/runs.ps1')
+. (Join-Path $PSScriptRoot '../logistics/run-paths.ps1')
 $adaptersManifest = [System.IO.Path]::Combine(
     $PSScriptRoot, '..', 'adapters', 'adapters.psd1')
 $executorManifest = [System.IO.Path]::Combine(

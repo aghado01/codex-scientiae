@@ -10,6 +10,14 @@
 
 . "$PSScriptRoot/latex-ingest.ps1"
 
+# The current deposit convention's address, kept here because this shim is its only consumer:
+# production reaches the source tree through validated metadata.json, not by deriving `{slug}-tex`
+# from an archive path. It sunsets with the rest of this file (LOGJ-509).
+function Get-SourceWorkDir([string]$ArchivePath, [string]$Slug) {
+    $dir = Split-Path -Parent $ArchivePath
+    return (Join-Path $dir "$Slug-tex")
+}
+
 function Expand-ArxivSourceTarball {
     param([string]$TarGz, [string]$WorkDir)
     return (Expand-LatexSourceArchive -ArchivePath $TarGz -DestinationPath $WorkDir).destination_path

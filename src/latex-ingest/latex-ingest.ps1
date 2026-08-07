@@ -18,7 +18,7 @@
   Entry point: Invoke-ArxivLatexToMarkdown -MetadataPath <metadata.json-or-document-dir> -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../shared/runs.ps1"       # run addresses only; source-deposit addressing comes from metadata.json
+. "$PSScriptRoot/../logistics/run-paths.ps1" # runstamped artifact addressing only; source-deposit addressing comes from metadata.json
 . "$PSScriptRoot/source-deposit.ps1"       # source-only .NET extraction + validated metadata.json addressing; never initializes implicitly
 . "$PSScriptRoot/../tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/../pdf-raster/pdf-raster.ps1"   # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
