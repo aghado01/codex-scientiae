@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/shared/log.ps1 — per-run execution trace, as a shared substrate.
+  src/shared/logger/logger.ps1 — per-run execution trace, as a shared substrate.
 
   Any codex process gets ONE trace file per run — JSONL, one record per line — and a
   near-silent console: the file records everything, stderr mirrors warn+ only, and stdout is
@@ -18,7 +18,7 @@
   Sink resolution, first hit wins:
     -LogPath <file>          exactly there
     -RunDir <dir>            trace.jsonl inside a run dir the caller already minted
-                             (New-ModuleRunDir / New-RunDir in src/shared/runs.ps1)
+                             (New-ModuleRunDir in src/logistics/run-paths.ps1)
     $env:CODEX_RUNLOG_DIR    a parent process's run dir; the child lands beside the parent
                              as trace-{module}-{pid}.jsonl — never a shared handle
     (minted)                 artifacts/{module}/logs/{stamp}.jsonl — regenerable tier,
@@ -34,7 +34,7 @@
   before any Start is safe: warn+ still reaches stderr, the file sink is just off — shared
   substrate may log opportunistically without demanding its host started a run.
 
-  Dot-source to use:  . "$PSScriptRoot/../shared/log.ps1"
+  Dot-source to use:  src/shared/logger/logger.ps1
 #>
 
 $script:RunLogLevels = @{ trace = 0; debug = 1; info = 2; warn = 3; error = 4 }
@@ -87,8 +87,9 @@ function Start-RunLog {
             # collides with itself) — land beside it, never share the file
             if (Test-Path -LiteralPath $path) { $path = Join-Path $dir "trace-$Module-$PID.jsonl" }
         } else {
-            # mirrors Get-ArtifactsRoot (src/shared/runs.ps1) without dragging the crawler in
-            $logsRoot = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))) 'artifacts' $Module 'logs'
+            # mirrors Get-ArtifactsRoot (src/logistics/run-paths.ps1), which is now crawler-free and
+            # importable if this duplicate is no longer worth keeping. Depth is from src/shared/logger/.
+            $logsRoot = Join-Path ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))) 'artifacts' $Module 'logs'
             $stamp = Get-Date -Format 'yyyyMMdd_HHmmss'
             $path = Join-Path $logsRoot "$stamp.jsonl"
             $n = 1
