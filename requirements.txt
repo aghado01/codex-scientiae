@@ -1,5 +1,9 @@
 # Codex-Scientiae Core Python Dependencies
 
+# Boilerplate
+
+pytest
+
 # Document & Markdown Processing
 markdown
 python-frontmatter

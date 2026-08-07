@@ -6,7 +6,8 @@ import os
 import tempfile
 import subprocess
 import unittest
-from src.shared.jsonl_engine import JsonlEngine
+from jsonl_engine import JsonlEngine
+from jsonl_engine.paths import RepoPaths
 
 
 class TestPwshInterop(unittest.TestCase):
@@ -21,8 +22,9 @@ class TestPwshInterop(unittest.TestCase):
                 engine.append({"id": "rec_1", "val": 200})
                 engine.commit()
 
-            repo_root = os.path.abspath(".")
-            ps1_path = os.path.join(repo_root, "src", "shared", "jso-ops", "jsonl-v2.ps1").replace("\\", "/")
+            # Anchored through the engine's own __file__-based resolver rather than the current
+            # working directory, so the test passes from any invocation directory.
+            ps1_path = RepoPaths.resolve("src", "shared", "jso-ops", "jsonl-v2.ps1").replace("\\", "/")
 
             ps_script = f"""
             . '{ps1_path}'

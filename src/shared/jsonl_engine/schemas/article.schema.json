@@ -1,47 +1,47 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-scientiae/document-metadata/0.1",
-  "title": "Codex Scientiae document metadata (provisional source-deposit shape)",
+  "$id": "codex-scientiae/article/0.1",
+  "title": "Codex Scientiae article manifest (provisional source-deposit shape)",
+  "description": "One bounded object per deposited article, written atomically and last by the source-deposit transaction. Its presence is the success sentinel: state 'source-ready' means the deposit completed, not that conversion has run.",
   "type": "object",
   "required": [
     "schema",
     "state",
     "slug",
     "initialized_utc",
-    "document",
+    "title",
+    "authors",
+    "abstract",
+    "identifiers",
+    "categories",
     "evidence",
     "source_forms",
     "validation"
   ],
   "properties": {
-    "schema": { "const": "codex-scientiae/document-metadata/0.1" },
+    "schema": { "const": "codex-scientiae/article/0.1" },
     "state": { "const": "source-ready" },
     "slug": { "type": "string", "minLength": 1 },
     "initialized_utc": { "type": "string", "format": "date-time" },
-    "document": {
+
+    "title": { "type": ["string", "null"] },
+    "authors": { "type": "array", "items": { "type": "string" } },
+    "abstract": { "type": ["string", "null"] },
+    "identifiers": {
       "type": "object",
-      "required": ["title", "authors", "abstract", "identifiers", "categories"],
+      "required": ["arxiv", "arxiv_versioned", "doi"],
       "properties": {
-        "title": { "type": ["string", "null"] },
-        "authors": { "type": "array", "items": { "type": "string" } },
-        "abstract": { "type": ["string", "null"] },
-        "identifiers": {
-          "type": "object",
-          "required": ["arxiv", "arxiv_versioned", "doi"],
-          "properties": {
-            "arxiv": { "type": ["string", "null"] },
-            "arxiv_versioned": { "type": ["string", "null"] },
-            "doi": { "type": ["string", "null"] }
-          },
-          "additionalProperties": true
-        },
-        "categories": { "type": "array", "items": { "type": "string" } },
-        "primary_category": { "type": ["string", "null"] },
-        "published": { "type": ["string", "null"] },
-        "updated": { "type": ["string", "null"] }
+        "arxiv": { "type": ["string", "null"] },
+        "arxiv_versioned": { "type": ["string", "null"] },
+        "doi": { "type": ["string", "null"] }
       },
       "additionalProperties": true
     },
+    "categories": { "type": "array", "items": { "type": "string" } },
+    "primary_category": { "type": ["string", "null"] },
+    "published": { "type": ["string", "null"] },
+    "updated": { "type": ["string", "null"] },
+
     "evidence": {
       "type": "object",
       "required": ["provider_metadata", "latex_source", "package_control_files"],
@@ -103,7 +103,7 @@
         "status": { "const": "valid" },
         "validated_utc": { "type": "string", "format": "date-time" },
         "publication": { "enum": ["published-new-tree", "recovered-existing-tree"] },
-        "checks": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+        "checks": { "$ref": "#/$defs/probeLedger" }
       },
       "additionalProperties": true
     }
@@ -115,6 +115,30 @@
       "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
     },
     "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "probeLedger": {
+      "description": "One entry per probe the deposit transaction is accountable for. An outcome other than 'passed' requires a reason, so a probe that did not apply is distinguishable from one that held. Additional keys carry per-probe detail.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "outcome"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "outcome": { "enum": ["passed", "not-applicable", "waived"] },
+          "reason": { "type": "string", "minLength": 1 }
+        },
+        "allOf": [
+          {
+            "if": {
+              "required": ["outcome"],
+              "properties": { "outcome": { "not": { "const": "passed" } } }
+            },
+            "then": { "required": ["reason"] }
+          }
+        ],
+        "additionalProperties": true
+      }
+    },
     "fingerprintRecord": {
       "type": "object",
       "required": ["path", "bytes", "sha256"],

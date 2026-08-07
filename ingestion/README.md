@@ -71,8 +71,11 @@ Run commands from the repository root or supply another explicit/relative docume
 
    ```pwsh
    Get-Content './ingestion/<segment>/<slug>/metadata.json' -Raw |
-       Test-Json -SchemaFile ./ingestion/inventory/metadata.schema.json
+       Test-Json -SchemaFile ./src/shared/jsonl_engine/schemas/metadata.schema.json
    ```
+
+   Schemas live with the JSONL engine, which owns schema validation. `Test-Json` reads the same file
+   directly and stays the executable check until the engine exposes a verb for it.
 
 The initializer extracts privately, validates confinement/encoding/entrypoint/input structure, publishes
 `{slug}-tex/`, and writes `metadata.json` last. Failure leaves no sentinel. An existing different tree or

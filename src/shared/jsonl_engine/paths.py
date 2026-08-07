@@ -1,5 +1,11 @@
-"""
-src/shared/jsonl_engine/paths.py - Portable Repository Path Resolution
+"""Repository root resolution.
+
+find_repository_root walks up from __file__ for AGENTS.md, .git, or Directory.Build.props, and
+raises when none is found. The working directory is not consulted. The nearest sentinel wins, so a
+git worktree carrying its own AGENTS.md resolves to that worktree.
+
+RepoPaths caches the root for the process. resolve() joins against it; relative_to_root() returns
+forward-slash paths relative to it.
 """
 
 import os

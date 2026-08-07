@@ -1,0 +1,43 @@
+# Python project scaffolding for codex-scientiae.
+#
+# This repository is mixed-language; Python is one lane. This file exists to make that lane's
+# package importable under ONE name, not to publish a distribution.
+#
+# The problem it solves: jsonl_engine was reachable by two import paths -- `src.shared.jsonl_engine`
+# in tests and `jsonl_engine` under `python -m`. Two names for one package means two module objects
+# if both load, which duplicates module-level state such as the global SchemaRegistry.
+#
+#     .venv/Scripts/python.exe -m pip install -r requirements.txt
+#     .venv/Scripts/python.exe -m pip install -e .
+#
+# Dependencies are not declared here. requirements.txt is this repository's environment manifest and
+# stays the single source; duplicating the list would recreate the same fork one layer up.
+#
+# Hatchling rather than setuptools: setuptools writes a .egg-info directory into the source tree,
+# and redirecting it with egg_base only moves the problem, since the target must be tracked for a
+# fresh clone to install. Hatchling emits none -- an editable install is a .pth file and nothing
+# else. It also ships non-Python files inside the package by default, so schemas/*.schema.json
+# travel with the engine without a package-data declaration.
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "codex-scientiae"
+version = "0.1.0"
+description = "Codex Scientiae — Python lane (JSONL engine and artifact registries)"
+requires-python = ">=3.12"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shared/jsonl_engine"]
+
+[tool.pytest.ini_options]
+# Anchors rootdir at the repository root so `pytest` and `python -m pytest` agree. Import resolution
+# does not depend on the working directory -- that comes from the editable install, not from here --
+# so the suite passes from any directory, including outside the repository.
+#
+# testpaths is honoured only when pytest is invoked FROM the rootdir; from a subdirectory pytest
+# collects that subtree instead, which is its intended behaviour.
+testpaths = ["tests"]
+python_files = ["test_*.py"]

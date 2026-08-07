@@ -1,8 +1,15 @@
-"""
-src/shared/jsonl_engine/registries/inventory.py - Inventory Catalog Registry
+"""Localized inventory registry.
+
+A catalog root owns one `inventory.jsonl` holding the `article.json` of each direct child deposit.
+Rows are article objects inserted verbatim: the article schema governs both, so there is no row shape
+to project into and no derived fields to keep in step.
+
+`slug` carries identity and locality -- it equals the child directory name -- so a row needs no path
+or parent field. The catalog is a materialized view; a stale one is rebuilt rather than reconciled.
 """
 
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict
+
 from ..registry import BaseArtifactRegistry
 from .catalog import RegistryCatalog
 
@@ -11,35 +18,11 @@ from .catalog import RegistryCatalog
 class InventoryCatalogRegistry(BaseArtifactRegistry):
     KIND = "inventory"
     VERSION = "0.1"
-    SCHEMA_NAME = "inventory-row.schema.json"
+    RECORD_SCHEMA = "article.schema.json"
     EMIT_HEADER = False
     NAME_FORMAT = "inventory.jsonl"
-    CHILD_KINDS = ["document"]
+    CHILD_KINDS = ["article"]
 
-    def add_inventory_row(
-        self,
-        slug: str,
-        title: Optional[str],
-        authors: List[str],
-        abstract: Optional[str],
-        identifiers: Dict[str, Any],
-        categories: List[str],
-        metadata_sha256: str
-    ) -> None:
-        """Adds a schema-validated row for inventory.jsonl."""
-        self.add({
-            "schema": "codex-scientiae/document-inventory-row/0.1",
-            "document_parent": slug,
-            "metadata_path": f"{slug}/metadata.json",
-            "metadata_sha256": metadata_sha256,
-            "manifest_schema": "codex-scientiae/document-metadata/0.1",
-            "state": "source-ready",
-            "slug": slug,
-            "document": {
-                "title": title,
-                "authors": authors,
-                "abstract": abstract,
-                "identifiers": identifiers,
-                "categories": categories
-            }
-        })
+    def add_article(self, article: Dict[str, Any]) -> None:
+        """Insert one article object as a row. Validation is the kind's declared schema."""
+        self.add(article)

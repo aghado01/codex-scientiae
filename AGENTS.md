@@ -45,3 +45,9 @@ User may also create snapshots for ease of inspection under `..\project-snapshot
 ## Graveyard
 
 [graveyard/codex-scientiae](..\graveyard\codex-scientiae) is the archive repository for refuse and retired code moved out of codex-scientiae, and a source for archaeological excavation for future development
+
+## Dev Guidelines (WIP)
+
+- Docstrings are future public materials that should be written in declarative, factual voicing -- not persuasive essay, not marketing, not proselytization. When editing existing files, review the doc strings and ask if they should be revised to conform to this sensibility.
+
+- Separation of code and config. Config is data.

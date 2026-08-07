@@ -1,0 +1,28 @@
+
+# TODO: discipline: python, whitespace strictness coverage, etc for all file types in repo
+
+# Default: text files with auto line-ending normalization
+* text=auto
+
+# Enforce LF
+*.txt  text eol=lf
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.js   text eol=lf
+*.json text eol=lf
+*.jsonl  text eol=lf
+*.ps1  text eol=lf
+*.psm1 text eol=lf
+*.psd1 text eol=lf
+*.sig  text eol=lf
+*.jidx binary
+
+
+# Whitespace strictness
+*.ts   whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.tsx  whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.js   whitespace=trailing-space,blank-at-eol,blank-at-eof
+
+# Ignore whitespace checks in generated/minified output, if any
+*.min.js -whitespace
+dist/**  -whitespace

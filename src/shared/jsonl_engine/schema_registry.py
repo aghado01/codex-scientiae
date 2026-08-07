@@ -1,12 +1,19 @@
-"""
-src/shared/jsonl_engine/schema_registry.py - Schema Registry & Factory (V7)
+"""Compiled JSON Schema validators, loaded from the *.schema.json files shipped with this package.
+
+auto_discover scans schemas/ relative to this module at construction. Each schema is indexed by its
+$id, its filename, and its filename stem.
+
+check_schema runs at registration; the draft is taken from each file's own $schema. Registering two
+distinct schemas under one key raises. Re-registering an identical schema is idempotent.
+
+read_schema_file is a classmethod. A schema's authority is the JSON Schema meta-schema rather than a
+registry entry, so schemas are not read through json_document.read_json_document.
 """
 
 import os
-import json
 import jsonschema
 from typing import Any, Dict, List, Optional
-from .paths import RepoPaths
+from .json_document import read_json_value
 
 
 class SchemaRegistry:
@@ -21,10 +28,11 @@ class SchemaRegistry:
         self._schemas_by_name: Dict[str, Dict[str, Any]] = {}
         self._validators: Dict[str, jsonschema.protocols.Validator] = {}
         
-        # Default search roots relative to repository root
+        # Schemas ship with the package rather than sitting at a repository path, so discovery is
+        # anchored to this module. The engine's declarations travel with the engine and resolve the
+        # same way under an editable install, a wheel, or a relocated checkout.
         self.search_paths: List[str] = search_paths or [
-            RepoPaths.resolve("ingestion", "inventory"),
-            RepoPaths.resolve("schemas")
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "schemas")
         ]
         
         self.auto_discover()
@@ -42,25 +50,39 @@ class SchemaRegistry:
                         if file.endswith(".schema.json") or file.endswith(".schema"):
                             self.register_schema_file(os.path.join(root, file))
 
+    @classmethod
+    def read_schema_file(cls, schema_path: str) -> Dict[str, Any]:
+        """Read one *.schema.json and return it, having confirmed it is a valid schema.
+
+        Schemas do not go through read_json_document. A schema is what validates rather than a thing
+        validated, and its authority is the JSON Schema meta-schema via check_schema -- not a
+        registry entry, which would be circular. Keeping that on the registry makes the difference
+        structural instead of a waived argument at the call site.
+
+        require_object is False because JSON Schema 2020-12 admits a bare boolean as a schema;
+        check_schema is the authority on validity, not the document's shape.
+        """
+        full = os.path.abspath(schema_path)
+        if not os.path.exists(full):
+            raise FileNotFoundError(f"Schema file not found: {full}")
+
+        schema_data = read_json_value(full, require_object=False)
+        jsonschema.validators.validator_for(schema_data).check_schema(schema_data)
+        return schema_data
+
     def register_schema_file(self, schema_path: str) -> None:
         """Loads, checks, and indexes a single schema file from disk."""
         schema_path = os.path.abspath(schema_path)
-        if not os.path.exists(schema_path):
-            raise FileNotFoundError(f"Schema file not found: {schema_path}")
+        schema_data = self.read_schema_file(schema_path)
 
-        with open(schema_path, "r", encoding="utf-8") as f:
-            schema_data = json.load(f)
-
-        # Validate that the loaded schema itself is structurally valid JSON Schema
         validator_cls = jsonschema.validators.validator_for(schema_data)
-        validator_cls.check_schema(schema_data)
         validator = validator_cls(schema_data)
 
         filename = os.path.basename(schema_path)
         schema_id = schema_data.get("$id") or schema_data.get("id") or filename
 
         # Register by schema_id, filename, and stem
-        self._register_entry(schema_id, schema_data, validator)
+        self._register_entry(schema_id, schema_data, validator, as_id=True)
         self._register_entry(filename, schema_data, validator)
         stem = filename.split(".")[0]
         self._register_entry(stem, schema_data, validator)
@@ -72,15 +94,23 @@ class SchemaRegistry:
         validator = validator_cls(schema_dict)
 
         schema_id = schema_dict.get("$id") or key
-        self._register_entry(schema_id, schema_dict, validator)
+        self._register_entry(schema_id, schema_dict, validator, as_id=True)
         self._register_entry(key, schema_dict, validator)
 
-    def _register_entry(self, key: str, schema_dict: Dict[str, Any], validator: Any) -> None:
+    def _register_entry(
+        self,
+        key: str,
+        schema_dict: Dict[str, Any],
+        validator: Any,
+        as_id: bool = False
+    ) -> None:
         if key in self._schemas_by_name and self._schemas_by_name[key] != schema_dict:
             # Raise exception on ambiguous schema name collision
             raise KeyError(f"Schema registration collision for key '{key}': another distinct schema is already registered under this key.")
         self._schemas_by_name[key] = schema_dict
         self._validators[key] = validator
+        if as_id:
+            self._schemas_by_id[key] = schema_dict
 
     def has_schema(self, key: str) -> bool:
         """Returns True if schema is registered under key."""

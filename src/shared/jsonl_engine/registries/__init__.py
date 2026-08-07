@@ -1,15 +1,17 @@
-"""
-src/shared/jsonl_engine/registries - Centralized Artifact Registries Package
+"""Declared artifact kinds.
+
+Importing this package registers every kind with RegistryCatalog; a kind whose module is never
+imported is absent from the catalog.
 """
 
 from .catalog import RegistryCatalog
 from .inventory import InventoryCatalogRegistry
-from .document import DocumentMetadataRegistry
+from .article import ArticleRegistry
 from .docgraph import DocGraphRegistry
 
 __all__ = [
     "RegistryCatalog",
     "InventoryCatalogRegistry",
-    "DocumentMetadataRegistry",
-    "DocGraphRegistry"
+    "ArticleRegistry",
+    "DocGraphRegistry",
 ]

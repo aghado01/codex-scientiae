@@ -1,5 +1,19 @@
-"""
-src/shared/jsonl_engine/registry.py - Base Artifact Registry with Sealed Invariants & Strict Schema Binding
+"""Artifact kinds, declared as classes.
+
+A kind is an archetype of JSONL artifact: `inventory`, not the inventory.jsonl under one directory.
+
+Identity is declared as class attributes -- KIND, VERSION, DISCIPLINE, CODEC, EMIT_HEADER,
+NAME_FORMAT, RECORD_SCHEMA, PARENT_KIND and CHILD_KINDS. Location is a call argument.
+__init__ accepts target_dir, run_id, and a schema_registry override.
+
+Schema binding is strict. A kind naming a schema that cannot be resolved raises at construction; a
+kind naming none is unvalidated.
+
+validate_record dispatches on a row discriminator. HEADER_SCHEMA is the variant for
+__type__ == "header". A kind carrying several body shapes needs the same dispatch over its own
+discriminator.
+
+Key extraction, uniqueness, and canonical ordering are not implemented.
 """
 
 import os
@@ -8,7 +22,7 @@ from abc import ABC
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from .engine import JsonlEngine, Discipline
+from .engine import JsonlEngine, Discipline, Codec
 from .schema_registry import get_global_schema_registry, SchemaRegistry
 
 
@@ -36,6 +50,11 @@ class BaseArtifactRegistry(ABC):
     KIND: str = "base"
     VERSION: str = "1.0"
     DISCIPLINE: Discipline = Discipline.CREATE
+
+    # UNICODE is readable and refuses unpaired surrogates; ASCII escapes them losslessly and is for
+    # extracted-text kinds only.
+    CODEC: Codec = Codec.UNICODE
+
     EMIT_HEADER: bool = False  # Default False to match unheadered production lanes
     NAME_FORMAT: str = "{kind}.jsonl"
 
@@ -43,9 +62,9 @@ class BaseArtifactRegistry(ABC):
     PARENT_KIND: Optional[str] = None
     CHILD_KINDS: List[str] = []
 
-    # External schema pointer: set SCHEMA_NAME (e.g. 'inventory-row.schema.json') or SCHEMA_ID
-    SCHEMA_NAME: Optional[str] = None
-    SCHEMA_ID: Optional[str] = None
+    # The schema governing one record. Accepts any key SchemaRegistry indexes: a $id, a filename, or
+    # a filename stem. A JSONL container holds many records under it; a JSON container holds one.
+    RECORD_SCHEMA: Optional[str] = None
 
     def __init__(
         self,
@@ -64,9 +83,9 @@ class BaseArtifactRegistry(ABC):
     def _resolve_payload_validator(self) -> Optional[jsonschema.protocols.Validator]:
         """
         Resolves the compiled jsonschema validator from the SchemaRegistry.
-        Fails fast with KeyError if SCHEMA_ID or SCHEMA_NAME is declared but missing.
+        Fails fast with KeyError if RECORD_SCHEMA is declared but missing.
         """
-        declared_key = self.SCHEMA_ID or self.SCHEMA_NAME
+        declared_key = self.RECORD_SCHEMA
         if declared_key is not None:
             if not self.schema_registry.has_schema(declared_key):
                 raise KeyError(
@@ -156,12 +175,12 @@ class BaseArtifactRegistry(ABC):
     def open_writer(self, stem: Optional[str] = None, filename: Optional[str] = None) -> JsonlEngine:
         """Low-memory streaming context writer, incorporating header rules cleanly inside the engine."""
         out_path = self.get_output_path(stem=stem, filename=filename)
-        return JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE)
+        return JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE, codec=self.CODEC)
 
     def write(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
         """Flushes buffered records to disk using JsonlEngine."""
         out_path = self.get_output_path(stem=stem, filename=filename)
-        engine = JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE)
+        engine = JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE, codec=self.CODEC)
 
         with engine:
             if self.EMIT_HEADER and (self.DISCIPLINE == Discipline.CREATE or not os.path.exists(out_path)):

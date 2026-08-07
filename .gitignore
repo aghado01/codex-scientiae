@@ -31,6 +31,12 @@ lib/
 **/.pytest_cache/**
 **/.mypy_cache/**
 **/.ruff_cache/**
+
+# python build metadata (produced by `pip install -e .`; the package itself stays in src/)
+*.egg-info/
+**/*.egg-info/
+build/
+dist/
 **/.vscode/**
 **/.idea/**
 **/.DS_Store**

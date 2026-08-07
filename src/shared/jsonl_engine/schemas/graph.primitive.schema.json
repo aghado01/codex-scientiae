@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/docgraph/0.1",
+  "title": "Codex Scientiae document graph record",
+  "description": "One record of a graph encoded as a JSONL list. Records are discriminated on 'type': a node declares an identity and its attributes, an edge declares a relation between two node identities. Referential integrity between an edge's endpoints and the nodes present in the same store is not expressible in JSON Schema and is not checked here.",
+  "type": "object",
+  "required": ["type"],
+  "oneOf": [
+    {
+      "title": "node",
+      "type": "object",
+      "required": ["type", "id", "label", "class"],
+      "properties": {
+        "type": { "const": "node" },
+        "id": { "$ref": "#/$defs/nodeId" },
+        "label": { "type": "string" },
+        "class": { "type": "string", "minLength": 1 },
+        "properties": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "edge",
+      "type": "object",
+      "required": ["type", "source", "target", "relation"],
+      "properties": {
+        "type": { "const": "edge" },
+        "source": { "$ref": "#/$defs/nodeId" },
+        "target": { "$ref": "#/$defs/nodeId" },
+        "relation": { "type": "string", "minLength": 1 },
+        "properties": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "nodeId": { "type": "string", "minLength": 1 }
+  }
+}

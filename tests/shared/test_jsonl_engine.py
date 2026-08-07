@@ -7,22 +7,83 @@ import json
 import tempfile
 import unittest
 
-from src.shared.jsonl_engine.engine import JsonlEngine, Discipline
-from src.shared.jsonl_engine.registry import BaseArtifactRegistry
-from src.shared.jsonl_engine.reader import ArtifactReader
-from src.shared.jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
-from src.shared.jsonl_engine.paths import RepoPaths, find_repository_root
-from src.shared.jsonl_engine.registries import (
+import jsonschema
+
+from jsonl_engine.engine import JsonlEngine, Discipline
+from jsonl_engine.registry import BaseArtifactRegistry
+from jsonl_engine.reader import ArtifactReader
+from jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
+from jsonl_engine.paths import RepoPaths, find_repository_root
+from jsonl_engine.registries import (
     RegistryCatalog,
     InventoryCatalogRegistry,
-    DocumentMetadataRegistry,
+    ArticleRegistry,
     DocGraphRegistry
 )
 
 
+def _article(slug: str = "1105.4224v1") -> dict:
+    """A minimal object satisfying codex-scientiae/article/0.1."""
+    return {
+        "schema": "codex-scientiae/article/0.1",
+        "state": "source-ready",
+        "slug": slug,
+        "initialized_utc": "2026-08-07T00:00:00Z",
+        "title": "Quantum Chaos",
+        "authors": ["Author"],
+        "abstract": "Abstract...",
+        "identifiers": {"arxiv": "1105.4224", "arxiv_versioned": slug, "doi": None},
+        "categories": ["cs.CL"],
+        "primary_category": "cs.CL",
+        "published": None,
+        "updated": None,
+        "evidence": {
+            "provider_metadata": [],
+            "latex_source": {
+                "entrypoint": "main.tex",
+                "selection": "single-candidate",
+                "declarations": {"title_tex": None, "authors_tex": [], "doi": None},
+            },
+            "package_control_files": [],
+        },
+        "source_forms": [
+            {
+                "role": "latex-source-archive",
+                "path": f"{slug}.tar.gz",
+                "format": "application/gzip",
+                "bytes": 1,
+                "sha256": "0" * 64,
+            },
+            {
+                "role": "latex-source-tree",
+                "path": f"{slug}-tex",
+                "format": "application/x-latex-source-tree",
+                "derived_from": f"{slug}.tar.gz",
+                "entrypoint": "main.tex",
+                "files": 1,
+                "tex_files": 1,
+                "sha256": "1" * 64,
+            },
+        ],
+        "validation": {
+            "status": "valid",
+            "validated_utc": "2026-08-07T00:00:00Z",
+            "publication": "published-new-tree",
+            "checks": [
+                {"name": "gzip-readable", "outcome": "passed", "archive_kind": "tar+gzip"},
+                {
+                    "name": "entrypoint-unambiguous",
+                    "outcome": "not-applicable",
+                    "reason": "entrypoint named explicitly; the ambiguity scan did not run",
+                },
+            ],
+        },
+    }
+
+
 class DeclaredMissingSchemaRegistry(BaseArtifactRegistry):
     KIND = "broken"
-    SCHEMA_NAME = "non_existent_schema_file.schema.json"
+    RECORD_SCHEMA = "non_existent_schema_file.schema.json"
 
 
 class TestJsonlEngineV7(unittest.TestCase):
@@ -55,24 +116,55 @@ class TestJsonlEngineV7(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 find_repository_root(start_path=tmpdir)
 
-    def test_inventory_row_validation_from_schema_registry(self):
+    def test_inventory_row_is_an_article_object(self):
+        """An article object is inserted verbatim as a row; no projection, no row shape."""
         with tempfile.TemporaryDirectory() as tmpdir:
             inv = InventoryCatalogRegistry(target_dir=tmpdir)
-            inv.add_inventory_row(
-                slug="1105.4224v1",
-                title="Quantum Chaos",
-                authors=["Author"],
-                abstract="Abstract...",
-                identifiers={"arxiv": "1105.4224v1"},
-                categories=["cs.CL"],
-                metadata_sha256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-            )
+            inv.add_article(_article())
             out_file = inv.write()
             self.assertTrue(os.path.exists(out_file))
+            self.assertEqual(os.path.basename(out_file), "inventory.jsonl")
 
             records = list(ArtifactReader.read_records(out_file))
             self.assertEqual(len(records), 1)
-            self.assertEqual(records[0]["slug"], "1105.4224v1")
+            self.assertEqual(records[0], _article())
+
+    def test_one_schema_governs_article_and_inventory_row(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            self.assertEqual(
+                InventoryCatalogRegistry.RECORD_SCHEMA,
+                ArticleRegistry.RECORD_SCHEMA,
+            )
+            article = _article()
+            InventoryCatalogRegistry(target_dir=tmpdir).validate_record(article)
+            ArticleRegistry(target_dir=tmpdir).validate_record(article)
+
+    def test_docgraph_records_validate_as_one_union(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            g = DocGraphRegistry(target_dir=tmpdir)
+            g.add_node(node_id="n1", label="Introduction", node_class="section")
+            g.add_edge(source="n1", target="n2", relation="precedes")
+            out = g.write(stem="1105.4224v1")
+            self.assertEqual(os.path.basename(out), "1105.4224v1.docgraph.jsonl")
+            self.assertEqual(len(list(ArtifactReader.read_records(out))), 2)
+
+    def test_docgraph_rejects_a_record_matching_neither_branch(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            g = DocGraphRegistry(target_dir=tmpdir)
+            with self.assertRaises(jsonschema.ValidationError):
+                g.add({"type": "node", "id": "n1"})            # missing label/class
+            with self.assertRaises(jsonschema.ValidationError):
+                g.add({"type": "edge", "source": "n1", "target": "n2"})  # missing relation
+            with self.assertRaises(jsonschema.ValidationError):
+                g.add({"type": "hyperedge", "id": "n1"})       # not a declared branch
+
+    def test_inventory_rejects_a_malformed_article(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            inv = InventoryCatalogRegistry(target_dir=tmpdir)
+            broken = _article()
+            del broken["source_forms"]
+            with self.assertRaises(jsonschema.ValidationError):
+                inv.add_article(broken)
 
     def test_engine_commit_sidecars_and_exact_ticks(self):
         with tempfile.TemporaryDirectory() as tmpdir:

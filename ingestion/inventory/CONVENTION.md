@@ -3,6 +3,11 @@
 Status: work in progress. `ingestion/inventory` is the sandbox for developing source-deposit,
 manifest, and localized inventory-store conventions before broader ingestion integration.
 
+Schema ownership has moved. `metadata.schema.json` and `inventory-row.schema.json` now live with the JSONL
+engine at [`src/shared/jsonl_engine/schemas/`](../../src/shared/jsonl_engine/schemas/), which owns schema
+validation and will take over reading and writing these artifacts. This document describes the layout and the
+deposit transaction; it no longer describes where validation is implemented.
+
 ## Document deposit layout
 
 Each versioned source document has one `{slug}/` parent directory. A version suffix such as `v1` is part of
@@ -107,8 +112,8 @@ do not supply bibliographic identity; and LaTeX declarations are often absent, c
 inputs, or intended for typesetting rather than normalized catalog use.
 
 The emitted `codex-scientiae/document-metadata/0.1` shape and its
-[`metadata.schema.json`](metadata.schema.json) are provisional. The final schema is still to be finalized and
-is expected to cover:
+[`metadata.schema.json`](../../src/shared/jsonl_engine/schemas/metadata.schema.json) are provisional. The
+final schema is still to be finalized and is expected to cover:
 
 - schema/version and logical document identity;
 - provider identifiers and versioned slug;
@@ -127,7 +132,8 @@ same manifest through an explicit, validated operation. It does not create a com
 
 A selected parent directory may own one `inventory.jsonl` materialized from authoritative child
 `metadata.json` manifests. The provisional `codex-scientiae/document-inventory-row/0.1` shape is specified
-by [`inventory-row.schema.json`](inventory-row.schema.json). Each row carries:
+by [`inventory-row.schema.json`](../../src/shared/jsonl_engine/schemas/inventory-row.schema.json). Each row
+carries:
 
 - `document_parent`, the direct-child path relative to the catalog root and the catalog's portable,
   case-insensitively unique identity key;
@@ -141,6 +147,11 @@ inferred to be a document and is ignored. A present but malformed, schema-invali
 slug-disagreeing sentinel aborts the complete build. Rows sort by preserved `document_parent` spelling using
 ordinal comparison, while case-insensitive uniqueness exposes portable path collisions. There is no build
 timestamp, so identical sentinels produce byte-identical UTF-8-no-BOM, LF-only catalog bytes.
+
+The PowerShell materializer below predates the schema move and no longer dot-sources: its schema paths still
+resolve into this directory. It stands as the specification for the Python replacement — admission rules,
+ordinal sort with case-insensitive uniqueness, and the cross-artifact identity checks on read — rather than
+as a runnable tool.
 
 The application-local materializer is explicit and whole-file transactional:
 

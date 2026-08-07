@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/jsonl-signature/0.1",
+  "title": "Codex Scientiae JSONL store signature sidecar",
+  "description": "The .sig written beside a committed JSONL store. Records what the store's bytes were and what produced them, so a hash that fails to reproduce is attributable rather than merely wrong. additionalProperties is false deliberately: an unrecognised field is engine drift, and forcing a version bump is the point.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "sha256",
+    "line_count",
+    "file_size",
+    "ticks",
+    "discipline",
+    "codec",
+    "metadata",
+    "created_at"
+  ],
+  "properties": {
+    "schema": { "const": "codex-scientiae/jsonl-signature/0.1" },
+    "sha256": {
+      "description": "SHA-256 over the published bytes, accumulated during the write.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "line_count": {
+      "description": "Records written, including a header record when the kind emits one.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "file_size": {
+      "description": "Byte length of the published .jsonl, from os.stat after the rename.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "ticks": {
+      "description": "Published file's last-write time as .NET UTC ticks, integer-derived from st_mtime_ns. Matches the sourceLastWriteUtcTicks field of the JSOI v2 index.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "discipline": {
+      "description": "Write discipline declared by the kind that produced this store.",
+      "enum": ["create", "append", "sealed"]
+    },
+    "codec": {
+      "description": "Escaping policy in force. The hash covers codec-dependent bytes, so reproducing it requires the same value.",
+      "enum": ["unicode", "ascii"]
+    },
+    "metadata": {
+      "description": "Caller-supplied stage metadata. Free-form by design; this is the extension point, so the rest of the document can stay closed.",
+      "type": "object"
+    },
+    "created_at": {
+      "description": "When the signature was written. Not a determinism input.",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

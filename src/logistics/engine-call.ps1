@@ -37,8 +37,13 @@ function Get-RepositoryRoot {
 
 function Resolve-EnginePython {
     <#
-    Prefer the repository virtual environment so a deposit does not silently run against whatever
-    interpreter happens to be on PATH — the engine's dependencies are pinned to that venv.
+    The repository virtual environment, and nothing else.
+
+    The engine is an editable install into that venv (pyproject.toml + `pip install -e .`), which is
+    what makes `jsonl_engine` a single import name for both the tests and this caller. An interpreter
+    found on PATH would not carry that install, so falling back to one trades a clear "the
+    environment is not set up" for a confusing ModuleNotFoundError from inside a subprocess. Failing
+    here names the fix instead.
     #>
     [CmdletBinding()]
     param([string]$PythonPath = '')
@@ -47,24 +52,16 @@ function Resolve-EnginePython {
         if (-not [System.IO.File]::Exists($PythonPath)) { throw "python not found: '$PythonPath'" }
         return [System.IO.Path]::GetFullPath($PythonPath)
     }
-    $venv = Join-Path (Get-RepositoryRoot) '.venv/Scripts/python.exe'
-    if ([System.IO.File]::Exists($venv)) { return [System.IO.Path]::GetFullPath($venv) }
-    $venvPosix = Join-Path (Get-RepositoryRoot) '.venv/bin/python'
-    if ([System.IO.File]::Exists($venvPosix)) { return [System.IO.Path]::GetFullPath($venvPosix) }
-
-    $onPath = Get-Command python -CommandType Application -ErrorAction SilentlyContinue
-    if ($onPath) { return $onPath.Source }
-    throw 'no python interpreter found: expected .venv under the repository root or python on PATH'
-}
-
-function Resolve-EngineModuleRoot {
-    <# The directory the engine package sits in, so `-m jsonl_engine` resolves via PYTHONPATH. #>
-    $root = Join-Path (Get-RepositoryRoot) 'src/shared'
-    $package = Join-Path $root 'jsonl_engine'
-    if (-not [System.IO.Directory]::Exists($package)) {
-        throw "jsonl engine package not found: '$package'"
+    foreach ($candidate in @('.venv/Scripts/python.exe', '.venv/bin/python')) {
+        $full = Join-Path (Get-RepositoryRoot) $candidate
+        if ([System.IO.File]::Exists($full)) { return [System.IO.Path]::GetFullPath($full) }
     }
-    return [System.IO.Path]::GetFullPath($root)
+    throw @"
+no repository virtual environment found under '$(Get-RepositoryRoot)'.
+The jsonl engine runs from .venv, where it is installed editable. Set it up with:
+  .venv/Scripts/python.exe -m pip install -r requirements.txt
+  .venv/Scripts/python.exe -m pip install -e .
+"@
 }
 
 function Write-EngineFindings {
@@ -132,7 +129,6 @@ function Invoke-JsonlEngine {
     )
 
     $python = Resolve-EnginePython -PythonPath $PythonPath
-    $moduleRoot = Resolve-EngineModuleRoot
 
     $argv = [System.Collections.Generic.List[string]]::new()
     $argv.Add('-m'); $argv.Add($Module); $argv.Add($Verb)
@@ -146,8 +142,10 @@ function Invoke-JsonlEngine {
     $psi.RedirectStandardError = $true
     $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
     $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
+    # No PYTHONPATH: the editable install already puts jsonl_engine on the interpreter's path.
+    # Setting it here as well would reintroduce a second route to the same package, which is the
+    # import fork this scaffolding exists to close.
     $psi.WorkingDirectory = (Get-RepositoryRoot)
-    $psi.Environment['PYTHONPATH'] = $moduleRoot
     $psi.Environment['PYTHONIOENCODING'] = 'utf-8'
 
     $display = ConvertTo-EngineCommandDisplay -Executable $python -ArgumentList $argv.ToArray()

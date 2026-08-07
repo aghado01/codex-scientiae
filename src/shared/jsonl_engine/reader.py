@@ -1,5 +1,14 @@
-"""
-src/shared/jsonl_engine/reader.py - Artifact Reader, JSOI v2 Index Seeker, & Provenance Verifier (V4)
+"""Reading a JSONL store and verifying it against its sidecars.
+
+Records are read in binary. Text mode applies universal-newline translation, which removes CR before
+it can be observed. CR is insignificant whitespace in JSON and is rejected here rather than by the
+parser, which accepts it everywhere except inside a string value.
+
+read_index parses JSOI v2 and compares length and mtime ticks against the file. seek_record resolves
+a record by byte offset. verify_signature validates the .sig against its schema, then recomputes
+SHA-256 and line count.
+
+Canonical ordering, key uniqueness, path shape, and cross-artifact identity are not checked.
 """
 
 import os
@@ -8,6 +17,10 @@ import struct
 import hashlib
 from dataclasses import dataclass
 from typing import Any, Dict, Generator, List, Optional
+
+from .json_document import read_json_document
+from .engine import SIG_SCHEMA_ID
+from .schema_registry import get_global_schema_registry
 
 # Exact integer Ticks offset between .NET Ticks (0001-01-01) and Unix Epoch (1970-01-01)
 DOTNET_TICKS_OFFSET = 621_355_968_000_000_000
@@ -139,9 +152,16 @@ class ArtifactReader:
             return json.loads(line.decode("utf-8"))
 
     @staticmethod
-    def verify_signature(jsonl_path: str, sig_path: Optional[str] = None) -> bool:
+    def verify_signature(
+        jsonl_path: str,
+        sig_path: Optional[str] = None,
+        schema_registry: Optional[Any] = None
+    ) -> bool:
         """
         Verifies the SHA-256 integrity signature of a JSONL artifact against its .sig sidecar.
+
+        The sidecar is schema-validated before its values are trusted, so a truncated or edited
+        .sig reports itself rather than presenting as a content mismatch.
         """
         if sig_path is None:
             sig_path = os.path.splitext(jsonl_path)[0] + ".sig"
@@ -149,8 +169,11 @@ class ArtifactReader:
         if not os.path.exists(sig_path):
             raise FileNotFoundError(f"Signature file not found: {sig_path}")
 
-        with open(sig_path, "r", encoding="utf-8") as f:
-            sig_data = json.load(f)
+        # A malformed .sig must report itself, not surface later as a hash mismatch. Resolution
+        # failure raises: the schema is declared by the engine, so its absence is a broken install
+        # rather than a decision to skip validation.
+        validator = (schema_registry or get_global_schema_registry()).get_validator(SIG_SCHEMA_ID)
+        sig_data = read_json_document(sig_path, validator)
 
         expected_hash = sig_data.get("sha256")
         expected_line_count = sig_data.get("line_count")
