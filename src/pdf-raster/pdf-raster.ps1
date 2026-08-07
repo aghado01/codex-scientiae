@@ -16,9 +16,9 @@
     Invoke-PdfRaster -Jobs @(@{ pdf = 'a.pdf'; out = 'a.png' }, @{ pdf = 'b.pdf'; page = 0; out = 'b.png' })
 #>
 
-$script:PdfRasterRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$script:PdfRasterRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')) # should just be 'reporoot' and there should be a dedicated helper for resolving this question
 $script:PdfRasterDir = $PSScriptRoot
-$script:PdfRasterMjs = Join-Path $script:PdfRasterDir 'render.mjs'
+$script:PdfRasterMjs = Join-Path $script:PdfRasterDir 'render.mjs' # should be psscript-root relative now
 $script:PdfRasterNodeModules = Join-Path $script:PdfRasterRepoRoot 'packages/node/node_modules'
 
 function Resolve-PdfRasterNodeModules([string]$NodeModulesPath = '') {

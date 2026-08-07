@@ -1,3 +1,17 @@
+# Codex-Scientiae Core Python Dependencies
+
+# Document & Markdown Processing
 markdown
 python-frontmatter
 mistune
+jinja2
+ftfy>=6.1.0
+
+
+# JSONL Engine & Artifact Registries Substrate
+jsonschema>=4.20.0
+jmespath>=1.0.0
+jsonlines>=4.0.0
+
+orjson>=3.9.0
+filelock>=3.13.0
