@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/jsonl-header/0.1",
+  "title": "Codex Scientiae JSONL header record",
+  "description": "The container-level metadata row of a JSONL store, distinguished from record rows by __type__. This is the base every kind gets; a kind carrying its own container metadata declares a schema that extends it. additionalProperties is true so an extending schema can add fields without restating this one.",
+  "type": "object",
+  "required": ["__type__", "kind", "version", "created_at"],
+  "properties": {
+    "__type__": { "const": "header" },
+    "kind": {
+      "description": "The KIND of the store this header opens.",
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "description": "The declaring kind's VERSION, not the schema's.",
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "description": "When the store was written.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

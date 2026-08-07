@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-scientiae/docgraph/0.1",
-  "title": "Codex Scientiae document graph record",
-  "description": "One record of a graph encoded as a JSONL list. Records are discriminated on 'type': a node declares an identity and its attributes, an edge declares a relation between two node identities. Referential integrity between an edge's endpoints and the nodes present in the same store is not expressible in JSON Schema and is not checked here.",
+  "$id": "codex-scientiae/graph-primitive/0.1",
+  "title": "Codex Scientiae graph record primitive",
+  "description": "DORMANT REFERENCE. The abstract shape of a graph encoded as a JSONL list: records discriminated on 'type', a node declaring an identity, an edge declaring a relation between two identities. No kind declares this as its RECORD_SCHEMA and no producer emits it. It records the notion while the concrete graphs are settled; the refgraph's edges are anchored on one end only and its identities are label keys rather than addresses, so the two do not yet agree on what this would assert. Referential integrity between an edge's endpoints and the nodes in the same store is not expressible in JSON Schema and is not checked here.",
   "type": "object",
   "required": ["type"],
   "oneOf": [

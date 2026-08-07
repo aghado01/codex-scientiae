@@ -8,15 +8,19 @@ src/shared/jsonl_engine/registries/docgraph.py - DocGraph Node/Edge Artifact Reg
 
 
 from typing import Dict, Any, List, Optional
-from ..registry import BaseArtifactRegistry
+from ..registry import BaseStore
 from .catalog import RegistryCatalog
 
 
 @RegistryCatalog.register
-class DocGraphRegistry(BaseArtifactRegistry):
+class DocGraphRegistry(BaseStore):
     KIND = "docgraph"
     VERSION = "0.1"
-    RECORD_SCHEMA = "docgraph.schema.json"
+    # Unbound. graph.primitive.schema.json is a dormant reference, not this kind's record schema,
+    # and the converter's doc graph is an open composition (stream + refgraph + more) that cannot be
+    # schematized until its member set is settled. This registry's add_node/add_edge match no
+    # producer in the converter and are themselves unresolved.
+    RECORD_SCHEMA = None
     EMIT_HEADER = False
     NAME_FORMAT = "{stem}.docgraph.jsonl"
     PARENT_KIND = "article"

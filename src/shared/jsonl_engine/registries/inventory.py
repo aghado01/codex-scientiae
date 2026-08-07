@@ -10,12 +10,12 @@ or parent field. The catalog is a materialized view; a stale one is rebuilt rath
 
 from typing import Any, Dict
 
-from ..registry import BaseArtifactRegistry
+from ..registry import BaseStore
 from .catalog import RegistryCatalog
 
 
 @RegistryCatalog.register
-class InventoryCatalogRegistry(BaseArtifactRegistry):
+class InventoryCatalogRegistry(BaseStore):
     KIND = "inventory"
     VERSION = "0.1"
     RECORD_SCHEMA = "article.schema.json"

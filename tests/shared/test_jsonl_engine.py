@@ -10,7 +10,7 @@ import unittest
 import jsonschema
 
 from jsonl_engine.engine import JsonlEngine, Discipline
-from jsonl_engine.registry import BaseArtifactRegistry
+from jsonl_engine.registry import BaseStore
 from jsonl_engine.reader import ArtifactReader
 from jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
 from jsonl_engine.paths import RepoPaths, find_repository_root
@@ -81,7 +81,7 @@ def _article(slug: str = "1105.4224v1") -> dict:
     }
 
 
-class DeclaredMissingSchemaRegistry(BaseArtifactRegistry):
+class DeclaredMissingSchemaRegistry(BaseStore):
     KIND = "broken"
     RECORD_SCHEMA = "non_existent_schema_file.schema.json"
 
@@ -139,24 +139,15 @@ class TestJsonlEngineV7(unittest.TestCase):
             InventoryCatalogRegistry(target_dir=tmpdir).validate_record(article)
             ArticleRegistry(target_dir=tmpdir).validate_record(article)
 
-    def test_docgraph_records_validate_as_one_union(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            g = DocGraphRegistry(target_dir=tmpdir)
-            g.add_node(node_id="n1", label="Introduction", node_class="section")
-            g.add_edge(source="n1", target="n2", relation="precedes")
-            out = g.write(stem="1105.4224v1")
-            self.assertEqual(os.path.basename(out), "1105.4224v1.docgraph.jsonl")
-            self.assertEqual(len(list(ArtifactReader.read_records(out))), 2)
-
-    def test_docgraph_rejects_a_record_matching_neither_branch(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            g = DocGraphRegistry(target_dir=tmpdir)
-            with self.assertRaises(jsonschema.ValidationError):
-                g.add({"type": "node", "id": "n1"})            # missing label/class
-            with self.assertRaises(jsonschema.ValidationError):
-                g.add({"type": "edge", "source": "n1", "target": "n2"})  # missing relation
-            with self.assertRaises(jsonschema.ValidationError):
-                g.add({"type": "hyperedge", "id": "n1"})       # not a declared branch
+    def test_graph_primitive_is_dormant(self):
+        """It is discoverable as a reference, and no kind declares it."""
+        registry = get_global_schema_registry()
+        self.assertTrue(registry.has_schema("codex-scientiae/graph-primitive/0.1"))
+        declared = [
+            RegistryCatalog.get_registry_class(k).RECORD_SCHEMA
+            for k in RegistryCatalog.list_kinds()
+        ]
+        self.assertNotIn("graph.primitive.schema.json", declared)
 
     def test_inventory_rejects_a_malformed_article(self):
         with tempfile.TemporaryDirectory() as tmpdir:

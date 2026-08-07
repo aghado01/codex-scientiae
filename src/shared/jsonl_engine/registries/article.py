@@ -13,12 +13,12 @@ declaration and mints validated article objects.
 
 from typing import Any, Dict, List, Optional
 
-from ..registry import BaseArtifactRegistry
+from ..registry import BaseStore
 from .catalog import RegistryCatalog
 
 
 @RegistryCatalog.register
-class ArticleRegistry(BaseArtifactRegistry):
+class ArticleRegistry(BaseStore):
     KIND = "article"
     VERSION = "0.1"
     RECORD_SCHEMA = "article.schema.json"

@@ -2,7 +2,7 @@
 Core JSONL Engine & Registry Package for Codex-Scientiae
 """
 from .engine import JsonlEngine, Discipline, Codec
-from .registry import BaseArtifactRegistry
+from .registry import BaseStore
 from .reader import ArtifactReader
 from .paths import RepoPaths, find_repository_root
 from .schema_registry import SchemaRegistry, get_global_schema_registry
@@ -18,7 +18,7 @@ __all__ = [
     "JsonlEngine",
     "Discipline",
     "Codec",
-    "BaseArtifactRegistry",
+    "BaseStore",
     "ArtifactReader",
     "RepoPaths",
     "find_repository_root",

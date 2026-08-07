@@ -26,21 +26,13 @@ from .engine import JsonlEngine, Discipline, Codec
 from .schema_registry import get_global_schema_registry, SchemaRegistry
 
 
-# Standard Schema for Header Records
-HEADER_SCHEMA: Dict[str, Any] = {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "required": ["__type__", "kind", "version", "created_at"],
-    "properties": {
-        "__type__": {"const": "header"},
-        "kind": {"type": "string"},
-        "version": {"type": "string"},
-        "created_at": {"type": "string"}
-    }
-}
+# The base header schema every kind gets unless it declares its own. Named, not inlined: the two row
+# categories are declared the same way, and a kind carrying container metadata of its own -- stats,
+# scope, a source reference -- needs a schema file to put it in.
+BASE_HEADER_SCHEMA = "header.schema.json"
 
 
-class BaseArtifactRegistry(ABC):
+class BaseStore(ABC):
     """
     Abstract base class for JSONL artifact registries.
     Seals KIND, VERSION, DISCIPLINE, EMIT_HEADER, resolves JSONSchema via SchemaRegistry,
@@ -62,9 +54,13 @@ class BaseArtifactRegistry(ABC):
     PARENT_KIND: Optional[str] = None
     CHILD_KINDS: List[str] = []
 
-    # The schema governing one record. Accepts any key SchemaRegistry indexes: a $id, a filename, or
-    # a filename stem. A JSONL container holds many records under it; a JSON container holds one.
+    # The two row categories of a JSONL store, declared the same way. Either accepts any key
+    # SchemaRegistry indexes: a $id, a filename, or a filename stem.
+    #
+    # RECORD_SCHEMA governs one record. A JSONL container holds many under it; a JSON container one.
+    # HEADER_SCHEMA governs the container metadata row, and defaults to the base.
     RECORD_SCHEMA: Optional[str] = None
+    HEADER_SCHEMA: str = BASE_HEADER_SCHEMA
 
     def __init__(
         self,
@@ -77,7 +73,7 @@ class BaseArtifactRegistry(ABC):
         self._records: List[Dict[str, Any]] = []
 
         self.schema_registry = schema_registry or get_global_schema_registry()
-        self._header_validator = jsonschema.Draft202012Validator(HEADER_SCHEMA)
+        self._header_validator = self.schema_registry.get_validator(self.HEADER_SCHEMA)
         self._payload_validator = self._resolve_payload_validator()
 
     def _resolve_payload_validator(self) -> Optional[jsonschema.protocols.Validator]:
@@ -100,7 +96,7 @@ class BaseArtifactRegistry(ABC):
 
         return None
 
-    def get_child_registry(self, child_kind: str, child_target_dir: Optional[str] = None) -> 'BaseArtifactRegistry':
+    def get_child_registry(self, child_kind: str, child_target_dir: Optional[str] = None) -> 'BaseStore':
         """Instantiates a child registry of this parent artifact."""
         from .registries.catalog import RegistryCatalog
         if child_kind not in self.CHILD_KINDS and child_kind != "any":
