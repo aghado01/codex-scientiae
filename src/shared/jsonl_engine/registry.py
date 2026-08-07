@@ -1,5 +1,5 @@
 """
-src/shared/jsonl_engine/registry.py - Base Artifact Registry with Tagged-Union Schema Validation
+src/shared/jsonl_engine/registry.py - Base Artifact Registry with Sealed Invariants & Strict Schema Binding
 """
 
 import os
@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from .engine import JsonlEngine, Discipline
+from .schema_registry import get_global_schema_registry, SchemaRegistry
 
 
 # Standard Schema for Header Records
@@ -28,37 +29,94 @@ HEADER_SCHEMA: Dict[str, Any] = {
 class BaseArtifactRegistry(ABC):
     """
     Abstract base class for JSONL artifact registries.
-    Seals KIND, VERSION, and JSONSchema validation contracts.
+    Seals KIND, VERSION, DISCIPLINE, EMIT_HEADER, resolves JSONSchema via SchemaRegistry,
+    and captures hierarchical parent-child relationships between artifact kinds.
+    Fails fast if a declared schema cannot be resolved.
     """
     KIND: str = "base"
     VERSION: str = "1.0"
-    SCHEMA: Optional[Dict[str, Any]] = None  # Row/Payload schema dict
+    DISCIPLINE: Discipline = Discipline.CREATE
+    EMIT_HEADER: bool = False  # Default False to match unheadered production lanes
+    NAME_FORMAT: str = "{kind}.jsonl"
+
+    # Hierarchy declaration
+    PARENT_KIND: Optional[str] = None
+    CHILD_KINDS: List[str] = []
+
+    # External schema pointer: set SCHEMA_NAME (e.g. 'inventory-row.schema.json') or SCHEMA_ID
+    SCHEMA_NAME: Optional[str] = None
+    SCHEMA_ID: Optional[str] = None
 
     def __init__(
         self,
         target_dir: str,
         run_id: Optional[str] = None,
-        discipline: Discipline = Discipline.CREATE
+        schema_registry: Optional[SchemaRegistry] = None
     ):
         self.target_dir = os.path.abspath(target_dir)
         self.run_id = run_id
-        self.discipline = discipline
         self._records: List[Dict[str, Any]] = []
 
+        self.schema_registry = schema_registry or get_global_schema_registry()
         self._header_validator = jsonschema.Draft202012Validator(HEADER_SCHEMA)
-        self._payload_validator = (
-            jsonschema.Draft202012Validator(self.SCHEMA) if self.SCHEMA else None
-        )
+        self._payload_validator = self._resolve_payload_validator()
 
-    def get_output_path(self) -> str:
-        suffix = f".{self.run_id}" if self.run_id else ""
-        return os.path.join(self.target_dir, f"{self.KIND}{suffix}.jsonl")
+    def _resolve_payload_validator(self) -> Optional[jsonschema.protocols.Validator]:
+        """
+        Resolves the compiled jsonschema validator from the SchemaRegistry.
+        Fails fast with KeyError if SCHEMA_ID or SCHEMA_NAME is declared but missing.
+        """
+        declared_key = self.SCHEMA_ID or self.SCHEMA_NAME
+        if declared_key is not None:
+            if not self.schema_registry.has_schema(declared_key):
+                raise KeyError(
+                    f"Declared schema '{declared_key}' for artifact registry kind '{self.KIND}' "
+                    f"could not be resolved from SchemaRegistry."
+                )
+            return self.schema_registry.get_validator(declared_key)
+
+        # Fallback to KIND lookup if available
+        if self.schema_registry.has_schema(self.KIND):
+            return self.schema_registry.get_validator(self.KIND)
+
+        return None
+
+    def get_child_registry(self, child_kind: str, child_target_dir: Optional[str] = None) -> 'BaseArtifactRegistry':
+        """Instantiates a child registry of this parent artifact."""
+        from .registries.catalog import RegistryCatalog
+        if child_kind not in self.CHILD_KINDS and child_kind != "any":
+            raise ValueError(
+                f"Kind '{child_kind}' is not declared as a valid child of parent kind '{self.KIND}'. "
+                f"Allowed: {self.CHILD_KINDS}"
+            )
+
+        target = child_target_dir or self.target_dir
+        return RegistryCatalog.create(child_kind, target_dir=target, run_id=self.run_id)
+
+    def get_output_path(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
+        """
+        Resolves final output path cleanly through NAME_FORMAT.
+        """
+        if filename:
+            name = filename
+        else:
+            name = self.NAME_FORMAT.format(
+                kind=self.KIND,
+                stem=stem or "",
+                run_id=self.run_id or ""
+            )
+            # Clean up leading or double dots if stem/run_id is empty
+            if name.startswith("."):
+                name = name[1:]
+            name = name.replace("..", ".")
+            
+        return os.path.join(self.target_dir, name)
 
     def validate_record(self, record: Dict[str, Any]) -> Dict[str, Any]:
         """
         Validates record against appropriate schema:
         - If __type__ == 'header', validates against HEADER_SCHEMA.
-        - Otherwise, validates payload against self.SCHEMA.
+        - Otherwise, validates payload against resolved external JSONSchema.
         """
         if not isinstance(record, dict):
             raise jsonschema.ValidationError(f"Record must be a JSON dict, got {type(record)}")
@@ -95,23 +153,21 @@ class BaseArtifactRegistry(ABC):
         validated = self.validate_record(record)
         self._records.append(validated)
 
-    def open_writer(self) -> JsonlEngine:
-        """Low-memory streaming context writer."""
-        out_path = self.get_output_path()
-        return JsonlEngine(output_path=out_path, discipline=self.discipline)
+    def open_writer(self, stem: Optional[str] = None, filename: Optional[str] = None) -> JsonlEngine:
+        """Low-memory streaming context writer, incorporating header rules cleanly inside the engine."""
+        out_path = self.get_output_path(stem=stem, filename=filename)
+        return JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE)
 
-    def write(self) -> str:
+    def write(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
         """Flushes buffered records to disk using JsonlEngine."""
-        out_path = self.get_output_path()
-        engine = JsonlEngine(output_path=out_path, discipline=self.discipline)
+        out_path = self.get_output_path(stem=stem, filename=filename)
+        engine = JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE)
 
         with engine:
-            # Header line (only for CREATE discipline or new file)
-            if self.discipline == Discipline.CREATE or not os.path.exists(out_path):
+            if self.EMIT_HEADER and (self.DISCIPLINE == Discipline.CREATE or not os.path.exists(out_path)):
                 header = self.build_header()
                 engine.append(header)
 
-            # Record stream
             for rec in self._records:
                 engine.append(rec)
 

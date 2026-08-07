@@ -1,5 +1,5 @@
 """
-src/shared/jsonl_engine/reader.py - Artifact Reader, JSOI v2 Index Seeker, & Provenance Verifier
+src/shared/jsonl_engine/reader.py - Artifact Reader, JSOI v2 Index Seeker, & Provenance Verifier (V4)
 """
 
 import os
@@ -8,6 +8,9 @@ import struct
 import hashlib
 from dataclasses import dataclass
 from typing import Any, Dict, Generator, List, Optional
+
+# Exact integer Ticks offset between .NET Ticks (0001-01-01) and Unix Epoch (1970-01-01)
+DOTNET_TICKS_OFFSET = 621_355_968_000_000_000
 
 
 @dataclass
@@ -21,15 +24,17 @@ class JsoiIndexV2:
     offsets: List[int]
 
     def is_current(self) -> bool:
-        """Checks whether the index is current with the JSONL source file on disk."""
+        """
+        Strictly checks whether the index is current with the JSONL source file on disk.
+        Enforces exact integer byte size and exact .NET LastWriteTimeUtc tick equality.
+        """
         if not os.path.exists(self.jsonl_path):
             return False
         stat = os.stat(self.jsonl_path)
         if stat.st_size != self.source_length:
             return False
-        # Calculate ticks
-        ticks = int((stat.st_mtime * 10_000_000) + 621_355_968_000_000_000)
-        return abs(ticks - self.source_last_write_ticks) < 10_000_000
+        ticks = (stat.st_mtime_ns // 100) + DOTNET_TICKS_OFFSET
+        return ticks == self.source_last_write_ticks
 
 
 class ArtifactReader:
@@ -39,7 +44,7 @@ class ArtifactReader:
     def read_records(jsonl_path: str) -> Generator[Dict[str, Any], None, None]:
         """
         Streams records from a JSONL file.
-        Reads in binary mode to strictly catch raw line endings and surrogate escapes.
+        Reads in binary mode to strictly catch raw line endings and UTF-8 errors.
         """
         with open(jsonl_path, "rb") as f:
             for line_no, line in enumerate(f):
@@ -114,12 +119,15 @@ class ArtifactReader:
     def seek_record(jsonl_path: str, record_index: int, jidx_path: Optional[str] = None) -> Dict[str, Any]:
         """
         Performs random-access record retrieval by seeking to the exact byte offset in .jidx.
+        Validates that the index is current before seeking.
         """
         if jidx_path is None:
             jidx_path = os.path.splitext(jsonl_path)[0] + ".jidx"
 
         index_obj = ArtifactReader.read_index(jidx_path, jsonl_path)
-        
+        if not index_obj.is_current():
+            raise ValueError(f"Stale JSONL index: {jidx_path} does not match {jsonl_path}")
+
         if record_index < 0 or record_index >= index_obj.line_count:
             raise IndexError(f"Record index {record_index} out of bounds [0, {index_obj.line_count - 1}]")
 
@@ -156,10 +164,10 @@ class ArtifactReader:
                 line_count += 1
 
         actual_hash = hasher.hexdigest()
-        
+
         if actual_hash != expected_hash:
             raise ValueError(f"Signature verification failed for {jsonl_path}: Hash mismatch ({actual_hash} != {expected_hash})")
-            
+
         if line_count != expected_line_count:
             raise ValueError(f"Signature verification failed for {jsonl_path}: Line count mismatch ({line_count} != {expected_line_count})")
 

@@ -1,11 +1,12 @@
 r"""
-src/shared/jsonl_engine/engine.py - Deterministic Streaming JSONL Engine (V3)
+src/shared/jsonl_engine/engine.py - Deterministic Streaming JSONL Engine (V7)
 
 Implements primitive JSONL file mechanics with strict determinism invariants:
 - Universal UTF-8 without BOM and LF-only newline records.
+- Refuses appending to unterminated JSONL files (missing trailing LF).
 - Deterministic compact ASCII-escaped JSON serialization (RFC 8259 compatible).
-- Lossless UTF-16 surrogate handling via standard \uXXXX escapes (PDF glyph safe).
 - Binary JSOI v2 seek index format (compatible with src/shared/jso-ops/jsonl-v2.ps1).
+- Reordered commit transaction: .jsonl published first, stat'd for exact integer .NET ticks.
 - Incremental SHA-256 provenance checksums (.sig).
 - Coordinated multi-file atomic transactions (.jsonl, .jidx, .sig).
 - Discipline modes: CREATE, APPEND, SEALED.
@@ -19,14 +20,17 @@ from enum import Enum
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-# Ticks offset between .NET Ticks (0001-01-01) and Unix Epoch (1970-01-01)
+# Exact integer Ticks offset between .NET Ticks (0001-01-01) and Unix Epoch (1970-01-01)
 DOTNET_TICKS_OFFSET = 621_355_968_000_000_000
 
 
-def datetime_to_dotnet_ticks(dt: datetime) -> int:
-    """Converts a UTC datetime object to .NET UTC Ticks."""
-    timestamp = dt.timestamp()
-    return int((timestamp * 10_000_000) + DOTNET_TICKS_OFFSET)
+def get_file_dotnet_ticks(file_path: str) -> int:
+    """
+    Computes exact integer .NET UTC Ticks from the filesystem st_mtime_ns.
+    Guarantees exact byte-matching with PowerShell's (Get-Item file).LastWriteTimeUtc.Ticks.
+    """
+    stat = os.stat(file_path)
+    return (stat.st_mtime_ns // 100) + DOTNET_TICKS_OFFSET
 
 
 class Discipline(Enum):
@@ -72,23 +76,30 @@ class JsonlEngine:
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
 
         if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
+            file_size = os.path.getsize(self.output_path)
+            if file_size > 0:
+                # Check for unterminated trailing line
+                with open(self.output_path, "rb") as check_f:
+                    check_f.seek(-1, os.SEEK_END)
+                    last_byte = check_f.read(1)
+                    if last_byte != b"\n":
+                        raise ValueError(f"Cannot append to unterminated JSONL file (missing trailing LF newline): {self.output_path}")
+
             # Copy existing file to tmp to continue stream transactionally
             with open(self.output_path, "rb") as src, open(self.tmp_path, "wb") as dst:
                 content = src.read()
                 dst.write(content)
                 self.hasher.update(content)
             
-            # Reconstruct offsets and line count
+            # Reconstruct offsets and line count cleanly
             self.offsets.clear()
             self._file = open(self.tmp_path, "r+b")
             self._file.seek(0)
             
             offset = 0
-            self.offsets.append(offset)
             for line in self._file:
+                self.offsets.append(offset)
                 offset += len(line)
-                if offset < len(content):
-                    self.offsets.append(offset)
             self.line_count = len(self.offsets)
             self._file.seek(0, os.SEEK_END)
         else:
@@ -104,7 +115,7 @@ class JsonlEngine:
         """
         Serializes and appends a single record line.
         Enforces compact ASCII-escaped JSON (ensure_ascii=True, separators=(',', ':'))
-        to guarantee byte-exact determinism across platforms and lossless PDF surrogate escapes.
+        to guarantee byte-exact determinism across platforms and LF line endings.
         """
         if self._file is None or self._file.closed:
             raise RuntimeError("JsonlEngine must be active inside a 'with' context manager.")
@@ -127,31 +138,34 @@ class JsonlEngine:
             self._file.flush()
             self._file.close()
 
-        # Get file stats for JSOI v2 index header
-        file_size = os.path.getsize(self.tmp_path)
-        last_write_time = datetime.now(timezone.utc)
-        ticks = datetime_to_dotnet_ticks(last_write_time)
+        # REORDERED TRANSACTION:
+        # 1. Atomically rename .jsonl.tmp -> final .jsonl FIRST
+        os.replace(self.tmp_path, self.output_path)
 
-        # 1. Generate JSOI v2 .jidx.tmp sidecar
+        # 2. Stat the final published .jsonl file for exact size and .NET integer ticks
+        file_size = os.path.getsize(self.output_path)
+        ticks = get_file_dotnet_ticks(self.output_path)
+
+        # 3. Generate JSOI v2 .jidx.tmp sidecar using exact stat ticks
         if self.emit_index:
             self._write_jidx_v2(self.jidx_tmp, file_size, ticks)
 
-        # 2. Generate .sig.tmp sidecar
+        # 4. Generate .sig.tmp sidecar
         if self.emit_sig:
             sig_payload = {
                 "sha256": self.hasher.hexdigest(),
                 "line_count": self.line_count,
                 "file_size": file_size,
+                "ticks": ticks,
                 "discipline": self.discipline.value,
                 "metadata": stage_metadata or {},
-                "created_at": last_write_time.isoformat()
+                "created_at": datetime.now(timezone.utc).isoformat()
             }
             sig_str = json.dumps(sig_payload, ensure_ascii=True, indent=2) + "\n"
             with open(self.sig_tmp, "wb") as f:
                 f.write(sig_str.encode("utf-8"))
 
-        # 3. Atomically replace target files together
-        os.replace(self.tmp_path, self.output_path)
+        # 5. Atomically rename sidecars into target destinations
         if self.emit_index and os.path.exists(self.jidx_tmp):
             os.replace(self.jidx_tmp, self.jidx_path)
         if self.emit_sig and os.path.exists(self.sig_tmp):

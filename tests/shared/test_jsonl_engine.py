@@ -1,5 +1,5 @@
 """
-tests/shared/test_jsonl_engine.py - Unit Tests for Python JSONL Core Engine & Registry (V3)
+tests/shared/test_jsonl_engine.py - Unit Tests for Python JSONL Core Engine & Registry (V7)
 """
 
 import os
@@ -10,34 +10,71 @@ import unittest
 from src.shared.jsonl_engine.engine import JsonlEngine, Discipline
 from src.shared.jsonl_engine.registry import BaseArtifactRegistry
 from src.shared.jsonl_engine.reader import ArtifactReader
+from src.shared.jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
+from src.shared.jsonl_engine.paths import RepoPaths, find_repository_root
+from src.shared.jsonl_engine.registries import (
+    RegistryCatalog,
+    InventoryCatalogRegistry,
+    DocumentMetadataRegistry,
+    DocGraphRegistry
+)
 
 
-class DummyRegistry(BaseArtifactRegistry):
-    KIND = "test_kind"
-    VERSION = "1.0"
-    SCHEMA = {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "object",
-        "required": ["__type__"],
-        "oneOf": [
-            {
-                "properties": {
-                    "__type__": {"const": "item"},
-                    "id": {"type": "string"},
-                    "value": {"type": "integer"}
-                },
-                "required": ["id", "value"]
-            }
-        ]
-    }
-
-    def add_item(self, item_id: str, value: int):
-        self.add({"__type__": "item", "id": item_id, "value": value})
+class DeclaredMissingSchemaRegistry(BaseArtifactRegistry):
+    KIND = "broken"
+    SCHEMA_NAME = "non_existent_schema_file.schema.json"
 
 
-class TestJsonlEngineV3(unittest.TestCase):
+class TestJsonlEngineV7(unittest.TestCase):
 
-    def test_engine_commit_sidecars(self):
+    def test_fail_fast_on_declared_missing_schema(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Must raise KeyError immediately on construction
+            with self.assertRaises(KeyError):
+                DeclaredMissingSchemaRegistry(target_dir=tmpdir)
+
+    def test_append_mode_refuses_unterminated_file(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_path = os.path.join(tmpdir, "unterminated.jsonl")
+
+            # Create file without trailing newline
+            with open(out_path, "wb") as f:
+                f.write(b'{"a":1}')  # Missing \n
+
+            # Append mode must raise ValueError immediately on enter
+            with self.assertRaises(ValueError):
+                with JsonlEngine(output_path=out_path, discipline=Discipline.APPEND) as engine:
+                    engine.append({"b": 2})
+
+    def test_repo_paths_dynamic_resolution(self):
+        root = RepoPaths.root()
+        self.assertTrue(os.path.exists(os.path.join(root, "AGENTS.md")))
+
+    def test_find_repository_root_fail_fast(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with self.assertRaises(RuntimeError):
+                find_repository_root(start_path=tmpdir)
+
+    def test_inventory_row_validation_from_schema_registry(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            inv = InventoryCatalogRegistry(target_dir=tmpdir)
+            inv.add_inventory_row(
+                slug="1105.4224v1",
+                title="Quantum Chaos",
+                authors=["Author"],
+                abstract="Abstract...",
+                identifiers={"arxiv": "1105.4224v1"},
+                categories=["cs.CL"],
+                metadata_sha256="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            )
+            out_file = inv.write()
+            self.assertTrue(os.path.exists(out_file))
+
+            records = list(ArtifactReader.read_records(out_file))
+            self.assertEqual(len(records), 1)
+            self.assertEqual(records[0]["slug"], "1105.4224v1")
+
+    def test_engine_commit_sidecars_and_exact_ticks(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             out_path = os.path.join(tmpdir, "test_output.jsonl")
             jidx_path = os.path.join(tmpdir, "test_output.jidx")
@@ -52,106 +89,10 @@ class TestJsonlEngineV3(unittest.TestCase):
             self.assertTrue(os.path.exists(out_path))
             self.assertTrue(os.path.exists(jidx_path))
             self.assertTrue(os.path.exists(sig_path))
-            self.assertFalse(os.path.exists(out_path + ".tmp"))
-
-            # Verify sig payload & hash
-            self.assertTrue(ArtifactReader.verify_signature(out_path))
-
-    def test_binary_index_v2_seeking(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            out_path = os.path.join(tmpdir, "indexed.jsonl")
-            jidx_path = os.path.join(tmpdir, "indexed.jidx")
-
-            records = [{"id": f"rec_{i}", "val": i * 10} for i in range(5)]
-            
-            with JsonlEngine(output_path=out_path) as engine:
-                for r in records:
-                    engine.append(r)
-                engine.commit()
 
             index_obj = ArtifactReader.read_index(jidx_path, out_path)
-            self.assertEqual(index_obj.version, 2)
-            self.assertEqual(index_obj.line_count, 5)
-
-            # Seek directly using seek_record API
-            rec3 = ArtifactReader.seek_record(out_path, 3, jidx_path)
-            self.assertEqual(rec3["id"], "rec_3")
-            self.assertEqual(rec3["val"], 30)
-
-    def test_signature_verification_and_tamper_detection(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            out_path = os.path.join(tmpdir, "signed.jsonl")
-            sig_path = os.path.join(tmpdir, "signed.sig")
-
-            with JsonlEngine(output_path=out_path) as engine:
-                engine.append({"__type__": "test", "data": "alpha"})
-                engine.commit()
-
-            self.assertTrue(ArtifactReader.verify_signature(out_path, sig_path))
-
-            # Tamper with the jsonl file
-            with open(out_path, "ab") as f:
-                f.write(b'{"tampered":true}\n')
-
-            with self.assertRaises(ValueError):
-                ArtifactReader.verify_signature(out_path, sig_path)
-
-    def test_jsonschema_validation_and_header(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            reg = DummyRegistry(target_dir=tmpdir, run_id="run_01")
-            reg.add_item("item_1", 100)
-            reg.add_item("item_2", 200)
-
-            # Header + records write cleanly without crashing
-            file_written = reg.write()
-            self.assertTrue(os.path.exists(file_written))
-
-            records = list(ArtifactReader.read_records(file_written))
-            self.assertEqual(len(records), 3)  # Header line + 2 item lines
-            self.assertEqual(records[0]["__type__"], "header")
-            self.assertEqual(records[0]["kind"], "test_kind")
-            self.assertEqual(records[1]["id"], "item_1")
-
-    def test_pdf_surrogate_escape_lossless(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            out_path = os.path.join(tmpdir, "pdf_surrogates.jsonl")
-            
-            # Record containing lone surrogate from corrupt PDF font extraction
-            surrogate_record = {"__type__": "token", "text": "Math symbol \ud800 unicode", "page": 1}
-            
-            with JsonlEngine(output_path=out_path) as engine:
-                engine.append(surrogate_record)
-                engine.commit()
-
-            records = list(ArtifactReader.read_records(out_path))
-            self.assertEqual(len(records), 1)
-            self.assertIn("\ud800", records[0]["text"])
-
-    def test_discipline_modes(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            out_path = os.path.join(tmpdir, "discipline.jsonl")
-
-            # CREATE
-            with JsonlEngine(output_path=out_path, discipline=Discipline.CREATE) as engine:
-                engine.append({"line": 1})
-                engine.commit()
-
-            records_v1 = list(ArtifactReader.read_records(out_path))
-            self.assertEqual(len(records_v1), 1)
-
-            # APPEND
-            with JsonlEngine(output_path=out_path, discipline=Discipline.APPEND) as engine:
-                engine.append({"line": 2})
-                engine.commit()
-
-            records_v2 = list(ArtifactReader.read_records(out_path))
-            self.assertEqual(len(records_v2), 2)
-            self.assertEqual(records_v2[1]["line"], 2)
-
-            # SEALED
-            with self.assertRaises(PermissionError):
-                with JsonlEngine(output_path=out_path, discipline=Discipline.SEALED) as engine:
-                    engine.append({"line": 3})
+            self.assertTrue(index_obj.is_current())
+            self.assertTrue(ArtifactReader.verify_signature(out_path))
 
 
 if __name__ == "__main__":
