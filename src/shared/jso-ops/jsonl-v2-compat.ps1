@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/shared/jsonl-v2-compat.ps1 — transitional adapters for jsonl-v2.ps1.
+  src/shared/jso-ops/jsonl-v2-compat.ps1 — transitional adapters for jsonl-v2.ps1.
 
   Nothing imports this file today. It is deliberately separate so legacy naming and sidecar discovery
   can be deleted as one unit after migration. New code should dot-source jsonl-v2.ps1 directly.

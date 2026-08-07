@@ -2,7 +2,7 @@
 # Pending replacement JSONL primitives. This suite imports jsonl-v2.ps1 only; production stays on jsonl.ps1.
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/shared/jsonl-v2.ps1"
+    . "$PSScriptRoot/../../src/shared/jso-ops/jsonl-v2.ps1"
     $script:Utf8 = [System.Text.UTF8Encoding]::new($false, $true)
 }
 

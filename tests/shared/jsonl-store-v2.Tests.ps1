@@ -2,7 +2,7 @@
 # Managed-store automation remains additive and is not imported by production code.
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/shared/jsonl-store-v2.ps1"
+    . "$PSScriptRoot/../../src/shared/jso-ops/jsonl-store-v2.ps1"
 }
 
 Describe 'managed JSONL store automation' {

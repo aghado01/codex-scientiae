@@ -2,7 +2,7 @@
 # Compatibility is tested separately so the replacement core has no legacy path/name behavior.
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/shared/jsonl-v2-compat.ps1"
+    . "$PSScriptRoot/../../src/shared/jso-ops/jsonl-v2-compat.ps1"
     $script:Utf8 = [System.Text.UTF8Encoding]::new($false, $true)
 
     function Write-TestJsoiV1Index([string]$JsonlPath, [string]$IndexPath) {

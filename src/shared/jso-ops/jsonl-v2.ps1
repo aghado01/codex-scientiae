@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/shared/jsonl-v2.ps1 — pending replacement for the shared JSONL substrate.
+  src/shared/jso-ops/jsonl-v2.ps1 — pending replacement for the shared JSONL substrate.
 
   This file is intentionally NOT imported by current production code. The filename is versioned only
   while the replacement is being vetted; its API uses the intended final, unversioned names. Transitional
