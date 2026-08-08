@@ -1012,3 +1012,226 @@ Holding PDF scoring until then is the right constraint, not a gap.
 
 <div align="center">⁂</div>
 
+---
+
+# how might i modify this karpathy claude file to merge my wants and needs with karpathy's complementary guidance
+
+Karpathy’s file is a **process constitution** (how to change code). Yours is a **domain constitution** (what must stay true). Merge by keeping his four sections almost intact, then adding a thin project layer that encodes envelope/ABI/oracle rules without turning CLAUDE.md into MarkBrain.
+
+## Merge strategy
+
+| Keep from Karpathy | Add from you | Do not put in CLAUDE.md |
+| :-- | :-- | :-- |
+| Think / Simplicity / Surgical / Goal-driven | Lane authority, ABI, validation epistemology | Full kind catalog, RNG crosswalks |
+| Caution > speed tradeoff | Math-channel + furniture rules | Long architecture essays |
+| Verifiable success criteria | Render/raster vs pairwise δ (when each applies) | Implementation tutorials |
+
+**Rule of thumb:** CLAUDE.md answers “how should an agent behave in this repo?” Specs and ADRs answer “what is the envelope?”
+
+***
+
+## Suggested merged `CLAUDE.md`
+
+```markdown
+# CLAUDE.md
+
+Behavioral guidelines for agents in this repo. Karpathy-style process rules
+plus Codex-Scientiae domain constraints. Merge conflicts: domain invariants
+win over convenience; process rules win over drive-by refactors.
+
+**Tradeoff:** Bias toward caution over speed. For trivial tasks, use judgment.
+
+---
+
+## 0. Project north star (read first)
+
+**Codex-Scientiae** ingests scientific manuscripts into a latent envelope and
+emits projections. Agents must not invent a second architecture.
+
+| Concern | Authority |
+|---------|-----------|
+| Latent object | Manuscript hypergraph (nodes, spine order, hyperedges, closures) |
+| ABI / IR | JSONL serialization of that hypergraph — lane-agnostic contract |
+| Human/model view | MarkPig Markdown + math channel (projection of JSONL) |
+| L→MD / L→JSONL | First-class product; deterministic; builds the ABI |
+| P→MD / P→JSONL | Later; must emit the same ABI; scored against LaTeX-lane JSONL |
+| Pairwise PDF↔LaTeX δ | Only after ABI is stable and L-lane is trusted — not this phase’s scorer |
+
+**Surjection:** many sources (LaTeX dialects, later PDF/HTML) → one envelope
+instance. Do not treat any source format as the ontology.
+
+**Current phase:** harden LaTeX ingest + JSONL ABI. PDF pipeline is on hold
+for product work unless explicitly tasked. Do not build PDF scoring harnesses
+“while here.”
+
+---
+
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them — don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+**Domain checks before coding:**
+- Which lane is this? (`latex` | `pdf` | `html` | shared ABI | MarkPig view)
+- Does this change the JSONL ABI, only a projection, or only a converter?
+- ABI changes need explicit user intent — they are contract changes.
+- Is success defined by render/raster, fixtures/invariants, or (later) pairwise δ?
+- Never use LaTeX-lane output as the oracle for LaTeX-lane fidelity.
+
+---
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No “flexibility” or multi-lane scaffolding not requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+- No premature PDF↔LaTeX alignment metrics, judge LLMs, or schema
+  compatibility shims “for later” unless the task is exactly that.
+
+Ask: “Would a senior engineer say this is overcomplicated?” If yes, simplify.
+
+**Envelope simplicity:** prefer a smaller sufficient JSONL kind set over
+mirroring JATS/TEI/DocBook/DITA element inventories. Borrow names when useful;
+do not import those standards as runtime dependencies.
+
+---
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't “improve” adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it — don't delete it.
+- Don't “tidy” math normalization, ABI field names, or golden fixtures
+  unless the task targets them — silent norm drift breaks the oracle later.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: every changed line should trace directly to the user's request.
+
+---
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- “Add validation” → “Write tests for invalid inputs, then make them pass”
+- “Fix the bug” → “Write a test that reproduces it, then make it pass”
+- “Refactor X” → “Ensure tests pass before and after”
+
+For multi-step tasks, state a brief plan:
+```
+
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+### Phase-correct verification (this repo)
+
+**LaTeX lane (now) — non-circular:**
+- Math/payload fidelity: isolated render + raster (or agreed visual/semantic
+  witness) against source-derived truth — NOT diff to our own MD/JSONL alone.
+- Structure: fixtures, invariants, explicit graph checks — not self-oracle.
+- Golden ABI/MD files: regression locks after human/render acceptance; they
+  detect drift, they do not define ground truth by themselves.
+
+**PDF lane (later) — oracle is LaTeX JSONL:**
+- Piecewise δ on JSONL (`ord`/`kind`/payload/edges), then composite aggregates.
+- No judge model as primary success when pair-mates exist.
+
+**Shared:**
+- Strong criteria beat “make it work.”
+- Prefer tests that isolate failure class: segment | kind | math | order | edges.
+
+---
+
+## 5. Domain invariants (do not violate)
+
+1. **Substance vs furniture** — strip typesetting-only artifacts; keep
+   semantic structure and math meaning.
+2. **Math channel** — emit normalized, bounded, KaTeX-valid math; expand
+   macros; treat author commands as evidence toward canonical forms, not as
+   the permanent surface when a standard form is justified.
+3. **JSONL is the ABI** — Markdown is a view. Both lanes eventually write
+   JSONL; scoring aligns on JSONL chunks/nodes, not raw MD strings.
+4. **Canonical spine** — every envelope instance has deterministic reading
+   order (`ord`) + node `kind`; hyperedges carry refs (cite, label, footnote,
+   caption ownership, closures).
+5. **Terminology** — prefer *math channel* over overloaded “register”; prefer
+   *envelope* / *hypergraph* / *spine* as in project docs. Don't rename the
+   architecture in passing.
+6. **Stack sensibilities** — MarkPig/PdfDig are C#/PowerShell-facing where
+   applicable; don't casually replatform shared IR to a parallel Python-only
+   schema without intent.
+
+---
+
+## 6. What “done” looks like for common task types
+
+| Task type | Done means |
+|-----------|------------|
+| LaTeX math normalize | Render/raster (or fixture) pass; channel string stable; no ABI field rename |
+| New node kind | Schema + emitter + MD projection + fixture; document surjection from LaTeX |
+| Ref/hyperedge | Round-trip or fixture on edges; spine `ord` unchanged unless intended |
+| MD-only prettify | No JSONL semantic change; golden ABI unchanged |
+| PDF work | Explicitly in scope; emits ABI; δ plan named — else out of scope |
+
+---
+
+**These guidelines are working if:** diffs stay small; ABI doesn't drift
+silently; LaTeX validation stays non-circular (render/raster + fixtures);
+agents ask before contract changes; PDF scoring work doesn't leak into the
+LaTeX hardening phase; clarifying questions come before implementation.
+```
+
+
+***
+
+## Why this shape works
+
+- **§0–§5 domain** is short enough that agents actually load it; Karpathy **§1–§4** stay recognizable so the “complementary guidance” isn’t rewritten into a different personality.
+- **Epistemology is explicit** (self-oracle ban vs later pairwise δ) — that was the sharpest process bug to prevent.
+- **ABI vs MD** is stated once so agents don’t optimize Markdown string equality.
+- **Phase gate** on PDF matches your hold without needing a separate novel.
+
+
+## Optional splits (if CLAUDE.md grows)
+
+| File | Contents |
+| :-- | :-- |
+| `CLAUDE.md` | Process + invariants (above) |
+| `docs/ABI_JSONL.md` | Record schema, kinds, edge types |
+| `docs/VALIDATION.md` | Render/raster harness, golden policy |
+| MarkBrain | Design rationale, standards crosswalk |
+
+Keep CLAUDE.md under ~150–200 lines so it remains a steering surface.
+
+## Light edits you might want
+
+- Name the actual repos/paths (`aghado01/codex-scientiae`, MarkPig entrypoints) in §0 if agents land in a monorepo.
+- Add one line under §4 with the **real** render/raster command once it is stable (`dotnet test …`, `pwsh ./scripts/…`).
+- If you want Karpathy’s voice even tighter, delete §6 and fold the table into §4 as bullets.
+
+I can turn this into a repo-ready patch against your real paths/commands if you point at where `CLAUDE.md` will live (codex-scientiae root vs MarkBrain).
+<span style="display:none">[^8_1]</span>
+
+<div align="center">⁂</div>
+
+[^8_1]: CLAUDE.md
+
