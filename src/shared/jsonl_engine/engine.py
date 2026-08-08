@@ -104,47 +104,80 @@ class JsonlEngine:
 
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
 
-        if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
-            file_size = os.path.getsize(self.output_path)
-            if file_size > 0:
-                # The existing stream must end on this store's declared terminator. Appending past
-                # a partial line would corrupt the record it lands on, and appending LF to a CRLF
-                # store would leave a file no declared policy can read.
-                terminator = self.eol.terminator(self.encoding)
-                with open(self.output_path, "rb") as check_f:
-                    check_f.seek(-min(len(terminator), file_size), os.SEEK_END)
-                    tail = check_f.read()
-                    if tail != terminator:
-                        raise ValueError(
-                            f"Cannot append to unterminated JSONL file (expected a trailing "
-                            f"{self.eol.value.upper()} terminator, found {tail!r}): {self.output_path}"
-                        )
+        self.offsets.clear()
+        self.line_count = 0
+        self.hasher = hashlib.sha256()
 
-            # Copy existing file to tmp to continue stream transactionally
-            with open(self.output_path, "rb") as src, open(self.tmp_path, "wb") as dst:
-                content = src.read()
-                dst.write(content)
-                self.hasher.update(content)
-            
-            # Reconstruct offsets and line count cleanly
-            self.offsets.clear()
-            self._file = open(self.tmp_path, "r+b")
-            self._file.seek(0)
-            
-            offset = 0
-            for line in self._file:
-                self.offsets.append(offset)
-                offset += len(line)
-            self.line_count = len(self.offsets)
-            self._file.seek(0, os.SEEK_END)
+        if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
+            self._adopt_existing()
         else:
             self._file = open(self.tmp_path, "wb")
-            self.offsets.clear()
-            self.line_count = 0
-            self.hasher = hashlib.sha256()
 
         self._committed = False
         return self
+
+    def _adopt_existing(self) -> None:
+        """Carry the published store into this transaction's tmp file, in one pass.
+
+        Copy, hash, framing check, and offset capture happen together over a single read, so the
+        store is never held in memory and never walked twice.
+
+        Adoption validates. A record this engine would refuse to write is one it refuses to extend:
+        appending to a store whose framing the reader rejects produces a longer store the reader
+        still rejects, and the failure then surfaces at read time with no trace of which write
+        introduced it. Framing only -- terminator, blank lines, stray CR. Record shape belongs to
+        the kind, and this module knows nothing about kinds.
+        """
+        terminator = self.eol.terminator(self.encoding)
+        file_size = os.path.getsize(self.output_path)
+
+        # O(1) precheck so a large store fails before it is copied rather than after.
+        if file_size > 0:
+            with open(self.output_path, "rb") as probe:
+                probe.seek(-min(len(terminator), file_size), os.SEEK_END)
+                tail = probe.read()
+            if tail != terminator:
+                raise ValueError(
+                    f"Cannot append to unterminated JSONL file (expected a trailing "
+                    f"{self.eol.value.upper()} terminator, found {tail!r}): {self.output_path}"
+                )
+
+        self._file = open(self.tmp_path, "wb")
+        try:
+            offset = 0
+            with open(self.output_path, "rb") as src:
+                for index, line in enumerate(src):
+                    self._check_adopted(line, index, terminator)
+                    self._file.write(line)
+                    self.hasher.update(line)
+                    self.offsets.append(offset)
+                    offset += len(line)
+            self.line_count = len(self.offsets)
+        except BaseException:
+            # __exit__ does not run when __enter__ raises, so the partial tmp is cleaned here.
+            self._file.close()
+            self._file = None
+            if os.path.exists(self.tmp_path):
+                try:
+                    os.remove(self.tmp_path)
+                except OSError:
+                    pass
+            raise
+
+    def _check_adopted(self, line: bytes, index: int, terminator: bytes) -> None:
+        """Framing checks for one adopted record, matching what the reader enforces."""
+        where = f"record {index} of {os.path.basename(self.output_path)}"
+        if not line.endswith(terminator):
+            raise ValueError(
+                f"Cannot append: {where} does not end with this store's declared "
+                f"{self.eol.value.upper()} terminator"
+            )
+
+        body = line[: -len(terminator)]
+        if not body.strip():
+            raise ValueError(f"Cannot append: {where} is blank")
+        if b"\r" in body:
+            raise ValueError(f"Cannot append: {where} contains a CR inside the record")
 
     def append(self, record: Dict[str, Any]) -> None:
         """
