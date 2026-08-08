@@ -11,6 +11,7 @@ import unittest
 from jsonl_engine.engine import JsonlEngine
 from jsonl_engine.policy import Eol
 from jsonl_engine.reader import JsonlStore, read_json, read_json_or_none
+from jsonl_engine.sidecar import store_paths
 
 
 def _store(tmpdir: str, name: str = "s.jsonl", **engine_kwargs) -> str:
@@ -94,7 +95,7 @@ class TestRefusals(unittest.TestCase):
         """Another lane writes its own shape to .sig; that is not corruption."""
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _store(tmpdir)
-            with open(os.path.splitext(path)[0] + ".sig", "wb") as handle:
+            with open(store_paths(path).sig, "wb") as handle:
                 handle.write(b'{"stage":"pdfdig-ir/words","records":0}')
             with self.assertRaises(ValueError) as caught:
                 JsonlStore(path).verify()

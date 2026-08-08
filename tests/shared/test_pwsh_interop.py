@@ -8,6 +8,7 @@ import subprocess
 import unittest
 from jsonl_engine import JsonlEngine
 from jsonl_engine.paths import RepoPaths
+from jsonl_engine.sidecar import store_paths
 
 
 class TestPwshInterop(unittest.TestCase):
@@ -15,7 +16,7 @@ class TestPwshInterop(unittest.TestCase):
     def test_powershell_reads_python_jidx_v2_index(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             jsonl_path = os.path.join(tmpdir, "interop.jsonl")
-            jidx_path = os.path.join(tmpdir, "interop.jidx")
+            jidx_path = store_paths(jsonl_path).jidx
 
             with JsonlEngine(output_path=jsonl_path) as engine:
                 engine.append({"id": "rec_0", "val": 100})

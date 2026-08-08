@@ -7,10 +7,10 @@
 
   Compatibility currently provided:
     - Read-JsonlRecord, the old indexed-record function name;
-    - discovery of the retired `records.jsonl.jidx` sidecar; and
+    - discovery of the retired `records.jidx` extension-substituted sidecar; and
     - read-only loading of JSOI v1 offsets when a legacy sidecar is selected.
 
-  This file never writes the retired sidecar form. New indexes are always `{stem}.jidx` JSOI v2.
+  This file never writes the retired sidecar form. New indexes are always `{artifact}.jidx` JSOI v2.
 #>
 
 . "$PSScriptRoot/jsonl-v2.ps1"
@@ -22,7 +22,7 @@ function Resolve-JsonlCompatibleIndexPath {
     $full = [System.IO.Path]::GetFullPath($Path)
     $canonical = Resolve-JsonlIndexPath $full
     if ([System.IO.File]::Exists($canonical)) { return $canonical }
-    $legacy = "$full.jidx"
+    $legacy = [System.IO.Path]::ChangeExtension($full, '.jidx')
     if ([System.IO.File]::Exists($legacy)) { return $legacy }
     return $canonical
 }

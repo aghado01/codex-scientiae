@@ -72,18 +72,15 @@ class StorePaths:
 def store_paths(path: str) -> StorePaths:
     """Derive the sidecar paths for `path`, or recover the subject from a sidecar path.
 
-    Sidecars replace the extension: `records.jsonl` is accompanied by `records.jidx` and
-    `records.sig`. This is the canonical form, matching Get-JsonlIndexPath in
-    jso-ops/jsonl-v2.ps1; the appended `records.jsonl.jidx` shape is the retired form that lane
-    reads for discovery and never writes.
+    Sidecars append rather than replace the extension: `records.jsonl` is accompanied by
+    `records.jsonl.jidx` and `records.jsonl.sig`. One rule for every artifact type.
 
-    A single-object `.json` resolves the same way, so a manifest can carry a `.sig` without a
-    second convention. The cost of replacement is that a `.json` and a `.jsonl` sharing a stem in
-    one directory would contend for one sidecar, and that a sidecar path alone cannot say which of
-    the two it belongs to -- recovery assumes `.jsonl`.
+    Replacement cannot serve a signed `.json`: `foo.json` and `foo.jsonl` in one directory would
+    contend for a single `foo.sig`, and recovering the subject from a bare `foo.sig` would have to
+    guess which of the two it belonged to. Appending makes both exact -- the sidecar names its own
+    subject, and stripping one suffix returns it.
     """
     full = os.path.abspath(path)
     root, ext = os.path.splitext(full)
-    artifact = root + ".jsonl" if ext.lower() in _SIDECAR_EXTS else full
-    stem = os.path.splitext(artifact)[0]
-    return StorePaths(artifact=artifact, jidx=stem + ".jidx", sig=stem + ".sig")
+    artifact = root if ext.lower() in _SIDECAR_EXTS else full
+    return StorePaths(artifact=artifact, jidx=artifact + ".jidx", sig=artifact + ".sig")

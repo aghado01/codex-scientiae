@@ -14,6 +14,7 @@ from unittest import mock
 from jsonl_engine import engine as engine_module
 from jsonl_engine.engine import JsonlEngine
 from jsonl_engine.reader import JsonlStore
+from jsonl_engine.sidecar import store_paths
 from jsonl_engine.registries import InventoryCatalogRegistry
 
 from test_jsonl_engine import _article
@@ -31,9 +32,9 @@ class TestSidecarTransaction(unittest.TestCase):
             with JsonlEngine(output_path=path) as eng:
                 eng.append({"n": 1})
                 eng.commit()
-            stem = os.path.join(tmpdir, "s")
-            self.assertTrue(os.path.exists(stem + ".jidx"))
-            self.assertTrue(os.path.exists(stem + ".sig"))
+            paths = store_paths(path)
+            self.assertTrue(os.path.exists(paths.jidx))
+            self.assertTrue(os.path.exists(paths.sig))
 
     def test_sidecar_failure_names_the_published_unsigned_state(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -60,8 +61,8 @@ class TestSidecarTransaction(unittest.TestCase):
             with JsonlEngine(output_path=path) as eng:
                 eng.append({"n": 1})
                 eng.commit()
-            sig_path = os.path.join(tmpdir, "s.sig")
-            jidx_path = os.path.join(tmpdir, "s.jidx")
+            paths = store_paths(path)
+            sig_path, jidx_path = paths.sig, paths.jidx
             self.assertTrue(os.path.exists(sig_path))
             self.assertTrue(os.path.exists(jidx_path))
 
@@ -74,8 +75,8 @@ class TestSidecarTransaction(unittest.TestCase):
             # Both sidecars described the bytes this commit replaced, so both are named and gone.
             message = str(caught.exception)
             self.assertIn("Removed now-stale", message)
-            self.assertIn("s.jidx", message)
-            self.assertIn("s.sig", message)
+            self.assertIn(os.path.basename(jidx_path), message)
+            self.assertIn(os.path.basename(sig_path), message)
             self.assertFalse(os.path.exists(sig_path), "stale .sig should not survive")
             self.assertFalse(os.path.exists(jidx_path), "stale .jidx should not survive")
 

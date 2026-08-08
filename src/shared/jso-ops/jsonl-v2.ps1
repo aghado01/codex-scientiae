@@ -14,7 +14,7 @@
     - one strict codec for all streaming reads and validation;
     - cooperating-writer leases and stable-reader views;
     - head, tail, count, ranges, JSON Pointer projection, and indexed random access;
-    - canonical `{stem}.jidx` indexes; and
+    - canonical `{artifact}.jidx` indexes; and
     - store inspection/finalization and stable snapshots of actively appended JSONL files.
 
   Deliberately absent: run layout, stages, provenance stamps, inventories, ledgers, logging policy,
@@ -59,11 +59,18 @@ class JsonlIndex {
 }
 
 function Resolve-JsonlIndexPath {
-    <# Return the canonical sidecar path: records.jsonl -> records.jidx. #>
+    <#
+      Return the canonical sidecar path: records.jsonl -> records.jsonl.jidx.
+
+      The suffix is appended, not substituted. Substitution cannot serve a signed single-object
+      .json: records.json and records.jsonl in one directory would contend for a single
+      records.sig, and a bare sidecar path could not say which subject it belonged to. Appending
+      makes the sidecar name its own subject, and matches Write-JsonlStage in ../jsonl.ps1.
+    #>
     [CmdletBinding()]
     param([Parameter(Mandatory, Position = 0)][string]$Path)
 
-    return [System.IO.Path]::ChangeExtension([System.IO.Path]::GetFullPath($Path), '.jidx')
+    return "$([System.IO.Path]::GetFullPath($Path)).jidx"
 }
 
 function script:Assert-JsonlStreamNoBom {

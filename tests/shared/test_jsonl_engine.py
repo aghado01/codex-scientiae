@@ -14,6 +14,7 @@ from jsonl_engine.registry import BaseStore
 from jsonl_engine.reader import JsonlStore, read_index
 from jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
 from jsonl_engine.paths import RepoPaths, find_repository_root
+from jsonl_engine.sidecar import store_paths
 from jsonl_engine.registries import (
     RegistryCatalog,
     InventoryCatalogRegistry,
@@ -160,8 +161,8 @@ class TestJsonlEngineV7(unittest.TestCase):
     def test_engine_commit_sidecars_and_exact_ticks(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             out_path = os.path.join(tmpdir, "test_output.jsonl")
-            jidx_path = os.path.join(tmpdir, "test_output.jidx")
-            sig_path = os.path.join(tmpdir, "test_output.sig")
+            sidecars = store_paths(out_path)
+            jidx_path, sig_path = sidecars.jidx, sidecars.sig
 
             engine = JsonlEngine(output_path=out_path)
             with engine:
