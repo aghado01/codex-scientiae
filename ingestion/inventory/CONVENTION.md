@@ -20,6 +20,7 @@ the slug and identifies an immutable provider version.
   {slug}-tex/         # stable raw extraction of that archive
   {slug}.pdf          # optional acquired PDF form of the same document
   {slug}.arxiv.json   # optional provider/acquisition evidence
+  {slug}-latex.patch.jsonl # optional latex-ingest curated errata
   article.json        # authoritative flat article and source-ready sentinel
 ```
 
@@ -27,6 +28,30 @@ An acquired LaTeX archive named either `{slug}.tar.gz` or `arXiv-{slug}.tar.gz` 
 `{slug}.tar.gz` only after private extraction and validation succeed. The archive and extracted tree are
 source material, not run output. Generated artifacts after raw extraction belong under the applicable
 runstamped `artifacts/...` directory.
+
+### Document-local LaTeX curation
+
+`{slug}-latex.patch.jsonl` is an optional durable input owned by latex-ingest. Its canonical address is the
+document directory beside `article.json`; it is not allowed inside `{slug}-tex/`, a conversion run, lane
+output, or a deliverable shelf. It is not acquired source evidence, does not enter `article.json`, and does
+not contribute to the immutable source-tree fingerprint. Source publication and conversion never create,
+rewrite, move, or delete it. Its lifecycle is explicit curation: absence means faithful conversion, a present
+file is reapplied on every conversion, and a stale or count-mismatched record requires review or removal.
+
+Lookup uses the validated manifest slug to construct that one literal sibling and performs no scan, inferred
+basename, or output-directory fallback. The slug satisfies `article.schema.json#/$defs/portableLeaf`: one
+nonempty segment; not `.` or `..`; no trailing dot or space, `<>:"/\|?*`, or U+0000–U+001F; and no
+case-insensitive Windows device basename (`CON`, `PRN`, `AUX`, `NUL`, `COM1`–`COM9`, `LPT1`–`LPT9`) before a
+dot or end. A present patch must be a physical non-reparse file no larger than 1 MiB (1,048,576 raw bytes).
+Non-file occupancy, reparse traversal, and larger inputs fail; a missing exact leaf alone means `absent`.
+
+The patch suffix does not opt this domain format into strict shared-engine semantics. Its application parser
+accepts blank lines and full-line `#` or `//` comments; each remaining physical line is one JSON object with a
+supported operation and required reason. Files use valid UTF-8 without a BOM; LF or CRLF and a missing final
+newline are accepted, while a bare CR is rejected. Applied records preserve physical-line and curator
+provenance in file order. Conversion and run-local oracle evidence carry the same raw-byte identity—`absent`
+or `sha256:<64-lowercase-hex>`—and batch execution refuses drift from the identity frozen during planning.
+A same-named file in generated `OutDir` is ignored.
 
 ## Source-ready publication
 

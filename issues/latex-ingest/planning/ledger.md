@@ -4,6 +4,23 @@ Newest first. Detail lives in the field notes
 ([probe-prose-channel-20260802.md](../discussions/probe-prose-channel-20260802.md)) and commit
 messages; this is the index of what landed.
 
+## 2026-08-08
+
+- **Canonical per-document LaTeX patch lane** (D20). The converter now resolves only
+  `{document-directory}/{slug}-latex.patch.jsonl`, keeps the stable source tree and generated `OutDir`
+  independent, and treats absence as faithful input rather than searching generated output. The domain-owned
+  reader retains blank and full-line-comment tolerance while enforcing UTF-8/no-BOM bytes, a closed record
+  vocabulary, the article schema's exact portable-leaf slug rule, literal non-reparse lookup, a 1 MiB raw
+  byte ceiling, guarded operations, physical-line provenance, bounded regular expressions, and raw-byte
+  identity. Source and output phases retain their execution boundaries while `patched[]` projects applied
+  records back into authored file order; conversion and oracle evidence agree on identity and count. Batch
+  planning obtains `absent` or `sha256:<digest>` through a bounded incremental read, pins that identity into
+  stable job identity, and transports the planned slug with it. Before writes, the core compares the resolved
+  slug ordinally and refuses slug drift in supported legacy metadata; it separately refuses patch appearance,
+  deletion, or byte drift without treating the curated input as a write. Focused Pester 6 gates are 22/22
+  patch-contract tests, 10/10 adapter tests, and 7/7 integration tests, including a real article deposit,
+  separate conflicting `OutDir`, unchanged source fingerprint, provenance/order, and deterministic rerun.
+
 ## 2026-08-06
 
 - **Localized inventory 0.1 + latex-batch development entrypoint** (D18). Added a schema-bound,

@@ -7,7 +7,7 @@ the whole tree as one homogeneous inventory and do not bulk-rename it into appar
 The adoption unit is a deliberately selected segment and, within it, one logical document leaf at a time.
 The current source-deposit contract is specified in [`inventory/CONVENTION.md`](inventory/CONVENTION.md).
 
-## Separate the three address classes
+## Separate the four address classes
 
 1. **Source deposits** are stable inputs. A compliant document leaf owns its acquired forms, normalized raw
    extraction, provider evidence, and canonical `article.json`.
@@ -15,6 +15,9 @@ The current source-deposit contract is specified in [`inventory/CONVENTION.md`](
    `artifacts/{module}/runs/{runstamp}/...`, not inside source deposits.
 3. **Lane output and deliverables** are rendered projections or published bundles. They are neither acquired
    source nor permission to infer a source deposit.
+4. **Document-local application curation** is durable input maintained beside a deposit without becoming
+   acquired source truth. The optional LaTeX patch file belongs to this class; it is neither an article field
+   nor generated lane output.
 
 Runtimes may resolve absolute paths for confinement and I/O, but persisted article paths are portable,
 forward-slash paths relative to the document directory. No ingestion convention depends on a drive letter,
@@ -28,6 +31,7 @@ user profile, checkout location, or current machine.
   {slug}-tex/           # validated stable extraction
   {slug}.pdf            # optional acquired PDF form
   {slug}.arxiv.json     # optional provider/acquisition evidence
+  {slug}-latex.patch.jsonl # optional latex-ingest curated errata
   article.json          # source-ready transaction sentinel and flat article manifest
 ```
 
@@ -112,6 +116,25 @@ authoritative consumption-time schema check. Batch-adapter planning intentionall
 process-free address and identity check. The converter never initializes, infers an archive, recognizes
 `{slug}-latex/`, or writes into the source tree.
 
+An optional `{slug}-latex.patch.jsonl` is resolved only from the validated article's document directory. It
+is a durable latex-ingest curation input, independent of the source-deposit transaction and excluded from the
+article's immutable source forms and tree fingerprint. The converter never creates or mutates it, and a file
+with the same name in `-OutDir` is ignored. Lookup constructs that one literal leaf from the manifest slug;
+it does not scan for alternatives. The slug follows `article.schema.json#/$defs/portableLeaf`: one nonempty
+segment; not `.` or `..`; no trailing dot or space, `<>:"/\|?*`, control characters U+0000–U+001F, or
+case-insensitive Windows device basename (`CON`, `PRN`, `AUX`, `NUL`, `COM1`–`COM9`, `LPT1`–`LPT9`) before
+a dot or end. Absence is a faithful no-op. A present patch must be a physical non-reparse file of at most
+1 MiB (1,048,576 raw bytes). Present files deliberately retain a tolerant application grammar: blank lines
+and full-line `#` or `//` comments are allowed, while every other line is one JSON patch object with a
+supported operation and a required reason. This exception is not parsed or normalized through the strict
+shared JSONL engine.
+
+Applied records retain physical-line and curator provenance in file order. Stale or count-mismatched records
+fail loudly. The conversion result exposes the raw-byte identity (`absent` or
+`sha256:<64-lowercase-hex>`) as `patch_identity` and the ordered records as `patched[]`; the run-local oracle
+records the same identity and `patches_applied`. Batch planning pins the identity and the worker refuses a
+created, removed, or changed patch rather than executing under a stale job identity.
+
 ## Inventory and batch migration
 
 The canonical localized inventory model is a deterministic JSONL materialization of direct-child
@@ -168,6 +191,8 @@ exceptions, and migration state. Do not encode one segment's nesting assumptions
 - [ ] The article validates as flat `codex-scientiae/article/0.1`.
 - [ ] A production conversion succeeds through the article or document directory without changing the
       source-tree fingerprint.
+- [ ] Any document-local LaTeX patch is reviewed as explicit curation, remains outside `{slug}-tex/` and
+      generated output, and has a conversion audit matching its raw-byte identity.
 - [ ] Generated evidence is found under the run directory, not `{slug}-tex/`.
 - [ ] Legacy `metadata.json`, `{slug}-latex/`, and compatibility-only exceptions are recorded for removal.
 - [ ] Any localized inventory is deliberately materialized from explicit direct-child articles; recursive

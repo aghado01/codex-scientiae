@@ -42,9 +42,12 @@ function Get-LatexBatchJob {
         if ($null -eq $row) { throw 'latex-batch inventory row must not be null' }
         $document = Read-LatexBatchManifestRecord -InventoryRow $row `
             -MetadataPathProperty $MetadataPathProperty -InventoryRoot $inventory
+        $patch = Resolve-LatexBatchPatchRecord -ManifestPath $document.ManifestPath `
+            -Slug $document.Slug -InventoryRoot $inventory
         $identityMaterial = @(
             "manifest=$($document.RelativeManifestPath)"
             "source=$($document.SourceTreeSha256)"
+            "patch=$($patch.Identity)"
             "bundle=$([bool]$BundleDeliverable)"
             "embedded-toc=$([bool]$EnableEmbeddedToc)"
             "tree-toc-disabled=$([bool]$DisableTreeToc)"
@@ -59,6 +62,8 @@ function Get-LatexBatchJob {
         $parameters = @{
             LatexIngestPath = $latexIngest.Path
             MetadataPath = $document.ManifestPath
+            ExpectedSlug = $document.Slug
+            ExpectedPatchIdentity = $patch.Identity
             RunDir = $address.ApplicationRunDirectory
             OutDir = $address.OutputDirectory
         }
@@ -85,6 +90,9 @@ function Get-LatexBatchJob {
             MetadataPath = $document.ManifestPath
             MetadataSchema = [string]$document.Manifest['schema']
             Slug = $document.Slug
+            PatchPath = $patch.Path
+            InventoryRelativePatchPath = $patch.RelativePath
+            PatchIdentity = $patch.Identity
             SourceTreeSha256 = $document.SourceTreeSha256
             SourceArchiveSha256 = $document.SourceArchiveSha256
             LatexIngestPath = $latexIngest.Path

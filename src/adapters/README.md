@@ -92,10 +92,32 @@ article, latex-ingest calls the engine's `validate-json <path> article.schema.js
 the object or running conversion. A schema-invalid article can therefore be planned but cannot execute as a
 valid source.
 
-Stable identity derives from the inventory-relative manifest, source-tree fingerprint, and output options.
+For a canonical article, planning also resolves exactly
+`{document-directory}/{slug}-latex.patch.jsonl`. It constructs that literal sibling from the manifest slug;
+there is no directory scan, inferred basename, or `OutDir` fallback. The slug follows
+`article.schema.json#/$defs/portableLeaf`: it is one nonempty segment other than `.` or `..`, has no trailing
+dot or space, contains none of `<>:"/\|?*` or U+0000–U+001F, and has no case-insensitive Windows device
+basename (`CON`, `PRN`, `AUX`, `NUL`, `COM1`–`COM9`, or `LPT1`–`LPT9`) before a dot or end. The resolved
+address must stay beneath `InventoryRoot`. A present entry must be a physical non-reparse file no larger than
+1 MiB (1,048,576 raw bytes); non-file occupancy, reparse traversal, and larger files are planning errors.
+Planning incrementally hashes the admitted raw bytes, bounded at 1 MiB with only a one-byte over-limit probe;
+it does not parse patch records, start Python, or create artifacts.
+
+Patch identity is exactly `absent` or `sha256:` followed by 64 lowercase hexadecimal digits over the raw
+file bytes. It joins the inventory-relative manifest, source-tree fingerprint, and output options in stable
+job identity, so it also affects the job address. Metadata records `PatchPath`,
+`InventoryRelativePatchPath`, and `PatchIdentity`. For every batch job, the worker requires and transports the
+planned slug as `ExpectedSlug` alongside the frozen `ExpectedPatchIdentity`. After resolving the manifest and
+before conversion writes, latex-ingest compares the resolved slug to `ExpectedSlug` with ordinal equality.
+This prevents a supported legacy `metadata.json` edit from selecting a different canonical patch or output
+address under an already planned job; it is a targeted address guard, not a claim that every manifest byte is
+immutable. Latex-ingest also refuses patch appearance, deletion, byte drift, or runtime reparse traversal
+instead of executing under a stale plan.
+
 One private resolver owns all paths beneath `RunDirectory/latex-jobs/`: application evidence, lane output,
 and an optional deliverable root. The job declares every such root in `Writes`, and planning creates none.
-The private worker invokes only latex-ingest's manifest-backed production entrypoint.
+The canonical patch is a read dependency and is never declared in `Writes`. The private worker invokes only
+latex-ingest's manifest-backed production entrypoint.
 
 `src/latex-ingest/latex-batch.ps1` is the repository development shell over this planner. It reads a
 validated localized `inventory.jsonl`, optionally selects exact slugs, allocates or joins a caller run, then

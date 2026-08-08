@@ -170,9 +170,16 @@ tracked separately.
 The JSONL-engine PowerShell client subsequently added one `CapabilityGated` container. Pytest adapter
 coverage and deposit activation add two more `CapabilityGated` containers with five tests each; multilingual
 shell evolution adds two observed cases and two nested-fixture-only textual `It` lines, and the topology
-container adds one composition case. The current semantic inventory is therefore 49 files: 36 `Batchable`,
-13 `CapabilityGated`, 510 textual `It` blocks, and 521 observed tests. The deposit container's focused direct
-gate passed 5/5.
+container adds one composition case. That snapshot was 49 files: 36 `Batchable`, 13 `CapabilityGated`, 510
+textual `It` blocks, and 521 observed tests. The deposit container's focused direct gate passed 5/5.
+
+D20 patch activation extends three existing containers without changing physical files or classifications:
+six `Batchable` patch-contract cases covering exact portable-leaf lookup, the 1 MiB ceiling, bytes, schema,
+identity, guards, and provenance; one `CapabilityGated` end-to-end conversion; and two
+`CapabilityGated` LaTeX-adapter cases. The current semantic inventory is therefore 49 files: 36 `Batchable`,
+13 `CapabilityGated`, no `NeedsRefactor` or `SerialOnly`, 519 textual `It` blocks, and 530 observed tests.
+Focused exact-file Pester 6 gates passed 22/22 patch-contract tests, 7/7 LaTeX integration tests, and 10/10
+LaTeX-adapter tests.
 
 ### Pytest
 

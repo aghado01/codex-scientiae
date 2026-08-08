@@ -2,7 +2,8 @@
 <#
   Compatibility surface for pre-metadata latex-ingest callers.
 
-  Production code imports latex-ingest.ps1 and calls Invoke-ArxivLatexToMarkdown with metadata.json.
+  Production code imports latex-ingest.ps1 and calls Invoke-ArxivLatexToMarkdown with article.json or
+  its document directory. A bounded metadata.json read remains available for deposits not yet migrated.
   This file alone owns archive/slug inference, `{slug}-latex`, `-ReuseSource`, arbitrary source-work
   overrides, and the retired helper names. Default archive-backed use standardizes the leaf through
   Initialize-LatexSourceDeposit before handing control to the production entrypoint.
@@ -11,7 +12,7 @@
 . "$PSScriptRoot/latex-ingest.ps1"
 
 # The current deposit convention's address, kept here because this shim is its only consumer:
-# production reaches the source tree through validated metadata.json, not by deriving `{slug}-tex`
+# production reaches the source tree through a validated manifest, not by deriving `{slug}-tex`
 # from an archive path. It sunsets with the rest of this file (LOGJ-509).
 function Get-SourceWorkDir([string]$ArchivePath, [string]$Slug) {
     $dir = Split-Path -Parent $ArchivePath
@@ -83,12 +84,14 @@ function Invoke-LegacyLatexResolvedSource {
     param(
         [Parameter(Mandatory)] [string]$Slug,
         [Parameter(Mandatory)] [string]$SourcePath,
+        [Parameter(Mandatory)] [string]$DocumentDir,
         [string]$MainTex = '',
         [Parameter(Mandatory)] [string]$OutDir,
         [string]$DeliverableDir,
         [string]$RunDir = '',
         [string]$ArtifactsRoot = '',
         [string]$SourceMode = 'compat-unverified',
+        [AllowEmptyString()] [string]$ExpectedPatchIdentity = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc,
@@ -99,8 +102,10 @@ function Invoke-LegacyLatexResolvedSource {
         -Slug $Slug `
         -SourcePath $SourcePath `
         -MainPath $entrypoint.path `
+        -DocumentDir $DocumentDir `
         -UnresolvedInputAction Keep `
         -SourceMode $SourceMode `
+        -ExpectedPatchIdentity $ExpectedPatchIdentity `
         -OutDir $OutDir `
         -DeliverableDir $DeliverableDir `
         -RunDir $RunDir `
@@ -123,6 +128,7 @@ function Invoke-ArxivLatexToMarkdownLegacy {
         [string]$MainTex = '',
         [string]$RunDir = '',
         [string]$ArtifactsRoot = '',
+        [AllowEmptyString()] [string]$ExpectedPatchIdentity = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc,
@@ -130,6 +136,10 @@ function Invoke-ArxivLatexToMarkdownLegacy {
     )
     $requestedArchive = [System.IO.Path]::GetFullPath($TarGz)
     $documentDir = Split-Path -Parent $requestedArchive
+    # Refuse malformed, replaced, or unexpectedly present/absent authored input before this compatibility
+    # surface can reuse, extract, or initialize source state. The conversion core rereads the same pin.
+    $null = Read-LatexPatchSet -DocumentDir $documentDir -Slug $Slug `
+        -ExpectedPatchIdentity $ExpectedPatchIdentity
     $manifestPath = Join-Path $documentDir 'metadata.json'
 
     # Once a deposit is initialized, metadata.json is authoritative even if an old alias supplied by a
@@ -142,7 +152,7 @@ function Invoke-ArxivLatexToMarkdownLegacy {
         if ($MainTex) { Write-Warning 'compat: -MainTex is ignored because metadata.json owns the validated entrypoint' }
         return Invoke-ArxivLatexToMarkdown `
             -MetadataPath $manifestPath -OutDir $OutDir -DeliverableDir $DeliverableDir `
-            -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot `
+            -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot -ExpectedPatchIdentity $ExpectedPatchIdentity `
             -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc `
             -DisableJsonlToc:$DisableJsonlToc -FaithfulNumbering:$FaithfulNumbering
     }
@@ -152,7 +162,8 @@ function Invoke-ArxivLatexToMarkdownLegacy {
     if ($legacySource.available -and ($ReuseSource -or $SourceWorkDir)) {
         Write-Warning "compat: bypassing metadata initialization for '$($legacySource.path)'"
         return Invoke-LegacyLatexResolvedSource `
-            -Slug $Slug -SourcePath $legacySource.path -MainTex $MainTex -SourceMode $legacySource.mode `
+            -Slug $Slug -SourcePath $legacySource.path -DocumentDir $documentDir `
+            -MainTex $MainTex -SourceMode $legacySource.mode -ExpectedPatchIdentity $ExpectedPatchIdentity `
             -OutDir $OutDir -DeliverableDir $DeliverableDir -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot `
             -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc `
             -DisableJsonlToc:$DisableJsonlToc -FaithfulNumbering:$FaithfulNumbering
@@ -165,7 +176,8 @@ function Invoke-ArxivLatexToMarkdownLegacy {
         Write-Warning "compat: extracting to explicit unmanifested source override '$($legacySource.path)'"
         Expand-LatexSourceArchive -ArchivePath $requestedArchive -DestinationPath $legacySource.path | Out-Null
         return Invoke-LegacyLatexResolvedSource `
-            -Slug $Slug -SourcePath $legacySource.path -MainTex $MainTex -SourceMode 'compat-explicit-extracted' `
+            -Slug $Slug -SourcePath $legacySource.path -DocumentDir $documentDir `
+            -MainTex $MainTex -SourceMode 'compat-explicit-extracted' -ExpectedPatchIdentity $ExpectedPatchIdentity `
             -OutDir $OutDir -DeliverableDir $DeliverableDir -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot `
             -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc `
             -DisableJsonlToc:$DisableJsonlToc -FaithfulNumbering:$FaithfulNumbering
@@ -181,7 +193,7 @@ function Invoke-ArxivLatexToMarkdownLegacy {
         -ArchivePath $requestedArchive -MainTex $MainTex
     return Invoke-ArxivLatexToMarkdown `
         -MetadataPath $initialized.metadata_path -OutDir $OutDir -DeliverableDir $DeliverableDir `
-        -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot `
+        -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot -ExpectedPatchIdentity $ExpectedPatchIdentity `
         -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc `
         -DisableJsonlToc:$DisableJsonlToc -FaithfulNumbering:$FaithfulNumbering
 }

@@ -3,6 +3,8 @@
 param(
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $LatexIngestPath,
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $MetadataPath,
+    [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $ExpectedSlug,
+    [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $ExpectedPatchIdentity,
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDir,
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $OutDir,
     [string] $DeliverableDir,
@@ -11,6 +13,11 @@ param(
     [switch] $DisableJsonlToc,
     [switch] $FaithfulNumbering
 )
+
+if ($ExpectedPatchIdentity -cne 'absent' -and
+    $ExpectedPatchIdentity -cnotmatch '^sha256:[0-9a-f]{64}$') {
+    throw "latex-batch worker received an invalid patch identity: '$ExpectedPatchIdentity'"
+}
 
 $dependency = [System.IO.Path]::GetFullPath($LatexIngestPath)
 if (-not (Test-Path -LiteralPath $dependency -PathType Leaf)) {
@@ -24,6 +31,8 @@ if ($null -eq (Get-Command Invoke-ArxivLatexToMarkdown -CommandType Function `
 
 $invoke = @{
     MetadataPath = $MetadataPath
+    ExpectedSlug = $ExpectedSlug
+    ExpectedPatchIdentity = $ExpectedPatchIdentity
     RunDir = $RunDir
     OutDir = $OutDir
 }

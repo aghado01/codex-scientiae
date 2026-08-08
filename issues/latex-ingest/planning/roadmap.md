@@ -16,6 +16,10 @@ Exit criterion: corpus residue ≈ 0 outside declared kernel classes; closure in
 - Refgraph site→node anchoring (edges carry `from = null` today; site order only).
 - Equation-label anchoring: labels strip before math capture (known entanglement) — re-home the
   capture so eq targets join the docstream.
+- Whole-conversion transactional publication and failed-run cleanup. A late refusal, including an
+  `output_replace` patch failure, can currently leave declared partial run/output artifacts; stage or journal
+  conversion writes and publish only after all terminal guards. This is post-D20 lifecycle work, not an
+  incompleteness in the canonical patch address, identity, or audit contract.
 - tex-docgraph physical retirement (refs-consolidation step 5; the name already re-scoped by D7).
 - Consumer migration onto docstream/docgraph: subject index and TOC as queries over the stream.
 - Sweep cadence as the standing regression harness (probe + sweep after each production change).
@@ -31,3 +35,5 @@ Exit criterion: corpus residue ≈ 0 outside declared kernel classes; closure in
   machinery dies; float bundles born raw instead of mid-realization.
 - Protograph formal document (graduating the D8 running census into the designed superset).
 - Doccer convergence: DLL-reach adapters, the macro-expansion witness demo, claims-shaped rows.
+- Patch authoring/review tooling or inclusion in a future generation manifest. D20 freezes only the
+  document-root read/apply, identity, audit, and lifecycle contract; it does not add a patch producer.

@@ -293,6 +293,36 @@ Current semantic inventory after this addition:
 | `SerialOnly` | 0 |
 | **Total** | **49 files / 521 observed tests / 510 textual `It` blocks** |
 
+### Canonical LaTeX patch activation
+
+D20 extends three existing containers without adding a physical file or changing a classification.
+`tests/latex-ingest/latex-patch.Tests.ps1` grows from 16 to 22 observed/textual tests and remains
+`Batchable`; its exact-file Pester 6 gate passed 22/22. The new cases freeze tolerant physical-line parsing,
+strict bytes and closed record fields, exact portable-leaf lookup, the 1 MiB raw-byte ceiling, raw identity
+and drift, confinement, macro/regex guards, and audit provenance.
+
+`tests/latex-ingest/latex-ingest-integration.Tests.ps1` grows from six to seven observed/textual tests and
+remains `CapabilityGated`. Its exact-file gate passed 7/7 with the repository Python, Node, and KaTeX
+capabilities. The new real-article case proves that a canonical document-root patch wins over a conflicting
+same-named `OutDir` file, preserves the source fingerprint, carries identity and authored-line provenance in
+order, agrees with the oracle count, and produces the same audit and markdown on rerun.
+
+`tests/adapters/latex-batch.Tests.ps1` grows from eight to ten observed/textual tests and remains
+`CapabilityGated`; its exact-file gate passed 10/10. Planning freezes present/absent patch identity without
+creating run artifacts or declaring the patch as a write; it rejects non-file occupancy, reparse traversal,
+and patch input larger than 1 MiB. Execution refuses patch appearance, content change, or deletion after
+planning while preserving sibling containment.
+
+Current semantic inventory after this activation:
+
+| Class | Files |
+|---|---:|
+| `Batchable` | 36 |
+| `CapabilityGated` | 13 |
+| `NeedsRefactor` | 0 |
+| `SerialOnly` | 0 |
+| **Total** | **49 files / 530 observed tests / 519 textual `It` blocks** |
+
 ## BEX-501 exit gate
 
 - All 43 BEX-501 physical files have an exact-path isolation result, observed count, approximate wall time,

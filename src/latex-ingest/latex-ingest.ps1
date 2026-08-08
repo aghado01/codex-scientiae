@@ -33,6 +33,7 @@ Import-Module (Join-Path $PSScriptRoot '../shared/jsonl-engine-client/jsonl-engi
 . "$PSScriptRoot/latex-math-store.ps1"     # store-driven math lowering + out-of-band evidence tracking
 . "$PSScriptRoot/ref-semantics.ps1"        # the \ref-family resolution stage: relevance probe + per-macro contracts
 . "$PSScriptRoot/docstream.ps1"            # docstream (nodes) + latex refgraph (reference machinery) + doc graph (their composition)
+. "$PSScriptRoot/latex-patch.ps1"           # strict authored patch input + bounded source/output appliers
 
 # --- brace-aware primitives -------------------------------------------------------------------------
 function Get-LatexBracedArg {
@@ -2387,126 +2388,18 @@ function Copy-LatexFigures {
     return [pscustomobject]@{ markdown = $Markdown; copied = $state.copied; png = $state.png; missing = $state.missing }
 }
 
-# ----------------------------------------------------------------------------------------------------
-# PER-PAPER PATCH LANE — the durable home for repair-tier corrections (curated errata).
-#
-# The converter is FAITHFUL by doctrine ([[latex-faithful-not-filtered]]): it must never guess-fix an
-# author's defect (an undefined macro, a typo'd control sequence). But a faithful transcription of a
-# DEFECTIVE source is itself defective (it won't render), and a one-off hand-edit to the deliverable is
-# erased by the next latex_convert. The durable home is a per-paper, human-authored, JUSTIFIED patch
-# file BESIDE the source ({slug}-latex.patch.jsonl), re-applied on EVERY conversion. This is NOT the
-# converter editorializing on its own judgement: each patch is explicit data carrying a REASON, an
-# occurrence GUARD that fails LOUDLY if the source drifts (upstream fixes the defect, or our converter
-# changes its emission), and a full audit trail in the tool result. The converter's DEFAULT — no patch
-# file — stays 100% faithful; the patch is opt-in per-paper curation, the persistent analog of a
-# propose_edit / splice_md that survives regeneration.
-#
-# Three ops, applied in file order:
-#   define_macro   {name, body, [expect_uses]}  — SOURCE phase: supply an omitted \newcommand so the
-#                  converter's OWN ordinal, control-word-boundary-safe expander (Expand-LatexMacros)
-#                  resolves the undefined control sequence exactly as a defined one would. The
-#                  least-interventionist fix for the undefined-macro class: no output surgery, no
-#                  \foo-vs-\foobar boundary hazard (the expander is token-aware by construction).
-#   source_replace {find, replace, [expect]}    — SOURCE phase: regex substitution on the resolved LaTeX
-#                  before conversion (for defects best corrected in TeX space).
-#   output_replace {find, replace, [expect]}    — OUTPUT phase: regex substitution on the emitted
-#                  markdown just before write (for converter-output quirks with no clean TeX-space handle).
-# Every patch carries op + reason (REQUIRED); optionally class, source_ref, authored_by, authored_utc.
-# ----------------------------------------------------------------------------------------------------
-function Read-LatexPatchFile {
-    param([string]$Dir, [string]$Slug)
-    $path = Join-Path $Dir "$Slug-latex.patch.jsonl"
-    if (-not (Test-Path -LiteralPath $path)) { return @() }
-    $u8 = [System.Text.UTF8Encoding]::new($false)
-    $patches = [System.Collections.Generic.List[object]]::new()
-    $ln = 0
-    foreach ($line in [System.IO.File]::ReadAllLines($path, $u8)) {
-        $ln++
-        $t = $line.Trim()
-        if (-not $t -or $t.StartsWith('#') -or $t.StartsWith('//')) { continue }   # comment / blank lines allowed
-        $obj = $null
-        try { $obj = $t | ConvertFrom-Json } catch { throw "patch $Slug-latex.patch.jsonl:$ln — invalid JSON: $($_.Exception.Message)" }
-        $op = [string]$obj.op
-        if ($op -notin 'define_macro', 'source_replace', 'output_replace') { throw "patch $Slug-latex.patch.jsonl:$ln — unknown op '$op' (want define_macro | source_replace | output_replace)" }
-        if ([string]::IsNullOrWhiteSpace([string]$obj.reason)) { throw "patch $Slug-latex.patch.jsonl:$ln — missing 'reason' (every erratum must be justified)" }
-        $patches.Add($obj)
-    }
-    return $patches.ToArray()
-}
-
-# a stale patch (matches nothing, or a count that no longer holds) is a SIGNAL, not something to swallow:
-# throw so the human learns the upstream/converter drifted and the erratum needs review.
-function Assert-PatchHits {
-    param([int]$Hits, $Expect, [string]$What, [string]$Slug)
-    if ($Hits -eq 0) { throw "patch[$Slug] $What is STALE — matched nothing in the source (upstream fixed it, or the converter drifted); review/remove the patch" }
-    if ($null -ne $Expect -and [int]$Expect -ne $Hits) { throw "patch[$Slug] $What — expected $([int]$Expect) occurrence(s), found $Hits; review the patch" }
-}
-
-# SOURCE phase: define_macro (accumulated, prepended once) + source_replace (in file order). Returns the
-# patched TeX and the audit list of what fired.
-function Invoke-LatexSourcePatches {
-    param([string]$Tex, [object[]]$Patches, [string]$Slug)
-    $ci = [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
-    $applied = [System.Collections.Generic.List[object]]::new()
-    $prefix = ''
-    foreach ($p in $Patches) {
-        switch ([string]$p.op) {
-            'define_macro' {
-                $name = [string]$p.name
-                if ([string]::IsNullOrWhiteSpace($name)) { throw "patch[$Slug] define_macro missing 'name'" }
-                $bare = $name.TrimStart('\')
-                $esc = [regex]::Escape($bare)
-                $uses = ([regex]::new('\\' + $esc + '(?![A-Za-z])', $ci)).Matches($Tex).Count
-                # any definition idiom the source might use — \newcommand-family, \def, or \let — means the
-                # author (or a future version) already defines it, so this erratum is redundant/stale.
-                $alreadyDef = ([regex]::new('\\(?:(?:new|renew|provide)command\s*\{?\s*|def\s*|let\s*)\\' + $esc + '(?![A-Za-z])', $ci)).IsMatch($Tex)
-                if ($alreadyDef) { throw "patch[$Slug] define_macro \$bare is STALE — the source ALREADY defines it (erratum redundant); review/remove the patch" }
-                Assert-PatchHits -Hits $uses -Expect $p.expect_uses -What "define_macro \$bare" -Slug $Slug
-                $prefix += "% codex-patch define_macro: $name`n\newcommand{$name}{$([string]$p.body)}`n"
-                $applied.Add([ordered]@{ op = 'define_macro'; name = $name; body = [string]$p.body; uses = $uses; class = [string]$p.class; reason = [string]$p.reason })
-            }
-            'source_replace' {
-                $find = [string]$p.find
-                if ([string]::IsNullOrEmpty($find)) { throw "patch[$Slug] source_replace missing 'find'" }
-                $hits = ([regex]::new($find, $ci)).Matches($Tex).Count
-                Assert-PatchHits -Hits $hits -Expect $p.expect -What "source_replace /$find/" -Slug $Slug
-                $Tex = ([regex]::new($find, $ci)).Replace($Tex, [string]$p.replace)
-                $applied.Add([ordered]@{ op = 'source_replace'; find = $find; replace = [string]$p.replace; hits = $hits; class = [string]$p.class; reason = [string]$p.reason })
-            }
-            'output_replace' { }   # handled in the output phase
-        }
-    }
-    if ($prefix) { $Tex = $prefix + $Tex }   # injected defs go on top so any real author def (later) still wins
-    return @{ tex = $Tex; applied = $applied.ToArray() }
-}
-
-# OUTPUT phase: output_replace on the assembled markdown, just before write.
-function Invoke-LatexOutputPatches {
-    param([string]$Markdown, [object[]]$Patches, [string]$Slug)
-    $ci = [System.Text.RegularExpressions.RegexOptions]::CultureInvariant
-    $applied = [System.Collections.Generic.List[object]]::new()
-    foreach ($p in $Patches) {
-        if ([string]$p.op -ne 'output_replace') { continue }
-        $find = [string]$p.find
-        if ([string]::IsNullOrEmpty($find)) { throw "patch[$Slug] output_replace missing 'find'" }
-        $hits = ([regex]::new($find, $ci)).Matches($Markdown).Count
-        Assert-PatchHits -Hits $hits -Expect $p.expect -What "output_replace /$find/" -Slug $Slug
-        $Markdown = ([regex]::new($find, $ci)).Replace($Markdown, [string]$p.replace)
-        $applied.Add([ordered]@{ op = 'output_replace'; find = $find; replace = [string]$p.replace; hits = $hits; class = [string]$p.class; reason = [string]$p.reason })
-    }
-    return @{ markdown = $Markdown; applied = $applied.ToArray() }
-}
-
 function Invoke-LatexIngestResolvedSource {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$Slug,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$SourcePath,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$MainPath,
+        [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$DocumentDir,
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$OutDir,
         [ValidateSet('Stop', 'Keep', 'Drop')] [string]$UnresolvedInputAction = 'Stop',
         [string]$SourceMode = 'resolved',
         [string]$MetadataPath = '',
+        [AllowEmptyString()] [string]$ExpectedPatchIdentity = '',
         # optional delivery shelf (the ingestion/_markdown pattern): when set, the finished
         # {slug}-latex.md + its {slug}/ assets are BUNDLED there via Copy-MdDeliverable, links
         # verified at the destination — the manual copy step, codified. Absent -> unchanged.
@@ -2536,6 +2429,9 @@ function Invoke-LatexIngestResolvedSource {
     if (-not (Test-LatexPathWithinRoot -Path $main -Root $work) -or -not [System.IO.File]::Exists($main)) {
         throw "LaTeX entrypoint is missing or outside its source tree: '$main'"
     }
+    $patchSet = Read-LatexPatchSet -DocumentDir $DocumentDir -Slug $Slug `
+        -ExpectedPatchIdentity $ExpectedPatchIdentity
+    $patches = @($patchSet.patches)
     if (-not (Test-MathRenderAvailable)) {
         throw 'latex-ingest: required math-render audit is unavailable; restore packages/node with brewery/node/restore-node.ps1'
     }
@@ -2549,7 +2445,6 @@ function Invoke-LatexIngestResolvedSource {
     # per-paper curated errata (the faithful-not-filtered escape hatch): supply omitted macro defs /
     # correct author defects in SOURCE space BEFORE anything downstream reads $tex, so oracle counts,
     # macro collection, and conversion all see one patched source of truth. No patch file → pure no-op.
-    $patches = Read-LatexPatchFile -Dir $OutDir -Slug $Slug
     $srcPatch = Invoke-LatexSourcePatches -Tex $tex -Patches $patches -Slug $Slug
     $tex = $srcPatch.tex
     # oracle object counts off the resolved source (macro-robust env regexes) — persisted below as the
@@ -2678,7 +2573,9 @@ function Invoke-LatexIngestResolvedSource {
     # applied to the near-emission text so a human authors find-strings against what the deliverable shows.
     $outPatch = Invoke-LatexOutputPatches -Markdown $md -Patches $patches -Slug $Slug
     $md = $outPatch.markdown
-    $patchesApplied = @($srcPatch.applied) + @($outPatch.applied)
+    # Phase execution stays source-then-output, while the audit is projected back into authored file order.
+    $patchesApplied = @(@($srcPatch.applied) + @($outPatch.applied) |
+            Sort-Object { if ($null -eq $_.line) { [int]::MaxValue } else { [int]$_.line } })
 
     # In-doc `## Contents` block is DISABLED by default so manuscript stays a pristine transfer.
     # Refresh/insert ONLY if explicitly requested via -EnableEmbeddedToc switch.
@@ -2731,6 +2628,7 @@ function Invoke-LatexIngestResolvedSource {
         diagrams_svg      = [int]$diag.svg                 # rendered to SVG (tikzjax fallback, non-terminal intermediate; present only when tectonic absent)
         diagrams_marker   = [int]$diagUnrendered           # left as a FLAGGED marker (no compiler / compile failed) — never a silent drop
         patches_applied   = [int]$patchesApplied.Count     # per-paper curated errata re-applied this conversion (0 = pure faithful)
+        patch_identity    = $patchSet.identity
         main_tex          = (Split-Path -Leaf $main)
         run_utc           = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
     }
@@ -2752,6 +2650,7 @@ function Invoke-LatexIngestResolvedSource {
         diagrams_encoded = [int]($script:XyEncoded + $script:CdEncoded)   # xymatrix + tikzcd transpiled to inline arrows (real math)
         diagrams_rendered = $rendered                  # markers swapped for images
         diagrams_png = $diag.png; diagrams_svg = $diag.svg; diagrams_marker = $diagUnrendered
+        patch_identity = $patchSet.identity
         patched = $patchesApplied                       # curated-errata audit trail (op/find/replace/hits/reason) — the human-visible record
         audits = [pscustomobject]@{ math_render = $mathRenderAudit } # reusable capability report; persisted under this run's audits/
         deliverable = $bundle                           # Copy-MdDeliverable audit when -DeliverableDir was given, else $null
@@ -2769,18 +2668,26 @@ function Invoke-ArxivLatexToMarkdown {
         [string]$DeliverableDir,
         [string]$RunDir = '',
         [string]$ArtifactsRoot = '',
+        [AllowEmptyString()] [string]$ExpectedPatchIdentity = '',
+        [AllowEmptyString()] [string]$ExpectedSlug = '',
         [switch]$EnableEmbeddedToc,
         [switch]$DisableTreeToc,
         [switch]$DisableJsonlToc,
         [switch]$FaithfulNumbering
     )
     $source = Resolve-LatexIngestManifestSource -MetadataPath $MetadataPath
+    if ($ExpectedSlug.Length -gt 0 -and -not [string]::Equals(
+            $ExpectedSlug, [string]$source.slug, [System.StringComparison]::Ordinal)) {
+        throw "latex-ingest resolved slug '$($source.slug)' does not match expected slug '$ExpectedSlug'"
+    }
     return Invoke-LatexIngestResolvedSource `
         -Slug $source.slug `
         -SourcePath $source.source_path `
         -MainPath $source.main_path `
+        -DocumentDir (Split-Path -Parent $source.metadata_path) `
         -SourceMode $source.mode `
         -MetadataPath $source.metadata_path `
+        -ExpectedPatchIdentity $ExpectedPatchIdentity `
         -OutDir $OutDir `
         -DeliverableDir $DeliverableDir `
         -RunDir $RunDir `

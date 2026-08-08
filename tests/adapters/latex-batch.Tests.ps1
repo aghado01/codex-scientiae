@@ -168,12 +168,14 @@ BeforeAll {
 
         Set-Content -LiteralPath $Path -Encoding utf8 -Value @'
 function Invoke-ArxivLatexToMarkdown {
-    [CmdletBinding()]
+        [CmdletBinding()]
     param(
         [Parameter(Mandatory)] [string] $MetadataPath,
+        [Parameter(Mandatory)] [string] $ExpectedSlug,
         [Parameter(Mandatory)] [string] $OutDir,
         [string] $DeliverableDir,
         [Parameter(Mandatory)] [string] $RunDir,
+        [Parameter(Mandatory)] [string] $ExpectedPatchIdentity,
         [switch] $EnableEmbeddedToc,
         [switch] $DisableTreeToc,
         [switch] $DisableJsonlToc,
@@ -182,6 +184,24 @@ function Invoke-ArxivLatexToMarkdown {
 
     $manifest = Get-Content -LiteralPath $MetadataPath -Raw | ConvertFrom-Json
     $slug = [string]$manifest.slug
+    if ($slug -cne $ExpectedSlug) {
+        throw "fixture resolved slug '$slug' does not match expected slug '$ExpectedSlug'"
+    }
+    $patchPath = Join-Path (Split-Path -Parent $MetadataPath) "$slug-latex.patch.jsonl"
+    $patchEntry = Get-Item -LiteralPath $patchPath -Force -ErrorAction SilentlyContinue
+    $actualPatchIdentity = if ($null -eq $patchEntry) {
+        'absent'
+    }
+    elseif (-not [System.IO.File]::Exists($patchPath) -or
+        ($patchEntry.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+        throw "fixture patch path is not a physical file: '$patchPath'"
+    }
+    else {
+        'sha256:' + (Get-FileHash -LiteralPath $patchPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    }
+    if ($actualPatchIdentity -cne $ExpectedPatchIdentity) {
+        throw "fixture patch identity drift: expected '$ExpectedPatchIdentity', found '$actualPatchIdentity'"
+    }
     if ($slug -eq 'broken') { throw 'fixture document failure' }
     [void][System.IO.Directory]::CreateDirectory($RunDir)
     [void][System.IO.Directory]::CreateDirectory($OutDir)
@@ -198,6 +218,7 @@ function Invoke-ArxivLatexToMarkdown {
         job_id = $env:CODEX_BATCH_JOB_ID
         execution_mode = $env:CODEX_BATCH_EXECUTION_MODE
         caller_correlation = $env:CALLER_CORRELATION
+        patch_identity = $actualPatchIdentity
         embedded_toc = [bool]$EnableEmbeddedToc
         faithful_numbering = [bool]$FaithfulNumbering
     }
@@ -252,6 +273,7 @@ Describe 'adapters module surface for latex-batch' {
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         foreach ($helper in @(
                 'Resolve-LatexBatchJobAddress'
+                'Resolve-LatexBatchPatchRecord'
                 'Read-LatexBatchManifestRecord'
                 'Resolve-LatexBatchDependency'
                 'Get-LatexBatchStableHash'
@@ -363,6 +385,8 @@ Describe 'Get-LatexBatchJob planning' {
             $job.ProcessSpec.LoadProfile | Should -BeFalse
             $job.ProcessSpec.Environment.CALLER_CORRELATION | Should -Be 'parent-value'
             $job.Parameters.LatexIngestPath | Should -Be $dependency
+            $job.Parameters.ExpectedSlug | Should -Be $job.Metadata.Slug
+            $job.Parameters.ExpectedPatchIdentity | Should -Be $job.Metadata.PatchIdentity
             $job.Parameters.RunDir | Should -Be $job.Metadata.ApplicationRunDirectory
             $job.Parameters.OutDir | Should -Be $job.Metadata.OutputDirectory
             $job.Parameters.ContainsKey('DeliverableDir') | Should -BeFalse
@@ -371,6 +395,13 @@ Describe 'Get-LatexBatchJob planning' {
             $job.Metadata.Domain | Should -Be 'latex-ingest'
             $job.Metadata.ResultPersistence | Should -Be 'InMemory'
             $job.Metadata.LatexIngestSha256 | Should -Match '^[0-9a-f]{64}$'
+            $job.Metadata.PatchPath | Should -Be (Join-Path `
+                (Split-Path -Parent $job.Metadata.MetadataPath) `
+                "$($job.Metadata.Slug)-latex.patch.jsonl")
+            $job.Metadata.InventoryRelativePatchPath | Should -Be `
+                "$($job.Metadata.Slug)/$($job.Metadata.Slug)-latex.patch.jsonl"
+            $job.Metadata.PatchIdentity | Should -Be 'absent'
+            Test-Path -LiteralPath $job.Metadata.PatchPath | Should -BeFalse
             @($job.Writes).Count | Should -Be 2
             @($job.Writes) | Should -Be @(
                 $job.Metadata.ApplicationRunDirectory, $job.Metadata.OutputDirectory)
@@ -380,6 +411,8 @@ Describe 'Get-LatexBatchJob planning' {
                 $relativeWrite | Should -Not -Be '..'
                 $relativeWrite | Should -Not -Match '^\.\.[\\/]'
             }
+            Test-LatexBatchPathCoveredByWrite -Path $job.Metadata.PatchPath `
+                -Write $job.Writes | Should -BeFalse
             Test-Path -LiteralPath $job.Metadata.JobDirectory | Should -BeFalse
         }
         $jobs[1].EstimatedCost | Should -BeGreaterThan $jobs[0].EstimatedCost
@@ -395,6 +428,60 @@ Describe 'Get-LatexBatchJob planning' {
         $compiled.Errors.Count | Should -Be 0
         $compiled.Plan.Jobs.Count | Should -Be 2
         $compiled.Plan.DispatchJobs[0].Id | Should -Be $jobs[1].Id
+    }
+
+    It 'freezes absent and present patch identity into stable metadata, parameters, and addresses' {
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'patch-identity')
+        $dependency = Write-LatexBatchFixtureDependency `
+            (Join-Path $fixture.Root 'patch-identity-ingest.ps1')
+        $manifest = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -Slug patched
+        $row = [pscustomobject]@{ metadata_path = $manifest }
+        $invoke = @{
+            InventoryRow = $row
+            RunDirectory = $fixture.RunDirectory
+            InventoryRoot = $fixture.InventoryRoot
+            LatexIngestPath = $dependency
+        }
+
+        $absent = @(Get-LatexBatchJob @invoke)[0]
+        $absentAgain = @(Get-LatexBatchJob @invoke)[0]
+        $absent.Id | Should -Be $absentAgain.Id
+        $absent.Metadata.PatchIdentity | Should -Be 'absent'
+        $absent.Parameters.ExpectedPatchIdentity | Should -Be 'absent'
+
+        $patchPath = Join-Path (Split-Path -Parent $manifest) 'patched-latex.patch.jsonl'
+        [System.IO.File]::WriteAllText(
+            $patchPath,
+            "{`"op`":`"output_replace`",`"find`":`"x`",`"replace`":`"y`",`"expect`":1,`"reason`":`"fixture`"}`n",
+            [System.Text.UTF8Encoding]::new($false))
+        $firstHash = (Get-FileHash -LiteralPath $patchPath -Algorithm SHA256).Hash.ToLowerInvariant()
+        $present = @(Get-LatexBatchJob @invoke)[0]
+        $presentAgain = @(Get-LatexBatchJob @invoke)[0]
+
+        $present.Id | Should -Be $presentAgain.Id
+        $present.Id | Should -Not -Be $absent.Id
+        $present.Metadata.JobDirectory | Should -Not -Be $absent.Metadata.JobDirectory
+        $present.Metadata.PatchPath | Should -Be $patchPath
+        $present.Metadata.PatchIdentity | Should -Be "sha256:$firstHash"
+        $present.Parameters.ExpectedPatchIdentity | Should -Be "sha256:$firstHash"
+        Test-LatexBatchPathCoveredByWrite -Path $patchPath -Write $present.Writes |
+            Should -BeFalse
+
+        [System.IO.File]::WriteAllText(
+            $patchPath,
+            "{`"op`":`"output_replace`",`"find`":`"x`",`"replace`":`"z`",`"expect`":1,`"reason`":`"changed`"}`n",
+            [System.Text.UTF8Encoding]::new($false))
+        $secondHash = (Get-FileHash -LiteralPath $patchPath -Algorithm SHA256).Hash.ToLowerInvariant()
+        $changed = @(Get-LatexBatchJob @invoke)[0]
+        $changed.Metadata.PatchIdentity | Should -Be "sha256:$secondHash"
+        $changed.Id | Should -Not -Be $present.Id
+        $changed.Metadata.JobDirectory | Should -Not -Be $present.Metadata.JobDirectory
+
+        [System.IO.File]::WriteAllBytes($patchPath, [byte[]]::new((1MB) + 1))
+        { Get-LatexBatchJob @invoke } |
+            Should -Throw '*canonical patch exceeds the 1048576-byte limit*'
+        @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
     }
 
     It 'supports a caller-selected row projection and freezes output options and child policy' {
@@ -491,6 +578,23 @@ Describe 'Get-LatexBatchJob planning' {
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw '*slug must be one safe path leaf*'
+        $portableUnsafe = @(
+            @{ Directory = 'unsafe-colon'; Slug = 'bad:name' },
+            @{ Directory = 'unsafe-device'; Slug = 'CON.txt' },
+            @{ Directory = 'unsafe-trailing'; Slug = 'trailing.' },
+            @{ Directory = 'unsafe-control'; Slug = "control$([char]0x1F)" },
+            @{ Directory = 'unsafe-terminal-lf'; Slug = "terminal-lf`n" }
+        )
+        foreach ($case in $portableUnsafe) {
+            $unsafePortable = Write-LatexBatchManifest `
+                -InventoryRoot $fixture.InventoryRoot -DirectoryName $case.Directory `
+                -Slug $case.Slug
+            { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{
+                        metadata_path = $unsafePortable
+                    }) -RunDirectory $fixture.RunDirectory `
+                    -InventoryRoot $fixture.InventoryRoot -LatexIngestPath $dependency } |
+                Should -Throw '*slug must be one safe path leaf*'
+        }
         $noTree = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -DirectoryName no-tree -Slug no-tree -OmitTree
         { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $noTree }) `
@@ -526,6 +630,35 @@ Describe 'Get-LatexBatchJob planning' {
                 -LatexIngestPath $dependency } |
             Should -Throw '*canonical article path is occupied by a non-file*'
 
+        $patchOccupiedManifest = Write-LatexBatchManifest `
+            -InventoryRoot $fixture.InventoryRoot -Slug patch-occupied
+        $patchOccupiedPath = Join-Path (Split-Path -Parent $patchOccupiedManifest) `
+            'patch-occupied-latex.patch.jsonl'
+        [void][System.IO.Directory]::CreateDirectory($patchOccupiedPath)
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{
+                    metadata_path = $patchOccupiedManifest
+                }) -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                -LatexIngestPath $dependency } |
+            Should -Throw '*canonical patch path is occupied by a non-file*'
+
+        $patchReparseManifest = Write-LatexBatchManifest `
+            -InventoryRoot $fixture.InventoryRoot -Slug patch-reparse
+        $patchReparsePath = Join-Path (Split-Path -Parent $patchReparseManifest) `
+            'patch-reparse-latex.patch.jsonl'
+        $patchTarget = Join-Path $fixture.Root 'patch-reparse-target'
+        [void][System.IO.Directory]::CreateDirectory($patchTarget)
+        $linkType = if ([System.OperatingSystem]::IsWindows()) { 'Junction' } else { 'SymbolicLink' }
+        [void](New-Item -ItemType $linkType -Path $patchReparsePath `
+                -Target $patchTarget -ErrorAction Stop)
+        try {
+            { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{
+                        metadata_path = $patchReparseManifest
+                    }) -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                    -LatexIngestPath $dependency } |
+                Should -Throw '*canonical patch must not traverse a symbolic link or reparse point*'
+        }
+        finally { Remove-Item -LiteralPath $patchReparsePath -Force }
+
         $externalArticle = Write-LatexBatchManifest -InventoryRoot $fixture.Root `
             -DirectoryName external-article -Slug external-article -Article
         $junction = Join-Path $fixture.InventoryRoot 'junction-escape'
@@ -541,6 +674,19 @@ Describe 'Get-LatexBatchJob planning' {
                     -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                     -LatexIngestPath $dependency } |
                 Should -Throw '*escapes InventoryRoot*'
+        }
+
+        InModuleScope adapters -Parameters @{
+            ManifestPath = $valid
+            InventoryRoot = $fixture.InventoryRoot
+        } {
+            Mock Test-LatexBatchPathHasReparsePoint { $false }
+            Mock Get-Item {
+                throw [System.UnauthorizedAccessException]::new('planned patch lookup denial')
+            }
+            { Resolve-LatexBatchPatchRecord -ManifestPath $ManifestPath -Slug valid `
+                    -InventoryRoot $InventoryRoot } |
+                Should -Throw '*planned patch lookup denial*'
         }
     }
 }
@@ -588,6 +734,7 @@ Describe 'latex-batch execution integration' {
         $output.job_id | Should -Be $jobs[0].Id
         $output.execution_mode | Should -Be 'Process'
         $output.caller_correlation | Should -Be 'caller-trace'
+        $output.patch_identity | Should -Be 'absent'
         $output.embedded_toc | Should -BeTrue
         $output.faithful_numbering | Should -BeTrue
 
@@ -608,6 +755,65 @@ Describe 'latex-batch execution integration' {
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File |
                 Where-Object Name -Match '^batch-(?:job-)?results?\.(?:json|jsonl)$').Count |
             Should -Be 0
+    }
+
+    It 'contains patch appearance, content change, and deletion after planning without writes' {
+        $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'patch-drift')
+        $dependency = Write-LatexBatchFixtureDependency `
+            (Join-Path $fixture.Root 'patch-drift-ingest.ps1')
+        $appearance = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -Slug patch-appeared
+        $changed = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -Slug patch-changed
+        $deleted = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -Slug patch-deleted
+        $changedPatch = Join-Path (Split-Path -Parent $changed) `
+            'patch-changed-latex.patch.jsonl'
+        $deletedPatch = Join-Path (Split-Path -Parent $deleted) `
+            'patch-deleted-latex.patch.jsonl'
+        foreach ($path in @($changedPatch, $deletedPatch)) {
+            [System.IO.File]::WriteAllText(
+                $path,
+                "{`"op`":`"output_replace`",`"find`":`"x`",`"replace`":`"y`",`"expect`":1,`"reason`":`"planned`"}`n",
+                [System.Text.UTF8Encoding]::new($false))
+        }
+        $rows = @(foreach ($manifestPath in @($appearance, $changed, $deleted)) {
+                [pscustomobject]@{ metadata_path = $manifestPath }
+            })
+        $jobs = @(Get-LatexBatchJob -InventoryRow $rows `
+                -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                -LatexIngestPath $dependency -TimeoutSeconds 30)
+
+        [System.IO.File]::WriteAllText(
+            (Join-Path (Split-Path -Parent $appearance) `
+                'patch-appeared-latex.patch.jsonl'),
+            "{`"op`":`"output_replace`",`"find`":`"x`",`"replace`":`"y`",`"expect`":1,`"reason`":`"appeared`"}`n",
+            [System.Text.UTF8Encoding]::new($false))
+        [System.IO.File]::WriteAllText(
+            $changedPatch,
+            "{`"op`":`"output_replace`",`"find`":`"x`",`"replace`":`"z`",`"expect`":1,`"reason`":`"changed`"}`n",
+            [System.Text.UTF8Encoding]::new($false))
+        Remove-Item -LiteralPath $deletedPatch -Force
+
+        $compiled = InModuleScope adapters -Parameters @{
+            Jobs = $jobs; BasePath = $script:RepositoryRoot
+        } {
+            New-BatchPlan -Job $Jobs -BasePath $BasePath
+        }
+        $compiled.Errors.Count | Should -Be 0
+        $execution = InModuleScope adapters -Parameters @{ Compiled = $compiled } {
+            Invoke-BatchPlan -Plan $Compiled -MaxWorkers 3
+        }
+
+        @($execution.Results.State) | Should -Be @('Failed', 'Failed', 'Failed')
+        foreach ($result in $execution.Results) {
+            $result.Errors -join "`n" | Should -Match 'patch identity drift'
+            Test-Path -LiteralPath $result.Input.Metadata.ApplicationRunDirectory |
+                Should -BeFalse
+            Test-Path -LiteralPath $result.Input.Metadata.OutputDirectory |
+                Should -BeFalse
+        }
+        $execution.Summary.Failed | Should -Be 3
     }
 
     It 'runs the live manifest-only latex-ingest entrypoint at its declared addresses' {
@@ -669,6 +875,128 @@ Describe 'latex-batch execution integration' {
                 Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -File)) {
             Test-LatexBatchPathCoveredByWrite -Path $producedFile.FullName `
                 -Write $declaredWrites | Should -BeTrue
+        }
+
+        # Exercise the real worker/core runtime guard, not the fixture dependency used by the
+        # broader appearance/change/deletion matrix above.  The target deliberately retains the
+        # planned raw bytes: identity pinning alone must not make reparse traversal admissible.
+        $patchPath = Join-Path $documentDirectory 'live-document-latex.patch.jsonl'
+        $outsidePatchPath = Join-Path $fixture.Root 'outside-live-document-latex.patch.jsonl'
+        $patchText = "{`"op`":`"source_replace`",`"find`":`"Adapter body`",`"replace`":`"Adapter body`",`"expect`":1,`"reason`":`"reparse guard probe`"}`n"
+        [System.IO.File]::WriteAllText(
+            $patchPath, $patchText, [System.Text.UTF8Encoding]::new($false))
+        [System.IO.File]::Copy($patchPath, $outsidePatchPath)
+        $reparseJob = @(Get-LatexBatchJob -InventoryRow $row `
+                -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                -ProcessEnvironment @{ PATH = $childPath } -TimeoutSeconds 60)[0]
+        $reparseCompiled = InModuleScope adapters -Parameters @{
+            Job = $reparseJob; BasePath = $script:RepositoryRoot
+        } {
+            New-BatchPlan -Job @($Job) -BasePath $BasePath
+        }
+        $reparseCompiled.Errors.Count | Should -Be 0
+        Remove-Item -LiteralPath $patchPath -Force
+        $patchLinkCreated = $false
+        try {
+            [void](New-Item -ItemType SymbolicLink -Path $patchPath `
+                    -Target $outsidePatchPath -ErrorAction Stop)
+            $patchLinkCreated = $true
+        }
+        catch {
+            Write-Warning "Skipping live file-symlink swap branch because this host cannot create a file symbolic link: $($_.Exception.Message)"
+        }
+        if ($patchLinkCreated) {
+            try {
+                $reparseExecution = InModuleScope adapters -Parameters @{
+                    Compiled = $reparseCompiled
+                } {
+                    Invoke-BatchPlan -Plan $Compiled -MaxWorkers 1
+                }
+                $reparseExecution.Results[0].State | Should -Be 'Failed'
+                $reparseExecution.Results[0].Errors -join "`n" |
+                    Should -Match 'symbolic link or reparse point'
+                Test-Path -LiteralPath $reparseJob.Metadata.ApplicationRunDirectory |
+                    Should -BeFalse
+                Test-Path -LiteralPath $reparseJob.Metadata.OutputDirectory |
+                    Should -BeFalse
+            }
+            finally {
+                Remove-Item -LiteralPath $patchPath -Force -ErrorAction SilentlyContinue
+            }
+        }
+
+        # A legacy metadata record can remain fully valid after its slug and slug-derived source
+        # addresses change.  Patch identity alone cannot detect that drift when both patch leaves
+        # are absent or carry the same bytes, so exercise the independent planned-slug pin through
+        # the real private worker and production resolver.
+        foreach ($legacyCase in @(
+                @{ Name = 'absent'; IdenticalPatches = $false },
+                @{ Name = 'byte-identical'; IdenticalPatches = $true })) {
+            $legacyDocumentDir = Join-Path $fixture.InventoryRoot "legacy-$($legacyCase.Name)"
+            [void][System.IO.Directory]::CreateDirectory($legacyDocumentDir)
+            $plannedSlug = "legacy-a-$($legacyCase.Name)"
+            $runtimeSlug = "legacy-b-$($legacyCase.Name)"
+            $legacyArchive = Join-Path $legacyDocumentDir "$plannedSlug.tar.gz"
+            New-LatexBatchTestArchive -Path $legacyArchive -Files ([ordered]@{
+                    'main.tex' = '\documentclass{article}\begin{document}Legacy body.\end{document}'
+                })
+            $legacyDeposit = Initialize-LatexSourceDeposit `
+                -DocumentDir $legacyDocumentDir -Slug $plannedSlug
+            if ($legacyCase.IdenticalPatches) {
+                $legacyPatchBytes = [System.Text.UTF8Encoding]::new($false).GetBytes(
+                    "{`"op`":`"source_replace`",`"find`":`"Legacy body`",`"replace`":`"Legacy body`",`"expect`":1,`"reason`":`"slug pin probe`"}`n")
+                foreach ($slug in @($plannedSlug, $runtimeSlug)) {
+                    [System.IO.File]::WriteAllBytes(
+                        (Join-Path $legacyDocumentDir "$slug-latex.patch.jsonl"),
+                        $legacyPatchBytes)
+                }
+            }
+
+            $legacyRow = [pscustomobject]@{ metadata_path = $legacyDeposit.metadata_path }
+            $legacyJob = @(Get-LatexBatchJob -InventoryRow $legacyRow `
+                    -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                    -ProcessEnvironment @{ PATH = $childPath } -TimeoutSeconds 60)[0]
+            $legacyJob.Parameters.ExpectedSlug | Should -Be $plannedSlug
+            $legacyCompiled = InModuleScope adapters -Parameters @{
+                Job = $legacyJob; BasePath = $script:RepositoryRoot
+            } {
+                New-BatchPlan -Job @($Job) -BasePath $BasePath
+            }
+            $legacyCompiled.Errors.Count | Should -Be 0
+
+            $legacyManifest = Get-Content -LiteralPath $legacyDeposit.metadata_path -Raw |
+                ConvertFrom-Json -AsHashtable -Depth 100
+            $archiveForm = @($legacyManifest['source_forms'] |
+                    Where-Object { [string]$_['role'] -eq 'latex-source-archive' })[0]
+            $treeForm = @($legacyManifest['source_forms'] |
+                    Where-Object { [string]$_['role'] -eq 'latex-source-tree' })[0]
+            [System.IO.File]::Move(
+                (Join-Path $legacyDocumentDir ([string]$archiveForm['path'])),
+                (Join-Path $legacyDocumentDir "$runtimeSlug.tar.gz"))
+            [System.IO.Directory]::Move(
+                (Join-Path $legacyDocumentDir ([string]$treeForm['path'])),
+                (Join-Path $legacyDocumentDir "$runtimeSlug-tex"))
+            $legacyManifest['slug'] = $runtimeSlug
+            $archiveForm['path'] = "$runtimeSlug.tar.gz"
+            $treeForm['path'] = "$runtimeSlug-tex"
+            $treeForm['derived_from'] = "$runtimeSlug.tar.gz"
+            [System.IO.File]::WriteAllText(
+                $legacyDeposit.metadata_path,
+                ($legacyManifest | ConvertTo-Json -Depth 100) + "`n",
+                [System.Text.UTF8Encoding]::new($false))
+
+            $legacyExecution = InModuleScope adapters -Parameters @{
+                Compiled = $legacyCompiled
+            } {
+                Invoke-BatchPlan -Plan $Compiled -MaxWorkers 1
+            }
+            $legacyExecution.Results[0].State | Should -Be 'Failed'
+            $legacyExecution.Results[0].Errors -join "`n" |
+                Should -Match "resolved slug '$runtimeSlug' does not match expected slug '$plannedSlug'"
+            Test-Path -LiteralPath $legacyJob.Metadata.ApplicationRunDirectory |
+                Should -BeFalse
+            Test-Path -LiteralPath $legacyJob.Metadata.OutputDirectory |
+                Should -BeFalse
         }
 
         $invalidArticle = Get-Content -LiteralPath $initialized.ManifestPath -Raw |

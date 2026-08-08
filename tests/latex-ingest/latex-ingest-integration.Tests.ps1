@@ -5,6 +5,13 @@
 # use Pester's ephemeral TestDrive instead.
 BeforeAll {
     . "$PSScriptRoot/../../src/latex-ingest/latex-ingest.ps1"
+    . "$PSScriptRoot/../../src/logistics/latex-source-deposit.ps1"
+
+    $script:RepositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+    $script:RepositoryPythonPath = @(
+        (Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe')
+        (Join-Path $script:RepositoryRoot '.venv/bin/python')
+    ) | Where-Object { [System.IO.File]::Exists($_) } | Select-Object -First 1
 
     function New-LatexIngestIntegrationRoot {
         param(
@@ -191,6 +198,132 @@ Describe 'latex-ingest manifest execution and run addressing' {
         Test-Path (Join-Path $out 'z-latex.md') | Should -BeTrue
         Test-Path (Join-Path $shelf 'z/z.md') | Should -BeTrue
         Test-Path (Join-Path $root 'artifacts') | Should -BeFalse
+    }
+
+    It 'applies only the canonical document-root patch with stable identity, provenance, and rerun output' {
+        if (-not $script:RepositoryPythonPath) {
+            Set-ItResult -Skipped -Because 'the repository Python environment is absent'
+            return
+        }
+        if (-not $script:MathRenderAvailable) {
+            Set-ItResult -Skipped -Because 'the shared Node and KaTeX math-render capability is absent'
+            return
+        }
+
+        $caseRoot = New-LatexIngestIntegrationRoot -Name 'document-root-patch' -EphemeralRoot $TestDrive
+        $slug = 'patch-probe'
+        $documentDir = Join-Path $caseRoot $slug
+        [void][System.IO.Directory]::CreateDirectory($documentDir)
+        $archive = Join-Path $documentDir "$slug.tar.gz"
+        New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
+                'main.tex' = @'
+\documentclass{article}
+\title{Patch Specimen}
+\begin{document}
+\section{Patch}
+ORIGINALTOKEN
+\end{document}
+'@
+            })
+        $deposit = New-LatexSourceDeposit -DocumentDir $documentDir -Slug $slug `
+            -PythonPath $script:RepositoryPythonPath
+        $sourceDir = Join-Path $documentDir "$slug-tex"
+        $sourceFingerprint = (Get-LatexSourceTreeFingerprint -RootPath $sourceDir).sha256
+
+        $patchRecords = @(
+            [ordered]@{
+                op = 'source_replace'; find = 'ORIGINALTOKEN'; replace = 'INTERMEDIATE_TOKEN'; expect = 1
+                class = 'author-defect'; reason = 'first ordered source correction'; source_ref = 'main.tex:5'
+                authored_by = 'integration-fixture'; authored_utc = '2026-08-08T12:00:00Z'
+            },
+            [ordered]@{
+                op = 'output_replace'; find = 'CANONICAL_TOKEN'; replace = 'FINAL_CURATED_TOKEN'; expect = 1
+                class = 'emission-erratum'; reason = 'near-emission correction'; source_ref = 'rendered prose'
+                authored_by = 'integration-fixture'; authored_utc = '2026-08-08T12:01:00Z'
+            },
+            [ordered]@{
+                op = 'source_replace'; find = 'INTERMEDIATE_TOKEN'; replace = 'CANONICAL_TOKEN'; expect = 1
+                class = 'author-defect'; reason = 'second ordered source correction'; source_ref = 'main.tex:5'
+                authored_by = 'integration-fixture'; authored_utc = '2026-08-08T12:02:00Z'
+            }
+        )
+        $patchText = @(
+            '# document-root curated errata'
+            ($patchRecords[0] | ConvertTo-Json -Compress)
+            '// audit retains physical record order across application phases'
+            ($patchRecords[1] | ConvertTo-Json -Compress)
+            ''
+            ($patchRecords[2] | ConvertTo-Json -Compress)
+        ) -join "`n"
+        $patchText += "`n"
+        $patchPath = Join-Path $documentDir "$slug-latex.patch.jsonl"
+        [System.IO.File]::WriteAllText(
+            $patchPath, $patchText, [System.Text.UTF8Encoding]::new($false))
+        $expectedIdentity = 'sha256:' + (
+            Get-FileHash -LiteralPath $patchPath -Algorithm SHA256).Hash.ToLowerInvariant()
+
+        $out1 = Join-Path $caseRoot 'lane-output-with-conflict'
+        $run1 = Join-Path $caseRoot 'runs/first'
+        [void][System.IO.Directory]::CreateDirectory($out1)
+        $wrongPatch = [ordered]@{
+            op = 'output_replace'; find = 'Patch Specimen'; replace = 'OUTDIR_PATCH_WAS_USED'; expect = 1
+            reason = 'conflicting generated-output patch must be ignored'
+        } | ConvertTo-Json -Compress
+        [System.IO.File]::WriteAllText(
+            (Join-Path $out1 "$slug-latex.patch.jsonl"), "$wrongPatch`n",
+            [System.Text.UTF8Encoding]::new($false))
+
+        $first = Invoke-ArxivLatexToMarkdown -MetadataPath $deposit.ManifestPath -OutDir $out1 `
+            -RunDir $run1 -ExpectedPatchIdentity $expectedIdentity
+        $firstMarkdownPath = Join-Path $out1 "$slug-latex.md"
+        $firstMarkdown = [System.IO.File]::ReadAllText($firstMarkdownPath)
+        $firstMarkdown | Should -Match 'FINAL_CURATED_TOKEN'
+        $firstMarkdown | Should -Not -Match 'ORIGINALTOKEN|INTERMEDIATE_TOKEN|CANONICAL_TOKEN|OUTDIR_PATCH_WAS_USED'
+        $first.patch_identity | Should -Be $expectedIdentity
+        @($first.patched) | Should -HaveCount 3
+        @($first.patched | ForEach-Object op) |
+            Should -Be @('source_replace', 'output_replace', 'source_replace')
+        @($first.patched | ForEach-Object line) | Should -Be @(2, 4, 6)
+        @($first.patched | ForEach-Object hits) | Should -Be @(1, 1, 1)
+        @($first.patched | ForEach-Object class) |
+            Should -Be @('author-defect', 'emission-erratum', 'author-defect')
+        @($first.patched | ForEach-Object reason) | Should -Be @(
+            'first ordered source correction',
+            'near-emission correction',
+            'second ordered source correction'
+        )
+        @($first.patched | ForEach-Object source_ref) |
+            Should -Be @('main.tex:5', 'rendered prose', 'main.tex:5')
+        @($first.patched | ForEach-Object authored_by) |
+            Should -Be @('integration-fixture', 'integration-fixture', 'integration-fixture')
+        @($first.patched | ForEach-Object authored_utc) | Should -Be @(
+            '2026-08-08T12:00:00Z',
+            '2026-08-08T12:01:00Z',
+            '2026-08-08T12:02:00Z'
+        )
+
+        $firstOracle = Get-Content -LiteralPath (Join-Path $run1 "$slug.oracle-counts.json") -Raw |
+            ConvertFrom-Json
+        $firstOracle.patches_applied | Should -Be 3
+        $firstOracle.patch_identity | Should -Be $expectedIdentity
+        (Get-LatexSourceTreeFingerprint -RootPath $sourceDir).sha256 | Should -Be $sourceFingerprint
+
+        $out2 = Join-Path $caseRoot 'lane-output-without-conflict'
+        $run2 = Join-Path $caseRoot 'runs/second'
+        $second = Invoke-ArxivLatexToMarkdown -MetadataPath $deposit.ManifestPath -OutDir $out2 `
+            -RunDir $run2 -ExpectedPatchIdentity $expectedIdentity
+        $secondOracle = Get-Content -LiteralPath (Join-Path $run2 "$slug.oracle-counts.json") -Raw |
+            ConvertFrom-Json
+        $second.patch_identity | Should -Be $expectedIdentity
+        $secondOracle.patch_identity | Should -Be $expectedIdentity
+        $secondOracle.patches_applied | Should -Be 3
+        (ConvertTo-Json -InputObject @($second.patched) -Depth 8 -Compress) |
+            Should -Be (ConvertTo-Json -InputObject @($first.patched) -Depth 8 -Compress)
+        (Get-FileHash -LiteralPath (Join-Path $out2 "$slug-latex.md") -Algorithm SHA256).Hash |
+            Should -Be (Get-FileHash -LiteralPath $firstMarkdownPath -Algorithm SHA256).Hash
+        (Get-LatexSourceTreeFingerprint -RootPath $sourceDir).sha256 | Should -Be $sourceFingerprint
+        ('sha256:' + (Get-FileHash -LiteralPath $patchPath -Algorithm SHA256).Hash.ToLowerInvariant()) |
+            Should -Be $expectedIdentity
     }
 }
 

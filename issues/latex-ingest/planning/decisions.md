@@ -141,3 +141,38 @@ application semantics, not shared contracts. Implementation witness: commit `054
   identity pass; the conversion worker authoritatively validates a canonical article through
   `validate-json <path> article.schema.json` before consuming it. The exact framed publication boundary is
   infrastructure D36 and the shared validation boundary is infrastructure D37.
+
+- **D20 — Per-document LaTeX patches are document-root application curation, not source-deposit or
+  JSONL-engine state** (2026-08-08). The sole canonical address is
+  `{document-directory}/{slug}-latex.patch.jsonl`, a sibling of `article.json`, the acquired archive, and the
+  stable source tree. It is never discovered in `{slug}-tex/`, a run directory, `OutDir`, or a deliverable
+  shelf. Lookup constructs that one literal leaf from the validated manifest directory and slug; it does not
+  enumerate, infer another basename, or fall back to generated output. The slug obeys
+  `article.schema.json#/$defs/portableLeaf`: one nonempty segment; not `.` or `..`; no trailing dot or space,
+  `<>:"/\|?*`, or U+0000–U+001F; and no case-insensitive `CON`, `PRN`, `AUX`, `NUL`, `COM1`–`COM9`, or
+  `LPT1`–`LPT9` basename before a dot or end. The file is durable, mutable latex-ingest input maintained
+  independently of the source-deposit `article.json` evidence; source deposit and conversion never create, rewrite,
+  relocate, or delete it. A missing exact leaf is the explicit `absent` identity and leaves faithful
+  conversion unchanged. A present leaf must be a physical, non-reparse file no larger than 1 MiB
+  (1,048,576 raw bytes); non-file occupancy, reparse traversal, and larger input fail before application.
+
+  Despite its suffix, this is an application-owned tolerant record file, not a strict `jsonl_engine` store.
+  Blank lines and full-line `#` or `//` comments are ignored; every other physical line is one JSON patch
+  object. Bytes are valid UTF-8 without a BOM; LF or CRLF and a missing final newline are accepted, while a
+  bare CR is not. Each object requires a supported `op` and nonblank `reason`, may carry curator provenance,
+  and retains its one-based physical line number in the applied audit. Source operations run in file order
+  before downstream source analysis; output operations run in file order at the existing near-emission
+  boundary. Zero matches, stale definitions, and declared-count drift fail conversion rather than silently
+  weakening an erratum. Successful conversion returns `patch_identity` and ordered `patched[]`; oracle
+  evidence records the same identity and `patches_applied` count.
+
+  Patch identity is `absent` or `sha256:<64-lowercase-hex>` over the raw file bytes. Direct conversion resolves
+  the canonical sibling at invocation. A batch plan freezes the planned slug and patch identity, includes the
+  identity in job correlation, and transports both as `ExpectedSlug` and `ExpectedPatchIdentity`. After
+  manifest resolution and before conversion writes, the core compares the resolved slug to `ExpectedSlug`
+  ordinally; this prevents supported legacy metadata drift from selecting another canonical patch or output
+  address under the planned job without claiming byte-for-byte manifest immutability. Execution separately
+  refuses a created, removed, or changed patch. The patch is a read dependency, never an adapter `Writes`
+  target; no executor command, process kind, run allocator, or strict-engine compatibility mode is added for
+  this domain format. D20 also does not claim whole-conversion transactional publication: cleanup or atomic
+  publication after a late conversion failure remains a separate roadmap item.
