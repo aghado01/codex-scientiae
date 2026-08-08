@@ -1,0 +1,161 @@
+"""The write path: sidecar transaction, and the two ways a kind can produce a store.
+
+commit() publishes before it can build sidecars, because both record the published file's length
+and ticks. These cover what happens in that window, and that the streamed and buffered writers are
+interchangeable.
+"""
+
+import hashlib
+import os
+import tempfile
+import unittest
+from unittest import mock
+
+from jsonl_engine import engine as engine_module
+from jsonl_engine.engine import JsonlEngine
+from jsonl_engine.reader import JsonlStore
+from jsonl_engine.registries import InventoryCatalogRegistry
+
+from test_jsonl_engine import _article
+
+
+def _sha(path: str) -> str:
+    with open(path, "rb") as handle:
+        return hashlib.sha256(handle.read()).hexdigest()
+
+
+class TestSidecarTransaction(unittest.TestCase):
+    def test_a_normal_commit_writes_both_sidecars(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+            stem = os.path.join(tmpdir, "s")
+            self.assertTrue(os.path.exists(stem + ".jidx"))
+            self.assertTrue(os.path.exists(stem + ".sig"))
+
+    def test_sidecar_failure_names_the_published_unsigned_state(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+
+            boom = OSError("disk full")
+            with mock.patch.object(engine_module, "write_json", side_effect=boom):
+                with JsonlEngine(output_path=path) as eng:
+                    eng.append({"n": 2})
+                    with self.assertRaises(RuntimeError) as caught:
+                        eng.commit()
+
+            message = str(caught.exception)
+            self.assertIn("was published but its sidecars were not written", message)
+            self.assertIn("disk full", message)
+            self.assertIn("intact and unsigned", message)
+
+    def test_a_stale_sidecar_is_removed_rather_than_left_describing_dead_bytes(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+            sig_path = os.path.join(tmpdir, "s.sig")
+            jidx_path = os.path.join(tmpdir, "s.jidx")
+            self.assertTrue(os.path.exists(sig_path))
+            self.assertTrue(os.path.exists(jidx_path))
+
+            with mock.patch.object(engine_module, "write_json", side_effect=OSError("nope")):
+                with JsonlEngine(output_path=path) as eng:
+                    eng.append({"n": 2})
+                    with self.assertRaises(RuntimeError) as caught:
+                        eng.commit()
+
+            # Both sidecars described the bytes this commit replaced, so both are named and gone.
+            message = str(caught.exception)
+            self.assertIn("Removed now-stale", message)
+            self.assertIn("s.jidx", message)
+            self.assertIn("s.sig", message)
+            self.assertFalse(os.path.exists(sig_path), "stale .sig should not survive")
+            self.assertFalse(os.path.exists(jidx_path), "stale .jidx should not survive")
+
+            # The store itself is published, complete, and simply unsigned.
+            self.assertEqual([{"n": 2}], list(JsonlStore(path)))
+
+    def test_no_leftover_tmp_after_a_failed_commit(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with mock.patch.object(engine_module, "write_json", side_effect=OSError("nope")):
+                with JsonlEngine(output_path=path) as eng:
+                    eng.append({"n": 1})
+                    with self.assertRaises(RuntimeError):
+                        eng.commit()
+            leftovers = [n for n in os.listdir(tmpdir) if n.endswith(".tmp")]
+            self.assertEqual([], leftovers)
+
+    def test_unsigned_by_request_is_still_a_clean_commit(self):
+        """emit_sig=False is a declared choice, not the failure this transaction guards."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path, emit_sig=False, emit_index=False) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+            self.assertEqual([{"n": 1}], list(JsonlStore(path)))
+            self.assertFalse(os.path.exists(os.path.join(tmpdir, "s.sig")))
+
+
+class TestStoreWriter(unittest.TestCase):
+    """Streamed and buffered are the same write; the choice is memory, not correctness."""
+
+    def test_streaming_applies_the_kinds_validator(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            with self.assertRaises(Exception):
+                with registry.open_writer() as writer:
+                    writer.append({"not": "an article"})
+                    writer.commit()
+            self.assertFalse(
+                os.path.exists(registry.get_output_path()),
+                "a refused record must not leave a published store",
+            )
+
+    def test_streamed_and_buffered_produce_identical_bytes(self):
+        with tempfile.TemporaryDirectory() as d1, tempfile.TemporaryDirectory() as d2:
+            buffered = InventoryCatalogRegistry(target_dir=d1)
+            for _ in range(3):
+                buffered.add(_article())
+            buffered_path = buffered.write()
+
+            streamed = InventoryCatalogRegistry(target_dir=d2)
+            with streamed.open_writer() as writer:
+                for _ in range(3):
+                    writer.append(_article())
+                writer.commit()
+
+            self.assertEqual(_sha(buffered_path), _sha(streamed.get_output_path()))
+
+    def test_sig_metadata_defaults_to_the_kind(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            with registry.open_writer() as writer:
+                writer.append(_article())
+                writer.commit()
+
+            sig = JsonlStore(registry.get_output_path()).read_sig()
+            self.assertEqual("inventory", sig["metadata"]["kind"])
+            self.assertEqual(registry.VERSION, sig["metadata"]["version"])
+
+    def test_the_store_reads_back_through_open_store(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            with registry.open_writer() as writer:
+                writer.append(_article())
+                writer.commit()
+
+            store = registry.open_store()
+            self.assertEqual([_article()], list(store))
+            self.assertTrue(store.verify())
+
+
+if __name__ == "__main__":
+    unittest.main()

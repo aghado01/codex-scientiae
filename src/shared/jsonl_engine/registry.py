@@ -176,9 +176,22 @@ class BaseStore(ABC):
         validated = self.validate_record(record)
         self._records.append(validated)
 
-    def open_writer(self, stem: Optional[str] = None, filename: Optional[str] = None) -> JsonlEngine:
-        """Low-memory streaming context writer, incorporating header rules cleanly inside the engine."""
-        return self._engine(self.get_output_path(stem=stem, filename=filename))
+    def open_writer(
+        self, stem: Optional[str] = None, filename: Optional[str] = None
+    ) -> "StoreWriter":
+        """Streaming writer for this kind. Equivalent to add()/write(), at constant memory.
+
+        Choose between them on memory alone: reach for write() only when the record set is
+        something you need in hand before it lands -- to sort it, dedupe it, count it, or decide
+        whether to write at all. Everything derived from a document, where the count follows the
+        input, belongs here.
+
+        That is a real choice only because this writer applies the kind's validator and header
+        rules, which a bare JsonlEngine does not. It used to return the engine, so streaming
+        silently skipped both.
+        """
+        out_path = self.get_output_path(stem=stem, filename=filename)
+        return StoreWriter(self, self._engine(out_path), out_path)
 
     def open_store(
         self, stem: Optional[str] = None, filename: Optional[str] = None
@@ -205,23 +218,68 @@ class BaseStore(ABC):
             encoding=self.ENCODING,
         )
 
+    def wants_header(self, out_path: str) -> bool:
+        """Whether this write should open with a header record.
+
+        A header belongs to a store, not to a write: an APPEND that lands in an existing store
+        would otherwise put a second one partway through.
+        """
+        if not self.EMIT_HEADER:
+            return False
+        return self.DISCIPLINE == Discipline.CREATE or not os.path.exists(out_path)
+
+    def stage_metadata(self) -> Dict[str, Any]:
+        """What this kind records in the .sig's metadata block."""
+        return {"kind": self.KIND, "version": self.VERSION, "run_id": self.run_id}
+
     def write(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
-        """Flushes buffered records to disk using JsonlEngine."""
-        out_path = self.get_output_path(stem=stem, filename=filename)
-        engine = self._engine(out_path)
+        """Flush the records accumulated by add() to disk.
 
-        with engine:
-            if self.EMIT_HEADER and (self.DISCIPLINE == Discipline.CREATE or not os.path.exists(out_path)):
-                header = self.build_header()
-                engine.append(header)
-
+        Buffered rather than streamed; see open_writer for which to reach for. Routed through the
+        same writer so both paths produce the same bytes for the same records.
+        """
+        with self.open_writer(stem=stem, filename=filename) as writer:
             for rec in self._records:
-                engine.append(rec)
+                writer.append(rec)
+            writer.commit()
+        return writer.output_path
 
-            engine.commit(stage_metadata={
-                "kind": self.KIND,
-                "version": self.VERSION,
-                "run_id": self.run_id
-            })
 
-        return out_path
+
+class StoreWriter:
+    """Streaming writer that applies a kind's rules on the way to a JsonlEngine.
+
+    JsonlEngine knows nothing about kinds or schemas and should not: it is the byte layer. This is
+    where the kind's validator and header rule attach, so a streamed write and a buffered one
+    produce the same store from the same records.
+
+    Not constructed directly. BaseStore.open_writer() builds it with the engine already carrying
+    the kind's discipline and text policy.
+    """
+
+    def __init__(self, store: BaseStore, engine: JsonlEngine, output_path: str) -> None:
+        self.store = store
+        self.engine = engine
+        self.output_path = output_path
+        self.record_count = 0
+
+    def __enter__(self) -> "StoreWriter":
+        # Resolved before the engine opens: APPEND adoption does not change whether this store
+        # already existed, but reading it after the fact would be answering a different question.
+        wants_header = self.store.wants_header(self.output_path)
+        self.engine.__enter__()
+        if wants_header:
+            self.engine.append(self.store.build_header())
+        return self
+
+    def append(self, record: Dict[str, Any]) -> None:
+        """Validate against the kind, then write. Refuses before any byte reaches the stream."""
+        self.engine.append(self.store.validate_record(record))
+        self.record_count += 1
+
+    def commit(self, stage_metadata: Optional[Dict[str, Any]] = None) -> None:
+        """Publish, defaulting the .sig metadata to this kind's identity."""
+        self.engine.commit(stage_metadata=stage_metadata or self.store.stage_metadata())
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return self.engine.__exit__(exc_type, exc_val, exc_tb)

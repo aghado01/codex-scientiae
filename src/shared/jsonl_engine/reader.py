@@ -203,7 +203,7 @@ def read_index(jidx_path: str, jsonl_path: Optional[str] = None) -> Jidx:
         raise FileNotFoundError(f"Index file not found: {index_path}")
 
     if jsonl_path is None:
-        jsonl_path = store_paths(index_path).jsonl
+        jsonl_path = store_paths(index_path).artifact
 
     with open(index_path, "rb") as handle:
         magic = handle.read(4)
@@ -278,7 +278,7 @@ class JsonlStore:
     def index(self) -> Jidx:
         """Parsed .jidx, loaded once."""
         if self._index is None:
-            self._index = read_index(self.paths.jidx, self.paths.jsonl)
+            self._index = read_index(self.paths.jidx, self.paths.artifact)
         return self._index
 
     def __len__(self) -> int:
@@ -293,12 +293,12 @@ class JsonlStore:
             if os.path.exists(self.paths.jidx):
                 self._length = self.index.line_count
             else:
-                with open(self.paths.jsonl, "rb") as handle:
+                with open(self.paths.artifact, "rb") as handle:
                     self._length = sum(1 for _ in handle)
         return self._length
 
     def __iter__(self) -> Iterator[Any]:
-        with open(self.paths.jsonl, "rb") as handle:
+        with open(self.paths.artifact, "rb") as handle:
             for record, line in enumerate(handle):
                 yield self._loads_line(line, record=record)
 
@@ -314,10 +314,10 @@ class JsonlStore:
         jidx = self.index
         if not jidx.is_current():
             raise ValueError(
-                f"Stale JSONL index: {self.paths.jidx} does not match {self.paths.jsonl}"
+                f"Stale JSONL index: {self.paths.jidx} does not match {self.paths.artifact}"
             )
 
-        with open(self.paths.jsonl, "rb") as handle:
+        with open(self.paths.artifact, "rb") as handle:
             handle.seek(jidx.offsets[record])
             line = handle.readline()
         return self._loads_line(line, record=record)
@@ -327,14 +327,14 @@ class JsonlStore:
         # This engine never writes a blank line, so one is a hand-edit or a foreign file. Refused
         # rather than skipped, and named -- "malformed JSON at column 1" describes the symptom.
         if not line.strip():
-            _raise(self.paths.jsonl, "blank line", record=record)
+            _raise(self.paths.artifact, "blank line", record=record)
 
         if self.eol is Eol.CRLF:
             if line.endswith(b"\r\n"):
                 line = line[:-2]
             elif line.endswith(b"\n"):
                 _raise(
-                    self.paths.jsonl,
+                    self.paths.artifact,
                     "store is declared CRLF but this record ends with a bare LF",
                     record=record,
                 )
@@ -343,7 +343,7 @@ class JsonlStore:
 
         if b"\r" in line:
             _raise(
-                self.paths.jsonl,
+                self.paths.artifact,
                 "CR inside a record"
                 + (" (store is declared LF)" if self.eol is Eol.LF else ""),
                 record=record,
@@ -351,7 +351,7 @@ class JsonlStore:
 
         return loads(
             line,
-            path=self.paths.jsonl,
+            path=self.paths.artifact,
             encoding=self.encoding,
             validator=self.validator,
             require_object=self.require_object,
@@ -397,13 +397,13 @@ class JsonlStore:
             witnessed = sig_data.get(field)
             if witnessed is not None and witnessed != declared:
                 raise ValueError(
-                    f"Policy disagreement for {self.paths.jsonl}: written with "
+                    f"Policy disagreement for {self.paths.artifact}: written with "
                     f"{field}={witnessed!r}, read with {field}={declared!r}"
                 )
 
         hasher = hashlib.sha256()
         line_count = 0
-        with open(self.paths.jsonl, "rb") as handle:
+        with open(self.paths.artifact, "rb") as handle:
             for line in handle:
                 hasher.update(line)
                 line_count += 1
@@ -411,12 +411,12 @@ class JsonlStore:
         actual_hash = hasher.hexdigest()
         if actual_hash != sig_data["sha256"]:
             raise ValueError(
-                f"Signature verification failed for {self.paths.jsonl}: "
+                f"Signature verification failed for {self.paths.artifact}: "
                 f"Hash mismatch ({actual_hash} != {sig_data['sha256']})"
             )
         if line_count != sig_data["line_count"]:
             raise ValueError(
-                f"Signature verification failed for {self.paths.jsonl}: "
+                f"Signature verification failed for {self.paths.artifact}: "
                 f"Line count mismatch ({line_count} != {sig_data['line_count']})"
             )
         return True

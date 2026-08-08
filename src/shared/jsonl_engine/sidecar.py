@@ -19,7 +19,7 @@ _PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 SIG_SCHEMA_PATH = os.path.join(_PACKAGE_DIR, "schemas", "sig.schema.json")
 
 UTF8_BOM = b"\xef\xbb\xbf"
-_SIDECAR_EXTS = {".jsonl", ".jidx", ".sig"}
+_SIDECAR_EXTS = {".jidx", ".sig"}
 
 
 def get_ticks_offset() -> int:
@@ -58,16 +58,32 @@ SIG_SCHEMA_ID = _load_sig_schema_id(SIG_SCHEMA_PATH)
 
 @dataclass(frozen=True)
 class StorePaths:
-    """Absolute paths for a JSONL store and its .jidx / .sig sidecars."""
+    """Absolute paths for an artifact and its sidecars.
 
-    jsonl: str
+    `artifact` is the subject -- a .jsonl store or a single-object .json. `jidx` is meaningful only
+    for the former: there is nothing to index in a document with no records.
+    """
+
+    artifact: str
     jidx: str
     sig: str
 
 
 def store_paths(path: str) -> StorePaths:
-    """Derive `.jsonl`, `.jidx`, and `.sig` paths from any one of them, or from a stem."""
+    """Derive the sidecar paths for `path`, or recover the subject from a sidecar path.
+
+    Sidecars replace the extension: `records.jsonl` is accompanied by `records.jidx` and
+    `records.sig`. This is the canonical form, matching Get-JsonlIndexPath in
+    jso-ops/jsonl-v2.ps1; the appended `records.jsonl.jidx` shape is the retired form that lane
+    reads for discovery and never writes.
+
+    A single-object `.json` resolves the same way, so a manifest can carry a `.sig` without a
+    second convention. The cost of replacement is that a `.json` and a `.jsonl` sharing a stem in
+    one directory would contend for one sidecar, and that a sidecar path alone cannot say which of
+    the two it belongs to -- recovery assumes `.jsonl`.
+    """
     full = os.path.abspath(path)
     root, ext = os.path.splitext(full)
-    stem = root if ext.lower() in _SIDECAR_EXTS else full
-    return StorePaths(jsonl=stem + ".jsonl", jidx=stem + ".jidx", sig=stem + ".sig")
+    artifact = root + ".jsonl" if ext.lower() in _SIDECAR_EXTS else full
+    stem = os.path.splitext(artifact)[0]
+    return StorePaths(artifact=artifact, jidx=stem + ".jidx", sig=stem + ".sig")

@@ -84,7 +84,7 @@ class JsonlEngine:
         self.emit_sig = emit_sig
 
         paths = store_paths(output_path)
-        self.output_path = paths.jsonl
+        self.output_path = paths.artifact
         self.jidx_path = paths.jidx
         self.sig_path = paths.sig
 
@@ -211,14 +211,44 @@ class JsonlEngine:
         self.line_count += 1
 
     def commit(self, stage_metadata: Optional[Dict[str, Any]] = None) -> None:
+        """Publish the store, then write and rename its sidecars.
+
+        The ordering is forced, not incidental. Both sidecars record the published file's byte
+        length and last-write ticks, and neither exists until the .jsonl is at its final path, so
+        the rename has to come first. That leaves a window in which the store is published and its
+        sidecars are not yet in place.
+
+        A store is signed by default and an unsigned one is a valid state, so the window is
+        survivable -- but it must not be silent. If a sidecar step fails, any sidecar left over
+        from a previous commit now describes bytes that are gone; those are removed so the store
+        reads as unsigned rather than as wrongly signed, and the error names what is on disk.
+        """
         if self._file and not self._file.closed:
             self._file.flush()
             self._file.close()
 
-        # REORDERED TRANSACTION:
         # 1. Atomically rename .jsonl.tmp -> final .jsonl FIRST
         os.replace(self.tmp_path, self.output_path)
 
+        try:
+            self._write_sidecars(stage_metadata)
+        except BaseException as exc:
+            stranded = self._discard_stale_sidecars()
+            raise RuntimeError(
+                f"{self.output_path} was published but its sidecars were not written "
+                f"({type(exc).__name__}: {exc}). "
+                + (
+                    f"Removed now-stale {', '.join(stranded)} from a previous commit; "
+                    if stranded
+                    else ""
+                )
+                + "the store is intact and unsigned; re-run the write to sign it."
+            ) from exc
+
+        self._committed = True
+
+    def _write_sidecars(self, stage_metadata: Optional[Dict[str, Any]]) -> None:
+        """Build both sidecars against the published file, then rename them into place."""
         # 2. Stat the final published .jsonl file for exact size and .NET integer ticks
         file_size = os.path.getsize(self.output_path)
         ticks = get_file_dotnet_ticks(self.output_path)
@@ -261,13 +291,32 @@ class JsonlEngine:
                 atomic=False,
             )
 
-        # 5. Atomically rename sidecars into target destinations
-        if self.emit_index and os.path.exists(self.jidx_tmp):
+        # 5. Atomically rename sidecars into target destinations. No existence guard: if the emit
+        #    flag is set, step 3 or 4 wrote the tmp, and a missing one is the silent non-write this
+        #    method exists to refuse. os.replace raises, which is the point.
+        if self.emit_index:
             os.replace(self.jidx_tmp, self.jidx_path)
-        if self.emit_sig and os.path.exists(self.sig_tmp):
+        if self.emit_sig:
             os.replace(self.sig_tmp, self.sig_path)
 
-        self._committed = True
+    def _discard_stale_sidecars(self) -> List[str]:
+        """Remove sidecars describing bytes this commit replaced. Returns what was removed."""
+        removed: List[str] = []
+        for enabled, path, tmp in (
+            (self.emit_index, self.jidx_path, self.jidx_tmp),
+            (self.emit_sig, self.sig_path, self.sig_tmp),
+        ):
+            if not enabled:
+                continue
+            for target, label in ((tmp, None), (path, os.path.basename(path))):
+                if os.path.exists(target):
+                    try:
+                        os.remove(target)
+                        if label:
+                            removed.append(label)
+                    except OSError:
+                        pass
+        return removed
 
     def _write_jidx_v2(self, target_jidx_path: str, file_size: int, ticks: int) -> None:
         """
