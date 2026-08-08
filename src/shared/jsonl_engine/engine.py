@@ -30,6 +30,8 @@ from typing import Any, Dict, List, Optional
 from .policy import DEFAULT_ENCODING, Codec, Eol
 from .sidecar import (
     SIG_SCHEMA_ID,
+    lock_path,
+    temp_write_path,
     SIG_SCHEMA_PATH,
     DOTNET_TICKS_OFFSET,
     TICKS_PER_SECOND,
@@ -74,7 +76,9 @@ class JsonlEngine:
         eol: Eol = Eol.LF,
         encoding: str = DEFAULT_ENCODING,
         emit_index: bool = True,
-        emit_sig: bool = True
+        emit_sig: bool = True,
+        lock: bool = True,
+        lock_timeout: float = 60.0
     ):
         self.discipline = discipline
         self.codec = codec
@@ -82,15 +86,20 @@ class JsonlEngine:
         self.encoding = encoding
         self.emit_index = emit_index
         self.emit_sig = emit_sig
+        self.lock = lock
+        self.lock_timeout = lock_timeout
 
         paths = store_paths(output_path)
         self.output_path = paths.artifact
         self.jidx_path = paths.jidx
         self.sig_path = paths.sig
 
-        self.tmp_path = self.output_path + ".tmp"
-        self.jidx_tmp = self.jidx_path + ".tmp"
-        self.sig_tmp = self.sig_path + ".tmp"
+        # Resolved at __enter__: a scratch path is per-transaction, and reusing one across two
+        # opens of the same engine would recreate the collision it exists to avoid.
+        self.tmp_path = ""
+        self.jidx_tmp = ""
+        self.sig_tmp = ""
+        self._lock = None
 
         self.offsets: List[int] = []
         self.line_count: int = 0
@@ -106,6 +115,16 @@ class JsonlEngine:
             raise PermissionError(f"Cannot open sealed JSONL artifact for writing: {self.output_path}")
 
         os.makedirs(os.path.dirname(self.output_path), exist_ok=True)
+
+        # An exclusive lease over the whole transaction, not merely over the rename. commit()
+        # publishes the store and then writes two sidecars against it; a second writer landing
+        # between those steps leaves a store signed by neither. The lock lives outside the artifact
+        # directory -- see sidecar.lock_path.
+        self._acquire_lease()
+
+        self.tmp_path = temp_write_path(self.output_path)
+        self.jidx_tmp = temp_write_path(self.jidx_path)
+        self.sig_tmp = temp_write_path(self.sig_path)
 
         self.offsets.clear()
         self.line_count = 0
@@ -130,6 +149,37 @@ class JsonlEngine:
 
         self._committed = False
         return self
+
+    def _acquire_lease(self) -> None:
+        """Take the exclusive write lease for this artifact, if locking is enabled.
+
+        filelock is already this repository's lock primitive and is reentrant per process, so a
+        caller that nests writes on one artifact is not deadlocked by its own lease. Contention
+        raises rather than blocking forever: a writer waiting on a lease held by something that
+        died is a hang, and a hang is worse than an error that names the artifact.
+        """
+        if not self.lock:
+            return
+
+        from filelock import FileLock, Timeout
+
+        target = lock_path(self.output_path)
+        self._lock = FileLock(target, timeout=self.lock_timeout)
+        try:
+            self._lock.acquire()
+        except Timeout as exc:
+            self._lock = None
+            raise TimeoutError(
+                f"Could not acquire the write lease for {self.output_path} within "
+                f"{self.lock_timeout}s; another writer holds it (lock file: {target})."
+            ) from exc
+
+    def _release_lease(self) -> None:
+        if self._lock is not None:
+            try:
+                self._lock.release()
+            finally:
+                self._lock = None
 
     def _adopt_existing(self) -> None:
         """Carry the published store into this transaction's tmp file, in one pass.
@@ -169,7 +219,8 @@ class JsonlEngine:
                     offset += len(line)
             self.line_count = len(self.offsets)
         except BaseException:
-            # __exit__ does not run when __enter__ raises, so the partial tmp is cleaned here.
+            # __exit__ does not run when __enter__ raises, so the partial tmp and the lease are
+            # both cleaned up here.
             self._file.close()
             self._file = None
             if os.path.exists(self.tmp_path):
@@ -177,6 +228,7 @@ class JsonlEngine:
                     os.remove(self.tmp_path)
                 except OSError:
                     pass
+            self._release_lease()
             raise
 
     def _check_adopted(self, line: bytes, index: int, terminator: bytes) -> None:
@@ -349,14 +401,19 @@ class JsonlEngine:
                 f.write(struct.pack("<q", o))             # Line Offset (int64)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if self._file and not self._file.closed:
-            self._file.close()
+        try:
+            if self._file and not self._file.closed:
+                self._file.close()
 
-        # Clean up temporary files if uncommitted or on exception
-        if not self._committed or exc_type is not None:
-            for tmp_file in (self.tmp_path, self.jidx_tmp, self.sig_tmp):
-                if os.path.exists(tmp_file):
-                    try:
-                        os.remove(tmp_file)
-                    except OSError:
-                        pass
+            # Clean up temporary files if uncommitted or on exception
+            if not self._committed or exc_type is not None:
+                for tmp_file in (self.tmp_path, self.jidx_tmp, self.sig_tmp):
+                    if tmp_file and os.path.exists(tmp_file):
+                        try:
+                            os.remove(tmp_file)
+                        except OSError:
+                            pass
+        finally:
+            # Released last and unconditionally: the lease covers the publish and both sidecar
+            # renames, so dropping it earlier would reopen the window it exists to close.
+            self._release_lease()

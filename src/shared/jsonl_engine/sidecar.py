@@ -5,8 +5,11 @@ Leaf module: no imports from engine, reader, or schemas. Shared by writers and r
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import tempfile
+import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -67,6 +70,33 @@ class StorePaths:
     artifact: str
     jidx: str
     sig: str
+
+
+def lock_path(artifact_path: str) -> str:
+    """Where the write lock for `artifact_path` lives.
+
+    Beside the system temp directory, not beside the artifact. A lock is process coordination on
+    one machine, not state belonging to the store: it says nothing about the bytes, it is
+    meaningless to a reader, and it would not coordinate anything across a network share anyway.
+    Putting it next to the artifact would leave a file in every output directory that means nothing
+    to anyone reading them.
+
+    Keyed by a digest of the absolute path so two artifacts never share a lock and one artifact
+    always resolves to the same one.
+    """
+    digest = hashlib.sha256(os.path.abspath(artifact_path).encode("utf-8")).hexdigest()[:32]
+    return os.path.join(tempfile.gettempdir(), f"codex-jsonl-{digest}.lock")
+
+
+def temp_write_path(artifact_path: str) -> str:
+    """A write-transaction scratch path unique to this call.
+
+    Unique, not derived from the artifact name alone: a deterministic '{artifact}.tmp' is shared by
+    every concurrent writer of that artifact, so two transactions interleave their records into one
+    scratch file. On Windows that surfaces as a sharing violation; on POSIX os.replace succeeds and
+    publishes a blend of both writers with a signature covering only one.
+    """
+    return f"{artifact_path}.{os.getpid()}.{uuid.uuid4().hex[:12]}.tmp"
 
 
 def store_paths(path: str) -> StorePaths:
