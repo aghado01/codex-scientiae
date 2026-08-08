@@ -105,7 +105,9 @@ tests/fixtures/**                   -text
 # Acquired LaTeX source. source_forms in the article schema records a SHA-256 over the archive and
 # over the extracted tree, so normalizing a .tex on commit would invalidate provenance for a file
 # this project did not author. Frozen as received.
-ingestion/_inbox/**                 -text
+#
+# By extension rather than by path: acquired trees move, and a path rule goes stale silently while
+# an extension rule keeps holding wherever the source lands.
 *.tex                               -text
 *.sty                               -text
 *.cls                               -text

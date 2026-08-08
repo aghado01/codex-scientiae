@@ -12,7 +12,7 @@ import unittest
 from unittest import mock
 
 from jsonl_engine import engine as engine_module
-from jsonl_engine.engine import JsonlEngine
+from jsonl_engine.engine import Discipline, JsonlEngine
 from jsonl_engine.reader import JsonlStore
 from jsonl_engine.sidecar import store_paths
 from jsonl_engine.registries import InventoryCatalogRegistry
@@ -103,6 +103,88 @@ class TestSidecarTransaction(unittest.TestCase):
                 eng.commit()
             self.assertEqual([{"n": 1}], list(JsonlStore(path)))
             self.assertFalse(os.path.exists(os.path.join(tmpdir, "s.sig")))
+
+
+class TestSidecarPolicy(unittest.TestCase):
+    """Sidecars are declarable, on by default, and never orphaned once they exist."""
+
+    def test_flags_are_honoured_on_a_store_with_no_sidecars(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "bare.jsonl")
+            with JsonlEngine(output_path=path, emit_index=False, emit_sig=False) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+            paths = store_paths(path)
+            self.assertFalse(os.path.exists(paths.jidx))
+            self.assertFalse(os.path.exists(paths.sig))
+            self.assertEqual([{"n": 1}], list(JsonlStore(path)))
+
+    def test_an_existing_sidecar_is_rebuilt_even_when_the_write_declines_it(self):
+        """Presence on disk is a standing request; the alternative is a sidecar describing
+        bytes that no longer exist."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+
+            with JsonlEngine(
+                output_path=path,
+                discipline=Discipline.APPEND,
+                emit_index=False,
+                emit_sig=False,
+            ) as eng:
+                eng.append({"n": 2})
+                eng.commit()
+
+            store = JsonlStore(path)
+            self.assertEqual([{"n": 1}, {"n": 2}], list(store))
+            self.assertTrue(store.index.is_current(), "index must not be left stale")
+            self.assertTrue(store.verify(), "signature must not be left stale")
+
+    def test_the_same_holds_when_create_replaces_an_indexed_store(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                eng.append({"n": 1})
+                eng.commit()
+
+            with JsonlEngine(output_path=path, emit_index=False, emit_sig=False) as eng:
+                eng.append({"n": 99})
+                eng.commit()
+
+            store = JsonlStore(path)
+            self.assertEqual([{"n": 99}], list(store))
+            self.assertTrue(store.index.is_current())
+            self.assertTrue(store.verify())
+
+    def test_a_kind_declares_its_own_sidecar_policy(self):
+        class Unsigned(InventoryCatalogRegistry):
+            KIND = "inventory"
+            EMIT_INDEX = False
+            EMIT_SIG = False
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            registry = Unsigned(target_dir=tmpdir)
+            with registry.open_writer() as writer:
+                writer.append(_article())
+                writer.commit()
+
+            paths = store_paths(registry.get_output_path())
+            self.assertFalse(os.path.exists(paths.jidx))
+            self.assertFalse(os.path.exists(paths.sig))
+            self.assertEqual([_article()], list(registry.open_store()))
+
+    def test_the_default_kind_is_signed_and_indexed(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            with registry.open_writer() as writer:
+                writer.append(_article())
+                writer.commit()
+
+            paths = store_paths(registry.get_output_path())
+            self.assertTrue(os.path.exists(paths.jidx))
+            self.assertTrue(os.path.exists(paths.sig))
 
 
 class TestStoreWriter(unittest.TestCase):

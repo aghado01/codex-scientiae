@@ -97,6 +97,9 @@ class JsonlEngine:
         self.hasher = hashlib.sha256()
         self._file = None
         self._committed = False
+        # Resolved at __enter__ against what is on disk; see the invariant there.
+        self._emit_index = emit_index
+        self._emit_sig = emit_sig
 
     def __enter__(self):
         if self.discipline == Discipline.SEALED:
@@ -107,6 +110,18 @@ class JsonlEngine:
         self.offsets.clear()
         self.line_count = 0
         self.hasher = hashlib.sha256()
+
+        # A commit must not leave a sidecar describing bytes it replaced. A sidecar already on disk
+        # is therefore rebuilt whether or not this write asked for one: its presence is a standing
+        # request, and the alternative is silently orphaning it against the new bytes. Resolved
+        # here rather than in __init__ because it is a fact about the file at open time.
+        #
+        # This is what keeps APPEND honest. Adoption recomputes every offset and re-hashes the
+        # whole store, so an indexed or signed store rebuilds both on every append -- O(n) in the
+        # store, forced by the signature rather than the index, since SHA-256 cannot resume from a
+        # digest. A kind that appends often should declare EMIT_SIG=False and sign once at the end.
+        self._emit_index = self.emit_index or os.path.exists(self.jidx_path)
+        self._emit_sig = self.emit_sig or os.path.exists(self.sig_path)
 
         if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
             self._adopt_existing()
@@ -254,11 +269,11 @@ class JsonlEngine:
         ticks = get_file_dotnet_ticks(self.output_path)
 
         # 3. Generate JSOI v2 .jidx.tmp sidecar using exact stat ticks
-        if self.emit_index:
+        if self._emit_index:
             self._write_jidx_v2(self.jidx_tmp, file_size, ticks)
 
         # 4. Generate .sig.tmp sidecar
-        if self.emit_sig:
+        if self._emit_sig:
             sig_payload = {
                 # The sidecar names the schema that governs it, matching the manifest convention.
                 # Unheadered stores carry no identity in the .jsonl itself, so this is where a
@@ -294,17 +309,17 @@ class JsonlEngine:
         # 5. Atomically rename sidecars into target destinations. No existence guard: if the emit
         #    flag is set, step 3 or 4 wrote the tmp, and a missing one is the silent non-write this
         #    method exists to refuse. os.replace raises, which is the point.
-        if self.emit_index:
+        if self._emit_index:
             os.replace(self.jidx_tmp, self.jidx_path)
-        if self.emit_sig:
+        if self._emit_sig:
             os.replace(self.sig_tmp, self.sig_path)
 
     def _discard_stale_sidecars(self) -> List[str]:
         """Remove sidecars describing bytes this commit replaced. Returns what was removed."""
         removed: List[str] = []
         for enabled, path, tmp in (
-            (self.emit_index, self.jidx_path, self.jidx_tmp),
-            (self.emit_sig, self.sig_path, self.sig_tmp),
+            (self._emit_index, self.jidx_path, self.jidx_tmp),
+            (self._emit_sig, self.sig_path, self.sig_tmp),
         ):
             if not enabled:
                 continue

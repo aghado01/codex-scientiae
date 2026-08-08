@@ -55,6 +55,18 @@ class BaseStore(ABC):
     EOL: Eol = Eol.LF
     ENCODING: str = DEFAULT_ENCODING
 
+    # Sidecars, declared per kind. On by default because a signed, indexed store is the posture
+    # worth defaulting to -- but a kind that appends often should weigh EMIT_SIG: every append
+    # re-hashes the whole store, since a SHA-256 cannot be resumed from a digest. The index has no
+    # such constraint in principle, but adoption already walks the file for the hash, so dropping
+    # only the index saves little. A high-frequency append lane wants both off and one signed
+    # finalize pass at the end.
+    #
+    # These are the floor, not the ceiling: a sidecar already on disk is maintained regardless, so
+    # turning one off never orphans an existing one. See JsonlEngine.__enter__.
+    EMIT_INDEX: bool = True
+    EMIT_SIG: bool = True
+
     EMIT_HEADER: bool = False  # Default False to match unheadered production lanes
     NAME_FORMAT: str = "{kind}.jsonl"
 
@@ -216,6 +228,8 @@ class BaseStore(ABC):
             codec=self.CODEC,
             eol=self.EOL,
             encoding=self.ENCODING,
+            emit_index=self.EMIT_INDEX,
+            emit_sig=self.EMIT_SIG,
         )
 
     def wants_header(self, out_path: str) -> bool:
