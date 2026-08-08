@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "codex-scientiae/jsonl-signature/0.1",
+  "$id": "codex-scientiae/jsonl-signature/0.2",
   "title": "Codex Scientiae JSONL store signature sidecar",
-  "description": "The .sig written beside a committed JSONL store. Records what the store's bytes were and what produced them, so a hash that fails to reproduce is attributable rather than merely wrong. additionalProperties is false deliberately: an unrecognised field is engine drift, and forcing a version bump is the point.",
+  "description": "The .sig written beside a committed JSONL store. Records what the store's bytes were and what produced them, so a hash that fails to reproduce is attributable rather than merely wrong. additionalProperties is false deliberately: an unrecognised field is engine drift, and forcing a version bump is the point. 0.2 adds encoding and eol beside codec, so the sidecar witnesses all three declared text axes rather than only the escaping one -- the hash covers bytes produced under all of them, and a store read under the wrong encoding or terminator now fails on the policy rather than on the digest. Bumped rather than amended in place because required properties changed shape; no 0.1 artifact exists to migrate.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -19,7 +19,7 @@
     "created_at"
   ],
   "properties": {
-    "schema": { "const": "codex-scientiae/jsonl-signature/0.1" },
+    "schema": { "const": "codex-scientiae/jsonl-signature/0.2" },
     "sha256": {
       "description": "SHA-256 over the published bytes, accumulated during the write.",
       "type": "string",
