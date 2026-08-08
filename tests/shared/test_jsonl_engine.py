@@ -10,17 +10,16 @@ import unittest
 import jsonschema
 
 from jsonl_engine.engine import JsonlEngine, Discipline
-from jsonl_engine.registry import BaseStore
+from jsonl_engine.kinds import (
+    ArticleManifest,
+    BaseStore,
+    InventoryRegistry,
+    KindCatalog,
+)
 from jsonl_engine.reader import JsonlStore, read_index
-from jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
+from jsonl_engine.schemas import get_schema_catalog
 from jsonl_engine.paths import RepoPaths, find_repository_root
 from jsonl_engine.sidecar import store_paths
-from jsonl_engine.registries import (
-    RegistryCatalog,
-    InventoryCatalogRegistry,
-    ArticleRegistry,
-    DocGraphRegistry
-)
 
 
 def _article(slug: str = "1105.4224v1") -> dict:
@@ -120,43 +119,42 @@ class TestJsonlEngineV7(unittest.TestCase):
     def test_inventory_row_is_an_article_object(self):
         """An article object is inserted verbatim as a row; no projection, no row shape."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            inv = InventoryCatalogRegistry(target_dir=tmpdir)
-            inv.add_article(_article())
-            out_file = inv.write()
+            inv = InventoryRegistry(target_dir=tmpdir)
+            out_file = inv.rebuild([_article()])
             self.assertTrue(os.path.exists(out_file))
             self.assertEqual(os.path.basename(out_file), "inventory.jsonl")
 
             records = list(JsonlStore(out_file))
-            self.assertEqual(len(records), 1)
-            self.assertEqual(records[0], _article())
+            header, rows = records[0], records[1:]
+            self.assertEqual("header", header["__type__"])
+            self.assertEqual(["slug"], header["identity"])
+            self.assertEqual(1, header["count"])
+            self.assertEqual([_article()], rows)
 
     def test_one_schema_governs_article_and_inventory_row(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             self.assertEqual(
-                InventoryCatalogRegistry.RECORD_SCHEMA,
-                ArticleRegistry.RECORD_SCHEMA,
+                InventoryRegistry.RECORD_SCHEMA,
+                ArticleManifest.RECORD_SCHEMA,
             )
             article = _article()
-            InventoryCatalogRegistry(target_dir=tmpdir).validate_record(article)
-            ArticleRegistry(target_dir=tmpdir).validate_record(article)
+            InventoryRegistry(target_dir=tmpdir).validate_record(article)
+            ArticleManifest(target_dir=tmpdir).validate_record(article)
 
     def test_graph_primitive_is_dormant(self):
         """It is discoverable as a reference, and no kind declares it."""
-        registry = get_global_schema_registry()
-        self.assertTrue(registry.has_schema("codex-scientiae/graph-primitive/0.1"))
-        declared = [
-            RegistryCatalog.get_registry_class(k).RECORD_SCHEMA
-            for k in RegistryCatalog.list_kinds()
-        ]
+        catalog = get_schema_catalog()
+        self.assertTrue(catalog.has_schema("codex-scientiae/graph-primitive/0.1"))
+        declared = [KindCatalog.get(k).RECORD_SCHEMA for k in KindCatalog.kinds()]
         self.assertNotIn("graph.primitive.schema.json", declared)
 
     def test_inventory_rejects_a_malformed_article(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            inv = InventoryCatalogRegistry(target_dir=tmpdir)
+            inv = InventoryRegistry(target_dir=tmpdir)
             broken = _article()
             del broken["source_forms"]
             with self.assertRaises(jsonschema.ValidationError):
-                inv.add_article(broken)
+                inv.rebuild([broken])
 
     def test_engine_commit_sidecars_and_exact_ticks(self):
         with tempfile.TemporaryDirectory() as tmpdir:

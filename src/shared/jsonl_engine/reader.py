@@ -416,9 +416,9 @@ class JsonlStore:
             )
 
         if schema_registry is None:
-            from .schema_registry import get_global_schema_registry
+            from .schemas import get_schema_catalog
 
-            schema_registry = get_global_schema_registry()
+            schema_registry = get_schema_catalog()
 
         return validate(raw, schema_registry.get_validator(SIG_SCHEMA_ID), path=sig_path)
 

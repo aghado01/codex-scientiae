@@ -15,9 +15,23 @@ from jsonl_engine import engine as engine_module
 from jsonl_engine.engine import Discipline, JsonlEngine
 from jsonl_engine.reader import JsonlStore
 from jsonl_engine.sidecar import store_paths
-from jsonl_engine.registries import InventoryCatalogRegistry
+from jsonl_engine.kinds import BaseStore
 
 from test_jsonl_engine import _article
+
+
+class ArticleStore(BaseStore):
+    """A plain JSONL store kind, declared here rather than shipped.
+
+    The writer tests need an ordinary store: rows under a schema, no registry semantics and no
+    single-object document. The package ships neither -- inventory is a registry now and article is
+    a manifest -- and inventing one in the package to satisfy tests would be the tail wagging.
+    """
+
+    KIND = "test-article-store"
+    VERSION = "0.1"
+    RECORD_SCHEMA = "article.schema.json"
+    NAME_FORMAT = "articles.jsonl"
 
 
 def _sha(path: str) -> str:
@@ -159,8 +173,8 @@ class TestSidecarPolicy(unittest.TestCase):
             self.assertTrue(store.verify())
 
     def test_a_kind_declares_its_own_sidecar_policy(self):
-        class Unsigned(InventoryCatalogRegistry):
-            KIND = "inventory"
+        class Unsigned(ArticleStore):
+            KIND = "test-unsigned-store"
             EMIT_INDEX = False
             EMIT_SIG = False
 
@@ -177,7 +191,7 @@ class TestSidecarPolicy(unittest.TestCase):
 
     def test_the_default_kind_is_signed_and_indexed(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            registry = ArticleStore(target_dir=tmpdir)
             with registry.open_writer() as writer:
                 writer.append(_article())
                 writer.commit()
@@ -192,7 +206,7 @@ class TestStoreWriter(unittest.TestCase):
 
     def test_streaming_applies_the_kinds_validator(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            registry = ArticleStore(target_dir=tmpdir)
             with self.assertRaises(Exception):
                 with registry.open_writer() as writer:
                     writer.append({"not": "an article"})
@@ -204,12 +218,12 @@ class TestStoreWriter(unittest.TestCase):
 
     def test_streamed_and_buffered_produce_identical_bytes(self):
         with tempfile.TemporaryDirectory() as d1, tempfile.TemporaryDirectory() as d2:
-            buffered = InventoryCatalogRegistry(target_dir=d1)
+            buffered = ArticleStore(target_dir=d1)
             for _ in range(3):
                 buffered.add(_article())
             buffered_path = buffered.write()
 
-            streamed = InventoryCatalogRegistry(target_dir=d2)
+            streamed = ArticleStore(target_dir=d2)
             with streamed.open_writer() as writer:
                 for _ in range(3):
                     writer.append(_article())
@@ -219,18 +233,18 @@ class TestStoreWriter(unittest.TestCase):
 
     def test_sig_metadata_defaults_to_the_kind(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            registry = ArticleStore(target_dir=tmpdir)
             with registry.open_writer() as writer:
                 writer.append(_article())
                 writer.commit()
 
             sig = JsonlStore(registry.get_output_path()).read_sig()
-            self.assertEqual("inventory", sig["metadata"]["kind"])
+            self.assertEqual(ArticleStore.KIND, sig["metadata"]["kind"])
             self.assertEqual(registry.VERSION, sig["metadata"]["version"])
 
     def test_the_store_reads_back_through_open_store(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            registry = InventoryCatalogRegistry(target_dir=tmpdir)
+            registry = ArticleStore(target_dir=tmpdir)
             with registry.open_writer() as writer:
                 writer.append(_article())
                 writer.commit()

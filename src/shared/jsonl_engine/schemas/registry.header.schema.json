@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/registry-header/0.1",
+  "title": "Codex Scientiae registry header record",
+  "description": "The container row opening a registry store. Extends the base JSONL header with what a registry additionally claims: which properties address its members, and how many it holds. Two things are deliberately absent, for one reason: this row describes the POPULATION, not the write that emitted it. created_at would make an unchanged population produce different bytes on every rebuild, destroying the reproducibility that ordering and wholesale rebuild exist to provide -- and the .sig already carries a created_at scoped to the write. The population's source is absent on the same principle, plus one of its own: a root path inside an artifact is a locality claim that stops being true when the tree moves.",
+  "type": "object",
+  "required": [
+    "__type__",
+    "kind",
+    "version",
+    "identity",
+    "count"
+  ],
+  "properties": {
+    "__type__": {
+      "const": "header"
+    },
+    "kind": {
+      "description": "The KIND of the registry this header opens.",
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "description": "The declaring kind's VERSION, not the schema's.",
+      "type": "string",
+      "minLength": 1
+    },
+    "identity": {
+      "description": "Properties addressing one member, copied from the record schema's x-identity. Restated here so a reader learns the key without resolving the record schema, and so a registry rebuilt under a changed identity is detectable.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "count": {
+      "description": "Members in this registry, excluding the header row.",
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}

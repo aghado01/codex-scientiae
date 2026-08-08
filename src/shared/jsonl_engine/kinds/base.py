@@ -1,10 +1,9 @@
 """Artifact kinds, declared as classes.
 
-A kind is an archetype of JSONL artifact: `inventory`, not the inventory.jsonl under one directory.
-
-Identity is declared as class attributes -- KIND, VERSION, DISCIPLINE, CODEC, EMIT_HEADER,
-NAME_FORMAT, RECORD_SCHEMA, PARENT_KIND and CHILD_KINDS. Location is a call argument.
-__init__ accepts target_dir, run_id, and a schema_registry override.
+A kind is an archetype of artifact: `inventory`, not the inventory.jsonl under one directory. It
+declares identity (KIND, VERSION), text policy (CODEC, EOL, ENCODING), sidecar policy (EMIT_INDEX,
+EMIT_SIG), naming (NAME_FORMAT), and shape (RECORD_SCHEMA, HEADER_SCHEMA). Location is a call
+argument.
 
 Schema binding is strict. A kind naming a schema that cannot be resolved raises at construction; a
 kind naming none is unvalidated.
@@ -13,20 +12,21 @@ validate_record dispatches on a row discriminator. HEADER_SCHEMA is the variant 
 __type__ == "header". A kind carrying several body shapes needs the same dispatch over its own
 discriminator.
 
-Key extraction, uniqueness, and canonical ordering are not implemented.
+Key extraction, uniqueness, and canonical ordering are deliberately absent here. They are not
+missing features of a store -- they are the definition of a registry, and live in registry.py.
 """
 
 import os
-import jsonschema
 from abc import ABC
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from .engine import JsonlEngine, Discipline
-from .policy import DEFAULT_ENCODING, Codec, Eol
-from .reader import JsonlStore
-from .schema_registry import get_global_schema_registry, SchemaRegistry
+import jsonschema
 
+from ..engine import Discipline, JsonlEngine
+from ..policy import DEFAULT_ENCODING, Codec, Eol
+from ..reader import JsonlStore
+from ..schemas import SchemaCatalog, get_schema_catalog
 
 # The base header schema every kind gets unless it declares its own. Named, not inlined: the two row
 # categories are declared the same way, and a kind carrying container metadata of its own -- stats,
@@ -35,18 +35,14 @@ BASE_HEADER_SCHEMA = "header.schema.json"
 
 
 class BaseStore(ABC):
-    """
-    Abstract base class for JSONL artifact registries.
-    Seals KIND, VERSION, DISCIPLINE, EMIT_HEADER, resolves JSONSchema via SchemaRegistry,
-    and captures hierarchical parent-child relationships between artifact kinds.
-    Fails fast if a declared schema cannot be resolved.
-    """
+    """Base class for artifact kinds. Seals identity and policy; resolves schemas at construction."""
+
     KIND: str = "base"
     VERSION: str = "1.0"
     DISCIPLINE: Discipline = Discipline.CREATE
 
     # The three text-policy axes, declared here because a kind is what knows them. The .sig records
-    # all three, so a store this registry wrote carries its own policy and a reader never guesses.
+    # all three, so a store this kind wrote carries its own policy and a reader never guesses.
     #
     # UNICODE is readable and refuses unpaired surrogates; ASCII escapes them losslessly and is for
     # extracted-text kinds only. LF and UTF-8 are this engine's posture for everything it writes --
@@ -57,10 +53,7 @@ class BaseStore(ABC):
 
     # Sidecars, declared per kind. On by default because a signed, indexed store is the posture
     # worth defaulting to -- but a kind that appends often should weigh EMIT_SIG: every append
-    # re-hashes the whole store, since a SHA-256 cannot be resumed from a digest. The index has no
-    # such constraint in principle, but adoption already walks the file for the hash, so dropping
-    # only the index saves little. A high-frequency append lane wants both off and one signed
-    # finalize pass at the end.
+    # re-hashes the whole store, since a SHA-256 cannot be resumed from a digest.
     #
     # These are the floor, not the ceiling: a sidecar already on disk is maintained regardless, so
     # turning one off never orphans an existing one. See JsonlEngine.__enter__.
@@ -70,12 +63,8 @@ class BaseStore(ABC):
     EMIT_HEADER: bool = False  # Default False to match unheadered production lanes
     NAME_FORMAT: str = "{kind}.jsonl"
 
-    # Hierarchy declaration
-    PARENT_KIND: Optional[str] = None
-    CHILD_KINDS: List[str] = []
-
-    # The two row categories of a JSONL store, declared the same way. Either accepts any key
-    # SchemaRegistry indexes: a $id, a filename, or a filename stem.
+    # The two row categories of a store, declared the same way. Either accepts any key the
+    # SchemaCatalog indexes: a $id, a filename, or a filename stem.
     #
     # RECORD_SCHEMA governs one record. A JSONL container holds many under it; a JSON container one.
     # HEADER_SCHEMA governs the container metadata row, and defaults to the base.
@@ -86,78 +75,65 @@ class BaseStore(ABC):
         self,
         target_dir: str,
         run_id: Optional[str] = None,
-        schema_registry: Optional[SchemaRegistry] = None
+        schema_catalog: Optional[SchemaCatalog] = None,
     ):
         self.target_dir = os.path.abspath(target_dir)
         self.run_id = run_id
         self._records: List[Dict[str, Any]] = []
 
-        self.schema_registry = schema_registry or get_global_schema_registry()
-        self._header_validator = self.schema_registry.get_validator(self.HEADER_SCHEMA)
+        self.schemas = schema_catalog or get_schema_catalog()
+        self._header_validator = self.schemas.get_validator(self.HEADER_SCHEMA)
         self._payload_validator = self._resolve_payload_validator()
 
     def _resolve_payload_validator(self) -> Optional[jsonschema.protocols.Validator]:
-        """
-        Resolves the compiled jsonschema validator from the SchemaRegistry.
-        Fails fast with KeyError if RECORD_SCHEMA is declared but missing.
-        """
-        declared_key = self.RECORD_SCHEMA
-        if declared_key is not None:
-            if not self.schema_registry.has_schema(declared_key):
+        """Resolve the record validator. Fails fast if RECORD_SCHEMA is declared but missing."""
+        declared = self.RECORD_SCHEMA
+        if declared is not None:
+            if not self.schemas.has_schema(declared):
                 raise KeyError(
-                    f"Declared schema '{declared_key}' for artifact registry kind '{self.KIND}' "
-                    f"could not be resolved from SchemaRegistry."
+                    f"Declared schema '{declared}' for kind '{self.KIND}' could not be resolved "
+                    f"from the SchemaCatalog."
                 )
-            return self.schema_registry.get_validator(declared_key)
+            return self.schemas.get_validator(declared)
 
-        # Fallback to KIND lookup if available
-        if self.schema_registry.has_schema(self.KIND):
-            return self.schema_registry.get_validator(self.KIND)
+        if self.schemas.has_schema(self.KIND):
+            return self.schemas.get_validator(self.KIND)
 
         return None
 
-    def get_child_registry(self, child_kind: str, child_target_dir: Optional[str] = None) -> 'BaseStore':
-        """Instantiates a child registry of this parent artifact."""
-        from .registries.catalog import RegistryCatalog
-        if child_kind not in self.CHILD_KINDS and child_kind != "any":
-            raise ValueError(
-                f"Kind '{child_kind}' is not declared as a valid child of parent kind '{self.KIND}'. "
-                f"Allowed: {self.CHILD_KINDS}"
-            )
+    def mint(self, values: Optional[Dict[str, Any]] = None, **_unused) -> Dict[str, Any]:
+        """Build one record of this kind from a single data structure.
 
-        target = child_target_dir or self.target_dir
-        return RegistryCatalog.create(child_kind, target_dir=target, run_id=self.run_id)
+        Delegates to the schema: `const` and `default` properties are filled from the declaration,
+        the rest comes from `values`, and key order follows the schema so records of one kind are
+        byte-canonical. A kind declaring no RECORD_SCHEMA has nothing to mint from and says so.
+        """
+        if self.RECORD_SCHEMA is None:
+            raise TypeError(
+                f"Kind '{self.KIND}' declares no RECORD_SCHEMA, so there is no shape to mint from."
+            )
+        return self.schemas.mint(self.RECORD_SCHEMA, values)
 
     def get_output_path(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
-        """
-        Resolves final output path cleanly through NAME_FORMAT.
-        """
+        """Resolve the final output path through NAME_FORMAT."""
         if filename:
             name = filename
         else:
             name = self.NAME_FORMAT.format(
-                kind=self.KIND,
-                stem=stem or "",
-                run_id=self.run_id or ""
+                kind=self.KIND, stem=stem or "", run_id=self.run_id or ""
             )
-            # Clean up leading or double dots if stem/run_id is empty
             if name.startswith("."):
                 name = name[1:]
             name = name.replace("..", ".")
-            
+
         return os.path.join(self.target_dir, name)
 
     def validate_record(self, record: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Validates record against appropriate schema:
-        - If __type__ == 'header', validates against HEADER_SCHEMA.
-        - Otherwise, validates payload against resolved external JSONSchema.
-        """
+        """Validate against HEADER_SCHEMA for a header row, RECORD_SCHEMA otherwise."""
         if not isinstance(record, dict):
             raise jsonschema.ValidationError(f"Record must be a JSON dict, got {type(record)}")
 
-        rec_type = record.get("__type__")
-        if rec_type == "header":
+        if record.get("__type__") == "header":
             errors = sorted(self._header_validator.iter_errors(record), key=lambda e: str(e.path))
             if errors:
                 raise jsonschema.ValidationError(
@@ -166,27 +142,36 @@ class BaseStore(ABC):
         elif self._payload_validator:
             errors = sorted(self._payload_validator.iter_errors(record), key=lambda e: str(e.path))
             if errors:
-                first_err = errors[0]
-                path_str = " -> ".join(str(p) for p in first_err.path) if first_err.path else "root"
+                first = errors[0]
+                where = " -> ".join(str(p) for p in first.path) if first.path else "root"
                 raise jsonschema.ValidationError(
-                    f"Record validation failed for kind '{self.KIND}': {first_err.message} at [{path_str}]"
+                    f"Record validation failed for kind '{self.KIND}': {first.message} at [{where}]"
                 )
         return record
 
-    def build_header(self) -> Dict[str, Any]:
-        """Constructs and validates the header record."""
-        header = {
+    def header_fields(self) -> Dict[str, Any]:
+        """Container metadata beyond the base. Overridden by a kind that declares its own."""
+        return {}
+
+    def header_base(self) -> Dict[str, Any]:
+        """The header fields every kind carries. Overridable, because not every kind should
+        stamp a wall clock into its bytes -- see Registry."""
+        return {
             "__type__": "header",
             "kind": self.KIND,
             "version": self.VERSION,
-            "created_at": datetime.now(timezone.utc).isoformat()
+            "created_at": datetime.now(timezone.utc).isoformat(),
         }
+
+    def build_header(self) -> Dict[str, Any]:
+        """Construct and validate the header record."""
+        header = self.header_base()
+        header.update(self.header_fields())
         return self.validate_record(header)
 
     def add(self, record: Dict[str, Any]) -> None:
-        """In-memory batch record accumulation."""
-        validated = self.validate_record(record)
-        self._records.append(validated)
+        """Buffer one validated record for write()."""
+        self._records.append(self.validate_record(record))
 
     def open_writer(
         self, stem: Optional[str] = None, filename: Optional[str] = None
@@ -197,10 +182,6 @@ class BaseStore(ABC):
         something you need in hand before it lands -- to sort it, dedupe it, count it, or decide
         whether to write at all. Everything derived from a document, where the count follows the
         input, belongs here.
-
-        That is a real choice only because this writer applies the kind's validator and header
-        rules, which a bare JsonlEngine does not. It used to return the engine, so streaming
-        silently skipped both.
         """
         out_path = self.get_output_path(stem=stem, filename=filename)
         return StoreWriter(self, self._engine(out_path), out_path)
@@ -208,10 +189,10 @@ class BaseStore(ABC):
     def open_store(
         self, stem: Optional[str] = None, filename: Optional[str] = None
     ) -> JsonlStore:
-        """Reader for a store of this kind, carrying the kind's policy and record validator.
+        """Reader for a store of this kind, carrying its policy and record validator.
 
-        The counterpart to open_writer. A caller reading a store this registry produced states
-        nothing: the kind already declared what the bytes are and what shape they hold.
+        The counterpart to open_writer. A caller reading a store this kind produced states nothing:
+        the kind already declared what the bytes are and what shape they hold.
         """
         return JsonlStore(
             self.get_output_path(stem=stem, filename=filename),
@@ -221,7 +202,7 @@ class BaseStore(ABC):
         )
 
     def _engine(self, out_path: str) -> JsonlEngine:
-        """A JsonlEngine carrying this kind's declared discipline and text policy."""
+        """A JsonlEngine carrying this kind's declared discipline and policy."""
         return JsonlEngine(
             output_path=out_path,
             discipline=self.DISCIPLINE,
@@ -235,8 +216,8 @@ class BaseStore(ABC):
     def wants_header(self, out_path: str) -> bool:
         """Whether this write should open with a header record.
 
-        A header belongs to a store, not to a write: an APPEND that lands in an existing store
-        would otherwise put a second one partway through.
+        A header belongs to a store, not to a write: an APPEND landing in an existing store would
+        otherwise put a second one partway through.
         """
         if not self.EMIT_HEADER:
             return False
@@ -247,17 +228,13 @@ class BaseStore(ABC):
         return {"kind": self.KIND, "version": self.VERSION, "run_id": self.run_id}
 
     def write(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
-        """Flush the records accumulated by add() to disk.
-
-        Buffered rather than streamed; see open_writer for which to reach for. Routed through the
-        same writer so both paths produce the same bytes for the same records.
-        """
+        """Flush the records buffered by add(). Routed through the streaming writer, so both paths
+        produce the same bytes for the same records."""
         with self.open_writer(stem=stem, filename=filename) as writer:
-            for rec in self._records:
-                writer.append(rec)
+            for record in self._records:
+                writer.append(record)
             writer.commit()
         return writer.output_path
-
 
 
 class StoreWriter:
@@ -279,7 +256,7 @@ class StoreWriter:
 
     def __enter__(self) -> "StoreWriter":
         # Resolved before the engine opens: APPEND adoption does not change whether this store
-        # already existed, but reading it after the fact would be answering a different question.
+        # already existed, but reading it after the fact would answer a different question.
         wants_header = self.store.wants_header(self.output_path)
         self.engine.__enter__()
         if wants_header:

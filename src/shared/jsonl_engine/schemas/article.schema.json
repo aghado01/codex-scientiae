@@ -18,55 +18,162 @@
     "source_forms",
     "validation"
   ],
+  "x-identity": [
+    "slug"
+  ],
   "properties": {
-    "schema": { "const": "codex-scientiae/article/0.1" },
-    "state": { "const": "source-ready" },
-    "slug": { "type": "string", "minLength": 1 },
-    "initialized_utc": { "type": "string", "format": "date-time" },
-
-    "title": { "type": ["string", "null"] },
-    "authors": { "type": "array", "items": { "type": "string" } },
-    "abstract": { "type": ["string", "null"] },
+    "schema": {
+      "const": "codex-scientiae/article/0.1"
+    },
+    "state": {
+      "const": "source-ready"
+    },
+    "slug": {
+      "type": "string",
+      "minLength": 1
+    },
+    "initialized_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "abstract": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "identifiers": {
       "type": "object",
-      "required": ["arxiv", "arxiv_versioned", "doi"],
+      "required": [
+        "arxiv",
+        "arxiv_versioned",
+        "doi"
+      ],
       "properties": {
-        "arxiv": { "type": ["string", "null"] },
-        "arxiv_versioned": { "type": ["string", "null"] },
-        "doi": { "type": ["string", "null"] }
+        "arxiv": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "arxiv_versioned": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "doi": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       },
       "additionalProperties": true
     },
-    "categories": { "type": "array", "items": { "type": "string" } },
-    "primary_category": { "type": ["string", "null"] },
-    "published": { "type": ["string", "null"] },
-    "updated": { "type": ["string", "null"] },
-
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primary_category": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "published": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "updated": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "evidence": {
       "type": "object",
-      "required": ["provider_metadata", "latex_source", "package_control_files"],
+      "required": [
+        "provider_metadata",
+        "latex_source",
+        "package_control_files"
+      ],
       "properties": {
-        "provider_metadata": { "type": "array", "items": { "$ref": "#/$defs/fileRecord" } },
+        "provider_metadata": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fileRecord"
+          }
+        },
         "latex_source": {
           "type": "object",
-          "required": ["entrypoint", "selection", "declarations"],
+          "required": [
+            "entrypoint",
+            "selection",
+            "declarations"
+          ],
           "properties": {
-            "entrypoint": { "$ref": "#/$defs/relativePath" },
-            "selection": { "type": "string", "minLength": 1 },
+            "entrypoint": {
+              "$ref": "#/$defs/relativePath"
+            },
+            "selection": {
+              "type": "string",
+              "minLength": 1
+            },
             "declarations": {
               "type": "object",
-              "required": ["title_tex", "authors_tex", "doi"],
+              "required": [
+                "title_tex",
+                "authors_tex",
+                "doi"
+              ],
               "properties": {
-                "title_tex": { "type": ["string", "null"] },
-                "authors_tex": { "type": "array", "items": { "type": "string" } },
-                "doi": { "type": ["string", "null"] }
+                "title_tex": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "authors_tex": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "doi": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
               },
               "additionalProperties": false
             }
           },
           "additionalProperties": true
         },
-        "package_control_files": { "type": "array", "items": { "$ref": "#/$defs/fingerprintRecord" } }
+        "package_control_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fingerprintRecord"
+          }
+        }
       },
       "additionalProperties": true
     },
@@ -75,21 +182,55 @@
       "minItems": 2,
       "contains": {
         "type": "object",
-        "required": ["role", "path", "sha256"],
-        "properties": { "role": { "const": "latex-source-archive" } }
+        "required": [
+          "role",
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "role": {
+            "const": "latex-source-archive"
+          }
+        }
       },
       "items": {
         "allOf": [
-          { "$ref": "#/$defs/fileRecord" },
           {
-            "if": { "properties": { "role": { "const": "latex-source-tree" } }, "required": ["role"] },
-            "then": {
-              "required": ["derived_from", "entrypoint", "files", "tex_files"],
+            "$ref": "#/$defs/fileRecord"
+          },
+          {
+            "if": {
               "properties": {
-                "derived_from": { "$ref": "#/$defs/relativePath" },
-                "entrypoint": { "$ref": "#/$defs/relativePath" },
-                "files": { "type": "integer", "minimum": 1 },
-                "tex_files": { "type": "integer", "minimum": 1 }
+                "role": {
+                  "const": "latex-source-tree"
+                }
+              },
+              "required": [
+                "role"
+              ]
+            },
+            "then": {
+              "required": [
+                "derived_from",
+                "entrypoint",
+                "files",
+                "tex_files"
+              ],
+              "properties": {
+                "derived_from": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "entrypoint": {
+                  "$ref": "#/$defs/relativePath"
+                },
+                "files": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "tex_files": {
+                  "type": "integer",
+                  "minimum": 1
+                }
               }
             }
           }
@@ -98,12 +239,29 @@
     },
     "validation": {
       "type": "object",
-      "required": ["status", "validated_utc", "publication", "checks"],
+      "required": [
+        "status",
+        "validated_utc",
+        "publication",
+        "checks"
+      ],
       "properties": {
-        "status": { "const": "valid" },
-        "validated_utc": { "type": "string", "format": "date-time" },
-        "publication": { "enum": ["published-new-tree", "recovered-existing-tree"] },
-        "checks": { "$ref": "#/$defs/probeLedger" }
+        "status": {
+          "const": "valid"
+        },
+        "validated_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "publication": {
+          "enum": [
+            "published-new-tree",
+            "recovered-existing-tree"
+          ]
+        },
+        "checks": {
+          "$ref": "#/$defs/probeLedger"
+        }
       },
       "additionalProperties": true
     }
@@ -114,26 +272,56 @@
       "minLength": 1,
       "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
     },
-    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "probeLedger": {
       "description": "One entry per probe the deposit transaction is accountable for. An outcome other than 'passed' requires a reason, so a probe that did not apply is distinguishable from one that held. Additional keys carry per-probe detail.",
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["name", "outcome"],
+        "required": [
+          "name",
+          "outcome"
+        ],
         "properties": {
-          "name": { "type": "string", "minLength": 1 },
-          "outcome": { "enum": ["passed", "not-applicable", "waived"] },
-          "reason": { "type": "string", "minLength": 1 }
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "outcome": {
+            "enum": [
+              "passed",
+              "not-applicable",
+              "waived"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "allOf": [
           {
             "if": {
-              "required": ["outcome"],
-              "properties": { "outcome": { "not": { "const": "passed" } } }
+              "required": [
+                "outcome"
+              ],
+              "properties": {
+                "outcome": {
+                  "not": {
+                    "const": "passed"
+                  }
+                }
+              }
             },
-            "then": { "required": ["reason"] }
+            "then": {
+              "required": [
+                "reason"
+              ]
+            }
           }
         ],
         "additionalProperties": true
@@ -141,23 +329,51 @@
     },
     "fingerprintRecord": {
       "type": "object",
-      "required": ["path", "bytes", "sha256"],
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
       "properties": {
-        "path": { "$ref": "#/$defs/relativePath" },
-        "bytes": { "type": "integer", "minimum": 0 },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       },
       "additionalProperties": true
     },
     "fileRecord": {
       "type": "object",
-      "required": ["role", "path", "format"],
+      "required": [
+        "role",
+        "path",
+        "format"
+      ],
       "properties": {
-        "role": { "type": "string", "minLength": 1 },
-        "path": { "$ref": "#/$defs/relativePath" },
-        "format": { "type": "string", "minLength": 1 },
-        "bytes": { "type": "integer", "minimum": 0 },
-        "sha256": { "$ref": "#/$defs/sha256" }
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       },
       "additionalProperties": true
     }

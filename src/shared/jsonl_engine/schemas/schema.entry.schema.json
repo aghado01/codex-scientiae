@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "codex-scientiae/schema-entry/0.1",
+  "title": "Codex Scientiae schema registry entry",
+  "description": "One row of the schema registry: a schema the engine ships, described by the parts a consumer needs in order to resolve and trust it. The registry is a published view of what the in-memory SchemaCatalog holds, so this row carries only what is derivable from the schema document itself -- nothing about where the file sits, which would go stale on a move.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "file", "draft"],
+  "x-identity": ["id"],
+  "properties": {
+    "id": {
+      "description": "The schema's own $id. The address every other artifact cites it by.",
+      "type": "string",
+      "minLength": 1
+    },
+    "file": {
+      "description": "Filename the schema ships as, without a directory. The catalog indexes by this and by its stem, so a consumer can resolve either way.",
+      "type": "string",
+      "minLength": 1
+    },
+    "draft": {
+      "description": "The meta-schema this document declares, from its own $schema. Recorded because the draft decides how the document is interpreted.",
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "description": "The schema's title, when it declares one.",
+      "type": ["string", "null"]
+    },
+    "identity": {
+      "description": "The schema's own x-identity, when it declares one. Present here means the schema can back a registry; absent means it cannot be keyed.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

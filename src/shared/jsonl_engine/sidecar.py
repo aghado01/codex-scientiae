@@ -1,6 +1,6 @@
 """Store path triple, .NET ticks, and the .sig schema id.
 
-Leaf module: no imports from engine, reader, or schema_registry. Shared by writers and readers.
+Leaf module: no imports from engine, reader, or schemas. Shared by writers and readers.
 """
 
 from __future__ import annotations
