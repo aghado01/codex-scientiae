@@ -7,13 +7,16 @@
 #   3. Is it text we edit?                 -> text eol=lf    normalize to LF in the repo
 #
 # Question 1 is the one generic templates miss and the one this repository actually needs. A file
-# can be perfectly readable text and still belong in category 1 -- a byte-exact test fixture, or
-# acquired source whose SHA-256 is recorded as provenance. Normalizing those silently invalidates
-# the thing they exist to prove.
+# can be perfectly readable text and still belong in category 1 -- a byte-exact test fixture,
+# acquired source whose SHA-256 is recorded as provenance, or any format the engine itself owns.
+#
+# That last case is the important one. Where code declares a file's bytes, git must not also have
+# an opinion about them: two authorities over one artifact is not belt-and-braces, it is a silent
+# contradiction waiting for the first artifact whose declared policy differs from git's default.
+# Ambient normalization is for files nothing else governs.
 #
 # This file governs bytes in the REPOSITORY, for TRACKED files, at checkout and commit. It has no
-# authority over generated artifacts that are untracked, and it is never read at runtime -- the
-# jsonl_engine declares its own encoding, escaping, and terminator per artifact (see policy.py).
+# authority over generated artifacts that are untracked, and it is never read at runtime.
 #
 # Ordering matters: later patterns win. Broad defaults first, specific overrides last.
 
@@ -30,12 +33,9 @@
 # 3. Text we edit — normalized to LF
 # ---------------------------------------------------------------------------
 
-# Documents and data
+# Documents and data. Formats the engine owns are NOT here -- see category 1.
 *.md        text eol=lf diff=markdown
 *.txt       text eol=lf
-*.json      text eol=lf
-*.jsonl     text eol=lf
-*.sig       text eol=lf
 *.csv       text eol=lf
 *.xml       text eol=lf
 *.svg       text eol=lf
@@ -95,6 +95,15 @@ LICENSE             text eol=lf
 # ---------------------------------------------------------------------------
 # 1. Bytes are the contract — text-shaped, frozen anyway
 # ---------------------------------------------------------------------------
+
+# Formats the engine owns. jsonl_engine declares encoding, escaping, and record terminator per
+# artifact and records all three in the .sig; the reader then enforces what was declared. Git
+# normalizing these would not be redundant with that, it would contradict it: a kind that declares
+# EOL = Eol.CRLF would have its store rewritten to LF on checkout, and the reader would refuse the
+# store it just wrote. One authority over these bytes, and it is the code.
+*.jsonl                             -text
+*.json                              -text
+*.sig                               -text
 
 # Byte-exact reference data. A golden is compared against fresh output, so whatever it was when it
 # was captured is the thing under test -- the jsonl-engine CRLF golden would be rewritten to LF on
