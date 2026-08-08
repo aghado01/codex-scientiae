@@ -127,7 +127,7 @@ class TestJsonlEngineV7(unittest.TestCase):
             records = list(JsonlStore(out_file))
             header, rows = records[0], records[1:]
             self.assertEqual("header", header["__type__"])
-            self.assertEqual(["slug"], header["identity"])
+            self.assertEqual(["/slug"], header["identity"])
             self.assertEqual(1, header["count"])
             self.assertEqual([_article()], rows)
 

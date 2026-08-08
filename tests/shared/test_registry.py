@@ -53,7 +53,7 @@ class TestRegistrySemantics(unittest.TestCase):
             registry = InventoryRegistry(target_dir=tmpdir)
             with self.assertRaises(DuplicateEntry) as caught:
                 registry.rebuild([_article("dup"), _article("dup")])
-            self.assertIn("'slug': 'dup'", str(caught.exception))
+            self.assertIn("'/slug': 'dup'", str(caught.exception))
 
     def test_the_header_declares_the_population(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -61,7 +61,7 @@ class TestRegistrySemantics(unittest.TestCase):
             path = registry.rebuild([_article(s) for s in ("a", "b")])
             header, _ = _rows(path)
             self.assertEqual("inventory", header["kind"])
-            self.assertEqual(["slug"], header["identity"])
+            self.assertEqual(["/slug"], header["identity"])
             self.assertEqual(2, header["count"])
 
     def test_accumulating_into_a_registry_is_refused(self):
@@ -112,7 +112,7 @@ class TestSchemaRegistry(unittest.TestCase):
             _, rows = _rows(path)
             article = next(r for r in rows if r["id"] == "codex-scientiae/article/0.1")
             self.assertEqual("article.schema.json", article["file"])
-            self.assertEqual(["slug"], article["identity"])
+            self.assertEqual(["/slug"], article["identity"])
             self.assertTrue(article["draft"].startswith("https://json-schema.org/"))
 
     def test_a_schema_declaring_no_identity_says_so_by_omission(self):

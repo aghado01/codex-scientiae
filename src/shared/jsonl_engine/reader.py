@@ -257,6 +257,7 @@ class JsonlStore:
         require_object: bool = True,
         require_index: bool = False,
         require_sig: bool = False,
+        bound: Optional[int] = None,
     ) -> None:
         try:
             framable = is_line_framable(encoding)
@@ -275,8 +276,46 @@ class JsonlStore:
         self.require_object = require_object
         self.require_index = require_index
         self.require_sig = require_sig
+        # Read bound. None means "to EOF", which is correct for a quiescent store and torn for one
+        # being appended. See at_length / at_signature for the bounded views.
+        self.bound = bound
         self._index: Optional[Jidx] = None
         self._offsets: Optional[List[int]] = None
+
+    def _with(self, **overrides) -> "JsonlStore":
+        """A sibling view of the same artifact, differing only in the given settings."""
+        settings = {
+            "encoding": self.encoding,
+            "eol": self.eol,
+            "validator": self.validator,
+            "require_object": self.require_object,
+            "require_index": self.require_index,
+            "require_sig": self.require_sig,
+            "bound": self.bound,
+        }
+        settings.update(overrides)
+        return type(self)(self.paths.artifact, **settings)
+
+    def at_length(self, length: Optional[int] = None) -> "JsonlStore":
+        """A view bounded at `length`, defaulting to the last complete record right now.
+
+        For reading a store another process is appending to. Readers take no lease -- one long scan
+        would stall every writer, and a reader has nothing to protect. A bound is sufficient
+        instead: JSONL only grows at the end and a replacement arrives by rename, so bytes below
+        the bound are durable and will not change under the scan.
+        """
+        from .inspect import complete_prefix
+
+        return self._with(bound=complete_prefix(self.paths.artifact) if length is None else length)
+
+    def at_signature(self) -> "JsonlStore":
+        """A view bounded at the length the `.sig` attests to.
+
+        Stronger than at_length: a signed prefix is a population a writer committed to, so this
+        view verifies rather than merely being untorn.
+        """
+        sig = self.read_sig()
+        return self._with(bound=sig["file_size"])
 
     @property
     def has_index(self) -> bool:
@@ -306,14 +345,23 @@ class JsonlStore:
         A *stale* index is a different matter and still raises. Absence means nobody wrote one;
         staleness means someone wrote one and the bytes moved out from under it, which is the case
         the sidecar exists to catch.
+
+        A bounded view uses the index only when the index describes exactly that extent -- which
+        at_signature() does, since the .sig and the .jidx are written against the same published
+        bytes. A view bounded anywhere else is reading a length the index never described, so it
+        scans. Filtering the index's offsets instead would silently under-report: an index covering
+        three records says nothing about the two that were appended after it.
         """
         if self.has_index:
             jidx = self.index
-            if not jidx.is_current():
-                raise ValueError(
-                    f"Stale JSONL index: {self.paths.jidx} does not match {self.paths.artifact}"
-                )
-            return jidx.offsets
+            if self.bound is None:
+                if not jidx.is_current():
+                    raise ValueError(
+                        f"Stale JSONL index: {self.paths.jidx} does not match {self.paths.artifact}"
+                    )
+                return jidx.offsets
+            if jidx.source_length == self.bound:
+                return jidx.offsets
 
         if self.require_index:
             raise FileNotFoundError(
@@ -321,12 +369,13 @@ class JsonlStore:
             )
 
         if self._offsets is None:
+            # Derived from the same bounded walk iteration uses, so the two can never disagree
+            # about which records this view contains.
             scanned: List[int] = []
             offset = 0
-            with open(self.paths.artifact, "rb") as handle:
-                for line in handle:
-                    scanned.append(offset)
-                    offset += len(line)
+            for line in self._raw_lines():
+                scanned.append(offset)
+                offset += len(line)
             self._offsets = scanned
         return self._offsets
 
@@ -338,11 +387,24 @@ class JsonlStore:
         """
         return len(self.offsets())
 
-    def __iter__(self) -> Iterator[Any]:
-        """Stream every record in order. Needs no sidecar at all."""
+    def _raw_lines(self) -> Iterator[bytes]:
+        """Every record's bytes, in order, stopping at the bound.
+
+        The one place the bound is applied to a sequential read. A partial line straddling the
+        bound is excluded rather than truncated: half a record is not a record.
+        """
+        consumed = 0
         with open(self.paths.artifact, "rb") as handle:
-            for record, line in enumerate(handle):
-                yield self._loads_line(line, record=record)
+            for line in handle:
+                if self.bound is not None and consumed + len(line) > self.bound:
+                    return
+                consumed += len(line)
+                yield line
+
+    def __iter__(self) -> Iterator[Any]:
+        """Stream every record in order, stopping at the bound. Needs no sidecar at all."""
+        for record, line in enumerate(self._raw_lines()):
+            yield self._loads_line(line, record=record)
 
     def __getitem__(self, index: Union[int, slice]) -> Any:
         offsets = self.offsets()
@@ -445,12 +507,13 @@ class JsonlStore:
                     f"{field}={witnessed!r}, read with {field}={declared!r}"
                 )
 
+        # Hashed over the same bytes the view reads, so a view bounded at the signature verifies
+        # against it rather than against whatever the file has grown to since.
         hasher = hashlib.sha256()
         line_count = 0
-        with open(self.paths.artifact, "rb") as handle:
-            for line in handle:
-                hasher.update(line)
-                line_count += 1
+        for line in self._raw_lines():
+            hasher.update(line)
+            line_count += 1
 
         actual_hash = hasher.hexdigest()
         if actual_hash != sig_data["sha256"]:

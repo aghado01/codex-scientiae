@@ -3,10 +3,14 @@
 Layered leaf-first, so each module depends only on what sits below it:
 
     policy      the three declared text axes: encoding, Codec, Eol
-    sidecar     the artifact path triple, .NET ticks, the .sig schema id
+    pointer     JSON Pointer (RFC 6901) resolution
+    ordering    a total, host-independent order over JSON values
+    sidecar     the artifact path triple, .NET ticks, scratch and lock placement
     writer      serialize_json / write_json -- single-object artifacts
     reader      read_json / JsonlStore      -- both artifact shapes
     engine      JsonlEngine                 -- JSONL bytes, offsets, sidecar transaction
+    inspect     physical facts and stable views of an actively appended store
+    cli         `python -m jsonl_engine`, the surface jso-shell.ps1 marshals into
     schemas     the shipped *.schema.json and the catalog that indexes them
     kinds       artifact kinds, and the registry category
 
@@ -16,6 +20,8 @@ registers a population under a schema-declared key.
 """
 
 from .policy import DEFAULT_ENCODING, Codec, Eol
+from .pointer import MISSING, PointerError, exists as pointer_exists, resolve as pointer_resolve
+from .ordering import KeyComparison, SortField
 from .sidecar import StorePaths, get_file_dotnet_ticks, store_paths
 from .writer import JsonWriterError, serialize_json, write_json
 from .reader import (
@@ -29,6 +35,7 @@ from .reader import (
     read_json_or_none,
 )
 from .engine import Discipline, JsonlEngine
+from .inspect import StoreInfo, complete_prefix, inspect_store, snapshot
 from .schemas import IDENTITY_KEYWORD, SchemaCatalog, get_schema_catalog
 from .kinds import (
     ArticleManifest,
@@ -47,6 +54,13 @@ __all__ = [
     "DEFAULT_ENCODING",
     "Codec",
     "Eol",
+    # addressing and ordering
+    "MISSING",
+    "PointerError",
+    "pointer_resolve",
+    "pointer_exists",
+    "KeyComparison",
+    "SortField",
     # artifact paths and sidecars
     "StorePaths",
     "store_paths",
@@ -66,6 +80,11 @@ __all__ = [
     "read_index",
     "read_json",
     "read_json_or_none",
+    # inspection
+    "StoreInfo",
+    "inspect_store",
+    "complete_prefix",
+    "snapshot",
     # schemas
     "IDENTITY_KEYWORD",
     "SchemaCatalog",

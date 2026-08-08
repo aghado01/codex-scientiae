@@ -5,8 +5,14 @@
   "description": "One row of the schema registry: a schema the engine ships, described by the parts a consumer needs in order to resolve and trust it. The registry is a published view of what the in-memory SchemaCatalog holds, so this row carries only what is derivable from the schema document itself -- nothing about where the file sits, which would go stale on a move.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "file", "draft"],
-  "x-identity": ["id"],
+  "required": [
+    "id",
+    "file",
+    "draft"
+  ],
+  "x-identity": [
+    "/id"
+  ],
   "properties": {
     "id": {
       "description": "The schema's own $id. The address every other artifact cites it by.",
@@ -25,12 +31,18 @@
     },
     "title": {
       "description": "The schema's title, when it declares one.",
-      "type": ["string", "null"]
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "identity": {
       "description": "The schema's own x-identity, when it declares one. Present here means the schema can back a registry; absent means it cannot be keyed.",
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     }
   }
 }

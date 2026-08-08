@@ -19,7 +19,7 @@
     "validation"
   ],
   "x-identity": [
-    "slug"
+    "/slug"
   ],
   "properties": {
     "schema": {

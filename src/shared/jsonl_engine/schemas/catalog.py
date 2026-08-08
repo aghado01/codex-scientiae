@@ -23,6 +23,8 @@ from typing import Any, Dict, List, Optional, Sequence
 
 import jsonschema
 
+from ..pointer import PointerError
+from ..pointer import parse as parse_pointer
 from ..reader import read_json
 
 # Schemas may declare which of their properties address an instance. JSON Schema ignores unknown
@@ -159,8 +161,17 @@ class SchemaCatalog:
             return ()
         if not isinstance(declared, list) or not all(isinstance(p, str) for p in declared):
             raise ValueError(
-                f"Schema '{key}' declares {IDENTITY_KEYWORD} that is not a list of property names"
+                f"Schema '{key}' declares {IDENTITY_KEYWORD} that is not a list of JSON Pointers"
             )
+        for pointer in declared:
+            # Syntax is checked here rather than at first use, so a malformed declaration is a
+            # load-time error naming the schema instead of a runtime one naming a record.
+            try:
+                parse_pointer(pointer)
+            except PointerError as exc:
+                raise ValueError(
+                    f"Schema '{key}' declares an invalid {IDENTITY_KEYWORD} pointer: {exc}"
+                ) from exc
         return tuple(declared)
 
     def mint(
