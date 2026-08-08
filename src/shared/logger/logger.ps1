@@ -9,8 +9,8 @@
   RepoLogger's file-first shape, CyberneticLogger's JSONL records — rebuilt on house
   invariants: UTF-8-no-BOM, LF, explicit .NET I/O.
 
-  Record shape (slice with Get-RunLog here, Get-JsonlSchema in src/shared/jsonl.ps1, or the
-  jso-jackson utilities):
+  Record shape (slice with Get-RunLog here, the jso-shell.ps1 cmdlets over src/shared/jsonl_engine,
+  or the jso-jackson utilities):
     { ts, el, lvl, comp, msg, data? }
   el = ms elapsed since Start-RunLog — the execution trace's clock; comp defaults to the
   module and is overridden per call when a sub-area speaks.

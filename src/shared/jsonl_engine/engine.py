@@ -1,8 +1,8 @@
 """Primitive JSONL file mechanics: serialization, byte offsets, and atomic publication.
 
 A committed store is UTF-8 without BOM, LF-terminated, compact-separated, in insertion key order.
-Two sidecars accompany it: a JSOI v2 byte-offset index (.jidx) shared with jso-ops/jsonl-v2.ps1, and
-a SHA-256 signature (.sig) accumulated during the write.
+Two sidecars accompany it: a JSOI v2 byte-offset index (.jidx) and a SHA-256 signature (.sig)
+accumulated during the write.
 
 Offsets are captured from file.tell() as each record is written.
 

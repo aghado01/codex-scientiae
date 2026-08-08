@@ -171,6 +171,43 @@ class TestByteEquality(unittest.TestCase):
                 JsonlStore(out_path, eol=Eol.LF).verify()
             self.assertIn("Policy disagreement", str(caught.exception))
 
+    def test_every_index_offset_lands_on_a_record_start_byte(self):
+        """Ported from the PowerShell glyph gauntlet, whose subject is retired.
+
+        The invariant is the engine's, not that lane's: offsets are captured from a byte position
+        while records are serialized as text, so an off-by-one under multibyte content would seek
+        into the middle of a character and only surface as a decode error much later.
+        """
+        for name, case in CASES.items():
+            with self.subTest(case=name), tempfile.TemporaryDirectory() as tmpdir:
+                out_path = self._emit_to_tmp(name, case, tmpdir)
+                store = JsonlStore(out_path, eol=case["eol"])
+                with open(out_path, "rb") as handle:
+                    raw = handle.read()
+
+                terminator = case["eol"].terminator("utf-8")
+                starts = {0}
+                position = raw.find(terminator)
+                while position != -1 and position + len(terminator) < len(raw):
+                    starts.add(position + len(terminator))
+                    position = raw.find(terminator, position + len(terminator))
+
+                self.assertEqual(starts, set(store.index.offsets))
+                # And each offset decodes from that byte, rather than mid-character.
+                for record, offset in enumerate(store.index.offsets):
+                    self.assertEqual(case["records"][record], store[record])
+                    self.assertNotEqual(b"", raw[offset:offset + 1])
+
+    def test_writing_the_same_records_twice_yields_the_same_offsets(self):
+        """The .jidx carries mtime ticks so it is not byte-identical across writes; the offsets
+        it describes must be, or the store is not deterministic in the way its hash claims."""
+        for name, case in CASES.items():
+            with self.subTest(case=name):
+                with tempfile.TemporaryDirectory() as d1, tempfile.TemporaryDirectory() as d2:
+                    first = JsonlStore(self._emit_to_tmp(name, case, d1), eol=case["eol"])
+                    second = JsonlStore(self._emit_to_tmp(name, case, d2), eol=case["eol"])
+                    self.assertEqual(first.index.offsets, second.index.offsets)
+
     def test_utf16_is_refused_for_line_framed_stores(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             out_path = os.path.join(tmpdir, "x.jsonl")
