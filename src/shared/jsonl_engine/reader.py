@@ -17,6 +17,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import codecs
 import struct
 from dataclasses import dataclass
 from pathlib import Path
@@ -59,11 +60,12 @@ def is_line_framable(encoding: str) -> bool:
     JSONL splits records on a newline byte before anything is decoded. Under utf-16-le a newline is
     b"\\n\\x00", so a byte-level split lands mid-character and every record after the first is
     garbage. Single-object JSON has no such constraint -- there is nothing to split.
+
+    An unknown encoding name is a different failure and raises LookupError rather than answering
+    False; conflating the two reports a typo as an architectural limit.
     """
-    try:
-        return "\n".encode(encoding) == b"\n"
-    except LookupError:
-        return False
+    codecs.lookup(encoding)
+    return "\n".encode(encoding) == b"\n"
 
 
 def validate(
@@ -254,7 +256,11 @@ class JsonlStore:
         validator: Any = None,
         require_object: bool = True,
     ) -> None:
-        if not is_line_framable(encoding):
+        try:
+            framable = is_line_framable(encoding)
+        except LookupError as exc:
+            raise ValueError(f"unknown encoding '{encoding}'") from exc
+        if not framable:
             raise ValueError(
                 f"encoding '{encoding}' cannot frame JSONL records: a newline is not a single "
                 f"0x0A byte under it, so splitting on newline before decoding would land "
@@ -266,6 +272,7 @@ class JsonlStore:
         self.validator = validator
         self.require_object = require_object
         self._index: Optional[Jidx] = None
+        self._length: Optional[int] = None
 
     @property
     def index(self) -> Jidx:
@@ -275,7 +282,20 @@ class JsonlStore:
         return self._index
 
     def __len__(self) -> int:
-        return self.index.line_count
+        """Records in the store, O(1) from the .jidx when there is one.
+
+        A store written with emit_index=False is a supported state, so the count is scanned rather
+        than refused. Without this, list(store) fails where an equivalent for-loop succeeds: list()
+        probes __len__ for a size hint, so the index gets forced by an operation that never needed
+        it. Random access still requires the index, and says so.
+        """
+        if self._length is None:
+            if os.path.exists(self.paths.jidx):
+                self._length = self.index.line_count
+            else:
+                with open(self.paths.jsonl, "rb") as handle:
+                    self._length = sum(1 for _ in handle)
+        return self._length
 
     def __iter__(self) -> Iterator[Any]:
         with open(self.paths.jsonl, "rb") as handle:
@@ -304,6 +324,11 @@ class JsonlStore:
 
     def _loads_line(self, line: bytes, *, record: int) -> Any:
         """Strip the declared terminator, then parse. A declared terminator is enforced."""
+        # This engine never writes a blank line, so one is a hand-edit or a foreign file. Refused
+        # rather than skipped, and named -- "malformed JSON at column 1" describes the symptom.
+        if not line.strip():
+            _raise(self.paths.jsonl, "blank line", record=record)
+
         if self.eol is Eol.CRLF:
             if line.endswith(b"\r\n"):
                 line = line[:-2]
@@ -396,19 +421,7 @@ class JsonlStore:
             )
         return True
 
-    def query(self, jmespath_query: str) -> List[Any]:
-        """Collect non-null JMESPath results over each record."""
-        try:
-            import jmespath
-        except ImportError as exc:
-            raise RuntimeError(
-                "The 'jmespath' package is required to execute JMESPath queries."
-            ) from exc
-
-        compiled = jmespath.compile(jmespath_query)
-        matches: List[Any] = []
-        for record in self:
-            result = compiled.search(record)
-            if result is not None:
-                matches.append(result)
-        return matches
+    # No query() method. The store is iterable, so a comprehension does the job with no dependency
+    # and fails loudly on a mistyped key, where a query expression would return an empty list. A
+    # query *language* is worth its weight only where the expression arrives as a string from
+    # outside the process -- an MCP tool argument, a CLI flag -- and it belongs at that boundary.

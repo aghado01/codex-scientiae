@@ -13,5 +13,4 @@ filelock>=3.13.0
 
 # JSONL Engine & Artifact Registries Substrate
 jsonschema>=4.20.0
-jmespath>=1.0.0
 jsonlines>=4.0.0
