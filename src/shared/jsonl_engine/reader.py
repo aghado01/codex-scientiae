@@ -255,6 +255,8 @@ class JsonlStore:
         eol: Eol = Eol.LF,
         validator: Any = None,
         require_object: bool = True,
+        require_index: bool = False,
+        require_sig: bool = False,
     ) -> None:
         try:
             framable = is_line_framable(encoding)
@@ -271,54 +273,89 @@ class JsonlStore:
         self.eol = eol
         self.validator = validator
         self.require_object = require_object
+        self.require_index = require_index
+        self.require_sig = require_sig
         self._index: Optional[Jidx] = None
-        self._length: Optional[int] = None
+        self._offsets: Optional[List[int]] = None
+
+    @property
+    def has_index(self) -> bool:
+        """Whether a .jidx accompanies this store."""
+        return os.path.exists(self.paths.jidx)
+
+    @property
+    def has_signature(self) -> bool:
+        """Whether a .sig accompanies this store."""
+        return os.path.exists(self.paths.sig)
 
     @property
     def index(self) -> Jidx:
-        """Parsed .jidx, loaded once."""
+        """Parsed .jidx, loaded once. Raises when there is none; see has_index."""
         if self._index is None:
             self._index = read_index(self.paths.jidx, self.paths.artifact)
         return self._index
 
-    def __len__(self) -> int:
-        """Records in the store, O(1) from the .jidx when there is one.
+    def offsets(self) -> List[int]:
+        """Record offsets, from the .jidx when there is one and by scanning when there is not.
 
-        A store written with emit_index=False is a supported state, so the count is scanned rather
-        than refused. Without this, list(store) fails where an equivalent for-loop succeeds: list()
-        probes __len__ for a size hint, so the index gets forced by an operation that never needed
-        it. Random access still requires the index, and says so.
+        Sidecars are optional on the write side, so their absence is a normal state rather than a
+        fault: what the engine emits by convention the reader uses by convention, and a store
+        without an index is slower to seek, not unreadable. Pass require_index=True to make absence
+        an error.
+
+        A *stale* index is a different matter and still raises. Absence means nobody wrote one;
+        staleness means someone wrote one and the bytes moved out from under it, which is the case
+        the sidecar exists to catch.
         """
-        if self._length is None:
-            if os.path.exists(self.paths.jidx):
-                self._length = self.index.line_count
-            else:
-                with open(self.paths.artifact, "rb") as handle:
-                    self._length = sum(1 for _ in handle)
-        return self._length
+        if self.has_index:
+            jidx = self.index
+            if not jidx.is_current():
+                raise ValueError(
+                    f"Stale JSONL index: {self.paths.jidx} does not match {self.paths.artifact}"
+                )
+            return jidx.offsets
+
+        if self.require_index:
+            raise FileNotFoundError(
+                f"Index file not found and require_index is set: {self.paths.jidx}"
+            )
+
+        if self._offsets is None:
+            scanned: List[int] = []
+            offset = 0
+            with open(self.paths.artifact, "rb") as handle:
+                for line in handle:
+                    scanned.append(offset)
+                    offset += len(line)
+            self._offsets = scanned
+        return self._offsets
+
+    def __len__(self) -> int:
+        """Records in the store. O(1) from the .jidx, one scan without it.
+
+        Scanned rather than refused because list() probes __len__ for a size hint, so without this
+        list(store) would fail where an equivalent for-loop succeeds.
+        """
+        return len(self.offsets())
 
     def __iter__(self) -> Iterator[Any]:
+        """Stream every record in order. Needs no sidecar at all."""
         with open(self.paths.artifact, "rb") as handle:
             for record, line in enumerate(handle):
                 yield self._loads_line(line, record=record)
 
     def __getitem__(self, index: Union[int, slice]) -> Any:
+        offsets = self.offsets()
         if isinstance(index, slice):
-            return [self[i] for i in range(*index.indices(len(self)))]
+            return [self[i] for i in range(*index.indices(len(offsets)))]
 
-        n = len(self)
+        n = len(offsets)
         record = index if index >= 0 else index + n
         if record < 0 or record >= n:
             raise IndexError(f"Record index {index} out of bounds [0, {n - 1}]")
 
-        jidx = self.index
-        if not jidx.is_current():
-            raise ValueError(
-                f"Stale JSONL index: {self.paths.jidx} does not match {self.paths.artifact}"
-            )
-
         with open(self.paths.artifact, "rb") as handle:
-            handle.seek(jidx.offsets[record])
+            handle.seek(offsets[record])
             line = handle.readline()
         return self._loads_line(line, record=record)
 
@@ -366,7 +403,7 @@ class JsonlStore:
         rather than reported as a schema failure, which would read as corruption.
         """
         sig_path = self.paths.sig
-        if not os.path.exists(sig_path):
+        if not self.has_signature:
             raise FileNotFoundError(f"Signature file not found: {sig_path}")
 
         raw = read_json(sig_path, encoding=DEFAULT_ENCODING)
@@ -385,12 +422,19 @@ class JsonlStore:
 
         return validate(raw, schema_registry.get_validator(SIG_SCHEMA_ID), path=sig_path)
 
-    def verify(self, schema_registry: Any = None) -> bool:
+    def verify(self, schema_registry: Any = None) -> Optional[bool]:
         """Check the `.sig`, then SHA-256 and line count against the JSONL file.
+
+        Returns True when the store verifies, and None when it carries no signature at all -- an
+        unsigned store is a supported state, not a failed check, and returning False would claim a
+        verification that never ran. Pass require_sig=True to make absence an error instead.
 
         Policy disagreement is reported first: a store read under the wrong encoding or terminator
         fails its hash, and "hash mismatch" would name the symptom instead of the cause.
         """
+        if not self.has_signature and not self.require_sig:
+            return None
+
         sig_data = self.read_sig(schema_registry)
 
         for field, declared in (("encoding", self.encoding), ("eol", self.eol.value)):

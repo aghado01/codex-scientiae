@@ -96,11 +96,10 @@ LICENSE             text eol=lf
 # 1. Bytes are the contract — text-shaped, frozen anyway
 # ---------------------------------------------------------------------------
 
-# Test fixtures, all of them. A fixture is reference data: whatever it was when it was captured is
-# the thing under test. The jsonl-engine fixtures are compared byte-for-byte and the CRLF case
-# would be rewritten to LF on commit and then pass vacuously; the rest are frozen for the same
-# reason before someone writes a byte-wise assertion against one.
-tests/fixtures/**                   -text
+# Byte-exact reference data. A golden is compared against fresh output, so whatever it was when it
+# was captured is the thing under test -- the jsonl-engine CRLF golden would be rewritten to LF on
+# commit and then pass vacuously. Named, not located: the suffix travels with the file.
+*.golden                            -text
 
 # Acquired LaTeX source. source_forms in the article schema records a SHA-256 over the archive and
 # over the extracted tree, so normalizing a .tex on commit would invalidate provenance for a file
@@ -126,7 +125,6 @@ tests/fixtures/**                   -text
 *.cs    whitespace=trailing-space,blank-at-eol,blank-at-eof
 *.ps1   whitespace=trailing-space,blank-at-eol,blank-at-eof
 
-# Generated or vendored output is exempt from whitespace checks.
+# Generated or minified output is exempt from whitespace checks.
 *.min.js    -whitespace
-dist/**     -whitespace
-artifacts/** -whitespace
+*.g.cs      -whitespace

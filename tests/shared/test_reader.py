@@ -38,12 +38,46 @@ class TestStoreWithoutAnIndex(unittest.TestCase):
             self.assertEqual(expected, list(store))
             self.assertEqual(2, len(store))
 
-    def test_random_access_still_names_the_missing_index(self):
+    def test_random_access_falls_back_to_scanning(self):
+        """Absence of a sidecar is a normal state: slower to seek, not unreadable."""
         with tempfile.TemporaryDirectory() as tmpdir:
             store = JsonlStore(_store(tmpdir, emit_index=False))
+            self.assertFalse(store.has_index)
+            self.assertEqual({"a": 1}, store[0])
+            self.assertEqual({"b": 2}, store[-1])
+            self.assertEqual([{"a": 1}, {"b": 2}], store[0:2])
+
+    def test_require_index_makes_absence_an_error(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            store = JsonlStore(_store(tmpdir, emit_index=False), require_index=True)
             with self.assertRaises(FileNotFoundError) as caught:
                 store[0]
-            self.assertIn("Index file not found", str(caught.exception))
+            self.assertIn("require_index is set", str(caught.exception))
+
+    def test_a_stale_index_still_raises_because_absence_is_not_staleness(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _store(tmpdir)
+            # Rewrite the store behind its index: same path, different bytes and mtime.
+            with open(path, "ab") as handle:
+                handle.write(b'{"c":3}\n')
+            with self.assertRaises(ValueError) as caught:
+                JsonlStore(path)[0]
+            self.assertIn("Stale JSONL index", str(caught.exception))
+
+    def test_verify_returns_none_when_the_store_is_unsigned(self):
+        """None, not False: no check ran, so there is no failure to report."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            store = JsonlStore(_store(tmpdir, emit_sig=False, emit_index=False))
+            self.assertFalse(store.has_signature)
+            self.assertIsNone(store.verify())
+
+    def test_require_sig_makes_an_unsigned_store_an_error(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            store = JsonlStore(
+                _store(tmpdir, emit_sig=False, emit_index=False), require_sig=True
+            )
+            with self.assertRaises(FileNotFoundError):
+                store.verify()
 
 
 class TestPolicyDiagnosis(unittest.TestCase):

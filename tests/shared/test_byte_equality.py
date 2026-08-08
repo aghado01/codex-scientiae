@@ -15,8 +15,9 @@ To refresh the fixtures after a DELIBERATE format change:
 then read the diff before committing it. A fixture that changes without a format decision behind it
 is the failure this file exists to catch.
 
-The fixture tree is marked -text in .gitattributes. Without that, the CRLF case would be normalized
-to LF on commit and the case would silently test nothing.
+Goldens carry a .golden suffix and .gitattributes marks *.golden as -text. Without that the CRLF
+case would be normalized to LF on commit and would silently test nothing. The suffix is what earns
+the exemption, so it travels with the file rather than depending on where the file lives.
 """
 
 import os
@@ -115,7 +116,7 @@ class TestByteEquality(unittest.TestCase):
                 with open(produced, "rb") as handle:
                     actual = handle.read()
 
-                golden = os.path.join(FIXTURES, name + ".jsonl")
+                golden = os.path.join(FIXTURES, name + ".jsonl.golden")
                 if REGEN or not os.path.exists(golden):
                     shutil.copyfile(produced, golden)
                     continue
