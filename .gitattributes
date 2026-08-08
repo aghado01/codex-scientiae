@@ -1,32 +1,130 @@
+# codex-scientiae — git attributes
+#
+# Every pattern here answers exactly one of three questions, asked in this order:
+#
+#   1. Are its exact bytes the contract?   -> -text          freeze; never normalize
+#   2. Is it binary?                       -> binary         freeze, and no textual diff
+#   3. Is it text we edit?                 -> text eol=lf    normalize to LF in the repo
+#
+# Question 1 is the one generic templates miss and the one this repository actually needs. A file
+# can be perfectly readable text and still belong in category 1 -- a byte-exact test fixture, or
+# acquired source whose SHA-256 is recorded as provenance. Normalizing those silently invalidates
+# the thing they exist to prove.
+#
+# This file governs bytes in the REPOSITORY, for TRACKED files, at checkout and commit. It has no
+# authority over generated artifacts that are untracked, and it is never read at runtime -- the
+# jsonl_engine declares its own encoding, escaping, and terminator per artifact (see policy.py).
+#
+# Ordering matters: later patterns win. Broad defaults first, specific overrides last.
 
-# TODO: discipline: python, whitespace strictness coverage, etc for all file types in repo
 
-# Default: text files with auto line-ending normalization
+# ---------------------------------------------------------------------------
+# Default
+# ---------------------------------------------------------------------------
+# Normalize anything git detects as text. Kept as a safety net so a new source type does not
+# silently accumulate CRLF; the lists below are meant to be complete enough that it rarely fires.
 * text=auto
 
-# Enforce LF
-*.txt  text eol=lf
-*.ts   text eol=lf
-*.tsx  text eol=lf
-*.js   text eol=lf
-*.json text eol=lf
-*.jsonl  text eol=lf
-*.ps1  text eol=lf
-*.psm1 text eol=lf
-*.psd1 text eol=lf
-*.sig  text eol=lf
-*.jidx binary
+
+# ---------------------------------------------------------------------------
+# 3. Text we edit — normalized to LF
+# ---------------------------------------------------------------------------
+
+# Documents and data
+*.md        text eol=lf diff=markdown
+*.txt       text eol=lf
+*.json      text eol=lf
+*.jsonl     text eol=lf
+*.sig       text eol=lf
+*.csv       text eol=lf
+*.xml       text eol=lf
+*.svg       text eol=lf
+*.toml      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+
+# PowerShell
+*.ps1       text eol=lf
+*.psm1      text eol=lf
+*.psd1      text eol=lf
+
+# Python
+*.py        text eol=lf diff=python
+
+# C# and MSBuild
+*.cs        text eol=lf diff=csharp
+*.csproj    text eol=lf
+*.props     text eol=lf
+*.targets   text eol=lf
+*.sln       text eol=lf
+
+# JavaScript / TypeScript
+*.js        text eol=lf
+*.mjs       text eol=lf
+*.ts        text eol=lf
+*.tsx       text eol=lf
+
+# Repository metadata and editor config
+.gitignore          text eol=lf
+.gitattributes      text eol=lf
+.copilotignore      text eol=lf
+*.code-workspace    text eol=lf
+LICENSE             text eol=lf
 
 
+# ---------------------------------------------------------------------------
+# 2. Binary — never touched, no textual diff
+# ---------------------------------------------------------------------------
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.pdf       binary
+*.gz        binary
+*.zip       binary
+*.tar       binary
+*.dll       binary
+*.exe       binary
+*.pyc       binary
+
+# JSOI byte-offset index: int64 offsets, no text anywhere in it. Marked explicitly because a
+# misdetect that ran EOL conversion over the offset table would corrupt every seek in the store.
+*.jidx      binary
+
+
+# ---------------------------------------------------------------------------
+# 1. Bytes are the contract — text-shaped, frozen anyway
+# ---------------------------------------------------------------------------
+
+# Test fixtures, all of them. A fixture is reference data: whatever it was when it was captured is
+# the thing under test. The jsonl-engine fixtures are compared byte-for-byte and the CRLF case
+# would be rewritten to LF on commit and then pass vacuously; the rest are frozen for the same
+# reason before someone writes a byte-wise assertion against one.
+tests/fixtures/**                   -text
+
+# Acquired LaTeX source. source_forms in the article schema records a SHA-256 over the archive and
+# over the extracted tree, so normalizing a .tex on commit would invalidate provenance for a file
+# this project did not author. Frozen as received.
+ingestion/_inbox/**                 -text
+*.tex                               -text
+*.sty                               -text
+*.cls                               -text
+*.bib                               -text
+*.bbl                               -text
+*.bst                               -text
+
+
+# ---------------------------------------------------------------------------
 # Whitespace strictness
-*.ts   whitespace=trailing-space,blank-at-eol,blank-at-eof
-*.tsx  whitespace=trailing-space,blank-at-eol,blank-at-eof
-*.js   whitespace=trailing-space,blank-at-eol,blank-at-eof
+# ---------------------------------------------------------------------------
+*.ts    whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.tsx   whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.js    whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.py    whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.cs    whitespace=trailing-space,blank-at-eol,blank-at-eof
+*.ps1   whitespace=trailing-space,blank-at-eol,blank-at-eof
 
-# Ignore whitespace checks in generated/minified output, if any
-*.min.js -whitespace
-dist/**  -whitespace
-
-# Byte-exact test fixtures. Normalization here would destroy what the fixture tests --
-# the CRLF golden store would be rewritten to LF on commit and the case would pass vacuously.
-tests/fixtures/jsonl-engine/** -text
+# Generated or vendored output is exempt from whitespace checks.
+*.min.js    -whitespace
+dist/**     -whitespace
+artifacts/** -whitespace
