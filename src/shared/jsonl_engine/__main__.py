@@ -1,4 +1,4 @@
-"""`python -m jsonl_engine` -- the command surface jso-shell.ps1 marshals into."""
+"""`python -m jsonl_engine` -- the command protocol used by jsonl-engine-client."""
 
 import sys
 

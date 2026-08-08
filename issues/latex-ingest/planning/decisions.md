@@ -121,3 +121,23 @@ application semantics, not shared contracts. Implementation witness: commit `054
   explicit atomic whole-file create or replace and performs no source initialization, repair, or recursive
   asset inference. Indexes, incremental/multi-writer mutation, recursive rollups, move history, and
   top-down/bottom-up reconciliation remain deferred with the shared managed-store work.
+
+- **D19 — `article.json` activates and supersedes the D13–D18 metadata-era surface** (2026-08-08).
+  D13–D18 remain historical records of the source-deposit and immediate-scope inventory reasoning, but their
+  active filename, schema, and row envelope are replaced. The canonical sentinel is `{slug}/article.json`, a
+  flat `codex-scientiae/article/0.1` object whose identity is `/slug`; localized inventories insert that same
+  validated object verbatim rather than wrapping a nested `document` projection. No new producer writes
+  `metadata.json` or `codex-scientiae/document-metadata/0.1`. Bounded compatibility readers may accept them
+  while existing deposits migrate, and the old inventory catalog and compatibility initializer remain
+  legacy/specification surfaces rather than canonical producers.
+
+  `New-LatexSourceDeposit` is the active publication boundary. PowerShell owns source truth—archive
+  extraction, source confinement, entrypoint selection, LaTeX declarations, the tree fingerprint, and the
+  probe ledger—and retains the per-document source lock through finalization. Python owns artifact truth—
+  confinement and file facts, provider projection, schema validation, no-clobber publication, and
+  idempotence validation. It creates `article.json` last or validates an equivalent existing article without
+  rewriting it; changed evidence is a conflict. The production converter and LaTeX batch adapter prefer
+  `article.json` for directory addresses. Adapter planning remains a shallow, process-free address and
+  identity pass; the conversion worker authoritatively validates a canonical article through
+  `validate-json <path> article.schema.json` before consuming it. The exact framed publication boundary is
+  infrastructure D36 and the shared validation boundary is infrastructure D37.

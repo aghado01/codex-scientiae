@@ -1,9 +1,10 @@
 # Batch adapters
 
-`adapters` contains the domain planners for the shared finite-batch executor. It exports two commands while
-leaving the executor's four-command public surface unchanged: `Get-PesterBatchJob` for repository Pester
-work and `Get-LatexBatchJob` for manifest-backed latex-ingest work. These are public files in one module,
-not one PowerShell module per adapter; the Pester command has no compatibility alias.
+`adapters` contains the domain planners for the shared finite-batch executor. It exports three commands
+while leaving the executor's four-command public surface unchanged: `Get-PesterBatchJob` for repository
+Pester work, `Get-PytestBatchJob` for repository pytest work, and `Get-LatexBatchJob` for manifest-backed
+latex-ingest work. These are public files in one module, not one PowerShell module per adapter; no unitary
+adapter module or compatibility alias is introduced.
 
 ## Pester adapter
 
@@ -39,13 +40,57 @@ execution record, or owns pools, cancellation, retries, and result ordering. Pro
 executor's `CODEX_BATCH_JOB_ID`; any caller-supplied logging or correlation environment continues through ordinary
 process policy.
 
+## Pytest adapter
+
+`Get-PytestBatchJob` accepts caller-selected `test_*.py` files or directories and an existing absolute
+`RunDirectory`. Directory discovery produces one `PowerShellProcess` job per physical file without
+importing pytest or test code. Pytest methods, node IDs, parameter rows, and `unittest.subTest` contexts stay
+inside the file job; the adapter does not add method-level scheduling or pytest-xdist.
+
+The planning contract freezes:
+
+- a stable `pytest:<repository-relative-path>#<digest>` ID from exact source identity plus normalized
+  framework selectors;
+- the repository-local or caller-supplied Python interpreter, repository working directory, and
+  `tests/pytest.ps1` runner;
+- cache, bytecode, temporary-directory, and JSON-engine scratch policy;
+- a file-size cost hint; and
+- one container beneath `RunDirectory/pytest-jobs/`, containing `pytest.xml`, `artifacts/`, and `temp/`.
+
+One private resolver owns all three addresses. Planning creates none; each is declared in `Writes`.
+`CODEX_TEST_ARTIFACT_ROOT` transports the retained evidence root, while the temporary address contains
+pytest/Python scratch and the test-local JSON-engine coordination root. Native JUnit remains the durable
+framework result and the generic executor record remains in memory. The resolved child PowerShell is
+transported as `CODEX_TEST_POWERSHELL_PATH`; shell-surface tests consume that exact path and use `PATH`
+only for direct, non-batch pytest. `Metadata.PowerShellEnvironment` names that transport key.
+
+`tests/pytest.ps1` is the authoritative runner and the job's direct PowerShell entrypoint. It invokes the
+pinned interpreter as `python -m pytest`, captures native streams and status, rejects empty runs,
+writes JUnit, and emits `PytestContainerObservation`. There is no second Python runner or adapter worker.
+Executor timeout and teardown continue to own the PowerShell child and its Python descendant; adding this
+adapter does not add a native-process executor mode.
+
+BEX-604 evolved `tests/parallel.ps1` into the one multilingual repository shell; no pytest-only parallel
+shell exists. It combines the adapters' domain-neutral jobs into one plan while
+keeping framework selectors, observations, job IDs, address roots, and native reports distinct.
+
 ## LaTeX adapter
 
 `Get-LatexBatchJob` accepts caller-selected document-inventory rows and an existing absolute
-`RunDirectory`. It resolves each row to one source-ready `codex-scientiae/document-metadata/0.1` manifest
-and emits one isolated latex-ingest process job per document. The exact latex-ingest script, its SHA-256,
-the child PowerShell, output-affecting switches, environment, timeout, priority, and original inventory row
-are frozen into each job.
+`RunDirectory`. It resolves each row to one source-ready manifest and emits one isolated latex-ingest
+process job per document. A directory address prefers its canonical `article.json` with schema
+`codex-scientiae/article/0.1`. Direct `metadata.json` addresses and the older
+`codex-scientiae/document-metadata/0.1` shape remain bounded read compatibility during migration; they are
+not a license for a new metadata-era producer. The exact latex-ingest script, its SHA-256, the child
+PowerShell, output-affecting switches, environment, timeout, priority, and original inventory row are frozen
+into each job.
+
+Adapter planning remains pure and shallow. It resolves confined addresses and reads only the discriminator,
+state, required top-level fields, and source identity needed to construct a job; it neither starts Python nor
+claims authoritative JSON Schema validation. When the planned conversion worker consumes a canonical
+article, latex-ingest calls the engine's `validate-json <path> article.schema.json` boundary before trusting
+the object or running conversion. A schema-invalid article can therefore be planned but cannot execute as a
+valid source.
 
 Stable identity derives from the inventory-relative manifest, source-tree fingerprint, and output options.
 One private resolver owns all paths beneath `RunDirectory/latex-jobs/`: application evidence, lane output,
@@ -60,6 +105,6 @@ projection are application-shell responsibilities rather than planner behavior.
 
 ## Ownership boundary
 
-Both commands only interpret domain input and emit `BatchJob` records. Callers compile and invoke those jobs
-through `New-BatchPlan` and `Invoke-BatchPlan`. The adapters do not own pools, cancellation, retries, result
-ordering, run allocation, logger lifecycle, or durable executor-result storage.
+The three commands only interpret domain input and emit `BatchJob` records. Callers compile and invoke
+those jobs through `New-BatchPlan` and `Invoke-BatchPlan`. The adapters do not own pools, cancellation,
+retries, result ordering, run allocation, logger lifecycle, or durable executor-result storage.

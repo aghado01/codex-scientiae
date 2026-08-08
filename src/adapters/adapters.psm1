@@ -7,8 +7,10 @@ $script:AdaptersExecutorManifest = [System.IO.Path]::GetFullPath(
     (Join-Path $script:AdaptersModuleRoot '../shared/batch-executor/batch-executor.psd1'))
 $script:LatexBatchWorkerPath = [System.IO.Path]::GetFullPath(
     (Join-Path $script:AdaptersModuleRoot 'workers/invoke-latex-ingest.ps1'))
-
-foreach ($dependency in @($script:AdaptersExecutorManifest, $script:LatexBatchWorkerPath)) {
+foreach ($dependency in @(
+        $script:AdaptersExecutorManifest
+        $script:LatexBatchWorkerPath
+    )) {
     if (-not (Test-Path -LiteralPath $dependency -PathType Leaf)) {
         throw "adapters dependency not found: '$dependency'"
     }
@@ -19,11 +21,15 @@ $hostFiles = @(
     'private/pester-address.ps1'
     'private/pester-discovery.ps1'
     'private/pester-dependency.ps1'
+    'private/pytest-address.ps1'
+    'private/pytest-discovery.ps1'
+    'private/pytest-dependency.ps1'
     'private/latex-address.ps1'
     'private/latex-inventory-row.ps1'
     'private/latex-dependency.ps1'
     'public/Get-LatexBatchJob.ps1'
     'public/Get-PesterBatchJob.ps1'
+    'public/Get-PytestBatchJob.ps1'
 )
 foreach ($relativePath in $hostFiles) {
     $path = Join-Path $script:AdaptersModuleRoot $relativePath
@@ -33,4 +39,4 @@ foreach ($relativePath in $hostFiles) {
     . $path
 }
 
-Export-ModuleMember -Function 'Get-LatexBatchJob', 'Get-PesterBatchJob'
+Export-ModuleMember -Function 'Get-LatexBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob'

@@ -8,6 +8,7 @@ takes no lease, because one long scan would stall every writer and a reader has 
 import os
 import tempfile
 import unittest
+from unittest import mock
 
 from jsonl_engine import JsonlEngine, JsonlStore
 from jsonl_engine.inspect import complete_prefix, inspect_store, snapshot
@@ -72,6 +73,31 @@ class TestBoundedViews(unittest.TestCase):
             self.assertEqual([{"n": n} for n in range(5)], list(view))
             self.assertEqual(5, len(view))
 
+    def test_at_length_keeps_its_prefix_across_an_in_place_append(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            view = JsonlStore(path).at_length()
+
+            with open(path, "ab") as handle:
+                handle.write(b'{"n":3}\n')
+
+            self.assertEqual([{"n": n} for n in range(3)], list(view))
+            self.assertEqual(3, len(view))
+
+    def test_at_length_refuses_a_replacement_generation(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            view = JsonlStore(path).at_length()
+            replacement_dir = os.path.join(tmpdir, "replacement")
+            os.makedirs(replacement_dir)
+            replacement = _signed_store(replacement_dir, count=1)
+
+            os.replace(replacement, path)
+
+            with self.assertRaises(ValueError) as caught:
+                list(view)
+            self.assertIn("generation changed", str(caught.exception))
+
     def test_at_signature_yields_what_the_sig_attests_to_and_verifies(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = _signed_store(tmpdir)
@@ -79,6 +105,33 @@ class TestBoundedViews(unittest.TestCase):
             view = JsonlStore(path).at_signature()
             self.assertEqual([{"n": n} for n in range(3)], list(view))
             self.assertTrue(view.verify(), "a signed prefix must verify against its own signature")
+
+    def test_at_signature_retains_the_exact_sidecar_it_verified(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            view = JsonlStore(path).at_signature()
+
+            # A later sidecar must not silently redefine an already-created signed view.
+            with open(path + ".sig", "wb") as handle:
+                handle.write(b'{"not":"this engines signature"}')
+
+            self.assertTrue(view.verify())
+            with self.assertRaises(ValueError):
+                JsonlStore(path).verify()
+
+    def test_at_signature_refuses_a_later_replacement_generation(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            view = JsonlStore(path).at_signature()
+            replacement_dir = os.path.join(tmpdir, "replacement")
+            os.makedirs(replacement_dir)
+            replacement = _signed_store(replacement_dir, count=3)
+
+            os.replace(replacement, path)
+
+            with self.assertRaises(ValueError) as caught:
+                view.verify()
+            self.assertIn("generation changed", str(caught.exception))
 
     def test_random_access_respects_the_bound(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -133,6 +186,67 @@ class TestSnapshot(unittest.TestCase):
 
             with open(destination, "rb") as handle:
                 self.assertEqual(sig["sha256"], hashlib.sha256(handle.read()).hexdigest())
+
+    def test_it_rejects_the_source_as_its_destination_without_truncating_it(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            with open(path, "rb") as handle:
+                before = handle.read()
+
+            with self.assertRaises(ValueError) as caught:
+                snapshot(path, path)
+
+            self.assertIn("same file", str(caught.exception))
+            with open(path, "rb") as handle:
+                self.assertEqual(before, handle.read())
+
+    def test_it_rejects_an_equivalent_hard_link_destination(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            alias = os.path.join(tmpdir, "alias.jsonl")
+            os.link(path, alias)
+
+            with self.assertRaises(ValueError) as caught:
+                snapshot(path, alias)
+
+            self.assertIn("same file", str(caught.exception))
+
+    def test_a_supplied_limit_must_be_a_complete_record_boundary(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            destination = os.path.join(tmpdir, "snap.jsonl")
+            with open(destination, "wb") as handle:
+                handle.write(b"previous destination")
+
+            with self.assertRaises(ValueError) as caught:
+                snapshot(path, destination, limit=2)
+
+            self.assertIn("complete-record boundary", str(caught.exception))
+            with open(destination, "rb") as handle:
+                self.assertEqual(b"previous destination", handle.read())
+
+    def test_a_failed_publish_preserves_destination_and_cleans_its_temp(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = _signed_store(tmpdir)
+            destination = os.path.join(tmpdir, "snap.jsonl")
+            with open(destination, "wb") as handle:
+                handle.write(b"previous destination")
+
+            with mock.patch(
+                "jsonl_engine.inspect.os.replace", side_effect=OSError("publish failed")
+            ):
+                with self.assertRaises(OSError):
+                    snapshot(path, destination)
+
+            with open(destination, "rb") as handle:
+                self.assertEqual(b"previous destination", handle.read())
+            scratch_prefix = f".{os.path.basename(destination)}."
+            self.assertFalse(
+                any(
+                    name.startswith(scratch_prefix) and name.endswith(".tmp")
+                    for name in os.listdir(tmpdir)
+                )
+            )
 
 
 if __name__ == "__main__":

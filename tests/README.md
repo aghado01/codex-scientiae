@@ -1,14 +1,23 @@
 # tests/
 
-Pester tests are grouped by the source module or product shell they currently
-exercise. The grouping makes module boundaries and future evictions legible; it
-does not imply that every embedded capability ultimately belongs to its present
-module.
+Repository tests are multilingual and grouped by the source module or product shell they currently
+exercise. The grouping makes module boundaries and future evictions legible; it does not imply that every
+embedded capability ultimately belongs to its present module. Shared durable fixtures remain under
+`tests/fixtures/`.
 
-Shared durable fixtures remain under `tests/fixtures/`. `run.ps1` stays at the
-test root and discovers `*.Tests.ps1` recursively.
+Framework semantics stay separate while their jobs share the batch executor:
 
-## Adding a test: quick contract
+| Framework | Physical container | Current direct runner | Batch state |
+|---|---|---|---|
+| Pester | `*.Tests.ps1` | `tests/run.ps1` | Implemented through `Get-PesterBatchJob` and `tests/parallel.ps1`. |
+| pytest | `test_*.py` | `tests/pytest.ps1` | Implemented through `Get-PytestBatchJob` and `tests/parallel.ps1`. |
+
+The [pytest inventory](../issues/batch-executor/planning/pytest-batchability-inventory.md) and
+[completed workplan](../issues/batch-executor/planning/pytest-testing-workplan.md) record the admitted lane. The
+completed Pester contract below remains authoritative for Pester and is not retroactively generalized into
+pytest terminology.
+
+## Adding a Pester test: quick contract
 
 ```text
 tests/
@@ -43,7 +52,7 @@ At minimum, verify the file through both public entry points (the batch run dire
 
 ```pwsh
 pwsh -File tests/run.ps1 -Path tests/<owner>/<behavior>.Tests.ps1
-pwsh -File tests/parallel.ps1 -Path tests/<owner>/<behavior>.Tests.ps1 `
+pwsh -File tests/parallel.ps1 -Framework Pester -Path tests/<owner>/<behavior>.Tests.ps1 `
   -RunDirectory D:/runs/codex-scientiae-tests/new-test -MaxWorkers 1
 ```
 
@@ -51,7 +60,46 @@ A compliant file selects the expected tests by exact path, reports real failures
 owned state and children, and writes only inside its assigned temporary or artifact boundary. The detailed
 contract and review checklist below are authoritative when a case is ambiguous.
 
+## Adding a Python test: quick contract
+
+One physical `test_*.py` file is one batch job. Pytest classes and methods, parameter rows, node
+IDs, and `unittest.subTest` contexts remain inside that file; they are not separate jobs. Existing
+`unittest.TestCase` files do not need a stylistic rewrite to become batchable.
+
+For every new or changed Python test file:
+
+- Make every test method independent of earlier methods and other test files. Put reusable factories in a
+  non-test support module rather than importing a sibling `test_*.py` file.
+- Put ephemeral writes in `tmp_path`, `tempfile.TemporaryDirectory`, or another unique temporary root. A
+  batch child receives an absolute `CODEX_TEST_ARTIFACT_ROOT` only for retained evidence.
+- Treat committed fixtures as read-only. Regeneration is an explicit maintenance operation outside the
+  test runner; a missing golden fails.
+- Restore environment, working directory, module/global state, mocks, locks, threads, and child processes
+  on every path. Joins and subprocess waits require bounds; timeout cleanup terminates descendants.
+- Preflight optional tools with a deterministic skip reason. Do not install, restore, or build a missing
+  dependency during a test.
+- Consume the adapter-provided `CODEX_TEST_POWERSHELL_PATH` for PowerShell integration. Falling back to
+  `PATH` is permitted only for direct, non-batch pytest.
+- Capture subprocess stdout, stderr, and exit status locally. Do not let expected stderr or a nonzero probe
+  contaminate the file runner's result.
+- Do not add pytest-xdist, per-file manifests or sidecars, scheduler locks, or custom batch loops.
+
+At minimum, verify Python files through both the native convenience surface and the public batch shell:
+
+```pwsh
+.venv/Scripts/python.exe -m pytest -p no:cacheprovider tests/<owner>/test_<behavior>.py
+pwsh -File tests/parallel.ps1 -Framework Pytest `
+  -PytestPath tests/<owner>/test_<behavior>.py `
+  -RunDirectory D:/runs/codex-scientiae-tests/new-python-test -MaxWorkers 1
+```
+
+The admitted contract requires exact-file sequential/batch parity, native JUnit, declared
+`pytest.xml`/`artifacts`/`temp` addresses, zero cache or bytecode writes, and no surviving descendants. A
+green direct file is necessary evidence, not by itself a `Batchable` classification.
+
 ## Running
+
+### Pester
 
 Restore the locked shared Node payload before running the suite; Node-backed integration tests resolve
 only this shelf and never fall back to use-case-local installations:
@@ -82,23 +130,29 @@ audit a failed container; it is not a log or generic result store, and the nativ
 runner's only durable runner-owned artifact. `selected` is the sum of pass/fail/skip outcomes because Pester
 5's `TotalCount` can include cases excluded by a full-name filter, unlike Pester 6 and the native result.
 
-### Parallel batch execution
+### Multilingual batch execution
 
-`parallel.ps1` is the repository-facing parallel shell. Its mandatory `RunDirectory` must already exist and
-belong to the caller; the shell never allocates or timestamps a run. `Path` defaults to the repository
-`tests/` directory and may instead name selected files or directories, so there is no separate workload
-profile. Architecture decision [D24](../issues/batch-executor/planning/decisions.md) freezes this ownership
-boundary.
+`parallel.ps1` is the repository-facing multilingual shell. Its mandatory `RunDirectory` must already exist
+and belong to the caller; the shell never allocates or timestamps a run. `Framework` explicitly selects
+`All`, `Pester`, or `Pytest` and defaults to `All`. `Path` supplies the common selection and defaults to the
+repository `tests/` directory; optional `PesterPath` and `PytestPath` override it per framework. There is no
+separate workload profile. Architecture decisions [D24 and D27](../issues/batch-executor/planning/decisions.md)
+freeze this ownership boundary.
 
 ```pwsh
 pwsh -File tests/parallel.ps1 -RunDirectory D:/runs/codex-scientiae-tests/run-001
-pwsh -File tests/parallel.ps1 -Path tests/shared -RunDirectory D:/runs/codex-scientiae-tests/run-002 -MaxWorkers 4
+pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/shared `
+  -RunDirectory D:/runs/codex-scientiae-tests/run-002 -MaxWorkers 4
+pwsh -File tests/parallel.ps1 -Framework All `
+  -PesterPath tests/shared/jsonl-engine-client-module.Tests.ps1 -PytestPath tests/shared/test_reader.py `
+  -RunDirectory D:/runs/codex-scientiae-tests/run-003 -MaxWorkers 2
 ```
 
-The shell imports the canonical `adapters` and `batch-executor` manifests, then performs one
-module-qualified `Get-PesterBatchJob` -> `New-BatchPlan` -> `Invoke-BatchPlan` composition. It accepts the
-repository/Pester manifest and child-PowerShell overrides, Pester selection/result inputs, and bounded
-executor worker/process policy inputs exposed by those public contracts.
+The shell imports the canonical `adapters` and `batch-executor` manifests, asks the selected framework
+adapters for jobs, concatenates their domain-neutral records, and invokes `New-BatchPlan` and
+`Invoke-BatchPlan` once. Pester and pytest keep separate selectors, runners, observations, job IDs,
+addresses, and native XML. Both lanes share one worker budget, cancellation path, failure policy, and result
+order.
 
 One concise Information-stream line reports total, succeeded, failed, timed-out, cancelled,
 infrastructure-error, and duration values. The shell writes the exact in-memory executor record to the
@@ -107,17 +161,69 @@ successful or the executor reports an infrastructure error, it emits the record 
 direct `pwsh -File tests/parallel.ps1 ...` invocation therefore exits nonzero without discarding successful
 sibling results, native XML, or container artifacts.
 
-BEX-507 admitted its complete 45-file closure snapshot through this ordinary path selection. The subsequent
-localized-inventory/latex-batch development container is also `Batchable`, bringing the current repository
-to 46 physical files: 36 `Batchable`, 10 `CapabilityGated`, no `NeedsRefactor` or `SerialOnly` residue, 477
-textual `It` blocks, and 490 observed tests. No per-file sidecar, workload profile, serial exclusion list, or
-testing-specific scheduler mode is required.
+BEX-507 admitted its complete 45-file Pester closure snapshot through this ordinary path selection. The
+subsequent localized-inventory/latex-batch development container brought that Pester snapshot to 46 files:
+36 `Batchable`, 10 `CapabilityGated`, no `NeedsRefactor` or `SerialOnly` residue, 477 textual `It` blocks,
+and 490 observed tests. Those are Pester history, not a current multilingual total; the later Python lane is
+tracked separately.
+
+The JSONL-engine PowerShell client subsequently added one `CapabilityGated` container. Pytest adapter
+coverage and deposit activation add two more `CapabilityGated` containers with five tests each; multilingual
+shell evolution adds two observed cases and two nested-fixture-only textual `It` lines, and the topology
+container adds one composition case. The current semantic inventory is therefore 49 files: 36 `Batchable`,
+13 `CapabilityGated`, 510 textual `It` blocks, and 521 observed tests. The deposit container's focused direct
+gate passed 5/5.
+
+### Pytest
+
+Restore the repository Python environment before testing; test execution does not install dependencies:
+
+```pwsh
+.venv/Scripts/python.exe -m pip install -r requirements.txt
+.venv/Scripts/python.exe -m pip install -e .
+```
+
+Run the complete or exact-file direct suite with the pinned environment interpreter:
+
+```pwsh
+.venv/Scripts/python.exe -m pytest -p no:cacheprovider
+.venv/Scripts/python.exe -m pytest -p no:cacheprovider tests/shared/test_reader.py
+```
+
+The cache provider is disabled because repository `.pytest_cache` is a shared write and is not test
+evidence. The batch runner also disables bytecode and gives pytest temporary state and JSON-engine
+coordination scratch a job-local `temp/` address.
+
+`tests/pytest.ps1` is the authoritative one-file runner and `Get-PytestBatchJob` is the discovery and
+addressing owner. Each batch job uses this address:
+
+```text
+<RunDirectory>/pytest-jobs/<container-address>/
+    pytest.xml
+    artifacts/
+    temp/
+```
+
+`PytestContainerObservation` reports `container_path`, `selected`, `passed`, assertion `failed`, `errors`,
+`skipped`, `duration_ms`, result path/presence, Python and pytest versions, and pytest exit code before
+failure propagation. `selected` is the durable outcome count: the current direct collection is 192 methods,
+while pytest's JUnit and observation report 264 outcomes after adding 72 subtest outcomes. Native JUnit
+remains authoritative durable evidence; the shell does not merge it with Pester NUnit.
+
+The earlier post-admission parity witness completed 11/11 jobs at both four workers (17.205 seconds) and
+one worker (33.392 seconds). The final hardening refresh keeps the lane at 12 files. Its direct shared-suite
+gate passed 190 methods with two genuine symbolic-link capability skips and passed 72 subtests, yielding 264
+selected outcomes. `test_deposit.py` contributes 26 methods plus 27 subtests, or 53 outcomes: 24 methods
+passed and two symlink cases skipped. A two-worker multilingual gate paired it with the five-test Pester
+deposit container: both jobs succeeded in 9.641 seconds, retained their separate native reports, and left
+the pytest job-local `json-scratch` empty under
+`artifacts/test-runs/deposit-parity-hardened-20260808`.
 
 ## Batchable Pester-container contract
 
 This is the canonical BEX-502 authoring and review contract. The supporting
 [design brief](../issues/batch-executor/briefs/sol-pester-batch-testing-overhaul-20260805.md) explains the
-ownership boundary, and the current per-file classifications remain in the
+ownership boundary, and the Pester closure classifications remain in the
 [semantic inventory](../issues/batch-executor/planning/testing-batchability-inventory.md).
 
 The atomic schedulable unit is one physical repository-relative `*.Tests.ps1` file, invoked by exact path
@@ -247,11 +353,30 @@ Static discovery names, substring searches, and Pester ASTs may route review but
 these classifications. No classification requires a new executor mode, dependency graph, resource lock, or
 per-test scheduler.
 
+## Batchable pytest-container contract
+
+This is the current BEX-601 authoring and review checklist.
+
+| Review question | Required evidence |
+|---|---|
+| Does an exact `test_*.py` path collect only that file? | One fresh-process exact-file run; no sibling test-module import. |
+| Are methods and subtests order-independent? | No fixture or mutation produced only by an earlier outcome. |
+| Are global state, mocks, threads, locks, and children bounded? | Context/finally cleanup plus bounded joins and descendant termination. |
+| Are committed fixtures read-only? | Missing inputs fail; regeneration has a separate explicit utility. |
+| Are temporary writes container-local? | Runner-supplied `temp/`; no repository cache, bytecode, or shared engine scratch. |
+| Are retained writes explicitly owned? | Only beneath `CODEX_TEST_ARTIFACT_ROOT`, with the root declared by the job. |
+| Are optional executables deterministic capabilities? | Exact preflight and reasoned pytest skip; no ambient build/install fallback. |
+| Do direct and nested outcomes agree? | Same method collection and selected/pass/fail/error/skip outcome counts, JUnit, observation, and nonzero failure status. |
+| Does one failed file preserve siblings? | Executor evidence retains every sibling JUnit/artifact result and no descendant process. |
+
+Use the same four classification names as Pester. Framework syntax changes the evidence mechanism, not the
+meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
+
 ## Module groups
 
 | Directory | Current ownership |
 |---|---|
-| `adapters/` | Pester and LaTeX batch planning, addressing, and isolated execution |
+| `adapters/` | Pester, pytest, and LaTeX batch planning, addressing, and isolated execution. |
 | `audits/` | Repository and deliverable audits, including mathematical rendering |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |
@@ -265,8 +390,10 @@ per-test scheduler.
 
 ## Conventions
 
-- One `*.Tests.ps1` file per concern, inside the directory of its current owner.
-- Dot-source the module under test in a top-level `BeforeAll` when practical.
+- One `*.Tests.ps1` or `test_*.py` file per concern, inside the directory of its current owner.
+- In Pester, dot-source the module under test in a top-level `BeforeAll` when practical.
+- In Python, import the installed package name; do not create a second source-tree import identity or import
+  helpers from another test container.
 - From a module test directory, the repository root is `../..` relative to
   `$PSScriptRoot`; shared fixtures are under `../fixtures`.
 - Reproduced bugs and calibration decisions should be named regressions rather

@@ -1,8 +1,8 @@
 """Primitive JSONL file mechanics: serialization, byte offsets, and atomic publication.
 
-A committed store is UTF-8 without BOM, LF-terminated, compact-separated, in insertion key order.
-Two sidecars accompany it: a JSOI v2 byte-offset index (.jidx) and a SHA-256 signature (.sig)
-accumulated during the write.
+A committed store uses its declared line-framable encoding and terminator, compact separators, and
+insertion key order. Two optional sidecars can accompany it: a JSOI v2 byte-offset index (.jidx)
+and a SHA-256 signature (.sig) accumulated during the write.
 
 Offsets are captured from file.tell() as each record is written.
 
@@ -13,8 +13,8 @@ st_mtime_ns.
 Discipline selects create, append, or sealed. SEALED refuses to open this engine for writing and
 does not mark the artifact on disk, so it constrains the declaring kind rather than the path.
 
-Codec selects the escaping policy. Text with no UTF-8 form is escaped or refused; it is never
-substituted.
+Codec selects the escaping policy. Text with no form in the declared encoding is escaped or
+refused; it is never substituted.
 
 Contains no knowledge of kinds, schemas, ingestion, or run layout.
 """
@@ -27,7 +27,7 @@ from enum import Enum
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from .policy import DEFAULT_ENCODING, Codec, Eol
+from .policy import DEFAULT_ENCODING, Codec, Eol, is_line_framable
 from .sidecar import (
     SIG_SCHEMA_ID,
     find_stale_scratch,
@@ -61,7 +61,7 @@ __all__ = [
 
 class Discipline(Enum):
     CREATE = "create"  # Replaces or creates fresh output
-    APPEND = "append"  # Appends to existing output stream
+    APPEND = "append"  # Publishes existing records plus new records as one replacement
     SEALED = "sealed"  # Immutable; write attempt raises PermissionError
 
 
@@ -85,6 +85,16 @@ class JsonlEngine:
         self.codec = codec
         self.eol = eol
         self.encoding = encoding
+        try:
+            framable = is_line_framable(encoding)
+        except LookupError as exc:
+            raise ValueError(f"unknown encoding '{encoding}'") from exc
+        if not framable:
+            raise ValueError(
+                f"encoding '{encoding}' cannot frame JSONL records: a newline is not a single "
+                f"0x0A byte under it (or the encoding emits a BOM). Single-object JSON has no "
+                f"such limit -- use write_json()."
+            )
         self.emit_index = emit_index
         self.emit_sig = emit_sig
         self.lock = lock
@@ -107,6 +117,7 @@ class JsonlEngine:
         self.hasher = hashlib.sha256()
         self._file = None
         self._committed = False
+        self._poisoned: Optional[str] = None
         # Resolved at __enter__ against what is on disk; see the invariant there.
         self._emit_index = emit_index
         self._emit_sig = emit_sig
@@ -122,34 +133,40 @@ class JsonlEngine:
         # between those steps leaves a store signed by neither. The lock lives outside the artifact
         # directory -- see sidecar.lock_path.
         self._acquire_lease()
-        self._sweep_stale_scratch()
+        try:
+            self._sweep_stale_scratch()
 
-        self.tmp_path = temp_write_path(self.output_path)
-        self.jidx_tmp = temp_write_path(self.jidx_path)
-        self.sig_tmp = temp_write_path(self.sig_path)
+            self.tmp_path = temp_write_path(self.output_path)
+            self.jidx_tmp = temp_write_path(self.jidx_path)
+            self.sig_tmp = temp_write_path(self.sig_path)
 
-        self.offsets.clear()
-        self.line_count = 0
-        self.hasher = hashlib.sha256()
+            self.offsets.clear()
+            self.line_count = 0
+            self.hasher = hashlib.sha256()
+            self._file = None
+            self._committed = False
+            self._poisoned = None
 
-        # A commit must not leave a sidecar describing bytes it replaced. A sidecar already on disk
-        # is therefore rebuilt whether or not this write asked for one: its presence is a standing
-        # request, and the alternative is silently orphaning it against the new bytes. Resolved
-        # here rather than in __init__ because it is a fact about the file at open time.
-        #
-        # This is what keeps APPEND honest. Adoption recomputes every offset and re-hashes the
-        # whole store, so an indexed or signed store rebuilds both on every append -- O(n) in the
-        # store, forced by the signature rather than the index, since SHA-256 cannot resume from a
-        # digest. A kind that appends often should declare EMIT_SIG=False and sign once at the end.
-        self._emit_index = self.emit_index or os.path.exists(self.jidx_path)
-        self._emit_sig = self.emit_sig or os.path.exists(self.sig_path)
+            # A commit must not leave a sidecar describing bytes it replaced. A sidecar already on
+            # disk is therefore rebuilt whether or not this write asked for one: its presence is a
+            # standing request, and the alternative is silently orphaning it against the new bytes.
+            self._emit_index = self.emit_index or os.path.exists(self.jidx_path)
+            self._emit_sig = self.emit_sig or os.path.exists(self.sig_path)
 
-        if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
-            self._adopt_existing()
-        else:
-            self._file = open(self.tmp_path, "wb")
+            if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
+                self._adopt_existing()
+            else:
+                self._file = open(self.tmp_path, "wb")
+        except BaseException:
+            # __exit__ is never called when __enter__ raises. Every operation after lease
+            # acquisition therefore lives under this one cleanup guard, including APPEND's early
+            # terminator precheck before a scratch handle exists.
+            try:
+                self._discard_transaction_scratch()
+            finally:
+                self._release_lease()
+            raise
 
-        self._committed = False
         return self
 
     def _acquire_lease(self) -> None:
@@ -202,18 +219,41 @@ class JsonlEngine:
             finally:
                 self._lock = None
 
+    def _discard_transaction_scratch(self) -> None:
+        """Close scratch and remove every unpublished transaction file, best effort."""
+        if self._file is not None and not self._file.closed:
+            try:
+                self._file.close()
+            except BaseException:
+                # Cleanup must keep progressing and, during __enter__, must reach lease release
+                # even if an unusual file wrapper itself fails while closing.
+                pass
+        self._file = None
+        for tmp_file in (self.tmp_path, self.jidx_tmp, self.sig_tmp):
+            if tmp_file and os.path.exists(tmp_file):
+                try:
+                    os.remove(tmp_file)
+                except OSError:
+                    pass
+
     def _adopt_existing(self) -> None:
         """Carry the published store into this transaction's tmp file, in one pass.
 
-        Copy, hash, framing check, and offset capture happen together over a single read, so the
-        store is never held in memory and never walked twice.
+        The adoption copy, hash, framing check, and offset capture happen together, so the store is
+        never held in memory. A conflicting valid signature requires one preliminary hash pass to
+        establish that it still witnesses the bytes before its policy can be trusted.
 
-        Adoption validates. A record this engine would refuse to write is one it refuses to extend:
-        appending to a store whose framing the reader rejects produces a longer store the reader
-        still rejects, and the failure then surfaces at read time with no trace of which write
-        introduced it. Framing only -- terminator, blank lines, stray CR. Record shape belongs to
-        the kind, and this module knows nothing about kinds.
+        Adoption validates. A record this engine would refuse to read is one it refuses to extend:
+        appending to a store with invalid framing or non-JSON values produces a longer store the
+        reader still rejects, and the failure then surfaces at read time with no trace of which
+        write introduced it. The base object contract is checked here; record schemas belong to the
+        kind, and this module knows nothing about kinds.
         """
+        # Local import avoids a module-load dependency from engine back to its reader. Both share
+        # only leaf modules, so the reader is safe to use once this engine instance is active.
+        from .reader import loads
+
+        self._check_existing_signature_policy()
         terminator = self.eol.terminator(self.encoding)
         file_size = os.path.getsize(self.output_path)
 
@@ -229,31 +269,81 @@ class JsonlEngine:
                 )
 
         self._file = open(self.tmp_path, "wb")
-        try:
-            offset = 0
-            with open(self.output_path, "rb") as src:
-                for index, line in enumerate(src):
-                    self._check_adopted(line, index, terminator)
-                    self._file.write(line)
-                    self.hasher.update(line)
-                    self.offsets.append(offset)
-                    offset += len(line)
-            self.line_count = len(self.offsets)
-        except BaseException:
-            # __exit__ does not run when __enter__ raises, so the partial tmp and the lease are
-            # both cleaned up here.
-            self._file.close()
-            self._file = None
-            if os.path.exists(self.tmp_path):
-                try:
-                    os.remove(self.tmp_path)
-                except OSError:
-                    pass
-            self._release_lease()
-            raise
+        offset = 0
+        with open(self.output_path, "rb") as src:
+            for index, line in enumerate(src):
+                body = self._check_adopted(line, index, terminator)
+                # This is JsonlStore's strict parser, including non-finite-number and object checks.
+                loads(body, path=self.output_path, encoding=self.encoding, record=index)
+                written = self._file.write(line)
+                if written != len(line):
+                    raise OSError(
+                        f"short write while adopting record {index}: wrote {written!r} of "
+                        f"{len(line)} bytes"
+                    )
+                self.hasher.update(line)
+                self.offsets.append(offset)
+                offset += len(line)
+        self.line_count = len(self.offsets)
 
-    def _check_adopted(self, line: bytes, index: int, terminator: bytes) -> None:
-        """Framing checks for one adopted record, matching what the reader enforces."""
+    def _check_existing_signature_policy(self) -> None:
+        """Refuse a conflicting policy witnessed by a current engine signature.
+
+        Foreign, malformed, and stale sidecars retain the pre-existing append behavior: they are
+        not policy witnesses and a successful commit replaces them. Hash and line count establish
+        that a structurally valid engine signature describes the bytes being adopted before its
+        declarations are trusted.
+        """
+        if not os.path.exists(self.sig_path):
+            return
+
+        # Local import keeps engine -> writer/sidecar/policy as the module-level dependency graph;
+        # reader imports the same leaf modules and is safe to use after engine initialization.
+        from .reader import JsonlStore
+
+        try:
+            signature = JsonlStore(self.output_path).read_sig()
+        except (OSError, ValueError):
+            return
+
+        declared = {
+            "encoding": self.encoding,
+            "eol": self.eol.value,
+            "codec": self.codec.value,
+        }
+        conflicts = [
+            (field, signature.get(field), value)
+            for field, value in declared.items()
+            if signature.get(field) != value
+        ]
+        if not conflicts:
+            return
+
+        if signature["file_size"] != os.path.getsize(self.output_path):
+            return
+        witnessed_hash = hashlib.sha256()
+        witnessed_lines = 0
+        with open(self.output_path, "rb") as source:
+            for line in source:
+                witnessed_hash.update(line)
+                witnessed_lines += 1
+        if (
+            witnessed_hash.hexdigest() != signature["sha256"]
+            or witnessed_lines != signature["line_count"]
+        ):
+            return
+
+        details = ", ".join(
+            f"{field}: signature={witnessed!r}, appender={value!r}"
+            for field, witnessed, value in conflicts
+        )
+        raise ValueError(
+            f"Cannot append to {self.output_path}: its current engine signature declares a "
+            f"conflicting write policy ({details})."
+        )
+
+    def _check_adopted(self, line: bytes, index: int, terminator: bytes) -> bytes:
+        """Apply reader-equivalent framing checks and return the record body."""
         where = f"record {index} of {os.path.basename(self.output_path)}"
         if not line.endswith(terminator):
             raise ValueError(
@@ -266,6 +356,7 @@ class JsonlEngine:
             raise ValueError(f"Cannot append: {where} is blank")
         if b"\r" in body:
             raise ValueError(f"Cannot append: {where} contains a CR inside the record")
+        return body
 
     def append(self, record: Dict[str, Any]) -> None:
         """
@@ -277,11 +368,13 @@ class JsonlEngine:
         if self._file is None or self._file.closed:
             raise RuntimeError("JsonlEngine must be active inside a 'with' context manager.")
 
-        # 1. Capture exact byte offset before writing line
-        offset = self._file.tell()
-        self.offsets.append(offset)
+        if self._poisoned is not None:
+            raise RuntimeError(
+                f"JSONL transaction for {self.output_path} is poisoned by an earlier write "
+                f"failure and cannot accept records ({self._poisoned})."
+            )
 
-        # 2. Deterministic serialization under this store's declared policy. The writer names the
+        # 1. Deterministic serialization under this store's declared policy. The writer names the
         #    encoding and the remedy but not the record; re-raise with it, since in a store of
         #    50,000 rows the index is the part a caller cannot recover.
         try:
@@ -293,9 +386,23 @@ class JsonlEngine:
 
         json_bytes += self.eol.terminator(self.encoding)
 
-        # 3. Write line & update SHA-256 hash incrementally
-        self._file.write(json_bytes)
+        # 2. Only advance index/hash/count after a complete write. Serialization failures occur
+        # before the stream is touched and are recoverable; a stream failure may have written an
+        # unknown prefix, so it poisons the transaction and commit must refuse it.
+        offset = self._file.tell()
+        try:
+            written = self._file.write(json_bytes)
+            if written != len(json_bytes):
+                raise OSError(
+                    f"short write for record {self.line_count}: wrote {written!r} of "
+                    f"{len(json_bytes)} bytes"
+                )
+        except BaseException as exc:
+            self._poisoned = f"record {self.line_count}: {type(exc).__name__}: {exc}"
+            raise
+
         self.hasher.update(json_bytes)
+        self.offsets.append(offset)
         self.line_count += 1
 
     def commit(self, stage_metadata: Optional[Dict[str, Any]] = None) -> None:
@@ -311,9 +418,19 @@ class JsonlEngine:
         from a previous commit now describes bytes that are gone; those are removed so the store
         reads as unsigned rather than as wrongly signed, and the error names what is on disk.
         """
+        if self._poisoned is not None:
+            raise RuntimeError(
+                f"Refusing to commit poisoned JSONL transaction for {self.output_path} "
+                f"({self._poisoned})."
+            )
+
         if self._file and not self._file.closed:
-            self._file.flush()
-            self._file.close()
+            try:
+                self._file.flush()
+                self._file.close()
+            except BaseException as exc:
+                self._poisoned = f"finalizing scratch: {type(exc).__name__}: {exc}"
+                raise
 
         # 1. Atomically rename .jsonl.tmp -> final .jsonl FIRST
         os.replace(self.tmp_path, self.output_path)
@@ -423,17 +540,11 @@ class JsonlEngine:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
-            if self._file and not self._file.closed:
-                self._file.close()
-
             # Clean up temporary files if uncommitted or on exception
             if not self._committed or exc_type is not None:
-                for tmp_file in (self.tmp_path, self.jidx_tmp, self.sig_tmp):
-                    if tmp_file and os.path.exists(tmp_file):
-                        try:
-                            os.remove(tmp_file)
-                        except OSError:
-                            pass
+                self._discard_transaction_scratch()
+            elif self._file and not self._file.closed:
+                self._file.close()
         finally:
             # Released last and unconditionally: the lease covers the publish and both sidecar
             # renames, so dropping it earlier would reopen the window it exists to close.

@@ -1,4 +1,4 @@
-"""The PowerShell front-end reads what the Python engine writes.
+"""The PowerShell client module reads what the Python engine writes.
 
 Replaces the old jsonl-v2 interop test. That one proved a PowerShell implementation of the JSONL
 format agreed with the Python one; there is no longer a second implementation to agree with. What
@@ -10,6 +10,7 @@ Skipped rather than failed when pwsh is absent, so the suite still runs on a mac
 
 import json
 import os
+import signal
 import shutil
 import struct
 import subprocess
@@ -23,35 +24,91 @@ from jsonl_engine.paths import RepoPaths
 # render, which is exactly why they belong in a round-trip assertion rather than a screenshot.
 GLYPHS = "∫ 𝔼[X] ﬁﬂﬃ 日本語 �"
 
-SHELL = RepoPaths.resolve("src", "shared", "jsonl_engine", "jso-shell.ps1")
+CLIENT = RepoPaths.resolve(
+    "src", "shared", "jsonl-engine-client", "jsonl-engine-client.psd1"
+)
 
 
 def _pwsh() -> str:
+    configured = os.environ.get("CODEX_TEST_POWERSHELL_PATH")
+    if configured is not None:
+        return configured if os.path.isfile(configured) else ""
     return shutil.which("pwsh") or ""
 
 
+def _terminate_process_tree(process: subprocess.Popen) -> None:
+    """Bound cleanup for pwsh and the Python CLI process it launches."""
+    if process.poll() is not None:
+        return
+
+    if os.name == "nt":
+        try:
+            subprocess.run(
+                ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                timeout=10,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+    else:
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except OSError:
+            pass
+
+    if process.poll() is None:
+        process.kill()
+    try:
+        process.wait(timeout=10)
+    except subprocess.TimeoutExpired:
+        pass
+
+
 @unittest.skipUnless(_pwsh(), "pwsh not available")
-class TestShellSurface(unittest.TestCase):
+class TestPowerShellSurface(unittest.TestCase):
     def _run(self, script: str, store: str) -> str:
-        body = f". '{SHELL.replace(os.sep, '/')}'\n$p = '{store.replace(os.sep, '/')}'\n{script}"
+        body = (
+            f"Import-Module '{CLIENT.replace(os.sep, '/')}' -ErrorAction Stop\n"
+            f"$p = '{store.replace(os.sep, '/')}'\n{script}"
+        )
         with tempfile.NamedTemporaryFile(
             "w", suffix=".ps1", delete=False, encoding="utf-8", newline="\n"
         ) as handle:
             handle.write(body)
             script_path = handle.name
+        process_options = {}
+        if os.name == "nt":
+            process_options["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        else:
+            process_options["start_new_session"] = True
         try:
-            proc = subprocess.run(
+            proc = subprocess.Popen(
                 [_pwsh(), "-NoProfile", "-File", script_path],
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 text=True,
                 encoding="utf-8",
-                timeout=120,
+                **process_options,
             )
+            try:
+                stdout, stderr = proc.communicate(timeout=120)
+            except subprocess.TimeoutExpired:
+                _terminate_process_tree(proc)
+                try:
+                    stdout, stderr = proc.communicate(timeout=5)
+                except subprocess.TimeoutExpired:
+                    stdout, stderr = "", "process pipes did not close after tree termination"
+                self.fail(
+                    "pwsh and its jsonl_engine child exceeded 120s:\n"
+                    f"{stdout}\n{stderr}"
+                )
         finally:
             os.unlink(script_path)
         if proc.returncode != 0:
-            self.fail(f"pwsh failed ({proc.returncode}):\n{proc.stdout}\n{proc.stderr}")
-        return proc.stdout.strip()
+            self.fail(f"pwsh failed ({proc.returncode}):\n{stdout}\n{stderr}")
+        return stdout.strip()
 
     def _store(self, tmpdir: str) -> str:
         path = os.path.join(tmpdir, "s.jsonl")

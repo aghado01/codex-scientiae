@@ -11,13 +11,15 @@ import tempfile
 import unittest
 from unittest import mock
 
+import jsonschema
+
 from jsonl_engine import engine as engine_module
 from jsonl_engine.engine import Discipline, JsonlEngine
 from jsonl_engine.reader import JsonlStore
 from jsonl_engine.sidecar import store_paths
 from jsonl_engine.kinds import BaseStore
 
-from test_jsonl_engine import _article
+from jsonl_test_support import article
 
 
 class ArticleStore(BaseStore):
@@ -32,6 +34,16 @@ class ArticleStore(BaseStore):
     VERSION = "0.1"
     RECORD_SCHEMA = "article.schema.json"
     NAME_FORMAT = "articles.jsonl"
+
+
+class BrokenHeaderStore(ArticleStore):
+    """A headered kind whose declared identity is deliberately contradicted."""
+
+    KIND = "broken-header-store"
+    EMIT_HEADER = True
+
+    def header_fields(self):
+        return {"kind": "not-broken-header-store"}
 
 
 def _sha(path: str) -> str:
@@ -119,6 +131,61 @@ class TestSidecarTransaction(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(tmpdir, "s.sig")))
 
 
+class TestAppendTransactionState(unittest.TestCase):
+    def test_a_caught_serialization_failure_does_not_advance_the_index(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                with self.assertRaises(ValueError) as caught:
+                    eng.append({"not_json": object()})
+                self.assertIn("record 0", str(caught.exception))
+                self.assertIn(path, str(caught.exception))
+                self.assertEqual([], eng.offsets)
+                self.assertEqual(0, eng.line_count)
+
+                eng.append({"n": 1})
+                eng.commit()
+
+            store = JsonlStore(path)
+            self.assertEqual([{"n": 1}], list(store))
+            self.assertEqual([0], store.index.offsets)
+            self.assertEqual(1, store.read_sig()["line_count"])
+            self.assertTrue(store.verify())
+
+    def test_a_partial_stream_write_poisons_and_cannot_be_committed(self):
+        class PartialThenFail:
+            def __init__(self, handle):
+                self.handle = handle
+
+            @property
+            def closed(self):
+                return self.handle.closed
+
+            def tell(self):
+                return self.handle.tell()
+
+            def write(self, raw):
+                self.handle.write(raw[:3])
+                raise OSError("simulated partial write")
+
+            def close(self):
+                self.handle.close()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as eng:
+                eng._file = PartialThenFail(eng._file)
+                with self.assertRaisesRegex(OSError, "partial write"):
+                    eng.append({"n": 1})
+                self.assertEqual([], eng.offsets)
+                self.assertEqual(0, eng.line_count)
+                with self.assertRaisesRegex(RuntimeError, "poisoned"):
+                    eng.commit()
+
+            self.assertFalse(os.path.exists(path))
+            self.assertEqual([], [name for name in os.listdir(tmpdir) if name.endswith(".tmp")])
+
+
 class TestSidecarPolicy(unittest.TestCase):
     """Sidecars are declarable, on by default, and never orphaned once they exist."""
 
@@ -181,19 +248,19 @@ class TestSidecarPolicy(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             registry = Unsigned(target_dir=tmpdir)
             with registry.open_writer() as writer:
-                writer.append(_article())
+                writer.append(article())
                 writer.commit()
 
             paths = store_paths(registry.get_output_path())
             self.assertFalse(os.path.exists(paths.jidx))
             self.assertFalse(os.path.exists(paths.sig))
-            self.assertEqual([_article()], list(registry.open_store()))
+            self.assertEqual([article()], list(registry.open_store()))
 
     def test_the_default_kind_is_signed_and_indexed(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             registry = ArticleStore(target_dir=tmpdir)
             with registry.open_writer() as writer:
-                writer.append(_article())
+                writer.append(article())
                 writer.commit()
 
             paths = store_paths(registry.get_output_path())
@@ -216,17 +283,31 @@ class TestStoreWriter(unittest.TestCase):
                 "a refused record must not leave a published store",
             )
 
+    def test_a_rejected_header_releases_the_already_open_engine(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            store = BrokenHeaderStore(target_dir=tmpdir)
+            writer = store.open_writer()
+
+            with self.assertRaises(jsonschema.ValidationError):
+                writer.__enter__()
+
+            self.assertIsNone(writer.engine._lock)
+            self.assertFalse(os.path.exists(store.get_output_path()))
+            with JsonlEngine(store.get_output_path(), lock_timeout=0.1) as engine:
+                engine.append({"recovered": True})
+                engine.commit()
+
     def test_streamed_and_buffered_produce_identical_bytes(self):
         with tempfile.TemporaryDirectory() as d1, tempfile.TemporaryDirectory() as d2:
             buffered = ArticleStore(target_dir=d1)
             for _ in range(3):
-                buffered.add(_article())
+                buffered.add(article())
             buffered_path = buffered.write()
 
             streamed = ArticleStore(target_dir=d2)
             with streamed.open_writer() as writer:
                 for _ in range(3):
-                    writer.append(_article())
+                    writer.append(article())
                 writer.commit()
 
             self.assertEqual(_sha(buffered_path), _sha(streamed.get_output_path()))
@@ -235,7 +316,7 @@ class TestStoreWriter(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             registry = ArticleStore(target_dir=tmpdir)
             with registry.open_writer() as writer:
-                writer.append(_article())
+                writer.append(article())
                 writer.commit()
 
             sig = JsonlStore(registry.get_output_path()).read_sig()
@@ -246,11 +327,11 @@ class TestStoreWriter(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             registry = ArticleStore(target_dir=tmpdir)
             with registry.open_writer() as writer:
-                writer.append(_article())
+                writer.append(article())
                 writer.commit()
 
             store = registry.open_store()
-            self.assertEqual([_article()], list(store))
+            self.assertEqual([article()], list(store))
             self.assertTrue(store.verify())
 
 

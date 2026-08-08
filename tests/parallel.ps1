@@ -4,10 +4,16 @@
 param(
     [Parameter(Position = 0)] [ValidateNotNullOrEmpty()]
     [string[]] $Path = @($PSScriptRoot),
+    [AllowEmptyCollection()] [string[]] $PesterPath = @(),
+    [AllowEmptyCollection()] [string[]] $PytestPath = @(),
     [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string] $RunDirectory,
+    [ValidateSet('Pester', 'Pytest', 'All')]
+    [string] $Framework = 'All',
     [ValidateNotNullOrEmpty()] [string] $RepositoryRoot =
         ([System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))),
     [string] $PesterManifest,
+    [string] $PythonPath,
+    [string] $PytestConfig,
     [string] $PowerShellPath,
     [AllowEmptyCollection()] [string[]] $FullNameFilter = @(),
     [AllowEmptyCollection()] [string[]] $Tag = @(),
@@ -16,6 +22,10 @@ param(
     [string] $ResultFormat = 'NUnitXml',
     [ValidateSet('None', 'Normal', 'Detailed', 'Diagnostic')]
     [string] $OutputVerbosity = 'None',
+    [string] $KeywordExpression,
+    [string] $MarkerExpression,
+    [ValidateSet('Quiet', 'Normal', 'Verbose')]
+    [string] $PytestOutputVerbosity = 'Quiet',
     [nullable[int]] $MaxWorkers = $null,
     [ValidateRange(0, [int]::MaxValue)] [int] $ReservedCores = 2,
     [ValidateRange(1, [int]::MaxValue)] [int] $MinItemsPerWorker = 1,
@@ -38,8 +48,8 @@ $executorManifest = [System.IO.Path]::Combine(
 Import-Module -Name $executorManifest -ErrorAction Stop
 Import-Module -Name $adaptersManifest -ErrorAction Stop
 
-$adapterParameters = @{
-    Path = $Path
+$pesterAdapterParameters = @{
+    Path = if ($PesterPath.Count -gt 0) { $PesterPath } else { $Path }
     RunDirectory = $RunDirectory
     RepositoryRoot = $RepositoryRoot
     FullNameFilter = $FullNameFilter
@@ -49,13 +59,46 @@ $adapterParameters = @{
     OutputVerbosity = $OutputVerbosity
 }
 if (-not [string]::IsNullOrWhiteSpace($PesterManifest)) {
-    $adapterParameters.PesterManifest = $PesterManifest
+    $pesterAdapterParameters.PesterManifest = $PesterManifest
 }
 if (-not [string]::IsNullOrWhiteSpace($PowerShellPath)) {
-    $adapterParameters.PowerShellPath = $PowerShellPath
+    $pesterAdapterParameters.PowerShellPath = $PowerShellPath
 }
 
-$jobs = @(adapters\Get-PesterBatchJob @adapterParameters)
+$pytestAdapterParameters = @{
+    Path = if ($PytestPath.Count -gt 0) { $PytestPath } else { $Path }
+    RunDirectory = $RunDirectory
+    RepositoryRoot = $RepositoryRoot
+    OutputVerbosity = $PytestOutputVerbosity
+}
+if (-not [string]::IsNullOrWhiteSpace($PythonPath)) {
+    $pytestAdapterParameters.PythonPath = $PythonPath
+}
+if (-not [string]::IsNullOrWhiteSpace($PytestConfig)) {
+    $pytestAdapterParameters.PytestConfig = $PytestConfig
+}
+if (-not [string]::IsNullOrWhiteSpace($PowerShellPath)) {
+    $pytestAdapterParameters.PowerShellPath = $PowerShellPath
+}
+if (-not [string]::IsNullOrWhiteSpace($KeywordExpression)) {
+    $pytestAdapterParameters.KeywordExpression = $KeywordExpression
+}
+if (-not [string]::IsNullOrWhiteSpace($MarkerExpression)) {
+    $pytestAdapterParameters.MarkerExpression = $MarkerExpression
+}
+
+$pesterJobs = if ($Framework -in @('Pester', 'All')) {
+    @(adapters\Get-PesterBatchJob @pesterAdapterParameters)
+}
+else { @() }
+$pytestJobs = if ($Framework -in @('Pytest', 'All')) {
+    @(adapters\Get-PytestBatchJob @pytestAdapterParameters)
+}
+else { @() }
+$jobs = @($pesterJobs) + @($pytestJobs)
+if ($jobs.Count -eq 0) {
+    throw "parallel.ps1: framework '$Framework' produced no jobs"
+}
 $compiled = batch-executor\New-BatchPlan -Job $jobs -BasePath $jobs[0].WorkingDirectory
 if ($compiled.Errors.Count -gt 0 -or $null -eq $compiled.Plan) {
     throw "parallel.ps1: plan validation failed: $(@($compiled.Errors) -join '; ')"
@@ -71,8 +114,8 @@ $execution = batch-executor\Invoke-BatchPlan -Plan $compiled `
 $summary = $execution.Summary
 $infrastructureErrors = @($execution.Errors).Count
 Write-Information -InformationAction Continue -MessageData (
-    'Pester batch: total={0}; succeeded={1}; failed={2}; timed-out={3}; cancelled={4}; infrastructure-errors={5}; duration-ms={6}' -f
-    $summary.Total, $summary.Succeeded, $summary.Failed, $summary.TimedOut,
+    'Test batch: framework={0}; total={1}; succeeded={2}; failed={3}; timed-out={4}; cancelled={5}; infrastructure-errors={6}; duration-ms={7}' -f
+    $Framework, $summary.Total, $summary.Succeeded, $summary.Failed, $summary.TimedOut,
     $summary.Cancelled, $infrastructureErrors, $execution.Timing.TotalMs)
 
 $execution

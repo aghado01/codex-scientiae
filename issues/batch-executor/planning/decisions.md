@@ -363,10 +363,10 @@ result, or surviving worker.
 
 ### D24 — The repository parallel-test shell owns composition and failure projection only — implemented
 
-`tests/parallel.ps1` is the product-facing batch entrypoint for repository Pester work. It imports the
-canonical `adapters.psd1` and `batch-executor.psd1` manifests and invokes the module-qualified
-`Get-PesterBatchJob`, `New-BatchPlan`, and `Invoke-BatchPlan` commands exactly once each. This fixes one
-visible composition path without adding a command to either module or creating another scheduler layer.
+`tests/parallel.ps1` began as the product-facing batch entrypoint for repository Pester work. D27 now
+extends that same shell to multilingual composition while preserving the thin-shell ownership established
+here. The shell imports the canonical `adapters.psd1` and `batch-executor.psd1` manifests and invokes
+`New-BatchPlan` and `Invoke-BatchPlan` exactly once each; framework adapters remain the discovery owners.
 
 The caller supplies selected `Path` values, which default to the repository `tests/` directory, and a
 mandatory existing absolute `RunDirectory`. File/directory selection is sufficient for the current suite;
@@ -386,6 +386,65 @@ run allocation, logger lifecycle, durable or merged result store, result orderin
 composition. Structural witnesses reject those owners; two-file success and sibling-failure runtime
 witnesses cover exact record output, native and suite artifacts, process cleanup, retained failure evidence,
 and real CLI exit status.
+
+### D25 — The pytest adapter maps one physical file to one isolated process job — implemented
+
+The repository pytest planner is `Get-PytestBatchJob`, exported by the existing shared `adapters`
+module rather than a unitary module or an executor command. It discovers repository-contained `test_*.py`
+files without importing test code. Each unique physical file becomes one job; pytest classes, methods, node
+IDs, parameter rows, and `unittest.subTest` contexts remain selection and outcome structure inside that
+file rather than independent scheduler items.
+
+Stable identity is `pytest:<repository-relative-path>#<digest>`, with normalized framework selectors
+contributing to the digest. One D19 resolver owns the complete address beneath
+`RunDirectory/pytest-jobs/<container>`: native `pytest.xml`, retained `artifacts/`, and job-local `temp/`.
+All three are declared writes and planning creates none. The artifact root is transported as
+`CODEX_TEST_ARTIFACT_ROOT`; the temporary root contains Python/pytest temporary state and the JSON engine's
+test-local coordination scratch. The resolved child PowerShell is transported as
+`CODEX_TEST_POWERSHELL_PATH`, and `Metadata.PowerShellEnvironment` names that key. The exact interpreter,
+repository working directory, runner, selectors,
+cache/bytecode policy, and process environment are frozen into the job.
+
+The job remains `PowerShellProcess` because the implemented executor validates PowerShell entrypoints and
+owns their descendant process trees. This decision does not authorize pytest-xdist, a second worker budget,
+automatic method fan-out, dependency installation, or a native-process executor mode. BEX-601 through
+BEX-605 established planning purity, exact-file execution, declared writes, sibling failure containment,
+and process cleanup.
+
+### D26 — One PowerShell runner owns pytest invocation and result semantics — implemented
+
+`tests/pytest.ps1` is the authoritative direct and nested pytest boundary. It invokes the pinned
+interpreter as `python -m pytest`, anchors collection at the repository root, accepts one exact file,
+writes native JUnit XML, rejects zero selected tests, and propagates framework
+failure as nonzero. It emits one prefixed transient `PytestContainerObservation` before failure propagation;
+the observation records resolved path, selected outcome count, passed count, assertion-failure count, error
+count, skipped count, duration, result path/presence, Python and pytest versions, and pytest exit code
+without replacing the native report. The direct collection baseline remains 157 methods; pytest 9's JUnit
+and observation select 193 outcomes after including 36 subtest outcomes.
+
+The runner captures the nested process's stdout, stderr, and exit status locally so benign native stderr or
+a stale exit code cannot reinterpret a successful wrapper. It owns no scheduler, process registry,
+cancellation policy, run allocation, retry, logger lifecycle, or generic durable result store. The executor
+remains the process-tree and timeout owner around nested use. A second Python runner or adapter worker would
+duplicate this boundary and is not part of the design.
+
+### D27 — One repository shell composes framework-owned test jobs — implemented
+
+BEX-604 evolved `tests/parallel.ps1` into the multilingual repository test shell. It obtains Pester and
+pytest jobs through their separate adapters, concatenates those domain-neutral job records, compiles one
+plan, and invokes one executor. Both frameworks therefore share one worker budget, cancellation
+path, failure policy, and result order without acquiring a cross-framework runner or result model.
+
+Pester and pytest retain separate physical-file discovery, selectors, runners, job ID prefixes, address
+roots, transient observations, and native XML reports. The shell neither parses nor merges NUnit and JUnit,
+and it owns no scheduler, process registry, cancellation protocol, retry, run allocation, logger lifecycle,
+durable result store, or address composition. One concise aggregate summary and the unchanged in-memory
+execution record remain its only projections.
+
+D27 supersedes only D24's original Pester-only composition scope, not its thin-shell ownership rules.
+BEX-604/BEX-605 supplied structural, Pester-regression, mixed-framework success, sibling-failure,
+native-evidence, and process-cleanup witnesses. No interim or permanent `parallel-pytest.ps1` shell was
+introduced.
 
 ## Deliberate non-goals of the current executor
 

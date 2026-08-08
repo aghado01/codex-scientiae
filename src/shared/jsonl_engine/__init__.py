@@ -10,7 +10,8 @@ Layered leaf-first, so each module depends only on what sits below it:
     reader      read_json / JsonlStore      -- both artifact shapes
     engine      JsonlEngine                 -- JSONL bytes, offsets, sidecar transaction
     inspect     physical facts and stable views of an actively appended store
-    cli         `python -m jsonl_engine`, the surface jso-shell.ps1 marshals into
+    deposit     article assembly and immutable source-deposit publication
+    cli         `python -m jsonl_engine`, the protocol used by the PowerShell client
     schemas     the shipped *.schema.json and the catalog that indexes them
     kinds       artifact kinds, and the registry category
 
@@ -19,7 +20,7 @@ index of what is available (SchemaCatalog, KindCatalog); a *registry* is a publi
 registers a population under a schema-declared key.
 """
 
-from .policy import DEFAULT_ENCODING, Codec, Eol
+from .policy import DEFAULT_ENCODING, Codec, Eol, is_line_framable
 from .pointer import MISSING, PointerError, exists as pointer_exists, resolve as pointer_resolve
 from .ordering import KeyComparison, SortField
 from .sidecar import StorePaths, get_file_dotnet_ticks, store_paths
@@ -28,7 +29,6 @@ from .reader import (
     Jidx,
     JsonReaderError,
     JsonlStore,
-    is_line_framable,
     loads,
     read_index,
     read_json,
@@ -48,6 +48,7 @@ from .kinds import (
     StoreWriter,
 )
 from .paths import RepoPaths, find_repository_root
+from .deposit import DepositConflict, DepositError, DepositResult, deposit_article
 
 __all__ = [
     # policy
@@ -98,6 +99,11 @@ __all__ = [
     "ArticleManifest",
     "InventoryRegistry",
     "SchemaRegistry",
+    # article deposits
+    "DepositError",
+    "DepositConflict",
+    "DepositResult",
+    "deposit_article",
     # repository layout
     "RepoPaths",
     "find_repository_root",

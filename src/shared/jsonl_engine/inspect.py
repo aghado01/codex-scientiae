@@ -1,13 +1,13 @@
 """Physical inspection and stable views of a store that may be actively appended.
 
-A writer publishes by rename, so a reader never sees a half-written *replacement*. It can still see
-a half-written *append*: APPEND extends the file in place, and a reader that runs to EOF while that
-is happening reads a torn final record.
+This engine publishes both CREATE and APPEND transactions by rename, so its readers never see a
+half-written replacement. A foreign or uncoordinated producer may still extend a file in place;
+reading that file to EOF while the write is active can expose a torn final record.
 
-The fix is a bound, not a lock. Readers do not take the write lease -- one long scan would stall
-every writer, and a reader has nothing to protect. Instead a reader fixes the length it intends to
-read and stops there. Bytes below that offset are already durable and never change: JSONL only ever
-grows at the end, and a rename swaps the whole file rather than editing it.
+The fix is a bound plus a captured file generation, not a lock. Readers do not take the write lease
+-- one long scan would stall every writer, and a reader has nothing to protect. Instead a reader
+fixes the length it intends to read and refuses if the pathname is later replaced. An append may
+extend the captured generation, but cannot expose a partial record below the bound.
 
 Two bounds are worth having, and they answer different questions:
 
@@ -21,8 +21,9 @@ there gives a view that verifies, rather than merely a view that is not torn.
 from __future__ import annotations
 
 import os
+import tempfile
 from dataclasses import dataclass
-from typing import Optional
+from typing import BinaryIO, Optional
 
 from .policy import Eol
 from .sidecar import StorePaths, store_paths
@@ -98,21 +99,55 @@ def complete_prefix(path: str, *, chunk_size: int = 1 << 16) -> int:
     record, and a record in progress above it is excluded rather than truncated.
     """
     target = store_paths(path).artifact
-    size = os.path.getsize(target)
-    if size == 0:
-        return 0
-
     with open(target, "rb") as handle:
-        position = size
-        while position > 0:
-            window = min(chunk_size, position)
-            position -= window
-            handle.seek(position)
-            block = handle.read(window)
-            found = block.rfind(b"\n")
-            if found != -1:
-                return position + found + 1
+        return _complete_prefix_from_handle(
+            handle,
+            size=os.fstat(handle.fileno()).st_size,
+            chunk_size=chunk_size,
+        )
+
+
+def _complete_prefix_from_handle(
+    handle: BinaryIO, *, size: int, chunk_size: int = 1 << 16
+) -> int:
+    """Find the complete prefix in one already-open generation of a source file."""
+    position = size
+    while position > 0:
+        window = min(chunk_size, position)
+        position -= window
+        handle.seek(position)
+        block = handle.read(window)
+        found = block.rfind(b"\n")
+        if found != -1:
+            return position + found + 1
     return 0
+
+
+def _validate_record_boundary(handle: BinaryIO, limit: int, *, size: int) -> int:
+    """Validate and return a byte limit that ends immediately after a complete record."""
+    if isinstance(limit, bool) or not isinstance(limit, int):
+        raise TypeError(
+            f"record boundary must be an integer byte offset, got {type(limit).__name__}"
+        )
+    if limit < 0 or limit > size:
+        raise ValueError(f"record boundary {limit} is outside source extent [0, {size}]")
+    if limit:
+        handle.seek(limit - 1)
+        if handle.read(1) != b"\n":
+            raise ValueError(f"byte offset {limit} is not a complete-record boundary")
+    return limit
+
+
+def _paths_equivalent(first: str, second: str) -> bool:
+    """Whether two spellings identify the same destination, including existing hard links."""
+    canonical_first = os.path.normcase(os.path.realpath(os.path.abspath(first)))
+    canonical_second = os.path.normcase(os.path.realpath(os.path.abspath(second)))
+    if canonical_first == canonical_second:
+        return True
+    try:
+        return os.path.samefile(first, second)
+    except (FileNotFoundError, OSError):
+        return False
 
 
 def snapshot(source: str, destination: str, *, limit: Optional[int] = None) -> int:
@@ -120,21 +155,61 @@ def snapshot(source: str, destination: str, *, limit: Optional[int] = None) -> i
 
     Byte-for-byte, with no re-serialization: a snapshot that reformatted its input would no longer
     answer the question it was taken to answer, and its hash would not match the source's .sig.
-    Bounded at `limit` when given, otherwise at the last complete record.
+    Bounded at `limit` when given, otherwise at the last complete record. The source is read through
+    one handle and the destination is atomically replaced only after an adjacent temporary copy is
+    complete.
     """
     source_path = store_paths(source).artifact
-    bound = complete_prefix(source_path) if limit is None else limit
+    destination_path = os.path.abspath(destination)
+    if _paths_equivalent(source_path, destination_path):
+        raise ValueError(
+            f"snapshot source and destination identify the same file: '{source_path}'"
+        )
 
-    parent = os.path.dirname(os.path.abspath(destination))
+    parent = os.path.dirname(destination_path)
     if parent:
         os.makedirs(parent, exist_ok=True)
 
-    written = 0
-    with open(source_path, "rb") as src, open(destination, "wb") as dst:
-        while written < bound:
-            block = src.read(min(1 << 20, bound - written))
-            if not block:
-                break
-            dst.write(block)
-            written += len(block)
-    return written
+    # Open once, then derive and copy the bound through that handle. If a rename publishes a new
+    # source while the copy runs, this snapshot remains entirely of the generation it opened.
+    with open(source_path, "rb") as src:
+        size = os.fstat(src.fileno()).st_size
+        bound = (
+            _complete_prefix_from_handle(src, size=size)
+            if limit is None
+            else _validate_record_boundary(src, limit, size=size)
+        )
+        src.seek(0)
+
+        descriptor, temporary = tempfile.mkstemp(
+            prefix=f".{os.path.basename(destination_path)}.",
+            suffix=".tmp",
+            dir=parent or None,
+        )
+        try:
+            written = 0
+            with os.fdopen(descriptor, "wb") as dst:
+                while written < bound:
+                    block = src.read(min(1 << 20, bound - written))
+                    if not block:
+                        raise OSError(
+                            f"source ended at byte {written} before snapshot bound {bound}"
+                        )
+                    dst.write(block)
+                    written += len(block)
+                dst.flush()
+                os.fsync(dst.fileno())
+            os.replace(temporary, destination_path)
+            return written
+        except BaseException:
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+            try:
+                os.remove(temporary)
+            except OSError:
+                # Preserve the operation that failed. A cleanup error is secondary and the
+                # uniquely named scratch remains isolated and identifiable as transaction debris.
+                pass
+            raise

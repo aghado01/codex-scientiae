@@ -28,6 +28,25 @@ function Test-LatexPathsEqual {
     )
 }
 
+function Test-LatexPathHasReparsePoint {
+    <# Return true when any existing component of a path is a symbolic link or reparse point. #>
+    param([Parameter(Mandatory)] [string]$Path)
+
+    $fullPath = [System.IO.Path]::GetFullPath($Path)
+    $pathRoot = [System.IO.Path]::GetPathRoot($fullPath)
+    $relative = [System.IO.Path]::GetRelativePath($pathRoot, $fullPath)
+    $current = $pathRoot
+    foreach ($segment in @($relative -split '[\\/]' | Where-Object { $_ -and $_ -ne '.' })) {
+        $current = [System.IO.Path]::Combine($current, $segment)
+        $item = Get-Item -LiteralPath $current -Force -ErrorAction SilentlyContinue
+        if ($null -eq $item) { break }
+        if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+            return $true
+        }
+    }
+    return $false
+}
+
 function Test-LatexPathWithinRoot {
     param(
         [Parameter(Mandatory)] [string]$Path,
@@ -524,9 +543,25 @@ function Get-LatexEmbeddedMetadata {
     }
 }
 
+function Assert-LatexSourceTreeHasNoReparsePoint {
+    <# Resolve a source-tree root and reject reparse points at the root or below it. #>
+    param([Parameter(Mandatory)] [string]$RootPath)
+
+    $root = (Resolve-Path -LiteralPath $RootPath -ErrorAction Stop).Path
+    if (Test-LatexPathHasReparsePoint -Path $root) {
+        throw "source tree contains a reparse point: '$root'"
+    }
+    $reparse = @(Get-ChildItem -LiteralPath $root -Force -Recurse `
+            -Attributes ReparsePoint -ErrorAction SilentlyContinue)
+    if ($reparse.Count) {
+        throw "source tree contains a reparse point: '$($reparse[0].FullName)'"
+    }
+    return $root
+}
+
 function Get-LatexSourceTreeFingerprint {
     param([Parameter(Mandatory)] [string]$RootPath)
-    $root = (Resolve-Path -LiteralPath $RootPath -ErrorAction Stop).Path
+    $root = Assert-LatexSourceTreeHasNoReparsePoint -RootPath $RootPath
     $filesByRelativePath = [System.Collections.Generic.Dictionary[string, string]]::new([System.StringComparer]::Ordinal)
     $portablePaths = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
     foreach ($file in @(Get-ChildItem -LiteralPath $root -Force -Recurse -File)) {
@@ -568,9 +603,7 @@ function Test-LatexSourceTree {
         [string]$Slug = '',
         [string]$MainTex = ''
     )
-    $root = (Resolve-Path -LiteralPath $RootPath -ErrorAction Stop).Path
-    $reparse = @(Get-ChildItem -LiteralPath $root -Force -Recurse -Attributes ReparsePoint -ErrorAction SilentlyContinue)
-    if ($reparse.Count) { throw "source tree contains a reparse point: '$($reparse[0].FullName)'" }
+    $root = Assert-LatexSourceTreeHasNoReparsePoint -RootPath $RootPath
 
     $texFiles = @(Get-ChildItem -LiteralPath $root -Recurse -File -Filter '*.tex')
     foreach ($texFile in $texFiles) { $null = Read-LatexSourceText $texFile.FullName }

@@ -8,10 +8,20 @@ writers interleaving across that sequence leave a store signed by neither.
 import os
 import tempfile
 import threading
+import time
 import unittest
+from unittest import mock
 
 from jsonl_engine import JsonlEngine, JsonlStore
-from jsonl_engine.sidecar import lock_path, scratch_root, temp_write_path
+from jsonl_engine.sidecar import (
+    SCRATCH_ROOT_ENV,
+    find_stale_scratch,
+    lock_path,
+    scratch_root,
+    store_paths,
+    temp_write_path,
+)
+from jsonl_engine.writer import write_json
 
 
 class TestScratchPaths(unittest.TestCase):
@@ -62,13 +72,60 @@ class TestScratchPaths(unittest.TestCase):
                 engine.commit()
             self.assertEqual(["s.jsonl", "s.jsonl.jidx", "s.jsonl.sig"], sorted(os.listdir(tmpdir)))
 
+    def test_atomic_document_writes_do_not_share_the_legacy_tmp_name(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "doc.json")
+            legacy_tmp = path + ".tmp"
+            with open(legacy_tmp, "wb") as handle:
+                handle.write(b"another transaction")
+
+            write_json(path, {"n": 1})
+
+            with open(legacy_tmp, "rb") as handle:
+                self.assertEqual(b"another transaction", handle.read())
+
+    def test_scratch_glob_escapes_metacharacters_in_the_artifact_name(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s[draft].jsonl")
+            paths = store_paths(path)
+            expected = [
+                temp_write_path(paths.artifact),
+                temp_write_path(paths.jidx),
+                temp_write_path(paths.sig),
+            ]
+            prefixed_artifact = temp_write_path(path + ".backup")
+            malformed = [
+                path + ".worker.0123456789ab.tmp",
+                path + ".123.0123456789AB.tmp",
+                path + ".123.0123456789a.tmp",
+                path + ".123.0123456789ab.extra.tmp",
+            ]
+            for scratch in (*expected, prefixed_artifact, *malformed):
+                with open(scratch, "wb") as handle:
+                    handle.write(b"{}\n")
+
+            self.assertEqual(sorted(expected), find_stale_scratch(path))
+
+    @unittest.skipUnless(os.name == "nt", "Windows path identity is case-insensitive")
+    def test_windows_case_aliases_share_one_lock(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "MixedCase.jsonl")
+            self.assertEqual(lock_path(path), lock_path(path.swapcase()))
+
 
 class TestScratchRoot(unittest.TestCase):
-    def test_coordination_files_stay_on_the_repository_volume(self):
+    def _production_root(self) -> str:
+        """Resolve the production default without creating its shared directory."""
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(SCRATCH_ROOT_ENV, None)
+            with mock.patch("jsonl_engine.sidecar.os.makedirs"):
+                return scratch_root()
+
+    def test_production_default_stays_on_the_repository_volume(self):
         """A process writing to the repo should not reach another volume to coordinate with itself."""
         from jsonl_engine.paths import RepoPaths
 
-        root = scratch_root()
+        root = self._production_root()
         self.assertTrue(
             root.startswith(RepoPaths.root()),
             f"scratch root {root} is outside the repository",
@@ -77,9 +134,28 @@ class TestScratchRoot(unittest.TestCase):
             os.path.splitdrive(RepoPaths.root())[0], os.path.splitdrive(root)[0]
         )
 
-    def test_it_is_flat_rather_than_run_stamped(self):
+    def test_production_default_is_flat_rather_than_run_stamped(self):
         """A lock is per-artifact and outlives any single run."""
-        self.assertTrue(scratch_root().endswith(os.path.join("artifacts", "json-scratch")))
+        self.assertTrue(
+            self._production_root().endswith(os.path.join("artifacts", "json-scratch"))
+        )
+
+    def test_process_override_uses_the_job_local_coordination_root(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            configured = os.path.join(tmpdir, "job", "json-scratch")
+            artifact = os.path.join(tmpdir, "artifact.jsonl")
+            with mock.patch.dict(os.environ, {SCRATCH_ROOT_ENV: configured}):
+                self.assertEqual(os.path.abspath(configured), scratch_root())
+                self.assertEqual(os.path.abspath(configured), os.path.dirname(lock_path(artifact)))
+            self.assertTrue(os.path.isdir(configured))
+
+    def test_process_override_must_be_an_absolute_directory(self):
+        for configured in ("", "relative/scratch"):
+            with self.subTest(configured=configured), mock.patch.dict(
+                os.environ, {SCRATCH_ROOT_ENV: configured}
+            ):
+                with self.assertRaisesRegex(ValueError, SCRATCH_ROOT_ENV):
+                    scratch_root()
 
 
 class TestStaleScratchSweep(unittest.TestCase):
@@ -115,6 +191,19 @@ class TestStaleScratchSweep(unittest.TestCase):
                 engine.commit()
 
             self.assertTrue(os.path.exists(orphan), "must not delete what it cannot prove is stale")
+
+    def test_the_sweep_does_not_delete_a_prefixed_artifacts_transaction(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            sibling_scratch = temp_write_path(path + ".backup")
+            with open(sibling_scratch, "wb") as handle:
+                handle.write(b"another artifact's live transaction")
+
+            with JsonlEngine(output_path=path) as engine:
+                engine.append({"n": 1})
+                engine.commit()
+
+            self.assertTrue(os.path.exists(sibling_scratch))
 
     def test_the_sweep_leaves_the_artifact_and_its_sidecars_alone(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -182,11 +271,19 @@ class TestWriteLease(unittest.TestCase):
                 except Exception as exc:  # noqa: BLE001 - surfaced by the assertion below
                     errors.append(exc)
 
-            threads = [threading.Thread(target=write, args=(t,)) for t in "abcd"]
+            threads = [
+                threading.Thread(target=write, args=(tag,), daemon=True)
+                for tag in "abcd"
+            ]
             for t in threads:
                 t.start()
+
+            deadline = time.monotonic() + 30.0
             for t in threads:
-                t.join()
+                t.join(max(0.0, deadline - time.monotonic()))
+
+            alive = [t.name for t in threads if t.is_alive()]
+            self.assertEqual([], alive, f"writer threads did not stop within 30s: {alive}")
 
             self.assertEqual([], errors)
             records = list(JsonlStore(path))

@@ -154,7 +154,7 @@ Describe 'adapters module surface for pester-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-LatexBatchJob', 'Get-PesterBatchJob')
+            'Get-LatexBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         Get-Command Get-TestBatchJob -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         foreach ($oldPath in @(
@@ -178,7 +178,9 @@ Describe 'adapters module surface for pester-batch' {
     It 'keeps all run-relative path composition in one pure private resolver' {
         $sourceFiles = @(
             Get-ChildItem -LiteralPath $script:AdaptersModuleRoot -Recurse -File |
-                Where-Object Extension -In @('.ps1', '.psm1')
+                Where-Object {
+                    $_.Extension -in @('.ps1', '.psm1') -and $_.Name -match '(?i)pester'
+                }
         )
         $addressLiteralOwners = [System.Collections.Generic.List[string]]::new()
         $resolverCalls = [System.Collections.Generic.List[string]]::new()

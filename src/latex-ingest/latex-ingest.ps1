@@ -15,11 +15,13 @@
   In-house (no pandoc/latexml dependency). Known rough edges: tables, deeply-nested optional-arg macros,
   multi-file submissions beyond one \input level, non-UTF8 sources.
 
-  Entry point: Invoke-ArxivLatexToMarkdown -MetadataPath <metadata.json-or-document-dir> -OutDir <dir>
+  Entry point: Invoke-ArxivLatexToMarkdown -MetadataPath <article.json-or-document-dir> -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../logistics/run-paths.ps1" # runstamped artifact addressing only; source-deposit addressing comes from metadata.json
-. "$PSScriptRoot/source-deposit.ps1"       # source-only .NET extraction + validated metadata.json addressing; never initializes implicitly
+. "$PSScriptRoot/../logistics/run-paths.ps1" # runstamped artifact addressing only
+. "$PSScriptRoot/source-deposit.ps1"       # source-only .NET extraction + deposit-address validation; never initializes implicitly
+Import-Module (Join-Path $PSScriptRoot '../shared/jsonl-engine-client/jsonl-engine-client.psd1') `
+    -ErrorAction Stop
 . "$PSScriptRoot/../tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/../pdf-raster/pdf-raster.ps1"   # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
@@ -2210,37 +2212,73 @@ function Resolve-LatexIngestManifestSource {
     param([Parameter(Mandatory)] [string]$MetadataPath)
     $requested = [System.IO.Path]::GetFullPath($MetadataPath)
     $manifestPath = if ([System.IO.Directory]::Exists($requested)) {
-        Join-Path $requested 'metadata.json'
+        $articlePath = Join-Path $requested 'article.json'
+        $articleEntry = Get-Item -LiteralPath $articlePath -Force -ErrorAction SilentlyContinue
+        if ([System.IO.File]::Exists($articlePath)) { $articlePath }
+        elseif ($null -ne $articleEntry) {
+            throw "latex-ingest canonical article path is occupied by a non-file: '$articlePath'"
+        }
+        else { Join-Path $requested 'metadata.json' }
     } else {
         $requested
     }
     try {
         $manifestPath = (Resolve-Path -LiteralPath $manifestPath -ErrorAction Stop).Path
     } catch {
-        throw "latex-ingest metadata.json not found: '$manifestPath'"
+        throw "latex-ingest article manifest not found: '$manifestPath'"
     }
     if (-not [System.IO.File]::Exists($manifestPath)) {
         throw "latex-ingest metadata path is not a file: '$manifestPath'"
+    }
+    if (Test-LatexPathHasReparsePoint -Path $manifestPath) {
+        throw "latex-ingest manifest path must not traverse a symbolic link or reparse point: '$manifestPath'"
     }
 
     $documentDir = Split-Path -Parent $manifestPath
     $manifest = Read-SourceDepositJson -Path $manifestPath
     $slug = [string]$manifest.slug
-    if ([string]::IsNullOrWhiteSpace($slug)) { throw "metadata.json has no slug: '$manifestPath'" }
+    if ([string]::IsNullOrWhiteSpace($slug)) { throw "article manifest has no slug: '$manifestPath'" }
+    $isArticle = [string]$manifest.schema -eq 'codex-scientiae/article/0.1'
+    if ($isArticle) {
+        if (-not [string]::Equals(
+                [System.IO.Path]::GetFileName($manifestPath),
+                'article.json',
+                [System.StringComparison]::Ordinal) -or
+            -not [string]::Equals(
+                (Split-Path -Leaf $documentDir),
+                $slug,
+                [System.StringComparison]::Ordinal)) {
+            throw "canonical article location does not match slug '$slug': '$manifestPath'"
+        }
+        $frames = @(jsonl-engine-client\Invoke-JsonlEngineCommand -Verb 'validate-json' `
+                -Argument @($manifestPath, 'article.schema.json'))
+        if ($frames.Count -ne 1) {
+            throw "jsonl engine verb 'validate-json' returned $($frames.Count) values; expected exactly one"
+        }
+        $manifest = $frames[0].value
+    }
+    elseif ([string]::Equals(
+            [System.IO.Path]::GetFileName($manifestPath),
+            'article.json',
+            [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "canonical article path does not contain an article/0.1 record: '$manifestPath'"
+    }
     $state = Test-ExistingSourceDeposit -Manifest $manifest -ManifestPath $manifestPath `
         -DocumentDir $documentDir -Slug $slug
     $treeForm = @($manifest.source_forms | Where-Object { $_.role -eq 'latex-source-tree' })
     if ($treeForm.Count -ne 1 -or [string]::IsNullOrWhiteSpace([string]$treeForm[0].entrypoint)) {
-        throw "metadata.json does not declare exactly one LaTeX source-tree entrypoint: '$manifestPath'"
+        throw "article manifest does not declare exactly one LaTeX source-tree entrypoint: '$manifestPath'"
     }
     $main = [System.IO.Path]::GetFullPath((Join-Path $state.source_path ([string]$treeForm[0].entrypoint)))
     if (-not (Test-LatexPathWithinRoot -Path $main -Root $state.source_path) -or
+        (Test-LatexPathHasReparsePoint -Path $main) -or
         -not [System.IO.File]::Exists($main)) {
-        throw "metadata.json entrypoint is missing or outside its source tree: '$main'"
+        throw "article manifest entrypoint is missing or outside its source tree: '$main'"
     }
     return [pscustomobject]@{
         slug          = $slug
         metadata_path = $manifestPath
+        article_path  = $manifestPath
         archive_path  = $state.archive_path
         source_path   = $state.source_path
         main_path     = $main

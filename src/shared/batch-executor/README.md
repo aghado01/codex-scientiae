@@ -22,14 +22,20 @@ the resolved budget is present in every execution record.
 
 ## Companion adapters
 
-The [`adapters`](../../adapters/README.md) module exports `Get-PesterBatchJob` and `Get-LatexBatchJob` as
-public files in one package, with no compatibility alias or module per command. The first discovers
-repository Pester files and assigns each container native-result and suite-artifact writes beneath the
-caller run, transporting the latter as `CODEX_TEST_ARTIFACT_ROOT`; the second maps source-ready document
-manifests to isolated latex-ingest process jobs with
-caller-owned run addressing and complete application write declarations. Both emit jobs without changing
-this module's public surface or owning execution. Callers compile and invoke those jobs through
-`New-BatchPlan` and `Invoke-BatchPlan`.
+The [`adapters`](../../adapters/README.md) module exports `Get-PesterBatchJob`, `Get-PytestBatchJob`, and
+`Get-LatexBatchJob` as public files in one package, with no compatibility alias or module per command. The
+test planners discover one physical framework file per process job and assign framework-native result and
+suite-artifact writes beneath the caller run; the LaTeX planner maps source-ready document manifests to
+isolated latex-ingest process jobs with caller-owned run addressing and complete application write
+declarations. All emit jobs without changing this module's public surface or owning execution. Callers
+compile and invoke those jobs through `New-BatchPlan` and `Invoke-BatchPlan`.
+
+The pytest unit is one physical `test_*.py` file with native JUnit and separate retained/temporary addresses
+beneath `RunDirectory/pytest-jobs/<container>`. It uses the existing `PowerShellProcess` mode and
+`tests/pytest.ps1` entrypoint, which invokes the pinned Python interpreter as a descendant. This preserves
+the executor's single queue,
+worker budget, timeout, cancellation, process-tree teardown, and result order. It does not implement a
+native non-PowerShell job kind or authorize pytest-xdist.
 
 ## Job contract
 
@@ -166,5 +172,6 @@ with the parent run without sharing file handles.
 
 This module does not provide retries or backoff, detached or durable background work, persistent
 queues or resume, dependency-DAG scheduling, multiple competing schedulers, native non-PowerShell
-child entrypoints, domain discovery, or a public worker-budget preview. Cooperative process-child
-cancellation, parent-liveness leases, and hard-parent-death containment remain deferred designs.
+child entrypoints, domain discovery, or a public worker-budget preview. The pytest adapter's nested
+Python invocation does not change those non-goals. Cooperative process-child cancellation,
+parent-liveness leases, and hard-parent-death containment remain deferred designs.

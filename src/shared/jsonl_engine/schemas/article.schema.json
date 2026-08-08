@@ -29,8 +29,7 @@
       "const": "source-ready"
     },
     "slug": {
-      "type": "string",
-      "minLength": 1
+      "$ref": "#/$defs/portableLeaf"
     },
     "initialized_utc": {
       "type": "string",
@@ -183,9 +182,7 @@
       "contains": {
         "type": "object",
         "required": [
-          "role",
-          "path",
-          "sha256"
+          "role"
         ],
         "properties": {
           "role": {
@@ -193,10 +190,38 @@
           }
         }
       },
+      "minContains": 1,
+      "maxContains": 1,
       "items": {
         "allOf": [
           {
             "$ref": "#/$defs/fileRecord"
+          },
+          {
+            "if": {
+              "properties": {
+                "role": {
+                  "const": "latex-source-archive"
+                }
+              },
+              "required": [
+                "role"
+              ]
+            },
+            "then": {
+              "required": [
+                "sha256",
+                "archive_kind"
+              ],
+              "properties": {
+                "archive_kind": {
+                  "enum": [
+                    "tar+gzip",
+                    "single-tex+gzip"
+                  ]
+                }
+              }
+            }
           },
           {
             "if": {
@@ -213,8 +238,10 @@
               "required": [
                 "derived_from",
                 "entrypoint",
+                "entrypoint_selection",
                 "files",
-                "tex_files"
+                "tex_files",
+                "sha256"
               ],
               "properties": {
                 "derived_from": {
@@ -222,6 +249,10 @@
                 },
                 "entrypoint": {
                   "$ref": "#/$defs/relativePath"
+                },
+                "entrypoint_selection": {
+                  "type": "string",
+                  "minLength": 1
                 },
                 "files": {
                   "type": "integer",
@@ -235,7 +266,24 @@
             }
           }
         ]
-      }
+      },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "role"
+            ],
+            "properties": {
+              "role": {
+                "const": "latex-source-tree"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
     },
     "validation": {
       "type": "object",
@@ -267,10 +315,13 @@
     }
   },
   "$defs": {
+    "portableLeaf": {
+      "type": "string",
+      "pattern": "^(?!(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm][1-9]|[Ll][Pp][Tt][1-9])(?:\\.|$))(?!\\.{1,2}$)(?!.*[ .]$)[^<>:\"/\\\\|?*\\u0000-\\u001F]+$"
+    },
     "relativePath": {
       "type": "string",
-      "minLength": 1,
-      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\]+$"
+      "pattern": "^(?!(?:.*\/)?(?:[Cc][Oo][Nn]|[Pp][Rr][Nn]|[Aa][Uu][Xx]|[Nn][Uu][Ll]|[Cc][Oo][Mm][1-9]|[Ll][Pp][Tt][1-9])(?:\\.|\/|$))(?!(?:.*\/)?\\.{1,2}(?:\/|$))(?!.*[ .](?:\/|$))(?!.*[<>:\"\\\\|?*\\u0000-\\u001F])[^/]+(?:/[^/]+)*$"
     },
     "sha256": {
       "type": "string",

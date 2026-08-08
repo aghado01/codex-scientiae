@@ -75,6 +75,7 @@ class StorePaths:
 
 
 SCRATCH_DIRNAME = os.path.join("artifacts", "json-scratch")
+SCRATCH_ROOT_ENV = "CODEX_JSON_SCRATCH_ROOT"
 
 
 def scratch_root() -> str:
@@ -89,15 +90,30 @@ def scratch_root() -> str:
     machine that means engaging C: for work happening entirely on D:. artifacts/ is already
     gitignored regenerable output, which is exactly what these are.
 
-    Falls back to the system temp directory only when there is no repository to anchor to -- the
+    ``CODEX_JSON_SCRATCH_ROOT`` selects a process-scoped coordination root. Batch workers use a
+    job-local value so independent jobs do not write to one shared directory. Every process that
+    can write the same artifact must receive the same value, because the directory defines the
+    lock-coordination domain.
+
+    Without that override, the production default remains the repository scratch directory below.
+    It falls back to the system temp directory only when there is no repository to anchor to -- the
     engine has to keep working when installed as a wheel somewhere else.
     """
-    try:
-        from .paths import find_repository_root
+    configured = os.environ.get(SCRATCH_ROOT_ENV)
+    if configured is not None:
+        if not configured.strip() or not os.path.isabs(configured):
+            raise ValueError(
+                f"{SCRATCH_ROOT_ENV} must name a non-empty absolute directory, got "
+                f"{configured!r}"
+            )
+        root = os.path.abspath(configured)
+    else:
+        try:
+            from .paths import find_repository_root
 
-        root = os.path.join(find_repository_root(), SCRATCH_DIRNAME)
-    except (RuntimeError, ImportError):
-        root = os.path.join(tempfile.gettempdir(), "codex-json-scratch")
+            root = os.path.join(find_repository_root(), SCRATCH_DIRNAME)
+        except (RuntimeError, ImportError):
+            root = os.path.join(tempfile.gettempdir(), "codex-json-scratch")
     os.makedirs(root, exist_ok=True)
     return root
 
@@ -109,10 +125,11 @@ def lock_path(artifact_path: str) -> str:
     state belonging to the store: it says nothing about the bytes and is meaningless to a reader,
     so leaving one in every output directory would be noise a reader has to learn to ignore.
 
-    Keyed by a digest of the absolute path so two artifacts never share a lock and one artifact
-    always resolves to the same one, from any working directory.
+    Keyed by a digest of the canonical path so two artifacts never share a lock and one artifact
+    always resolves to the same one, including through Windows case aliases and resolved links.
     """
-    digest = hashlib.sha256(os.path.abspath(artifact_path).encode("utf-8")).hexdigest()[:32]
+    canonical = os.path.normcase(os.path.realpath(os.path.abspath(artifact_path)))
+    digest = hashlib.sha256(os.fsencode(canonical)).hexdigest()[:32]
     return os.path.join(scratch_root(), f"{digest}.lock")
 
 
@@ -128,14 +145,33 @@ def temp_write_path(artifact_path: str) -> str:
 
 
 def scratch_glob(artifact_path: str) -> str:
-    """Glob matching every write-scratch file for `artifact_path`.
+    """Glob candidates for one transaction subject; exact grammar is checked afterward.
 
     Scratch must sit beside its target: os.replace is atomic only within one filesystem, and a
     shared scratch directory would silently degrade the atomic publish into a cross-volume copy --
     or fail outright, which is what it does on Windows. Adjacency is a correctness requirement, not
     a placement preference, so the answer to strays is sweeping them rather than relocating them.
     """
-    return f"{artifact_path}.*.tmp"
+    return f"{glob.escape(artifact_path)}.*.*.tmp"
+
+
+def _is_transaction_scratch(subject: str, candidate: str) -> bool:
+    """Whether `candidate` is exactly ``subject.PID.12-lower-hex.tmp``."""
+    prefix = subject + "."
+    if not os.path.normcase(candidate).startswith(os.path.normcase(prefix)):
+        return False
+
+    parts = candidate[len(prefix) :].split(".")
+    if len(parts) != 3:
+        return False
+    pid, token, extension = parts
+    return (
+        bool(pid)
+        and all("0" <= char <= "9" for char in pid)
+        and len(token) == 12
+        and all(char in "0123456789abcdef" for char in token)
+        and extension == "tmp"
+    )
 
 
 def find_stale_scratch(artifact_path: str) -> List[str]:
@@ -146,7 +182,15 @@ def find_stale_scratch(artifact_path: str) -> List[str]:
     any scratch present belongs to one that died. Without the lease the same files are
     indistinguishable from a peer's work in progress, and deleting them would corrupt it.
     """
-    return sorted(glob.glob(scratch_glob(artifact_path)))
+    paths = store_paths(artifact_path)
+    found = set()
+    for subject in (paths.artifact, paths.jidx, paths.sig):
+        found.update(
+            candidate
+            for candidate in glob.glob(scratch_glob(subject))
+            if _is_transaction_scratch(subject, candidate)
+        )
+    return sorted(found)
 
 
 def store_paths(path: str) -> StorePaths:

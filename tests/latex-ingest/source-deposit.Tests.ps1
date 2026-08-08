@@ -102,8 +102,10 @@ Describe 'standalone LaTeX source-deposit initialization' {
         Test-Path (Join-Path $deposit.document_dir 'metadata.json') | Should -BeTrue
 
         $manifest = Read-SourceDepositJson (Join-Path $deposit.document_dir 'metadata.json')
-        (Get-Content -LiteralPath (Join-Path $deposit.document_dir 'metadata.json') -Raw |
-            Test-Json -SchemaFile "$PSScriptRoot/../../ingestion/inventory/metadata.schema.json") | Should -BeTrue
+        (Test-ExistingSourceDeposit -Manifest $manifest `
+                -ManifestPath (Join-Path $deposit.document_dir 'metadata.json') `
+                -DocumentDir $deposit.document_dir -Slug $slug).status |
+            Should -Be 'already-initialized'
         $manifest.schema | Should -Be 'codex-scientiae/document-metadata/0.1'
         $manifest.state | Should -Be 'source-ready'
         $manifest.evidence.latex_source.entrypoint | Should -Be 'paper.tex'
@@ -161,6 +163,41 @@ Describe 'standalone LaTeX source-deposit initialization' {
         $result.status | Should -Be 'initialized'
         $result.manifest.document.title | Should -Be 'Locality'
         $result.metadata_path | Should -Be (Join-Path $deposit.document_dir 'metadata.json')
+
+        $guardSlug = 'guarded-inputs'
+        $guardDocument = Join-Path $deposit.root $guardSlug
+        [void][System.IO.Directory]::CreateDirectory($guardDocument)
+        $guardArchive = Join-Path $guardDocument "$guardSlug.tar.gz"
+        New-TestLatexTarGzip -Path $guardArchive -Files ([ordered]@{
+                'main.tex' = '\documentclass{article}\begin{document}Guarded.\end{document}'
+            })
+        $guardProvider = Join-Path $guardDocument "$guardSlug.arxiv.json"
+        [System.IO.File]::WriteAllText(
+            $guardProvider,
+            (ConvertTo-Json ([ordered]@{ idv = $guardSlug; authors = @() })),
+            [System.Text.UTF8Encoding]::new($false)
+        )
+        $guardPdf = Join-Path $guardDocument "$guardSlug.pdf"
+        [System.IO.File]::WriteAllBytes($guardPdf, [byte[]](0x25, 0x50, 0x44, 0x46))
+
+        $script:GuardedSourceDepositPath = $guardArchive
+        Mock Test-LatexPathHasReparsePoint {
+            param([string]$Path)
+            return Test-LatexPathsEqual -Left $Path -Right $script:GuardedSourceDepositPath
+        }
+        { Resolve-SourceDepositArchive -DocumentDir $guardDocument -Slug $guardSlug } |
+            Should -Throw '*source archive must not traverse a symbolic link or reparse point*'
+
+        $script:GuardedSourceDepositPath = $guardProvider
+        { Resolve-SourceDepositProviderMetadata -DocumentDir $guardDocument -Slug $guardSlug } |
+            Should -Throw '*provider metadata must not traverse a symbolic link or reparse point*'
+
+        $script:GuardedSourceDepositPath = $guardPdf
+        { Initialize-LatexSourceDeposit -DocumentDir $guardDocument } |
+            Should -Throw '*PDF source must not traverse a symbolic link or reparse point*'
+        Test-Path (Join-Path $guardDocument "$guardSlug-tex") | Should -BeFalse
+        Test-Path (Join-Path $guardDocument 'metadata.json') | Should -BeFalse
+        Assert-NoSourceDepositTransactionResidue $guardDocument
     }
 
     It 'is idempotent and validates rather than rewriting an existing sentinel' {
@@ -212,6 +249,45 @@ Describe 'standalone LaTeX source-deposit initialization' {
         { Initialize-LatexSourceDeposit -DocumentDir $deposit.document_dir } | Should -Throw '*differs from the validated archive*'
         Test-Path (Join-Path $deposit.document_dir 'metadata.json') | Should -BeFalse
         (Get-Content (Join-Path $source 'main.tex') -Raw) | Should -Match 'Different body'
+
+        Remove-Item -LiteralPath $source -Recurse -Force
+        $rootTarget = Join-Path $deposit.root 'root-reparse-target'
+        [void][System.IO.Directory]::CreateDirectory($rootTarget)
+        [System.IO.File]::WriteAllText(
+            (Join-Path $rootTarget 'main.tex'),
+            '\documentclass{article}\begin{document}Archive body.\end{document}',
+            [System.Text.UTF8Encoding]::new($false)
+        )
+        $directoryLinkType = if ([System.OperatingSystem]::IsWindows()) { 'Junction' } else { 'SymbolicLink' }
+        [void](New-Item -ItemType $directoryLinkType -Path $source -Target $rootTarget -ErrorAction Stop)
+        try {
+            { Initialize-LatexSourceDeposit -DocumentDir $deposit.document_dir } |
+                Should -Throw '*source tree contains a reparse point*'
+            Test-Path (Join-Path $deposit.document_dir 'metadata.json') | Should -BeFalse
+        } finally {
+            Remove-Item -LiteralPath $source -Force
+        }
+
+        [System.IO.Directory]::Move($rootTarget, $source)
+        $descendantTarget = Join-Path $deposit.root 'descendant-reparse-target'
+        [void][System.IO.Directory]::CreateDirectory($descendantTarget)
+        [System.IO.File]::WriteAllText(
+            (Join-Path $descendantTarget 'asset.txt'),
+            'external asset',
+            [System.Text.UTF8Encoding]::new($false)
+        )
+        $descendantLink = Join-Path $source 'linked-assets'
+        [void](New-Item -ItemType $directoryLinkType -Path $descendantLink `
+                -Target $descendantTarget -ErrorAction Stop)
+        try {
+            { Get-LatexSourceTreeFingerprint -RootPath $source } |
+                Should -Throw '*source tree contains a reparse point*'
+            { Test-LatexSourceTree -RootPath $source -Slug $slug } |
+                Should -Throw '*source tree contains a reparse point*'
+        } finally {
+            Remove-Item -LiteralPath $descendantLink -Force
+        }
+
         Assert-NoSourceDepositTransactionResidue $deposit.document_dir
     }
 
@@ -295,6 +371,8 @@ Describe 'standalone LaTeX source-deposit initialization' {
         } finally {
             Exit-SourceDepositLock $held
         }
+        $reacquired = Enter-SourceDepositLock -DocumentDir $deposit.document_dir -TimeoutSeconds 0
+        Exit-SourceDepositLock $reacquired
         Test-Path (Join-Path $deposit.document_dir 'metadata.json') | Should -BeFalse
     }
 }

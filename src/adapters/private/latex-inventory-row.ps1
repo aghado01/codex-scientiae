@@ -16,6 +16,24 @@ function Get-LatexBatchPropertyValue {
     return $null
 }
 
+function Test-LatexBatchPathHasReparsePoint {
+    param([Parameter(Mandatory)] [string] $Path)
+
+    $fullPath = [System.IO.Path]::GetFullPath($Path)
+    $pathRoot = [System.IO.Path]::GetPathRoot($fullPath)
+    $relative = [System.IO.Path]::GetRelativePath($pathRoot, $fullPath)
+    $current = $pathRoot
+    foreach ($segment in @($relative -split '[\\/]' | Where-Object { $_ -and $_ -ne '.' })) {
+        $current = [System.IO.Path]::Combine($current, $segment)
+        $item = Get-Item -LiteralPath $current -Force -ErrorAction SilentlyContinue
+        if ($null -eq $item) { break }
+        if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
+            return $true
+        }
+    }
+    return $false
+}
+
 function Resolve-LatexBatchRepositoryRoot {
     [CmdletBinding()]
     param(
@@ -49,7 +67,11 @@ function Resolve-LatexBatchInventoryRoot {
     if (-not (Test-Path -LiteralPath $candidate -PathType Container)) {
         throw "latex-batch inventory root not found: '$InventoryRoot'"
     }
-    return (Resolve-Path -LiteralPath $candidate).Path
+    $resolved = (Resolve-Path -LiteralPath $candidate).Path
+    if (Test-LatexBatchPathHasReparsePoint -Path $resolved) {
+        throw "latex-batch InventoryRoot must not traverse a symbolic link or reparse point: '$resolved'"
+    }
+    return $resolved
 }
 
 function Resolve-LatexBatchRunDirectory {
@@ -105,13 +127,22 @@ function Resolve-LatexBatchManifestPath {
     }
     else { [System.IO.Path]::GetFullPath([string]$value, $InventoryRoot) }
     if ([System.IO.Directory]::Exists($candidate)) {
-        $candidate = [System.IO.Path]::Combine($candidate, 'metadata.json')
+        $articleCandidate = [System.IO.Path]::Combine($candidate, 'article.json')
+        $articleEntry = Get-Item -LiteralPath $articleCandidate -Force -ErrorAction SilentlyContinue
+        $candidate = if ([System.IO.File]::Exists($articleCandidate)) {
+            $articleCandidate
+        }
+        elseif ($null -ne $articleEntry) {
+            throw "latex-batch canonical article path is occupied by a non-file: '$articleCandidate'"
+        }
+        else { [System.IO.Path]::Combine($candidate, 'metadata.json') }
     }
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
         throw "latex-batch metadata.json not found: '$value'"
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
-    if (-not (Test-LatexBatchPathWithinRoot -Path $resolved -Root $InventoryRoot)) {
+    if ((Test-LatexBatchPathHasReparsePoint -Path $resolved) -or
+        -not (Test-LatexBatchPathWithinRoot -Path $resolved -Root $InventoryRoot)) {
         throw "latex-batch metadata address escapes InventoryRoot: '$value'"
     }
     return $resolved
@@ -134,9 +165,12 @@ function Read-LatexBatchManifestRecord {
     }
     catch { throw "latex-batch metadata.json is invalid: '$manifestPath': $($_.Exception.Message)" }
     if ($manifest -isnot [System.Collections.IDictionary] -or
-        [string]$manifest['schema'] -ne 'codex-scientiae/document-metadata/0.1' -or
+        [string]$manifest['schema'] -notin @(
+            'codex-scientiae/article/0.1',
+            'codex-scientiae/document-metadata/0.1'
+        ) -or
         [string]$manifest['state'] -ne 'source-ready') {
-        throw "latex-batch requires a source-ready document-metadata/0.1 manifest: '$manifestPath'"
+        throw "latex-batch requires a source-ready article manifest: '$manifestPath'"
     }
 
     $slug = [string]$manifest['slug']
@@ -145,6 +179,33 @@ function Read-LatexBatchManifestRecord {
         (Split-Path -Leaf $slug) -ne $slug -or
         $slug.IndexOfAny([System.IO.Path]::GetInvalidFileNameChars()) -ge 0) {
         throw "latex-batch manifest slug must be one safe path leaf: '$slug'"
+    }
+
+    $isArticle = [string]$manifest['schema'] -eq 'codex-scientiae/article/0.1'
+    if ($isArticle) {
+        if (-not [string]::Equals(
+                [System.IO.Path]::GetFileName($manifestPath),
+                'article.json',
+                [System.StringComparison]::Ordinal) -or
+            -not [string]::Equals(
+                (Split-Path -Leaf (Split-Path -Parent $manifestPath)),
+                $slug,
+                [System.StringComparison]::Ordinal)) {
+            throw "latex-batch canonical article location does not match slug '$slug': '$manifestPath'"
+        }
+        foreach ($required in @(
+                'initialized_utc', 'title', 'authors', 'abstract', 'identifiers', 'categories',
+                'evidence', 'source_forms', 'validation')) {
+            if (-not $manifest.Contains($required)) {
+                throw "latex-batch canonical article is missing required field '$required': '$manifestPath'"
+            }
+        }
+    }
+    elseif ([string]::Equals(
+            [System.IO.Path]::GetFileName($manifestPath),
+            'article.json',
+            [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "latex-batch canonical article path does not contain an article/0.1 record: '$manifestPath'"
     }
 
     $sourceForms = @($manifest['source_forms'])

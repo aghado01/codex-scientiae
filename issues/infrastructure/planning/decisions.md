@@ -247,5 +247,54 @@ records, and other domain rules remain with their applications unless a delibera
 accepted. Separate focused issues, such as batch execution, may depend on infrastructure without being
 absorbed into this umbrella.
 
+### D36 — `deposit` is the declared PowerShell/Python article-publication boundary — accepted
+
+The shared JSONL engine exposes one framed whole-artifact transaction with this exact argument surface and
+order as invoked by the PowerShell source-deposit orchestrator:
+
+```text
+python -m jsonl_engine --framed deposit
+  --document-dir <absolute-document-directory>
+  --slug <slug>
+  --archive <document-relative-archive-path>
+  --archive-kind <tar+gzip|single-tex+gzip>
+  --tree <document-relative-source-tree-path>
+  --tree-sha256 <lowercase-sha256>
+  --files <count>
+  --tex-files <count>
+  --entrypoint <tree-relative-tex-path>
+  --entrypoint-selection <selection>
+  --publication <published-new-tree|recovered-existing-tree>
+  --findings-json <absolute-staged-findings-path>
+  [--provider-json <document-relative-provider-path>]
+  [--pdf <document-relative-pdf-path>]
+```
+
+PowerShell owns extraction, source confinement, entrypoint resolution, LaTeX declarations, the tree
+fingerprint, and the probe ledger, and it holds the source lock until this call completes. Explicit findings
+staging is create-only and outside the document deposit; transport input cannot share an address with a
+source or sentinel. Direct callers of the low-level verb inherit the same source-stability precondition.
+Python treats the arguments as claims to verify: it owns document confinement, measured file facts and
+pre/post-publication generation checks, rollback of its new sentinel when those checks detect drift,
+provider projection,
+`codex-scientiae/article/0.1` validation, and no-clobber publication or idempotent validation of
+`{document-dir}/article.json`. The command emits exactly one value frame on success with `status`, `created`,
+`article_path`, `archive_path`, `source_path`, and the flat `article` object. Validation and conflict failures
+emit no value result. Application meaning and the supersession of metadata-era names remain in latex-ingest
+D19 rather than becoming generic engine policy.
+
+### D37 — Authoritative schema validation occurs at artifact publication and use, not batch planning — accepted
+
+The JSONL-engine capability record advertises 16 stable verbs. `validate-json <path> <schema>` is the exact
+positional boundary for validating an existing bounded document: Python strictly reads one JSON object,
+resolves a shipped schema by ID, filename, or stem, applies it, and emits exactly one validated value frame.
+The shared PowerShell client transports this verb without implementing JSON Schema rules itself.
+
+Batch planners remain process-free and perform only the confined address, discriminator, and identity checks
+needed to build jobs. Application workers invoke `validate-json` before consuming a schema-owned artifact;
+publication transactions such as `deposit` validate through the same Python schema authority before writing.
+For latex-ingest, the worker uses `validate-json <article-path> article.schema.json`. The article's domain
+meaning remains in latex-ingest D19 rather than becoming generic infrastructure policy.
+
 Unsettled design choices are tracked in [open-questions.md](open-questions.md), not mixed into the accepted
 decision sequence.

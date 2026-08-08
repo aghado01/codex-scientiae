@@ -144,6 +144,17 @@ class TestRefusals(unittest.TestCase):
                 read_json(path)
             self.assertIn("BOM", str(caught.exception))
 
+    def test_nonfinite_number_extensions_are_not_json(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            for literal in (b"NaN", b"Infinity", b"-Infinity"):
+                with self.subTest(literal=literal):
+                    path = os.path.join(tmpdir, "doc.json")
+                    with open(path, "wb") as handle:
+                        handle.write(b'{"n":' + literal + b"}")
+                    with self.assertRaises(ValueError) as caught:
+                        read_json(path)
+                    self.assertIn("not JSON", str(caught.exception))
+
 
 class TestOptionalDocument(unittest.TestCase):
     def test_absent_is_none_but_malformed_is_still_an_error(self):
@@ -164,6 +175,29 @@ class TestTerminatorEnforcement(unittest.TestCase):
             with self.assertRaises(ValueError) as caught:
                 list(JsonlStore(path, eol=Eol.CRLF))
             self.assertIn("bare LF", str(caught.exception))
+
+    def test_valid_looking_unterminated_tail_is_not_a_record(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "unterminated.jsonl")
+            with open(path, "wb") as handle:
+                handle.write(b'{"a":1}\n{"b":2}')
+
+            with self.assertRaises(ValueError) as caught:
+                list(JsonlStore(path))
+            self.assertIn("no LF terminator", str(caught.exception))
+
+            # len() scans when there is no index and must enforce the same framing contract.
+            with self.assertRaises(ValueError):
+                len(JsonlStore(path))
+
+    def test_nonfinite_number_is_rejected_inside_a_store(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "nonfinite.jsonl")
+            with open(path, "wb") as handle:
+                handle.write(b'{"n":NaN}\n')
+            with self.assertRaises(ValueError) as caught:
+                list(JsonlStore(path))
+            self.assertIn("not JSON", str(caught.exception))
 
 
 if __name__ == "__main__":

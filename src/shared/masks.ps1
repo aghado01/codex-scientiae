@@ -172,11 +172,7 @@ function Split-AtLevel {
 }
 
 # ── offset arithmetic — change-of-basis for masks (the pincer substrate) ───────
-# Move-Mask shifts spans into a universe of a given length; Limit-Mask restricts a mask to [Start,End)
-# and rebases it to [0,End-Start). Together they lift a level-local mask back to the parent offset
-# space — the bottom-up half of the pincer (Character atoms -> Line spans -> MultiLine extent). The
-# coincidence test (top-down derivation == bottom-up derivation) is exercised in the validation suite;
-# the dispatch-ranking / impossibility-gate POLICY readouts are deferred (membrane-upgrade-plan).
+
 function Move-Mask {
     param([Parameter(Mandatory)]$Mask, [Parameter(Mandatory)][int]$By, [Parameter(Mandatory)][int]$Length)
     $out = [System.Collections.Generic.List[object]]::new()

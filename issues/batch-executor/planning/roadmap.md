@@ -2,10 +2,11 @@
 
 Living plan for batch-executor work not yet complete. The current architecture contract is
 [decisions.md](decisions.md); completed work moves to [ledger.md](ledger.md); the testing tranche has a
-[detailed workplan](testing-overhaul-workplan.md); arguments, briefs, and review evidence live under
+[completed Pester workplan](testing-overhaul-workplan.md) and [completed pytest workplan](pytest-testing-workplan.md);
+arguments, briefs, and review evidence live under
 [../discussions/](../discussions/) and [../briefs/](../briefs/). Do not leave completed work in this file.
 
-## Current baseline — 2026-08-06
+## Current baseline — Pester closure 2026-08-06; pytest closure 2026-08-08
 
 The executor is packaged under `src/shared/batch-executor/`. Its manifest exposes four commands; its root
 module validates and reads four runtime payloads as source data, loads named host files in deterministic
@@ -41,9 +42,9 @@ failure containment, and a live source-deposit-to-latex-ingest child run. At clo
 suite is 158/158 and the complete repository suite is 474/474. That left cross-adapter thinness as the final
 Phase 4 gate.
 
-The two planners are public files under `src/adapters/`, backed by grouped private helpers and one manifest;
-there is no PowerShell module per planner. The Pester and LaTeX planners, helper symbols, metadata, job IDs,
-address roots, and test filenames consistently use `pester-batch` and `latex-batch` naming.
+The three planners are public files under `src/adapters/`, backed by grouped private helpers and one
+manifest; there is no PowerShell module per planner. Pester, pytest, and LaTeX planner symbols, metadata,
+job IDs, address roots, and test filenames retain their framework/domain naming.
 
 BEX-403 is closed. A cross-adapter AST gate proves production adapters call the executor only through
 `New-BatchJob`; expose no execution-owner inputs; own no scheduler, private PowerShell host, process
@@ -123,7 +124,7 @@ was native stderr plus a deliberately nonzero final CLI status leaking past nine
 LaTeX/HDBSCAN shared-path collision; local capture/status ownership and the assigned
 `artifacts/hdbscan-cli` subtree repair that boundary. Completed Phase 5 implementation and evidence live in
 the [ledger](ledger.md), [inventory](testing-batchability-inventory.md), and workplan, leaving no active
-testing-overhaul item in this ahead-only roadmap.
+Pester-overhaul item in this ahead-only roadmap.
 
 ## Sequencing rules
 
@@ -135,8 +136,13 @@ testing-overhaul item in this ahead-only roadmap.
 5. Require a separate decision before changing the frozen public execution projection or deferred semantics.
 6. Preserve the complete exact-file admission gate; any future finer-grained scheduling requires separate
    evidence and a new decision.
+7. Keep Pester and pytest selection, runner, observation, and native-result semantics framework-owned when
+   their jobs share one plan.
 
 ## Deferred semantic candidates
+
+- Map or retire the four historical Pester JSONL containers after identifying any unique
+  PowerShell-front-end coverage. This archaeology is separate from the completed pytest admission.
 
 These are not implied by the module refactor and require separate decisions:
 

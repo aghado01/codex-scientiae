@@ -166,6 +166,14 @@ class Registry(BaseStore):
         """Not available on a registry. Use rebuild()."""
         self.add({})  # raises with the explanation
 
+    def open_writer(self, stem: Optional[str] = None, filename: Optional[str] = None):
+        """Not available on a registry. Streaming bypasses its set-wide invariants."""
+        raise TypeError(
+            f"Registry '{self.KIND}' cannot be streamed with open_writer(): canonical ordering, "
+            f"uniqueness, and the header count require the complete population. Use "
+            f"rebuild(entries)."
+        )
+
     def collate(self, entries: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Validate, key, refuse duplicates, and return the population in canonical order."""
         by_key: Dict[Tuple[Any, ...], Dict[str, Any]] = {}
@@ -201,7 +209,7 @@ class Registry(BaseStore):
         ordered = self.collate(entries)
         self._entry_count = len(ordered)
 
-        with self.open_writer(stem=stem, filename=filename) as writer:
+        with self._open_writer(stem=stem, filename=filename) as writer:
             for record in ordered:
                 writer.append(record)
             writer.commit()

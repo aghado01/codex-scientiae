@@ -103,11 +103,11 @@ BeforeAll {
         $adapterManifests = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -Filter *.psd1 -File)
         if ($adapterManifests.Count -ne 1 -or
             $adapterManifests[0].FullName -ne $expectedManifest) {
-            $failures.Add('Pester and LaTeX planners must share only src/adapters/adapters.psd1')
+            $failures.Add('Pester, pytest, and LaTeX planners must share only src/adapters/adapters.psd1')
         }
         $adapterModules = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -Filter *.psm1 -File)
         if ($adapterModules.Count -ne 1 -or $adapterModules[0].FullName -ne $expectedModule) {
-            $failures.Add('Pester and LaTeX planners must share only src/adapters/adapters.psm1')
+            $failures.Add('Pester, pytest, and LaTeX planners must share only src/adapters/adapters.psm1')
         }
 
         $oldPaths = @(
@@ -124,7 +124,7 @@ BeforeAll {
         $adapterSource = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -File | Where-Object {
                 $_.Extension -in @('.ps1', '.psm1', '.psd1', '.md')
             } | ForEach-Object { [System.IO.File]::ReadAllText($_.FullName) }) -join "`n"
-        if ($adapterSource -match 'Get-TestBatchJob|\bTestBatch|test-batch|test-jobs') {
+        if ($adapterSource -match 'Get-TestBatchJob|\bTestBatch|\btest-batch|\btest-jobs') {
             $failures.Add('live adapter source contains a retired generic Pester adapter name')
         }
 
@@ -139,6 +139,7 @@ BeforeAll {
         }
 
         $runnerOwners = [System.Collections.Generic.List[string]]::new()
+        $pytestRunnerOwners = [System.Collections.Generic.List[string]]::new()
         $compositionOwners = [System.Collections.Generic.List[string]]::new()
         $scriptFiles = @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'src'),
                 (Join-Path $script:RepoRoot 'tests') -Recurse -File | Where-Object {
@@ -155,6 +156,10 @@ BeforeAll {
                 $failures.Add("batch topology could not parse '$relative'")
                 continue
             }
+            if ($scriptFile.Name -notlike '*.Tests.ps1' -and
+                    $ast.Extent.Text -match 'PytestContainerObservation') {
+                $pytestRunnerOwners.Add($relative)
+            }
             foreach ($command in @($ast.FindAll({
                             param($node)
                             $node -is [System.Management.Automation.Language.CommandAst]
@@ -166,6 +171,7 @@ BeforeAll {
                 if ($scriptFile.Name -notlike '*.Tests.ps1' -and $name -in @(
                         'adapters\Get-LatexBatchJob'
                         'adapters\Get-PesterBatchJob'
+                        'adapters\Get-PytestBatchJob'
                         'batch-executor\New-BatchPlan'
                         'batch-executor\Invoke-BatchPlan'
                     )) {
@@ -182,12 +188,18 @@ BeforeAll {
         if (($actualRunnerOwners -join "`n") -ne ($expectedRunnerOwners -join "`n")) {
             $failures.Add("repository Pester runner ownership drifted: $($actualRunnerOwners -join ', ')")
         }
+        $actualPytestRunnerOwners = @($pytestRunnerOwners | Sort-Object)
+        if (($actualPytestRunnerOwners -join "`n") -ne 'tests/pytest.ps1') {
+            $failures.Add(
+                "repository pytest runner ownership drifted: $($actualPytestRunnerOwners -join ', ')")
+        }
         $actualCompositionOwners = @($compositionOwners | Sort-Object)
         $expectedCompositionOwners = @(
             'src/latex-ingest/latex-batch.ps1::adapters\Get-LatexBatchJob'
             'src/latex-ingest/latex-batch.ps1::batch-executor\Invoke-BatchPlan'
             'src/latex-ingest/latex-batch.ps1::batch-executor\New-BatchPlan'
             'tests/parallel.ps1::adapters\Get-PesterBatchJob'
+            'tests/parallel.ps1::adapters\Get-PytestBatchJob'
             'tests/parallel.ps1::batch-executor\Invoke-BatchPlan'
             'tests/parallel.ps1::batch-executor\New-BatchPlan'
         )
@@ -197,6 +209,59 @@ BeforeAll {
                 "repository batch composition ownership drifted: $($actualCompositionOwners -join ', ')")
         }
 
+        return $failures.ToArray()
+    }
+
+    function Get-JsonlClientTopologyFailures {
+        $failures = [System.Collections.Generic.List[string]]::new()
+        $clientRoot = Join-Path $script:RepoRoot 'src/shared/jsonl-engine-client'
+        $expectedManifest = Join-Path $clientRoot 'jsonl-engine-client.psd1'
+        $expectedModule = Join-Path $clientRoot 'jsonl-engine-client.psm1'
+        foreach ($required in @($expectedManifest, $expectedModule)) {
+            if (-not [System.IO.File]::Exists($required)) {
+                $failures.Add("required JSONL engine client file missing: '$required'")
+            }
+        }
+
+        $manifests = @(Get-ChildItem -LiteralPath $clientRoot -Recurse -Filter *.psd1 -File)
+        if ($manifests.Count -ne 1 -or $manifests[0].FullName -ne $expectedManifest) {
+            $failures.Add('JSONL engine client must have one canonical manifest')
+        }
+        $modules = @(Get-ChildItem -LiteralPath $clientRoot -Recurse -Filter *.psm1 -File)
+        if ($modules.Count -ne 1 -or $modules[0].FullName -ne $expectedModule) {
+            $failures.Add('JSONL engine client must have one canonical root module')
+        }
+
+        $retiredLogisticsBoundary = Join-Path $script:RepoRoot `
+            ('src/logistics/engine-' + 'call.ps1')
+        if ([System.IO.File]::Exists($retiredLogisticsBoundary)) {
+            $failures.Add('retired logistics JSONL process boundary returned')
+        }
+        $facade = Join-Path $script:RepoRoot 'src/shared/jsonl_engine/jso-shell.ps1'
+        if (-not [System.IO.File]::Exists($facade)) {
+            $failures.Add('temporary jso-shell compatibility importer is missing')
+        }
+        else {
+            $facadeText = [System.IO.File]::ReadAllText($facade)
+            if ($facadeText -notmatch 'Import-Module' -or
+                $facadeText -match 'ProcessStartInfo|function\s+(?:Invoke|Get|Find|Test|New|Read)-Jsonl') {
+                $failures.Add('jso-shell compatibility path must import, not reimplement, the client')
+            }
+        }
+
+        $processOwners = [System.Collections.Generic.List[string]]::new()
+        foreach ($file in @(Get-ChildItem -LiteralPath (Join-Path $script:RepoRoot 'src') `
+                -Recurse -File | Where-Object { $_.Extension -in @('.ps1', '.psm1') })) {
+            $text = [System.IO.File]::ReadAllText($file.FullName)
+            if ($text -match 'ProcessStartInfo' -and $text -match "jsonl_engine") {
+                $processOwners.Add(
+                    ([System.IO.Path]::GetRelativePath($script:RepoRoot, $file.FullName) -replace '\\', '/'))
+            }
+        }
+        $expectedOwner = 'src/shared/jsonl-engine-client/private/process.ps1'
+        if ((@($processOwners | Sort-Object) -join "`n") -cne $expectedOwner) {
+            $failures.Add("JSONL engine PowerShell process ownership drifted: $($processOwners -join ', ')")
+        }
         return $failures.ToArray()
     }
 }
@@ -210,9 +275,16 @@ Describe 'source path topology' {
     It 'keeps active literal source-code references pointed at existing files' {
         $failures = @(Get-LiteralSourcePathFailures)
         $failures.Count | Should -Be 0 -Because ($failures -join [Environment]::NewLine)
+    }
 
+    It 'keeps batch planners, runners, and composition under their declared owners' {
         $batchFailures = @(Get-BatchTopologyFailures)
         $batchFailures.Count | Should -Be 0 -Because ($batchFailures -join [Environment]::NewLine)
+    }
+
+    It 'keeps one PowerShell owner for the JSONL engine process boundary' {
+        $failures = @(Get-JsonlClientTopologyFailures)
+        $failures.Count | Should -Be 0 -Because ($failures -join [Environment]::NewLine)
     }
 
     It 'keeps configured Codex MCP declarations and script arguments portable' {

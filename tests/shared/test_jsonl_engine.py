@@ -21,64 +21,7 @@ from jsonl_engine.schemas import get_schema_catalog
 from jsonl_engine.paths import RepoPaths, find_repository_root
 from jsonl_engine.sidecar import store_paths
 
-
-def _article(slug: str = "1105.4224v1") -> dict:
-    """A minimal object satisfying codex-scientiae/article/0.1."""
-    return {
-        "schema": "codex-scientiae/article/0.1",
-        "state": "source-ready",
-        "slug": slug,
-        "initialized_utc": "2026-08-07T00:00:00Z",
-        "title": "Quantum Chaos",
-        "authors": ["Author"],
-        "abstract": "Abstract...",
-        "identifiers": {"arxiv": "1105.4224", "arxiv_versioned": slug, "doi": None},
-        "categories": ["cs.CL"],
-        "primary_category": "cs.CL",
-        "published": None,
-        "updated": None,
-        "evidence": {
-            "provider_metadata": [],
-            "latex_source": {
-                "entrypoint": "main.tex",
-                "selection": "single-candidate",
-                "declarations": {"title_tex": None, "authors_tex": [], "doi": None},
-            },
-            "package_control_files": [],
-        },
-        "source_forms": [
-            {
-                "role": "latex-source-archive",
-                "path": f"{slug}.tar.gz",
-                "format": "application/gzip",
-                "bytes": 1,
-                "sha256": "0" * 64,
-            },
-            {
-                "role": "latex-source-tree",
-                "path": f"{slug}-tex",
-                "format": "application/x-latex-source-tree",
-                "derived_from": f"{slug}.tar.gz",
-                "entrypoint": "main.tex",
-                "files": 1,
-                "tex_files": 1,
-                "sha256": "1" * 64,
-            },
-        ],
-        "validation": {
-            "status": "valid",
-            "validated_utc": "2026-08-07T00:00:00Z",
-            "publication": "published-new-tree",
-            "checks": [
-                {"name": "gzip-readable", "outcome": "passed", "archive_kind": "tar+gzip"},
-                {
-                    "name": "entrypoint-unambiguous",
-                    "outcome": "not-applicable",
-                    "reason": "entrypoint named explicitly; the ambiguity scan did not run",
-                },
-            ],
-        },
-    }
+from jsonl_test_support import article
 
 
 class DeclaredMissingSchemaRegistry(BaseStore):
@@ -120,7 +63,7 @@ class TestJsonlEngineV7(unittest.TestCase):
         """An article object is inserted verbatim as a row; no projection, no row shape."""
         with tempfile.TemporaryDirectory() as tmpdir:
             inv = InventoryRegistry(target_dir=tmpdir)
-            out_file = inv.rebuild([_article()])
+            out_file = inv.rebuild([article()])
             self.assertTrue(os.path.exists(out_file))
             self.assertEqual(os.path.basename(out_file), "inventory.jsonl")
 
@@ -129,7 +72,7 @@ class TestJsonlEngineV7(unittest.TestCase):
             self.assertEqual("header", header["__type__"])
             self.assertEqual(["/slug"], header["identity"])
             self.assertEqual(1, header["count"])
-            self.assertEqual([_article()], rows)
+            self.assertEqual([article()], rows)
 
     def test_one_schema_governs_article_and_inventory_row(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -137,9 +80,9 @@ class TestJsonlEngineV7(unittest.TestCase):
                 InventoryRegistry.RECORD_SCHEMA,
                 ArticleManifest.RECORD_SCHEMA,
             )
-            article = _article()
-            InventoryRegistry(target_dir=tmpdir).validate_record(article)
-            ArticleManifest(target_dir=tmpdir).validate_record(article)
+            record = article()
+            InventoryRegistry(target_dir=tmpdir).validate_record(record)
+            ArticleManifest(target_dir=tmpdir).validate_record(record)
 
     def test_graph_primitive_is_dormant(self):
         """It is discoverable as a reference, and no kind declares it."""
@@ -151,7 +94,7 @@ class TestJsonlEngineV7(unittest.TestCase):
     def test_inventory_rejects_a_malformed_article(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             inv = InventoryRegistry(target_dir=tmpdir)
-            broken = _article()
+            broken = article()
             del broken["source_forms"]
             with self.assertRaises(jsonschema.ValidationError):
                 inv.rebuild([broken])

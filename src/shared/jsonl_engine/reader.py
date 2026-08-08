@@ -1,9 +1,10 @@
 """Read JSON files and JSONL stores.
 
-Bytes are read in binary and decoded under a declared encoding; a BOM is rejected. Optional
-`validator` is a compiled jsonschema validator applied after parse. A JSONL store is one path triple
-(`.jsonl`, `.jidx`, `.sig`); `JsonlStore` holds its policy and validator as state and parses the
-index once.
+Bytes are read in binary and decoded under a declared encoding. A leading UTF-8 BOM is accepted for
+a single document only when the caller declares the BOM-consuming ``utf-8-sig`` codec; plain UTF-8
+remains BOM-free. Optional `validator` is a compiled jsonschema validator applied after parse. A
+JSONL store is one path triple (`.jsonl`, `.jidx`, `.sig`); `JsonlStore` holds its policy and
+validator as state and parses the index once.
 
 The three text-policy axes are declared, never sniffed -- see policy.py. For a store this engine
 wrote, the `.sig` witnesses them, and verify() reports a policy disagreement before it reports a
@@ -14,21 +15,56 @@ Does not check canonical ordering, key uniqueness, or cross-artifact identity.
 
 from __future__ import annotations
 
+import codecs
 import hashlib
 import json
 import os
-import codecs
 import struct
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Iterator, List, Optional, Union
+from typing import Any, BinaryIO, Dict, Iterator, List, Optional, Union
 
 import jsonschema
 
-from .policy import DEFAULT_ENCODING, Eol
+from .policy import DEFAULT_ENCODING, Eol, is_line_framable
 from .sidecar import SIG_SCHEMA_ID, StorePaths, get_file_dotnet_ticks, store_paths
 
 UTF8_BOM = b"\xef\xbb\xbf"
+
+
+@dataclass(frozen=True)
+class _FileGeneration:
+    """Stable identity of one file generation, without keeping its handle open.
+
+    A bounded view may coexist with an in-place append to the same file, so size and timestamps
+    are deliberately not part of the normal identity. Replacing the pathname creates a different
+    file identity even when the replacement happens to have the same bytes and timestamps.
+    """
+
+    device: int
+    inode: int
+    fallback_ctime_ns: int
+
+    @classmethod
+    def from_handle(cls, handle: BinaryIO) -> "_FileGeneration":
+        stat = os.fstat(handle.fileno())
+        return cls(
+            device=stat.st_dev,
+            inode=stat.st_ino,
+            fallback_ctime_ns=getattr(stat, "st_ctime_ns", int(stat.st_ctime * 1_000_000_000)),
+        )
+
+    def matches(self, handle: BinaryIO) -> bool:
+        current = type(self).from_handle(handle)
+        if self.inode or current.inode:
+            return self.device == current.device and self.inode == current.inode
+        # Some filesystems expose no usable file id. A changed ctime is conservative there: it may
+        # reject an append, but it will not let a replacement masquerade as the captured file.
+        return (
+            self.device == current.device
+            and self.fallback_ctime_ns == current.fallback_ctime_ns
+        )
 
 
 class JsonReaderError(ValueError):
@@ -52,20 +88,6 @@ def _raise(
     if cause is not None:
         raise err from cause
     raise err
-
-
-def is_line_framable(encoding: str) -> bool:
-    """Whether newline framing survives at the byte level under `encoding`.
-
-    JSONL splits records on a newline byte before anything is decoded. Under utf-16-le a newline is
-    b"\\n\\x00", so a byte-level split lands mid-character and every record after the first is
-    garbage. Single-object JSON has no such constraint -- there is nothing to split.
-
-    An unknown encoding name is a different failure and raises LookupError rather than answering
-    False; conflating the two reports a typo as an architectural limit.
-    """
-    codecs.lookup(encoding)
-    return "\n".encode(encoding) == b"\n"
 
 
 def validate(
@@ -98,9 +120,22 @@ def loads(
     require_object: bool = True,
     record: Optional[int] = None,
 ) -> Any:
-    """Parse JSON from `raw` under `encoding`. Rejects a leading BOM."""
+    """Parse JSON from `raw` under `encoding` and its declared BOM semantics.
+
+    A leading UTF-8 BOM is data-policy, not something to sniff away: only a codec alias resolving
+    to ``utf-8-sig`` consumes it. Plain UTF-8 rejects the same bytes.
+    """
     if raw.startswith(UTF8_BOM):
-        _raise(path, "JSON must be without a BOM", record=record)
+        try:
+            declared_codec = codecs.lookup(encoding).name
+        except LookupError as exc:
+            _raise(path, f"unknown encoding '{encoding}'", exc, record=record)
+        if declared_codec != "utf-8-sig":
+            _raise(
+                path,
+                "leading UTF-8 BOM requires declared encoding 'utf-8-sig'",
+                record=record,
+            )
 
     try:
         text = raw.decode(encoding)
@@ -118,8 +153,12 @@ def loads(
             record=record,
         )
 
+    def reject_nonfinite(token: str) -> Any:
+        raise ValueError(f"non-finite numeric literal {token!r} is not JSON")
+
     try:
-        value = json.loads(text)
+        # Python accepts NaN and infinities as JavaScript extensions by default. JSON does not.
+        value = json.loads(text, parse_constant=reject_nonfinite)
     except json.JSONDecodeError as exc:
         # Inside a store the line number is always 1 and the record index is the locator that
         # matters; for a whole file it is the other way round.
@@ -129,6 +168,8 @@ def loads(
             else f"malformed JSON (line {exc.lineno}, column {exc.colno})"
         )
         _raise(path, where, exc, record=record)
+    except ValueError as exc:
+        _raise(path, str(exc), exc, record=record)
 
     if require_object and not isinstance(value, dict):
         _raise(path, f"expected one object, got {type(value).__name__}", record=record)
@@ -258,6 +299,8 @@ class JsonlStore:
         require_index: bool = False,
         require_sig: bool = False,
         bound: Optional[int] = None,
+        _generation: Optional[_FileGeneration] = None,
+        _signature: Optional[Dict[str, Any]] = None,
     ) -> None:
         try:
             framable = is_line_framable(encoding)
@@ -279,6 +322,8 @@ class JsonlStore:
         # Read bound. None means "to EOF", which is correct for a quiescent store and torn for one
         # being appended. See at_length / at_signature for the bounded views.
         self.bound = bound
+        self._generation = _generation
+        self._signature = deepcopy(_signature) if _signature is not None else None
         self._index: Optional[Jidx] = None
         self._offsets: Optional[List[int]] = None
 
@@ -292,6 +337,8 @@ class JsonlStore:
             "require_index": self.require_index,
             "require_sig": self.require_sig,
             "bound": self.bound,
+            "_generation": self._generation,
+            "_signature": self._signature,
         }
         settings.update(overrides)
         return type(self)(self.paths.artifact, **settings)
@@ -301,21 +348,51 @@ class JsonlStore:
 
         For reading a store another process is appending to. Readers take no lease -- one long scan
         would stall every writer, and a reader has nothing to protect. A bound is sufficient
-        instead: JSONL only grows at the end and a replacement arrives by rename, so bytes below
-        the bound are durable and will not change under the scan.
+        instead. An in-place append preserves the captured file generation and only grows above
+        the bound; a replacement changes generation and makes the view fail clearly.
         """
-        from .inspect import complete_prefix
+        from .inspect import _complete_prefix_from_handle, _validate_record_boundary
 
-        return self._with(bound=complete_prefix(self.paths.artifact) if length is None else length)
+        with open(self.paths.artifact, "rb") as handle:
+            generation = _FileGeneration.from_handle(handle)
+            size = os.fstat(handle.fileno()).st_size
+            if length is None:
+                bound = _complete_prefix_from_handle(handle, size=size)
+            else:
+                bound = _validate_record_boundary(handle, length, size=size)
+        return self._with(
+            bound=bound,
+            _generation=generation,
+            # A length-bound view has no claim on a signature inherited by another view.
+            _signature=None,
+        )
 
     def at_signature(self) -> "JsonlStore":
         """A view bounded at the length the `.sig` attests to.
 
         Stronger than at_length: a signed prefix is a population a writer committed to, so this
-        view verifies rather than merely being untorn.
+        method verifies the captured signature before returning rather than merely producing an
+        untorn extent.
         """
+        from .inspect import _validate_record_boundary
+
+        # Retain this exact sidecar. Reading it again during verify() could bless a later commit
+        # than the one from which this view took its bound.
         sig = self.read_sig()
-        return self._with(bound=sig["file_size"])
+        with open(self.paths.artifact, "rb") as handle:
+            generation = _FileGeneration.from_handle(handle)
+            size = os.fstat(handle.fileno()).st_size
+            _validate_record_boundary(handle, sig["file_size"], size=size)
+
+        view = self._with(
+            bound=sig["file_size"],
+            _generation=generation,
+            _signature=sig,
+        )
+        # at_signature() promises a signed view, not merely a view sized from an unchecked
+        # sidecar. Fail at construction if the captured signature does not attest to these bytes.
+        view.verify()
+        return view
 
     @property
     def has_index(self) -> bool:
@@ -324,8 +401,29 @@ class JsonlStore:
 
     @property
     def has_signature(self) -> bool:
-        """Whether a .sig accompanies this store."""
-        return os.path.exists(self.paths.sig)
+        """Whether this view carries a signature or one accompanies the live store."""
+        return self._signature is not None or os.path.exists(self.paths.sig)
+
+    def _assert_handle_generation(self, handle: BinaryIO) -> None:
+        """Refuse to read through a pathname that now names another file generation."""
+        if self._generation is not None and not self._generation.matches(handle):
+            _raise(
+                self.paths.artifact,
+                "store generation changed after this bounded view was created; create a new view",
+            )
+
+    def _assert_current_generation(self) -> None:
+        if self._generation is None:
+            return
+        try:
+            with open(self.paths.artifact, "rb") as handle:
+                self._assert_handle_generation(handle)
+        except FileNotFoundError as exc:
+            _raise(
+                self.paths.artifact,
+                "store generation is no longer available; create a new view",
+                exc,
+            )
 
     @property
     def index(self) -> Jidx:
@@ -346,13 +444,20 @@ class JsonlStore:
         staleness means someone wrote one and the bytes moved out from under it, which is the case
         the sidecar exists to catch.
 
-        A bounded view uses the index only when the index describes exactly that extent -- which
-        at_signature() does, since the .sig and the .jidx are written against the same published
-        bytes. A view bounded anywhere else is reading a length the index never described, so it
-        scans. Filtering the index's offsets instead would silently under-report: an index covering
-        three records says nothing about the two that were appended after it.
+        A generation-bound view scans even when an index exists. The artifact is bound to the file
+        identity captured by at_length() or at_signature(), but an index opened later through its
+        pathname could belong to a replacement generation. An unbound view uses a current index;
+        a manually constructed extent-only view uses it only when it describes exactly that bound.
         """
-        if self.has_index:
+        # A generation-bound view cannot consult a sidecar through the live pathname: that
+        # sidecar may belong to a later replacement. Scan the captured artifact extent instead.
+        if self._generation is not None:
+            self._assert_current_generation()
+            if self.require_index and not self.has_index:
+                raise FileNotFoundError(
+                    f"Index file not found and require_index is set: {self.paths.jidx}"
+                )
+        elif self.has_index:
             jidx = self.index
             if self.bound is None:
                 if not jidx.is_current():
@@ -363,7 +468,7 @@ class JsonlStore:
             if jidx.source_length == self.bound:
                 return jidx.offsets
 
-        if self.require_index:
+        if self.require_index and self._generation is None:
             raise FileNotFoundError(
                 f"Index file not found and require_index is set: {self.paths.jidx}"
             )
@@ -380,7 +485,7 @@ class JsonlStore:
         return self._offsets
 
     def __len__(self) -> int:
-        """Records in the store. O(1) from the .jidx, one scan without it.
+        """Records in the store. O(1) from a usable .jidx, otherwise one scan.
 
         Scanned rather than refused because list() probes __len__ for a size hint, so without this
         list(store) would fail where an equivalent for-loop succeeds.
@@ -394,12 +499,38 @@ class JsonlStore:
         bound is excluded rather than truncated: half a record is not a record.
         """
         consumed = 0
-        with open(self.paths.artifact, "rb") as handle:
-            for line in handle:
+        try:
+            handle = open(self.paths.artifact, "rb")
+        except FileNotFoundError as exc:
+            if self._generation is not None:
+                _raise(
+                    self.paths.artifact,
+                    "store generation is no longer available; create a new view",
+                    exc,
+                )
+            raise
+
+        with handle:
+            self._assert_handle_generation(handle)
+            if self.bound == 0:
+                return
+            for record, line in enumerate(handle):
                 if self.bound is not None and consumed + len(line) > self.bound:
-                    return
+                    _raise(
+                        self.paths.artifact,
+                        f"read bound {self.bound} is not a complete-record boundary",
+                    )
+                self._require_declared_terminator(line, record=record)
                 consumed += len(line)
                 yield line
+                if self.bound is not None and consumed == self.bound:
+                    return
+
+            if self.bound is not None and consumed != self.bound:
+                _raise(
+                    self.paths.artifact,
+                    f"store ended at byte {consumed} before read bound {self.bound}",
+                )
 
     def __iter__(self) -> Iterator[Any]:
         """Stream every record in order, stopping at the bound. Needs no sidecar at all."""
@@ -416,10 +547,57 @@ class JsonlStore:
         if record < 0 or record >= n:
             raise IndexError(f"Record index {index} out of bounds [0, {n - 1}]")
 
-        with open(self.paths.artifact, "rb") as handle:
+        try:
+            handle = open(self.paths.artifact, "rb")
+        except FileNotFoundError as exc:
+            if self._generation is not None:
+                _raise(
+                    self.paths.artifact,
+                    "store generation is no longer available; create a new view",
+                    exc,
+                )
+            raise
+        with handle:
+            self._assert_handle_generation(handle)
             handle.seek(offsets[record])
             line = handle.readline()
+            if self.bound is not None and offsets[record] + len(line) > self.bound:
+                _raise(
+                    self.paths.artifact,
+                    f"record {record} crosses read bound {self.bound}",
+                )
         return self._loads_line(line, record=record)
+
+    def _require_declared_terminator(self, line: bytes, *, record: int) -> None:
+        """Require the framing policy without decoding or parsing the record payload."""
+        if self.eol is Eol.CRLF:
+            if line.endswith(b"\r\n"):
+                if b"\r" in line[:-2]:
+                    _raise(self.paths.artifact, "CR inside a record", record=record)
+                return
+            if line.endswith(b"\n"):
+                _raise(
+                    self.paths.artifact,
+                    "store is declared CRLF but this record ends with a bare LF",
+                    record=record,
+                )
+            _raise(
+                self.paths.artifact,
+                "store is declared CRLF but this record has no CRLF terminator",
+                record=record,
+            )
+        if not line.endswith(b"\n"):
+            _raise(
+                self.paths.artifact,
+                "store is declared LF but this record has no LF terminator",
+                record=record,
+            )
+        if b"\r" in line[:-1]:
+            _raise(
+                self.paths.artifact,
+                "CR inside a record (store is declared LF)",
+                record=record,
+            )
 
     def _loads_line(self, line: bytes, *, record: int) -> Any:
         """Strip the declared terminator, then parse. A declared terminator is enforced."""
@@ -428,25 +606,8 @@ class JsonlStore:
         if not line.strip():
             _raise(self.paths.artifact, "blank line", record=record)
 
-        if self.eol is Eol.CRLF:
-            if line.endswith(b"\r\n"):
-                line = line[:-2]
-            elif line.endswith(b"\n"):
-                _raise(
-                    self.paths.artifact,
-                    "store is declared CRLF but this record ends with a bare LF",
-                    record=record,
-                )
-        elif line.endswith(b"\n"):
-            line = line[:-1]
-
-        if b"\r" in line:
-            _raise(
-                self.paths.artifact,
-                "CR inside a record"
-                + (" (store is declared LF)" if self.eol is Eol.LF else ""),
-                record=record,
-            )
+        self._require_declared_terminator(line, record=record)
+        line = line[:-2] if self.eol is Eol.CRLF else line[:-1]
 
         return loads(
             line,
@@ -465,6 +626,15 @@ class JsonlStore:
         rather than reported as a schema failure, which would read as corruption.
         """
         sig_path = self.paths.sig
+        if self._signature is not None:
+            captured = deepcopy(self._signature)
+            if schema_registry is not None:
+                return validate(
+                    captured,
+                    schema_registry.get_validator(SIG_SCHEMA_ID),
+                    path=sig_path,
+                )
+            return captured
         if not self.has_signature:
             raise FileNotFoundError(f"Signature file not found: {sig_path}")
 

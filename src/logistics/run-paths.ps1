@@ -17,7 +17,7 @@
 
   Split out of the retired shared runs helper, which carried this convention alongside the
   paper-local {paper}/.runs layout, membrane chunk resolution, and pig-lane IR discovery. Those are
-  dormant in src/shared/runs-depr.ps1 pending the paired latex/pdf comparison work.
+  dormant in the retired shared helper pending the paired latex/pdf comparison work.
 #>
 
 # The artifacts TIER itself — the directory runs live under, never its parent. Callers name this

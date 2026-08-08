@@ -10,7 +10,7 @@ reproducible by construction; their contents are checked structurally elsewhere.
 
 To refresh the fixtures after a DELIBERATE format change:
 
-    CODEX_REGEN_FIXTURES=1 .venv/Scripts/python.exe -m pytest tests/shared/test_byte_equality.py
+    .venv/Scripts/python.exe tests/shared/regenerate_jsonl_goldens.py
 
 then read the diff before committing it. A fixture that changes without a format decision behind it
 is the failure this file exists to catch.
@@ -20,83 +20,18 @@ case would be normalized to LF on commit and would silently test nothing. The su
 the exemption, so it travels with the file rather than depending on where the file lives.
 """
 
+import codecs
+import math
 import os
-import shutil
 import tempfile
 import unittest
 
 from jsonl_engine.engine import JsonlEngine
-from jsonl_engine.policy import Codec, Eol
-from jsonl_engine.reader import JsonlStore
+from jsonl_engine.policy import Eol
+from jsonl_engine.reader import JsonlStore, read_json
+from jsonl_engine.writer import JsonWriterError, serialize_json, write_json
 
-FIXTURES = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fixtures", "jsonl-engine"
-)
-REGEN = os.environ.get("CODEX_REGEN_FIXTURES") == "1"
-
-# A lone high surrogate: no UTF-8 form, so it exists only to exercise Codec.ASCII. This is the case
-# Codec.ASCII was introduced for -- a PDF font CMap yielding code units that are not scalar values.
-LONE_SURROGATE = "cap: \ud800 end"
-
-CASES = {
-    "plain-lf": {
-        "records": [
-            {"kind": "block", "page": 1, "bbox": [72.0, 96.5, 540.0, 120.25]},
-            {"kind": "block", "page": 1, "text": "The quick brown fox.", "rule": None},
-            {"kind": "block", "page": 2, "nested": {"a": [1, 2, 3], "b": {"c": True}}},
-        ],
-        "codec": Codec.UNICODE,
-        "eol": Eol.LF,
-    },
-    "unicode-lf": {
-        "records": [
-            {"math": "∫ f(x) dx = 𝔼[X]", "set": "𝕊¹", "lig": "ﬁﬂﬃ"},
-            {"greek": "αβγδε", "cjk": "日本語", "emoji": "🜲", "sentinel": "�"},
-        ],
-        "codec": Codec.UNICODE,
-        "eol": Eol.LF,
-    },
-    "unicode-ascii-escaped": {
-        # Same records as unicode-lf under the other escaping policy. Byte-different by design;
-        # freezing both is what proves the codec is a knob rather than an accident.
-        "records": [
-            {"math": "∫ f(x) dx = 𝔼[X]", "set": "𝕊¹", "lig": "ﬁﬂﬃ"},
-            {"greek": "αβγδε", "cjk": "日本語", "emoji": "🜲", "sentinel": "�"},
-        ],
-        "codec": Codec.ASCII,
-        "eol": Eol.LF,
-    },
-    "surrogate-ascii": {
-        "records": [
-            {"extracted": LONE_SURROGATE, "page": 3},
-            {"extracted": "ordinary text", "page": 4},
-        ],
-        "codec": Codec.ASCII,
-        "eol": Eol.LF,
-    },
-    "plain-crlf": {
-        # Same records as plain-lf. Two bytes per terminator, so this also pins that .jidx offsets
-        # follow the declared terminator width rather than assuming one.
-        "records": [
-            {"kind": "block", "page": 1, "bbox": [72.0, 96.5, 540.0, 120.25]},
-            {"kind": "block", "page": 1, "text": "The quick brown fox.", "rule": None},
-            {"kind": "block", "page": 2, "nested": {"a": [1, 2, 3], "b": {"c": True}}},
-        ],
-        "codec": Codec.UNICODE,
-        "eol": Eol.CRLF,
-    },
-}
-
-
-def emit(case: dict, out_path: str) -> None:
-    """Write one case's records under its declared policy."""
-    engine = JsonlEngine(
-        output_path=out_path, codec=case["codec"], eol=case["eol"]
-    )
-    with engine:
-        for record in case["records"]:
-            engine.append(record)
-        engine.commit(stage_metadata={"case": os.path.basename(out_path)})
+from jsonl_golden_cases import CASES, GOLDEN_DIR, emit
 
 
 class TestByteEquality(unittest.TestCase):
@@ -108,17 +43,17 @@ class TestByteEquality(unittest.TestCase):
         return out_path
 
     def test_cases_match_frozen_bytes(self):
-        os.makedirs(FIXTURES, exist_ok=True)
         drift = []
+        missing = []
         for name, case in CASES.items():
             with tempfile.TemporaryDirectory() as tmpdir:
                 produced = self._emit_to_tmp(name, case, tmpdir)
                 with open(produced, "rb") as handle:
                     actual = handle.read()
 
-                golden = os.path.join(FIXTURES, name + ".jsonl.golden")
-                if REGEN or not os.path.exists(golden):
-                    shutil.copyfile(produced, golden)
+                golden = os.path.join(GOLDEN_DIR, name + ".jsonl.golden")
+                if not os.path.isfile(golden):
+                    missing.append(name)
                     continue
 
                 with open(golden, "rb") as handle:
@@ -135,8 +70,12 @@ class TestByteEquality(unittest.TestCase):
                         f"    produced: {actual[max(0, at - 30):at + 40]!r}"
                     )
 
-        if REGEN:
-            self.skipTest("fixtures regenerated; review the diff before committing")
+        self.assertEqual(
+            [],
+            missing,
+            "missing frozen JSONL fixtures; regenerate explicitly with "
+            "tests/shared/regenerate_jsonl_goldens.py: " + ", ".join(missing),
+        )
         self.assertEqual([], drift, "writer output drifted from frozen bytes:\n" + "\n".join(drift))
 
     def test_cases_round_trip_through_the_reader(self):
@@ -214,6 +153,61 @@ class TestByteEquality(unittest.TestCase):
             with self.assertRaises(ValueError) as caught:
                 JsonlStore(out_path, encoding="utf-16-le")
             self.assertIn("frame JSONL records", str(caught.exception))
+
+    def test_utf8_sig_is_refused_for_line_framed_stores(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_path = os.path.join(tmpdir, "x.jsonl")
+            with self.assertRaises(ValueError) as caught:
+                JsonlStore(out_path, encoding="utf_8_sig")
+            self.assertIn("frame JSONL records", str(caught.exception))
+
+    def test_writer_refuses_encodings_the_jsonl_reader_cannot_frame(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            for encoding in ("utf-16", "utf-16-le", "utf-32", "utf-8-sig"):
+                with self.subTest(encoding=encoding):
+                    out_path = os.path.join(tmpdir, encoding + ".jsonl")
+                    with self.assertRaises(ValueError) as caught:
+                        JsonlEngine(out_path, encoding=encoding)
+                    self.assertIn("cannot frame JSONL records", str(caught.exception))
+                    self.assertFalse(os.path.exists(out_path))
+
+
+class TestSingleDocumentWriter(unittest.TestCase):
+    def test_non_finite_numbers_are_not_emitted_as_json(self):
+        for value in (math.nan, math.inf, -math.inf):
+            with self.subTest(value=value), self.assertRaises(JsonWriterError) as caught:
+                serialize_json({"value": value}, path="numbers.json")
+            message = str(caught.exception)
+            self.assertIn("strict JSON", message)
+            self.assertIn("numbers.json", message)
+
+    def test_utf16_document_and_newline_are_encoded_once(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "doc.json")
+            write_json(path, {"math": "∫"}, encoding="utf-16")
+
+            with open(path, "rb") as handle:
+                raw = handle.read()
+            self.assertTrue(raw.startswith(codecs.BOM_UTF16))
+            self.assertEqual(1, raw.count(codecs.BOM_UTF16))
+            self.assertEqual({"math": "∫"}, read_json(path, encoding="utf-16"))
+
+    def test_utf8_sig_document_round_trips_only_under_its_declared_codec(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "doc.json")
+            write_json(path, {"math": "∫"}, encoding="utf-8-sig")
+
+            with open(path, "rb") as handle:
+                raw = handle.read()
+            self.assertTrue(raw.startswith(codecs.BOM_UTF8))
+            self.assertEqual(1, raw.count(codecs.BOM_UTF8))
+            self.assertEqual({"math": "∫"}, read_json(path, encoding="utf-8-sig"))
+            # Exercise alias normalization rather than accepting one spelling by string equality.
+            self.assertEqual({"math": "∫"}, read_json(path, encoding="utf_8_sig"))
+
+            with self.assertRaises(ValueError) as caught:
+                read_json(path)
+            self.assertIn("BOM", str(caught.exception))
 
 
 if __name__ == "__main__":

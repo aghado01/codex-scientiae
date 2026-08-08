@@ -34,6 +34,16 @@ from ..schemas import SchemaCatalog, get_schema_catalog
 BASE_HEADER_SCHEMA = "header.schema.json"
 
 
+class _KindRowValidator:
+    """Adapt a kind's header/payload dispatch to JsonlStore's validator protocol."""
+
+    def __init__(self, store: "BaseStore") -> None:
+        self.store = store
+
+    def validate(self, value: Any) -> None:
+        self.store.validate_record(value)
+
+
 class BaseStore(ABC):
     """Base class for artifact kinds. Seals identity and policy; resolves schemas at construction."""
 
@@ -136,17 +146,30 @@ class BaseStore(ABC):
         if record.get("__type__") == "header":
             errors = sorted(self._header_validator.iter_errors(record), key=lambda e: str(e.path))
             if errors:
+                first = errors[0]
                 raise jsonschema.ValidationError(
-                    f"Header validation failed for kind '{self.KIND}': {errors[0].message}"
-                )
+                    f"Header validation failed for kind '{self.KIND}': {first.message}",
+                    path=tuple(first.path),
+                ) from first
+
+            for field, expected in (("kind", self.KIND), ("version", self.VERSION)):
+                actual = record.get(field)
+                if actual != expected:
+                    raise jsonschema.ValidationError(
+                        f"Header validation failed for kind '{self.KIND}': "
+                        f"{field} must be {expected!r}, got {actual!r}",
+                        path=(field,),
+                    )
         elif self._payload_validator:
             errors = sorted(self._payload_validator.iter_errors(record), key=lambda e: str(e.path))
             if errors:
                 first = errors[0]
                 where = " -> ".join(str(p) for p in first.path) if first.path else "root"
                 raise jsonschema.ValidationError(
-                    f"Record validation failed for kind '{self.KIND}': {first.message} at [{where}]"
-                )
+                    f"Record validation failed for kind '{self.KIND}': "
+                    f"{first.message} at [{where}]",
+                    path=tuple(first.path),
+                ) from first
         return record
 
     def header_fields(self) -> Dict[str, Any]:
@@ -183,6 +206,12 @@ class BaseStore(ABC):
         whether to write at all. Everything derived from a document, where the count follows the
         input, belongs here.
         """
+        return self._open_writer(stem=stem, filename=filename)
+
+    def _open_writer(
+        self, stem: Optional[str] = None, filename: Optional[str] = None
+    ) -> "StoreWriter":
+        """Internal writer construction route for kinds that constrain public writing."""
         out_path = self.get_output_path(stem=stem, filename=filename)
         return StoreWriter(self, self._engine(out_path), out_path)
 
@@ -198,7 +227,7 @@ class BaseStore(ABC):
             self.get_output_path(stem=stem, filename=filename),
             encoding=self.ENCODING,
             eol=self.EOL,
-            validator=self._payload_validator,
+            validator=_KindRowValidator(self),
         )
 
     def _engine(self, out_path: str) -> JsonlEngine:
@@ -259,8 +288,15 @@ class StoreWriter:
         # already existed, but reading it after the fact would answer a different question.
         wants_header = self.store.wants_header(self.output_path)
         self.engine.__enter__()
-        if wants_header:
-            self.engine.append(self.store.build_header())
+        try:
+            if wants_header:
+                self.engine.append(self.store.build_header())
+        except BaseException as exc:
+            # Python does not call __exit__ when __enter__ itself raises. The engine is already
+            # active here, so a rejected header must close its scratch file and release its lease
+            # explicitly rather than relying on object destruction.
+            self.engine.__exit__(type(exc), exc, exc.__traceback__)
+            raise
         return self
 
     def append(self, record: Dict[str, Any]) -> None:

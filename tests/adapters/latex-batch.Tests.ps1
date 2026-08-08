@@ -5,6 +5,10 @@ BeforeAll {
     $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/adapters'
     $script:AdaptersManifest = Join-Path $script:AdaptersModuleRoot 'adapters.psd1'
     $script:LiveLatexIngest = Join-Path $script:RepositoryRoot 'src/latex-ingest/latex-ingest.ps1'
+    $script:PythonPath = Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe'
+    if (-not [System.IO.File]::Exists($script:PythonPath)) {
+        $script:PythonPath = Join-Path $script:RepositoryRoot '.venv/bin/python'
+    }
 
     function Get-LatexBatchMathRenderCapability {
         $node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue |
@@ -82,7 +86,8 @@ BeforeAll {
             [string] $TreeHash = ('a' * 64),
             [string] $ArchiveHash = ('b' * 64),
             [long] $ArchiveBytes = 100,
-            [switch] $OmitTree
+            [switch] $OmitTree,
+            [switch] $Article
         )
 
         $documentDirectory = Join-Path $InventoryRoot $DirectoryName
@@ -100,19 +105,59 @@ BeforeAll {
                     role = 'latex-source-tree'
                     path = "$DirectoryName-tex"
                     format = 'application/x-latex-source-tree'
+                    derived_from = "$DirectoryName.tar.gz"
                     entrypoint = 'main.tex'
+                    entrypoint_selection = 'single-candidate'
                     files = 2
                     tex_files = 1
                     sha256 = $TreeHash
                 })
         }
-        $manifest = [ordered]@{
-            schema = 'codex-scientiae/document-metadata/0.1'
-            state = $State
-            slug = $Slug
-            source_forms = $forms.ToArray()
+        $manifest = if ($Article) {
+            [ordered]@{
+                schema = 'codex-scientiae/article/0.1'
+                state = $State
+                slug = $Slug
+                initialized_utc = '2026-01-01T00:00:00Z'
+                title = $null
+                authors = @()
+                abstract = $null
+                identifiers = [ordered]@{
+                    arxiv = $null; arxiv_versioned = $null; doi = $null
+                }
+                categories = @()
+                primary_category = $null
+                published = $null
+                updated = $null
+                evidence = [ordered]@{
+                    provider_metadata = @()
+                    latex_source = [ordered]@{
+                        entrypoint = 'main.tex'
+                        selection = 'single-candidate'
+                        declarations = [ordered]@{
+                            title_tex = $null; authors_tex = @(); doi = $null
+                        }
+                    }
+                    package_control_files = @()
+                }
+                source_forms = $forms.ToArray()
+                validation = [ordered]@{
+                    status = 'valid'
+                    validated_utc = '2026-01-01T00:00:00Z'
+                    publication = 'published-new-tree'
+                    checks = @([ordered]@{ name = 'fixture'; outcome = 'passed' })
+                }
+            }
         }
-        $path = Join-Path $documentDirectory 'metadata.json'
+        else {
+            [ordered]@{
+                schema = 'codex-scientiae/document-metadata/0.1'
+                state = $State
+                slug = $Slug
+                source_forms = $forms.ToArray()
+            }
+        }
+        $path = Join-Path $documentDirectory $(if ($Article) { 'article.json' } else { 'metadata.json' })
         Set-Content -LiteralPath $path -Encoding utf8 `
             -Value ($manifest | ConvertTo-Json -Depth 8)
         return $path
@@ -185,7 +230,7 @@ function Invoke-ArxivLatexToMarkdown {
         finally { $writer.Dispose(); $gzip.Dispose(); $fileStream.Dispose() }
     }
 
-    . (Join-Path $script:RepositoryRoot 'src/latex-ingest/source-deposit.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/logistics/latex-source-deposit.ps1')
     Import-Module $script:AdaptersManifest -Force
     $script:MathRenderCapability = Get-LatexBatchMathRenderCapability
 }
@@ -203,7 +248,7 @@ Describe 'adapters module surface for latex-batch' {
 
         $warnings.Count | Should -Be 0
         @((Get-Module adapters).ExportedFunctions.Keys | Sort-Object) | Should -Be @(
-            'Get-LatexBatchJob', 'Get-PesterBatchJob')
+            'Get-LatexBatchJob', 'Get-PesterBatchJob', 'Get-PytestBatchJob')
         (Get-Module adapters).ExportedAliases.Count | Should -Be 0
         foreach ($helper in @(
                 'Resolve-LatexBatchJobAddress'
@@ -273,12 +318,15 @@ Describe 'Get-LatexBatchJob planning' {
         $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'planning')
         $dependency = Write-LatexBatchFixtureDependency (Join-Path $fixture.Root 'fixture-ingest.ps1')
         $alpha = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
-            -Slug alpha -ArchiveBytes 100 -TreeHash ('a' * 64)
+            -Slug alpha -ArchiveBytes 100 -TreeHash ('a' * 64) -Article
         $beta = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
             -Slug beta -ArchiveBytes 900 -TreeHash ('c' * 64)
         $rows = @(
             [pscustomobject]@{
-                metadata_path = [System.IO.Path]::GetRelativePath($fixture.InventoryRoot, $alpha)
+                # A directory address resolves the canonical article.json before the temporary
+                # compatibility fallback to metadata.json.
+                metadata_path = [System.IO.Path]::GetRelativePath(
+                    $fixture.InventoryRoot, (Split-Path -Parent $alpha))
                 caller_key = 'alpha-correlation'
             }
             [pscustomobject]@{
@@ -300,6 +348,7 @@ Describe 'Get-LatexBatchJob planning' {
         $jobs.Count | Should -Be 2
         @($jobs.Id) | Should -Be @($again.Id)
         @($jobs.Metadata.Slug) | Should -Be @('alpha', 'beta')
+        $jobs[0].Metadata.MetadataPath | Should -Be $alpha
         [object]::ReferenceEquals($jobs[0].Metadata.InventoryRow, $rows[0]) |
             Should -BeTrue
         foreach ($job in $jobs) {
@@ -448,6 +497,51 @@ Describe 'Get-LatexBatchJob planning' {
                 -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
                 -LatexIngestPath $dependency } |
             Should -Throw '*exactly one LaTeX archive and source tree*'
+
+        $incompleteArticle = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -Slug incomplete -Article
+        $incomplete = Get-Content -LiteralPath $incompleteArticle -Raw |
+            ConvertFrom-Json -AsHashtable -Depth 100
+        [void]$incomplete.Remove('validation')
+        Set-Content -LiteralPath $incompleteArticle -Encoding utf8 `
+            -Value ($incomplete | ConvertTo-Json -Depth 100)
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $incompleteArticle }) `
+                -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                -LatexIngestPath $dependency } |
+            Should -Throw "*missing required field 'validation'*"
+
+        $misplacedArticle = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -DirectoryName wrong-location -Slug declared-slug -Article
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $misplacedArticle }) `
+                -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                -LatexIngestPath $dependency } |
+            Should -Throw '*canonical article location does not match slug*'
+
+        $occupied = Write-LatexBatchManifest -InventoryRoot $fixture.InventoryRoot `
+            -Slug occupied
+        $occupiedDirectory = Split-Path -Parent $occupied
+        [void][System.IO.Directory]::CreateDirectory((Join-Path $occupiedDirectory 'article.json'))
+        { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $occupiedDirectory }) `
+                -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                -LatexIngestPath $dependency } |
+            Should -Throw '*canonical article path is occupied by a non-file*'
+
+        $externalArticle = Write-LatexBatchManifest -InventoryRoot $fixture.Root `
+            -DirectoryName external-article -Slug external-article -Article
+        $junction = Join-Path $fixture.InventoryRoot 'junction-escape'
+        $junctionCreated = $false
+        try {
+            [void](New-Item -ItemType Junction -Path $junction `
+                    -Target (Split-Path -Parent $externalArticle) -ErrorAction Stop)
+            $junctionCreated = $true
+        }
+        catch { $junctionCreated = $false }
+        if ($junctionCreated) {
+            { Get-LatexBatchJob -InventoryRow ([pscustomobject]@{ metadata_path = $junction }) `
+                    -RunDirectory $fixture.RunDirectory -InventoryRoot $fixture.InventoryRoot `
+                    -LatexIngestPath $dependency } |
+                Should -Throw '*escapes InventoryRoot*'
+        }
     }
 }
 
@@ -521,6 +615,10 @@ Describe 'latex-batch execution integration' {
             Set-ItResult -Skipped -Because $script:MathRenderCapability.Reason
             return
         }
+        if (-not [System.IO.File]::Exists($script:PythonPath)) {
+            Set-ItResult -Skipped -Because 'the repository Python environment is absent'
+            return
+        }
         $fixture = New-LatexBatchFixture -Root (Join-Path $TestDrive 'live-execution')
         $documentDirectory = Join-Path $fixture.InventoryRoot 'live-document'
         [void][System.IO.Directory]::CreateDirectory($documentDirectory)
@@ -528,9 +626,19 @@ Describe 'latex-batch execution integration' {
         New-LatexBatchTestArchive -Path $archive -Files ([ordered]@{
                 'main.tex' = '\documentclass{article}\begin{document}\section{Live}Adapter body.\end{document}'
             })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $documentDirectory `
-            -Slug live-document
-        $row = [pscustomobject]@{ metadata_path = $initialized.metadata_path }
+        $priorScratch = [System.Environment]::GetEnvironmentVariable('CODEX_JSON_SCRATCH_ROOT')
+        try {
+            $env:CODEX_JSON_SCRATCH_ROOT = Join-Path $TestDrive 'live-json-scratch'
+            $initialized = New-LatexSourceDeposit -DocumentDir $documentDirectory `
+                -Slug live-document -PythonPath $script:PythonPath
+        }
+        finally {
+            if ($null -eq $priorScratch) {
+                Remove-Item Env:CODEX_JSON_SCRATCH_ROOT -ErrorAction SilentlyContinue
+            }
+            else { $env:CODEX_JSON_SCRATCH_ROOT = $priorScratch }
+        }
+        $row = [pscustomobject]@{ metadata_path = $initialized.ManifestPath }
         $nodeDirectory = Split-Path -Parent $script:MathRenderCapability.NodePath
         $childPath = "$nodeDirectory$([System.IO.Path]::PathSeparator)$env:PATH"
         $job = @(Get-LatexBatchJob -InventoryRow $row `
@@ -562,5 +670,27 @@ Describe 'latex-batch execution integration' {
             Test-LatexBatchPathCoveredByWrite -Path $producedFile.FullName `
                 -Write $declaredWrites | Should -BeTrue
         }
+
+        $invalidArticle = Get-Content -LiteralPath $initialized.ManifestPath -Raw |
+            ConvertFrom-Json -AsHashtable -Depth 100
+        $invalidArticle['initialized_utc'] = 'not-a-date-time'
+        Set-Content -LiteralPath $initialized.ManifestPath -Encoding utf8 `
+            -Value ($invalidArticle | ConvertTo-Json -Depth 100)
+        $invalidRun = Join-Path $fixture.Root 'caller-run-invalid-article'
+        [void][System.IO.Directory]::CreateDirectory($invalidRun)
+        $invalidJob = @(Get-LatexBatchJob -InventoryRow $row `
+                -RunDirectory $invalidRun -InventoryRoot $fixture.InventoryRoot `
+                -ProcessEnvironment @{ PATH = $childPath } -TimeoutSeconds 60)[0]
+        $invalidCompiled = InModuleScope adapters -Parameters @{
+            Job = $invalidJob; BasePath = $script:RepositoryRoot
+        } {
+            New-BatchPlan -Job @($Job) -BasePath $BasePath
+        }
+        $invalidExecution = InModuleScope adapters -Parameters @{ Compiled = $invalidCompiled } {
+            Invoke-BatchPlan -Plan $Compiled -MaxWorkers 1
+        }
+        $invalidExecution.Results[0].State | Should -Be 'Failed'
+        $invalidExecution.Results[0].Errors -join "`n" | Should -Match 'date-time'
+        Test-Path -LiteralPath $invalidJob.Metadata.OutputDirectory | Should -BeFalse
     }
 }

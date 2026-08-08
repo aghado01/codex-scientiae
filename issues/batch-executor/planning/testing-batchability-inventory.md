@@ -251,6 +251,48 @@ Current inventory after that addition:
 | `SerialOnly` | 0 |
 | **Total** | **46 files / 490 observed tests / 477 textual `It` blocks** |
 
+### JSONL engine PowerShell client addition
+
+`tests/shared/jsonl-engine-client-module.Tests.ps1` adds one `CapabilityGated` container with 17
+observed/textual tests. The final focused exact-path direct run passed 17/17 in 10.65 seconds, and an ordinary
+one-worker adapter/executor run succeeded as one job in 11.997 seconds with one native XML report selecting
+the same 17 outcomes. Module imports are read-only; fixtures and input files use `$TestDrive`; the explicit
+temporary input is removed in `finally`; the slow-process fixture is bounded by the client's process-tree
+timeout; and every live Python invocation uses the repository or explicitly supplied interpreter. The
+structural import/surface case remains runnable without the repository Python environment; live process
+and engine-integration cases are deterministically skipped when neither repository interpreter exists.
+
+The existing `tests/infrastructure/path-topology.Tests.ps1` gains one assertion freezing a single
+PowerShell owner for `python -m jsonl_engine`, so its physical classification is unchanged while its
+observed/textual count grows by one. Focused execution of that assertion passed 1/1. The four retired
+PowerShell JSONL containers and the unrelated logistics source reference remain separate known topology
+archaeology, so no new whole-repository Pester closure is claimed here.
+
+`tests/adapters/pytest-batch.Tests.ps1` adds one `CapabilityGated` container with five observed/textual
+tests. Its three planning cases remain runnable with a fake interpreter; only the two live runner/executor
+cases require the explicitly detected repository Python capability. The multilingual
+`tests/adapters/parallel.Tests.ps1` container gains two observed tests plus two additional textual `It` lines
+inside nested fixture source, and `tests/infrastructure/path-topology.Tests.ps1` gains one further observed
+and textual composition assertion. Those existing containers retain their classifications.
+
+`tests/latex-ingest/latex-source-deposit.Tests.ps1` adds one `CapabilityGated` container with five
+observed/textual tests. Its focused exact-path run passed 5/5. The cases publish and idempotently validate the
+flat article through the Python engine, exercise both not-applicable probe outcomes, and prove conflict
+refusal without overwrite; repository-Python availability is an explicit container capability. A mixed
+two-worker gate paired it with `tests/shared/test_deposit.py`: both jobs succeeded in 9.641 seconds with five
+Pester outcomes and 53 pytest outcomes retained separately under
+`artifacts/test-runs/deposit-parity-hardened-20260808`; the pytest job-local `json-scratch` was empty.
+
+Current semantic inventory after this addition:
+
+| Class | Files |
+|---|---:|
+| `Batchable` | 36 |
+| `CapabilityGated` | 13 |
+| `NeedsRefactor` | 0 |
+| `SerialOnly` | 0 |
+| **Total** | **49 files / 521 observed tests / 510 textual `It` blocks** |
+
 ## BEX-501 exit gate
 
 - All 43 BEX-501 physical files have an exact-path isolation result, observed count, approximate wall time,

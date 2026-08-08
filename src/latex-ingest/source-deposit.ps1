@@ -70,6 +70,7 @@ function Resolve-SourceDepositArchive {
     if ($ArchivePath) {
         $selected = Resolve-SourceDepositScopedPath -Path $ArchivePath -DocumentDir $DocumentDir
         if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
+            (Test-LatexPathHasReparsePoint -Path $selected) -or
             -not [System.IO.File]::Exists($selected)) {
             throw "source archive must be a file inside the document directory: '$ArchivePath'"
         }
@@ -86,7 +87,11 @@ function Resolve-SourceDepositArchive {
     if ($found.Count -gt 1) {
         throw "both canonical and alias source archives exist; refusing to choose between '$canonical' and '$alias'"
     }
-    return [System.IO.Path]::GetFullPath($found[0])
+    $selected = [System.IO.Path]::GetFullPath($found[0])
+    if (Test-LatexPathHasReparsePoint -Path $selected) {
+        throw "source archive must not traverse a symbolic link or reparse point: '$selected'"
+    }
+    return $selected
 }
 
 function Resolve-SourceDepositProviderMetadata {
@@ -98,48 +103,73 @@ function Resolve-SourceDepositProviderMetadata {
     if ($ProviderMetadataPath) {
         $selected = Resolve-SourceDepositScopedPath -Path $ProviderMetadataPath -DocumentDir $DocumentDir
         if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
+            (Test-LatexPathHasReparsePoint -Path $selected) -or
             -not [System.IO.File]::Exists($selected)) {
             throw "provider metadata must be a file inside the document directory: '$ProviderMetadataPath'"
         }
         return $selected
     }
     $candidate = Join-Path $DocumentDir "$Slug.arxiv.json"
+    if (Test-LatexPathHasReparsePoint -Path $candidate) {
+        throw "provider metadata must not traverse a symbolic link or reparse point: '$candidate'"
+    }
     if ([System.IO.File]::Exists($candidate)) { return [System.IO.Path]::GetFullPath($candidate) }
     return $null
 }
 
+if ($null -eq $script:SourceDepositHeldLocks) {
+    $script:SourceDepositHeldLocks =
+        [System.Collections.Concurrent.ConcurrentDictionary[string, byte]]::new(
+            [System.StringComparer]::Ordinal)
+}
+
 function Enter-SourceDepositLock {
     param([Parameter(Mandatory)] [string]$DocumentDir, [int]$TimeoutSeconds = 15)
-    $path = Join-Path $DocumentDir '.source-deposit.lock'
-    $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
-    do {
+    $canonical = [System.IO.Path]::GetFullPath($DocumentDir)
+    if ([System.OperatingSystem]::IsWindows()) { $canonical = $canonical.ToUpperInvariant() }
+    $digest = [System.Convert]::ToHexString(
+        [System.Security.Cryptography.SHA256]::HashData(
+            [System.Text.UTF8Encoding]::new($false).GetBytes($canonical)
+        )
+    ).ToLowerInvariant()
+    $name = "codex-scientiae-source-deposit-$($digest.Substring(0, 32))"
+    if (-not $script:SourceDepositHeldLocks.TryAdd($name, [byte]0)) {
+        throw "timed out waiting for the source-deposit lock: '$canonical'"
+    }
+
+    $mutex = $null
+    $acquired = $false
+    try {
+        $mutex = [System.Threading.Mutex]::new($false, $name)
         try {
-            $stream = [System.IO.FileStream]::new(
-                $path,
-                [System.IO.FileMode]::OpenOrCreate,
-                [System.IO.FileAccess]::ReadWrite,
-                [System.IO.FileShare]::None
-            )
-            $stream.SetLength(0)
-            $text = "pid=$PID`nstarted_utc=$([DateTime]::UtcNow.ToString('o'))`n"
-            $bytes = [System.Text.UTF8Encoding]::new($false).GetBytes($text)
-            $stream.Write($bytes, 0, $bytes.Length)
-            $stream.Flush($true)
-            return [pscustomobject]@{ path = $path; stream = $stream }
-        } catch [System.IO.IOException] {
-            if ([DateTime]::UtcNow -ge $deadline) {
-                throw "timed out waiting for the source-deposit lock: '$path'"
-            }
-            Start-Sleep -Milliseconds 100
+            $acquired = $mutex.WaitOne([TimeSpan]::FromSeconds([math]::Max(0, $TimeoutSeconds)))
         }
-    } while ($true)
+        catch [System.Threading.AbandonedMutexException] {
+            # The prior owner died while holding the mutex; this caller now owns it.
+            $acquired = $true
+        }
+        if (-not $acquired) {
+            throw "timed out waiting for the source-deposit lock: '$canonical'"
+        }
+        return [pscustomobject]@{ name = $name; mutex = $mutex }
+    }
+    catch {
+        if ($mutex) { $mutex.Dispose() }
+        [byte]$removed = 0
+        [void]$script:SourceDepositHeldLocks.TryRemove($name, [ref]$removed)
+        throw
+    }
 }
 
 function Exit-SourceDepositLock {
     param([object]$Lock)
     if (-not $Lock) { return }
-    $Lock.stream.Dispose()
-    Remove-Item -LiteralPath $Lock.path -Force -ErrorAction SilentlyContinue
+    try { $Lock.mutex.ReleaseMutex() }
+    finally {
+        $Lock.mutex.Dispose()
+        [byte]$removed = 0
+        [void]$script:SourceDepositHeldLocks.TryRemove([string]$Lock.name, [ref]$removed)
+    }
 }
 
 function Write-SourceDepositManifest {
@@ -178,10 +208,33 @@ function Test-ExistingSourceDeposit {
         [Parameter(Mandatory)] [string]$DocumentDir,
         [Parameter(Mandatory)] [string]$Slug
     )
-    if ([string]$Manifest.schema -ne 'codex-scientiae/document-metadata/0.1' -or
+    $isArticle = [string]$Manifest.schema -eq 'codex-scientiae/article/0.1'
+    if ([string]$Manifest.schema -notin @(
+            'codex-scientiae/article/0.1',
+            'codex-scientiae/document-metadata/0.1'
+        ) -or
         [string]$Manifest.state -ne 'source-ready' -or
         [string]$Manifest.slug -ne $Slug) {
-        throw "existing metadata.json is not a source-ready manifest for '$Slug': '$ManifestPath'"
+        throw "existing deposit manifest is not source-ready for '$Slug': '$ManifestPath'"
+    }
+    if ($isArticle) {
+        if (-not [string]::Equals(
+                [System.IO.Path]::GetFileName($ManifestPath),
+                'article.json',
+                [System.StringComparison]::Ordinal) -or
+            -not [string]::Equals(
+                (Split-Path -Leaf (Split-Path -Parent $ManifestPath)),
+                $Slug,
+                [System.StringComparison]::Ordinal)) {
+            throw "canonical article location does not match slug '$Slug': '$ManifestPath'"
+        }
+        foreach ($required in @(
+                'initialized_utc', 'title', 'authors', 'abstract', 'identifiers', 'categories',
+                'evidence', 'source_forms', 'validation')) {
+            if (-not $Manifest.Contains($required)) {
+                throw "canonical article is missing required field '$required': '$ManifestPath'"
+            }
+        }
     }
     $archiveForm = @($Manifest.source_forms | Where-Object { $_.role -eq 'latex-source-archive' })
     $treeForm = @($Manifest.source_forms | Where-Object { $_.role -eq 'latex-source-tree' })
@@ -192,6 +245,8 @@ function Test-ExistingSourceDeposit {
     $treePath = [System.IO.Path]::GetFullPath((Join-Path $DocumentDir ([string]$treeForm[0].path)))
     if (-not (Test-LatexPathWithinRoot -Path $archivePath -Root $DocumentDir) -or
         -not (Test-LatexPathWithinRoot -Path $treePath -Root $DocumentDir) -or
+        (Test-LatexPathHasReparsePoint -Path $archivePath) -or
+        (Test-LatexPathHasReparsePoint -Path $treePath) -or
         -not [System.IO.File]::Exists($archivePath) -or
         -not [System.IO.Directory]::Exists($treePath)) {
         throw "existing metadata.json points to missing or out-of-root source material: '$ManifestPath'"
@@ -229,6 +284,9 @@ function Initialize-LatexSourceDeposit {
     if (-not [System.IO.Directory]::Exists($documentRoot)) {
         throw "document deposit is not a directory: '$documentRoot'"
     }
+    if (Test-LatexPathHasReparsePoint -Path $documentRoot) {
+        throw "document deposit must not traverse a symbolic link or reparse point: '$documentRoot'"
+    }
     if (-not $Slug) { $Slug = Split-Path -Leaf $documentRoot }
     if ([string]::IsNullOrWhiteSpace($Slug) -or $Slug -in @('.', '..') -or
         (Split-Path -Leaf $Slug) -ne $Slug -or $Slug.IndexOfAny([System.IO.Path]::GetInvalidFileNameChars()) -ge 0) {
@@ -261,6 +319,11 @@ function Initialize-LatexSourceDeposit {
             $providerRecord.provider = 'arxiv'
             $providerRecord.fetched_at = $provider.fetched_at
             $providerRecord.fetched_by = $provider.fetched_by
+        }
+
+        $pdfPath = Join-Path $documentRoot "$Slug.pdf"
+        if (Test-LatexPathHasReparsePoint -Path $pdfPath) {
+            throw "PDF source must not traverse a symbolic link or reparse point: '$pdfPath'"
         }
 
         $nonce = [guid]::NewGuid().ToString('N')
@@ -313,7 +376,6 @@ function Initialize-LatexSourceDeposit {
         $sourceForms = [System.Collections.Generic.List[object]]::new()
         $sourceForms.Add($archiveRecord)
         $sourceForms.Add($treeRecord)
-        $pdfPath = Join-Path $documentRoot "$Slug.pdf"
         if ([System.IO.File]::Exists($pdfPath)) {
             $sourceForms.Add((Get-SourceDepositFileRecord -Path $pdfPath -Root $documentRoot `
                         -Role 'pdf-source' -Format 'application/pdf'))

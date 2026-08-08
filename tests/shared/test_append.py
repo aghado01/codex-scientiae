@@ -9,19 +9,24 @@ import tempfile
 import unittest
 
 from jsonl_engine.engine import Discipline, JsonlEngine
-from jsonl_engine.policy import Eol
+from jsonl_engine.policy import Codec, Eol
 from jsonl_engine.reader import JsonlStore
 
 
-def _seed(path: str, records, eol: Eol = Eol.LF) -> None:
-    with JsonlEngine(output_path=path, eol=eol) as engine:
+def _seed(path: str, records, eol: Eol = Eol.LF, **engine_kwargs) -> None:
+    with JsonlEngine(output_path=path, eol=eol, **engine_kwargs) as engine:
         for record in records:
             engine.append(record)
         engine.commit()
 
 
-def _extend(path: str, records, eol: Eol = Eol.LF) -> None:
-    engine = JsonlEngine(output_path=path, discipline=Discipline.APPEND, eol=eol)
+def _extend(path: str, records, eol: Eol = Eol.LF, **engine_kwargs) -> None:
+    engine = JsonlEngine(
+        output_path=path,
+        discipline=Discipline.APPEND,
+        eol=eol,
+        **engine_kwargs,
+    )
     with engine:
         for record in records:
             engine.append(record)
@@ -64,6 +69,18 @@ class TestAppendRoundTrip(unittest.TestCase):
             self.assertEqual({"n": 3}, store[2])
             # Two-byte terminators: offsets advance by payload + 2, not payload + 1.
             self.assertEqual([0, 9, 18], store.index.offsets)
+
+    def test_unsigned_store_appends_under_the_callers_declared_policy(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "unsigned.jsonl")
+            with open(path, "wb") as handle:
+                handle.write('{"text":"café"}\n'.encode("latin-1"))
+
+            _extend(path, [{"text": "touché"}], encoding="latin-1")
+
+            store = JsonlStore(path, encoding="latin-1")
+            self.assertEqual([{"text": "café"}, {"text": "touché"}], list(store))
+            self.assertTrue(store.verify())
 
 
 class TestAdoptionRefuses(unittest.TestCase):
@@ -110,6 +127,50 @@ class TestAdoptionRefuses(unittest.TestCase):
                 _extend(path, [{"n": 3}])
             self.assertIn("unterminated", str(caught.exception))
 
+    def test_non_finite_json_extension_is_rejected_before_copy(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._corrupt(tmpdir, b'{"n":NaN}\n')
+            with self.assertRaises(ValueError) as caught:
+                _extend(path, [{"n": 2}])
+            message = str(caught.exception)
+            self.assertIn("record 0", message)
+            self.assertIn("non-finite numeric literal", message)
+            with open(path, "rb") as handle:
+                self.assertEqual(b'{"n":NaN}\n', handle.read())
+
+    def test_signed_latin1_store_refuses_a_utf8_appender(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "signed.jsonl")
+            _seed(path, [{"text": "café"}], encoding="latin-1")
+
+            with self.assertRaises(ValueError) as caught:
+                _extend(path, [{"text": "next"}], encoding="utf-8")
+            message = str(caught.exception)
+            self.assertIn("conflicting write policy", message)
+            self.assertIn("encoding", message)
+            self.assertIn("latin-1", message)
+            self.assertIn("utf-8", message)
+
+            store = JsonlStore(path, encoding="latin-1")
+            self.assertEqual([{"text": "café"}], list(store))
+            self.assertTrue(store.verify())
+
+    def test_signature_policy_checks_eol_and_codec_too(self):
+        cases = (
+            ("eol", {"eol": Eol.CRLF}, {"eol": Eol.LF}),
+            ("codec", {"codec": Codec.ASCII}, {"codec": Codec.UNICODE}),
+        )
+        for field, seed_kwargs, append_kwargs in cases:
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as tmpdir:
+                path = os.path.join(tmpdir, "signed.jsonl")
+                _seed(path, [{"text": "café"}], **seed_kwargs)
+
+                with self.assertRaises(ValueError) as caught:
+                    _extend(path, [{"text": "next"}], **append_kwargs)
+                message = str(caught.exception)
+                self.assertIn("conflicting write policy", message)
+                self.assertIn(field, message)
+
     def test_a_refused_adoption_leaves_nothing_behind(self):
         """__exit__ does not run when __enter__ raises, so the tmp must clean up itself."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -126,6 +187,25 @@ class TestAdoptionRefuses(unittest.TestCase):
                 _extend(path, [{"n": 2}])
             with open(path, "rb") as handle:
                 self.assertEqual(b'{"n":1}\n\n', handle.read())
+
+    def test_tail_precheck_failure_releases_the_lease(self):
+        """Keep the failed engine alive so FileLock finalization cannot hide a leaked lease."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._corrupt(tmpdir, b'{"n":1}')
+            failed = JsonlEngine(
+                output_path=path,
+                discipline=Discipline.APPEND,
+                lock_timeout=0.2,
+            )
+            with self.assertRaises(ValueError):
+                failed.__enter__()
+
+            # CREATE does not repeat the framing failure; it reaches the same artifact lease and
+            # proves the failed __enter__ released it even while `failed` remains strongly held.
+            with JsonlEngine(output_path=path, lock_timeout=0.2) as replacement:
+                replacement.append({"n": 2})
+                replacement.commit()
+            self.assertEqual([{"n": 2}], list(JsonlStore(path)))
 
 
 if __name__ == "__main__":

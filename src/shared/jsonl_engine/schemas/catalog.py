@@ -19,6 +19,8 @@ what a conforming object starts as, and which of its properties address it.
 """
 
 import os
+import re
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Sequence
 
 import jsonschema
@@ -32,6 +34,21 @@ from ..reader import read_json
 # shape and identity belong to one document, and a Python class should not be a second place to
 # look. Consumed by identity_of and by the Registry kind.
 IDENTITY_KEYWORD = "x-identity"
+
+_RFC3339_DATE_TIME = re.compile(
+    r"^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:[Zz]|[+-]\d{2}:\d{2})$"
+)
+_FORMAT_CHECKER = jsonschema.FormatChecker()
+
+
+@_FORMAT_CHECKER.checks("date-time", raises=(TypeError, ValueError))
+def _is_date_time(value: Any) -> bool:
+    """Project-local RFC 3339 checker; does not depend on jsonschema's optional extras."""
+    if not isinstance(value, str) or _RFC3339_DATE_TIME.fullmatch(value) is None:
+        return False
+    normalized = value[:-1] + "+00:00" if value[-1:] in ("Z", "z") else value
+    parsed = datetime.fromisoformat(normalized)
+    return parsed.tzinfo is not None
 
 
 class SchemaCatalog:
@@ -89,7 +106,10 @@ class SchemaCatalog:
         schema_data = self.read_schema_file(schema_path)
 
         validator_cls = jsonschema.validators.validator_for(schema_data)
-        validator = validator_cls(schema_data)
+        validator = validator_cls(
+            schema_data,
+            format_checker=_FORMAT_CHECKER,
+        )
 
         filename = os.path.basename(schema_path)
         schema_id = schema_data.get("$id") or schema_data.get("id") or filename
@@ -102,7 +122,10 @@ class SchemaCatalog:
         """Register a schema dict directly, for testing or runtime registration."""
         validator_cls = jsonschema.validators.validator_for(schema_dict)
         validator_cls.check_schema(schema_dict)
-        validator = validator_cls(schema_dict)
+        validator = validator_cls(
+            schema_dict,
+            format_checker=_FORMAT_CHECKER,
+        )
 
         schema_id = schema_dict.get("$id") or key
         self._register_entry(schema_id, schema_dict, validator, as_id=True)
