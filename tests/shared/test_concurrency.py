@@ -11,7 +11,7 @@ import threading
 import unittest
 
 from jsonl_engine import JsonlEngine, JsonlStore
-from jsonl_engine.sidecar import lock_path, temp_write_path
+from jsonl_engine.sidecar import lock_path, scratch_root, temp_write_path
 
 
 class TestScratchPaths(unittest.TestCase):
@@ -56,10 +56,77 @@ class TestScratchPaths(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             path = os.path.join(tmpdir, "s.jsonl")
             self.assertNotEqual(os.path.dirname(lock_path(path)), tmpdir)
+            self.assertEqual(scratch_root(), os.path.dirname(lock_path(path)))
             with JsonlEngine(output_path=path) as engine:
                 engine.append({"n": 1})
                 engine.commit()
             self.assertEqual(["s.jsonl", "s.jsonl.jidx", "s.jsonl.sig"], sorted(os.listdir(tmpdir)))
+
+
+class TestScratchRoot(unittest.TestCase):
+    def test_coordination_files_stay_on_the_repository_volume(self):
+        """A process writing to the repo should not reach another volume to coordinate with itself."""
+        from jsonl_engine.paths import RepoPaths
+
+        root = scratch_root()
+        self.assertTrue(
+            root.startswith(RepoPaths.root()),
+            f"scratch root {root} is outside the repository",
+        )
+        self.assertEqual(
+            os.path.splitdrive(RepoPaths.root())[0], os.path.splitdrive(root)[0]
+        )
+
+    def test_it_is_flat_rather_than_run_stamped(self):
+        """A lock is per-artifact and outlives any single run."""
+        self.assertTrue(scratch_root().endswith(os.path.join("artifacts", "json-scratch")))
+
+
+class TestStaleScratchSweep(unittest.TestCase):
+    """Scratch must live beside its target, so strays are swept rather than relocated."""
+
+    def test_scratch_orphaned_by_a_dead_writer_is_removed_on_the_next_write(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            orphan = temp_write_path(path)
+            with open(orphan, "wb") as handle:
+                handle.write(b'{"half":"written"}\n')
+            self.assertTrue(os.path.exists(orphan))
+
+            with JsonlEngine(output_path=path) as engine:
+                engine.append({"n": 1})
+                engine.commit()
+
+            self.assertFalse(os.path.exists(orphan))
+            self.assertEqual(
+                ["s.jsonl", "s.jsonl.jidx", "s.jsonl.sig"], sorted(os.listdir(tmpdir))
+            )
+
+    def test_the_sweep_is_skipped_without_a_lease(self):
+        """Unleased, a stray is indistinguishable from a peer's work in progress."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            orphan = temp_write_path(path)
+            with open(orphan, "wb") as handle:
+                handle.write(b"{}\n")
+
+            with JsonlEngine(output_path=path, lock=False) as engine:
+                engine.append({"n": 1})
+                engine.commit()
+
+            self.assertTrue(os.path.exists(orphan), "must not delete what it cannot prove is stale")
+
+    def test_the_sweep_leaves_the_artifact_and_its_sidecars_alone(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "s.jsonl")
+            with JsonlEngine(output_path=path) as engine:
+                engine.append({"n": 1})
+                engine.commit()
+            with JsonlEngine(output_path=path) as engine:
+                engine.append({"n": 2})
+                engine.commit()
+            self.assertEqual([{"n": 2}], list(JsonlStore(path)))
+            self.assertTrue(JsonlStore(path).verify())
 
 
 class TestWriteLease(unittest.TestCase):

@@ -5,6 +5,7 @@ Leaf module: no imports from engine, reader, or schemas. Shared by writers and r
 
 from __future__ import annotations
 
+import glob
 import hashlib
 import json
 import os
@@ -13,6 +14,7 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import List
 
 _DOTNET_EPOCH = datetime(1, 1, 1, tzinfo=timezone.utc)
 _UNIX_EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
@@ -72,20 +74,46 @@ class StorePaths:
     sig: str
 
 
+SCRATCH_DIRNAME = os.path.join("artifacts", "json-scratch")
+
+
+def scratch_root() -> str:
+    """Directory for engine coordination files that are not artifacts.
+
+    `<repo>/artifacts/json-scratch`, flat and not run-stamped: a lock is not a product of a run, it
+    is per-artifact and outlives any one of them, so filing it under a run stamp would scatter one
+    logical thing across every run that ever touched the store.
+
+    Deliberately inside the repository rather than the system temp directory. A process writing to
+    the repo has no business reaching for another volume to coordinate with itself, and on this
+    machine that means engaging C: for work happening entirely on D:. artifacts/ is already
+    gitignored regenerable output, which is exactly what these are.
+
+    Falls back to the system temp directory only when there is no repository to anchor to -- the
+    engine has to keep working when installed as a wheel somewhere else.
+    """
+    try:
+        from .paths import find_repository_root
+
+        root = os.path.join(find_repository_root(), SCRATCH_DIRNAME)
+    except (RuntimeError, ImportError):
+        root = os.path.join(tempfile.gettempdir(), "codex-json-scratch")
+    os.makedirs(root, exist_ok=True)
+    return root
+
+
 def lock_path(artifact_path: str) -> str:
     """Where the write lock for `artifact_path` lives.
 
-    Beside the system temp directory, not beside the artifact. A lock is process coordination on
-    one machine, not state belonging to the store: it says nothing about the bytes, it is
-    meaningless to a reader, and it would not coordinate anything across a network share anyway.
-    Putting it next to the artifact would leave a file in every output directory that means nothing
-    to anyone reading them.
+    Under scratch_root, not beside the artifact. A lock is machine-local process coordination, not
+    state belonging to the store: it says nothing about the bytes and is meaningless to a reader,
+    so leaving one in every output directory would be noise a reader has to learn to ignore.
 
     Keyed by a digest of the absolute path so two artifacts never share a lock and one artifact
-    always resolves to the same one.
+    always resolves to the same one, from any working directory.
     """
     digest = hashlib.sha256(os.path.abspath(artifact_path).encode("utf-8")).hexdigest()[:32]
-    return os.path.join(tempfile.gettempdir(), f"codex-jsonl-{digest}.lock")
+    return os.path.join(scratch_root(), f"{digest}.lock")
 
 
 def temp_write_path(artifact_path: str) -> str:
@@ -97,6 +125,28 @@ def temp_write_path(artifact_path: str) -> str:
     publishes a blend of both writers with a signature covering only one.
     """
     return f"{artifact_path}.{os.getpid()}.{uuid.uuid4().hex[:12]}.tmp"
+
+
+def scratch_glob(artifact_path: str) -> str:
+    """Glob matching every write-scratch file for `artifact_path`.
+
+    Scratch must sit beside its target: os.replace is atomic only within one filesystem, and a
+    shared scratch directory would silently degrade the atomic publish into a cross-volume copy --
+    or fail outright, which is what it does on Windows. Adjacency is a correctness requirement, not
+    a placement preference, so the answer to strays is sweeping them rather than relocating them.
+    """
+    return f"{artifact_path}.*.tmp"
+
+
+def find_stale_scratch(artifact_path: str) -> List[str]:
+    """Scratch files left beside `artifact_path` by a writer that is no longer running.
+
+    Only sound to call while holding the artifact's write lease. The lease is what makes this
+    exact: if this process holds it, no other live writer is mid-transaction on this artifact, so
+    any scratch present belongs to one that died. Without the lease the same files are
+    indistinguishable from a peer's work in progress, and deleting them would corrupt it.
+    """
+    return sorted(glob.glob(scratch_glob(artifact_path)))
 
 
 def store_paths(path: str) -> StorePaths:

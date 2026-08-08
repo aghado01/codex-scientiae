@@ -30,6 +30,7 @@ from typing import Any, Dict, List, Optional
 from .policy import DEFAULT_ENCODING, Codec, Eol
 from .sidecar import (
     SIG_SCHEMA_ID,
+    find_stale_scratch,
     lock_path,
     temp_write_path,
     SIG_SCHEMA_PATH,
@@ -121,6 +122,7 @@ class JsonlEngine:
         # between those steps leaves a store signed by neither. The lock lives outside the artifact
         # directory -- see sidecar.lock_path.
         self._acquire_lease()
+        self._sweep_stale_scratch()
 
         self.tmp_path = temp_write_path(self.output_path)
         self.jidx_tmp = temp_write_path(self.jidx_path)
@@ -173,6 +175,25 @@ class JsonlEngine:
                 f"Could not acquire the write lease for {self.output_path} within "
                 f"{self.lock_timeout}s; another writer holds it (lock file: {target})."
             ) from exc
+
+    def _sweep_stale_scratch(self) -> List[str]:
+        """Remove scratch left beside this artifact by a writer that died mid-transaction.
+
+        Sound only because the lease is held: no other live writer can be working on this artifact,
+        so anything matching the scratch pattern was orphaned. Skipped when locking is declined --
+        without the lease those files are indistinguishable from a peer's work in progress, and
+        removing them would destroy it.
+        """
+        if self._lock is None:
+            return []
+        removed = []
+        for stale in find_stale_scratch(self.output_path):
+            try:
+                os.remove(stale)
+                removed.append(stale)
+            except OSError:
+                pass
+        return removed
 
     def _release_lease(self) -> None:
         if self._lock is not None:
