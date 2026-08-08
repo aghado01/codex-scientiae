@@ -1,32 +1,55 @@
 """
 Core JSONL Engine & Registry Package for Codex-Scientiae
 """
-from .engine import JsonlEngine, Discipline, Codec
+from .policy import DEFAULT_ENCODING, Codec, Eol
+from .sidecar import StorePaths, store_paths, get_file_dotnet_ticks
+from .engine import JsonlEngine, Discipline
+from .writer import JsonWriterError, serialize_json, write_json
+from .reader import (
+    JsonReaderError,
+    JsonlStore,
+    Jidx,
+    is_line_framable,
+    loads,
+    read_index,
+    read_json,
+    read_json_or_none,
+)
 from .registry import BaseStore
-from .reader import ArtifactReader
 from .paths import RepoPaths, find_repository_root
 from .schema_registry import SchemaRegistry, get_global_schema_registry
-from .json_document import (
-    read_json_value,
-    read_json_value_or_none,
-    read_json_document,
-    JsonDocumentError,
-)
 from .registries import RegistryCatalog
 
 __all__ = [
+    # policy
+    "DEFAULT_ENCODING",
+    "Codec",
+    "Eol",
+    # store paths and sidecars
+    "StorePaths",
+    "store_paths",
+    "get_file_dotnet_ticks",
+    # writing
     "JsonlEngine",
     "Discipline",
-    "Codec",
+    "JsonWriterError",
+    "serialize_json",
+    "write_json",
+    # reading
+    "JsonReaderError",
+    "JsonlStore",
+    "Jidx",
+    "is_line_framable",
+    "loads",
+    "read_index",
+    "read_json",
+    "read_json_or_none",
+    # kinds and schemas
     "BaseStore",
-    "ArtifactReader",
-    "RepoPaths",
-    "find_repository_root",
     "SchemaRegistry",
     "get_global_schema_registry",
-    "read_json_value",
-    "read_json_value_or_none",
-    "read_json_document",
-    "JsonDocumentError",
-    "RegistryCatalog"
+    "RegistryCatalog",
+    # repository layout
+    "RepoPaths",
+    "find_repository_root",
 ]

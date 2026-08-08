@@ -22,7 +22,9 @@ from abc import ABC
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from .engine import JsonlEngine, Discipline, Codec
+from .engine import JsonlEngine, Discipline
+from .policy import DEFAULT_ENCODING, Codec, Eol
+from .reader import JsonlStore
 from .schema_registry import get_global_schema_registry, SchemaRegistry
 
 
@@ -43,9 +45,15 @@ class BaseStore(ABC):
     VERSION: str = "1.0"
     DISCIPLINE: Discipline = Discipline.CREATE
 
+    # The three text-policy axes, declared here because a kind is what knows them. The .sig records
+    # all three, so a store this registry wrote carries its own policy and a reader never guesses.
+    #
     # UNICODE is readable and refuses unpaired surrogates; ASCII escapes them losslessly and is for
-    # extracted-text kinds only.
+    # extracted-text kinds only. LF and UTF-8 are this engine's posture for everything it writes --
+    # a kind overrides them only to match a consumer that cannot be moved.
     CODEC: Codec = Codec.UNICODE
+    EOL: Eol = Eol.LF
+    ENCODING: str = DEFAULT_ENCODING
 
     EMIT_HEADER: bool = False  # Default False to match unheadered production lanes
     NAME_FORMAT: str = "{kind}.jsonl"
@@ -170,13 +178,37 @@ class BaseStore(ABC):
 
     def open_writer(self, stem: Optional[str] = None, filename: Optional[str] = None) -> JsonlEngine:
         """Low-memory streaming context writer, incorporating header rules cleanly inside the engine."""
-        out_path = self.get_output_path(stem=stem, filename=filename)
-        return JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE, codec=self.CODEC)
+        return self._engine(self.get_output_path(stem=stem, filename=filename))
+
+    def open_store(
+        self, stem: Optional[str] = None, filename: Optional[str] = None
+    ) -> JsonlStore:
+        """Reader for a store of this kind, carrying the kind's policy and record validator.
+
+        The counterpart to open_writer. A caller reading a store this registry produced states
+        nothing: the kind already declared what the bytes are and what shape they hold.
+        """
+        return JsonlStore(
+            self.get_output_path(stem=stem, filename=filename),
+            encoding=self.ENCODING,
+            eol=self.EOL,
+            validator=self._payload_validator,
+        )
+
+    def _engine(self, out_path: str) -> JsonlEngine:
+        """A JsonlEngine carrying this kind's declared discipline and text policy."""
+        return JsonlEngine(
+            output_path=out_path,
+            discipline=self.DISCIPLINE,
+            codec=self.CODEC,
+            eol=self.EOL,
+            encoding=self.ENCODING,
+        )
 
     def write(self, stem: Optional[str] = None, filename: Optional[str] = None) -> str:
         """Flushes buffered records to disk using JsonlEngine."""
         out_path = self.get_output_path(stem=stem, filename=filename)
-        engine = JsonlEngine(output_path=out_path, discipline=self.DISCIPLINE, codec=self.CODEC)
+        engine = self._engine(out_path)
 
         with engine:
             if self.EMIT_HEADER and (self.DISCIPLINE == Discipline.CREATE or not os.path.exists(out_path)):

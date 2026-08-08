@@ -12,7 +12,9 @@
     "file_size",
     "ticks",
     "discipline",
+    "encoding",
     "codec",
+    "eol",
     "metadata",
     "created_at"
   ],
@@ -42,9 +44,18 @@
       "description": "Write discipline declared by the kind that produced this store.",
       "enum": ["create", "append", "sealed"]
     },
+    "encoding": {
+      "description": "Codec name mapping text to the published bytes, as declared by the kind or the caller. Never sniffed. Recorded because the hash covers encoding-dependent bytes.",
+      "type": "string",
+      "minLength": 1
+    },
     "codec": {
       "description": "Escaping policy in force. The hash covers codec-dependent bytes, so reproducing it requires the same value.",
       "enum": ["unicode", "ascii"]
+    },
+    "eol": {
+      "description": "Record terminator in force. LF for everything this engine writes by default; CRLF is declared, not inferred. The hash covers terminator bytes, and .jidx offsets depend on their width.",
+      "enum": ["lf", "crlf"]
     },
     "metadata": {
       "description": "Caller-supplied stage metadata. Free-form by design; this is the extension point, so the rest of the document can stay closed.",

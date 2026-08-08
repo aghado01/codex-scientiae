@@ -27,58 +27,39 @@ from enum import Enum
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from .json_document import read_json_value
+from .policy import DEFAULT_ENCODING, Codec, Eol
+from .sidecar import (
+    SIG_SCHEMA_ID,
+    SIG_SCHEMA_PATH,
+    DOTNET_TICKS_OFFSET,
+    TICKS_PER_SECOND,
+    get_file_dotnet_ticks,
+    get_ticks_offset,
+    store_paths,
+)
+from .writer import JsonWriterError, serialize_json, write_json
 
-# The JSOI index records last-write time as .NET ticks: 100-nanosecond intervals since 0001-01-01
-# UTC. The representation belongs to the format, which jso-ops/jsonl-v2.ps1 compares against
-# DateTime.LastWriteTimeUtc.Ticks. The offset is derived from the two epochs rather than written as
-# a literal.
-_DOTNET_EPOCH = datetime(1, 1, 1, tzinfo=timezone.utc)
-_UNIX_EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
-_EPOCH_DELTA = _UNIX_EPOCH - _DOTNET_EPOCH
-TICKS_PER_SECOND = 10_000_000
-DOTNET_TICKS_OFFSET = (_EPOCH_DELTA.days * 86_400 + _EPOCH_DELTA.seconds) * TICKS_PER_SECOND
-
-# The .sig sidecar's schema ships with the engine at schemas/sig.schema.json. Its identity is read
-# from that file rather than restated here, so the schema is the only place the id is written.
-SIG_SCHEMA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schemas", "sig.schema.json")
-SIG_SCHEMA_ID = read_json_value(SIG_SCHEMA_PATH, require_object=False)["$id"]
-
-
-def get_file_dotnet_ticks(file_path: str) -> int:
-    """
-    Computes exact integer .NET UTC Ticks from the filesystem st_mtime_ns.
-    Guarantees exact byte-matching with PowerShell's (Get-Item file).LastWriteTimeUtc.Ticks.
-    """
-    stat = os.stat(file_path)
-    return (stat.st_mtime_ns // 100) + DOTNET_TICKS_OFFSET
+# Codec and Eol are re-exported from policy, ticks and schema id from sidecar, for existing
+# importers. The definitions live in the leaf modules that both the writer and the reader share.
+__all__ = [
+    "Codec",
+    "Eol",
+    "DEFAULT_ENCODING",
+    "Discipline",
+    "JsonlEngine",
+    "SIG_SCHEMA_ID",
+    "SIG_SCHEMA_PATH",
+    "DOTNET_TICKS_OFFSET",
+    "TICKS_PER_SECOND",
+    "get_file_dotnet_ticks",
+    "get_ticks_offset",
+]
 
 
 class Discipline(Enum):
     CREATE = "create"  # Replaces or creates fresh output
     APPEND = "append"  # Appends to existing output stream
     SEALED = "sealed"  # Immutable; write attempt raises PermissionError
-
-
-class Codec(Enum):
-    """Escaping policy for text with no plain UTF-8 form.
-
-    UNICODE  ensure_ascii=False. Non-ASCII is written as UTF-8. An unpaired surrogate has no UTF-8
-             encoding and raises at write time. Default.
-
-    ASCII    ensure_ascii=True. Non-ASCII is written as \\uXXXX, a UTF-16 code unit, so an unpaired
-             surrogate round-trips. For extracted text, where a PDF font CMap can yield code units
-             that are not scalar values. Costs roughly 1.2x on multilingual prose.
-
-    Substitution is not offered. Declared on the kind; separators and key order are fixed in
-    append() and are not part of this choice.
-    """
-    UNICODE = "unicode"
-    ASCII = "ascii"
-
-    @property
-    def ensure_ascii(self) -> bool:
-        return self is Codec.ASCII
 
 
 class JsonlEngine:
@@ -90,18 +71,22 @@ class JsonlEngine:
         output_path: str,
         discipline: Discipline = Discipline.CREATE,
         codec: Codec = Codec.UNICODE,
+        eol: Eol = Eol.LF,
+        encoding: str = DEFAULT_ENCODING,
         emit_index: bool = True,
         emit_sig: bool = True
     ):
-        self.output_path = os.path.abspath(output_path)
         self.discipline = discipline
         self.codec = codec
+        self.eol = eol
+        self.encoding = encoding
         self.emit_index = emit_index
         self.emit_sig = emit_sig
 
-        base_path = os.path.splitext(self.output_path)[0]
-        self.jidx_path = base_path + ".jidx"
-        self.sig_path = base_path + ".sig"
+        paths = store_paths(output_path)
+        self.output_path = paths.jsonl
+        self.jidx_path = paths.jidx
+        self.sig_path = paths.sig
 
         self.tmp_path = self.output_path + ".tmp"
         self.jidx_tmp = self.jidx_path + ".tmp"
@@ -122,12 +107,18 @@ class JsonlEngine:
         if self.discipline == Discipline.APPEND and os.path.exists(self.output_path):
             file_size = os.path.getsize(self.output_path)
             if file_size > 0:
-                # Check for unterminated trailing line
+                # The existing stream must end on this store's declared terminator. Appending past
+                # a partial line would corrupt the record it lands on, and appending LF to a CRLF
+                # store would leave a file no declared policy can read.
+                terminator = self.eol.terminator(self.encoding)
                 with open(self.output_path, "rb") as check_f:
-                    check_f.seek(-1, os.SEEK_END)
-                    last_byte = check_f.read(1)
-                    if last_byte != b"\n":
-                        raise ValueError(f"Cannot append to unterminated JSONL file (missing trailing LF newline): {self.output_path}")
+                    check_f.seek(-min(len(terminator), file_size), os.SEEK_END)
+                    tail = check_f.read()
+                    if tail != terminator:
+                        raise ValueError(
+                            f"Cannot append to unterminated JSONL file (expected a trailing "
+                            f"{self.eol.value.upper()} terminator, found {tail!r}): {self.output_path}"
+                        )
 
             # Copy existing file to tmp to continue stream transactionally
             with open(self.output_path, "rb") as src, open(self.tmp_path, "wb") as dst:
@@ -159,8 +150,8 @@ class JsonlEngine:
         """
         Serializes and appends a single record line.
 
-        Compact separators, insertion key order, and an LF terminator are fixed for every kind.
-        Only the escaping policy varies; see Codec.
+        Compact separators and insertion key order are fixed for every kind. The escaping policy,
+        the encoding, and the record terminator are declared; see Codec, DEFAULT_ENCODING, and Eol.
         """
         if self._file is None or self._file.closed:
             raise RuntimeError("JsonlEngine must be active inside a 'with' context manager.")
@@ -169,22 +160,17 @@ class JsonlEngine:
         offset = self._file.tell()
         self.offsets.append(offset)
 
-        # 2. Deterministic serialization; the codec decides escaping only
-        json_str = json.dumps(
-            record, ensure_ascii=self.codec.ensure_ascii, separators=(",", ":"), sort_keys=False
-        ) + "\n"
-
-        # The stdlib error names neither the record nor the remedy; re-raise with both.
+        # 2. Deterministic serialization under this store's declared policy. The writer names the
+        #    encoding and the remedy but not the record; re-raise with it, since in a store of
+        #    50,000 rows the index is the part a caller cannot recover.
         try:
-            json_bytes = json_str.encode("utf-8")
-        except UnicodeEncodeError as exc:
-            raise ValueError(
-                f"record {self.line_count} in {os.path.basename(self.output_path)} contains a code "
-                f"unit with no UTF-8 form (typically an unpaired surrogate from text extraction). "
-                f"This store's codec is '{self.codec.value}', which refuses rather than replaces. "
-                f"Declare CODEC = Codec.ASCII on the kind to carry it losslessly as a \\uXXXX "
-                f"escape, or repair the value upstream. Underlying error: {exc}"
-            ) from exc
+            json_bytes = serialize_json(
+                record, encoding=self.encoding, codec=self.codec, path=self.output_path
+            )
+        except JsonWriterError as exc:
+            raise ValueError(f"record {self.line_count}: {exc}") from exc
+
+        json_bytes += self.eol.terminator(self.encoding)
 
         # 3. Write line & update SHA-256 hash incrementally
         self._file.write(json_bytes)
@@ -220,14 +206,27 @@ class JsonlEngine:
                 "file_size": file_size,
                 "ticks": ticks,
                 "discipline": self.discipline.value,
-                # The hash covers codec-dependent bytes; record which codec produced them.
+                # The hash covers bytes produced under all three text-policy axes; record every one
+                # of them, so a signature that fails to reproduce is attributable to a policy
+                # difference rather than merely wrong. A reader learns the store's policy here.
+                "encoding": self.encoding,
                 "codec": self.codec.value,
+                "eol": self.eol.value,
                 "metadata": stage_metadata or {},
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
-            sig_str = json.dumps(sig_payload, ensure_ascii=True, indent=2) + "\n"
-            with open(self.sig_tmp, "wb") as f:
-                f.write(sig_str.encode("utf-8"))
+            # The .sig is written ASCII-escaped and UTF-8 regardless of the store's own policy: it
+            # is the artifact that tells a reader what that policy was, so it cannot require the
+            # answer in order to be read. atomic=False because the rename is step 5 -- both
+            # sidecars appear together or not at all.
+            write_json(
+                self.sig_tmp,
+                sig_payload,
+                encoding=DEFAULT_ENCODING,
+                codec=Codec.ASCII,
+                indent=2,
+                atomic=False,
+            )
 
         # 5. Atomically rename sidecars into target destinations
         if self.emit_index and os.path.exists(self.jidx_tmp):

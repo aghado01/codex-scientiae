@@ -11,7 +11,7 @@ import jsonschema
 
 from jsonl_engine.engine import JsonlEngine, Discipline
 from jsonl_engine.registry import BaseStore
-from jsonl_engine.reader import ArtifactReader
+from jsonl_engine.reader import JsonlStore, read_index
 from jsonl_engine.schema_registry import SchemaRegistry, get_global_schema_registry
 from jsonl_engine.paths import RepoPaths, find_repository_root
 from jsonl_engine.registries import (
@@ -125,7 +125,7 @@ class TestJsonlEngineV7(unittest.TestCase):
             self.assertTrue(os.path.exists(out_file))
             self.assertEqual(os.path.basename(out_file), "inventory.jsonl")
 
-            records = list(ArtifactReader.read_records(out_file))
+            records = list(JsonlStore(out_file))
             self.assertEqual(len(records), 1)
             self.assertEqual(records[0], _article())
 
@@ -173,9 +173,9 @@ class TestJsonlEngineV7(unittest.TestCase):
             self.assertTrue(os.path.exists(jidx_path))
             self.assertTrue(os.path.exists(sig_path))
 
-            index_obj = ArtifactReader.read_index(jidx_path, out_path)
+            index_obj = read_index(jidx_path, out_path)
             self.assertTrue(index_obj.is_current())
-            self.assertTrue(ArtifactReader.verify_signature(out_path))
+            self.assertTrue(JsonlStore(out_path).verify())
 
 
 if __name__ == "__main__":

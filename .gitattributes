@@ -26,3 +26,7 @@
 # Ignore whitespace checks in generated/minified output, if any
 *.min.js -whitespace
 dist/**  -whitespace
+
+# Byte-exact test fixtures. Normalization here would destroy what the fixture tests --
+# the CRLF golden store would be rewritten to LF on commit and the case would pass vacuously.
+tests/fixtures/jsonl-engine/** -text

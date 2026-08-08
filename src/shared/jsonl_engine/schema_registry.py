@@ -7,13 +7,13 @@ check_schema runs at registration; the draft is taken from each file's own $sche
 distinct schemas under one key raises. Re-registering an identical schema is idempotent.
 
 read_schema_file is a classmethod. A schema's authority is the JSON Schema meta-schema rather than a
-registry entry, so schemas are not read through json_document.read_json_document.
+registry entry, so schemas are not read through reader.read_json with a validator.
 """
 
 import os
 import jsonschema
 from typing import Any, Dict, List, Optional
-from .json_document import read_json_value
+from .reader import read_json
 
 
 class SchemaRegistry:
@@ -54,7 +54,7 @@ class SchemaRegistry:
     def read_schema_file(cls, schema_path: str) -> Dict[str, Any]:
         """Read one *.schema.json and return it, having confirmed it is a valid schema.
 
-        Schemas do not go through read_json_document. A schema is what validates rather than a thing
+        Schemas are not themselves validated. A schema is what validates rather than a thing
         validated, and its authority is the JSON Schema meta-schema via check_schema -- not a
         registry entry, which would be circular. Keeping that on the registry makes the difference
         structural instead of a waived argument at the call site.
@@ -66,7 +66,7 @@ class SchemaRegistry:
         if not os.path.exists(full):
             raise FileNotFoundError(f"Schema file not found: {full}")
 
-        schema_data = read_json_value(full, require_object=False)
+        schema_data = read_json(full, require_object=False)
         jsonschema.validators.validator_for(schema_data).check_schema(schema_data)
         return schema_data
 
