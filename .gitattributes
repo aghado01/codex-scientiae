@@ -24,9 +24,18 @@
 # ---------------------------------------------------------------------------
 # Default
 # ---------------------------------------------------------------------------
-# Normalize anything git detects as text. Kept as a safety net so a new source type does not
-# silently accumulate CRLF; the lists below are meant to be complete enough that it rarely fires.
-* text=auto
+# Normalize anything git detects as text, and check it out as LF. A safety net so a new source type
+# does not silently accumulate CRLF before anyone thinks to list it below.
+#
+# eol=lf is on the catch-all deliberately: without it an unlisted filetype inherits the worktree
+# form from whatever core.autocrlf the cloning machine happens to have, and this repository's
+# conventions should not depend on a setting that does not travel with a clone. With it, every rule
+# here holds against a hostile ambient config in both directions.
+#
+# A file that genuinely needs CRLF must say so rather than rely on the default -- .bat and .cmd are
+# the real cases (cmd.exe can mis-parse an LF-only batch file around labels). None exist here yet;
+# add `*.bat text eol=crlf` alongside if one does.
+* text=auto eol=lf
 
 
 # ---------------------------------------------------------------------------
