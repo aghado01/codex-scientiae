@@ -48,6 +48,8 @@ User may also create snapshots for ease of inspection under `..\project-snapshot
 
 ## Dev Guidelines (WIP)
 
-- Docstrings are future public materials that should be written in declarative, factual voicing -- not persuasive essay, not marketing, not proselytization. When editing existing files, review the doc strings and ask if they should be revised to conform to this sensibility.
-
 - Separation of code and config. Config is data.
+
+- Docstrings are future public materials that should be written in declarative, factual voicing -- not persuasive essay, not doctrine, not commentary, or even exposition -- just terse facts. When editing existing files, review the doc strings and ask if they should be revised to conform to this sensibility.
+
+- Reusability: This project strives to write minimal lines of code and maximize effectiveness. If shared primitives already enable or should naturally own an operation, don't duplicate functionality in bespoke helper utilities (such as jsonl read/write primitives or markdown processing operations).

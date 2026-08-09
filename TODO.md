@@ -33,3 +33,5 @@ convention updates:
 
 rename `ingestion` to `procurement`
 add staging directory
+
+sweep SRC for canonical application layer stores to incorporate into jsonl engine

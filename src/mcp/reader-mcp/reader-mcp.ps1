@@ -27,6 +27,7 @@ param(
     [string]$ProtocolVersion = '2025-06-18'
 )
 
+# Note: want to sunset "codex" prefixes in this project, maybe rename mcp to "scientiae-reader"
 $ServerInfo = @{ name = 'codex-reader'; version = '0.1.0' }
 
 # --- own the protocol channel at the .NET level, pinned to UTF-8 (no BOM) ---------------------------
