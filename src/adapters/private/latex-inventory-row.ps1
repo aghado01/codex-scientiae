@@ -1,3 +1,6 @@
+. "$PSScriptRoot/../../shared/portable-path.ps1"
+. "$PSScriptRoot/../../shared/file-bytes.ps1"
+
 $script:LatexBatchPatchMaxBytes = [long](1MB)
 
 function Get-LatexBatchPropertyValue {
@@ -16,35 +19,6 @@ function Get-LatexBatchPropertyValue {
         if ($property.Name -ieq $Name) { return $property.Value }
     }
     return $null
-}
-
-function Test-LatexBatchPortableLeaf {
-    param([Parameter(Mandatory)] [AllowEmptyString()] [string] $Value)
-
-    # Keep this process-free planning check aligned with article.schema.json#/$defs/portableLeaf.
-    $pattern = '^(?!(?i:(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9]))(?:\.|\z))(?!\.{1,2}\z)(?!.*[ .]\z)[^<>:"/\\|?*\x00-\x1F]+\z'
-    return [System.Text.RegularExpressions.Regex]::IsMatch(
-        $Value,
-        $pattern,
-        [System.Text.RegularExpressions.RegexOptions]::CultureInvariant)
-}
-
-function Test-LatexBatchPathHasReparsePoint {
-    param([Parameter(Mandatory)] [string] $Path)
-
-    $fullPath = [System.IO.Path]::GetFullPath($Path)
-    $pathRoot = [System.IO.Path]::GetPathRoot($fullPath)
-    $relative = [System.IO.Path]::GetRelativePath($pathRoot, $fullPath)
-    $current = $pathRoot
-    foreach ($segment in @($relative -split '[\\/]' | Where-Object { $_ -and $_ -ne '.' })) {
-        $current = [System.IO.Path]::Combine($current, $segment)
-        $item = Get-Item -LiteralPath $current -Force -ErrorAction SilentlyContinue
-        if ($null -eq $item) { break }
-        if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
-            return $true
-        }
-    }
-    return $false
 }
 
 function Resolve-LatexBatchRepositoryRoot {
@@ -81,7 +55,7 @@ function Resolve-LatexBatchInventoryRoot {
         throw "latex-batch inventory root not found: '$InventoryRoot'"
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
-    if (Test-LatexBatchPathHasReparsePoint -Path $resolved) {
+    if (Test-PathHasReparsePoint -Path $resolved) {
         throw "latex-batch InventoryRoot must not traverse a symbolic link or reparse point: '$resolved'"
     }
     return $resolved
@@ -135,7 +109,7 @@ function Resolve-LatexBatchPatchRecord {
         throw "latex-batch canonical patch address escapes InventoryRoot: '$patchPath'"
     }
 
-    if (Test-LatexBatchPathHasReparsePoint -Path $patchPath) {
+    if (Test-PathHasReparsePoint -Path $patchPath) {
         throw "latex-batch canonical patch must not traverse a symbolic link or reparse point: '$patchPath'"
     }
     $entry = try {
@@ -156,42 +130,12 @@ function Resolve-LatexBatchPatchRecord {
         throw "latex-batch canonical patch path is occupied by a non-file: '$patchPath'"
     }
 
-    $stream = [System.IO.File]::OpenRead($patchPath)
-    try {
-        $initialLength = [long]$stream.Length
-        if ($initialLength -gt $script:LatexBatchPatchMaxBytes) {
-            throw "latex-batch canonical patch exceeds the $($script:LatexBatchPatchMaxBytes)-byte limit: '$patchPath'"
-        }
-        $sha = [System.Security.Cryptography.IncrementalHash]::CreateHash(
-            [System.Security.Cryptography.HashAlgorithmName]::SHA256)
-        try {
-            $buffer = [byte[]]::new(64KB)
-            $total = [long]0
-            while ($true) {
-                # Probe through exactly max+1 bytes so growth cannot make hashing cross the limit.
-                $remainingProbe = ($script:LatexBatchPatchMaxBytes + 1L) - $total
-                $request = [int][System.Math]::Min([long]$buffer.Length, $remainingProbe)
-                $read = $stream.Read($buffer, 0, $request)
-                if ($read -eq 0) { break }
-                $total += $read
-                if ($total -gt $script:LatexBatchPatchMaxBytes) {
-                    throw "latex-batch canonical patch exceeds the $($script:LatexBatchPatchMaxBytes)-byte limit: '$patchPath'"
-                }
-                $sha.AppendData($buffer, 0, $read)
-            }
-            if ($total -ne $initialLength -or [long]$stream.Length -ne $initialLength) {
-                throw "latex-batch canonical patch changed length while hashing: '$patchPath'"
-            }
-            $hash = [System.Convert]::ToHexString($sha.GetHashAndReset()).ToLowerInvariant()
-        }
-        finally { $sha.Dispose() }
-    }
-    finally { $stream.Dispose() }
+    $bytes = Read-BoundedFileBytes -Path $patchPath -MaxBytes $script:LatexBatchPatchMaxBytes
     return [pscustomobject]@{
         Path = $patchPath
         RelativePath = [System.IO.Path]::GetRelativePath(
             $InventoryRoot, $patchPath).Replace('\', '/')
-        Identity = "sha256:$hash"
+        Identity = Get-ContentIdentity -Bytes $bytes
     }
 }
 
@@ -230,7 +174,7 @@ function Resolve-LatexBatchManifestPath {
         throw "latex-batch metadata.json not found: '$value'"
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
-    if ((Test-LatexBatchPathHasReparsePoint -Path $resolved) -or
+    if ((Test-PathHasReparsePoint -Path $resolved) -or
         -not (Test-LatexBatchPathWithinRoot -Path $resolved -Root $InventoryRoot)) {
         throw "latex-batch metadata address escapes InventoryRoot: '$value'"
     }
@@ -263,7 +207,7 @@ function Read-LatexBatchManifestRecord {
     }
 
     $slug = [string]$manifest['slug']
-    if (-not (Test-LatexBatchPortableLeaf -Value $slug)) {
+    if (-not (Test-PortableLeaf -Value $slug)) {
         throw "latex-batch manifest slug must be one safe path leaf: '$slug'"
     }
 

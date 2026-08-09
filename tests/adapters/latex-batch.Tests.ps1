@@ -480,7 +480,7 @@ Describe 'Get-LatexBatchJob planning' {
 
         [System.IO.File]::WriteAllBytes($patchPath, [byte[]]::new((1MB) + 1))
         { Get-LatexBatchJob @invoke } |
-            Should -Throw '*canonical patch exceeds the 1048576-byte limit*'
+            Should -Throw '*exceeds the 1048576-byte limit*'
         @(Get-ChildItem -LiteralPath $fixture.RunDirectory -Recurse -Force).Count | Should -Be 0
     }
 
@@ -680,7 +680,7 @@ Describe 'Get-LatexBatchJob planning' {
             ManifestPath = $valid
             InventoryRoot = $fixture.InventoryRoot
         } {
-            Mock Test-LatexBatchPathHasReparsePoint { $false }
+            Mock Test-PathHasReparsePoint { $false }
             Mock Get-Item {
                 throw [System.UnauthorizedAccessException]::new('planned patch lookup denial')
             }
