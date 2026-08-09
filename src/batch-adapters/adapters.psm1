@@ -4,7 +4,7 @@ $script:AdaptersModuleRoot = $PSScriptRoot
 $script:AdaptersDefaultRepositoryRoot = [System.IO.Path]::GetFullPath(
     (Join-Path $script:AdaptersModuleRoot '../..'))
 $script:AdaptersExecutorManifest = [System.IO.Path]::GetFullPath(
-    (Join-Path $script:AdaptersModuleRoot '../shared/batch-executor/batch-executor.psd1'))
+    (Join-Path $script:AdaptersModuleRoot '../batch-executor/batch-executor.psd1'))
 $script:LatexBatchWorkerPath = [System.IO.Path]::GetFullPath(
     (Join-Path $script:AdaptersModuleRoot 'workers/invoke-latex-ingest.ps1'))
 foreach ($dependency in @(

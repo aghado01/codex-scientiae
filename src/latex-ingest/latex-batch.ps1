@@ -38,9 +38,9 @@ $repository = (Resolve-Path -LiteralPath $repository).Path
 . (Join-Path $PSScriptRoot 'inventory-catalog.ps1')
 . (Join-Path $PSScriptRoot '../logistics/run-paths.ps1')
 $adaptersManifest = [System.IO.Path]::Combine(
-    $PSScriptRoot, '..', 'adapters', 'adapters.psd1')
+    $PSScriptRoot, '..', 'batch-adapters', 'adapters.psd1')
 $executorManifest = [System.IO.Path]::Combine(
-    $PSScriptRoot, '..', 'shared', 'batch-executor', 'batch-executor.psd1')
+    $PSScriptRoot, '..', 'batch-executor', 'batch-executor.psd1')
 Import-Module -Name $executorManifest -ErrorAction Stop
 Import-Module -Name $adaptersManifest -ErrorAction Stop
 

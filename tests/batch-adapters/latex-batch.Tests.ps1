@@ -2,7 +2,7 @@
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-    $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/adapters'
+    $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/batch-adapters'
     $script:AdaptersManifest = Join-Path $script:AdaptersModuleRoot 'adapters.psd1'
     $script:LiveLatexIngest = Join-Path $script:RepositoryRoot 'src/latex-ingest/latex-ingest.ps1'
     $script:PythonPath = Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe'

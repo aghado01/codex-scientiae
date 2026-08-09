@@ -96,25 +96,25 @@ BeforeAll {
 
     function Get-BatchTopologyFailures {
         $failures = [System.Collections.Generic.List[string]]::new()
-        $adapterRoot = Join-Path $script:RepoRoot 'src/adapters'
+        $adapterRoot = Join-Path $script:RepoRoot 'src/batch-adapters'
         $expectedManifest = Join-Path $adapterRoot 'adapters.psd1'
         $expectedModule = Join-Path $adapterRoot 'adapters.psm1'
 
         $adapterManifests = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -Filter *.psd1 -File)
         if ($adapterManifests.Count -ne 1 -or
             $adapterManifests[0].FullName -ne $expectedManifest) {
-            $failures.Add('Pester, pytest, and LaTeX planners must share only src/adapters/adapters.psd1')
+            $failures.Add('Pester, pytest, and LaTeX planners must share only src/batch-adapters/adapters.psd1')
         }
         $adapterModules = @(Get-ChildItem -LiteralPath $adapterRoot -Recurse -Filter *.psm1 -File)
         if ($adapterModules.Count -ne 1 -or $adapterModules[0].FullName -ne $expectedModule) {
-            $failures.Add('Pester, pytest, and LaTeX planners must share only src/adapters/adapters.psm1')
+            $failures.Add('Pester, pytest, and LaTeX planners must share only src/batch-adapters/adapters.psm1')
         }
 
         $oldPaths = @(
             (Join-Path $adapterRoot ('public/Get-' + 'TestBatchJob.ps1'))
             (Join-Path $adapterRoot ('private/test-' + 'address.ps1'))
             (Join-Path $adapterRoot ('private/test-' + 'discovery.ps1'))
-            (Join-Path $script:RepoRoot ('tests/adapters/test-' + 'batch.Tests.ps1'))
+            (Join-Path $script:RepoRoot ('tests/batch-adapters/test-' + 'batch.Tests.ps1'))
         )
         foreach ($oldPath in $oldPaths) {
             if ([System.IO.File]::Exists($oldPath)) {

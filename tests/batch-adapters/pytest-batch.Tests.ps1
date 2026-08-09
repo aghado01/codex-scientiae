@@ -2,7 +2,7 @@
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-    $script:AdaptersManifest = Join-Path $script:RepositoryRoot 'src/adapters/adapters.psd1'
+    $script:AdaptersManifest = Join-Path $script:RepositoryRoot 'src/batch-adapters/adapters.psd1'
     $script:RepositoryPytestRunner = Join-Path $script:RepositoryRoot 'tests/pytest.ps1'
     $pythonCandidate = Join-Path $script:RepositoryRoot '.venv/Scripts/python.exe'
     $script:PythonPath = if (Test-Path -LiteralPath $pythonCandidate -PathType Leaf) {

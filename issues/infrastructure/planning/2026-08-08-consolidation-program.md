@@ -45,5 +45,5 @@ Each thread runs its own spec → plan → implementation cycle.
 ## Pointers
 
 - Thread 1 spec: [primitive-extraction-design](../../shared-primitives/planning/2026-08-08-primitive-extraction-design.md).
-- Session synthesis: [opus-sol-session-synthesis-and-loose-ends](../../jsonl-engine/briefs/opus-sol-session-synthesis-and-loose-ends-20260808_141747.md).
-- Taxonomy source (Ledger/Catalog/Exhibit, CATEGORY layer): [opus-engine-state-and-next-sequence](../../jsonl-engine/briefs/opus-engine-state-and-next-sequence-20260807_141055.md) §2, and the `opus-jsonl-engine-taxonomy-and-ref-graph` discussion.
+- Session synthesis: [opus-sol-session-synthesis-and-loose-ends](../../jsonl_engine/briefs/opus-sol-session-synthesis-and-loose-ends-20260808_141747.md).
+- Taxonomy source (Ledger/Catalog/Exhibit, CATEGORY layer): [opus-engine-state-and-next-sequence](../../jsonl_engine/briefs/opus-engine-state-and-next-sequence-20260807_141055.md) §2, and the `opus-jsonl-engine-taxonomy-and-ref-graph` discussion.

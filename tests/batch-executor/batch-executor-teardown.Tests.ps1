@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    Import-Module (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1') -Force
+    Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
 
     function Write-TeardownTestWorker {
         param([Parameter(Mandatory)] [string] $Path)
@@ -16,7 +16,7 @@ $Item.Value
 Describe 'batch-executor teardown and final assembly' {
     It 'keeps the exported owner as one lexical try/finally phase orchestrator' {
         $publicPath = Join-Path $PSScriptRoot `
-            '../../src/shared/batch-executor/public/Invoke-BatchExecutor.ps1'
+            '../../src/batch-executor/public/Invoke-BatchExecutor.ps1'
         $tokens = $null
         $parseErrors = $null
         $ast = [System.Management.Automation.Language.Parser]::ParseFile(

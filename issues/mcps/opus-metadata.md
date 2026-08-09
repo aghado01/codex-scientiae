@@ -37,4 +37,4 @@ So resolving through OpenAlex gives a *worse* record than arXiv's own API. That 
 
 `ConvertTo-NormalizedDoi` is already the right front door for step 2: it strips `https://doi.org/`, `dx.`, and `doi:` prefixes and lowercases — which is precisely the shape a `UriAction.Uri` hands you.
 
-Want this written into `issues/jsonl-engine/planning/` alongside the decisions from earlier, or a separate procurement/pdf-metadata topic?
+Want this written into `issues/jsonl_engine/planning/` alongside the decisions from earlier, or a separate procurement/pdf-metadata topic?

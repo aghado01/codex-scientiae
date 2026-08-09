@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    Import-Module (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1') -Force
+    Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
 
     function Write-TestWorker {
         param([string] $Path, [string] $Body)
@@ -443,7 +443,7 @@ finally { $null = Stop-RunLog }
             ChildPidPath = Join-Path $TestDrive 'pipeline-stop.pid'
             GrandchildPidPath = Join-Path $TestDrive 'pipeline-stop-grandchild.pid'
         }
-        $manifestPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1')).Path
+        $manifestPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1')).Path
         $hostingPowerShell = [System.Management.Automation.PowerShell]::Create()
         $command = $hostingPowerShell.AddScript(@'
 param($ManifestPath, $WorkerPath, $Item)
@@ -486,7 +486,7 @@ Invoke-BatchExecutor -InputObject @($Item) -ScriptPath $WorkerPath -ExecutionMod
                 GrandchildPidPath = Join-Path $TestDrive "queued-pipeline-stop-grandchild-$_.pid"
             }
         }
-        $manifestPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1')).Path
+        $manifestPath = (Resolve-Path (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1')).Path
         $hostingPowerShell = [System.Management.Automation.PowerShell]::Create()
         $command = $hostingPowerShell.AddScript(@'
 param($ManifestPath, $WorkerPath, $Items)

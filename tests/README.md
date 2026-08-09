@@ -148,9 +148,9 @@ pwsh -File tests/parallel.ps1 -Framework All `
   -RunDirectory D:/runs/codex-scientiae-tests/run-003 -MaxWorkers 2
 ```
 
-The shell imports the canonical `adapters` and `batch-executor` manifests, asks the selected framework
-adapters for jobs, concatenates their domain-neutral records, and invokes `New-BatchPlan` and
-`Invoke-BatchPlan` once. Pester and pytest keep separate selectors, runners, observations, job IDs,
+The shell imports the canonical `batch-adapters` (`adapters.psd1`) and `batch-executor` manifests, asks the
+selected framework adapters for jobs, concatenates their domain-neutral records, and invokes `New-BatchPlan`
+and `Invoke-BatchPlan` once. Pester and pytest keep separate selectors, runners, observations, job IDs,
 addresses, and native XML. Both lanes share one worker budget, cancellation path, failure policy, and result
 order.
 

@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    Import-Module (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1') -Force
+    Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
 
     function Write-AwaitTestWorker {
         param([Parameter(Mandatory)] [string] $Path, [Parameter(Mandatory)] [string] $Body)

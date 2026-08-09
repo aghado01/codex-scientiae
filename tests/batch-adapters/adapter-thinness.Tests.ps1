@@ -2,7 +2,7 @@
 
 BeforeAll {
     $script:AdaptersModuleRoot = (Resolve-Path `
-        (Join-Path $PSScriptRoot '../../src/adapters')).Path
+        (Join-Path $PSScriptRoot '../../src/batch-adapters')).Path
 
     function Get-AdapterSourceAst {
         $records = [System.Collections.Generic.List[object]]::new()

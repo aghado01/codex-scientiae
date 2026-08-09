@@ -42,9 +42,9 @@ param(
 )
 
 $sourceRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../src'))
-$adaptersManifest = [System.IO.Path]::Combine($sourceRoot, 'adapters', 'adapters.psd1')
+$adaptersManifest = [System.IO.Path]::Combine($sourceRoot, 'batch-adapters', 'adapters.psd1')
 $executorManifest = [System.IO.Path]::Combine(
-    $sourceRoot, 'shared', 'batch-executor', 'batch-executor.psd1')
+    $sourceRoot, 'batch-executor', 'batch-executor.psd1')
 Import-Module -Name $executorManifest -ErrorAction Stop
 Import-Module -Name $adaptersManifest -ErrorAction Stop
 

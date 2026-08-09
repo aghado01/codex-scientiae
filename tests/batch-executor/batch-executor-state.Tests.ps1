@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    Import-Module (Join-Path $PSScriptRoot '../../src/shared/batch-executor/batch-executor.psd1') -Force
+    Import-Module (Join-Path $PSScriptRoot '../../src/batch-executor/batch-executor.psd1') -Force
 }
 
 Describe 'batch-executor private phase-state contracts' {

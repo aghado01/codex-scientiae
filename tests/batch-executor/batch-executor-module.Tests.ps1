@@ -2,7 +2,7 @@
 
 BeforeAll {
     $script:BatchExecutorModuleRoot = (Resolve-Path `
-        (Join-Path $PSScriptRoot '../../src/shared/batch-executor')).Path
+        (Join-Path $PSScriptRoot '../../src/batch-executor')).Path
     $script:BatchExecutorManifest = Join-Path $script:BatchExecutorModuleRoot 'batch-executor.psd1'
     $script:RetiredBatchExecutorFacade = Join-Path `
         (Split-Path -Parent $script:BatchExecutorModuleRoot) 'batch-executor.ps1'

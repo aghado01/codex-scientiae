@@ -1,4 +1,4 @@
-. "$PSScriptRoot/../../shared/portable-path.ps1"
+. "$PSScriptRoot/../../logistics/portable-path.ps1"
 . "$PSScriptRoot/../../shared/file-bytes.ps1"
 
 $script:LatexBatchPatchMaxBytes = [long](1MB)

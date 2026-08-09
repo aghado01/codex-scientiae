@@ -22,7 +22,7 @@ the resolved budget is present in every execution record.
 
 ## Companion adapters
 
-The [`adapters`](../../adapters/README.md) module exports `Get-PesterBatchJob`, `Get-PytestBatchJob`, and
+The [`batch-adapters`](../batch-adapters/README.md) module exports `Get-PesterBatchJob`, `Get-PytestBatchJob`, and
 `Get-LatexBatchJob` as public files in one package, with no compatibility alias or module per command. The
 test planners discover one physical framework file per process job and assign framework-native result and
 suite-artifact writes beneath the caller run; the LaTeX planner maps source-ready document manifests to

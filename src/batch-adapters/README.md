@@ -1,10 +1,10 @@
 # Batch adapters
 
-`adapters` contains the domain planners for the shared finite-batch executor. It exports three commands
-while leaving the executor's four-command public surface unchanged: `Get-PesterBatchJob` for repository
-Pester work, `Get-PytestBatchJob` for repository pytest work, and `Get-LatexBatchJob` for manifest-backed
-latex-ingest work. These are public files in one module, not one PowerShell module per adapter; no unitary
-adapter module or compatibility alias is introduced.
+`batch-adapters` contains the domain planners for the finite-batch executor. Import the canonical module
+through `adapters.psd1`. It exports three commands while leaving the executor's four-command public surface
+unchanged: `Get-PesterBatchJob` for repository Pester work, `Get-PytestBatchJob` for repository pytest work,
+and `Get-LatexBatchJob` for manifest-backed latex-ingest work. These are public files in one module, not one
+PowerShell module per adapter; no unitary adapter module or compatibility alias is introduced.
 
 ## Pester adapter
 

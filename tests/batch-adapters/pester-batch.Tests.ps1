@@ -2,10 +2,10 @@
 
 BeforeAll {
     $script:RepositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
-    $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/adapters'
+    $script:AdaptersModuleRoot = Join-Path $script:RepositoryRoot 'src/batch-adapters'
     $script:AdaptersManifest = Join-Path $script:AdaptersModuleRoot 'adapters.psd1'
     $script:BatchExecutorManifest = Join-Path $script:RepositoryRoot `
-        'src/shared/batch-executor/batch-executor.psd1'
+        'src/batch-executor/batch-executor.psd1'
     $script:RepositoryRunner = Join-Path $script:RepositoryRoot 'tests/run.ps1'
     $livePester = Get-Module Pester | Sort-Object Version -Descending | Select-Object -First 1
     $script:LivePesterManifest = Join-Path $livePester.ModuleBase 'Pester.psd1'
@@ -161,7 +161,7 @@ Describe 'adapters module surface for pester-batch' {
                 (Join-Path $script:AdaptersModuleRoot ('private/test-' + 'address.ps1'))
                 (Join-Path $script:AdaptersModuleRoot ('private/test-' + 'discovery.ps1'))
                 (Join-Path $script:AdaptersModuleRoot ('public/Get-' + 'TestBatchJob.ps1'))
-                (Join-Path $script:RepositoryRoot ('tests/adapters/test-' + 'batch.Tests.ps1'))
+                (Join-Path $script:RepositoryRoot ('tests/batch-adapters/test-' + 'batch.Tests.ps1'))
             )) {
             Test-Path -LiteralPath $oldPath | Should -BeFalse
         }
