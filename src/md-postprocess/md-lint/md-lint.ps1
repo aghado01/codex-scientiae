@@ -8,7 +8,7 @@
   orchestrates; markdownlint (Node) does the linting, against the codex-aligned config
   (codex.markdownlint.json — line-length off, since the codex removes hard wraps).
 
-    . ./src/audits/md-lint/md-lint.ps1
+    . ./src/md-postprocess/md-lint/md-lint.ps1
     Test-MarkdownLint -Path <file.md> [-Config <json>]
 #>
 

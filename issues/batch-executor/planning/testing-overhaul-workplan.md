@@ -141,7 +141,7 @@ Every ticket preserves these conditions:
 - Classify each file as `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly` using the brief.
 - Record an owner, reason, and removal condition for each `SerialOnly` exception.
 - Measure the two pilots first:
-  `tests/shared/batch-executor*.Tests.ps1` and `tests/latex-ingest/latex-ingest.Tests.ps1`.
+  `tests/batch-executor/batch-executor*.Tests.ps1` and `tests/latex-ingest/latex-ingest.Tests.ps1`.
 - Treat the existing mechanical census as a review queue, not as a semantic result.
 
 ### Exit gate

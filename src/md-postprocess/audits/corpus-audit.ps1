@@ -9,16 +9,16 @@
   sweep. Two tiers:
 
     HARD     — holes that must never ship: FILL_ME_IN, U+FFFD, a UTF-8 BOM (STANDARDS §8 is no-BOM).
-               tests/audits/corpus-health.Tests.ps1 pins these (and the now-clean ligature/URL classes) at zero.
+               tests/md-postprocess/corpus-health.Tests.ps1 pins these (and the now-clean ligature/URL classes) at zero.
     ADVISORY — quality/migration debt, heuristic, not a publish blocker: literal ligatures, mangled URL
                scheme separators, legacy flat image paths ({slug}/… vs images/{slug}/…, STANDARDS §8),
                degenerate single-column tables (a destroyed-table tell), and suspected `?`-mojibake.
 
   Usage:
-    pwsh -File src/audits/corpus-audit.ps1                 # human report over the default roots
-    pwsh -File src/audits/corpus-audit.ps1 -Json           # machine-readable findings
-    pwsh -File src/audits/corpus-audit.ps1 -Roots bibliotecha/compendia
-    . ./src/audits/corpus-audit.ps1; Get-CorpusHealth      # dot-source for the data (what the Pester test does)
+    pwsh -File src/md-postprocess/audits/corpus-audit.ps1                 # human report over the default roots
+    pwsh -File src/md-postprocess/audits/corpus-audit.ps1 -Json           # machine-readable findings
+    pwsh -File src/md-postprocess/audits/corpus-audit.ps1 -Roots bibliotecha/compendia
+    . ./src/md-postprocess/audits/corpus-audit.ps1; Get-CorpusHealth      # dot-source for the data (what the Pester test does)
 
   PowerShell codepoint discipline (see memory powershell-text-mutation-traps): all matching is ordinal
   via [regex]; String.Replace / -eq / -ne are culture-sensitive and silently fold ligatures, so they are
@@ -26,7 +26,7 @@
 #>
 param(
     [string[]]$Roots = @('bibliotecha/compendia', 'bibliotecha/codices', 'bibliotecha/corpora'),
-    [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')),
+    [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..')),
     [switch]$Json,
     [switch]$Quiet
 )
@@ -107,7 +107,7 @@ function Get-FileHealth([string]$path, [string]$repoRoot) {
 function Get-CorpusHealth {
     [CmdletBinding()] param(
         [string[]]$Roots = @('bibliotecha/compendia', 'bibliotecha/codices', 'bibliotecha/corpora'),
-        [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+        [string]$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
     )
     $classes = 'bom', 'fill_me_in', 'u_fffd', 'ligatures', 'url_mangled', 'broken_image_link', 'broken_md_link', 'single_col_table', 'mojibake_suspect'
     $totals = [ordered]@{}; foreach ($c in $classes) { $totals[$c] = 0 }

@@ -1,12 +1,12 @@
 #requires -Version 7.0
-# src/shared/md-anchor.ps1 — THE heading-slug engine, one definition repo-wide.
+# src/md-postprocess/md-anchor.ps1 — THE heading-slug engine, one definition repo-wide.
 #
 # These cases came from md-toc.Tests.ps1, which retired with its module. The slug rule is a
 # cross-cutting invariant: finalize, md-repair, toc-engine and the latex lane all resolve anchors
 # written by each other, so a change here is a corpus-wide link break, not a local edit.
 
 Describe 'Get-MdAnchor — the one slug engine' {
-    BeforeAll { . "$PSScriptRoot/../../src/shared/md-anchor.ps1" }
+    BeforeAll { . "$PSScriptRoot/../../src/md-postprocess/md-anchor.ps1" }
 
     It 'lowercases, strips punctuation, and hyphenates whitespace (GitHub rule)' {
         Get-MdAnchor 'Methods' | Should -Be 'methods'

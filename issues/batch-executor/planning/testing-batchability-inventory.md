@@ -8,7 +8,7 @@ that individual `It` blocks are independently schedulable.
 ## Measurement method
 
 - Each physical file was invoked by exact path through `tests/run.ps1` in a fresh child PowerShell process.
-- The eight `tests/shared/batch-executor*.Tests.ps1` positive-control files ran first, followed by the
+- The eight `tests/batch-executor/batch-executor*.Tests.ps1` positive-control files ran first, followed by the
   `tests/latex-ingest/latex-ingest.Tests.ps1` restructuring control and then every remaining file in stable
   path order.
 - Every invocation requested its own native NUnit XML result. All 43 processes exited successfully: 476
@@ -40,20 +40,20 @@ fresh-process-local; the file has no dependency on another test file running fir
 
 | File | Obs/It | Hooks, state, process/capability | Writes, resources, skips | Wall | Class | Evidence and action |
 |---|---:|---|---|---:|---|---|
-| `tests/adapters/adapter-thinness.Tests.ps1` | 2/2 | BA builds a script-local AST cache; no process or mutable host state. | Read-only adapter source; no skip. | 4.742 s | `Batchable` | Repeatable exact-path structural gate; retain the container-local cache. |
-| `tests/adapters/latex-batch.Tests.ps1` | 8/8 | BA/AA manage modules; synthetic planner cases plus child PowerShell and one live LaTeX/Node/KaTeX integration. | TD-only fixtures/results; live toolchain is not gated. | 10.889 s | `NeedsRefactor` | Split the live integration at its capability/cost seam and gate it; the synthetic planner portion is otherwise batchable. |
-| `tests/adapters/test-batch.Tests.ps1` (then named; now `pester-batch.Tests.ps1`) | 7/10 | BA/AA manage modules; nested child PowerShell/Pester; saved `PORTABLE_ROOT` is restored in `finally`. | Generated repositories, manifests, tests, and XML are TD-only; no skip. | 10.133 s | `Batchable` | Exact fixture paths and child results are isolated. The planning/integration boundary is an optional cost split. |
+| `tests/batch-adapters/adapter-thinness.Tests.ps1` | 2/2 | BA builds a script-local AST cache; no process or mutable host state. | Read-only adapter source; no skip. | 4.742 s | `Batchable` | Repeatable exact-path structural gate; retain the container-local cache. |
+| `tests/batch-adapters/latex-batch.Tests.ps1` | 8/8 | BA/AA manage modules; synthetic planner cases plus child PowerShell and one live LaTeX/Node/KaTeX integration. | TD-only fixtures/results; live toolchain is not gated. | 10.889 s | `NeedsRefactor` | Split the live integration at its capability/cost seam and gate it; the synthetic planner portion is otherwise batchable. |
+| `tests/batch-adapters/test-batch.Tests.ps1` (then named; now `pester-batch.Tests.ps1`) | 7/10 | BA/AA manage modules; nested child PowerShell/Pester; saved `PORTABLE_ROOT` is restored in `finally`. | Generated repositories, manifests, tests, and XML are TD-only; no skip. | 10.133 s | `Batchable` | Exact fixture paths and child results are isolated. The planning/integration boundary is an optional cost split. |
 | `tests/infrastructure/node-dependencies.Tests.ps1` | 3/3 | BA fixes repository root; invokes ambient Git and changes only process-local `$LASTEXITCODE`. | Read-only working tree and Git index; missing Git is an ungated failure. | 3.828 s | `NeedsRefactor` | Split the Git-index assertion from filesystem checks or add an explicit Git capability outcome. |
 | `tests/infrastructure/path-topology.Tests.ps1` | 3/3 | BA builds scan helpers; `Get-Command` probes host-local MCP commands. | Read-only repository/config scan; missing configured commands fail without a gate. | 4.112 s | `NeedsRefactor` | Split portable source topology from a deterministically capability-gated host-command check. |
-| `tests/shared/batch-executor-await.Tests.ps1` | 2/2 | BA imports module; local cancellation/runspace resources are stopped and disposed. | TD-only scripts/PID markers; selected process case launches no child; no skip. | 4.682 s | `Batchable` | Resource ownership and cleanup are container-local. |
-| `tests/shared/batch-executor-collection.Tests.ps1` | 3/3 | BA imports module; runspaces are disposed; a guarded `Add-Type` is fresh-process-local. | TD-only worker scripts; no fixed resource or skip. | 5.513 s | `Batchable` | Directly proves sibling collection-failure containment. |
-| `tests/shared/batch-executor-lifecycle.Tests.ps1` | 6/6 | BA imports module; mocked globals/AppDomain probes and injected handles are reset or disposed. | TD-only workers and process-local fake resources; no skip. | 5.656 s | `Batchable` | Mutable lifecycle probes are explicitly restored. |
-| `tests/shared/batch-executor-module.Tests.ps1` | 8/8 | BA plus BE/AE remove modules and a global sentinel around each test. | Canonical module is read-only; copied/mutated module fixtures are TD-only; no skip. | 7.100 s | `Batchable` | Module/global cleanup and write isolation are explicit. |
-| `tests/shared/batch-executor-preparation.Tests.ps1` | 5/5 | BA imports module; in-memory copy/serialization cases launch no process. | TD-only scripts and marker; no skip. | 4.927 s | `Batchable` | Deterministic preparation state is container-local. |
-| `tests/shared/batch-executor-state.Tests.ps1` | 8/8 | BA imports module; one pipeline is disposed in `finally`; no child process. | In-memory contract tests; no writes, fixed resources, or skip. | 4.125 s | `Batchable` | Pure lifecycle-state boundary. |
-| `tests/shared/batch-executor-teardown.Tests.ps1` | 4/4 | BA imports module; exercises runspace/pool teardown and in-memory disposal-failure probes. | TD-only workers plus read-only source AST; no skip. | 4.765 s | `Batchable` | Successful paths close handles before assertion; no shared resource. |
-| `tests/shared/batch-executor.Tests.ps1` | 21/21 | BA imports module; many runspaces and exact-PID `$PSHOME` child/grandchild processes; cleanup is in `finally`/survivor helpers. | TD-only scripts, logs, and PID markers; no ports, services, or skip. | 22.360 s | `Batchable` | High cost/resource pressure, but isolated identities and explicit process-tree cleanup satisfy the contract. Runspace, ordinary-process, and termination Describes are natural future cost seams. |
-| `tests/shared/batch-plan.Tests.ps1` | 8/8 | BA imports module; mixed runspace/`$PSHOME` child execution and local cancellation disposed in `finally`. | TD-only scripts/modules; no fixed resource or skip. | 8.979 s | `Batchable` | Declared writes and runtime state remain inside the container boundary. |
+| `tests/batch-executor/batch-executor-await.Tests.ps1` | 2/2 | BA imports module; local cancellation/runspace resources are stopped and disposed. | TD-only scripts/PID markers; selected process case launches no child; no skip. | 4.682 s | `Batchable` | Resource ownership and cleanup are container-local. |
+| `tests/batch-executor/batch-executor-collection.Tests.ps1` | 3/3 | BA imports module; runspaces are disposed; a guarded `Add-Type` is fresh-process-local. | TD-only worker scripts; no fixed resource or skip. | 5.513 s | `Batchable` | Directly proves sibling collection-failure containment. |
+| `tests/batch-executor/batch-executor-lifecycle.Tests.ps1` | 6/6 | BA imports module; mocked globals/AppDomain probes and injected handles are reset or disposed. | TD-only workers and process-local fake resources; no skip. | 5.656 s | `Batchable` | Mutable lifecycle probes are explicitly restored. |
+| `tests/batch-executor/batch-executor-module.Tests.ps1` | 8/8 | BA plus BE/AE remove modules and a global sentinel around each test. | Canonical module is read-only; copied/mutated module fixtures are TD-only; no skip. | 7.100 s | `Batchable` | Module/global cleanup and write isolation are explicit. |
+| `tests/batch-executor/batch-executor-preparation.Tests.ps1` | 5/5 | BA imports module; in-memory copy/serialization cases launch no process. | TD-only scripts and marker; no skip. | 4.927 s | `Batchable` | Deterministic preparation state is container-local. |
+| `tests/batch-executor/batch-executor-state.Tests.ps1` | 8/8 | BA imports module; one pipeline is disposed in `finally`; no child process. | In-memory contract tests; no writes, fixed resources, or skip. | 4.125 s | `Batchable` | Pure lifecycle-state boundary. |
+| `tests/batch-executor/batch-executor-teardown.Tests.ps1` | 4/4 | BA imports module; exercises runspace/pool teardown and in-memory disposal-failure probes. | TD-only workers plus read-only source AST; no skip. | 4.765 s | `Batchable` | Successful paths close handles before assertion; no shared resource. |
+| `tests/batch-executor/batch-executor.Tests.ps1` | 21/21 | BA imports module; many runspaces and exact-PID `$PSHOME` child/grandchild processes; cleanup is in `finally`/survivor helpers. | TD-only scripts, logs, and PID markers; no ports, services, or skip. | 22.360 s | `Batchable` | High cost/resource pressure, but isolated identities and explicit process-tree cleanup satisfy the contract. Runspace, ordinary-process, and termination Describes are natural future cost seams. |
+| `tests/batch-executor/batch-plan.Tests.ps1` | 8/8 | BA imports module; mixed runspace/`$PSHOME` child execution and local cancellation disposed in `finally`. | TD-only scripts/modules; no fixed resource or skip. | 8.979 s | `Batchable` | Declared writes and runtime state remain inside the container boundary. |
 
 ## LaTeX ingest, audits, postprocess, and document primitives
 
@@ -110,11 +110,11 @@ Measured files at or above 10 s are:
 | File | Wall | Class / significance |
 |---|---:|---|
 | `tests/latex-ingest.refs.Tests.ps1` | 27.542 s | `CapabilityGated`; immutable full-paper/golden fixture. |
-| `tests/shared/batch-executor.Tests.ps1` | 22.360 s | `Batchable`; process/lifecycle resource pressure. |
+| `tests/batch-executor/batch-executor.Tests.ps1` | 22.360 s | `Batchable`; process/lifecycle resource pressure. |
 | `tests/latex-ingest/latex-ingest.Tests.ps1` | 18.276 s | `NeedsRefactor`; restructuring pilot and shared-write collision. |
 | `tests/audits/corpus-health.Tests.ps1` | 12.118 s | `Batchable`; corpus-wide read scan. |
-| `tests/adapters/latex-batch.Tests.ps1` | 10.889 s | `NeedsRefactor`; live Node/KaTeX seam. |
-| `tests/adapters/test-batch.Tests.ps1` (then named; now `pester-batch.Tests.ps1`) | 10.133 s | `Batchable`; nested process/Pester setup. |
+| `tests/batch-adapters/latex-batch.Tests.ps1` | 10.889 s | `NeedsRefactor`; live Node/KaTeX seam. |
+| `tests/batch-adapters/test-batch.Tests.ps1` (then named; now `pester-batch.Tests.ps1`) | 10.133 s | `Batchable`; nested process/Pester setup. |
 | `tests/shared/masks.Tests.ps1` | 10.019 s | `Batchable`; randomized property workload. |
 
 The write-isolation findings are bounded and visible:
@@ -133,7 +133,7 @@ carry forward.
 ## Post-baseline deltas
 
 BEX-503 did not add a physical container or change any classification. It added three outer runner-contract
-tests and six embedded fixture `It` lines to the then-named `tests/adapters/test-batch.Tests.ps1`, moving the
+tests and six embedded fixture `It` lines to the then-named `tests/batch-adapters/test-batch.Tests.ps1`, moving the
 current mechanical count from 453 to 462 textual lines and the current observed repository count from 476
 to 479.
 That container now selects 10 tests and took 29.710 s in its focused closure run; its original 7/10.133 s row
@@ -159,14 +159,14 @@ semantic and timing evidence without a new scheduler, lock, workload manifest, o
 benchmark test. Post-refactor closure selected 479 repository tests in 93.244 s: 477 passed, 2 skipped, and
 none failed.
 
-BEX-505 renamed that adapter container to `tests/adapters/pester-batch.Tests.ps1` without changing its
+BEX-505 renamed that adapter container to `tests/batch-adapters/pester-batch.Tests.ps1` without changing its
 classification, the physical-file job boundary, or the inventory totals. Its current contract now witnesses
 stable `pester:<repository-relative-path>#<digest>` identity, one `pester-jobs` address resolver, sibling
 `pester.xml` and `artifacts/` declared writes, `CODEX_TEST_ARTIFACT_ROOT` child transport, and planning that
 creates neither address. The former generic adapter names remain above only as explicit BEX-501/BEX-503
 measurement provenance.
 
-BEX-506 adds one `Batchable` physical container, `tests/adapters/parallel.Tests.ps1`. Its three outer tests
+BEX-506 adds one `Batchable` physical container, `tests/batch-adapters/parallel.Tests.ps1`. Its three outer tests
 pass by exact path; four additional textual `It` lines are fixture source executed only in nested child
 repositories, so the mechanical count increases from 462 to 469 without creating seven repository tests.
 The container's structural witness rejects duplicated scheduler/lifecycle/run/log/store/address ownership;
@@ -190,7 +190,7 @@ BEX-507 preserves all historical measurements and re-audits the eight remaining 
 
 | File | Final class | Migration evidence |
 |---|---|---|
-| `tests/adapters/latex-batch.Tests.ps1` | `CapabilityGated` | The live Node/KaTeX assertion has an exact preflight and reasoned skip; the child receives only the pinned capability path. |
+| `tests/batch-adapters/latex-batch.Tests.ps1` | `CapabilityGated` | The live Node/KaTeX assertion has an exact preflight and reasoned skip; the child receives only the pinned capability path. |
 | `tests/infrastructure/node-dependencies.Tests.ps1` | `CapabilityGated` | Filesystem checks remain portable; only the Git-index assertion is gated by an exact Git probe and reasoned skip. |
 | `tests/infrastructure/path-topology.Tests.ps1` | `CapabilityGated` | Portable repository topology is separate from the explicitly gated host-MCP executable check; the same container now freezes the one-adapters-module/one-runner/one-parallel-composition/no-sidecar topology. |
 | `tests/latex-ingest/latex-ingest-compat.Tests.ps1` | `CapabilityGated` | Namespace isolation remains portable; the three legacy conversions use explicit rendering-capability gates and `$TestDrive` scratch. |
@@ -268,10 +268,10 @@ observed/textual count grows by one. Focused execution of that assertion passed 
 PowerShell JSONL containers and the unrelated logistics source reference remain separate known topology
 archaeology, so no new whole-repository Pester closure is claimed here.
 
-`tests/adapters/pytest-batch.Tests.ps1` adds one `CapabilityGated` container with five observed/textual
+`tests/batch-adapters/pytest-batch.Tests.ps1` adds one `CapabilityGated` container with five observed/textual
 tests. Its three planning cases remain runnable with a fake interpreter; only the two live runner/executor
 cases require the explicitly detected repository Python capability. The multilingual
-`tests/adapters/parallel.Tests.ps1` container gains two observed tests plus two additional textual `It` lines
+`tests/batch-adapters/parallel.Tests.ps1` container gains two observed tests plus two additional textual `It` lines
 inside nested fixture source, and `tests/infrastructure/path-topology.Tests.ps1` gains one further observed
 and textual composition assertion. Those existing containers retain their classifications.
 
@@ -307,7 +307,7 @@ capabilities. The new real-article case proves that a canonical document-root pa
 same-named `OutDir` file, preserves the source fingerprint, carries identity and authored-line provenance in
 order, agrees with the oracle count, and produces the same audit and markdown on rerun.
 
-`tests/adapters/latex-batch.Tests.ps1` grows from eight to ten observed/textual tests and remains
+`tests/batch-adapters/latex-batch.Tests.ps1` grows from eight to ten observed/textual tests and remains
 `CapabilityGated`; its exact-file gate passed 10/10. Planning freezes present/absent patch identity without
 creating run artifacts or declaring the patch as a write; it rejects non-file occupancy, reparse traversal,
 and patch input larger than 1 MiB. Execution refuses patch appearance, content change, or deletion after

@@ -4,7 +4,7 @@
 # every corruption category surveyed in bibliotecha/compendia/ph, and the back-to-front auto-fix + escalation.
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/audits/md-repair.ps1"
+    . "$PSScriptRoot/../../src/md-postprocess/audits/md-repair.ps1"
     $script:U8 = [System.Text.UTF8Encoding]::new($false)
     function New-Md([string]$content) {
         $p = Join-Path $TestDrive ([guid]::NewGuid().ToString('N') + '.md')

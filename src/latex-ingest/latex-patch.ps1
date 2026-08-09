@@ -7,7 +7,7 @@
   Raw-byte identities allow batch callers to pin the input consumed by a conversion.
 #>
 
-. "$PSScriptRoot/../shared/portable-path.ps1"
+. "$PSScriptRoot/../logistics/portable-path.ps1"
 . "$PSScriptRoot/../shared/file-bytes.ps1"
 . "$PSScriptRoot/../shared/authored-jsonl.ps1"
 

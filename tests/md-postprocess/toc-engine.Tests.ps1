@@ -1,9 +1,9 @@
 #requires -Version 7.0
-# Tests for src/toc-engine/toc-engine.ps1 — TOC & Tree Manifest Engine
+# Tests for src/md-postprocess/toc-engine/toc-engine.ps1 — TOC & Tree Manifest Engine
 
 Describe 'toc-engine — template expansion, model assembly, sidecar export' {
     BeforeAll {
-        . "$PSScriptRoot/../../src/toc-engine/toc-engine.ps1"
+        . "$PSScriptRoot/../../src/md-postprocess/toc-engine/toc-engine.ps1"
     }
 
     It 'Expand-MdTemplate: performs scalar substitution, {{#each}} loops, and {{#if}} conditionals' {
@@ -248,7 +248,7 @@ Text for methods.
         try {
             $mdFile = Join-Path $tmpDir 'solo.md'
             "# T`n`n## A Section, Punctuated!`n`nText`n" | Out-File -FilePath $mdFile -Encoding utf8
-            $engine = (Resolve-Path "$PSScriptRoot/../../src/toc-engine/toc-engine.ps1").Path
+            $engine = (Resolve-Path "$PSScriptRoot/../../src/md-postprocess/toc-engine/toc-engine.ps1").Path
 
             $script = @"
 . '$engine'

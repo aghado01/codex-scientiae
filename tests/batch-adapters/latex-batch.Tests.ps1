@@ -13,7 +13,7 @@ BeforeAll {
     function Get-LatexBatchMathRenderCapability {
         $node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue |
             Select-Object -First 1
-        $auditEngine = Join-Path $script:RepositoryRoot 'src/audits/math-render/katex-check.js'
+        $auditEngine = Join-Path $script:RepositoryRoot 'src/math-channel/math-render/katex-check.js'
         $katexPackage = Join-Path $script:RepositoryRoot 'packages/node/node_modules/katex/package.json'
         if (-not $node) {
             return [pscustomobject]@{

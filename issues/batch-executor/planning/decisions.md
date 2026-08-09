@@ -8,7 +8,7 @@ The originating design evidence is the
 [independent module proposal](../discussions/opus-batch-executor-independent-proposal-20260804.md) and the
 [module proposal with review](../discussions/sol-batch-executor-module-proposal-20260804.md). Work still
 ahead lives in [roadmap.md](roadmap.md); completed roadmap-grain work moves to
-[ledger.md](ledger.md). The `src/shared/batch-executor/README.md` is the runtime capability and
+[ledger.md](ledger.md). The `src/batch-executor/README.md` is the runtime capability and
 contract surface and must agree with this canon.
 
 Status vocabulary: **implemented** describes the current tested substrate; **accepted** is a binding

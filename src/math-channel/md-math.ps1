@@ -18,7 +18,7 @@
     markdown context (fences, tables, links) these predicates deliberately know nothing about.
 
   Unicode -> LaTeX conversion and register canonicalization are NOT here: they belong to
-  src/math-register, and a caller composes them (see src/audits/md-cleanup.ps1).
+  src/math-channel, and a caller composes them (see src/md-postprocess/audits/md-cleanup.ps1).
 
     . ./md-math.ps1
     Optimize-MathContent '\frac { d + 1 } { 2 }' @()      # -> \frac{d+1}{2}

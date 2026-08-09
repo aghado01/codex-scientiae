@@ -8,7 +8,7 @@ arguments, briefs, and review evidence live under
 
 ## Current baseline — Pester closure 2026-08-06; pytest closure 2026-08-08
 
-The executor is packaged under `src/shared/batch-executor/`. Its manifest exposes four commands; its root
+The executor is packaged under `src/batch-executor/`. Its manifest exposes four commands; its root
 module validates and reads four runtime payloads as source data, loads named host files in deterministic
 order, and leaks no private helpers. The manifest is the sole supported load path; BEX-208 removed the
 zero-caller flat compatibility facade and `Compile-BatchPlan` alias.
@@ -42,7 +42,7 @@ failure containment, and a live source-deposit-to-latex-ingest child run. At clo
 suite is 158/158 and the complete repository suite is 474/474. That left cross-adapter thinness as the final
 Phase 4 gate.
 
-The three planners are public files under `src/adapters/`, backed by grouped private helpers and one
+The three planners are public files under `src/batch-adapters/`, backed by grouped private helpers and one
 manifest; there is no PowerShell module per planner. Pester, pytest, and LaTeX planner symbols, metadata,
 job IDs, address roots, and test filenames retain their framework/domain naming.
 

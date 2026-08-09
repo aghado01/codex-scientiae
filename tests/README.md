@@ -384,16 +384,16 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | Directory | Current ownership |
 |---|---|
 | `adapters/` | Pester, pytest, and LaTeX batch planning, addressing, and isolated execution. |
-| `audits/` | Repository and deliverable audits, including mathematical rendering |
+| `md-postprocess/` | Markdown post-process, audits, TOC engine, and deliverable bundling |
 | `hdbscan/` | HDBSCAN executable and evaluator contracts |
 | `infrastructure/` | Repository-wide topology and structural checks |
 | `latex-ingest/` | LaTeX ingestion, stores, patches, and rendering integration |
-| `math-register/` | Mathematical register normalization |
+| `math-channel/` | Mathematical register normalization and math-render audit |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
 | `procurement/` | Scholarly discovery and acquisition adapters |
 | `reader-mcp/` | Portable deliverable reader MCP |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
-| `toc-engine/` | Deliverable TOC and manifest rendering |
+| `logistics/` | Shared logistics primitives (run paths, portable paths, deposit) |
 
 ## Conventions
 

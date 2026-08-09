@@ -7,7 +7,7 @@
   orchestration without starting a conversion run.
 #>
 
-. "$PSScriptRoot/../shared/portable-path.ps1"
+. "$PSScriptRoot/../logistics/portable-path.ps1"
 
 function Get-LatexPathComparison {
     if ($IsWindows) { return [System.StringComparison]::OrdinalIgnoreCase }

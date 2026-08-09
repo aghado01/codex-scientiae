@@ -12,8 +12,8 @@
 #>
 
 . "$PSScriptRoot/../shared/md-sentinels.ps1"   # the ONE defect-sentinel catalogue
-if (Test-Path -LiteralPath (Join-Path $PSScriptRoot '../toc-engine/toc-engine.ps1') -PathType Leaf) {
-    . (Join-Path $PSScriptRoot '../toc-engine/toc-engine.ps1')
+if (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'toc-engine/toc-engine.ps1') -PathType Leaf) {
+    . (Join-Path $PSScriptRoot 'toc-engine/toc-engine.ps1')
 }
 
 $script:BundleUtf8 = [System.Text.UTF8Encoding]::new($false)

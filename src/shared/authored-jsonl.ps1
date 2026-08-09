@@ -10,7 +10,7 @@
   caller can keep its own wording without the reader knowing anything about the domain.
 #>
 
-. "$PSScriptRoot/portable-path.ps1"
+. "$PSScriptRoot/../logistics/portable-path.ps1"
 . "$PSScriptRoot/file-bytes.ps1"
 
 function Assert-AuthoredJsonlIdentity {
