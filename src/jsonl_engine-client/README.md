@@ -1,6 +1,6 @@
 # JSONL engine PowerShell client
 
-`jsonl-engine-client` is the repository's single PowerShell-to-Python boundary for
+`jsonl_engine-client` is the repository's single PowerShell-to-Python boundary for
 [`jsonl_engine`](../jsonl_engine/). The Python package owns JSON/JSONL parsing, text policy, JSON
 Pointer behavior, sidecars, signatures, and artifact transactions. This module owns interpreter
 resolution, process lifetime, UTF-8 streams, the versioned CLI protocol, and PowerShell value
@@ -9,7 +9,7 @@ conversion.
 Import the canonical manifest:
 
 ```pwsh
-Import-Module ./src/shared/jsonl-engine-client/jsonl-engine-client.psd1
+Import-Module ./src/shared/jsonl_engine-client/jsonl_engine-client.psd1
 Get-JsonlHead ./inventory.jsonl 5
 Find-JsonlRecord ./inventory.jsonl /state eq '"source-ready"'
 ```

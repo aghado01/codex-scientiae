@@ -20,7 +20,7 @@
 
 . "$PSScriptRoot/../logistics/run-paths.ps1" # runstamped artifact addressing only
 . "$PSScriptRoot/source-deposit.ps1"       # source-only .NET extraction + deposit-address validation; never initializes implicitly
-Import-Module (Join-Path $PSScriptRoot '../shared/jsonl-engine-client/jsonl-engine-client.psd1') `
+Import-Module (Join-Path $PSScriptRoot '../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 . "$PSScriptRoot/../tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
 . "$PSScriptRoot/../pdf-raster/pdf-raster.ps1"   # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
@@ -2251,7 +2251,7 @@ function Resolve-LatexIngestManifestSource {
                 [System.StringComparison]::Ordinal)) {
             throw "canonical article location does not match slug '$slug': '$manifestPath'"
         }
-        $frames = @(jsonl-engine-client\Invoke-JsonlEngineCommand -Verb 'validate-json' `
+        $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'validate-json' `
                 -Argument @($manifestPath, 'article.schema.json'))
         if ($frames.Count -ne 1) {
             throw "jsonl engine verb 'validate-json' returned $($frames.Count) values; expected exactly one"

@@ -13,7 +13,7 @@
 
 . "$PSScriptRoot/probe-ledger.ps1"
 . "$PSScriptRoot/../latex-ingest/source-deposit.ps1"
-Import-Module (Join-Path $PSScriptRoot '../shared/jsonl-engine-client/jsonl-engine-client.psd1') `
+Import-Module (Join-Path $PSScriptRoot '../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 
 # The probe set this transaction is accountable for. Adding a probe to the code without adding it
@@ -303,7 +303,7 @@ function New-LatexSourceDeposit {
         if ($FindingsPath) {
             $inputFileArguments.Path = $FindingsPath
         }
-        $findingsInput = jsonl-engine-client\New-JsonlEngineInputFile @inputFileArguments
+        $findingsInput = jsonl_engine-client\New-JsonlEngineInputFile @inputFileArguments
         $findingsFile = $findingsInput.Path
         try {
             try { [void](& $assertSafeFindingsPath $findingsFile) }

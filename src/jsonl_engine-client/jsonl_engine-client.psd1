@@ -1,5 +1,5 @@
 @{
-    RootModule        = 'jsonl-engine-client.psm1'
+    RootModule        = 'jsonl_engine-client.psm1'
     ModuleVersion     = '0.1.0'
     GUID              = 'ae40f855-7846-408a-ad0e-8cb0850477ca'
     Author            = 'Codex Scientiae'

@@ -3,9 +3,9 @@
 # This repository is mixed-language; Python is one lane. This file exists to make that lane's
 # package importable under ONE name, not to publish a distribution.
 #
-# The problem it solves: jsonl_engine was reachable by two import paths -- `src.shared.jsonl_engine`
-# in tests and `jsonl_engine` under `python -m`. Two names for one package means two module objects
-# if both load, which duplicates module-level state such as the global SchemaRegistry.
+# The problem it solves: jsonl_engine must be reachable under one import path -- `jsonl_engine` for
+# both tests and `python -m`. Two names for one package means two module objects if both load, which
+# duplicates module-level state such as the global SchemaRegistry.
 #
 #     .venv/Scripts/python.exe -m pip install -r requirements.txt
 #     .venv/Scripts/python.exe -m pip install -e .
@@ -30,7 +30,7 @@ description = "Codex Scientiae — Python lane (JSONL engine and artifact regist
 requires-python = ">=3.12"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/shared/jsonl_engine"]
+packages = ["src/jsonl_engine"]
 
 [tool.pytest.ini_options]
 # Anchors rootdir at the repository root so `pytest` and `python -m pytest` agree. Import resolution

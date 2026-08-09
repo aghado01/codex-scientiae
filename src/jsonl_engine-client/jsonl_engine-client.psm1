@@ -6,7 +6,7 @@ $script:JsonlEngineProtocol = 'codex-scientiae/jsonl-engine-cli'
 $script:JsonlEngineProtocolVersion = 1
 $script:JsonlEngineClientRoot = $PSScriptRoot
 $script:JsonlEngineRepositoryRoot = [System.IO.Path]::GetFullPath(
-    (Join-Path $PSScriptRoot '../../..'))
+    (Join-Path $PSScriptRoot '../..'))
 $script:JsonlEngineUtf8 = [System.Text.UTF8Encoding]::new($false, $true)
 
 $privateFiles = @(
@@ -23,7 +23,7 @@ $publicFiles = @(
 foreach ($relativePath in @($privateFiles + $publicFiles)) {
     $sourcePath = Join-Path $PSScriptRoot $relativePath
     if (-not [System.IO.File]::Exists($sourcePath)) {
-        throw "jsonl-engine-client source file not found: '$sourcePath'"
+        throw "jsonl_engine-client source file not found: '$sourcePath'"
     }
     . $sourcePath
 }
