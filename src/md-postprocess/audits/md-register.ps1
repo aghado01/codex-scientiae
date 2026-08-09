@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/audits/md-register.ps1 — the ONE markdown figure/image register, shared across emission lanes.
+  src/md-postprocess/audits/md-register.ps1 — the ONE markdown figure/image register, shared across emission lanes.
 
   Conversion lanes end at the same corpus register, so the register strings live in exactly one place:
 

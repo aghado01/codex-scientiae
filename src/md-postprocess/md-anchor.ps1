@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/shared/md-anchor.ps1 — THE heading-slug engine. One definition, repo-wide.
+  src/md-postprocess/md-anchor.ps1 — THE heading-slug engine. One definition, repo-wide.
 
   This is a cross-cutting invariant, not a convenience: finalize (chunk-stream emission), md-repair
   (post-hoc TOC regeneration), toc-engine (sidecars + in-doc contents) and the latex lane must all

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/md-postprocess/md-math.ps1 — math-span primitives for markdown that arrived from a
+  src/math-channel/md-math.ps1 — math-span primitives for markdown that arrived from a
   non-markdown source. Pure text in / text out: every function takes a string (or a token) and
   returns a string or a boolean. No document model, no chunk stream, no run addressing — so any
   lane that produces markdown from PDF, LaTeX, or an IR can serialize its math spans through the

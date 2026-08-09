@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/math-register/math-register.ps1 — span-level canonicalization into the math register.
+  src/math-channel/math-channel.ps1 — span-level canonicalization into the math register.
 
   Implements the mechanical rules of issues/math-register/math-register-spec.md on a single math
   span's LaTeX (the content between $..$ / $$..$$, delimiters excluded). Shared by BOTH conversion
@@ -8,7 +8,7 @@
   born canonical, and the membrane's normalize chain applies it after glyph repair. One register,
   one code path: conformance is a manuscript property, provenance is irrelevant (spec §0.1).
 
-  Data-driven via target store files under `src/math-register/stores/`:
+  Data-driven via target store files under `src/math-channel/stores/`:
   - `jurisdiction.json`: Prose protection & boundary masking (\text{...})
   - `operators.json`: Atom-class operator lowering (\operatorname -> \mathrm)
   - `surjections.json`: Normative command alias surjection mappings

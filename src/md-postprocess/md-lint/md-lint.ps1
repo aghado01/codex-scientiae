@@ -1,10 +1,10 @@
 #requires -Version 7.0
 <#
-  src/audits/md-lint/md-lint.ps1 — markdown STRUCTURE audit backed by the colocated
+  src/md-postprocess/md-lint/md-lint.ps1 — markdown STRUCTURE audit backed by the colocated
   md-lint.js worker (markdownlint).
 
   The non-math half of the codex standard: heading hierarchy (STANDARDS §5), spacing hygiene (§4), the
-  Contents block (§6). Mathematical rendering is the SEPARATE audit (src/audits/math-render). PowerShell
+  Contents block (§6). Mathematical rendering is the SEPARATE audit (src/math-channel/math-render). PowerShell
   orchestrates; markdownlint (Node) does the linting, against the codex-aligned config
   (codex.markdownlint.json — line-length off, since the codex removes hard wraps).
 

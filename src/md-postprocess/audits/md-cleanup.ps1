@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/audits/md-cleanup.ps1 — post-hoc deterministic cleanup for existing markdown corpora.
+  src/md-postprocess/audits/md-cleanup.ps1 — post-hoc deterministic cleanup for existing markdown corpora.
 
   Lifts the safe text transforms from the restoration pipeline and runs them straight on assembled
   markdown — no JSON needed. Quick fixes, not the full monty:
@@ -23,7 +23,7 @@
 
 . "$PSScriptRoot/../../math-channel/md-math.ps1"       # Optimize-MathContent, Repair-MathAlignment, Test-MathGlyphToken, Test-StrongMath
 . "$PSScriptRoot/../../math-channel/math-channel.ps1"  # Convert-MathToLatex + ConvertTo-RegisterMath (previously reached transitively)
-. "$PSScriptRoot/../../shared/crawl.ps1"
+. "$PSScriptRoot/../../logistics/crawl.ps1"
 . "$PSScriptRoot/../../latex-ingest/latex.ps1"         # Get-LatexBalance, Test-IsMath, Test-AlignmentOutsideEnv
 
 $script:Ligatures = @{

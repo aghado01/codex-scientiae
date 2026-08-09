@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/toc-engine/toc-engine.ps1 — Single-document and multi-document TOC & Tree Manifest Engine.
+  src/md-postprocess/toc-engine/toc-engine.ps1 — Single-document and multi-document TOC & Tree Manifest Engine.
 
   Features:
   - Micro Template Engine (Expand-MdTemplate): zero-dependency 3-pass renderer ({{#each}}, {{#if}}, {{Property}})

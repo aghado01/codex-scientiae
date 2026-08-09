@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/audits/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies
+  src/md-postprocess/audits/corpus-audit.ps1 — read-only health audit of the PUBLISHED corpus (the promoted .md bodies
   under bibliotecha/{compendia,codices,corpora}/). This walks what actually shipped and reports defect
   classes that legacy, hand-promoted, or otherwise imperfect deliverables can still carry.
 

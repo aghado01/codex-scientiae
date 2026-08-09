@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/audits/md-repair.ps1 — surgical, byte-offset-anchored post-hoc repair for promoted markdown.
+  src/md-postprocess/audits/md-repair.ps1 — surgical, byte-offset-anchored post-hoc repair for promoted markdown.
 
   Mirrors the membrane's law of exposure for raw .md (no JSON / IR available post-promotion):
   DETECT problems, classify each into auto-fixable vs needs-manual, and expose a byte-offset
@@ -192,7 +192,7 @@ function Repair-MdHeadings {
     }
 }
 
-# Heading slugs come from the shared engine (shared/md-anchor.ps1, Get-MdAnchor) — the same anchors
+# Heading slugs come from the shared engine (md-postprocess/md-anchor.ps1, Get-MdAnchor) — the same anchors
 # finalize and latex-ingest write, so a regenerated TOC always matches the emitting lane.
 
 # Regenerate a document's "## Contents" block from its current KEEP headings (H2+), so the in-doc TOC and
