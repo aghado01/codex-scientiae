@@ -127,7 +127,7 @@ function Publish-LatexSourceTree {
     if (-not [System.IO.Directory]::Exists($documentRoot)) {
         throw "document deposit is not a directory: '$documentRoot'"
     }
-    if (Test-LatexPathHasReparsePoint -Path $documentRoot) {
+    if (Test-PathHasReparsePoint -Path $documentRoot) {
         throw "document deposit must not traverse a symbolic link or reparse point: '$documentRoot'"
     }
     if (-not $Slug) { $Slug = Split-Path -Leaf $documentRoot }
@@ -161,7 +161,7 @@ function Publish-LatexSourceTree {
         }
 
         $pdfPath = Join-Path $documentRoot "$Slug.pdf"
-        if (Test-LatexPathHasReparsePoint -Path $pdfPath) {
+        if (Test-PathHasReparsePoint -Path $pdfPath) {
             throw "PDF source must not traverse a symbolic link or reparse point: '$pdfPath'"
         }
 
@@ -262,7 +262,7 @@ function New-LatexSourceDeposit {
     )
 
     $documentRootForFindings = (Resolve-Path -LiteralPath $DocumentDir -ErrorAction Stop).Path
-    $testReparsePath = ${function:Test-LatexPathHasReparsePoint}
+    $testReparsePath = ${function:Test-PathHasReparsePoint}
     $assertSafeFindingsPath = {
         param([Parameter(Mandatory)] [string]$Path)
 

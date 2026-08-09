@@ -398,7 +398,7 @@ Describe 'LaTeX source deposit through the JSONL engine' {
             $pdfGuardPath,
             [System.Text.Encoding]::ASCII.GetBytes("%PDF-1.4`n"))
         $script:GuardedLatexDepositPdf = $pdfGuardPath
-        Mock Test-LatexPathHasReparsePoint {
+        Mock Test-PathHasReparsePoint {
             param([string]$Path)
             return Test-LatexPathsEqual -Left $Path -Right $script:GuardedLatexDepositPdf
         }

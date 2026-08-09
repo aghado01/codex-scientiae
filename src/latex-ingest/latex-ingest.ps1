@@ -2231,7 +2231,7 @@ function Resolve-LatexIngestManifestSource {
     if (-not [System.IO.File]::Exists($manifestPath)) {
         throw "latex-ingest metadata path is not a file: '$manifestPath'"
     }
-    if (Test-LatexPathHasReparsePoint -Path $manifestPath) {
+    if (Test-PathHasReparsePoint -Path $manifestPath) {
         throw "latex-ingest manifest path must not traverse a symbolic link or reparse point: '$manifestPath'"
     }
 
@@ -2272,7 +2272,7 @@ function Resolve-LatexIngestManifestSource {
     }
     $main = [System.IO.Path]::GetFullPath((Join-Path $state.source_path ([string]$treeForm[0].entrypoint)))
     if (-not (Test-LatexPathWithinRoot -Path $main -Root $state.source_path) -or
-        (Test-LatexPathHasReparsePoint -Path $main) -or
+        (Test-PathHasReparsePoint -Path $main) -or
         -not [System.IO.File]::Exists($main)) {
         throw "article manifest entrypoint is missing or outside its source tree: '$main'"
     }

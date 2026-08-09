@@ -70,7 +70,7 @@ function Resolve-SourceDepositArchive {
     if ($ArchivePath) {
         $selected = Resolve-SourceDepositScopedPath -Path $ArchivePath -DocumentDir $DocumentDir
         if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
-            (Test-LatexPathHasReparsePoint -Path $selected) -or
+            (Test-PathHasReparsePoint -Path $selected) -or
             -not [System.IO.File]::Exists($selected)) {
             throw "source archive must be a file inside the document directory: '$ArchivePath'"
         }
@@ -88,7 +88,7 @@ function Resolve-SourceDepositArchive {
         throw "both canonical and alias source archives exist; refusing to choose between '$canonical' and '$alias'"
     }
     $selected = [System.IO.Path]::GetFullPath($found[0])
-    if (Test-LatexPathHasReparsePoint -Path $selected) {
+    if (Test-PathHasReparsePoint -Path $selected) {
         throw "source archive must not traverse a symbolic link or reparse point: '$selected'"
     }
     return $selected
@@ -103,14 +103,14 @@ function Resolve-SourceDepositProviderMetadata {
     if ($ProviderMetadataPath) {
         $selected = Resolve-SourceDepositScopedPath -Path $ProviderMetadataPath -DocumentDir $DocumentDir
         if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
-            (Test-LatexPathHasReparsePoint -Path $selected) -or
+            (Test-PathHasReparsePoint -Path $selected) -or
             -not [System.IO.File]::Exists($selected)) {
             throw "provider metadata must be a file inside the document directory: '$ProviderMetadataPath'"
         }
         return $selected
     }
     $candidate = Join-Path $DocumentDir "$Slug.arxiv.json"
-    if (Test-LatexPathHasReparsePoint -Path $candidate) {
+    if (Test-PathHasReparsePoint -Path $candidate) {
         throw "provider metadata must not traverse a symbolic link or reparse point: '$candidate'"
     }
     if ([System.IO.File]::Exists($candidate)) { return [System.IO.Path]::GetFullPath($candidate) }
@@ -245,8 +245,8 @@ function Test-ExistingSourceDeposit {
     $treePath = [System.IO.Path]::GetFullPath((Join-Path $DocumentDir ([string]$treeForm[0].path)))
     if (-not (Test-LatexPathWithinRoot -Path $archivePath -Root $DocumentDir) -or
         -not (Test-LatexPathWithinRoot -Path $treePath -Root $DocumentDir) -or
-        (Test-LatexPathHasReparsePoint -Path $archivePath) -or
-        (Test-LatexPathHasReparsePoint -Path $treePath) -or
+        (Test-PathHasReparsePoint -Path $archivePath) -or
+        (Test-PathHasReparsePoint -Path $treePath) -or
         -not [System.IO.File]::Exists($archivePath) -or
         -not [System.IO.Directory]::Exists($treePath)) {
         throw "existing metadata.json points to missing or out-of-root source material: '$ManifestPath'"
@@ -284,7 +284,7 @@ function Initialize-LatexSourceDeposit {
     if (-not [System.IO.Directory]::Exists($documentRoot)) {
         throw "document deposit is not a directory: '$documentRoot'"
     }
-    if (Test-LatexPathHasReparsePoint -Path $documentRoot) {
+    if (Test-PathHasReparsePoint -Path $documentRoot) {
         throw "document deposit must not traverse a symbolic link or reparse point: '$documentRoot'"
     }
     if (-not $Slug) { $Slug = Split-Path -Leaf $documentRoot }
@@ -322,7 +322,7 @@ function Initialize-LatexSourceDeposit {
         }
 
         $pdfPath = Join-Path $documentRoot "$Slug.pdf"
-        if (Test-LatexPathHasReparsePoint -Path $pdfPath) {
+        if (Test-PathHasReparsePoint -Path $pdfPath) {
             throw "PDF source must not traverse a symbolic link or reparse point: '$pdfPath'"
         }
 

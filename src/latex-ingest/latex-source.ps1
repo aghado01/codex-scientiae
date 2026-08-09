@@ -7,6 +7,8 @@
   orchestration without starting a conversion run.
 #>
 
+. "$PSScriptRoot/../shared/portable-path.ps1"
+
 function Get-LatexPathComparison {
     if ($IsWindows) { return [System.StringComparison]::OrdinalIgnoreCase }
     return [System.StringComparison]::Ordinal
@@ -26,25 +28,6 @@ function Test-LatexPathsEqual {
         [System.IO.Path]::GetFullPath($Right),
         (Get-LatexPathComparison)
     )
-}
-
-function Test-LatexPathHasReparsePoint {
-    <# Return true when any existing component of a path is a symbolic link or reparse point. #>
-    param([Parameter(Mandatory)] [string]$Path)
-
-    $fullPath = [System.IO.Path]::GetFullPath($Path)
-    $pathRoot = [System.IO.Path]::GetPathRoot($fullPath)
-    $relative = [System.IO.Path]::GetRelativePath($pathRoot, $fullPath)
-    $current = $pathRoot
-    foreach ($segment in @($relative -split '[\\/]' | Where-Object { $_ -and $_ -ne '.' })) {
-        $current = [System.IO.Path]::Combine($current, $segment)
-        $item = Get-Item -LiteralPath $current -Force -ErrorAction SilentlyContinue
-        if ($null -eq $item) { break }
-        if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) {
-            return $true
-        }
-    }
-    return $false
 }
 
 function Test-LatexPathWithinRoot {
@@ -548,7 +531,7 @@ function Assert-LatexSourceTreeHasNoReparsePoint {
     param([Parameter(Mandatory)] [string]$RootPath)
 
     $root = (Resolve-Path -LiteralPath $RootPath -ErrorAction Stop).Path
-    if (Test-LatexPathHasReparsePoint -Path $root) {
+    if (Test-PathHasReparsePoint -Path $root) {
         throw "source tree contains a reparse point: '$root'"
     }
     $reparse = @(Get-ChildItem -LiteralPath $root -Force -Recurse `

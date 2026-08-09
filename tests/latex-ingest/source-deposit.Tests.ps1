@@ -181,7 +181,7 @@ Describe 'standalone LaTeX source-deposit initialization' {
         [System.IO.File]::WriteAllBytes($guardPdf, [byte[]](0x25, 0x50, 0x44, 0x46))
 
         $script:GuardedSourceDepositPath = $guardArchive
-        Mock Test-LatexPathHasReparsePoint {
+        Mock Test-PathHasReparsePoint {
             param([string]$Path)
             return Test-LatexPathsEqual -Left $Path -Right $script:GuardedSourceDepositPath
         }
