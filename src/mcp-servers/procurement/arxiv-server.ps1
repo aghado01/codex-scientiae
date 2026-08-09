@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/procurement/arxiv-server.ps1 — a pure-PowerShell MCP server for arXiv acquisition. Protocol:
+  src/mcp-servers/procurement/arxiv-server.ps1 — a pure-PowerShell MCP server for arXiv acquisition. Protocol:
   newline-delimited JSON-RPC 2.0 on stdin/stdout, one compact
   JSON object per line, stdout for protocol frames ONLY (all logging + stray writes go to stderr), the
   channel pinned to UTF-8 no-BOM so SMP glyphs in titles/abstracts round-trip.
@@ -10,10 +10,10 @@
   early-growth convention held in an external template config, not in code.
 
   Launch from a client's MCP config (-NoProfile keeps the profile off stdout):
-    pwsh -NoProfile -File src/procurement/arxiv-server.ps1 [-StagingRoot <dir>] [-ConfigPath <arxiv-staging.json>]
+    pwsh -NoProfile -File src/mcp-servers/procurement/arxiv-server.ps1 [-StagingRoot <dir>] [-ConfigPath <arxiv-staging.json>]
 
-  -ConfigPath defaults to src/procurement/arxiv-staging.json; -StagingRoot (if given) overrides the config's
-  staging_root. Everywhere a path is computed it is confined under the staging root (see arxiv.ps1).
+  -ConfigPath defaults to src/procurement/schemas/arxiv-staging.json; -StagingRoot (if given) overrides the
+  config's staging_root. Everywhere a path is computed it is confined under the staging root (see arxiv.ps1).
 
   Tools (7): search, get_metadata, fetch (async), fetch_status, list_inbox, inspect, clear.
 #>
@@ -21,17 +21,18 @@
 [CmdletBinding()]
 param(
     [string]$StagingRoot,
-    [string]$ConfigPath = (Join-Path $PSScriptRoot 'arxiv-staging.json'),
+    [string]$ConfigPath = (Join-Path $PSScriptRoot '../../procurement/schemas/arxiv-staging.json'),
     [string]$ProtocolVersion = '2025-06-18'
 )
 
-. "$PSScriptRoot/arxiv.ps1"
+$script:ProcurementLibRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../procurement'))
+. (Join-Path $script:ProcurementLibRoot 'arxiv.ps1')
 
 # Invoke-WebRequest's progress UI would otherwise spray the host stream; silence it so nothing competes
 # with the protocol channel (belt-and-suspenders alongside the stream guard below).
 $ProgressPreference = 'SilentlyContinue'
 
-$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $ServerInfo = @{ name = 'codex-arxiv'; version = '0.4.0' }
 
 # Resolve config + the effective staging root once. Precedence: -StagingRoot param > config.staging_root.
@@ -46,7 +47,8 @@ $EffectiveStagingRoot = if ([System.IO.Path]::IsPathRooted($rawRoot)) {
 
 # Stand up the background fetch worker (single runspace, shared 3s clock) so 'fetch' returns a job handle
 # immediately instead of blocking the protocol loop for the length of a download. Poll via 'fetch_status'.
-Initialize-ArxivJobs -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot -LibPath (Join-Path $PSScriptRoot 'arxiv.ps1')
+Initialize-ArxivJobs -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot `
+    -LibPath (Join-Path $script:ProcurementLibRoot 'arxiv.ps1')
 
 # --- tool catalogue: name -> description + JSON-Schema for arguments ---
 $Tools = @(
@@ -101,7 +103,7 @@ $Prompts = @(
 )
 function Get-PromptText([string]$name) {
     switch ($name) {
-        'discovery_procedure' { return [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'arxiv-discovery.md'), [System.Text.UTF8Encoding]::new($false)) }
+        'discovery_procedure' { return [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'resources/arxiv-discovery.md'), [System.Text.UTF8Encoding]::new($false)) }
         default { throw "prompt not found: $name" }
     }
 }

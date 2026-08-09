@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/math-channel/math-render/math-render.ps1 — engine-backed audit of mathematical Markdown.
+  src/node_utils/math-render/math-render.ps1 — engine-backed audit of mathematical Markdown.
 
   The capability boundary is "does the emitted mathematical register render?", not KaTeX and not
   any one ingestion lane. KaTeX is the current audit engine, supplied explicitly from the shared

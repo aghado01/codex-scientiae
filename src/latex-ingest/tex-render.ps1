@@ -14,7 +14,7 @@
     Invoke-TexDiagramRender -Jobs @(@{ id='diagram-1'; source='\begin{tikzcd}...' }) -Preamble $pre -OutDir <dir>
 #>
 
-. "$PSScriptRoot/../pdf-raster/pdf-raster.ps1" # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
+. "$PSScriptRoot/../node_utils/pdf-raster/pdf-raster.ps1" # PDF -> PNG (MuPDF WASM) — the raster half of the pipeline
 
 $script:TexRepoRoot   = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $script:TexPackageDir = Join-Path $script:TexRepoRoot 'packages/tectonic'   # the pinned external tier

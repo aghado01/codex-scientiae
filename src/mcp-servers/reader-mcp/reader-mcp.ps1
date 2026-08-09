@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/mcp/reader-mcp/reader-mcp.ps1 — the CONSUMER-side MCP server over codex-scientiae deliverable bundles.
+  src/mcp-servers/reader-mcp/reader-mcp.ps1 — the CONSUMER-side MCP server over codex-scientiae deliverable bundles.
 
   Curation and consumption are separate planes. A future librarian plane may ingest, audit, repair, and
   promote bundles. This is the reader plane: it opens finished bundles and slices them, and it can do

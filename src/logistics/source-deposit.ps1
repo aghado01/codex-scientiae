@@ -7,7 +7,7 @@
   manifest is therefore a success sentinel: its presence means the source deposit reached source-ready.
 #>
 
-. "$PSScriptRoot/latex-source.ps1"
+. "$PSScriptRoot/../latex-ingest/latex-source.ps1"
 
 function Resolve-SourceDepositScopedPath {
     param(

@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/procurement/zenodo-server.ps1 — pure-PowerShell MCP server for Zenodo acquisition.
+  src/mcp-servers/procurement/zenodo-server.ps1 — pure-PowerShell MCP server for Zenodo acquisition.
 
   Protocol: Newline-delimited JSON-RPC 2.0 on stdin/stdout, UTF-8 no-BOM.
   Exposes tools: search, get_metadata, fetch, fetch_status, list_inbox, inspect, clear.
@@ -9,14 +9,15 @@
 [CmdletBinding()]
 param(
     [string]$StagingRoot,
-    [string]$ConfigPath = (Join-Path $PSScriptRoot 'zenodo-staging.json'),
+    [string]$ConfigPath = (Join-Path $PSScriptRoot '../../procurement/schemas/zenodo-staging.json'),
     [string]$ProtocolVersion = '2025-06-18'
 )
 
-. "$PSScriptRoot/zenodo.ps1"
+$script:ProcurementLibRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../procurement'))
+. (Join-Path $script:ProcurementLibRoot 'zenodo.ps1')
 
 $ProgressPreference = 'SilentlyContinue'
-$RepoRoot   = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$RepoRoot   = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $ServerInfo = @{ name = 'codex-zenodo'; version = '0.1.0' }
 
 $Config = Get-ZenodoConfig -Path $ConfigPath
@@ -27,7 +28,8 @@ $EffectiveStagingRoot = if ([System.IO.Path]::IsPathRooted($rawRoot)) {
     [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawRoot))
 }
 
-Initialize-ZenodoJobs -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot -LibPath (Join-Path $PSScriptRoot 'zenodo.ps1')
+Initialize-ZenodoJobs -Config $Config -StagingRoot $EffectiveStagingRoot -RepoRoot $RepoRoot `
+    -LibPath (Join-Path $script:ProcurementLibRoot 'zenodo.ps1')
 
 $Tools = @(
     @{ name = 'search'

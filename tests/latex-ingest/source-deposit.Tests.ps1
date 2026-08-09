@@ -1,7 +1,7 @@
 #requires -Version 7.0
 
 BeforeAll {
-    . "$PSScriptRoot/../../src/latex-ingest/source-deposit.ps1"
+    . "$PSScriptRoot/../../src/logistics/source-deposit.ps1"
 
     function New-TestLatexTarGzip {
         param(

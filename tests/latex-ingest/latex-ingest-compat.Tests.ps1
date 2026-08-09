@@ -7,7 +7,7 @@ BeforeAll {
         $repositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
         $node = Get-Command node -CommandType Application -ErrorAction SilentlyContinue |
             Select-Object -First 1
-        $auditEngine = Join-Path $repositoryRoot 'src/math-channel/math-render/katex-check.js'
+        $auditEngine = Join-Path $repositoryRoot 'src/node_utils/math-render/katex-check.js'
         $katexPackage = Join-Path $repositoryRoot 'packages/node/node_modules/katex/package.json'
         if (-not $node) {
             return [pscustomobject]@{

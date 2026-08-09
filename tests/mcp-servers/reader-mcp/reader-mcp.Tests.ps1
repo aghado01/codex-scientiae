@@ -1,11 +1,11 @@
 #requires -Version 7.0
-# Tests for src/mcp/reader-mcp/reader-mcp.ps1 — the consumer-side read-only MCP server.
+# Tests for src/mcp-servers/reader-mcp/reader-mcp.ps1 — the consumer-side read-only MCP server.
 # Driven as a CHILD PROCESS over real JSON-RPC frames: the protocol surface is what consumers see, and
 # dot-sourcing the script would both start its stdin loop and hide the self-containment guarantee.
 
 Describe 'reader-mcp — bundle discovery, byte-span reads, read-only surface' {
     BeforeAll {
-        $script:Server = (Resolve-Path "$PSScriptRoot/../../src/mcp/reader-mcp/reader-mcp.ps1").Path
+        $script:Server = (Resolve-Path "$PSScriptRoot/../../../src/mcp-servers/reader-mcp/reader-mcp.ps1").Path
         $script:ReaderPowerShell = [System.Environment]::ProcessPath
         if ([string]::IsNullOrWhiteSpace($script:ReaderPowerShell) -or
             -not [System.IO.Path]::IsPathFullyQualified($script:ReaderPowerShell) -or

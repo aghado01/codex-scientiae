@@ -19,14 +19,14 @@
 #>
 
 . "$PSScriptRoot/../logistics/run-paths.ps1" # runstamped artifact addressing only
-. "$PSScriptRoot/source-deposit.ps1"       # source-only .NET extraction + deposit-address validation; never initializes implicitly
+. "$PSScriptRoot/../logistics/source-deposit.ps1"       # source-only .NET extraction + deposit-address validation; never initializes implicitly
 Import-Module (Join-Path $PSScriptRoot '../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
-. "$PSScriptRoot/../tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
-. "$PSScriptRoot/../pdf-raster/pdf-raster.ps1"   # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
+. "$PSScriptRoot/../node_utils/tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)
+. "$PSScriptRoot/../node_utils/pdf-raster/pdf-raster.ps1"   # PNG-terminal raster: \includegraphics PDF assets + compiled-diagram PDFs -> PNG (MuPDF WASM)
 . "$PSScriptRoot/tex-render.ps1"    # unified diagram render: tectonic snippet -> PDF -> PNG (all packages incl. xy-pic); graceful when absent
 . "$PSScriptRoot/../md-postprocess/audits/md-register.ps1" # the ONE markdown figure/image register (image line, italic caption, flagged marker) — shared with the membrane finalize weave
-. "$PSScriptRoot/../math-channel/math-render/math-render.ps1" # reusable emitted-math audit; this workflow consumes it but does not own it
+. "$PSScriptRoot/../node_utils/math-render/math-render.ps1" # reusable emitted-math audit; this workflow consumes it but does not own it
 . "$PSScriptRoot/../math-channel/math-channel.ps1"      # span-level register canonicalization (ConvertTo-RegisterMath) — Store-Math serializes every span through it
 . "$PSScriptRoot/../md-postprocess/md-bundle.ps1"   # standalone-deliverable bundling (-DeliverableDir): md + assets to the shelf, links verified
 . "$PSScriptRoot/../md-postprocess/md-hygiene.ps1"  # emission-grade hygiene walk (Format-MdHygiene) — fence-aware whitespace/autolink/heading/list/span-adjacency rules
@@ -2588,7 +2588,7 @@ function Invoke-LatexIngestResolvedSource {
     [System.IO.File]::WriteAllText($outPath, $md, $u8)
 
     # Operational audit of the emitted mathematical register. The capability is shared under
-    # src/math-channel/math-render; latex-ingest owns only this report address inside its run. A render defect
+    # src/node_utils/math-render; latex-ingest owns only this report address inside its run. A render defect
     # is returned and persisted for an agentic repair pass rather than throwing away the conversion.
     $mathRenderPath = Join-Path $run 'audits/math-render.json'
     $mathRenderAudit = Invoke-MathRenderAudit -Path $outPath -Strict -OutputPath $mathRenderPath

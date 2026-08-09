@@ -390,8 +390,9 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | `latex-ingest/` | LaTeX ingestion, stores, patches, and rendering integration |
 | `math-channel/` | Mathematical register normalization and math-render audit |
 | `md-postprocess/` | Markdown hygiene and bundle construction |
-| `procurement/` | Scholarly discovery and acquisition adapters |
-| `reader-mcp/` | Portable deliverable reader MCP |
+| `procurement/` | Scholarly discovery and acquisition adapters (libraries; MCP shells under `mcp-servers/`) |
+| `mcp-servers/` | MCP server shells (procurement + reader) |
+| `node_utils/` | Node-backed utilities (md-lint, pdf-raster, tikz-render) |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
 | `logistics/` | Shared logistics primitives (run paths, portable paths, deposit) |
 

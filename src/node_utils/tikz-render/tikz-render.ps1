@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/tikz-render/tikz-render.ps1 — TikZ -> SVG operation backed by the colocated tikz-svg.js
+  src/node_utils/tikz-render/tikz-render.ps1 — TikZ -> SVG operation backed by the colocated tikz-svg.js
   worker (node-tikzjax: wasm TeX).
 
   The LaTeX source is the AUTHORITY for diagrams when it exists — PDF-side image extraction is
@@ -9,11 +9,11 @@
   same harness pattern as the math-render audit. Batch-oriented: one node invocation (one wasm init) renders
   a whole paper's diagrams, with per-job fault isolation.
 
-    . ./src/tikz-render/tikz-render.ps1
+    . ./src/node_utils/tikz-render/tikz-render.ps1
     Invoke-TikzRender -Jobs @(@{ id = 'diagram-1'; source = '\begin{tikzpicture}...' }) -OutDir <dir>
 #>
 
-$script:TikzRenderRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$script:TikzRenderRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $script:TikzRenderDir = $PSScriptRoot
 $script:TikzSvgJs = Join-Path $script:TikzRenderDir 'tikz-svg.js'
 $script:TikzRenderNodeModules = Join-Path $script:TikzRenderRepoRoot 'packages/node/node_modules'

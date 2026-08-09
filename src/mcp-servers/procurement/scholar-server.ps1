@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/procurement/scholar-server.ps1 — a pure-PowerShell MCP server for cross-source scholarly DISCOVERY,
+  src/mcp-servers/procurement/scholar-server.ps1 — a pure-PowerShell MCP server for cross-source scholarly DISCOVERY,
   sibling to codex-arxiv (acquisition). Protocol: newline-delimited JSON-RPC 2.0 on stdin/stdout,
   UTF-8 no-BOM, stdout = protocol frames only.
 
@@ -9,25 +9,26 @@
   model and deduping the same paper across graphs. Discovery only: it returns DOIs/arXiv-ids/metadata; it
   does NOT stage bytes (that is codex-arxiv / the future sci-hub fetcher).
 
-  Launch:  pwsh -NoProfile -File src/procurement/scholar-server.ps1 [-Mailto <email>] [-ConfigPath <scholar-config.json>]
+  Launch:  pwsh -NoProfile -File src/mcp-servers/procurement/scholar-server.ps1 [-Mailto <email>] [-ConfigPath <scholar-config.json>]
   Secrets/contact come from ENV: CODEX_SCHOLAR_MAILTO (or -Mailto), SEMANTIC_SCHOLAR_API_KEY (optional).
 #>
 
 [CmdletBinding()]
 param(
     [string]$Mailto,
-    [string]$ConfigPath = (Join-Path $PSScriptRoot 'scholar-config.json'),
+    [string]$ConfigPath = (Join-Path $PSScriptRoot '../../procurement/store/scholar-config.json'),
     [string]$ProtocolVersion = '2025-06-18'
 )
 
-. "$PSScriptRoot/scholar-core.ps1"
-. "$PSScriptRoot/openalex.ps1"
-. "$PSScriptRoot/semanticscholar.ps1"
-. "$PSScriptRoot/arxiv.ps1"           # arXiv search/metadata + Invoke-ArxivFetch (acquisition hand-off)
-. "$PSScriptRoot/arxiv-adapter.ps1"   # arXiv -> Work adapter
-. "$PSScriptRoot/zenodo.ps1"          # Zenodo search/metadata
-. "$PSScriptRoot/zenodo-adapter.ps1"  # Zenodo -> Work adapter
-. "$PSScriptRoot/scihub-get.ps1"      # DOI -> PDF fetcher (acquire's route=doi)
+$script:ProcurementLibRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../procurement'))
+. (Join-Path $script:ProcurementLibRoot 'scholar-core.ps1')
+. (Join-Path $script:ProcurementLibRoot 'openalex.ps1')
+. (Join-Path $script:ProcurementLibRoot 'semanticscholar.ps1')
+. (Join-Path $script:ProcurementLibRoot 'arxiv.ps1')           # arXiv search/metadata + Invoke-ArxivFetch (acquisition hand-off)
+. (Join-Path $script:ProcurementLibRoot 'arxiv-adapter.ps1')   # arXiv -> Work adapter
+. (Join-Path $script:ProcurementLibRoot 'zenodo.ps1')          # Zenodo search/metadata
+. (Join-Path $script:ProcurementLibRoot 'zenodo-adapter.ps1')  # Zenodo -> Work adapter
+. (Join-Path $script:ProcurementLibRoot 'scihub-get.ps1')      # DOI -> PDF fetcher (acquire's route=doi)
 
 $ProgressPreference = 'SilentlyContinue'
 $ServerInfo = @{ name = 'codex-scholar'; version = '0.3.0' }
@@ -43,11 +44,11 @@ if ($contact) { Set-ScholarContact $contact }
 $PerPage = if ($Config.per_page) { [int]$Config.per_page } else { 25 }
 
 # The acquisition hand-off reuses the codex-arxiv inbox + staging convention (shared inbox, one config).
-$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-$ArxivConfig = Get-ArxivConfig -Path (Join-Path $PSScriptRoot 'arxiv-staging.json')
+$RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
+$ArxivConfig = Get-ArxivConfig -Path (Join-Path $script:ProcurementLibRoot 'schemas/arxiv-staging.json')
 $rawArxivRoot = [string]$ArxivConfig.staging_root
 $ArxivStagingRoot = if ([System.IO.Path]::IsPathRooted($rawArxivRoot)) { [System.IO.Path]::GetFullPath($rawArxivRoot) } else { [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $rawArxivRoot)) }
-$ScihubConfig = Get-ScihubConfig -Path (Join-Path $PSScriptRoot 'scihub-mirrors.json')   # DOI fetcher mirror list
+$ScihubConfig = Get-ScihubConfig -Path (Join-Path $script:ProcurementLibRoot 'store/scihub-mirrors.json')   # DOI fetcher mirror list
 
 $SourceEnumAll  = @('openalex', 'semanticscholar', 'arxiv', 'zenodo', 'all')   # discover_search (search sources + fan)
 $SourceEnumOne  = @('openalex', 'semanticscholar')                             # discover_related / resolve_doi (graph/DOI only)
@@ -98,7 +99,7 @@ $Prompts = @(
 )
 function Get-PromptText([string]$name) {
     switch ($name) {
-        'discovery_procedure' { return [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'scholar-discovery.md'), [System.Text.UTF8Encoding]::new($false)) }
+        'discovery_procedure' { return [System.IO.File]::ReadAllText((Join-Path $PSScriptRoot 'resources/scholar-discovery.md'), [System.Text.UTF8Encoding]::new($false)) }
         default { throw "prompt not found: $name" }
     }
 }

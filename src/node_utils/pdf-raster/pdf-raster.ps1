@@ -1,6 +1,6 @@
 #requires -Version 7.0
 <#
-  src/pdf-raster/pdf-raster.ps1 — PDF -> PNG operation backed by the colocated render.mjs
+  src/node_utils/pdf-raster/pdf-raster.ps1 — PDF -> PNG operation backed by the colocated render.mjs
   worker (MuPDF WASM).
 
   The LaTeX ingestion lane uses PNG as its terminal image register: \includegraphics PDF assets and
@@ -12,11 +12,11 @@
   CAVEAT: this MuPDF build has NO SVG or EPS/PostScript document handler — PDF (+ raster images) only.
   SVG intermediates and EPS assets must reach PDF first (tectonic) before they can be rasterized here.
 
-    . ./src/pdf-raster/pdf-raster.ps1
+    . ./src/node_utils/pdf-raster/pdf-raster.ps1
     Invoke-PdfRaster -Jobs @(@{ pdf = 'a.pdf'; out = 'a.png' }, @{ pdf = 'b.pdf'; page = 0; out = 'b.png' })
 #>
 
-$script:PdfRasterRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..')) # should just be 'reporoot' and there should be a dedicated helper for resolving this question
+$script:PdfRasterRepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..')) # should just be 'reporoot' and there should be a dedicated helper for resolving this question
 $script:PdfRasterDir = $PSScriptRoot
 $script:PdfRasterMjs = Join-Path $script:PdfRasterDir 'render.mjs' # should be psscript-root relative now
 $script:PdfRasterNodeModules = Join-Path $script:PdfRasterRepoRoot 'packages/node/node_modules'

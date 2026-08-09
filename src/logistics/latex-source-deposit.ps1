@@ -12,7 +12,7 @@
 #>
 
 . "$PSScriptRoot/probe-ledger.ps1"
-. "$PSScriptRoot/../latex-ingest/source-deposit.ps1"
+. "$PSScriptRoot/source-deposit.ps1"
 Import-Module (Join-Path $PSScriptRoot '../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 

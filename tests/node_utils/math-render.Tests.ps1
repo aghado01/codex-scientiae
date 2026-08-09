@@ -4,7 +4,7 @@
 
 BeforeAll {
     $script:RepoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-    . (Join-Path $script:RepoRoot 'src/math-channel/math-render/math-render.ps1')
+    . (Join-Path $script:RepoRoot 'src/node_utils/math-render/math-render.ps1')
     $script:Available = Test-MathRenderAvailable
     $script:TestArtifacts = Join-Path $script:RepoRoot "artifacts/tests/math-render/$([guid]::NewGuid().ToString('N'))"
     New-Item -ItemType Directory -Force -Path $script:TestArtifacts | Out-Null

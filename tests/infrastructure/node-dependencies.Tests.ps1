@@ -27,9 +27,10 @@ Describe 'centralized Node dependency topology' {
     }
 
     It 'keeps Node workers colocated with their owning operations' {
-        foreach ($worker in 'src/md-postprocess/md-lint/md-lint.js',
-                            'src/pdf-raster/render.mjs',
-                            'src/tikz-render/tikz-svg.js') {
+        foreach ($worker in 'src/node_utils/md-lint/md-lint.js',
+                            'src/node_utils/math-render/katex-check.js',
+                            'src/node_utils/pdf-raster/render.mjs',
+                            'src/node_utils/tikz-render/tikz-svg.js') {
             Test-Path -LiteralPath (Join-Path $script:RepoRoot $worker) | Should -BeTrue -Because "$worker is part of its operation, not a freestanding tool"
         }
     }
