@@ -35,7 +35,7 @@ from .sidecar import SIG_SCHEMA_ID, store_paths
 __all__ = ["main"]
 
 
-PROTOCOL = "codex-scientiae/jsonl-engine-cli"
+PROTOCOL = "codex-scientiae/jsonl_engine-cli"
 PROTOCOL_VERSION = 1
 STABLE_VERBS = (
     "capabilities",

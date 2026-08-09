@@ -141,10 +141,10 @@ freeze this ownership boundary.
 
 ```pwsh
 pwsh -File tests/parallel.ps1 -RunDirectory D:/runs/codex-scientiae-tests/run-001
-pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/shared `
+pwsh -File tests/parallel.ps1 -Framework Pytest -PytestPath tests/jsonl_engine `
   -RunDirectory D:/runs/codex-scientiae-tests/run-002 -MaxWorkers 4
 pwsh -File tests/parallel.ps1 -Framework All `
-  -PesterPath tests/shared/jsonl-engine-client-module.Tests.ps1 -PytestPath tests/shared/test_reader.py `
+  -PesterPath tests/jsonl_engine-client/jsonl_engine-client-module.Tests.ps1 -PytestPath tests/jsonl_engine/test_reader.py `
   -RunDirectory D:/runs/codex-scientiae-tests/run-003 -MaxWorkers 2
 ```
 
@@ -194,7 +194,7 @@ Run the complete or exact-file direct suite with the pinned environment interpre
 
 ```pwsh
 .venv/Scripts/python.exe -m pytest -p no:cacheprovider
-.venv/Scripts/python.exe -m pytest -p no:cacheprovider tests/shared/test_reader.py
+.venv/Scripts/python.exe -m pytest -p no:cacheprovider tests/jsonl_engine/test_reader.py
 ```
 
 The cache provider is disabled because repository `.pytest_cache` is a shared write and is not test

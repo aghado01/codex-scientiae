@@ -333,7 +333,7 @@ function New-LatexSourceDeposit {
             }
             if ($facts.Pdf) { $argument.Add('--pdf'); $argument.Add($facts.Pdf) }
 
-            $frames = @(jsonl-engine-client\Invoke-JsonlEngineCommand -Verb 'deposit' `
+            $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'deposit' `
                     -Argument $argument.ToArray() -PythonPath $PythonPath `
                     -TimeoutSeconds $EngineTimeoutSeconds)
             if ($frames.Count -ne 1) {

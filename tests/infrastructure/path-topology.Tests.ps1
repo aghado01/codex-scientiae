@@ -214,9 +214,9 @@ BeforeAll {
 
     function Get-JsonlClientTopologyFailures {
         $failures = [System.Collections.Generic.List[string]]::new()
-        $clientRoot = Join-Path $script:RepoRoot 'src/shared/jsonl-engine-client'
-        $expectedManifest = Join-Path $clientRoot 'jsonl-engine-client.psd1'
-        $expectedModule = Join-Path $clientRoot 'jsonl-engine-client.psm1'
+        $clientRoot = Join-Path $script:RepoRoot 'src/jsonl_engine-client'
+        $expectedManifest = Join-Path $clientRoot 'jsonl_engine-client.psd1'
+        $expectedModule = Join-Path $clientRoot 'jsonl_engine-client.psm1'
         foreach ($required in @($expectedManifest, $expectedModule)) {
             if (-not [System.IO.File]::Exists($required)) {
                 $failures.Add("required JSONL engine client file missing: '$required'")
@@ -237,7 +237,7 @@ BeforeAll {
         if ([System.IO.File]::Exists($retiredLogisticsBoundary)) {
             $failures.Add('retired logistics JSONL process boundary returned')
         }
-        $facade = Join-Path $script:RepoRoot 'src/shared/jsonl_engine/jso-shell.ps1'
+        $facade = Join-Path $script:RepoRoot 'src/jsonl_engine/jso-shell.ps1'
         if (-not [System.IO.File]::Exists($facade)) {
             $failures.Add('temporary jso-shell compatibility importer is missing')
         }
@@ -258,7 +258,7 @@ BeforeAll {
                     ([System.IO.Path]::GetRelativePath($script:RepoRoot, $file.FullName) -replace '\\', '/'))
             }
         }
-        $expectedOwner = 'src/shared/jsonl-engine-client/private/process.ps1'
+        $expectedOwner = 'src/jsonl_engine-client/private/process.ps1'
         if ((@($processOwners | Sort-Object) -join "`n") -cne $expectedOwner) {
             $failures.Add("JSONL engine PowerShell process ownership drifted: $($processOwners -join ', ')")
         }

@@ -25,7 +25,7 @@ from jsonl_engine.paths import RepoPaths
 GLYPHS = "∫ 𝔼[X] ﬁﬂﬃ 日本語 �"
 
 CLIENT = RepoPaths.resolve(
-    "src", "shared", "jsonl-engine-client", "jsonl-engine-client.psd1"
+    "src", "jsonl_engine-client", "jsonl_engine-client.psd1"
 )
 
 

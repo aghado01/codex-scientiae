@@ -1,5 +1,5 @@
 """
-tests/shared/test_jsonl_engine.py - Unit Tests for Python JSONL Core Engine & Registry (V7)
+tests/jsonl_engine/test_jsonl_engine.py - Unit Tests for Python JSONL Core Engine & Registry (V7)
 """
 
 import os

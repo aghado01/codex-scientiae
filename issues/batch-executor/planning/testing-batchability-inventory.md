@@ -253,7 +253,7 @@ Current inventory after that addition:
 
 ### JSONL engine PowerShell client addition
 
-`tests/shared/jsonl-engine-client-module.Tests.ps1` adds one `CapabilityGated` container with 17
+`tests/jsonl_engine-client/jsonl_engine-client-module.Tests.ps1` adds one `CapabilityGated` container with 17
 observed/textual tests. The final focused exact-path direct run passed 17/17 in 10.65 seconds, and an ordinary
 one-worker adapter/executor run succeeded as one job in 11.997 seconds with one native XML report selecting
 the same 17 outcomes. Module imports are read-only; fixtures and input files use `$TestDrive`; the explicit

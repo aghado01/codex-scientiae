@@ -11,7 +11,7 @@ from jsonl_engine.policy import Codec, Eol
 GOLDEN_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "fixtures",
-    "jsonl-engine",
+    "jsonl_engine",
 )
 
 # A lone high surrogate: no UTF-8 form, so it exists only to exercise Codec.ASCII. This is the case

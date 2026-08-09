@@ -4,7 +4,7 @@ Status: work in progress. `ingestion/inventory` is the sandbox for developing so
 localized inventory-store conventions before broader ingestion integration.
 
 Schema ownership is in the Python JSONL engine. The canonical leaf and inventory-row schema is
-[`article.schema.json`](../../src/shared/jsonl_engine/schemas/article.schema.json), with identifier
+[`article.schema.json`](../../src/jsonl_engine/schemas/article.schema.json), with identifier
 `codex-scientiae/article/0.1`. The same flat article object is the document sentinel and, when materialized,
 the verbatim inventory row. This document describes the domain layout and transaction; it does not duplicate
 engine validation rules.

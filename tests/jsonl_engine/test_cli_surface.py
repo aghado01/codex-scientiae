@@ -126,7 +126,7 @@ class TestCliBoundary(unittest.TestCase):
             self.assertEqual([[1, 2], "scalar", None], [frame["value"] for frame in frames])
             self.assertEqual([0, 1, 2], [frame["sequence"] for frame in frames])
             for frame in frames:
-                self.assertEqual("codex-scientiae/jsonl-engine-cli", frame["protocol"])
+                self.assertEqual("codex-scientiae/jsonl_engine-cli", frame["protocol"])
                 self.assertEqual(1, frame["version"])
                 self.assertEqual("value", frame["type"])
 
@@ -148,7 +148,7 @@ class TestCliBoundary(unittest.TestCase):
         proc = _run_cli("capabilities")
         self.assertEqual(0, proc.returncode, proc.stderr.decode("utf-8"))
         capabilities = json.loads(proc.stdout)
-        self.assertEqual("codex-scientiae/jsonl-engine-cli", capabilities["protocol"])
+        self.assertEqual("codex-scientiae/jsonl_engine-cli", capabilities["protocol"])
         self.assertEqual(1, capabilities["version"])
         self.assertIs(True, capabilities["framing"])
         self.assertEqual(
@@ -272,7 +272,7 @@ class TestCliBoundary(unittest.TestCase):
                 error = json.loads(proc.stderr)
                 self.assertEqual(
                     {
-                        "protocol": "codex-scientiae/jsonl-engine-cli",
+                        "protocol": "codex-scientiae/jsonl_engine-cli",
                         "version": 1,
                         "type": "error",
                         "error": "ArgumentError",
@@ -287,7 +287,7 @@ class TestCliBoundary(unittest.TestCase):
         self.assertEqual(b"", proc.stdout)
         self.assertEqual(1, len(proc.stderr.splitlines()))
         error = json.loads(proc.stderr)
-        self.assertEqual("codex-scientiae/jsonl-engine-cli", error["protocol"])
+        self.assertEqual("codex-scientiae/jsonl_engine-cli", error["protocol"])
         self.assertEqual(1, error["version"])
         self.assertEqual("error", error["type"])
         self.assertIn("error", error)

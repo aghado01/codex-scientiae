@@ -10,7 +10,8 @@ the [pytest workplan](pytest-testing-workplan.md) and [completed-work ledger](le
 
 ## Current baseline
 
-- The repository has 12 physical `test_*.py` files below `tests/shared/`.
+- The repository has 12 physical `test_*.py` files below `tests/jsonl_engine/` and
+  `tests/jsonl_engine-client/`.
 - Direct pytest collects 192 test methods and observes 72 in-method `unittest.subTest` contexts, for 264
   outcomes. Subtests are not separately schedulable jobs.
 - Exact-file discovery produces 12 fresh-process jobs without importing test code.
@@ -31,18 +32,18 @@ the [pytest workplan](pytest-testing-workplan.md) and [completed-work ledger](le
 
 | File | Methods / subtests | Current boundary | Class |
 |---|---:|---|---|
-| `tests/shared/test_append.py` | 15 / 2 | Unique temporary stores; no external capability or cross-file state. | `Batchable` |
-| `tests/shared/test_bounded_views.py` | 19 / 0 | Filesystem-heavy cases remain inside unique temporary roots. | `Batchable` |
-| `tests/shared/test_byte_equality.py` | 12 / 27 | Golden inputs are read-only; regeneration is outside normal test execution. | `Batchable` |
-| `tests/shared/test_cli_surface.py` | 14 / 9 | Versioned framing, the 16-verb capability record, schema-plus-semantic `validate-json`, kind dispatch, and machine-readable CLI failures remain pure Python process-boundary cases. | `Batchable` |
-| `tests/shared/test_commit.py` | 17 / 0 | Temporary outputs and bounded mocks use non-test support fixtures. | `Batchable` |
-| `tests/shared/test_concurrency.py` | 20 / 2 | Threads and descendants are bounded; coordination scratch is job-local. | `Batchable` |
-| `tests/shared/test_deposit.py` | 26 / 27 | Deposits, portable schema and semantic relations, source-generation witnesses, rollback, reparse confinement, forced publication races, and conflicts use temporary roots; two symlink cases skip only when the host denies symlink creation. | `CapabilityGated` |
-| `tests/shared/test_jsonl_engine.py` | 9 / 0 | Read-only repository/schema inputs and unique temporary outputs. | `Batchable` |
-| `tests/shared/test_pointer_ordering.py` | 16 / 0 | Pure deterministic pointer and ordering behavior. | `Batchable` |
-| `tests/shared/test_reader.py` | 18 / 3 | Every mutation is under a unique temporary directory. | `Batchable` |
-| `tests/shared/test_registry.py` | 18 / 2 | Unique temporary registries use non-test support fixtures. | `Batchable` |
-| `tests/shared/test_shell_surface.py` | 8 / 0 | PowerShell integration consumes `CODEX_TEST_POWERSHELL_PATH` from batch jobs, falls back to `PATH` only for direct pytest, and uses bounded subprocess cleanup. | `CapabilityGated` |
+| `tests/jsonl_engine/test_append.py` | 15 / 2 | Unique temporary stores; no external capability or cross-file state. | `Batchable` |
+| `tests/jsonl_engine/test_bounded_views.py` | 19 / 0 | Filesystem-heavy cases remain inside unique temporary roots. | `Batchable` |
+| `tests/jsonl_engine/test_byte_equality.py` | 12 / 27 | Golden inputs are read-only; regeneration is outside normal test execution. | `Batchable` |
+| `tests/jsonl_engine/test_cli_surface.py` | 14 / 9 | Versioned framing, the 16-verb capability record, schema-plus-semantic `validate-json`, kind dispatch, and machine-readable CLI failures remain pure Python process-boundary cases. | `Batchable` |
+| `tests/jsonl_engine/test_commit.py` | 17 / 0 | Temporary outputs and bounded mocks use non-test support fixtures. | `Batchable` |
+| `tests/jsonl_engine/test_concurrency.py` | 20 / 2 | Threads and descendants are bounded; coordination scratch is job-local. | `Batchable` |
+| `tests/jsonl_engine/test_deposit.py` | 26 / 27 | Deposits, portable schema and semantic relations, source-generation witnesses, rollback, reparse confinement, forced publication races, and conflicts use temporary roots; two symlink cases skip only when the host denies symlink creation. | `CapabilityGated` |
+| `tests/jsonl_engine/test_jsonl_engine.py` | 9 / 0 | Read-only repository/schema inputs and unique temporary outputs. | `Batchable` |
+| `tests/jsonl_engine/test_pointer_ordering.py` | 16 / 0 | Pure deterministic pointer and ordering behavior. | `Batchable` |
+| `tests/jsonl_engine/test_reader.py` | 18 / 3 | Every mutation is under a unique temporary directory. | `Batchable` |
+| `tests/jsonl_engine/test_registry.py` | 18 / 2 | Unique temporary registries use non-test support fixtures. | `Batchable` |
+| `tests/jsonl_engine-client/test_shell_surface.py` | 8 / 0 | PowerShell integration consumes `CODEX_TEST_POWERSHELL_PATH` from batch jobs, falls back to `PATH` only for direct pytest, and uses bounded subprocess cleanup. | `CapabilityGated` |
 
 ## Admission evidence
 
@@ -66,13 +67,13 @@ The pre-deposit post-admission parity refresh produced:
 Both runs retained only declared XML files, created no new cache or bytecode, left no repository scratch
 entries, and left no admission residue.
 
-The final hardening refresh collected 192 physical tests across all 12 files. Its direct `tests/shared` run
-passed 190 methods, recorded two genuine Windows symbolic-link capability skips, and passed all 72 subtest
-outcomes, for 264 selected outcomes. `test_deposit.py` contributes 26 methods and 27 subtests, or 53 JUnit
-outcomes: 24 methods passed, two symlink cases skipped, and all 27 subtests passed. A two-job multilingual
-batch gate paired that file with the Pester deposit container at two workers: both jobs succeeded in 9.641
-seconds, retaining native reports with 53 pytest outcomes and five Pester outcomes. Its job-local
-`json-scratch` was empty. The evidence is under
+The final hardening refresh collected 192 physical tests across all 12 files. Its direct suite run (then under
+`tests/shared/`, now under `tests/jsonl_engine/` and `tests/jsonl_engine-client/`) passed 190 methods, recorded
+two genuine Windows symbolic-link capability skips, and passed all 72 subtest outcomes, for 264 selected
+outcomes. `test_deposit.py` contributes 26 methods and 27 subtests, or 53 JUnit outcomes: 24 methods passed,
+two symlink cases skipped, and all 27 subtests passed. A two-job multilingual batch gate paired that file with
+the Pester deposit container at two workers: both jobs succeeded in 9.641 seconds, retaining native reports
+with 53 pytest outcomes and five Pester outcomes. Its job-local `json-scratch` was empty. The evidence is under
 `artifacts/test-runs/deposit-parity-hardened-20260808`.
 
 ## Deferred Pester archaeology

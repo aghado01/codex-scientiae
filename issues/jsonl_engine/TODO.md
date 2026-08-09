@@ -15,8 +15,8 @@ section is representative corpus coverage, not activation or synthetic-fixture c
 
 ## PowerShell compatibility
 
-The manifest-backed `src/shared/jsonl-engine-client` module is the only PowerShell process and
-protocol owner for `python -m jsonl_engine`. `src/shared/jsonl_engine/jso-shell.ps1` remains a
+The manifest-backed `src/jsonl_engine-client` module is the only PowerShell process and
+protocol owner for `python -m jsonl_engine`. `src/jsonl_engine/jso-shell.ps1` remains a
 bounded compatibility importer for callers that still dot-source the former location; it does not
 contain a second implementation. New callers import the module manifest directly.
 

@@ -1,7 +1,7 @@
 """Byte-equality gate for JsonlEngine.
 
 Every case here is a record set plus a declared text policy, frozen as committed bytes under
-tests/fixtures/jsonl-engine/. The engine re-emits each case into a temporary directory and the
+tests/fixtures/jsonl_engine/. The engine re-emits each case into a temporary directory and the
 bytes must match exactly. This is what makes a change to the writer's internals reviewable: a
 refactor that is meant to preserve output either does, or this says which case it broke.
 
@@ -10,7 +10,7 @@ reproducible by construction; their contents are checked structurally elsewhere.
 
 To refresh the fixtures after a DELIBERATE format change:
 
-    .venv/Scripts/python.exe tests/shared/regenerate_jsonl_goldens.py
+    .venv/Scripts/python.exe tests/jsonl_engine/regenerate_jsonl_goldens.py
 
 then read the diff before committing it. A fixture that changes without a format decision behind it
 is the failure this file exists to catch.
@@ -74,7 +74,7 @@ class TestByteEquality(unittest.TestCase):
             [],
             missing,
             "missing frozen JSONL fixtures; regenerate explicitly with "
-            "tests/shared/regenerate_jsonl_goldens.py: " + ", ".join(missing),
+            "tests/jsonl_engine/regenerate_jsonl_goldens.py: " + ", ".join(missing),
         )
         self.assertEqual([], drift, "writer output drifted from frozen bytes:\n" + "\n".join(drift))
 

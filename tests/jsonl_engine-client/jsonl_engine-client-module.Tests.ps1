@@ -12,7 +12,7 @@ BeforeDiscovery {
 BeforeAll {
     $script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
     $script:Manifest = Join-Path $script:RepoRoot `
-        'src/shared/jsonl-engine-client/jsonl-engine-client.psd1'
+        'src/jsonl_engine-client/jsonl_engine-client.psd1'
     $script:Python = Join-Path $script:RepoRoot '.venv/Scripts/python.exe'
     if (-not [System.IO.File]::Exists($script:Python)) {
         $script:Python = Join-Path $script:RepoRoot '.venv/bin/python'
@@ -62,7 +62,7 @@ BeforeAll {
     )
 }
 
-Describe 'jsonl-engine-client module' {
+Describe 'jsonl_engine-client module' {
     It 'imports only its declared surface from outside the repository working directory' {
         $before = @(Get-ChildItem -LiteralPath (Split-Path $script:Manifest -Parent) `
                 -Recurse -File | ForEach-Object FullName | Sort-Object)
@@ -75,11 +75,11 @@ Describe 'jsonl-engine-client module' {
             Pop-Location
         }
 
-        $actual = @((Get-Command -Module jsonl-engine-client).Name | Sort-Object)
+        $actual = @((Get-Command -Module jsonl_engine-client).Name | Sort-Object)
         $actual | Should -Be $script:ExpectedExports
         Get-Command Resolve-JsonlEngineRuntime -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
         Get-Command Invoke-JsonlEngineProcess -ErrorAction SilentlyContinue | Should -BeNullOrEmpty
-        @(Get-Alias | Where-Object Source -eq 'jsonl-engine-client').Count | Should -Be 0
+        @(Get-Alias | Where-Object Source -eq 'jsonl_engine-client').Count | Should -Be 0
 
         $after = @(Get-ChildItem -LiteralPath (Split-Path $script:Manifest -Parent) `
                 -Recurse -File | ForEach-Object FullName | Sort-Object)
@@ -92,7 +92,7 @@ Describe 'jsonl-engine-client module' {
         $default = Get-JsonlEngineCapability
         $explicit = Get-JsonlEngineCapability -PythonPath $script:Python
 
-        $default.protocol | Should -Be 'codex-scientiae/jsonl-engine-cli'
+        $default.protocol | Should -Be 'codex-scientiae/jsonl_engine-cli'
         $default.version | Should -Be 1
         $default.framing | Should -BeTrue
         @($default.verbs).Count | Should -Be 16
@@ -313,8 +313,8 @@ time.sleep(60)
     It 'rejects non-integer version and sequence fields instead of coercing them' `
             -Skip:(-not $script:JsonlClientPythonAvailable) {
         $invalidFrames = [ordered]@{
-            version = '{"protocol":"codex-scientiae/jsonl-engine-cli","version":"1","type":"value","sequence":0,"value":1}'
-            sequence = '{"protocol":"codex-scientiae/jsonl-engine-cli","version":1,"type":"value","sequence":"0","value":1}'
+            version = '{"protocol":"codex-scientiae/jsonl_engine-cli","version":"1","type":"value","sequence":0,"value":1}'
+            sequence = '{"protocol":"codex-scientiae/jsonl_engine-cli","version":1,"type":"value","sequence":"0","value":1}'
         }
         $accepted = [System.Collections.Generic.List[string]]::new()
         foreach ($case in $invalidFrames.GetEnumerator()) {
@@ -336,17 +336,17 @@ time.sleep(60)
 
     It 'accepts only one exactly typed JSON error frame on stderr' `
             -Skip:(-not $script:JsonlClientPythonAvailable) {
-        $validError = '{"protocol":"codex-scientiae/jsonl-engine-cli","version":1,"type":"error","error":"ProbeError","message":"probe failed"}'
+        $validError = '{"protocol":"codex-scientiae/jsonl_engine-cli","version":1,"type":"error","error":"ProbeError","message":"probe failed"}'
         $errorCases = @(
             [pscustomobject]@{ Name = 'exact'; Lines = @($validError); Structured = $true }
             [pscustomobject]@{
                 Name = 'string-version'
-                Lines = @('{"protocol":"codex-scientiae/jsonl-engine-cli","version":"1","type":"error","error":"ProbeError","message":"probe failed"}')
+                Lines = @('{"protocol":"codex-scientiae/jsonl_engine-cli","version":"1","type":"error","error":"ProbeError","message":"probe failed"}')
                 Structured = $false
             }
             [pscustomobject]@{
                 Name = 'numeric-error'
-                Lines = @('{"protocol":"codex-scientiae/jsonl-engine-cli","version":1,"type":"error","error":7,"message":"probe failed"}')
+                Lines = @('{"protocol":"codex-scientiae/jsonl_engine-cli","version":1,"type":"error","error":7,"message":"probe failed"}')
                 Structured = $false
             }
             [pscustomobject]@{
@@ -393,7 +393,7 @@ time.sleep(60)
         $fakePython = New-JsonlClientTestLauncher -Directory $TestDrive `
             -Name 'invalid-utf8-frame' -Source @'
 import sys
-sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl-engine-cli","version":1,"type":"value","sequence":0,"value":"\xff"}\n')
+sys.stdout.buffer.write(b'{"protocol":"codex-scientiae/jsonl_engine-cli","version":1,"type":"value","sequence":0,"value":"\xff"}\n')
 '@
         $values = [System.Collections.Generic.List[object]]::new()
         $failure = $null

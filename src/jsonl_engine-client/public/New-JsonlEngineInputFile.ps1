@@ -35,7 +35,7 @@ function New-JsonlEngineInputFile {
         }
         [System.IO.Path]::Combine(
             $temporaryRoot,
-            "codex-jsonl-engine-input-$([guid]::NewGuid().ToString('N')).json")
+            "codex-jsonl_engine-input-$([guid]::NewGuid().ToString('N')).json")
     }
     else {
         Resolve-JsonlEnginePathArgument -Path $Path

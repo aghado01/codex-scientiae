@@ -2,7 +2,7 @@
 
 Set-StrictMode -Version Latest
 
-$script:JsonlEngineProtocol = 'codex-scientiae/jsonl-engine-cli'
+$script:JsonlEngineProtocol = 'codex-scientiae/jsonl_engine-cli'
 $script:JsonlEngineProtocolVersion = 1
 $script:JsonlEngineClientRoot = $PSScriptRoot
 $script:JsonlEngineRepositoryRoot = [System.IO.Path]::GetFullPath(

@@ -9,12 +9,12 @@ conversion.
 Import the canonical manifest:
 
 ```pwsh
-Import-Module ./src/shared/jsonl_engine-client/jsonl_engine-client.psd1
+Import-Module ./src/jsonl_engine-client/jsonl_engine-client.psd1
 Get-JsonlHead ./inventory.jsonl 5
 Find-JsonlRecord ./inventory.jsonl /state eq '"source-ready"'
 ```
 
-`src/shared/jsonl_engine/jso-shell.ps1` is a temporary compatibility importer. New callers import
+`src/jsonl_engine/jso-shell.ps1` is a temporary compatibility importer. New callers import
 the manifest directly; no protocol, runtime, or command logic belongs in the compatibility file.
 
 ## Runtime and protocol

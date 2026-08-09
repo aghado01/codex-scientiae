@@ -74,7 +74,7 @@ Run commands from the repository root or supply another explicit/relative docume
 6. Inspect the returned status and validate the article when reviewing a migration:
 
    ```pwsh
-   Import-Module ./src/shared/jsonl-engine-client/jsonl-engine-client.psd1
+   Import-Module ./src/jsonl_engine-client/jsonl_engine-client.psd1
    $articlePath = (Resolve-Path './ingestion/<segment>/<slug>/article.json').Path
    $validated = @(Invoke-JsonlEngineCommand `
        -Verb validate-json -Argument @($articlePath, 'article.schema.json'))

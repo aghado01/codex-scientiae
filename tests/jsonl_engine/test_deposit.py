@@ -27,7 +27,7 @@ from jsonl_engine.reader import read_json
 from jsonl_test_support import article as article_record
 
 
-PROTOCOL = "codex-scientiae/jsonl-engine-cli"
+PROTOCOL = "codex-scientiae/jsonl_engine-cli"
 _NO_CLOBBER_OPERATION = "rename" if os.name == "nt" else "link"
 
 

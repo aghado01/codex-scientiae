@@ -219,7 +219,7 @@ Describe 'LaTeX source deposit through the JSONL engine' {
         ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and
             $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) | Should -BeFalse
         @(Get-ChildItem -LiteralPath $script:JsonScratch `
-                -Filter 'codex-jsonl-engine-input-*.json' -File).Count | Should -Be 0
+                -Filter 'codex-jsonl_engine-input-*.json' -File).Count | Should -Be 0
         Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
     }
 
@@ -253,7 +253,7 @@ Describe 'LaTeX source deposit through the JSONL engine' {
         ($second.EngineOutput.article | ConvertTo-Json -Depth 100 -Compress) |
             Should -Be ($first.EngineOutput.article | ConvertTo-Json -Depth 100 -Compress)
         @(Get-ChildItem -LiteralPath $script:JsonScratch `
-                -Filter 'codex-jsonl-engine-input-*.json' -File).Count | Should -Be 0
+                -Filter 'codex-jsonl_engine-input-*.json' -File).Count | Should -Be 0
         Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
     }
 
@@ -275,7 +275,7 @@ Describe 'LaTeX source deposit through the JSONL engine' {
         @($result.EngineOutput.article.evidence.provider_metadata).Count | Should -Be 0
         @($result.EngineOutput.article.authors).Count | Should -Be 0
         @(Get-ChildItem -LiteralPath $script:JsonScratch `
-                -Filter 'codex-jsonl-engine-input-*.json' -File).Count | Should -Be 0
+                -Filter 'codex-jsonl_engine-input-*.json' -File).Count | Should -Be 0
         Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
     }
 
@@ -348,7 +348,7 @@ Describe 'LaTeX source deposit through the JSONL engine' {
         }
         finally { $env:CODEX_JSON_SCRATCH_ROOT = $savedScratch }
         [System.IO.File]::Exists($deposit.ArticlePath) | Should -BeFalse
-        @(Get-ChildItem -LiteralPath $sourceTree -Filter 'codex-jsonl-engine-input-*.json' `
+        @(Get-ChildItem -LiteralPath $sourceTree -Filter 'codex-jsonl_engine-input-*.json' `
                 -File -ErrorAction SilentlyContinue).Count | Should -Be 0
 
         $findingsPath = Join-Path $TestDrive 'owned findings 日本語.json'
@@ -453,7 +453,7 @@ Describe 'LaTeX source deposit through the JSONL engine' {
         [System.IO.File]::GetLastWriteTimeUtc($deposit.ArticlePath) | Should -Be $markedWriteTime
         (Read-LatexDepositJson -Path $deposit.ArticlePath).title | Should -Be 'Original title'
         @(Get-ChildItem -LiteralPath $script:JsonScratch `
-                -Filter 'codex-jsonl-engine-input-*.json' -File).Count | Should -Be 0
+                -Filter 'codex-jsonl_engine-input-*.json' -File).Count | Should -Be 0
         Assert-NoLatexDepositTransactionResidue -DocumentDirectory $deposit.DocumentDirectory
     }
 }
