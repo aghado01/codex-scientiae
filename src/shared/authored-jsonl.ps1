@@ -5,6 +5,9 @@
   Read-AuthoredJsonl: resolve -> reparse-guard -> absent? -> bounded read -> identity (+ optional drift
   assertion) -> UTF-8/no-BOM/no-bare-CR -> skip blank and full-line '#' or '//' comments -> one strict
   JSON object per line, no duplicate/case-colliding keys -> { line, fields }. The caller validates records.
+
+  -Subject labels the input in file/path/identity error messages (default 'authored JSONL'), so a domain
+  caller can keep its own wording without the reader knowing anything about the domain.
 #>
 
 . "$PSScriptRoot/portable-path.ps1"
@@ -14,14 +17,15 @@ function Assert-AuthoredJsonlIdentity {
     param(
         [AllowNull()] [AllowEmptyString()] [string]$Expected,
         [Parameter(Mandatory)] [string]$Actual,
-        [Parameter(Mandatory)] [string]$Path
+        [Parameter(Mandatory)] [string]$Path,
+        [string]$Subject = 'authored JSONL'
     )
     if ([string]::IsNullOrEmpty($Expected)) { return }
     if ($Expected -cne 'absent' -and -not (Test-ContentIdentityFormat -Value $Expected)) {
-        throw "invalid expected identity '$Expected' (want absent or sha256:<64 lowercase hex>)"
+        throw "invalid expected $Subject identity '$Expected' (want absent or sha256:<64 lowercase hex>)"
     }
     if ($Expected -cne $Actual) {
-        throw "authored JSONL identity drift for '$Path': expected '$Expected', found '$Actual'"
+        throw "$Subject identity drift for '$Path': expected '$Expected', found '$Actual'"
     }
 }
 
@@ -64,31 +68,32 @@ function Read-AuthoredJsonl {
     param(
         [Parameter(Mandatory)] [ValidateNotNullOrEmpty()] [string]$Path,
         [Parameter(Mandatory)] [long]$MaxBytes,
-        [Alias('ExpectedIdentity')] [AllowNull()] [AllowEmptyString()] [string]$ExpectedPatchIdentity = ''
+        [Alias('ExpectedIdentity')] [AllowNull()] [AllowEmptyString()] [string]$ExpectedPatchIdentity = '',
+        [string]$Subject = 'authored JSONL'
     )
     if (Test-PathHasReparsePoint -Path $Path) {
-        throw "authored JSONL path must not traverse a symbolic link or reparse point: '$Path'"
+        throw "$Subject path must not traverse a symbolic link or reparse point: '$Path'"
     }
     $entry = try { Get-Item -LiteralPath $Path -Force -ErrorAction Stop }
              catch [System.Management.Automation.ItemNotFoundException] { $null }
     if ($null -eq $entry) {
-        Assert-AuthoredJsonlIdentity -Expected $ExpectedPatchIdentity -Actual 'absent' -Path $Path
+        Assert-AuthoredJsonlIdentity -Expected $ExpectedPatchIdentity -Actual 'absent' -Path $Path -Subject $Subject
         return [pscustomobject]@{ path = $Path; identity = 'absent'; records = @() }
     }
-    if (-not [System.IO.File]::Exists($Path)) { throw "authored JSONL path is not a file: '$Path'" }
+    if (-not [System.IO.File]::Exists($Path)) { throw "$Subject path is not a file: '$Path'" }
 
     $bytes = Read-BoundedFileBytes -Path $Path -MaxBytes $MaxBytes
     if (Test-PathHasReparsePoint -Path $Path) {
-        throw "authored JSONL path must not traverse a symbolic link or reparse point: '$Path'"
+        throw "$Subject path must not traverse a symbolic link or reparse point: '$Path'"
     }
     $identity = Get-ContentIdentity -Bytes $bytes
-    Assert-AuthoredJsonlIdentity -Expected $ExpectedPatchIdentity -Actual $identity -Path $Path
+    Assert-AuthoredJsonlIdentity -Expected $ExpectedPatchIdentity -Actual $identity -Path $Path -Subject $Subject
     if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
-        throw "authored JSONL file must be UTF-8 without a BOM: '$Path'"
+        throw "$Subject file must be UTF-8 without a BOM: '$Path'"
     }
     try { $text = [System.Text.UTF8Encoding]::new($false, $true).GetString($bytes) }
-    catch [System.Text.DecoderFallbackException] { throw "authored JSONL file is not valid UTF-8: '$Path'" }
-    if ($text -match "`r(?!`n)") { throw "authored JSONL file contains a bare CR line ending: '$Path'" }
+    catch [System.Text.DecoderFallbackException] { throw "$Subject file is not valid UTF-8: '$Path'" }
+    if ($text -match "`r(?!`n)") { throw "$Subject file contains a bare CR line ending: '$Path'" }
 
     $records = [System.Collections.Generic.List[object]]::new()
     $fileName = [System.IO.Path]::GetFileName($Path)
