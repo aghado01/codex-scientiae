@@ -131,3 +131,29 @@ Two pleasant side effects:
 **The catalog becomes the census referent for shapes.** If config schemas join the kind/schema catalog, then "what declared shapes exist in this repo" has one answer surface — which gives your abductive census a canonical place to check a suspect artifact against, the same way the engine's doctrine sentences became the disposition criteria.
 
 **Promotion gets a crisp mechanical form for configs:** promotion moves the _schema_, never the _thing_. A nursery config starts schema-less (or locally-schema'd) beside its application; battle-testing earns its schema a place in the catalog; the instance never moves. That's the maturity axis with zero migration cost at promotion time — the file that works keeps working, and what changes is only that its shape is now canon.
+
+# one wrinkle though, in practice even with an orchestrator, i want to be able to "just run" a WIP pipeline, not have to update and maintain config between every dev iteration. how would that work mechanically here?
+
+Good wrinkle — and the answer falls out of a distinction the design already implies but I should make explicit: **the plan is derived, never maintained.** Config fatigue comes from artifacts you must keep in sync with churning code. So dev mode's job is to make every synchronizable artifact either _derived_ (recomputed per invocation) or _absent until promotion_. Mechanically:
+
+**1. The spec is a Python object; the document form is the promotion form.** `PipelineSpec` is a dataclass. A WIP pipeline is a single `.py` file next to the lane that constructs it inline — stages, runners, params, done. The compiler doesn't care whether the spec was parsed from a schema-validated document or built in twelve lines of code; downstream is identical. So during dev there _is_ no pipeline config file to maintain — there's the code you were already editing. Serializing to the document form (and sending its schema to the catalog) is what promotion means, and it can be mechanical: `orch export-spec` dumps the object you've been iterating.
+
+**2. Layout is default-first; the registry is an override, not a prerequisite.** The orchestrator ships a built-in dev pattern — say `{artifacts_root}/{pipeline}/runs/_dev/{doc}/{stage}/{artifact}` — and any artifact kind not bound to a named pattern falls back to it. Zero layout entries needed to run. Named patterns enter when placement starts mattering (promotion, again).
+
+**3. `run` is one fused verb, and recompiling is how your edits take effect.**
+
+```bash
+python -m orchestrator run pipelines/latex_ingest_dev.py --docs 1611.03935v1
+```
+
+compiles and executes in one call. The plan is regenerated _every invocation_ — cheap, and it's precisely why nothing needs maintaining: edit the spec object, run, the new plan reflects it. Compile-then-execute stays real internally (you still get `plan.json` and `ledger.jsonl` in the run dir, so every dev run is inspectable and resumable); it just stops being two UX steps.
+
+**4. The dev run root is stable, and digests do the work stamps used to do.** Membrane doctrine says every run is a new stamp — right for canon, wrong for dev, where you want warm upstreams. Dev default: reuse `runs/_dev` per pipeline; `--fresh` when you want a clean room. Each invocation recompiles the plan, diffs digests against the ledger, and re-executes only what's invalid. Which brings up the one place the strict design would actively _hurt_ dev if left alone:
+
+**5. In dev, stage `version` is the runner's source hash.** The digest is `hash(name, version, inputs, params)` — but nobody bumps `version` on every edit, so canonical digesting would happily skip a stage whose code you just changed (the classic Make footgun). Dev mode substitutes automatically: version = content hash of the runner file (the module for `python:` runners, the script for `pwsh:`). Now the loop is exactly what you want and _better than "just run" today_: touch S6's code → only S6 (and its downstream) re-executes; S3–S5 materializations reuse untouched. The monolith re-does everything on every iteration; this re-does only what you edited. Incremental re-execution is dev mode's payoff, not its tax.
+
+**6. Validation and pinning degrade instead of blocking.** Nursery configs are legitimately schema-less under your promotion rule, so the dev compiler validates what has a schema, warns on what doesn't, pins what it can, and records `unpinned` for the rest in the plan. The provenance trail stays honest about its own gaps rather than demanding completeness you haven't earned yet.
+
+**What does _not_ relax — deliberately:** the envelope (stages still receive resolved paths and touch nothing else), write confinement to slots, ledger appends, per-(doc, artifact) materialization accounting. Two reasons. Those are what make a dev run debuggable — "what did stage X actually read and produce" answers from the run dir, not from print statements. And more importantly, they keep dev and canon on **one execution model**, differing only in compiler strictness, digest source, and run-root policy. The moment dev mode becomes a second, looser execution path, you've rebuilt the promotion cliff — WIP pipelines that can't graduate because they grew habits canon forbids.
+
+So the dev loop, end to end: edit the spec `.py` or a stage runner → `run` → recompile (instant), digest-diff, re-execute the touched stage against warm upstream materializations → inspect the run dir if surprised. Config appears in your life exactly once per pipeline: the day it stops being WIP.
