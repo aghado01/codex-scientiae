@@ -7,22 +7,12 @@
   Raw-byte identities allow batch callers to pin the input consumed by a conversion.
 #>
 
+. "$PSScriptRoot/../shared/portable-path.ps1"
+. "$PSScriptRoot/../shared/file-bytes.ps1"
+. "$PSScriptRoot/../shared/authored-jsonl.ps1"
+
 $script:LatexPatchRegexTimeout = [System.TimeSpan]::FromMilliseconds(250)
 $script:LatexPatchMaximumBytes = 1MB
-
-function Test-LatexPatchPortableLeaf {
-    param([AllowNull()] [AllowEmptyString()] [string]$Value)
-    if ([string]::IsNullOrEmpty($Value) -or $Value -in '.', '..' -or
-        $Value.EndsWith(' ') -or $Value.EndsWith('.')) { return $false }
-    $invalid = '<>:"/\|?*'
-    foreach ($character in $Value.ToCharArray()) {
-        if ([int]$character -lt 32 -or $invalid.Contains([string]$character)) { return $false }
-    }
-    $stem = $Value.Split('.', 2)[0].ToUpperInvariant()
-    if ($stem -in @('CON', 'PRN', 'AUX', 'NUL') -or
-        $stem -match '^(?:COM|LPT)[1-9]$') { return $false }
-    return $true
-}
 
 function Get-LatexPatchPath {
     param(
@@ -33,233 +23,69 @@ function Get-LatexPatchPath {
     if (-not [System.IO.Directory]::Exists($root)) {
         throw "LaTeX patch document directory does not exist: '$root'"
     }
-    if (-not (Test-LatexPatchPortableLeaf -Value $Slug)) {
+    if (-not (Test-PortableLeaf -Value $Slug)) {
         throw "LaTeX patch slug is not a portable file name: '$Slug'"
     }
     return [System.IO.Path]::Combine($root, "$Slug-latex.patch.jsonl")
 }
 
-function Get-LatexPatchRawIdentity {
-    param([Parameter(Mandatory)] [AllowEmptyCollection()] [byte[]]$Bytes)
-    $hash = [System.Security.Cryptography.SHA256]::HashData($Bytes)
-    return 'sha256:' + [System.BitConverter]::ToString($hash).Replace('-', '').ToLowerInvariant()
-}
-
-function Test-LatexPatchPathHasReparsePoint {
-    param([Parameter(Mandatory)] [string]$Path)
-    $central = Get-Command Test-LatexPathHasReparsePoint -CommandType Function -ErrorAction SilentlyContinue
-    if ($null -ne $central) { return [bool](Test-LatexPathHasReparsePoint -Path $Path) }
-
-    $fullPath = [System.IO.Path]::GetFullPath($Path)
-    $pathRoot = [System.IO.Path]::GetPathRoot($fullPath)
-    $relative = [System.IO.Path]::GetRelativePath($pathRoot, $fullPath)
-    $current = $pathRoot
-    foreach ($segment in @($relative -split '[\\/]' | Where-Object { $_ -and $_ -ne '.' })) {
-        $current = [System.IO.Path]::Combine($current, $segment)
-        $item = Get-Item -LiteralPath $current -Force -ErrorAction SilentlyContinue
-        if ($null -eq $item) { break }
-        if (($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0) { return $true }
-    }
-    return $false
-}
-
-function Get-LatexPatchItemOrNull {
-    param([Parameter(Mandatory)] [string]$Path)
-    try {
-        return Get-Item -LiteralPath $Path -Force -ErrorAction Stop
-    } catch [System.Management.Automation.ItemNotFoundException] {
-        return $null
-    }
-}
-
-function Read-LatexPatchBoundedBytes {
-    param(
-        [Parameter(Mandatory)] [string]$Path,
-        [Parameter(Mandatory)] [System.IO.FileInfo]$Entry
-    )
-    $observedLength = [long]$Entry.Length
-    if ($observedLength -gt $script:LatexPatchMaximumBytes) {
-        throw "LaTeX patch file exceeds the 1 MiB limit: '$Path'"
-    }
-
-    $stream = [System.IO.FileStream]::new(
-        $Path,
-        [System.IO.FileMode]::Open,
-        [System.IO.FileAccess]::Read,
-        [System.IO.FileShare]::Read,
-        4096,
-        [System.IO.FileOptions]::SequentialScan)
-    try {
-        $length = [long]$stream.Length
-        if ($length -ne $observedLength) {
-            throw "LaTeX patch file changed length before its bounded read: '$Path'"
-        }
-        if ($length -gt $script:LatexPatchMaximumBytes) {
-            throw "LaTeX patch file exceeds the 1 MiB limit: '$Path'"
-        }
-        $bytes = [byte[]]::new([int]$length)
-        $offset = 0
-        while ($offset -lt $bytes.Length) {
-            $read = $stream.Read($bytes, $offset, $bytes.Length - $offset)
-            if ($read -eq 0) {
-                throw "LaTeX patch file shrank during its bounded read: '$Path'"
-            }
-            $offset += $read
-        }
-        if ($stream.ReadByte() -ne -1 -or [long]$stream.Length -ne $length) {
-            throw "LaTeX patch file grew during its bounded read: '$Path'"
-        }
-        return ,$bytes
-    } finally {
-        $stream.Dispose()
-    }
-}
-
-function Assert-LatexPatchIdentity {
-    param(
-        [AllowNull()] [AllowEmptyString()] [string]$ExpectedPatchIdentity,
-        [Parameter(Mandatory)] [string]$ActualIdentity,
-        [Parameter(Mandatory)] [string]$Path
-    )
-    if ($null -eq $ExpectedPatchIdentity -or $ExpectedPatchIdentity.Length -eq 0) { return }
-    if ($ExpectedPatchIdentity -cne 'absent' -and
-        $ExpectedPatchIdentity -cnotmatch '^sha256:[0-9a-f]{64}$') {
-        throw "invalid expected LaTeX patch identity '$ExpectedPatchIdentity' (want absent or sha256:<64 lowercase hex>)"
-    }
-    if ($ExpectedPatchIdentity -cne $ActualIdentity) {
-        throw "LaTeX patch identity drift for '$Path': expected '$ExpectedPatchIdentity', found '$ActualIdentity'"
-    }
-}
-
-function Get-LatexPatchRequiredString {
+function ConvertFrom-LatexPatchRecord {
     param(
         [Parameter(Mandatory)] $Fields,
-        [Parameter(Mandatory)] [string]$Name,
-        [Parameter(Mandatory)] [string]$Display
-    )
-    if (-not $Fields.ContainsKey($Name)) { throw "$Display — missing '$Name'" }
-    $element = $Fields[$Name]
-    if ($element.ValueKind -ne [System.Text.Json.JsonValueKind]::String) {
-        throw "$Display — '$Name' must be a JSON string"
-    }
-    return [string]$element.GetString()
-}
-
-function Get-LatexPatchOptionalString {
-    param(
-        [Parameter(Mandatory)] $Fields,
-        [Parameter(Mandatory)] [string]$Name,
-        [Parameter(Mandatory)] [string]$Display
-    )
-    if (-not $Fields.ContainsKey($Name)) { return '' }
-    $element = $Fields[$Name]
-    if ($element.ValueKind -ne [System.Text.Json.JsonValueKind]::String) {
-        throw "$Display — '$Name' must be a JSON string"
-    }
-    return [string]$element.GetString()
-}
-
-function Get-LatexPatchOptionalGuard {
-    param(
-        [Parameter(Mandatory)] $Fields,
-        [Parameter(Mandatory)] [string]$Name,
-        [Parameter(Mandatory)] [string]$Display
-    )
-    if (-not $Fields.ContainsKey($Name)) { return $null }
-    $element = $Fields[$Name]
-    $value = 0
-    if ($element.ValueKind -ne [System.Text.Json.JsonValueKind]::Number -or
-        -not $element.TryGetInt32([ref]$value) -or $value -le 0) {
-        throw "$Display — '$Name' must be a positive JSON integer"
-    }
-    return $value
-}
-
-function ConvertFrom-LatexPatchJsonLine {
-    param(
-        [Parameter(Mandatory)] [string]$Json,
-        [Parameter(Mandatory)] [string]$FileName,
+        [Parameter(Mandatory)] [string]$Display,
         [Parameter(Mandatory)] [int]$Line
     )
-    $display = "patch $FileName`:$Line"
-    $document = $null
-    try {
-        $options = [System.Text.Json.JsonDocumentOptions]::new()
-        $document = [System.Text.Json.JsonDocument]::Parse($Json, $options)
-    } catch [System.Text.Json.JsonException] {
-        throw "$display — invalid JSON: $($_.Exception.Message)"
+    $op = Get-JsonRequiredString -Fields $Fields -Name 'op' -Display $Display
+    if ($op -cnotin 'define_macro', 'source_replace', 'output_replace') {
+        throw "$Display — unknown op '$op' (want define_macro | source_replace | output_replace)"
     }
-    try {
-        $root = $document.RootElement
-        if ($root.ValueKind -ne [System.Text.Json.JsonValueKind]::Object) {
-            throw "$display — each JSONL value must be one object"
-        }
-
-        $names = [System.Collections.Generic.HashSet[string]]::new(
-            [System.StringComparer]::OrdinalIgnoreCase)
-        $fields = [System.Collections.Generic.Dictionary[string,System.Text.Json.JsonElement]]::new(
-            [System.StringComparer]::Ordinal)
-        foreach ($property in $root.EnumerateObject()) {
-            if (-not $names.Add($property.Name)) {
-                throw "$display — duplicate or case-colliding field '$($property.Name)'"
-            }
-            $fields.Add($property.Name, $property.Value.Clone())
-        }
-
-        $op = Get-LatexPatchRequiredString -Fields $fields -Name 'op' -Display $display
-        if ($op -cnotin 'define_macro', 'source_replace', 'output_replace') {
-            throw "$display — unknown op '$op' (want define_macro | source_replace | output_replace)"
-        }
-        $reason = Get-LatexPatchRequiredString -Fields $fields -Name 'reason' -Display $display
-        if ([string]::IsNullOrWhiteSpace($reason)) {
-            throw "$display — missing 'reason' (every erratum must be justified)"
-        }
-
-        $allowed = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
-        foreach ($name in @('op', 'reason', 'class', 'source_ref', 'authored_by', 'authored_utc')) {
-            [void]$allowed.Add($name)
-        }
-        if ($op -ceq 'define_macro') {
-            foreach ($name in @('name', 'body', 'expect_uses')) { [void]$allowed.Add($name) }
-        } else {
-            foreach ($name in @('find', 'replace', 'expect')) { [void]$allowed.Add($name) }
-        }
-        foreach ($name in $fields.Keys) {
-            if (-not $allowed.Contains($name)) { throw "$display — unknown field '$name' for op '$op'" }
-        }
-
-        $record = [ordered]@{
-            op           = $op
-            reason       = $reason
-            class        = Get-LatexPatchOptionalString -Fields $fields -Name 'class' -Display $display
-            source_ref   = Get-LatexPatchOptionalString -Fields $fields -Name 'source_ref' -Display $display
-            authored_by  = Get-LatexPatchOptionalString -Fields $fields -Name 'authored_by' -Display $display
-            authored_utc = Get-LatexPatchOptionalString -Fields $fields -Name 'authored_utc' -Display $display
-        }
-        if ($op -ceq 'define_macro') {
-            $name = Get-LatexPatchRequiredString -Fields $fields -Name 'name' -Display $display
-            if ($name -cnotmatch '^\\[A-Za-z]+$') {
-                throw "$display — 'name' must be one TeX control word such as \vect"
-            }
-            $record['name'] = $name
-            $record['body'] = Get-LatexPatchRequiredString -Fields $fields -Name 'body' -Display $display
-            if ($fields.ContainsKey('expect_uses')) {
-                $record['expect_uses'] = Get-LatexPatchOptionalGuard -Fields $fields -Name 'expect_uses' -Display $display
-            }
-        } else {
-            $find = Get-LatexPatchRequiredString -Fields $fields -Name 'find' -Display $display
-            if ($find.Length -eq 0) { throw "$display — 'find' must not be empty" }
-            $record['find'] = $find
-            $record['replace'] = Get-LatexPatchRequiredString -Fields $fields -Name 'replace' -Display $display
-            if ($fields.ContainsKey('expect')) {
-                $record['expect'] = Get-LatexPatchOptionalGuard -Fields $fields -Name 'expect' -Display $display
-            }
-        }
-        $record['line'] = $Line
-        return [pscustomobject]$record
-    } finally {
-        if ($null -ne $document) { $document.Dispose() }
+    $reason = Get-JsonRequiredString -Fields $Fields -Name 'reason' -Display $Display
+    if ([string]::IsNullOrWhiteSpace($reason)) {
+        throw "$Display — missing 'reason' (every erratum must be justified)"
     }
+
+    $allowed = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    foreach ($name in @('op', 'reason', 'class', 'source_ref', 'authored_by', 'authored_utc')) {
+        [void]$allowed.Add($name)
+    }
+    if ($op -ceq 'define_macro') {
+        foreach ($name in @('name', 'body', 'expect_uses')) { [void]$allowed.Add($name) }
+    } else {
+        foreach ($name in @('find', 'replace', 'expect')) { [void]$allowed.Add($name) }
+    }
+    foreach ($name in $Fields.Keys) {
+        if (-not $allowed.Contains($name)) { throw "$Display — unknown field '$name' for op '$op'" }
+    }
+
+    $record = [ordered]@{
+        op           = $op
+        reason       = $reason
+        class        = Get-JsonOptionalString -Fields $Fields -Name 'class' -Display $Display
+        source_ref   = Get-JsonOptionalString -Fields $Fields -Name 'source_ref' -Display $Display
+        authored_by  = Get-JsonOptionalString -Fields $Fields -Name 'authored_by' -Display $Display
+        authored_utc = Get-JsonOptionalString -Fields $Fields -Name 'authored_utc' -Display $Display
+    }
+    if ($op -ceq 'define_macro') {
+        $name = Get-JsonRequiredString -Fields $Fields -Name 'name' -Display $Display
+        if ($name -cnotmatch '^\\[A-Za-z]+$') {
+            throw "$Display — 'name' must be one TeX control word such as \vect"
+        }
+        $record['name'] = $name
+        $record['body'] = Get-JsonRequiredString -Fields $Fields -Name 'body' -Display $Display
+        if ($Fields.ContainsKey('expect_uses')) {
+            $record['expect_uses'] = Get-JsonOptionalPositiveInteger -Fields $Fields -Name 'expect_uses' -Display $Display
+        }
+    } else {
+        $find = Get-JsonRequiredString -Fields $Fields -Name 'find' -Display $Display
+        if ($find.Length -eq 0) { throw "$Display — 'find' must not be empty" }
+        $record['find'] = $find
+        $record['replace'] = Get-JsonRequiredString -Fields $Fields -Name 'replace' -Display $Display
+        if ($Fields.ContainsKey('expect')) {
+            $record['expect'] = Get-JsonOptionalPositiveInteger -Fields $Fields -Name 'expect' -Display $Display
+        }
+    }
+    $record['line'] = $Line
+    return [pscustomobject]$record
 }
 
 function Read-LatexPatchSet {
@@ -269,48 +95,20 @@ function Read-LatexPatchSet {
         [Alias('ExpectedIdentity')] [AllowNull()] [AllowEmptyString()] [string]$ExpectedPatchIdentity = ''
     )
     $path = Get-LatexPatchPath -DocumentDir $DocumentDir -Slug $Slug
-    if (Test-LatexPatchPathHasReparsePoint -Path $path) {
-        throw "LaTeX patch path must not traverse a symbolic link or reparse point: '$path'"
-    }
-    $entry = Get-LatexPatchItemOrNull -Path $path
-    if ($null -eq $entry) {
-        Assert-LatexPatchIdentity -ExpectedPatchIdentity $ExpectedPatchIdentity `
-            -ActualIdentity 'absent' -Path $path
-        return [pscustomobject]@{ path = $path; identity = 'absent'; patches = @() }
-    }
-    if (-not [System.IO.File]::Exists($path)) { throw "LaTeX patch path is not a file: '$path'" }
-
-    $bytes = Read-LatexPatchBoundedBytes -Path $path -Entry $entry
-    if (Test-LatexPatchPathHasReparsePoint -Path $path) {
-        throw "LaTeX patch path must not traverse a symbolic link or reparse point: '$path'"
-    }
-    $identity = Get-LatexPatchRawIdentity -Bytes $bytes
-    Assert-LatexPatchIdentity -ExpectedPatchIdentity $ExpectedPatchIdentity `
-        -ActualIdentity $identity -Path $path
-    if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
-        throw "LaTeX patch file must be UTF-8 without a BOM: '$path'"
-    }
-    try {
-        $text = [System.Text.UTF8Encoding]::new($false, $true).GetString($bytes)
-    } catch [System.Text.DecoderFallbackException] {
-        throw "LaTeX patch file is not valid UTF-8: '$path'"
-    }
-    if ($text -match "`r(?!`n)") { throw "LaTeX patch file contains a bare CR line ending: '$path'" }
-
+    $authored = Read-AuthoredJsonl -Path $path -MaxBytes $script:LatexPatchMaximumBytes `
+        -ExpectedIdentity $ExpectedPatchIdentity -Subject 'LaTeX patch'
+    $fileName = [System.IO.Path]::GetFileName($path)
     $patches = [System.Collections.Generic.List[object]]::new()
     $defined = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
-    $lines = [System.Text.RegularExpressions.Regex]::Split($text, '\r?\n')
-    for ($index = 0; $index -lt $lines.Length; $index++) {
-        $trimmed = $lines[$index].Trim()
-        if (-not $trimmed -or $trimmed.StartsWith('#') -or $trimmed.StartsWith('//')) { continue }
-        $patch = ConvertFrom-LatexPatchJsonLine -Json $lines[$index] `
-            -FileName ([System.IO.Path]::GetFileName($path)) -Line ($index + 1)
+    foreach ($rec in $authored.records) {
+        $patch = ConvertFrom-LatexPatchRecord -Fields $rec.fields `
+            -Display "patch $fileName`:$($rec.line)" -Line $rec.line
         if ($patch.op -ceq 'define_macro' -and -not $defined.Add([string]$patch.name)) {
-            throw "patch $([System.IO.Path]::GetFileName($path)):$($index + 1) — duplicate define_macro '$($patch.name)'"
+            throw "patch $fileName`:$($rec.line) — duplicate define_macro '$($patch.name)'"
         }
         $patches.Add($patch)
     }
-    return [pscustomobject]@{ path = $path; identity = $identity; patches = $patches.ToArray() }
+    return [pscustomobject]@{ path = $path; identity = $authored.identity; patches = $patches.ToArray() }
 }
 
 function Read-LatexPatchFile {

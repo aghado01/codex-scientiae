@@ -83,7 +83,7 @@ Describe 'Read-LatexPatchFile' {
         [System.IO.File]::WriteAllBytes(
             (Get-TestPatchPath 'oversize'), [byte[]]::new(1MB + 1))
         { Read-LatexPatchFile -DocumentDir $TestDrive -Slug 'oversize' } |
-            Should -Throw '*exceeds the 1 MiB limit*'
+            Should -Throw '*exceeds*limit*'
     }
 
     It 'enforces the closed operation schemas and exact field types' {
