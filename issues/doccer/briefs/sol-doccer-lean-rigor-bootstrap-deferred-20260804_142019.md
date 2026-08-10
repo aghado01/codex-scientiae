@@ -520,7 +520,9 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step after D43 is K5a fact/support implementation, not Lean. The first future proof
+The practical next step after D43 was K5a fact/support implementation, not Lean; that chip landed
+2026-08-09 (harness 2091) with `K5-FACT-SUPPORT` owned by its direct construction, adversarial
+validation, and proposal-permutation tests, exactly as registered. The first future proof
 most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, D35's
 direct located closure, D37's sole additive recurrence, or D39's direct structural validators; it
 is a law that licenses compression, pruning, generalized optimization, closure/composition, fusion,

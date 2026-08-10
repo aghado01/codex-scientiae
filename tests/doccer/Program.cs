@@ -93,6 +93,13 @@ internal static class Program
             HierarchyViewMatchesBoundedDagOracle();
             ResolutionMapsSeparateIncidenceFromAggregation();
             ResolutionIncidenceMatchesBoundedEndpointOracle();
+            FactKeyIsAMasterRelativeSemanticValue();
+            CanonicalFactTableCollapsesAndOrdersProposals();
+            CanonicalFactTableEqualityIsProposalOrderIndependent();
+            FactReferenceIsAnExactTableHandle();
+            SupportEdgeIsAnOrderedEvidenceValue();
+            SupportHypergraphValidatesExactBasesAndRetainsAlternatives();
+            K5aHierarchyDiamondWitnessSuppliesAncestorSupport();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }
@@ -6686,6 +6693,575 @@ internal static class Program
         }
 
         return selection.Count == CountSetBits(mask);
+    }
+
+    private static void FactKeyIsAMasterRelativeSemanticValue()
+    {
+        Throws<ArgumentException>(
+            () => new FactKey(" ", "Parent", Array.Empty<TextSpan>(), Array.Empty<string>()),
+            "fact domain required");
+        Throws<ArgumentException>(
+            () => new FactKey("hier", "", Array.Empty<TextSpan>(), Array.Empty<string>()),
+            "fact kind required");
+        Throws<ArgumentNullException>(
+            () => new FactKey("hier", "Parent", null!, Array.Empty<string>()),
+            "geometry sequence required");
+        Throws<ArgumentNullException>(
+            () => new FactKey("hier", "Parent", Array.Empty<TextSpan>(), null!),
+            "value sequence required");
+        Throws<ArgumentException>(
+            () => new FactKey("hier", "Parent", Array.Empty<TextSpan>(), new string[] { null! }),
+            "null value component rejected");
+
+        var geometry = new List<TextSpan> { new(1, 2), new(0, 3) };
+        var values = new List<string> { "x", "y" };
+        var key = new FactKey("hier", "Parent", geometry, values);
+        geometry[0] = new TextSpan(3, 4);
+        values[0] = "mutated";
+        Equal(new TextSpan(1, 2), key.Geometry[0], "geometry tuple snapshotted");
+        Equal("x", key.ValueKey[0], "value tuple snapshotted");
+
+        var same = new FactKey(
+            "hier",
+            "Parent",
+            new[] { new TextSpan(1, 2), new TextSpan(0, 3) },
+            new[] { "x", "y" });
+        True(key.Equals(same), "fact key value equality");
+        Equal(key.GetHashCode(), same.GetHashCode(), "fact key hash agreement");
+
+        var distinctions = new[]
+        {
+            new FactKey("hier2", "Parent", key.Geometry, key.ValueKey),
+            new FactKey("hier", "Ancestor", key.Geometry, key.ValueKey),
+            new FactKey("hier", "Parent", new[] { new TextSpan(1, 2) }, key.ValueKey),
+            new FactKey(
+                "hier", "Parent", new[] { new TextSpan(0, 3), new TextSpan(1, 2) }, key.ValueKey),
+            new FactKey(
+                "hier", "Parent", new[] { new TextSpan(1, 3), new TextSpan(0, 3) }, key.ValueKey),
+            new FactKey("hier", "Parent", key.Geometry, new[] { "x" }),
+            new FactKey("hier", "Parent", key.Geometry, new[] { "x", "z" }),
+            new FactKey("hier", "Parent", key.Geometry, Array.Empty<string>()),
+        };
+        for (var i = 0; i < distinctions.Length; i++)
+        {
+            True(!key.Equals(distinctions[i]), $"fact key distinction {i} is semantic");
+        }
+
+        var global = new FactKey("doc", "word-count", Array.Empty<TextSpan>(), new[] { "4" });
+        Equal(0, global.Geometry.Count, "zero-geometry master-global key");
+        var unit = new FactKey("doc", "seen", new[] { new TextSpan(2, 2) }, Array.Empty<string>());
+        Equal(0, unit.ValueKey.Count, "empty tuple is the unit value key");
+        True(!global.Equals(unit), "empty tuples still distinguish");
+        True(!key.Equals(null), "null fact key inequality");
+    }
+
+    private static void CanonicalFactTableCollapsesAndOrdersProposals()
+    {
+        var master = new TextMaster("facts", 0, "wxyz");
+        var a = new TextSpan(1, 2);
+        var b = new TextSpan(0, 3);
+        var d = new TextSpan(0, 4);
+
+        FactKey Parent(TextSpan child, TextSpan parent) =>
+            new("hier", "Parent", new[] { child, parent }, Array.Empty<string>());
+
+        var empty = CanonicalFactTable.Create(master, Array.Empty<FactKey>());
+        True(empty.IsEmpty, "empty fact table");
+        Equal(0, empty.Count, "empty fact table count");
+
+        var table = CanonicalFactTable.Create(master, new[]
+        {
+            Parent(a, b),
+            Parent(b, d),
+            Parent(a, b),
+            new FactKey("hier", "Ancestor", new[] { a, d }, Array.Empty<string>()),
+            new FactKey("doc", "word-count", Array.Empty<TextSpan>(), new[] { "4" }),
+            new FactKey("hier", "boundary", new[] { new TextSpan(2, 2) }, Array.Empty<string>()),
+        });
+        Equal(5, table.Count, "duplicate fact proposals collapse");
+        Equal("word-count", table[0].Kind, "domain-major canonical order");
+        Equal("Ancestor", table[1].Kind, "ordinal kind order within one domain");
+        Equal(new TextSpan(0, 3), table[2].Geometry[0], "geometry coordinate order");
+        Equal(new TextSpan(1, 2), table[3].Geometry[0], "geometry coordinate order continued");
+        Equal("boundary", table[4].Kind, "ordinal kind order is case-sensitive");
+
+        True(table.TryGetOrdinal(Parent(a, b), out var parentOrdinal), "value-equal key found");
+        Equal(3, parentOrdinal, "found ordinal addresses the canonical row");
+        True(!table.TryGetOrdinal(Parent(d, a), out _), "absent key not found");
+        Throws<ArgumentOutOfRangeException>(() => _ = table[5], "fact ordinal range validated");
+
+        var widened = CanonicalFactTable.Create(master, new[]
+        {
+            Parent(a, b),
+            new FactKey("aaa", "first", Array.Empty<TextSpan>(), Array.Empty<string>()),
+        });
+        True(widened.TryGetOrdinal(Parent(a, b), out var shifted), "widened table retains the key");
+        Equal(1, shifted, "unrelated facts shift table-local ordinals");
+
+        Throws<ArgumentOutOfRangeException>(
+            () => CanonicalFactTable.Create(
+                master,
+                new[]
+                {
+                    new FactKey(
+                        "hier", "Parent", new[] { new TextSpan(0, 5) }, Array.Empty<string>()),
+                }),
+            "geometry beyond the master refused");
+        var smp = new TextMaster("smp", 0, "a😀b");
+        Throws<ArgumentException>(
+            () => CanonicalFactTable.Create(
+                smp,
+                new[]
+                {
+                    new FactKey(
+                        "hier", "mark", new[] { new TextSpan(2, 2) }, Array.Empty<string>()),
+                }),
+            "surrogate-splitting boundary fact refused");
+        Throws<ArgumentException>(
+            () => CanonicalFactTable.Create(master, new FactKey[] { null! }),
+            "null fact proposal refused");
+        Throws<ArgumentNullException>(
+            () => CanonicalFactTable.Create(null!, Array.Empty<FactKey>()),
+            "fact table master required");
+
+        var proposals = new List<FactKey> { Parent(a, b) };
+        var snapshotted = CanonicalFactTable.Create(master, proposals);
+        proposals.Clear();
+        Equal(1, snapshotted.Count, "proposal sequence snapshotted");
+    }
+
+    private static void CanonicalFactTableEqualityIsProposalOrderIndependent()
+    {
+        var master = new TextMaster("facts", 0, "wxyz");
+        var proposals = new FactKey[]
+        {
+            new(
+                "hier",
+                "Parent",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 3) },
+                Array.Empty<string>()),
+            new(
+                "hier",
+                "Parent",
+                new[] { new TextSpan(0, 3), new TextSpan(0, 4) },
+                Array.Empty<string>()),
+            new(
+                "hier",
+                "Ancestor",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 4) },
+                Array.Empty<string>()),
+            new("doc", "word-count", Array.Empty<TextSpan>(), new[] { "4" }),
+            new(
+                "hier",
+                "Parent",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 3) },
+                Array.Empty<string>()),
+        };
+
+        var reference = CanonicalFactTable.Create(master, proposals);
+        Equal(4, reference.Count, "reference table collapses the duplicate proposal");
+
+        var total = 0;
+        var agreeing = 0;
+        foreach (var permutation in Permutations(proposals.Length))
+        {
+            total++;
+            var permuted = new FactKey[proposals.Length];
+            for (var i = 0; i < permutation.Length; i++)
+            {
+                permuted[i] = proposals[permutation[i]];
+            }
+
+            var table = CanonicalFactTable.Create(master, permuted);
+            if (reference.Equals(table) &&
+                table.Equals(reference) &&
+                reference.GetHashCode() == table.GetHashCode())
+            {
+                agreeing++;
+            }
+        }
+
+        Equal(120, total, "proposal permutation census");
+        Equal(total, agreeing, "canonical value is proposal-order independent");
+
+        var compatible = CanonicalFactTable.Create(new TextMaster("facts", 0, "wxyz"), proposals);
+        True(reference.Equals(compatible), "compatible-master tables are value-equal");
+        Equal(reference.GetHashCode(), compatible.GetHashCode(), "compatible-master hash agreement");
+
+        var otherText = CanonicalFactTable.Create(new TextMaster("facts", 0, "wxyA"), proposals);
+        True(!reference.Equals(otherText), "incompatible master text breaks equality");
+        var otherRevision = CanonicalFactTable.Create(new TextMaster("facts", 1, "wxyz"), proposals);
+        True(!reference.Equals(otherRevision), "incompatible revision breaks equality");
+        var fewer = CanonicalFactTable.Create(master, new[] { proposals[0] });
+        True(!reference.Equals(fewer), "different key populations differ");
+        True(!reference.Equals(null), "null table inequality");
+    }
+
+    private static void FactReferenceIsAnExactTableHandle()
+    {
+        var master = new TextMaster("facts", 0, "wxyz");
+        var proposals = new FactKey[]
+        {
+            new(
+                "hier",
+                "Ancestor",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 4) },
+                Array.Empty<string>()),
+            new(
+                "hier",
+                "Parent",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 3) },
+                Array.Empty<string>()),
+        };
+        var table = CanonicalFactTable.Create(master, proposals);
+        var twin = CanonicalFactTable.Create(master, proposals);
+        True(table.Equals(twin), "twin tables are value-equal");
+
+        Throws<ArgumentNullException>(
+            () => new FactReference(null!, 0), "fact reference requires a table");
+        Throws<ArgumentOutOfRangeException>(
+            () => new FactReference(table, 2), "fact reference ordinal validated");
+        Throws<ArgumentOutOfRangeException>(
+            () => new FactReference(CanonicalFactTable.Create(master, Array.Empty<FactKey>()), 0),
+            "empty table admits no reference");
+
+        var reference = new FactReference(table, 0);
+        True(reference.Key.Equals(table[0]), "key projection returns semantic identity");
+        True(reference == new FactReference(table, 0), "same exact table and ordinal are one handle");
+        True(reference != new FactReference(table, 1), "different ordinals differ");
+        True(reference != new FactReference(twin, 0), "value-equal tables do not share references");
+        True(
+            reference.Key.Equals(new FactReference(twin, 0).Key),
+            "twin reference projections agree semantically");
+        Throws<InvalidOperationException>(
+            () => _ = default(FactReference).Table, "uninitialized fact reference refuses use");
+    }
+
+    private static void SupportEdgeIsAnOrderedEvidenceValue()
+    {
+        Throws<ArgumentOutOfRangeException>(
+            () => new SupportEdge(
+                -1, "rule", Array.Empty<int>(), Array.Empty<string>(), Array.Empty<int>()),
+            "conclusion ordinal must be non-negative");
+        Throws<ArgumentException>(
+            () => new SupportEdge(
+                0, " ", Array.Empty<int>(), Array.Empty<string>(), Array.Empty<int>()),
+            "support rule ID required");
+        Throws<ArgumentNullException>(
+            () => new SupportEdge(0, "rule", null!, Array.Empty<string>(), Array.Empty<int>()),
+            "premise sequence required");
+        Throws<ArgumentNullException>(
+            () => new SupportEdge(0, "rule", Array.Empty<int>(), null!, Array.Empty<int>()),
+            "parameter sequence required");
+        Throws<ArgumentNullException>(
+            () => new SupportEdge(0, "rule", Array.Empty<int>(), Array.Empty<string>(), null!),
+            "occurrence sequence required");
+        Throws<ArgumentOutOfRangeException>(
+            () => new SupportEdge(
+                0, "rule", new[] { -1 }, Array.Empty<string>(), Array.Empty<int>()),
+            "negative premise ordinal refused");
+        Throws<ArgumentException>(
+            () => new SupportEdge(
+                0, "rule", Array.Empty<int>(), new string[] { null! }, Array.Empty<int>()),
+            "null parameter refused");
+        Throws<ArgumentOutOfRangeException>(
+            () => new SupportEdge(
+                0, "rule", Array.Empty<int>(), Array.Empty<string>(), new[] { -2 }),
+            "negative occurrence ordinal refused");
+
+        var premises = new List<int> { 1, 2 };
+        var parameters = new List<string> { "p" };
+        var occurrences = new List<int> { 0, 3 };
+        var edge = new SupportEdge(0, "path", premises, parameters, occurrences);
+        premises[0] = 9;
+        parameters[0] = "mutated";
+        occurrences.Clear();
+        Equal(1, edge.PremiseOrdinals[0], "premise tuple snapshotted");
+        Equal("p", edge.Parameters[0], "parameter tuple snapshotted");
+        Equal(2, edge.OccurrenceOrdinals.Count, "occurrence tuple snapshotted");
+
+        var same = new SupportEdge(0, "path", new[] { 1, 2 }, new[] { "p" }, new[] { 0, 3 });
+        True(edge.Equals(same), "support edge value equality");
+        Equal(edge.GetHashCode(), same.GetHashCode(), "support edge hash agreement");
+
+        var distinctions = new[]
+        {
+            new SupportEdge(1, "path", new[] { 1, 2 }, new[] { "p" }, new[] { 0, 3 }),
+            new SupportEdge(0, "path2", new[] { 1, 2 }, new[] { "p" }, new[] { 0, 3 }),
+            new SupportEdge(0, "path", new[] { 2, 1 }, new[] { "p" }, new[] { 0, 3 }),
+            new SupportEdge(0, "path", new[] { 1, 1, 2 }, new[] { "p" }, new[] { 0, 3 }),
+            new SupportEdge(0, "path", new[] { 1, 2 }, new[] { "p", "q" }, new[] { 0, 3 }),
+            new SupportEdge(0, "path", new[] { 1, 2 }, new[] { "p" }, new[] { 3, 0 }),
+            new SupportEdge(0, "path", new[] { 1, 2 }, new[] { "p" }, Array.Empty<int>()),
+        };
+        for (var i = 0; i < distinctions.Length; i++)
+        {
+            True(!edge.Equals(distinctions[i]), $"support edge distinction {i} is an alternative");
+        }
+
+        True(!edge.Equals(null), "null support edge inequality");
+    }
+
+    private static void SupportHypergraphValidatesExactBasesAndRetainsAlternatives()
+    {
+        var master = new TextMaster("facts", 0, "wxyz");
+        var builder = new SpanBatchBuilder(master);
+        builder.Add(new SpanClaim(new TextSpan(1, 2), "node", SpanLevel.Character, "witness"));
+        builder.Add(new SpanClaim(new TextSpan(0, 3), "node", SpanLevel.Character, "witness"));
+        var occurrences = builder.Freeze();
+
+        var table = CanonicalFactTable.Create(master, new FactKey[]
+        {
+            new(
+                "hier",
+                "Ancestor",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 4) },
+                Array.Empty<string>()),
+            new(
+                "hier",
+                "Parent",
+                new[] { new TextSpan(1, 2), new TextSpan(0, 3) },
+                Array.Empty<string>()),
+        });
+
+        Throws<ArgumentNullException>(
+            () => SupportHypergraph.Create(null!, occurrences, Array.Empty<SupportEdge>()),
+            "fact basis required");
+        Throws<ArgumentNullException>(
+            () => SupportHypergraph.Create(table, null!, Array.Empty<SupportEdge>()),
+            "occurrence basis required");
+        Throws<ArgumentNullException>(
+            () => SupportHypergraph.Create(table, occurrences, null!),
+            "support edge sequence required");
+
+        var foreignBuilder = new SpanBatchBuilder(new TextMaster("other", 0, "wxyz"));
+        foreignBuilder.Add(new SpanClaim(new TextSpan(0, 1), "node", SpanLevel.Character, "witness"));
+        Throws<InvalidOperationException>(
+            () => SupportHypergraph.Create(table, foreignBuilder.Freeze(), Array.Empty<SupportEdge>()),
+            "incompatible occurrence master refused");
+
+        Throws<ArgumentException>(
+            () => SupportHypergraph.Create(table, occurrences, new SupportEdge[] { null! }),
+            "null support edge refused");
+        Throws<ArgumentException>(
+            () => SupportHypergraph.Create(
+                table,
+                occurrences,
+                new[]
+                {
+                    new SupportEdge(
+                        2, "rule", Array.Empty<int>(), Array.Empty<string>(), Array.Empty<int>()),
+                }),
+            "missing conclusion fact refused");
+        Throws<ArgumentException>(
+            () => SupportHypergraph.Create(
+                table,
+                occurrences,
+                new[]
+                {
+                    new SupportEdge(
+                        0, "rule", new[] { 2 }, Array.Empty<string>(), Array.Empty<int>()),
+                }),
+            "missing premise fact refused");
+        Throws<ArgumentException>(
+            () => SupportHypergraph.Create(
+                table,
+                occurrences,
+                new[]
+                {
+                    new SupportEdge(
+                        0, "rule", Array.Empty<int>(), Array.Empty<string>(), new[] { 2 }),
+                }),
+            "invalid occurrence ordinal refused");
+
+        var bare = SupportHypergraph.Create(table, occurrences, Array.Empty<SupportEdge>());
+        True(bare.IsEmpty, "facts need no support edge");
+        Equal(0, bare.SupportsOf(0).Count, "unsupported fact answers with no edges");
+        Throws<ArgumentOutOfRangeException>(
+            () => bare.SupportsOf(2), "supports query validates its ordinal");
+
+        var compatibleBuilder = new SpanBatchBuilder(new TextMaster("facts", 0, "wxyz"));
+        compatibleBuilder.Add(
+            new SpanClaim(new TextSpan(1, 2), "node", SpanLevel.Character, "witness"));
+        var compatibleGraph =
+            SupportHypergraph.Create(table, compatibleBuilder.Freeze(), Array.Empty<SupportEdge>());
+        Equal(0, compatibleGraph.Count, "compatible-but-distinct master batch admitted");
+
+        var alternatives = new[]
+        {
+            new SupportEdge(0, "path", new[] { 1 }, Array.Empty<string>(), new[] { 0 }),
+            new SupportEdge(0, "path", new[] { 1 }, Array.Empty<string>(), new[] { 0 }),
+            new SupportEdge(0, "path", new[] { 1, 1 }, Array.Empty<string>(), new[] { 0 }),
+            new SupportEdge(0, "other-rule", new[] { 1 }, Array.Empty<string>(), new[] { 0 }),
+            new SupportEdge(0, "path", new[] { 1 }, new[] { "p" }, new[] { 0 }),
+            new SupportEdge(0, "path", new[] { 1 }, Array.Empty<string>(), new[] { 1 }),
+            new SupportEdge(0, "seed", Array.Empty<int>(), Array.Empty<string>(), Array.Empty<int>()),
+            new SupportEdge(0, "self", new[] { 0 }, Array.Empty<string>(), Array.Empty<int>()),
+            new SupportEdge(1, "cycle", new[] { 0 }, Array.Empty<string>(), Array.Empty<int>()),
+            new SupportEdge(0, "cycle", new[] { 1 }, Array.Empty<string>(), Array.Empty<int>()),
+        };
+
+        var graph = SupportHypergraph.Create(table, occurrences, alternatives);
+        Equal(9, graph.Count, "exact duplicate support collapses");
+        Equal(8, graph.SupportsOf(0).Count, "alternative supports retained beside one conclusion");
+        Equal(1, graph.SupportsOf(1).Count, "cyclic and self-support are representable");
+
+        var reversed = new SupportEdge[alternatives.Length];
+        for (var i = 0; i < alternatives.Length; i++)
+        {
+            reversed[i] = alternatives[alternatives.Length - 1 - i];
+        }
+
+        var reordered = SupportHypergraph.Create(table, occurrences, reversed);
+        Equal(graph.Count, reordered.Count, "supply order does not change the edge census");
+        var sequenceAgrees = true;
+        for (var i = 0; i < graph.Count; i++)
+        {
+            if (!graph[i].Equals(reordered[i]))
+            {
+                sequenceAgrees = false;
+            }
+        }
+
+        True(sequenceAgrees, "canonical edge enumeration is supply-order independent");
+
+        var edgeList = new List<SupportEdge>
+        {
+            new(0, "seed", Array.Empty<int>(), Array.Empty<string>(), Array.Empty<int>()),
+        };
+        var snapshotted = SupportHypergraph.Create(table, occurrences, edgeList);
+        edgeList.Clear();
+        Equal(1, snapshotted.Count, "edge sequence snapshotted");
+        Throws<ArgumentOutOfRangeException>(() => _ = snapshotted[1], "edge index validated");
+    }
+
+    private static void K5aHierarchyDiamondWitnessSuppliesAncestorSupport()
+    {
+        // The K4c four-node diamond a -> b -> d with a -> c -> d, replayed as facts: four Parent
+        // facts plus one directly supplied Ancestor(a,d) conclusion carried by two ordered
+        // support paths. Nothing here saturates; K5b later derives the same result.
+        var master = new TextMaster("diamond", 0, "wxyz");
+        var a = new TextSpan(1, 2);
+        var b = new TextSpan(0, 3);
+        var c = new TextSpan(1, 4);
+        var d = new TextSpan(0, 4);
+
+        var builder = new SpanBatchBuilder(master);
+        var occurrenceA = builder.Add(new SpanClaim(a, "node", SpanLevel.Character, "witness"));
+        var occurrenceB = builder.Add(new SpanClaim(b, "node", SpanLevel.Character, "witness"));
+        var occurrenceC = builder.Add(new SpanClaim(c, "node", SpanLevel.Character, "witness"));
+        var occurrenceD = builder.Add(new SpanClaim(d, "node", SpanLevel.Character, "witness"));
+        var occurrences = builder.Freeze();
+
+        FactKey Parent(TextSpan child, TextSpan parent) =>
+            new("hier", "Parent", new[] { child, parent }, Array.Empty<string>());
+        var ancestor = new FactKey("hier", "Ancestor", new[] { a, d }, Array.Empty<string>());
+
+        // The conclusion is proposed once per path; the semantic fact collapses to one row.
+        var table = CanonicalFactTable.Create(master, new[]
+        {
+            Parent(a, b), Parent(b, d), ancestor,
+            Parent(a, c), Parent(c, d), ancestor,
+        });
+        Equal(5, table.Count, "diamond fact census");
+
+        True(table.TryGetOrdinal(ancestor, out var ancestorOrdinal), "ancestor fact retained");
+        True(table.TryGetOrdinal(Parent(a, b), out var ab), "Parent(a,b) retained");
+        True(table.TryGetOrdinal(Parent(b, d), out var bd), "Parent(b,d) retained");
+        True(table.TryGetOrdinal(Parent(a, c), out var ac), "Parent(a,c) retained");
+        True(table.TryGetOrdinal(Parent(c, d), out var cd), "Parent(c,d) retained");
+
+        // K7's optional seam: the exact fact handle exists before and without any support graph.
+        var seam = new FactReference(table, ancestorOrdinal);
+        True(seam.Key.Equals(ancestor), "fact reference projects the ancestor without support");
+
+        var viaB = new SupportEdge(
+            ancestorOrdinal,
+            "ancestor-path",
+            new[] { ab, bd },
+            Array.Empty<string>(),
+            new[] { occurrenceA, occurrenceB, occurrenceD });
+        var viaC = new SupportEdge(
+            ancestorOrdinal,
+            "ancestor-path",
+            new[] { ac, cd },
+            Array.Empty<string>(),
+            new[] { occurrenceA, occurrenceC, occurrenceD });
+        var graph = SupportHypergraph.Create(table, occurrences, new[] { viaB, viaC });
+        var mirrored = SupportHypergraph.Create(table, occurrences, new[] { viaC, viaB });
+
+        Equal(2, graph.Count, "two ancestor supports supplied without saturation");
+        var supports = graph.SupportsOf(ancestorOrdinal);
+        Equal(2, supports.Count, "both paths retained beside one conclusion");
+        var mirroredSupports = mirrored.SupportsOf(ancestorOrdinal);
+        True(
+            supports[0].Equals(mirroredSupports[0]) && supports[1].Equals(mirroredSupports[1]),
+            "support enumeration is supply-order independent");
+
+        var pathThroughB = false;
+        var pathThroughC = false;
+        foreach (var support in supports)
+        {
+            if (support.PremiseOrdinals.Count == 2 &&
+                support.PremiseOrdinals[0] == ab &&
+                support.PremiseOrdinals[1] == bd &&
+                support.OccurrenceOrdinals.Count == 3 &&
+                support.OccurrenceOrdinals[1] == occurrenceB)
+            {
+                pathThroughB = true;
+            }
+
+            if (support.PremiseOrdinals.Count == 2 &&
+                support.PremiseOrdinals[0] == ac &&
+                support.PremiseOrdinals[1] == cd &&
+                support.OccurrenceOrdinals.Count == 3 &&
+                support.OccurrenceOrdinals[1] == occurrenceC)
+            {
+                pathThroughC = true;
+            }
+        }
+
+        True(pathThroughB, "ordered path through b retained");
+        True(pathThroughC, "ordered path through c retained");
+
+        foreach (var parentOrdinal in new[] { ab, bd, ac, cd })
+        {
+            Equal(
+                0,
+                graph.SupportsOf(parentOrdinal).Count,
+                $"Parent fact #{parentOrdinal} carries no support");
+        }
+    }
+
+    private static IEnumerable<int[]> Permutations(int count)
+    {
+        var indices = new int[count];
+        for (var i = 0; i < count; i++)
+        {
+            indices[i] = i;
+        }
+
+        return PermuteFrom(indices, 0);
+    }
+
+    private static IEnumerable<int[]> PermuteFrom(int[] indices, int position)
+    {
+        if (position == indices.Length)
+        {
+            yield return (int[])indices.Clone();
+            yield break;
+        }
+
+        for (var i = position; i < indices.Length; i++)
+        {
+            (indices[position], indices[i]) = (indices[i], indices[position]);
+            foreach (var permutation in PermuteFrom(indices, position + 1))
+            {
+                yield return permutation;
+            }
+
+            (indices[position], indices[i]) = (indices[i], indices[position]);
+        }
     }
 
     private static void True(bool condition, string name)

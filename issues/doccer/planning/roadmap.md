@@ -7,7 +7,7 @@ move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 
 ## Current state (2026-08-09)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D43**, contract harness **1976 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D43**, contract harness **2091 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the initial text/claim substrate
@@ -91,8 +91,10 @@ canonical fact tables deduplicate and order those values; exact fact-table/occur
 ordered alternative support; and K7 receives only a narrow exact-table `FactReference`. K5a adds
 no executable rule or fixed-point claim. The law registry now separates `K5-FACT-SUPPORT` from
 K5b's `K5-SATURATE`; Lean remains deferred and must be reapplied when K5b freezes its positive rule
-signature. No source surface or harness count changed. K5a implementation is the default next
-chip; K6 contract work remains independently available.
+signature. The implementation chip then landed the carriers as `src/doccer/Facts/` — `FactKey`,
+`CanonicalFactTable` plus `FactReference`, and `SupportEdge` plus `SupportHypergraph` — with the
+manual hierarchy-diamond witness and the full D43 exit gate (harness 1976→2091; **K5a closed**).
+K5b and K6 are the sibling next lanes.
 
 ## Sequencing doctrine
 
@@ -109,23 +111,19 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Fact and support identity (K5a implementation; default next):** implement D43's compatible-
-   master fact keys, canonical fact table, exact-basis support hypergraph, and narrow
-   `FactReference`. `SpanBatch` remains the occurrence table. The chip executes no rules; its
-   manual hierarchy diamond retains one fact with two supplied support paths.
-2. **Sibling execution lanes (K5b and K6):** K5b adds finite positive saturation over the K5a
-   carriers and proves its first contract with the bounded K4c diamond witness. Independently, K6
-   adds output-to-tagged-source origin relations over one exact origin basis. K5b does not block
-   K6.
-3. **Materialization (K7):** after K6, close D7's final lift with positive-material ordered output
+1. **Sibling execution lanes (K5b and K6):** K5b adds finite positive saturation over the landed
+   K5a carriers and proves its first contract with the bounded K4c diamond witness. Independently,
+   K6 adds output-to-tagged-source origin relations over one exact origin basis. K5b does not
+   block K6.
+2. **Materialization (K7):** after K6, close D7's final lift with positive-material ordered output
    pieces, a new immutable master, residuals, and composed stage origins. K7 has only an optional
    K5a `FactReference` seam; it does not require saturation. `OffsetMap` becomes a restricted
    monotone single-source view, not the universal transform carrier.
-4. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
+3. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-5. **Downstream commitments and optional branches:** stable carrier identities unlock the
+4. **Downstream commitments and optional branches:** stable carrier identities unlock the
    committed separate CLI module and its wire forms, durable adapters, persistence, and indexes.
    Most substantial F8/F9 implementations retain a post-K
    execution default, but no family has a blanket K8 type dependency: F7a correspondence,
@@ -144,8 +142,8 @@ may establish named dense/sparse time and allocation baselines now; A1's word-sk
 and A2's reconstruct-once `PathSelection` recurrence may then land under the frozen D30/D37
 oracles. The per-capability HPC repertoire records span destinations, exact allocation, flat
 layouts, operation/worker scratch, bounded heaps, online reductions, deterministic parallel state, and
-reference/fast pairing—not a common framework. These lanes do not change K5a's default priority
-or expose D20 numeric columns. Their evidence policy is Doccer's, not ThermoMapper's.
+reference/fast pairing—not a common framework. These lanes do not change the K5b/K6 default
+priority or expose D20 numeric columns. Their evidence policy is Doccer's, not ThermoMapper's.
 
 **Parallel witness/census lane:** provisional PowerShell adapters may continue to reach directly
 into the packaged DLL during the latex-ingest rewrite. They remain site-local, disposable research

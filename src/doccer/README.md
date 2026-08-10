@@ -42,6 +42,8 @@ CandidateRegionGraph + results    + exact ordinal partition evidence
 PathSelection                     + exact objective execution and decision evidence
 Packing / Cover / LaminarView     + exact structural-family validation
 HierarchyView / ResolutionMap     + explicit parent and layer incidence evidence
+FactKey / CanonicalFactTable      + master-relative semantic fact identity
+SupportHypergraph                 + exact-basis supplied support evidence
 Scoped collectors                 + declarative recognition
 Interval joins                    + structure derivation
 Validation tiers / inventories    + cross-examination
@@ -111,14 +113,14 @@ gate per backend; a packed region or suppression backend advertised as interchan
 arbitrary inputs is a presumptive optimization-pressure activation unless a smaller complete
 certificate or weaker claim closes it.
 
-D43 freezes the still-unimplemented K5a fact/support surface. `SpanBatch` remains the exact
-occurrence table. A fact key uses required ordinal domain/kind strings plus immutable ordered
-master-relative `TextSpan` geometry and canonical string-value tuples; compatible master plus key
-defines semantic fact identity. `CanonicalFactTable` will deduplicate and canonically order those
-keys, while `SupportHypergraph` will retain one exact fact-table and occurrence-batch basis with
-ordered alternative support. K7's optional seam is only an exact-table `FactReference`, not a
-support graph. `K5-FACT-SUPPORT` is separate from K5b's future `K5-SATURATE`; no rule carrier or
-fixed-point claim belongs to K5a.
+D43 freezes the K5a fact/support surface, implemented under `src/doccer/Facts/`. `SpanBatch`
+remains the exact occurrence table. A fact key uses required ordinal domain/kind strings plus
+immutable ordered master-relative `TextSpan` geometry and canonical string-value tuples;
+compatible master plus key defines semantic fact identity. `CanonicalFactTable` deduplicates and
+canonically orders those keys, while `SupportHypergraph` retains one exact fact-table and
+occurrence-batch basis with ordered alternative support. K7's optional seam is only an
+exact-table `FactReference`, not a support graph. `K5-FACT-SUPPORT` is separate from K5b's future
+`K5-SATURATE`; no rule carrier or fixed-point claim belongs to K5a.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
@@ -216,6 +218,17 @@ owners and Lean reactivation triggers live in the D25 registry in
   material aggregation. Independent bounded suites cover 1,024 structural masks, 4,096 greedy
   problems, every valid bounded nearest-parent family, 4,096 directed graphs, and 2,048 incidence
   endpoint problems;
+- K5a canonical facts and supplied support: `FactKey` snapshots required ordinal domain/kind
+  strings with ordered geometry and value tuples (zero-arity and empty extents admitted, the empty
+  value tuple as unit key); `CanonicalFactTable` validates every extent on its retained master,
+  collapses exact duplicate keys, and enumerates in the fixed domain/kind/geometry/value order
+  independent of proposal order, with compatible-master value equality; `FactReference` is the
+  exact-table/validated-ordinal evidence handle that value-equal twin tables never share;
+  `SupportEdge`/`SupportHypergraph` retain one exact fact table and one exact compatible-master
+  occurrence batch with ordered rule/premise/parameter/occurrence evidence, collapsing exact
+  duplicate edges while retaining alternative supports, zero-arity seeds, and representable
+  cycles; the manual K4c hierarchy diamond supplies one `Ancestor(a,d)` fact with two ordered
+  support paths and 120 proposal permutations agree on one canonical value — no rule executes;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -288,8 +301,8 @@ owners and Lean reactivation triggers live in the D25 registry in
 ## Deliberately absent
 
 These surfaces are absent because their contract or implementation gate is not closed. Contract
-closure is the only authorization gate on engine work; D43 has crossed that gate for K5a, whose
-implementation is now pending. A consumer's arrival prioritizes and validates; it never authorizes,
+closure is the only authorization gate on engine work; D43 crossed that gate for K5a and its
+carriers have landed. A consumer's arrival prioritizes and validates; it never authorizes,
 and its
 absence is never by itself a reason to leave a gap. Where the brief names a "first consumer"
 trigger, read it as a prioritization default for a contract whose remaining questions a real
@@ -323,9 +336,9 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- D43's K5a canonical fact table, exact-basis support hypergraph, and narrow `FactReference` are
-  contractually closed but not implemented; K5b's executable positive saturation remains a
-  separate open contract with the K4c hierarchy-diamond witness. The sibling K6 exact-tagged-basis
+- K5b's executable positive saturation — the K5a fact/support carriers are implemented, but the
+  positive rule carrier, worklist, `Saturate`, and least-fixed-point claim remain a separate open
+  contract with the K4c hierarchy-diamond witness. The sibling K6 exact-tagged-basis
   origin algebra leads to K7 materialization, and K5b does not block K6 or K7. D35–D40 close K3 and
   all K4
   lanes without a common selector: the repeated exact-selection and named-policy stamps are real,

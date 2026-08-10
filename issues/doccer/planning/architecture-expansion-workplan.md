@@ -759,12 +759,13 @@ SupportHypergraph      rule application + ordered premise IDs
 SemiringView           optional quotient/evaluation
 ~~~
 
-#### K5a: canonical fact and support identity
+#### K5a: canonical fact and support identity (closed 2026-08-09)
 
 The contract is frozen by D43 and its
 [superseding brief](../briefs/sol-doccer-k5a-contract-20260809_193131.md). K5a is immutable fact
 canonicalization plus supplied support evidence. It introduces no executable rule carrier,
-worklist, or fixed-point claim.
+worklist, or fixed-point claim. The carriers are implemented at `src/doccer/Facts/` with the
+full exit gate below (harness 1976→2091).
 
 The master-relative key is:
 

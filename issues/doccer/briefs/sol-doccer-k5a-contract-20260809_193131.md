@@ -1,6 +1,7 @@
 # Doccer K5a contract — canonical facts and support identity
 
-Runstamp 20260809_193131. **Status: contract frozen as D43; source implementation pending.**
+Runstamp 20260809_193131. **Status: contract frozen as D43; implemented — see the appended
+report (harness 1976→2091; K5a closed).**
 
 This brief supersedes the provisional K5a carrier and assurance language in the
 [D40 correction](sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md) and the
@@ -210,3 +211,36 @@ surface lands.
 
 The following implementation chip owns the K5a C# values and bounded witness. K5b contract work
 begins only after those carriers close; K6 remains independently available throughout.
+
+## Implementation report (2026-08-09)
+
+The carriers land as `src/doccer/Facts/` in namespace `CodexSci.Doccer`:
+
+- `FactKey.cs` — sealed value class with required ordinal `Domain`/`Kind`, snapshotted ordered
+  `TextSpan` geometry and non-null string value tuples, value equality/hash, and an internal
+  `CompareCanonical` implementing the §3 total order (zero exactly on value equality).
+- `CanonicalFactTable.cs` — `Create(master, proposals)` snapshots, validates every extent on the
+  retained master (`ValidateSpan` admits empties; zero-arity is master-global), collapses exact
+  duplicates, and enumerates canonically; compatible-master value equality/hash follows the
+  `LocatedRelation` precedent; `TryGetOrdinal` is the binary-search key lookup. `FactReference`
+  is a readonly struct with hand-written equality on `ReferenceEquals(table)` + ordinal —
+  deliberately not default record equality, which would have delegated to the table's value
+  equality and made value-equal twin tables interchangeable against §3.
+- `SupportHypergraph.cs` — `SupportEdge` sealed value class (required rule ID, ordered
+  premise/parameter/occurrence tuples, duplicates preserved, value equality and canonical order);
+  `SupportHypergraph.Create` retains the exact fact table and exact compatible-master `SpanBatch`,
+  validates all ordinals against both bases, collapses exact duplicate edges, and enumerates in
+  canonical edge order; `SupportsOf` projects one conclusion's retained alternatives.
+
+Seven harness checks cover the full §7 gate: key semantics and every distinction axis, canonical
+collapse/order with all 120 proposal permutations agreeing on one value and hash,
+compatible-master equality plus incompatible-master refusal, the exact `FactReference` boundary
+(twin tables share keys, never references), edge value semantics, exact-basis refusals with
+alternatives/seeds/cycles retained, snapshot checks mutating every caller sequence, and the
+hierarchy-diamond witness supplying `Ancestor(a,d)` with two ordered paths and unsupported Parent
+facts — no rule executes. Harness 1976→2091, zero build warnings.
+
+No non-goal was touched: no rule carrier, `Saturate`, second occurrence table, multi-batch basis,
+persisted ID, wire format, payload/comparer, acyclicity claim, or Lean activation. Canon updated:
+D43 marked implemented, ledger row added, roadmap/workplan/README status flipped. K5b contract
+work is unblocked; K6 remains independently available.
