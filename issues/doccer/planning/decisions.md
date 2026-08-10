@@ -67,9 +67,46 @@ briefs carry the later contracts with their reports — and the evidence in
 | D37 | K4b additive complete-path selection closure: `AdditivePathPolicy` snapshots one nonnegative Int64 cost per exact source-graph candidate under required name/unit, minimum-additive guarantee, and lexicographic-ordinal tie stamps; `PathSelectionProblem` retains an exact admissible subset and derived feasibility graph; `PathSelection.Select` uses direct finite-DAG dynamic programming to return the global minimum-cost complete `PartitionView` or `PathSelectionResidual`; results retain selected, rejected-admissible, and hard-excluded populations plus score/unit/policy evidence; tokenizer and budget-plus-breakpoint chunk witnesses, exact refusals, gap/dead-end/parallel/empty cases, and all 16,384 admissible-mask × binary-cost-table problems agree with independent all-path enumeration; the global-optimum Lean trigger is reapplied but remains deferred because no alternate backend or generalized objective algebra lands | implemented; K4b closed; sibling K4c later closed by D39 |
 | D38 | K4c contract freeze: structural validators, greedy laminar admission, explicit/nearest hierarchy, and resolution incidence are four separate gates; `PackingView` means disjoint-with-gaps, `CoverView` means total declared-window coverage with overlap allowed, `LaminarView` validates without selecting or inferring parenthood, hierarchy edges are explicit DAG data except for one named nearest-container projection, and resolution maps distinguish incidence, functional aggregation, and exact material aggregation; no K4b dependency or common selector lands | recorded; implemented by D39 |
 | D39 | K4c structural-family closure: exact selection/window/policy-stamped packing, cover, and laminar validators; `Laminarizer.Admit` with grouped maximum priority and deterministic inclusion-maximal—not maximum—guarantee; explicit multiple-parent `HierarchyView` plus policy-gated immediate nearest-container projection; named `ResolutionView` layers and compatible-master explicit `ResolutionMap` incidence/functional/exact-aggregation contracts; the unstamped `Extract`/implicit-tree path is removed; all 1,024 structural masks, 4,096 greedy problems, every valid bounded nearest-parent family, all 4,096 four-node directed graphs, and 2,048 resolution endpoint problems agree with independent oracles (harness 1914→1976) | implemented; K4c closed; next lanes resequenced by D40; Lean gate reapplied and deferred |
-| D40 | Post-K4 coherence and K5–K7 sequencing correction: Doccer's historical “register” is natively a named codepoint-address span or family of spans; Block/Script/GeneralCategory assignments are Unicode classifications derived from register membership; the canonical mathematical language is the unrelated **math channel** (legacy repository name `math-register`); the combined register/value/metadata blocker is decomposed into F-UCD register/classification work, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a derivation-reference seam into K7; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; terminology amended after owner clarification; K5a/K5b/K6/K7 surfaces remain pending |
+| D40 | Post-K4 coherence and K5–K7 sequencing correction: Doccer's historical “register” is natively a named codepoint-address span or family of spans; Block/Script/GeneralCategory assignments are Unicode classifications derived from register membership; the canonical mathematical language is the unrelated **math channel** (legacy repository name `math-register`); the combined register/value/metadata blocker is decomposed into F-UCD register/classification work, K5 fact-grain canonical values, and occurrence/support metadata; graph value equality on one exact `SpanBatch` becomes K4 graph-basis compatibility; K5a identity/support and K5b saturation split; K5 and K6 are sibling lanes with only an optional K5a-to-K7 evidence seam, later frozen as D43's `FactReference`; K6 composition requires one exact tagged origin basis while compatible masters serve geometry only; the K5 Lean gate is reapplied and deferred pending the positive-rule signature | implemented for terminology, sequencing, and K4 equality; terminology amended after owner clarification; K5a contract later frozen by D43; K5a/K5b/K6/K7 source surfaces remain pending |
 | D41 | Round-2 capability excavation: the K5a/K5b and K6→K7→K8 critical paths remain unchanged; ThermoMapper contributes transferable concepts/patterns/prototype capabilities but no Doccer policy or gate; donor defects become lift acceptance requirements while donor-facing maintenance guidance stays in ThermoMapper; V0/V1 independently define and realize a compatible-master/exact-window UTF-16 code-unit Boolean-vector carrier with distinct direct/harvest exits and unit-basis residual; A0–A2 retain Doccer-measured set-bit/path candidates alongside a separate per-capability HPC repertoire; F7 splits independent distance/correspondence from K6/K7 transform-origin/promotion integration; F8 splits direct measures/hash substrate, rolling/content-defined producers, signatures/candidate indexes, and streaming sketches; F9 splits counted/online views, immutable fitted feature artifacts, and ranked queries; each subchip schedules by its actual carrier inputs rather than a blanket K8 dependency; F2 retains persisted algorithm/version/byte-order identity | recorded; amended after owner clarification; planning/registry only; no source surface or K edge changed |
 | D42 | V-lane formal-assurance split: D41's combined vector obligation is decomposed into the V0 carrier contract, prefix-scan refinement, the vector-to-offset/span/claim harvest bridge, future packed `SpanSet` equivalence, and future D3 suppression-bitmap equivalence; V0 performs statement/signature review, V1 remains portable-reference-owned, and V2 reapplies the gate per accelerated or fused backend; merely minting a peer vector does not activate Lean, while a packed region or suppression backend advertised as interchangeable over arbitrary inputs is a presumptive optimization-pressure activation unless a smaller complete certificate owns the universal equality | recorded; law registry and deferred restart packet amended; Lean remains deferred; no K edge or source surface changed |
+| D43 | K5a canonical fact/support contract: existing `SpanBatch` remains the exact occurrence table; a master-relative `FactKey` is required domain/kind plus immutable ordered geometry and canonical string-value tuples; compatible master plus key defines semantic fact identity; `CanonicalFactTable` deduplicates and canonically orders keys; `SupportHypergraph` retains one exact fact-table and occurrence-batch basis with complete ordered support evidence; exact `FactReference` is the optional K7 seam without a support-graph dependency; K5a adds no executable rule or fixed-point claim; `K5-FACT-SUPPORT` and `K5-SATURATE` become separate assurance rows | recorded; K5a contract frozen, source pending; Lean gate reapplied without activation; K5b owns the future rule signature and `Saturate` |
+
+## K5a canonical fact and support identity (D43)
+
+D43 supersedes D40's provisional K5a carrier language while preserving its K5/K6 sibling
+sequencing. The full contract and implementation handoff are in the
+[K5a contract brief](../briefs/sol-doccer-k5a-contract-20260809_193131.md).
+
+`SpanBatch` remains the occurrence table. K5a introduces no duplicate occurrence store. A
+master-relative `FactKey` contains required ordinal `domain` and `kind` strings, an immutable
+ordered tuple of validated `TextSpan` geometry, and an immutable ordered tuple of non-null string
+value components. Zero geometry arguments and empty located extents are admitted because facts
+may be master-global or boundary-valued; they remain distinct from nonempty claim occurrences.
+The adapter owns canonical, culture-independent component construction. Doccer performs no
+normalization, injected comparison, object-payload interpretation, or wire encoding.
+
+Compatible master value plus `FactKey` value defines semantic identity. `CanonicalFactTable`
+collapses duplicate keys and enumerates them in a fixed domain/kind/geometry/value order independent
+of proposal order. A `FactReference` is the stricter exact-table plus validated-ordinal evidence
+handle; value-equal tables do not make their references interchangeable. K7 may retain that fact
+reference without retaining or inspecting a support graph. Exact proof-path references, if ever
+witnessed, require a distinct future `SupportReference`.
+
+`SupportHypergraph` retains one exact fact table, one exact compatible-master `SpanBatch`, and
+immutable edges containing a conclusion fact ordinal, required rule ID, ordered premise fact
+ordinals, ordered parameters, and ordered originating occurrence ordinals. Exact duplicate edges
+collapse while alternative supports remain. Fact tables remain independently usable, and facts
+may have no support. Empty-premise seeds and cycles are representable; K5a validates structure but
+does not certify adapter reasoning. Producer metadata remains
+occurrence/support evidence unless a named adapter schema deliberately places a value in fact
+identity.
+
+K5a exposes no rule carrier, worklist, or `Saturate`. Its manual hierarchy-diamond witness supplies
+one `Ancestor(a,d)` fact with two support paths and tests canonicalization without inference. D43
+splits the assurance registry into `K5-FACT-SUPPORT` and `K5-SATURATE`. The present identity/evidence
+contract remains reference-owned and does not activate Lean; K5b reapplies signature pressure when
+it freezes structurally positive rules and the least-fixed-point promise.
 
 ## V-lane formal-assurance split (D42)
 
@@ -112,8 +149,9 @@ separate obligations.
 D41 separates the research threads in the
 [round-2 transcript](../discussions/opus-doccer-expansion-round2.md) and its
 [capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md).
-The current K sequence is not reopened. K5a remains the default next chip, K5b and K6 remain
-sibling lanes, K7 follows K6, and K8 remains their integration close.
+The current K sequence is not reopened. D43 later freezes the K5a contract, so its source
+implementation remains the default next chip; K5b and K6 remain sibling lanes, K7 follows K6, and
+K8 remains their integration close.
 
 The source rule is explicit after owner clarification: excavate transferable HPC concepts and
 capabilities rather than asking whether a ThermoMapper file can be ported verbatim. Donor defects
@@ -183,21 +221,26 @@ by their caller, and policy/problem/result objects retain their own evidence-bea
 value equality never admits another `SpanBatch` or merely compatible master. D40 removes the
 former wrapper-reference asymmetry without weakening D34's occurrence-basis boundary.
 
-K5 splits into K5a canonical fact/support identity and K5b finite positive saturation. Its bounded
-witness is a K4c four-node diamond whose two ancestor paths derive one canonical fact with two
-support edges; rule/seed permutations must reach the same fact set. Rules match positive premises
-and propose additions—they do not inspect absence, delete, select winners, or observe stage order.
-The standard finite monotone fixed-point theorem, a direct worklist, and order-permutation tests own
-the first assurance burden. Reapply Lean when K5a freezes the rule signature; activate only if a
-proof can change that signature or later license a parallel/incremental backend.
+K5 splits into K5a canonical fact/support identity and K5b finite positive saturation. D43 later
+freezes K5a as immutable canonicalization and supplied evidence with no executable rule surface.
+Its manual K4c-diamond witness retains one canonical ancestor with two supplied support paths.
+K5b later makes those paths executable: rules match positive premises and propose additions—they
+do not inspect absence, delete, select winners, or observe stage order. The standard finite
+monotone fixed-point theorem, a direct worklist, and rule/seed permutation tests own K5b's first
+assurance burden. D43 discharges the K5a review without activating Lean and reapplies signature
+pressure when K5b freezes its positive rule carrier or later licenses a parallel/incremental
+backend.
 
 K6 no longer depends on K5 saturation. It follows K4b's selected output evidence as a sibling of
-K5, while K7 depends on K6 and may consume only a narrow optional derivation reference frozen by
-K5a. K6 must stamp ordered tagged source slots with one exact origin basis; compatible
+K5, while K7 depends on K6 and may consume only D43's narrow optional exact-table `FactReference`.
+That reference retains a canonical fact without selecting or requiring a support graph. K6 must
+stamp ordered tagged source slots with one exact origin basis; compatible
 `TextMaster` values validate or project geometry but never substitute provenance identity.
 Generated material remains positive output material, deletion remains absence/residue, and
-zero-width claims do not enter `SpanBatch` through K6/K7. Full contract and implementation report:
-[D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md).
+zero-width claims do not enter `SpanBatch` through K6/K7. D40's sequencing argument remains in its
+[correction brief](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md);
+D43's superseding K5a contract is in the
+[fact/support brief](../briefs/sol-doccer-k5a-contract-20260809_193131.md).
 
 ## Structural-family closure (D38–D39)
 
@@ -664,7 +707,7 @@ For one immutable master `M`, and an output master `N` where applicable:
 | \(L_M\) | located extents \((i,j)\) over \(P_M\), with \(i\le j\) | includes the diagonal empty extents used by located `Seq` |
 | \(I_M\) | nonempty Allen intervals \((i,j)\), with \(i<j\) | `AllenRelation.Equal` is the geometric diagonal |
 | \(C_M\) | identity-bearing claim occurrences | in-process identity is an ordinal on one exact frozen `SpanBatch`; equal geometry does not imply equal claims |
-| \(F_M\) | later canonical semantic facts | distinct from occurrences; canonical value representation is active K5a contract work |
+| \(F_M\) | canonical semantic facts on one compatible master value | D43 identity is required domain/kind plus ordered geometry and canonical string-value tuples; distinct from exact occurrence and support identity; source implementation pending |
 | \(O_{N,M}\) | later output-to-source atom-origin relations | cross-master and basis-checked; distinct from support or causal derivation |
 | \(V_{M,W}\) | later Boolean vectors over UTF-16 code-unit ordinals in exact window \(W\) | compatible-master/equal-window value basis; zero/all values are ordinary vectors, not intervals or occurrences; reserved by D41 for V0 |
 
@@ -713,9 +756,10 @@ their result semantics interchangeable.
 | K4-FLAT-PATH | exact-batch `CandidateRegionGraph` preserves parallel claim ordinals while projecting to compatible located geometry; graph value equality is exact-source-reference + window + candidate ordinals and is the K4 graph-basis compatibility relation; a partition retains an ordered `CanSeq` path and exactly covers its window; gaps and connectivity dead ends remain distinct; first-ordinal determinism is exact-basis only — **implemented by D35–D36, equality clarified by D40** | K3 closure plus graph-specific reference traversal, independent bounded path oracle, construction-time result validation, and equal-graph/foreign-batch adversaries | D35 closes graph/projection identity; D36 adds graph/policy stamps, validated ordinal partitions, separate gap/dead-end evidence, ambiguous-token/parallel/empty/budget-admissible witnesses, and differential coverage of all 128 subsets on a seven-edge basis; D40 removes wrapper-reference asymmetry without admitting another batch | an alternative/packed reachability backend claims equivalence, all-path enumeration gains a complexity guarantee, cross-batch invariance is proposed, or path/partition preservation is generalized beyond the frozen hypotheses |
 | K4-SELECT | each family-specific `Select` executor runs a named caller policy and promises only its declared feasibility/objective/tie invariants, never an implied optimum; D37's flat-path executor specifically promises a global nonnegative-additive minimum with lexicographic ordinal ties, while no universal cross-family selection carrier is promised — **first flat-path family implemented by D37; K4b closed** | direct finite-DAG dynamic program, independent complete-path optimizer oracle, construction-time result validation, and explicit Lean-gate reapplication | exact source/admissible graph and policy stamps; complete-path feasibility; snapshotted cost/name/unit; selected/rejected/excluded partition; K4a residual; token/chunk/parallel/empty/refusal witnesses; all 16,384 admissibility × binary-cost problems agree with enumeration | before a second/optimized backend claims equivalence, signed/generalized objective algebra becomes shared infrastructure, partial-path approximation/completeness becomes nontrivial, or cross-family reuse makes the recurrence load-bearing |
 | K4-STRUCTURE | packing, total-overlap-permitting cover, laminar-family validation, inclusion-maximal greedy admission, explicit/nearest hierarchy, and resolution incidence/aggregation retain exact bases and family-specific policies; validation, selection, parent projection, explicit DAG construction, and same-master incidence remain distinct — **implemented by D39; K4c closed** | construction-time validation, independent pairwise/unit-cell/greedy/nearest-parent/DAG/endpoint oracles, and adversarial C# result checks | D2 policy stamp, D21 basis stamp including empty results, D30 selection backing, maximal-not-maximum counterexample, no inferred parent/incidence edges, multiple-parent DAG, and envelope-hole exact-aggregation refusal | before a structural executor promises a global optimum, an optimized/incremental backend claims equivalence, hierarchy closure/reduction or resolution composition becomes semantic, or a common generalized carrier is proposed |
-| K5-SATURATE | K5a separates canonical fact identity, occurrence evidence, support edges, and a narrow derivation reference; K5b positive finite `Saturate` is monotone and inflationary and reaches one least fixed point independent of fair rule order — **reserved for K5a/K5b by D40** | positive-premise rule combinators, reference worklist, order-permutation C# tests, standard external theorem, and the K4c diamond witness | one `Ancestor(a,d)` fact with two support edges; repeated derivations never duplicate semantic facts; absence/deletion/winner/stage inspection excluded from the rule carrier | reapply at K5a signature freeze; activate if the proof changes that signature, or before parallel/incremental saturation claims semantic equivalence |
+| K5-FACT-SUPPORT | a D43 `FactKey` is required domain/kind plus immutable ordered master-relative geometry and canonical string-value tuples; compatible master plus key defines semantic identity; one table canonicalizes equal facts while exact table/occurrence bases retain references and alternative ordered supports — **contract frozen for K5a; source pending** | direct immutable construction, canonical-order/equality laws, adversarial validation, and proposal-permutation C# tests | manual K4c diamond supplies one `Ancestor(a,d)` fact with two support paths; duplicate facts/edges collapse; alternative support, empty-premise seeds, cycles, exact-basis refusal, empty geometry, and immutable snapshots remain visible | before an alternate, persisted, compressed, or incremental fact/support backend claims the same extensional identity without complete differential evidence |
+| K5-SATURATE | positive finite `Saturate` consumes K5a values through structurally positive rules, is monotone and inflationary, and reaches one least fixed point independent of fair rule order — **reserved for K5b by D43** | positive-premise rule combinators, reference worklist, rule/seed-permutation C# tests, standard external theorem, and the executable K4c diamond witness | `Ancestor(a,d)` is derived once with two support edges; repeated derivations never duplicate semantic facts; absence/deletion/winner/stage inspection are excluded from the rule carrier | reapply when the K5b public rule signature freezes; activate if proof pressure changes that signature, or before parallel/incremental saturation claims semantic equivalence |
 | K6-COMPOSE-ORIGINS | `ComposeOrigins` is ordinary relation composition over one exact ordered tagged origin basis; compatible `TextMaster` values validate/project geometry but never substitute source-slot identity — **reserved for K6; independent of K5b by D40** | reference C# relation oracle and property tests | exact tagged middle-basis refusal, identity, associativity, compatible-geometry projection, duplicate-compatible-source-slot adversary, and functional-embedding laws before landing | compression, stage fusion, or a functional fast path relies on semantic equivalence |
-| K7-MATERIALIZE | `Materialize` realizes a supplied ordered piece plan whose positive-material pieces partition and exactly reconstruct a new master with declared origin or synthetic explanation; deletion is absence/residue and an empty output has zero pieces — **reserved for K7 after K6, with only an optional K5a derivation-reference seam** | construction-time validation and adversarial C# tests | gaps, overlaps, zero-width pieces, unmapped output, unused pieces, and origin/support conflation are refused or retained as named residue | before stage fusion, intermediate-master elision, or a nontrivial global reconstruction guarantee |
+| K7-MATERIALIZE | `Materialize` realizes a supplied ordered piece plan whose positive-material pieces partition and exactly reconstruct a new master with declared origin or synthetic explanation; deletion is absence/residue and an empty output has zero pieces — **reserved for K7 after K6, with only D43's optional exact-table `FactReference` seam** | construction-time validation and adversarial C# tests | gaps, overlaps, zero-width pieces, unmapped output, unused pieces, and origin/support conflation are refused or retained as named residue | before stage fusion, intermediate-master elision, or a nontrivial global reconstruction guarantee |
 
 ## Deferred families (F) — trigger = prioritization default, per D14
 
@@ -763,12 +807,10 @@ their result semantics interchangeable.
 | Q25 | performed transform origin vs post-hoc alignment | D41 — actual origins from the producer; correspondence evidence needs explicit promotion |
 | Q26 | one hash utility vs distinct jobs | D41 — identity, direct comparison/hash substrate, verified rolling/material prefilter, signature/candidate index, and streaming sketch remain separate contracts |
 | Q27 | when vector/bitmap work activates Lean | D42 — carrier, scan, harvest, packed-region, and suppression-query obligations are separate; peer vectors do not activate the harness, while interchangeable arbitrary-input packed semantic backends presumptively meet optimization pressure |
+| Q28 | K5a canonical value, support, and K7-reference identity | D43 — ordered geometry/string tuples on a compatible master define semantic facts; exact fact-table and occurrence bases retain evidence; K7 receives only an exact `FactReference`; saturation remains K5b |
 
 ## Open (no decision record yet)
 
-- **K5a canonical value representation and derivation-reference identity:** active contract work;
-  codepoint registers and their Unicode classifications are F-UCD, while the math channel (legacy
-  repository name `math-register`) is unrelated adapter/application design (D40).
 - **V0/V1 code-unit-vector lane:** exact public basis/equality, classifier/residual result shape,
   chunk carry, the two direct/harvest exits, and a portable reference are independently available
   work (D41); D42 separates carrier, prefix-scan, and harvest assurance, reapplies the gate per V2

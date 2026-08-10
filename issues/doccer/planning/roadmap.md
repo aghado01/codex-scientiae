@@ -5,9 +5,9 @@ Decisions and the question ledger live in [decisions.md](decisions.md); complete
 move to [ledger.md](ledger.md); arguments in the runstamped briefs under
 [../briefs/](../briefs/); evidence in [../discussions/](../discussions/).
 
-## Current state (2026-08-06)
+## Current state (2026-08-09)
 
-Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D42**, contract harness **1976 checks
+Engine at `src/doccer` (`CodexSci.Doccer`), canon **D1–D43**, contract harness **1976 checks
 green** (`dotnet run --project brewery/doccer/Doccer.Tests.csproj`). The capability inventory is
 `src/doccer/README.md` — the in-repo contract surface; the completed-item record is the
 [ledger](ledger.md). Legacy implementation Tranches 0–3 are done: the initial text/claim substrate
@@ -64,8 +64,7 @@ and resolution incidence/aggregation under independent bounded oracles. K4c is c
 then remove the accidental codepoint-register/math-channel dependency, make exact-basis graph
 value equality coherent across K4, split K5a identity/support from K5b saturation, and make K5 and
 K6 sibling lanes toward K7. Existing `math-register` paths retain that legacy name pending the
-separate terminology migration. K5a contract work has default execution priority; K6 contract
-work is independently available. D41 and its
+separate terminology migration. D41 and its
 [round-2 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md)
 leave that K sequence unchanged. The owner-amended decision treats ThermoMapper as a source of
 transferable concepts/patterns/capabilities rather than Doccer policy, adds independent V0/V1 and
@@ -84,6 +83,17 @@ check are recorded in the
 [deferred Lean addendum](../briefs/sol-doccer-lean-rigor-bootstrap-deferred-20260804_142019.md)
 and [design inquiry](../discussions/sol-doccer-material-basis-and-public-composability-20260806_105530.md).
 
+D43 and its
+[K5a contract brief](../briefs/sol-doccer-k5a-contract-20260809_193131.md) then supersede the
+provisional K5a shape: `SpanBatch` remains the exact occurrence table; compatible master plus
+required domain/kind, ordered geometry, and canonical string-value tuples define semantic facts;
+canonical fact tables deduplicate and order those values; exact fact-table/occurrence bases retain
+ordered alternative support; and K7 receives only a narrow exact-table `FactReference`. K5a adds
+no executable rule or fixed-point claim. The law registry now separates `K5-FACT-SUPPORT` from
+K5b's `K5-SATURATE`; Lean remains deferred and must be reapplied when K5b freezes its positive rule
+signature. No source surface or harness count changed. K5a implementation is the default next
+chip; K6 contract work remains independently available.
+
 ## Sequencing doctrine
 
 Engines first; **codex-scientiae adapters last**. scriba-scientiae was aborted — codex-scientiae is
@@ -99,17 +109,17 @@ The detailed dependencies, tranche gates, and non-goals live in the
 [architectural expansion workplan](architecture-expansion-workplan.md). The compact execution
 order is:
 
-1. **Fact and support identity (K5a; default next):** separate observed occurrences, canonical
-   facts, support hyperedges, and a narrow derivation reference. Canonical value identity is a
-   fact-grain contract; codepoint registers and their Unicode classifications remain F-UCD, and
-   the math channel is unrelated adapter/application design.
+1. **Fact and support identity (K5a implementation; default next):** implement D43's compatible-
+   master fact keys, canonical fact table, exact-basis support hypergraph, and narrow
+   `FactReference`. `SpanBatch` remains the occurrence table. The chip executes no rules; its
+   manual hierarchy diamond retains one fact with two supplied support paths.
 2. **Sibling execution lanes (K5b and K6):** K5b adds finite positive saturation over the K5a
    carriers and proves its first contract with the bounded K4c diamond witness. Independently, K6
    adds output-to-tagged-source origin relations over one exact origin basis. K5b does not block
    K6.
 3. **Materialization (K7):** after K6, close D7's final lift with positive-material ordered output
    pieces, a new immutable master, residuals, and composed stage origins. K7 has only an optional
-   K5a derivation-reference seam; it does not require saturation. `OffsetMap` becomes a restricted
+   K5a `FactReference` seam; it does not require saturation. `OffsetMap` becomes a restricted
    monotone single-source view, not the universal transform carrier.
 4. **Cross-carrier integration demonstrations (K8):** re-run pairing, ambiguous token paths,
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
@@ -149,14 +159,14 @@ Activate it only when proof pressure can change a public signature, license an o
 stage fusion, resolve an exact-versus-lax boundary, or support a nontrivial global guarantee.
 D29 records that the K2 Allen-image inclusion is an obligation but not an activation: reference
 composition and C# witness/property tests own it until an optimized or generalized backend makes
-universal no-false-negative equivalence load-bearing. D33–D42 leave K3/K4a and the first K4b/K4c
+universal no-false-negative equivalence load-bearing. D33–D43 leave K3/K4a and the first K4b/K4c
 executor on direct finite reference semantics. D37 reapplies the global-optimum trigger and keeps
 Lean deferred under one closed finite-DAG additive recurrence plus exhaustive differential
 evidence. D39 reapplies the structural gate and keeps Lean deferred under direct validators,
 explicit relations, a non-optimal greedy reference policy, and bounded differential oracles.
-D40 reapplies K5's signature trigger and keeps Lean deferred: K5a must first make positive,
-monotone rule construction true rather than exposing arbitrary whole-store callbacks. Reapply at
-the K5a contract freeze and before a parallel/incremental saturation backend. Also reapply before a
+D43 discharges D40's K5a review without activation because K5a exposes immutable identity/support
+values, not a rule carrier or fixed-point guarantee. Reapply when K5b freezes structurally positive
+rule construction and before a parallel/incremental saturation backend. Also reapply before a
 second/optimized path or structural backend, generalized objective/carrier,
 nontrivial partial-path guarantee, global structural optimum, hierarchy closure/reduction law, or
 resolution-map composition/equivalence claim. D42 splits D41's V-lane gate: carrier signature,
@@ -243,14 +253,14 @@ example** (recipe / store entry — cheap, no engine work) · **missing mechanis
 
 ## Open questions in play
 
-- See [decisions.md § Open](decisions.md): K5a's canonical value representation and narrow
-  derivation-reference identity are active contract work; V0's exact public vector/classifier/
-  harvest shape is independently active contract work; the per-line terminator-kind view remains
+- See [decisions.md § Open](decisions.md): V0's exact public vector/classifier/harvest shape is
+  independently active contract work; the per-line terminator-kind view remains
   unscheduled. D40 restores Doccer's historical register to its codepoint-address meaning and
   removes the unrelated math-channel dependency; `math-register` remains only the legacy
   repository name pending migration. D41 keeps post-hoc alignment evidence distinct from actual
   producer origins. D42 splits the V-lane formal obligations without activating Lean or changing
-  the K queue. All Tranche-2 stragglers are closed — see the
+  the K queue. D43 closes K5a's contract questions and leaves its source implementation next. All
+  Tranche-2 stragglers are closed — see the
   [ledger](ledger.md).
 
 ## Standing context for future sessions

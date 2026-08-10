@@ -461,6 +461,7 @@ direct implementation.
 | Flat graph reachability and identity-bearing reference path | D35–D36 close exact-batch graph/projection/result semantics, exact-basis ordinal determinism, a bounded independent path oracle, and parallel-edge/gap/dead-end/empty-window witnesses | before a packed/independent reachability backend claims equivalence, cross-batch invariance is proposed, or path preservation is generalized |
 | Additive minimum-cost complete path | D37 direct descending-boundary DAG recurrence; nonnegative bounded `Int64` score domain; exact feasibility/objective/tie stamps; all 16,384 admissibility × binary-cost problems agree with independent complete-path enumeration | before another/optimized backend claims equivalence, signed/generalized objectives or nontrivial partial-path guarantees land, or cross-family reuse makes the recurrence load-bearing |
 | K4c structural validation, explicit hierarchy/incidence, and greedy admission | D39 direct validators/relations; all 1,024 structural masks, 4,096 priority problems, valid bounded nearest-parent families, 4,096 directed graphs, and 2,048 resolution endpoint problems; explicit maximal-not-maximum and envelope-hole counterexamples | before a global optimum, optimized/incremental backend, hierarchy closure/reduction equivalence, resolution-map composition/coverage theorem, or generalized carrier |
+| K5a canonical fact/support identity | D43 immutable reference construction, canonical-order/equality laws, adversarial exact-basis validation, proposal permutations, and a manually supplied two-support diamond | before an alternate, persisted, compressed, or incremental fact/support backend claims the same extensional identity without complete differential evidence |
 | Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
 | Functional origins embed into relation-valued origins | reference relation tests | before origin compression, stage fusion, or functional fast paths |
@@ -519,7 +520,7 @@ also shows that a proof harness has its own lifecycle cost and can accumulate mi
 states. Doccer should keep the proof-obligation inventory now and defer the toolchain until a claim
 crosses the burden gate.
 
-The practical next step after D35–D39 is K5 fact/support identity, not Lean. The first future proof
+The practical next step after D43 is K5a fact/support implementation, not Lean. The first future proof
 most likely to repay its cost is not a reproof of Allen's table, the unoptimized pair join, D35's
 direct located closure, D37's sole additive recurrence, or D39's direct structural validators; it
 is a law that licenses compression, pruning, generalized optimization, closure/composition, fusion,
@@ -536,9 +537,10 @@ least-fixed-point theorem under explicit hypotheses. K5a must make those hypothe
 rules match present positive premises and propose additions, with no absence, deletion, winner, or
 stage-order observation through arbitrary whole-store callbacks.
 
-Reapply when the K5a public rule signature freezes. Activate if a proof can change that carrier or
-later license parallel/incremental saturation; otherwise formalizing the sole direct worklist would
-still add lifecycle cost without an implementation consequence.
+The then-open question was resolved by D43 below: K5a exposes no executable rule signature. K5b
+reapplies this trigger when its positive rule carrier freezes. Activate if a proof can change that
+carrier or later license parallel/incremental saturation; otherwise formalizing the sole direct
+worklist would still add lifecycle cost without an implementation consequence.
 
 ## 2026-08-06 D42 V-lane and semantic-bitmap gate split
 
@@ -619,3 +621,22 @@ The overall harness status remains **deferred**. No V backend, packed `SpanSet`,
 suppression bitmap has landed, so no present implementation decision requires the toolchain.
 D42 updates the trigger inventory and registry before that pressure arrives; it does not insert
 Lean into the K5/K6 queue.
+
+## 2026-08-09 D43 K5a fact/support assurance split
+
+D43 separates the former combined `K5-SATURATE` registry row into `K5-FACT-SUPPORT` and
+`K5-SATURATE`. K5a freezes finite immutable values only: compatible-master fact-key equality,
+canonical fact deduplication/order, exact fact-table and `SpanBatch` evidence bases, ordered
+alternative supports, and an exact-table `FactReference` that does not retain a support graph.
+It adds no rule carrier, worklist, or least-fixed-point claim.
+
+The K5a burden is therefore owned by direct reference construction, immutable snapshots,
+adversarial basis refusal, structural equality checks, and proposal-permutation tests. Its manual
+hierarchy diamond supplies one ancestor fact with two support paths; it does not infer them. No
+proof pressure can presently change this signature, so Lean remains deferred.
+
+K5b separately owns positive rule execution, finite saturation, support completeness for derived
+facts, and fair-order independence. Reapply the activation gate when that public rule signature
+freezes. An arbitrary whole-store callback remains inadmissible because formalization cannot make
+absence observation, deletion, winner selection, or stage-order dependence monotone after the
+fact.

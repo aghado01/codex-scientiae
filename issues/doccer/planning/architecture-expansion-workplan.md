@@ -12,7 +12,9 @@ The evidence base is:
 - [the formalization audit and Lean inventory](../discussions/sol-doccer-formalization-audit-and-lean-obligations-20260803.md);
 - [the ICDT 2025 ET close read](../discussions/fable-et-framework-close-read-20260803.md);
 - [the post-K4 review](../discussions/opus-doccer-k3k4-review-k5k7-notes.md) and
-  [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md);
+  [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md),
+  as superseded for K5a by the
+  [D43 fact/support contract](../briefs/sol-doccer-k5a-contract-20260809_193131.md);
 - [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
   [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
   [D41 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
@@ -48,7 +50,7 @@ close value and query carriers
     -> structural views and policy-driven selection
        +-> canonical fact/support identity -> positive saturation
        '--> exact-basis origin algebra ------> rewrite plan and materialize
-                         optional derivation reference joins only at materialization
+                         optional D43 FactReference joins only at materialization
 ~~~
 
 Lean is a deferred, burden-triggered rigor lane. The law registry chooses among counterexamples,
@@ -196,7 +198,7 @@ flowchart TD
     K5A --> K5B
     K4B --> K6
     K6 --> K7
-    K5A -.->|optional derivation reference| K7
+    K5A -.->|optional D43 FactReference| K7
     K2C --> W
     K4A --> W
     K4B --> W
@@ -751,7 +753,7 @@ contract and report: [D38](../briefs/sol-doccer-k4c-structural-contract-20260805
 D40 splits this lane so identity/support can close before saturation without serializing K6.
 
 ~~~text
-ClaimOccurrenceTable   observed evidence rows
+SpanBatch              existing exact occurrence table
 CanonicalFactTable     one identity per semantic fact key
 SupportHypergraph      rule application + ordered premise IDs
 SemiringView           optional quotient/evaluation
@@ -759,23 +761,61 @@ SemiringView           optional quotient/evaluation
 
 #### K5a: canonical fact and support identity
 
-The active contract is fact identity:
+The contract is frozen by D43 and its
+[superseding brief](../briefs/sol-doccer-k5a-contract-20260809_193131.md). K5a is immutable fact
+canonicalization plus supplied support evidence. It introduces no executable rule carrier,
+worklist, or fixed-point claim.
+
+The master-relative key is:
 
 ~~~text
-FactKey = geometry + fact kind/domain + adapter-defined canonical value key
+FactKey
+  required ordinal domain and kind
+  immutable ordered TextSpan geometry tuple
+  immutable ordered canonical string-value tuple
 ~~~
 
 Doccer's historical “register” meant a named span of codepoint addresses, or a named family of such
 spans. Block/Script/GeneralCategory assignments are classifications derived from membership in
 those registers. Their representation remains F-UCD work. The application-level **math channel**
 (legacy repository name `math-register`) is unrelated. Neither blocks K5. D40 adds no universal
-`Register` column and does not pre-decide F-UCD's carrier; K5a must instead separate:
+`Register` column and does not pre-decide F-UCD's carrier.
 
-- observed occurrence rows and producer metadata;
-- canonical fact identity and an adapter-defined stable value key;
-- support edges retaining rule ID, ordered premise fact IDs, parameters, and occurrence evidence;
-  and
-- a narrow derivation reference K7 may retain without requiring a support graph at materialization.
+Compatible master value plus `FactKey` value defines semantic fact identity. Geometry is an
+ordered argument tuple rather than one span or a normalized `SpanSet`; zero geometry arguments
+and empty located extents are admitted without creating empty claim occurrences. The value tuple
+provides explicit framing while leaving domain interpretation, canonical component construction,
+and future wire encoding outside the engine. Producer source, priority, level, and collected rule
+metadata remain evidence unless an adapter deliberately promotes a value into the named fact key.
+
+`CanonicalFactTable` snapshots proposals, validates geometry, collapses duplicate keys, and uses
+one deterministic domain/kind/geometry/value order independent of proposal order. Table value
+equality uses compatible masters and the canonical key sequence. A `FactReference` is stricter:
+it is one exact fact-table reference plus a validated fact ordinal. It is K7's optional narrow
+justification seam and requires no support graph.
+
+`SupportHypergraph` retains one exact fact table, one exact compatible-master `SpanBatch`, and
+immutable edges containing a conclusion ordinal, required rule ID, ordered premise ordinals,
+ordered parameters, and ordered originating occurrence ordinals. Exact duplicate edges collapse;
+alternative supports remain. The fact table is independently usable and facts may have no support.
+Empty-premise seeds and cyclic support are representable. K5a validates structure but does not
+certify adapter reasoning. A tagged multi-batch occurrence basis,
+support-path reference, semiring view, and persistence format remain separate future contracts.
+
+Exit gate:
+
+- equal keys collapse to one fact while every domain, kind, geometry arity/order/value, or value
+  component distinction remains semantic;
+- canonical fact enumeration and table equality are independent of proposal order;
+- all supplied geometry, value, premise, parameter, and occurrence sequences are snapshotted;
+- incompatible masters, foreign fact-table references, missing facts, and invalid exact-batch
+  occurrence ordinals fail loudly;
+- exact duplicate supports collapse while two alternative paths to one conclusion remain visible;
+- empty/master-global facts, boundary-valued facts, empty-premise seeds, and cyclic support have
+  explicit behavior;
+- the manual K4c hierarchy diamond supplies one `Ancestor(a,d)` fact with two support paths without
+  executing saturation; and
+- `FactReference` remains valid without retaining a `SupportHypergraph`.
 
 #### K5b: finite positive saturation
 
@@ -855,7 +895,7 @@ OutputPiece
   supplied literal or source-copy instruction
   output extent after assembly
   declared source origins
-  optional narrow K5a derivation reference
+  optional narrow K5a FactReference
 
 MaterializationResult
   immutable output master
@@ -1021,12 +1061,13 @@ already certifies the atomic Allen triads. Reassess the gate before an indexed, 
 incremental, or independent pair backend relies on qualitative summaries for a universal
 no-false-negative claim, or if the public contract changes the inclusion to equality.
 
-D40 reapplies K5's signature-pressure trigger and retains deferral. The first finite positive
-saturation surface uses a direct worklist, order-permutation tests, and the standard monotone
-least-fixed-point theorem under explicit hypotheses. K5a must make those hypotheses structural in
-the rule carrier before K5b promises order independence. Reapply when the K5a signature freezes;
-activate if a proof can choose between rule-carrier designs or before a parallel/incremental
-backend claims equivalence.
+D43 discharges D40's K5a signature-pressure review without activation. K5a freezes only finite
+immutable identity and supplied-support values, covered by direct construction, adversarial
+validation, and proposal-permutation tests. It exposes no executable rule carrier and makes no
+least-fixed-point claim. K5b must reapply the gate when its positive rule signature freezes. Its
+first saturation surface remains owned by a direct worklist, rule/seed-permutation tests, and the
+standard monotone least-fixed-point theorem under explicit hypotheses. Activate if proof pressure
+can change that rule carrier or before a parallel/incremental backend claims equivalence.
 
 D42 splits D41's V-lane gate without declaring a present activation:
 
@@ -1081,7 +1122,8 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K4a | geometric cut-set/partition equivalence under its fixed-basis hypotheses; identity-bearing path/partition preservation; gap/dead-end distinction |
 | K4b | D37's nonnegative additive complete-path minimum is covered by a direct DAG recurrence and 16,384-problem enumeration oracle; reactivate before another backend/generalized objective/partial guarantee |
 | K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
-| K5a–K5b | positive-rule monotonicity, finite fixed-point termination, rule-order independence, and alternative-support preservation |
+| K5a | compatible-master fact-key identity, canonical deduplication/order, exact table/occurrence evidence, immutable support, and alternative-support preservation |
+| K5b | structurally positive rule monotonicity, finite fixed-point termination, rule-order independence, and derived-support completeness |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
 | V0 carrier | compatible-window identity/equality, ordinary vector empties, residual sort, and distinct direct/harvest exits |
 | V prefix scan | pointwise XOR/parity, prefix/transition inversion, chunk/carry agreement, logical-tail independence, residual refinement, and V2 backend equivalence |
@@ -1182,11 +1224,11 @@ contract freeze as D29, K2a selection closure as D30, K2b exact-pair closure as 
 stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review correction as D34,
 the joint located/graph core as D35, the flat result closure as D36, additive complete-path
 selection as D37, the K4c contract as D38, structural-family closure as D39, the post-K4
-coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, and the
-V-lane formal-assurance split as D42. K2,
-K3, and all K4 lanes are closed. K5a canonical
-fact/support identity is the default active next chip; K6 origin-contract work is an independently
-available sibling. K5b saturation follows K5a and does not block K6 or K7. D41 records the
+coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, the
+V-lane formal-assurance split as D42, and the K5a fact/support contract as D43. K2, K3, and all K4
+lanes are closed. K5a source implementation against D43 is the default active next chip; K6
+origin-contract work is an independently available sibling. K5b saturation follows the K5a
+implementation and does not block K6 or K7. D41 records the
 round-2 capability excavation without changing those edges: V0/V1, A0–A2, F7a, F8a/F8b contract
 work, and F9a current-population work are independently available. V2 follows reference semantics
 and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes wait only for
@@ -1199,9 +1241,11 @@ and keeps Lean deferred under direct finite validators, explicit relations, a no
 reference policy, and bounded differential evidence. Reapply if K3 adopts a compressed/incremental
 closure backend, another K4 backend claims equivalence, generalized objectives/carriers land,
 partial paths gain a nontrivial guarantee, structural selection promises an optimum, or hierarchy
-closure/reduction or resolution-map composition becomes load-bearing. D40 separately reapplies the
-K5 signature trigger and defers Lean until K5a freezes a positive-rule carrier; activate if proof
-pressure changes that signature or later licenses parallel/incremental saturation. D42 splits
+closure/reduction or resolution-map composition becomes load-bearing. D43 discharges D40's K5a
+review without activating Lean because fact/support canonicalization exposes no executable rule
+carrier or fixed-point claim. Reapply when K5b freezes its structurally positive rule signature;
+activate if proof pressure changes that signature or later licenses parallel/incremental
+saturation. D42 splits
 D41's V-lane gate into carrier signature, prefix-scan refinement, harvest, packed `SpanSet`,
 and suppression-query obligations. V0/V1 remain unblocked. Reapply per V2 backend; presume
 activation when a packed region or suppression backend claims arbitrary-input interchangeability,

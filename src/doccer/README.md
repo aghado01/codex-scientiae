@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D42, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D43, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -110,6 +110,15 @@ selections are different sorts. The split does not activate Lean or block V0/V1.
 gate per backend; a packed region or suppression backend advertised as interchangeable over
 arbitrary inputs is a presumptive optimization-pressure activation unless a smaller complete
 certificate or weaker claim closes it.
+
+D43 freezes the still-unimplemented K5a fact/support surface. `SpanBatch` remains the exact
+occurrence table. A fact key uses required ordinal domain/kind strings plus immutable ordered
+master-relative `TextSpan` geometry and canonical string-value tuples; compatible master plus key
+defines semantic fact identity. `CanonicalFactTable` will deduplicate and canonically order those
+keys, while `SupportHypergraph` will retain one exact fact-table and occurrence-batch basis with
+ordered alternative support. K7's optional seam is only an exact-table `FactReference`, not a
+support graph. `K5-FACT-SUPPORT` is separate from K5b's future `K5-SATURATE`; no rule carrier or
+fixed-point claim belongs to K5a.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
@@ -278,8 +287,10 @@ owners and Lean reactivation triggers live in the D25 registry in
 
 ## Deliberately absent
 
-These families are absent because their contracts are not closed — that is the only gate on
-engine work here. A consumer's arrival prioritizes and validates; it never authorizes, and its
+These surfaces are absent because their contract or implementation gate is not closed. Contract
+closure is the only authorization gate on engine work; D43 has crossed that gate for K5a, whose
+implementation is now pending. A consumer's arrival prioritizes and validates; it never authorizes,
+and its
 absence is never by itself a reason to leave a gap. Where the brief names a "first consumer"
 trigger, read it as a prioritization default for a contract whose remaining questions a real
 consumer's shapes would answer best; any item may be pulled forward the moment its contract
@@ -312,9 +323,11 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K5a canonical-fact/support identity and narrow derivation references; K5b finite positive
-  saturation with the K4c hierarchy-diamond witness; and the sibling K6 exact-tagged-basis origin
-  algebra leading to K7 materialization. K5b does not block K6 or K7. D35–D40 close K3 and all K4
+- D43's K5a canonical fact table, exact-basis support hypergraph, and narrow `FactReference` are
+  contractually closed but not implemented; K5b's executable positive saturation remains a
+  separate open contract with the K4c hierarchy-diamond witness. The sibling K6 exact-tagged-basis
+  origin algebra leads to K7 materialization, and K5b does not block K6 or K7. D35–D40 close K3 and
+  all K4
   lanes without a common selector: the repeated exact-selection and named-policy stamps are real,
   but path, packing, cover, laminar, hierarchy, and resolution feasibility/results remain distinct.
   Further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or

@@ -5,6 +5,16 @@ Status before correction: D39 closes K4c with 1976 contract checks green. The po
 finds no algorithmic defect in K3/K4, but exposes one equality inconsistency and several stale or
 conflated premises in the K5–K7 plan. This brief corrects those premises before K5 source work.
 
+> **Supersession note (2026-08-09):** D43 and the
+> [K5a contract brief](sol-doccer-k5a-contract-20260809_193131.md) supersede D40's provisional K5a
+> carrier/reference shape and the K5a-attributed rule-signature and Lean-gate handoff in section 6.
+> K5a now owns immutable canonical fact/support values and the narrow `FactReference` only; it
+> exposes no executable rule carrier or fixed-point claim. A future K5b contract owns the positive
+> rule signature, worklist, saturation semantics, executable diamond witness, and assurance-gate
+> reapplication after the K5a source carriers land. D40 remains authoritative for its terminology
+> correction, K4 equality correction, structurally positive K5b direction, and K5/K6/K7 sibling
+> sequencing. Where the two briefs conflict on K5a or the K5b handoff, D43 controls.
+
 ## 1. Register is codepoint-address terminology; mathematics is a channel
 
 MarkPig's historical `doccer/legwork` material used **Unicode register** natively for a named span
