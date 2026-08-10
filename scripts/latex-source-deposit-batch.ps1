@@ -4,7 +4,7 @@
 
   Discovers arXiv-shaped archives under -CatalogDir, runs the full New-LatexSourceDeposit ceremony
   (expand, validate, mint article.json), and reports per-slug outcomes. Rebuild inventory.jsonl
-  separately with scripts/inventory-rebuild.ps1 after deposits succeed.
+  separately with scripts/inventory-build.ps1 after deposits succeed.
 #>
 
 [CmdletBinding(SupportsShouldProcess)]

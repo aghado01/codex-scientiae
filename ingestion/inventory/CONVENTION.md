@@ -142,16 +142,20 @@ whole build. Ordering and collision rules are owned by the engine inventory regi
 strict UTF-8 without a BOM, LF-terminated rows, and the complete `inventory.jsonl` (+ sidecar) as one
 transaction. The materializer does not initialize, repair, or recursively infer deposits.
 
-Canonical on-demand rebuild:
+Canonical on-demand build:
 
 ```pwsh
 # Enumerate direct-child article.json and publish inventory.jsonl
-pwsh -File ./scripts/inventory-rebuild.ps1 -CatalogDir ./ingestion/inventory
+pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
+
+# Overwrite an existing inventory.jsonl
+pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
 ```
 
-PowerShell helper: `Invoke-InventoryRebuild` in `src/logistics/inventory-catalog.ps1`. Engine verb:
-`rebuild-inventory` (`--catalog-dir`, `--article-paths-json`). Enumeration stays in PowerShell; the engine
-validates each `{catalog}/{slug}/article.json` path against the article slug and rebuilds the registry.
+PowerShell helper: `Invoke-InventoryBuild` in `src/logistics/inventory-catalog.ps1`. Engine verb:
+`build-inventory` (`--catalog-dir`, `--article-paths-json`, optional `--force`). Enumeration stays in
+PowerShell; the engine validates each `{catalog}/{slug}/article.json` path against the article slug and
+publishes the registry. An existing `inventory.jsonl` is refused unless `-Force` / `--force` is set.
 
 Precursor unpack/deposit over the same parent (arXiv-shaped archives only today):
 

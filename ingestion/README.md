@@ -147,8 +147,11 @@ On-demand helpers:
 # Full unpack/validate/deposit ceremony for arXiv-shaped archives under a catalog parent
 pwsh -File ./scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
 
-# Sweep direct-child article.json and rebuild inventory.jsonl via jsonl_engine
-pwsh -File ./scripts/inventory-rebuild.ps1 -CatalogDir ./ingestion/inventory
+# Sweep direct-child article.json and build inventory.jsonl via jsonl_engine
+pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory
+
+# Overwrite an existing inventory.jsonl
+pwsh -File ./scripts/inventory-build.ps1 -CatalogDir ./ingestion/inventory -Force
 ```
 
 `src/latex-ingest/inventory-catalog.ps1` and its nested metadata row shape remain a legacy specification of

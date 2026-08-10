@@ -2,9 +2,9 @@
 <#
   Catalog-root inventory helpers.
 
-  Sweep direct-child article.json sentinels and rebuild inventory.jsonl through the jsonl_engine
-  `rebuild-inventory` verb. Enumeration stays in PowerShell; the engine validates rows and publishes
-  the registry.
+  Sweep direct-child article.json sentinels and publish inventory.jsonl through the jsonl_engine
+  `build-inventory` verb. An existing inventory.jsonl is refused unless -Force is set. Enumeration
+  stays in PowerShell; the engine validates rows and publishes the registry.
 #>
 
 . "$PSScriptRoot/portable-path.ps1"
@@ -56,14 +56,17 @@ function Get-InventoryArticlePaths {
     return $paths.ToArray()
 }
 
-function Invoke-InventoryRebuild {
+function Invoke-InventoryBuild {
     <#
     .SYNOPSIS
-        Rebuild `{CatalogDir}/inventory.jsonl` from direct-child article.json sentinels.
+        Build `{CatalogDir}/inventory.jsonl` from direct-child article.json sentinels.
+    .DESCRIPTION
+        Publishes a new inventory when absent. Pass -Force to overwrite an existing inventory.jsonl.
     #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$CatalogDir,
+        [switch]$Force,
         [string]$PythonPath = '',
         [ValidateRange(1, 3600)][int]$EngineTimeoutSeconds = 300
     )
@@ -72,15 +75,19 @@ function Invoke-InventoryRebuild {
     $articlePaths = @(Get-InventoryArticlePaths -CatalogDir $root)
     $staged = jsonl_engine-client\New-JsonlEngineInputFile -InputObject @($articlePaths)
     try {
-        $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'rebuild-inventory' `
-                -Argument @(
-                    '--catalog-dir', $root
-                    '--article-paths-json', $staged.Path
-                ) `
+        $argument = [System.Collections.Generic.List[string]]::new()
+        $argument.Add('--catalog-dir')
+        $argument.Add($root)
+        $argument.Add('--article-paths-json')
+        $argument.Add($staged.Path)
+        if ($Force) { $argument.Add('--force') }
+
+        $frames = @(jsonl_engine-client\Invoke-JsonlEngineCommand -Verb 'build-inventory' `
+                -Argument $argument.ToArray() `
                 -PythonPath $PythonPath `
                 -TimeoutSeconds $EngineTimeoutSeconds)
         if ($frames.Count -ne 1) {
-            throw "jsonl engine verb 'rebuild-inventory' returned $($frames.Count) values; expected exactly one"
+            throw "jsonl engine verb 'build-inventory' returned $($frames.Count) values; expected exactly one"
         }
         return [pscustomobject]$frames[0].value
     } finally {

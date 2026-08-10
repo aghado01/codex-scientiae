@@ -162,17 +162,34 @@ Describe 'Get-LatexSourceBatchCandidates' {
     }
 }
 
-Describe 'Invoke-InventoryRebuild' {
-    It 'rebuilds inventory.jsonl from direct-child article.json sentinels' -Skip:(-not $script:InventoryPythonAvailable) {
-        $catalog = Join-Path $TestDrive 'catalog-rebuild'
+Describe 'Invoke-InventoryBuild' {
+    It 'builds inventory.jsonl from direct-child article.json sentinels' -Skip:(-not $script:InventoryPythonAvailable) {
+        $catalog = Join-Path $TestDrive 'catalog-build'
         [void][System.IO.Directory]::CreateDirectory($catalog)
         Write-InventoryTestArticle -CatalogDir $catalog -Slug 'b.0001v1' | Out-Null
         Write-InventoryTestArticle -CatalogDir $catalog -Slug 'a.0001v1' | Out-Null
         [void][System.IO.Directory]::CreateDirectory((Join-Path $catalog 'no-article'))
 
-        $result = Invoke-InventoryRebuild -CatalogDir $catalog -PythonPath $script:Python
+        $result = Invoke-InventoryBuild -CatalogDir $catalog -PythonPath $script:Python
         $result.article_count | Should -Be 2
         $result.slugs | Should -Be @('a.0001v1', 'b.0001v1')
         [System.IO.File]::Exists($result.inventory_path) | Should -BeTrue
+    }
+
+    It 'refuses an existing inventory without -Force and overwrites with -Force' -Skip:(-not $script:InventoryPythonAvailable) {
+        $catalog = Join-Path $TestDrive 'catalog-force'
+        [void][System.IO.Directory]::CreateDirectory($catalog)
+        Write-InventoryTestArticle -CatalogDir $catalog -Slug 'a.0001v1' | Out-Null
+
+        $first = Invoke-InventoryBuild -CatalogDir $catalog -PythonPath $script:Python
+        $first.article_count | Should -Be 1
+
+        { Invoke-InventoryBuild -CatalogDir $catalog -PythonPath $script:Python } |
+            Should -Throw -ExpectedMessage '*already exists*'
+
+        Write-InventoryTestArticle -CatalogDir $catalog -Slug 'b.0001v1' | Out-Null
+        $second = Invoke-InventoryBuild -CatalogDir $catalog -Force -PythonPath $script:Python
+        $second.article_count | Should -Be 2
+        $second.slugs | Should -Be @('a.0001v1', 'b.0001v1')
     }
 }
