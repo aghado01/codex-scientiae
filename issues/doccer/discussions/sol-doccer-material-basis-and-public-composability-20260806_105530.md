@@ -766,8 +766,24 @@ The MATLAB/scikit-learn analogy is about portfolio architecture:
 - higher-level conveniences do not hide the lower layer; and
 - applications choose combinations after the capability library exists.
 
+The nested-delimiter sketch is one illustrative reachability test for that portfolio, not a
+definition of public composability. A script could locate outer Markdown code regions, enter those
+regions without surrendering source coordinates, select different caller-supplied delimiter
+conventions, and combine classification, bitmap operations, region restriction, strict pairing,
+and extraction as appropriate. XOR or prefix parity serves the stages with toggle semantics;
+balanced nesting still needs depth- or identity-preserving operations. The point is that callers
+may enter and leave at useful stages instead of being required to invoke one canonical document
+pipeline. The example does not make delimiter processing, bitmap algebra, or any proposed CLI
+grammar the definition of Doccer's public surface.
+
+That portfolio may eventually have two distribution faces: an executable hosting declarative
+engine and CLI capabilities, and a set of .NET assemblies/components that consumers can reference
+or load selectively for direct access. This is compatible only if both faces share the same public
+carriers and operations. Exact assembly boundaries, package granularity, loading mechanics, and
+host topology remain packaging questions rather than semantic ones.
+
 This intent already agrees with D12's “library of primitives, never a pipeline” and much of D13's
-à-la-carte DLL/CLI posture in the [decision canon](../planning/decisions.md). The tension is with
+à-la-carte library/CLI posture in the [decision canon](../planning/decisions.md). The tension is with
 decisions and [roadmap language](../planning/roadmap.md) that treat low-level public exposure as
 unnecessary until one existing higher-level consumer asks for it. D20 keeps numeric `SpanBatch`
 columns internal, D26 keeps the Allen raw mask private, `ClaimSelection` keeps its words private,

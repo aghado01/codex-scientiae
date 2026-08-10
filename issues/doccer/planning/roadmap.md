@@ -166,10 +166,13 @@ A future packed `SpanSet` or D3 suppression bitmap advertised as interchangeable
 arbitrary inputs presumptively meets optimization pressure; its chip must activate the smallest
 obligation unless a cheaper complete certificate or a weaker claim honestly closes the gate.
 
-**The separate public CLI module is committed by D13; its first durable vertical slice remains
+**The separate public CLI module over the public capability library/engine is committed by D13;
+its first durable vertical slice remains
 deferred.** The [CLI-module return packet](../briefs/sol-doccer-cli-module-deferred-20260809_180623.md)
 records the one-way module boundary, ThermoMapper `user-repl` lift, donor defects to avoid, and
-reactivation gate. Exact command grammar and carrier-specific wire forms wait for stable identities;
+reactivation gate. A later distribution may pair an executable host for declarative-engine and CLI
+capabilities with selectively referenceable .NET assemblies/components. Exact assembly splits,
+host topology, command grammar, and carrier-specific wire forms wait for stable identities;
 the latent-manuscript node-stream schema gates document-stream commands, not the module or an
 independently closed low-level carrier. Minimal cross-process wire work precedes and informs F2.
 The current `inspect`/`relate` commands remain disposable developer diagnostics. Durable adapters

@@ -19,18 +19,28 @@ Inputs:
 
 ## 1. Disposition
 
-Doccer will expose a public CLI as its own module over the declarative engine. The working shape is:
+Doccer will expose a public CLI as its own module over the public capability library and
+declarative engine. The working shape is:
 
 ~~~text
-CodexSci.Doccer          declarative engine module
+CodexSci.Doccer          public capability library + declarative engine
         ↑ one-way dependency
 CodexSci.Doccer.Cli      public command/application module (working name)
 ~~~
 
-The engine owns carrier and operation semantics. The CLI calls those public contracts and never
-reimplements them. Low-level values and operations that close their own contracts are intended to
-be publicly stackable in process and eventually through the CLI. The CLI is therefore an eventual
-product feature, not a diagnostic convenience whose existence still needs justification.
+The library owns carrier and operation semantics and exposes admitted stages for direct in-process
+use. The declarative engine composes those same capabilities under explicit policies; it is not the
+only route to them. The CLI calls the public contracts and never reimplements them. Stage-level
+values and operations that close their own contracts are intended to be publicly stackable in
+process and eventually through the CLI. The CLI is therefore an eventual product feature, not a
+diagnostic convenience whose existence still needs justification.
+
+One likely distribution realization has two access modes: a Doccer executable can host both
+declarative-engine execution and named CLI capabilities, while .NET consumers can reference or
+load only the public assemblies/components needed for direct stage-level work. Both modes must use
+the same carrier and operation contracts; an executable-only semantic implementation would split
+Doccer into two products. This paragraph records a packaging direction, not a frozen assembly
+graph, package granularity, component-loading mechanism, or executable topology.
 
 Implementation remains deferred because the first durable vertical slice, command grammar, wire
 realization, and carrier-specific artifact identities are not frozen. The current brewery
@@ -44,7 +54,7 @@ future persisted Doccer value.
 
 ## 2. Ownership boundary
 
-| Declarative engine owns | CLI module owns |
+| Public library/engine owns | CLI module owns |
 |---|---|
 | immutable carriers, basis and identity | argument, config, recipe, and session transport |
 | named operations and their many-sorted signatures | mapping transport input to typed engine invocations |
@@ -75,6 +85,15 @@ reusable artifact / stream / human presentation
 Human-readable output alone is not low-level composability. A command family that produces a
 mask, vector, region, selection, map, or other reusable value must be able to emit an unambiguous
 artifact or session handle that another command can consume without mining console prose.
+
+The nested-delimiter sketch is an illustrative reachability witness, not a definition of
+low-level composability or a proposed command taxonomy. A caller might enter at candidate
+classification, bitmap algebra, region restriction, pairing, or extraction; combine those stages
+to locate an outer delimited region; then apply different caller-supplied conventions inside it.
+XOR or prefix parity is useful where a stage has toggle semantics, while balanced nesting retains
+depth and delimiter-family identity through other capabilities. The architectural requirement is
+that admitted stages needed by such a script remain directly callable and, as their wire contracts
+close, become composable through the CLI without requiring one prescribed end-to-end processor.
 
 ## 3. What the ThermoMapper snapshot establishes
 
@@ -213,6 +232,8 @@ The first durable CLI chip closes only when:
 Still deferred:
 
 - final project/package/executable naming;
+- exact .NET assembly/package decomposition and any selective component-loading mechanism;
+- executable-host topology for declarative-engine and named CLI entry points;
 - command-parser implementation and help generation;
 - exact command-family grammar;
 - explicit subcommands versus a small algebra expression versus declarative recipes;
@@ -226,7 +247,7 @@ Still deferred:
 Not deferred and not open:
 
 - the CLI will be a public feature;
-- it will be its own module over the declarative engine;
+- its command/application module will sit over the public library/engine;
 - the dependency points from CLI to engine only;
 - low-level admitted capabilities are intended to be stackable;
 - the engine remains the semantic source of truth;

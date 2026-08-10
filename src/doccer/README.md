@@ -23,11 +23,13 @@ coarser typing — as explicit, deterministic, parameterized operations, and exe
 policy the caller names; it never selects one. All judgment — which query, which policy, what
 the result means, what happens next — belongs to orchestration.
 
-## A library of primitives, not a pipeline
+## A capability library and declarative engine, not a pipeline
 
-Every rung is usable without the rungs above it, and construction cost scales with what a job
-touches. "Full doccer" — sweep → collect → validate → laminarize → tiered acceptance — is one
-composition of these primitives, never the entry price:
+Doccer has two in-process roles: a public capability library whose admitted stages can be called
+directly, and a declarative engine that composes those same capabilities under explicit policies.
+The engine does not monopolize access to a stage. Every rung is usable without the rungs above it,
+and construction cost scales with what a job touches. "Full doccer" — sweep → collect → validate
+→ laminarize → tiered acceptance — is one composition of these primitives, never the entry price:
 
 ```text
 TextSpan / Allen relations        pure, zero dependencies
@@ -65,10 +67,12 @@ mathematical language is the **math channel**, not a register, and is neither a 
 nor a dependency of canonical facts or saturation. Existing `math-register` repository paths use
 the legacy term pending a separate migration (D40).
 
-The domain-agnostic surface is the declarative engine DLL (operation granularity, in-process
-composition) and a committed separate public CLI module over it (task granularity — one-shot or
-stacked à la carte jobs, with domain knowledge arriving as data inventories, never as flags or
-verbs). CLI implementation is deferred under its
+The domain-agnostic in-process surface is both the stage-addressable capability library and its
+declarative composition engine. A committed separate public CLI module projects those public
+contracts across a process boundary for one-shot or stacked à la carte jobs, with domain knowledge
+arriving as data inventories, never as flags or verbs. A later distribution may expose a Doccer
+executable for engine/CLI use and selectively referenceable .NET assemblies or components for
+direct access; their exact packaging remains deferred. CLI implementation is deferred under its
 [return packet](../../issues/doccer/briefs/sol-doccer-cli-module-deferred-20260809_180623.md); the
 current brewery commands are developer diagnostics rather than that module. PowerShell helpers are
 site-local ergonomics and domain adapters, deliberately thin: anything a graduated, cross-project
