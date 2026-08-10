@@ -67,7 +67,7 @@ Run commands from the repository root or supply another explicit/relative docume
 5. Publish the deposit:
 
    ```pwsh
-   . ./src/logistics/latex-source-deposit.ps1
+   . ./src/logistics/latex-source.ps1
    New-LatexSourceDeposit -DocumentDir './ingestion/<segment>/<slug>'
    ```
 

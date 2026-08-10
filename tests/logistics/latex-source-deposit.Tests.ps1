@@ -17,7 +17,7 @@ BeforeAll {
     }
     $script:Utf8 = [System.Text.UTF8Encoding]::new($false, $true)
 
-    . (Join-Path $script:RepositoryRoot 'src/logistics/latex-source-deposit.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/logistics/latex-source.ps1')
 
     function New-LatexDepositTestDirectory {
         param(

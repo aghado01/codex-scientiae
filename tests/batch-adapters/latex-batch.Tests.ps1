@@ -251,7 +251,7 @@ function Invoke-ArxivLatexToMarkdown {
         finally { $writer.Dispose(); $gzip.Dispose(); $fileStream.Dispose() }
     }
 
-    . (Join-Path $script:RepositoryRoot 'src/logistics/latex-source-deposit.ps1')
+    . (Join-Path $script:RepositoryRoot 'src/logistics/latex-source.ps1')
 
     function New-LegacyMetadataSourceDeposit {
         param(

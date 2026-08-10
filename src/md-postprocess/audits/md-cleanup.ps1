@@ -76,7 +76,8 @@ function Invoke-MarkdownCleanup {
         [switch]$LigaturesOnly
     )
     if (Test-Path -LiteralPath $Path -PathType Container) {
-        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
+        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include `
+                -PruneDirs '.git','node_modules' |
                  ForEach-Object { Invoke-MarkdownCleanup -Path $_ -Apply:$Apply -LigaturesOnly:$LigaturesOnly })
     }
 
@@ -164,7 +165,8 @@ function Invoke-MarkdownCleanup {
 function Test-MarkdownCleanupIdempotent {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$Path)
     if (Test-Path -LiteralPath $Path -PathType Container) {
-        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
+        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include `
+                -PruneDirs '.git','node_modules' |
                  ForEach-Object { Test-MarkdownCleanupIdempotent -Path $_ })
     }
     $first = Invoke-MarkdownCleanup -Path $Path
@@ -211,7 +213,8 @@ function Format-Imbalance($b) {
 function Find-MathClosureIssues {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$Path)
     if (Test-Path -LiteralPath $Path -PathType Container) {
-        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
+        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include `
+                -PruneDirs '.git','node_modules' |
                  ForEach-Object { Find-MathClosureIssues -Path $_ })
     }
     $text = ([System.IO.File]::ReadAllText($Path)) -replace "`r`n", "`n"
@@ -282,7 +285,8 @@ function Test-MathBridge([string]$between) {
 function Repair-SplitEquations {
     [CmdletBinding()] param([Parameter(Mandatory)][string]$Path, [switch]$Apply)
     if (Test-Path -LiteralPath $Path -PathType Container) {
-        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include |
+        return @(Invoke-Crawl -Root $Path -Patterns '**/*.md' -Semantics Include `
+                -PruneDirs '.git','node_modules' |
                  ForEach-Object { Repair-SplitEquations -Path $_ -Apply:$Apply })
     }
     $raw  = [System.IO.File]::ReadAllText($Path)

@@ -10,7 +10,7 @@
 #>
 
 . "$PSScriptRoot/latex-ingest.ps1"
-. "$PSScriptRoot/../logistics/latex-source-deposit.ps1"
+. "$PSScriptRoot/../logistics/latex-source.ps1"
 
 # The current deposit convention's address, kept here because this shim is its only consumer:
 # production reaches the source tree through a validated manifest, not by deriving `{slug}-tex`

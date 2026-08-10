@@ -19,7 +19,7 @@
 #>
 
 . "$PSScriptRoot/../logistics/run-paths.ps1" # runstamped artifact addressing only
-. "$PSScriptRoot/../logistics/latex-source.ps1"         # read-side source-ready validation; deposit publication is logistics/latex-source-deposit.ps1
+. "$PSScriptRoot/../logistics/latex-source.ps1"         # source deposit helpers (read-side + optional deposit compositions)
 Import-Module (Join-Path $PSScriptRoot '../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
 . "$PSScriptRoot/../node_utils/tikz-render/tikz-render.ps1" # source-authoritative diagrams: TikZ -> SVG via node-tikzjax (graceful when absent)

@@ -55,10 +55,10 @@ A same-named file in generated `OutDir` is ignored.
 
 ## Source-ready publication
 
-The canonical entrypoint is `New-LatexSourceDeposit` in `src/logistics/latex-source-deposit.ps1`:
+The canonical entrypoint is `New-LatexSourceDeposit` in `src/logistics/latex-source.ps1`:
 
 ```pwsh
-. ./src/logistics/latex-source-deposit.ps1
+. ./src/logistics/latex-source.ps1
 New-LatexSourceDeposit -DocumentDir ./ingestion/inventory/1105.4224v1
 ```
 

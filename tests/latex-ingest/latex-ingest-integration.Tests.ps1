@@ -5,7 +5,7 @@
 # use Pester's ephemeral TestDrive instead.
 BeforeAll {
     . "$PSScriptRoot/../../src/latex-ingest/latex-ingest.ps1"
-    . "$PSScriptRoot/../../src/logistics/latex-source-deposit.ps1"
+    . "$PSScriptRoot/../../src/logistics/latex-source.ps1"
 
     $script:RepositoryRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
     $script:RepositoryPythonPath = @(
