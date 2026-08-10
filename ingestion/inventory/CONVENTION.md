@@ -138,14 +138,34 @@ shape.
 
 Materialization is immediate-scope and explicit. A direct child without `article.json` is not inferred to be
 a document. A present but malformed, schema-invalid, wrongly located, or slug-disagreeing article fails the
-whole build. The eventual materializer must define deterministic ordering, reject portable identity/path
-collisions, write strict UTF-8 without a BOM and with LF termination, and publish the complete JSONL file as
-one transaction. It must not initialize, repair, or recursively infer deposits.
+whole build. Ordering and collision rules are owned by the engine inventory registry. Publication writes
+strict UTF-8 without a BOM, LF-terminated rows, and the complete `inventory.jsonl` (+ sidecar) as one
+transaction. The materializer does not initialize, repair, or recursively infer deposits.
 
-`src/latex-ingest/inventory-catalog.ps1` predates this article contract. Its direct-child admission checks,
-ordering, collision rules, and all-or-nothing publication remain design evidence, but its
-`metadata.json`/`document-inventory-row/0.1` projection is a legacy specification rather than the active
-canonical materializer. A Python-backed article materialization path is still to be integrated.
+Canonical on-demand rebuild:
+
+```pwsh
+# Enumerate direct-child article.json and publish inventory.jsonl
+pwsh -File ./scripts/inventory-rebuild.ps1 -CatalogDir ./ingestion/inventory
+```
+
+PowerShell helper: `Invoke-InventoryRebuild` in `src/logistics/inventory-catalog.ps1`. Engine verb:
+`rebuild-inventory` (`--catalog-dir`, `--article-paths-json`). Enumeration stays in PowerShell; the engine
+validates each `{catalog}/{slug}/article.json` path against the article slug and rebuilds the registry.
+
+Precursor unpack/deposit over the same parent (arXiv-shaped archives only today):
+
+```pwsh
+pwsh -File ./scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
+```
+
+`ConvertFrom-ArxivSourceArchiveLeaf` extracts `\d{4}\.\d{4,5}(?:v\d+)?` from tarball filenames so prefixes
+such as `arXiv-{slug}` are accepted before `New-LatexSourceDeposit` runs. Non-arXiv archive naming is out
+of scope for this batch helper.
+
+`src/latex-ingest/inventory-catalog.ps1` predates this article contract. Its direct-child admission checks
+and collision rules remain design evidence, but its `metadata.json`/`document-inventory-row/0.1` projection
+is a legacy specification rather than the active materializer.
 
 The public LaTeX batch adapter and production converter already read `article.json`; a directory address
 prefers it. Planning performs only confined address resolution and the shallow fields needed for job

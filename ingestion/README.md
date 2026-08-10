@@ -139,12 +139,20 @@ created, removed, or changed patch rather than executing under a stale job ident
 
 The canonical localized inventory model is a deterministic JSONL materialization of direct-child
 `article.json` objects. Each flat `codex-scientiae/article/0.1` object is inserted verbatim as one row, with
-`/slug` as its declared identity. A current canonical article materializer has not yet replaced the
-metadata-era catalog implementation.
+`/slug` as its declared identity.
+
+On-demand helpers:
+
+```pwsh
+# Full unpack/validate/deposit ceremony for arXiv-shaped archives under a catalog parent
+pwsh -File ./scripts/latex-source-deposit-batch.ps1 -CatalogDir ./ingestion/inventory
+
+# Sweep direct-child article.json and rebuild inventory.jsonl via jsonl_engine
+pwsh -File ./scripts/inventory-rebuild.ps1 -CatalogDir ./ingestion/inventory
+```
 
 `src/latex-ingest/inventory-catalog.ps1` and its nested metadata row shape remain a legacy specification of
-useful admission behavior—direct-child scope, complete failure on an invalid present sentinel, deterministic
-ordering, and collision checks. They are not active canonical `article.json` producers or materializers.
+useful admission behavior. They are not active canonical `article.json` producers or materializers.
 
 The public `Get-LatexBatchJob` adapter can already resolve an explicitly supplied `article.json` or a
 document-directory address, preferring `article.json` for a directory. It temporarily accepts legacy

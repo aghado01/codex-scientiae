@@ -25,6 +25,7 @@ from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional
 
 from .deposit import deposit_article
 from .inspect import inspect_store, snapshot
+from .inventory_rebuild import load_article_paths_json, rebuild_inventory
 from .kinds.article import ArticleManifest
 from .policy import Eol
 from .pointer import MISSING, resolve
@@ -42,6 +43,7 @@ STABLE_VERBS = (
     "info",
     "count",
     "deposit",
+    "rebuild-inventory",
     "head",
     "tail",
     "range",
@@ -367,6 +369,16 @@ def _cmd_deposit(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_rebuild_inventory(args: argparse.Namespace) -> int:
+    article_paths = load_article_paths_json(args.article_paths_json)
+    result = rebuild_inventory(
+        catalog_dir=args.catalog_dir,
+        article_paths=article_paths,
+    )
+    _emit_for(args, [result.as_dict()])
+    return 0
+
+
 def _take(values: Iterable[Any], count: int) -> Iterator[Any]:
     for index, value in enumerate(values):
         if index >= count:
@@ -487,6 +499,22 @@ def _build_parser() -> argparse.ArgumentParser:
     deposit.add_argument("--provider-json")
     deposit.add_argument("--pdf")
     deposit.set_defaults(handler=_cmd_deposit)
+
+    rebuild_inventory_cmd = sub.add_parser(
+        "rebuild-inventory",
+        help="rebuild one catalog-root inventory.jsonl from article.json paths",
+        description=(
+            "Rebuild inventory.jsonl under a catalog directory from an explicit JSON array of "
+            "direct-child article.json paths. The engine does not walk the filesystem."
+        ),
+    )
+    rebuild_inventory_cmd.add_argument("--catalog-dir", required=True)
+    rebuild_inventory_cmd.add_argument(
+        "--article-paths-json",
+        required=True,
+        help="JSON array of absolute article.json paths (UTF-8, one array value)",
+    )
+    rebuild_inventory_cmd.set_defaults(handler=_cmd_rebuild_inventory)
 
     return parser
 

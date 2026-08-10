@@ -139,6 +139,15 @@ $expectedTypes = @(
     'CodexSci.Doccer.ResolutionMapPolicy'
     'CodexSci.Doccer.ResolutionEdge'
     'CodexSci.Doccer.ResolutionMap'
+    'CodexSci.Doccer.FactKey'
+    'CodexSci.Doccer.CanonicalFactTable'
+    'CodexSci.Doccer.FactReference'
+    'CodexSci.Doccer.SupportEdge'
+    'CodexSci.Doccer.SupportHypergraph'
+    'CodexSci.Doccer.GroundRule'
+    'CodexSci.Doccer.SaturationProblem'
+    'CodexSci.Doccer.SaturationResult'
+    'CodexSci.Doccer.FactSaturation'
     'CodexSci.Doccer.RegexCollector'
     'CodexSci.Doccer.PatternRule'
     'CodexSci.Doccer.ExecutionScope'
@@ -149,7 +158,8 @@ $expectedTypes = @(
     'CodexSci.Doccer.DoccerValidation'
 )
 foreach ($typeName in $expectedTypes) {
-    if ($null -eq $assembly.GetType($typeName, $false)) {
+    $expectedType = $assembly.GetType($typeName, $false)
+    if ($null -eq $expectedType -or -not $expectedType.IsPublic) {
         throw "Packaged assembly is missing expected public type $typeName."
     }
 }
@@ -201,6 +211,34 @@ if ($null -eq $packing.GetMethod('Create') -or
     $null -eq $resolution.GetMethod('Create') -or
     $null -eq $resolutionMap.GetMethod('Create')) {
     throw 'Packaged K4c structural-family surface is incomplete.'
+}
+$factTable = $assembly.GetType('CodexSci.Doccer.CanonicalFactTable', $true)
+$supportGraph = $assembly.GetType('CodexSci.Doccer.SupportHypergraph', $true)
+$groundRule = $assembly.GetType('CodexSci.Doccer.GroundRule', $true)
+$saturationProblem = $assembly.GetType('CodexSci.Doccer.SaturationProblem', $true)
+$saturationResult = $assembly.GetType('CodexSci.Doccer.SaturationResult', $true)
+$factSaturation = $assembly.GetType('CodexSci.Doccer.FactSaturation', $true)
+$problemCreate = $saturationProblem.GetMethod('Create')
+$saturate = $factSaturation.GetMethod('Saturate')
+if ($groundRule.GetConstructors().Count -ne 1 -or
+    $null -eq $groundRule.GetProperty('Conclusion') -or
+    $null -eq $groundRule.GetProperty('RuleId') -or
+    $null -eq $groundRule.GetProperty('Premises') -or
+    $null -eq $groundRule.GetProperty('Parameters') -or
+    $null -eq $groundRule.GetProperty('OccurrenceOrdinals') -or
+    $null -eq $factTable.GetMethod('Create') -or
+    $null -eq $supportGraph.GetMethod('Create') -or
+    $null -eq $problemCreate -or -not $problemCreate.IsStatic -or
+    $problemCreate.ReturnType -ne $saturationProblem -or
+    $null -eq $saturationProblem.GetProperty('Initial') -or
+    $null -eq $saturationProblem.GetProperty('Rules') -or
+    $null -eq $saturate -or -not $saturate.IsStatic -or
+    $saturate.ReturnType -ne $saturationResult -or
+    $saturationResult.GetConstructors().Count -ne 0 -or
+    $null -eq $saturationResult.GetProperty('Problem') -or
+    $null -eq $saturationResult.GetProperty('Graph') -or
+    $null -eq $saturationResult.GetProperty('Facts')) {
+    throw 'Packaged K5 fact and saturation surface is incomplete.'
 }
 $relation = & (Join-Path $PackageDir 'doccer.exe') relate 0 5 5 9
 if ($LASTEXITCODE -ne 0 -or $relation -ne 'Meets') {

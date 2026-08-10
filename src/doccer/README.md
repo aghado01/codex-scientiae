@@ -6,7 +6,7 @@ consume views, but none owns the interval substrate.
 
 This README is the contract surface. The decision canon, roadmap, and completed-item ledger
 live as current-truth documents in [issues/doccer/planning/](../../issues/doccer/planning/)
-([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D43, the carrier/law
+([decisions.md](../../issues/doccer/planning/decisions.md) — records D1–D44, the carrier/law
 registry, deferrals, question
 ledger — [roadmap.md](../../issues/doccer/planning/roadmap.md) — what is ahead — and
 [ledger.md](../../issues/doccer/planning/ledger.md) — what has landed); per-iteration chip briefs
@@ -119,19 +119,28 @@ immutable ordered master-relative `TextSpan` geometry and canonical string-value
 compatible master plus key defines semantic fact identity. `CanonicalFactTable` deduplicates and
 canonically orders those keys, while `SupportHypergraph` retains one exact fact-table and
 occurrence-batch basis with ordered alternative support. K7's optional seam is only an
-exact-table `FactReference`, not a support graph. `K5-FACT-SUPPORT` is separate from K5b's future
+exact-table `FactReference`, not a support graph. `K5-FACT-SUPPORT` is separate from K5b's
 `K5-SATURATE`; no rule carrier or fixed-point claim belongs to K5a.
+
+D44 freezes and implements K5b's `K5-SATURATE` contract. A `GroundRule` is finite data: one
+conclusion `FactKey` plus ordered premise keys and rule/parameter/occurrence evidence. A
+`SaturationProblem` retains one exact initial `SupportHypergraph`; its finite universe is the union
+of initial and rule-named keys. `FactSaturation.Saturate` computes the least positive closure in key
+space, retains every enabled support, then creates a new canonical table and remaps every edge to
+final ordinals. `SaturationResult` retains the exact problem and result graph. No callback,
+variable-bearing rule language, negation, selection, or scheduler trace enters the contract.
 
 The operation names therefore state their sort: `AllenCompose` (canonical qualitative upper
 approximation), `ConcreteCompose` (exact composition on one carrier), located `Seq`,
 `ComposePairs`, `Saturate`, policy-bearing `Select`, `ComposeOrigins`, and `Materialize`. There is
 no unqualified public `Compose`. Names in this paragraph reserve the public contract vocabulary;
 `AllenCompose`, located `Seq`, the occurrence-level `ComposePairs`, and flat-path
-`PathSelection.Select` are implemented, while the other later-tranche names remain reservations
-rather than implementation claims. The latter is one exact nonnegative-additive complete-path
-executor, not a universal selection carrier. K4c additionally implements the separately named
-`Laminarizer.Admit` and `LaminarHierarchy.NearestContainers`; neither is routed through the path
-selector or an unqualified common `Select`.
+`PathSelection.Select` and `FactSaturation.Saturate` are implemented, while `ComposeOrigins` and
+`Materialize` remain reservations rather than implementation claims. Path selection is one exact
+nonnegative-additive complete-path executor, not a universal selection carrier. K4c additionally
+implements the separately named `Laminarizer.Admit` and
+`LaminarHierarchy.NearestContainers`; neither is routed through the path selector or an
+unqualified common `Select`.
 `Segmentation.FirstOrdinalCompletePath` is the implemented narrow K4a witness operation; it does
 not spend the reserved policy-execution name `Select`. `Pairing.Pair` is the implemented
 strict-stack query over exact occurrence selections; it likewise introduces no unqualified
@@ -229,6 +238,14 @@ owners and Lean reactivation triggers live in the D25 registry in
   duplicate edges while retaining alternative supports, zero-arity seeds, and representable
   cycles; the manual K4c hierarchy diamond supplies one `Ancestor(a,d)` fact with two ordered
   support paths and 120 proposal permutations agree on one canonical value — no rule executes;
+- K5b finite positive ground saturation: `GroundRule` snapshots one conclusion plus ordered
+  premise/rule/parameter/occurrence evidence with value equality and canonical order;
+  `SaturationProblem` retains the exact initial graph and a canonical duplicate-collapsing finite
+  rule set; `FactSaturation.Saturate` computes least closure in semantic-key space, then freezes a
+  new table and remaps every initial and finally enabled rule support to final ordinals over the
+  same exact occurrence batch; `SaturationResult` retains the exact problem and graph. Direct
+  adversaries, all 24 seed/support/rule permutations, the executable hierarchy diamond, and an
+  independent powerset oracle over all 256 two-fact zero/unary programs are green;
 - suppression as named `Admitted`/`Excluded` queries over that algebra, accepting an exact
   suppressor selection with predicate conveniences delegating through it — never a claim property,
   so the same claim suppresses under one question and is the target of the next;
@@ -301,10 +318,10 @@ owners and Lean reactivation triggers live in the D25 registry in
 ## Deliberately absent
 
 These surfaces are absent because their contract or implementation gate is not closed. Contract
-closure is the only authorization gate on engine work; D43 crossed that gate for K5a and its
-carriers have landed. A consumer's arrival prioritizes and validates; it never authorizes,
-and its
-absence is never by itself a reason to leave a gap. Where the brief names a "first consumer"
+closure is the only authorization gate on engine work; D43 and D44 crossed and implemented the
+K5a fact/support and K5b saturation gates. A
+consumer's arrival prioritizes and validates; it never authorizes, and its absence is never by
+itself a reason to leave a gap. Where the brief names a "first consumer"
 trigger, read it as a prioritization default for a contract whose remaining questions a real
 consumer's shapes would answer best; any item may be pulled forward the moment its contract
 closes honestly without one:
@@ -336,14 +353,9 @@ closes honestly without one:
   ship as versioned UCD data and need a data-provenance decision first;
 - persisted batch formats; indexed join strategies;
 - Tier-2 and Tier-3 acceptance — direct-versus-derived matching, tolerances, agreement scores;
-- K5b's executable positive saturation — the K5a fact/support carriers are implemented, but the
-  positive rule carrier, worklist, `Saturate`, and least-fixed-point claim remain a separate open
-  contract with the K4c hierarchy-diamond witness. The sibling K6 exact-tagged-basis
-  origin algebra leads to K7 materialization, and K5b does not block K6 or K7. D35–D40 close K3 and
-  all K4
-  lanes without a common selector: the repeated exact-selection and named-policy stamps are real,
-  but path, packing, cover, laminar, hierarchy, and resolution feasibility/results remain distinct.
-  Further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
+- K6's exact-tagged-basis origin algebra and K7 materialization; K5b is closed and does not block
+  either lane;
+- further path objectives—partial paths, signed/vector scores, maximum weight, fewest edges, or
   other ties—require separately named contracts rather than widening D37 silently. Structural
   optima, hierarchy closure/reduction, and resolution-map composition are likewise separate future
   contracts, not implications of D39;

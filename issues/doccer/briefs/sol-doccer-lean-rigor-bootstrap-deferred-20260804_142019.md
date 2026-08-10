@@ -462,7 +462,7 @@ direct implementation.
 | Additive minimum-cost complete path | D37 direct descending-boundary DAG recurrence; nonnegative bounded `Int64` score domain; exact feasibility/objective/tie stamps; all 16,384 admissibility × binary-cost problems agree with independent complete-path enumeration | before another/optimized backend claims equivalence, signed/generalized objectives or nontrivial partial-path guarantees land, or cross-family reuse makes the recurrence load-bearing |
 | K4c structural validation, explicit hierarchy/incidence, and greedy admission | D39 direct validators/relations; all 1,024 structural masks, 4,096 priority problems, valid bounded nearest-parent families, 4,096 directed graphs, and 2,048 resolution endpoint problems; explicit maximal-not-maximum and envelope-hole counterexamples | before a global optimum, optimized/incremental backend, hierarchy closure/reduction equivalence, resolution-map composition/coverage theorem, or generalized carrier |
 | K5a canonical fact/support identity | D43 immutable reference construction, canonical-order/equality laws, adversarial exact-basis validation, proposal permutations, and a manually supplied two-support diamond | before an alternate, persisted, compressed, or incremental fact/support backend claims the same extensional identity without complete differential evidence |
-| Positive finite saturation reaches one least fixed point | reference worklist plus order-permutation tests and standard theorem citation | before parallel/incremental saturation claims semantic equivalence |
+| Positive finite saturation reaches one least fixed point with complete enabled support | D44 finite data-only ground rules, explicit key-space operator, reference worklist, independent bounded closure/support oracle, and order-permutation tests | before a wider rule carrier or alternate/compressed/parallel/incremental saturation claims the same fact and support semantics |
 | Direct-image maps are lax generally and exact under injectivity | encode the distinction in C# types/contracts and test counterexamples | if a generalized rebase/map API makes equality a reusable public law |
 | Functional origins embed into relation-valued origins | reference relation tests | before origin compression, stage fusion, or functional fast paths |
 | Multi-source origin composition | ordinary relational reference implementation first | leading future Lean candidate if K6/K7 semantics or optimization remain disputed |
@@ -533,16 +533,17 @@ origin/support machinery remains the other leading source.
 ## 2026-08-05 D40 gate reapplication
 
 D40 splits K5a fact/support identity from K5b positive saturation and reapplies signature pressure
-without activating Lean. The first implementation remains owned by a direct worklist,
+without activating Lean. The landed first implementation is owned by a direct worklist,
 order-permutation tests on the K4c diamond witness, and the standard finite monotone
 least-fixed-point theorem under explicit hypotheses. K5a must make those hypotheses structural:
 rules match present positive premises and propose additions, with no absence, deletion, winner, or
 stage-order observation through arbitrary whole-store callbacks.
 
-The then-open question was resolved by D43 below: K5a exposes no executable rule signature. K5b
-reapplies this trigger when its positive rule carrier freezes. Activate if a proof can change that
-carrier or later license parallel/incremental saturation; otherwise formalizing the sole direct
-worklist would still add lifecycle cost without an implementation consequence.
+The then-open K5a question was resolved by D43 below: K5a exposes no executable rule signature.
+D44 later resolves K5b's signature pressure with finite data-only ground implications and reapplies
+the gate without activation. Reactivate if a proof can change that carrier or later license an
+alternate/parallel/incremental saturation backend; otherwise formalizing the sole direct worklist
+would still add lifecycle cost without an implementation consequence.
 
 ## 2026-08-06 D42 V-lane and semantic-bitmap gate split
 
@@ -638,7 +639,34 @@ hierarchy diamond supplies one ancestor fact with two support paths; it does not
 proof pressure can presently change this signature, so Lean remains deferred.
 
 K5b separately owns positive rule execution, finite saturation, support completeness for derived
-facts, and fair-order independence. Reapply the activation gate when that public rule signature
-freezes. An arbitrary whole-store callback remains inadmissible because formalization cannot make
-absence observation, deletion, winner selection, or stage-order dependence monotone after the
-fact.
+facts, and fair-order independence. D44 below freezes that signature and reapplies the gate. An
+arbitrary whole-store callback remains inadmissible because formalization cannot make absence
+observation, deletion, winner selection, or stage-order dependence monotone after the fact.
+
+## 2026-08-09 D44 K5b finite ground-saturation gate
+
+D44 freezes K5b as finite data rather than a callback or premature rule language. A `GroundRule`
+names its conclusion and ordered positive premises as complete `FactKey` values plus ordered
+rule/parameter/occurrence evidence. `SaturationProblem` retains one exact initial K5a support graph
+and a finite canonical rule set. Its universe is the union of initial and rule-named keys, so no
+rule can create a fresh identifier or function term.
+
+The public semantic operator is explicit: add a ground conclusion exactly when every premise is
+already reached. It is inflationary and monotone on a finite powerset, reaches one least fixed point,
+and assigns final fact ordinals only after key-space closure. Support is a final extensional
+projection: preserve every initial edge and add every ground rule enabled by the final fact set,
+not merely the rule that first discovered each conclusion. This makes fact closure, alternative-
+support completeness, and fair-order independence precise without exposing a scheduler trace.
+
+The gate is reapplied and remains deferred. The direct C# worklist, independent powerset oracle,
+rule/seed/support permutations, key-remap adversaries, and executable diamond own the first
+implementation without affecting the public signature. Reactivate before a
+variable-bearing or callback rule carrier claims the same theorem, or before an alternate,
+compressed, parallel, or incremental backend claims the same facts and complete support. A future
+schema-to-ground-rule compiler owns a separate soundness obligation.
+
+The reference implementation landed 2026-08-09 (harness 2091→2324) with no alternate backend and
+no wider carrier. Its independent closed-superset oracle exhausts all 256 programs over the
+complete two-fact zero/unary vocabulary; 24 seed/support/rule permutations, the ordinal-remap
+adversary, and the executable diamond cover the remaining D44 witnesses. This discharges the
+registered first-implementation burden without activating Lean or changing the reactivation gate.

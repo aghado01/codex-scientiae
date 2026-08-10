@@ -31,7 +31,7 @@ FactReference         exact fact-table identity retained without a support graph
 
 K5a adds no rule carrier and no `Saturate` implementation. A support edge is immutable supplied
 evidence, not an executable callback and not a claim that Doccer has verified the adapter's domain
-reasoning. K5b will later define positive rule execution over these values.
+reasoning. D44 defines K5b positive ground-rule execution over these values.
 
 The existing `SpanBatch` is the claim-occurrence table. K5a does not duplicate its ordinals,
 producer metadata, or immutable ownership in a new `ClaimOccurrenceTable` type.
@@ -132,8 +132,8 @@ tuple, or occurrence tuple remains an alternative support for the same conclusio
 
 Empty-premise and empty-occurrence edges are admitted as named zero-arity seeds. Cycles and
 self-support are representable because recursive fixed-point provenance is a hypergraph, not
-necessarily a proof tree. K5a promises structural well-formedness only. K5b must ensure every fact
-it derives has a support produced by its admitted positive rule execution.
+necessarily a proof tree. K5a promises structural well-formedness only. D44 requires every
+K5b-derived fact to have support from an enabled admitted ground rule.
 
 Semiring provenance remains a later evaluated/quotiented view. It cannot replace the primary
 hypergraph because ordinary commutative annotations discard rule identity and premise order.
@@ -154,12 +154,12 @@ D43 replaces the combined registry row with two obligations:
 | ID | Owner now | Activation boundary |
 |---|---|---|
 | `K5-FACT-SUPPORT` | direct immutable construction, adversarial validation, value/equality laws, and proposal-permutation tests | alternate, persisted, compressed, or incremental fact/support storage claims the same extensional identity without complete differential evidence |
-| `K5-SATURATE` | K5b reference worklist, rule/seed permutations, the standard finite monotone fixed-point theorem, and the hierarchy diamond | a proof can change the K5b public rule carrier, or a parallel/incremental backend claims semantic equivalence |
+| `K5-SATURATE` | D44 finite ground rules, reference worklist, independent closure/support oracle, rule/seed permutations, explicit finite monotone theorem, and executable hierarchy diamond | a wider rule carrier or alternate/compressed/parallel/incremental backend claims the same fact and complete-support semantics |
 
 The D40 signature-pressure reapplication is discharged without activating Lean. K5a exposes no
-executable rule signature and makes no least-fixed-point claim. K5b must reapply the gate when its
-positive rule carrier freezes. An arbitrary whole-store callback that can observe absence, delete,
-select winners, or inspect stage order cannot satisfy `K5-SATURATE`.
+executable rule signature and makes no least-fixed-point claim. D44 later reapplies and defers K5b's
+gate under finite data-only ground implications. An arbitrary whole-store callback that can observe
+absence, delete, select winners, or inspect stage order cannot satisfy `K5-SATURATE`.
 
 ## 7. Bounded K5a witness
 
@@ -172,8 +172,8 @@ a -> b -> d
 
 The K5a witness constructs four Parent facts and one `Ancestor(a,d)` fact. Two supplied support
 edges for the ancestor retain the ordered paths through `b` and `c`. This establishes identity and
-evidence behavior without performing saturation. K5b later derives the same result under seed and
-rule permutations.
+evidence behavior without performing saturation. D44 later derives the same outer ancestor with
+two branches while also adding the four direct Ancestor facts and all six enabled rule supports.
 
 The implementation gate must additionally cover:
 
@@ -244,3 +244,7 @@ No non-goal was touched: no rule carrier, `Saturate`, second occurrence table, m
 persisted ID, wire format, payload/comparer, acyclicity claim, or Lean activation. Canon updated:
 D43 marked implemented, ledger row added, roadmap/workplan/README status flipped. K5b contract
 work is unblocked; K6 remains independently available.
+
+The unblocked K5b handoff was frozen and subsequently implemented by D44's
+[finite positive ground-saturation contract and report](sol-doccer-k5b-saturation-contract-20260809_215158.md)
+(harness 2091→2324; K5b closed).

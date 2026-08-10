@@ -10,7 +10,7 @@ using CodexSci.Doccer;
 
 namespace CodexSci.Doccer.Tests;
 
-internal static class Program
+internal static partial class Program
 {
     private static int _checks;
 
@@ -100,6 +100,14 @@ internal static class Program
             SupportEdgeIsAnOrderedEvidenceValue();
             SupportHypergraphValidatesExactBasesAndRetainsAlternatives();
             K5aHierarchyDiamondWitnessSuppliesAncestorSupport();
+            GroundRuleIsAnOrderedGroundEvidenceValue();
+            SaturationProblemValidatesAndCanonicalizesRules();
+            FactSaturationHandlesFinitePositiveClosure();
+            FactSaturationRetainsCompleteEnabledSupport();
+            FactSaturationRebasesThroughKeyOrderShifts();
+            FactSaturationIsPermutationIndependent();
+            K5bHierarchyDiamondSaturatesCanonically();
+            FactSaturationMatchesIndependentBoundedOracle();
             Console.WriteLine($"doccer contract harness: {_checks} checks passed");
             return 0;
         }

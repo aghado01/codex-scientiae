@@ -14,7 +14,8 @@ The evidence base is:
 - [the post-K4 review](../discussions/opus-doccer-k3k4-review-k5k7-notes.md) and
   [D40 correction](../briefs/sol-doccer-d40-register-equality-k5k7-correction-20260805_221200.md),
   as superseded for K5a by the
-  [D43 fact/support contract](../briefs/sol-doccer-k5a-contract-20260809_193131.md);
+  [D43 fact/support contract](../briefs/sol-doccer-k5a-contract-20260809_193131.md) and for K5b by
+  the [D44 saturation contract](../briefs/sol-doccer-k5b-saturation-contract-20260809_215158.md);
 - [the round-2 expansion transcript](../discussions/opus-doccer-expansion-round2.md), its
   [Grok ideation source](../discussions/grok-doccer-expansion-round2-ideation-20260804.md), and the
   [D41 capability excavation](../briefs/sol-doccer-expansion-round2-adjudication-20260806_093159.md);
@@ -756,6 +757,9 @@ D40 splits this lane so identity/support can close before saturation without ser
 SpanBatch              existing exact occurrence table
 CanonicalFactTable     one identity per semantic fact key
 SupportHypergraph      rule application + ordered premise IDs
+GroundRule             finite data-only positive implication in FactKey space
+SaturationProblem      exact initial support graph + canonical ground rules
+SaturationResult       exact problem stamp + newly frozen support graph
 SemiringView           optional quotient/evaluation
 ~~~
 
@@ -818,28 +822,60 @@ Exit gate:
   executing saturation; and
 - `FactReference` remains valid without retaining a `SupportHypergraph`.
 
-#### K5b: finite positive saturation
+#### K5b: finite positive ground saturation (closed 2026-08-09)
 
-After K5a closes, add finite positive worklist saturation. Rules must be positive and monotone by
-construction: they match named present premises and propose additions. An arbitrary whole-store
-callback that can inspect absence, delete, select winners, or observe stage order does not satisfy
-this contract.
+D44 and its
+[saturation brief](../briefs/sol-doccer-k5b-saturation-contract-20260809_215158.md) replace the
+provisional callback/combinator shape with finite data-only ground implications. `GroundRule`
+retains one conclusion `FactKey`, required rule ID, ordered premise keys, ordered parameters, and
+ordered exact-batch occurrence ordinals. It has no variables, matcher, guard, delegate, evolving
+store view, or proposal method. Adapter-side matching may compile to this carrier, but its
+correctness and termination are outside K5b.
+
+`SaturationProblem` retains one exact initial `SupportHypergraph` and a canonical snapshotted rule
+set. Every initial table fact is a seed, including unsupported facts; initial edges are preserved
+evidence rather than executable rules. The finite universe is exactly the union of initial keys and
+all premise/conclusion keys named by the finite rule set. Geometry and occurrence ordinals validate
+against the initial graph's master and exact occurrence batch.
+
+The positive operator adds a rule conclusion whenever every premise position is already reached.
+It is inflationary and monotone, and the finite universe gives one least fixed point independent of
+fair worklist order. A zero-premise rule is immediately enabled. Unseeded cycles derive nothing;
+reached cycles and self-rules contribute their finite support edges.
+
+Support semantics are complete relative to the frozen program: retain every initial edge and one
+edge for every ground rule enabled by the final closure, even if that rule did not first discover
+its conclusion. Worklist identity is `FactKey` value. After closure, create a new
+`CanonicalFactTable`, remap initial and derived supports to final ordinals, and create a new
+`SupportHypergraph` over the same exact occurrence batch. Input `FactReference` values never rebind.
 
 Exit gate:
 
-- rules are monotone and inflationary over a finite canonical fact universe;
-- fair evaluation order yields the same least fixed point;
-- repeated derivations add support, not duplicate semantic facts;
-- every derived fact has a sound support edge;
-- rule ID, ordered premise IDs, parameters, and originating occurrence IDs remain available;
-- semiring provenance is derived and may quotient proof structure;
-- negation, winner selection, and stage ordering remain explicit orchestration boundaries.
+- rule values, problem inputs, and every supplied sequence are immutable and canonicalized;
+- the finite key universe, monotone operator, least fixed point, and strict-addition bound are
+  explicit;
+- fair rule, seed, initial-support, and agenda orders yield the same final fact and edge sequences;
+- every derived fact has support, every enabled alternative support remains, and initial facts may
+  remain unsupported;
+- zero-arity rules, duplicate premises, disabled keys, self-rules, reachable/unreachable cycles,
+  exact duplicate rules, and key-order shifts have explicit behavior;
+- final ordinals are assigned only after semantic closure and all initial edges rebase by key;
+- the executable four-node K4c diamond derives four direct ancestors and one outer ancestor, with
+  `Ancestor(a,d)` represented once and supported through both branches; and
+- a direct worklist agrees with an independent bounded repeated-scan/powerset oracle.
 
-The bounded witness is a four-node K4c hierarchy diamond. Positive parent/ancestor rules derive one
-canonical outer ancestor by two paths, retaining two support edges without duplicating the fact;
-seed and rule permutations must reach the same fact set. Start with restricted host-language rule
-combinators. A serializable grammar/rule IR waits for at least two adapters demonstrating repeated
-structure.
+The implementation lands all four D44 owners in `src/doccer/Facts/Saturation.cs`. The reference
+agenda operates only on `FactKey` values; final support construction remaps every initial edge and
+every finally enabled ground rule through one newly frozen canonical table over the original exact
+occurrence batch. Direct refusal/snapshot/edge-case tests, all 24 seed × initial-support × rule
+permutations, and the executable hierarchy diamond cover the adversarial gate. An independent
+closed-superset powerset oracle exhausts all 256 programs over the complete two-fact zero/unary
+rule vocabulary and agrees on both fact closure and enabled support. Harness 2091→2324 with zero
+build warnings; K5b is closed.
+
+A variable-bearing Horn/Datalog grammar, arbitrary callback carrier, serializable rule IR,
+negation, deletion, aggregation, winner/stage policy, proof-tree unfolding, semiring evaluation,
+parallel/incremental execution, and persistence remain separate contracts.
 
 ### K6 — origin algebra before materialization
 
@@ -1065,10 +1101,13 @@ no-false-negative claim, or if the public contract changes the inclusion to equa
 D43 discharges D40's K5a signature-pressure review without activation. K5a freezes only finite
 immutable identity and supplied-support values, covered by direct construction, adversarial
 validation, and proposal-permutation tests. It exposes no executable rule carrier and makes no
-least-fixed-point claim. K5b must reapply the gate when its positive rule signature freezes. Its
-first saturation surface remains owned by a direct worklist, rule/seed-permutation tests, and the
-standard monotone least-fixed-point theorem under explicit hypotheses. Activate if proof pressure
-can change that rule carrier or before a parallel/incremental backend claims equivalence.
+least-fixed-point claim. D44 then reapplies and discharges the K5b gate under a finite data-only
+`GroundRule` carrier: the finite universe and positive operator are explicit, and no callback can
+inspect an evolving store. Its first saturation surface remains owned by a direct worklist, an
+independent repeated-scan/powerset oracle, rule/seed/support permutations, and the stated monotone
+least-fixed-point theorem. Reactivate before a changed variable-bearing/callback carrier or an
+alternate, parallel, compressed, or incremental backend claims the same fact and complete-support
+semantics.
 
 D42 splits D41's V-lane gate without declaring a present activation:
 
@@ -1124,7 +1163,7 @@ and published formalization evidence. They do not justify a Lean bootstrap by th
 | K4b | D37's nonnegative additive complete-path minimum is covered by a direct DAG recurrence and 16,384-problem enumeration oracle; reactivate before another backend/generalized objective/partial guarantee |
 | K4c | D39's family-specific validators, explicit relations, and inclusion-maximal greedy admission are covered by independent bounded oracles; reactivate before an optimum, alternate backend, hierarchy closure/reduction law, or resolution-map composition/equivalence claim |
 | K5a | compatible-master fact-key identity, canonical deduplication/order, exact table/occurrence evidence, immutable support, and alternative-support preservation |
-| K5b | structurally positive rule monotonicity, finite fixed-point termination, rule-order independence, and derived-support completeness |
+| K5b | D44 finite ground-rule monotonicity, fixed-point termination, key-to-final-ordinal freeze, fair-order independence, and complete enabled support |
 | K6-K7 | functional-origin embedding, origin composition, output-piece partition and reconstruction |
 | V0 carrier | compatible-window identity/equality, ordinary vector empties, residual sort, and distinct direct/harvest exits |
 | V prefix scan | pointwise XOR/parity, prefix/transition inversion, chunk/carry agreement, logical-tail independence, residual refinement, and V2 backend equivalence |
@@ -1226,10 +1265,9 @@ stack pairing closure as D32, the joint K3/K4a contract as D33, its peer-review 
 the joint located/graph core as D35, the flat result closure as D36, additive complete-path
 selection as D37, the K4c contract as D38, structural-family closure as D39, the post-K4
 coherence/K5–K7 sequencing correction as D40, the round-2 expansion adjudication as D41, the
-V-lane formal-assurance split as D42, and the K5a fact/support contract as D43. K2, K3, and all K4
-lanes are closed. K5a source implementation against D43 is the default active next chip; K6
-origin-contract work is an independently available sibling. K5b saturation follows the K5a
-implementation and does not block K6 or K7. D41 records the
+V-lane formal-assurance split as D42, the K5a fact/support contract as D43, and the finite positive
+ground-saturation contract as D44. K2, K3, all K4 lanes, K5a, and K5b are closed. K6
+origin-contract work is the default active K chip; K5b does not block K6 or K7. D41 records the
 round-2 capability excavation without changing those edges: V0/V1, A0–A2, F7a, F8a/F8b contract
 work, and F9a current-population work are independently available. V2 follows reference semantics
 and measured differential evidence; F7b/F7c and fact/origin-specific feature recipes wait only for
@@ -1244,9 +1282,9 @@ closure backend, another K4 backend claims equivalence, generalized objectives/c
 partial paths gain a nontrivial guarantee, structural selection promises an optimum, or hierarchy
 closure/reduction or resolution-map composition becomes load-bearing. D43 discharges D40's K5a
 review without activating Lean because fact/support canonicalization exposes no executable rule
-carrier or fixed-point claim. Reapply when K5b freezes its structurally positive rule signature;
-activate if proof pressure changes that signature or later licenses parallel/incremental
-saturation. D42 splits
+carrier or fixed-point claim. D44 reapplies and defers the K5b gate because finite data-only ground
+rules make the positive operator and termination hypotheses structural. Reapply for a wider rule
+carrier or alternate/parallel/incremental/compressed saturation semantics. D42 splits
 D41's V-lane gate into carrier signature, prefix-scan refinement, harvest, packed `SpanSet`,
 and suppression-query obligations. V0/V1 remain unblocked. Reapply per V2 backend; presume
 activation when a packed region or suppression backend claims arbitrary-input interchangeability,
