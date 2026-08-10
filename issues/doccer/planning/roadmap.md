@@ -115,8 +115,9 @@ order is:
    budgeted flat chunks, fixed bounded macro substitution with composed origins, and explicitly
    bounded dynamic expansion as one integrated suite. Their first bounded witnesses already land
    with K2, K3/K4, and K6/K7; K8 proves composition across the completed kernel.
-5. **Downstream and optional branches:** stable carrier identities unlock CLI wire forms, durable
-   adapters, persistence, and indexes. Most substantial F8/F9 implementations retain a post-K
+5. **Downstream commitments and optional branches:** stable carrier identities unlock the
+   committed separate CLI module and its wire forms, durable adapters, persistence, and indexes.
+   Most substantial F8/F9 implementations retain a post-K
    execution default, but no family has a blanket K8 type dependency: F7a correspondence,
    F8a/F8b low-level contracts, and F9a views over current populations are independent; F7b/F7c
    and fact/origin feature recipes wait only for the carriers they name. D8/D10 decide kernel
@@ -165,11 +166,15 @@ A future packed `SpanSet` or D3 suppression bitmap advertised as interchangeable
 arbitrary inputs presumptively meets optimization pressure; its chip must activate the smallest
 obligation unless a cheaper complete certificate or a weaker claim honestly closes the gate.
 
-**First CLI verbs (D13) remain deferred pending surface design.** The operational terminology is
-still a catalog, not a contract, and the wire format waits for stable carrier identities and the
-latent-manuscript node-stream schema. The current `inspect`/`relate` commands remain disposable
-developer diagnostics. Durable adapters remain last: PowerShell veneers and LaTeX consumers become
-thin clients only after the relevant Doccer surface stabilizes.
+**The separate public CLI module is committed by D13; its first durable vertical slice remains
+deferred.** The [CLI-module return packet](../briefs/sol-doccer-cli-module-deferred-20260809_180623.md)
+records the one-way module boundary, ThermoMapper `user-repl` lift, donor defects to avoid, and
+reactivation gate. Exact command grammar and carrier-specific wire forms wait for stable identities;
+the latent-manuscript node-stream schema gates document-stream commands, not the module or an
+independently closed low-level carrier. Minimal cross-process wire work precedes and informs F2.
+The current `inspect`/`relate` commands remain disposable developer diagnostics. Durable adapters
+remain last: PowerShell veneers and LaTeX consumers become thin clients only after the relevant
+Doccer surface stabilizes.
 
 Other independent closures remain available under D14: V0/V1, the A0–A2 measured backend lane,
 F7a correspondence, F8a/F8b low-level contract or current-carrier witnesses, F9a counted/online

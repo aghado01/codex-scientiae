@@ -65,11 +65,15 @@ mathematical language is the **math channel**, not a register, and is neither a 
 nor a dependency of canonical facts or saturation. Existing `math-register` repository paths use
 the legacy term pending a separate migration (D40).
 
-The domain-agnostic surface is the DLL (operation granularity, in-process composition) and the
-CLI (task granularity — one-shot à la carte jobs, with domain knowledge arriving as data
-inventories, never as flags or verbs). PowerShell helpers are site-local ergonomics and domain
-adapters, deliberately thin: anything a graduated, cross-project doccer would have to carry
-travels in the C# surface. One compat note for pre-graduation DLL consumers (T2-5):
+The domain-agnostic surface is the declarative engine DLL (operation granularity, in-process
+composition) and a committed separate public CLI module over it (task granularity — one-shot or
+stacked à la carte jobs, with domain knowledge arriving as data inventories, never as flags or
+verbs). CLI implementation is deferred under its
+[return packet](../../issues/doccer/briefs/sol-doccer-cli-module-deferred-20260809_180623.md); the
+current brewery commands are developer diagnostics rather than that module. PowerShell helpers are
+site-local ergonomics and domain adapters, deliberately thin: anything a graduated, cross-project
+doccer would have to carry travels in the C# surface. One compat note for pre-graduation DLL
+consumers (T2-5):
 `PatternRule`'s positional parameter order places `scope` before `priority` — bind both by name.
 
 ## Carrier boundary and algebra names
