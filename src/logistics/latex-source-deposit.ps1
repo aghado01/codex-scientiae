@@ -7,14 +7,139 @@
   provider projection, article-schema validation, and immutable publication of article.json.
 
   Publish-LatexSourceTree returns the scalar/path boundary payload. New-LatexSourceDeposit supplies
-  a finalizer so the document lock remains held through the Python publication step. The older
-  source-deposit.ps1 currently supplies shared extraction-address and lock primitives.
+  a finalizer so the document lock remains held through the Python publication step.
 #>
 
 . "$PSScriptRoot/probe-ledger.ps1"
-. "$PSScriptRoot/source-deposit.ps1"
+. "$PSScriptRoot/latex-source.ps1"
 Import-Module (Join-Path $PSScriptRoot '../jsonl_engine-client/jsonl_engine-client.psd1') `
     -ErrorAction Stop
+
+function Resolve-SourceDepositScopedPath {
+    param(
+        [Parameter(Mandatory)] [string]$Path,
+        [Parameter(Mandatory)] [string]$DocumentDir
+    )
+    $candidate = if ([System.IO.Path]::IsPathRooted($Path)) {
+        $Path
+    } else {
+        Join-Path $DocumentDir $Path
+    }
+    return (Resolve-Path -LiteralPath $candidate -ErrorAction Stop).Path
+}
+
+function Resolve-SourceDepositArchive {
+    param(
+        [Parameter(Mandatory)] [string]$DocumentDir,
+        [Parameter(Mandatory)] [string]$Slug,
+        [string]$ArchivePath = ''
+    )
+    $canonical = Join-Path $DocumentDir "$Slug.tar.gz"
+    $alias = Join-Path $DocumentDir "arXiv-$Slug.tar.gz"
+    if ($ArchivePath) {
+        $selected = Resolve-SourceDepositScopedPath -Path $ArchivePath -DocumentDir $DocumentDir
+        if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
+            (Test-PathHasReparsePoint -Path $selected) -or
+            -not [System.IO.File]::Exists($selected)) {
+            throw "source archive must be a file inside the document directory: '$ArchivePath'"
+        }
+        $leaf = Split-Path -Leaf $selected
+        if ($leaf -cnotin @("$Slug.tar.gz", "arXiv-$Slug.tar.gz")) {
+            throw "source archive must be named '$Slug.tar.gz' or 'arXiv-$Slug.tar.gz', not '$leaf'"
+        }
+        return $selected
+    }
+    $found = @(@($canonical, $alias) | Where-Object { [System.IO.File]::Exists($_) })
+    if ($found.Count -eq 0) {
+        throw "no source archive found; expected '$Slug.tar.gz' or 'arXiv-$Slug.tar.gz' in '$DocumentDir'"
+    }
+    if ($found.Count -gt 1) {
+        throw "both canonical and alias source archives exist; refusing to choose between '$canonical' and '$alias'"
+    }
+    $selected = [System.IO.Path]::GetFullPath($found[0])
+    if (Test-PathHasReparsePoint -Path $selected) {
+        throw "source archive must not traverse a symbolic link or reparse point: '$selected'"
+    }
+    return $selected
+}
+
+function Resolve-SourceDepositProviderMetadata {
+    param(
+        [Parameter(Mandatory)] [string]$DocumentDir,
+        [Parameter(Mandatory)] [string]$Slug,
+        [string]$ProviderMetadataPath = ''
+    )
+    if ($ProviderMetadataPath) {
+        $selected = Resolve-SourceDepositScopedPath -Path $ProviderMetadataPath -DocumentDir $DocumentDir
+        if (-not (Test-LatexPathWithinRoot -Path $selected -Root $DocumentDir) -or
+            (Test-PathHasReparsePoint -Path $selected) -or
+            -not [System.IO.File]::Exists($selected)) {
+            throw "provider metadata must be a file inside the document directory: '$ProviderMetadataPath'"
+        }
+        return $selected
+    }
+    $candidate = Join-Path $DocumentDir "$Slug.arxiv.json"
+    if (Test-PathHasReparsePoint -Path $candidate) {
+        throw "provider metadata must not traverse a symbolic link or reparse point: '$candidate'"
+    }
+    if ([System.IO.File]::Exists($candidate)) { return [System.IO.Path]::GetFullPath($candidate) }
+    return $null
+}
+
+if ($null -eq $script:SourceDepositHeldLocks) {
+    $script:SourceDepositHeldLocks =
+        [System.Collections.Concurrent.ConcurrentDictionary[string, byte]]::new(
+            [System.StringComparer]::Ordinal)
+}
+
+function Enter-SourceDepositLock {
+    param([Parameter(Mandatory)] [string]$DocumentDir, [int]$TimeoutSeconds = 15)
+    $canonical = [System.IO.Path]::GetFullPath($DocumentDir)
+    if ([System.OperatingSystem]::IsWindows()) { $canonical = $canonical.ToUpperInvariant() }
+    $digest = [System.Convert]::ToHexString(
+        [System.Security.Cryptography.SHA256]::HashData(
+            [System.Text.UTF8Encoding]::new($false).GetBytes($canonical)
+        )
+    ).ToLowerInvariant()
+    $name = "codex-scientiae-source-deposit-$($digest.Substring(0, 32))"
+    if (-not $script:SourceDepositHeldLocks.TryAdd($name, [byte]0)) {
+        throw "timed out waiting for the source-deposit lock: '$canonical'"
+    }
+
+    $mutex = $null
+    $acquired = $false
+    try {
+        $mutex = [System.Threading.Mutex]::new($false, $name)
+        try {
+            $acquired = $mutex.WaitOne([TimeSpan]::FromSeconds([math]::Max(0, $TimeoutSeconds)))
+        }
+        catch [System.Threading.AbandonedMutexException] {
+            # The prior owner died while holding the mutex; this caller now owns it.
+            $acquired = $true
+        }
+        if (-not $acquired) {
+            throw "timed out waiting for the source-deposit lock: '$canonical'"
+        }
+        return [pscustomobject]@{ name = $name; mutex = $mutex }
+    }
+    catch {
+        if ($mutex) { $mutex.Dispose() }
+        [byte]$removed = 0
+        [void]$script:SourceDepositHeldLocks.TryRemove($name, [ref]$removed)
+        throw
+    }
+}
+
+function Exit-SourceDepositLock {
+    param([object]$Lock)
+    if (-not $Lock) { return }
+    try { $Lock.mutex.ReleaseMutex() }
+    finally {
+        $Lock.mutex.Dispose()
+        [byte]$removed = 0
+        [void]$script:SourceDepositHeldLocks.TryRemove([string]$Lock.name, [ref]$removed)
+    }
+}
 
 # The probe set this transaction is accountable for. Adding a probe to the code without adding it
 # here fails Assert-ProbeCoverage, and so does the reverse — an entry no code path backs.

@@ -6,10 +6,11 @@
   its document directory. A bounded metadata.json read remains available for deposits not yet migrated.
   This file alone owns archive/slug inference, `{slug}-latex`, `-ReuseSource`, arbitrary source-work
   overrides, and the retired helper names. Default archive-backed use standardizes the leaf through
-  Initialize-LatexSourceDeposit before handing control to the production entrypoint.
+  New-LatexSourceDeposit before handing control to the production entrypoint.
 #>
 
 . "$PSScriptRoot/latex-ingest.ps1"
+. "$PSScriptRoot/../logistics/latex-source-deposit.ps1"
 
 # The current deposit convention's address, kept here because this shim is its only consumer:
 # production reaches the source tree through a validated manifest, not by deriving `{slug}-tex`
@@ -140,16 +141,20 @@ function Invoke-ArxivLatexToMarkdownLegacy {
     # surface can reuse, extract, or initialize source state. The conversion core rereads the same pin.
     $null = Read-LatexPatchSet -DocumentDir $documentDir -Slug $Slug `
         -ExpectedPatchIdentity $ExpectedPatchIdentity
-    $manifestPath = Join-Path $documentDir 'metadata.json'
+    $articlePath = Join-Path $documentDir 'article.json'
+    $legacyManifestPath = Join-Path $documentDir 'metadata.json'
+    $manifestPath = if ([System.IO.File]::Exists($articlePath)) { $articlePath }
+        elseif ([System.IO.File]::Exists($legacyManifestPath)) { $legacyManifestPath }
+        else { $null }
 
-    # Once a deposit is initialized, metadata.json is authoritative even if an old alias supplied by a
+    # Once a deposit is initialized, the sentinel is authoritative even if an old alias supplied by a
     # caller was normalized away. Explicit source-work overrides remain a compatibility escape hatch.
-    if ([System.IO.File]::Exists($manifestPath) -and -not $SourceWorkDir) {
+    if ($manifestPath -and -not $SourceWorkDir) {
         $manifest = Read-SourceDepositJson -Path $manifestPath
         if ([string]$manifest.slug -ne $Slug) {
-            throw "compat: requested slug '$Slug' disagrees with metadata.json slug '$($manifest.slug)'"
+            throw "compat: requested slug '$Slug' disagrees with deposit sentinel slug '$($manifest.slug)'"
         }
-        if ($MainTex) { Write-Warning 'compat: -MainTex is ignored because metadata.json owns the validated entrypoint' }
+        if ($MainTex) { Write-Warning 'compat: -MainTex is ignored because the deposit sentinel owns the validated entrypoint' }
         return Invoke-ArxivLatexToMarkdown `
             -MetadataPath $manifestPath -OutDir $OutDir -DeliverableDir $DeliverableDir `
             -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot -ExpectedPatchIdentity $ExpectedPatchIdentity `
@@ -184,15 +189,15 @@ function Invoke-ArxivLatexToMarkdownLegacy {
     }
 
     if (-not [System.IO.File]::Exists($requestedArchive)) {
-        throw "compat: LaTeX source archive not found and no initialized metadata.json exists: '$requestedArchive'"
+        throw "compat: LaTeX source archive not found and no initialized deposit sentinel exists: '$requestedArchive'"
     }
     if (Test-LegacyLatexSourceAvailable (Get-LegacyLatexSourceWorkDir $requestedArchive $Slug)) {
-        Write-Warning "compat: legacy '$Slug-latex' remains untouched; initialization will publish '$Slug-tex' from the archive"
+        Write-Warning "compat: legacy '$Slug-latex' remains untouched; deposit will publish '$Slug-tex' from the archive"
     }
-    $initialized = Initialize-LatexSourceDeposit -DocumentDir $documentDir -Slug $Slug `
+    $initialized = New-LatexSourceDeposit -DocumentDir $documentDir -Slug $Slug `
         -ArchivePath $requestedArchive -MainTex $MainTex
     return Invoke-ArxivLatexToMarkdown `
-        -MetadataPath $initialized.metadata_path -OutDir $OutDir -DeliverableDir $DeliverableDir `
+        -MetadataPath $initialized.ManifestPath -OutDir $OutDir -DeliverableDir $DeliverableDir `
         -RunDir $RunDir -ArtifactsRoot $ArtifactsRoot -ExpectedPatchIdentity $ExpectedPatchIdentity `
         -EnableEmbeddedToc:$EnableEmbeddedToc -DisableTreeToc:$DisableTreeToc `
         -DisableJsonlToc:$DisableJsonlToc -FaithfulNumbering:$FaithfulNumbering

@@ -90,18 +90,25 @@ Describe 'latex-ingest manifest execution and run addressing' {
             return
         }
         $root = New-LatexIngestIntegrationRoot -Name 'figures-e2e' -EphemeralRoot $TestDrive
+        $document = Join-Path $root 'p'
         $out = Join-Path $root 'out'
         $run = Join-Path $root 'runs/default'
-        New-Item -ItemType Directory -Force -Path $out | Out-Null
-        $archive = Join-Path $root 'p.tar.gz'
+        New-Item -ItemType Directory -Force -Path $document, $out | Out-Null
+        $archive = Join-Path $document 'p.tar.gz'
         New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
                 'main.tex' = '\documentclass{article}\begin{document}\section{Setup}Fig: \includegraphics{figs/arch}\end{document}'
                 'figs/arch.png' = [byte[]](137, 80, 78, 71)
             })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'p'
-        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $initialized.source_path).sha256
+        if (-not $script:RepositoryPythonPath) {
+            Set-ItResult -Skipped -Because 'the repository Python environment is absent'
+            return
+        }
+        $initialized = New-LatexSourceDeposit -DocumentDir $document -Slug 'p' `
+            -PythonPath $script:RepositoryPythonPath
+        $sourcePath = Join-Path $document 'p-tex'
+        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $sourcePath).sha256
         $shelf = Join-Path $root 'shelf'
-        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
+        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.ManifestPath -OutDir $out `
             -DeliverableDir $shelf -RunDir $run
         $r.figures | Should -Be 1
         $r.audits.math_render.schema | Should -Be 'math-render-audit/1'
@@ -120,12 +127,12 @@ Describe 'latex-ingest manifest execution and run addressing' {
         $out2 = Join-Path $root 'out2'
         $run2 = Join-Path $root 'runs/embedded-toc'
         New-Item -ItemType Directory -Force -Path $out2 | Out-Null
-        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out2 `
+        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.ManifestPath -OutDir $out2 `
             -RunDir $run2 -EnableEmbeddedToc
         (Get-Content (Join-Path $out2 'p-latex.md') -Raw) |
             Should -Match '(?s)## Contents\n\n- \[Setup\]\(#setup\)\n\n## Setup'
         Test-Path (Join-Path $out 'p/arch.png') | Should -BeTrue
-        $r.tex | Should -Be (Join-Path $root 'p-tex')
+        $r.tex | Should -Be $sourcePath
         Test-Path (Join-Path $r.tex 'main.tex') | Should -BeTrue
         (Get-LatexSourceTreeFingerprint -RootPath $r.tex).sha256 | Should -Be $sourceHash
         $r.source_mode | Should -Be 'manifest'
@@ -138,20 +145,26 @@ Describe 'latex-ingest manifest execution and run addressing' {
             return
         }
         $root = New-LatexIngestIntegrationRoot -Name 'allocated-runs' -EphemeralRoot $TestDrive
+        $document = Join-Path $root 'q'
         $out = Join-Path $root 'out'
         $artifacts = Join-Path $root 'artifacts'
-        New-Item -ItemType Directory -Force -Path $out | Out-Null
-        $archive = Join-Path $root 'q.tar.gz'
+        New-Item -ItemType Directory -Force -Path $document, $out | Out-Null
+        $archive = Join-Path $document 'q.tar.gz'
         New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
                 'main.tex' = '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
             })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'q'
-        $manifestHash = (Get-FileHash $initialized.metadata_path -Algorithm SHA256).Hash
-        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $initialized.source_path).sha256
+        if (-not $script:RepositoryPythonPath) {
+            Set-ItResult -Skipped -Because 'the repository Python environment is absent'
+            return
+        }
+        $initialized = New-LatexSourceDeposit -DocumentDir $document -Slug 'q' `
+            -PythonPath $script:RepositoryPythonPath
+        $manifestHash = (Get-FileHash $initialized.ManifestPath -Algorithm SHA256).Hash
+        $staged = Join-Path $document 'q-tex'
+        $sourceHash = (Get-LatexSourceTreeFingerprint -RootPath $staged).sha256
 
-        $r1 = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
+        $r1 = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.ManifestPath -OutDir $out `
             -ArtifactsRoot $artifacts
-        $staged = Join-Path $root 'q-tex'
         Test-Path (Join-Path $staged 'main.tex') | Should -BeTrue
         $runs = Join-Path $artifacts 'latex-ingest/runs'
         Test-Path $runs | Should -BeTrue
@@ -163,10 +176,10 @@ Describe 'latex-ingest manifest execution and run addressing' {
         $r1.audits.math_render.report_path | Should -Be $mathAudits[0].FullName
         @(Get-ChildItem $staged -Filter '*.oracle-counts.json').Count | Should -Be 0
 
-        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path -OutDir $out `
+        $null = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.ManifestPath -OutDir $out `
             -ArtifactsRoot $artifacts
         @(Get-ChildItem $runs -Directory).Count | Should -BeGreaterThan 1
-        (Get-FileHash $initialized.metadata_path -Algorithm SHA256).Hash | Should -Be $manifestHash
+        (Get-FileHash $initialized.ManifestPath -Algorithm SHA256).Hash | Should -Be $manifestHash
         (Get-LatexSourceTreeFingerprint -RootPath $staged).sha256 | Should -Be $sourceHash
         @(Get-ChildItem $staged -File | Where-Object { $_.Extension -in '.json', '.jsonl' }).Count |
             Should -Be 0
@@ -179,20 +192,27 @@ Describe 'latex-ingest manifest execution and run addressing' {
             return
         }
         $root = New-LatexIngestIntegrationRoot -Name 'explicit-layout' -EphemeralRoot $TestDrive
+        $document = Join-Path $root 'z'
         $runDir = Join-Path $root 'elsewhere/runs/custom'
         $out = Join-Path $root 'elsewhere/lane'
         $shelf = Join-Path $root 'elsewhere/shelf'
-        New-Item -ItemType Directory -Force -Path $out, $shelf | Out-Null
-        $archive = Join-Path $root 'z.tar.gz'
+        New-Item -ItemType Directory -Force -Path $document, $out, $shelf | Out-Null
+        $archive = Join-Path $document 'z.tar.gz'
         New-LatexIngestTestArchive -Path $archive -Files ([ordered]@{
                 'main.tex' = '\documentclass{article}\begin{document}\section{S}Body.\end{document}'
             })
-        $initialized = Initialize-LatexSourceDeposit -DocumentDir $root -Slug 'z'
+        if (-not $script:RepositoryPythonPath) {
+            Set-ItResult -Skipped -Because 'the repository Python environment is absent'
+            return
+        }
+        $initialized = New-LatexSourceDeposit -DocumentDir $document -Slug 'z' `
+            -PythonPath $script:RepositoryPythonPath
+        $sourcePath = Join-Path $document 'z-tex'
 
-        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.metadata_path `
+        $r = Invoke-ArxivLatexToMarkdown -MetadataPath $initialized.ManifestPath `
             -OutDir $out -DeliverableDir $shelf -RunDir $runDir
-        $r.tex | Should -Be ([System.IO.Path]::GetFullPath($initialized.source_path))
-        Test-Path (Join-Path $initialized.source_path 'main.tex') | Should -BeTrue
+        $r.tex | Should -Be ([System.IO.Path]::GetFullPath($sourcePath))
+        Test-Path (Join-Path $sourcePath 'main.tex') | Should -BeTrue
         Test-Path (Join-Path $runDir 'z.oracle-counts.json') | Should -BeTrue
         Test-Path (Join-Path $runDir 'audits/math-render.json') | Should -BeTrue
         Test-Path (Join-Path $out 'z-latex.md') | Should -BeTrue

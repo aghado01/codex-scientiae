@@ -1,13 +1,13 @@
 #requires -Version 7.0
 <#
-  Source-only LaTeX deposit primitives.
+  Source-only LaTeX archive and tree primitives under logistics.
 
-  This file deliberately has no dependency on the latex-ingest converter or its render/audit stack.
-  It can therefore be used by prerequisite source housekeeping, procurement, and later ingestion
-  orchestration without starting a conversion run.
+  Owns gzip/tar expansion, tree confinement, entrypoint resolution, fingerprinting, and read-side
+  validation of an existing source-ready sentinel. Deposit publication of article.json lives in
+  latex-source-deposit.ps1. This file has no dependency on the latex-ingest converter.
 #>
 
-. "$PSScriptRoot/../logistics/portable-path.ps1"
+. "$PSScriptRoot/portable-path.ps1"
 
 function Get-LatexPathComparison {
     if ($IsWindows) { return [System.StringComparison]::OrdinalIgnoreCase }
@@ -608,5 +608,89 @@ function Test-LatexSourceTree {
         tree_sha256           = $fingerprint.sha256
         package_control_files = $packageControl
         embedded_metadata     = $embeddedMetadata
+    }
+}
+
+function Read-SourceDepositJson {
+    param([Parameter(Mandatory)] [string]$Path)
+    $strictUtf8 = [System.Text.UTF8Encoding]::new($false, $true)
+    try {
+        $json = [System.IO.File]::ReadAllText($Path, $strictUtf8)
+    } catch [System.Text.DecoderFallbackException] {
+        throw "JSON file is not valid UTF-8: '$Path'"
+    }
+    try {
+        $document = [System.Text.Json.JsonDocument]::Parse($json)
+        $document.Dispose()
+        return ($json | ConvertFrom-Json -AsHashtable -Depth 100)
+    } catch {
+        throw "invalid JSON file '$Path': $($_.Exception.Message)"
+    }
+}
+
+function Test-ExistingSourceDeposit {
+    param(
+        [Parameter(Mandatory)] [System.Collections.IDictionary]$Manifest,
+        [Parameter(Mandatory)] [string]$ManifestPath,
+        [Parameter(Mandatory)] [string]$DocumentDir,
+        [Parameter(Mandatory)] [string]$Slug
+    )
+    $isArticle = [string]$Manifest.schema -eq 'codex-scientiae/article/0.1'
+    if ([string]$Manifest.schema -notin @(
+            'codex-scientiae/article/0.1',
+            'codex-scientiae/document-metadata/0.1'
+        ) -or
+        [string]$Manifest.state -ne 'source-ready' -or
+        [string]$Manifest.slug -ne $Slug) {
+        throw "existing deposit manifest is not source-ready for '$Slug': '$ManifestPath'"
+    }
+    if ($isArticle) {
+        if (-not [string]::Equals(
+                [System.IO.Path]::GetFileName($ManifestPath),
+                'article.json',
+                [System.StringComparison]::Ordinal) -or
+            -not [string]::Equals(
+                (Split-Path -Leaf (Split-Path -Parent $ManifestPath)),
+                $Slug,
+                [System.StringComparison]::Ordinal)) {
+            throw "canonical article location does not match slug '$Slug': '$ManifestPath'"
+        }
+        foreach ($required in @(
+                'initialized_utc', 'title', 'authors', 'abstract', 'identifiers', 'categories',
+                'evidence', 'source_forms', 'validation')) {
+            if (-not $Manifest.Contains($required)) {
+                throw "canonical article is missing required field '$required': '$ManifestPath'"
+            }
+        }
+    }
+    $archiveForm = @($Manifest.source_forms | Where-Object { $_.role -eq 'latex-source-archive' })
+    $treeForm = @($Manifest.source_forms | Where-Object { $_.role -eq 'latex-source-tree' })
+    if ($archiveForm.Count -ne 1 -or $treeForm.Count -ne 1) {
+        throw "existing deposit manifest does not declare exactly one LaTeX archive and source tree: '$ManifestPath'"
+    }
+    $archivePath = [System.IO.Path]::GetFullPath((Join-Path $DocumentDir ([string]$archiveForm[0].path)))
+    $treePath = [System.IO.Path]::GetFullPath((Join-Path $DocumentDir ([string]$treeForm[0].path)))
+    if (-not (Test-LatexPathWithinRoot -Path $archivePath -Root $DocumentDir) -or
+        -not (Test-LatexPathWithinRoot -Path $treePath -Root $DocumentDir) -or
+        (Test-PathHasReparsePoint -Path $archivePath) -or
+        (Test-PathHasReparsePoint -Path $treePath) -or
+        -not [System.IO.File]::Exists($archivePath) -or
+        -not [System.IO.Directory]::Exists($treePath)) {
+        throw "existing deposit manifest points to missing or out-of-root source material: '$ManifestPath'"
+    }
+    $archiveHash = (Get-FileHash -LiteralPath $archivePath -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($archiveHash -ne [string]$archiveForm[0].sha256) {
+        throw "source archive no longer matches deposit manifest: '$archivePath'"
+    }
+    $treeHash = (Get-LatexSourceTreeFingerprint -RootPath $treePath).sha256
+    if ($treeHash -ne [string]$treeForm[0].sha256) {
+        throw "source tree no longer matches deposit manifest: '$treePath'"
+    }
+    return [pscustomobject]@{
+        status        = 'already-initialized'
+        metadata_path = $ManifestPath
+        archive_path  = $archivePath
+        source_path   = $treePath
+        manifest      = $Manifest
     }
 }

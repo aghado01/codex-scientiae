@@ -155,10 +155,8 @@ converter activation.
 ## Legacy compatibility is a bounded migration tool
 
 Old archive/slug callers may explicitly import `src/latex-ingest/latex-ingest-compat.ps1`. That compatibility
-surface and `src/latex-ingest/source-deposit.ps1` still contain the metadata-era initializer as migration
-history. It is not an active canonical producer and must not be used to create a new `metadata.json`. New
-source deposits call `New-LatexSourceDeposit` and create only `article.json`; remaining compatibility is a
-temporary read path for already-existing metadata-era deposits.
+surface may still read an existing metadata-era `metadata.json`, but deposit publication is only through
+`New-LatexSourceDeposit` (`article.json`). Do not create new `metadata.json` sentinels.
 
 Explicit source reuse or work-directory overrides in the compatibility shim may keep an investigation
 moving, but the shim warns and labels such results `compat-*`. Such a run does not make a leaf compliant.

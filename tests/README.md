@@ -394,7 +394,7 @@ meaning of `Batchable`, `CapabilityGated`, `NeedsRefactor`, or `SerialOnly`.
 | `mcp-servers/` | MCP server shells (procurement + reader) |
 | `node_utils/` | Node-backed utilities (md-lint, pdf-raster, tikz-render) |
 | `shared/` | Substrate-level primitives such as masks, JSONL, anchors, and sentinels |
-| `logistics/` | Shared logistics primitives (run paths, portable paths, deposit) |
+| `logistics/` | Shared logistics primitives (run paths, portable paths, latex-source deposit) |
 
 ## Conventions
 

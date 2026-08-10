@@ -1,0 +1,26 @@
+extract raw stream + expanded
+ - work out solution for aligning extracted environment spans against the
+
+
+extract all environment spans into a jsonl store
+ - use jsonl store written by jsonl engine
+ - delimiter pattern specified as a parameter
+ - metadata for position/address, span width (chars? bytes?) in stream
+ - emit new stream with spans masked and cross-indexed to store
+
+
+ - also start accumulating distinct examples of extracted environment objects
+  - append to a persistent store of of unique examples to accumulate over many examples
+  - with metadata labeling such as ontology for different types e.g. macros, diagrams if possible
+  - source provenance, publication date, latex runtime version
+
+normalization of lexical tokens before canonicalization
+ - all lower case
+ - can classify by using attribute values or key names in stores
+ - e.g. pull all lexical tokens across a given set of stores as input to the function
+ - "id":"operatorname" -> `operatorname` is one lexical token in a set to be matched
+ - metadata about a given lexical token can be used to categorize according to current canon
+
+canonicalization
+ - ordinal/alphabetical indexes -> reindexed to ordinal starting from "1" when there is 1:1 correspondence
+  - already exists somewhere in either codex-scientiae or graveyard

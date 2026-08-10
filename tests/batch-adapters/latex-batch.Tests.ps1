@@ -252,6 +252,51 @@ function Invoke-ArxivLatexToMarkdown {
     }
 
     . (Join-Path $script:RepositoryRoot 'src/logistics/latex-source-deposit.ps1')
+
+    function New-LegacyMetadataSourceDeposit {
+        param(
+            [Parameter(Mandatory)] [string] $DocumentDir,
+            [Parameter(Mandatory)] [string] $Slug
+        )
+
+        $archive = Join-Path $DocumentDir "$Slug.tar.gz"
+        $tree = Join-Path $DocumentDir "$Slug-tex"
+        Expand-LatexSourceArchive -ArchivePath $archive -DestinationPath $tree | Out-Null
+        $validation = Test-LatexSourceTree -RootPath $tree -Slug $Slug
+        $archiveHash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+        $manifestPath = Join-Path $DocumentDir 'metadata.json'
+        $manifest = [ordered]@{
+            schema     = 'codex-scientiae/document-metadata/0.1'
+            state      = 'source-ready'
+            slug       = $Slug
+            source_forms = @(
+                [ordered]@{
+                    role   = 'latex-source-archive'
+                    path   = "$Slug.tar.gz"
+                    format = 'application/gzip'
+                    sha256 = $archiveHash
+                }
+                [ordered]@{
+                    role         = 'latex-source-tree'
+                    path         = "$Slug-tex"
+                    format       = 'application/x-latex-source-tree'
+                    derived_from = "$Slug.tar.gz"
+                    entrypoint   = [string]$validation.entrypoint
+                    sha256       = [string]$validation.tree_sha256
+                }
+            )
+        }
+        [System.IO.File]::WriteAllText(
+            $manifestPath,
+            (ConvertTo-Json -InputObject $manifest -Depth 20) + "`n",
+            [System.Text.UTF8Encoding]::new($false))
+        return [pscustomobject]@{
+            metadata_path = $manifestPath
+            archive_path  = $archive
+            source_path   = $tree
+        }
+    }
+
     Import-Module $script:AdaptersManifest -Force
     $script:MathRenderCapability = Get-LatexBatchMathRenderCapability
 }
@@ -940,7 +985,7 @@ Describe 'latex-batch execution integration' {
             New-LatexBatchTestArchive -Path $legacyArchive -Files ([ordered]@{
                     'main.tex' = '\documentclass{article}\begin{document}Legacy body.\end{document}'
                 })
-            $legacyDeposit = Initialize-LatexSourceDeposit `
+            $legacyDeposit = New-LegacyMetadataSourceDeposit `
                 -DocumentDir $legacyDocumentDir -Slug $plannedSlug
             if ($legacyCase.IdenticalPatches) {
                 $legacyPatchBytes = [System.Text.UTF8Encoding]::new($false).GetBytes(
